@@ -1,0 +1,6 @@
+Línea 17: la clase XtremeSuiteControls.PushButton del control Imprimir no era una clase de control cargada.
+Línea 38: la clase XtremeSuiteControls.TabControl del control TabControl1 no era una clase de control cargada.
+Línea 99: la clase XtremeSuiteControls.PushButton del control cmdGuardar no era una clase de control cargada.
+Línea 120: la clase XtremeSuiteControls.PushButton del control cmdQuitarOperario no era una clase de control cargada.
+Línea 133: la clase XtremeSuiteControls.PushButton del control cmdTerminar no era una clase de control cargada.
+Línea 146: la clase XtremeSuiteControls.PushButton del control cmdCrear no era una clase de control cargada.

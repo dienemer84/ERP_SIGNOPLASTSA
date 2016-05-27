@@ -1,0 +1,7 @@
+
+
+Estos son los indices que indican origen de archivos.
+
+1- archivos de piezas
+2- archivos de presupuestos
+3- archivos de ot/oe
