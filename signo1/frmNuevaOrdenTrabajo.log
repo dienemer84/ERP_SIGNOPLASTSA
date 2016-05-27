@@ -1,0 +1,7 @@
+Line 28: Class XtremeSuiteControls.ComboBox of control cboCliente was not a loaded control class.
+Line 41: Class XtremeSuiteControls.GroupBox of control grpMarco was not a loaded control class.
+Line 52: Class XtremeSuiteControls.CheckBox of control chkMarco was not a loaded control class.
+Line 74: Class XtremeSuiteControls.ComboBox of control cboContratos was not a loaded control class.
+Line 119: Class XtremeSuiteControls.PushButton of control cmdGuardar was not a loaded control class.
+Line 132: Class XtremeSuiteControls.PushButton of control cmdCerrar was not a loaded control class.
+Line 145: Class XtremeSuiteControls.ComboBox of control cboClienteFacturar was not a loaded control class.
