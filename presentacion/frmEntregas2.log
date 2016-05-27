@@ -1,0 +1,15 @@
+Line 28: Class XtremeSuiteControls.TabControl of control TabControl1 was not a loaded control class.
+Line 48: Class XtremeSuiteControls.GroupBox of control grpEntregasDetalle was not a loaded control class.
+Line 103: Class XtremeSuiteControls.PushButton of control btnExportarExcel was not a loaded control class.
+Line 117: Class XtremeSuiteControls.GroupBox of control GroupBox1 was not a loaded control class.
+Line 172: Class XtremeSuiteControls.PushButton of control PushButton1 was not a loaded control class.
+Line 187: Class XtremeSuiteControls.PushButton of control mnuAtajo was not a loaded control class.
+Line 207: Class XtremeSuiteControls.GroupBox of control grpE was not a loaded control class.
+Line 219: Class XtremeSuiteControls.Label of control lblPorcentajeEntregas was not a loaded control class.
+Line 232: Class XtremeSuiteControls.Label of control lblPorcentajeFabricacion was not a loaded control class.
+Line 245: Class XtremeSuiteControls.Label of control lblPorcentajeAvance was not a loaded control class.
+Line 259: Class XtremeSuiteControls.PushButton of control btnCerrar was not a loaded control class.
+Line 272: Class XtremeSuiteControls.GroupBox of control grpDetalles was not a loaded control class.
+Line 332: Class XtremeSuiteControls.PushButton of control btnRemitar was not a loaded control class.
+Line 345: Class XtremeSuiteControls.PushButton of control btnAplicarRemito was not a loaded control class.
+Line 358: Class XtremeSuiteControls.PushButton of control cmdPreconteo was not a loaded control class.

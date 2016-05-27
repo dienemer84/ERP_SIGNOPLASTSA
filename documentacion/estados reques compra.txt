@@ -1,0 +1,4 @@
+estados de los reques de compra
+
+0 en proceso
+1 pendiente

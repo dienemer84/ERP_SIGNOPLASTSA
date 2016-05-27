@@ -1,0 +1,11 @@
+Line 19: Class XtremeSuiteControls.GroupBox of control GroupBox2 was not a loaded control class.
+Line 31: Class XtremeReportControl.ReportControl of control ReportControlDetalles was not a loaded control class.
+Line 50: Class XtremeSuiteControls.GroupBox of control fraDetalles was not a loaded control class.
+Line 62: Class XtremeReportControl.ReportControl of control ReportControl was not a loaded control class.
+Line 81: Class XtremeSuiteControls.GroupBox of control fraDatosOT was not a loaded control class.
+Line 131: Class XtremeSuiteControls.PushButton of control cmdBuscar was not a loaded control class.
+Line 145: Class XtremeSuiteControls.GroupBox of control GroupBox1 was not a loaded control class.
+Line 158: Class XtremeSuiteControls.PushButton of control btnClearTarea was not a loaded control class.
+Line 171: Class XtremeSuiteControls.ComboBox of control cboTarea was not a loaded control class.
+Line 196: Class XtremeSuiteControls.FlatEdit of control txtOTNro was not a loaded control class.
+Line 209: Class XtremeSuiteControls.TaskDialog of control taskDialog was not a loaded control class.

@@ -1,0 +1,636 @@
+VERSION 5.00
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Begin VB.Form frmOrdenesPago 
+   Caption         =   "Ordenes de Pago"
+   ClientHeight    =   6975
+   ClientLeft      =   60
+   ClientTop       =   450
+   ClientWidth     =   10785
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   8.25
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   Icon            =   "frmOrdenesPago.frx":0000
+   LinkTopic       =   "Form1"
+   MDIChild        =   -1  'True
+   ScaleHeight     =   6975
+   ScaleWidth      =   10785
+   Begin GridEX20.GridEX gridOrdenes 
+      Height          =   5580
+      Left            =   45
+      TabIndex        =   0
+      Top             =   1335
+      Width           =   10620
+      _ExtentX        =   18733
+      _ExtentY        =   9843
+      Version         =   "2.0"
+      BoundColumnIndex=   ""
+      ReplaceColumnIndex=   ""
+      GroupFooterStyle=   2
+      ColumnAutoResize=   -1  'True
+      MethodHoldFields=   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   9
+      Column(1)       =   "frmOrdenesPago.frx":000C
+      Column(2)       =   "frmOrdenesPago.frx":0178
+      Column(3)       =   "frmOrdenesPago.frx":02AC
+      Column(4)       =   "frmOrdenesPago.frx":03A0
+      Column(5)       =   "frmOrdenesPago.frx":04D8
+      Column(6)       =   "frmOrdenesPago.frx":06E0
+      Column(7)       =   "frmOrdenesPago.frx":0814
+      Column(8)       =   "frmOrdenesPago.frx":0900
+      Column(9)       =   "frmOrdenesPago.frx":09F4
+      FormatStylesCount=   9
+      FormatStyle(1)  =   "frmOrdenesPago.frx":0AE8
+      FormatStyle(2)  =   "frmOrdenesPago.frx":0C10
+      FormatStyle(3)  =   "frmOrdenesPago.frx":0CC0
+      FormatStyle(4)  =   "frmOrdenesPago.frx":0D74
+      FormatStyle(5)  =   "frmOrdenesPago.frx":0E4C
+      FormatStyle(6)  =   "frmOrdenesPago.frx":0F04
+      FormatStyle(7)  =   "frmOrdenesPago.frx":0FE4
+      FormatStyle(8)  =   "frmOrdenesPago.frx":1098
+      FormatStyle(9)  =   "frmOrdenesPago.frx":114C
+      ImageCount      =   0
+      PrinterProperties=   "frmOrdenesPago.frx":122C
+   End
+   Begin XtremeSuiteControls.GroupBox GroupBox1 
+      Height          =   1290
+      Left            =   90
+      TabIndex        =   1
+      Top             =   45
+      Width           =   10620
+      _Version        =   786432
+      _ExtentX        =   18732
+      _ExtentY        =   2275
+      _StockProps     =   79
+      Caption         =   "Parámetros de búsqueda"
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.GroupBox GroupBox2 
+         Height          =   1095
+         Left            =   4890
+         TabIndex        =   9
+         Top             =   105
+         Width           =   2355
+         _Version        =   786432
+         _ExtentX        =   4154
+         _ExtentY        =   1931
+         _StockProps     =   79
+         Caption         =   "Estado Proveedor"
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.CheckBox chkContado 
+            Height          =   195
+            Left            =   405
+            TabIndex        =   10
+            Top             =   225
+            Width           =   1635
+            _Version        =   786432
+            _ExtentX        =   2884
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Contado"
+            UseVisualStyle  =   -1  'True
+            Value           =   1
+         End
+         Begin XtremeSuiteControls.CheckBox chkCtaCte 
+            Height          =   315
+            Left            =   405
+            TabIndex        =   11
+            Top             =   465
+            Width           =   1800
+            _Version        =   786432
+            _ExtentX        =   3175
+            _ExtentY        =   556
+            _StockProps     =   79
+            Caption         =   "Cuenta Corriente"
+            UseVisualStyle  =   -1  'True
+            Value           =   1
+         End
+         Begin XtremeSuiteControls.CheckBox chkEliminado 
+            Height          =   315
+            Left            =   405
+            TabIndex        =   12
+            Top             =   765
+            Width           =   1800
+            _Version        =   786432
+            _ExtentX        =   3175
+            _ExtentY        =   556
+            _StockProps     =   79
+            Caption         =   "Inactivos"
+            UseVisualStyle  =   -1  'True
+            Value           =   1
+         End
+      End
+      Begin VB.TextBox txtNro 
+         Alignment       =   1  'Right Justify
+         Height          =   285
+         Left            =   945
+         TabIndex        =   2
+         Top             =   285
+         Width           =   840
+      End
+      Begin XtremeSuiteControls.PushButton cmdBuscar 
+         Default         =   -1  'True
+         Height          =   450
+         Left            =   7350
+         TabIndex        =   3
+         Top             =   720
+         Width           =   1350
+         _Version        =   786432
+         _ExtentX        =   2381
+         _ExtentY        =   794
+         _StockProps     =   79
+         Caption         =   "Buscar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboProveedores 
+         Height          =   315
+         Left            =   945
+         TabIndex        =   4
+         Top             =   615
+         Width           =   3525
+         _Version        =   786432
+         _ExtentX        =   6218
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Text            =   "cboProveedores"
+      End
+      Begin XtremeSuiteControls.PushButton btnClearProveedor 
+         Height          =   255
+         Left            =   4530
+         TabIndex        =   5
+         Top             =   630
+         Width           =   300
+         _Version        =   786432
+         _ExtentX        =   529
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton PushButton1 
+         Height          =   330
+         Left            =   9030
+         TabIndex        =   8
+         Top             =   915
+         Visible         =   0   'False
+         Width           =   1545
+         _Version        =   786432
+         _ExtentX        =   2725
+         _ExtentY        =   582
+         _StockProps     =   79
+         Caption         =   "PushButton1"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label lbl 
+         Height          =   195
+         Left            =   165
+         TabIndex        =   7
+         Top             =   660
+         Width           =   750
+         _Version        =   786432
+         _ExtentX        =   1323
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Proveedor"
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label1 
+         Height          =   195
+         Left            =   195
+         TabIndex        =   6
+         Top             =   330
+         Width           =   675
+         _Version        =   786432
+         _ExtentX        =   1191
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Nº Orden"
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
+   End
+   Begin VB.Menu menu 
+      Caption         =   "menu"
+      Visible         =   0   'False
+      Begin VB.Menu mnuEditar 
+         Caption         =   "Editar"
+      End
+      Begin VB.Menu mnuAprobar 
+         Caption         =   "Aprobar"
+      End
+      Begin VB.Menu mnuAnular 
+         Caption         =   "Anular"
+      End
+      Begin VB.Menu mnuVer 
+         Caption         =   "Ver"
+      End
+      Begin VB.Menu mnuImprimir 
+         Caption         =   "Imprimir"
+      End
+      Begin VB.Menu mnuVerCertificado 
+         Caption         =   "Ver Certificado IIBB"
+      End
+   End
+End
+Attribute VB_Name = "frmOrdenesPago"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+
+Implements ISuscriber
+
+Dim ids As String
+Private ordenes As New Collection
+Private Orden As ordenPago
+Private fac As clsFacturaProveedor
+
+Private Sub btnClearProveedor_Click()
+Me.cboProveedores.ListIndex = -1
+End Sub
+
+Private Sub cmdBuscar_Click()
+If (Me.chkContado.value = xtpChecked Or Me.chkCtaCte.value = xtpChecked Or Me.chkEliminado.value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
+
+End Sub
+
+Private Sub Form_Load()
+    Customize Me
+    GridEXHelper.CustomizeGrid Me.gridOrdenes, True
+    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
+    Me.cboProveedores.ListIndex = -1
+    llenarLista
+    GridEXHelper.AutoSizeColumns Me.gridOrdenes
+    ids = funciones.CreateGUID
+    Channel.AgregarSuscriptor Me, OrdenesPago_
+End Sub
+
+Private Sub llenarLista()
+    Dim filter As String
+    filter = "1 = 1"
+    
+    If Me.cboProveedores.ListIndex > -1 Then
+        filter = filter & " AND AdminComprasFacturasProveedores.id_proveedor = " & Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
+    End If
+    
+    If LenB(Me.txtNro.text) > 0 Then
+        filter = filter & " AND  ordenes_pago.id  = " & Val(Me.txtNro.text)
+   End If
+   
+   
+   
+   Dim filtroor As String
+   
+   
+   
+   If Me.chkContado.value = xtpChecked Then
+      filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorContado
+   End If
+   
+   If Me.chkCtaCte.value = xtpChecked Then
+      filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorCuentaCorriente
+   End If
+   
+   If Me.chkEliminado.value = xtpChecked Then
+      filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorEliminado
+   End If
+   
+   
+   
+   
+   
+   If LenB(filtroor) > 0 Then
+   filtroor = " AND (" & Right(filtroor, Len(filtroor) - 3) & " )"
+   filter = filter & filtroor
+   End If
+
+    Me.gridOrdenes.ItemCount = 0
+    Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
+    Me.gridOrdenes.ItemCount = ordenes.count
+    
+    If ordenes.count = 1 And LenB(Me.txtNro.text) > 0 Then
+    Set Orden = ordenes(1)
+        If Orden.estado <> EstadoOrdenPago_Anulada Then gridOrdenes_DblClick
+    End If
+End Sub
+Private Sub Form_Resize()
+    Me.gridOrdenes.Width = Me.ScaleWidth - 50
+    Me.gridOrdenes.Height = Me.ScaleHeight - Me.gridOrdenes.Top
+    
+    Me.GroupBox1.Width = Me.gridOrdenes.Width - 100
+    GridEXHelper.AutoSizeColumns Me.gridOrdenes
+End Sub
+
+Private Sub Form_Terminate()
+Channel.RemoverSuscripcionTotal Me
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+Channel.RemoverSuscripcionTotal Me
+End Sub
+
+Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
+    GridEXHelper.ColumnHeaderClick Me.gridOrdenes, Column
+End Sub
+
+Private Sub gridOrdenes_DblClick()
+gridOrdenes_SelectionChange
+mnuVer_Click
+End Sub
+
+Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, X As Single, y As Single)
+    If ordenes.count > 0 Then
+    gridOrdenes_SelectionChange
+    If Button = 2 Then
+        Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
+        Me.mnuEditar.Enabled = (Orden.estado = EstadoOrdenPago_pendiente)
+        Me.mnuAprobar.Enabled = (Orden.estado = EstadoOrdenPago_pendiente)
+        Me.mnuAnular.Enabled = Not (Orden.estado = EstadoOrdenPago_Anulada)
+        Me.mnuVer.Enabled = Not (Orden.estado = EstadoOrdenPago_Anulada)
+        
+        Me.PopupMenu menu
+    End If
+    End If
+End Sub
+
+Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
+    If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.Item(RowBuffer.RowIndex)
+        If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
+            RowBuffer.CellStyle(9) = "aprobada"
+        ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
+            RowBuffer.RowStyle = "anulada2"
+            
+            RowBuffer.CellStyle(9) = "anulada"
+        End If
+    End If
+End Sub
+
+Private Sub gridOrdenes_SelectionChange()
+On Error Resume Next
+    Set Orden = ordenes.Item(gridOrdenes.RowIndex(gridOrdenes.row))
+End Sub
+
+Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.Item(RowIndex)
+        Values(1) = Orden.id
+        Values(2) = Orden.FEcha
+        
+        Values(3) = Orden.Moneda.NombreCorto
+       
+        Values(4) = funciones.FormatearDecimales(Orden.StaticTotalOrigenes)
+        Values(5) = funciones.FormatearDecimales(Orden.StaticTotalRetenido)
+        Values(6) = funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)
+
+        If Orden.EsParaFacturaProveedor Then
+            Set fac = Orden.FacturasProveedor.Item(1)
+            Values(7) = "Factura Proveedor"
+            Values(8) = fac.Proveedor.RazonSocial
+        Else
+            Values(7) = "Cuenta Contable"
+            If IsSomething(Orden.CuentaContable) Then
+                Values(8) = Orden.CuentaContable.nombre & " (" & Orden.CuentaContable.codigo & ")"
+            End If
+        End If
+
+        Values(9) = enums.EnumEstadoOrdenPago(Orden.estado)
+    End If
+End Sub
+
+Private Property Get ISuscriber_id() As String
+ISuscriber_id = ids
+End Property
+
+Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
+    Dim tmp As ordenPago
+    Dim i As Long
+    
+    If EVENTO.EVENTO = agregar_ Then
+        ordenes.Add EVENTO.Elemento
+        llenarLista
+    ElseIf EVENTO.EVENTO = modificar_ Then
+        For i = ordenes.count To 1 Step -1
+            Set tmp = EVENTO.Elemento
+            If ordenes(i).id = tmp.id Then
+                Set Orden = ordenes(i)
+                Orden.id = tmp.id
+                Orden.estado = tmp.estado
+                Me.gridOrdenes.RefreshRowIndex i
+                Exit For
+            End If
+        Next
+    End If
+End Function
+
+Private Sub mnuAnular_Click()
+    If MsgBox("¿Desea borrar la OP?", vbQuestion + vbYesNo) = vbYes Then
+        If DAOOrdenPago.Delete(Orden.id, True) Then
+            Me.gridOrdenes.ItemCount = 0
+            ordenes.remove CStr(Orden.id)
+            Me.gridOrdenes.ItemCount = ordenes.count
+        Else
+            MsgBox "No se pudo borrar.", vbCritical + vbOKOnly
+        End If
+    End If
+End Sub
+
+Private Sub mnuAprobar_Click()
+    If DAOOrdenPago.aprobar(Orden, True) Then
+        MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+    Else
+        MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
+    End If
+
+End Sub
+
+Private Sub mnuEditar_Click()
+Dim f22 As New frmCrearOrdenPago
+f22.Show
+f22.Cargar Orden
+End Sub
+
+Private Sub mnuImprimir_Click()
+    With drpOrdenPago.Sections("seccion").Controls
+
+    .Item("lblTitulo").caption = "SIGNOPLAST S.A. - Orden de Pago Nº " & Orden.id
+    .Item("lblFecha").caption = Orden.FEcha
+    
+    If Orden.FacturasProveedor.count > 0 Then
+        .Item("lblProveedor").caption = Orden.FacturasProveedor(1).Proveedor.RazonSocial
+    End If
+    
+    .Item("lblAlicuota").caption = Orden.Alicuota & "%"
+    
+    Dim cert As CertificadoRetencion
+    Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
+    If IsSomething(cert) Then
+        .Item("lblCertificadoIIBB").caption = cert.id
+    Else
+        .Item("lblCertificadoIIBB").caption = "NO POSEE"
+    End If
+    
+    .Item("lblMoneda").caption = Orden.Moneda.NombreCorto & " " & Orden.Moneda.NombreLargo
+    
+
+
+    Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
+    Dim F As clsFacturaProveedor
+    Dim facs As New Collection
+    For Each F In Orden.FacturasProveedor
+        facs.Add F.NumeroFormateado & String$(8, " ") & F.FEcha & String$(8, " ") & F.Moneda.NombreCorto & " " & F.Total
+    Next F
+    If facs.count = 0 Then
+        .Item("lblFacturas").caption = "NO POSEE FACTURAS"
+    Else
+        .Item("lblFacturas").caption = funciones.JoinCollectionValues(facs, vbNewLine)
+    End If
+    
+    
+    Dim cheq As Cheque
+    Dim tmpCol As New Collection
+    For Each cheq In Orden.ChequesPropios
+        tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.Moneda.NombreCorto & " " & cheq.Monto
+    Next cheq
+    If tmpCol.count = 0 Then
+        .Item("lblChequesPropios").caption = "NO POSEE CHEQUES PROPIOS"
+    Else
+        .Item("lblChequesPropios").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
+    End If
+    
+    
+    Set tmpCol = New Collection
+    For Each cheq In Orden.ChequesTerceros
+        tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.Moneda.NombreCorto & " " & cheq.Monto
+    Next cheq
+    If tmpCol.count = 0 Then
+        .Item("lblChequesTerceros").caption = "NO POSEE CHEQUES DE 3ros"
+    Else
+        .Item("lblChequesTerceros").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
+    End If
+   
+   
+    Dim op As operacion
+    Set tmpCol = New Collection
+    For Each op In Orden.OperacionesBanco
+        tmpCol.Add op.FechaOperacion & String$(8, " ") & op.Moneda.NombreCorto & " " & op.Monto
+    Next op
+    If tmpCol.count = 0 Then
+        .Item("lblTransferencias").caption = "NO POSEE OPERACIONES DE BANCO"
+    Else
+        .Item("lblTransferencias").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
+    End If
+
+    
+    Set tmpCol = New Collection
+    For Each op In Orden.OperacionesCaja
+        tmpCol.Add op.FechaOperacion & String$(8, " ") & op.Moneda.NombreCorto & " " & op.Monto
+    Next op
+    If tmpCol.count = 0 Then
+        .Item("lblEfectivo").caption = "NO POSEE OPERACIONES DE CAJA"
+    Else
+        .Item("lblEfectivo").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
+    End If
+    
+    
+    .Item("lblDifTipoCambio").caption = Orden.Moneda.NombreCorto & " " & Orden.DiferenciaCambio
+    .Item("lblOtrosDescuentos").caption = Orden.Moneda.NombreCorto & " " & Orden.OtrosDescuentos
+    
+    .Item("lblTotalFacturas").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalFacturas
+    .Item("lblTotalRetenido").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalRetenido
+    .Item("lblTotalAbonado").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalOrigenes '+ Orden.StaticTotalRetenido
+    
+    
+    Dim r As Recordset
+    Set r = conectar.RSFactory("SELECT 1")
+    Set drpOrdenPago.DataSource = r
+    
+    End With
+End Sub
+
+Private Sub mnuVer_Click()
+Dim f22 As New frmCrearOrdenPago
+f22.Show
+f22.ReadOnly = True
+f22.Cargar Orden
+End Sub
+
+Private Sub mnuVerCertificado_Click()
+    Dim cr As CertificadoRetencion
+    Set cr = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
+    
+    If IsSomething(cr) Then
+        DAOCertificadoRetencion.VerCertificado cr
+    Else
+        MsgBox "La orden de pago no tiene certificado.", vbInformation
+    End If
+End Sub
+
+Private Sub PushButton1_Click()
+    Dim ordenes As Collection
+    Set ordenes = DAOOrdenPago.FindAll()
+    Dim Orden As ordenPago
+
+    Dim d As New Dictionary
+    Dim ret As Retencion
+    Dim colret As Collection
+
+    conectar.BeginTransaction
+
+
+    Dim facturasPosta As Collection
+
+    'conectar.execute "TRUNCATE certificados_retencion"
+    'conectar.execute "TRUNCATE certificados_retencion_detalles"
+
+    For Each Orden In ordenes
+        If Orden.FacturasProveedor.count > 0 Then    'no traia las facturas bien, faltaban datos y no me daban los totales
+            Set facturasPosta = New Collection
+            Set facturasPosta = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id IN (" & funciones.JoinCollectionValues(Orden.FacturasProveedor, ", ", "Id") & ")")
+            Set Orden.FacturasProveedor = facturasPosta
+        End If
+
+        If Orden.StaticTotalFacturas = 0 Then
+
+            Orden.StaticTotalFacturas = Orden.TotalFacturas
+            Orden.StaticTotalFacturasNG = Orden.TotalFacturasNG
+            Orden.StaticTotalOrigenes = Orden.TotalOrigenes
+
+            Set colret = DAORetenciones.FindAllEsAgente
+            Set d = DAOCertificadoRetencion.VerPosibleRetenciones(Orden.FacturasProveedor, colret, Orden.Alicuota, Orden.DiferenciaCambio)
+            Dim totRet As Double
+            totRet = 0
+            For Each ret In colret
+                totRet = totRet + d.Item(CStr(ret.id))
+            Next ret
+            Orden.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
+
+            If Not DAOOrdenPago.Guardar(Orden) Then Stop
+
+            If Orden.estado = EstadoOrdenPago_Aprobada And Orden.StaticTotalRetenido > 0 Then
+                If Not IsSomething(DAOCertificadoRetencion.Create(Orden, True)) Then Stop
+            End If
+
+        End If
+    Next Orden
+
+    conectar.CommitTransaction
+
+
+
+End Sub

@@ -1,0 +1,10 @@
+TRUNCATE ComprasRequerimientosProveedores;
+TRUNCATE ComprasRequerimientosHistorial;
+TRUNCATE ComprasRequerimientosDetallesEntregas;
+TRUNCATE ComprasRequerimientosDetalleMaterial;
+TRUNCATE ComprasRequerimientos;
+TRUNCATE ComprasPeticionOfertaDetalleEntregas;
+TRUNCATE ComprasPeticionOfertaDetalle;
+TRUNCATE ComprasPeticionOferta;
+TRUNCATE ComprasOrdenesHistorial;
+TRUNCATE ComprasOrdenes;
