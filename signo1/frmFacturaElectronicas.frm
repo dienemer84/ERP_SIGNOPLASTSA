@@ -15,14 +15,3 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Option Explicit
-Public Function factura_electronica()
-
-    Me.WSAFIPFEx1.iniciar SCModoFiscal.Test, "23172338909", "c:\certificados\cert.pfx", ""
-
-    Dim F As Boolean
-
-    F = Me.WSAFIPFEx1.f1ObtenerTicketAcceso
-    Debug.Print F
-
-End Function
