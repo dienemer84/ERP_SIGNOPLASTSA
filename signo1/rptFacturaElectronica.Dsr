@@ -904,7 +904,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    BeginProperty Section3 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "footer"
-      Object.Height          =   3195
+      Object.Height          =   3255
       NumControls     =   24
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -999,10 +999,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item6 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblBarcode"
-         Object.Left            =   150
-         Object.Top             =   2415
-         Object.Width           =   6870
-         Object.Height          =   615
+         Object.Top             =   2385
+         Object.Width           =   7380
+         Object.Height          =   840
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "3 of 9 Barcode"
             Size            =   32.25
