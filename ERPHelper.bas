@@ -143,19 +143,27 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     req.CbteDesde = F.numero
     req.CbteHasta = F.numero
     req.CbteFch = Format(F.FechaEmision, "yyyymmdd")
-    req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total * F.CambioAPatron, 2)
+req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total, 2)
+'req.MonCotiz = F.CambioAPatron
+
+    'req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total * F.CambioAPatron, 2)
     req.ImpTotConc = "0"    'no gavado+excento + gravado + iva + tributo
-    req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
-    req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento * F.CambioAPatron, 2)
+req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
+    'req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
+    req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento, 2)
+    'req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento * F.CambioAPatron, 2)
     req.FchServDesde = ""    ' obligatorio para concepto de tipo 3 y 2
     req.FchServHasta = ""    ' obligatorio para concepto de tipo 3 y 2
-    req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
+    
+req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
+    'req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
-    req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
+req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
+'    req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
 
     req.MonId = F.Moneda.id
-    req.MonCotiz = F.Moneda.Cambio
-
+    'req.MonCotiz = F.Moneda.Cambio
+req.MonCotiz = F.CambioAPatron
     req.FchVtoPago = ""    'obligatorio para concepto 2 y 3
 
     'Dim cbt As CbteAsoc
@@ -199,9 +207,11 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
 
 
     Dim Iva As New AlicIva
-    Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
+    Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
+    'Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
     Iva.idAlicIvaCambiar = F.AlicuotaAplicada
-    Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
+Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
+    'Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
 
     If F.TotalEstatico.TotalIVADiscrimandoONo > 0 Then
         req.Iva.Add Iva

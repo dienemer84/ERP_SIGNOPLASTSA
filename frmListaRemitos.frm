@@ -358,11 +358,15 @@ Private Sub AnularRto_Click()
 End Sub
 
 Private Sub archivos_Click()
-    Dim archi As New frmArchivos2
-    archi.Origen = OA_Remitos
-    archi.caption = "Remito " & tmpRto.numero
-    archi.ObjetoId = tmpRto.id
-    archi.Show
+    
+ Dim frmarchi1 As New frmArchivos2
+    frmarchi1.Origen = OA_Remitos
+    frmarchi1.ObjetoId = tmpRto.id
+    frmarchi1.caption = "Remito " & tmpRto.numero
+    frmarchi1.Show
+    
+    
+    frmarchi1.Show
 
 
 
@@ -541,7 +545,7 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
         IconIndex = 1
     End If
 End Sub
-Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim row As Long
     row = grilla.RowIndex(grilla.row)
     If row > 0 Then

@@ -1790,8 +1790,19 @@ seccion.Controls.item("lblIntereses").caption = tip
 
  If F.TipoCambioAjuste > 0 Then
     Dim mon As clsMoneda
+    
+    
+    If F.Moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
+       'si esta factura en moneda patron
     Set mon = DAOMoneda.GetById(F.IdMonedaAjuste)
-    tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total / F.TipoCambioAjuste) & " al tipo de cambio " & F.Moneda.NombreCorto & " " & F.TipoCambioAjuste & ".  La presente deberá ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
+       tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total / F.TipoCambioAjuste) & " al tipo de cambio " & mon.NombreCorto & " " & F.TipoCambioAjuste & ".  La presente deberá ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
+    Else
+        'si esta facturada en otra moneda
+    Set mon = DAOMoneda.FindFirstByPatronOrDefault '  DAOMoneda.GetById(F.IdMonedaAjuste)
+    tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
+    End If
+    
+    
     seccion.Controls.item("lblCambio").caption = tip
     
 End If
