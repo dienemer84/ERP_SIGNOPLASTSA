@@ -1,9 +1,11 @@
 Attribute VB_Name = "enums"
 Public forma_Entrega(2)
+Public tipo_ot(2)
 Public estados_Reques(11)
 Dim Destinos(3)
 Dim unidad(5)
 Dim estados_material(2)
+Dim estado_orden_entrega(3)
 Dim estado_factura_proveedor(3)
 Public estado_po(2)
 Dim estado_presupuesto(8)
@@ -55,6 +57,13 @@ Public Enum TipoDocumentoDetalle
     TipoDocumentoDetalle_Fijo = 0
     TipoDocumentoDetalle_Dinamico = 1
 End Enum
+
+Public Enum TipoOt
+    OT_TRADICIONAL = 1
+    OT_STOCK = 2
+    OT_ENTREGA = 3
+End Enum
+
 
 Public Enum EstadoProveedor
     EstadoProveedorCuentaCorriente = 1
@@ -171,7 +180,11 @@ End Enum
 
 
 
-
+Public Enum EstadoOrdenEntrega
+    Pendiente = 1
+    Aprobado = 2
+    FINALIZADO = 3
+End Enum
 
 
 Public Enum TipoCuentaBancaria
@@ -191,7 +204,7 @@ End Enum
 
 
 Public Enum EstadoRecibo
-    pendiente = 1
+    Pendiente = 1
     Aprobado = 2
     Reciboanulado = 3
 End Enum
@@ -374,6 +387,9 @@ Public Function EnumTiposComplejidad(indice) As String
     EnumTiposComplejidad = tipo_complejidad(indice)
 End Function
 
+Public Function EnumTipoOT(indice) As String
+    EnumTiposOT = tipo_ot(indice)
+End Function
 Public Function EnumTiposDoc(indice) As String
     enumtioposdoc = tipos_Doc(indice)
 End Function
@@ -387,6 +403,13 @@ End Function
 Public Function enumEstadoFacturaProveedor(indice) As String
     enumEstadoFacturaProveedor = estado_factura_proveedor(indice)
 End Function
+
+
+Public Function enumEstadoOrdenEntrega(indice) As String
+enumEstadoOrdenEntrega = estado_orden_entrega(indice)
+End Function
+
+
 Public Function enumEstadoProcesoDetalleOrdenTrabajo(indice) As String
     enumEstadoProcesoDetalleOrdenTrabajo = estado_proceso_ot(indice)
 End Function
@@ -430,6 +453,10 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
     estado_nnc(EstadoNotaNoConformidad.NNC_Pendiente) = "Pendiente"
     estado_nnc(EstadoNotaNoConformidad.NNC_Resuelta) = "Resuelta"
 
+    tipo_ot(0) = "Tradicional"
+    tipo_ot(1) = "De Stock"
+    tipo_ot(2) = "De Entrega"
+
     estado_proceso_ot(0) = "Aún no definido"
     estado_proceso_ot(1) = "Definido"
     estado_proceso_ot(2) = "No definido"
@@ -458,6 +485,9 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
     estado_factura_proveedor(2) = "Aprobada"    ' EstadoFacturaProveedor.Aprobada
     estado_factura_proveedor(3) = "Saldada"    'EstadoFacturaProveedor.Saldada
 
+estado_orden_entrega(1) = "Pendiente"
+estado_orden_entrega(2) = "Aprobada"
+estado_orden_entrega(3) = "Finalizada"
 
     estado_saldado(TipoSaldadoFactura.NoSaldada) = "No Saldada"
     estado_saldado(TipoSaldadoFactura.notaCredito) = "N. Crédito"
@@ -475,7 +505,7 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
     estado_po(2) = "Orden Compra creada"
 
     estado_recibo(EstadoRecibo.Aprobado) = "Aprobado"
-    estado_recibo(EstadoRecibo.pendiente) = "Pendiente"
+    estado_recibo(EstadoRecibo.Pendiente) = "Pendiente"
     estado_recibo(EstadoRecibo.Reciboanulado) = "Anulado"
 
     unidad(1) = "Kg"

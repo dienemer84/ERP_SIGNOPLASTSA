@@ -103,21 +103,21 @@ Begin VB.Form frmPlaneamientoPedidosPendientes
       Column(10)      =   "frmVerPedidosPendientes.frx":0B62
       Column(11)      =   "frmVerPedidosPendientes.frx":0C92
       Column(12)      =   "frmVerPedidosPendientes.frx":0DEA
-      Column(13)      =   "frmVerPedidosPendientes.frx":0F2A
+      Column(13)      =   "frmVerPedidosPendientes.frx":0F06
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmVerPedidosPendientes.frx":100E
-      FormatStyle(2)  =   "frmVerPedidosPendientes.frx":1136
-      FormatStyle(3)  =   "frmVerPedidosPendientes.frx":11E6
-      FormatStyle(4)  =   "frmVerPedidosPendientes.frx":129A
-      FormatStyle(5)  =   "frmVerPedidosPendientes.frx":134E
-      FormatStyle(6)  =   "frmVerPedidosPendientes.frx":1426
-      FormatStyle(7)  =   "frmVerPedidosPendientes.frx":1506
-      FormatStyle(8)  =   "frmVerPedidosPendientes.frx":15D2
-      FormatStyle(9)  =   "frmVerPedidosPendientes.frx":169E
-      FormatStyle(10) =   "frmVerPedidosPendientes.frx":1772
+      FormatStyle(1)  =   "frmVerPedidosPendientes.frx":0FEA
+      FormatStyle(2)  =   "frmVerPedidosPendientes.frx":1112
+      FormatStyle(3)  =   "frmVerPedidosPendientes.frx":11C2
+      FormatStyle(4)  =   "frmVerPedidosPendientes.frx":1276
+      FormatStyle(5)  =   "frmVerPedidosPendientes.frx":132A
+      FormatStyle(6)  =   "frmVerPedidosPendientes.frx":1402
+      FormatStyle(7)  =   "frmVerPedidosPendientes.frx":14E2
+      FormatStyle(8)  =   "frmVerPedidosPendientes.frx":15AE
+      FormatStyle(9)  =   "frmVerPedidosPendientes.frx":167A
+      FormatStyle(10) =   "frmVerPedidosPendientes.frx":174E
       ImageCount      =   1
-      ImagePicture(1) =   "frmVerPedidosPendientes.frx":1836
-      PrinterProperties=   "frmVerPedidosPendientes.frx":1B50
+      ImagePicture(1) =   "frmVerPedidosPendientes.frx":1812
+      PrinterProperties=   "frmVerPedidosPendientes.frx":1B2C
    End
    Begin XtremeSuiteControls.PushButton cmdImprimir 
       Height          =   375
@@ -856,7 +856,7 @@ Private Sub AprobarOT_Click()
         If Not aux_ordenTrabajo.Detalles Is Nothing Then
 
             Dim aaa As New frmReservaStock
-            Set aaa.ot = aux_ordenTrabajo
+            Set aaa.Ot = aux_ordenTrabajo
             aaa.Show 1
             grid.RefreshRowIndex A
             MostrarMensajePendientes
@@ -866,7 +866,7 @@ End Sub
 Private Sub archivos_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmArchivos2
-        F.origen = OrigenArchivos.OA_OrdenesTrabajo
+        F.Origen = OrigenArchivos.OA_OrdenesTrabajo
         F.ObjetoId = aux_ordenTrabajo.id
         F.caption = "Archivos OT Nº " & aux_ordenTrabajo.IdFormateado
         F.Show
@@ -945,7 +945,7 @@ End Sub
 
 Private Sub Command1_Click()
     Dim rs As Recordset
-    Dim STRSQL As String
+    Dim strsql As String
     Dim selectedItem As JSSelectedItem
     Dim ped As OrdenTrabajo
     Dim dto As DTOPiezaCantidad
@@ -1225,10 +1225,10 @@ Private Function HayPendientes() As Integer
 
     If Permisos.planOTaprobaciones Then
         Dim rs As Recordset
-        Dim STRSQL As String
+        Dim strsql As String
         HayPendientes = 0
-        STRSQL = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_Pendiente
-        Set rs = conectar.RSFactory(STRSQL)
+        strsql = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_Pendiente
+        Set rs = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
             HayPendientes = rs!Cantidad
         End If
@@ -1240,11 +1240,11 @@ Private Function HayParaActivar() As Integer
 
     If Permisos.planOTaprobaciones Then
         Dim rs As Recordset
-        Dim STRSQL As String
+        Dim strsql As String
         HayParaActivar = 0
-        STRSQL = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_EnEspera
+        strsql = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_EnEspera
 
-        Set rs = conectar.RSFactory(STRSQL)
+        Set rs = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
             HayParaActivar = rs!Cantidad
         End If
@@ -1375,7 +1375,7 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
             If CDbl(.FechaEntrega) > 0 Then Values(3) = .FechaEntrega
             Values(4) = IIf(.NroPresupuesto = -1, "Manual", Format(.NroPresupuesto, "0000"))
             Values(5) = .descripcion
-            Values(6) = .FechaCreado
+            Values(6) = .fechaCreado
             Values(7) = .usuario.usuario
 
             If aux_ordenTrabajo.EsMarco Then
@@ -1387,8 +1387,14 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
 
             Values(10) = IIf(IsEmpty(m_Incidencias.item(.id)), 0, m_Incidencias.item(.id))
             Values(11) = IIf(IsEmpty(m_Archivos.item(.id)), 0, "(" & m_Archivos.item(.id) & ")")
-            Values(12) = .EsMarco
-            Values(13) = .Cliente.razon
+            
+            If .EsMarco Then
+                Values(12) = "Marco"
+            Else
+                Values(12) = EnumTipoOT(.TipoOrden - 1)
+            End If
+            
+            Values(13) = .cliente.razon
 
             'cambio entre values2 y values13 por pedido de karin hecho el 7-4
         End With
@@ -1407,13 +1413,13 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
             If m_ordenesTrabajo(x).id = EVENTO.Elemento.id Then
                 m_ordenesTrabajo(x).descripcion = EVENTO.Elemento.descripcion
                 m_ordenesTrabajo(x).FechaEntrega = EVENTO.Elemento.FechaEntrega
-                Set m_ordenesTrabajo(x).Moneda = EVENTO.Elemento.Moneda
+                Set m_ordenesTrabajo(x).moneda = EVENTO.Elemento.moneda
                 m_ordenesTrabajo(x).CantDiasAnticipo = EVENTO.Elemento.CantDiasAnticipo
                 m_ordenesTrabajo(x).CantDiasSaldo = EVENTO.Elemento.CantDiasSaldo
                 m_ordenesTrabajo(x).FormaDePagoAnticipo = EVENTO.Elemento.FormaDePagoAnticipo
                 m_ordenesTrabajo(x).FormaDePagoSaldo = EVENTO.Elemento.FormaDePagoSaldo
                 m_ordenesTrabajo(x).Anticipo = EVENTO.Elemento.Anticipo
-                Set m_ordenesTrabajo(x).Cliente = EVENTO.Elemento.Cliente
+                Set m_ordenesTrabajo(x).cliente = EVENTO.Elemento.cliente
                 Set m_ordenesTrabajo(x).ClienteFacturar = EVENTO.Elemento.ClienteFacturar
                 Me.grid.RefreshRowIndex x
                 Exit For
@@ -1538,7 +1544,7 @@ End Sub
 Private Sub mnuFacturasAplicadas_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmAdminFacturasAplicadas
-        F.origen = 1
+        F.Origen = 1
         F.idOrigen = aux_ordenTrabajo.id
         F.Show
     End If
@@ -1573,7 +1579,7 @@ End Sub
 Private Sub mnuRemitosEntregados_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmRemitosEntregados
-        F.origen = 1
+        F.Origen = 1
         F.idPedidoEntrega = aux_ordenTrabajo.id
         F.caption = "Nro." & aux_ordenTrabajo.id
         F.Show
@@ -1637,7 +1643,7 @@ End Sub
 Private Sub verIncidencias_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         frmVerIncidencias.referencia = aux_ordenTrabajo.id
-        frmVerIncidencias.origen = OrigenIncidencias.OI_OrdenesTrabajo
+        frmVerIncidencias.Origen = OrigenIncidencias.OI_OrdenesTrabajo
         frmVerIncidencias.Show
     End If
 End Sub

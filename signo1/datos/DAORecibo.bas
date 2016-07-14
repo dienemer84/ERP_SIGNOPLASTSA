@@ -37,9 +37,9 @@ End Function
 Public Function Anular(recibo As recibo) As Boolean
     conectar.BeginTransaction
 
-    If recibo.estado = EstadoRecibo.Aprobado Then
+    If recibo.Estado = EstadoRecibo.Aprobado Then
         'cambio el estado del recibo
-        recibo.estado = EstadoRecibo.Reciboanulado
+        recibo.Estado = EstadoRecibo.Reciboanulado
 
 
 
@@ -141,10 +141,10 @@ Public Function aprobar(recibo As recibo) As Boolean
     conectar.BeginTransaction
 
 
-    estAnt = recibo.estado
+    estAnt = recibo.Estado
     recibo.FechaAprobacion = Now
-    Set recibo.UsuarioAprobador = funciones.GetUserObj
-    recibo.estado = EstadoRecibo.Aprobado
+    Set recibo.usuarioAprobador = funciones.GetUserObj
+    recibo.Estado = EstadoRecibo.Aprobado
 
 
     If recibo.IsValid Then
@@ -169,7 +169,7 @@ Public Function aprobar(recibo As recibo) As Boolean
             If montoSaldado = 0 Then
                 newEstadoSaldadoFactura = NoSaldada
             ElseIf montoSaldado >= Factura.Total Then
-                newEstadoSaldadoFactura = SaldadoTotal
+                newEstadoSaldadoFactura = saldadoTotal
             Else
                 newEstadoSaldadoFactura = SaldadoParcial
             End If
@@ -193,8 +193,8 @@ Public Function aprobar(recibo As recibo) As Boolean
     Exit Function
 err5:
     aprobar = False
-    recibo.estado = estAnt
-    Set recibo.UsuarioAprobador = Nothing
+    recibo.Estado = estAnt
+    Set recibo.usuarioAprobador = Nothing
     recibo.FechaAprobacion = fechaAnt
     conectar.RollBackTransaction
 
@@ -306,7 +306,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
     If id > 0 Then
         Set r = New recibo
         r.id = id
-        r.estado = GetValue(rs, indice, tabla, "estado")
+        r.Estado = GetValue(rs, indice, tabla, "estado")
         r.FechaAprobacion = GetValue(rs, indice, tabla, "fechaAprobacion")
         r.FechaCreacion = GetValue(rs, indice, tabla, "fechaCreacion")
         r.FechaModificacion = GetValue(rs, indice, tabla, "fechaModificacion")
@@ -325,10 +325,10 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         Set r.TotalEstatico = totEstatico
 
 
-        If LenB(tablaMoneda) > 0 Then Set r.Moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
-        If LenB(tablaCliente) > 0 Then Set r.Cliente = DAOCliente.Map(rs, indice, tablaCliente)
-        If LenB(tablaUsuarioCreador) > 0 Then Set r.UsuarioCreador = DAOUsuarios.Map(rs, indice, tablaUsuarioCreador)
-        If LenB(tablaUsuarioAprobador) > 0 Then Set r.UsuarioAprobador = DAOUsuarios.Map(rs, indice, tablaUsuarioAprobador)
+        If LenB(tablaMoneda) > 0 Then Set r.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        If LenB(tablaCliente) > 0 Then Set r.cliente = DAOCliente.Map(rs, indice, tablaCliente)
+        If LenB(tablaUsuarioCreador) > 0 Then Set r.usuarioCreador = DAOUsuarios.Map(rs, indice, tablaUsuarioCreador)
+        If LenB(tablaUsuarioAprobador) > 0 Then Set r.usuarioAprobador = DAOUsuarios.Map(rs, indice, tablaUsuarioAprobador)
     End If
 
     Set Map = r
@@ -415,7 +415,7 @@ Public Function Guardar(rec As recibo) As Boolean
 
          rec.FechaModificacion = Now
 
-        q = Replace(q, "'idUsuarioAprobador'", conectar.GetEntityId(rec.UsuarioAprobador))
+        q = Replace(q, "'idUsuarioAprobador'", conectar.GetEntityId(rec.usuarioAprobador))
         q = Replace(q, "'id'", conectar.GetEntityId(rec))
         q = Replace(q, "'idUsuarioModificador'", funciones.getUser)
         q = Replace(q, "'fechaAprobacion'", conectar.Escape(rec.FechaAprobacion))
@@ -435,12 +435,12 @@ Public Function Guardar(rec As recibo) As Boolean
 
     End If
 
-    q = Replace(q, "'idCliente'", conectar.GetEntityId(rec.Cliente))
+    q = Replace(q, "'idCliente'", conectar.GetEntityId(rec.cliente))
     q = Replace(q, "'fechaCreacion'", conectar.Escape(rec.FechaCreacion))
-    q = Replace(q, "'idUsuarioCreador'", conectar.GetEntityId(rec.UsuarioCreador))
+    q = Replace(q, "'idUsuarioCreador'", conectar.GetEntityId(rec.usuarioCreador))
     q = Replace(q, "'fechaModificacion'", conectar.Escape(rec.FechaModificacion))
-    q = Replace(q, "'estado'", conectar.Escape(rec.estado))
-    q = Replace(q, "'idMoneda'", conectar.GetEntityId(rec.Moneda))
+    q = Replace(q, "'estado'", conectar.Escape(rec.Estado))
+    q = Replace(q, "'idMoneda'", conectar.GetEntityId(rec.moneda))
     q = Replace(q, "'redondeo'", conectar.Escape(rec.Redondeo))
     'q = Replace(q, "'pagoACuenta'", conectar.Escape(rec.PagoACuenta))
     q = Replace(q, "'fecha'", conectar.Escape(rec.FEcha))
@@ -450,7 +450,7 @@ Public Function Guardar(rec As recibo) As Boolean
     esNuevo = False
     If Not conectar.execute(q) Then GoTo E
     If rec.id = 0 Then esNuevo = True
-    If rec.id <> 0 And rec.estado = pendiente Then  'en el insert no tiene nada de agregacion
+    If rec.id <> 0 And rec.Estado = EstadoRecibo.Pendiente Then  'en el insert no tiene nada de agregacion
 
         'retenciones----------------------------------------------------------
         q = "idRecibo = " & rec.id
@@ -469,7 +469,7 @@ Public Function Guardar(rec As recibo) As Boolean
             If cheq.id = 0 Then
                 cheq.EnCartera = True
                 cheq.Propio = False
-                cheq.OrigenDestino = UCase(rec.Cliente.razon)
+                cheq.OrigenDestino = UCase(rec.cliente.razon)
             Else
                 'If IsSomething(DAOCheques.FindById(cheq.id)) Then
                 '    q = "DELETE FROM Cheques WHERE id = " & cheq.id
@@ -574,9 +574,9 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.Print "SIGNO PLAST S.A."
         Printer.FontSize = origin + 3
         Printer.Print "Número: " & recibo.id
-        Printer.Print "Estado: " & enums.EnumEstadoRecibo(recibo.estado)
+        Printer.Print "Estado: " & enums.EnumEstadoRecibo(recibo.Estado)
         Printer.Print "Fecha: " & Format(Day(recibo.FEcha), "00") & "/" & Format(Month(recibo.FEcha), "00") & "/" & Format(Year(recibo.FEcha), "0000")
-        Printer.Print "Cliente: " & recibo.Cliente.razon
+        Printer.Print "Cliente: " & recibo.cliente.razon
         Printer.FontSize = origin
         Printer.FontBold = False
         Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.Width, Printer.CurrentY)
@@ -588,7 +588,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.FontBold = False
         Dim F As Factura
         For Each F In recibo.facturas
-            Printer.Print F.FechaEmision, F.GetShortDescription(False, True), F.Moneda.NombreCorto & " " & recibo.PagosDeFacturas(CStr(F.id))
+            Printer.Print F.FechaEmision, F.GetShortDescription(False, True), F.moneda.NombreCorto & " " & recibo.PagosDeFacturas(CStr(F.id))
         Next F
 
         If recibo.facturas.count > 0 Then

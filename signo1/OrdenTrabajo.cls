@@ -15,11 +15,11 @@ Option Explicit
 
 Public id As Long
 Public descripcion As String
-
-Public Cliente As clsCliente  'centro de costos....
+Public TipoOrden As TipoOt
+Public cliente As clsCliente  'centro de costos....
 Public ClienteFacturar As clsCliente
 Public FechaEntrega As Date
-Public FechaCreado As Date
+Public fechaCreado As Date
 Public NroPresupuesto As Long
 Public estado As EstadoOrdenTrabajo
 Public Activa As Boolean
@@ -27,9 +27,9 @@ Public Entregada As Boolean
 Public FechaCerrado As Date
 Public usuario As clsUsuario
 Public Descuento As Double
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 Public IdMoneda As Long
-Public FechaAprobado As Date
+Public fechaAprobado As Date
 Public UsuarioAprobado As clsUsuario
 Public FechaModificado As Date
 Public UsuarioModificado As clsUsuario
@@ -131,8 +131,8 @@ Public Property Get PorcentajeFacturado() As Double
     Dim valor2 As Double
 
     'creo qu eestoy haciendo al pedo la conversion a moneda
-    valor1 = MonedaConverter.Convertir(Me.Total, Me.Moneda.id, MonedaConverter.Patron.id)
-    valor2 = MonedaConverter.Convertir(Me.TotalFacturado, Me.Moneda.id, MonedaConverter.Patron.id)
+    valor1 = MonedaConverter.Convertir(Me.Total, Me.moneda.id, MonedaConverter.Patron.id)
+    valor2 = MonedaConverter.Convertir(Me.TotalFacturado, Me.moneda.id, MonedaConverter.Patron.id)
     If valor1 > 0 Then
         PorcentajeFacturado = funciones.RedondearDecimales((valor2 * 100) / valor1)
     Else
@@ -143,7 +143,7 @@ End Property
 
 
 Private Sub Class_Initialize()
-    Me.FechaCreado = Now
+    Me.fechaCreado = Now
     Me.Activa = True
     Me.NroPresupuesto = -1
     Me.estado = EstadoOrdenTrabajo.EstadoOT_Pendiente
@@ -377,7 +377,7 @@ End Property
 
 
 Public Property Get SpecificEventDescription() As String
-    SpecificEventDescription = Cliente.razon
+    SpecificEventDescription = cliente.razon
 End Property
 
 Public Property Get PorcentajeFabricacion() As Double

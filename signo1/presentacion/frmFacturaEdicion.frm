@@ -1678,11 +1678,11 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 
 
-Dim a As frmPlaneamientoRemitoVer
+Dim A As frmPlaneamientoRemitoVer
 
-Set a = EVENTO.Originador
+Set A = EVENTO.Originador
 
-If a.IdFormSuscriber <> ISuscriber_id Then Exit Function
+If A.IdFormSuscriber <> ISuscriber_id Then Exit Function
 
     If EVENTO.Tipo = FacturarRemitosDetalle_ Then
         If ReadOnly Then
@@ -1769,6 +1769,7 @@ Private Sub mnuAplicarDetalleRemito_Click()
         Dim frm As frmPlaneamientoRemitoVer
 
         Set frm = New frmPlaneamientoRemitoVer
+        frm.IdFormSuscriber = ISuscriber_id
         frm.Usable = False
         frm.editar = False
         Set frm.Remito = Selecciones.RemitoElegido    'DAORemitoS.FindById(Selecciones.RemitoElegido.Id)

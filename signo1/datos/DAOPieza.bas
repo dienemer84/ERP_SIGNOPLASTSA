@@ -295,13 +295,13 @@ Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRe
         P.Complejidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "tipo_complejidad")
 
         If LenB(monedaTableNameOrAlias) > 0 Then Set P.MonedaPrecio = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
-        If LenB(clienteTableNameOrAlias) > 0 Then Set P.Cliente = DAOCliente.Map(rs, fieldsIndex, clienteTableNameOrAlias)
+        If LenB(clienteTableNameOrAlias) > 0 Then Set P.cliente = DAOCliente.Map(rs, fieldsIndex, clienteTableNameOrAlias)
     End If
 
     Set Map = P
 End Function
 
-Public Function ModificarStock(T As Pieza, operacion As ModificarStockOperaciones, Cantidad As Long, Optional ubicacion As String = Empty, Optional OTOEid As Long) As Boolean
+Public Function ModificarStock(T As Pieza, operacion As ModificarStockOperaciones, Cantidad As Double, Optional ubicacion As String = Empty, Optional OTOEid As Long) As Boolean
     On Error GoTo err5
     Dim charO As String
     Dim Nota As Long
@@ -436,7 +436,7 @@ Public Function Save(P As Pieza, Optional ByVal paraRevision As Boolean = False)
     End If
 
     q = Replace$(q, "'detalle'", conectar.Escape(P.nombre))
-    q = Replace$(q, "'id_cliente'", conectar.GetEntityId(P.Cliente))
+    q = Replace$(q, "'id_cliente'", conectar.GetEntityId(P.cliente))
     q = Replace$(q, "'cantidad'", conectar.Escape(P.Cantidad))
     q = Replace$(q, "'estado'", conectar.Escape(P.Activa))
     q = Replace$(q, "'conjunto'", IIf(P.EsConjunto, "0", "-1"))
