@@ -35,11 +35,14 @@ proximo = -1
 End Function
 
 Public Function Anular(recibo As recibo) As Boolean
+    
+Err.Raise 9999, , "Funcionalidad en desarrollo"
+    
     conectar.BeginTransaction
 
-    If recibo.Estado = EstadoRecibo.Aprobado Then
+    If recibo.estado = EstadoRecibo.Aprobado Then
         'cambio el estado del recibo
-        recibo.Estado = EstadoRecibo.Reciboanulado
+        recibo.estado = EstadoRecibo.Reciboanulado
 
 
 
@@ -107,7 +110,7 @@ Public Function Anular(recibo As recibo) As Boolean
 
 
         'libero los comprobasntes
-
+        
 
 
 
@@ -130,6 +133,8 @@ err101:
     conectar.RollBackTransaction
 
 
+
+
 End Function
 
 
@@ -141,10 +146,10 @@ Public Function aprobar(recibo As recibo) As Boolean
     conectar.BeginTransaction
 
 
-    estAnt = recibo.Estado
+    estAnt = recibo.estado
     recibo.FechaAprobacion = Now
     Set recibo.usuarioAprobador = funciones.GetUserObj
-    recibo.Estado = EstadoRecibo.Aprobado
+    recibo.estado = EstadoRecibo.Aprobado
 
 
     If recibo.IsValid Then
@@ -193,7 +198,7 @@ Public Function aprobar(recibo As recibo) As Boolean
     Exit Function
 err5:
     aprobar = False
-    recibo.Estado = estAnt
+    recibo.estado = estAnt
     Set recibo.usuarioAprobador = Nothing
     recibo.FechaAprobacion = fechaAnt
     conectar.RollBackTransaction
@@ -306,7 +311,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
     If id > 0 Then
         Set r = New recibo
         r.id = id
-        r.Estado = GetValue(rs, indice, tabla, "estado")
+        r.estado = GetValue(rs, indice, tabla, "estado")
         r.FechaAprobacion = GetValue(rs, indice, tabla, "fechaAprobacion")
         r.FechaCreacion = GetValue(rs, indice, tabla, "fechaCreacion")
         r.FechaModificacion = GetValue(rs, indice, tabla, "fechaModificacion")
@@ -439,7 +444,7 @@ Public Function Guardar(rec As recibo) As Boolean
     q = Replace(q, "'fechaCreacion'", conectar.Escape(rec.FechaCreacion))
     q = Replace(q, "'idUsuarioCreador'", conectar.GetEntityId(rec.usuarioCreador))
     q = Replace(q, "'fechaModificacion'", conectar.Escape(rec.FechaModificacion))
-    q = Replace(q, "'estado'", conectar.Escape(rec.Estado))
+    q = Replace(q, "'estado'", conectar.Escape(rec.estado))
     q = Replace(q, "'idMoneda'", conectar.GetEntityId(rec.moneda))
     q = Replace(q, "'redondeo'", conectar.Escape(rec.Redondeo))
     'q = Replace(q, "'pagoACuenta'", conectar.Escape(rec.PagoACuenta))
@@ -450,7 +455,7 @@ Public Function Guardar(rec As recibo) As Boolean
     esNuevo = False
     If Not conectar.execute(q) Then GoTo E
     If rec.id = 0 Then esNuevo = True
-    If rec.id <> 0 And rec.Estado = EstadoRecibo.Pendiente Then  'en el insert no tiene nada de agregacion
+    If rec.id <> 0 And rec.estado = EstadoRecibo.Pendiente Then  'en el insert no tiene nada de agregacion
 
         'retenciones----------------------------------------------------------
         q = "idRecibo = " & rec.id
@@ -574,7 +579,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.Print "SIGNO PLAST S.A."
         Printer.FontSize = origin + 3
         Printer.Print "Número: " & recibo.id
-        Printer.Print "Estado: " & enums.EnumEstadoRecibo(recibo.Estado)
+        Printer.Print "Estado: " & enums.EnumEstadoRecibo(recibo.estado)
         Printer.Print "Fecha: " & Format(Day(recibo.FEcha), "00") & "/" & Format(Month(recibo.FEcha), "00") & "/" & Format(Year(recibo.FEcha), "0000")
         Printer.Print "Cliente: " & recibo.cliente.razon
         Printer.FontSize = origin

@@ -760,7 +760,7 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
             & " fechaEntrega," _
             & " fechaCreado," _
             & " nroPresupuesto," _
-            & " estado,tipo_orden" _
+            & " estado,tipo_orden," _
             & " activo," _
             & " entregado," _
             & " idUsuario," _
@@ -899,6 +899,7 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
     Exit Function
 E:
     Guardar = False
+    
 End Function
 Public Function AprobarOT(T As OrdenTrabajo, Optional progressbar As Object) As Boolean
     conectar.BeginTransaction

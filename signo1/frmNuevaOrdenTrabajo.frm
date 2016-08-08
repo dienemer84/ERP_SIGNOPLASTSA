@@ -113,12 +113,12 @@ Begin VB.Form frmNuevaOrdenTrabajo
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   59572225
+      Format          =   59899905
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdGuardar 
       Height          =   495
-      Left            =   975
+      Left            =   960
       TabIndex        =   10
       Top             =   3705
       Width           =   1590
@@ -322,7 +322,6 @@ End Sub
 Private Sub cboTipoOt_Change()
 
 
-TipoOt = Me.cboTipoOt.ListIndex
 
 Me.grpMarco.Enabled = (TipoOt = OT_TRADICIONAL)
 
@@ -330,6 +329,12 @@ Me.grpMarco.Enabled = (TipoOt = OT_TRADICIONAL)
 End Sub
 
 
+
+Private Sub cboTipoOt_Click()
+
+Me.grpMarco.Enabled = (TipoOt = OT_TRADICIONAL)
+
+End Sub
 
 Private Sub chkMarco_Click()
     Me.cboCliente.Enabled = Not (Me.chkMarco.value * -1)
@@ -361,8 +366,10 @@ Private Sub cmdGuardar_Click()
     End If
 
     Dim Ot As New OrdenTrabajo
-
-
+    
+    
+    
+Ot.TipoOrden = Me.cboTipoOt.ListIndex + 1
     Set Ot.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
     Set Ot.ClienteFacturar = DAOCliente.BuscarPorID(Me.cboClienteFacturar.ItemData(Me.cboClienteFacturar.ListIndex))
     Ot.FechaEntrega = Me.dtpFechaEntrega.value

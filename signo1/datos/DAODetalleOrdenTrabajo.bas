@@ -45,6 +45,28 @@ Public Function FindById(idpedido As Long, Optional withEntregados As Boolean = 
 End Function
 
 
+Public Function PendientesEntregaPorPieza(idPieza As Long) As Double
+
+'busco todas las ordenes activas donde se est'e fabricando esta pieza
+Dim sql As String
+sql = " SELECT SUM(dp.cantidad)-SUM(dpc.cantidad)  as pendientes FROM detalles_pedidos_cantidad dpc " _
+        & "INNER JOIN detalles_pedidos dp ON dpc.id_detalle_pedido=dp.id " _
+    & "Where tipo_cantidad = 2 And id_detalle_pedido " _
+        & "IN (SELECT dp.id FROM pedidos p INNER JOIN detalles_pedidos dp ON dp.idPedido=p.id  WHERE p.estado=2 AND dp.idPieza = " & idPieza & ") " _
+        & " GROUP BY dp.idPieza"
+
+Dim rs As New Recordset
+Set rs = RSFactory(sql)
+If Not rs.EOF And Not rs.BOF Then
+    PendientesEntregaPorPieza = rs!pendientes
+End If
+
+
+
+End Function
+
+
+
 Public Function FindAllByPieza(piezasId As Collection) As Collection
     Dim filter As String
     filter = "{detalle_ot}.{idPieza} IN ({idPieza_value})"
@@ -527,7 +549,7 @@ Public Function arreglarCagada()
 
         For Each det In Ot.Detalles
 
-            det.IdMoneda = Ot.Moneda.id
+            det.IdMoneda = Ot.moneda.id
             ''If ot.Moneda.Id = 1 Then Stop
             DAODetalleOrdenTrabajo.Save det
 

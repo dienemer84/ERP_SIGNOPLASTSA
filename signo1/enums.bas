@@ -388,7 +388,7 @@ Public Function EnumTiposComplejidad(indice) As String
 End Function
 
 Public Function EnumTipoOT(indice) As String
-    EnumTiposOT = tipo_ot(indice)
+    EnumTipoOT = tipo_ot(indice)
 End Function
 Public Function EnumTiposDoc(indice) As String
     enumtioposdoc = tipos_Doc(indice)

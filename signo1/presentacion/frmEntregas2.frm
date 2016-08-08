@@ -421,6 +421,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Implements ISuscriber
 
+
+Private valid As Boolean
 Option Explicit
 Private m_ot As OrdenTrabajo
 Private detalle As DetalleOrdenTrabajo
@@ -523,7 +525,7 @@ Private Sub btnCerrar_Click()
             Unload Me
         End If
     Else
-        If m_ot.Estado = EstadoOT_Finalizado Then    'cerrada
+        If m_ot.estado = EstadoOT_Finalizado Then    'cerrada
             MsgBox "La OT ya se encuentra cerrada.", vbExclamation
         Else
             If m_ot.PuedeCerrarse Then
@@ -608,7 +610,7 @@ Private Sub btnExportarExcel_Click()
 
 
                 Set rto = DAORemitoS.FindById(remitoDetalle.Remito)
-                If rto.Estado = RemitoAprobado Then
+                If rto.estado = RemitoAprobado Then
                     row = row + 1
                     xlWorksheet.Cells(row, 2) = remitoDetalle.Cantidad
                     xlWorksheet.Cells(row, 3) = remitoDetalle.RemitoAlQuePertenece.numero
@@ -785,7 +787,13 @@ Private Sub Form_Load()
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     Set CantArchivosDetalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
 
+valid = (m_ot.TipoOrden = OT_TRADICIONAL Or m_ot.TipoOrden = OT_TRADICIONAL)
 
+Me.btnAplicarRemito.Enabled = valid
+Me.btnCerrar.Enabled = valid
+Me.mnuAtajo.Enabled = valid
+Me.btnRemitar.Enabled = valid
+Me.btnTomarDeStock.Enabled = valid
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -852,7 +860,13 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(1) = detalle.item
         Values(2) = detalle.Nota
         Values(3) = detalle.Pieza.nombre
+        
         Values(4) = detalle.CantidadPedida
+        
+        If m_ot.TipoOrden = OT_STOCK Then
+            Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.id) & ")"
+        End If
+        
         Values(5) = detalle.FechaEntrega
         Values(6) = detalle.CantidadFabricados
         Values(7) = detalle.CantidadEntregada
@@ -869,11 +883,11 @@ Private Sub gridEntregas_RowFormat(RowBuffer As GridEX20.JSRowData)
 
     Set detalleRemito = Entregas.item(RowBuffer.RowIndex)
 
-    If detalleRemito.RemitoAlQuePertenece.Estado = RemitoPendiente Then
+    If detalleRemito.RemitoAlQuePertenece.estado = RemitoPendiente Then
         RowBuffer.RowStyle = "Pendiente"
     Else
 
-        If detalleRemito.RemitoAlQuePertenece.Estado = RemitoAnulado Then
+        If detalleRemito.RemitoAlQuePertenece.estado = RemitoAnulado Then
             RowBuffer.RowStyle = GridEXHelper.GRID_FORMATSTYLE_ANULADA
 
         End If
@@ -1098,7 +1112,7 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
     Dim SalioDelFor As Boolean
     Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.id, True, True, True)
     Dim deta As DetalleOrdenTrabajo
-    Dim cant As Double
+    Dim Cant As Double
     Dim cantEntrega As Double
     Dim Remito As Remito
     Dim redeta As remitoDetalle
@@ -1108,7 +1122,7 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
     Remito.detalle = m_ot.descripcion
     Set Remito.cliente = m_ot.ClienteFacturar
 
-    Remito.Estado = RemitoPendiente
+    Remito.estado = RemitoPendiente
     Remito.EstadoFacturado = RemitoNoFacturado
 
     Set Remito.usuarioCreador = funciones.GetUserObj
@@ -1124,12 +1138,12 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
 
 
         'realizo el seguimiento
-        cant = deta.CantidadPedida - deta.CantidadFabricados
-        If cant > 0 Then
+        Cant = deta.CantidadPedida - deta.CantidadFabricados
+        If Cant > 0 Then
 
-            deta.CantidadFabricados = deta.CantidadFabricados + cant
-            deta.CantidadFabricadosStatic = deta.CantidadFabricadosStatic + cant
-            If Not DAODetalleOrdenTrabajo.SaveCantidad(deta.id, cant, CantidadFabricada_, 0, Remito.id, 0, 0, 0) Then GoTo err1
+            deta.CantidadFabricados = deta.CantidadFabricados + Cant
+            deta.CantidadFabricadosStatic = deta.CantidadFabricadosStatic + Cant
+            If Not DAODetalleOrdenTrabajo.SaveCantidad(deta.id, Cant, CantidadFabricada_, 0, Remito.id, 0, 0, 0) Then GoTo err1
         End If
 
         'realizo la entrega
@@ -1138,7 +1152,7 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
             Set redeta = New remitoDetalle
             redeta.Cantidad = cantEntrega
             Set redeta.DetallePedido = deta
-            redeta.EstadoRemito = Remito.Estado
+            redeta.EstadoRemito = Remito.estado
             redeta.facturable = True
             redeta.Facturado = False
             redeta.FEcha = Now

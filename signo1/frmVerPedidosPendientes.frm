@@ -103,21 +103,21 @@ Begin VB.Form frmPlaneamientoPedidosPendientes
       Column(10)      =   "frmVerPedidosPendientes.frx":0B62
       Column(11)      =   "frmVerPedidosPendientes.frx":0C92
       Column(12)      =   "frmVerPedidosPendientes.frx":0DEA
-      Column(13)      =   "frmVerPedidosPendientes.frx":0F06
+      Column(13)      =   "frmVerPedidosPendientes.frx":0F02
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmVerPedidosPendientes.frx":0FEA
-      FormatStyle(2)  =   "frmVerPedidosPendientes.frx":1112
-      FormatStyle(3)  =   "frmVerPedidosPendientes.frx":11C2
-      FormatStyle(4)  =   "frmVerPedidosPendientes.frx":1276
-      FormatStyle(5)  =   "frmVerPedidosPendientes.frx":132A
-      FormatStyle(6)  =   "frmVerPedidosPendientes.frx":1402
-      FormatStyle(7)  =   "frmVerPedidosPendientes.frx":14E2
-      FormatStyle(8)  =   "frmVerPedidosPendientes.frx":15AE
-      FormatStyle(9)  =   "frmVerPedidosPendientes.frx":167A
-      FormatStyle(10) =   "frmVerPedidosPendientes.frx":174E
+      FormatStyle(1)  =   "frmVerPedidosPendientes.frx":0FE6
+      FormatStyle(2)  =   "frmVerPedidosPendientes.frx":110E
+      FormatStyle(3)  =   "frmVerPedidosPendientes.frx":11BE
+      FormatStyle(4)  =   "frmVerPedidosPendientes.frx":1272
+      FormatStyle(5)  =   "frmVerPedidosPendientes.frx":1326
+      FormatStyle(6)  =   "frmVerPedidosPendientes.frx":13FE
+      FormatStyle(7)  =   "frmVerPedidosPendientes.frx":14DE
+      FormatStyle(8)  =   "frmVerPedidosPendientes.frx":15AA
+      FormatStyle(9)  =   "frmVerPedidosPendientes.frx":1676
+      FormatStyle(10) =   "frmVerPedidosPendientes.frx":174A
       ImageCount      =   1
-      ImagePicture(1) =   "frmVerPedidosPendientes.frx":1812
-      PrinterProperties=   "frmVerPedidosPendientes.frx":1B2C
+      ImagePicture(1) =   "frmVerPedidosPendientes.frx":180E
+      PrinterProperties=   "frmVerPedidosPendientes.frx":1B28
    End
    Begin XtremeSuiteControls.PushButton cmdImprimir 
       Height          =   375

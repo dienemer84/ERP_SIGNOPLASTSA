@@ -18,6 +18,11 @@ Dim rs2 As ADODB.Recordset
 Dim claseS As New classStock
 Dim idPiezaFabriacada As Long
 Dim Cuit
+
+
+Public Property Get TipoOrden() As TipoOt
+    TipoOrden = rs!tipo_orden
+End Property
 Public Property Get IdMoneda() As Integer
     IdMoneda = rs!IdMoneda
 End Property
@@ -52,8 +57,8 @@ End Property
 Public Property Get cantidadItems() As Long
     cantidadItems = rs!cantidadItems
 End Property
-Public Property Get Cliente() As String
-    Cliente = rs!Cliente
+Public Property Get cliente() As String
+    cliente = rs!cliente
 End Property
 Public Property Get count() As Long
     count = rs!count
@@ -150,7 +155,7 @@ Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optio
 
         razon = rs!razon
         entrega = rs!fe
-        Creado = rs!FechaCreado
+        Creado = rs!fechaCreado
         presu = rs!NroPresupuesto
         Cuit = rs!Cuit
         Dim tit As String
@@ -525,7 +530,7 @@ Public Function imprimirOrdenEntrega(nroOE As Long) As Boolean
         rs.MoveFirst
         ref = rs!referencia
         fecEnt = rs!FEcha
-        fecCre = rs!FechaCreado
+        fecCre = rs!fechaCreado
         razon = rs!razon
         dire = rs!Domicilio
         Cuit = rs!Cuit
@@ -603,10 +608,10 @@ Public Function AprobarOrdenEntrega(IDOE As Long) As Boolean
             'aca se aprueba la OE
             cn.execute "update PedidosEntregas set estado=2 where id=" & IDOE
             'aca se carga en históricos
-            autor = funciones.getUser
+            Autor = funciones.getUser
             Nota = "O/E Aprobada"
             fec = funciones.datetimeFormateada(Now)
-            cn.execute "insert into historico_PedidoEntrega (usuario,nota,fecha) values (" & autor & ",'" & Nota & "','" & fec & "')"
+            cn.execute "insert into historico_PedidoEntrega (usuario,nota,fecha) values (" & Autor & ",'" & Nota & "','" & fec & "')"
             'acá se actualiza el stock.
             Dim asume As Boolean
 
@@ -1166,14 +1171,14 @@ Public Function rs_materiales(id As Long, Origen As Integer) As Recordset
             Ancho = r_1!Ancho
             Grupo = r_1!Grupo
             descrip = r_1!descripcion
-            Rubro = r_1!Rubro
+            rubro = r_1!rubro
             Grupo = r_1!Grupo
             Espesor = r_1!Espesor
             largop = r_1!LargoTerm
             anchop = r_1!AnchoTerm
             Cantidad = r_1!Cantidad * cantidad_p
             PesoXUnidad = r_1!PesoXUnidad
-            Moneda = r_1!Nombre_corto
+            moneda = r_1!Nombre_corto
             codigo = r_1!codigo
             id_Unidad = r_1!id_Unidad
             Valor = r_1!valor_unitario
@@ -1202,7 +1207,7 @@ Public Function rs_materiales(id As Long, Origen As Integer) As Recordset
                 totUnit = Math.Round(unidad, 2)
                 UN = "Un"
             End If
-            agregarARSmateriales r_mat, id_Unidad, IdMaterial, unidad, totUnit, codigo, descrip, Rubro, Grupo, Espesor, UN, Valor, fec_act, Moneda
+            agregarARSmateriales r_mat, id_Unidad, IdMaterial, unidad, totUnit, codigo, descrip, rubro, Grupo, Espesor, UN, Valor, fec_act, moneda
 
             r_1.MoveNext
         Wend
@@ -1219,7 +1224,7 @@ err4:
 
 End Function
 
-Private Sub agregarARSmateriales(r_mat As Recordset, unidad, IdMaterial, m2kg, totUnit, codigo, descripcion, Rubro, Grupo, Espesor, UN, valor_unit, fec_act, Moneda)
+Private Sub agregarARSmateriales(r_mat As Recordset, unidad, IdMaterial, m2kg, totUnit, codigo, descripcion, rubro, Grupo, Espesor, UN, valor_unit, fec_act, moneda)
     'busco en el rs
     If r_mat.RecordCount > 0 Then r_mat.MoveFirst
 
@@ -1232,14 +1237,14 @@ Private Sub agregarARSmateriales(r_mat As Recordset, unidad, IdMaterial, m2kg, t
         r_mat!codigo = codigo
         r_mat!CANTuNITARIO = Math.Round(totUnit, 2)
         r_mat!m2kg = Math.Round(m2kg, 2)
-        r_mat!Rubro = UCase(Rubro)
+        r_mat!rubro = UCase(rubro)
         r_mat!Grupo = UCase(Grupo)
         r_mat!descripcion = UCase(descripcion)
         r_mat!unidad = UN
         r_mat!Espesor = Espesor
         r_mat!Valor = valor_unit
         r_mat!FEcha = fec_act
-        r_mat!Moneda = Moneda
+        r_mat!moneda = moneda
         r_mat.Update
     Else
         'edito

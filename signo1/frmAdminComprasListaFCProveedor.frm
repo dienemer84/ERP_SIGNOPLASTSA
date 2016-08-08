@@ -811,10 +811,10 @@ Public Sub llenarGrilla()
 
 
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-        Total = Total + MonedaConverter.Convertir(F.Total * c, F.Moneda.id, MonedaConverter.Patron.id)
-        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.Moneda.id, MonedaConverter.Patron.id)
-        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.Moneda.id, MonedaConverter.Patron.id)
-        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.Moneda.id, MonedaConverter.Patron.id)
+        Total = Total + MonedaConverter.Convertir(F.Total * c, F.moneda.id, MonedaConverter.Patron.id)
+        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
+        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
+        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.moneda.id, MonedaConverter.Patron.id)
     Next
 
 
@@ -912,7 +912,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(1) = funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial)
         Values(2) = Factura.NumeroFormateado
         Values(3) = Factura.FEcha
-        Values(4) = Factura.Moneda.NombreCorto
+        Values(4) = Factura.moneda.NombreCorto
         Values(5) = funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i
         Values(6) = funciones.FormatearDecimales(Factura.TotalIVA) * i
         Values(7) = funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i
@@ -964,7 +964,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 rectmp.Monto = tmp.Monto
                 rectmp.numero = tmp.numero
                 rectmp.FormaPagoCuentaCorriente = tmp.FormaPagoCuentaCorriente
-                Set rectmp.Moneda = tmp.Moneda
+                Set rectmp.moneda = tmp.moneda
                 Me.grilla.RefreshRowIndex i
                 Exit For
             End If
@@ -997,13 +997,14 @@ Private Sub mnuEliminar_Click()
 End Sub
 
 Private Sub mnuPagarEnEfectivo_Click()
-    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.Moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
+    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
         Dim fechaPago As String
         fechaPago = InputBox("Ingrese la fecha de pago de factura", , Factura.FEcha)
         If IsDate(fechaPago) Then
             If DAOFacturaProveedor.PagarEnEfectivo(Factura, CDate(fechaPago), True) Then
                 MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().id & ".", vbInformation
                 llenarGrilla
+                Me.txtComprobante.SetFocus
             Else
                 MsgBox "No se pudo registrar el pago de la factura.", vbCritical
             End If
