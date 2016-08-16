@@ -1045,7 +1045,7 @@ Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As
     Set Obj = New PrinterControl
     Dim titulo As String
     Dim strsql As String
-    Dim A As String
+    Dim a As String
     Dim r As Recordset
     informePiezaMateriales = True
     Dim strsql2 As String
@@ -1206,7 +1206,7 @@ Private Function rs_materiales(id As Long, Origen As Integer, Optional ListaPiez
     Dim strsql As String
 
 
-    Dim IdMaterial As Long
+    Dim idMaterial As Long
     Dim Largo As Double
     Dim Ancho As Double
     Dim Grupo As String
@@ -1236,7 +1236,7 @@ Private Function rs_materiales(id As Long, Origen As Integer, Optional ListaPiez
         strsql = " select mo.nombre_corto,m.valor_unitario,m.fecha_valor as fecha_actualizacion,m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,m.id as id_material, dm.largo,dm.ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m, AdminConfigMonedas mo where m.id_moneda=mo.id and dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and id_pieza=" & Pieza
         Set r_1 = conectar.RSFactory(strsql)
         While Not r_1.EOF
-            IdMaterial = r_1!id_material
+            idMaterial = r_1!id_material
             Largo = r_1!Largo
             Ancho = r_1!Ancho
             Grupo = r_1!Grupo
@@ -1277,7 +1277,7 @@ Private Function rs_materiales(id As Long, Origen As Integer, Optional ListaPiez
                 totUnit = Math.Round(unidad, 2)
                 UN = "Un"
             End If
-            agregarARSmateriales r_mat, id_Unidad, IdMaterial, unidad, totUnit, codigo, descrip, rubro, Grupo, Espesor, UN, Valor, fec_act, moneda
+            agregarARSmateriales r_mat, id_Unidad, idMaterial, unidad, totUnit, codigo, descrip, rubro, Grupo, Espesor, UN, Valor, fec_act, moneda
 
             r_1.MoveNext
         Wend
@@ -1295,16 +1295,16 @@ err4:
     MsgBox Err.Description, vbCritical
 End Function
 
-Private Sub agregarARSmateriales(r_mat As Recordset, unidad, IdMaterial, m2kg, totUnit, codigo, descripcion, rubro, Grupo, Espesor, UN, valor_unit, fec_act, moneda)
+Private Sub agregarARSmateriales(r_mat As Recordset, unidad, idMaterial, m2kg, totUnit, codigo, descripcion, rubro, Grupo, Espesor, UN, valor_unit, fec_act, moneda)
     'busco en el rs
     If r_mat.RecordCount > 0 Then r_mat.MoveFirst
 
-    r_mat.Find "idmaterial=" & IdMaterial
+    r_mat.Find "idmaterial=" & idMaterial
 
     If r_mat.EOF Then
         'agrego
         r_mat.AddNew
-        r_mat!IdMaterial = IdMaterial
+        r_mat!idMaterial = idMaterial
         r_mat!codigo = codigo
         r_mat!CANTuNITARIO = Math.Round(totUnit, 2)
         r_mat!m2kg = Math.Round(m2kg, 2)
@@ -1916,7 +1916,7 @@ Public Function CopiarOT(orig As OrdenTrabajo) As Boolean
     nue.CantDiasSaldo = orig.CantDiasSaldo
     Set nue.cliente = orig.cliente
     Set nue.ClienteFacturar = orig.ClienteFacturar
-
+    nue.TipoOrden = orig.TipoOrden
 
     nue.descripcion = orig.descripcion
     nue.Descuento = orig.Descuento
