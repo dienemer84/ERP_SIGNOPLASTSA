@@ -94,6 +94,8 @@ Public idP As Long
 Dim claseP As New classPlaneamiento
 Dim vec()
 Private remitoId As Long
+Public TipoOrden() As TipoOt
+
 Public Function vector(nvec() As Long)
     'Erase vec
     ReDim vec(UBound(nvec))
@@ -156,7 +158,11 @@ Private Sub Command3_Click()
 
 End Sub
 
+
+
+
 Private Sub Form_Load()
+
     FormHelper.Customize Me
     ver
 End Sub
@@ -165,11 +171,10 @@ Private Sub txtNroRto_Change()
     ver
 End Sub
 Public Sub ver()
-    If Trim(txtNroRto) = Empty Then
-        Command1.Enabled = False
-    Else
-        Command1.Enabled = True
-    End If
+    
+        Command1.Enabled = Trim(txtNroRto) <> Empty And TipoOrden = OT_Entrega
+    
+    
 End Sub
 
 Private Sub txtNroRto_DblClick()

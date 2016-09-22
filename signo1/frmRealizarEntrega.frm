@@ -10,12 +10,19 @@ Begin VB.Form frmPlaneamientoRealizarEntrega
    ClipControls    =   0   'False
    Icon            =   "frmRealizarEntrega.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   3195
    ScaleWidth      =   5625
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton Command2 
+      Caption         =   "Envíar a Stock.."
+      Height          =   450
+      Left            =   120
+      TabIndex        =   18
+      Top             =   2640
+      Width           =   1635
+   End
    Begin VB.TextBox Text1 
       Height          =   285
       Left            =   1200
@@ -258,6 +265,8 @@ Public deta As DetalleOrdenTrabajo
 Dim baseP As New classPlaneamiento
 Dim strsql As String
 Private remitoId As Long
+Public TipoOrden As TipoOt
+
 
 Private Sub Command1_Click()
     Dim aentregar As Double
@@ -326,6 +335,36 @@ Private Sub Command1_Click()
     End If
 End Sub
 
+Private Sub Command2_Click()
+On Error GoTo err1
+Dim cant As Double
+
+    Dim disponibles As Double
+    disponibles = deta.CantidadFabricados - deta.CantidadEnviadasAStock
+  
+    Dim res As String
+
+    Dim envio As Double: envio = Val(Me.Text1)
+    
+    
+    
+    
+  If disponibles - envio < 0 Then
+        MsgBox "Cantidad Insuficiente Para enviar a Stock"
+        Exit Sub
+  End If
+    
+     DAODetalleOrdenTrabajo.EnviarAStock deta, envio
+    
+
+
+
+
+Exit Sub
+err1:
+MsgBox Err.Description, vbCritical, Err.Source
+
+End Sub
 
 Private Sub Form_Activate()
     Me.caption = "Realizar entrega [ OT Nº " & Me.lblOT & " - Item " & Me.lblItem & " ]"
@@ -333,6 +372,9 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
+    
+    
+    Me.Command1.Enabled = (TipoOrden = OT_Entrega Or Me.TipoOrden = OT_TRADICIONAL)
 End Sub
 
 Private Sub Text1_Validate(Cancel As Boolean)

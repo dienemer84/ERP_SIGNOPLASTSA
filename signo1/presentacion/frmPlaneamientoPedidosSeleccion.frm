@@ -119,7 +119,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Public Cliente As clsCliente
+Public cliente As clsCliente
 Private ots As New Collection
 Private Ot As OrdenTrabajo
 Public MostrarAnticipo As Boolean
@@ -138,9 +138,9 @@ Private Sub Form_Load()
     DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
     CMDsINCliente_Click
 
-    If IsSomething(Cliente) Then
+    If IsSomething(cliente) Then
         'Me.GroupBox1.Enabled = False
-        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Cliente.id, Me.cboClientes)
+        Me.cboClientes.ListIndex = funciones.PosIndexCbo(cliente.id, Me.cboClientes)
         Me.cboClientes.Enabled = False
         Me.CMDsINCliente.Enabled = False
     End If
@@ -200,6 +200,6 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(3) = Ot.FechaEntrega
     Values(4) = funciones.estado_pedido(Ot.estado)
     Values(5) = Ot.Anticipo
-    Values(6) = Ot.Cliente.razon
+    Values(6) = Ot.cliente.razon
 
 End Sub

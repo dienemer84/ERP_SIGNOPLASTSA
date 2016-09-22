@@ -518,7 +518,7 @@ Private Sub btnCerrar_Click()
             Set v.Elemento = m_ot
             v.EVENTO = modificar_
             Set v.Originador = Me
-            v.Tipo = ordenesTrabajo
+            v.tipo = ordenesTrabajo
             Channel.Notificar v, TipoSuscripcion.ordenesTrabajo
 
 
@@ -688,6 +688,7 @@ Private Sub btnRemitar_Click()
         fEntrega.lblDeStock = detaOT.ReservaStock
         fEntrega.lblOT = m_ot.id
         fEntrega.lblItem = detaOT.item
+        
         fEntrega.Show 1
 
     ElseIf Me.gridDetalles.SelectedItems.count > 1 Then
@@ -787,13 +788,15 @@ Private Sub Form_Load()
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     Set CantArchivosDetalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
 
-valid = (m_ot.TipoOrden = OT_TRADICIONAL Or m_ot.TipoOrden = OT_TRADICIONAL)
+valid = (m_ot.TipoOrden = OT_TRADICIONAL Or m_ot.TipoOrden = OT_Entrega)
 
 Me.btnAplicarRemito.Enabled = valid
 Me.btnCerrar.Enabled = valid
 Me.mnuAtajo.Enabled = valid
-Me.btnRemitar.Enabled = valid
+Me.btnRemitar.Enabled = valid Or m_ot.TipoOrden = OT_STOCK
 Me.btnTomarDeStock.Enabled = valid
+
+gridDetalles_SelectionChange
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -1037,7 +1040,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 
 
-    If EVENTO.Tipo = FacturarRemitosDetalle_ Then
+    If EVENTO.tipo = FacturarRemitosDetalle_ Then
         'If ReadOnly Then
 
         'aplicacion de detalle remito post facturacion

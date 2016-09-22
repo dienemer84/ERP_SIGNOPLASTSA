@@ -429,8 +429,8 @@ Private Sub Command1_Click()
     Dim idP As Long
     If Trim(Me.txtOT) <> Empty Then
         idP = CLng(Me.txtOT)
-        A = claseP.ExistePedido(idP)
-        If A = 0 Or A = -1 Then
+        a = claseP.ExistePedido(idP)
+        If a = 0 Or a = -1 Then
             MsgBox "Dato inválido.", vbCritical, "Error"
             Me.lstDetallePedidos.ListItems.Clear
             Me.lblTerminados = Empty
@@ -440,7 +440,7 @@ Private Sub Command1_Click()
         Else
             claseP.ejecutar_consulta "select c.razon as cliente,p.tipo_orden,p.estado,p.descripcion,p.fechaEntrega from pedidos p,clientes c where p.id=" & idP & " and c.id=p.idCliente"
             estado = claseP.estadoOT
-            If claseP.TipoOrden <> OT_TRADICIONAL Then
+            If claseP.TipoOrden = OT_Entrega Then
                 MsgBox "OT Invalida para hacer el seguimiento!", vbInformation
                 Exit Sub
             End If
@@ -599,11 +599,11 @@ Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
                 x.EnsureVisible
             End If
         End If
-        A = DateDiff("d", Date, rs!FechaEntrega)
-        If A < 0 Then
+        a = DateDiff("d", Date, rs!FechaEntrega)
+        If a < 0 Then
             x.ListSubItems(1).ForeColor = vbRed
             x.ListSubItems(4).ForeColor = vbRed
-        ElseIf A = 0 Then
+        ElseIf a = 0 Then
             x.ListSubItems(1).ForeColor = vbGreen
             x.ListSubItems(4).ForeColor = vbGreen
         End If
