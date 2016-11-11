@@ -337,10 +337,10 @@ End Sub
 
 Private Sub Command2_Click()
 On Error GoTo err1
-Dim cant As Double
+Dim Cant As Double
 
-    Dim disponibles As Double
-    disponibles = deta.CantidadFabricados - deta.CantidadEnviadasAStock
+    Dim Disponibles As Double
+    Disponibles = deta.CantidadFabricados - deta.CantidadEnviadasAStock
   
     Dim res As String
 
@@ -349,7 +349,7 @@ Dim cant As Double
     
     
     
-  If disponibles - envio < 0 Then
+  If Disponibles - envio < 0 Then
         MsgBox "Cantidad Insuficiente Para enviar a Stock"
         Exit Sub
   End If

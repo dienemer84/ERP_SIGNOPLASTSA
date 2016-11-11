@@ -21,8 +21,8 @@ Public Historial As New Collection
 Public origenFacturado As origenFacturado
 Public FechaPropuestaPago As Date    'propuesta
 Public numero As String
-Public Cliente As clsCliente
-Public Moneda As clsMoneda
+Public cliente As clsCliente
+Public moneda As clsMoneda
 Public CambioAPatron As Double
 Public FechaEntrega As Date
 Public CAE As String
@@ -45,7 +45,7 @@ Public Saldado As TipoSaldadoFactura
 Public AlicuotaAplicada As Double    'iva
 Public AlicuotaPercepcionesIIBB As Double
 Public estado As EstadoFacturaCliente
-Public UsuarioCreador As clsUsuario
+Public usuarioCreador As clsUsuario
 Public CantDiasPago As Long    'FormaPago
 Public OrdenCompra As String
 Public UsuarioAprobacion As clsUsuario
@@ -129,15 +129,15 @@ End Function
 
 Public Function getDescripcionCondicion() As String
     
-    Dim a As String
+    Dim A As String
     If Me.CantDiasPago = 1 Then
-        a = Me.CantDiasPago & " dia FF"
+        A = Me.CantDiasPago & " dia FF"
     Else
-        a = Me.CantDiasPago & " dias FF"
+        A = Me.CantDiasPago & " dias FF"
     End If
 
 
-getDescripcionCondicion = a & Me.observaciones
+getDescripcionCondicion = A & Me.observaciones
 
 End Function
 
@@ -304,7 +304,7 @@ Public Property Get TotalNetoGravado()
     'Debug.Assert Me.Numero <> 9124
 
     For Each det In Me.Detalles
-        If det.IvaAplicado Or Me.AlicuotaAplicada > 0 Or Not Tipo.TipoFactura.ExcentoIVA Then subT = subT + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad)
+        If det.IvaAplicado And Me.AlicuotaAplicada > 0 And Not Tipo.TipoFactura.ExcentoIVA Then subT = subT + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad)
     Next det
     TotalNetoGravado = subT
 
@@ -390,7 +390,7 @@ Public Property Get totalPercepciones() As Double
                 'Debug.Print det.Total, Me.AlicuotaPercepcionesIIBB, (det.Total * (Me.AlicuotaPercepcionesIIBB - 1))
                 If Me.AlicuotaPercepcionesIIBB > 1 Then
                     If Me.FechaEmision > #12/21/2010# Then    'desde el 21 de dic de 2010
-                        If Me.TotalNetoGravado > MonedaConverter.Convertir(0, 0, Me.Moneda.id) Then
+                        If Me.TotalNetoGravado > MonedaConverter.Convertir(0, 0, Me.moneda.id) Then
                             If det.IvaAplicado Then
                                 totPercep = totPercep + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad * (Me.AlicuotaPercepcionesIIBB - 1))
                             End If

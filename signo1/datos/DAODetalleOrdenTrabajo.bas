@@ -22,16 +22,16 @@ Public Const TABLA_DETALLE_PEDIDO As String = "dp"
 Public Const CAMPO_ID_PRESU = "id_presupuesto_origen"
 Public Const CAMPO_DESCUENTO = "descuento"
 
-Public Sub EnviarAStock(detalle As DetalleOrdenTrabajo, cantidad As Double)
+Public Sub EnviarAStock(detalle As DetalleOrdenTrabajo, Cantidad As Double)
 On Error GoTo err1
 'reload
 Set detalle = DAODetalleOrdenTrabajo.FindById(detalle.id)
 
 'valido nuevamente
-If detalle.CantidadPedida >= detalle.CantidadEnviadasAStock + cantidad Then
-    detalle.CantidadEnviadasAStock = detalle.CantidadEnviadasAStock + cantidad
+If detalle.CantidadPedida >= detalle.CantidadEnviadasAStock + Cantidad Then
+    detalle.CantidadEnviadasAStock = detalle.CantidadEnviadasAStock + Cantidad
     conectar.BeginTransaction
-        Save (deta)
+        Save (detalle)
     conectar.CommitTransaction
 Else
     Err.Raise 2020, "Asignación de Stock", "La cantidad de stock que se intenta asignar supera a la cantidad disponible"
@@ -309,7 +309,7 @@ Public Function MapConjunto(ByRef rs As Recordset, _
         Set tmpDeta = New DetalleOTConjuntoDTO
 
         tmpDeta.id = id
-        tmpDeta.cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
+        tmpDeta.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
         tmpDeta.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "procesos_definidos")
         tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
         tmpDeta.idpedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
@@ -361,7 +361,7 @@ Public Function Map(ByRef rs As Recordset, _
         tmpDetaOrdenTrabajo.idDetalleOtPadre = GetValue(rs, fieldsIndex, tableNameOrAlias, "IdDetalleOtPadre")
         tmpDetaOrdenTrabajo.EtiquetasImpresas = GetValue(rs, fieldsIndex, tableNameOrAlias, "etiquetas_impresas")
         tmpDetaOrdenTrabajo.idPresupuestoOrigen = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID_PRESU)
-
+        tmpDetaOrdenTrabajo.CantidadEnviadasAStock = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_a_stock")
         'pseudo proxy
         Set tmpDetaOrdenTrabajo.OrdenTrabajo = New OrdenTrabajo
         tmpDetaOrdenTrabajo.OrdenTrabajo.id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PEDIDO_ID)
@@ -472,7 +472,7 @@ Public Function Save(deta As DetalleOrdenTrabajo) As Boolean
                 'cargo el detalle_pedido de conjuntos para teenr el despiece separado
                 While Not r_arbol.EOF
                     q = "insert into detalles_pedidos_conjuntos  (idPedido, idDetalle_pedido, IdPiezaPadre, idPieza, esConjunto, cantidad, reserva_stock,cantidadPieza,cantidad_total_static,identificador_posicion)"
-                    q = q & " values (" & deta.OrdenTrabajo.id & "," & deta.id & "," & r_arbol!idPiezaPadre & "," & r_arbol!idPieza & "," & r_arbol!conjunto & "," & r_arbol!cantidad & "," & 0 & "," & r_arbol!cantidad & "," & r_arbol!Cantt * deta.CantidadPedida & ",'" & r_arbol!id_pos & "')"
+                    q = q & " values (" & deta.OrdenTrabajo.id & "," & deta.id & "," & r_arbol!idPiezaPadre & "," & r_arbol!idPieza & "," & r_arbol!conjunto & "," & r_arbol!Cantidad & "," & 0 & "," & r_arbol!Cantidad & "," & r_arbol!Cantt * deta.CantidadPedida & ",'" & r_arbol!id_pos & "')"
                     Save = conectar.execute(q)
 
                     r_arbol.MoveNext
@@ -521,26 +521,26 @@ End Function
 
 
 
-Public Function MapCantidad(id_detalle As Long, tipo As TipoCantidadOT, idMonedaOrden As Long) As Collection
+Public Function MapCantidad(id_detalle As Long, Tipo As TipoCantidadOT, idMonedaOrden As Long) As Collection
     Dim strsql As String
     Dim rs As Recordset
-    Dim cant As clsDetalleOrdenTrabajoCantidades
+    Dim Cant As clsDetalleOrdenTrabajoCantidades
     Dim cole As New Collection
-    strsql = "select * from detalles_pedidos_cantidad where id_detalle_pedido=" & id_detalle & " and tipo_cantidad =" & tipo
+    strsql = "select * from detalles_pedidos_cantidad where id_detalle_pedido=" & id_detalle & " and tipo_cantidad =" & Tipo
     Set rs = conectar.RSFactory(strsql)
 
     While Not rs.EOF And Not rs.BOF
-        Set cant = New clsDetalleOrdenTrabajoCantidades
-        cant.cantidad = rs!cantidad
-        cant.FEcha = rs!FEcha
-        cant.Monto = rs!Monto
-        cant.tipo = rs!tipo_cantidad
-        cant.TipoCambio = rs!tipo_cambio
-        cant.IdMoneda = rs!id_moneda
-        cant.MontoSegunMoneda = MonedaConverter.ConvertirForzado2(cant.Monto, cant.IdMoneda, idMonedaOrden, cant.TipoCambio)
+        Set Cant = New clsDetalleOrdenTrabajoCantidades
+        Cant.Cantidad = rs!Cantidad
+        Cant.FEcha = rs!FEcha
+        Cant.Monto = rs!Monto
+        Cant.Tipo = rs!tipo_cantidad
+        Cant.TipoCambio = rs!tipo_cambio
+        Cant.IdMoneda = rs!id_moneda
+        Cant.MontoSegunMoneda = MonedaConverter.ConvertirForzado2(Cant.Monto, Cant.IdMoneda, idMonedaOrden, Cant.TipoCambio)
 
 
-        cole.Add cant
+        cole.Add Cant
         rs.MoveNext
     Wend
     Set MapCantidad = cole
@@ -613,27 +613,27 @@ erro:
 End Function
 
 
-Public Function SaveCantidad(id_detalle As Long, cantidad As Double, tipo As TipoCantidadOT, Monto As Double, id_comprobante As Long, id_moneda As Long, tipo_cambio As Double, tipo_cambio_ajuste As Double) As Boolean
+Public Function SaveCantidad(id_detalle As Long, Cantidad As Double, Tipo As TipoCantidadOT, Monto As Double, id_comprobante As Long, id_moneda As Long, tipo_cambio As Double, tipo_cambio_ajuste As Double) As Boolean
     Dim strsql As String
     On Error GoTo err1
     SaveCantidad = True
     'habria que validar q no se vaya a negativo...
 
 
-    strsql = "INSERT INTO detalles_pedidos_cantidad (id_detalle_pedido, cantidad, fecha, tipo_cantidad, monto,id_comprobante,id_moneda,tipo_cambio)VALUES ( " & id_detalle & "," & cantidad & "," & conectar.Escape(Now) & "," & tipo & "," & Monto & "," & id_comprobante & "," & id_moneda & " ," & tipo_cambio & ")"
+    strsql = "INSERT INTO detalles_pedidos_cantidad (id_detalle_pedido, cantidad, fecha, tipo_cantidad, monto,id_comprobante,id_moneda,tipo_cambio)VALUES ( " & id_detalle & "," & Cantidad & "," & conectar.Escape(Now) & "," & Tipo & "," & Monto & "," & id_comprobante & "," & id_moneda & " ," & tipo_cambio & ")"
     SaveCantidad = conectar.execute(strsql)
 
     Exit Function
 err1:
     SaveCantidad = False
 End Function
-Public Function GetCantidad(id_detalle As Long, tipo As TipoCantidadOT) As Double
+Public Function GetCantidad(id_detalle As Long, Tipo As TipoCantidadOT) As Double
     Dim strsql As String
     Dim rs As Recordset
-    strsql = "select SUM(cantidad) AS cantidad from detalles_pedidos_cantidad where id_detalle_pedido=" & id_detalle & " and tipo_cantidad=" & tipo
+    strsql = "select SUM(cantidad) AS cantidad from detalles_pedidos_cantidad where id_detalle_pedido=" & id_detalle & " and tipo_cantidad=" & Tipo
     Set rs = conectar.RSFactory(strsql)
     If Not rs.EOF And Not rs.BOF Then
-        GetCantidad = IIf(IsNumeric(rs!cantidad), rs!cantidad, 0)
+        GetCantidad = IIf(IsNumeric(rs!Cantidad), rs!Cantidad, 0)
     Else
         GetCantidad = -1
     End If
@@ -794,8 +794,8 @@ Public Sub CalcularPorcentajeAvanceYPromedioFabricado(idDetallePedido As Long, B
 
 
             tmpCantPosible = 0
-            If tmpRS!cantidad > 0 Then
-                tmpCantPosible = Int(minimoTmp / tmpRS!cantidad)
+            If tmpRS!Cantidad > 0 Then
+                tmpCantPosible = Int(minimoTmp / tmpRS!Cantidad)
             End If
 
             If cantPiezasMinima = -1 Then

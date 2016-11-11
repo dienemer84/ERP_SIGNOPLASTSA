@@ -518,7 +518,7 @@ Private Sub btnCerrar_Click()
             Set v.Elemento = m_ot
             v.EVENTO = modificar_
             Set v.Originador = Me
-            v.tipo = ordenesTrabajo
+            v.Tipo = ordenesTrabajo
             Channel.Notificar v, TipoSuscripcion.ordenesTrabajo
 
 
@@ -534,7 +534,9 @@ Private Sub btnCerrar_Click()
                 fEntTotal.Show 1
                 Unload Me
             Else
+                
                 MsgBox "Para cerrar la OT debe tener todo fabricado o proveniente de stock.", vbExclamation
+            
             End If
         End If
     End If
@@ -1040,7 +1042,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 
 
-    If EVENTO.tipo = FacturarRemitosDetalle_ Then
+    If EVENTO.Tipo = FacturarRemitosDetalle_ Then
         'If ReadOnly Then
 
         'aplicacion de detalle remito post facturacion

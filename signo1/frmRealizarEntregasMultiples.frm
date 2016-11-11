@@ -94,7 +94,7 @@ Public idP As Long
 Dim claseP As New classPlaneamiento
 Dim vec()
 Private remitoId As Long
-Public TipoOrden() As TipoOt
+Public TipoOrden As TipoOt
 
 Public Function vector(nvec() As Long)
     'Erase vec
