@@ -265,7 +265,15 @@ Public deta As DetalleOrdenTrabajo
 Dim baseP As New classPlaneamiento
 Dim strsql As String
 Private remitoId As Long
-Public TipoOrden As TipoOt
+Private tipo As tipoOt
+
+Public Property Let TipoOrden(t As tipoOt)
+     tipo = t
+    Me.Command1.Enabled = (tipo = OT_Entrega Or tipo = OT_TRADICIONAL)
+End Property
+
+
+
 
 
 Private Sub Command1_Click()
@@ -372,9 +380,8 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
+        
     
-    
-    Me.Command1.Enabled = (TipoOrden = OT_Entrega Or Me.TipoOrden = OT_TRADICIONAL)
 End Sub
 
 Private Sub Text1_Validate(Cancel As Boolean)
