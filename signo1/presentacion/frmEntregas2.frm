@@ -690,13 +690,14 @@ Private Sub btnRemitar_Click()
         fEntrega.lblDeStock = detaOT.ReservaStock
         fEntrega.lblOT = m_ot.id
         fEntrega.lblItem = detaOT.item
-        fEntrega.TipoOrden = m_ot.TipoOrden
+        fEntrega.tipoOrden = m_ot.tipoOrden
         
         fEntrega.Show 1
 
     ElseIf Me.gridDetalles.SelectedItems.count > 1 Then
         Dim f22 As New frmPlaneamientoRealizarEntregaMultiple
         f22.idP = m_ot.id
+        f22.tipoOrden = m_ot.tipoOrden
         f22.vector detasId
         f22.Show 1
     End If
@@ -791,12 +792,12 @@ Private Sub Form_Load()
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     Set CantArchivosDetalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
 
-valid = (m_ot.TipoOrden = OT_TRADICIONAL Or m_ot.TipoOrden = OT_Entrega)
+valid = (m_ot.tipoOrden = OT_TRADICIONAL Or m_ot.tipoOrden = OT_ENTREGA)
 
 Me.btnAplicarRemito.Enabled = valid
 Me.btnCerrar.Enabled = valid
 Me.mnuAtajo.Enabled = valid
-Me.btnRemitar.Enabled = valid Or m_ot.TipoOrden = OT_STOCK
+Me.btnRemitar.Enabled = valid Or m_ot.tipoOrden = OT_STOCK
 Me.btnTomarDeStock.Enabled = valid
 
 gridDetalles_SelectionChange
@@ -869,7 +870,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         
         Values(4) = detalle.CantidadPedida
         
-        If m_ot.TipoOrden = OT_STOCK Then
+        If m_ot.tipoOrden = OT_STOCK Then
             Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.id) & ")"
         End If
         

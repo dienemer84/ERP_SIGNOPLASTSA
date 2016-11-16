@@ -94,7 +94,14 @@ Public idP As Long
 Dim claseP As New classPlaneamiento
 Dim vec()
 Private remitoId As Long
-Public TipoOrden As TipoOt
+Private tipoOT As tipoOT
+Public Property Let tipoOrden(tipo As tipoOT)
+tipoOT = tipo
+ver
+End Property
+
+
+
 
 Public Function vector(nvec() As Long)
     'Erase vec
@@ -171,8 +178,8 @@ Private Sub txtNroRto_Change()
     ver
 End Sub
 Public Sub ver()
-    
-        Command1.Enabled = Trim(txtNroRto) <> Empty And TipoOrden = OT_Entrega
+    Command1.Enabled = Trim(txtNroRto) <> Empty And tipoOT <> OT_STOCK
+'        Command1.Enabled = Trim(txtNroRto) <> Empty And tipoOrden = OT_ENTREGA
     
     
 End Sub
@@ -183,6 +190,7 @@ Private Sub txtNroRto_DblClick()
     If IsSomething(Selecciones.RemitoElegido) Then
         Me.txtNroRto = Selecciones.RemitoElegido.numero
         remitoId = Selecciones.RemitoElegido.id
+        ver
     Else
         Me.txtNroRto = Empty
     End If
