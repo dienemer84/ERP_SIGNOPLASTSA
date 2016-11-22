@@ -390,9 +390,12 @@ Public Property Get totalPercepciones() As Double
                 'Debug.Print det.Total, Me.AlicuotaPercepcionesIIBB, (det.Total * (Me.AlicuotaPercepcionesIIBB - 1))
                 If Me.AlicuotaPercepcionesIIBB > 1 Then
                     If Me.FechaEmision > #12/21/2010# Then    'desde el 21 de dic de 2010
-                        If Me.TotalNetoGravado > MonedaConverter.Convertir(0, 0, Me.moneda.id) Then
+                        ' bug #1 cambie > pór >= el 22-11-16 para poder hacer una factura solo de percepciones (ver FC grupo via del 22-11-16)
+                        If Me.TotalNetoGravado >= MonedaConverter.Convertir(0, 0, Me.moneda.id) Then
                             If det.IvaAplicado Then
                                 totPercep = totPercep + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad * (Me.AlicuotaPercepcionesIIBB - 1))
+                          Else
+                           totPercep = totPercep + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad * (Me.AlicuotaPercepcionesIIBB - 1))
                             End If
                         End If
                     Else
