@@ -966,7 +966,7 @@ On Error GoTo err1
         Exit Sub
     End If
 
-    If Not Factura.Cliente.CUITValido Or Not Factura.Cliente.ValidoRemitoFactura Then
+    If Not Factura.cliente.CUITValido Or Not Factura.cliente.ValidoRemitoFactura Then
         MsgBox "El cliente no es valido para poder facturar.", vbExclamation + vbOKOnly
         Exit Sub
     End If
@@ -1058,10 +1058,10 @@ err1:
 End Sub
 
 Private Sub btnItemRemito_Click()
-    If IsSomething(Factura.Cliente) Then
+    If IsSomething(Factura.cliente) Then
         Dim idEntrega As Long
         Dim f11 As New frmPlaneamientoRemitosListaProceso
-        f11.idCliMostrar = Factura.Cliente.id
+        f11.idCliMostrar = Factura.cliente.id
         f11.mostrar = 2
      
         Set Selecciones.RemitoElegido = Nothing
@@ -1105,7 +1105,7 @@ Private Sub AgregarEntregas(col As Collection)
             detalle.Bruto = redeta.Valor
             Set Ot = DAOOrdenTrabajo.FindById(redeta.idpedido)
             If IsSomething(Ot) Then
-                detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.Moneda.id, Factura.Moneda.id)
+                detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.moneda.id, Factura.moneda.id)
             End If
             detalle.IvaAplicado = True
             detalle.IBAplicado = True
@@ -1185,7 +1185,7 @@ Private Sub btnItemsDescuentoAnticipo_Click()
                                     Exit Sub
                                 End If
                             End If
-                            detalleAnticipo.Bruto = detalleAnticipo.Bruto + funciones.RedondearDecimales(detalle.Total)
+                            detalleAnticipo.Bruto = detalleAnticipo.Bruto + funciones.RedondearDecimales(detalle.Total * Factura.moneda.Cambio)
                         End If
                     End If
                 End If
@@ -1200,10 +1200,10 @@ End Sub
 
 Private Sub cboCliente_Click()
     If IsSomething(Factura) And Me.cboCliente.ListIndex <> -1 And Not dataLoading Then
-        Set Factura.Cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
+        Set Factura.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
         Factura.Detalles = New Collection
 
-        Set Factura.TipoIVA = Factura.Cliente.TipoIVA
+        Set Factura.TipoIVA = Factura.cliente.TipoIVA
 
         Dim tipos As New Collection
 
@@ -1239,7 +1239,7 @@ Dim nidx As Long
         '     Set Factura.Tipo = DAOTipoFactura.FindFirstByFilter("id IN (select TipoFactura FROM AdminConfigFacturas where idIVA = " & Factura.TipoIVA.idIVA & ")")
 
         Factura.AlicuotaAplicada = Factura.TipoIVA.Alicuota
-        Set Factura.Cliente = DAOCliente.BuscarPorID(Factura.Cliente.id)
+        Set Factura.cliente = DAOCliente.BuscarPorID(Factura.cliente.id)
         Dim classA As New classAdministracion
     'Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(id_Default)
         If IsSomething(Factura.Tipo.TipoFactura) Then
@@ -1282,11 +1282,11 @@ Private Sub MostrarPercepcionIIBB()
     Me.txtPercepcion.text = 0
     Me.lblVencido.Visible = False
 
-    If Factura.Cliente.CUITValido Then
+    If Factura.cliente.CUITValido Then
         Me.lblBuscandoPercepcion.Visible = True
         DoEvents
         Dim rs As Recordset
-        Set rs = conectar.RSFactory("select * from sp_permisos." & tabla & " where cuit='" & Factura.Cliente.Cuit & "'")
+        Set rs = conectar.RSFactory("select * from sp_permisos." & tabla & " where cuit='" & Factura.cliente.Cuit & "'")
         Me.lblBuscandoPercepcion.Visible = False
         DoEvents
         If IsSomething(rs) Then
@@ -1301,7 +1301,7 @@ End Sub
 
 Private Sub cboMoneda_Click()
     If IsSomething(Factura) And Me.cboMoneda.ListIndex <> -1 And Not dataLoading Then
-        Set Factura.Moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+        Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
     End If
 End Sub
 Private Sub cboPadron_Click()
@@ -1367,7 +1367,7 @@ Private Sub Form_Load()
         Me.dtpFecha.value = Now
 
         If Me.cboMoneda.ListIndex <> -1 Then
-            Set Factura.Moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+            Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
         End If
     Else
         Me.caption = Factura.GetShortDescription(False, True)
@@ -1476,13 +1476,13 @@ Private Sub CargarFactura()
     End If
 
 
-    If IsSomething(Factura.Cliente) Then
-        Me.cboCliente.ListIndex = funciones.PosIndexCbo(Factura.Cliente.id, Me.cboCliente)
+    If IsSomething(Factura.cliente) Then
+        Me.cboCliente.ListIndex = funciones.PosIndexCbo(Factura.cliente.id, Me.cboCliente)
         MostrarCliente
     Else
         LimpiarCliente
     End If
-    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.Moneda.id, Me.cboMoneda)
+    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.id, Me.cboMoneda)
 
     Me.cboMonedaAjuste.ListIndex = funciones.PosIndexCbo(Factura.IdMonedaAjuste, Me.cboMonedaAjuste)
 
@@ -1543,14 +1543,14 @@ End Sub
 Private Sub MostrarCliente()
     On Error Resume Next
     If Factura Is Nothing Then Exit Sub
-    If Factura.Cliente Is Nothing Then Exit Sub
-    Me.lblCuit.caption = Factura.Cliente.Cuit
-    Me.lblIVA.caption = Factura.Cliente.TipoIVA.detalle
-    Me.lblDireccion.caption = Factura.Cliente.Domicilio
-    Me.lblLocalidad.caption = Factura.Cliente.localidad.nombre
-    Me.lblCodPostal.caption = Factura.Cliente.localidad.cp
+    If Factura.cliente Is Nothing Then Exit Sub
+    Me.lblCuit.caption = Factura.cliente.Cuit
+    Me.lblIVA.caption = Factura.cliente.TipoIVA.detalle
+    Me.lblDireccion.caption = Factura.cliente.Domicilio
+    Me.lblLocalidad.caption = Factura.cliente.localidad.nombre
+    Me.lblCodPostal.caption = Factura.cliente.localidad.cp
 
-    Me.lblProvincia = Factura.Cliente.provincia.nombre
+    Me.lblProvincia = Factura.cliente.provincia.nombre
 
 End Sub
 
@@ -1717,7 +1717,7 @@ If A.IdFormSuscriber <> ISuscriber_id Then Exit Function
                             transactionResult = transactionResult And DAORemitoS.Guardar(remi, False, False)
                             transactionResult = transactionResult And DAOFacturaDetalles.Guardar(detaFactRemito)
                             transactionResult = transactionResult And DAORemitoSDetalle.Guardar(redeta)
-                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, Factura.id, Factura.Moneda.id, Factura.CambioAPatron, Factura.TipoCambioAjuste)
+                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, Factura.id, Factura.moneda.id, Factura.CambioAPatron, Factura.TipoCambioAjuste)
 
                             If transactionResult Then
 
@@ -1760,7 +1760,7 @@ Private Sub mnuAplicarDetalleRemito_Click()
 
     On Error Resume Next
     Dim f11 As New frmPlaneamientoRemitosListaProceso
-    f11.idCliMostrar = Factura.Cliente.id
+    f11.idCliMostrar = Factura.cliente.id
     f11.mostrar = 2
     Set Selecciones.RemitoElegido = Nothing
     f11.Show 1
@@ -1787,9 +1787,9 @@ End Sub
 
 Private Sub PushButton1_Click()
 
-    If IsSomething(Factura.Cliente) Then
+    If IsSomething(Factura.cliente) Then
         Set Selecciones.OrdenTrabajo = Nothing
-        Set frmPlaneamientoPedidosSeleccion.Cliente = Factura.Cliente
+        Set frmPlaneamientoPedidosSeleccion.cliente = Factura.cliente
         frmPlaneamientoPedidosSeleccion.MostrarAnticipo = True
         frmPlaneamientoPedidosSeleccion.Show 1
 
@@ -1836,7 +1836,7 @@ Private Sub PushButton1_Click()
                     deta.detalle = deta.detalle & " " & Ot.IdFormateado
 
 
-                    deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.Anticipo) / 100)
+                    deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
 
                     '   deta.Bruto = MonedaConverter.Convertir(deta.Bruto, Ot.Moneda.Id, Factura.Moneda.Id)
 
