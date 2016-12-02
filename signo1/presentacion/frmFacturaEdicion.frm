@@ -1835,7 +1835,7 @@ Private Sub PushButton1_Click()
                     End If
                     deta.detalle = deta.detalle & " " & Ot.IdFormateado
 
-
+            'bug #2
                     deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
 
                     '   deta.Bruto = MonedaConverter.Convertir(deta.Bruto, Ot.Moneda.Id, Factura.Moneda.Id)

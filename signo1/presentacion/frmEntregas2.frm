@@ -518,7 +518,7 @@ Private Sub btnCerrar_Click()
             Set v.Elemento = m_ot
             v.EVENTO = modificar_
             Set v.Originador = Me
-            v.tipo = ordenesTrabajo
+            v.Tipo = ordenesTrabajo
             Channel.Notificar v, TipoSuscripcion.ordenesTrabajo
 
 
@@ -690,14 +690,14 @@ Private Sub btnRemitar_Click()
         fEntrega.lblDeStock = detaOT.ReservaStock
         fEntrega.lblOT = m_ot.id
         fEntrega.lblItem = detaOT.item
-        fEntrega.tipoOrden = m_ot.tipoOrden
+        fEntrega.TipoOrden = m_ot.TipoOrden
         
         fEntrega.Show 1
 
     ElseIf Me.gridDetalles.SelectedItems.count > 1 Then
         Dim f22 As New frmPlaneamientoRealizarEntregaMultiple
         f22.idP = m_ot.id
-        f22.tipoOrden = m_ot.tipoOrden
+        f22.TipoOrden = m_ot.TipoOrden
         f22.vector detasId
         f22.Show 1
     End If
@@ -706,7 +706,15 @@ Private Sub btnRemitar_Click()
 End Sub
 
 Private Sub btnTomarDeStock_Click()
+
+
 On Error GoTo err1
+ 'Bug #3 - probar
+ If Me.gridDetalles.SelectedItems.count = 1 Then
+    Set detalle = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).RowIndex)
+    If detalle Is Nothing Then Exit Sub
+End If
+'bug #3
 Dim res As String
 res = InputBox("Ingrese la cantidad a tomar de stock (Máximo " & detalle.Pieza.CantidadStock & ")", "Reserva de Stock", "0")
 If IsNumeric(res) Then
@@ -792,12 +800,12 @@ Private Sub Form_Load()
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     Set CantArchivosDetalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
 
-valid = (m_ot.tipoOrden = OT_TRADICIONAL Or m_ot.tipoOrden = OT_ENTREGA)
+valid = (m_ot.TipoOrden = OT_TRADICIONAL Or m_ot.TipoOrden = OT_ENTREGA)
 
 Me.btnAplicarRemito.Enabled = valid
 Me.btnCerrar.Enabled = valid
 Me.mnuAtajo.Enabled = valid
-Me.btnRemitar.Enabled = valid Or m_ot.tipoOrden = OT_STOCK
+Me.btnRemitar.Enabled = valid Or m_ot.TipoOrden = OT_STOCK
 Me.btnTomarDeStock.Enabled = valid
 
 gridDetalles_SelectionChange
@@ -870,7 +878,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         
         Values(4) = detalle.CantidadPedida
         
-        If m_ot.tipoOrden = OT_STOCK Then
+        If m_ot.TipoOrden = OT_STOCK Then
             Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.id) & ")"
         End If
         
@@ -1044,7 +1052,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 
 
-    If EVENTO.tipo = FacturarRemitosDetalle_ Then
+    If EVENTO.Tipo = FacturarRemitosDetalle_ Then
         'If ReadOnly Then
 
         'aplicacion de detalle remito post facturacion
