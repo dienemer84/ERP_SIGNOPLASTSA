@@ -69,13 +69,13 @@ Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True, True
           
     Dim Entregas As New Collection
     Dim initialPos As Long: initialPos = 3
-    Dim ypos As Long: ypos = initialPos
+    Dim yPos As Long: yPos = initialPos
     Dim entrega As remitoDetalle
     For Each deta In Ot.Detalles
-    ypos = ypos + 1
+    yPos = yPos + 1
     
     Set deta.OrdenTrabajo = Ot
-    exportaDetalle ypos, deta, xlWorksheet
+    exportaDetalle yPos, deta, xlWorksheet
     
      
     Next deta
@@ -115,71 +115,71 @@ E:
 
 End Sub
 
-Private Sub exportaDetalle(ypos, deta As DetalleOrdenTrabajo, xlWorksheet)
+Private Sub exportaDetalle(yPos, deta As DetalleOrdenTrabajo, xlWorksheet)
 Dim deta2 As DetalleOrdenTrabajo
 Dim origenypos As Long
 
-origenypos = ypos
+origenypos = yPos
 
-    xlWorksheet.Cells(ypos, 2).value = deta.item
-     xlWorksheet.Cells(ypos, 3).value = deta.Pieza.nombre
-     xlWorksheet.Cells(ypos, 4).value = deta.CantidadPedida
-     xlWorksheet.Cells(ypos, 5).value = deta.Cantidad_Entregada
-  xlWorksheet.Cells(ypos, 6).value = "Remito"
-        xlWorksheet.Cells(ypos, 7).value = "Fecha"
-          xlWorksheet.Cells(ypos, 8).value = "Cantidad"
+    xlWorksheet.Cells(yPos, 2).value = deta.item
+     xlWorksheet.Cells(yPos, 3).value = deta.Pieza.nombre
+     xlWorksheet.Cells(yPos, 4).value = deta.CantidadPedida
+     xlWorksheet.Cells(yPos, 5).value = deta.Cantidad_Entregada
+  xlWorksheet.Cells(yPos, 6).value = "Remito"
+        xlWorksheet.Cells(yPos, 7).value = "Fecha"
+          xlWorksheet.Cells(yPos, 8).value = "Cantidad"
     
 If deta.OrdenTrabajo.EsMarco Then
 
 For Each deta2 In deta.DetallesHijasMarcoPadre
-   ypos = ypos + 1
-   exportaDetalleHijo ypos, deta2, xlWorksheet
+   yPos = yPos + 1
+   exportaDetalleHijo yPos, deta2, xlWorksheet
     
 Next
 Else
-ypos = ypos + 1
- exportarEntregas ypos, deta.id, xlWorksheet
+yPos = yPos + 1
+ exportarEntregas yPos, deta.id, xlWorksheet
  End If
  
-ypos = ypos + 1
-  xlWorksheet.Range(xlWorksheet.Cells(origenypos, 2), xlWorksheet.Cells(ypos, 9)).BorderAround xlContinuous, xlMedium
+yPos = yPos + 1
+  xlWorksheet.Range(xlWorksheet.Cells(origenypos, 2), xlWorksheet.Cells(yPos, 9)).BorderAround xlContinuous, xlMedium
 End Sub
 
-Private Sub exportaDetalleHijo(ypos, deta As DetalleOrdenTrabajo, xlWorksheet)
+Private Sub exportaDetalleHijo(yPos, deta As DetalleOrdenTrabajo, xlWorksheet)
 Dim deta2 As DetalleOrdenTrabajo
     Dim rs As Recordset
     Dim strsql As String
     Dim origenypos As Long
-    origenypos = ypos
+    origenypos = yPos
       strsql = "Select descripcion from pedidos where id=" & deta.OrdenTrabajo.id
     Set rs = conectar.RSFactory(strsql)
 
                 deta.OrdenTrabajo.descripcion = rs!descripcion
 
-    xlWorksheet.Cells(ypos, 2).value = ""
-     xlWorksheet.Cells(ypos, 3).value = "OT " & deta.OrdenTrabajo.id & " - " & deta.OrdenTrabajo.descripcion
-     xlWorksheet.Cells(ypos, 4).value = deta.CantidadPedida
-     xlWorksheet.Cells(ypos, 5).value = deta.Cantidad_Entregada
+    xlWorksheet.Cells(yPos, 2).value = ""
+     xlWorksheet.Cells(yPos, 3).value = "OT " & deta.OrdenTrabajo.id & " - " & deta.OrdenTrabajo.descripcion
+     xlWorksheet.Cells(yPos, 4).value = deta.CantidadPedida
+     xlWorksheet.Cells(yPos, 5).value = deta.Cantidad_Entregada
 
 If deta.OrdenTrabajo.EsMarco Then
 
 For Each deta2 In deta.DetallesHijasMarcoPadre
     
-   exportaDetalleHijo ypos, deta2, xlWorksheet
+   exportaDetalleHijo yPos, deta2, xlWorksheet
     
 Next
 Else
- exportarEntregas ypos, deta.id, xlWorksheet
+ exportarEntregas yPos, deta.id, xlWorksheet
  End If
- xlWorksheet.Range(xlWorksheet.Cells(origenypos, 3), xlWorksheet.Cells(ypos, 8)).BorderAround xlContinuous
+ xlWorksheet.Range(xlWorksheet.Cells(origenypos, 3), xlWorksheet.Cells(yPos, 8)).BorderAround xlContinuous
 End Sub
 
 
-Private Sub exportarEntregas(ypos, detalleid As Long, xlWorksheet)
+Private Sub exportarEntregas(yPos, detalleid As Long, xlWorksheet)
  Dim Entregas As New Collection
  Dim facturas As Collection
  Dim origenypos As Long
- origenypos = ypos
+ origenypos = yPos
  Dim entrega As remitoDetalle
  Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalleid)
     
@@ -188,16 +188,16 @@ Private Sub exportarEntregas(ypos, detalleid As Long, xlWorksheet)
        If (entrega.RemitoAlQuePertenece.estado = RemitoAprobado) Then
        
        
-       xlWorksheet.Cells(ypos, 6).value = entrega.RemitoAlQuePertenece.numero
-       xlWorksheet.Cells(ypos, 7).value = entrega.FEcha
-       xlWorksheet.Cells(ypos, 8).value = entrega.Cantidad
-       ypos = ypos + 1
+       xlWorksheet.Cells(yPos, 6).value = entrega.RemitoAlQuePertenece.numero
+       xlWorksheet.Cells(yPos, 7).value = entrega.FEcha
+       xlWorksheet.Cells(yPos, 8).value = entrega.Cantidad
+       yPos = yPos + 1
       End If
       Next entrega
      
      End If
-     ypos = ypos - 1
-       xlWorksheet.Range(xlWorksheet.Cells(origenypos, 6), xlWorksheet.Cells(ypos, 8)).BorderAround xlContinuous, xlThin
+     yPos = yPos - 1
+       xlWorksheet.Range(xlWorksheet.Cells(origenypos, 6), xlWorksheet.Cells(yPos, 8)).BorderAround xlContinuous, xlThin
 End Sub
 Public Sub ImprimirFaltantesFacturacion(Ot As OrdenTrabajo)
     On Error GoTo err1
@@ -902,6 +902,12 @@ E:
     
 End Function
 Public Function AprobarOT(T As OrdenTrabajo, Optional progressbar As Object) As Boolean
+    If T.TipoOrden = OT_ENTREGA Then
+    MsgBox "Orden de entrega, consultar con sistemas"
+    Exit Function
+End If
+    
+    
     conectar.BeginTransaction
     Dim claseP As New classPlaneamiento
     AprobarOT = True
