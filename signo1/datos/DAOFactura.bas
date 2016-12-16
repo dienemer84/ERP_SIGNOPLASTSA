@@ -1790,23 +1790,29 @@ seccion.Controls.item("lblIntereses").caption = tip
 
  If F.TipoCambioAjuste > 0 Then
     Dim mon As clsMoneda
-    
+    'FIX #001
+    'cambio de tipo de cambio comprador a vendedor
     
     If F.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
        'si esta factura en moneda patron
     Set mon = DAOMoneda.GetById(F.IdMonedaAjuste)
-       tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total / F.TipoCambioAjuste) & " al tipo de cambio " & mon.NombreCorto & " " & F.TipoCambioAjuste & ".  La presente deberá ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
+       tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total / F.TipoCambioAjuste) & " al tipo de cambio " & mon.NombreCorto & " " & F.TipoCambioAjuste & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
     Else
         'si esta facturada en otra moneda
     Set mon = DAOMoneda.FindFirstByPatronOrDefault '  DAOMoneda.GetById(F.IdMonedaAjuste)
-    tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
+    'tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
+    'FIX 001 - MT
+    tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
     End If
     
     
+    'FIX #001
+    'If Not F.moneda.Patron Then
     seccion.Controls.item("lblCambio").caption = tip
+'   End If
     
 End If
-seccion.Controls.item("lblCambio").Visible = F.TipoCambioAjuste > 0
+seccion.Controls.item("lblCambio").Visible = F.TipoCambioAjuste > 0 And F.IdMonedaAjuste <> DAOMoneda.FindFirstByPatronOrDefault.id
 
 
 
