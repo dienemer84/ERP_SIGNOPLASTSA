@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16711681
+      Format          =   16777217
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -761,7 +761,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim Moneda As clsMoneda
+Dim moneda As clsMoneda
 Dim loading As Boolean
 Dim colAlicuotas As New Collection
 Dim aliaplicada As clsAlicuotaAplicada
@@ -825,13 +825,13 @@ Private Sub llenarTiposFacturas()
 End Sub
 
 Private Sub cboMonedas_Click()
-    Set Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+    Set moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
 
 
-    If IsSomething(vFactura) Then Set vFactura.Moneda = Moneda
-    If IsSomething(Moneda) Then
+    If IsSomething(vFactura) Then Set vFactura.moneda = moneda
+    If IsSomething(moneda) Then
         If Not VVer Then
-            Me.txtTipoCambio = Moneda.Cambio
+            Me.txtTipoCambio = moneda.Cambio
         End If
     End If
 End Sub
@@ -935,7 +935,7 @@ Private Sub cmdGuardar_Click()
 
 
     conectar.BeginTransaction
-    Dim a As Boolean
+    Dim A As Boolean
     Dim montonero As Double
     Dim nroNuevo As Long
     Dim EVENTO As clsEventoObserver
@@ -963,9 +963,9 @@ Private Sub cmdGuardar_Click()
         If funciones.RedondearDecimales(vFactura.TotalAplicadoACuentas) <> funciones.RedondearDecimales(vFactura.NetoGravado) Then Err.Raise 200
 
         If Me.cboMonedas.ListIndex <> -1 Then
-            Set vFactura.Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+            Set vFactura.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
         Else
-            Set vFactura.Moneda = Nothing
+            Set vFactura.moneda = Nothing
         End If
 
         'creo el proveedor si es contado
@@ -1450,7 +1450,7 @@ Private Sub LlenarFactura()
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.id, Me.cboProveedores)
     Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(vFactura.configFactura.id, Me.cboTiposFactura)
-    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.Moneda.id, Me.cboMonedas)
+    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.moneda.id, Me.cboMonedas)
     Me.txtMontoNeto = vFactura.NetoGravado
 
     Me.optContado.value = Not vFactura.FormaPagoCuentaCorriente
