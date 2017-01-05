@@ -1802,7 +1802,18 @@ seccion.Controls.item("lblIntereses").caption = tip
     Set mon = DAOMoneda.FindFirstByPatronOrDefault '  DAOMoneda.GetById(F.IdMonedaAjuste)
     'tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
     'FIX 001 - MT
-    tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
+    
+    Dim idPatron As Long
+    idPatron = DAOMoneda.FindFirstByPatronOrDefault.id
+    If F.IdMonedaAjuste <> idPatron And F.moneda.id = idPatron Then
+    'factura en pesos, pero  convertida de dolares
+        tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
+   Else
+   'fix 000
+   'factura en dolares
+   tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & " ***"
+   End If
+    
     End If
     
     
@@ -1812,7 +1823,7 @@ seccion.Controls.item("lblIntereses").caption = tip
 '   End If
     
 End If
-seccion.Controls.item("lblCambio").Visible = F.TipoCambioAjuste > 0 And F.IdMonedaAjuste <> DAOMoneda.FindFirstByPatronOrDefault.id
+seccion.Controls.item("lblCambio").Visible = F.moneda.id <> idPatron 'F.TipoCambioAjuste > 0 'fix #003 es este comentario And F.IdMonedaAjuste <> DAOMoneda.FindFirstByPatronOrDefault.id
 
 
 
