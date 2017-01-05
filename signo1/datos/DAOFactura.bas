@@ -420,7 +420,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             'valida tambien q no se repita el tipo de comprobante nc-nd-fc   29/7/13
 
         Else
-            Dim A As New classAdministracion
+            Dim a As New classAdministracion
 
            ' If Not F.Tipo.PuntoVenta.EsElectronico Then
                 If F.numero >= DAOFactura.proximaFactura(F.Tipo.id) Then  'F.TipoDocumento, F.Tipo.TipoFactura.id) Then
@@ -1099,7 +1099,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
     Dim x
     Dim xval
-    Dim A
+    Dim a
     Dim b
     Dim d
     Dim ss
@@ -1374,12 +1374,12 @@ Public Function Imprimir(idFactura As Long) As Boolean
         Printer.Print "Esta factura devengará un interés mensual de " & objFac.TasaAjusteMensual & "%"
     End If
 
-    A = "     La cancelación del monto indicado en la presente factura, se efectuará convirtiendo este importe a " & UCase(MonedaConverter.Patron.NombreLargo)    'UCase(nombre_largo_patron)
+    a = "     La cancelación del monto indicado en la presente factura, se efectuará convirtiendo este importe a " & UCase(MonedaConverter.Patron.NombreLargo)    'UCase(nombre_largo_patron)
     b = "     De acuerdo  con la cotización de la moneda extranjera Vigente al día anterior del efectivo pago"
     d = "     Tipo de cambio de referencia en la presente factura :" & MonedaConverter.Patron.NombreCorto & " " & objFac.CambioAPatron & " " & MonedaConverter.Patron.NombreLargo
 
     If MonedaConverter.Patron.id <> objFac.moneda.id Then
-        Printer.Print A
+        Printer.Print a
         Printer.Print b
         Printer.Print d
     End If
@@ -1388,11 +1388,11 @@ Public Function Imprimir(idFactura As Long) As Boolean
     If IsSomething(mon) Then
         Dim tot_cbio As Double
         tot_cbio = funciones.RedondearDecimales(objFac.Total / objFac.TipoCambioAjuste)
-        A = "      El importe del presente documento equivale a " & mon.NombreCorto & " " & tot_cbio
+        a = "      El importe del presente documento equivale a " & mon.NombreCorto & " " & tot_cbio
         b = "      al tipo de cambio de " & DAOMoneda.FindFirstByPatronOrDefault.NombreCorto & " " & objFac.TipoCambioAjuste
         d = "      la presente debera ser abonada al TC BNA tipo comprador del dia anterior al efectivo pago"
         If objFac.moneda.id <> objFac.IdMonedaAjuste And objFac.moneda.id <> 1 Then
-            Printer.Print A
+            Printer.Print a
             Printer.Print b
             Printer.Print d
         End If
@@ -1811,7 +1811,7 @@ seccion.Controls.item("lblIntereses").caption = tip
    Else
    'fix 000
    'factura en dolares
-   tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & " ***"
+   tip = "***  El total de la presente factura, equvale a " & F.moneda.NombreCorto & " " & funciones.RedondearDecimales(F.Total) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & " ***"
    End If
     
     End If
