@@ -420,7 +420,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             'valida tambien q no se repita el tipo de comprobante nc-nd-fc   29/7/13
 
         Else
-            Dim a As New classAdministracion
+            Dim A As New classAdministracion
 
            ' If Not F.Tipo.PuntoVenta.EsElectronico Then
                 If F.numero >= DAOFactura.proximaFactura(F.Tipo.id) Then  'F.TipoDocumento, F.Tipo.TipoFactura.id) Then
@@ -706,8 +706,8 @@ Public Function aprobar(Factura As Factura) As Boolean
     Dim idf As Long
 
     aprobar = True
-    If Factura.moneda.Cambio > 1 Then
-        If MsgBox("¿Desea asumir el valor para  " & Factura.moneda.NombreCorto & " cómo " & Factura.moneda.Cambio & "?", vbYesNo, "Confirmación") = vbNo Then GoTo err5
+    If Factura.moneda.cambio > 1 Then
+        If MsgBox("¿Desea asumir el valor para  " & Factura.moneda.NombreCorto & " cómo " & Factura.moneda.cambio & "?", vbYesNo, "Confirmación") = vbNo Then GoTo err5
     End If
 
     Dim CambioAnterior As Double
@@ -722,7 +722,7 @@ Public Function aprobar(Factura As Factura) As Boolean
     For Each d In Factura.Detalles
         Set d.Factura = Factura
     Next
-    Factura.CambioAPatron = Factura.moneda.Cambio
+    Factura.CambioAPatron = Factura.moneda.cambio
     Factura.FechaAprobacion = Now
 
     'Factura.FechaEntrega = Date
@@ -889,7 +889,7 @@ Public Function desaprobar(Factura As Factura) As Boolean
     Set usuAnterior = Factura.UsuarioAprobacion
     CambioAnterior = Factura.CambioAPatron
     estadoAnterior = Factura.estado
-    Factura.CambioAPatron = Factura.moneda.Cambio
+    Factura.CambioAPatron = Factura.moneda.cambio
     Factura.FechaAprobacion = Null
 
     'Factura.FechaEntrega = Date
@@ -975,6 +975,8 @@ Public Function EnlazarFacturaAnticipoConOT(Factura As Factura, Optional implici
     Dim Ot As OrdenTrabajo
     Dim sumaOt As Double
 
+Dim cambio As Double
+cambio = Factura.CambioAPatron
 
     For Each Ot In Factura.OTsFacturadasAnticipo
         Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id)
@@ -983,7 +985,7 @@ Public Function EnlazarFacturaAnticipoConOT(Factura As Factura, Optional implici
         EnlazarFacturaAnticipoConOT = DAOOrdenTrabajo.Guardar(Ot, False)
 
         If Not EnlazarFacturaAnticipoConOT Then Exit For
-        sumaOt = sumaOt + funciones.RedondearDecimales((Ot.Total * Ot.Anticipo) / 100)
+        sumaOt = sumaOt + funciones.RedondearDecimales(((MonedaConverter.Convertir(Ot.Total, Ot.moneda.id, Factura.moneda.id)) * Ot.Anticipo) / 100)
     Next Ot
 
     If EnlazarFacturaAnticipoConOT Then
@@ -1099,7 +1101,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
     Dim x
     Dim xval
-    Dim a
+    Dim A
     Dim b
     Dim d
     Dim ss
@@ -1374,12 +1376,12 @@ Public Function Imprimir(idFactura As Long) As Boolean
         Printer.Print "Esta factura devengará un interés mensual de " & objFac.TasaAjusteMensual & "%"
     End If
 
-    a = "     La cancelación del monto indicado en la presente factura, se efectuará convirtiendo este importe a " & UCase(MonedaConverter.Patron.NombreLargo)    'UCase(nombre_largo_patron)
+    A = "     La cancelación del monto indicado en la presente factura, se efectuará convirtiendo este importe a " & UCase(MonedaConverter.Patron.NombreLargo)    'UCase(nombre_largo_patron)
     b = "     De acuerdo  con la cotización de la moneda extranjera Vigente al día anterior del efectivo pago"
     d = "     Tipo de cambio de referencia en la presente factura :" & MonedaConverter.Patron.NombreCorto & " " & objFac.CambioAPatron & " " & MonedaConverter.Patron.NombreLargo
 
     If MonedaConverter.Patron.id <> objFac.moneda.id Then
-        Printer.Print a
+        Printer.Print A
         Printer.Print b
         Printer.Print d
     End If
@@ -1388,11 +1390,11 @@ Public Function Imprimir(idFactura As Long) As Boolean
     If IsSomething(mon) Then
         Dim tot_cbio As Double
         tot_cbio = funciones.RedondearDecimales(objFac.Total / objFac.TipoCambioAjuste)
-        a = "      El importe del presente documento equivale a " & mon.NombreCorto & " " & tot_cbio
+        A = "      El importe del presente documento equivale a " & mon.NombreCorto & " " & tot_cbio
         b = "      al tipo de cambio de " & DAOMoneda.FindFirstByPatronOrDefault.NombreCorto & " " & objFac.TipoCambioAjuste
         d = "      la presente debera ser abonada al TC BNA tipo comprador del dia anterior al efectivo pago"
         If objFac.moneda.id <> objFac.IdMonedaAjuste And objFac.moneda.id <> 1 Then
-            Printer.Print a
+            Printer.Print A
             Printer.Print b
             Printer.Print d
         End If
@@ -1504,7 +1506,73 @@ End Function
 
 
 Public Function aplicarANC(idOrigen As Long, idNCDestino As Long)
+  Dim esreto As EstadoRemitoFacturado
+    Dim rs As Recordset
+    Dim rs_rto As Recordset
+    On Error GoTo er12
+    aplicarNCaFC = True
+    conectar.BeginTransaction
 
+
+    Dim nc As Factura
+    Dim fc As Factura
+
+    Set nc = DAOFactura.FindById(idnc)
+    nc.Detalles = DAOFacturaDetalles.FindByFactura(nc.id)
+    Set fc = DAOFactura.FindById(idFactura)
+    fc.Detalles = DAOFacturaDetalles.FindByFactura(fc.id)
+
+    Dim ok As Boolean
+Dim saldadoTotal As Boolean
+saldadoTotal = False
+    If MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.id, nc.moneda.id) <> (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura)) Then
+        If MsgBox("La NC a aplicar debe ser del mismo monto que la FC!" & vbNewLine & "¿Desea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
+     
+    saldadoTotal = False
+            ok = True
+        End If    '
+    Else
+        ok = True
+    End If
+
+    
+    
+    If ok Then
+
+If saldadoTotal Then
+        nc.estado = CanceladaNC
+        nc.Saldado = saldadoTotal
+        Else
+        nc.Saldado = notaCreditoParcial
+        nc.estado = CanceladaNCParcial
+    End If
+    
+    
+        
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idnc & " where id=" & idFactura) Then GoTo er12
+
+        If Not conectar.execute("INSERT INTO AdminFacturas_NC (idFactura, idNC) VALUES (" & idFactura & "," & idnc & ")") Then GoTo er12
+
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idFactura & " where id=" & idnc) Then GoTo er12
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idnc & " where id=" & idFactura) Then GoTo er12
+
+If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True)) & " where id=" & fc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True)) & " where id=" & nc.id) Then GoTo er12
+
+
+
+    Else
+        GoTo er12
+    End If
+
+
+
+    conectar.CommitTransaction
+
+    Exit Function
+er12:
+    aplicarNCaFC = False
+    conectar.RollBackTransaction
 End Function
 
 Public Function aplicarNCaFC(idFactura As Long, idnc As Long) As Boolean
