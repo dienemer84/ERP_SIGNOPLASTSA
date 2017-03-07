@@ -510,7 +510,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Values(1) = Orden.id
         Values(2) = Orden.FEcha
 
-        Values(3) = Orden.Moneda.NombreCorto
+        Values(3) = Orden.moneda.NombreCorto
 
         Values(4) = funciones.FormatearDecimales(Orden.StaticTotalOrigenes)
         Values(5) = funciones.FormatearDecimales(Orden.StaticTotalRetenido)
@@ -612,7 +612,7 @@ Private Sub Imprimir()
             .item("lblCertificadoIIBB").caption = "NO POSEE"
         End If
 
-        .item("lblMoneda").caption = Orden.Moneda.NombreCorto & " " & Orden.Moneda.NombreLargo
+        .item("lblMoneda").caption = Orden.moneda.NombreCorto & " " & Orden.moneda.NombreLargo
 
 
 
@@ -622,7 +622,7 @@ Private Sub Imprimir()
         For Each F In Orden.FacturasProveedor
             'facs.Add F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.Moneda.NombreCorto & " " & F.Total
 
-            facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.Moneda.NombreCorto & " " & F.Total
+            facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.moneda.NombreCorto & " " & F.Total
 
         Next F
         If facs.count = 0 Then
@@ -635,7 +635,7 @@ Private Sub Imprimir()
         Dim cheq As cheque
         Dim tmpCol As New Collection
         For Each cheq In Orden.ChequesPropios
-            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.Moneda.NombreCorto & " " & cheq.Monto
+            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
         Next cheq
         If tmpCol.count = 0 Then
             .item("lblChequesPropios").caption = "NO POSEE CHEQUES PROPIOS"
@@ -646,7 +646,7 @@ Private Sub Imprimir()
 
         Set tmpCol = New Collection
         For Each cheq In Orden.ChequesTerceros
-            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.Moneda.NombreCorto & " " & cheq.Monto
+            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
         Next cheq
         If tmpCol.count = 0 Then
             .item("lblChequesTerceros").caption = "NO POSEE CHEQUES DE 3ros"
@@ -658,7 +658,7 @@ Private Sub Imprimir()
         Dim op As operacion
         Set tmpCol = New Collection
         For Each op In Orden.OperacionesBanco
-            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.Moneda.NombreCorto & " " & op.Monto
+            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
         Next op
         If tmpCol.count = 0 Then
             .item("lblTransferencias").caption = "NO POSEE OPERACIONES DE BANCO"
@@ -669,7 +669,7 @@ Private Sub Imprimir()
 
         Set tmpCol = New Collection
         For Each op In Orden.OperacionesCaja
-            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.Moneda.NombreCorto & " " & op.Monto
+            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
         Next op
         If tmpCol.count = 0 Then
             .item("lblEfectivo").caption = "NO POSEE OPERACIONES DE CAJA"
@@ -678,12 +678,12 @@ Private Sub Imprimir()
         End If
 
 
-        .item("lblDifTipoCambio").caption = Orden.Moneda.NombreCorto & " " & Orden.DiferenciaCambio
-        .item("lblOtrosDescuentos").caption = Orden.Moneda.NombreCorto & " " & Orden.OtrosDescuentos
+        .item("lblDifTipoCambio").caption = Orden.moneda.NombreCorto & " " & Orden.DiferenciaCambio
+        .item("lblOtrosDescuentos").caption = Orden.moneda.NombreCorto & " " & Orden.OtrosDescuentos
 
-        .item("lblTotalFacturas").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalFacturas
-        .item("lblTotalRetenido").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalRetenido
-        .item("lblTotalAbonado").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalOrigenes    '+ Orden.StaticTotalRetenido
+        .item("lblTotalFacturas").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalFacturas
+        .item("lblTotalRetenido").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalRetenido
+        .item("lblTotalAbonado").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalOrigenes    '+ Orden.StaticTotalRetenido
 
 
         Dim r As Recordset
@@ -793,7 +793,7 @@ Private Sub PushButton2_Click()
             Set opeCaja = New operacion
             opeCaja.Pertenencia = OrigenOperacion.caja
             opeCaja.Monto = nop.StaticTotal
-            Set opeCaja.Moneda = fac.Moneda
+            Set opeCaja.moneda = fac.moneda
             opeCaja.FechaOperacion = nop.FEcha
 
 

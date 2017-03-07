@@ -706,8 +706,8 @@ Public Function aprobar(Factura As Factura) As Boolean
     Dim idf As Long
 
     aprobar = True
-    If Factura.moneda.cambio > 1 Then
-        If MsgBox("¿Desea asumir el valor para  " & Factura.moneda.NombreCorto & " cómo " & Factura.moneda.cambio & "?", vbYesNo, "Confirmación") = vbNo Then GoTo err5
+    If Factura.moneda.Cambio > 1 Then
+        If MsgBox("¿Desea asumir el valor para  " & Factura.moneda.NombreCorto & " cómo " & Factura.moneda.Cambio & "?", vbYesNo, "Confirmación") = vbNo Then GoTo err5
     End If
 
     Dim CambioAnterior As Double
@@ -722,7 +722,7 @@ Public Function aprobar(Factura As Factura) As Boolean
     For Each d In Factura.Detalles
         Set d.Factura = Factura
     Next
-    Factura.CambioAPatron = Factura.moneda.cambio
+    Factura.CambioAPatron = Factura.moneda.Cambio
     Factura.FechaAprobacion = Now
 
     'Factura.FechaEntrega = Date
@@ -889,7 +889,7 @@ Public Function desaprobar(Factura As Factura) As Boolean
     Set usuAnterior = Factura.UsuarioAprobacion
     CambioAnterior = Factura.CambioAPatron
     estadoAnterior = Factura.estado
-    Factura.CambioAPatron = Factura.moneda.cambio
+    Factura.CambioAPatron = Factura.moneda.Cambio
     Factura.FechaAprobacion = Null
 
     'Factura.FechaEntrega = Date
@@ -975,8 +975,8 @@ Public Function EnlazarFacturaAnticipoConOT(Factura As Factura, Optional implici
     Dim Ot As OrdenTrabajo
     Dim sumaOt As Double
 
-Dim cambio As Double
-cambio = Factura.CambioAPatron
+Dim Cambio As Double
+Cambio = Factura.CambioAPatron
 
     For Each Ot In Factura.OTsFacturadasAnticipo
         Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id)
@@ -1510,16 +1510,16 @@ Public Function aplicarANC(idOrigen As Long, idNCDestino As Long)
     Dim rs As Recordset
     Dim rs_rto As Recordset
     On Error GoTo er12
-    aplicarNCaFC = True
+    aplicarANC = True
     conectar.BeginTransaction
 
 
     Dim nc As Factura
     Dim fc As Factura
 
-    Set nc = DAOFactura.FindById(idnc)
+    Set nc = DAOFactura.FindById(idNCDestino)
     nc.Detalles = DAOFacturaDetalles.FindByFactura(nc.id)
-    Set fc = DAOFactura.FindById(idFactura)
+    Set fc = DAOFactura.FindById(idOrigen)
     fc.Detalles = DAOFacturaDetalles.FindByFactura(fc.id)
 
     Dim ok As Boolean
@@ -1549,12 +1549,12 @@ If saldadoTotal Then
     
     
         
-        If Not conectar.execute("update AdminFacturas set cancelada=" & idnc & " where id=" & idFactura) Then GoTo er12
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idNCDestino & " where id=" & idFactura) Then GoTo er12
 
-        If Not conectar.execute("INSERT INTO AdminFacturas_NC (idFactura, idNC) VALUES (" & idFactura & "," & idnc & ")") Then GoTo er12
+        If Not conectar.execute("INSERT INTO AdminFacturas_NC (idFactura, idNC) VALUES (" & idOrigen & "," & idNCDestino & ")") Then GoTo er12
 
-        If Not conectar.execute("update AdminFacturas set cancelada=" & idFactura & " where id=" & idnc) Then GoTo er12
-        If Not conectar.execute("update AdminFacturas set cancelada=" & idnc & " where id=" & idFactura) Then GoTo er12
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idOrigen & " where id=" & idNCDestino) Then GoTo er12
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idNCDestino & " where id=" & idFactura) Then GoTo er12
 
 If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True)) & " where id=" & fc.id) Then GoTo er12
             If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True)) & " where id=" & nc.id) Then GoTo er12
@@ -1571,7 +1571,7 @@ If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura
 
     Exit Function
 er12:
-    aplicarNCaFC = False
+    aplicarANC = False
     conectar.RollBackTransaction
 End Function
 

@@ -18,7 +18,9 @@ Public Function VerPosibleRetenciones(colFc As Collection, colret As Collection,
         For Each F In colFc
 
             If F.FormaPagoCuentaCorriente Then
-                sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoDiaPago * -1, F.NetoGravadoDiaPago)
+'sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoDiaPago * -1, F.NetoGravadoDiaPago)
+'fix 004
+                sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoDiaPago - F.NetoNoGravado * -1, F.NetoGravadoDiaPago - F.NetoNoGravado)
 
             End If
 
@@ -77,7 +79,9 @@ Public Function Create(op As OrdenPago, Optional Save As Boolean = False) As Cer
                 Set cerd = New CertificadoRetencionDetalles
                 cerd.Alicuota = op.Alicuota
                 Set cerd.FacturaProveedor = fac
-                cerd.NetoGravado = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado)
+                'cerd.NetoGravado = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado)
+                'fix 004
+                cerd.NetoGravado = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado - fac.NetoNoGravado * -1, fac.NetoGravado - fac.NetoNoGravado)
                 cerd.Comprobante = fac.NumeroFormateado
                 cerd.TotalFactura = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.Total * -1, fac.Total)
                 cerd.IdCertificado = cer.id    'al pedo

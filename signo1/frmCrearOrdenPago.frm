@@ -4,10 +4,10 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   7830
+   ClientHeight    =   7665
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   9750
+   ClientWidth     =   9705
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -22,8 +22,8 @@ Begin VB.Form frmCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7830
-   ScaleWidth      =   9750
+   ScaleHeight     =   7665
+   ScaleWidth      =   9705
    Begin VB.TextBox txtnetogravadoabonado 
       Height          =   315
       Left            =   3960
@@ -961,7 +961,7 @@ Dim Factura As clsFacturaProveedor
 Private Banco As Banco
 Private caja As caja
 Private CuentaBancaria As CuentaBancaria
-Private Moneda As clsMoneda
+Private moneda As clsMoneda
 
 Private cuentasBancarias As New Collection
 Private monedas As New Collection
@@ -1042,7 +1042,7 @@ Public Sub Cargar(op As OrdenPago)
 
 
 
-        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.Moneda.id, Me.cboMonedas)
+        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.id, Me.cboMonedas)
         Me.dtpFecha.value = .FEcha
         Me.txtDifCambio.text = .DiferenciaCambio
         Me.txtOtrosDescuentos.text = .OtrosDescuentos
@@ -1207,9 +1207,9 @@ End Sub
 
 Private Sub cboMonedas_Click()
     If Me.cboMonedas.ListIndex = -1 Then
-        Set OrdenPago.Moneda = Nothing
+        Set OrdenPago.moneda = Nothing
     Else
-        Set OrdenPago.Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+        Set OrdenPago.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
     End If
     Totalizar
 End Sub
@@ -1354,7 +1354,7 @@ Private Sub MostrarFacturas()
         End If
 
         For Each Factura In colFacturas
-            Me.lstFacturas.AddItem Factura.NumeroFormateado & " (" & Factura.Moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"
+            Me.lstFacturas.AddItem Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"
             Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.id
         Next
 
@@ -1427,7 +1427,7 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal
         Set cheque = chequesDisponibles.item(RowIndex)
         Values(1) = cheque.numero
         Values(2) = cheque.Monto
-        If IsSomething(cheque.Moneda) Then Values(3) = cheque.Moneda.NombreCorto
+        If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
         Values(5) = cheque.id
         Values(6) = cheque.OrigenCheque
@@ -1559,9 +1559,9 @@ End Sub
 
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And monedas.count > 0 Then
-        Set Moneda = monedas.item(RowIndex)
-        Values(1) = Moneda.id
-        Values(2) = Moneda.NombreCorto
+        Set moneda = monedas.item(RowIndex)
+        Values(1) = moneda.id
+        Values(2) = moneda.NombreCorto
     End If
 End Sub
 
@@ -1609,38 +1609,39 @@ Private Sub MostrarPosiblesRetenciones(col As Collection)
         ' totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.total * -1, f.total), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago) cambiado el 22-9-14 por tema de pagos parciales
         'totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.TotalDiaPago * -1, f.TotalDiaPago), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
-        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.Moneda.id, OrdenPago.Moneda.id, F.TipoCambioPago)
+        'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        'fix 004
+        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
+        totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
-        totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.Moneda.id, OrdenPago.Moneda.id, F.TipoCambioPago)
-
-        TotNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonado * -1, F.NetoGravadoAbonado), F.Moneda.id, OrdenPago.Moneda.id, F.TipoCambioPago)
-        totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonadoDiaPago * -1, F.NetoGravadoAbonadoDiaPago), F.Moneda.id, OrdenPago.Moneda.id, F.TipoCambioPago)
-        totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionTOTAL * -1, F.DiferenciaPorTipoDeCambionTOTAL), F.Moneda.id, OrdenPago.Moneda.id, F.TipoCambioPago)
-        totCambiong = totCambiong + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionNG * -1, F.DiferenciaPorTipoDeCambionNG), F.Moneda.id, OrdenPago.Moneda.id, F.TipoCambioPago)
+        TotNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonado * -1, F.NetoGravadoAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonadoDiaPago * -1, F.NetoGravadoAbonadoDiaPago), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionTOTAL * -1, F.DiferenciaPorTipoDeCambionTOTAL), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        totCambiong = totCambiong + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionNG * -1, F.DiferenciaPorTipoDeCambionNG), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
     Next F
-    Me.lblNgAbonar = "Total NG a Abonar en " & OrdenPago.Moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnNG + totNGHoy)
-    Me.lblTotalFacturas = "Total Facturas en " & OrdenPago.Moneda.NombreCorto & " " & funciones.FormatearDecimales(totFact)
+    Me.lblNgAbonar = "Total NG a Abonar en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnNG + totNGHoy)
+    Me.lblTotalFacturas = "Total Facturas en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totFact)
     OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
 
-    Me.lblTotalFacturasNG = "Total NG Facturas en " & OrdenPago.Moneda.NombreCorto & " " & funciones.FormatearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG)
+    Me.lblTotalFacturasNG = "Total NG Facturas en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG)
     OrdenPago.StaticTotalFacturasNG = funciones.RedondearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG)
 
-    Me.lblDiferenciaCambio = "Diferencia Cambio en " & OrdenPago.Moneda.NombreCorto & " " & totCambiong
+    Me.lblDiferenciaCambio = "Diferencia Cambio en " & OrdenPago.moneda.NombreCorto & " " & totCambiong
     OrdenPago.DiferenciaCambio = totCambio
 
     verCompensatorios
-    Me.lblTotalARetener = "Total a retener en " & OrdenPago.Moneda.NombreCorto & " " & funciones.FormatearDecimales(totRet)
+    Me.lblTotalARetener = "Total a retener en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totRet)
     OrdenPago.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
 
-    Me.lblTotalOrdenPago = "Total a abonar en " & OrdenPago.Moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - totRet - OrdenPago.OtrosDescuentos + OrdenPago.TotalCompensatorios)
+    Me.lblTotalOrdenPago = "Total a abonar en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - totRet - OrdenPago.OtrosDescuentos + OrdenPago.TotalCompensatorios)
 
 End Sub
 
 Private Sub verCompensatorios()
-    Me.lblTotalCompensatorios = "Total compensatorios en " & OrdenPago.Moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.TotalCompensatorios)
+    Me.lblTotalCompensatorios = "Total compensatorios en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.TotalCompensatorios)
 End Sub
 
 
@@ -1650,7 +1651,7 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
     If IsSomething(F) Then
 
         If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
-        If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado
+        If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado - F.NetoNoGravado
         Me.txtParcialAbonar = F.ImporteTotalAbonado
         Me.txtnetogravadoabonado = F.NetoGravadoAbonado
     End If
@@ -1847,7 +1848,7 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
     operacion.Pertenencia = OrigenOperacion.caja
     operacion.Monto = Values(1)
     If IsNumeric(Values(2)) Then
-        Set operacion.Moneda = DAOMoneda.GetById(Values(2))
+        Set operacion.moneda = DAOMoneda.GetById(Values(2))
     End If
     operacion.FechaOperacion = Values(3)
     If IsNumeric(Values(4)) Then
@@ -1871,7 +1872,7 @@ Private Sub Totalizar()
 
 
     OrdenPago.StaticTotalOrigenes = OrdenPago.TotalOrigenes
-    Me.lblTotal.caption = "Total orden de pago en " & OrdenPago.Moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido)
+    Me.lblTotal.caption = "Total orden de pago en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido)
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
     GridEXHelper.AutoSizeColumns Me.gridCheques
@@ -1924,8 +1925,8 @@ Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
     If RowIndex <= OrdenPago.OperacionesCaja.count Then
         Set operacion = OrdenPago.OperacionesCaja.item(RowIndex)
         Values(1) = funciones.FormatearDecimales(operacion.Monto)
-        If IsSomething(operacion.Moneda) Then
-            Values(2) = operacion.Moneda.NombreCorto
+        If IsSomething(operacion.moneda) Then
+            Values(2) = operacion.moneda.NombreCorto
         End If
         Values(3) = operacion.FechaOperacion
         If IsSomething(operacion.caja) Then
@@ -1941,7 +1942,7 @@ Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Book
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
         If IsNumeric(Values(2)) Then
-            Set operacion.Moneda = DAOMoneda.GetById(Values(2))
+            Set operacion.moneda = DAOMoneda.GetById(Values(2))
         End If
         operacion.FechaOperacion = Values(3)
         If IsNumeric(Values(4)) Then
@@ -1975,7 +1976,7 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
     operacion.Pertenencia = OrigenOperacion.Banco
     operacion.Monto = Values(1)
     If IsNumeric(Values(2)) Then
-        Set operacion.Moneda = DAOMoneda.GetById(Values(2))
+        Set operacion.moneda = DAOMoneda.GetById(Values(2))
     End If
     operacion.FechaOperacion = Values(3)
     If IsNumeric(Values(4)) Then
@@ -1997,8 +1998,8 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByV
     If RowIndex <= OrdenPago.OperacionesBanco.count Then
         Set operacion = OrdenPago.OperacionesBanco.item(RowIndex)
         Values(1) = funciones.FormatearDecimales(operacion.Monto)
-        If IsSomething(operacion.Moneda) Then
-            Values(2) = operacion.Moneda.NombreCorto
+        If IsSomething(operacion.moneda) Then
+            Values(2) = operacion.moneda.NombreCorto
         End If
         Values(3) = operacion.FechaOperacion
         If IsSomething(operacion.CuentaBancaria) Then
@@ -2014,7 +2015,7 @@ Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
         If IsNumeric(Values(2)) Then
-            Set operacion.Moneda = DAOMoneda.GetById(Values(2))
+            Set operacion.moneda = DAOMoneda.GetById(Values(2))
         End If
         operacion.FechaOperacion = Values(3)
         If IsNumeric(Values(4)) Then
@@ -2046,7 +2047,7 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Set cheque = OrdenPago.ChequesTerceros.item(RowIndex)
         Values(1) = cheque.numero
         Values(2) = cheque.Monto
-        If IsSomething(cheque.Moneda) Then Values(3) = cheque.Moneda.NombreCorto
+        If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
         Values(5) = cheque.OrigenDestino
         Values(6) = cheque.OrigenCheque
