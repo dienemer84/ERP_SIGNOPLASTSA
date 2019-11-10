@@ -241,25 +241,25 @@ Begin VB.Form frmPlaneamientoRemitosLista
       Column(7)       =   "frmListaRemitos.frx":08C2
       Column(8)       =   "frmListaRemitos.frx":0996
       Column(9)       =   "frmListaRemitos.frx":0A8A
-      Column(10)      =   "frmListaRemitos.frx":0B96
+      Column(10)      =   "frmListaRemitos.frx":0B7E
       FormatStylesCount=   14
-      FormatStyle(1)  =   "frmListaRemitos.frx":0CCE
-      FormatStyle(2)  =   "frmListaRemitos.frx":0E06
-      FormatStyle(3)  =   "frmListaRemitos.frx":0EB6
-      FormatStyle(4)  =   "frmListaRemitos.frx":0F6A
-      FormatStyle(5)  =   "frmListaRemitos.frx":1042
-      FormatStyle(6)  =   "frmListaRemitos.frx":10FA
-      FormatStyle(7)  =   "frmListaRemitos.frx":11DA
-      FormatStyle(8)  =   "frmListaRemitos.frx":129A
-      FormatStyle(9)  =   "frmListaRemitos.frx":137A
-      FormatStyle(10) =   "frmListaRemitos.frx":147A
-      FormatStyle(11) =   "frmListaRemitos.frx":1556
-      FormatStyle(12) =   "frmListaRemitos.frx":1626
-      FormatStyle(13) =   "frmListaRemitos.frx":16FA
-      FormatStyle(14) =   "frmListaRemitos.frx":17B2
+      FormatStyle(1)  =   "frmListaRemitos.frx":0C6A
+      FormatStyle(2)  =   "frmListaRemitos.frx":0DA2
+      FormatStyle(3)  =   "frmListaRemitos.frx":0E52
+      FormatStyle(4)  =   "frmListaRemitos.frx":0F06
+      FormatStyle(5)  =   "frmListaRemitos.frx":0FDE
+      FormatStyle(6)  =   "frmListaRemitos.frx":1096
+      FormatStyle(7)  =   "frmListaRemitos.frx":1176
+      FormatStyle(8)  =   "frmListaRemitos.frx":1236
+      FormatStyle(9)  =   "frmListaRemitos.frx":1316
+      FormatStyle(10) =   "frmListaRemitos.frx":1416
+      FormatStyle(11) =   "frmListaRemitos.frx":14F2
+      FormatStyle(12) =   "frmListaRemitos.frx":15C2
+      FormatStyle(13) =   "frmListaRemitos.frx":1696
+      FormatStyle(14) =   "frmListaRemitos.frx":174E
       ImageCount      =   1
-      ImagePicture(1) =   "frmListaRemitos.frx":183E
-      PrinterProperties=   "frmListaRemitos.frx":1B58
+      ImagePicture(1) =   "frmListaRemitos.frx":17DA
+      PrinterProperties=   "frmListaRemitos.frx":1AF4
    End
    Begin MSComDlg.CommonDialog CD 
       Left            =   360
@@ -556,7 +556,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
 
 
-            If VerInfoAdministracion And tmpRto.estado <> RemitoAnulado Then
+            If VerInfoAdministracion And tmpRto.Estado <> RemitoAnulado Then
                 Me.mnuValorizar.Enabled = (tmpRto.EstadoFacturado = RemitoNoFacturado Or tmpRto.EstadoFacturado = RemitoFacturadoParcial)
 
                 If tmpRto.EstadoFacturado = RemitoNoFacturable Or tmpRto.EstadoFacturado = RemitoNoFacturado Then
@@ -579,11 +579,11 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
 
             Me.archivos = Permisos.SistemaArchivosVer
-            Me.AnularRto = (tmpRto.estado = EstadoRemito.RemitoAprobado)
-            Me.printRto.Enabled = (tmpRto.estado = EstadoRemito.RemitoAprobado Or tmpRto.estado = RemitoAnulado)
-            Me.endRto.Enabled = (Permisos.planRemitosAprobaciones And tmpRto.estado = RemitoPendiente)
-            Me.mnuEditar.Enabled = (tmpRto.estado = RemitoPendiente)
-            Me.mnuFacturarRemito.Enabled = (tmpRto.estado = EstadoRemito.RemitoAprobado)
+            Me.AnularRto = (tmpRto.Estado = EstadoRemito.RemitoAprobado)
+            Me.printRto.Enabled = (tmpRto.Estado = EstadoRemito.RemitoAprobado Or tmpRto.Estado = RemitoAnulado)
+            Me.endRto.Enabled = (Permisos.planRemitosAprobaciones And tmpRto.Estado = RemitoPendiente)
+            Me.mnuEditar.Enabled = (tmpRto.Estado = RemitoPendiente)
+            Me.mnuFacturarRemito.Enabled = (tmpRto.Estado = EstadoRemito.RemitoAprobado)
 
             Me.PopupMenu Me.mnuRtos
         End If
@@ -593,12 +593,12 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 Then
         Set tmpRto = remitos(RowBuffer.RowIndex)
 
-        If tmpRto.estado = RemitoAnulado Then
+        If tmpRto.Estado = RemitoAnulado Then
             RowBuffer.RowStyle = "Anulado"
         Else
-            If tmpRto.estado = EstadoRemito.RemitoAprobado Then
+            If tmpRto.Estado = EstadoRemito.RemitoAprobado Then
                 RowBuffer.CellStyle(4) = "EstadoAprobado"
-            ElseIf tmpRto.estado = RemitoPendiente Then
+            ElseIf tmpRto.Estado = RemitoPendiente Then
                 RowBuffer.CellStyle(4) = "EstadoPendiente"
             End If
         End If
@@ -636,11 +636,11 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         .value(1) = tmpRto.numero
         .value(6) = tmpRto.detalle
         .value(3) = tmpRto.FEcha
-        .value(4) = enums.EnumEstadoRemito(tmpRto.estado)
-        .value(5) = tmpRto.UsuarioCreador.usuario
-        If IsSomething(tmpRto.Cliente) Then .value(2) = tmpRto.Cliente.razon
-        If IsSomething(tmpRto.UsuarioAprobador) Then
-            .value(7) = tmpRto.UsuarioAprobador.usuario
+        .value(4) = enums.EnumEstadoRemito(tmpRto.Estado)
+        .value(5) = tmpRto.usuarioCreador.usuario
+        If IsSomething(tmpRto.cliente) Then .value(2) = tmpRto.cliente.razon
+        If IsSomething(tmpRto.usuarioAprobador) Then
+            .value(7) = tmpRto.usuarioAprobador.usuario
         Else
             .value(7) = vbNullString
         End If
@@ -676,10 +676,10 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 Set tmpRto = remitos(i)
                 tmpRto.id = tmp.id
                 tmpRto.detalle = tmp.detalle
-                tmpRto.estado = tmp.estado
+                tmpRto.Estado = tmp.Estado
                 tmpRto.EstadoFacturado = tmp.EstadoFacturado
-                Set tmpRto.Cliente = tmp.Cliente
-                Set tmpRto.UsuarioCreador = tmp.UsuarioCreador
+                Set tmpRto.cliente = tmp.cliente
+                Set tmpRto.usuarioCreador = tmp.usuarioCreador
                 grilla.RefreshRowIndex i
                 Exit For
             End If
@@ -729,7 +729,7 @@ Private Sub mnuEditar_Click()
     frm3.editar = True
     Set frm3.Remito = tmpRto
     frm3.valorizable = Me.VerInfoAdministracion
-    frm3.conceptuable = (tmpRto.estado = RemitoPendiente)
+    frm3.conceptuable = (tmpRto.Estado = RemitoPendiente)
     frm3.MostrarInfoAdministracion = VerInfoAdministracion
     frm3.Show
 End Sub

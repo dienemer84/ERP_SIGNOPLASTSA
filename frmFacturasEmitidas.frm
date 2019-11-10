@@ -612,7 +612,7 @@ Private Sub aplicarNCaFC_Click()
         Set Selecciones.Factura = Nothing
           Dim F As New frmAdminFacturasNCElegirFC
         
-        F.idCliente = Factura.Cliente.id
+        F.idCliente = Factura.cliente.id
             F.TiposDocs.Add tipoDocumentoContable.Factura
             F.TiposDocs.Add tipoDocumentoContable.NotaDebito
             F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
@@ -802,7 +802,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub llenarGrilla()
-    Dim Cliente As clsCliente
+    Dim cliente As clsCliente
     Dim filtro As String
     Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
 
@@ -860,15 +860,15 @@ Private Sub llenarGrilla()
 
 
 
-        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
+        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
         '    Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
 
-        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
+        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         'TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
+        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         '    totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.Moneda.id, MonedaConverter.Patron.id)
+        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
 
     Next
 
@@ -926,7 +926,7 @@ Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer,
     If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
@@ -1064,21 +1064,21 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(5) = Factura.FechaEmision
     Values(6) = funciones.FormatearDecimales(Factura.TotalEstatico.Total)
 
-    If Factura.Moneda.id = 0 Then
-        Values(7) = Factura.Moneda.NombreCorto
+    If Factura.moneda.id = 0 Then
+        Values(7) = Factura.moneda.NombreCorto
     Else
-        Values(7) = Factura.Moneda.NombreCorto & " " & Factura.CambioAPatron
+        Values(7) = Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
     End If
 
     Values(8) = funciones.FormatearDecimales(Factura.TotalEstatico.Total * Factura.CambioAPatron)
 
     Values(9) = Factura.OrdenCompra
-    Values(10) = Factura.Cliente.razon
+    Values(10) = Factura.cliente.razon
     Values(11) = enums.EnumEstadoDocumentoContable(Factura.estado)
     Values(12) = EnumTipoSaldadoFactura(Factura.Saldado)
     Values(13) = Factura.Vencimiento
     Values(14) = Factura.StringDiasAtraso
-    Values(15) = Factura.UsuarioCreador.usuario
+    Values(15) = Factura.usuarioCreador.usuario
     Values(16) = Factura.observaciones
 
     If Factura.Tipo.PuntoVenta.EsElectronico Then
@@ -1249,13 +1249,13 @@ Private Sub mnuAplicarANC_Click()
         Set Selecciones.Factura = Nothing
           Dim F As New frmAdminFacturasNCElegirFC
         
-        F.idCliente = Factura.Cliente.id
+        F.idCliente = Factura.cliente.id
             F.TiposDocs.Add tipoDocumentoContable.notaCredito
             F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
             F.Show 1
 
         If IsSomething(Selecciones.Factura) Then
-            If DAOFactura.aplicarANC(Factura.id, Selecciones.Factura.id) Then
+            If DAOFactura.aplicarNCaFC(Factura.id, Selecciones.Factura.id) Then
                 MsgBox "Aplicación existosa!", vbInformation, "Información"
             Else
                 MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
@@ -1459,7 +1459,7 @@ Private Sub PushButton2_Click()
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
 
         xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
-        xlWorksheet.Cells(idx, 3).value = fac.Moneda.NombreCorto
+        xlWorksheet.Cells(idx, 3).value = fac.moneda.NombreCorto
         xlWorksheet.Cells(idx, 4).value = fac.OrdenCompra
 
 
@@ -1480,7 +1480,7 @@ Private Sub PushButton2_Click()
             xlWorksheet.Cells(idx, 9).value = 0
         End If
 
-        If (id < 0) Then xlWorksheet.Cells(idx, 10).value = fac.Cliente.razon
+        If (id < 0) Then xlWorksheet.Cells(idx, 10).value = fac.cliente.razon
 
         idx = idx + 1
     Next

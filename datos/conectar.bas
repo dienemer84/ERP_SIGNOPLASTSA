@@ -8,10 +8,15 @@ Public Function conectar() As Boolean
     Set cn = New ADODB.Connection
     'http://dev.mysql.com/doc/refman/5.0/en/connector-odbc-configuration-connection-parameters.html
     'http://dev.mysql.com/tech-resources/articles/vb-blob-handling.html
-    cn.ConnectionString = "driver={MySQL ODBC 3.51 Driver};server=" & serverBBDD & ";uid=root;pwd=3l3c720n;database=sp;Option=" & (1 + 1024)    ';connection=adUseClient" ' era 3 ' eraç 1 + 1024
+    cn.ConnectionString = "driver={MySQL ODBC 3.51 Driver};server=" & serverBBDD & ";uid=root;pwd=3l3c720n;database=sp;Option=" & (1 + 1024) & "';ConvertZeroDateTime=True'"   ';connection=adUseClient" ' era 3 ' eraç 1 + 1024
     ' cn.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver};server=" & serverBBDD & ";uid=root;pwd=3l3c720n;database=sp;Option=" & (1 + 1024)   ';connection=adUseClient" ' era 3
     'cn.ConnectionString = "Driver={MySQL ODBC 5.1 Driver};Server=" & serverBBDD & ";Database=sp;User=root; Password=3l3c720n;Option=" & (1 Or 2 Or 1024)
     'cn.ConnectionString = "Driver={MySQL ODBC 5.1 Driver};Server=" & serverBBDD & ";Database=sp;User=root; Password=3l3c720n;Option=" & (1 + 2 + 64 + 1024) & ";"
+
+
+
+'cn.ConnectionString = "driver={MySQL ODBC 3.51 Driver};server=" & serverBBDD & ";uid=root;pwd=3l3c720n;database=sp;ConvertZeroDateTime=True"
+
 
     cn.Open
     vcount = 0

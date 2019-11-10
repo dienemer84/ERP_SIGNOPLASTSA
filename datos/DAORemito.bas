@@ -63,15 +63,15 @@ Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Option
         q = "INSERT INTO remitos (detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
             & "idUsuario, numero,idUsuarioAprobador) Values (" _
             & conectar.Escape(T.detalle) & ", " _
-            & conectar.GetEntityId(T.Cliente) & ", " _
+            & conectar.GetEntityId(T.cliente) & ", " _
             & conectar.Escape(T.FEcha) & ", " _
             & conectar.Escape(T.estado) & "," _
             & "0," _
             & conectar.Escape(T.EstadoFacturado) & ", " _
             & conectar.GetEntityId(T.contacto) & "," _
-            & conectar.GetEntityId(T.UsuarioCreador) & ", " _
+            & conectar.GetEntityId(T.usuarioCreador) & ", " _
             & conectar.Escape(T.numero) & ", " _
-            & conectar.GetEntityId(T.UsuarioAprobador) & ")"
+            & conectar.GetEntityId(T.usuarioAprobador) & ")"
 
 
     Else
@@ -79,15 +79,15 @@ Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Option
         q = "Update remitos " _
             & "SET" _
             & " detalle = " & conectar.Escape(T.detalle) & " ," _
-            & "idCliente =" & conectar.GetEntityId(T.Cliente) & " ," _
+            & "idCliente =" & conectar.GetEntityId(T.cliente) & " ," _
             & "fecha = " & conectar.Escape(T.FEcha) & " ," _
             & "estado =" & conectar.Escape(T.estado) & "," _
             & "estadoFacturado =" & conectar.Escape(T.EstadoFacturado) & "," _
             & "idContacto = " & conectar.GetEntityId(T.contacto) & "," _
             & "numero = " & conectar.Escape(T.numero) & "," _
-            & "idUsuario = " & conectar.GetEntityId(T.UsuarioCreador) & "," _
+            & "idUsuario = " & conectar.GetEntityId(T.usuarioCreador) & "," _
             & "cantidad_bultos = " & conectar.Escape(T.CantidadBultos) & "," _
-            & "idUsuarioAprobador = " & conectar.GetEntityId(T.UsuarioAprobador) & " Where " _
+            & "idUsuarioAprobador = " & conectar.GetEntityId(T.usuarioAprobador) & " Where " _
             & "id =" & T.id
 
     End If
@@ -249,9 +249,9 @@ Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tab
         Remito.FEcha = GetValue(rs, indice, tabla, CAMPO_FECHA)
         Remito.CantidadBultos = GetValue(rs, indice, tabla, "cantidad_bultos")
         Remito.ControlCargaImpresiones = GetValue(rs, indice, tabla, "control_carga")
-        If LenB(tablaCliente) > 0 Then Set Remito.Cliente = DAOCliente.Map(rs, indice, tablaCliente, , "Localidades", "", "Provincia")
-        If LenB(tablaUsuCreador) > 0 Then Set Remito.UsuarioCreador = DAOUsuarios.Map(rs, indice, tablaUsuCreador)
-        If LenB(TablaUsuAprobador) > 0 Then Set Remito.UsuarioAprobador = DAOUsuarios.Map(rs, indice, TablaUsuAprobador)
+        If LenB(tablaCliente) > 0 Then Set Remito.cliente = DAOCliente.Map(rs, indice, tablaCliente, , "Localidades", "", "Provincia")
+        If LenB(tablaUsuCreador) > 0 Then Set Remito.usuarioCreador = DAOUsuarios.Map(rs, indice, tablaUsuCreador)
+        If LenB(TablaUsuAprobador) > 0 Then Set Remito.usuarioAprobador = DAOUsuarios.Map(rs, indice, TablaUsuAprobador)
         If LenB(tablaContacto) > 0 Then Set Remito.contacto = DAOContacto.Map(rs, indice, tablaContacto)
     End If
 
@@ -343,7 +343,7 @@ Public Function Anular(Remito As Remito) As Boolean
     Dim rs As Recordset
     Dim strsql As String
     Dim FEcha As Date
-    Dim autor As Long
+    Dim Autor As Long
     Dim tra As Boolean
     Dim estado_facturacion_remito As Integer
     Dim canti As Long
@@ -390,10 +390,10 @@ Public Function Anular(Remito As Remito) As Boolean
 
 
             If Not conectar.execute("update pedidos set estado=" & estado_nuevo & " where id=" & detalle.idpedido) Then GoTo erranu
-            autor = funciones.getUser
+            Autor = funciones.getUser
             FEcha = funciones.datetimeFormateada(Now)
 
-            If Not conectar.execute("insert into historial_pedido (idPedido,nota,fecha,autor) values (" & detalle.idpedido & ",'Pedido abierto por anulación de remito','" & FEcha & "'," & autor & ")") Then GoTo erranu
+            If Not conectar.execute("insert into historial_pedido (idPedido,nota,fecha,autor) values (" & detalle.idpedido & ",'Pedido abierto por anulación de remito','" & FEcha & "'," & Autor & ")") Then GoTo erranu
 
 
             'resto desde detalles_pedidos
@@ -451,7 +451,7 @@ Public Function aprobar(Remito As Remito) As Boolean
 
         Else
             Set deta.DetallePedido = DAODetalleOrdenTrabajo.FindById(deta.DetallePedido.id, True, True, False)
-            If deta.DetallePedido.Cantidad_Fabricada - deta.DetallePedido.Cantidad_Entregada >= deta.Cantidad Then
+            If (deta.DetallePedido.Cantidad_Fabricada + deta.DetallePedido.ReservaStock) - deta.DetallePedido.Cantidad_Entregada >= deta.Cantidad Then
             Else
                 segui = False
             End If
@@ -481,7 +481,7 @@ Public Function aprobar(Remito As Remito) As Boolean
     aprobar = True
     est_ant = Remito.estado
     Remito.estado = RemitoAprobado
-    Set Remito.UsuarioAprobador = funciones.GetUserObj
+    Set Remito.usuarioAprobador = funciones.GetUserObj
 
 
 
@@ -534,7 +534,7 @@ Public Function aprobar(Remito As Remito) As Boolean
     Exit Function
 errh44:
     Remito.estado = est_ant
-    Remito.UsuarioAprobador = Nothing
+    Remito.usuarioAprobador = Nothing
     aprobar = False
 End Function
 
@@ -543,7 +543,7 @@ End Function
 Public Function ImprimirControlCarga(rto As Remito) As Boolean
     On Error GoTo err1
     dsrControlCarga.Sections("section4").Controls.item("lblRemitoNumero").caption = "Remito Nº: " & rto.numero
-    dsrControlCarga.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & rto.Cliente.razon
+    dsrControlCarga.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & rto.cliente.razon
     dsrControlCarga.Sections("section4").Controls.item("lblDetalleRemito").caption = "Observaciones: " & rto.detalle
 
     Dim r As New Recordset
@@ -566,7 +566,7 @@ Public Function ImprimirControlCarga(rto As Remito) As Boolean
         r.AddNew
         r!Cantidad = IIf(deta.Cantidad = 0, "", funciones.FormatearDecimales(deta.Cantidad))
         r!Origen = deta.VerOrigen
-        r!Observaciones = deta.Observaciones
+        r!observaciones = deta.observaciones
         If deta.Origen = OrigenRemitoConcepto Then
             r!item = "000"
         Else
@@ -586,7 +586,7 @@ Public Function ImprimirControlCarga(rto As Remito) As Boolean
 
 
     dsrDatosDespacho.Sections("section4").Controls.item("lblRemitoNumero").caption = "Remito Nº: " & rto.numero
-    dsrDatosDespacho.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & rto.Cliente.razon
+    dsrDatosDespacho.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & rto.cliente.razon
     dsrDatosDespacho.Sections("section4").Controls.item("lblDetalleRemito").caption = "Observaciones: " & rto.detalle
     Set dsrDatosDespacho.DataSource = conectar.RSFactory("select 1")
     dsrDatosDespacho.PrintReport False
@@ -598,7 +598,7 @@ End Function
 
 
 Public Function ImprimirRemito(IdRemito As Long) As Boolean
-    Dim Observaciones
+    Dim observaciones
     Dim nroCli
     Dim cli
     Dim direccion
@@ -724,7 +724,7 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     Printer.Print "Observaciones: "
     Printer.Print Tab(4);
     Printer.Font.Size = 8
-    Printer.Print Observaciones
+    Printer.Print observaciones
     'detalle y encabezado de detalle de la factura
 
 
@@ -798,9 +798,9 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
 
         End If
 
-        If LenB(rs!Observaciones) > 0 Then
+        If LenB(rs!observaciones) > 0 Then
             Printer.Print Tab(35);
-            Printer.Print rs!Observaciones
+            Printer.Print rs!observaciones
         End If
 
         rs.MoveNext

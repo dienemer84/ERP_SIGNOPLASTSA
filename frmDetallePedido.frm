@@ -650,6 +650,11 @@ Private Sub Form_Load()
     Set m_pedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_pedido.id)
     Me.caption = "OT Nro. " & Format(m_pedido.id, "0000")
     GridEXHelper.CustomizeGrid Me.grilla
+    
+    If m_pedido.EsHija Then
+    Me.caption = Me.caption & " (Corresponde a OTA " & m_pedido.OTMarcoIdPadre & ")"
+    End If
+    
     mostrarDetalles
     llenarLista
 

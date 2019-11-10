@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmPlaneamientoSeguimiento 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -427,26 +427,32 @@ Private Sub Command1_Click()
     On Error GoTo er1
 
     Dim idP As Long
-    If Trim(Me.txtOt) <> Empty Then
-        idP = CLng(Me.txtOt)
-        A = claseP.ExistePedido(idP)
-        If A = 0 Or A = -1 Then
+    If Trim(Me.txtOT) <> Empty Then
+        idP = CLng(Me.txtOT)
+        a = claseP.ExistePedido(idP)
+        If a = 0 Or a = -1 Then
             MsgBox "Dato inválido.", vbCritical, "Error"
             Me.lstDetallePedidos.ListItems.Clear
             Me.lblTerminados = Empty
             Me.lblPedidos = Empty
-            frame2.Enabled = False
+            Frame2.Enabled = False
             Me.lblIdPedido = Empty
         Else
-            claseP.ejecutar_consulta "select c.razon as cliente,p.estado,p.descripcion,p.fechaEntrega from pedidos p,clientes c where p.id=" & idP & " and c.id=p.idCliente"
+            claseP.ejecutar_consulta "select c.razon as cliente,p.tipo_orden,p.estado,p.descripcion,p.fechaEntrega from pedidos p,clientes c where p.id=" & idP & " and c.id=p.idCliente"
             estado = claseP.estadoOT
+            If claseP.TipoOrden = OT_Entrega Then
+                MsgBox "OT Invalida para hacer el seguimiento!", vbInformation
+                Exit Sub
+            End If
+            
+
 
             '    If estado = 2 Then 'esta en proceso
-            lblCliente = claseP.Cliente
+            lblCliente = claseP.cliente
             lblDescripcion = claseP.descripcion
-            lblFechaEntrega = claseP.FechaEntrega
+            lblfechaEntrega = claseP.FechaEntrega
             llenar_lista_detalle Me.lstDetallePedidos, idP, 1
-            frame2.Enabled = True
+            Frame2.Enabled = True
             Me.lblIdPedido = idP
             Me.lblItem = Me.lstDetallePedidos.selectedItem
             verSeleccionado
@@ -465,7 +471,7 @@ Private Sub Command1_Click()
     Exit Sub
 er1:
 
-    Me.txtOt = Empty
+    Me.txtOT = Empty
 End Sub
 Private Sub verSeleccionado()
     Me.lblPedidos = Me.lstDetallePedidos.selectedItem.ListSubItems(3) & " unidades"
@@ -546,7 +552,7 @@ Private Sub Text1_GotFocus()
     foco Me.Text1
 End Sub
 Private Sub txtOT_GotFocus()
-    foco Me.txtOt
+    foco Me.txtOT
 End Sub
 Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
     On Error GoTo eja
@@ -593,11 +599,11 @@ Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
                 x.EnsureVisible
             End If
         End If
-        A = DateDiff("d", Date, rs!FechaEntrega)
-        If A < 0 Then
+        a = DateDiff("d", Date, rs!FechaEntrega)
+        If a < 0 Then
             x.ListSubItems(1).ForeColor = vbRed
             x.ListSubItems(4).ForeColor = vbRed
-        ElseIf A = 0 Then
+        ElseIf a = 0 Then
             x.ListSubItems(1).ForeColor = vbGreen
             x.ListSubItems(4).ForeColor = vbGreen
         End If

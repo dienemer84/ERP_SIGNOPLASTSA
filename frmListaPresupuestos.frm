@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmVentasPresupuestoLista 
@@ -599,11 +599,11 @@ Private Sub Command5_Click()
 End Sub
 Private Sub desactiva_Click()
     If MsgBox("¿Está seguro de desactivar este presupuesto?", vbYesNo, "Confirmación") = vbYes Then    '
-        a = grilla.RowIndex(grilla.row)
+        A = grilla.RowIndex(grilla.row)
         If Not DAOPresupuestos.desactivar(rectmp) Then
             MsgBox "Se produjo algún error al intentar desactivar el presupuesto!", vbCritical, "Error"
         Else
-            grilla.RefreshRowIndex a
+            grilla.RefreshRowIndex A
         End If
     End If
 End Sub
@@ -629,7 +629,7 @@ Private Sub EditPres_Click()
 End Sub
 Private Sub enviar_Click()
 
-    On Error GoTo a
+    On Error GoTo A
     Dim T As Long
     T = grilla.RowIndex(grilla.row)
     If DAOPresupuestos.enviar(rectmp) Then
@@ -641,7 +641,7 @@ Private Sub enviar_Click()
 
     Exit Sub
     Set baseV = Nothing
-a:
+A:
     MsgBox Err.Description
 End Sub
 Private Sub mostrarDetalles()
@@ -873,9 +873,9 @@ End Sub
 Private Sub ncotizar_Click()
 
     If MsgBox("¿Está seguro de no cotizar este presupuesto?", vbYesNo, "Confirmación") = vbYes Then
-        a = grilla.RowIndex(grilla.row)
+        A = grilla.RowIndex(grilla.row)
         DAOPresupuestos.NoCotizar rectmp
-        grilla.RefreshRowIndex a
+        grilla.RefreshRowIndex A
     End If
 
     Set baseV = Nothing
@@ -935,17 +935,17 @@ Private Sub llenar_Grilla()
     Set tmpIncidencias = DAOIncidencias.GetCantidadIncidenciasPorReferencia(OI_Presupuestos)
     Set tmpArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Presupuestos)
     Dim nro As Long
-    Dim Cliente As Long
+    Dim cliente As Long
     grilla.ItemCount = 0
     llenarEstados
-    If Me.cboClientes.ListIndex >= 0 Then Cliente = Me.cboClientes.ItemData(Me.cboClientes.ListIndex) Else Cliente = -1
+    If Me.cboClientes.ListIndex >= 0 Then cliente = Me.cboClientes.ItemData(Me.cboClientes.ListIndex) Else cliente = -1
     filtro = Trim(Me.txtFiltro)
     If Trim(txtCodigo) = vbNullString Or Not IsNumeric(txtCodigo) Then
         nro = 0
     Else
         nro = CLng(Me.txtCodigo)
     End If
-    Set presupuestos = DAOPresupuestos.GetAll(filtro, estados, Cliente, nro)
+    Set presupuestos = DAOPresupuestos.GetAll(filtro, estados, cliente, nro)
     grilla.ItemCount = presupuestos.count
     Me.caption = "Presupuestos [ Cantidad: " & presupuestos.count & " ]"
     GridEXHelper.AutoSizeColumns Me.grilla, True
@@ -969,12 +969,12 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
     Set rectmp = presupuestos.item(RowIndex)
     With rectmp
         Values(1) = Format(.id, "0000")
-        Values(2) = .Cliente.razon
+        Values(2) = .cliente.razon
         Values(3) = .detalle
         Values(4) = .FechaEntrega
         Values(5) = .UsuarioCreado.usuario
         Values(6) = enums.EnumEstadoPresupuesto(.EstadoPresupuesto)
-        Values(7) = .FechaCreado
+        Values(7) = .fechaCreado
         Values(8) = .VencimientoPresupuesto
         Values(9) = IIf(IsEmpty(tmpArchivos(.id)), 0, tmpArchivos(.id))
         Values(10) = IIf(IsEmpty(tmpIncidencias(.id)), 0, tmpIncidencias(.id))

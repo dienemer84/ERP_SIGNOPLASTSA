@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmVentasPresupuestoNuevo 
    BackColor       =   &H00FF8080&
@@ -232,7 +232,7 @@ Private Sub Guardar()
         tmpPresu.detalle = UCase(Me.txtReferencia)
         tmpPresu.FechaEntrega = 0
         tmpPresu.PorcentajeManoObraMuerta = Configurar.Mano_obra_muerta
-        tmpPresu.FechaCreado = Now()
+        tmpPresu.fechaCreado = Now()
         tmpPresu.VencimientoPresupuesto = Format(Me.DTPicker1, "YYYY/MM/DD")
         Set tmpPresu.UsuarioCreado = funciones.GetUserObj
         tmpPresu.PorcMDO = Configurar.PorcMO
@@ -240,8 +240,8 @@ Private Sub Guardar()
         tmpPresu.PorcMen15 = Configurar.PorMAMenos15
         tmpPresu.PorcMas15 = Configurar.PorMaMas15
         tmpPresu.Gastos = claseConf.Gastos
-        Set tmpPresu.Moneda = DAOMoneda.GetById(0)
-        Set tmpPresu.Cliente = DAOCliente.BuscarPorID(CLng(Me.cboCliente.ItemData(Me.cboCliente.ListIndex)))
+        Set tmpPresu.moneda = DAOMoneda.GetById(0)
+        Set tmpPresu.cliente = DAOCliente.BuscarPorID(CLng(Me.cboCliente.ItemData(Me.cboCliente.ListIndex)))
         tmpPresu.manteOferta = 0
         tmpPresu.Descuento = 0
         tmpPresu.EstadoPresupuesto = ACotizar_

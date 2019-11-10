@@ -21,8 +21,8 @@ Public Historial As New Collection
 Public origenFacturado As origenFacturado
 Public FechaPropuestaPago As Date    'propuesta
 Public numero As String
-Public Cliente As clsCliente
-Public Moneda As clsMoneda
+Public cliente As clsCliente
+Public moneda As clsMoneda
 Public CambioAPatron As Double
 Public FechaEntrega As Date
 Public CAE As String
@@ -45,7 +45,7 @@ Public Saldado As TipoSaldadoFactura
 Public AlicuotaAplicada As Double    'iva
 Public AlicuotaPercepcionesIIBB As Double
 Public estado As EstadoFacturaCliente
-Public UsuarioCreador As clsUsuario
+Public usuarioCreador As clsUsuario
 Public CantDiasPago As Long    'FormaPago
 Public OrdenCompra As String
 Public UsuarioAprobacion As clsUsuario
@@ -57,7 +57,8 @@ Public TotalEstatico As New FacturaTotalEstatico
 Private m_ots_facturadas_anticipo As Collection
 Private m_detalles As Collection
 
-
+Public FechaPago As Date    'para fce
+Public CBU As String
 
 
 Public TasaAjusteMensual As Double  'de aca se empieza
@@ -66,7 +67,21 @@ Public Sub SetToNothingOTsFacturadasAnticipo()
     Set m_ots_facturadas_anticipo = Nothing
 End Sub
 
-
+Public Property Get DescripcionCreditoAdicional() As String
+    Dim dsc As String
+    
+    
+    If TipoDocumento = tipoDocumentoContable.Factura Then
+         dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
+    End If
+    If TipoDocumento = tipoDocumentoContable.notaCredito Then
+        dsc = "NOTA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
+    End If
+      If TipoDocumento = tipoDocumentoContable.notaDebito Then
+         dsc = "NOTA DE DÉBITO ELECTRÓNICA MiPyMEs  (FCE)"
+    End If
+    DescripcionCreditoAdicional = dsc
+End Property
 
 Public Property Get CodigoBarrasAfip() As String
     Dim numero As String
@@ -113,14 +128,14 @@ End Property
 
 
 Public Function GetCodigoDocumentoAfip() As Integer
-    If Tipo.TipoDoc = tipoDocumentoContable.NotaDebito Then GetCodigoDocumentoAfip = 2
+    If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
     If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
     If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
 
 
 End Function
 Public Function GetDescripciopnDocumentoAfip() As String
-    If Tipo.TipoDoc = tipoDocumentoContable.NotaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
+    If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
     If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
     If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetDescripciopnDocumentoAfip = "FACTURA"
 
@@ -129,15 +144,15 @@ End Function
 
 Public Function getDescripcionCondicion() As String
     
-    Dim a As String
+    Dim A As String
     If Me.CantDiasPago = 1 Then
-        a = Me.CantDiasPago & " dia FF"
+        A = Me.CantDiasPago & " dia FF"
     Else
-        a = Me.CantDiasPago & " dias FF"
+        A = Me.CantDiasPago & " dias FF"
     End If
 
 
-getDescripcionCondicion = a & Me.observaciones
+getDescripcionCondicion = A & Me.observaciones
 
 End Function
 
@@ -249,7 +264,7 @@ Public Property Get TipoDocumentoDescription() As String
             retorno = "FACTURA"
         Case tipoDocumentoContable.notaCredito
             retorno = "NOTA DE CREDITO"
-        Case tipoDocumentoContable.NotaDebito
+        Case tipoDocumentoContable.notaDebito
             retorno = "NOTA DE DEBITO"
     End Select
 
@@ -272,7 +287,7 @@ Public Property Get GetShortDescription(justTipo As Boolean, fullShortDescriptio
             retorno = "FC"
         Case tipoDocumentoContable.notaCredito
             retorno = "NC"
-        Case tipoDocumentoContable.NotaDebito
+        Case tipoDocumentoContable.notaDebito
             retorno = "ND"
     End Select
 
@@ -304,7 +319,7 @@ Public Property Get TotalNetoGravado()
     'Debug.Assert Me.Numero <> 9124
 
     For Each det In Me.Detalles
-        If det.IvaAplicado Or Me.AlicuotaAplicada > 0 Or Not Tipo.TipoFactura.ExcentoIVA Then subT = subT + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad)
+        If det.IvaAplicado And Me.AlicuotaAplicada > 0 And Not Tipo.TipoFactura.ExcentoIVA Then subT = subT + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad)
     Next det
     TotalNetoGravado = subT
 
@@ -390,9 +405,12 @@ Public Property Get totalPercepciones() As Double
                 'Debug.Print det.Total, Me.AlicuotaPercepcionesIIBB, (det.Total * (Me.AlicuotaPercepcionesIIBB - 1))
                 If Me.AlicuotaPercepcionesIIBB > 1 Then
                     If Me.FechaEmision > #12/21/2010# Then    'desde el 21 de dic de 2010
-                        If Me.TotalNetoGravado > MonedaConverter.Convertir(0, 0, Me.Moneda.id) Then
+                        ' bug #1 cambie > pór >= el 22-11-16 para poder hacer una factura solo de percepciones (ver FC grupo via del 22-11-16)
+                        If Me.TotalNetoGravado >= MonedaConverter.Convertir(0, 0, Me.moneda.id) Then
                             If det.IvaAplicado Then
                                 totPercep = totPercep + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad * (Me.AlicuotaPercepcionesIIBB - 1))
+                          Else
+                           totPercep = totPercep + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad * (Me.AlicuotaPercepcionesIIBB - 1))
                             End If
                         End If
                     Else

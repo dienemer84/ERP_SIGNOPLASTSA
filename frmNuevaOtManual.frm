@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmPlaneamientoOTNueva 
@@ -311,7 +311,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   54853633
+         Format          =   60162049
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -323,7 +323,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   54853633
+         Format          =   60162049
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -800,11 +800,11 @@ Private Sub CargarOrdenTrabajo()
     If (Me.cboMoneda.ListIndex <> -1) Then Me.cboCliente2.ListIndex = funciones.PosIndexCbo(m_ot.ClienteFacturar.id, cboCliente2)
 
 
-    Me.cboCliente.ListIndex = funciones.PosIndexCbo(m_ot.Cliente.id, cboCliente)
+    Me.cboCliente.ListIndex = funciones.PosIndexCbo(m_ot.cliente.id, cboCliente)
     Me.txtReferencia.text = m_ot.descripcion
     Me.DTVencimiento.value = m_ot.FechaEntrega
     Me.chkMismaFecha.value = CInt(m_ot.MismaFechaEntregaParaDetalles) * -1
-    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.Moneda.id, cboMoneda)
+    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.moneda.id, cboMoneda)
     Me.txtDto.text = m_ot.Descuento
     Me.txtAnticipo.text = m_ot.Anticipo
     Me.txtCantDiasAnticipo.text = m_ot.CantDiasAnticipo
@@ -821,9 +821,9 @@ Private Sub CargarOrdenTrabajo()
     Command7.Enabled = Not ActualizacionPrecios
     cmdDefinirPrecios.Enabled = Not ActualizacionPrecios
     Command2.Enabled = Not ActualizacionPrecios
-    cmdAgregarPieza.Enabled = Not ActualizacionPrecios
-    Frame1.Enabled = Not ActualizacionPrecios
-
+    'cmdAgregarPieza.Enabled = Not ActualizacionPrecios
+    
+    txtReferencia.Enabled = True
     If ActualizacionPrecios Then
         Dim col As JSColumn
         For Each col In Me.grid.Columns
@@ -846,7 +846,7 @@ End Sub
 Private Sub cboCliente_Click()
     If Me.cboCliente.ListIndex <> -1 And Not m_ot Is Nothing Then
         If formLoaded Then
-            Set m_ot.Cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
+            Set m_ot.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
             Set m_ot.Detalles = New Collection
             RecargarDetalles
         End If
@@ -869,7 +869,7 @@ End Sub
 Private Sub cboMoneda_Click()
     If Me.cboMoneda.ListIndex <> -1 And Not m_ot Is Nothing Then
         If formLoaded Then
-            Set m_ot.Moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+            Set m_ot.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
         End If
     End If
 End Sub
@@ -894,12 +894,12 @@ Private Sub ConfigurarMismaFecha()
 End Sub
 Private Sub cmdAgregarPieza_Click()
     If m_ot Is Nothing Then Exit Sub
-    If m_ot.Cliente Is Nothing Then Exit Sub
+    If m_ot.cliente Is Nothing Then Exit Sub
     Dim id As Long
     Dim f12 As New frmElegirPieza
     f12.Origen = 2    'desde ot
     f12.OtIdFilter = m_ot.OTMarcoIdPadre
-    f12.Cliente = m_ot.Cliente
+    f12.cliente = m_ot.cliente
     f12.Show 1
 End Sub
 Private Sub Command10_Click()
@@ -921,7 +921,7 @@ Private Sub cmdDefinirPrecios_Click()
         For Each si In Me.grid.SelectedItems
             If si.RowIndex > 0 And si.RowIndex <= m_ot.Detalles.count Then
                 Set tmpDetalle = m_ot.Detalles.item(si.RowIndex)
-                va = baseP.definirPrecios(tmpDetalle.Pieza.id, tmpDetalle.Precio, m_ot.Moneda.id)
+                va = baseP.definirPrecios(tmpDetalle.Pieza.id, tmpDetalle.Precio, m_ot.moneda.id)
             End If
         Next si
 
@@ -958,7 +958,13 @@ Private Sub Command3_Click()
             Next detaOT
             If result Then
                 conectar.execute "UPDATE pedidos SET ultima_fecha_actualizacion_precios = NOW() WHERE id = " & m_ot.id
+                conectar.execute "UPDATE pedidos SET descripcion = '" & m_ot.descripcion & "' WHERE id = " & m_ot.id
                 conectar.CommitTransaction
+                 Dim EVENTO As New clsEventoObserver
+                Set EVENTO.Elemento = m_ot
+                Set EVENTO.Originador = Me
+                EVENTO.EVENTO = modificar_
+                Channel.Notificar EVENTO, ordenesTrabajo
                 MsgBox "Los precios de los detalles se editaron correctamente", vbInformation + vbOKOnly
             Else
                 conectar.RollBackTransaction
@@ -966,11 +972,11 @@ Private Sub Command3_Click()
             End If
         Else
             If DAOOrdenTrabajo.Save(m_ot) Then
-                Dim EVENTO As New clsEventoObserver
-                Set EVENTO.Elemento = m_ot
-                Set EVENTO.Originador = Me
-                EVENTO.EVENTO = modificar_
-                Channel.Notificar EVENTO, ordenesTrabajo
+                Dim EVENTO1 As New clsEventoObserver
+                Set EVENTO1.Elemento = m_ot
+                Set EVENTO1.Originador = Me
+                EVENTO1.EVENTO = modificar_
+                Channel.Notificar EVENTO1, ordenesTrabajo
                 MsgBox "La orden se edito correctamente", vbInformation + vbOKOnly
             Else
                 MsgBox "Se produjo un error al editar la orden", vbCritical, "Error"
@@ -1178,7 +1184,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim x As Long
     If EVENTO.EVENTO = agregarColeccion_ Then
         Set col = EVENTO.Elemento
-        Dim Moneda As New clsMoneda
+        Dim moneda As New clsMoneda
         Dim adm As New classAdministracion
 
         Dim dto As DTOPiezaDetallePedido
@@ -1196,8 +1202,8 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
             If dto.idOt = 0 Then   'ver cuando cree el prox marco
                 If tmpDetalle.Pieza.Precio <> 0 Then
                     tmpDetalle.Precio = tmpDetalle.Pieza.Precio
-                    If tmpDetalle.Pieza.MonedaPrecio.id <> m_ot.Moneda.id Then
-                        tmpDetalle.Precio = adm.realizaCambio(tmpDetalle.Pieza.Precio, tmpDetalle.Pieza.MonedaPrecio.id, m_ot.Moneda.id)
+                    If tmpDetalle.Pieza.MonedaPrecio.id <> m_ot.moneda.id Then
+                        tmpDetalle.Precio = adm.realizaCambio(tmpDetalle.Pieza.Precio, tmpDetalle.Pieza.MonedaPrecio.id, m_ot.moneda.id)
                     End If
                 End If
 
@@ -1346,11 +1352,11 @@ Private Sub imprimirOT()
 
 
     headercenter = "OT NUMERO " & m_ot.id & Chr(10) _
-                   & "Cliente: (" & m_ot.Cliente.id & ") " & m_ot.Cliente.razon & Chr(10) _
+                   & "Cliente: (" & m_ot.cliente.id & ") " & m_ot.cliente.razon & Chr(10) _
                    & "Referencia: " & m_ot.descripcion & Chr(10) _
                    & "Entrega: " & m_ot.FechaEntrega & Chr(10)
 
-    headerLeft = "Total: " & m_ot.Moneda.NombreCorto & " " & Format$(m_ot.Total, "0.00") & vbNewLine _
+    headerLeft = "Total: " & m_ot.moneda.NombreCorto & " " & Format$(m_ot.Total, "0.00") & vbNewLine _
                  & "% Descuento: " & m_ot.Descuento & "%" & Chr(10) _
                  & "% Anticipo: " & m_ot.Anticipo & "%" & Chr(10) _
                  & "Anticipo a " & m_ot.CantDiasAnticipo & " días | FP: " & m_ot.FormaDePagoAnticipo & Chr(10) _

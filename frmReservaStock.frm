@@ -180,13 +180,13 @@ Implements ISuscriber
 Private Sub Command1_Click()
     Me.lblAprobando.Visible = True
     Me.progreso.Visible = True
-    Dim a As Long
+    Dim A As Long
     If Me.grilla.EditMode = jgexEditModeOn Then
         MsgBox "Salga del modo edicion para poder guardar!", vbInformation, "Información"
     Else
 
         If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
-            a = grilla.RowIndex(grilla.row)
+            A = grilla.RowIndex(grilla.row)
             If Not Ot.ValidarProcesos Then
                 MsgBox "Por favor, defina todos los procesos para continuar!", vbCritical, "Error"
             Else

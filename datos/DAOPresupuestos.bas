@@ -167,7 +167,7 @@ Public Function GetById(id As Long) As clsPresupuesto
 
     End If
 End Function
-Public Function GetAll(Optional filtro As String = Empty, Optional estados As Collection = Nothing, Optional Cliente As Long = -1, Optional numero As Long = 0) As Collection
+Public Function GetAll(Optional filtro As String = Empty, Optional estados As Collection = Nothing, Optional cliente As Long = -1, Optional numero As Long = 0) As Collection
     Dim col As Collection
     strsql = "SELECT " _
              & "p.*, u1.*, u2.*, u3.*,m.*, c.* " _
@@ -196,8 +196,8 @@ Public Function GetAll(Optional filtro As String = Empty, Optional estados As Co
         Next i
         strsql = strsql & ")"
     End If
-    If Cliente > 0 Then
-        strsql = strsql & " and idCliente=" & Cliente
+    If cliente > 0 Then
+        strsql = strsql & " and idCliente=" & cliente
     End If
     If filtro <> Empty Then
         filtro = " and p.detalle like '%" & Trim(filtro) & "%' or c.razon LIKE '%" & Trim(filtro) & "%'"
@@ -241,7 +241,7 @@ Public Function Map(ByRef rs As Recordset, index As Dictionary, ByRef tableNameO
         P.FormaPagoAnticipo = GetValue(rs, index, tableNameOrAlias, formaPagoAnticipo_)
         P.FormaPagoSaldo = GetValue(rs, index, tableNameOrAlias, formaPagoSaldo_)
         P.detalle = GetValue(rs, index, tableNameOrAlias, detalle_)
-        P.FechaCreado = GetValue(rs, index, tableNameOrAlias, fecha_)
+        P.fechaCreado = GetValue(rs, index, tableNameOrAlias, fecha_)
         P.FechaFinalizado = GetValue(rs, index, tableNameOrAlias, fechaFinalizado_)
         P.FechaModificado = GetValue(rs, index, tableNameOrAlias, fechaModificado_)
         P.FechaProcesado = GetValue(rs, index, tableNameOrAlias, fechaProcesado_)
@@ -257,8 +257,8 @@ Public Function Map(ByRef rs As Recordset, index As Dictionary, ByRef tableNameO
         P.DiasPagoAnticipo = GetValue(rs, index, tableNameOrAlias, diasPagoAnticipo_)
         P.DiasPagoSaldo = GetValue(rs, index, tableNameOrAlias, diasPagoSaldo_)
 
-        If LenB(tableNameOrAliasCliente) > 0 Then Set P.Cliente = DAOCliente.Map(rs, index, tableNameOrAliasCliente)
-        If LenB(tableNameOrAliasMoneda) > 0 Then Set P.Moneda = DAOMoneda.Map(rs, index, tableNameOrAliasMoneda)
+        If LenB(tableNameOrAliasCliente) > 0 Then Set P.cliente = DAOCliente.Map(rs, index, tableNameOrAliasCliente)
+        If LenB(tableNameOrAliasMoneda) > 0 Then Set P.moneda = DAOMoneda.Map(rs, index, tableNameOrAliasMoneda)
         If LenB(tableUsuarioModificado) > 0 Then Set P.UsuarioModificado = DAOUsuarios.Map(rs, index, tableUsuarioModificado)
         If LenB(tableUsuarioFinalizado) > 0 Then Set P.UsuarioFinalizado = DAOUsuarios.Map(rs, index, tableUsuarioFinalizado)
         If LenB(tableUsuarioCreado) > 0 Then Set P.UsuarioCreado = DAOUsuarios.Map(rs, index, tableUsuarioCreado)
@@ -294,9 +294,9 @@ Public Function Guardar(T As clsPresupuesto, Optional Cascade As Boolean = False
             End If
             strsql = "update presupuestos" _
                      & " SET " _
-                     & "fecha = '" & funciones.datetimeFormateada(T.FechaCreado) & "' ," _
+                     & "fecha = '" & funciones.datetimeFormateada(T.fechaCreado) & "' ," _
                      & "fechaEntrega = " & T.FechaEntrega & " ," _
-                     & "idCliente = " & T.Cliente.id & " ," _
+                     & "idCliente = " & T.cliente.id & " ," _
                      & "idVendedor = '" & T.UsuarioCreado.id & "'," _
                      & "estado = " & T.EstadoPresupuesto & "," _
                      & "detalle = '" & T.detalle & "' ," _
@@ -312,7 +312,7 @@ Public Function Guardar(T As clsPresupuesto, Optional Cascade As Boolean = False
                      & "fechaProcesado = '" & fecha_procesada & "'," _
                      & "idUsuarioFinalizado = " & id_u_fin & " ," _
                      & "fechaFinalizado = '" & fecha_finalizada & "' ," _
-                     & "idMoneda = " & T.Moneda.id & " ," & "fechaModificado = '" & fecha_modif & "' ," _
+                     & "idMoneda = " & T.moneda.id & " ," & "fechaModificado = '" & fecha_modif & "' ," _
                      & "anticipo= " & T.Anticipo & "," _
                      & "forma_pago_anticipo= '" & T.FormaPagoAnticipo & "', " & "forma_pago_saldo= '" & T.FormaPagoSaldo & "', " _
                      & "dias_pago_anticipo =" & T.DiasPagoAnticipo & ", dias_pago_saldo = " & T.DiasPagoSaldo & ", " _
@@ -336,9 +336,9 @@ Public Function Guardar(T As clsPresupuesto, Optional Cascade As Boolean = False
                  & " detalle, descuento, PorcMDO, PorcMen10, PorcMen15, PorcMas15, " _
                  & "gastos, ManteOferta, vencimientoPresupuesto, idMoneda, dias_pago_saldo,forma_pago_saldo,porcentaje_mano_obra_muerta) " _
                  & " values " _
-                 & " ('" & funciones.datetimeFormateada(T.FechaCreado) & "','" & T.FechaEntrega & "'," & T.Cliente.id & " ," & T.UsuarioCreado.id & "," & T.EstadoPresupuesto & ",'" & T.detalle & "'," & T.Descuento & ", " _
+                 & " ('" & funciones.datetimeFormateada(T.fechaCreado) & "','" & T.FechaEntrega & "'," & T.cliente.id & " ," & T.UsuarioCreado.id & "," & T.EstadoPresupuesto & ",'" & T.detalle & "'," & T.Descuento & ", " _
                  & " " & T.PorcMDO & "," & T.PorcMen10 & "," & T.PorcMen15 & "," & T.PorcMas15 & "," & T.Gastos & "," & T.manteOferta & ",'" & funciones.datetimeFormateada(T.VencimientoPresupuesto) & "' " _
-                 & "," & T.Moneda.id & "," & T.Cliente.FP & ",'" & T.Cliente.FormaPago & "'," & T.PorcentajeManoObraMuerta & ")"
+                 & "," & T.moneda.id & "," & T.cliente.FP & ",'" & T.cliente.FormaPago & "'," & T.PorcentajeManoObraMuerta & ")"
         If Not conectar.execute(strsql) Then GoTo err1
         conectar.UltimoId "presupuestos", id
         T.id = id
@@ -393,16 +393,16 @@ Public Function ImprimirPresupuesto(T As clsPresupuesto) As Boolean    '1- envia
     Dim SubTotal As Double
     SubTotal = T.Total(Manual)
     Total = SubTotal * 1
-    presu1.Sections("header").Controls("lblCliente").caption = T.Cliente.razon
+    presu1.Sections("header").Controls("lblCliente").caption = T.cliente.razon
     presu1.Sections("header").Controls("lblRef").caption = T.detalle
-    presu1.Sections("header").Controls("lblfechaPresu").caption = T.FechaCreado
+    presu1.Sections("header").Controls("lblfechaPresu").caption = T.fechaCreado
     presu1.Sections("header").Controls("lblnroPresu").caption = T.IdFormateada
     presu1.Sections("fondo").Controls("lbldto").caption = funciones.FormatearDecimales(T.Descuento)
     presu1.Sections("fondo").Controls("lblsubtotal").caption = funciones.FormatearDecimales(T.SubTotal(Manual))
     totaldto = SubTotal * (T.Descuento / 100)
     Total = SubTotal - totaldto
     presu1.Sections("fondo").Controls("lbltotal").caption = funciones.FormatearDecimales(T.Total(Manual), 2)
-    presu1.Sections("fondo").Controls("lblmoneda").caption = T.Moneda.NombreCorto
+    presu1.Sections("fondo").Controls("lblmoneda").caption = T.moneda.NombreCorto
     presu1.Sections("fondo").Controls("lblfecEnt").caption = T.FechaEntrega & " días desde la recepción de la O/C."
     presu1.Sections("fondo").Controls("lblManteOferta").caption = T.manteOferta & " días"
 
@@ -491,9 +491,9 @@ Public Function exporta(T As clsPresupuesto, Optional enviar As Boolean = False)
         .Cells(1, 1).value = "Presupuesto Nro."
         .Cells(1, 3).value = str(Format(T.id, "0000"))
         .Cells(2, 1).value = "Fecha presupuesto"
-        .Cells(2, 3).value = str(T.FechaCreado)
+        .Cells(2, 3).value = str(T.fechaCreado)
         .Cells(3, 1).value = "Cliente"
-        .Cells(3, 3).value = T.Cliente.razon
+        .Cells(3, 3).value = T.cliente.razon
         .Cells(4, 1).value = "Referencia"
         .Cells(4, 3).value = T.detalle
         .Cells(7, 1).value = "Item"
@@ -542,9 +542,9 @@ Public Function exporta(T As clsPresupuesto, Optional enviar As Boolean = False)
         .Columns("E").HorizontalAlignment = xlHAlignRight
         .Columns("C").HorizontalAlignment = xlHAlignLeft
         .Cells(P + 7, 5).value = funciones.RedondearDecimales(T.SubTotal(Manual), 2)
-        .Cells(P + 7, 4).value = "SubTotal " & T.Moneda.NombreCorto
+        .Cells(P + 7, 4).value = "SubTotal " & T.moneda.NombreCorto
         .Cells(P + 8, 4).value = "Desc "
-        .Cells(P + 9, 4).value = "Total " & T.Moneda.NombreCorto
+        .Cells(P + 9, 4).value = "Total " & T.moneda.NombreCorto
         .Cells(P + 7, 5).Formula = "=SUM(E8:E" & 8 + (P - 2) & ")"   'funciones.RedondearDecimales(T.Total(Manual), 2)
         .Cells(P + 8, 5).value = T.Descuento & "%"
         .Cells(P + 9, 5).value = funciones.RedondearDecimales(T.Total(Manual), 2)
@@ -669,16 +669,17 @@ Public Function CrearOT(T As clsPresupuesto, idpedido As Long, DetalleOt As Stri
     Ot.AnticipoFacturado = False
     Ot.CantDiasAnticipo = T.DiasPagoAnticipo
     Ot.CantDiasSaldo = T.DiasPagoSaldo
-    Set Ot.Cliente = T.Cliente
-    Set Ot.ClienteFacturar = T.Cliente
+    Set Ot.cliente = T.cliente
+    Set Ot.ClienteFacturar = T.cliente
     Ot.FormaDePagoAnticipo = T.FormaPagoAnticipo
     Ot.FormaDePagoSaldo = T.FormaPagoSaldo
     Ot.descripcion = DetalleOt    'T.detalle
     Ot.Descuento = T.Descuento
+    Ot.TipoOrden = OT_TRADICIONAL  'cambiar?
     Ot.Entregada = False
     Ot.estado = EstadoOT_Pendiente
     Ot.MismaFechaEntregaParaDetalles = True
-    Set Ot.Moneda = T.Moneda
+    Set Ot.moneda = T.moneda
     Ot.NroPresupuesto = T.id
     Ot.StockDescontado = False
     'creo el detalle
@@ -729,7 +730,7 @@ Public Function ReCotizar(PresupuestoOriginal As clsPresupuesto) As Boolean
     Set PresupuestoOriginal.DetallePresupuesto = DAOPresupuestosDetalle.GetAllByPresupuesto(PresupuestoOriginal)
     With PresupuestoOriginal
         P.Anticipo = .Anticipo
-        Set P.Cliente = .Cliente
+        Set P.cliente = .cliente
         P.Descuento = .Descuento
         P.detalle = "RE: " & .detalle
         Set P.DetallePresupuesto = New Collection
@@ -754,14 +755,14 @@ Public Function ReCotizar(PresupuestoOriginal As clsPresupuesto) As Boolean
         P.DiasPagoAnticipo = .DiasPagoAnticipo
         P.DiasPagoSaldo = .DiasPagoSaldo
         P.EstadoPresupuesto = ACotizar_
-        P.FechaCreado = Now
+        P.fechaCreado = Now
         P.FechaEntrega = 0
         P.FormaPagoAnticipo = .FormaPagoAnticipo
         P.FormaPagoSaldo = .FormaPagoSaldo
         P.Gastos = .Gastos
         P.id = 0
         P.manteOferta = .manteOferta
-        Set P.Moneda = .Moneda
+        Set P.moneda = .moneda
         P.PorcentajeManoObraMuerta = .PorcentajeManoObraMuerta
         P.PorcMas15 = .PorcMas15
         P.PorcMDO = .PorcMDO

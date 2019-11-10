@@ -164,6 +164,12 @@ Public Function Publish(ObjetoId As Long, tipoEvento As TipoEventoBroadcast, Opt
             'Dim ot As OrdenTrabajo
             'Set ot = DAOOrdenTrabajo.FindById(objetoId)
             descripcion = "Se ha agregado un archivo a la OT Nº " & ObjetoId
+             Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
+            If IsSomething(Ot) Then
+                descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
+            End If
+            
+            
         Case TipoEventoBroadcast.TEB_ArchivoPieza
             descripcion = "Se ha agregado un archivo a la pieza [" & DAOPieza.FindById(ObjetoId, FL_0).nombre & "] - codigo de pieza [" & ObjetoId & "]"
 
@@ -183,18 +189,18 @@ Public Function Publish(ObjetoId As Long, tipoEvento As TipoEventoBroadcast, Opt
 
             Set fact = DAOFactura.FindById(ObjetoId)
             descripcion = "Se ha aprobado el comprobante " & fact.GetShortDescription(False, True)
-            descripcion2 = "<b>Cliente:</b>  " & fact.Cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
+            descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
 
         Case TipoEventoBroadcast.TEB_FacturaAnulada
             Set fact = DAOFactura.FindById(ObjetoId)
             descripcion = "Se ha anulado el comprobante " & fact.GetShortDescription(False, True)
-            descripcion2 = "<b>Cliente:</b>  " & fact.Cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
+            descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
 
 
         Case TipoEventoBroadcast.TEB_FacturaCreada
             Set fact = DAOFactura.FindById(ObjetoId)
             descripcion = "Se ha creado el comprobante " & fact.GetShortDescription(False, True)
-            descripcion2 = "<b>Cliente:</b>  " & fact.Cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
+            descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
 
 
 
@@ -241,12 +247,12 @@ Public Function Publish(ObjetoId As Long, tipoEvento As TipoEventoBroadcast, Opt
             Dim rto As Remito
             Set rto = DAORemitoS.FindById(ObjetoId)
             descripcion = "Se ha aprobado el remito Nº " & rto.numero
-            descripcion2 = "<b>Cliente:</b>  " & rto.Cliente.razon & "<br>" & " <b>Descripcion:</b> " & rto.detalle
+            descripcion2 = "<b>Cliente:</b>  " & rto.cliente.razon & "<br>" & " <b>Descripcion:</b> " & rto.detalle
 
         Case TipoEventoBroadcast.TEB_RemitoAnulado
             Set rto = DAORemitoS.FindById(ObjetoId)
             descripcion = "Se ha anulado el remito Nº " & rto.numero
-            descripcion2 = "<b>Cliente:</b>  " & rto.Cliente.razon & "<br>" & " <b>Descripcion:</b> " & rto.detalle
+            descripcion2 = "<b>Cliente:</b>  " & rto.cliente.razon & "<br>" & " <b>Descripcion:</b> " & rto.detalle
 
         Case TipoEventoBroadcast.TEB_RemitoCreado
             Set rto = DAORemitoS.FindById(ObjetoId)
@@ -282,7 +288,7 @@ Public Function Publish(ObjetoId As Long, tipoEvento As TipoEventoBroadcast, Opt
 
             Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
             If IsSomething(Ot) Then
-                descripcion2 = "<b>Cliente:</b>  " & Ot.Cliente.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion & "<br>" & " <b>Anticipo:</b> " & Ot.Anticipo & "%" & "<b>Facturado: " & Ot.AnticipoFacturado
+                descripcion2 = "<b>Cliente:</b>  " & Ot.cliente.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion & "<br>" & " <b>Anticipo:</b> " & Ot.Anticipo & "%" & "<b>Facturado: " & Ot.AnticipoFacturado
             End If
 
         Case Else

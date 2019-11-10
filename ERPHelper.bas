@@ -138,8 +138,8 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
 
     Dim req As New FECAEDetRequest
     req.Concepto = "1"
-    req.DocTipo = F.Cliente.TipoDocumento
-    req.DocNro = F.Cliente.Cuit
+    req.DocTipo = F.cliente.TipoDocumento
+    req.DocNro = F.cliente.Cuit
     req.CbteDesde = F.numero
     req.CbteHasta = F.numero
     req.CbteFch = Format(F.FechaEmision, "yyyymmdd")
@@ -161,7 +161,7 @@ req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 
 req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
 '    req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
 
-    req.MonId = F.Moneda.id
+    req.MonId = F.moneda.id
     'req.MonCotiz = F.Moneda.Cambio
 req.MonCotiz = F.CambioAPatron
     req.FchVtoPago = ""    'obligatorio para concepto 2 y 3
@@ -193,11 +193,18 @@ req.MonCotiz = F.CambioAPatron
     Set P = DAOPercepciones.GetById(5)
 
     trib.Alic = funciones.FormatearDecimales(((F.AlicuotaPercepcionesIIBB - 1) * 100), 2)
-    trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)    '"400" 'revisar con tulio,2)
+    'trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)    '"400" 'revisar con tulio,2)
+    
+    'bug #4
+    trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)    '
     trib.Desc = P.Percepcion
     trib.idTributoCambiar = "1"
-    trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
+    
+    
+    'trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
+'bug #4
+    trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     If F.TotalEstatico.TotalPercepcionesIB > 0 Then
         req.Tributos.Add trib
     Else
@@ -210,7 +217,8 @@ req.MonCotiz = F.CambioAPatron
     Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
     Iva.idAlicIvaCambiar = F.AlicuotaAplicada
-Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
+    
+    Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
 
     If F.TotalEstatico.TotalIVADiscrimandoONo > 0 Then

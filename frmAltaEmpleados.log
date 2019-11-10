@@ -1,1 +1,3 @@
 Line 20: Class XtremeSuiteControls.PushButton of control PushButton1 was not a loaded control class.
+Line 33: Class MSComCtl2.DTPicker of control dtpFechaNac was not a loaded control class.
+Line 181: Class MSComCtl2.DTPicker of control dtpFechaIng was not a loaded control class.

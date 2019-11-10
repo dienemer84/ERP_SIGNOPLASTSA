@@ -26,7 +26,7 @@ Dim vEstado As EstadoFacturaProveedor
 Dim vConfigFactura As clsConfigFacturaProveedor
 Dim vHistorial As New Collection
 Dim vCuentasContables As New Collection
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 Public tipoDocumentoContable As tipoDocumentoContable
 Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
@@ -239,7 +239,7 @@ Public Property Get Total() As Double
 
 
 
-    If Me.Moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
+    If Me.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
         tipo_cambio = 1
     Else
         tipo_cambio = Me.TipoCambio
@@ -285,6 +285,21 @@ Public Property Get NetoGravadoDiaPago() As Double
 End Property
 Public Property Get NetoGravadoAbonadoDiaPago() As Double
     NetoGravadoAbonadoDiaPago = funciones.RedondearDecimales(((NetoGravadoAbonado / Me.TipoCambio) * Me.TipoCambioPago), 2)
+End Property
+
+Public Property Get NetoNoGravado() As Double
+  Dim tot_ng As Double
+    tot_ng = 0
+    Dim P As Long
+    Dim a As clsAlicuotaAplicada
+    
+    For P = 1 To vIvaAplicado.count
+Set a = vIvaAplicado(P)
+    If a.Alicuota.Alicuota = 0 Then
+        tot_ng = tot_ng + vIvaAplicado(P).Monto
+    End If
+    Next
+    NetoNoGravado = tot_ng
 End Property
 Public Property Get NetoGravado() As Double
     Dim tot_ng As Double

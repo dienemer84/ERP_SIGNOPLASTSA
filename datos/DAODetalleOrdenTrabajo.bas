@@ -22,6 +22,26 @@ Public Const TABLA_DETALLE_PEDIDO As String = "dp"
 Public Const CAMPO_ID_PRESU = "id_presupuesto_origen"
 Public Const CAMPO_DESCUENTO = "descuento"
 
+Public Sub EnviarAStock(detalle As DetalleOrdenTrabajo, Cantidad As Double)
+On Error GoTo err1
+'reload
+Set detalle = DAODetalleOrdenTrabajo.FindById(detalle.id)
+
+'valido nuevamente
+If detalle.CantidadPedida >= detalle.CantidadEnviadasAStock + Cantidad Then
+    detalle.CantidadEnviadasAStock = detalle.CantidadEnviadasAStock + Cantidad
+    conectar.BeginTransaction
+        Save (detalle)
+    conectar.CommitTransaction
+Else
+    Err.Raise 2020, "Asignación de Stock", "La cantidad de stock que se intenta asignar supera a la cantidad disponible"
+End If
+Exit Sub
+err1:
+    conectar.RollBackTransaction
+    Err.Raise Err.Number, Err.Source, Err.Description
+End Sub
+
 
 Public Function CountPrintedLabels(id As Long) As Boolean
     On Error GoTo err1
@@ -43,6 +63,28 @@ Public Function FindById(idpedido As Long, Optional withEntregados As Boolean = 
     End If
 
 End Function
+
+
+Public Function PendientesEntregaPorPieza(idPieza As Long) As Double
+
+'busco todas las ordenes activas donde se est'e fabricando esta pieza
+Dim sql As String
+sql = " SELECT SUM(dp.cantidad)-SUM(dpc.cantidad)  as pendientes FROM detalles_pedidos_cantidad dpc " _
+        & "INNER JOIN detalles_pedidos dp ON dpc.id_detalle_pedido=dp.id " _
+    & "Where tipo_cantidad = 2 And id_detalle_pedido " _
+        & "IN (SELECT dp.id FROM pedidos p INNER JOIN detalles_pedidos dp ON dp.idPedido=p.id  WHERE p.estado=2 AND dp.idPieza = " & idPieza & ") " _
+        & " GROUP BY dp.idPieza"
+
+Dim rs As New Recordset
+Set rs = RSFactory(sql)
+If Not rs.EOF And Not rs.BOF Then
+    PendientesEntregaPorPieza = rs!pendientes
+End If
+
+
+
+End Function
+
 
 
 Public Function FindAllByPieza(piezasId As Collection) As Collection
@@ -319,7 +361,7 @@ Public Function Map(ByRef rs As Recordset, _
         tmpDetaOrdenTrabajo.idDetalleOtPadre = GetValue(rs, fieldsIndex, tableNameOrAlias, "IdDetalleOtPadre")
         tmpDetaOrdenTrabajo.EtiquetasImpresas = GetValue(rs, fieldsIndex, tableNameOrAlias, "etiquetas_impresas")
         tmpDetaOrdenTrabajo.idPresupuestoOrigen = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID_PRESU)
-
+        tmpDetaOrdenTrabajo.CantidadEnviadasAStock = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_a_stock")
         'pseudo proxy
         Set tmpDetaOrdenTrabajo.OrdenTrabajo = New OrdenTrabajo
         tmpDetaOrdenTrabajo.OrdenTrabajo.id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PEDIDO_ID)
@@ -390,7 +432,7 @@ Public Function Save(deta As DetalleOrdenTrabajo) As Boolean
             & " nota_produccion," _
             & " impresiones_ruta," _
             & " precio_modificado," _
-            & " procesos_definidos, IdDetalleOtPadre,id_presupuesto_origen,descuento,id_moneda)" _
+            & " procesos_definidos, IdDetalleOtPadre,id_presupuesto_origen,descuento,id_moneda,cantidad_a_stock)" _
             & " VALUES (" _
             & conectar.Escape(deta.item) & "," _
             & conectar.GetEntityId(deta.OrdenTrabajo) & "," _
@@ -412,7 +454,7 @@ Public Function Save(deta As DetalleOrdenTrabajo) As Boolean
             & "'" & deta.NotaProduccion & "'," _
             & d & "," _
             & conectar.Escape(deta.PrecioModificado) & "," _
-            & conectar.Escape(deta.EstadoProceso) & ", " & deta.idDetalleOtPadre & "," & Escape(deta.idPresupuestoOrigen) & "," & Escape(deta.Descuento) & "," & Escape(deta.IdMoneda) & ")"
+            & conectar.Escape(deta.EstadoProceso) & ", " & deta.idDetalleOtPadre & "," & Escape(deta.idPresupuestoOrigen) & "," & Escape(deta.Descuento) & "," & Escape(deta.IdMoneda) & "," & Escape(deta.CantidadEnviadasAStock) & ")"
 
         Save = conectar.execute(q)
 
@@ -527,7 +569,7 @@ Public Function arreglarCagada()
 
         For Each det In Ot.Detalles
 
-            det.IdMoneda = Ot.Moneda.id
+            det.IdMoneda = Ot.moneda.id
             ''If ot.Moneda.Id = 1 Then Stop
             DAODetalleOrdenTrabajo.Save det
 

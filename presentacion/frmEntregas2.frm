@@ -8,20 +8,20 @@ Begin VB.Form frmEntregas2
    ClientHeight    =   7935
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   10965
+   ClientWidth     =   12495
    Icon            =   "frmEntregas2.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   7935
-   ScaleWidth      =   10965
+   ScaleWidth      =   12495
    Begin VB.CommandButton Command1 
       Caption         =   "Command1"
       Height          =   375
-      Left            =   7155
+      Left            =   8280
       TabIndex        =   20
-      Top             =   6165
+      Top             =   6960
       Visible         =   0   'False
       Width           =   1140
    End
@@ -30,15 +30,16 @@ Begin VB.Form frmEntregas2
       Left            =   105
       TabIndex        =   13
       Top             =   4005
-      Width           =   6480
+      Width           =   8040
       _Version        =   786432
-      _ExtentX        =   11430
+      _ExtentX        =   14182
       _ExtentY        =   6800
       _StockProps     =   68
       AllowReorder    =   -1  'True
       Appearance      =   10
       Color           =   128
       ItemCount       =   2
+      SelectedItem    =   1
       Item(0).Caption =   "Entregas"
       Item(0).ControlCount=   1
       Item(0).Control(0)=   "grpEntregasDetalle"
@@ -47,12 +48,13 @@ Begin VB.Form frmEntregas2
       Item(1).Control(0)=   "GroupBox1"
       Begin XtremeSuiteControls.GroupBox grpEntregasDetalle 
          Height          =   3390
-         Left            =   90
+         Left            =   -69910
          TabIndex        =   14
          Top             =   375
-         Width           =   6255
+         Visible         =   0   'False
+         Width           =   7815
          _Version        =   786432
-         _ExtentX        =   11033
+         _ExtentX        =   13785
          _ExtentY        =   5980
          _StockProps     =   79
          Caption         =   "Entregas del detalle seleccionado de la OT"
@@ -62,8 +64,8 @@ Begin VB.Form frmEntregas2
             Left            =   90
             TabIndex        =   15
             Top             =   255
-            Width           =   4815
-            _ExtentX        =   8493
+            Width           =   6135
+            _ExtentX        =   10821
             _ExtentY        =   5398
             Version         =   "2.0"
             HoldSortSettings=   -1  'True
@@ -102,7 +104,7 @@ Begin VB.Form frmEntregas2
          End
          Begin XtremeSuiteControls.PushButton btnExportarExcel 
             Height          =   465
-            Left            =   4995
+            Left            =   6480
             TabIndex        =   16
             Top             =   2835
             Width           =   1140
@@ -116,13 +118,12 @@ Begin VB.Form frmEntregas2
       End
       Begin XtremeSuiteControls.GroupBox GroupBox1 
          Height          =   3390
-         Left            =   -69910
+         Left            =   90
          TabIndex        =   17
          Top             =   375
-         Visible         =   0   'False
-         Width           =   6255
+         Width           =   7815
          _Version        =   786432
-         _ExtentX        =   11033
+         _ExtentX        =   13785
          _ExtentY        =   5980
          _StockProps     =   79
          Caption         =   "Facturas del detalle seleccionado de la OT"
@@ -132,8 +133,8 @@ Begin VB.Form frmEntregas2
             Left            =   90
             TabIndex        =   18
             Top             =   255
-            Width           =   4815
-            _ExtentX        =   8493
+            Width           =   6105
+            _ExtentX        =   10769
             _ExtentY        =   5398
             Version         =   "2.0"
             HoldSortSettings=   -1  'True
@@ -171,7 +172,7 @@ Begin VB.Form frmEntregas2
          End
          Begin XtremeSuiteControls.PushButton PushButton1 
             Height          =   465
-            Left            =   4995
+            Left            =   6480
             TabIndex        =   19
             Top             =   2835
             Width           =   1140
@@ -186,7 +187,7 @@ Begin VB.Form frmEntregas2
    End
    Begin XtremeSuiteControls.PushButton mnuAtajo 
       Height          =   465
-      Left            =   8880
+      Left            =   10560
       TabIndex        =   11
       Top             =   4665
       Width           =   1635
@@ -198,20 +199,20 @@ Begin VB.Form frmEntregas2
       UseVisualStyle  =   -1  'True
    End
    Begin MSComDlg.CommonDialog CommonDialog1 
-      Left            =   8175
-      Top             =   5175
+      Left            =   7320
+      Top             =   6720
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
    End
    Begin XtremeSuiteControls.GroupBox grpE 
       Height          =   1395
-      Left            =   8475
+      Left            =   8280
       TabIndex        =   5
-      Top             =   5760
-      Width           =   2070
+      Top             =   5880
+      Width           =   4110
       _Version        =   786432
-      _ExtentX        =   3651
+      _ExtentX        =   7250
       _ExtentY        =   2461
       _StockProps     =   79
       Caption         =   "Valores"
@@ -258,7 +259,7 @@ Begin VB.Form frmEntregas2
    End
    Begin XtremeSuiteControls.PushButton btnCerrar 
       Height          =   465
-      Left            =   8865
+      Left            =   10560
       TabIndex        =   2
       Top             =   4140
       Width           =   1650
@@ -274,9 +275,9 @@ Begin VB.Form frmEntregas2
       Left            =   60
       TabIndex        =   0
       Top             =   30
-      Width           =   10815
+      Width           =   12375
       _Version        =   786432
-      _ExtentX        =   19076
+      _ExtentX        =   21828
       _ExtentY        =   7011
       _StockProps     =   79
       Caption         =   "Detalles de OT"
@@ -286,8 +287,8 @@ Begin VB.Form frmEntregas2
          Left            =   120
          TabIndex        =   1
          Top             =   255
-         Width           =   10530
-         _ExtentX        =   18574
+         Width           =   12210
+         _ExtentX        =   21537
          _ExtentY        =   6244
          Version         =   "2.0"
          PreviewRowIndent=   300
@@ -303,7 +304,7 @@ Begin VB.Form frmEntregas2
          IntProp1        =   0
          IntProp2        =   0
          IntProp7        =   0
-         ColumnsCount    =   11
+         ColumnsCount    =   12
          Column(1)       =   "frmEntregas2.frx":1EF4
          Column(2)       =   "frmEntregas2.frx":2004
          Column(3)       =   "frmEntregas2.frx":20F0
@@ -315,25 +316,26 @@ Begin VB.Form frmEntregas2
          Column(9)       =   "frmEntregas2.frx":27E4
          Column(10)      =   "frmEntregas2.frx":2910
          Column(11)      =   "frmEntregas2.frx":2A2C
+         Column(12)      =   "frmEntregas2.frx":2B2C
          FmtConditionsCount=   1
-         FmtCondition(1) =   "frmEntregas2.frx":2B2C
+         FmtCondition(1) =   "frmEntregas2.frx":2C8C
          FormatStylesCount=   7
-         FormatStyle(1)  =   "frmEntregas2.frx":2BF0
-         FormatStyle(2)  =   "frmEntregas2.frx":2D28
-         FormatStyle(3)  =   "frmEntregas2.frx":2DD8
-         FormatStyle(4)  =   "frmEntregas2.frx":2E8C
-         FormatStyle(5)  =   "frmEntregas2.frx":2F64
-         FormatStyle(6)  =   "frmEntregas2.frx":301C
-         FormatStyle(7)  =   "frmEntregas2.frx":30FC
+         FormatStyle(1)  =   "frmEntregas2.frx":2D50
+         FormatStyle(2)  =   "frmEntregas2.frx":2E88
+         FormatStyle(3)  =   "frmEntregas2.frx":2F38
+         FormatStyle(4)  =   "frmEntregas2.frx":2FEC
+         FormatStyle(5)  =   "frmEntregas2.frx":30C4
+         FormatStyle(6)  =   "frmEntregas2.frx":317C
+         FormatStyle(7)  =   "frmEntregas2.frx":325C
          ImageCount      =   0
-         PrinterProperties=   "frmEntregas2.frx":3190
+         PrinterProperties=   "frmEntregas2.frx":32F0
       End
    End
    Begin XtremeSuiteControls.PushButton btnRemitar 
       Height          =   465
-      Left            =   7020
+      Left            =   8400
       TabIndex        =   3
-      Top             =   4140
+      Top             =   4200
       Width           =   1650
       _Version        =   786432
       _ExtentX        =   2910
@@ -344,9 +346,9 @@ Begin VB.Form frmEntregas2
    End
    Begin XtremeSuiteControls.PushButton btnAplicarRemito 
       Height          =   465
-      Left            =   7035
+      Left            =   8400
       TabIndex        =   4
-      Top             =   4635
+      Top             =   4680
       Width           =   1650
       _Version        =   786432
       _ExtentX        =   2910
@@ -357,9 +359,9 @@ Begin VB.Form frmEntregas2
    End
    Begin XtremeSuiteControls.PushButton cmdPreconteo 
       Height          =   465
-      Left            =   8880
+      Left            =   10560
       TabIndex        =   12
-      Top             =   5190
+      Top             =   5160
       Width           =   1635
       _Version        =   786432
       _ExtentX        =   2884
@@ -368,19 +370,32 @@ Begin VB.Form frmEntregas2
       Caption         =   "Planilla de Preconteo"
       UseVisualStyle  =   -1  'True
    End
+   Begin XtremeSuiteControls.PushButton btnTomarDeStock 
+      Height          =   465
+      Left            =   8400
+      TabIndex        =   21
+      Top             =   5160
+      Width           =   1650
+      _Version        =   786432
+      _ExtentX        =   2910
+      _ExtentY        =   820
+      _StockProps     =   79
+      Caption         =   "Tomar de Stock"
+      UseVisualStyle  =   -1  'True
+   End
    Begin VB.Label lblCentroCostos 
       Height          =   240
-      Left            =   6645
+      Left            =   8160
       TabIndex        =   10
-      Top             =   7545
-      Width           =   5340
+      Top             =   7680
+      Width           =   4140
    End
    Begin VB.Label lblCliente 
       Height          =   240
-      Left            =   6615
+      Left            =   8280
       TabIndex        =   9
-      Top             =   7245
-      Width           =   5340
+      Top             =   7440
+      Width           =   4140
    End
    Begin VB.Menu mnuEmergente 
       Caption         =   "menu"
@@ -406,6 +421,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Implements ISuscriber
 
+
+Private valid As Boolean
 Option Explicit
 Private m_ot As OrdenTrabajo
 Private detalle As DetalleOrdenTrabajo
@@ -423,8 +440,8 @@ Private CantArchivosDetalle As New Dictionary
 
 
 
-Public Sub SetOrdenTrabajo(ot As OrdenTrabajo)
-    Set m_ot = ot
+Public Sub SetOrdenTrabajo(Ot As OrdenTrabajo)
+    Set m_ot = Ot
     Me.caption = "Entregas de la OT Nº " & m_ot.IdFormateado
     CargaDetalles
 End Sub
@@ -440,7 +457,7 @@ Private Sub CargaDetalles()
     Me.lblPorcentajeEntregas.caption = "% Entregas: " & m_ot.PorcentajeEntregas
     Me.lblPorcentajeFabricacion.caption = "% Fabricación: " & m_ot.PorcentajeFabricacion
 
-    Me.lblCentroCostos = "Centro de costos: " & m_ot.Cliente.razon
+    Me.lblCentroCostos = "Centro de costos: " & m_ot.cliente.razon
     If IsSomething(m_ot.ClienteFacturar) Then
         Me.lblCliente = "Cliente: " & m_ot.ClienteFacturar.razon
     End If
@@ -517,7 +534,9 @@ Private Sub btnCerrar_Click()
                 fEntTotal.Show 1
                 Unload Me
             Else
+                
                 MsgBox "Para cerrar la OT debe tener todo fabricado o proveniente de stock.", vbExclamation
+            
             End If
         End If
     End If
@@ -558,7 +577,7 @@ Private Sub btnExportarExcel_Click()
     xlWorksheet.Cells(4, 1).value = "Fecha Entrega:"
 
     xlWorksheet.Cells(1, 2).value = "OT Nº " & m_ot.IdFormateado & " al dia " & Date
-    xlWorksheet.Cells(2, 2).value = m_ot.Cliente.razon & " Cliente: " & m_ot.ClienteFacturar.razon
+    xlWorksheet.Cells(2, 2).value = m_ot.cliente.razon & " Cliente: " & m_ot.ClienteFacturar.razon
     xlWorksheet.Cells(3, 2).value = m_ot.descripcion
     xlWorksheet.Range(xlWorksheet.Cells(3, 2), xlWorksheet.Cells(3, 2)).HorizontalAlignment = xlLeft
     xlWorksheet.Cells(4, 2).value = m_ot.FechaEntrega
@@ -671,16 +690,47 @@ Private Sub btnRemitar_Click()
         fEntrega.lblDeStock = detaOT.ReservaStock
         fEntrega.lblOT = m_ot.id
         fEntrega.lblItem = detaOT.item
+        fEntrega.TipoOrden = m_ot.TipoOrden
+        
         fEntrega.Show 1
 
     ElseIf Me.gridDetalles.SelectedItems.count > 1 Then
         Dim f22 As New frmPlaneamientoRealizarEntregaMultiple
         f22.idP = m_ot.id
+        f22.TipoOrden = m_ot.TipoOrden
         f22.vector detasId
         f22.Show 1
     End If
 
     CargaDetalles
+End Sub
+
+Private Sub btnTomarDeStock_Click()
+
+
+On Error GoTo err1
+ 'Bug #3 - probar
+ If Me.gridDetalles.SelectedItems.count = 1 Then
+    Set detalle = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).RowIndex)
+    If detalle Is Nothing Then Exit Sub
+End If
+'bug #3
+Dim res As String
+res = InputBox("Ingrese la cantidad a tomar de stock (Máximo " & detalle.Pieza.CantidadStock & ")", "Reserva de Stock", "0")
+If IsNumeric(res) Then
+
+    Dim reserva As Double: reserva = Val(res)
+    
+    If DAOOrdenTrabajo.DescontarReservaDetalle(detalle, reserva) Then
+            MsgBox "Reserva de Stock realizada!", vbInformation
+    End If
+
+End If
+Exit Sub
+
+err1:
+MsgBox Err.Description
+
 End Sub
 
 Private Sub cmdPreconteo_Click()
@@ -750,7 +800,15 @@ Private Sub Form_Load()
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     Set CantArchivosDetalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
 
+valid = (m_ot.TipoOrden = OT_TRADICIONAL Or m_ot.TipoOrden = OT_ENTREGA)
 
+Me.btnAplicarRemito.Enabled = valid
+Me.btnCerrar.Enabled = valid
+Me.mnuAtajo.Enabled = valid
+Me.btnRemitar.Enabled = valid Or m_ot.TipoOrden = OT_STOCK
+Me.btnTomarDeStock.Enabled = valid
+
+gridDetalles_SelectionChange
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -817,7 +875,13 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(1) = detalle.item
         Values(2) = detalle.Nota
         Values(3) = detalle.Pieza.nombre
+        
         Values(4) = detalle.CantidadPedida
+        
+        If m_ot.TipoOrden = OT_STOCK Then
+            Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.id) & ")"
+        End If
+        
         Values(5) = detalle.FechaEntrega
         Values(6) = detalle.CantidadFabricados
         Values(7) = detalle.CantidadEntregada
@@ -825,6 +889,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(9) = detalle.CantidadFacturada
         Values(10) = detalle.ReservaStock
         Values(11) = detalle.Pieza.UnidadMedida
+        Values(12) = detalle.Pieza.CantidadStock
     End If
 End Sub
 
@@ -885,7 +950,7 @@ Private Sub ImprimirEntregas()
     '        Exit Sub
     '    End If
 
-    Printer.Print "C.Costos: " & m_ot.Cliente.id & " - " & m_ot.Cliente.razon,
+    Printer.Print "C.Costos: " & m_ot.cliente.id & " - " & m_ot.cliente.razon,
     Printer.Print "Referencia: " & UCase(m_ot.descripcion)
     Printer.Print "Entrega: " & Format(m_ot.FechaEntrega, "dd-mm-yyyy")
     Printer.Print
@@ -1070,12 +1135,12 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
     Set Remito = New Remito
     Remito.FEcha = Now
     Remito.detalle = m_ot.descripcion
-    Set Remito.Cliente = m_ot.ClienteFacturar
+    Set Remito.cliente = m_ot.ClienteFacturar
 
     Remito.estado = RemitoPendiente
     Remito.EstadoFacturado = RemitoNoFacturado
 
-    Set Remito.UsuarioCreador = funciones.GetUserObj
+    Set Remito.usuarioCreador = funciones.GetUserObj
     Remito.numero = DAORemitoS.ProximoRemito
     Set Remito.Detalles = New Collection
     If Not DAORemitoS.Guardar(Remito, False) Then GoTo err1

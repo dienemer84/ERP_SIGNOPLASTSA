@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmAdminCobranzasNuevoRecibo 
@@ -846,7 +846,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   16646145
+         Format          =   59703297
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -929,7 +929,7 @@ Private Banco As Banco
 Private CuentaBancaria As CuentaBancaria
 Private cuentasBancarias As New Collection
 Private monedas As New Collection
-Private Moneda As clsMoneda
+Private moneda As clsMoneda
 Private operacion As operacion
 Private Cajas As New Collection
 Private caja As caja
@@ -986,9 +986,9 @@ Public Property Let reciboId(nIdRecibo As Long)
     Me.gridFacturas.ItemCount = recibo.facturas.count
 
     DAOMoneda.LlenarCombo Me.cboMonedas
-    Me.cboMonedas.ListIndex = PosIndexCbo(recibo.Moneda.id, Me.cboMonedas)
+    Me.cboMonedas.ListIndex = PosIndexCbo(recibo.moneda.id, Me.cboMonedas)
     DAOCliente.LlenarCombo Me.cboClientes, True, True
-    Me.cboClientes.ListIndex = PosIndexCbo(recibo.Cliente.id, Me.cboClientes)
+    Me.cboClientes.ListIndex = PosIndexCbo(recibo.cliente.id, Me.cboClientes)
 
 
     Me.gridCajaOperaciones.ItemCount = recibo.OperacionesCaja.count
@@ -1056,7 +1056,7 @@ Private Sub cboClientes_Click()
             If recibo.facturas.count > 0 Then
                 If MsgBox("Va a cambiar de cliente y perder las facturas." & vbNewLine & "¿Desea continuar?", vbQuestion + vbYesNo) = vbNo Then
                     clienteChange = True
-                    Me.cboClientes.ListIndex = funciones.PosIndexCbo(recibo.Cliente.id, Me.cboClientes)
+                    Me.cboClientes.ListIndex = funciones.PosIndexCbo(recibo.cliente.id, Me.cboClientes)
                     clienteChange = False
                     Exit Sub
 
@@ -1064,7 +1064,7 @@ Private Sub cboClientes_Click()
             End If
             VaciarFacturasRetenciones
             CargarFacturasCliente
-            Set recibo.Cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
+            Set recibo.cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
             'Else
             '    VaciarFacturasRetenciones
             '    CargarFacturasCliente
@@ -1078,7 +1078,7 @@ End Sub
 
 Private Sub cboMonedas_Click()
     If Me.cboMonedas.ListIndex <> -1 And dataLoaded Then
-        Set recibo.Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+        Set recibo.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
         Totalizar
     End If
 End Sub
@@ -1135,8 +1135,8 @@ Private Sub Totalizar()
         lblTotalRecibo.BackColor = vbGreen
     End If
 
-    Me.lblDiferencia.caption = Me.lblDiferencia.Tag & funciones.FormatearDecimales(totalCancelado - MonedaConverter.Convertir(totalRecibo, recibo.Moneda.id, DAOMoneda.MONEDA_PESO_ID))
-    Debug.Print MonedaConverter.Convertir(totalRecibo, recibo.Moneda.id, DAOMoneda.MONEDA_PESO_ID)
+    Me.lblDiferencia.caption = Me.lblDiferencia.Tag & funciones.FormatearDecimales(totalCancelado - MonedaConverter.Convertir(totalRecibo, recibo.moneda.id, DAOMoneda.MONEDA_PESO_ID))
+    Debug.Print MonedaConverter.Convertir(totalRecibo, recibo.moneda.id, DAOMoneda.MONEDA_PESO_ID)
     recibo.ACuenta = (totalCancelado - totalRecibo)
 End Sub
 
@@ -1217,7 +1217,7 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
     operacion.Pertenencia = OrigenOperacion.caja
     operacion.Monto = Values(1)
     If IsNumeric(Values(2)) Then
-        Set operacion.Moneda = DAOMoneda.GetById(Values(2))
+        Set operacion.moneda = DAOMoneda.GetById(Values(2))
     End If
     operacion.FechaOperacion = Values(3)
     If IsNumeric(Values(4)) Then
@@ -1240,8 +1240,8 @@ Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
     If RowIndex <= recibo.OperacionesCaja.count Then
         Set operacion = recibo.OperacionesCaja.item(RowIndex)
         Values(1) = funciones.FormatearDecimales(operacion.Monto)
-        If IsSomething(operacion.Moneda) Then
-            Values(2) = operacion.Moneda.NombreCorto
+        If IsSomething(operacion.moneda) Then
+            Values(2) = operacion.moneda.NombreCorto
         End If
         Values(3) = operacion.FechaOperacion
         If IsSomething(operacion.caja) Then
@@ -1258,7 +1258,7 @@ Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Book
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
         If IsNumeric(Values(2)) Then
-            Set operacion.Moneda = DAOMoneda.GetById(Values(2))
+            Set operacion.moneda = DAOMoneda.GetById(Values(2))
         End If
         operacion.FechaOperacion = Values(3)
         If IsNumeric(Values(4)) Then
@@ -1280,7 +1280,7 @@ End Sub
 Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     If Me.gridCheques.row = -1 Then    'es nuevo
         If Val(Me.gridCheques.value(6)) = -1 Then
-            Me.gridCheques.value(7) = recibo.Cliente.razon
+            Me.gridCheques.value(7) = recibo.cliente.razon
         End If
     End If
 
@@ -1297,7 +1297,7 @@ Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVari
     If IsNumeric(Values(4)) Then Set cheque.Banco = DAOBancos.GetById(Values(4))
     cheque.EnCartera = True
     cheque.FechaRecibido = recibo.FEcha
-    If IsNumeric(Values(3)) Then Set cheque.Moneda = DAOMoneda.GetById(Values(3))
+    If IsNumeric(Values(3)) Then Set cheque.moneda = DAOMoneda.GetById(Values(3))
     cheque.Monto = funciones.RedondearDecimales(Val(Values(2)))
     cheque.numero = Values(1)
     cheque.Propio = False
@@ -1306,7 +1306,7 @@ Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVari
     cheque.TercerosPropio = (Values(6) = -1)
 
     If cheque.TercerosPropio Then
-        cheque.OrigenDestino = recibo.Cliente.razon
+        cheque.OrigenDestino = recibo.cliente.razon
     Else
         cheque.OrigenDestino = Values(7)
     End If
@@ -1329,7 +1329,7 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Values(2) = funciones.FormatearDecimales(cheque.Monto)
         Values(6) = cheque.TercerosPropio
         Values(7) = cheque.OrigenDestino
-        If IsSomething(cheque.Moneda) Then Values(3) = cheque.Moneda.NombreCorto
+        If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
         If CDbl(cheque.FechaVencimiento) > 0 Then Values(5) = cheque.FechaVencimiento
         Totalizar
@@ -1342,7 +1342,7 @@ Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As 
         If IsNumeric(Values(4)) Then Set cheque.Banco = DAOBancos.GetById(Values(4))
         cheque.EnCartera = True
         cheque.FechaRecibido = recibo.FEcha
-        If IsNumeric(Values(3)) Then Set cheque.Moneda = DAOMoneda.GetById(Values(3))
+        If IsNumeric(Values(3)) Then Set cheque.moneda = DAOMoneda.GetById(Values(3))
         cheque.Monto = Val(Values(2))
         cheque.numero = Values(1)
         cheque.Propio = False
@@ -1381,7 +1381,7 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
     operacion.Pertenencia = OrigenOperacion.Banco
     operacion.Monto = Values(1)
     If IsNumeric(Values(2)) Then
-        Set operacion.Moneda = DAOMoneda.GetById(Values(2))
+        Set operacion.moneda = DAOMoneda.GetById(Values(2))
     End If
     operacion.FechaOperacion = Values(3)
     If IsNumeric(Values(4)) Then
@@ -1406,8 +1406,8 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByV
     If RowIndex <= recibo.OperacionesBanco.count Then
         Set operacion = recibo.OperacionesBanco.item(RowIndex)
         Values(1) = funciones.FormatearDecimales(operacion.Monto)
-        If IsSomething(operacion.Moneda) Then
-            Values(2) = operacion.Moneda.NombreCorto
+        If IsSomething(operacion.moneda) Then
+            Values(2) = operacion.moneda.NombreCorto
         End If
         Values(3) = operacion.FechaOperacion
         If IsSomething(operacion.CuentaBancaria) Then
@@ -1424,7 +1424,7 @@ Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
         If IsNumeric(Values(2)) Then
-            Set operacion.Moneda = DAOMoneda.GetById(Values(2))
+            Set operacion.moneda = DAOMoneda.GetById(Values(2))
         End If
         operacion.FechaOperacion = Values(3)
         If IsNumeric(Values(4)) Then
@@ -1513,9 +1513,9 @@ End Sub
 
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And monedas.count > 0 Then
-        Set Moneda = monedas.item(RowIndex)
-        Values(1) = Moneda.id
-        Values(2) = Moneda.NombreCorto
+        Set moneda = monedas.item(RowIndex)
+        Values(1) = moneda.id
+        Values(2) = moneda.NombreCorto
     End If
 End Sub
 

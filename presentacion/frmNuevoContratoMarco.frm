@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmNuevoContratoMarco 
@@ -121,7 +121,7 @@ Begin VB.Form frmNuevoContratoMarco
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   56492033
+      Format          =   59506689
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdCerrar 
@@ -146,7 +146,7 @@ Begin VB.Form frmNuevoContratoMarco
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   56492033
+      Format          =   59506689
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.ComboBox cboCliente 
@@ -330,13 +330,13 @@ Private Sub cmdGuardar_Click()
 
     'Set ot.FechasPreciosMarco = fechas
 
-    Set Ot.Cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
+    Set Ot.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
     Set Ot.ClienteFacturar = DAOCliente.BuscarPorID(Me.cboClienteFacturar.ItemData(Me.cboClienteFacturar.ListIndex))
 
     Ot.FechaInicioMarco = Me.dtpFechaInicio.value
     Ot.FechaFinMarco = Me.dtpFin.value
     Ot.descripcion = Me.txtReferencia.text
-    Set Ot.Moneda = monedas.item(CStr(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
+    Set Ot.moneda = monedas.item(CStr(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
 
     Ot.FechaEntrega = Me.dtpFin.value
     Ot.OTMarcoIdPadre = -1

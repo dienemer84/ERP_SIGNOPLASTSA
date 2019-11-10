@@ -346,7 +346,7 @@ Private Sub Command1_Click()
 
 
     For Each rc In rs
-        If rc.estado = Aprobado Then
+        If rc.Estado = EstadoRecibo.Aprobado Then
             rc.TotalEstatico.TotalReciboEstatico = rc.Total
         End If
     Next
@@ -433,7 +433,7 @@ End Sub
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.nro.caption = "[ Nro. " & Format(recibo.id, "0000") & " ]"
-        If recibo.estado = EstadoRecibo.pendiente Then   'pendiente
+        If recibo.Estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True
             Me.imprimirRecibo.Enabled = False
             Me.mnuAnular.Enabled = False
@@ -441,7 +441,7 @@ Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Sin
             If Permisos.AdminCobrosAprobaciones = False Then
                 Me.aprobarRecibo.Enabled = False
             End If
-        ElseIf recibo.estado = EstadoRecibo.Aprobado Then      'aprobado
+        ElseIf recibo.Estado = EstadoRecibo.Aprobado Then      'aprobado
             Me.imprimirRecibo.Enabled = True
             Me.editarRecibo.Enabled = False
             Me.aprobarRecibo.Enabled = False
@@ -450,13 +450,13 @@ Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Sin
                 Me.mnuAnular.Enabled = False
             End If
 
-        ElseIf recibo.estado = EstadoRecibo.pendiente Then    'anulado
+        ElseIf recibo.Estado = EstadoRecibo.Pendiente Then    'anulado
             Me.editarRecibo.Enabled = False
             Me.imprimirRecibo.Enabled = True
             Me.aprobarRecibo.Enabled = False
             Me.mnuAnular.Enabled = False
 
-        ElseIf recibo.estado = EstadoRecibo.Reciboanulado Then    'anulado
+        ElseIf recibo.Estado = EstadoRecibo.Reciboanulado Then    'anulado
             Me.editarRecibo.Enabled = False
             Me.imprimirRecibo.Enabled = True
             Me.aprobarRecibo.Enabled = False
@@ -500,9 +500,9 @@ Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmar
     
     
     
-    Values(3) = recibo.Cliente.razon
+    Values(3) = recibo.cliente.razon
     Values(4) = recibo.FechaCreacion
-    Values(5) = enums.EnumEstadoRecibo(recibo.estado)
+    Values(5) = enums.EnumEstadoRecibo(recibo.Estado)
     Values(6) = IIf(IsEmpty(tmpArchivos(recibo.id)), 0, tmpArchivos(recibo.id))
 End Sub
 

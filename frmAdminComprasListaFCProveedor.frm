@@ -475,7 +475,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   15
+      ColumnsCount    =   16
       Column(1)       =   "frmAdminComprasListaFCProveedor.frx":0326
       Column(2)       =   "frmAdminComprasListaFCProveedor.frx":045E
       Column(3)       =   "frmAdminComprasListaFCProveedor.frx":0536
@@ -491,19 +491,20 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(13)      =   "frmAdminComprasListaFCProveedor.frx":15E6
       Column(14)      =   "frmAdminComprasListaFCProveedor.frx":16EA
       Column(15)      =   "frmAdminComprasListaFCProveedor.frx":182A
+      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":196A
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":196A
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1AA2
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1B52
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":1C06
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":1CDE
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":1D96
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":1E76
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":1F36
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":1FFA
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1A5E
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1B96
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1C46
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":1CFA
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":1DD2
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":1E8A
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":1F6A
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":202A
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":20EE
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":20BA
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":23D4
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":21AE
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":24C8
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -811,10 +812,10 @@ Public Sub llenarGrilla()
 
 
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-        Total = Total + MonedaConverter.Convertir(F.Total * c, F.Moneda.id, MonedaConverter.Patron.id)
-        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.Moneda.id, MonedaConverter.Patron.id)
-        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.Moneda.id, MonedaConverter.Patron.id)
-        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.Moneda.id, MonedaConverter.Patron.id)
+        Total = Total + MonedaConverter.Convertir(F.Total * c, F.moneda.id, MonedaConverter.Patron.id)
+        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
+        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
+        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.moneda.id, MonedaConverter.Patron.id)
     Next
 
 
@@ -912,7 +913,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(1) = funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial)
         Values(2) = Factura.NumeroFormateado
         Values(3) = Factura.FEcha
-        Values(4) = Factura.Moneda.NombreCorto
+        Values(4) = Factura.moneda.NombreCorto
         Values(5) = funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i
         Values(6) = funciones.FormatearDecimales(Factura.TotalIVA) * i
         Values(7) = funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i
@@ -931,6 +932,8 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         End If
         Values(15) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
         If Factura.OrdenPagoId > 0 Then Values(14) = Factura.OrdenPagoId
+        
+                    Values(16) = Factura.TipoCambio
     End With
 End Sub
 
@@ -964,7 +967,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 rectmp.Monto = tmp.Monto
                 rectmp.numero = tmp.numero
                 rectmp.FormaPagoCuentaCorriente = tmp.FormaPagoCuentaCorriente
-                Set rectmp.Moneda = tmp.Moneda
+                Set rectmp.moneda = tmp.moneda
                 Me.grilla.RefreshRowIndex i
                 Exit For
             End If
@@ -997,13 +1000,14 @@ Private Sub mnuEliminar_Click()
 End Sub
 
 Private Sub mnuPagarEnEfectivo_Click()
-    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.Moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
+    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
         Dim fechaPago As String
         fechaPago = InputBox("Ingrese la fecha de pago de factura", , Factura.FEcha)
         If IsDate(fechaPago) Then
             If DAOFacturaProveedor.PagarEnEfectivo(Factura, CDate(fechaPago), True) Then
                 MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().id & ".", vbInformation
                 llenarGrilla
+                Me.txtComprobante.SetFocus
             Else
                 MsgBox "No se pudo registrar el pago de la factura.", vbCritical
             End If

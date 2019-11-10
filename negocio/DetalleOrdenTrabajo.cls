@@ -32,7 +32,7 @@ Public EtiquetasImpresas As Double
 Public CantidadEntregada As Double
 Public CantidadFacturada As Double
 Public CantidadFabricados As Double
-
+Public CantidadEnviadasAStock As Double
 
 Public CantidadEntregadaStatic As Double
 Public CantidadFacturadaStatic As Double

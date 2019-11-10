@@ -21,6 +21,8 @@ Public estado As EstadoDetalleFacturaCliente
 Public DescuentoAnticipo As Boolean
 Public Bruto As Double  'bruto, sin descuento
 
+
+Public idProvincia As Long
 Public detalle As String
 Public Cantidad As Double
 Public IvaAplicado As Boolean

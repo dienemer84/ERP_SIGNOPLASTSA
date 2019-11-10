@@ -397,11 +397,11 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(6) = enums.enumUnidades(.unidad)
         Values(7) = .PesoXUnidad
         Values(8) = .Valor
-        Values(9) = .Moneda.NombreCorto
+        Values(9) = .moneda.NombreCorto
         Values(10) = .FechaValor
         Values(11) = .Cantidad
         Values(12) = .almacen.almacen
-        Values(13) = enums.enumEstadoMaterial(.estado)
+        Values(13) = enums.enumEstadoMaterial(.Estado)
         If .Tipo <> 0 Then Values(14) = enums.EnumTipoMaterial(.Tipo)
         Values(15) = funciones.JoinCollectionValues(.Atributos, ", ")
         Values(17) = .Aprobado
@@ -419,7 +419,7 @@ Private Sub editamos()
         If A = 0 Then Exit Sub
 
         Dim frm1 As New frmMaterialesNuevo
-        frm1.material = Materiales(grilla.RowIndex(grilla.row))
+        frm1.Material = Materiales(grilla.RowIndex(grilla.row))
         frm1.Show
     End If
 End Sub
@@ -443,7 +443,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 rectemp.Valor = tmp.Valor
                 rectemp.descripcion = tmp.descripcion
                 rectemp.Grupo = tmp.Grupo
-                rectemp.estado = tmp.estado
+                rectemp.Estado = tmp.Estado
                 rectemp.almacen = tmp.almacen
                 rectemp.Cantidad = tmp.Cantidad
                 rectemp.FechaValor = tmp.FechaValor
@@ -522,7 +522,7 @@ Public Function BuildCodigoMaterial(MAT As clsMaterial) As String
 End Function
 
 Private Sub mnuHistoricoaAprobacion_Click()
-Dim f As New frmHistoricoMateriales
-f.idMaterial = rectemp.id
-f.Show
+Dim F As New frmHistoricoMateriales
+F.IdMaterial = rectemp.id
+F.Show
 End Sub

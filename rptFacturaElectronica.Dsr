@@ -10,7 +10,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    _ExtentY        =   18494
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11100
+   ReportWidth     =   11547
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -30,8 +30,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    BeginProperty Section0 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "header"
-      Object.Height          =   3015
-      NumControls     =   15
+      Object.Height          =   3105
+      NumControls     =   18
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -188,7 +188,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "LBLDescripcionCodigoDocumento"
          Object.Left            =   6555
-         Object.Top             =   345
+         Object.Top             =   120
          Object.Width           =   4125
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -207,7 +207,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "lblNumeroDocumento"
          Object.Left            =   6555
-         Object.Top             =   720
+         Object.Top             =   465
          Object.Width           =   4050
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -226,7 +226,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "lblFecha"
          Object.Left            =   6555
-         Object.Top             =   1080
+         Object.Top             =   810
          Object.Width           =   4065
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -244,8 +244,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item12 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta1"
-         Object.Left            =   6555
-         Object.Top             =   1665
+         Object.Left            =   6540
+         Object.Top             =   1470
          Object.Width           =   4125
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -264,7 +264,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "Etiqueta6"
          Object.Left            =   6555
-         Object.Top             =   1980
+         Object.Top             =   1725
          Object.Width           =   4020
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -282,8 +282,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta7"
-         Object.Left            =   6555
-         Object.Top             =   2280
+         Object.Left            =   6540
+         Object.Top             =   2025
          Object.Width           =   4050
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -296,6 +296,68 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "Inicio de Actividades 07-1992"
+      EndProperty
+      ItemType15      =   3
+      BeginProperty Item15 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblFce"
+         Object.Left            =   5655
+         Object.Top             =   2625
+         Object.Width           =   5325
+         Object.Height          =   330
+         Object.Visible         =   0   'False
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "FCE"
+         Alignment       =   2
+      EndProperty
+      ItemType16      =   3
+      BeginProperty Item16 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblFechaPagoFce"
+         Object.Left            =   6555
+         Object.Top             =   1140
+         Object.Width           =   4065
+         Object.Height          =   570
+         Object.Visible         =   0   'False
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "29/06/2015"
+      EndProperty
+      ItemType17      =   3
+      BeginProperty Item17 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblCbuEmisorFce"
+         Object.Left            =   5655
+         Object.Top             =   2295
+         Object.Width           =   5325
+         Object.Height          =   330
+         Object.Visible         =   0   'False
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "FCE"
+         Alignment       =   2
       EndProperty
    EndProperty
    SectionCode1    =   2
