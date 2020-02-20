@@ -311,7 +311,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   59768833
+         Format          =   60162049
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -323,7 +323,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   59768833
+         Format          =   60162049
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -821,9 +821,9 @@ Private Sub CargarOrdenTrabajo()
     Command7.Enabled = Not ActualizacionPrecios
     cmdDefinirPrecios.Enabled = Not ActualizacionPrecios
     Command2.Enabled = Not ActualizacionPrecios
-    cmdAgregarPieza.Enabled = Not ActualizacionPrecios
-    Frame1.Enabled = Not ActualizacionPrecios
-
+    'cmdAgregarPieza.Enabled = Not ActualizacionPrecios
+    
+    txtReferencia.Enabled = True
     If ActualizacionPrecios Then
         Dim col As JSColumn
         For Each col In Me.grid.Columns
@@ -958,7 +958,13 @@ Private Sub Command3_Click()
             Next detaOT
             If result Then
                 conectar.execute "UPDATE pedidos SET ultima_fecha_actualizacion_precios = NOW() WHERE id = " & m_ot.id
+                conectar.execute "UPDATE pedidos SET descripcion = '" & m_ot.descripcion & "' WHERE id = " & m_ot.id
                 conectar.CommitTransaction
+                 Dim EVENTO As New clsEventoObserver
+                Set EVENTO.Elemento = m_ot
+                Set EVENTO.Originador = Me
+                EVENTO.EVENTO = modificar_
+                Channel.Notificar EVENTO, ordenesTrabajo
                 MsgBox "Los precios de los detalles se editaron correctamente", vbInformation + vbOKOnly
             Else
                 conectar.RollBackTransaction
@@ -966,11 +972,11 @@ Private Sub Command3_Click()
             End If
         Else
             If DAOOrdenTrabajo.Save(m_ot) Then
-                Dim EVENTO As New clsEventoObserver
-                Set EVENTO.Elemento = m_ot
-                Set EVENTO.Originador = Me
-                EVENTO.EVENTO = modificar_
-                Channel.Notificar EVENTO, ordenesTrabajo
+                Dim EVENTO1 As New clsEventoObserver
+                Set EVENTO1.Elemento = m_ot
+                Set EVENTO1.Originador = Me
+                EVENTO1.EVENTO = modificar_
+                Channel.Notificar EVENTO1, ordenesTrabajo
                 MsgBox "La orden se edito correctamente", vbInformation + vbOKOnly
             Else
                 MsgBox "Se produjo un error al editar la orden", vbCritical, "Error"

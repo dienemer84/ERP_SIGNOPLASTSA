@@ -1,10 +1,10 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCategoriasSueldo 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Categorias de sueldo"
-   ClientHeight    =   5790
+   ClientHeight    =   5835
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   6060
@@ -22,7 +22,7 @@ Begin VB.Form frmCategoriasSueldo
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   5790
+   ScaleHeight     =   5835
    ScaleWidth      =   6060
    Begin XtremeReportControl.ReportControl ReportControl 
       Height          =   3450
@@ -192,7 +192,27 @@ Private Sub ActivarControles()
 End Sub
 
 Private Sub cmdActualizarValores_Click()
-    MsgBox "falta implementar"
+    On Error GoTo err1:
+    Dim sueldo As Double
+    
+    sueldo = Val(InputBox("Ingrese incremental", "Actualización Salarial Global", 0))
+    Dim cat As CategoriaSueldo
+    
+    Dim categorias As Collection
+    conectar.BeginTransaction
+    Set categorias = DAOCategoriaSueldo.FindAll()
+    Dim porc As Double
+    porc = 1 + (sueldo / 100)
+    For Each cat In categorias
+    cat.Valor = funciones.RedondearDecimales(cat.Valor * porc, 2)
+     If Not DAOCategoriaSueldo.Save(cat) Then GoTo err1
+    Next
+    conectar.CommitTransaction
+    MsgBox "Actualización correcta de categorias", vbInformation, "Información"
+    Exit Sub
+err1:
+    MsgBox "Se produjo un error al actualizar los valores. Por favor, contacar al dto. de Sistemas", vbCritical, "Error"
+    conectar.RollBackTransaction
 End Sub
 
 Private Sub cmdCancelar_Click()

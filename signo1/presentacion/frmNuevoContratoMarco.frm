@@ -121,7 +121,7 @@ Begin VB.Form frmNuevoContratoMarco
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   60227585
+      Format          =   59506689
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdCerrar 
@@ -146,7 +146,7 @@ Begin VB.Form frmNuevoContratoMarco
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   60227585
+      Format          =   59506689
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.ComboBox cboCliente 

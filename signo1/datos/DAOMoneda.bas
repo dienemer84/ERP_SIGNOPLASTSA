@@ -20,7 +20,7 @@ Public Function GetAll(Optional filtro As String = vbNullString) As Collection
     Dim col As New Collection
     Dim idx As Dictionary
 
-    Dim Moneda As clsMoneda
+    Dim moneda As clsMoneda
     Dim q As String
 
     Dim withPatron As Boolean
@@ -42,12 +42,12 @@ Public Function GetAll(Optional filtro As String = vbNullString) As Collection
 
     While Not rs.EOF
         If Not withPatron Then
-            Set Moneda = Map(rs, idx, "mon")
+            Set moneda = Map(rs, idx, "mon")
         Else
 
-            Set Moneda = Map(rs, idx, "mon", "mon2")
+            Set moneda = Map(rs, idx, "mon", "mon2")
         End If
-        col.Add Moneda, CStr(Moneda.id)
+        col.Add moneda, CStr(moneda.id)
         rs.MoveNext
     Wend
 
@@ -66,12 +66,12 @@ End Function
 Public Sub LlenarCombo(cbo As ComboBox)
     Dim col As Collection
     Set col = DAOMoneda.GetAll()
-    Dim Moneda As clsMoneda
+    Dim moneda As clsMoneda
     cbo.Clear
     For i = 1 To col.count
-        Set Moneda = col(i)
-        cbo.AddItem Moneda.NombreCorto
-        cbo.ItemData(cbo.NewIndex) = Moneda.id
+        Set moneda = col(i)
+        cbo.AddItem moneda.NombreCorto
+        cbo.ItemData(cbo.NewIndex) = moneda.id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -82,17 +82,17 @@ End Sub
 Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, Optional withValue As Boolean = False)
     Dim col As Collection
     Set col = DAOMoneda.GetAll
-    Dim Moneda As clsMoneda
+    Dim moneda As clsMoneda
     cbo.Clear
     For i = 1 To col.count
-        Set Moneda = col(i)
+        Set moneda = col(i)
         If withValue Then
-            cbo.AddItem Moneda.NombreCorto & " | " & Moneda.Cambio
+            cbo.AddItem moneda.NombreCorto & " | " & moneda.Cambio
 
         Else
-            cbo.AddItem Moneda.NombreCorto
+            cbo.AddItem moneda.NombreCorto
         End If
-        cbo.ItemData(cbo.NewIndex) = Moneda.id
+        cbo.ItemData(cbo.NewIndex) = moneda.id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0

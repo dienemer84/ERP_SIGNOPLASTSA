@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~2.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~1.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.MDIForm frmPrincipal 
    BackColor       =   &H00FFC0C0&
@@ -539,7 +539,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
         Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO:
             Dim ff111 As New frmVentasClienteNuevo
-            ff111.Cliente = Nothing
+            ff111.cliente = Nothing
             ff111.Show
         Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO: frmVentasClientesLista.Show
 
@@ -681,9 +681,9 @@ Public Sub mostrarTablero()
     Dim sp As New classSignoplast
     Dim marcado As Boolean
 
-    Dim a As Long
-    a = sp.cantidadGruposUsuario(funciones.getUser)
-    If a > 0 Then
+    Dim A As Long
+    A = sp.cantidadGruposUsuario(funciones.getUser)
+    If A > 0 Then
         If marcado Then
             frmSistemaTablero.Show
         Else
@@ -1046,7 +1046,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Crear", ID_BUTTON.ID_BUTTON_ADMIN_LIQUIDACIONES_VER
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Varios", ID_GROUP.ID_GROUP_ADMINISTRACION__VARIOS)
-    AddButton ribbonGroup, "Padrón IIBB", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__PADRON_IIBB, Permisos.AdminIIBB
+    AddButton ribbonGroup, "Padrones IIBB", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__PADRON_IIBB, Permisos.AdminIIBB
     AddButton ribbonGroup, "Centro de cambio", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__CENTRO_CAMBIO, Permisos.AdminCentroCambio
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Subdiarios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS, , , xtpControlButtonPopup)

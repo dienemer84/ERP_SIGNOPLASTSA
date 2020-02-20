@@ -7,7 +7,7 @@ Begin VB.Form frmFacturaEdicion
    ClientHeight    =   10080
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   10515
+   ClientWidth     =   11655
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -23,12 +23,12 @@ Begin VB.Form frmFacturaEdicion
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   10080
-   ScaleWidth      =   10515
+   ScaleWidth      =   11655
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1575
-      Left            =   7815
+      Left            =   9000
       TabIndex        =   43
-      Top             =   8370
+      Top             =   8400
       Width           =   2580
       _Version        =   786432
       _ExtentX        =   4551
@@ -206,9 +206,9 @@ Begin VB.Form frmFacturaEdicion
       Left            =   -15
       TabIndex        =   42
       Top             =   -60
-      Width           =   10590
+      Width           =   11550
       _Version        =   786432
-      _ExtentX        =   18680
+      _ExtentX        =   20373
       _ExtentY        =   503
       _StockProps     =   79
       Caption         =   "Buscando Percepcion..."
@@ -228,9 +228,9 @@ Begin VB.Form frmFacturaEdicion
       Left            =   105
       TabIndex        =   17
       Top             =   210
-      Width           =   10275
+      Width           =   11475
       _Version        =   786432
-      _ExtentX        =   18124
+      _ExtentX        =   20241
       _ExtentY        =   6694
       _StockProps     =   79
       Caption         =   "Datos"
@@ -265,12 +265,12 @@ Begin VB.Form frmFacturaEdicion
       End
       Begin XtremeSuiteControls.GroupBox grpPercep 
          Height          =   1110
-         Left            =   6885
+         Left            =   6840
          TabIndex        =   34
          Top             =   2535
-         Width           =   3240
+         Width           =   4440
          _Version        =   786432
-         _ExtentX        =   5715
+         _ExtentX        =   7832
          _ExtentY        =   1958
          _StockProps     =   79
          Caption         =   "Percepciones IIBB"
@@ -280,16 +280,16 @@ Begin VB.Form frmFacturaEdicion
             Left            =   1440
             TabIndex        =   9
             Top             =   660
-            Width           =   675
+            Width           =   2715
          End
          Begin XtremeSuiteControls.ComboBox cboPadron 
             Height          =   315
             Left            =   1485
             TabIndex        =   8
             Top             =   285
-            Width           =   1380
+            Width           =   2700
             _Version        =   786432
-            _ExtentX        =   2434
+            _ExtentX        =   4762
             _ExtentY        =   556
             _StockProps     =   77
             BackColor       =   -2147483643
@@ -339,11 +339,11 @@ Begin VB.Form frmFacturaEdicion
             EndProperty
             ForeColor       =   &H00FFFFFF&
             Height          =   210
-            Left            =   1530
+            Left            =   1560
             TabIndex        =   35
             Top             =   0
             Visible         =   0   'False
-            Width           =   1590
+            Width           =   2670
          End
       End
       Begin VB.TextBox txtNumero 
@@ -362,7 +362,7 @@ Begin VB.Form frmFacturaEdicion
          TabIndex        =   1
          Text            =   "999999"
          Top             =   765
-         Width           =   2115
+         Width           =   3300
       End
       Begin XtremeSuiteControls.ComboBox cboCliente 
          Height          =   315
@@ -382,9 +382,9 @@ Begin VB.Form frmFacturaEdicion
          Left            =   7980
          TabIndex        =   2
          Top             =   1320
-         Width           =   1680
+         Width           =   3360
          _Version        =   786432
-         _ExtentX        =   2963
+         _ExtentX        =   5927
          _ExtentY        =   714
          _StockProps     =   68
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -400,14 +400,14 @@ Begin VB.Form frmFacturaEdicion
          CurrentDate     =   40234.4177546296
       End
       Begin XtremeSuiteControls.ComboBox cboMoneda 
-         Height          =   315
+         Height          =   405
          Left            =   7995
          TabIndex        =   3
          Top             =   1875
-         Width           =   1275
+         Width           =   3300
          _Version        =   786432
-         _ExtentX        =   2249
-         _ExtentY        =   556
+         _ExtentX        =   5821
+         _ExtentY        =   714
          _StockProps     =   77
          BackColor       =   -2147483643
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -429,9 +429,9 @@ Begin VB.Form frmFacturaEdicion
          Left            =   8010
          TabIndex        =   57
          Top             =   255
-         Width           =   2130
+         Width           =   3330
          _Version        =   786432
-         _ExtentX        =   3757
+         _ExtentX        =   5874
          _ExtentY        =   635
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -747,9 +747,9 @@ Begin VB.Form frmFacturaEdicion
       Left            =   120
       TabIndex        =   41
       Top             =   4035
-      Width           =   10275
+      Width           =   11475
       _Version        =   786432
-      _ExtentX        =   18124
+      _ExtentX        =   20241
       _ExtentY        =   7514
       _StockProps     =   79
       Caption         =   "Detalles (Cant: 0)"
@@ -759,8 +759,8 @@ Begin VB.Form frmFacturaEdicion
          Left            =   105
          TabIndex        =   10
          Top             =   240
-         Width           =   10050
-         _ExtentX        =   17727
+         Width           =   11250
+         _ExtentX        =   19844
          _ExtentY        =   6879
          Version         =   "2.0"
          PreviewRowIndent=   300
@@ -781,7 +781,7 @@ Begin VB.Form frmFacturaEdicion
          IntProp1        =   0
          IntProp2        =   0
          IntProp7        =   0
-         ColumnsCount    =   9
+         ColumnsCount    =   10
          Column(1)       =   "frmFacturaEdicion.frx":000C
          Column(2)       =   "frmFacturaEdicion.frx":0144
          Column(3)       =   "frmFacturaEdicion.frx":0238
@@ -791,20 +791,21 @@ Begin VB.Form frmFacturaEdicion
          Column(7)       =   "frmFacturaEdicion.frx":06E4
          Column(8)       =   "frmFacturaEdicion.frx":080C
          Column(9)       =   "frmFacturaEdicion.frx":093C
+         Column(10)      =   "frmFacturaEdicion.frx":0A4C
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmFacturaEdicion.frx":0A4C
-         FormatStyle(2)  =   "frmFacturaEdicion.frx":0B74
-         FormatStyle(3)  =   "frmFacturaEdicion.frx":0C24
-         FormatStyle(4)  =   "frmFacturaEdicion.frx":0CD8
-         FormatStyle(5)  =   "frmFacturaEdicion.frx":0DB0
-         FormatStyle(6)  =   "frmFacturaEdicion.frx":0E68
+         FormatStyle(1)  =   "frmFacturaEdicion.frx":0B44
+         FormatStyle(2)  =   "frmFacturaEdicion.frx":0C6C
+         FormatStyle(3)  =   "frmFacturaEdicion.frx":0D1C
+         FormatStyle(4)  =   "frmFacturaEdicion.frx":0DD0
+         FormatStyle(5)  =   "frmFacturaEdicion.frx":0EA8
+         FormatStyle(6)  =   "frmFacturaEdicion.frx":0F60
          ImageCount      =   0
-         PrinterProperties=   "frmFacturaEdicion.frx":0F48
+         PrinterProperties=   "frmFacturaEdicion.frx":1040
       End
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
       Height          =   360
-      Left            =   5670
+      Left            =   6840
       TabIndex        =   16
       Top             =   9600
       Width           =   2055
@@ -830,7 +831,7 @@ Begin VB.Form frmFacturaEdicion
    End
    Begin XtremeSuiteControls.PushButton btnItemsDescuentoAnticipo 
       Height          =   360
-      Left            =   5670
+      Left            =   6840
       TabIndex        =   14
       Top             =   8385
       Width           =   2055
@@ -856,7 +857,7 @@ Begin VB.Form frmFacturaEdicion
    End
    Begin XtremeSuiteControls.PushButton cmdNueva 
       Height          =   360
-      Left            =   5670
+      Left            =   6840
       TabIndex        =   15
       Top             =   9180
       Width           =   2055
@@ -1651,6 +1652,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(7) = detalle.IvaAplicado
         Values(8) = detalle.IBAplicado
         Values(9) = detalle.VerOrigen
+        Values(10) = detalle.idProvincia
     End If
 End Sub
 

@@ -46,6 +46,10 @@ End Enum
 Public Enum TipoPadron
     TipoPadronRetencion = 0
     TipoPadronPercepcion = 1
+    'Agrega Nemer para poder cargar el Padron CABA
+    TipoPadronUnificadoCABA = 2
+ 
+    
 End Enum
 
 Public Enum TipoDocumento

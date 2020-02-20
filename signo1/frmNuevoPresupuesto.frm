@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmVentasPresupuestoEditar 
@@ -220,7 +220,7 @@ Begin VB.Form frmVentasPresupuestoEditar
          _ExtentX        =   2143
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   74317825
+         Format          =   60162049
          CurrentDate     =   38926
       End
       Begin XtremeSuiteControls.PushButton Command6 
@@ -1670,11 +1670,11 @@ Public Function MostrarPresupuesto(Optional BeforSave As Boolean = False)
     Me.txtFormaPagoAnticipo = tmpPresupuesto.FormaPagoAnticipo
     Me.txtFormaPagoSaldo = tmpPresupuesto.FormaPagoSaldo
     Me.manteOferta = tmpPresupuesto.manteOferta
-    Me.cboMoneda.ListIndex = tmpPresupuesto.Moneda.id
+    Me.cboMoneda.ListIndex = tmpPresupuesto.moneda.id
     Me.txtReferencia = tmpPresupuesto.detalle
     Me.txtDias = tmpPresupuesto.FechaEntrega
     Me.txtDescuento = tmpPresupuesto.Descuento
-    Me.cboCliente.ListIndex = PosIndexCbo(tmpPresupuesto.Cliente.id, Me.cboCliente)
+    Me.cboCliente.ListIndex = PosIndexCbo(tmpPresupuesto.cliente.id, Me.cboCliente)
     Me.DTVencimiento = tmpPresupuesto.VencimientoPresupuesto
 
     If Not BeforSave Then llenarLista
@@ -1697,7 +1697,7 @@ Private Function Guardar() As Boolean
     End If
     g = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
     If g = 6 Then
-        Set tmpPresupuesto.Cliente = DAOCliente.BuscarPorID(CLng(Me.cboCliente.ItemData(Me.cboCliente.ListIndex)))
+        Set tmpPresupuesto.cliente = DAOCliente.BuscarPorID(CLng(Me.cboCliente.ItemData(Me.cboCliente.ListIndex)))
         tmpPresupuesto.Anticipo = CDbl(Me.txtAnticipo)
         tmpPresupuesto.Descuento = CDbl(Me.txtDescuento)
         tmpPresupuesto.detalle = UCase(Me.txtReferencia)
@@ -1709,7 +1709,7 @@ Private Function Guardar() As Boolean
         tmpPresupuesto.Gastos = CDbl(Me.lblGastos)
         tmpPresupuesto.id = idpresu
         tmpPresupuesto.manteOferta = Me.manteOferta
-        Set tmpPresupuesto.Moneda = DAOMoneda.GetById(CLng(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
+        Set tmpPresupuesto.moneda = DAOMoneda.GetById(CLng(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
         tmpPresupuesto.PorcMas15 = CDbl(mas15)
         tmpPresupuesto.PorcMDO = CDbl(Me.txtMarkupMDO)
         tmpPresupuesto.PorcMen15 = CDbl(men15)
@@ -1751,13 +1751,13 @@ Private Sub cboCliente_Click()
     Inicio = Inicio + 1
     On Error GoTo err1
     If Not tmpPresupuesto Is Nothing Then
-        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> CInt(tmpPresupuesto.Cliente.id) Then
+        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> CInt(tmpPresupuesto.cliente.id) Then
             h = MsgBox("¿Desea cambiar el cliente seleccionado?", vbYesNo, "Confirmación")
             If h = 6 Then
                 Me.grilla.ItemCount = 0
-                Set tmpPresupuesto.Cliente = DAOCliente.BuscarPorID(Me.cboCliente.ListIndex)
+                Set tmpPresupuesto.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ListIndex)
             Else
-                Me.cboCliente.ItemData(Me.cboCliente.ListIndex) = tmpPresupuesto.Cliente.id
+                Me.cboCliente.ItemData(Me.cboCliente.ListIndex) = tmpPresupuesto.cliente.id
             End If
 
         End If
@@ -1775,14 +1775,14 @@ Private Sub cboMoneda_Click()
     On Error Resume Next
     Dim vmo As clsMoneda
     Set vmo = DAOMoneda.GetById(cboMoneda.ItemData(Me.cboMoneda.ListIndex))
-    Set tmpPresupuesto.Moneda = DAOMoneda.GetById(cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+    Set tmpPresupuesto.moneda = DAOMoneda.GetById(cboMoneda.ItemData(Me.cboMoneda.ListIndex))
 End Sub
 Private Sub Command1_Click()
     Dim col As Collection
     Dim id As Long
     Dim f222 As New frmElegirPieza
     f222.Origen = 1    'desde un presupuesto
-    f222.Cliente = tmpPresupuesto.Cliente
+    f222.cliente = tmpPresupuesto.cliente
     f222.Show 1
 End Sub
 
@@ -1894,7 +1894,7 @@ Private Sub imprimirPresu()
     Dim header As String
 
     headercenter = "PRESUPUESTO NUMERO " & tmpPresupuesto.id & Chr(10) _
-                   & "Cliente: " & tmpPresupuesto.Cliente.id & " " & tmpPresupuesto.Cliente.razon & Chr(10) _
+                   & "Cliente: " & tmpPresupuesto.cliente.id & " " & tmpPresupuesto.cliente.razon & Chr(10) _
                    & "Referencia: " & tmpPresupuesto.detalle & Chr(10) _
                    & "Entrega: " & tmpPresupuesto.FechaEntrega & " días" & Chr(10)
 
@@ -1908,8 +1908,8 @@ Private Sub imprimirPresu()
                  & Space(10) & ">15Kg: " & tmpPresupuesto.PorcMas15 & "%" & Chr(10)
 
 
-    footerLeft = "Total Sistema: " & tmpPresupuesto.Moneda.NombreCorto & Space(1) & tmpPresupuesto.Total(Sistema) & Chr(10) _
-                 & "Total Manual: " & tmpPresupuesto.Moneda.NombreCorto & Space(1) & tmpPresupuesto.Total(Manual) & Chr(10) _
+    footerLeft = "Total Sistema: " & tmpPresupuesto.moneda.NombreCorto & Space(1) & tmpPresupuesto.Total(Sistema) & Chr(10) _
+                 & "Total Manual: " & tmpPresupuesto.moneda.NombreCorto & Space(1) & tmpPresupuesto.Total(Manual) & Chr(10) _
                  & "Anticipo " & tmpPresupuesto.Anticipo & " Saldo / FP: " & tmpPresupuesto.FormaPagoAnticipo
 
 
@@ -2077,7 +2077,7 @@ Private Sub grilla_KeyUp(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-    Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If tmpPresupuesto.DetallePresupuesto.count > 0 Then
         Set tmpDetalle = tmpPresupuesto.DetallePresupuesto(grilla.RowIndex(grilla.row))
         If Button = 2 Then
@@ -2110,11 +2110,11 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 
 
-    If tmpDetalle.Pieza.complejidad = ComplejidadAlta Then
+    If tmpDetalle.Pieza.Complejidad = ComplejidadAlta Then
         RowBuffer.CellStyle(14) = "comp_alta"
-    ElseIf tmpDetalle.Pieza.complejidad = ComplejidadMedia Then
+    ElseIf tmpDetalle.Pieza.Complejidad = Complejidadmedia Then
         RowBuffer.CellStyle(14) = "comp_media"
-        ElseIf tmpDetalle.Pieza.complejidad = ComplejidadBaja Then
+        ElseIf tmpDetalle.Pieza.Complejidad = ComplejidadBaja Then
         RowBuffer.CellStyle(14) = "comp_baja"
     End If
 
@@ -2214,7 +2214,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(9) = .PorcentajeMDO & "% (" & .TotalMDO & ")"
         Values(11) = .Pieza.nombre
     Values(13) = .indiceAjuste
-    Values(14) = enums.EnumTiposComplejidad(.Pieza.complejidad)
+    Values(14) = enums.EnumTiposComplejidad(.Pieza.Complejidad)
     End With
 End Sub
 
@@ -2238,7 +2238,7 @@ Private Property Get ISuscriber_id() As String
 End Property
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim col As New Collection
-    Dim X As Long
+    Dim x As Long
     If EVENTO Is Nothing Then
         recalcule
     Else
@@ -2575,11 +2575,11 @@ Public Sub recalcule()
     Me.progreso.Visible = False
     Me.lblRecalculando.Visible = False
 
-    Me.lblTotalMateriales = tmpPresupuesto.Moneda.NombreCorto & " " & tmpPresupuesto.TotalMateriales & " | " & Math.Round(t_ma / tmpPresupuesto.DetallePresupuesto.count, 0) & "%"
-    Me.lblTotalMdo = tmpPresupuesto.Moneda.NombreCorto & " " & tmpPresupuesto.TotalMDO & " | " & Math.Round(t_mo / tmpPresupuesto.DetallePresupuesto.count, 0) & "%"
-    Me.lblCosto = tmpPresupuesto.Moneda.NombreCorto & " " & tmpPresupuesto.Total(SMCosto)
-    Me.lblGg = tmpPresupuesto.Moneda.NombreCorto & " " & tmpPresupuesto.Total(SMGG)
-    Me.lblUtilidad = tmpPresupuesto.Moneda.NombreCorto & " " & tmpPresupuesto.Total(SMUtilidad)
+    Me.lblTotalMateriales = tmpPresupuesto.moneda.NombreCorto & " " & tmpPresupuesto.TotalMateriales & " | " & Math.Round(t_ma / tmpPresupuesto.DetallePresupuesto.count, 0) & "%"
+    Me.lblTotalMdo = tmpPresupuesto.moneda.NombreCorto & " " & tmpPresupuesto.TotalMDO & " | " & Math.Round(t_mo / tmpPresupuesto.DetallePresupuesto.count, 0) & "%"
+    Me.lblCosto = tmpPresupuesto.moneda.NombreCorto & " " & tmpPresupuesto.Total(SMCosto)
+    Me.lblGg = tmpPresupuesto.moneda.NombreCorto & " " & tmpPresupuesto.Total(SMGG)
+    Me.lblUtilidad = tmpPresupuesto.moneda.NombreCorto & " " & tmpPresupuesto.Total(SMUtilidad)
     calcular
     llenarLista
 

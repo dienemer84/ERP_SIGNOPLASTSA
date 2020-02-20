@@ -475,7 +475,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   15
+      ColumnsCount    =   16
       Column(1)       =   "frmAdminComprasListaFCProveedor.frx":0326
       Column(2)       =   "frmAdminComprasListaFCProveedor.frx":045E
       Column(3)       =   "frmAdminComprasListaFCProveedor.frx":0536
@@ -491,19 +491,20 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(13)      =   "frmAdminComprasListaFCProveedor.frx":15E6
       Column(14)      =   "frmAdminComprasListaFCProveedor.frx":16EA
       Column(15)      =   "frmAdminComprasListaFCProveedor.frx":182A
+      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":196A
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":196A
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1AA2
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1B52
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":1C06
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":1CDE
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":1D96
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":1E76
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":1F36
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":1FFA
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1A5E
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1B96
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1C46
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":1CFA
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":1DD2
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":1E8A
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":1F6A
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":202A
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":20EE
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":20BA
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":23D4
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":21AE
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":24C8
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -931,6 +932,8 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         End If
         Values(15) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
         If Factura.OrdenPagoId > 0 Then Values(14) = Factura.OrdenPagoId
+        
+                    Values(16) = Factura.TipoCambio
     End With
 End Sub
 

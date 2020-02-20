@@ -82,7 +82,7 @@ End Sub
 
 
 Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolean
-    On Error GoTo err4
+        On Error GoTo err4
     ActualizarPadronIB = True
     cn.BeginTrans
 
@@ -96,11 +96,13 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
         cn.execute "INSERT INTO sp_permisos.IIBB2_RetencionAnt SELECT * FROM sp_permisos.IIBB2_Retencion"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Retencion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Retencion FIELDS TERMINATED BY ';'"
+    ElseIf Tipo = TipoPadronUnificadoCABA Then
+        cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA_Ant"
+        cn.execute "INSERT INTO sp_permisos.IIBB2_Padron_CABA_Ant SELECT * FROM sp_permisos.IIBB2_Padron_CABA"
+        cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA"
+        cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Padron_CABA FIELDS TERMINATED BY ';'"
     End If
-
-
-
-
+    
     cn.CommitTrans
     Exit Function
 err4:
@@ -316,14 +318,14 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
         .Range("A1:j3").HorizontalAlignment = xlHAlignCenter
 
 
-        .Range(.cells(1, 1), .cells(1, canti_col)).Merge
-        .Range(.cells(2, 1), .cells(2, canti_col)).Merge
-        .cells(1, 1).value = "SIGNOPLAST S.A. Subdiario cobranzas"
-        .cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
-        .Range(.cells(1, 1), .cells(3, canti_col)).Font.Bold = True
+        .Range(.Cells(1, 1), .Cells(1, canti_col)).Merge
+        .Range(.Cells(2, 1), .Cells(2, canti_col)).Merge
+        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario cobranzas"
+        .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+        .Range(.Cells(1, 1), .Cells(3, canti_col)).Font.Bold = True
 
-        .Range(.cells(3, 1), .cells(3, canti_col)).Interior.Color = &HC0C0C0
-        .Range(.cells(3, 1), .cells(3, canti_col)).Font.Bold = True    '
+        .Range(.Cells(3, 1), .Cells(3, canti_col)).Interior.Color = &HC0C0C0
+        .Range(.Cells(3, 1), .Cells(3, canti_col)).Font.Bold = True    '
 
 
 
@@ -332,7 +334,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
 
 
         For x = 1 To canti_col
-            .cells(3, x).value = lst.ColumnHeaders(x).text
+            .Cells(3, x).value = lst.ColumnHeaders(x).text
 
         Next
         For i = 1 To canti_col
@@ -360,35 +362,35 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
 
         For x = 1 To lst.ListItems.count - 1
 
-            .cells(x + 3, 1).value = lst.ListItems(x)
-            .cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
-            .cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
-            .cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
+            .Cells(x + 3, 1).value = lst.ListItems(x)
+            .Cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
+            .Cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
+            .Cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
 
             'campos numericos
             For y = 4 To canti_col - 1
-                .cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
+                .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
                 vec(y - 4) = vec(y - 4) + CDbl(lst.ListItems(x).ListSubItems(y))
             Next y
 
 
         Next x
-        a = 1
+        A = 1
 
         offset = x + 3
 
 
-        b = .cells(canti_col, x)    '"j" & Offset
-        .Range("f1", .cells(x + 2, canti_col)).NumberFormat = "0.00"
-        .Range(.cells(1, 1), .cells(x + 2, canti_col)).Borders.LineStyle = xlContinuous
+        b = .Cells(canti_col, x)    '"j" & Offset
+        .Range("f1", .Cells(x + 2, canti_col)).NumberFormat = "0.00"
+        .Range(.Cells(1, 1), .Cells(x + 2, canti_col)).Borders.LineStyle = xlContinuous
 
-        .Range(.cells(x + 3, 5), .cells(x + 3, canti_col)).Interior.Color = &HC0C0C0
-        .Range(.cells(x + 3, 5), .cells(x + 3, canti_col)).Font.Bold = True
+        .Range(.Cells(x + 3, 5), .Cells(x + 3, canti_col)).Interior.Color = &HC0C0C0
+        .Range(.Cells(x + 3, 5), .Cells(x + 3, canti_col)).Font.Bold = True
 
         For o = 0 To UBound(vec)
-            .cells(x + 3, 5 + o) = vec(o)
+            .Cells(x + 3, 5 + o) = vec(o)
         Next o
-        .Range("e" & x + 3, .cells(x, canti_col)).Borders.LineStyle = xlContinuous
+        .Range("e" & x + 3, .Cells(x, canti_col)).Borders.LineStyle = xlContinuous
         '.Range("f" & X + 3, .Cells(X, canti_col)).Font.Bold = True
 
         '.Cells(Offset, 10).value = total
@@ -615,15 +617,15 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
         .Range("A1:j3").HorizontalAlignment = xlHAlignCenter
 
 
-        .Range(.cells(1, 1), .cells(1, canti_col)).Merge
-        .Range(.cells(2, 1), .cells(2, canti_col)).Merge
-        .cells(1, 1).value = "SIGNOPLAST S.A. Subdiario retenciones"
-        .cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+        .Range(.Cells(1, 1), .Cells(1, canti_col)).Merge
+        .Range(.Cells(2, 1), .Cells(2, canti_col)).Merge
+        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario retenciones"
+        .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
 
-        .Range(.cells(1, 1), .cells(3, canti_col)).Font.Bold = True
+        .Range(.Cells(1, 1), .Cells(3, canti_col)).Font.Bold = True
 
-        .Range(.cells(3, 1), .cells(3, canti_col)).Interior.Color = &HC0C0C0
-        .Range(.cells(3, 1), .cells(3, canti_col)).Font.Bold = True    '
+        .Range(.Cells(3, 1), .Cells(3, canti_col)).Interior.Color = &HC0C0C0
+        .Range(.Cells(3, 1), .Cells(3, canti_col)).Font.Bold = True    '
 
 
 
@@ -632,7 +634,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
 
 
         For x = 1 To canti_col
-            .cells(3, x).value = lst.ColumnHeaders(x).text
+            .Cells(3, x).value = lst.ColumnHeaders(x).text
 
         Next
         For i = 1 To canti_col
@@ -661,36 +663,36 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
         '
         For x = 1 To lst.ListItems.count - 1
             '
-            .cells(x + 3, 1).value = lst.ListItems(x)
-            .cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
-            .cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
-            .cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
-            .cells(x + 3, 5).value = lst.ListItems(x).ListSubItems(4)
+            .Cells(x + 3, 1).value = lst.ListItems(x)
+            .Cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
+            .Cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
+            .Cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
+            .Cells(x + 3, 5).value = lst.ListItems(x).ListSubItems(4)
             '
             '    'campos numericos
             For y = 5 To canti_col - 1
-                .cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
+                .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
                 vec(y - 5) = vec(y - 5) + CDbl(lst.ListItems(x).ListSubItems(y))
             Next y
             '
             '
         Next x
-        a = 1
+        A = 1
 
         offset = x + 3
 
 
-        b = .cells(canti_col, x)    '"j" & Offset
-        .Range("f1", .cells(x + 2, canti_col)).NumberFormat = "0.00"
-        .Range(.cells(1, 1), .cells(x + 2, canti_col)).Borders.LineStyle = xlContinuous
+        b = .Cells(canti_col, x)    '"j" & Offset
+        .Range("f1", .Cells(x + 2, canti_col)).NumberFormat = "0.00"
+        .Range(.Cells(1, 1), .Cells(x + 2, canti_col)).Borders.LineStyle = xlContinuous
 
-        .Range(.cells(x + 3, 6), .cells(x + 3, canti_col)).Interior.Color = &HC0C0C0
-        .Range(.cells(x + 3, 6), .cells(x + 3, canti_col)).Font.Bold = True
+        .Range(.Cells(x + 3, 6), .Cells(x + 3, canti_col)).Interior.Color = &HC0C0C0
+        .Range(.Cells(x + 3, 6), .Cells(x + 3, canti_col)).Font.Bold = True
 
         For o = 0 To UBound(vec)
-            .cells(x + 3, 6 + o) = vec(o)
+            .Cells(x + 3, 6 + o) = vec(o)
         Next o
-        .Range("f" & x + 3, .cells(x, canti_col)).Borders.LineStyle = xlContinuous
+        .Range("f" & x + 3, .Cells(x, canti_col)).Borders.LineStyle = xlContinuous
 
 
         'xls.Visible = True 'NO MUESTRO LA HOJA XLS

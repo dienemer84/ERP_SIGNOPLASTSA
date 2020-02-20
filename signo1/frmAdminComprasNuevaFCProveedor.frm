@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16777217
+      Format          =   63438849
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1136,7 +1136,13 @@ Private Sub llenarGrillaPercepciones()
     Set Me.grilla_percepciones.Columns("percepcion").DropDownControl = Me.grilla_percepcion
 End Sub
 Private Sub ProtegerProveedor()
-    Me.GroupBox1.Enabled = (Proveedor.id = 0)
+    txtRazonSocial.Enabled = (Proveedor.id = 0)
+    txtCuit.Enabled = (Proveedor.id = 0)
+    txtIB.Enabled = (Proveedor.id = 0)
+    cboTipoIva.Enabled = (Proveedor.id = 0)
+    
+    'Me.GroupBox1.Enabled = (Proveedor.id = 0)
+    
     Me.cmdDisponer.Visible = Me.GroupBox1.Enabled
 End Sub
 

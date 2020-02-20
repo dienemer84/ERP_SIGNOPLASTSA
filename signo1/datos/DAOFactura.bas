@@ -721,6 +721,8 @@ Public Function aprobar(Factura As Factura) As Boolean
     Dim d As FacturaDetalle
     For Each d In Factura.Detalles
         Set d.Factura = Factura
+        
+        
     Next
     Factura.CambioAPatron = Factura.moneda.Cambio
     Factura.FechaAprobacion = Now
