@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmNuevoElemento 
    BackColor       =   &H00000000&
@@ -1165,7 +1165,7 @@ Public Sub calcularTotalMateriales(ByVal lst As ListView, ByRef Kg, ByRef m2, By
     Kg = K
     m2 = m
     costo = c
-    Me.lblTotalKg = Kg
+    Me.lblTotalKG = Kg
     Me.lblTotalM2 = m2
     Me.lblCosto = costo
 End Sub
@@ -1565,7 +1565,7 @@ Private Sub Form_Load()
     Me.calcular_totales_mdo
     'Me.calcularTotalMateriales Me.ListView1, kg, m2, costo
     Me.lblCosto = costo
-    Me.lblTotalKg = Kg
+    Me.lblTotalKG = Kg
     Me.lblTotalM2 = m2
     grabado = False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes

@@ -1651,7 +1651,7 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
     If IsSomething(F) Then
 
         If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
-        If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado - F.NetoNoGravado
+        If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
         Me.txtParcialAbonar = F.ImporteTotalAbonado
         Me.txtnetogravadoabonado = F.NetoGravadoAbonado
     End If

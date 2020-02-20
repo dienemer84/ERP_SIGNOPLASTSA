@@ -20,7 +20,7 @@ Public Function VerPosibleRetenciones(colFc As Collection, colret As Collection,
             If F.FormaPagoCuentaCorriente Then
 'sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoDiaPago * -1, F.NetoGravadoDiaPago)
 'fix 004
-                sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoDiaPago - F.NetoNoGravado * -1, F.NetoGravadoDiaPago - F.NetoNoGravado)
+                sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.NetoGravadoDiaPago) * -1, F.NetoGravadoDiaPago)
 
             End If
 
@@ -81,7 +81,7 @@ Public Function Create(op As OrdenPago, Optional Save As Boolean = False) As Cer
                 Set cerd.FacturaProveedor = fac
                 'cerd.NetoGravado = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado)
                 'fix 004
-                cerd.NetoGravado = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado - fac.NetoNoGravado * -1, fac.NetoGravado - fac.NetoNoGravado)
+                cerd.NetoGravado = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado)
                 cerd.Comprobante = fac.NumeroFormateado
                 cerd.TotalFactura = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.Total * -1, fac.Total)
                 cerd.IdCertificado = cer.id    'al pedo
@@ -277,15 +277,15 @@ Public Function VerCertificado(cr As CertificadoRetencion)
     r_tmp.Open
 
     Dim fac As clsFacturaProveedor
-    Dim a As Double
+    Dim A As Double
     Dim det As CertificadoRetencionDetalles
     Dim fc As clsFacturaProveedor
     If cr.Detalles.count > 0 Then
 
         For Each det In cr.Detalles
-            a = MonedaConverter.Convertir(det.TotalFactura, det.IdMoneda, mon.id)
+            A = MonedaConverter.Convertir(det.TotalFactura, det.IdMoneda, mon.id)
             r_tmp.AddNew
-            r_tmp!Importe = mon.NombreCorto & " " & funciones.FormatearDecimales(a)
+            r_tmp!Importe = mon.NombreCorto & " " & funciones.FormatearDecimales(A)
             r_tmp!importe_retenido = mon.NombreCorto & " " & det.TotalRetenido(cr)
             r_tmp!nrocomprobante = det.Comprobante
             r_tmp.Update
