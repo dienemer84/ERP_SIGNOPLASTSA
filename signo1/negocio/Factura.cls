@@ -57,7 +57,8 @@ Public TotalEstatico As New FacturaTotalEstatico
 Private m_ots_facturadas_anticipo As Collection
 Private m_detalles As Collection
 
-
+Public FechaPago As Date    'para fce
+Public CBU As String
 
 
 Public TasaAjusteMensual As Double  'de aca se empieza
@@ -66,7 +67,21 @@ Public Sub SetToNothingOTsFacturadasAnticipo()
     Set m_ots_facturadas_anticipo = Nothing
 End Sub
 
-
+Public Property Get DescripcionCreditoAdicional() As String
+    Dim dsc As String
+    
+    
+    If TipoDocumento = tipoDocumentoContable.Factura Then
+         dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
+    End If
+    If TipoDocumento = tipoDocumentoContable.notaCredito Then
+        dsc = "NOTA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
+    End If
+      If TipoDocumento = tipoDocumentoContable.notaDebito Then
+         dsc = "NOTA DE DÉBITO ELECTRÓNICA MiPyMEs  (FCE)"
+    End If
+    DescripcionCreditoAdicional = dsc
+End Property
 
 Public Property Get CodigoBarrasAfip() As String
     Dim numero As String
@@ -113,14 +128,14 @@ End Property
 
 
 Public Function GetCodigoDocumentoAfip() As Integer
-    If Tipo.TipoDoc = tipoDocumentoContable.NotaDebito Then GetCodigoDocumentoAfip = 2
+    If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
     If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
     If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
 
 
 End Function
 Public Function GetDescripciopnDocumentoAfip() As String
-    If Tipo.TipoDoc = tipoDocumentoContable.NotaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
+    If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
     If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
     If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetDescripciopnDocumentoAfip = "FACTURA"
 
@@ -249,7 +264,7 @@ Public Property Get TipoDocumentoDescription() As String
             retorno = "FACTURA"
         Case tipoDocumentoContable.notaCredito
             retorno = "NOTA DE CREDITO"
-        Case tipoDocumentoContable.NotaDebito
+        Case tipoDocumentoContable.notaDebito
             retorno = "NOTA DE DEBITO"
     End Select
 
@@ -272,7 +287,7 @@ Public Property Get GetShortDescription(justTipo As Boolean, fullShortDescriptio
             retorno = "FC"
         Case tipoDocumentoContable.notaCredito
             retorno = "NC"
-        Case tipoDocumentoContable.NotaDebito
+        Case tipoDocumentoContable.notaDebito
             retorno = "ND"
     End Select
 

@@ -280,7 +280,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " cambio_a_patron = 'cambio_a_patron' ," _
             & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega', " _
             & " propuesta = 'propuesta' ," _
-            & " cancelada = 'cancelada' ," _
+            & " cancelada = 'cancelada' , CBU = 'CBU', fecha_pago='fecha_pago' " _
             & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste'," _
             & " total_estatico = 'total_estatico' ,  total_iva_estatico = 'total_iva_estatico' , total_perIB_estatico = 'total_perIB_estatico' ," _
             & " total_neto_estatico = 'total_neto_estatico' , total_exento_estatico = 'total_exento_estatico' ," _
@@ -314,7 +314,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " FormaPago, " _
             & " fecha_entrega, " _
             & " propuesta, id_tipo_discriminado," _
-            & " cancelada,id_moneda_ajuste,tipo_cambio_ajuste, " _
+            & " cancelada,id_moneda_ajuste,tipo_cambio_ajuste, CBU, fecha_pago, " _
     & " nc_motivo, tasa_ajuste_mensual) Values "
         q = q & "('NroFactura', " _
             & " 'idCliente', " _
@@ -338,7 +338,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'FormaPago', " _
             & " 'fecha_entrega', " _
             & " 'propuesta', 'id_tipo_discriminado'," _
-            & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste'," _
+            & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste', 'CBU', 'fecha_pago'," _
             & " 'nc_motivo','tasa_ajuste_mensual' " _
             & ")"
 
@@ -402,7 +402,8 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'total_iva_discono_estatico'", conectar.Escape(F.TotalEstatico.TotalIVADiscrimandoONo))
     'q = Replace$(q, "'id_ot_anticipo'", conectar.Escape(F.IdOTAnticipo))
     q = Replace$(q, "'tasa_ajuste_mensual'", conectar.Escape(F.TasaAjusteMensual))
-
+   q = Replace$(q, "'CBU'", conectar.Escape(F.CBU))
+    q = Replace$(q, "'fecha_pago'", conectar.Escape(F.FechaPago))
 
     If conectar.execute(q) Then
         If esNueva Then F.id = conectar.UltimoId2
@@ -1806,9 +1807,18 @@ rptFacturaElectronica.LeftMargin = 250
         Set c = seccion.Controls.item("lblTipoDocumento")
         c.caption = F.Tipo.TipoFactura.Tipo
         
-      
-         
-        
+       Set c = seccion.Controls.item("lblFce")
+            c.Visible = F.Tipo.PuntoVenta.EsCredito
+             c.caption = F.DescripcionCreditoAdicional
+              
+            Set c = seccion.Controls.item("lblFechaPagoFce")
+            c.Visible = F.Tipo.PuntoVenta.EsCredito
+             c.caption = "Fecha Vto: " & Format(F.FechaPago, "dd/mm/yyyy")
+
+   Set c = seccion.Controls.item("lblCbuEmisorFce")
+            c.Visible = F.Tipo.PuntoVenta.EsCredito
+             c.caption = "CBU del emisor: " & F.CBU
+
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
         c.caption = "Código Nº" & Format(F.GetCodigoDocumentoAfip, "00")
