@@ -5,8 +5,8 @@ Begin VB.Form frmCrearOrdenPago
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
    ClientHeight    =   10140
-   ClientLeft      =   6075
-   ClientTop       =   2280
+   ClientLeft      =   5370
+   ClientTop       =   3165
    ClientWidth     =   9765
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -662,7 +662,6 @@ Begin VB.Form frmCrearOrdenPago
          Version         =   "2.0"
          BoundColumnIndex=   ""
          ReplaceColumnIndex=   ""
-         Enabled         =   0   'False
          MethodHoldFields=   -1  'True
          ContScroll      =   -1  'True
          AllowColumnDrag =   0   'False
@@ -675,16 +674,16 @@ Begin VB.Form frmCrearOrdenPago
          IntProp7        =   0
          ColumnsCount    =   2
          Column(1)       =   "frmCrearOrdenPago.frx":8500
-         Column(2)       =   "frmCrearOrdenPago.frx":8618
+         Column(2)       =   "frmCrearOrdenPago.frx":8638
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmCrearOrdenPago.frx":8714
-         FormatStyle(2)  =   "frmCrearOrdenPago.frx":883C
-         FormatStyle(3)  =   "frmCrearOrdenPago.frx":88EC
-         FormatStyle(4)  =   "frmCrearOrdenPago.frx":89A0
-         FormatStyle(5)  =   "frmCrearOrdenPago.frx":8A78
-         FormatStyle(6)  =   "frmCrearOrdenPago.frx":8B30
+         FormatStyle(1)  =   "frmCrearOrdenPago.frx":8734
+         FormatStyle(2)  =   "frmCrearOrdenPago.frx":885C
+         FormatStyle(3)  =   "frmCrearOrdenPago.frx":890C
+         FormatStyle(4)  =   "frmCrearOrdenPago.frx":89C0
+         FormatStyle(5)  =   "frmCrearOrdenPago.frx":8A98
+         FormatStyle(6)  =   "frmCrearOrdenPago.frx":8B50
          ImageCount      =   0
-         PrinterProperties=   "frmCrearOrdenPago.frx":8C10
+         PrinterProperties=   "frmCrearOrdenPago.frx":8C30
       End
       Begin VB.TextBox txtParcialAbonar 
          Height          =   315
@@ -1269,7 +1268,12 @@ Private Sub cboProveedores_Click()
     Else
         Set prov = Nothing
     End If
-    MostrarFacturas
+    
+   MostrarFacturas
+    
+   'Copiada por Nemer 16.03.20
+   MostrarFacturas2
+       
 End Sub
 
 Private Sub dtpFecha_Change()
@@ -1397,6 +1401,38 @@ Private Sub MostrarFacturas()
         Set colFacturas = New Collection
     End If
 End Sub
+
+
+
+Private Sub MostrarFacturas2()
+    Me.lstFacturas.Clear
+    If IsSomething(prov) Then
+        Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada)
+
+        If OrdenPago.id <> 0 And OrdenPago.EsParaFacturaProveedor Then
+            If prov.id = OrdenPago.FacturasProveedor.item(1).Proveedor.id Then
+                For Each Factura In OrdenPago.FacturasProveedor
+                    If Not funciones.BuscarEnColeccion(colFacturas, CStr(Factura.id)) Then
+                        colFacturas.Add DAOFacturaProveedor.FindById(Factura.id), CStr(Factura.id)
+                    End If
+                Next
+            End If
+        End If
+
+        For Each Factura In colFacturas
+            Me.lstFacturas.AddItem Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"
+            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.id
+        Next
+
+    Else
+        Set colFacturas = New Collection
+    End If
+End Sub
+
+
+
+
+
 Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
 End Sub
@@ -1692,10 +1728,6 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
     End If
 End Sub
 
-
-Private Sub lblTotalARetener_Click()
-
-End Sub
 
 Private Sub lstFacturas_Click()
 
