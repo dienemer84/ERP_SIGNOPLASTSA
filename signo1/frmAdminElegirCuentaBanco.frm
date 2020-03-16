@@ -1,12 +1,12 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Begin VB.Form frmAdminElegirCuentaBanco 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   5  'Sizable ToolWindow
    Caption         =   "Ingrese monto depositado"
    ClientHeight    =   2715
-   ClientLeft      =   60
-   ClientTop       =   330
+   ClientLeft      =   2220
+   ClientTop       =   3450
    ClientWidth     =   4680
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -73,7 +73,7 @@ Begin VB.Form frmAdminElegirCuentaBanco
          _ExtentX        =   2566
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16777217
+         Format          =   58851329
          CurrentDate     =   39220
       End
       Begin VB.Label Label4 
@@ -164,6 +164,7 @@ Dim clasea As New classAdministracion
 
 Private Sub cboBancos_Click()
     llenarCuenta
+    'Comentario
 End Sub
 
 Private Sub llenarCuenta()
