@@ -6,8 +6,8 @@ Begin VB.Form frmFacturaEdicion
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Factura"
    ClientHeight    =   10080
-   ClientLeft      =   45
-   ClientTop       =   435
+   ClientLeft      =   3945
+   ClientTop       =   2385
    ClientWidth     =   11655
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -30,6 +30,7 @@ Begin VB.Form frmFacturaEdicion
       Left            =   1200
       TabIndex        =   63
       Top             =   4200
+      Visible         =   0   'False
       Width           =   2175
    End
    Begin XtremeSuiteControls.GroupBox grpTotales 
@@ -248,11 +249,12 @@ Begin VB.Form frmFacturaEdicion
          Left            =   4440
          TabIndex        =   66
          Top             =   3960
+         Visible         =   0   'False
          Width           =   2175
          _ExtentX        =   3836
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16777217
+         Format          =   59768833
          CurrentDate     =   43770
       End
       Begin VB.TextBox txtTasaAjuste 
@@ -477,6 +479,7 @@ Begin VB.Form frmFacturaEdicion
          Left            =   3480
          TabIndex        =   65
          Top             =   3960
+         Visible         =   0   'False
          Width           =   900
       End
       Begin VB.Label lblCbuCredito 
@@ -487,6 +490,7 @@ Begin VB.Form frmFacturaEdicion
          Left            =   600
          TabIndex        =   62
          Top             =   3960
+         Visible         =   0   'False
          Width           =   360
       End
       Begin VB.Label lblEsCredito 
