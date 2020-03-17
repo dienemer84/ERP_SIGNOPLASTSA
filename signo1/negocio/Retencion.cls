@@ -18,5 +18,6 @@ Public nombre As String
 Public codigo As String
 Public Porcentaje As Double
 Public MinimoImponible As Double
+Public IdPadron As Long
 
 

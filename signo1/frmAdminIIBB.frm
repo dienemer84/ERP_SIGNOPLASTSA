@@ -7,8 +7,8 @@ Begin VB.Form frmAdminIIBB
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Padrón IIBB"
    ClientHeight    =   6765
-   ClientLeft      =   15
-   ClientTop       =   1845
+   ClientLeft      =   5925
+   ClientTop       =   1830
    ClientWidth     =   7200
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -118,7 +118,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   59441152
+         Format          =   58392576
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -131,7 +131,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   59441153
+         Format          =   58392577
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -144,7 +144,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   59441153
+         Format          =   58392577
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -472,11 +472,11 @@ Private Sub MostrarResultado(tabla As String, Cuit As String)
         If Not rs.EOF And Not rs.BOF Then
 
             If rs!Discriminador = "R" Then
-                Me.Frame2.caption = "[ Resultado RETENCIONES ]"
+                Me.frame2.caption = "[ Resultado RETENCIONES ]"
             ElseIf rs!Discriminador = "P" Then
-                Me.Frame2.caption = "[ Resultado PERCEPCIONES ]"
+                Me.frame2.caption = "[ Resultado PERCEPCIONES ]"
             Else
-                Me.Frame2.caption = "[ Sin resultado ]"
+                Me.frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
             Me.lblCambio = rs!Cambio

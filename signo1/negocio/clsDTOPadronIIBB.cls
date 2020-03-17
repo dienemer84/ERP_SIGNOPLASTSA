@@ -17,7 +17,7 @@ Public FechaPublicacion As String
 Public FechaDesde As String
 Public FechaHasta As String
 Public Cuit As String
-Public tipo As String
+Public Tipo As String
 Public AltaBaja As String
 Public Cambio As String
 'Public Percepcion As Double
@@ -27,3 +27,7 @@ Public Cambio As String
 Public Grupo As String
 Public Alicuota As Double
 Public Discriminador As String
+Public AlicuotaPercepcion As Double
+Public AlicuotaRetencion As Double
+Public IdPadron As Long
+Public Id As String

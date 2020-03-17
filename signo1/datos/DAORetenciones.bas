@@ -54,6 +54,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As R
         T.nombre = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_NOMBRE)
         T.Porcentaje = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_PORCENTAJE)
         T.MinimoImponible = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_MINIMO)
+        T.IdPadron = GetValue(rs, indice, tabla, "id_padron")
     End If
 
     Set Map = T

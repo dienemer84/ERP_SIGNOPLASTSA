@@ -521,6 +521,7 @@ Class=OrdenDeEntrega; negocio\OrdenDeEntrega.cls
 Module=DAOOrdenDeEntrega; datos\DAOOrdenDeEntrega.bas
 Class=OrdenDeEntregaDetalle; negocio\OrdenDeEntregaDetalle.cls
 ResFile32="Themes.res"
+Class=DTORetencionAlicuota; DTORetencionImporte.cls
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""
