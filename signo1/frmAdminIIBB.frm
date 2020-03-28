@@ -6,15 +6,15 @@ Begin VB.Form frmAdminIIBB
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Padrón IIBB"
-   ClientHeight    =   6765
-   ClientLeft      =   5925
-   ClientTop       =   1830
+   ClientHeight    =   6240
+   ClientLeft      =   7995
+   ClientTop       =   1575
    ClientWidth     =   7200
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   6765
+   ScaleHeight     =   6240
    ScaleWidth      =   7200
    ShowInTaskbar   =   0   'False
    Begin VB.CommandButton Command9 
@@ -549,8 +549,8 @@ Private Sub Command3ss_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -565,6 +565,25 @@ err4:
 
 End Sub
 
+Private Sub Command3_Click(index As Integer)
+    On Error GoTo err4
+    Dim strsql As String
+    Dim filename As String
+    Me.CD.ShowOpen
+    filename = CD.filename
+    filename = Replace(filename, "\", "/")
+    If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
+        If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
+            MsgBox "Actualización exitosa!", vbInformation, "Información"
+        Else
+            MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"
+        End If
+    End If
+    Exit Sub
+err4:
+    If Err.Number <> 32755 Then MsgBox "Se produjo algun error!", vbCritical, "Error"
+End Sub
+
 Private Sub Command4_Click()
     Unload Me
 End Sub
@@ -573,8 +592,8 @@ Private Sub Command5_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronPercepcion) Then
@@ -606,8 +625,8 @@ Private Sub Command7_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronUnificadoCABA) Then
@@ -635,9 +654,9 @@ Private Sub Form_Load()
 
     FormHelper.Customize Me
     If Permisos.AdminIIBB Then
-        Me.Command3.Enabled = True
+        'Me.Command3.Enabled = True
     Else
-        Me.Command3.Enabled = False
+        'Me.Command3.Enabled = False
     End If
 End Sub
 

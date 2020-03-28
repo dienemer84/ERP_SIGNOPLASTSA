@@ -1,8 +1,7 @@
 Attribute VB_Name = "DAOCertificadoRetencion"
 Option Explicit
 
-
-Public Function VerPosibleRetenciones(colFc As Collection, colret As Collection, Alicuota As Double, diferenciaDeCambio As Double, Optional TotalNGCompensatorios As Double = 0) As Dictionary
+Public Function VerPosibleRetenciones(colFc As Collection, colret As Collection, alicuota As Double, diferenciaDeCambio As Double, Optional TotalNGCompensatorios As Double = 0) As Dictionary
     'col es col de fcproveedor
     Dim F As clsFacturaProveedor
     Dim ret As Retencion
@@ -37,7 +36,7 @@ Public Function VerPosibleRetenciones(colFc As Collection, colret As Collection,
         '        End If
         'cambiado el 22-10-12
         If (sumadorDeTotales - TotalNGCompensatorios) > ret.MinimoImponible Then
-            sumadorDeTotales = (sumadorDeTotales - TotalNGCompensatorios) * (Alicuota / 100)
+            sumadorDeTotales = (sumadorDeTotales - TotalNGCompensatorios) * (alicuota / 100)
         Else
             sumadorDeTotales = 0
         End If
@@ -52,6 +51,56 @@ Public Function VerPosibleRetenciones(colFc As Collection, colret As Collection,
     'trae en un diccionario como clave la retencion (que sea agente) y el valor a retener de la lista
     'de facturas provista.
 End Function
+Public Function VerPosibleRetenciones2(colFc As Collection, colret As Collection, diferenciaDeCambio As Double, Optional TotalNGCompensatorios As Double = 0) As Dictionary
+    'col es col de fcproveedor
+    Dim F As clsFacturaProveedor
+    Dim ret As DTORetencionAlicuota
+    Dim c As Double
+    Dim dic As New Dictionary
+    Dim difCambioFactura As Double
+    Dim sumadorDeTotales As Double
+    Dim totCambiong As Double
+    Dim totdifcambio_hoy As Double
+    Dim totdifcambio As Double
+    
+    
+    Dim alicuotasParciales As Double
+    
+    
+      For Each F In colFc
+
+            If F.FormaPagoCuentaCorriente Then
+
+                sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.NetoGravadoDiaPago) * -1, F.NetoGravadoDiaPago)
+
+            End If
+
+            sumadorDeTotales = sumadorDeTotales + diferenciaDeCambio
+
+        Next F
+    
+    For Each ret In colret
+    
+        c = 0
+      
+
+        'cambiado el 22-10-12
+        If (sumadorDeTotales - TotalNGCompensatorios) > ret.Retencion.MinimoImponible Then
+            alicuotasParciales = (sumadorDeTotales - TotalNGCompensatorios) * (ret.alicuotaRetencion / 100)
+        Else
+         '   sumadorDeTotales = 0
+        End If
+
+
+
+
+        dic.Add CStr(ret.Retencion.id), funciones.RedondearDecimales(alicuotasParciales, 2)
+    Next ret
+
+    Set VerPosibleRetenciones2 = dic
+    'trae en un diccionario como clave la retencion (que sea agente) y el valor a retener de la lista
+    'de facturas provista.
+End Function
 
 Public Function Create(op As OrdenPago, Optional Save As Boolean = False) As CertificadoRetencion
     Dim fac As clsFacturaProveedor
@@ -61,7 +110,7 @@ Public Function Create(op As OrdenPago, Optional Save As Boolean = False) As Cer
         Set prov = op.FacturasProveedor.item(1).Proveedor
         Set cer = New CertificadoRetencion
         cer.IdOrdenPago = op.id
-        cer.Cuit = prov.Cuit
+        cer.cuit = prov.cuit
         cer.FEcha = Now
         cer.localidad = prov.Ciudad
         cer.cp = Val(prov.cp)
@@ -77,7 +126,7 @@ Public Function Create(op As OrdenPago, Optional Save As Boolean = False) As Cer
             For Each fac In op.FacturasProveedor
                 Set fac = DAOFacturaProveedor.FindById(fac.id)
                 Set cerd = New CertificadoRetencionDetalles
-                cerd.Alicuota = op.Alicuota
+                cerd.alicuota = op.alicuota
                 Set cerd.FacturaProveedor = fac
                 'cerd.NetoGravado = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado)
                 'fix 004
@@ -156,7 +205,7 @@ Public Function Guardar(Certificado As CertificadoRetencion, Optional cascada As
     q = Replace(q, "'id'", Escape(Certificado.id))
     q = Replace(q, "'id_orden_pago'", Certificado.IdOrdenPago)
     q = Replace(q, "'razon_social'", Escape(Certificado.RazonSocial))
-    q = Replace(q, "'cuit'", Escape(Certificado.Cuit))
+    q = Replace(q, "'cuit'", Escape(Certificado.cuit))
 
     q = Replace(q, "'id_retencion'", GetEntityId(Certificado.Retencion))
     q = Replace(q, "'fecha'", Escape(Certificado.FEcha))
@@ -235,7 +284,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Opti
     If id > 0 Then
         Set cer = New CertificadoRetencion
         cer.id = id
-        cer.Cuit = GetValue(rs, indice, tabla, "cuit")
+        cer.cuit = GetValue(rs, indice, tabla, "cuit")
         cer.FEcha = GetValue(rs, indice, tabla, "fecha")
         cer.IB = GetValue(rs, indice, tabla, "ib")
         cer.RazonSocial = GetValue(rs, indice, tabla, "razon_social")

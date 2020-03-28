@@ -5,6 +5,40 @@ Public Const CAMPO_CODIGO As String = "codigo"
 Public Const CAMPO_PORCENTAJE As String = "porcentaje"
 Public Const CAMPO_MINIMO As String = "minimo_imponible"
 Public Const TABLA_RETENCION As String = "ret"
+
+Public Function FindAllWithAlicuotas(cuit As String) As Collection
+    Dim d As New clsDTOPadronIIBB
+        Dim col2 As New Collection
+        Dim ali As New Collection
+          Set col2 = DTOPadronIIBB.FindByCUIT2(cuit)
+          Dim retenciones As Collection
+           Set retenciones = FindAllEsAgente
+               
+           Dim rx As Retencion
+        Dim c As clsDTOPadronIIBB
+        Set alicuotas = New Collection
+        Dim x As DTORetencionAlicuota
+        For Each c In col2
+        
+            For Each rx In retenciones
+            
+            If rx.IdPadron = c.IdPadron Then
+                
+                Set x = New DTORetencionAlicuota
+                x.alicuotaRetencion = c.alicuotaRetencion
+                x.alicuotaPercepcion = c.alicuotaPercepcion
+                Set x.Retencion = rx
+                ali.Add x, CStr(c.IdPadron)
+                
+            End If
+            
+            Next
+        
+        Next
+        
+        Set FindAllWithAlicuotas = ali
+        
+End Function
 Public Function FindById(id As Long) As Retencion
     Dim col As Collection: Set col = FindAll("id = " & id)
     If col.count = 0 Then
@@ -14,7 +48,7 @@ Public Function FindById(id As Long) As Retencion
     End If
 End Function
 Public Function FindAllEsAgente() As Collection
-    Set FindAllEsAgente = FindAll("id=5")    'reemplazar por EsAgente cuando vea el tema de los permisos de la tabla.
+    Set FindAllEsAgente = FindAll("1=1 and retiene=1")  'fix 28-3-2020  'reemplazar por EsAgente cuando vea el tema de los permisos de la tabla.
 End Function
 Public Function FindAll(Optional whereFilter As String = "1 = 1") As Collection
     Dim tickStart As Double

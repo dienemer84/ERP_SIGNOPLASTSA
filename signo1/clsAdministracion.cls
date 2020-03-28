@@ -82,7 +82,7 @@ End Sub
 
 
 Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolean
-        On Error GoTo err4
+    On Error GoTo err4
     ActualizarPadronIB = True
     cn.BeginTrans
 
@@ -91,16 +91,27 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
         cn.execute "INSERT INTO sp_permisos.IIBB2_PercepcionAnt SELECT * FROM sp_permisos.IIBB2_Percepcion"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Percepcion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Percepcion FIELDS TERMINATED BY ';'"
+        
+        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, Padron) SELECT Cuit, Alicuota, '1' FROM sp_permisos.IIBB2_Percepcion"
+        
+
     ElseIf Tipo = TipoPadronRetencion Then
         cn.execute "TRUNCATE sp_permisos.IIBB2_RetencionAnt"
         cn.execute "INSERT INTO sp_permisos.IIBB2_RetencionAnt SELECT * FROM sp_permisos.IIBB2_Retencion"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Retencion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Retencion FIELDS TERMINATED BY ';'"
+                       
+        cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = (SELECT c.Alicuota from sp_permisos.IIBB2_Retencion c WHERE f.Cuit = c.Cuit)"
+              
+        
     ElseIf Tipo = TipoPadronUnificadoCABA Then
         cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA_Ant"
         cn.execute "INSERT INTO sp_permisos.IIBB2_Padron_CABA_Ant SELECT * FROM sp_permisos.IIBB2_Padron_CABA"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Padron_CABA FIELDS TERMINATED BY ';'"
+        
+        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, AlicuotaPercepcion, AlicuotaRetencion, '2' FROM sp_permisos.IIBB2_Padron_CABA"
+        
     End If
     
     cn.CommitTrans
@@ -409,7 +420,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -422,7 +433,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         archi = "SUB_COBRANZAS_" & Periodo & ".xls"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -700,7 +711,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -713,7 +724,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         archi = "SUB_RETENCIONES_" & Periodo & ".xls"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
