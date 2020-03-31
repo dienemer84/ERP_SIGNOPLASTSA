@@ -4,8 +4,8 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmOrdenesPago 
    Caption         =   "Ordenes de Pago"
    ClientHeight    =   7050
-   ClientLeft      =   60
-   ClientTop       =   450
+   ClientLeft      =   8445
+   ClientTop       =   3465
    ClientWidth     =   12660
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -602,7 +602,7 @@ Private Sub Imprimir()
             .item("lblProveedor").caption = Orden.FacturasProveedor(1).Proveedor.RazonSocial
         End If
 
-        .item("lblAlicuota").caption = Orden.Alicuota & "%"
+        .item("lblAlicuota").caption = Orden.alicuota & "%"
 
         Dim cert As CertificadoRetencion
         Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
@@ -742,7 +742,7 @@ Private Sub PushButton1_Click()
             Orden.StaticTotalOrigenes = Orden.TotalOrigenes
 
             Set colret = DAORetenciones.FindAllEsAgente
-            Set d = DAOCertificadoRetencion.VerPosibleRetenciones(Orden.FacturasProveedor, colret, Orden.Alicuota, Orden.DiferenciaCambio)
+            Set d = DAOCertificadoRetencion.VerPosibleRetenciones(Orden.FacturasProveedor, colret, Orden.alicuota, Orden.DiferenciaCambio)
             Dim totRet As Double
             totRet = 0
             For Each ret In colret

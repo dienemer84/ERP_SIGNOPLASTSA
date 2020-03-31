@@ -5,9 +5,9 @@ Begin VB.Form frmCrearOrdenPago
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
    ClientHeight    =   10215
-   ClientLeft      =   9525
-   ClientTop       =   2670
-   ClientWidth     =   9720
+   ClientLeft      =   2340
+   ClientTop       =   3105
+   ClientWidth     =   9705
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -23,12 +23,25 @@ Begin VB.Form frmCrearOrdenPago
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   10215
-   ScaleWidth      =   9720
+   ScaleWidth      =   9705
+   Begin XtremeSuiteControls.PushButton btnCargar 
+      Height          =   405
+      Left            =   3600
+      TabIndex        =   52
+      Top             =   3000
+      Width           =   1590
+      _Version        =   786432
+      _ExtentX        =   2805
+      _ExtentY        =   714
+      _StockProps     =   79
+      Caption         =   "Cargar datos"
+      UseVisualStyle  =   -1  'True
+   End
    Begin VB.TextBox txtnetogravadoabonado 
       Height          =   315
-      Left            =   2400
+      Left            =   9840
       TabIndex        =   49
-      Top             =   2880
+      Top             =   2160
       Visible         =   0   'False
       Width           =   1185
    End
@@ -329,9 +342,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
-      Left            =   9840
+      Left            =   12840
       TabIndex        =   3
-      Top             =   120
+      Top             =   4200
       Visible         =   0   'False
       Width           =   3465
       _ExtentX        =   6112
@@ -368,9 +381,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   1695
-      Left            =   13320
+      Left            =   15360
       TabIndex        =   4
-      Top             =   120
+      Top             =   2160
       Visible         =   0   'False
       Width           =   4185
       _ExtentX        =   7382
@@ -406,9 +419,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridMonedas 
       Height          =   1695
-      Left            =   17520
+      Left            =   9840
       TabIndex        =   5
-      Top             =   120
+      Top             =   240
       Visible         =   0   'False
       Width           =   1380
       _ExtentX        =   2434
@@ -444,9 +457,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridCajas 
       Height          =   1695
-      Left            =   11880
+      Left            =   13080
       TabIndex        =   6
-      Top             =   4800
+      Top             =   3000
       Visible         =   0   'False
       Width           =   1500
       _ExtentX        =   2646
@@ -480,9 +493,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequesDisponibles 
       Height          =   2640
-      Left            =   9840
+      Left            =   14400
       TabIndex        =   7
-      Top             =   2040
+      Top             =   3120
       Visible         =   0   'False
       Width           =   9555
       _ExtentX        =   16854
@@ -523,9 +536,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequeras 
       Height          =   1815
-      Left            =   9840
+      Left            =   13440
       TabIndex        =   11
-      Top             =   6600
+      Top             =   6960
       Width           =   6435
       _ExtentX        =   11351
       _ExtentY        =   3201
@@ -561,9 +574,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequesChequera 
       Height          =   1710
-      Left            =   9840
+      Left            =   10800
       TabIndex        =   12
-      Top             =   4800
+      Top             =   3120
       Width           =   1980
       _ExtentX        =   3493
       _ExtentY        =   3016
@@ -645,9 +658,9 @@ Begin VB.Form frmCrearOrdenPago
       Left            =   90
       TabIndex        =   29
       Top             =   1845
-      Width           =   9540
+      Width           =   9525
       _Version        =   786432
-      _ExtentX        =   16828
+      _ExtentX        =   16801
       _ExtentY        =   9340
       _StockProps     =   79
       Caption         =   "Destino"
@@ -655,19 +668,19 @@ Begin VB.Form frmCrearOrdenPago
       Begin VB.CommandButton Command1 
          Caption         =   "Command1"
          Height          =   255
-         Left            =   3600
+         Left            =   9960
          TabIndex        =   51
-         Top             =   1080
+         Top             =   6840
          Width           =   1335
       End
       Begin GridEX20.GridEX gridRetenciones 
-         Height          =   1215
+         Height          =   1095
          Left            =   120
          TabIndex        =   50
-         Top             =   1440
+         Top             =   1680
          Width           =   4935
          _ExtentX        =   8705
-         _ExtentY        =   2143
+         _ExtentY        =   1931
          Version         =   "2.0"
          BoundColumnIndex=   ""
          ReplaceColumnIndex=   ""
@@ -685,14 +698,14 @@ Begin VB.Form frmCrearOrdenPago
          Column(1)       =   "frmCrearOrdenPago.frx":8500
          Column(2)       =   "frmCrearOrdenPago.frx":8638
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmCrearOrdenPago.frx":8734
-         FormatStyle(2)  =   "frmCrearOrdenPago.frx":885C
-         FormatStyle(3)  =   "frmCrearOrdenPago.frx":890C
-         FormatStyle(4)  =   "frmCrearOrdenPago.frx":89C0
-         FormatStyle(5)  =   "frmCrearOrdenPago.frx":8A98
-         FormatStyle(6)  =   "frmCrearOrdenPago.frx":8B50
+         FormatStyle(1)  =   "frmCrearOrdenPago.frx":8738
+         FormatStyle(2)  =   "frmCrearOrdenPago.frx":8860
+         FormatStyle(3)  =   "frmCrearOrdenPago.frx":8910
+         FormatStyle(4)  =   "frmCrearOrdenPago.frx":89C4
+         FormatStyle(5)  =   "frmCrearOrdenPago.frx":8A9C
+         FormatStyle(6)  =   "frmCrearOrdenPago.frx":8B54
          ImageCount      =   0
-         PrinterProperties=   "frmCrearOrdenPago.frx":8C30
+         PrinterProperties=   "frmCrearOrdenPago.frx":8C34
       End
       Begin VB.TextBox txtParcialAbonar 
          Height          =   315
@@ -704,10 +717,10 @@ Begin VB.Form frmCrearOrdenPago
       Begin VB.TextBox txtRetenciones 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   1500
+         Left            =   11160
          TabIndex        =   31
          Text            =   "0"
-         Top             =   1050
+         Top             =   240
          Width           =   585
       End
       Begin VB.TextBox txtBuscarFactura 
@@ -776,6 +789,34 @@ Begin VB.Form frmCrearOrdenPago
          UseVisualStyle  =   -1  'True
          Text            =   "ComboBox1"
       End
+      Begin XtremeSuiteControls.PushButton btnClearProveedor 
+         Height          =   285
+         Left            =   4800
+         TabIndex        =   38
+         Top             =   600
+         Width           =   270
+         _Version        =   786432
+         _ExtentX        =   476
+         _ExtentY        =   503
+         _StockProps     =   79
+         Caption         =   "X"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.FlatEdit txtDetalle 
+         Height          =   3960
+         Left            =   5625
+         TabIndex        =   37
+         Top             =   1065
+         Width           =   3750
+         _Version        =   786432
+         _ExtentX        =   6615
+         _ExtentY        =   6985
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         MultiLine       =   -1  'True
+         ScrollBars      =   2
+         Appearance      =   6
+      End
       Begin XtremeSuiteControls.ComboBox cboCuentas 
          Height          =   315
          Left            =   5625
@@ -793,43 +834,6 @@ Begin VB.Form frmCrearOrdenPago
          UseVisualStyle  =   -1  'True
          Text            =   "ComboBox1"
       End
-      Begin XtremeSuiteControls.FlatEdit txtDetalle 
-         Height          =   3960
-         Left            =   5625
-         TabIndex        =   37
-         Top             =   1065
-         Width           =   3750
-         _Version        =   786432
-         _ExtentX        =   6615
-         _ExtentY        =   6985
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         MultiLine       =   -1  'True
-         ScrollBars      =   2
-         Appearance      =   6
-      End
-      Begin XtremeSuiteControls.PushButton btnClearProveedor 
-         Height          =   285
-         Left            =   4740
-         TabIndex        =   38
-         Top             =   630
-         Width           =   270
-         _Version        =   786432
-         _ExtentX        =   476
-         _ExtentY        =   503
-         _StockProps     =   79
-         Caption         =   "X"
-         UseVisualStyle  =   -1  'True
-      End
-      Begin VB.Label lblEspere 
-         Caption         =   "Espere..."
-         Height          =   255
-         Left            =   3720
-         TabIndex        =   52
-         Top             =   240
-         Visible         =   0   'False
-         Width           =   1215
-      End
       Begin VB.Line Line1 
          BorderColor     =   &H00FFDBBF&
          DrawMode        =   9  'Not Mask Pen
@@ -842,9 +846,9 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Retenciones IIBB"
          Height          =   195
-         Left            =   165
+         Left            =   9840
          TabIndex        =   40
-         Top             =   1095
+         Top             =   240
          Width           =   1230
       End
       Begin VB.Label Label3 
@@ -1161,6 +1165,30 @@ Public Property Get FacturaProveedor(nvalue As clsFacturaProveedor)
 End Property
 
 
+Private Sub btnCargar_Click()
+
+
+If Me.cboProveedores.ListIndex <> -1 Then
+    
+        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
+        If IsSomething(prov) Then
+         Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+
+        End If
+    Else
+        Set prov = Nothing
+    End If
+    
+    Me.gridRetenciones.ItemCount = 0
+    Me.gridRetenciones.ItemCount = alicuotas.count
+    Me.gridRetenciones.Refresh
+    
+    MostrarFacturas
+    
+
+   
+End Sub
+
 Private Sub btnClearProveedor_Click()
     cboProveedores.ListIndex = -1
     Me.txtRetenciones.text = 0
@@ -1193,7 +1221,7 @@ Private Sub btnGuardar_Click()
     Set OrdenPago.CuentaContable = Nothing
     OrdenPago.CuentaContableDescripcion = vbNullString
     Set OrdenPago.FacturasProveedor = New Collection
-
+    Set OrdenPago.RetencionesAlicuota = alicuotas
 
     If Me.radioFacturaProveedor.value Then
         Dim i As Long
@@ -1270,6 +1298,10 @@ End Sub
 
 
 Private Sub cboProveedores_Click()
+
+Me.gridRetenciones.ItemCount = 0
+Me.lstFacturas.Clear
+
 'If Me.cboProveedores.ListIndex <> -1 Then
 '        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
 '        If IsSomething(prov) Then
@@ -1320,18 +1352,16 @@ Private Sub cboProveedores_Click()
 '    Me.gridRetenciones.ItemCount = alicuotas.count
 '   MostrarFacturas
 '
+
+
+
+
+
 End Sub
-
-
-
-
-
-
 
 
 Private Sub Command1_Click()
 
-Me.lblEspere.Visible = True
 
     If Me.cboProveedores.ListIndex <> -1 Then
     
@@ -1369,7 +1399,7 @@ Me.lblEspere.Visible = True
 ''
 ''        Next
 ''
-        Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.cuit)
+        Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
         
 '                If IsSomething(d) Then
 '              Me.txtRetenciones = 1 '¿str(d.Alicuota)    ' Val(d.Retencion )
@@ -1386,7 +1416,7 @@ Me.lblEspere.Visible = True
     Me.gridRetenciones.ItemCount = alicuotas.count
     Me.gridRetenciones.Refresh
    MostrarFacturas
-   Me.lblEspere.Visible = False
+  
 End Sub
 
 Private Sub dtpFecha_Change()
@@ -1963,6 +1993,12 @@ End Sub
 Private Sub mostrarCompensatorios()
     Me.gridCompensatorios.ItemCount = OrdenPago.Compensatorios.count
     verCompensatorios
+End Sub
+
+Private Sub PushButton1_Click()
+
+    
+   
 End Sub
 
 Private Sub radioConcepto_Click()

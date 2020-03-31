@@ -185,7 +185,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
         op.FEcha = GetValue(rs, indice, tabla, "fecha")
         op.CuentaContableDescripcion = GetValue(rs, indice, tabla, "cuenta_contable_desc")
         op.estado = GetValue(rs, indice, tabla, "estado")
-        op.Alicuota = GetValue(rs, indice, tabla, "alicuota")
+        op.alicuota = GetValue(rs, indice, tabla, "alicuota")
 
         op.StaticTotalFacturas = GetValue(rs, indice, tabla, "static_total_facturas")
         op.StaticTotalFacturasNG = GetValue(rs, indice, tabla, "static_total_factura_ng")
@@ -198,7 +198,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
         op.DiferenciaCambioEnNG = GetValue(rs, indice, tabla, "dif_cambio_ng")
         op.DiferenciaCambioEnTOTAL = GetValue(rs, indice, tabla, "dif_cambio_total")
         If LenB(tablaCuentaContable) > 0 Then Set op.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
-        If LenB(tablaMoneda) > 0 Then Set op.Moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
     End If
 
@@ -238,13 +238,13 @@ Public Function aprobar(op As OrdenPago, insideTransaction As Boolean) As Boolea
             If op.FacturasProveedor.count > 0 Then
                 If op.FacturasProveedor(1).Proveedor.estado <> 2 Then
                     Dim d As New clsDTOPadronIIBB
-                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
+                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.cuit, TipoPadronRetencion)
                     Dim ret As Double
 
                     If IsSomething(d) Then
-                        ret = d.Alicuota
+                        ret = d.alicuota
 
-                        If ret <> op.Alicuota Then
+                        If ret <> op.alicuota Then
                             If MsgBox("La alicuota de retención actual del proveedor en el padrón difiere de la especificada en la orden de pago." & vbNewLine & "¿Quiere editar la orden de pago con la nueva alicuota de retención? o ¿Usar la especificada de todas maneras?" & vbNewLine & "[SI] - Continuar usando la especificada." & "[NO] - Cancelar y editar la orden de pago.", vbQuestion + vbYesNo) = vbNo Then
                                 GoTo err1
                             End If
@@ -330,8 +330,8 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         q = Replace(q, "'id'", GetEntityId(op))
     End If
 
-    q = Replace(q, "'id_moneda'", GetEntityId(op.Moneda))
-    q = Replace(q, "'alicuota'", Escape(op.Alicuota))
+    q = Replace(q, "'id_moneda'", GetEntityId(op.moneda))
+    q = Replace(q, "'alicuota'", Escape(op.alicuota))
     q = Replace(q, "'fecha'", Escape(op.FEcha))
     q = Replace(q, "'id_cuenta_contable'", GetEntityId(op.CuentaContable))
     q = Replace(q, "'cuenta_contable_desc'", Escape(op.CuentaContableDescripcion))
@@ -486,8 +486,21 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
                 GoTo E
             End If
         Next oper
+        
+        
+        
+        'guardo las retenciones aplicadas
+   q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.id
+        If Not conectar.execute(q) Then GoTo E
 
+        Dim r As DTORetencionAlicuota
+        For Each r In op.RetencionesAlicuota
+            
+         
 
+          ' q = "INSERT INTO retenciones_alicuotas VALUES (" & op.id & ", " & che.id & ")"
+          '  If Not conectar.execute(q) Then GoTo E
+        Next r
 
 
         'guardo los compensatorios
@@ -763,7 +776,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
 
     pic.Picture = LoadResPicture(101, vbResBitmap)
 
-    Dim a As Single
+    Dim A As Single
     lmargin = 720
 
 
@@ -772,8 +785,8 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     TAB2 = 300
     Printer.CurrentY = lmargin
     maxw = Printer.Width - lmargin * 2
-    a = lmargin + (maxw - 3200) / 2
-    Printer.PaintPicture pic.Picture, a, 100, 3200, 600
+    A = lmargin + (maxw - 3200) / 2
+    Printer.PaintPicture pic.Picture, A, 100, 3200, 600
     Printer.FontBold = True
 
     Printer.FontSize = 12
@@ -802,7 +815,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Alícuota Retencion IIBB: ";
     Printer.FontBold = False
-    Printer.Print Orden.Alicuota & "%"
+    Printer.Print Orden.alicuota & "%"
 
     Dim cert As CertificadoRetencion
     Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
@@ -823,19 +836,19 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Moneda: ";
     Printer.FontBold = False
-    Printer.Print Orden.Moneda.NombreCorto & " " & Orden.Moneda.NombreLargo
+    Printer.Print Orden.moneda.NombreCorto & " " & Orden.moneda.NombreLargo
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Otros Descuentos: ";
     Printer.FontBold = False
-    Printer.Print Orden.Moneda.NombreCorto & " " & Orden.OtrosDescuentos
+    Printer.Print Orden.moneda.NombreCorto & " " & Orden.OtrosDescuentos
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Dif. Por Tipo de Cambio: ";
     Printer.FontBold = False
-    Printer.Print Orden.Moneda.NombreCorto & " " & Orden.DiferenciaCambio
+    Printer.Print Orden.moneda.NombreCorto & " " & Orden.DiferenciaCambio
 
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
@@ -855,7 +868,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each F In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.Moneda.NombreCorto & " " & F.Total
+        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
     Next F
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -877,7 +890,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each cheq In Orden.ChequesPropios
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.Moneda.NombreCorto & " " & cheq.Monto
+        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
     Next cheq
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -893,7 +906,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each cheq In Orden.ChequesTerceros
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.Moneda.NombreCorto & " " & cheq.Monto
+        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
     Next cheq
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -911,7 +924,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each op In Orden.OperacionesBanco
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & op.Moneda.NombreCorto & " " & op.Monto
+        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
     Next op
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -929,7 +942,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each op In Orden.OperacionesCaja
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & op.Moneda.NombreCorto & " " & op.Monto
+        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
     Next op
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -945,19 +958,19 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Total Facturas: ";
     Printer.FontBold = False
-    Printer.Print Orden.Moneda.NombreCorto & " " & Orden.StaticTotalFacturas
+    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalFacturas
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Total Retenido: ";
     Printer.FontBold = False
-    Printer.Print Orden.Moneda.NombreCorto & " " & Orden.StaticTotalRetenido
+    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalRetenido
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Total Abonado: ";
     Printer.FontBold = False
-    Printer.Print Orden.Moneda.NombreCorto & " " & Orden.StaticTotalOrigenes
+    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalOrigenes
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.EndDoc
