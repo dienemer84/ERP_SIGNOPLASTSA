@@ -92,23 +92,29 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
         cn.execute "TRUNCATE sp_permisos.IIBB2_Percepcion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Percepcion FIELDS TERMINATED BY ';'"
         
-        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, Padron) SELECT Cuit, Alicuota, '1' FROM sp_permisos.IIBB2_Percepcion"
-        
+       cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='1'"
+       
+       cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, Alicuota, '0,00', '1' FROM sp_permisos.IIBB2_Percepcion"
+
 
     ElseIf Tipo = TipoPadronRetencion Then
         cn.execute "TRUNCATE sp_permisos.IIBB2_RetencionAnt"
         cn.execute "INSERT INTO sp_permisos.IIBB2_RetencionAnt SELECT * FROM sp_permisos.IIBB2_Retencion"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Retencion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Retencion FIELDS TERMINATED BY ';'"
-                       
+ 
         cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = (SELECT c.Alicuota from sp_permisos.IIBB2_Retencion c WHERE f.Cuit = c.Cuit)"
-              
-        
+               
+        cn.execute ""
+                    
+                    
     ElseIf Tipo = TipoPadronUnificadoCABA Then
         cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA_Ant"
         cn.execute "INSERT INTO sp_permisos.IIBB2_Padron_CABA_Ant SELECT * FROM sp_permisos.IIBB2_Padron_CABA"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Padron_CABA FIELDS TERMINATED BY ';'"
+        
+        cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='2'"
         
         cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, AlicuotaPercepcion, AlicuotaRetencion, '2' FROM sp_permisos.IIBB2_Padron_CABA"
         
@@ -420,7 +426,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -433,7 +439,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         archi = "SUB_COBRANZAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -711,7 +717,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -724,7 +730,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         archi = "SUB_RETENCIONES_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
