@@ -105,8 +105,10 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
  
         cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = (SELECT c.Alicuota from sp_permisos.IIBB2_Retencion c WHERE f.Cuit = c.Cuit)"
                
-        cn.execute ""
+        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, '0,00', Alicuota, '1' FROM sp_permisos.IIBB2_Retencion WHERE Cuit NOT IN (SELECT Cuit FROM sp_permisos.IIBB2_Percepcion)"
                     
+        cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = '0,00' WHERE f.AlicuotaRetencion IS NULL"
+        
                     
     ElseIf Tipo = TipoPadronUnificadoCABA Then
         cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA_Ant"
@@ -392,7 +394,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
 
 
         Next x
-        A = 1
+        a = 1
 
         offset = x + 3
 
@@ -694,7 +696,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
             '
             '
         Next x
-        A = 1
+        a = 1
 
         offset = x + 3
 

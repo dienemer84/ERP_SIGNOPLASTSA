@@ -20,6 +20,7 @@ Begin VB.Form frmAdminIIBB
    Begin VB.CommandButton Command9 
       BackColor       =   &H00E0E0E0&
       Caption         =   "Buscar R en CABA"
+      Enabled         =   0   'False
       Height          =   375
       Index           =   2
       Left            =   5400
@@ -30,18 +31,19 @@ Begin VB.Form frmAdminIIBB
    End
    Begin VB.CommandButton Command7 
       BackColor       =   &H00E0E0E0&
-      Caption         =   "Actualizar Padrón Unificado (CABA)"
+      Caption         =   "3- Actualizar Padrón Unificado (CABA)"
       Height          =   375
-      Left            =   4320
+      Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   28
       Top             =   5280
-      Width           =   2775
+      Width           =   2895
    End
    Begin VB.CommandButton Command6 
       BackColor       =   &H00E0E0E0&
       Caption         =   "Buscar P en Bs.As."
       Default         =   -1  'True
+      Enabled         =   0   'False
       Height          =   375
       Left            =   240
       Style           =   1  'Graphical
@@ -51,7 +53,7 @@ Begin VB.Form frmAdminIIBB
    End
    Begin VB.CommandButton Command5 
       BackColor       =   &H00E0E0E0&
-      Caption         =   "Actualizar Padrón P (Bs.As.)"
+      Caption         =   "1- Actualizar Padrón P (Bs.As.)"
       Height          =   375
       Left            =   120
       Style           =   1  'Graphical
@@ -80,7 +82,7 @@ Begin VB.Form frmAdminIIBB
    End
    Begin VB.CommandButton Command3 
       BackColor       =   &H00E0E0E0&
-      Caption         =   "Actualizar Padrón R (Bs.As.)"
+      Caption         =   "2- Actualizar Padrón R (Bs.As.)"
       Height          =   375
       Index           =   0
       Left            =   120
@@ -92,6 +94,7 @@ Begin VB.Form frmAdminIIBB
    Begin VB.Frame Frame2 
       BackColor       =   &H00C0C0C0&
       Caption         =   "[ Resultado ]"
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -118,7 +121,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58654720
+         Format          =   58851328
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -131,7 +134,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58654721
+         Format          =   58851329
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -144,7 +147,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58654721
+         Format          =   58851329
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -358,6 +361,7 @@ Begin VB.Form frmAdminIIBB
    Begin VB.Frame Frame1 
       BackColor       =   &H00C0C0C0&
       Caption         =   "[ Búsqueda ]"
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -375,6 +379,7 @@ Begin VB.Form frmAdminIIBB
       Begin VB.CommandButton Command2 
          BackColor       =   &H00E0E0E0&
          Caption         =   "Buscar P en CABA"
+         Enabled         =   0   'False
          Height          =   375
          Index           =   1
          Left            =   3720
@@ -386,6 +391,7 @@ Begin VB.Form frmAdminIIBB
       Begin VB.CommandButton Command1 
          BackColor       =   &H00E0E0E0&
          Caption         =   "Buscar R en Bs.As."
+         Enabled         =   0   'False
          Height          =   375
          Index           =   0
          Left            =   1680
@@ -395,6 +401,7 @@ Begin VB.Form frmAdminIIBB
          Width           =   1515
       End
       Begin VB.TextBox txtCuit 
+         Enabled         =   0   'False
          Height          =   285
          Left            =   1725
          TabIndex        =   2
@@ -412,6 +419,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
+         Enabled         =   0   'False
          Style           =   2
          Appearance      =   6
          UseVisualStyle  =   -1  'True
@@ -589,6 +597,8 @@ Private Sub Command4_Click()
 End Sub
 
 Private Sub Command5_Click()
+    
+    
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
