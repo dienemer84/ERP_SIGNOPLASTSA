@@ -230,8 +230,23 @@ Private Sub Command1_Click()
 
     On Error GoTo errh000
 
+
+    Dim fullserver() As String
+     fullserver = Split(Me.cboServidor.text, ":")
+    
+    Dim port As String
+    port = "3306"
+    Dim ip As String
+    ip = frmPrincipal.servidorActual
+    If UBound(fullserver) = 1 Then
+        port = fullserver(1)
+        ip = fullserver(0)
+    End If
+
+
     frmPrincipal.servidorActual = Me.cboServidor.text
-    conectar.SetServidorBBDD frmPrincipal.servidorActual
+     conectar.port = port
+    conectar.SetServidorBBDD ip
     If Not conectar.conectar Then GoTo errh000
 
     Dim r As Recordset

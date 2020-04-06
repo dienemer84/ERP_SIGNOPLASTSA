@@ -48,6 +48,7 @@ Public Enum TipoPadron
     TipoPadronPercepcion = 1
     'Agrega Nemer para poder cargar el Padron CABA
     TipoPadronUnificadoCABA = 2
+    
  
     
 End Enum
@@ -179,7 +180,7 @@ End Enum
 Public Enum tipoDocumentoContable
     Factura = 0
     notaCredito = 1
-    NotaDebito = 2
+    notaDebito = 2
 End Enum
 
 
@@ -445,7 +446,7 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
 
     tipo_doc_contable(tipoDocumentoContable.Factura) = "Factura"
     tipo_doc_contable(tipoDocumentoContable.notaCredito) = "N. Crédito"
-    tipo_doc_contable(tipoDocumentoContable.NotaDebito) = "N. Debito"
+    tipo_doc_contable(tipoDocumentoContable.notaDebito) = "N. Debito"
 
 
     tipos_Doc(TipoDocumento.TipoDocumentoCuit) = "CUIT"
