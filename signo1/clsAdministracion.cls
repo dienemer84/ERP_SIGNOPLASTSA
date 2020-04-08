@@ -92,9 +92,8 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
         cn.execute "TRUNCATE sp_permisos.IIBB2_Percepcion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Percepcion FIELDS TERMINATED BY ';'"
         
-       cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='1'"
-       
-       cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, Alicuota, '0,00', '1' FROM sp_permisos.IIBB2_Percepcion"
+       'cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='1'"
+       'cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, Alicuota, '0,00', '1' FROM sp_permisos.IIBB2_Percepcion"
 
 
     ElseIf Tipo = TipoPadronRetencion Then
@@ -103,11 +102,9 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
         cn.execute "TRUNCATE sp_permisos.IIBB2_Retencion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Retencion FIELDS TERMINATED BY ';'"
  
-        cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = (SELECT c.Alicuota from sp_permisos.IIBB2_Retencion c WHERE f.Cuit = c.Cuit)"
-               
-        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, '0,00', Alicuota, '1' FROM sp_permisos.IIBB2_Retencion WHERE Cuit NOT IN (SELECT Cuit FROM sp_permisos.IIBB2_Percepcion)"
-                    
-        cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = '0,00' WHERE f.AlicuotaRetencion IS NULL"
+        'cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = (SELECT c.Alicuota from sp_permisos.IIBB2_Retencion c WHERE f.Cuit = c.Cuit)"
+        'cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, '0,00', Alicuota, '1' FROM sp_permisos.IIBB2_Retencion WHERE Cuit NOT IN (SELECT Cuit FROM sp_permisos.IIBB2_Percepcion)"
+        'cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = '0,00' WHERE f.AlicuotaRetencion IS NULL"
         
                     
     ElseIf Tipo = TipoPadronUnificadoCABA Then
@@ -116,9 +113,8 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
         cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Padron_CABA FIELDS TERMINATED BY ';'"
         
-        cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='2'"
-        
-        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, AlicuotaPercepcion, AlicuotaRetencion, '2' FROM sp_permisos.IIBB2_Padron_CABA"
+        'cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='2'"
+        'cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, AlicuotaPercepcion, AlicuotaRetencion, '2' FROM sp_permisos.IIBB2_Padron_CABA"
         
     End If
     
@@ -130,6 +126,25 @@ err4:
 End Function
 
 
+Public Function ProcesarPadronIB() As Boolean
+    On Error GoTo err4
+    ProcesarPadronIB = True
+    cn.BeginTrans
+
+        MsgBox "Llegó a la funcion ProcesarPadronIB!"
+        
+        cn.execute "TRUNCATE sp_permisos.Padron_Detalles"
+        
+        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) (SELECT r.Cuit, r.Alicuota AS AlicuotaPercepcion, p.Alicuota AS AlicuotaRetencion, '1' FROM sp_permisos.IIBB2_Percepcion r LEFT JOIN sp_permisos.IIBB2_Retencion p ON r.Cuit=p.Cuit) UNION SELECT r.Cuit, r.Alicuota AS AlicuotaRetencion, 0, '1' FROM sp_permisos.IIBB2_Retencion r WHERE NOT EXISTS (SELECT * FROM sp_permisos.IIBB2_Percepcion p WHERE p.Cuit=r.Cuit) UNION (SELECT c.Cuit, c.AlicuotaPercepcion, c.AlicuotaRetencion, '2'  FROM sp_permisos.IIBB2_Padron_CABA c)"
+
+        cn.CommitTrans
+    
+    Exit Function
+    
+err4:
+    ProcesarPadronIB = False
+    cn.RollbackTrans
+End Function
 
 
 
@@ -225,7 +240,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     ReDim Preserve vec(TOTAL_DE_RET) As Double
     Dim ret As retencionRecibo
     Dim rs_lista As Recordset
-    Dim x As ListItem
+    Dim X As ListItem
     'TRAIGO LOS DATOS
     strsql = "SELECT c.razon,c.cuit,r.fechaCreacion,r.id,r.efectivo,r.cheques,r.idMoneda, redondeo from AdminRecibos r inner join clientes c on r.idCliente=c.id where r.fechaCreacion >= '" & Format(desde, "yyyy-mm-dd") & "' and r.fechaCreacion <=  '" & Format(hasta, "yyyy-mm-dd") & "'"
     Dim di As New Dictionary
@@ -236,22 +251,22 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     tot_re = 0
     tot_fc = 0
     Dim r As recibo
-    Dim y As ListItem
+    Dim Y As ListItem
 
 
 
     While Not rs_lista.EOF
         '' Set ret = Me.totalizarRecibo(rs_lista!Id, totalfacturs) '' -->> VER
         Set r = DAORecibo.FindById(rs_lista!id, True, False, False, False, True)
-        Set x = lst.ListItems.Add(, , Format(rs_lista!FechaCreacion, "dd-mm-yyyy"))
-        x.SubItems(1) = Format(rs_lista!id, "0000-00000000")
-        x.SubItems(2) = rs_lista!razon
-        x.SubItems(3) = rs_lista!Cuit
-        x.SubItems(4) = funciones.FormatearDecimales(r.TotalFacturas, 2)
-        x.SubItems(5) = funciones.FormatearDecimales(r.TotalEstatico.TotalEfectivoEstatico, 2)
-        x.SubItems(6) = funciones.FormatearDecimales(r.TotalEstatico.TotalChequesEstatico, 2)
-        x.SubItems(7) = funciones.FormatearDecimales(r.TotalEstatico.TotalDepositosEstatico, 2)
-        x.SubItems(8) = funciones.FormatearDecimales(r.Redondeo, 2)
+        Set X = lst.ListItems.Add(, , Format(rs_lista!FechaCreacion, "dd-mm-yyyy"))
+        X.SubItems(1) = Format(rs_lista!id, "0000-00000000")
+        X.SubItems(2) = rs_lista!razon
+        X.SubItems(3) = rs_lista!Cuit
+        X.SubItems(4) = funciones.FormatearDecimales(r.TotalFacturas, 2)
+        X.SubItems(5) = funciones.FormatearDecimales(r.TotalEstatico.TotalEfectivoEstatico, 2)
+        X.SubItems(6) = funciones.FormatearDecimales(r.TotalEstatico.TotalChequesEstatico, 2)
+        X.SubItems(7) = funciones.FormatearDecimales(r.TotalEstatico.TotalDepositosEstatico, 2)
+        X.SubItems(8) = funciones.FormatearDecimales(r.Redondeo, 2)
 
         tot_Ef = tot_Ef + funciones.FormatearDecimales(r.TotalEstatico.TotalEfectivoEstatico, 2)
         tot_ch = tot_ch + funciones.FormatearDecimales(r.TotalEstatico.TotalChequesEstatico, 2)
@@ -266,9 +281,9 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
 
 
                 If ret.Retencion.id = lst.ColumnHeaders(o).Tag Then
-                    x.SubItems(o - 1) = ret.Valor
+                    X.SubItems(o - 1) = ret.Valor
                 Else
-                    If (Not IsNumeric(x.SubItems(o - 1))) Then x.SubItems(o - 1) = "0.00"
+                    If (Not IsNumeric(X.SubItems(o - 1))) Then X.SubItems(o - 1) = "0.00"
                 End If
             Next ret
 
@@ -291,26 +306,26 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     Wend
 
 
-    Set y = lst.ListItems.Add(, , Empty)
-    y.SubItems(1) = Empty
-    y.SubItems(2) = Empty
-    y.SubItems(3) = Empty
-    y.SubItems(4) = tot_fc
-    y.SubItems(5) = funciones.FormatearDecimales(tot_Ef)
-    y.SubItems(6) = funciones.FormatearDecimales(tot_ch)
-    y.SubItems(7) = funciones.FormatearDecimales(tot_bco)
-    y.SubItems(8) = funciones.FormatearDecimales(tot_re)
-    y.ListSubItems(4).Bold = True
-    y.ListSubItems(5).Bold = True
-    y.ListSubItems(6).Bold = True
-    y.ListSubItems(8).Bold = True
-    y.ListSubItems(7).Bold = True
+    Set Y = lst.ListItems.Add(, , Empty)
+    Y.SubItems(1) = Empty
+    Y.SubItems(2) = Empty
+    Y.SubItems(3) = Empty
+    Y.SubItems(4) = tot_fc
+    Y.SubItems(5) = funciones.FormatearDecimales(tot_Ef)
+    Y.SubItems(6) = funciones.FormatearDecimales(tot_ch)
+    Y.SubItems(7) = funciones.FormatearDecimales(tot_bco)
+    Y.SubItems(8) = funciones.FormatearDecimales(tot_re)
+    Y.ListSubItems(4).Bold = True
+    Y.ListSubItems(5).Bold = True
+    Y.ListSubItems(6).Bold = True
+    Y.ListSubItems(8).Bold = True
+    Y.ListSubItems(7).Bold = True
 
 
 
     For o = 10 To 10 + TOTAL_DE_RET - 1
-        y.SubItems(o - 1) = di.item(lst.ColumnHeaders.item(o).Tag)
-        y.ListSubItems(o - 1).Bold = True
+        Y.SubItems(o - 1) = di.item(lst.ColumnHeaders.item(o).Tag)
+        Y.ListSubItems(o - 1).Bold = True
     Next o
 
 End Function
@@ -352,8 +367,8 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
 
 
 
-        For x = 1 To canti_col
-            .Cells(3, x).value = lst.ColumnHeaders(x).text
+        For X = 1 To canti_col
+            .Cells(3, X).value = lst.ColumnHeaders(X).text
 
         Next
         For i = 1 To canti_col
@@ -379,37 +394,37 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
         Dim vec() As Variant
         ReDim Preserve vec(canti_col - 1 - 3)
 
-        For x = 1 To lst.ListItems.count - 1
+        For X = 1 To lst.ListItems.count - 1
 
-            .Cells(x + 3, 1).value = lst.ListItems(x)
-            .Cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
-            .Cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
-            .Cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
+            .Cells(X + 3, 1).value = lst.ListItems(X)
+            .Cells(X + 3, 2).value = lst.ListItems(X).ListSubItems(1)
+            .Cells(X + 3, 3).value = lst.ListItems(X).ListSubItems(2)
+            .Cells(X + 3, 4).value = lst.ListItems(X).ListSubItems(3)
 
             'campos numericos
-            For y = 4 To canti_col - 1
-                .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
-                vec(y - 4) = vec(y - 4) + CDbl(lst.ListItems(x).ListSubItems(y))
-            Next y
+            For Y = 4 To canti_col - 1
+                .Cells(X + 3, Y + 1).value = CDbl(lst.ListItems(X).ListSubItems(Y))
+                vec(Y - 4) = vec(Y - 4) + CDbl(lst.ListItems(X).ListSubItems(Y))
+            Next Y
 
 
-        Next x
-        a = 1
+        Next X
+        A = 1
 
-        offset = x + 3
+        offset = X + 3
 
 
-        b = .Cells(canti_col, x)    '"j" & Offset
-        .Range("f1", .Cells(x + 2, canti_col)).NumberFormat = "0.00"
-        .Range(.Cells(1, 1), .Cells(x + 2, canti_col)).Borders.LineStyle = xlContinuous
+        b = .Cells(canti_col, X)    '"j" & Offset
+        .Range("f1", .Cells(X + 2, canti_col)).NumberFormat = "0.00"
+        .Range(.Cells(1, 1), .Cells(X + 2, canti_col)).Borders.LineStyle = xlContinuous
 
-        .Range(.Cells(x + 3, 5), .Cells(x + 3, canti_col)).Interior.Color = &HC0C0C0
-        .Range(.Cells(x + 3, 5), .Cells(x + 3, canti_col)).Font.Bold = True
+        .Range(.Cells(X + 3, 5), .Cells(X + 3, canti_col)).Interior.Color = &HC0C0C0
+        .Range(.Cells(X + 3, 5), .Cells(X + 3, canti_col)).Font.Bold = True
 
         For o = 0 To UBound(vec)
-            .Cells(x + 3, 5 + o) = vec(o)
+            .Cells(X + 3, 5 + o) = vec(o)
         Next o
-        .Range("e" & x + 3, .Cells(x, canti_col)).Borders.LineStyle = xlContinuous
+        .Range("e" & X + 3, .Cells(X, canti_col)).Borders.LineStyle = xlContinuous
         '.Range("f" & X + 3, .Cells(X, canti_col)).Font.Bold = True
 
         '.Cells(Offset, 10).value = total
@@ -525,8 +540,8 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
     TOTAL_DE_RET = i
 
 
-    Dim x As ListItem
-    Dim y As ListItem
+    Dim X As ListItem
+    Dim Y As ListItem
     'TRAIGO LOS DATOS
     'strsql = "SELECT c.razon,c.cuit,r.fechaCreacion,r.id,r.idMoneda from AdminRecibos r inner join clientes c on r.idCliente=c.id where r.fechaCreacion >= '" & Format(desde, "yyyy-mm-dd") & "' and r.fechaCreacion <=  '" & Format(hasta, "yyyy-mm-dd") & "'"
 
@@ -537,16 +552,16 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
     While Not rs_lista.EOF
         '    Set ret = Me.totalizarRecibo(rs_lista!id, totalfacturs)
         '
-        Set x = lst.ListItems.Add(, , Format(rs_lista!FEcha, "dd-mm-yyyy"))
+        Set X = lst.ListItems.Add(, , Format(rs_lista!FEcha, "dd-mm-yyyy"))
 
-        x.SubItems(1) = rs_lista!razon
-        x.SubItems(2) = rs_lista!Cuit
-        x.SubItems(3) = Format(rs_lista!id, "0000-00000000")
+        X.SubItems(1) = rs_lista!razon
+        X.SubItems(2) = rs_lista!Cuit
+        X.SubItems(3) = Format(rs_lista!id, "0000-00000000")
 
         Set ret = conectar.RSFactory("select *, fecha as fechaRet from AdminRecibosDetalleRetenciones where idRecibo=" & rs_lista!id & " and fecha >= '" & Format(desde, "yyyy-mm-dd") & "' and fecha <=  '" & Format(hasta, "yyyy-mm-dd") & "'")
 
         If ret.EOF = False And ret.BOF = False Then
-            x.SubItems(4) = ret!NroRetencion & " (" & ret!fechaRet & ")"
+            X.SubItems(4) = ret!NroRetencion & " (" & ret!fechaRet & ")"
             For h = 6 To tot_columnas
                 If ret!idretencion = lst.ColumnHeaders(h).Tag Then
                     Valor = ret!Valor
@@ -555,24 +570,24 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
                     Valor = 0
 
                 End If
-                x.SubItems(h - 1) = Valor
+                X.SubItems(h - 1) = Valor
             Next h
             ret.MoveNext
         End If
 
         While Not ret.EOF
-            Set y = lst.ListItems.Add(, , Empty)
-            y.SubItems(1) = Empty
-            y.SubItems(2) = Empty
-            y.SubItems(3) = Empty
-            y.SubItems(4) = ret!NroRetencion & " (" & ret!fechaRet & ")"
+            Set Y = lst.ListItems.Add(, , Empty)
+            Y.SubItems(1) = Empty
+            Y.SubItems(2) = Empty
+            Y.SubItems(3) = Empty
+            Y.SubItems(4) = ret!NroRetencion & " (" & ret!fechaRet & ")"
             For h = 6 To tot_columnas
                 If ret!idretencion = lst.ColumnHeaders(h).Tag Then
                     Valor = ret!Valor
                 Else
                     Valor = 0
                 End If
-                y.SubItems(h - 1) = Valor
+                Y.SubItems(h - 1) = Valor
             Next h
             '
             ret.MoveNext
@@ -595,15 +610,15 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
         Next xx
     Next YY
 
-    Set y = lst.ListItems.Add(, , Empty)
-    y.SubItems(1) = Empty
-    y.SubItems(2) = Empty
-    y.SubItems(3) = Empty
-    y.SubItems(4) = Empty
+    Set Y = lst.ListItems.Add(, , Empty)
+    Y.SubItems(1) = Empty
+    Y.SubItems(2) = Empty
+    Y.SubItems(3) = Empty
+    Y.SubItems(4) = Empty
     For i = 0 To tot_ret
-        y.SubItems(i + 5) = vec1(i)
-        y.Bold = True
-        y.ListSubItems(i + 5).Bold = True
+        Y.SubItems(i + 5) = vec1(i)
+        Y.Bold = True
+        Y.ListSubItems(i + 5).Bold = True
     Next i
 
 
@@ -652,8 +667,8 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
 
 
 
-        For x = 1 To canti_col
-            .Cells(3, x).value = lst.ColumnHeaders(x).text
+        For X = 1 To canti_col
+            .Cells(3, X).value = lst.ColumnHeaders(X).text
 
         Next
         For i = 1 To canti_col
@@ -680,38 +695,38 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
         Dim vec() As Variant
         ReDim Preserve vec(canti_col - 1 - 3)
         '
-        For x = 1 To lst.ListItems.count - 1
+        For X = 1 To lst.ListItems.count - 1
             '
-            .Cells(x + 3, 1).value = lst.ListItems(x)
-            .Cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
-            .Cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
-            .Cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
-            .Cells(x + 3, 5).value = lst.ListItems(x).ListSubItems(4)
+            .Cells(X + 3, 1).value = lst.ListItems(X)
+            .Cells(X + 3, 2).value = lst.ListItems(X).ListSubItems(1)
+            .Cells(X + 3, 3).value = lst.ListItems(X).ListSubItems(2)
+            .Cells(X + 3, 4).value = lst.ListItems(X).ListSubItems(3)
+            .Cells(X + 3, 5).value = lst.ListItems(X).ListSubItems(4)
             '
             '    'campos numericos
-            For y = 5 To canti_col - 1
-                .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
-                vec(y - 5) = vec(y - 5) + CDbl(lst.ListItems(x).ListSubItems(y))
-            Next y
+            For Y = 5 To canti_col - 1
+                .Cells(X + 3, Y + 1).value = CDbl(lst.ListItems(X).ListSubItems(Y))
+                vec(Y - 5) = vec(Y - 5) + CDbl(lst.ListItems(X).ListSubItems(Y))
+            Next Y
             '
             '
-        Next x
-        a = 1
+        Next X
+        A = 1
 
-        offset = x + 3
+        offset = X + 3
 
 
-        b = .Cells(canti_col, x)    '"j" & Offset
-        .Range("f1", .Cells(x + 2, canti_col)).NumberFormat = "0.00"
-        .Range(.Cells(1, 1), .Cells(x + 2, canti_col)).Borders.LineStyle = xlContinuous
+        b = .Cells(canti_col, X)    '"j" & Offset
+        .Range("f1", .Cells(X + 2, canti_col)).NumberFormat = "0.00"
+        .Range(.Cells(1, 1), .Cells(X + 2, canti_col)).Borders.LineStyle = xlContinuous
 
-        .Range(.Cells(x + 3, 6), .Cells(x + 3, canti_col)).Interior.Color = &HC0C0C0
-        .Range(.Cells(x + 3, 6), .Cells(x + 3, canti_col)).Font.Bold = True
+        .Range(.Cells(X + 3, 6), .Cells(X + 3, canti_col)).Interior.Color = &HC0C0C0
+        .Range(.Cells(X + 3, 6), .Cells(X + 3, canti_col)).Font.Bold = True
 
         For o = 0 To UBound(vec)
-            .Cells(x + 3, 6 + o) = vec(o)
+            .Cells(X + 3, 6 + o) = vec(o)
         Next o
-        .Range("f" & x + 3, .Cells(x, canti_col)).Borders.LineStyle = xlContinuous
+        .Range("f" & X + 3, .Cells(X, canti_col)).Borders.LineStyle = xlContinuous
 
 
         'xls.Visible = True 'NO MUESTRO LA HOJA XLS

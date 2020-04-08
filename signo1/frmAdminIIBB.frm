@@ -6,27 +6,45 @@ Begin VB.Form frmAdminIIBB
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Padrón IIBB"
-   ClientHeight    =   8370
+   ClientHeight    =   7425
    ClientLeft      =   5700
    ClientTop       =   3015
-   ClientWidth     =   7200
+   ClientWidth     =   7230
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8370
-   ScaleWidth      =   7200
+   ScaleHeight     =   7425
+   ScaleWidth      =   7230
    ShowInTaskbar   =   0   'False
-   Begin VB.CommandButton btnProcesar 
-      BackColor       =   &H00E0E0E0&
-      Cancel          =   -1  'True
-      Caption         =   "Procesar Padrones"
-      Height          =   375
-      Left            =   4320
-      Style           =   1  'Graphical
-      TabIndex        =   31
-      Top             =   5280
-      Width           =   2655
+   Begin VB.Frame Frame4 
+      BackColor       =   &H00C0C0C0&
+      Caption         =   "[ Procesar Padrones ]"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   1095
+      Left            =   3480
+      TabIndex        =   32
+      Top             =   5160
+      Width           =   3615
+      Begin VB.CommandButton btnProcesar 
+         BackColor       =   &H00E0E0E0&
+         Cancel          =   -1  'True
+         Caption         =   "Procesar Padrones"
+         Height          =   375
+         Left            =   240
+         Style           =   1  'Graphical
+         TabIndex        =   33
+         Top             =   480
+         Width           =   3135
+      End
    End
    Begin VB.CommandButton Command9 
       BackColor       =   &H00E0E0E0&
@@ -36,19 +54,9 @@ Begin VB.Form frmAdminIIBB
       Index           =   2
       Left            =   5400
       Style           =   1  'Graphical
-      TabIndex        =   30
+      TabIndex        =   27
       Top             =   1080
       Width           =   1515
-   End
-   Begin VB.CommandButton Command7 
-      BackColor       =   &H00E0E0E0&
-      Caption         =   "Importar Padrón Unificado (CABA)"
-      Height          =   375
-      Left            =   120
-      Style           =   1  'Graphical
-      TabIndex        =   28
-      Top             =   6240
-      Width           =   2895
    End
    Begin VB.CommandButton Command6 
       BackColor       =   &H00E0E0E0&
@@ -62,19 +70,9 @@ Begin VB.Form frmAdminIIBB
       Top             =   1080
       Width           =   1515
    End
-   Begin VB.CommandButton Command5 
-      BackColor       =   &H00E0E0E0&
-      Caption         =   "Importar Percepción  (BSAS.)"
-      Height          =   375
-      Left            =   120
-      Style           =   1  'Graphical
-      TabIndex        =   27
-      Top             =   5280
-      Width           =   2895
-   End
    Begin MSComDlg.CommonDialog cd 
-      Left            =   3240
-      Top             =   5520
+      Left            =   3600
+      Top             =   6720
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
@@ -84,22 +82,11 @@ Begin VB.Form frmAdminIIBB
       BackColor       =   &H00E0E0E0&
       Caption         =   "Salir"
       Height          =   375
-      Left            =   6120
-      Style           =   1  'Graphical
-      TabIndex        =   17
-      Top             =   6225
-      Width           =   975
-   End
-   Begin VB.CommandButton Command3 
-      BackColor       =   &H00E0E0E0&
-      Caption         =   "Importar Retenciones (BSAS)"
-      Height          =   375
-      Index           =   0
-      Left            =   120
+      Left            =   4560
       Style           =   1  'Graphical
       TabIndex        =   16
-      Top             =   5760
-      Width           =   2895
+      Top             =   6720
+      Width           =   1335
    End
    Begin VB.Frame Frame2 
       BackColor       =   &H00C0C0C0&
@@ -122,7 +109,7 @@ Begin VB.Form frmAdminIIBB
       Begin MSComCtl2.DTPicker Fpublicacion 
          Height          =   255
          Left            =   2400
-         TabIndex        =   23
+         TabIndex        =   22
          Top             =   360
          Width           =   3375
          _ExtentX        =   5953
@@ -131,33 +118,33 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58720256
+         Format          =   59113472
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
          Height          =   255
          Left            =   2400
-         TabIndex        =   20
+         TabIndex        =   19
          Top             =   720
          Width           =   1335
          _ExtentX        =   2355
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58720257
+         Format          =   59113473
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
          Height          =   255
          Left            =   4440
-         TabIndex        =   22
+         TabIndex        =   21
          Top             =   720
          Width           =   1335
          _ExtentX        =   2355
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58720257
+         Format          =   59113473
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -176,7 +163,7 @@ Begin VB.Form frmAdminIIBB
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   120
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   2955
          Visible         =   0   'False
          Width           =   6495
@@ -186,7 +173,7 @@ Begin VB.Form frmAdminIIBB
          Caption         =   "Hasta"
          Height          =   255
          Left            =   3840
-         TabIndex        =   21
+         TabIndex        =   20
          Top             =   720
          Width           =   615
       End
@@ -205,7 +192,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   19
+         TabIndex        =   18
          Top             =   720
          Width           =   2055
       End
@@ -224,7 +211,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   18
+         TabIndex        =   17
          Top             =   360
          Width           =   2055
       End
@@ -394,7 +381,7 @@ Begin VB.Form frmAdminIIBB
          Index           =   1
          Left            =   3720
          Style           =   1  'Graphical
-         TabIndex        =   29
+         TabIndex        =   26
          Top             =   1080
          Width           =   1515
       End
@@ -421,7 +408,7 @@ Begin VB.Form frmAdminIIBB
       Begin XtremeSuiteControls.ComboBox cboPadron 
          Height          =   315
          Left            =   1725
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   210
          Width           =   2880
          _Version        =   786432
@@ -442,7 +429,7 @@ Begin VB.Form frmAdminIIBB
          Caption         =   "Padrón a utilizar"
          Height          =   195
          Left            =   480
-         TabIndex        =   25
+         TabIndex        =   24
          Top             =   255
          Width           =   1125
       End
@@ -456,19 +443,61 @@ Begin VB.Form frmAdminIIBB
          Width           =   1335
       End
    End
+   Begin VB.Frame Frame3 
+      BackColor       =   &H00C0C0C0&
+      Caption         =   "[ Importar Padrones ]"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2055
+      Left            =   120
+      TabIndex        =   28
+      Top             =   5160
+      Width           =   3255
+      Begin VB.CommandButton Command7 
+         BackColor       =   &H00E0E0E0&
+         Caption         =   "Padrón Unificado (CABA)"
+         Height          =   375
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   31
+         Top             =   1440
+         Width           =   2895
+      End
+      Begin VB.CommandButton Command3 
+         BackColor       =   &H00E0E0E0&
+         Caption         =   "Padrón Retenciones (BSAS)"
+         Height          =   375
+         Index           =   0
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   30
+         Top             =   960
+         Width           =   2895
+      End
+      Begin VB.CommandButton Command5 
+         BackColor       =   &H00E0E0E0&
+         Caption         =   "Padrón Percepciones  (BSAS.)"
+         Height          =   375
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   29
+         Top             =   480
+         Width           =   2895
+      End
+   End
    Begin VB.Line Line1 
       Index           =   1
       X1              =   3840
       X2              =   3480
       Y1              =   1680
       Y2              =   1800
-   End
-   Begin VB.Line Line1 
-      Index           =   0
-      X1              =   3480
-      X2              =   3480
-      Y1              =   5280
-      Y2              =   6720
    End
 End
 Attribute VB_Name = "frmAdminIIBB"
@@ -490,11 +519,11 @@ Private Sub MostrarResultado(tabla As String, Cuit As String)
         If Not rs.EOF And Not rs.BOF Then
 
             If rs!Discriminador = "R" Then
-                Me.Frame2.caption = "[ Resultado RETENCIONES ]"
+                Me.frame2.caption = "[ Resultado RETENCIONES ]"
             ElseIf rs!Discriminador = "P" Then
-                Me.Frame2.caption = "[ Resultado PERCEPCIONES ]"
+                Me.frame2.caption = "[ Resultado PERCEPCIONES ]"
             Else
-                Me.Frame2.caption = "[ Sin resultado ]"
+                Me.frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
             Me.lblCambio = rs!Cambio
@@ -591,11 +620,11 @@ Private Sub btnProcesar_Click()
     'Me.cd.ShowOpen
     'filename = cd.filename
     'filename = Replace(filename, "\", "/")
-    If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
-        If c.ActualizarPadronIB(filename, TipoPadronUnificadoCABA) Then
-            MsgBox "Actualización exitosa del padrón CABA!", vbInformation, "Información"
+    If MsgBox("¿Está seguro de continuar con el procesamiento?", vbYesNo, "Confirmación") = vbYes Then
+        If c.ProcesarPadronIB() Then
+            MsgBox "Procesamiento de Padrones éxitosa!", vbInformation, "Información"
         Else
-            MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"
+            MsgBox "Error, el procesamiento no se efectuó!", vbInformation, "Información"
         End If
     End If
     Exit Sub
@@ -628,8 +657,6 @@ Private Sub Command4_Click()
 End Sub
 
 Private Sub Command5_Click()
-    
-    
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
@@ -639,7 +666,6 @@ Private Sub Command5_Click()
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronPercepcion) Then
             MsgBox "Actualización exitosa!", vbInformation, "Información"
-              
         Else
             MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"
         End If
