@@ -6,7 +6,7 @@ Begin VB.Form frmAdminIIBB
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Padrón IIBB"
-   ClientHeight    =   8055
+   ClientHeight    =   7245
    ClientLeft      =   5700
    ClientTop       =   3015
    ClientWidth     =   7215
@@ -14,12 +14,193 @@ Begin VB.Form frmAdminIIBB
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8055
+   ScaleHeight     =   7245
    ScaleWidth      =   7215
    ShowInTaskbar   =   0   'False
+   Begin VB.Frame Frame5 
+      BackColor       =   &H00C0C0C0&
+      Caption         =   "[ Resultado ]"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2715
+      Left            =   120
+      TabIndex        =   35
+      Top             =   2280
+      Width           =   6975
+      Begin VB.Label lblVigenciaHastaR 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   4560
+         TabIndex        =   48
+         Top             =   960
+         Width           =   1215
+      End
+      Begin VB.Label lblVigenciaHastaP 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   4560
+         TabIndex        =   47
+         Top             =   720
+         Width           =   1215
+      End
+      Begin VB.Label lblVigenciaDesdeR 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   46
+         Top             =   960
+         Width           =   1215
+      End
+      Begin VB.Label lblVigenciaDesdeP 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   45
+         Top             =   720
+         Width           =   1215
+      End
+      Begin VB.Label Label23 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Alicuota Percepción"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   44
+         Top             =   1440
+         Width           =   2055
+      End
+      Begin VB.Label lblAlicuotaP 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   43
+         Top             =   1440
+         Width           =   4215
+      End
+      Begin VB.Label Label19 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Vigencia Ret desde"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   42
+         Top             =   960
+         Width           =   2055
+      End
+      Begin VB.Label Label18 
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Hasta"
+         Height          =   255
+         Left            =   3960
+         TabIndex        =   41
+         Top             =   960
+         Width           =   615
+      End
+      Begin VB.Label Label22 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Alicuota Retención"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   40
+         Top             =   1680
+         Width           =   2055
+      End
+      Begin VB.Label lblAlicuotaR 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   39
+         Top             =   1680
+         Width           =   4215
+      End
+      Begin VB.Label Label14 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Vigencia Per desde"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   38
+         Top             =   720
+         Width           =   2055
+      End
+      Begin VB.Label Label13 
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Hasta"
+         Height          =   255
+         Left            =   3960
+         TabIndex        =   37
+         Top             =   720
+         Width           =   615
+      End
+      Begin VB.Label Label12 
+         Alignment       =   2  'Center
+         BackColor       =   &H000000FF&
+         Caption         =   "LA CONSULTA GENERÓ UN RESULTADO CON FECHA VENCIDA"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   255
+         Left            =   120
+         TabIndex        =   36
+         Top             =   2280
+         Visible         =   0   'False
+         Width           =   6495
+      End
+   End
    Begin VB.Frame Frame4 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "[ Procesar Padrones ]"
+      Caption         =   "[ Paso 2 - Procesar Padrones ]"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -31,8 +212,8 @@ Begin VB.Form frmAdminIIBB
       EndProperty
       Height          =   1095
       Left            =   3480
-      TabIndex        =   32
-      Top             =   5880
+      TabIndex        =   30
+      Top             =   5160
       Width           =   3615
       Begin VB.CommandButton btnProcesar 
          BackColor       =   &H00E0E0E0&
@@ -41,32 +222,10 @@ Begin VB.Form frmAdminIIBB
          Height          =   375
          Left            =   600
          Style           =   1  'Graphical
-         TabIndex        =   33
+         TabIndex        =   31
          Top             =   480
          Width           =   2415
       End
-   End
-   Begin VB.CommandButton Command9 
-      BackColor       =   &H00E0E0E0&
-      Caption         =   "Buscar R en CABA"
-      Height          =   375
-      Index           =   2
-      Left            =   5280
-      Style           =   1  'Graphical
-      TabIndex        =   27
-      Top             =   1320
-      Width           =   1515
-   End
-   Begin VB.CommandButton Command6 
-      BackColor       =   &H00E0E0E0&
-      Caption         =   "Buscar P en Bs.As."
-      Default         =   -1  'True
-      Height          =   375
-      Left            =   5280
-      Style           =   1  'Graphical
-      TabIndex        =   4
-      Top             =   840
-      Width           =   1515
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   3600
@@ -80,10 +239,10 @@ Begin VB.Form frmAdminIIBB
       BackColor       =   &H00E0E0E0&
       Caption         =   "Salir"
       Height          =   375
-      Left            =   5400
+      Left            =   5520
       Style           =   1  'Graphical
-      TabIndex        =   16
-      Top             =   7320
+      TabIndex        =   15
+      Top             =   7440
       Width           =   1575
    End
    Begin VB.Frame Frame2 
@@ -99,14 +258,14 @@ Begin VB.Form frmAdminIIBB
          Strikethrough   =   0   'False
       EndProperty
       Height          =   3435
-      Left            =   120
-      TabIndex        =   5
-      Top             =   2400
+      Left            =   10920
+      TabIndex        =   4
+      Top             =   360
       Width           =   6975
       Begin MSComCtl2.DTPicker Fpublicacion 
          Height          =   255
          Left            =   2400
-         TabIndex        =   22
+         TabIndex        =   21
          Top             =   360
          Width           =   3375
          _ExtentX        =   5953
@@ -115,33 +274,33 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   62259200
+         Format          =   58916864
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
          Height          =   255
          Left            =   2400
-         TabIndex        =   19
+         TabIndex        =   18
          Top             =   720
          Width           =   1335
          _ExtentX        =   2355
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   62259201
+         Format          =   58916865
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
          Height          =   255
          Left            =   4440
-         TabIndex        =   21
+         TabIndex        =   20
          Top             =   720
          Width           =   1335
          _ExtentX        =   2355
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   62259201
+         Format          =   58916865
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -160,7 +319,7 @@ Begin VB.Form frmAdminIIBB
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   120
-         TabIndex        =   23
+         TabIndex        =   22
          Top             =   2955
          Visible         =   0   'False
          Width           =   6495
@@ -170,7 +329,7 @@ Begin VB.Form frmAdminIIBB
          Caption         =   "Hasta"
          Height          =   255
          Left            =   3840
-         TabIndex        =   20
+         TabIndex        =   19
          Top             =   720
          Width           =   615
       End
@@ -189,7 +348,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   18
+         TabIndex        =   17
          Top             =   720
          Width           =   2055
       End
@@ -208,7 +367,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   17
+         TabIndex        =   16
          Top             =   360
          Width           =   2055
       End
@@ -216,7 +375,7 @@ Begin VB.Form frmAdminIIBB
          BackColor       =   &H00E0E0E0&
          Height          =   255
          Left            =   2400
-         TabIndex        =   15
+         TabIndex        =   14
          Top             =   2520
          Width           =   4215
       End
@@ -224,7 +383,7 @@ Begin VB.Form frmAdminIIBB
          BackColor       =   &H00E0E0E0&
          Height          =   255
          Left            =   2400
-         TabIndex        =   14
+         TabIndex        =   13
          Top             =   2160
          Width           =   4215
       End
@@ -232,7 +391,7 @@ Begin VB.Form frmAdminIIBB
          BackColor       =   &H00E0E0E0&
          Height          =   255
          Left            =   2400
-         TabIndex        =   13
+         TabIndex        =   12
          ToolTipText     =   "'S' - Cambió 'N' - No Cambió"
          Top             =   1800
          Width           =   4215
@@ -241,7 +400,7 @@ Begin VB.Form frmAdminIIBB
          BackColor       =   &H00E0E0E0&
          Height          =   255
          Left            =   2400
-         TabIndex        =   12
+         TabIndex        =   11
          ToolTipText     =   "'S' - Alta  'N' - Baja"
          Top             =   1440
          Width           =   4215
@@ -251,7 +410,7 @@ Begin VB.Form frmAdminIIBB
          Caption         =   " "
          Height          =   255
          Left            =   2400
-         TabIndex        =   11
+         TabIndex        =   10
          ToolTipText     =   "'C' - Convenio Multilateral 'D' Directo PCIA Bs As"
          Top             =   1080
          Width           =   4215
@@ -271,7 +430,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   10
+         TabIndex        =   9
          Top             =   2520
          Width           =   2055
       End
@@ -290,7 +449,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   9
+         TabIndex        =   8
          Top             =   2160
          Width           =   2055
       End
@@ -309,7 +468,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   8
+         TabIndex        =   7
          Top             =   1800
          Width           =   2055
       End
@@ -328,7 +487,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   7
+         TabIndex        =   6
          Top             =   1440
          Width           =   2055
       End
@@ -347,7 +506,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   6
+         TabIndex        =   5
          Top             =   1080
          Width           =   2055
       End
@@ -364,15 +523,37 @@ Begin VB.Form frmAdminIIBB
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2295
+      Height          =   2055
       Left            =   120
       TabIndex        =   0
-      Top             =   0
+      Top             =   120
       Width           =   6975
+      Begin VB.CommandButton Command6 
+         BackColor       =   &H00E0E0E0&
+         Caption         =   "Buscar P en Bs.As."
+         Default         =   -1  'True
+         Height          =   375
+         Left            =   7440
+         Style           =   1  'Graphical
+         TabIndex        =   50
+         Top             =   960
+         Width           =   1515
+      End
+      Begin VB.CommandButton Command9 
+         BackColor       =   &H00E0E0E0&
+         Caption         =   "Buscar R en CABA"
+         Height          =   375
+         Index           =   2
+         Left            =   7560
+         Style           =   1  'Graphical
+         TabIndex        =   49
+         Top             =   1680
+         Width           =   1515
+      End
       Begin XtremeSuiteControls.PushButton btnBuscar 
          Height          =   375
-         Left            =   7320
-         TabIndex        =   38
+         Left            =   4800
+         TabIndex        =   34
          Top             =   360
          Width           =   1575
          _Version        =   786432
@@ -381,7 +562,6 @@ Begin VB.Form frmAdminIIBB
          _StockProps     =   79
          Caption         =   "Buscar"
          BackColor       =   14737632
-         Enabled         =   0   'False
          UseVisualStyle  =   -1  'True
       End
       Begin VB.CommandButton Command2 
@@ -389,10 +569,10 @@ Begin VB.Form frmAdminIIBB
          Caption         =   "Buscar P en CABA"
          Height          =   375
          Index           =   1
-         Left            =   5160
+         Left            =   7440
          Style           =   1  'Graphical
-         TabIndex        =   26
-         Top             =   1800
+         TabIndex        =   25
+         Top             =   360
          Width           =   1515
       End
       Begin VB.CommandButton Command1 
@@ -400,10 +580,10 @@ Begin VB.Form frmAdminIIBB
          Caption         =   "Buscar R en Bs.As."
          Height          =   375
          Index           =   0
-         Left            =   5160
+         Left            =   7680
          Style           =   1  'Graphical
          TabIndex        =   3
-         Top             =   360
+         Top             =   1320
          Width           =   1515
       End
       Begin VB.TextBox txtCuit 
@@ -413,26 +593,11 @@ Begin VB.Form frmAdminIIBB
          Top             =   360
          Width           =   2865
       End
-      Begin XtremeSuiteControls.ComboBox cboTipo 
-         Height          =   315
-         Left            =   1725
-         TabIndex        =   34
-         Top             =   1260
-         Width           =   2880
-         _Version        =   786432
-         _ExtentX        =   5080
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Enabled         =   0   'False
-         Style           =   2
-         Appearance      =   6
-      End
       Begin XtremeSuiteControls.ComboBox cboPadron 
          Height          =   315
          Left            =   1725
-         TabIndex        =   25
-         Top             =   840
+         TabIndex        =   24
+         Top             =   1320
          Width           =   2880
          _Version        =   786432
          _ExtentX        =   5080
@@ -446,15 +611,14 @@ Begin VB.Form frmAdminIIBB
       Begin XtremeSuiteControls.ComboBox cboRegion 
          Height          =   315
          Left            =   1725
-         TabIndex        =   37
-         Top             =   1680
+         TabIndex        =   33
+         Top             =   840
          Width           =   2880
          _Version        =   786432
          _ExtentX        =   5080
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
-         Enabled         =   0   'False
          Style           =   2
          Appearance      =   6
       End
@@ -462,36 +626,24 @@ Begin VB.Form frmAdminIIBB
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Región"
+         Caption         =   "Padrón"
          Enabled         =   0   'False
          Height          =   195
          Left            =   1080
-         TabIndex        =   36
-         Top             =   1740
+         TabIndex        =   32
+         Top             =   900
          Width           =   510
-      End
-      Begin VB.Label Label5 
-         Alignment       =   1  'Right Justify
-         AutoSize        =   -1  'True
-         BackColor       =   &H00C0C0C0&
-         Caption         =   "Tipo"
-         Enabled         =   0   'False
-         Height          =   195
-         Left            =   1275
-         TabIndex        =   35
-         Top             =   1320
-         Width           =   315
       End
       Begin VB.Label Label11 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Padrón a utilizar"
+         Caption         =   "Versión a utilizar"
          Height          =   195
          Left            =   465
-         TabIndex        =   24
-         Top             =   900
-         Width           =   1125
+         TabIndex        =   23
+         Top             =   1380
+         Width           =   1140
       End
       Begin VB.Label In 
          Alignment       =   1  'Right Justify
@@ -506,7 +658,7 @@ Begin VB.Form frmAdminIIBB
    End
    Begin VB.Frame Frame3 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "[ Importar Padrones ]"
+      Caption         =   "[Paso 1 - Importar Padrones ]"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -518,8 +670,8 @@ Begin VB.Form frmAdminIIBB
       EndProperty
       Height          =   2055
       Left            =   120
-      TabIndex        =   28
-      Top             =   5880
+      TabIndex        =   26
+      Top             =   5160
       Width           =   3255
       Begin VB.CommandButton Command7 
          BackColor       =   &H00E0E0E0&
@@ -527,7 +679,7 @@ Begin VB.Form frmAdminIIBB
          Height          =   375
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   31
+         TabIndex        =   29
          Top             =   1440
          Width           =   2895
       End
@@ -538,7 +690,7 @@ Begin VB.Form frmAdminIIBB
          Index           =   0
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   30
+         TabIndex        =   28
          Top             =   960
          Width           =   2895
       End
@@ -548,7 +700,7 @@ Begin VB.Form frmAdminIIBB
          Height          =   375
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   29
+         TabIndex        =   27
          Top             =   480
          Width           =   2895
       End
@@ -568,16 +720,16 @@ Dim rs As Recordset
 Private Sub MostrarResultado(tabla As String, Cuit As String)
 
     If IsNumeric(Cuit) Then
-        Set rs = conectar.RSFactory("select * from sp_permisos." & tabla & " where cuit=" & CDbl(Me.txtCuit))
+        Set rs = conectar.RSFactory("select * from sp_permisos.padron_detalles where cuit=" & CDbl(Me.txtCuit))
 
         If Not rs.EOF And Not rs.BOF Then
 
             If rs!Discriminador = "R" Then
-                Me.Frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
+                Me.frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
             ElseIf rs!Discriminador = "P" Then
-                Me.Frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
+                Me.frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
             Else
-                Me.Frame2.caption = "[ Sin resultado ]"
+                Me.frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
             Me.lblCambio = rs!Cambio
@@ -626,62 +778,69 @@ End Sub
 
 
 
-Private Sub MostrarResultadoCABA(tabla As String, Cuit As String, Tipo As String)
+Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As String)
 
-    If IsNumeric(Cuit) Then
-        Set rs = conectar.RSFactory("select * from sp_permisos." & tabla & " where cuit=" & CDbl(Me.txtCuit))
+    If IsNumeric(Cuit) And IdPadron <> "-1" Then
+        Set rs = conectar.RSFactory("SELECT * FROM sp_permisos." & tabla & " pd INNER JOIN sp_permisos.Padron_Config pc ON pd.Padron = pc.id  WHERE pc.id=" & IdPadron & " and cuit=" & CDbl(Me.txtCuit))
 
         If Not rs.EOF And Not rs.BOF Then
 
-          If Tipo = "P" Then
-              Me.Frame2.caption = "[ Resultado PERCEPCIONES Padrón CABA]"
+'
+              Me.frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
               
 
-            Me.lblGrupo = rs!GrupoPercepcion
-            Me.lblAlicuota = rs!alicuotaPercepcion
+          '   Me.lblGrupo = rs!GrupoPercepcion
+            Me.lblAlicuotaP = rs!alicuotaPercepcion
 
               
               
-           ElseIf Tipo = "R" Then
-              Me.Frame2.caption = "[ Resultado RETENCIONES Padrón CABA]"
-              
+           
+            Me.lblAlicuotaR = rs!alicuotaRetencion
 
-            Me.lblGrupo = rs!GrupoRetencion
-            Me.lblAlicuota = rs!alicuotaRetencion
-
-           Else
-               Me.Frame2.caption = "[ Sin resultado ]"
-            End If
-            
-            Me.lblAltaBaja = rs!AltaBaja
-            Me.lblCambio = rs!Cambio
-            Me.lblTipo = rs!Tipo
+                       If rs.Fields("FechaDesdePercepcion").value <> Null Then
+                        Me.lblVigenciaDesdeP = rs!FechaDesdePercepcion
+                       End If
                        
-            FechaDesde = rs!FechaDesde
-            f_desde_anio = Right(FechaDesde, 4)
-            f_desde_mes = Mid(FechaDesde, 3, 2)
-            f_desde_dia = Mid(FechaDesde, 1, 2)
-            Me.Fdesde = f_desde_dia & "/" & f_desde_mes & "/" & f_desde_anio
+                       If rs.Fields("FechaDesdeRetencion").value <> Null Then
+                        Me.lblVigenciaDesdeR = rs!FechaDesdeRetencion
+                       End If
+                       
+                       If rs.Fields("FechaHastaPercepcion").value <> Null Then
+                      Me.lblVigenciaHastaP = rs!FechaHastaPercepcion
+                       End If
+                       
+                        If rs.Fields("FechaHastaRetencion").value <> Null Then
+                        Me.lblVigenciaHastaR = rs!FechaHastaRetencion
+                       End If
+            
+'             Me.lblVigenciaDesdeR = rs!FechaDesdeRetencion
+'             Me.lblVigenciaHastaP = rs!FechaHastaPercepcion
+'             Me.lblVigenciaHastaR = rs!FechaHastaRetencion
+             
+'            f_desde_anio = Right(FechaDesde, 4)
+'            f_desde_mes = Mid(FechaDesde, 3, 2)
+'            f_desde_dia = Mid(FechaDesde, 1, 2)
+'            Me.Fdesde = f_desde_dia & "/" & f_desde_mes & "/" & f_desde_anio
 
-            FechaHasta = rs!FechaHasta
-            f_hasta_anio = Right(FechaHasta, 4)
-            f_hasta_mes = Mid(FechaHasta, 3, 2)
-            f_hasta_dia = Mid(FechaHasta, 1, 2)
-            Me.Fhasta = f_hasta_dia & "/" & f_hasta_mes & "/" & f_hasta_anio
+             '  Me.Fhasta = rs!FechaHasta
+'            f_hasta_anio = Right(FechaHasta, 4)
+'            f_hasta_mes = Mid(FechaHasta, 3, 2)
+'            f_hasta_dia = Mid(FechaHasta, 1, 2)
+'            Me.Fhasta = f_hasta_dia & "/" & f_hasta_mes & "/" & f_hasta_anio
 
 
-            fechapub = rs!FechaPublicacion
-            f_pub_anio = Right(fechapub, 4)
-            f_pub_mes = Mid(fechapub, 3, 2)
-            f_pub_dia = Mid(fechapub, 1, 2)
-            Me.Fpublicacion = f_pub_dia & "/" & f_pub_mes & "/" & f_pub_anio
+'            fechapub = rs!FechaPublicacion
+'            f_pub_anio = Right(fechapub, 4)
+'            f_pub_mes = Mid(fechapub, 3, 2)
+'            f_pub_dia = Mid(fechapub, 1, 2)
+'            Me.Fpublicacion = f_pub_dia & "/" & f_pub_mes & "/" & f_pub_anio
 
 
-            If Now() > Fhasta Then
-                Me.lblVencida.Visible = True
-            Else
-                Me.lblVencida.Visible = False
-            End If
+'            If Now() > Fhasta Then
+'                Me.lblVencida.Visible = True
+'            Else
+'                Me.lblVencida.Visible = False
+'            End If
 
 
 
@@ -745,18 +904,21 @@ Private Sub btnBuscar_Click()
 
     Dim tabla As String
     
-    If Me.cboPadron.ListIndex = 0 Then
+    If Me.cboPadron.ListIndex = 1 Then
     'PADRON ACTUAL
-        tabla = "IIBB2_Padron_CABA"
+        tabla = "Padron_Detalles_ant"
         
     Else
     'PADRON ANTERIOR'
-        tabla = "IIBB2_Padron_CABA_Ant"
+        tabla = "Padron_Detalles"
         
     End If
 
-    MostrarResultadoCABA tabla, Me.txtCuit, "R"
-    
+If Me.cboRegion.ListIndex = -1 Then
+    MsgBox ("Debe seleccionar el padrón correspondiente")
+Else
+    MostrarResultado2 Me.txtCuit, Me.cboRegion.ItemData(Me.cboRegion.ListIndex), tabla
+    End If
     
 End Sub
 
@@ -783,7 +945,7 @@ End Sub
 
 
 
-Private Sub Command1_Click(Index As Integer)
+Private Sub Command1_Click(index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Retencion"
@@ -795,7 +957,7 @@ Private Sub Command1_Click(Index As Integer)
 
 End Sub
 
-Private Sub Command2_Click(Index As Integer)
+Private Sub Command2_Click(index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Padron_CABA"
@@ -807,7 +969,7 @@ Private Sub Command2_Click(Index As Integer)
 
 End Sub
 
-Private Sub Command3_Click(Index As Integer)
+Private Sub Command3_Click(index As Integer)
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
@@ -884,7 +1046,7 @@ End Sub
 
 
 
-Private Sub Command9_Click(Index As Integer)
+Private Sub Command9_Click(index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Padron_CABA"
@@ -904,16 +1066,16 @@ Private Sub Form_Load()
     Me.cboPadron.ItemData(Me.cboPadron.NewIndex) = 1
     'Me.cboPadron.ListIndex = 0
     
-    Me.cboTipo.Clear
-    cboTipo.AddItem "Percepciones"
-    Me.cboTipo.ItemData(Me.cboTipo.NewIndex) = 0
-    cboTipo.AddItem "Retenciones"
-    Me.cboTipo.ItemData(Me.cboTipo.NewIndex) = 1
-    'Me.cboTipo.ListIndex = 0
+'    Me.cboTipo.Clear
+'    cboTipo.AddItem "Percepciones"
+'    Me.cboTipo.ItemData(Me.cboTipo.NewIndex) = 0
+'    cboTipo.AddItem "Retenciones"
+'    Me.cboTipo.ItemData(Me.cboTipo.NewIndex) = 1
+'    'Me.cboTipo.ListIndex = 0
     
     Me.cboRegion.Clear
     cboRegion.AddItem "CABA"
-    Me.cboRegion.ItemData(Me.cboRegion.NewIndex) = 0
+    Me.cboRegion.ItemData(Me.cboRegion.NewIndex) = 2
     cboRegion.AddItem "BUENOS AIRES"
     Me.cboRegion.ItemData(Me.cboRegion.NewIndex) = 1
     'Me.cboRegion.ListIndex = 0

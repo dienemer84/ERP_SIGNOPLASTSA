@@ -135,7 +135,10 @@ Public Function ProcesarPadronIB() As Boolean
         
         cn.execute "TRUNCATE sp_permisos.Padron_Detalles"
         
-        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) (SELECT r.Cuit, r.Alicuota AS AlicuotaPercepcion, p.Alicuota AS AlicuotaRetencion, '1' FROM sp_permisos.IIBB2_Percepcion r LEFT JOIN sp_permisos.IIBB2_Retencion p ON r.Cuit=p.Cuit) UNION SELECT r.Cuit, r.Alicuota AS AlicuotaRetencion, 0, '1' FROM sp_permisos.IIBB2_Retencion r WHERE NOT EXISTS (SELECT * FROM sp_permisos.IIBB2_Percepcion p WHERE p.Cuit=r.Cuit) UNION (SELECT c.Cuit, c.AlicuotaPercepcion, c.AlicuotaRetencion, '2'  FROM sp_permisos.IIBB2_Padron_CABA c)"
+        cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron, FechaDesdePercepcion, FechaHastaPercepcion, FechaDesdeRetencion, FechaDesdeRetencion)" _
+        & "(SELECT r.Cuit, r.Alicuota AS AlicuotaPercepcion, p.Alicuota AS AlicuotaRetencion, '1', p.FechaDesde, p.FechaHasta,'','' FROM sp_permisos.IIBB2_Percepcion r LEFT JOIN sp_permisos.IIBB2_Retencion p ON r.Cuit=p.Cuit) " _
+        & "UNION SELECT r.Cuit, r.Alicuota AS AlicuotaRetencion, 0, '1','','', r.FechaDesde, r.FechaHasta FROM sp_permisos.IIBB2_Retencion r WHERE NOT EXISTS (SELECT * FROM sp_permisos.IIBB2_Percepcion p WHERE p.Cuit=r.Cuit)" _
+        & "UNION (SELECT c.Cuit, c.AlicuotaPercepcion, c.AlicuotaRetencion, c.FechaDesde, c.FechaHasta, c.FechaDesde, c.FechaHasta, '2'  FROM sp_permisos.IIBB2_Padron_CABA c)"
 
         cn.CommitTrans
     

@@ -16,6 +16,13 @@ Option Explicit
 Public FechaPublicacion As String
 Public FechaDesde As String
 Public FechaHasta As String
+
+Public FechaDesdePercepcion As String
+Public FechaHastaPercepcion As String
+Public FechaDesdeRetencion As String
+Public FechaHastaRetencion As String
+
+
 Public Cuit As String
 Public Tipo As String
 Public AltaBaja As String
@@ -25,9 +32,9 @@ Public Cambio As String
 'Public GrupoRetencion As String
 'Public GrupoPercepcion As String
 Public Grupo As String
-Public Alicuota As Double
+Public alicuota As Double
 Public Discriminador As String
-Public AlicuotaPercepcion As Double
-Public AlicuotaRetencion As Double
+Public alicuotaPercepcion As Double
+Public alicuotaRetencion As Double
 Public IdPadron As Long
-Public Id As String
+Public id As String
