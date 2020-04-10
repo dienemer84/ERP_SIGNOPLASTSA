@@ -797,20 +797,20 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
            
             Me.lblAlicuotaR = rs!alicuotaRetencion
 
-                       If rs.Fields("FechaDesdePercepcion").value <> Null Then
-                        Me.lblVigenciaDesdeP = rs!FechaDesdePercepcion
+                       If Not IsNull(rs.Fields("FechaDesdePercepcion").value) Then
+                        Me.lblVigenciaDesdeP = ConvertirAFecha(rs!FechaDesdePercepcion)
                        End If
                        
-                       If rs.Fields("FechaDesdeRetencion").value <> Null Then
-                        Me.lblVigenciaDesdeR = rs!FechaDesdeRetencion
+                       If Not IsNull(rs.Fields("FechaDesdeRetencion").value) Then
+                        Me.lblVigenciaDesdeR = ConvertirAFecha(rs!FechaDesdeRetencion)
                        End If
                        
-                       If rs.Fields("FechaHastaPercepcion").value <> Null Then
-                      Me.lblVigenciaHastaP = rs!FechaHastaPercepcion
+                       If Not IsNull(rs.Fields("FechaHastaPercepcion").value) Then
+                      Me.lblVigenciaHastaP = ConvertirAFecha(rs!FechaHastaPercepcion)
                        End If
                        
-                        If rs.Fields("FechaHastaRetencion").value <> Null Then
-                        Me.lblVigenciaHastaR = rs!FechaHastaRetencion
+                        If Not IsNull(rs.Fields("FechaHastaRetencion").value) Then
+                        Me.lblVigenciaHastaR = ConvertirAFecha(rs!FechaHastaRetencion)
                        End If
             
 '             Me.lblVigenciaDesdeR = rs!FechaDesdeRetencion
@@ -854,6 +854,16 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
 
 
 End Sub
+Private Function ConvertirAFecha(entrada As String) As String
+Dim Fecha As String
+Dim f_anio As String, f_mes As String, f_dia As String
+f_anio = Right(entrada, 4)
+f_mes = Mid(entrada, 3, 2)
+ f_dia = Mid(entrada, 1, 2)
+ConvertirAFecha = f_dia & "/" & f_mes & "/" & f_anio
+End Function
+
+
 
 Private Sub Command1s_Click()
     Dim tabla As String
