@@ -1100,7 +1100,7 @@ Public Sub Cargar(op As OrdenPago)
 
 
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.id, Me.cboMonedas)
-        Me.dtpFecha.value = .FEcha
+        Me.dtpFecha.value = .Fecha
         Me.txtDifCambio.text = .DiferenciaCambio
         Me.txtOtrosDescuentos.text = .OtrosDescuentos
 
@@ -1167,7 +1167,7 @@ End Property
 
 Private Sub btnCargar_Click()
 
-txtCuit
+
 
 If Me.cboProveedores.ListIndex <> -1 Then
     
@@ -1421,7 +1421,7 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub dtpFecha_Change()
-    OrdenPago.FEcha = Me.dtpFecha.value
+    OrdenPago.Fecha = Me.dtpFecha.value
 End Sub
 
 Private Sub Form_Load()
@@ -1508,7 +1508,7 @@ Private Sub Form_Load()
 
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
 
-    Me.dtpFecha.value = OrdenPago.FEcha
+    Me.dtpFecha.value = OrdenPago.Fecha
 
 
     Totalizar
@@ -1538,7 +1538,7 @@ Private Sub MostrarFacturas()
         End If
 
         For Each Factura In colFacturas
-            Me.lstFacturas.AddItem Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"
+            Me.lstFacturas.AddItem Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.Fecha & ")"
             Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.id
         Next
 
