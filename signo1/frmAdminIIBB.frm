@@ -9,17 +9,18 @@ Begin VB.Form frmAdminIIBB
    ClientHeight    =   7245
    ClientLeft      =   5700
    ClientTop       =   3015
-   ClientWidth     =   7215
+   ClientWidth     =   7185
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   7245
-   ScaleWidth      =   7215
+   ScaleWidth      =   7185
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame5 
       BackColor       =   &H00C0C0C0&
       Caption         =   "[ Resultado ]"
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -34,12 +35,26 @@ Begin VB.Form frmAdminIIBB
       TabIndex        =   35
       Top             =   2280
       Width           =   6975
+      Begin VB.Line Line3 
+         BorderColor     =   &H80000000&
+         X1              =   360
+         X2              =   6600
+         Y1              =   2040
+         Y2              =   2040
+      End
+      Begin VB.Line Line1 
+         BorderColor     =   &H80000000&
+         X1              =   360
+         X2              =   6600
+         Y1              =   1100
+         Y2              =   1100
+      End
       Begin VB.Label lblVigenciaHastaR 
          BackColor       =   &H00E0E0E0&
          Height          =   255
          Left            =   4560
          TabIndex        =   48
-         Top             =   960
+         Top             =   1680
          Width           =   1215
       End
       Begin VB.Label lblVigenciaHastaP 
@@ -55,7 +70,7 @@ Begin VB.Form frmAdminIIBB
          Height          =   255
          Left            =   2400
          TabIndex        =   46
-         Top             =   960
+         Top             =   1680
          Width           =   1215
       End
       Begin VB.Label lblVigenciaDesdeP 
@@ -69,7 +84,7 @@ Begin VB.Form frmAdminIIBB
       Begin VB.Label Label23 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Alicuota Percepción"
+         Caption         =   "Alicuota Percepción:"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -82,7 +97,7 @@ Begin VB.Form frmAdminIIBB
          Height          =   255
          Left            =   240
          TabIndex        =   44
-         Top             =   1440
+         Top             =   360
          Width           =   2055
       End
       Begin VB.Label lblAlicuotaP 
@@ -90,13 +105,13 @@ Begin VB.Form frmAdminIIBB
          Height          =   255
          Left            =   2400
          TabIndex        =   43
-         Top             =   1440
+         Top             =   360
          Width           =   4215
       End
       Begin VB.Label Label19 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Vigencia Ret desde"
+         Caption         =   "Vigencia Ret desde:"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -109,22 +124,31 @@ Begin VB.Form frmAdminIIBB
          Height          =   255
          Left            =   240
          TabIndex        =   42
-         Top             =   960
+         Top             =   1680
          Width           =   2055
       End
       Begin VB.Label Label18 
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Hasta"
+         Caption         =   "Hasta:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   3960
          TabIndex        =   41
-         Top             =   960
+         Top             =   1680
          Width           =   615
       End
       Begin VB.Label Label22 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Alicuota Retención"
+         Caption         =   "Alicuota Retención:"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -137,7 +161,7 @@ Begin VB.Form frmAdminIIBB
          Height          =   255
          Left            =   240
          TabIndex        =   40
-         Top             =   1680
+         Top             =   1320
          Width           =   2055
       End
       Begin VB.Label lblAlicuotaR 
@@ -145,13 +169,13 @@ Begin VB.Form frmAdminIIBB
          Height          =   255
          Left            =   2400
          TabIndex        =   39
-         Top             =   1680
+         Top             =   1320
          Width           =   4215
       End
       Begin VB.Label Label14 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Vigencia Per desde"
+         Caption         =   "Vigencia Per desde:"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -169,7 +193,16 @@ Begin VB.Form frmAdminIIBB
       End
       Begin VB.Label Label13 
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Hasta"
+         Caption         =   "Hasta:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   3960
          TabIndex        =   37
@@ -220,7 +253,7 @@ Begin VB.Form frmAdminIIBB
          Cancel          =   -1  'True
          Caption         =   "Procesar Padrones"
          Height          =   375
-         Left            =   600
+         Left            =   720
          Style           =   1  'Graphical
          TabIndex        =   31
          Top             =   480
@@ -274,7 +307,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58916864
+         Format          =   59441152
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -287,7 +320,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58916865
+         Format          =   59441153
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -300,7 +333,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58916865
+         Format          =   59441153
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -552,9 +585,9 @@ Begin VB.Form frmAdminIIBB
       End
       Begin XtremeSuiteControls.PushButton btnBuscar 
          Height          =   375
-         Left            =   4800
+         Left            =   5160
          TabIndex        =   34
-         Top             =   360
+         Top             =   1290
          Width           =   1575
          _Version        =   786432
          _ExtentX        =   2778
@@ -588,14 +621,14 @@ Begin VB.Form frmAdminIIBB
       End
       Begin VB.TextBox txtCuit 
          Height          =   285
-         Left            =   1725
+         Left            =   1965
          TabIndex        =   2
          Top             =   360
          Width           =   2865
       End
       Begin XtremeSuiteControls.ComboBox cboPadron 
          Height          =   315
-         Left            =   1725
+         Left            =   1965
          TabIndex        =   24
          Top             =   1320
          Width           =   2880
@@ -610,7 +643,7 @@ Begin VB.Form frmAdminIIBB
       End
       Begin XtremeSuiteControls.ComboBox cboRegion 
          Height          =   315
-         Left            =   1725
+         Left            =   1965
          TabIndex        =   33
          Top             =   840
          Width           =   2880
@@ -621,39 +654,66 @@ Begin VB.Form frmAdminIIBB
          BackColor       =   -2147483643
          Style           =   2
          Appearance      =   6
+         Text            =   "Seleccione..."
       End
       Begin VB.Label Label7 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Padrón"
-         Enabled         =   0   'False
+         Caption         =   "Padrón:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   195
-         Left            =   1080
+         Left            =   1155
          TabIndex        =   32
          Top             =   900
-         Width           =   510
+         Width           =   660
       End
       Begin VB.Label Label11 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Versión a utilizar"
+         Caption         =   "Versión a utilizar:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   195
-         Left            =   465
+         Left            =   345
          TabIndex        =   23
          Top             =   1380
-         Width           =   1140
+         Width           =   1470
       End
       Begin VB.Label In 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Ingrese Nro CUIT"
+         Caption         =   "Ingrese Nro CUIT:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   255
+         Left            =   240
          TabIndex        =   1
          Top             =   375
-         Width           =   1335
+         Width           =   1575
       End
    End
    Begin VB.Frame Frame3 
@@ -675,7 +735,7 @@ Begin VB.Form frmAdminIIBB
       Width           =   3255
       Begin VB.CommandButton Command7 
          BackColor       =   &H00E0E0E0&
-         Caption         =   "Padrón Unificado (CABA)"
+         Caption         =   "Unificado (CABA)"
          Height          =   375
          Left            =   120
          Style           =   1  'Graphical
@@ -685,7 +745,7 @@ Begin VB.Form frmAdminIIBB
       End
       Begin VB.CommandButton Command3 
          BackColor       =   &H00E0E0E0&
-         Caption         =   "Padrón Retenciones (BSAS)"
+         Caption         =   "Retenciones (BS.AS.)"
          Height          =   375
          Index           =   0
          Left            =   120
@@ -696,7 +756,7 @@ Begin VB.Form frmAdminIIBB
       End
       Begin VB.CommandButton Command5 
          BackColor       =   &H00E0E0E0&
-         Caption         =   "Padrón Percepciones  (BSAS.)"
+         Caption         =   "Percepciones (BS.AS.)"
          Height          =   375
          Left            =   120
          Style           =   1  'Graphical
@@ -704,6 +764,13 @@ Begin VB.Form frmAdminIIBB
          Top             =   480
          Width           =   2895
       End
+   End
+   Begin VB.Line Line2 
+      BorderColor     =   &H80000000&
+      X1              =   480
+      X2              =   6720
+      Y1              =   4440
+      Y2              =   4440
    End
 End
 Attribute VB_Name = "frmAdminIIBB"
@@ -725,11 +792,11 @@ Private Sub MostrarResultado(tabla As String, Cuit As String)
         If Not rs.EOF And Not rs.BOF Then
 
             If rs!Discriminador = "R" Then
-                Me.frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
+                Me.Frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
             ElseIf rs!Discriminador = "P" Then
-                Me.frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
+                Me.Frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
             Else
-                Me.frame2.caption = "[ Sin resultado ]"
+                Me.Frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
             Me.lblCambio = rs!Cambio
@@ -786,7 +853,7 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
         If Not rs.EOF And Not rs.BOF Then
 
 '
-              Me.frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
+              Me.Frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
               
 
           '   Me.lblGrupo = rs!GrupoPercepcion
@@ -855,7 +922,7 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
 
 End Sub
 Private Function ConvertirAFecha(entrada As String) As String
-Dim Fecha As String
+Dim FEcha As String
 Dim f_anio As String, f_mes As String, f_dia As String
 f_anio = Right(entrada, 4)
 f_mes = Mid(entrada, 3, 2)
@@ -928,6 +995,9 @@ If Me.cboRegion.ListIndex = -1 Then
     MsgBox ("Debe seleccionar el padrón correspondiente")
 Else
     MostrarResultado2 Me.txtCuit, Me.cboRegion.ItemData(Me.cboRegion.ListIndex), tabla
+    
+    Me.Frame5.Enabled = True
+    
     End If
     
 End Sub
@@ -1068,13 +1138,16 @@ Private Sub Command9_Click(index As Integer)
 End Sub
 
 Private Sub Form_Load()
+
+   'Me.Left = (Screen.Width - Me.Width) / 2
+   'Me.Top = (Screen.Height - Me.Height) / 5
     
     Me.cboPadron.Clear
     cboPadron.AddItem "Actual"
     Me.cboPadron.ItemData(Me.cboPadron.NewIndex) = 0
     cboPadron.AddItem "Anterior"
     Me.cboPadron.ItemData(Me.cboPadron.NewIndex) = 1
-    'Me.cboPadron.ListIndex = 0
+    Me.cboPadron.ListIndex = 0
     
 '    Me.cboTipo.Clear
 '    cboTipo.AddItem "Percepciones"

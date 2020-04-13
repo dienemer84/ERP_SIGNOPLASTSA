@@ -521,7 +521,6 @@ Class=OrdenDeEntrega; negocio\OrdenDeEntrega.cls
 Module=DAOOrdenDeEntrega; datos\DAOOrdenDeEntrega.bas
 Class=OrdenDeEntregaDetalle; negocio\OrdenDeEntregaDetalle.cls
 Class=DTORetencionAlicuota; DTORetencionImporte.cls
-Object=AcroExch.Document.11; AcroRd32.exe"
 Object=Paint.Picture; mspaint.exe
 ResFile32="Themes.res"
 IconForm="frmPrincipal"
