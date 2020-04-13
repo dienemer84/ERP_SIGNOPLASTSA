@@ -131,6 +131,8 @@ Public Function ProcesarPadronIB() As Boolean
     ProcesarPadronIB = True
     cn.BeginTrans
 
+        cn.execute "TRUNCATE sp_permisos.Padron_Detalles_Ant"
+        cn.execute "INSERT INTO sp_permisos.Padron_Detalles_Ant SELECT * FROM sp_permisos.Padron_Detalles"
       
         cn.execute "TRUNCATE sp_permisos.Padron_Detalles"
         

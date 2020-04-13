@@ -6,21 +6,20 @@ Begin VB.Form frmAdminIIBB
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Padrón IIBB"
-   ClientHeight    =   7245
+   ClientHeight    =   7080
    ClientLeft      =   5700
    ClientTop       =   3015
-   ClientWidth     =   7185
+   ClientWidth     =   7215
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7245
-   ScaleWidth      =   7185
+   ScaleHeight     =   7080
+   ScaleWidth      =   7215
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame5 
       BackColor       =   &H00C0C0C0&
       Caption         =   "[ Resultado ]"
-      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -33,101 +32,9 @@ Begin VB.Form frmAdminIIBB
       Height          =   2715
       Left            =   120
       TabIndex        =   35
-      Top             =   2280
+      Top             =   2160
       Width           =   6975
-      Begin VB.Line Line3 
-         BorderColor     =   &H80000000&
-         X1              =   360
-         X2              =   6600
-         Y1              =   2040
-         Y2              =   2040
-      End
-      Begin VB.Line Line1 
-         BorderColor     =   &H80000000&
-         X1              =   360
-         X2              =   6600
-         Y1              =   1100
-         Y2              =   1100
-      End
-      Begin VB.Label lblVigenciaHastaR 
-         BackColor       =   &H00E0E0E0&
-         Height          =   255
-         Left            =   4560
-         TabIndex        =   48
-         Top             =   1680
-         Width           =   1215
-      End
-      Begin VB.Label lblVigenciaHastaP 
-         BackColor       =   &H00E0E0E0&
-         Height          =   255
-         Left            =   4560
-         TabIndex        =   47
-         Top             =   720
-         Width           =   1215
-      End
-      Begin VB.Label lblVigenciaDesdeR 
-         BackColor       =   &H00E0E0E0&
-         Height          =   255
-         Left            =   2400
-         TabIndex        =   46
-         Top             =   1680
-         Width           =   1215
-      End
-      Begin VB.Label lblVigenciaDesdeP 
-         BackColor       =   &H00E0E0E0&
-         Height          =   255
-         Left            =   2400
-         TabIndex        =   45
-         Top             =   720
-         Width           =   1215
-      End
-      Begin VB.Label Label23 
-         Alignment       =   1  'Right Justify
-         BackColor       =   &H00C0C0C0&
-         Caption         =   "Alicuota Percepción:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   240
-         TabIndex        =   44
-         Top             =   360
-         Width           =   2055
-      End
-      Begin VB.Label lblAlicuotaP 
-         BackColor       =   &H00E0E0E0&
-         Height          =   255
-         Left            =   2400
-         TabIndex        =   43
-         Top             =   360
-         Width           =   4215
-      End
-      Begin VB.Label Label19 
-         Alignment       =   1  'Right Justify
-         BackColor       =   &H00C0C0C0&
-         Caption         =   "Vigencia Ret desde:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   240
-         TabIndex        =   42
-         Top             =   1680
-         Width           =   2055
-      End
-      Begin VB.Label Label18 
+      Begin VB.Label Label13 
          BackColor       =   &H00C0C0C0&
          Caption         =   "Hasta:"
          BeginProperty Font 
@@ -140,37 +47,10 @@ Begin VB.Form frmAdminIIBB
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   3960
-         TabIndex        =   41
-         Top             =   1680
+         Left            =   4080
+         TabIndex        =   50
+         Top             =   720
          Width           =   615
-      End
-      Begin VB.Label Label22 
-         Alignment       =   1  'Right Justify
-         BackColor       =   &H00C0C0C0&
-         Caption         =   "Alicuota Retención:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   240
-         TabIndex        =   40
-         Top             =   1320
-         Width           =   2055
-      End
-      Begin VB.Label lblAlicuotaR 
-         BackColor       =   &H00E0E0E0&
-         Height          =   255
-         Left            =   2400
-         TabIndex        =   39
-         Top             =   1320
-         Width           =   4215
       End
       Begin VB.Label Label14 
          Alignment       =   1  'Right Justify
@@ -187,11 +67,48 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   38
+         TabIndex        =   49
          Top             =   720
          Width           =   2055
       End
-      Begin VB.Label Label13 
+      Begin VB.Label lblAlicuotaR 
+         BackColor       =   &H00E0E0E0&
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000C0&
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   48
+         Top             =   1320
+         Width           =   4215
+      End
+      Begin VB.Label Label22 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Alicuota Retención:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   47
+         Top             =   1320
+         Width           =   2055
+      End
+      Begin VB.Label Label18 
          BackColor       =   &H00C0C0C0&
          Caption         =   "Hasta:"
          BeginProperty Font 
@@ -204,10 +121,112 @@ Begin VB.Form frmAdminIIBB
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   3960
-         TabIndex        =   37
-         Top             =   720
+         Left            =   4080
+         TabIndex        =   46
+         Top             =   1680
          Width           =   615
+      End
+      Begin VB.Label Label19 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Vigencia Ret desde:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   45
+         Top             =   1680
+         Width           =   2055
+      End
+      Begin VB.Label lblAlicuotaP 
+         BackColor       =   &H00E0E0E0&
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000C0&
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   44
+         Top             =   360
+         Width           =   4215
+      End
+      Begin VB.Label Label23 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Alicuota Percepción:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   43
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label lblVigenciaDesdeP 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   42
+         Top             =   720
+         Width           =   1215
+      End
+      Begin VB.Label lblVigenciaDesdeR 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   41
+         Top             =   1680
+         Width           =   1215
+      End
+      Begin VB.Label lblVigenciaHastaP 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   4680
+         TabIndex        =   40
+         Top             =   720
+         Width           =   1215
+      End
+      Begin VB.Label lblVigenciaHastaR 
+         BackColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   4680
+         TabIndex        =   39
+         Top             =   1680
+         Width           =   1215
+      End
+      Begin VB.Line Line3 
+         BorderColor     =   &H80000000&
+         X1              =   360
+         X2              =   6600
+         Y1              =   2040
+         Y2              =   2040
+      End
+      Begin VB.Line Line1 
+         BorderColor     =   &H80000000&
+         X1              =   360
+         X2              =   6600
+         Y1              =   1100
+         Y2              =   1100
       End
       Begin VB.Label Label12 
          Alignment       =   2  'Center
@@ -246,7 +265,7 @@ Begin VB.Form frmAdminIIBB
       Height          =   1095
       Left            =   3480
       TabIndex        =   30
-      Top             =   5160
+      Top             =   4920
       Width           =   3615
       Begin VB.CommandButton btnProcesar 
          BackColor       =   &H00E0E0E0&
@@ -291,9 +310,9 @@ Begin VB.Form frmAdminIIBB
          Strikethrough   =   0   'False
       EndProperty
       Height          =   3435
-      Left            =   10920
+      Left            =   7320
       TabIndex        =   4
-      Top             =   360
+      Top             =   2280
       Width           =   6975
       Begin MSComCtl2.DTPicker Fpublicacion 
          Height          =   255
@@ -307,7 +326,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   59441152
+         Format          =   58785792
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -320,7 +339,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   59441153
+         Format          =   58785793
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -333,7 +352,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   59441153
+         Format          =   58785793
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -556,7 +575,7 @@ Begin VB.Form frmAdminIIBB
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2055
+      Height          =   1935
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -568,7 +587,7 @@ Begin VB.Form frmAdminIIBB
          Height          =   375
          Left            =   7440
          Style           =   1  'Graphical
-         TabIndex        =   50
+         TabIndex        =   38
          Top             =   960
          Width           =   1515
       End
@@ -579,7 +598,7 @@ Begin VB.Form frmAdminIIBB
          Index           =   2
          Left            =   7560
          Style           =   1  'Graphical
-         TabIndex        =   49
+         TabIndex        =   37
          Top             =   1680
          Width           =   1515
       End
@@ -731,7 +750,7 @@ Begin VB.Form frmAdminIIBB
       Height          =   2055
       Left            =   120
       TabIndex        =   26
-      Top             =   5160
+      Top             =   4920
       Width           =   3255
       Begin VB.CommandButton Command7 
          BackColor       =   &H00E0E0E0&
@@ -983,7 +1002,7 @@ Private Sub btnBuscar_Click()
     
     If Me.cboPadron.ListIndex = 1 Then
     'PADRON ACTUAL
-        tabla = "Padron_Detalles_ant"
+        tabla = "Padron_Detalles_Ant"
         
     Else
     'PADRON ANTERIOR'
@@ -1005,11 +1024,7 @@ End Sub
 Private Sub btnProcesar_Click()
     
     On Error GoTo err4
-    'Dim strsql As String
-    'Dim filename As String
-    'Me.cd.ShowOpen
-    'filename = cd.filename
-    'filename = Replace(filename, "\", "/")
+
     If MsgBox("¿Está seguro de continuar con el procesamiento?", vbYesNo, "Confirmación") = vbYes Then
         If c.ProcesarPadronIB() Then
             MsgBox "Procesamiento de Padrones éxitosa!", vbInformation, "Información"
