@@ -326,7 +326,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58785792
+         Format          =   58916864
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -339,7 +339,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58785793
+         Format          =   58916865
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -352,7 +352,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58785793
+         Format          =   58916865
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -818,7 +818,7 @@ Private Sub MostrarResultado(tabla As String, Cuit As String)
                 Me.Frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
-            Me.lblCambio = rs!Cambio
+            Me.lblcambio = rs!Cambio
             Me.lblGrupo = rs!Grupo
             Me.lblAlicuota = rs!alicuota
             Me.lblTipo = rs!Tipo
