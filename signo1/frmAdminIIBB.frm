@@ -326,7 +326,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58916864
+         Format          =   58589184
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -339,7 +339,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58916865
+         Format          =   58589185
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -352,7 +352,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58916865
+         Format          =   58589185
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -811,14 +811,14 @@ Private Sub MostrarResultado(tabla As String, Cuit As String)
         If Not rs.EOF And Not rs.BOF Then
 
             If rs!Discriminador = "R" Then
-                Me.Frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
+                Me.frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
             ElseIf rs!Discriminador = "P" Then
-                Me.Frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
+                Me.frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
             Else
-                Me.Frame2.caption = "[ Sin resultado ]"
+                Me.frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
-            Me.lblcambio = rs!Cambio
+            Me.lblCambio = rs!Cambio
             Me.lblGrupo = rs!Grupo
             Me.lblAlicuota = rs!alicuota
             Me.lblTipo = rs!Tipo
@@ -872,7 +872,7 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
         If Not rs.EOF And Not rs.BOF Then
 
 '
-              Me.Frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
+              Me.frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
               
 
           '   Me.lblGrupo = rs!GrupoPercepcion
@@ -977,8 +977,8 @@ Private Sub Command3ss_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1068,8 +1068,8 @@ Private Sub Command3_Click(index As Integer)
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1091,8 +1091,8 @@ Private Sub Command5_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronPercepcion) Then
@@ -1124,8 +1124,8 @@ Private Sub Command7_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronUnificadoCABA) Then
