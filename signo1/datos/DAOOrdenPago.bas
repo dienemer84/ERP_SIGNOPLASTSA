@@ -96,8 +96,11 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     q = q & " LEFT JOIN AdminConfigBancos bancocheque  ON (bancocheque.id = Cheques.id_banco)" _
         & " LEFT JOIN proveedores ON (proveedores.id = AdminComprasFacturasProveedores.id_proveedor)" _
        ' & " LEFT JOIN certificados_retencion ON (certificados_retencion.id_orden_pago = ordenes_pago.id)" _
-       ' & " LEFT JOIN retenciones ON (certificados_retencion.id_retencion = retenciones.id)" _
-
+       ' & " LEFT JOIN retenciones ON (certificados_retencion.id_retencion = retenciones.id)"
+       
+       
+q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = ordenes_pago.id " _
+      & " LEFT JOIN retenciones r ON r.id = opr.id_retencion "
        q = q & " WHERE " & filter
     q = q & " ORDER BY " & orderBy
 
@@ -109,7 +112,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
 
     Dim idx As Dictionary
     Dim rs As Recordset
-
+    Dim ra As DTORetencionAlicuota
     Set rs = conectar.RSFactory(q)
 
     BuildFieldsIndex rs, idx
@@ -156,6 +159,13 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
             End If
         End If
 
+        Set ra = MapAlicuotaRetencion(rs, idx, "opr", "r")
+          If IsSomething(ra) Then
+            If Not funciones.BuscarEnColeccion(op.RetencionesAlicuota, CStr(ra.Retencion.id)) Then
+                    op.RetencionesAlicuota.Add ra, CStr(ra.Retencion.id)
+                End If
+           End If
+    
 
         rs.MoveNext
     Wend
@@ -205,6 +215,35 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
     Set Map = op
 End Function
 
+
+
+Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
+                    tabla As String, _
+                  ByVal TablaRetenciones As String) As DTORetencionAlicuota
+
+    'Optional ByVal tablaCertRetencion As String = vbNullString _
+
+     Dim ra As DTORetencionAlicuota
+
+    'id_certificado_retencion
+    Dim id As Long
+    id = GetValue(rs, indice, tabla, "id_retencion")
+
+    If id > 0 Then
+        Set ra = New DTORetencionAlicuota
+        ra.alicuotaRetencion = GetValue(rs, indice, tabla, "alicuota")
+       Set ra.Retencion = DAORetenciones.Map(rs, indice, TablaRetenciones)
+      
+
+            'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
+    End If
+
+    Set MapAlicuotaRetencion = ra
+End Function
+
+
+
+
 Public Function Save(op As OrdenPago, Optional cascada As Boolean = False) As Boolean
     On Error GoTo err1
     conectar.BeginTransaction
@@ -238,7 +277,7 @@ Public Function aprobar(op As OrdenPago, insideTransaction As Boolean) As Boolea
             If op.FacturasProveedor.count > 0 Then
                 If op.FacturasProveedor(1).Proveedor.estado <> 2 Then
                     Dim d As New clsDTOPadronIIBB
-                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.cuit, TipoPadronRetencion)
+                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
                     Dim ret As Double
 
                     If IsSomething(d) Then
@@ -423,7 +462,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         For Each fac In op.FacturasProveedor
             q = "INSERT INTO ordenes_pago_facturas VALUES (" & op.id & ", " & fac.id & ")"
 
-            If Not conectar.execute(q) Then GoTo E
+             If Not conectar.execute(q) Then GoTo E
 
             If BuscarEnColeccion(op.Compensatorios, CStr(fac.id)) Then
 
@@ -435,7 +474,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             'If op.estado = EstadoOrdenPago_Aprobada Then
 
             es = EstadoFacturaProveedor.Aprobada
-            If nopago > 0 Then
+             If nopago > 0 Then
                 es = EstadoFacturaProveedor.pagoParcial
             Else
                 es = EstadoFacturaProveedor.Saldada
@@ -514,6 +553,26 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             If Not DAOCompensatorios.Guardar(c) Then GoTo E
 
         Next c
+        
+        
+           'guardo las retenciones
+        q = "DELETE FROM ordenes_pago_retenciones WHERE id_pago = " & op.id
+        If Not conectar.execute(q) Then GoTo E
+
+        Dim ra As DTORetencionAlicuota
+        
+         For Each ra In op.RetencionesAlicuota
+            
+           
+           q = " INSERT INTO ordenes_pago_retenciones (id_pago,id_retencion,fecha,alicuota,total) values('id_pago','id_retencion','fecha','alicuota','total')"
+           
+             q = Replace(q, "'id_pago'", GetEntityId(op))
+             q = Replace(q, "'id_retencion'", GetEntityId(ra.Retencion))
+             q = Replace(q, "'fecha'", Escape(op.FEcha))
+             q = Replace(q, "'alicuota'", Escape(ra.alicuotaRetencion))
+             q = Replace(q, "'total'", Escape(0))
+              If Not conectar.execute(q) Then GoTo E
+        Next ra
 
     End If
 

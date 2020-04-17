@@ -43,6 +43,43 @@ Public Function FindAllWithAlicuotas(Cuit As String) As Collection
         
 End Function
 
+Public Function FindAllWithAlicuotasAnt(Cuit As String) As Collection
+
+    Dim d As New clsDTOPadronIIBB
+    Dim col2 As New Collection
+    Dim ali As New Collection
+          
+            Set col2 = DTOPadronIIBB.FindByCUITAnt(Cuit)
+          
+            Dim retenciones As Collection
+            Set retenciones = FindAllEsAgente
+                 
+            Dim rx As Retencion
+            Dim c As clsDTOPadronIIBB
+            Set alicuotas = New Collection
+            Dim x As DTORetencionAlicuota
+            For Each c In col2
+        
+            For Each rx In retenciones
+            
+            If rx.IdPadron = c.IdPadron Then
+                
+            Set x = New DTORetencionAlicuota
+            x.alicuotaRetencion = c.alicuotaRetencion
+            x.alicuotaPercepcion = c.alicuotaPercepcion
+            Set x.Retencion = rx
+            ali.Add x, CStr(c.IdPadron)
+                
+            End If
+            
+            Next
+        
+        Next
+        
+        Set FindAllWithAlicuotasAnt = ali
+        
+End Function
+
 Public Function FindById(id As Long) As Retencion
     Dim col As Collection: Set col = FindAll("id = " & id)
     If col.count = 0 Then
