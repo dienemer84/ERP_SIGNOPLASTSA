@@ -25,22 +25,34 @@ Begin VB.Form frmCrearOrdenPago
    ScaleHeight     =   10245
    ScaleWidth      =   9975
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   2295
+      Height          =   2655
       Left            =   240
       TabIndex        =   45
-      Top             =   5160
+      Top             =   4800
       Width           =   5175
       _Version        =   786432
       _ExtentX        =   9128
-      _ExtentY        =   4048
+      _ExtentY        =   4683
       _StockProps     =   79
       Caption         =   "Mostrar y editar retenciones "
       UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtRetenciones 
+         Alignment       =   1  'Right Justify
+         Appearance      =   0  'Flat
+         BackColor       =   &H8000000F&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         Height          =   195
+         Left            =   4320
+         TabIndex        =   55
+         Top             =   960
+         Width           =   585
+      End
       Begin GridEX20.GridEX gridRetenciones 
          Height          =   1215
          Left            =   120
          TabIndex        =   46
-         Top             =   840
+         Top             =   1275
          Width           =   4935
          _ExtentX        =   8705
          _ExtentY        =   2143
@@ -76,7 +88,7 @@ Begin VB.Form frmCrearOrdenPago
          Height          =   405
          Left            =   2880
          TabIndex        =   47
-         Top             =   285
+         Top             =   360
          Width           =   2175
          _Version        =   786432
          _ExtentX        =   3836
@@ -89,7 +101,7 @@ Begin VB.Form frmCrearOrdenPago
          Height          =   405
          Left            =   120
          TabIndex        =   48
-         Top             =   290
+         Top             =   360
          Width           =   2175
          _Version        =   786432
          _ExtentX        =   3836
@@ -97,6 +109,25 @@ Begin VB.Form frmCrearOrdenPago
          _StockProps     =   79
          Caption         =   "Traer Alicuotas Anteriores"
          UseVisualStyle  =   -1  'True
+      End
+      Begin VB.Label lblRetenciones 
+         AutoSize        =   -1  'True
+         Caption         =   "Retenciones previamente aplicadas IIBB BSAS"
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   195
+         Left            =   840
+         TabIndex        =   56
+         Top             =   960
+         Width           =   3300
       End
    End
    Begin VB.TextBox txtnetogravadoabonado 
@@ -727,8 +758,8 @@ Begin VB.Form frmCrearOrdenPago
       Caption         =   "Destino"
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.PushButton cmdMostrarDatosProveedor 
-         Height          =   350
-         Left            =   4200
+         Height          =   345
+         Left            =   3870
          TabIndex        =   49
          Top             =   480
          Width           =   1095
@@ -736,7 +767,7 @@ Begin VB.Form frmCrearOrdenPago
          _ExtentX        =   1931
          _ExtentY        =   617
          _StockProps     =   79
-         Caption         =   "Mostrar"
+         Caption         =   "Seleccionar"
          UseVisualStyle  =   -1  'True
       End
       Begin VB.CommandButton Command1 
@@ -792,8 +823,8 @@ Begin VB.Form frmCrearOrdenPago
          Text            =   "ComboBox1"
       End
       Begin XtremeSuiteControls.PushButton btnClearProveedor 
-         Height          =   350
-         Left            =   3850
+         Height          =   345
+         Left            =   5040
          TabIndex        =   35
          Top             =   480
          Width           =   270
@@ -837,27 +868,17 @@ Begin VB.Form frmCrearOrdenPago
          Text            =   "ComboBox1"
       End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
-         Height          =   2415
+         Height          =   2055
          Left            =   120
          TabIndex        =   50
          Top             =   960
          Width           =   5175
          _Version        =   786432
          _ExtentX        =   9128
-         _ExtentY        =   4260
+         _ExtentY        =   3625
          _StockProps     =   79
          Caption         =   "Mostrar Facturas"
          UseVisualStyle  =   -1  'True
-         Begin VB.TextBox txtRetenciones 
-            Alignment       =   1  'Right Justify
-            Enabled         =   0   'False
-            Height          =   285
-            Left            =   4320
-            TabIndex        =   55
-            Text            =   "0"
-            Top             =   120
-            Width           =   585
-         End
          Begin VB.TextBox txtParcialAbonar 
             Alignment       =   1  'Right Justify
             Height          =   285
@@ -875,27 +896,27 @@ Begin VB.Form frmCrearOrdenPago
             Width           =   1770
          End
          Begin XtremeSuiteControls.ListBox lstFacturas 
-            Height          =   1335
+            Height          =   975
             Left            =   120
             TabIndex        =   53
             Top             =   960
             Width           =   4890
             _Version        =   786432
             _ExtentX        =   8625
-            _ExtentY        =   2355
+            _ExtentY        =   1720
             _StockProps     =   77
             BackColor       =   -2147483643
             Appearance      =   6
             Style           =   1
          End
-         Begin VB.Label lblRetenciones 
+         Begin VB.Label Label7 
             AutoSize        =   -1  'True
-            Caption         =   "Retenciones IIBB"
+            Caption         =   "Parcial a abonar:"
             Height          =   195
-            Left            =   3000
-            TabIndex        =   56
-            Top             =   120
-            Width           =   1230
+            Left            =   2880
+            TabIndex        =   57
+            Top             =   240
+            Width           =   1215
          End
          Begin VB.Label Label3 
             AutoSize        =   -1  'True
@@ -1094,6 +1115,7 @@ Private chequesChequeraSeleccionada As New Collection
 Public ReadOnly As Boolean
 
 Public Sub Cargar(op As OrdenPago)
+    
     Set OrdenPago = DAOOrdenPago.FindById(op.id)
     Set OrdenPago.Compensatorios = DAOCompensatorios.FindByOP(OrdenPago.id)
 
@@ -1138,7 +1160,7 @@ Public Sub Cargar(op As OrdenPago)
 
             End If
             Me.txtRetenciones.text = .alicuota
-
+            
         Else
             Me.radioConcepto.value = True
 
@@ -1199,7 +1221,7 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
-    Me.gridCajas.AllowEdit = Not ReadOnly
+    Me.GridCajas.AllowEdit = Not ReadOnly
     'Me.gridCajas.AllowDelete = Not ReadOnly
 
     Me.gridChequeras.AllowEdit = Not ReadOnly
@@ -1223,7 +1245,8 @@ Public Sub Cargar(op As OrdenPago)
     Me.txtDifCambio.Enabled = Not ReadOnly
     Me.txtOtrosDescuentos.Enabled = Not ReadOnly
     
-        Totalizar
+    Totalizar
+    
 End Sub
 
 
@@ -1262,7 +1285,7 @@ Private Sub btnCargar_Click()
     Me.gridRetenciones.Refresh
        
 'MostrarFacturas
-    
+    Totalizar
 
 End Sub
 
@@ -1398,6 +1421,7 @@ Private Sub btnPadronAnt_Click()
     Me.gridRetenciones.Refresh
        
 'MostrarFacturas
+    Totalizar
     
 End Sub
 
@@ -1594,7 +1618,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1604,7 +1628,7 @@ Private Sub Form_Load()
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.gridCajas.ItemCount = Cajas.count
+    Me.GridCajas.ItemCount = Cajas.count
 
     Set monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = monedas.count
@@ -1653,7 +1677,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
