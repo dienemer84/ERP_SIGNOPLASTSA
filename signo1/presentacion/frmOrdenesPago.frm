@@ -701,11 +701,15 @@ Private Sub mnuVer_Click()
 End Sub
 
 Private Sub mnuVerCertificado_Click()
-    Dim cr As CertificadoRetencion
-    Set cr = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
+    Dim cr As Collection
+    Set cr = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.id)
 
     If IsSomething(cr) Then
-        DAOCertificadoRetencion.VerCertificado cr
+    
+    Dim c As CertificadoRetencion
+        For Each c In cr
+            DAOCertificadoRetencion.VerCertificado c
+        Next
     Else
         MsgBox "La orden de pago no tiene certificado.", vbInformation
     End If

@@ -102,7 +102,7 @@ Public Function VerPosibleRetenciones2(colFc As Collection, colret As Collection
     'de facturas provista.
 End Function
 
-Public Function Create(op As OrdenPago, Optional Save As Boolean = False) As CertificadoRetencion
+Public Function Create(op As OrdenPago, Retencion As Retencion, alicuota As Double, Optional Save As Boolean = False) As CertificadoRetencion
     Dim fac As clsFacturaProveedor
     Dim cer As CertificadoRetencion
     If op.StaticTotalRetenido > 0 Then   'op.FacturasProveedor.count > 0 Then
@@ -110,13 +110,13 @@ Public Function Create(op As OrdenPago, Optional Save As Boolean = False) As Cer
         Set prov = op.FacturasProveedor.item(1).Proveedor
         Set cer = New CertificadoRetencion
         cer.IdOrdenPago = op.id
-        cer.cuit = prov.cuit
+        cer.Cuit = prov.Cuit
         cer.FEcha = Now
         cer.localidad = prov.Ciudad
         cer.cp = Val(prov.cp)
         cer.Domicilio = prov.direccion
         cer.IB = prov.IIBB
-        Set cer.Retencion = DAORetenciones.FindAllEsAgente()(1)
+        Set cer.Retencion = Retencion ' DAORetenciones.FindAllEsAgente()(1)
         cer.RazonSocial = prov.RazonSocial
         Set cer.Detalles = New Collection
         Dim cerd As CertificadoRetencionDetalles
@@ -126,7 +126,7 @@ Public Function Create(op As OrdenPago, Optional Save As Boolean = False) As Cer
             For Each fac In op.FacturasProveedor
                 Set fac = DAOFacturaProveedor.FindById(fac.id)
                 Set cerd = New CertificadoRetencionDetalles
-                cerd.alicuota = op.alicuota
+                cerd.alicuota = alicuota 'op.alicuota
                 Set cerd.FacturaProveedor = fac
                 'cerd.NetoGravado = IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado)
                 'fix 004
@@ -205,7 +205,7 @@ Public Function Guardar(Certificado As CertificadoRetencion, Optional cascada As
     q = Replace(q, "'id'", Escape(Certificado.id))
     q = Replace(q, "'id_orden_pago'", Certificado.IdOrdenPago)
     q = Replace(q, "'razon_social'", Escape(Certificado.RazonSocial))
-    q = Replace(q, "'cuit'", Escape(Certificado.cuit))
+    q = Replace(q, "'cuit'", Escape(Certificado.Cuit))
 
     q = Replace(q, "'id_retencion'", GetEntityId(Certificado.Retencion))
     q = Replace(q, "'fecha'", Escape(Certificado.FEcha))
@@ -237,6 +237,18 @@ Public Function Guardar(Certificado As CertificadoRetencion, Optional cascada As
 err1:
     Guardar = False
 
+End Function
+
+
+Public Function FindAllByOrdenPago(idOP As Long) As Collection
+    Dim col As Collection
+    Set col = FindAll("id_orden_pago=" & idOP, True)
+    If col.count > 0 Then
+        Set FindAllByOrdenPago = col
+    Else
+        Set FindAllByOrdenPago = Nothing
+    End If
+    
 End Function
 
 Public Function FindByOrdenPago(idOP As Long) As CertificadoRetencion
@@ -284,7 +296,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Opti
     If id > 0 Then
         Set cer = New CertificadoRetencion
         cer.id = id
-        cer.cuit = GetValue(rs, indice, tabla, "cuit")
+        cer.Cuit = GetValue(rs, indice, tabla, "cuit")
         cer.FEcha = GetValue(rs, indice, tabla, "fecha")
         cer.IB = GetValue(rs, indice, tabla, "ib")
         cer.RazonSocial = GetValue(rs, indice, tabla, "razon_social")

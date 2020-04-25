@@ -29,7 +29,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrCertificadoIIBB
       _Version        =   393216
       Name            =   "sec4"
       Object.Height          =   1680
-      NumControls     =   7
+      NumControls     =   6
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -99,36 +99,16 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrCertificadoIIBB
          ForeColor       =   16777215
          Object.Caption         =   "Impuesto sobre los Ingresos Brutos"
       EndProperty
-      ItemType4       =   3
-      BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "Etiqueta3"
-         Object.Left            =   120
-         Object.Top             =   1140
-         Object.Width           =   8055
-         Object.Height          =   495
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   16777215
-         Object.Caption         =   "Jurisdicción Provincia de Buenos Aires"
-      EndProperty
-      ItemType5       =   5
-      BeginProperty Item5 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType4       =   5
+      BeginProperty Item4 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Línea1"
          Object.Left            =   8175
          Object.Top             =   1560
          Object.Width           =   3135
       EndProperty
-      ItemType6       =   7
-      BeginProperty Item6 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType5       =   7
+      BeginProperty Item5 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Image1"
          Object.Left            =   8160

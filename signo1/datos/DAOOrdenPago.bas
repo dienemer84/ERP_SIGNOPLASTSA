@@ -277,6 +277,7 @@ Public Function aprobar(op As OrdenPago, insideTransaction As Boolean) As Boolea
             If op.FacturasProveedor.count > 0 Then
                 If op.FacturasProveedor(1).Proveedor.estado <> 2 Then
                     Dim d As New clsDTOPadronIIBB
+                    'todo: cambiar validacion
                     Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
                     Dim ret As Double
 
@@ -317,11 +318,17 @@ Public Function aprobar(op As OrdenPago, insideTransaction As Boolean) As Boolea
 
             If op.StaticTotalRetenido > 0 Then
 
-                If IsSomething(DAOCertificadoRetencion.Create(op, True)) Then
+        Dim ra As DTORetencionAlicuota
+        For Each ra In op.RetencionesAlicuota
+        
+
+                If IsSomething(DAOCertificadoRetencion.Create(op, ra.Retencion, ra.alicuotaRetencion, True)) Then
                     MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
                 Else
                     GoTo err1
                 End If
+        Next
+            
             End If
         Else
             GoTo err1
@@ -870,11 +877,30 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
         Printer.FontBold = False
         Printer.Print Orden.FacturasProveedor(1).Proveedor.RazonSocial
     End If
-    Printer.FontBold = True
-    Printer.CurrentX = lmargin
-    Printer.Print "Alícuota Retencion IIBB: ";
-    Printer.FontBold = False
-    Printer.Print Orden.alicuota & "%"
+  
+    Dim existeIIBB As Boolean
+    existeIIBB = False
+    Dim ra As DTORetencionAlicuota
+    For Each ra In Orden.RetencionesAlicuota
+   
+            Printer.FontBold = True
+            Printer.CurrentX = lmargin
+            Printer.Print "Alícuota " & ra.Retencion.nombre & ": ";
+            Printer.FontBold = False
+            Printer.Print ra.alicuotaRetencion & "%"
+            
+            If ra.Retencion.id = 5 Then existeIIBB = True
+                
+      Next
+      
+      If Not existeIIBB Then
+              Printer.FontBold = True
+            Printer.CurrentX = lmargin
+            Printer.Print "Alícuota Retencion IIBB: ";
+            Printer.FontBold = False
+            Printer.Print Orden.alicuota & "%"
+    End If
+
 
     Dim cert As CertificadoRetencion
     Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
