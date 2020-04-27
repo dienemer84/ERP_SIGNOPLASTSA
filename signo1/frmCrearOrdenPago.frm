@@ -653,7 +653,7 @@ Begin VB.Form frmCrearOrdenPago
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.PushButton cmdMostrarDatosProveedor 
          Height          =   345
-         Left            =   3960
+         Left            =   3870
          TabIndex        =   45
          Top             =   480
          Width           =   1095
@@ -1219,7 +1219,14 @@ Public Sub Cargar(op As OrdenPago)
     Me.cmdMostrarDatosProveedor.Enabled = Not ReadOnly
     Me.btnPadronAnt.Enabled = Not ReadOnly
     Me.btnCargar.Enabled = Not ReadOnly
+    
     Me.gridRetenciones.AllowEdit = Not ReadOnly
+    
+'    GroupBox2.Enabled = Not ReadOnly
+'
+'    GroupBox1.Enabled = Not ReadOnly
+    
+    
     Me.radioConcepto.Enabled = Not ReadOnly
     Me.radioFacturaProveedor.Enabled = Not ReadOnly
     Me.cboCuentas.Enabled = Not ReadOnly
