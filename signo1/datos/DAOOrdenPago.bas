@@ -880,6 +880,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
   
     Dim existeIIBB As Boolean
     existeIIBB = False
+    
     Dim ra As DTORetencionAlicuota
     For Each ra In Orden.RetencionesAlicuota
    
@@ -896,27 +897,60 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
       If Not existeIIBB Then
               Printer.FontBold = True
             Printer.CurrentX = lmargin
-            Printer.Print "Alícuota Retencion IIBB: ";
+            Printer.Print "Alícuota IIBB BS AS: ";
             Printer.FontBold = False
             Printer.Print Orden.alicuota & "%"
     End If
 
 
+
+
     Dim cert As CertificadoRetencion
     Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
-    If IsSomething(cert) Then
-        Printer.FontBold = True
-        Printer.CurrentX = lmargin
-        Printer.Print "Certificado IIBB Nº: ";
-        Printer.FontBold = False
-        Printer.Print cert.id
-    Else
+
+
+    Dim allcert As Collection
+    Set allcert = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.id)
+    
+   ' For Each cert In cert.CertificadoRetencion
+   ' Printer.Print cert.id & "%"
+   ' Next
+    
+    If Not IsSomething(allcert) Or allcert.count = 0 Then
         Printer.FontBold = True
         Printer.CurrentX = lmargin
         Printer.Print "Certificado IIBB Nº: ";
         Printer.FontBold = False
         Printer.Print " NO POSEE"
+    Else
+        If allcert.count = 1 Then
+            Printer.FontBold = True
+            Printer.CurrentX = lmargin
+            Printer.Print "Certificado IIBB Nº: ";
+            Printer.FontBold = False
+            Printer.Print allcert(1).id
+        Else
+            
+             Printer.FontBold = True
+            Printer.CurrentX = lmargin
+            Printer.Print "Certificados IIBB Nº: ";
+            Printer.FontBold = False
+            
+            Dim c1 As CertificadoRetencion
+            Dim t1 As String
+            For Each c1 In allcert
+               t1 = t1 & c1.id & " "
+            Next
+          
+                Printer.Print t1
+            
+        End If
     End If
+    
+      
+    
+    
+    
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Moneda: ";
