@@ -5,7 +5,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Factura"
-   ClientHeight    =   10080
+   ClientHeight    =   10605
    ClientLeft      =   3945
    ClientTop       =   2385
    ClientWidth     =   11655
@@ -23,21 +23,13 @@ Begin VB.Form frmFacturaEdicion
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10080
+   ScaleHeight     =   10605
    ScaleWidth      =   11655
-   Begin VB.TextBox txtCbuCredito 
-      Height          =   300
-      Left            =   1200
-      TabIndex        =   63
-      Top             =   4200
-      Visible         =   0   'False
-      Width           =   2175
-   End
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1575
       Left            =   9000
       TabIndex        =   43
-      Top             =   8400
+      Top             =   8880
       Width           =   2580
       _Version        =   786432
       _ExtentX        =   4551
@@ -201,7 +193,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   150
       TabIndex        =   11
-      Top             =   8385
+      Top             =   8865
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -233,28 +225,28 @@ Begin VB.Form frmFacturaEdicion
       Appearance      =   6
    End
    Begin XtremeSuiteControls.GroupBox grpDatos 
-      Height          =   4395
+      Height          =   4755
       Left            =   120
       TabIndex        =   17
       Top             =   240
       Width           =   11475
       _Version        =   786432
       _ExtentX        =   20241
-      _ExtentY        =   7752
+      _ExtentY        =   8387
       _StockProps     =   79
       Caption         =   "Datos"
       UseVisualStyle  =   -1  'True
       Begin MSComCtl2.DTPicker dtFechaPagoCredito 
          Height          =   255
-         Left            =   4440
-         TabIndex        =   66
-         Top             =   3960
+         Left            =   1080
+         TabIndex        =   65
+         Top             =   4320
          Visible         =   0   'False
          Width           =   2175
          _ExtentX        =   3836
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   59768833
+         Format          =   58327041
          CurrentDate     =   43770
       End
       Begin VB.TextBox txtTasaAjuste 
@@ -286,14 +278,14 @@ Begin VB.Form frmFacturaEdicion
          Width           =   5430
       End
       Begin XtremeSuiteControls.GroupBox grpPercep 
-         Height          =   1110
+         Height          =   1695
          Left            =   6840
          TabIndex        =   34
-         Top             =   3000
+         Top             =   2880
          Width           =   4440
          _Version        =   786432
          _ExtentX        =   7832
-         _ExtentY        =   1958
+         _ExtentY        =   2990
          _StockProps     =   79
          Caption         =   "Percepciones IIBB"
          UseVisualStyle  =   -1  'True
@@ -471,14 +463,28 @@ Begin VB.Form frmFacturaEdicion
          Text            =   "cboMoneda"
          DropDownItemCount=   3
       End
+      Begin XtremeSuiteControls.ComboBox cboCuentasCBU 
+         Height          =   315
+         Left            =   1080
+         TabIndex        =   66
+         Top             =   3960
+         Visible         =   0   'False
+         Width           =   5535
+         _Version        =   786432
+         _ExtentX        =   9763
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Text            =   "ComboBox1"
+      End
       Begin VB.Label lblFechaPagoCredito 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          Caption         =   "Fecha pago:"
          Height          =   195
-         Left            =   3480
-         TabIndex        =   65
-         Top             =   3960
+         Left            =   120
+         TabIndex        =   64
+         Top             =   4320
          Visible         =   0   'False
          Width           =   900
       End
@@ -807,7 +813,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   3660
       Left            =   120
       TabIndex        =   41
-      Top             =   4680
+      Top             =   5040
       Width           =   11475
       _Version        =   786432
       _ExtentX        =   20241
@@ -868,7 +874,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   6840
       TabIndex        =   16
-      Top             =   9600
+      Top             =   10080
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -881,7 +887,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   150
       TabIndex        =   12
-      Top             =   8820
+      Top             =   9300
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -894,7 +900,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   6840
       TabIndex        =   14
-      Top             =   8385
+      Top             =   8865
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -907,7 +913,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   165
       TabIndex        =   13
-      Top             =   9255
+      Top             =   9735
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -920,7 +926,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   6840
       TabIndex        =   15
-      Top             =   9180
+      Top             =   9660
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -933,7 +939,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   405
       Left            =   2760
       TabIndex        =   55
-      Top             =   8760
+      Top             =   9240
       Width           =   2550
       _Version        =   786432
       _ExtentX        =   4498
@@ -960,7 +966,7 @@ Begin VB.Form frmFacturaEdicion
       Caption         =   "CBU:"
       Height          =   675
       Left            =   0
-      TabIndex        =   64
+      TabIndex        =   63
       Top             =   0
       Width           =   360
    End
@@ -986,7 +992,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   210
       Left            =   135
       TabIndex        =   59
-      Top             =   9750
+      Top             =   10230
       Width           =   5385
    End
    Begin VB.Label lblAjuste 
@@ -1004,7 +1010,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   285
       Left            =   2760
       TabIndex        =   56
-      Top             =   8400
+      Top             =   8880
       Width           =   870
    End
    Begin VB.Menu mnuDetalles 
@@ -1126,7 +1132,16 @@ On Error GoTo err1
                 End If
             End If
         Next deta
-
+        
+        Factura.cbu = Me.cboCuentasCBU.text
+        Dim c As CuentaBancaria
+        
+        Set c = DAOCuentaBancaria.FindById(Me.cboCuentasCBU.ItemData(Me.cboCuentasCBU.ListIndex))
+        
+        If IsSomething(c) Then
+          Factura.cbu = c.cbu
+        End If
+        
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
         Else
@@ -1319,7 +1334,7 @@ Dim nidx As Long
         'esto hay que ponerlo en onclick del cbotipos 26-12-12
         '     Set Factura.Tipo = DAOTipoFactura.FindFirstByFilter("id IN (select TipoFactura FROM AdminConfigFacturas where idIVA = " & Factura.TipoIVA.idIVA & ")")
 
-        Factura.AlicuotaAplicada = Factura.TipoIVA.Alicuota
+        Factura.AlicuotaAplicada = Factura.TipoIVA.alicuota
         Set Factura.cliente = DAOCliente.BuscarPorID(Factura.cliente.id)
         Dim classA As New classAdministracion
     'Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(id_Default)
@@ -1373,8 +1388,8 @@ Private Sub MostrarPercepcionIIBB()
         If IsSomething(rs) Then
             If Not rs.EOF And Not rs.BOF Then
                 Me.lblVencido.Visible = (Now() > rs!FechaHasta)
-                Me.txtPercepcion.text = rs!Alicuota
-                Factura.AlicuotaPercepcionesIIBB = (rs!Alicuota / 100) + 1
+                Me.txtPercepcion.text = rs!alicuota
+                Factura.AlicuotaPercepcionesIIBB = (rs!alicuota / 100) + 1
             End If
         End If
     End If
@@ -1405,7 +1420,7 @@ Private Sub cboTiposFactura_Click()
     Me.lblCbuCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
     Me.lblFechaPagoCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
     Me.dtFechaPagoCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
-    Me.txtCbuCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
+    Me.cboCuentasCBU.Visible = Factura.Tipo.PuntoVenta.EsCredito
     Me.lblEsCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
     Me.lblEsCredito.caption = Factura.DescripcionCreditoAdicional
     
@@ -1458,7 +1473,7 @@ Private Sub Form_Load()
     cboCliente.ListIndex = -1
     DAOMoneda.llenarComboXtremeSuite Me.cboMoneda
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedaAjuste, True
-
+    DAOCuentaBancaria.llenarComboCBUXtremeSuite Me.cboCuentasCBU
     If Not IsSomething(Factura) Then
         Set Factura = New Factura
         Factura.Detalles = New Collection
@@ -1615,8 +1630,21 @@ Private Sub CargarFactura()
     Me.txtCondObs.text = Factura.observaciones
     Me.lblTipoFactura.caption = Factura.Tipo.TipoFactura.Tipo
 
+    
     Me.txtTasaAjuste.text = Factura.TasaAjusteMensual
-
+   ' Me.txtCbuCredito = Factura.CBU
+    
+   Dim c As CuentaBancaria
+   If Factura.Tipo.PuntoVenta.EsCredito And LenB(Factura.cbu) > 0 Then
+Set c = DAOCuentaBancaria.FindByCBU(Factura.cbu)
+      
+      '''TODO: SEGUIR ACA 1-5-2020
+      Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(Factura.cliente.id, Me.cboCliente)
+      
+    End If
+    
+    Me.dtFechaPagoCredito = Factura.FechaPago
+    
     CargarDetalles
     Totalizar
 End Sub
@@ -1954,11 +1982,7 @@ Private Sub PushButton1_Click()
     End If
 End Sub
 
-Private Sub txtCbuCredito_Change()
-If Not dataLoading Then
-        Factura.CBU = Me.txtCbuCredito.text
-    End If
-End Sub
+
 
 Private Sub txtCondObs_Change()
     If Not dataLoading Then

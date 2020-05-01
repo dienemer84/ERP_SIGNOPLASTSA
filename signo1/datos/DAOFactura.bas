@@ -172,8 +172,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.EstaDiscriminada = GetValue(rs, indice, tabla, "discriminada")
         F.FechaEmision = GetValue(rs, indice, tabla, "FechaEmision")
         F.FechaEntrega = GetValue(rs, indice, tabla, "fecha_entrega")
-
-
+        F.CBU = GetValue(rs, indice, tabla, "CBU")
+        F.FechaPago = GetValue(rs, indice, tabla, "fecha_pago")
         F.CAE = GetValue(rs, indice, tabla, "cae")
         F.CAEVto = GetValue(rs, indice, tabla, "cae_vto")
         
@@ -229,6 +229,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
     Set Map = F
 End Function
 Public Function Save(Factura As Factura, Optional Cascade As Boolean = False) As Boolean
+  On Error GoTo err1
+    
     conectar.BeginTransaction
     Save = True
     If Not Guardar(Factura, Cascade) Then
@@ -280,7 +282,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " cambio_a_patron = 'cambio_a_patron' ," _
             & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega', " _
             & " propuesta = 'propuesta' ," _
-            & " cancelada = 'cancelada' , CBU = 'CBU', fecha_pago='fecha_pago' " _
+            & " cancelada = 'cancelada' , CBU = 'CBU', fecha_pago='fecha_pago', " _
             & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste'," _
             & " total_estatico = 'total_estatico' ,  total_iva_estatico = 'total_iva_estatico' , total_perIB_estatico = 'total_perIB_estatico' ," _
             & " total_neto_estatico = 'total_neto_estatico' , total_exento_estatico = 'total_exento_estatico' ," _

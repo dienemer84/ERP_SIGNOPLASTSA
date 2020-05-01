@@ -7,23 +7,22 @@ Begin VB.Form frmAdminconfigCuentas
    ClientHeight    =   3930
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   9165
+   ClientWidth     =   11235
    Icon            =   "frmAdminconfigCuentas.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   3930
-   ScaleWidth      =   9165
+   ScaleWidth      =   11235
    ShowInTaskbar   =   0   'False
    Begin GridEX20.GridEX grid 
       Height          =   3915
       Left            =   15
       TabIndex        =   0
       Top             =   15
-      Width           =   9150
-      _ExtentX        =   16140
+      Width           =   11190
+      _ExtentX        =   19738
       _ExtentY        =   6906
       Version         =   "2.0"
       PreviewRowIndent=   500
@@ -44,20 +43,21 @@ Begin VB.Form frmAdminconfigCuentas
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   4
+      ColumnsCount    =   5
       Column(1)       =   "frmAdminconfigCuentas.frx":000C
       Column(2)       =   "frmAdminconfigCuentas.frx":013C
       Column(3)       =   "frmAdminconfigCuentas.frx":0228
       Column(4)       =   "frmAdminconfigCuentas.frx":0494
+      Column(5)       =   "frmAdminconfigCuentas.frx":05A8
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminconfigCuentas.frx":05A8
-      FormatStyle(2)  =   "frmAdminconfigCuentas.frx":06E0
-      FormatStyle(3)  =   "frmAdminconfigCuentas.frx":0790
-      FormatStyle(4)  =   "frmAdminconfigCuentas.frx":0844
-      FormatStyle(5)  =   "frmAdminconfigCuentas.frx":091C
-      FormatStyle(6)  =   "frmAdminconfigCuentas.frx":09D4
+      FormatStyle(1)  =   "frmAdminconfigCuentas.frx":068C
+      FormatStyle(2)  =   "frmAdminconfigCuentas.frx":07C4
+      FormatStyle(3)  =   "frmAdminconfigCuentas.frx":0874
+      FormatStyle(4)  =   "frmAdminconfigCuentas.frx":0928
+      FormatStyle(5)  =   "frmAdminconfigCuentas.frx":0A00
+      FormatStyle(6)  =   "frmAdminconfigCuentas.frx":0AB8
       ImageCount      =   0
-      PrinterProperties=   "frmAdminconfigCuentas.frx":0AB4
+      PrinterProperties=   "frmAdminconfigCuentas.frx":0B98
    End
    Begin GridEX20.GridEX gridMonedas 
       Height          =   1320
@@ -90,17 +90,17 @@ Begin VB.Form frmAdminconfigCuentas
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminconfigCuentas.frx":0C8C
-      Column(2)       =   "frmAdminconfigCuentas.frx":0DD0
+      Column(1)       =   "frmAdminconfigCuentas.frx":0D70
+      Column(2)       =   "frmAdminconfigCuentas.frx":0EB4
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminconfigCuentas.frx":0EE4
-      FormatStyle(2)  =   "frmAdminconfigCuentas.frx":101C
-      FormatStyle(3)  =   "frmAdminconfigCuentas.frx":10CC
-      FormatStyle(4)  =   "frmAdminconfigCuentas.frx":1180
-      FormatStyle(5)  =   "frmAdminconfigCuentas.frx":1258
-      FormatStyle(6)  =   "frmAdminconfigCuentas.frx":1310
+      FormatStyle(1)  =   "frmAdminconfigCuentas.frx":0FC8
+      FormatStyle(2)  =   "frmAdminconfigCuentas.frx":1100
+      FormatStyle(3)  =   "frmAdminconfigCuentas.frx":11B0
+      FormatStyle(4)  =   "frmAdminconfigCuentas.frx":1264
+      FormatStyle(5)  =   "frmAdminconfigCuentas.frx":133C
+      FormatStyle(6)  =   "frmAdminconfigCuentas.frx":13F4
       ImageCount      =   0
-      PrinterProperties=   "frmAdminconfigCuentas.frx":13F0
+      PrinterProperties=   "frmAdminconfigCuentas.frx":14D4
    End
    Begin GridEX20.GridEX gridBancos 
       Height          =   1320
@@ -133,17 +133,17 @@ Begin VB.Form frmAdminconfigCuentas
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminconfigCuentas.frx":15C8
-      Column(2)       =   "frmAdminconfigCuentas.frx":170C
+      Column(1)       =   "frmAdminconfigCuentas.frx":16AC
+      Column(2)       =   "frmAdminconfigCuentas.frx":17F0
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminconfigCuentas.frx":1820
-      FormatStyle(2)  =   "frmAdminconfigCuentas.frx":1958
-      FormatStyle(3)  =   "frmAdminconfigCuentas.frx":1A08
-      FormatStyle(4)  =   "frmAdminconfigCuentas.frx":1ABC
-      FormatStyle(5)  =   "frmAdminconfigCuentas.frx":1B94
-      FormatStyle(6)  =   "frmAdminconfigCuentas.frx":1C4C
+      FormatStyle(1)  =   "frmAdminconfigCuentas.frx":1904
+      FormatStyle(2)  =   "frmAdminconfigCuentas.frx":1A3C
+      FormatStyle(3)  =   "frmAdminconfigCuentas.frx":1AEC
+      FormatStyle(4)  =   "frmAdminconfigCuentas.frx":1BA0
+      FormatStyle(5)  =   "frmAdminconfigCuentas.frx":1C78
+      FormatStyle(6)  =   "frmAdminconfigCuentas.frx":1D30
       ImageCount      =   0
-      PrinterProperties=   "frmAdminconfigCuentas.frx":1D2C
+      PrinterProperties=   "frmAdminconfigCuentas.frx":1E10
    End
 End
 Attribute VB_Name = "frmAdminconfigCuentas"
@@ -157,7 +157,7 @@ Private cuenta As CuentaBancaria
 Private bancos As New Collection
 Private Banco As Banco
 Private monedas As New Collection
-Private Moneda As clsMoneda
+Private moneda As clsMoneda
 
 Private Sub Form_Load()
     FormHelper.Customize Me
@@ -194,7 +194,7 @@ Private Sub grid_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, By
         If IsNumeric(Values(1)) And Not IsEmpty(Values(1)) Then Set .Banco = DAOBancos.GetById(Values(1))
         .numero = Values(2)
         .TipoCuenta = Values(3)
-        If IsNumeric(Values(4)) And Not IsEmpty(Values(4)) Then Set .Moneda = DAOMoneda.GetById(Values(4))
+        If IsNumeric(Values(4)) And Not IsEmpty(Values(4)) Then Set .moneda = DAOMoneda.GetById(Values(4))
     End With
     If DAOCuentaBancaria.Save(cuenta) Then
         cuentas.Add cuenta, CStr(cuenta.id)
@@ -212,7 +212,8 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
         Values(1) = .Banco.nombre
         Values(2) = .numero
         Values(3) = .TipoCuenta
-        If IsSomething(.Moneda) Then Values(4) = .Moneda.NombreCorto
+        If IsSomething(.moneda) Then Values(4) = .moneda.NombreCorto
+        Values(5) = .CBU
     End With
 End Sub
 
@@ -223,7 +224,8 @@ Private Sub grid_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant
         If IsNumeric(Values(1)) And Not IsEmpty(Values(1)) Then Set .Banco = DAOBancos.GetById(Values(1))
         .numero = Values(2)
         .TipoCuenta = Values(3)
-        If IsNumeric(Values(4)) And Not IsEmpty(Values(4)) Then Set .Moneda = DAOMoneda.GetById(Values(4))
+        .CBU = Values(5)
+        If IsNumeric(Values(4)) And Not IsEmpty(Values(4)) Then Set .moneda = DAOMoneda.GetById(Values(4))
     End With
     If Not DAOCuentaBancaria.Save(cuenta) Then MsgBox "Hubo un error al guardar los valores"
 End Sub
@@ -234,6 +236,7 @@ Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As
     With Banco
         Values(1) = .id
         Values(2) = .nombre
+      
     End With
 End Sub
 
@@ -241,8 +244,8 @@ End Sub
 
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > monedas.count Then Exit Sub
-    Set Moneda = monedas.item(RowIndex)
-    With Moneda
+    Set moneda = monedas.item(RowIndex)
+    With moneda
         Values(1) = .id
         Values(2) = .NombreCorto
     End With

@@ -17,8 +17,46 @@ Public id As Long
 Public Banco As Banco
 Public numero As String
 Public TipoCuenta As TipoCuentaBancaria
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
+Public CBU As String
 
+
+
+Public Property Get DescripcionCBUFormateada() As String
+    Dim col As New Collection
+
+    If IsSomething(Me.Banco) Then
+        If LenB(Me.Banco.nombre) > 0 Then
+            col.Add Me.Banco.nombre
+        End If
+    End If
+
+    If LenB(Me.numero) > 0 Then
+        col.Add "Nº " & Me.numero
+    End If
+
+    If TipoCuenta = TipoCuentaBancaria.CajaAhorro Then
+        col.Add "Caja de ahorro"
+    ElseIf TipoCuenta = TipoCuentaBancaria.CuentaCorriente Then
+        col.Add "Cuenta Corriente"
+    End If
+
+    If IsSomething(Me.moneda) Then
+        col.Add Me.moneda.NombreCorto
+    End If
+    
+    
+    col.Add "CBU: " & Me.CBU
+
+    Dim i As Long
+    Dim arr() As String
+    If col.count > 0 Then ReDim arr(col.count - 1) As String
+    For i = 1 To col.count
+        arr(i - 1) = col.item(i)
+    Next
+
+    DescripcionCBUFormateada = Join(arr, " | ")
+End Property
 Public Property Get DescripcionFormateada() As String
     Dim col As New Collection
 
@@ -38,8 +76,8 @@ Public Property Get DescripcionFormateada() As String
         col.Add "Cuenta Corriente"
     End If
 
-    If IsSomething(Me.Moneda) Then
-        col.Add Me.Moneda.NombreCorto
+    If IsSomething(Me.moneda) Then
+        col.Add Me.moneda.NombreCorto
     End If
 
     Dim i As Long
