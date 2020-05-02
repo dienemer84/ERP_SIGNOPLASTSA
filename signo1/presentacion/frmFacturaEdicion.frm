@@ -204,12 +204,12 @@ Begin VB.Form frmFacturaEdicion
    End
    Begin XtremeSuiteControls.PushButton lblBuscandoPercepcion 
       Height          =   285
-      Left            =   -15
+      Left            =   120
       TabIndex        =   42
-      Top             =   -60
-      Width           =   11550
+      Top             =   0
+      Width           =   11415
       _Version        =   786432
-      _ExtentX        =   20373
+      _ExtentX        =   20135
       _ExtentY        =   503
       _StockProps     =   79
       Caption         =   "Buscando Percepcion..."
@@ -236,17 +236,26 @@ Begin VB.Form frmFacturaEdicion
       _StockProps     =   79
       Caption         =   "Datos"
       UseVisualStyle  =   -1  'True
+      Begin VB.ComboBox cboCuentasCBU 
+         Height          =   315
+         Left            =   1080
+         Style           =   2  'Dropdown List
+         TabIndex        =   66
+         Top             =   3960
+         Visible         =   0   'False
+         Width           =   5535
+      End
       Begin MSComCtl2.DTPicker dtFechaPagoCredito 
-         Height          =   255
+         Height          =   315
          Left            =   1080
          TabIndex        =   65
-         Top             =   4320
+         Top             =   4290
          Visible         =   0   'False
          Width           =   2175
          _ExtentX        =   3836
-         _ExtentY        =   450
+         _ExtentY        =   556
          _Version        =   393216
-         Format          =   58327041
+         Format          =   58392577
          CurrentDate     =   43770
       End
       Begin VB.TextBox txtTasaAjuste 
@@ -272,7 +281,7 @@ Begin VB.Form frmFacturaEdicion
       End
       Begin VB.TextBox txtReferencia 
          Height          =   300
-         Left            =   1170
+         Left            =   1155
          TabIndex        =   4
          Top             =   2880
          Width           =   5430
@@ -316,7 +325,7 @@ Begin VB.Form frmFacturaEdicion
             Height          =   195
             Left            =   525
             TabIndex        =   37
-            Top             =   675
+            Top             =   713
             Width           =   840
             _Version        =   786432
             _ExtentX        =   1482
@@ -329,7 +338,7 @@ Begin VB.Form frmFacturaEdicion
             Height          =   195
             Left            =   150
             TabIndex        =   36
-            Top             =   330
+            Top             =   345
             Width           =   1215
             _Version        =   786432
             _ExtentX        =   2143
@@ -393,12 +402,12 @@ Begin VB.Form frmFacturaEdicion
       End
       Begin XtremeSuiteControls.DateTimePicker dtpFecha 
          Height          =   405
-         Left            =   7920
+         Left            =   8040
          TabIndex        =   2
          Top             =   1320
-         Width           =   3360
+         Width           =   3240
          _Version        =   786432
-         _ExtentX        =   5927
+         _ExtentX        =   5715
          _ExtentY        =   714
          _StockProps     =   68
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -463,20 +472,6 @@ Begin VB.Form frmFacturaEdicion
          Text            =   "cboMoneda"
          DropDownItemCount=   3
       End
-      Begin XtremeSuiteControls.ComboBox cboCuentasCBU 
-         Height          =   315
-         Left            =   1080
-         TabIndex        =   66
-         Top             =   3960
-         Visible         =   0   'False
-         Width           =   5535
-         _Version        =   786432
-         _ExtentX        =   9763
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Text            =   "ComboBox1"
-      End
       Begin VB.Label lblFechaPagoCredito 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
@@ -484,7 +479,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   120
          TabIndex        =   64
-         Top             =   4320
+         Top             =   4350
          Visible         =   0   'False
          Width           =   900
       End
@@ -495,7 +490,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   600
          TabIndex        =   62
-         Top             =   3960
+         Top             =   4020
          Visible         =   0   'False
          Width           =   360
       End
@@ -512,7 +507,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   255
          Left            =   6840
          TabIndex        =   61
-         Top             =   2400
+         Top             =   2280
          Visible         =   0   'False
          Width           =   4455
       End
@@ -561,7 +556,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   3915
          TabIndex        =   52
-         Top             =   3240
+         Top             =   3278
          Width           =   1740
       End
       Begin VB.Label Label20 
@@ -571,7 +566,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   240
          TabIndex        =   40
-         Top             =   3600
+         Top             =   3623
          Width           =   750
       End
       Begin VB.Label Label19 
@@ -581,7 +576,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   240
          TabIndex        =   39
-         Top             =   3240
+         Top             =   3263
          Width           =   1875
       End
       Begin VB.Label Label18 
@@ -589,9 +584,9 @@ Begin VB.Form frmFacturaEdicion
          AutoSize        =   -1  'True
          Caption         =   "Referencia:"
          Height          =   195
-         Left            =   255
+         Left            =   240
          TabIndex        =   38
-         Top             =   2895
+         Top             =   2940
          Width           =   840
       End
       Begin VB.Line Line2 
@@ -599,8 +594,8 @@ Begin VB.Form frmFacturaEdicion
          DrawMode        =   9  'Not Mask Pen
          X1              =   11280
          X2              =   0
-         Y1              =   2760
-         Y2              =   2760
+         Y1              =   2640
+         Y2              =   2640
       End
       Begin VB.Label Label16 
          Alignment       =   1  'Right Justify
@@ -701,7 +696,7 @@ Begin VB.Form frmFacturaEdicion
          X1              =   5715
          X2              =   5715
          Y1              =   240
-         Y2              =   2760
+         Y2              =   2640
       End
       Begin VB.Label lblCodPostal 
          AutoSize        =   -1  'True
@@ -968,16 +963,18 @@ Begin VB.Form frmFacturaEdicion
       Left            =   0
       TabIndex        =   63
       Top             =   0
+      Visible         =   0   'False
       Width           =   360
    End
    Begin VB.Label Label21 
       AutoSize        =   -1  'True
       Caption         =   "23-30279550-9"
       Height          =   195
-      Left            =   0
+      Left            =   480
       TabIndex        =   60
       Top             =   0
-      Width           =   1110
+      Visible         =   0   'False
+      Width           =   1575
    End
    Begin VB.Label txtDetallesCAE 
       BeginProperty Font 
@@ -1133,13 +1130,13 @@ On Error GoTo err1
             End If
         Next deta
         
-        Factura.cbu = Me.cboCuentasCBU.text
+        Factura.CBU = Me.cboCuentasCBU.text
         Dim c As CuentaBancaria
         
         Set c = DAOCuentaBancaria.FindById(Me.cboCuentasCBU.ItemData(Me.cboCuentasCBU.ListIndex))
         
         If IsSomething(c) Then
-          Factura.cbu = c.cbu
+          Factura.CBU = c.CBU
         End If
         
         If DAOFactura.Save(Factura, True) Then
@@ -1473,7 +1470,8 @@ Private Sub Form_Load()
     cboCliente.ListIndex = -1
     DAOMoneda.llenarComboXtremeSuite Me.cboMoneda
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedaAjuste, True
-    DAOCuentaBancaria.llenarComboCBUXtremeSuite Me.cboCuentasCBU
+    DAOCuentaBancaria.llenarComboCBU Me.cboCuentasCBU
+    'Me.cboCuentasCBU.Visible = False
     If Not IsSomething(Factura) Then
         Set Factura = New Factura
         Factura.Detalles = New Collection
@@ -1635,11 +1633,11 @@ Private Sub CargarFactura()
    ' Me.txtCbuCredito = Factura.CBU
     
    Dim c As CuentaBancaria
-   If Factura.Tipo.PuntoVenta.EsCredito And LenB(Factura.cbu) > 0 Then
-Set c = DAOCuentaBancaria.FindByCBU(Factura.cbu)
+   If Factura.Tipo.PuntoVenta.EsCredito And LenB(Factura.CBU) > 0 Then
+     Set c = DAOCuentaBancaria.FindByCBU(Factura.CBU)
       
       '''TODO: SEGUIR ACA 1-5-2020
-      Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(Factura.cliente.id, Me.cboCliente)
+      Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
       
     End If
     

@@ -435,7 +435,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 Private ordenes As Collection
-Dim Cliente As clsCliente
+Dim cliente As clsCliente
 Dim Ot As OrdenTrabajo
 Dim tot As Double
 Dim totPend As Double
@@ -673,7 +673,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 
     Values(1) = Ot.IdFormateado
     Values(2) = Ot.ClienteFacturar.razon
-    Values(3) = Ot.Cliente.provincia.nombre
+    Values(3) = Ot.cliente.provincia.nombre
 
     Values(4) = Ot.descripcion
     Values(5) = Ot.FechaEntrega

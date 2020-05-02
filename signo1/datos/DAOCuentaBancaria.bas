@@ -30,7 +30,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
 End Sub
 
 
-Public Sub llenarComboCBUXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
+Public Sub llenarComboCBU(cbo As ComboBox)
     Dim col As Collection
     Set col = FindAllWithCBU()
     Dim c As CuentaBancaria
@@ -63,9 +63,9 @@ Public Function FindById(id As Long) As CuentaBancaria
 End Function
 
 
-Public Function FindByCBU(cbu As String) As CuentaBancaria
+Public Function FindByCBU(CBU As String) As CuentaBancaria
     Dim col As Collection
-    Set col = FindAll("c.cbu = " & Escape(cbu))
+    Set col = FindAll("c.cbu = " & Escape(CBU))
     If col.count = 0 Then
         Set FindByCBU = Nothing
     Else
@@ -111,7 +111,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Opti
         c.id = id
         c.numero = GetValue(rs, indice, tabla, "cuenta")
         c.TipoCuenta = GetValue(rs, indice, tabla, "tipo")
-             c.cbu = GetValue(rs, indice, tabla, "cbu")
+             c.CBU = GetValue(rs, indice, tabla, "cbu")
         If LenB(tablaBanco) > 0 Then Set c.Banco = DAOBancos.Map(rs, indice, tablaBanco)
         If LenB(tablaMoneda) > 0 Then Set c.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
     End If
@@ -123,7 +123,7 @@ Public Function Save(cuenta As CuentaBancaria) As Boolean
     Dim q As String
     If cuenta.id = 0 Then
         q = "INSERT INTO AdminConfigCuentas (idBanco, cuenta, tipo, moneda_id,CBU)" _
-            & " VALUES (" & GetEntityId(cuenta.Banco) & ", " & Escape(cuenta.numero) & "," & cuenta.TipoCuenta & "," & GetEntityId(cuenta.moneda) & "," & Escape(cuenta.cbu) & " )"
+            & " VALUES (" & GetEntityId(cuenta.Banco) & ", " & Escape(cuenta.numero) & "," & cuenta.TipoCuenta & "," & GetEntityId(cuenta.moneda) & "," & Escape(cuenta.CBU) & " )"
     Else
         q = "Update AdminConfigCuentas" _
             & " SET" _
@@ -131,7 +131,7 @@ Public Function Save(cuenta As CuentaBancaria) As Boolean
             & " cuenta = " & Escape(cuenta.numero) & " ," _
             & " tipo = " & cuenta.TipoCuenta & " ," _
             & " moneda_id = " & GetEntityId(cuenta.moneda) _
-            & ", cbu = " & Escape(cuenta.cbu) _
+            & ", cbu = " & Escape(cuenta.CBU) _
             & " WHERE id = " & cuenta.id
     End If
 
