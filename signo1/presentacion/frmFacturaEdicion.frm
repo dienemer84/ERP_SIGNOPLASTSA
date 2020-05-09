@@ -5,7 +5,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Factura"
-   ClientHeight    =   10605
+   ClientHeight    =   10365
    ClientLeft      =   3945
    ClientTop       =   2385
    ClientWidth     =   11655
@@ -23,13 +23,13 @@ Begin VB.Form frmFacturaEdicion
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10605
+   ScaleHeight     =   10365
    ScaleWidth      =   11655
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1575
       Left            =   9000
       TabIndex        =   43
-      Top             =   8880
+      Top             =   8760
       Width           =   2580
       _Version        =   786432
       _ExtentX        =   4551
@@ -238,78 +238,78 @@ Begin VB.Form frmFacturaEdicion
       UseVisualStyle  =   -1  'True
       Begin VB.ComboBox cboCuentasCBU 
          Height          =   315
-         Left            =   1080
+         Left            =   1035
          Style           =   2  'Dropdown List
          TabIndex        =   66
-         Top             =   3960
+         Top             =   4300
          Visible         =   0   'False
-         Width           =   5535
+         Width           =   5550
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCredito 
          Height          =   315
-         Left            =   1080
+         Left            =   1035
          TabIndex        =   65
-         Top             =   4290
+         Top             =   3885
          Visible         =   0   'False
          Width           =   2175
          _ExtentX        =   3836
          _ExtentY        =   556
          _Version        =   393216
-         Format          =   58392577
+         Format          =   58916865
          CurrentDate     =   43770
       End
       Begin VB.TextBox txtTasaAjuste 
          Height          =   300
-         Left            =   5745
+         Left            =   5760
          TabIndex        =   6
-         Top             =   3225
+         Top             =   3120
          Width           =   840
       End
       Begin VB.TextBox txtCondObs 
          Height          =   300
-         Left            =   1095
+         Left            =   1035
          TabIndex        =   7
-         Top             =   3570
-         Width           =   5505
+         Top             =   3480
+         Width           =   5550
       End
       Begin VB.TextBox txtDiasVenc 
          Height          =   300
          Left            =   2205
          TabIndex        =   5
-         Top             =   3210
+         Top             =   3120
          Width           =   840
       End
       Begin VB.TextBox txtReferencia 
          Height          =   300
-         Left            =   1155
+         Left            =   1035
          TabIndex        =   4
-         Top             =   2880
-         Width           =   5430
+         Top             =   2750
+         Width           =   5550
       End
       Begin XtremeSuiteControls.GroupBox grpPercep 
-         Height          =   1695
+         Height          =   1815
          Left            =   6840
          TabIndex        =   34
-         Top             =   2880
+         Top             =   2760
          Width           =   4440
          _Version        =   786432
          _ExtentX        =   7832
-         _ExtentY        =   2990
+         _ExtentY        =   3201
          _StockProps     =   79
          Caption         =   "Percepciones IIBB"
          UseVisualStyle  =   -1  'True
          Begin VB.TextBox txtPercepcion 
             Height          =   300
-            Left            =   1440
+            Left            =   1485
             TabIndex        =   9
-            Top             =   660
+            Top             =   900
             Width           =   2715
          End
          Begin XtremeSuiteControls.ComboBox cboPadron 
             Height          =   315
-            Left            =   1485
+            Left            =   1530
             TabIndex        =   8
-            Top             =   285
+            Top             =   405
             Width           =   2700
             _Version        =   786432
             _ExtentX        =   4762
@@ -323,9 +323,9 @@ Begin VB.Form frmFacturaEdicion
          End
          Begin XtremeSuiteControls.Label Label17 
             Height          =   195
-            Left            =   525
+            Left            =   570
             TabIndex        =   37
-            Top             =   713
+            Top             =   960
             Width           =   840
             _Version        =   786432
             _ExtentX        =   1482
@@ -336,9 +336,9 @@ Begin VB.Form frmFacturaEdicion
          End
          Begin XtremeSuiteControls.Label lblPadron 
             Height          =   195
-            Left            =   150
+            Left            =   195
             TabIndex        =   36
-            Top             =   345
+            Top             =   465
             Width           =   1215
             _Version        =   786432
             _ExtentX        =   2143
@@ -477,9 +477,9 @@ Begin VB.Form frmFacturaEdicion
          AutoSize        =   -1  'True
          Caption         =   "Fecha pago:"
          Height          =   195
-         Left            =   120
+         Left            =   60
          TabIndex        =   64
-         Top             =   4350
+         Top             =   3945
          Visible         =   0   'False
          Width           =   900
       End
@@ -490,11 +490,12 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   600
          TabIndex        =   62
-         Top             =   4020
+         Top             =   4360
          Visible         =   0   'False
          Width           =   360
       End
       Begin VB.Label lblEsCredito 
+         Caption         =   "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMES (FCE)"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   6.75
@@ -505,11 +506,11 @@ Begin VB.Form frmFacturaEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   6840
+         Left            =   7500
          TabIndex        =   61
-         Top             =   2280
+         Top             =   2380
          Visible         =   0   'False
-         Width           =   4455
+         Width           =   3855
       End
       Begin VB.Label Label6 
          Alignment       =   1  'Right Justify
@@ -537,7 +538,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   300
          TabIndex        =   54
-         Top             =   1875
+         Top             =   1840
          Width           =   705
       End
       Begin VB.Label lblProvincia 
@@ -546,7 +547,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   1080
          TabIndex        =   53
-         Top             =   1890
+         Top             =   1840
          Width           =   630
       End
       Begin VB.Label Label11 
@@ -554,9 +555,9 @@ Begin VB.Form frmFacturaEdicion
          AutoSize        =   -1  'True
          Caption         =   "% Tasa ajuste mensual:"
          Height          =   195
-         Left            =   3915
+         Left            =   3960
          TabIndex        =   52
-         Top             =   3278
+         Top             =   3173
          Width           =   1740
       End
       Begin VB.Label Label20 
@@ -564,9 +565,9 @@ Begin VB.Form frmFacturaEdicion
          AutoSize        =   -1  'True
          Caption         =   "Condicion:"
          Height          =   195
-         Left            =   240
+         Left            =   210
          TabIndex        =   40
-         Top             =   3623
+         Top             =   3540
          Width           =   750
       End
       Begin VB.Label Label19 
@@ -576,7 +577,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   195
          Left            =   240
          TabIndex        =   39
-         Top             =   3263
+         Top             =   3173
          Width           =   1875
       End
       Begin VB.Label Label18 
@@ -584,9 +585,9 @@ Begin VB.Form frmFacturaEdicion
          AutoSize        =   -1  'True
          Caption         =   "Referencia:"
          Height          =   195
-         Left            =   240
+         Left            =   120
          TabIndex        =   38
-         Top             =   2940
+         Top             =   2805
          Width           =   840
       End
       Begin VB.Line Line2 
@@ -669,7 +670,7 @@ Begin VB.Form frmFacturaEdicion
          X1              =   6720
          X2              =   6720
          Y1              =   240
-         Y2              =   4320
+         Y2              =   4560
       End
       Begin VB.Label lblTipoFactura 
          Alignment       =   2  'Center
@@ -869,7 +870,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   6840
       TabIndex        =   16
-      Top             =   10080
+      Top             =   9840
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -882,7 +883,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   150
       TabIndex        =   12
-      Top             =   9300
+      Top             =   9330
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -895,7 +896,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   6840
       TabIndex        =   14
-      Top             =   8865
+      Top             =   8880
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -908,7 +909,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   165
       TabIndex        =   13
-      Top             =   9735
+      Top             =   9840
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -921,7 +922,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   360
       Left            =   6840
       TabIndex        =   15
-      Top             =   9660
+      Top             =   9330
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625

@@ -523,6 +523,7 @@ Class=OrdenDeEntregaDetalle; negocio\OrdenDeEntregaDetalle.cls
 Class=DTORetencionAlicuota; DTORetencionImporte.cls
 Object=Paint.Picture; mspaint.exe
 ResFile32="Themes.res"
+Form=presentacion\frmAdminFacturasAprobarSinAfip.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""
