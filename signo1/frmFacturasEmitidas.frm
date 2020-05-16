@@ -616,13 +616,13 @@ Private Sub aplicarNCaFC_Click()
     If MsgBox("¿Seguro de aplicar NC?", vbYesNo, "Confirmación") = vbYes Then
         'seleccionar factura para aplicar
         Set Selecciones.Factura = Nothing
-          Dim f As New frmAdminFacturasNCElegirFC
+          Dim F As New frmAdminFacturasNCElegirFC
         
-        f.idCliente = Factura.cliente.id
-            f.TiposDocs.Add tipoDocumentoContable.Factura
-            f.TiposDocs.Add tipoDocumentoContable.notaDebito
-            f.EstadosDocs.Add EstadoFacturaCliente.Aprobada
-            f.Show 1
+        F.idCliente = Factura.cliente.id
+            F.TiposDocs.Add tipoDocumentoContable.Factura
+            F.TiposDocs.Add tipoDocumentoContable.notaDebito
+            F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
+            F.Show 1
 
         If IsSomething(Selecciones.Factura) Then
             If DAOFactura.aplicarNCaFC(Selecciones.Factura.id, Factura.id) Then
@@ -668,11 +668,11 @@ err1:
 End Sub
 
 Private Sub archivos_Click()
-    Dim f As New frmArchivos2
-    f.Origen = 101
-    f.ObjetoId = Factura.id
-    f.caption = "Comprobante " & Factura.GetShortDescription(False, True)
-    f.Show
+    Dim F As New frmArchivos2
+    F.Origen = 101
+    F.ObjetoId = Factura.id
+    F.caption = "Comprobante " & Factura.GetShortDescription(False, True)
+    F.Show
 End Sub
 
 'Private Sub Command1_Click()
@@ -782,8 +782,10 @@ Private Sub Form_Load()
 
     vId = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, FacturaCliente_
-
-    DAOPuntoVenta.llenarComboXtremeSuite Me.cboPuntosVenta, True
+    
+'Modificación 15/05/20 (Se muestran todos los comprobanes sin filtrar por punto de venta)
+    DAOPuntoVenta.llenarComboXtremeSuite Me.cboPuntosVenta, False
+    
     cboEstados.Clear
     cboEstados.AddItem "Pendientes"
     cboEstados.ItemData(cboEstados.NewIndex) = 1
@@ -851,9 +853,9 @@ Private Sub llenarGrilla()
     End If
 
     Set facturas = DAOFactura.FindAll(filtro)
-    Dim f As Factura
+    Dim F As Factura
     Dim c As Integer
-    For Each f In facturas
+    For Each F In facturas
 
 
         Dim Total As Double
@@ -862,19 +864,19 @@ Private Sub llenarGrilla()
         Dim totalPercepcionesIIBB As Double
 
 
-        If f.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
 
 
 
-        Total = Total + MonedaConverter.ConvertirForzado2(f.TotalEstatico.Total * c, MonedaConverter.Patron.id, f.moneda.id, f.CambioAPatron)
+        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
         '    Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
 
-        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(f.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, f.moneda.id, f.CambioAPatron)
+        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         'TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalNG = totalNG + MonedaConverter.ConvertirForzado2(f.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, f.moneda.id, f.CambioAPatron)
+        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         '    totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(f.TotalEstatico.TotalPercepcionesIB * c, f.moneda.id, MonedaConverter.Patron.id)
+        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
 
     Next
 
@@ -1209,22 +1211,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-               cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+               CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fué impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.id
                 Next i
             End If
@@ -1302,12 +1304,12 @@ Private Sub mnuAplicarANC_Click()
   If MsgBox("¿Seguro de aplicar a NC?", vbYesNo, "Confirmación") = vbYes Then
         'seleccionar factura para aplicar
         Set Selecciones.Factura = Nothing
-          Dim f As New frmAdminFacturasNCElegirFC
+          Dim F As New frmAdminFacturasNCElegirFC
         
-        f.idCliente = Factura.cliente.id
-            f.TiposDocs.Add tipoDocumentoContable.notaCredito
-            f.EstadosDocs.Add EstadoFacturaCliente.Aprobada
-            f.Show 1
+        F.idCliente = Factura.cliente.id
+            F.TiposDocs.Add tipoDocumentoContable.notaCredito
+            F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
+            F.Show 1
 
         If IsSomething(Selecciones.Factura) Then
             If DAOFactura.aplicarNCaFC(Factura.id, Selecciones.Factura.id) Then
@@ -1434,9 +1436,9 @@ Private Sub mnuEditarCAE_Click()
     Dim g As Long
     g = Me.GridEX1.RowIndex(Me.GridEX1.row)
 
-    Dim f As New frmAdminFacturasAprobarSinAfip
-    Set f.Factura = Factura
-    f.Show 1
+    Dim F As New frmAdminFacturasAprobarSinAfip
+    Set F.Factura = Factura
+    F.Show 1
 
  Me.GridEX1.RefreshRowIndex g
 

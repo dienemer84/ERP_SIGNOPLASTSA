@@ -201,18 +201,18 @@ Begin VB.Form frmAdminIIBB
       Begin VB.Label lblVigenciaHastaP 
          BackColor       =   &H00E0E0E0&
          Height          =   255
-         Left            =   4680
+         Left            =   4800
          TabIndex        =   40
          Top             =   720
-         Width           =   1215
+         Width           =   1455
       End
       Begin VB.Label lblVigenciaHastaR 
          BackColor       =   &H00E0E0E0&
          Height          =   255
-         Left            =   4680
+         Left            =   4800
          TabIndex        =   39
          Top             =   1680
-         Width           =   1215
+         Width           =   1455
       End
       Begin VB.Line Line3 
          BorderColor     =   &H80000000&
@@ -326,7 +326,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58589184
+         Format          =   59047936
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -339,7 +339,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58589185
+         Format          =   59047937
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -352,7 +352,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58589185
+         Format          =   59047937
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -606,7 +606,7 @@ Begin VB.Form frmAdminIIBB
          Height          =   375
          Left            =   5160
          TabIndex        =   34
-         Top             =   1290
+         Top             =   1320
          Width           =   1575
          _Version        =   786432
          _ExtentX        =   2778
@@ -811,11 +811,11 @@ Private Sub MostrarResultado(tabla As String, Cuit As String)
         If Not rs.EOF And Not rs.BOF Then
 
             If rs!Discriminador = "R" Then
-                Me.frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
+                Me.Frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
             ElseIf rs!Discriminador = "P" Then
-                Me.frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
+                Me.Frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
             Else
-                Me.frame2.caption = "[ Sin resultado ]"
+                Me.Frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
             Me.lblCambio = rs!Cambio
@@ -872,7 +872,7 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
         If Not rs.EOF And Not rs.BOF Then
 
 '
-              Me.frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
+              Me.Frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
               
 
           '   Me.lblGrupo = rs!GrupoPercepcion
@@ -940,7 +940,7 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
 
 
 End Sub
-Private Function ConvertirAFecha(entrada As String) As String
+Public Function ConvertirAFecha(entrada As String) As String
 Dim FEcha As String
 Dim f_anio As String, f_mes As String, f_dia As String
 f_anio = Right(entrada, 4)
@@ -997,27 +997,39 @@ End Sub
 
 Private Sub btnBuscar_Click()
 
+    'Dim F As New frmLoading
+    
 
     Dim tabla As String
-    
+
+
     If Me.cboPadron.ListIndex = 1 Then
-    'PADRON ACTUAL
+    
+        'PADRON ACTUAL
         tabla = "Padron_Detalles_Ant"
-        
-    Else
-    'PADRON ANTERIOR'
-        tabla = "Padron_Detalles"
-        
+            
+        Else
+        'PADRON ANTERIOR'
+            tabla = "Padron_Detalles"
+    
     End If
 
-If Me.cboRegion.ListIndex = -1 Then
+    If Me.cboRegion.ListIndex = -1 Then
+    
     MsgBox ("Debe seleccionar el padrón correspondiente")
-Else
+    
+    Else
+    
+   
     MostrarResultado2 Me.txtCuit, Me.cboRegion.ItemData(Me.cboRegion.ListIndex), tabla
     
     Me.Frame5.Enabled = True
+
     
     End If
+    
+
+    
     
 End Sub
 
@@ -1040,7 +1052,7 @@ End Sub
 
 
 
-Private Sub Command1_Click(index As Integer)
+Private Sub Command1_Click(Index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Retencion"
@@ -1052,7 +1064,7 @@ Private Sub Command1_Click(index As Integer)
 
 End Sub
 
-Private Sub Command2_Click(index As Integer)
+Private Sub Command2_Click(Index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Padron_CABA"
@@ -1064,7 +1076,7 @@ Private Sub Command2_Click(index As Integer)
 
 End Sub
 
-Private Sub Command3_Click(index As Integer)
+Private Sub Command3_Click(Index As Integer)
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
@@ -1141,7 +1153,7 @@ End Sub
 
 
 
-Private Sub Command9_Click(index As Integer)
+Private Sub Command9_Click(Index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Padron_CABA"
@@ -1177,9 +1189,6 @@ Private Sub Form_Load()
     cboRegion.AddItem "BUENOS AIRES"
     Me.cboRegion.ItemData(Me.cboRegion.NewIndex) = 1
     'Me.cboRegion.ListIndex = 0
-    
-    
-    
 
     FormHelper.Customize Me
     If Permisos.AdminIIBB Then
@@ -1187,5 +1196,10 @@ Private Sub Form_Load()
     Else
         'Me.Command3.Enabled = False
     End If
+    
+   
 End Sub
 
+Private Sub TaskDialog1_ButtonClicked(ByVal id As Long, CloseDialog As Variant)
+
+End Sub

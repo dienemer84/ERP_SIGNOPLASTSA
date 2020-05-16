@@ -710,12 +710,12 @@ Function quitar_de_lista(list As ListView)
     Next
 End Function
 Function datetimeFormateada(fec As Date) As String
-    a = Format(fec, "yyyy-mm-dd hh:mm:ss")
-    datetimeFormateada = a
+    A = Format(fec, "yyyy-mm-dd hh:mm:ss")
+    datetimeFormateada = A
 End Function
 Function dateFormateada(fec As Date) As String
-    a = Format(fec, "yyyy-mm-dd")
-    dateFormateada = a
+    A = Format(fec, "yyyy-mm-dd")
+    dateFormateada = A
 End Function
 
 
@@ -750,11 +750,11 @@ Function amortizaV2(id, Cantidad, forma As FormaCotizar, Optional amort = 0, Opt
 
     ElseIf forma = fabricados_ Then
         Set rs = conectar.RSFactory("select sum(cantidad_fabricados) as a from detalles_pedidos where idPieza=" & id)
-        If Not IsNumeric(rs!a) Then a = 0 Else a = rs!a
+        If Not IsNumeric(rs!A) Then A = 0 Else A = rs!A
 
 
 
-        amortizaV2 = Cantidad + a
+        amortizaV2 = Cantidad + A
     ElseIf forma = fijo_ Then
 
         If Not esCon Then canti = 1
@@ -913,7 +913,7 @@ Public Function calcularTamañoArchivo(ByVal tamOrig As Double, ByRef tamDest As 
 End Function
 
 Public Function crearUsuario(nombre, Apellido) As String
-    Dim a As New classSignoplast
+    Dim A As New classSignoplast
     Dim r As Recordset
     Dim usu As String
     usu = LCase(nombre & Mid(Apellido, 1, 1) & Right(Apellido, 1))
@@ -1079,6 +1079,16 @@ Public Sub vaciarControles(frm As Form)
     Next
 End Sub
 
+Public Function ConvertirAFechaAfip(entrada As String) As String
+Dim FEcha As String
+Dim f_anio As String, f_mes As String, f_dia As String
+f_anio = Right(entrada, 4)
+f_mes = Mid(entrada, 3, 2)
+ f_dia = Mid(entrada, 1, 2)
+ConvertirAFechaAfip = f_dia & "/" & f_mes & "/" & f_anio
+End Function
+
+
 Public Function FormatearDecimales(numero As Double, Optional ByVal cantDecimales As Long = 2) As String
     FormatearDecimales = Format(numero, "0." & String$(cantDecimales, "0"))
 End Function
@@ -1113,9 +1123,9 @@ Public Function Redondear(dblntor As Double, Optional cntdecas As Integer) As Do
 End Function
 
 
-Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
+Public Function ImprimirLista(titulo, lst As ListView, CD As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
     On Error GoTo err91
-    cd.ShowPrinter
+    CD.ShowPrinter
 
     AnchoCol = 0
 
@@ -1211,10 +1221,10 @@ Public Sub ordenar_grilla(ByVal Column As GridEX20.JSColumn, GridEX1 As GridEX)
     'Add this new sortkey
     If SortOrder = jgexSortAscending Then
         'if the column was sorted in ascending order, sort the column in descending order
-        GridEX1.SortKeys.Add Column.index, jgexSortDescending
+        GridEX1.SortKeys.Add Column.Index, jgexSortDescending
     Else
         'if was sorted in descending order or not sorted, sort the column in ascending order
-        GridEX1.SortKeys.Add Column.index, jgexSortAscending
+        GridEX1.SortKeys.Add Column.Index, jgexSortAscending
     End If
 End Sub
 Public Sub FillComboBox(ByRef combo As ComboBox, ByRef col As Collection, ByRef propertyForShow As String, ByRef propertyForId As String, ByRef selectFirst As Boolean)
@@ -1679,7 +1689,7 @@ End Function
 
 Public Function AjustarLineas(st As String) As String
 
-    Dim a As String
+    Dim A As String
     Dim b As String
 
     If Len(st) >= 55 Then
