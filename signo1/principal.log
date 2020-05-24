@@ -1,0 +1,6 @@
+Line 36: Class MSComDlg.CommonDialog of control CD was not a loaded control class.
+Line 44: Class MSComctlLib.ImageList of control ImageList1 was not a loaded control class.
+Line 62: Class XtremeSuiteControls.TrayIcon of control TrayIcon was not a loaded control class.
+Line 73: Class XtremeSuiteControls.PopupControl of control Popup was not a loaded control class.
+Line 81: Class XtremeCommandBars.ImageManager of control ImageManager was not a loaded control class.
+Line 90: Class XtremeCommandBars.CommandBars of control CommandBars was not a loaded control class.
