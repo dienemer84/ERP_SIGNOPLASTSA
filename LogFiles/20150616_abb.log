@@ -1,0 +1,19 @@
+10:38:14 a.m. 
+
+16/06/2015 10:38:14 a.m.  RunTime Error in abb
+
+RunTime Error: 450 - Número de argumentos erróneo o asignación de propiedad no válida
+	Module Name    : XmlSerializer
+	Procedure Name : SerializeObject
+	Line Number    : 0
+	Error Source   : nucleo
+	User Desc.     : 
+
+Call Stack:
+	Module    : XmlSerializer
+	Procedure : SerializeObject()
+
+	Module    : XmlSerializer
+	Procedure : Serialize()
+
+

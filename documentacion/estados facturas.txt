@@ -1,0 +1,3 @@
+campo Saldada
+1- factura saldada
+2- factura en recibo, pèro no saldada

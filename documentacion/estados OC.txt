@@ -1,0 +1,5 @@
+0- en proceso
+1- pendiente (aprobada)
+2- Envíada
+3- Recibida completa
+4- recibida parcial
