@@ -1,4 +1,4 @@
-frmPrincipal = 138, 20, 1076, 694, , 24, 10, 801, 601, C
+frmPrincipal = 138, 20, 1076, 694, C, 24, 10, 801, 601, C
 funciones = -800, 45, 220, 519, C
 frmRubrosGrupos = 86, 106, 892, 638, C, 0, 0, 853, 533, C
 frmMaterialesNuevo = 105, 73, 947, 769, C, 272, 148, 866, 570, C
