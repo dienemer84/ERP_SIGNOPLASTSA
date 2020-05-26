@@ -5,7 +5,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Factura"
-   ClientHeight    =   10740
+   ClientHeight    =   10470
    ClientLeft      =   3945
    ClientTop       =   2385
    ClientWidth     =   11670
@@ -23,7 +23,7 @@ Begin VB.Form frmFacturaEdicion
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10740
+   ScaleHeight     =   10470
    ScaleWidth      =   11670
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1575
@@ -204,7 +204,7 @@ Begin VB.Form frmFacturaEdicion
    End
    Begin XtremeSuiteControls.PushButton lblBuscandoPercepcion 
       Height          =   285
-      Left            =   960
+      Left            =   120
       TabIndex        =   41
       Top             =   0
       Width           =   11415
@@ -239,12 +239,11 @@ Begin VB.Form frmFacturaEdicion
       Begin VB.ComboBox txtCondObs 
          Height          =   315
          ItemData        =   "frmFacturaEdicion.frx":000C
-         Left            =   1200
+         Left            =   1040
          List            =   "frmFacturaEdicion.frx":001C
          TabIndex        =   68
-         Text            =   "Combo1"
          Top             =   3550
-         Width           =   5295
+         Width           =   3255
       End
       Begin VB.Frame frmFC 
          Caption         =   "Factura de Crédito"
@@ -253,39 +252,51 @@ Begin VB.Form frmFacturaEdicion
          Left            =   120
          TabIndex        =   61
          Top             =   3960
+         Visible         =   0   'False
          Width           =   11260
+         Begin VB.ComboBox cboConceptosAIncluir 
+            Height          =   315
+            ItemData        =   "frmFacturaEdicion.frx":007C
+            Left            =   5450
+            List            =   "frmFacturaEdicion.frx":0089
+            TabIndex        =   73
+            Top             =   360
+            Width           =   3015
+         End
          Begin MSComCtl2.DTPicker dtFechaPagoCreditoHasta 
             Height          =   315
-            Left            =   8400
+            Left            =   2280
             TabIndex        =   70
-            Top             =   330
+            Top             =   1050
             Width           =   1335
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   16515073
+            Format          =   58589185
             CurrentDate     =   43967
          End
          Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
             Height          =   315
-            Left            =   6240
+            Left            =   2280
             TabIndex        =   69
-            Top             =   330
+            Top             =   690
             Width           =   1335
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   16515073
+            Format          =   58589185
             CurrentDate     =   43967
          End
          Begin VB.ComboBox cboCuentasCBU 
             Height          =   315
-            Left            =   840
+            ItemData        =   "frmFacturaEdicion.frx":00BA
+            Left            =   4680
+            List            =   "frmFacturaEdicion.frx":00BC
             Style           =   2  'Dropdown List
             TabIndex        =   66
-            Top             =   960
+            Top             =   840
             Visible         =   0   'False
-            Width           =   6615
+            Width           =   6210
          End
          Begin MSComCtl2.DTPicker dtFechaPagoCredito 
             Height          =   315
@@ -296,14 +307,40 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   16515073
+            Format          =   58589185
             CurrentDate     =   43967
+         End
+         Begin VB.Line Line5 
+            X1              =   3720
+            X2              =   3720
+            Y1              =   1200
+            Y2              =   840
+         End
+         Begin VB.Line Line4 
+            X1              =   3600
+            X2              =   3720
+            Y1              =   840
+            Y2              =   840
+         End
+         Begin VB.Line Line3 
+            X1              =   3600
+            X2              =   3720
+            Y1              =   1200
+            Y2              =   1200
+         End
+         Begin VB.Label lblConceptosAIncluir 
+            Caption         =   "Conceptos a incluir:"
+            Height          =   255
+            Left            =   3960
+            TabIndex        =   74
+            Top             =   420
+            Width           =   1455
          End
          Begin XtremeSuiteControls.Label lblFechaPagoCreditoHasta 
             Height          =   255
-            Left            =   7800
+            Left            =   1680
             TabIndex        =   72
-            Top             =   360
+            Top             =   1080
             Width           =   495
             _Version        =   786432
             _ExtentX        =   873
@@ -313,9 +350,9 @@ Begin VB.Form frmFacturaEdicion
          End
          Begin XtremeSuiteControls.Label lblFechaPagoCreditoDesde 
             Height          =   255
-            Left            =   4320
+            Left            =   360
             TabIndex        =   71
-            Top             =   360
+            Top             =   720
             Width           =   1935
             _Version        =   786432
             _ExtentX        =   3413
@@ -323,22 +360,22 @@ Begin VB.Form frmFacturaEdicion
             _StockProps     =   79
             Caption         =   "Periodo Facturado desde:"
          End
-         Begin VB.Label Label22 
+         Begin VB.Label LblCBU 
             Alignment       =   1  'Right Justify
             AutoSize        =   -1  'True
             Caption         =   "CBU:"
             Height          =   195
-            Left            =   360
+            Left            =   4245
             TabIndex        =   67
-            Top             =   1020
+            Top             =   900
             Width           =   360
          End
          Begin VB.Label lblVerCbu 
             Caption         =   "NO INFORMADO"
             Height          =   195
-            Left            =   840
+            Left            =   4920
             TabIndex        =   65
-            Top             =   960
+            Top             =   900
             Width           =   2415
          End
          Begin VB.Label lblFechaPagoCredito 
@@ -346,7 +383,7 @@ Begin VB.Form frmFacturaEdicion
             Height          =   255
             Left            =   240
             TabIndex        =   64
-            Top             =   385
+            Top             =   360
             Width           =   2055
          End
          Begin VB.Label lblCbuCredito 
@@ -363,10 +400,10 @@ Begin VB.Form frmFacturaEdicion
       End
       Begin VB.TextBox txtTasaAjuste 
          Height          =   300
-         Left            =   5760
+         Left            =   5640
          TabIndex        =   6
          Top             =   3150
-         Width           =   720
+         Width           =   840
       End
       Begin VB.TextBox txtDiasVenc 
          Height          =   300
@@ -377,10 +414,10 @@ Begin VB.Form frmFacturaEdicion
       End
       Begin VB.TextBox txtReferencia 
          Height          =   300
-         Left            =   1200
+         Left            =   1040
          TabIndex        =   4
          Top             =   2750
-         Width           =   5295
+         Width           =   5415
       End
       Begin XtremeSuiteControls.GroupBox grpPercep 
          Height          =   1215
@@ -545,9 +582,9 @@ Begin VB.Form frmFacturaEdicion
       End
       Begin XtremeSuiteControls.ComboBox cboTiposFactura 
          Height          =   360
-         Left            =   8025
+         Left            =   8040
          TabIndex        =   56
-         Top             =   255
+         Top             =   240
          Width           =   3090
          _Version        =   786432
          _ExtentX        =   5450
@@ -580,9 +617,9 @@ Begin VB.Form frmFacturaEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   7500
+         Left            =   7320
          TabIndex        =   60
-         Top             =   2380
+         Top             =   2385
          Visible         =   0   'False
          Width           =   3855
       End
@@ -629,7 +666,7 @@ Begin VB.Form frmFacturaEdicion
          AutoSize        =   -1  'True
          Caption         =   "% Tasa ajuste mensual:"
          Height          =   195
-         Left            =   3960
+         Left            =   3840
          TabIndex        =   51
          Top             =   3195
          Width           =   1740
@@ -639,7 +676,7 @@ Begin VB.Form frmFacturaEdicion
          AutoSize        =   -1  'True
          Caption         =   "Condicion:"
          Height          =   195
-         Left            =   240
+         Left            =   210
          TabIndex        =   39
          Top             =   3600
          Width           =   750
@@ -659,7 +696,7 @@ Begin VB.Form frmFacturaEdicion
          AutoSize        =   -1  'True
          Caption         =   "Referencia:"
          Height          =   195
-         Left            =   240
+         Left            =   120
          TabIndex        =   37
          Top             =   2805
          Width           =   840
@@ -883,7 +920,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   2820
       Left            =   120
       TabIndex        =   40
-      Top             =   6000
+      Top             =   5880
       Width           =   11475
       _Version        =   786432
       _ExtentX        =   20241
@@ -893,7 +930,7 @@ Begin VB.Form frmFacturaEdicion
       UseVisualStyle  =   -1  'True
       Begin GridEX20.GridEX gridDetalles 
          Height          =   2460
-         Left            =   105
+         Left            =   120
          TabIndex        =   9
          Top             =   240
          Width           =   11250
@@ -919,25 +956,25 @@ Begin VB.Form frmFacturaEdicion
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   10
-         Column(1)       =   "frmFacturaEdicion.frx":007C
-         Column(2)       =   "frmFacturaEdicion.frx":01B4
-         Column(3)       =   "frmFacturaEdicion.frx":02A8
-         Column(4)       =   "frmFacturaEdicion.frx":03C0
-         Column(5)       =   "frmFacturaEdicion.frx":04E0
-         Column(6)       =   "frmFacturaEdicion.frx":0620
-         Column(7)       =   "frmFacturaEdicion.frx":0754
-         Column(8)       =   "frmFacturaEdicion.frx":087C
-         Column(9)       =   "frmFacturaEdicion.frx":09AC
-         Column(10)      =   "frmFacturaEdicion.frx":0ABC
+         Column(1)       =   "frmFacturaEdicion.frx":00BE
+         Column(2)       =   "frmFacturaEdicion.frx":01F6
+         Column(3)       =   "frmFacturaEdicion.frx":02EA
+         Column(4)       =   "frmFacturaEdicion.frx":0402
+         Column(5)       =   "frmFacturaEdicion.frx":0522
+         Column(6)       =   "frmFacturaEdicion.frx":0662
+         Column(7)       =   "frmFacturaEdicion.frx":0796
+         Column(8)       =   "frmFacturaEdicion.frx":08BE
+         Column(9)       =   "frmFacturaEdicion.frx":09EE
+         Column(10)      =   "frmFacturaEdicion.frx":0AFE
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmFacturaEdicion.frx":0BB4
-         FormatStyle(2)  =   "frmFacturaEdicion.frx":0CDC
-         FormatStyle(3)  =   "frmFacturaEdicion.frx":0D8C
-         FormatStyle(4)  =   "frmFacturaEdicion.frx":0E40
-         FormatStyle(5)  =   "frmFacturaEdicion.frx":0F18
-         FormatStyle(6)  =   "frmFacturaEdicion.frx":0FD0
+         FormatStyle(1)  =   "frmFacturaEdicion.frx":0BF6
+         FormatStyle(2)  =   "frmFacturaEdicion.frx":0D1E
+         FormatStyle(3)  =   "frmFacturaEdicion.frx":0DCE
+         FormatStyle(4)  =   "frmFacturaEdicion.frx":0E82
+         FormatStyle(5)  =   "frmFacturaEdicion.frx":0F5A
+         FormatStyle(6)  =   "frmFacturaEdicion.frx":1012
          ImageCount      =   0
-         PrinterProperties=   "frmFacturaEdicion.frx":10B0
+         PrinterProperties=   "frmFacturaEdicion.frx":10F2
       End
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
@@ -1492,6 +1529,10 @@ Private Sub cboTiposFactura_Click()
     
     Me.cboCuentasCBU.Visible = Factura.Tipo.PuntoVenta.EsCredito
     Me.lblEsCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
+    
+    Me.frmFC.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.frmFC.Visible = Factura.Tipo.PuntoVenta.EsCredito
+    
     Me.lblEsCredito.caption = Factura.DescripcionCreditoAdicional
     
     Me.lblVerCbu.Visible = True
@@ -1527,11 +1568,14 @@ Private Sub cmdNueva_Click()
 End Sub
 
 
+
 Private Sub dtFechaPagoCredito_Change()
    If Not dataLoading Then
-        Factura.fechaPago = Me.dtFechaPagoCredito.value
+        Factura.FechaPago = Me.dtFechaPagoCredito.value
     End If
 End Sub
+
+
 
 
 
@@ -1752,7 +1796,7 @@ Private Sub CargarFactura()
         
       
       End If
-          Me.dtFechaPagoCredito = Factura.fechaPago
+          Me.dtFechaPagoCredito = Factura.FechaPago
     Else
        Me.cboCuentasCBU.Visible = False
             Me.lblVerCbu.Visible = True
@@ -2011,6 +2055,10 @@ If A.IdFormSuscriber <> ISuscriber_id Then Exit Function
 
 err1:
 End Function
+
+
+
+
 
 
 
