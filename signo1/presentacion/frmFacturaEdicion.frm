@@ -272,7 +272,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   58589185
+            Format          =   16449537
             CurrentDate     =   43967
          End
          Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -284,7 +284,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   58589185
+            Format          =   16449537
             CurrentDate     =   43967
          End
          Begin VB.ComboBox cboCuentasCBU 
@@ -307,7 +307,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   58589185
+            Format          =   16449537
             CurrentDate     =   43967
          End
          Begin VB.Line Line5 
@@ -338,12 +338,12 @@ Begin VB.Form frmFacturaEdicion
          End
          Begin XtremeSuiteControls.Label lblFechaPagoCreditoHasta 
             Height          =   255
-            Left            =   1680
+            Left            =   1740
             TabIndex        =   72
             Top             =   1080
-            Width           =   495
+            Width           =   615
             _Version        =   786432
-            _ExtentX        =   873
+            _ExtentX        =   1085
             _ExtentY        =   450
             _StockProps     =   79
             Caption         =   "Hasta:"
