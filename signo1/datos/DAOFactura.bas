@@ -1853,13 +1853,8 @@ rptFacturaElectronica.LeftMargin = 250
             c.Visible = F.Tipo.PuntoVenta.EsCredito
              c.caption = F.DescripcionCreditoAdicional
               
-            Set c = seccion.Controls.item("lblFechaPagoFce")
-            c.Visible = F.Tipo.PuntoVenta.EsCredito
-             c.caption = "Fecha Vto: " & Format(F.fechaPago, "dd/mm/yyyy")
 
-   Set c = seccion.Controls.item("lblCbuEmisorFce")
-            c.Visible = F.Tipo.PuntoVenta.EsCredito
-             c.caption = "CBU del emisor: " & F.CBU
+
 
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
@@ -1869,14 +1864,33 @@ rptFacturaElectronica.LeftMargin = 250
    c.caption = F.GetDescripciopnDocumentoAfip
 
    Set c = seccion.Controls.item("lblFecha")
-   c.caption = Format(F.FechaEmision, "dd/mm/yyyy")
+   c.caption = "Fecha de Emisión: " & Format(F.FechaEmision, "dd/mm/yyyy")
    
-
-Set c = seccion.Controls.item("lblNumeroDocumento")
-   c.caption = "Nº " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000") & " - " & Format(F.numero, "00000000")
+        'fce_nemer_2905/2020
+        Set c = seccion.Controls.item("lblNumeroDocumento")
+        c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000")
    
+        Set c = seccion.Controls.item("lblNumeroDocumentoComp")
+        c.caption = "Compr. Nro: " & Format(F.numero, "00000000")
 
         Set seccion = rptFacturaElectronica.Sections("detailsHead")
+        
+        Set c = seccion.Controls.item("lblFechaPagoFce")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "Fecha de Vto. para el pago: " & Format(F.fechaPago, "dd/mm/yyyy")
+        
+        Set c = seccion.Controls.item("lblFechaPagoFceDesde")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "Período Facturado Desde: " & Format(F.FechaVtoDesde, "dd/mm/yyyy")
+        
+        Set c = seccion.Controls.item("lblFechaPagoFceHasta")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "Hasta: " & Format(F.FechaVtoHasta, "dd/mm/yyyy")
+        
+        
+        Set c = seccion.Controls.item("lblCbuEmisorFce")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "CBU del Emisor: " & F.CBU
         
      
         seccion.Controls.item("lblCliente").caption = Format(F.cliente.id, "0000") & " - " & F.cliente.razon
