@@ -1896,7 +1896,10 @@ rptFacturaElectronica.LeftMargin = 250
         seccion.Controls.item("lblCliente").caption = Format(F.cliente.id, "0000") & " - " & F.cliente.razon
         seccion.Controls.item("lblCuit").caption = F.cliente.Cuit
         seccion.Controls.item("lblIva").caption = F.cliente.TipoIVA.detalle
-        seccion.Controls.item("lblCondicionPAgo").caption = F.getDescripcionCondicion
+        
+        'fce_nemer_29052020
+        seccion.Controls.item("lblCondicionPagoFCE").caption = F.observaciones
+        
         seccion.Controls.item("lblDireccion").caption = F.cliente.Domicilio & ", " & F.cliente.localidad.nombre & ", " & F.cliente.provincia.nombre
         seccion.Controls.item("lblReferencia").caption = F.OrdenCompra
 

@@ -562,10 +562,10 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       ItemType13      =   3
       BeginProperty Item13 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
-         Name            =   "lblCondicionPago"
-         Object.Left            =   8115
+         Name            =   "lblCondicionPagoFCE"
+         Object.Left            =   8175
          Object.Top             =   1125
-         Object.Width           =   2835
+         Object.Width           =   2820
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -576,7 +576,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "30 DÍAS FF"
+         Object.Caption         =   "Transferencia Bancaria"
       EndProperty
       ItemType14      =   3
       BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -614,7 +614,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "COND. DE PAGO:"
+         Object.Caption         =   "COND. DE VENTA:"
       EndProperty
       ItemType16      =   3
       BeginProperty Item16 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -754,7 +754,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "lblCbuEmisorFce"
          Object.Left            =   3225
-         Object.Top             =   360
+         Object.Top             =   375
          Object.Width           =   5325
          Object.Height          =   240
          Object.Visible         =   0   'False
