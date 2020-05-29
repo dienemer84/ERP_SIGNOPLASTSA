@@ -57,8 +57,13 @@ Public TotalEstatico As New FacturaTotalEstatico
 Private m_ots_facturadas_anticipo As Collection
 Private m_detalles As Collection
 
-Public FechaPago As Date    'para fce
+Public fechaPago As Date    'para fce
 Public CBU As String
+
+'fce_nemer_28052020
+Public FechaVtoDesde As Date
+Public FechaVtoHasta As Date
+
 
 
 Public TasaAjusteMensual As Double  'de aca se empieza
@@ -144,15 +149,15 @@ End Function
 
 Public Function getDescripcionCondicion() As String
     
-    Dim A As String
+    Dim a As String
     If Me.CantDiasPago = 1 Then
-        A = Me.CantDiasPago & " dia FF"
+        a = Me.CantDiasPago & " dia FF"
     Else
-        A = Me.CantDiasPago & " dias FF"
+        a = Me.CantDiasPago & " dias FF"
     End If
 
 
-getDescripcionCondicion = A & Me.observaciones
+getDescripcionCondicion = a & Me.observaciones
 
 End Function
 
@@ -483,3 +488,4 @@ Public Sub RemoveDetallesAnticipoOT()
         End If
     Next
 End Sub
+
