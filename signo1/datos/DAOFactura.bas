@@ -37,17 +37,17 @@ End Function
 
 
 Public Function FindAllNoSaldadasNiVencidas(desde As Date, hasta As Date, Optional cliente_id As Long = 0) As Collection
-    Dim f As String
-    f = " ((AdminFacturas.saldada IN (0,2) AND NOW() <=  ADDDATE(AdminFacturas.FechaEmision, AdminFacturas.FormaPago)) " _
+    Dim F As String
+    F = " ((AdminFacturas.saldada IN (0,2) AND NOW() <=  ADDDATE(AdminFacturas.FechaEmision, AdminFacturas.FormaPago)) " _
         & " OR (AdminFacturas.saldada IN (0,2) AND NOW() >  ADDDATE(AdminFacturas.FechaEmision, AdminFacturas.FormaPago) AND AdminFacturas.propuesta >= NOW())) " _
         & " AND (IF(IFNULL(propuesta, ADDDATE(FechaEmision,FormaPago)), ADDDATE(FechaEmision,FormaPago) >= " & conectar.Escape(desde) & ", propuesta >= " & conectar.Escape(desde) & " ))" _
         & " AND (IF(IFNULL(propuesta, ADDDATE(FechaEmision,FormaPago)), ADDDATE(FechaEmision,FormaPago) <= " & conectar.Escape(hasta) & ", propuesta <= " & conectar.Escape(hasta) & "))" _
 
 If cliente_id <> 0 Then
-        f = f & " AND AdminFacturas.idCliente = " & cliente_id
+        F = F & " AND AdminFacturas.idCliente = " & cliente_id
     End If
 
-    Set FindAllNoSaldadasNiVencidas = FindAll(f)
+    Set FindAllNoSaldadasNiVencidas = FindAll(F)
 End Function
 
 Public Function FindAllNoSaldadasTotalByCliente(cliente_id As Long, Optional includeDetalles As Boolean = False, Optional includeEntregasWithDetalles As Boolean = False) As Collection
@@ -99,7 +99,7 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
     q = q & " WHERE " & filter
 
     Dim col As New Collection
-    Dim f As Factura
+    Dim F As Factura
     Dim idx As Dictionary
     Dim deta As FacturaDetalle
     Dim rs As Recordset
@@ -113,21 +113,21 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
     Set rs = conectar.RSFactory(q)
     BuildFieldsIndex rs, idx
     While Not rs.EOF
-        Set f = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv")
+        Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv")
 
-        If funciones.BuscarEnColeccion(col, CStr(f.id)) Then
-            Set f = col.item(CStr(f.id))
+        If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
+            Set F = col.item(CStr(F.id))
         Else
-            f.Detalles = New Collection
-            col.Add f, CStr(f.id)
+            F.Detalles = New Collection
+            col.Add F, CStr(F.id)
         End If
 
         If includeDetalles Then
             Set deta = DAOFacturaDetalles.Map(rs, idx, "AdminFacturasDetalleNueva")
             If IsSomething(deta) Then
-                If Not funciones.BuscarEnColeccion(f.Detalles, CStr(deta.id)) Then
-                    Set deta.Factura = f
-                    f.Detalles.Add deta, CStr(deta.id)
+                If Not funciones.BuscarEnColeccion(F.Detalles, CStr(deta.id)) Then
+                    Set deta.Factura = F
+                    F.Detalles.Add deta, CStr(deta.id)
                 End If
 
                 If includeEntregasWithDetalles Then
@@ -161,72 +161,78 @@ End Function
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaCliente As String = vbNullString, _
                     Optional tablaMoneda As String = vbNullString, Optional tablaClienteIva As String = vbNullString, Optional tablaFactTipoFacturaDiscriminado As String = vbNullString, Optional tablaIVATipo As String = vbNullString, Optional tablaTipoFactura As String = vbNullString, Optional tablaPuntoVenta As String = vbNullString) As Factura
-    Dim f As Factura
+    Dim F As Factura
     Dim id As Long: id = GetValue(rs, indice, tabla, "id")
     If id > 0 Then
-        Set f = New Factura
-        f.id = id
-        f.numero = GetValue(rs, indice, tabla, "NroFactura")
+        Set F = New Factura
+        F.id = id
+        F.numero = GetValue(rs, indice, tabla, "NroFactura")
         'f.Descuento = GetValue(rs, indice, tabla, "descuento")
-        f.EstaImpresa = GetValue(rs, indice, tabla, "impresa")
-        f.EstaDiscriminada = GetValue(rs, indice, tabla, "discriminada")
-        f.FechaEmision = GetValue(rs, indice, tabla, "FechaEmision")
-        f.FechaEntrega = GetValue(rs, indice, tabla, "fecha_entrega")
-        f.CBU = GetValue(rs, indice, tabla, "CBU")
-        f.FechaPago = GetValue(rs, indice, tabla, "fecha_pago")
-        f.CAE = GetValue(rs, indice, tabla, "cae")
-        f.CAEVto = GetValue(rs, indice, tabla, "cae_vto")
+        F.EstaImpresa = GetValue(rs, indice, tabla, "impresa")
+        F.EstaDiscriminada = GetValue(rs, indice, tabla, "discriminada")
+        F.FechaEmision = GetValue(rs, indice, tabla, "FechaEmision")
+        F.FechaEntrega = GetValue(rs, indice, tabla, "fecha_entrega")
+        F.CBU = GetValue(rs, indice, tabla, "CBU")
         
-        f.FechaVencimientoSQL = GetValue(rs, indice, vbNullString, "FechaVencimiento")
+        F.fechaPago = GetValue(rs, indice, tabla, "fecha_pago")
+        
+        'fce_nemer_29052020
+        F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
+        F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
+        
+        F.CAE = GetValue(rs, indice, tabla, "cae")
+        F.CAEVto = GetValue(rs, indice, tabla, "cae_vto")
+        
+        F.FechaVencimientoSQL = GetValue(rs, indice, vbNullString, "FechaVencimiento")
         'F.IdOTAnticipo = GetValue(rs, indice, tabla, "id_ot_anticipo")
 
-        f.OrdenCompra = GetValue(rs, indice, tabla, "OrdenCompra")
+        F.OrdenCompra = GetValue(rs, indice, tabla, "OrdenCompra")
         'F.TipoDocumento = GetValue(rs, indice, tabla, "tipo")
-        f.Saldado = GetValue(rs, indice, tabla, "saldada")
-        f.observaciones = GetValue(rs, indice, tabla, "observaciones")
-        If Trim(f.observaciones) = "-" Or (f.observaciones) = "." Then f.observaciones = vbNullString
+        F.Saldado = GetValue(rs, indice, tabla, "saldada")
+        F.observaciones = GetValue(rs, indice, tabla, "observaciones")
+        If Trim(F.observaciones) = "-" Or (F.observaciones) = "." Then F.observaciones = vbNullString
         'If F.id = 6415 Then Stop
-        If LenB(tablaFactTipoFacturaDiscriminado) Then Set f.Tipo = DAOTipoFacturaDiscriminado.Map(rs, indice, tablaFactTipoFacturaDiscriminado, tablaTipoFactura, tablaPuntoVenta)
-        If LenB(tablaIVATipo) Then Set f.TipoIVA = DAOTipoIva.Map(rs, indice, tablaIVATipo)
+        If LenB(tablaFactTipoFacturaDiscriminado) Then Set F.Tipo = DAOTipoFacturaDiscriminado.Map(rs, indice, tablaFactTipoFacturaDiscriminado, tablaTipoFactura, tablaPuntoVenta)
+        If LenB(tablaIVATipo) Then Set F.TipoIVA = DAOTipoIva.Map(rs, indice, tablaIVATipo)
 
-        f.AlicuotaAplicada = GetValue(rs, indice, tabla, "alicuotaAplicada")
+        F.AlicuotaAplicada = GetValue(rs, indice, tabla, "alicuotaAplicada")
 
         'ver bien que onda
         Dim porcenPercep As Double
         porcenPercep = GetValue(rs, indice, tabla, "AliPercIB")
 
 
-        f.AlicuotaPercepcionesIIBB = porcenPercep
+        F.AlicuotaPercepcionesIIBB = porcenPercep
 
-        f.estado = GetValue(rs, indice, tabla, "estado")
-        f.CantDiasPago = GetValue(rs, indice, tabla, "FormaPago")
-        f.FechaAprobacion = GetValue(rs, indice, tabla, "FechaAprobacion")
-        f.origenFacturado = GetValue(rs, indice, tabla, "origenFacturado")
-        f.FechaPropuestaPago = GetValue(rs, indice, tabla, "propuesta")
-        f.Cancelada = GetValue(rs, indice, tabla, "cancelada")
-        f.MotivoNC = GetValue(rs, indice, tabla, "nc_motivo")
-        f.CambioAPatron = GetValue(rs, indice, tabla, "cambio_a_patron")
-        Set f.usuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
-        If LenB(tablaMoneda) > 0 Then Set f.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
-        If LenB(tablaCliente) > 0 Then Set f.cliente = DAOCliente.Map(rs, indice, tablaCliente, tablaClienteIva, "Localidades", "", "Provincia")
-        Set f.UsuarioAprobacion = DAOUsuarios.Map(rs, indice, "usuarios2")
+        F.estado = GetValue(rs, indice, tabla, "estado")
+        F.CantDiasPago = GetValue(rs, indice, tabla, "FormaPago")
+        F.FechaAprobacion = GetValue(rs, indice, tabla, "FechaAprobacion")
+        F.origenFacturado = GetValue(rs, indice, tabla, "origenFacturado")
+        F.FechaPropuestaPago = GetValue(rs, indice, tabla, "propuesta")
+        F.Cancelada = GetValue(rs, indice, tabla, "cancelada")
+        F.MotivoNC = GetValue(rs, indice, tabla, "nc_motivo")
+        F.CambioAPatron = GetValue(rs, indice, tabla, "cambio_a_patron")
+        Set F.usuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
+        If LenB(tablaMoneda) > 0 Then Set F.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        If LenB(tablaCliente) > 0 Then Set F.cliente = DAOCliente.Map(rs, indice, tablaCliente, tablaClienteIva, "Localidades", "", "Provincia")
+        Set F.UsuarioAprobacion = DAOUsuarios.Map(rs, indice, "usuarios2")
 
-        f.TasaAjusteMensual = GetValue(rs, indice, tabla, "tasa_ajuste_mensual")
+        F.TasaAjusteMensual = GetValue(rs, indice, tabla, "tasa_ajuste_mensual")
 
-        Set f.TotalEstatico = New FacturaTotalEstatico
-        f.TotalEstatico.Total = GetValue(rs, indice, tabla, "total_estatico")
-        f.TotalEstatico.TotalExento = GetValue(rs, indice, tabla, "total_exento_estatico")
-        f.TotalEstatico.TotalIVA = GetValue(rs, indice, tabla, "total_iva_estatico")
-        f.TotalEstatico.TotalIVADiscrimandoONo = GetValue(rs, indice, tabla, "total_iva_discono_estatico")
-        f.TotalEstatico.TotalNetoGravado = GetValue(rs, indice, tabla, "total_neto_estatico")
-        f.TotalEstatico.TotalPercepcionesIB = GetValue(rs, indice, tabla, "total_perIB_estatico")
-        f.IdMonedaAjuste = GetValue(rs, indice, tabla, "id_moneda_ajuste")
-        f.TipoCambioAjuste = GetValue(rs, indice, tabla, "tipo_cambio_ajuste")
+        Set F.TotalEstatico = New FacturaTotalEstatico
+        F.TotalEstatico.Total = GetValue(rs, indice, tabla, "total_estatico")
+        F.TotalEstatico.TotalExento = GetValue(rs, indice, tabla, "total_exento_estatico")
+        F.TotalEstatico.TotalIVA = GetValue(rs, indice, tabla, "total_iva_estatico")
+        F.TotalEstatico.TotalIVADiscrimandoONo = GetValue(rs, indice, tabla, "total_iva_discono_estatico")
+        F.TotalEstatico.TotalNetoGravado = GetValue(rs, indice, tabla, "total_neto_estatico")
+        F.TotalEstatico.TotalPercepcionesIB = GetValue(rs, indice, tabla, "total_perIB_estatico")
+        F.IdMonedaAjuste = GetValue(rs, indice, tabla, "id_moneda_ajuste")
+        F.TipoCambioAjuste = GetValue(rs, indice, tabla, "tipo_cambio_ajuste")
 
 
     End If
 
-    Set Map = f
+    Set Map = F
 End Function
 Public Function Save(Factura As Factura, Optional Cascade As Boolean = False) As Boolean
   On Error GoTo err1
@@ -257,14 +263,14 @@ End Function
 
 
 
-Public Function ActualizarCAE(f As Factura)
+Public Function ActualizarCAE(F As Factura)
 
 
-    If Not f.Tipo.PuntoVenta.EsElectronico Then
+    If Not F.Tipo.PuntoVenta.EsElectronico Then
         Err.Raise "no se puede actualizar datos de CAE en comprobantes no electrónicas"
     End If
 
-    If f.estado = EstadoFacturaCliente.Anulada Or f.estado = EstadoFacturaCliente.EnProceso Then
+    If F.estado = EstadoFacturaCliente.Anulada Or F.estado = EstadoFacturaCliente.EnProceso Then
             Err.Raise "Solo puede modificar CAE en comprobantes aprobados. "
      End If
      
@@ -272,21 +278,21 @@ Public Function ActualizarCAE(f As Factura)
      Dim q As String
   q = "Update sp.AdminFacturas  SET cae='cae',cae_vto='cae_vto' where id='id'"
   
-    q = Replace$(q, "'id'", conectar.Escape(f.id))
-    q = Replace$(q, "'cae'", conectar.Escape(f.CAE))
-    q = Replace$(q, "'cae_vto'", conectar.Escape(f.CAEVto))
+    q = Replace$(q, "'id'", conectar.Escape(F.id))
+    q = Replace$(q, "'cae'", conectar.Escape(F.CAE))
+    q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
     
     If Not conectar.execute(q) Then
            Err.Raise "No se pudieron actualizar los datos del CAE"
     End If
     
 End Function
-Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Boolean
+Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Boolean
     Dim q As String
     '    conectar.BeginTransaction
     Dim esNueva As Boolean
 
-    If f.id > 0 Then
+    If F.id > 0 Then
 
         '& " descuento = 'descuento' , "
         q = "Update sp.AdminFacturas  SET " _
@@ -309,14 +315,14 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
             & " cambio_a_patron = 'cambio_a_patron' ," _
             & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega', " _
             & " propuesta = 'propuesta' ," _
-            & " cancelada = 'cancelada' , CBU = 'CBU', fecha_pago='fecha_pago', " _
+            & " cancelada = 'cancelada' , CBU = 'CBU' , fecha_pago = 'fecha_pago' , fecha_vto_desde = 'fecha_vto_desde' , fecha_vto_hasta = 'fecha_vto_hasta' , " _
             & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste'," _
             & " total_estatico = 'total_estatico' ,  total_iva_estatico = 'total_iva_estatico' , total_perIB_estatico = 'total_perIB_estatico' ," _
             & " total_neto_estatico = 'total_neto_estatico' , total_exento_estatico = 'total_exento_estatico' ," _
-            & "total_iva_discono_estatico = 'total_iva_discono_estatico', tasa_ajuste_mensual = 'tasa_ajuste_mensual'  Where id = 'id'"
+            & " total_iva_discono_estatico = 'total_iva_discono_estatico', tasa_ajuste_mensual = 'tasa_ajuste_mensual'  Where id = 'id'"
 
-        q = Replace$(q, "'id'", conectar.Escape(f.id))
-        q = Replace$(q, "'FechaAprobacion'", conectar.Escape(f.FechaAprobacion))
+        q = Replace$(q, "'id'", conectar.Escape(F.id))
+        q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion))
     Else
         esNueva = True
 
@@ -343,7 +349,7 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
             & " FormaPago, " _
             & " fecha_entrega, " _
             & " propuesta, id_tipo_discriminado," _
-            & " cancelada,id_moneda_ajuste,tipo_cambio_ajuste, CBU, fecha_pago, " _
+            & " cancelada, id_moneda_ajuste, tipo_cambio_ajuste, CBU, fecha_pago, fecha_vto_desde, fecha_vto_hasta," _
     & " nc_motivo, tasa_ajuste_mensual) Values "
         q = q & "('NroFactura', " _
             & " 'idCliente', " _
@@ -367,20 +373,20 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'FormaPago', " _
             & " 'fecha_entrega', " _
             & " 'propuesta', 'id_tipo_discriminado'," _
-            & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste', 'CBU', 'fecha_pago'," _
+            & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste', 'CBU', 'fecha_pago', 'fecha_vto_desde','fecha_vto_hasta', " _
             & " 'nc_motivo','tasa_ajuste_mensual' " _
             & ")"
 
-        Set f.usuarioCreador = funciones.GetUserObj()
+        Set F.usuarioCreador = funciones.GetUserObj()
         q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
     End If
 
-    q = Replace$(q, "'NroFactura'", conectar.Escape(f.numero))
-    q = Replace$(q, "'idCliente'", conectar.GetEntityId(f.cliente))
-    q = Replace$(q, "'fecha_entrega'", conectar.Escape(f.FechaEntrega))
+    q = Replace$(q, "'NroFactura'", conectar.Escape(F.numero))
+    q = Replace$(q, "'idCliente'", conectar.GetEntityId(F.cliente))
+    q = Replace$(q, "'fecha_entrega'", conectar.Escape(F.FechaEntrega))
 
-    q = Replace$(q, "'cae'", conectar.Escape(f.CAE))
-    q = Replace$(q, "'cae_vto'", conectar.Escape(f.CAEVto))
+    q = Replace$(q, "'cae'", conectar.Escape(F.CAE))
+    q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
     
 
 
@@ -397,54 +403,58 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
     '    q = Replace$(q, "'tipoFactura'", TipoFactura)
     '    ''''''''''''''''''''''''''''''''''''''
 
-    q = Replace$(q, "'id_tipo_discriminado'", f.Tipo.id)
-    q = Replace$(q, "'tipoFactura_borrar'", f.Tipo.TipoFactura.id)
-    q = Replace$(q, "'idMoneda'", conectar.GetEntityId(f.moneda))
-    q = Replace$(q, "'FechaEmision'", conectar.Escape(f.FechaEmision))
-    q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(f.usuarioCreador))
-    q = Replace$(q, "'OrdenCompra'", conectar.Escape(f.OrdenCompra))
-    q = Replace$(q, "'origenFacturado'", conectar.Escape(f.origenFacturado))
-    q = Replace$(q, "'estado'", conectar.Escape(f.estado))
-    q = Replace$(q, "'alicuotaAplicada'", conectar.Escape(f.AlicuotaAplicada))
-    q = Replace$(q, "'discriminada'", conectar.Escape(f.EstaDiscriminada))
-    q = Replace$(q, "'impresa'", conectar.Escape(f.EstaImpresa))
-    q = Replace$(q, "'tipo_borrar'", conectar.Escape(f.TipoDocumento))
-    q = Replace$(q, "'saldada'", conectar.Escape(f.Saldado))
-    q = Replace$(q, "'observaciones'", conectar.Escape(f.observaciones))
+    q = Replace$(q, "'id_tipo_discriminado'", F.Tipo.id)
+    q = Replace$(q, "'tipoFactura_borrar'", F.Tipo.TipoFactura.id)
+    q = Replace$(q, "'idMoneda'", conectar.GetEntityId(F.moneda))
+    q = Replace$(q, "'FechaEmision'", conectar.Escape(F.FechaEmision))
+    q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.usuarioCreador))
+    q = Replace$(q, "'OrdenCompra'", conectar.Escape(F.OrdenCompra))
+    q = Replace$(q, "'origenFacturado'", conectar.Escape(F.origenFacturado))
+    q = Replace$(q, "'estado'", conectar.Escape(F.estado))
+    q = Replace$(q, "'alicuotaAplicada'", conectar.Escape(F.AlicuotaAplicada))
+    q = Replace$(q, "'discriminada'", conectar.Escape(F.EstaDiscriminada))
+    q = Replace$(q, "'impresa'", conectar.Escape(F.EstaImpresa))
+    q = Replace$(q, "'tipo_borrar'", conectar.Escape(F.TipoDocumento))
+    q = Replace$(q, "'saldada'", conectar.Escape(F.Saldado))
+    q = Replace$(q, "'observaciones'", conectar.Escape(F.observaciones))
     'q = Replace$(q, "'AliPercIB'", conectar.Escape(1 + (f.AlicuotaPercepcionesIIBB / 100)))
-    q = Replace$(q, "'AliPercIB'", conectar.Escape(f.AlicuotaPercepcionesIIBB))
-    q = Replace$(q, "'cambio_a_patron'", conectar.Escape(f.CambioAPatron))
-    q = Replace$(q, "'FormaPago'", conectar.Escape(f.CantDiasPago))
-    q = Replace$(q, "'propuesta'", conectar.Escape(f.FechaPropuestaPago))
-    q = Replace$(q, "'cancelada'", conectar.Escape(f.Cancelada))
-    q = Replace$(q, "'nc_motivo'", conectar.Escape(f.MotivoNC))
-    q = Replace$(q, "'idUsuarioAprobacion'", conectar.GetEntityId(f.UsuarioAprobacion))
+    q = Replace$(q, "'AliPercIB'", conectar.Escape(F.AlicuotaPercepcionesIIBB))
+    q = Replace$(q, "'cambio_a_patron'", conectar.Escape(F.CambioAPatron))
+    q = Replace$(q, "'FormaPago'", conectar.Escape(F.CantDiasPago))
+    q = Replace$(q, "'propuesta'", conectar.Escape(F.FechaPropuestaPago))
+    q = Replace$(q, "'cancelada'", conectar.Escape(F.Cancelada))
+    q = Replace$(q, "'nc_motivo'", conectar.Escape(F.MotivoNC))
+    q = Replace$(q, "'idUsuarioAprobacion'", conectar.GetEntityId(F.UsuarioAprobacion))
 
-    q = Replace$(q, "'id_moneda_ajuste'", conectar.Escape(f.IdMonedaAjuste))
-    q = Replace$(q, "'tipo_cambio_ajuste'", conectar.Escape(f.TipoCambioAjuste))
+    q = Replace$(q, "'id_moneda_ajuste'", conectar.Escape(F.IdMonedaAjuste))
+    q = Replace$(q, "'tipo_cambio_ajuste'", conectar.Escape(F.TipoCambioAjuste))
 
-    q = Replace$(q, "'total_estatico'", conectar.Escape(f.TotalEstatico.Total))
-    q = Replace$(q, "'total_iva_estatico'", conectar.Escape(f.TotalEstatico.TotalIVA))
-    q = Replace$(q, "'total_perIB_estatico'", conectar.Escape(f.TotalEstatico.TotalPercepcionesIB))
-    q = Replace$(q, "'total_neto_estatico'", conectar.Escape(f.TotalEstatico.TotalNetoGravado))
-    q = Replace$(q, "'total_exento_estatico'", conectar.Escape(f.TotalEstatico.TotalExento))
-    q = Replace$(q, "'total_iva_discono_estatico'", conectar.Escape(f.TotalEstatico.TotalIVADiscrimandoONo))
+    q = Replace$(q, "'total_estatico'", conectar.Escape(F.TotalEstatico.Total))
+    q = Replace$(q, "'total_iva_estatico'", conectar.Escape(F.TotalEstatico.TotalIVA))
+    q = Replace$(q, "'total_perIB_estatico'", conectar.Escape(F.TotalEstatico.TotalPercepcionesIB))
+    q = Replace$(q, "'total_neto_estatico'", conectar.Escape(F.TotalEstatico.TotalNetoGravado))
+    q = Replace$(q, "'total_exento_estatico'", conectar.Escape(F.TotalEstatico.TotalExento))
+    q = Replace$(q, "'total_iva_discono_estatico'", conectar.Escape(F.TotalEstatico.TotalIVADiscrimandoONo))
     'q = Replace$(q, "'id_ot_anticipo'", conectar.Escape(F.IdOTAnticipo))
-    q = Replace$(q, "'tasa_ajuste_mensual'", conectar.Escape(f.TasaAjusteMensual))
-   q = Replace$(q, "'CBU'", conectar.Escape(f.CBU))
-    q = Replace$(q, "'fecha_pago'", conectar.Escape(f.FechaPago))
+    q = Replace$(q, "'tasa_ajuste_mensual'", conectar.Escape(F.TasaAjusteMensual))
+    q = Replace$(q, "'CBU'", conectar.Escape(F.CBU))
+    q = Replace$(q, "'fecha_pago'", conectar.Escape(F.fechaPago))
+    
+    'fce_nemer_28052020
+    q = Replace$(q, "'fecha_vto_desde'", conectar.Escape(F.FechaVtoDesde))
+    q = Replace$(q, "'fecha_vto_hasta'", conectar.Escape(F.FechaVtoHasta))
 
     If conectar.execute(q) Then
-        If esNueva Then f.id = conectar.UltimoId2
-        If f.id = 0 Then GoTo err1
+        If esNueva Then F.id = conectar.UltimoId2
+        If F.id = 0 Then GoTo err1
 
         'me fijo que el nro y el tipo no se repita
         'solo en las q no son electronicas
 
 
 
-        If DAOFactura.FindAll("AdminFacturas.id_tipo_discriminado=" & f.Tipo.id & "  and  AdminFacturas.NroFactura = " & f.numero & " And AdminFacturas.Id <> " & f.id).count > 0 Then
-            If Not f.Tipo.PuntoVenta.EsElectronico Then GoTo err1
+        If DAOFactura.FindAll("AdminFacturas.id_tipo_discriminado=" & F.Tipo.id & "  and  AdminFacturas.NroFactura = " & F.numero & " And AdminFacturas.Id <> " & F.id).count > 0 Then
+            If Not F.Tipo.PuntoVenta.EsElectronico Then GoTo err1
 
             'el nro de factura y tipo se repite
             'valida tambien q no se repita el tipo de comprobante nc-nd-fc   29/7/13
@@ -453,10 +463,10 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
             Dim A As New classAdministracion
 
            ' If Not F.Tipo.PuntoVenta.EsElectronico Then
-                If f.numero >= DAOFactura.proximaFactura(f.Tipo.id) Then  'F.TipoDocumento, F.Tipo.TipoFactura.id) Then
+                If F.numero >= DAOFactura.proximaFactura(F.Tipo.id) Then  'F.TipoDocumento, F.Tipo.TipoFactura.id) Then
 
 
-                    If Not conectar.execute("UPDATE   AdminConfigFacturasTiposDiscriminado SET   numeracion = " & f.numero & " Where id_tipo_factura = " & f.Tipo.TipoFactura.id & "   AND tipo_documento = " & f.TipoDocumento & " and id_punto_venta = " & f.Tipo.PuntoVenta.id) Then
+                    If Not conectar.execute("UPDATE   AdminConfigFacturasTiposDiscriminado SET   numeracion = " & F.numero & " Where id_tipo_factura = " & F.Tipo.TipoFactura.id & "   AND tipo_documento = " & F.TipoDocumento & " and id_punto_venta = " & F.Tipo.PuntoVenta.id) Then
                         GoTo err1
                     End If
                 End If
@@ -473,17 +483,17 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
     Dim Ot As OrdenTrabajo
 
 
-    If f.id <> 0 Then
-        q = "UPDATE pedidos SET id_anticipo_factura = 0 WHERE id_anticipo_factura = " & f.id
-        If f.OTsFacturadasAnticipo.count > 0 Then
-            q = q & " AND id NOT IN (" & funciones.JoinCollectionValues(f.OTsFacturadasAnticipo, ", ", "Id") & ")"
+    If F.id <> 0 Then
+        q = "UPDATE pedidos SET id_anticipo_factura = 0 WHERE id_anticipo_factura = " & F.id
+        If F.OTsFacturadasAnticipo.count > 0 Then
+            q = q & " AND id NOT IN (" & funciones.JoinCollectionValues(F.OTsFacturadasAnticipo, ", ", "Id") & ")"
         End If
 
         If Not conectar.execute(q) Then GoTo err1
     End If
 
-    For Each Ot In f.OTsFacturadasAnticipo
-        If Not conectar.execute("UPDATE pedidos SET id_anticipo_factura = " & f.id & " WHERE id = " & Ot.id) Then GoTo err1
+    For Each Ot In F.OTsFacturadasAnticipo
+        If Not conectar.execute("UPDATE pedidos SET id_anticipo_factura = " & F.id & " WHERE id = " & Ot.id) Then GoTo err1
     Next Ot
 
 
@@ -495,11 +505,11 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
         '    GoTo err1
         'End If
 
-        DAOFacturaDetalles.Delete "idFactura=" & f.id
+        DAOFacturaDetalles.Delete "idFactura=" & F.id
 
-        For Each det In f.Detalles
+        For Each det In F.Detalles
             det.id = 0    'asi hace insert
-            det.idFactura = f.id
+            det.idFactura = F.id
             If Not DAOFacturaDetalles.Guardar(det) Then
                 Err.Raise 8773, "Guardando el historial", "Se produjo un error al guardar el historial"
             End If
@@ -511,9 +521,9 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
     Dim hist As Boolean
     hist = True
     If esNueva Then
-        hist = DAOFacturaHistorial.agregar(f, "Factura Creada")
+        hist = DAOFacturaHistorial.agregar(F, "Factura Creada")
     Else
-        hist = DAOFacturaHistorial.agregar(f, "Factura Modificada")
+        hist = DAOFacturaHistorial.agregar(F, "Factura Modificada")
     End If
     If Not hist Then Err.Raise 8773, "Guardando el historial", "Se produjo un error al guardar el historial"
 
@@ -522,7 +532,7 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
 
 
     Dim EVENTO As New clsEventoObserver
-    Set EVENTO.Elemento = f
+    Set EVENTO.Elemento = F
 
     If esNueva Then
         EVENTO.EVENTO = agregar_
@@ -541,7 +551,7 @@ Public Function Guardar(f As Factura, Optional Cascade As Boolean = False) As Bo
     Guardar = True
     Exit Function
 err1:
-    If esNueva Then f.id = 0
+    If esNueva Then F.id = 0
     Guardar = False
     Err.Raise Err.Number, Err.Source, Err.Description
     'conectar.RollBackTransaction
@@ -1732,47 +1742,47 @@ er12:
     conectar.RollBackTransaction
 End Function
 
-Public Function CrearCopiaFiel(f As Factura, Tipo As tipoDocumentoContable) As Factura
+Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As Factura
     Dim nuevaF As New Factura
-    nuevaF.Cancelada = f.Cancelada
-    nuevaF.origenFacturado = f.origenFacturado
+    nuevaF.Cancelada = F.Cancelada
+    nuevaF.origenFacturado = F.origenFacturado
 
-    Set nuevaF.cliente = f.cliente
-    Set nuevaF.moneda = f.moneda
-    nuevaF.CambioAPatron = f.CambioAPatron
-    Set nuevaF.Tipo = DAOTipoFacturaDiscriminado.FindByTipoDocumentoAndPuntoVentaAndTipoFactura(f.Tipo.TipoFactura.id, Tipo, f.Tipo.PuntoVenta.id, f.TipoIVA.idIVA)
+    Set nuevaF.cliente = F.cliente
+    Set nuevaF.moneda = F.moneda
+    nuevaF.CambioAPatron = F.CambioAPatron
+    Set nuevaF.Tipo = DAOTipoFacturaDiscriminado.FindByTipoDocumentoAndPuntoVentaAndTipoFactura(F.Tipo.TipoFactura.id, Tipo, F.Tipo.PuntoVenta.id, F.TipoIVA.idIVA)
 
 
-    If f.Tipo.PuntoVenta.EsElectronico Then
+    If F.Tipo.PuntoVenta.EsElectronico Then
         nuevaF.numero = 0
     Else
         nuevaF.numero = CStr(DAOFactura.proximaFactura(nuevaF.Tipo.id))  'Tipo, nuevaF.Tipo.TipoFactura.id))
     End If
-    Set nuevaF.TipoIVA = f.TipoIVA
+    Set nuevaF.TipoIVA = F.TipoIVA
     nuevaF.FechaEmision = Date
-    nuevaF.observaciones = f.observaciones
-    nuevaF.EstaDiscriminada = f.EstaDiscriminada
-    nuevaF.OrdenCompra = f.OrdenCompra
+    nuevaF.observaciones = F.observaciones
+    nuevaF.EstaDiscriminada = F.EstaDiscriminada
+    nuevaF.OrdenCompra = F.OrdenCompra
 
-    nuevaF.TipoCambioAjuste = f.TipoCambioAjuste
+    nuevaF.TipoCambioAjuste = F.TipoCambioAjuste
 
     nuevaF.Saldado = NoSaldada
-    nuevaF.AlicuotaAplicada = f.AlicuotaAplicada
-    nuevaF.AlicuotaPercepcionesIIBB = f.AlicuotaPercepcionesIIBB
+    nuevaF.AlicuotaAplicada = F.AlicuotaAplicada
+    nuevaF.AlicuotaPercepcionesIIBB = F.AlicuotaPercepcionesIIBB
     nuevaF.estado = EstadoFacturaCliente.EnProceso
     Set nuevaF.usuarioCreador = funciones.GetUserObj
-    nuevaF.CantDiasPago = f.CantDiasPago
+    nuevaF.CantDiasPago = F.CantDiasPago
     Set nuevaF.UsuarioAprobacion = Nothing
-    Set nuevaF.TotalEstatico = f.TotalEstatico
-    nuevaF.TotalEstatico.TotalPercepcionesIB = f.TotalEstatico.TotalPercepcionesIB
+    Set nuevaF.TotalEstatico = F.TotalEstatico
+    nuevaF.TotalEstatico.TotalPercepcionesIB = F.TotalEstatico.TotalPercepcionesIB
 
 
     Dim deta As FacturaDetalle
     Dim detaNew As FacturaDetalle
 
-    f.Detalles = DAOFacturaDetalles.FindByFactura(f.id)
+    F.Detalles = DAOFacturaDetalles.FindByFactura(F.id)
     nuevaF.Detalles = New Collection
-    For Each deta In f.Detalles
+    For Each deta In F.Detalles
         Set detaNew = New FacturaDetalle
         Set detaNew.detalleRemito = Nothing
         detaNew.Bruto = deta.Bruto
@@ -1787,7 +1797,7 @@ Public Function CrearCopiaFiel(f As Factura, Tipo As tipoDocumentoContable) As F
         nuevaF.Detalles.Add detaNew
 
     Next deta
-    nuevaF.TotalEstatico.TotalPercepcionesIB = f.TotalEstatico.TotalPercepcionesIB
+    nuevaF.TotalEstatico.TotalPercepcionesIB = F.TotalEstatico.TotalPercepcionesIB
     If DAOFactura.Save(nuevaF, True) Then
         Set CrearCopiaFiel = nuevaF
     Else
@@ -1797,7 +1807,7 @@ Public Function CrearCopiaFiel(f As Factura, Tipo As tipoDocumentoContable) As F
 End Function
 
 Public Function CrearFacturaDesdeRemito(rto As Remito) As Boolean
-    Dim f As New Factura
+    Dim F As New Factura
 
 
 
@@ -1823,12 +1833,12 @@ End Function
 Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
     On Error GoTo err1
     'Printer.PaperSize = 9
-    Dim f As Factura
-    Set f = DAOFactura.FindById(idFactura, True, False)
+    Dim F As Factura
+    Set F = DAOFactura.FindById(idFactura, True, False)
     Dim seccion As Section
     Dim c As Object
 rptFacturaElectronica.LeftMargin = 250
-    If IsSomething(f) Then
+    If IsSomething(F) Then
     
     Dim Largo As Double
     
@@ -1837,78 +1847,95 @@ rptFacturaElectronica.LeftMargin = 250
         
         
         Set c = seccion.Controls.item("lblTipoDocumento")
-        c.caption = f.Tipo.TipoFactura.Tipo
+        c.caption = F.Tipo.TipoFactura.Tipo
         
        Set c = seccion.Controls.item("lblFce")
-            c.Visible = f.Tipo.PuntoVenta.EsCredito
-             c.caption = f.DescripcionCreditoAdicional
+            c.Visible = F.Tipo.PuntoVenta.EsCredito
+             c.caption = F.DescripcionCreditoAdicional
               
-            Set c = seccion.Controls.item("lblFechaPagoFce")
-            c.Visible = f.Tipo.PuntoVenta.EsCredito
-             c.caption = "Fecha Vto: " & Format(f.FechaPago, "dd/mm/yyyy")
 
-   Set c = seccion.Controls.item("lblCbuEmisorFce")
-            c.Visible = f.Tipo.PuntoVenta.EsCredito
-             c.caption = "CBU del emisor: " & f.CBU
+
 
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
-        c.caption = "Código Nº" & Format(f.GetCodigoDocumentoAfip, "00")
+        c.caption = "Código Nº" & Format(F.GetCodigoDocumentoAfip, "00")
 
    Set c = seccion.Controls.item("LBLDescripcionCodigoDocumento")
-   c.caption = f.GetDescripciopnDocumentoAfip
+   c.caption = F.GetDescripciopnDocumentoAfip
 
    Set c = seccion.Controls.item("lblFecha")
-   c.caption = Format(f.FechaEmision, "dd/mm/yyyy")
+   c.caption = "Fecha de Emisión: " & Format(F.FechaEmision, "dd/mm/yyyy")
    
-
-Set c = seccion.Controls.item("lblNumeroDocumento")
-   c.caption = "Nº " & Format(f.Tipo.PuntoVenta.PuntoVenta, "0000") & " - " & Format(f.numero, "00000000")
+        'fce_nemer_2905/2020
+        Set c = seccion.Controls.item("lblNumeroDocumento")
+        c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000")
    
+        Set c = seccion.Controls.item("lblNumeroDocumentoComp")
+        c.caption = "Compr. Nro: " & Format(F.numero, "00000000")
 
         Set seccion = rptFacturaElectronica.Sections("detailsHead")
         
+        Set c = seccion.Controls.item("lblFechaPagoFce")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "Fecha de Vto. para el pago: " & Format(F.fechaPago, "dd/mm/yyyy")
+        
+        Set c = seccion.Controls.item("lblFechaPagoFceDesde")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "Período Facturado Desde: " & Format(F.FechaVtoDesde, "dd/mm/yyyy")
+        
+        Set c = seccion.Controls.item("lblFechaPagoFceHasta")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "Hasta: " & Format(F.FechaVtoHasta, "dd/mm/yyyy")
+        
+        
+        Set c = seccion.Controls.item("lblCbuEmisorFce")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "CBU del Emisor: " & F.CBU
+        
      
-        seccion.Controls.item("lblCliente").caption = Format(f.cliente.id, "0000") & " - " & f.cliente.razon
-        seccion.Controls.item("lblCuit").caption = f.cliente.Cuit
-        seccion.Controls.item("lblIva").caption = f.cliente.TipoIVA.detalle
-        seccion.Controls.item("lblCondicionPAgo").caption = f.getDescripcionCondicion
-        seccion.Controls.item("lblDireccion").caption = f.cliente.Domicilio & ", " & f.cliente.localidad.nombre & ", " & f.cliente.provincia.nombre
-        seccion.Controls.item("lblReferencia").caption = f.OrdenCompra
+        seccion.Controls.item("lblCliente").caption = Format(F.cliente.id, "0000") & " - " & F.cliente.razon
+        seccion.Controls.item("lblCuit").caption = F.cliente.Cuit
+        seccion.Controls.item("lblIva").caption = F.cliente.TipoIVA.detalle
+        
+        'fce_nemer_29052020
+        seccion.Controls.item("lblCondicionPagoFCE").caption = F.observaciones
+        
+        seccion.Controls.item("lblDireccion").caption = F.cliente.Domicilio & ", " & F.cliente.localidad.nombre & ", " & F.cliente.provincia.nombre
+        seccion.Controls.item("lblReferencia").caption = F.OrdenCompra
 
 
         Set seccion = rptFacturaElectronica.Sections("footer")
 
         Set c = seccion.Controls.item("lblBarcode")
-        c.caption = f.CodigoBarrasAfip
+        c.caption = F.CodigoBarrasAfip
         Set c = seccion.Controls.item("lblBarcodeCode")
-        c.caption = f.CodigoBarrasAfip
+        c.caption = F.CodigoBarrasAfip
 
         Set c = seccion.Controls.item("lblCae")
-        c.caption = "CAE: " & f.CAE
+        c.caption = "CAE: " & F.CAE
         Set c = seccion.Controls.item("lblCaeVencimiento")
         
-        c.caption = "VTO CAE: " & f.CAEVto
+        c.caption = "VTO CAE: " & F.CAEVto
       
 Dim tip As String
 tip = vbNullString
-If f.TasaAjusteMensual > 0 Then
+If F.TasaAjusteMensual > 0 Then
         
-        tip = "Esta factura devengará un interés mensual de " & f.TasaAjusteMensual & "%"
+        tip = "Esta factura devengará un interés mensual de " & F.TasaAjusteMensual & "%"
 
 End If
 seccion.Controls.item("lblIntereses").caption = tip
 
 
- If f.TipoCambioAjuste > 0 Then
+ If F.TipoCambioAjuste > 0 Then
     Dim mon As clsMoneda
     'FIX #001
     'cambio de tipo de cambio comprador a vendedor
     
-    If f.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
+    If F.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
        'si esta factura en moneda patron
-    Set mon = DAOMoneda.GetById(f.IdMonedaAjuste)
-       tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(f.Total / f.TipoCambioAjuste) & " al tipo de cambio " & mon.NombreCorto & " " & f.TipoCambioAjuste & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
+    Set mon = DAOMoneda.GetById(F.IdMonedaAjuste)
+       tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total / F.TipoCambioAjuste) & " al tipo de cambio " & mon.NombreCorto & " " & F.TipoCambioAjuste & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
     Else
         'si esta facturada en otra moneda
     Set mon = DAOMoneda.FindFirstByPatronOrDefault '  DAOMoneda.GetById(F.IdMonedaAjuste)
@@ -1917,13 +1944,13 @@ seccion.Controls.item("lblIntereses").caption = tip
     
     Dim idPatron As Long
     idPatron = DAOMoneda.FindFirstByPatronOrDefault.id
-    If f.IdMonedaAjuste <> idPatron And f.moneda.id = idPatron Then
+    If F.IdMonedaAjuste <> idPatron And F.moneda.id = idPatron Then
     'factura en pesos, pero  convertida de dolares
-        tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(f.Total * f.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & f.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
+        tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
    Else
    'fix 000
    'factura en dolares
-   tip = "***  El total de la presente factura, equvale a " & f.moneda.NombreCorto & " " & funciones.RedondearDecimales(f.Total) & " al tipo de cambio " & mon.NombreCorto & " " & f.CambioAPatron & " ***"
+   tip = "***  El total de la presente factura, equvale a " & F.moneda.NombreCorto & " " & funciones.RedondearDecimales(F.Total) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & " ***"
    End If
     
     End If
@@ -1935,7 +1962,7 @@ seccion.Controls.item("lblIntereses").caption = tip
 '   End If
     
 End If
-seccion.Controls.item("lblCambio").Visible = f.moneda.id <> idPatron 'F.TipoCambioAjuste > 0 'fix #003 es este comentario And F.IdMonedaAjuste <> DAOMoneda.FindFirstByPatronOrDefault.id
+seccion.Controls.item("lblCambio").Visible = F.moneda.id <> idPatron 'F.TipoCambioAjuste > 0 'fix #003 es este comentario And F.IdMonedaAjuste <> DAOMoneda.FindFirstByPatronOrDefault.id
 
 
 
@@ -1943,11 +1970,11 @@ Dim n As New classNumericas
 '
 
 
-seccion.Controls.item("lblTotalLetras").caption = "Son " & f.moneda.NombreLargo & " " & f.moneda.NombreCorto & " " & LCase(n.ValorEnLetras(f.Total))
-seccion.Controls.item("lblSubTotal").caption = funciones.FormatearDecimales(f.TotalSubTotal)
-seccion.Controls.item("lblTotalIva").caption = funciones.FormatearDecimales(f.TotalIVA)
-seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(f.totalPercepciones)
-seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(f.Total)
+seccion.Controls.item("lblTotalLetras").caption = "Son " & F.moneda.NombreLargo & " " & F.moneda.NombreCorto & " " & LCase(n.ValorEnLetras(F.Total))
+seccion.Controls.item("lblSubTotal").caption = funciones.FormatearDecimales(F.TotalSubTotal)
+seccion.Controls.item("lblTotalIva").caption = funciones.FormatearDecimales(F.TotalIVA)
+seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(F.totalPercepciones)
+seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.Total)
 
 
 
@@ -1967,7 +1994,7 @@ seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(f.Total
 
     Dim deta As FacturaDetalle
         r_tmp.Open
-        For Each deta In f.Detalles
+        For Each deta In F.Detalles
             r_tmp.AddNew
             r_tmp!Cantidad = deta.Cantidad
             r_tmp!Remito = vbNullString
@@ -1993,7 +2020,7 @@ seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(f.Total
 
         Next deta
 
-        rptFacturaElectronica.Title = f.GetShortDescription(True, False) & f.Tipo.TipoFactura.Tipo & "-" & Format(f.Tipo.PuntoVenta.PuntoVenta, "000") & "-" & Format(f.numero, "00000000") & " - " & f.cliente.razonFixed
+        rptFacturaElectronica.Title = F.GetShortDescription(True, False) & F.Tipo.TipoFactura.Tipo & "-" & Format(F.Tipo.PuntoVenta.PuntoVenta, "000") & "-" & Format(F.numero, "00000000") & " - " & F.cliente.razonFixed
         rptFacturaElectronica.caption = rptFacturaElectronica.Title
         
         Set rptFacturaElectronica.DataSource = r_tmp

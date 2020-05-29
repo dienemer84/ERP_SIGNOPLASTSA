@@ -272,7 +272,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   16449537
+            Format          =   58851329
             CurrentDate     =   43967
          End
          Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -284,7 +284,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   16449537
+            Format          =   58851329
             CurrentDate     =   43967
          End
          Begin VB.ComboBox cboCuentasCBU 
@@ -307,7 +307,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   16449537
+            Format          =   58851329
             CurrentDate     =   43967
          End
          Begin VB.Line Line5 
@@ -1145,7 +1145,9 @@ Public Property Let idFactura(value As Long)
 End Property
 
 Private Sub btnGuardar_Click()
+
 On Error GoTo err1
+
     If Me.gridDetalles.EditMode = jgexEditModeOn Then
         MsgBox "Todavia esta editando algun detalle de la factura.", vbExclamation
         Exit Sub
@@ -1163,10 +1165,10 @@ On Error GoTo err1
         MsgBox "La factura debe poseer Nº, referencia y dias de venc de forma de pago.", vbExclamation + vbOKOnly
     Else
 
-        If EsAnticipo And Factura.OTsFacturadasAnticipo.count = 0 Then
+    If EsAnticipo And Factura.OTsFacturadasAnticipo.count = 0 Then
             MsgBox "Se produjo un error en la asociación del anticipo.", vbExclamation + vbOKOnly
-            Exit Sub
-        End If
+    Exit Sub
+    End If
 
 
 
@@ -1567,38 +1569,31 @@ Private Sub cmdNueva_Click()
     frm2.Show
 End Sub
 
-
-
 Private Sub dtFechaPagoCredito_Change()
    If Not dataLoading Then
-        Factura.FechaPago = Me.dtFechaPagoCredito.value
+        Factura.fechaPago = Me.dtFechaPagoCredito.value
     End If
 End Sub
 
-
-
-
-
-'Aca da error 16/05/20
-
-'Private Sub dtFechaPagoCredito_Change()
-'   If Not dataLoading Then
-'        Factura.FechaPago = Me.dtFechaPagoCredito.value
-'    End If
-'End Sub
-
-'Private Sub dtFechaPagoCredito_Change()
-'   If Not dataLoading Then
-'        Factura.FechaPago = Me.dtFechaPagoCredito.value
-'    End If
-'End Sub
-
+'fce_nemer_28052020
+Private Sub dtFechaPagoCreditoDesde_Change()
+   If Not dataLoading Then
+        Factura.FechaVtoDesde = Me.dtFechaPagoCreditoDesde.value
+    End If
+End Sub
+'fce_nemer_28052020
+Private Sub dtFechaPagoCreditoHasta_Change()
+   If Not dataLoading Then
+        Factura.FechaVtoHasta = Me.dtFechaPagoCreditoHasta.value
+    End If
+End Sub
 
 Private Sub dtpFecha_Change()
     If Not dataLoading Then
         Factura.FechaEmision = Me.dtpFecha.value
     End If
 End Sub
+
 Private Sub Form_Load()
     Customize Me
     dataLoading = True
@@ -1615,6 +1610,12 @@ Private Sub Form_Load()
         Factura.Tipo.TipoDoc = NuevoTipoDocumento
         Me.caption = "Nueva " & StrConv(Factura.TipoDocumentoDescription, vbProperCase)
         Me.dtpFecha.value = Now
+        
+        Me.dtFechaPagoCredito.value = Now
+        
+        'fce_nemer_28052020
+        Me.dtFechaPagoCreditoDesde.value = Now
+        Me.dtFechaPagoCreditoHasta.value = Now
 
         If Me.cboMoneda.ListIndex <> -1 Then
             Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
@@ -1642,6 +1643,13 @@ Private Sub Form_Load()
 
     If Factura.id = 0 Then
         Factura.FechaEmision = Now
+        
+        Factura.fechaPago = Now
+        
+        'fce_nemer_28052020
+        Factura.FechaVtoDesde = Now
+        Factura.FechaVtoHasta = Now
+        
         Factura.estado = EstadoFacturaCliente.EnProceso
         LimpiarFactura
         LimpiarCliente
@@ -1709,6 +1717,7 @@ Private Sub LimpiarCliente()
 End Sub
 
 Private Sub CargarFactura()
+    
     If Not IsSomething(Factura) Then Exit Sub
     Me.cboTiposFactura.Enabled = Not (Factura.estado = EstadoFacturaCliente.Aprobada)
     Me.txtNumero.Locked = (Factura.estado = EstadoFacturaCliente.Aprobada) 'Or Factura.Tipo.PuntoVenta.EsElectronico
@@ -1734,6 +1743,8 @@ Private Sub CargarFactura()
     Else
         LimpiarCliente
     End If
+    
+    
     Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.id, Me.cboMoneda)
 
     Me.cboMonedaAjuste.ListIndex = funciones.PosIndexCbo(Factura.IdMonedaAjuste, Me.cboMonedaAjuste)
@@ -1743,6 +1754,7 @@ Private Sub CargarFactura()
         Dim classA As New classAdministracion
         Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura.Tipo.id)) 'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
     Else
+        
         Set tipos = DAOTipoFacturaDiscriminado.FindAllByFilter("id_iva=" & Factura.TipoIVA.idIVA & " and tipo_Documento=" & Factura.TipoDocumento)    'acft.id IN (select TipoFactura FROM AdminConfigFacturas where idIVA = " & Factura.TipoIVA.idIVA & ")")
 
         Me.cboTiposFactura.Clear
@@ -1759,6 +1771,7 @@ Private Sub CargarFactura()
 
         Me.txtNumero.text = Factura.numero
     End If
+    
     Me.dtpFecha.value = Factura.FechaEmision
     Me.txtPercepcion.text = Round((Factura.AlicuotaPercepcionesIIBB - 1) * 100, 2)
     Me.txtDiasVenc.text = Factura.CantDiasPago
@@ -1782,22 +1795,29 @@ Private Sub CargarFactura()
             Me.cboCuentasCBU.Visible = IsSomething(c)
             Me.lblVerCbu.Visible = Not IsSomething(c)
       
-            If IsSomething(c) Then
+       If IsSomething(c) Then
                  Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
-            Else
+       Else
                 Me.lblVerCbu = Factura.CBU
-            End If
+       End If
       
-      Else
+      
+       Else
         Me.lblVerCbu.Visible = False
              If IsSomething(c) Then
                  Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
             End If
         
       
-      End If
-          Me.dtFechaPagoCredito = Factura.FechaPago
-    Else
+       End If
+          Me.dtFechaPagoCredito = Factura.fechaPago
+          
+        'fce_nemer_28052020
+        
+          Me.dtFechaPagoCreditoDesde = Factura.FechaVtoDesde
+          Me.dtFechaPagoCreditoHasta = Factura.FechaVtoHasta
+          
+      Else
        Me.cboCuentasCBU.Visible = False
             Me.lblVerCbu.Visible = True
             Me.lblVerCbu = "NO INFORMADO"
