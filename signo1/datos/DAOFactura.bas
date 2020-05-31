@@ -1601,8 +1601,20 @@ If saldadoTotal Then
         If Not conectar.execute("update AdminFacturas set cancelada=" & idOrigen & " where id=" & idNCDestino) Then GoTo er12
         If Not conectar.execute("update AdminFacturas set cancelada=" & idNCDestino & " where id=" & idFactura) Then GoTo er12
 
-If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True)) & " where id=" & fc.id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True)) & " where id=" & nc.id) Then GoTo er12
+
+            Dim msg1 As String
+            msg1 = conectar.Escape(fc.observaciones & " - CANCELADA POR " & nc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
+            
+            
+            Dim msg2 As String
+            msg2 = conectar.Escape(nc.observaciones & " - CANCELA A " & fc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then msg2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+            
+
+
+        If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg2 & " where id=" & nc.id) Then GoTo er12
 
 
 
@@ -1719,10 +1731,19 @@ If saldadoTotal Then
                 End If
                 rs.MoveNext
             Wend
+            
+            Dim msg1 As String
+            msg1 = conectar.Escape(fc.observaciones & " - CANCELADA POR " & nc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
+            
+            
+            Dim msg2 As String
+            msg2 = conectar.Escape(nc.observaciones & " - CANCELA A " & fc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then msg2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+            
 
-
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True)) & " where id=" & fc.id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True)) & " where id=" & nc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg2 & " where id=" & nc.id) Then GoTo er12
 
         Next deta
 

@@ -243,7 +243,7 @@ Begin VB.Form frmFacturaEdicion
          List            =   "frmFacturaEdicion.frx":001C
          TabIndex        =   68
          Top             =   3550
-         Width           =   3255
+         Width           =   5415
       End
       Begin VB.Frame frmFC 
          Caption         =   "Factura de Crédito"
@@ -252,7 +252,6 @@ Begin VB.Form frmFacturaEdicion
          Left            =   120
          TabIndex        =   61
          Top             =   3960
-         Visible         =   0   'False
          Width           =   11260
          Begin VB.ComboBox cboConceptosAIncluir 
             Height          =   315
@@ -272,7 +271,8 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   62586881
+            Enabled         =   0   'False
+            Format          =   58392577
             CurrentDate     =   43967
          End
          Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -284,18 +284,19 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   62586881
+            Enabled         =   0   'False
+            Format          =   58392577
             CurrentDate     =   43967
          End
          Begin VB.ComboBox cboCuentasCBU 
+            Enabled         =   0   'False
             Height          =   315
             ItemData        =   "frmFacturaEdicion.frx":00BA
-            Left            =   4680
+            Left            =   4800
             List            =   "frmFacturaEdicion.frx":00BC
             Style           =   2  'Dropdown List
             TabIndex        =   66
             Top             =   840
-            Visible         =   0   'False
             Width           =   6210
          End
          Begin MSComCtl2.DTPicker dtFechaPagoCredito 
@@ -307,7 +308,8 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   62586881
+            Enabled         =   0   'False
+            Format          =   58392577
             CurrentDate     =   43967
          End
          Begin VB.Line Line5 
@@ -330,6 +332,7 @@ Begin VB.Form frmFacturaEdicion
          End
          Begin VB.Label lblConceptosAIncluir 
             Caption         =   "Conceptos a incluir:"
+            Enabled         =   0   'False
             Height          =   255
             Left            =   3960
             TabIndex        =   74
@@ -347,6 +350,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentY        =   450
             _StockProps     =   79
             Caption         =   "Hasta:"
+            Enabled         =   0   'False
          End
          Begin XtremeSuiteControls.Label lblFechaPagoCreditoDesde 
             Height          =   255
@@ -359,11 +363,13 @@ Begin VB.Form frmFacturaEdicion
             _ExtentY        =   450
             _StockProps     =   79
             Caption         =   "Periodo Facturado desde:"
+            Enabled         =   0   'False
          End
          Begin VB.Label LblCBU 
             Alignment       =   1  'Right Justify
             AutoSize        =   -1  'True
             Caption         =   "CBU:"
+            Enabled         =   0   'False
             Height          =   195
             Left            =   4245
             TabIndex        =   67
@@ -372,6 +378,7 @@ Begin VB.Form frmFacturaEdicion
          End
          Begin VB.Label lblVerCbu 
             Caption         =   "NO INFORMADO"
+            Enabled         =   0   'False
             Height          =   195
             Left            =   4920
             TabIndex        =   65
@@ -380,6 +387,7 @@ Begin VB.Form frmFacturaEdicion
          End
          Begin VB.Label lblFechaPagoCredito 
             Caption         =   "Fecha de Vto. para el Pago:"
+            Enabled         =   0   'False
             Height          =   255
             Left            =   240
             TabIndex        =   64
@@ -1242,6 +1250,10 @@ On Error GoTo err1
           Factura.CBU = c.CBU
         End If
         
+           
+        Factura.observaciones = Me.txtCondObs.text
+   
+        
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
         Else
@@ -1533,7 +1545,19 @@ Private Sub cboTiposFactura_Click()
     Me.lblEsCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
     
     Me.frmFC.Enabled = Factura.Tipo.PuntoVenta.EsCredito
-    Me.frmFC.Visible = Factura.Tipo.PuntoVenta.EsCredito
+    'Me.frmFC.Visible = Factura.Tipo.PuntoVenta.EsCredito
+    Me.dtFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.dtFechaPagoCreditoDesde.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.dtFechaPagoCreditoHasta.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.cboCuentasCBU.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.cboConceptosAIncluir.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.lblFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.LblCBU.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.lblFechaPagoCreditoDesde.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.lblFechaPagoCreditoHasta.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    Me.lblConceptosAIncluir.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+ 
+  
     
     Me.lblEsCredito.caption = Factura.DescripcionCreditoAdicional
     
@@ -2184,13 +2208,6 @@ Private Sub PushButton1_Click()
 End Sub
 
 
-
-Private Sub txtCondObs_Change()
-    If Not dataLoading Then
-        Factura.observaciones = Me.txtCondObs.text
-    End If
-
-End Sub
 
 Private Sub txtDiasVenc_Change()
     If Not dataLoading Then
