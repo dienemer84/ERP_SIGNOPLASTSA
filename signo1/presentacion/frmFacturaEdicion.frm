@@ -272,7 +272,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   58851329
+            Format          =   62586881
             CurrentDate     =   43967
          End
          Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -284,7 +284,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   58851329
+            Format          =   62586881
             CurrentDate     =   43967
          End
          Begin VB.ComboBox cboCuentasCBU 
@@ -307,7 +307,7 @@ Begin VB.Form frmFacturaEdicion
             _ExtentX        =   2355
             _ExtentY        =   556
             _Version        =   393216
-            Format          =   58851329
+            Format          =   62586881
             CurrentDate     =   43967
          End
          Begin VB.Line Line5 
@@ -1603,10 +1603,12 @@ Private Sub Form_Load()
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedaAjuste, True
     DAOCuentaBancaria.llenarComboCBU Me.cboCuentasCBU
     'Me.cboCuentasCBU.Visible = False
+    
     If Not IsSomething(Factura) Then
         Set Factura = New Factura
         Factura.Detalles = New Collection
         Set Factura.Tipo = New clsTipoFacturaDiscriminado
+        
         Factura.Tipo.TipoDoc = NuevoTipoDocumento
         Me.caption = "Nueva " & StrConv(Factura.TipoDocumentoDescription, vbProperCase)
         Me.dtpFecha.value = Now

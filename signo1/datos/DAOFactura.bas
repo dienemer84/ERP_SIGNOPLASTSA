@@ -2027,7 +2027,12 @@ seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.Total
         
         rptFacturaElectronica.PrintReport True
         
-        
+        conectar.BeginTransaction
+
+        conectar.execute "update AdminFacturas set impresa=impresa+1 where id=" & idFactura
+        conectar.execute "insert into AdminFacturasHistorial (idFactura,Nota,Fecha,idusuario) values (" & idFactura & ",'Factura impresa','" & funciones.datetimeFormateada(Now) & "'," & getUser & " )"
+        conectar.CommitTransaction
+
 
     Else
         MsgBox "Factura no disponible!", vbCritical, "Error"

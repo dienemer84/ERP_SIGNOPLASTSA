@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica 
    Caption         =   "COMPROBANTE ELECTRONICO"
    ClientHeight    =   14265
-   ClientLeft      =   60
-   ClientTop       =   450
-   ClientWidth     =   28680
+   ClientLeft      =   165
+   ClientTop       =   555
+   ClientWidth     =   23880
    StartUpPosition =   3  'Windows Default
    _ExtentX        =   50588
    _ExtentY        =   25162
@@ -1473,3 +1473,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
+Private Sub DataReport_Terminate()
+
+End Sub
