@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica 
    Caption         =   "COMPROBANTE ELECTRONICO"
-   ClientHeight    =   14265
+   ClientHeight    =   11565
    ClientLeft      =   165
    ClientTop       =   555
    ClientWidth     =   23880
@@ -753,7 +753,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item23 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCbuEmisorFce"
-         Object.Left            =   3225
+         Object.Left            =   2910
          Object.Top             =   375
          Object.Width           =   5325
          Object.Height          =   240
@@ -1473,6 +1473,3 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-Private Sub DataReport_Terminate()
-
-End Sub

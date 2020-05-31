@@ -31,7 +31,8 @@ Public CAEFechaProceso
 Public Tipo As clsTipoFacturaDiscriminado
 Public TipoIVA As clsTipoIVA
 Public CaeSolicitarResponse As CAESolicitar
-
+'agregado 31052020
+Public ConceptoIncluir As ConceptoIncluir
 'agregado 25-6-12
 Public IdMonedaAjuste As Long
 Public TipoCambioAjuste As Double
@@ -149,15 +150,15 @@ End Function
 
 Public Function getDescripcionCondicion() As String
     
-    Dim a As String
+    Dim A As String
     If Me.CantDiasPago = 1 Then
-        a = Me.CantDiasPago & " dia FF"
+        A = Me.CantDiasPago & " dia FF"
     Else
-        a = Me.CantDiasPago & " dias FF"
+        A = Me.CantDiasPago & " dias FF"
     End If
 
 
-getDescripcionCondicion = a & Me.observaciones
+getDescripcionCondicion = A & Me.observaciones
 
 End Function
 
