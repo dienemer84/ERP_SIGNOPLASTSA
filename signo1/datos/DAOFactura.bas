@@ -180,6 +180,11 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
         F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
         
+        'fce_nemer_02062020_#113
+        F.FechaServDesde = GetValue(rs, indice, tabla, "fecha_serv_desde")
+        F.FechaServHasta = GetValue(rs, indice, tabla, "fecha_serv_hasta")
+        
+        
         F.CAE = GetValue(rs, indice, tabla, "cae")
         F.CAEVto = GetValue(rs, indice, tabla, "cae_vto")
         
@@ -316,10 +321,10 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " observaciones = 'observaciones' ," _
             & " AliPercIB = 'AliPercIB' , " _
             & " cambio_a_patron = 'cambio_a_patron' ," _
-            & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega', " _
-            & " propuesta = 'propuesta' ," _
+            & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega' , " _
+            & " propuesta = 'propuesta', fecha_serv_desde = 'fecha_serv_desde', fecha_serv_hasta = 'fecha_serv_hasta' , " _
             & " cancelada = 'cancelada' , CBU = 'CBU' , fecha_pago = 'fecha_pago' , fecha_vto_desde = 'fecha_vto_desde' , fecha_vto_hasta = 'fecha_vto_hasta' , " _
-            & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste'," _
+            & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste' ," _
             & " total_estatico = 'total_estatico' ,  total_iva_estatico = 'total_iva_estatico' , total_perIB_estatico = 'total_perIB_estatico' ," _
             & " total_neto_estatico = 'total_neto_estatico' , total_exento_estatico = 'total_exento_estatico' ," _
             & " total_iva_discono_estatico = 'total_iva_discono_estatico', tasa_ajuste_mensual = 'tasa_ajuste_mensual'  Where id = 'id'"
@@ -351,8 +356,8 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " cambio_a_patron, " _
             & " FormaPago, " _
             & " fecha_entrega, " _
-            & " propuesta, id_tipo_discriminado," _
-            & " cancelada, id_moneda_ajuste, tipo_cambio_ajuste, CBU, fecha_pago, fecha_vto_desde, fecha_vto_hasta," _
+            & " propuesta, id_tipo_discriminado, fecha_serv_desde, fecha_serv_hasta, " _
+            & " cancelada, id_moneda_ajuste, tipo_cambio_ajuste, CBU, fecha_pago, fecha_vto_desde, fecha_vto_hasta, " _
     & " nc_motivo, tasa_ajuste_mensual) Values "
         q = q & "('NroFactura', " _
             & " 'idCliente', " _
@@ -375,7 +380,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'cambio_a_patron', " _
             & " 'FormaPago', " _
             & " 'fecha_entrega', " _
-            & " 'propuesta', 'id_tipo_discriminado'," _
+            & " 'propuesta', 'id_tipo_discriminado', 'fecha_serv_desde', 'fecha_serv_hasta', " _
             & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste', 'CBU', 'fecha_pago', 'fecha_vto_desde','fecha_vto_hasta', " _
             & " 'nc_motivo','tasa_ajuste_mensual' " _
             & ")"
@@ -392,7 +397,8 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
     
 
-q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
+    q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
+    
     '    '''''''''''''''''''''''''''''''''''''' HACK
     '    Dim qTemp As String
     '    Dim TipoFactura As Long: TipoFactura = -1
@@ -446,6 +452,12 @@ q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
     'fce_nemer_28052020
     q = Replace$(q, "'fecha_vto_desde'", conectar.Escape(F.FechaVtoDesde))
     q = Replace$(q, "'fecha_vto_hasta'", conectar.Escape(F.FechaVtoHasta))
+    
+    'fce_nemer_02062020_#113
+    q = Replace$(q, "'fecha_serv_desde'", conectar.Escape(F.FechaServDesde))
+    q = Replace$(q, "'fecha_serv_hasta'", conectar.Escape(F.FechaServHasta))
+    
+    
 
     If conectar.execute(q) Then
         If esNueva Then F.id = conectar.UltimoId2
@@ -1878,6 +1890,10 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
        Set c = seccion.Controls.item("lblFce")
             c.Visible = F.Tipo.PuntoVenta.EsCredito
              c.caption = F.DescripcionCreditoAdicional
+             
+                     Set c = seccion.Controls.item("lblCbuEmisorFce")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "CBU del Emisor: " & F.CBU
               
 
 
@@ -1913,10 +1929,26 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.Visible = F.Tipo.PuntoVenta.EsCredito
         c.caption = "Hasta: " & Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
-        
-        Set c = seccion.Controls.item("lblCbuEmisorFce")
+                
+        'fce_nemer_02062020_#113
+        Set c = seccion.Controls.item("lblFechaServFceDesde")
         c.Visible = F.Tipo.PuntoVenta.EsCredito
-        c.caption = "CBU del Emisor: " & F.CBU
+        
+        If F.FechaServDesde > 0 Then
+                c.caption = "Fecha del Servicio Desde: " & Format(F.FechaServDesde, "dd/mm/yyyy")
+                Else
+                c.caption = ""
+        End If
+        
+        'fce_nemer_02062020_#113
+        Set c = seccion.Controls.item("lblFechaServFceHasta")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        
+        If F.FechaServHasta > 0 Then
+                c.caption = "Hasta: " & Format(F.FechaServHasta, "dd/mm/yyyy")
+                Else
+                c.caption = ""
+        End If
         
      
         seccion.Controls.item("lblCliente").caption = Format(F.cliente.id, "0000") & " - " & F.cliente.razon

@@ -65,6 +65,11 @@ Public CBU As String
 Public FechaVtoDesde As Date
 Public FechaVtoHasta As Date
 
+'fce_nemer_02062020_#113
+Public FechaServDesde As Date
+Public FechaServHasta As Date
+
+
 
 
 Public TasaAjusteMensual As Double  'de aca se empieza
@@ -150,15 +155,15 @@ End Function
 
 Public Function getDescripcionCondicion() As String
     
-    Dim A As String
+    Dim a As String
     If Me.CantDiasPago = 1 Then
-        A = Me.CantDiasPago & " dia FF"
+        a = Me.CantDiasPago & " dia FF"
     Else
-        A = Me.CantDiasPago & " dias FF"
+        a = Me.CantDiasPago & " dias FF"
     End If
 
 
-getDescripcionCondicion = A & Me.observaciones
+getDescripcionCondicion = a & Me.observaciones
 
 End Function
 

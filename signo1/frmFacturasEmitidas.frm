@@ -938,7 +938,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False

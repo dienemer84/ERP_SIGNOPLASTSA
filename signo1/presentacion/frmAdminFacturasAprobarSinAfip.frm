@@ -22,8 +22,17 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
       Top             =   120
       Width           =   5415
       Begin VB.TextBox txtCAE 
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
-         Left            =   1200
+         Left            =   1560
          TabIndex        =   4
          Text            =   "Text1"
          Top             =   420
@@ -31,28 +40,55 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
       End
       Begin MSComCtl2.DTPicker dtVtoCAE 
          Height          =   375
-         Left            =   1200
+         Left            =   1560
          TabIndex        =   3
          Top             =   960
-         Width           =   1575
-         _ExtentX        =   2778
+         Width           =   1455
+         _ExtentX        =   2566
          _ExtentY        =   661
          _Version        =   393216
-         Format          =   58785793
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Format          =   58327041
          CurrentDate     =   43960
       End
       Begin VB.Label Label1 
          Caption         =   "CAE:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   600
+         Left            =   960
          TabIndex        =   6
          Top             =   450
          Width           =   495
       End
       Begin VB.Label Label2 
          Caption         =   "Vto.CAE:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   360
+         Left            =   600
          TabIndex        =   5
          Top             =   1020
          Width           =   735
@@ -60,7 +96,7 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
    End
    Begin XtremeSuiteControls.PushButton cmdAceptar 
       Height          =   375
-      Left            =   3960
+      Left            =   120
       TabIndex        =   0
       Top             =   1920
       Width           =   1575
@@ -73,7 +109,7 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
    End
    Begin XtremeSuiteControls.PushButton cmdCancelar 
       Height          =   375
-      Left            =   120
+      Left            =   3720
       TabIndex        =   1
       Top             =   1920
       Width           =   1575
@@ -115,10 +151,26 @@ Private Sub cmdCancelar_Click()
     Unload Me
 End Sub
 
+Private Sub dtVtoCAE_CallbackKeyDown(ByVal KeyCode As Integer, ByVal Shift As Integer, ByVal CallbackField As String, CallbackDate As Date)
+
+End Sub
+
 Private Sub Form_Load()
     Customize Me
     Me.txtCAE = Factura.CAE
     Me.dtVtoCAE = Factura.CAEVto
     
+
+End Sub
+
+Private Sub Frame1_DragDrop(Source As Control, X As Single, Y As Single)
+
+End Sub
+
+Private Sub Label1_Click()
+
+End Sub
+
+Private Sub Label2_Click()
 
 End Sub
