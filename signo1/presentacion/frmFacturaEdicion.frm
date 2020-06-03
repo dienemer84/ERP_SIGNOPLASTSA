@@ -75,7 +75,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62259201
+         Format          =   59179009
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -97,7 +97,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62259201
+         Format          =   59179009
          CurrentDate     =   43967
       End
       Begin VB.Label lblPeriodoFacturadoH 
@@ -302,7 +302,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62259201
+         Format          =   59179009
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta 
@@ -324,7 +324,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62259201
+         Format          =   59179009
          CurrentDate     =   43983
       End
       Begin VB.ComboBox cboConceptosAIncluir 
@@ -366,7 +366,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62259201
+         Format          =   59179009
          CurrentDate     =   43967
       End
       Begin VB.Line Line7 
@@ -1833,8 +1833,29 @@ Private Sub cboConceptosAIncluir_Click()
         
         Me.lblFechaServHasta.Enabled = Factura.Tipo.PuntoVenta.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
         Me.dtFechaServHasta.Enabled = Factura.Tipo.PuntoVenta.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
+      
+      'fce_nemer_03062020_#133
+        Me.lblFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsElectronico Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
+        Me.dtFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsElectronico Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
         
+        Me.lblFechaServDesde.Enabled = Factura.Tipo.PuntoVenta.EsElectronico Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
+        Me.dtFechaServDesde.Enabled = Factura.Tipo.PuntoVenta.EsElectronico Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
+        
+        Me.lblFechaServHasta.Enabled = Factura.Tipo.PuntoVenta.EsElectronico Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
+        Me.dtFechaServHasta.Enabled = Factura.Tipo.PuntoVenta.EsElectronico Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
+      
+    
     End If
+    
+      'fce_nemer_03062020_#133
+    If Factura.ConceptoIncluir = ConceptoProducto Then
+            Me.lblFechaServDesde.Enabled = False
+            Me.dtFechaServDesde.Enabled = False
+            Me.lblFechaServHasta.Enabled = False
+            Me.dtFechaServHasta.Enabled = False
+    End If
+
+
 End Sub
 
 Private Sub cboMoneda_Click()
@@ -1883,10 +1904,14 @@ Private Sub cboTiposFactura_Click()
     Me.dtFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
     Me.LblCBU.Enabled = Factura.Tipo.PuntoVenta.EsCredito
    
-   'fce_nemer_02062020_#113
+    'fce_nemer_02062020_#113
     Me.lblPeriodoFacturadoT.Enabled = Factura.Tipo.PuntoVenta.EsCredito
     Me.lblPeriodoFacturadoD.Enabled = Factura.Tipo.PuntoVenta.EsCredito
     Me.lblPeriodoFacturadoH.Enabled = Factura.Tipo.PuntoVenta.EsCredito
+    
+    'fce_nemer_03062020_#133
+    Me.lblFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsElectronico
+    Me.dtFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsElectronico
     
     Me.lblEsCredito.caption = Factura.DescripcionCreditoAdicional
     
@@ -2300,9 +2325,9 @@ Private Sub gridDetalles_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not IsNumeric(Me.gridDetalles.value(1)) Or Not IsNumeric(Me.gridDetalles.value(3)) Or Not IsNumeric(Me.gridDetalles.value(4))
 End Sub
 
-Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
-        Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
+Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(X, Y) = jgexHitTestConstants.jgexHTCell Then
+        Dim row As Long: row = Me.gridDetalles.RowFromPoint(X, Y)
         If row > 0 Then
             Set detalle = Factura.Detalles.item(Me.gridDetalles.RowIndex(row))
             If IsSomething(detalle) Then
