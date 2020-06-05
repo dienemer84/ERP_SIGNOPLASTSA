@@ -56,7 +56,7 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58327041
+         Format          =   62128129
          CurrentDate     =   43960
       End
       Begin VB.Label Label1 
@@ -151,26 +151,21 @@ Private Sub cmdCancelar_Click()
     Unload Me
 End Sub
 
-Private Sub dtVtoCAE_CallbackKeyDown(ByVal KeyCode As Integer, ByVal Shift As Integer, ByVal CallbackField As String, CallbackDate As Date)
-
-End Sub
-
 Private Sub Form_Load()
     Customize Me
     Me.txtCAE = Factura.CAE
-    Me.dtVtoCAE = Factura.CAEVto
     
+    Dim d As Date
+   
+    If Factura.CAEVto = d Then
+        Me.dtVtoCAE = Now
+    Else
+            Me.dtVtoCAE = Factura.CAEVto
+    End If
+
+    
+    
+   
 
 End Sub
 
-Private Sub Frame1_DragDrop(Source As Control, X As Single, Y As Single)
-
-End Sub
-
-Private Sub Label1_Click()
-
-End Sub
-
-Private Sub Label2_Click()
-
-End Sub

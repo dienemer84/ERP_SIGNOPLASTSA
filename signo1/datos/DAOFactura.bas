@@ -844,11 +844,11 @@ Public Function aprobar(Factura As Factura, Optional envio = True) As Boolean
             If Not BuscarEnColeccion(col, CStr(deta.detalleRemito.Remito)) Then
                 col.Add deta.detalleRemito.Remito, CStr(deta.detalleRemito.Remito)
             End If
-            Dim x As Long
+            Dim X As Long
             Dim rto As Long
             Dim Remito As Remito
-            For x = 1 To col.count
-                rto = col.item(x)
+            For X = 1 To col.count
+                rto = col.item(X)
                 Set Remito = DAORemitoS.FindById(rto)
                 Remito.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(Remito.id)
 If Remito.estado = RemitoPendiente Then Err.Raise 206, "Remito " & Remito.numero, "El Remito no esta aprobado"
@@ -995,11 +995,11 @@ Public Function desaprobar(Factura As Factura) As Boolean
             If Not BuscarEnColeccion(col, CStr(deta.detalleRemito.Remito)) Then
                 col.Add deta.detalleRemito.Remito, CStr(deta.detalleRemito.Remito)
             End If
-            Dim x As Long
+            Dim X As Long
             Dim rto As Long
             Dim Remito As Remito
-            For x = 1 To col.count
-                rto = col.item(x)
+            For X = 1 To col.count
+                rto = col.item(X)
                 Set Remito = DAORemitoS.FindById(rto)
                 Remito.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(Remito.id)
                 If Not DAORemitoS.Guardar(Remito) Then GoTo err5
@@ -1159,7 +1159,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
 
 
-    Dim x
+    Dim X
     Dim xval
     Dim A
     Dim b
@@ -1272,8 +1272,8 @@ Public Function Imprimir(idFactura As Long) As Boolean
         Printer.Print Tab(12);
         'ss = funciones.formatearDecimales(rs!Cantidad, 2)
         ss = funciones.FormatearDecimales(objDeta.Cantidad, 2)
-        x = Printer.CurrentX
-        xval = x - Printer.TextWidth(ss)
+        X = Printer.CurrentX
+        xval = X - Printer.TextWidth(ss)
         Printer.CurrentX = xval
         Printer.Print ss;
 
@@ -1325,16 +1325,16 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
         'alineo a la izquierda
         Printer.Print Tab(135);
-        x = Printer.CurrentX
-        xval = x - Printer.TextWidth(funciones.FormatearDecimales(objDeta.SubTotal))
+        X = Printer.CurrentX
+        xval = X - Printer.TextWidth(funciones.FormatearDecimales(objDeta.SubTotal))
 
         Printer.CurrentX = xval
         Printer.Print funciones.FormatearDecimales(objDeta.SubTotal);
 
         'alineo a la izquierda
         Printer.Print Tab(165);
-        x = Printer.CurrentX
-        xval = x - Printer.TextWidth(funciones.FormatearDecimales(objDeta.Total))
+        X = Printer.CurrentX
+        xval = X - Printer.TextWidth(funciones.FormatearDecimales(objDeta.Total))
         Printer.CurrentX = xval
 
 
@@ -1353,17 +1353,17 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
     'imprimo el primer subtotal alineado a la derecha
     Printer.Print Tab(18);
-    x = Printer.CurrentX
-    xval = x - Printer.TextWidth(vbNullString)
+    X = Printer.CurrentX
+    xval = X - Printer.TextWidth(vbNullString)
     Printer.CurrentX = xval
     Printer.Print vbNullString;
 
     'imprimo el descuento alineado a la derecha
     Printer.Print Tab(35);
     'dtoFormateado = funciones.formatearDecimales(dtoAplicado, 2)
-    x = Printer.CurrentX
+    X = Printer.CurrentX
     'xval = x - Printer.TextWidth(dtoFormateado)
-    xval = x - Printer.TextWidth(vbNullString)
+    xval = X - Printer.TextWidth(vbNullString)
     Printer.CurrentX = xval
     'Printer.Print dtoFormateado;
     Printer.Print vbNullString;
@@ -1371,16 +1371,16 @@ Public Function Imprimir(idFactura As Long) As Boolean
     'imprimo el segundo subtotal alineado a la derecha
     Printer.Print Tab(53);
 
-    x = Printer.CurrentX
-    xval = x - Printer.TextWidth(funciones.FormatearDecimales(objFac.TotalSubTotal))
+    X = Printer.CurrentX
+    xval = X - Printer.TextWidth(funciones.FormatearDecimales(objFac.TotalSubTotal))
     Printer.CurrentX = xval
     Printer.Print funciones.FormatearDecimales(objFac.TotalSubTotal);
 
 
     If objFac.EstaDiscriminada Then
         Printer.Print Tab(70);
-        x = Printer.CurrentX
-        xval = x - Printer.TextWidth(funciones.FormatearDecimales(objFac.TotalIVA))
+        X = Printer.CurrentX
+        xval = X - Printer.TextWidth(funciones.FormatearDecimales(objFac.TotalIVA))
         Printer.CurrentX = xval
         Printer.Print funciones.FormatearDecimales(objFac.TotalIVA);
     End If
@@ -1389,8 +1389,8 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
     Dim per As Double
     Printer.Print Tab(84);
-    x = Printer.CurrentX
-    xval = x - Printer.TextWidth(funciones.FormatearDecimales(objFac.totalPercepciones))
+    X = Printer.CurrentX
+    xval = X - Printer.TextWidth(funciones.FormatearDecimales(objFac.totalPercepciones))
     Printer.CurrentX = xval
 
     Dim i As Integer
@@ -1412,9 +1412,9 @@ Public Function Imprimir(idFactura As Long) As Boolean
     'imprimo el total
     Printer.Print Tab(105);
     Printer.CurrentY = cy
-    x = Printer.CurrentX
+    X = Printer.CurrentX
 
-    xval = x - Printer.TextWidth(funciones.FormatearDecimales(objFac.Total))
+    xval = X - Printer.TextWidth(funciones.FormatearDecimales(objFac.Total))
     Printer.CurrentX = xval
 
     Printer.Print funciones.FormatearDecimales(objFac.Total);
@@ -1930,26 +1930,26 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.caption = "Hasta: " & Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
                 
+        Set c = seccion.Controls.item("lblConcepto")
+        c.Visible = F.ConceptoIncluir
+        c.caption = "Concepto: " & F.ConceptoIncluir
+
+                
         'fce_nemer_02062020_#113
         Set c = seccion.Controls.item("lblFechaServFceDesde")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
-        
-        If F.FechaServDesde > 0 Then
-                c.caption = "Fecha del Servicio Desde: " & Format(F.FechaServDesde, "dd/mm/yyyy")
-                Else
-                c.caption = ""
+        If F.ConceptoIncluir = ConceptoServicio Or ConceptoProductoServicio Then
+         c.Visible = F.FechaServDesde
+         c.caption = F.FechaServDesde
         End If
+    
         
         'fce_nemer_02062020_#113
         Set c = seccion.Controls.item("lblFechaServFceHasta")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
-        
-        If F.FechaServHasta > 0 Then
-                c.caption = "Hasta: " & Format(F.FechaServHasta, "dd/mm/yyyy")
-                Else
-                c.caption = ""
+        If F.ConceptoIncluir = ConceptoServicio Or ConceptoProductoServicio Then
+         c.Visible = F.FechaServHasta
+         c.caption = F.FechaServHasta
         End If
-        
+
      
         seccion.Controls.item("lblCliente").caption = Format(F.cliente.id, "0000") & " - " & F.cliente.razon
         seccion.Controls.item("lblCuit").caption = F.cliente.Cuit

@@ -27,7 +27,7 @@ Begin VB.Form frmFacturaEdicion
    ScaleWidth      =   17775
    Begin XtremeSuiteControls.PushButton PushButton5 
       Height          =   360
-      Left            =   2280
+      Left            =   4320
       TabIndex        =   78
       Top             =   9960
       Width           =   2055
@@ -35,7 +35,7 @@ Begin VB.Form frmFacturaEdicion
       _ExtentX        =   3625
       _ExtentY        =   635
       _StockProps     =   79
-      Caption         =   "Cargar Texto"
+      Caption         =   "Texto Adicional"
       UseVisualStyle  =   -1  'True
    End
    Begin VB.Frame frmFC 
@@ -75,7 +75,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59179009
+         Format          =   58785793
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -97,7 +97,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59179009
+         Format          =   58785793
          CurrentDate     =   43967
       End
       Begin VB.Label lblPeriodoFacturadoH 
@@ -241,7 +241,20 @@ Begin VB.Form frmFacturaEdicion
       TabIndex        =   67
       Top             =   5040
       Width           =   6135
-      Begin XtremeSuiteControls.PushButton PushButton4 
+      Begin XtremeSuiteControls.PushButton btnEditarTxt 
+         Height          =   375
+         Left            =   1800
+         TabIndex        =   87
+         Top             =   4800
+         Width           =   1455
+         _Version        =   786432
+         _ExtentX        =   2566
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Editar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton btnLimpiarTxt 
          Height          =   375
          Left            =   120
          TabIndex        =   70
@@ -254,7 +267,7 @@ Begin VB.Form frmFacturaEdicion
          Caption         =   "Limpiar"
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.PushButton PushButton3 
+      Begin XtremeSuiteControls.PushButton btnCargarTxt 
          Height          =   375
          Left            =   4200
          TabIndex        =   69
@@ -302,7 +315,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59179009
+         Format          =   58785793
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta 
@@ -324,7 +337,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59179009
+         Format          =   58785793
          CurrentDate     =   43983
       End
       Begin VB.ComboBox cboConceptosAIncluir 
@@ -344,7 +357,7 @@ Begin VB.Form frmFacturaEdicion
          List            =   "frmFacturaEdicion.frx":001D
          Style           =   2  'Dropdown List
          TabIndex        =   10
-         Top             =   240
+         Top             =   285
          Width           =   3975
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCredito 
@@ -366,7 +379,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59179009
+         Format          =   58785793
          CurrentDate     =   43967
       End
       Begin VB.Line Line7 
@@ -472,7 +485,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   495
          Left            =   120
          TabIndex        =   65
-         Top             =   285
+         Top             =   330
          Width           =   2655
       End
    End

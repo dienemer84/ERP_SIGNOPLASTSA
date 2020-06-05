@@ -10,7 +10,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    _ExtentY        =   25162
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11265
+   ReportWidth     =   11712
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -366,7 +366,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       _Version        =   393216
       Name            =   "detailsHead"
       Object.Height          =   2715
-      NumControls     =   26
+      NumControls     =   27
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -820,6 +820,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Top             =   2055
          Object.Width           =   3330
          Object.Height          =   225
+         Object.Visible         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   9.75
@@ -849,6 +850,25 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "Hasta: 00/00/0000"
+      EndProperty
+      ItemType26      =   3
+      BeginProperty Item26 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblConcepto"
+         Object.Left            =   210
+         Object.Top             =   2055
+         Object.Width           =   1395
+         Object.Height          =   285
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "Label1"
       EndProperty
    EndProperty
    SectionCode2    =   4

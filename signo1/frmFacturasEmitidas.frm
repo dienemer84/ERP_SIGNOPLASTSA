@@ -934,11 +934,11 @@ Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer,
     If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
@@ -1138,7 +1138,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
           Values(16) = "CAE no definido"
         Else
    
-          Values(16) = Values(16) & " CAE: " & Factura.CAE & " Vto CAE: " & Factura.CAEVto
+          Values(16) = Values(16) & " CAE: " & Factura.CAE & " Vto CAE: " & Format(Factura.CAEVto, "dd/mm/yyyy")
         End If
     End If
 End If
