@@ -757,7 +757,8 @@ Private Sub PushButton1_Click()
             If Not DAOOrdenPago.Guardar(Orden) Then Stop
 
             If Orden.estado = EstadoOrdenPago_Aprobada And Orden.StaticTotalRetenido > 0 Then
-                If Not IsSomething(DAOCertificadoRetencion.Create(Orden, True)) Then Stop
+                ' If Not IsSomething(DAOCertificadoRetencion.Create(Orden,) Then Stop
+                Err.Raise "ver error en frmOrdenesPago"
             End If
 
         End If

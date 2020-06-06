@@ -469,7 +469,9 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
 
 
         If DAOFactura.FindAll("AdminFacturas.id_tipo_discriminado=" & F.Tipo.id & "  and  AdminFacturas.NroFactura = " & F.numero & " And AdminFacturas.Id <> " & F.id).count > 0 Then
+            
             If Not F.Tipo.PuntoVenta.EsElectronico Then GoTo err1
+    
 
             'el nro de factura y tipo se repite
             'valida tambien q no se repita el tipo de comprobante nc-nd-fc   29/7/13
@@ -844,11 +846,11 @@ Public Function aprobar(Factura As Factura, Optional envio = True) As Boolean
             If Not BuscarEnColeccion(col, CStr(deta.detalleRemito.Remito)) Then
                 col.Add deta.detalleRemito.Remito, CStr(deta.detalleRemito.Remito)
             End If
-            Dim X As Long
+            Dim x As Long
             Dim rto As Long
             Dim Remito As Remito
-            For X = 1 To col.count
-                rto = col.item(X)
+            For x = 1 To col.count
+                rto = col.item(x)
                 Set Remito = DAORemitoS.FindById(rto)
                 Remito.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(Remito.id)
 If Remito.estado = RemitoPendiente Then Err.Raise 206, "Remito " & Remito.numero, "El Remito no esta aprobado"
@@ -995,11 +997,11 @@ Public Function desaprobar(Factura As Factura) As Boolean
             If Not BuscarEnColeccion(col, CStr(deta.detalleRemito.Remito)) Then
                 col.Add deta.detalleRemito.Remito, CStr(deta.detalleRemito.Remito)
             End If
-            Dim X As Long
+            Dim x As Long
             Dim rto As Long
             Dim Remito As Remito
-            For X = 1 To col.count
-                rto = col.item(X)
+            For x = 1 To col.count
+                rto = col.item(x)
                 Set Remito = DAORemitoS.FindById(rto)
                 Remito.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(Remito.id)
                 If Not DAORemitoS.Guardar(Remito) Then GoTo err5
@@ -1159,7 +1161,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
 
 
-    Dim X
+    Dim x
     Dim xval
     Dim A
     Dim b
@@ -1272,8 +1274,8 @@ Public Function Imprimir(idFactura As Long) As Boolean
         Printer.Print Tab(12);
         'ss = funciones.formatearDecimales(rs!Cantidad, 2)
         ss = funciones.FormatearDecimales(objDeta.Cantidad, 2)
-        X = Printer.CurrentX
-        xval = X - Printer.TextWidth(ss)
+        x = Printer.CurrentX
+        xval = x - Printer.TextWidth(ss)
         Printer.CurrentX = xval
         Printer.Print ss;
 
@@ -1325,16 +1327,16 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
         'alineo a la izquierda
         Printer.Print Tab(135);
-        X = Printer.CurrentX
-        xval = X - Printer.TextWidth(funciones.FormatearDecimales(objDeta.SubTotal))
+        x = Printer.CurrentX
+        xval = x - Printer.TextWidth(funciones.FormatearDecimales(objDeta.SubTotal))
 
         Printer.CurrentX = xval
         Printer.Print funciones.FormatearDecimales(objDeta.SubTotal);
 
         'alineo a la izquierda
         Printer.Print Tab(165);
-        X = Printer.CurrentX
-        xval = X - Printer.TextWidth(funciones.FormatearDecimales(objDeta.Total))
+        x = Printer.CurrentX
+        xval = x - Printer.TextWidth(funciones.FormatearDecimales(objDeta.Total))
         Printer.CurrentX = xval
 
 
@@ -1353,17 +1355,17 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
     'imprimo el primer subtotal alineado a la derecha
     Printer.Print Tab(18);
-    X = Printer.CurrentX
-    xval = X - Printer.TextWidth(vbNullString)
+    x = Printer.CurrentX
+    xval = x - Printer.TextWidth(vbNullString)
     Printer.CurrentX = xval
     Printer.Print vbNullString;
 
     'imprimo el descuento alineado a la derecha
     Printer.Print Tab(35);
     'dtoFormateado = funciones.formatearDecimales(dtoAplicado, 2)
-    X = Printer.CurrentX
+    x = Printer.CurrentX
     'xval = x - Printer.TextWidth(dtoFormateado)
-    xval = X - Printer.TextWidth(vbNullString)
+    xval = x - Printer.TextWidth(vbNullString)
     Printer.CurrentX = xval
     'Printer.Print dtoFormateado;
     Printer.Print vbNullString;
@@ -1371,16 +1373,16 @@ Public Function Imprimir(idFactura As Long) As Boolean
     'imprimo el segundo subtotal alineado a la derecha
     Printer.Print Tab(53);
 
-    X = Printer.CurrentX
-    xval = X - Printer.TextWidth(funciones.FormatearDecimales(objFac.TotalSubTotal))
+    x = Printer.CurrentX
+    xval = x - Printer.TextWidth(funciones.FormatearDecimales(objFac.TotalSubTotal))
     Printer.CurrentX = xval
     Printer.Print funciones.FormatearDecimales(objFac.TotalSubTotal);
 
 
     If objFac.EstaDiscriminada Then
         Printer.Print Tab(70);
-        X = Printer.CurrentX
-        xval = X - Printer.TextWidth(funciones.FormatearDecimales(objFac.TotalIVA))
+        x = Printer.CurrentX
+        xval = x - Printer.TextWidth(funciones.FormatearDecimales(objFac.TotalIVA))
         Printer.CurrentX = xval
         Printer.Print funciones.FormatearDecimales(objFac.TotalIVA);
     End If
@@ -1389,8 +1391,8 @@ Public Function Imprimir(idFactura As Long) As Boolean
 
     Dim per As Double
     Printer.Print Tab(84);
-    X = Printer.CurrentX
-    xval = X - Printer.TextWidth(funciones.FormatearDecimales(objFac.totalPercepciones))
+    x = Printer.CurrentX
+    xval = x - Printer.TextWidth(funciones.FormatearDecimales(objFac.totalPercepciones))
     Printer.CurrentX = xval
 
     Dim i As Integer
@@ -1412,9 +1414,9 @@ Public Function Imprimir(idFactura As Long) As Boolean
     'imprimo el total
     Printer.Print Tab(105);
     Printer.CurrentY = cy
-    X = Printer.CurrentX
+    x = Printer.CurrentX
 
-    xval = X - Printer.TextWidth(funciones.FormatearDecimales(objFac.Total))
+    xval = x - Printer.TextWidth(funciones.FormatearDecimales(objFac.Total))
     Printer.CurrentX = xval
 
     Printer.Print funciones.FormatearDecimales(objFac.Total);
@@ -1932,8 +1934,11 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
                 
         Set c = seccion.Controls.item("lblConcepto")
         c.Visible = F.ConceptoIncluir
-        c.caption = "Concepto: " & F.ConceptoIncluir
-
+        
+       ' If F.ConceptoIncluir = 1 Then
+        c.caption = "Concepto: " & F.MostrarConcepto
+        
+        
                 
         'fce_nemer_02062020_#113
         Set c = seccion.Controls.item("lblFechaServFceDesde")

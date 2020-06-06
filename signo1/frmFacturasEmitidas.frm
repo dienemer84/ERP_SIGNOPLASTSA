@@ -934,7 +934,7 @@ Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer,
     If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
@@ -951,7 +951,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y 
                 Me.AnularFactura.Visible = True
                 Me.AnularFactura.Enabled = False
                 Me.aprobarFactura.Enabled = True
-                Me.aprobarFactura.Visible = True
+                Me.aprobarFactura.Visible = Not Factura.Tipo.PuntoVenta.EsCredito
                 
                 Me.mnuAprobarSinEnvio.Enabled = True
                 Me.mnuAprobarSinEnvio.Visible = True
