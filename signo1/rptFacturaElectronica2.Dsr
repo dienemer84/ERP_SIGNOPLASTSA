@@ -1,16 +1,16 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica 
    Caption         =   "COMPROBANTE ELECTRONICO"
-   ClientHeight    =   14265
-   ClientLeft      =   60
-   ClientTop       =   450
-   ClientWidth     =   28680
+   ClientHeight    =   11565
+   ClientLeft      =   165
+   ClientTop       =   555
+   ClientWidth     =   23880
    StartUpPosition =   3  'Windows Default
    _ExtentX        =   50588
    _ExtentY        =   25162
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11205
+   ReportWidth     =   11712
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -30,8 +30,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    BeginProperty Section0 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "header"
-      Object.Height          =   3000
-      NumControls     =   17
+      Object.Height          =   3015
+      NumControls     =   18
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -338,6 +338,28 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Comp. Nro: 00000006"
       EndProperty
+      ItemType17      =   3
+      BeginProperty Item17 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblCbuEmisorFce"
+         Object.Left            =   120
+         Object.Top             =   2625
+         Object.Width           =   5325
+         Object.Height          =   240
+         Object.Visible         =   0   'False
+         Object.BorderStyle     =   1
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "CBU del Emisor: 000000000000000000000000"
+         Alignment       =   2
+      EndProperty
    EndProperty
    SectionCode1    =   2
    BeginProperty Section1 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -350,41 +372,23 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "marco2"
          Object.Left            =   45
-         Object.Top             =   660
          Object.Width           =   11055
-         Object.Height          =   1620
+         Object.Height          =   2340
       EndProperty
-      ItemType1       =   6
-      BeginProperty Item1 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "Shape2"
-         Object.Left            =   45
-         Object.Top             =   330
-         Object.Width           =   11055
-         Object.Height          =   300
-      EndProperty
-      ItemType2       =   6
-      BeginProperty Item2 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "Shape1"
-         Object.Left            =   45
-         Object.Width           =   11055
-         Object.Height          =   300
-      EndProperty
-      ItemType3       =   7
-      BeginProperty Item3 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType1       =   7
+      BeginProperty Item1 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "marco3"
          Object.Left            =   45
-         Object.Top             =   2310
+         Object.Top             =   2370
          Object.Width           =   11055
-         Object.Height          =   405
+         Object.Height          =   345
          Object.BorderStyle     =   1
          BackColor       =   14737632
          BackStyle       =   1
       EndProperty
-      ItemType4       =   3
-      BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType2       =   3
+      BeginProperty Item2 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta8"
          Object.Left            =   60
@@ -403,8 +407,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Caption         =   "Cant"
          Alignment       =   2
       EndProperty
-      ItemType5       =   3
-      BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType3       =   3
+      BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta9"
          Object.Left            =   555
@@ -423,8 +427,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Caption         =   "Rto"
          Alignment       =   2
       EndProperty
-      ItemType6       =   3
-      BeginProperty Item6 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType4       =   3
+      BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta10"
          Object.Left            =   1140
@@ -443,8 +447,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Caption         =   "Pos"
          Alignment       =   2
       EndProperty
-      ItemType7       =   3
-      BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType5       =   3
+      BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta12"
          Object.Left            =   8505
@@ -463,8 +467,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Caption         =   "% Dto"
          Alignment       =   2
       EndProperty
-      ItemType8       =   3
-      BeginProperty Item8 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType6       =   3
+      BeginProperty Item6 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta13"
          Object.Left            =   9135
@@ -483,8 +487,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Caption         =   "P.Unit"
          Alignment       =   1
       EndProperty
-      ItemType9       =   3
-      BeginProperty Item9 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType7       =   3
+      BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta14"
          Object.Left            =   10080
@@ -503,13 +507,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Caption         =   "Importe"
          Alignment       =   1
       EndProperty
-      ItemType10      =   3
-      BeginProperty Item10 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType8       =   3
+      BeginProperty Item8 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCliente"
          Object.Left            =   1275
-         Object.Top             =   780
-         Object.Width           =   9675
+         Object.Top             =   30
+         Object.Width           =   6855
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -522,12 +526,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "0910 - SIGNO PLAST S.A."
       EndProperty
-      ItemType11      =   3
-      BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType9       =   3
+      BeginProperty Item9 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblDireccion"
          Object.Left            =   1410
-         Object.Top             =   1470
+         Object.Top             =   720
          Object.Width           =   9525
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -541,13 +545,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "ARIETA 4720 - LA TABLADA - BUENOS AIRES - A"
       EndProperty
-      ItemType12      =   3
-      BeginProperty Item12 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType10      =   3
+      BeginProperty Item10 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblReferencia"
-         Object.Left            =   3675
-         Object.Top             =   1830
-         Object.Width           =   7245
+         Object.Left            =   3690
+         Object.Top             =   1080
+         Object.Width           =   7155
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -558,14 +562,15 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
+         Object.Caption         =   "Hola hola"
       EndProperty
-      ItemType13      =   3
-      BeginProperty Item13 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType11      =   3
+      BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCondicionPagoFCE"
-         Object.Left            =   8175
-         Object.Top             =   1125
-         Object.Width           =   2820
+         Object.Left            =   1950
+         Object.Top             =   1410
+         Object.Width           =   8985
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -578,12 +583,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Transferencia Bancaria"
       EndProperty
-      ItemType14      =   3
-      BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType12      =   3
+      BeginProperty Item12 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta19"
          Object.Left            =   210
-         Object.Top             =   780
+         Object.Top             =   30
          Object.Width           =   1125
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -597,12 +602,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "CLIENTE:"
       EndProperty
-      ItemType15      =   3
-      BeginProperty Item15 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType13      =   3
+      BeginProperty Item13 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta20"
-         Object.Left            =   6390
-         Object.Top             =   1125
+         Object.Left            =   210
+         Object.Top             =   1410
          Object.Width           =   1785
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -616,13 +621,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "COND. DE VENTA:"
       EndProperty
-      ItemType16      =   3
-      BeginProperty Item16 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType14      =   3
+      BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta21"
          Object.Left            =   210
-         Object.Top             =   1830
-         Object.Width           =   3570
+         Object.Top             =   1080
+         Object.Width           =   3465
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -635,12 +640,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "ORDEN DE COMPRA / REFERENCIA:"
       EndProperty
-      ItemType17      =   3
-      BeginProperty Item17 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType15      =   3
+      BeginProperty Item15 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta15"
          Object.Left            =   210
-         Object.Top             =   1125
+         Object.Top             =   375
          Object.Width           =   945
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -654,12 +659,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "CUIT:"
       EndProperty
-      ItemType18      =   3
-      BeginProperty Item18 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType16      =   3
+      BeginProperty Item16 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta22"
          Object.Left            =   2505
-         Object.Top             =   1125
+         Object.Top             =   375
          Object.Width           =   945
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -673,12 +678,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "IVA:"
       EndProperty
-      ItemType19      =   3
-      BeginProperty Item19 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType17      =   3
+      BeginProperty Item17 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCuit"
          Object.Left            =   825
-         Object.Top             =   1125
+         Object.Top             =   375
          Object.Width           =   1545
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -692,12 +697,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "30657604972"
       EndProperty
-      ItemType20      =   3
-      BeginProperty Item20 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType18      =   3
+      BeginProperty Item18 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblIva"
          Object.Left            =   3015
-         Object.Top             =   1125
+         Object.Top             =   375
          Object.Width           =   3300
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -711,12 +716,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Responsable Inscripto"
       EndProperty
-      ItemType21      =   3
-      BeginProperty Item21 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType19      =   3
+      BeginProperty Item19 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta25"
          Object.Left            =   210
-         Object.Top             =   1470
+         Object.Top             =   720
          Object.Width           =   1590
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -730,8 +735,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "DIRECCIÓN:"
       EndProperty
-      ItemType22      =   3
-      BeginProperty Item22 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType20      =   3
+      BeginProperty Item20 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta11"
          Object.Left            =   1545
@@ -749,33 +754,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Descripción"
       EndProperty
-      ItemType23      =   3
-      BeginProperty Item23 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "lblCbuEmisorFce"
-         Object.Left            =   3225
-         Object.Top             =   375
-         Object.Width           =   5325
-         Object.Height          =   240
-         Object.Visible         =   0   'False
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Arial"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Object.Caption         =   "CBU del Emisor: 000000000000000000000000"
-         Alignment       =   2
-      EndProperty
-      ItemType24      =   3
-      BeginProperty Item24 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType21      =   3
+      BeginProperty Item21 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaPagoFce"
-         Object.Left            =   240
-         Object.Top             =   30
+         Object.Left            =   210
+         Object.Top             =   1740
          Object.Width           =   3570
          Object.Height          =   240
          Object.Visible         =   0   'False
@@ -790,13 +774,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Fecha de Vto. para el pago: 00/00/0000"
       EndProperty
-      ItemType25      =   3
-      BeginProperty Item25 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType22      =   3
+      BeginProperty Item22 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaPagoFceDesde"
-         Object.Left            =   4170
-         Object.Top             =   30
-         Object.Width           =   3900
+         Object.Left            =   3915
+         Object.Top             =   1740
+         Object.Width           =   3330
          Object.Height          =   240
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -809,13 +793,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Período Facturado Desde: 00/00/0000"
       EndProperty
-      ItemType26      =   3
-      BeginProperty Item26 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType23      =   3
+      BeginProperty Item23 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaPagoFceHasta"
-         Object.Left            =   8175
-         Object.Top             =   30
-         Object.Width           =   2910
+         Object.Left            =   7605
+         Object.Top             =   1740
+         Object.Width           =   1740
          Object.Height          =   240
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -827,6 +811,64 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "Hasta: 00/00/0000"
+      EndProperty
+      ItemType24      =   3
+      BeginProperty Item24 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblFechaServFceDesde"
+         Object.Left            =   3915
+         Object.Top             =   2055
+         Object.Width           =   3330
+         Object.Height          =   225
+         Object.Visible         =   0   'False
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "Fecha del Servicio Desde: 00/00/0000"
+      EndProperty
+      ItemType25      =   3
+      BeginProperty Item25 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblFechaServFceHasta"
+         Object.Left            =   7605
+         Object.Top             =   2055
+         Object.Width           =   1740
+         Object.Height          =   255
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "Hasta: 00/00/0000"
+      EndProperty
+      ItemType26      =   3
+      BeginProperty Item26 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblConcepto"
+         Object.Left            =   210
+         Object.Top             =   2055
+         Object.Width           =   1395
+         Object.Height          =   285
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "Label1"
       EndProperty
    EndProperty
    SectionCode2    =   4

@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
@@ -442,7 +442,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   59834369
+      Format          =   59179009
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -772,7 +772,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
+Public TmpProveedor As clsProveedor
 Dim moneda As clsMoneda
 Dim loading As Boolean
 Dim colAlicuotas As New Collection
@@ -787,7 +787,7 @@ Dim perAplicada As clsPercepcionesAplicadas
 
 Dim colCuentas As Collection
 
-Public TmpProveedor As clsProveedor
+
 Dim ctaAplicada As clsCuentaFactura
 Dim ctaContable As clsCuentaContable
 Dim Percepcion As New clsPercepciones
@@ -906,7 +906,7 @@ Private Sub LimpiarProveedor()
     Me.cboTiposFactura.Clear
 End Sub
 
-Public TmpProveedor As clsProveedor
+
 Private Sub cmdDisponer_Click()
 
 
@@ -1127,7 +1127,7 @@ End If
         Me.cmdGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.frame2.Enabled = False
+        Me.Frame2.Enabled = False
         Me.frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False

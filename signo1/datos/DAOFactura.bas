@@ -180,10 +180,18 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
         F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
         
+        'fce_nemer_02062020_#113
+        F.FechaServDesde = GetValue(rs, indice, tabla, "fecha_serv_desde")
+        F.FechaServHasta = GetValue(rs, indice, tabla, "fecha_serv_hasta")
+        
+        
         F.CAE = GetValue(rs, indice, tabla, "cae")
         F.CAEVto = GetValue(rs, indice, tabla, "cae_vto")
         
         F.FechaVencimientoSQL = GetValue(rs, indice, vbNullString, "FechaVencimiento")
+        
+        F.ConceptoIncluir = GetValue(rs, indice, tabla, "id_concepto_incluir")
+        
         'F.IdOTAnticipo = GetValue(rs, indice, tabla, "id_ot_anticipo")
 
         F.OrdenCompra = GetValue(rs, indice, tabla, "OrdenCompra")
@@ -304,7 +312,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " idUsuarioAprobacion = 'idUsuarioAprobacion' ," _
             & " OrdenCompra = 'OrdenCompra' , " _
             & " origenFacturado = 'origenFacturado' , " _
-            & " estado = 'estado' , " _
+            & " estado = 'estado' ,id_concepto_incluir='id_concepto_incluir' , " _
             & " alicuotaAplicada = 'alicuotaAplicada' , " _
             & " discriminada = 'discriminada' , " _
             & " impresa = 'impresa' ," _
@@ -313,10 +321,10 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " observaciones = 'observaciones' ," _
             & " AliPercIB = 'AliPercIB' , " _
             & " cambio_a_patron = 'cambio_a_patron' ," _
-            & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega', " _
-            & " propuesta = 'propuesta' ," _
+            & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega' , " _
+            & " propuesta = 'propuesta', fecha_serv_desde = 'fecha_serv_desde', fecha_serv_hasta = 'fecha_serv_hasta' , " _
             & " cancelada = 'cancelada' , CBU = 'CBU' , fecha_pago = 'fecha_pago' , fecha_vto_desde = 'fecha_vto_desde' , fecha_vto_hasta = 'fecha_vto_hasta' , " _
-            & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste'," _
+            & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste' ," _
             & " total_estatico = 'total_estatico' ,  total_iva_estatico = 'total_iva_estatico' , total_perIB_estatico = 'total_perIB_estatico' ," _
             & " total_neto_estatico = 'total_neto_estatico' , total_exento_estatico = 'total_exento_estatico' ," _
             & " total_iva_discono_estatico = 'total_iva_discono_estatico', tasa_ajuste_mensual = 'tasa_ajuste_mensual'  Where id = 'id'"
@@ -337,7 +345,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " idUsuarioAprobacion, " _
             & " OrdenCompra, " _
             & " origenFacturado, " _
-            & " estado, " _
+            & " estado, id_concepto_incluir, " _
             & " alicuotaAplicada, " _
             & " discriminada, " _
             & " impresa, " _
@@ -348,8 +356,8 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " cambio_a_patron, " _
             & " FormaPago, " _
             & " fecha_entrega, " _
-            & " propuesta, id_tipo_discriminado," _
-            & " cancelada, id_moneda_ajuste, tipo_cambio_ajuste, CBU, fecha_pago, fecha_vto_desde, fecha_vto_hasta," _
+            & " propuesta, id_tipo_discriminado, fecha_serv_desde, fecha_serv_hasta, " _
+            & " cancelada, id_moneda_ajuste, tipo_cambio_ajuste, CBU, fecha_pago, fecha_vto_desde, fecha_vto_hasta, " _
     & " nc_motivo, tasa_ajuste_mensual) Values "
         q = q & "('NroFactura', " _
             & " 'idCliente', " _
@@ -361,7 +369,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'idUsuarioAprobacion', " _
             & " 'OrdenCompra', " _
             & " 'origenFacturado', " _
-            & " 'estado', " _
+            & " 'estado','id_concepto_incluir', " _
             & " 'alicuotaAplicada', " _
             & " 'discriminada', " _
             & " 'impresa', " _
@@ -372,7 +380,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'cambio_a_patron', " _
             & " 'FormaPago', " _
             & " 'fecha_entrega', " _
-            & " 'propuesta', 'id_tipo_discriminado'," _
+            & " 'propuesta', 'id_tipo_discriminado', 'fecha_serv_desde', 'fecha_serv_hasta', " _
             & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste', 'CBU', 'fecha_pago', 'fecha_vto_desde','fecha_vto_hasta', " _
             & " 'nc_motivo','tasa_ajuste_mensual' " _
             & ")"
@@ -389,7 +397,8 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
     
 
-
+    q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
+    
     '    '''''''''''''''''''''''''''''''''''''' HACK
     '    Dim qTemp As String
     '    Dim TipoFactura As Long: TipoFactura = -1
@@ -443,6 +452,12 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     'fce_nemer_28052020
     q = Replace$(q, "'fecha_vto_desde'", conectar.Escape(F.FechaVtoDesde))
     q = Replace$(q, "'fecha_vto_hasta'", conectar.Escape(F.FechaVtoHasta))
+    
+    'fce_nemer_02062020_#113
+    q = Replace$(q, "'fecha_serv_desde'", conectar.Escape(F.FechaServDesde))
+    q = Replace$(q, "'fecha_serv_hasta'", conectar.Escape(F.FechaServHasta))
+    
+    
 
     If conectar.execute(q) Then
         If esNueva Then F.id = conectar.UltimoId2
@@ -454,7 +469,9 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
 
 
         If DAOFactura.FindAll("AdminFacturas.id_tipo_discriminado=" & F.Tipo.id & "  and  AdminFacturas.NroFactura = " & F.numero & " And AdminFacturas.Id <> " & F.id).count > 0 Then
+            
             If Not F.Tipo.PuntoVenta.EsElectronico Then GoTo err1
+    
 
             'el nro de factura y tipo se repite
             'valida tambien q no se repita el tipo de comprobante nc-nd-fc   29/7/13
@@ -1601,8 +1618,20 @@ If saldadoTotal Then
         If Not conectar.execute("update AdminFacturas set cancelada=" & idOrigen & " where id=" & idNCDestino) Then GoTo er12
         If Not conectar.execute("update AdminFacturas set cancelada=" & idNCDestino & " where id=" & idFactura) Then GoTo er12
 
-If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True)) & " where id=" & fc.id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True)) & " where id=" & nc.id) Then GoTo er12
+
+            Dim msg1 As String
+            msg1 = conectar.Escape(fc.observaciones & " - CANCELADA POR " & nc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
+            
+            
+            Dim MSG2 As String
+            MSG2 = conectar.Escape(nc.observaciones & " - CANCELA A " & fc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+            
+
+
+        If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & MSG2 & " where id=" & nc.id) Then GoTo er12
 
 
 
@@ -1719,10 +1748,19 @@ If saldadoTotal Then
                 End If
                 rs.MoveNext
             Wend
+            
+            Dim msg1 As String
+            msg1 = conectar.Escape(fc.observaciones & " - CANCELADA POR " & nc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
+            
+            
+            Dim MSG2 As String
+            MSG2 = conectar.Escape(nc.observaciones & " - CANCELA A " & fc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+            
 
-
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True)) & " where id=" & fc.id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True)) & " where id=" & nc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & MSG2 & " where id=" & nc.id) Then GoTo er12
 
         Next deta
 
@@ -1837,7 +1875,9 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
     Set F = DAOFactura.FindById(idFactura, True, False)
     Dim seccion As Section
     Dim c As Object
-rptFacturaElectronica.LeftMargin = 250
+    
+    rptFacturaElectronica.LeftMargin = 250
+    
     If IsSomething(F) Then
     
     Dim Largo As Double
@@ -1852,6 +1892,10 @@ rptFacturaElectronica.LeftMargin = 250
        Set c = seccion.Controls.item("lblFce")
             c.Visible = F.Tipo.PuntoVenta.EsCredito
              c.caption = F.DescripcionCreditoAdicional
+             
+                     Set c = seccion.Controls.item("lblCbuEmisorFce")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = "CBU del Emisor: " & F.CBU
               
 
 
@@ -1887,11 +1931,30 @@ rptFacturaElectronica.LeftMargin = 250
         c.Visible = F.Tipo.PuntoVenta.EsCredito
         c.caption = "Hasta: " & Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
+                
+        Set c = seccion.Controls.item("lblConcepto")
+        c.Visible = F.ConceptoIncluir
         
-        Set c = seccion.Controls.item("lblCbuEmisorFce")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
-        c.caption = "CBU del Emisor: " & F.CBU
+       ' If F.ConceptoIncluir = 1 Then
+        c.caption = "Concepto: " & F.MostrarConcepto
         
+        
+                
+        'fce_nemer_02062020_#113
+        Set c = seccion.Controls.item("lblFechaServFceDesde")
+        If F.ConceptoIncluir = ConceptoServicio Or ConceptoProductoServicio Then
+         c.Visible = F.FechaServDesde
+         c.caption = F.FechaServDesde
+        End If
+    
+        
+        'fce_nemer_02062020_#113
+        Set c = seccion.Controls.item("lblFechaServFceHasta")
+        If F.ConceptoIncluir = ConceptoServicio Or ConceptoProductoServicio Then
+         c.Visible = F.FechaServHasta
+         c.caption = F.FechaServHasta
+        End If
+
      
         seccion.Controls.item("lblCliente").caption = Format(F.cliente.id, "0000") & " - " & F.cliente.razon
         seccion.Controls.item("lblCuit").caption = F.cliente.Cuit
@@ -2027,7 +2090,12 @@ seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.Total
         
         rptFacturaElectronica.PrintReport True
         
-        
+        conectar.BeginTransaction
+
+        conectar.execute "update AdminFacturas set impresa=impresa+1 where id=" & idFactura
+        conectar.execute "insert into AdminFacturasHistorial (idFactura,Nota,Fecha,idusuario) values (" & idFactura & ",'Factura impresa','" & funciones.datetimeFormateada(Now) & "'," & getUser & " )"
+        conectar.CommitTransaction
+
 
     Else
         MsgBox "Factura no disponible!", vbCritical, "Error"

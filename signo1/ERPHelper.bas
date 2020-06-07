@@ -137,7 +137,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     F.numero = id + 1
 
     Dim req As New FECAEDetRequest
-    req.Concepto = "1"
+    req.Concepto = F.ConceptoIncluir
     req.DocTipo = F.cliente.TipoDocumento
     req.DocNro = F.cliente.Cuit
     req.CbteDesde = F.numero

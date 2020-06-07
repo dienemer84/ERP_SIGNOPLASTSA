@@ -194,3 +194,5 @@ Public Function GetEntityId(entity As Object) As Variant
         GetEntityId = entity.id
     End If
 End Function
+
+

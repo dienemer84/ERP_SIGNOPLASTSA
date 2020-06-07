@@ -20,6 +20,8 @@ Private iidPercepcionIva As Long
 Private percepcionesIIBB As Collection
 Public IdCtaPercepcionesIIBBResto As Long
 
+
+
 Public Property Get idPercepcionesIIBB() As Collection
     Set idPercepcionesIIBB = percepcionesIIBB
 End Property
@@ -56,6 +58,32 @@ End Property
 
 
 
+Public Function EstaActualizando(cs As String) As Boolean
+
+  Dim cn As ADODB.Connection
+
+  
+
+    Set cn = New ADODB.Connection
+
+    cn.ConnectionString = cs
+    cn.Open
+
+
+Dim rstmp As New ADODB.Recordset
+
+Dim rs As Recordset
+    If rstmp.State = 1 Then rstmp.Close
+    rstmp.Open "select actualizando from configuracion", cn, CursorTypeEnum.adOpenStatic, LockTypeEnum.adLockOptimistic, adCmdText
+    Set rs = rstmp
+ 
+    EstaActualizando = rs!Actualizando
+    rs.Close
+    cn.Close
+    
+
+
+End Function
 
 
 

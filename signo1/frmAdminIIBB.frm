@@ -326,7 +326,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   59047936
+         Format          =   59179008
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -339,7 +339,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   59047937
+         Format          =   59179009
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -352,7 +352,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   59047937
+         Format          =   59179009
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -977,8 +977,8 @@ Private Sub Command3ss_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1052,7 +1052,7 @@ End Sub
 
 
 
-Private Sub Command1_Click(Index As Integer)
+Private Sub Command1_Click(index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Retencion"
@@ -1064,7 +1064,7 @@ Private Sub Command1_Click(Index As Integer)
 
 End Sub
 
-Private Sub Command2_Click(Index As Integer)
+Private Sub Command2_Click(index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Padron_CABA"
@@ -1072,16 +1072,16 @@ Private Sub Command2_Click(Index As Integer)
         tabla = "IIBB2_Padron_CABA_Ant"
     End If
 
-    MostrarResultadoCABA tabla, Me.txtCuit, "P"
+    'MostrarResultadoCABA tabla, Me.txtCuit, "P"
 
 End Sub
 
-Private Sub Command3_Click(Index As Integer)
+Private Sub Command3_Click(index As Integer)
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1103,8 +1103,8 @@ Private Sub Command5_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronPercepcion) Then
@@ -1136,8 +1136,8 @@ Private Sub Command7_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronUnificadoCABA) Then
@@ -1153,7 +1153,7 @@ End Sub
 
 
 
-Private Sub Command9_Click(Index As Integer)
+Private Sub Command9_Click(index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Padron_CABA"
@@ -1161,7 +1161,7 @@ Private Sub Command9_Click(Index As Integer)
         tabla = "IIBB2_Padron_CABA_Ant"
     End If
 
-    MostrarResultadoCABA tabla, Me.txtCuit, "R"
+    'MostrarResultadoCABA tabla, Me.txtCuit, "R"
 End Sub
 
 Private Sub Form_Load()

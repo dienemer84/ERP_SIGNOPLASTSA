@@ -76,7 +76,12 @@ Public Enum EstadoProveedor
     EstadoProveedorEliminado = 0
 End Enum
 
-
+Public Enum ConceptoIncluir
+    ConceptoProducto = 1
+    ConceptoServicio = 2
+    ConceptoProductoServicio = 3
+    
+End Enum
 
 Public Enum EstadoOrdenPago
     EstadoOrdenPago_pendiente = 0

@@ -518,9 +518,6 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin VB.Menu finalizar 
          Caption         =   "Aprobar..."
       End
-      Begin VB.Menu mnuEliminar 
-         Caption         =   "Eliminar"
-      End
       Begin VB.Menu mnuPagarEnEfectivo 
          Caption         =   "Pagar en Efectivo..."
       End
@@ -531,6 +528,12 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Caption         =   "Adquirir..."
       End
       Begin VB.Menu n1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuEliminar 
+         Caption         =   "Eliminar"
+      End
+      Begin VB.Menu n2 
          Caption         =   "-"
       End
       Begin VB.Menu MnuVerOP 

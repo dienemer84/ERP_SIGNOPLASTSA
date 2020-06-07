@@ -31,7 +31,8 @@ Public CAEFechaProceso
 Public Tipo As clsTipoFacturaDiscriminado
 Public TipoIVA As clsTipoIVA
 Public CaeSolicitarResponse As CAESolicitar
-
+'agregado 31052020
+Public ConceptoIncluir As ConceptoIncluir
 'agregado 25-6-12
 Public IdMonedaAjuste As Long
 Public TipoCambioAjuste As Double
@@ -63,6 +64,11 @@ Public CBU As String
 'fce_nemer_28052020
 Public FechaVtoDesde As Date
 Public FechaVtoHasta As Date
+
+'fce_nemer_02062020_#113
+Public FechaServDesde As Date
+Public FechaServHasta As Date
+
 
 
 
@@ -149,15 +155,15 @@ End Function
 
 Public Function getDescripcionCondicion() As String
     
-    Dim a As String
+    Dim A As String
     If Me.CantDiasPago = 1 Then
-        a = Me.CantDiasPago & " dia FF"
+        A = Me.CantDiasPago & " dia FF"
     Else
-        a = Me.CantDiasPago & " dias FF"
+        A = Me.CantDiasPago & " dias FF"
     End If
 
 
-getDescripcionCondicion = a & Me.observaciones
+getDescripcionCondicion = A & Me.observaciones
 
 End Function
 
@@ -249,7 +255,12 @@ End Property
 Public Property Get EstaVencida() As Boolean
     EstaVencida = (Date > Vencimiento)
 End Property
+Public Property Get MostrarConcepto() As String
+If Me.ConceptoIncluir = 1 Then MostrarConcepto = "Productos"
+If Me.ConceptoIncluir = 2 Then MostrarConcepto = "Servicios"
+If Me.ConceptoIncluir = 3 Then MostrarConcepto = "Productos y Servicios"
 
+End Property
 Public Property Get Total() As Double
     Dim totIva As Double
     Dim totPercepciones As Double
