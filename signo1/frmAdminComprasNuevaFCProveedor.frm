@@ -442,7 +442,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   59834369
+      Format          =   60162049
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -778,6 +778,7 @@ Dim loading As Boolean
 Dim colAlicuotas As New Collection
 Dim aliaplicada As clsAlicuotaAplicada
 
+Public TmpProveedor As clsProveedor
 Dim colPercepciones As Collection
 Dim colPercepcionesTMP As New Collection
 
@@ -787,7 +788,6 @@ Dim perAplicada As clsPercepcionesAplicadas
 
 Dim colCuentas As Collection
 
-Public TmpProveedor As clsProveedor
 Dim ctaAplicada As clsCuentaFactura
 Dim ctaContable As clsCuentaContable
 Dim Percepcion As New clsPercepciones
@@ -906,7 +906,6 @@ Private Sub LimpiarProveedor()
     Me.cboTiposFactura.Clear
 End Sub
 
-Public TmpProveedor As clsProveedor
 Private Sub cmdDisponer_Click()
 
 
