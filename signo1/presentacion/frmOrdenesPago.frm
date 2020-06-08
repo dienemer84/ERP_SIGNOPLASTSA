@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmOrdenesPago 
    Caption         =   "Ordenes de Pago"
    ClientHeight    =   7050
@@ -755,9 +755,10 @@ Private Sub PushButton1_Click()
             Orden.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
             If Not DAOOrdenPago.Guardar(Orden) Then Stop
-        'revisar error al compilar 24052020
+
             If Orden.estado = EstadoOrdenPago_Aprobada And Orden.StaticTotalRetenido > 0 Then
-             '   If Not IsSomething(DAOCertificadoRetencion.Create(Orden, True)) Then Stop
+                ' If Not IsSomething(DAOCertificadoRetencion.Create(Orden,) Then Stop
+                Err.Raise "ver error en frmOrdenesPago"
             End If
 
         End If

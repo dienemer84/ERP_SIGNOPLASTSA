@@ -938,7 +938,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
@@ -951,7 +951,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.AnularFactura.Visible = True
                 Me.AnularFactura.Enabled = False
                 Me.aprobarFactura.Enabled = True
-                Me.aprobarFactura.Visible = True
+                Me.aprobarFactura.Visible = Not Factura.Tipo.PuntoVenta.EsCredito
                 
                 Me.mnuAprobarSinEnvio.Enabled = True
                 Me.mnuAprobarSinEnvio.Visible = True
@@ -979,8 +979,8 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.mnuAprobarSinEnvio.Enabled = False
                 Me.mnuAprobarSinEnvio.Visible = False
                 
-                Me.mnuEditarCAE.Enabled = True
-                Me.mnuEditarCAE.Visible = True
+                Me.mnuEditarCAE.Enabled = Not Factura.EstaImpresa
+                Me.mnuEditarCAE.Visible = Not Factura.EstaImpresa
                 
                 Me.ImprimirFactura.Enabled = True
                 Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado = TipoSaldadoFactura.saldadoTotal)
@@ -1018,8 +1018,8 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.mnuAprobarSinEnvio.Enabled = False
                 Me.mnuAprobarSinEnvio.Visible = False
                 
-                Me.mnuEditarCAE.Enabled = True
-                Me.mnuEditarCAE.Visible = True
+                Me.mnuEditarCAE.Enabled = False
+                Me.mnuEditarCAE.Visible = False
               
                 Me.ImprimirFactura.Enabled = True
                 Me.aplicar.Enabled = False
@@ -1138,7 +1138,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
           Values(16) = "CAE no definido"
         Else
    
-          Values(16) = Values(16) & " CAE: " & Factura.CAE & " Vto CAE: " & Factura.CAEVto
+          Values(16) = Values(16) & " CAE: " & Factura.CAE & " Vto CAE: " & Format(Factura.CAEVto, "dd/mm/yyyy")
         End If
     End If
 End If
@@ -1211,22 +1211,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-               CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 3
-                CD.ShowPrinter
+               cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 3
+                cd.ShowPrinter
                 Dim i As Long
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAOFactura.Imprimir Factura.id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fué impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 3
-                CD.ShowPrinter
+                cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 3
+                cd.ShowPrinter
 
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAOFactura.Imprimir Factura.id
                 Next i
             End If

@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#13.2#0"; "Codejock.Controls.v13.2.1.ocx"
 Begin VB.Form frmAdminIIBB 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -326,7 +326,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   60096512
+         Format          =   58327040
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -339,7 +339,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   60096513
+         Format          =   58327041
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -352,7 +352,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   60096513
+         Format          =   58327041
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -608,7 +608,7 @@ Begin VB.Form frmAdminIIBB
          TabIndex        =   34
          Top             =   1320
          Width           =   1575
-         _Version        =   786432
+         _Version        =   851970
          _ExtentX        =   2778
          _ExtentY        =   661
          _StockProps     =   79
@@ -651,7 +651,7 @@ Begin VB.Form frmAdminIIBB
          TabIndex        =   24
          Top             =   1320
          Width           =   2880
-         _Version        =   786432
+         _Version        =   851970
          _ExtentX        =   5080
          _ExtentY        =   556
          _StockProps     =   77
@@ -666,7 +666,7 @@ Begin VB.Form frmAdminIIBB
          TabIndex        =   33
          Top             =   840
          Width           =   2880
-         _Version        =   786432
+         _Version        =   851970
          _ExtentX        =   5080
          _ExtentY        =   556
          _StockProps     =   77
@@ -811,11 +811,11 @@ Private Sub MostrarResultado(tabla As String, Cuit As String)
         If Not rs.EOF And Not rs.BOF Then
 
             If rs!Discriminador = "R" Then
-                Me.frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
+                Me.Frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
             ElseIf rs!Discriminador = "P" Then
-                Me.frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
+                Me.Frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
             Else
-                Me.frame2.caption = "[ Sin resultado ]"
+                Me.Frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
             Me.lblCambio = rs!Cambio
@@ -872,7 +872,7 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
         If Not rs.EOF And Not rs.BOF Then
 
 '
-              Me.frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
+              Me.Frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
               
 
           '   Me.lblGrupo = rs!GrupoPercepcion
@@ -1072,7 +1072,7 @@ Private Sub Command2_Click(index As Integer)
         tabla = "IIBB2_Padron_CABA_Ant"
     End If
 
-    ' MostrarResultadoCABA tabla, Me.txtCuit, "P"
+    'MostrarResultadoCABA tabla, Me.txtCuit, "P"
 
 End Sub
 
@@ -1161,7 +1161,7 @@ Private Sub Command9_Click(index As Integer)
         tabla = "IIBB2_Padron_CABA_Ant"
     End If
 
-   ' MostrarResultadoCABA tabla, Me.txtCuit, "R"
+    'MostrarResultadoCABA tabla, Me.txtCuit, "R"
 End Sub
 
 Private Sub Form_Load()

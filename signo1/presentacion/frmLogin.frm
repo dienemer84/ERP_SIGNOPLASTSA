@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#13.2#0"; "Codejock.Controls.v13.2.1.ocx"
 Begin VB.Form frmLogin 
    BackColor       =   &H00FF8080&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -47,7 +47,7 @@ Begin VB.Form frmLogin
       TabIndex        =   4
       Top             =   1515
       Width           =   1560
-      _Version        =   786432
+      _Version        =   851970
       _ExtentX        =   2752
       _ExtentY        =   714
       _StockProps     =   79
@@ -61,7 +61,7 @@ Begin VB.Form frmLogin
       TabIndex        =   3
       Top             =   1515
       Width           =   1560
-      _Version        =   786432
+      _Version        =   851970
       _ExtentX        =   2752
       _ExtentY        =   714
       _StockProps     =   79
@@ -241,6 +241,10 @@ Private Sub Command1_Click()
     If UBound(fullserver) = 1 Then
         port = fullserver(1)
         ip = fullserver(0)
+    Else
+        If UBound(fullserver) = 0 Then
+           ip = fullserver(0)
+        End If
     End If
 
 

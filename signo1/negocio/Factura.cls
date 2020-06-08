@@ -31,7 +31,8 @@ Public CAEFechaProceso
 Public Tipo As clsTipoFacturaDiscriminado
 Public TipoIVA As clsTipoIVA
 Public CaeSolicitarResponse As CAESolicitar
-
+'agregado 31052020
+Public ConceptoIncluir As ConceptoIncluir
 'agregado 25-6-12
 Public IdMonedaAjuste As Long
 Public TipoCambioAjuste As Double
@@ -57,8 +58,18 @@ Public TotalEstatico As New FacturaTotalEstatico
 Private m_ots_facturadas_anticipo As Collection
 Private m_detalles As Collection
 
-Public FechaPago As Date    'para fce
+Public fechaPago As Date    'para fce
 Public CBU As String
+
+'fce_nemer_28052020
+Public FechaVtoDesde As Date
+Public FechaVtoHasta As Date
+
+'fce_nemer_02062020_#113
+Public FechaServDesde As Date
+Public FechaServHasta As Date
+
+
 
 
 Public TasaAjusteMensual As Double  'de aca se empieza
@@ -244,7 +255,12 @@ End Property
 Public Property Get EstaVencida() As Boolean
     EstaVencida = (Date > Vencimiento)
 End Property
+Public Property Get MostrarConcepto() As String
+If Me.ConceptoIncluir = 1 Then MostrarConcepto = "Productos"
+If Me.ConceptoIncluir = 2 Then MostrarConcepto = "Servicios"
+If Me.ConceptoIncluir = 3 Then MostrarConcepto = "Productos y Servicios"
 
+End Property
 Public Property Get Total() As Double
     Dim totIva As Double
     Dim totPercepciones As Double
@@ -483,3 +499,4 @@ Public Sub RemoveDetallesAnticipoOT()
         End If
     Next
 End Sub
+
