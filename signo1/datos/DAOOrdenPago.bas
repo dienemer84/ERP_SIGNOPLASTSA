@@ -916,7 +916,11 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
    ' Printer.Print cert.id & "%"
    ' Next
     
-    If Not IsSomething(allcert) Or allcert.count = 0 Then
+   If allcert Is Nothing Then
+   Set allcert = New Collection
+   End If
+   
+    If allcert Is Nothing Or Not IsSomething(allcert) Or allcert.count = 0 Then
         Printer.FontBold = True
         Printer.CurrentX = lmargin
         Printer.Print "Certificado IIBB Nº: ";
