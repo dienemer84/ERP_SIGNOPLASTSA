@@ -1923,6 +1923,16 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.Visible = F.Tipo.PuntoVenta.EsCredito
         c.caption = "Fecha de Vto. para el pago: " & Format(F.fechaPago, "dd/mm/yyyy")
         
+        'fce_nemer_09062020
+        Set c = seccion.Controls.item("lblDias")
+        If F.CantDiasPago = 1 Then
+        c.caption = F.CantDiasPago & " día."
+        Else
+        c.caption = F.CantDiasPago & " días."
+        End If
+           
+        
+        
         Set c = seccion.Controls.item("lblFechaPagoFceDesde")
         c.Visible = F.Tipo.PuntoVenta.EsCredito
         c.caption = "Período Facturado Desde: " & Format(F.FechaVtoDesde, "dd/mm/yyyy")
@@ -1932,10 +1942,11 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.caption = "Hasta: " & Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
                 
-        Set c = seccion.Controls.item("lblConcepto1")
+        Set c = seccion.Controls.item("lblConceptoTexto")
         'c.Visible = F.ConceptoIncluir
-   
-        c.caption = "Concepto: " & F.MostrarConcepto
+        'fce_nemer_09062020
+        c.caption = F.MostrarConcepto
+        
         
         
                 

@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Factura"
@@ -39,6 +39,7 @@ Begin VB.Form frmFacturaEdicion
       UseVisualStyle  =   -1  'True
    End
    Begin VB.Frame frmFC 
+      Caption         =   "Factura de Crédito Eléctronica"
       Enabled         =   0   'False
       Height          =   2415
       Left            =   11640
@@ -75,7 +76,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58785793
+         Format          =   59113473
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -97,7 +98,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58785793
+         Format          =   59113473
          CurrentDate     =   43967
       End
       Begin VB.Label lblPeriodoFacturadoH 
@@ -227,10 +228,9 @@ Begin VB.Form frmFacturaEdicion
       Begin VB.Label lblEsCredito 
          Caption         =   "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMES (FCE)"
          Height          =   255
-         Left            =   120
+         Left            =   2040
          TabIndex        =   74
-         Top             =   0
-         Visible         =   0   'False
+         Top             =   1680
          Width           =   3975
       End
    End
@@ -315,7 +315,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58785793
+         Format          =   59113473
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta 
@@ -337,7 +337,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58785793
+         Format          =   59113473
          CurrentDate     =   43983
       End
       Begin VB.ComboBox cboConceptosAIncluir 
@@ -379,7 +379,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58785793
+         Format          =   59113473
          CurrentDate     =   43967
       End
       Begin VB.Line Line7 
@@ -700,7 +700,7 @@ Begin VB.Form frmFacturaEdicion
       _StockProps     =   79
       Caption         =   "Datos"
       UseVisualStyle  =   -1  'True
-      Begin XtremeSuiteControls.GroupBox GroupBox1 
+      Begin XtremeSuiteControls.GroupBox grpInfo 
          Height          =   1695
          Left            =   120
          TabIndex        =   79
@@ -711,7 +711,6 @@ Begin VB.Form frmFacturaEdicion
          _ExtentY        =   2990
          _StockProps     =   79
          Caption         =   "Detalles"
-         Enabled         =   0   'False
          UseVisualStyle  =   -1  'True
          Begin VB.TextBox txtReferencia 
             Height          =   300
@@ -795,7 +794,6 @@ Begin VB.Form frmFacturaEdicion
          _ExtentY        =   2990
          _StockProps     =   79
          Caption         =   "Percepciones IIBB"
-         Enabled         =   0   'False
          UseVisualStyle  =   -1  'True
          Begin VB.TextBox txtPercepcion 
             Height          =   300
@@ -870,7 +868,6 @@ Begin VB.Form frmFacturaEdicion
       End
       Begin VB.TextBox txtNumero 
          Alignment       =   1  'Right Justify
-         Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   12
@@ -919,7 +916,6 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Enabled         =   0   'False
          Format          =   1
          CurrentDate     =   40234.4177546296
       End
@@ -943,7 +939,6 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Enabled         =   0   'False
          Style           =   2
          Appearance      =   6
          Text            =   "cboMoneda"
@@ -969,7 +964,6 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Enabled         =   0   'False
          Style           =   2
          Text            =   "cboMoneda"
          DropDownItemCount=   3
@@ -987,7 +981,6 @@ Begin VB.Form frmFacturaEdicion
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          Caption         =   "Punto:"
-         Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   12
@@ -1026,7 +1019,6 @@ Begin VB.Form frmFacturaEdicion
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          Caption         =   "Moneda:"
-         Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   12
@@ -1046,7 +1038,6 @@ Begin VB.Form frmFacturaEdicion
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          Caption         =   "Fecha:"
-         Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   12
@@ -1066,7 +1057,6 @@ Begin VB.Form frmFacturaEdicion
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          Caption         =   "Numero:"
-         Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   12
@@ -1554,10 +1544,13 @@ On Error GoTo err1
         
         Set c = DAOCuentaBancaria.FindById(Me.cboCuentasCBU.ItemData(Me.cboCuentasCBU.ListIndex))
         
+        
+        
         If IsSomething(c) Then
           Factura.CBU = c.CBU
         End If
         
+           
            
         Factura.observaciones = Me.txtCondObs.text
    
@@ -1739,7 +1732,7 @@ Private Sub cboCliente_Click()
         Me.cboMoneda.Enabled = True
         
         Me.grpPercep.Enabled = True
-        Me.GroupBox1.Enabled = True
+        Me.grpInfo.Enabled = True
         
         Me.cboConceptosAIncluir.Enabled = True
         
@@ -1961,11 +1954,13 @@ Private Sub cmdNueva_Click()
 End Sub
 
 
-
 Private Sub dtFechaPagoCredito_Change()
    If Not dataLoading Then
         Factura.fechaPago = Me.dtFechaPagoCredito.value
     End If
+    
+    Me.txtDiasVenc = DateDiff("d", Me.dtpFecha, Me.dtFechaPagoCredito)
+    
 End Sub
 
 'fce_nemer_28052020
@@ -2007,6 +2002,11 @@ Private Sub dtpFecha_Change()
         'fce_nemer_02062020_#113
         Me.dtFechaServDesde.value = Me.dtpFecha.value
         Me.dtFechaServHasta.value = Me.dtpFecha.value
+        
+        'fce_nemer_09062020
+        txtDiasVenc_LostFocus
+        
+        Me.txtDiasVenc = DateDiff("d", Me.dtpFecha, Me.dtFechaPagoCredito)
         
     End If
     
@@ -2099,6 +2099,7 @@ Private Sub Form_Load()
     Me.grpDatos.Enabled = Not ReadOnly
     Me.cboMonedaAjuste.Enabled = Not ReadOnly
     'Me.grpDetalles.Enabled = Not ReadOnly
+    
     If ReadOnly Then
         Me.gridDetalles.EditMode = jgexEditModeOff
         Me.gridDetalles.AllowAddNew = False
@@ -2338,9 +2339,9 @@ Private Sub gridDetalles_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not IsNumeric(Me.gridDetalles.value(1)) Or Not IsNumeric(Me.gridDetalles.value(3)) Or Not IsNumeric(Me.gridDetalles.value(4))
 End Sub
 
-Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(X, Y) = jgexHitTestConstants.jgexHTCell Then
-        Dim row As Long: row = Me.gridDetalles.RowFromPoint(X, Y)
+Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
+        Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
         If row > 0 Then
             Set detalle = Factura.Detalles.item(Me.gridDetalles.RowIndex(row))
             If IsSomething(detalle) Then
@@ -2628,15 +2629,25 @@ Private Sub PushButton1_Click()
 End Sub
 
 
+'fce_nemer_09062020
+Public Sub txtDiasVenc_LostFocus()
 
+            Me.dtFechaPagoCredito.value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
 
+End Sub
+    
 
 
 
 Private Sub txtDiasVenc_Change()
     If Not dataLoading Then
         Factura.CantDiasPago = Val(Me.txtDiasVenc.text)
+        
+
     End If
+    
+
+    
 End Sub
 
 Private Sub txtNumero_Change()
