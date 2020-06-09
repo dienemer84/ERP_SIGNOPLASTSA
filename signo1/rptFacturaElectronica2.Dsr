@@ -4,13 +4,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    ClientHeight    =   11565
    ClientLeft      =   165
    ClientTop       =   555
-   ClientWidth     =   23880
+   ClientWidth     =   19080
    StartUpPosition =   3  'Windows Default
    _ExtentX        =   50588
    _ExtentY        =   25162
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11712
+   ReportWidth     =   11100
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -854,10 +854,10 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       ItemType26      =   3
       BeginProperty Item26 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
-         Name            =   "lblConcepto"
+         Name            =   "lblConcepto1"
          Object.Left            =   210
          Object.Top             =   2055
-         Object.Width           =   1395
+         Object.Width           =   3720
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"

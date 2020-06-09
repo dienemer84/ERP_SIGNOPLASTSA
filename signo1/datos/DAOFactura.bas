@@ -1932,10 +1932,9 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.caption = "Hasta: " & Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
                 
-        Set c = seccion.Controls.item("lblConcepto")
-        c.Visible = F.ConceptoIncluir
-        
-       ' If F.ConceptoIncluir = 1 Then
+        Set c = seccion.Controls.item("lblConcepto1")
+        'c.Visible = F.ConceptoIncluir
+   
         c.caption = "Concepto: " & F.MostrarConcepto
         
         
