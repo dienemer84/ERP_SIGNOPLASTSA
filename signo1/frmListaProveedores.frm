@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasProveedoresLista 
    BackColor       =   &H00FF8080&
    Caption         =   "Proveedores"
@@ -37,7 +37,7 @@ Begin VB.Form frmComprasProveedoresLista
    Begin XtremeSuiteControls.PushButton Command1 
       Default         =   -1  'True
       Height          =   375
-      Left            =   11370
+      Left            =   11880
       TabIndex        =   4
       Top             =   4635
       Width           =   1335
@@ -59,9 +59,9 @@ Begin VB.Form frmComprasProveedoresLista
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
-      Left            =   7320
+      Left            =   8280
       TabIndex        =   0
-      Top             =   4680
+      Top             =   5040
       Width           =   3975
    End
    Begin GridEX20.GridEX grilla 
@@ -127,7 +127,7 @@ Begin VB.Form frmComprasProveedoresLista
       Height          =   315
       Left            =   8280
       TabIndex        =   7
-      Top             =   5415
+      Top             =   5430
       Width           =   3525
       _Version        =   786432
       _ExtentX        =   6218
@@ -151,6 +151,19 @@ Begin VB.Form frmComprasProveedoresLista
       BackColor       =   12632256
       UseVisualStyle  =   -1  'True
    End
+   Begin XtremeSuiteControls.Label Label1 
+      Height          =   255
+      Left            =   7200
+      TabIndex        =   12
+      Top             =   5055
+      Width           =   1095
+      _Version        =   786432
+      _ExtentX        =   1931
+      _ExtentY        =   450
+      _StockProps     =   79
+      Caption         =   "Razón Social:"
+      BackColor       =   12632256
+   End
    Begin XtremeSuiteControls.Label lblCuit 
       Height          =   195
       Left            =   30
@@ -167,15 +180,15 @@ Begin VB.Form frmComprasProveedoresLista
    End
    Begin XtremeSuiteControls.Label Label3 
       Height          =   195
-      Left            =   7260
+      Left            =   7275
       TabIndex        =   9
       Top             =   5490
-      Width           =   975
+      Width           =   1020
       _Version        =   786432
-      _ExtentX        =   1720
+      _ExtentX        =   1799
       _ExtentY        =   344
       _StockProps     =   79
-      Caption         =   "Nom Fantasia"
+      Caption         =   "Nom Fantasia:"
       BackColor       =   12632256
       AutoSize        =   -1  'True
    End
@@ -364,13 +377,13 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     ordenar_grilla Column, Me.grilla
 End Sub
 Private Sub grilla_DblClick()
-    a = grilla.RowIndex(grilla.row)
-    If vSeleccionar And a > 0 Then
-        Selecciones.proveedorElegido = proveedores(a)
+    A = grilla.RowIndex(grilla.row)
+    If vSeleccionar And A > 0 Then
+        Selecciones.proveedorElegido = proveedores(A)
     Else
-        If grilla.rowcount > 0 And a > 0 Then
+        If grilla.rowcount > 0 And A > 0 Then
 
-            Set Proveedor = proveedores(a)
+            Set Proveedor = proveedores(A)
             frmComprasProveedoresModifica.Proveedor = Proveedor
             frmComprasProveedoresModifica.Show
         End If
@@ -446,3 +459,4 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 err1:
 
 End Function
+

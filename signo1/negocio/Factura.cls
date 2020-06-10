@@ -255,6 +255,7 @@ End Property
 Public Property Get EstaVencida() As Boolean
     EstaVencida = (Date > Vencimiento)
 End Property
+
 Public Property Get MostrarConcepto() As String
 If Me.ConceptoIncluir = 1 Then MostrarConcepto = "Productos"
 If Me.ConceptoIncluir = 2 Then MostrarConcepto = "Servicios"

@@ -1919,53 +1919,80 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
         Set seccion = rptFacturaElectronica.Sections("detailsHead")
         
-        Set c = seccion.Controls.item("lblFechaPagoFce")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
-        c.caption = "Fecha de Vto. para el pago: " & Format(F.fechaPago, "dd/mm/yyyy")
+        'fce_nemer_10062020
+        
+        
+        Set c = seccion.Controls.item("lblFechaPagoFceDato")
+        c.caption = Format(F.fechaPago, "dd/mm/yyyy")
+
         
         'fce_nemer_09062020
         Set c = seccion.Controls.item("lblDias")
         If F.CantDiasPago = 1 Then
-        c.caption = F.CantDiasPago & " día."
+                c.caption = "/ " & F.CantDiasPago & " día"
         Else
-        c.caption = F.CantDiasPago & " días."
+                c.caption = "/ " & F.CantDiasPago & " días"
         End If
            
-        
-        
+           
         Set c = seccion.Controls.item("lblFechaPagoFceDesde")
         c.Visible = F.Tipo.PuntoVenta.EsCredito
-        c.caption = "Período Facturado Desde: " & Format(F.FechaVtoDesde, "dd/mm/yyyy")
+        
+        Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = Format(F.FechaVtoDesde, "dd/mm/yyyy")
+        
         
         Set c = seccion.Controls.item("lblFechaPagoFceHasta")
         c.Visible = F.Tipo.PuntoVenta.EsCredito
-        c.caption = "Hasta: " & Format(F.FechaVtoHasta, "dd/mm/yyyy")
+              
+        Set c = seccion.Controls.item("FechaPagoFceHastaDato")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
                 
         Set c = seccion.Controls.item("lblConceptoTexto")
-        'c.Visible = F.ConceptoIncluir
         'fce_nemer_09062020
         c.caption = F.MostrarConcepto
         
         
         
                 
-        'fce_nemer_02062020_#113
+        'fce_nemer_10062020_#113
         Set c = seccion.Controls.item("lblFechaServFceDesde")
-        If F.ConceptoIncluir = ConceptoServicio Or ConceptoProductoServicio Then
-         c.Visible = F.FechaServDesde
-         c.caption = F.FechaServDesde
+        If F.MostrarConcepto = "Productos" Then
+            c.caption = ""
+            Else
+            c.caption = "Fecha del Servicio Desde:"
         End If
-    
         
-        'fce_nemer_02062020_#113
-        Set c = seccion.Controls.item("lblFechaServFceHasta")
-        If F.ConceptoIncluir = ConceptoServicio Or ConceptoProductoServicio Then
-         c.Visible = F.FechaServHasta
-         c.caption = F.FechaServHasta
+        'fce_nemer_10062020_#113
+        Set c = seccion.Controls.item("FechaServFceDesdeDato")
+        If F.MostrarConcepto = "Productos" Then
+            c.caption = ""
+            Else
+            c.caption = Format(F.FechaServDesde, "dd/mm/yyyy")
         End If
 
-     
+        
+        'fce_nemer_10062020_#113
+        Set c = seccion.Controls.item("lblFechaServFceHasta")
+        If F.MostrarConcepto = "Productos" Then
+            c.caption = ""
+            Else
+            c.caption = "Hasta:"
+        End If
+        
+        'fce_nemer_10062020_#113
+        Set c = seccion.Controls.item("FechaServFceHastaDato")
+        If F.MostrarConcepto = "Productos" Then
+            c.caption = ""
+            Else
+            c.caption = Format(F.FechaServHasta, "dd/mm/yyyy")
+        End If
+        
+        
+    
         seccion.Controls.item("lblCliente").caption = Format(F.cliente.id, "0000") & " - " & F.cliente.razon
         seccion.Controls.item("lblCuit").caption = F.cliente.Cuit
         seccion.Controls.item("lblIva").caption = F.cliente.TipoIVA.detalle

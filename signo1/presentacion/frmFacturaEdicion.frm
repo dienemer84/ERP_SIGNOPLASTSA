@@ -76,7 +76,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59113473
+         Format          =   62324737
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -98,7 +98,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59113473
+         Format          =   62324737
          CurrentDate     =   43967
       End
       Begin VB.Label lblPeriodoFacturadoH 
@@ -315,7 +315,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59113473
+         Format          =   62324737
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta 
@@ -337,7 +337,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59113473
+         Format          =   62324737
          CurrentDate     =   43983
       End
       Begin VB.ComboBox cboConceptosAIncluir 
@@ -379,7 +379,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59113473
+         Format          =   62324737
          CurrentDate     =   43967
       End
       Begin VB.Line Line7 
@@ -1549,9 +1549,8 @@ On Error GoTo err1
         If IsSomething(c) Then
           Factura.CBU = c.CBU
         End If
-        
-           
-           
+
+          
         Factura.observaciones = Me.txtCondObs.text
    
         
@@ -2030,7 +2029,9 @@ Private Sub Form_Load()
         Set Factura = New Factura
         Factura.Detalles = New Collection
         Set Factura.Tipo = New clsTipoFacturaDiscriminado
+        
         Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(1, Me.cboConceptosAIncluir)
+        
         Factura.Tipo.TipoDoc = NuevoTipoDocumento
         Me.caption = "Nueva " & StrConv(Factura.TipoDocumentoDescription, vbProperCase)
         Me.dtpFecha.value = Now
