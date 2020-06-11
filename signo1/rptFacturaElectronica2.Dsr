@@ -898,6 +898,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Top             =   1725
          Object.Width           =   1275
          Object.Height          =   270
+         Object.Visible         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   9.75
