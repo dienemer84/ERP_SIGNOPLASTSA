@@ -536,17 +536,17 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         
         
         'guardo las retenciones aplicadas
-   q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.id
-        If Not conectar.execute(q) Then GoTo E
-
-        Dim r As DTORetencionAlicuota
-        For Each r In op.RetencionesAlicuota
-            
-         
-
-          ' q = "INSERT INTO retenciones_alicuotas VALUES (" & op.id & ", " & che.id & ")"
-          '  If Not conectar.execute(q) Then GoTo E
-        Next r
+'   q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.id
+'        If Not conectar.execute(q) Then GoTo E
+'
+'        Dim r As DTORetencionAlicuota
+'        For Each r In op.RetencionesAlicuota
+'
+'
+'
+'          ' q = "INSERT INTO retenciones_alicuotas VALUES (" & op.id & ", " & che.id & ")"
+'          '  If Not conectar.execute(q) Then GoTo E
+'        Next r
 
 
         'guardo los compensatorios

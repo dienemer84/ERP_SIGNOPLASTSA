@@ -479,9 +479,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequesDisponibles 
       Height          =   2640
-      Left            =   13200
+      Left            =   11520
       TabIndex        =   7
-      Top             =   240
+      Top             =   3720
       Visible         =   0   'False
       Width           =   9555
       _ExtentX        =   16854
@@ -1564,6 +1564,8 @@ Private Sub cmdMostrarDatosProveedor_Click()
 
        
 MostrarFacturas
+
+btnCargar_Click
 
 End Sub
 
