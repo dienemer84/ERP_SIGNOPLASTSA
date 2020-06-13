@@ -76,7 +76,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -98,7 +98,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin VB.Label lblPeriodoFacturadoH 
@@ -315,7 +315,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58982401
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta 
@@ -337,7 +337,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58982401
          CurrentDate     =   43983
       End
       Begin VB.ComboBox cboConceptosAIncluir 
@@ -353,11 +353,11 @@ Begin VB.Form frmFacturaEdicion
          EndProperty
          Height          =   360
          ItemData        =   "frmFacturaEdicion.frx":0010
-         Left            =   1920
+         Left            =   1800
          List            =   "frmFacturaEdicion.frx":001D
          Style           =   2  'Dropdown List
          TabIndex        =   10
-         Top             =   285
+         Top             =   240
          Width           =   3975
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCredito 
@@ -379,7 +379,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin VB.Line Line7 
@@ -1552,7 +1552,7 @@ On Error GoTo err1
 
           
         Factura.observaciones = Me.txtCondObs.text
-   
+        ASociarConcepto
         
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
@@ -1826,9 +1826,17 @@ Private Sub MostrarPercepcionIIBB()
     End If
 End Sub
 
-Private Sub cboConceptosAIncluir_Click()
-    If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
+Private Sub ASociarConcepto()
+If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
         Factura.ConceptoIncluir = Me.cboConceptosAIncluir.ItemData(Me.cboConceptosAIncluir.ListIndex)
+End If
+End Sub
+
+Private Sub ConceptosIncuir()
+If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
+
+        ASociarConcepto
+        
         
         Me.lblFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
         Me.dtFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
@@ -1860,6 +1868,11 @@ Private Sub cboConceptosAIncluir_Click()
             Me.dtFechaServHasta.Enabled = False
     End If
 
+End Sub
+
+
+Private Sub cboConceptosAIncluir_Click()
+    ConceptosIncuir
 
 End Sub
 
@@ -2264,7 +2277,7 @@ Private Sub CargarFactura()
             Me.lblVerCbu.Visible = True
             Me.lblVerCbu = "NO INFORMADO"
       End If
-          
+          ConceptosIncuir
       '''TODO: SEGUIR ACA 1-5-2020
 '          If IsSomething(c) Then
 '          Me.lblVerCbu.Visible = False

@@ -4,7 +4,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    ClientHeight    =   11565
    ClientLeft      =   165
    ClientTop       =   555
-   ClientWidth     =   19080
+   ClientWidth     =   11955
    StartUpPosition =   3  'Windows Default
    _ExtentX        =   50588
    _ExtentY        =   25162
@@ -569,7 +569,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCondicionPagoFCE"
-         Object.Left            =   1850
+         Object.Left            =   3500
          Object.Top             =   1410
          Object.Width           =   4530
          Object.Height          =   285
@@ -609,7 +609,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Name            =   "Etiqueta20"
          Object.Left            =   210
          Object.Top             =   1410
-         Object.Width           =   1785
+         Object.Width           =   3780
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -620,7 +620,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "COND. DE VENTA:"
+         Object.Caption         =   "COND. DE VENTA / OBSERVACIONES:"
       EndProperty
       ItemType14      =   3
       BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 

@@ -1609,7 +1609,6 @@ If saldadoTotal Then
         nc.estado = CanceladaNCParcial
     End If
     
-    
         
         If Not conectar.execute("update AdminFacturas set cancelada=" & idNCDestino & " where id=" & idFactura) Then GoTo er12
 
@@ -1621,12 +1620,12 @@ If saldadoTotal Then
 
             Dim msg1 As String
             msg1 = conectar.Escape(fc.observaciones & " - CANCELADA POR " & nc.GetShortDescription(False, True))
-            If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape(" / CANCELADA POR " & nc.GetShortDescription(False, True))
             
             
             Dim MSG2 As String
             MSG2 = conectar.Escape(nc.observaciones & " - CANCELA A " & fc.GetShortDescription(False, True))
-            If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
             
 
 
@@ -1751,12 +1750,12 @@ If saldadoTotal Then
             
             Dim msg1 As String
             msg1 = conectar.Escape(fc.observaciones & " - CANCELADA POR " & nc.GetShortDescription(False, True))
-            If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape(" / CANCELADA POR " & nc.GetShortDescription(False, True))
             
             
             Dim MSG2 As String
             MSG2 = conectar.Escape(nc.observaciones & " - CANCELA A " & fc.GetShortDescription(False, True))
-            If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+            If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
             
 
             If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
@@ -1893,9 +1892,10 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
             c.Visible = F.Tipo.PuntoVenta.EsCredito
              c.caption = F.DescripcionCreditoAdicional
              
-                     Set c = seccion.Controls.item("lblCbuEmisorFce")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        Set c = seccion.Controls.item("lblCbuEmisorFce")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito And F.TipoDocumento = Factura
         c.caption = "CBU del Emisor: " & F.CBU
+              
               
 
 
