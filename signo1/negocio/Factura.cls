@@ -51,6 +51,8 @@ Public CantDiasPago As Long    'FormaPago
 Public OrdenCompra As String
 Public UsuarioAprobacion As clsUsuario
 
+Public TextoAdicional As String
+
 
 Public FechaVencimientoSQL As Date    'Fecha de vencimiento calculada por la base
 Public TotalEstatico As New FacturaTotalEstatico

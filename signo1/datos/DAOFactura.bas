@@ -184,6 +184,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.FechaServDesde = GetValue(rs, indice, tabla, "fecha_serv_desde")
         F.FechaServHasta = GetValue(rs, indice, tabla, "fecha_serv_hasta")
         
+        F.TextoAdicional = GetValue(rs, indice, tabla, "texto_adicional")
+        
         
         F.CAE = GetValue(rs, indice, tabla, "cae")
         F.CAEVto = GetValue(rs, indice, tabla, "cae_vto")
@@ -318,7 +320,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " impresa = 'impresa' ," _
             & " tipo_borrar= 'tipo_borrar' , " _
             & " saldada = 'saldada' , id_tipo_discriminado= 'id_tipo_discriminado', " _
-            & " observaciones = 'observaciones' ," _
+            & " observaciones = 'observaciones', texto_adicional = 'texto_adicional'," _
             & " AliPercIB = 'AliPercIB' , " _
             & " cambio_a_patron = 'cambio_a_patron' ," _
             & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega' , " _
@@ -351,7 +353,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " impresa, " _
             & " tipo_borrar, " _
             & " saldada, " _
-            & " observaciones, " _
+            & " observaciones, texto_adicional," _
             & " AliPercIB, " _
             & " cambio_a_patron, " _
             & " FormaPago, " _
@@ -375,7 +377,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'impresa', " _
             & " 'tipo_borrar', " _
             & " 'saldada', " _
-            & " 'observaciones', " _
+            & " 'observaciones', 'texto_adicional'," _
             & " 'AliPercIB', " _
             & " 'cambio_a_patron', " _
             & " 'FormaPago', " _
@@ -426,6 +428,9 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'tipo_borrar'", conectar.Escape(F.TipoDocumento))
     q = Replace$(q, "'saldada'", conectar.Escape(F.Saldado))
     q = Replace$(q, "'observaciones'", conectar.Escape(F.observaciones))
+    
+     q = Replace$(q, "'texto_adicional'", conectar.Escape(F.TextoAdicional))
+
     'q = Replace$(q, "'AliPercIB'", conectar.Escape(1 + (f.AlicuotaPercepcionesIIBB / 100)))
     q = Replace$(q, "'AliPercIB'", conectar.Escape(F.AlicuotaPercepcionesIIBB))
     q = Replace$(q, "'cambio_a_patron'", conectar.Escape(F.CambioAPatron))
@@ -1619,12 +1624,12 @@ If saldadoTotal Then
 
 
             Dim msg1 As String
-            msg1 = conectar.Escape(fc.observaciones & " - CANCELADA POR " & nc.GetShortDescription(False, True))
+            msg1 = conectar.Escape(fc.observaciones & " / CANCELADA POR " & nc.GetShortDescription(False, True))
             If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape(" / CANCELADA POR " & nc.GetShortDescription(False, True))
             
             
             Dim MSG2 As String
-            MSG2 = conectar.Escape(nc.observaciones & " - CANCELA A " & fc.GetShortDescription(False, True))
+            MSG2 = conectar.Escape(nc.observaciones & " / CANCELA A " & fc.GetShortDescription(False, True))
             If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
             
 
@@ -1749,12 +1754,12 @@ If saldadoTotal Then
             Wend
             
             Dim msg1 As String
-            msg1 = conectar.Escape(fc.observaciones & " - CANCELADA POR " & nc.GetShortDescription(False, True))
+            msg1 = conectar.Escape(fc.observaciones & " / CANCELADA POR " & nc.GetShortDescription(False, True))
             If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape(" / CANCELADA POR " & nc.GetShortDescription(False, True))
             
             
             Dim MSG2 As String
-            MSG2 = conectar.Escape(nc.observaciones & " - CANCELA A " & fc.GetShortDescription(False, True))
+            MSG2 = conectar.Escape(nc.observaciones & " / CANCELA A " & fc.GetShortDescription(False, True))
             If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
             
 
@@ -1888,27 +1893,22 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         Set c = seccion.Controls.item("lblTipoDocumento")
         c.caption = F.Tipo.TipoFactura.Tipo
         
-       Set c = seccion.Controls.item("lblFce")
-            c.Visible = F.Tipo.PuntoVenta.EsCredito
-             c.caption = F.DescripcionCreditoAdicional
+        Set c = seccion.Controls.item("lblFce")
+        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.caption = F.DescripcionCreditoAdicional
              
         Set c = seccion.Controls.item("lblCbuEmisorFce")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito And F.TipoDocumento = Factura
+        c.Visible = F.Tipo.PuntoVenta.EsCredito And F.TipoDocumento = tipoDocumentoContable.Factura
         c.caption = "CBU del Emisor: " & F.CBU
-              
-              
-
-
-
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
         c.caption = "Código Nº" & Format(F.GetCodigoDocumentoAfip, "00")
 
-   Set c = seccion.Controls.item("LBLDescripcionCodigoDocumento")
-   c.caption = F.GetDescripciopnDocumentoAfip
+        Set c = seccion.Controls.item("LBLDescripcionCodigoDocumento")
+        c.caption = F.GetDescripciopnDocumentoAfip
 
-   Set c = seccion.Controls.item("lblFecha")
-   c.caption = "Fecha de Emisión: " & Format(F.FechaEmision, "dd/mm/yyyy")
+        Set c = seccion.Controls.item("lblFecha")
+        c.caption = "Fecha de Emisión: " & Format(F.FechaEmision, "dd/mm/yyyy")
    
         'fce_nemer_2905/2020
         Set c = seccion.Controls.item("lblNumeroDocumento")
@@ -1922,7 +1922,11 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         'fce_nemer_10062020
         
         
+        Set c = seccion.Controls.item("lblFechaPagoFce")
+        c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+        
         Set c = seccion.Controls.item("lblFechaPagoFceDato")
+        c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
         c.caption = Format(F.fechaPago, "dd/mm/yyyy")
 
         
@@ -2010,6 +2014,9 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.caption = F.CodigoBarrasAfip
         Set c = seccion.Controls.item("lblBarcodeCode")
         c.caption = F.CodigoBarrasAfip
+        
+        Set c = seccion.Controls.item("lblTextoAdicional")
+        c.caption = F.TextoAdicional
 
         Set c = seccion.Controls.item("lblCae")
         c.caption = "CAE: " & F.CAE
