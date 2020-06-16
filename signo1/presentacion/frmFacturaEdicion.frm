@@ -63,7 +63,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57868289
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -85,7 +85,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57868289
          CurrentDate     =   43967
       End
       Begin VB.Label lblPeriodoFacturadoH 
@@ -264,7 +264,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57868289
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta 
@@ -286,7 +286,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57868289
          CurrentDate     =   43983
       End
       Begin VB.ComboBox cboConceptosAIncluir 
@@ -328,7 +328,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57868289
          CurrentDate     =   43967
       End
       Begin VB.Line Line7 
@@ -1415,14 +1415,15 @@ On Error GoTo err1
         Exit Sub
     End If
 
-
+ Factura.observaciones = Me.txtCondObs.text
 
     If LenB(Factura.numero) = 0 Or _
        LenB(Factura.OrdenCompra) = 0 Or _
+       Factura.observaciones = "" Or _
        Factura.CantDiasPago = 0 Then
-                MsgBox "La factura debe poseer Nº, referencia y dias de venc de forma de pago.", vbExclamation + vbOKOnly
+                MsgBox "El Comprobante debe poseer Nº, referencia, cantidad dias de vto. de FF y condición cargada.", vbExclamation + vbOKOnly
     Else
-        If EsAnticipo And Factura.OTsFacturadasAnticipo.count = 0 Then
+     If EsAnticipo And Factura.OTsFacturadasAnticipo.count = 0 Then
                 MsgBox "Se produjo un error en la asociación del anticipo.", vbExclamation + vbOKOnly
         Exit Sub
     End If
@@ -1499,20 +1500,14 @@ On Error GoTo err1
           Factura.CBU = c.CBU
         End If
 
-'       ' If Me.cboConceptosAIncluir.text = "Servicios" Then
-'        If Me.cboConceptosAIncluir.text = "Productos y Servicios" Then
-'        MsgBox "Hola"
-'        Else
-'        End If
-'       ' End If
           
         Factura.observaciones = Me.txtCondObs.text
-        
         Factura.TextoAdicional = Me.txtTextoAdicional
-        
         Factura.FechaServDesde = Me.dtFechaServDesde.value
-        
         Factura.FechaServHasta = Me.dtFechaServHasta.value
+        Factura.fechaPago = Me.dtFechaPagoCredito.value
+        
+       
         
         ASociarConcepto
         
@@ -1527,7 +1522,7 @@ On Error GoTo err1
     End If
 Exit Sub
 err1:
-       MsgBox "Ocurrió un error al guardar. Controle datos y que el Nº no este ya asignado. o Bien" & Chr(10) & Err.Description, vbCritical + vbOKOnly
+       MsgBox "Ocurrió un error al guardar. Controle datos y que el Nº no este ya asignado. o Bien " & Chr(10) & Err.Description, vbCritical + vbOKOnly
 End Sub
 
 Private Sub btnItemRemito_Click()
@@ -2388,9 +2383,9 @@ Private Sub gridDetalles_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not IsNumeric(Me.gridDetalles.value(1)) Or Not IsNumeric(Me.gridDetalles.value(3)) Or Not IsNumeric(Me.gridDetalles.value(4))
 End Sub
 
-Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(X, Y) = jgexHitTestConstants.jgexHTCell Then
-        Dim row As Long: row = Me.gridDetalles.RowFromPoint(X, Y)
+Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
+        Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
         If row > 0 Then
             Set detalle = Factura.Detalles.item(Me.gridDetalles.RowIndex(row))
             If IsSomething(detalle) Then
