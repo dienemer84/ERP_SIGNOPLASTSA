@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#13.2#0"; "Codejock.Controls.v13.2.1.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminIIBB 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -9,14 +9,66 @@ Begin VB.Form frmAdminIIBB
    ClientHeight    =   7080
    ClientLeft      =   5700
    ClientTop       =   3015
-   ClientWidth     =   7215
+   ClientWidth     =   7155
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   7080
-   ScaleWidth      =   7215
+   ScaleWidth      =   7155
    ShowInTaskbar   =   0   'False
+   Begin XtremeSuiteControls.PushButton Command7 
+      Height          =   375
+      Left            =   480
+      TabIndex        =   52
+      Top             =   6360
+      Width           =   2535
+      _Version        =   786432
+      _ExtentX        =   4471
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Unificado (CABA)"
+      UseVisualStyle  =   -1  'True
+   End
+   Begin XtremeSuiteControls.PushButton btnRetenciones 
+      Height          =   375
+      Left            =   480
+      TabIndex        =   51
+      Top             =   5800
+      Width           =   2535
+      _Version        =   786432
+      _ExtentX        =   4471
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Retenciones (BS.AS.)"
+      UseVisualStyle  =   -1  'True
+   End
+   Begin XtremeSuiteControls.PushButton Command5 
+      Height          =   375
+      Left            =   480
+      TabIndex        =   50
+      Top             =   5280
+      Width           =   2535
+      _Version        =   786432
+      _ExtentX        =   4471
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Percepciones (BS.AS.)"
+      UseVisualStyle  =   -1  'True
+   End
+   Begin XtremeSuiteControls.PushButton btnProcesar 
+      Height          =   375
+      Left            =   3960
+      TabIndex        =   49
+      Top             =   5400
+      Width           =   2535
+      _Version        =   786432
+      _ExtentX        =   4471
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Procesar Padrones"
+      UseVisualStyle  =   -1  'True
+   End
    Begin VB.Frame Frame5 
       BackColor       =   &H00C0C0C0&
       Caption         =   "[ Resultado ]"
@@ -31,9 +83,60 @@ Begin VB.Form frmAdminIIBB
       EndProperty
       Height          =   2715
       Left            =   120
-      TabIndex        =   35
+      TabIndex        =   31
       Top             =   2160
       Width           =   6975
+      Begin XtremeSuiteControls.Label Label15 
+         Height          =   255
+         Left            =   3480
+         TabIndex        =   48
+         Top             =   360
+         Width           =   3255
+         _Version        =   786432
+         _ExtentX        =   5741
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "VALOR DE PERCEPCIÓN"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Alignment       =   2
+      End
+      Begin XtremeSuiteControls.Label Label5 
+         Height          =   255
+         Left            =   240
+         TabIndex        =   47
+         Top             =   360
+         Width           =   3015
+         _Version        =   786432
+         _ExtentX        =   5318
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "VALOR DE RETENCIÓN"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Alignment       =   2
+      End
+      Begin VB.Line Line3 
+         BorderColor     =   &H80000006&
+         X1              =   3360
+         X2              =   3360
+         Y1              =   2160
+         Y2              =   360
+      End
       Begin VB.Label Label13 
          BackColor       =   &H00C0C0C0&
          Caption         =   "Hasta:"
@@ -47,9 +150,9 @@ Begin VB.Form frmAdminIIBB
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   4080
-         TabIndex        =   50
-         Top             =   720
+         Left            =   4720
+         TabIndex        =   46
+         Top             =   1560
          Width           =   615
       End
       Begin VB.Label Label14 
@@ -66,16 +169,18 @@ Begin VB.Form frmAdminIIBB
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   240
-         TabIndex        =   49
-         Top             =   720
-         Width           =   2055
+         Left            =   3480
+         TabIndex        =   45
+         Top             =   1200
+         Width           =   1815
       End
       Begin VB.Label lblAlicuotaR 
+         Alignment       =   2  'Center
          BackColor       =   &H00E0E0E0&
+         Caption         =   "00,00"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
-            Size            =   8.25
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -84,18 +189,18 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          ForeColor       =   &H000000C0&
          Height          =   255
-         Left            =   2400
-         TabIndex        =   48
-         Top             =   1320
-         Width           =   4215
+         Left            =   2040
+         TabIndex        =   44
+         Top             =   840
+         Width           =   1095
       End
       Begin VB.Label Label22 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Alicuota Retención:"
+         Caption         =   "Alicuota:"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
-            Size            =   8.25
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -103,10 +208,10 @@ Begin VB.Form frmAdminIIBB
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   240
-         TabIndex        =   47
-         Top             =   1320
-         Width           =   2055
+         Left            =   120
+         TabIndex        =   43
+         Top             =   840
+         Width           =   1815
       End
       Begin VB.Label Label18 
          BackColor       =   &H00C0C0C0&
@@ -121,9 +226,9 @@ Begin VB.Form frmAdminIIBB
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   4080
-         TabIndex        =   46
-         Top             =   1680
+         Left            =   1360
+         TabIndex        =   42
+         Top             =   1560
          Width           =   615
       End
       Begin VB.Label Label19 
@@ -140,16 +245,18 @@ Begin VB.Form frmAdminIIBB
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   240
-         TabIndex        =   45
-         Top             =   1680
-         Width           =   2055
+         Left            =   120
+         TabIndex        =   41
+         Top             =   1200
+         Width           =   1815
       End
       Begin VB.Label lblAlicuotaP 
+         Alignment       =   2  'Center
          BackColor       =   &H00E0E0E0&
+         Caption         =   "00,00"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
-            Size            =   8.25
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -158,18 +265,18 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          ForeColor       =   &H000000C0&
          Height          =   255
-         Left            =   2400
-         TabIndex        =   44
-         Top             =   360
-         Width           =   4215
+         Left            =   5400
+         TabIndex        =   40
+         Top             =   840
+         Width           =   1095
       End
       Begin VB.Label Label23 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Alicuota Percepción:"
+         Caption         =   "Alicuota:"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
-            Size            =   8.25
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -177,56 +284,46 @@ Begin VB.Form frmAdminIIBB
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   240
-         TabIndex        =   43
-         Top             =   360
-         Width           =   2055
+         Left            =   3960
+         TabIndex        =   39
+         Top             =   840
+         Width           =   1335
       End
       Begin VB.Label lblVigenciaDesdeP 
+         Alignment       =   2  'Center
          BackColor       =   &H00E0E0E0&
          Height          =   255
-         Left            =   2400
-         TabIndex        =   42
-         Top             =   720
-         Width           =   1215
+         Left            =   5400
+         TabIndex        =   38
+         Top             =   1200
+         Width           =   1095
       End
       Begin VB.Label lblVigenciaDesdeR 
+         Alignment       =   2  'Center
          BackColor       =   &H00E0E0E0&
          Height          =   255
-         Left            =   2400
-         TabIndex        =   41
-         Top             =   1680
-         Width           =   1215
+         Left            =   2040
+         TabIndex        =   37
+         Top             =   1200
+         Width           =   1095
       End
       Begin VB.Label lblVigenciaHastaP 
+         Alignment       =   2  'Center
          BackColor       =   &H00E0E0E0&
          Height          =   255
-         Left            =   4800
-         TabIndex        =   40
-         Top             =   720
-         Width           =   1455
+         Left            =   5400
+         TabIndex        =   36
+         Top             =   1560
+         Width           =   1095
       End
       Begin VB.Label lblVigenciaHastaR 
+         Alignment       =   2  'Center
          BackColor       =   &H00E0E0E0&
          Height          =   255
-         Left            =   4800
-         TabIndex        =   39
-         Top             =   1680
-         Width           =   1455
-      End
-      Begin VB.Line Line3 
-         BorderColor     =   &H80000000&
-         X1              =   360
-         X2              =   6600
-         Y1              =   2040
-         Y2              =   2040
-      End
-      Begin VB.Line Line1 
-         BorderColor     =   &H80000000&
-         X1              =   360
-         X2              =   6600
-         Y1              =   1100
-         Y2              =   1100
+         Left            =   2040
+         TabIndex        =   35
+         Top             =   1560
+         Width           =   1095
       End
       Begin VB.Label Label12 
          Alignment       =   2  'Center
@@ -243,8 +340,8 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   255
-         Left            =   120
-         TabIndex        =   36
+         Left            =   240
+         TabIndex        =   32
          Top             =   2280
          Visible         =   0   'False
          Width           =   6495
@@ -264,20 +361,9 @@ Begin VB.Form frmAdminIIBB
       EndProperty
       Height          =   1095
       Left            =   3480
-      TabIndex        =   30
+      TabIndex        =   27
       Top             =   4920
       Width           =   3615
-      Begin VB.CommandButton btnProcesar 
-         BackColor       =   &H00E0E0E0&
-         Cancel          =   -1  'True
-         Caption         =   "Procesar Padrones"
-         Height          =   375
-         Left            =   720
-         Style           =   1  'Graphical
-         TabIndex        =   31
-         Top             =   480
-         Width           =   2415
-      End
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   3600
@@ -310,9 +396,9 @@ Begin VB.Form frmAdminIIBB
          Strikethrough   =   0   'False
       EndProperty
       Height          =   3435
-      Left            =   7320
+      Left            =   7200
       TabIndex        =   4
-      Top             =   2280
+      Top             =   240
       Width           =   6975
       Begin MSComCtl2.DTPicker Fpublicacion 
          Height          =   255
@@ -326,7 +412,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58327040
+         Format          =   58982400
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -339,7 +425,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58327041
+         Format          =   58982401
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -352,7 +438,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58327041
+         Format          =   58982401
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -587,7 +673,7 @@ Begin VB.Form frmAdminIIBB
          Height          =   375
          Left            =   7440
          Style           =   1  'Graphical
-         TabIndex        =   38
+         TabIndex        =   34
          Top             =   960
          Width           =   1515
       End
@@ -598,17 +684,17 @@ Begin VB.Form frmAdminIIBB
          Index           =   2
          Left            =   7560
          Style           =   1  'Graphical
-         TabIndex        =   37
+         TabIndex        =   33
          Top             =   1680
          Width           =   1515
       End
       Begin XtremeSuiteControls.PushButton btnBuscar 
          Height          =   375
          Left            =   5160
-         TabIndex        =   34
+         TabIndex        =   30
          Top             =   1320
          Width           =   1575
-         _Version        =   851970
+         _Version        =   786432
          _ExtentX        =   2778
          _ExtentY        =   661
          _StockProps     =   79
@@ -651,7 +737,7 @@ Begin VB.Form frmAdminIIBB
          TabIndex        =   24
          Top             =   1320
          Width           =   2880
-         _Version        =   851970
+         _Version        =   786432
          _ExtentX        =   5080
          _ExtentY        =   556
          _StockProps     =   77
@@ -663,10 +749,11 @@ Begin VB.Form frmAdminIIBB
       Begin XtremeSuiteControls.ComboBox cboRegion 
          Height          =   315
          Left            =   1965
-         TabIndex        =   33
+         TabIndex        =   29
+         ToolTipText     =   "Elija el Padrón Según Zona"
          Top             =   840
          Width           =   2880
-         _Version        =   851970
+         _Version        =   786432
          _ExtentX        =   5080
          _ExtentY        =   556
          _StockProps     =   77
@@ -691,7 +778,7 @@ Begin VB.Form frmAdminIIBB
          EndProperty
          Height          =   195
          Left            =   1155
-         TabIndex        =   32
+         TabIndex        =   28
          Top             =   900
          Width           =   660
       End
@@ -752,37 +839,6 @@ Begin VB.Form frmAdminIIBB
       TabIndex        =   26
       Top             =   4920
       Width           =   3255
-      Begin VB.CommandButton Command7 
-         BackColor       =   &H00E0E0E0&
-         Caption         =   "Unificado (CABA)"
-         Height          =   375
-         Left            =   120
-         Style           =   1  'Graphical
-         TabIndex        =   29
-         Top             =   1440
-         Width           =   2895
-      End
-      Begin VB.CommandButton Command3 
-         BackColor       =   &H00E0E0E0&
-         Caption         =   "Retenciones (BS.AS.)"
-         Height          =   375
-         Index           =   0
-         Left            =   120
-         Style           =   1  'Graphical
-         TabIndex        =   28
-         Top             =   960
-         Width           =   2895
-      End
-      Begin VB.CommandButton Command5 
-         BackColor       =   &H00E0E0E0&
-         Caption         =   "Percepciones (BS.AS.)"
-         Height          =   375
-         Left            =   120
-         Style           =   1  'Graphical
-         TabIndex        =   27
-         Top             =   480
-         Width           =   2895
-      End
    End
    Begin VB.Line Line2 
       BorderColor     =   &H80000000&
@@ -1052,6 +1108,26 @@ End Sub
 
 
 
+Private Sub btnRetenciones_Click()
+    On Error GoTo err4
+    Dim strsql As String
+    Dim filename As String
+    Me.cd.ShowOpen
+    filename = cd.filename
+    filename = Replace(filename, "\", "/")
+    If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
+        If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
+            MsgBox "Actualización exitosa!", vbInformation, "Información"
+        Else
+            MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"
+        End If
+    End If
+    Exit Sub
+err4:
+    If Err.Number <> 32755 Then MsgBox "Se produjo algun error!", vbCritical, "Error"
+
+End Sub
+
 Private Sub Command1_Click(index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
@@ -1203,3 +1279,4 @@ End Sub
 Private Sub TaskDialog1_ButtonClicked(ByVal id As Long, CloseDialog As Variant)
 
 End Sub
+

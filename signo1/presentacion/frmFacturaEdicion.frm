@@ -63,7 +63,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -85,7 +85,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin VB.Label lblPeriodoFacturadoH 
@@ -221,24 +221,24 @@ Begin VB.Form frmFacturaEdicion
          Width           =   3975
       End
    End
-   Begin VB.Frame Frame2 
-      Caption         =   "Texto Adicional"
-      Height          =   5295
+   Begin VB.Frame frmTextoAdicional 
+      Caption         =   "Texto Adicional (Limite de 300 caracteres)"
+      Height          =   2055
       Left            =   11640
       TabIndex        =   67
       Top             =   5040
       Width           =   6135
       Begin VB.TextBox txtTextoAdicional 
-         Height          =   4455
+         Height          =   1575
          Left            =   120
-         MaxLength       =   200
+         MaxLength       =   300
          MultiLine       =   -1  'True
          TabIndex        =   68
          Top             =   240
          Width           =   5895
       End
    End
-   Begin VB.Frame TextoLibre 
+   Begin VB.Frame frmFCE 
       Caption         =   "Factura Eléctronica"
       Height          =   2415
       Left            =   11640
@@ -264,7 +264,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58720257
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta 
@@ -286,7 +286,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58720257
          CurrentDate     =   43983
       End
       Begin VB.ComboBox cboConceptosAIncluir 
@@ -302,7 +302,7 @@ Begin VB.Form frmFacturaEdicion
          EndProperty
          Height          =   360
          ItemData        =   "frmFacturaEdicion.frx":0010
-         Left            =   1800
+         Left            =   1920
          List            =   "frmFacturaEdicion.frx":001D
          Style           =   2  'Dropdown List
          TabIndex        =   10
@@ -328,7 +328,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62324737
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin VB.Line Line7 
@@ -431,10 +431,10 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   495
+         Height          =   255
          Left            =   120
          TabIndex        =   65
-         Top             =   330
+         Top             =   293
          Width           =   2655
       End
    End
@@ -726,7 +726,7 @@ Begin VB.Form frmFacturaEdicion
             AutoSize        =   -1  'True
             Caption         =   "% Tasa ajuste mensual:"
             Height          =   195
-            Left            =   3240
+            Left            =   3350
             TabIndex        =   77
             Top             =   780
             Width           =   1740
@@ -1408,44 +1408,41 @@ On Error GoTo err1
         Exit Sub
     End If
 
+
+
     If Not Factura.cliente.CUITValido Or Not Factura.cliente.ValidoRemitoFactura Then
         MsgBox "El cliente no es valido para poder facturar.", vbExclamation + vbOKOnly
         Exit Sub
     End If
 
+
+
     If LenB(Factura.numero) = 0 Or _
        LenB(Factura.OrdenCompra) = 0 Or _
        Factura.CantDiasPago = 0 Then
-
-        MsgBox "La factura debe poseer Nº, referencia y dias de venc de forma de pago.", vbExclamation + vbOKOnly
+                MsgBox "La factura debe poseer Nº, referencia y dias de venc de forma de pago.", vbExclamation + vbOKOnly
     Else
-
-    If EsAnticipo And Factura.OTsFacturadasAnticipo.count = 0 Then
-            MsgBox "Se produjo un error en la asociación del anticipo.", vbExclamation + vbOKOnly
-    Exit Sub
+        If EsAnticipo And Factura.OTsFacturadasAnticipo.count = 0 Then
+                MsgBox "Se produjo un error en la asociación del anticipo.", vbExclamation + vbOKOnly
+        Exit Sub
     End If
 
 
 
-        If Me.cboMonedaAjuste.ListIndex = -1 Then
-            Factura.IdMonedaAjuste = 0
-            Factura.TipoCambioAjuste = 1
-
-        Else
-            Dim mon As clsMoneda
-            Set mon = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex))
-
-            Factura.IdMonedaAjuste = mon.id
-            Factura.TipoCambioAjuste = mon.Cambio
-
-        End If
+    If Me.cboMonedaAjuste.ListIndex = -1 Then
+        Factura.IdMonedaAjuste = 0
+        Factura.TipoCambioAjuste = 1
+    Else
+        Dim mon As clsMoneda
+        Set mon = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex))
+        Factura.IdMonedaAjuste = mon.id
+        Factura.TipoCambioAjuste = mon.Cambio
+    End If
 
 
 
-        If Factura.EsAnticipo Or EsAnticipo Then
+    If Factura.EsAnticipo Or EsAnticipo Then
             'If Factura.DetallesMismaOT > 0 Then
-
-
             Dim Ot As OrdenTrabajo
             For Each Ot In Factura.OTsFacturadasAnticipo
                 If Ot.Anticipo > 0 And Not Ot.AnticipoFacturado And Not Factura.AnticipoDescontado Then
@@ -1456,6 +1453,8 @@ On Error GoTo err1
 
             'End If
         End If
+        
+        
 
         Dim deta As FacturaDetalle
         'Dim ot As OrdenTrabajo
@@ -1488,29 +1487,43 @@ On Error GoTo err1
             End If
         Next deta
         
+        
         Factura.CBU = Me.cboCuentasCBU.text
+        
         Dim c As CuentaBancaria
         
         Set c = DAOCuentaBancaria.FindById(Me.cboCuentasCBU.ItemData(Me.cboCuentasCBU.ListIndex))
         
-        
-        
+                
         If IsSomething(c) Then
           Factura.CBU = c.CBU
         End If
 
+'       ' If Me.cboConceptosAIncluir.text = "Servicios" Then
+'        If Me.cboConceptosAIncluir.text = "Productos y Servicios" Then
+'        MsgBox "Hola"
+'        Else
+'        End If
+'       ' End If
           
         Factura.observaciones = Me.txtCondObs.text
         
         Factura.TextoAdicional = Me.txtTextoAdicional
         
+        Factura.FechaServDesde = Me.dtFechaServDesde.value
+        
+        Factura.FechaServHasta = Me.dtFechaServHasta.value
+        
         ASociarConcepto
+        
         
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
         Else
-           Err.Raise "9999", "Guardando factura", Err.Description
+            Err.Raise "9999", "Guardando factura", Err.Description
         End If
+        
+        
     End If
 Exit Sub
 err1:
@@ -2094,6 +2107,72 @@ Private Sub Form_Load()
     Me.PushButton2.Enabled = Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT
     Me.btnGuardar.Enabled = Not ReadOnly Or EsAnticipo
     Me.btnItemRemito.Enabled = Not ReadOnly And Not EsAnticipo
+    
+    'fce_nemer_16062020
+    Me.frmTextoAdicional.Enabled = Not ReadOnly
+    Me.txtTextoAdicional.Enabled = Not ReadOnly
+    Me.lblFechaPagoCredito.Enabled = Not ReadOnly
+    Me.dtFechaPagoCredito.Enabled = Not ReadOnly
+    Me.grpPercep.Enabled = Not ReadOnly
+    Me.frmFC.Enabled = Not ReadOnly
+    Me.frmFCE.Enabled = Not ReadOnly
+    Me.lblConceptosAIncluir.Enabled = Not ReadOnly
+    Me.cboConceptosAIncluir.Enabled = Not ReadOnly
+    Me.Label6.Enabled = Not ReadOnly
+    Me.cboTiposFactura.Enabled = Not ReadOnly
+    Me.Label14.Enabled = Not ReadOnly
+    Me.txtNumero.Enabled = Not ReadOnly
+    Me.Label15.Enabled = Not ReadOnly
+    Me.dtpFecha.Enabled = Not ReadOnly
+    Me.Label16.Enabled = Not ReadOnly
+    Me.cboMoneda.Enabled = Not ReadOnly
+    Me.grpInfo.Enabled = Not ReadOnly
+    Me.txtReferencia.Enabled = Not ReadOnly
+    Me.txtDiasVenc.Enabled = Not ReadOnly
+    Me.txtTasaAjuste.Enabled = Not ReadOnly
+    Me.txtCondObs.Enabled = Not ReadOnly
+    Me.Label18.Enabled = Not ReadOnly
+    Me.Label19.Enabled = Not ReadOnly
+    Me.Label11.Enabled = Not ReadOnly
+    Me.Label20.Enabled = Not ReadOnly
+    Me.lblPadron.Enabled = Not ReadOnly
+    Me.Label17.Enabled = Not ReadOnly
+    Me.cboPadron.Enabled = Not ReadOnly
+    Me.txtPercepcion.Enabled = Not ReadOnly
+    Me.cboCliente.Enabled = Not ReadOnly
+    Me.grpDetalles.Enabled = Not ReadOnly
+    Me.gridDetalles.Enabled = Not ReadOnly
+    Me.lblTipoFactura.Enabled = Not ReadOnly
+    Me.Label1.Enabled = Not ReadOnly
+    Me.Label3.Enabled = Not ReadOnly
+    Me.Label2.Enabled = Not ReadOnly
+    Me.Label4.Enabled = Not ReadOnly
+    Me.Label5.Enabled = Not ReadOnly
+    Me.Label12.Enabled = Not ReadOnly
+    Me.Label7.Enabled = Not ReadOnly
+    Me.lblCuit.Enabled = Not ReadOnly
+    Me.lblIVA.Enabled = Not ReadOnly
+    Me.lblDireccion.Enabled = Not ReadOnly
+    Me.lblLocalidad.Enabled = Not ReadOnly
+    Me.lblProvincia.Enabled = Not ReadOnly
+    Me.lblCodPostal.Enabled = Not ReadOnly
+    Me.lblNCND.Enabled = Not ReadOnly
+    Me.lblAjuste.Enabled = Not ReadOnly
+    Me.cboMonedaAjuste.Enabled = Not ReadOnly
+    Me.grpTotales.Enabled = Not ReadOnly
+    Me.btnItemsDescuentoAnticipo.Enabled = Not ReadOnly
+    Me.Label9.Enabled = Not ReadOnly
+    Me.lblSubTotal.Enabled = Not ReadOnly
+    Me.lblPercepciones.Enabled = Not ReadOnly
+    Me.lblIVATot.Enabled = Not ReadOnly
+    Me.lblTotal.Enabled = Not ReadOnly
+    Me.Label10.Enabled = Not ReadOnly
+    Me.lblIva2.Enabled = Not ReadOnly
+    Me.Label8.Enabled = Not ReadOnly
+
+    
+    
+    
 End Sub
 
 Private Sub LimpiarFactura()
@@ -2116,7 +2195,7 @@ Private Sub LimpiarCliente()
     Me.lblCodPostal.caption = vbNullString
 End Sub
 
-Private Sub CargarFactura()
+ Private Sub CargarFactura()
     
     If Not IsSomething(Factura) Then Exit Sub
     Me.cboTiposFactura.Enabled = Not (Factura.estado = EstadoFacturaCliente.Aprobada)
@@ -2180,6 +2259,16 @@ Private Sub CargarFactura()
     Me.txtCondObs.text = Factura.observaciones
     Me.txtTextoAdicional.text = Factura.TextoAdicional
     Me.lblTipoFactura.caption = Factura.Tipo.TipoFactura.Tipo
+    
+    Me.dtFechaPagoCredito = Factura.fechaPago
+          
+        'fce_nemer_28052020
+        Me.dtFechaPagoCreditoDesde = Factura.FechaVtoDesde
+        Me.dtFechaPagoCreditoHasta = Factura.FechaVtoHasta
+          
+        'fce_nemer_02062020_#113
+        Me.dtFechaServDesde = Factura.FechaServDesde
+        Me.dtFechaServHasta = Factura.FechaServHasta
 
     
     Me.txtTasaAjuste.text = Factura.TasaAjusteMensual
@@ -2200,6 +2289,7 @@ Private Sub CargarFactura()
             Me.cboCuentasCBU.Visible = IsSomething(c)
             Me.lblVerCbu.Visible = Not IsSomething(c)
       
+     
        If IsSomething(c) Then
                  Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
        Else
@@ -2211,19 +2301,11 @@ Private Sub CargarFactura()
         Me.lblVerCbu.Visible = False
              If IsSomething(c) Then
                  Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
-            End If
+       End If
         
       
        End If
-          Me.dtFechaPagoCredito = Factura.fechaPago
-          
-        'fce_nemer_28052020
-        Me.dtFechaPagoCreditoDesde = Factura.FechaVtoDesde
-        Me.dtFechaPagoCreditoHasta = Factura.FechaVtoHasta
-          
-        'fce_nemer_02062020_#113
-        Me.dtFechaServDesde = Factura.FechaServDesde
-        Me.dtFechaServHasta = Factura.FechaServHasta
+
           
       Else
        Me.cboCuentasCBU.Visible = False
@@ -2306,9 +2388,9 @@ Private Sub gridDetalles_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not IsNumeric(Me.gridDetalles.value(1)) Or Not IsNumeric(Me.gridDetalles.value(3)) Or Not IsNumeric(Me.gridDetalles.value(4))
 End Sub
 
-Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
-        Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
+Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(X, Y) = jgexHitTestConstants.jgexHTCell Then
+        Dim row As Long: row = Me.gridDetalles.RowFromPoint(X, Y)
         If row > 0 Then
             Set detalle = Factura.Detalles.item(Me.gridDetalles.RowIndex(row))
             If IsSomething(detalle) Then

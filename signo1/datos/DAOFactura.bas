@@ -1926,9 +1926,13 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
         
         Set c = seccion.Controls.item("lblFechaPagoFceDato")
-        c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
-        c.caption = Format(F.fechaPago, "dd/mm/yyyy")
-
+                If F.fechaPago = "30/12/1899" Then
+                    c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+                    c.caption = "S/D"
+                Else
+                    c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+                    c.caption = Format(F.fechaPago, "dd/mm/yyyy")
+                End If
         
         'fce_nemer_09062020
         Set c = seccion.Controls.item("lblDias")
