@@ -10,7 +10,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza_ARBOL
    _ExtentY        =   16166
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11445
+   ReportWidth     =   11385
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25

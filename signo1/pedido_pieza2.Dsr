@@ -10,7 +10,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
    _ExtentY        =   22225
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   12195
+   ReportWidth     =   11055
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -109,7 +109,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta4"
-         Object.Left            =   9000
+         Object.Left            =   8640
+         Object.Top             =   30
          Object.Width           =   2010
          Object.Height          =   675
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -296,7 +297,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item15 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lbldeStock"
-         Object.Left            =   8940
+         Object.Left            =   8820
          Object.Top             =   3015
          Object.Width           =   1770
          Object.Height          =   315
@@ -333,7 +334,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item17 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta16"
-         Object.Left            =   8925
+         Object.Left            =   8790
          Object.Top             =   2730
          Object.Width           =   1770
          Object.Height          =   300
@@ -371,7 +372,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item19 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "barCode"
-         Object.Left            =   8000
+         Object.Left            =   7770
          Object.Top             =   720
          Object.Width           =   2910
          Object.Height          =   915
@@ -391,8 +392,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item20 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCantidad"
-         Object.Left            =   8850
-         Object.Top             =   1665
+         Object.Left            =   8745
+         Object.Top             =   1680
          Object.Width           =   1995
          Object.Height          =   1005
          Object.BorderStyle     =   1
@@ -414,7 +415,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       _Version        =   393216
       Name            =   "Sección2"
       Object.Height          =   375
-      NumControls     =   7
+      NumControls     =   6
       ItemType0       =   3
       BeginProperty Item0 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -526,14 +527,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
          Object.Caption         =   "Fecha"
          Alignment       =   2
       EndProperty
-      ItemType6       =   5
-      BeginProperty Item6 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "Línea1"
-         Object.Top             =   360
-         Object.Width           =   11355
-         Object.Height          =   15
-      EndProperty
    EndProperty
    SectionCode2    =   4
    BeginProperty Section2 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -630,7 +623,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
          _Version        =   393216
          Name            =   "Forma8"
          Object.Left            =   8535
-         Object.Top             =   90
+         Object.Top             =   60
          Object.Width           =   885
          Object.Height          =   300
       EndProperty

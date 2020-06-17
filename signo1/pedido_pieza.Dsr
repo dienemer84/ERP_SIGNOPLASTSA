@@ -10,7 +10,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza
    _ExtentY        =   19606
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11445
+   ReportWidth     =   11400
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -35,7 +35,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza
          _Version        =   393216
          Name            =   "Forma2"
          Object.Top             =   45
-         Object.Width           =   11445
+         Object.Width           =   11355
          Object.Height          =   780
          BackColor       =   8421504
          BackStyle       =   1
@@ -84,7 +84,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza
          _Version        =   393216
          Name            =   "Forma3"
          Object.Top             =   765
-         Object.Width           =   11445
+         Object.Width           =   11370
          Object.Height          =   2850
          BackColor       =   14737632
          BackStyle       =   1
@@ -150,8 +150,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza
       BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta4"
-         Object.Left            =   9420
-         Object.Top             =   150
+         Object.Left            =   9270
+         Object.Top             =   135
          Object.Width           =   1980
          Object.Height          =   585
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -245,15 +245,15 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza
          Name            =   "Forma1"
          Object.Left            =   9075
          Object.Top             =   1395
-         Object.Width           =   2340
+         Object.Width           =   2190
          Object.Height          =   1035
       EndProperty
       ItemType13      =   3
       BeginProperty Item13 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCantidad"
-         Object.Left            =   9060
-         Object.Top             =   1425
+         Object.Left            =   8985
+         Object.Top             =   1440
          Object.Width           =   2340
          Object.Height          =   930
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -774,7 +774,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza
          Name            =   "lblTT"
          Object.Left            =   9705
          Object.Top             =   795
-         Object.Width           =   1710
+         Object.Width           =   1650
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"

@@ -10,7 +10,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
    _ExtentY        =   26194
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11355
+   ReportWidth     =   11055
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -28,14 +28,14 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
    BeginProperty Section0 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "cabeza"
-      Object.Height          =   1635
-      NumControls     =   16
+      Object.Height          =   1695
+      NumControls     =   15
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma3"
          Object.Top             =   525
-         Object.Width           =   11325
+         Object.Width           =   7800
          Object.Height          =   1110
          BackColor       =   14737632
          BackStyle       =   1
@@ -44,8 +44,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
       BeginProperty Item1 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma1"
-         Object.Left            =   8205
-         Object.Top             =   540
+         Object.Left            =   7740
+         Object.Top             =   555
          Object.Width           =   3135
          Object.Height          =   1095
          BackStyle       =   1
@@ -54,7 +54,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
       BeginProperty Item2 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma2"
-         Object.Width           =   8370
+         Object.Width           =   7785
          Object.Height          =   540
          BackColor       =   4194304
          BackStyle       =   1
@@ -85,7 +85,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "lblOT"
          Object.Left            =   1125
          Object.Top             =   75
-         Object.Width           =   6900
+         Object.Width           =   6570
          Object.Height          =   465
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -117,17 +117,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          EndProperty
          Object.Caption         =   "Fecha de entrega:"
       EndProperty
-      ItemType6       =   6
-      BeginProperty Item6 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "Forma5"
-         Object.Left            =   8145
-         Object.Top             =   30
-         Object.Width           =   3180
-         Object.Height          =   510
-      EndProperty
-      ItemType7       =   3
-      BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType6       =   3
+      BeginProperty Item6 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta5"
          Object.Left            =   135
@@ -145,8 +136,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          EndProperty
          Object.Caption         =   "Referencia:"
       EndProperty
-      ItemType8       =   3
-      BeginProperty Item8 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType7       =   3
+      BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCreacion"
          Object.Left            =   3870
@@ -164,8 +155,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          EndProperty
          Object.Caption         =   "Fecha de creación:"
       EndProperty
-      ItemType9       =   3
-      BeginProperty Item9 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType8       =   3
+      BeginProperty Item8 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaEntrega"
          Object.Left            =   1905
@@ -182,13 +173,31 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
             Strikethrough   =   0   'False
          EndProperty
       EndProperty
-      ItemType10      =   3
-      BeginProperty Item10 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType9       =   3
+      BeginProperty Item9 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCliente"
          Object.Left            =   1170
          Object.Top             =   1320
-         Object.Width           =   6915
+         Object.Width           =   6585
+         Object.Height          =   285
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Times New Roman"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      EndProperty
+      ItemType10      =   3
+      BeginProperty Item10 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblFechaCreado"
+         Object.Left            =   5760
+         Object.Top             =   975
+         Object.Width           =   1995
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
@@ -203,28 +212,10 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
       ItemType11      =   3
       BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
-         Name            =   "lblFechaCreado"
-         Object.Left            =   5760
-         Object.Top             =   975
-         Object.Width           =   2310
-         Object.Height          =   285
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Times New Roman"
-            Size            =   11.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-      EndProperty
-      ItemType12      =   3
-      BeginProperty Item12 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
          Name            =   "lblReferencia"
          Object.Left            =   1335
          Object.Top             =   615
-         Object.Width           =   6840
+         Object.Width           =   6405
          Object.Height          =   300
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
@@ -236,23 +227,24 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
             Strikethrough   =   0   'False
          EndProperty
       EndProperty
-      ItemType13      =   7
-      BeginProperty Item13 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType12      =   7
+      BeginProperty Item12 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Image1"
-         Object.Left            =   8220
+         Object.Left            =   7770
+         Object.Top             =   15
          Object.Width           =   3135
          Object.Height          =   1110
          Picture         =   "gruilla_tiempos.dsx":0000
          PictureAlignment=   2
          SizeMode        =   1
       EndProperty
-      ItemType14      =   3
-      BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType13      =   3
+      BeginProperty Item13 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblSector"
-         Object.Left            =   8310
-         Object.Top             =   1125
+         Object.Left            =   7815
+         Object.Top             =   1140
          Object.Width           =   2985
          Object.Height          =   465
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -267,8 +259,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Object.Caption         =   "DETALLE"
          Alignment       =   2
       EndProperty
-      ItemType15      =   3
-      BeginProperty Item15 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType14      =   3
+      BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta1"
          Object.Left            =   120
@@ -394,7 +386,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          _Version        =   393216
          Name            =   "Etiqueta11"
          Object.Left            =   7455
-         Object.Width           =   3840
+         Object.Width           =   3390
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -428,7 +420,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          _Version        =   393216
          Name            =   "Forma6"
          Object.Left            =   7410
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType2       =   6
@@ -478,7 +470,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma12"
          Object.Left            =   7410
          Object.Top             =   300
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType8       =   6
@@ -532,7 +524,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma18"
          Object.Left            =   7410
          Object.Top             =   600
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType14      =   6
@@ -586,7 +578,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma24"
          Object.Left            =   7410
          Object.Top             =   900
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType20      =   6
@@ -640,7 +632,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma30"
          Object.Left            =   7410
          Object.Top             =   1200
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType26      =   6
@@ -694,7 +686,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma36"
          Object.Left            =   7410
          Object.Top             =   1500
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType32      =   6
@@ -748,7 +740,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma42"
          Object.Left            =   7410
          Object.Top             =   1800
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType38      =   6
@@ -802,7 +794,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma48"
          Object.Left            =   7410
          Object.Top             =   2100
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType44      =   6
@@ -856,7 +848,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma54"
          Object.Left            =   7410
          Object.Top             =   2400
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType50      =   6
@@ -910,7 +902,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma60"
          Object.Left            =   7410
          Object.Top             =   2700
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType56      =   6
@@ -964,7 +956,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma66"
          Object.Left            =   7410
          Object.Top             =   3000
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType62      =   6
@@ -1018,7 +1010,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma72"
          Object.Left            =   7410
          Object.Top             =   3300
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType68      =   6
@@ -1072,7 +1064,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma78"
          Object.Left            =   7410
          Object.Top             =   3600
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType74      =   6
@@ -1126,7 +1118,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma84"
          Object.Left            =   7410
          Object.Top             =   3900
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType80      =   6
@@ -1180,7 +1172,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma96"
          Object.Left            =   7410
          Object.Top             =   4200
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType86      =   6
@@ -1234,7 +1226,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma102"
          Object.Left            =   7410
          Object.Top             =   4500
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType92      =   6
@@ -1288,7 +1280,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma108"
          Object.Left            =   7410
          Object.Top             =   4800
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType98      =   6
@@ -1342,7 +1334,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma114"
          Object.Left            =   7410
          Object.Top             =   5100
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType104     =   6
@@ -1396,7 +1388,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma120"
          Object.Left            =   7410
          Object.Top             =   5400
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType110     =   6
@@ -1450,7 +1442,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma126"
          Object.Left            =   7410
          Object.Top             =   5700
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType116     =   6
@@ -1504,7 +1496,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma132"
          Object.Left            =   7410
          Object.Top             =   6000
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType122     =   6
@@ -1558,7 +1550,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma138"
          Object.Left            =   7410
          Object.Top             =   6300
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType128     =   6
@@ -1612,7 +1604,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma90"
          Object.Left            =   7410
          Object.Top             =   6600
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType134     =   6
@@ -1666,7 +1658,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma144"
          Object.Left            =   7410
          Object.Top             =   6900
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType140     =   6
@@ -1720,7 +1712,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma150"
          Object.Left            =   7410
          Object.Top             =   7200
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType146     =   6
@@ -1774,7 +1766,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma156"
          Object.Left            =   7410
          Object.Top             =   7500
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType152     =   6
@@ -1828,7 +1820,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma162"
          Object.Left            =   7410
          Object.Top             =   7800
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType158     =   6
@@ -1882,7 +1874,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma168"
          Object.Left            =   7410
          Object.Top             =   8100
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType164     =   6
@@ -1936,7 +1928,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma174"
          Object.Left            =   7410
          Object.Top             =   8400
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType170     =   6
@@ -1990,7 +1982,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma180"
          Object.Left            =   7410
          Object.Top             =   8700
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType176     =   6
@@ -2044,7 +2036,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma186"
          Object.Left            =   7410
          Object.Top             =   9000
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType182     =   6
@@ -2098,7 +2090,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Name            =   "Forma192"
          Object.Left            =   7410
          Object.Top             =   9300
-         Object.Width           =   3900
+         Object.Width           =   3465
          Object.Height          =   300
       EndProperty
       ItemType188     =   6
@@ -2203,7 +2195,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
       BeginProperty Item0 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta4"
-         Object.Width           =   11280
+         Object.Width           =   11055
          Object.Height          =   690
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"

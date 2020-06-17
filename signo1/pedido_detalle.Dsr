@@ -1,15 +1,15 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT 
    Caption         =   "Informe general OT"
-   ClientHeight    =   7395
+   ClientHeight    =   14265
    ClientLeft      =   -90
    ClientTop       =   450
-   ClientWidth     =   12075
-   _ExtentX        =   21299
-   _ExtentY        =   13044
+   ClientWidth     =   28680
+   _ExtentX        =   50588
+   _ExtentY        =   25162
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11520
+   ReportWidth     =   11340
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -34,7 +34,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          _Version        =   393216
          Name            =   "Forma3"
          Object.Top             =   525
-         Object.Width           =   11325
+         Object.Width           =   10665
          Object.Height          =   1110
          BackColor       =   14737632
          BackStyle       =   1
@@ -43,7 +43,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item1 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma2"
-         Object.Width           =   8370
+         Object.Width           =   10650
          Object.Height          =   540
          BackColor       =   4194304
          BackStyle       =   1
@@ -54,7 +54,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Name            =   "Etiqueta2"
          Object.Left            =   150
          Object.Top             =   75
-         Object.Width           =   5325
+         Object.Width           =   4410
          Object.Height          =   495
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -93,7 +93,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Name            =   "Forma1"
          Object.Left            =   8145
          Object.Top             =   30
-         Object.Width           =   3180
+         Object.Width           =   2385
          Object.Height          =   510
       EndProperty
       ItemType5       =   3
@@ -121,7 +121,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Name            =   "lblCliente"
          Object.Left            =   1170
          Object.Top             =   1320
-         Object.Width           =   7005
+         Object.Width           =   6210
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
@@ -139,7 +139,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Name            =   "lblReferencia"
          Object.Left            =   1335
          Object.Top             =   615
-         Object.Width           =   6840
+         Object.Width           =   6030
          Object.Height          =   300
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
@@ -157,32 +157,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Name            =   "Forma6"
          Object.Left            =   8220
          Object.Top             =   540
-         Object.Width           =   3120
+         Object.Width           =   2445
          Object.Height          =   1095
          BackStyle       =   1
       EndProperty
       ItemType9       =   3
       BeginProperty Item9 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "lblSector"
-         Object.Left            =   8265
-         Object.Top             =   1125
-         Object.Width           =   3030
-         Object.Height          =   465
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Arial"
-            Size            =   18
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Object.Caption         =   "DETALLE"
-         Alignment       =   2
-      EndProperty
-      ItemType10      =   3
-      BeginProperty Item10 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta1"
          Object.Left            =   120
@@ -200,24 +180,25 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          EndProperty
          Object.Caption         =   "C.Costos:"
       EndProperty
-      ItemType11      =   7
-      BeginProperty Item11 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType10      =   7
+      BeginProperty Item10 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Image1"
-         Object.Left            =   8235
-         Object.Width           =   3090
-         Object.Height          =   1110
+         Object.Left            =   8220
+         Object.Top             =   45
+         Object.Width           =   2430
+         Object.Height          =   900
          Picture         =   "pedido_detalle.dsx":0000
          PictureAlignment=   2
          SizeMode        =   1
       EndProperty
-      ItemType12      =   3
-      BeginProperty Item12 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType11      =   3
+      BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaEntrega"
-         Object.Left            =   5730
+         Object.Left            =   4620
          Object.Top             =   75
-         Object.Width           =   2445
+         Object.Width           =   1545
          Object.Height          =   495
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -231,12 +212,32 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          ForeColor       =   16777215
          Alignment       =   1
       EndProperty
+      ItemType12      =   3
+      BeginProperty Item12 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblSector"
+         Object.Left            =   8295
+         Object.Top             =   1065
+         Object.Width           =   2280
+         Object.Height          =   465
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   18
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "DETALLE"
+         Alignment       =   2
+      EndProperty
    EndProperty
    SectionCode1    =   2
    BeginProperty Section1 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "Sección2"
-      Object.Height          =   360
+      Object.Height          =   375
       NumControls     =   8
       ItemType0       =   3
       BeginProperty Item0 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -260,7 +261,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item1 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta10"
-         Object.Left            =   9810
+         Object.Left            =   9150
          Object.Top             =   15
          Object.Width           =   510
          Object.Height          =   345
@@ -279,7 +280,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item2 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta11"
-         Object.Left            =   10320
+         Object.Left            =   9660
+         Object.Top             =   15
          Object.Width           =   510
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -297,7 +299,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item3 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Línea1"
-         Object.Left            =   15
          Object.Top             =   300
          Object.Width           =   11340
       EndProperty
@@ -307,7 +308,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Name            =   "Etiqueta7"
          Object.Left            =   2595
          Object.Top             =   15
-         Object.Width           =   5805
+         Object.Width           =   5450
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -324,7 +325,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta14"
-         Object.Left            =   10845
+         Object.Left            =   10185
+         Object.Top             =   15
          Object.Width           =   510
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -342,8 +344,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item6 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Entrega"
-         Object.Left            =   8370
-         Object.Width           =   1440
+         Object.Left            =   7950
+         Object.Width           =   1200
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -388,7 +390,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Name            =   "Texto2"
          Object.Left            =   2625
          Object.Top             =   30
-         Object.Width           =   8730
+         Object.Width           =   8085
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -414,7 +416,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item1 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto4"
-         Object.Left            =   9795
+         Object.Left            =   9150
          Object.Top             =   240
          Object.Width           =   510
          Object.Height          =   225
@@ -442,7 +444,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item2 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto3"
-         Object.Left            =   10320
+         Object.Left            =   9675
          Object.Top             =   240
          Object.Width           =   510
          Object.Height          =   225
@@ -497,7 +499,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item4 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto5"
-         Object.Left            =   10845
+         Object.Left            =   10200
          Object.Top             =   240
          Object.Width           =   510
          Object.Height          =   225
@@ -525,7 +527,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item5 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto6"
-         Object.Left            =   7635
+         Object.Left            =   7170
          Object.Top             =   240
          Object.Width           =   705
          Object.Height          =   225
@@ -554,9 +556,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item6 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto7"
-         Object.Left            =   8385
+         Object.Left            =   7950
          Object.Top             =   240
-         Object.Width           =   1410
+         Object.Width           =   1185
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -703,8 +705,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblBarCode"
-         Object.Left            =   10155
-         Object.Top             =   60
+         Object.Left            =   9510
+         Object.Top             =   105
          Object.Width           =   1245
          Object.Height          =   840
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -860,7 +862,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Name            =   "lblIncidencias"
          Object.Left            =   3510
          Object.Top             =   195
-         Object.Width           =   7710
+         Object.Width           =   7305
          Object.Height          =   540
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"

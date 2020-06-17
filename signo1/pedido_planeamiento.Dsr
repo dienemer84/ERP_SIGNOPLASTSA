@@ -9,7 +9,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_planeamiento
    _ExtentY        =   19420
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11400
+   ReportWidth     =   11385
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -33,8 +33,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_planeamiento
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma3"
-         Object.Top             =   555
-         Object.Width           =   11325
+         Object.Left            =   15
+         Object.Top             =   540
+         Object.Width           =   11130
          Object.Height          =   1110
          BackColor       =   14737632
          BackStyle       =   1
@@ -229,7 +230,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_planeamiento
       BeginProperty Item12 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma1"
-         Object.Left            =   8205
+         Object.Left            =   8010
          Object.Top             =   540
          Object.Width           =   3180
          Object.Height          =   1125
@@ -239,7 +240,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_planeamiento
       BeginProperty Item13 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Image1"
-         Object.Left            =   8220
+         Object.Left            =   8040
          Object.Width           =   3180
          Object.Height          =   1185
          Picture         =   "pedido_planeamiento.dsx":0000
@@ -269,7 +270,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_planeamiento
       BeginProperty Item15 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblSector"
-         Object.Left            =   8250
+         Object.Left            =   8070
          Object.Top             =   1200
          Object.Width           =   3060
          Object.Height          =   465
@@ -544,7 +545,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_planeamiento
    BeginProperty Section3 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "s3"
-      Object.Height          =   840
+      Object.Height          =   855
       NumControls     =   4
       ItemType0       =   3
       BeginProperty Item0 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -598,7 +599,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_planeamiento
       BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblBarCode"
-         Object.Left            =   10080
+         Object.Left            =   9495
+         Object.Top             =   15
          Object.Width           =   1305
          Object.Height          =   840
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
