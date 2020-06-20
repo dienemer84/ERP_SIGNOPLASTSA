@@ -17,4 +17,5 @@ Public descripcion As String
 Public PuntoVenta As Integer
 Public EsElectronico As Boolean
 Public default As Boolean
-Public EsCredito As Boolean
+'Public EsCredito As Boolean
+Public CaeManual As Boolean

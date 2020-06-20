@@ -42,7 +42,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As P
         pv.descripcion = GetValue(rs, indice, tabla, "descripcion")
         pv.PuntoVenta = GetValue(rs, indice, tabla, "punto_venta")
         pv.EsElectronico = GetValue(rs, indice, tabla, "esElectronico")
-        pv.EsCredito = GetValue(rs, indice, tabla, "esCredito")
+        'pv.EsCredito = GetValue(rs, indice, tabla, "esCredito")
+        pv.CaeManual = GetValue(rs, indice, tabla, "caeManual")
     pv.default = GetValue(rs, indice, tabla, "default")
 
     End If

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasAprobarSinAfip 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Aprobar comprobante sin envio a AFIP"
@@ -56,7 +56,7 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62128129
+         Format          =   58851329
          CurrentDate     =   43960
       End
       Begin VB.Label Label1 
@@ -96,7 +96,7 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
    End
    Begin XtremeSuiteControls.PushButton cmdAceptar 
       Height          =   375
-      Left            =   120
+      Left            =   3840
       TabIndex        =   0
       Top             =   1920
       Width           =   1575
@@ -109,7 +109,7 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
    End
    Begin XtremeSuiteControls.PushButton cmdCancelar 
       Height          =   375
-      Left            =   3720
+      Left            =   240
       TabIndex        =   1
       Top             =   1920
       Width           =   1575

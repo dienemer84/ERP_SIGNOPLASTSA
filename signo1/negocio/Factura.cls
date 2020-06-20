@@ -12,7 +12,7 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-
+Public EsCredito As Boolean
 Public id As Long
 Public Cancelada As Long
 Public FechaAprobacion As Date
@@ -157,15 +157,15 @@ End Function
 
 Public Function getDescripcionCondicion() As String
     
-    Dim A As String
+    Dim a As String
     If Me.CantDiasPago = 1 Then
-        A = Me.CantDiasPago & " dia FF"
+        a = Me.CantDiasPago & " dia FF"
     Else
-        A = Me.CantDiasPago & " dias FF"
+        a = Me.CantDiasPago & " dias FF"
     End If
 
 
-getDescripcionCondicion = A & Me.observaciones
+getDescripcionCondicion = a & Me.observaciones
 
 End Function
 

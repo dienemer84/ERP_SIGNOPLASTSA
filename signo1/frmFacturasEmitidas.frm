@@ -934,11 +934,11 @@ Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer,
     If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
@@ -951,10 +951,12 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y 
                 Me.AnularFactura.Visible = True
                 Me.AnularFactura.Enabled = False
                 Me.aprobarFactura.Enabled = True
-                Me.aprobarFactura.Visible = Not Factura.Tipo.PuntoVenta.EsCredito
                 
-                Me.mnuAprobarSinEnvio.Enabled = True
-                Me.mnuAprobarSinEnvio.Visible = True
+                
+                Me.aprobarFactura.Visible = True 'Not Factura.EsCredito
+                
+                Me.mnuAprobarSinEnvio.Enabled = False
+                Me.mnuAprobarSinEnvio.Visible = False
                 
                 Me.mnuEditarCAE.Enabled = False
                 Me.mnuEditarCAE.Visible = False
@@ -979,8 +981,8 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y 
                 Me.mnuAprobarSinEnvio.Enabled = False
                 Me.mnuAprobarSinEnvio.Visible = False
                 
-                Me.mnuEditarCAE.Enabled = Not Factura.EstaImpresa
-                Me.mnuEditarCAE.Visible = Not Factura.EstaImpresa
+                Me.mnuEditarCAE.Enabled = Not Factura.EstaImpresa And Factura.Tipo.PuntoVenta.CaeManual
+                Me.mnuEditarCAE.Visible = Not Factura.EstaImpresa And Factura.Tipo.PuntoVenta.CaeManual
                 
                 Me.ImprimirFactura.Enabled = True
                 Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado = TipoSaldadoFactura.saldadoTotal)
@@ -1032,14 +1034,14 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y 
                 Me.mnuFechaEntrega.Enabled = False
             End If
 
-          If Not Factura.Tipo.PuntoVenta.EsElectronico Then
-          
-                          Me.mnuEditarCAE.Enabled = False
-                          Me.mnuEditarCAE.Visible = False
-                        
-                          Me.mnuAprobarSinEnvio.Enabled = False
-                          Me.mnuAprobarSinEnvio.Visible = False
-          End If
+'          If Not Factura.Tipo.PuntoVenta.EsElectronico Then
+'
+'                          Me.mnuEditarCAE.Enabled = False
+'                          Me.mnuEditarCAE.Visible = False
+'
+'                          Me.mnuAprobarSinEnvio.Enabled = False
+'                          Me.mnuAprobarSinEnvio.Visible = False
+'          End If
             
 
             Me.AnularFactura.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
@@ -1128,7 +1130,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(15) = Factura.usuarioCreador.usuario
     Values(16) = Factura.observaciones
 
-    If Factura.Tipo.PuntoVenta.EsElectronico Then
+    If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
     
     If Factura.estado = EstadoFacturaCliente.EnProceso Then
          Values(16) = "Factura en proceso"

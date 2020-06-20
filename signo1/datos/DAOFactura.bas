@@ -175,7 +175,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.CBU = GetValue(rs, indice, tabla, "CBU")
         
         F.fechaPago = GetValue(rs, indice, tabla, "fecha_pago")
-        
+          F.EsCredito = GetValue(rs, indice, tabla, "EsCredito")
         'fce_nemer_29052020
         F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
         F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
@@ -274,14 +274,14 @@ End Function
 
 
 Public Function ActualizarCAE(F As Factura)
+On Error GoTo err1
 
-
-    If Not F.Tipo.PuntoVenta.EsElectronico Then
-        Err.Raise "no se puede actualizar datos de CAE en comprobantes no electrónicas"
+    If Not F.Tipo.PuntoVenta.CaeManual Then
+        Err.Raise 1235, "cae", "no se puede actualizar datos de CAE en comprobantes con PV que no acepten cae manual"
     End If
 
     If F.estado = EstadoFacturaCliente.Anulada Or F.estado = EstadoFacturaCliente.EnProceso Then
-            Err.Raise "Solo puede modificar CAE en comprobantes aprobados. "
+            Err.Raise 1444, "cae", "Solo puede modificar CAE en comprobantes aprobados. "
      End If
      
      
@@ -293,9 +293,11 @@ Public Function ActualizarCAE(F As Factura)
     q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
     
     If Not conectar.execute(q) Then
-           Err.Raise "No se pudieron actualizar los datos del CAE"
+           Err.Raise 112233, "No se pudieron actualizar los datos del CAE"
     End If
-    
+Exit Function
+err1:
+Err.Raise Err.Number, Err.Description
 End Function
 Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Boolean
     Dim q As String
@@ -308,7 +310,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         q = "Update sp.AdminFacturas  SET " _
             & " NroFactura = 'NroFactura' , idCliente = 'idCliente' ,  tipoFactura_borrar = 'tipoFactura_borrar' ," _
             & " idMoneda = 'idMoneda' ,cae='cae',cae_vto='cae_vto'," _
-            & " FechaEmision = 'FechaEmision' , " _
+            & " FechaEmision = 'FechaEmision' , EsCredito = 'EsCredito'," _
             & " idUsuarioEmision = 'idUsuarioEmision' ," _
             & " FechaAprobacion = 'FechaAprobacion' , " _
             & " idUsuarioAprobacion = 'idUsuarioAprobacion' ," _
@@ -341,7 +343,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " idCliente, " _
             & " tipoFactura_borrar, " _
             & " idMoneda, " _
-            & " FechaEmision, " _
+            & " FechaEmision, EsCredito," _
             & " idUsuarioEmision, " _
             & " FechaAprobacion, " _
             & " idUsuarioAprobacion, " _
@@ -365,7 +367,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'idCliente', " _
             & " 'tipoFactura_borrar', " _
             & " 'idMoneda', " _
-            & " 'FechaEmision', " _
+            & " 'FechaEmision', 'EsCredito'," _
             & " 'idUsuarioEmision', " _
             & " 'FechaAprobacion', " _
             & " 'idUsuarioAprobacion', " _
@@ -418,6 +420,9 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'tipoFactura_borrar'", F.Tipo.TipoFactura.id)
     q = Replace$(q, "'idMoneda'", conectar.GetEntityId(F.moneda))
     q = Replace$(q, "'FechaEmision'", conectar.Escape(F.FechaEmision))
+    
+    q = Replace$(q, "'EsCredito'", conectar.Escape(F.EsCredito))
+    
     q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.usuarioCreador))
     q = Replace$(q, "'OrdenCompra'", conectar.Escape(F.OrdenCompra))
     q = Replace$(q, "'origenFacturado'", conectar.Escape(F.origenFacturado))
