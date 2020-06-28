@@ -938,7 +938,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
@@ -1044,8 +1044,8 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 '          End If
             
 
-            Me.AnularFactura.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
-            Me.desAnular.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
+            Me.AnularFactura.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
+            Me.desAnular.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
             Me.mnuDesaprobarFactura.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
 
 
@@ -1194,7 +1194,7 @@ Private Sub ImprimirFactura_Click()
     Dim veces As Long
 
 
-    If Factura.Tipo.PuntoVenta.EsElectronico Then
+    If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
         veces = clasea.facturaImpresa(Factura.id)
         If veces > 0 Then
             If MsgBox("Este comprobante ya fué generarlo" & Chr(10) & "¿Desea volver a generarlo?", vbYesNo, "Confirmación") = vbYes Then

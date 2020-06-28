@@ -175,7 +175,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.CBU = GetValue(rs, indice, tabla, "CBU")
         
         F.fechaPago = GetValue(rs, indice, tabla, "fecha_pago")
-          F.EsCredito = GetValue(rs, indice, tabla, "EsCredito")
+        F.EsCredito = GetValue(rs, indice, tabla, "EsCredito")
         'fce_nemer_29052020
         F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
         F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
@@ -480,7 +480,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
 
         If DAOFactura.FindAll("AdminFacturas.id_tipo_discriminado=" & F.Tipo.id & "  and  AdminFacturas.NroFactura = " & F.numero & " And AdminFacturas.Id <> " & F.id).count > 0 Then
             
-            If Not F.Tipo.PuntoVenta.EsElectronico Then GoTo err1
+            If Not F.Tipo.PuntoVenta.EsElectronico And Not F.Tipo.PuntoVenta.CaeManual Then GoTo err1
     
 
             'el nro de factura y tipo se repite
@@ -716,7 +716,7 @@ Public Function Anular(Factura As Factura) As Boolean
 err5:
     conectar.RollBackTransaction
     Factura.estado = estadoAnterior
-    ftmp.estado = tmpestado
+    'ftmp.estado = tmpestado
     Factura.TotalEstatico.Total = totAnt
     Factura.TotalEstatico.TotalExento = TotEx
 
@@ -1899,11 +1899,11 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.caption = F.Tipo.TipoFactura.Tipo
         
         Set c = seccion.Controls.item("lblFce")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.Visible = F.EsCredito
         c.caption = F.DescripcionCreditoAdicional
              
         Set c = seccion.Controls.item("lblCbuEmisorFce")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito And F.TipoDocumento = tipoDocumentoContable.Factura
+        c.Visible = F.EsCredito And F.TipoDocumento = tipoDocumentoContable.Factura
         c.caption = "CBU del Emisor: " & F.CBU
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
@@ -1949,18 +1949,18 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
            
            
         Set c = seccion.Controls.item("lblFechaPagoFceDesde")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.Visible = F.EsCredito
         
         Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.Visible = F.EsCredito
         c.caption = Format(F.FechaVtoDesde, "dd/mm/yyyy")
         
         
         Set c = seccion.Controls.item("lblFechaPagoFceHasta")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.Visible = F.EsCredito
               
         Set c = seccion.Controls.item("FechaPagoFceHastaDato")
-        c.Visible = F.Tipo.PuntoVenta.EsCredito
+        c.Visible = F.EsCredito
         c.caption = Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
                 
