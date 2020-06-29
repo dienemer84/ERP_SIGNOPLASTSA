@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   58982401
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   58982401
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -334,7 +334,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   2055
       Left            =   11640
       TabIndex        =   51
-      Top             =   4800
+      Top             =   4320
       Width           =   6135
       Begin VB.TextBox txtTextoAdicional 
          Height          =   1575
@@ -534,7 +534,7 @@ Begin VB.Form frmFacturaEdicion
       _ExtentY        =   7646
       _StockProps     =   79
       Caption         =   "Datos"
-      UseVisualStyle  =   -1  'True
+      Appearance      =   4
       Begin XtremeSuiteControls.CheckBox chkEsCredito 
          Height          =   375
          Left            =   8160
@@ -764,14 +764,14 @@ Begin VB.Form frmFacturaEdicion
          _Version        =   393216
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
-            Size            =   9.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1106,7 +1106,7 @@ Begin VB.Form frmFacturaEdicion
       _ExtentY        =   7805
       _StockProps     =   79
       Caption         =   "Detalles (Cant: 0)"
-      UseVisualStyle  =   -1  'True
+      Appearance      =   2
       Begin GridEX20.GridEX gridDetalles 
          Height          =   3945
          Left            =   120
@@ -1247,17 +1247,17 @@ Begin VB.Form frmFacturaEdicion
       DropDownItemCount=   3
    End
    Begin XtremeSuiteControls.GroupBox grpPercep 
-      Height          =   1575
+      Height          =   1215
       Left            =   11640
       TabIndex        =   63
       Top             =   3120
       Width           =   6105
       _Version        =   786432
       _ExtentX        =   10769
-      _ExtentY        =   2778
+      _ExtentY        =   2143
       _StockProps     =   79
       Caption         =   "Percepciones IIBB"
-      UseVisualStyle  =   -1  'True
+      Appearance      =   4
       Begin VB.TextBox txtPercepcion 
          Height          =   300
          Left            =   2160
@@ -1296,9 +1296,9 @@ Begin VB.Form frmFacturaEdicion
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   210
-         Left            =   2160
+         Left            =   3480
          TabIndex        =   68
-         Top             =   1080
+         Top             =   0
          Visible         =   0   'False
          Width           =   2670
       End
@@ -1954,20 +1954,18 @@ Private Sub dtFechaPagoCreditoHasta_Change()
 End Sub
 
 'fce_nemer_02062020_#113
-Private Sub dtFechaServDesde_Change()
-   If Not dataLoading Then
-        Factura.FechaServDesde = Me.dtFechaServDesde.value
-    End If
-    
-    
-End Sub
+'Private Sub dtFechaServDesde_Change()
+'   If Not dataLoading Then
+'        Factura.FechaServDesde = Me.dtFechaServDesde.value
+'    End If
+'End Sub
 
 'fce_nemer_02062020_#113
-Private Sub dtFechaServHasta_Change()
-   If Not dataLoading Then
-        Factura.FechaServHasta = Me.dtFechaServHasta.value
-    End If
-End Sub
+'Private Sub dtFechaServHasta_Change()
+'   If Not dataLoading Then
+'        Factura.FechaServHasta = Me.dtFechaServHasta.value
+'    End If
+'End Sub
 
 
 Private Sub dtpFecha_Change()
@@ -1976,8 +1974,8 @@ Private Sub dtpFecha_Change()
         Factura.FechaEmision = Me.dtpFecha.value
         
         'fce_nemer_02062020_#113
-        Me.dtFechaServDesde.value = Me.dtpFecha.value
-        Me.dtFechaServHasta.value = Me.dtpFecha.value
+        'Me.dtFechaServDesde.value = Me.dtpFecha.value
+        'Me.dtFechaServHasta.value = Me.dtpFecha.value
         
         'fce_nemer_09062020
         txtDiasVenc_LostFocus

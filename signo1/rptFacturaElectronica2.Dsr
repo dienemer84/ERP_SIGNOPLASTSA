@@ -831,7 +831,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "Fecha del Servicio Desde:"
       EndProperty
       ItemType25      =   3
       BeginProperty Item25 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -850,7 +849,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "Hasta:"
       EndProperty
       ItemType26      =   3
       BeginProperty Item26 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -987,7 +985,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "00/00/0000"
       EndProperty
       ItemType33      =   3
       BeginProperty Item33 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -1006,7 +1003,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "00/00/0000"
       EndProperty
       ItemType34      =   6
       BeginProperty Item34 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 

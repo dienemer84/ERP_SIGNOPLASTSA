@@ -430,7 +430,7 @@ Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As I
     End If
 End Sub
 
-Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Button = 2 Then
         Me.nro.caption = "[ Nro. " & Format(recibo.id, "0000") & " ]"
         If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente

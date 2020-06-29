@@ -181,8 +181,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
         
         'fce_nemer_02062020_#113
-        F.FechaServDesde = GetValue(rs, indice, tabla, "fecha_serv_desde")
-        F.FechaServHasta = GetValue(rs, indice, tabla, "fecha_serv_hasta")
+        'F.FechaServDesde = GetValue(rs, indice, tabla, "fecha_serv_desde")
+        'F.FechaServHasta = GetValue(rs, indice, tabla, "fecha_serv_hasta")
         
         F.TextoAdicional = GetValue(rs, indice, tabla, "texto_adicional")
         
@@ -464,8 +464,8 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'fecha_vto_hasta'", conectar.Escape(F.FechaVtoHasta))
     
     'fce_nemer_02062020_#113
-    q = Replace$(q, "'fecha_serv_desde'", conectar.Escape(F.FechaServDesde))
-    q = Replace$(q, "'fecha_serv_hasta'", conectar.Escape(F.FechaServHasta))
+    'q = Replace$(q, "'fecha_serv_desde'", conectar.Escape(F.FechaServDesde))
+    'q = Replace$(q, "'fecha_serv_hasta'", conectar.Escape(F.FechaServHasta))
     
     
 
@@ -1972,37 +1972,37 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         
                 
         'fce_nemer_10062020_#113
-        Set c = seccion.Controls.item("lblFechaServFceDesde")
-        If F.MostrarConcepto = "Productos" Then
-            c.caption = ""
-            Else
-            c.caption = "Fecha del Servicio Desde:"
-        End If
+        'Set c = seccion.Controls.item("lblFechaServFceDesde")
+        'If F.MostrarConcepto = "Productos" Then
+        '    c.caption = ""
+        '   Else
+        '    c.caption = "Fecha del Servicio Desde:"
+        'End If
         
         'fce_nemer_10062020_#113
-        Set c = seccion.Controls.item("FechaServFceDesdeDato")
-        If F.MostrarConcepto = "Productos" Then
-            c.caption = ""
-            Else
-            c.caption = Format(F.FechaServDesde, "dd/mm/yyyy")
-        End If
+        'Set c = seccion.Controls.item("FechaServFceDesdeDato")
+       'If F.MostrarConcepto = "Productos" Then
+        '    c.caption = ""
+        '    Else
+        '    c.caption = Format(F.FechaServDesde, "dd/mm/yyyy")
+        'End If
 
         
         'fce_nemer_10062020_#113
-        Set c = seccion.Controls.item("lblFechaServFceHasta")
-        If F.MostrarConcepto = "Productos" Then
-            c.caption = ""
-            Else
-            c.caption = "Hasta:"
-        End If
+        'Set c = seccion.Controls.item("lblFechaServFceHasta")
+        'If F.MostrarConcepto = "Productos" Then
+        '    c.caption = ""
+         '   Else
+        '    c.caption = "Hasta:"
+       ' End If
         
         'fce_nemer_10062020_#113
-        Set c = seccion.Controls.item("FechaServFceHastaDato")
-        If F.MostrarConcepto = "Productos" Then
-            c.caption = ""
-            Else
-            c.caption = Format(F.FechaServHasta, "dd/mm/yyyy")
-        End If
+        'Set c = seccion.Controls.item("FechaServFceHastaDato")
+       ' If F.MostrarConcepto = "Productos" Then
+        '    c.caption = ""
+        '    Else
+        '    c.caption = Format(F.FechaServHasta, "dd/mm/yyyy")
+        'End If
         
         
     

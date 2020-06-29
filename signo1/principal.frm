@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~1.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.MDIForm frmPrincipal 
    BackColor       =   &H00FFC0C0&
    Caption         =   "Signo Plast ERP"
@@ -336,8 +336,8 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
             Dim F As New frmCategoriasSueldo
             F.Show
         Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SUELDO:
-            Dim CS As New CategoriaSueldo
-            CS.EspecificarSueldo
+            Dim cs As New CategoriaSueldo
+            cs.EspecificarSueldo
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS:
             Dim frm6001 As frmPlaneamientoRemitosLista
@@ -361,7 +361,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ND:
 
             Dim f32412 As New frmFacturaEdicion
-            f32412.NuevoTipoDocumento = tipoDocumentoContable.NotaDebito
+            f32412.NuevoTipoDocumento = tipoDocumentoContable.notaDebito
             f32412.Show
 
 
@@ -996,7 +996,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Nota de Débito", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ND, Permisos.AdminFacturaControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Nota de Crédito", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_NC, Permisos.AdminFacturaControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Factura Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ANTICIPO, Permisos.AdminFacturaControl, , , cmdBarCtrl
-    AddButton ribbonGroup, "Facturas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__FACTURAS, Permisos.AdminFacturaConsultas
+    AddButton ribbonGroup, "Comprobantes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__FACTURAS, Permisos.AdminFacturaConsultas
 
     'Set ribbonGroup = ribbonTab.Groups.AddGroup("Ctas. Ctes. Clientes", ID_GROUP.ID_GROUP_ADMINISTRACION__CUENTAS_CORRIENTES)
     AddButton ribbonGroup, "Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS, Permisos.AdminCtaCteControl
