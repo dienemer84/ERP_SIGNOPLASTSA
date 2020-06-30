@@ -782,7 +782,7 @@ Private Sub cmdImprimir_Click()
         .FitColumns = True
         .RepeatHeaders = True
         .Orientation = jgexPPLandscape
-        .HeaderString(jgexHFCenter) = "Comprobantes emitidos"
+        .HeaderString(jgexHFCenter) = "Emitidos"
         .FooterString(jgexHFCenter) = Now
     End With
     Load frmPrintPreview
@@ -858,9 +858,9 @@ Private Sub llenarGrilla()
     End If
 
 
-    If Me.chkCredito.value >= 0 Then
+    If Me.chkCredito.value > 0 Then
     filtro = filtro & " and AdminFacturas.EsCredito=" & Me.chkCredito.value
-    End If
+   End If
     
 
     If LenB(Me.txtOrdenCompra) > 0 Then
@@ -926,7 +926,7 @@ Private Sub llenarGrilla()
 
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = facturas.count
-    Me.caption = "Comprobantes Emitidos [Cantidad: " & facturas.count & "]"
+    Me.caption = "Emitidos [Cantidad: " & facturas.count & "]"
 
     If facturas.count = 1 Then
         Dim f_c3h3 As New frmFacturaEdicion
@@ -972,7 +972,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
