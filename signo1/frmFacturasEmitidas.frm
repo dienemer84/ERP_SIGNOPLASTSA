@@ -8,12 +8,12 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   6975
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   14655
+   ClientWidth     =   11955
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   6975
-   ScaleWidth      =   14655
+   ScaleWidth      =   11955
    Begin XtremeSuiteControls.GroupBox grp 
       Height          =   1575
       Left            =   120
@@ -470,41 +470,41 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(3)       =   "frmFacturasEmitidas.frx":05B2
       Column(4)       =   "frmFacturasEmitidas.frx":069A
       Column(5)       =   "frmFacturasEmitidas.frx":0786
-      Column(6)       =   "frmFacturasEmitidas.frx":087A
-      Column(7)       =   "frmFacturasEmitidas.frx":098A
-      Column(8)       =   "frmFacturasEmitidas.frx":0B82
-      Column(9)       =   "frmFacturasEmitidas.frx":0C76
-      Column(10)      =   "frmFacturasEmitidas.frx":0D76
-      Column(11)      =   "frmFacturasEmitidas.frx":0E72
-      Column(12)      =   "frmFacturasEmitidas.frx":0F66
-      Column(13)      =   "frmFacturasEmitidas.frx":105A
-      Column(14)      =   "frmFacturasEmitidas.frx":114E
-      Column(15)      =   "frmFacturasEmitidas.frx":1252
-      Column(16)      =   "frmFacturasEmitidas.frx":1346
-      Column(17)      =   "frmFacturasEmitidas.frx":143A
-      Column(18)      =   "frmFacturasEmitidas.frx":151E
-      Column(19)      =   "frmFacturasEmitidas.frx":161A
-      Column(20)      =   "frmFacturasEmitidas.frx":173E
-      Column(21)      =   "frmFacturasEmitidas.frx":1862
-      Column(22)      =   "frmFacturasEmitidas.frx":19A6
+      Column(6)       =   "frmFacturasEmitidas.frx":0886
+      Column(7)       =   "frmFacturasEmitidas.frx":09EA
+      Column(8)       =   "frmFacturasEmitidas.frx":0BE2
+      Column(9)       =   "frmFacturasEmitidas.frx":0D2A
+      Column(10)      =   "frmFacturasEmitidas.frx":0E2A
+      Column(11)      =   "frmFacturasEmitidas.frx":0F26
+      Column(12)      =   "frmFacturasEmitidas.frx":1026
+      Column(13)      =   "frmFacturasEmitidas.frx":117A
+      Column(14)      =   "frmFacturasEmitidas.frx":12C2
+      Column(15)      =   "frmFacturasEmitidas.frx":141A
+      Column(16)      =   "frmFacturasEmitidas.frx":1562
+      Column(17)      =   "frmFacturasEmitidas.frx":1656
+      Column(18)      =   "frmFacturasEmitidas.frx":173A
+      Column(19)      =   "frmFacturasEmitidas.frx":1836
+      Column(20)      =   "frmFacturasEmitidas.frx":195A
+      Column(21)      =   "frmFacturasEmitidas.frx":1A7E
+      Column(22)      =   "frmFacturasEmitidas.frx":1BC2
       FormatStylesCount=   14
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":1AB2
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":1BEA
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":1C9A
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":1D4E
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":1E26
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":1EDE
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":1FBE
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":204A
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":212A
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":21DA
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":228E
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":233E
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":2412
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":24C6
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":1CCE
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":1E06
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":1EB6
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":1F6A
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":2042
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":20FA
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":21DA
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":2266
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2346
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":23F6
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":24AA
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":255A
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":262E
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":26E2
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":259E
-      PrinterProperties=   "frmFacturasEmitidas.frx":28B8
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":27BA
+      PrinterProperties=   "frmFacturasEmitidas.frx":2AD4
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   15630
@@ -1125,19 +1125,19 @@ Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
         RowBuffer.RowStyle = "anulada"
     Else
         If Factura.estado = EstadoFacturaCliente.EnProceso Then
-            RowBuffer.CellStyle(11) = "pendiente"
+            RowBuffer.CellStyle(12) = "pendiente"
         ElseIf Factura.estado = EstadoFacturaCliente.Aprobada Then
-            RowBuffer.CellStyle(11) = "aprobada"
+            RowBuffer.CellStyle(12) = "aprobada"
         End If
 
         If Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado = TipoSaldadoFactura.SaldadoParcial Or Factura.Saldado = TipoSaldadoFactura.notaCredito Then
             If Factura.EstaAtrasada Then
-                RowBuffer.CellStyle(14) = "no_saldada"
+                RowBuffer.CellStyle(15) = "no_saldada"
             Else
-                RowBuffer.CellStyle(14) = "no_vencida"
+                RowBuffer.CellStyle(15) = "no_vencida"
             End If
         ElseIf Factura.Saldado = saldadoTotal Then
-            RowBuffer.CellStyle(14) = "saldada"
+            RowBuffer.CellStyle(15) = "saldada"
         End If
 
 
@@ -1190,7 +1190,11 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(11) = Factura.cliente.razon
     Values(12) = enums.EnumEstadoDocumentoContable(Factura.estado)
     Values(13) = EnumTipoSaldadoFactura(Factura.Saldado)
+    
+
     Values(14) = Factura.Vencimiento
+
+    
     Values(15) = Factura.StringDiasAtraso
     Values(16) = Factura.usuarioCreador.usuario
     Values(17) = Factura.observaciones
@@ -1198,14 +1202,14 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
     
     If Factura.estado = EstadoFacturaCliente.EnProceso Then
-         Values(17) = "Factura en proceso"
+         Values(17) = "Comprobante en proceso"
     Else
     
         If LenB(Factura.CAE) <= 2 Then
-          Values(17) = "CAE no definido"
+          Values(17) = "/ CAE no definido"
         Else
    
-          Values(17) = Values(17) & " CAE: " & Factura.CAE & " Vto CAE: " & Format(Factura.CAEVto, "dd/mm/yyyy")
+          Values(17) = Values(17) & "/ CAE: " & Factura.CAE
         End If
     End If
 End If
@@ -1214,6 +1218,8 @@ End If
     Else
         Values(18) = vbNullString
     End If
+     
+    
     If CDbl(Factura.FechaPropuestaPago) > 0 Then Values(19) = Factura.FechaPropuestaPago
 
     If Factura.DiferenciaDiasEntrega = -1 Then

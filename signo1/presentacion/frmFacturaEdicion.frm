@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   61800449
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   61800449
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   61800449
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   61800449
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -771,7 +771,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   61800449
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -2168,9 +2168,16 @@ Private Sub Form_Load()
     Me.lblIva2.Enabled = Not ReadOnly
     Me.Label8.Enabled = Not ReadOnly
 
+    Me.Label13.Enabled = Not ReadOnly
+    Me.chkEsCredito.Enabled = Not ReadOnly
+    Me.Label23.Enabled = Not ReadOnly
+        
+    Me.Frame1.Enabled = Not ReadOnly
     
+    Me.PushButton1.Enabled = Not ReadOnly
+    Me.PushButton2.Enabled = Not ReadOnly
     
-    
+        
 End Sub
 
 Private Sub LimpiarFactura()
@@ -2212,8 +2219,11 @@ End Sub
 
         Me.txtDetallesCAE.caption = ""
     End If
-
-
+    
+   
+  
+  
+  
 
     If IsSomething(Factura.cliente) Then
         Me.cboCliente.ListIndex = funciones.PosIndexCbo(Factura.cliente.id, Me.cboCliente)
