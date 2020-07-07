@@ -1,22 +1,22 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Factura de Proveedor"
-   ClientHeight    =   7065
+   ClientHeight    =   7005
    ClientLeft      =   45
    ClientTop       =   480
-   ClientWidth     =   10530
+   ClientWidth     =   10515
    Icon            =   "frmAdminComprasNuevaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7065
-   ScaleWidth      =   10530
+   ScaleHeight     =   7005
+   ScaleWidth      =   10515
    Begin VB.TextBox txtTipoCambio 
       Alignment       =   1  'Right Justify
       Height          =   285
@@ -252,18 +252,15 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          Height          =   1650
          Left            =   120
          TabIndex        =   13
-         Top             =   240
+         Top             =   255
          Width           =   3495
          _ExtentX        =   6165
          _ExtentY        =   2910
          Version         =   "2.0"
          BoundColumnIndex=   ""
          ReplaceColumnIndex=   ""
-         TabKeyBehavior  =   1
          ColumnAutoResize=   -1  'True
-         HideSelection   =   2
          MethodHoldFields=   -1  'True
-         SelectionStyle  =   1
          AllowDelete     =   -1  'True
          RowHeaders      =   -1  'True
          DataMode        =   99
@@ -301,21 +298,17 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       UseVisualStyle  =   -1  'True
       Begin GridEX20.GridEX grilla_alicuotas 
          Height          =   1680
-         Left            =   120
+         Left            =   105
          TabIndex        =   11
-         Top             =   240
+         Top             =   255
          Width           =   2205
          _ExtentX        =   3889
          _ExtentY        =   2963
          Version         =   "2.0"
-         AllowRowSizing  =   -1  'True
          BoundColumnIndex=   ""
          ReplaceColumnIndex=   ""
-         TabKeyBehavior  =   1
          ColumnAutoResize=   -1  'True
-         HideSelection   =   2
          MethodHoldFields=   -1  'True
-         ContScroll      =   -1  'True
          AllowDelete     =   -1  'True
          RowHeaders      =   -1  'True
          DataMode        =   99
@@ -339,14 +332,14 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       End
    End
    Begin GridEX20.GridEX grilla_alicuota 
-      Height          =   2325
-      Left            =   960
+      Height          =   1485
+      Left            =   555
       TabIndex        =   34
-      Top             =   7080
+      Top             =   3060
       Visible         =   0   'False
-      Width           =   2985
-      _ExtentX        =   5265
-      _ExtentY        =   4101
+      Width           =   1665
+      _ExtentX        =   2937
+      _ExtentY        =   2619
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "alicuota"
@@ -442,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   59179009
+      Format          =   16711681
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -458,22 +451,18 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Caption         =   "Cuentas Contables"
       UseVisualStyle  =   -1  'True
       Begin GridEX20.GridEX grid_cuentascontables 
-         Height          =   1770
+         Height          =   1650
          Left            =   135
          TabIndex        =   12
-         Top             =   240
+         Top             =   285
          Width           =   3555
          _ExtentX        =   6271
-         _ExtentY        =   3122
+         _ExtentY        =   2910
          Version         =   "2.0"
          BoundColumnIndex=   ""
          ReplaceColumnIndex=   ""
-         TabKeyBehavior  =   1
          ColumnAutoResize=   -1  'True
-         HideSelection   =   2
          MethodHoldFields=   -1  'True
-         ContScroll      =   -1  'True
-         SelectionStyle  =   1
          AllowDelete     =   -1  'True
          RowHeaders      =   -1  'True
          DataMode        =   99
@@ -497,14 +486,14 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       End
    End
    Begin GridEX20.GridEX grid_cuenta 
-      Height          =   2565
-      Left            =   1800
+      Height          =   1485
+      Left            =   3195
       TabIndex        =   39
-      Top             =   7800
+      Top             =   2970
       Visible         =   0   'False
-      Width           =   3540
-      _ExtentX        =   6244
-      _ExtentY        =   4524
+      Width           =   3075
+      _ExtentX        =   5424
+      _ExtentY        =   2619
       Version         =   "2.0"
       HoldSortSettings=   -1  'True
       BoundColumnIndex=   "id"
@@ -772,8 +761,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Public TmpProveedor As clsProveedor
-Dim moneda As clsMoneda
+Dim Moneda As clsMoneda
 Dim loading As Boolean
 Dim colAlicuotas As New Collection
 Dim aliaplicada As clsAlicuotaAplicada
@@ -791,7 +779,7 @@ Dim colCuentas As Collection
 Dim ctaAplicada As clsCuentaFactura
 Dim ctaContable As clsCuentaContable
 Dim Percepcion As New clsPercepciones
-Dim alicuota As clsAlicuotas
+Dim Alicuota As clsAlicuotas
 Dim IDtipo As Long
 Dim nroFacturaAnterior
 Dim grabado As Boolean
@@ -837,13 +825,13 @@ Private Sub llenarTiposFacturas()
 End Sub
 
 Private Sub cboMonedas_Click()
-    Set moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+    Set Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
 
 
-    If IsSomething(vFactura) Then Set vFactura.moneda = moneda
-    If IsSomething(moneda) Then
+    If IsSomething(vFactura) Then Set vFactura.Moneda = Moneda
+    If IsSomething(Moneda) Then
         If Not VVer Then
-            Me.txtTipoCambio = moneda.Cambio
+            Me.txtTipoCambio = Moneda.Cambio
         End If
     End If
 End Sub
@@ -947,7 +935,7 @@ Private Sub cmdGuardar_Click()
 
 
     conectar.BeginTransaction
-    Dim A As Boolean
+    Dim a As Boolean
     Dim montonero As Double
     Dim nroNuevo As Long
     Dim EVENTO As clsEventoObserver
@@ -960,7 +948,7 @@ Private Sub cmdGuardar_Click()
     'If MsgBox("¿Está seguro de guardar la factura?", vbYesNo, "Confirmación") = vbYes Then
     armarFactura
     If vFactura.NetoGravado <= 0 Then
-        If vFactura.tipoDocumentoContable <> notaDebito Then
+        If vFactura.tipoDocumentoContable <> NotaDebito Then
             Err.Raise 202
         End If
     End If
@@ -970,14 +958,14 @@ Private Sub cmdGuardar_Click()
     If Me.txtNumeroMask.text <> "____-________" Then
 
 
-        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
+        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> NotaDebito Then Err.Raise 201
 
         If funciones.RedondearDecimales(vFactura.TotalAplicadoACuentas) <> funciones.RedondearDecimales(vFactura.NetoGravado) Then Err.Raise 200
 
         If Me.cboMonedas.ListIndex <> -1 Then
-            Set vFactura.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+            Set vFactura.Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
         Else
-            Set vFactura.moneda = Nothing
+            Set vFactura.Moneda = Nothing
         End If
 
         'creo el proveedor si es contado
@@ -1078,39 +1066,23 @@ Private Sub Form_Load()
     DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboTipoIva
     llenarComboProveedores
 
-
-If IsSomething(Me.TmpProveedor) Then
-    Me.cboProveedores.ListIndex = PosIndexCbo(Me.TmpProveedor.id, cboProveedores)
-End If
     Me.cboTipoDocContable.AddItem "Factura"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.Factura
     Me.cboTipoDocContable.AddItem "Nota de crédito"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.notaCredito
     Me.cboTipoDocContable.AddItem "Nota de débito"
-    Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.notaDebito
+    Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.NotaDebito
 
     Me.cboTipoDocContable.ListIndex = 0
-
-    'Me.grilla_alicuotas.ItemCount = Nothing
-    'Me.grilla_percepciones.ItemCount = Nothing
-    'Me.grid_cuentascontables.ItemCount = Nothing
-    
-    'Me.grilla_alicuotas.ReBind
 
     Me.grilla_alicuotas.ItemCount = 0
     Me.grilla_percepciones.ItemCount = 0
     Me.grid_cuentascontables.ItemCount = 0
-    Me.grid_cuentascontables.ReBind
-    Me.grilla_percepciones.ReBind
-        Me.grilla_alicuotas.ItemCount = 0
-    Me.grilla_percepciones.ItemCount = 0
-    Me.grid_cuentascontables.ItemCount = 0
-    
+
+
     llenarGrillaPercepciones
     LlenarCuentasContables
-  
-    
-    
+
 
     Me.DTPicker1 = Now
     If vFactura.id > 0 Then
@@ -1127,7 +1099,7 @@ End If
         Me.cmdGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.Frame2.Enabled = False
+        Me.frame2.Enabled = False
         Me.frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
@@ -1164,13 +1136,7 @@ Private Sub llenarGrillaPercepciones()
     Set Me.grilla_percepciones.Columns("percepcion").DropDownControl = Me.grilla_percepcion
 End Sub
 Private Sub ProtegerProveedor()
-    txtRazonSocial.Enabled = (Proveedor.id = 0)
-    txtCuit.Enabled = (Proveedor.id = 0)
-    txtIB.Enabled = (Proveedor.id = 0)
-    cboTipoIva.Enabled = (Proveedor.id = 0)
-    
-    'Me.GroupBox1.Enabled = (Proveedor.id = 0)
-    
+    Me.GroupBox1.Enabled = (Proveedor.id = 0)
     Me.cmdDisponer.Visible = Me.GroupBox1.Enabled
 End Sub
 
@@ -1202,14 +1168,6 @@ Private Sub grid_cuentascontables_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoo
     Cancel = (Not IsNumeric(Me.grid_cuentascontables.value(2))) Or (IsEmpty(Me.grid_cuentascontables.value(2)))
 End Sub
 
-
-
-
-Private Sub grid_cuentascontables_GotFocus()
-    grid_cuentascontables.SelStart = 0
-    grid_cuentascontables.SelLength = -1
-End Sub
-
 Private Sub grid_cuentascontables_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set ctaAplicada = New clsCuentaFactura
     ctaAplicada.Monto = funciones.FormatearDecimales(Values(2))
@@ -1217,9 +1175,6 @@ Private Sub grid_cuentascontables_UnboundAddNew(ByVal NewRowBookmark As GridEX20
     vFactura.cuentasContables.Add ctaAplicada
     TotalFactura
     grabado = False
-    Me.grilla_percepciones.SetFocus
-    
-    
 End Sub
 Private Sub grid_cuentascontables_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     vFactura.cuentasContables.remove RowIndex
@@ -1241,11 +1196,10 @@ Private Sub grid_cuentascontables_UnboundUpdate(ByVal RowIndex As Long, ByVal Bo
 End Sub
 
 Private Sub grilla_alicuota_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set alicuota = colAlicuotas.item(RowIndex)
-    Values(1) = funciones.FormatearDecimales(alicuota.alicuota)
-    Values(2) = alicuota.id
+    Set Alicuota = colAlicuotas.item(RowIndex)
+    Values(1) = funciones.FormatearDecimales(Alicuota.Alicuota)
+    Values(2) = Alicuota.id
 End Sub
-
 
 Private Sub grilla_alicuotas_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not (MsgBox("¿Está seguro de eliminar la alícuota seleccionada?", vbYesNo, "Confirmación") = vbYes)
@@ -1255,10 +1209,9 @@ End Sub
 Private Sub AddDefaultAlicuota(id_alicuota As Long)
     Set aliaplicada = New clsAlicuotaAplicada
     aliaplicada.Monto = 0
-    aliaplicada.alicuota = DAOAlicuotas.GetById(id_alicuota)
+    aliaplicada.Alicuota = DAOAlicuotas.GetById(id_alicuota)
     vFactura.IvaAplicado.Add aliaplicada
     mostrarALicuotas
-    
 End Sub
 
 
@@ -1275,12 +1228,11 @@ Private Sub grilla_alicuotas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRe
     Set aliaplicada = New clsAlicuotaAplicada
 
     aliaplicada.Monto = funciones.FormatearDecimales(Values(2))
-    aliaplicada.alicuota = DAOAlicuotas.GetById(Values(1))
+    aliaplicada.Alicuota = DAOAlicuotas.GetById(Values(1))
     vFactura.IvaAplicado.Add aliaplicada
     TotalFactura
     grabado = False
-    Me.grid_cuentascontables.SetFocus
-    
+
 End Sub
 
 Private Sub grilla_alicuotas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
@@ -1292,13 +1244,13 @@ End Sub
 Private Sub grilla_alicuotas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
     Set aliaplicada = vFactura.IvaAplicado.item(RowIndex)
-    Values(1) = funciones.FormatearDecimales(aliaplicada.alicuota.alicuota)
+    Values(1) = funciones.FormatearDecimales(aliaplicada.Alicuota.Alicuota)
     Values(2) = funciones.FormatearDecimales(aliaplicada.Monto)
 End Sub
 
 Private Sub grilla_alicuotas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
-        vFactura.IvaAplicado(RowIndex).alicuota = DAOAlicuotas.GetById(Values(1))
+        vFactura.IvaAplicado(RowIndex).Alicuota = DAOAlicuotas.GetById(Values(1))
 
     End If
     vFactura.IvaAplicado(RowIndex).Monto = Values(2)
@@ -1369,9 +1321,6 @@ End Sub
 Private Sub PushButton2_Click()
     Dim frm1 As New frmAdminComprasNuevaFCProveedor
     frm1.Factura = Nothing
-    Set frm1.TmpProveedor = Proveedor
-    
-    
     frm1.Show
 
     frm1.Top = 100
@@ -1501,7 +1450,7 @@ Private Sub LlenarFactura()
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.id, Me.cboProveedores)
     Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(vFactura.configFactura.id, Me.cboTiposFactura)
-    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.moneda.id, Me.cboMonedas)
+    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.Moneda.id, Me.cboMonedas)
     Me.txtMontoNeto = vFactura.NetoGravado
 
     Me.optContado.value = Not vFactura.FormaPagoCuentaCorriente

@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61800449
+         Format          =   61865985
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61800449
+         Format          =   61865985
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61800449
+         Format          =   61865985
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61800449
+         Format          =   61865985
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -771,7 +771,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61800449
+         Format          =   61865985
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -2138,8 +2138,8 @@ Private Sub Form_Load()
     Me.cboPadron.Enabled = Not ReadOnly
     Me.txtPercepcion.Enabled = Not ReadOnly
     Me.cboCliente.Enabled = Not ReadOnly
-    Me.grpDetalles.Enabled = Not ReadOnly
-    Me.gridDetalles.Enabled = Not ReadOnly
+    'Me.grpDetalles.Enabled = Not ReadOnly
+    'Me.gridDetalles.Enabled = Not ReadOnly
     Me.lblTipoFactura.Enabled = Not ReadOnly
     Me.Label1.Enabled = Not ReadOnly
     Me.Label3.Enabled = Not ReadOnly
