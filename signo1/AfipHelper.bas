@@ -5,6 +5,7 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
     Dim r As String
     r = "<FeCAEReq>"
     r = r & "<FeCabReq>"
+     r = r & "<EsCredito>" & c.FeCabReq.esCredito & "</EsCredito>"
     r = r & "<CantReg>" & c.FeCabReq.CantReg & "</CantReg>"
     r = r & "<PtoVta>" & c.FeCabReq.PtoVta & "</PtoVta>"
     r = r & "<CbteTipo>" & c.FeCabReq.CbteTipo & "</CbteTipo>"
@@ -40,9 +41,11 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
         r = r & "<CbtesAsoc>"
         For Each ca In c.FeDetReq.FECAEDetRequest.CbtesAsoc
             r = r & "<CbteAsoc>"
+            r = r & "<EsCredito>" & ca.esCredito & "</EsCredito>"
             r = r & "<Tipo>" & ca.Tipo & "</Tipo>"
             r = r & "<PtoVta>" & ca.PtoVta & "</PtoVta>"
             r = r & "<Nro>" & ca.nro & "</Nro>"
+            r = r & "<Cuit>" & ca.Cuit & "</Cuit>"
             r = r & "</CbteAsoc>"
         Next
         r = r & "</CbtesAsoc>"

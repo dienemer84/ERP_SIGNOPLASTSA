@@ -15,5 +15,7 @@ Option Explicit
 
 Public Tipo As String
 Public PtoVta As String
-Public Nro As String
-
+Public nro As String
+Public esCredito As Boolean
+Public Cuit As String
+Public Fecha As String
