@@ -2062,11 +2062,11 @@ seccion.Controls.item("lblIntereses").caption = tip
     idPatron = DAOMoneda.FindFirstByPatronOrDefault.id
     If F.IdMonedaAjuste <> idPatron And F.moneda.id = idPatron Then
     'factura en pesos, pero  convertida de dolares
-        tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
+        tip = "***  El total de la presente factura, equivale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
    Else
    'fix 000
    'factura en dolares
-   tip = "***  El total de la presente factura, equvale a " & F.moneda.NombreCorto & " " & funciones.RedondearDecimales(F.Total) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & " ***"
+        tip = "***  El total de la presente factura, equivale a " & F.moneda.NombreCorto & " " & funciones.RedondearDecimales(F.Total) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & " ***"
    End If
     
     End If
@@ -2075,6 +2075,8 @@ seccion.Controls.item("lblIntereses").caption = tip
     'FIX #001
     'If Not F.moneda.Patron Then
     seccion.Controls.item("lblCambio").caption = tip
+    MsgBox tip
+    
 '   End If
     
 End If
@@ -2083,8 +2085,6 @@ seccion.Controls.item("lblCambio").Visible = F.moneda.id <> idPatron 'F.TipoCamb
 
 
 Dim n As New classNumericas
-'
-
 
 seccion.Controls.item("lblTotalLetras").caption = "Son " & F.moneda.NombreLargo & " " & F.moneda.NombreCorto & " " & LCase(n.ValorEnLetras(F.Total))
 seccion.Controls.item("lblSubTotal").caption = funciones.FormatearDecimales(F.TotalSubTotal)

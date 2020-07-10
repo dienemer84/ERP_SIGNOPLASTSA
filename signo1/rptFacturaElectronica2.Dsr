@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica 
    Caption         =   "COMPROBANTE ELECTRONICO"
-   ClientHeight    =   14265
+   ClientHeight    =   11565
    ClientLeft      =   165
    ClientTop       =   555
-   ClientWidth     =   28680
+   ClientWidth     =   23880
    StartUpPosition =   3  'Windows Default
    _ExtentX        =   50588
    _ExtentY        =   25162
@@ -1667,7 +1667,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Left            =   90
          Object.Top             =   15
          Object.Width           =   10920
-         Object.Height          =   465
+         Object.Height          =   405
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   8.25
