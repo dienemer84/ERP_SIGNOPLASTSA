@@ -21,10 +21,10 @@ Begin VB.Form frmFacturaEdicion
    Icon            =   "frmFacturaEdicion.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   10470
    ScaleWidth      =   17775
+   StartUpPosition =   2  'CenterScreen
    Begin VB.Frame Frame1 
       Caption         =   "Período de Servicio / Producto"
       Height          =   1695
@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61865985
+         Format          =   58327041
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61865985
+         Format          =   58327041
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61865985
+         Format          =   58327041
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61865985
+         Format          =   58327041
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -771,7 +771,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61865985
+         Format          =   58327041
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1513,7 +1513,7 @@ On Error GoTo err1
         'Factura.FechaServDesde = Me.dtFechaServDesde.value
         'Factura.FechaServHasta = Me.dtFechaServHasta.value
         Factura.fechaPago = Me.dtFechaPagoCredito.value
-        Factura.EsCredito = Me.chkEsCredito.value
+        Factura.esCredito = Me.chkEsCredito.value
         
        
         
@@ -1864,24 +1864,24 @@ Private Sub cboTiposFactura_Click()
 
     '1 11 19
 '    Me.lblCbuCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
-    Me.frmFC.Enabled = Factura.EsCredito
+    Me.frmFC.Enabled = Factura.esCredito
 
     'Me.dtFechaPagoCredito.Enabled = Factura.EsCredito Or Factura.Tipo.PuntoVenta.CaeManual
     
-    Me.dtFechaPagoCreditoDesde.Enabled = Factura.EsCredito
-    Me.dtFechaPagoCreditoHasta.Enabled = Factura.EsCredito
+    Me.dtFechaPagoCreditoDesde.Enabled = Factura.esCredito
+    Me.dtFechaPagoCreditoHasta.Enabled = Factura.esCredito
     
-    Me.cboCuentasCBU.Enabled = Factura.EsCredito
+    Me.cboCuentasCBU.Enabled = Factura.esCredito
     
     'Me.lblFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
     'Me.dtFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
     
-    Me.LblCBU.Enabled = Factura.EsCredito
+    Me.LblCBU.Enabled = Factura.esCredito
    
     'fce_nemer_02062020_#113
-    Me.lblPeriodoFacturadoT.Enabled = Factura.EsCredito
-    Me.lblPeriodoFacturadoD.Enabled = Factura.EsCredito
-    Me.lblPeriodoFacturadoH.Enabled = Factura.EsCredito
+    Me.lblPeriodoFacturadoT.Enabled = Factura.esCredito
+    Me.lblPeriodoFacturadoD.Enabled = Factura.esCredito
+    Me.lblPeriodoFacturadoH.Enabled = Factura.esCredito
     
     'fce_nemer_03062020_#133
     'Me.lblFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsElectronico
@@ -1891,7 +1891,7 @@ Private Sub cboTiposFactura_Click()
     Me.lblEsCredito.caption = Factura.DescripcionCreditoAdicional
     
     Me.lblVerCbu.Visible = True
-    If Not Factura.EsCredito Then
+    If Not Factura.esCredito Then
         Me.lblVerCbu = "NO INFORMADO"
     End If
 
@@ -1919,7 +1919,7 @@ End Sub
 
 Private Sub chkEsCredito_Click()
 
-Factura.EsCredito = Me.chkEsCredito.value
+Factura.esCredito = Me.chkEsCredito.value
 
   ValidarEsCredito
 End Sub
@@ -2285,11 +2285,11 @@ End Sub
     
    Dim c As CuentaBancaria
    
-         If Factura.EsCredito And LenB(Factura.CBU) > 0 Then
+         If Factura.esCredito And LenB(Factura.CBU) > 0 Then
          
         Set c = DAOCuentaBancaria.FindByCBU(Factura.CBU)
       
-        Me.chkEsCredito.value = Factura.EsCredito
+        Me.chkEsCredito.value = Factura.esCredito
     
       
       
@@ -2347,11 +2347,11 @@ Private Sub ValidarEsCredito()
   'Me.chkEsCredito.value = Factura.EsCredito
   
   
-  Me.frmFC.Enabled = Factura.EsCredito
+  Me.frmFC.Enabled = Factura.esCredito
   
-  Me.LblCBU.Enabled = Factura.EsCredito
-  Me.cboCuentasCBU.Enabled = Factura.EsCredito
-  Me.cboCuentasCBU.Visible = Factura.EsCredito
+  Me.LblCBU.Enabled = Factura.esCredito
+  Me.cboCuentasCBU.Enabled = Factura.esCredito
+  Me.cboCuentasCBU.Visible = Factura.esCredito
   Me.txtCondObs.ListIndex = 1
   
     

@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16711681
+      Format          =   58327041
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -761,7 +761,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim Moneda As clsMoneda
+Dim moneda As clsMoneda
 Dim loading As Boolean
 Dim colAlicuotas As New Collection
 Dim aliaplicada As clsAlicuotaAplicada
@@ -779,7 +779,7 @@ Dim colCuentas As Collection
 Dim ctaAplicada As clsCuentaFactura
 Dim ctaContable As clsCuentaContable
 Dim Percepcion As New clsPercepciones
-Dim Alicuota As clsAlicuotas
+Dim alicuota As clsAlicuotas
 Dim IDtipo As Long
 Dim nroFacturaAnterior
 Dim grabado As Boolean
@@ -825,13 +825,13 @@ Private Sub llenarTiposFacturas()
 End Sub
 
 Private Sub cboMonedas_Click()
-    Set Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+    Set moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
 
 
-    If IsSomething(vFactura) Then Set vFactura.Moneda = Moneda
-    If IsSomething(Moneda) Then
+    If IsSomething(vFactura) Then Set vFactura.moneda = moneda
+    If IsSomething(moneda) Then
         If Not VVer Then
-            Me.txtTipoCambio = Moneda.Cambio
+            Me.txtTipoCambio = moneda.Cambio
         End If
     End If
 End Sub
@@ -935,7 +935,7 @@ Private Sub cmdGuardar_Click()
 
 
     conectar.BeginTransaction
-    Dim a As Boolean
+    Dim A As Boolean
     Dim montonero As Double
     Dim nroNuevo As Long
     Dim EVENTO As clsEventoObserver
@@ -948,7 +948,7 @@ Private Sub cmdGuardar_Click()
     'If MsgBox("¿Está seguro de guardar la factura?", vbYesNo, "Confirmación") = vbYes Then
     armarFactura
     If vFactura.NetoGravado <= 0 Then
-        If vFactura.tipoDocumentoContable <> NotaDebito Then
+        If vFactura.tipoDocumentoContable <> notaDebito Then
             Err.Raise 202
         End If
     End If
@@ -958,14 +958,14 @@ Private Sub cmdGuardar_Click()
     If Me.txtNumeroMask.text <> "____-________" Then
 
 
-        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> NotaDebito Then Err.Raise 201
+        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
 
         If funciones.RedondearDecimales(vFactura.TotalAplicadoACuentas) <> funciones.RedondearDecimales(vFactura.NetoGravado) Then Err.Raise 200
 
         If Me.cboMonedas.ListIndex <> -1 Then
-            Set vFactura.Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+            Set vFactura.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
         Else
-            Set vFactura.Moneda = Nothing
+            Set vFactura.moneda = Nothing
         End If
 
         'creo el proveedor si es contado
@@ -1071,7 +1071,7 @@ Private Sub Form_Load()
     Me.cboTipoDocContable.AddItem "Nota de crédito"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.notaCredito
     Me.cboTipoDocContable.AddItem "Nota de débito"
-    Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.NotaDebito
+    Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.notaDebito
 
     Me.cboTipoDocContable.ListIndex = 0
 
@@ -1196,9 +1196,9 @@ Private Sub grid_cuentascontables_UnboundUpdate(ByVal RowIndex As Long, ByVal Bo
 End Sub
 
 Private Sub grilla_alicuota_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set Alicuota = colAlicuotas.item(RowIndex)
-    Values(1) = funciones.FormatearDecimales(Alicuota.Alicuota)
-    Values(2) = Alicuota.id
+    Set alicuota = colAlicuotas.item(RowIndex)
+    Values(1) = funciones.FormatearDecimales(alicuota.alicuota)
+    Values(2) = alicuota.id
 End Sub
 
 Private Sub grilla_alicuotas_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
@@ -1209,7 +1209,7 @@ End Sub
 Private Sub AddDefaultAlicuota(id_alicuota As Long)
     Set aliaplicada = New clsAlicuotaAplicada
     aliaplicada.Monto = 0
-    aliaplicada.Alicuota = DAOAlicuotas.GetById(id_alicuota)
+    aliaplicada.alicuota = DAOAlicuotas.GetById(id_alicuota)
     vFactura.IvaAplicado.Add aliaplicada
     mostrarALicuotas
 End Sub
@@ -1228,7 +1228,7 @@ Private Sub grilla_alicuotas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRe
     Set aliaplicada = New clsAlicuotaAplicada
 
     aliaplicada.Monto = funciones.FormatearDecimales(Values(2))
-    aliaplicada.Alicuota = DAOAlicuotas.GetById(Values(1))
+    aliaplicada.alicuota = DAOAlicuotas.GetById(Values(1))
     vFactura.IvaAplicado.Add aliaplicada
     TotalFactura
     grabado = False
@@ -1244,13 +1244,13 @@ End Sub
 Private Sub grilla_alicuotas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
     Set aliaplicada = vFactura.IvaAplicado.item(RowIndex)
-    Values(1) = funciones.FormatearDecimales(aliaplicada.Alicuota.Alicuota)
+    Values(1) = funciones.FormatearDecimales(aliaplicada.alicuota.alicuota)
     Values(2) = funciones.FormatearDecimales(aliaplicada.Monto)
 End Sub
 
 Private Sub grilla_alicuotas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
-        vFactura.IvaAplicado(RowIndex).Alicuota = DAOAlicuotas.GetById(Values(1))
+        vFactura.IvaAplicado(RowIndex).alicuota = DAOAlicuotas.GetById(Values(1))
 
     End If
     vFactura.IvaAplicado(RowIndex).Monto = Values(2)
@@ -1450,7 +1450,7 @@ Private Sub LlenarFactura()
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.id, Me.cboProveedores)
     Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(vFactura.configFactura.id, Me.cboTiposFactura)
-    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.Moneda.id, Me.cboMonedas)
+    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.moneda.id, Me.cboMonedas)
     Me.txtMontoNeto = vFactura.NetoGravado
 
     Me.optContado.value = Not vFactura.FormaPagoCuentaCorriente
