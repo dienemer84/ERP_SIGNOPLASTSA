@@ -18,10 +18,7 @@ Public PtoVta As String
 Public nro As String
 
 'Desactivado el 17.07.20 - dnemer
-'Public esCredito As Boolean
-'Public Cuit As String
-'Public FEcha As String
+Public esCredito As Boolean
+Public Cuit As String
+Public FEcha As String
 
-Private Sub Class_Initialize()
-
-End Sub

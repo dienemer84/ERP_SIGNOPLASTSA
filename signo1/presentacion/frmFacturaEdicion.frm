@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58327041
+         Format          =   63504385
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58327041
+         Format          =   63504385
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58327041
+         Format          =   63504385
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58327041
+         Format          =   63504385
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -771,7 +771,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58327041
+         Format          =   63504385
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1008,13 +1008,12 @@ Begin VB.Form frmFacturaEdicion
          Width           =   630
       End
       Begin VB.Label lblDireccion 
-         AutoSize        =   -1  'True
          Caption         =   "RIVAD 3242"
          Height          =   195
          Left            =   1080
          TabIndex        =   26
          Top             =   1230
-         Width           =   870
+         Width           =   4575
       End
       Begin VB.Label lblIVA 
          AutoSize        =   -1  'True
@@ -1513,7 +1512,7 @@ On Error GoTo err1
         'Factura.FechaServDesde = Me.dtFechaServDesde.value
         'Factura.FechaServHasta = Me.dtFechaServHasta.value
         Factura.fechaPago = Me.dtFechaPagoCredito.value
-        Factura.esCredito = Me.chkEsCredito.value
+        Factura.EsCredito = Me.chkEsCredito.value
         
        
         
@@ -1864,24 +1863,24 @@ Private Sub cboTiposFactura_Click()
 
     '1 11 19
 '    Me.lblCbuCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
-    Me.frmFC.Enabled = Factura.esCredito
+    Me.frmFC.Enabled = Factura.EsCredito
 
     'Me.dtFechaPagoCredito.Enabled = Factura.EsCredito Or Factura.Tipo.PuntoVenta.CaeManual
     
-    Me.dtFechaPagoCreditoDesde.Enabled = Factura.esCredito
-    Me.dtFechaPagoCreditoHasta.Enabled = Factura.esCredito
+    Me.dtFechaPagoCreditoDesde.Enabled = Factura.EsCredito
+    Me.dtFechaPagoCreditoHasta.Enabled = Factura.EsCredito
     
-    Me.cboCuentasCBU.Enabled = Factura.esCredito
+    Me.cboCuentasCBU.Enabled = Factura.EsCredito
     
     'Me.lblFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
     'Me.dtFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
     
-    Me.LblCBU.Enabled = Factura.esCredito
+    Me.LblCBU.Enabled = Factura.EsCredito
    
     'fce_nemer_02062020_#113
-    Me.lblPeriodoFacturadoT.Enabled = Factura.esCredito
-    Me.lblPeriodoFacturadoD.Enabled = Factura.esCredito
-    Me.lblPeriodoFacturadoH.Enabled = Factura.esCredito
+    Me.lblPeriodoFacturadoT.Enabled = Factura.EsCredito
+    Me.lblPeriodoFacturadoD.Enabled = Factura.EsCredito
+    Me.lblPeriodoFacturadoH.Enabled = Factura.EsCredito
     
     'fce_nemer_03062020_#133
     'Me.lblFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsElectronico
@@ -1891,7 +1890,7 @@ Private Sub cboTiposFactura_Click()
     Me.lblEsCredito.caption = Factura.DescripcionCreditoAdicional
     
     Me.lblVerCbu.Visible = True
-    If Not Factura.esCredito Then
+    If Not Factura.EsCredito Then
         Me.lblVerCbu = "NO INFORMADO"
     End If
 
@@ -1919,7 +1918,7 @@ End Sub
 
 Private Sub chkEsCredito_Click()
 
-Factura.esCredito = Me.chkEsCredito.value
+Factura.EsCredito = Me.chkEsCredito.value
 
   ValidarEsCredito
 End Sub
@@ -2285,11 +2284,11 @@ End Sub
     
    Dim c As CuentaBancaria
    
-         If Factura.esCredito And LenB(Factura.CBU) > 0 Then
+         If Factura.EsCredito And LenB(Factura.CBU) > 0 Then
          
         Set c = DAOCuentaBancaria.FindByCBU(Factura.CBU)
       
-        Me.chkEsCredito.value = Factura.esCredito
+        Me.chkEsCredito.value = Factura.EsCredito
     
       
       
@@ -2347,15 +2346,20 @@ Private Sub ValidarEsCredito()
   'Me.chkEsCredito.value = Factura.EsCredito
   
   
-  Me.frmFC.Enabled = Factura.esCredito
+  Me.frmFC.Enabled = Factura.EsCredito
   
-  Me.LblCBU.Enabled = Factura.esCredito
-  Me.cboCuentasCBU.Enabled = Factura.esCredito
-  Me.cboCuentasCBU.Visible = Factura.esCredito
+  Me.LblCBU.Enabled = Factura.EsCredito
+  Me.cboCuentasCBU.Enabled = Factura.EsCredito
+  Me.cboCuentasCBU.Visible = Factura.EsCredito
   Me.txtCondObs.ListIndex = 1
   
     
     ConceptosIncuir
+    If IsSomething(Factura) And IsSomething(Factura.Tipo) And IsSomething(Factura.Tipo.TipoFactura) Then
+        If Factura.Tipo.TipoFactura.Tipo = "E" Then
+        chkEsCredito.Enabled = False
+        End If
+    End If
 End Sub
 Private Sub Totalizar()
     Me.lblSubTotal.caption = funciones.FormatearDecimales(Factura.TotalSubTotal)

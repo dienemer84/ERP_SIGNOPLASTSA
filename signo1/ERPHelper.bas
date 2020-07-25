@@ -72,23 +72,21 @@ Err.Raise Err.Number, Err.Source, Err.Description
 End Function
 
 'Desactivada el 17.07.20 -dnemer
-'Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String, esCredito As Boolean) As String
-
-Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String) As String
+Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String, esCredito As Boolean) As String
     On Error GoTo err1
     Dim resp As String
     If CheckDummyAfip Then
     
     'Reestablecida esta linea de codigo el 17.07.20 -dnemer
-    resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
+    'resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
     
     
     'Desactivada el 17.07.20 -dnemer
-    '    If esCredito Then
-    '                resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante & "/true", POST_, False)
-    '    Else
-    '            resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
-    '    End If
+        If esCredito Then
+                    resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante & "/true", POST_, False)
+        Else
+                resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
+        End If
     Else
         Err.Raise 1002, "Afip", "Imposible obtener ultimo comprobante autorizado"
     End If
@@ -147,10 +145,10 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     Dim id
     
     'Desactivada el 17.07.20 -dnemer
-    'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
     
     'Reestablecida esta linea de codigo el 17.07.20 -dnemer
-    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
+    'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
     
     
     F.numero = id + 1
@@ -173,12 +171,12 @@ req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento * F.CambioAPatron, 2)
     
     'Reestablecida el 17.07.20 -dnemer
-    req.FchServDesde = ""    ' obligatorio para concepto de tipo 3 y 2
-    req.FchServHasta = ""    ' obligatorio para concepto de tipo 3 y 2
+    'req.FchServDesde = ""    ' obligatorio para concepto de tipo 3 y 2
+    'req.FchServHasta = ""    ' obligatorio para concepto de tipo 3 y 2
     
     'Desactivada el 17.07.20 -dnemer
-    'req.FchServDesde = Format(F.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
-    'req.FchServHasta = Format(F.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
+    req.FchServDesde = Format(F.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
+    req.FchServHasta = Format(F.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
     
 req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     'req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
@@ -193,33 +191,33 @@ req.MonCotiz = F.CambioAPatron
 
 
     'Reestablecida el 17.07.20 -dnemer
-    req.FchVtoPago = ""    'obligatorio para concepto 2 y 3
+    'req.FchVtoPago = ""    'obligatorio para concepto 2 y 3
 
     'Desactivada el 17.07.20 -dnemer
-    'req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
+    req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
     
     
     'Desactivada el 17.07.20 -dnemer
-'If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
-'   Dim ftmp As Factura
-'   Set ftmp = DAOFactura.FindById(F.Cancelada)
-'
-'   If IsSomething(ftmp) Then
-'          Dim cbt As CbteAsoc
-'      Set cbt = New CbteAsoc
-'
-'       cbt.nro = F.Cancelada
-'
-'       cbt.nro = ftmp.numero
-'       cbt.PtoVta = ftmp.Tipo.PuntoVenta.id
-'       cbt.Tipo = ftmp.Tipo.id
-'       cbt.FEcha = Format(ftmp.FechaEmision, "yyyymmdd")
-'       cbt.Cuit = "30657604972"
-'        req.CbtesAsoc.Add cbt
-'       End If
+If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
+   Dim ftmp As Factura
+   Set ftmp = DAOFactura.FindById(F.Cancelada)
+
+   If IsSomething(ftmp) Then
+          Dim cbt As CbteAsoc
+      Set cbt = New CbteAsoc
+
+       cbt.nro = F.Cancelada
+
+       cbt.nro = ftmp.numero
+       cbt.PtoVta = ftmp.Tipo.PuntoVenta.id
+       cbt.Tipo = ftmp.Tipo.id
+       cbt.FEcha = Format(ftmp.FechaEmision, "yyyymmdd")
+       cbt.Cuit = "30657604972"
+        req.CbtesAsoc.Add cbt
+       End If
        
 
-'End If
+End If
 
 
 
@@ -368,7 +366,7 @@ End Function
 
 
 
-Public Function SendMail(asunto As String, mensaje As String, destino As String, Optional file As String, Optional Class As Object) As String
+Public Function SendMail(asunto As String, Mensaje As String, destino As String, Optional file As String, Optional Class As Object) As String
     On Error Resume Next
     Dim sUrl As String
     Dim verb As verbo
@@ -431,14 +429,14 @@ srv = LeerIni(App.path & "\config.ini", "Configurar", "ERPHelperAddress", vbNull
         Dim filename As String
         'sPostData = ReadFile(file)
         filename = Mid$(file, InStrRev(file, "\") + 1)
-        sUrl = "mailsender/sendfile?para=" & destino & "&asunto=" & asunto & "&msg=" & mensaje & "&filename=" & filename & " &de=" & de & " &de_firma=" & de_firma
+        sUrl = "mailsender/sendfile?para=" & destino & "&asunto=" & asunto & "&msg=" & Mensaje & "&filename=" & filename & " &de=" & de & " &de_firma=" & de_firma
         xmlhttp.Open verbo, srv + sUrl, async
         ' xmlhttp.setRequestHeader "Content-Type", "application/octet-stream; boundary=" & STR_BOUNDARY
         'xmlhttp.setRequestHeader "User-Agent", "Alalala"
         xmlhttp.setRequestHeader "Content-Type", "multipart/form-data; boundary=" & STR_BOUNDARY
         xmlhttp.Send pvToByteArray(sPostData)
     Else
-        sUrl = "mailsender/send?para=" & destino & "&asunto=" & asunto & "&msg=" & mensaje & " &de=" & de & " &de_firma=" & de_firma
+        sUrl = "mailsender/send?para=" & destino & "&asunto=" & asunto & "&msg=" & Mensaje & " &de=" & de & " &de_firma=" & de_firma
         xmlhttp.Open verbo, srv + sUrl, async
         xmlhttp.setRequestHeader "Content-Type", "text/plain"
         xmlhttp.Send
