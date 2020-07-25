@@ -71,15 +71,24 @@ err1:
 Err.Raise Err.Number, Err.Source, Err.Description
 End Function
 
-Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String, esCredito As Boolean) As String
+'Desactivada el 17.07.20 -dnemer
+'Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String, esCredito As Boolean) As String
+
+Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String) As String
     On Error GoTo err1
     Dim resp As String
     If CheckDummyAfip Then
-        If esCredito Then
-                    resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante & "/true", POST_, False)
-        Else
-                resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
-        End If
+    
+    'Reestablecida esta linea de codigo el 17.07.20 -dnemer
+    resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
+    
+    
+    'Desactivada el 17.07.20 -dnemer
+    '    If esCredito Then
+    '                resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante & "/true", POST_, False)
+    '    Else
+    '            resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
+    '    End If
     Else
         Err.Raise 1002, "Afip", "Imposible obtener ultimo comprobante autorizado"
     End If
@@ -136,8 +145,14 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     
     'Set f = DAOFactura.FindById(idFactura)
     Dim id
-
-    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    
+    'Desactivada el 17.07.20 -dnemer
+    'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    
+    'Reestablecida esta linea de codigo el 17.07.20 -dnemer
+    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
+    
+    
     F.numero = id + 1
 
     Dim req As New FECAEDetRequest
@@ -156,8 +171,14 @@ req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
     req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento, 2)
     'req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento * F.CambioAPatron, 2)
-    req.FchServDesde = Format(F.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
-    req.FchServHasta = Format(F.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
+    
+    'Reestablecida el 17.07.20 -dnemer
+    req.FchServDesde = ""    ' obligatorio para concepto de tipo 3 y 2
+    req.FchServHasta = ""    ' obligatorio para concepto de tipo 3 y 2
+    
+    'Desactivada el 17.07.20 -dnemer
+    'req.FchServDesde = Format(F.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
+    'req.FchServHasta = Format(F.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
     
 req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     'req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
@@ -168,26 +189,37 @@ req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo
     req.MonId = F.moneda.id
     'req.MonCotiz = F.Moneda.Cambio
 req.MonCotiz = F.CambioAPatron
-    req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
 
-If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) Then
-   Dim ftmp As Factura
-   Set ftmp = DAOFactura.FindById(F.Cancelada)
-   cbt.nro = F.Cancelada
-   If IsSomething(ftmp) Then
-          Dim cbt As CbteAsoc
-      Set cbt = New CbteAsoc
+
+
+    'Reestablecida el 17.07.20 -dnemer
+    req.FchVtoPago = ""    'obligatorio para concepto 2 y 3
+
+    'Desactivada el 17.07.20 -dnemer
+    'req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
     
-       cbt.nro = ftmp.numero
-       cbt.PtoVta = ftmp.Tipo.PuntoVenta.id
-       cbt.Tipo = ftmp.Tipo.id
-       cbt.Fecha = Format(ftmp.FechaEmision, "yyyymmdd")
-       cbt.Cuit = "30657604972"
-        req.CbtesAsoc.Add cbt
-       End If
+    
+    'Desactivada el 17.07.20 -dnemer
+'If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
+'   Dim ftmp As Factura
+'   Set ftmp = DAOFactura.FindById(F.Cancelada)
+'
+'   If IsSomething(ftmp) Then
+'          Dim cbt As CbteAsoc
+'      Set cbt = New CbteAsoc
+'
+'       cbt.nro = F.Cancelada
+'
+'       cbt.nro = ftmp.numero
+'       cbt.PtoVta = ftmp.Tipo.PuntoVenta.id
+'       cbt.Tipo = ftmp.Tipo.id
+'       cbt.FEcha = Format(ftmp.FechaEmision, "yyyymmdd")
+'       cbt.Cuit = "30657604972"
+'        req.CbtesAsoc.Add cbt
+'       End If
        
 
-End If
+'End If
 
 
 

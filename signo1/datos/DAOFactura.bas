@@ -175,7 +175,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.CBU = GetValue(rs, indice, tabla, "CBU")
         
         F.fechaPago = GetValue(rs, indice, tabla, "fecha_pago")
-        F.EsCredito = GetValue(rs, indice, tabla, "EsCredito")
+        F.esCredito = GetValue(rs, indice, tabla, "EsCredito")
         'fce_nemer_29052020
         F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
         F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
@@ -421,7 +421,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'idMoneda'", conectar.GetEntityId(F.moneda))
     q = Replace$(q, "'FechaEmision'", conectar.Escape(F.FechaEmision))
     
-    q = Replace$(q, "'EsCredito'", conectar.Escape(F.EsCredito))
+    q = Replace$(q, "'EsCredito'", conectar.Escape(F.esCredito))
     
     q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.usuarioCreador))
     q = Replace$(q, "'OrdenCompra'", conectar.Escape(F.OrdenCompra))
@@ -1899,11 +1899,11 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.caption = F.Tipo.TipoFactura.Tipo
         
         Set c = seccion.Controls.item("lblFce")
-        c.Visible = F.EsCredito
+        c.Visible = F.esCredito
         c.caption = F.DescripcionCreditoAdicional
              
         Set c = seccion.Controls.item("lblCbuEmisorFce")
-        c.Visible = F.EsCredito And F.TipoDocumento = tipoDocumentoContable.Factura
+        c.Visible = F.esCredito And F.TipoDocumento = tipoDocumentoContable.Factura
         c.caption = "CBU del Emisor: " & F.CBU
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
@@ -1949,18 +1949,18 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
            
            
         Set c = seccion.Controls.item("lblFechaPagoFceDesde")
-        c.Visible = F.EsCredito
+        c.Visible = F.esCredito
         
         Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
-        c.Visible = F.EsCredito
+        c.Visible = F.esCredito
         c.caption = Format(F.FechaVtoDesde, "dd/mm/yyyy")
         
         
         Set c = seccion.Controls.item("lblFechaPagoFceHasta")
-        c.Visible = F.EsCredito
+        c.Visible = F.esCredito
               
         Set c = seccion.Controls.item("FechaPagoFceHastaDato")
-        c.Visible = F.EsCredito
+        c.Visible = F.esCredito
         c.caption = Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
                 
@@ -2062,11 +2062,11 @@ seccion.Controls.item("lblIntereses").caption = tip
     idPatron = DAOMoneda.FindFirstByPatronOrDefault.id
     If F.IdMonedaAjuste <> idPatron And F.moneda.id = idPatron Then
     'factura en pesos, pero  convertida de dolares
-        tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
+        tip = "***  El total de la presente factura, equivale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deberá ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
    Else
    'fix 000
    'factura en dolares
-   tip = "***  El total de la presente factura, equvale a " & F.moneda.NombreCorto & " " & funciones.RedondearDecimales(F.Total) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & " ***"
+        tip = "***  El total de la presente factura, equivale a " & F.moneda.NombreCorto & " " & funciones.RedondearDecimales(F.Total) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & " ***"
    End If
     
     End If
@@ -2075,16 +2075,16 @@ seccion.Controls.item("lblIntereses").caption = tip
     'FIX #001
     'If Not F.moneda.Patron Then
     seccion.Controls.item("lblCambio").caption = tip
+   ' MsgBox tip
+    
 '   End If
     
 End If
-seccion.Controls.item("lblCambio").Visible = F.moneda.id <> idPatron 'F.TipoCambioAjuste > 0 'fix #003 es este comentario And F.IdMonedaAjuste <> DAOMoneda.FindFirstByPatronOrDefault.id
+seccion.Controls.item("lblCambio").Visible = F.IdMonedaAjuste <> idPatron Or F.moneda.id <> idPatron 'F.TipoCambioAjuste > 0 'fix #003 es este comentario And F.IdMonedaAjuste <> DAOMoneda.FindFirstByPatronOrDefault.id
 
 
 
 Dim n As New classNumericas
-'
-
 
 seccion.Controls.item("lblTotalLetras").caption = "Son " & F.moneda.NombreLargo & " " & F.moneda.NombreCorto & " " & LCase(n.ValorEnLetras(F.Total))
 seccion.Controls.item("lblSubTotal").caption = funciones.FormatearDecimales(F.TotalSubTotal)

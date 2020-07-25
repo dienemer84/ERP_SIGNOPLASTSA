@@ -601,6 +601,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin VB.Menu archivos 
          Caption         =   "Archivos Asociados..."
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu scanear 
          Caption         =   "Adquirir..."
@@ -928,11 +930,13 @@ Private Sub llenarGrilla()
     Me.GridEX1.ItemCount = facturas.count
     Me.caption = "Emitidos [Cantidad: " & facturas.count & "]"
 
-    If facturas.count = 1 Then
-        Dim f_c3h3 As New frmFacturaEdicion
-        f_c3h3.idFactura = facturas(1).id
-        f_c3h3.Show
-    End If
+
+' Desabilito la apertura directa de la Factura al encontrar exacto
+    'If facturas.count = 1 Then
+    '   Dim f_c3h3 As New frmFacturaEdicion
+    '    f_c3h3.idFactura = facturas(1).id
+    '    f_c3h3.Show
+    'End If
 
     'GridEXHelper.AutoSizeColumns Me.GridEX1
 End Sub
@@ -972,7 +976,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
@@ -1167,7 +1171,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 
     Values(3) = Factura.Tipo.PuntoVenta.PuntoVenta
 
-    If Factura.EsCredito Then
+    If Factura.esCredito Then
         Values(4) = "(FCE)"
     Else
         Values(4) = ""

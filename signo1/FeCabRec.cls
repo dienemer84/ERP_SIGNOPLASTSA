@@ -13,7 +13,9 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public EsCredito As Boolean
+'Desactivada el 17.07.20 -dnemer
+'Public esCredito As Boolean
+
 Public CantReg As String
 Public PtoVta As String
 Public CbteTipo As String
