@@ -537,7 +537,11 @@ HelpContextID="0"
 CompatibleMode="0"
 MajorVer=4
 MinorVer=8
+<<<<<<< HEAD
+RevisionVer=27
+=======
 RevisionVer=26
+>>>>>>> 1cb7a2b25c7e9a6fa5c6d8259d219d23d0b67c98
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionComments="Signo Plast SA"

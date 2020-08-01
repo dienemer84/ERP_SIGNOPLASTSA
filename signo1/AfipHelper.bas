@@ -7,7 +7,7 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
     r = r & "<FeCabReq>"
     
     'Desactivado el 17.07.20 - dnemer
-     'r = r & "<EsCredito>" & c.FeCabReq.esCredito & "</EsCredito>"
+     r = r & "<EsCredito>" & c.FeCabReq.esCredito & "</EsCredito>"
      
     r = r & "<CantReg>" & c.FeCabReq.CantReg & "</CantReg>"
     r = r & "<PtoVta>" & c.FeCabReq.PtoVta & "</PtoVta>"
@@ -46,14 +46,14 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
             r = r & "<CbteAsoc>"
             
             'Desactivado el 17.07.20 - dnemer
-            'r = r & "<EsCredito>" & ca.esCredito & "</EsCredito>"
+            r = r & "<EsCredito>" & ca.esCredito & "</EsCredito>"
             
             r = r & "<Tipo>" & ca.Tipo & "</Tipo>"
             r = r & "<PtoVta>" & ca.PtoVta & "</PtoVta>"
             r = r & "<Nro>" & ca.nro & "</Nro>"
             
             'Desactivado el 17.07.20 - dnemer
-            'r = r & "<Cuit>" & ca.Cuit & "</Cuit>"
+            r = r & "<Cuit>" & ca.Cuit & "</Cuit>"
             
             r = r & "</CbteAsoc>"
         Next
