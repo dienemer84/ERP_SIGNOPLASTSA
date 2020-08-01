@@ -24,12 +24,14 @@ Public numero As String
 Public cliente As clsCliente
 Public moneda As clsMoneda
 Public CambioAPatron As Double
+Public Aprobada As Boolean
 Public FechaEntrega As Date
 Public CAE As String
 Public CAEVto As Date
 Public CAEFechaProceso
 Public Tipo As clsTipoFacturaDiscriminado
 Public TipoIVA As clsTipoIVA
+Public AnulacionAFIP As String
 Public CaeSolicitarResponse As CAESolicitar
 'agregado 31052020
 Public ConceptoIncluir As ConceptoIncluir

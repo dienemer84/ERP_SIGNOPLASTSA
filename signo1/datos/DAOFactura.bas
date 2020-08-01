@@ -173,9 +173,11 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.FechaEmision = GetValue(rs, indice, tabla, "FechaEmision")
         F.FechaEntrega = GetValue(rs, indice, tabla, "fecha_entrega")
         F.CBU = GetValue(rs, indice, tabla, "CBU")
-        
+        F.AnulacionAFIP = GetValue(rs, indice, tabla, "anulacion_afip")
         F.fechaPago = GetValue(rs, indice, tabla, "fecha_pago")
-        F.esCredito = GetValue(rs, indice, tabla, "EsCredito")
+        F.EsCredito = GetValue(rs, indice, tabla, "EsCredito")
+        F.Aprobada = GetValue(rs, indice, tabla, "estado_aprobacion")
+        
         'fce_nemer_29052020
         F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
         F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
@@ -319,7 +321,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " estado = 'estado' ,id_concepto_incluir='id_concepto_incluir' , " _
             & " alicuotaAplicada = 'alicuotaAplicada' , " _
             & " discriminada = 'discriminada' , " _
-            & " impresa = 'impresa' ," _
+            & " impresa = 'impresa' , anulacion_afip='anulacion_afip'," _
             & " tipo_borrar= 'tipo_borrar' , " _
             & " saldada = 'saldada' , id_tipo_discriminado= 'id_tipo_discriminado', " _
             & " observaciones = 'observaciones', texto_adicional = 'texto_adicional'," _
@@ -400,7 +402,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'cae'", conectar.Escape(F.CAE))
     q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
     
-
+    q = Replace$(q, "'anulacion_afip'", conectar.Escape(F.AnulacionAFIP))
     q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
     
     '    '''''''''''''''''''''''''''''''''''''' HACK
@@ -421,7 +423,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'idMoneda'", conectar.GetEntityId(F.moneda))
     q = Replace$(q, "'FechaEmision'", conectar.Escape(F.FechaEmision))
     
-    q = Replace$(q, "'EsCredito'", conectar.Escape(F.esCredito))
+    q = Replace$(q, "'EsCredito'", conectar.Escape(F.EsCredito))
     
     q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.usuarioCreador))
     q = Replace$(q, "'OrdenCompra'", conectar.Escape(F.OrdenCompra))
@@ -1899,11 +1901,11 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         c.caption = F.Tipo.TipoFactura.Tipo
         
         Set c = seccion.Controls.item("lblFce")
-        c.Visible = F.esCredito
+        c.Visible = F.EsCredito
         c.caption = F.DescripcionCreditoAdicional
              
         Set c = seccion.Controls.item("lblCbuEmisorFce")
-        c.Visible = F.esCredito And F.TipoDocumento = tipoDocumentoContable.Factura
+        c.Visible = F.EsCredito And F.TipoDocumento = tipoDocumentoContable.Factura
         c.caption = "CBU del Emisor: " & F.CBU
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
@@ -1949,18 +1951,18 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
            
            
         Set c = seccion.Controls.item("lblFechaPagoFceDesde")
-        c.Visible = F.esCredito
+        c.Visible = F.EsCredito
         
         Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
-        c.Visible = F.esCredito
+        c.Visible = F.EsCredito
         c.caption = Format(F.FechaVtoDesde, "dd/mm/yyyy")
         
         
         Set c = seccion.Controls.item("lblFechaPagoFceHasta")
-        c.Visible = F.esCredito
+        c.Visible = F.EsCredito
               
         Set c = seccion.Controls.item("FechaPagoFceHastaDato")
-        c.Visible = F.esCredito
+        c.Visible = F.EsCredito
         c.caption = Format(F.FechaVtoHasta, "dd/mm/yyyy")
         
                 

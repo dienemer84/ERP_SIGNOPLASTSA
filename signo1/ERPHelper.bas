@@ -72,7 +72,7 @@ Err.Raise Err.Number, Err.Source, Err.Description
 End Function
 
 'Desactivada el 17.07.20 -dnemer
-Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String, esCredito As Boolean) As String
+Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String, EsCredito As Boolean) As String
     On Error GoTo err1
     Dim resp As String
     If CheckDummyAfip Then
@@ -82,7 +82,7 @@ Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As Strin
     
     
     'Desactivada el 17.07.20 -dnemer
-        If esCredito Then
+        If EsCredito Then
                     resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante & "/true", POST_, False)
         Else
                 resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
@@ -145,7 +145,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     Dim id
     
     'Desactivada el 17.07.20 -dnemer
-    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.EsCredito))
     
     'Reestablecida esta linea de codigo el 17.07.20 -dnemer
     'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
@@ -159,6 +159,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     req.DocNro = F.cliente.Cuit
     req.CbteDesde = F.numero
     req.CbteHasta = F.numero
+    
     req.CbteFch = Format(F.FechaEmision, "yyyymmdd")
 req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total, 2)
 'req.MonCotiz = F.CambioAPatron
@@ -175,8 +176,11 @@ req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'req.FchServHasta = ""    ' obligatorio para concepto de tipo 3 y 2
     
     'Desactivada el 17.07.20 -dnemer
-    req.FchServDesde = Format(F.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
-    req.FchServHasta = Format(F.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
+    
+    If F.ConceptoIncluir = ConceptoIncluir.ConceptoProductoServicio Or F.ConceptoIncluir = ConceptoIncluir.ConceptoServicio Then
+     req.FchServDesde = Format(F.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
+     req.FchServHasta = Format(F.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
+    End If
     
 req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     'req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
@@ -194,11 +198,26 @@ req.MonCotiz = F.CambioAPatron
     'req.FchVtoPago = ""    'obligatorio para concepto 2 y 3
 
     'Desactivada el 17.07.20 -dnemer
-    req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
     
+    If Not F.EsCredito Then
+      req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
+    Else
+            ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), el campo
+        '“fecha de vencimiento para el pago” <FchVtoPago> no debe informarse si NO es
+        'Factura de Crédito. En el caso de ser Débito o Crédito, solo puede informarse si es de Anulación.
+       
+    
+           If F.TipoDocumento = tipoDocumentoContable.Factura Then
+            req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")
+           Else
+                If F.AnulacionAFIP = "S" Then
+                   req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")
+                End If
+           End If
+    End If
     
     'Desactivada el 17.07.20 -dnemer
-If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
+If F.EsCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
    Dim ftmp As Factura
    Set ftmp = DAOFactura.FindById(F.Cancelada)
 
@@ -206,9 +225,9 @@ If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.Tip
           Dim cbt As CbteAsoc
       Set cbt = New CbteAsoc
 
-       cbt.nro = F.Cancelada
+       cbt.NRO = F.Cancelada
 
-       cbt.nro = ftmp.numero
+       cbt.NRO = ftmp.numero
        cbt.PtoVta = ftmp.Tipo.PuntoVenta.id
        cbt.Tipo = ftmp.Tipo.id
        cbt.FEcha = Format(ftmp.FechaEmision, "yyyymmdd")
@@ -284,6 +303,58 @@ End If
     End If
 
 
+
+    If F.EsCredito Then
+    
+    'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), es obligatorio informar al menos uno de los sig. códigos
+    '2101, 22.
+         
+         If F.TipoDocumento = tipoDocumentoContable.Factura Then
+                'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código
+                '2101 es un CBU numérico de 22 caracteres.
+                
+                'Si el tipo de comprobante que está autorizando es Factura (201, 206, 211) del tipo MiPyMEs (FCE), informa opcionales, es
+                'obligatorio informar CBU.
+                
+                'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Debito (202, 207, 212) o Crédito (203, 208, 213) No
+                'no informar CBU y ALIAS.
+                If Len(F.CBU) <> 22 Then
+                    Err.Raise 222101, "El cbu debe tener 22 caracteres"
+                End If
+                
+                Dim op As New Opcional
+                op.idOpcionalCambiar = "2101"
+                op.Valor = F.CBU
+                req.Opcionales.Add op
+        End If
+        If F.TipoDocumento <> tipoDocumentoContable.Factura Then
+            ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código 22
+            ' es “S” o “N”: S = Es de Anulación N = No es de Anulación
+            
+            'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Factura (201, 206, 211), no informar Código de Anulación
+            
+            'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Debito (202, 207, 212) o Crédito (203, 208, 213) informar
+            'Código de Anulación
+            
+         If Len(F.AnulacionAFIP) <> 1 Then
+            Err.Raise 22221, "El campo anulacion afip debe informarse"
+        End If
+        
+        
+             If F.AnulacionAFIP <> "N" Or F.AnulacionAFIP <> "S" Then
+            Err.Raise 22222, "El campo anulacion afip debe ser S o N"
+            End If
+            
+            Set op = New Opcional
+            op.idOpcionalCambiar = "22"
+            op.Valor = F.AnulacionAFIP
+            req.Opcionales.Add op
+        End If
+        
+        
+    End If
+    
+
     'Dim op As New Opcional
     'op.Id = "1"
     'op.Valor = "asf"
@@ -294,6 +365,7 @@ End If
     Dim FeCabReq As New FeCabReq
     FeCabReq.CantReg = "1"
     FeCabReq.CbteTipo = F.Tipo.id
+    FeCabReq.EsCredito = F.EsCredito
     FeCabReq.PtoVta = F.Tipo.PuntoVenta.id
     Dim FeCAEReq As New FeCAEReq
 
@@ -366,7 +438,7 @@ End Function
 
 
 
-Public Function SendMail(asunto As String, Mensaje As String, destino As String, Optional file As String, Optional Class As Object) As String
+Public Function SendMail(asunto As String, mensaje As String, destino As String, Optional file As String, Optional Class As Object) As String
     On Error Resume Next
     Dim sUrl As String
     Dim verb As verbo
@@ -429,14 +501,14 @@ srv = LeerIni(App.path & "\config.ini", "Configurar", "ERPHelperAddress", vbNull
         Dim filename As String
         'sPostData = ReadFile(file)
         filename = Mid$(file, InStrRev(file, "\") + 1)
-        sUrl = "mailsender/sendfile?para=" & destino & "&asunto=" & asunto & "&msg=" & Mensaje & "&filename=" & filename & " &de=" & de & " &de_firma=" & de_firma
+        sUrl = "mailsender/sendfile?para=" & destino & "&asunto=" & asunto & "&msg=" & mensaje & "&filename=" & filename & " &de=" & de & " &de_firma=" & de_firma
         xmlhttp.Open verbo, srv + sUrl, async
         ' xmlhttp.setRequestHeader "Content-Type", "application/octet-stream; boundary=" & STR_BOUNDARY
         'xmlhttp.setRequestHeader "User-Agent", "Alalala"
         xmlhttp.setRequestHeader "Content-Type", "multipart/form-data; boundary=" & STR_BOUNDARY
         xmlhttp.Send pvToByteArray(sPostData)
     Else
-        sUrl = "mailsender/send?para=" & destino & "&asunto=" & asunto & "&msg=" & Mensaje & " &de=" & de & " &de_firma=" & de_firma
+        sUrl = "mailsender/send?para=" & destino & "&asunto=" & asunto & "&msg=" & mensaje & " &de=" & de & " &de_firma=" & de_firma
         xmlhttp.Open verbo, srv + sUrl, async
         xmlhttp.setRequestHeader "Content-Type", "text/plain"
         xmlhttp.Send

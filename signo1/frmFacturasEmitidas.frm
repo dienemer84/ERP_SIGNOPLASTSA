@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -981,7 +981,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
 
-            If Factura.estado = EstadoFacturaCliente.EnProceso Then
+            If Factura.estado = EstadoFacturaCliente.EnProceso Or Not Factura.Aprobada Then
                 Me.aplicarNCaFC.Enabled = False
                 Me.mnuAplicarANC = False
                 Me.editar.Enabled = True
@@ -1116,7 +1116,9 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
             Me.desAnular.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
             Me.mnuDesaprobarFactura.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
 
-
+            If Factura.EsCredito Then
+                  Me.aplicarNCaFC.Enabled = True
+            End If
             Me.PopupMenu Me.mnuFacturas
         End If
     End If
@@ -1171,7 +1173,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 
     Values(3) = Factura.Tipo.PuntoVenta.PuntoVenta
 
-    If Factura.esCredito Then
+    If Factura.EsCredito Then
         Values(4) = "(FCE)"
     Else
         Values(4) = ""
@@ -1288,22 +1290,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-               cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+               CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fué impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.id
                 Next i
             End If
