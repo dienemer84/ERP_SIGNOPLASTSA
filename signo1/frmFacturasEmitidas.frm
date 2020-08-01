@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -464,7 +464,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   22
+      ColumnsCount    =   23
       Column(1)       =   "frmFacturasEmitidas.frx":0326
       Column(2)       =   "frmFacturasEmitidas.frx":04C6
       Column(3)       =   "frmFacturasEmitidas.frx":05B2
@@ -478,33 +478,34 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(11)      =   "frmFacturasEmitidas.frx":0F26
       Column(12)      =   "frmFacturasEmitidas.frx":1026
       Column(13)      =   "frmFacturasEmitidas.frx":117A
-      Column(14)      =   "frmFacturasEmitidas.frx":12C2
-      Column(15)      =   "frmFacturasEmitidas.frx":141A
-      Column(16)      =   "frmFacturasEmitidas.frx":1562
-      Column(17)      =   "frmFacturasEmitidas.frx":1656
-      Column(18)      =   "frmFacturasEmitidas.frx":173A
-      Column(19)      =   "frmFacturasEmitidas.frx":1836
-      Column(20)      =   "frmFacturasEmitidas.frx":195A
-      Column(21)      =   "frmFacturasEmitidas.frx":1A7E
-      Column(22)      =   "frmFacturasEmitidas.frx":1BC2
+      Column(14)      =   "frmFacturasEmitidas.frx":12CA
+      Column(15)      =   "frmFacturasEmitidas.frx":1412
+      Column(16)      =   "frmFacturasEmitidas.frx":156A
+      Column(17)      =   "frmFacturasEmitidas.frx":16B2
+      Column(18)      =   "frmFacturasEmitidas.frx":17A6
+      Column(19)      =   "frmFacturasEmitidas.frx":188A
+      Column(20)      =   "frmFacturasEmitidas.frx":1986
+      Column(21)      =   "frmFacturasEmitidas.frx":1AAA
+      Column(22)      =   "frmFacturasEmitidas.frx":1BCE
+      Column(23)      =   "frmFacturasEmitidas.frx":1D12
       FormatStylesCount=   14
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":1CCE
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":1E06
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":1EB6
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":1F6A
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":2042
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":20FA
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":21DA
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":2266
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2346
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":23F6
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":24AA
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":255A
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":262E
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":26E2
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":1E1E
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":1F56
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2006
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":20BA
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":2192
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":224A
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":232A
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":23B6
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2496
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":2546
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":25FA
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":26AA
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":277E
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":2832
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":27BA
-      PrinterProperties=   "frmFacturasEmitidas.frx":2AD4
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":290A
+      PrinterProperties=   "frmFacturasEmitidas.frx":2C24
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   15630
@@ -976,7 +977,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
@@ -1116,7 +1117,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
             Me.desAnular.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
             Me.mnuDesaprobarFactura.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
 
-            If Factura.EsCredito Then
+            If Factura.esCredito Then
                   Me.aplicarNCaFC.Enabled = True
             End If
             Me.PopupMenu Me.mnuFacturas
@@ -1138,12 +1139,12 @@ Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
 
         If Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado = TipoSaldadoFactura.SaldadoParcial Or Factura.Saldado = TipoSaldadoFactura.notaCredito Then
             If Factura.EstaAtrasada Then
-                RowBuffer.CellStyle(15) = "no_saldada"
+                RowBuffer.CellStyle(16) = "no_saldada"
             Else
-                RowBuffer.CellStyle(15) = "no_vencida"
+                RowBuffer.CellStyle(16) = "no_vencida"
             End If
         ElseIf Factura.Saldado = saldadoTotal Then
-            RowBuffer.CellStyle(15) = "saldada"
+            RowBuffer.CellStyle(16) = "saldada"
         End If
 
 
@@ -1173,7 +1174,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 
     Values(3) = Factura.Tipo.PuntoVenta.PuntoVenta
 
-    If Factura.EsCredito Then
+    If Factura.esCredito Then
         Values(4) = "(FCE)"
     Else
         Values(4) = ""
@@ -1195,45 +1196,53 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(10) = Factura.OrdenCompra
     Values(11) = Factura.cliente.razon
     Values(12) = enums.EnumEstadoDocumentoContable(Factura.estado)
-    Values(13) = EnumTipoSaldadoFactura(Factura.Saldado)
+    
+    If Factura.Aprobada = True Then
+    Values(13) = "SI"
+    Else
+    Values(13) = "NO"
+    End If
+    
+    
+    Values(14) = EnumTipoSaldadoFactura(Factura.Saldado)
     
 
-    Values(14) = Factura.Vencimiento
+    Values(15) = Factura.Vencimiento
 
     
-    Values(15) = Factura.StringDiasAtraso
-    Values(16) = Factura.usuarioCreador.usuario
-    Values(17) = Factura.observaciones
+    Values(16) = Factura.StringDiasAtraso
+    Values(17) = Factura.usuarioCreador.usuario
+    Values(18) = Factura.observaciones
 
     If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
     
     If Factura.estado = EstadoFacturaCliente.EnProceso Then
-         Values(17) = "Comprobante en proceso"
+         Values(18) = "Comprobante en proceso"
     Else
     
         If LenB(Factura.CAE) <= 2 Then
-          Values(17) = "/ CAE no definido"
+          Values(18) = "/ CAE no definido"
         Else
    
-          Values(17) = Values(17) & "/ CAE: " & Factura.CAE
+          Values(18) = Values(17) & "/ CAE: " & Factura.CAE
         End If
     End If
 End If
     If IsSomething(Factura.UsuarioAprobacion) Then
-        Values(18) = Factura.UsuarioAprobacion.usuario
+        Values(19) = Factura.UsuarioAprobacion.usuario
     Else
-        Values(18) = vbNullString
+        Values(19) = vbNullString
     End If
      
     
-    If CDbl(Factura.FechaPropuestaPago) > 0 Then Values(19) = Factura.FechaPropuestaPago
+    If CDbl(Factura.FechaPropuestaPago) > 0 Then Values(20) = Factura.FechaPropuestaPago
 
     If Factura.DiferenciaDiasEntrega = -1 Then
-        Values(19) = "Defina fecha"
+        Values(20) = "Defina fecha"
     Else
 
         If CDbl(Factura.FechaEntrega) > 0 And Factura.estado <> EstadoFacturaCliente.Anulada Then
-            If Factura.Saldado = NoSaldada Then Values(20) = Format(Factura.FechaEntrega, "dd/mm/yyyy") & " (" & Factura.DiferenciaDiasEntrega & ")"
+            If Factura.Saldado = NoSaldada Then Values(21) = Format(Factura.FechaEntrega, "dd/mm/yyyy") & " (" & Factura.DiferenciaDiasEntrega & ")"
 
 
 
@@ -1247,18 +1256,18 @@ End If
 
         Else
             If Factura.estado = EstadoFacturaCliente.Anulada Then
-                Values(20) = "Anulada"
+                Values(21) = "Anulada"
             Else
-                Values(20) = Factura.FechaEntrega
+                Values(21) = Factura.FechaEntrega
             End If
         End If
 
     End If
 
 
-    Values(21) = Factura.TasaAjusteMensual
+    Values(22) = Factura.TasaAjusteMensual
 
-    Values(22) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+    Values(23) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
 
     Exit Sub
 err1:
@@ -1290,22 +1299,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-               CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 3
-                CD.ShowPrinter
+               cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 3
+                cd.ShowPrinter
                 Dim i As Long
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAOFactura.Imprimir Factura.id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fué impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 3
-                CD.ShowPrinter
+                cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 3
+                cd.ShowPrinter
 
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAOFactura.Imprimir Factura.id
                 Next i
             End If
