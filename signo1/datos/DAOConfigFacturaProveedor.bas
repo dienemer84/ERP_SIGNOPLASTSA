@@ -13,7 +13,8 @@ Public Function getByIdIVA(id_iva) As Collection
         configFactura.alicuotas = DAOAlicuotas.getByIdConfigFactura(rs!id)
         configFactura.Discrimina = rs!Discrimina
         configFactura.TipoFactura = rs!TipoFactura
-
+        configFactura.FormateaNumero = rs!Formatea_numero
+        
         col.Add configFactura
         rs.MoveNext
     Wend
@@ -30,6 +31,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Opti
         c.id = id
         c.Discrimina = GetValue(rs, indice, tabla, "discrimina")
         c.TipoFactura = GetValue(rs, indice, tabla, "tipoFactura")
+        c.FormateaNumero = GetValue(rs, indice, tabla, "formatea_numero")
         If LenB(tablaIVA) > 0 Then Set c.TipoIvaProveedor = DAOTipoIvaProveedor.Map(rs, indice, tablaIVA)
     End If
 
@@ -45,6 +47,8 @@ Public Function GetById(id) As clsConfigFacturaProveedor
         configFactura.alicuotas = DAOAlicuotas.getByIdConfigFactura(rs!id)
         configFactura.Discrimina = rs!Discrimina
         configFactura.TipoFactura = rs!TipoFactura
+        configFactura.FormateaNumero = rs!Formatea_numero
+        
     Else
         Set configFactura = Nothing
     End If

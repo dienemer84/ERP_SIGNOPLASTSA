@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasProveedoresModifica 
    BackColor       =   &H00FF8080&
    BorderStyle     =   3  'Fixed Dialog
@@ -762,7 +762,7 @@ Private Function accion() As Boolean
     proveedor_.pagoDolares = Abs(Me.Check2.value)
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
     proveedor_.Cuit = Me.Text1(10)
-    Set proveedor_.Moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
+    Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
     Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIVA.ItemData(Me.cboIVA.ListIndex)))
 
     'busco rubros
@@ -811,7 +811,7 @@ Private Sub mostrarCampos()
     Text1(10) = proveedor_.Cuit
     Text1(11) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
-    cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.Moneda.id, cboMonedas)
+    cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.id, cboMonedas)
     cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.id, cboIVA)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
 End Sub
@@ -855,28 +855,28 @@ End Sub
 Private Sub llenarListarubros()
     Dim ListaRubros As Collection
     Set ListaRubros = DAORubros.FindAll
-    Dim Rubro As clsRubros
+    Dim rubro As clsRubros
     lstRubros.ListItems.Clear
     Dim u As Long
     Dim x As ListItem
     For u = 1 To ListaRubros.count
-        Set Rubro = ListaRubros(u)
-        Set x = Me.lstRubros.ListItems.Add(, , Rubro.Rubro)
-        Set x.Tag = Rubro
+        Set rubro = ListaRubros(u)
+        Set x = Me.lstRubros.ListItems.Add(, , rubro.rubro)
+        Set x.Tag = rubro
     Next
 End Sub
 
 Private Sub llenarListaRubrosProveedor()
     Dim ListaRubros As New Collection
     Set ListaRubros = DAORubros.FindAllByProveedor(proveedor_.id)
-    Dim Rubro As clsRubros
+    Dim rubro As clsRubros
     Me.ListView1.ListItems.Clear
     Dim x As ListItem
     Dim u As Long
     For u = 1 To ListaRubros.count
-        Set Rubro = ListaRubros(u)
-        Set x = Me.ListView1.ListItems.Add(, , Rubro.Rubro)
-        Set x.Tag = Rubro
+        Set rubro = ListaRubros(u)
+        Set x = Me.ListView1.ListItems.Add(, , rubro.rubro)
+        Set x.Tag = rubro
     Next
 
 End Sub

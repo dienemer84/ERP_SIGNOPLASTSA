@@ -186,6 +186,7 @@ Public Enum tipoDocumentoContable
     Factura = 0
     notaCredito = 1
     notaDebito = 2
+    DespachoAduana = 3
 End Enum
 
 
@@ -607,6 +608,7 @@ Public Function EnumTipoDocumentoContableShort(indice) As String
         Case 0: EnumTipoDocumentoContableShort = "FC"
         Case 1: EnumTipoDocumentoContableShort = "NC"
         Case 2: EnumTipoDocumentoContableShort = "ND"
+          Case 3: EnumTipoDocumentoContableShort = "DA"
     End Select
 End Function
 Public Function EnumPeriodo(indice) As String

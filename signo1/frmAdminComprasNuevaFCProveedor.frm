@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
    BackColor       =   &H00FF8080&
@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   58327041
+      Format          =   59965441
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -574,6 +574,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentY        =   556
       _StockProps     =   77
       BackColor       =   -2147483643
+      Sorted          =   -1  'True
       Text            =   "ComboBox1"
    End
    Begin XtremeSuiteControls.PushButton PushButton2 
@@ -636,11 +637,11 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    Begin VB.Label Label9 
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FF8080&
-      Caption         =   "Tipo Factura"
+      Caption         =   "Letra"
       Height          =   255
-      Left            =   7395
+      Left            =   7320
       TabIndex        =   45
-      Top             =   720
+      Top             =   1080
       Width           =   1215
    End
    Begin VB.Label lblMoneda 
@@ -748,9 +749,9 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Tipo Documento"
       Height          =   255
-      Left            =   7050
+      Left            =   7080
       TabIndex        =   27
-      Top             =   1095
+      Top             =   720
       Width           =   1575
    End
 End
@@ -780,7 +781,7 @@ Dim ctaAplicada As clsCuentaFactura
 Dim ctaContable As clsCuentaContable
 Dim Percepcion As New clsPercepciones
 Dim alicuota As clsAlicuotas
-Dim IDtipo As Long
+Dim idtipo As Long
 Dim nroFacturaAnterior
 Dim grabado As Boolean
 Dim Proveedor As clsProveedor
@@ -815,12 +816,12 @@ Private Sub llenarTiposFacturas()
 
 
 
-    Dim IDtipo As Long
+    Dim idtipo As Long
 
     If Me.cboTiposFactura.ListCount > 0 Then
         Me.cboTiposFactura.ListIndex = 0
-        IDtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
-        llenarAlicuotas IDtipo
+        idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+        llenarAlicuotas idtipo
     End If
 End Sub
 
@@ -842,18 +843,24 @@ Private Sub cboProveedores_Click()
     If Me.cboProveedores.ListIndex <> -1 Then
         Me.txtCodigoProveedor = Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
     End If
+     
+
 End Sub
+
+
+
+
 
 
 Private Sub cboTiposFactura_Click()
 
     grabado = False
     'vFactura.IvaAplicado = Nothing
-
+FacturaRequiereNumeroFormateado
     If Me.cboTiposFactura.ListCount > 0 Then
-        Dim IDtipo As Long
-        IDtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
-        llenarAlicuotas IDtipo
+        Dim idtipo As Long
+        idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+        llenarAlicuotas idtipo
 
         Dim id_ali As Long
 
@@ -955,7 +962,7 @@ Private Sub cmdGuardar_Click()
 
 
     montonero = CDbl(Me.txtMontoNeto)
-    If Me.txtNumeroMask.text <> "____-________" Then
+    If Me.txtNumeroMask.text <> "____-________" And Len(Me.txtNumeroMask.text) > 0 Then
 
 
         If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
@@ -1045,7 +1052,8 @@ End Sub
 
 Private Sub Form_Load()
     loading = True
-    Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+    
+  
     Me.txtCuit.SetMask "00-00000000-0", "__-________-_"
 
     FormHelper.Customize Me
@@ -1072,14 +1080,20 @@ Private Sub Form_Load()
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.notaCredito
     Me.cboTipoDocContable.AddItem "Nota de débito"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.notaDebito
+   Me.cboTipoDocContable.AddItem "Despacho de Aduana"
+    Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.DespachoAduana
 
-    Me.cboTipoDocContable.ListIndex = 0
+
+    Me.cboTipoDocContable.ListIndex = 1
 
     Me.grilla_alicuotas.ItemCount = 0
     Me.grilla_percepciones.ItemCount = 0
     Me.grid_cuentascontables.ItemCount = 0
-
-
+'    If vFactura.configFactura.FormateaNumero Then
+'       Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+'       Me.txtNumeroMask.MaxLength = 0
+'  End If
+FacturaRequiereNumeroFormateado
     llenarGrillaPercepciones
     LlenarCuentasContables
 
@@ -1127,6 +1141,26 @@ Private Sub Form_Load()
 
 
 End Sub
+
+Private Sub FacturaRequiereNumeroFormateado()
+
+    Dim idtipo As Integer
+    idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+ Dim cx As clsConfigFacturaProveedor
+ 
+ Set cx = DAOConfigFacturaProveedor.GetById(idtipo)
+
+If IsSomething(cx) Then
+   If cx.FormateaNumero Then
+       Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+       Me.txtNumeroMask.MaxLength = 13
+  Else
+    Me.txtNumeroMask.SetMask "", ""
+       Me.txtNumeroMask.MaxLength = 0
+  End If
+End If
+End Sub
+
 Private Sub llenarGrillaPercepciones()
     Set colPercepciones = DAOPercepciones.GetAll
     Set colPercepcionesTMP = colPercepciones
@@ -1392,9 +1426,9 @@ End Sub
 '    foco Me.txtNumero
 'End Sub
 
-Private Sub llenarAlicuotas(IDtipo As Long)
+Private Sub llenarAlicuotas(idtipo As Long)
     Me.grilla_alicuota.ItemCount = 0
-    Set colAlicuotas = DAOAlicuotas.getByTipoFactura(IDtipo)
+    Set colAlicuotas = DAOAlicuotas.getByTipoFactura(idtipo)
     Me.grilla_alicuota.ItemCount = colAlicuotas.count
     Set Me.grilla_alicuotas.Columns("alicuota").DropDownControl = Me.grilla_alicuota
 End Sub
@@ -1440,12 +1474,17 @@ Private Sub LlenarFactura()
     Me.txtImpuestos = funciones.FormatearDecimales(vFactura.ImpuestoInterno)
     Me.DTPicker1 = vFactura.FEcha
 
+
+If vFactura.configFactura.FormateaNumero Then
     If InStr(1, vFactura.numero, "-") = 0 Then
-        Me.txtNumeroMask.text = Mid(vFactura.numero, 1, 4) & "-" & String(8 - Len(Mid(vFactura.numero, 5)), "0") & Mid(vFactura.numero, 5)
+      Me.txtNumeroMask.text = vFactura.numero
+        'Me.txtNumeroMask.text = Mid(vFactura.numero, 1, 4) & "-" & String(8 - Len(Mid(vFactura.numero, 5)), "0") & Mid(vFactura.numero, 5)
     Else
         Me.txtNumeroMask.text = vFactura.numero
     End If
-
+Else
+      Me.txtNumeroMask.text = vFactura.numero
+End If
     Me.txtRedondeo = vFactura.Redondeo
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.id, Me.cboProveedores)
@@ -1479,9 +1518,9 @@ Private Sub armarFactura()
     vFactura.Monto = CDbl(Me.txtMontoNeto)
     vFactura.estado = EstadoFacturaProveedor.EnProceso
 
-    IDtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+    idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
     vFactura.tipoDocumentoContable = Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.ListIndex)
-    vFactura.configFactura = DAOConfigFacturaProveedor.GetById(IDtipo)
+    vFactura.configFactura = DAOConfigFacturaProveedor.GetById(idtipo)
 End Sub
 Private Sub llenarComboProveedores()
     DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, False

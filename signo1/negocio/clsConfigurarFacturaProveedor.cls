@@ -15,6 +15,7 @@ Private vId As Long
 Private vDiscrimina As Boolean
 Public TipoIvaProveedor As clsTipoIvaProveedor
 Private vTipoFactura As String
+Public FormateaNumero As Boolean
 Private mAlicuotas As New Collection
 
 Public Property Let alicuotas(nAlicuotas As Collection)
