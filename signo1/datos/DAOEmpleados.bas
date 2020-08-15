@@ -5,7 +5,7 @@ Dim rs As ADODB.Recordset
 
 Public Function GetAllByTareaId(tareaId As Long) As Collection
     Dim col As New Collection
-    Dim a As clsEmpleado
+    Dim A As clsEmpleado
 
     Set rs = conectar.RSFactory("SELECT DISTINCT * FROM personal p INNER JOIN empleado_tarea et ON et.personal_id = p.id WHERE et.tarea_id = " & tareaId)
     While Not rs.EOF
@@ -18,11 +18,15 @@ End Function
 
 Public Function GetAll(Optional filter As String = vbNullString) As Collection
     Dim col As New Collection
-    Dim a As clsEmpleado
-
-    Set rs = conectar.RSFactory("select * from personal where 1 = 1 " & filter)
+    Dim A As clsEmpleado
+If LenB(filter) = 0 Then filter = "1=1"
+    Set rs = conectar.RSFactory("SELECT * FROM personal LEFT JOIN ObraSocial ON personal.obra_social=ObraSocial.id where 1 = 1 and " & filter)
     While Not rs.EOF
-        col.Add Map(rs)
+        Dim fieldsIndex As Dictionary
+        BuildFieldsIndex rs, fieldsIndex
+    
+    
+        col.Add Map2(rs, fieldsIndex, "personal", False)
         rs.MoveNext
     Wend
     Set GetAll = col
@@ -34,52 +38,55 @@ End Function
 
 
 Public Function GetById(id As Long) As clsEmpleado
-    On Error GoTo err1
-    Dim a As New clsEmpleado
-    Set rs = conectar.RSFactory("select * from personal where id=" & id)
-    If Not rs.EOF And Not rs.BOF Then
 
-
-        Set GetById = Map(rs)
-    Else
-        GoTo err1
-    End If
-    Exit Function
-
-err1:
-    Set GetById = Nothing
+  On Error Resume Next
+    Set GetById = GetAll("personal.id=" & id)(1)
+'    On Error GoTo err1
+'    Dim A As New clsEmpleado
+'    Set rs = conectar.RSFactory("select * from personal where id=" & id)
+'    If Not rs.EOF And Not rs.BOF Then
+'
+'
+'        Set GetById = Map(rs)
+'    Else
+'        GoTo err1
+'    End If
+'    Exit Function
+'
+'err1:
+'    Set GetById = Nothing
 
 End Function
 
 
 Private Function Map(rs As Recordset) As clsEmpleado
 
-    Set a = New clsEmpleado
-    a.Apellido = rs!Apellido
-    a.nombre = rs!nombre
-    a.id = rs!id
-    a.direccion = rs!direccion
-    a.documento = rs!documento
-    If Not IsNull(rs!email) Then a.email = rs!email
-    a.estado = rs!estado
-    a.legajo = rs!legajo
-    a.localidad = rs!localidad
-    a.nombre = rs!nombre
-    a.Nombres = rs!Nombres
-    Set a.sectores = DAOSectores.GetByIdEmpleado(rs!id)
-    a.Telefono1 = rs!Telefono1
-    a.Telefono2 = rs!Telefono2
+    Set A = New clsEmpleado
+    A.Apellido = rs!Apellido
+    A.nombre = rs!nombre
+    A.id = rs!id
+    A.direccion = rs!direccion
+    A.documento = rs!documento
+    If Not IsNull(rs!email) Then A.email = rs!email
+    A.estado = rs!estado
+    A.legajo = rs!legajo
+    A.localidad = rs!localidad
+    A.nombre = rs!nombre
+    A.Nombres = rs!Nombres
+    Set A.sectores = DAOSectores.GetByIdEmpleado(rs!id)
+    A.Telefono1 = rs!Telefono1
+    A.Telefono2 = rs!Telefono2
 
 
-    If Not IsNull(rs!fecha_ingreso) Then a.FechaIngreso = rs!fecha_ingreso
-    If Not IsNull(rs!fecha_nacimiento) Then a.FechaNacimiento = rs!fecha_nacimiento
+    If Not IsNull(rs!fecha_ingreso) Then A.FechaIngreso = rs!fecha_ingreso
+    If Not IsNull(rs!fecha_nacimiento) Then A.FechaNacimiento = rs!fecha_nacimiento
 
 
 
-    If Not IsNull(rs!grupo_sanguineo) Then a.GrupoSanguineo = rs!grupo_sanguineo
+    If Not IsNull(rs!grupo_sanguineo) Then A.GrupoSanguineo = rs!grupo_sanguineo
 
 
-    Set Map = a
+    Set Map = A
 End Function
 
 
@@ -148,10 +155,16 @@ Public Function Map2(rs As Recordset, indice As Dictionary, tabla As String, Opt
         'e.sectores
         E.Telefono1 = GetValue(rs, indice, tabla, "telefono1")
         E.Telefono2 = GetValue(rs, indice, tabla, "telefono2")
+        
+        E.Cuil = GetValue(rs, indice, tabla, "cuil")
+        'E.ObraSocial = GetValue(rs, indice, tabla, "obra_social")
+        E.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
 
         If withFoto Then
             Set E.Foto = DAOArchivo.FindAll(OA_FotoEmpleado, "id=" & E.idFoto)(0)
         End If
+     Set E.ObraSocial = DAOObraSocial.Map(rs, indice, "ObraSocial")
+        
 
     End If
 
@@ -178,6 +191,9 @@ Public Function Save(Empleado As clsEmpleado) As Boolean
             & " email," _
             & " grupo_sanguineo," _
             & " fecha_ingreso," _
+            & " cuil," _
+            & " obra_social," _
+            & " ultima_actualizacion," _
           & " fecha_nacimiento)"
         q = q & " Values" _
             & " ('legajo'," _
@@ -193,6 +209,9 @@ Public Function Save(Empleado As clsEmpleado) As Boolean
             & " 'email'," _
             & " 'grupo_sanguineo'," _
             & " 'fecha_ingreso'," _
+            & " cuil," _
+            & " obra_social," _
+            & " ultima_actualizacion," _
             & " 'fecha_nacimiento')"
 
         q = Replace$(q, "'legajo'", Escape(Empleado.legajo))
@@ -209,6 +228,12 @@ Public Function Save(Empleado As clsEmpleado) As Boolean
         q = Replace$(q, "'grupo_sanguineo'", Escape(Empleado.GrupoSanguineo))
         q = Replace$(q, "'fecha_ingreso'", Escape(Empleado.FechaIngreso))
         q = Replace$(q, "'fecha_nacimiento'", Escape(Empleado.FechaNacimiento))
+        
+        q = Replace$(q, "'cuil'", Escape(Empleado.Cuil))
+
+        q = Replace$(q, "'obra_social'", conectar.GetEntityId(Empleado.ObraSocial))
+        q = Replace$(q, "'ultima_actualizacion'", Escape(DateTime.Now))
+        
 
 
         'duarante el alta creo el usuario del sistema
@@ -232,6 +257,9 @@ Public Function Save(Empleado As clsEmpleado) As Boolean
             & " email = " & Escape(Empleado.email) & " ," _
             & " grupo_sanguineo = " & Escape(Empleado.GrupoSanguineo) & " ," _
             & " fecha_ingreso = " & Escape(Empleado.FechaIngreso) & " ," _
+            & " cuil = " & Escape(Empleado.Cuil) & " ," _
+            & " obra_social = " & conectar.GetEntityId(Empleado.ObraSocial) & " ," _
+            & " ultima_actualizacion = " & Escape(DateTime.Now) & " ," _
             & " fecha_nacimiento = " & Escape(Empleado.FechaNacimiento) _
             & " Where" _
             & " id = " & Escape(Empleado.id)

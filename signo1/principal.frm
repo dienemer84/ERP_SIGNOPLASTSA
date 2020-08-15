@@ -118,6 +118,11 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS:
             Dim f4333 As New frmListaEmpleados
             frmListaEmpleados.Show
+            
+              Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS:
+
+           ' Dim f43334 As New frmObraSocial
+            frmObraSocial.Show
 
         Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SECTORIZAR:
             frmSectorizar.Show
@@ -857,7 +862,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Usuarios", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__USUARIOS, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Siniestros", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS, (Permisos.RRHHInformeAccidente Or Permisos.RRHHSiniestros)
-
+ AddButton ribbonGroup, "Obras Sociales", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS, Permisos.sistemaPanelControlGeneral
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Configurar", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__CONFIGURAR)
     AddButton ribbonGroup, "Sistema", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__SISTEMA, Permisos.sistemaPanelControlGeneral
     Set cmdBarCtrl = AddButton(ribbonGroup, "Cotizaciones", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__COTIZACIONES, Permisos.sistemaPanelControlGeneral, , xtpControlPopup)
@@ -1028,6 +1033,7 @@ Private Sub CreateRibbonBar()
 
     AddButton ribbonGroup, "Bancos", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Cuentas", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS, Permisos.AdminCajayBancos
+
 
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Compras", ID_GROUP.ID_GROUP_ADMINISTRACION__COMPRAS)

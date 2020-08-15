@@ -4,7 +4,7 @@ Begin VB.Form frmAdminconfigCuentas
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Cuentas Bancarias"
-   ClientHeight    =   3930
+   ClientHeight    =   4290
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   11235
@@ -13,7 +13,7 @@ Begin VB.Form frmAdminconfigCuentas
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   3930
+   ScaleHeight     =   4290
    ScaleWidth      =   11235
    ShowInTaskbar   =   0   'False
    Begin GridEX20.GridEX grid 
