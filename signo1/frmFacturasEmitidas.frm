@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -549,13 +549,10 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Editar"
       End
       Begin VB.Menu aprobarFactura 
-         Caption         =   "Aprobar"
+         Caption         =   "Aprobar localmente"
       End
-      Begin VB.Menu mnuAprobarSinEnvio 
-         Caption         =   "Aprobar sin envío a AFIP"
-      End
-      Begin VB.Menu mnuEditarCAE 
-         Caption         =   "Editar datos de CAE"
+      Begin VB.Menu mnuEnviarAfip 
+         Caption         =   "Enviar a AFIP"
       End
       Begin VB.Menu mnuDesaprobarFactura 
          Caption         =   "Desaprobar..."
@@ -620,7 +617,7 @@ Implements ISuscriber
 
 Dim vId As String
 Dim facturas As Collection
-Dim Factura As Factura
+Dim factura As factura
 Dim m_Archivos As Dictionary
 
 
@@ -629,7 +626,7 @@ Private Sub AnularFactura_Click()
     r = Me.GridEX1.RowIndex(Me.GridEX1.row)
     If MsgBox("¿Desea anular el comprobante?", vbYesNo, "Confirmacion") = vbYes Then
 
-        If DAOFactura.Anular(Factura) Then
+        If DAOFactura.Anular(factura) Then
             MsgBox "Comprobante anulado con éxito!", vbInformation, "Información"
             Me.GridEX1.RefreshRowIndex r
         Else
@@ -644,17 +641,17 @@ End Sub
 Private Sub aplicarNCaFC_Click()
     If MsgBox("¿Seguro de aplicar NC?", vbYesNo, "Confirmación") = vbYes Then
         'seleccionar factura para aplicar
-        Set Selecciones.Factura = Nothing
-          Dim F As New frmAdminFacturasNCElegirFC
+        Set Selecciones.factura = Nothing
+          Dim f As New frmAdminFacturasNCElegirFC
         
-        F.idCliente = Factura.cliente.id
-            F.TiposDocs.Add tipoDocumentoContable.Factura
-            F.TiposDocs.Add tipoDocumentoContable.notaDebito
-            F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
-            F.Show 1
+        f.idCliente = factura.cliente.id
+            f.TiposDocs.Add tipoDocumentoContable.factura
+            f.TiposDocs.Add tipoDocumentoContable.notaDebito
+            f.EstadosDocs.Add EstadoFacturaCliente.Aprobada
+            f.Show 1
 
-        If IsSomething(Selecciones.Factura) Then
-            If DAOFactura.aplicarNCaFC(Selecciones.Factura.id, Factura.id) Then
+        If IsSomething(Selecciones.factura) Then
+            If DAOFactura.aplicarNCaFC(Selecciones.factura.id, factura.id) Then
                 MsgBox "Aplicación existosa!", vbInformation, "Información"
             Else
                 MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
@@ -663,22 +660,39 @@ Private Sub aplicarNCaFC_Click()
     End If
 End Sub
 
+
+
+
 Private Sub aprobarFactura_Click()
     On Error GoTo err1
     Dim g As Long
-
+    Dim msgadicional As String
+    msgadicional = ""
     If MsgBox("¿Desea aprobar el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.GridEX1.RowIndex(Me.GridEX1.row)
-        If DAOFactura.aprobar(Factura) Then
+        If DAOFactura.aprobar(factura) Then
             
+            
+            
+            If factura.Tipo.PuntoVenta.EsElectronico And Not factura.Tipo.PuntoVenta.CaeManual And Not factura.AprobadaAFIP Then
+              msgadicional = "Esta factura deberá enviarse a la afip"
+           End If
+            If factura.Tipo.PuntoVenta.EsElectronico And factura.Tipo.PuntoVenta.CaeManual And Not factura.AprobadaAFIP Then
+              msgadicional = "Recuerde agregar al comprobante: CAE y fecha de vencimiento del CAE "
+           End If
             
             Dim msg As String
             msg = "Comprobante aprobado con éxito!"
-            If IsSomething(Factura.CaeSolicitarResponse) Then
-             If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
+            If IsSomething(factura.CaeSolicitarResponse) Then
+             If LenB(factura.CaeSolicitarResponse.observaciones) > 5 Then
             
-              msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
+              msg = msg & Chr(10) & factura.CaeSolicitarResponse.observaciones
             End If
+            
+            If LenB(msgadicional) > 0 Then
+                msg = msg & Chr(10) & msgadicional
+            End If
+            
             End If
             MsgBox msg, vbInformation, "Información"
             
@@ -697,11 +711,11 @@ err1:
 End Sub
 
 Private Sub archivos_Click()
-    Dim F As New frmArchivos2
-    F.Origen = 101
-    F.ObjetoId = Factura.id
-    F.caption = "Comprobante " & Factura.GetShortDescription(False, True)
-    F.Show
+    Dim f As New frmArchivos2
+    f.Origen = 101
+    f.ObjetoId = factura.id
+    f.caption = "Comprobante " & factura.GetShortDescription(False, True)
+    f.Show
 End Sub
 
 'Private Sub Command1_Click()
@@ -804,7 +818,7 @@ End Sub
 Private Sub editar_Click()
 
     Dim f_c3h3 As New frmFacturaEdicion
-    f_c3h3.idFactura = Factura.id
+    f_c3h3.idFactura = factura.id
     f_c3h3.Show
 
 End Sub
@@ -890,9 +904,9 @@ Private Sub llenarGrilla()
     End If
 
     Set facturas = DAOFactura.FindAll(filtro)
-    Dim F As Factura
+    Dim f As factura
     Dim c As Integer
-    For Each F In facturas
+    For Each f In facturas
 
 
         Dim Total As Double
@@ -901,19 +915,19 @@ Private Sub llenarGrilla()
         Dim totalPercepcionesIIBB As Double
 
 
-        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If f.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
 
 
 
-        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        Total = Total + MonedaConverter.ConvertirForzado2(f.TotalEstatico.Total * c, MonedaConverter.Patron.id, f.moneda.id, f.CambioAPatron)
 
         '    Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
 
-        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(f.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, f.moneda.id, f.CambioAPatron)
         'TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        totalNG = totalNG + MonedaConverter.ConvertirForzado2(f.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, f.moneda.id, f.CambioAPatron)
         '    totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
+        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(f.TotalEstatico.TotalPercepcionesIB * c, f.moneda.id, MonedaConverter.Patron.id)
 
     Next
 
@@ -970,156 +984,183 @@ Private Sub GridEX1_DblClick()
 End Sub
 
 Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
+    If ColIndex = 20 And m_Archivos.item(factura.id) > 0 Then IconIndex = 1
 End Sub
 
 Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
 
-            If Factura.estado = EstadoFacturaCliente.EnProceso Or Not Factura.Aprobada Then
+            If factura.estado = EstadoFacturaCliente.EnProceso Then   'no se aprobó localmente
                 Me.aplicarNCaFC.Enabled = False
-                Me.mnuAplicarANC = False
+                Me.aplicarNCaFC.Visible = False
+                Me.mnuAplicarANC.Enabled = False
+                Me.mnuAplicarANC.Visible = False
                 Me.editar.Enabled = True
+                Me.editar.Visible = True
                 Me.desAnular.Visible = False
-                Me.AnularFactura.Visible = True
+                Me.AnularFactura.Visible = False
                 Me.AnularFactura.Enabled = False
-                Me.aprobarFactura.Enabled = True
-                
-                
-                Me.aprobarFactura.Visible = True 'Not Factura.EsCredito
-                
-                Me.mnuAprobarSinEnvio.Enabled = False
-                Me.mnuAprobarSinEnvio.Visible = False
-                
-                Me.mnuEditarCAE.Enabled = False
-                Me.mnuEditarCAE.Visible = False
-                
+                Me.aprobarFactura.Enabled = Permisos.AdminFacturasAprobaciones
+                Me.aprobarFactura.Visible = True
+                Me.mnuEnviarAfip.Visible = False
+               ' Me.mnuEditarCAE.Visible = False
                 Me.ImprimirFactura.Enabled = False
+                Me.ImprimirFactura.Visible = False
                 Me.mnuDesaprobarFactura.Visible = False
                 Me.aplicar.Enabled = False
+                Me.aplicar.Visible = False
                 Me.mnuFechaPagoPropuesta.Enabled = True
+                 Me.mnuFechaPagoPropuesta.Visible = True
                 Me.mnuFechaEntrega.Enabled = False
-                Me.aprobarFactura.Enabled = Permisos.AdminFacturasAprobaciones
+                Me.mnuFechaEntrega.Visible = False
+           End If
+           
+              
             
-            ElseIf Factura.estado = EstadoFacturaCliente.Aprobada Then    'estado = 2 Then
+            If factura.estado <> EstadoFacturaCliente.EnProceso And factura.estado <> EstadoFacturaCliente.Anulada Then     'se aprobo localmente y no está anulada
                 Me.editar.Enabled = False
-                Me.mnuFechaEntrega.Enabled = True
+                   Me.editar.Visible = False
                 Me.desAnular.Visible = False
-                Me.mnuDesaprobarFactura.Visible = True
-                Me.AnularFactura.Visible = True
-                Me.AnularFactura.Enabled = True
                 Me.aprobarFactura.Enabled = False
                 Me.aprobarFactura.Visible = False
-                
-                Me.mnuAprobarSinEnvio.Enabled = False
-                Me.mnuAprobarSinEnvio.Visible = False
-                
-                Me.mnuEditarCAE.Enabled = Not Factura.EstaImpresa And Factura.Tipo.PuntoVenta.CaeManual
-                Me.mnuEditarCAE.Visible = Not Factura.EstaImpresa And Factura.Tipo.PuntoVenta.CaeManual
-                
-                Me.ImprimirFactura.Enabled = True
-                Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado = TipoSaldadoFactura.saldadoTotal)
-                
-                
+                Me.mnuFechaEntrega.Enabled = True
                 Me.mnuFechaPagoPropuesta.Enabled = True
-                Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                Me.mnuAplicarANC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-
-            ElseIf Factura.estado = EstadoFacturaCliente.Anulada Then
+                
+                If factura.Tipo.PuntoVenta.EsElectronico Then
+                    Me.AnularFactura.Visible = False 'si es electronico no se puede anular comprobante
+                    Me.AnularFactura.Enabled = False
+                    
+                    If factura.AprobadaAFIP Then
+                               'Me.mnuEditarCAE.Enabled = False
+                                'Me.mnuEditarCAE.Visible = False
+                                Me.mnuEnviarAfip.Enabled = False
+                                Me.mnuEnviarAfip.Visible = False
+                                 Me.aplicar.Visible = False
+                                 Me.aplicar.Enabled = False '(factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado = TipoSaldadoFactura.saldadoTotal)
+                                Me.aplicarNCaFC.Visible = False
+                                Me.aplicarNCaFC.Enabled = False '(factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                                Me.mnuAplicarANC.Visible = False
+                                Me.mnuAplicarANC.Enabled = False '(factura.TipoDocumento = tipoDocumentoContable.notaDebito Or factura.TipoDocumento = tipoDocumentoContable.factura) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                
+                    Else
+'                               Me.mnuEditarCAE.Enabled = Permisos.AdminFacturasAprobaciones ' Not factura.EstaImpresa And factura.Tipo.PuntoVenta.CaeManual
+'                               Me.mnuEditarCAE.Visible = True
+'                               Me.mnuEnviarAfip.Enabled = Permisos.AdminFacturasAprobaciones
+                              Me.mnuEnviarAfip.Visible = True
+                              Me.mnuEnviarAfip.Enabled = True
+                               Me.aplicar.Visible = (factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado <> TipoSaldadoFactura.SaldadoParcial)
+                               Me.aplicar.Enabled = (factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
+                               Me.aplicarNCaFC.Visible = (factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                               Me.aplicarNCaFC.Enabled = (factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                             Me.mnuAplicarANC.Visible = (factura.TipoDocumento = tipoDocumentoContable.notaDebito Or factura.TipoDocumento = tipoDocumentoContable.factura) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                             Me.mnuAplicarANC.Enabled = (factura.TipoDocumento = tipoDocumentoContable.notaDebito Or factura.TipoDocumento = tipoDocumentoContable.factura) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                        
+                    End If
+                
+                Else
+                    Me.mnuEnviarAfip.Enabled = False
+                    Me.mnuEnviarAfip.Visible = False
+'                    Me.mnuEditarCAE.Enabled = False ' Not factura.EstaImpresa And factura.Tipo.PuntoVenta.CaeManual
+'                    Me.mnuEditarCAE.Visible = False '  Not factura.EstaImpresa And factura.Tipo.PuntoVenta.CaeManual
+                    Me.AnularFactura.Visible = True
+                    Me.AnularFactura.Enabled = True
+                    Me.mnuDesaprobarFactura.Visible = True
+                    Me.aplicar.Enabled = (factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
+                    Me.aplicar.Visible = (factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
+                 
+                    Me.aplicarNCaFC.Enabled = (factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                    Me.mnuAplicarANC.Enabled = (factura.TipoDocumento = tipoDocumentoContable.notaDebito Or factura.TipoDocumento = tipoDocumentoContable.factura) And (factura.estado = EstadoFacturaCliente.Aprobada)
+               Me.aplicarNCaFC.Visible = (factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                    Me.mnuAplicarANC.Visible = (factura.TipoDocumento = tipoDocumentoContable.notaDebito Or factura.TipoDocumento = tipoDocumentoContable.factura) And (factura.estado = EstadoFacturaCliente.Aprobada)
+               
+                End If
+            Me.ImprimirFactura.Enabled = True
+     End If
+            
+     
+            If factura.estado = EstadoFacturaCliente.Anulada Then
                 Me.mnuFechaEntrega.Enabled = False
                 Me.editar.Enabled = False
                 Me.AnularFactura.Visible = False
                 Me.aprobarFactura.Enabled = False
-                Me.mnuEditarCAE.Enabled = False
-                Me.mnuEditarCAE.Visible = False
+'                Me.mnuEditarCAE.Enabled = False
+'                Me.mnuEditarCAE.Visible = False
                 
-                Me.mnuAprobarSinEnvio.Enabled = False
-                Me.mnuAprobarSinEnvio.Visible = False
-
                 Me.ImprimirFactura.Enabled = False
                 Me.aplicar.Enabled = False
                 Me.aplicarNCaFC.Enabled = False
                 Me.mnuAplicarANC = False
+             End If
                 
-                
-            ElseIf Factura.estado = EstadoFacturaCliente.CanceladaNC Then
+            If factura.estado = EstadoFacturaCliente.CanceladaNC Then
                 Me.editar.Enabled = False
                 Me.mnuFechaEntrega.Enabled = False
                 Me.AnularFactura.Enabled = False
                 Me.AnularFactura.Visible = False
                 Me.aprobarFactura.Enabled = False
-              
-              
-                Me.mnuAprobarSinEnvio.Enabled = False
-                Me.mnuAprobarSinEnvio.Visible = False
-                
-                Me.mnuEditarCAE.Enabled = False
-                Me.mnuEditarCAE.Visible = False
+           
               
                 Me.ImprimirFactura.Enabled = True
                 Me.aplicar.Enabled = False
                 Me.aplicarNCaFC.Enabled = False
                 Me.mnuAplicarANC = False
-                
-                
-                
-                
-                
-            End If
+         End If
+            
+            
             Me.archivos.Enabled = Permisos.SistemaArchivosVer
 
-            If Factura.Saldado <> NoSaldada Then
+            If factura.Saldado <> NoSaldada Then
                 Me.mnuFechaEntrega.Enabled = False
             End If
 
-
-            If Factura.Tipo.PuntoVenta.CaeManual Then
-                  
-                  Me.aprobarFactura.Enabled = False
-                  Me.aprobarFactura.Visible = False
-                        
-                  Me.mnuEditarCAE.Enabled = False
-                  Me.mnuEditarCAE.Visible = False
-                        
-                  Me.mnuAprobarSinEnvio.Enabled = True
-                  Me.mnuAprobarSinEnvio.Visible = True
-                  
-             End If
+'
+'            If factura.Tipo.PuntoVenta.CaeManual Then
+'
+'                  Me.aprobarFactura.Enabled = False
+'                  Me.aprobarFactura.Visible = False
+'
+'                  Me.mnuEditarCAE.Enabled = False
+'                  Me.mnuEditarCAE.Visible = False
+'
+'                  Me.mnuAprobarSinEnvio.Enabled = True
+'                  Me.mnuAprobarSinEnvio.Visible = True
+'
+'             End If
              
-             If Factura.estado = EstadoFacturaCliente.Aprobada And Factura.Tipo.PuntoVenta.CaeManual Then
-                  
-                  Me.mnuEditarCAE.Enabled = True
-                  Me.mnuEditarCAE.Visible = True
-                  
-                  Me.mnuAprobarSinEnvio.Enabled = False
-                  Me.mnuAprobarSinEnvio.Visible = False
-                  
-             End If
+'             If factura.estado = EstadoFacturaCliente.Aprobada And factura.Tipo.PuntoVenta.CaeManual Then
+'
+'                  Me.mnuEditarCAE.Enabled = True
+'                  Me.mnuEditarCAE.Visible = True
+'
+'                  Me.mnuAprobarSinEnvio.Enabled = False
+'                  Me.mnuAprobarSinEnvio.Visible = False
+'
+'             End If
            
-              If Factura.estado = EstadoFacturaCliente.CanceladaNC And Factura.Tipo.PuntoVenta.CaeManual Then
-                  
-                  Me.mnuEditarCAE.Enabled = True
-                  Me.mnuEditarCAE.Visible = True
-                  
-                  Me.mnuAprobarSinEnvio.Enabled = False
-                  Me.mnuAprobarSinEnvio.Visible = False
-                  
-           End If
+'              If factura.estado = EstadoFacturaCliente.CanceladaNC And factura.Tipo.PuntoVenta.CaeManual Then
+'
+'                  Me.mnuEditarCAE.Enabled = True
+'                  Me.mnuEditarCAE.Visible = True
+'
+'                  Me.mnuAprobarSinEnvio.Enabled = False
+'                  Me.mnuAprobarSinEnvio.Visible = False
+'
+'           End If
             
 
-            Me.AnularFactura.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
-            Me.desAnular.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
-            Me.mnuDesaprobarFactura.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
-
-            If Factura.esCredito Then
-                  Me.aplicarNCaFC.Enabled = True
-            End If
+'            Me.AnularFactura.Enabled = Not factura.Tipo.PuntoVenta.EsElectronico Or factura.Tipo.PuntoVenta.CaeManual
+'            Me.desAnular.Enabled = Not factura.Tipo.PuntoVenta.EsElectronico Or factura.Tipo.PuntoVenta.CaeManual
+'            Me.mnuDesaprobarFactura.Enabled = Not factura.Tipo.PuntoVenta.EsElectronico
+'
+'            If factura.esCredito Then
+'                  Me.aplicarNCaFC.Enabled = True
+'            End If
             Me.PopupMenu Me.mnuFacturas
         End If
     End If
@@ -1127,23 +1168,23 @@ End Sub
 
 Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(RowBuffer.RowIndex)
-    If Factura.estado = EstadoFacturaCliente.Anulada Then
+    Set factura = facturas.item(RowBuffer.RowIndex)
+    If factura.estado = EstadoFacturaCliente.Anulada Then
         RowBuffer.RowStyle = "anulada"
     Else
-        If Factura.estado = EstadoFacturaCliente.EnProceso Then
+        If factura.estado = EstadoFacturaCliente.EnProceso Then
             RowBuffer.CellStyle(12) = "pendiente"
-        ElseIf Factura.estado = EstadoFacturaCliente.Aprobada Then
+        ElseIf factura.estado = EstadoFacturaCliente.Aprobada Then
             RowBuffer.CellStyle(12) = "aprobada"
         End If
 
-        If Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado = TipoSaldadoFactura.SaldadoParcial Or Factura.Saldado = TipoSaldadoFactura.notaCredito Then
-            If Factura.EstaAtrasada Then
+        If factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado = TipoSaldadoFactura.SaldadoParcial Or factura.Saldado = TipoSaldadoFactura.notaCredito Then
+            If factura.EstaAtrasada Then
                 RowBuffer.CellStyle(16) = "no_saldada"
             Else
                 RowBuffer.CellStyle(16) = "no_vencida"
             End If
-        ElseIf Factura.Saldado = saldadoTotal Then
+        ElseIf factura.Saldado = saldadoTotal Then
             RowBuffer.CellStyle(16) = "saldada"
         End If
 
@@ -1160,89 +1201,89 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+    Set factura = facturas.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
 
 End Sub
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(RowIndex)
-    Values(1) = Factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
+    Set factura = facturas.item(RowIndex)
+    Values(1) = factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
 
-    If IsSomething(Factura.Tipo) Then
-        Values(2) = Factura.Tipo.TipoFactura.Tipo
+    If IsSomething(factura.Tipo) Then
+        Values(2) = factura.Tipo.TipoFactura.Tipo
     End If
 
-    Values(3) = Factura.Tipo.PuntoVenta.PuntoVenta
+    Values(3) = factura.Tipo.PuntoVenta.PuntoVenta
 
-    If Factura.esCredito Then
+    If factura.esCredito Then
         Values(4) = "(FCE)"
     Else
         Values(4) = ""
     End If
 
 
-    Values(5) = Factura.NumeroFormateado
-    Values(6) = Factura.FechaEmision
-    Values(7) = funciones.FormatearDecimales(Factura.TotalEstatico.Total)
+    Values(5) = factura.NumeroFormateado
+    Values(6) = factura.FechaEmision
+    Values(7) = funciones.FormatearDecimales(factura.TotalEstatico.Total)
 
-    If Factura.moneda.id = 0 Then
-        Values(8) = Factura.moneda.NombreCorto
+    If factura.moneda.id = 0 Then
+        Values(8) = factura.moneda.NombreCorto
     Else
-        Values(8) = Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
+        Values(8) = factura.moneda.NombreCorto & " " & factura.CambioAPatron
     End If
 
-    Values(9) = funciones.FormatearDecimales(Factura.TotalEstatico.Total * Factura.CambioAPatron)
+    Values(9) = funciones.FormatearDecimales(factura.TotalEstatico.Total * factura.CambioAPatron)
 
-    Values(10) = Factura.OrdenCompra
-    Values(11) = Factura.cliente.razon
-    Values(12) = enums.EnumEstadoDocumentoContable(Factura.estado)
+    Values(10) = factura.OrdenCompra
+    Values(11) = factura.cliente.razon
+    Values(12) = enums.EnumEstadoDocumentoContable(factura.estado)
     
-    If Factura.Aprobada = True Then
+    If factura.AprobadaAFIP = True Then
     Values(13) = "SI"
     Else
     Values(13) = "NO"
     End If
     
     
-    Values(14) = EnumTipoSaldadoFactura(Factura.Saldado)
+    Values(14) = EnumTipoSaldadoFactura(factura.Saldado)
     
 
-    Values(15) = Factura.Vencimiento
+    Values(15) = factura.Vencimiento
 
     
-    Values(16) = Factura.StringDiasAtraso
-    Values(17) = Factura.usuarioCreador.usuario
-    Values(18) = Factura.observaciones
+    Values(16) = factura.StringDiasAtraso
+    Values(17) = factura.usuarioCreador.usuario
+    Values(18) = factura.observaciones
 
-    If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
+    If factura.Tipo.PuntoVenta.EsElectronico Or factura.Tipo.PuntoVenta.CaeManual Then
     
-    If Factura.estado = EstadoFacturaCliente.EnProceso Then
+    If factura.estado = EstadoFacturaCliente.EnProceso Then
          Values(18) = "Comprobante en proceso"
     Else
     
-        If LenB(Factura.CAE) <= 2 Then
+        If LenB(factura.CAE) <= 2 Then
           Values(18) = "/ CAE no definido"
         Else
    
-          Values(18) = Values(17) & "/ CAE: " & Factura.CAE
+          Values(18) = Values(17) & "/ CAE: " & factura.CAE
         End If
     End If
 End If
-    If IsSomething(Factura.UsuarioAprobacion) Then
-        Values(19) = Factura.UsuarioAprobacion.usuario
+    If IsSomething(factura.UsuarioAprobacion) Then
+        Values(19) = factura.UsuarioAprobacion.usuario
     Else
         Values(19) = vbNullString
     End If
      
     
-    If CDbl(Factura.FechaPropuestaPago) > 0 Then Values(20) = Factura.FechaPropuestaPago
+    If CDbl(factura.FechaPropuestaPago) > 0 Then Values(20) = factura.FechaPropuestaPago
 
-    If Factura.DiferenciaDiasEntrega = -1 Then
+    If factura.DiferenciaDiasEntrega = -1 Then
         Values(20) = "Defina fecha"
     Else
 
-        If CDbl(Factura.FechaEntrega) > 0 And Factura.estado <> EstadoFacturaCliente.Anulada Then
-            If Factura.Saldado = NoSaldada Then Values(21) = Format(Factura.FechaEntrega, "dd/mm/yyyy") & " (" & Factura.DiferenciaDiasEntrega & ")"
+        If CDbl(factura.FechaEntrega) > 0 And factura.estado <> EstadoFacturaCliente.Anulada Then
+            If factura.Saldado = NoSaldada Then Values(21) = Format(factura.FechaEntrega, "dd/mm/yyyy") & " (" & factura.DiferenciaDiasEntrega & ")"
 
 
 
@@ -1255,19 +1296,19 @@ End If
             '    End If
 
         Else
-            If Factura.estado = EstadoFacturaCliente.Anulada Then
+            If factura.estado = EstadoFacturaCliente.Anulada Then
                 Values(21) = "Anulada"
             Else
-                Values(21) = Factura.FechaEntrega
+                Values(21) = factura.FechaEntrega
             End If
         End If
 
     End If
 
 
-    Values(22) = Factura.TasaAjusteMensual
+    Values(22) = factura.TasaAjusteMensual
 
-    Values(23) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+    Values(23) = "(" & Val(m_Archivos.item(factura.id)) & ")"
 
     Exit Sub
 err1:
@@ -1280,42 +1321,42 @@ Private Sub ImprimirFactura_Click()
     Dim veces As Long
 
 
-    If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
-        veces = clasea.facturaImpresa(Factura.id)
+    If factura.Tipo.PuntoVenta.EsElectronico Or factura.Tipo.PuntoVenta.CaeManual Then
+        veces = clasea.facturaImpresa(factura.id)
         If veces > 0 Then
             If MsgBox("Este comprobante ya fué generarlo" & Chr(10) & "¿Desea volver a generarlo?", vbYesNo, "Confirmación") = vbYes Then
                 'DAOFactura.GenerarPdf (Factura.id)
-                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
+                DAOFactura.VerFacturaElectronicaParaImpresion (factura.id)
             End If
         Else
 
 
-            DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
+            DAOFactura.VerFacturaElectronicaParaImpresion (factura.id)
 
 
         End If
     Else
 
-        veces = clasea.facturaImpresa(Factura.id)
+        veces = clasea.facturaImpresa(factura.id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-               cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+               CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
-                    DAOFactura.Imprimir Factura.id
+                For i = 1 To CD.Copies
+                    DAOFactura.Imprimir factura.id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fué impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
-                    DAOFactura.Imprimir Factura.id
+                For i = 1 To CD.Copies
+                    DAOFactura.Imprimir factura.id
                 Next i
             End If
 
@@ -1331,7 +1372,7 @@ Private Property Get ISuscriber_id() As String
 End Property
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
-    Dim tmp As Factura
+    Dim tmp As factura
     If EVENTO.EVENTO = agregar_ Then
         llenarGrilla
         Me.GridEX1.Refresh
@@ -1391,16 +1432,16 @@ End Function
 Private Sub mnuAplicarANC_Click()
   If MsgBox("¿Seguro de aplicar a NC?", vbYesNo, "Confirmación") = vbYes Then
         'seleccionar factura para aplicar
-        Set Selecciones.Factura = Nothing
-          Dim F As New frmAdminFacturasNCElegirFC
+        Set Selecciones.factura = Nothing
+          Dim f As New frmAdminFacturasNCElegirFC
         
-        F.idCliente = Factura.cliente.id
-            F.TiposDocs.Add tipoDocumentoContable.notaCredito
-            F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
-            F.Show 1
+        f.idCliente = factura.cliente.id
+            f.TiposDocs.Add tipoDocumentoContable.notaCredito
+            f.EstadosDocs.Add EstadoFacturaCliente.Aprobada
+            f.Show 1
 
-        If IsSomething(Selecciones.Factura) Then
-            If DAOFactura.aplicarNCaFC(Factura.id, Selecciones.Factura.id) Then
+        If IsSomething(Selecciones.factura) Then
+            If DAOFactura.aplicarNCaFC(factura.id, Selecciones.factura.id) Then
                 MsgBox "Aplicación existosa!", vbInformation, "Información"
             Else
                 MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
@@ -1413,40 +1454,40 @@ End Sub
 
 Private Sub mnuAprobarSinEnvio_Click()
 
-On Error GoTo err1
-    Dim g As Long
-
-    If MsgBox("¿Desea aprobar el comprobante SIN ENVÍAR A LA AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.GridEX1.RowIndex(Me.GridEX1.row)
-        
-        If DAOFactura.aprobar(Factura, False) Then
-            
-            
-              MsgBox "Recuerde agregar al comprobante: CAE y fecha de vencimiento del CAE ", vbInformation, "Información"
-            
-            
-'            Dim msg As String
-'            msg = "Comprobante aprobado con éxito!"
-'            If IsSomething(Factura.CaeSolicitarResponse) Then
-'             If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
+'On Error GoTo err1
+'    Dim g As Long
 '
-'              msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
-'            End If
-'            End If
-'            MsgBox msg, vbInformation, "Información"
-            
-            Me.GridEX1.RefreshRowIndex g
-            Me.txtNroFactura.SetFocus
-        Else
-            GoTo err1
-        End If
-    End If
-    Exit Sub
-err1:
-    'MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
-
-    MsgBox Err.Description, vbCritical, Err.Source
-    Me.GridEX1.RefreshRowIndex g
+'    If MsgBox("¿Desea aprobar el comprobante SIN ENVÍAR A LA AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+'        g = Me.GridEX1.RowIndex(Me.GridEX1.row)
+'
+'        If DAOFactura.aprobar(factura, False) Then
+'
+'
+'              MsgBox "Recuerde agregar al comprobante: CAE y fecha de vencimiento del CAE ", vbInformation, "Información"
+'
+'
+''            Dim msg As String
+''            msg = "Comprobante aprobado con éxito!"
+''            If IsSomething(Factura.CaeSolicitarResponse) Then
+''             If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
+''
+''              msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
+''            End If
+''            End If
+''            MsgBox msg, vbInformation, "Información"
+'
+'            Me.GridEX1.RefreshRowIndex g
+'            Me.txtNroFactura.SetFocus
+'        Else
+'            GoTo err1
+'        End If
+'    End If
+'    Exit Sub
+'err1:
+'    'MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
+'
+'    MsgBox Err.Description, vbCritical, Err.Source
+'    Me.GridEX1.RefreshRowIndex g
 
 
 
@@ -1456,8 +1497,8 @@ Private Sub mnuArchivos_Click()
     Dim archi As New frmArchivos2
 
     archi.Origen = OrigenArchivos.OA_factura
-    archi.ObjetoId = Factura.id
-    archi.caption = Factura.GetShortDescription(False, True)
+    archi.ObjetoId = factura.id
+    archi.caption = factura.GetShortDescription(False, True)
     archi.Show
 
 End Sub
@@ -1475,7 +1516,7 @@ Private Sub mnuCrearCopiaFactura_Click()
     taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonCancel
 
     taskDialog.DefaultRadioButton = -1
-    taskDialog.AddRadioButton "Factura", tipoDocumentoContable.Factura
+    taskDialog.AddRadioButton "Factura", tipoDocumentoContable.factura
     taskDialog.AddRadioButton "Nota de Débito", tipoDocumentoContable.notaDebito
     taskDialog.AddRadioButton "Nota de Crédito", tipoDocumentoContable.notaCredito
 
@@ -1486,8 +1527,8 @@ Private Sub mnuCrearCopiaFactura_Click()
         If Me.taskDialog.DefaultRadioButton = -1 Then
             MsgBox "Debe seleccionar un tipo para el nuevo comprobante.", vbExclamation + vbOKOnly
         Else
-            Dim newFact As Factura
-            Set newFact = DAOFactura.CrearCopiaFiel(Factura, Me.taskDialog.DefaultRadioButton)
+            Dim newFact As factura
+            Set newFact = DAOFactura.CrearCopiaFiel(factura, Me.taskDialog.DefaultRadioButton)
             If IsSomething(newFact) Then
                 MsgBox "Se creó un nuevo comprobante (" & newFact.GetShortDescription(False, True) & ")", vbInformation + vbOKOnly
             Else
@@ -1507,7 +1548,7 @@ Private Sub mnuDesaprobarFactura_Click()
 
     If MsgBox("¿Desea desaprobar el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.GridEX1.RowIndex(Me.GridEX1.row)
-        If DAOFactura.desaprobar(Factura) Then
+        If DAOFactura.desaprobar(factura) Then
             MsgBox "Comprobante desaprobado con éxito!", vbInformation, "Información"
             Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
@@ -1521,16 +1562,80 @@ err1:
 End Sub
 
 Private Sub mnuEditarCAE_Click()
+'    Dim g As Long
+'    g = Me.GridEX1.RowIndex(Me.GridEX1.row)
+'
+'    Dim F As New frmAdminFacturasAprobarSinAfip
+'    Set F.factura = factura
+'    F.Show 1
+'
+' Me.GridEX1.RefreshRowIndex g
+
+
+End Sub
+
+Private Sub mnuEnviarAfip_Click()
+On Error GoTo err1
     Dim g As Long
-    g = Me.GridEX1.RowIndex(Me.GridEX1.row)
 
-    Dim F As New frmAdminFacturasAprobarSinAfip
-    Set F.Factura = Factura
-    F.Show 1
-
- Me.GridEX1.RefreshRowIndex g
+   
 
 
+
+    If Not factura.Tipo.PuntoVenta.EsElectronico Then
+      Err.Raise 300, "Informar AFIP", "No puede informar un comprobante de un PV no catalogado como electrónico"
+    End If
+      
+'    If factura.Tipo.PuntoVenta.EsElectronico And factura.Tipo.PuntoVenta.CaeManual Then
+'       Err.Raise 301, "Informar AFIP", "No puede informar un comprobante del PV indicado"
+'   End If
+
+    If factura.Tipo.PuntoVenta.EsElectronico And factura.AprobadaAFIP Then
+            Err.Raise 302, "Informar AFIP", "No puede informar un comprobante de ya informado"
+    End If
+    
+    If factura.Tipo.PuntoVenta.CaeManual Then
+    
+            Dim gg As Long
+            gg = Me.GridEX1.RowIndex(Me.GridEX1.row)
+        
+            Dim f As New frmAdminFacturasAprobarSinAfip
+            Set f.factura = factura
+            f.Show 1
+        
+         Me.GridEX1.RefreshRowIndex gg
+            
+    Else
+     If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+        g = Me.GridEX1.RowIndex(Me.GridEX1.row)
+        If DAOFactura.aprobarAFIP(factura) Then
+            
+   
+         
+            Dim msg As String
+            msg = "Comprobante informado con éxito!"
+            If IsSomething(factura.CaeSolicitarResponse) Then
+             If LenB(factura.CaeSolicitarResponse.observaciones) > 5 Then
+            
+              msg = msg & Chr(10) & factura.CaeSolicitarResponse.observaciones
+            End If
+            End If
+            MsgBox msg, vbInformation, "Información"
+            
+            Me.GridEX1.RefreshRowIndex g
+            Me.txtNroFactura.SetFocus
+        Else
+            GoTo err1
+        End If
+    End If
+End If
+    
+    
+    Exit Sub
+err1:
+   
+    MsgBox Err.Description, vbCritical, Err.Source
+    Me.GridEX1.RefreshRowIndex g
 End Sub
 
 Private Sub mnuFechaEntrega_Click()
@@ -1539,7 +1644,7 @@ Private Sub mnuFechaEntrega_Click()
     Dim nuevaFecha As Date
     Dim Update As Boolean
 
-    If CDbl(Factura.FechaEntrega) > 0 Then fechaAnterior = Factura.FechaEntrega
+    If CDbl(factura.FechaEntrega) > 0 Then fechaAnterior = factura.FechaEntrega
 
     fechaPosterior = InputBox("Establezca fecha de entrega", "Fecha de Entrega", fechaAnterior)
 
@@ -1556,8 +1661,8 @@ Private Sub mnuFechaEntrega_Click()
     End If
 
     If Update Then
-        Factura.FechaEntrega = nuevaFecha
-        If DAOFactura.Guardar(Factura) Then
+        factura.FechaEntrega = nuevaFecha
+        If DAOFactura.Guardar(factura) Then
             Me.GridEX1.RefreshRowIndex (Me.GridEX1.row)
         Else
             MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
@@ -1572,7 +1677,7 @@ Private Sub mnuFechaPagoPropuesta_Click()
     Dim nuevaFecha As Date
     Dim Update As Boolean
 
-    If CDbl(Factura.FechaPropuestaPago) > 0 Then fechaAnterior = Factura.FechaPropuestaPago
+    If CDbl(factura.FechaPropuestaPago) > 0 Then fechaAnterior = factura.FechaPropuestaPago
 
     fechaPosterior = InputBox("Establezca fecha de pago propuesta", "Fecha de Pago", fechaAnterior)
 
@@ -1588,8 +1693,8 @@ Private Sub mnuFechaPagoPropuesta_Click()
     End If
 
     If Update Then
-        Factura.FechaPropuestaPago = nuevaFecha
-        If DAOFactura.Guardar(Factura) Then
+        factura.FechaPropuestaPago = nuevaFecha
+        If DAOFactura.Guardar(factura) Then
             Me.GridEX1.ReBind
         Else
             MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
@@ -1652,7 +1757,7 @@ Private Sub PushButton2_Click()
     If (id < 0) Then xlWorksheet.Cells(2, 10).value = "Cliente"
     Dim idx As Integer
     idx = 3
-    Dim fac As Factura
+    Dim fac As factura
     For Each fac In col
 
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
@@ -1733,9 +1838,9 @@ End Sub
 Private Sub scanear_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_factura, factura.id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
-        Me.GridEX1.RefreshRowIndex (Factura.id)
+        Me.GridEX1.RefreshRowIndex (factura.id)
     End If
 End Sub
 
@@ -1747,13 +1852,13 @@ End Sub
 Private Sub verFactura_Click()
     Dim f_c3h3 As New frmFacturaEdicion
     f_c3h3.ReadOnly = True
-    f_c3h3.idFactura = Factura.id
+    f_c3h3.idFactura = factura.id
     f_c3h3.Show
 
 End Sub
 
 Private Sub verHistorialFactura_Click()
-    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.id)
-    frmHistoriales.lista = Factura.Historial
+    Set factura.Historial = DAOFacturaHistorial.getAllByIdFactura(factura.id)
+    frmHistoriales.lista = factura.Historial
     frmHistoriales.Show
 End Sub

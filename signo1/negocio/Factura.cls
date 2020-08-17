@@ -12,7 +12,7 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-Public EsCredito As Boolean
+Public esCredito As Boolean
 Public id As Long
 Public Cancelada As Long
 Public FechaAprobacion As Date
@@ -24,7 +24,7 @@ Public numero As String
 Public cliente As clsCliente
 Public moneda As clsMoneda
 Public CambioAPatron As Double
-Public Aprobada As Boolean
+Public AprobadaAFIP As Boolean
 Public FechaEntrega As Date
 Public CAE As String
 Public CAEVto As Date
@@ -73,10 +73,13 @@ Public FechaVtoHasta As Date
 Public FechaServDesde As Date
 Public FechaServHasta As Date
 
-
-
-
 Public TasaAjusteMensual As Double  'de aca se empieza
+
+Public Function Modificable() As Boolean
+
+    Modificable = Not (Tipo.PuntoVenta.EsElectronico And Me.AprobadaAFIP)
+
+End Function
 
 Public Sub SetToNothingOTsFacturadasAnticipo()
     Set m_ots_facturadas_anticipo = Nothing
@@ -86,7 +89,7 @@ Public Property Get DescripcionCreditoAdicional() As String
     Dim dsc As String
     
     
-    If TipoDocumento = tipoDocumentoContable.Factura Then
+    If TipoDocumento = tipoDocumentoContable.factura Then
          dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
     End If
     If TipoDocumento = tipoDocumentoContable.notaCredito Then
@@ -145,14 +148,14 @@ End Property
 Public Function GetCodigoDocumentoAfip() As Integer
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
     If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
-    If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
+    If Tipo.TipoDoc = tipoDocumentoContable.factura Then GetCodigoDocumentoAfip = 1
 
 
 End Function
 Public Function GetDescripciopnDocumentoAfip() As String
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
     If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
-    If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetDescripciopnDocumentoAfip = "FACTURA"
+    If Tipo.TipoDoc = tipoDocumentoContable.factura Then GetDescripciopnDocumentoAfip = "FACTURA"
 
 
 End Function
@@ -281,7 +284,7 @@ Public Property Get TipoDocumentoDescription() As String
 
     Dim retorno As String
     Select Case Me.TipoDocumento
-        Case tipoDocumentoContable.Factura
+        Case tipoDocumentoContable.factura
             retorno = "FACTURA"
         Case tipoDocumentoContable.notaCredito
             retorno = "NOTA DE CREDITO"
@@ -304,7 +307,7 @@ Public Property Get GetShortDescription(justTipo As Boolean, fullShortDescriptio
 
     Dim retorno As String
     Select Case Me.TipoDocumento
-        Case tipoDocumentoContable.Factura
+        Case tipoDocumentoContable.factura
             retorno = "FC"
         Case tipoDocumentoContable.notaCredito
             retorno = "NC"

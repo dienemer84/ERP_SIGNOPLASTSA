@@ -348,7 +348,7 @@ End Enum
 Public Enum EstadoFacturaCliente
     EnProceso = 1
     Aprobada = 2
-    Anulada = 3
+    Anulada = 3 'no se usa mas
     CanceladaNC = 4
     CanceladaNCParcial = 5
 End Enum

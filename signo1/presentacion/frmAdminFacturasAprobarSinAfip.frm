@@ -56,7 +56,7 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58851329
+         Format          =   60096513
          CurrentDate     =   43960
       End
       Begin VB.Label Label1 
@@ -128,16 +128,17 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Public Factura As Factura
+Public factura As factura
 
 Private Sub cmdAceptar_Click()
 On Error GoTo errCae
 
-If MsgBox("¿Está seguro de actualizar los datos?", vbYesNo, "Confirmación") = vbYes Then
+If MsgBox("¿Está seguro de actualizar los datos y marcarla como informada?", vbYesNo, "Confirmación") = vbYes Then
 
-    Factura.CAE = Me.txtCAE
-    Factura.CAEVto = Me.dtVtoCAE
-    DAOFactura.ActualizarCAE Factura
+    factura.CAE = Me.txtCAE
+    factura.CAEVto = Me.dtVtoCAE
+    factura.AprobadaAFIP = True
+    DAOFactura.ActualizarCAE factura
     MsgBox "Datos de CAE actualizados correctamente", vbInformation, "Proceso correcto"
    Unload Me
 End If
@@ -153,14 +154,14 @@ End Sub
 
 Private Sub Form_Load()
     Customize Me
-    Me.txtCAE = Factura.CAE
+    Me.txtCAE = factura.CAE
     
     Dim d As Date
    
-    If Factura.CAEVto = d Then
+    If factura.CAEVto = d Then
         Me.dtVtoCAE = Now
     Else
-            Me.dtVtoCAE = Factura.CAEVto
+            Me.dtVtoCAE = factura.CAEVto
     End If
 
     
