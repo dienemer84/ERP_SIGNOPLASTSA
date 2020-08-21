@@ -20,7 +20,7 @@ Begin VB.Form frmAltaEmpleados
    Begin XtremeSuiteControls.ComboBox cboOS 
       Height          =   315
       Left            =   1560
-      TabIndex        =   39
+      TabIndex        =   13
       Top             =   5400
       Width           =   5175
       _Version        =   786432
@@ -33,14 +33,14 @@ Begin VB.Form frmAltaEmpleados
    Begin VB.TextBox txtCuil 
       Height          =   285
       Left            =   1560
-      TabIndex        =   34
+      TabIndex        =   6
       Top             =   2475
       Width           =   3135
    End
    Begin XtremeSuiteControls.PushButton PushButton1 
       Height          =   255
       Left            =   6480
-      TabIndex        =   33
+      TabIndex        =   35
       Top             =   2280
       Width           =   1455
       _Version        =   786432
@@ -53,19 +53,19 @@ Begin VB.Form frmAltaEmpleados
    Begin MSComCtl2.DTPicker dtpFechaNac 
       Height          =   300
       Left            =   1545
-      TabIndex        =   11
+      TabIndex        =   7
       Top             =   2850
       Width           =   1305
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   63438849
+      Format          =   58720257
       CurrentDate     =   40119
    End
    Begin VB.TextBox txtGrupoSanguineo 
       Height          =   285
       Left            =   1560
-      TabIndex        =   10
+      TabIndex        =   14
       Text            =   "txtGrupoSanguineo"
       Top             =   5835
       Width           =   900
@@ -81,7 +81,7 @@ Begin VB.Form frmAltaEmpleados
    Begin VB.TextBox txtApellido 
       Height          =   285
       Left            =   1575
-      TabIndex        =   1
+      TabIndex        =   2
       Text            =   "Text1"
       Top             =   1020
       Width           =   4695
@@ -89,7 +89,7 @@ Begin VB.Form frmAltaEmpleados
    Begin VB.TextBox TxtNombre 
       Height          =   285
       Left            =   1560
-      TabIndex        =   2
+      TabIndex        =   3
       Text            =   "Text1"
       Top             =   1380
       Width           =   4695
@@ -97,7 +97,7 @@ Begin VB.Form frmAltaEmpleados
    Begin VB.TextBox TxtDireccion 
       Height          =   285
       Left            =   1560
-      TabIndex        =   5
+      TabIndex        =   8
       Text            =   "Text1"
       Top             =   3420
       Width           =   6375
@@ -105,7 +105,7 @@ Begin VB.Form frmAltaEmpleados
    Begin VB.TextBox TxtLocalidad 
       Height          =   285
       Left            =   1560
-      TabIndex        =   6
+      TabIndex        =   9
       Text            =   "Text1"
       Top             =   3780
       Width           =   6375
@@ -113,7 +113,7 @@ Begin VB.Form frmAltaEmpleados
    Begin VB.TextBox txtTel1 
       Height          =   285
       Left            =   1560
-      TabIndex        =   7
+      TabIndex        =   10
       Text            =   "Text1"
       Top             =   4155
       Width           =   6375
@@ -121,7 +121,7 @@ Begin VB.Form frmAltaEmpleados
    Begin VB.TextBox txtTel2 
       Height          =   285
       Left            =   1560
-      TabIndex        =   8
+      TabIndex        =   11
       Text            =   "Text1"
       Top             =   4500
       Width           =   6375
@@ -133,14 +133,14 @@ Begin VB.Form frmAltaEmpleados
       Height          =   375
       Left            =   5655
       Style           =   1  'Graphical
-      TabIndex        =   15
+      TabIndex        =   17
       Top             =   6285
       Width           =   1095
    End
    Begin VB.TextBox txtNroDocumento 
       Height          =   285
       Left            =   1560
-      TabIndex        =   4
+      TabIndex        =   5
       Text            =   "Text1"
       Top             =   2100
       Width           =   3135
@@ -150,7 +150,7 @@ Begin VB.Form frmAltaEmpleados
       Caption         =   "Si"
       Height          =   255
       Left            =   2070
-      TabIndex        =   13
+      TabIndex        =   15
       Top             =   6420
       Width           =   495
    End
@@ -159,7 +159,7 @@ Begin VB.Form frmAltaEmpleados
       Caption         =   "No"
       Height          =   255
       Left            =   2670
-      TabIndex        =   14
+      TabIndex        =   16
       Top             =   6420
       Value           =   -1  'True
       Width           =   615
@@ -168,21 +168,21 @@ Begin VB.Form frmAltaEmpleados
       Height          =   285
       Left            =   1560
       Locked          =   -1  'True
-      TabIndex        =   17
+      TabIndex        =   19
       Top             =   180
       Width           =   1695
    End
    Begin VB.TextBox txtNombres 
       Height          =   285
       Left            =   1560
-      TabIndex        =   3
+      TabIndex        =   4
       Top             =   1740
       Width           =   4695
    End
    Begin VB.TextBox txtEmail 
       Height          =   285
       Left            =   1560
-      TabIndex        =   9
+      TabIndex        =   12
       Text            =   "Text1"
       Top             =   4860
       Width           =   6375
@@ -194,20 +194,20 @@ Begin VB.Form frmAltaEmpleados
       Height          =   375
       Left            =   6855
       Style           =   1  'Graphical
-      TabIndex        =   16
+      TabIndex        =   18
       Top             =   6285
       Width           =   1095
    End
    Begin MSComCtl2.DTPicker dtpFechaIng 
       Height          =   300
       Left            =   4920
-      TabIndex        =   12
+      TabIndex        =   1
       Top             =   600
       Width           =   1305
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   63438849
+      Format          =   58720257
       CurrentDate     =   40119
    End
    Begin VB.Label lblDatoActualizacion 
@@ -215,7 +215,7 @@ Begin VB.Form frmAltaEmpleados
       Caption         =   "00/00/0000 00:00:00"
       Height          =   255
       Left            =   6360
-      TabIndex        =   38
+      TabIndex        =   39
       Top             =   6840
       Width           =   1695
    End
@@ -234,7 +234,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   4320
-      TabIndex        =   37
+      TabIndex        =   38
       Top             =   6840
       Width           =   1935
    End
@@ -253,7 +253,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   240
       Left            =   120
-      TabIndex        =   36
+      TabIndex        =   37
       Top             =   5460
       Width           =   1335
    End
@@ -272,7 +272,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   540
-      TabIndex        =   35
+      TabIndex        =   36
       Top             =   2490
       Width           =   855
    End
@@ -300,7 +300,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   195
       Left            =   3600
-      TabIndex        =   32
+      TabIndex        =   34
       Top             =   645
       Width           =   1230
    End
@@ -320,7 +320,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   195
       Left            =   510
-      TabIndex        =   31
+      TabIndex        =   33
       Top             =   2910
       Width           =   945
    End
@@ -340,7 +340,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   195
       Left            =   480
-      TabIndex        =   30
+      TabIndex        =   32
       Top             =   5865
       Width           =   1020
    End
@@ -359,7 +359,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   29
+      TabIndex        =   31
       Top             =   645
       Width           =   975
    End
@@ -378,7 +378,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   28
+      TabIndex        =   30
       Top             =   1035
       Width           =   975
    End
@@ -397,7 +397,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   27
+      TabIndex        =   29
       Top             =   1395
       Width           =   975
    End
@@ -416,7 +416,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   26
+      TabIndex        =   28
       Top             =   3435
       Width           =   975
    End
@@ -435,7 +435,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   25
+      TabIndex        =   27
       Top             =   3795
       Width           =   975
    End
@@ -454,7 +454,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   24
+      TabIndex        =   26
       Top             =   4170
       Width           =   975
    End
@@ -473,7 +473,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   23
+      TabIndex        =   25
       Top             =   4515
       Width           =   975
    End
@@ -492,7 +492,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   22
+      TabIndex        =   24
       Top             =   2115
       Width           =   975
    End
@@ -510,7 +510,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   270
-      TabIndex        =   21
+      TabIndex        =   23
       Top             =   6420
       Width           =   1815
    End
@@ -519,7 +519,7 @@ Begin VB.Form frmAltaEmpleados
       Caption         =   "Usuario"
       Height          =   255
       Left            =   900
-      TabIndex        =   20
+      TabIndex        =   22
       Top             =   210
       Width           =   615
    End
@@ -538,7 +538,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   255
       Left            =   120
-      TabIndex        =   19
+      TabIndex        =   21
       Top             =   1755
       Width           =   1335
    End
@@ -557,7 +557,7 @@ Begin VB.Form frmAltaEmpleados
       EndProperty
       Height          =   240
       Left            =   480
-      TabIndex        =   18
+      TabIndex        =   20
       Top             =   4875
       Width           =   975
    End
