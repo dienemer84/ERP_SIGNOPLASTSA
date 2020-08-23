@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -546,13 +546,16 @@ Begin VB.Form frmAdminFacturasEmitidas
          Enabled         =   0   'False
       End
       Begin VB.Menu editar 
-         Caption         =   "Editar"
+         Caption         =   "Editar..."
       End
       Begin VB.Menu aprobarFactura 
-         Caption         =   "Aprobar localmente"
+         Caption         =   "Aprobar localmente..."
       End
       Begin VB.Menu mnuEnviarAfip 
-         Caption         =   "Enviar a AFIP"
+         Caption         =   "Enviar a AFIP..."
+      End
+      Begin VB.Menu mnuAprobarEnviar 
+         Caption         =   "Aprobar localmente y Enviar a AFIP..."
       End
       Begin VB.Menu mnuDesaprobarFactura 
          Caption         =   "Desaprobar..."
@@ -639,7 +642,8 @@ End Sub
 
 
 Private Sub aplicarNCaFC_Click()
-    If MsgBox("¿Seguro de aplicar NC?", vbYesNo, "Confirmación") = vbYes Then
+On Error GoTo err1
+    If MsgBox("¿Seguro de aplicar NC a FC?", vbYesNo, "Confirmación") = vbYes Then
         'seleccionar factura para aplicar
         Set Selecciones.factura = Nothing
           Dim F As New frmAdminFacturasNCElegirFC
@@ -651,13 +655,16 @@ Private Sub aplicarNCaFC_Click()
             F.Show 1
 
         If IsSomething(Selecciones.factura) Then
-            If DAOFactura.aplicarNCaFC(Selecciones.factura.id, factura.id) Then
+             If DAOFactura.aplicarNCaFC(Selecciones.factura.id, factura.id) Then
                 MsgBox "Aplicación existosa!", vbInformation, "Información"
-            Else
-                MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
+'            Else
+'                MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
             End If
         End If
     End If
+Exit Sub
+err1:
+MsgBox Err.Description, vbCritical, "Error"
 End Sub
 
 
@@ -670,7 +677,7 @@ Private Sub aprobarFactura_Click()
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.GridEX1.RowIndex(Me.GridEX1.row)
-        If DAOFactura.aprobar(factura) Then
+        If DAOFactura.aprobarV2(factura, True, False) Then
             
             
             
@@ -991,7 +998,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
@@ -1019,6 +1026,14 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                  Me.mnuFechaPagoPropuesta.Visible = True
                 Me.mnuFechaEntrega.Enabled = False
                 Me.mnuFechaEntrega.Visible = False
+                
+                      
+               'opción combinada solo válida para comprobantes electrónicos no aprobados localmente
+               '23-08-2020
+                Me.mnuAprobarEnviar.Visible = factura.Tipo.PuntoVenta.EsElectronico
+                Me.mnuAprobarEnviar.Enabled = factura.Tipo.PuntoVenta.EsElectronico
+                
+                 
            End If
            
               
@@ -1031,6 +1046,12 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.aprobarFactura.Visible = False
                 Me.mnuFechaEntrega.Enabled = True
                 Me.mnuFechaPagoPropuesta.Enabled = True
+               
+               
+               'opción combinada solo válida para comprobantes electrónicos no aprobados localmente
+               '23-08-2020
+                Me.mnuAprobarEnviar.Visible = False
+                Me.mnuAprobarEnviar.Enabled = False
                 
                 If factura.Tipo.PuntoVenta.EsElectronico Then
                     Me.AnularFactura.Visible = False 'si es electronico no se puede anular comprobante
@@ -1430,7 +1451,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 End Function
 
 Private Sub mnuAplicarANC_Click()
-  If MsgBox("¿Seguro de aplicar a NC?", vbYesNo, "Confirmación") = vbYes Then
+  If MsgBox("¿Seguro de aplicar a FC a NC?", vbYesNo, "Confirmación") = vbYes Then
         'seleccionar factura para aplicar
         Set Selecciones.factura = Nothing
           Dim F As New frmAdminFacturasNCElegirFC
@@ -1443,8 +1464,8 @@ Private Sub mnuAplicarANC_Click()
         If IsSomething(Selecciones.factura) Then
             If DAOFactura.aplicarNCaFC(factura.id, Selecciones.factura.id) Then
                 MsgBox "Aplicación existosa!", vbInformation, "Información"
-            Else
-                MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
+'            Else
+'                MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
             End If
         End If
     End If
@@ -1491,6 +1512,53 @@ Private Sub mnuAprobarSinEnvio_Click()
 
 
 
+End Sub
+
+Private Sub mnuAprobarEnviar_Click()
+    On Error GoTo err1
+    Dim g As Long
+    Dim msgadicional As String
+    msgadicional = ""
+    If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+        g = Me.GridEX1.RowIndex(Me.GridEX1.row)
+        If DAOFactura.aprobarV2(factura, True, True) Then
+            
+            
+            
+            If factura.Tipo.PuntoVenta.EsElectronico And Not factura.Tipo.PuntoVenta.CaeManual And Not factura.AprobadaAFIP Then
+              msgadicional = "Esta factura deberá enviarse a la afip"
+           End If
+            If factura.Tipo.PuntoVenta.EsElectronico And factura.Tipo.PuntoVenta.CaeManual And Not factura.AprobadaAFIP Then
+              msgadicional = "Recuerde agregar al comprobante: CAE y fecha de vencimiento del CAE "
+           End If
+            
+            Dim msg As String
+            msg = "Comprobante aprobado con éxito!"
+            If IsSomething(factura.CaeSolicitarResponse) Then
+             If LenB(factura.CaeSolicitarResponse.observaciones) > 5 Then
+            
+              msg = msg & Chr(10) & factura.CaeSolicitarResponse.observaciones
+            End If
+            
+            If LenB(msgadicional) > 0 Then
+                msg = msg & Chr(10) & msgadicional
+            End If
+            
+            End If
+            MsgBox msg, vbInformation, "Información"
+            
+            Me.GridEX1.RefreshRowIndex g
+            Me.txtNroFactura.SetFocus
+        Else
+            GoTo err1
+        End If
+    End If
+    Exit Sub
+err1:
+    'MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
+
+    MsgBox Err.Description, vbCritical, Err.Source
+    Me.GridEX1.RefreshRowIndex g
 End Sub
 
 Private Sub mnuArchivos_Click()
@@ -1608,7 +1676,7 @@ On Error GoTo err1
     Else
      If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.GridEX1.RowIndex(Me.GridEX1.row)
-        If DAOFactura.aprobarAFIP(factura) Then
+        If DAOFactura.aprobarV2(factura, False, True) Then
             
    
          

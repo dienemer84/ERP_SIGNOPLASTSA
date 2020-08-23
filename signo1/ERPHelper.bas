@@ -137,15 +137,15 @@ End Function
 
 
 
-Public Function ObtenerUltimoActual(f As factura) As Integer
+Public Function ObtenerUltimoActual(F As factura) As Integer
 Dim id
     
-    id = CLng(ERPHelper.GetUltimoAutorizado(f.Tipo.PuntoVenta.PuntoVenta, f.Tipo.id, f.esCredito))
+    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
 
 ObtenerUltimoActual = id
 End Function
 
-Public Function CreateFECaeSolicitarRequest(f As factura) As CAESolicitar
+Public Function CreateFECaeSolicitarRequest(F As factura) As CAESolicitar
     On Error GoTo err1
     Dim body As String
 
@@ -154,30 +154,30 @@ Public Function CreateFECaeSolicitarRequest(f As factura) As CAESolicitar
     Dim id
     
     'Desactivada el 17.07.20 -dnemer
-    id = CLng(ERPHelper.GetUltimoAutorizado(f.Tipo.PuntoVenta.PuntoVenta, f.Tipo.id, f.esCredito))
+    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
     
     'Reestablecida esta linea de codigo el 17.07.20 -dnemer
     'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
     
     
-    f.numero = id + 1
+    F.numero = id + 1
 
     Dim req As New FECAEDetRequest
-    req.Concepto = f.ConceptoIncluir
-    req.DocTipo = f.cliente.TipoDocumento
-    req.DocNro = f.cliente.Cuit
-    req.CbteDesde = f.numero
-    req.CbteHasta = f.numero
+    req.Concepto = F.ConceptoIncluir
+    req.DocTipo = F.cliente.TipoDocumento
+    req.DocNro = F.cliente.Cuit
+    req.CbteDesde = F.numero
+    req.CbteHasta = F.numero
     
-    req.CbteFch = Format(f.FechaEmision, "yyyymmdd")
-req.ImpTotal = funciones.FormatearDecimales(f.TotalEstatico.Total, 2)
+    req.CbteFch = Format(F.FechaEmision, "yyyymmdd")
+req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total, 2)
 'req.MonCotiz = F.CambioAPatron
 
     'req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total * F.CambioAPatron, 2)
     req.ImpTotConc = "0"    'no gavado+excento + gravado + iva + tributo
-req.ImpNeto = funciones.FormatearDecimales(f.TotalEstatico.TotalNetoGravado, 2)
+req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
-    req.ImpOpEx = funciones.FormatearDecimales(f.TotalEstatico.TotalExento, 2)
+    req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento, 2)
     'req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento * F.CambioAPatron, 2)
     
     'Reestablecida el 17.07.20 -dnemer
@@ -186,20 +186,20 @@ req.ImpNeto = funciones.FormatearDecimales(f.TotalEstatico.TotalNetoGravado, 2)
     
     'Desactivada el 17.07.20 -dnemer
     
-    If f.ConceptoIncluir = ConceptoIncluir.ConceptoProductoServicio Or f.ConceptoIncluir = ConceptoIncluir.ConceptoServicio Then
-     req.FchServDesde = Format(f.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
-     req.FchServHasta = Format(f.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
+    If F.ConceptoIncluir = ConceptoIncluir.ConceptoProductoServicio Or F.ConceptoIncluir = ConceptoIncluir.ConceptoServicio Then
+     req.FchServDesde = Format(F.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
+     req.FchServHasta = Format(F.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
     End If
     
-req.ImpTrib = funciones.FormatearDecimales(f.TotalEstatico.TotalPercepcionesIB, 2)
+req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     'req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
-req.ImpIVA = funciones.FormatearDecimales(f.TotalEstatico.TotalIVADiscrimandoONo, 2)
+req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
 '    req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
 
-    req.MonId = f.moneda.id
+    req.MonId = F.moneda.id
     'req.MonCotiz = F.Moneda.Cambio
-req.MonCotiz = f.CambioAPatron
+req.MonCotiz = F.CambioAPatron
 
 
 
@@ -208,28 +208,31 @@ req.MonCotiz = f.CambioAPatron
 
     'Desactivada el 17.07.20 -dnemer
     
-    If Not f.esCredito Then
-      req.FchVtoPago = Format(f.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
+    If Not F.esCredito Then
+      req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
     Else
             ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), el campo
         '“fecha de vencimiento para el pago” <FchVtoPago> no debe informarse si NO es
         'Factura de Crédito. En el caso de ser Débito o Crédito, solo puede informarse si es de Anulación.
        
     
-           If f.TipoDocumento = tipoDocumentoContable.factura Then
-            req.FchVtoPago = Format(f.fechaPago, "yyyymmdd")
+           If F.TipoDocumento = tipoDocumentoContable.factura Then
+            req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")
            Else
-                If f.AnulacionAFIP = "S" Then
-                   req.FchVtoPago = Format(f.fechaPago, "yyyymmdd")
+                If F.AnulacionAFIP = "S" Then
+                   req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")
                 End If
            End If
     End If
     
     'Desactivada el 17.07.20 -dnemer
-If f.esCredito And (f.TipoDocumento = tipoDocumentoContable.notaCredito Or f.TipoDocumento = tipoDocumentoContable.notaDebito) Then
+If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
    Dim ftmp As factura
-   Set ftmp = DAOFactura.FindById(f.Cancelada)
-
+   Set ftmp = DAOFactura.FindById(F.Cancelada)
+  '23-8 NB: no puedo informar un comprobnte asociado que no esté previamente informado. (en caso que sea crédito o débido mipyme)
+   If Not ftmp.AprobadaAFIP Then
+      Err.Raise 22211, "El comprobante asociado debe estar informado previamente a AFIP"
+   End If
    If IsSomething(ftmp) Then
           Dim cbt As CbteAsoc
       Set cbt = New CbteAsoc
@@ -276,11 +279,11 @@ End If
     Dim P As New clsPercepciones
     Set P = DAOPercepciones.GetById(5)
 
-    trib.Alic = funciones.FormatearDecimales(((f.AlicuotaPercepcionesIIBB - 1) * 100), 2)
+    trib.Alic = funciones.FormatearDecimales(((F.AlicuotaPercepcionesIIBB - 1) * 100), 2)
     'trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)    '"400" 'revisar con tulio,2)
     
     'bug #4
-    trib.BaseImp = funciones.FormatearDecimales(f.TotalEstatico.TotalNetoGravado, 2)    '
+    trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)    '
     trib.Desc = P.Percepcion
     trib.idTributoCambiar = "1"
     
@@ -288,8 +291,8 @@ End If
     'trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
 'bug #4
-    trib.Importe = funciones.FormatearDecimales(f.TotalEstatico.TotalPercepcionesIB, 2)
-    If f.TotalEstatico.TotalPercepcionesIB > 0 Then
+    trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
+    If F.TotalEstatico.TotalPercepcionesIB > 0 Then
         req.Tributos.Add trib
     Else
         Set req.Tributos = Nothing
@@ -298,14 +301,14 @@ End If
 
 
     Dim Iva As New AlicIva
-    Iva.BaseImp = funciones.FormatearDecimales(f.TotalEstatico.TotalNetoGravado, 2)
+    Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
-    Iva.idAlicIvaCambiar = f.AlicuotaAplicada
+    Iva.idAlicIvaCambiar = F.AlicuotaAplicada
     
-    Iva.Importe = funciones.FormatearDecimales(f.TotalEstatico.TotalIVADiscrimandoONo, 2)
+    Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
 
-    If f.TotalEstatico.TotalIVADiscrimandoONo > 0 Then
+    If F.TotalEstatico.TotalIVADiscrimandoONo > 0 Then
         req.Iva.Add Iva
     Else
         Set req.Iva = Nothing
@@ -314,12 +317,12 @@ End If
 
 
 
-    If f.esCredito Then
+    If F.esCredito Then
     
     'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), es obligatorio informar al menos uno de los sig. códigos
     '2101, 22.
          
-         If f.TipoDocumento = tipoDocumentoContable.factura Then
+         If F.TipoDocumento = tipoDocumentoContable.factura Then
                 'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código
                 '2101 es un CBU numérico de 22 caracteres.
                 
@@ -328,16 +331,16 @@ End If
                 
                 'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Debito (202, 207, 212) o Crédito (203, 208, 213) No
                 'no informar CBU y ALIAS.
-                If Len(f.CBU) <> 22 Then
+                If Len(F.CBU) <> 22 Then
                     Err.Raise 222101, "El cbu debe tener 22 caracteres"
                 End If
                 
                 Dim op As New Opcional
                 op.idOpcionalCambiar = "2101"
-                op.Valor = f.CBU
+                op.Valor = F.CBU
                 req.Opcionales.Add op
         End If
-        If f.TipoDocumento <> tipoDocumentoContable.factura Then
+        If F.TipoDocumento <> tipoDocumentoContable.factura Then
             ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código 22
             ' es “S” o “N”: S = Es de Anulación N = No es de Anulación
             
@@ -346,18 +349,18 @@ End If
             'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Debito (202, 207, 212) o Crédito (203, 208, 213) informar
             'Código de Anulación
             
-         If Len(f.AnulacionAFIP) <> 1 Then
+         If Len(F.AnulacionAFIP) <> 1 Then
             Err.Raise 22221, "El campo anulacion afip debe informarse"
         End If
         
         
-             If f.AnulacionAFIP <> "N" And f.AnulacionAFIP <> "S" Then
+             If F.AnulacionAFIP <> "N" And F.AnulacionAFIP <> "S" Then
             Err.Raise 22222, "El campo anulacion afip debe ser S o N"
             End If
             
             Set op = New Opcional
             op.idOpcionalCambiar = "22"
-            op.Valor = f.AnulacionAFIP
+            op.Valor = F.AnulacionAFIP
             req.Opcionales.Add op
         End If
         
@@ -374,9 +377,9 @@ End If
     Set FeDetReq.FECAEDetRequest = req
     Dim FeCabReq As New FeCabReq
     FeCabReq.CantReg = "1"
-    FeCabReq.CbteTipo = f.Tipo.id
-    FeCabReq.esCredito = f.esCredito
-    FeCabReq.PtoVta = f.Tipo.PuntoVenta.id
+    FeCabReq.CbteTipo = F.Tipo.id
+    FeCabReq.esCredito = F.esCredito
+    FeCabReq.PtoVta = F.Tipo.PuntoVenta.id
     Dim FeCAEReq As New FeCAEReq
 
     Set FeCAEReq.FeCabReq = FeCabReq
