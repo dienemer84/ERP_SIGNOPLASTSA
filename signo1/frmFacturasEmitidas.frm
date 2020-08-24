@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -478,34 +478,36 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(11)      =   "frmFacturasEmitidas.frx":0F26
       Column(12)      =   "frmFacturasEmitidas.frx":1026
       Column(13)      =   "frmFacturasEmitidas.frx":1186
-      Column(14)      =   "frmFacturasEmitidas.frx":12E6
-      Column(15)      =   "frmFacturasEmitidas.frx":142E
-      Column(16)      =   "frmFacturasEmitidas.frx":1586
-      Column(17)      =   "frmFacturasEmitidas.frx":16CE
-      Column(18)      =   "frmFacturasEmitidas.frx":17C2
-      Column(19)      =   "frmFacturasEmitidas.frx":18A6
-      Column(20)      =   "frmFacturasEmitidas.frx":19A2
-      Column(21)      =   "frmFacturasEmitidas.frx":1AC6
-      Column(22)      =   "frmFacturasEmitidas.frx":1BEA
-      Column(23)      =   "frmFacturasEmitidas.frx":1D2E
-      FormatStylesCount=   14
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":1E3A
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":1F72
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2022
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":20D6
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":21AE
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":2266
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":2346
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":23D2
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":24B2
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":2562
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":2616
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":26C6
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":279A
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":284E
+      Column(14)      =   "frmFacturasEmitidas.frx":12DA
+      Column(15)      =   "frmFacturasEmitidas.frx":1422
+      Column(16)      =   "frmFacturasEmitidas.frx":157A
+      Column(17)      =   "frmFacturasEmitidas.frx":16C2
+      Column(18)      =   "frmFacturasEmitidas.frx":17B6
+      Column(19)      =   "frmFacturasEmitidas.frx":189A
+      Column(20)      =   "frmFacturasEmitidas.frx":1996
+      Column(21)      =   "frmFacturasEmitidas.frx":1ABA
+      Column(22)      =   "frmFacturasEmitidas.frx":1BDE
+      Column(23)      =   "frmFacturasEmitidas.frx":1D22
+      FormatStylesCount=   16
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":1E2E
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":1F66
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2016
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":20CA
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":21A2
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":225A
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":233A
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":23C6
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":24A6
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":2556
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":260A
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":26BA
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":276A
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":281E
+      FormatStyle(15) =   "frmFacturasEmitidas.frx":28F6
+      FormatStyle(16) =   "frmFacturasEmitidas.frx":29DA
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":2926
-      PrinterProperties=   "frmFacturasEmitidas.frx":2C40
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":2ABA
+      PrinterProperties=   "frmFacturasEmitidas.frx":2DD4
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   15630
@@ -998,7 +1000,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
@@ -1190,26 +1192,33 @@ End Sub
 Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
     Set factura = facturas.item(RowBuffer.RowIndex)
+    
     If factura.estado = EstadoFacturaCliente.Anulada Then
         RowBuffer.RowStyle = "anulada"
-    Else
-        If factura.estado = EstadoFacturaCliente.EnProceso Then
+         Else
+         If factura.estado = EstadoFacturaCliente.EnProceso Then
             RowBuffer.CellStyle(12) = "pendiente"
         ElseIf factura.estado = EstadoFacturaCliente.Aprobada Then
             RowBuffer.CellStyle(12) = "aprobada"
         End If
 
-        If factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado = TipoSaldadoFactura.SaldadoParcial Or factura.Saldado = TipoSaldadoFactura.notaCredito Then
-            If factura.EstaAtrasada Then
-                RowBuffer.CellStyle(16) = "no_saldada"
-            Else
-                RowBuffer.CellStyle(16) = "no_vencida"
-            End If
-        ElseIf factura.Saldado = saldadoTotal Then
-            RowBuffer.CellStyle(16) = "saldada"
+'        If factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado = TipoSaldadoFactura.SaldadoParcial Or factura.Saldado = TipoSaldadoFactura.notaCredito Then
+'            If factura.EstaAtrasada Then
+'                RowBuffer.CellStyle(16) = "no_saldada"
+'            Else
+'                RowBuffer.CellStyle(16) = "no_vencida"
+'            End If
+'        ElseIf factura.Saldado = saldadoTotal Then
+'            RowBuffer.CellStyle(16) = "saldada"
+'        End If
+
+'Nemer agrega formato especial a la Celda
+         If factura.AprobadaAFIP = True Then
+            RowBuffer.CellStyle(13) = "informadaAfip"
+        Else
+            RowBuffer.CellStyle(13) = "No_informadaAfip"
         End If
-
-
+        
     End If
     Exit Sub
 err1:
