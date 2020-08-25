@@ -968,7 +968,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
         
         If Not Factura.Tipo.PuntoVenta.EsElectronico Then
            Err.Raise 110012, "Factura", "La factura a aprobar debe ser electrónica"
-        End If
+    End If
  
         Dim response As New CAESolicitar
         'validar la aprobacion o desplegar los errores

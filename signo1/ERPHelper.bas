@@ -137,7 +137,7 @@ End Function
 
 
 
-Public Function ObtenerUltimoActual(F As factura) As Integer
+Public Function ObtenerUltimoActual(F As Factura) As Integer
 Dim id
     
     id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
@@ -145,7 +145,7 @@ Dim id
 ObtenerUltimoActual = id
 End Function
 
-Public Function CreateFECaeSolicitarRequest(F As factura) As CAESolicitar
+Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     On Error GoTo err1
     Dim body As String
 
@@ -209,14 +209,18 @@ req.MonCotiz = F.CambioAPatron
     'Desactivada el 17.07.20 -dnemer
     
     If Not F.esCredito Then
+    
+    If F.ConceptoIncluir = ConceptoProductoServicio Or F.ConceptoIncluir = ConceptoProductoServicio Then
       req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
+    End If
+    
     Else
             ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), el campo
         '“fecha de vencimiento para el pago” <FchVtoPago> no debe informarse si NO es
         'Factura de Crédito. En el caso de ser Débito o Crédito, solo puede informarse si es de Anulación.
        
     
-           If F.TipoDocumento = tipoDocumentoContable.factura Then
+           If F.TipoDocumento = tipoDocumentoContable.Factura Then
             req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")
            Else
                 If F.AnulacionAFIP = "S" Then
@@ -227,7 +231,7 @@ req.MonCotiz = F.CambioAPatron
     
     'Desactivada el 17.07.20 -dnemer
 If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
-   Dim ftmp As factura
+   Dim ftmp As Factura
    Set ftmp = DAOFactura.FindById(F.Cancelada)
   '23-8 NB: no puedo informar un comprobnte asociado que no esté previamente informado. (en caso que sea crédito o débido mipyme)
    If Not ftmp.AprobadaAFIP Then
@@ -239,7 +243,7 @@ If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.Tip
 
 '       cbt.NRO = f.Cancelada
 
-       cbt.NRO = ftmp.numero
+       cbt.nro = ftmp.numero
        cbt.esCredito = ftmp.esCredito
        cbt.PtoVta = ftmp.Tipo.PuntoVenta.PuntoVenta
        cbt.Tipo = ftmp.Tipo.id
@@ -322,7 +326,7 @@ End If
     'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), es obligatorio informar al menos uno de los sig. códigos
     '2101, 22.
          
-         If F.TipoDocumento = tipoDocumentoContable.factura Then
+         If F.TipoDocumento = tipoDocumentoContable.Factura Then
                 'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código
                 '2101 es un CBU numérico de 22 caracteres.
                 
@@ -340,7 +344,7 @@ End If
                 op.Valor = F.CBU
                 req.Opcionales.Add op
         End If
-        If F.TipoDocumento <> tipoDocumentoContable.factura Then
+        If F.TipoDocumento <> tipoDocumentoContable.Factura Then
             ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código 22
             ' es “S” o “N”: S = Es de Anulación N = No es de Anulación
             
