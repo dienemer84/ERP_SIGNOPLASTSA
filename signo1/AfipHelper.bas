@@ -33,8 +33,11 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
     If LenB(c.FeDetReq.FECAEDetRequest.FchServHasta) > 0 Then
         r = r & "<FchServHasta>" & c.FeDetReq.FECAEDetRequest.FchServHasta & "</FchServHasta>"
     End If
+    
     If LenB(c.FeDetReq.FECAEDetRequest.FchVtoPago) > 0 Then
+        
         r = r & "<FchVtoPago>" & c.FeDetReq.FECAEDetRequest.FchVtoPago & "</FchVtoPago>"
+    
     End If
     r = r & "<MonId>" & c.FeDetReq.FECAEDetRequest.MonId & "</MonId>"
     r = r & "<MonCotiz>" & c.FeDetReq.FECAEDetRequest.MonCotiz & "</MonCotiz>"
@@ -50,7 +53,7 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
              r = r & "<CbteFch>" & ca.CbteFch & "</CbteFch>"
             r = r & "<Tipo>" & ca.Tipo & "</Tipo>"
             r = r & "<PtoVta>" & ca.PtoVta & "</PtoVta>"
-            r = r & "<Nro>" & ca.NRO & "</Nro>"
+            r = r & "<Nro>" & ca.nro & "</Nro>"
             
             'Desactivado el 17.07.20 - dnemer
             r = r & "<Cuit>" & ca.Cuit & "</Cuit>"
