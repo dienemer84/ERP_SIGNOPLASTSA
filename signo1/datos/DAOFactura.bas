@@ -104,10 +104,14 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
     Dim deta As FacturaDetalle
     Dim rs As Recordset
 
+
+' Modificar el orden en el que se muestran los comprobantes en el grid de Facturas Emitidas
+' Nemer 29/08/2020
+
     If LenB(Orden) > 0 Then
         q = q & " ORDER BY " & Orden
     Else
-        q = q & " ORDER BY AdminFacturas.NroFactura DESC"
+        q = q & " ORDER BY AdminFacturas.FechaEmision DESC"
     End If
 
     Set rs = conectar.RSFactory(q)

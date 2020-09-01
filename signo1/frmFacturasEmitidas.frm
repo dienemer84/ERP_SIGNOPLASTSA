@@ -559,11 +559,16 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin VB.Menu mnuEnviarAfip 
          Caption         =   "Enviar a AFIP..."
       End
+      Begin VB.Menu separador 
+         Caption         =   "-"
+      End
       Begin VB.Menu mnuAprobarEnviar 
          Caption         =   "Aprobar localmente y Enviar a AFIP..."
       End
       Begin VB.Menu mnuDesaprobarFactura 
          Caption         =   "Desaprobar..."
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu awd 
          Caption         =   "-"
@@ -605,6 +610,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin VB.Menu mnuArchivos 
          Caption         =   "Archivos Asociados..."
       End
+      Begin VB.Menu LineaUlt 
+         Caption         =   "-"
+      End
       Begin VB.Menu verFactura 
          Caption         =   "Ver Detalle..."
       End
@@ -615,6 +623,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin VB.Menu scanear 
          Caption         =   "Adquirir..."
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
    End
 End
@@ -1027,7 +1037,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                ' Me.mnuEditarCAE.Visible = False
                 Me.ImprimirFactura.Enabled = False
                 Me.ImprimirFactura.Visible = False
-                Me.mnuDesaprobarFactura.Visible = True
+                Me.mnuDesaprobarFactura.Visible = False
                 Me.aplicar.Enabled = False
                 Me.aplicar.Visible = False
                 Me.mnuFechaPagoPropuesta.Enabled = True
@@ -1099,7 +1109,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 '                    Me.mnuEditarCAE.Visible = False '  Not factura.EstaImpresa And factura.Tipo.PuntoVenta.CaeManual
                     Me.AnularFactura.Visible = True
                     Me.AnularFactura.Enabled = True
-                    Me.mnuDesaprobarFactura.Visible = True
+                    Me.mnuDesaprobarFactura.Visible = False
                     Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
                     Me.aplicar.Visible = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
                  
