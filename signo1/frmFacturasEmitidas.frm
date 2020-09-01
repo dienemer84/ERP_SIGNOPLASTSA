@@ -1120,6 +1120,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                
                 End If
             Me.ImprimirFactura.Enabled = True
+            Me.ImprimirFactura.Visible = True
      End If
             
      
