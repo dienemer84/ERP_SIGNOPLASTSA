@@ -567,6 +567,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin VB.Menu mnuDesaprobarFactura 
          Caption         =   "Desaprobar..."
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu awd 
          Caption         =   "-"
@@ -1014,7 +1016,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             Me.mnuFechaPagoPropuesta.Enabled = False
