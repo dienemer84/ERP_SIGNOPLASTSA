@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~1.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.MDIForm frmPrincipal 
    BackColor       =   &H00FFC0C0&
    Caption         =   "Signo Plast ERP"
@@ -857,13 +857,14 @@ Private Sub CreateRibbonBar()
 
     Set ribbonTab = RibbonBar.InsertTab(0, "Panel de Control")
     ribbonTab.id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
-    Set ribbonGroup = ribbonTab.Groups.AddGroup("Usuarios y Empleados", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS)
-    AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
-    AddButton ribbonGroup, "Usuarios", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__USUARIOS, Permisos.sistemaPanelControlGeneral
-    AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
-    AddButton ribbonGroup, "Siniestros", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS, (Permisos.RRHHInformeAccidente Or Permisos.RRHHSiniestros)
- AddButton ribbonGroup, "Obras Sociales", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS, Permisos.sistemaPanelControlGeneral
+    'Set ribbonGroup = ribbonTab.Groups.AddGroup("Usuarios y Empleados", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS)
+    'AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
+    
+    'AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
+    'AddButton ribbonGroup, "Siniestros", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS, (Permisos.RRHHInformeAccidente Or Permisos.RRHHSiniestros)
+    'AddButton ribbonGroup, "Obras Sociales", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS, Permisos.sistemaPanelControlGeneral
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Configurar", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__CONFIGURAR)
+    AddButton ribbonGroup, "Usuarios", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__USUARIOS, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Sistema", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__SISTEMA, Permisos.sistemaPanelControlGeneral
     Set cmdBarCtrl = AddButton(ribbonGroup, "Cotizaciones", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__COTIZACIONES, Permisos.sistemaPanelControlGeneral, , xtpControlPopup)
     AddButton ribbonGroup, "Gastos", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__COTIZACIONES__GASTOS, Permisos.sistemaPanelControlGeneral, , , cmdBarCtrl
@@ -882,10 +883,20 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Documentos", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__DOCUMENTOS, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Ubicaciones", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__LUGARES, Permisos.sistemaPanelControlGeneral
 
+  'RECURSOS HUMANOS--------------------------------------------------------------------------------------------------------------------
 
+    Set ribbonTab = RibbonBar.InsertTab(1, "Recursos Humanos")
+    ribbonTab.id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
+    Set ribbonGroup = ribbonTab.Groups.AddGroup("Usuarios y Empleados", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS)
+    AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
+    AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
+    AddButton ribbonGroup, "Siniestros", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS, (Permisos.RRHHInformeAccidente Or Permisos.RRHHSiniestros)
+    AddButton ribbonGroup, "Obras Sociales", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS, Permisos.sistemaPanelControlGeneral
+   
+   
     'VENTAS--------------------------------------------------------------------------------------------------------------------
 
-    Set ribbonTab = RibbonBar.InsertTab(1, "Ventas")
+    Set ribbonTab = RibbonBar.InsertTab(2, "Ventas")
     ribbonTab.id = ID_TAB.ID_TAB_VENTAS
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Cotizaciones", ID_GROUP.ID_GROUP_VENTAS__COTIZACIONES)
@@ -904,7 +915,7 @@ Private Sub CreateRibbonBar()
 
     'COMPRAS--------------------------------------------------------------------------------------------------------------------
 
-    Set ribbonTab = RibbonBar.InsertTab(2, "Compras")
+    Set ribbonTab = RibbonBar.InsertTab(3, "Compras")
     ribbonTab.id = ID_TAB.ID_TAB_COMPRAS
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Requerimientos", ID_GROUP.ID_GROUP_COMPRAS__REQUERIMIENTOS)
     AddButton ribbonGroup, "Nuevo", ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__NUEVO, Permisos.ComprasRequesControl
@@ -925,7 +936,7 @@ Private Sub CreateRibbonBar()
 
     'PLANEAMIENTO--------------------------------------------------------------------------------------------------------------------
 
-    Set ribbonTab = RibbonBar.InsertTab(3, "Planeamiento")
+    Set ribbonTab = RibbonBar.InsertTab(4, "Planeamiento")
     ribbonTab.id = ID_TAB.ID_TAB_PLANEAMIENTO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Orden de Trabajo", ID_GROUP.ID_GROUP_PLANEAMIENTO__ORDEN_TRABAJO)
     AddButton ribbonGroup, "Nueva", ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__NUEVA, Permisos.PlanOTcontrol
@@ -959,7 +970,7 @@ Private Sub CreateRibbonBar()
 
     'DESARROLLO--------------------------------------------------------------------------------------------------------------------
 
-    Set ribbonTab = RibbonBar.InsertTab(4, "Desarrollo")
+    Set ribbonTab = RibbonBar.InsertTab(5, "Desarrollo")
     ribbonTab.id = ID_TAB.ID_TAB_DESARROLLO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Piezas", ID_GROUP.ID_GROUP_DESARROLLO__CENTRO_DE_COSTOS)
     AddButton ribbonGroup, "Nuevo elemento", ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_ELEMENTO, Permisos.DesaControl
@@ -991,7 +1002,7 @@ Private Sub CreateRibbonBar()
 
     'ADMINISTRACIÓN--------------------------------------------------------------------------------------------------------------------
 
-    Set ribbonTab = RibbonBar.InsertTab(5, "Administración")
+    Set ribbonTab = RibbonBar.InsertTab(6, "Administración")
     ribbonTab.id = ID_TAB.ID_TAB_ADMINISTRACION
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Ventas", ID_GROUP.ID_GROUP_ADMINISTRACION__FACTURACION)
 
@@ -1006,11 +1017,6 @@ Private Sub CreateRibbonBar()
     'Set ribbonGroup = ribbonTab.Groups.AddGroup("Ctas. Ctes. Clientes", ID_GROUP.ID_GROUP_ADMINISTRACION__CUENTAS_CORRIENTES)
     AddButton ribbonGroup, "Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS, Permisos.AdminCtaCteControl
     AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS, Permisos.AdminCtaCteControl
-
-
-
-
-
 
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Informes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
@@ -1070,7 +1076,7 @@ Private Sub CreateRibbonBar()
 
     'CLIENTES PROVEEDORES--------------------------------------------------------------------------------------------------------------------
 
-    Set ribbonTab = RibbonBar.InsertTab(6, "Clientes / Proveedores")
+    Set ribbonTab = RibbonBar.InsertTab(7, "Clientes / Proveedores")
     ribbonTab.id = ID_TAB.ID_TAB_CLIENTES_PROVEEDORES
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Clientes", ID_GROUP.ID_GROUP_CLIENTES_PROVEEDORES__CLIENTES)
     AddButton ribbonGroup, "Nuevo", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO, Permisos.VentasClientesControl, ID_BUTTON.ID_BUTTON_NUEVA_PERSONA
@@ -1084,9 +1090,12 @@ Private Sub CreateRibbonBar()
     'AddButton ribbonGroup, "Nuevo", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__NUEVO
     AddButton ribbonGroup, "Ver", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER
 
+
+
+
     'USUARIO--------------------------------------------------------------------------------------------------------------------
 
-    Set ribbonTab = RibbonBar.InsertTab(7, "Usuario")
+    Set ribbonTab = RibbonBar.InsertTab(8, "Usuario")
     ribbonTab.id = ID_TAB.ID_TAB_USUARIO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Herramientas", ID_GROUP.ID_GROUP_USUARIO__HERRAMIENTAS)
     AddButton ribbonGroup, "Tablero", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO
