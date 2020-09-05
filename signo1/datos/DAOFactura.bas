@@ -1800,9 +1800,16 @@ Public Function aplicarNCaFC(idFactura As Long, idnc As Long) As Boolean
 
 ' 23-8 si quiero asociar una FC a una NC, laNC no debe estar informada y deberá controlar que este aprobada
 'localmente antes de informar NC a afip
-  If Not nc.Modificable Then
-         Err.Raise 821, "bb", "La NC no debe estar informada para poder hacer la asociación"
-   End If
+
+'02.09.20 DNEMER
+'Desactivo este mensaje de ERROR porque finalmente las aplicaciones se hacen para los comprobantes electronicos si están informados tambien.
+' En el caso de que sean Mi Pymes no van a llegar hasta esta comprobación porque no va a estar disponible la aplicacion en el menu
+
+'  If Not nc.Modificable Then
+'         Err.Raise 821, "bb", "La NC no debe estar informada para poder hacer la asociación"
+'   End If
+
+' FIN
 
     Dim ok As Boolean
 Dim saldadoTotal As Boolean

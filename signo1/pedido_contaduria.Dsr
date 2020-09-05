@@ -34,7 +34,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
          _Version        =   393216
          Name            =   "Forma3"
          Object.Top             =   525
-         Object.Width           =   11325
+         Object.Width           =   11145
          Object.Height          =   1110
          BackColor       =   14737632
          BackStyle       =   1
@@ -45,7 +45,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
          Name            =   "Forma1"
          Object.Left            =   8220
          Object.Top             =   555
-         Object.Width           =   3120
+         Object.Width           =   2895
          Object.Height          =   1080
          BackStyle       =   1
       EndProperty
@@ -84,7 +84,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
          Name            =   "Forma6"
          Object.Left            =   8145
          Object.Top             =   30
-         Object.Width           =   3195
+         Object.Width           =   2985
          Object.Height          =   510
       EndProperty
       ItemType5       =   3
@@ -128,7 +128,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item7 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Image1"
-         Object.Left            =   8235
+         Object.Left            =   8010
+         Object.Top             =   45
          Object.Width           =   3090
          Object.Height          =   1110
          Picture         =   "pedido_contaduria.dsx":0000
@@ -139,8 +140,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item8 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblSector"
-         Object.Left            =   8295
-         Object.Top             =   1140
+         Object.Left            =   8010
+         Object.Top             =   1155
          Object.Width           =   3000
          Object.Height          =   465
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -177,8 +178,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item10 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta3"
-         Object.Left            =   5490
-         Object.Top             =   120
+         Object.Left            =   5130
+         Object.Top             =   135
          Object.Width           =   1140
          Object.Height          =   300
          BorderColor     =   14737632
@@ -198,8 +199,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaEntrega"
-         Object.Left            =   6585
-         Object.Top             =   120
+         Object.Left            =   6180
+         Object.Top             =   180
          Object.Width           =   1605
          Object.Height          =   285
          BorderColor     =   14737632
@@ -281,9 +282,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item0 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Línea1"
-         Object.Left            =   30
          Object.Top             =   315
-         Object.Width           =   11340
+         Object.Width           =   6690
       EndProperty
       ItemType1       =   3
       BeginProperty Item1 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -306,7 +306,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item2 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta10"
-         Object.Left            =   6645
+         Object.Left            =   6330
          Object.Width           =   690
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -325,7 +325,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta11"
-         Object.Left            =   7335
+         Object.Left            =   7020
          Object.Width           =   735
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -345,7 +345,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
          _Version        =   393216
          Name            =   "Etiqueta7"
          Object.Left            =   660
-         Object.Width           =   6030
+         Object.Width           =   5640
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
@@ -362,7 +362,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta6"
-         Object.Left            =   10245
+         Object.Left            =   9930
          Object.Width           =   1065
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -381,7 +381,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item6 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta2"
-         Object.Left            =   8175
+         Object.Left            =   7860
          Object.Width           =   795
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -400,7 +400,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta9"
-         Object.Left            =   9030
+         Object.Left            =   8715
          Object.Width           =   1065
          Object.Height          =   345
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -428,7 +428,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
          Name            =   "Texto2"
          Object.Left            =   705
          Object.Top             =   15
-         Object.Width           =   5970
+         Object.Width           =   5580
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
@@ -454,7 +454,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item1 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto4"
-         Object.Left            =   6765
+         Object.Left            =   6450
          Object.Width           =   585
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -482,7 +482,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item2 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto3"
-         Object.Left            =   7395
+         Object.Left            =   7080
          Object.Width           =   765
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -538,7 +538,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item4 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto5"
-         Object.Left            =   10260
+         Object.Left            =   9945
          Object.Width           =   1035
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -577,7 +577,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
          Name            =   "Texto8"
          Object.Left            =   705
          Object.Top             =   240
-         Object.Width           =   5985
+         Object.Width           =   5580
          Object.Height          =   165
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
@@ -604,7 +604,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item7 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto6"
-         Object.Left            =   8235
+         Object.Left            =   7920
          Object.Width           =   705
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -632,7 +632,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item8 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto7"
-         Object.Left            =   9120
+         Object.Left            =   8805
          Object.Width           =   990
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -661,7 +661,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
    BeginProperty Section3 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "s3"
-      Object.Height          =   840
+      Object.Height          =   870
       NumControls     =   4
       ItemType0       =   3
       BeginProperty Item0 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -715,7 +715,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblBarCode"
-         Object.Left            =   10005
+         Object.Left            =   9390
+         Object.Top             =   15
          Object.Width           =   1305
          Object.Height          =   840
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -854,8 +855,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item6 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma4"
-         Object.Left            =   9030
-         Object.Top             =   900
+         Object.Left            =   8760
+         Object.Top             =   915
          Object.Width           =   2310
          Object.Height          =   675
       EndProperty
@@ -863,8 +864,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta16"
-         Object.Left            =   9030
-         Object.Top             =   1380
+         Object.Left            =   8760
+         Object.Top             =   1395
          Object.Width           =   2310
          Object.Height          =   240
          Object.BorderStyle     =   1
@@ -886,8 +887,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item8 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma5"
-         Object.Left            =   9030
-         Object.Top             =   45
+         Object.Left            =   8745
+         Object.Top             =   60
          Object.Width           =   2310
          Object.Height          =   675
       EndProperty
@@ -895,8 +896,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item9 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta18"
-         Object.Left            =   9030
-         Object.Top             =   540
+         Object.Left            =   8760
+         Object.Top             =   510
          Object.Width           =   2310
          Object.Height          =   240
          Object.BorderStyle     =   1
@@ -1033,8 +1034,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_contaduria
       BeginProperty Item16 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblNoAprobado"
-         Object.Left            =   9210
-         Object.Top             =   1020
+         Object.Left            =   8940
+         Object.Top             =   1035
          Object.Width           =   2085
          Object.Height          =   330
          Object.Visible         =   0   'False
