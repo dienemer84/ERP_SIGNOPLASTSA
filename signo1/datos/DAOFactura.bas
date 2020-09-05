@@ -178,6 +178,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.FechaEntrega = GetValue(rs, indice, tabla, "fecha_entrega")
         F.CBU = GetValue(rs, indice, tabla, "CBU")
         F.AnulacionAFIP = GetValue(rs, indice, tabla, "anulacion_afip")
+        F.MotivosAnulacionAFIP = GetValue(rs, indice, tabla, "motivo_anulacion_afip")
         F.fechaPago = GetValue(rs, indice, tabla, "fecha_pago")
         F.esCredito = GetValue(rs, indice, tabla, "EsCredito")
         F.AprobadaAFIP = GetValue(rs, indice, tabla, "aprobacion_afip")
@@ -278,6 +279,29 @@ Public Function hacktipofactura(idIVA, Tipo) As Long
 End Function
 
 
+Public Function RechazoAfip(F As Factura)
+On Error GoTo err1
+
+    If Not F.esCredito Then
+        Err.Raise 1235, "recha", "La anulación corresponde a facturas de crédito"
+    End If
+
+    
+     
+     Dim q As String
+  q = "Update sp.AdminFacturas  SET motivo_anulacion_afip='motivo_anulacion_afip',anulacion_afip='anulacion_afip' where id='id'"
+  
+    q = Replace$(q, "'id'", conectar.Escape(F.id))
+    q = Replace$(q, "'motivo_anulacion_afip'", conectar.Escape(F.MotivosAnulacionAFIP))
+    q = Replace$(q, "'anulacion_afip'", conectar.Escape(F.AnulacionAFIP))
+   
+    If Not conectar.execute(q) Then
+           Err.Raise 112233, "No se pudo actualizar el estado de rechazo del comprobante"
+    End If
+Exit Function
+err1:
+Err.Raise Err.Number, Err.Description
+End Function
 
 Public Function ActualizarCAE(F As Factura)
 On Error GoTo err1

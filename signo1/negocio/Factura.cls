@@ -32,6 +32,7 @@ Public CAEFechaProceso
 Public Tipo As clsTipoFacturaDiscriminado
 Public TipoIVA As clsTipoIVA
 Public AnulacionAFIP As String
+Public MotivosAnulacionAFIP As String
 Public CaeSolicitarResponse As CAESolicitar
 'agregado 31052020
 Public ConceptoIncluir As ConceptoIncluir
@@ -89,7 +90,7 @@ Public Property Get DescripcionCreditoAdicional() As String
     Dim dsc As String
     
     
-    If TipoDocumento = tipoDocumentoContable.factura Then
+    If TipoDocumento = tipoDocumentoContable.Factura Then
          dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
     End If
     If TipoDocumento = tipoDocumentoContable.notaCredito Then
@@ -148,14 +149,14 @@ End Property
 Public Function GetCodigoDocumentoAfip() As Integer
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
     If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
-    If Tipo.TipoDoc = tipoDocumentoContable.factura Then GetCodigoDocumentoAfip = 1
+    If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
 
 
 End Function
 Public Function GetDescripciopnDocumentoAfip() As String
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
     If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
-    If Tipo.TipoDoc = tipoDocumentoContable.factura Then GetDescripciopnDocumentoAfip = "FACTURA"
+    If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetDescripciopnDocumentoAfip = "FACTURA"
 
 
 End Function
@@ -284,7 +285,7 @@ Public Property Get TipoDocumentoDescription() As String
 
     Dim retorno As String
     Select Case Me.TipoDocumento
-        Case tipoDocumentoContable.factura
+        Case tipoDocumentoContable.Factura
             retorno = "FACTURA"
         Case tipoDocumentoContable.notaCredito
             retorno = "NOTA DE CREDITO"
@@ -307,7 +308,7 @@ Public Property Get GetShortDescription(justTipo As Boolean, fullShortDescriptio
 
     Dim retorno As String
     Select Case Me.TipoDocumento
-        Case tipoDocumentoContable.factura
+        Case tipoDocumentoContable.Factura
             retorno = "FC"
         Case tipoDocumentoContable.notaCredito
             retorno = "NC"

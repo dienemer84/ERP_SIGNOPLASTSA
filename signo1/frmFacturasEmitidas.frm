@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
    Caption         =   "Comprobantes Emitidos"
@@ -550,7 +550,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin VB.Menu editar 
          Caption         =   "Editar..."
       End
-      Begin VB.Menu asd 
+      Begin VB.Menu separador2 
          Caption         =   "-"
       End
       Begin VB.Menu aprobarFactura 
@@ -570,8 +570,11 @@ Begin VB.Form frmAdminFacturasEmitidas
          Enabled         =   0   'False
          Visible         =   0   'False
       End
-      Begin VB.Menu awd 
+      Begin VB.Menu sepa3 
          Caption         =   "-"
+      End
+      Begin VB.Menu mnuRechazo 
+         Caption         =   "Rechazo de comprobantes (FCE)"
       End
       Begin VB.Menu ImprimirFactura 
          Caption         =   "Imprimir..."
@@ -1018,8 +1021,14 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
+
+            If Factura.Tipo.PuntoVenta.CaeManual Then
+              Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"
+            Else
+             Me.mnuEnviarAfip.caption = "Informar a AFIP"
+            End If
 
             Me.mnuFechaPagoPropuesta.Enabled = False
 
@@ -1080,8 +1089,9 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.aprobarFactura.Enabled = False
                 Me.aprobarFactura.Visible = False
                 Me.mnuFechaEntrega.Enabled = True
+                Me.mnuFechaEntrega.Visible = True
                 Me.mnuFechaPagoPropuesta.Enabled = True
-               
+               Me.mnuFechaPagoPropuesta.Visible = True
                
                'opción combinada solo válida para comprobantes electrónicos no aprobados localmente
                '23-08-2020
@@ -1159,8 +1169,12 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
          
      Me.ImprimirFactura.Enabled = True
      Me.ImprimirFactura.Visible = True
+         'si es FCE muestro el form para cambiar el estado de rechazo
+          Me.mnuRechazo.Visible = Factura.esCredito
+        
             
-     End If
+            End If
+     
             
      
             If Factura.estado = EstadoFacturaCliente.Anulada Then
@@ -1178,7 +1192,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 
             If Factura.estado = EstadoFacturaCliente.CanceladaNC Then
                 Me.editar.Enabled = False
-                Me.mnuFechaEntrega.Enabled = False
+                'Me.mnuFechaEntrega.Enabled = False
                 Me.AnularFactura.Enabled = False
                 Me.AnularFactura.Visible = False
                 Me.aprobarFactura.Enabled = False
@@ -1190,6 +1204,11 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
          End If
                         
             Me.archivos.Enabled = Permisos.SistemaArchivosVer
+            
+            Me.separador.Visible = Me.mnuEnviarAfip.Visible Or Me.aprobarFactura
+            Me.sepa3.Visible = Me.mnuDesaprobarFactura.Visible Or Me.mnuAprobarEnviar.Visible
+            
+            
             
             
             If Factura.Saldado <> NoSaldada Then
@@ -1790,6 +1809,12 @@ Private Sub mnuFechaPagoPropuesta_Click()
         End If
     End If
 
+End Sub
+
+Private Sub mnuRechazo_Click()
+Dim F As New frmAdminFacturaRechazoAfip
+            Set F.Factura = Factura
+            F.Show
 End Sub
 
 Private Sub PushButton1_Click()

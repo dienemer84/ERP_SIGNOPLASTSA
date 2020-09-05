@@ -128,17 +128,17 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Public factura As factura
+Public Factura As Factura
 
 Private Sub cmdAceptar_Click()
 On Error GoTo errCae
 
 If MsgBox("¿Está seguro de actualizar los datos y marcarla como informada?", vbYesNo, "Confirmación") = vbYes Then
 
-    factura.CAE = Me.txtCAE
-    factura.CAEVto = Me.dtVtoCAE
-    factura.AprobadaAFIP = True
-    DAOFactura.ActualizarCAE factura
+    Factura.CAE = Me.txtCAE
+    Factura.CAEVto = Me.dtVtoCAE
+    Factura.AprobadaAFIP = True
+    DAOFactura.ActualizarCAE Factura
     MsgBox "Datos de CAE actualizados correctamente", vbInformation, "Proceso correcto"
    Unload Me
 End If
@@ -154,14 +154,14 @@ End Sub
 
 Private Sub Form_Load()
     Customize Me
-    Me.txtCAE = factura.CAE
+    Me.txtCAE = Factura.CAE
     
     Dim d As Date
    
-    If factura.CAEVto = d Then
+    If Factura.CAEVto = d Then
         Me.dtVtoCAE = Now
     Else
-            Me.dtVtoCAE = factura.CAEVto
+            Me.dtVtoCAE = Factura.CAEVto
     End If
 
     
