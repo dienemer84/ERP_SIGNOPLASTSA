@@ -7,13 +7,26 @@ Begin VB.Form frmListaEmpleados
    ClientHeight    =   6330
    ClientLeft      =   60
    ClientTop       =   270
-   ClientWidth     =   13380
+   ClientWidth     =   14865
    ClipControls    =   0   'False
    Icon            =   "frmListaEmpleados.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   6330
-   ScaleWidth      =   13380
+   ScaleWidth      =   14865
+   Begin XtremeSuiteControls.PushButton PushButton2 
+      Height          =   495
+      Left            =   13440
+      TabIndex        =   11
+      Top             =   1200
+      Width           =   1335
+      _Version        =   786432
+      _ExtentX        =   2355
+      _ExtentY        =   873
+      _StockProps     =   79
+      Caption         =   "PushButton2"
+      UseVisualStyle  =   -1  'True
+   End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1020
       Left            =   90
