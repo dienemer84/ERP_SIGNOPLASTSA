@@ -233,7 +233,7 @@ Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
         Set ra = New DTORetencionAlicuota
         ra.alicuotaRetencion = GetValue(rs, indice, tabla, "alicuota")
        Set ra.Retencion = DAORetenciones.Map(rs, indice, TablaRetenciones)
-      
+      ra.importe = GetValue(rs, indice, tabla, "total")
 
             'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
     End If
@@ -349,9 +349,9 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
     Dim q As String
     Dim rs As Recordset
     On Error GoTo E
-    Dim Nueva As Boolean: Nueva = False
+    Dim NUEVA As Boolean: NUEVA = False
     If op.id = 0 Then
-        Nueva = True
+        NUEVA = True
         q = "INSERT INTO ordenes_pago (id_moneda_pago,tipo_cambio,id_moneda, fecha, id_cuenta_contable,cuenta_contable_desc,estado,alicuota,static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen,dif_cambio, otros_descuentos,dif_cambio_ng,dif_cambio_total)" _
             & " VALUES ('id_moneda_pago','tipo_cambio','id_moneda', 'fecha', 'id_cuenta_contable', 'cuenta_contable_desc','0','alicuota','static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio', 'otros_descuentos','dif_cambio_ng','dif_cambio_total')"
     Else
@@ -396,7 +396,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
 
     If Not conectar.execute(q) Then GoTo E
 
-    If Nueva Then op.id = conectar.UltimoId2()
+    If NUEVA Then op.id = conectar.UltimoId2()
     If op.id = 0 Then GoTo E
 
     If cascada Then
@@ -577,7 +577,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
              q = Replace(q, "'id_retencion'", GetEntityId(ra.Retencion))
              q = Replace(q, "'fecha'", Escape(op.FEcha))
              q = Replace(q, "'alicuota'", Escape(ra.alicuotaRetencion))
-             q = Replace(q, "'total'", Escape(0))
+             q = Replace(q, "'total'", Escape(ra.importe))
               If Not conectar.execute(q) Then GoTo E
         Next ra
 
@@ -589,7 +589,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
     Exit Function
 E:
     Guardar = False
-    If Nueva Then op.id = 0
+    If NUEVA Then op.id = 0
 
 End Function
 

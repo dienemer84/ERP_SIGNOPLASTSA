@@ -17,3 +17,6 @@ Public Retencion As Retencion
 Public alicuota As Double
 Public alicuotaPercepcion As Double
 Public alicuotaRetencion As Double
+Public importe As Double
+Public dePadron As Boolean
+

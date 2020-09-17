@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
@@ -869,18 +869,19 @@ Begin VB.Form frmCrearOrdenPago
             IntProp1        =   0
             IntProp2        =   0
             IntProp7        =   0
-            ColumnsCount    =   2
+            ColumnsCount    =   3
             Column(1)       =   "frmCrearOrdenPago.frx":8500
-            Column(2)       =   "frmCrearOrdenPago.frx":8638
+            Column(2)       =   "frmCrearOrdenPago.frx":8618
+            Column(3)       =   "frmCrearOrdenPago.frx":8718
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmCrearOrdenPago.frx":8738
-            FormatStyle(2)  =   "frmCrearOrdenPago.frx":8860
-            FormatStyle(3)  =   "frmCrearOrdenPago.frx":8910
-            FormatStyle(4)  =   "frmCrearOrdenPago.frx":89C4
-            FormatStyle(5)  =   "frmCrearOrdenPago.frx":8A9C
-            FormatStyle(6)  =   "frmCrearOrdenPago.frx":8B54
+            FormatStyle(1)  =   "frmCrearOrdenPago.frx":880C
+            FormatStyle(2)  =   "frmCrearOrdenPago.frx":8934
+            FormatStyle(3)  =   "frmCrearOrdenPago.frx":89E4
+            FormatStyle(4)  =   "frmCrearOrdenPago.frx":8A98
+            FormatStyle(5)  =   "frmCrearOrdenPago.frx":8B70
+            FormatStyle(6)  =   "frmCrearOrdenPago.frx":8C28
             ImageCount      =   0
-            PrinterProperties=   "frmCrearOrdenPago.frx":8C34
+            PrinterProperties=   "frmCrearOrdenPago.frx":8D08
          End
          Begin XtremeSuiteControls.PushButton btnCargar 
             Height          =   405
@@ -1247,7 +1248,7 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
-    Me.GridCajas.AllowEdit = Not ReadOnly
+    Me.gridCajas.AllowEdit = Not ReadOnly
     'Me.gridCajas.AllowDelete = Not ReadOnly
 
     Me.gridChequeras.AllowEdit = Not ReadOnly
@@ -1299,6 +1300,24 @@ Private Sub btnCargar_Click()
                 
                 If IsSomething(prov) Then
                     Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+                    
+'                    Dim p As New Collection
+'                    Set p = DAORetenciones.FindAllEsAgente
+'
+'                    Dim aa As Retencion
+'
+'
+'                    For Each aa In p
+'                        If Not Contains(aa, alicuotas) Then
+'
+'                            Dim xl As New DTORetencionAlicuota
+'                            Set xl.Retencion = aa
+'                            xl.dePadron = False
+'                            alicuotas.Add xl
+'                        End If
+'                    Next
+                    
+                    
         
                 End If
     Else
@@ -1314,6 +1333,18 @@ Private Sub btnCargar_Click()
     Totalizar
 
 End Sub
+
+'Public Function Contains(r As Retencion, c As Collection)
+'Dim c1 As Boolean
+'c1 = False
+'Dim i As DTORetencionAlicuota
+'For Each i In c
+' If i.Retencion.id = r.id Then
+'   c1 = True
+' End If
+'Next i
+'Contains = c1
+'End Function
 
 Private Sub btnClearProveedor_Click()
     cboProveedores.ListIndex = -1
@@ -1647,7 +1678,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1657,7 +1688,7 @@ Private Sub Form_Load()
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.GridCajas.ItemCount = Cajas.count
+    Me.gridCajas.ItemCount = Cajas.count
 
     Set monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = monedas.count
@@ -1706,7 +1737,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
@@ -1968,6 +1999,7 @@ Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
         Set alicuotaRetencion = alicuotas.item(RowIndex)
         Values(2) = alicuotaRetencion.alicuotaRetencion
         Values(1) = alicuotaRetencion.Retencion.nombre
+        Values(3) = alicuotaRetencion.importe
     End If
 End Sub
 
@@ -1975,6 +2007,7 @@ Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark
  If alicuotas.count >= RowIndex Then
         Set alicuotaRetencion = alicuotas.item(RowIndex)
        alicuotaRetencion.alicuotaRetencion = Values(2)
+       alicuotaRetencion.importe = Values(3)
        Totalizar
        
     End If
@@ -2047,6 +2080,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection)
 
     verCompensatorios
     Me.lblTotalARetener = "Total a retener en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totRet)
+    
     OrdenPago.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
 
@@ -2225,7 +2259,11 @@ Private Sub PushButton1_Click()
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
                 
                 If IsSomething(prov) Then
-                    Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+                    Dim NUEVA As New Collection
+                Set NUEVA = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
+                
+                
+                   Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
         
                 End If
     Else
