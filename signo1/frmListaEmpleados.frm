@@ -7,13 +7,13 @@ Begin VB.Form frmListaEmpleados
    ClientHeight    =   6330
    ClientLeft      =   60
    ClientTop       =   270
-   ClientWidth     =   13380
+   ClientWidth     =   14865
    ClipControls    =   0   'False
    Icon            =   "frmListaEmpleados.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   6330
-   ScaleWidth      =   13380
+   ScaleWidth      =   14865
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1020
       Left            =   90
