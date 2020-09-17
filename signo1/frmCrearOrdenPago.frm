@@ -1293,6 +1293,27 @@ Private Sub btnBorrar_Click()
     
 End Sub
 
+Private Sub ActualizarAlicuotas()
+
+  Dim a As DTORetencionAlicuota
+                    Dim b As DTORetencionAlicuota
+                       For Each a In alicuotas
+                        
+                       For Each b In OrdenPago.RetencionesAlicuota
+                                If a.Retencion.id = b.Retencion.id Then
+                                  If b.importe > 0 Then
+                                    a.importe = b.importe
+                                  End If
+                             
+                                End If
+                    
+                    Next
+                    
+                    Next
+
+End Sub
+
+
 Private Sub btnCargar_Click()
 
     If Me.cboProveedores.ListIndex <> -1 Then
@@ -1300,7 +1321,13 @@ Private Sub btnCargar_Click()
                 
                 If IsSomething(prov) Then
                     Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+                    ActualizarAlicuotas
+
                     
+                  
+                    
+                    
+                 
 '                    Dim p As New Collection
 '                    Set p = DAORetenciones.FindAllEsAgente
 '
@@ -1466,7 +1493,8 @@ Private Sub btnPadronAnt_Click()
                 
                 If IsSomething(prov) Then
                     Set alicuotas = DAORetenciones.FindAllWithAlicuotasAnt(prov.Cuit)
-        
+        ActualizarAlicuotas
+
                 End If
     Else
         Set prov = Nothing
@@ -1640,7 +1668,7 @@ Private Sub Command1_Click()
 ''        Next
 ''
         Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
-        
+        ActualizarAlicuotas
 '                If IsSomething(d) Then
 '              Me.txtRetenciones = 1 '¿str(d.Alicuota)    ' Val(d.Retencion )
 '            Else
@@ -2259,12 +2287,12 @@ Private Sub PushButton1_Click()
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
                 
                 If IsSomething(prov) Then
-                    Dim NUEVA As New Collection
-                Set NUEVA = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
+                    Dim Nueva As New Collection
+                Set Nueva = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
                 
                 
                    Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
-        
+        ActualizarAlicuotas
                 End If
     Else
         Set prov = Nothing

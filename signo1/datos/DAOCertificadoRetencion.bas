@@ -85,11 +85,25 @@ Public Function VerPosibleRetenciones2(colFc As Collection, colret As Collection
       
 
         'cambiado el 22-10-12
+        
+        If ret.importe > 0 Then
+            alicuotasParciales = (sumadorDeTotales - TotalNGCompensatorios) + (ret.importe)
+        Else
+        
+        
         If (sumadorDeTotales - TotalNGCompensatorios) > ret.Retencion.MinimoImponible Then
-            alicuotasParciales = (sumadorDeTotales - TotalNGCompensatorios) * (ret.alicuotaRetencion / 100)
+        
+            If ret.importe > 0 Then
+                alicuotasParciales = (sumadorDeTotales - TotalNGCompensatorios) + (ret.importe)
+            Else
+            
+              alicuotasParciales = (sumadorDeTotales - TotalNGCompensatorios) * (ret.alicuotaRetencion / 100)
+            End If
         Else
          '   sumadorDeTotales = 0
         End If
+        End If
+        
 
 
 
@@ -338,15 +352,15 @@ Public Function VerCertificado(cr As CertificadoRetencion)
     r_tmp.Open
 
     Dim fac As clsFacturaProveedor
-    Dim A As Double
+    Dim a As Double
     Dim det As CertificadoRetencionDetalles
     Dim fc As clsFacturaProveedor
     If cr.Detalles.count > 0 Then
 
         For Each det In cr.Detalles
-            A = MonedaConverter.Convertir(det.TotalFactura, det.IdMoneda, mon.id)
+            a = MonedaConverter.Convertir(det.TotalFactura, det.IdMoneda, mon.id)
             r_tmp.AddNew
-            r_tmp!Importe = mon.NombreCorto & " " & funciones.FormatearDecimales(A)
+            r_tmp!importe = mon.NombreCorto & " " & funciones.FormatearDecimales(a)
             r_tmp!importe_retenido = mon.NombreCorto & " " & det.TotalRetenido(cr)
             r_tmp!nrocomprobante = det.Comprobante
             r_tmp.Update

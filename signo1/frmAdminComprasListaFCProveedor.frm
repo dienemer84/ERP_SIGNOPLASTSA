@@ -913,7 +913,10 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 
     If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
     With Factura
+    If IsSomething(Factura.Proveedor) Then
         Values(1) = funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial)
+        End If
+        
         Values(2) = Factura.NumeroFormateado
         Values(3) = Factura.FEcha
         Values(4) = Factura.moneda.NombreCorto
