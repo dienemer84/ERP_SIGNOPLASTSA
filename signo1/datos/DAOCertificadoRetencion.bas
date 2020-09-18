@@ -96,11 +96,10 @@ Public Function VerPosibleRetenciones2(colFc As Collection, colret As Collection
              End If
         End If
         
-
-
-
-
-        dic.Add CStr(ret.Retencion.id), funciones.RedondearDecimales(alicuotasParciales, 2)
+        If alicuotasParciales <> 0 Then
+       dic.Add CStr(ret.Retencion.id), funciones.RedondearDecimales(alicuotasParciales, 2)
+       End If
+       
     Next ret
 
     Set VerPosibleRetenciones2 = dic

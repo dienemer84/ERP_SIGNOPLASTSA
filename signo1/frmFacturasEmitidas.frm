@@ -652,12 +652,12 @@ Dim m_Archivos As Dictionary
 
 Private Sub AnularFactura_Click()
     Dim r As Long
-    r = Me.GridEx1.RowIndex(Me.GridEx1.row)
+    r = Me.GridEX1.RowIndex(Me.GridEX1.row)
     If MsgBox("?Desea anular el comprobante?", vbYesNo, "Confirmacion") = vbYes Then
 
         If DAOFactura.Anular(Factura) Then
             MsgBox "Comprobante anulado con ?xito!", vbInformation, "Informaci?n"
-            Me.GridEx1.RefreshRowIndex r
+            Me.GridEX1.RefreshRowIndex r
         Else
             MsgBox "Hubo un error. No se anulo el comprobante!", vbCritical, "Error"
         End If
@@ -702,7 +702,7 @@ Private Sub aprobarFactura_Click()
     Dim msgadicional As String
     msgadicional = ""
     If MsgBox("?Desea aprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.GridEx1.RowIndex(Me.GridEx1.row)
+        g = Me.GridEX1.RowIndex(Me.GridEX1.row)
         If DAOFactura.aprobarV2(Factura, True, False) Then
             
             
@@ -729,7 +729,7 @@ Private Sub aprobarFactura_Click()
             End If
             MsgBox msg, vbInformation, "Informaci?n"
             
-            Me.GridEx1.RefreshRowIndex g
+            Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
         Else
             GoTo err1
@@ -740,7 +740,7 @@ err1:
     'MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
 
     MsgBox Err.Description, vbCritical, Err.Source
-    Me.GridEx1.RefreshRowIndex g
+    Me.GridEX1.RefreshRowIndex g
 End Sub
 
 Private Sub archivos_Click()
@@ -814,9 +814,9 @@ Private Sub chkVerObservaciones_Click()
 End Sub
 Private Sub verObservaciones()
     If Me.chkVerObservaciones Then
-        Me.GridEx1.PreviewRowLines = 1
+        Me.GridEX1.PreviewRowLines = 1
     Else
-        Me.GridEx1.PreviewRowLines = 0
+        Me.GridEX1.PreviewRowLines = 0
     End If
 End Sub
 
@@ -828,7 +828,7 @@ End Sub
 Private Sub cmdImprimir_Click()
 
 
-    With Me.GridEx1.PrinterProperties
+    With Me.GridEX1.PrinterProperties
         .FitColumns = True
         .RepeatHeaders = True
         .Orientation = jgexPPLandscape
@@ -837,7 +837,7 @@ Private Sub cmdImprimir_Click()
     End With
     Load frmPrintPreview
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
-    GridEx1.PrintPreview frmPrintPreview.GEXPreview1
+    GridEX1.PrintPreview frmPrintPreview.GEXPreview1
     frmPrintPreview.Show 1
 End Sub
 
@@ -858,7 +858,7 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-    GridEXHelper.CustomizeGrid Me.GridEx1, True, False
+    GridEXHelper.CustomizeGrid Me.GridEX1, True, False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
     Me.cboClientes.ListIndex = -1
 
@@ -892,7 +892,7 @@ Private Sub llenarGrilla()
     Dim filtro As String
     Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
 
-    Me.GridEx1.ItemCount = 0
+    Me.GridEX1.ItemCount = 0
     filtro = "1=1"
     If Me.cboClientes.ListIndex >= 0 Then
         filtro = filtro & " and idCliente=" & cboClientes.ItemData(Me.cboClientes.ListIndex)
@@ -974,8 +974,8 @@ Private Sub llenarGrilla()
 
 
 
-    Me.GridEx1.ItemCount = 0
-    Me.GridEx1.ItemCount = facturas.count
+    Me.GridEX1.ItemCount = 0
+    Me.GridEX1.ItemCount = facturas.count
     Me.caption = "Emitidos [Cantidad: " & facturas.count & "]"
 
 
@@ -991,9 +991,9 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.GridEx1.Width = Me.ScaleWidth
-    Me.GridEx1.Height = Me.ScaleHeight - 1900
-    Me.grp.Width = Me.GridEx1.Width - 180
+    Me.GridEX1.Width = Me.ScaleWidth
+    Me.GridEX1.Height = Me.ScaleHeight - 1900
+    Me.grp.Width = Me.GridEX1.Width - 180
 End Sub
 
 Private Sub Form_Terminate()
@@ -1005,11 +1005,11 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub GridEX1_BeforePrintPage(ByVal PageNumber As Long, ByVal nPages As Long)
-    GridEx1.PrinterProperties.FooterString(jgexHFRight) = "P?gina" & PageNumber & " de " & nPages
+    GridEX1.PrinterProperties.FooterString(jgexHFRight) = "P?gina" & PageNumber & " de " & nPages
 End Sub
 
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
-    GridEXHelper.ColumnHeaderClick Me.GridEx1, Column
+    GridEXHelper.ColumnHeaderClick Me.GridEX1, Column
 End Sub
 
 Private Sub GridEX1_DblClick()
@@ -1260,7 +1260,7 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(Me.GridEx1.RowIndex(Me.GridEx1.row))
+    Set Factura = facturas.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
 
 End Sub
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -1400,22 +1400,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("?Desea imprimir este comprobante?", vbYesNo, "Confirmaci?n") = vbYes Then
-               cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+               CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fu? impreso." & Chr(10) & "?Desea volver a imprimirlo?", vbYesNo, "Confirmaci?n") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.id
                 Next i
             End If
@@ -1435,7 +1435,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim tmp As Factura
     If EVENTO.EVENTO = agregar_ Then
         llenarGrilla
-        Me.GridEx1.Refresh
+        Me.GridEX1.Refresh
     ElseIf EVENTO.EVENTO = modificar_ Then
         Set tmp = EVENTO.Elemento
 
@@ -1477,7 +1477,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 
 
-                Me.GridEx1.RefreshRowIndex i
+                Me.GridEX1.RefreshRowIndex i
                 Exit For
 
             End If
@@ -1557,7 +1557,7 @@ Private Sub mnuAprobarEnviar_Click()
     Dim msgadicional As String
     msgadicional = ""
     If MsgBox("?Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.GridEx1.RowIndex(Me.GridEx1.row)
+        g = Me.GridEX1.RowIndex(Me.GridEX1.row)
         If DAOFactura.aprobarV2(Factura, True, True) Then
             
             
@@ -1584,7 +1584,7 @@ Private Sub mnuAprobarEnviar_Click()
             End If
             MsgBox msg, vbInformation, "Informaci?n"
             
-            Me.GridEx1.RefreshRowIndex g
+            Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
         Else
             GoTo err1
@@ -1595,7 +1595,7 @@ err1:
     'MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
 
     MsgBox Err.Description, vbCritical, Err.Source
-    Me.GridEx1.RefreshRowIndex g
+    Me.GridEX1.RefreshRowIndex g
 End Sub
 
 Private Sub mnuArchivos_Click()
@@ -1652,10 +1652,10 @@ Private Sub mnuDesaprobarFactura_Click()
     Dim g As Long
 
     If MsgBox("?Desea desaprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.GridEx1.RowIndex(Me.GridEx1.row)
+        g = Me.GridEX1.RowIndex(Me.GridEX1.row)
         If DAOFactura.desaprobar(Factura) Then
             MsgBox "Comprobante desaprobado con ?xito!", vbInformation, "Informaci?n"
-            Me.GridEx1.RefreshRowIndex g
+            Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
         Else
             GoTo err1
@@ -1702,17 +1702,17 @@ On Error GoTo err1
     If Factura.Tipo.PuntoVenta.CaeManual Then
     
             Dim gg As Long
-            gg = Me.GridEx1.RowIndex(Me.GridEx1.row)
+            gg = Me.GridEX1.RowIndex(Me.GridEX1.row)
         
             Dim F As New frmAdminFacturasAprobarSinAfip
             Set F.Factura = Factura
             F.Show 1
         
-         Me.GridEx1.RefreshRowIndex gg
+         Me.GridEX1.RefreshRowIndex gg
             
     Else
      If MsgBox("?Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.GridEx1.RowIndex(Me.GridEx1.row)
+        g = Me.GridEX1.RowIndex(Me.GridEX1.row)
         If DAOFactura.aprobarV2(Factura, False, True) Then
             
    
@@ -1727,7 +1727,7 @@ On Error GoTo err1
             End If
             MsgBox msg, vbInformation, "Informaci?n"
             
-            Me.GridEx1.RefreshRowIndex g
+            Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
         Else
             GoTo err1
@@ -1740,7 +1740,7 @@ End If
 err1:
    
     MsgBox Err.Description, vbCritical, Err.Source
-    Me.GridEx1.RefreshRowIndex g
+    Me.GridEX1.RefreshRowIndex g
 End Sub
 
 Private Sub mnuFechaEntrega_Click()
@@ -1768,7 +1768,7 @@ Private Sub mnuFechaEntrega_Click()
     If Update Then
         Factura.FechaEntrega = nuevaFecha
         If DAOFactura.Guardar(Factura) Then
-            Me.GridEx1.RefreshRowIndex (Me.GridEx1.row)
+            Me.GridEX1.RefreshRowIndex (Me.GridEX1.row)
         Else
             MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
         End If
@@ -1800,7 +1800,7 @@ Private Sub mnuFechaPagoPropuesta_Click()
     If Update Then
         Factura.FechaPropuestaPago = nuevaFecha
         If DAOFactura.Guardar(Factura) Then
-            Me.GridEx1.ReBind
+            Me.GridEX1.ReBind
         Else
             MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
         End If
@@ -1951,7 +1951,7 @@ Private Sub scanear_Click()
     Dim archivos As New classArchivos
     If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
-        Me.GridEx1.RefreshRowIndex (Factura.id)
+        Me.GridEX1.RefreshRowIndex (Factura.id)
     End If
 End Sub
 
