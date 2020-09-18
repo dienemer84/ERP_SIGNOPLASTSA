@@ -1248,7 +1248,7 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
-    Me.gridCajas.AllowEdit = Not ReadOnly
+    Me.GridCajas.AllowEdit = Not ReadOnly
     'Me.gridCajas.AllowDelete = Not ReadOnly
 
     Me.gridChequeras.AllowEdit = Not ReadOnly
@@ -1295,14 +1295,14 @@ End Sub
 
 Private Sub ActualizarAlicuotas()
 
-  Dim a As DTORetencionAlicuota
+  Dim A As DTORetencionAlicuota
                     Dim b As DTORetencionAlicuota
-                       For Each a In alicuotas
+                       For Each A In alicuotas
                         
                        For Each b In OrdenPago.RetencionesAlicuota
-                                If a.Retencion.id = b.Retencion.id Then
+                                If A.Retencion.id = b.Retencion.id Then
                                   If b.importe > 0 Then
-                                    a.importe = b.importe
+                                    A.importe = b.importe
                                   End If
                              
                                 End If
@@ -1706,7 +1706,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1716,7 +1716,7 @@ Private Sub Form_Load()
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.gridCajas.ItemCount = Cajas.count
+    Me.GridCajas.ItemCount = Cajas.count
 
     Set monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = monedas.count
@@ -1765,7 +1765,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
@@ -2287,8 +2287,8 @@ Private Sub PushButton1_Click()
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
                 
                 If IsSomething(prov) Then
-                    Dim Nueva As New Collection
-                Set Nueva = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
+                    Dim NUEVA As New Collection
+                Set NUEVA = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
                 
                 
                    Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
