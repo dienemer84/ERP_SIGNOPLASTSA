@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   59179009
+      Format          =   58720257
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -993,13 +993,13 @@ Private Sub cmdGuardar_Click()
 
         If DAOFacturaProveedor.existeFactura(vFactura) Then Err.Raise 101
 
-        Dim Nueva As Boolean
-        Nueva = (vFactura.id = 0)
+        Dim NUEVA As Boolean
+        NUEVA = (vFactura.id = 0)
 
         If DAOFacturaProveedor.Guardar(vFactura) Then
             Set EVENTO = New clsEventoObserver
             Set EVENTO.Elemento = vFactura
-            If Nueva Then
+            If NUEVA Then
                 EVENTO.EVENTO = agregar_
             Else
                 EVENTO.EVENTO = modificar_
@@ -1146,7 +1146,7 @@ FacturaRequiereNumeroFormateado
 End Sub
 
 Private Sub FacturaRequiereNumeroFormateado()
-
+'dnemer
     Dim idtipo As Integer
     idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
  Dim cx As clsConfigFacturaProveedor
