@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmListaEmpleados 
    BackColor       =   &H00C0C0C0&
@@ -240,10 +240,15 @@ Private Sub Form_Activate()
     GridEXHelper.AutoSizeColumns Me.grilla
 End Sub
 
+Private Sub Form_Initialize()
+llenarLista
+End Sub
+
 Private Sub Form_Load()
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.grilla, False
     Me.grilla.ItemCount = 0
+    
 End Sub
 
 Private Sub Form_Resize()
