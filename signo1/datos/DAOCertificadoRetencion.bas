@@ -93,6 +93,7 @@ Public Function VerPosibleRetenciones2(colFc As Collection, colret As Collection
                       alicuotasParciales = (sumadorDeTotales - TotalNGCompensatorios) * (ret.alicuotaRetencion / 100)
             Else
                 '   sumadorDeTotales = 0
+                alicuotasParciales = 0
              End If
         End If
         

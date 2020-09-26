@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
@@ -2106,7 +2106,11 @@ Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark
  If alicuotas.count >= RowIndex Then
         Set alicuotaRetencion = alicuotas.item(RowIndex)
        alicuotaRetencion.alicuotaRetencion = Values(2)
+       If Not IsNumeric(Values(3)) Then
+       alicuotaRetencion.importe = 0
+       Else
        alicuotaRetencion.importe = Values(3)
+       End If
        Totalizar
        
     End If
