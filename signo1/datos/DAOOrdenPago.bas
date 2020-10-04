@@ -259,12 +259,22 @@ End Function
 
 
 
-Public Function aprobar(op As OrdenPago, insideTransaction As Boolean) As Boolean
+Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Boolean
     'VALIDAR BIEN LOS TOTALES ANTES DE PODER APROBAR
 
+'verificar que las facturas esten todas aprobadsa...
 
     On Error GoTo err1
     If insideTransaction Then conectar.BeginTransaction
+    
+    '3-10-2020 recargo la OP para que se actualicen los estados de las facturas y se validen bien
+    Dim op As OrdenPago
+    Set op = DAOOrdenPago.FindById(op_mem.id)
+    
+    If Not IsSomething(op) Then
+        GoTo err1
+    End If
+
 
     If op.estado = EstadoOrdenPago_pendiente Then
         Dim es As EstadoOrdenPago
@@ -304,6 +314,8 @@ Public Function aprobar(op As OrdenPago, insideTransaction As Boolean) As Boolea
 
 
         If Guardar(op) Then
+   
+
 
             Dim fac As clsFacturaProveedor
             For Each fac In op.FacturasProveedor
