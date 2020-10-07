@@ -3,7 +3,7 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Begin VB.Form frmPlaneamientoPedidosDetalle 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
-   ClientHeight    =   6630
+   ClientHeight    =   6780
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   11190
@@ -14,7 +14,7 @@ Begin VB.Form frmPlaneamientoPedidosDetalle
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   6630
+   ScaleHeight     =   6780
    ScaleWidth      =   11190
    Begin VB.Frame Frame1 
       BackColor       =   &H00FFC0C0&
@@ -33,6 +33,32 @@ Begin VB.Form frmPlaneamientoPedidosDetalle
       TabIndex        =   22
       Top             =   4440
       Width           =   5415
+      Begin VB.Label Label2 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Moneda"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   2760
+         TabIndex        =   34
+         Top             =   720
+         Width           =   1095
+      End
+      Begin VB.Label lblMoneda 
+         Height          =   255
+         Left            =   3930
+         TabIndex        =   33
+         Top             =   720
+         Width           =   1250
+      End
       Begin VB.Label lblDetalle 
          BackColor       =   &H00E0E0E0&
          ForeColor       =   &H00000000&
@@ -593,8 +619,11 @@ Private Sub mostrarDetalles()
     Me.lblAnticipo = IIf(m_pedido.Anticipo = 0, "Sin Anticipo", m_pedido.Anticipo & "%")
     Me.lblFormaPagoAnticipo = m_pedido.CondicionesComercialesAnticipo
     Me.lblFormaPagoSaldo = m_pedido.CondicionesComercialesSaldo
-    Me.lblCliente = m_pedido.Cliente.razon
+    Me.lblCliente = m_pedido.cliente.razon
     Me.lblDetalle = m_pedido.descripcion
+    Me.lblMoneda = m_pedido.moneda.NombreCorto
+    
+    
     Dim creador As String, aprobador As String, modificador As String, finalizador As String
     creador = m_pedido.usuario.usuario
 
@@ -613,14 +642,14 @@ Private Sub mostrarDetalles()
     Else
         finalizador = m_pedido.UsuarioFinalizado.usuario
     End If
-    Me.lblFechaCreado = m_pedido.FechaCreado
+    Me.lblFechaCreado = m_pedido.fechaCreado
     Me.lblFechaEntrega = m_pedido.FechaEntrega
     If aprobador = vbNullString Then    'no está aprobado
         Me.lblAprobador = "No Aprobado"
         Me.lblFechaAprobado = "No Aprobado"
     Else
         Me.lblAprobador = aprobador
-        Me.lblFechaAprobado = m_pedido.FechaAprobado
+        Me.lblFechaAprobado = m_pedido.fechaAprobado
     End If
     If finalizador = vbNullString Then    'finalizador
         Me.LblFinalizado = "En proceso"
@@ -634,7 +663,7 @@ Private Sub mostrarDetalles()
         Me.lblFechaCreado = "Error en BBDD"
     Else
         Me.lblCreador = creador
-        Me.lblModificador = m_pedido.FechaCreado
+        Me.lblModificador = m_pedido.fechaCreado
     End If
     If modificador = vbNullString Then    'no esta modificado
         Me.lblModificador = "No Modificado"

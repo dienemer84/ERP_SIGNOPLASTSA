@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{65E121D4-0C60-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCHRT20.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminResumenesFacturacion 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -723,7 +723,19 @@ Private Sub Totalizar()
 
     Me.lblNetoGravadoTotal.caption = FormatearDecimales(tot_neto)
     Me.lblPercepcionesTotal.caption = FormatearDecimales(tot_ib)
-    Me.lblTotalTotal.caption = FormatearDecimales(tot_neto + tot_ib + tot_iva)   'tot_exento +  borrado 24-02-15
+    
+    
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    
+    'Antes del 11.09.20 esto estaba asi:
+    
+    'Me.lblTotalTotal.caption = FormatearDecimales(tot_neto + tot_ib + tot_iva)   'tot_exento +  borrado 24-02-15
+    
+    'Despues del 11.09.20 queda asi:
+    'Se reincopora a la sumatoria del total total el valor de total exento indicado por pedido de Karin el 27.07.20
+    Me.lblTotalTotal.caption = FormatearDecimales(tot_neto + tot_ib + tot_iva + tot_exento)
+    
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 End Sub
 Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGroupMethod) As Collection

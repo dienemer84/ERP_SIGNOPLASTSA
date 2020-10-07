@@ -6,6 +6,9 @@ Public Const CAMPO_PORCENTAJE As String = "porcentaje"
 Public Const CAMPO_MINIMO As String = "minimo_imponible"
 Public Const TABLA_RETENCION As String = "ret"
 
+
+
+
 Public Function FindAllWithAlicuotas(Cuit As String) As Collection
 
     Dim d As New clsDTOPadronIIBB
@@ -23,25 +26,65 @@ Public Function FindAllWithAlicuotas(Cuit As String) As Collection
             Dim x As DTORetencionAlicuota
             For Each c In col2
         
-            For Each rx In retenciones
-            
-            If rx.IdPadron = c.IdPadron Then
-                
-            Set x = New DTORetencionAlicuota
-            x.alicuotaRetencion = c.alicuotaRetencion
-            x.alicuotaPercepcion = c.alicuotaPercepcion
-            Set x.Retencion = rx
-            ali.Add x, CStr(c.IdPadron)
-                
-            End If
+                    For Each rx In retenciones
+                    
+                    If rx.IdPadron = c.IdPadron Then
+                        
+                    Set x = New DTORetencionAlicuota
+                    x.alicuotaRetencion = c.alicuotaRetencion
+                    x.alicuotaPercepcion = c.alicuotaPercepcion
+                    x.importe = 0
+                    x.dePadron = True
+                    Set x.Retencion = rx
+                    ali.Add x, CStr(c.IdPadron)
+                        
+                    End If
             
             Next
         
         Next
         
+        Dim P As New Collection
+                    Set P = DAORetenciones.FindAllEsAgente
+                    
+                    Dim aa As Retencion
+                    
+                    
+                    For Each aa In P
+                        If Not Contains(aa, ali) Then
+                            
+                            Dim xl As New DTORetencionAlicuota
+                            Set xl = New DTORetencionAlicuota
+                            
+                            Set xl.Retencion = aa
+                            xl.dePadron = False
+                            If aa.IdPadron = 0 Then
+                                 ali.Add xl ', aa.nombre
+                            Else
+                            ali.Add xl ', aa.IdPadron
+                            End If
+                        End If
+                    Next
+        
+        
+        
+        
+        
         Set FindAllWithAlicuotas = ali
         
 End Function
+Private Function Contains(r As Retencion, c As Collection)
+Dim c1 As Boolean
+c1 = False
+Dim i As DTORetencionAlicuota
+For Each i In c
+ If i.Retencion.id = r.id Then
+   c1 = True
+ End If
+Next i
+Contains = c1
+End Function
+
 
 Public Function FindAllWithAlicuotasAnt(Cuit As String) As Collection
 

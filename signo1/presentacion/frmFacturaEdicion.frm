@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61997057
+         Format          =   59965441
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61997057
+         Format          =   59965441
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61997057
+         Format          =   59965441
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61997057
+         Format          =   59965441
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -771,7 +771,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   61997057
+         Format          =   59965441
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1913,8 +1913,16 @@ Private Sub cboTiposFactura_Click()
 
 '        End If
         Else
-        
-        Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura), "00000000")
+        If Factura.estado = EstadoFacturaCliente.Aprobada Then
+        Me.txtNumero.text = Format(Factura.numero, "00000000")   'Factura.NumeroFormateado
+      
+        Else
+         If Factura.Tipo.PuntoVenta.CaeManual Then
+            Me.txtNumero.text = Format(Factura.numero, "00000000")
+         Else
+         Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura), "00000000")
+          End If
+        End If
 '        If Factura.Tipo.PuntoVenta.EsElectronico Then
 '           Me.txtNumero.text = "0000"
 '        Else
@@ -2267,10 +2275,15 @@ End Sub
         
              If Factura.estado = EstadoFacturaCliente.EnProceso Then
 
+                If Factura.Tipo.PuntoVenta.CaeManual Then
+                Me.txtNumero.text = Format(Factura.numero)
+                Else
+            
                     Dim prox As Long
                     prox = DAOFactura.proximaFactura(Factura)
                     Factura.numero = prox
                    Me.txtNumero.text = Format(prox)
+                   End If
         End If
         
         

@@ -562,20 +562,25 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
         Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER: frmSistemaAgendaGlobal.Show
         Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO: frmSistemaTablero.Show
-        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA: frmUsuariosAgendaPersonal.Show
         Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA:
             frmCambiarPassword.Frame1 = "[ " & funciones.GetUserObj.usuario & " ]"
             frmCambiarPassword.Show
-        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__EVENTOS:
+        
+' Desactivaciones dienemer 11.09.20
+'        Se desactiva AGENDA porque da error. Aparentemente no está desarrollada.
+'        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA:
+'               frmUsuariosAgendaPersonal.Show
 
-            Dim f2k2 As New frmEventos
-            f2k2.Show
-            f2k2.llenar
+'        Se desactiva EVENTOS porque da error. Para ver luego.
+'        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__EVENTOS:
+'            Dim f2k2 As New frmEventos
+'            f2k2.Show
+'            f2k2.llenar
 
-        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS___ASIGNACION_EVENTOS
-
-            Dim f212l As New frmUsuariosEventos
-            f212l.Show
+'       Se desactiva ASIGNACION EVENTOS porque da error. No recuerdo si esto funcionaba
+'        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS___ASIGNACION_EVENTOS
+'            Dim f212l As New frmUsuariosEventos
+'            f212l.Show
 
 
         Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_INICIO_TAREAS_ASIGNADAS
@@ -891,7 +896,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
     'AddButton ribbonGroup, "Siniestros", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS, (Permisos.RRHHInformeAccidente Or Permisos.RRHHSiniestros)
-    AddButton ribbonGroup, "Obras Sociales", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS, Permisos.sistemaPanelControlGeneral
+    AddButton ribbonGroup, "Obras Sociales", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS, Permisos.sistemaPanelControlGeneral, 100
    
    
     'VENTAS--------------------------------------------------------------------------------------------------------------------
@@ -1185,3 +1190,4 @@ Private Sub TrayIcon_DblClick()
     End Select
     Me.SetFocus
 End Sub
+

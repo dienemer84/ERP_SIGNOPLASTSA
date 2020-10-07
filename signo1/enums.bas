@@ -183,10 +183,11 @@ End Enum
 
 
 Public Enum tipoDocumentoContable
-    factura = 0
+    Factura = 0
     notaCredito = 1
     notaDebito = 2
     DespachoAduana = 3
+    LiquidacionBancaria = 4
 End Enum
 
 
@@ -450,7 +451,7 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
     estado_doc_contable(EstadoFacturaCliente.CanceladaNCParcial) = "Cancela NC Parcial"
     estado_doc_contable(EstadoFacturaCliente.EnProceso) = "En Edición"
 
-    tipo_doc_contable(tipoDocumentoContable.factura) = "Factura"
+    tipo_doc_contable(tipoDocumentoContable.Factura) = "Factura"
     tipo_doc_contable(tipoDocumentoContable.notaCredito) = "N. Crédito"
     tipo_doc_contable(tipoDocumentoContable.notaDebito) = "N. Debito"
 

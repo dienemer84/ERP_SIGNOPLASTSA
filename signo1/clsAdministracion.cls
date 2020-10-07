@@ -554,8 +554,13 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
     Dim y As ListItem
     'TRAIGO LOS DATOS
     'strsql = "SELECT c.razon,c.cuit,r.fechaCreacion,r.id,r.idMoneda from AdminRecibos r inner join clientes c on r.idCliente=c.id where r.fechaCreacion >= '" & Format(desde, "yyyy-mm-dd") & "' and r.fechaCreacion <=  '" & Format(hasta, "yyyy-mm-dd") & "'"
+    
+    'Desactivo esta consulta ya que traia registros NULL y eso provocaba el error al intentar reportar
+    'Se agrega linea de r.id IS NOT NULL para filtrar. Queda Funcionando
+    'DNEMER 23.09.20 | #163
+    'strsql = "SELECT c.razon,c.cuit,r.fecha as fecha, r.id,r.idMoneda from AdminRecibos r inner join clientes c on r.idCliente=c.id right join AdminRecibosDetalleRetenciones dr on dr.idRecibo=r.id where dr.fecha >= '" & Format(desde, "yyyy-mm-dd") & "' and dr.fecha <=  '" & Format(hasta, "yyyy-mm-dd") & "' group by r.id"
 
-    strsql = "SELECT c.razon,c.cuit,r.fecha as fecha, r.id,r.idMoneda from AdminRecibos r inner join clientes c on r.idCliente=c.id right join AdminRecibosDetalleRetenciones dr on dr.idRecibo=r.id where dr.fecha >= '" & Format(desde, "yyyy-mm-dd") & "' and dr.fecha <=  '" & Format(hasta, "yyyy-mm-dd") & "' group by r.id"
+    strsql = "SELECT c.razon,c.cuit,r.fecha as fecha, r.id,r.idMoneda from AdminRecibos r inner join clientes c on r.idCliente=c.id right join AdminRecibosDetalleRetenciones dr on dr.idRecibo=r.id where dr.fecha >= '" & Format(desde, "yyyy-mm-dd") & "' and dr.fecha <=  '" & Format(hasta, "yyyy-mm-dd") & "' AND r.id IS NOT NULL group by r.id"
     Dim ret As New Recordset
     Set rs_lista = conectar.RSFactory(strsql)
 
