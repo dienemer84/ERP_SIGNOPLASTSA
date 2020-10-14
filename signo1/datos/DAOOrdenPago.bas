@@ -633,7 +633,7 @@ Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
 End Function
 
 Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boolean
-    On Error GoTo E
+     On Error GoTo E
 
     Dim op As OrdenPago
     Set op = DAOOrdenPago.FindById(opid)
@@ -656,9 +656,20 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
     If Not conectar.execute(q) Then GoTo E
 
 
-
-    q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ")"
+    'se deben borrar los cheques creados para esta orden de pago (solo los propios)
+    'fix 14-10-2020
+    'q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ")"
+       q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=1"
     If Not conectar.execute(q) Then GoTo E
+    
+        q = "UPDATE Cheques SET orden_pago_origen=0,en_cartera = 1  WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=0"
+   
+    
+    
+    
+    If Not conectar.execute(q) Then GoTo E
+    
+    
     q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid
     If Not conectar.execute(q) Then GoTo E
 
