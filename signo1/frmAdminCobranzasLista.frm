@@ -87,23 +87,23 @@ Begin VB.Form frmAdminCobranzasLista
       Column(4)       =   "frmAdminCobranzasLista.frx":0994
       Column(5)       =   "frmAdminCobranzasLista.frx":0AB4
       Column(6)       =   "frmAdminCobranzasLista.frx":0BA8
-      Column(7)       =   "frmAdminCobranzasLista.frx":0CB4
-      Column(8)       =   "frmAdminCobranzasLista.frx":0DA8
+      Column(7)       =   "frmAdminCobranzasLista.frx":0D08
+      Column(8)       =   "frmAdminCobranzasLista.frx":0DFC
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":0EFC
-      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":1034
-      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":10E4
-      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":1198
-      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1270
-      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":1328
-      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":1408
-      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":14B4
-      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1564
-      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1644
+      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":0F50
+      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":1088
+      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":1138
+      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":11EC
+      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":12C4
+      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":137C
+      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":145C
+      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1508
+      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":15B8
+      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1698
       ImageCount      =   2
-      ImagePicture(1) =   "frmAdminCobranzasLista.frx":16F0
-      ImagePicture(2) =   "frmAdminCobranzasLista.frx":1A0A
-      PrinterProperties=   "frmAdminCobranzasLista.frx":1D24
+      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1744
+      ImagePicture(2) =   "frmAdminCobranzasLista.frx":1A5E
+      PrinterProperties=   "frmAdminCobranzasLista.frx":1D78
    End
    Begin XtremeSuiteControls.PushButton cmdImprimir 
       Height          =   345
@@ -505,7 +505,7 @@ Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmar
     Values(3) = recibo.cliente.razon
     Values(4) = recibo.FechaCreacion
     Values(5) = recibo.moneda.NombreCorto
-    Values(6) = recibo.TotalEstatico.TotalReciboEstatico
+    Values(6) = funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico + recibo.TotalRetenciones)
     Values(7) = enums.EnumEstadoRecibo(recibo.estado)
     Values(8) = IIf(IsEmpty(tmpArchivos(recibo.id)), 0, tmpArchivos(recibo.id))
 End Sub
