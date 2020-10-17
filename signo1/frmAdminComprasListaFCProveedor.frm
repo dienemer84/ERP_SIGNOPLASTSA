@@ -1008,9 +1008,10 @@ End Sub
 Private Sub mnuPagarEnEfectivo_Click()
     If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
         Dim fechaPago As String
-        fechaPago = InputBox("Ingrese la fecha de pago de factura", , Factura.FEcha)
-        If IsDate(fechaPago) Then
-            If DAOFacturaProveedor.PagarEnEfectivo(Factura, CDate(fechaPago), True) Then
+        'fechaPago = InputBox("Ingrese la fecha de pago de factura", , Factura.FEcha)
+        MsgBox "Se creará una OP con fecha " + CStr(Factura.FEcha)
+        If IsDate(Factura.FEcha) Then
+            If DAOFacturaProveedor.PagarEnEfectivo(Factura, Factura.FEcha, True) Then
                 MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().id & ".", vbInformation
                 llenarGrilla
                 Me.txtComprobante.SetFocus

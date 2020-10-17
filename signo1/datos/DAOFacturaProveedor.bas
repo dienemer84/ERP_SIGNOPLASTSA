@@ -19,7 +19,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     Dim strsql As String
     If fc.id = 0 Then
         'guardo la factura
-        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte) values (" & funciones.GetUserObj.id & " , " & fc.TipoCambio & ", " & fc.configFactura.id & "," & fc.estado & "," & fc.Proveedor.id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.Redondeo) & ", " & GetEntityId(fc.Moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & ")"
+        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte) values (" & funciones.GetUserObj.id & " , " & fc.TipoCambio & ", " & fc.configFactura.id & "," & fc.estado & "," & fc.Proveedor.id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.Redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & ")"
         conectar.execute strsql
         fc.id = conectar.UltimoId2
         A = DAOPercepcionesAplicadas.Save(fc)
@@ -36,7 +36,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
         DaoFacturaProveedorHistorial.agregar fc, "Factura creada"
 
     Else
-        strsql = "update AdminComprasFacturasProveedores set tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.Moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.id
+        strsql = "update AdminComprasFacturasProveedores set tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.id
         If Not conectar.execute(strsql) Then GoTo err1
         b = DAOPercepcionesAplicadas.Save(fc)
         A = DAOIvaAplicado.Save(fc)
@@ -227,7 +227,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         fc.TotalAbonado = GetValue(rs, indice, tabla, "total_abonado")
         fc.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
 
-        If LenB(tablaMoneda) > 0 Then Set fc.Moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        If LenB(tablaMoneda) > 0 Then Set fc.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         fc.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
         If LenB(tablaAdminConfigFacturasProveedor) > 0 Then fc.configFactura = DAOConfigFacturaProveedor.Map(rs, indice, tablaAdminConfigFacturasProveedor, tablaAdminConfigIVAProveedor)
 
@@ -333,16 +333,23 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     Dim op As New OrdenPago
     op.FacturasProveedor.Add fac
     fac.TotalAbonado = fac.Total
+    fac.TipoCambio = 1
+  
+    
     op.FEcha = fechaPago
     op.estado = EstadoOrdenPago_pendiente
-    Set op.Moneda = fac.Moneda
+    Set op.moneda = fac.moneda
 
 
 
     Dim opeCaja As New operacion
     opeCaja.Pertenencia = OrigenOperacion.caja
     opeCaja.Monto = fac.Total
-    Set opeCaja.Moneda = fac.Moneda
+      If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+    opeCaja.Monto = fac.Total * -1
+    End If
+    
+    Set opeCaja.moneda = fac.moneda
     opeCaja.FechaOperacion = op.FEcha
 
 
@@ -355,7 +362,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
 
     Dim d As New clsDTOPadronIIBB
     Set d = DTOPadronIIBB.FindByCUIT(fac.Proveedor.Cuit, TipoPadronRetencion)
-    op.Alicuota = d.Alicuota
+    op.alicuota = d.alicuota
 
 
 
@@ -370,8 +377,8 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     '    totRet = totRet + d2.Item(CStr(ret.Id))
     'Next ret
 
-    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.Total * -1, fac.Total), fac.Moneda.id, op.Moneda.id))
-    op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.Moneda.id, op.Moneda.id))
+    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.Total * -1, fac.Total), fac.moneda.id, op.moneda.id))
+    op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.moneda.id, op.moneda.id))
     op.StaticTotalOrigenes = op.TotalOrigenes
     op.StaticTotalRetenido = 0    'funciones.RedondearDecimales(totRet)
 
@@ -448,10 +455,10 @@ Public Function ExportarColeccion(col As Collection) As Boolean
 
     For Each fac In col
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-        Total = Total + MonedaConverter.Convertir(fac.Total * c, fac.Moneda.id, MonedaConverter.Patron.id)
-        totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.Moneda.id, MonedaConverter.Patron.id)
-        totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.Moneda.id, MonedaConverter.Patron.id)
-        totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.Moneda.id, MonedaConverter.Patron.id)
+        Total = Total + MonedaConverter.Convertir(fac.Total * c, fac.moneda.id, MonedaConverter.Patron.id)
+        totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.id, MonedaConverter.Patron.id)
+        totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.id, MonedaConverter.Patron.id)
+        totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.id, MonedaConverter.Patron.id)
 
 
 
@@ -459,7 +466,7 @@ Public Function ExportarColeccion(col As Collection) As Boolean
         xlWorksheet.Cells(offset, 1).value = fac.Proveedor.RazonSocial
         xlWorksheet.Cells(offset, 2).value = fac.NumeroFormateado
         xlWorksheet.Cells(offset, 3).value = fac.FEcha
-        xlWorksheet.Cells(offset, 4).value = fac.Moneda.NombreCorto
+        xlWorksheet.Cells(offset, 4).value = fac.moneda.NombreCorto
         xlWorksheet.Cells(offset, 5).value = fac.TotalNetoGravadoDiscriminado(0)
         xlWorksheet.Cells(offset, 6).value = fac.TotalIVA
         xlWorksheet.Cells(offset, 7).value = fac.TotalNetoGravadoDiscriminado(0)
