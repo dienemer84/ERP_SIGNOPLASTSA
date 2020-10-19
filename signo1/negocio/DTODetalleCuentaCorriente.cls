@@ -21,3 +21,4 @@ Public AtributoExtra As Boolean    'en cta cte prov, marco si la factura esta en
 Public saldo As Double
 Public tipoComprobante As TipoComprobanteUsado
 Public IdComprobante As Long
+Public TmpId As Long

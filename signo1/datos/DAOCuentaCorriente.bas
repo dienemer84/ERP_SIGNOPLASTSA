@@ -318,9 +318,11 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     If sortCollection And Detalles.count > 0 Then
         Dim q As String
 
-        q = "CREATE TEMPORARY TABLE IF NOT EXISTS tmp_cta_cte_sort ( fecha DATE, comprobante VARCHAR(50), debe DOUBLE, haber DOUBLE, extra TINYINT, id_comprobante BIGINT, tipo_comprobante INT) TYPE=HEAP"
+        q = "CREATE TEMPORARY TABLE IF NOT EXISTS tmp_cta_cte_sort (fecha DATE, comprobante VARCHAR(50), debe DOUBLE, haber DOUBLE, extra TINYINT, id_comprobante BIGINT, tipo_comprobante INT) TYPE=HEAP"
         conectar.execute q
         conectar.execute "TRUNCATE tmp_cta_cte_sort"
+
+
 
         For Each detalle In Detalles
             q = "INSERT INTO tmp_cta_cte_sort VALUES ('fecha', 'comprobante', 'debe', 'haber', 'extra','id_comprobante', 'tipo_comprobante')"
@@ -336,9 +338,13 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
         Next detalle
 
         Set Detalles = New Collection
+        Dim id As Long
+id = 0
         Set rs = conectar.RSFactory("SELECT * FROM tmp_cta_cte_sort ORDER BY fecha ASC")
         While Not rs.EOF
+        id = id + 1
             Set detalle = New DTODetalleCuentaCorriente
+            detalle.TmpId = id
             detalle.Comprobante = rs!Comprobante
             If Not IsNull(rs!FEcha) Then detalle.FEcha = rs!FEcha
             detalle.Debe = rs!Debe
@@ -418,7 +424,7 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
         End If
         detalle.FEcha = fac.FechaEmision
 
-        detalle.AtributoExtra = (fac.Saldado = TipoSaldadoFactura.SaldadoTotal) Or (fac.Saldado = TipoSaldadoFactura.notaCredito)
+        detalle.AtributoExtra = (fac.Saldado = TipoSaldadoFactura.saldadoTotal) Or (fac.Saldado = TipoSaldadoFactura.notaCredito)
         detalle.tipoComprobante = Factura_
         detalle.IdComprobante = fac.id
         Detalles.Add detalle
@@ -446,12 +452,12 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
         'detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalEstatico.TotalReciboEstatico, rec.Moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.Moneda.Id), 2)
         If rec.TotalEstatico.TotalRecibidoEstatico > 0 Then
-            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalEstatico.TotalReciboEstatico, rec.Moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.Moneda.id), 2) + funciones.RedondearDecimales(MonedaConverter.Convertir(rec.ACuenta, rec.Moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.Moneda.id), 2)
+            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalEstatico.TotalReciboEstatico, rec.moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.id), 2) + funciones.RedondearDecimales(MonedaConverter.Convertir(rec.ACuenta, rec.moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.id), 2)
         Else
             'Set rec.facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idFactura FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id & ")")
 
             Set rec.Cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.id & ")")
-            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalRecibido, rec.Moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.Moneda.id), 2)
+            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalRecibido, rec.moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.id), 2)
 
             'comentado el 3-7-13
             'detalle.Haber = detalle.Haber - rec.TotalRetenciones
