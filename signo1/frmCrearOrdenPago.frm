@@ -1372,9 +1372,12 @@ Private Sub btnCargar_Click()
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
                 
                 If IsSomething(prov) Then
+                
+                 ' #fix 180
+                If OrdenPago.estado = EstadoOrdenPago_pendiente Then
                     Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
                     ActualizarAlicuotas
-
+                End If
                     
                   
                     
