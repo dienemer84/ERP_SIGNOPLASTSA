@@ -346,7 +346,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
             GoTo err1
         End If
     End If
-
+DaoHistorico.Save "orden_pago_historial", "OP Aprobada", op.id
     aprobar = True
     If insideTransaction Then conectar.CommitTransaction
     Exit Function
@@ -594,8 +594,13 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         Next ra
 
     End If
-
-
+    
+    Dim msg As String
+    msg = "OP Creada"
+    
+    If Not NUEVA Then msg = "OP Actualizada"
+    DaoHistorico.Save "orden_pago_historial", msg, op.id
+    
     Guardar = True
 
     Exit Function
@@ -625,7 +630,7 @@ Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
                 q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Saldada & " WHERE id = " & opid
                 RemoveFactura = conectar.execute(q)
             End If
-
+'DaoHistorico.Save "orden_pago_historial", "Factura Id " & facid & " removida, opid"
 
         End If
     End If
@@ -684,7 +689,7 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
     If Not DAOOrdenPago.Guardar(op, False) Then GoTo E
 
 
-
+DaoHistorico.Save "orden_pago_historial", "OP Anulada", op.id
 
     If useInternalTransaction Then conectar.CommitTransaction
 
@@ -1008,14 +1013,14 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontBold = False
     Printer.FontSize = 8
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
-    Dim F As clsFacturaProveedor
+    Dim f As clsFacturaProveedor
     Dim facs As New Collection
     c = 0
-    For Each F In Orden.FacturasProveedor
+    For Each f In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
-    Next F
+        Printer.Print f.NumeroFormateado & String$(8, " del ") & f.FEcha & String$(8, " por ") & f.moneda.NombreCorto & " " & f.Total
+    Next f
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"
@@ -1120,5 +1125,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.EndDoc
+    
+        DaoHistorico.Save "orden_pago_historial", "OP Impresa", Orden.id
 End Function
 

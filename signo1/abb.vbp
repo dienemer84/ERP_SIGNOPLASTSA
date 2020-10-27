@@ -529,6 +529,7 @@ Module=DAOObraSocial; datos\DAOObraSocial.bas
 Form=presentacion\frmObraSocial.frm
 Form=presentacion\frmAdminFacturaRechazoAfip.frm
 ResFile32="Themes.res"
+Form=presentacion\frmHistorico.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""

@@ -219,9 +219,9 @@ Begin VB.Form frmOrdenesPago
       End
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
          Height          =   315
-         Left            =   7965
+         Left            =   7845
          TabIndex        =   14
-         Top             =   330
+         Top             =   180
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -232,9 +232,9 @@ Begin VB.Form frmOrdenesPago
       End
       Begin XtremeSuiteControls.DateTimePicker dtpHasta 
          Height          =   315
-         Left            =   7950
+         Left            =   7830
          TabIndex        =   15
-         Top             =   705
+         Top             =   555
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -243,11 +243,53 @@ Begin VB.Form frmOrdenesPago
          CheckBox        =   -1  'True
          Format          =   1
       End
+      Begin XtremeSuiteControls.ComboBox cboEstado 
+         Height          =   315
+         Left            =   945
+         TabIndex        =   19
+         Top             =   960
+         Width           =   3510
+         _Version        =   786432
+         _ExtentX        =   6191
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Style           =   2
+         Text            =   "ComboBox1"
+      End
+      Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
+         Height          =   255
+         Left            =   4530
+         TabIndex        =   21
+         Top             =   960
+         Width           =   300
+         _Version        =   786432
+         _ExtentX        =   529
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label4 
+         Height          =   195
+         Left            =   360
+         TabIndex        =   20
+         Top             =   1020
+         Width           =   495
+         _Version        =   786432
+         _ExtentX        =   873
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Estado"
+         BackColor       =   12632256
+         AutoSize        =   -1  'True
+      End
       Begin XtremeSuiteControls.Label Label6 
          Height          =   195
-         Left            =   7440
+         Left            =   7320
          TabIndex        =   17
-         Top             =   765
+         Top             =   615
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -259,9 +301,9 @@ Begin VB.Form frmOrdenesPago
       End
       Begin XtremeSuiteControls.Label Label5 
          Height          =   195
-         Left            =   7425
+         Left            =   7305
          TabIndex        =   16
-         Top             =   375
+         Top             =   225
          Width           =   465
          _Version        =   786432
          _ExtentX        =   820
@@ -321,6 +363,12 @@ Begin VB.Form frmOrdenesPago
       Begin VB.Menu mnuVerCertificado 
          Caption         =   "Ver Certificado IIBB"
       End
+      Begin VB.Menu nada 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuHistorial 
+         Caption         =   "Ver Historial"
+      End
    End
 End
 Attribute VB_Name = "frmOrdenesPago"
@@ -372,6 +420,10 @@ Private Sub cmdImprimir_Click()
 
 End Sub
 
+Private Sub cmdLimpiaEstado_Click()
+Me.cboEstado.ListIndex = -1
+End Sub
+
 Private Sub Form_Load()
     Customize Me
     GridEXHelper.CustomizeGrid Me.gridOrdenes, True
@@ -386,6 +438,18 @@ Private Sub Form_Load()
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     ids = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, OrdenesPago_
+    
+    Me.cboEstado.Clear
+    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_pendiente)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_pendiente
+    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Aprobada)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Aprobada
+    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
+
+        
+        
+    
 End Sub
 
 Private Sub llenarLista()
@@ -426,7 +490,9 @@ Private Sub llenarLista()
     End If
 
 
-
+ If Me.cboEstado.ListIndex > -1 Then
+        filter = filter & " AND ordenes_pago.estado = " & Me.cboEstado.ItemData(Me.cboEstado.ListIndex)
+    End If
 
 
     If LenB(filtroor) > 0 Then
@@ -584,6 +650,14 @@ Private Sub mnuEditar_Click()
     f22.Cargar Orden
 End Sub
 
+Private Sub mnuHistorial_Click()
+Dim c As New Collection
+
+Dim f As New frmHistorico
+f.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
+f.Show
+End Sub
+
 Private Sub mnuImprimir_Click()
 
     If Not DAOOrdenPago.PrintOP(Orden, Me.pic) Then GoTo err1
@@ -617,14 +691,14 @@ Private Sub Imprimir()
 
 
         Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
-        Dim F As clsFacturaProveedor
+        Dim f As clsFacturaProveedor
         Dim facs As New Collection
-        For Each F In Orden.FacturasProveedor
+        For Each f In Orden.FacturasProveedor
             'facs.Add F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.Moneda.NombreCorto & " " & F.Total
 
-            facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.moneda.NombreCorto & " " & F.Total
+            facs.Add f.NumeroFormateado & " del " & f.FEcha & " por " & f.moneda.NombreCorto & " " & f.Total
 
-        Next F
+        Next f
         If facs.count = 0 Then
             .item("lblFacturas").caption = "NO POSEE FACTURAS"
         Else
