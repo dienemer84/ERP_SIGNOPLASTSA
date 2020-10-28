@@ -44,19 +44,25 @@ Public Function FindAllWithAlicuotas(Cuit As String) As Collection
         
         Next
         
-        Dim p As New Collection
-                    Set p = DAORetenciones.FindAllEsAgente
+        Dim P As New Collection
+                    Set P = DAORetenciones.FindAllEsAgente
                     
                     Dim aa As Retencion
                     
                     
-                    For Each aa In p
+                    For Each aa In P
                         If Not Contains(aa, ali) Then
                             
                             Dim xl As New DTORetencionAlicuota
+                            Set xl = New DTORetencionAlicuota
+                            
                             Set xl.Retencion = aa
                             xl.dePadron = False
-                            ali.Add xl
+                            If aa.IdPadron = 0 Then
+                                 ali.Add xl ', aa.nombre
+                            Else
+                            ali.Add xl ', aa.IdPadron
+                            End If
                         End If
                     Next
         

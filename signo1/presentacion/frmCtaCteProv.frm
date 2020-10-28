@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCtaCteProv 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cuenta Corriente Proveedores"
@@ -343,6 +343,9 @@ Private Sub ver()
 
         saldo = 0
         Set saldos = New Dictionary
+       'trello  #179
+        Me.gridDetalles.Refetch
+        
         Me.gridDetalles.ItemCount = 0
         Me.gridDetalles.ItemCount = Detalles.count
         GridEXHelper.AutoSizeColumns Me.gridDetalles

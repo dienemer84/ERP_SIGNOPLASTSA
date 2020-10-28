@@ -901,18 +901,18 @@ Begin VB.Form frmCrearOrdenPago
          ColumnsCount    =   3
          Column(1)       =   "frmCrearOrdenPago.frx":8500
          Column(2)       =   "frmCrearOrdenPago.frx":863C
-         Column(3)       =   "frmCrearOrdenPago.frx":875C
+         Column(3)       =   "frmCrearOrdenPago.frx":873C
          FormatStylesCount=   8
-         FormatStyle(1)  =   "frmCrearOrdenPago.frx":8860
-         FormatStyle(2)  =   "frmCrearOrdenPago.frx":8988
-         FormatStyle(3)  =   "frmCrearOrdenPago.frx":8A38
-         FormatStyle(4)  =   "frmCrearOrdenPago.frx":8AEC
-         FormatStyle(5)  =   "frmCrearOrdenPago.frx":8BC4
-         FormatStyle(6)  =   "frmCrearOrdenPago.frx":8C7C
-         FormatStyle(7)  =   "frmCrearOrdenPago.frx":8D5C
-         FormatStyle(8)  =   "frmCrearOrdenPago.frx":8DF8
+         FormatStyle(1)  =   "frmCrearOrdenPago.frx":8840
+         FormatStyle(2)  =   "frmCrearOrdenPago.frx":8968
+         FormatStyle(3)  =   "frmCrearOrdenPago.frx":8A18
+         FormatStyle(4)  =   "frmCrearOrdenPago.frx":8ACC
+         FormatStyle(5)  =   "frmCrearOrdenPago.frx":8BA4
+         FormatStyle(6)  =   "frmCrearOrdenPago.frx":8C5C
+         FormatStyle(7)  =   "frmCrearOrdenPago.frx":8D3C
+         FormatStyle(8)  =   "frmCrearOrdenPago.frx":8DD8
          ImageCount      =   0
-         PrinterProperties=   "frmCrearOrdenPago.frx":8E98
+         PrinterProperties=   "frmCrearOrdenPago.frx":8E78
       End
       Begin XtremeSuiteControls.PushButton btnCargar 
          Height          =   405
@@ -1372,9 +1372,12 @@ Private Sub btnCargar_Click()
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
                 
                 If IsSomething(prov) Then
+                
+                 ' #fix 180
+                If OrdenPago.estado = EstadoOrdenPago_pendiente Then
                     Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
                     ActualizarAlicuotas
-
+                End If
                     
                   
                     
@@ -2080,7 +2083,7 @@ Private Sub gridRetenciones_RowFormat(RowBuffer As GridEX20.JSRowData)
  
         Set alicuotaRetencion = alicuotas.item(RowBuffer.RowIndex)
         
-            If alicuotaRetencion.Retencion.id <> 2 Then
+            If alicuotaRetencion.importe > 0 Then '.Retencion.id <> 2 Then
             RowBuffer.RowStyle = "padronganancias"
             Else
             RowBuffer.RowStyle = "padroningresos"

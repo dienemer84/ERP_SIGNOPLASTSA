@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitosLista 
    BackColor       =   &H00C0C0C0&
    Caption         =   "Remitos"
@@ -31,7 +31,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Left            =   1425
          TabIndex        =   3
          Top             =   645
-         Width           =   6855
+         Width           =   4215
       End
       Begin VB.TextBox txtNroRemito 
          Height          =   285
@@ -69,9 +69,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
       Begin XtremeSuiteControls.PushButton cmdBuscar 
          Default         =   -1  'True
          Height          =   375
-         Left            =   8445
+         Left            =   11280
          TabIndex        =   9
-         Top             =   600
+         Top             =   720
          Width           =   1095
          _Version        =   786432
          _ExtentX        =   1931
@@ -122,9 +122,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
       End
       Begin XtremeSuiteControls.PushButton cmdImprimir 
          Height          =   375
-         Left            =   9570
+         Left            =   11280
          TabIndex        =   16
-         Top             =   585
+         Top             =   240
          Width           =   1080
          _Version        =   786432
          _ExtentX        =   1905
@@ -132,6 +132,46 @@ Begin VB.Form frmPlaneamientoRemitosLista
          _StockProps     =   79
          Caption         =   "Imprimir"
          UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboEstadoFacturado 
+         Height          =   315
+         Left            =   6705
+         TabIndex        =   17
+         Top             =   600
+         Width           =   1590
+         _Version        =   786432
+         _ExtentX        =   2805
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Style           =   2
+         Text            =   "ComboBox1"
+      End
+      Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
+         Height          =   255
+         Left            =   8400
+         TabIndex        =   19
+         Top             =   630
+         Width           =   300
+         _Version        =   786432
+         _ExtentX        =   529
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label4 
+         Height          =   195
+         Left            =   5760
+         TabIndex        =   18
+         Top             =   660
+         Width           =   720
+         _Version        =   786432
+         _ExtentX        =   1270
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Facturado"
+         AutoSize        =   -1  'True
       End
       Begin XtremeSuiteControls.Label Label7 
          Height          =   195
@@ -410,6 +450,7 @@ Private Sub cmdImprimir_Click()
         If IsNull(Me.dtpHasta) And IsNull(Me.dtpDesde) Then
             q = "PERIODO SIN ESPECIFICAR" & Chr(10)
         End If
+        
 
         If LenB(q) > 1 Then
             .HeaderString(jgexHFRight) = q
@@ -424,6 +465,10 @@ Private Sub cmdImprimir_Click()
     frmPrintPreview.Show 1
 End Sub
 
+Private Sub cmdLimpiaEstado_Click()
+Me.cboEstadoFacturado.ListIndex = -1
+End Sub
+
 Private Sub endRto_Click()
     On Error GoTo err454
     Dim A As Long
@@ -433,11 +478,11 @@ Private Sub endRto_Click()
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 5
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 5
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAORemitoS.ImprimirRemito rtoNro
                 Next i
             End If
@@ -474,6 +519,10 @@ Private Sub listaRemitos()
     End If
 
 
+ If Me.cboEstadoFacturado.ListIndex > -1 Then
+        filtro = filtro & " and " & DAORemitoS.CAMPO_ESTADO_FACTURADO & "=" & (Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.ListIndex))
+    End If
+
 
 
 
@@ -506,6 +555,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.grilla, True
     id_suscriber = funciones.CreateGUID
     Me.grilla.Columns(8).Visible = VerInfoAdministracion
+    Me.cboEstadoFacturado.Visible = VerInfoAdministracion
     Channel.AgregarSuscriptor Me, Remitos_
     Me.grilla.ItemCount = 0
     Me.grilla.Update
@@ -515,6 +565,21 @@ Private Sub Form_Load()
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
     Next i
     Me.cboRangos.ListIndex = i
+
+
+Me.cboEstadoFacturado.Clear
+Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoNoFacturado)
+Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoNoFacturado
+Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoNoFacturable)
+
+Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoNoFacturable
+Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoFacturadoParcial)
+Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoFacturadoParcial
+
+Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoFacturadoTotal)
+
+Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoFacturadoTotal
+
 
     listaRemitos
 
@@ -556,7 +621,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
 
 
-            If VerInfoAdministracion And tmpRto.Estado <> RemitoAnulado Then
+            If VerInfoAdministracion And tmpRto.estado <> RemitoAnulado Then
                 Me.mnuValorizar.Enabled = (tmpRto.EstadoFacturado = RemitoNoFacturado Or tmpRto.EstadoFacturado = RemitoFacturadoParcial)
 
                 If tmpRto.EstadoFacturado = RemitoNoFacturable Or tmpRto.EstadoFacturado = RemitoNoFacturado Then
@@ -579,11 +644,11 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
 
             Me.archivos = Permisos.SistemaArchivosVer
-            Me.AnularRto = (tmpRto.Estado = EstadoRemito.RemitoAprobado)
-            Me.printRto.Enabled = (tmpRto.Estado = EstadoRemito.RemitoAprobado Or tmpRto.Estado = RemitoAnulado)
-            Me.endRto.Enabled = (Permisos.planRemitosAprobaciones And tmpRto.Estado = RemitoPendiente)
-            Me.mnuEditar.Enabled = (tmpRto.Estado = RemitoPendiente)
-            Me.mnuFacturarRemito.Enabled = (tmpRto.Estado = EstadoRemito.RemitoAprobado)
+            Me.AnularRto = (tmpRto.estado = EstadoRemito.RemitoAprobado)
+            Me.printRto.Enabled = (tmpRto.estado = EstadoRemito.RemitoAprobado Or tmpRto.estado = RemitoAnulado)
+            Me.endRto.Enabled = (Permisos.planRemitosAprobaciones And tmpRto.estado = RemitoPendiente)
+            Me.mnuEditar.Enabled = (tmpRto.estado = RemitoPendiente)
+            Me.mnuFacturarRemito.Enabled = (tmpRto.estado = EstadoRemito.RemitoAprobado)
 
             Me.PopupMenu Me.mnuRtos
         End If
@@ -593,12 +658,12 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 Then
         Set tmpRto = remitos(RowBuffer.RowIndex)
 
-        If tmpRto.Estado = RemitoAnulado Then
+        If tmpRto.estado = RemitoAnulado Then
             RowBuffer.RowStyle = "Anulado"
         Else
-            If tmpRto.Estado = EstadoRemito.RemitoAprobado Then
+            If tmpRto.estado = EstadoRemito.RemitoAprobado Then
                 RowBuffer.CellStyle(4) = "EstadoAprobado"
-            ElseIf tmpRto.Estado = RemitoPendiente Then
+            ElseIf tmpRto.estado = RemitoPendiente Then
                 RowBuffer.CellStyle(4) = "EstadoPendiente"
             End If
         End If
@@ -636,7 +701,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         .value(1) = tmpRto.numero
         .value(6) = tmpRto.detalle
         .value(3) = tmpRto.FEcha
-        .value(4) = enums.EnumEstadoRemito(tmpRto.Estado)
+        .value(4) = enums.EnumEstadoRemito(tmpRto.estado)
         .value(5) = tmpRto.usuarioCreador.usuario
         If IsSomething(tmpRto.cliente) Then .value(2) = tmpRto.cliente.razon
         If IsSomething(tmpRto.usuarioAprobador) Then
@@ -676,7 +741,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 Set tmpRto = remitos(i)
                 tmpRto.id = tmp.id
                 tmpRto.detalle = tmp.detalle
-                tmpRto.Estado = tmp.Estado
+                tmpRto.estado = tmp.estado
                 tmpRto.EstadoFacturado = tmp.EstadoFacturado
                 Set tmpRto.cliente = tmp.cliente
                 Set tmpRto.usuarioCreador = tmp.usuarioCreador
@@ -729,7 +794,7 @@ Private Sub mnuEditar_Click()
     frm3.editar = True
     Set frm3.Remito = tmpRto
     frm3.valorizable = Me.VerInfoAdministracion
-    frm3.conceptuable = (tmpRto.Estado = RemitoPendiente)
+    frm3.conceptuable = (tmpRto.estado = RemitoPendiente)
     frm3.MostrarInfoAdministracion = VerInfoAdministracion
     frm3.Show
 End Sub
@@ -778,18 +843,18 @@ Private Sub printRto_Click()
     If Not rs.BOF And Not rs.EOF Then est = rs!impreso Else Exit Sub
     If est > 0 Then
         If MsgBox("Este remito ya fué impreso," & Chr(10) & "¿Desea volver a imprimir?", vbYesNo, "Confirmación") = vbYes Then
-            cd.Flags = cdlPDUseDevModeCopies
-            cd.Copies = 5
-            cd.ShowPrinter
-            For i = 1 To cd.Copies
+            CD.Flags = cdlPDUseDevModeCopies
+            CD.Copies = 5
+            CD.ShowPrinter
+            For i = 1 To CD.Copies
                 DAORemitoS.ImprimirRemito rto
             Next i
         End If
     Else
         If MsgBox("Este remito no fue impreso." & Chr(10) & "¿Desea imprimirlo?", vbYesNo) = vbYes Then
-            cd.Copies = 5
-            cd.ShowPrinter
-            For i = 1 To cd.Copies
+            CD.Copies = 5
+            CD.ShowPrinter
+            For i = 1 To CD.Copies
                 DAORemitoS.ImprimirRemito rto
             Next
         End If

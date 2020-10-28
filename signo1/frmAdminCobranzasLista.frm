@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminCobranzasLista 
    BackColor       =   &H00C0C0C0&
@@ -80,28 +80,30 @@ Begin VB.Form frmAdminCobranzasLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   6
+      ColumnsCount    =   8
       Column(1)       =   "frmAdminCobranzasLista.frx":0640
       Column(2)       =   "frmAdminCobranzasLista.frx":07A0
       Column(3)       =   "frmAdminCobranzasLista.frx":08A0
       Column(4)       =   "frmAdminCobranzasLista.frx":0994
       Column(5)       =   "frmAdminCobranzasLista.frx":0AB4
       Column(6)       =   "frmAdminCobranzasLista.frx":0BA8
+      Column(7)       =   "frmAdminCobranzasLista.frx":0D08
+      Column(8)       =   "frmAdminCobranzasLista.frx":0DFC
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":0CFC
-      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":0E34
-      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":0EE4
-      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":0F98
-      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1070
-      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":1128
-      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":1208
-      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":12B4
-      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1364
-      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1444
+      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":0F50
+      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":1088
+      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":1138
+      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":11EC
+      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":12C4
+      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":137C
+      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":145C
+      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1508
+      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":15B8
+      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1698
       ImageCount      =   2
-      ImagePicture(1) =   "frmAdminCobranzasLista.frx":14F0
-      ImagePicture(2) =   "frmAdminCobranzasLista.frx":180A
-      PrinterProperties=   "frmAdminCobranzasLista.frx":1B24
+      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1744
+      ImagePicture(2) =   "frmAdminCobranzasLista.frx":1A5E
+      PrinterProperties=   "frmAdminCobranzasLista.frx":1D78
    End
    Begin XtremeSuiteControls.PushButton cmdImprimir 
       Height          =   345
@@ -430,7 +432,7 @@ Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As I
     End If
 End Sub
 
-Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.nro.caption = "[ Nro. " & Format(recibo.id, "0000") & " ]"
         If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
@@ -469,19 +471,19 @@ End Sub
 
 Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex = 0 Then Exit Sub
-    If RowBuffer.value(5) = "Aprobado" Then
-        RowBuffer.CellStyle(5) = "Verde"
-    ElseIf RowBuffer.value(5) = "Anulado" Then
+    If RowBuffer.value(7) = "Aprobado" Then
+        RowBuffer.CellStyle(7) = "Verde"
+    ElseIf RowBuffer.value(7) = "Anulado" Then
 
-        RowBuffer.CellStyle(5) = "Anulado"
+        RowBuffer.CellStyle(7) = "Anulado"
     Else
-        RowBuffer.CellStyle(5) = "Rojo"
+        RowBuffer.CellStyle(7) = "Rojo"
     End If
 
 
 
-    If RowBuffer.value(6) > 0 Then
-        RowBuffer.CellStyle(6) = "HayArchivosIncidencias"
+    If RowBuffer.value(8) > 0 Then
+        RowBuffer.CellStyle(8) = "HayArchivosIncidencias"
     End If
 
 
@@ -502,8 +504,10 @@ Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmar
     
     Values(3) = recibo.cliente.razon
     Values(4) = recibo.FechaCreacion
-    Values(5) = enums.EnumEstadoRecibo(recibo.estado)
-    Values(6) = IIf(IsEmpty(tmpArchivos(recibo.id)), 0, tmpArchivos(recibo.id))
+    Values(5) = recibo.moneda.NombreCorto
+    Values(6) = funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico + recibo.TotalRetenciones)
+    Values(7) = enums.EnumEstadoRecibo(recibo.estado)
+    Values(8) = IIf(IsEmpty(tmpArchivos(recibo.id)), 0, tmpArchivos(recibo.id))
 End Sub
 
 
