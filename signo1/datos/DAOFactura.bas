@@ -875,6 +875,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
     
     conectar.BeginTransaction
   
+            aprobarV2 = True
     If aprobarLocal Then
             If (Factura.estado = EstadoFacturaCliente.Aprobada) Then
           
@@ -883,7 +884,6 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
             
             Dim idf As Long
         
-            aprobarV2 = True
             If Factura.moneda.Cambio > 1 Then
                 If MsgBox("¿Desea asumir el valor para  " & Factura.moneda.NombreCorto & " cómo " & Factura.moneda.Cambio & "?", vbYesNo, "Confirmación") = vbNo Then GoTo err5
             End If
@@ -2291,7 +2291,7 @@ seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.Total
             r_tmp!descripcion = deta.detalle
             r_tmp!unitario = funciones.FormatearDecimales(deta.SubTotal)
             r_tmp!Descuento = deta.PorcentajeDescuento
-            r_tmp!Importe = funciones.FormatearDecimales(deta.Total)
+            r_tmp!importe = funciones.FormatearDecimales(deta.Total)
             
             r_tmp.Update
 
