@@ -187,8 +187,8 @@ req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'Desactivada el 17.07.20 -dnemer
     
     If F.ConceptoIncluir = ConceptoIncluir.ConceptoProductoServicio Or F.ConceptoIncluir = ConceptoIncluir.ConceptoServicio Then
-     req.FchServDesde = Format(F.FechaServDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
-     req.FchServHasta = Format(F.FechaServHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
+     req.FchServDesde = Format(F.FechaVtoDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
+     req.FchServHasta = Format(F.FechaVtoHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
     End If
     
 req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
@@ -295,7 +295,7 @@ End If
     'trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
 'bug #4
-    trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
+    trib.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     If F.TotalEstatico.TotalPercepcionesIB > 0 Then
         req.Tributos.Add trib
     Else
@@ -309,7 +309,7 @@ End If
     'Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
     Iva.idAlicIvaCambiar = F.AlicuotaAplicada
     
-    Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
+    Iva.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
 
     If F.TotalEstatico.TotalIVADiscrimandoONo > 0 Then
