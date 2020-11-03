@@ -1971,7 +1971,7 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
     nuevaF.observaciones = F.observaciones
     nuevaF.EstaDiscriminada = F.EstaDiscriminada
     nuevaF.OrdenCompra = F.OrdenCompra
-
+    nuevaF.ConceptoIncluir = F.ConceptoIncluir
     nuevaF.TipoCambioAjuste = F.TipoCambioAjuste
 
     nuevaF.Saldado = NoSaldada

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -1693,8 +1693,8 @@ Private Sub mnuCrearCopiaFactura_Click()
 
     taskDialog.DefaultRadioButton = -1
     taskDialog.AddRadioButton "Factura", tipoDocumentoContable.Factura
-    taskDialog.AddRadioButton "Nota de D?bito", tipoDocumentoContable.notaDebito
-    taskDialog.AddRadioButton "Nota de Cr?dito", tipoDocumentoContable.notaCredito
+    taskDialog.AddRadioButton "Nota de Débito", tipoDocumentoContable.notaDebito
+    taskDialog.AddRadioButton "Nota de Crédito", tipoDocumentoContable.notaCredito
 
 
     taskDialog.MainIcon = xtpTaskIconInformation
@@ -1706,7 +1706,7 @@ Private Sub mnuCrearCopiaFactura_Click()
             Dim newFact As Factura
             Set newFact = DAOFactura.CrearCopiaFiel(Factura, Me.taskDialog.DefaultRadioButton)
             If IsSomething(newFact) Then
-                MsgBox "Se cre? un nuevo comprobante (" & newFact.GetShortDescription(False, True) & ")", vbInformation + vbOKOnly
+                MsgBox "Se creó un nuevo comprobante (" & newFact.GetShortDescription(False, True) & ")", vbInformation + vbOKOnly
             Else
                 MsgBox "Hubo un error al copiar la factura.", vbCritical + vbOKOnly
             End If
