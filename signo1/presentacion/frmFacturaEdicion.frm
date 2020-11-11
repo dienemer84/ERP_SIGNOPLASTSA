@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59965441
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59965441
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59965441
+         Format          =   58720257
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59965441
+         Format          =   58720257
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -771,7 +771,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59965441
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1705,7 +1705,6 @@ Private Sub cboCliente_Click()
         Me.cboTiposFactura.Clear
         
 
-
 Dim id_Default As Long
 id_Default = 0
 Dim nidx As Long
@@ -2019,6 +2018,8 @@ Private Sub Form_Load()
     DAOCuentaBancaria.llenarComboCBU Me.cboCuentasCBU
     'Me.cboCuentasCBU.Visible = False
     
+
+    
     If Not IsSomething(Factura) Then
         Set Factura = New Factura
         Factura.Detalles = New Collection
@@ -2040,6 +2041,7 @@ Private Sub Form_Load()
         'Me.dtFechaServDesde.value = Factura.FechaEmision
         'Me.dtFechaServHasta.value = Factura.FechaEmision
         
+
 
         If Me.cboMoneda.ListIndex <> -1 Then
             Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))

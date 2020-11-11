@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitosLista 
    BackColor       =   &H00C0C0C0&
@@ -57,7 +57,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Height          =   285
          Left            =   10620
          TabIndex        =   8
-         Top             =   225
+         Top             =   270
          Width           =   495
          _Version        =   786432
          _ExtentX        =   873
@@ -135,9 +135,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
       End
       Begin XtremeSuiteControls.ComboBox cboEstadoFacturado 
          Height          =   315
-         Left            =   6705
+         Left            =   6600
          TabIndex        =   17
-         Top             =   600
+         Top             =   645
          Width           =   1590
          _Version        =   786432
          _ExtentX        =   2805
@@ -149,9 +149,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
       End
       Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
          Height          =   255
-         Left            =   8400
+         Left            =   8280
          TabIndex        =   19
-         Top             =   630
+         Top             =   690
          Width           =   300
          _Version        =   786432
          _ExtentX        =   529
@@ -164,7 +164,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Height          =   195
          Left            =   5760
          TabIndex        =   18
-         Top             =   660
+         Top             =   710
          Width           =   720
          _Version        =   786432
          _ExtentX        =   1270
@@ -230,7 +230,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Height          =   255
          Left            =   240
          TabIndex        =   5
-         Top             =   645
+         Top             =   710
          Width           =   1095
       End
       Begin VB.Label Label3 
