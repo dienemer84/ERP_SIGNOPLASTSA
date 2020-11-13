@@ -235,18 +235,23 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
 
     Set ordenes = DAOOrdenPago.FindAllByProveedor(id_proveedor, cond1 & "  and ordenes_pago.fecha> " & max_desde, soloOp)
     For Each Orden In ordenes
-        'ver si solo mostrar las aprobadas
+        'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
 
-        If Orden.estado = EstadoOrdenPago_Aprobada Then
+        'If Orden.estado = EstadoOrdenPago_Aprobada Then
             Set detalle = New DTODetalleCuentaCorriente
             detalle.Comprobante = "OP-" & Orden.id
+            
+            '#178
+            If (Orden.estado = EstadoOrdenPago_pendiente) Then
+                detalle.Comprobante = detalle.Comprobante & " (Pendiente)"
+            End If
             detalle.tipoComprobante = OrdenPago_
             detalle.IdComprobante = Orden.id
 
             detalle.Haber = funciones.RedondearDecimales(Orden.TotalOrdenPago)          '.StaticTotalFacturas + Orden.TotalCompensatorios)
             detalle.FEcha = Orden.FEcha
             Detalles.Add detalle
-        End If
+      '  End If
     Next Orden
 
     Dim facturas As Collection
@@ -270,6 +275,10 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
         If fac.OrdenPagoId > 0 Then
             If BuscarEnColeccion(ordenes, CStr(fac.OrdenPagoId)) Then
                 detalle.Comprobante = detalle.Comprobante & " (Op." & fac.OrdenPagoId & " " & ordenes.item(CStr(fac.OrdenPagoId)).FEcha & ")"
+                
+                
+                
+                
             End If
 
         End If
@@ -344,7 +353,7 @@ id = 0
         While Not rs.EOF
         id = id + 1
             Set detalle = New DTODetalleCuentaCorriente
-            detalle.TmpId = id
+            detalle.tmpId = id
             detalle.Comprobante = rs!Comprobante
             If Not IsNull(rs!FEcha) Then detalle.FEcha = rs!FEcha
             detalle.Debe = rs!Debe
