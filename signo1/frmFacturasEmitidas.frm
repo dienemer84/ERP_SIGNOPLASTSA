@@ -751,21 +751,21 @@ Private Sub aprobarFactura_Click()
     Dim g As Long
     Dim msgadicional As String
     msgadicional = ""
-    If MsgBox("?Desea aprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+    If MsgBox("¿Desea aprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.GridEX1.RowIndex(Me.GridEX1.row)
         If DAOFactura.aprobarV2(Factura, True, False) Then
             
             
             
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
-              msgadicional = "Esta factura deber? enviarse a la afip"
+              msgadicional = "Esta factura deberá enviarse a la afip"
            End If
             If Factura.Tipo.PuntoVenta.EsElectronico And Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
               msgadicional = "Recuerde agregar al comprobante: CAE y fecha de vencimiento del CAE "
            End If
             
             Dim msg As String
-            msg = "Comprobante aprobado con ?xito!"
+            msg = "Comprobante aprobado con éxito!"
             If IsSomething(Factura.CaeSolicitarResponse) Then
              If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
             
@@ -777,7 +777,7 @@ Private Sub aprobarFactura_Click()
             End If
             
             End If
-            MsgBox msg, vbInformation, "Informaci?n"
+            MsgBox msg, vbInformation, "Información"
             
             Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
@@ -1095,7 +1095,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
@@ -1627,21 +1627,21 @@ Private Sub mnuAprobarEnviar_Click()
     Dim g As Long
     Dim msgadicional As String
     msgadicional = ""
-    If MsgBox("?Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+    If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.GridEX1.RowIndex(Me.GridEX1.row)
         If DAOFactura.aprobarV2(Factura, True, True) Then
             
             
             
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
-              msgadicional = "Esta factura deber? enviarse a la afip"
+              msgadicional = "Esta factura deberá enviarse a la afip"
            End If
             If Factura.Tipo.PuntoVenta.EsElectronico And Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
               msgadicional = "Recuerde agregar al comprobante: CAE y fecha de vencimiento del CAE "
            End If
             
             Dim msg As String
-            msg = "Comprobante aprobado con    exito!"
+            msg = "Comprobante aprobado con exito!"
             If IsSomething(Factura.CaeSolicitarResponse) Then
                  If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
                 
@@ -1653,7 +1653,7 @@ Private Sub mnuAprobarEnviar_Click()
                 End If
                 
             End If
-            MsgBox msg, vbInformation, "Informacion"
+            MsgBox msg, vbInformation, "Información"
             
             Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
@@ -1782,21 +1782,21 @@ On Error GoTo err1
          Me.GridEX1.RefreshRowIndex gg
             
     Else
-     If MsgBox("?Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+     If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.GridEX1.RowIndex(Me.GridEX1.row)
         If DAOFactura.aprobarV2(Factura, False, True) Then
             
    
          
             Dim msg As String
-            msg = "Comprobante informado con ?xito!"
+            msg = "Comprobante informado con éxito!"
             If IsSomething(Factura.CaeSolicitarResponse) Then
              If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
             
-              msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
+                  msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
+                End If
             End If
-            End If
-            MsgBox msg, vbInformation, "Informaci?n"
+            MsgBox msg, vbInformation, "Información"
             
             Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
