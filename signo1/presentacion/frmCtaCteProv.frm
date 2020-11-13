@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCtaCteProv 
    BorderStyle     =   1  'Fixed Single
@@ -347,8 +347,10 @@ Private Sub ver()
         Me.gridDetalles.Refetch
         
         Me.gridDetalles.ItemCount = 0
-        Me.gridDetalles.ItemCount = Detalles.count
-        GridEXHelper.AutoSizeColumns Me.gridDetalles
+        If Detalles.count > 0 Then
+            Me.gridDetalles.ItemCount = Detalles.count
+            GridEXHelper.AutoSizeColumns Me.gridDetalles
+        End If
     End If
 End Sub
 Private Sub ver2()
@@ -448,6 +450,8 @@ Private Sub gridDetalles_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
+    If Detalles.count = 0 Then Exit Sub
+    
     If RowBuffer.RowIndex > 0 Then
         Set deta = Detalles.item(RowBuffer.RowIndex)
         If Not deta.AtributoExtra And deta.Debe > 0 And deta.Haber = 0 Then    'no esta en ninguna orden
