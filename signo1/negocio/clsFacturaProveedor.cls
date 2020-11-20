@@ -35,7 +35,7 @@ Public TotalAbonado As Double
 Dim vTipoCambio As Double
 Public TotalPago As Double
 Public TipoCambioPago As Double
-
+Public UltimaActualizacion As Date
 Public ImporteTotalAbonado As Double    'dto para poder hacer pagos parciales
 Public NetoGravadoAbonado As Double    'dto para poder hacer pagos parciales
 
@@ -186,8 +186,8 @@ Public Property Get TotalIVA() As Double
     For P = 1 To vIvaAplicado.count
         'el iva 0% (exento), no suma por el valor 0 de la alicuota
 
-        If (vIvaAplicado(P).Alicuota.Alicuota <> 0) Then
-            tot_iva = tot_iva + (vIvaAplicado(P).Monto * (vIvaAplicado(P).Alicuota.Alicuota / 100))
+        If (vIvaAplicado(P).alicuota.alicuota <> 0) Then
+            tot_iva = tot_iva + (vIvaAplicado(P).Monto * (vIvaAplicado(P).alicuota.alicuota / 100))
         End If
     Next
     TotalIVA = tot_iva
@@ -198,14 +198,14 @@ End Property
 
 
 'no se usa creo
-Public Property Get TotalNetoGravadoDiscriminado(Alicuota As Double) As Double
+Public Property Get TotalNetoGravadoDiscriminado(alicuota As Double) As Double
     Dim tot_ng As Double
     tot_ng = 0
-    Dim a As clsAlicuotaAplicada
+    Dim A As clsAlicuotaAplicada
 
-    For Each a In Me.IvaAplicado
-        If a.Alicuota.Alicuota = Alicuota Then
-            tot_ng = tot_ng + (a.Monto)
+    For Each A In Me.IvaAplicado
+        If A.alicuota.alicuota = alicuota Then
+            tot_ng = tot_ng + (A.Monto)
         End If
     Next
 
@@ -213,17 +213,17 @@ Public Property Get TotalNetoGravadoDiscriminado(Alicuota As Double) As Double
 
 End Property
 
-Public Property Get TotalIVADiscriminado(Alicuota As Double) As Double
+Public Property Get TotalIVADiscriminado(alicuota As Double) As Double
     Dim tot_iva As Double
     tot_iva = 0
-    Dim a As clsAlicuotaAplicada
+    Dim A As clsAlicuotaAplicada
 
-    For Each a In Me.IvaAplicado
-        If a.Alicuota.Alicuota = Alicuota Then
-            If Alicuota = 0 Then
-                tot_iva = tot_iva + (a.Monto)
+    For Each A In Me.IvaAplicado
+        If A.alicuota.alicuota = alicuota Then
+            If alicuota = 0 Then
+                tot_iva = tot_iva + (A.Monto)
             Else
-                tot_iva = tot_iva + (a.Monto * (a.Alicuota.Alicuota / 100))
+                tot_iva = tot_iva + (A.Monto * (A.alicuota.alicuota / 100))
             End If
         End If
     Next
@@ -291,11 +291,11 @@ Public Property Get NetoNoGravado() As Double
   Dim tot_ng As Double
     tot_ng = 0
     Dim P As Long
-    Dim a As clsAlicuotaAplicada
+    Dim A As clsAlicuotaAplicada
     
     For P = 1 To vIvaAplicado.count
-Set a = vIvaAplicado(P)
-    If a.Alicuota.Alicuota = 0 Then
+Set A = vIvaAplicado(P)
+    If A.alicuota.alicuota = 0 Then
         tot_ng = tot_ng + vIvaAplicado(P).Monto
     End If
     Next

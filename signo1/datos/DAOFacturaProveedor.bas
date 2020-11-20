@@ -36,7 +36,15 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
         DaoFacturaProveedorHistorial.agregar fc, "Factura creada"
 
     Else
-        strsql = "update AdminComprasFacturasProveedores set tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.id
+    ' #195
+    Dim fca As clsFacturaProveedor
+    Set fca = DAOFacturaProveedor.FindById(fc.id)
+    If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
+    
+    
+         
+    
+        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.id
         If Not conectar.execute(strsql) Then GoTo err1
         b = DAOPercepcionesAplicadas.Save(fc)
         A = DAOIvaAplicado.Save(fc)
@@ -58,6 +66,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
 err1:
     Guardar = False
     If Err.Number = 100 Then MsgBox "Se produjo algun error, no se  guadarán los cambios!"
+    If Err.Number = 104 Then MsgBox Err.Description
 End Function
 Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
     On Error GoTo err4
@@ -82,9 +91,19 @@ Public Function GetByDate(desde As Date, Optional hasta As Date) As Collection
     Set GetByDate = DAOFacturaProveedor.FindAll("fecha>='" & Format(desde, "yyyy-mm-dd") & "' and fecha<= '" & Format(hasta, "yyyy-mm-dd") & "'", False)
 End Function
 Public Function aprobar(fc As clsFacturaProveedor) As Boolean
+    
+    Set fc = DAOFacturaProveedor.FindById(fc.id)
+    
     Set cn = conectar.obternerConexion
     On Error GoTo err121
     cn.BeginTrans
+'        Dim fca As clsFacturaProveedor
+'    Set fca = DAOFacturaProveedor.FindById(fc.id)
+'    If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
+'
+'
+'
+    
     Dim estadoAnterior As EstadoFacturaProveedor
     aprobar = True
     If fc.estado = EstadoFacturaProveedor.EnProceso Then
@@ -104,6 +123,7 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     cn.CommitTrans
     Exit Function
 err121:
+ If Err.Number = 104 Then MsgBox Err.Description
     cn.RollbackTrans
     aprobar = False
     fc.estado = estadoAnterior
@@ -226,7 +246,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         fc.TipoCambioPago = GetValue(rs, indice, tabla, "tipo_cambio_pago")
         fc.TotalAbonado = GetValue(rs, indice, tabla, "total_abonado")
         fc.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
-
+       fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
         If LenB(tablaMoneda) > 0 Then Set fc.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         fc.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
         If LenB(tablaAdminConfigFacturasProveedor) > 0 Then fc.configFactura = DAOConfigFacturaProveedor.Map(rs, indice, tablaAdminConfigFacturasProveedor, tablaAdminConfigIVAProveedor)
