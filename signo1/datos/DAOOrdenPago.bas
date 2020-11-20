@@ -150,6 +150,7 @@ q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = ordenes_pago.i
         If IsSomething(oper) Then
             If oper.Pertenencia = Banco Then
                 If Not funciones.BuscarEnColeccion(op.OperacionesBanco, CStr(oper.id)) Then
+                
                     op.OperacionesBanco.Add oper, CStr(oper.id)
                 End If
             ElseIf oper.Pertenencia = caja Then
@@ -1013,14 +1014,14 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontBold = False
     Printer.FontSize = 8
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
-    Dim f As clsFacturaProveedor
+    Dim F As clsFacturaProveedor
     Dim facs As New Collection
     c = 0
-    For Each f In Orden.FacturasProveedor
+    For Each F In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print f.NumeroFormateado & String$(8, " del ") & f.FEcha & String$(8, " por ") & f.moneda.NombreCorto & " " & f.Total
-    Next f
+        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
+    Next F
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"

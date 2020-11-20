@@ -653,9 +653,9 @@ End Sub
 Private Sub mnuHistorial_Click()
 Dim c As New Collection
 
-Dim f As New frmHistorico
-f.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
-f.Show
+Dim F As New frmHistorico
+F.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
+F.Show
 End Sub
 
 Private Sub mnuImprimir_Click()
@@ -691,14 +691,14 @@ Private Sub Imprimir()
 
 
         Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
-        Dim f As clsFacturaProveedor
+        Dim F As clsFacturaProveedor
         Dim facs As New Collection
-        For Each f In Orden.FacturasProveedor
+        For Each F In Orden.FacturasProveedor
             'facs.Add F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.Moneda.NombreCorto & " " & F.Total
 
-            facs.Add f.NumeroFormateado & " del " & f.FEcha & " por " & f.moneda.NombreCorto & " " & f.Total
+            facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.moneda.NombreCorto & " " & F.Total
 
-        Next f
+        Next F
         If facs.count = 0 Then
             .item("lblFacturas").caption = "NO POSEE FACTURAS"
         Else
