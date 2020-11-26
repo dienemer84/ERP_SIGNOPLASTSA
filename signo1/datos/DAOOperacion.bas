@@ -58,8 +58,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
 
         op.Monto = GetValue(rs, indice, tabla, "monto")
         op.EntradaSalida = GetValue(rs, indice, tabla, "entrada_salida")
-
-        If LenB(tablaMoneda) > 0 Then Set op.Moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+  op.Comprobante = GetValue(rs, indice, tabla, "comprobante")
+        If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         If LenB(tablaCuentaContable) > 0 Then Set op.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
 
 
@@ -86,7 +86,7 @@ Public Function Save(ope As operacion) As Boolean
         & " fecha_operacion," _
         & " cuenta_contable_id," _
         & " pertenencia," _
-        & " cuentabanc_o_caja_id, entrada_salida)" _
+        & " cuentabanc_o_caja_id, entrada_salida,comprobante)" _
         & " Values" _
         & " ('monto'," _
         & " 'moneda_id'," _
@@ -94,18 +94,18 @@ Public Function Save(ope As operacion) As Boolean
         & " 'fecha_operacion'," _
         & " 'cuenta_contable_id'," _
         & " 'pertenencia'," _
-        & " 'cuentabanc_o_caja_id', 'entrada_salida')"
+        & " 'cuentabanc_o_caja_id', 'entrada_salida','comprobante')"
 
     ope.FechaCarga = Now
 
     q = Replace(q, "'monto'", conectar.Escape(ope.Monto))
-    q = Replace(q, "'moneda_id'", conectar.GetEntityId(ope.Moneda))
+    q = Replace(q, "'moneda_id'", conectar.GetEntityId(ope.moneda))
     q = Replace(q, "'fecha_carga'", conectar.Escape(ope.FechaCarga))
     q = Replace(q, "'fecha_operacion'", conectar.Escape(ope.FechaOperacion))
     q = Replace(q, "'cuenta_contable_id'", conectar.GetEntityId(ope.CuentaContable))
     q = Replace(q, "'pertenencia'", ope.Pertenencia)
     q = Replace(q, "'entrada_salida'", ope.EntradaSalida)
-
+q = Replace(q, "'comprobante'", ope.Comprobante)
     If ope.Pertenencia = Banco Then
         q = Replace(q, "'cuentabanc_o_caja_id'", conectar.GetEntityId(ope.CuentaBancaria))
     Else

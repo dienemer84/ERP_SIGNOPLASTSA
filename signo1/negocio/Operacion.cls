@@ -15,7 +15,7 @@ Option Explicit
 
 Public id As Long
 Public Monto As Double
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 Public FechaCarga As Date
 Public FechaOperacion As Date
 Public CuentaContable As clsCuentaContable
@@ -27,6 +27,7 @@ Public caja As caja
 Public IdPertenencia As Long
 Public Pertenencia As OrigenOperacion
 Public EntradaSalida As OperacionEntradaSalida
+Public Comprobante As String
 
 Private Sub Class_Initialize()
     Me.EntradaSalida = OPEntrada
