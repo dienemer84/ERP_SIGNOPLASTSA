@@ -111,19 +111,25 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
 
 
         fc.estado = EstadoFacturaProveedor.Aprobada
-        cn.execute "update AdminComprasFacturasProveedores SET  estado=2 where id=" & fc.id
+        cn.execute "update AdminComprasFacturasProveedores SET ultima_actualizacion= " & Escape(Now) & ", estado=2 where id=" & fc.id
         DaoFacturaProveedorHistorial.agregar fc, "Factura aprobada"
 
         If Not fc.FormaPagoCuentaCorriente Then
             If Not DAOFacturaProveedor.PagarEnEfectivo(fc, fc.FEcha, False) Then GoTo err121
         End If
     Else
-        MsgBox "No puede cambiar el estado de la factura, ya fue aprobada!", vbInformation, "Información"
+      '  MsgBox "No puede cambiar el estado de la factura, ya fue aprobada!", vbInformation, "Información"
+        Err.Raise 4431, "Aprobar factura", "Error: La factura fué aprobada en otra sesión "
+        
     End If
     cn.CommitTrans
     Exit Function
 err121:
- If Err.Number = 104 Then MsgBox Err.Description
+ If Err.Number = 104 Or Err.Number = 4431 Then
+     MsgBox Err.Description
+ Else
+ MsgBox "Se produjo un error y no se pudo aprobar la factura", vbCritical
+ End If
     cn.RollbackTrans
     aprobar = False
     fc.estado = estadoAnterior

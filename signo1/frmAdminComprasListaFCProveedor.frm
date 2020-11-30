@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasListaFCProveedor 
    Appearance      =   0  'Flat
@@ -753,7 +753,7 @@ Private Sub finalizar_Click()
                 If Not Factura.FormaPagoCuentaCorriente Then MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().id & ".", vbInformation
                 grilla.RefreshRowIndex l
             Else
-                MsgBox "Se produjo algún error, no se aprobó la factura!", vbCritical, "Error"
+                'MsgBox "Se produjo algún error, no se aprobó la factura!", vbCritical, "Error"
             End If
         End If
     End If
