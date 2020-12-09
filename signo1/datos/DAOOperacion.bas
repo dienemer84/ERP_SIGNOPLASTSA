@@ -105,7 +105,13 @@ Public Function Save(ope As operacion) As Boolean
     q = Replace(q, "'cuenta_contable_id'", conectar.GetEntityId(ope.CuentaContable))
     q = Replace(q, "'pertenencia'", ope.Pertenencia)
     q = Replace(q, "'entrada_salida'", ope.EntradaSalida)
+    
+    If LenB(ope.Comprobante) = 0 Then
+    q = Replace(q, "'comprobante'", "'-'")
+    Else
+    
 q = Replace(q, "'comprobante'", ope.Comprobante)
+End If
     If ope.Pertenencia = Banco Then
         q = Replace(q, "'cuentabanc_o_caja_id'", conectar.GetEntityId(ope.CuentaBancaria))
     Else
