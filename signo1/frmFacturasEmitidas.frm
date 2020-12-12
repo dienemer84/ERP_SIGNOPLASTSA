@@ -1095,7 +1095,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
@@ -1395,7 +1395,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
           Values(18) = "/ CAE no definido"
         Else
    
-          Values(18) = Values(17) & "CAE: " & Factura.CAE & "// " & Factura.observaciones
+          Values(18) = Values(17) & "CAE: " & Factura.CAE & "// " & Factura.observaciones & "//" & Factura.observaciones_cancela
         End If
     End If
 End If

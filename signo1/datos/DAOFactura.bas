@@ -987,6 +987,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
     End If
     
     If enviarAfip Then
+
               If (Factura.estado = EstadoFacturaCliente.EnProceso) Then
                 Err.Raise 110013, "Factura", "La factura debe aprobarse localmente primero"
            End If
@@ -1025,11 +1026,23 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
             Dim tmp As Factura
             Set tmp = DAOFactura.FindById(Factura.Cancelada)
                      
-            If IsSomething(tmp) Then
-                Dim msg1 As String
+            If IsSomething(tmp) And Factura.Cancelada > 0 Then
+              Dim msg1 As String
+               Dim MSG2 As String
+
+            If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
+            
+              
                  msg1 = conectar.Escape("CANCELADA POR " & tmp.GetShortDescription(False, True))
-                Dim MSG2 As String
-                MSG2 = conectar.Escape("CANCELA A " & Factura.GetShortDescription(False, True))
+                 MSG2 = conectar.Escape("CANCELA A " & Factura.GetShortDescription(False, True))
+                     
+        Else
+                   msg1 = conectar.Escape("CANCELA A " & tmp.GetShortDescription(False, True))
+                 MSG2 = conectar.Escape("CANCELADA POR " & Factura.GetShortDescription(False, True))
+        End If
+        
+        
+        
                 If Not conectar.execute("update AdminFacturas set observaciones_cancela=" & msg1 & " where id=" & Factura.id) Then GoTo err5
                 If Not conectar.execute("update AdminFacturas set  observaciones_cancela=" & MSG2 & " where id=" & tmp.id) Then GoTo err5
             End If
