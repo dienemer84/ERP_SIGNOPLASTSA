@@ -8,12 +8,12 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   6975
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   18285
+   ClientWidth     =   20415
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   6975
-   ScaleWidth      =   18285
+   ScaleWidth      =   20415
    Begin XtremeSuiteControls.GroupBox grp 
       Height          =   1575
       Left            =   120
@@ -884,6 +884,11 @@ Private Sub cmdImprimir_Click()
         .Orientation = jgexPPLandscape
         .HeaderString(jgexHFCenter) = "Emitidos"
         .FooterString(jgexHFCenter) = Now
+     '202
+        .FooterDistance = 1500
+    .FooterString(jgexHFLeft) = lblTotalNeto & Chr(10) & lblTotalIVA & Chr(10) & lblTotalPercepciones & Chr(10) & lblTotal
+    '202
+    
     End With
     Load frmPrintPreview
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
