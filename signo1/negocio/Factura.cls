@@ -42,6 +42,8 @@ Public TipoCambioAjuste As Double
 
 Public FechaEmision As Date
 Public observaciones As String
+'#197
+Public observaciones_cancela As String
 Public EstaImpresa As Boolean
 Public EstaDiscriminada As Boolean
 'Public TipoDocumento As tipoDocumentoContable

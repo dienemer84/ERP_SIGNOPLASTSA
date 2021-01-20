@@ -15,10 +15,10 @@ Option Explicit
 
 Public Tipo As String
 Public PtoVta As String
-Public NRO As String
+Public nro As String
 
 'Desactivado el 17.07.20 - dnemer
-Public esCredito As Boolean
+Public esCredito As String
 Public Cuit As String
 Public CbteFch As String
 

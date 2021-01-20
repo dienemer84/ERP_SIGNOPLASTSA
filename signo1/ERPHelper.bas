@@ -245,7 +245,11 @@ If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.Tip
 '       cbt.NRO = f.Cancelada
 
        cbt.nro = ftmp.numero
-       cbt.esCredito = ftmp.esCredito
+       If ftmp.esCredito Then
+                cbt.esCredito = "true"
+       Else
+          cbt.esCredito = "false"
+       End If
        cbt.PtoVta = ftmp.Tipo.PuntoVenta.PuntoVenta
        cbt.Tipo = ftmp.Tipo.id
        cbt.CbteFch = Format(ftmp.FechaEmision, "yyyymmdd")
@@ -383,7 +387,17 @@ End If
     Dim FeCabReq As New FeCabReq
     FeCabReq.CantReg = "1"
     FeCabReq.CbteTipo = F.Tipo.id
-    FeCabReq.esCredito = F.esCredito
+    
+    
+       If F.esCredito Then
+              FeCabReq.esCredito = "true"
+       Else
+            FeCabReq.esCredito = "false"
+       End If
+    
+   
+    
+    
     FeCabReq.PtoVta = F.Tipo.PuntoVenta.id
     Dim FeCAEReq As New FeCAEReq
 

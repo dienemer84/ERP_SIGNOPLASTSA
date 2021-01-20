@@ -8,12 +8,12 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   6975
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   18285
+   ClientWidth     =   20415
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   6975
-   ScaleWidth      =   18285
+   ScaleWidth      =   20415
    Begin XtremeSuiteControls.GroupBox grp 
       Height          =   1575
       Left            =   120
@@ -884,6 +884,11 @@ Private Sub cmdImprimir_Click()
         .Orientation = jgexPPLandscape
         .HeaderString(jgexHFCenter) = "Emitidos"
         .FooterString(jgexHFCenter) = Now
+     '202
+        .FooterDistance = 1500
+    .FooterString(jgexHFLeft) = lblTotalNeto & Chr(10) & lblTotalIVA & Chr(10) & lblTotalPercepciones & Chr(10) & lblTotal
+    '202
+    
     End With
     Load frmPrintPreview
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
@@ -1095,7 +1100,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
@@ -1395,7 +1400,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
           Values(18) = "/ CAE no definido"
         Else
    
-          Values(18) = Values(17) & "CAE: " & Factura.CAE & "// " & Factura.observaciones
+          Values(18) = Values(17) & "CAE: " & Factura.CAE & "// " & Factura.observaciones & "//" & Factura.observaciones_cancela
         End If
     End If
 End If

@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 'Desactivada el 17.07.20 -dnemer
-Public esCredito As Boolean
+Public esCredito As String
 
 Public CantReg As String
 Public PtoVta As String
