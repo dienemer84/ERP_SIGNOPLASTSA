@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -1191,6 +1191,13 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                                         'Si es Credito no muestra la posibilidad de aplicar NC a Factura
                                         Me.aplicarNCaFC.Visible = Not Factura.esCredito And Factura.TipoDocumento <> tipoDocumentoContable.Factura
                                         Me.aplicarNCaFC.Enabled = Not Factura.esCredito And Factura.TipoDocumento <> tipoDocumentoContable.Factura
+                                        
+                                        '----------------------------------------------------------------------------------------------------------------------------------------
+                                        '21/01/2021 dnemer
+                                        'Agrego estas dos lineas para que se habilite el menu aplicar sobre las NC cuando sean PV 6 o sea PV Cae Manual
+                                        Me.aplicarNCaFC.Visible = Factura.Tipo.PuntoVenta.CaeManual And Factura.TipoDocumento <> tipoDocumentoContable.Factura
+                                        Me.aplicarNCaFC.Enabled = Factura.Tipo.PuntoVenta.CaeManual And Factura.TipoDocumento <> tipoDocumentoContable.Factura
+                                        
                                         
                                         
                                         'Desde una FC
