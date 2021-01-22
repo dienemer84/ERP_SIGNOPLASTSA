@@ -1,5 +1,9 @@
 VERSION 5.00
+<<<<<<< HEAD
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+=======
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+>>>>>>> 6ab52b609bd5be674acba6e144b34e2a411a3e59
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminSubdiarioCompras 
    Caption         =   "Subdiario IVA Compras"
@@ -643,10 +647,18 @@ Private Sub Totalizar()
         sumImpuestoInterno = sumImpuestoInterno + i.ImpuestoInterno
         sumRedondeo = sumRedondeo + i.Redondeo
 
+<<<<<<< HEAD
 ' 20/01/2021
 ' Aca da error el sistema al Generar Liquidación.
 ' Luego del mensaje de Liquidacion generada con Exito se cierra el sistema.
 ' Corriendo el procedimiento el DEBUG llega a la linea siguiente >>
+=======
+'NB: error al mostrarl iquidaciones, revisar. Este fix es par aq no se cierre, pero no se si está bien
+'18.1.2021
+If IsSomething(i.ListaPercepciones) Then Set i.ListaPercepciones = New Collection
+
+
+>>>>>>> 6ab52b609bd5be674acba6e144b34e2a411a3e59
 
         For Each pera In i.ListaPercepciones
 
