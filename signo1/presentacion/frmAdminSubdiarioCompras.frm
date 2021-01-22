@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminSubdiarioCompras 
    Caption         =   "Subdiario IVA Compras"
@@ -645,7 +645,7 @@ Private Sub Totalizar()
 
 'NB: error al mostrarl iquidaciones, revisar. Este fix es par aq no se cierre, pero no se si está bien
 '18.1.2021
-If IsSomething(i.ListaPercepciones) Then Set i.ListaPercepciones = New Collection
+If Not IsSomething(i.ListaPercepciones) Then Set i.ListaPercepciones = New Collection
 
 
 

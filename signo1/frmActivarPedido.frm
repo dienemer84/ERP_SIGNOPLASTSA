@@ -1,8 +1,8 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "Codejock.ReportControl.v12.0.2.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmActivarPedido 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
@@ -415,10 +415,10 @@ End Sub
 
 
 Private Sub cmdActivar_Click()
-    Dim a As VbMsgBoxResult
-    a = MsgBox("¿Desea darle curso a este pedido?", vbYesNo + vbQuestion, "Confirmación")
+    Dim A As VbMsgBoxResult
+    A = MsgBox("¿Desea darle curso a este pedido?", vbYesNo + vbQuestion, "Confirmación")
 
-    If a = vbYes Then
+    If A = vbYes Then
         If baseP.procesos_definidos(cod) Then
             If DAOOrdenTrabajo.PonerEnProduccion(vpedido) Then
 
@@ -574,7 +574,7 @@ Private Sub ImprimirHojaTarea(ptpId As Long, P As Pieza, d As DetalleOrdenTrabaj
     informe_tareas.Sections("Sección4").Controls("lblReferencia").caption = P.nombre
     informe_tareas.Sections("Sección4").Controls("lblfechaEntrega").caption = d.FechaEntrega
     informe_tareas.Sections("Sección4").Controls("barCode").caption = "*" & Format(ptp.id, "00000000") & "*"
-    informe_tareas.Sections("Sección4").Controls("lblCliente").caption = vpedido.Cliente.razon
+    informe_tareas.Sections("Sección4").Controls("lblCliente").caption = vpedido.cliente.razon
 
     informe_tareas.Sections("Sección2").Controls("Etiqueta4").caption = "Tarea: " & ptp.Tarea.id & " - " & ptp.Tarea.Tarea & " (Sector: " & ptp.Tarea.Sector.Sector & ")"
 

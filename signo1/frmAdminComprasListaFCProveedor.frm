@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasListaFCProveedor 
    Appearance      =   0  'Flat
@@ -517,7 +517,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   16
+      ColumnsCount    =   17
       Column(1)       =   "frmAdminComprasListaFCProveedor.frx":0326
       Column(2)       =   "frmAdminComprasListaFCProveedor.frx":045E
       Column(3)       =   "frmAdminComprasListaFCProveedor.frx":0536
@@ -534,19 +534,20 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(14)      =   "frmAdminComprasListaFCProveedor.frx":16EA
       Column(15)      =   "frmAdminComprasListaFCProveedor.frx":182A
       Column(16)      =   "frmAdminComprasListaFCProveedor.frx":196A
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1A5E
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1A5E
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1B96
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1C46
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":1CFA
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":1DD2
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":1E8A
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":1F6A
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":202A
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":20EE
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1B52
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1C8A
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1D3A
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":1DEE
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":1EC6
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":1F7E
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":205E
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":211E
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":21E2
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":21AE
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":24C8
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":22A2
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":25BC
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
