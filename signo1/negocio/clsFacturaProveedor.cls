@@ -39,6 +39,7 @@ Public UltimaActualizacion As Date
 Public ImporteTotalAbonado As Double    'dto para poder hacer pagos parciales
 Public NetoGravadoAbonado As Double    'dto para poder hacer pagos parciales
 
+Public UsuarioCreador As clsUsuario
 
 
 

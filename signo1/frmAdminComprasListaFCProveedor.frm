@@ -8,13 +8,13 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ClientHeight    =   6495
    ClientLeft      =   60
    ClientTop       =   420
-   ClientWidth     =   15600
+   ClientWidth     =   14655
    ClipControls    =   0   'False
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   6495
-   ScaleWidth      =   15600
+   ScaleWidth      =   14655
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1800
       Left            =   120
@@ -522,32 +522,32 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(2)       =   "frmAdminComprasListaFCProveedor.frx":045E
       Column(3)       =   "frmAdminComprasListaFCProveedor.frx":0536
       Column(4)       =   "frmAdminComprasListaFCProveedor.frx":064A
-      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":073A
-      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":0992
-      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0B8E
-      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0DBE
-      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":0FCE
-      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":11DA
-      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":13DA
-      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":14F6
-      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":15E6
-      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":16EA
-      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":182A
-      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":196A
-      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1A5E
+      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":078E
+      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":09FA
+      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0BF6
+      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0E26
+      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":1036
+      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":1242
+      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":1442
+      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":15B2
+      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":16F6
+      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":184E
+      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":19BA
+      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B12
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CB6
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1B52
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1C8A
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1D3A
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":1DEE
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":1EC6
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":1F7E
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":205E
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":211E
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":21E2
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1DBA
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1EF2
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1FA2
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":2056
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":212E
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":21E6
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":22C6
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2386
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":244A
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":22A2
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":25BC
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":250A
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2824
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -1004,11 +1004,17 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Else
             Values(13) = "Contado"
         End If
-        Values(15) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+
         If Factura.OrdenPagoId > 0 Then Values(14) = Factura.OrdenPagoId
+              
+        Values(15) = Factura.usuarioCreador.usuario
         
-                    Values(16) = Factura.TipoCambio
-    End With
+        Values(16) = Factura.TipoCambio
+                    
+        Values(17) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+
+
+  End With
 End Sub
 
 

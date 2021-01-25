@@ -165,6 +165,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
         & " LEFT JOIN AdminConfigIvaAlicuotas AS a1 ON AdminComprasFacturasProveedoresIva.id_iva=a1.id " _
         & " LEFT JOIN AdminComprasCuentasFacturas  ON (AdminComprasFacturasProveedores.id = AdminComprasCuentasFacturas.id_factura) " _
         & " LEFT JOIN AdminComprasCuentasContables  ON (AdminComprasCuentasFacturas.id_cuenta = AdminComprasCuentasContables.id) " _
+        & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id " _
         & " WHERE 1=1 "
     If LenB(filtro) > 0 Then
         q = q & " and " & filtro
@@ -252,7 +253,10 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         fc.TipoCambioPago = GetValue(rs, indice, tabla, "tipo_cambio_pago")
         fc.TotalAbonado = GetValue(rs, indice, tabla, "total_abonado")
         fc.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
-       fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
+        fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
+        
+        Set fc.UsuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
+        
         If LenB(tablaMoneda) > 0 Then Set fc.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         fc.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
         If LenB(tablaAdminConfigFacturasProveedor) > 0 Then fc.configFactura = DAOConfigFacturaProveedor.Map(rs, indice, tablaAdminConfigFacturasProveedor, tablaAdminConfigIVAProveedor)
@@ -453,7 +457,7 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     xlWorksheet.Cells(offset, 2).value = "Comprobante"
     xlWorksheet.Cells(offset, 3).value = "Fecha"
     xlWorksheet.Cells(offset, 4).value = "Moneda"
-    xlWorksheet.Cells(offset, 5).value = "NG"
+    xlWorksheet.Cells(offset, 5).value = "Neto Gravado"
     xlWorksheet.Cells(offset, 6).value = "IVA"
     xlWorksheet.Cells(offset, 7).value = "No Gravado"
     xlWorksheet.Cells(offset, 8).value = "Percepciones"
@@ -463,8 +467,11 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     xlWorksheet.Cells(offset, 12).value = "Estado"
     xlWorksheet.Cells(offset, 13).value = "Forma de Pago"
     xlWorksheet.Cells(offset, 14).value = "Orden de Pago"
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 14)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 14)).Interior.Color = &HC0C0C0
+    xlWorksheet.Cells(offset, 15).value = "Tipo de Cambio"
+    xlWorksheet.Cells(offset, 16).value = "Usuario"
+    
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 16)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 16)).Interior.Color = &HC0C0C0
 
 
     '.Borders.LineStyle = xlContinuous
@@ -487,25 +494,28 @@ Public Function ExportarColeccion(col As Collection) As Boolean
         totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.id, MonedaConverter.Patron.id)
 
 
+        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
         offset = offset + 1
         xlWorksheet.Cells(offset, 1).value = fac.Proveedor.RazonSocial
         xlWorksheet.Cells(offset, 2).value = fac.NumeroFormateado
         xlWorksheet.Cells(offset, 3).value = fac.FEcha
         xlWorksheet.Cells(offset, 4).value = fac.moneda.NombreCorto
-        xlWorksheet.Cells(offset, 5).value = fac.TotalNetoGravadoDiscriminado(0)
-        xlWorksheet.Cells(offset, 6).value = fac.TotalIVA
-        xlWorksheet.Cells(offset, 7).value = fac.TotalNetoGravadoDiscriminado(0)
-        xlWorksheet.Cells(offset, 8).value = fac.totalPercepciones
-        xlWorksheet.Cells(offset, 9).value = fac.ImpuestoInterno
-        xlWorksheet.Cells(offset, 10).value = fac.Total
+        xlWorksheet.Cells(offset, 5).value = funciones.FormatearDecimales(fac.Total - (fac.TotalIVA + fac.totalPercepciones + fac.ImpuestoInterno + fac.TotalNetoGravadoDiscriminado(0))) * i
+        xlWorksheet.Cells(offset, 6).value = funciones.FormatearDecimales(fac.TotalIVA * i)
+        xlWorksheet.Cells(offset, 7).value = funciones.FormatearDecimales(fac.TotalNetoGravadoDiscriminado(0) * i)
+        xlWorksheet.Cells(offset, 8).value = funciones.FormatearDecimales(fac.totalPercepciones * i)
+        xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(fac.ImpuestoInterno * i)
+        xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(fac.Total * i)
         If fac.cuentasContables.count > 0 Then xlWorksheet.Cells(offset, 11).value = fac.cuentasContables.item(1).cuentas.codigo
         xlWorksheet.Cells(offset, 12).value = enums.enumEstadoFacturaProveedor(fac.estado)
         If fac.FormaPagoCuentaCorriente Then xlWorksheet.Cells(offset, 13).value = "Cta. Cte." Else xlWorksheet.Cells(offset, 13).value = "Contado"
         xlWorksheet.Cells(offset, 14).value = fac.OrdenPagoId
+        xlWorksheet.Cells(offset, 15).value = fac.TipoCambio
+        xlWorksheet.Cells(offset, 16).value = fac.UsuarioCreador.usuario
 
 
-        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 14)).Borders.LineStyle = xlContinuous
+        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 16)).Borders.LineStyle = xlContinuous
     Next
 
 
