@@ -1028,15 +1028,15 @@ Private Sub llenarGrilla()
 
 
 
-        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
 
         '    Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
 
-        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
         'TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
         '    totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
+        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.Moneda.id, MonedaConverter.Patron.id)
 
     Next
 
@@ -1349,6 +1349,8 @@ End Sub
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
     Set Factura = facturas.item(RowIndex)
+    
+    
     Values(1) = Factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
 
     If IsSomething(Factura.Tipo) Then
@@ -1368,10 +1370,10 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(6) = Factura.FechaEmision
     Values(7) = funciones.FormatearDecimales(Factura.TotalEstatico.Total)
 
-    If Factura.moneda.id = 0 Then
-        Values(8) = Factura.moneda.NombreCorto
+    If Factura.Moneda.id = 0 Then
+        Values(8) = Factura.Moneda.NombreCorto
     Else
-        Values(8) = Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
+        Values(8) = Factura.Moneda.NombreCorto & " " & Factura.CambioAPatron
     End If
 
     Values(9) = funciones.FormatearDecimales(Factura.TotalEstatico.Total * Factura.CambioAPatron)
@@ -1394,8 +1396,15 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 
     
     Values(16) = Factura.StringDiasAtraso
-    'Values(17) = Factura.usuarioCreador.usuario
+    
+    
+    Values(17) = Factura.usuarioCreador.usuario
+    
+    
     Values(18) = Factura.observaciones
+    
+    
+    
 
     If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
     
@@ -1957,7 +1966,7 @@ Private Sub PushButton2_Click()
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
 
         xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
-        xlWorksheet.Cells(idx, 3).value = fac.moneda.NombreCorto
+        xlWorksheet.Cells(idx, 3).value = fac.Moneda.NombreCorto
         xlWorksheet.Cells(idx, 4).value = fac.OrdenCompra
 
 

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmOrdenesPago 
    Caption         =   "Ordenes de Pago"
@@ -576,7 +576,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Values(1) = Orden.id
         Values(2) = Orden.FEcha
 
-        Values(3) = Orden.moneda.NombreCorto
+        Values(3) = Orden.Moneda.NombreCorto
 
         Values(4) = funciones.FormatearDecimales(Orden.StaticTotalOrigenes)
         Values(5) = funciones.FormatearDecimales(Orden.StaticTotalRetenido)
@@ -623,11 +623,13 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 End Function
 
 Private Sub mnuAnular_Click()
-    If MsgBox("¿Desea borrar la OP?", vbQuestion + vbYesNo) = vbYes Then
+    If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
         If DAOOrdenPago.Delete(Orden.id, True) Then
+            MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
             ordenes.remove CStr(Orden.id)
             Me.gridOrdenes.ItemCount = ordenes.count
+            cmdBuscar_Click
         Else
             MsgBox "No se pudo borrar.", vbCritical + vbOKOnly
         End If
@@ -638,6 +640,7 @@ Private Sub mnuAprobar_Click()
     If DAOOrdenPago.aprobar(Orden, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
         Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+        cmdBuscar_Click
     Else
         MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
     End If
@@ -686,7 +689,7 @@ Private Sub Imprimir()
             .item("lblCertificadoIIBB").caption = "NO POSEE"
         End If
 
-        .item("lblMoneda").caption = Orden.moneda.NombreCorto & " " & Orden.moneda.NombreLargo
+        .item("lblMoneda").caption = Orden.Moneda.NombreCorto & " " & Orden.Moneda.NombreLargo
 
 
 
@@ -696,7 +699,7 @@ Private Sub Imprimir()
         For Each F In Orden.FacturasProveedor
             'facs.Add F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.Moneda.NombreCorto & " " & F.Total
 
-            facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.moneda.NombreCorto & " " & F.Total
+            facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.Moneda.NombreCorto & " " & F.Total
 
         Next F
         If facs.count = 0 Then
@@ -709,7 +712,7 @@ Private Sub Imprimir()
         Dim cheq As cheque
         Dim tmpCol As New Collection
         For Each cheq In Orden.ChequesPropios
-            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
+            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.Moneda.NombreCorto & " " & cheq.Monto
         Next cheq
         If tmpCol.count = 0 Then
             .item("lblChequesPropios").caption = "NO POSEE CHEQUES PROPIOS"
@@ -720,7 +723,7 @@ Private Sub Imprimir()
 
         Set tmpCol = New Collection
         For Each cheq In Orden.ChequesTerceros
-            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
+            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.Moneda.NombreCorto & " " & cheq.Monto
         Next cheq
         If tmpCol.count = 0 Then
             .item("lblChequesTerceros").caption = "NO POSEE CHEQUES DE 3ros"
@@ -732,7 +735,7 @@ Private Sub Imprimir()
         Dim op As operacion
         Set tmpCol = New Collection
         For Each op In Orden.OperacionesBanco
-            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
+            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.Moneda.NombreCorto & " " & op.Monto
         Next op
         If tmpCol.count = 0 Then
             .item("lblTransferencias").caption = "NO POSEE OPERACIONES DE BANCO"
@@ -743,7 +746,7 @@ Private Sub Imprimir()
 
         Set tmpCol = New Collection
         For Each op In Orden.OperacionesCaja
-            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
+            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.Moneda.NombreCorto & " " & op.Monto
         Next op
         If tmpCol.count = 0 Then
             .item("lblEfectivo").caption = "NO POSEE OPERACIONES DE CAJA"
@@ -752,12 +755,12 @@ Private Sub Imprimir()
         End If
 
 
-        .item("lblDifTipoCambio").caption = Orden.moneda.NombreCorto & " " & Orden.DiferenciaCambio
-        .item("lblOtrosDescuentos").caption = Orden.moneda.NombreCorto & " " & Orden.OtrosDescuentos
+        .item("lblDifTipoCambio").caption = Orden.Moneda.NombreCorto & " " & Orden.DiferenciaCambio
+        .item("lblOtrosDescuentos").caption = Orden.Moneda.NombreCorto & " " & Orden.OtrosDescuentos
 
-        .item("lblTotalFacturas").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalFacturas
-        .item("lblTotalRetenido").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalRetenido
-        .item("lblTotalAbonado").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalOrigenes    '+ Orden.StaticTotalRetenido
+        .item("lblTotalFacturas").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalFacturas
+        .item("lblTotalRetenido").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalRetenido
+        .item("lblTotalAbonado").caption = Orden.Moneda.NombreCorto & " " & Orden.StaticTotalOrigenes    '+ Orden.StaticTotalRetenido
 
 
         Dim r As Recordset
@@ -872,7 +875,7 @@ Private Sub PushButton2_Click()
             Set opeCaja = New operacion
             opeCaja.Pertenencia = OrigenOperacion.caja
             opeCaja.Monto = nop.StaticTotal
-            Set opeCaja.moneda = fac.moneda
+            Set opeCaja.Moneda = fac.Moneda
             opeCaja.FechaOperacion = nop.FEcha
 
 

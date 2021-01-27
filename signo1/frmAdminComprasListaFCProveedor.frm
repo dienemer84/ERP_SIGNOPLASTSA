@@ -887,6 +887,7 @@ Public Sub llenarGrilla()
         totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
         totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
         totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.moneda.id, MonedaConverter.Patron.id)
+
     Next
 
 
@@ -981,6 +982,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 
     If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
     With Factura
+    
     If IsSomething(Factura.Proveedor) Then
         Values(1) = funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial)
         End If
@@ -1007,7 +1009,12 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 
         If Factura.OrdenPagoId > 0 Then Values(14) = Factura.OrdenPagoId
               
-        Values(15) = Factura.usuarioCreador.usuario
+              
+       Values(15) = Factura.UsuarioCarga.usuario
+       
+        
+         
+  
         
         Values(16) = Factura.TipoCambio
                     
