@@ -5,24 +5,37 @@ Begin VB.Form frmComprasProveedoresModifica
    BackColor       =   &H00FF8080&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Modificar proveedor"
-   ClientHeight    =   8535
+   ClientHeight    =   9150
    ClientLeft      =   210
    ClientTop       =   195
-   ClientWidth     =   8325
+   ClientWidth     =   8595
    ClipControls    =   0   'False
    Icon            =   "frmModificaProveedor.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8535
-   ScaleWidth      =   8325
+   ScaleHeight     =   9150
+   ScaleWidth      =   8595
    ShowInTaskbar   =   0   'False
+   Begin XtremeSuiteControls.PushButton btnVerificarCUIT 
+      Height          =   375
+      Left            =   6240
+      TabIndex        =   42
+      Top             =   480
+      Width           =   1935
+      _Version        =   786432
+      _ExtentX        =   3413
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Verificar CUIT"
+      UseVisualStyle  =   -1  'True
+   End
    Begin XtremeSuiteControls.ComboBox cboIva 
       Height          =   315
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   2
-      Top             =   840
+      Top             =   1320
       Width           =   6495
       _Version        =   786432
       _ExtentX        =   11456
@@ -34,17 +47,17 @@ Begin VB.Form frmComprasProveedoresModifica
    Begin VB.ComboBox cboEstadoProveedor 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   1440
+      Left            =   1680
       Style           =   2  'Dropdown List
       TabIndex        =   14
-      Top             =   5280
+      Top             =   5760
       Width           =   2775
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1830
-      Left            =   240
+      Left            =   480
       TabIndex        =   35
-      Top             =   6120
+      Top             =   6600
       Width           =   7935
       _Version        =   786432
       _ExtentX        =   13996
@@ -147,157 +160,157 @@ Begin VB.Form frmComprasProveedoresModifica
       BackColor       =   &H00FF8080&
       Caption         =   "Dólares"
       Height          =   300
-      Left            =   4845
+      Left            =   5085
       TabIndex        =   15
-      Top             =   5310
+      Top             =   5790
       Width           =   1095
    End
    Begin VB.CheckBox Check1 
       BackColor       =   &H00FF8080&
       Caption         =   "Pago contra entrega"
       Height          =   300
-      Left            =   6165
+      Left            =   6405
       TabIndex        =   16
-      Top             =   5310
+      Top             =   5790
       Width           =   1935
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   0
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   3
       Text            =   "Text1"
-      Top             =   1215
+      Top             =   1695
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   1
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   4
       Text            =   "Text1"
-      Top             =   1560
+      Top             =   2040
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   2
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   6
       Text            =   "Text1"
-      Top             =   2280
+      Top             =   2760
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   3
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   7
       Text            =   "Text1"
-      Top             =   2640
+      Top             =   3120
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   4
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   8
       Text            =   "Text1"
-      Top             =   3000
+      Top             =   3480
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   5
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   9
       TabStop         =   0   'False
       Text            =   "Text1"
-      Top             =   3360
+      Top             =   3840
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   6
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   10
       Text            =   "Text1"
-      Top             =   3720
+      Top             =   4200
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   7
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   11
       Text            =   "Text1"
-      Top             =   4080
+      Top             =   4560
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   9
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   13
       Text            =   "Text1"
-      Top             =   4800
+      Top             =   5280
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   8
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   12
       Text            =   "Text1"
-      Top             =   4440
+      Top             =   4920
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   10
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   0
       Text            =   "Text1"
       ToolTipText     =   "El cuit va sin guiones!"
       Top             =   135
-      Width           =   6495
+      Width           =   2415
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   11
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   5
       Text            =   "Text1"
-      Top             =   1920
+      Top             =   2400
       Width           =   6495
    End
    Begin VB.TextBox Text1 
       BackColor       =   &H00FFFFFF&
       Height          =   285
       Index           =   12
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   1
       Text            =   "Text1"
-      Top             =   480
+      Top             =   960
       Width           =   6495
    End
    Begin XtremeSuiteControls.PushButton cmdPlanCuentas 
       Height          =   375
-      Left            =   255
+      Left            =   495
       TabIndex        =   37
-      Top             =   8070
+      Top             =   8550
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -306,11 +319,12 @@ Begin VB.Form frmComprasProveedoresModifica
       Caption         =   "Definir plan de cuentas"
       Appearance      =   2
    End
-   Begin XtremeSuiteControls.PushButton btnCrear 
+   Begin XtremeSuiteControls.PushButton btnCrearNew 
       Height          =   375
-      Left            =   6870
+      Index           =   0
+      Left            =   7080
       TabIndex        =   38
-      Top             =   8055
+      Top             =   8520
       Width           =   1335
       _Version        =   786432
       _ExtentX        =   2355
@@ -321,9 +335,9 @@ Begin VB.Form frmComprasProveedoresModifica
    End
    Begin XtremeSuiteControls.ComboBox cboMonedas 
       Height          =   315
-      Left            =   1440
+      Left            =   1680
       TabIndex        =   39
-      Top             =   5670
+      Top             =   6150
       Width           =   2760
       _Version        =   786432
       _ExtentX        =   4868
@@ -334,6 +348,28 @@ Begin VB.Form frmComprasProveedoresModifica
       Appearance      =   6
       Text            =   "cboMoneda"
       DropDownItemCount=   3
+   End
+   Begin XtremeSuiteControls.Label Label17 
+      Height          =   375
+      Index           =   0
+      Left            =   1680
+      TabIndex        =   41
+      Top             =   480
+      Width           =   4215
+      _Version        =   786432
+      _ExtentX        =   7435
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Verifique si el CUIT ingresado es correcto >>"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
    End
    Begin VB.Label Label16 
       Alignment       =   1  'Right Justify
@@ -349,9 +385,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   525
+      Left            =   765
       TabIndex        =   40
-      Top             =   5700
+      Top             =   6180
       Width           =   855
    End
    Begin VB.Label Label9 
@@ -369,9 +405,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   735
+      Left            =   975
       TabIndex        =   36
-      Top             =   5370
+      Top             =   5850
       Width           =   600
    End
    Begin VB.Label Label1 
@@ -389,9 +425,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   240
+      Left            =   480
       TabIndex        =   34
-      Top             =   1245
+      Top             =   1725
       Width           =   1140
    End
    Begin VB.Label Label2 
@@ -409,9 +445,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   600
+      Left            =   840
       TabIndex        =   33
-      Top             =   1920
+      Top             =   2400
       Width           =   780
    End
    Begin VB.Label Label3 
@@ -429,9 +465,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   720
+      Left            =   960
       TabIndex        =   32
-      Top             =   2280
+      Top             =   2760
       Width           =   600
    End
    Begin VB.Label Label4 
@@ -449,9 +485,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   1080
+      Left            =   1320
       TabIndex        =   31
-      Top             =   2640
+      Top             =   3120
       Width           =   255
    End
    Begin VB.Label Label5 
@@ -469,9 +505,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   480
+      Left            =   720
       TabIndex        =   30
-      Top             =   3000
+      Top             =   3480
       Width           =   855
    End
    Begin VB.Label Label6 
@@ -489,9 +525,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   960
+      Left            =   1200
       TabIndex        =   29
-      Top             =   3360
+      Top             =   3840
       Width           =   315
    End
    Begin VB.Label Label7 
@@ -509,9 +545,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   720
+      Left            =   960
       TabIndex        =   28
-      Top             =   3720
+      Top             =   4200
       Width           =   540
    End
    Begin VB.Label Label8 
@@ -529,9 +565,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   480
+      Left            =   720
       TabIndex        =   27
-      Top             =   4080
+      Top             =   4560
       Width           =   780
    End
    Begin VB.Label Label10 
@@ -549,9 +585,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   840
+      Left            =   1080
       TabIndex        =   26
-      Top             =   4440
+      Top             =   4920
       Width           =   450
    End
    Begin VB.Label Label11 
@@ -569,9 +605,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   240
+      Left            =   480
       TabIndex        =   25
-      Top             =   4800
+      Top             =   5280
       Width           =   1065
    End
    Begin VB.Label Label12 
@@ -589,9 +625,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   960
+      Left            =   1200
       TabIndex        =   24
-      Top             =   135
+      Top             =   180
       Width           =   450
    End
    Begin VB.Label Label13 
@@ -609,16 +645,16 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   960
+      Left            =   1200
       TabIndex        =   23
-      Top             =   1560
+      Top             =   2040
       Width           =   375
    End
    Begin VB.Label Label14 
       Alignment       =   1  'Right Justify
       AutoSize        =   -1  'True
       BackColor       =   &H00FF8080&
-      Caption         =   "Fantasía"
+      Caption         =   "Nombre Fantasía"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -629,10 +665,10 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   600
+      Left            =   150
       TabIndex        =   22
-      Top             =   480
-      Width           =   765
+      Top             =   1005
+      Width           =   1455
    End
    Begin VB.Label Label15 
       Alignment       =   1  'Right Justify
@@ -649,9 +685,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   1080
+      Left            =   1320
       TabIndex        =   21
-      Top             =   840
+      Top             =   1320
       Width           =   315
    End
 End
@@ -678,9 +714,14 @@ End Property
 Public Property Let idProveedor(nId As Long)
     id = nId
 End Property
-Private Sub btnCrear_Click()
 
+Private Sub Command1_Click()
+    If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
+        Unload Me
+    End If
+End Sub
 
+Private Sub btnCrearNew_Click(Index As Integer)
     If Trim(Text1(9)) = Empty Then Text1(9) = 0
     If LenB(Text1(10)) = 0 Then Text1(10) = 0
     If LenB(Text1(0)) = 0 Or LenB(Text1(12)) = 0 Then
@@ -688,12 +729,14 @@ Private Sub btnCrear_Click()
         Exit Sub
     End If
     accion
-
 End Sub
-Private Sub Command1_Click()
-    If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
-        Unload Me
-    End If
+
+
+
+Private Sub btnVerificarCUIT_Click()
+    Dim Ie As New InternetExplorer
+    Ie.Visible = True
+    Ie.Navigate "https://seti.afip.gob.ar/padron-puc-constancia-internet/ConsultaConstanciaAction.do"
 End Sub
 
 Private Sub cmdPlanCuentas_Click()
@@ -742,7 +785,7 @@ Private Function accion() As Boolean
 
     If Not IsSomething(proveedor_) Then Set proveedor_ = New clsProveedor
 
-    proveedor_.RazonSocial = Me.Text1(0)
+    proveedor_.RazonSocial = UCase(Me.Text1(0))
     proveedor_.direccion = Me.Text1(11)
     proveedor_.Ciudad = Me.Text1(2)
     proveedor_.cp = Me.Text1(3)
@@ -758,7 +801,7 @@ Private Function accion() As Boolean
     Else
         proveedor_.IIBB = Me.Text1(1)
     End If
-    proveedor_.razonFantasia = Me.Text1(12)
+    proveedor_.razonFantasia = UCase(Me.Text1(12))
     proveedor_.pagoDolares = Abs(Me.Check2.value)
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
     proveedor_.Cuit = Me.Text1(10)
@@ -901,18 +944,18 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 End Function
 
 Private Sub lstRubros_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
-    funciones.LstOrdenar Me.lstRubros, ColumnHeader.index
+    funciones.LstOrdenar Me.lstRubros, ColumnHeader.Index
 End Sub
 
-Private Sub Text1_GotFocus(index As Integer)
-    foco Me.Text1(index)
+Private Sub Text1_GotFocus(Index As Integer)
+    foco Me.Text1(Index)
 End Sub
 Public Sub llenarIva()
     DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIVA
 End Sub
 
-Private Sub Text1_Validate(index As Integer, Cancel As Boolean)
-    If index = 10 Then    '10=cuit
+Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)
+    If Index = 10 Then    '10=cuit
         Cancel = Not IsNumeric(Me.Text1(10)) And LenB(Me.Text1(10)) > 0
 
         If Not Cancel Then
