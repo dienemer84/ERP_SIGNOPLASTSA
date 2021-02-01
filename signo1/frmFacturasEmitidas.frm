@@ -504,12 +504,14 @@ Begin VB.Form frmAdminFacturasEmitidas
       GroupFooterStyle=   2
       PreviewColumn   =   "preview"
       PreviewRowLines =   1
+      RowHeight       =   26
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
       ImageCount      =   1
       ImagePicture1   =   "frmFacturasEmitidas.frx":000C
       RowHeaders      =   -1  'True
       DataMode        =   99
+      CardSpacing     =   16
       ColumnHeaderHeight=   285
       IntProp1        =   0
       IntProp2        =   0
@@ -517,47 +519,47 @@ Begin VB.Form frmAdminFacturasEmitidas
       ColumnsCount    =   23
       Column(1)       =   "frmFacturasEmitidas.frx":0326
       Column(2)       =   "frmFacturasEmitidas.frx":04C6
-      Column(3)       =   "frmFacturasEmitidas.frx":05B2
-      Column(4)       =   "frmFacturasEmitidas.frx":069A
-      Column(5)       =   "frmFacturasEmitidas.frx":0786
-      Column(6)       =   "frmFacturasEmitidas.frx":0886
-      Column(7)       =   "frmFacturasEmitidas.frx":09EA
-      Column(8)       =   "frmFacturasEmitidas.frx":0BE2
-      Column(9)       =   "frmFacturasEmitidas.frx":0D2A
-      Column(10)      =   "frmFacturasEmitidas.frx":0E4A
-      Column(11)      =   "frmFacturasEmitidas.frx":0F46
-      Column(12)      =   "frmFacturasEmitidas.frx":1046
-      Column(13)      =   "frmFacturasEmitidas.frx":11A6
-      Column(14)      =   "frmFacturasEmitidas.frx":12FA
-      Column(15)      =   "frmFacturasEmitidas.frx":1442
-      Column(16)      =   "frmFacturasEmitidas.frx":159A
-      Column(17)      =   "frmFacturasEmitidas.frx":16E2
-      Column(18)      =   "frmFacturasEmitidas.frx":17D6
-      Column(19)      =   "frmFacturasEmitidas.frx":18BA
-      Column(20)      =   "frmFacturasEmitidas.frx":19B6
-      Column(21)      =   "frmFacturasEmitidas.frx":1ADA
-      Column(22)      =   "frmFacturasEmitidas.frx":1BFE
-      Column(23)      =   "frmFacturasEmitidas.frx":1D42
+      Column(3)       =   "frmFacturasEmitidas.frx":05DA
+      Column(4)       =   "frmFacturasEmitidas.frx":0716
+      Column(5)       =   "frmFacturasEmitidas.frx":0856
+      Column(6)       =   "frmFacturasEmitidas.frx":09AA
+      Column(7)       =   "frmFacturasEmitidas.frx":0B0E
+      Column(8)       =   "frmFacturasEmitidas.frx":0D3E
+      Column(9)       =   "frmFacturasEmitidas.frx":0E86
+      Column(10)      =   "frmFacturasEmitidas.frx":1006
+      Column(11)      =   "frmFacturasEmitidas.frx":1102
+      Column(12)      =   "frmFacturasEmitidas.frx":1202
+      Column(13)      =   "frmFacturasEmitidas.frx":1362
+      Column(14)      =   "frmFacturasEmitidas.frx":14B6
+      Column(15)      =   "frmFacturasEmitidas.frx":15FE
+      Column(16)      =   "frmFacturasEmitidas.frx":1756
+      Column(17)      =   "frmFacturasEmitidas.frx":189E
+      Column(18)      =   "frmFacturasEmitidas.frx":19E6
+      Column(19)      =   "frmFacturasEmitidas.frx":1ACA
+      Column(20)      =   "frmFacturasEmitidas.frx":1C1A
+      Column(21)      =   "frmFacturasEmitidas.frx":1D3E
+      Column(22)      =   "frmFacturasEmitidas.frx":1EB6
+      Column(23)      =   "frmFacturasEmitidas.frx":2026
       FormatStylesCount=   16
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":1E4E
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":1F86
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2036
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":20EA
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":21C2
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":227A
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":235A
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":23E6
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":24C6
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":2576
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":262A
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":26DA
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":278A
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":283E
-      FormatStyle(15) =   "frmFacturasEmitidas.frx":2916
-      FormatStyle(16) =   "frmFacturasEmitidas.frx":29FA
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":2132
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":226A
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":231A
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":23CE
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":24A6
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":255E
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":263E
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":26CA
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":27AA
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":285A
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":290E
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":29BE
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":2A6E
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":2B22
+      FormatStyle(15) =   "frmFacturasEmitidas.frx":2BFA
+      FormatStyle(16) =   "frmFacturasEmitidas.frx":2CDE
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":2ADA
-      PrinterProperties=   "frmFacturasEmitidas.frx":2DF4
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":2DBE
+      PrinterProperties=   "frmFacturasEmitidas.frx":30D8
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   15630
@@ -703,10 +705,10 @@ Dim m_Archivos As Dictionary
 Private Sub AnularFactura_Click()
     Dim r As Long
     r = Me.GridEX1.RowIndex(Me.GridEX1.row)
-    If MsgBox("?Desea anular el comprobante?", vbYesNo, "Confirmacion") = vbYes Then
+    If MsgBox("¿Desea anular el comprobante?", vbYesNo, "Confirmacion") = vbYes Then
 
         If DAOFactura.Anular(Factura) Then
-            MsgBox "Comprobante anulado con ?xito!", vbInformation, "Informaci?n"
+            MsgBox "Comprobante anulado con éxito!", vbInformation, "Información"
             Me.GridEX1.RefreshRowIndex r
         Else
             MsgBox "Hubo un error. No se anulo el comprobante!", vbCritical, "Error"
@@ -719,7 +721,7 @@ End Sub
 
 Private Sub aplicarNCaFC_Click()
 On Error GoTo err1
-    If MsgBox("?Seguro de aplicar NC a FC / ND?", vbYesNo, "Confirmaci?n") = vbYes Then
+    If MsgBox("¿Seguro de aplicar NC a FC / ND?", vbYesNo, "Confirmación") = vbYes Then
         'seleccionar factura para aplicar
         Set Selecciones.Factura = Nothing
           Dim F As New frmAdminFacturasNCElegirFC
@@ -732,7 +734,7 @@ On Error GoTo err1
 
         If IsSomething(Selecciones.Factura) Then
              If DAOFactura.aplicarNCaFC(Selecciones.Factura.id, Factura.id) Then
-                MsgBox "Aplicaci?n existosa!", vbInformation, "Informaci?n"
+                MsgBox "Aplicación existosa!", vbInformation, "Información"
 '            Else
 '                MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
             End If
@@ -801,67 +803,17 @@ Private Sub archivos_Click()
     F.Show
 End Sub
 
-'Private Sub Command1_Click()
-'On Error GoTo err1
-'Dim col As Collection
-'Set col = DAOFactura.FindAll(, True)
-'
-'Dim F As Factura
-'Dim q As String
-'conectar.BeginTransaction
-'Dim c
-'c = 0
-'For Each F In col
-'    c = c + 1
-'    If F.estado = EstadoFacturaCliente.Aprobada Then
-'
-'    F.TotalEstatico.Total = F.Total
-'    F.TotalEstatico.TotalExento = F.TotalExento
-'    F.TotalEstatico.TotalIVA = F.TotalIVA
-'    F.TotalEstatico.TotalIVADiscrimandoONo = F.TotalIVADiscrimandoONo
-'    F.TotalEstatico.TotalNetoGravado = F.TotalNetoGravado
-'    F.TotalEstatico.TotalPercepcionesIB = F.totalPercepciones
-'
-'    'a = DAOFactura.Guardar(f) 'Then GoTo err1
-'
-'    q = "UPDATE sp.AdminFacturas " _
-     '                     & " SET total_estatico = '" & F.Total & "', " _
-     '                    & "  total_iva_estatico = ' " & F.TotalIVA & "  ', " _
-     '                & "total_perIB_estatico = '" & F.totalPercepciones & "', " _
-     '                & " total_neto_estatico = '" & F.TotalNetoGravado & "'," _
-     '                & " total_exento_estatico = '" & F.TotalExento & "', " _
-     '                & " total_iva_discono_estatico = '" & F.TotalIVADiscrimandoONo & "' " _
-     '                & "Where id = " & F.id
-'
-'                conectar.execute q
-'    End If
-'Debug.Print c
-'Next F
-'
-'conectar.CommitTransaction
-'
-'Exit Sub
-'err1:
-'
-'conectar.RollBackTransaction
-'
-'End Sub
-
-
-
-
 
 Private Sub cboRangos_Click()
     funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde, Me.dtpHasta
 End Sub
 
 
-
-
-
 Private Sub chkVerObservaciones_Click()
     verObservaciones
 End Sub
+
+
 Private Sub verObservaciones()
     If Me.chkVerObservaciones Then
         Me.GridEX1.PreviewRowLines = 1
@@ -899,7 +851,6 @@ End Sub
 
 
 Private Sub Command1_Click()
-
     DAODetalleOrdenTrabajo.arreglarCagada
 End Sub
 
@@ -942,6 +893,8 @@ Private Sub Form_Load()
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 3
    cboEstadosSaldada.AddItem "Cancelado parcial por NC"
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 3
+    
+    
 'NoSaldada = 0
 '    saldadoTotal = 1
 '    SaldadoParcial = 2
@@ -1028,15 +981,15 @@ Private Sub llenarGrilla()
 
 
 
-        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
+        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
         '    Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
 
-        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
+        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         'TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.Moneda.id, F.CambioAPatron)
+        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         '    totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.Moneda.id, MonedaConverter.Patron.id)
+        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
 
     Next
 
@@ -1081,7 +1034,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub GridEX1_BeforePrintPage(ByVal PageNumber As Long, ByVal nPages As Long)
-    GridEX1.PrinterProperties.FooterString(jgexHFRight) = "P?gina" & PageNumber & " de " & nPages
+    GridEX1.PrinterProperties.FooterString(jgexHFRight) = "Página" & PageNumber & " de " & nPages
 End Sub
 
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
@@ -1137,19 +1090,17 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                'opci?n combinada solo v?lida para comprobantes electr?nicos no aprobados localmente
                '23-08-2020
                If Factura.esCredito Then
-               
-                          If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
-                                      Me.mnuAprobarEnviar.Visible = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones
-                                     Me.mnuAprobarEnviar.Enabled = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones
-                                    Else
-                                      Me.mnuAprobarEnviar.Visible = False
-                                     Me.mnuAprobarEnviar.Enabled = False
-                          End If
-                         
-                        Else
+                      If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
+                            Me.mnuAprobarEnviar.Visible = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones
+                            Me.mnuAprobarEnviar.Enabled = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones
+                     Else
+                            Me.mnuAprobarEnviar.Visible = False
+                            Me.mnuAprobarEnviar.Enabled = False
+                     End If
+               Else
                           Me.mnuAprobarEnviar.Visible = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual
                           Me.mnuAprobarEnviar.Enabled = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual
-                        End If
+                     End If
                
              End If
              
@@ -1189,14 +1140,14 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                                         
                                         'Desde una NC
                                         'Si es Credito no muestra la posibilidad de aplicar NC a Factura
-                                        Me.aplicarNCaFC.Visible = Not Factura.esCredito And Factura.TipoDocumento <> tipoDocumentoContable.Factura
-                                        Me.aplicarNCaFC.Enabled = Not Factura.esCredito And Factura.TipoDocumento <> tipoDocumentoContable.Factura
+                                        Me.aplicarNCaFC.Visible = Not Factura.esCredito And Factura.TipoDocumento <> tipoDocumentoContable.Factura And Not Factura.Tipo.PuntoVenta.CaeManual
+                                        Me.aplicarNCaFC.Enabled = Not Factura.esCredito And Factura.TipoDocumento <> tipoDocumentoContable.Factura And Not Factura.Tipo.PuntoVenta.CaeManual
                                         
                                         '----------------------------------------------------------------------------------------------------------------------------------------
                                         '21/01/2021 dnemer
                                         'Agrego estas dos lineas para que se habilite el menu aplicar sobre las NC cuando sean PV 6 o sea PV Cae Manual
-                                        Me.aplicarNCaFC.Visible = Factura.Tipo.PuntoVenta.CaeManual And Factura.TipoDocumento <> tipoDocumentoContable.Factura
-                                        Me.aplicarNCaFC.Enabled = Factura.Tipo.PuntoVenta.CaeManual And Factura.TipoDocumento <> tipoDocumentoContable.Factura
+                                        'Me.aplicarNCaFC.Visible = Factura.Tipo.PuntoVenta.CaeManual And Factura.TipoDocumento <> tipoDocumentoContable.Factura
+                                        'Me.aplicarNCaFC.Enabled = Factura.Tipo.PuntoVenta.CaeManual And Factura.TipoDocumento <> tipoDocumentoContable.Factura
                                         
                                         
                                         
@@ -1370,10 +1321,10 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(6) = Factura.FechaEmision
     Values(7) = funciones.FormatearDecimales(Factura.TotalEstatico.Total)
 
-    If Factura.Moneda.id = 0 Then
-        Values(8) = Factura.Moneda.NombreCorto
+    If Factura.moneda.id = 0 Then
+        Values(8) = Factura.moneda.NombreCorto
     Else
-        Values(8) = Factura.Moneda.NombreCorto & " " & Factura.CambioAPatron
+        Values(8) = Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
     End If
 
     Values(9) = funciones.FormatearDecimales(Factura.TotalEstatico.Total * Factura.CambioAPatron)
@@ -1416,7 +1367,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
           Values(18) = "/ CAE no definido"
         Else
    
-          Values(18) = Values(17) & "CAE: " & Factura.CAE & "// " & Factura.observaciones & "//" & Factura.observaciones_cancela
+          Values(18) = "CAE: " & Factura.CAE & " / " & Factura.observaciones & " / " & Factura.observaciones_cancela
         End If
     End If
 End If
@@ -1476,7 +1427,7 @@ Private Sub ImprimirFactura_Click()
     If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
         veces = clasea.facturaImpresa(Factura.id)
         If veces > 0 Then
-            If MsgBox("Este comprobante ya fu? generarlo" & Chr(10) & "?Desea volver a generarlo?", vbYesNo, "Confirmaci?n") = vbYes Then
+            If MsgBox("Este comprobante ya fue generarlo" & Chr(10) & "¿Desea volver a generarlo?", vbYesNo, "Confirmación") = vbYes Then
                 'DAOFactura.GenerarPdf (Factura.id)
                 DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
             End If
@@ -1491,7 +1442,7 @@ Private Sub ImprimirFactura_Click()
 
         veces = clasea.facturaImpresa(Factura.id)
         If veces = 0 Or veces = -1 Then
-            If MsgBox("?Desea imprimir este comprobante?", vbYesNo, "Confirmaci?n") = vbYes Then
+            If MsgBox("'¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
                cd.Flags = cdlPDUseDevModeCopies
                 cd.Copies = 3
                 cd.ShowPrinter
@@ -1502,7 +1453,7 @@ Private Sub ImprimirFactura_Click()
             End If
 
         ElseIf veces > 0 Then
-            If MsgBox("Este comprobante ya fu? impreso." & Chr(10) & "?Desea volver a imprimirlo?", vbYesNo, "Confirmaci?n") = vbYes Then
+            If MsgBox("Este comprobante ya fue impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
                 cd.Flags = cdlPDUseDevModeCopies
                 cd.Copies = 3
                 cd.ShowPrinter
@@ -1704,7 +1655,7 @@ Private Sub mnuCrearCopiaFactura_Click()
     Me.taskDialog.Reset
     Me.taskDialog.MessageBoxStyle = True
     Me.taskDialog.WindowTitle = "Copia fiel de Comprobante"
-    Me.taskDialog.MainInstructionText = "?De que tipo es el nuevo comprobante?"
+    Me.taskDialog.MainInstructionText = "¿De que tipo es el nuevo comprobante?"
     Me.taskDialog.ContentText = "Elija el tipo de comprobante para el nuevo comprobante."
     taskDialog.RelativePosition = False
 
@@ -1743,10 +1694,10 @@ Private Sub mnuDesaprobarFactura_Click()
     On Error GoTo err1
     Dim g As Long
 
-    If MsgBox("?Desea desaprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+    If MsgBox("¿Desea desaprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.GridEX1.RowIndex(Me.GridEX1.row)
         If DAOFactura.desaprobar(Factura) Then
-            MsgBox "Comprobante desaprobado con ?xito!", vbInformation, "Informaci?n"
+            MsgBox "Comprobante desaprobado con éxito!", vbInformation, "Información"
             Me.GridEX1.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
         Else
@@ -1780,7 +1731,7 @@ On Error GoTo err1
 
 
     If Not Factura.Tipo.PuntoVenta.EsElectronico Then
-      Err.Raise 300, "Informar AFIP", "No puede informar un comprobante de un PV no catalogado como electr?nico"
+      Err.Raise 300, "Informar AFIP", "No puede informar un comprobante de un PV no catalogado como electrónico"
     End If
       
 '    If factura.Tipo.PuntoVenta.EsElectronico And factura.Tipo.PuntoVenta.CaeManual Then
@@ -1853,7 +1804,7 @@ Private Sub mnuFechaEntrega_Click()
             nuevaFecha = CDate(fechaPosterior)
             Update = True
         Else
-            MsgBox "La fecha no es v?lida.", vbOKOnly + vbExclamation, "Fecha"
+            MsgBox "La fecha no es válida.", vbOKOnly + vbExclamation, "Fecha"
         End If
     End If
 
@@ -1879,13 +1830,13 @@ Private Sub mnuFechaPagoPropuesta_Click()
     fechaPosterior = InputBox("Establezca fecha de pago propuesta", "Fecha de Pago", fechaAnterior)
 
     If LenB(fechaPosterior) = 0 Then
-        Update = (MsgBox("?Desea dejar en blanco la fecha de pago propuesta?", vbYesNo + vbQuestion) = vbYes)
+        Update = (MsgBox("¿Desea dejar en blanco la fecha de pago propuesta?", vbYesNo + vbQuestion) = vbYes)
     Else
         If IsDate(fechaPosterior) Then
             nuevaFecha = CDate(fechaPosterior)
             Update = True
         Else
-            MsgBox "La fecha no es v?lida.", vbOKOnly + vbExclamation, "Fecha"
+            MsgBox "La fecha no es válida.", vbOKOnly + vbExclamation, "Fecha"
         End If
     End If
 
@@ -1966,7 +1917,7 @@ Private Sub PushButton2_Click()
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
 
         xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
-        xlWorksheet.Cells(idx, 3).value = fac.Moneda.NombreCorto
+        xlWorksheet.Cells(idx, 3).value = fac.moneda.NombreCorto
         xlWorksheet.Cells(idx, 4).value = fac.OrdenCompra
 
 
