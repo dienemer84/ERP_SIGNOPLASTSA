@@ -435,6 +435,8 @@ End Function
 Public Function ExportarColeccion(col As Collection) As Boolean
     On Error GoTo err1
     ExportarColeccion = True
+    
+
     Dim detalle As DetalleOrdenTrabajo
     Dim Entregas As Collection
     Dim remitoDetalle As remitoDetalle
@@ -443,6 +445,7 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     Dim xlWorksheet As New Excel.Worksheet
     Dim xlApplication As New Excel.Application
 
+    
     Set xlWorkbook = xlApplication.Workbooks.Add
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
@@ -484,7 +487,8 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     Dim totalneto As Double
     Dim totalno As Double
     Dim totIva As Double
-
+    'Agregar DNEMER 03/02/2021
+    Dim totalpercep As Double
 
     For Each fac In col
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
@@ -492,8 +496,9 @@ Public Function ExportarColeccion(col As Collection) As Boolean
         totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.id, MonedaConverter.Patron.id)
         totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.id, MonedaConverter.Patron.id)
         totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.id, MonedaConverter.Patron.id)
-
-
+        'Agrega DNEMER 03/02/2021
+        totalpercep = totalpercep + fac.totalPercepciones * c
+        
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
         offset = offset + 1
@@ -524,15 +529,17 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     xlWorksheet.Cells(offset + 4, 2).value = "Total NNG"
     xlWorksheet.Cells(offset + 5, 2).value = "Total Neto"
     xlWorksheet.Cells(offset + 6, 2).value = "Tota IVA"
-    xlWorksheet.Cells(offset + 7, 2).value = "Total Filtrado"
+    xlWorksheet.Cells(offset + 7, 2).value = "Tota Percepciones"
+    xlWorksheet.Cells(offset + 8, 2).value = "Total Filtrado"
 
     xlWorksheet.Cells(offset + 3, 3).value = totalneto
     xlWorksheet.Cells(offset + 4, 3).value = totalno
     xlWorksheet.Cells(offset + 5, 3).value = totalneto + totalno
     xlWorksheet.Cells(offset + 6, 3).value = totIva
-    xlWorksheet.Cells(offset + 7, 3).value = Total
-    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 7, 3)).Borders.LineStyle = xlContinuous
-    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 7, 2)).Interior.Color = &HC0C0C0
+    xlWorksheet.Cells(offset + 7, 3).value = totalpercep
+    xlWorksheet.Cells(offset + 8, 3).value = Total
+    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 8, 3)).Borders.LineStyle = xlContinuous
+    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 8, 2)).Interior.Color = &HC0C0C0
 
 
 
@@ -562,6 +569,7 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     Set xlWorksheet = Nothing
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
+
 
     Exit Function
 err1:

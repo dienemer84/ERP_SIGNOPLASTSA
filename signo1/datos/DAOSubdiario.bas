@@ -416,6 +416,8 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
                 For i = min To max
                     existeNumero = False
+                    
+                    
                     For Each det In liq.Detalles
                         If det.ComprobanteTipoLetra = CStr(letra) And CLng(det.ComprobanteNro) = i Then
                             existeNumero = True
@@ -458,6 +460,12 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
         Dim iddet As Long
 
         For Each det In liq.Detalles
+        
+             If Not liq.EsDeVenta Then
+              q = "UPDATE AdminComprasFacturasProveedores a SET a.en_liquidacion = 'id_liquidacion' WHERE a.id = 'id_factura'"
+              q = Replace$(q, "'id_liquidacion'", conectar.Escape(det.LiquidacionId))
+              q = Replace$(q, "'id_factura'", conectar.Escape(det.FacturaId))
+            End If
 
             '        If det.estado = EstadoFacturaCliente.EnProceso Then
             '            facturasEnProceso.Add det.Comprobante
@@ -469,9 +477,14 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
             Else
                 q = "INSERT INTO liquidacion_subdiario_compras_detalles (id_liquidacion, fecha, comprobante, razon_social, cuit, condicion_iva, neto_gravado, iva, percepciones_iibb, exento, total, estado_factura, id_factura, percepciones_iva, impuesto_interno, redondeo) " _
                     & " VALUES ('id_liquidacion', 'fecha', 'comprobante', 'razon_social', 'cuit', 'condicion_iva', 'neto_gravado', 'iva', 'percepciones_iibb', 'exento', 'total', 'estado_factura', 'id_factura', 'percepciones_iva', 'impuesto_interno', 'redondeo')"
+                
             End If
+            
+
 
             det.LiquidacionId = id
+            
+
 
             q = Replace$(q, "'id_liquidacion'", conectar.Escape(det.LiquidacionId))
             q = Replace$(q, "'fecha'", conectar.Escape(CDate(det.FEcha)))
@@ -493,6 +506,10 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
                 q = Replace$(q, "'redondeo'", conectar.Escape(det.Redondeo))
             End If
 
+
+
+            
+            
             If conectar.execute(q) Then
                 iddet = 0
                 iddet = conectar.UltimoId2()
