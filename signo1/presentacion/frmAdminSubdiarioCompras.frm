@@ -693,7 +693,7 @@ End Sub
 
 
 Private Sub btnExportar_Click()
-    MsgBox "en construcción"
+    MsgBox "En construcción"
     '    ExportaSubDiarioVentas
 End Sub
 
@@ -1304,7 +1304,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         .Range(.Cells(offset, 16), .Cells(offset, 16)).Formula = "=SUM(P3:P" & x + 2 & ")"    'totales.Item(PosicionTotales.TotTot)
         .Range(.Cells(offset, 17), .Cells(offset, 17)).Formula = "=SUM(Q3:Q" & x + 2 & ")"    'totales.Item(PosicionTotales.TotTot)
 
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
         sFilter = "Hoja de Calculo|*.xls"
         CDLGMAIN.filter = sFilter
@@ -1315,7 +1315,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
