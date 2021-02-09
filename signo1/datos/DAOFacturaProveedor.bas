@@ -78,7 +78,7 @@ Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
-        existeFactura = rs!Cantidad > 0
+        existeFactura = rs!cantidad > 0
 
     End If
     Exit Function
@@ -287,6 +287,13 @@ End Function
 Public Function Delete(facid As Long) As Boolean
     On Error GoTo E
 
+  If DAOSubdiarios.ExisteComprobanteEnLiquidacion(facid) Then
+   MsgBox "El comrpobante se encuentra liquidado, no se puede eliminar", vbCritical
+   Exit Function
+  End If
+
+
+
     Dim q As String
     conectar.BeginTransaction
     Dim facProv As clsFacturaProveedor
@@ -294,6 +301,8 @@ Public Function Delete(facid As Long) As Boolean
     Dim facsOrphan As New Collection
 
     'para borrar fijarse que no este en ninguna orden de pago, si esta en alguna, la op no debe estar aprobada para poder sacarla de ahi
+    
+    
     Dim op As OrdenPago
     Set op = DAOOrdenPago.FindByFacturaId(facid)
 

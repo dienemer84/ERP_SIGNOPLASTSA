@@ -7,6 +7,25 @@ Public Enum FcGroupMethod
     GroupByYear = 3
 End Enum
 
+Public Function ExisteComprobanteEnLiquidacion(id As Long) As Boolean
+On Error GoTo err1
+Dim qry As String
+Dim rs As Recordset
+qry = "select count(id) as c from liquidacion_subdiario_compras_detalles"
+Set rs = conectar.RSFactory(q)
+Dim cantidad As Integer
+While Not rs.EOF
+    cantidad = rs!c
+Wend
+
+ExisteComprobanteEnLiquidacion = cantidad > 0
+
+err1:
+ExisteComprobanteEnLiquidacion = False
+
+End Function
+
+
 Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optional Orden As String = vbNullString, Optional idCliente As Long = -1, Optional idContratoMarco As Long = -1) As Collection
     Dim col_facturas As New Collection
     Dim newcol As New Collection
