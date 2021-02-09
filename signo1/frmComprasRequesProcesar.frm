@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Begin VB.Form frmComprasRequesProcesar 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
@@ -302,6 +302,7 @@ Private Sub Command3_Click()
     'agregar un proveedor a la coleccion y mostrarlo
     esta = False
     IdElegido = Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
+    Dim h As Integer
     For h = 1 To vProveedores.count
         If vProveedores.item(h).id = IdElegido Then
             esta = True
@@ -336,7 +337,7 @@ Private Sub cargarDatosReque()
     End If
     Me.caption = "Procesar proveedores requerimiento Nº " & vReque.id
     Me.lblSector = vReque.Sector.Sector
-    Me.lblFecha = vReque.FechaCreado
+    Me.lblFecha = vReque.fechaCreado
     Me.lblNumero = vReque.id
     Me.lblDestino = vReque.StringDestino
     Me.grilla_materiales.ItemCount = vReque.Materiales.count
@@ -345,8 +346,8 @@ Private Sub mostrarMenu()
     Me.PopupMenu Me.procesar
 End Sub
 Private Sub grilla_materiales_SelectionChange()
-    a = grilla_materiales.RowIndex(grilla_materiales.row)
-    Set tmpMaterial = vReque.Materiales.item(a)
+    A = grilla_materiales.RowIndex(grilla_materiales.row)
+    Set tmpMaterial = vReque.Materiales.item(A)
     Me.grilla_proveedores.ItemCount = 0
     Set vProveedores = tmpMaterial.ListaProveedores
     Me.grilla_proveedores.ItemCount = vProveedores.count
@@ -363,7 +364,7 @@ Private Sub grilla_materiales_UnboundReadData(ByVal RowIndex As Long, ByVal Book
     With tmpMaterial
         Values(1) = tmpMaterial.Cantidad
         Values(2) = tmpMaterial.Material.codigo
-        Values(3) = tmpMaterial.Material.Grupo.rubros.Rubro
+        Values(3) = tmpMaterial.Material.Grupo.rubros.rubro
         Values(4) = tmpMaterial.Material.Grupo.Grupo
         Values(5) = tmpMaterial.Material.descripcion
         Values(6) = tmpMaterial.Material.Espesor
@@ -372,7 +373,7 @@ Private Sub grilla_materiales_UnboundReadData(ByVal RowIndex As Long, ByVal Book
         Values(9) = funciones.FormatearDecimales(tmpMaterial.ML, 2)
         Values(10) = funciones.FormatearDecimales(tmpMaterial.Kg, 2)
         Values(11) = enums.enumUnidades(tmpMaterial.Material.unidad)
-        Values(12) = tmpMaterial.Observaciones
+        Values(12) = tmpMaterial.observaciones
         Values(13) = enums.enumEstadoRequeCompra(tmpMaterial.estado)
     End With
 End Sub

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmSectorizar 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -306,6 +306,7 @@ Private Sub Command2_Click()
                 If Me.lstSectoresEmpleados.ListItems(i) = Me.lstSectores.ListItems(x) Then esta = True
             Next i
             If Not esta Then
+            Dim h As ListItem
                 Set h = Me.lstSectoresEmpleados.ListItems.Add(, , Me.lstSectores.ListItems(x))
                 h.SubItems(1) = Me.lstSectores.ListItems(x).ListSubItems(1)
             End If

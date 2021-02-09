@@ -14,7 +14,8 @@ Public Function GetById(id) As clsTipoIvaProveedor
 End Function
 Public Function GetAll() As Collection
     Dim col As New Collection
-    Dim a As clsTipoIvaProveedor
+    Dim A As clsTipoIvaProveedor
+    Dim q As String
     q = "SELECT * From  AdminConfigIVAProveedor  LEFT JOIN AdminConfigFacturasProveedor " _
         & " ON (AdminConfigIVAProveedor.id = AdminConfigFacturasProveedor.id) "
 
@@ -25,19 +26,19 @@ Public Function GetAll() As Collection
     Dim configFc As clsConfigFacturaProveedor
 
     While Not rs.EOF
-        Set a = Map(rs, indice, "AdminConfigIVAProveedor", "AdminConfigFacturasProveedor")
+        Set A = Map(rs, indice, "AdminConfigIVAProveedor", "AdminConfigFacturasProveedor")
 
-        If Not BuscarEnColeccion(col, CStr(a.id)) Then
-            col.Add a, CStr(a.id)
+        If Not BuscarEnColeccion(col, CStr(A.id)) Then
+            col.Add A, CStr(A.id)
         Else
-            Set a = col.item(CStr(a.id))
+            Set A = col.item(CStr(A.id))
         End If
 
 
         Set configFc = DAOConfigFacturaProveedor.Map(rs, indice, "AdminConfigFacturasProveedor")
         If IsSomething(configFc) Then
-            If BuscarEnColeccion(a.configFacturas, CStr(configFc.id)) Then
-                a.configFacturas.Add configFc, CStr(configFc.id)
+            If BuscarEnColeccion(A.configFacturas, CStr(configFc.id)) Then
+                A.configFacturas.Add configFc, CStr(configFc.id)
                 End
             End If
 
@@ -46,7 +47,7 @@ Public Function GetAll() As Collection
 
         rs.MoveNext
     Wend
-    Set a = Nothing
+    Set A = Nothing
     Set GetAll = col
 End Function
 

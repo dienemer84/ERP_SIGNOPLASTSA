@@ -13,7 +13,7 @@ Public Function FindAllByFilter(filter As String) As Collection
     Dim TipoFactura As New clsTipoFactura
 
     'Set rs = conectar.RSFactory("SELECT * FROM AdminConfigFacturasTipos acft LEFT JOIN AdminConfigFacturaPuntoVenta pv ON  acft.id_punto_venta=pv.id where " & filter)
-
+Dim q As String
     q = "SELECT   * From   AdminConfigFacturasTiposDiscriminado acftd " _
         & "LEFT JOIN AdminConfigFacturaPuntoVenta pv  ON acftd.id_punto_venta = pv.id " _
         & "LEFT JOIN AdminConfigFacturasTipos acft ON (acftd.`id_tipo_factura`=acft.`id`) " _

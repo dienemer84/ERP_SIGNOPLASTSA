@@ -73,7 +73,7 @@ End Property
 
 
 Private Sub UserControl_Initialize()
-    BackColor = FormHelper.FondoCeleste
+    backColor = FormHelper.FondoCeleste
 End Sub
 
 Private Sub UserControl_Resize()

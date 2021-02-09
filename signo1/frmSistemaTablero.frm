@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmSistemaTablero 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00FF8080&
@@ -131,7 +131,7 @@ Begin VB.Form frmSistemaTablero
          _ExtentY        =   5953
          BorderStyle     =   1
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -205,7 +205,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   5
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -229,7 +229,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -253,7 +253,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -277,7 +277,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -301,7 +301,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -325,7 +325,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -349,7 +349,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -373,7 +373,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -397,7 +397,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -421,7 +421,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -445,7 +445,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -469,7 +469,7 @@ Begin VB.Form frmSistemaTablero
          BorderStyle     =   1
          ViewSelCell     =   0
          ViewHeaderLang  =   3
-         DayCount        =   30
+         DayCount        =   28
          cDay            =   6
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -903,10 +903,10 @@ Private Sub Form_Load()
     Me.cal1(0).cYear = ANIOAnterior
 
     For x = 2 To 11
-        calcularMesDesplazado Now, x - 1, False, a, m
-        Me.Label3(x).caption = mesAnio(m, a)
+        calcularMesDesplazado Now, x - 1, False, A, m
+        Me.Label3(x).caption = mesAnio(m, A)
         Me.cal1(x).cMonth = m
-        Me.cal1(x).cYear = a
+        Me.cal1(x).cYear = A
     Next x
     verTablero Grupo, Empty, Empty    'muestra el mes en curso al comienzo (onload)
 End Sub
@@ -973,6 +973,7 @@ End Sub
 Private Sub calcularMesDesplazado(actual As Date, desplazamiento, atras As Boolean, ByRef anioDesplazado, ByRef mesDesplazado)
     desplazado = desplazamiento
     If atras Then desplazado = desplazamiento * -1
+    Dim m As Integer
     m = DateAdd("m", desplazado, actual)
     mesDesplazado = Month(m)    'a
     anioDesplazado = Year(m)    'anio
@@ -1026,9 +1027,9 @@ Private Sub Label3_Click(index As Integer)
     mess = Me.cal1(index).cMonth
     anioo = Me.cal1(index).cYear
     verMes Grupo, mess, anioo
-    a = vbBlack
+    A = vbBlack
     For i = 0 To 11
-        Label3(i).ForeColor = a
+        Label3(i).ForeColor = A
     Next
     Label3(index).ForeColor = vbRed
 End Sub
@@ -1050,10 +1051,10 @@ Private Sub lstEventos_MouseUp(Button As Integer, Shift As Integer, x As Single,
             If Not rs.EOF And Not rs.BOF Then
                 estado = rs!estado
                 idUsuario = rs!idUsuario
-                modificable = rs!eventoModificable
+                Modificable = rs!eventoModificable
             End If
 
-            If modificable = 1 Then  'si se puede modificar, activo la opcion
+            If Modificable = 1 Then  'si se puede modificar, activo la opcion
                 Me.agregar_comentario.Enabled = True
                 Me.editar_evento.Enabled = True
             Else
@@ -1098,7 +1099,7 @@ Private Sub stCalendar1_DayClicked(ByVal Button As Integer, ByVal Shift As Integ
             estado = "Finalizado"
         End If
         x.SubItems(2) = estado
-        x.SubItems(3) = r!FechaCreado
+        x.SubItems(3) = r!fechaCreado
         x.Tag = r!id
         If marcado = x Then
             x.Selected = True

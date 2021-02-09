@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica 
    Caption         =   "COMPROBANTE ELECTRONICO"
-   ClientHeight    =   11565
+   ClientHeight    =   10890
    ClientLeft      =   165
    ClientTop       =   555
-   ClientWidth     =   23880
+   ClientWidth     =   22920
    StartUpPosition =   3  'Windows Default
    _ExtentX        =   50588
    _ExtentY        =   25162
@@ -1247,7 +1247,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       _Version        =   393216
       Name            =   "footer"
       Object.Height          =   3660
-      NumControls     =   25
+      NumControls     =   26
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -1264,27 +1264,27 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item1 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "marco4"
-         Object.Left            =   30
+         Object.Left            =   2025
          Object.Top             =   1545
-         Object.Width           =   11055
+         Object.Width           =   9060
          Object.Height          =   1215
       EndProperty
       ItemType2       =   6
       BeginProperty Item2 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "marco5"
-         Object.Left            =   30
+         Object.Left            =   2025
          Object.Top             =   2760
-         Object.Width           =   11055
+         Object.Width           =   9060
          Object.Height          =   855
       EndProperty
       ItemType3       =   3
       BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblTotalLetras"
-         Object.Left            =   225
+         Object.Left            =   2175
          Object.Top             =   1590
-         Object.Width           =   10815
+         Object.Width           =   8865
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -1301,7 +1301,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCAE"
-         Object.Left            =   7395
+         Object.Left            =   2130
          Object.Top             =   2910
          Object.Width           =   3510
          Object.Height          =   330
@@ -1315,13 +1315,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "CAE: BLABLABLABLA"
-         Alignment       =   1
       EndProperty
       ItemType5       =   3
       BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCaeVencimiento"
-         Object.Left            =   7410
+         Object.Left            =   2145
          Object.Top             =   3195
          Object.Width           =   3495
          Object.Height          =   330
@@ -1335,15 +1334,16 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "VTO CAE: BLABLABLABLA"
-         Alignment       =   1
       EndProperty
       ItemType6       =   3
       BeginProperty Item6 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblBarcode"
+         Object.Left            =   2235
          Object.Top             =   2820
-         Object.Width           =   7380
+         Object.Width           =   5145
          Object.Height          =   840
+         Object.Visible         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "3 of 9 Barcode"
             Size            =   32.25
@@ -1360,10 +1360,11 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblBarcodeCode"
-         Object.Left            =   105
+         Object.Left            =   2385
          Object.Top             =   3375
-         Object.Width           =   6870
+         Object.Width           =   4590
          Object.Height          =   255
+         Object.Visible         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   9
@@ -1679,6 +1680,16 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Label1"
          Alignment       =   2
+      EndProperty
+      ItemType25      =   7
+      BeginProperty Item25 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "qrcode"
+         Object.Left            =   45
+         Object.Top             =   1590
+         Object.Width           =   1920
+         Object.Height          =   1935
+         SizeMode        =   1
       EndProperty
    EndProperty
    SectionCode4    =   8

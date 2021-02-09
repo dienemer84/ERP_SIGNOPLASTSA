@@ -1,8 +1,8 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmVentasPresupuestoEditar 
    BackColor       =   &H00FF80FF&
    BorderStyle     =   1  'Fixed Single
@@ -220,7 +220,7 @@ Begin VB.Form frmVentasPresupuestoEditar
          _ExtentX        =   2143
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   60162049
+         Format          =   60686337
          CurrentDate     =   38926
       End
       Begin XtremeSuiteControls.PushButton Command6 
@@ -1751,6 +1751,7 @@ Private Sub cboCliente_Click()
     Inicio = Inicio + 1
     On Error GoTo err1
     If Not tmpPresupuesto Is Nothing Then
+    Dim h As VbMsgBoxResult
         If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> CInt(tmpPresupuesto.cliente.id) Then
             h = MsgBox("¿Desea cambiar el cliente seleccionado?", vbYesNo, "Confirmación")
             If h = 6 Then
@@ -2112,7 +2113,7 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
 
     If tmpDetalle.Pieza.Complejidad = ComplejidadAlta Then
         RowBuffer.CellStyle(14) = "comp_alta"
-    ElseIf tmpDetalle.Pieza.Complejidad = Complejidadmedia Then
+    ElseIf tmpDetalle.Pieza.Complejidad = ComplejidadMedia Then
         RowBuffer.CellStyle(14) = "comp_media"
         ElseIf tmpDetalle.Pieza.Complejidad = ComplejidadBaja Then
         RowBuffer.CellStyle(14) = "comp_baja"

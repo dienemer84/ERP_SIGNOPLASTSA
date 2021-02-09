@@ -1146,6 +1146,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Dim grabado As Boolean
 Dim rss As Recordset
 Dim baseM As New classConfigurar
@@ -1155,8 +1156,12 @@ Dim baseSP As New classSignoplast
 Dim Kg
 Dim m2
 
+
+
 Public Sub calcularTotalMateriales(ByVal lst As ListView, ByRef Kg, ByRef m2, ByRef costo)
     Dim K As Double, m As Double, c As Double
+    Dim i As Integer
+    
     For i = 1 To lst.ListItems.count
         K = K + CDbl(lst.ListItems(i).ListSubItems(10))
         m = m + CDbl(lst.ListItems(i).ListSubItems(11))
@@ -1261,6 +1266,10 @@ Private Sub btnModificar_Click()
         If Trim(Me.txtNombreElemento) = Empty Then
             MsgBox "Error, debe completar todos los campos.", vbCritical, "Error"
         Else
+        Dim h As VbMsgBoxResult
+        
+        
+        
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
                 base.modificar Me.ListView1, Me.ListView2, Me.txtNombreElemento, CInt(Me.txtIdCliente), idPieza, CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
@@ -1474,6 +1483,7 @@ Private Sub Command5_Click()
         If Me.txtIdCliente = vbNullString Or Me.txtIdCliente = 0 Or Trim(Me.txtNombreElemento) = Empty Then
             MsgBox "Error, debe completar todos los campos.", vbCritical, "Error"
         Else
+        Dim h As VbMsgBoxResult
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
                 base.agregar Me.ListView1, Me.ListView2, Me.txtNombreElemento, CInt(Me.txtIdCliente), CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
