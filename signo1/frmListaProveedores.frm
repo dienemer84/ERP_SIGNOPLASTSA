@@ -4,74 +4,200 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasProveedoresLista 
    BackColor       =   &H00FF8080&
    Caption         =   "Proveedores"
-   ClientHeight    =   5865
+   ClientHeight    =   7515
    ClientLeft      =   60
    ClientTop       =   270
-   ClientWidth     =   13335
+   ClientWidth     =   17775
    Icon            =   "frmListaProveedores.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   5865
-   ScaleWidth      =   13335
-   Begin VB.TextBox txtCuit 
-      BackColor       =   &H00FFFFFF&
-      Height          =   285
-      Left            =   465
-      TabIndex        =   10
-      Top             =   5430
-      Width           =   2295
-   End
-   Begin XtremeSuiteControls.ComboBox cboRubros 
-      Height          =   315
+   ScaleHeight     =   7515
+   ScaleWidth      =   17775
+   Begin XtremeSuiteControls.GroupBox GroupBox1 
+      Height          =   1815
       Left            =   120
-      TabIndex        =   5
-      Top             =   4680
-      Width           =   3135
+      TabIndex        =   1
+      Top             =   5400
+      Width           =   11055
       _Version        =   786432
-      _ExtentX        =   5530
-      _ExtentY        =   556
-      _StockProps     =   77
-      BackColor       =   -2147483643
-      Text            =   "ComboBox1"
-   End
-   Begin XtremeSuiteControls.PushButton Command1 
-      Default         =   -1  'True
-      Height          =   375
-      Left            =   11880
-      TabIndex        =   4
-      Top             =   4635
-      Width           =   1335
-      _Version        =   786432
-      _ExtentX        =   2355
-      _ExtentY        =   661
+      _ExtentX        =   19500
+      _ExtentY        =   3201
       _StockProps     =   79
-      Caption         =   "Filtrar"
+      Caption         =   "Búsqueda"
       UseVisualStyle  =   -1  'True
-   End
-   Begin VB.ListBox lstEstados 
-      Height          =   735
-      Left            =   4020
-      Style           =   1  'Checkbox
-      TabIndex        =   3
-      Top             =   4695
-      Width           =   3015
-   End
-   Begin VB.TextBox Text1 
-      BackColor       =   &H00FFFFFF&
-      Height          =   285
-      Left            =   8280
-      TabIndex        =   0
-      Top             =   5040
-      Width           =   3975
+      Begin VB.ListBox lstEstados 
+         Height          =   735
+         Left            =   6240
+         Style           =   1  'Checkbox
+         TabIndex        =   13
+         Top             =   600
+         Width           =   3015
+      End
+      Begin VB.TextBox Text1 
+         BackColor       =   &H00FFFFFF&
+         Height          =   285
+         Left            =   1320
+         TabIndex        =   5
+         Top             =   600
+         Width           =   3975
+      End
+      Begin VB.TextBox txtCuit 
+         BackColor       =   &H00FFFFFF&
+         Height          =   285
+         Left            =   1320
+         TabIndex        =   2
+         Top             =   240
+         Width           =   2295
+      End
+      Begin XtremeSuiteControls.ComboBox cboFantasia 
+         Height          =   315
+         Left            =   1320
+         TabIndex        =   7
+         Top             =   960
+         Width           =   4005
+         _Version        =   786432
+         _ExtentX        =   7064
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Sorted          =   -1  'True
+         Text            =   "cboProveedores"
+      End
+      Begin XtremeSuiteControls.PushButton btnClearFantasia 
+         Height          =   255
+         Left            =   5400
+         TabIndex        =   8
+         Top             =   990
+         Width           =   420
+         _Version        =   786432
+         _ExtentX        =   741
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboRubros 
+         Height          =   315
+         Left            =   1320
+         TabIndex        =   10
+         Top             =   1350
+         Width           =   4005
+         _Version        =   786432
+         _ExtentX        =   7064
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Text            =   "ComboBox1"
+      End
+      Begin XtremeSuiteControls.PushButton cmdSinRubro 
+         Height          =   255
+         Left            =   5400
+         TabIndex        =   11
+         Top             =   1395
+         Width           =   420
+         _Version        =   786432
+         _ExtentX        =   741
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton Command1 
+         Default         =   -1  'True
+         Height          =   375
+         Left            =   9600
+         TabIndex        =   14
+         Top             =   1320
+         Width           =   1335
+         _Version        =   786432
+         _ExtentX        =   2355
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Filtrar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label lblEstados 
+         Height          =   195
+         Index           =   1
+         Left            =   6240
+         TabIndex        =   15
+         Top             =   360
+         Width           =   615
+         _Version        =   786432
+         _ExtentX        =   1085
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Estados:"
+         BackColor       =   12632256
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
+      Begin VB.Label P 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Rubros:"
+         Height          =   255
+         Left            =   480
+         TabIndex        =   12
+         Top             =   1375
+         Width           =   735
+      End
+      Begin XtremeSuiteControls.Label Label3 
+         Height          =   195
+         Left            =   240
+         TabIndex        =   9
+         Top             =   1020
+         Width           =   1020
+         _Version        =   786432
+         _ExtentX        =   1799
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Nom Fantasia:"
+         BackColor       =   12632256
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label2 
+         Height          =   255
+         Left            =   165
+         TabIndex        =   6
+         Top             =   615
+         Width           =   1095
+         _Version        =   786432
+         _ExtentX        =   1931
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Razón Social:"
+         BackColor       =   12632256
+         Alignment       =   1
+      End
+      Begin XtremeSuiteControls.Label lblCuit 
+         Height          =   195
+         Index           =   0
+         Left            =   840
+         TabIndex        =   3
+         Top             =   285
+         Width           =   420
+         _Version        =   786432
+         _ExtentX        =   741
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "CUIT:"
+         BackColor       =   12632256
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   4560
+      Height          =   5280
       Left            =   15
-      TabIndex        =   2
+      TabIndex        =   0
       Top             =   15
       Width           =   17415
       _ExtentX        =   30718
-      _ExtentY        =   8043
+      _ExtentY        =   9313
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
@@ -109,53 +235,11 @@ Begin VB.Form frmComprasProveedoresLista
       ImageCount      =   0
       PrinterProperties=   "frmListaProveedores.frx":0CC4
    End
-   Begin XtremeSuiteControls.PushButton cmdSinRubro 
-      Height          =   255
-      Left            =   3345
-      TabIndex        =   6
-      Top             =   4710
-      Width           =   495
-      _Version        =   786432
-      _ExtentX        =   873
-      _ExtentY        =   450
-      _StockProps     =   79
-      Caption         =   "X"
-      BackColor       =   12632256
-      UseVisualStyle  =   -1  'True
-   End
-   Begin XtremeSuiteControls.ComboBox cboFantasia 
-      Height          =   315
-      Left            =   8280
-      TabIndex        =   7
-      Top             =   5430
-      Width           =   3525
-      _Version        =   786432
-      _ExtentX        =   6218
-      _ExtentY        =   556
-      _StockProps     =   77
-      BackColor       =   -2147483643
-      Sorted          =   -1  'True
-      Text            =   "cboProveedores"
-   End
-   Begin XtremeSuiteControls.PushButton btnClearFantasia 
-      Height          =   255
-      Left            =   11895
-      TabIndex        =   8
-      Top             =   5475
-      Width           =   420
-      _Version        =   786432
-      _ExtentX        =   741
-      _ExtentY        =   450
-      _StockProps     =   79
-      Caption         =   "X"
-      BackColor       =   12632256
-      UseVisualStyle  =   -1  'True
-   End
    Begin XtremeSuiteControls.Label Label1 
       Height          =   255
-      Left            =   7200
-      TabIndex        =   12
-      Top             =   5055
+      Left            =   0
+      TabIndex        =   4
+      Top             =   15
       Width           =   1095
       _Version        =   786432
       _ExtentX        =   1931
@@ -163,43 +247,6 @@ Begin VB.Form frmComprasProveedoresLista
       _StockProps     =   79
       Caption         =   "Razón Social:"
       BackColor       =   12632256
-   End
-   Begin XtremeSuiteControls.Label lblCuit 
-      Height          =   195
-      Left            =   30
-      TabIndex        =   11
-      Top             =   5475
-      Width           =   375
-      _Version        =   786432
-      _ExtentX        =   661
-      _ExtentY        =   344
-      _StockProps     =   79
-      Caption         =   "CUIT"
-      BackColor       =   12632256
-      AutoSize        =   -1  'True
-   End
-   Begin XtremeSuiteControls.Label Label3 
-      Height          =   195
-      Left            =   7275
-      TabIndex        =   9
-      Top             =   5490
-      Width           =   1020
-      _Version        =   786432
-      _ExtentX        =   1799
-      _ExtentY        =   344
-      _StockProps     =   79
-      Caption         =   "Nom Fantasia:"
-      BackColor       =   12632256
-      AutoSize        =   -1  'True
-   End
-   Begin VB.Label P 
-      BackColor       =   &H00C0C0C0&
-      Caption         =   "Rubros"
-      Height          =   255
-      Left            =   120
-      TabIndex        =   1
-      Top             =   4320
-      Width           =   495
    End
    Begin VB.Menu m2 
       Caption         =   "m2"
@@ -349,21 +396,19 @@ End Sub
 Private Sub Form_Resize()
     On Error Resume Next
     Me.grilla.Width = Me.ScaleWidth
-    Me.grilla.Height = Me.Height - (Me.cboRubros.Height + (1500 - Me.cboRubros.Height))
+'    Me.grilla.Height = Me.Height - (Me.cboRubros.Height + (1500 - Me.cboRubros.Height))
     Me.grilla.ColumnAutoResize = True
-    Me.cboRubros.Top = Me.Height - 1350
-    Me.Text1.Top = Me.cboRubros.Top
-    Me.Command1.Top = Me.cboRubros.Top
-    Me.lstEstados.Top = Me.cboRubros.Top    '+ 400
-    cmdSinRubro.Top = Me.cboRubros.Top
-    Me.lblCuit.Top = Me.cboRubros.Top + 500
-    Me.txtCuit.Top = Me.lblCuit.Top
+'    Me.cboRubros.Top = Me.Height - 1350
+'    Me.Text1.Top = Me.cboRubros.Top
+'    Me.Command1.Top = Me.cboRubros.Top
+'    Me.lstEstados.Top = Me.cboRubros.Top    '+ 400
+'    cmdSinRubro.Top = Me.cboRubros.Top
+'    Me.lblCuit.Top = Me.cboRubros.Top + 500
+'    Me.txtCuit.Top = Me.lblCuit.Top
+'    Me.cboFantasia.Top = Me.cboRubros.Top + 400
+'    Me.Label3.Top = Me.cboFantasia.Top
+'    Me.btnClearFantasia.Top = Me.cboFantasia.Top
 
-
-
-    Me.cboFantasia.Top = Me.cboRubros.Top + 400
-    Me.Label3.Top = Me.cboFantasia.Top
-    Me.btnClearFantasia.Top = Me.cboFantasia.Top
 End Sub
 Private Sub Form_Terminate()
     Channel.RemoverSuscripcionTotal Me

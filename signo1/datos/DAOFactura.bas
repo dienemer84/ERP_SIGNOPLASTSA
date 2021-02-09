@@ -182,29 +182,15 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.fechaPago = GetValue(rs, indice, tabla, "fecha_pago")
         F.esCredito = GetValue(rs, indice, tabla, "EsCredito")
         F.AprobadaAFIP = GetValue(rs, indice, tabla, "aprobacion_afip")
-        
         'fce_nemer_29052020
         F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
         F.FechaVtoHasta = GetValue(rs, indice, tabla, "fecha_vto_hasta")
-        
-        'fce_nemer_02062020_#113
-        'F.FechaServDesde = GetValue(rs, indice, tabla, "fecha_serv_desde")
-        'F.FechaServHasta = GetValue(rs, indice, tabla, "fecha_serv_hasta")
-        
         F.TextoAdicional = GetValue(rs, indice, tabla, "texto_adicional")
-        
-        
         F.CAE = GetValue(rs, indice, tabla, "cae")
         F.CAEVto = GetValue(rs, indice, tabla, "cae_vto")
-        
         F.FechaVencimientoSQL = GetValue(rs, indice, vbNullString, "FechaVencimiento")
-        
         F.ConceptoIncluir = GetValue(rs, indice, tabla, "id_concepto_incluir")
-        
-        'F.IdOTAnticipo = GetValue(rs, indice, tabla, "id_ot_anticipo")
-
         F.OrdenCompra = GetValue(rs, indice, tabla, "OrdenCompra")
-        'F.TipoDocumento = GetValue(rs, indice, tabla, "tipo")
         F.Saldado = GetValue(rs, indice, tabla, "saldada")
         F.observaciones = GetValue(rs, indice, tabla, "observaciones")
         F.observaciones_cancela = GetValue(rs, indice, tabla, "observaciones_cancela")
@@ -212,16 +198,11 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         'If F.id = 6415 Then Stop
         If LenB(tablaFactTipoFacturaDiscriminado) Then Set F.Tipo = DAOTipoFacturaDiscriminado.Map(rs, indice, tablaFactTipoFacturaDiscriminado, tablaTipoFactura, tablaPuntoVenta)
         If LenB(tablaIVATipo) Then Set F.TipoIVA = DAOTipoIva.Map(rs, indice, tablaIVATipo)
-
         F.AlicuotaAplicada = GetValue(rs, indice, tabla, "alicuotaAplicada")
-
         'ver bien que onda
         Dim porcenPercep As Double
         porcenPercep = GetValue(rs, indice, tabla, "AliPercIB")
-
-
         F.AlicuotaPercepcionesIIBB = porcenPercep
-
         F.estado = GetValue(rs, indice, tabla, "estado")
         F.CantDiasPago = GetValue(rs, indice, tabla, "FormaPago")
         F.FechaAprobacion = GetValue(rs, indice, tabla, "FechaAprobacion")
@@ -230,13 +211,16 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.Cancelada = GetValue(rs, indice, tabla, "cancelada")
         F.MotivoNC = GetValue(rs, indice, tabla, "nc_motivo")
         F.CambioAPatron = GetValue(rs, indice, tabla, "cambio_a_patron")
-        Set F.usuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
         If LenB(tablaMoneda) > 0 Then Set F.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         If LenB(tablaCliente) > 0 Then Set F.cliente = DAOCliente.Map(rs, indice, tablaCliente, tablaClienteIva, "Localidades", "", "Provincia")
+        
+        
+        'MAP DE USUARIOS PARA FACTURAS VENTAS
+        Set F.UsuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
         Set F.UsuarioAprobacion = DAOUsuarios.Map(rs, indice, "usuarios2")
 
-        F.TasaAjusteMensual = GetValue(rs, indice, tabla, "tasa_ajuste_mensual")
 
+        F.TasaAjusteMensual = GetValue(rs, indice, tabla, "tasa_ajuste_mensual")
         Set F.TotalEstatico = New FacturaTotalEstatico
         F.TotalEstatico.Total = GetValue(rs, indice, tabla, "total_estatico")
         F.TotalEstatico.TotalExento = GetValue(rs, indice, tabla, "total_exento_estatico")
@@ -420,7 +404,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'nc_motivo','tasa_ajuste_mensual' " _
             & ")"
 
-        Set F.usuarioCreador = funciones.GetUserObj()
+        Set F.UsuarioCreador = funciones.GetUserObj()
         q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
     End If
 
@@ -456,7 +440,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     
     q = Replace$(q, "'EsCredito'", conectar.Escape(F.esCredito))
     
-    q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.usuarioCreador))
+    q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.UsuarioCreador))
     q = Replace$(q, "'OrdenCompra'", conectar.Escape(F.OrdenCompra))
     q = Replace$(q, "'origenFacturado'", conectar.Escape(F.origenFacturado))
     q = Replace$(q, "'estado'", conectar.Escape(F.estado))
@@ -1282,22 +1266,7 @@ Public Function proximaFactura(F As Factura) As Long 'TipoDocumento As tipoDocum
             proximaFactura = Format(rs!Ult, "0000")
         End If
         Exit Function
-'    End If
 
-'    If idFactura > 0 Then
-'        Set rs = conectar.RSFactory("Select tipoFactura from AdminFacturas where id=" & idFactura)
-'
-'        If Not rs.EOF And Not rs.BOF Then
-'            TipoFactura = rs!TipoFactura
-'            Set rs = conectar.RSFactory("select numeracion+1 as ult from AdminConfigFacturas where id=" & TipoFactura)
-'            If Not rs.EOF And Not rs.BOF Then
-'                proximaFactura = Format(rs!Ult, "0000")
-'            End If
-'            Exit Function
-'
-'        End If
-'
-'    End If
 End If
 
 Exit Function
@@ -2007,7 +1976,7 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
     nuevaF.AlicuotaAplicada = F.AlicuotaAplicada
     nuevaF.AlicuotaPercepcionesIIBB = F.AlicuotaPercepcionesIIBB
     nuevaF.estado = EstadoFacturaCliente.EnProceso
-    Set nuevaF.usuarioCreador = funciones.GetUserObj
+    Set nuevaF.UsuarioCreador = funciones.GetUserObj
     nuevaF.CantDiasPago = F.CantDiasPago
     Set nuevaF.UsuarioAprobacion = Nothing
     Set nuevaF.TotalEstatico = F.TotalEstatico

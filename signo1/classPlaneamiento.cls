@@ -103,10 +103,10 @@ Public Function ExistePedido(idpedido As Long) As Integer
         ExistePedido = -1
     End If
 End Function
-Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optional T1 As OrdenTrabajo) As Boolean     '1- enviar 2-imprimir
+Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optional t1 As OrdenTrabajo) As Boolean     '1- enviar 2-imprimir
 
     Dim T As OrdenTrabajo
-    Set T = DAOOrdenTrabajo.FindById(T1.id)
+    Set T = DAOOrdenTrabajo.FindById(t1.id)
 
     Dim tot As Double
     Dim subto As Double
@@ -244,9 +244,15 @@ Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optio
         pedido_contaduria.Sections("pie").Controls("lblSaldo_header").Visible = True
         If c > 0 Then rs.MoveFirst
         Set pedido_contaduria.DataSource = rs
-        pedido_contaduria.PrintReport False
+        
+        '22/01/2021 DNEMER
+        'Comento el envio de la impresión directa para que primero se muestre la vista previa de la hoja de Contaduria.
+        'Entonces ahora va a mostrar la vista previa desde donde se puede enviar o no a IMPRIMIR
+        
+        'pedido_contaduria.PrintReport False
 
         pedido_contaduria.Show 1
+        
         If Not DAOOrdenTrabajoHistorial.agregar(T, "Caratula de Contaduria previsualizado") Then
             GoTo err2
         End If

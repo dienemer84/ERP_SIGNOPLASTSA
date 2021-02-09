@@ -26,7 +26,7 @@ Dim vEstado As EstadoFacturaProveedor
 Dim vConfigFactura As clsConfigFacturaProveedor
 Dim vHistorial As New Collection
 Dim vCuentasContables As New Collection
-Public moneda As clsMoneda
+Public Moneda As clsMoneda
 Public tipoDocumentoContable As tipoDocumentoContable
 Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
@@ -38,6 +38,7 @@ Public TipoCambioPago As Double
 Public UltimaActualizacion As Date
 Public ImporteTotalAbonado As Double    'dto para poder hacer pagos parciales
 Public NetoGravadoAbonado As Double    'dto para poder hacer pagos parciales
+Public UsuarioCarga As clsUsuario
 
 
 
@@ -239,7 +240,7 @@ Public Property Get Total() As Double
 
 
 
-    If Me.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
+    If Me.Moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
         tipo_cambio = 1
     Else
         tipo_cambio = Me.TipoCambio

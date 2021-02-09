@@ -39,7 +39,7 @@ Dim estado_proveedor(3)
 
 Public Enum TipoComplejidad
 ComplejidadAlta = 3
-Complejidadmedia = 2
+ComplejidadMedia = 2
 ComplejidadBaja = 1
 End Enum
 
@@ -442,7 +442,7 @@ Public Function enumUnidades(indice) As String
 End Function
 Public Function LlenarArrays()
 tipo_complejidad(ComplejidadBaja) = "Baja"
-tipo_complejidad(Complejidadmedia) = "Media"
+tipo_complejidad(ComplejidadMedia) = "Media"
 tipo_complejidad(ComplejidadAlta) = "Alta"
 
     estado_doc_contable(EstadoFacturaCliente.Anulada) = "Anulada"
@@ -613,7 +613,9 @@ Public Function EnumTipoDocumentoContableShort(indice) As String
         Case 0: EnumTipoDocumentoContableShort = "FC"
         Case 1: EnumTipoDocumentoContableShort = "NC"
         Case 2: EnumTipoDocumentoContableShort = "ND"
-          Case 3: EnumTipoDocumentoContableShort = "DA"
+        Case 3: EnumTipoDocumentoContableShort = "DA"
+        
+        
     End Select
 End Function
 Public Function EnumPeriodo(indice) As String

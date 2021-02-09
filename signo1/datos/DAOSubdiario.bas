@@ -30,7 +30,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
         'esto de abajo es porque puedo estar en pesos y a la ves tener un tipo de cambio (por la convertibilidad)
         '01-7-13
-        If fc.Moneda.id = DAOMoneda.FindFirstByPatronOrDefault().id Then
+        If fc.moneda.id = DAOMoneda.FindFirstByPatronOrDefault().id Then
             tipo_cambio = 1
         Else
             tipo_cambio = fc.TipoCambio
@@ -158,8 +158,8 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
 
         Set sv = New SubdiarioVentasDetalle
         sv.Comprobante = fc.GetShortDescription(False, False)
-        sv.CondicionIva = fc.Cliente.TipoIVA.detalle
-        sv.Cuit = fc.Cliente.Cuit
+        sv.CondicionIva = fc.cliente.TipoIVA.detalle
+        sv.Cuit = fc.cliente.Cuit
         'sv.Exento = fc.TotalEstatico.TotalExento
         sv.FEcha = fc.FechaEmision
 
@@ -183,7 +183,7 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
 
 
 
-        sv.RazonSocial = fc.Cliente.razon
+        sv.RazonSocial = fc.cliente.razon
         sv.estado = fc.estado
         sv.FacturaId = fc.id
 
@@ -196,7 +196,7 @@ End Function
 
 Public Function FindAllLiquidacionesVenta(Optional venta As Boolean = True) As Collection
     Dim q As String
-    q = "SELECT * FROM " & IIf(venta, "liquidacion_subdiario", "liquidacion_subdiario_compras") & " l ORDER BY l.desde"
+    q = "SELECT * FROM " & IIf(venta, "liquidacion_subdiario", "liquidacion_subdiario_compras") & " l ORDER BY l.desde DESC"
     Dim rs As Recordset
     Dim liquis As New Collection
     Set rs = conectar.RSFactory(q)
