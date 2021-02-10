@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmDefinirConjunto 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -289,6 +289,7 @@ Private Sub Command1_Click()
         MsgBox "El nombre asignado ya existe en la base de datos", vbCritical, "Error"
     Else
         If Me.lstDetalleConj.ListItems.count > 0 Then
+        Dim h As VbMsgBoxResult
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
                 Dim idcli As Long
@@ -311,6 +312,7 @@ End Sub
 
 Private Sub Command3_Click()
     If Me.lstDetalleConj.ListItems.count > 0 Then
+    Dim h As VbMsgBoxResult
         h = MsgBox("¿Está seguro de modificar el conjunto?", vbYesNo, "Confirmación")
         If h = 6 Then
             Dim idcli As Long
@@ -400,11 +402,11 @@ Private Sub lstDetalleConj_OLEDragDrop(data As MSComctlLib.DataObject, Effect As
         Me.txtCantidad = 1
         Me.txtPieza = rs!detalle
         Me.idPieza = idP
-        Dim a As ListItem
-        Set a = Me.lstDetalleConj.ListItems.Add(, , Trim(Me.txtCantidad))
-        a.SubItems(1) = Me.txtPieza
-        a.SubItems(2) = Me.idPieza
-        a.Tag = ipd
+        Dim A As ListItem
+        Set A = Me.lstDetalleConj.ListItems.Add(, , Trim(Me.txtCantidad))
+        A.SubItems(1) = Me.txtPieza
+        A.SubItems(2) = Me.idPieza
+        A.Tag = ipd
 
     End If
 

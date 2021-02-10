@@ -973,8 +973,10 @@ Private Sub llenarGrilla()
 
         Dim Total As Double
         Dim totalNG As Double
-        Dim TotalIVA As Double
+        Dim TotalIVATodo As Double
         Dim totalPercepcionesIIBB As Double
+        
+        Dim Percepcion As Double
 
 
         If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
@@ -983,20 +985,21 @@ Private Sub llenarGrilla()
 
         Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
-        '    Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
+        TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
-        TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
-        'TotalIVA = TotalIVA + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVA, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
         totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
-        '    totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado, F.Moneda.Id, MonedaConverter.Patron.Id, F.CambioAPatron)
-        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
+       
+       Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
+       
+      '  totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
 
+        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
     Next
 
 
     Me.lblTotal = "Total: $ " & funciones.FormatearDecimales(Total)
     Me.lblTotalPercepciones = "Total Percepciones: $ " & funciones.FormatearDecimales(totalPercepcionesIIBB)
-    Me.lblTotalIVA = "Total IVA: $ " & funciones.FormatearDecimales(TotalIVA)
+    Me.lblTotalIVA = "Total IVA: $ " & funciones.FormatearDecimales(TotalIVATodo)
     Me.lblTotalNeto = "Total NG: $ " & funciones.FormatearDecimales(totalNG)
 
 

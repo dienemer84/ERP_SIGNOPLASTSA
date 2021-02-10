@@ -216,7 +216,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         
         
         'MAP DE USUARIOS PARA FACTURAS VENTAS
-        Set F.UsuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
+        Set F.usuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
         Set F.UsuarioAprobacion = DAOUsuarios.Map(rs, indice, "usuarios2")
 
 
@@ -404,7 +404,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'nc_motivo','tasa_ajuste_mensual' " _
             & ")"
 
-        Set F.UsuarioCreador = funciones.GetUserObj()
+        Set F.usuarioCreador = funciones.GetUserObj()
         q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
     End If
 
@@ -440,7 +440,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     
     q = Replace$(q, "'EsCredito'", conectar.Escape(F.esCredito))
     
-    q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.UsuarioCreador))
+    q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.usuarioCreador))
     q = Replace$(q, "'OrdenCompra'", conectar.Escape(F.OrdenCompra))
     q = Replace$(q, "'origenFacturado'", conectar.Escape(F.origenFacturado))
     q = Replace$(q, "'estado'", conectar.Escape(F.estado))
@@ -1976,7 +1976,7 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
     nuevaF.AlicuotaAplicada = F.AlicuotaAplicada
     nuevaF.AlicuotaPercepcionesIIBB = F.AlicuotaPercepcionesIIBB
     nuevaF.estado = EstadoFacturaCliente.EnProceso
-    Set nuevaF.UsuarioCreador = funciones.GetUserObj
+    Set nuevaF.usuarioCreador = funciones.GetUserObj
     nuevaF.CantDiasPago = F.CantDiasPago
     Set nuevaF.UsuarioAprobacion = Nothing
     Set nuevaF.TotalEstatico = F.TotalEstatico
@@ -2251,6 +2251,8 @@ seccion.Controls.item("lblTotalIva").caption = funciones.FormatearDecimales(F.To
 seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(F.totalPercepciones)
 seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.Total)
 
+QRHelper.generar F
+Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.id & ".bmp")
 
 
 'rptFacturaElectronica.ReportWidth = Largo

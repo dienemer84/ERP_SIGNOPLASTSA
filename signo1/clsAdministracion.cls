@@ -577,6 +577,7 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
 
         If ret.EOF = False And ret.BOF = False Then
             x.SubItems(4) = ret!NroRetencion & " (" & ret!fechaRet & ")"
+            Dim h As Integer
             For h = 6 To tot_columnas
                 If ret!idretencion = lst.ColumnHeaders(h).Tag Then
                     Valor = ret!Valor

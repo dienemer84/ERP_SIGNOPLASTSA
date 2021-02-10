@@ -1,7 +1,7 @@
 Attribute VB_Name = "FormHelper"
 Option Explicit
 
-Public Const FondoCeleste As Long = &HF0E1D1
+Public Const FondoCeleste As Long = &HF0E1E1
 'Public Const FondoCeleste As Long = &HFFDBBF
 
 Public Const FondoAzul As Long = &HD6AA88
@@ -35,7 +35,7 @@ End Function
 Public Sub Customize(F As Form)
     On Error Resume Next
 
-    F.BackColor = FondoCeleste
+    F.backColor = FondoCeleste
     F.Font = "Tahoma"
 
     Set F.Icon = Nothing
@@ -56,7 +56,7 @@ Public Sub Customize(F As Form)
 
         If TypeOf ctrl Is Label Or TypeOf ctrl Is Frame Or TypeOf ctrl Is OptionButton Or TypeOf ctrl Is CheckBox Or TypeOf ctrl Is Xtremesuitecontrols.CheckBox Or TypeOf ctrl Is Xtremesuitecontrols.Label Then
 
-            ctrl.BackColor = FondoCeleste
+            ctrl.backColor = FondoCeleste
             ctrl.ForeColor = LetraAzul
 
         ElseIf TypeOf ctrl Is CommandButton Then
@@ -67,12 +67,12 @@ Public Sub Customize(F As Form)
 
             Set but = ctrl
             Set but.Font = fontt
-            but.BackColor = FondoAzul
+            but.backColor = FondoAzul
         ElseIf TypeOf ctrl Is ComboBox Then
-            ctrl.BackColor = vbWhite
+            ctrl.backColor = vbWhite
             ctrl.Sorter = True
         ElseIf TypeOf ctrl Is ComboBox Then
-            ctrl.BackColor = &H80000005
+            ctrl.backColor = &H80000005
         ElseIf TypeOf ctrl Is ReportControl Then
             Dim fontt2 As New stdfont
             fontt2.Bold = False
@@ -102,7 +102,7 @@ Public Sub Customize(F As Form)
 
         ElseIf TypeOf ctrl Is Xtremesuitecontrols.GroupBox Then
             Set gbox = ctrl
-            gbox.BackColor = FormHelper.FondoCeleste
+            gbox.backColor = FormHelper.FondoCeleste
         ElseIf TypeOf ctrl Is Xtremesuitecontrols.ComboBox Then
             Set cbox = ctrl
             cbox.Appearance = xtpAppearanceOffice2003    'xtpAppearanceOffice2007
@@ -113,9 +113,9 @@ Public Sub Customize(F As Form)
         ElseIf TypeOf ctrl Is Xtremesuitecontrols.RadioButton Then
             Set rb = ctrl
             rb.Appearance = xtpAppearanceOffice2007
-            rb.BackColor = FormHelper.FondoCeleste
+            rb.backColor = FormHelper.FondoCeleste
         ElseIf TypeOf ctrl Is Xtremesuitecontrols.CheckBox Then
-            ctrl.BackColor = FormHelper.FondoCeleste
+            ctrl.backColor = FormHelper.FondoCeleste
 
 
         End If
@@ -128,9 +128,9 @@ Private Sub CustomizeControl(ctrl As Control)
     On Error Resume Next
 
     If TypeOf ctrl Is Label Or TypeOf ctrl Is Frame Then
-        ctrl.BackColor = FondoCeleste
+        ctrl.backColor = FondoCeleste
     ElseIf TypeOf ctrl Is CommandButton Then
-        ctrl.BackColor = FondoAzul
+        ctrl.backColor = FondoAzul
     End If
 
     Dim ctrl2 As Control
