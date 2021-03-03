@@ -941,7 +941,7 @@ Private Sub llenarGrilla()
     filtro = filtro & " and AdminFacturas.EsCredito=" & Me.chkCredito.value
    End If
     
-
+    
     If LenB(Me.txtOrdenCompra) > 0 Then
         filtro = filtro & " and OrdenCompra like '%" & Trim(Me.txtOrdenCompra) & "%'"
     End If
@@ -983,17 +983,18 @@ Private Sub llenarGrilla()
 
 
 
-        Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+      Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
-        TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+      TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
-        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+      totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
        
-       Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
+      Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
        
       '  totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
 
-        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+       totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+    
     Next
 
 
@@ -1002,14 +1003,9 @@ Private Sub llenarGrilla()
     Me.lblTotalIVA = "Total IVA: $ " & funciones.FormatearDecimales(TotalIVATodo)
     Me.lblTotalNeto = "Total NG: $ " & funciones.FormatearDecimales(totalNG)
 
-
-
-
-
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = facturas.count
     Me.caption = "Emitidos [Cantidad: " & facturas.count & "]"
-
 
 ' Desabilito la apertura directa de la Factura al encontrar exacto
     'If facturas.count = 1 Then

@@ -12,13 +12,13 @@ On Error GoTo err1
 Dim qry As String
 Dim rs As Recordset
 qry = "select count(id) as c from liquidacion_subdiario_compras_detalles"
-Set rs = conectar.RSFactory(q)
-Dim cantidad As Integer
+Set rs = conectar.RSFactory(qry)
+Dim Cantidad As Integer
 While Not rs.EOF
-    cantidad = rs!c
+    Cantidad = rs!c
 Wend
 
-ExisteComprobanteEnLiquidacion = cantidad > 0
+ExisteComprobanteEnLiquidacion = Cantidad > 0
 
 err1:
 ExisteComprobanteEnLiquidacion = False

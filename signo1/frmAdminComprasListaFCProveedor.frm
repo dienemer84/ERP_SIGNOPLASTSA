@@ -526,37 +526,39 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   17
+      ColumnsCount    =   19
       Column(1)       =   "frmAdminComprasListaFCProveedor.frx":0326
       Column(2)       =   "frmAdminComprasListaFCProveedor.frx":045E
-      Column(3)       =   "frmAdminComprasListaFCProveedor.frx":0536
-      Column(4)       =   "frmAdminComprasListaFCProveedor.frx":064A
-      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":078E
-      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":09FA
-      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0BF6
-      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0E26
-      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":1036
-      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":1242
-      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":1442
-      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":15B2
-      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":16F6
-      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":184E
-      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":19BA
-      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B12
-      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CB6
+      Column(3)       =   "frmAdminComprasListaFCProveedor.frx":0532
+      Column(4)       =   "frmAdminComprasListaFCProveedor.frx":05FE
+      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":0742
+      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":0862
+      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":09A6
+      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0C12
+      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":0E0E
+      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":103E
+      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":124E
+      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":145A
+      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":165A
+      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":17CA
+      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":190E
+      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1A66
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1BD2
+      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1D2A
+      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1ECE
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1DBA
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":1EF2
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":1FA2
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":2056
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":212E
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":21E6
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":22C6
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2386
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":244A
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1FD2
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":210A
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":21BA
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":226E
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":2346
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":23FE
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":24DE
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":259E
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2662
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":250A
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2824
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2722
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2A3C
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -918,6 +920,7 @@ Public Sub llenarGrilla()
     GridEXHelper.AutoSizeColumns Me.grilla, True
 
     Me.caption = "Facturas Proveedores (" & facturas.count & " comprobantes encontrados)"
+    
 End Sub
 
 Private Sub Form_Resize()
@@ -981,11 +984,11 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     Set Factura = facturas(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaProveedor.Aprobada Then
-        RowBuffer.CellStyle(12) = "EstadoAprobado"
+        RowBuffer.CellStyle(14) = "EstadoAprobado"
     ElseIf Factura.estado = EstadoFacturaProveedor.EnProceso Then
-        RowBuffer.CellStyle(12) = " EstadoEnProceso"
+        RowBuffer.CellStyle(14) = " EstadoEnProceso"
     ElseIf Factura.estado = EstadoFacturaProveedor.Saldada Then
-        RowBuffer.CellStyle(12) = "EstadoSaldado"
+        RowBuffer.CellStyle(14) = "EstadoSaldado"
     End If
     Exit Sub
 err1:
@@ -1004,38 +1007,40 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(1) = funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial)
         End If
         
-        Values(2) = Factura.NumeroFormateado
-        Values(3) = Factura.FEcha
-        Values(4) = Factura.moneda.NombreCorto
-        Values(5) = funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i
-        Values(6) = funciones.FormatearDecimales(Factura.TotalIVA) * i
-        Values(7) = funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i
-        Values(8) = funciones.FormatearDecimales(Factura.totalPercepciones) * i
-        Values(9) = funciones.FormatearDecimales(Factura.ImpuestoInterno) * i
-        Values(10) = funciones.FormatearDecimales(Factura.Total) * i
+        'Values(2) = Factura.NumeroFormateado
+        
+        Values(2) = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
+      '  vConfigFactura.TipoFactura
+        Values(3) = Factura.configFactura.TipoFactura
+        
+        Values(4) = Factura.numero
+        
+        Values(5) = Factura.FEcha
+        Values(6) = Factura.moneda.NombreCorto
+        Values(7) = funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i
+        Values(8) = funciones.FormatearDecimales(Factura.TotalIVA) * i
+        Values(9) = funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i
+        Values(10) = funciones.FormatearDecimales(Factura.totalPercepciones) * i
+        Values(11) = funciones.FormatearDecimales(Factura.ImpuestoInterno) * i
+        Values(12) = funciones.FormatearDecimales(Factura.Total) * i
         If Factura.cuentasContables.count > 0 Then
-            Values(11) = Factura.cuentasContables.item(1).cuentas.codigo
+            Values(13) = Factura.cuentasContables.item(1).cuentas.codigo
         End If
-        Values(12) = enums.enumEstadoFacturaProveedor(Factura.estado)
+        Values(14) = enums.enumEstadoFacturaProveedor(Factura.estado)
 
         If Factura.FormaPagoCuentaCorriente Then
-            Values(13) = "Cta. Cte."
+            Values(15) = "Cta. Cte."
         Else
-            Values(13) = "Contado"
+            Values(15) = "Contado"
         End If
 
-        If Factura.OrdenPagoId > 0 Then Values(14) = Factura.OrdenPagoId
+        If Factura.OrdenPagoId > 0 Then Values(16) = Factura.OrdenPagoId
               
-              
-       Values(15) = Factura.UsuarioCarga.usuario
-       
+        Values(17) = Factura.UsuarioCarga.usuario
         
-         
-  
-        
-        Values(16) = Factura.TipoCambio
+        Values(18) = Factura.TipoCambio
                     
-        Values(17) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+        Values(19) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
 
 
   End With

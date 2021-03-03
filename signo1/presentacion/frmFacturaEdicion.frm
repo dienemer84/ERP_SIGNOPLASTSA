@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60162049
+         Format          =   59244545
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60162049
+         Format          =   59244545
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60162049
+         Format          =   59244545
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60162049
+         Format          =   59244545
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -771,7 +771,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60162049
+         Format          =   59244545
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1838,6 +1838,13 @@ Private Sub cboMoneda_Click()
         Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
     End If
 End Sub
+
+Private Sub cboMonedaAjuste_Click()
+If IsSomething(Factura) And Me.cboMoneda.ListIndex <> -1 And Not dataLoading Then
+         Factura.TipoCambioAjuste = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex)).Cambio
+    End If
+End Sub
+
 Private Sub cboPadron_Click()
     
     If IsSomething(Factura.cliente) And Not dataLoading Then
@@ -2777,9 +2784,22 @@ Private Sub PushButton1_Click()
                     deta.detalle = deta.detalle & " " & Ot.IdFormateado
 
             'bug #2
-                    deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
+                                If Ot.moneda.id <> Factura.moneda.id Then
+                                    If Factura.moneda.Patron Then
+                                        Dim m2 As clsMoneda
+                                        Set m2 = DAOMoneda.GetById(Factura.TipoCambioAjuste)
+                                    
+                                     deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * m2.Cambio * Ot.Anticipo) / 100)
+                                    Else
+                                         deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
+                                    End If
+                                
+                                   
+                                    Else
+                                     deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.Anticipo) / 100)
+                                    End If
 
-                    '   deta.Bruto = MonedaConverter.Convertir(deta.Bruto, Ot.Moneda.Id, Factura.Moneda.Id)
+                      'deta.Bruto = MonedaConverter.Convertir(deta.Bruto, Ot.moneda.id, Factura.moneda.id)
 
                 Next Ot
 

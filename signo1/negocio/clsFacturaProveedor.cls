@@ -26,7 +26,7 @@ Dim vEstado As EstadoFacturaProveedor
 Dim vConfigFactura As clsConfigFacturaProveedor
 Dim vHistorial As New Collection
 Dim vCuentasContables As New Collection
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 Public tipoDocumentoContable As tipoDocumentoContable
 Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
@@ -70,6 +70,11 @@ End Property
 Public Property Get NumeroFormateado() As String
     NumeroFormateado = enums.EnumTipoDocumentoContableShort(tipoDocumentoContable) & "-" & vConfigFactura.TipoFactura & "-" & vNumero
 End Property
+
+Public Property Get NumeroFormateadoCorto() As String
+    NumeroFormateadoCorto = enums.EnumTipoDocumentoContableShort(tipoDocumentoContable) & "-" & vConfigFactura.TipoFactura
+    End Property
+
 
 Public Property Let Historial(nvalue As Collection)
     Set vHistorial = nvalue
@@ -240,7 +245,7 @@ Public Property Get Total() As Double
 
 
 
-    If Me.Moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
+    If Me.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
         tipo_cambio = 1
     Else
         tipo_cambio = Me.TipoCambio
