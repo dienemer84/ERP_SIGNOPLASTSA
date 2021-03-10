@@ -614,7 +614,7 @@ Public Function EnumTipoDocumentoContableShort(indice) As String
         Case 1: EnumTipoDocumentoContableShort = "NC"
         Case 2: EnumTipoDocumentoContableShort = "ND"
         Case 3: EnumTipoDocumentoContableShort = "DA"
-        
+                Case 4: EnumTipoDocumentoContableShort = "LB"
         
     End Select
 End Function
