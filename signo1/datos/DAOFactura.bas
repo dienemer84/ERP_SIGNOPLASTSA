@@ -59,7 +59,18 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
     On Error GoTo err1
     Dim q As String
     q = "SELECT *, ADDDATE(AdminFacturas.FechaEmision, AdminFacturas.FormaPago) AS FechaVencimiento " _
-        & " From AdminFacturas" _
+        
+        If includeDetalles Then
+            
+            q = q & ",CAST((SELECT   GROUP_CONCAT(DISTINCT r.numero SEPARATOR ',') AS lista_remitos FROM AdminFacturasDetalleAplicacionRemitos a " _
+                       & "INNER JOIN entregas e ON e.id=a.idRemitoDetalle INNER JOIN remitos r ON e.Remito = r.id  WHERE a.idFacturaDetalle= AdminFacturasDetalleNueva.id) AS CHAR) as lista_remitos_aplicados "
+        
+       
+            q = q & ",CAST((SELECT   COUNT(DISTINCT r.numero) AS cantidad_remitos FROM AdminFacturasDetalleAplicacionRemitos a " _
+                       & "INNER JOIN entregas e ON e.id=a.idRemitoDetalle INNER JOIN remitos r ON e.Remito = r.id  WHERE a.idFacturaDetalle= AdminFacturasDetalleNueva.id) AS CHAR) as cantidad_remitos_aplicados "
+        
+        End If
+        q = q & " From AdminFacturas" _
         & " LEFT JOIN AdminConfigFacturasTiposDiscriminado acftd      ON (       acftd.id = AdminFacturas.id_tipo_discriminado    ) " _
         & " LEFT JOIN AdminConfigFacturasTipos acft     ON (acftd.id_tipo_factura = acft.id)  " _
         & " LEFT JOIN AdminConfigFacturasTiposDiscriminadoIva acftdi      ON (       acftd.`id` = acftdi.`id_tipo_factura_discriminado`   ) " _
@@ -128,6 +139,11 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
 
         If includeDetalles Then
             Set deta = DAOFacturaDetalles.Map(rs, idx, "AdminFacturasDetalleNueva")
+            
+            
+            deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
+            deta.CantidadRemitosAplicados = rs!cantidad_remitos_aplicados
+            
             If IsSomething(deta) Then
                 If Not funciones.BuscarEnColeccion(F.Detalles, CStr(deta.id)) Then
                     Set deta.Factura = F
@@ -2274,6 +2290,7 @@ Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.id 
         For Each deta In F.Detalles
             r_tmp.AddNew
             r_tmp!Cantidad = deta.Cantidad
+            
             r_tmp!Remito = vbNullString
             r_tmp!item = vbNullString
             
@@ -2281,14 +2298,24 @@ Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.id 
             Set deta.detalleRemito = DAORemitoSDetalle.FindById(deta.DetalleRemitoId)
         End If
 
-        If IsSomething(deta.detalleRemito) Then
-            r_tmp!Remito = deta.detalleRemito.RemitoAlQuePertenece.numero
-            
-            If IsSomething(deta.detalleRemito.DetallePedido) Then
-                r_tmp!item = deta.detalleRemito.DetallePedido.item
+
+        If deta.CantidadRemitosAplicados > 1 Then
+             r_tmp!Remito = "Varios"
+        Else
+            If IsSomething(deta.detalleRemito) Then
+                r_tmp!Remito = deta.detalleRemito.RemitoAlQuePertenece.numero
+                
+                If IsSomething(deta.detalleRemito.DetallePedido) Then
+                    r_tmp!item = deta.detalleRemito.DetallePedido.item
+                End If
             End If
-        End If
+       End If
+        
             r_tmp!descripcion = deta.detalle
+            
+            If deta.CantidadRemitosAplicados > 1 Then
+            r_tmp!descripcion = r_tmp!descripcion & " (Remitos: " & deta.ListaRemitosAplicados & ")"
+            End If
             r_tmp!unitario = funciones.FormatearDecimales(deta.SubTotal)
             r_tmp!Descuento = deta.PorcentajeDescuento
             r_tmp!importe = funciones.FormatearDecimales(deta.Total)
