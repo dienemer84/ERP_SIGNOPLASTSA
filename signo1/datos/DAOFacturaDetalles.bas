@@ -126,7 +126,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tablaFacturaDetalle A
         F.PorcentajeDescuento = GetValue(rs, indice, tablaFacturaDetalle, "porcentaje_descuento")
         F.DescuentoAnticipo = GetValue(rs, indice, tablaFacturaDetalle, "descuento_anticipo")
         F.OtIdAnticipo = GetValue(rs, indice, tablaFacturaDetalle, "idOt_anticipo")
-
+      
         If LenB(tablaEntrega) > 0 Then
             Set F.detalleRemito = DAORemitoSDetalle.Map(rs, indice, tablaEntrega)
         End If

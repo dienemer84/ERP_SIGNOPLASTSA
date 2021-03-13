@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -15,14 +15,14 @@ Begin VB.Form frmAdminFacturasEmitidas
    ScaleHeight     =   6975
    ScaleWidth      =   20415
    Begin XtremeSuiteControls.GroupBox grp 
-      Height          =   1575
-      Left            =   120
+      Height          =   2295
+      Left            =   0
       TabIndex        =   1
-      Top             =   -15
+      Top             =   0
       Width           =   18990
       _Version        =   786432
       _ExtentX        =   33496
-      _ExtentY        =   2778
+      _ExtentY        =   4048
       _StockProps     =   79
       Caption         =   "Filtros"
       UseVisualStyle  =   -1  'True
@@ -352,6 +352,57 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
       End
+      Begin XtremeSuiteControls.ComboBox cboEstadoAfip 
+         Height          =   360
+         Left            =   11520
+         TabIndex        =   40
+         Top             =   1800
+         Width           =   2355
+         _Version        =   786432
+         _ExtentX        =   4154
+         _ExtentY        =   635
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Style           =   2
+         Appearance      =   6
+         Text            =   "cboMoneda"
+         DropDownItemCount=   3
+      End
+      Begin XtremeSuiteControls.PushButton cmdLimpiarCboEstadoAfip 
+         Height          =   285
+         Left            =   13920
+         TabIndex        =   41
+         Top             =   1800
+         Width           =   375
+         _Version        =   786432
+         _ExtentX        =   661
+         _ExtentY        =   503
+         _StockProps     =   79
+         Caption         =   "X"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label14 
+         Height          =   285
+         Left            =   10080
+         TabIndex        =   42
+         Top             =   1800
+         Width           =   1395
+         _Version        =   786432
+         _ExtentX        =   2461
+         _ExtentY        =   503
+         _StockProps     =   79
+         Caption         =   "Estado AFIP"
+         Alignment       =   1
+      End
       Begin XtremeSuiteControls.Label Label12 
          Height          =   285
          Left            =   10800
@@ -490,9 +541,9 @@ Begin VB.Form frmAdminFacturasEmitidas
    End
    Begin GridEX20.GridEX GridEX1 
       Height          =   4395
-      Left            =   15
+      Left            =   120
       TabIndex        =   0
-      Top             =   1635
+      Top             =   2520
       Width           =   19125
       _ExtentX        =   33734
       _ExtentY        =   7752
@@ -850,6 +901,10 @@ End Sub
 
 
 
+Private Sub cmdLimpiarCboEstadoAfip_Click()
+    Me.cboEstadoAfip.ListIndex = -1
+End Sub
+
 Private Sub Command1_Click()
     DAODetalleOrdenTrabajo.arreglarCagada
 End Sub
@@ -893,6 +948,15 @@ Private Sub Form_Load()
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 3
    cboEstadosSaldada.AddItem "Cancelado parcial por NC"
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 3
+    
+    
+     Me.cboEstadoAfip.Clear
+    cboEstadoAfip.AddItem "Sólo informadas"
+    cboEstadoAfip.ItemData(cboEstadoAfip.NewIndex) = 0
+    cboEstadoAfip.AddItem "Sólo no informadas"
+    cboEstadoAfip.ItemData(cboEstadoAfip.NewIndex) = 1
+
+    
     
     
 'NoSaldada = 0
@@ -964,6 +1028,14 @@ Private Sub llenarGrilla()
     If LenB(Me.txtReferencia.text) > 0 Then
         filtro = filtro & " and AdminFacturas.OrdenCompra like '%" & Trim(Me.txtReferencia.text) & "%'"
     End If
+    
+   If Me.cboEstadoAfip.ListIndex = 0 Then
+        filtro = filtro & " and AdminFacturas.aprobacion_afip=1"
+  End If
+     If Me.cboEstadoAfip.ListIndex = 1 Then
+        filtro = filtro & " and AdminFacturas.aprobacion_afip=0"
+  End If
+    
 
     Set facturas = DAOFactura.FindAll(filtro)
     Dim F As Factura
@@ -1052,7 +1124,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
@@ -1316,7 +1388,12 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     End If
 
 
+If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.AprobadaAFIP And Factura.estado <> EstadoFacturaCliente.EnProceso Then
+    Values(5) = "Nro. Pendiente"
+Else
     Values(5) = Factura.NumeroFormateado
+End If
+    
     Values(6) = Factura.FechaEmision
     Values(7) = funciones.FormatearDecimales(Factura.TotalEstatico.Total)
 
