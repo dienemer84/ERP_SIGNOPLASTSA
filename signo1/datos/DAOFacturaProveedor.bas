@@ -14,7 +14,23 @@ End Function
 
 
 Public Function Guardar(fc As clsFacturaProveedor) As Boolean
-    On Error GoTo err1
+    
+          On Error GoTo err1
+          
+        '#209
+  If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
+   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   Exit Function
+  End If
+
+    '#209
+    Dim fecha_liqui_max As Date
+    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
+    If fc.FEcha <= fecha_liqui_max Then
+        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
+        Exit Function
+    End If
+
 
     Dim strsql As String
     If fc.id = 0 Then
@@ -78,7 +94,7 @@ Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
-        existeFactura = rs!cantidad > 0
+        existeFactura = rs!Cantidad > 0
 
     End If
     Exit Function
@@ -93,6 +109,20 @@ End Function
 Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     
     Set fc = DAOFacturaProveedor.FindById(fc.id)
+    
+         '#209
+      If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
+   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   Exit Function
+  End If
+
+    '#209
+    Dim fecha_liqui_max As Date
+    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
+    If fc.FEcha <= fecha_liqui_max Then
+        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
+        Exit Function
+    End If
     
     Set cn = conectar.obternerConexion
     On Error GoTo err121
@@ -287,8 +317,11 @@ End Function
 Public Function Delete(facid As Long) As Boolean
     On Error GoTo E
 
-  If DAOSubdiarios.ExisteComprobanteEnLiquidacion(facid) Then
-   MsgBox "El comrpobante se encuentra liquidado, no se puede eliminar", vbCritical
+
+
+'#209
+  If DAOSubdiarios.ComprobanteComprasLiquidado(facid) Then
+   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
    Exit Function
   End If
 
