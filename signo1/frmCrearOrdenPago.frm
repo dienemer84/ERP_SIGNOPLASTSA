@@ -4,7 +4,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   7650
+   ClientHeight    =   8820
    ClientLeft      =   2340
    ClientTop       =   3105
    ClientWidth     =   15750
@@ -22,7 +22,7 @@ Begin VB.Form frmCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7650
+   ScaleHeight     =   8820
    ScaleWidth      =   15750
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   1335
@@ -170,14 +170,14 @@ Begin VB.Form frmCrearOrdenPago
       Width           =   1200
    End
    Begin XtremeSuiteControls.GroupBox grpOrigen 
-      Height          =   3375
+      Height          =   4455
       Left            =   5880
       TabIndex        =   0
       Top             =   4200
       Width           =   9780
       _Version        =   786432
       _ExtentX        =   17251
-      _ExtentY        =   5953
+      _ExtentY        =   7858
       _StockProps     =   79
       Caption         =   "Valores"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -191,20 +191,20 @@ Begin VB.Form frmCrearOrdenPago
       EndProperty
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.TabControl TabControl 
-         Height          =   3060
+         Height          =   4020
          Left            =   120
          TabIndex        =   1
          Top             =   240
          Width           =   9540
          _Version        =   786432
          _ExtentX        =   16828
-         _ExtentY        =   5397
+         _ExtentY        =   7091
          _StockProps     =   68
          Appearance      =   10
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
          ItemCount       =   5
-         SelectedItem    =   3
+         SelectedItem    =   4
          Item(0).Caption =   "Cheques Propios"
          Item(0).ControlCount=   1
          Item(0).Control(0)=   "gridChequesPropios"
@@ -261,13 +261,14 @@ Begin VB.Form frmCrearOrdenPago
             PrinterProperties=   "frmCrearOrdenPago.frx":0B30
          End
          Begin GridEX20.GridEX gridCajaOperaciones 
-            Height          =   2400
-            Left            =   105
+            Height          =   3480
+            Left            =   -69895
             TabIndex        =   10
             Top             =   435
+            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   4233
+            _ExtentY        =   6138
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -384,10 +385,9 @@ Begin VB.Form frmCrearOrdenPago
          End
          Begin GridEX20.GridEX gridCompensatorios 
             Height          =   2430
-            Left            =   -69895
+            Left            =   105
             TabIndex        =   16
             Top             =   435
-            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   4286
@@ -964,14 +964,14 @@ Begin VB.Form frmCrearOrdenPago
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox2 
-      Height          =   3375
+      Height          =   2535
       Left            =   120
       TabIndex        =   42
       Top             =   4200
       Width           =   5565
       _Version        =   786432
       _ExtentX        =   9816
-      _ExtentY        =   5953
+      _ExtentY        =   4471
       _StockProps     =   79
       Caption         =   "Mostrar Facturas"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -1001,14 +1001,14 @@ Begin VB.Form frmCrearOrdenPago
          Width           =   2265
       End
       Begin XtremeSuiteControls.ListBox lstFacturas 
-         Height          =   2295
+         Height          =   1455
          Left            =   120
          TabIndex        =   45
          Top             =   960
          Width           =   5250
          _Version        =   786432
          _ExtentX        =   9260
-         _ExtentY        =   4048
+         _ExtentY        =   2566
          _StockProps     =   77
          BackColor       =   -2147483643
          Appearance      =   6
@@ -1033,12 +1033,41 @@ Begin VB.Form frmCrearOrdenPago
          Width           =   1215
       End
    End
-   Begin VB.Line Line1 
-      BorderColor     =   &H8000000C&
-      X1              =   5760
-      X2              =   5760
-      Y1              =   1440
-      Y2              =   7560
+   Begin XtremeSuiteControls.GroupBox GroupBox4 
+      Height          =   1935
+      Left            =   120
+      TabIndex        =   59
+      Top             =   6720
+      Width           =   5565
+      _Version        =   786432
+      _ExtentX        =   9816
+      _ExtentY        =   3413
+      _StockProps     =   79
+      Caption         =   "Mostrar Compensatorios Pendientes"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ListBox lstDeudaCompensatorios 
+         Height          =   1455
+         Left            =   120
+         TabIndex        =   60
+         Top             =   360
+         Width           =   5250
+         _Version        =   786432
+         _ExtentX        =   9260
+         _ExtentY        =   2566
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Appearance      =   6
+         Style           =   1
+      End
    End
    Begin VB.Label lblDiferenciaCambio 
       AutoSize        =   -1  'True
@@ -1143,6 +1172,7 @@ Dim vFactElegida As clsFacturaProveedor
 Dim vFacturaProveedor As clsFacturaProveedor
 Dim colProveedores As New Collection
 Dim colFacturas As New Collection
+Dim colDeudaCompensatorios As New Collection
 Dim prov As clsProveedor
 Dim Factura As clsFacturaProveedor
 
@@ -1303,7 +1333,7 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
-    Me.GridCajas.AllowEdit = Not ReadOnly
+    Me.gridCajas.AllowEdit = Not ReadOnly
     'Me.gridCajas.AllowDelete = Not ReadOnly
 
     Me.gridChequeras.AllowEdit = Not ReadOnly
@@ -1681,7 +1711,7 @@ Private Sub cmdMostrarDatosProveedor_Click()
 
        
 MostrarFacturas
-
+MostrarDeudaCompensatorios
 btnCargar_Click
 
 End Sub
@@ -1764,7 +1794,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1774,7 +1804,7 @@ Private Sub Form_Load()
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.GridCajas.ItemCount = Cajas.count
+    Me.gridCajas.ItemCount = Cajas.count
 
     Set monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = monedas.count
@@ -1823,7 +1853,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
@@ -1847,11 +1877,49 @@ Private Sub CargarChequesDisponibles()
     Me.gridChequesDisponibles.ItemCount = chequesDisponibles.count
 End Sub
 
+Private Sub MostrarDeudaCompensatorios()
+    Me.lstDeudaCompensatorios.Clear
+    If IsSomething(prov) Then
+        Set colDeudaCompensatorios = DAOCompensatorios.FindAllPendientesByProveedor(prov.id)  'DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & " or  AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & ")", False, "", False, True)
+        
+
+        
+        Dim c As Compensatorio
+        
+        
+'        If OrdenPago.id <> 0 And OrdenPago.EsParaFacturaProveedor Then
+'            If prov.id = OrdenPago.FacturasProveedor.item(1).Proveedor.id Then
+'                For Each Factura In OrdenPago.FacturasProveedor
+'                    If Not funciones.BuscarEnColeccion(colFacturas, CStr(Factura.id)) Then
+'                        colFacturas.Add DAOFacturaProveedor.FindById(Factura.id), CStr(Factura.id)
+'                    End If
+'                Next
+'            End If
+'        End If
+
+        For Each c In colDeudaCompensatorios
+            Me.lstDeudaCompensatorios.AddItem "Cód: " & c.id & " (OP: " & c.IdOrdenPago & ", Cbte: " & c.Comprobante.NumeroFormateado & ", Importe: " & c.Monto & ")"
+            Me.lstDeudaCompensatorios.ItemData(Me.lstDeudaCompensatorios.NewIndex) = c.id
+        Next
+
+
+
+
+    Else
+        Set colFacturas = New Collection
+    End If
+End Sub
+
+
+
 Private Sub MostrarFacturas()
     Me.lstFacturas.Clear
     If IsSomething(prov) Then
-        Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada)
+        Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada, False, "", False, True)
+        
 
+        
+        
         If OrdenPago.id <> 0 And OrdenPago.EsParaFacturaProveedor Then
             If prov.id = OrdenPago.FacturasProveedor.item(1).Proveedor.id Then
                 For Each Factura In OrdenPago.FacturasProveedor
@@ -2221,6 +2289,7 @@ Private Sub lstFacturas_Click()
     Set vFactElegida = colFacturas.item(CStr(Me.lstFacturas.ItemData(Me.lstFacturas.ListIndex)))
 If IsSomething(vFactElegida) Then
 
+    
     MostrarPago vFactElegida
 End If
 
@@ -2337,7 +2406,7 @@ Private Sub mnuCrearCompensatorio_Click()
 
             Dim Cant As Long
 
-            If DAOCompensatorios.FindAll("id_comprobante=" & Factura.id).count > 0 Then hay = True
+            If DAOCompensatorios.FindAll("id_orden_pago= " & OrdenPago.id & " and  id_comprobante=" & Factura.id).count > 0 Then hay = True
 
             If hay Then
                 MsgBox "Ya existe un compensatorio para el comprobante indicado!", vbInformation, "Error"

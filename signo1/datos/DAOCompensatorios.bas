@@ -34,10 +34,10 @@ Else
             & " fecha = 'fecha' ,  " _
             & " tipo = 'tipo' ,  " _
             & " importe = 'importe' , " _
-            & " observacion = 'observacion' " _
-            & " neto_gravado_compensado = 'neto_gravado_compensado' " _
-            & " alicuota_percepcion = 'alicuota_percepcion' " _
-            & " monto_a_percibir = 'monto_a_percibir' " _
+            & " observacion = 'observacion', " _
+            & " neto_gravado_compensado = 'neto_gravado_compensado' ," _
+            & " alicuota_percepcion = 'alicuota_percepcion', " _
+            & " monto_a_percibir = 'monto_a_percibir', " _
             & " cancelado = 'cancelado' " _
             & " Where  id = 'id'  "
     End If
@@ -75,17 +75,41 @@ Public Function FindByOP(idOP As Long) As Collection
     Set FindByOP = FindAll("id_orden_pago=" & idOP)
 End Function
 
+Public Function FindAllPendientesByProveedor(idp As Integer) As Collection
+    On Error GoTo err1
+    Dim rs As Recordset
+    Dim A As String
+    Dim col As New Collection
+    Dim index As New Dictionary
+    A = "SELECT opc.* FROM ordenes_pago_compensatorios opc  JOIN ordenes_pago op ON opc.id_orden_pago=op.id JOIN AdminComprasFacturasProveedores acfp ON opc.id_comprobante=acfp.id WHERE acfp.id_proveedor = " & idp & " AND op.estado=1 AND opc.cancelado=0 "
+    
+    Set rs = conectar.RSFactory(A)
+    conectar.BuildFieldsIndex rs, index
+
+    While Not rs.EOF And Not rs.BOF
+        col.Add Map(rs, index, "opc")
+        rs.MoveNext
+    Wend
+    Set FindAllPendientesByProveedor = col
+
+    Exit Function
+err1:
+    Set FindAllPendientesByProveedor = Nothing
+End Function
+
+
+
 Public Function FindAll(Optional filtro As String) As Collection
     On Error GoTo err1
     Dim rs As Recordset
-    Dim a As String
+    Dim A As String
     Dim col As New Collection
     Dim index As New Dictionary
-    a = "SELECT * FROM sp.ordenes_pago_compensatorios WHERE 1=1 "
+    A = "SELECT * FROM sp.ordenes_pago_compensatorios WHERE 1=1 "
 
-    If LenB(filtro) > 0 Then a = a & " and " & filtro
+    If LenB(filtro) > 0 Then A = A & " and " & filtro
 
-    Set rs = conectar.RSFactory(a)
+    Set rs = conectar.RSFactory(A)
     conectar.BuildFieldsIndex rs, index
 
     While Not rs.EOF And Not rs.BOF
