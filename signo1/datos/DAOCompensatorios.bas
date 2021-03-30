@@ -2,10 +2,10 @@ Attribute VB_Name = "DAOCompensatorios"
 Option Explicit
 
 
-Public Function Save(c As Compensatorio) As Boolean
+Public Function Save(C As Compensatorio) As Boolean
     On Error GoTo err1
     conectar.BeginTransaction
-    If Not Guardar(c) Then GoTo err1
+    If Not Guardar(C) Then GoTo err1
 
     conectar.CommitTransaction
     Exit Function
@@ -16,11 +16,11 @@ End Function
 
 
 
-Public Function Guardar(c As Compensatorio) As Boolean
+Public Function Guardar(C As Compensatorio) As Boolean
     Dim q As String
     On Error GoTo err2
     Guardar = True
-    If c.id = 0 Then
+    If C.id = 0 Then
         q = "INSERT INTO sp.ordenes_pago_compensatorios  (id_comprobante,   fecha,   importe,   Observacion, tipo ,id_orden_pago, " _
             & "neto_gravado_compensado, alicuota_percepcion, monto_a_percibir, cancelado)" _
             & " values  " _
@@ -42,18 +42,18 @@ Else
             & " Where  id = 'id'  "
     End If
 
-    q = Replace$(q, "'id_comprobante'", conectar.GetEntityId(c.Comprobante))
-    q = Replace$(q, "'id_orden_pago'", conectar.Escape(c.IdOrdenPago))
-    q = Replace$(q, "'fecha'", conectar.Escape(c.FechaCancelacion))
-    q = Replace$(q, "'importe'", conectar.Escape(c.Monto))
-    q = Replace$(q, "'observacion'", conectar.Escape(c.Observacion))
-    q = Replace$(q, "'tipo'", conectar.Escape(c.Tipo))
-    q = Replace$(q, "'id'", conectar.GetEntityId(c))
+    q = Replace$(q, "'id_comprobante'", conectar.GetEntityId(C.Comprobante))
+    q = Replace$(q, "'id_orden_pago'", conectar.Escape(C.IdOrdenPago))
+    q = Replace$(q, "'fecha'", conectar.Escape(C.FechaCancelacion))
+    q = Replace$(q, "'importe'", conectar.Escape(C.Monto))
+    q = Replace$(q, "'observacion'", conectar.Escape(C.Observacion))
+    q = Replace$(q, "'tipo'", conectar.Escape(C.Tipo))
+    q = Replace$(q, "'id'", conectar.GetEntityId(C))
 
-    q = Replace$(q, "'neto_gravado_compensado'", conectar.Escape(c.NetoGravadoCompensado))
-    q = Replace$(q, "'alicuota_percepcion'", conectar.Escape(c.alicuotaPercepcion))
-    q = Replace$(q, "'monto_a_percibir'", conectar.Escape(c.MontoAPercibir))
-    q = Replace$(q, "'cancelado'", conectar.Escape(c.Cancelado))
+    q = Replace$(q, "'neto_gravado_compensado'", conectar.Escape(C.NetoGravadoCompensado))
+    q = Replace$(q, "'alicuota_percepcion'", conectar.Escape(C.alicuotaPercepcion))
+    q = Replace$(q, "'monto_a_percibir'", conectar.Escape(C.MontoAPercibir))
+    q = Replace$(q, "'cancelado'", conectar.Escape(C.Cancelado))
 
 
 
@@ -85,9 +85,12 @@ Public Function FindAllPendientesByProveedor(idp As Integer) As Collection
     
     Set rs = conectar.RSFactory(A)
     conectar.BuildFieldsIndex rs, index
-
+    Dim C As Compensatorio
+    
     While Not rs.EOF And Not rs.BOF
-        col.Add Map(rs, index, "opc")
+       Set C = Map(rs, index, "opc")
+        col.Add C, CStr(C.id)
+        
         rs.MoveNext
     Wend
     Set FindAllPendientesByProveedor = col
@@ -124,25 +127,25 @@ err1:
 End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As Compensatorio
-    Dim c As Compensatorio
+    Dim C As Compensatorio
     Dim id As Long: id = GetValue(rs, indice, tabla, "id")
     If id > 0 Then
         Dim idf As Long
         idf = GetValue(rs, indice, tabla, "id_comprobante")
-        Set c = New Compensatorio
-        c.id = id
-        Set c.Comprobante = DAOFacturaProveedor.FindById(idf)
-        c.Tipo = GetValue(rs, indice, tabla, "tipo")
-        c.FechaCancelacion = GetValue(rs, indice, tabla, "fecha")
-        c.IdOrdenPago = GetValue(rs, indice, tabla, "id_orden_pago")
-        c.Monto = GetValue(rs, indice, tabla, "importe")
-        c.Observacion = GetValue(rs, indice, tabla, "observacion")
-        c.NetoGravadoCompensado = GetValue(rs, indice, tabla, "neto_gravado_compensado")
-        c.alicuotaPercepcion = GetValue(rs, indice, tabla, "alicuota_percepcion")
-        c.MontoAPercibir = GetValue(rs, indice, tabla, "monto_a_percibir")
-        c.Cancelado = GetValue(rs, indice, tabla, "cancelado")
+        Set C = New Compensatorio
+        C.id = id
+        Set C.Comprobante = DAOFacturaProveedor.FindById(idf)
+        C.Tipo = GetValue(rs, indice, tabla, "tipo")
+        C.FechaCancelacion = GetValue(rs, indice, tabla, "fecha")
+        C.IdOrdenPago = GetValue(rs, indice, tabla, "id_orden_pago")
+        C.Monto = GetValue(rs, indice, tabla, "importe")
+        C.Observacion = GetValue(rs, indice, tabla, "observacion")
+        C.NetoGravadoCompensado = GetValue(rs, indice, tabla, "neto_gravado_compensado")
+        C.alicuotaPercepcion = GetValue(rs, indice, tabla, "alicuota_percepcion")
+        C.MontoAPercibir = GetValue(rs, indice, tabla, "monto_a_percibir")
+        C.Cancelado = GetValue(rs, indice, tabla, "cancelado")
 
-        Set Map = c
+        Set Map = C
     End If
 
 End Function
