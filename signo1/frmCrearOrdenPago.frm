@@ -1539,7 +1539,7 @@ Private Sub btnGuardar_Click()
 
      For i = 0 To Me.lstDeudaCompensatorios.ListCount - 1
             If Me.lstDeudaCompensatorios.Checked(i) Then
-                OrdenPago.DeudaCompensatorios.Add colDeudaCompensatorios.Item(CStr(Me.colDeudaCompensatorios.ItemData(i)))
+                OrdenPago.DeudaCompensatorios.Add colDeudaCompensatorios.Item(CStr(Me.lstDeudaCompensatorios.ItemData(i)))
             End If
         Next i
 
@@ -2282,7 +2282,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     Me.lblDeudaCompensatorios = "Total deuda compensatorios en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totDeudaCompe)
     
     OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
-
+    OrdenPago.staticTotalDeudaCompensatorios = funciones.RedondearDecimales(totDeudaCompe)
     Me.lblTotalFacturasNG = "Total NG Facturas en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG)
     OrdenPago.StaticTotalFacturasNG = funciones.RedondearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG)
 

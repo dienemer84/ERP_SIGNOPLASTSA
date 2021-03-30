@@ -59,7 +59,7 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orde
     While Not rs.EOF
         Set op = Map(rs, idx, "ordenes_pago", "AdminConfigMonedas")    ', "certificados_retencion")
         If funciones.BuscarEnColeccion(col, CStr(op.id)) Then
-            Set op = col.item(CStr(op.id))
+            Set op = col.Item(CStr(op.id))
         Else
             col.Add op, CStr(op.id)
         End If
@@ -122,7 +122,7 @@ q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = ordenes_pago.i
         Set op = Map(rs, idx, "ordenes_pago", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones")    ', "certificados_retencion")
 
         If funciones.BuscarEnColeccion(col, CStr(op.id)) Then
-            Set op = col.item(CStr(op.id))
+            Set op = col.Item(CStr(op.id))
         Else
             col.Add op, CStr(op.id)
         End If
@@ -314,7 +314,8 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
         'analizo las facturas de proveedores
 
 
-
+    'TODO: debo verificar que los deudas por compensatorio no esten utilizadas en otra OP aprobada ni que esten ya canceladas en otro proceso
+    
 
         If Guardar(op) Then
    
@@ -504,6 +505,28 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
                 
             Next cp
             
+             q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.id
+        If Not conectar.execute(q) Then GoTo E
+
+        Dim C As Compensatorio
+            
+        For Each C In op.DeudaCompensatorios
+        If C.Cancelado Then Err.Raise "El compensatorio " & C.id & " ya está cancelado!"
+         q = "INSERT INTO  orden_pago_deuda_compensatorios (id_orden_pago, id_compensatorio) values (" & op.id & "," & C.id & ")"
+            
+            
+            If Not conectar.execute(q) Then GoTo E
+
+        q = "UPDATE  ordenes_pago_compensatorios   SET cancelado=1 where id_orden_pago=" & op.id & " and id=" & C.id
+            
+            
+            If Not conectar.execute(q) Then GoTo E
+
+
+        Next C
+            
+            
+            
             
             'If op.estado = EstadoOrdenPago_Aprobada Then
 
@@ -580,13 +603,13 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         q = "DELETE FROM ordenes_pago_compensatorios WHERE id_orden_pago = " & op.id
         If Not conectar.execute(q) Then GoTo E
 
-        Dim c As Compensatorio
+        Dim C1 As Compensatorio
 
-        For Each c In op.Compensatorios
-            c.IdOrdenPago = op.id
-            If Not DAOCompensatorios.Guardar(c) Then GoTo E
+        For Each C1 In op.Compensatorios
+            C1.IdOrdenPago = op.id
+            If Not DAOCompensatorios.Guardar(C1) Then GoTo E
 
-        Next c
+        Next C1
         
         
            'guardo las retenciones
@@ -876,7 +899,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Dim TAB1 As Integer
     Dim TAB2 As Integer
     Dim maxw As Single
-    Dim c As Long
+    Dim C As Long
     Dim mtxt As String
     Dim textw As Single
     Dim lmargin As Integer
@@ -983,10 +1006,10 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
             Printer.Print "Certificados IIBB Nº: ";
             Printer.FontBold = False
             
-            Dim c1 As CertificadoRetencion
+            Dim C1 As CertificadoRetencion
             Dim t1 As String
-            For Each c1 In allcert
-               t1 = t1 & c1.id & " "
+            For Each C1 In allcert
+               t1 = t1 & C1.id & " "
             Next
           
                 Printer.Print t1
@@ -1030,13 +1053,13 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
     Dim F As clsFacturaProveedor
     Dim facs As New Collection
-    c = 0
+    C = 0
     For Each F In Orden.FacturasProveedor
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
     Next F
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"
     End If
@@ -1052,13 +1075,13 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontBold = False
     Dim cheq As cheque
     Dim tmpCol As New Collection
-    c = 0
+    C = 0
     For Each cheq In Orden.ChequesPropios
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
     Next cheq
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE CHEQUES PROPIOS"
     End If
@@ -1068,13 +1091,13 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.Print "Cheques de Terceros: "
     Printer.FontBold = False
     Set tmpCol = New Collection
-    c = 0
+    C = 0
     For Each cheq In Orden.ChequesTerceros
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
     Next cheq
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE CHEQUES DE TERCEROS"
     End If
@@ -1086,13 +1109,13 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
 
     Dim op As operacion
     Set tmpCol = New Collection
-    c = 0
+    C = 0
     For Each op In Orden.OperacionesBanco
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
     Next op
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE TRANSFERENCIAS"
     End If
@@ -1104,13 +1127,13 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
 
 
     Set tmpCol = New Collection
-    c = 0
+    C = 0
     For Each op In Orden.OperacionesCaja
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
     Next op
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE OPERACIONES EN EFECTIVO"
     End If
