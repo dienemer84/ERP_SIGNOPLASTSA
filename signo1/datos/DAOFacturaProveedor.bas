@@ -78,7 +78,7 @@ Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
-        existeFactura = rs!cantidad > 0
+        existeFactura = rs!Cantidad > 0
 
     End If
     Exit Function
@@ -491,6 +491,7 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     Dim fac As clsFacturaProveedor
     Dim initoffset As Long
     initoffset = offset
+    
     Dim c As Integer
     Dim Total As Double
     Dim totalneto As Double
