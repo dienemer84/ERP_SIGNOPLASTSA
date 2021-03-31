@@ -14,7 +14,23 @@ End Function
 
 
 Public Function Guardar(fc As clsFacturaProveedor) As Boolean
-    On Error GoTo err1
+    
+          On Error GoTo err1
+          
+        '#209
+  If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
+   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   Exit Function
+  End If
+
+    '#209
+    Dim fecha_liqui_max As Date
+    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
+    If fc.FEcha <= fecha_liqui_max Then
+        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
+        Exit Function
+    End If
+
 
     Dim strsql As String
     If fc.id = 0 Then
@@ -94,6 +110,20 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     
     Set fc = DAOFacturaProveedor.FindById(fc.id)
     
+         '#209
+      If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
+   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   Exit Function
+  End If
+
+    '#209
+    Dim fecha_liqui_max As Date
+    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
+    If fc.FEcha <= fecha_liqui_max Then
+        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
+        Exit Function
+    End If
+    
     Set cn = conectar.obternerConexion
     On Error GoTo err121
     cn.BeginTrans
@@ -146,13 +176,22 @@ err1:
 
 End Function
 
-Public Function FindAll(Optional filtro As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False) As Collection
+Public Function FindAll(Optional filtro As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
     Dim indice As New Dictionary
     Dim q As String
     Dim rs As Recordset
     Dim col As New Collection
-    q = "SELECT *, (SELECT max(id_orden_pago) FROM ordenes_pago_facturas inner join ordenes_pago on ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  limit 1) as nro_orden" _
-        & " From" _
+    q = "SELECT *, (SELECT max(id_orden_pago) FROM ordenes_pago_facturas inner join ordenes_pago on ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  limit 1) as nro_orden"
+      
+      If widhCompensatorios Then
+        q = q & ", (SELECT SUM(IF (tipo=1, c.importe,-c.importe)) FROM ordenes_pago_compensatorios c JOIN ordenes_pago op ON c.id_orden_pago=op.id AND op.estado=1 WHERE c.id_comprobante = AdminComprasFacturasProveedores.id AND c.cancelado=0 ) as total_compensado"
+      
+      Else
+      
+      q = q & ",0 as total_compensado "
+      End If
+      
+      q = q & " From" _
         & " AdminComprasFacturasProveedores" _
         & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
         & " LEFT JOIN proveedores ON (AdminComprasFacturasProveedores.id_proveedor = proveedores.id)" _
@@ -262,6 +301,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
 
         If indice.Exists(".nro_orden") Then fc.OrdenPagoId = GetValue(rs, indice, vbNullString, "nro_orden")
 
+         If indice.Exists(".total_compensado") Then fc.TotalCompensado = GetValue(rs, indice, vbNullString, "total_compensado")
+       
     End If
 
     Set Map = fc
@@ -287,8 +328,11 @@ End Function
 Public Function Delete(facid As Long) As Boolean
     On Error GoTo E
 
-  If DAOSubdiarios.ExisteComprobanteEnLiquidacion(facid) Then
-   MsgBox "El comrpobante se encuentra liquidado, no se puede eliminar", vbCritical
+
+
+'#209
+  If DAOSubdiarios.ComprobanteComprasLiquidado(facid) Then
+   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
    Exit Function
   End If
 

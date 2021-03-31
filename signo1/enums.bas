@@ -6,7 +6,7 @@ Dim Destinos(3)
 Dim unidad(5)
 Dim estados_material(2)
 Dim estado_orden_entrega(3)
-Dim estado_factura_proveedor(3)
+Dim estado_factura_proveedor(4)
 Public estado_po(2)
 Dim estado_presupuesto(8)
 Dim estado_proceso_ot(3)
@@ -500,6 +500,8 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
     estado_factura_proveedor(1) = "En Proceso"    'EstadoFacturaProveedor.EnProceso
     estado_factura_proveedor(2) = "Aprobada"    ' EstadoFacturaProveedor.Aprobada
     estado_factura_proveedor(3) = "Saldada"    'EstadoFacturaProveedor.Saldada
+estado_factura_proveedor(4) = "Pago Parcial"
+
 
 estado_orden_entrega(1) = "Pendiente"
 estado_orden_entrega(2) = "Aprobada"

@@ -25,6 +25,24 @@ ExisteComprobanteEnLiquidacion = False
 
 End Function
 
+Public Function ComprobanteComprasLiquidado(id As Long) As Boolean
+On Error GoTo err1
+Dim qry As String
+Dim rs As Recordset
+qry = "select count(id) as c from liquidacion_subdiario_compras_detalles where id_factura=" & id
+Set rs = conectar.RSFactory(qry)
+Dim Cantidad As Integer
+While Not rs.EOF
+    Cantidad = rs!c
+    rs.MoveNext
+Wend
+
+ComprobanteComprasLiquidado = Cantidad > 0
+Exit Function
+err1:
+ComprobanteComprasLiquidado = True
+
+End Function
 
 Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optional Orden As String = vbNullString, Optional idCliente As Long = -1, Optional idContratoMarco As Long = -1) As Collection
     Dim col_facturas As New Collection

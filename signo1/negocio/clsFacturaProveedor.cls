@@ -40,7 +40,7 @@ Public ImporteTotalAbonado As Double    'dto para poder hacer pagos parciales
 Public NetoGravadoAbonado As Double    'dto para poder hacer pagos parciales
 Public UsuarioCarga As clsUsuario
 
-
+Public TotalCompensado As Double
 
 
 Public Property Get DiferenciaPorTipoDeCambionIVA() As Double
@@ -235,6 +235,12 @@ Public Property Get TotalIVADiscriminado(alicuota As Double) As Double
     Next
 
     TotalIVADiscriminado = tot_iva
+End Property
+
+Public Property Get ObtenerTotalCompensado() As Double
+
+
+
 End Property
 
 Public Property Get Total() As Double
