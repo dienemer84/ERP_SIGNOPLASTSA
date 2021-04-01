@@ -231,20 +231,28 @@ req.MonCotiz = F.CambioAPatron
     End If
     
     'Desactivada el 17.07.20 -dnemer
-If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
+    
+    
+    'NB: afip rechaza nc y nd que no sean mi pyme sin tener cbte asociado (err 10197 afip)
+    'If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
+ 
+If F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito Then
    Dim ftmp As Factura
    Set ftmp = DAOFactura.FindById(F.Cancelada)
   '23-8 NB: no puedo informar un comprobnte asociado que no esté previamente informado. (en caso que sea crédito o débido mipyme)
+   
+  If IsSomething(ftmp) Then
    If Not ftmp.AprobadaAFIP Then
       Err.Raise 22211, "El comprobante asociado debe estar informado previamente a AFIP"
    End If
+End If
    If IsSomething(ftmp) Then
           Dim cbt As CbteAsoc
       Set cbt = New CbteAsoc
 
 '       cbt.NRO = f.Cancelada
 
-       cbt.nro = ftmp.numero
+       cbt.NRO = ftmp.numero
        If ftmp.esCredito Then
                 cbt.esCredito = "true"
        Else

@@ -140,8 +140,9 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
         If includeDetalles Then
             Set deta = DAOFacturaDetalles.Map(rs, idx, "AdminFacturasDetalleNueva")
             
-            
+            If rs!cantidad_remitos_aplicados > 0 Then
             deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
+            End If
             deta.CantidadRemitosAplicados = rs!cantidad_remitos_aplicados
             
             If IsSomething(deta) Then

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -762,14 +762,21 @@ End Sub
 
 Private Sub aplicarNCaFC_Click()
 On Error GoTo err1
-    If MsgBox("¿Seguro de aplicar NC a FC / ND?", vbYesNo, "Confirmación") = vbYes Then
+    If MsgBox("¿Seguro de aplicar comprobante?", vbYesNo, "Confirmación") = vbYes Then
         'seleccionar factura para aplicar
         Set Selecciones.Factura = Nothing
           Dim F As New frmAdminFacturasNCElegirFC
         
         F.idCliente = Factura.cliente.id
             F.TiposDocs.Add tipoDocumentoContable.Factura
-            F.TiposDocs.Add tipoDocumentoContable.notaDebito
+            
+            If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
+                F.TiposDocs.Add tipoDocumentoContable.notaDebito
+            End If
+                 If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
+                F.TiposDocs.Add tipoDocumentoContable.notaCredito
+            End If
+            
             F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
             F.Show 1
 
@@ -1125,6 +1132,20 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 
             'Me.mnuFechaPagoPropuesta.Enabled = False
 
+
+'actualizo leyenda para aplicación
+
+'Aplicar a Factura o ND...
+If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
+    Me.aplicarNCaFC.caption = "Aplicar a Factura o ND..."
+End If
+
+If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
+        Me.aplicarNCaFC.caption = "Aplicar a Factura o NC..."
+End If
+
+
+
 ' Si el estado del comprobante es EN PROCESO
             If Factura.estado = EstadoFacturaCliente.EnProceso Then   'no se aprob? localmente
                 Me.aplicarNCaFC.Enabled = False
@@ -1231,8 +1252,8 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                                        
                              Me.aplicar.Visible = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.SaldadoParcial)
                              Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
-                             Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                             Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+                             Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+                             Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                              'Me.mnuAplicarANC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                              'Me.mnuAplicarANC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                                 
@@ -1249,7 +1270,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                         Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
                         Me.aplicar.Visible = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
                      
-                        Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+                        Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                         'Me.mnuAplicarANC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                         'Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                         'Me.mnuAplicarANC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
