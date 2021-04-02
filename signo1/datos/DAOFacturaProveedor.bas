@@ -535,6 +535,7 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     Dim fac As clsFacturaProveedor
     Dim initoffset As Long
     initoffset = offset
+    
     Dim c As Integer
     Dim Total As Double
     Dim totalneto As Double
