@@ -336,10 +336,34 @@ End If
 
     If F.esCredito Then
     
+    
+    '4-4-21 #218
+    'Si el tipo de comprobante que está autorizando es Factura del tipo MiPyMEs (201, 206, 211), es
+    'obligatorio informar <Opcionales> con id = 27. Los valores posiblesson SCA o ADC
+          
+    
     'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), es obligatorio informar al menos uno de los sig. códigos
     '2101, 22.
          
          If F.TipoDocumento = tipoDocumentoContable.Factura Then
+                
+             
+    '4-4-21 #218
+    'Si el tipo de comprobante que está autorizando es Factura del tipo MiPyMEs (201, 206, 211), es
+    'obligatorio informar <Opcionales> con id = 27. Los valores posiblesson SCA o ADC
+                
+                      Dim op27 As New Opcional
+                op27.idOpcionalCambiar = "27"
+                
+                If F.Opcional27 = 1 Then
+                    op27.Valor = "SCA"
+                ElseIf F.Opcional27 = 2 Then
+                  op27.Valor = "ADC"
+                End If
+                
+                req.Opcionales.Add op27
+                
+                
                 'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código
                 '2101 es un CBU numérico de 22 caracteres.
                 

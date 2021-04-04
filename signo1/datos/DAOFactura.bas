@@ -210,6 +210,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.OrdenCompra = GetValue(rs, indice, tabla, "OrdenCompra")
         F.Saldado = GetValue(rs, indice, tabla, "saldada")
         F.observaciones = GetValue(rs, indice, tabla, "observaciones")
+                F.Opcional27 = GetValue(rs, indice, tabla, "opcional27")
         F.observaciones_cancela = GetValue(rs, indice, tabla, "observaciones_cancela")
         If Trim(F.observaciones) = "-" Or (F.observaciones) = "." Then F.observaciones = vbNullString
         'If F.id = 6415 Then Stop
@@ -355,7 +356,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " tipo_borrar= 'tipo_borrar' , " _
             & " saldada = 'saldada' , id_tipo_discriminado= 'id_tipo_discriminado', " _
             & " observaciones = 'observaciones', texto_adicional = 'texto_adicional'," _
-            & " AliPercIB = 'AliPercIB' , " _
+            & " AliPercIB = 'AliPercIB', Opcional27='Opcional27', " _
             & " cambio_a_patron = 'cambio_a_patron' ," _
             & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega' , " _
             & " propuesta = 'propuesta', fecha_serv_desde = 'fecha_serv_desde', fecha_serv_hasta = 'fecha_serv_hasta' , " _
@@ -391,7 +392,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " AliPercIB, " _
             & " cambio_a_patron, " _
             & " FormaPago, " _
-            & " fecha_entrega, " _
+            & " fecha_entrega, Opcional27," _
             & " propuesta, id_tipo_discriminado, fecha_serv_desde, fecha_serv_hasta, " _
             & " cancelada, id_moneda_ajuste, tipo_cambio_ajuste, CBU, fecha_pago, fecha_vto_desde, fecha_vto_hasta, " _
     & " nc_motivo, tasa_ajuste_mensual) Values "
@@ -415,7 +416,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'AliPercIB', " _
             & " 'cambio_a_patron', " _
             & " 'FormaPago', " _
-            & " 'fecha_entrega', " _
+            & " 'fecha_entrega', 'Opcional27'," _
             & " 'propuesta', 'id_tipo_discriminado', 'fecha_serv_desde', 'fecha_serv_hasta', " _
             & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste', 'CBU', 'fecha_pago', 'fecha_vto_desde','fecha_vto_hasta', " _
             & " 'nc_motivo','tasa_ajuste_mensual' " _
@@ -433,7 +434,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
     
     q = Replace$(q, "'aprobacion_afip'", conectar.Escape(F.AprobadaAFIP))
-
+    q = Replace$(q, "'Opcional27'", conectar.Escape(F.Opcional27))
     q = Replace$(q, "'anulacion_afip'", conectar.Escape(F.AnulacionAFIP))
     q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
     

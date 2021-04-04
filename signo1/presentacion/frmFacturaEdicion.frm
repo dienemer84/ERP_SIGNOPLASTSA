@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
@@ -51,7 +51,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   60686337
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -73,7 +73,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   60686337
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -157,7 +157,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   975
       Left            =   11640
       TabIndex        =   76
-      Top             =   6960
+      Top             =   7800
       Visible         =   0   'False
       Width           =   6135
       Begin MSComCtl2.DTPicker dtFechaServDesde1 
@@ -179,7 +179,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   60686337
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -201,7 +201,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   60686337
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -244,21 +244,40 @@ Begin VB.Form frmFacturaEdicion
    Begin VB.Frame frmFC 
       Caption         =   "Factura de Crédito Eléctronica"
       Enabled         =   0   'False
-      Height          =   1455
+      Height          =   2655
       Left            =   11640
       TabIndex        =   53
       Top             =   1680
       Width           =   6135
-      Begin VB.ComboBox cboCuentasCBU 
+      Begin VB.ComboBox cboOpcional27 
          Enabled         =   0   'False
          Height          =   315
          ItemData        =   "frmFacturaEdicion.frx":000C
          Left            =   120
          List            =   "frmFacturaEdicion.frx":000E
          Style           =   2  'Dropdown List
+         TabIndex        =   88
+         Top             =   1560
+         Width           =   5850
+      End
+      Begin VB.ComboBox cboCuentasCBU 
+         Enabled         =   0   'False
+         Height          =   315
+         ItemData        =   "frmFacturaEdicion.frx":0010
+         Left            =   120
+         List            =   "frmFacturaEdicion.frx":0012
+         Style           =   2  'Dropdown List
          TabIndex        =   10
          Top             =   720
          Width           =   5850
+      End
+      Begin VB.Label Label22 
+         Caption         =   "Opcional 27"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   87
+         Top             =   1200
+         Width           =   1035
       End
       Begin VB.Label LblCBU 
          Alignment       =   1  'Right Justify
@@ -324,7 +343,7 @@ Begin VB.Form frmFacturaEdicion
          Height          =   255
          Left            =   120
          TabIndex        =   54
-         Top             =   1080
+         Top             =   2280
          Visible         =   0   'False
          Width           =   3975
       End
@@ -334,7 +353,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   2055
       Left            =   11640
       TabIndex        =   51
-      Top             =   4320
+      Top             =   5760
       Width           =   6135
       Begin VB.TextBox txtTextoAdicional 
          Height          =   1575
@@ -559,9 +578,9 @@ Begin VB.Form frmFacturaEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   360
-         ItemData        =   "frmFacturaEdicion.frx":0010
+         ItemData        =   "frmFacturaEdicion.frx":0014
          Left            =   8070
-         List            =   "frmFacturaEdicion.frx":001D
+         List            =   "frmFacturaEdicion.frx":0021
          Style           =   2  'Dropdown List
          TabIndex        =   70
          Top             =   1320
@@ -602,9 +621,9 @@ Begin VB.Form frmFacturaEdicion
          End
          Begin VB.ComboBox txtCondObs 
             Height          =   315
-            ItemData        =   "frmFacturaEdicion.frx":004E
+            ItemData        =   "frmFacturaEdicion.frx":0052
             Left            =   1035
-            List            =   "frmFacturaEdicion.frx":005E
+            List            =   "frmFacturaEdicion.frx":0062
             TabIndex        =   8
             Top             =   1200
             Width           =   5295
@@ -771,7 +790,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   60686337
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1134,25 +1153,25 @@ Begin VB.Form frmFacturaEdicion
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   10
-         Column(1)       =   "frmFacturaEdicion.frx":00BE
-         Column(2)       =   "frmFacturaEdicion.frx":01F6
-         Column(3)       =   "frmFacturaEdicion.frx":02EA
-         Column(4)       =   "frmFacturaEdicion.frx":0402
-         Column(5)       =   "frmFacturaEdicion.frx":0522
-         Column(6)       =   "frmFacturaEdicion.frx":0662
-         Column(7)       =   "frmFacturaEdicion.frx":0796
-         Column(8)       =   "frmFacturaEdicion.frx":08BE
-         Column(9)       =   "frmFacturaEdicion.frx":09EE
-         Column(10)      =   "frmFacturaEdicion.frx":0AFE
+         Column(1)       =   "frmFacturaEdicion.frx":00C2
+         Column(2)       =   "frmFacturaEdicion.frx":01FA
+         Column(3)       =   "frmFacturaEdicion.frx":02EE
+         Column(4)       =   "frmFacturaEdicion.frx":0406
+         Column(5)       =   "frmFacturaEdicion.frx":0526
+         Column(6)       =   "frmFacturaEdicion.frx":0666
+         Column(7)       =   "frmFacturaEdicion.frx":079A
+         Column(8)       =   "frmFacturaEdicion.frx":08C2
+         Column(9)       =   "frmFacturaEdicion.frx":09F2
+         Column(10)      =   "frmFacturaEdicion.frx":0B02
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmFacturaEdicion.frx":0BF6
-         FormatStyle(2)  =   "frmFacturaEdicion.frx":0D1E
-         FormatStyle(3)  =   "frmFacturaEdicion.frx":0DCE
-         FormatStyle(4)  =   "frmFacturaEdicion.frx":0E82
-         FormatStyle(5)  =   "frmFacturaEdicion.frx":0F5A
-         FormatStyle(6)  =   "frmFacturaEdicion.frx":1012
+         FormatStyle(1)  =   "frmFacturaEdicion.frx":0BFA
+         FormatStyle(2)  =   "frmFacturaEdicion.frx":0D22
+         FormatStyle(3)  =   "frmFacturaEdicion.frx":0DD2
+         FormatStyle(4)  =   "frmFacturaEdicion.frx":0E86
+         FormatStyle(5)  =   "frmFacturaEdicion.frx":0F5E
+         FormatStyle(6)  =   "frmFacturaEdicion.frx":1016
          ImageCount      =   0
-         PrinterProperties=   "frmFacturaEdicion.frx":10F2
+         PrinterProperties=   "frmFacturaEdicion.frx":10F6
       End
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
@@ -1249,7 +1268,7 @@ Begin VB.Form frmFacturaEdicion
       Height          =   1215
       Left            =   11640
       TabIndex        =   63
-      Top             =   3120
+      Top             =   4560
       Width           =   6105
       _Version        =   786432
       _ExtentX        =   10769
@@ -1514,7 +1533,14 @@ On Error GoTo err1
         Factura.fechaPago = Me.dtFechaPagoCredito.value
         Factura.esCredito = Me.chkEsCredito.value
         
+        If Factura.esCredito Then
+            
+            If Me.cboOpcional27.ListIndex < 0 Then Err.Raise "Para FCE es obligatorio informar opcional 27 con valor SCA ó ADC"
+                Factura.Opcional27 = Me.cboOpcional27.ItemData(Me.cboOpcional27.ListIndex)
+       Else
        
+        Factura.Opcional27 = 0
+       End If
         
         ASociarConcepto
         
@@ -2028,6 +2054,17 @@ Private Sub Form_Load()
     DAOCuentaBancaria.llenarComboCBU Me.cboCuentasCBU
     'Me.cboCuentasCBU.Visible = False
     
+     'opcional 27
+    
+    Me.cboOpcional27.Clear
+    Me.cboOpcional27.AddItem "TRANSFERENCIA AL SISTEMA DE CIRCULACION ABIERTA"
+    Me.cboOpcional27.ItemData(Me.cboOpcional27.NewIndex) = 1
+    
+       Me.cboOpcional27.AddItem "AGENTE DE DEPOSITO COLECTIVO "
+    Me.cboOpcional27.ItemData(Me.cboOpcional27.NewIndex) = 2
+  
+    
+    
 
     
     If Not IsSomething(Factura) Then
@@ -2051,8 +2088,10 @@ Private Sub Form_Load()
         'Me.dtFechaServDesde.value = Factura.FechaEmision
         'Me.dtFechaServHasta.value = Factura.FechaEmision
         
-
-
+  
+        '#218 consultar con karin cual quiere dejar por default
+              Me.cboOpcional27.ListIndex = 1
+       
         If Me.cboMoneda.ListIndex <> -1 Then
             Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
         End If
@@ -2216,7 +2255,7 @@ Private Sub Form_Load()
     Me.PushButton2.Enabled = Not ReadOnly
     
     ValidarEsCredito
-    
+   
 End Sub
 
 Private Sub LimpiarFactura()
@@ -2352,8 +2391,10 @@ End Sub
       If ReadOnly Then
       
             Me.cboCuentasCBU.Visible = IsSomething(c)
+        
             Me.lblVerCbu.Visible = Not IsSomething(c)
          Me.chkEsCredito.Enabled = False
+         Me.cboOpcional27.Enabled = False
      
        If IsSomething(c) Then
                  Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
@@ -2397,7 +2438,9 @@ End Sub
     
     Totalizar
     ValidarEsCredito
-
+    
+    Me.cboOpcional27.ListIndex = funciones.PosIndexCbo(Factura.Opcional27, Me.cboOpcional27)
+    
 End Sub
 
 Private Sub ValidarEsElectronico()
@@ -2441,6 +2484,7 @@ ValidarEsElectronico
   
   Me.LblCBU.Enabled = Factura.esCredito
   Me.cboCuentasCBU.Enabled = Factura.esCredito
+  Me.cboOpcional27.Enabled = Factura.esCredito
   Me.cboCuentasCBU.Visible = Factura.esCredito
   Me.txtCondObs.ListIndex = 1
   

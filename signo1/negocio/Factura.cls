@@ -55,7 +55,7 @@ Public usuarioCreador As clsUsuario
 Public CantDiasPago As Long    'FormaPago
 Public OrdenCompra As String
 Public UsuarioAprobacion As clsUsuario
-
+Public Opcional27 As Integer
 Public TextoAdicional As String
 
 
