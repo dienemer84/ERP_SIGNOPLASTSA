@@ -30,6 +30,9 @@ Public moneda As clsMoneda
 Public tipoDocumentoContable As tipoDocumentoContable
 Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
+Public TotalAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+Public NetoGravadoAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+
 Public OrdenPagoId As Long
 Public TotalAbonado As Double
 Dim vTipoCambio As Double

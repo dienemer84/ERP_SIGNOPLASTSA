@@ -191,6 +191,10 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       q = q & ",0 as total_compensado "
       End If
       
+      q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf WHERE opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
+      q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf WHERE opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
+
+      
       q = q & " From" _
         & " AdminComprasFacturasProveedores" _
         & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
@@ -229,6 +233,10 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
 
     While Not rs.EOF
         Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
+         
+        F.TotalAbonadoGlobal = rs!total_abonado
+        F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
+        
         If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
             Set F = col.item(CStr(F.id))
         Else

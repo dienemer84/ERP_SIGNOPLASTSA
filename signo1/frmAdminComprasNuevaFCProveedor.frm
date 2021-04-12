@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
    BackColor       =   &H00FF8080&
@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   59244545
+      Format          =   60030977
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -993,13 +993,13 @@ Private Sub cmdGuardar_Click()
 
         If DAOFacturaProveedor.existeFactura(vFactura) Then Err.Raise 101
 
-        Dim NUEVA As Boolean
-        NUEVA = (vFactura.id = 0)
+        Dim Nueva As Boolean
+        Nueva = (vFactura.id = 0)
 
         If DAOFacturaProveedor.Guardar(vFactura) Then
             Set EVENTO = New clsEventoObserver
             Set EVENTO.Elemento = vFactura
-            If NUEVA Then
+            If Nueva Then
                 EVENTO.EVENTO = agregar_
             Else
                 EVENTO.EVENTO = modificar_
