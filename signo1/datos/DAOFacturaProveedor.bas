@@ -19,7 +19,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
           
         '#209
   If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
-   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar o eliminar.", vbCritical
    Exit Function
   End If
 
@@ -112,7 +112,7 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     
          '#209
       If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
-   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar.", vbCritical
    Exit Function
   End If
 
@@ -340,7 +340,7 @@ Public Function Delete(facid As Long) As Boolean
 
 '#209
   If DAOSubdiarios.ComprobanteComprasLiquidado(facid) Then
-   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar o modificar.", vbCritical
    Exit Function
   End If
 
