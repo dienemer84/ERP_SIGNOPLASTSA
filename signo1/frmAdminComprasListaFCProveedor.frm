@@ -5,24 +5,25 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    Appearance      =   0  'Flat
    BackColor       =   &H00FF8080&
    Caption         =   "Facturas Proveedores"
-   ClientHeight    =   6495
+   ClientHeight    =   7815
    ClientLeft      =   60
    ClientTop       =   420
-   ClientWidth     =   14655
+   ClientWidth     =   25005
    ClipControls    =   0   'False
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   6495
-   ScaleWidth      =   14655
+   ScaleHeight     =   7815
+   ScaleWidth      =   25005
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1800
       Left            =   120
       TabIndex        =   1
       Top             =   0
-      Width           =   15315
+      Width           =   23715
       _Version        =   786432
-      _ExtentX        =   27014
+      _ExtentX        =   41831
       _ExtentY        =   3175
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
@@ -57,7 +58,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.PushButton Command2 
          Default         =   -1  'True
          Height          =   390
-         Left            =   13920
+         Left            =   22200
          TabIndex        =   2
          Top             =   240
          Width           =   1245
@@ -221,7 +222,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
       Begin XtremeSuiteControls.PushButton cmdImprimir 
          Height          =   390
-         Left            =   13920
+         Left            =   22200
          TabIndex        =   33
          Top             =   1200
          Width           =   1245
@@ -234,7 +235,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
       Begin XtremeSuiteControls.PushButton cmdExportar 
          Height          =   390
-         Left            =   13920
+         Left            =   22200
          TabIndex        =   34
          Top             =   720
          Width           =   1245
@@ -271,6 +272,32 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          _StockProps     =   77
          BackColor       =   -2147483643
          Sorted          =   -1  'True
+      End
+      Begin XtremeSuiteControls.ProgressBar progreso 
+         Height          =   390
+         Left            =   16440
+         TabIndex        =   39
+         Top             =   1200
+         Visible         =   0   'False
+         Width           =   5535
+         _Version        =   786432
+         _ExtentX        =   9763
+         _ExtentY        =   688
+         _StockProps     =   93
+         Appearance      =   6
+      End
+      Begin XtremeSuiteControls.Label lblExportando 
+         Height          =   375
+         Left            =   15360
+         TabIndex        =   40
+         Top             =   1200
+         Visible         =   0   'False
+         Width           =   1215
+         _Version        =   786432
+         _ExtentX        =   2143
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Exportando..."
       End
       Begin VB.Label lblTotal 
          AutoSize        =   -1  'True
@@ -498,13 +525,13 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   4440
-      Left            =   105
+      Height          =   5280
+      Left            =   120
       TabIndex        =   0
-      Top             =   1920
-      Width           =   15300
-      _ExtentX        =   26988
-      _ExtentY        =   7832
+      Top             =   2400
+      Width           =   23700
+      _ExtentX        =   41804
+      _ExtentY        =   9313
       Version         =   "2.0"
       PreviewRowIndent=   100
       DefaultGroupMode=   1
@@ -635,9 +662,16 @@ End Sub
 
 Private Sub cmdExportar_Click()
 
+    Me.progreso.Visible = True
+    Me.lblExportando.Visible = True
+    
     If IsSomething(facturas) Then
-        If Not DAOFacturaProveedor.ExportarColeccion(facturas) Then GoTo err1
+        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
     End If
+    
+    Me.progreso.Visible = False
+    Me.lblExportando.Visible = False
+    
     Exit Sub
 err1:
     MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
@@ -782,7 +816,14 @@ Private Sub Form_Load()
     Channel.AgregarSuscriptor Me, TipoSuscripcion.FacturaProveedor_
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.grilla, True
-    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True
+    
+   ' DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True
+   
+    Set colProveedores = DAOProveedor.FindAll
+    For Each prov In colProveedores
+        cboProveedores.AddItem prov.RazonSocial
+        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.id
+    Next
 
 
     Me.cboEstado.Clear
@@ -794,14 +835,14 @@ Private Sub Form_Load()
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.Saldada
 
 
-    Dim P As clsProveedor
-    For Each P In DAOProveedor.FindAll()
-        If LenB(Trim$(P.razonFantasia)) > 0 Then
-            Me.cboFantasia.AddItem P.razonFantasia
-            Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.id
-        End If
-    Next P
-    Me.cboFantasia.ListIndex = -1
+'    Dim P As clsProveedor
+'    For Each P In DAOProveedor.FindAll()
+'        If LenB(Trim$(P.razonFantasia)) > 0 Then
+'            Me.cboFantasia.AddItem P.razonFantasia
+'            Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.id
+'        End If
+'    Next P
+'    Me.cboFantasia.ListIndex = -1
 
 
 Dim cc As clsCuentaContable
