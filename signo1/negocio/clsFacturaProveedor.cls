@@ -32,6 +32,8 @@ Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
 Public TotalAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public NetoGravadoAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+Public TotalAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+Public NetoGravadoAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 
 Public OrdenPagoId As Long
 Public TotalAbonado As Double

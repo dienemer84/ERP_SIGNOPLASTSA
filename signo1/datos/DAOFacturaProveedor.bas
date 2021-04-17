@@ -191,8 +191,8 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       q = q & ",0 as total_compensado "
       End If
       
-      q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf WHERE opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
-      q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf WHERE opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
+      q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
+      q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
 
       
       q = q & " From" _
