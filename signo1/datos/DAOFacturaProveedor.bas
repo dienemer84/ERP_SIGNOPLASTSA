@@ -19,7 +19,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
           
         '#209
   If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
-   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar o eliminar.", vbCritical
    Exit Function
   End If
 
@@ -112,7 +112,7 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     
          '#209
       If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
-   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar.", vbCritical
    Exit Function
   End If
 
@@ -340,7 +340,7 @@ Public Function Delete(facid As Long) As Boolean
 
 '#209
   If DAOSubdiarios.ComprobanteComprasLiquidado(facid) Then
-   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar", vbCritical
+   MsgBox "El comprobante se encuentra liquidado, no se puede eliminar o modificar.", vbCritical
    Exit Function
   End If
 
@@ -493,7 +493,7 @@ eh:
 End Function
 
 
-Public Function ExportarColeccion(col As Collection) As Boolean
+Public Function ExportarColeccion(col As Collection, Optional progressbar As Object) As Boolean
     On Error GoTo err1
     ExportarColeccion = True
     
@@ -552,6 +552,13 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     'Agregar DNEMER 03/02/2021
     Dim totalpercep As Double
 
+    progressbar.min = 0
+    progressbar.max = col.count
+    
+
+    Dim d As Long
+    d = 0
+    
     For Each fac In col
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
         Total = Total + MonedaConverter.Convertir(fac.Total * c, fac.moneda.id, MonedaConverter.Patron.id)
@@ -562,7 +569,10 @@ Public Function ExportarColeccion(col As Collection) As Boolean
         totalpercep = totalpercep + fac.totalPercepciones * c
         
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
-
+    
+        d = d + 1
+        progressbar.value = d
+        
         offset = offset + 1
         xlWorksheet.Cells(offset, 1).value = fac.Proveedor.Cuit
         xlWorksheet.Cells(offset, 2).value = fac.Proveedor.RazonSocial
@@ -632,7 +642,8 @@ Public Function ExportarColeccion(col As Collection) As Boolean
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
-
+    progressbar.value = 0
+    
     Exit Function
 err1:
     ExportarColeccion = False
