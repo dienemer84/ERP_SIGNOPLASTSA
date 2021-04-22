@@ -1359,7 +1359,7 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
-    Me.gridCajas.AllowEdit = Not ReadOnly
+    Me.GridCajas.AllowEdit = Not ReadOnly
     'Me.gridCajas.AllowDelete = Not ReadOnly
 
     Me.gridChequeras.AllowEdit = Not ReadOnly
@@ -1826,7 +1826,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1836,7 +1836,7 @@ Private Sub Form_Load()
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.gridCajas.ItemCount = Cajas.count
+    Me.GridCajas.ItemCount = Cajas.count
 
     Set monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = monedas.count
@@ -1885,7 +1885,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
@@ -1961,7 +1961,7 @@ Private Sub MostrarFacturas()
                 Next
             End If
         End If
-    Dim t As String
+    Dim T As String
         For Each Factura In colFacturas
         
         
@@ -1974,13 +1974,13 @@ Private Sub MostrarFacturas()
         
         
         
-        t = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"
+        T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"
            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
-            t = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
+            T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
            
            End If
             
-            Me.lstFacturas.AddItem t
+            Me.lstFacturas.AddItem T
             Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.id
         Next
 
@@ -2347,7 +2347,7 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
         If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
         If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
         
-        Me.txtParcialAbonar = F.TotalAbonadoGlobalPendiente
+        Me.txtParcialAbonar = F.ImporteTotalAbonado
         vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar)
         
         If F.ImporteTotalAbonado + F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente > F.Total Then
@@ -2388,7 +2388,12 @@ If IsSomething(vFactElegida) Then
    Set c = DAOOrdenPago.FindAbonadoPendiente(vFactElegida.id, OrdenPago.id)
     
     vFactElegida.TotalAbonadoGlobalPendiente = c(1)
-        vFactElegida.NetoGravadoAbonadoGlobalPendiente = c(2)
+    vFactElegida.NetoGravadoAbonadoGlobalPendiente = c(2)
+    
+    If vFactElegida.ImporteTotalAbonado = 0 Then
+        vFactElegida.ImporteTotalAbonado = vFactElegida.TotalPendiente
+    
+    End If
     
     MostrarPago vFactElegida
 End If
@@ -2713,7 +2718,7 @@ Private Function TotalizarDiferenciasCambio()
     Dim F As clsFacturaProveedor
     Dim col As New Collection
     Dim i As Long
-    Dim t As Double
+    Dim T As Double
     Dim TIVA As Double
     Dim TTOTAL As Double
     For i = 0 To Me.lstFacturas.ListCount - 1
@@ -2728,11 +2733,11 @@ Private Function TotalizarDiferenciasCambio()
 
 
     For Each F In col
-        t = t + F.DiferenciaPorTipoDeCambionNG
+        T = T + F.DiferenciaPorTipoDeCambionNG
         TIVA = TIVA + F.DiferenciaPorTipoDeCambionIVA
         TTOTAL = TTOTAL + F.DiferenciaPorTipoDeCambionTOTAL
     Next
-    Me.txtDiferenciaCambioPago.text = t
+    Me.txtDiferenciaCambioPago.text = T
     Me.txtDifTipoCambioIVA.text = TIVA
     Me.txtDifCambio = TTOTAL
 

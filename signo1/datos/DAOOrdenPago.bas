@@ -531,7 +531,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             Next cp
             
             
-            nopago = fac.Total - fac.ImporteTotalAbonado
+            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.ImporteTotalAbonado
             
              q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.id
         If Not conectar.execute(q) Then GoTo E

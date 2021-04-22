@@ -71,7 +71,9 @@ Public Function VerPosibleRetenciones2(colFc As Collection, colret As Collection
 
             If F.FormaPagoCuentaCorriente Then
 
-                sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.NetoGravadoDiaPago) * -1, F.NetoGravadoDiaPago)
+               ' sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.NetoGravadoDiaPago) * -1, F.NetoGravadoDiaPago)
+               'op a cuenta
+                 sumadorDeTotales = sumadorDeTotales + IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.NetoGravadoAbonadoDiaPago) * -1, F.NetoGravadoAbonadoDiaPago)
 
             End If
 
