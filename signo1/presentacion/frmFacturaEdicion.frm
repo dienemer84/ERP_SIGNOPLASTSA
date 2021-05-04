@@ -52,7 +52,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57999361
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57999361
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57999361
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57999361
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   57999361
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1553,7 +1553,7 @@ On Error GoTo err1
         
 Exit Sub
 err1:
-       MsgBox "Ocurrió un error al guardar. Controle datos y que el Nº no este ya asignado. o Bien " & Chr(10) & Err.Description, vbCritical + vbOKOnly
+       MsgBox "Ocurrió un error al guardar. Controle datos y que el Nº no esté ya asignado. o Bien " & Chr(10) & Err.Description, vbCritical + vbOKOnly
 End Sub
 
 Private Sub btnItemRemito_Click()

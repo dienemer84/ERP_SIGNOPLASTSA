@@ -54,8 +54,7 @@ Public Function FindAllNoSaldadasTotalByCliente(cliente_id As Long, Optional inc
     Set FindAllNoSaldadasTotalByCliente = FindAll("AdminFacturas.idCliente = " & cliente_id & " AND AdminFacturas.estado <> " & EstadoFacturaCliente.Anulada & " AND AdminFacturas.saldada IN (" & TipoSaldadoFactura.NoSaldada & ", " & TipoSaldadoFactura.SaldadoParcial & "," & TipoSaldadoFactura.notaCreditoParcial & ")", includeDetalles, includeEntregasWithDetalles)
 End Function
 Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional includeDetalles As Boolean = False, Optional includeEntregasWithDetalles As Boolean = False, Optional Orden As String = vbNullString) As Collection
-    '    Dim duracion As Double
-    '    duracion = GetTickCount
+
     On Error GoTo err1
     Dim q As String
     q = "SELECT *, ADDDATE(AdminFacturas.FechaEmision, AdminFacturas.FormaPago) AS FechaVencimiento " _
@@ -83,21 +82,6 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
         & " LEFT JOIN AdminConfigMonedas ON (AdminFacturas.idMoneda = AdminConfigMonedas.id)" _
         & " LEFT JOIN usuarios ON AdminFacturas.idUsuarioEmision=usuarios.id " _
         & " LEFT JOIN usuarios as usuarios2 ON AdminFacturas.idUsuarioAprobacion=usuarios2.id "
-
-
-    '& " LEFT JOIN AdminConfigFacturas acf ON (acf.id = AdminFacturas.tipoFactura)" _
-     & " LEFT JOIN AdminConfigFacturasTipos acft ON (acft.id = acf.TipoFactura)" _
-     & " LEFT JOIN AdminConfigIVA ivaFac ON (ivaFac.idIVA = acf.idIVA)" _
-     & " LEFT JOIN AdminConfigFacturasTipos ON (AdminFacturas.tipoFactura=AdminConfigFacturasTipos.id)" _
-     & " LEFT JOIN AdminConfigFacturaPuntoVenta pv ON (acft.id_punto_venta=pv.id)" _
-     & " LEFT JOIN clientes ON (AdminFacturas.idCliente = clientes.id)" _
-     & " LEFT JOIN Localidades ON (clientes.id_localidad = Localidades.ID)" _
-     & " LEFT JOIN Provincia ON (clientes.id_provincia = Provincia.ID)" _
-     & " LEFT JOIN AdminConfigIVA iva ON (iva.idIVA = clientes.iva)" _
-     & " LEFT JOIN AdminConfigMonedas ON (AdminFacturas.idMoneda = AdminConfigMonedas.id)" _
-     & " LEFT JOIN usuarios ON AdminFacturas.idUsuarioEmision=usuarios.id " _
-     & " LEFT JOIN usuarios as usuarios2 ON AdminFacturas.idUsuarioAprobacion=usuarios2.id "
-
 
 
     If includeDetalles Then
@@ -425,18 +409,6 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         Set F.usuarioCreador = funciones.GetUserObj()
         q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
     End If
-
-    q = Replace$(q, "'NroFactura'", conectar.Escape(F.numero))
-    q = Replace$(q, "'idCliente'", conectar.GetEntityId(F.cliente))
-    q = Replace$(q, "'fecha_entrega'", conectar.Escape(F.FechaEntrega))
-
-    q = Replace$(q, "'cae'", conectar.Escape(F.CAE))
-    q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
-    
-    q = Replace$(q, "'aprobacion_afip'", conectar.Escape(F.AprobadaAFIP))
-    q = Replace$(q, "'Opcional27'", conectar.Escape(F.Opcional27))
-    q = Replace$(q, "'anulacion_afip'", conectar.Escape(F.AnulacionAFIP))
-    q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
     
     '    '''''''''''''''''''''''''''''''''''''' HACK
     '    Dim qTemp As String
@@ -450,14 +422,22 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     '    'apunta a AdminConfigFacturas
     '    q = Replace$(q, "'tipoFactura'", TipoFactura)
     '    ''''''''''''''''''''''''''''''''''''''
-
+    
+    
+    q = Replace$(q, "'NroFactura'", conectar.Escape(F.numero))
+    q = Replace$(q, "'idCliente'", conectar.GetEntityId(F.cliente))
+    q = Replace$(q, "'fecha_entrega'", conectar.Escape(F.FechaEntrega))
+    q = Replace$(q, "'cae'", conectar.Escape(F.CAE))
+    q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
+    q = Replace$(q, "'aprobacion_afip'", conectar.Escape(F.AprobadaAFIP))
+    q = Replace$(q, "'opcional27'", conectar.Escape(F.Opcional27))
+    q = Replace$(q, "'anulacion_afip'", conectar.Escape(F.AnulacionAFIP))
+    q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
     q = Replace$(q, "'id_tipo_discriminado'", F.Tipo.id)
     q = Replace$(q, "'tipoFactura_borrar'", F.Tipo.TipoFactura.id)
     q = Replace$(q, "'idMoneda'", conectar.GetEntityId(F.moneda))
     q = Replace$(q, "'FechaEmision'", conectar.Escape(F.FechaEmision))
-    
     q = Replace$(q, "'EsCredito'", conectar.Escape(F.esCredito))
-    
     q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.usuarioCreador))
     q = Replace$(q, "'OrdenCompra'", conectar.Escape(F.OrdenCompra))
     q = Replace$(q, "'origenFacturado'", conectar.Escape(F.origenFacturado))
@@ -468,9 +448,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'tipo_borrar'", conectar.Escape(F.TipoDocumento))
     q = Replace$(q, "'saldada'", conectar.Escape(F.Saldado))
     q = Replace$(q, "'observaciones'", conectar.Escape(F.observaciones))
-    
-     q = Replace$(q, "'texto_adicional'", conectar.Escape(F.TextoAdicional))
-
+    q = Replace$(q, "'texto_adicional'", conectar.Escape(F.TextoAdicional))
     'q = Replace$(q, "'AliPercIB'", conectar.Escape(1 + (f.AlicuotaPercepcionesIIBB / 100)))
     q = Replace$(q, "'AliPercIB'", conectar.Escape(F.AlicuotaPercepcionesIIBB))
     q = Replace$(q, "'cambio_a_patron'", conectar.Escape(F.CambioAPatron))
