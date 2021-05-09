@@ -30,10 +30,15 @@ Public moneda As clsMoneda
 Public tipoDocumentoContable As tipoDocumentoContable
 Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
+Public OtrosAbonadoGlobal As Double
 Public TotalAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public NetoGravadoAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+
 Public TotalAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public NetoGravadoAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+Public OtrosAbonadoGlobalPendiente As Double
+
+
 
 Public OrdenPagoId As Long
 Public TotalAbonado As Double
@@ -43,6 +48,8 @@ Public TipoCambioPago As Double
 Public UltimaActualizacion As Date
 Public ImporteTotalAbonado As Double    'dto para poder hacer pagos parciales
 Public NetoGravadoAbonado As Double    'dto para poder hacer pagos parciales
+Public OtrosAbonado As Double
+
 Public UsuarioCarga As clsUsuario
 
 Public TotalCompensado As Double
@@ -61,11 +68,11 @@ Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
     CalcularIvaTotalAbonadoParcial = tot_iva
 End Function
 Public Function CalcularTotalAbonadoParcial(ng As Double)
-Dim iva As Double
+Dim Iva As Double
 
-iva = CalcularIvaTotalAbonadoParcial(ng)
+Iva = CalcularIvaTotalAbonadoParcial(ng)
 
-CalcularTotalAbonadoParcial = ng + iva
+CalcularTotalAbonadoParcial = ng + Iva
 End Function
 
 

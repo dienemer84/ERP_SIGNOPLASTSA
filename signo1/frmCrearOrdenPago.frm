@@ -984,21 +984,37 @@ Begin VB.Form frmCrearOrdenPago
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtOtrosParcialAbonar 
+         Alignment       =   1  'Right Justify
+         Height          =   285
+         Left            =   3840
+         TabIndex        =   69
+         Top             =   1680
+         Width           =   1545
+      End
+      Begin VB.TextBox txtOtrosParcialAbonado 
+         Alignment       =   1  'Right Justify
+         Height          =   285
+         Left            =   3840
+         TabIndex        =   68
+         Top             =   1080
+         Width           =   1545
+      End
       Begin VB.TextBox txtTotalParcialAbonado 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   2880
+         Left            =   1920
          TabIndex        =   66
          Top             =   1080
-         Width           =   2265
+         Width           =   1545
       End
       Begin VB.TextBox txtTotalParcialAbonar 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   2880
+         Left            =   1920
          TabIndex        =   64
          Top             =   1680
-         Width           =   2265
+         Width           =   1545
       End
       Begin VB.TextBox txtParcialAbonado 
          Alignment       =   1  'Right Justify
@@ -1006,7 +1022,7 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   120
          TabIndex        =   62
          Top             =   1080
-         Width           =   2265
+         Width           =   1425
       End
       Begin VB.TextBox txtBuscarFactura 
          Alignment       =   1  'Right Justify
@@ -1022,7 +1038,7 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   120
          TabIndex        =   43
          Top             =   1680
-         Width           =   2265
+         Width           =   1425
       End
       Begin XtremeSuiteControls.ListBox lstFacturas 
          Height          =   1575
@@ -1038,11 +1054,29 @@ Begin VB.Form frmCrearOrdenPago
          Appearance      =   6
          Style           =   1
       End
+      Begin VB.Label Label12 
+         AutoSize        =   -1  'True
+         Caption         =   "Otros Parcial a abonar:"
+         Height          =   195
+         Left            =   3840
+         TabIndex        =   71
+         Top             =   1440
+         Width           =   1665
+      End
+      Begin VB.Label Label11 
+         AutoSize        =   -1  'True
+         Caption         =   "Otros Parcial abonado:"
+         Height          =   195
+         Left            =   3840
+         TabIndex        =   70
+         Top             =   840
+         Width           =   1650
+      End
       Begin VB.Label Label10 
          AutoSize        =   -1  'True
          Caption         =   "Total Parcial abonado:"
          Height          =   195
-         Left            =   2880
+         Left            =   1920
          TabIndex        =   67
          Top             =   840
          Width           =   1605
@@ -1051,7 +1085,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Total Parcial a abonar:"
          Height          =   195
-         Left            =   2880
+         Left            =   1920
          TabIndex        =   65
          Top             =   1440
          Width           =   1620
@@ -2004,7 +2038,7 @@ Private Sub MostrarFacturas()
              
              Factura.TotalAbonadoGlobalPendiente = c(1) 'que esta en ops sin aprobar
                  Factura.NetoGravadoAbonadoGlobalPendiente = c(2)
-                 
+                   Factura.OtrosAbonadoGlobalPendiente = c(3)
         
         
         
@@ -2380,9 +2414,11 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
         Me.txtParcialAbonado = F.TotalAbonadoGlobal
         If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
         If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
-        
+          If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.Total - F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
+      
         Me.txtParcialAbonar = F.NetoGravadoAbonado
         Me.txtTotalParcialAbonar = F.ImporteTotalAbonado
+        Me.txtOtrosParcialAbonar = F.OtrosAbonado
         
         
         
