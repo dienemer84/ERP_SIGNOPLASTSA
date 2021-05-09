@@ -47,6 +47,27 @@ Public UsuarioCarga As clsUsuario
 
 Public TotalCompensado As Double
 
+Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
+  Dim tot_iva As Double
+    tot_iva = 0
+    Dim P As Long
+    For P = 1 To vIvaAplicado.count
+        'el iva 0% (exento), no suma por el valor 0 de la alicuota
+
+        If (vIvaAplicado(P).alicuota.alicuota <> 0) Then
+            tot_iva = tot_iva + ((ng * 1 + (vIvaAplicado(P).alicuota.alicuota / 100)) - ng)
+        End If
+    Next
+    CalcularIvaTotalAbonadoParcial = tot_iva
+End Function
+Public Function CalcularTotalAbonadoParcial(ng As Double)
+Dim iva As Double
+
+iva = CalcularIvaTotalAbonadoParcial(ng)
+
+CalcularTotalAbonadoParcial = ng + iva
+End Function
+
 
 Public Property Get DiferenciaPorTipoDeCambionIVA() As Double
     If TipoCambio > 0 Then
