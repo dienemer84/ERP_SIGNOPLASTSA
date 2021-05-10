@@ -150,8 +150,13 @@ frmPlaneamientoDefinirCrono = 0, 0, 0, 0, C, 176, 232, 1266, 812, C
 informe_etiquetas = 0, 0, 0, 0, C, -650, 174, 630, 946, C
 frmAdminComprasNuevaFCProveedor = 88, 116, 968, 580, C, 0, 0, 1091, 551, C
 frmAdminComprasListaFCProveedor = 109, 46, 819, 818, C, 900, 0, 1350, 772, C
+<<<<<<< HEAD
 conectar = 25, 199, 777, 459, Z
 DAOFacturaProveedor = 0, 0, 710, 772, C
+=======
+conectar = 25, 199, 777, 459, 
+DAOFacturaProveedor = 0, 0, 710, 772, 
+>>>>>>> 652c37a6675b5f82c460c6bffc4952493f4f4732
 DAOIvaAplicado = 22, 29, 902, 493, C
 DAOPercepcionesAplicadas = 22, 29, 1267, 578, C
 DAOPercepciones = 0, 0, 0, 0, C
@@ -166,11 +171,11 @@ clsProveedor = -159, 194, 721, 658, C
 clsTipoFactura = -254, 149, 924, 511, C
 clsTipoIVA = -232, 49, 995, 373, C
 DAOAlicuotas = 132, 174, 1012, 638, C
-clsAlicuotas = 0, 0, 0, 0, C
+clsAlicuotas = 88, 116, 1082, 486, C
 DAOConfigFacturaProveedor = 110, 145, 990, 609, C
 clsTipoIvaProveedor = 88, 116, 968, 580, C
 DAOTipoIvaProveedor = 66, 87, 946, 551, C
-clsAlicuotaAplicada = 0, 0, 0, 0, C
+clsAlicuotaAplicada = 66, 87, 1060, 457, C
 clsCuentaContable = 0, 0, 0, 0, C
 DAOCuentaContable = 132, 174, 945, 622, C
 frmAdminComprasPlanCuentasAdmin = 0, 0, 0, 0, C, 44, 58, 1134, 638, C
@@ -299,7 +304,11 @@ DAOBancos = 0, 0, 0, 0, C
 Cheque = 0, 0, 0, 0, C
 DAOCheques = 187, 119, 1551, 535, C
 OrdenPago = 198, 261, 1252, 847, 
+<<<<<<< HEAD
 frmCrearOrdenPago = 59, -1, 886, 544, , 66, 87, 1156, 667, C
+=======
+frmCrearOrdenPago = 59, -1, 886, 544, , 35, 17, 1125, 597, C
+>>>>>>> 652c37a6675b5f82c460c6bffc4952493f4f4732
 Operacion = 132, 174, 849, 622, C
 CuentaBancaria = 0, 0, 0, 0, C
 Caja = 0, 0, 0, 0, C
@@ -323,7 +332,7 @@ DAONotaNoConformidad = 0, 0, 1054, 586, C
 dsrNotaNoConformidad = 0, 0, 0, 0, C, 132, 174, 1572, 946, C
 frmNotaNoConformidad = 22, 29, 1076, 615, C, 110, 145, 1200, 725, C
 frmNotasNoConformidad = 44, 58, 1098, 644, C, 132, 174, 1222, 754, C
-DAOOrdenPago = 86, 57, 1277, 602, 
+DAOOrdenPago = 86, 57, 1277, 602, Z
 frmChequePropioACartera = 154, 203, 1345, 748, C, 154, 203, 1244, 783, C
 frmOrdenesPago = 196, 122, 1387, 667, , 6, 156, 1096, 736, C
 frmNuevaOrdenTrabajo = 0, 0, 0, 0, C, 198, 261, 1288, 841, C
