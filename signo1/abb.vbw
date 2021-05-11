@@ -1,5 +1,5 @@
 frmPrincipal = 367, 131, 866, 881, C, 44, 58, 1134, 638, C
-funciones = 63, 91, 715, 521, 
+funciones = 63, 91, 715, 521, C
 frmRubrosGrupos = 0, 0, 0, 0, C, 198, 261, 1288, 841, C
 frmMaterialesNuevo = 176, 232, 828, 696, C, 0, 0, 1090, 580, C
 frmComprasPreciosHistorico = 0, 0, 0, 0, C, 22, 29, 1112, 609, C
@@ -150,8 +150,13 @@ frmPlaneamientoDefinirCrono = 0, 0, 0, 0, C, 176, 232, 1266, 812, C
 informe_etiquetas = 0, 0, 0, 0, C, -650, 174, 630, 946, C
 frmAdminComprasNuevaFCProveedor = 88, 116, 968, 580, C, 0, 0, 1091, 551, C
 frmAdminComprasListaFCProveedor = 109, 46, 819, 818, C, 900, 0, 1350, 772, C
+<<<<<<< HEAD
+conectar = 25, 199, 777, 459, Z
+DAOFacturaProveedor = 0, 0, 710, 772, C
+=======
 conectar = 25, 199, 777, 459, 
 DAOFacturaProveedor = 0, 0, 710, 772, 
+>>>>>>> 652c37a6675b5f82c460c6bffc4952493f4f4732
 DAOIvaAplicado = 22, 29, 902, 493, C
 DAOPercepcionesAplicadas = 22, 29, 1267, 578, C
 DAOPercepciones = 0, 0, 0, 0, C
@@ -185,7 +190,7 @@ DaoFacturaProveedorHistorial = 0, 0, 0, 0, C
 frmHistoriales = 132, 174, 945, 622, C, 88, 116, 1178, 696, C
 clsRubros = 0, 0, 0, 0, C
 DAORubros = 0, 0, 0, 0, C
-clsCliente = -413, 180, 879, 725, 
+clsCliente = -413, 180, 879, 725, C
 DAOCliente = 0, 0, 813, 448, C
 frmVentasClientesLista22 = 110, 145, 990, 609, C, 110, 145, 1200, 725, C
 clsContacto = 0, 0, 0, 0, C
@@ -223,7 +228,7 @@ DAOPeticionOfertaDetalle = 0, 0, 0, 0, C
 frmComprasPeticionesLista = 88, 116, 1142, 702, C, 176, 232, 1266, 812, C
 frmPlaneamientoAgregarTareaAProceso = 0, 0, 0, 0, C, 198, 261, 1288, 841, C
 DAOTareas = 0, 0, 0, 0, C
-clsTarea = 0, 0, 0, 0, C
+clsTarea = 44, 58, 1258, 492, C
 OrdenTrabajo = 0, 0, 0, 0, C
 DAOOrdenTrabajo = 132, 174, 1012, 638, C
 DAOPresupuestos = 110, 145, 1301, 690, C
@@ -242,10 +247,10 @@ DAOPresupuestosDetalle = 0, 0, 0, 0, C
 clsPresupuestoDetalle = 0, 0, 0, 0, C
 Archivo = 0, 0, 0, 0, C
 DetalleOrdenTrabajo = 0, 0, 0, 0, C
-DAODetalleOrdenTrabajo = 0, 0, 0, 0, C
+DAODetalleOrdenTrabajo = 88, 116, 1002, 550, 
 frmNuevoContratoMarco = 88, 116, 1279, 661, C, 0, 0, 1090, 580, C
 DetalleOTConjuntoDTO = 0, 0, 0, 0, C
-DAOTiemposProceso = 44, 58, 1098, 644, C
+DAOTiemposProceso = 44, 58, 1098, 644, 
 DAOOrdenTrabajoHistorial = 0, 0, 0, 0, C
 DesarrolloManoObra = 0, 0, 0, 0, C
 DesarrolloMaterial = 0, 0, 0, 0, C
@@ -299,7 +304,11 @@ DAOBancos = 0, 0, 0, 0, C
 Cheque = 0, 0, 0, 0, C
 DAOCheques = 187, 119, 1551, 535, C
 OrdenPago = 198, 261, 1252, 847, 
+<<<<<<< HEAD
+frmCrearOrdenPago = 59, -1, 886, 544, , 66, 87, 1156, 667, C
+=======
 frmCrearOrdenPago = 59, -1, 886, 544, , 35, 17, 1125, 597, C
+>>>>>>> 652c37a6675b5f82c460c6bffc4952493f4f4732
 Operacion = 132, 174, 849, 622, C
 CuentaBancaria = 0, 0, 0, 0, C
 Caja = 0, 0, 0, 0, C
