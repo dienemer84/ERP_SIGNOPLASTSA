@@ -987,7 +987,7 @@ Begin VB.Form frmCrearOrdenPago
       Begin VB.TextBox txtOtrosParcialAbonar 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   3840
+         Left            =   1800
          TabIndex        =   69
          Top             =   1680
          Width           =   1545
@@ -995,7 +995,8 @@ Begin VB.Form frmCrearOrdenPago
       Begin VB.TextBox txtOtrosParcialAbonado 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   3840
+         Left            =   1800
+         Locked          =   -1  'True
          TabIndex        =   68
          Top             =   1080
          Width           =   1545
@@ -1003,7 +1004,8 @@ Begin VB.Form frmCrearOrdenPago
       Begin VB.TextBox txtTotalParcialAbonado 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   1920
+         Left            =   3600
+         Locked          =   -1  'True
          TabIndex        =   66
          Top             =   1080
          Width           =   1545
@@ -1011,7 +1013,8 @@ Begin VB.Form frmCrearOrdenPago
       Begin VB.TextBox txtTotalParcialAbonar 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   1920
+         Left            =   3600
+         Locked          =   -1  'True
          TabIndex        =   64
          Top             =   1680
          Width           =   1545
@@ -1020,6 +1023,7 @@ Begin VB.Form frmCrearOrdenPago
          Alignment       =   1  'Right Justify
          Height          =   285
          Left            =   120
+         Locked          =   -1  'True
          TabIndex        =   62
          Top             =   1080
          Width           =   1425
@@ -1058,7 +1062,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Otros Parcial a abonar:"
          Height          =   195
-         Left            =   3840
+         Left            =   1800
          TabIndex        =   71
          Top             =   1440
          Width           =   1665
@@ -1067,7 +1071,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Otros Parcial abonado:"
          Height          =   195
-         Left            =   3840
+         Left            =   1800
          TabIndex        =   70
          Top             =   840
          Width           =   1650
@@ -1076,7 +1080,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Total Parcial abonado:"
          Height          =   195
-         Left            =   1920
+         Left            =   3600
          TabIndex        =   67
          Top             =   840
          Width           =   1605
@@ -1085,7 +1089,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Total Parcial a abonar:"
          Height          =   195
-         Left            =   1920
+         Left            =   3600
          TabIndex        =   65
          Top             =   1440
          Width           =   1620
@@ -2411,8 +2415,12 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
 
     If IsSomething(F) Then
 
-        Me.txtParcialAbonado = F.TotalAbonadoGlobal
-        If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
+        Me.txtTotalParcialAbonado = F.TotalAbonadoGlobal
+        Me.txtOtrosParcialAbonado = F.OtrosAbonadoGlobal
+        Me.txtParcialAbonado = F.NetoGravadoAbonadoGlobal
+        
+        
+       ' If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
         If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
           If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.Total - F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
       
@@ -2420,20 +2428,20 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
         Me.txtTotalParcialAbonar = F.ImporteTotalAbonado
         Me.txtOtrosParcialAbonar = F.OtrosAbonado
         
+recalcularTotalFacturaelegida
         
-        
-        vFactElegida.NetoGravadoAbonado = CDbl(Me.txtParcialAbonar)
-           vFactElegida.ImporteTotalAbonado = vFactElegida.CalcularTotalAbonadoParcial(CDbl(Me.txtParcialAbonar))
+   '     vFactElegida.NetoGravadoAbonado = CDbl(Me.txtParcialAbonar)
+      '    vFactElegida.ImporteTotalAbonado =    'vFactElegida.CalcularTotalAbonadoParcial(CDbl(Me.txtParcialAbonar))
            
            
            'esto debería calcular el total en base a las alícuotas de la factura
            
   
-        If F.ImporteTotalAbonado + F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente > F.Total Then
+        If F.TotalAbonado + F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente > F.Total Then
             MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
         End If
-        Me.txtnetogravadoabonado = F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
-        Me.txtParcialAbonado = F.TotalAbonado - F.TotalAbonadoGlobal
+        'Me.txtnetogravadoabonado = F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
+       ' Me.txtParcialAbonado = F.TotalAbonado - F.TotalAbonadoGlobal
     End If
 End Sub
 
@@ -2469,11 +2477,12 @@ If IsSomething(vFactElegida) Then
     
     vFactElegida.TotalAbonadoGlobalPendiente = c(1)
     vFactElegida.NetoGravadoAbonadoGlobalPendiente = c(2)
+    vFactElegida.OtrosAbonadoGlobalPendiente = c(3)
     
-    If vFactElegida.ImporteTotalAbonado = 0 Then
-        vFactElegida.ImporteTotalAbonado = vFactElegida.TotalPendiente
-    
-    End If
+'    If vFactElegida.ImporteTotalAbonado = 0 Then
+'        vFactElegida.ImporteTotalAbonado = vFactElegida.TotalPendiente
+'
+'    End If
     
     MostrarPago vFactElegida
 End If
@@ -3063,25 +3072,49 @@ Private Sub txtOtrosDescuentos_LostFocus()
     Totalizar
 End Sub
 
+Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
+  If LenB(Me.txtOtrosParcialAbonar) > 0 Then
+    
+        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
+        recalcularTotalFacturaelegida
+       
+        
+    End If
+    
+    Totalizar
+End Sub
+
+Private Sub recalcularTotalFacturaelegida()
+    Me.txtTotalParcialAbonar = CDbl(txtParcialAbonar) + CDbl(Me.txtOtrosParcialAbonar)
+       vFactElegida.TotalAbonado = CDbl(txtTotalParcialAbonar)
+    
+End Sub
+
+
 Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
   If LenB(txtParcialAbonar) > 0 Then
     
-    
-        
-        If CDbl(Me.txtParcialAbonar) + vFactElegida.TotalAbonadoGlobal > vFactElegida.Total Then
-            MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
-            
-         vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar) 'vFactElegida.Total - vFactElegida.TotalAbonadoGlobal + vFactElegida.ImporteTotalAbonado
-            Me.txtParcialAbonar = vFactElegida.ImporteTotalAbonado
-            
-        Else
-            vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar)
-        End If
-    
-    
-    Else
-        vFactElegida.ImporteTotalAbonado = 0
+
+       vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
+        recalcularTotalFacturaelegida
     End If
+    
+'
+'
+'        If CDbl(Me.txtParcialAbonar) + vFactElegida.TotalAbonadoGlobal > vFactElegida.Total Then
+'            MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
+'
+'         vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar) 'vFactElegida.Total - vFactElegida.TotalAbonadoGlobal + vFactElegida.ImporteTotalAbonado
+'            Me.txtParcialAbonar = vFactElegida.ImporteTotalAbonado
+'
+'        Else
+'            vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar)
+'        End If
+'
+'
+'    Else
+'        vFactElegida.ImporteTotalAbonado = 0
+   ' End If
 
     Totalizar
 End Sub

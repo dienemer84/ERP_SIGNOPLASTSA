@@ -91,7 +91,7 @@ Public Function VerPosibleRetenciones2(colFc As Collection, colret As Collection
         If ret.importe > 0 Then
             alicuotasParciales = ret.importe
         Else
-             If (sumadorDeTotales - TotalNGCompensatorios) > ret.Retencion.MinimoImponible Then
+             If (sumadorDeTotales - TotalNGCompensatorios) Then  '> ret.Retencion.MinimoImponible Then
                       alicuotasParciales = (sumadorDeTotales - TotalNGCompensatorios) * (ret.alicuotaRetencion / 100)
             Else
                 '   sumadorDeTotales = 0
