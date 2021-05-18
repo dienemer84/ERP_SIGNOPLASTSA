@@ -8,18 +8,22 @@ Dim q As String
 q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
     & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS total_pendiente, " _
     & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS netogravado_pendiente "
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS netogravado_pendiente, " _
+     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS otros_pendiente "
 
 Dim rs As Recordset
  Set rs = conectar.RSFactory(q)
 
-Dim tot As Double, ng As Double
+Dim tot As Double, ng As Double, Otros As Double
 tot = rs!total_pendiente
 ng = rs!netogravado_pendiente
+Otros = rs!otros_pendiente
 
 Dim c As New Collection
 c.Add tot
 c.Add ng
+c.Add Otros
 Set FindAbonadoPendiente = c
 End Function
 
@@ -511,7 +515,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         Dim cp As Compensatorio
         Dim fac As clsFacturaProveedor
         For Each fac In op.FacturasProveedor
-            q = "INSERT INTO ordenes_pago_facturas VALUES (" & op.id & ", " & fac.id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & ")"
+            q = "INSERT INTO ordenes_pago_facturas VALUES (" & op.id & ", " & fac.id & "," & fac.TotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
 
              If Not conectar.execute(q) Then GoTo E
 
@@ -531,7 +535,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             Next cp
             
             
-            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.ImporteTotalAbonado
+            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
             
              q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.id
         If Not conectar.execute(q) Then GoTo E

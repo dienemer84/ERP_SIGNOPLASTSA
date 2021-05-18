@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasListaFCProveedor 
    Appearance      =   0  'Flat
@@ -570,22 +570,22 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(14)      =   "frmAdminComprasListaFCProveedor.frx":17CA
       Column(15)      =   "frmAdminComprasListaFCProveedor.frx":190E
       Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1A66
-      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1BD2
-      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1D2A
-      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1ECE
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1BD6
+      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1D2E
+      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1ED2
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1FD2
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":210A
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":21BA
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":226E
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":2346
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":23FE
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":24DE
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":259E
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2662
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1FD6
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":210E
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":21BE
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":2272
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":234A
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":2402
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":24E2
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":25A2
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2666
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2722
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2A3C
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2726
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2A40
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -1075,7 +1075,16 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             Values(15) = "Contado"
         End If
 
-        If Factura.OrdenPagoId > 0 Then Values(16) = Factura.OrdenPagoId
+        If LenB(Factura.OrdenesPagoId) > 0 Then
+            Values(16) = Factura.OrdenesPagoId
+        Else
+            If Factura.OrdenPagoId > 0 Then
+                Values(16) = Factura.OrdenPagoId
+            End If
+        End If
+        
+
+        
               
         Values(17) = Factura.UsuarioCarga.usuario
         

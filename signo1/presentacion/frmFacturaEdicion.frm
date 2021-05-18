@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmFacturaEdicion 
    BorderStyle     =   1  'Fixed Single
@@ -52,7 +52,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   57999361
+         Format          =   59899905
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   57999361
+         Format          =   59899905
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   57999361
+         Format          =   59899905
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   57999361
+         Format          =   59899905
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -273,12 +273,12 @@ Begin VB.Form frmFacturaEdicion
          Width           =   5850
       End
       Begin VB.Label Label22 
-         Caption         =   "Opcional 27"
+         Caption         =   "Opción de Transferencia"
          Height          =   195
          Left            =   120
          TabIndex        =   87
          Top             =   1200
-         Width           =   1035
+         Width           =   5595
       End
       Begin VB.Label LblCBU 
          Alignment       =   1  'Right Justify
@@ -791,7 +791,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   57999361
+         Format          =   59899905
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1535,10 +1535,10 @@ On Error GoTo err1
         If Factura.esCredito Then
             
         If Me.cboOpcional27.ListIndex < 0 Then Err.Raise "Para FCE es obligatorio informar opcional 27 con valor SCA ó ADC"
-           Factura.Opcional27 = Me.cboOpcional27.ItemData(Me.cboOpcional27.ListIndex)
+            Factura.Opcional27 = Me.cboOpcional27.ItemData(Me.cboOpcional27.ListIndex)
         Else
        
-        Factura.Opcional27 = 0
+            Factura.Opcional27 = 0
         End If
         
         ASociarConcepto
@@ -2088,7 +2088,7 @@ Private Sub Form_Load()
         
   
         '#218 consultar con karin cual quiere dejar por default
-              Me.cboOpcional27.ListIndex = 1
+              Me.cboOpcional27.ListIndex = 0
        
         If Me.cboMoneda.ListIndex <> -1 Then
             Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))

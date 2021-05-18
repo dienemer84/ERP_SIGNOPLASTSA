@@ -181,7 +181,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
     Dim q As String
     Dim rs As Recordset
     Dim col As New Collection
-    q = "SELECT *, (SELECT max(id_orden_pago) FROM ordenes_pago_facturas inner join ordenes_pago on ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  limit 1) as nro_orden"
+    q = "SELECT *, (SELECT GROUP_CONCAT(DISTINCT id_orden_pago SEPARATOR ', ')  FROM ordenes_pago_facturas inner join ordenes_pago on ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado=1  ) as nros_orden, (SELECT MAX(id_orden_pago) FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado=1  LIMIT 1) AS nro_orden"
       
       If widhCompensatorios Then
         q = q & ", (SELECT SUM(IF (tipo=1, c.importe,-c.importe)) FROM ordenes_pago_compensatorios c JOIN ordenes_pago op ON c.id_orden_pago=op.id AND op.estado=1 WHERE c.id_comprobante = AdminComprasFacturasProveedores.id AND c.cancelado=0 ) as total_compensado"
@@ -193,7 +193,8 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       
       q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
       q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
-
+q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
+        
       
       q = q & " From" _
         & " AdminComprasFacturasProveedores" _
@@ -236,6 +237,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
          
         F.TotalAbonadoGlobal = rs!total_abonado
         F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
+        F.OtrosAbonadoGlobal = rs!otros_abonado
         
         If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
             Set F = col.item(CStr(F.id))
@@ -307,8 +309,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         fc.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
         If LenB(tablaAdminConfigFacturasProveedor) > 0 Then fc.configFactura = DAOConfigFacturaProveedor.Map(rs, indice, tablaAdminConfigFacturasProveedor, tablaAdminConfigIVAProveedor)
 
+        If indice.Exists(".nros_orden") Then fc.OrdenesPagoId = GetValue(rs, indice, vbNullString, "nros_orden")
         If indice.Exists(".nro_orden") Then fc.OrdenPagoId = GetValue(rs, indice, vbNullString, "nro_orden")
-
          If indice.Exists(".total_compensado") Then fc.TotalCompensado = GetValue(rs, indice, vbNullString, "total_compensado")
        
     End If
