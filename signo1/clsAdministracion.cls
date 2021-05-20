@@ -213,18 +213,18 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
 
     lst.ColumnHeaders.Add(6).text = "Efectivo"
     lst.ColumnHeaders(6).Alignment = lvwColumnRight
-    lst.ColumnHeaders(6).Width = 1000
+    lst.ColumnHeaders(6).Width = 3000
     lst.ColumnHeaders.Add(7).text = "Cheques"
     lst.ColumnHeaders(7).Alignment = lvwColumnRight
-    lst.ColumnHeaders(7).Width = 1440
+    lst.ColumnHeaders(7).Width = 3440
     lst.ColumnHeaders.Add(8).text = "Banco"
     lst.ColumnHeaders(8).Alignment = lvwColumnRight
-    lst.ColumnHeaders(8).Width = 1440
+    lst.ColumnHeaders(8).Width = 3440
     lst.ColumnHeaders.Add(9).text = "Redondeo"
     lst.ColumnHeaders(9).Alignment = lvwColumnRight
-    lst.ColumnHeaders(9).Width = 1440
+    lst.ColumnHeaders(9).Width = 3440
 
-
+    
     'encabezado de lst result
 
 
@@ -237,7 +237,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     While Not rs_p.EOF
         lst.ColumnHeaders.Add(i).text = rs_p!codigo
         lst.ColumnHeaders(i).Tag = rs_p!id
-        lst.ColumnHeaders(i).Width = 1000
+        lst.ColumnHeaders(i).Width = 5000
 
         lst.ColumnHeaders(i).Alignment = lvwColumnRight
 
@@ -252,7 +252,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     Dim rs_lista As Recordset
     Dim x As ListItem
     'TRAIGO LOS DATOS
-    strsql = "SELECT c.razon,c.cuit,r.fechaCreacion,r.id,r.efectivo,r.cheques,r.idMoneda, redondeo from AdminRecibos r inner join clientes c on r.idCliente=c.id where r.fechaCreacion >= '" & Format(desde, "yyyy-mm-dd") & "' and r.fechaCreacion <=  '" & Format(hasta, "yyyy-mm-dd") & "'"
+    strsql = "SELECT c.razon,c.cuit,r.fecha,r.id,r.efectivo,r.cheques,r.idMoneda, redondeo from AdminRecibos r inner join clientes c on r.idCliente=c.id where r.fecha >= '" & Format(desde, "yyyy-mm-dd") & "' and r.fecha <=  '" & Format(hasta, "yyyy-mm-dd") & "'"
     Dim di As New Dictionary
     Set rs_lista = conectar.RSFactory(strsql)
     tot_Ef = 0
@@ -268,7 +268,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     While Not rs_lista.EOF
         '' Set ret = Me.totalizarRecibo(rs_lista!Id, totalfacturs) '' -->> VER
         Set r = DAORecibo.FindById(rs_lista!id, True, False, False, False, True)
-        Set x = lst.ListItems.Add(, , Format(rs_lista!FechaCreacion, "dd-mm-yyyy"))
+        Set x = lst.ListItems.Add(, , Format(rs_lista!FEcha, "dd-mm-yyyy"))
         x.SubItems(1) = Format(rs_lista!id, "0000-00000000")
         x.SubItems(2) = rs_lista!razon
         x.SubItems(3) = rs_lista!Cuit
@@ -291,7 +291,8 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
 
 
                 If ret.Retencion.id = lst.ColumnHeaders(o).Tag Then
-                    x.SubItems(o - 1) = ret.Valor
+                    If (Not IsNumeric(x.SubItems(o - 1))) Then x.SubItems(o - 1) = "0.00"
+                    x.SubItems(o - 1) = CDbl(x.SubItems(o - 1)) + ret.Valor
                 Else
                     If (Not IsNumeric(x.SubItems(o - 1))) Then x.SubItems(o - 1) = "0.00"
                 End If
@@ -338,6 +339,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
         y.ListSubItems(o - 1).Bold = True
     Next o
 
+funciones.AutosizeColumns2 lst
 End Function
 
 Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean

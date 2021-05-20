@@ -1,20 +1,21 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Begin VB.Form frmAdminSubdiarioCobranzas 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   4  'Fixed ToolWindow
+   BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Subdiario cobranzas..."
-   ClientHeight    =   6405
+   ClientHeight    =   6210
    ClientLeft      =   45
-   ClientTop       =   315
-   ClientWidth     =   16980
+   ClientTop       =   435
+   ClientWidth     =   14235
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   6405
-   ScaleWidth      =   16980
+   ScaleHeight     =   6210
+   ScaleMode       =   0  'User
+   ScaleWidth      =   49947.37
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame1 
       BackColor       =   &H00C0C0C0&
@@ -84,7 +85,7 @@ Begin VB.Form frmAdminSubdiarioCobranzas
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16777217
+         Format          =   59703297
          CurrentDate     =   39660
       End
       Begin MSComCtl2.DTPicker DTDesde 
@@ -96,7 +97,7 @@ Begin VB.Form frmAdminSubdiarioCobranzas
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16777217
+         Format          =   59703297
          CurrentDate     =   39660
       End
       Begin VB.Label Label1 
@@ -139,13 +140,13 @@ Begin VB.Form frmAdminSubdiarioCobranzas
       End
    End
    Begin MSComctlLib.ListView lstSubdiarioCobranzas 
-      Height          =   4575
+      Height          =   4335
       Left            =   0
       TabIndex        =   9
       Top             =   1800
-      Width           =   16935
-      _ExtentX        =   29871
-      _ExtentY        =   8070
+      Width           =   18615
+      _ExtentX        =   32835
+      _ExtentY        =   7646
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
@@ -155,7 +156,6 @@ Begin VB.Form frmAdminSubdiarioCobranzas
       _Version        =   393217
       ForeColor       =   -2147483640
       BackColor       =   -2147483643
-      BorderStyle     =   1
       Appearance      =   1
       NumItems        =   0
    End

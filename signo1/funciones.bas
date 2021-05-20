@@ -1,6 +1,4 @@
 Attribute VB_Name = "funciones"
-
-
 Public TareaAgregada As Boolean
 Public DescuentoDetalleFactura As Double
 
@@ -31,6 +29,12 @@ Private Declare Function StringFromGUID2 Lib "ole32.dll" ( _
                                          rguid As Any, _
                                          ByVal lpstrClsId As Long, _
                                          ByVal cbMax As Long) As Long
+
+
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+
+
+
 
 
 Dim usuario_online As clsUsuario
@@ -142,12 +146,14 @@ End Enum
 
 
 Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" _
-                                     (ByVal hWnd As Long, ByVal lpOperation As String, ByVal lpFile As String, _
+                                     (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, _
                                       ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
 
 'para medir tiempos
 Public Declare Function GetTickCount Lib "kernel32" () As Long
+
+
 
 Private m_bInIDE As Boolean
 Public Property Get InIDE() As Boolean
@@ -1123,9 +1129,9 @@ Public Function Redondear(dblntor As Double, Optional cntdecas As Integer) As Do
 End Function
 
 
-Public Function ImprimirLista(titulo, lst As ListView, CD As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
+Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
     On Error GoTo err91
-    CD.ShowPrinter
+    cd.ShowPrinter
 
     AnchoCol = 0
 
@@ -1221,10 +1227,10 @@ Public Sub ordenar_grilla(ByVal Column As GridEX20.JSColumn, GridEX1 As GridEX)
     'Add this new sortkey
     If SortOrder = jgexSortAscending Then
         'if the column was sorted in ascending order, sort the column in descending order
-        GridEX1.SortKeys.Add Column.Index, jgexSortDescending
+        GridEX1.SortKeys.Add Column.index, jgexSortDescending
     Else
         'if was sorted in descending order or not sorted, sort the column in ascending order
-        GridEX1.SortKeys.Add Column.Index, jgexSortAscending
+        GridEX1.SortKeys.Add Column.index, jgexSortAscending
     End If
 End Sub
 Public Sub FillComboBox(ByRef combo As ComboBox, ByRef col As Collection, ByRef propertyForShow As String, ByRef propertyForId As String, ByRef selectFirst As Boolean)
@@ -1382,7 +1388,7 @@ Public Function ListBoxHasCheckedItems(ByRef lst As ListBox) As Boolean
 End Function
 Public Function ValidarTextBox(text As TextBox, ByRef Cancel)
     Cancel = Not IsNumeric(text)
-    text.BackColor = IIf(Cancel, vbRed, &H80000005)
+    text.backColor = IIf(Cancel, vbRed, &H80000005)
 End Function
 
 
@@ -1482,7 +1488,7 @@ Public Function BrowseForDirectory(ByVal caption As String) As String
     Dim item As Long
     Dim dir_name As String
 
-    browse_info.hwndOwner = hWnd
+    browse_info.hwndOwner = hwnd
     browse_info.pIDLRoot = 0
     browse_info.sDisplayName = Space$(260)
     browse_info.sTitle = caption
@@ -1737,3 +1743,13 @@ Function InstrCount(StringToSearch As String, _
 End Function
 
 
+Public Sub AutosizeColumns2(ByVal TargetListView As ListView)
+    Const SET_COLUMN_WIDTH    As Long = 4126
+    Const AUTOSIZE_USEHEADER  As Long = -2
+    Dim lngColumn As Long
+    
+    For lngColumn = 0 To (TargetListView.ColumnHeaders.count - 1)
+    Call SendMessage(TargetListView.hwnd, SET_COLUMN_WIDTH, lngColumn, ByVal AUTOSIZE_USEHEADER)
+    Next lngColumn
+
+End Sub
