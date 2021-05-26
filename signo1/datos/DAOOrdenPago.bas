@@ -5,23 +5,23 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
 
 Dim q As String
 
-q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS total_pendiente, " _
+q = "SELECT IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago<>" & ocid & "),0 ) AS otros_pendiente, " _
     & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS netogravado_pendiente, " _
-     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS otros_pendiente "
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago<>" & ocid & "),0 ) AS netogravado_pendiente "
+     '& " IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+    '& " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago<>" & ocid & "),0 ) AS total_pendiente "
 
 Dim rs As Recordset
  Set rs = conectar.RSFactory(q)
 
 Dim tot As Double, ng As Double, Otros As Double
-tot = rs!total_pendiente
+'tot = rs!total_pendiente
 ng = rs!netogravado_pendiente
 Otros = rs!otros_pendiente
 
 Dim c As New Collection
-c.Add tot
+c.Add 0 'tot
 c.Add ng
 c.Add Otros
 Set FindAbonadoPendiente = c

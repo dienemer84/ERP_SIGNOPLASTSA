@@ -191,9 +191,13 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       q = q & ",0 as total_compensado "
       End If
       
-      q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
+    '  q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
       q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
-q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
+        q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
+        
+      '        q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado_pendiente"
+     ' q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado_pendiente"
+      ''  q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado_pendiente "
         
       
       q = q & " From" _
@@ -235,9 +239,15 @@ q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN 
     While Not rs.EOF
         Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
          
-        F.TotalAbonadoGlobal = rs!total_abonado
+        
         F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
         F.OtrosAbonadoGlobal = rs!otros_abonado
+        'F.TotalAbonadoGlobal = rs!total_abonado
+        
+       
+       ' F.NetoGravadoAbonadoGlobalPendiente = rs!neto_gravado_abonado_pendiente
+        'F.OtrosAbonadoGlobalPendiente = rs!otros_abonado_pendiente
+        'F.TotalAbonadoGlobalPendiente = rs!total_abonado_pendiente 'todo: podria derivarse de otros+ng
         
         If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
             Set F = col.item(CStr(F.id))
