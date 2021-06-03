@@ -12,6 +12,20 @@ err1:
     conectar.RollBackTransaction
 End Function
 
+Public Function ObtenerTotalAbonado(id As Integer) As Double
+       On Error GoTo err1
+     
+    Dim rs As ADODB.Recordset
+    Dim strsql As String
+    
+        strsql = "SELECT SUM(total_abonado) AS total FROM ordenes_pago_facturas o INNER JOIN ordenes_pago op ON o.id_orden_pago = op.id WHERE o.id_factura_proveedor = " & id & " AND (op.estado = 0 OR op.estado=1)"
+       Set rs = conectar.RSFactory(strsql)
+      ObtenerTotalAbonado = rs!Total
+    Exit Function
+err1:
+  ObtenerTotalAbonado = -1
+
+End Function
 
 Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     

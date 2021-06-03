@@ -300,7 +300,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     '3-10-2020 recargo la OP para que se actualicen los estados de las facturas y se validen bien
     Dim op As OrdenPago
     Set op = DAOOrdenPago.FindById(op_mem.id)
-    
+    Set op.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(op.id)
     If Not IsSomething(op) Then
         GoTo err1
     End If
@@ -344,18 +344,23 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     'TODO: debo verificar que los deudas por compensatorio no esten utilizadas en otra OP aprobada ni que esten ya canceladas en otro proceso
     
 
-        If Guardar(op) Then
+        If Guardar(op, False) Then
    
+            Dim t1 As Double
+            t1 = DAOFacturaProveedor.ObtenerTotalAbonado(fac1.id)
 
-
-            Dim fac As clsFacturaProveedor
-            For Each fac In op.FacturasProveedor
-                If fac.estado = EstadoFacturaProveedor.Saldada Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac, "SALDADA") Then GoTo err1
+            Dim fac1 As clsFacturaProveedor
+            For Each fac1 In op.FacturasProveedor
+                If fac1.estado = EstadoFacturaProveedor.Saldada Then
+                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "SALDADA") Then GoTo err1
                 End If
-                If fac.estado = EstadoFacturaProveedor.pagoParcial Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac, "PAGO PARCIAL") Then GoTo err1
+                If fac1.estado = EstadoFacturaProveedor.pagoParcial Then
+                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "PAGO PARCIAL") Then GoTo err1
                 End If
+                
+            
+                
+                
             Next
 
 
@@ -365,8 +370,12 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
         For Each ra In op.RetencionesAlicuota
         
 
-                If IsSomething(DAOCertificadoRetencion.Create(op, ra.Retencion, ra.alicuotaRetencion, True)) Then
-                    MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
+        Dim cr As CertificadoRetencion
+        Set cr = DAOCertificadoRetencion.Create(op, ra.Retencion, ra.alicuotaRetencion, True)
+                If IsSomething(cr) Then
+                    If cr.TotalRetenido > 0 Then
+                        MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
+                    End If
                 Else
                     GoTo err1
                 End If
@@ -534,8 +543,14 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
                 
             Next cp
             
+              
+              
+            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado - fac.TotalAbonadoGlobalPendiente
             
-            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+            
+            If nopago < 0 Then
+                Err.Raise "El comprobante " & fac.NumeroFormateado & " tiene saldos comprometidos. No se puede aprobar esta OP!"
+            End If
             
              q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.id
         If Not conectar.execute(q) Then GoTo E
@@ -562,12 +577,18 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             
             'If op.estado = EstadoOrdenPago_Aprobada Then
             
+            Dim r As ADODB.Recordset
+            Set r = conectar.RSFactory("SELECT COUNT(id_orden_pago) AS cantidad_pendientes FROM ordenes_pago_facturas o INNER JOIN ordenes_pago op ON o.id_orden_pago = op.id WHERE o.id_factura_proveedor =  " & fac.id & " AND (op.estado = 0)")
             
+            Dim pend As Integer
+            pend = r!cantidad_pendientes
             es = EstadoFacturaProveedor.Aprobada
-             If nopago > 0 Then
+             If nopago > 0 Or pend > 0 Then
                 es = EstadoFacturaProveedor.pagoParcial
             Else
-                es = EstadoFacturaProveedor.Saldada
+                
+                es = EstadoFacturaProveedor.Saldada 'esto solo hay q ponerlo cuando no queden op pendientes para esta factura
+                
             End If
 
             ' Else
