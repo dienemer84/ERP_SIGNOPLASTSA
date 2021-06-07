@@ -2401,7 +2401,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
 
     totRet = funciones.RedondearDecimales(totRet)
     Dim c As Compensatorio
-    Dim f As clsFacturaProveedor
+    Dim F As clsFacturaProveedor
     Dim totFact As Double
     Dim TotNG As Double
     Dim totFactHoy As Double
@@ -2411,7 +2411,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     Dim totNGHoy As Double
     Dim totDeudaCompe As Double
     totDeudaCompe = 0
-    For Each f In col
+    For Each F In col
 
 
         'totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravadoDiaPago * -1, f.NetoGravadoDiaPago), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
@@ -2420,16 +2420,16 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
         'fix 004
-        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.TotalAbonado * -1, f.TotalAbonado), f.moneda.id, OrdenPago.moneda.id, f.TipoCambioPago)
+        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalAbonado * -1, F.TotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
-        totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.TotalDiaPagoAbonado * -1, f.TotalDiaPagoAbonado), f.moneda.id, OrdenPago.moneda.id, f.TipoCambioPago)
+        totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
-        TotNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravadoAbonado * -1, f.NetoGravadoAbonado), f.moneda.id, OrdenPago.moneda.id, f.TipoCambioPago)
-        totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravadoAbonadoDiaPago * -1, f.NetoGravadoAbonadoDiaPago), f.moneda.id, OrdenPago.moneda.id, f.TipoCambioPago)
-        totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.DiferenciaPorTipoDeCambionTOTAL * -1, f.DiferenciaPorTipoDeCambionTOTAL), f.moneda.id, OrdenPago.moneda.id, f.TipoCambioPago)
-        totCambiong = totCambiong + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.DiferenciaPorTipoDeCambionNG * -1, f.DiferenciaPorTipoDeCambionNG), f.moneda.id, OrdenPago.moneda.id, f.TipoCambioPago)
+        TotNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonado * -1, F.NetoGravadoAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonadoDiaPago * -1, F.NetoGravadoAbonadoDiaPago), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionTOTAL * -1, F.DiferenciaPorTipoDeCambionTOTAL), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        totCambiong = totCambiong + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionNG * -1, F.DiferenciaPorTipoDeCambionNG), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
-    Next f
+    Next F
     
     
     If IsSomething(colc) Then
@@ -2475,22 +2475,22 @@ End Sub
 
 
 
-Private Sub MostrarPago(f As clsFacturaProveedor)
+Private Sub MostrarPago(F As clsFacturaProveedor)
 
-    If IsSomething(f) Then
+    If IsSomething(F) Then
 
-        Me.txtTotalParcialAbonado = f.TotalAbonadoGlobal + f.TotalAbonadoGlobalPendiente
-        Me.txtOtrosParcialAbonado = f.OtrosAbonadoGlobal + f.OtrosAbonadoGlobalPendiente
-        Me.txtParcialAbonado = f.NetoGravadoAbonadoGlobal + f.NetoGravadoAbonadoGlobalPendiente
+        Me.txtTotalParcialAbonado = F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente
+        Me.txtOtrosParcialAbonado = F.OtrosAbonadoGlobal + F.OtrosAbonadoGlobalPendiente
+        Me.txtParcialAbonado = F.NetoGravadoAbonadoGlobal + F.NetoGravadoAbonadoGlobalPendiente
         
         
        ' If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
-        If f.NetoGravadoAbonado = 0 Then f.NetoGravadoAbonado = f.MaxNetoGrabadoAbonar 'F.NetoGravado - F.NetoGravadoAbonadoGlobal '- F.NetoNoGravado  (2do cambio en fix 004)
-          If f.OtrosAbonado = 0 Then f.OtrosAbonado = f.MaxOtrosAbonar ' (F.Total - F.NetoGravado) - F.OtrosAbonadoGlobal '- F.NetoNoGravado  (2do cambio en fix 004)
+        If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.MaxNetoGrabadoAbonar 'F.NetoGravado - F.NetoGravadoAbonadoGlobal '- F.NetoNoGravado  (2do cambio en fix 004)
+          If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.MaxOtrosAbonar ' (F.Total - F.NetoGravado) - F.OtrosAbonadoGlobal '- F.NetoNoGravado  (2do cambio en fix 004)
       
-        Me.txtParcialAbonar = f.NetoGravadoAbonado
-        Me.txtTotalParcialAbonar = f.ImporteTotalAbonado
-        Me.txtOtrosParcialAbonar = f.OtrosAbonado
+        Me.txtParcialAbonar = F.NetoGravadoAbonado
+        Me.txtTotalParcialAbonar = F.ImporteTotalAbonado
+        Me.txtOtrosParcialAbonar = F.OtrosAbonado
         
         
             
@@ -2503,7 +2503,7 @@ Private Sub MostrarPago(f As clsFacturaProveedor)
            'esto debería calcular el total en base a las alícuotas de la factura
            
   
-        If f.TotalAbonado + f.TotalAbonadoGlobal > f.Total Then
+        If F.TotalAbonado + F.TotalAbonadoGlobal > F.Total Then
             MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
         End If
         'Me.txtnetogravadoabonado = F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
@@ -2559,24 +2559,24 @@ End Sub
 Private Sub lstFacturas_DblClick()
     Dim i As Long
     Dim change As Double
-    Dim f As clsFacturaProveedor
+    Dim F As clsFacturaProveedor
     Dim col As New Collection
     For i = 0 To Me.lstFacturas.ListCount - 1
         If Me.lstFacturas.Selected(i) Then
-            Set f = colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
+            Set F = colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
 
             MostrarPago vFactElegida
         End If
     Next
 
     On Error GoTo err1
-    change = InputBox("Establezca el tipo de cambio con el cual se va a abonar la factura", "Tipo de cambio", f.TipoCambioPago)
+    change = InputBox("Establezca el tipo de cambio con el cual se va a abonar la factura", "Tipo de cambio", F.TipoCambioPago)
 
 
     If LenB(change) = 0 Then
         change = 1
     Else
-        f.TipoCambioPago = change
+        F.TipoCambioPago = change
 
     End If
     Totalizar
@@ -2665,11 +2665,11 @@ If item < -1 Then
 End If
 
 If item > -1 Then
-Dim f As clsFacturaProveedor
+Dim F As clsFacturaProveedor
 
-Set f = colFacturas.item(CStr(Me.lstFacturas.ItemData(item)))
+Set F = colFacturas.item(CStr(Me.lstFacturas.ItemData(item)))
 
-If f.Total - (f.TotalAbonadoGlobal + f.TotalAbonadoGlobalPendiente) = 0 Then
+If F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente) = 0 Then
     Me.lstFacturas.Checked(item) = False
 End If
 End If
@@ -2882,7 +2882,7 @@ Private Sub Totalizar()
 
 End Sub
 Private Function TotalizarDiferenciasCambio()
-    Dim f As clsFacturaProveedor
+    Dim F As clsFacturaProveedor
     Dim col As New Collection
     Dim i As Long
     Dim T As Double
@@ -2899,10 +2899,10 @@ Private Function TotalizarDiferenciasCambio()
 
 
 
-    For Each f In col
-        T = T + f.DiferenciaPorTipoDeCambionNG
-        TIVA = TIVA + f.DiferenciaPorTipoDeCambionIVA
-        TTOTAL = TTOTAL + f.DiferenciaPorTipoDeCambionTOTAL
+    For Each F In col
+        T = T + F.DiferenciaPorTipoDeCambionNG
+        TIVA = TIVA + F.DiferenciaPorTipoDeCambionIVA
+        TTOTAL = TTOTAL + F.DiferenciaPorTipoDeCambionTOTAL
     Next
     Me.txtDiferenciaCambioPago.text = T
     Me.txtDifTipoCambioIVA.text = TIVA
@@ -3074,20 +3074,7 @@ Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As 
     End If
 End Sub
 
-Private Sub Text1_Change()
 
-End Sub
-
-Private Sub Slider1_Change()
-    Me.lblSlider = CInt(Me.Slider1.value)
-    
-End Sub
-
-Private Sub Slider1_Click()
-Me.lblSlider = CInt(Me.Slider1.value)
-vFactElegida.slider = CInt(Me.Slider1.value)
-
-End Sub
 
 Private Sub txtBuscarFactura_GotFocus()
     Me.txtBuscarFactura.SelStart = 0

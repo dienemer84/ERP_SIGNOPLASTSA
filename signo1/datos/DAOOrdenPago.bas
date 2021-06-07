@@ -346,11 +346,16 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
 
         If Guardar(op, False) Then
    
-            Dim t1 As Double
-            t1 = DAOFacturaProveedor.ObtenerTotalAbonado(fac1.id)
-
+    
             Dim fac1 As clsFacturaProveedor
+
             For Each fac1 In op.FacturasProveedor
+                Dim t1 As Double
+ 
+               DAOFacturaProveedor.ProcesarEstadoSaldada fac1.id
+                
+                
+                
                 If fac1.estado = EstadoFacturaProveedor.Saldada Then
                     If Not DaoFacturaProveedorHistorial.agregar(fac1, "SALDADA") Then GoTo err1
                 End If
@@ -1105,14 +1110,14 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontBold = False
     Printer.FontSize = 8
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
-    Dim F As clsFacturaProveedor
+    Dim f As clsFacturaProveedor
     Dim facs As New Collection
     c = 0
-    For Each F In Orden.FacturasProveedor
+    For Each f In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
-    Next F
+        Printer.Print f.NumeroFormateado & String$(8, " del ") & f.FEcha & String$(8, " por ") & f.moneda.NombreCorto & " " & f.Total
+    Next f
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"
