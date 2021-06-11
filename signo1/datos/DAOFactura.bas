@@ -91,7 +91,7 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
         End If
     End If
 
-    q = q & " WHERE " & filter
+    q = q & " WHERE  " & filter
 
     Dim col As New Collection
     Dim F As Factura

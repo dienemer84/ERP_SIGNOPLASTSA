@@ -14,16 +14,18 @@ End Function
 
 Public Function ProcesarEstadoSaldada(id As Long)
 On Error GoTo err1
-Dim f As clsFacturaProveedor
-Set f = FindById(id)
+Dim F As clsFacturaProveedor
+Set F = FindById(id)
 
-If IsSomething(f) Then
-    If f.estado = EnProceso Then Err.Raise 123, , "No se puede procesar el estado de saldado del comprobante " & f.NumeroFormateado & " sin aprobar"
-    Dim t As Double
-    t = ObtenerTotalAbonado(id)
-    If f.Total = t And f.estado <> estadoFacturaProveeedor.Saldada Then
-        f.estado = EstadoFacturaProveedor.Saldada
-        If Not Guardar(fc) Then Err.Raise 121, , "No se puede procesar el estado del comprobante " & f.NumeroFormateado
+If IsSomething(F) Then
+    If F.estado = EstadoFacturaProveedor.EnProceso Then
+        Err.Raise 123, , "No se puede procesar el estado de saldado del comprobante " & F.NumeroFormateado & " sin aprobar"
+    End If
+    Dim T As Double
+    T = ObtenerTotalAbonado(id)
+    If F.Total = T And F.estado <> EstadoFacturaProveedor.Saldada Then
+        F.estado = EstadoFacturaProveedor.Saldada
+        If Not Guardar(F) Then Err.Raise 121, , "No se puede procesar el estado del comprobante " & F.NumeroFormateado
     End If
 Else
     Err.Raise 124, , "No se encontró el comprobante con id " & id
@@ -266,17 +268,17 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
 
     Set rs = conectar.RSFactory(q)
     BuildFieldsIndex rs, indice
-    Dim f As clsFacturaProveedor
+    Dim F As clsFacturaProveedor
     Dim per As clsPercepcionesAplicadas
     Dim Iva As clsAlicuotaAplicada
     Dim cta As clsCuentaFactura
 
     While Not rs.EOF
-        Set f = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
+        Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
          
         
-        f.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
-        f.OtrosAbonadoGlobal = rs!otros_abonado
+        F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
+        F.OtrosAbonadoGlobal = rs!otros_abonado
         'F.TotalAbonadoGlobal = rs!total_abonado
         
        
@@ -284,40 +286,40 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
         'F.OtrosAbonadoGlobalPendiente = rs!otros_abonado_pendiente
         'F.TotalAbonadoGlobalPendiente = rs!total_abonado_pendiente 'todo: podria derivarse de otros+ng
         
-        If funciones.BuscarEnColeccion(col, CStr(f.id)) Then
-            Set f = col.item(CStr(f.id))
+        If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
+            Set F = col.item(CStr(F.id))
         Else
             If withHistorial Then
-                f.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(f.id)
+                F.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(F.id)
             End If
         End If
 
-        If IsSomething(f.configFactura) Then
-            f.configFactura.alicuotas.Add DAOAlicuotas.Map(rs, indice, "AdminConfigIvaAlicuotas")
+        If IsSomething(F.configFactura) Then
+            F.configFactura.alicuotas.Add DAOAlicuotas.Map(rs, indice, "AdminConfigIvaAlicuotas")
         End If
 
         Set per = DAOPercepcionesAplicadas.Map(rs, indice, "AdminComprasFacturasProveedoresPercepciones", "AdminConfigPercepciones")
         If IsSomething(per) Then
-            If Not funciones.BuscarEnColeccion(f.percepciones, CStr(per.id)) Then
-                If per.id <> 0 Then f.percepciones.Add per, CStr(per.id)
+            If Not funciones.BuscarEnColeccion(F.percepciones, CStr(per.id)) Then
+                If per.id <> 0 Then F.percepciones.Add per, CStr(per.id)
             End If
         End If
 
         Set cta = DAOCuentasFacturas.Map(rs, indice, "AdminComprasCuentasFacturas", "AdminComprasCuentasContables")
         If IsSomething(cta) Then
-            If Not funciones.BuscarEnColeccion(f.cuentasContables, CStr(cta.id)) Then
-                f.cuentasContables.Add cta, CStr(cta.id)
+            If Not funciones.BuscarEnColeccion(F.cuentasContables, CStr(cta.id)) Then
+                F.cuentasContables.Add cta, CStr(cta.id)
             End If
         End If
 
         Set Iva = DAOIvaAplicado.Map(rs, indice, "AdminComprasFacturasProveedoresIva", "a1")
         If IsSomething(Iva) Then
-            If Not funciones.BuscarEnColeccion(f.IvaAplicado, CStr(Iva.id)) Then
-                f.IvaAplicado.Add Iva, CStr(Iva.id)
+            If Not funciones.BuscarEnColeccion(F.IvaAplicado, CStr(Iva.id)) Then
+                F.IvaAplicado.Add Iva, CStr(Iva.id)
             End If
         End If
 
-        If Not funciones.BuscarEnColeccion(col, CStr(f.id)) Then col.Add f, CStr(f.id)
+        If Not funciones.BuscarEnColeccion(col, CStr(F.id)) Then col.Add F, CStr(F.id)
         rs.MoveNext
     Wend
     Set FindAll = col
@@ -413,13 +415,13 @@ Public Function Delete(facid As Long) As Boolean
         ElseIf op.estado = EstadoOrdenPago_pendiente Or op.estado = EstadoOrdenPago_Anulada Then
 
             Dim facs As Collection
-            Dim f As clsFacturaProveedor
+            Dim F As clsFacturaProveedor
             Set facs = op.FacturasProveedor
-            For Each f In facs
-                If f.id <> facid Then
-                    facsOrphan.Add f
+            For Each F In facs
+                If F.id <> facid Then
+                    facsOrphan.Add F
                 End If
-            Next f
+            Next F
 
             If Not DAOOrdenPago.Delete(op.id, False) Then GoTo E
 
