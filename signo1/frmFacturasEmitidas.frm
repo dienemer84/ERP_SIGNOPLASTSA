@@ -1121,7 +1121,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
@@ -1398,8 +1398,8 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(4) = ""
     End If
 
-
-If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.AprobadaAFIP And Factura.estado <> EstadoFacturaCliente.EnProceso Then
+'#222
+If Not Factura.Tipo.PuntoVenta.CaeManual And Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.AprobadaAFIP And Factura.estado <> EstadoFacturaCliente.EnProceso Then
     Values(5) = "Nro. Pendiente"
 Else
     Values(5) = Factura.NumeroFormateado
