@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminCobranzasNuevoRecibo 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -846,7 +846,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   59703297
+         Format          =   74907649
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -955,7 +955,7 @@ Public Property Let reciboId(nIdRecibo As Long)
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.GridCajas.ItemCount = Cajas.count
+    Me.gridCajas.ItemCount = Cajas.count
 
     Set monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = monedas.count
@@ -976,7 +976,7 @@ Public Property Let reciboId(nIdRecibo As Long)
     Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
 
     Set retenciones = DAORetenciones.FindAll()
@@ -1128,11 +1128,11 @@ Private Sub Totalizar()
     Me.lblTotalRecibido.caption = "Total Recibido: " & funciones.FormatearDecimales(totalCancelado)
 
     If totalCancelado < totalRecibo Then
-        lblTotalRecibo.BackColor = vbRed
+        lblTotalRecibo.backColor = vbRed
     ElseIf totalCancelado = totalRecibo Then
-        lblTotalRecibo.BackColor = vbYellow
+        lblTotalRecibo.backColor = vbYellow
     ElseIf totalCancelado > totalRecibo Then
-        lblTotalRecibo.BackColor = vbGreen
+        lblTotalRecibo.backColor = vbGreen
     End If
 
     Me.lblDiferencia.caption = Me.lblDiferencia.Tag & funciones.FormatearDecimales(totalCancelado - MonedaConverter.Convertir(totalRecibo, recibo.moneda.id, DAOMoneda.MONEDA_PESO_ID))
@@ -1176,7 +1176,7 @@ Private Sub Form_Load()
 
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
 
     GridEXHelper.CustomizeGrid Me.gridDepositosOperaciones, False, True
     GridEXHelper.CustomizeGrid Me.gridCajaOperaciones, False, True
@@ -1493,13 +1493,48 @@ Private Sub gridFacturas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As
         'recibo.facturas.Add Factura, , , RowIndex
         'recibo.facturas.Remove RowIndex
 
+    
+      
+        
+        
+        recibo.facturas.remove
+
+
         If recibo.PagosDeFacturas.Exists(CStr(Factura.id)) Then
             recibo.PagosDeFacturas.remove CStr(Factura.id)
         End If
+        
+        
+        
+        
+        Set Factura = DAOFactura.FindById(Values(1), True)
+        recibo.facturas.Add Factura, CStr(Factura.id)
+        
+        
         recibo.PagosDeFacturas.Add CStr(Factura.id), Val(Values(4))
 
         Totalizar    ' no se si hay que totalizar
     End If
+    
+    
+'    If IsNumeric(Values(1)) Then
+'        Set Factura = DAOFactura.FindById(Values(1), True)
+'        recibo.facturas.Add Factura
+'
+'        If recibo.PagosDeFacturas.Exists(CStr(Factura.id)) Then
+'            recibo.PagosDeFacturas.remove CStr(Factura.id)
+'        End If
+'
+'
+'
+'        recibo.PagosDeFacturas.Add CStr(Factura.id), Factura.Total - DAOFactura.PagosRealizados(Factura.id)
+'
+'
+'
+'
+'        Totalizar
+'    End If
+    
 End Sub
 
 Private Sub gridFacturasCombo_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
