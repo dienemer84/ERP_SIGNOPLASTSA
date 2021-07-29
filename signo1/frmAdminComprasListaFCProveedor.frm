@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasListaFCProveedor 
    Appearance      =   0  'Flat
@@ -1003,7 +1003,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.finalizar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.editar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
-
+            Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba")
             Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
             If (Factura.estado = Saldada And Factura.OrdenPagoId > 0) Then
                 Me.MnuVerOP.Visible = True
