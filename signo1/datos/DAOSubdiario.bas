@@ -680,97 +680,97 @@ Public Sub PosicionIvaMensual()
     'drpPosicionIvaMensual.Show
 End Sub
 
-'Public Function ExportaSubDiarioCompras(col As Collection) As Boolean
-'
-'    On Error GoTo err1
-'    ExportaSubDiarioCompras = True
-'
-'    Dim xlWorkbook As New Excel.Workbook
-'    Dim xlWorksheet As New Excel.Worksheet
-'    Dim xlApplication As New Excel.Application
-'
-'
-'    Dim A As String
-'    Dim b As String
-'    Dim offset As Long
-'    Dim strMsg As String
-'
-'
-'    Set xlWorkbook = xlApplication.Workbooks.Add
-'    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
-'    xlWorksheet.Activate
-'
-'    'fila, columna
-'
-'        Dim desde As Date
-'        Dim hasta As Date
-'        If rdoRangoFechas.value Then
-'            desde = Me.dtpDesde.value
-'            hasta = Me.dtpHasta.value
-'        Else
-'            Dim liq As LiquidacionSubdiarioVenta
-'            Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
-'            desde = liq.desde
-'            hasta = liq.hasta
-'        End If
-'
-'        xlWorksheet.Cells(2, 1).value = "Periodos " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
-'        xlWorksheet.Range("A3:Q3").Interior.Color = &HC0C0C0
-'
-'
-'        Dim Column As JSColumn
-'        Dim x As Integer
-'
-'        For Each Column In Me.GridEX1.Columns
-'            x = x + 1
-'            xlWorksheet.Cells(3, x).value = Column.caption
-'        Next Column
-'
-'          Dim initoffset As Long
-'          initoffset = offset
-'
-'
-'offset = offset + 1
-'        For Each item In liq.Detalles
-'         xlWorksheet.Cells(x + 3, 1).value = item.FEcha
-'         xlWorksheet.Cells(x + 3, 2).value = item.Comprobante
-'         xlWorksheet.Cells(x + 3, 3).value = item.RazonSocial
-'         xlWorksheet.Cells(x + 3, 4).value = item.Cuit
-'         xlWorksheet.Cells(x + 3, 5).value = item.CondicionIva
-'
-'
-'
-'    'autosize
-'    xlApplication.ScreenUpdating = False
-'    Dim wkSt As String
-'    wkSt = xlWorksheet.Name
-'    xlWorksheet.Cells.EntireColumn.AutoFit
-'    xlWorkbook.Sheets(wkSt).Select
-'    xlApplication.ScreenUpdating = True
-'
-'
-'    Dim ruta As String
-'    ruta = Environ$("TEMP")
-'    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
-'    If LenB(ruta) = 0 Then ruta = App.path
-'    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
-'
-'    xlWorkbook.SaveAs ruta
-'
-'    xlWorkbook.Saved = True
-'    xlWorkbook.Close
-'    xlApplication.Quit
-'
-'    ShellExecute -1, "open", ruta, "", "", 4
-'
-'    Set xlWorksheet = Nothing
-'    Set xlWorkbook = Nothing
-'    Set xlApplication = Nothing
-'
-'
-'    Exit Function
-'err1:
-'    ExportaSubDiarioCompras = False
-'
-'End Function
+Public Function ExportaSubDiarioCompras(col As Collection) As Boolean
+
+    On Error GoTo err1
+    ExportaSubDiarioCompras = True
+    
+    Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorksheet As New Excel.Worksheet
+    Dim xlApplication As New Excel.Application
+
+
+    Dim A As String
+    Dim b As String
+    Dim offset As Long
+    Dim strMsg As String
+ 
+    
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+    xlWorksheet.Activate
+
+    'fila, columna
+    
+        Dim desde As Date
+        Dim hasta As Date
+        If Me.rdoRangoFechas.value Then
+            desde = Me.dtpDesde.value
+            hasta = Me.dtpHasta.value
+        Else
+            Dim liq As LiquidacionSubdiarioVenta
+            Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
+            desde = liq.desde
+            hasta = liq.hasta
+        End If
+
+        xlWorksheet.Cells(2, 1).value = "Periodosss " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+        xlWorksheet.Range("A3:Q3").Interior.Color = &HC0C0C0
+
+
+        Dim Column As JSColumn
+        Dim x As Integer
+
+        For Each Column In Me.GridEX1.Columns
+            x = x + 1
+            xlWorksheet.Cells(3, x).value = Column.caption
+        Next Column
+          
+          Dim initoffset As Long
+          initoffset = offset
+        
+
+offset = offset + 1
+        For Each item In liq.Detalles
+         xlWorksheet.Cells(x + 3, 1).value = item.FEcha
+         xlWorksheet.Cells(x + 3, 2).value = item.Comprobante
+         xlWorksheet.Cells(x + 3, 3).value = item.RazonSocial
+         xlWorksheet.Cells(x + 3, 4).value = item.Cuit
+         xlWorksheet.Cells(x + 3, 5).value = item.CondicionIva
+
+
+
+    'autosize
+    xlApplication.ScreenUpdating = False
+    Dim wkSt As String
+    wkSt = xlWorksheet.Name
+    xlWorksheet.Cells.EntireColumn.AutoFit
+    xlWorkbook.Sheets(wkSt).Select
+    xlApplication.ScreenUpdating = True
+
+
+    Dim ruta As String
+    ruta = Environ$("TEMP")
+    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
+    If LenB(ruta) = 0 Then ruta = App.path
+    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
+
+    xlWorkbook.SaveAs ruta
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+
+    Exit Function
+err1:
+    ExportaSubDiarioCompras = False
+
+End Function
 

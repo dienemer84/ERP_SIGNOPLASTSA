@@ -91,7 +91,7 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
         End If
     End If
 
-    q = q & " WHERE  " & filter
+    q = q & " WHERE " & filter
 
     Dim col As New Collection
     Dim F As Factura
@@ -124,13 +124,12 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
         If includeDetalles Then
             Set deta = DAOFacturaDetalles.Map(rs, idx, "AdminFacturasDetalleNueva")
             
-         
+            If rs!cantidad_remitos_aplicados > 0 Then
+            deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
+            End If
+            deta.CantidadRemitosAplicados = rs!cantidad_remitos_aplicados
             
             If IsSomething(deta) Then
-               If rs!cantidad_remitos_aplicados > 0 Then
-                    deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
-                End If
-                deta.CantidadRemitosAplicados = rs!cantidad_remitos_aplicados
                 If Not funciones.BuscarEnColeccion(F.Detalles, CStr(deta.id)) Then
                     Set deta.Factura = F
                     F.Detalles.Add deta, CStr(deta.id)
@@ -169,8 +168,6 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaMoneda As String = vbNullString, Optional tablaClienteIva As String = vbNullString, Optional tablaFactTipoFacturaDiscriminado As String = vbNullString, Optional tablaIVATipo As String = vbNullString, Optional tablaTipoFactura As String = vbNullString, Optional tablaPuntoVenta As String = vbNullString) As Factura
     Dim F As Factura
     Dim id As Long: id = GetValue(rs, indice, tabla, "id")
-    Debug.Print id
-
     If id > 0 Then
         Set F = New Factura
         F.id = id
@@ -1752,7 +1749,7 @@ saldadoTotal = False
     
     If ok Then
 
-    If saldadoTotal Then
+If saldadoTotal Then
         nc.estado = CanceladaNC
         nc.Saldado = saldadoTotal
         Else
@@ -1925,8 +1922,8 @@ If saldadoTotal Then
            ' If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
             MSG2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
 
-            If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & MSG2 & " where id=" & nc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & MSG2 & " where id=" & nc.id) Then GoTo er12
 
         Next deta
 

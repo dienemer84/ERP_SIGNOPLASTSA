@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmComprasPeticionesOfertaNueva 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
@@ -8,7 +8,7 @@ Begin VB.Form frmComprasPeticionesOfertaNueva
    ClientHeight    =   7530
    ClientLeft      =   45
    ClientTop       =   360
-   ClientWidth     =   10905
+   ClientWidth     =   10860
    Icon            =   "frmComprasPeticionesOfertaNueva.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
@@ -16,7 +16,7 @@ Begin VB.Form frmComprasPeticionesOfertaNueva
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   7530
-   ScaleWidth      =   10905
+   ScaleWidth      =   10860
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1035
       Left            =   165
@@ -348,7 +348,7 @@ Public Property Let peticion(nvalue As clsPeticionOferta)
     Set vPeticion = nvalue
     Me.lblFechaEmision.caption = Me.lblFechaEmision.Tag & nvalue.FechaEmision
     Me.lblProveedor.caption = Me.lblProveedor.Tag & nvalue.Proveedor.RazonSocial
-    Me.lblUsuario.caption = Me.lblUsuario.Tag & nvalue.usuarioCreador.usuario
+    Me.lblUsuario.caption = Me.lblUsuario.Tag & nvalue.UsuarioCreador.usuario
     Me.lblNroReq.caption = Me.lblNroReq.Tag & nvalue.idReque
 
     Dim mon As clsMoneda
@@ -358,10 +358,10 @@ Public Property Let peticion(nvalue As clsPeticionOferta)
         Me.cboMoneda.ItemData(Me.cboMoneda.NewIndex) = mon.id
     Next mon
 
-    If vPeticion.moneda Is Nothing Then
+    If vPeticion.Moneda Is Nothing Then
         Me.cboMoneda.ListIndex = -1
     Else
-        Me.cboMoneda.ListIndex = funciones.PosIndexCbo(vPeticion.moneda.id, Me.cboMoneda)
+        Me.cboMoneda.ListIndex = funciones.PosIndexCbo(vPeticion.Moneda.id, Me.cboMoneda)
     End If
 
     Me.txtCantDiasPago.text = vPeticion.CantidadDiasPago
@@ -383,7 +383,7 @@ Private Sub cmdGuardar_Click()
 
     conectar.BeginTransaction
 
-    Set vPeticion.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+    Set vPeticion.Moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
     vPeticion.CantidadDiasPago = Val(Me.txtCantDiasPago.text)
     vPeticion.PorcentajeDescuento = Val(Me.txtPorcentajeDescuento.text)
     vPeticion.FormaDePago = Me.txtFormaPago.text
@@ -462,7 +462,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(5) = .DetalleReque.ML
         Values(6) = .Valor
         Values(7) = .Total
-        Values(8) = .DetalleReque.observaciones
+        Values(8) = .DetalleReque.Observaciones
         Values(9) = enums.EstadosPeticionOfertaDetalle.item(CStr(.estado))
         Values(10) = funciones.JoinCollectionValues(.DetalleReque.Material.Atributos, "|")
     End With

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminSubdiarioCompras 
    Caption         =   "Subdiario IVA Compras"
@@ -694,12 +694,12 @@ End Sub
 
 Private Sub btnExportar_Click()
 
-'    If IsSomething(Factura) Then
-'        If Not DAOSubdiarios.ExportaSubDiarioCompras(Factura) Then GoTo err1
-'    End If
-'    Exit Sub
-'err1:
-'    MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
+    If IsSomething(Factura) Then
+        If Not DAOSubdiarios.ExportaSubDiarioCompras(Factura) Then GoTo err1
+    End If
+    Exit Sub
+err1:
+    MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
 End Sub
 
 

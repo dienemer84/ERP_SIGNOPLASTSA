@@ -4,10 +4,10 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   8760
+   ClientHeight    =   8820
    ClientLeft      =   2340
    ClientTop       =   3105
-   ClientWidth     =   18960
+   ClientWidth     =   15750
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -22,51 +22,51 @@ Begin VB.Form frmCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8760
-   ScaleWidth      =   18960
+   ScaleHeight     =   8820
+   ScaleWidth      =   15750
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   1335
       Left            =   120
       TabIndex        =   48
       Top             =   0
-      Width           =   14340
+      Width           =   11100
       _Version        =   786432
-      _ExtentX        =   25294
+      _ExtentX        =   19579
       _ExtentY        =   2355
       _StockProps     =   79
       UseVisualStyle  =   -1  'True
       Begin VB.TextBox txtOtrosDescuentos 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   12840
+         Left            =   9960
          TabIndex        =   51
          Top             =   225
-         Width           =   1320
+         Width           =   960
       End
       Begin VB.TextBox txtDifCambioNG1 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   12840
+         Left            =   9960
          TabIndex        =   50
          Top             =   600
-         Width           =   1320
+         Width           =   960
       End
       Begin VB.TextBox txtDifCambioTOTAL1 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   12840
+         Left            =   9960
          TabIndex        =   49
          Top             =   945
-         Width           =   1320
+         Width           =   960
       End
       Begin XtremeSuiteControls.ComboBox cboMonedas 
          Height          =   315
          Left            =   885
          TabIndex        =   55
          Top             =   240
-         Width           =   2085
+         Width           =   1245
          _Version        =   786432
-         _ExtentX        =   3678
+         _ExtentX        =   2196
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -78,9 +78,9 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   885
          TabIndex        =   56
          Top             =   735
-         Width           =   2085
+         Width           =   1245
          _Version        =   786432
-         _ExtentX        =   3678
+         _ExtentX        =   2196
          _ExtentY        =   582
          _StockProps     =   68
          Format          =   1
@@ -112,7 +112,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Otros Descuentos"
          Height          =   195
-         Left            =   11400
+         Left            =   8520
          TabIndex        =   54
          Top             =   270
          Width           =   1275
@@ -121,7 +121,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Dif. Cambio manual NG "
          Height          =   195
-         Left            =   11040
+         Left            =   8160
          TabIndex        =   53
          Top             =   645
          Width           =   1680
@@ -130,7 +130,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Dif. Cambio manual TOTAL"
          Height          =   195
-         Left            =   10800
+         Left            =   7920
          TabIndex        =   52
          Top             =   990
          Width           =   1905
@@ -171,7 +171,7 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin XtremeSuiteControls.GroupBox grpOrigen 
       Height          =   4455
-      Left            =   9120
+      Left            =   5880
       TabIndex        =   0
       Top             =   4200
       Width           =   9780
@@ -191,19 +191,20 @@ Begin VB.Form frmCrearOrdenPago
       EndProperty
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.TabControl TabControl 
-         Height          =   4140
+         Height          =   4020
          Left            =   120
          TabIndex        =   1
          Top             =   240
          Width           =   9540
          _Version        =   786432
          _ExtentX        =   16828
-         _ExtentY        =   7302
+         _ExtentY        =   7091
          _StockProps     =   68
          Appearance      =   10
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
          ItemCount       =   5
+         SelectedItem    =   4
          Item(0).Caption =   "Cheques Propios"
          Item(0).ControlCount=   1
          Item(0).Control(0)=   "gridChequesPropios"
@@ -220,14 +221,14 @@ Begin VB.Form frmCrearOrdenPago
          Item(4).ControlCount=   1
          Item(4).Control(0)=   "gridCompensatorios"
          Begin GridEX20.GridEX gridDepositosOperaciones 
-            Height          =   3600
-            Left            =   -69880
+            Height          =   2400
+            Left            =   -69895
             TabIndex        =   2
             Top             =   435
             Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   6350
+            _ExtentY        =   4233
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -300,13 +301,14 @@ Begin VB.Form frmCrearOrdenPago
             PrinterProperties=   "frmCrearOrdenPago.frx":181C
          End
          Begin GridEX20.GridEX gridChequesPropios 
-            Height          =   3630
-            Left            =   105
+            Height          =   2430
+            Left            =   -69895
             TabIndex        =   9
             Top             =   435
+            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   6403
+            _ExtentY        =   4286
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -340,14 +342,14 @@ Begin VB.Form frmCrearOrdenPago
             PrinterProperties=   "frmCrearOrdenPago.frx":2538
          End
          Begin GridEX20.GridEX gridCheques 
-            Height          =   3510
+            Height          =   2430
             Left            =   -69895
             TabIndex        =   8
             Top             =   435
             Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   6191
+            _ExtentY        =   4286
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -382,14 +384,13 @@ Begin VB.Form frmCrearOrdenPago
             PrinterProperties=   "frmCrearOrdenPago.frx":3340
          End
          Begin GridEX20.GridEX gridCompensatorios 
-            Height          =   3495
-            Left            =   -69880
+            Height          =   2430
+            Left            =   105
             TabIndex        =   16
-            Top             =   480
-            Visible         =   0   'False
+            Top             =   435
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   6165
+            _ExtentY        =   4286
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -427,9 +428,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
-      Left            =   13560
+      Left            =   13320
       TabIndex        =   3
-      Top             =   9720
+      Top             =   8040
       Visible         =   0   'False
       Width           =   3465
       _ExtentX        =   6112
@@ -466,9 +467,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   1695
-      Left            =   16080
+      Left            =   18360
       TabIndex        =   4
-      Top             =   9480
+      Top             =   5040
       Visible         =   0   'False
       Width           =   4185
       _ExtentX        =   7382
@@ -621,9 +622,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequeras 
       Height          =   1815
-      Left            =   10800
+      Left            =   10680
       TabIndex        =   11
-      Top             =   10200
+      Top             =   7680
       Width           =   6435
       _ExtentX        =   11351
       _ExtentY        =   3201
@@ -659,9 +660,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequesChequera 
       Height          =   1710
-      Left            =   15240
+      Left            =   16440
       TabIndex        =   12
-      Top             =   9720
+      Top             =   6240
       Width           =   1980
       _ExtentX        =   3493
       _ExtentY        =   3016
@@ -700,9 +701,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
       Height          =   405
-      Left            =   16920
+      Left            =   13680
       TabIndex        =   14
-      Top             =   3840
+      Top             =   3720
       Width           =   1950
       _Version        =   786432
       _ExtentX        =   3440
@@ -716,9 +717,9 @@ Begin VB.Form frmCrearOrdenPago
       Left            =   120
       TabIndex        =   17
       Top             =   1320
-      Width           =   8925
+      Width           =   5565
       _Version        =   786432
-      _ExtentX        =   15743
+      _ExtentX        =   9816
       _ExtentY        =   5106
       _StockProps     =   79
       Caption         =   "Destino"
@@ -734,7 +735,7 @@ Begin VB.Form frmCrearOrdenPago
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.PushButton cmdMostrarDatosProveedor 
          Height          =   345
-         Left            =   7350
+         Left            =   3870
          TabIndex        =   28
          Top             =   480
          Width           =   1095
@@ -784,10 +785,10 @@ Begin VB.Form frmCrearOrdenPago
          Height          =   315
          Left            =   120
          TabIndex        =   20
-         Top             =   495
-         Width           =   7050
+         Top             =   498
+         Width           =   3690
          _Version        =   786432
-         _ExtentX        =   12435
+         _ExtentX        =   6509
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -799,7 +800,7 @@ Begin VB.Form frmCrearOrdenPago
       End
       Begin XtremeSuiteControls.PushButton btnClearProveedor 
          Height          =   345
-         Left            =   8520
+         Left            =   5040
          TabIndex        =   23
          Top             =   480
          Width           =   270
@@ -815,9 +816,9 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   120
          TabIndex        =   22
          Top             =   1680
-         Width           =   8655
+         Width           =   5175
          _Version        =   786432
-         _ExtentX        =   15266
+         _ExtentX        =   9128
          _ExtentY        =   1905
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -830,9 +831,9 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   120
          TabIndex        =   21
          Top             =   1200
-         Width           =   8655
+         Width           =   3735
          _Version        =   786432
-         _ExtentX        =   15266
+         _ExtentX        =   6588
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -845,7 +846,7 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   2895
-      Left            =   9120
+      Left            =   5880
       TabIndex        =   29
       Top             =   1320
       Width           =   5340
@@ -963,14 +964,14 @@ Begin VB.Form frmCrearOrdenPago
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox2 
-      Height          =   4455
+      Height          =   3975
       Left            =   120
       TabIndex        =   42
       Top             =   4200
-      Width           =   8925
+      Width           =   5565
       _Version        =   786432
-      _ExtentX        =   15743
-      _ExtentY        =   7858
+      _ExtentX        =   9816
+      _ExtentY        =   7011
       _StockProps     =   79
       Caption         =   "Mostrar Facturas"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -986,37 +987,37 @@ Begin VB.Form frmCrearOrdenPago
       Begin VB.TextBox txtOtrosParcialAbonar 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   3120
+         Left            =   1800
          TabIndex        =   69
          Top             =   1680
-         Width           =   2505
+         Width           =   1545
       End
       Begin VB.TextBox txtOtrosParcialAbonado 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   3120
+         Left            =   1800
          Locked          =   -1  'True
          TabIndex        =   68
          Top             =   1080
-         Width           =   2505
+         Width           =   1545
       End
       Begin VB.TextBox txtTotalParcialAbonado 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   6360
+         Left            =   3600
          Locked          =   -1  'True
          TabIndex        =   66
          Top             =   1080
-         Width           =   2385
+         Width           =   1545
       End
       Begin VB.TextBox txtTotalParcialAbonar 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   6360
+         Left            =   3600
          Locked          =   -1  'True
          TabIndex        =   64
          Top             =   1680
-         Width           =   2385
+         Width           =   1545
       End
       Begin VB.TextBox txtParcialAbonado 
          Alignment       =   1  'Right Justify
@@ -1025,7 +1026,7 @@ Begin VB.Form frmCrearOrdenPago
          Locked          =   -1  'True
          TabIndex        =   62
          Top             =   1080
-         Width           =   2145
+         Width           =   1425
       End
       Begin VB.TextBox txtBuscarFactura 
          Alignment       =   1  'Right Justify
@@ -1033,7 +1034,7 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   120
          TabIndex        =   44
          Top             =   480
-         Width           =   8610
+         Width           =   5010
       End
       Begin VB.TextBox txtParcialAbonar 
          Alignment       =   1  'Right Justify
@@ -1041,72 +1042,27 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   120
          TabIndex        =   43
          Top             =   1680
-         Width           =   2145
+         Width           =   1425
       End
       Begin XtremeSuiteControls.ListBox lstFacturas 
          Height          =   1575
          Left            =   120
          TabIndex        =   45
-         Top             =   2640
-         Width           =   8730
+         Top             =   2280
+         Width           =   5250
          _Version        =   786432
-         _ExtentX        =   15399
+         _ExtentX        =   9260
          _ExtentY        =   2778
          _StockProps     =   77
          BackColor       =   -2147483643
          Appearance      =   6
          Style           =   1
       End
-      Begin VB.Label totalPendiente 
-         Height          =   255
-         Left            =   6360
-         TabIndex        =   77
-         Top             =   2280
-         Width           =   2415
-      End
-      Begin VB.Label Label15 
-         Caption         =   "Total Pendiente"
-         Height          =   255
-         Left            =   6360
-         TabIndex        =   76
-         Top             =   2040
-         Width           =   1455
-      End
-      Begin VB.Label otrosPendiente 
-         Height          =   255
-         Left            =   3120
-         TabIndex        =   75
-         Top             =   2280
-         Width           =   2535
-      End
-      Begin VB.Label Label14 
-         Caption         =   "Otros Pendiente"
-         Height          =   255
-         Left            =   3120
-         TabIndex        =   74
-         Top             =   2040
-         Width           =   1455
-      End
-      Begin VB.Label ngPendiente 
-         Height          =   255
-         Left            =   120
-         TabIndex        =   73
-         Top             =   2280
-         Width           =   2175
-      End
-      Begin VB.Label Label13 
-         Caption         =   "NG Pendiente"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   72
-         Top             =   2040
-         Width           =   1455
-      End
       Begin VB.Label Label12 
          AutoSize        =   -1  'True
          Caption         =   "Otros Parcial a abonar:"
          Height          =   195
-         Left            =   3120
+         Left            =   1800
          TabIndex        =   71
          Top             =   1440
          Width           =   1665
@@ -1115,7 +1071,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Otros Parcial abonado:"
          Height          =   195
-         Left            =   3120
+         Left            =   1800
          TabIndex        =   70
          Top             =   840
          Width           =   1650
@@ -1124,7 +1080,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Total Parcial abonado:"
          Height          =   195
-         Left            =   6360
+         Left            =   3600
          TabIndex        =   67
          Top             =   840
          Width           =   1605
@@ -1133,7 +1089,7 @@ Begin VB.Form frmCrearOrdenPago
          AutoSize        =   -1  'True
          Caption         =   "Total Parcial a abonar:"
          Height          =   195
-         Left            =   6360
+         Left            =   3600
          TabIndex        =   65
          Top             =   1440
          Width           =   1620
@@ -1168,9 +1124,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin XtremeSuiteControls.GroupBox GroupBox4 
       Height          =   1095
-      Left            =   120
+      Left            =   240
       TabIndex        =   59
-      Top             =   9960
+      Top             =   8760
       Width           =   5565
       _Version        =   786432
       _ExtentX        =   9816
@@ -1202,41 +1158,31 @@ Begin VB.Form frmCrearOrdenPago
          Style           =   1
       End
    End
-   Begin VB.Label lblTotalPendienteAbonar 
-      AutoSize        =   -1  'True
-      Caption         =   "Total Pendiente:"
-      Height          =   195
-      Left            =   14640
-      TabIndex        =   78
-      Tag             =   "Total: "
-      Top             =   600
-      Width           =   1185
-   End
    Begin VB.Label lblDeudaCompensatorios 
       AutoSize        =   -1  'True
       Caption         =   "Total compensatorios pendientes:"
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   61
-      Top             =   2040
+      Top             =   1920
       Width           =   2430
    End
    Begin VB.Label lblDiferenciaCambio 
       AutoSize        =   -1  'True
       Caption         =   "Diferencia Cambio:"
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   41
-      Top             =   3000
+      Top             =   2880
       Width           =   1350
    End
    Begin VB.Label lblTotalFacturasNG 
       AutoSize        =   -1  'True
       Caption         =   "Total NG Facturas: "
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   40
-      Top             =   1800
+      Top             =   1680
       Width           =   1395
    End
    Begin VB.Label lblTotalOrdenPago 
@@ -1244,10 +1190,10 @@ Begin VB.Form frmCrearOrdenPago
       Caption         =   "Total a pagar:"
       Enabled         =   0   'False
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   39
       Tag             =   "tot fac - tot ret"
-      Top             =   3720
+      Top             =   3600
       Visible         =   0   'False
       Width           =   1020
    End
@@ -1255,47 +1201,47 @@ Begin VB.Form frmCrearOrdenPago
       AutoSize        =   -1  'True
       Caption         =   "Total facturas: "
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   38
-      Top             =   1560
+      Top             =   1440
       Width           =   1110
    End
    Begin VB.Label lblTotalARetener 
       AutoSize        =   -1  'True
       Caption         =   "Total a retener:"
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   37
-      Top             =   3480
+      Top             =   3360
       Width           =   1140
    End
    Begin VB.Label lblTotalCompensatorios 
       AutoSize        =   -1  'True
       Caption         =   "Total compensatorios: "
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   36
       Tag             =   "Total: "
-      Top             =   3240
+      Top             =   3120
       Width           =   1635
    End
    Begin VB.Label lblNgAbonar 
       AutoSize        =   -1  'True
       Caption         =   "Neto gravado a abonar:"
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   35
-      Top             =   2760
+      Top             =   2640
       Width           =   1740
    End
    Begin VB.Label lblTotal 
       AutoSize        =   -1  'True
       Caption         =   "Total Pagos:"
       Height          =   195
-      Left            =   14640
+      Left            =   11400
       TabIndex        =   15
       Tag             =   "Total: "
-      Top             =   240
+      Top             =   120
       Width           =   900
    End
    Begin VB.Menu emergente 
@@ -1317,7 +1263,7 @@ Private id_susc As String
 Dim formLoading As Boolean
 Dim formLoaded As Boolean
 Dim alicuotas As New Collection
-Dim slider As Integer
+
 Dim total_por_factura As New Dictionary
 Dim vFactElegida As clsFacturaProveedor
 Dim vCompeElegido As Compensatorio
@@ -2073,7 +2019,7 @@ End Sub
 Private Sub MostrarFacturas()
     Me.lstFacturas.Clear
     If IsSomething(prov) Then
-        Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & " or AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & ")", False, "", False, True)
+        Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & " or AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial, False, "", False, True)
         
     
             
@@ -2093,29 +2039,21 @@ Private Sub MostrarFacturas()
         
          Dim c As Collection
             Set c = DAOOrdenPago.FindAbonadoPendiente(Factura.id, OrdenPago.id)
-
-             'Factura.TotalAbonadoGlobalPendiente = c(1) 'que esta en ops sin aprobar
+             
+             Factura.TotalAbonadoGlobalPendiente = c(1) 'que esta en ops sin aprobar
                  Factura.NetoGravadoAbonadoGlobalPendiente = c(2)
                    Factura.OtrosAbonadoGlobalPendiente = c(3)
-'
         
         
-        T = Factura.NumeroFormateado & " " & Factura.FEcha & "Total: " & Factura.moneda.NombreCorto & " " & Factura.Total
-           If Factura.TotalAbonadoGlobal > 0 Then
-            T = T & " - Abonado: " & Factura.TotalAbonadoGlobal
+        
+        T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"
+           If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
+            T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
            
            End If
             
-            If Factura.TotalAbonadoGlobalPendiente > 0 Then
-            T = T & " - OP Pendientes: " & Factura.TotalAbonadoGlobalPendiente
-           End If
-           
-               If Factura.TotalAbonadoGlobal > 0 Or Factura.TotalAbonadoGlobalPendiente > 0 Then
-                 T = T & " - Pendiente: " & Factura.Total - (Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente)
-               End If
             Me.lstFacturas.AddItem T
             Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.id
-            
         Next
 
 
@@ -2420,7 +2358,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
         'fix 004
-        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalAbonado * -1, F.TotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
         totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
@@ -2464,9 +2402,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
 
 
     Me.lblTotalOrdenPago = "Total a abonar en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - totRet - OrdenPago.OtrosDescuentos + OrdenPago.TotalCompensatorios + totDeudaCompe)
-    
-    
-    Me.lblTotalPendienteAbonar = "Pendiente a abonar: " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales((OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - totRet - OrdenPago.OtrosDescuentos + OrdenPago.TotalCompensatorios + totDeudaCompe) - OrdenPago.TotalOrigenes)
+
 End Sub
 
 Private Sub verCompensatorios()
@@ -2479,22 +2415,20 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
 
     If IsSomething(F) Then
 
-        Me.txtTotalParcialAbonado = F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente
-        Me.txtOtrosParcialAbonado = F.OtrosAbonadoGlobal + F.OtrosAbonadoGlobalPendiente
-        Me.txtParcialAbonado = F.NetoGravadoAbonadoGlobal + F.NetoGravadoAbonadoGlobalPendiente
+        Me.txtTotalParcialAbonado = F.TotalAbonadoGlobal
+        Me.txtOtrosParcialAbonado = F.OtrosAbonadoGlobal
+        Me.txtParcialAbonado = F.NetoGravadoAbonadoGlobal
         
         
        ' If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
-        If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.MaxNetoGrabadoAbonar 'F.NetoGravado - F.NetoGravadoAbonadoGlobal '- F.NetoNoGravado  (2do cambio en fix 004)
-          If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.MaxOtrosAbonar ' (F.Total - F.NetoGravado) - F.OtrosAbonadoGlobal '- F.NetoNoGravado  (2do cambio en fix 004)
+        If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
+          If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.Total - F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
       
         Me.txtParcialAbonar = F.NetoGravadoAbonado
         Me.txtTotalParcialAbonar = F.ImporteTotalAbonado
         Me.txtOtrosParcialAbonar = F.OtrosAbonado
         
-        
-            
-    recalcularTotalFacturaelegida
+recalcularTotalFacturaelegida
         
    '     vFactElegida.NetoGravadoAbonado = CDbl(Me.txtParcialAbonar)
       '    vFactElegida.ImporteTotalAbonado =    'vFactElegida.CalcularTotalAbonadoParcial(CDbl(Me.txtParcialAbonar))
@@ -2503,7 +2437,7 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
            'esto debería calcular el total en base a las alícuotas de la factura
            
   
-        If F.TotalAbonado + F.TotalAbonadoGlobal > F.Total Then
+        If F.TotalAbonado + F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente > F.Total Then
             MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
         End If
         'Me.txtnetogravadoabonado = F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
@@ -2532,8 +2466,7 @@ Private Sub lstFacturas_Click()
 
 
     Set vFactElegida = colFacturas.item(CStr(Me.lstFacturas.ItemData(Me.lstFacturas.ListIndex)))
-   
-   
+    
     
    
     
@@ -2541,19 +2474,19 @@ If IsSomething(vFactElegida) Then
   '  vFactElegida.ImporteTotalAbonado = vFactElegida.Total - vFactElegida.TotalAbonadoGlobal
    Dim c As Collection
    Set c = DAOOrdenPago.FindAbonadoPendiente(vFactElegida.id, OrdenPago.id)
-
-    'vFactElegida.TotalAbonadoGlobalPendiente = c(1)
+    
+    vFactElegida.TotalAbonadoGlobalPendiente = c(1)
     vFactElegida.NetoGravadoAbonadoGlobalPendiente = c(2)
     vFactElegida.OtrosAbonadoGlobalPendiente = c(3)
-
-    If vFactElegida.ImporteTotalAbonado = 0 Then
-        vFactElegida.ImporteTotalAbonado = vFactElegida.totalPendiente
-
-    End If
+    
+'    If vFactElegida.ImporteTotalAbonado = 0 Then
+'        vFactElegida.ImporteTotalAbonado = vFactElegida.TotalPendiente
+'
+'    End If
     
     MostrarPago vFactElegida
 End If
-    mostrarPendientesPago
+
 End Sub
 
 Private Sub lstFacturas_DblClick()
@@ -2662,16 +2595,6 @@ If item < -1 Then
              Dim f1
                      Set f1 = DAOFacturaProveedor.FindById(CStr(Me.lstFacturas.ItemData(item)))
                '  colFacturas.item(CStr(Me.lstFacturas.ItemData(i))) =
-End If
-
-If item > -1 Then
-Dim F As clsFacturaProveedor
-
-Set F = colFacturas.item(CStr(Me.lstFacturas.ItemData(item)))
-
-If F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente) = 0 Then
-    Me.lstFacturas.Checked(item) = False
-End If
 End If
 calcularOrigenes
 '    Dim i As Long
@@ -2870,14 +2793,13 @@ Private Sub Totalizar()
     OrdenPago.StaticTotalOrigenes = OrdenPago.TotalOrigenes
   
     Me.lblTotal.caption = "Total orden de pago en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido)
-    'Me.lblTotalPendienteAbonar = "Total pendiente " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.TotalFacturas - (OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
     GridEXHelper.AutoSizeColumns Me.gridCheques
     'GridEXHelper.AutoSizeColumns Me.gridChequesPropios
     lstFacturas_ItemCheck -1
     TotalizarDiferenciasCambio
-    mostrarPendientesPago
+
 
 
 End Sub
@@ -3074,7 +2996,9 @@ Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As 
     End If
 End Sub
 
+Private Sub Text1_Change()
 
+End Sub
 
 Private Sub txtBuscarFactura_GotFocus()
     Me.txtBuscarFactura.SelStart = 0
@@ -3148,23 +3072,16 @@ Private Sub txtOtrosDescuentos_LostFocus()
     Totalizar
 End Sub
 
-'Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
-'  If LenB(Me.txtOtrosParcialAbonar) > 0 Then
-'
-'        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
-'        recalcularTotalFacturaelegida
-'
-'
-'    End If
-'
-'    Totalizar
-'End Sub
-Private Sub mostrarPendientesPago()
-    If IsSomething(vFactElegida) Then
-        Me.ngPendiente = vFactElegida.PendienteNetoGravadoAbonar
-        Me.otrosPendiente = vFactElegida.PendienteOtrosAbonar
-        Me.totalPendiente = vFactElegida.PendienteTotalAbonar
+Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
+  If LenB(Me.txtOtrosParcialAbonar) > 0 Then
+    
+        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
+        recalcularTotalFacturaelegida
+       
+        
     End If
+    
+    Totalizar
 End Sub
 
 Private Sub recalcularTotalFacturaelegida()
@@ -3174,39 +3091,32 @@ Private Sub recalcularTotalFacturaelegida()
 End Sub
 
 
-Private Sub txtOtrosParcialAbonar_Validate(Cancel As Boolean)
-If CDbl(Me.txtOtrosParcialAbonar) > vFactElegida.MaxOtrosAbonar Then
-    MsgBox "El monto indicado supera el máximo posible a abonar!", vbCritical, "Error"
-    Cancel = True
-Else
-        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
+Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
+  If LenB(txtParcialAbonar) > 0 Then
+    
+
+       vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
         recalcularTotalFacturaelegida
-           Totalizar
-End If
-End Sub
+    End If
+    
+'
+'
+'        If CDbl(Me.txtParcialAbonar) + vFactElegida.TotalAbonadoGlobal > vFactElegida.Total Then
+'            MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
+'
+'         vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar) 'vFactElegida.Total - vFactElegida.TotalAbonadoGlobal + vFactElegida.ImporteTotalAbonado
+'            Me.txtParcialAbonar = vFactElegida.ImporteTotalAbonado
+'
+'        Else
+'            vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar)
+'        End If
+'
+'
+'    Else
+'        vFactElegida.ImporteTotalAbonado = 0
+   ' End If
 
-'Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
-'  If LenB(txtParcialAbonar) > 0 Then
-'
-'
-'       vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
-'        recalcularTotalFacturaelegida
-'    End If
-'
-'
-'    Totalizar
-'End Sub
-
-Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
-If CDbl(Me.txtParcialAbonar) > vFactElegida.MaxNetoGrabadoAbonar Then
-    MsgBox "El monto indicado supera el máximo posible a abonar!", vbCritical, "Error"
-    Cancel = True
-Else
-      vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
-        recalcularTotalFacturaelegida
-           Totalizar
-End If
-
+    Totalizar
 End Sub
 
 Private Sub txtRetenciones_GotFocus()

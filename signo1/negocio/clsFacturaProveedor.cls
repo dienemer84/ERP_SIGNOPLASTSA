@@ -31,11 +31,15 @@ Public tipoDocumentoContable As tipoDocumentoContable
 Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
 Public OtrosAbonadoGlobal As Double
+Public TotalAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public NetoGravadoAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+
+Public TotalAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public NetoGravadoAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public OtrosAbonadoGlobalPendiente As Double
-Public slider As Integer
-Public OrdenesPagoId As String
+
+
+
 Public OrdenPagoId As Long
 Public TotalAbonado As Double
 Dim vTipoCambio As Double
@@ -49,25 +53,6 @@ Public OtrosAbonado As Double
 Public UsuarioCarga As clsUsuario
 
 Public TotalCompensado As Double
-
-Public Property Get TotalAbonadoGlobal() As Double 'dto para saber cuanto se pago de la factura en todsa las OP
-    TotalAbonadoGlobal = NetoGravadoAbonadoGlobal + OtrosAbonadoGlobal
-End Property
-Public Property Get TotalAbonadoGlobalPendiente() As Double 'dto para saber cuanto se pago de la factura en todsa las OP
-    TotalAbonadoGlobalPendiente = OtrosAbonadoGlobalPendiente + NetoGravadoAbonadoGlobalPendiente
-End Property
-
-
-Public Property Get PendienteOtrosAbonar()
-    PendienteOtrosAbonar = (Total - NetoGravado) - (Me.OtrosAbonadoGlobal + Me.OtrosAbonadoGlobalPendiente + Me.OtrosAbonado)
-End Property
-Public Property Get PendienteTotalAbonar()
-    PendienteTotalAbonar = Total - (TotalAbonadoGlobalPendiente + TotalAbonadoGlobal + (Me.OtrosAbonado + Me.NetoGravadoAbonado))
-End Property
-
-Public Property Get PendienteNetoGravadoAbonar()
-    PendienteNetoGravadoAbonar = Me.NetoGravado - (Me.NetoGravadoAbonadoGlobal + Me.NetoGravadoAbonadoGlobalPendiente + Me.NetoGravadoAbonado)
-End Property
 
 Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
   Dim tot_iva As Double
@@ -384,8 +369,8 @@ Public Property Get TotalAplicadoACuentas() As Double
 End Property
 
 
-Public Property Get totalPendiente() As Double
-    totalPendiente = Me.Total - Me.TotalAbonado + Me.TotalPago
+Public Property Get TotalPendiente() As Double
+    TotalPendiente = Me.Total - Me.TotalAbonado + Me.TotalPago
 End Property
 
 
@@ -393,17 +378,3 @@ Public Function AnalizarEstado() As EstadoFacturaProveedor
     If Me.Total = Me.TotalAbonado Then AnalizarEstado = Saldada
     If Me.TotalAbonado > 0 And Me.TotalAbonado < Me.Total Then AnalizarEstado = pagoParcial
 End Function
-
-Public Property Get MaxNetoGrabadoAbonar()
-    MaxNetoGrabadoAbonar = NetoGravado - NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente
-End Property
-
-Public Property Get MaxOtrosAbonar()
-    MaxOtrosAbonar = (Total - NetoGravado) - OtrosAbonadoGlobal - Me.OtrosAbonadoGlobalPendiente
-End Property
-
-
-Public Property Get MaxTotalAbonar()
-    MaxTotalAbonar = Total - TotalAbonado - Me.TotalAbonadoGlobalPendiente
-End Property
-

@@ -25,20 +25,6 @@ Begin VB.Form frmFacturaEdicion
    MinButton       =   0   'False
    ScaleHeight     =   10470
    ScaleWidth      =   17775
-   Begin XtremeSuiteControls.PushButton cmdVaciar 
-      Height          =   375
-      Left            =   2400
-      TabIndex        =   89
-      Top             =   9960
-      Visible         =   0   'False
-      Width           =   2175
-      _Version        =   786432
-      _ExtentX        =   3836
-      _ExtentY        =   661
-      _StockProps     =   79
-      Caption         =   "Vaciar factura de anticipo"
-      UseVisualStyle  =   -1  'True
-   End
    Begin VB.Frame Frame1 
       Caption         =   "Período de Servicio / Producto"
       Enabled         =   0   'False
@@ -66,7 +52,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63307777
+         Format          =   59899905
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -88,7 +74,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63307777
+         Format          =   59899905
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -194,7 +180,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63307777
+         Format          =   59899905
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -216,7 +202,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63307777
+         Format          =   59899905
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -805,7 +791,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63307777
+         Format          =   59899905
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1996,13 +1982,6 @@ Private Sub cmdNueva_Click()
 End Sub
 
 
-Private Sub cmdVaciar_Click()
-    Factura.Detalles = New Collection
-        Me.gridDetalles.ItemCount = 0
-    Me.gridDetalles.ItemCount = Factura.Detalles.count
-    Factura.OTsFacturadasAnticipo.remove 1
-End Sub
-
 Private Sub dtFechaPagoCredito_Change()
    If Not dataLoading Then
         Factura.fechaPago = Me.dtFechaPagoCredito.value
@@ -2186,10 +2165,7 @@ Private Sub Form_Load()
     If EsAnticipo Or Factura.EsAnticipo Then
         Me.gridDetalles.Columns(1).EditType = jgexEditNone
         Me.gridDetalles.AllowDelete = False
-        Me.cmdVaciar.Visible = True
         Factura.origenFacturado = OrigenFacturadoAnticipoOT
-    Else
-        Me.cmdVaciar.Visible = False
     End If
 
 
@@ -2853,10 +2829,9 @@ Private Sub PushButton1_Click()
                                 If Ot.moneda.id <> Factura.moneda.id Then
                                     If Factura.moneda.Patron Then
                                         Dim m2 As clsMoneda
-                                        Set m2 = DAOMoneda.GetById(Factura.IdMonedaAjuste)
-                                     '2021-8-7 - la ot parece que ya devuelve el total convertido al patron
-                                     'deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * m2.Cambio * Ot.Anticipo) / 100)
-                                     deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * 1 * Ot.Anticipo) / 100)
+                                        Set m2 = DAOMoneda.GetById(Factura.TipoCambioAjuste)
+                                    
+                                     deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * m2.Cambio * Ot.Anticipo) / 100)
                                     Else
                                          deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
                                     End If
@@ -2880,13 +2855,6 @@ Private Sub PushButton1_Click()
     End If
 End Sub
 
-
-Private Sub PushButton3_Click()
-    Factura.Detalles = New Collection
-        Me.gridDetalles.ItemCount = 0
-    Me.gridDetalles.ItemCount = Factura.Detalles.count
-    Factura.OTsFacturadasAnticipo.remove 1
-End Sub
 
 'fce_nemer_09062020
 Public Sub txtDiasVenc_LostFocus()

@@ -433,11 +433,6 @@ Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As I
 End Sub
 
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    
-    '#205
-    grilla_recibos_SelectionChange
-    
     If Button = 2 Then
         Me.nro.caption = "[ Nro. " & Format(recibo.id, "0000") & " ]"
         If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
@@ -510,14 +505,7 @@ Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmar
     Values(3) = recibo.cliente.razon
     Values(4) = recibo.FechaCreacion
     Values(5) = recibo.moneda.NombreCorto
-    
-    '#199
-    If recibo.estado = EstadoRecibo.Pendiente Then
-    Values(6) = funciones.FormatearDecimales(0)
-    Else
     Values(6) = funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico + recibo.TotalRetenciones)
-    End If
-    
     Values(7) = enums.EnumEstadoRecibo(recibo.estado)
     Values(8) = IIf(IsEmpty(tmpArchivos(recibo.id)), 0, tmpArchivos(recibo.id))
 End Sub

@@ -5,25 +5,25 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
 
 Dim q As String
 
-q = "SELECT IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago<>" & ocid & "),0 ) AS otros_pendiente, " _
+q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS total_pendiente, " _
     & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago<>" & ocid & "),0 ) AS netogravado_pendiente "
-     '& " IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-    '& " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago<>" & ocid & "),0 ) AS total_pendiente "
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS netogravado_pendiente, " _
+     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS otros_pendiente "
 
 Dim rs As Recordset
  Set rs = conectar.RSFactory(q)
 
-Dim tot As Double, ng As Double, Otros As Double
-'tot = rs!total_pendiente
+Dim tot As Double, ng As Double, otros As Double
+tot = rs!total_pendiente
 ng = rs!netogravado_pendiente
-Otros = rs!otros_pendiente
+otros = rs!otros_pendiente
 
 Dim c As New Collection
-c.Add 0 'tot
+c.Add tot
 c.Add ng
-c.Add Otros
+c.Add otros
 Set FindAbonadoPendiente = c
 End Function
 
@@ -300,7 +300,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     '3-10-2020 recargo la OP para que se actualicen los estados de las facturas y se validen bien
     Dim op As OrdenPago
     Set op = DAOOrdenPago.FindById(op_mem.id)
-    Set op.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(op.id)
+    
     If Not IsSomething(op) Then
         GoTo err1
     End If
@@ -344,28 +344,18 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     'TODO: debo verificar que los deudas por compensatorio no esten utilizadas en otra OP aprobada ni que esten ya canceladas en otro proceso
     
 
-        If Guardar(op, False) Then
+        If Guardar(op) Then
    
-    
-            Dim fac1 As clsFacturaProveedor
 
-            For Each fac1 In op.FacturasProveedor
-                Dim t1 As Double
- 
-               DAOFacturaProveedor.ProcesarEstadoSaldada fac1.id
-                
-                
-                
-                If fac1.estado = EstadoFacturaProveedor.Saldada Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "SALDADA") Then GoTo err1
+
+            Dim fac As clsFacturaProveedor
+            For Each fac In op.FacturasProveedor
+                If fac.estado = EstadoFacturaProveedor.Saldada Then
+                    If Not DaoFacturaProveedorHistorial.agregar(fac, "SALDADA") Then GoTo err1
                 End If
-                If fac1.estado = EstadoFacturaProveedor.pagoParcial Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "PAGO PARCIAL") Then GoTo err1
+                If fac.estado = EstadoFacturaProveedor.pagoParcial Then
+                    If Not DaoFacturaProveedorHistorial.agregar(fac, "PAGO PARCIAL") Then GoTo err1
                 End If
-                
-            
-                
-                
             Next
 
 
@@ -375,12 +365,8 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
         For Each ra In op.RetencionesAlicuota
         
 
-        Dim cr As CertificadoRetencion
-        Set cr = DAOCertificadoRetencion.Create(op, ra.Retencion, ra.alicuotaRetencion, True)
-                If IsSomething(cr) Then
-                    If cr.TotalRetenido > 0 Then
-                        MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
-                    End If
+                If IsSomething(DAOCertificadoRetencion.Create(op, ra.Retencion, ra.alicuotaRetencion, True)) Then
+                    MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
                 Else
                     GoTo err1
                 End If
@@ -529,7 +515,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         Dim cp As Compensatorio
         Dim fac As clsFacturaProveedor
         For Each fac In op.FacturasProveedor
-            q = "INSERT INTO ordenes_pago_facturas VALUES (" & op.id & ", " & fac.id & "," & fac.TotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
+            q = "INSERT INTO ordenes_pago_facturas VALUES (" & op.id & ", " & fac.id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
 
              If Not conectar.execute(q) Then GoTo E
 
@@ -548,14 +534,8 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
                 
             Next cp
             
-              
-              
-            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado - fac.TotalAbonadoGlobalPendiente
             
-            
-            If nopago < 0 Then
-                Err.Raise "El comprobante " & fac.NumeroFormateado & " tiene saldos comprometidos. No se puede aprobar esta OP!"
-            End If
+            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.ImporteTotalAbonado
             
              q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.id
         If Not conectar.execute(q) Then GoTo E
@@ -582,18 +562,12 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             
             'If op.estado = EstadoOrdenPago_Aprobada Then
             
-            Dim r As ADODB.Recordset
-            Set r = conectar.RSFactory("SELECT COUNT(id_orden_pago) AS cantidad_pendientes FROM ordenes_pago_facturas o INNER JOIN ordenes_pago op ON o.id_orden_pago = op.id WHERE o.id_factura_proveedor =  " & fac.id & " AND (op.estado = 0)")
             
-            Dim pend As Integer
-            pend = r!cantidad_pendientes
             es = EstadoFacturaProveedor.Aprobada
-             If nopago > 0 Or pend > 0 Then
+             If nopago > 0 Then
                 es = EstadoFacturaProveedor.pagoParcial
             Else
-                
-                es = EstadoFacturaProveedor.Saldada 'esto solo hay q ponerlo cuando no queden op pendientes para esta factura
-                
+                es = EstadoFacturaProveedor.Saldada
             End If
 
             ' Else
@@ -1110,14 +1084,14 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontBold = False
     Printer.FontSize = 8
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
-    Dim f As clsFacturaProveedor
+    Dim F As clsFacturaProveedor
     Dim facs As New Collection
     c = 0
-    For Each f In Orden.FacturasProveedor
+    For Each F In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print f.NumeroFormateado & String$(8, " del ") & f.FEcha & String$(8, " por ") & f.moneda.NombreCorto & " " & f.Total
-    Next f
+        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
+    Next F
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"
