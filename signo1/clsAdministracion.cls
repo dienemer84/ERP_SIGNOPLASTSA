@@ -286,6 +286,12 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
         ia = 9
         ia_orig = ia
         Dim d As Double
+        
+        For o = 10 To 10 + TOTAL_DE_RET - 1
+         x.SubItems(o - 1) = "0.00"
+        Next
+        
+        
         For o = 10 To 10 + TOTAL_DE_RET - 1    '
             For Each ret In r.retenciones
 
