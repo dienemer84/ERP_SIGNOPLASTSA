@@ -177,6 +177,7 @@ err1:
 End Function
 
 Public Function FindAll(Optional filtro As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
+  On Error Resume Next
     Dim indice As New Dictionary
     Dim q As String
     Dim rs As Recordset
@@ -194,7 +195,9 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
       q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
 q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado>0 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
-        
+        q = q & "   ,(SELECT GROUP_CONCAT(id_orden_pago) FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2 ) AS ordenes_pago"
+    
+    
       
       q = q & " From" _
         & " AdminComprasFacturasProveedores" _
@@ -235,9 +238,12 @@ q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN 
     While Not rs.EOF
         Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
          
-        F.TotalAbonadoGlobal = rs!total_abonado
+       ' F.TotalAbonadoGlobal = rs!total_abonado
         F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
         F.OtrosAbonadoGlobal = rs!otros_abonado
+        If IsSomething(rs.Fields("ordenes_pago").value) Then
+        F.OrdenesPagoId = rs!ordenes_pago
+        End If
         
         If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
             Set F = col.item(CStr(F.id))

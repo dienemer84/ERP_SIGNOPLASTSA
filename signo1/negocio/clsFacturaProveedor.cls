@@ -31,13 +31,14 @@ Public tipoDocumentoContable As tipoDocumentoContable
 Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
 Public OtrosAbonadoGlobal As Double
-Public TotalAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+
 Public NetoGravadoAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 
 Public TotalAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public NetoGravadoAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public OtrosAbonadoGlobalPendiente As Double
 
+Public OrdenesPagoId As String
 
 
 Public OrdenPagoId As Long
@@ -53,6 +54,26 @@ Public OtrosAbonado As Double
 Public UsuarioCarga As clsUsuario
 
 Public TotalCompensado As Double
+
+Public Property Get TotalAbonadoGlobal() As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+    TotalAbonadoGlobal = Me.OtrosAbonadoGlobal + Me.NetoGravadoAbonadoGlobal + Me.NetoGravadoAbonadoGlobalPendiente + Me.OtrosAbonadoGlobalPendiente
+End Property
+
+
+Public Property Get ImporteTotalSaldo()
+ ImporteTotalSaldo = Total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente
+End Property
+Public Property Get ImporteNetoGravadoSaldo()
+ImporteNetoGravadoSaldo = Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente 'Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente
+End Property
+
+Public Property Get ImporteOtrosSaldo()
+ImporteOtrosSaldo = Me.TotalOtros - Me.OtrosAbonadoGlobal - Me.OtrosAbonadoGlobalPendiente
+End Property
+
+Public Property Get TotalOtros()
+TotalOtros = Me.Total - Me.NetoGravado
+End Property
 
 Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
   Dim tot_iva As Double

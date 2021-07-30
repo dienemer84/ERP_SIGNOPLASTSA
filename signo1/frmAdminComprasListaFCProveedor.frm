@@ -1075,8 +1075,8 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             Values(15) = "Contado"
         End If
 
-        If Factura.OrdenPagoId > 0 Then Values(16) = Factura.OrdenPagoId
-              
+        'If Factura.OrdenPagoId > 0 Then Values(16) = Factura.OrdenPagoId
+              Values(16) = Factura.OrdenesPagoId
         Values(17) = Factura.UsuarioCarga.usuario
         
         Values(18) = Factura.TipoCambio

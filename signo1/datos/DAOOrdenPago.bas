@@ -15,15 +15,15 @@ q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JO
 Dim rs As Recordset
  Set rs = conectar.RSFactory(q)
 
-Dim tot As Double, ng As Double, otros As Double
+Dim tot As Double, ng As Double, Otros As Double
 tot = rs!total_pendiente
 ng = rs!netogravado_pendiente
-otros = rs!otros_pendiente
+Otros = rs!otros_pendiente
 
 Dim c As New Collection
 c.Add tot
 c.Add ng
-c.Add otros
+c.Add Otros
 Set FindAbonadoPendiente = c
 End Function
 
@@ -535,7 +535,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             Next cp
             
             
-            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.ImporteTotalAbonado
+            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
             
              q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.id
         If Not conectar.execute(q) Then GoTo E

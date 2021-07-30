@@ -4,7 +4,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   8820
+   ClientHeight    =   8535
    ClientLeft      =   2340
    ClientTop       =   3105
    ClientWidth     =   15750
@@ -22,7 +22,7 @@ Begin VB.Form frmCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8820
+   ScaleHeight     =   8535
    ScaleWidth      =   15750
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   1335
@@ -1188,13 +1188,11 @@ Begin VB.Form frmCrearOrdenPago
    Begin VB.Label lblTotalOrdenPago 
       AutoSize        =   -1  'True
       Caption         =   "Total a pagar:"
-      Enabled         =   0   'False
       Height          =   195
       Left            =   11400
       TabIndex        =   39
       Tag             =   "tot fac - tot ret"
-      Top             =   3600
-      Visible         =   0   'False
+      Top             =   720
       Width           =   1020
    End
    Begin VB.Label lblTotalFacturas 
@@ -1212,7 +1210,7 @@ Begin VB.Form frmCrearOrdenPago
       Height          =   195
       Left            =   11400
       TabIndex        =   37
-      Top             =   3360
+      Top             =   480
       Width           =   1140
    End
    Begin VB.Label lblTotalCompensatorios 
@@ -2358,7 +2356,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
         'fix 004
-        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
+        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalAbonado * -1, F.TotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
         totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
 
@@ -2402,7 +2400,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
 
 
     Me.lblTotalOrdenPago = "Total a abonar en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - totRet - OrdenPago.OtrosDescuentos + OrdenPago.TotalCompensatorios + totDeudaCompe)
-
+    'Me.lblTotalOP = "Total OP: " & OrdenPago.moneda.NombreCorto & " " & OrdenPago.StaticTotal
 End Sub
 
 Private Sub verCompensatorios()
@@ -2424,9 +2422,9 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
         If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
           If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.Total - F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
       
-        Me.txtParcialAbonar = F.NetoGravadoAbonado
+        Me.txtParcialAbonar = F.ImporteNetoGravadoSaldo ' F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
         Me.txtTotalParcialAbonar = F.ImporteTotalAbonado
-        Me.txtOtrosParcialAbonar = F.OtrosAbonado
+        Me.txtOtrosParcialAbonar = F.ImporteOtrosSaldo  'F.OtrosAbonado - F.OtrosAbonadoGlobal
         
 recalcularTotalFacturaelegida
         
@@ -2443,8 +2441,13 @@ recalcularTotalFacturaelegida
         'Me.txtnetogravadoabonado = F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
        ' Me.txtParcialAbonado = F.TotalAbonado - F.TotalAbonadoGlobal
     End If
+    Totalizar
 End Sub
 
+
+Private Sub Label13_Click()
+
+End Sub
 
 Private Sub lstDeudaCompensatorios_Click()
 
@@ -3073,14 +3076,14 @@ Private Sub txtOtrosDescuentos_LostFocus()
 End Sub
 
 Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
-  If LenB(Me.txtOtrosParcialAbonar) > 0 Then
-    
+  If LenB(Me.txtOtrosParcialAbonar) > 0 And IsNumeric(Me.txtOtrosParcialAbonar) Then
+
         vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
         recalcularTotalFacturaelegida
-       
-        
+
+
     End If
-    
+
     Totalizar
 End Sub
 
@@ -3091,8 +3094,32 @@ Private Sub recalcularTotalFacturaelegida()
 End Sub
 
 
+Private Sub txtOtrosParcialAbonar_LostFocus()
+'  If LenB(Me.txtOtrosParcialAbonar) > 0 Then
+'
+'        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
+'        recalcularTotalFacturaelegida
+'
+'
+'    End If
+'
+'    Totalizar
+End Sub
+
+Private Sub txtOtrosParcialAbonar_Validate(Cancel As Boolean)
+Cancel = CDbl(Me.txtOtrosParcialAbonar) > vFactElegida.ImporteOtrosSaldo Or Not IsNumeric(Me.txtOtrosParcialAbonar) Or CDbl(Me.txtOtrosParcialAbonar) < 0
+
+If Cancel Then
+    Me.txtOtrosParcialAbonar.backColor = vbRed
+    Me.txtOtrosParcialAbonar.ForeColor = vbWhite
+Else
+    Me.txtOtrosParcialAbonar.backColor = vbWhite
+    Me.txtOtrosParcialAbonar.ForeColor = vbBlack
+End If
+End Sub
+
 Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
-  If LenB(txtParcialAbonar) > 0 Then
+  If LenB(txtParcialAbonar) > 0 And IsNumeric(txtParcialAbonar) Then
     
 
        vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
@@ -3119,6 +3146,18 @@ Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
     Totalizar
 End Sub
 
+Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
+Cancel = CDbl(Me.txtParcialAbonar) > vFactElegida.ImporteNetoGravadoSaldo Or Not IsNumeric(Me.txtParcialAbonar) Or CDbl(Me.txtParcialAbonar) < 0
+
+If Cancel Then
+    Me.txtParcialAbonar.backColor = vbRed
+    Me.txtParcialAbonar.ForeColor = vbWhite
+Else
+    Me.txtParcialAbonar.backColor = vbWhite
+    Me.txtParcialAbonar.ForeColor = vbBlack
+End If
+End Sub
+
 Private Sub txtRetenciones_GotFocus()
     foco Me.txtRetenciones
 End Sub
@@ -3132,3 +3171,12 @@ Private Sub txtRetenciones_Validate(Cancel As Boolean)
 End Sub
 
 
+Private Sub txtTotalParcialAbonar_Change()
+ If CDbl(Me.txtTotalParcialAbonar) > vFactElegida.ImporteTotalSaldo Or CDbl(Me.txtParcialAbonar) < 0 Then
+              Me.txtTotalParcialAbonar.backColor = vbRed
+    Me.txtTotalParcialAbonar.ForeColor = vbWhite
+Else
+    Me.txtTotalParcialAbonar.backColor = vbWhite
+    Me.txtTotalParcialAbonar.ForeColor = vbBlack
+End If
+End Sub
