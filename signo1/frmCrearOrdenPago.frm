@@ -2017,7 +2017,7 @@ End Sub
 Private Sub MostrarFacturas()
     Me.lstFacturas.Clear
     If IsSomething(prov) Then
-        Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & " or AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial, False, "", False, True)
+        Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & " or AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & ")", False, "", False, True)
         
     
             
@@ -2414,8 +2414,8 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
     If IsSomething(F) Then
 
         Me.txtTotalParcialAbonado = F.TotalAbonadoGlobal
-        Me.txtOtrosParcialAbonado = F.OtrosAbonadoGlobal
-        Me.txtParcialAbonado = F.NetoGravadoAbonadoGlobal
+        Me.txtOtrosParcialAbonado = F.OtrosAbonadoGlobal + F.OtrosAbonadoGlobalPendiente
+        Me.txtParcialAbonado = F.NetoGravadoAbonadoGlobal + F.NetoGravadoAbonadoGlobalPendiente
         
         
        ' If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
@@ -2426,7 +2426,7 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
         Me.txtTotalParcialAbonar = F.ImporteTotalAbonado
         Me.txtOtrosParcialAbonar = F.ImporteOtrosSaldo  'F.OtrosAbonado - F.OtrosAbonadoGlobal
         
-recalcularTotalFacturaelegida
+RecalcularTotalFacturaElegida
         
    '     vFactElegida.NetoGravadoAbonado = CDbl(Me.txtParcialAbonar)
       '    vFactElegida.ImporteTotalAbonado =    'vFactElegida.CalcularTotalAbonadoParcial(CDbl(Me.txtParcialAbonar))
@@ -2488,7 +2488,9 @@ If IsSomething(vFactElegida) Then
 '    End If
     
     MostrarPago vFactElegida
+    RecalcularFacturaElegida
 End If
+Totalizar
 
 End Sub
 
@@ -3075,19 +3077,25 @@ Private Sub txtOtrosDescuentos_LostFocus()
     Totalizar
 End Sub
 
-Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
-  If LenB(Me.txtOtrosParcialAbonar) > 0 And IsNumeric(Me.txtOtrosParcialAbonar) Then
+
+Public Sub RecalcularOtrosFacturaelegida()
+ If LenB(Me.txtOtrosParcialAbonar) > 0 And IsNumeric(Me.txtOtrosParcialAbonar) Then
 
         vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
-        recalcularTotalFacturaelegida
+        RecalcularTotalFacturaElegida
 
 
     End If
 
+End Sub
+
+Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
+ RecalcularOtrosFacturaelegida
+
     Totalizar
 End Sub
 
-Private Sub recalcularTotalFacturaelegida()
+Private Sub RecalcularTotalFacturaElegida()
     Me.txtTotalParcialAbonar = CDbl(txtParcialAbonar) + CDbl(Me.txtOtrosParcialAbonar)
        vFactElegida.TotalAbonado = CDbl(txtTotalParcialAbonar)
     
@@ -3107,8 +3115,12 @@ Private Sub txtOtrosParcialAbonar_LostFocus()
 End Sub
 
 Private Sub txtOtrosParcialAbonar_Validate(Cancel As Boolean)
-Cancel = CDbl(Me.txtOtrosParcialAbonar) > vFactElegida.ImporteOtrosSaldo Or Not IsNumeric(Me.txtOtrosParcialAbonar) Or CDbl(Me.txtOtrosParcialAbonar) < 0
+If Not IsNumeric(Me.txtOtrosParcialAbonar) Then
+ Cancel = True
+Else
 
+Cancel = CDbl(Me.txtOtrosParcialAbonar) > vFactElegida.ImporteOtrosSaldo Or Not IsNumeric(Me.txtOtrosParcialAbonar) Or CDbl(Me.txtOtrosParcialAbonar) < 0
+End If
 If Cancel Then
     Me.txtOtrosParcialAbonar.backColor = vbRed
     Me.txtOtrosParcialAbonar.ForeColor = vbWhite
@@ -3118,37 +3130,35 @@ Else
 End If
 End Sub
 
-Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
-  If LenB(txtParcialAbonar) > 0 And IsNumeric(txtParcialAbonar) Then
+
+Private Sub RecalcularFacturaElegida()
+RecalcularNetoGravadoFacturaElegida
+RecalcularOtrosFacturaelegida
+End Sub
+
+Private Sub RecalcularNetoGravadoFacturaElegida()
+ If LenB(txtParcialAbonar) > 0 And IsNumeric(txtParcialAbonar) Then
     
 
        vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
-        recalcularTotalFacturaelegida
+        RecalcularTotalFacturaElegida
     End If
+End Sub
+
+Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
+  RecalcularNetoGravadoFacturaElegida
     
 '
-'
-'        If CDbl(Me.txtParcialAbonar) + vFactElegida.TotalAbonadoGlobal > vFactElegida.Total Then
-'            MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
-'
-'         vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar) 'vFactElegida.Total - vFactElegida.TotalAbonadoGlobal + vFactElegida.ImporteTotalAbonado
-'            Me.txtParcialAbonar = vFactElegida.ImporteTotalAbonado
-'
-'        Else
-'            vFactElegida.ImporteTotalAbonado = CDbl(Me.txtParcialAbonar)
-'        End If
-'
-'
-'    Else
-'        vFactElegida.ImporteTotalAbonado = 0
-   ' End If
 
     Totalizar
 End Sub
 
 Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
+If Not IsNumeric(Me.txtParcialAbonar) Then
+Cancel = True
+Else
 Cancel = CDbl(Me.txtParcialAbonar) > vFactElegida.ImporteNetoGravadoSaldo Or Not IsNumeric(Me.txtParcialAbonar) Or CDbl(Me.txtParcialAbonar) < 0
-
+End If
 If Cancel Then
     Me.txtParcialAbonar.backColor = vbRed
     Me.txtParcialAbonar.ForeColor = vbWhite

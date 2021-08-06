@@ -61,14 +61,14 @@ End Property
 
 
 Public Property Get ImporteTotalSaldo()
- ImporteTotalSaldo = Total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente
+ ImporteTotalSaldo = funciones.FormatearDecimales(Total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente)
 End Property
 Public Property Get ImporteNetoGravadoSaldo()
-ImporteNetoGravadoSaldo = Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente 'Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente
+ImporteNetoGravadoSaldo = funciones.FormatearDecimales(Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente) 'Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente)
 End Property
 
 Public Property Get ImporteOtrosSaldo()
-ImporteOtrosSaldo = Me.TotalOtros - Me.OtrosAbonadoGlobal - Me.OtrosAbonadoGlobalPendiente
+ImporteOtrosSaldo = funciones.FormatearDecimales(Me.TotalOtros - Me.OtrosAbonadoGlobal - Me.OtrosAbonadoGlobalPendiente)
 End Property
 
 Public Property Get TotalOtros()
