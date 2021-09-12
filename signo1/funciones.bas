@@ -1,5 +1,5 @@
 Attribute VB_Name = "funciones"
-
+ 
 
 Public TareaAgregada As Boolean
 Public DescuentoDetalleFactura As Double
@@ -1123,9 +1123,9 @@ Public Function Redondear(dblntor As Double, Optional cntdecas As Integer) As Do
 End Function
 
 
-Public Function ImprimirLista(titulo, lst As ListView, CD As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
+Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
     On Error GoTo err91
-    CD.ShowPrinter
+    cd.ShowPrinter
 
     AnchoCol = 0
 
@@ -1221,10 +1221,10 @@ Public Sub ordenar_grilla(ByVal Column As GridEX20.JSColumn, GridEX1 As GridEX)
     'Add this new sortkey
     If SortOrder = jgexSortAscending Then
         'if the column was sorted in ascending order, sort the column in descending order
-        GridEX1.SortKeys.Add Column.Index, jgexSortDescending
+        GridEX1.SortKeys.Add Column.index, jgexSortDescending
     Else
         'if was sorted in descending order or not sorted, sort the column in ascending order
-        GridEX1.SortKeys.Add Column.Index, jgexSortAscending
+        GridEX1.SortKeys.Add Column.index, jgexSortAscending
     End If
 End Sub
 Public Sub FillComboBox(ByRef combo As ComboBox, ByRef col As Collection, ByRef propertyForShow As String, ByRef propertyForId As String, ByRef selectFirst As Boolean)
@@ -1382,7 +1382,7 @@ Public Function ListBoxHasCheckedItems(ByRef lst As ListBox) As Boolean
 End Function
 Public Function ValidarTextBox(text As TextBox, ByRef Cancel)
     Cancel = Not IsNumeric(text)
-    text.BackColor = IIf(Cancel, vbRed, &H80000005)
+    text.backColor = IIf(Cancel, vbRed, &H80000005)
 End Function
 
 
