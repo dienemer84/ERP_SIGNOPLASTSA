@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminCobranzasNuevoRecibo 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -846,7 +846,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   59703297
+         Format          =   16842753
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -1128,11 +1128,11 @@ Private Sub Totalizar()
     Me.lblTotalRecibido.caption = "Total Recibido: " & funciones.FormatearDecimales(totalCancelado)
 
     If totalCancelado < totalRecibo Then
-        lblTotalRecibo.BackColor = vbRed
+        lblTotalRecibo.backColor = vbRed
     ElseIf totalCancelado = totalRecibo Then
-        lblTotalRecibo.BackColor = vbYellow
+        lblTotalRecibo.backColor = vbYellow
     ElseIf totalCancelado > totalRecibo Then
-        lblTotalRecibo.BackColor = vbGreen
+        lblTotalRecibo.backColor = vbGreen
     End If
 
     Me.lblDiferencia.caption = Me.lblDiferencia.Tag & funciones.FormatearDecimales(totalCancelado - MonedaConverter.Convertir(totalRecibo, recibo.moneda.id, DAOMoneda.MONEDA_PESO_ID))

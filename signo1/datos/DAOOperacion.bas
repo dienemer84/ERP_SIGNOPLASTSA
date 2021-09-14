@@ -110,7 +110,7 @@ Public Function Save(ope As operacion) As Boolean
     q = Replace(q, "'comprobante'", "'-'")
     Else
     
-q = Replace(q, "'comprobante'", ope.Comprobante)
+q = Replace(q, "'comprobante'", conectar.Escape(ope.Comprobante))
 End If
     If ope.Pertenencia = Banco Then
         q = Replace(q, "'cuentabanc_o_caja_id'", conectar.GetEntityId(ope.CuentaBancaria))
