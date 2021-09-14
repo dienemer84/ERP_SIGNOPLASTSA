@@ -1039,10 +1039,12 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
     Exit Function
 err5:
 
+conectar.RollBackTransaction
+
 If Err.Number = 110011 Or Err.Number = 110012 Or Err.Number = 110013 Then
     Err.Raise Err.Number, , Err.Description
 Else
-    conectar.RollBackTransaction
+    'conectar.RollBackTransaction
     aprobarV2 = False
     Factura.CambioAPatron = CambioAnterior
     Factura.FechaAprobacion = 0
