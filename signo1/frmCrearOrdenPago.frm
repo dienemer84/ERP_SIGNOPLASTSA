@@ -1429,7 +1429,7 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
-    Me.GridCajas.AllowEdit = Not ReadOnly
+    Me.gridCajas.AllowEdit = Not ReadOnly
     'Me.gridCajas.AllowDelete = Not ReadOnly
 
     Me.gridChequeras.AllowEdit = Not ReadOnly
@@ -1896,7 +1896,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1906,7 +1906,7 @@ Private Sub Form_Load()
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.GridCajas.ItemCount = Cajas.count
+    Me.gridCajas.ItemCount = Cajas.count
 
     Set monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = monedas.count
@@ -1955,7 +1955,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
@@ -2038,9 +2038,9 @@ Private Sub MostrarFacturas()
          Dim c As Collection
             Set c = DAOOrdenPago.FindAbonadoPendiente(Factura.id, OrdenPago.id)
              
-             Factura.TotalAbonadoGlobalPendiente = c(1) 'que esta en ops sin aprobar
-                 Factura.NetoGravadoAbonadoGlobalPendiente = c(2)
-                   Factura.OtrosAbonadoGlobalPendiente = c(3)
+             Factura.TotalAbonadoGlobalPendiente = 0 ' c(1) 'que esta en ops sin aprobar
+                 Factura.NetoGravadoAbonadoGlobalPendiente = 0 ' c(2)
+                   Factura.OtrosAbonadoGlobalPendiente = 0 'c(3)
         
         
         
@@ -2548,6 +2548,7 @@ Sub calcularOrigenes()
     For i = 0 To Me.lstFacturas.ListCount - 1
         If Me.lstFacturas.Checked(i) Then
 
+        
             If funciones.BuscarEnColeccion(colFacturas, CStr(Me.lstFacturas.ItemData(i))) Then
                     
                   
@@ -2603,6 +2604,17 @@ Sub calcularOrigenes()
 End Sub
 
 
+Sub limpiarParciales()
+    Me.txtParcialAbonado = 0
+    Me.txtParcialAbonar = 0
+    Me.txtOtrosParcialAbonado = 0
+    Me.txtOtrosParcialAbonar = 0
+    Me.txtTotalParcialAbonado = 0
+    Me.txtTotalParcialAbonar = 0
+    
+    
+End Sub
+
 Private Sub lstFacturas_ItemCheck(ByVal item As Long)
 
 
@@ -2611,7 +2623,26 @@ If item < -1 Then
                      Set f1 = DAOFacturaProveedor.FindById(CStr(Me.lstFacturas.ItemData(item)))
                '  colFacturas.item(CStr(Me.lstFacturas.ItemData(i))) =
 End If
+
+
 calcularOrigenes
+
+
+If lstFacturas.ListCount > 0 And item > -1 Then
+    
+    Dim x As Integer
+    
+    
+    Me.txtParcialAbonado.Enabled = lstFacturas.Checked(item)
+        Me.txtParcialAbonar.Enabled = lstFacturas.Checked(item)
+        Me.txtOtrosParcialAbonado.Enabled = lstFacturas.Checked(item)
+        Me.txtOtrosParcialAbonar.Enabled = lstFacturas.Checked(item)
+        Me.txtTotalParcialAbonado.Enabled = lstFacturas.Checked(item)
+        Me.txtTotalParcialAbonar.Enabled = lstFacturas.Checked(item)
+    
+   
+    
+End If
 '    Dim i As Long
 '    Dim col As New Collection
 '    For i = 0 To Me.lstFacturas.ListCount - 1
@@ -3192,11 +3223,13 @@ End Sub
 
 
 Private Sub txtTotalParcialAbonar_Change()
- If CDbl(Me.txtTotalParcialAbonar) > vFactElegida.ImporteTotalSaldo Or CDbl(Me.txtParcialAbonar) < 0 Then
-              Me.txtTotalParcialAbonar.backColor = vbRed
-    Me.txtTotalParcialAbonar.ForeColor = vbWhite
-Else
-    Me.txtTotalParcialAbonar.backColor = vbWhite
-    Me.txtTotalParcialAbonar.ForeColor = vbBlack
+ If IsSomething(vFactElegida) Then
+     If CDbl(Me.txtTotalParcialAbonar) > vFactElegida.ImporteTotalSaldo Or CDbl(Me.txtParcialAbonar) < 0 Then
+                  Me.txtTotalParcialAbonar.backColor = vbRed
+        Me.txtTotalParcialAbonar.ForeColor = vbWhite
+    Else
+        Me.txtTotalParcialAbonar.backColor = vbWhite
+        Me.txtTotalParcialAbonar.ForeColor = vbBlack
+    End If
 End If
 End Sub
