@@ -229,7 +229,12 @@ Public Property Get StringDiasAtraso() As String
         If Me.Saldado = SaldadoParcial Or Me.Saldado = NoSaldada Then
             StringDiasAtraso = atraso & " Días"
         Else
-            StringDiasAtraso = "Saldada"
+            If Me.Saldado = notaCreditoParcial Then
+                StringDiasAtraso = "Saldada NC parcial"
+            Else
+            
+                StringDiasAtraso = "Saldada"
+            End If
         End If
 
         If atraso < 0 And Me.estado <> EstadoFacturaCliente.Aprobada Then
