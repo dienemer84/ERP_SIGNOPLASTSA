@@ -3137,7 +3137,11 @@ Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub RecalcularTotalFacturaElegida()
-    Me.txtTotalParcialAbonar = CDbl(txtParcialAbonar) + CDbl(Me.txtOtrosParcialAbonar)
+    Me.txtTotalParcialAbonar = (CDbl(txtParcialAbonar)) + (CDbl(Me.txtOtrosParcialAbonar))
+    
+    If Me.txtTotalParcialAbonar = "0" Then Me.txtTotalParcialAbonar = "0.00"
+
+    
        vFactElegida.TotalAbonado = CDbl(txtTotalParcialAbonar)
     
 End Sub
