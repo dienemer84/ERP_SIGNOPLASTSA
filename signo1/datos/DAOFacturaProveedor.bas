@@ -20,7 +20,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
         '#209
   If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
    MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar o eliminar.", vbCritical
-   Exit Function
+    Exit Function
   End If
 
     '#209
@@ -110,19 +110,22 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     
     Set fc = DAOFacturaProveedor.FindById(fc.id)
     
-         '#209
-      If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
-   MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar.", vbCritical
-   Exit Function
-  End If
-
-    '#209
-    Dim fecha_liqui_max As Date
-    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
-    If fc.FEcha <= fecha_liqui_max Then
-        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
-        Exit Function
-    End If
+    
+    
+    'remuevo task 209 en aprobación por rechazo de tarea.
+'         '#209
+'      If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
+'   MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar.", vbCritical
+'   Exit Function
+'  End If
+'
+'    '#209
+'    Dim fecha_liqui_max As Date
+'    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
+'    If fc.FEcha <= fecha_liqui_max Then
+'        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
+'        Exit Function
+'    End If
     
     Set cn = conectar.obternerConexion
     On Error GoTo err121
