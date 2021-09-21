@@ -52,7 +52,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60227585
+         Format          =   63438849
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60227585
+         Format          =   63438849
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60227585
+         Format          =   63438849
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60227585
+         Format          =   63438849
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   60227585
+         Format          =   63438849
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -2163,6 +2163,8 @@ Private Sub Form_Load()
     End If
 
     If EsAnticipo Or Factura.EsAnticipo Then
+    
+        Me.caption = "Anticipo " & Me.caption
         Me.gridDetalles.Columns(1).EditType = jgexEditNone
         Me.gridDetalles.AllowDelete = False
         Factura.origenFacturado = OrigenFacturadoAnticipoOT
@@ -2538,6 +2540,10 @@ End Sub
 
 Private Sub gridDetalles_AfterUpdate()
     ActualizarCantDetalles
+End Sub
+
+Private Sub gridDetalles_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
+
 End Sub
 
 Private Sub gridDetalles_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
