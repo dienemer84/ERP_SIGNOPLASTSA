@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEmitidas 
    BackColor       =   &H00C0C0C0&
@@ -407,7 +407,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   285
          Left            =   5880
          TabIndex        =   38
-         Top             =   360
+         Top             =   758
          Width           =   675
          _Version        =   786432
          _ExtentX        =   1191
@@ -456,7 +456,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   285
          Left            =   6000
          TabIndex        =   29
-         Top             =   720
+         Top             =   360
          Width           =   555
          _Version        =   786432
          _ExtentX        =   979
@@ -927,7 +927,7 @@ Private Sub Form_Load()
     DAOPuntoVenta.llenarComboXtremeSuite Me.cboPuntosVenta, False
     
     cboEstados.Clear
-    cboEstados.AddItem "Pendientes"
+    cboEstados.AddItem "En Edición"
     cboEstados.ItemData(cboEstados.NewIndex) = 1
     cboEstados.AddItem "Aprobadas"
     cboEstados.ItemData(cboEstados.NewIndex) = 2
@@ -943,7 +943,7 @@ Private Sub Form_Load()
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 2
     cboEstadosSaldada.AddItem "Cancelado total por NC"
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 3
-   cboEstadosSaldada.AddItem "Cancelado parcial por NC"
+    cboEstadosSaldada.AddItem "Cancelado parcial por NC"
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 3
     
     
