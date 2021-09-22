@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasListaFCProveedor 
    Appearance      =   0  'Flat
@@ -525,15 +525,16 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   5280
+      Height          =   5640
       Left            =   120
       TabIndex        =   0
-      Top             =   2400
+      Top             =   1920
       Width           =   23700
       _ExtentX        =   41804
-      _ExtentY        =   9313
+      _ExtentY        =   9948
       Version         =   "2.0"
       PreviewRowIndent=   100
+      ScrollToolTips  =   -1  'True
       DefaultGroupMode=   1
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
