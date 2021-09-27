@@ -389,13 +389,13 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
 
     'VALIDAR BIEN LOS TOTALES ANTES DE PODER APROBAR
     'verificar que las facturas esten todas aprobadsa...
-    Dim f As clsFacturaProveedor
+    Dim F As clsFacturaProveedor
     Dim nopago As Double
     Dim esf As EstadoFacturaProveedor
-    For Each f In op.FacturasProveedor
+    For Each F In op.FacturasProveedor
         
             Dim fac As clsFacturaProveedor
-            Set fac = DAOFacturaProveedor.FindById(f.id)
+            Set fac = DAOFacturaProveedor.FindById(F.id)
             
             If fac.estado = EstadoFacturaProveedor.EnProceso Then
                 Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"
@@ -405,7 +405,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
             
            Set x = DAOOrdenPago.FindAbonadoPendienteEnEstaOP(fac.id, op.id)
             
-             nopago = fac.Total - fac.TotalAbonadoGlobal - (x(1) + x(2) + x(3))
+             nopago = fac.Total - fac.TotalAbonadoGlobal - funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
             esf = EstadoFacturaProveedor.Aprobada
             
             If nopago < 0 Then
@@ -417,7 +417,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
                 esf = EstadoFacturaProveedor.Saldada
             End If
                conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & fac.id
-    Next f
+    Next F
 
 
 
@@ -1201,14 +1201,14 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontBold = False
     Printer.FontSize = 8
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
-    Dim f As clsFacturaProveedor
+    Dim F As clsFacturaProveedor
     Dim facs As New Collection
     c = 0
-    For Each f In Orden.FacturasProveedor
+    For Each F In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print f.NumeroFormateado & String$(8, " del ") & f.FEcha & String$(8, " por ") & f.moneda.NombreCorto & " " & f.Total
-    Next f
+        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
+    Next F
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"

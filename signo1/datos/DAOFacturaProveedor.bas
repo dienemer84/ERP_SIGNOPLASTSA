@@ -447,7 +447,8 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     op.FacturasProveedor.Add fac
     fac.TotalAbonado = fac.Total
     fac.TipoCambio = 1
-  
+    fac.NetoGravadoAbonado = fac.NetoGravado
+    fac.OtrosAbonado = fac.Total - fac.NetoGravado
     
     op.FEcha = fechaPago
     op.estado = EstadoOrdenPago_pendiente
