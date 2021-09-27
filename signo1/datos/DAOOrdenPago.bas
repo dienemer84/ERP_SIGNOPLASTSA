@@ -1,6 +1,45 @@
 Attribute VB_Name = "DAOOrdenPago"
 Option Explicit
 
+
+Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Collection
+
+Dim q As String
+
+q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & "),0 ) AS total_pendiente, " _
+    & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & "),0 ) AS netogravado_pendiente, " _
+     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & "),0 ) AS otros_pendiente "
+
+'q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+'    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS total_pendiente, " _
+'    & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+'    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS netogravado_pendiente, " _
+'     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
+'    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS otros_pendiente "
+
+
+
+Dim rs As Recordset
+ Set rs = conectar.RSFactory(q)
+
+Dim tot As Double, ng As Double, Otros As Double
+tot = rs!total_pendiente
+ng = rs!netogravado_pendiente
+Otros = rs!otros_pendiente
+
+Dim c As New Collection
+c.Add tot
+c.Add ng
+c.Add Otros
+Set FindAbonadoPendienteEnEstaOP = c
+End Function
+
+
+
+
 Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
 
 Dim q As String
@@ -97,11 +136,11 @@ Public Function FindAllByProveedor(provid As Long, Optional cond As String, Opti
 
     If soloOp Then
         Set FindAllByProveedor = FindAllSoloOP(q)
-        Debug.Print FindAllByProveedor.count
+      '  Debug.Print FindAllByProveedor.count
 
     Else
         Set FindAllByProveedor = FindAll(q)
-        Debug.Print FindAllByProveedor.count
+      '  Debug.Print FindAllByProveedor.count
     End If
 End Function
 
@@ -334,9 +373,8 @@ End Function
 
 
 Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Boolean
-    'VALIDAR BIEN LOS TOTALES ANTES DE PODER APROBAR
+  
 
-'verificar que las facturas esten todas aprobadsa...
 
     On Error GoTo err1
     If insideTransaction Then conectar.BeginTransaction
@@ -348,6 +386,41 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     If Not IsSomething(op) Then
         GoTo err1
     End If
+
+    'VALIDAR BIEN LOS TOTALES ANTES DE PODER APROBAR
+    'verificar que las facturas esten todas aprobadsa...
+    Dim f As clsFacturaProveedor
+    Dim nopago As Double
+    Dim esf As EstadoFacturaProveedor
+    For Each f In op.FacturasProveedor
+        
+            Dim fac As clsFacturaProveedor
+            Set fac = DAOFacturaProveedor.FindById(f.id)
+            
+            If fac.estado = EstadoFacturaProveedor.EnProceso Then
+                Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"
+            End If
+            
+            Dim x
+            
+           Set x = DAOOrdenPago.FindAbonadoPendienteEnEstaOP(fac.id, op.id)
+            
+             nopago = fac.Total - fac.TotalAbonadoGlobal - (x(1) + x(2) + x(3))
+            esf = EstadoFacturaProveedor.Aprobada
+            
+            If nopago < 0 Then
+                Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
+            End If
+             If nopago > 0 Then
+                esf = EstadoFacturaProveedor.pagoParcial
+            Else
+                esf = EstadoFacturaProveedor.Saldada
+            End If
+               conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & fac.id
+    Next f
+
+
+
 
 
     If op.estado = EstadoOrdenPago_pendiente Then
@@ -392,13 +465,13 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
    
 
 
-            Dim fac As clsFacturaProveedor
-            For Each fac In op.FacturasProveedor
-                If fac.estado = EstadoFacturaProveedor.Saldada Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac, "SALDADA") Then GoTo err1
+            Dim fac1 As clsFacturaProveedor
+            For Each fac1 In op.FacturasProveedor
+                If fac1.estado = EstadoFacturaProveedor.Saldada Then
+                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "SALDADA") Then GoTo err1
                 End If
-                If fac.estado = EstadoFacturaProveedor.pagoParcial Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac, "PAGO PARCIAL") Then GoTo err1
+                If fac1.estado = EstadoFacturaProveedor.pagoParcial Then
+                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "PAGO PARCIAL") Then GoTo err1
                 End If
             Next
 
@@ -606,7 +679,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             
             'If op.estado = EstadoOrdenPago_Aprobada Then
             
-            
+             'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
             es = EstadoFacturaProveedor.Aprobada
              If nopago > 0 Then
                 es = EstadoFacturaProveedor.pagoParcial
@@ -1128,14 +1201,14 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontBold = False
     Printer.FontSize = 8
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
-    Dim F As clsFacturaProveedor
+    Dim f As clsFacturaProveedor
     Dim facs As New Collection
     c = 0
-    For Each F In Orden.FacturasProveedor
+    For Each f In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
-    Next F
+        Printer.Print f.NumeroFormateado & String$(8, " del ") & f.FEcha & String$(8, " por ") & f.moneda.NombreCorto & " " & f.Total
+    Next f
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"

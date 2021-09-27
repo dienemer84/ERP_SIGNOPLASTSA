@@ -237,7 +237,7 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     For Each Orden In ordenes
         'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
 
-        'If Orden.estado = EstadoOrdenPago_Aprobada Then
+       ' If Orden.estado <> EstadoOrdenPago_Anulada Then
             Set detalle = New DTODetalleCuentaCorriente
             detalle.Comprobante = "OP-" & Orden.id
             
@@ -245,13 +245,26 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
             If (Orden.estado = EstadoOrdenPago_pendiente) Then
                 detalle.Comprobante = detalle.Comprobante & " (Pendiente)"
             End If
+            
+            If (Orden.estado = EstadoOrdenPago_Anulada) Then
+                detalle.Comprobante = detalle.Comprobante & " (Anulada)"
+            End If
+            
             detalle.tipoComprobante = OrdenPago_
             detalle.IdComprobante = Orden.id
 
+            If (Orden.estado = EstadoOrdenPago_Anulada) Then
+            
+                    detalle.Haber = 0
+            Else
+            
+            
             detalle.Haber = funciones.RedondearDecimales(Orden.TotalOrdenPago)          '.StaticTotalFacturas + Orden.TotalCompensatorios)
+            End If
             detalle.FEcha = Orden.FEcha
+            
             Detalles.Add detalle
-      '  End If
+      ' End If
     Next Orden
 
     Dim facturas As Collection
@@ -260,7 +273,7 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     Dim cond2 As String
 
     Dim qq As String
-    cond2 = "AdminComprasFacturasProveedores.id_proveedor = " & id_proveedor & " AND AdminComprasFacturasProveedores.estado IN (" & EstadoFacturaProveedor.Aprobada & ", " & EstadoFacturaProveedor.Saldada & ") and  AdminComprasFacturasProveedores.fecha > " & max_desde
+    cond2 = "AdminComprasFacturasProveedores.id_proveedor = " & id_proveedor & " AND AdminComprasFacturasProveedores.estado IN (" & EstadoFacturaProveedor.Aprobada & ", " & EstadoFacturaProveedor.Saldada & ", " & EstadoFacturaProveedor.pagoParcial & ") and  AdminComprasFacturasProveedores.fecha > " & max_desde
     If LenB(condicion) > 0 Then
         cond2 = cond2 & " and AdminComprasFacturasProveedores.fecha<=" & condicion
     End If
@@ -270,8 +283,20 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     For Each fac In facturas
         Set detalle = New DTODetalleCuentaCorriente
         detalle.Comprobante = fac.NumeroFormateado
+        '#234
+        If fac.estado = pagoParcial Then
+            detalle.Comprobante = fac.NumeroFormateado & " (P.Parcial)"
+        Else
+            detalle.Comprobante = fac.NumeroFormateado
+        End If
+        
         detalle.tipoComprobante = TipoComprobanteUsado.FacturaProveedor_
         detalle.IdComprobante = fac.id
+        
+        If InStr(fac.OrdenesPagoId, ",") > 0 Then
+          detalle.Comprobante = detalle.Comprobante & " (Ops." & fac.OrdenesPagoId & ")"
+       Else
+        
         If fac.OrdenPagoId > 0 Then
             If BuscarEnColeccion(ordenes, CStr(fac.OrdenPagoId)) Then
                 detalle.Comprobante = detalle.Comprobante & " (Op." & fac.OrdenPagoId & " " & ordenes.item(CStr(fac.OrdenPagoId)).FEcha & ")"
@@ -282,7 +307,7 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
             End If
 
         End If
-
+    End If
 
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
             detalle.Haber = fac.Total
