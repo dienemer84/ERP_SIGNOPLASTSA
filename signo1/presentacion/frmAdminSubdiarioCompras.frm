@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminSubdiarioCompras 
    Caption         =   "Subdiario IVA Compras"
@@ -694,12 +694,8 @@ End Sub
 
 Private Sub btnExportar_Click()
 
-    If IsSomething(Factura) Then
-        If Not DAOSubdiarios.ExportaSubDiarioCompras(Factura) Then GoTo err1
-    End If
-    Exit Sub
-err1:
-    MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
+    ExportaSubDiarioCompras
+
 End Sub
 
 
@@ -1199,166 +1195,214 @@ Private Sub CargarLiquidaciones()
 End Sub
 
 
-'Public Function ExportaSubDiarioVentas() As Boolean
-'  '  If Not rdoLiquidacion.value Then Exit Function
-'
-'    On Error GoTo errEXCEL
-'    Dim xlb As New Excel.Workbook
-'    Dim xla As New Excel.Worksheet
-'    Dim xls As New Excel.Application
-'
-'    Dim A As String
-'    Dim b As String
-'    Dim offset As Long
-'    Dim strMsg As String
-'    Dim CDLGMAIN As CommonDialog
-'    Dim sFilter As String
-'
-'
-'    Set xlb = xls.Workbooks.Add
-'    Set xla = xlb.Worksheets.Add
-'    xla.Activate
-'
-'
-'    With xla
-'
-'        .Range("A1:Q1").Merge
-'        .Range("A2:Q2").Merge
-'        .Range("A1:Q3").HorizontalAlignment = xlHAlignCenter
-'        .Range("A1:Q2").Font.Bold = True
-'        .Range("A3:Q2").Font.Bold = True
-'
-'
-'        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario compras" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
-'
-'        Dim desde As Date
-'        Dim hasta As Date
-'        If Me.rdoRangoFechas.value Then
-'            desde = Me.dtpDesde.value
-'            hasta = Me.dtpHasta.value
-'        Else
-'            Dim liq As LiquidacionSubdiarioVenta
+Public Function ExportaSubDiarioCompras() As Boolean
+    On Error GoTo errEXCEL
+    Dim xlb As New Excel.Workbook
+    Dim xla As New Excel.Worksheet
+    Dim xls As New Excel.Application
+
+    Dim A As String
+    Dim b As String
+    Dim offset As Long
+    Dim strMsg As String
+    Dim CDLGMAIN As CommonDialog
+    Dim sFilter As String
+
+
+    Set xlb = xls.Workbooks.Add
+    Set xla = xlb.Worksheets.Add
+    xla.Activate
+
+
+    With xla
+
+        .Range("A1:af1").Merge
+        .Range("A2:af2").Merge
+        .Range("A1:af3").HorizontalAlignment = xlHAlignCenter
+        .Range("A1:af2").Font.Bold = True
+        .Range("A3:af2").Font.Bold = True
+
+
+        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario compras" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
+
+        Dim desde As Date
+        Dim hasta As Date
+        If Me.rdoRangoFechas.value Then
+            desde = Me.dtpDesde.value
+            hasta = Me.dtpHasta.value
+        Else
+'            Dim liq As LiquidacionSubdiarioCompra
 '            Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
 '            desde = liq.desde
 '            hasta = liq.hasta
-'        End If
+        End If
+
+        .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+        .Range("A3:af3").Interior.Color = &HC0C0C0
+
+
+        Dim Column As JSColumn
+        Dim x As Integer
+
+        For Each Column In Me.GridEX1.Columns
+            x = x + 1
+            .Cells(3, x).value = Column.caption
+        Next Column
+
+        .Columns("f").HorizontalAlignment = xlHAlignRight
+        .Columns("g").HorizontalAlignment = xlHAlignRight
+        .Columns("h").HorizontalAlignment = xlHAlignRight
+        .Columns("i").HorizontalAlignment = xlHAlignRight
+
+        .Columns("a").HorizontalAlignment = xlHAlignCenter
+        .Columns("b").HorizontalAlignment = xlHAlignCenter
+        .Columns("d").HorizontalAlignment = xlHAlignCenter
+        .Columns("e").HorizontalAlignment = xlHAlignCenter
+
+        .Columns("j").HorizontalAlignment = xlHAlignRight
+
+        .Columns("a").ColumnWidth = 10
+        .Columns("b").ColumnWidth = 8
+        .Columns("c").ColumnWidth = 35
+        .Columns("d").ColumnWidth = 13
+        .Columns("e").ColumnWidth = 15
+        .Columns("f").ColumnWidth = 13
+        .Columns("g").ColumnWidth = 13
+        .Columns("h").ColumnWidth = 13
+        .Columns("i").ColumnWidth = 13
+        .Columns("j").ColumnWidth = 15
+
+
+
+        Dim Total As Double
+        Dim totnetog As Double
+        Dim totIV As Double
+        Dim totperi As Double
+        Dim totexen As Double
+        Total = 0
+        totnetog = 0
+        totIV = 0
+        totperi = 0
+        totexen = 0
+
+        x = 1
+
+        For Each item In col
+
+                .Cells(x + 3, 1).value = item.FEcha
+                .Cells(x + 3, 2).value = item.Comprobante
+                .Cells(x + 3, 3).value = item.RazonSocial
+                .Cells(x + 3, 4).value = item.Cuit
+                .Cells(x + 3, 5).value = item.CondicionIva
+
+
+'                .Cells(x + 3, 6).value = item.NetoGravado
+'                .Cells(x + 3, 7).value = item.Iva
+'                .Cells(x + 3, 8).value = item.percepciones
+'                .Cells(x + 3, 9).value = item.Exento
+'                .Cells(x + 3, 10).value = item.Total
+
+                .Cells(x + 3, 14).value = item.percepciones
+                
+                
+'                            If BuscarEnColeccion(item.ListaPercepciones, CStr(per.id)) Then
+'                Values(Me.GridEX1.Columns.item("per_" & per.id).index) = funciones.FormatearDecimales(item.ListaPercepciones(CStr(per.id)).Monto)
+'            Else
+'                Values(Me.GridEX1.Columns.item("per_" & per.id).index) = 0
+'            End If
 '
-'        .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
-'        .Range("A3:Q3").Interior.Color = &HC0C0C0
-'
-'
-'        Dim Column As JSColumn
-'        Dim x As Integer
-'
-'        For Each Column In Me.GridEX1.Columns
-'            x = x + 1
-'            .Cells(3, x).value = Column.caption
-'        Next Column
-'
-'
-'        x = 1
-'        For Each item In liq.Detalles
-'            .Cells(x + 3, 1).value = item.FEcha
-'            .Cells(x + 3, 2).value = item.Comprobante
-'            .Cells(x + 3, 3).value = item.RazonSocial
-'            .Cells(x + 3, 4).value = item.Cuit
-'            .Cells(x + 3, 5).value = item.CondicionIva
-'            .Cells(x + 3, 6).value = item.NetoGravado
-'
-'
-'            .Cells(x + 3, 7).value = item.NetosGravado(CStr(27))
-'            .Cells(x + 3, 8).value = item.AlicuotasIva(CStr(27))
-'
-'            .Cells(x + 3, 9).value = item.NetosGravado(CStr(21))
-'            .Cells(x + 3, 10).value = item.AlicuotasIva(CStr(21))
-'
-'            .Cells(x + 3, 11).value = item.NetosGravado(CStr(11))
-'            .Cells(x + 3, 12).value = item.AlicuotasIva(CStr(11))
-'
-'            .Cells(x + 3, 13).value = item.Exento
-'            .Cells(x + 3, 14).value = item.percepciones
-'
-'            '.Cells(x + 3, 15).value = item.PercepcionesIVA
-'            .Cells(x + 3, 16).value = item.ImpuestoInterno
-'            .Cells(x + 3, 17).value = item.Total
-'
-'            x = x + 1
-'        Next item
-'
-'        A = "Q" & x + 2
-'        offset = x + 3
-'        b = "Q" & offset
-'        .Range("f1", b).NumberFormat = "0.00"
-'        .Range("a1", A).Borders.LineStyle = xlContinuous
-'
-'        .Range("f" & x + 3, b).Interior.Color = &HC0C0C0
-'        .Range("f" & x + 3, b).Borders.LineStyle = xlContinuous
-'        .Range("f" & x + 3, b).Font.Bold = True
-'
-'
-'        .Cells(offset, 5).value = "Totales"
-'        .Range(.Cells(offset, 6), .Cells(offset, 6)).Formula = "=SUM(F3:F" & x + 2 & ")"    'totales.Item(PosicionTotales.TotNetoGravado)
-'        .Range(.Cells(offset, 7), .Cells(offset, 7)).Formula = "=SUM(G3:G" & x + 2 & ")"    'totalesIva.Item(CStr(27))
-'        .Range(.Cells(offset, 8), .Cells(offset, 8)).Formula = "=SUM(H3:H" & x + 2 & ")"    'totalesIva.Item(CStr(21))
-'        .Range(.Cells(offset, 9), .Cells(offset, 9)).Formula = "=SUM(I3:I" & x + 2 & ")"    'totalesIva.Item(CStr(10.5))
-'        .Range(.Cells(offset, 10), .Cells(offset, 10)).Formula = "=SUM(J3:J" & x + 2 & ")"    'totales.Item(PosicionTotales.TotExento)
-'        .Range(.Cells(offset, 11), .Cells(offset, 11)).Formula = "=SUM(K3:K" & x + 2 & ")"    'totales.Item(PosicionTotales.TotPercepIB)
-'        .Range(.Cells(offset, 12), .Cells(offset, 12)).Formula = "=SUM(L3:L" & x + 2 & ")"    'totales.Item(PosicionTotales.TotPercepIVA)
-'        .Range(.Cells(offset, 13), .Cells(offset, 13)).Formula = "=SUM(M3:M" & x + 2 & ")"    'totales.Item(PosicionTotales.TotImpuestoInterno)
-'        .Range(.Cells(offset, 14), .Cells(offset, 14)).Formula = "=SUM(N3:N" & x + 2 & ")"    'totales.Item(PosicionTotales.TotTot)
-'        .Range(.Cells(offset, 15), .Cells(offset, 15)).Formula = "=SUM(O3:O" & x + 2 & ")"    'totales.Item(PosicionTotales.TotTot)
-'        .Range(.Cells(offset, 16), .Cells(offset, 16)).Formula = "=SUM(P3:P" & x + 2 & ")"    'totales.Item(PosicionTotales.TotTot)
-'        .Range(.Cells(offset, 17), .Cells(offset, 17)).Formula = "=SUM(Q3:Q" & x + 2 & ")"    'totales.Item(PosicionTotales.TotTot)
-'
-'        Set CDLGMAIN = frmPrincipal.cd
-'
-'        sFilter = "Hoja de Calculo|*.xls"
-'        CDLGMAIN.filter = sFilter
-'
-'        Dim Periodo As String
-'        Periodo = 1
-'        Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
-'
-'        Dim archi As String
-'        archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-'        frmPrincipal.cd.CancelError = True
-'        CDLGMAIN.filename = archi
-'        CDLGMAIN.ShowSave
-'
-'        If CDLGMAIN.filename <> Empty Then
-'            xla.SaveAs (CDLGMAIN.filename)
-'            strMsg = "Los datos del reporte se han guardado en un archivo: " & vbCrLf & vbCrLf
-'            strMsg = strMsg & CDLGMAIN.filename
-'            MsgBox strMsg, vbInformation + vbOKOnly, "Hoja de calculo guardada"
-'            archi = CDLGMAIN.filename
-'        Else
-'            ExportaSubDiarioVentas = False
-'        End If
-'        xlb.Saved = True
-'        xlb.Close
-'
-'        xls.Quit
-'        Set xls = Nothing
-'        Set xla = Nothing
-'        Set xlb = Nothing
-'
-'        ExportaSubDiarioVentas = True
-'
-'    End With
-'    Exit Function
-'errEXCEL:
-'    If Err.Number = -2147221080 Then
-'        ExportaSubDiarioVentas = False
-'    Else
-'        'Resume
-'        MsgBox "Se produjo un error. No se graban los cambios", vbCritical, "Error"
-'        ExportaSubDiarioVentas = False
-'    End If
-'    xlb.Saved = True
-'    xlb.Close
-'    Set xls = Nothing
-'    Set xla = Nothing
-'    Set xlb = Nothing
-'
-'End Function
+            
+            x = x + 1
+        Next item
+
+
+        A = "af" & x + 2
+        offset = x + 3
+        b = "af" & offset
+        .Range("f1", b).NumberFormat = "0.00"
+        .Range("a1", A).Borders.LineStyle = xlContinuous
+
+        .Range("f" & x + 3, b).Interior.Color = &HC0C0C0
+        .Range("f" & x + 3, b).Borders.LineStyle = xlContinuous
+        .Range("f" & x + 3, b).Font.Bold = True
+
+'        .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
+'        .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
+'        .Cells(offset, 8).value = totales.item(PosicionTotales.totPercep)
+'        .Cells(offset, 7).value = totales.item(PosicionTotales.totIva)
+        .Cells(offset, 6).value = totales.item(PosicionTotales.TotNetoGravado)
+        .Cells(offset, 5).value = "Totales"
+
+
+
+
+
+        
+        strMsg = "Se han transportado los datos correctamente"
+        strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
+        strMsg = strMsg & vbCrLf & vbCrLf
+        strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
+        Set CDLGMAIN = frmPrincipal.CD
+
+
+
+        '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
+        sFilter = "Hoja de Calculo|*.xls"
+        CDLGMAIN.filter = sFilter
+
+        Dim Periodo As String
+        Periodo = 1
+        Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
+
+        Dim archi As String
+        archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
+        frmPrincipal.CD.CancelError = True
+        CDLGMAIN.filename = archi
+        CDLGMAIN.ShowSave
+
+        If CDLGMAIN.filename <> Empty Then
+            xla.SaveAs (CDLGMAIN.filename)
+            strMsg = "Los datos del reporte se han guardado en un archivo: " & vbCrLf & vbCrLf
+            strMsg = strMsg & CDLGMAIN.filename
+            MsgBox strMsg, vbInformation + vbOKOnly, "Hoja de calculo guardada"
+            archi = CDLGMAIN.filename
+        Else
+            ExportaSubDiarioCompras = False
+        End If
+        xlb.Saved = True
+        
+        'xlb.Close
+        
+        xls.Visible = True 'NO MUESTRO LA HOJA XLS
+
+        'xls.Quit
+        
+        Set xls = Nothing
+        Set xla = Nothing
+        Set xlb = Nothing
+
+        '    End If
+        ExportaSubDiarioCompras = True
+
+
+
+    End With
+    Exit Function
+errEXCEL:
+    If Err.Number = -2147221080 Then
+        ExportaSubDiarioCompras = False
+    Else
+        ' Resume
+        MsgBox "Se produjo un error. No se graban los cambios", vbCritical, "Error"
+        ExportaSubDiarioCompras = False
+    End If
+    xlb.Saved = True
+    xlb.Close
+    Set xls = Nothing
+    Set xla = Nothing
+    Set xlb = Nothing
+
+End Function
+
+
 
