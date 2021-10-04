@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminSubdiariosVentasv2 
    Caption         =   "Subdiario de Ventas"
    ClientHeight    =   8625
@@ -488,6 +488,7 @@ Dim col As New Collection
 Dim item As SubdiarioVentasDetalle
 Private liqui As LiquidacionSubdiarioVenta
 Private liquidaciones As Collection
+
 Private desdeAbsoluto As Date
 Private totales As New Dictionary
 
@@ -813,7 +814,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
     Dim xla As New Excel.Worksheet
     Dim xls As New Excel.Application
 
-    Dim a As String
+    Dim A As String
     Dim b As String
     Dim offset As Long
     Dim strMsg As String
@@ -835,7 +836,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         .Range("A3:j2").Font.Bold = True
 
 
-        .cells(1, 1).value = "SIGNOPLAST S.A. Subdiario ventas" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
+        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario ventas" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
 
         Dim desde As Date
         Dim hasta As Date
@@ -849,7 +850,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
             hasta = liq.hasta
         End If
 
-        .cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+        .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
         .Range("A3:j3").Interior.Color = &HC0C0C0
 
 
@@ -858,7 +859,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         For Each Column In Me.GridEX1.Columns
             x = x + 1
-            .cells(3, x).value = Column.caption
+            .Cells(3, x).value = Column.caption
         Next Column
 
         .Columns("f").HorizontalAlignment = xlHAlignRight
@@ -901,57 +902,57 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         For Each item In col
             If item.estado = Anulada Then
-                .cells(x + 3, 1).value = item.FEcha
-                .cells(x + 3, 2).value = item.Comprobante
-                .cells(x + 3, 3).value = "ANULADO"
-                .cells(x + 3, 4).value = "ANULADO"
-                .cells(x + 3, 5).value = "ANULADO"
+                .Cells(x + 3, 1).value = item.FEcha
+                .Cells(x + 3, 2).value = item.Comprobante
+                .Cells(x + 3, 3).value = "ANULADO"
+                .Cells(x + 3, 4).value = "ANULADO"
+                .Cells(x + 3, 5).value = "ANULADO"
 
 
-                .cells(x + 3, 6).value = 0
-                .cells(x + 3, 7).value = 0
-                .cells(x + 3, 8).value = 0
-                .cells(x + 3, 9).value = 0
-                .cells(x + 3, 10).value = 0
-                .Range(.cells(x + 3, 1), .cells(x + 3, 10)).Font.Strikethrough = True
-                .Range(.cells(x + 3, 1), .cells(x + 3, 10)).Font.Italic = True
+                .Cells(x + 3, 6).value = 0
+                .Cells(x + 3, 7).value = 0
+                .Cells(x + 3, 8).value = 0
+                .Cells(x + 3, 9).value = 0
+                .Cells(x + 3, 10).value = 0
+                .Range(.Cells(x + 3, 1), .Cells(x + 3, 10)).Font.Strikethrough = True
+                .Range(.Cells(x + 3, 1), .Cells(x + 3, 10)).Font.Italic = True
             Else
 
 
-                .cells(x + 3, 1).value = item.FEcha
-                .cells(x + 3, 2).value = item.Comprobante
-                .cells(x + 3, 3).value = item.RazonSocial
-                .cells(x + 3, 4).value = item.Cuit
-                .cells(x + 3, 5).value = item.CondicionIva
+                .Cells(x + 3, 1).value = item.FEcha
+                .Cells(x + 3, 2).value = item.Comprobante
+                .Cells(x + 3, 3).value = item.RazonSocial
+                .Cells(x + 3, 4).value = item.Cuit
+                .Cells(x + 3, 5).value = item.CondicionIva
 
 
-                .cells(x + 3, 6).value = item.NetoGravado
-                .cells(x + 3, 7).value = item.Iva
-                .cells(x + 3, 8).value = item.percepciones
-                .cells(x + 3, 9).value = item.Exento
-                .cells(x + 3, 10).value = item.Total
+                .Cells(x + 3, 6).value = item.NetoGravado
+                .Cells(x + 3, 7).value = item.Iva
+                .Cells(x + 3, 8).value = item.percepciones
+                .Cells(x + 3, 9).value = item.Exento
+                .Cells(x + 3, 10).value = item.Total
             End If
 
             x = x + 1
         Next item
 
 
-        a = "j" & x + 2
+        A = "j" & x + 2
         offset = x + 3
         b = "j" & offset
         .Range("f1", b).NumberFormat = "0.00"
-        .Range("a1", a).Borders.LineStyle = xlContinuous
+        .Range("a1", A).Borders.LineStyle = xlContinuous
 
         .Range("f" & x + 3, b).Interior.Color = &HC0C0C0
         .Range("f" & x + 3, b).Borders.LineStyle = xlContinuous
         .Range("f" & x + 3, b).Font.Bold = True
 
-        .cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
-        .cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
-        .cells(offset, 8).value = totales.item(PosicionTotales.totPercep)
-        .cells(offset, 7).value = totales.item(PosicionTotales.totIva)
-        .cells(offset, 6).value = totales.item(PosicionTotales.TotNetoGravado)
-        .cells(offset, 5).value = "Totales"
+        .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
+        .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
+        .Cells(offset, 8).value = totales.item(PosicionTotales.totPercep)
+        .Cells(offset, 7).value = totales.item(PosicionTotales.totIva)
+        .Cells(offset, 6).value = totales.item(PosicionTotales.TotNetoGravado)
+        .Cells(offset, 5).value = "Totales"
 
 
 
