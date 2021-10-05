@@ -641,7 +641,7 @@ Private Sub Totalizar()
         sumImpuestoInterno = sumImpuestoInterno + i.ImpuestoInterno
         sumRedondeo = sumRedondeo + i.Redondeo
 
-'NB: error al mostrarl iquidaciones, revisar. Este fix es par aq no se cierre, pero no se si está bien
+'NB: error al mostrarl iquidaciones, revisar. Este fix es par aq no se cierre, pero no se si est? bien
 '18.1.2021
 If Not IsSomething(i.ListaPercepciones) Then Set i.ListaPercepciones = New Collection
 
@@ -691,7 +691,7 @@ End Sub
 
 Private Sub btnExportar_Click()
 
-    ExportaSubDiarioCompras
+ExportaSubDiarioCompras
 
 End Sub
 
@@ -709,7 +709,7 @@ Private Sub btnGuardarLiquidacion_Click()
     End If
 
 
-    Dim l As New LiquidacionSubdiarioCompras
+    Dim l As New LiquidacionSubdiarioVenta
     Dim nombre As String
     nombre = InputBox("Ingrese una descripcion para la liquidacion", "Descripcion de liquidacion")
     If LenB(nombre) = 0 Then
@@ -722,7 +722,7 @@ Private Sub btnGuardarLiquidacion_Click()
         Set l.Detalles = col
         If DAOSubdiarios.Guardar(l) Then
             SetearMaxDesde
-            MsgBox "La liquidacion se guardó con éxito", vbInformation + vbOKOnly
+            MsgBox "La liquidacion se guard? con ?xito", vbInformation + vbOKOnly
             CargarLiquidaciones
             If Me.cboLiquidaciones.ListCount > 0 Then
                 Me.cboLiquidaciones.ListIndex = Me.cboLiquidaciones.ListCount - 1
@@ -874,10 +874,6 @@ Private Sub Form_Resize()
 End Sub
 
 Private Sub llenarLista()
-'Me.dtpDesde = "04/09/2021"
-'Me.dtpHasta = "04/09/2021"
-    
-    
     Dim i As Long
 
     If Me.rdoRangoFechas.value Then
@@ -922,7 +918,7 @@ Private Sub llenarLista()
 End Sub
 
 Private Sub GridEX1_BeforePrintPage(ByVal PageNumber As Long, ByVal nPages As Long)
-    Me.GridEX1.PrinterProperties.FooterString(jgexHFRight) = "Página " & PageNumber & " de " & nPages
+    Me.GridEX1.PrinterProperties.FooterString(jgexHFRight) = "P?gina " & PageNumber & " de " & nPages
 End Sub
 
 Private Sub GridEX1_DblClick()
@@ -1032,7 +1028,7 @@ End Sub
 Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 Then
         '   If Item.estado = Anulada Then
-        If MsgBox("¿Desea realmente actualizar los valores del item?", vbYesNo + vbQuestion) = vbYes Then
+        If MsgBox("?Desea realmente actualizar los valores del item?", vbYesNo + vbQuestion) = vbYes Then
             Set item = col.item(RowIndex)
             item.NetoGravado = Values(6)
             item.Iva = Values(7)
@@ -1098,7 +1094,7 @@ Private Sub PushButton2_Click()
         If Me.rdoRangoFechas.value Then
             header = Me.dtpDesde.value & " a " & Me.dtpHasta.value
         Else
-            header = "Liquidación " & Me.cboLiquidaciones.text
+            header = "Liquidaci?n " & Me.cboLiquidaciones.text
         End If
 
 
@@ -1195,6 +1191,7 @@ Private Sub CargarLiquidaciones()
 
 End Sub
 
+'#236
 
 Public Function ExportaSubDiarioCompras() As Boolean
     On Error GoTo errEXCEL
@@ -1231,15 +1228,21 @@ Public Function ExportaSubDiarioCompras() As Boolean
         If Me.rdoRangoFechas.value Then
             desde = Me.dtpDesde.value
             hasta = Me.dtpHasta.value
+                .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+                
         Else
-        MsgBox ("Entro aca, porque esta seleccionada una liquidacion")
+        MsgBox ("Se va a exportar los detalles de la liquidación seleccionada.")
 '           Dim liq As LiquidacionSubdiarioCompras
 '            Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
 '            desde = liq.desde
 '            hasta = liq.hasta
+
+
+        .Cells(2, 1).value = "Periodo " & Format(liqui.desde, "dd/mm/yyyy") & " - " & Format(liqui.hasta, "dd/mm/yyyy")
+            
         End If
 
-        .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+
         .Range("A3:ae3").Interior.Color = &HC0C0C0
 
 
@@ -1298,16 +1301,16 @@ Public Function ExportaSubDiarioCompras() As Boolean
         .Columns("ae").ColumnWidth = 15
         .Columns("af").ColumnWidth = 15
 
-'        Dim Total As Double
-'        Dim totnetog As Double
-'        Dim totIV As Double
-'        Dim totperi As Double
-'        Dim totexen As Double
-'        Total = 0
-'        totnetog = 0
-'        totIV = 0
-'        totperi = 0
-'        totexen = 0
+        Dim Total As Double
+        Dim totnetog As Double
+        Dim totIV As Double
+        Dim totperi As Double
+        Dim totexen As Double
+        Total = 0
+        totnetog = 0
+        totIV = 0
+        totperi = 0
+        totexen = 0
 
         x = 1
 
