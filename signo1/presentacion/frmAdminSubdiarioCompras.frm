@@ -690,9 +690,11 @@ If Not IsSomething(i.ListaPercepciones) Then Set i.ListaPercepciones = New Colle
 End Sub
 
 Private Sub btnExportar_Click()
-
-ExportaSubDiarioCompras
-
+        If Me.rdoRangoFechas.value Then
+                ExportaSubDiarioComprasFechas
+        Else
+                ExportaSubDiarioComprasLiquidacion
+        End If
 End Sub
 
 
@@ -966,7 +968,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     If col.count > 0 Then
         Set item = col.item(RowIndex)
 
-        Values(1) = item.FEcha
+        Values(1) = item.Fecha
         Values(2) = item.Comprobante
         Values(3) = funciones.RazonSocialFormateada(item.RazonSocial)
         Values(4) = item.Cuit
@@ -1193,7 +1195,7 @@ End Sub
 
 '#236
 
-Public Function ExportaSubDiarioCompras() As Boolean
+Public Function ExportaSubDiarioComprasFechas() As Boolean
     On Error GoTo errEXCEL
     Dim xlb As New Excel.Workbook
     Dim xla As New Excel.Worksheet
@@ -1225,23 +1227,11 @@ Public Function ExportaSubDiarioCompras() As Boolean
 
         Dim desde As Date
         Dim hasta As Date
-        If Me.rdoRangoFechas.value Then
-            desde = Me.dtpDesde.value
-            hasta = Me.dtpHasta.value
-                .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
-                
-        Else
-        MsgBox ("Se va a exportar los detalles de la liquidación seleccionada.")
-'           Dim liq As LiquidacionSubdiarioCompras
-'            Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
-'            desde = liq.desde
-'            hasta = liq.hasta
-
-
-        .Cells(2, 1).value = "Periodo " & Format(liqui.desde, "dd/mm/yyyy") & " - " & Format(liqui.hasta, "dd/mm/yyyy")
-            
-        End If
-
+        
+          desde = Me.dtpDesde.value
+          hasta = Me.dtpHasta.value
+          
+         .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
 
         .Range("A3:ae3").Interior.Color = &HC0C0C0
 
@@ -1314,9 +1304,11 @@ Public Function ExportaSubDiarioCompras() As Boolean
 
         x = 1
 
+
+        
         For Each item In col
 
-                .Cells(x + 3, 1).value = item.FEcha
+                .Cells(x + 3, 1).value = item.Fecha
                 .Cells(x + 3, 2).value = item.Comprobante
                 .Cells(x + 3, 3).value = item.RazonSocial
                 .Cells(x + 3, 4).value = item.Cuit
@@ -1448,17 +1440,14 @@ Public Function ExportaSubDiarioCompras() As Boolean
         .Cells(offset, 30).value = xls.WorksheetFunction.SUM(.Range("ad4", "ad" & x + 3))
         .Cells(offset, 31).value = xls.WorksheetFunction.SUM(.Range("ae4", "ae" & x + 3))
         
-'        .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
-'        .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
-'        .Cells(offset, 8).value = totales.item(PosicionTotales.totPercep)
-'        .Cells(offset, 7).value = totales.item(PosicionTotales.totIva)
-'        .Cells(offset, 6).value = totales.item(PosicionTotales.TotNetoGravado)
+
+
 
         strMsg = "Se han transportado los datos correctamente"
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -1472,7 +1461,7 @@ Public Function ExportaSubDiarioCompras() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -1483,7 +1472,7 @@ Public Function ExportaSubDiarioCompras() As Boolean
            MsgBox strMsg, vbInformation + vbOKOnly, "Hoja de calculo guardada"
            archi = CDLGMAIN.filename
         Else
-            ExportaSubDiarioCompras = False
+            ExportaSubDiarioComprasFechas = False
         End If
         xlb.Saved = True
         
@@ -1498,7 +1487,7 @@ Public Function ExportaSubDiarioCompras() As Boolean
         Set xlb = Nothing
 
         '    End If
-        ExportaSubDiarioCompras = True
+        ExportaSubDiarioComprasFechas = True
 
 
 
@@ -1506,11 +1495,11 @@ Public Function ExportaSubDiarioCompras() As Boolean
     Exit Function
 errEXCEL:
     If Err.Number = -2147221080 Then
-        ExportaSubDiarioCompras = False
+        ExportaSubDiarioComprasFechas = False
     Else
         ' Resume
         MsgBox "Se produjo un error. No se graban los cambios", vbCritical, "Error"
-        ExportaSubDiarioCompras = False
+        ExportaSubDiarioComprasFechas = False
     End If
     xlb.Saved = True
     xlb.Close
@@ -1520,6 +1509,361 @@ errEXCEL:
 
 End Function
 
+Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
+    On Error GoTo errEXCEL
+    Dim xlb As New Excel.Workbook
+    Dim xla As New Excel.Worksheet
+    Dim xls As New Excel.Application
+
+    Dim A As String
+    Dim b As String
+    Dim offset As Long
+    Dim strMsg As String
+    Dim CDLGMAIN As CommonDialog
+    Dim sFilter As String
+
+
+    Set xlb = xls.Workbooks.Add
+    Set xla = xlb.Worksheets.Add
+    xla.Activate
+
+
+    With xla
+
+        .Range("A1:an1").Merge
+        .Range("A2:an2").Merge
+        .Range("A1:an3").HorizontalAlignment = xlHAlignCenter
+        .Range("A1:an2").Font.Bold = True
+        .Range("A3:an2").Font.Bold = True
+
+
+        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario compras" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
+
+        Dim desde As Date
+        Dim hasta As Date
+
+        'MsgBox ("Se va a exportar los detalles de la liquidación seleccionada.")
+        
+'           Dim liq As LiquidacionSubdiarioCompras
+'            Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
+'            desde = liq.desde
+'            hasta = liq.hasta
+
+
+        .Cells(2, 1).value = "Periodo " & Format(liqui.desde, "dd/mm/yyyy") & " - " & Format(liqui.hasta, "dd/mm/yyyy")
+            
+
+        .Range("A3:an3").Interior.Color = &HC0C0C0
+
+
+        Dim Column As JSColumn
+        Dim x As Integer
+        Dim n As Integer
+
+        For Each Column In Me.GridEX1.Columns
+            x = x + 1
+            .Cells(3, x).value = Column.caption
+            
+        Next Column
+
+        .Columns("f").HorizontalAlignment = xlHAlignRight
+        .Columns("g").HorizontalAlignment = xlHAlignRight
+        .Columns("h").HorizontalAlignment = xlHAlignRight
+        .Columns("i").HorizontalAlignment = xlHAlignRight
+
+        .Columns("a").HorizontalAlignment = xlHAlignCenter
+        .Columns("b").HorizontalAlignment = xlHAlignCenter
+        .Columns("d").HorizontalAlignment = xlHAlignCenter
+        .Columns("e").HorizontalAlignment = xlHAlignCenter
+
+        .Columns("j").HorizontalAlignment = xlHAlignRight
+
+        .Columns("a").ColumnWidth = 10
+        .Columns("b").ColumnWidth = 8
+        .Columns("c").ColumnWidth = 35
+        .Columns("d").ColumnWidth = 13
+        .Columns("e").ColumnWidth = 15
+        .Columns("f").ColumnWidth = 13
+        .Columns("g").ColumnWidth = 13
+        .Columns("h").ColumnWidth = 13
+        .Columns("i").ColumnWidth = 13
+        .Columns("j").ColumnWidth = 15
+        .Columns("k").ColumnWidth = 15
+        .Columns("l").ColumnWidth = 15
+        .Columns("m").ColumnWidth = 15
+        .Columns("n").ColumnWidth = 15
+        .Columns("o").ColumnWidth = 15
+        .Columns("p").ColumnWidth = 15
+        .Columns("q").ColumnWidth = 15
+        .Columns("r").ColumnWidth = 15
+        .Columns("s").ColumnWidth = 15
+        .Columns("t").ColumnWidth = 15
+        .Columns("u").ColumnWidth = 15
+        .Columns("v").ColumnWidth = 15
+        .Columns("w").ColumnWidth = 15
+        .Columns("x").ColumnWidth = 15
+        .Columns("y").ColumnWidth = 15
+        .Columns("z").ColumnWidth = 15
+        .Columns("aa").ColumnWidth = 15
+        .Columns("ab").ColumnWidth = 15
+        .Columns("ac").ColumnWidth = 15
+        .Columns("ad").ColumnWidth = 15
+        .Columns("ae").ColumnWidth = 15
+        .Columns("af").ColumnWidth = 15
+        .Columns("ag").ColumnWidth = 15
+        .Columns("ah").ColumnWidth = 15
+        .Columns("ai").ColumnWidth = 15
+        .Columns("aj").ColumnWidth = 15
+        .Columns("ak").ColumnWidth = 15
+        .Columns("al").ColumnWidth = 15
+        .Columns("am").ColumnWidth = 15
+        .Columns("an").ColumnWidth = 15
+
+
+        Dim Total As Double
+        Dim totnetog As Double
+        Dim totIV As Double
+        Dim totperi As Double
+        Dim totexen As Double
+        Total = 0
+        totnetog = 0
+        totIV = 0
+        totperi = 0
+        totexen = 0
+
+        x = 1
+
+
+        
+        For Each item In col
+
+
+                .Cells(x + 3, 1).value = Format(item.Fecha, "yyyy-mm-dd")
+                .Cells(x + 3, 2).value = item.Comprobante
+                .Cells(x + 3, 3).value = item.RazonSocial
+                .Cells(x + 3, 4).value = item.Cuit
+                .Cells(x + 3, 5).value = item.CondicionIva
+                .Cells(x + 3, 6).value = item.NetoGravado
+        
+'IVA
+
+                 If item.NetosGravado.item(4) Then
+                    .Cells(x + 3, 7).value = item.NetosGravado.item(4)
+                End If
+                
+                If item.NetosGravado.item(4) Then
+                    .Cells(x + 3, 8).value = item.Iva
+                End If
+                
+                If item.NetosGravado.item(3) Then
+                    .Cells(x + 3, 9).value = item.NetosGravado.item(3)
+                End If
+                
+                If item.NetosGravado.item(3) Then
+                    .Cells(x + 3, 10).value = item.Iva
+                End If
+                
+                If item.NetosGravado.item(2) Then
+                    .Cells(x + 3, 11).value = item.NetosGravado.item(2)
+                End If
+                
+                If item.NetosGravado.item(2) Then
+                    .Cells(x + 3, 12).value = item.Iva
+                End If
+                
+                If item.NetosGravado.item(1) Then
+                    .Cells(x + 3, 13).value = item.NetosGravado.item(1)
+                End If
+
+'PERCEPCIONES
+                 
+                If item.ListaPercepciones.count <> 0 Then
+                 
+                Dim i
+                For i = 1 To item.ListaPercepciones.count Step 1
+        
+                         Select Case item.ListaPercepciones.item(i).Percepcion.Percepcion
+                                Case "IIBB CABA"
+                                                .Cells(x + 3, 14).value = item.ListaPercepciones.item(i).Monto
+                                Case "IVA"
+                                                .Cells(x + 3, 15).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SANTA FE"
+                                                .Cells(x + 3, 16).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SALTA"
+                                                .Cells(x + 3, 17).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB BUENOS AIRES"
+                                                .Cells(x + 3, 18).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB MISIONES"
+                                                .Cells(x + 3, 19).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB TUCUMAN"
+                                                .Cells(x + 3, 20).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SAN LUIS"
+                                                .Cells(x + 3, 21).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CORRIENTES"
+                                                .Cells(x + 3, 22).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB RIO NEGRO"
+                                                .Cells(x + 3, 23).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB ENTRE RIOS"
+                                                .Cells(x + 3, 24).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CORDOBA"
+                                                .Cells(x + 3, 25).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CATAMARCA"
+                                                .Cells(x + 3, 26).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB NEUQUEN"
+                                                .Cells(x + 3, 27).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB LA PAMPA"
+                                                .Cells(x + 3, 28).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB MENDOZA"
+                                                .Cells(x + 3, 29).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SAN JUAN"
+                                                .Cells(x + 3, 30).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SANTA CRUZ"
+                                                .Cells(x + 3, 31).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CHUBUT"
+                                                .Cells(x + 3, 32).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB LA RIOJA"
+                                                .Cells(x + 3, 33).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SANTIAGO DEL ESTERO"
+                                                .Cells(x + 3, 34).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CHACO"
+                                                .Cells(x + 3, 35).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB FORMOSA"
+                                                .Cells(x + 3, 36).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB JUJUY"
+                                                .Cells(x + 3, 37).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB TIERRA DEL FUEGO"
+                                                .Cells(x + 3, 38).value = item.ListaPercepciones.item(i).Monto
+                                         
+                                                
+                        End Select
+                        
+                    Next i
+                 
+                End If
+                
+                .Cells(x + 3, 39).value = item.ImpuestoInterno
+                .Cells(x + 3, 40).value = item.Total
+           
+            x = x + 1
+            
+        Next item
+
+
+         A = "an" & x + 2
+         offset = x + 3
+         b = "an" & offset
+        .Range("f1", b).NumberFormat = "0.00"
+        .Range("a1", A).Borders.LineStyle = xlContinuous
+
+        .Range("f" & x + 3, b).Interior.Color = &HC0C0C0
+        .Range("f" & x + 3, b).Borders.LineStyle = xlContinuous
+        .Range("f" & x + 3, b).Font.Bold = True
+
+
+        .Cells(offset, 5).value = "Totales"
+        .Cells(offset, 6).value = xls.WorksheetFunction.SUM(.Range("f4", "f" & x + 3))
+        .Cells(offset, 7).value = xls.WorksheetFunction.SUM(.Range("g4", "g" & x + 3))
+        .Cells(offset, 8).value = xls.WorksheetFunction.SUM(.Range("h4", "h" & x + 3))
+        .Cells(offset, 9).value = xls.WorksheetFunction.SUM(.Range("i4", "i" & x + 3))
+        .Cells(offset, 10).value = xls.WorksheetFunction.SUM(.Range("j4", "j" & x + 3))
+        .Cells(offset, 11).value = xls.WorksheetFunction.SUM(.Range("k4", "k" & x + 3))
+        .Cells(offset, 12).value = xls.WorksheetFunction.SUM(.Range("l4", "l" & x + 3))
+        .Cells(offset, 13).value = xls.WorksheetFunction.SUM(.Range("m4", "m" & x + 3))
+        .Cells(offset, 14).value = xls.WorksheetFunction.SUM(.Range("n4", "n" & x + 3))
+        .Cells(offset, 15).value = xls.WorksheetFunction.SUM(.Range("o4", "o" & x + 3))
+        .Cells(offset, 16).value = xls.WorksheetFunction.SUM(.Range("p4", "p" & x + 3))
+        .Cells(offset, 17).value = xls.WorksheetFunction.SUM(.Range("q4", "q" & x + 3))
+        .Cells(offset, 18).value = xls.WorksheetFunction.SUM(.Range("r4", "r" & x + 3))
+        .Cells(offset, 19).value = xls.WorksheetFunction.SUM(.Range("s4", "s" & x + 3))
+        .Cells(offset, 20).value = xls.WorksheetFunction.SUM(.Range("t4", "t" & x + 3))
+        .Cells(offset, 21).value = xls.WorksheetFunction.SUM(.Range("u4", "u" & x + 3))
+        .Cells(offset, 22).value = xls.WorksheetFunction.SUM(.Range("v4", "v" & x + 3))
+        .Cells(offset, 23).value = xls.WorksheetFunction.SUM(.Range("w4", "w" & x + 3))
+        .Cells(offset, 24).value = xls.WorksheetFunction.SUM(.Range("x4", "x" & x + 3))
+        .Cells(offset, 25).value = xls.WorksheetFunction.SUM(.Range("y4", "y" & x + 3))
+        .Cells(offset, 26).value = xls.WorksheetFunction.SUM(.Range("z4", "z" & x + 3))
+        .Cells(offset, 27).value = xls.WorksheetFunction.SUM(.Range("aa4", "aa" & x + 3))
+        .Cells(offset, 28).value = xls.WorksheetFunction.SUM(.Range("ab4", "ab" & x + 3))
+        .Cells(offset, 29).value = xls.WorksheetFunction.SUM(.Range("ac4", "ac" & x + 3))
+        .Cells(offset, 30).value = xls.WorksheetFunction.SUM(.Range("ad4", "ad" & x + 3))
+        .Cells(offset, 31).value = xls.WorksheetFunction.SUM(.Range("ae4", "ae" & x + 3))
+        .Cells(offset, 32).value = xls.WorksheetFunction.SUM(.Range("af4", "af" & x + 3))
+        .Cells(offset, 33).value = xls.WorksheetFunction.SUM(.Range("ag4", "ag" & x + 3))
+        .Cells(offset, 34).value = xls.WorksheetFunction.SUM(.Range("ah4", "ah" & x + 3))
+        .Cells(offset, 35).value = xls.WorksheetFunction.SUM(.Range("ai4", "ai" & x + 3))
+        .Cells(offset, 36).value = xls.WorksheetFunction.SUM(.Range("aj4", "aj" & x + 3))
+        .Cells(offset, 37).value = xls.WorksheetFunction.SUM(.Range("ak4", "ak" & x + 3))
+        .Cells(offset, 38).value = xls.WorksheetFunction.SUM(.Range("al4", "al" & x + 3))
+        .Cells(offset, 39).value = xls.WorksheetFunction.SUM(.Range("am4", "am" & x + 3))
+        .Cells(offset, 40).value = xls.WorksheetFunction.SUM(.Range("an4", "an" & x + 3))
+
+
+
+        strMsg = "Se han transportado los datos correctamente"
+        strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
+        strMsg = strMsg & vbCrLf & vbCrLf
+        strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
+        Set CDLGMAIN = frmPrincipal.CD
+
+
+
+        '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
+        sFilter = "Hoja de Calculo|*.xls"
+        CDLGMAIN.filter = sFilter
+
+        Dim Periodo As String
+        Periodo = 1
+        Periodo = Format(liqui.desde, "ddmmyyyy") & "-" & Format(liqui.hasta, "ddmmyyyy")
+
+        Dim archi As String
+        archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
+        frmPrincipal.CD.CancelError = True
+        CDLGMAIN.filename = archi
+        CDLGMAIN.ShowSave
+
+        If CDLGMAIN.filename <> Empty Then
+            xla.SaveAs (CDLGMAIN.filename)
+           strMsg = "Los datos del reporte se han guardado en un archivo: " & vbCrLf & vbCrLf
+           strMsg = strMsg & CDLGMAIN.filename
+           MsgBox strMsg, vbInformation + vbOKOnly, "Hoja de calculo guardada"
+           archi = CDLGMAIN.filename
+        Else
+            ExportaSubDiarioComprasLiquidacion = False
+        End If
+        xlb.Saved = True
+        
+        'xlb.Close
+        
+        xls.Visible = True 'NO MUESTRO LA HOJA XLS
+
+        'xls.Quit
+        
+        Set xls = Nothing
+        Set xla = Nothing
+        Set xlb = Nothing
+
+        '    End If
+        ExportaSubDiarioComprasLiquidacion = True
+
+
+
+    End With
+    Exit Function
+errEXCEL:
+    If Err.Number = -2147221080 Then
+        ExportaSubDiarioComprasLiquidacion = False
+    Else
+        ' Resume
+        MsgBox "Se produjo un error. No se graban los cambios", vbCritical, "Error"
+        ExportaSubDiarioComprasLiquidacion = False
+    End If
+    xlb.Saved = True
+    xlb.Close
+    Set xls = Nothing
+    Set xla = Nothing
+    Set xlb = Nothing
+
+End Function
 
 
 
