@@ -968,7 +968,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     If col.count > 0 Then
         Set item = col.item(RowIndex)
 
-        Values(1) = item.Fecha
+        Values(1) = item.FEcha
         Values(2) = item.Comprobante
         Values(3) = funciones.RazonSocialFormateada(item.RazonSocial)
         Values(4) = item.Cuit
@@ -1216,11 +1216,11 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
     With xla
 
-        .Range("A1:ae1").Merge
-        .Range("A2:af2").Merge
-        .Range("A1:ae3").HorizontalAlignment = xlHAlignCenter
-        .Range("A1:ae2").Font.Bold = True
-        .Range("A3:ae2").Font.Bold = True
+        .Range("A1:an1").Merge
+        .Range("A2:an2").Merge
+        .Range("A1:an3").HorizontalAlignment = xlHAlignCenter
+        .Range("A1:an2").Font.Bold = True
+        .Range("A3:an2").Font.Bold = True
 
 
         .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario compras" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
@@ -1233,7 +1233,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
           
          .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
 
-        .Range("A3:ae3").Interior.Color = &HC0C0C0
+        .Range("A3:an3").Interior.Color = &HC0C0C0
 
 
         Dim Column As JSColumn
@@ -1290,6 +1290,14 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         .Columns("ad").ColumnWidth = 15
         .Columns("ae").ColumnWidth = 15
         .Columns("af").ColumnWidth = 15
+        .Columns("ag").ColumnWidth = 15
+        .Columns("ah").ColumnWidth = 15
+        .Columns("ai").ColumnWidth = 15
+        .Columns("aj").ColumnWidth = 15
+        .Columns("ak").ColumnWidth = 15
+        .Columns("al").ColumnWidth = 15
+        .Columns("am").ColumnWidth = 15
+        .Columns("an").ColumnWidth = 15
 
         Dim Total As Double
         Dim totnetog As Double
@@ -1308,7 +1316,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         
         For Each item In col
 
-                .Cells(x + 3, 1).value = item.Fecha
+                .Cells(x + 3, 1).value = item.FEcha
                 .Cells(x + 3, 2).value = item.Comprobante
                 .Cells(x + 3, 3).value = item.RazonSocial
                 .Cells(x + 3, 4).value = item.Cuit
@@ -1387,23 +1395,43 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
                                                 .Cells(x + 3, 28).value = item.ListaPercepciones.item(i).Monto
                                 Case "IIBB MENDOZA"
                                                 .Cells(x + 3, 29).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SAN JUAN"
+                                                .Cells(x + 3, 30).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SANTA CRUZ"
+                                                .Cells(x + 3, 31).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CHUBUT"
+                                                .Cells(x + 3, 32).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB LA RIOJA"
+                                                .Cells(x + 3, 33).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SANTIAGO DEL ESTERO"
+                                                .Cells(x + 3, 34).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CHACO"
+                                                .Cells(x + 3, 35).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB FORMOSA"
+                                                .Cells(x + 3, 36).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB JUJUY"
+                                                .Cells(x + 3, 37).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB TIERRA DEL FUEGO"
+                                                .Cells(x + 3, 38).value = item.ListaPercepciones.item(i).Monto
+                                         
+                                                
                         End Select
                         
                     Next i
                  
                 End If
                 
-                .Cells(x + 3, 30).value = item.ImpuestoInterno
-                .Cells(x + 3, 31).value = item.Total
+                .Cells(x + 3, 39).value = item.ImpuestoInterno
+                .Cells(x + 3, 40).value = item.Total
            
             x = x + 1
             
         Next item
 
 
-         A = "ae" & x + 2
+         A = "an" & x + 2
          offset = x + 3
-         b = "ae" & offset
+         b = "an" & offset
         .Range("f1", b).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
@@ -1439,15 +1467,22 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         .Cells(offset, 29).value = xls.WorksheetFunction.SUM(.Range("ac4", "ac" & x + 3))
         .Cells(offset, 30).value = xls.WorksheetFunction.SUM(.Range("ad4", "ad" & x + 3))
         .Cells(offset, 31).value = xls.WorksheetFunction.SUM(.Range("ae4", "ae" & x + 3))
-        
-
+        .Cells(offset, 32).value = xls.WorksheetFunction.SUM(.Range("af4", "af" & x + 3))
+        .Cells(offset, 33).value = xls.WorksheetFunction.SUM(.Range("ag4", "ag" & x + 3))
+        .Cells(offset, 34).value = xls.WorksheetFunction.SUM(.Range("ah4", "ah" & x + 3))
+        .Cells(offset, 35).value = xls.WorksheetFunction.SUM(.Range("ai4", "ai" & x + 3))
+        .Cells(offset, 36).value = xls.WorksheetFunction.SUM(.Range("aj4", "aj" & x + 3))
+        .Cells(offset, 37).value = xls.WorksheetFunction.SUM(.Range("ak4", "ak" & x + 3))
+        .Cells(offset, 38).value = xls.WorksheetFunction.SUM(.Range("al4", "al" & x + 3))
+        .Cells(offset, 39).value = xls.WorksheetFunction.SUM(.Range("am4", "am" & x + 3))
+        .Cells(offset, 40).value = xls.WorksheetFunction.SUM(.Range("an4", "an" & x + 3))
 
 
         strMsg = "Se han transportado los datos correctamente"
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1461,7 +1496,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -1537,13 +1572,11 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         .Range("A3:an2").Font.Bold = True
 
 
-        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario compras" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
+        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario compras" & " (LIQUIDADO)"
 
         Dim desde As Date
         Dim hasta As Date
 
-        'MsgBox ("Se va a exportar los detalles de la liquidación seleccionada.")
-        
 '           Dim liq As LiquidacionSubdiarioCompras
 '            Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
 '            desde = liq.desde
@@ -1638,7 +1671,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         For Each item In col
 
 
-                .Cells(x + 3, 1).value = Format(item.Fecha, "yyyy-mm-dd")
+                .Cells(x + 3, 1).value = Format(item.FEcha, "yyyy-mm-dd")
                 .Cells(x + 3, 2).value = item.Comprobante
                 .Cells(x + 3, 3).value = item.RazonSocial
                 .Cells(x + 3, 4).value = item.Cuit
@@ -1652,7 +1685,8 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
                 End If
                 
                 If item.NetosGravado.item(4) Then
-                    .Cells(x + 3, 8).value = item.Iva
+                    .Cells(x + 3, 8).value = FormatearDecimales(item.NetosGravado.item(4) * 27 / 100)
+                ''''''''
                 End If
                 
                 If item.NetosGravado.item(3) Then
@@ -1660,7 +1694,8 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
                 End If
                 
                 If item.NetosGravado.item(3) Then
-                    .Cells(x + 3, 10).value = item.Iva
+                    .Cells(x + 3, 10).value = FormatearDecimales(item.NetosGravado.item(3) * 21 / 100)
+                ''''''''
                 End If
                 
                 If item.NetosGravado.item(2) Then
@@ -1668,7 +1703,8 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
                 End If
                 
                 If item.NetosGravado.item(2) Then
-                    .Cells(x + 3, 12).value = item.Iva
+                    .Cells(x + 3, 12).value = FormatearDecimales(item.NetosGravado.item(2) * 10.5 / 100)
+                ''''''''
                 End If
                 
                 If item.NetosGravado.item(1) Then
@@ -1803,7 +1839,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1817,7 +1853,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

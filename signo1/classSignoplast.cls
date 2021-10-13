@@ -315,7 +315,7 @@ Public Sub llenarLstRubros(lst As ListView)
     Dim x As ListItem
     While Not rs.EOF
         Set x = lst.ListItems.Add(, , rs!id)
-        x.SubItems(1) = rs!Rubro
+        x.SubItems(1) = rs!rubro
         rs.MoveNext
     Wend
 End Sub
@@ -400,7 +400,7 @@ Public Function llenar_combo_rubros(cbo As ComboBox)
     cbo.Clear
     Me.ejecutar "select * from rubros"
     While Not rs.EOF
-        cbo.AddItem rs!Rubro
+        cbo.AddItem rs!rubro
         cbo.ItemData(cbo.NewIndex) = rs!id
         rs.MoveNext
     Wend
@@ -550,6 +550,8 @@ Public Function actualizarSistema(idNuevo As Long) As Boolean
         aa = App.path & "\updater.exe " & App.path & "\abb.exe|" & App.path & "\abb.tmp"
         
         Shell aa, vbNormalFocus
+        
+
         SalirForzado
         
         End

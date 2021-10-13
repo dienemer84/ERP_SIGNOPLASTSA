@@ -430,7 +430,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'cae'", conectar.Escape(F.CAE))
     q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
     q = Replace$(q, "'aprobacion_afip'", conectar.Escape(F.AprobadaAFIP))
-    q = Replace$(q, "'opcional27'", conectar.Escape(F.Opcional27))
+    q = Replace$(q, "'Opcional27'", conectar.Escape(F.Opcional27))
     q = Replace$(q, "'anulacion_afip'", conectar.Escape(F.AnulacionAFIP))
     q = Replace$(q, "'id_concepto_incluir'", conectar.Escape(F.ConceptoIncluir))
     q = Replace$(q, "'id_tipo_discriminado'", F.Tipo.id)
@@ -1835,7 +1835,7 @@ Public Function aplicarNCaFC(idFactura As Long, idnc As Long) As Boolean
 Dim saldadoTotal As Boolean
 saldadoTotal = False
     If MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.id, nc.moneda.id) <> (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura)) Then
-        If MsgBox("La NC a aplicar debe ser del mismo monto que la FC!" & vbNewLine & "¿Desea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
+        If MsgBox("La NC a aplicar no es del mismo que la FC!" & vbNewLine & "¿Desea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
             '     If Not conectar.execute("INSERT INTO AdminFacturas_NC (idFactura, idNC) VALUES (" & idFactura & "," & idnc & ")") Then GoTo er12
             '     If Not conectar.execute("update AdminFacturas set estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELADA POR " & nc.NumeroFormateado) & " where id=" & fc.Id) Then GoTo er12
     saldadoTotal = False
@@ -1852,7 +1852,7 @@ saldadoTotal = False
 
 If saldadoTotal Then
         nc.estado = CanceladaNC
-        nc.Saldado = saldadoTotal
+        nc.Saldado = TipoSaldadoFactura.notaCredito
         Else
         nc.Saldado = notaCreditoParcial
         nc.estado = CanceladaNCParcial
@@ -1917,15 +1917,15 @@ If saldadoTotal Then
             Dim msg1 As String
            ' msg1 = conectar.Escape(fc.observaciones & " / CANCELADA POR " & nc.GetShortDescription(False, True))
             ' LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape(" / CANCELADA POR " & nc.GetShortDescription(False, True))
-            msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
+            msg1 = conectar.Escape("APLICADA DE " & nc.GetShortDescription(False, True))
             
             Dim MSG2 As String
             'MSG2 = conectar.Escape(nc.observaciones & " / CANCELA A " & fc.GetShortDescription(False, True))
            ' If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
-            MSG2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+            MSG2 = conectar.Escape("APLICADA A " & fc.GetShortDescription(False, True))
 
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & MSG2 & " where id=" & nc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & MSG2 & " where id=" & nc.id) Then GoTo er12
 
         Next deta
 

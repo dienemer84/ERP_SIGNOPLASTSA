@@ -659,9 +659,13 @@ Private Sub MDIForm_Load()
             Me.tmrEventos.Enabled = Not funciones.InIDE
 
             frmPrincipal.Show
+            
             Me.TrayIcon.text = "Signo Plast Event Handler"
+            
             Set Me.TrayIcon.Icon = pic
-
+            
+            MsgBox ("Inicio el sistema.")
+            
             If LenB(LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)) > 0 And InStr(1, funciones.GetUserObj.usuario, "puesto") Then
                 Dim frmT As New frmTiempoProcesoDetalle
                 frmT.Show 1

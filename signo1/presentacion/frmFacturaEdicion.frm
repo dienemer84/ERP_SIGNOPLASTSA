@@ -52,7 +52,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58392577
+         Format          =   58523649
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58392577
+         Format          =   58523649
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58392577
+         Format          =   58523649
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58392577
+         Format          =   58523649
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmFacturaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58392577
+         Format          =   58523649
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -2831,7 +2831,7 @@ Private Sub PushButton1_Click()
                                 If Ot.moneda.id <> Factura.moneda.id Then
                                     If Factura.moneda.Patron Then
                                         Dim m2 As clsMoneda
-                                        Set m2 = DAOMoneda.GetById(Factura.TipoCambioAjuste)
+                                        Set m2 = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex))
                                     
                                      deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * m2.Cambio * Ot.Anticipo) / 100)
                                     Else
