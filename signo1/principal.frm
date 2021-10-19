@@ -341,8 +341,8 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
             Dim F As New frmCategoriasSueldo
             F.Show
         Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SUELDO:
-            Dim cs As New CategoriaSueldo
-            cs.EspecificarSueldo
+            Dim CS As New CategoriaSueldo
+            CS.EspecificarSueldo
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS:
             Dim frm6001 As frmPlaneamientoRemitosLista
@@ -664,7 +664,23 @@ Private Sub MDIForm_Load()
             
             Set Me.TrayIcon.Icon = pic
             
-            MsgBox ("Inicio el sistema.")
+            
+            
+'            Dim idNuevo As Long
+'                If funciones.InIDE Then
+'                    If classP.VerificarSiHayActualizacion(idNuevo) Then
+'                    MsgBox ("Aca tiene que haber texto porque hubo actualización.")
+''                        statusBar(5).text = "** ACTUALIZACION DISPONIBLE **"
+''                        If Permisos.SistemaVerUpdate Then
+''                            Me.Popup.item(2).id = idNuevo
+''                            If Me.Popup.State = xtpPopupStateClosed Then
+''                                Me.Popup.Show
+''                            End If
+''                        End If
+'                    Else
+'                        MsgBox ("No hay nada para decir porque no hubo actualización.")
+'                    End If
+'                End If
             
             If LenB(LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)) > 0 And InStr(1, funciones.GetUserObj.usuario, "puesto") Then
                 Dim frmT As New frmTiempoProcesoDetalle
