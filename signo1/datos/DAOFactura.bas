@@ -113,7 +113,7 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
     BuildFieldsIndex rs, idx
     While Not rs.EOF
         Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv")
-
+Debug.Print F.id
         If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
             Set F = col.item(CStr(F.id))
         Else
@@ -124,12 +124,13 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
         If includeDetalles Then
             Set deta = DAOFacturaDetalles.Map(rs, idx, "AdminFacturasDetalleNueva")
             
-            If rs!cantidad_remitos_aplicados > 0 Then
-            deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
-            End If
-            deta.CantidadRemitosAplicados = rs!cantidad_remitos_aplicados
+
             
             If IsSomething(deta) Then
+                  If rs!cantidad_remitos_aplicados > 0 Then
+                    deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
+                  End If
+                    deta.CantidadRemitosAplicados = rs!cantidad_remitos_aplicados
                 If Not funciones.BuscarEnColeccion(F.Detalles, CStr(deta.id)) Then
                     Set deta.Factura = F
                     F.Detalles.Add deta, CStr(deta.id)
