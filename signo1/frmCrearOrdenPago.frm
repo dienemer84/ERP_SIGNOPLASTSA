@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
@@ -1429,7 +1429,7 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
-    Me.gridCajas.AllowEdit = Not ReadOnly
+    Me.GridCajas.AllowEdit = Not ReadOnly
     'Me.gridCajas.AllowDelete = Not ReadOnly
 
     Me.gridChequeras.AllowEdit = Not ReadOnly
@@ -1896,7 +1896,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1906,7 +1906,7 @@ Private Sub Form_Load()
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.gridCajas.ItemCount = Cajas.count
+    Me.GridCajas.ItemCount = Cajas.count
 
     Set monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = monedas.count
@@ -1955,7 +1955,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
@@ -3163,8 +3163,10 @@ Private Sub txtOtrosParcialAbonar_Validate(Cancel As Boolean)
 If Not IsNumeric(Me.txtOtrosParcialAbonar) Then
  Cancel = True
 Else
+'COMENTO ESTA LINEA PORQUE ESTA COMPROBACIÓN HACE QUE EL FORM SE CONGELE Y NO SE PUEDA AVANZAR CON LA CARGA.
+'QUEDA PARA VER CON NICOLAS
 
-Cancel = CDbl(Me.txtOtrosParcialAbonar) > vFactElegida.ImporteOtrosSaldo Or Not IsNumeric(Me.txtOtrosParcialAbonar) Or CDbl(Me.txtOtrosParcialAbonar) < 0
+'Cancel = CDbl(Me.txtOtrosParcialAbonar) > vFactElegida.ImporteOtrosSaldo Or Not IsNumeric(Me.txtOtrosParcialAbonar) Or CDbl(Me.txtOtrosParcialAbonar) < 0
 End If
 If Cancel Then
     Me.txtOtrosParcialAbonar.backColor = vbRed
@@ -3202,7 +3204,7 @@ Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
 If Not IsNumeric(Me.txtParcialAbonar) Then
 Cancel = True
 Else
-Cancel = CDbl(Me.txtParcialAbonar) > vFactElegida.ImporteNetoGravadoSaldo Or Not IsNumeric(Me.txtParcialAbonar) Or CDbl(Me.txtParcialAbonar) < 0
+'Cancel = CDbl(Me.txtParcialAbonar) > vFactElegida.ImporteNetoGravadoSaldo Or Not IsNumeric(Me.txtParcialAbonar) Or CDbl(Me.txtParcialAbonar) < 0
 End If
 If Cancel Then
     Me.txtParcialAbonar.backColor = vbRed
