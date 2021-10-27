@@ -391,6 +391,10 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     'verificar que las facturas esten todas aprobadsa...
     Dim F As clsFacturaProveedor
     Dim nopago As Double
+        Dim nopago1 As Double
+    
+  Dim otrosvalores As Double
+    
     Dim esf As EstadoFacturaProveedor
     For Each F In op.FacturasProveedor
         
@@ -405,7 +409,14 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
             
            Set x = DAOOrdenPago.FindAbonadoPendienteEnEstaOP(fac.id, op.id)
             
-             nopago = fac.Total - fac.TotalAbonadoGlobal - funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
+             nopago1 = fac.Total - fac.TotalAbonadoGlobal '- (funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3)))))
+            
+             'nopago = fac.Total - fac.TotalAbonadoGlobal - funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
+            
+            otrosvalores = funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
+            
+            nopago = funciones.RedondearDecimales(nopago1) - otrosvalores
+            
             esf = EstadoFacturaProveedor.Aprobada
             
             If nopago < 0 Then
