@@ -56,7 +56,7 @@ Public UsuarioCarga As clsUsuario
 Public TotalCompensado As Double
 
 Public Property Get TotalAbonadoGlobal() As Double 'dto para saber cuanto se pago de la factura en todsa las OP
-    TotalAbonadoGlobal = Me.OtrosAbonadoGlobal + Me.NetoGravadoAbonadoGlobal + Me.NetoGravadoAbonadoGlobalPendiente + Me.OtrosAbonadoGlobalPendiente
+    TotalAbonadoGlobal = funciones.FormatearDecimales(Me.OtrosAbonadoGlobal + Me.NetoGravadoAbonadoGlobal + Me.NetoGravadoAbonadoGlobalPendiente + Me.OtrosAbonadoGlobalPendiente)
 End Property
 
 
