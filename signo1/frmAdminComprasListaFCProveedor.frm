@@ -569,24 +569,24 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(12)      =   "frmAdminComprasListaFCProveedor.frx":145A
       Column(13)      =   "frmAdminComprasListaFCProveedor.frx":165A
       Column(14)      =   "frmAdminComprasListaFCProveedor.frx":17CA
-      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":190E
-      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1A66
-      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1BD2
-      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1D2A
-      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1ECE
+      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1932
+      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1A8A
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1BF6
+      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1D4E
+      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1EF2
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1FD2
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":210A
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":21BA
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":226E
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":2346
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":23FE
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":24DE
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":259E
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2662
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":1FF6
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":212E
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":21DE
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":2292
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":236A
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":2422
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":2502
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":25C2
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2686
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2722
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2A3C
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2746
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2A60
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -834,6 +834,8 @@ Private Sub Form_Load()
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.Aprobada
     Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(3)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.Saldada
+    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(4)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.pagoParcial
 
 
 '    Dim P As clsProveedor

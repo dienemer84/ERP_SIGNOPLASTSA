@@ -4,10 +4,10 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   8535
+   ClientHeight    =   9945
    ClientLeft      =   2340
    ClientTop       =   3105
-   ClientWidth     =   15750
+   ClientWidth     =   16950
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -22,8 +22,8 @@ Begin VB.Form frmCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8535
-   ScaleWidth      =   15750
+   ScaleHeight     =   9945
+   ScaleWidth      =   16950
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   1335
       Left            =   120
@@ -170,14 +170,14 @@ Begin VB.Form frmCrearOrdenPago
       Width           =   1200
    End
    Begin XtremeSuiteControls.GroupBox grpOrigen 
-      Height          =   4455
-      Left            =   5880
+      Height          =   5655
+      Left            =   7080
       TabIndex        =   0
       Top             =   4200
       Width           =   9780
       _Version        =   786432
       _ExtentX        =   17251
-      _ExtentY        =   7858
+      _ExtentY        =   9975
       _StockProps     =   79
       Caption         =   "Valores"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -191,20 +191,20 @@ Begin VB.Form frmCrearOrdenPago
       EndProperty
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.TabControl TabControl 
-         Height          =   4020
+         Height          =   5340
          Left            =   120
          TabIndex        =   1
          Top             =   240
          Width           =   9540
          _Version        =   786432
          _ExtentX        =   16828
-         _ExtentY        =   7091
+         _ExtentY        =   9419
          _StockProps     =   68
          Appearance      =   10
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
          ItemCount       =   5
-         SelectedItem    =   4
+         SelectedItem    =   3
          Item(0).Caption =   "Cheques Propios"
          Item(0).ControlCount=   1
          Item(0).Control(0)=   "gridChequesPropios"
@@ -221,14 +221,14 @@ Begin VB.Form frmCrearOrdenPago
          Item(4).ControlCount=   1
          Item(4).Control(0)=   "gridCompensatorios"
          Begin GridEX20.GridEX gridDepositosOperaciones 
-            Height          =   2400
+            Height          =   4710
             Left            =   -69895
             TabIndex        =   2
             Top             =   435
             Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   4233
+            _ExtentY        =   8308
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -261,14 +261,13 @@ Begin VB.Form frmCrearOrdenPago
             PrinterProperties=   "frmCrearOrdenPago.frx":0B30
          End
          Begin GridEX20.GridEX gridCajaOperaciones 
-            Height          =   3480
-            Left            =   -69895
+            Height          =   4710
+            Left            =   105
             TabIndex        =   10
             Top             =   435
-            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   6138
+            _ExtentY        =   8308
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -301,14 +300,14 @@ Begin VB.Form frmCrearOrdenPago
             PrinterProperties=   "frmCrearOrdenPago.frx":181C
          End
          Begin GridEX20.GridEX gridChequesPropios 
-            Height          =   2430
+            Height          =   4710
             Left            =   -69895
             TabIndex        =   9
             Top             =   435
             Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   4286
+            _ExtentY        =   8308
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -342,14 +341,14 @@ Begin VB.Form frmCrearOrdenPago
             PrinterProperties=   "frmCrearOrdenPago.frx":2538
          End
          Begin GridEX20.GridEX gridCheques 
-            Height          =   2430
+            Height          =   4710
             Left            =   -69895
             TabIndex        =   8
             Top             =   435
             Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   4286
+            _ExtentY        =   8308
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -384,13 +383,14 @@ Begin VB.Form frmCrearOrdenPago
             PrinterProperties=   "frmCrearOrdenPago.frx":3340
          End
          Begin GridEX20.GridEX gridCompensatorios 
-            Height          =   2430
-            Left            =   105
+            Height          =   4710
+            Left            =   -69895
             TabIndex        =   16
             Top             =   435
+            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
-            _ExtentY        =   4286
+            _ExtentY        =   8308
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -428,9 +428,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
-      Left            =   13320
+      Left            =   4320
       TabIndex        =   3
-      Top             =   8040
+      Top             =   10080
       Visible         =   0   'False
       Width           =   3465
       _ExtentX        =   6112
@@ -467,9 +467,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   1695
-      Left            =   18360
+      Left            =   16680
       TabIndex        =   4
-      Top             =   5040
+      Top             =   8640
       Visible         =   0   'False
       Width           =   4185
       _ExtentX        =   7382
@@ -505,9 +505,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridMonedas 
       Height          =   1695
-      Left            =   10800
+      Left            =   1920
       TabIndex        =   5
-      Top             =   9240
+      Top             =   9960
       Visible         =   0   'False
       Width           =   1380
       _ExtentX        =   2434
@@ -543,9 +543,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridCajas 
       Height          =   1695
-      Left            =   13440
+      Left            =   12840
       TabIndex        =   6
-      Top             =   9120
+      Top             =   8760
       Visible         =   0   'False
       Width           =   1500
       _ExtentX        =   2646
@@ -579,9 +579,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequesDisponibles 
       Height          =   2640
-      Left            =   10440
+      Left            =   5880
       TabIndex        =   7
-      Top             =   10320
+      Top             =   10680
       Visible         =   0   'False
       Width           =   9555
       _ExtentX        =   16854
@@ -622,9 +622,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequeras 
       Height          =   1815
-      Left            =   10680
+      Left            =   7200
       TabIndex        =   11
-      Top             =   7680
+      Top             =   10560
       Width           =   6435
       _ExtentX        =   11351
       _ExtentY        =   3201
@@ -660,9 +660,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequesChequera 
       Height          =   1710
-      Left            =   16440
+      Left            =   14520
       TabIndex        =   12
-      Top             =   6240
+      Top             =   8640
       Width           =   1980
       _ExtentX        =   3493
       _ExtentY        =   3016
@@ -701,7 +701,7 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
       Height          =   405
-      Left            =   13680
+      Left            =   14880
       TabIndex        =   14
       Top             =   3720
       Width           =   1950
@@ -964,14 +964,14 @@ Begin VB.Form frmCrearOrdenPago
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox2 
-      Height          =   3975
+      Height          =   5655
       Left            =   120
       TabIndex        =   42
       Top             =   4200
-      Width           =   5565
+      Width           =   6885
       _Version        =   786432
-      _ExtentX        =   9816
-      _ExtentY        =   7011
+      _ExtentX        =   12144
+      _ExtentY        =   9975
       _StockProps     =   79
       Caption         =   "Mostrar Facturas"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -1045,14 +1045,14 @@ Begin VB.Form frmCrearOrdenPago
          Width           =   1425
       End
       Begin XtremeSuiteControls.ListBox lstFacturas 
-         Height          =   1575
+         Height          =   3255
          Left            =   120
          TabIndex        =   45
          Top             =   2280
-         Width           =   5250
+         Width           =   6570
          _Version        =   786432
-         _ExtentX        =   9260
-         _ExtentY        =   2778
+         _ExtentX        =   11589
+         _ExtentY        =   5741
          _StockProps     =   77
          BackColor       =   -2147483643
          Appearance      =   6
@@ -1124,9 +1124,9 @@ Begin VB.Form frmCrearOrdenPago
    End
    Begin XtremeSuiteControls.GroupBox GroupBox4 
       Height          =   1095
-      Left            =   240
+      Left            =   17280
       TabIndex        =   59
-      Top             =   8760
+      Top             =   1680
       Width           =   5565
       _Version        =   786432
       _ExtentX        =   9816
@@ -1145,9 +1145,9 @@ Begin VB.Form frmCrearOrdenPago
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.ListBox lstDeudaCompensatorios 
          Height          =   495
-         Left            =   120
+         Left            =   14280
          TabIndex        =   60
-         Top             =   360
+         Top             =   -6480
          Width           =   5250
          _Version        =   786432
          _ExtentX        =   9260

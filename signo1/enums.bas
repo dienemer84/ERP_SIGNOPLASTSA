@@ -87,6 +87,8 @@ Public Enum EstadoOrdenPago
     EstadoOrdenPago_pendiente = 0
     EstadoOrdenPago_Aprobada = 1
     EstadoOrdenPago_Anulada = 2
+
+        
 End Enum
 
 
