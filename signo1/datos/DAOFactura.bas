@@ -1156,8 +1156,10 @@ End Function
 
 Public Function EnlazarFacturaAnticipoConOT(Factura As Factura, Optional implicitTransaction As Boolean = False) As Boolean
     EnlazarFacturaAnticipoConOT = True
+    implicitTransaction = True
+    'conectar.BeginTransaction
 
-    If implicitTransaction Then conectar.BeginTransaction
+    'If implicitTransaction Then conectar.BeginTransaction
 
     Dim Ot As OrdenTrabajo
     Dim sumaOt As Double
@@ -1179,17 +1181,18 @@ Cambio = Factura.CambioAPatron
         EnlazarFacturaAnticipoConOT = (funciones.RedondearDecimales(sumaOt) = funciones.RedondearDecimales(Factura.TotalNetoGravado - DAOFactura.MontoTotalAplicadoNCFC(Factura.id, True)))
     End If
 
-    If implicitTransaction Then
-        If EnlazarFacturaAnticipoConOT Then
+    'If implicitTransaction Then
+        'If EnlazarFacturaAnticipoConOT Then
 
             If Factura.id <> 0 Then
                 Dim q As String
                 q = "UPDATE pedidos SET id_anticipo_factura = 0 WHERE id_anticipo_factura = " & Factura.id
-                If Factura.OTsFacturadasAnticipo.count > 0 Then
-                    q = q & " AND id NOT IN (" & funciones.JoinCollectionValues(Factura.OTsFacturadasAnticipo, ", ", "Id") & ")"
-                End If
+                  If Factura.OTsFacturadasAnticipo.count > 0 Then
+                      q = q & " AND id NOT IN (" & funciones.JoinCollectionValues(Factura.OTsFacturadasAnticipo, ", ", "Id") & ")"
+                  End If
 
                 EnlazarFacturaAnticipoConOT = conectar.execute(q)
+                
                 If Not EnlazarFacturaAnticipoConOT Then
                     conectar.RollBackTransaction
                 End If
@@ -1201,10 +1204,11 @@ Cambio = Factura.CambioAPatron
                 conectar.RollBackTransaction
                 EnlazarFacturaAnticipoConOT = False
             End If
-        Else
-            conectar.RollBackTransaction
-        End If
-    End If
+            
+        'Else
+        '    conectar.RollBackTransaction
+        'End If
+    'End If
 End Function
 Public Function EnLiquidacionSubdiarioVentas(factura_id As Long) As Boolean
     Dim q As String
