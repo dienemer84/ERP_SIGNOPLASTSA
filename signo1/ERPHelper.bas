@@ -171,8 +171,8 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     req.CbteHasta = F.numero
     
     req.CbteFch = Format(F.FechaEmision, "yyyymmdd")
-req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total, 2)
-'req.MonCotiz = F.CambioAPatron
+    req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total, 2)
+    'req.MonCotiz = F.CambioAPatron
 
     'req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total * F.CambioAPatron, 2)
     req.ImpTotConc = "0"    'no gavado+excento + gravado + iva + tributo
@@ -252,7 +252,7 @@ End If
 
 '       cbt.NRO = f.Cancelada
 
-       cbt.NRO = ftmp.numero
+       cbt.nro = ftmp.numero
        If ftmp.esCredito Then
                 cbt.esCredito = "true"
        Else
