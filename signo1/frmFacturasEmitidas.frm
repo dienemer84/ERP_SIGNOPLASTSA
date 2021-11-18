@@ -557,7 +557,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   23
+      ColumnsCount    =   24
       Column(1)       =   "frmFacturasEmitidas.frx":0326
       Column(2)       =   "frmFacturasEmitidas.frx":04C6
       Column(3)       =   "frmFacturasEmitidas.frx":05DA
@@ -581,26 +581,27 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(21)      =   "frmFacturasEmitidas.frx":1D3E
       Column(22)      =   "frmFacturasEmitidas.frx":1EB6
       Column(23)      =   "frmFacturasEmitidas.frx":2026
+      Column(24)      =   "frmFacturasEmitidas.frx":2132
       FormatStylesCount=   16
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":2132
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":226A
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":231A
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":23CE
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":24A6
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":255E
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":263E
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":26CA
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":27AA
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":285A
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":290E
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":29BE
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":2A6E
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":2B22
-      FormatStyle(15) =   "frmFacturasEmitidas.frx":2BFA
-      FormatStyle(16) =   "frmFacturasEmitidas.frx":2CDE
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":221E
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":2356
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2406
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":24BA
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":2592
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":264A
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":272A
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":27B6
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2896
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":2946
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":29FA
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":2AAA
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":2B5A
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":2C0E
+      FormatStyle(15) =   "frmFacturasEmitidas.frx":2CE6
+      FormatStyle(16) =   "frmFacturasEmitidas.frx":2DCA
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":2DBE
-      PrinterProperties=   "frmFacturasEmitidas.frx":30D8
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":2EAA
+      PrinterProperties=   "frmFacturasEmitidas.frx":31C4
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   15630
@@ -982,6 +983,7 @@ Private Sub llenarGrilla()
 
     Me.GridEX1.ItemCount = 0
     filtro = "1=1"
+    
     If Me.cboClientes.ListIndex >= 0 Then
         filtro = filtro & " and idCliente=" & cboClientes.ItemData(Me.cboClientes.ListIndex)
     End If
@@ -989,23 +991,23 @@ Private Sub llenarGrilla()
     If Me.cboPuntosVenta.ListIndex >= 0 Then
         filtro = filtro & " and pv.id=" & cboPuntosVenta.ItemData(Me.cboPuntosVenta.ListIndex)
     End If
-
-
+    
     If Me.cboEstados.ListIndex >= 0 Then
         filtro = filtro & " and AdminFacturas.estado=" & cboEstados.ItemData(Me.cboEstados.ListIndex)
     End If
 
- If Me.cboEstadosSaldada.ListIndex >= 0 Then
+    If Me.cboEstadosSaldada.ListIndex >= 0 Then
         filtro = filtro & " and AdminFacturas.saldada=" & cboEstadosSaldada.ItemData(Me.cboEstadosSaldada.ListIndex)
     End If
-    If Me.chkCredito.value > 0 Then
-    filtro = filtro & " and AdminFacturas.EsCredito=" & Me.chkCredito.value
-   End If
     
+    If Me.chkCredito.value > 0 Then
+        filtro = filtro & " and AdminFacturas.EsCredito=" & Me.chkCredito.value
+    End If
     
     If LenB(Me.txtOrdenCompra) > 0 Then
         filtro = filtro & " and OrdenCompra like '%" & Trim(Me.txtOrdenCompra) & "%'"
     End If
+    
     If LenB(Me.txtNroFactura) > 0 And IsNumeric(Me.txtNroFactura) Then
         filtro = filtro & " and nroFactura=" & Me.txtNroFactura
     End If
@@ -1028,17 +1030,17 @@ Private Sub llenarGrilla()
     
    If Me.cboEstadoAfip.ListIndex = 0 Then
         filtro = filtro & " and AdminFacturas.aprobacion_afip=1"
-  End If
-     If Me.cboEstadoAfip.ListIndex = 1 Then
+   End If
+   
+   If Me.cboEstadoAfip.ListIndex = 1 Then
         filtro = filtro & " and AdminFacturas.aprobacion_afip=0"
-  End If
+   End If
     
 
-    Set facturas = DAOFactura.FindAll(filtro)
-    Dim F As Factura
-    Dim c As Integer
-    For Each F In facturas
-
+   Set facturas = DAOFactura.FindAll(filtro)
+   Dim F As Factura
+   Dim c As Integer
+   For Each F In facturas
 
         Dim Total As Double
         Dim totalNG As Double
@@ -1050,15 +1052,14 @@ Private Sub llenarGrilla()
 
         If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
 
+      
+       Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
+       TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
 
-      Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
-
-      TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
-
-      totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+       totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
        
-      Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
+       Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
        
       '  totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.Convertir(F.TotalEstatico.TotalPercepcionesIB * c, F.moneda.id, MonedaConverter.Patron.id)
 
@@ -1499,6 +1500,8 @@ End If
     Values(22) = Factura.TasaAjusteMensual
 
     Values(23) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+    
+    Values(24) = Factura.id
 
     Exit Sub
 err1:
