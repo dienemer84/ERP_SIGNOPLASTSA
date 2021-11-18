@@ -532,6 +532,7 @@ Form=presentacion\frmAdminFacturaRechazoAfip.frm
 Form=presentacion\frmHistorico.frm
 Module=QRHelper; QRHelper.bas
 ResFile32="Themes.res"
+Form=frmTip.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""
