@@ -26,6 +26,20 @@ Begin VB.Form frmAdminFacturasEmitidas
       _StockProps     =   79
       Caption         =   "Filtros"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ProgressBar progreso 
+         Height          =   420
+         Left            =   14760
+         TabIndex        =   42
+         Top             =   1500
+         Visible         =   0   'False
+         Width           =   4215
+         _Version        =   786432
+         _ExtentX        =   7435
+         _ExtentY        =   741
+         _StockProps     =   93
+         Appearance      =   6
+         BarColor        =   65280
+      End
       Begin XtremeSuiteControls.CheckBox chkCredito 
          Height          =   255
          Left            =   6600
@@ -224,7 +238,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Imprimir"
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.PushButton PushButton2 
+      Begin XtremeSuiteControls.PushButton btnExpotar 
          Height          =   420
          Left            =   12240
          TabIndex        =   22
@@ -389,6 +403,17 @@ Begin VB.Form frmAdminFacturasEmitidas
          _StockProps     =   79
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
+      End
+      Begin VB.Label lblExportando 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H8000000A&
+         Caption         =   "Exportando..."
+         Height          =   255
+         Left            =   17160
+         TabIndex        =   43
+         Top             =   1200
+         Visible         =   0   'False
+         Width           =   1815
       End
       Begin XtremeSuiteControls.Label Label14 
          Height          =   285
@@ -852,6 +877,167 @@ Private Sub archivos_Click()
     F.Show
 End Sub
 
+
+Private Sub btnExpotar_Click()
+
+'FUNCIÓN PARA EXPORTAR A EXCEL
+    
+    Dim id As Long
+    
+    If (Me.cboClientes.ListIndex > 0) Then
+        id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
+    Else
+        id = -1
+    End If
+
+    Dim col As New Collection
+
+    If (id > 0) Then
+        Set col = DAOFactura.FindAllByEstadoSaldoAndCliente(NoSaldada, EstadoFacturaCliente.Aprobada, id)
+    Else
+        Set col = DAOFactura.FindAllByEstadoSaldoAndCliente(NoSaldada, EstadoFacturaCliente.Aprobada)
+
+    End If
+    
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+    Me.progreso.Visible = True
+    Me.lblExportando.Visible = True
+    
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+    progreso.min = 0
+    progreso.max = col.count
+    
+
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+    
+    
+    Set xlWorkbook = xlApplication.Workbooks.Add
+
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    xlWorksheet.Cells(1, 1).value = "Cliente"
+    
+    If (id > 0) Then
+        xlWorksheet.Cells(1, 2).value = DAOCliente.BuscarPorID(id).razon
+    Else
+        xlWorksheet.Cells(1, 2).value = "Todos"
+    End If
+
+    xlWorksheet.Columns(4).HorizontalAlignment = xlLeft
+    xlWorksheet.Columns(10).HorizontalAlignment = xlLeft
+    xlWorksheet.Cells(2, 1).value = "Comprobante"
+    xlWorksheet.Cells(2, 2).value = "Emision"
+    xlWorksheet.Cells(2, 3).value = "Moneda"
+    xlWorksheet.Cells(2, 4).value = "Detalle"
+    xlWorksheet.Cells(2, 5).value = "Importe en " & DAOMoneda.FindFirstByPatronOrDefault.NombreCorto
+
+    xlWorksheet.Cells(2, 6).value = "Vencimiento"
+    xlWorksheet.Cells(2, 7).value = "Atraso"
+    xlWorksheet.Cells(2, 8).value = "Entrega"
+    xlWorksheet.Cells(2, 9).value = "Atraso"
+    
+    If (id < 0) Then xlWorksheet.Cells(2, 10).value = "Cliente"
+    
+    Dim idx As Integer
+    idx = 3
+    
+    Dim fac As Factura
+  
+'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
+    
+    For Each fac In col
+        
+        xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
+        xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
+        xlWorksheet.Cells(idx, 3).value = fac.moneda.NombreCorto
+        xlWorksheet.Cells(idx, 4).value = fac.OrdenCompra
+
+        If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.TotalEstatico.Total * fac.CambioAPatron) * -1
+        Else
+            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.TotalEstatico.Total * fac.CambioAPatron)
+        End If
+        
+        xlWorksheet.Cells(idx, 6).value = fac.Vencimiento
+        xlWorksheet.Cells(idx, 7).value = fac.StringDiasAtraso
+        
+        If (fac.DiferenciaDiasEntrega <> -1) Then
+            xlWorksheet.Cells(idx, 8).value = Format(fac.FechaEntrega, "dd/mm/yyyy")
+            xlWorksheet.Cells(idx, 9).value = fac.DiferenciaDiasEntrega & " dias"
+        Else
+            xlWorksheet.Cells(idx, 8).value = "no definida"
+            xlWorksheet.Cells(idx, 9).value = 0
+        End If
+
+        If (id < 0) Then xlWorksheet.Cells(idx, 10).value = fac.cliente.razon
+
+        idx = idx + 1
+        
+'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+        progreso.value = d
+        
+        
+        Next
+        
+        xlWorksheet.Cells(idx, 5).Formula = "=SUM(E3:E" & idx - 1 & ")"
+
+        'AUTOSIZE
+        xlApplication.ScreenUpdating = False
+        
+        Dim wkSt As String
+        
+        wkSt = xlWorksheet.Name
+        
+        xlWorksheet.Cells.EntireColumn.AutoFit
+        
+        xlWorkbook.Sheets(wkSt).Select
+        
+        xlApplication.ScreenUpdating = True
+        
+        xlWorksheet.PageSetup.Orientation = xlLandscape
+        xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+    
+        Dim filename As String
+        filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
+    
+        If Dir(filename) <> vbNullString Then Kill filename
+       
+        xlWorkbook.SaveAs filename
+    
+        xlWorkbook.Saved = True
+        xlWorkbook.Close
+        xlApplication.Quit
+        
+        funciones.ShellExecute 0, "open", filename, "", "", 0
+    
+        Set xlWorksheet = Nothing
+        Set xlWorkbook = Nothing
+        Set xlApplication = Nothing
+        
+'REINICIA EL PROGRESSBAR Y LO OCULTA
+        progreso.value = 0
+        Me.progreso.Visible = False
+        Me.lblExportando.Visible = False
+        
+End Sub
 
 Private Sub cboRangos_Click()
     funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde, Me.dtpHasta
@@ -1816,12 +2002,8 @@ Private Sub mnuEnviarAfip_Click()
 On Error GoTo err1
     Dim g As Long
 
-   
-
-
-
     If Not Factura.Tipo.PuntoVenta.EsElectronico Then
-      Err.Raise 300, "Informar AFIP", "No puede informar un comprobante de un PV no catalogado como electrónico"
+      Err.Raise 300, "Informar AFIP", "No puede informar un comprobante de un PV no catalogado como electrónico."
     End If
       
 '    If factura.Tipo.PuntoVenta.EsElectronico And factura.Tipo.PuntoVenta.CaeManual Then
@@ -1829,7 +2011,7 @@ On Error GoTo err1
 '   End If
 
     If Factura.Tipo.PuntoVenta.EsElectronico And Factura.AprobadaAFIP Then
-            Err.Raise 302, "Informar AFIP", "No puede informar un comprobante de ya informado"
+            Err.Raise 302, "Informar AFIP", "No puede informar un comprobante que ya fue informado."
     End If
     
     If Factura.Tipo.PuntoVenta.CaeManual Then
@@ -1874,6 +2056,7 @@ err1:
    
     MsgBox Err.Description, vbCritical, Err.Source
     Me.GridEX1.RefreshRowIndex g
+    
 End Sub
 
 Private Sub mnuFechaEntrega_Click()
@@ -1951,123 +2134,7 @@ Private Sub PushButton1_Click()
     Me.cboClientes.ListIndex = -1
 End Sub
 
-Private Sub PushButton2_Click()
-    Dim id As Long
-    If (Me.cboClientes.ListIndex > 0) Then
-        id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
-    Else
-        id = -1
-    End If
 
-    Dim col As New Collection
-
-    If (id > 0) Then
-        Set col = DAOFactura.FindAllByEstadoSaldoAndCliente(NoSaldada, EstadoFacturaCliente.Aprobada, id)
-    Else
-        Set col = DAOFactura.FindAllByEstadoSaldoAndCliente(NoSaldada, EstadoFacturaCliente.Aprobada)
-
-    End If
-
-
-    Dim xlWorkbook As New Excel.Workbook
-    Dim xlWorksheet As New Excel.Worksheet
-    Dim xlApplication As New Excel.Application
-
-    Set xlWorkbook = xlApplication.Workbooks.Add
-    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
-
-    xlWorksheet.Activate
-
-    xlWorksheet.Cells(1, 1).value = "Cliente"
-
-    If (id > 0) Then
-        xlWorksheet.Cells(1, 2).value = DAOCliente.BuscarPorID(id).razon
-    Else
-        xlWorksheet.Cells(1, 2).value = "Todos"
-    End If
-
-    xlWorksheet.Columns(4).HorizontalAlignment = xlLeft
-    xlWorksheet.Columns(10).HorizontalAlignment = xlLeft
-    xlWorksheet.Cells(2, 1).value = "Comprobante"
-    xlWorksheet.Cells(2, 2).value = "Emision"
-    xlWorksheet.Cells(2, 3).value = "Moneda"
-    xlWorksheet.Cells(2, 4).value = "Detalle"
-    xlWorksheet.Cells(2, 5).value = "Importe en " & DAOMoneda.FindFirstByPatronOrDefault.NombreCorto
-
-    xlWorksheet.Cells(2, 6).value = "Vencimiento"
-    xlWorksheet.Cells(2, 7).value = "Atraso"
-    xlWorksheet.Cells(2, 8).value = "Entrega"
-    xlWorksheet.Cells(2, 9).value = "Atraso"
-    If (id < 0) Then xlWorksheet.Cells(2, 10).value = "Cliente"
-    Dim idx As Integer
-    idx = 3
-    Dim fac As Factura
-    For Each fac In col
-
-        xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
-
-        xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
-        xlWorksheet.Cells(idx, 3).value = fac.moneda.NombreCorto
-        xlWorksheet.Cells(idx, 4).value = fac.OrdenCompra
-
-
-        If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
-            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.TotalEstatico.Total * fac.CambioAPatron) * -1
-        Else
-            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.TotalEstatico.Total * fac.CambioAPatron)
-
-
-        End If
-        xlWorksheet.Cells(idx, 6).value = fac.Vencimiento
-        xlWorksheet.Cells(idx, 7).value = fac.StringDiasAtraso
-        If (fac.DiferenciaDiasEntrega <> -1) Then
-            xlWorksheet.Cells(idx, 8).value = Format(fac.FechaEntrega, "dd/mm/yyyy")
-            xlWorksheet.Cells(idx, 9).value = fac.DiferenciaDiasEntrega & " dias"
-        Else
-            xlWorksheet.Cells(idx, 8).value = "no definida"
-            xlWorksheet.Cells(idx, 9).value = 0
-        End If
-
-        If (id < 0) Then xlWorksheet.Cells(idx, 10).value = fac.cliente.razon
-
-        idx = idx + 1
-    Next
-    xlWorksheet.Cells(idx, 5).Formula = "=SUM(E3:E" & idx - 1 & ")"
-
-    'autosize
-    xlApplication.ScreenUpdating = False
-    Dim wkSt As String
-    wkSt = xlWorksheet.Name
-    xlWorksheet.Cells.EntireColumn.AutoFit
-    xlWorkbook.Sheets(wkSt).Select
-    xlApplication.ScreenUpdating = True
-
-    'xlWorksheet.PageSetup.PrintTitleRows = "$1:$3" 'para que al imprimir queden las columnas fijas
-    xlWorksheet.PageSetup.Orientation = xlLandscape
-    xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
-    xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
-    xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
-    xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
-
-    Dim filename As String
-    filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xls"
-
-    If Dir(filename) <> vbNullString Then Kill filename
-
-    xlWorkbook.SaveAs filename
-
-    xlWorkbook.Saved = True
-    xlWorkbook.Close
-    xlApplication.Quit
-
-
-    funciones.ShellExecute 0, "open", filename, "", "", 0
-
-    Set xlWorksheet = Nothing
-    Set xlWorkbook = Nothing
-    Set xlApplication = Nothing
-
-End Sub
 
 Private Sub PushButton3_Click()
     Me.cboPuntosVenta.ListIndex = -1

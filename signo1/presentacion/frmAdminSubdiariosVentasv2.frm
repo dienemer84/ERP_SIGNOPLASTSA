@@ -6,7 +6,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    ClientHeight    =   8625
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   13800
+   ClientWidth     =   18315
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -21,7 +21,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    LockControls    =   -1  'True
    MDIChild        =   -1  'True
    ScaleHeight     =   8625
-   ScaleWidth      =   13800
+   ScaleWidth      =   18315
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1680
       Left            =   10545
@@ -239,6 +239,19 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ProgressBar progreso 
+         Height          =   420
+         Left            =   9000
+         TabIndex        =   27
+         Top             =   1100
+         Visible         =   0   'False
+         Width           =   4215
+         _Version        =   786432
+         _ExtentX        =   7435
+         _ExtentY        =   741
+         _StockProps     =   93
+         Appearance      =   6
+      End
       Begin XtremeSuiteControls.RadioButton rdoRangoFechas 
          Height          =   255
          Left            =   420
@@ -256,7 +269,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Height          =   360
          Left            =   8850
          TabIndex        =   2
-         Top             =   570
+         Top             =   300
          Width           =   2235
          _Version        =   786432
          _ExtentX        =   3942
@@ -278,7 +291,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Height          =   360
          Left            =   11100
          TabIndex        =   3
-         Top             =   570
+         Top             =   300
          Width           =   2235
          _Version        =   786432
          _ExtentX        =   3942
@@ -300,7 +313,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Height          =   360
          Left            =   11100
          TabIndex        =   4
-         Top             =   945
+         Top             =   715
          Width           =   2235
          _Version        =   786432
          _ExtentX        =   3942
@@ -456,7 +469,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Height          =   360
          Left            =   8850
          TabIndex        =   15
-         Top             =   945
+         Top             =   715
          Width           =   2235
          _Version        =   786432
          _ExtentX        =   3942
@@ -809,10 +822,33 @@ End Sub
 
 
 Public Function ExportaSubDiarioVentas() As Boolean
+   
     On Error GoTo errEXCEL
-    Dim xlb As New Excel.Workbook
-    Dim xla As New Excel.Worksheet
-    Dim xls As New Excel.Application
+    
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+    Me.progreso.Visible = True
+
+    
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+    progreso.min = 0
+    progreso.max = col.count
+    
+    
+'    Dim xlb As New Excel.Workbook
+'    Dim xla As New Excel.Worksheet
+'    Dim xls As New Excel.Application
+
+    'Dim xlApplication As New Excel.Application
+    Dim xls As Object
+    Set xls = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlb As Object
+    Set xlb = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xla As Object
+    Set xla = CreateObject("Excel.Application")
 
     Dim A As String
     Dim b As String
@@ -821,11 +857,10 @@ Public Function ExportaSubDiarioVentas() As Boolean
     Dim CDLGMAIN As CommonDialog
     Dim sFilter As String
 
-
     Set xlb = xls.Workbooks.Add
     Set xla = xlb.Worksheets.Add
+    
     xla.Activate
-
 
     With xla
 
@@ -899,6 +934,10 @@ Public Function ExportaSubDiarioVentas() As Boolean
         totexen = 0
 
         x = 1
+        
+'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
 
         For Each item In col
             If item.estado = Anulada Then
@@ -934,6 +973,11 @@ Public Function ExportaSubDiarioVentas() As Boolean
             End If
 
             x = x + 1
+        
+'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+        progreso.value = d
+        
         Next item
 
 
@@ -976,7 +1020,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         Dim archi As String
-        archi = "SUBDIARIO_VENTAS_" & Periodo & ".xls"
+        archi = "SUBDIARIO_VENTAS_" & Periodo & ".xlsx"
         frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
@@ -997,6 +1041,12 @@ Public Function ExportaSubDiarioVentas() As Boolean
         Set xls = Nothing
         Set xla = Nothing
         Set xlb = Nothing
+        
+'REINICIA EL PROGRESSBAR Y LO OCULTA
+        progreso.value = 0
+        Me.progreso.Visible = False
+
+
 
         '    End If
         ExportaSubDiarioVentas = True

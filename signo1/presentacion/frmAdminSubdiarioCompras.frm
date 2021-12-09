@@ -261,13 +261,27 @@ Begin VB.Form frmAdminSubdiarioCompras
       Left            =   60
       TabIndex        =   8
       Top             =   0
-      Width           =   14940
+      Width           =   18060
       _Version        =   786432
-      _ExtentX        =   26352
+      _ExtentX        =   31856
       _ExtentY        =   2963
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ProgressBar progreso 
+         Height          =   420
+         Left            =   13560
+         TabIndex        =   37
+         Top             =   1160
+         Visible         =   0   'False
+         Width           =   4215
+         _Version        =   786432
+         _ExtentX        =   7435
+         _ExtentY        =   741
+         _StockProps     =   93
+         Appearance      =   6
+         BarColor        =   65280
+      End
       Begin XtremeSuiteControls.CheckBox chkOcultarIVACero 
          Height          =   255
          Left            =   8865
@@ -1196,10 +1210,32 @@ End Sub
 '#236
 
 Public Function ExportaSubDiarioComprasFechas() As Boolean
+    
     On Error GoTo errEXCEL
-    Dim xlb As New Excel.Workbook
-    Dim xla As New Excel.Worksheet
-    Dim xls As New Excel.Application
+    
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+    Me.progreso.Visible = True
+    
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+    progreso.min = 0
+    progreso.max = col.count
+    
+    
+'    Dim xlb As New Excel.Workbook
+'    Dim xla As New Excel.Worksheet
+'    Dim xls As New Excel.Application
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xls As Object
+    Set xls = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlb As Object
+    Set xlb = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xla As Object
+    Set xla = CreateObject("Excel.Application")
 
     Dim A As String
     Dim b As String
@@ -1312,7 +1348,9 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         x = 1
 
-
+'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
         
         For Each item In col
 
@@ -1426,6 +1464,11 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
            
             x = x + 1
             
+'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+        progreso.value = d
+        
+            
         Next item
 
 
@@ -1524,6 +1567,9 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         '    End If
         ExportaSubDiarioComprasFechas = True
 
+'REINICIA EL PROGRESSBAR Y LO OCULTA
+        progreso.value = 0
+        Me.progreso.Visible = False
 
 
     End With
@@ -1545,10 +1591,40 @@ errEXCEL:
 End Function
 
 Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
+    
     On Error GoTo errEXCEL
-    Dim xlb As New Excel.Workbook
-    Dim xla As New Excel.Worksheet
-    Dim xls As New Excel.Application
+    
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+    Me.progreso.Visible = True
+
+    
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+    progreso.min = 0
+    progreso.max = col.count
+    
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+    Me.progreso.Visible = True
+
+    
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+    progreso.min = 0
+    progreso.max = col.count
+    
+'    Dim xlb As New Excel.Workbook
+'    Dim xla As New Excel.Worksheet
+'    Dim xls As New Excel.Application
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xls As Object
+    Set xls = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlb As Object
+    Set xlb = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xla As Object
+    Set xla = CreateObject("Excel.Application")
 
     Dim A As String
     Dim b As String
@@ -1665,8 +1741,10 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         totexen = 0
 
         x = 1
-
-
+        
+'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
         
         For Each item In col
 
@@ -1782,6 +1860,11 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
            
             x = x + 1
             
+'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+        progreso.value = d
+        
+            
         Next item
 
 
@@ -1877,6 +1960,10 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         Set xls = Nothing
         Set xla = Nothing
         Set xlb = Nothing
+        
+'REINICIA EL PROGRESSBAR Y LO OCULTA
+        progreso.value = 0
+        Me.progreso.Visible = False
 
         '    End If
         ExportaSubDiarioComprasLiquidacion = True

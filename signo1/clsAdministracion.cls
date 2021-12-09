@@ -346,13 +346,28 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
 
 End Function
 
-Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
+Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) As Boolean
+    
     On Error GoTo errEXCEL
-    Dim xlb As New Excel.Workbook
-    Dim xla As New Excel.Worksheet
-    Dim xls As New Excel.Application
+    
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+    progreso.Visible = True
+    
+'    Dim xlb As New Excel.Workbook
+'    Dim xla As New Excel.Worksheet
+'    Dim xls As New Excel.Application
 
+    'Dim xlApplication As New Excel.Application
+    Dim xls As Object
+    Set xls = CreateObject("Excel.Application")
 
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlb As Object
+    Set xlb = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xla As Object
+    Set xla = CreateObject("Excel.Application")
 
     Set xlb = xls.Workbooks.Add
     Set xla = xlb.Worksheets.Add
@@ -375,12 +390,15 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
         .Range(.Cells(1, 1), .Cells(3, canti_col)).Font.Bold = True
 
         .Range(.Cells(3, 1), .Cells(3, canti_col)).Interior.Color = &HC0C0C0
-        .Range(.Cells(3, 1), .Cells(3, canti_col)).Font.Bold = True    '
+        .Range(.Cells(3, 1), .Cells(3, canti_col)).Font.Bold = True
+        
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+    progreso.min = 0
+    progreso.max = lst.ListItems.count
 
-
-
-
-
+'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
 
 
         For x = 1 To canti_col
@@ -416,13 +434,21 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
             .Cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
             .Cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
             .Cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
+            
+            
 
             'campos numericos
             For y = 4 To canti_col - 1
                 .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
                 vec(y - 4) = vec(y - 4) + CDbl(lst.ListItems(x).ListSubItems(y))
-            Next y
+                
+'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+        progreso.value = d
 
+
+            Next y
+            
 
         Next x
         A = 1
@@ -464,14 +490,14 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
 
 
         '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
-        sFilter = "Hoja de Calculo|*.xls"
+        sFilter = "Hoja de Calculo|*.xlsx"
         CDLGMAIN.filter = sFilter
         Dim refe As String
         refe = ref
         Periodo = 1
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
-        archi = "SUB_COBRANZAS_" & Periodo & ".xls"
+        archi = "SUB_COBRANZAS_" & Periodo & ".xlsx"
         frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
@@ -482,6 +508,12 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
             strMsg = strMsg & CDLGMAIN.filename
             MsgBox strMsg, vbExclamation, "Hoja de calculo guardada"
             archi = CDLGMAIN.filename
+            
+'REINICIA EL PROGRESSBAR Y LO OCULTA
+        progreso.value = 0
+        progreso.Visible = False
+        
+        
         Else
             exportaSubDiarioCobros = False
         End If
@@ -495,8 +527,6 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta) As Boolean
 
         '    End If
         exportaSubDiarioCobros = True
-
-
 
     End With
     Exit Function
@@ -651,13 +681,28 @@ End Function
 
 
 
-Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Boolean
+Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progreso) As Boolean
+    
     On Error GoTo errEXCEL
-    Dim xlb As New Excel.Workbook
-    Dim xla As New Excel.Worksheet
-    Dim xls As New Excel.Application
+    
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+    progreso.Visible = True
+  
+'    Dim xlb As New Excel.Workbook
+'    Dim xla As New Excel.Worksheet
+'    Dim xls As New Excel.Application
 
+    'Dim xlApplication As New Excel.Application
+    Dim xls As Object
+    Set xls = CreateObject("Excel.Application")
 
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlb As Object
+    Set xlb = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xla As Object
+    Set xla = CreateObject("Excel.Application")
 
     Set xlb = xls.Workbooks.Add
     Set xla = xlb.Worksheets.Add
@@ -681,13 +726,18 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
         .Range(.Cells(1, 1), .Cells(3, canti_col)).Font.Bold = True
 
         .Range(.Cells(3, 1), .Cells(3, canti_col)).Interior.Color = &HC0C0C0
-        .Range(.Cells(3, 1), .Cells(3, canti_col)).Font.Bold = True    '
+        .Range(.Cells(3, 1), .Cells(3, canti_col)).Font.Bold = True
+        
 
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+    progreso.min = 0
+    progreso.max = lst.ListItems.count
+    
+  
 
-
-
-
-
+'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
 
         For x = 1 To canti_col
             .Cells(3, x).value = lst.ColumnHeaders(x).text
@@ -729,6 +779,12 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
             For y = 5 To canti_col - 1
                 .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
                 vec(y - 5) = vec(y - 5) + CDbl(lst.ListItems(x).ListSubItems(y))
+                
+'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+        progreso.value = d
+        
+        
             Next y
             '
             '
@@ -761,14 +817,14 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
 
 
         '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
-        sFilter = "Hoja de Calculo|*.xls"
+        sFilter = "Hoja de Calculo|*.xlsx"
         CDLGMAIN.filter = sFilter
         Dim refe As String
         refe = ref
         Periodo = 1
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
-        archi = "SUB_RETENCIONES_" & Periodo & ".xls"
+        archi = "SUB_RETENCIONES_" & Periodo & ".xlsx"
         frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
@@ -779,6 +835,11 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta) As Bo
             strMsg = strMsg & CDLGMAIN.filename
             MsgBox strMsg, vbExclamation, "Hoja de calculo guardada"
             archi = CDLGMAIN.filename
+            
+'REINICIA EL PROGRESSBAR Y LO OCULTA
+        progreso.value = 0
+        progreso.Visible = False
+        
         Else
             exportaSubDiarioRetenciones = False
         End If

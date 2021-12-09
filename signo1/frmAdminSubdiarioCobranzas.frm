@@ -1,6 +1,7 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminSubdiarioCobranzas 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -33,6 +34,19 @@ Begin VB.Form frmAdminSubdiarioCobranzas
       TabIndex        =   0
       Top             =   0
       Width           =   16935
+      Begin XtremeSuiteControls.ProgressBar progreso 
+         Height          =   420
+         Left            =   4440
+         TabIndex        =   10
+         Top             =   1180
+         Visible         =   0   'False
+         Width           =   4215
+         _Version        =   786432
+         _ExtentX        =   7435
+         _ExtentY        =   741
+         _StockProps     =   93
+         Appearance      =   6
+      End
       Begin VB.CommandButton Command1 
          BackColor       =   &H00E0E0E0&
          Caption         =   "Imprimir"
@@ -84,7 +98,7 @@ Begin VB.Form frmAdminSubdiarioCobranzas
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16777217
+         Format          =   58327041
          CurrentDate     =   39660
       End
       Begin MSComCtl2.DTPicker DTDesde 
@@ -96,7 +110,7 @@ Begin VB.Form frmAdminSubdiarioCobranzas
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16777217
+         Format          =   58327041
          CurrentDate     =   39660
       End
       Begin VB.Label Label1 
@@ -188,7 +202,7 @@ Private Sub Command2_Click()
 End Sub
 
 Private Sub Command3_Click()
-    clase.exportaSubDiarioCobros Me.lstSubdiarioCobranzas, desde, hasta
+    clase.exportaSubDiarioCobros Me.lstSubdiarioCobranzas, desde, hasta, progreso
 End Sub
 
 Private Sub Command4_Click()

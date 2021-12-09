@@ -296,7 +296,7 @@ Private Sub Command1_Click()
                         If clssp.VerificarSiHayActualizacion(idnueva) Then
                             If MsgBox("Hay una nueva actualización del sistema." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
                                 clssp.actualizarSistema CLng(idnueva)
-                                
+
                             End If
                             
                         End If
@@ -310,7 +310,7 @@ Private Sub Command1_Click()
 'ACA SE INCORPORA LA VENTANA DONDE SE MUESTRAN LOS ULTIMOS CAMBIOS REALIZADOS EN EL SISTEMA
 'LOS DATOS QUE SE MUESTRAN ESTAN GUARDADOS EN UN ARCHIVO TXT EN LA MISMA UBICACIÓN DE DESARROLLO
 
-                    'frmTip.Show
+
                     
                 Else
                     Me.mensaje = "* Password incorrecto *"
