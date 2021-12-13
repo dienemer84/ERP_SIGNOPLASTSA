@@ -341,8 +341,8 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
             Dim F As New frmCategoriasSueldo
             F.Show
         Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SUELDO:
-            Dim CS As New CategoriaSueldo
-            CS.EspecificarSueldo
+            Dim cs As New CategoriaSueldo
+            cs.EspecificarSueldo
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS:
             Dim frm6001 As frmPlaneamientoRemitosLista
@@ -532,6 +532,11 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
             frmAdminConfigCambio.Show
 
+
+        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC:
+        
+            frmAdminExtrasReporteCMC.Show
+            
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES:
             Dim cccfff As New frmAdminCheques
@@ -1093,6 +1098,10 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Retenciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_RETENCIONES, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Posición IVA Mensual", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_POSICION_IVA_MENSUAL, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
 
+' REPORTE DE COMPARACIÓN DE COMPROBANTES SIGNO VS AFIP
+    Set ribbonGroup = ribbonTab.Groups.AddGroup("Extras", ID_GROUP.ID_GROUP_ADMINISTRACION__EXTRAS)
+    AddButton ribbonGroup, "Reporte CMC", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC, Permisos.AdminSubdiariosControl
+    'frmAdminExtrasReporteCMC
 
     '        Set cmdBarCtrl = AddButton(ribbonGroup, "Subdiarios Compras ", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_COMPRAS, , , xtpControlButtonPopup)
     '            AddButton ribbonGroup, "IVA Compras", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_IVACOMPRAS, Permisos.AdminSubdiariosControl, , , cmdBarCtrl

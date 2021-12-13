@@ -533,6 +533,7 @@ Form=presentacion\frmHistorico.frm
 Module=QRHelper; QRHelper.bas
 Form=frmTip.frm
 ResFile32="Themes.res"
+Form=Forms\frmAdminExtrasReporteCMC.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""
