@@ -8,12 +8,12 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   6975
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   20415
+   ClientWidth     =   12405
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   6975
-   ScaleWidth      =   20415
+   ScaleWidth      =   12405
    Begin XtremeSuiteControls.GroupBox grp 
       Height          =   2055
       Left            =   120
