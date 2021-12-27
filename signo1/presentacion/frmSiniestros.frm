@@ -5,7 +5,7 @@ Begin VB.Form frmSiniestros
    ClientHeight    =   7050
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   10260
+   ClientWidth     =   10500
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -20,7 +20,7 @@ Begin VB.Form frmSiniestros
    LockControls    =   -1  'True
    MDIChild        =   -1  'True
    ScaleHeight     =   7050
-   ScaleWidth      =   10260
+   ScaleWidth      =   10500
    Begin GridEX20.GridEX grid 
       Height          =   6990
       Left            =   30
@@ -91,6 +91,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Implements ISuscriber
+
 
 Dim siniestros As Collection
 Dim sin As SiniestroPersonal

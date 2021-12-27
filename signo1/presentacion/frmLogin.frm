@@ -249,8 +249,9 @@ Private Sub Command1_Click()
 
 
     frmPrincipal.servidorActual = Me.cboServidor.text
-     conectar.port = port
+    conectar.port = port
     conectar.SetServidorBBDD ip
+    
     If Not conectar.conectar Then GoTo errh000
 
     Dim r As Recordset
@@ -295,12 +296,14 @@ Private Sub Command1_Click()
                     If Not funciones.InIDE Then
                         If clssp.VerificarSiHayActualizacion(idnueva) Then
                             If MsgBox("Hay una nueva actualización del sistema." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
+                                frmTip.Show vbModal
                                 clssp.actualizarSistema CLng(idnueva)
-
                             End If
-                            
+
+                                                             
                         End If
-                        
+                    Else
+                                frmTip.Show vbModal
                     End If
 
 
@@ -436,6 +439,7 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub Command6_Click()
+
     frmPrincipal.servidorActual = Me.cboServidor.text
     conectar.SetServidorBBDD frmPrincipal.servidorActual
     conectar.conectar
@@ -484,6 +488,7 @@ Private Sub Form_Load()
         Me.Text1.text = "nicolasba"
         Me.Text2.text = "022916"
         'Command1_Click
+        
     Else
         Dim Puesto As String
         Puesto = LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)
@@ -503,6 +508,7 @@ Private Sub PushButton1_Click()
 End Sub
 
 Private Sub ProcesarDetaOT(detaOT As DetalleOrdenTrabajo, Optional detaOTDto As DetalleOTConjuntoDTO = Nothing)
+
     Dim tmpDeta As DetalleOTConjuntoDTO
     Dim piezaId As Long
     Dim ptp As PlaneamientoTiempoProceso
@@ -520,7 +526,9 @@ Private Sub ProcesarDetaOT(detaOT As DetalleOrdenTrabajo, Optional detaOTDto As 
         Next ptp
 
         ProcesarDetaOT detaOT, tmpDeta
+        
     Next tmpDeta
+    
 End Sub
 
 Private Sub Text1_GotFocus()
