@@ -721,7 +721,7 @@ Private Sub Command1_Click()
     End If
 End Sub
 
-Private Sub btnCrearNew_Click(Index As Integer)
+Private Sub btnCrearNew_Click(index As Integer)
     If Trim(Text1(9)) = Empty Then Text1(9) = 0
     If LenB(Text1(10)) = 0 Then Text1(10) = 0
     If LenB(Text1(0)) = 0 Or LenB(Text1(12)) = 0 Then
@@ -806,7 +806,7 @@ Private Function accion() As Boolean
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
     proveedor_.Cuit = Me.Text1(10)
     Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
-    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIVA.ItemData(Me.cboIVA.ListIndex)))
+    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.CboIVA.ItemData(Me.CboIVA.ListIndex)))
 
     'busco rubros
 
@@ -855,7 +855,7 @@ Private Sub mostrarCampos()
     Text1(11) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
     cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.id, cboMonedas)
-    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.id, cboIVA)
+    CboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.id, CboIVA)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
 End Sub
 Private Sub Form_Load()
@@ -944,18 +944,18 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 End Function
 
 Private Sub lstRubros_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
-    funciones.LstOrdenar Me.lstRubros, ColumnHeader.Index
+    funciones.LstOrdenar Me.lstRubros, ColumnHeader.index
 End Sub
 
-Private Sub Text1_GotFocus(Index As Integer)
-    foco Me.Text1(Index)
+Private Sub Text1_GotFocus(index As Integer)
+    foco Me.Text1(index)
 End Sub
 Public Sub llenarIva()
-    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIVA
+    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.CboIVA
 End Sub
 
-Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)
-    If Index = 10 Then    '10=cuit
+Private Sub Text1_Validate(index As Integer, Cancel As Boolean)
+    If index = 10 Then    '10=cuit
         Cancel = Not IsNumeric(Me.Text1(10)) And LenB(Me.Text1(10)) > 0
 
         If Not Cancel Then
