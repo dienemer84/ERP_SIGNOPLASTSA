@@ -303,7 +303,7 @@ Private Sub Command1_Click()
                                                              
                         End If
                     Else
-                                frmTip.Show vbModal
+ 
                     End If
 
 

@@ -158,6 +158,7 @@ Public Function exportarArchivo(id As Long, Optional ByVal ruta As String = vbNu
         If ejecutar Then
             ShellExecute -1, "open", ruta, "", "", 4
             'ShellExecute frmPrincipal.hwnd, "open", ruta, "", "", 4
+            
         End If
 
         exportarArchivo = ruta
@@ -182,16 +183,15 @@ Private Sub Class_Terminate()
 End Sub
 
 
-'Public Function cargarActualizacion(nombre As String, vruta As String, v_max As Long, v_max As Long) As Boolean
 Public Function cargarActualizacion(nom, rut, vmax, vmin, vrev, Optional notas As String = Empty) As Boolean
     On Error GoTo err221
     cn.BeginTrans
     cargarActualizacion = True
     Dim My As ADODB.Stream
     Set My = New ADODB.Stream
+    
     My.Open
-    'CN.Execute "delete  "
-
+    
     Me.ejecutar "select * from ActualizacionSistema limit 1"
 
     rs.AddNew
@@ -200,12 +200,16 @@ Public Function cargarActualizacion(nom, rut, vmax, vmin, vrev, Optional notas A
     rs!version_max = vmax
     rs!version_min = vmin
     rs!version_rev = vrev
+    
     My.Type = adTypeBinary
+    
     My.LoadFromFile rut
+    
     rs!archivo = My.Read
     rs!Tamano = My.Size
     rs!FEcha = funciones.datetimeFormateada(Now)
     rs!notas_version = notas
+    
     My.Close
 
     rs.Update
@@ -214,16 +218,22 @@ Public Function cargarActualizacion(nom, rut, vmax, vmin, vrev, Optional notas A
     rs.Close
 
 
-    Dim id_ As Long
+    Dim Id_ As Long
+    
     MsgBox "Carga exitosa!", vbInformation, "Información"
-    conectar.UltimoId "ActualizacionSistema", id_
+    
+    conectar.UltimoId "ActualizacionSistema", Id_
 
 
     cn.CommitTrans
 
+    If MsgBox("¿Desea cargar notas de la actualización?", vbYesNo, "Confirmación") = vbYes Then
+        frmSistemaAgregarNotasActualizacion.Show
+
+    End If
 
     If MsgBox("¿Desea agregar más archivos a esta actualización?", vbYesNo, "Confirmación") = vbYes Then
-        frmArchivosActualizacion.idVersion = id_
+        frmArchivosActualizacion.idVersion = Id_
         frmArchivosActualizacion.Show 1
 
     End If
@@ -395,8 +405,8 @@ Public Function grabarEscaneado(id As Long, Origen As Integer, ruta)
     nombr = Tipo & id & ".JPG"
 
 
-    a = Me.exportarJPG(App.path & "\tmp.bmp", App.path & "\tmp.jpg")
-    If a = 0 Then
+    A = Me.exportarJPG(App.path & "\tmp.bmp", App.path & "\tmp.jpg")
+    If A = 0 Then
         If classArchivos.grabarArchivo(id, nombr, App.path & "\tmp.jpg", "ESCANEO DIRECTO", Origen, False) Then
             Kill App.path & "\tmp.bmp"
         End If
@@ -422,11 +432,11 @@ Private Sub WriteByteArray(ByVal strPath As String, ByRef arrData() As Byte)
 
 End Sub
 
-Public Function previewImage2(a As archivo) As Picture
+Public Function previewImage2(A As archivo) As Picture
     On Error GoTo err22
     Dim P As String
     P = App.path & "\" & funciones.CreateGUID & ".tmp"
-    WriteByteArray P, a.Contenido
+    WriteByteArray P, A.Contenido
     Set previewImage2 = LoadPicture(P)
     Kill P
     Exit Function

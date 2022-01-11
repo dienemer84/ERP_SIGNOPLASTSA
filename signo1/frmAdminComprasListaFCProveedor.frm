@@ -8,13 +8,13 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ClientHeight    =   7815
    ClientLeft      =   60
    ClientTop       =   420
-   ClientWidth     =   25005
+   ClientWidth     =   14655
    ClipControls    =   0   'False
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   7815
-   ScaleWidth      =   25005
+   ScaleWidth      =   14655
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1800
@@ -1079,7 +1079,9 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         End If
 
         'If Factura.OrdenPagoId > 0 Then Values(16) = Factura.OrdenPagoId
-              Values(16) = Factura.OrdenesPagoId
+        
+        Values(16) = Factura.OrdenesPagoId
+        
         Values(17) = Factura.UsuarioCarga.usuario
         
         Values(18) = Factura.TipoCambio

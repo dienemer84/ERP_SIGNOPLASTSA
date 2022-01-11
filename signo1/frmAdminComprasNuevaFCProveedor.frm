@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
    BackColor       =   &H00FF8080&
@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   60686337
+      Format          =   62193665
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1118,8 +1118,8 @@ FacturaRequiereNumeroFormateado
         Me.cmdGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.frame2.Enabled = False
-        Me.frame3.Enabled = False
+        Me.Frame2.Enabled = False
+        Me.Frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
         Me.txtImpuestos.Enabled = False
@@ -1134,20 +1134,29 @@ FacturaRequiereNumeroFormateado
         Me.txtMontoManual.Visible = False
         Me.PushButton2.Visible = False
         Me.txtTipoCambio = vFactura.TipoCambio
-
-
         Me.lblTipoCambioPago = "Tipo de cambio Pago: " & vFactura.TipoCambioPago
+        
         grabado = True
+        
     End If
+    
+    
     Me.lblTipoCambioPago.Visible = VVer
+    
     TotalFactura
+    
     loading = False
 
 
+
    ' #208 revisado. No se puede agregar comprobantes a un período ya cerrado
-   Dim fecha_liqui_max As Date
-    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
-    Me.DTPicker1.MinDate = fecha_liqui_max
+'   Dim fecha_liqui_max As Date
+'
+'    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
+'
+'    Me.DTPicker1.MinDate = fecha_liqui_max
+'
+'    MsgBox (DTPicker1.MinDate)
 
 End Sub
 
@@ -1482,6 +1491,8 @@ Private Sub LlenarFactura()
     Me.cboTipoDocContable.ListIndex = funciones.PosIndexCbo(vFactura.tipoDocumentoContable, Me.cboTipoDocContable)
     Me.txtImpuestos = funciones.FormatearDecimales(vFactura.ImpuestoInterno)
     Me.DTPicker1 = vFactura.FEcha
+
+MsgBox (vFactura.FEcha)
 
 
 If vFactura.configFactura.FormateaNumero Then

@@ -6,12 +6,12 @@ Begin VB.Form frmAdminSubdiarioCompras
    ClientHeight    =   8805
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   15090
+   ClientWidth     =   14655
    Icon            =   "frmAdminSubdiarioCompras.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8805
-   ScaleWidth      =   15090
+   ScaleWidth      =   14655
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1695
       Left            =   8745
@@ -1354,7 +1354,10 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         
         For Each item In col
 
-                .Cells(x + 3, 1).value = item.FEcha
+                '.Cells(x + 3, 1).value = item.FEcha
+                
+                .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
+                
                 .Cells(x + 3, 2).value = item.Comprobante
                 .Cells(x + 3, 3).value = item.RazonSocial
                 .Cells(x + 3, 4).value = item.Cuit
@@ -1748,8 +1751,10 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         
         For Each item In col
 
-
-                .Cells(x + 3, 1).value = Format(item.FEcha, "yyyy-mm-dd")
+                '.Cells(x + 3, 1).value = item.FEcha
+                
+                .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
+                
                 .Cells(x + 3, 2).value = item.Comprobante
                 .Cells(x + 3, 3).value = item.RazonSocial
                 .Cells(x + 3, 4).value = item.Cuit

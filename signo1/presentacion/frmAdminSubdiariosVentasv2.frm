@@ -6,7 +6,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    ClientHeight    =   8625
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   18315
+   ClientWidth     =   14655
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -21,7 +21,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    LockControls    =   -1  'True
    MDIChild        =   -1  'True
    ScaleHeight     =   8625
-   ScaleWidth      =   18315
+   ScaleWidth      =   14655
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1680
       Left            =   10545
@@ -724,7 +724,6 @@ Private Sub btnMostrar_Click()
     llenarLista
 End Sub
 
-
 Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 Then
         If item.estado <> Anulada Then
@@ -761,13 +760,12 @@ Private Sub PushButton2_Click()
         '.FooterString(jgexHFLeft) = footerLeft
         .FooterString(jgexHFCenter) = Now
 
-
-
     End With
     Load frmPrintPreview
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
     Me.GridEX1.PrintPreview frmPrintPreview.GEXPreview1, Me.GridEX1.SelectedItems.count > 1
     frmPrintPreview.Show 1
+    
 End Sub
 
 Private Sub rdoLiquidacion_Click()
@@ -958,7 +956,9 @@ Public Function ExportaSubDiarioVentas() As Boolean
             Else
 
 
-                .Cells(x + 3, 1).value = item.FEcha
+                '.Cells(x + 3, 1).value = item.FEcha
+                
+                .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
                 .Cells(x + 3, 2).value = item.Comprobante
                 .Cells(x + 3, 3).value = item.RazonSocial
                 .Cells(x + 3, 4).value = item.Cuit

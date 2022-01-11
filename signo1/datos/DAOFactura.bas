@@ -53,6 +53,7 @@ End Function
 Public Function FindAllNoSaldadasTotalByCliente(cliente_id As Long, Optional includeDetalles As Boolean = False, Optional includeEntregasWithDetalles As Boolean = False) As Collection
     Set FindAllNoSaldadasTotalByCliente = FindAll("AdminFacturas.idCliente = " & cliente_id & " AND AdminFacturas.estado <> " & EstadoFacturaCliente.Anulada & " AND AdminFacturas.saldada IN (" & TipoSaldadoFactura.NoSaldada & ", " & TipoSaldadoFactura.SaldadoParcial & "," & TipoSaldadoFactura.notaCreditoParcial & ")", includeDetalles, includeEntregasWithDetalles)
 End Function
+
 Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional includeDetalles As Boolean = False, Optional includeEntregasWithDetalles As Boolean = False, Optional Orden As String = vbNullString) As Collection
 
     On Error GoTo err1
@@ -68,7 +69,14 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
             q = q & ",CAST((SELECT   COUNT(DISTINCT r.numero) AS cantidad_remitos FROM AdminFacturasDetalleAplicacionRemitos a " _
                        & "INNER JOIN entregas e ON e.id=a.idRemitoDetalle INNER JOIN remitos r ON e.Remito = r.id  WHERE a.idFacturaDetalle= AdminFacturasDetalleNueva.id) AS CHAR) as cantidad_remitos_aplicados "
         
+   
+        
         End If
+        
+        q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(idRecibo),'-') FROM AdminRecibosDetalleFacturas INNER JOIN AdminRecibos ON AdminRecibosDetalleFacturas.idRecibo = AdminRecibos.id WHERE AdminRecibosDetalleFacturas.idFactura = AdminFacturas.id),NCHAR) AS nro_recibo "
+    
+    
+        
         q = q & " From AdminFacturas" _
         & " LEFT JOIN AdminConfigFacturasTiposDiscriminado acftd      ON (       acftd.id = AdminFacturas.id_tipo_discriminado    ) " _
         & " LEFT JOIN AdminConfigFacturasTipos acft     ON (acftd.id_tipo_factura = acft.id)  " _
@@ -113,7 +121,11 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
     BuildFieldsIndex rs, idx
     While Not rs.EOF
         Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv")
-Debug.Print F.id
+        
+        
+        F.RecibosAplicadosId = rs!nro_recibo
+        
+        
         If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
             Set F = col.item(CStr(F.id))
         Else
@@ -124,6 +136,7 @@ Debug.Print F.id
         If includeDetalles Then
             Set deta = DAOFacturaDetalles.Map(rs, idx, "AdminFacturasDetalleNueva")
             
+
 
             
             If IsSomething(deta) Then
@@ -140,6 +153,7 @@ Debug.Print F.id
                     Set deta.detalleRemito = DAORemitoSDetalle.Map(rs, idx, "entregas")
                 End If
             End If
+            
 
 
         End If
@@ -214,6 +228,9 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.Cancelada = GetValue(rs, indice, tabla, "cancelada")
         F.MotivoNC = GetValue(rs, indice, tabla, "nc_motivo")
         F.CambioAPatron = GetValue(rs, indice, tabla, "cambio_a_patron")
+        
+        If indice.Exists(".nro_recibo") Then F.RecibosAplicadosId = GetValue(rs, indice, vbNullString, "nro_recibo")
+         
         If LenB(tablaMoneda) > 0 Then Set F.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         If LenB(tablaCliente) > 0 Then Set F.cliente = DAOCliente.Map(rs, indice, tablaCliente, tablaClienteIva, "Localidades", "", "Provincia")
         
@@ -233,6 +250,11 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.TotalEstatico.TotalPercepcionesIB = GetValue(rs, indice, tabla, "total_perIB_estatico")
         F.IdMonedaAjuste = GetValue(rs, indice, tabla, "id_moneda_ajuste")
         F.TipoCambioAjuste = GetValue(rs, indice, tabla, "tipo_cambio_ajuste")
+        
+        
+        
+        'F.recibo = GetValue(rs, indice, vbNullString, "nro_recibo")
+
 
 
     End If
@@ -900,8 +922,10 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
             Dim T As Factura
             Set T = Factura
             If Not DAOFactura.Guardar(Factura) Then GoTo err5
+            
             idf = Factura.id
             ' Set Factura = DAOFactura.FindById(i)
+            
             If Not DAOFacturaHistorial.agregar(Factura, "FACTURA APROBADA!") Then GoTo err5
             Dim col As New Collection
             Dim deta As FacturaDetalle

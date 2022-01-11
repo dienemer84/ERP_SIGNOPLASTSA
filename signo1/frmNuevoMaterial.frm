@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmMaterialesNuevo 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00404040&
@@ -546,7 +546,7 @@ Dim codigoViejo As String
 Dim valorViejo As Double
 
 
-Public Property Let material(nvalue As clsMaterial)
+Public Property Let Material(nvalue As clsMaterial)
     Set vmaterial = nvalue
 End Property
 
@@ -715,7 +715,7 @@ Private Sub armarObjeto()
     vmaterial.Espesor = Val(Me.txtEspesor)
     vmaterial.PesoXUnidad = Val(Me.txtKgXM2Ml)
     vmaterial.Valor = Val(txtValor)
-    vmaterial.Moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+    vmaterial.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
     vmaterial.almacen = DAOAlmacenes.GetById(Me.cboAlmacenes.ItemData(Me.cboAlmacenes.ListIndex))
     vmaterial.estado = 1
     vmaterial.Cantidad = Val(Me.txtCantidad)
@@ -856,7 +856,7 @@ Private Sub mostrarForm()
     Me.txtCantidad = vmaterial.Cantidad
     Me.txtValor = vmaterial.Valor
     valorViejo = vmaterial.Valor
-    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vmaterial.Moneda.id, Me.cboMonedas)
+    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vmaterial.moneda.id, Me.cboMonedas)
     Me.txtStockMinimo.text = vmaterial.StockMinimo
     Me.txtPtoReposicion.text = vmaterial.PuntoReposicion
 

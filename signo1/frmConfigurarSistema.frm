@@ -194,9 +194,6 @@ Private Sub Command3_Click()
     vruta = frmPrincipal.cd.filename
     nombre = funciones.GetFileName(vruta)
 
-    '
-    notas = InputBox("Ingrese notas de la version:", "CAMBIAR X UN FORM")
-
     version_information = VersionInformation1(vruta)
 
 
@@ -220,7 +217,7 @@ Private Sub Command3_Click()
 
 
             Else
-                MsgBox "No se cargo la actualizacio!", vbCritical, "Error"
+                MsgBox "No se cargo la actualización!", vbCritical, "Error"
             End If
         End If
     Else

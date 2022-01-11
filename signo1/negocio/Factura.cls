@@ -76,6 +76,8 @@ Public FechaVtoHasta As Date
 Public FechaServDesde As Date
 Public FechaServHasta As Date
 
+Public RecibosAplicadosId As String
+
 Public TasaAjusteMensual As Double  'de aca se empieza
 
 Public Function Modificable() As Boolean
