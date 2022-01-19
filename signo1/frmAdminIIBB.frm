@@ -6,16 +6,16 @@ Begin VB.Form frmAdminIIBB
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Padrón IIBB"
-   ClientHeight    =   7080
+   ClientHeight    =   7125
    ClientLeft      =   5700
    ClientTop       =   3015
-   ClientWidth     =   7155
+   ClientWidth     =   7230
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7080
-   ScaleWidth      =   7155
+   ScaleHeight     =   7125
+   ScaleWidth      =   7230
    ShowInTaskbar   =   0   'False
    Begin XtremeSuiteControls.PushButton Command7 
       Height          =   375
@@ -412,7 +412,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58982400
+         Format          =   58654720
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -425,7 +425,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58982401
+         Format          =   58654721
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -438,7 +438,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58982401
+         Format          =   58654721
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -1128,7 +1128,7 @@ err4:
 
 End Sub
 
-Private Sub Command1_Click(index As Integer)
+Private Sub Command1_Click(Index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Retencion"
@@ -1140,7 +1140,7 @@ Private Sub Command1_Click(index As Integer)
 
 End Sub
 
-Private Sub Command2_Click(index As Integer)
+Private Sub Command2_Click(Index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Padron_CABA"
@@ -1152,7 +1152,7 @@ Private Sub Command2_Click(index As Integer)
 
 End Sub
 
-Private Sub Command3_Click(index As Integer)
+Private Sub Command3_Click(Index As Integer)
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
@@ -1229,7 +1229,7 @@ End Sub
 
 
 
-Private Sub Command9_Click(index As Integer)
+Private Sub Command9_Click(Index As Integer)
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Padron_CABA"

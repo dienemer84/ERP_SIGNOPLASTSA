@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmListarStock 
    BackColor       =   &H00C0C0C0&
    Caption         =   "Piezas"
@@ -130,6 +130,8 @@ Begin VB.Form frmListarStock
       OLEDropMode     =   1
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
+      Options         =   -1
+      RecordsetType   =   1
       ForeColorInfoText=   16777215
       BackColorInfoText=   8421504
       GroupByBoxInfoText=   "Arrastre una columna aqui para agrupar por dicha columna."
@@ -247,7 +249,7 @@ Private Sub archivos_Click()
     If Not pieza_actual Is Nothing Then
         Dim frmArchi As New frmArchivos2
         frmArchi.Origen = OrigenArchivos.OA_Piezas
-        frmArchi.ObjetoId = pieza_actual.id
+        frmArchi.ObjetoId = pieza_actual.Id
         frmArchi.caption = "Pieza " & pieza_actual.nombre
         frmArchi.Show
     End If
@@ -336,7 +338,7 @@ Private Sub grid_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, By
     On Error Resume Next
     Set pieza_actual = m_piezas(grid.RowIndex(RowPosition))
 
-    If ColIndex = 7 And CantArchivos.item(pieza_actual.id) > 0 Then
+    If ColIndex = 7 And CantArchivos.item(pieza_actual.Id) > 0 Then
         IconIndex = 1
     End If
 
@@ -354,7 +356,7 @@ Private Sub grid_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub grid_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Button = 2 And Not pieza_actual Is Nothing Then
         grid_SelectionChange
@@ -372,7 +374,7 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As 
     End If
 End Sub
 
-Private Sub grid_OLEDragDrop(data As GridEX20.JSDataObject, Effect As Long, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grid_OLEDragDrop(data As GridEX20.JSDataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo err4
     Dim A As String
     'a = Data.GetData(1)
@@ -387,7 +389,7 @@ Private Sub grid_OLEDragDrop(data As GridEX20.JSDataObject, Effect As Long, Butt
         If Not pieza_actual Is Nothing Then
             frmArchivos.Origen = 1
             frmArchivos.ruta = A
-            frmArchivos.lblIdPieza = pieza_actual.id
+            frmArchivos.lblIdPieza = pieza_actual.Id
             frmArchivos.caption = "[ " & pieza_actual.nombre & " ]"
             frmArchivos.Show
         End If
@@ -409,9 +411,9 @@ Private Sub grid_RowFormat(RowBuffer As GridEX20.JSRowData)
 
  If tpieza_actualcomplejidad = ComplejidadAlta Then
         RowBuffer.CellStyle(8) = "comp_alta"
-    ElseIf pieza_actual.complejidad = ComplejidadMedia Then
+    ElseIf pieza_actual.Complejidad = ComplejidadMedia Then
         RowBuffer.CellStyle(8) = "comp_media"
-        ElseIf pieza_actual.complejidad = ComplejidadBaja Then
+        ElseIf pieza_actual.Complejidad = ComplejidadBaja Then
         RowBuffer.CellStyle(8) = "comp_baja"
         
         
@@ -435,26 +437,26 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
     If m_piezas.count > 0 Then
         Set pieza_actual = m_piezas.item(RowIndex)
         With pieza_actual
-            Values(1) = .id
+            Values(1) = .Id
             Values(2) = .nombre
             Values(3) = .Revision
 
-            If .Cliente Is Nothing Then
+            If .cliente Is Nothing Then
                 Values(4) = vbNullString
             Else
-                Values(4) = .Cliente.razon
+                Values(4) = .cliente.razon
             End If
             Values(5) = .CantidadStock
             Values(6) = IIf(.EsConjunto, "Conjunto", "Unidad")
-            Values(7) = " (" & Val(CantArchivos(pieza_actual.id)) & ")"
-            Values(8) = enums.EnumTiposComplejidad(.complejidad)
+            Values(7) = " (" & Val(CantArchivos(pieza_actual.Id)) & ")"
+            Values(8) = enums.EnumTiposComplejidad(.Complejidad)
         End With
     End If
 End Sub
 
 Private Sub historic_Click()
     If Not pieza_actual Is Nothing Then
-        frmDesarrolloStockHistorial.idPieza = pieza_actual.id
+        frmDesarrolloStockHistorial.idPieza = pieza_actual.Id
         frmDesarrolloStockHistorial.Show
     End If
 End Sub
@@ -462,7 +464,7 @@ End Sub
 Private Sub mnuDesarrolloNuevo_Click()
     Dim F As New frmDesarrollo
     Load F
-    F.CargarPieza pieza_actual.id
+    F.CargarPieza pieza_actual.Id
     F.Show
 End Sub
 
@@ -489,7 +491,7 @@ Private Sub mnuNuevaRevision_Click()
                 result = DAOPieza.Save(pieza_actual)
                 If Not result Then GoTo E
 
-                If Not Versionar(DAOPieza.FindById(pieza_actual.id, FL_4, True, True), pieza_actual.id, revisionActual) Then GoTo E
+                If Not Versionar(DAOPieza.FindById(pieza_actual.Id, FL_4, True, True), pieza_actual.Id, revisionActual) Then GoTo E
 
                 conectar.CommitTransaction
 
@@ -511,7 +513,7 @@ Private Function Versionar(Pieza As Pieza, idOriginal As Long, Revision As Strin
 
     Pieza.IdPiezaUltimaRevision = idOriginal
     Pieza.Revision = Revision
-    Pieza.id = 0    'fuerzo insert
+    Pieza.Id = 0    'fuerzo insert
     Pieza.Activa = False
 
     If DAOPieza.Save(Pieza, True) Then
@@ -523,7 +525,7 @@ Private Function Versionar(Pieza As Pieza, idOriginal As Long, Revision As Strin
         Dim P As Pieza
 
         For Each dmdo In Pieza.desarrollosManoObra
-            dmdo.id = 0
+            dmdo.Id = 0
             Set dmdo.Pieza = Pieza
             If Not DAODesarrolloManoObra.Save(dmdo, True) Then
                 GoTo E
@@ -531,7 +533,7 @@ Private Function Versionar(Pieza As Pieza, idOriginal As Long, Revision As Strin
         Next dmdo
 
         For Each dm In Pieza.DesarrollosMaterial
-            dm.id = 0
+            dm.Id = 0
             Set dm.Pieza = Pieza
             If Not DAODesarrolloMaterial.Save(dm, True) Then
                 GoTo E
@@ -539,8 +541,8 @@ Private Function Versionar(Pieza As Pieza, idOriginal As Long, Revision As Strin
         Next dm
 
         For Each P In Pieza.PiezasHijas
-            If Not Versionar(P, P.id, P.Revision) Then GoTo E
-            conectar.execute "INSERT INTO stockConjuntos_rev (idPiezaPadre, idPiezaHija, cantidad) VALUES (" & Pieza.id & ", " & P.id & ", " & P.Cantidad & ")"
+            If Not Versionar(P, P.Id, P.Revision) Then GoTo E
+            conectar.execute "INSERT INTO stockConjuntos_rev (idPiezaPadre, idPiezaHija, cantidad) VALUES (" & Pieza.Id & ", " & P.Id & ", " & P.Cantidad & ")"
         Next P
 
         Versionar = True
@@ -559,15 +561,15 @@ End Function
 Private Sub MovStock_Click()
     If Not pieza_actual Is Nothing Then
         frmMovimientosStock.Frame1.caption = "[ " & pieza_actual.nombre & " ]"
-        frmMovimientosStock.lblCliente = IIf(pieza_actual.Cliente Is Nothing, vbNullString, pieza_actual.Cliente.razon)
-        frmMovimientosStock.lblid = pieza_actual.id
+        frmMovimientosStock.lblCliente = IIf(pieza_actual.cliente Is Nothing, vbNullString, pieza_actual.cliente.razon)
+        frmMovimientosStock.lblid = pieza_actual.Id
         frmMovimientosStock.Show
     End If
 End Sub
 Private Sub scanear_Click()
     If Not pieza_actual Is Nothing Then
         Dim archivos As New classArchivos
-        archivos.escanearDocumento OrigenArchivos.OA_Piezas, pieza_actual.id
+        archivos.escanearDocumento OrigenArchivos.OA_Piezas, pieza_actual.Id
     End If
 
 End Sub
@@ -575,7 +577,7 @@ Private Sub sEliminar_Click()
     If Not pieza_actual Is Nothing Then
         g = MsgBox("¿Seguro que desea cambiar el estado la pieza seleccionada?", vbYesNo, "Confirmacion")
         If g = 6 Then
-            acc = base.cambiar_estado(pieza_actual.id, CInt(pieza_actual.Activa) * -1)
+            acc = base.cambiar_estado(pieza_actual.Id, CInt(pieza_actual.Activa) * -1)
         End If
 
         'base.llenar_lista_stock Me.lstStock, Me.cboCliente.ItemData(Me.cboCliente.ListIndex), Trim(Text1), , Cantidad
@@ -585,7 +587,7 @@ End Sub
 Private Sub stockModif_Click()
     If Permisos.DesaManejoStock And Not pieza_actual Is Nothing Then
         'modificar stock
-        frmModificarStock.idPieza = pieza_actual.id
+        frmModificarStock.idPieza = pieza_actual.Id
         frmModificarStock.Show 1
     Else
         sinAcceso
@@ -601,7 +603,7 @@ Private Sub verconjunto_Click()
 
         Dim F As New frmDesarrollo
         Load F
-        F.CargarPieza pieza_actual.id
+        F.CargarPieza pieza_actual.Id
         F.Show
 
 
@@ -611,14 +613,14 @@ Private Sub VerDesarrollo_Click()
     If Not pieza_actual Is Nothing Then
         Dim F As New frmDesarrollo
         Load F
-        F.CargarPieza pieza_actual.id
+        F.CargarPieza pieza_actual.Id
         F.Show
     End If
 
 End Sub
 Private Sub verIncidencias_Click()
     If Not pieza_actual Is Nothing Then
-        frmVerIncidencias.referencia = pieza_actual.id
+        frmVerIncidencias.referencia = pieza_actual.Id
         frmVerIncidencias.Origen = OrigenIncidencias.OI_Piezas
         frmVerIncidencias.Show
     End If

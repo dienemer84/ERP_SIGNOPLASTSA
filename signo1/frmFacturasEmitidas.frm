@@ -607,27 +607,27 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(22)      =   "frmFacturasEmitidas.frx":1EB6
       Column(23)      =   "frmFacturasEmitidas.frx":2026
       Column(24)      =   "frmFacturasEmitidas.frx":2132
-      Column(25)      =   "frmFacturasEmitidas.frx":221E
+      Column(25)      =   "frmFacturasEmitidas.frx":2272
       FormatStylesCount=   16
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":231E
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":2456
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2506
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":25BA
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":2692
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":274A
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":282A
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":28B6
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2996
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":2A46
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":2AFA
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":2BAA
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":2C5A
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":2D0E
-      FormatStyle(15) =   "frmFacturasEmitidas.frx":2DE6
-      FormatStyle(16) =   "frmFacturasEmitidas.frx":2ECA
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":23C6
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":24FE
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":25AE
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":2662
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":273A
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":27F2
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":28D2
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":295E
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2A3E
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":2AEE
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":2BA2
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":2C52
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":2D02
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":2DB6
+      FormatStyle(15) =   "frmFacturasEmitidas.frx":2E8E
+      FormatStyle(16) =   "frmFacturasEmitidas.frx":2F72
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":2FAA
-      PrinterProperties=   "frmFacturasEmitidas.frx":32C4
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":3052
+      PrinterProperties=   "frmFacturasEmitidas.frx":336C
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   15630
@@ -794,7 +794,7 @@ On Error GoTo err1
         Set Selecciones.Factura = Nothing
           Dim F As New frmAdminFacturasNCElegirFC
         
-        F.idCliente = Factura.cliente.id
+        F.idCliente = Factura.cliente.Id
             F.TiposDocs.Add tipoDocumentoContable.Factura
             
             If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
@@ -808,7 +808,7 @@ On Error GoTo err1
             F.Show 1
 
         If IsSomething(Selecciones.Factura) Then
-             If DAOFactura.aplicarNCaFC(Selecciones.Factura.id, Factura.id) Then
+             If DAOFactura.aplicarNCaFC(Selecciones.Factura.Id, Factura.Id) Then
                 MsgBox "Aplicación existosa!", vbInformation, "Información"
             End If
         End If
@@ -870,7 +870,7 @@ End Sub
 Private Sub archivos_Click()
     Dim F As New frmArchivos2
     F.Origen = 101
-    F.ObjetoId = Factura.id
+    F.ObjetoId = Factura.Id
     F.caption = "Comprobante " & Factura.GetShortDescription(False, True)
     F.Show
 End Sub
@@ -880,22 +880,6 @@ Private Sub btnExpotar_Click()
 
 'FUNCIÓN PARA EXPORTAR A EXCEL
     
-'    Dim id As Long
-'
-'    If (Me.cboClientes.ListIndex > 0) Then
-'        id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
-'    Else
-'        id = -1
-'    End If
-'
-'    Dim col As New Collection
-'
-'    If (id > 0) Then
-'        Set col = DAOFactura.FindAllByEstadoSaldoAndCliente(NoSaldada, EstadoFacturaCliente.Aprobada, id)
-'    Else
-'        Set col = DAOFactura.FindAllByEstadoSaldoAndCliente(NoSaldada, EstadoFacturaCliente.Aprobada)
-'
-'    End If
     
 'INICIA EL PROGRESSBAR Y LO MUESTRA
     Me.progreso.Visible = True
@@ -977,6 +961,9 @@ Private Sub btnExpotar_Click()
 '   For Each fac In col
    
    For Each fac In facturas
+   
+        Debug.Print
+        
         
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
         'xlWorksheet.Cells(idx, 1).value = fac.NumeroFormateado
@@ -1012,7 +999,7 @@ Private Sub btnExpotar_Click()
         xlWorksheet.Cells(idx, 12).value = fac.observaciones
         xlWorksheet.Cells(idx, 13).value = fac.observaciones_cancela
         
-        xlWorksheet.Cells(idx, 14).value = fac.id
+        xlWorksheet.Cells(idx, 14).value = fac.Id
         xlWorksheet.Cells(idx, 15).value = fac.Cancelada
         
 
@@ -1127,7 +1114,7 @@ End Sub
 Private Sub editar_Click()
 
     Dim f_c3h3 As New frmFacturaEdicion
-    f_c3h3.idFactura = Factura.id
+    f_c3h3.idFactura = Factura.Id
     f_c3h3.Show
 
 End Sub
@@ -1261,15 +1248,15 @@ Private Sub llenarGrilla()
         If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
 
       
-           Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+           Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
     
-           TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+           TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
     
-           totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+           totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
            
            Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
            
-           totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+           totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
         
     Next
 
@@ -1322,14 +1309,14 @@ Private Sub GridEX1_DblClick()
 End Sub
 
 Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
+    If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
               Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"
@@ -1614,7 +1601,7 @@ End If
     Values(6) = Factura.FechaEmision
     Values(7) = funciones.FormatearDecimales(Factura.TotalEstatico.Total)
 
-    If Factura.moneda.id = 0 Then
+    If Factura.moneda.Id = 0 Then
         Values(8) = Factura.moneda.NombreCorto
     Else
         Values(8) = Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
@@ -1699,9 +1686,9 @@ End If
 
     Values(22) = Factura.TasaAjusteMensual
 
-    Values(23) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+    Values(23) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
     
-    Values(24) = Factura.id
+    Values(24) = Factura.Id
     
     Values(25) = Factura.RecibosAplicadosId
    
@@ -1717,18 +1704,18 @@ Private Sub ImprimirFactura_Click()
 
 
     If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
-        veces = clasea.facturaImpresa(Factura.id)
+        veces = clasea.facturaImpresa(Factura.Id)
         If veces > 0 Then
             If MsgBox("Este comprobante ya fue generarlo" & Chr(10) & "¿Desea volver a generarlo?", vbYesNo, "Confirmación") = vbYes Then
                 'DAOFactura.GenerarPdf (Factura.id)
-                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
+                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.Id)
             End If
         Else
-                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
+                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.Id)
             End If
     Else
 
-        veces = clasea.facturaImpresa(Factura.id)
+        veces = clasea.facturaImpresa(Factura.Id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("'¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
                cd.Flags = cdlPDUseDevModeCopies
@@ -1736,7 +1723,7 @@ Private Sub ImprimirFactura_Click()
                 cd.ShowPrinter
                 Dim i As Long
                 For i = 1 To cd.Copies
-                    DAOFactura.Imprimir Factura.id
+                    DAOFactura.Imprimir Factura.Id
                 Next
             End If
 
@@ -1747,7 +1734,7 @@ Private Sub ImprimirFactura_Click()
                 cd.ShowPrinter
 
                 For i = 1 To cd.Copies
-                    DAOFactura.Imprimir Factura.id
+                    DAOFactura.Imprimir Factura.Id
                 Next i
             End If
 
@@ -1773,7 +1760,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Dim i As Long
         For i = facturas.count To 1 Step -1
 
-            If facturas(i).id = tmp.id Then
+            If facturas(i).Id = tmp.Id Then
 
                 '                Set Factura = facturas(i)
                 '                Factura.Id = tmp.Id
@@ -1788,14 +1775,14 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 facturas.remove i
                 If facturas.count > 0 Then
                     If i = 1 Then    'ver esto cuand oes un solo item
-                        facturas.Add tmp, CStr(tmp.id), 1
+                        facturas.Add tmp, CStr(tmp.Id), 1
                     ElseIf (i - 1) = facturas.count Then
-                        facturas.Add tmp, CStr(tmp.id), , i - 1
+                        facturas.Add tmp, CStr(tmp.Id), , i - 1
                     Else
-                        facturas.Add tmp, CStr(tmp.id), i
+                        facturas.Add tmp, CStr(tmp.Id), i
                     End If
                 Else
-                    facturas.Add tmp, CStr(tmp.id)
+                    facturas.Add tmp, CStr(tmp.Id)
                 End If
 
                 'DAOFactura.FindById(tmp.Id, True)
@@ -1925,7 +1912,7 @@ Private Sub mnuArchivos_Click()
     Dim archi As New frmArchivos2
 
     archi.Origen = OrigenArchivos.OA_factura
-    archi.ObjetoId = Factura.id
+    archi.ObjetoId = Factura.Id
     archi.caption = Factura.GetShortDescription(False, True)
     archi.Show
 
@@ -2157,9 +2144,9 @@ End Sub
 Private Sub scanear_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
-        Me.GridEX1.RefreshRowIndex (Factura.id)
+        Me.GridEX1.RefreshRowIndex (Factura.Id)
     End If
 End Sub
 
@@ -2171,13 +2158,13 @@ End Sub
 Private Sub verFactura_Click()
     Dim f_c3h3 As New frmFacturaEdicion
     f_c3h3.ReadOnly = True
-    f_c3h3.idFactura = Factura.id
+    f_c3h3.idFactura = Factura.Id
     f_c3h3.Show
 
 End Sub
 
 Private Sub verHistorialFactura_Click()
-    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.id)
+    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.Id)
     frmHistoriales.lista = Factura.Historial
     frmHistoriales.Show
 End Sub

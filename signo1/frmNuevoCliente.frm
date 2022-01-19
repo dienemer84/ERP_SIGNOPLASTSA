@@ -518,8 +518,8 @@ Private Sub Guardar()
 
 
                 cliente.PasswordSistema = 0
-                'Set cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-                'Set cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+                Set cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+                Set cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
 
                 cliente.razon = razon
                 cliente.FormaPago = FP_detalle
@@ -675,9 +675,9 @@ Private Sub Form_Load()
 
 End Sub
 
-Private Sub Text1_GotFocus(index As Integer)
-    Text1(index).SelStart = 0
-    Text1(index).SelLength = Len(Text1(index))
+Private Sub Text1_GotFocus(Index As Integer)
+    Text1(Index).SelStart = 0
+    Text1(Index).SelLength = Len(Text1(Index))
 End Sub
 Private Sub txtFP_Validate(Cancel As Boolean)
     ValidarTextBox Me.txtFP, Cancel

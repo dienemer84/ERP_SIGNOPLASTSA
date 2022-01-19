@@ -296,8 +296,13 @@ Private Sub Command1_Click()
                     If Not funciones.InIDE Then
                         If clssp.VerificarSiHayActualizacion(idnueva) Then
                             If MsgBox("Hay una nueva actualización del sistema." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
+
                                 frmTip.Show vbModal
+                                 
                                 clssp.actualizarSistema CLng(idnueva)
+                                
+
+                                                                
                             End If
 
                                                              
@@ -308,11 +313,6 @@ Private Sub Command1_Click()
 
 
                     Unload Me
-'18/11/2021
-'ESTO ES SÓLO UNA PRUEBA
-'ACA SE INCORPORA LA VENTANA DONDE SE MUESTRAN LOS ULTIMOS CAMBIOS REALIZADOS EN EL SISTEMA
-'LOS DATOS QUE SE MUESTRAN ESTAN GUARDADOS EN UN ARCHIVO TXT EN LA MISMA UBICACIÓN DE DESARROLLO
-
 
                     
                 Else
@@ -458,6 +458,8 @@ Private Sub Command6_Click()
     conectar.CommitTransaction
 
 End Sub
+
+
 
 
 Private Sub Commandsa_Click()

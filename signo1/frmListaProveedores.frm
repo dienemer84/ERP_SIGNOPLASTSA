@@ -373,7 +373,7 @@ Private Sub Form_Load()
 
         If LenB(Trim$(P.razonFantasia)) > 0 Then
             Me.cboFantasia.AddItem P.razonFantasia
-            Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.id
+            Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.Id
         End If
     Next P
     Me.cboFantasia.ListIndex = -1
@@ -446,7 +446,7 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectemp = proveedores.item(RowIndex)  ' mcData.Item(RowIndex)
     With rectemp
-        Values(1) = Format(.id, "0000")
+        Values(1) = Format(.Id, "0000")
         Values(2) = .RazonSocial
         Values(3) = .razonFantasia
         Values(4) = .Cuit
@@ -481,7 +481,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = proveedores.count To 1 Step -1
-            If proveedores(i).id = tmp.id Then
+            If proveedores(i).Id = tmp.Id Then
                 Set Proveedor = proveedores(i)
                 Proveedor.estado = tmp.estado
                 Proveedor.razonFantasia = tmp.razonFantasia
@@ -498,7 +498,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 
 
-        grilla.RefreshRowIndex EVENTO.Elemento.id
+        grilla.RefreshRowIndex EVENTO.Elemento.Id
     End If
     Exit Function
 err1:

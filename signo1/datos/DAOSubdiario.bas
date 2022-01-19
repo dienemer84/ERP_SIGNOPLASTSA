@@ -400,6 +400,11 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
 
 
+
+
+
+
+
     If liq.EsDeVenta Then
         'hay que comprobar correlatividad
         Dim minTipoLetraComprobante As New Collection

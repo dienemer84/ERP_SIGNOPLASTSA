@@ -18,7 +18,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
           On Error GoTo err1
           
         '#209
-  If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
+  If DAOSubdiarios.ComprobanteComprasLiquidado(fc.Id) Then
    MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar o eliminar.", vbCritical
     Exit Function
   End If
@@ -33,11 +33,11 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
 
 
     Dim strsql As String
-    If fc.id = 0 Then
+    If fc.Id = 0 Then
         'guardo la factura
-        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte,ultima_actualizacion) values (" & funciones.GetUserObj.id & " , " & fc.TipoCambio & ", " & fc.configFactura.id & "," & fc.estado & "," & fc.Proveedor.id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.Redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & "," & Escape(Now) & ")"
+        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte,ultima_actualizacion) values (" & funciones.GetUserObj.Id & " , " & fc.TipoCambio & ", " & fc.configFactura.Id & "," & fc.estado & "," & fc.Proveedor.Id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.Redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & "," & Escape(Now) & ")"
         conectar.execute strsql
-        fc.id = conectar.UltimoId2
+        fc.Id = conectar.UltimoId2
         A = DAOPercepcionesAplicadas.Save(fc)
         b = DAOIvaAplicado.Save(fc)
         c = DAOCuentasFacturas.Save(fc)
@@ -54,13 +54,13 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     Else
     ' #195
     Dim fca As clsFacturaProveedor
-    Set fca = DAOFacturaProveedor.FindById(fc.id)
+    Set fca = DAOFacturaProveedor.FindById(fc.Id)
     If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
     
     
          
     
-        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.id
+        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.Id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.Id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.Id
         If Not conectar.execute(strsql) Then GoTo err1
         b = DAOPercepcionesAplicadas.Save(fc)
         A = DAOIvaAplicado.Save(fc)
@@ -87,10 +87,10 @@ End Function
 Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
     On Error GoTo err4
     Dim q As String
-    q = "select count(id) as cantidad from AdminComprasFacturasProveedores where id_proveedor=" & Factura.Proveedor.id & " and numero_factura=" & Escape(Factura.numero) & " and id_config_factura=" & Escape(Factura.configFactura.id) & "  AND tipo_doc_contable=" & Escape(Factura.tipoDocumentoContable)
+    q = "select count(id) as cantidad from AdminComprasFacturasProveedores where id_proveedor=" & Factura.Proveedor.Id & " and numero_factura=" & Escape(Factura.numero) & " and id_config_factura=" & Escape(Factura.configFactura.Id) & "  AND tipo_doc_contable=" & Escape(Factura.tipoDocumentoContable)
 
 
-    If Factura.id <> 0 Then q = q & " and AdminComprasFacturasProveedores.id <> " & Factura.id
+    If Factura.Id <> 0 Then q = q & " and AdminComprasFacturasProveedores.id <> " & Factura.Id
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
@@ -108,7 +108,7 @@ Public Function GetByDate(desde As Date, Optional hasta As Date) As Collection
 End Function
 Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     
-    Set fc = DAOFacturaProveedor.FindById(fc.id)
+    Set fc = DAOFacturaProveedor.FindById(fc.Id)
     
     
     
@@ -131,7 +131,7 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     On Error GoTo err121
     cn.BeginTrans
         Dim fca As clsFacturaProveedor
-    Set fca = DAOFacturaProveedor.FindById(fc.id)
+    Set fca = DAOFacturaProveedor.FindById(fc.Id)
  If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
 '
 '
@@ -144,7 +144,7 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
 
 
         fc.estado = EstadoFacturaProveedor.Aprobada
-        cn.execute "update AdminComprasFacturasProveedores SET ultima_actualizacion= " & Escape(Now) & ", estado=2 where id=" & fc.id
+        cn.execute "update AdminComprasFacturasProveedores SET ultima_actualizacion= " & Escape(Now) & ", estado=2 where id=" & fc.Id
         DaoFacturaProveedorHistorial.agregar fc, "Factura aprobada"
 
         If Not fc.FormaPagoCuentaCorriente Then
@@ -170,9 +170,9 @@ End Function
 
 
 
-Public Function FindById(id As Long) As clsFacturaProveedor
+Public Function FindById(Id As Long) As clsFacturaProveedor
     On Error GoTo err1
-    Set FindById = FindAll(" AdminComprasFacturasProveedores.Id=" & id, True)(1)
+    Set FindById = FindAll(" AdminComprasFacturasProveedores.Id=" & Id, True)(1)
     Exit Function
 err1:
     Set FindById = Nothing
@@ -186,10 +186,10 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
     Dim q As String
     Dim rs As Recordset
     Dim col As New Collection
-    q = "SELECT *, (SELECT max(id_orden_pago) FROM ordenes_pago_facturas inner join ordenes_pago on ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  limit 1) as nro_orden"
+      q = "SELECT *, (SELECT max(id_orden_pago) FROM ordenes_pago_facturas inner join ordenes_pago on ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  limit 1) as nro_orden"
       
       If widhCompensatorios Then
-        q = q & ", (SELECT SUM(IF (tipo=1, c.importe,-c.importe)) FROM ordenes_pago_compensatorios c JOIN ordenes_pago op ON c.id_orden_pago=op.id AND op.estado=1 WHERE c.id_comprobante = AdminComprasFacturasProveedores.id AND c.cancelado=0 ) as total_compensado"
+      q = q & ", (SELECT SUM(IF (tipo=1, c.importe,-c.importe)) FROM ordenes_pago_compensatorios c JOIN ordenes_pago op ON c.id_orden_pago=op.id AND op.estado=1 WHERE c.id_comprobante = AdminComprasFacturasProveedores.id AND c.cancelado=0 ) as total_compensado"
       
       Else
       
@@ -198,11 +198,9 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       
       q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
       q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
-q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
-        q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2 ),NCHAR) AS ordenes_pago "
+      q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
+      q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2 ),NCHAR) AS ordenes_pago "
     
-    
-      
       q = q & " From" _
         & " AdminComprasFacturasProveedores" _
         & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
@@ -223,7 +221,7 @@ q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN 
     End If
 
     If soloPropias Then
-        q = q & " and AdminComprasFacturasProveedores.id_usuario_creador=" & funciones.GetUserObj.id
+        q = q & " and AdminComprasFacturasProveedores.id_usuario_creador=" & funciones.GetUserObj.Id
 
     End If
 
@@ -233,7 +231,9 @@ q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN 
 
 
     Set rs = conectar.RSFactory(q)
+    
     BuildFieldsIndex rs, indice
+    
     Dim F As clsFacturaProveedor
     Dim per As clsPercepcionesAplicadas
     Dim Iva As clsAlicuotaAplicada
@@ -248,17 +248,17 @@ q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN 
         
       '  If IsSomething(rs.Fields("ordenes_pago")) Then
    
-            F.OrdenesPagoId = rs!ordenes_pago
+        F.OrdenesPagoId = rs!ordenes_pago
             
             
 
       '  End If
         
-        If funciones.BuscarEnColeccion(col, CStr(F.id)) Then
-            Set F = col.item(CStr(F.id))
+        If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
+            Set F = col.item(CStr(F.Id))
         Else
             If withHistorial Then
-                F.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(F.id)
+                F.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(F.Id)
             End If
         End If
 
@@ -268,26 +268,26 @@ q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN 
 
         Set per = DAOPercepcionesAplicadas.Map(rs, indice, "AdminComprasFacturasProveedoresPercepciones", "AdminConfigPercepciones")
         If IsSomething(per) Then
-            If Not funciones.BuscarEnColeccion(F.percepciones, CStr(per.id)) Then
-                If per.id <> 0 Then F.percepciones.Add per, CStr(per.id)
+            If Not funciones.BuscarEnColeccion(F.percepciones, CStr(per.Id)) Then
+                If per.Id <> 0 Then F.percepciones.Add per, CStr(per.Id)
             End If
         End If
 
         Set cta = DAOCuentasFacturas.Map(rs, indice, "AdminComprasCuentasFacturas", "AdminComprasCuentasContables")
         If IsSomething(cta) Then
-            If Not funciones.BuscarEnColeccion(F.cuentasContables, CStr(cta.id)) Then
-                F.cuentasContables.Add cta, CStr(cta.id)
+            If Not funciones.BuscarEnColeccion(F.cuentasContables, CStr(cta.Id)) Then
+                F.cuentasContables.Add cta, CStr(cta.Id)
             End If
         End If
 
         Set Iva = DAOIvaAplicado.Map(rs, indice, "AdminComprasFacturasProveedoresIva", "a1")
         If IsSomething(Iva) Then
-            If Not funciones.BuscarEnColeccion(F.IvaAplicado, CStr(Iva.id)) Then
-                F.IvaAplicado.Add Iva, CStr(Iva.id)
+            If Not funciones.BuscarEnColeccion(F.IvaAplicado, CStr(Iva.Id)) Then
+                F.IvaAplicado.Add Iva, CStr(Iva.Id)
             End If
         End If
 
-        If Not funciones.BuscarEnColeccion(col, CStr(F.id)) Then col.Add F, CStr(F.id)
+        If Not funciones.BuscarEnColeccion(col, CStr(F.Id)) Then col.Add F, CStr(F.Id)
         rs.MoveNext
     Wend
     Set FindAll = col
@@ -303,12 +303,12 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaAdminConfigFacturasProveedor As String = vbNullString, _
                     Optional tablaAdminConfigIVAProveedor As String = vbNullString, Optional tablaMoneda As String = vbNullString) As clsFacturaProveedor
 
-    Dim id As Long: id = GetValue(rs, indice, tabla, "id")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
     Dim fc As clsFacturaProveedor
 
-    If id > 0 Then
+    If Id > 0 Then
         Set fc = New clsFacturaProveedor
-        fc.id = id
+        fc.Id = Id
         fc.tipoDocumentoContable = GetValue(rs, indice, tabla, "tipo_doc_contable")
         fc.estado = GetValue(rs, indice, tabla, "estado")
         fc.FEcha = GetValue(rs, indice, tabla, "fecha")
@@ -392,12 +392,12 @@ Public Function Delete(facid As Long) As Boolean
             Dim F As clsFacturaProveedor
             Set facs = op.FacturasProveedor
             For Each F In facs
-                If F.id <> facid Then
+                If F.Id <> facid Then
                     facsOrphan.Add F
                 End If
             Next F
 
-            If Not DAOOrdenPago.Delete(op.id, False) Then GoTo E
+            If Not DAOOrdenPago.Delete(op.Id, False) Then GoTo E
 
         End If
     End If
@@ -420,10 +420,10 @@ Public Function Delete(facid As Long) As Boolean
 
     Delete = True
     If facsOrphan.count > 0 Then
-        MsgBox "El comprobante " & facProv.NumeroFormateado & " fue eliminado así como también la Orden de Pago Nº " & op.id & " a la que pertenecia." & vbNewLine & "Los siguientes comprobantes formaban parte de esa orden de pago y ahora se encuentran en estado [Pendiente] para ser incluidos en alguna otra orden de pago:" & vbNewLine & funciones.JoinCollectionValues(facsOrphan, vbNewLine, "NumeroFormateado"), vbInformation + vbOKOnly
+        MsgBox "El comprobante " & facProv.NumeroFormateado & " fue eliminado así como también la Orden de Pago Nº " & op.Id & " a la que pertenecia." & vbNewLine & "Los siguientes comprobantes formaban parte de esa orden de pago y ahora se encuentran en estado [Pendiente] para ser incluidos en alguna otra orden de pago:" & vbNewLine & funciones.JoinCollectionValues(facsOrphan, vbNewLine, "NumeroFormateado"), vbInformation + vbOKOnly
     Else
         If IsSomething(op) Then
-            MsgBox "El comprobante " & facProv.NumeroFormateado & " fue eliminado así como también la Orden de Pago Nº " & op.id & " a la que pertenecia.", vbInformation + vbOKOnly
+            MsgBox "El comprobante " & facProv.NumeroFormateado & " fue eliminado así como también la Orden de Pago Nº " & op.Id & " a la que pertenecia.", vbInformation + vbOKOnly
         End If
     End If
 
@@ -491,8 +491,8 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     '    totRet = totRet + d2.Item(CStr(ret.Id))
     'Next ret
 
-    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.Total * -1, fac.Total), fac.moneda.id, op.moneda.id))
-    op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.moneda.id, op.moneda.id))
+    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.Total * -1, fac.Total), fac.moneda.Id, op.moneda.Id))
+    op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.moneda.Id, op.moneda.Id))
     op.StaticTotalOrigenes = op.TotalOrigenes
     op.StaticTotalRetenido = 0    'funciones.RedondearDecimales(totRet)
 
@@ -585,10 +585,10 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     
     For Each fac In col
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-        Total = Total + MonedaConverter.Convertir(fac.Total * c, fac.moneda.id, MonedaConverter.Patron.id)
-        totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.id, MonedaConverter.Patron.id)
-        totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.id, MonedaConverter.Patron.id)
-        totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.id, MonedaConverter.Patron.id)
+        Total = Total + MonedaConverter.Convertir(fac.Total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+        totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+        totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+        totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.Id, MonedaConverter.Patron.Id)
         'Agrega DNEMER 03/02/2021
         totalpercep = totalpercep + fac.totalPercepciones * c
         
@@ -673,5 +673,41 @@ err1:
     ExportarColeccion = False
 End Function
 
+Public Function CrearTablaTempComprobantes(facturas) As Boolean
 
+    
+    On Error GoTo err1
+    
+    CrearTablaTempComprobantes = True
+    
+    Dim fac As clsFacturaProveedor
+    
+    Dim strsql As String
+    
+    Set cn = conectar.obternerConexion
+    
+    cn.BeginTrans
+    
+        cn.execute "TRUNCATE sp_temporal.ComprobantesCargadosSP"
+        
+    cn.CommitTrans
+    
+    cn.BeginTrans
+    
+    For Each fac In facturas
+    
+        strsql = "INSERT INTO sp_temporal.ComprobantesCargadosSP (idcomprobante, numero, cuit, clave)" _
+        & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & fac.numero + fac.Proveedor.Cuit & "')"
+ 
+    cn.execute strsql
+        
+    Next fac
+    
+    
+    cn.CommitTrans
+    Exit Function
+err1:
+    CrearTablaTempComprobantes = False
+    cn.RollbackTrans
+End Function
 

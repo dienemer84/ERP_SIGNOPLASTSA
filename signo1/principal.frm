@@ -600,8 +600,9 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
             f454.Show
 
         Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__DOCUMENTOS
-            Dim f4442 As New frmDocumentos
-            f4442.Show
+'            Dim f4442 As New frmDocumentos
+'            f4442.Show
+            MsgBox ("No desarrollado.")
 
         Case ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__ASOCRUBROS
             Dim f233 As New frmRubroProveedor
@@ -650,7 +651,7 @@ Private Sub MDIForm_Load()
         MsgBox "Se produjo un error con el archivo config.ini! Verificar la existencia de servidor."
         End
     Else
-        frmLogin.Show 1
+       frmLogin.Show 1
         'conectar.SetServidorBBDD  servidorBBDD 'ahora lohace el login
         If conectar.conectar Then
 
@@ -740,12 +741,12 @@ Private Sub stbar1_PanelClick(ByVal panel As MSComctlLib.panel)
 
 
 
-    If panel.index = 5 Then
+    If panel.Index = 5 Then
         If MsgBox("Hay una nueva actualización, ¿desea aplicarla ahora?", vbYesNo, "Confirmación") = vbYes Then
 
         End If
 
-    ElseIf panel.index = 2 Then
+    ElseIf panel.Index = 2 Then
         If MsgBox("¿Desea cambiar el password ahora?", vbYesNo, "Confirmación") = vbYes Then
             frmCambiarPassword.Show
         End If
