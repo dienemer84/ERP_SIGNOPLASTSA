@@ -812,7 +812,7 @@ Private Sub CargarLiquidaciones()
     Set liquidaciones = DAOSubdiarios.FindAllLiquidacionesVenta()
     For Each liqui In liquidaciones
         Me.cboLiquidaciones.AddItem liqui.nombre & " (" & liqui.desde & " a " & liqui.hasta & ")"
-        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.id
+        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.Id
     Next liqui
 
 End Sub
@@ -849,7 +849,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
     Set xla = CreateObject("Excel.Application")
 
     Dim A As String
-    Dim b As String
+    Dim B As String
     Dim offset As Long
     Dim strMsg As String
     Dim CDLGMAIN As CommonDialog
@@ -983,13 +983,13 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         A = "j" & x + 2
         offset = x + 3
-        b = "j" & offset
-        .Range("f1", b).NumberFormat = "0.00"
+        B = "j" & offset
+        .Range("f1", B).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
-        .Range("f" & x + 3, b).Interior.Color = &HC0C0C0
-        .Range("f" & x + 3, b).Borders.LineStyle = xlContinuous
-        .Range("f" & x + 3, b).Font.Bold = True
+        .Range("f" & x + 3, B).Interior.Color = &HC0C0C0
+        .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
+        .Range("f" & x + 3, B).Font.Bold = True
 
         .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
         .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
