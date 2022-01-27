@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmListarStock_seleccion 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -148,10 +148,14 @@ Private Sub Form_Load()
 
     DAOCliente.LlenarCombo Me.cboCliente, True
     'base.llenar_lista_stock Me.lstStock, -1, ""
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 Private Sub lstStock_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
     lstStock.Sorted = True
-    LstOrdenar (CInt(ColumnHeader.index))
+    LstOrdenar (CInt(ColumnHeader.Index))
 End Sub
 Function LstOrdenar(columna As Integer)
     lstStock.SortKey = columna - 1

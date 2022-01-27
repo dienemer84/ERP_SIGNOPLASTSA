@@ -673,7 +673,7 @@ End Sub
 
 Private Sub GridEX1_DblClick()
     If col.count > 0 Then
-        Dim f_c3h3 As New frmFacturaEdicion
+        Dim f_c3h3 As New frmAdminFacturasEdicion
         f_c3h3.ReadOnly = True
         f_c3h3.idFactura = item.FacturaId
         f_c3h3.Show

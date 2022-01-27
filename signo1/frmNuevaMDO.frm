@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Begin VB.Form frmNuevaMDO 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
@@ -35,7 +35,7 @@ Begin VB.Form frmNuevaMDO
       _ExtentX        =   2223
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   55705601
+      Format          =   58720257
       CurrentDate     =   40101
    End
    Begin VB.CommandButton cmdGuardar 
@@ -194,12 +194,12 @@ End Property
 
 Private Sub CargarTarea()
     Me.cboCant.ListIndex = PosIndexCbo(m_tarea.CantPorProc, Me.cboCant)
-    Me.cboSectores.ListIndex = PosIndexCbo(m_tarea.Sector.id, Me.cboSectores)
+    Me.cboSectores.ListIndex = PosIndexCbo(m_tarea.Sector.Id, Me.cboSectores)
 
     If m_tarea.CategoriaSueldo Is Nothing Then
         Me.cboCategoria.ListIndex = -1
     Else
-        Me.cboCategoria.ListIndex = PosIndexCbo(m_tarea.CategoriaSueldo.id, Me.cboCategoria)
+        Me.cboCategoria.ListIndex = PosIndexCbo(m_tarea.CategoriaSueldo.Id, Me.cboCategoria)
     End If
 
     Me.txtDescripcion.text = m_tarea.descripcion
@@ -250,7 +250,7 @@ Private Sub cmdGuardar_Click()
         Dim EVENTO As New clsEventoObserver
         Set EVENTO.Elemento = m_tarea
 
-        If m_tarea.id = 0 Then
+        If m_tarea.Id = 0 Then
             EVENTO.EVENTO = agregar_
         Else
             EVENTO.EVENTO = modificar_
@@ -284,9 +284,11 @@ Private Sub Form_Load()
     Set m_categorias = DAOCategoriaSueldo.FindAll()
     For Each cat In m_categorias
         Me.cboCategoria.AddItem cat.nombre
-        Me.cboCategoria.ItemData(Me.cboCategoria.NewIndex) = cat.id
+        Me.cboCategoria.ItemData(Me.cboCategoria.NewIndex) = cat.Id
     Next cat
 
+    Me.caption = caption & " (" & Name & ")"
+    
 End Sub
 
 

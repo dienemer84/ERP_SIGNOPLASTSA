@@ -19,7 +19,7 @@ Public Function GetAll(Optional filtro As String = vbNullString) As Collection
     On Error GoTo err1
     Dim col As New Collection
     Dim idx As Dictionary
-
+        
     Dim moneda As clsMoneda
     Dim q As String
 
@@ -47,7 +47,7 @@ Public Function GetAll(Optional filtro As String = vbNullString) As Collection
 
             Set moneda = Map(rs, idx, "mon", "mon2")
         End If
-        col.Add moneda, CStr(moneda.id)
+        col.Add moneda, CStr(moneda.Id)
         rs.MoveNext
     Wend
 
@@ -56,8 +56,8 @@ Public Function GetAll(Optional filtro As String = vbNullString) As Collection
 err1:
     Set GetAll = Nothing
 End Function
-Public Function GetById(id As Long) As clsMoneda
-    Set GetById = GetAll("mon.id=" & id)(1)
+Public Function GetById(Id As Long) As clsMoneda
+    Set GetById = GetAll("mon.id=" & Id)(1)
     Exit Function
 err1:
     Set GetById = Nothing
@@ -71,7 +71,7 @@ Public Sub LlenarCombo(cbo As ComboBox)
     For i = 1 To col.count
         Set moneda = col(i)
         cbo.AddItem moneda.NombreCorto
-        cbo.ItemData(cbo.NewIndex) = moneda.id
+        cbo.ItemData(cbo.NewIndex) = moneda.Id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -92,7 +92,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, Optional 
         Else
             cbo.AddItem moneda.NombreCorto
         End If
-        cbo.ItemData(cbo.NewIndex) = moneda.id
+        cbo.ItemData(cbo.NewIndex) = moneda.Id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -103,12 +103,12 @@ End Sub
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String, Optional tablaMon2 As String = vbNullString) As clsMoneda
     Dim tmpMoneda As clsMoneda
-    Dim id As Variant
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
+    Dim Id As Variant
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
-    If id >= 0 Then
+    If Id >= 0 Then
         Set tmpMoneda = New clsMoneda
-        tmpMoneda.id = id
+        tmpMoneda.Id = Id
         tmpMoneda.NombreCorto = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_NOMBRE_CORTO)
         tmpMoneda.NombreLargo = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_NOMBRE_LARGO)
         tmpMoneda.Cambio = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CAMBIO)

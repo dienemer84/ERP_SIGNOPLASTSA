@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmAdminFacturasAplicadas 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00C0C0C0&
@@ -93,7 +93,7 @@ Private Sub Form_Load()
     While Not rs.EOF
         Dim x As ListItem
         Set x = Me.lstFacturas.ListItems.Add(, , rs!Factura, 1)
-        x.Tag = rs!id
+        x.Tag = rs!Id
 
         rs.MoveNext
     Wend
@@ -102,7 +102,7 @@ End Sub
 Private Sub lstFacturas_DblClick()
     If Me.lstFacturas.ListItems.count > 0 Then
         idf = CLng(Me.lstFacturas.selectedItem.Tag)
-        Dim f_c3h3 As New frmFacturaEdicion
+        Dim f_c3h3 As New frmAdminFacturasEdicion
         f_c3h3.ReadOnly = True
         f_c3h3.idFactura = idf
         f_c3h3.Show

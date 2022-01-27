@@ -9,8 +9,8 @@ Begin VB.Form frmLogin
    ClientTop       =   285
    ClientWidth     =   4980
    ControlBox      =   0   'False
+   HelpContextID   =   1
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   2280
@@ -278,7 +278,7 @@ Private Sub Command1_Click()
         If c = 1 Then
             r.MoveFirst
 
-            idUsu = r!id
+            idUsu = r!Id
             passDB = r!PassWord
             estado = clssp.verSeleccionado(strPermisos.esistemaUsuarioActivo, idUsu)
 
@@ -374,24 +374,24 @@ Private Sub Command3_Click()
     For Each P In piezas
 
         For Each desa In P.desarrollosManoObra
-            arr(desa.Tarea.id) = arr(desa.Tarea.id) + _
-                                 IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(P.id))), desa.Tiempo * desa.Cantidad)
+            arr(desa.Tarea.Id) = arr(desa.Tarea.Id) + _
+                                 IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(P.Id))), desa.Tiempo * desa.Cantidad)
         Next desa
 
         For Each p1 In P.PiezasHijas
             For Each desa In p1.desarrollosManoObra
-                arr(desa.Tarea.id) = arr(desa.Tarea.id) + _
-                                     IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p1.id))), desa.Tiempo * desa.Cantidad)
+                arr(desa.Tarea.Id) = arr(desa.Tarea.Id) + _
+                                     IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p1.Id))), desa.Tiempo * desa.Cantidad)
             Next desa
             For Each p2 In p1.PiezasHijas
                 For Each desa In p2.desarrollosManoObra
-                    arr(desa.Tarea.id) = arr(desa.Tarea.id) + _
-                                         IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p2.id))), desa.Tiempo * desa.Cantidad)
+                    arr(desa.Tarea.Id) = arr(desa.Tarea.Id) + _
+                                         IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p2.Id))), desa.Tiempo * desa.Cantidad)
                 Next desa
                 For Each p3 In p2.PiezasHijas
                     For Each desa In p3.desarrollosManoObra
-                        arr(desa.Tarea.id) = arr(desa.Tarea.id) + _
-                                             IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p3.id))), desa.Tiempo * desa.Cantidad)
+                        arr(desa.Tarea.Id) = arr(desa.Tarea.Id) + _
+                                             IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p3.Id))), desa.Tiempo * desa.Cantidad)
                     Next desa
 
                 Next p3
@@ -453,7 +453,7 @@ Private Sub Command6_Click()
     conectar.BeginTransaction
     For Each Pieza In piezas
         conjunto = (Pieza.PiezasHijas.count > 0)
-        conectar.execute "UPDATE stock SET conjunto = " & IIf(conjunto, "0", "-1") & " WHERE id = " & Pieza.id
+        conectar.execute "UPDATE stock SET conjunto = " & IIf(conjunto, "0", "-1") & " WHERE id = " & Pieza.Id
     Next Pieza
     conectar.CommitTransaction
 
@@ -516,15 +516,15 @@ Private Sub ProcesarDetaOT(detaOT As DetalleOrdenTrabajo, Optional detaOTDto As 
     Dim ptp As PlaneamientoTiempoProceso
 
     If IsSomething(detaOTDto) Then
-        piezaId = detaOTDto.Pieza.id
+        piezaId = detaOTDto.Pieza.Id
     Else
-        piezaId = detaOT.Pieza.id
+        piezaId = detaOT.Pieza.Id
     End If
 
-    For Each tmpDeta In DAODetalleOrdenTrabajo.FindAllConjunto(detaOT.id, piezaId)
+    For Each tmpDeta In DAODetalleOrdenTrabajo.FindAllConjunto(detaOT.Id, piezaId)
 
-        For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(tmpDeta.id, tmpDeta.Pieza.id)
-            conectar.execute "UPDATE PlaneamientoTiemposProcesos SET idDetallePedido = " & detaOT.id & ", idDetallePedidoConj = " & tmpDeta.id & " WHERE id = " & ptp.id
+        For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(tmpDeta.Id, tmpDeta.Pieza.Id)
+            conectar.execute "UPDATE PlaneamientoTiemposProcesos SET idDetallePedido = " & detaOT.Id & ", idDetallePedidoConj = " & tmpDeta.Id & " WHERE id = " & ptp.Id
         Next ptp
 
         ProcesarDetaOT detaOT, tmpDeta

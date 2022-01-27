@@ -107,7 +107,10 @@ Private Sub Form_Load()
     Set rubroElegido = rubros.item(Me.GridEX1.row)
     Set grupos = DAOGrupos.GetAllByRubro(rubroElegido.Id)
     Me.GridEX2.ItemCount = grupos.count
-End Sub
+    
+    Me.caption = caption & " (" & Name & ")"
+    
+    End Sub
 
 
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)

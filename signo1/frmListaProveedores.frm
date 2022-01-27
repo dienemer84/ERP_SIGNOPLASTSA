@@ -7,12 +7,12 @@ Begin VB.Form frmComprasProveedoresLista
    ClientHeight    =   7515
    ClientLeft      =   60
    ClientTop       =   270
-   ClientWidth     =   17775
+   ClientWidth     =   14970
    Icon            =   "frmListaProveedores.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   7515
-   ScaleWidth      =   17775
+   ScaleWidth      =   14970
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1815
       Left            =   120
@@ -379,6 +379,9 @@ Private Sub Form_Load()
     Me.cboFantasia.ListIndex = -1
 
     Buscar
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 End Sub
 
 Private Sub llenarEstados()

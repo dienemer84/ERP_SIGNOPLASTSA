@@ -125,7 +125,7 @@ Private dtosRetorno As New Collection
 Public Property Let Origen(nOrigen As Integer)
     vorigen = nOrigen
 End Property
-Public Property Let Cliente(ncli As clsCliente)
+Public Property Let cliente(ncli As clsCliente)
     Set vCliente = ncli
 End Property
 Private Function CrearEvento() As clsEventoObserver
@@ -135,8 +135,9 @@ Private Function CrearEvento() As clsEventoObserver
     EVENTO.Originador = vorigen
     Set CrearEvento = EVENTO
 End Function
+
 Private Sub bDePresu_Click()
-    Dim a As JSSelectedItem
+    Dim A As JSSelectedItem
     Dim P As Pieza
     Dim detaOT As DetalleOrdenTrabajo
     Dim detas As Collection
@@ -147,19 +148,19 @@ Private Sub bDePresu_Click()
     '    End If
 
 
-    For Each a In Me.GridEX1.SelectedItems
-        Set dto = dtos.item(a.RowIndex)
+    For Each A In Me.GridEX1.SelectedItems
+        Set dto = dtos.item(A.RowIndex)
         If Not dto.Pieza.Activa Then
             MsgBox "No puede agregar una pieza desactivada.", vbExclamation
             Debug.Print dto.Pieza.nombre
             Exit Sub
         End If
-    Next a
+    Next A
 
 
     Set dtosRetorno = New Collection
-    For Each a In Me.GridEX1.SelectedItems
-        Set dto = dtos.item(a.RowIndex)
+    For Each A In Me.GridEX1.SelectedItems
+        Set dto = dtos.item(A.RowIndex)
         dtosRetorno.Add dto
         '        Set P = piezas.Item(a.RowIndex)
         '
@@ -175,7 +176,7 @@ Private Sub bDePresu_Click()
         '        colPiezas.Add P
     Next
 
-    Me.Command1.Default = True
+    Me.Command1.default = True
 
     Channel.Notificar CrearEvento, IIf(vorigen = 1, NuevoPresupuesto_, TipoSuscripcion.NuevaOT_)
 
@@ -191,7 +192,7 @@ Private Sub llenarLista()
         Exit Sub
     End If
 
-    filtro = "s.id_cliente=" & vCliente.id
+    filtro = "s.id_cliente=" & vCliente.Id
     If Trim(Me.Text1) <> Empty Then
         filtro = filtro & " and s.detalle LIKE '%" & Me.Text1.text & "%'"
     End If
@@ -212,7 +213,7 @@ Private Sub llenarLista()
             Set dto.Pieza = deta.Pieza
 
 
-            dto.idDetalleOt = deta.id
+            dto.idDetalleOt = deta.Id
             dto.idOt = OtIdFilter
             dto.item = deta.item
             dto.Precio = deta.Precio
@@ -240,7 +241,7 @@ Private Sub llenarLista()
     End If
 
     Me.GridEX1.ItemCount = dtos.count
-    Me.bDePresu.Default = True
+    Me.bDePresu.default = True
 End Sub
 Private Sub Command3_Click()
     Unload Me
@@ -251,6 +252,10 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.GridEX1
     llenarLista
     loading = False
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.GridEX1, Column

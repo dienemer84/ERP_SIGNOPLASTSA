@@ -3,6 +3,8 @@ Option Explicit
 Private monedas As Collection
 Private monedaPatron As clsMoneda
 Private lastUpdate As Date
+Public MonedaDN As clsMoneda
+
 
 Public Property Get Patron() As clsMoneda
     If Not IsSomething(monedaPatron) Then ActualizarMonedas
@@ -32,9 +34,9 @@ Public Function Convertir(Valor As Double, monedaOrigenId As Long, monedaDestino
 
     Dim Cambio As Double
     Cambio = monDestino.MonedaCambio.Cambio
-    If monDestino.MonedaCambio.id = monDestino.id Then Cambio = 1
-    If monedaPatron.id = monDestino.id Then Cambio = 1
-    If monOrigen.id = monDestino.id Then Cambio = 1
+    If monDestino.MonedaCambio.Id = monDestino.Id Then Cambio = 1
+    If monedaPatron.Id = monDestino.Id Then Cambio = 1
+    If monOrigen.Id = monDestino.Id Then Cambio = 1
 
     Convertir = ((Valor * monOrigen.Cambio) / monDestino.Cambio * Cambio) / monedaPatron.Cambio
 
@@ -63,7 +65,7 @@ Public Function ConvertirForzado2(Valor As Double, monedaOrigenId As Long, moned
         ConvertirForzado2 = Valor
 
     Else
-        If (monDestino.id = monedaPatron.id) Then
+        If (monDestino.Id = monedaPatron.Id) Then
             ConvertirForzado2 = Valor / cambioforzado
 
         Else
@@ -97,16 +99,16 @@ End Function
 
 
 Public Sub ActualizarMonedas()
-    Dim mon As clsMoneda
+    Dim Mon As clsMoneda
     Set monedas = DAOMoneda.GetAll
 
     Set monedaPatron = Nothing
-    For Each mon In monedas
-        If mon.Patron Then
-            Set monedaPatron = mon
+    For Each Mon In monedas
+        If Mon.Patron Then
+            Set monedaPatron = Mon
             Exit For
         End If
-    Next mon
+    Next Mon
 
     lastUpdate = Now
 End Sub

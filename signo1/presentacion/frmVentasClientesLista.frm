@@ -2,13 +2,13 @@ VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Begin VB.Form frmVentasClientesLista 
    Caption         =   "Clientes"
-   ClientHeight    =   5220
+   ClientHeight    =   5385
    ClientLeft      =   60
    ClientTop       =   750
    ClientWidth     =   13470
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   5220
+   ScaleHeight     =   5385
    ScaleWidth      =   13470
    Begin VB.CommandButton Command2 
       BackColor       =   &H00FFC0C0&
@@ -62,9 +62,9 @@ Begin VB.Form frmVentasClientesLista
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
+      ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
       AllowEdit       =   0   'False
-      GroupByBoxVisible=   0   'False
       BackColorHeader =   16761024
       DataMode        =   99
       HeaderFontBold  =   -1  'True
@@ -76,28 +76,28 @@ Begin VB.Form frmVentasClientesLista
       ColumnsCount    =   15
       Column(1)       =   "frmVentasClientesLista.frx":0022
       Column(2)       =   "frmVentasClientesLista.frx":012E
-      Column(3)       =   "frmVentasClientesLista.frx":022A
-      Column(4)       =   "frmVentasClientesLista.frx":0326
-      Column(5)       =   "frmVentasClientesLista.frx":0422
-      Column(6)       =   "frmVentasClientesLista.frx":050A
-      Column(7)       =   "frmVentasClientesLista.frx":0602
+      Column(3)       =   "frmVentasClientesLista.frx":021A
+      Column(4)       =   "frmVentasClientesLista.frx":0316
+      Column(5)       =   "frmVentasClientesLista.frx":0412
+      Column(6)       =   "frmVentasClientesLista.frx":050E
+      Column(7)       =   "frmVentasClientesLista.frx":05F6
       Column(8)       =   "frmVentasClientesLista.frx":06EE
-      Column(9)       =   "frmVentasClientesLista.frx":07DE
-      Column(10)      =   "frmVentasClientesLista.frx":08C2
-      Column(11)      =   "frmVentasClientesLista.frx":09B2
+      Column(9)       =   "frmVentasClientesLista.frx":07DA
+      Column(10)      =   "frmVentasClientesLista.frx":08CA
+      Column(11)      =   "frmVentasClientesLista.frx":09AE
       Column(12)      =   "frmVentasClientesLista.frx":0A9E
       Column(13)      =   "frmVentasClientesLista.frx":0B82
       Column(14)      =   "frmVentasClientesLista.frx":0C76
       Column(15)      =   "frmVentasClientesLista.frx":0D5A
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmVentasClientesLista.frx":0E5A
-      FormatStyle(2)  =   "frmVentasClientesLista.frx":0F92
-      FormatStyle(3)  =   "frmVentasClientesLista.frx":1042
-      FormatStyle(4)  =   "frmVentasClientesLista.frx":10F6
-      FormatStyle(5)  =   "frmVentasClientesLista.frx":11CE
-      FormatStyle(6)  =   "frmVentasClientesLista.frx":1286
+      FormatStyle(1)  =   "frmVentasClientesLista.frx":0E5E
+      FormatStyle(2)  =   "frmVentasClientesLista.frx":0F96
+      FormatStyle(3)  =   "frmVentasClientesLista.frx":1046
+      FormatStyle(4)  =   "frmVentasClientesLista.frx":10FA
+      FormatStyle(5)  =   "frmVentasClientesLista.frx":11D2
+      FormatStyle(6)  =   "frmVentasClientesLista.frx":128A
       ImageCount      =   0
-      PrinterProperties=   "frmVentasClientesLista.frx":1366
+      PrinterProperties=   "frmVentasClientesLista.frx":136A
    End
    Begin VB.Label Label2 
       BackColor       =   &H00FF8080&
@@ -149,12 +149,17 @@ Dim rows As Long
 Dim rectemp As clsCliente
 Dim est As EstadoCliente
 Dim clientes As Collection
+
 Private Sub Combo1_Click()
     Command1_Click
 End Sub
+
+
 Private Sub Command1_Click()
     llenar_Grilla
 End Sub
+
+
 Private Sub Command2_Click()
     Unload Me
 End Sub
@@ -179,9 +184,13 @@ Private Sub Form_Load()
     rows = 1
     id_suscriber = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, Clientes_
-
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 
 End Sub
+
+
 Private Sub Form_Resize()
     On Error Resume Next
     Me.grilla.Width = Me.ScaleWidth
@@ -209,7 +218,7 @@ End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Set rectemp = clientes(grilla.RowIndex(Me.grilla.row))
-        Me.numero.caption = "Nro." & Format(rectemp.id, "0000")
+        Me.numero.caption = "Nro." & Format(rectemp.Id, "0000")
         If rectemp.estado = 0 Then
             Me.CambiarEstado.caption = "Activar..."
         ElseIf rectemp.estado = 1 Then
@@ -218,26 +227,28 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         frmVentasClientesLista.PopupMenu m3
     End If
 End Sub
+
 Private Sub grilla_SelectionChange()
     rows = grilla.RowIndex(grilla.row)
+    
 End Sub
 
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
     Set rectemp = clientes.item(RowIndex)
     With rectemp
-        Values(1) = Format(.id, "0000")
-        Values(2) = UCase(.razon)
-        Values(3) = .Domicilio
-        Values(4) = .localidad.nombre
-        Values(5) = .localidad.cp
-        Values(6) = .provincia.nombre
-        Values(7) = .provincia.pais.nombre
+        Values(1) = Format(.Id, "0000")
+        Values(2) = .Cuit
+        Values(3) = UCase(.razon)
+        Values(4) = .Domicilio
+        Values(5) = .localidad.nombre
+        Values(6) = .localidad.cp
+        Values(7) = .provincia.nombre
+        Values(8) = .provincia.pais.nombre
+        Values(9) = .telefono
+        Values(10) = .Fax
+        Values(11) = .email
 
-        Values(8) = .telefono
-        Values(9) = .Fax
-        Values(10) = .email
-        Values(11) = .Cuit
         If .TipoIVA Is Nothing Then
             Values(12) = Empty
         Else
@@ -246,7 +257,13 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 
         Values(13) = .estado
         Values(14) = .FP
-        Values(15) = .exLocalidad
+
+        Select Case .idMonedaDefault
+            Case 0
+                Values(15) = "ARS"
+            Case 1
+                Values(15) = "U$S"
+        End Select
     End With
 End Sub
 
@@ -264,7 +281,7 @@ End Function
 Private Sub masContacto_Click()
     If grilla.rowcount > 0 Then
         Set rectemp = clientes(grilla.RowIndex(grilla.row))
-        frmVentasClientesNuevoContacto.Cliente = rectemp
+        frmVentasClientesNuevoContacto.cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
     End If
@@ -273,7 +290,7 @@ End Sub
 Private Sub masContactos_Click()
     If grilla.rowcount > 0 Then
         Set rectemp = clientes(grilla.RowIndex(grilla.row))
-        frmVentasClientesNuevoContacto.Cliente = rectemp
+        frmVentasClientesNuevoContacto.cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
     End If
@@ -311,7 +328,7 @@ End Sub
 Private Sub verDeta()
     If grilla.rowcount Then
         Set rectemp = clientes(grilla.RowIndex(grilla.row))
-        frmVentasClienteNuevo.Cliente = rectemp
+        frmVentasClienteNuevo.cliente = rectemp
         frmVentasClienteNuevo.Show
     End If
 End Sub

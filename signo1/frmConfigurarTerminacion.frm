@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmConfigurarTerminacion 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -958,32 +958,36 @@ Private Sub LlenarCuentasMDO()
     DAOTareas.LlenarComboPorSector Me.cboHorno, dto.Sector
     DAOTareas.LlenarComboPorSector Me.cboApp, dto.Sector
     DAOTareas.LlenarComboPorSector Me.cboSup, dto.Sector
-    Me.cboHorno.ListIndex = funciones.PosIndexCbo(dto.Horneado.id, Me.cboHorno)
-    Me.cboApp.ListIndex = funciones.PosIndexCbo(dto.Aplicacion.id, Me.cboApp)
-    Me.cboSup.ListIndex = funciones.PosIndexCbo(dto.Limpieza.id, Me.cboSup)
+    Me.cboHorno.ListIndex = funciones.PosIndexCbo(dto.Horneado.Id, Me.cboHorno)
+    Me.cboApp.ListIndex = funciones.PosIndexCbo(dto.Aplicacion.Id, Me.cboApp)
+    Me.cboSup.ListIndex = funciones.PosIndexCbo(dto.Limpieza.Id, Me.cboSup)
 
 End Sub
 
 Private Sub LlenarCuentasMAT()
     On Error Resume Next
-    DAOMateriales.LlenarComboPorRubro Me.cboCant, dto.Rubro
-    DAOMateriales.LlenarComboPorRubro Me.cboFosf, dto.Rubro
-    Me.cboCant.ListIndex = funciones.PosIndexCbo(dto.CantidadPintura.id, cboCant)
-    Me.cboFosf.ListIndex = funciones.PosIndexCbo(dto.CantidadFosfatos.id, cboFosf)
+    DAOMateriales.LlenarComboPorRubro Me.cboCant, dto.rubro
+    DAOMateriales.LlenarComboPorRubro Me.cboFosf, dto.rubro
+    Me.cboCant.ListIndex = funciones.PosIndexCbo(dto.CantidadPintura.Id, cboCant)
+    Me.cboFosf.ListIndex = funciones.PosIndexCbo(dto.CantidadFosfatos.Id, cboFosf)
 End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
     Dim baseS As New classStock
-    baseC.ver_datos_pintura a, b, c, d, E, F, g, h, i
+    baseC.ver_datos_pintura A, B, c, d, E, F, g, h, i
     Me.Text6 = i
-    Me.Text1 = a  'cantpintm2
-    Me.Text2 = b    'cantfosfatos
+    Me.Text1 = A  'cantpintm2
+    Me.Text2 = B    'cantfosfatos
     Me.Text3 = c    'tpo prrp sup
     Me.Text4 = d    'tpo pint m2
     Me.Text5 = E    'tpo horno
     Me.Textg = h    'factor mdo
     Me.Textf = g    'factor mat
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 
 Private Sub calcular()

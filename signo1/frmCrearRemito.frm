@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitosNuevo 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -247,7 +247,7 @@ Attribute VB_Exposed = False
 Dim claseP As New classPlaneamiento
 Dim claseS As New classStock
 Dim Remito As Remito
-Dim Cliente As clsCliente
+Dim cliente As clsCliente
 Private Sub cboClientes_Click()
     Me.cboContactos.Clear
     llenarContactos
@@ -264,19 +264,19 @@ Private Sub Command1_Click()
         If MsgBox("¿Desea crear el Remito Nro. " & Format(CLng(Me.txtRtoNro), "0000") & "?", vbYesNo, "Confirmación") = vbYes Then
 
             Set Remito = New Remito
-            Set Remito.Cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(cboClientes.ListIndex))
+            Set Remito.cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(cboClientes.ListIndex))
             Remito.detalle = UCase(Me.txtDetalles)
             Remito.FEcha = Now
             Remito.estado = RemitoPendiente
             Remito.EstadoFacturado = RemitoNoFacturado
-            Set Remito.UsuarioAprobador = Nothing
-            Set Remito.UsuarioCreador = funciones.GetUserObj
+            Set Remito.usuarioAprobador = Nothing
+            Set Remito.usuarioCreador = funciones.GetUserObj
 
             Remito.numero = CLng(Me.txtRtoNro)
 
 
 
-            If Not Remito.Cliente.CUITValido Or Not Remito.Cliente.ValidoRemitoFactura Then
+            If Not Remito.cliente.CUITValido Or Not Remito.cliente.ValidoRemitoFactura Then
                 MsgBox "El cliente no es válido para generar un remito!", vbCritical, "Error"
                 Exit Sub
             End If
@@ -332,7 +332,7 @@ Private Sub llenarContactos()
     For Each contacto In c
         If IsSomething(contacto) Then
             Me.cboContactos.AddItem contacto.nombre
-            Me.cboContactos.ItemData(Me.cboContactos.NewIndex) = contacto.id
+            Me.cboContactos.ItemData(Me.cboContactos.NewIndex) = contacto.Id
         End If
     Next
 

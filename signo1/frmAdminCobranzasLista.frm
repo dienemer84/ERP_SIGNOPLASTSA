@@ -381,6 +381,9 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = i
     llenarLista
+    
+    Me.caption = caption & "(" & Name & ")"
+        
 End Sub
 
 Private Sub llenarLista()

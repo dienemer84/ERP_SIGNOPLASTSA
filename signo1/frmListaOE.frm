@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoOELista 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00C0C0C0&
@@ -335,7 +335,7 @@ Private Sub lstOE_MouseUp(Button As Integer, Shift As Integer, x As Single, y As
             Me.OENumero.caption = "[ Nro. " & IDOE & " ]"
             Set rs = conectar.RSFactory("select estado from PedidosEntregas where id=" & IDOE)
 
-            If rs!Estado = 1 Then    'pendiente
+            If rs!estado = 1 Then    'pendiente
                 Me.vereditar.caption = "Editar..."
                 Me.remitar.Enabled = False
                 Me.cerrarOE.Enabled = False
@@ -343,7 +343,7 @@ Private Sub lstOE_MouseUp(Button As Integer, Shift As Integer, x As Single, y As
                 vereditarOE = 1
                 Me.printOrder.Enabled = False
                 Me.AprobarOE.Enabled = True
-            ElseIf rs!Estado = 2 Then    'aprobado
+            ElseIf rs!estado = 2 Then    'aprobado
                 Me.remitar.Enabled = True
                 Me.vereditar.Enabled = True
                 Me.cerrarOE.Enabled = False
@@ -352,7 +352,7 @@ Private Sub lstOE_MouseUp(Button As Integer, Shift As Integer, x As Single, y As
                 vereditarOE = 3
                 Me.printOrder.Enabled = True
                 Me.AprobarOE.Enabled = False
-            ElseIf rs!Estado = 4 Then    'entregada
+            ElseIf rs!estado = 4 Then    'entregada
                 Me.remitar.Enabled = False
                 Me.cerrarOE.Enabled = True
                 Me.RtosEntregados.Enabled = False
@@ -360,7 +360,7 @@ Private Sub lstOE_MouseUp(Button As Integer, Shift As Integer, x As Single, y As
                 vereditarOE = 3
                 Me.printOrder.Enabled = False
                 Me.AprobarOE.Enabled = False
-            ElseIf rs!Estado = 3 Then    'finalizada
+            ElseIf rs!estado = 3 Then    'finalizada
                 Me.vereditar.caption = "Ver..."
                 vereditarOE = 3
                 Me.remitar.Enabled = False
@@ -381,13 +381,13 @@ Private Sub gridEntregas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
 On Error Resume Next
     Set tmpOe = ordenes.item(RowIndex)
     With Values
-        .value(1) = tmpOe.id
+        .value(1) = tmpOe.Id
         .value(2) = tmpOe.FEcha
         .value(3) = tmpOe.cliente.razon
         .value(4) = tmpOe.referencia
         .value(5) = tmpOe.usuarioCreador.usuario
         .value(6) = tmpOe.usuarioAprobador.usuario
-        .value(7) = enumEstadoOrdenEntrega(tmpOe.Estado)
+        .value(7) = enumEstadoOrdenEntrega(tmpOe.estado)
     End With
 
 End Sub

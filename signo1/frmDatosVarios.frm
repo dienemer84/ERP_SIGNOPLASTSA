@@ -274,6 +274,9 @@ Private Sub Form_Load()
     Else
         Command1.Enabled = True
     End If
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 
 End Sub
 Private Sub txtManteOferta_Validate(Cancel As Boolean)

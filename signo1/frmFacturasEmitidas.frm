@@ -1113,7 +1113,7 @@ End Sub
 
 Private Sub editar_Click()
 
-    Dim f_c3h3 As New frmFacturaEdicion
+    Dim f_c3h3 As New frmAdminFacturasEdicion
     f_c3h3.idFactura = Factura.Id
     f_c3h3.Show
 
@@ -1166,6 +1166,9 @@ Private Sub Form_Load()
     Me.cboRangos.ListIndex = i
     llenarGrilla
     verObservaciones
+    
+    Me.caption = caption & "(" & Name & ")"
+    
 End Sub
 
 Private Sub llenarGrilla()
@@ -1273,7 +1276,7 @@ Private Sub llenarGrilla()
 
 ' Desabilito la apertura directa de la Factura al encontrar exacto
     'If facturas.count = 1 Then
-    '   Dim f_c3h3 As New frmFacturaEdicion
+    '   Dim f_c3h3 As New frmAdminFacturasEdicion
     '    f_c3h3.idFactura = facturas(1).id
     '    f_c3h3.Show
     'End If
@@ -1312,7 +1315,7 @@ Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer,
     If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
@@ -2156,7 +2159,7 @@ End Sub
 
 
 Private Sub verFactura_Click()
-    Dim f_c3h3 As New frmFacturaEdicion
+    Dim f_c3h3 As New frmAdminFacturasEdicion
     f_c3h3.ReadOnly = True
     f_c3h3.idFactura = Factura.Id
     f_c3h3.Show

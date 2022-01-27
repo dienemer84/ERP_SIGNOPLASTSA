@@ -356,19 +356,19 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC:
 
-            Dim f324 As New frmFacturaEdicion
+            Dim f324 As New frmAdminFacturasEdicion
             f324.NuevoTipoDocumento = tipoDocumentoContable.Factura
             f324.Show
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_NC:
 
-            Dim f3241 As New frmFacturaEdicion
+            Dim f3241 As New frmAdminFacturasEdicion
             f3241.NuevoTipoDocumento = tipoDocumentoContable.notaCredito
             f3241.Show
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ND:
 
-            Dim f32412 As New frmFacturaEdicion
+            Dim f32412 As New frmAdminFacturasEdicion
             f32412.NuevoTipoDocumento = tipoDocumentoContable.notaDebito
             f32412.Show
 
@@ -376,7 +376,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ANTICIPO:
 
-            Dim f324121 As New frmFacturaEdicion
+            Dim f324121 As New frmAdminFacturasEdicion
             f324121.NuevoTipoDocumento = tipoDocumentoContable.Factura
             f324121.EsAnticipo = True
             f324121.Show
@@ -734,13 +734,7 @@ Public Sub mostrarTablero()
 End Sub
 
 
-
-
-
 Private Sub stbar1_PanelClick(ByVal panel As MSComctlLib.panel)
-
-
-
     If panel.Index = 5 Then
         If MsgBox("Hay una nueva actualización, ¿desea aplicarla ahora?", vbYesNo, "Confirmación") = vbYes Then
 
@@ -759,8 +753,6 @@ Private Sub MDIForm_Unload(Cancel As Integer)
     Call UnInitializeAllContainer
 
 End Sub
-
-
 
 Private Sub Popup_ItemClick(ByVal item As Xtremesuitecontrols.IPopupControlItem)
     If item.Id = 666 Then

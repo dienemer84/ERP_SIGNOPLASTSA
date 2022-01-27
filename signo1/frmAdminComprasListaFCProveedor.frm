@@ -872,6 +872,9 @@ Dim cc As clsCuentaContable
     Me.dtpHastaCarga.value = Null
 
     Me.grilla.Refresh
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 End Sub
 Public Sub llenarGrilla()
     Dim tot As Double

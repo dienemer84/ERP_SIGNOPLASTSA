@@ -132,6 +132,8 @@ Private Sub Form_Load()
     Me.grilla_material.ItemCount = Materiales.count
     aRow = Me.grilla_material.RowIndex(Me.grilla_material.row)
     Set historicos = Materiales.item(aRow).historico
+    
+        Me.caption = caption & " (" & Name & ")"
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -139,13 +141,13 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Set tmpHistorico = historicos.item(RowIndex)
         Values(1) = tmpHistorico.FEcha
         Values(2) = funciones.FormatearDecimales(tmpHistorico.Valor, 2)
-        Values(3) = tmpHistorico.Moneda.NombreCorto
+        Values(3) = tmpHistorico.moneda.NombreCorto
     End If
 End Sub
 
 Private Sub grilla_material_SelectionChange()
     Me.GridEX1.ItemCount = 0
-    Set historicos = DAOMaterialHistorico.getAllByMaterial(tmpMaterial.id)
+    Set historicos = DAOMaterialHistorico.getAllByMaterial(tmpMaterial.Id)
     Me.GridEX1.ItemCount = historicos.count
 End Sub
 
@@ -153,7 +155,7 @@ Private Sub grilla_material_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
     Set tmpMaterial = Materiales.item(RowIndex)
     With tmpMaterial
         Values(1) = .codigo
-        Values(2) = .Grupo.rubros.Rubro
+        Values(2) = .Grupo.rubros.rubro
         Values(3) = .Grupo.Grupo
         Values(4) = .descripcion
         Values(5) = .Espesor

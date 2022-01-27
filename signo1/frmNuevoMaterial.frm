@@ -574,11 +574,11 @@ Public Sub BuildCodigoMaterial()
     If Me.cboGrupos.ListIndex > -1 Then
         Dim g As clsGrupo
         Set g = DAOGrupos.GetById(Me.cboGrupos.ItemData(Me.cboGrupos.ListIndex))
-        cod = cod & Format(g.id, "000")
+        cod = cod & Format(g.Id, "000")
     End If
 
     If IsSomething(vmaterial) Then
-        cod = cod & "-" & vmaterial.id
+        cod = cod & "-" & vmaterial.Id
     End If
 
     Me.lblCodigoNuevo.caption = cod
@@ -652,7 +652,7 @@ Private Function accion() As Boolean
 
             If DAOMateriales.modificar(vmaterial, True) Then
                 MsgBox "El material se ha modificado.", vbInformation
-                DaoHistorico.Save "materiales_historial", "Material desaprobado", vmaterial.id
+                DaoHistorico.Save "materiales_historial", "Material desaprobado", vmaterial.Id
                 If CDbl(valorViejo <> vmaterial.Valor) Then
                     MsgBox "Hubo una variacion. Se almacena en históricos", vbInformation, "Información"
                     DAOMaterialHistorico.crear vmaterial
@@ -696,7 +696,7 @@ Private Sub armarObjeto()
     vmaterial.Ancho = Val(Me.txtAncho)
     vmaterial.Cantidad = Val(Me.txtCantidad)
 
-    If vmaterial.id = 0 Then
+    If vmaterial.Id = 0 Then
         vmaterial.codigo = UCase(Me.lblCodigoNuevo.caption)
     Else
         If Me.lblCodigoAnterior.caption = Me.lblCodigoNuevo.caption Then
@@ -750,6 +750,8 @@ Private Sub Form_Load()
     vId = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, RubrosGrupos_
     If Not vmaterial Is Nothing Then mostrarForm
+    
+        Me.caption = caption & " (" & Name & ")"
 
 End Sub
 
@@ -845,9 +847,9 @@ Private Sub mostrarForm()
     Me.cboUnidadCompra.ListIndex = funciones.PosIndexCbo(vmaterial.UnidadCompra, Me.cboUnidadCompra)
     Me.cboUnidadPedido.ListIndex = funciones.PosIndexCbo(vmaterial.UnidadPedido, Me.cboUnidadPedido)
 
-    Me.cboRubros.ListIndex = funciones.PosIndexCbo(vmaterial.Grupo.rubros.id, Me.cboRubros)
-    Me.cboGrupos.ListIndex = funciones.PosIndexCbo(vmaterial.Grupo.id, Me.cboGrupos)
-    Me.cboAlmacenes.ListIndex = funciones.PosIndexCbo(vmaterial.almacen.id, Me.cboAlmacenes)
+    Me.cboRubros.ListIndex = funciones.PosIndexCbo(vmaterial.Grupo.rubros.Id, Me.cboRubros)
+    Me.cboGrupos.ListIndex = funciones.PosIndexCbo(vmaterial.Grupo.Id, Me.cboGrupos)
+    Me.cboAlmacenes.ListIndex = funciones.PosIndexCbo(vmaterial.almacen.Id, Me.cboAlmacenes)
     'Me.txtCodigo = vMaterial.codigo
     Me.lblCodigoAnterior.caption = vmaterial.codigo
     Me.txtDescripcion = vmaterial.descripcion
@@ -856,7 +858,7 @@ Private Sub mostrarForm()
     Me.txtCantidad = vmaterial.Cantidad
     Me.txtValor = vmaterial.Valor
     valorViejo = vmaterial.Valor
-    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vmaterial.moneda.id, Me.cboMonedas)
+    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vmaterial.moneda.Id, Me.cboMonedas)
     Me.txtStockMinimo.text = vmaterial.StockMinimo
     Me.txtPtoReposicion.text = vmaterial.PuntoReposicion
 

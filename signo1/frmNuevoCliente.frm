@@ -534,7 +534,7 @@ Private Sub Guardar()
                 F = "c.cuit = " & Escape(Text1(7))
                 
                 If IsSomething(vCliente) Then
-                F = F & " AND c.id <> " & vCliente.id
+                F = F & " AND c.id <> " & vCliente.Id
                 End If
 
                If DAOCliente.FindAll(F).count > 0 Then
@@ -618,10 +618,10 @@ Private Sub cboPaises_Click()
     'cboLocalidades.Clear
     'cboPartidos.Clear
 
-    Dim id As Long
+    Dim Id As Long
     If cboPaises.ListIndex >= 0 Then
-        id = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
-        DAOProvincias.LlenarCombo Me.cboProvincias, id
+        Id = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
+        DAOProvincias.LlenarCombo Me.cboProvincias, Id
     End If
 
     cboProvincias_Click
@@ -631,10 +631,10 @@ End Sub
 
 
 Private Sub cboProvincias_Click()
-    Dim id As Long
+    Dim Id As Long
     If cboProvincias.ListIndex >= 0 Then
-        id = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
-        DAOLocalidades.LlenarCombo Me.cboLocalidades, id
+        Id = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+        DAOLocalidades.LlenarCombo Me.cboLocalidades, Id
     End If
 
 End Sub
@@ -670,7 +670,7 @@ Private Sub Form_Load()
     End If
 
 
-
+    Me.caption = caption & "(" & Name & ")"
 
 
 End Sub
@@ -698,9 +698,9 @@ Private Sub llenarForm()
 
         'aca posiciono el combo
 
-        Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.id, Me.cboPaises)
-        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.id, Me.cboProvincias)
-        Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.id, Me.cboLocalidades)
+        Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.Id, Me.cboPaises)
+        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.Id, Me.cboProvincias)
+        Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.Id, Me.cboLocalidades)
 
 
         Me.chkValido.value = Escape(.ValidoRemitoFactura)

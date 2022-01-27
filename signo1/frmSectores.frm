@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmSectores 
    Appearance      =   0  'Flat
    BackColor       =   &H00C0C0C0&
@@ -231,9 +231,9 @@ End Sub
 
 Private Sub Command2_Click()
 
-    a = MsgBox("¿Desea eliminar el sector " & Text2 & "?", vbOKCancel, "Advertencia")
+    A = MsgBox("¿Desea eliminar el sector " & Text2 & "?", vbOKCancel, "Advertencia")
 
-    If a = 1 Then
+    If A = 1 Then
         base.ejecutar ("delete from sectores where id=" & CInt(Label3) & " limit 1")
         Text2 = Empty
         Label3 = Empty
@@ -244,8 +244,8 @@ Private Sub Command2_Click()
 End Sub
 
 Private Sub Command3_Click()
-    a = MsgBox("¿Desea modificar el sector " & Me.lblsectorviejo & "?", vbOKCancel, "Advertencia")
-    If a = 1 Then
+    A = MsgBox("¿Desea modificar el sector " & Me.lblsectorviejo & "?", vbOKCancel, "Advertencia")
+    If A = 1 Then
         base.ejecutar ("update sectores set sector='" & normaliza(Me.Text3) & "' where id=" & CInt(Label3))
         Text2 = Empty
         Label3 = Empty
@@ -273,6 +273,8 @@ Private Sub Form_Load()
     Label3 = -1
     base.LlenarListaSectores -1
     elegirMarcado
+    
+        Me.caption = caption & " (" & Name & ")"
 
 End Sub
 

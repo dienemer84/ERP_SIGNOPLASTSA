@@ -699,20 +699,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-Dim id As Long
+Dim Id As Long
 Dim vTipo As TipoOperacionProveedor
 Dim proveedor_ As clsProveedor
 Dim baseP As New classCompras
 
 Public Property Let Proveedor(nvalue As clsProveedor)
-    Set proveedor_ = DAOProveedor.FindById(nvalue.id)
+    Set proveedor_ = DAOProveedor.FindById(nvalue.Id)
 End Property
 
 Public Property Let tipoOperacion(Tipo As TipoOperacionProveedor)
     vTipo = Tipo
 End Property
 Public Property Let idProveedor(nId As Long)
-    id = nId
+    Id = nId
 End Property
 
 Private Sub Command1_Click()
@@ -721,7 +721,7 @@ Private Sub Command1_Click()
     End If
 End Sub
 
-Private Sub btnCrearNew_Click(index As Integer)
+Private Sub btnCrearNew_Click(Index As Integer)
     If Trim(Text1(9)) = Empty Then Text1(9) = 0
     If LenB(Text1(10)) = 0 Then Text1(10) = 0
     If LenB(Text1(0)) = 0 Or LenB(Text1(12)) = 0 Then
@@ -806,7 +806,7 @@ Private Function accion() As Boolean
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
     proveedor_.Cuit = Me.Text1(10)
     Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
-    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.CboIVA.ItemData(Me.CboIVA.ListIndex)))
+    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIVA.ItemData(Me.cboIVA.ListIndex)))
 
     'busco rubros
 
@@ -854,8 +854,8 @@ Private Sub mostrarCampos()
     Text1(10) = proveedor_.Cuit
     Text1(11) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
-    cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.id, cboMonedas)
-    CboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.id, CboIVA)
+    cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.Id, cboMonedas)
+    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIVA)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
 End Sub
 Private Sub Form_Load()
@@ -881,6 +881,9 @@ Private Sub Form_Load()
     Else
         limpiar
     End If
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 
 End Sub
 
@@ -911,7 +914,7 @@ End Sub
 
 Private Sub llenarListaRubrosProveedor()
     Dim ListaRubros As New Collection
-    Set ListaRubros = DAORubros.FindAllByProveedor(proveedor_.id)
+    Set ListaRubros = DAORubros.FindAllByProveedor(proveedor_.Id)
     Dim rubro As clsRubros
     Me.ListView1.ListItems.Clear
     Dim x As ListItem
@@ -944,25 +947,25 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 End Function
 
 Private Sub lstRubros_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
-    funciones.LstOrdenar Me.lstRubros, ColumnHeader.index
+    funciones.LstOrdenar Me.lstRubros, ColumnHeader.Index
 End Sub
 
-Private Sub Text1_GotFocus(index As Integer)
-    foco Me.Text1(index)
+Private Sub Text1_GotFocus(Index As Integer)
+    foco Me.Text1(Index)
 End Sub
 Public Sub llenarIva()
-    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.CboIVA
+    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIVA
 End Sub
 
-Private Sub Text1_Validate(index As Integer, Cancel As Boolean)
-    If index = 10 Then    '10=cuit
+Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)
+    If Index = 10 Then    '10=cuit
         Cancel = Not IsNumeric(Me.Text1(10)) And LenB(Me.Text1(10)) > 0
 
         If Not Cancel Then
             Dim F As String
             F = "proveedores.cuit = " & Escape(Me.Text1(10))
             If IsSomething(proveedor_) Then
-                F = F & " AND proveedores.id <> " & proveedor_.id
+                F = F & " AND proveedores.id <> " & proveedor_.Id
             End If
 
             Cancel = DAOProveedor.FindAll(F).count > 0
