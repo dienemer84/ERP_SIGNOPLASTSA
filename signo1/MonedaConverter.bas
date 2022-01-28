@@ -1,6 +1,6 @@
 Attribute VB_Name = "MonedaConverter"
 Option Explicit
-Private monedas As Collection
+Private Monedas As Collection
 Private monedaPatron As clsMoneda
 Private lastUpdate As Date
 Public MonedaDN As clsMoneda
@@ -29,8 +29,8 @@ Public Function Convertir(Valor As Double, monedaOrigenId As Long, monedaDestino
     Dim monOrigen As clsMoneda
     Dim monDestino As clsMoneda
 
-    Set monOrigen = monedas.item(CStr(monedaOrigenId))
-    Set monDestino = monedas.item(CStr(monedaDestinoId))
+    Set monOrigen = Monedas.item(CStr(monedaOrigenId))
+    Set monDestino = Monedas.item(CStr(monedaDestinoId))
 
     Dim Cambio As Double
     Cambio = monDestino.MonedaCambio.Cambio
@@ -38,8 +38,25 @@ Public Function Convertir(Valor As Double, monedaOrigenId As Long, monedaDestino
     If monedaPatron.Id = monDestino.Id Then Cambio = 1
     If monOrigen.Id = monDestino.Id Then Cambio = 1
 
+'    If monOrigen.Id <> monDestino.Id Then
+'    MsgBox ("Tenemos monedas distintas")
+'        MsgBox ("Moneda de la OT del Remito asociado: " & monOrigen.NombreCorto & " | Moneda del Comprobante: " & monDestino.NombreCorto)
+'        MsgBox ("Moneda de la OT del Remito asociado: " & monOrigen.NombreCorto & vbCrLf & "" _
+'        & "La Moneda del Comprobante que se está cargando es: " & monDestino.NombreCorto & vbCrLf & "" _
+'       & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
+'        & "Cálculo:" & vbCrLf & "" _
+'       & "Importe del item: " & monOrigen.NombreCorto & " " & Valor & vbCrLf & "" _
+'       & " * Valor de Moneda de OT: " & monDestino.NombreCorto & " " & monOrigen.Cambio)
+    
     Convertir = ((Valor * monOrigen.Cambio) / monDestino.Cambio * Cambio) / monedaPatron.Cambio
+'    Else
+'    MsgBox ("Tenemos las mismas monedas")
+'
+'    End If
 
+    
+
+    
 End Function
 
 
@@ -53,8 +70,8 @@ Public Function ConvertirForzado2(Valor As Double, monedaOrigenId As Long, moned
     Dim monOrigen As clsMoneda
     Dim monDestino As clsMoneda
 
-    Set monOrigen = monedas.item(CStr(monedaOrigenId))
-    Set monDestino = monedas.item(CStr(monedaDestinoId))
+    Set monOrigen = Monedas.item(CStr(monedaOrigenId))
+    Set monDestino = Monedas.item(CStr(monedaDestinoId))
 
 
     Dim Cambio As Double
@@ -84,7 +101,7 @@ Public Function ConvertirForzado(Valor As Double, monedaOrigenId As Long, cambio
     Dim monOrigen As clsMoneda
     Dim monDestino As clsMoneda
 
-    Set monOrigen = monedas.item(CStr(monedaOrigenId))
+    Set monOrigen = Monedas.item(CStr(monedaOrigenId))
 
 
     Dim Cambio As Double
@@ -99,16 +116,16 @@ End Function
 
 
 Public Sub ActualizarMonedas()
-    Dim Mon As clsMoneda
-    Set monedas = DAOMoneda.GetAll
+    Dim mon As clsMoneda
+    Set Monedas = DAOMoneda.GetAll
 
     Set monedaPatron = Nothing
-    For Each Mon In monedas
-        If Mon.Patron Then
-            Set monedaPatron = Mon
+    For Each mon In Monedas
+        If mon.Patron Then
+            Set monedaPatron = mon
             Exit For
         End If
-    Next Mon
+    Next mon
 
     lastUpdate = Now
 End Sub

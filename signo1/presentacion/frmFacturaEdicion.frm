@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   62717953
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   62717953
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   62717953
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   62717953
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   62717953
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1245,6 +1245,7 @@ Begin VB.Form frmAdminFacturasEdicion
       Left            =   3840
       TabIndex        =   46
       Top             =   9000
+      Visible         =   0   'False
       Width           =   2550
       _Version        =   786432
       _ExtentX        =   4498
@@ -1390,6 +1391,7 @@ Begin VB.Form frmAdminFacturasEdicion
       Left            =   2760
       TabIndex        =   47
       Top             =   9060
+      Visible         =   0   'False
       Width           =   870
    End
    Begin VB.Menu mnuDetalles 
@@ -1604,7 +1606,20 @@ Private Sub AgregarEntregas(col As Collection)
             detalle.Bruto = redeta.Valor
             Set Ot = DAOOrdenTrabajo.FindById(redeta.idpedido)
             If IsSomething(Ot) Then
-                detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.moneda.Id, Factura.moneda.Id)
+                detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.Moneda.Id, Factura.Moneda.Id)
+                
+                If Ot.Moneda.Id <> Factura.Moneda.Id Then
+                'MsgBox ("Tenemos monedas distintas")
+                MsgBox ("La Moneda de la OT incluída es: " & Ot.Moneda.NombreCorto & vbCrLf & "" _
+                & "La Moneda del Comprobante que se está cargando es: " & Factura.Moneda.NombreCorto & vbCrLf & "" _
+                & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
+                & "El importe de la Moneda del comprobante es de: " & Factura.Moneda.MonedaCambio.Cambio)
+
+                Else
+                'MsgBox ("Tenemos las mismas monedas")
+                
+                End If
+                
             End If
             detalle.IvaAplicado = True
             detalle.IBAplicado = True
@@ -1684,7 +1699,7 @@ Private Sub btnItemsDescuentoAnticipo_Click()
                                     Exit Sub
                                 End If
                             End If
-                            detalleAnticipo.Bruto = detalleAnticipo.Bruto + funciones.RedondearDecimales(detalle.Total * Factura.moneda.Cambio)
+                            detalleAnticipo.Bruto = detalleAnticipo.Bruto + funciones.RedondearDecimales(detalle.Total * Factura.Moneda.Cambio)
                         End If
                     End If
                 End If
@@ -1862,7 +1877,7 @@ End Sub
 
 Private Sub cboMoneda_Click()
     If IsSomething(Factura) And Me.cboMoneda.ListIndex <> -1 And Not dataLoading Then
-        Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+        Set Factura.Moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
     End If
 End Sub
 
@@ -2095,7 +2110,7 @@ Private Sub Form_Load()
               Me.cboOpcional27.ListIndex = 0
        
         If Me.cboMoneda.ListIndex <> -1 Then
-            Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+            Set Factura.Moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
         End If
     Else
         Me.caption = Factura.GetShortDescription(False, True)
@@ -2317,7 +2332,7 @@ End Sub
     End If
     
     
-    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.Id, Me.cboMoneda)
+    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.Moneda.Id, Me.cboMoneda)
     Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(Factura.ConceptoIncluir, Me.cboConceptosAIncluir)
 
     Me.cboMonedaAjuste.ListIndex = funciones.PosIndexCbo(Factura.IdMonedaAjuste, Me.cboMonedaAjuste)
@@ -2696,7 +2711,7 @@ If A.IdFormSuscriber <> ISuscriber_id Then Exit Function
                             transactionResult = transactionResult And DAORemitoS.Guardar(remi, False, False)
                             transactionResult = transactionResult And DAOFacturaDetalles.Guardar(detaFactRemito)
                             transactionResult = transactionResult And DAORemitoSDetalle.Guardar(redeta)
-                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, Factura.Id, Factura.moneda.Id, Factura.CambioAPatron, Factura.TipoCambioAjuste)
+                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, Factura.Id, Factura.Moneda.Id, Factura.CambioAPatron, Factura.TipoCambioAjuste)
 
                             If transactionResult Then
 
@@ -2817,32 +2832,32 @@ Private Sub PushButton1_Click()
 
             'bug #2 INICIO
             
-                                If Ot.moneda.Id <> Factura.moneda.Id Then
+                                If Ot.Moneda.Id <> Factura.Moneda.Id Then
                            
-                                    If Factura.moneda.Patron Then
+                                    If Factura.Moneda.Patron Then
 
 '                                        Set Monedas.MonedaConvertibles = Nothing
 '                                        Set frmAdminComprobantesEmitidosCambioMoneda.Ot = Ot
 '                                        Set frmAdminComprobantesEmitidosCambioMoneda.Factura = Factura
 '                                        frmAdminComprobantesEmitidosCambioMoneda.Show 1
                                         
-                                    MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                              & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
+                                    MsgBox ("La Moneda de la OT incluída es: " & Ot.Moneda.NombreCorto & vbCrLf & "" _
+                                              & "La Moneda del Comprobante que se está cargando es: " & Factura.Moneda.NombreCorto & vbCrLf & "" _
                                               & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
-                                              & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de OT: " & Ot.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                                              deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
+                                              & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de OT: " & Ot.Moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
+                                              deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.Moneda.Cambio * Ot.Anticipo) / 100)
                                                 
                                     Else
-                                    MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                              & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
+                                    MsgBox ("La Moneda de la OT incluída es: " & Ot.Moneda.NombreCorto & vbCrLf & "" _
+                                              & "La Moneda del Comprobante que se está cargando es: " & Factura.Moneda.NombreCorto & vbCrLf & "" _
                                               & "Se procede a realizar la conversión correspondiente:" & vbCrLf & "" _
-                                              & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de Comprobante: " & Factura.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                                             deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
+                                              & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de Comprobante: " & Factura.Moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
+                                             deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Factura.Moneda.Cambio * Ot.Anticipo) / 100)
                                     End If
                                     
                                  Else
-                                     MsgBox ("La Moneda de la OT es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                     & "La Moneda del Comprobante es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
+                                     MsgBox ("La Moneda de la OT es: " & Ot.Moneda.NombreCorto & vbCrLf & "" _
+                                     & "La Moneda del Comprobante es: " & Factura.Moneda.NombreCorto & vbCrLf & "" _
                                      & "No se realiza conversión:" & vbCrLf & "" _
                                      & "Cálculo:" & vbCrLf & " Total de OT: " & Ot.Total & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
                                      deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.Anticipo) / 100)

@@ -220,7 +220,7 @@ Begin VB.Form frmVentasPresupuestoEditar
          _ExtentX        =   2143
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   58654721
+         Format          =   58523649
          CurrentDate     =   38926
       End
       Begin XtremeSuiteControls.PushButton Command6 
@@ -1690,6 +1690,11 @@ End Function
 Private Function Guardar() As Boolean
     Dim tmpParaEstado As New clsPresupuesto
     Set tmpParaEstado = DAOPresupuestos.GetById(tmpPresupuesto.Id)
+    
+    If Me.cboMoneda.ListIndex = 3 Then
+        MsgBox "No se puede guardar un presupuesto con Moneda U$A Administrativo. Modifiquelo por favor.", vbInformation + vbOKOnly
+        Exit Function
+    End If
 
     If tmpParaEstado.EstadoPresupuesto <> ACotizar_ Then
         MsgBox "El presupuesto ya cambio de estado!" & Chr(10) & "No se puede volver a guardar en esta sesión.", vbCritical, "Error"
@@ -1774,9 +1779,13 @@ End Sub
 
 Private Sub cboMoneda_Click()
     On Error Resume Next
+    
     Dim vmo As clsMoneda
+    
     Set vmo = DAOMoneda.GetById(cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+    
     Set tmpPresupuesto.moneda = DAOMoneda.GetById(cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+    
 End Sub
 Private Sub Command1_Click()
     Dim col As Collection
@@ -2087,11 +2096,11 @@ End Sub
         Set tmpDetalle = tmpPresupuesto.DetallePresupuesto(grilla.RowIndex(grilla.row))
         If Button = 2 Then
             If tmpDetalle.Pieza.EsConjunto Then
-                Me.ver.caption = "Ver Conjunto..."
-                Me.ver.Tag = 0
+                Me.Ver.caption = "Ver Conjunto..."
+                Me.Ver.Tag = 0
             Else
-                Me.ver.caption = "Ver Desarrollo..."
-                Me.ver.Tag = -1
+                Me.Ver.caption = "Ver Desarrollo..."
+                Me.Ver.Tag = -1
             End If
             Me.PopupMenu Me.m1
         End If

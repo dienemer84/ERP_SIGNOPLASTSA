@@ -56,11 +56,13 @@ Public Function GetAll(Optional filtro As String = vbNullString) As Collection
 err1:
     Set GetAll = Nothing
 End Function
+
 Public Function GetById(Id As Long) As clsMoneda
     Set GetById = GetAll("mon.id=" & Id)(1)
     Exit Function
 err1:
     Set GetById = Nothing
+    
 End Function
 
 Public Sub LlenarCombo(cbo As ComboBox)
@@ -76,6 +78,7 @@ Public Sub LlenarCombo(cbo As ComboBox)
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
     End If
+    
 End Sub
 
 

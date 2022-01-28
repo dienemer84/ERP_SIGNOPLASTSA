@@ -7,7 +7,7 @@ Begin VB.Form frmPlaneamientoOTNueva
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Modificación Orden de Trabajo"
-   ClientHeight    =   8115
+   ClientHeight    =   8910
    ClientLeft      =   2235
    ClientTop       =   2880
    ClientWidth     =   13545
@@ -18,8 +18,65 @@ Begin VB.Form frmPlaneamientoOTNueva
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8115
+   ScaleHeight     =   8910
    ScaleWidth      =   13545
+   Begin XtremeSuiteControls.GroupBox GroupBoxCotizacionMoneda 
+      Height          =   615
+      Left            =   120
+      TabIndex        =   44
+      Top             =   6720
+      Visible         =   0   'False
+      Width           =   13335
+      _Version        =   786432
+      _ExtentX        =   23521
+      _ExtentY        =   1085
+      _StockProps     =   79
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ComboBox ComboBoxValorMoneda 
+         Height          =   360
+         Left            =   2880
+         TabIndex        =   45
+         Top             =   180
+         Width           =   1935
+         _Version        =   786432
+         _ExtentX        =   3413
+         _ExtentY        =   635
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Text            =   "ComboBox1"
+      End
+      Begin XtremeSuiteControls.Label Label1ValorDolar 
+         Height          =   255
+         Left            =   240
+         TabIndex        =   46
+         Top             =   240
+         Width           =   2895
+         _Version        =   786432
+         _ExtentX        =   5106
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Cotización Moneda Actual:"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         WordWrap        =   -1  'True
+      End
+   End
    Begin XtremeSuiteControls.GroupBox fraCondiciones 
       Height          =   1710
       Left            =   5145
@@ -311,7 +368,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   58916865
+         Format          =   62390273
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -323,7 +380,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   58916865
+         Format          =   62390273
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -406,7 +463,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   345
       Left            =   5985
       TabIndex        =   15
-      Top             =   7560
+      Top             =   8280
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -419,7 +476,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   345
       Left            =   5985
       TabIndex        =   14
-      Top             =   7200
+      Top             =   7920
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -432,7 +489,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   345
       Left            =   5985
       TabIndex        =   13
-      Top             =   6840
+      Top             =   7560
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -445,7 +502,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   120
       TabIndex        =   12
-      Top             =   7440
+      Top             =   8160
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -458,7 +515,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   120
       TabIndex        =   11
-      Top             =   7140
+      Top             =   7860
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -471,7 +528,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   120
       TabIndex        =   10
-      Top             =   6840
+      Top             =   7560
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -484,7 +541,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   405
       Left            =   4350
       TabIndex        =   9
-      Top             =   7380
+      Top             =   8100
       Width           =   1140
       _Version        =   786432
       _ExtentX        =   2011
@@ -493,11 +550,11 @@ Begin VB.Form frmPlaneamientoOTNueva
       Caption         =   "Salir"
       UseVisualStyle  =   -1  'True
    End
-   Begin XtremeSuiteControls.PushButton Command3 
+   Begin XtremeSuiteControls.PushButton CommandGuardar 
       Height          =   405
       Left            =   4350
       TabIndex        =   8
-      Top             =   6945
+      Top             =   7665
       Width           =   1140
       _Version        =   786432
       _ExtentX        =   2011
@@ -510,7 +567,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   405
       Left            =   3150
       TabIndex        =   7
-      Top             =   7380
+      Top             =   8100
       Width           =   1140
       _Version        =   786432
       _ExtentX        =   2011
@@ -523,7 +580,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   405
       Left            =   3150
       TabIndex        =   6
-      Top             =   6945
+      Top             =   7665
       Width           =   1140
       _Version        =   786432
       _ExtentX        =   2011
@@ -547,7 +604,7 @@ Begin VB.Form frmPlaneamientoOTNueva
    End
    Begin GridEX20.GridEX grid 
       Height          =   4185
-      Left            =   90
+      Left            =   120
       TabIndex        =   2
       Top             =   2580
       Width           =   13335
@@ -609,7 +666,7 @@ Begin VB.Form frmPlaneamientoOTNueva
    End
    Begin MSComDlg.CommonDialog CommonDialog1 
       Left            =   9165
-      Top             =   7095
+      Top             =   7815
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
@@ -619,7 +676,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   120
       TabIndex        =   43
-      Top             =   7755
+      Top             =   8475
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -683,14 +740,15 @@ Begin VB.Form frmPlaneamientoOTNueva
          Strikethrough   =   0   'False
       EndProperty
       Height          =   300
-      Left            =   10755
+      Left            =   10200
       TabIndex        =   1
-      Top             =   7185
+      Top             =   7920
       Width           =   615
    End
    Begin VB.Label lbltot 
       AutoSize        =   -1  'True
       BackColor       =   &H00FFC0C0&
+      Caption         =   "0.00"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   12
@@ -701,10 +759,10 @@ Begin VB.Form frmPlaneamientoOTNueva
          Strikethrough   =   0   'False
       EndProperty
       Height          =   300
-      Left            =   11520
+      Left            =   10920
       TabIndex        =   0
-      Top             =   7185
-      Width           =   105
+      Top             =   7920
+      Width           =   540
    End
    Begin VB.Menu m1 
       Caption         =   "Menu1"
@@ -751,7 +809,6 @@ Implements ISuscriber
 Dim CantArchivos As New Dictionary
 Dim CantArchivosDetalle As New Dictionary
 Private idSuscriber As String
-
 Dim baseC As New classConfigurar
 Dim idCliente As Long
 Dim baseP As New classPlaneamiento
@@ -762,8 +819,9 @@ Dim claseS As New classStock
 Private m_ot As OrdenTrabajo
 Private tmpDetalle As DetalleOrdenTrabajo
 Private formLoaded As Boolean
-
 Public ActualizacionPrecios As Boolean
+
+Private Monedas As New Collection
 
 Public Property Let OrdenTrabajoId(value As Long)
     Set m_ot = DAOOrdenTrabajo.FindById(value)       'me la recargo por las dudas
@@ -804,7 +862,7 @@ Private Sub CargarOrdenTrabajo()
     Me.txtReferencia.text = m_ot.descripcion
     Me.DTVencimiento.value = m_ot.FechaEntrega
     Me.chkMismaFecha.value = CInt(m_ot.MismaFechaEntregaParaDetalles) * -1
-    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.moneda.Id, cboMoneda)
+    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.Moneda.Id, cboMoneda)
     Me.txtDto.text = m_ot.Descuento
     Me.txtAnticipo.text = m_ot.Anticipo
     Me.txtCantDiasAnticipo.text = m_ot.CantDiasAnticipo
@@ -869,7 +927,7 @@ End Sub
 Private Sub cboMoneda_Click()
     If Me.cboMoneda.ListIndex <> -1 And Not m_ot Is Nothing Then
         If formLoaded Then
-            Set m_ot.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+            Set m_ot.Moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
         End If
     End If
 End Sub
@@ -923,7 +981,7 @@ Private Sub cmdDefinirPrecios_Click()
         For Each si In Me.grid.SelectedItems
             If si.RowIndex > 0 And si.RowIndex <= m_ot.Detalles.count Then
                 Set tmpDetalle = m_ot.Detalles.item(si.RowIndex)
-                va = baseP.definirPrecios(tmpDetalle.Pieza.Id, tmpDetalle.Precio, m_ot.moneda.Id)
+                va = baseP.definirPrecios(tmpDetalle.Pieza.Id, tmpDetalle.Precio, m_ot.Moneda.Id)
             End If
         Next si
 
@@ -940,7 +998,7 @@ Private Sub Command2_Click()
     CalcularValorOt
     RecargarDetalles
 End Sub
-Private Sub Command3_Click()
+Private Sub CommandGuardar_Click()
     If LenB(Trim$(Me.txtReferencia.text)) = 0 Then
         MsgBox "Falta la referencia", vbInformation + vbOKOnly
         Exit Sub
@@ -949,6 +1007,12 @@ Private Sub Command3_Click()
         MsgBox "Salga del modo edición de detalles.", vbInformation + vbOKOnly
         Exit Sub
     End If
+
+    If Me.cboMoneda.ListIndex = 3 Then
+        MsgBox "No se puede guardar una OT con Moneda U$A Administrativo. Modifiquelo por favor.", vbInformation + vbOKOnly
+        Exit Sub
+    End If
+    
     If vbYes = MsgBox("¿Confirma la edicion de la orden?", vbYesNo + vbQuestion) Then
         If ActualizacionPrecios Then
             Dim detaOT As DetalleOrdenTrabajo
@@ -1038,6 +1102,7 @@ Private Sub Command9_Click()
     frm1.Show
 End Sub
 
+
 Private Sub dtpInicio_CallbackKeyDown(ByVal KeyCode As Integer, ByVal Shift As Integer, ByVal CallbackField As String, CallbackDate As Date)
 
     If m_ot.EsMarco Then m_ot.FechaInicioMarco = Me.dtpInicio.value
@@ -1057,6 +1122,8 @@ Private Sub verModoEdicion()
     Else
         Me.lblModoEdicion.Visible = False
     End If
+    
+    GroupBoxCotizacionMoneda.Visible = True
 End Sub
 
 Private Sub Form_Load()
@@ -1077,8 +1144,11 @@ Private Sub Form_Load()
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     Set CantArchivosDetalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
     
+    DAOMoneda.llenarComboXtremeSuite Me.ComboBoxValorMoneda, True
+    Me.ComboBoxValorMoneda.ListIndex = 3
+  
     Me.caption = caption & " (" & Name & ")"
-    
+
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -1124,11 +1194,11 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
 
     If Button = 2 And idx > 0 Then
         If m_ot.Detalles(idx).Pieza.EsConjunto Then
-            Me.ver.caption = "Ver Conjunto..."
-            Me.ver.Tag = 0
+            Me.Ver.caption = "Ver Conjunto..."
+            Me.Ver.Tag = 0
         Else
-            Me.ver.caption = "Ver Desarrollo..."
-            Me.ver.Tag = -1
+            Me.Ver.caption = "Ver Desarrollo..."
+            Me.Ver.Tag = -1
         End If
 
         Me.PopupMenu Me.m1
@@ -1189,7 +1259,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim x As Long
     If EVENTO.EVENTO = agregarColeccion_ Then
         Set col = EVENTO.Elemento
-        Dim moneda As New clsMoneda
+        Dim Moneda As New clsMoneda
         Dim adm As New classAdministracion
 
         Dim dto As DTOPiezaDetallePedido
@@ -1207,8 +1277,8 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
             If dto.idOt = 0 Then   'ver cuando cree el prox marco
                 If tmpDetalle.Pieza.Precio <> 0 Then
                     tmpDetalle.Precio = tmpDetalle.Pieza.Precio
-                    If tmpDetalle.Pieza.MonedaPrecio.Id <> m_ot.moneda.Id Then
-                        tmpDetalle.Precio = adm.realizaCambio(tmpDetalle.Pieza.Precio, tmpDetalle.Pieza.MonedaPrecio.Id, m_ot.moneda.Id)
+                    If tmpDetalle.Pieza.MonedaPrecio.Id <> m_ot.Moneda.Id Then
+                        tmpDetalle.Precio = adm.realizaCambio(tmpDetalle.Pieza.Precio, tmpDetalle.Pieza.MonedaPrecio.Id, m_ot.Moneda.Id)
                     End If
                 End If
 
@@ -1240,6 +1310,8 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         grid.MoveLast
     End If
 End Function
+
+
 
 
 
@@ -1361,7 +1433,7 @@ Private Sub imprimirOT()
                    & "Referencia: " & m_ot.descripcion & Chr(10) _
                    & "Entrega: " & m_ot.FechaEntrega & Chr(10)
 
-    headerLeft = "Total: " & m_ot.moneda.NombreCorto & " " & Format$(m_ot.Total, "0.00") & vbNewLine _
+    headerLeft = "Total: " & m_ot.Moneda.NombreCorto & " " & Format$(m_ot.Total, "0.00") & vbNewLine _
                  & "% Descuento: " & m_ot.Descuento & "%" & Chr(10) _
                  & "% Anticipo: " & m_ot.Anticipo & "%" & Chr(10) _
                  & "Anticipo a " & m_ot.CantDiasAnticipo & " días | FP: " & m_ot.FormaDePagoAnticipo & Chr(10) _

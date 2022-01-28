@@ -1,32 +1,89 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitosListaProceso 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Remitos en proceso"
-   ClientHeight    =   6330
+   ClientHeight    =   6240
    ClientLeft      =   3600
    ClientTop       =   2055
-   ClientWidth     =   11400
+   ClientWidth     =   10125
    ClipControls    =   0   'False
+   ControlBox      =   0   'False
    Icon            =   "frmListaRemitosProceso.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6330
-   ScaleWidth      =   11400
+   ScaleHeight     =   6240
+   ScaleWidth      =   10125
    ShowInTaskbar   =   0   'False
+   StartUpPosition =   1  'CenterOwner
+   Begin XtremeSuiteControls.GroupBox GroupBox1 
+      Height          =   855
+      Left            =   120
+      TabIndex        =   2
+      Top             =   5160
+      Width           =   9855
+      _Version        =   786432
+      _ExtentX        =   17383
+      _ExtentY        =   1508
+      _StockProps     =   79
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton PushButtonAceptar 
+         Height          =   495
+         Left            =   7800
+         TabIndex        =   4
+         Top             =   240
+         Width           =   1815
+         _Version        =   786432
+         _ExtentX        =   3201
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Aceptar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton PushButtonCerrar 
+         Height          =   495
+         Left            =   240
+         TabIndex        =   3
+         Top             =   240
+         Width           =   1695
+         _Version        =   786432
+         _ExtentX        =   2990
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Cerrar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label1 
+         Height          =   495
+         Left            =   2040
+         TabIndex        =   5
+         Top             =   240
+         Width           =   5655
+         _Version        =   786432
+         _ExtentX        =   9975
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Seleccione el Remito y luego Acepte para continuar."
+         BackColor       =   -2147483633
+         Alignment       =   2
+      End
+   End
    Begin GridEX20.GridEX GridEX1 
-      Height          =   6315
-      Left            =   15
+      Height          =   4755
+      Left            =   120
       TabIndex        =   1
-      Top             =   0
-      Width           =   11340
-      _ExtentX        =   20003
-      _ExtentY        =   11139
+      Top             =   120
+      Width           =   9780
+      _ExtentX        =   17251
+      _ExtentY        =   8387
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
+      PreviewColumn   =   "estado"
+      PreviewRowLines =   1
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
       DataMode        =   99
@@ -36,19 +93,19 @@ Begin VB.Form frmPlaneamientoRemitosListaProceso
       IntProp7        =   0
       ColumnsCount    =   5
       Column(1)       =   "frmListaRemitosProceso.frx":000C
-      Column(2)       =   "frmListaRemitosProceso.frx":0124
-      Column(3)       =   "frmListaRemitosProceso.frx":0210
-      Column(4)       =   "frmListaRemitosProceso.frx":0304
-      Column(5)       =   "frmListaRemitosProceso.frx":03F8
+      Column(2)       =   "frmListaRemitosProceso.frx":0178
+      Column(3)       =   "frmListaRemitosProceso.frx":0264
+      Column(4)       =   "frmListaRemitosProceso.frx":0358
+      Column(5)       =   "frmListaRemitosProceso.frx":044C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmListaRemitosProceso.frx":04F4
-      FormatStyle(2)  =   "frmListaRemitosProceso.frx":062C
-      FormatStyle(3)  =   "frmListaRemitosProceso.frx":06DC
-      FormatStyle(4)  =   "frmListaRemitosProceso.frx":0790
-      FormatStyle(5)  =   "frmListaRemitosProceso.frx":0868
-      FormatStyle(6)  =   "frmListaRemitosProceso.frx":0920
+      FormatStyle(1)  =   "frmListaRemitosProceso.frx":0578
+      FormatStyle(2)  =   "frmListaRemitosProceso.frx":06B0
+      FormatStyle(3)  =   "frmListaRemitosProceso.frx":0760
+      FormatStyle(4)  =   "frmListaRemitosProceso.frx":0814
+      FormatStyle(5)  =   "frmListaRemitosProceso.frx":08EC
+      FormatStyle(6)  =   "frmListaRemitosProceso.frx":09A4
       ImageCount      =   0
-      PrinterProperties=   "frmListaRemitosProceso.frx":0A00
+      PrinterProperties=   "frmListaRemitosProceso.frx":0A84
    End
    Begin VB.CommandButton Command1 
       Cancel          =   -1  'True
@@ -102,6 +159,8 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.GridEX1
     Me.GridEX1.ItemCount = 0
     LlenarGrid
+    
+    Me.caption = caption & " (" & Name & ")"
 
 
 End Sub
@@ -145,7 +204,7 @@ Private Sub LlenarGrid()
     For Each rto In tmpCol
         '  If rto.estado = RemitoAprobado And (rto.EstadoFacturado = RemitoFacturadoParcial Or rto.EstadoFacturado = RemitoNoFacturado) Then
 
-        col.Add rto, CStr(rto.id)
+        col.Add rto, CStr(rto.Id)
         ' If
 
     Next
@@ -166,7 +225,7 @@ End Sub
 Private Sub GridEX1_DblClick()
     If col.count > 0 Then
         GridEX1_SelectionChange
-        vrto = Remito.id
+        vrto = Remito.Id
         Set Selecciones.RemitoElegido = Remito
         Unload Me
     End If
@@ -181,8 +240,24 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Set Remito = col.item(RowIndex)
         Values(1) = Remito.numero
         Values(2) = Remito.FEcha
-        Values(3) = Remito.Cliente.razon
+        Values(3) = Remito.cliente.razon
         Values(4) = Remito.detalle
-        If IsSomething(Remito.contacto) Then Values(5) = Remito.contacto.nombre
+        Values(5) = Remito.VerEstadoFacturado
+        'If IsSomething(Remito.contacto) Then Values(5) = Remito.contacto.nombre
+        
     End If
+End Sub
+
+Private Sub PushButtonAceptar_Click()
+    If col.count > 0 Then
+        GridEX1_SelectionChange
+        vrto = Remito.Id
+        Set Selecciones.RemitoElegido = Remito
+        Unload Me
+    End If
+End Sub
+
+Private Sub PushButtonCerrar_Click()
+    Set Selecciones.RemitoElegido = Nothing
+    Unload Me
 End Sub

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
+Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "msdatgrd.ocx"
 Begin VB.Form frmAdminConfigCambio 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -366,7 +366,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim id As Long
+Dim Id As Long
 Dim rs As Recordset
 Dim clasea As New classAdministracion
 Dim cambioOriginal As Double
@@ -382,29 +382,32 @@ End Sub
 
 Private Sub Command2_Click()
     If MsgBox("¿Está seguro de actualizar?", vbYesNo, "Confirmación") = vbYes Then
+    
+        If MsgBox("La moneda que está actualizando es: " & vbCrLf & Me.txtMoneda & "-" & Me.txtDetalle & vbCrLf & "Desea continuar con la actualización?", vbYesNo, "Confirmación") = vbYes Then
 
-        id = rs!id
+        Id = rs!Id
         idMonedaCambio = Me.cboMonedaCambio.ListIndex
         Cambio = CDbl(Me.txtCambio)
         hoy = Format(Now, "yyyy-mm-dd")
         detalle = Me.txtDetalle
-        Moneda = Me.txtMoneda
+        moneda = Me.txtMoneda
 
         'comentado el 15-07-2014 por solicitud de sabrina scaldafferro
         'If Cambio = cambioOriginal Then
         '    clasea.ejecutarComando "update AdminConfigMonedas set idMonedaCambio=" & idMonedaCambio & ", cambio= " & Cambio & ", nombre_largo='" & detalle & "',nombre_corto='" & Moneda & "' where id=" & Id
         ' Else
-        clasea.ejecutarComando "update AdminConfigMonedas set idMonedaCambio=" & idMonedaCambio & ", cambio= " & Cambio & ", nombre_largo='" & detalle & "',nombre_corto='" & Moneda & "',fechaActual='" & hoy & "' where id=" & id
+        clasea.ejecutarComando "update AdminConfigMonedas set idMonedaCambio=" & idMonedaCambio & ", cambio= " & Cambio & ", nombre_largo='" & detalle & "',nombre_corto='" & moneda & "',fechaActual='" & hoy & "' where id=" & Id
         ' End If
 
-        clasea.ejecutarComando "insert into AdminConfigMonedasHistorial (IdMoneda, FechaActualizacion, idUsuarioActualizacion,Valor) values (" & id & ",'" & funciones.datetimeFormateada(Now) & "'," & funciones.getUser & "," & Cambio & ")"
+        clasea.ejecutarComando "insert into AdminConfigMonedasHistorial (IdMoneda, FechaActualizacion, idUsuarioActualizacion,Valor) values (" & Id & ",'" & funciones.datetimeFormateada(Now) & "'," & funciones.getUser & "," & Cambio & ")"
         Me.mostrarRS
+        End If
 
     End If
 End Sub
 
 Private Sub Command3_Click()
-    frmAdminConfigCambioHistorico.IdMoneda = id
+    frmAdminConfigCambioHistorico.IdMoneda = Id
     frmAdminConfigCambioHistorico.Show
 
 End Sub
@@ -423,7 +426,7 @@ End Sub
 Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
     Me.txtCambio = rs!Cambio
     'Me.txtDestino = rs!destino
-    id = rs!id
+    Id = rs!Id
     Me.txtDetalle = rs!nombre_largo
     Me.txtMoneda = rs!Nombre_corto
     Me.txtFecha = rs!FechaActual
