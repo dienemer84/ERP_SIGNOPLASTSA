@@ -672,8 +672,7 @@ Private Sub MDIForm_Load()
             Me.TrayIcon.text = "Signo Plast Event Handler"
             
             Set Me.TrayIcon.Icon = pic
-            
-            
+                       
             
 '            Dim idNuevo As Long
 '                If funciones.InIDE Then
@@ -703,12 +702,6 @@ Private Sub MDIForm_Load()
     End If
 
     CreateRibbonBar
-
-
-
-
-
-
 
 End Sub
 

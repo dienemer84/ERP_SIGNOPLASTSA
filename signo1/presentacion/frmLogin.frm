@@ -296,18 +296,17 @@ Private Sub Command1_Click()
                     If Not funciones.InIDE Then
                         If clssp.VerificarSiHayActualizacion(idnueva) Then
                             If MsgBox("Hay una nueva actualización del sistema." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
-
-                                frmTip.Show vbModal
+                    
+                                frmTip.Show 1
                                  
                                 clssp.actualizarSistema CLng(idnueva)
-                                
-
-                                                                
+               
                             End If
-
-                                                             
+                                                           
                         End If
                     Else
+                    
+                    'frmTip.Show 1
  
                     End If
 
