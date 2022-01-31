@@ -1071,7 +1071,10 @@ Private Sub editOT_Click()
         F.OrdenTrabajoId = aux_ordenTrabajo.Id
         F.Show
     End If
+    
 End Sub
+
+
 Private Sub LlenarNuevaLista()
     Dim backIndex As Long
     backIndex = srow

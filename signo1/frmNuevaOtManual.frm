@@ -7,7 +7,7 @@ Begin VB.Form frmPlaneamientoOTNueva
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Modificación Orden de Trabajo"
-   ClientHeight    =   8910
+   ClientHeight    =   8865
    ClientLeft      =   2235
    ClientTop       =   2880
    ClientWidth     =   13545
@@ -18,14 +18,13 @@ Begin VB.Form frmPlaneamientoOTNueva
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8910
+   ScaleHeight     =   8865
    ScaleWidth      =   13545
    Begin XtremeSuiteControls.GroupBox GroupBoxCotizacionMoneda 
       Height          =   615
       Left            =   120
       TabIndex        =   44
-      Top             =   6720
-      Visible         =   0   'False
+      Top             =   8160
       Width           =   13335
       _Version        =   786432
       _ExtentX        =   23521
@@ -368,7 +367,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   62390273
+         Format          =   58523649
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -380,7 +379,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   62390273
+         Format          =   58523649
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -463,7 +462,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   345
       Left            =   5985
       TabIndex        =   15
-      Top             =   8280
+      Top             =   7560
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -476,7 +475,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   345
       Left            =   5985
       TabIndex        =   14
-      Top             =   7920
+      Top             =   7200
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -489,7 +488,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   345
       Left            =   5985
       TabIndex        =   13
-      Top             =   7560
+      Top             =   6840
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -502,7 +501,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   120
       TabIndex        =   12
-      Top             =   8160
+      Top             =   7440
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -515,7 +514,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   120
       TabIndex        =   11
-      Top             =   7860
+      Top             =   7140
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -528,7 +527,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   120
       TabIndex        =   10
-      Top             =   7560
+      Top             =   6840
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -541,7 +540,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   405
       Left            =   4350
       TabIndex        =   9
-      Top             =   8100
+      Top             =   7380
       Width           =   1140
       _Version        =   786432
       _ExtentX        =   2011
@@ -554,7 +553,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   405
       Left            =   4350
       TabIndex        =   8
-      Top             =   7665
+      Top             =   6945
       Width           =   1140
       _Version        =   786432
       _ExtentX        =   2011
@@ -567,7 +566,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   405
       Left            =   3150
       TabIndex        =   7
-      Top             =   8100
+      Top             =   7380
       Width           =   1140
       _Version        =   786432
       _ExtentX        =   2011
@@ -580,7 +579,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   405
       Left            =   3150
       TabIndex        =   6
-      Top             =   7665
+      Top             =   6945
       Width           =   1140
       _Version        =   786432
       _ExtentX        =   2011
@@ -666,7 +665,7 @@ Begin VB.Form frmPlaneamientoOTNueva
    End
    Begin MSComDlg.CommonDialog CommonDialog1 
       Left            =   9165
-      Top             =   7815
+      Top             =   7095
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
@@ -676,7 +675,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   120
       TabIndex        =   43
-      Top             =   8475
+      Top             =   7755
       Width           =   2565
       _Version        =   786432
       _ExtentX        =   4524
@@ -742,7 +741,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   10200
       TabIndex        =   1
-      Top             =   7920
+      Top             =   7200
       Width           =   615
    End
    Begin VB.Label lbltot 
@@ -761,7 +760,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Height          =   300
       Left            =   10920
       TabIndex        =   0
-      Top             =   7920
+      Top             =   7200
       Width           =   540
    End
    Begin VB.Menu m1 
@@ -862,7 +861,7 @@ Private Sub CargarOrdenTrabajo()
     Me.txtReferencia.text = m_ot.descripcion
     Me.DTVencimiento.value = m_ot.FechaEntrega
     Me.chkMismaFecha.value = CInt(m_ot.MismaFechaEntregaParaDetalles) * -1
-    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.Moneda.Id, cboMoneda)
+    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.moneda.Id, cboMoneda)
     Me.txtDto.text = m_ot.Descuento
     Me.txtAnticipo.text = m_ot.Anticipo
     Me.txtCantDiasAnticipo.text = m_ot.CantDiasAnticipo
@@ -927,7 +926,7 @@ End Sub
 Private Sub cboMoneda_Click()
     If Me.cboMoneda.ListIndex <> -1 And Not m_ot Is Nothing Then
         If formLoaded Then
-            Set m_ot.Moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
+            Set m_ot.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
         End If
     End If
 End Sub
@@ -981,7 +980,7 @@ Private Sub cmdDefinirPrecios_Click()
         For Each si In Me.grid.SelectedItems
             If si.RowIndex > 0 And si.RowIndex <= m_ot.Detalles.count Then
                 Set tmpDetalle = m_ot.Detalles.item(si.RowIndex)
-                va = baseP.definirPrecios(tmpDetalle.Pieza.Id, tmpDetalle.Precio, m_ot.Moneda.Id)
+                va = baseP.definirPrecios(tmpDetalle.Pieza.Id, tmpDetalle.Precio, m_ot.moneda.Id)
             End If
         Next si
 
@@ -1259,7 +1258,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim x As Long
     If EVENTO.EVENTO = agregarColeccion_ Then
         Set col = EVENTO.Elemento
-        Dim Moneda As New clsMoneda
+        Dim moneda As New clsMoneda
         Dim adm As New classAdministracion
 
         Dim dto As DTOPiezaDetallePedido
@@ -1277,8 +1276,8 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
             If dto.idOt = 0 Then   'ver cuando cree el prox marco
                 If tmpDetalle.Pieza.Precio <> 0 Then
                     tmpDetalle.Precio = tmpDetalle.Pieza.Precio
-                    If tmpDetalle.Pieza.MonedaPrecio.Id <> m_ot.Moneda.Id Then
-                        tmpDetalle.Precio = adm.realizaCambio(tmpDetalle.Pieza.Precio, tmpDetalle.Pieza.MonedaPrecio.Id, m_ot.Moneda.Id)
+                    If tmpDetalle.Pieza.MonedaPrecio.Id <> m_ot.moneda.Id Then
+                        tmpDetalle.Precio = adm.realizaCambio(tmpDetalle.Pieza.Precio, tmpDetalle.Pieza.MonedaPrecio.Id, m_ot.moneda.Id)
                     End If
                 End If
 
@@ -1433,7 +1432,7 @@ Private Sub imprimirOT()
                    & "Referencia: " & m_ot.descripcion & Chr(10) _
                    & "Entrega: " & m_ot.FechaEntrega & Chr(10)
 
-    headerLeft = "Total: " & m_ot.Moneda.NombreCorto & " " & Format$(m_ot.Total, "0.00") & vbNewLine _
+    headerLeft = "Total: " & m_ot.moneda.NombreCorto & " " & Format$(m_ot.Total, "0.00") & vbNewLine _
                  & "% Descuento: " & m_ot.Descuento & "%" & Chr(10) _
                  & "% Anticipo: " & m_ot.Anticipo & "%" & Chr(10) _
                  & "Anticipo a " & m_ot.CantDiasAnticipo & " días | FP: " & m_ot.FormaDePagoAnticipo & Chr(10) _

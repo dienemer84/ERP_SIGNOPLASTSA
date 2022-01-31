@@ -33,32 +33,6 @@ Begin VB.Form frmPlaneamientoPedidosDetalle
       TabIndex        =   22
       Top             =   4440
       Width           =   5415
-      Begin VB.Label Label2 
-         Alignment       =   1  'Right Justify
-         BackColor       =   &H00FFC0C0&
-         Caption         =   "Moneda"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   2760
-         TabIndex        =   34
-         Top             =   720
-         Width           =   1095
-      End
-      Begin VB.Label lblMoneda 
-         Height          =   255
-         Left            =   3930
-         TabIndex        =   33
-         Top             =   720
-         Width           =   1250
-      End
       Begin VB.Label lblDetalle 
          BackColor       =   &H00E0E0E0&
          ForeColor       =   &H00000000&
@@ -232,26 +206,27 @@ Begin VB.Form frmPlaneamientoPedidosDetalle
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   9
+      ColumnsCount    =   10
       Column(1)       =   "frmDetallePedido.frx":0326
       Column(2)       =   "frmDetallePedido.frx":0482
       Column(3)       =   "frmDetallePedido.frx":0576
       Column(4)       =   "frmDetallePedido.frx":069A
-      Column(5)       =   "frmDetallePedido.frx":07B6
-      Column(6)       =   "frmDetallePedido.frx":08C2
-      Column(7)       =   "frmDetallePedido.frx":09BE
-      Column(8)       =   "frmDetallePedido.frx":0AC6
-      Column(9)       =   "frmDetallePedido.frx":0BB2
+      Column(5)       =   "frmDetallePedido.frx":07E2
+      Column(6)       =   "frmDetallePedido.frx":08FE
+      Column(7)       =   "frmDetallePedido.frx":0A0A
+      Column(8)       =   "frmDetallePedido.frx":0B06
+      Column(9)       =   "frmDetallePedido.frx":0C0E
+      Column(10)      =   "frmDetallePedido.frx":0D16
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmDetallePedido.frx":0CAE
-      FormatStyle(2)  =   "frmDetallePedido.frx":0DE6
-      FormatStyle(3)  =   "frmDetallePedido.frx":0E96
-      FormatStyle(4)  =   "frmDetallePedido.frx":0F4A
-      FormatStyle(5)  =   "frmDetallePedido.frx":1022
-      FormatStyle(6)  =   "frmDetallePedido.frx":10DA
+      FormatStyle(1)  =   "frmDetallePedido.frx":0E2E
+      FormatStyle(2)  =   "frmDetallePedido.frx":0F66
+      FormatStyle(3)  =   "frmDetallePedido.frx":1016
+      FormatStyle(4)  =   "frmDetallePedido.frx":10CA
+      FormatStyle(5)  =   "frmDetallePedido.frx":11A2
+      FormatStyle(6)  =   "frmDetallePedido.frx":125A
       ImageCount      =   1
-      ImagePicture(1) =   "frmDetallePedido.frx":11BA
-      PrinterProperties=   "frmDetallePedido.frx":14D4
+      ImagePicture(1) =   "frmDetallePedido.frx":133A
+      PrinterProperties=   "frmDetallePedido.frx":1654
    End
    Begin VB.CommandButton Command2 
       BackColor       =   &H00E0E0E0&
@@ -603,6 +578,7 @@ Private m_pedido As OrdenTrabajo
 Public Property Let Pedido(nvalue As OrdenTrabajo)
     Set m_pedido = nvalue
 End Property
+
 Private Sub Command1_Click()
     Unload Me
 End Sub
@@ -613,6 +589,7 @@ Private Sub Command2_Click()
     frmMaterializacion.otro = False
     frmMaterializacion.presu = False
     frmMaterializacion.Show
+    
 End Sub
 
 Private Sub mostrarDetalles()
@@ -621,7 +598,6 @@ Private Sub mostrarDetalles()
     Me.lblFormaPagoSaldo = m_pedido.CondicionesComercialesSaldo
     Me.lblCliente = m_pedido.cliente.razon
     Me.lblDetalle = m_pedido.descripcion
-    Me.lblMoneda = m_pedido.moneda.NombreCorto
     
     
     Dim creador As String, aprobador As String, modificador As String, finalizador As String
@@ -751,17 +727,19 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
     Set rectmp = m_pedido.Detalles(RowIndex)
+    
     With rectmp
         Values(1) = rectmp.item
         Values(2) = rectmp.Nota
         Values(3) = rectmp.CantidadPedida
-        Values(4) = funciones.FormatearDecimales(rectmp.Precio)
-        Values(5) = rectmp.FechaEntrega
-        Values(6) = IIf(rectmp.Pieza.EsConjunto, "Conjunto", "Unidad")
-        Values(7) = rectmp.Pieza.nombre
+        Values(4) = m_pedido.moneda.NombreCorto
+        Values(5) = funciones.FormatearDecimales(rectmp.Precio)
+        Values(6) = rectmp.FechaEntrega
+        Values(7) = IIf(rectmp.Pieza.EsConjunto, "Conjunto", "Unidad")
+        Values(8) = rectmp.Pieza.nombre
 
-        Values(8) = m_Archivos.item(rectmp.Pieza.Id)
-        Values(9) = m_Archivos_detalle.item(rectmp.Id)
+        Values(9) = m_Archivos.item(rectmp.Pieza.Id)
+        Values(10) = m_Archivos_detalle.item(rectmp.Id)
 
 
     End With

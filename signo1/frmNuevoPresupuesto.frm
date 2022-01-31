@@ -7,7 +7,7 @@ Begin VB.Form frmVentasPresupuestoEditar
    BackColor       =   &H00FF80FF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   " Nuevo presupuesto..."
-   ClientHeight    =   10200
+   ClientHeight    =   11010
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   14430
@@ -17,8 +17,65 @@ Begin VB.Form frmVentasPresupuestoEditar
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10200
+   ScaleHeight     =   11010
    ScaleWidth      =   14430
+   Begin XtremeSuiteControls.GroupBox GroupBox6 
+      Height          =   735
+      Left            =   60
+      TabIndex        =   101
+      Top             =   10150
+      Width           =   14295
+      _Version        =   786432
+      _ExtentX        =   25220
+      _ExtentY        =   1296
+      _StockProps     =   79
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ComboBox ComboBoxValorMoneda 
+         Height          =   360
+         Left            =   3120
+         TabIndex        =   102
+         Top             =   240
+         Width           =   1935
+         _Version        =   786432
+         _ExtentX        =   3413
+         _ExtentY        =   635
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Text            =   "ComboBox1"
+      End
+      Begin XtremeSuiteControls.Label Label1ValorDolar 
+         Height          =   255
+         Left            =   120
+         TabIndex        =   103
+         Top             =   300
+         Width           =   2895
+         _Version        =   786432
+         _ExtentX        =   5106
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Cotización Moneda Actual:"
+         BackColor       =   16761024
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         WordWrap        =   -1  'True
+      End
+   End
    Begin XtremeSuiteControls.GroupBox GroupBox5 
       Height          =   1305
       Left            =   45
@@ -220,7 +277,7 @@ Begin VB.Form frmVentasPresupuestoEditar
          _ExtentX        =   2143
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   58523649
+         Format          =   58785793
          CurrentDate     =   38926
       End
       Begin XtremeSuiteControls.PushButton Command6 
@@ -2023,7 +2080,10 @@ Private Sub Form_Load()
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     grabado = True
     
-        Me.caption = caption & " (" & Name & ")"
+    DAOMoneda.llenarComboXtremeSuite Me.ComboBoxValorMoneda, True
+    Me.ComboBoxValorMoneda.ListIndex = 3
+    
+    Me.caption = caption & " (" & Name & ")"
         
         
 End Sub
@@ -2405,12 +2465,12 @@ Private Sub mnuArchiPieza_Click()
     ar1.Show
 End Sub
 Private Sub mnuEscaPedido_Click()
-    Dim archivos As New classArchivos
-    archivos.escanearDocumento 11, tmpDetalle.Id
+    Dim Archivos As New classArchivos
+    Archivos.escanearDocumento 11, tmpDetalle.Id
 End Sub
 Private Sub mnuEscaPieza_Click()
-    Dim archivos As New classArchivos
-    archivos.escanearDocumento 1, tmpDetalle.Pieza.Id
+    Dim Archivos As New classArchivos
+    Archivos.escanearDocumento 1, tmpDetalle.Pieza.Id
 End Sub
 Private Sub mnuInciPedido_Click()
     Dim i1 As New frmVerIncidencias

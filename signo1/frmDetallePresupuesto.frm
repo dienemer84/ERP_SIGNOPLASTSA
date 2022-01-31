@@ -41,7 +41,7 @@ Begin VB.Form frmVentasPresupuestoDetalle
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
-      PreviewColumn   =   5
+      PreviewColumn   =   "detalle"
       PreviewRowLines =   1
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
@@ -56,23 +56,24 @@ Begin VB.Form frmVentasPresupuestoDetalle
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   6
+      ColumnsCount    =   7
       Column(1)       =   "frmDetallePresupuesto.frx":000C
       Column(2)       =   "frmDetallePresupuesto.frx":0108
       Column(3)       =   "frmDetallePresupuesto.frx":01D8
       Column(4)       =   "frmDetallePresupuesto.frx":02AC
       Column(5)       =   "frmDetallePresupuesto.frx":037C
-      Column(6)       =   "frmDetallePresupuesto.frx":043C
+      Column(6)       =   "frmDetallePresupuesto.frx":0470
+      Column(7)       =   "frmDetallePresupuesto.frx":0564
       FormatStylesCount=   7
-      FormatStyle(1)  =   "frmDetallePresupuesto.frx":0530
-      FormatStyle(2)  =   "frmDetallePresupuesto.frx":0658
-      FormatStyle(3)  =   "frmDetallePresupuesto.frx":0708
-      FormatStyle(4)  =   "frmDetallePresupuesto.frx":07BC
-      FormatStyle(5)  =   "frmDetallePresupuesto.frx":0894
-      FormatStyle(6)  =   "frmDetallePresupuesto.frx":094C
-      FormatStyle(7)  =   "frmDetallePresupuesto.frx":0A2C
+      FormatStyle(1)  =   "frmDetallePresupuesto.frx":0648
+      FormatStyle(2)  =   "frmDetallePresupuesto.frx":0770
+      FormatStyle(3)  =   "frmDetallePresupuesto.frx":0820
+      FormatStyle(4)  =   "frmDetallePresupuesto.frx":08D4
+      FormatStyle(5)  =   "frmDetallePresupuesto.frx":09AC
+      FormatStyle(6)  =   "frmDetallePresupuesto.frx":0A64
+      FormatStyle(7)  =   "frmDetallePresupuesto.frx":0B44
       ImageCount      =   0
-      PrinterProperties=   "frmDetallePresupuesto.frx":0AB8
+      PrinterProperties=   "frmDetallePresupuesto.frx":0BD0
    End
    Begin VB.Frame Frame3 
       BackColor       =   &H00FF8080&
@@ -431,11 +432,11 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
         Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
 
         If tmp.Pieza.EsConjunto Then
-            Me.ver.caption = "Ver Conjunto..."
-            Me.ver.Tag = 0
+            Me.Ver.caption = "Ver Conjunto..."
+            Me.Ver.Tag = 0
         Else
-            Me.ver.caption = "Ver Desarrollo..."
-            Me.ver.Tag = -1
+            Me.Ver.caption = "Ver Desarrollo..."
+            Me.Ver.Tag = -1
         End If
 
         Me.PopupMenu Me.m1
@@ -453,14 +454,18 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(2) = tmp.Detalles
         Values(3) = tmp.Cantidad
         Values(4) = tmp.entrega
-        Values(5) = tmp.Pieza.nombre
+        Values(5) = tmp.presupuesto.moneda.NombreCorto
         Values(6) = funciones.FormatearDecimales(tmp.ValorManual)
+        Values(7) = tmp.Pieza.nombre
     End With
+    
 End Sub
+
 Private Sub mnuAdquirirADetalle_Click()
     Set arch = New classArchivos
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     archi.escanearDocumento OrigenArchivos.OA_PresupuestoDetalle, tmp.Id
+    
 End Sub
 
 Private Sub mnuAdquirirAPieza_Click()

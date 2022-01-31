@@ -764,7 +764,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Me.mnuCrearOT.Enabled = (est = Enviado_)
 
         If Not Permisos.SistemaArchivosVer Then
-            Me.archivos = False
+            Me.Archivos = False
         End If
 
         Me.mnuCrearOT.Enabled = (Permisos.PlanOTcontrol)
@@ -920,8 +920,8 @@ Private Sub recotiza_Click()
 End Sub
 
 Private Sub scanear_Click()
-    Dim archivos As New classArchivos
-    archivos.escanearDocumento 2, rectmp.Id
+    Dim Archivos As New classArchivos
+    Archivos.escanearDocumento 2, rectmp.Id
 End Sub
 Private Sub txtCodigo_GotFocus()
     foco Me.txtCodigo
