@@ -603,31 +603,31 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(18)      =   "frmFacturasEmitidas.frx":19E6
       Column(19)      =   "frmFacturasEmitidas.frx":1ACA
       Column(20)      =   "frmFacturasEmitidas.frx":1C1A
-      Column(21)      =   "frmFacturasEmitidas.frx":1D3E
-      Column(22)      =   "frmFacturasEmitidas.frx":1EB6
-      Column(23)      =   "frmFacturasEmitidas.frx":2026
-      Column(24)      =   "frmFacturasEmitidas.frx":2132
-      Column(25)      =   "frmFacturasEmitidas.frx":2272
+      Column(21)      =   "frmFacturasEmitidas.frx":1D5A
+      Column(22)      =   "frmFacturasEmitidas.frx":1ED2
+      Column(23)      =   "frmFacturasEmitidas.frx":2042
+      Column(24)      =   "frmFacturasEmitidas.frx":21A2
+      Column(25)      =   "frmFacturasEmitidas.frx":22DA
       FormatStylesCount=   16
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":23C6
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":24FE
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":25AE
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":2662
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":273A
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":27F2
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":28D2
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":295E
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2A3E
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":2AEE
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":2BA2
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":2C52
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":2D02
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":2DB6
-      FormatStyle(15) =   "frmFacturasEmitidas.frx":2E8E
-      FormatStyle(16) =   "frmFacturasEmitidas.frx":2F72
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":242E
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":2566
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2616
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":26CA
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":27A2
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":285A
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":293A
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":29C6
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2AA6
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":2B56
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":2C0A
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":2CBA
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":2D6A
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":2E1E
+      FormatStyle(15) =   "frmFacturasEmitidas.frx":2EF6
+      FormatStyle(16) =   "frmFacturasEmitidas.frx":2FDA
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":3052
-      PrinterProperties=   "frmFacturasEmitidas.frx":336C
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":30BA
+      PrinterProperties=   "frmFacturasEmitidas.frx":33D4
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   15630
@@ -809,7 +809,7 @@ On Error GoTo err1
 
         If IsSomething(Selecciones.Factura) Then
              If DAOFactura.aplicarNCaFC(Selecciones.Factura.Id, Factura.Id) Then
-                MsgBox "Aplicación existosa!", vbInformation, "Información"
+                MsgBox "Aplicación exitosa!", vbInformation, "Información"
             End If
         End If
     End If
@@ -1614,6 +1614,7 @@ End If
 
     Values(10) = Factura.OrdenCompra
     Values(11) = Factura.cliente.razon
+    
     Values(12) = enums.EnumEstadoDocumentoContable(Factura.estado)
     
     If Factura.AprobadaAFIP = True Then
@@ -1644,7 +1645,11 @@ End If
     Else
     
         If LenB(Factura.CAE) <= 2 Then
-          Values(18) = "/ CAE no definido"
+        
+          'Values(18) = "/ CAE no definido"
+          
+          Values(18) = "/ CAE no definido" & " / " & Factura.observaciones & " / " & Factura.observaciones_cancela
+        
         Else
    
           Values(18) = "CAE: " & Factura.CAE & " / " & Factura.observaciones & " / " & Factura.observaciones_cancela

@@ -554,8 +554,10 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
             Dim ff111 As New frmVentasClienteNuevo
             ff111.cliente = Nothing
             ff111.Show
-        Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO: frmVentasClientesLista.Show
-
+            
+        Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO:   frmVentasClientesLista.Show
+        
+        
         Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__NUEVO:
 
             Dim frmaa As New frmComprasProveedoresModifica

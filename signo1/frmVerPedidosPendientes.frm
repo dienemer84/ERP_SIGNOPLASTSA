@@ -1519,7 +1519,7 @@ End Sub
 Private Sub mnuCopiarOT_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         If DAOOrdenTrabajo.CopiarOT(aux_ordenTrabajo) Then
-            MsgBox "Copia Existosa!!", vbInformation
+            MsgBox "Copia Exitosa!!", vbInformation
             LlenarNuevaLista
         Else
             MsgBox "Se produjo algún error y no se realizó la copia!", vbCritical

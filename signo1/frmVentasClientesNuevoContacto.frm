@@ -491,7 +491,7 @@ Private Sub agregarContacto()
 
 
         If DAOContacto.modificar(vContacto) Then
-            MsgBox "Modificación existosa!", vbInformation, "Información"
+            MsgBox "Modificación exitosa!", vbInformation, "Información"
             grilla.RefreshRowIndex rows
         Else
             MsgBox "Se produjo algún error!", vbCritical, "Error"
