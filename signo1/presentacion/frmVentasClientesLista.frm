@@ -1,64 +1,91 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmVentasClientesLista 
    Caption         =   "Clientes"
-   ClientHeight    =   5385
+   ClientHeight    =   6660
    ClientLeft      =   60
    ClientTop       =   750
-   ClientWidth     =   13470
+   ClientWidth     =   13785
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   5385
-   ScaleWidth      =   13470
-   Begin VB.CommandButton Command2 
-      BackColor       =   &H00FFC0C0&
-      Cancel          =   -1  'True
-      Caption         =   "Salir"
-      Height          =   375
-      Left            =   10440
-      Style           =   1  'Graphical
-      TabIndex        =   4
-      Top             =   4680
-      Width           =   1095
-   End
-   Begin VB.TextBox txtFiltro 
-      BackColor       =   &H00FFFFFF&
-      Height          =   285
-      Left            =   3480
-      TabIndex        =   2
-      Top             =   4680
-      Width           =   5655
-   End
-   Begin VB.CommandButton Command1 
-      BackColor       =   &H00FFC0C0&
-      Caption         =   "Filtrar"
-      Default         =   -1  'True
-      Height          =   375
-      Left            =   9240
-      Style           =   1  'Graphical
+   ScaleHeight     =   6660
+   ScaleWidth      =   13785
+   Begin XtremeSuiteControls.GroupBox GroupBoxBusqueda 
+      Height          =   1815
+      Left            =   120
       TabIndex        =   1
-      Top             =   4680
-      Width           =   1095
-   End
-   Begin VB.ComboBox Combo1 
-      BackColor       =   &H00FFC0C0&
-      Height          =   315
-      ItemData        =   "frmVentasClientesLista.frx":0000
-      Left            =   240
-      List            =   "frmVentasClientesLista.frx":000A
-      Style           =   2  'Dropdown List
-      TabIndex        =   0
-      Top             =   4680
-      Width           =   2055
+      Top             =   120
+      Width           =   11055
+      _Version        =   786432
+      _ExtentX        =   19500
+      _ExtentY        =   3201
+      _StockProps     =   79
+      Caption         =   "Búsqueda"
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton PushButton1 
+         Height          =   375
+         Left            =   7080
+         TabIndex        =   6
+         Top             =   240
+         Width           =   1335
+         _Version        =   786432
+         _ExtentX        =   2355
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Filtrar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin VB.ComboBox Combo1 
+         BackColor       =   &H00FFC0C0&
+         Height          =   315
+         ItemData        =   "frmVentasClientesLista.frx":0000
+         Left            =   1560
+         List            =   "frmVentasClientesLista.frx":000A
+         Style           =   2  'Dropdown List
+         TabIndex        =   3
+         Top             =   600
+         Width           =   2055
+      End
+      Begin VB.TextBox txtFiltro 
+         BackColor       =   &H00FFFFFF&
+         Height          =   285
+         Left            =   1560
+         TabIndex        =   2
+         Top             =   240
+         Width           =   5175
+      End
+      Begin VB.Label Label2 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00FF8080&
+         Caption         =   "Estado:"
+         Height          =   255
+         Index           =   1
+         Left            =   240
+         TabIndex        =   5
+         Top             =   630
+         Width           =   1215
+      End
+      Begin VB.Label Label2 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00FF8080&
+         Caption         =   "Razón Social:"
+         Height          =   255
+         Index           =   0
+         Left            =   240
+         TabIndex        =   4
+         Top             =   240
+         Width           =   1215
+      End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   4575
-      Left            =   0
-      TabIndex        =   3
-      Top             =   0
+      Height          =   4695
+      Left            =   120
+      TabIndex        =   0
+      Top             =   2040
       Width           =   13455
       _ExtentX        =   23733
-      _ExtentY        =   8070
+      _ExtentY        =   8281
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
@@ -98,24 +125,6 @@ Begin VB.Form frmVentasClientesLista
       FormatStyle(6)  =   "frmVentasClientesLista.frx":128A
       ImageCount      =   0
       PrinterProperties=   "frmVentasClientesLista.frx":136A
-   End
-   Begin VB.Label Label2 
-      BackColor       =   &H00FF8080&
-      Caption         =   "Razón"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   255
-      Left            =   2640
-      TabIndex        =   5
-      Top             =   4680
-      Width           =   735
    End
    Begin VB.Menu m3 
       Caption         =   "m3"
@@ -193,13 +202,16 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.grilla.Width = Me.ScaleWidth
-    Me.grilla.Height = Me.Height - (Me.Combo1.Height + (1000 - Me.Combo1.Height))
+    Me.grilla.Width = Me.ScaleWidth - 300
+    Me.grilla.Height = Me.Height - 2700
     Me.grilla.ColumnAutoResize = True
-    Me.Combo1.Top = Me.Height - 950
-    Me.txtFiltro.Top = Me.Combo1.Top
-    Me.Command1.Top = Me.Combo1.Top
-    Me.Command2.Top = Me.Combo1.Top
+    
+    Me.GroupBoxBusqueda.Width = Me.ScaleWidth - 300
+   
+    'Me.Combo1.Top = Me.Height - 950
+    'Me.txtFiltro.Top = Me.Combo1.Top
+    'Me.Command1.Top = Me.Combo1.Top
+    'Me.Command2.Top = Me.Combo1.Top
 
 End Sub
 
@@ -294,6 +306,10 @@ Private Sub masContactos_Click()
         frmVentasClientesNuevoContacto.Show
 
     End If
+End Sub
+
+Private Sub PushButton1_Click()
+    llenar_Grilla
 End Sub
 
 Private Sub txtFiltro_GotFocus()

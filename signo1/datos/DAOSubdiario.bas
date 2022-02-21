@@ -7,7 +7,7 @@ Public Enum FcGroupMethod
     GroupByYear = 3
 End Enum
 
-Public Function ExisteComprobanteEnLiquidacion(id As Long) As Boolean
+Public Function ExisteComprobanteEnLiquidacion(Id As Long) As Boolean
 On Error GoTo err1
 Dim qry As String
 Dim rs As Recordset
@@ -25,11 +25,11 @@ ExisteComprobanteEnLiquidacion = False
 
 End Function
 
-Public Function ComprobanteComprasLiquidado(id As Long) As Boolean
+Public Function ComprobanteComprasLiquidado(Id As Long) As Boolean
 On Error GoTo err1
 Dim qry As String
 Dim rs As Recordset
-qry = "select count(id) as c from liquidacion_subdiario_compras_detalles where id_factura=" & id
+qry = "select count(id) as c from liquidacion_subdiario_compras_detalles where id_factura=" & Id
 Set rs = conectar.RSFactory(qry)
 Dim Cantidad As Integer
 While Not rs.EOF
@@ -67,7 +67,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
         'esto de abajo es porque puedo estar en pesos y a la ves tener un tipo de cambio (por la convertibilidad)
         '01-7-13
-        If fc.moneda.id = DAOMoneda.FindFirstByPatronOrDefault().id Then
+        If fc.moneda.Id = DAOMoneda.FindFirstByPatronOrDefault().Id Then
             tipo_cambio = 1
         Else
             tipo_cambio = fc.TipoCambio
@@ -93,6 +93,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
         'If sv.ComprobanteNro = 9225 Then Stop
         sv.Iva = RedondearDecimales(fc.TotalIVA) * negativo * tipo_cambio
+        
         For Each ali In alicuotas
             sv.AlicuotasIva.Add fc.TotalIVADiscriminado(CDbl(ali)) * negativo * tipo_cambio, CStr(ali)
             sv.NetosGravado.Add fc.TotalNetoGravadoDiscriminado(CDbl(ali)) * negativo * tipo_cambio, CStr(ali)
@@ -102,25 +103,41 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
 
         Dim per As clsPercepcionesAplicadas
+        
         Set sv.ListaPercepciones = New Collection
+        
 
         'ver aca el indice de la coleccion  per.id o per.percepciones.id
 
         For Each per In fc.percepciones
+        
+  
+            If Not BuscarEnColeccion(sv.ListaPercepciones, CStr(per.Percepcion.Id)) Then sv.ListaPercepciones.Add per, CStr(per.Percepcion.Id)
+           
+        
+            per.Monto = fc.TotalPercepcionesDiscriminado(per.Percepcion.Id) * negativo * tipo_cambio
 
-            per.Monto = per.Monto * negativo * tipo_cambio
-
-            If Not BuscarEnColeccion(sv.ListaPercepciones, CStr(per.Percepcion.id)) Then sv.ListaPercepciones.Add per, CStr(per.Percepcion.id)
         Next
-
-
-
+        
+        Dim perTodas As Double
+        
+        perTodas = 0
+        
+        For Each per In sv.ListaPercepciones
+                        
+        perTodas = perTodas + per.Monto
+                
+        Debug.Print perTodas
+        
+        Next
 
 
         'If fc.totalPercepciones > 0 Then Stop
 
 
-        sv.percepciones = RedondearDecimales(fc.totalPercepciones) * negativo * tipo_cambio
+        'sv.percepciones = RedondearDecimales(fc.totalPercepciones) * negativo * tipo_cambio
+        
+        sv.percepciones = RedondearDecimales(perTodas) '* negativo * tipo_cambio
 
 
 
@@ -131,16 +148,19 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
         sv.Exento = RedondearDecimales(fc.TotalIVADiscriminado(0)) * negativo * tipo_cambio
         sv.NetoGravado = RedondearDecimales(fc.NetoGravado) * negativo * tipo_cambio
         sv.ImpuestoInterno = RedondearDecimales(fc.ImpuestoInterno) * negativo * tipo_cambio
-
-        ' If fc.Id = 16325 Then Stop
-        sv.Total = funciones.RedondearDecimales(fc.Total) * negativo * tipo_cambio
-
-
         sv.Redondeo = fc.Redondeo * negativo * tipo_cambio
+        
+        ' If fc.Id = 16325 Then Stop
+        
+        'sv.Total = funciones.RedondearDecimales(fc.Total) * negativo * tipo_cambio
+        
+        sv.Total = funciones.RedondearDecimales(sv.NetoGravado + sv.ImpuestoInterno + sv.Redondeo + sv.Iva + (sv.percepciones / tipo_cambio)) '* negativo * tipo_cambio
+
+       
 
         sv.RazonSocial = fc.Proveedor.RazonSocial
         sv.estado = fc.estado
-        sv.FacturaId = fc.id
+        sv.FacturaId = fc.Id
 
         'sumImpInt = sumImpInt + fc.ImpuestoInterno
         'sumRedondeo = sumRedondeo + fc.redondeo
@@ -222,7 +242,7 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
 
         sv.RazonSocial = fc.cliente.razon
         sv.estado = fc.estado
-        sv.FacturaId = fc.id
+        sv.FacturaId = fc.Id
 
         newcol.Add sv
     Next
@@ -245,13 +265,13 @@ Public Function FindAllLiquidacionesVenta(Optional venta As Boolean = True) As C
     While Not rs.EOF
         Set liq = New LiquidacionSubdiarioVenta
 
-        liq.id = GetValue(rs, fieldsIndex, "l", "id")
+        liq.Id = GetValue(rs, fieldsIndex, "l", "id")
         liq.nombre = GetValue(rs, fieldsIndex, "l", "nombre")
         liq.desde = GetValue(rs, fieldsIndex, "l", "desde")
         liq.hasta = GetValue(rs, fieldsIndex, "l", "hasta")
         liq.EsDeVenta = venta
 
-        liquis.Add liq, CStr(liq.id)
+        liquis.Add liq, CStr(liq.Id)
         rs.MoveNext
     Wend
 
@@ -259,14 +279,14 @@ Public Function FindAllLiquidacionesVenta(Optional venta As Boolean = True) As C
 End Function
 
 
-Public Function FindAllDetallesLiquiVentaByLiquiVenta(id As Long, Optional venta As Boolean = True) As Collection
+Public Function FindAllDetallesLiquiVentaByLiquiVenta(Id As Long, Optional venta As Boolean = True) As Collection
     Dim q As String
 
     If venta Then
-        q = "SELECT * FROM liquidacion_subdiario_detalles ld WHERE ld.id_liquidacion = " & id
+        q = "SELECT * FROM liquidacion_subdiario_detalles ld WHERE ld.id_liquidacion = " & Id
     Else
         q = "SELECT * FROM liquidacion_subdiario_compras_detalles ld LEFT JOIN liquidacion_subdiario_compras_detalles_iva i ON i.subd_compra_detalle_id = ld.id LEFT JOIN liquidacion_subdiario_compras_detalles_ng ng ON ng.subd_compra_detalle_id = ld.id"
-        q = q & " WHERE ld.id_liquidacion = " & id
+        q = q & " WHERE ld.id_liquidacion = " & Id
     End If
 
     Dim rs As Recordset
@@ -286,7 +306,7 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(id As Long, Optional venta
 
             Set det = New SubdiarioVentasDetalle
 
-            det.id = GetValue(rs, fieldsIndex, "ld", "id")
+            det.Id = GetValue(rs, fieldsIndex, "ld", "id")
             det.Comprobante = GetValue(rs, fieldsIndex, "ld", "comprobante")
             det.CondicionIva = GetValue(rs, fieldsIndex, "ld", "condicion_iva")
             det.Cuit = GetValue(rs, fieldsIndex, "ld", "cuit")
@@ -311,7 +331,7 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(id As Long, Optional venta
 
             End If
 
-            Detalles.Add det, CStr(det.id)
+            Detalles.Add det, CStr(det.Id)
         Else
             Set det = Detalles.item(CStr(GetValue(rs, fieldsIndex, "ld", "id")))
         End If
@@ -386,7 +406,7 @@ End Function
 Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
     On Error GoTo E
 
-    If liq.id <> 0 Then
+    If liq.Id <> 0 Then
         Guardar = False
         Exit Function
     End If
@@ -491,11 +511,11 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
     q = Replace$(q, "'desde'", conectar.Escape(liq.desde))
     q = Replace$(q, "'hasta'", conectar.Escape(liq.hasta))
 
-    Dim id As Long
+    Dim Id As Long
 
     If conectar.execute(q) Then
-        id = conectar.UltimoId2()
-        If id = 0 Then GoTo E
+        Id = conectar.UltimoId2()
+        If Id = 0 Then GoTo E
 
         Dim iddet As Long
 
@@ -513,7 +533,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
                     & " VALUES ('id_liquidacion', 'fecha', 'comprobante', 'razon_social', 'cuit', 'condicion_iva', 'neto_gravado', 'iva', 'percepciones_iibb', 'exento', 'total', 'estado_factura', 'id_factura', 'percepciones_iva', 'impuesto_interno', 'redondeo')"
             End If
 
-            det.LiquidacionId = id
+            det.LiquidacionId = Id
 
             q = Replace$(q, "'id_liquidacion'", conectar.Escape(det.LiquidacionId))
             q = Replace$(q, "'fecha'", conectar.Escape(CDate(det.FEcha)))
@@ -539,7 +559,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
                 iddet = 0
                 iddet = conectar.UltimoId2()
                 If iddet = 0 Then GoTo E
-                det.id = iddet
+                det.Id = iddet
 
                 For Each tmpAli In colAlicuotas
                     If funciones.BuscarEnColeccion(det.AlicuotasIva, CStr(tmpAli)) Then
@@ -548,7 +568,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
                         q = Replace$(q, "'monto'", conectar.Escape(det.AlicuotasIva.item(CStr(tmpAli))))
                         q = Replace$(q, "'alicuota_iva_id'", conectar.Escape(tmpAli))
-                        q = Replace$(q, "'subd_compra_detalle_id'", conectar.Escape(det.id))
+                        q = Replace$(q, "'subd_compra_detalle_id'", conectar.Escape(det.Id))
 
                         If Not conectar.execute(q) Then GoTo E
                     End If
@@ -559,7 +579,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
                         q = Replace$(q, "'monto'", conectar.Escape(det.NetosGravado.item(CStr(tmpAli))))
                         q = Replace$(q, "'alicuota_iva_id'", conectar.Escape(tmpAli))
-                        q = Replace$(q, "'subd_compra_detalle_id'", conectar.Escape(det.id))
+                        q = Replace$(q, "'subd_compra_detalle_id'", conectar.Escape(det.Id))
 
                         If Not conectar.execute(q) Then GoTo E
                     End If
@@ -582,7 +602,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
     Guardar = True
     conectar.CommitTransaction
-    liq.id = id
+    liq.Id = Id
 
     Exit Function
 E:
@@ -598,7 +618,7 @@ Public Function UpdateDetalle(deta As SubdiarioVentasDetalle) As Boolean
     q = Replace$(q, "'percepciones_iibb'", conectar.Escape(deta.percepciones))
     q = Replace$(q, "'exento'", conectar.Escape(deta.Exento))
     q = Replace$(q, "'total'", conectar.Escape(deta.Total))
-    q = Replace$(q, "'id'", deta.id)
+    q = Replace$(q, "'id'", deta.Id)
     UpdateDetalle = conectar.execute(q)
 End Function
 
@@ -647,7 +667,7 @@ Public Sub PosicionIvaMensual()
         '''' ver aca!!!!! ver ver ver
 
         For Each per In itsub.ListaPercepciones
-            If per.Percepcion.id = 2 Then    'percepciones de iva hardcodedddd
+            If per.Percepcion.Id = 2 Then    'percepciones de iva hardcodedddd
                 sumaPercepcionesIva = sumaPercepcionesIva + per.Monto
             End If
         Next

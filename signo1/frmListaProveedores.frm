@@ -4,32 +4,39 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasProveedoresLista 
    BackColor       =   &H00FF8080&
    Caption         =   "Proveedores"
-   ClientHeight    =   7515
+   ClientHeight    =   7470
    ClientLeft      =   60
    ClientTop       =   270
-   ClientWidth     =   14970
+   ClientWidth     =   17790
    Icon            =   "frmListaProveedores.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   7515
-   ScaleWidth      =   14970
+   ScaleHeight     =   7470
+   ScaleWidth      =   17790
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1815
       Left            =   120
       TabIndex        =   1
-      Top             =   5400
-      Width           =   11055
+      Top             =   120
+      Width           =   17415
       _Version        =   786432
-      _ExtentX        =   19500
+      _ExtentX        =   30718
       _ExtentY        =   3201
       _StockProps     =   79
       Caption         =   "Búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin VB.TextBox TextFantasia 
+         Height          =   285
+         Left            =   1320
+         TabIndex        =   13
+         Top             =   960
+         Width           =   3975
+      End
       Begin VB.ListBox lstEstados 
          Height          =   735
          Left            =   6240
          Style           =   1  'Checkbox
-         TabIndex        =   13
+         TabIndex        =   10
          Top             =   600
          Width           =   3015
       End
@@ -37,7 +44,7 @@ Begin VB.Form frmComprasProveedoresLista
          BackColor       =   &H00FFFFFF&
          Height          =   285
          Left            =   1320
-         TabIndex        =   5
+         TabIndex        =   4
          Top             =   600
          Width           =   3975
       End
@@ -49,38 +56,10 @@ Begin VB.Form frmComprasProveedoresLista
          Top             =   240
          Width           =   2295
       End
-      Begin XtremeSuiteControls.ComboBox cboFantasia 
-         Height          =   315
-         Left            =   1320
-         TabIndex        =   7
-         Top             =   960
-         Width           =   4005
-         _Version        =   786432
-         _ExtentX        =   7064
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Sorted          =   -1  'True
-         Text            =   "cboProveedores"
-      End
-      Begin XtremeSuiteControls.PushButton btnClearFantasia 
-         Height          =   255
-         Left            =   5400
-         TabIndex        =   8
-         Top             =   990
-         Width           =   420
-         _Version        =   786432
-         _ExtentX        =   741
-         _ExtentY        =   450
-         _StockProps     =   79
-         Caption         =   "X"
-         BackColor       =   12632256
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.ComboBox cboRubros 
          Height          =   315
          Left            =   1320
-         TabIndex        =   10
+         TabIndex        =   7
          Top             =   1350
          Width           =   4005
          _Version        =   786432
@@ -93,7 +72,7 @@ Begin VB.Form frmComprasProveedoresLista
       Begin XtremeSuiteControls.PushButton cmdSinRubro 
          Height          =   255
          Left            =   5400
-         TabIndex        =   11
+         TabIndex        =   8
          Top             =   1395
          Width           =   420
          _Version        =   786432
@@ -108,7 +87,7 @@ Begin VB.Form frmComprasProveedoresLista
          Default         =   -1  'True
          Height          =   375
          Left            =   9600
-         TabIndex        =   14
+         TabIndex        =   11
          Top             =   1320
          Width           =   1335
          _Version        =   786432
@@ -122,7 +101,7 @@ Begin VB.Form frmComprasProveedoresLista
          Height          =   195
          Index           =   1
          Left            =   6240
-         TabIndex        =   15
+         TabIndex        =   12
          Top             =   360
          Width           =   615
          _Version        =   786432
@@ -140,15 +119,15 @@ Begin VB.Form frmComprasProveedoresLista
          Caption         =   "Rubros:"
          Height          =   255
          Left            =   480
-         TabIndex        =   12
+         TabIndex        =   9
          Top             =   1375
          Width           =   735
       End
       Begin XtremeSuiteControls.Label Label3 
          Height          =   195
          Left            =   240
-         TabIndex        =   9
-         Top             =   1020
+         TabIndex        =   6
+         Top             =   1005
          Width           =   1020
          _Version        =   786432
          _ExtentX        =   1799
@@ -162,7 +141,7 @@ Begin VB.Form frmComprasProveedoresLista
       Begin XtremeSuiteControls.Label Label2 
          Height          =   255
          Left            =   165
-         TabIndex        =   6
+         TabIndex        =   5
          Top             =   615
          Width           =   1095
          _Version        =   786432
@@ -192,9 +171,9 @@ Begin VB.Form frmComprasProveedoresLista
    End
    Begin GridEX20.GridEX grilla 
       Height          =   5280
-      Left            =   15
+      Left            =   120
       TabIndex        =   0
-      Top             =   15
+      Top             =   2040
       Width           =   17415
       _ExtentX        =   30718
       _ExtentY        =   9313
@@ -217,36 +196,24 @@ Begin VB.Form frmComprasProveedoresLista
       IntProp7        =   0
       ColumnsCount    =   9
       Column(1)       =   "frmListaProveedores.frx":000C
-      Column(2)       =   "frmListaProveedores.frx":0138
-      Column(3)       =   "frmListaProveedores.frx":0214
-      Column(4)       =   "frmListaProveedores.frx":02F4
-      Column(5)       =   "frmListaProveedores.frx":03C0
-      Column(6)       =   "frmListaProveedores.frx":048C
-      Column(7)       =   "frmListaProveedores.frx":0560
-      Column(8)       =   "frmListaProveedores.frx":0628
-      Column(9)       =   "frmListaProveedores.frx":06FC
-      FormatStylesCount=   6
-      FormatStyle(1)  =   "frmListaProveedores.frx":07C8
-      FormatStyle(2)  =   "frmListaProveedores.frx":08F0
-      FormatStyle(3)  =   "frmListaProveedores.frx":09A0
-      FormatStyle(4)  =   "frmListaProveedores.frx":0A54
-      FormatStyle(5)  =   "frmListaProveedores.frx":0B2C
-      FormatStyle(6)  =   "frmListaProveedores.frx":0BE4
+      Column(2)       =   "frmListaProveedores.frx":0114
+      Column(3)       =   "frmListaProveedores.frx":020C
+      Column(4)       =   "frmListaProveedores.frx":0308
+      Column(5)       =   "frmListaProveedores.frx":03F4
+      Column(6)       =   "frmListaProveedores.frx":04E0
+      Column(7)       =   "frmListaProveedores.frx":05C8
+      Column(8)       =   "frmListaProveedores.frx":06AC
+      Column(9)       =   "frmListaProveedores.frx":07A8
+      FormatStylesCount=   7
+      FormatStyle(1)  =   "frmListaProveedores.frx":0898
+      FormatStyle(2)  =   "frmListaProveedores.frx":09C0
+      FormatStyle(3)  =   "frmListaProveedores.frx":0A70
+      FormatStyle(4)  =   "frmListaProveedores.frx":0B24
+      FormatStyle(5)  =   "frmListaProveedores.frx":0BFC
+      FormatStyle(6)  =   "frmListaProveedores.frx":0CB4
+      FormatStyle(7)  =   "frmListaProveedores.frx":0D94
       ImageCount      =   0
-      PrinterProperties=   "frmListaProveedores.frx":0CC4
-   End
-   Begin XtremeSuiteControls.Label Label1 
-      Height          =   255
-      Left            =   0
-      TabIndex        =   4
-      Top             =   15
-      Width           =   1095
-      _Version        =   786432
-      _ExtentX        =   1931
-      _ExtentY        =   450
-      _StockProps     =   79
-      Caption         =   "Razón Social:"
-      BackColor       =   12632256
+      PrinterProperties=   "frmListaProveedores.frx":0DB4
    End
    Begin VB.Menu m2 
       Caption         =   "m2"
@@ -255,7 +222,7 @@ Begin VB.Form frmComprasProveedoresLista
          Caption         =   "Editar"
       End
       Begin VB.Menu con_tacto 
-         Caption         =   "Contáctos..."
+         Caption         =   "Cont?ctos..."
       End
    End
 End
@@ -283,9 +250,9 @@ Private Sub cmdSalir_Click()
     Unload Me
 End Sub
 
-Private Sub btnClearFantasia_Click()
-    Me.cboFantasia.ListIndex = -1
-End Sub
+'Private Sub btnClearFantasia_Click()
+'    Me.cboFantasia.ListIndex = -1
+'End Sub
 
 Private Sub cmdSinRubro_Click()
     Me.cboRubros.ListIndex = -1
@@ -303,14 +270,19 @@ Private Sub Buscar()
     If LenB(Me.Text1.text) > 0 Then
         filtro = filtro & " and razon like '%" & Trim(Me.Text1.text) & "%'"
     End If
+    
     If Me.cboRubros.ListIndex > -1 Then
         filtro = filtro & " And  asignacion.id_rubro =  " & Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
     End If
 
-    If Me.cboFantasia.ListIndex > -1 Then
-        filtro = filtro & " And  proveedores.id =  " & Me.cboFantasia.ItemData(Me.cboFantasia.ListIndex)
-    End If
+'    If Me.cboFantasia.ListIndex > -1 Then
+'        filtro = filtro & " And  proveedores.id =  " & Me.cboFantasia.ItemData(Me.cboFantasia.ListIndex)
+'    End If
 
+    If LenB(Me.TextFantasia.text) > 0 Then
+        filtro = filtro & " and razon_fantasia like '%" & Trim(Me.TextFantasia.text) & "%'"
+    End If
+    
     If LenB(Me.txtCuit) > 0 Then
         filtro = filtro & " and cuit like '%" & Trim(Me.txtCuit) & "%'"
     End If
@@ -368,15 +340,15 @@ Private Sub Form_Load()
     rows = 1
     llenarEstados
 
-    Dim P As clsProveedor
-    For Each P In DAOProveedor.FindAll()
-
-        If LenB(Trim$(P.razonFantasia)) > 0 Then
-            Me.cboFantasia.AddItem P.razonFantasia
-            Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.Id
-        End If
-    Next P
-    Me.cboFantasia.ListIndex = -1
+'    Dim P As clsProveedor
+'    For Each P In DAOProveedor.FindAll()
+'
+'        If LenB(Trim$(P.razonFantasia)) > 0 Then
+'            'Me.cboFantasia.AddItem P.razonFantasia
+'            'Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.Id
+'        End If
+'    Next P
+'    'Me.cboFantasia.ListIndex = -1
 
     Buscar
     
@@ -398,9 +370,11 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.grilla.Width = Me.ScaleWidth
+    Me.grilla.Width = Me.ScaleWidth - 300
+    Me.grilla.Height = Me.Height - 2700
 '    Me.grilla.Height = Me.Height - (Me.cboRubros.Height + (1500 - Me.cboRubros.Height))
     Me.grilla.ColumnAutoResize = True
+    Me.GroupBox1.Width = Me.ScaleWidth - 300
 '    Me.cboRubros.Top = Me.Height - 1350
 '    Me.Text1.Top = Me.cboRubros.Top
 '    Me.Command1.Top = Me.cboRubros.Top

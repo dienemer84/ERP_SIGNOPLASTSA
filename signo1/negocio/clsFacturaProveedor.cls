@@ -166,11 +166,11 @@ End Property
 Public Property Get Redondeo() As Double
     Redondeo = vRedondeo
 End Property
-Public Property Let id(nId As Long)
+Public Property Let Id(nId As Long)
     vId = nId
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Let Proveedor(nProveedor As clsProveedor)
     Set vProveedor = nProveedor
@@ -232,7 +232,7 @@ Public Property Get TotalPercepcionesDiscriminado(percepcionId As Long) As Doubl
     tot_per = 0
     Dim P As Long
     For P = 1 To vPercep.count
-        If percepcionId = vPercep(P).Percepcion.id Then
+        If percepcionId = vPercep(P).Percepcion.Id Then
             tot_per = tot_per + vPercep(P).Monto
         End If
     Next
@@ -299,13 +299,19 @@ End Property
 
 Public Property Get Total() As Double
     Dim tipo_cambio As Double
-
+    Dim negativo As Integer
+    Dim CalculoPercepciones As Double
+    
     On Error GoTo err1
 
+    If tipoDocumentoContable = 1 Then
+        negativo = -1
+    Else
+        negativo = 1
+    End If
 
 
-
-    If Me.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
+    If Me.moneda.Id = DAOMoneda.FindFirstByPatronOrDefault.Id Then
         tipo_cambio = 1
     Else
         tipo_cambio = Me.TipoCambio
@@ -314,7 +320,29 @@ Public Property Get Total() As Double
     'cambie la division de tipo de cambio por la operacion de arriba el 31-7-13
     'Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / Me.TipoCambio)) '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
 
-    Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / tipo_cambio))    '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
+    Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / tipo_cambio))     '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
+
+
+' POSIBLE SOLUCION A LO DE LAS PERCEPCIONES EN NEGATIVO
+
+'    CalculoPercepciones = (totalPercepciones / tipo_cambio) * negativo
+    
+'    Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + CalculoPercepciones)  '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
+    
+    
+    
+    
+'    Debug.Print NumeroFormateadoCorto
+'    'NumeroFormateado = enums.EnumTipoDocumentoContableShort(tipoDocumentoContable) & "-" & vConfigFactura.TipoFactura & "-" & vNumero
+'    Debug.Print tipoDocumentoContable
+'    Debug.Print "Total: " & Total
+'    Debug.Print "Neto Gravado: " & NetoGravado
+'    Debug.Print "Impuesto Interno: " & vImpuestoInterno
+'    Debug.Print "Redondeo: " & vRedondeo
+'    Debug.Print "Total IVA: " & TotalIVA
+'    Debug.Print "Total Percepciones: " & CalculoPercepciones
+'    Debug.Print ""
+
 
     Exit Property
 err1:
