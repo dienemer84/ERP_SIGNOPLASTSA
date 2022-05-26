@@ -639,7 +639,7 @@ Private Sub Totalizar()
         Set dtop = New DTOPercepcionImporte
         dtop.importe = 0
         Set dtop.Percepcion = per
-        totalesper.Add dtop, CStr(per.Id)
+        totalesper.Add dtop, CStr(per.id)
     Next
 
     Dim pera As clsPercepcionesAplicadas
@@ -663,13 +663,13 @@ If Not IsSomething(i.ListaPercepciones) Then Set i.ListaPercepciones = New Colle
 
         For Each pera In i.ListaPercepciones
 
-            Set dtop = totalesper(CStr(pera.Percepcion.Id))
+            Set dtop = totalesper(CStr(pera.Percepcion.id))
             'tmpValue = funciones.RedondearDecimales(totalesper(CStr(pera.Percepcion.Id)).importe)
-            totalesper.remove CStr(pera.Percepcion.Id)
+            totalesper.remove CStr(pera.Percepcion.id)
 
 
             dtop.importe = funciones.RedondearDecimales(dtop.importe + pera.Monto)
-            totalesper.Add dtop, CStr(pera.Percepcion.Id)
+            totalesper.Add dtop, CStr(pera.Percepcion.id)
         Next
 
 
@@ -821,12 +821,12 @@ Private Sub Form_Load()
     Dim per As clsPercepciones
     For Each per In cole
 
-        Set col = Me.GridEX1.Columns.Add(per.Percepcion, jgexText, jgexEditNone, "PER_" & per.Id)
+        Set col = Me.GridEX1.Columns.Add(per.Percepcion, jgexText, jgexEditNone, "PER_" & per.id)
         col.TextAlignment = jgexAlignRight
         col.AggregateFunction = jgexSum
         col.GroupFormat = "0.00"
         col.TotalRowFormat = "0.00"
-        col.Tag = per.Id
+        col.Tag = per.id
 
     Next per
 
@@ -1005,9 +1005,9 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 
                 'If ali = 10.5 Then ali = 11
 
-            Values(Me.GridEX1.Columns.item("NG_" & ali).Index) = funciones.FormatearDecimales(item.NetosGravado.item(CStr(ali)))
+            Values(Me.GridEX1.Columns.item("NG_" & ali).index) = funciones.FormatearDecimales(item.NetosGravado.item(CStr(ali)))
             End If
-            Values(Me.GridEX1.Columns.item("IVA_" & ali).Index) = funciones.FormatearDecimales(funciones.RedondearDecimales(item.AlicuotasIva.item(CStr(ali))))
+            Values(Me.GridEX1.Columns.item("IVA_" & ali).index) = funciones.FormatearDecimales(funciones.RedondearDecimales(item.AlicuotasIva.item(CStr(ali))))
         
         Next
 
@@ -1027,14 +1027,14 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         For Each per In colper
             Dim PercepcionAcumulada As Double
             
-            If BuscarEnColeccion(item.ListaPercepciones, CStr(per.Id)) Then
+            If BuscarEnColeccion(item.ListaPercepciones, CStr(per.id)) Then
             
-            PercepcionAcumulada = funciones.FormatearDecimales(item.ListaPercepciones(CStr(per.Id)).Monto)
+            PercepcionAcumulada = funciones.FormatearDecimales(item.ListaPercepciones(CStr(per.id)).Monto)
                 
-                Values(Me.GridEX1.Columns.item("per_" & per.Id).Index) = PercepcionAcumulada
+                Values(Me.GridEX1.Columns.item("per_" & per.id).index) = PercepcionAcumulada
 
             Else
-                Values(Me.GridEX1.Columns.item("per_" & per.Id).Index) = 0
+                Values(Me.GridEX1.Columns.item("per_" & per.id).index) = 0
             End If
         
         Next
@@ -1042,9 +1042,9 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 ' PERCEPCIONES POR CADA COMPROBANTE
 
 
-        Values(Me.GridEX1.Columns.item("impuestointerno").Index) = funciones.FormatearDecimales(item.ImpuestoInterno)
-        Values(Me.GridEX1.Columns.item("redondeo").Index) = funciones.FormatearDecimales(item.Redondeo)
-        Values(Me.GridEX1.Columns.item("total").Index) = funciones.FormatearDecimales(item.Total)
+        Values(Me.GridEX1.Columns.item("impuestointerno").index) = funciones.FormatearDecimales(item.ImpuestoInterno)
+        Values(Me.GridEX1.Columns.item("redondeo").index) = funciones.FormatearDecimales(item.Redondeo)
+        Values(Me.GridEX1.Columns.item("total").index) = funciones.FormatearDecimales(item.Total)
     End If
 
 End Sub
@@ -1214,7 +1214,7 @@ Private Sub CargarLiquidaciones()
     Set liquidaciones = DAOSubdiarios.FindAllLiquidacionesVenta(False)
     For Each liqui In liquidaciones
         Me.cboLiquidaciones.AddItem liqui.nombre & " (" & liqui.desde & " a " & liqui.hasta & ")"
-        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.Id
+        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.id
     Next liqui
 
 End Sub
@@ -1250,7 +1250,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
     Set xla = CreateObject("Excel.Application")
 
     Dim A As String
-    Dim B As String
+    Dim b As String
     Dim offset As Long
     Dim strMsg As String
     Dim CDLGMAIN As CommonDialog
@@ -1264,11 +1264,11 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
     With xla
 
-        .Range("A1:AO1").Merge
-        .Range("A2:AO2").Merge
-        .Range("A1:AO3").HorizontalAlignment = xlHAlignCenter
-        .Range("A1:AO2").Font.Bold = True
-        .Range("A3:AO2").Font.Bold = True
+        .Range("A1:AQ1").Merge
+        .Range("A2:AQ2").Merge
+        .Range("A1:AQ3").HorizontalAlignment = xlHAlignCenter
+        .Range("A1:AQ2").Font.Bold = True
+        .Range("A3:AQ2").Font.Bold = True
 
 
         .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario compras" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
@@ -1281,7 +1281,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
           
          .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
 
-        .Range("A3:AO3").Interior.Color = &HC0C0C0
+        .Range("A3:AQ3").Interior.Color = &HC0C0C0
 
 
         Dim Column As JSColumn
@@ -1403,81 +1403,91 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
                 If item.NetosGravado.item(3) Then
                     .Cells(x + 3, 12).value = FormatearDecimales(item.NetosGravado.item(3) * 10.5 / 100)
                 End If
-                
-                
+                                
+                                
                 If item.NetosGravado.item(4) Then
                     .Cells(x + 3, 13).value = item.NetosGravado.item(4)
                 End If
                 
                 
-                 
-                If item.ListaPercepciones.count <> 0 Then
-                 
-                Dim i
-                For i = 1 To item.ListaPercepciones.count Step 1
-        
-                         Select Case item.ListaPercepciones.item(i).Percepcion.Percepcion
-                                Case "IIBB CABA"
-                                                .Cells(x + 3, 14).value = item.ListaPercepciones.item(i).Monto
-                                Case "IVA"
-                                                .Cells(x + 3, 15).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB SANTA FE"
-                                                .Cells(x + 3, 16).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB SALTA"
-                                                .Cells(x + 3, 17).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB BUENOS AIRES"
-                                                .Cells(x + 3, 18).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB MISIONES"
-                                                .Cells(x + 3, 19).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB TUCUMAN"
-                                                .Cells(x + 3, 20).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB SAN LUIS"
-                                                .Cells(x + 3, 21).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB CORRIENTES"
-                                                .Cells(x + 3, 22).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB RIO NEGRO"
-                                                .Cells(x + 3, 23).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB ENTRE RIOS"
-                                                .Cells(x + 3, 24).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB CORDOBA"
-                                                .Cells(x + 3, 25).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB CATAMARCA"
-                                                .Cells(x + 3, 26).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB NEUQUEN"
-                                                .Cells(x + 3, 27).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB LA PAMPA"
-                                                .Cells(x + 3, 28).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB MENDOZA"
-                                                .Cells(x + 3, 29).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB SAN JUAN"
-                                                .Cells(x + 3, 30).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB SANTA CRUZ"
-                                                .Cells(x + 3, 31).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB CHUBUT"
-                                                .Cells(x + 3, 32).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB LA RIOJA"
-                                                .Cells(x + 3, 33).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB SANTIAGO DEL ESTERO"
-                                                .Cells(x + 3, 34).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB CHACO"
-                                                .Cells(x + 3, 35).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB FORMOSA"
-                                                .Cells(x + 3, 36).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB JUJUY"
-                                                .Cells(x + 3, 37).value = item.ListaPercepciones.item(i).Monto
-                                Case "IIBB TIERRA DEL FUEGO"
-                                                .Cells(x + 3, 38).value = item.ListaPercepciones.item(i).Monto
-                                         
-                                                
-                        End Select
-                        
-                    Next i
-                 
+                
+                If item.NetosGravado.item(4) Then
+                    .Cells(x + 3, 14).value = FormatearDecimales(item.NetosGravado.item(4) * 5 / 100)
                 End If
                 
-                .Cells(x + 3, 39).value = item.ImpuestoInterno
-                .Cells(x + 3, 40).value = item.Redondeo
-                .Cells(x + 3, 41).value = item.Total
+                If item.NetosGravado.item(5) Then
+                    .Cells(x + 3, 15).value = item.NetosGravado.item(5)
+                End If
+                
+                 
+
+                If item.ListaPercepciones.count <> 0 Then
+
+                Dim i
+                For i = 1 To item.ListaPercepciones.count Step 1
+
+                         Select Case item.ListaPercepciones.item(i).Percepcion.Percepcion
+                                Case "IIBB CABA"
+                                                .Cells(x + 3, 16).value = item.ListaPercepciones.item(i).Monto
+                                Case "IVA"
+                                                .Cells(x + 3, 17).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SANTA FE"
+                                                .Cells(x + 3, 18).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SALTA"
+                                                .Cells(x + 3, 19).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB BUENOS AIRES"
+                                                .Cells(x + 3, 20).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB MISIONES"
+                                                .Cells(x + 3, 21).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB TUCUMAN"
+                                                .Cells(x + 3, 22).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SAN LUIS"
+                                                .Cells(x + 3, 23).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CORRIENTES"
+                                                .Cells(x + 3, 24).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB RIO NEGRO"
+                                                .Cells(x + 3, 25).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB ENTRE RIOS"
+                                                .Cells(x + 3, 26).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CORDOBA"
+                                                .Cells(x + 3, 27).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CATAMARCA"
+                                                .Cells(x + 3, 28).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB NEUQUEN"
+                                                .Cells(x + 3, 29).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB LA PAMPA"
+                                                .Cells(x + 3, 30).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB MENDOZA"
+                                                .Cells(x + 3, 31).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SAN JUAN"
+                                                .Cells(x + 3, 32).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SANTA CRUZ"
+                                                .Cells(x + 3, 33).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CHUBUT"
+                                                .Cells(x + 3, 34).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB LA RIOJA"
+                                                .Cells(x + 3, 35).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB SANTIAGO DEL ESTERO"
+                                                .Cells(x + 3, 36).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB CHACO"
+                                                .Cells(x + 3, 37).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB FORMOSA"
+                                                .Cells(x + 3, 38).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB JUJUY"
+                                                .Cells(x + 3, 39).value = item.ListaPercepciones.item(i).Monto
+                                Case "IIBB TIERRA DEL FUEGO"
+                                                .Cells(x + 3, 40).value = item.ListaPercepciones.item(i).Monto
+
+
+                        End Select
+
+                    Next i
+
+                End If
+                
+                .Cells(x + 3, 41).value = item.ImpuestoInterno
+                .Cells(x + 3, 42).value = item.Redondeo
+                .Cells(x + 3, 43).value = item.Total
            
             x = x + 1
             
@@ -1489,15 +1499,15 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         Next item
 
 
-         A = "ao" & x + 2
+         A = "aq" & x + 2
          offset = x + 3
-         B = "ao" & offset
-        .Range("f1", B).NumberFormat = "0.00"
+         b = "aq" & offset
+        .Range("f1", b).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
-        .Range("f" & x + 3, B).Interior.Color = &HC0C0C0
-        .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
-        .Range("f" & x + 3, B).Font.Bold = True
+        .Range("f" & x + 3, b).Interior.Color = &HC0C0C0
+        .Range("f" & x + 3, b).Borders.LineStyle = xlContinuous
+        .Range("f" & x + 3, b).Font.Bold = True
 
 
         .Cells(offset, 5).value = "Totales"
@@ -1537,12 +1547,14 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         .Cells(offset, 39).value = xls.WorksheetFunction.SUM(.Range("am4", "am" & x + 3))
         .Cells(offset, 40).value = xls.WorksheetFunction.SUM(.Range("an4", "an" & x + 3))
         .Cells(offset, 41).value = xls.WorksheetFunction.SUM(.Range("ao4", "ao" & x + 3))
+        .Cells(offset, 42).value = xls.WorksheetFunction.SUM(.Range("ap4", "ap" & x + 3))
+        .Cells(offset, 43).value = xls.WorksheetFunction.SUM(.Range("aq4", "aq" & x + 3))
 
         strMsg = "Se han transportado los datos correctamente"
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1556,7 +1568,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -1646,7 +1658,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
     Set xla = CreateObject("Excel.Application")
 
     Dim A As String
-    Dim B As String
+    Dim b As String
     Dim offset As Long
     Dim strMsg As String
     Dim CDLGMAIN As CommonDialog
@@ -1660,7 +1672,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
     With xla
 
-        .Range("A1:an1").Merge
+        .Range("A1:a1").Merge
         .Range("A2:an2").Merge
         .Range("A1:an3").HorizontalAlignment = xlHAlignCenter
         .Range("A1:an2").Font.Bold = True
@@ -1891,13 +1903,13 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
          A = "an" & x + 2
          offset = x + 3
-         B = "an" & offset
-        .Range("f1", B).NumberFormat = "0.00"
+         b = "an" & offset
+        .Range("f1", b).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
-        .Range("f" & x + 3, B).Interior.Color = &HC0C0C0
-        .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
-        .Range("f" & x + 3, B).Font.Bold = True
+        .Range("f" & x + 3, b).Interior.Color = &HC0C0C0
+        .Range("f" & x + 3, b).Borders.LineStyle = xlContinuous
+        .Range("f" & x + 3, b).Font.Bold = True
 
 
         .Cells(offset, 5).value = "Totales"
@@ -1943,7 +1955,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1957,7 +1969,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
