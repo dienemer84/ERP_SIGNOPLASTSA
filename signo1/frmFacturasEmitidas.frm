@@ -941,6 +941,8 @@ Private Sub btnExpotar_Click()
     
     xlWorksheet.Cells(2, 13).value = "Observaciones Cancela"
     
+    xlWorksheet.Cells(2, 14).value = "Recibos Asociados"
+    
     
     Dim idx As Integer
     idx = 3
@@ -999,8 +1001,12 @@ Private Sub btnExpotar_Click()
         xlWorksheet.Cells(idx, 12).value = fac.observaciones
         xlWorksheet.Cells(idx, 13).value = fac.observaciones_cancela
         
-        xlWorksheet.Cells(idx, 14).value = fac.Id
-        xlWorksheet.Cells(idx, 15).value = fac.Cancelada
+'        xlWorksheet.Cells(idx, 14).value = fac.Id
+'        xlWorksheet.Cells(idx, 15).value = fac.Cancelada
+
+        xlWorksheet.Cells(idx, 14).value = fac.RecibosAplicadosId
+   
+        
         
 
         idx = idx + 1

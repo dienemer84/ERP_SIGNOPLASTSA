@@ -186,6 +186,8 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
         Orden = " nroFactura  ASC, AdminFacturas.FechaEmision  asc"
     End If
 
+
+
     q = "AdminFacturas.FechaEmision between '" & funciones.dateFormateada(FechaDesde) & "' and '" & funciones.dateFormateada(FechaHasta) & "' and (AdminFacturas.estado IN (" & EstadoFacturaCliente.Aprobada & ", " & EstadoFacturaCliente.Anulada & ", " & EstadoFacturaCliente.CanceladaNC & ", " & EstadoFacturaCliente.CanceladaNCParcial & ") AND aprobacion_afip = 1)"
 
     If idCliente > 0 Then

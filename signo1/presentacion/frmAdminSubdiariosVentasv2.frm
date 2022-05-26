@@ -652,8 +652,15 @@ Private Sub Form_Resize()
 End Sub
 
 Private Sub llenarLista()
+
+'Me.dtpDesde.value = "01/01/2021"
+'Me.dtpHasta.value = "31/12/2021"
+
     If Me.rdoRangoFechas.value Then
-        Set col = DAOSubdiarios.SubDiarioVentas(Me.dtpDesde.value, Me.dtpHasta.value)
+       Set col = DAOSubdiarios.SubDiarioVentas(Me.dtpDesde.value, Me.dtpHasta.value)
+        
+       'Set col = DAOSubdiarios.SubDiarioVentas("01/01/2021", "31/12/2021")
+    
     Else
         If Me.cboLiquidaciones.ListIndex <> -1 Then
             Set liqui = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
@@ -875,7 +882,9 @@ Public Function ExportaSubDiarioVentas() As Boolean
         Dim hasta As Date
         If Me.rdoRangoFechas.value Then
             desde = Me.dtpDesde.value
+            'desde = "01/01/2021"
             hasta = Me.dtpHasta.value
+            'hasta = "31/12/2021"
         Else
             Dim liq As LiquidacionSubdiarioVenta
             Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
