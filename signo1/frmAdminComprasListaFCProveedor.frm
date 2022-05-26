@@ -8,13 +8,13 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ClientHeight    =   7815
    ClientLeft      =   60
    ClientTop       =   420
-   ClientWidth     =   25005
+   ClientWidth     =   14655
    ClipControls    =   0   'False
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   7815
-   ScaleWidth      =   25005
+   ScaleWidth      =   14655
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1800
@@ -179,7 +179,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
       Begin XtremeSuiteControls.ComboBox cboRangosCarga 
          Height          =   315
-         Left            =   2490
+         Left            =   2520
          TabIndex        =   19
          Top             =   1335
          Width           =   2835
@@ -766,7 +766,7 @@ Private Sub Command3_Click()
     For Each Factura In facturas
 
         If Factura.estado = Saldada Then
-            q = "UPDATE AdminComprasFacturasProveedores SET total_abonado = " & Factura.Total & " WHERE id=" & Factura.id
+            q = "UPDATE AdminComprasFacturasProveedores SET total_abonado = " & Factura.Total & " WHERE id=" & Factura.Id
             If Not conectar.execute(q) Then GoTo E
         End If
 
@@ -798,7 +798,7 @@ Private Sub finalizar_Click()
                 txtComprobante.SetFocus
                 funciones.foco Me.txtComprobante
                 '---------------------------------------
-                If Not Factura.FormaPagoCuentaCorriente Then MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().id & ".", vbInformation
+                If Not Factura.FormaPagoCuentaCorriente Then MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().Id & ".", vbInformation
                 
                 Dim tmp As clsFacturaProveedor
                 facturas.item(grilla.RowIndex(grilla.row)).estado = Factura.estado
@@ -823,7 +823,7 @@ Private Sub Form_Load()
     Set colProveedores = DAOProveedor.FindAll
     For Each prov In colProveedores
         cboProveedores.AddItem prov.RazonSocial
-        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.id
+        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
     Next
 
 
@@ -852,7 +852,7 @@ Dim cc As clsCuentaContable
     For Each cc In DAOCuentaContable.GetAll
         If LenB(Trim$(cc.nombre)) > 0 Then
             Me.cboCuentasContables.AddItem cc.codigo & "- " & cc.nombre
-            Me.cboCuentasContables.ItemData(Me.cboCuentasContables.NewIndex) = cc.id
+            Me.cboCuentasContables.ItemData(Me.cboCuentasContables.NewIndex) = cc.Id
         End If
     Next cc
     Me.cboCuentasContables.ListIndex = -1
@@ -872,6 +872,9 @@ Dim cc As clsCuentaContable
     Me.dtpHastaCarga.value = Null
 
     Me.grilla.Refresh
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 End Sub
 Public Sub llenarGrilla()
     Dim tot As Double
@@ -941,10 +944,10 @@ Public Sub llenarGrilla()
 
 
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-        Total = Total + MonedaConverter.Convertir(F.Total * c, F.moneda.id, MonedaConverter.Patron.id)
-        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
-        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
-        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.moneda.id, MonedaConverter.Patron.id)
+        Total = Total + MonedaConverter.Convertir(F.Total * c, F.moneda.Id, MonedaConverter.Patron.Id)
+        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
+        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
+        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.moneda.Id, MonedaConverter.Patron.Id)
         'Agrega DNEMER 03/02/2021
         totalpercep = totalpercep + F.totalPercepciones * c
         
@@ -995,7 +998,7 @@ Private Sub grilla_DblClick()
 End Sub
 
 Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 15 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
+    If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 
 End Sub
 
@@ -1079,12 +1082,14 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         End If
 
         'If Factura.OrdenPagoId > 0 Then Values(16) = Factura.OrdenPagoId
-              Values(16) = Factura.OrdenesPagoId
+        
+        Values(16) = Factura.OrdenesPagoId
+        
         Values(17) = Factura.UsuarioCarga.usuario
         
         Values(18) = Factura.TipoCambio
                     
-        Values(19) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+        Values(19) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
 
 
   End With
@@ -1106,9 +1111,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = facturas.count To 1 Step -1
-            If facturas(i).id = tmp.id Then
+            If facturas(i).Id = tmp.Id Then
                 Set rectmp = facturas(i)
-                rectmp.id = tmp.id
+                rectmp.Id = tmp.Id
                 rectmp.estado = tmp.estado
                 rectmp.Proveedor = tmp.Proveedor
                 rectmp.FEcha = tmp.FEcha
@@ -1135,7 +1140,7 @@ Private Sub mnuArchivos_Click()
     Dim archi As New frmArchivos2
 
     archi.Origen = OrigenArchivos.OA_FacturaProveedor
-    archi.ObjetoId = Factura.id
+    archi.ObjetoId = Factura.Id
     archi.caption = Factura.NumeroFormateado
     archi.Show
 
@@ -1143,7 +1148,7 @@ End Sub
 
 Private Sub mnuEliminar_Click()
     If MsgBox("¿Está seguro de eliminar la " & Factura.NumeroFormateado & " de " & Factura.Proveedor.RazonSocial & "?", vbInformation + vbYesNo) = vbYes Then
-        If DAOFacturaProveedor.Delete(Factura.id) Then
+        If DAOFacturaProveedor.Delete(Factura.Id) Then
             MsgBox "Factura eliminada.", vbInformation
             llenarGrilla
         Else
@@ -1159,7 +1164,7 @@ Private Sub mnuPagarEnEfectivo_Click()
         MsgBox "Se creará una OP con fecha " + CStr(Factura.FEcha)
         If IsDate(Factura.FEcha) Then
             If DAOFacturaProveedor.PagarEnEfectivo(Factura, Factura.FEcha, True) Then
-                MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().id & ".", vbInformation
+                MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().Id & ".", vbInformation
                 llenarGrilla
                 Me.txtComprobante.SetFocus
             Else
@@ -1176,9 +1181,9 @@ End Sub
 Private Sub mnuScan_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_FacturaProveedor, Factura.id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_FacturaProveedor, Factura.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_FacturaProveedor)
-        Me.grilla.RefreshRowIndex (Factura.id)
+        Me.grilla.RefreshRowIndex (Factura.Id)
 
     End If
 
@@ -1187,7 +1192,7 @@ End Sub
 Private Sub MnuVerOP_Click()
 
     Dim Orden As OrdenPago
-    Set Orden = DAOOrdenPago.FindByFacturaId(Factura.id)
+    Set Orden = DAOOrdenPago.FindByFacturaId(Factura.Id)
     Dim f22 As New frmCrearOrdenPago
     f22.Show
     f22.ReadOnly = True
@@ -1210,7 +1215,7 @@ End Sub
 Private Sub verHistorial_Click()
     If grilla.ItemCount > 0 Then
         SeleccionarFactura
-        Factura.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(Factura.id)
+        Factura.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(Factura.Id)
         frmHistoriales.lista = Factura.Historial
         frmHistoriales.Show
     End If

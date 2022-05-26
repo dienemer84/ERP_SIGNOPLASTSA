@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminCobranzasLista 
    BackColor       =   &H00C0C0C0&
@@ -303,7 +303,7 @@ Private Sub aprobarRecibo_Click()
     Dim idRecibo As Long
     If MsgBox("¿Está seguro de aprobar este recibo?", vbYesNo, "Confirmación") = vbYes Then
 
-        Set recibo = DAORecibo.FindById(recibo.id, True, True, True, True, True)
+        Set recibo = DAORecibo.FindById(recibo.Id, True, True, True, True, True)
 
         If DAORecibo.aprobar(recibo) Then
             MsgBox "Aprobación exitosa!", vbInformation, "Información"
@@ -364,7 +364,7 @@ Private Sub editarRecibo_Click()
 
     Dim F As New frmAdminCobranzasNuevoRecibo
     F.editar = True
-    F.reciboId = recibo.id
+    F.reciboId = recibo.Id
     F.Show
 End Sub
 
@@ -381,8 +381,13 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = i
     llenarLista
+    
+    Me.caption = caption & "(" & Name & ")"
+        
 End Sub
+
 Private Sub llenarLista()
+
     Set tmpIncidencias = DAOIncidencias.GetCantidadIncidenciasPorReferencia(OI_Recibos)
     Set tmpArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Recibos)
     Dim F As String
@@ -420,21 +425,19 @@ Private Sub grilla_recibos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla_recibos, Column
 End Sub
 
-
-
 Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
 
     recibo = recibos.item(RowIndex)
 
-    If ColIndex = 6 And tmpArchivos.item(recibo.id) > 0 Then
+    If ColIndex = 6 And tmpArchivos.item(recibo.Id) > 0 Then
         IconIndex = 1
     End If
 End Sub
 
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        Me.nro.caption = "[ Nro. " & Format(recibo.id, "0000") & " ]"
+        Me.nro.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
         If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True
             Me.imprimirRecibo.Enabled = False
@@ -480,8 +483,6 @@ Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
         RowBuffer.CellStyle(7) = "Rojo"
     End If
 
-
-
     If RowBuffer.value(8) > 0 Then
         RowBuffer.CellStyle(8) = "HayArchivosIncidencias"
     End If
@@ -497,7 +498,7 @@ End Sub
 
 Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set recibo = recibos.item(RowIndex)
-    Values(1) = recibo.id
+    Values(1) = recibo.Id
     Values(2) = Format(recibo.FEcha, "yyyy/mm/dd", vbSunday)
     
     
@@ -507,13 +508,13 @@ Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmar
     Values(5) = recibo.moneda.NombreCorto
     Values(6) = funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico + recibo.TotalRetenciones)
     Values(7) = enums.EnumEstadoRecibo(recibo.estado)
-    Values(8) = IIf(IsEmpty(tmpArchivos(recibo.id)), 0, tmpArchivos(recibo.id))
+    Values(8) = IIf(IsEmpty(tmpArchivos(recibo.Id)), 0, tmpArchivos(recibo.Id))
 End Sub
 
 
 Private Sub imprimirRecibo_Click()
     If MsgBox("¿Desea imprimir el recibo?", vbYesNo, "Confirmación") = vbYes Then
-        DAORecibo.Imprimir recibo.id
+        DAORecibo.Imprimir recibo.Id
 
     End If
 
@@ -534,19 +535,19 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Dim i As Long
         For i = recibos.count To 1 Step -1
 
-            If recibos(i).id = tmp.id Then
+            If recibos(i).Id = tmp.Id Then
 
                 recibos.remove i
                 If recibos.count > 0 Then
                     If i = 1 Then    'ver esto cuand oes un solo item
-                        recibos.Add tmp, CStr(tmp.id), 1
+                        recibos.Add tmp, CStr(tmp.Id), 1
                     ElseIf (i - 1) = recibos.count Then
-                        recibos.Add tmp, CStr(tmp.id), , i - 1
+                        recibos.Add tmp, CStr(tmp.Id), , i - 1
                     Else
-                        recibos.Add tmp, CStr(tmp.id), i
+                        recibos.Add tmp, CStr(tmp.Id), i
                     End If
                 Else
-                    recibos.Add tmp, CStr(tmp.id)
+                    recibos.Add tmp, CStr(tmp.Id)
                 End If
 
 
@@ -567,9 +568,9 @@ End Function
 Private Sub mnuAdquirir_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_Recibos, recibo.id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_Recibos, recibo.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Recibos)
-        Me.grilla_recibos.RefreshRowIndex (recibo.id)
+        Me.grilla_recibos.RefreshRowIndex (recibo.Id)
     End If
 End Sub
 
@@ -577,7 +578,7 @@ Private Sub mnuAnular_Click()
     On Error GoTo err1
 
 
-    If MsgBox("¿Desera anular el recibo número " & recibo.id & " ?" & Chr(10) & "Esta acción no tiene rollback", vbYesNo, "Confirmación") = vbYes Then
+    If MsgBox("¿Desera anular el recibo número " & recibo.Id & " ?" & Chr(10) & "Esta acción no tiene rollback", vbYesNo, "Confirmación") = vbYes Then
         DAORecibo.Anular recibo
         MsgBox "Recibo anulado con éxito!", vbInformation, "Información"
     End If
@@ -590,8 +591,8 @@ End Sub
 Private Sub mnuArchivos_Click()
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OA_Recibos
-    frmarchi1.ObjetoId = recibo.id
-    frmarchi1.caption = "Recibo Nº " & recibo.id
+    frmarchi1.ObjetoId = recibo.Id
+    frmarchi1.caption = "Recibo Nº " & recibo.Id
     frmarchi1.Show
 End Sub
 
@@ -605,7 +606,7 @@ Private Sub verRecibo_Click()
     On Error GoTo err1
     Dim F As New frmAdminCobranzasNuevoRecibo
     F.editar = False
-    F.reciboId = recibo.id
+    F.reciboId = recibo.Id
     F.Show
     Exit Sub
 err1:

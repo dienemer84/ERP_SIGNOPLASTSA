@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmEntregas2 
    BorderStyle     =   1  'Fixed Single
@@ -450,7 +450,7 @@ Private Sub CargaDetalles()
     Me.gridDetalles.ItemCount = 0
     Me.gridEntregas.ItemCount = 0
 
-    Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.id, True, True, True)
+    Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.Id, True, True, True)
     Me.gridDetalles.ItemCount = m_ot.Detalles.count
 
     Me.lblPorcentajeAvance.caption = "% Avance: " & m_ot.PorcentajeAvance
@@ -509,10 +509,10 @@ Private Sub btnCerrar_Click()
     If m_ot.TodoEntregado Then
         'se cierra
         If DAOOrdenTrabajo.Cerrar(m_ot) Then
-            Set m_ot = DAOOrdenTrabajo.FindById(m_ot.id)
+            Set m_ot = DAOOrdenTrabajo.FindById(m_ot.Id)
             CargaDetalles
 
-            MsgBox "La OT " & m_ot.id & " se cerró correctamente.", vbInformation
+            MsgBox "La OT " & m_ot.Id & " se cerró correctamente.", vbInformation
 
             Dim v As New clsEventoObserver
             Set v.Elemento = m_ot
@@ -530,7 +530,7 @@ Private Sub btnCerrar_Click()
         Else
             If m_ot.PuedeCerrarse Then
                 Dim fEntTotal As New frmEntregaTotal
-                fEntTotal.Pedido = m_ot.id
+                fEntTotal.Pedido = m_ot.Id
                 fEntTotal.Show 1
                 Unload Me
             Else
@@ -597,7 +597,7 @@ Private Sub btnExportarExcel_Click()
         xlWorksheet.Cells(row, 3) = detalle.CantidadPedida
         xlWorksheet.Cells(row, 4) = detalle.CantidadEntregada
 
-        Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalle.id)
+        Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalle.Id)
         If Entregas.count > 0 Then
             row = row + 1
             xlWorksheet.Cells(row, 2) = "Cant Entreg"
@@ -666,7 +666,7 @@ Private Sub btnRemitar_Click()
         If detasId(0) <> 0 Then
             ReDim Preserve detasId(UBound(detasId, 1) + 1)
         End If
-        detasId(UBound(detasId, 1)) = detaOT.id
+        detasId(UBound(detasId, 1)) = detaOT.Id
 
 
         If (detaOT.CantidadFabricados + detaOT.ReservaStock) = 0 Then
@@ -681,14 +681,14 @@ Private Sub btnRemitar_Click()
 
         Set detaOT = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).RowIndex)
         Set fEntrega.deta = detaOT
-        fEntrega.lblIdPieza = detaOT.id    ' detaOT.pieza.Id
+        fEntrega.lblIdPieza = detaOT.Id    ' detaOT.pieza.Id
         fEntrega.lblPieza = detaOT.Pieza.nombre
         fEntrega.lblPedidos = detaOT.CantidadPedida
         fEntrega.Text1 = detaOT.CantidadPedida - detaOT.CantidadFabricados
         fEntrega.lblFabricados = detaOT.CantidadFabricados
         fEntrega.lblEntregados = detaOT.CantidadEntregada
         fEntrega.lblDeStock = detaOT.ReservaStock
-        fEntrega.lblOT = m_ot.id
+        fEntrega.lblOT = m_ot.Id
         fEntrega.lblItem = detaOT.item
         fEntrega.TipoOrden = m_ot.TipoOrden
         
@@ -696,7 +696,7 @@ Private Sub btnRemitar_Click()
 
     ElseIf Me.gridDetalles.SelectedItems.count > 1 Then
         Dim f22 As New frmPlaneamientoRealizarEntregaMultiple
-        f22.idP = m_ot.id
+        f22.idp = m_ot.Id
         f22.TipoOrden = m_ot.TipoOrden
         f22.vector detasId
         f22.Show 1
@@ -762,7 +762,7 @@ Private Sub Command1_Click()
     c = 0
     While Not rs.EOF And Not rs.BOF
 
-        q = "select * from detalles_pedidos_cantidad where id_detalle_pedido=" & rs!id    '& " and tipo_cantidad=2"
+        q = "select * from detalles_pedidos_cantidad where id_detalle_pedido=" & rs!Id    '& " and tipo_cantidad=2"
         Set rs2 = conectar.RSFactory(q)
         cont = 0
         While Not rs2.EOF And Not rs2.BOF
@@ -772,7 +772,7 @@ Private Sub Command1_Click()
 
 
 
-        If Not conectar.execute("INSERT INTO sp.detalles_pedidos_cantidad (id_detalle_pedido, cantidad, fecha, tipo_cantidad, monto) VALUES  (' " & rs!id & " ',   '" & rs!Cantidad & " ',  '" & funciones.datetimeFormateada(Now) & "',    '2',    ' " & rs!Valor & " '     )") Then GoTo error1
+        If Not conectar.execute("INSERT INTO sp.detalles_pedidos_cantidad (id_detalle_pedido, cantidad, fecha, tipo_cantidad, monto) VALUES  (' " & rs!Id & " ',   '" & rs!Cantidad & " ',  '" & funciones.datetimeFormateada(Now) & "',    '2',    ' " & rs!Valor & " '     )") Then GoTo error1
         c = c + 1
         Debug.Print c
 
@@ -809,6 +809,7 @@ Me.btnRemitar.Enabled = valid Or m_ot.TipoOrden = OT_STOCK
 Me.btnTomarDeStock.Enabled = valid
 
 gridDetalles_SelectionChange
+
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -822,9 +823,9 @@ Private Sub gridDetalles_MouseUp(Button As Integer, Shift As Integer, x As Singl
 
     If Button = 2 And idx > 0 Then
 
-        Me.mnuArchivoPieza.caption = "De la Pieza... " & CantArchivos.item(detalle.Pieza.id)
+        Me.mnuArchivoPieza.caption = "De la Pieza... " & CantArchivos.item(detalle.Pieza.Id)
 
-        Me.mnuDelDetalle.caption = "Del Detalle... " & CantArchivosDetalle.item(detalle.id)
+        Me.mnuDelDetalle.caption = "Del Detalle... " & CantArchivosDetalle.item(detalle.Id)
 
 
 
@@ -853,11 +854,11 @@ Private Sub gridDetalles_SelectionChange()
 
     If Me.gridDetalles.RowIndex(Me.gridDetalles.row) > 0 Then
         Set detalle = m_ot.Detalles.item(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
-        Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalle.id)
+        Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalle.Id)
 
         If Permisos.AdminFacturaConsultas Then
             Me.gridFacturas.ItemCount = 0
-            Set facturas = DAOFacturaDetalles.FindAll("entregas.idDetallePedido =" & detalle.id, True)
+            Set facturas = DAOFacturaDetalles.FindAll("entregas.idDetallePedido =" & detalle.Id, True)
 
             Me.gridFacturas.ItemCount = facturas.count
         End If
@@ -879,7 +880,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(4) = detalle.CantidadPedida
         
         If m_ot.TipoOrden = OT_STOCK Then
-            Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.id) & ")"
+            Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.Id) & ")"
         End If
         
         Values(5) = detalle.FechaEntrega
@@ -950,7 +951,7 @@ Private Sub ImprimirEntregas()
     '        Exit Sub
     '    End If
 
-    Printer.Print "C.Costos: " & m_ot.cliente.id & " - " & m_ot.cliente.razon,
+    Printer.Print "C.Costos: " & m_ot.cliente.Id & " - " & m_ot.cliente.razon,
     Printer.Print "Referencia: " & UCase(m_ot.descripcion)
     Printer.Print "Entrega: " & Format(m_ot.FechaEntrega, "dd-mm-yyyy")
     Printer.Print
@@ -988,7 +989,7 @@ Private Sub ImprimirEntregas()
         Printer.Print Tab(100);
         Printer.Print detalle.CantidadEntregada
 
-        Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalle.id)
+        Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalle.Id)
 
         If Entregas.count > 0 Then
             Printer.Print
@@ -1075,7 +1076,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
                 If redeta.Origen = OrigenRemitoConcepto Then
                     If MsgBox("¿Está seguro de aplicar este remito a este item de la OT?", vbYesNo + vbQuestion) = vbYes Then
-                        If claseP.aplicarRemitoAOT(m_ot.id, redeta.id, detalle.id, redeta.Cantidad) Then
+                        If claseP.aplicarRemitoAOT(m_ot.Id, redeta.Id, detalle.Id, redeta.Cantidad) Then
                             MsgBox "Remito aplicado correctamente.", vbInformation
                             CargaDetalles
                         Else
@@ -1096,7 +1097,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 
 
-                        If claseP.aplicarRemitoAOT(m_ot.id, redeta.id, detalle.id, detalle.CantidadPedida - detalle.CantidadEntregada) Then
+                        If claseP.aplicarRemitoAOT(m_ot.Id, redeta.Id, detalle.Id, detalle.CantidadPedida - detalle.CantidadEntregada) Then
                             MsgBox "Remito aplicado correctamente.", vbInformation
                             CargaDetalles
                         Else
@@ -1125,7 +1126,7 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
     itemsDisponibles = funciones.itemsPorRemito
     On Error GoTo err1
     Dim SalioDelFor As Boolean
-    Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.id, True, True, True)
+    Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.Id, True, True, True)
     Dim deta As DetalleOrdenTrabajo
     Dim Cant As Double
     Dim cantEntrega As Double
@@ -1158,7 +1159,7 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
 
             deta.CantidadFabricados = deta.CantidadFabricados + Cant
             deta.CantidadFabricadosStatic = deta.CantidadFabricadosStatic + Cant
-            If Not DAODetalleOrdenTrabajo.SaveCantidad(deta.id, Cant, CantidadFabricada_, 0, Remito.id, 0, 0, 0) Then GoTo err1
+            If Not DAODetalleOrdenTrabajo.SaveCantidad(deta.Id, Cant, CantidadFabricada_, 0, Remito.Id, 0, 0, 0) Then GoTo err1
         End If
 
         'realizo la entrega
@@ -1177,10 +1178,10 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
                 redeta.observaciones = deta.Nota
             End If
 
-            redeta.idDetallePedido = deta.id
-            redeta.idpedido = m_ot.id
+            redeta.idDetallePedido = deta.Id
+            redeta.idpedido = m_ot.Id
             redeta.Origen = OrigenRemitoOt
-            redeta.Remito = Remito.id
+            redeta.Remito = Remito.Id
             redeta.Valor = deta.Precio
             redeta.ValorModificado = False
             Set redeta.RemitoAlQuePertenece = Remito
@@ -1228,7 +1229,7 @@ Private Sub mnuArchivoPieza_Click()
     gridDetalles_SelectionChange
     Dim F As New frmArchivos2
     F.Origen = OrigenArchivos.OA_Piezas
-    F.ObjetoId = detalle.Pieza.id
+    F.ObjetoId = detalle.Pieza.Id
     F.caption = "OT Nº " & m_ot.IdFormateado & " - Item " & detalle.item
     F.Show
 End Sub
@@ -1263,7 +1264,7 @@ Private Sub mnuDelDetalle_Click()
     gridDetalles_SelectionChange
     Dim F As New frmArchivos2
     F.Origen = OrigenArchivos.OA_OrdenesTrabajoDetalle
-    F.ObjetoId = detalle.id
+    F.ObjetoId = detalle.Id
     F.caption = "OT Nº " & m_ot.IdFormateado & " - Item " & detalle.item
     F.Show
 End Sub
@@ -1275,7 +1276,7 @@ Private Sub mnuVerDesarrollo_Click()
     'If idx > 0 Then
     Dim F As New frmDesarrollo
     Load F
-    F.CargarPieza detalle.Pieza.id     'm_ot.Detalles(idx).Pieza.Id
+    F.CargarPieza detalle.Pieza.Id     'm_ot.Detalles(idx).Pieza.Id
     F.Show
 
     '    End If

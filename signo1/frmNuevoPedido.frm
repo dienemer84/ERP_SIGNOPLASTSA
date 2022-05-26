@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmVentasPedidoNuevo 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -213,7 +213,7 @@ Begin VB.Form frmVentasPedidoNuevo
       _ExtentX        =   2355
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   56295425
+      Format          =   58458113
       CurrentDate     =   38861
    End
    Begin GridEX20.GridEX grilla 
@@ -424,7 +424,7 @@ End Sub
 Private Sub cboClientes_Click()
     On Error GoTo err1
     If formLoading Then Exit Sub
-    Set presupuesto.Cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
+    Set presupuesto.cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
     MostrarOTPendientes Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
     Exit Sub
 err1:
@@ -441,8 +441,8 @@ Private Sub BuscarPresu()
             If presupuesto.EstadoPresupuesto = Enviado_ Then
                 Set presupuesto.DetallePresupuesto = DAOPresupuestosDetalle.GetAllByPresupuesto(presupuesto)
                 llenarLista
-                Me.lblMoneda = presupuesto.Moneda.NombreCorto
-                Me.cboClientes.ListIndex = funciones.PosIndexCbo(presupuesto.Cliente.id, cboClientes)
+                Me.lblMoneda = presupuesto.moneda.NombreCorto
+                Me.cboClientes.ListIndex = funciones.PosIndexCbo(presupuesto.cliente.Id, cboClientes)
                 Me.txtDescripcion = presupuesto.detalle
                 Me.txtEntregaDias = presupuesto.FechaEntrega & " días"
                 Me.txtEntrega = Now + presupuesto.FechaEntrega
@@ -482,6 +482,10 @@ Private Sub Form_Load()
     formLoading = False
     MostrarOTPendientes Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
     Me.cboListaOt.ListIndex = 0
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 Private Sub MostrarOTPendientes(idCliente)
 
@@ -494,8 +498,8 @@ Private Sub MostrarOTPendientes(idCliente)
     Me.cboListaOt.AddItem "Nueva OT"
     Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = -1
     For Each Ot In col
-        Me.cboListaOt.AddItem Ot.id & " - " & Ot.descripcion
-        Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = Ot.id
+        Me.cboListaOt.AddItem Ot.Id & " - " & Ot.descripcion
+        Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = Ot.Id
     Next
     Me.cboListaOt.ListIndex = 0
 End Sub

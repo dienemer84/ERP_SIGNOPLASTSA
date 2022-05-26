@@ -392,7 +392,7 @@ Private vProveedor As clsProveedor
 Dim vContacto As clsContacto
 Dim contactos As Collection
 
-Public Property Let Cliente(nvalue As clsCliente)
+Public Property Let cliente(nvalue As clsCliente)
     Set vCliente = nvalue
 End Property
 
@@ -428,6 +428,9 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.grilla
     Dim rs As New Recordset
     llenar_Grilla
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 End Sub
 
 Private Sub agregarContacto()
@@ -484,11 +487,11 @@ Private Sub agregarContacto()
         vContacto.email = UCase(Trim(Me.txtEmail))
         vContacto.celular = UCase(Trim(Me.txtCelular))
         vContacto.Cargo = UCase(Trim(Me.txtCargo))
-        vContacto.idPersona = vCliente.id
+        vContacto.idPersona = vCliente.Id
 
 
         If DAOContacto.modificar(vContacto) Then
-            MsgBox "Modificación existosa!", vbInformation, "Información"
+            MsgBox "Modificación exitosa!", vbInformation, "Información"
             grilla.RefreshRowIndex rows
         Else
             MsgBox "Se produjo algún error!", vbCritical, "Error"
@@ -502,11 +505,11 @@ End Sub
 
 Private Sub llenar_Grilla()
     If Not vCliente Is Nothing Then
-        Set contactos = DAOContacto.FindAll(cliente_, "idCliente = " & vCliente.id)
-        idPersona = vCliente.id
+        Set contactos = DAOContacto.FindAll(cliente_, "idCliente = " & vCliente.Id)
+        idPersona = vCliente.Id
     ElseIf Not vProveedor Is Nothing Then
-        Set contactos = DAOContacto.FindAll(proveedor_, "idCliente = " & vProveedor.id)
-        idPersona = vProveedor.id
+        Set contactos = DAOContacto.FindAll(proveedor_, "idCliente = " & vProveedor.Id)
+        idPersona = vProveedor.Id
     End If
     grilla.ItemCount = contactos.count
 End Sub
@@ -521,7 +524,7 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectemp = contactos(RowIndex)
     With rectemp
-        Values(1) = Format(.id, "0000")
+        Values(1) = Format(.Id, "0000")
         Values(2) = UCase(.nombre)
         Values(3) = UCase(.Cargo)
         Values(4) = .celular

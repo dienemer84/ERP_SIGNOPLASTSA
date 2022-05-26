@@ -56,16 +56,16 @@ Public Function facturaImpresa(idFactura) As Long
 err441:
     facturaImpresa = -1    'no se pudo comprobar
 End Function
-Public Function facturasEntregadas(Origen As Integer, id As Long) As Recordset
+Public Function facturasEntregadas(Origen As Integer, Id As Long) As Recordset
 
 
 
     If Origen = 1 Or Origen = 2 Then    'facturas aplicadas a una OT then
-        strsql = "select f.id,f.nroFactura as factura from AdminFacturasDetalleNueva df inner join entregas e on df.idEntrega=e.id inner join AdminFacturas f on f.id=df.idFactura where e.idPedido=" & id & " and e.origen=" & Origen & " group by df.idFactura "
+        strsql = "select f.id,f.nroFactura as factura from AdminFacturasDetalleNueva df inner join entregas e on df.idEntrega=e.id inner join AdminFacturas f on f.id=df.idFactura where e.idPedido=" & Id & " and e.origen=" & Origen & " group by df.idFactura "
     ElseIf Origen = 3 Then    'factura aplicadas a un remito
-        strsql = "select f.id,f.nroFactura as factura from AdminFacturasDetalleNueva df inner join entregas e on df.idEntrega=e.id inner join AdminFacturas f on f.id=df.idFactura where e.remito=" & id & " group by df.idFactura"
+        strsql = "select f.id,f.nroFactura as factura from AdminFacturasDetalleNueva df inner join entregas e on df.idEntrega=e.id inner join AdminFacturas f on f.id=df.idFactura where e.remito=" & Id & " group by df.idFactura"
     ElseIf Origen = -1 Then
-        strsql = "select f.id,f.nroFactura as factura from AdminFacturas f  inner join AdminFacturasDetalleNueva df on df.idFactura=f.id inner join entregas e on e.id=df.idEntrega where idDetallePedido=" & id
+        strsql = "select f.id,f.nroFactura as factura from AdminFacturas f  inner join AdminFacturasDetalleNueva df on df.idFactura=f.id inner join entregas e on e.id=df.idEntrega where idDetallePedido=" & Id
     End If
 
 
@@ -163,7 +163,7 @@ Public Function realizaCambio(Origen As Double, idMonedaOrigen, idMonedaDestino)
     Me.ejecutarConsulta "select id,cambio from AdminConfigMonedas where patron=1"
     If Not rs.EOF And Not rs.BOF Then
         CambioPatron = rs!Cambio
-        idMonedaPatron = rs!id
+        idMonedaPatron = rs!Id
         If CambioPatron <> 1 Then
             MsgBox "El patron debe ser valor 1", vbCritical, "Error"
             Exit Function
@@ -236,7 +236,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
 
     While Not rs_p.EOF
         lst.ColumnHeaders.Add(i).text = rs_p!codigo
-        lst.ColumnHeaders(i).Tag = rs_p!id
+        lst.ColumnHeaders(i).Tag = rs_p!Id
         lst.ColumnHeaders(i).Width = 1000
 
         lst.ColumnHeaders(i).Alignment = lvwColumnRight
@@ -267,9 +267,9 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
 
     While Not rs_lista.EOF
         '' Set ret = Me.totalizarRecibo(rs_lista!Id, totalfacturs) '' -->> VER
-        Set r = DAORecibo.FindById(rs_lista!id, True, False, False, False, True)
+        Set r = DAORecibo.FindById(rs_lista!Id, True, False, False, False, True)
         Set x = lst.ListItems.Add(, , Format(rs_lista!FechaCreacion, "dd-mm-yyyy"))
-        x.SubItems(1) = Format(rs_lista!id, "0000-00000000")
+        x.SubItems(1) = Format(rs_lista!Id, "0000-00000000")
         x.SubItems(2) = rs_lista!razon
         x.SubItems(3) = rs_lista!Cuit
         x.SubItems(4) = funciones.FormatearDecimales(r.TotalFacturas, 2)
@@ -296,7 +296,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
             For Each ret In r.retenciones
 
 
-                If ret.Retencion.id = lst.ColumnHeaders(o).Tag Then
+                If ret.Retencion.Id = lst.ColumnHeaders(o).Tag Then
                     x.SubItems(o - 1) = ret.Valor
                 Else
                     If (Not IsNumeric(x.SubItems(o - 1))) Then x.SubItems(o - 1) = "0.00"
@@ -307,13 +307,13 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
 
         For Each ret In r.retenciones
 
-            If di.Exists(ret.Retencion.id) Then
+            If di.Exists(ret.Retencion.Id) Then
 
-                d = di.item(ret.Retencion.id)
+                d = di.item(ret.Retencion.Id)
                 d = d + ret.Valor
-                di.item(ret.Retencion.id) = d
+                di.item(ret.Retencion.Id) = d
             Else
-                di.Add ret.Retencion.id, ret.Valor
+                di.Add ret.Retencion.Id, ret.Valor
             End If
         Next ret
 
@@ -573,9 +573,9 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
     While Not rs_p.EOF
         i = i + 1
         lst.ColumnHeaders.Add(i).text = rs_p!codigo
-        lst.ColumnHeaders(i).Tag = rs_p!id
+        lst.ColumnHeaders(i).Tag = rs_p!Id
         lst.ColumnHeaders(i).Width = 1000
-        lst.ColumnHeaders(i).Tag = rs_p!id
+        lst.ColumnHeaders(i).Tag = rs_p!Id
 
 
         rs_p.MoveNext
@@ -607,9 +607,9 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
 
         x.SubItems(1) = rs_lista!razon
         x.SubItems(2) = rs_lista!Cuit
-        x.SubItems(3) = Format(rs_lista!id, "0000-00000000")
+        x.SubItems(3) = Format(rs_lista!Id, "0000-00000000")
 
-        Set ret = conectar.RSFactory("select *, fecha as fechaRet from AdminRecibosDetalleRetenciones where idRecibo=" & rs_lista!id & " and fecha >= '" & Format(desde, "yyyy-mm-dd") & "' and fecha <=  '" & Format(hasta, "yyyy-mm-dd") & "'")
+        Set ret = conectar.RSFactory("select *, fecha as fechaRet from AdminRecibosDetalleRetenciones where idRecibo=" & rs_lista!Id & " and fecha >= '" & Format(desde, "yyyy-mm-dd") & "' and fecha <=  '" & Format(hasta, "yyyy-mm-dd") & "'")
 
         If ret.EOF = False And ret.BOF = False Then
             x.SubItems(4) = ret!NroRetencion & " (" & ret!fechaRet & ")"
@@ -878,3 +878,55 @@ End Function
 Public Function escanearFactura(idFactura) As Boolean
     newdoc = sTwain.TransferWithoutUI(300, BW, 1, 1, 2, 5, "noui_mono.bmp")
 End Function
+
+
+Public Function ImportarComprobantesAFIP(ruta As String) As Boolean
+    On Error GoTo err4
+    ImportarComprobantesAFIP = True
+    
+    'ProcesarArchivoCSV (ruta)
+    
+    Dim rs As Recordset
+    Dim strsql As String
+    strsql = "TRUNCATE sp_temporal.ComprobantesRecibidosAFIP"
+    Set rs = conectar.RSFactory(strsql)
+ 
+    strsql = "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_temporal.ComprobantesRecibidosAFIP" _
+        & " FIELDS TERMINATED BY ','" _
+        & " ENCLOSED BY " & Chr(39) & """" & Chr(39) & " " _
+        & " LINES TERMINATED BY '\r\n'" _
+        & " IGNORE 1 LINES" _
+        & " SET" _
+        & " puntodeventa = CONCAT(REPEAT('0',4 - LENGTH(puntodeventa)), puntodeventa)," _
+        & " numerodesde = CONCAT(REPEAT('0',8 - LENGTH(numerodesde)), numerodesde)," _
+        & " clave = CONCAT(puntodeventa,'-',numerodesde,nrodocemisor)"
+        
+    Set rs = conectar.RSFactory(strsql)
+
+    Exit Function
+err4:
+    ImportarComprobantesAFIP = False
+    cn.RollbackTrans
+End Function
+
+'Public Function ProcesarArchivoCSV(ruta As String)
+'' CON ESTA FUNCION SE QUITAN LAS COMILLAS DOBLES DEL ARCHIVO CSV
+'
+'    Dim intFile As Integer
+'    Dim strData As String
+'    Dim strFile As String
+'
+'    intFile = FreeFile
+'    strFile = ruta
+'    Open strFile For Input As intFile
+'    strData = Input(LOF(intFile), intFile)
+'    Close intFile
+'    Debug.Print (strData)
+'
+'    If InStr(strData, vbCrLf) <> 0 Then strData = Replace(strData, """", "")
+'
+'    Open strFile For Output As #1
+'    Print #1, strData
+'    Close #1
+'
+'End Function

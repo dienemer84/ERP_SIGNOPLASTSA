@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmConfigurarGastos 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -233,6 +233,10 @@ Private Sub Form_Load()
     Else
         Command2.Enabled = True
     End If
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 
 Private Sub lstGastos_Click()

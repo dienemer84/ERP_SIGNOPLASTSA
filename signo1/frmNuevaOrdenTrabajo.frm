@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmNuevaOrdenTrabajo 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
@@ -113,7 +113,7 @@ Begin VB.Form frmNuevaOrdenTrabajo
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   59899905
+      Format          =   58523649
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdGuardar 
@@ -292,7 +292,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Private clientes As New Collection
-Private monedas As New Collection
+Private Monedas As New Collection
 Private otsMarco As New Collection
 Private marco_ot As OrdenTrabajo
 
@@ -307,9 +307,9 @@ End Sub
 Private Sub cboContratos_Click()
     If Me.cboContratos.ListIndex <> -1 Then
         Set marco_ot = otsMarco.item(CStr(Me.cboContratos.ItemData(Me.cboContratos.ListIndex)))
-        Me.cboCliente.ListIndex = funciones.PosIndexCbo(marco_ot.cliente.id, Me.cboCliente)
-        Me.cboClienteFacturar.ListIndex = funciones.PosIndexCbo(marco_ot.ClienteFacturar.id, Me.cboCliente)
-        Me.cboMoneda.ListIndex = funciones.PosIndexCbo(marco_ot.moneda.id, Me.cboMoneda)
+        Me.cboCliente.ListIndex = funciones.PosIndexCbo(marco_ot.cliente.Id, Me.cboCliente)
+        Me.cboClienteFacturar.ListIndex = funciones.PosIndexCbo(marco_ot.ClienteFacturar.Id, Me.cboCliente)
+        Me.cboMoneda.ListIndex = funciones.PosIndexCbo(marco_ot.moneda.Id, Me.cboMoneda)
 
         Dim proxfecha As Date
         proxfecha = marco_ot.ProximaFechaActualizacionPrecios
@@ -364,17 +364,26 @@ Private Sub cmdGuardar_Click()
         MsgBox "Debe seleccionar un contrato marco.", vbInformation
         Exit Sub
     End If
-
+    
+    If Me.cboMoneda.ListIndex = 3 Then
+        MsgBox "No se puede cargar una OT con Moneda U$A Administrativo. Modifiquelo por favor.", vbInformation
+        Exit Sub
+    End If
+    
+    
     Dim Ot As New OrdenTrabajo
+
+    Ot.TipoOrden = Me.cboTipoOt.ListIndex + 1
     
-    
-    
-Ot.TipoOrden = Me.cboTipoOt.ListIndex + 1
     Set Ot.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
     Set Ot.ClienteFacturar = DAOCliente.BuscarPorID(Me.cboClienteFacturar.ItemData(Me.cboClienteFacturar.ListIndex))
+    
     Ot.FechaEntrega = Me.dtpFechaEntrega.value
     Ot.descripcion = Me.txtReferencia.text
-    Set Ot.moneda = monedas.item(CStr(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
+    
+    
+    Set Ot.moneda = Monedas.item(CStr(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
+    
 
     If Me.chkMarco.value = xtpChecked And Me.cboContratos.ListIndex <> -1 Then
         Ot.OTMarcoIdPadre = Me.cboContratos.ItemData(Me.cboContratos.ListIndex)
@@ -397,7 +406,7 @@ Ot.TipoOrden = Me.cboTipoOt.ListIndex + 1
 
 
     If DAOOrdenTrabajo.Save(Ot) Then
-        MsgBox "La orden de trabajo se guardo con el número " & Ot.id, vbInformation + vbOKOnly
+        MsgBox "La orden de trabajo se guardo con el número " & Ot.Id, vbInformation + vbOKOnly
         Dim EVENTO As New clsEventoObserver
         Set EVENTO.Elemento = Ot
         EVENTO.EVENTO = agregar_
@@ -415,7 +424,7 @@ Private Sub Form_Load()
     Me.dtpFechaEntrega = Now
     TipoOt = OT_TRADICIONAL
 
-    Set monedas = DAOMoneda.GetAll()
+    Set Monedas = DAOMoneda.GetAll()
     Dim mon As clsMoneda
 
     Me.cboTipoOt.AddItem "Tradicional"
@@ -434,14 +443,14 @@ Private Sub Form_Load()
     Me.cboContratos.Clear
     For Each ot1 In otsMarco
         Me.cboContratos.AddItem ot1.IdFormateado & " - " & ot1.descripcion & " (" & ot1.FechaInicioMarco & " - " & ot1.FechaFinMarco & ")"
-        Me.cboContratos.ItemData(Me.cboContratos.NewIndex) = ot1.id
+        Me.cboContratos.ItemData(Me.cboContratos.NewIndex) = ot1.Id
     Next ot1
     Me.cboContratos.ListIndex = -1
 
     Me.cboMoneda.Clear
-    For Each mon In monedas
+    For Each mon In Monedas
         Me.cboMoneda.AddItem mon.NombreCorto
-        Me.cboMoneda.ItemData(Me.cboMoneda.NewIndex) = mon.id
+        Me.cboMoneda.ItemData(Me.cboMoneda.NewIndex) = mon.Id
     Next mon
-    If monedas.count > 0 Then cboMoneda.ListIndex = 0
+    If Monedas.count > 0 Then cboMoneda.ListIndex = 0
 End Sub

@@ -418,7 +418,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrControlCarga
          _Version        =   393216
          Name            =   "Texto5"
          Object.Left            =   2160
-         Object.Top             =   240
+         Object.Top             =   390
          Object.Width           =   6540
          Object.Height          =   135
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -446,7 +446,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrControlCarga
          _Version        =   393216
          Name            =   "Texto6"
          Object.Left            =   2160
-         Object.Top             =   380
+         Object.Top             =   255
          Object.Width           =   6540
          Object.Height          =   135
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 

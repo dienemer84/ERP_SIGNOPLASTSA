@@ -1,20 +1,20 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmVentasPresupuestoLista 
    BackColor       =   &H00C0C0C0&
    Caption         =   "Lista de cotizaciones"
    ClientHeight    =   7065
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   16215
+   ClientWidth     =   14970
    Icon            =   "frmListaPresupuestos.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MDIChild        =   -1  'True
    ScaleHeight     =   7065
-   ScaleWidth      =   16215
+   ScaleWidth      =   14970
    Begin XtremeSuiteControls.PushButton cmdImprimir 
       Height          =   375
       Left            =   120
@@ -412,8 +412,8 @@ End Sub
 Private Sub archivos_Click()
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = 2
-    frmarchi1.ObjetoId = rectmp.id
-    frmarchi1.caption = "Presupuesto Nº " & rectmp.id
+    frmarchi1.ObjetoId = rectmp.Id
+    frmarchi1.caption = "Presupuesto Nº " & rectmp.Id
     frmarchi1.Show
 End Sub
 Private Sub chkVerDetalle_Click()
@@ -498,7 +498,7 @@ Private Sub cmdEstad_Click()
             Else
                 'lo hace por historico
                 For Each dp In pto.DetallePresupuesto
-                    Set colHistoricos = DAODetallePresupuestoHistorico.FindAllByDetallePresupuestoId(dp.id)
+                    Set colHistoricos = DAODetallePresupuestoHistorico.FindAllByDetallePresupuestoId(dp.Id)
                     For Each dhp In colHistoricos
                         ProcessChild sectoresTiempo, dhp, dp.Cantidad
                     Next dhp
@@ -536,21 +536,21 @@ Private Function MergeEstadisticas(colOT As Collection, colPiezas As Collection)
     Dim tmpTareaTiempo As DTOTareaTiempo
 
     For Each sectorTiempo In colPiezas
-        If funciones.BuscarEnColeccion(colOT, CStr(sectorTiempo.Sector.id)) Then
-            Set tmpSectorTiempo = colOT.item(CStr(sectorTiempo.Sector.id))
+        If funciones.BuscarEnColeccion(colOT, CStr(sectorTiempo.Sector.Id)) Then
+            Set tmpSectorTiempo = colOT.item(CStr(sectorTiempo.Sector.Id))
         Else
             Set tmpSectorTiempo = New DTOSectoresTiempo
             Set tmpSectorTiempo.Sector = sectorTiempo.Sector
-            colOT.Add tmpSectorTiempo, CStr(tmpSectorTiempo.Sector.id)
+            colOT.Add tmpSectorTiempo, CStr(tmpSectorTiempo.Sector.Id)
         End If
 
         For Each tareaTiempo In sectorTiempo.ListaDtoTareaTiempo
-            If BuscarEnColeccion(tmpSectorTiempo.ListaDtoTareaTiempo, CStr(tareaTiempo.Tarea.id)) Then
-                Set tmpTareaTiempo = tmpSectorTiempo.ListaDtoTareaTiempo.item(CStr(tareaTiempo.Tarea.id))
+            If BuscarEnColeccion(tmpSectorTiempo.ListaDtoTareaTiempo, CStr(tareaTiempo.Tarea.Id)) Then
+                Set tmpTareaTiempo = tmpSectorTiempo.ListaDtoTareaTiempo.item(CStr(tareaTiempo.Tarea.Id))
             Else
                 Set tmpTareaTiempo = New DTOTareaTiempo
                 Set tmpTareaTiempo.Tarea = tareaTiempo.Tarea
-                tmpSectorTiempo.ListaDtoTareaTiempo.Add tmpTareaTiempo, CStr(tmpTareaTiempo.Tarea.id)
+                tmpSectorTiempo.ListaDtoTareaTiempo.Add tmpTareaTiempo, CStr(tmpTareaTiempo.Tarea.Id)
             End If
 
             tmpTareaTiempo.Tiempo = tmpTareaTiempo.Tiempo + tareaTiempo.Tiempo
@@ -579,16 +579,16 @@ Private Sub AddTarea(sectoresTiempo As Collection, Tarea As clsTarea, CantidadPe
     Else
         Set tiempoSectorDTO = New DTOSectoresTiempo
         Set tiempoSectorDTO.Sector = DAOSectores.GetById(Tarea.SectorID)
-        sectoresTiempo.Add tiempoSectorDTO, CStr(Tarea.Sector.id)
+        sectoresTiempo.Add tiempoSectorDTO, CStr(Tarea.Sector.Id)
     End If
 
 
-    If BuscarEnColeccion(tiempoSectorDTO.ListaDtoTareaTiempo, CStr(Tarea.id)) Then
-        Set tareaTiempoDTO = tiempoSectorDTO.ListaDtoTareaTiempo.item(CStr(Tarea.id))
+    If BuscarEnColeccion(tiempoSectorDTO.ListaDtoTareaTiempo, CStr(Tarea.Id)) Then
+        Set tareaTiempoDTO = tiempoSectorDTO.ListaDtoTareaTiempo.item(CStr(Tarea.Id))
     Else
         Set tareaTiempoDTO = New DTOTareaTiempo
         Set tareaTiempoDTO.Tarea = Tarea
-        tiempoSectorDTO.ListaDtoTareaTiempo.Add tareaTiempoDTO, CStr(Tarea.id)
+        tiempoSectorDTO.ListaDtoTareaTiempo.Add tareaTiempoDTO, CStr(Tarea.Id)
     End If
     tareaTiempoDTO.Tiempo = tareaTiempoDTO.Tiempo + Tiempo
 
@@ -621,7 +621,7 @@ Private Sub EditPres_Click()
     Dim frmNuevo As New frmVentasPresupuestoEditar
     If Permisos.VentasCotizControl Then
         Set frmNuevo = New frmVentasPresupuestoEditar
-        frmNuevo.nroPresu = rectmp.id
+        frmNuevo.nroPresu = rectmp.Id
         frmNuevo.Show
     Else
         sinAcceso
@@ -670,6 +670,10 @@ Private Sub Form_Load()
 
     llenar_lista_estados
     Channel.AgregarSuscriptor Me, Presupuestos_
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 Private Sub Form_Terminate()
     Channel.RemoverSuscripcionTotal Me
@@ -691,7 +695,7 @@ Private Sub grilla_DblClick()
     If rectmp.EstadoPresupuesto = ACotizar_ Then
         If Permisos.VentasCotizControl Then
             Set FRMEDIT = New frmVentasPresupuestoEditar
-            FRMEDIT.nroPresu = rectmp.id
+            FRMEDIT.nroPresu = rectmp.Id
             FRMEDIT.Show
         Else
             sinAcceso
@@ -734,7 +738,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Set rectmp = presupuestos.item(gr)
     est = rectmp.EstadoPresupuesto
     If Button = 2 Then
-        Me.numero.caption = "[ Nro. " & rectmp.id & " ]"
+        Me.numero.caption = "[ Nro. " & rectmp.Id & " ]"
         If est = 6 Then
             Me.ncotizar.Enabled = True
             Me.EditPres.Enabled = True
@@ -760,7 +764,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Me.mnuCrearOT.Enabled = (est = Enviado_)
 
         If Not Permisos.SistemaArchivosVer Then
-            Me.archivos = False
+            Me.Archivos = False
         End If
 
         Me.mnuCrearOT.Enabled = (Permisos.PlanOTcontrol)
@@ -795,7 +799,7 @@ Private Sub grilla_SelectionChange()
     End If
 End Sub
 Private Sub historic_Click()
-    DAOPresupuestoHistorial.getAllByPresu rectmp.id, True
+    DAOPresupuestoHistorial.getAllByPresu rectmp.Id, True
 End Sub
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = suscriber_id
@@ -811,7 +815,7 @@ Public Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = presupuestos.count To 1 Step -1
-            If presupuestos(i).id = tmp.id Then
+            If presupuestos(i).Id = tmp.Id Then
                 '                Set rectmp = presupuestos(i)
                 '                rectmp.Id = tmp.Id
                 '                rectmp.detalle = tmp.detalle
@@ -827,14 +831,14 @@ Public Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
                 If presupuestos.count > 0 Then
                     If i = 1 Then
-                        presupuestos.Add tmp, CStr(tmp.id), 1
+                        presupuestos.Add tmp, CStr(tmp.Id), 1
                     ElseIf (i - 1) = presupuestos.count Then
-                        presupuestos.Add tmp, CStr(tmp.id), , i - 1
+                        presupuestos.Add tmp, CStr(tmp.Id), , i - 1
                     Else
-                        presupuestos.Add tmp, CStr(tmp.id), i
+                        presupuestos.Add tmp, CStr(tmp.Id), i
                     End If
                 Else
-                    presupuestos.Add tmp, CStr(tmp.id)
+                    presupuestos.Add tmp, CStr(tmp.Id)
                 End If
 
                 grilla.RefreshRowIndex i
@@ -916,8 +920,8 @@ Private Sub recotiza_Click()
 End Sub
 
 Private Sub scanear_Click()
-    Dim archivos As New classArchivos
-    archivos.escanearDocumento 2, rectmp.id
+    Dim Archivos As New classArchivos
+    Archivos.escanearDocumento 2, rectmp.Id
 End Sub
 Private Sub txtCodigo_GotFocus()
     foco Me.txtCodigo
@@ -927,7 +931,7 @@ Private Sub txtFiltro_GotFocus()
 End Sub
 Private Sub verIncidencias_Click()
     Dim inci As New frmVerIncidencias
-    inci.referencia = rectmp.id
+    inci.referencia = rectmp.Id
     inci.Origen = 1
     inci.Show
 End Sub
@@ -968,7 +972,7 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectmp = presupuestos.item(RowIndex)
     With rectmp
-        Values(1) = Format(.id, "0000")
+        Values(1) = Format(.Id, "0000")
         Values(2) = .cliente.razon
         Values(3) = .detalle
         Values(4) = .FechaEntrega
@@ -976,8 +980,8 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(6) = enums.EnumEstadoPresupuesto(.EstadoPresupuesto)
         Values(7) = .fechaCreado
         Values(8) = .VencimientoPresupuesto
-        Values(9) = IIf(IsEmpty(tmpArchivos(.id)), 0, tmpArchivos(.id))
-        Values(10) = IIf(IsEmpty(tmpIncidencias(.id)), 0, tmpIncidencias(.id))
+        Values(9) = IIf(IsEmpty(tmpArchivos(.Id)), 0, tmpArchivos(.Id))
+        Values(10) = IIf(IsEmpty(tmpIncidencias(.Id)), 0, tmpIncidencias(.Id))
     End With
 End Sub
 

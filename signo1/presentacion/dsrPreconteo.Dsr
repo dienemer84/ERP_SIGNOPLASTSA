@@ -252,7 +252,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrPreconteo
    BeginProperty Section2 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "Sección1"
-      Object.Height          =   525
+      Object.Height          =   930
       NumControls     =   14
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -309,7 +309,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrPreconteo
          Object.Left            =   2085
          Object.Top             =   15
          Object.Width           =   5670
-         Object.Height          =   240
+         Object.Height          =   675
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   8.25
@@ -344,7 +344,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrPreconteo
       BeginProperty Item5 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Línea2"
-         Object.Top             =   520
+         Object.Left            =   15
+         Object.Top             =   900
          Object.Width           =   11445
       EndProperty
       ItemType6       =   4
@@ -352,7 +353,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrPreconteo
          _Version        =   393216
          Name            =   "Texto5"
          Object.Left            =   2085
-         Object.Top             =   255
+         Object.Top             =   700
          Object.Width           =   5700
          Object.Height          =   135
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 

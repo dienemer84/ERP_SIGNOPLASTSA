@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitoVer 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -231,7 +231,7 @@ Private Sub btnFacturar_Click()
                 MsgBox "No puede facturar un item que ya fue facturado.", vbExclamation
                 Exit Sub
             End If
-            returnCol.Add tmp, CStr(tmp.id)
+            returnCol.Add tmp, CStr(tmp.Id)
         Next js
     Else
         Set tmp = Remito.Detalles.item(Me.grilla.RowIndex(Me.grilla.row))
@@ -243,7 +243,7 @@ Private Sub btnFacturar_Click()
             MsgBox "No puede facturar un item que ya fue facturado.", vbExclamation
             Exit Sub
         End If
-        returnCol.Add tmp, CStr(tmp.id)
+        returnCol.Add tmp, CStr(tmp.Id)
     End If
 
     Dim ev As New clsEventoObserver
@@ -274,13 +274,13 @@ Private Sub cmdValorizar_Click()
     On Error GoTo err1
     If MsgBox("¿Seguro de guardar los cambios?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
 
-        Set cli_viejo = Remito.Cliente
+        Set cli_viejo = Remito.cliente
 
         Remito.detalle = UCase(Me.lblDetalle)
-        Set Remito.Cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
+        Set Remito.cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
         If Not DAORemitoS.Save(Remito, True, False) Then
             MsgBox "Se produjo algun error al guardar!", vbCritical, "Error"
-            Set Remito.Cliente = cli_viejo
+            Set Remito.cliente = cli_viejo
         Else
 
             MsgBox "Guardado correctamente!", vbInformation, "Información"
@@ -292,7 +292,7 @@ Private Sub cmdValorizar_Click()
     End If
     Exit Sub
 err1:
-    Set Remito.Cliente = cli_viejo
+    Set Remito.cliente = cli_viejo
 
 End Sub
 
@@ -313,10 +313,10 @@ Private Function CrearDetalleDeOT() As Boolean
         detaEntrega.facturable = True
         detaEntrega.Facturado = False
         detaEntrega.FEcha = Now
-        detaEntrega.idDetallePedido = detapedido.id
-        detaEntrega.idpedido = detapedido.OrdenTrabajo.id
-        detaEntrega.origen = OrigenRemitoOt
-        detaEntrega.Remito = Me.Remito.id
+        detaEntrega.idDetallePedido = detapedido.Id
+        detaEntrega.idpedido = detapedido.OrdenTrabajo.Id
+        detaEntrega.Origen = OrigenRemitoOt
+        detaEntrega.Remito = Me.Remito.Id
         detaEntrega.Valor = detapedido.Precio
         detaEntrega.ValorModificado = False
         Set detaEntrega.DetallePedido = detapedido
@@ -354,16 +354,19 @@ Private Sub Form_Load()
     vId = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, RemitosDetalle_
     mostrarRemito
+    
+    Me.caption = caption & " (" & Name & ")"
+        
 End Sub
 Private Sub mostrarRemito()
 
     If IsSomething(Remito) Then
         Me.caption = "Remito " & Remito.numero
-        Set Remito.Detalles = DAORemitoSDetalle.FindAllByRemito(Remito.id, False, True)
+        Set Remito.Detalles = DAORemitoSDetalle.FindAllByRemito(Remito.Id, False, True)
 
         Me.lblFecha.caption = Remito.FEcha
         Me.lblDetalle = Remito.detalle
-        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.Cliente.id, Me.cboClientes)
+        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.cliente.Id, Me.cboClientes)
 
         grilla.Columns(6).Visible = MostrarInfoAdministracion
 
@@ -477,7 +480,7 @@ Private Sub grilla_SelectionChange()
     If it > 0 And Remito.Detalles.count > 0 Then
         Set tmp = Remito.Detalles.item(it)
 
-        If tmp.origen = OrigenRemitoConcepto Then
+        If tmp.Origen = OrigenRemitoConcepto Then
             grilla.Columns(2).EditType = jgexEditTextBox
             grilla.Columns(4).EditType = jgexEditTextBox
         Else
@@ -485,7 +488,7 @@ Private Sub grilla_SelectionChange()
             grilla.Columns(4).EditType = jgexEditTextBox
         End If
 
-        If (Not tmp.facturable Or tmp.Facturado) Or (tmp.origen <> OrigenRemitoConcepto And Not valorizable) Then
+        If (Not tmp.facturable Or tmp.Facturado) Or (tmp.Origen <> OrigenRemitoConcepto And Not valorizable) Then
             grilla.Columns(5).EditType = jgexEditNone
         Else
             grilla.Columns(5).EditType = jgexEditTextBox
@@ -516,7 +519,7 @@ Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, 
 
 
         Set tmp = New remitoDetalle
-        tmp.origen = OrigenRemitoConcepto
+        tmp.Origen = OrigenRemitoConcepto
 
         tmp.Concepto = UCase(Values(2))
         'Values(3) 'origen
@@ -542,7 +545,7 @@ Private Sub grilla_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Varia
         'eliminar de la entrega....!!!
 
         Set tmp = Remito.Detalles(RowIndex)
-        If tmp.origen = OrigenRemitoOt Or tmp.origen = OrigenRemitoAplicado Then
+        If tmp.Origen = OrigenRemitoOt Or tmp.Origen = OrigenRemitoAplicado Then
 
             If DAORemitoSDetalle.Delete(tmp) Then
                 Remito.Detalles.remove RowIndex

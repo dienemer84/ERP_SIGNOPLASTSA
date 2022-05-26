@@ -699,20 +699,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-Dim id As Long
+Dim Id As Long
 Dim vTipo As TipoOperacionProveedor
 Dim proveedor_ As clsProveedor
 Dim baseP As New classCompras
 
 Public Property Let Proveedor(nvalue As clsProveedor)
-    Set proveedor_ = DAOProveedor.FindById(nvalue.id)
+    Set proveedor_ = DAOProveedor.FindById(nvalue.Id)
 End Property
 
 Public Property Let tipoOperacion(Tipo As TipoOperacionProveedor)
     vTipo = Tipo
 End Property
 Public Property Let idProveedor(nId As Long)
-    id = nId
+    Id = nId
 End Property
 
 Private Sub Command1_Click()
@@ -854,8 +854,8 @@ Private Sub mostrarCampos()
     Text1(10) = proveedor_.Cuit
     Text1(11) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
-    cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.id, cboMonedas)
-    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.id, cboIVA)
+    cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.Id, cboMonedas)
+    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIVA)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
 End Sub
 Private Sub Form_Load()
@@ -881,6 +881,9 @@ Private Sub Form_Load()
     Else
         limpiar
     End If
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 
 End Sub
 
@@ -911,7 +914,7 @@ End Sub
 
 Private Sub llenarListaRubrosProveedor()
     Dim ListaRubros As New Collection
-    Set ListaRubros = DAORubros.FindAllByProveedor(proveedor_.id)
+    Set ListaRubros = DAORubros.FindAllByProveedor(proveedor_.Id)
     Dim rubro As clsRubros
     Me.ListView1.ListItems.Clear
     Dim x As ListItem
@@ -962,7 +965,7 @@ Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)
             Dim F As String
             F = "proveedores.cuit = " & Escape(Me.Text1(10))
             If IsSomething(proveedor_) Then
-                F = F & " AND proveedores.id <> " & proveedor_.id
+                F = F & " AND proveedores.id <> " & proveedor_.Id
             End If
 
             Cancel = DAOProveedor.FindAll(F).count > 0

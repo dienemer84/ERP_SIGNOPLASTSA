@@ -2,12 +2,12 @@ VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoOTNueva 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Modificación Orden de Trabajo"
-   ClientHeight    =   8115
+   ClientHeight    =   8865
    ClientLeft      =   2235
    ClientTop       =   2880
    ClientWidth     =   13545
@@ -18,8 +18,64 @@ Begin VB.Form frmPlaneamientoOTNueva
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8115
+   ScaleHeight     =   8865
    ScaleWidth      =   13545
+   Begin XtremeSuiteControls.GroupBox GroupBoxCotizacionMoneda 
+      Height          =   615
+      Left            =   120
+      TabIndex        =   44
+      Top             =   8160
+      Width           =   13335
+      _Version        =   786432
+      _ExtentX        =   23521
+      _ExtentY        =   1085
+      _StockProps     =   79
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ComboBox ComboBoxValorMoneda 
+         Height          =   360
+         Left            =   2880
+         TabIndex        =   45
+         Top             =   180
+         Width           =   1935
+         _Version        =   786432
+         _ExtentX        =   3413
+         _ExtentY        =   635
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Text            =   "ComboBox1"
+      End
+      Begin XtremeSuiteControls.Label Label1ValorDolar 
+         Height          =   255
+         Left            =   240
+         TabIndex        =   46
+         Top             =   240
+         Width           =   2895
+         _Version        =   786432
+         _ExtentX        =   5106
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Cotización Moneda Actual:"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         WordWrap        =   -1  'True
+      End
+   End
    Begin XtremeSuiteControls.GroupBox fraCondiciones 
       Height          =   1710
       Left            =   5145
@@ -311,7 +367,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   60162049
+         Format          =   58523649
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -323,7 +379,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   60162049
+         Format          =   58523649
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -493,7 +549,7 @@ Begin VB.Form frmPlaneamientoOTNueva
       Caption         =   "Salir"
       UseVisualStyle  =   -1  'True
    End
-   Begin XtremeSuiteControls.PushButton Command3 
+   Begin XtremeSuiteControls.PushButton CommandGuardar 
       Height          =   405
       Left            =   4350
       TabIndex        =   8
@@ -547,7 +603,7 @@ Begin VB.Form frmPlaneamientoOTNueva
    End
    Begin GridEX20.GridEX grid 
       Height          =   4185
-      Left            =   90
+      Left            =   120
       TabIndex        =   2
       Top             =   2580
       Width           =   13335
@@ -683,14 +739,15 @@ Begin VB.Form frmPlaneamientoOTNueva
          Strikethrough   =   0   'False
       EndProperty
       Height          =   300
-      Left            =   10755
+      Left            =   10200
       TabIndex        =   1
-      Top             =   7185
+      Top             =   7200
       Width           =   615
    End
    Begin VB.Label lbltot 
       AutoSize        =   -1  'True
       BackColor       =   &H00FFC0C0&
+      Caption         =   "0.00"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   12
@@ -701,10 +758,10 @@ Begin VB.Form frmPlaneamientoOTNueva
          Strikethrough   =   0   'False
       EndProperty
       Height          =   300
-      Left            =   11520
+      Left            =   10920
       TabIndex        =   0
-      Top             =   7185
-      Width           =   105
+      Top             =   7200
+      Width           =   540
    End
    Begin VB.Menu m1 
       Caption         =   "Menu1"
@@ -751,7 +808,6 @@ Implements ISuscriber
 Dim CantArchivos As New Dictionary
 Dim CantArchivosDetalle As New Dictionary
 Private idSuscriber As String
-
 Dim baseC As New classConfigurar
 Dim idCliente As Long
 Dim baseP As New classPlaneamiento
@@ -762,12 +818,13 @@ Dim claseS As New classStock
 Private m_ot As OrdenTrabajo
 Private tmpDetalle As DetalleOrdenTrabajo
 Private formLoaded As Boolean
-
 Public ActualizacionPrecios As Boolean
+
+Private Monedas As New Collection
 
 Public Property Let OrdenTrabajoId(value As Long)
     Set m_ot = DAOOrdenTrabajo.FindById(value)       'me la recargo por las dudas
-    Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.id)
+    Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.Id)
 
     Me.fraCondiciones.Enabled = m_ot.NoEsMarcoNiHija
     Me.cboCliente.Enabled = m_ot.NoEsMarcoNiHija
@@ -797,14 +854,14 @@ Private Sub CargarOrdenTrabajo()
     If m_ot Is Nothing Then Exit Sub
 
     Dim i As Long
-    If (Me.cboMoneda.ListIndex <> -1) Then Me.cboCliente2.ListIndex = funciones.PosIndexCbo(m_ot.ClienteFacturar.id, cboCliente2)
+    If (Me.cboMoneda.ListIndex <> -1) Then Me.cboCliente2.ListIndex = funciones.PosIndexCbo(m_ot.ClienteFacturar.Id, cboCliente2)
 
 
-    Me.cboCliente.ListIndex = funciones.PosIndexCbo(m_ot.cliente.id, cboCliente)
+    Me.cboCliente.ListIndex = funciones.PosIndexCbo(m_ot.cliente.Id, cboCliente)
     Me.txtReferencia.text = m_ot.descripcion
     Me.DTVencimiento.value = m_ot.FechaEntrega
     Me.chkMismaFecha.value = CInt(m_ot.MismaFechaEntregaParaDetalles) * -1
-    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.moneda.id, cboMoneda)
+    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.moneda.Id, cboMoneda)
     Me.txtDto.text = m_ot.Descuento
     Me.txtAnticipo.text = m_ot.Anticipo
     Me.txtCantDiasAnticipo.text = m_ot.CantDiasAnticipo
@@ -895,15 +952,17 @@ End Sub
 Private Sub cmdAgregarPieza_Click()
     If m_ot Is Nothing Then Exit Sub
     If m_ot.cliente Is Nothing Then Exit Sub
-    Dim id As Long
+    Dim Id As Long
     Dim f12 As New frmElegirPieza
     f12.Origen = 2    'desde ot
     f12.OtIdFilter = m_ot.OTMarcoIdPadre
     f12.cliente = m_ot.cliente
     f12.Show 1
 End Sub
+
+
 Private Sub Command10_Click()
-    frmMaterializacion.id = m_ot.id
+    frmMaterializacion.Id = m_ot.Id
     frmMaterializacion.Ot = True
     frmMaterializacion.Show
 
@@ -921,7 +980,7 @@ Private Sub cmdDefinirPrecios_Click()
         For Each si In Me.grid.SelectedItems
             If si.RowIndex > 0 And si.RowIndex <= m_ot.Detalles.count Then
                 Set tmpDetalle = m_ot.Detalles.item(si.RowIndex)
-                va = baseP.definirPrecios(tmpDetalle.Pieza.id, tmpDetalle.Precio, m_ot.moneda.id)
+                va = baseP.definirPrecios(tmpDetalle.Pieza.Id, tmpDetalle.Precio, m_ot.moneda.Id)
             End If
         Next si
 
@@ -938,7 +997,7 @@ Private Sub Command2_Click()
     CalcularValorOt
     RecargarDetalles
 End Sub
-Private Sub Command3_Click()
+Private Sub CommandGuardar_Click()
     If LenB(Trim$(Me.txtReferencia.text)) = 0 Then
         MsgBox "Falta la referencia", vbInformation + vbOKOnly
         Exit Sub
@@ -947,6 +1006,12 @@ Private Sub Command3_Click()
         MsgBox "Salga del modo edición de detalles.", vbInformation + vbOKOnly
         Exit Sub
     End If
+
+    If Me.cboMoneda.ListIndex = 3 Then
+        MsgBox "No se puede guardar una OT con Moneda U$A Administrativo. Modifiquelo por favor.", vbInformation + vbOKOnly
+        Exit Sub
+    End If
+    
     If vbYes = MsgBox("¿Confirma la edicion de la orden?", vbYesNo + vbQuestion) Then
         If ActualizacionPrecios Then
             Dim detaOT As DetalleOrdenTrabajo
@@ -957,8 +1022,8 @@ Private Sub Command3_Click()
                 If Not result Then Exit For
             Next detaOT
             If result Then
-                conectar.execute "UPDATE pedidos SET ultima_fecha_actualizacion_precios = NOW() WHERE id = " & m_ot.id
-                conectar.execute "UPDATE pedidos SET descripcion = '" & m_ot.descripcion & "' WHERE id = " & m_ot.id
+                conectar.execute "UPDATE pedidos SET ultima_fecha_actualizacion_precios = NOW() WHERE id = " & m_ot.Id
+                conectar.execute "UPDATE pedidos SET descripcion = '" & m_ot.descripcion & "' WHERE id = " & m_ot.Id
                 conectar.CommitTransaction
                  Dim EVENTO As New clsEventoObserver
                 Set EVENTO.Elemento = m_ot
@@ -1015,7 +1080,7 @@ End Sub
 Private Sub Command8_Click()
     Dim A As Boolean
     'a = baseP.informePiezaMateriales(m_ot.Id, 1, True)
-    DAOOrdenTrabajo.informePiezaMateriales m_ot.id, 1, True
+    DAOOrdenTrabajo.informePiezaMateriales m_ot.Id, 1, True
 End Sub
 Private Sub Command9_Click()
 
@@ -1036,6 +1101,7 @@ Private Sub Command9_Click()
     frm1.Show
 End Sub
 
+
 Private Sub dtpInicio_CallbackKeyDown(ByVal KeyCode As Integer, ByVal Shift As Integer, ByVal CallbackField As String, CallbackDate As Date)
 
     If m_ot.EsMarco Then m_ot.FechaInicioMarco = Me.dtpInicio.value
@@ -1055,6 +1121,8 @@ Private Sub verModoEdicion()
     Else
         Me.lblModoEdicion.Visible = False
     End If
+    
+    GroupBoxCotizacionMoneda.Visible = True
 End Sub
 
 Private Sub Form_Load()
@@ -1074,6 +1142,12 @@ Private Sub Form_Load()
     formLoaded = True
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     Set CantArchivosDetalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
+    
+    DAOMoneda.llenarComboXtremeSuite Me.ComboBoxValorMoneda, True
+    Me.ComboBoxValorMoneda.ListIndex = 3
+  
+    Me.caption = caption & " (" & Name & ")"
+
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -1119,11 +1193,11 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
 
     If Button = 2 And idx > 0 Then
         If m_ot.Detalles(idx).Pieza.EsConjunto Then
-            Me.ver.caption = "Ver Conjunto..."
-            Me.ver.Tag = 0
+            Me.Ver.caption = "Ver Conjunto..."
+            Me.Ver.Tag = 0
         Else
-            Me.ver.caption = "Ver Desarrollo..."
-            Me.ver.Tag = -1
+            Me.Ver.caption = "Ver Desarrollo..."
+            Me.Ver.Tag = -1
         End If
 
         Me.PopupMenu Me.m1
@@ -1148,8 +1222,8 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
         Values(8) = tmpDetalle.Pieza.CantidadStock
         Values(9) = tmpDetalle.ReservaStock
         Values(10) = tmpDetalle.Pieza.UnidadMedida    '   IIf(tmpDetalle.pieza.EsConjunto, "Conjunto", "Unidad")
-        Values(11) = CantArchivos.item(tmpDetalle.Pieza.id)
-        Values(12) = CantArchivosDetalle.item(tmpDetalle.id)
+        Values(11) = CantArchivos.item(tmpDetalle.Pieza.Id)
+        Values(12) = CantArchivosDetalle.item(tmpDetalle.Id)
     End If
 End Sub
 
@@ -1202,8 +1276,8 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
             If dto.idOt = 0 Then   'ver cuando cree el prox marco
                 If tmpDetalle.Pieza.Precio <> 0 Then
                     tmpDetalle.Precio = tmpDetalle.Pieza.Precio
-                    If tmpDetalle.Pieza.MonedaPrecio.id <> m_ot.moneda.id Then
-                        tmpDetalle.Precio = adm.realizaCambio(tmpDetalle.Pieza.Precio, tmpDetalle.Pieza.MonedaPrecio.id, m_ot.moneda.id)
+                    If tmpDetalle.Pieza.MonedaPrecio.Id <> m_ot.moneda.Id Then
+                        tmpDetalle.Precio = adm.realizaCambio(tmpDetalle.Pieza.Precio, tmpDetalle.Pieza.MonedaPrecio.Id, m_ot.moneda.Id)
                     End If
                 End If
 
@@ -1238,23 +1312,25 @@ End Function
 
 
 
+
+
 Private Sub mnuAdquirirDetalle_Click()
     Dim archi As classArchivos
     Set archi = New classArchivos
-    archi.escanearDocumento OrigenArchivos.OA_OrdenesTrabajoDetalle, tmpDetalle.id
+    archi.escanearDocumento OrigenArchivos.OA_OrdenesTrabajoDetalle, tmpDetalle.Id
 End Sub
 
 Private Sub mnuAdquirirPieza_Click()
     Dim archi As classArchivos
     Set archi = New classArchivos
-    archi.escanearDocumento OrigenArchivos.OA_Piezas, tmpDetalle.Pieza.id
+    archi.escanearDocumento OrigenArchivos.OA_Piezas, tmpDetalle.Pieza.Id
 End Sub
 
 Private Sub mnuArchivoAsociadoDetalle_Click()
     grid_SelectionChange
     Dim F As New frmArchivos2
     F.Origen = OrigenArchivos.OA_OrdenesTrabajoDetalle
-    F.ObjetoId = tmpDetalle.id
+    F.ObjetoId = tmpDetalle.Id
     F.caption = "OT Nº " & m_ot.IdFormateado & " - Item " & tmpDetalle.item
     F.Show
 End Sub
@@ -1263,19 +1339,19 @@ Private Sub mnuArchivoAsociadoPieza_Click()
     grid_SelectionChange
     Dim F As New frmArchivos2
     F.Origen = OrigenArchivos.OA_Piezas
-    F.ObjetoId = tmpDetalle.Pieza.id
+    F.ObjetoId = tmpDetalle.Pieza.Id
     F.caption = "Pieza " & tmpDetalle.Pieza.nombre
     F.Show
 End Sub
 
 Private Sub mnuIncidenciasDetalle_Click()
-    frmVerIncidencias.referencia = tmpDetalle.id
+    frmVerIncidencias.referencia = tmpDetalle.Id
     frmVerIncidencias.Origen = OI_OrdenesTrabajoDetalles
     frmVerIncidencias.Show
 End Sub
 
 Private Sub mnuIncidenciasPieza_Click()
-    frmVerIncidencias.referencia = tmpDetalle.Pieza.id
+    frmVerIncidencias.referencia = tmpDetalle.Pieza.Id
     frmVerIncidencias.Origen = OI_Piezas
     frmVerIncidencias.Show
 End Sub
@@ -1293,7 +1369,7 @@ Private Sub PushButton1_Click()
         For Each si In Me.grid.SelectedItems
             If si.RowIndex > 0 And si.RowIndex <= m_ot.Detalles.count Then
                 Set tmpDetalle = m_ot.Detalles.item(si.RowIndex)
-                tmpDetalle.Precio = DAODetalleOrdenTrabajo.FindBestPriceByPiezaId(tmpDetalle.Pieza.id)
+                tmpDetalle.Precio = DAODetalleOrdenTrabajo.FindBestPriceByPiezaId(tmpDetalle.Pieza.Id)
             End If
         Next si
         RecargarDetalles
@@ -1328,7 +1404,7 @@ Private Sub CalcularValorOt()
 
     For Each tmpDetalle In m_ot.Detalles
 
-        Set tmpPieza = DAOPieza.FindById(tmpDetalle.Pieza.id, FL_0)
+        Set tmpPieza = DAOPieza.FindById(tmpDetalle.Pieza.Id, FL_0)
 
         If tmpPieza.CantidadStock > tmpDetalle.CantidadPedida Then
             reserva = tmpDetalle.CantidadPedida
@@ -1351,8 +1427,8 @@ Private Sub imprimirOT()
     Dim headerLeft As String
 
 
-    headercenter = "OT NUMERO " & m_ot.id & Chr(10) _
-                   & "Cliente: (" & m_ot.cliente.id & ") " & m_ot.cliente.razon & Chr(10) _
+    headercenter = "OT NUMERO " & m_ot.Id & Chr(10) _
+                   & "Cliente: (" & m_ot.cliente.Id & ") " & m_ot.cliente.razon & Chr(10) _
                    & "Referencia: " & m_ot.descripcion & Chr(10) _
                    & "Entrega: " & m_ot.FechaEntrega & Chr(10)
 
@@ -1450,7 +1526,7 @@ Private Sub ver_Click()
     If idx > 0 Then
         Dim F As New frmDesarrollo
         Load F
-        F.CargarPieza tmpDetalle.Pieza.id   'm_ot.Detalles(idx).Pieza.Id
+        F.CargarPieza tmpDetalle.Pieza.Id   'm_ot.Detalles(idx).Pieza.Id
         F.Show
 
     End If

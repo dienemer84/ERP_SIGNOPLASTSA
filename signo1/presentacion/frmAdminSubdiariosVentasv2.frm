@@ -6,7 +6,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    ClientHeight    =   8625
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   18315
+   ClientWidth     =   14655
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -21,7 +21,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    LockControls    =   -1  'True
    MDIChild        =   -1  'True
    ScaleHeight     =   8625
-   ScaleWidth      =   18315
+   ScaleWidth      =   14655
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1680
       Left            =   10545
@@ -673,7 +673,7 @@ End Sub
 
 Private Sub GridEX1_DblClick()
     If col.count > 0 Then
-        Dim f_c3h3 As New frmFacturaEdicion
+        Dim f_c3h3 As New frmAdminFacturasEdicion
         f_c3h3.ReadOnly = True
         f_c3h3.idFactura = item.FacturaId
         f_c3h3.Show
@@ -724,7 +724,6 @@ Private Sub btnMostrar_Click()
     llenarLista
 End Sub
 
-
 Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 Then
         If item.estado <> Anulada Then
@@ -761,13 +760,12 @@ Private Sub PushButton2_Click()
         '.FooterString(jgexHFLeft) = footerLeft
         .FooterString(jgexHFCenter) = Now
 
-
-
     End With
     Load frmPrintPreview
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
     Me.GridEX1.PrintPreview frmPrintPreview.GEXPreview1, Me.GridEX1.SelectedItems.count > 1
     frmPrintPreview.Show 1
+    
 End Sub
 
 Private Sub rdoLiquidacion_Click()
@@ -814,7 +812,7 @@ Private Sub CargarLiquidaciones()
     Set liquidaciones = DAOSubdiarios.FindAllLiquidacionesVenta()
     For Each liqui In liquidaciones
         Me.cboLiquidaciones.AddItem liqui.nombre & " (" & liqui.desde & " a " & liqui.hasta & ")"
-        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.id
+        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.Id
     Next liqui
 
 End Sub
@@ -851,7 +849,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
     Set xla = CreateObject("Excel.Application")
 
     Dim A As String
-    Dim b As String
+    Dim B As String
     Dim offset As Long
     Dim strMsg As String
     Dim CDLGMAIN As CommonDialog
@@ -958,7 +956,9 @@ Public Function ExportaSubDiarioVentas() As Boolean
             Else
 
 
-                .Cells(x + 3, 1).value = item.FEcha
+                '.Cells(x + 3, 1).value = item.FEcha
+                
+                .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
                 .Cells(x + 3, 2).value = item.Comprobante
                 .Cells(x + 3, 3).value = item.RazonSocial
                 .Cells(x + 3, 4).value = item.Cuit
@@ -983,13 +983,13 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         A = "j" & x + 2
         offset = x + 3
-        b = "j" & offset
-        .Range("f1", b).NumberFormat = "0.00"
+        B = "j" & offset
+        .Range("f1", B).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
-        .Range("f" & x + 3, b).Interior.Color = &HC0C0C0
-        .Range("f" & x + 3, b).Borders.LineStyle = xlContinuous
-        .Range("f" & x + 3, b).Font.Bold = True
+        .Range("f" & x + 3, B).Interior.Color = &HC0C0C0
+        .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
+        .Range("f" & x + 3, B).Font.Bold = True
 
         .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
         .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)

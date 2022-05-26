@@ -9,8 +9,8 @@ Begin VB.Form frmLogin
    ClientTop       =   285
    ClientWidth     =   4980
    ControlBox      =   0   'False
+   HelpContextID   =   1
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   2280
@@ -249,8 +249,9 @@ Private Sub Command1_Click()
 
 
     frmPrincipal.servidorActual = Me.cboServidor.text
-     conectar.port = port
+    conectar.port = port
     conectar.SetServidorBBDD ip
+    
     If Not conectar.conectar Then GoTo errh000
 
     Dim r As Recordset
@@ -277,7 +278,7 @@ Private Sub Command1_Click()
         If c = 1 Then
             r.MoveFirst
 
-            idUsu = r!id
+            idUsu = r!Id
             passDB = r!PassWord
             estado = clssp.verSeleccionado(strPermisos.esistemaUsuarioActivo, idUsu)
 
@@ -295,21 +296,22 @@ Private Sub Command1_Click()
                     If Not funciones.InIDE Then
                         If clssp.VerificarSiHayActualizacion(idnueva) Then
                             If MsgBox("Hay una nueva actualización del sistema." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
+                    
+                                frmTip.Show 1
+                                 
                                 clssp.actualizarSistema CLng(idnueva)
-
+               
                             End If
-                            
+                                                           
                         End If
-                        
+                    Else
+                    
+                    'frmTip.Show 1
+ 
                     End If
 
 
                     Unload Me
-'18/11/2021
-'ESTO ES SÓLO UNA PRUEBA
-'ACA SE INCORPORA LA VENTANA DONDE SE MUESTRAN LOS ULTIMOS CAMBIOS REALIZADOS EN EL SISTEMA
-'LOS DATOS QUE SE MUESTRAN ESTAN GUARDADOS EN UN ARCHIVO TXT EN LA MISMA UBICACIÓN DE DESARROLLO
-
 
                     
                 Else
@@ -371,24 +373,24 @@ Private Sub Command3_Click()
     For Each P In piezas
 
         For Each desa In P.desarrollosManoObra
-            arr(desa.Tarea.id) = arr(desa.Tarea.id) + _
-                                 IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(P.id))), desa.Tiempo * desa.Cantidad)
+            arr(desa.Tarea.Id) = arr(desa.Tarea.Id) + _
+                                 IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(P.Id))), desa.Tiempo * desa.Cantidad)
         Next desa
 
         For Each p1 In P.PiezasHijas
             For Each desa In p1.desarrollosManoObra
-                arr(desa.Tarea.id) = arr(desa.Tarea.id) + _
-                                     IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p1.id))), desa.Tiempo * desa.Cantidad)
+                arr(desa.Tarea.Id) = arr(desa.Tarea.Id) + _
+                                     IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p1.Id))), desa.Tiempo * desa.Cantidad)
             Next desa
             For Each p2 In p1.PiezasHijas
                 For Each desa In p2.desarrollosManoObra
-                    arr(desa.Tarea.id) = arr(desa.Tarea.id) + _
-                                         IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p2.id))), desa.Tiempo * desa.Cantidad)
+                    arr(desa.Tarea.Id) = arr(desa.Tarea.Id) + _
+                                         IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p2.Id))), desa.Tiempo * desa.Cantidad)
                 Next desa
                 For Each p3 In p2.PiezasHijas
                     For Each desa In p3.desarrollosManoObra
-                        arr(desa.Tarea.id) = arr(desa.Tarea.id) + _
-                                             IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p3.id))), desa.Tiempo * desa.Cantidad)
+                        arr(desa.Tarea.Id) = arr(desa.Tarea.Id) + _
+                                             IIf(desa.Tarea.CantPorProc = 1, desa.Tiempo * desa.Cantidad * CLng(diccio.item(CStr(p3.Id))), desa.Tiempo * desa.Cantidad)
                     Next desa
 
                 Next p3
@@ -436,6 +438,7 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub Command6_Click()
+
     frmPrincipal.servidorActual = Me.cboServidor.text
     conectar.SetServidorBBDD frmPrincipal.servidorActual
     conectar.conectar
@@ -449,11 +452,13 @@ Private Sub Command6_Click()
     conectar.BeginTransaction
     For Each Pieza In piezas
         conjunto = (Pieza.PiezasHijas.count > 0)
-        conectar.execute "UPDATE stock SET conjunto = " & IIf(conjunto, "0", "-1") & " WHERE id = " & Pieza.id
+        conectar.execute "UPDATE stock SET conjunto = " & IIf(conjunto, "0", "-1") & " WHERE id = " & Pieza.Id
     Next Pieza
     conectar.CommitTransaction
 
 End Sub
+
+
 
 
 Private Sub Commandsa_Click()
@@ -484,6 +489,7 @@ Private Sub Form_Load()
         Me.Text1.text = "nicolasba"
         Me.Text2.text = "022916"
         'Command1_Click
+        
     Else
         Dim Puesto As String
         Puesto = LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)
@@ -503,24 +509,27 @@ Private Sub PushButton1_Click()
 End Sub
 
 Private Sub ProcesarDetaOT(detaOT As DetalleOrdenTrabajo, Optional detaOTDto As DetalleOTConjuntoDTO = Nothing)
+
     Dim tmpDeta As DetalleOTConjuntoDTO
     Dim piezaId As Long
     Dim ptp As PlaneamientoTiempoProceso
 
     If IsSomething(detaOTDto) Then
-        piezaId = detaOTDto.Pieza.id
+        piezaId = detaOTDto.Pieza.Id
     Else
-        piezaId = detaOT.Pieza.id
+        piezaId = detaOT.Pieza.Id
     End If
 
-    For Each tmpDeta In DAODetalleOrdenTrabajo.FindAllConjunto(detaOT.id, piezaId)
+    For Each tmpDeta In DAODetalleOrdenTrabajo.FindAllConjunto(detaOT.Id, piezaId)
 
-        For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(tmpDeta.id, tmpDeta.Pieza.id)
-            conectar.execute "UPDATE PlaneamientoTiemposProcesos SET idDetallePedido = " & detaOT.id & ", idDetallePedidoConj = " & tmpDeta.id & " WHERE id = " & ptp.id
+        For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(tmpDeta.Id, tmpDeta.Pieza.Id)
+            conectar.execute "UPDATE PlaneamientoTiemposProcesos SET idDetallePedido = " & detaOT.Id & ", idDetallePedidoConj = " & tmpDeta.Id & " WHERE id = " & ptp.Id
         Next ptp
 
         ProcesarDetaOT detaOT, tmpDeta
+        
     Next tmpDeta
+    
 End Sub
 
 Private Sub Text1_GotFocus()

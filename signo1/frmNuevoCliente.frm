@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmVentasClienteNuevo 
    BackColor       =   &H00FF8080&
    BorderStyle     =   3  'Fixed Dialog
@@ -461,13 +461,15 @@ Attribute VB_Exposed = False
 Dim vCliente As clsCliente
 Dim strsql As String
 
-Public Property Let Cliente(nvalue As clsCliente)
+Public Property Let cliente(nvalue As clsCliente)
     Set vCliente = nvalue
 End Property
 Private Sub Guardar()
     Dim Cuit
     Dim EVENTO As clsEventoObserver
+    
     On Error GoTo err2
+    
     razon = UCase(Text1(0))
     Domicilio = UCase(Text1(1))
     '    localidad = UCase(Text1(2))
@@ -495,41 +497,61 @@ Private Sub Guardar()
                 errorCode2 = 1
             End If
 
-            If ErrorCode > 0 Then
-                aa = "Debe introducir datos correctos para: "
-                If errorCode2 = 1 Then
-                    aa = aa & Chr(10) & "CUIT"
+                If ErrorCode > 0 Then
+                    aa = "Debe introducir datos correctos para: "
+                    If errorCode2 = 1 Then
+                        aa = aa & Chr(10) & "CUIT"
+                    End If
+                    MsgBox aa, vbCritical, "Error"
+                Else
+            
+                Dim cliente As New clsCliente
+
+                'Set cliente.TipoIVA = DAOTipoIva.GetById(ivan)
+
+                cliente.Cuit = Cuit
+                cliente.Domicilio = Domicilio
+                cliente.email = email
+                cliente.estado = EstadoCliente.activo
+                cliente.Fax = Fax
+                cliente.FP = FP
+
+
+                cliente.PasswordSistema = 0
+                Set cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+                Set cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+
+                cliente.razon = razon
+                cliente.FormaPago = FP_detalle
+                cliente.telefono = telefono
+                cliente.ValidoRemitoFactura = valido
+
+                cliente.Cuit = Cuil
+                
+                cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
+
+                Dim F As String
+                F = "c.cuit = " & Escape(Text1(7))
+                
+                If IsSomething(vCliente) Then
+                F = F & " AND c.id <> " & vCliente.Id
                 End If
-                MsgBox aa, vbCritical, "Error"
-            Else
-                Dim Cliente As New clsCliente
 
-                Set Cliente.TipoIVA = DAOTipoIva.GetById(ivan)
+               If DAOCliente.FindAll(F).count > 0 Then
+                'MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbExclamation
+                'Err.Raise 400, "Cliente", "El CUIT ya se encuentra asignado o no tiene el formato correcto."
+                MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
+                
+                Else
+                
 
-                Cliente.Cuit = Cuit
-                Cliente.Domicilio = Domicilio
-                Cliente.email = email
-                Cliente.estado = EstadoCliente.activo
-                Cliente.Fax = Fax
-                Cliente.FP = FP
-
-
-                Cliente.PasswordSistema = 0
-                Set Cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-                Set Cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
-
-                Cliente.razon = razon
-                Cliente.FormaPago = FP_detalle
-                Cliente.telefono = telefono
-                Cliente.ValidoRemitoFactura = valido
-
-
-
-                Cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
-                If DAOCliente.crear(Cliente) Then
+                 
+                If DAOCliente.crear(cliente) Then
                     MsgBox "Alta Exitosa!", vbInformation, "Información"
+                    
+                    
                     Set EVENTO = New clsEventoObserver
-                    Set EVENTO.Elemento = Cliente
+                    Set EVENTO.Elemento = cliente
                     EVENTO.EVENTO = agregar_
                     Set EVENTO.Originador = Me
                     Channel.Notificar EVENTO, Clientes_
@@ -538,9 +560,16 @@ Private Sub Guardar()
                         Me.txtFP = Empty
                         Me.txtDetalleFP = Empty
                     Next x
+                    
                 Else
                     MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
                 End If
+                
+                End If
+
+
+
+
             End If
         Else
             'se modifica
@@ -556,25 +585,29 @@ Private Sub Guardar()
 
 
             vCliente.PasswordSistema = 0
-            Set vCliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-            Set vCliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+            'Set vCliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+            'Set vCliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
             vCliente.razon = razon
             vCliente.telefono = telefono
             vCliente.FormaPago = FP_detalle
             vCliente.ValidoRemitoFactura = valido
             vCliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
+            
             If DAOCliente.modificar(vCliente) Then
                 MsgBox "Modificación Exitosa!", vbInformation, "Información"
+                
+                
                 Set EVENTO = New clsEventoObserver
-                Set EVENTO.Elemento = Cliente
+                Set EVENTO.Elemento = cliente
                 EVENTO.EVENTO = modificar_
                 Set EVENTO.Originador = Me
                 Channel.Notificar EVENTO, Clientes_
             Else
                 MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
             End If
+            
         End If
-    End If
+        End If
     Exit Sub
 err2:
 
@@ -585,10 +618,10 @@ Private Sub cboPaises_Click()
     'cboLocalidades.Clear
     'cboPartidos.Clear
 
-    Dim id As Long
+    Dim Id As Long
     If cboPaises.ListIndex >= 0 Then
-        id = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
-        DAOProvincias.LlenarCombo Me.cboProvincias, id
+        Id = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
+        DAOProvincias.LlenarCombo Me.cboProvincias, Id
     End If
 
     cboProvincias_Click
@@ -598,10 +631,10 @@ End Sub
 
 
 Private Sub cboProvincias_Click()
-    Dim id As Long
+    Dim Id As Long
     If cboProvincias.ListIndex >= 0 Then
-        id = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
-        DAOLocalidades.LlenarCombo Me.cboLocalidades, id
+        Id = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+        DAOLocalidades.LlenarCombo Me.cboLocalidades, Id
     End If
 
 End Sub
@@ -637,14 +670,14 @@ Private Sub Form_Load()
     End If
 
 
-
+    Me.caption = caption & "(" & Name & ")"
 
 
 End Sub
 
-Private Sub Text1_GotFocus(index As Integer)
-    Text1(index).SelStart = 0
-    Text1(index).SelLength = Len(Text1(index))
+Private Sub Text1_GotFocus(Index As Integer)
+    Text1(Index).SelStart = 0
+    Text1(Index).SelLength = Len(Text1(Index))
 End Sub
 Private Sub txtFP_Validate(Cancel As Boolean)
     ValidarTextBox Me.txtFP, Cancel
@@ -665,9 +698,9 @@ Private Sub llenarForm()
 
         'aca posiciono el combo
 
-        Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.id, Me.cboPaises)
-        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.id, Me.cboProvincias)
-        Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.id, Me.cboLocalidades)
+        Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.Id, Me.cboPaises)
+        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.Id, Me.cboProvincias)
+        Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.Id, Me.cboLocalidades)
 
 
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
@@ -675,6 +708,7 @@ Private Sub llenarForm()
         Me.txtDetalleFP = .FormaPago
         cboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIVA)
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vCliente.idMonedaDefault, Me.cboMonedas)
+        
     End With
 
     Exit Sub

@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmSiniestro 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Siniestro"
@@ -98,7 +98,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm"
-      Format          =   55574531
+      Format          =   58589187
       CurrentDate     =   40414.6993055556
    End
    Begin VB.TextBox txtNroSiniestro 
@@ -221,7 +221,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CheckBox        =   -1  'True
-      Format          =   55574529
+      Format          =   58589185
       CurrentDate     =   40414
    End
    Begin XtremeSuiteControls.ComboBox cboART 
@@ -752,12 +752,12 @@ Private Sub Form_Load()
         Me.cboTratamiento.ItemData(Me.cboTratamiento.NewIndex) = K
     Next K
 
-    Dim a As ART
+    Dim A As ART
     Me.cboART.Clear
-    For Each a In DAOART.FindAll
-        Me.cboART.AddItem a.nombre
-        Me.cboART.ItemData(Me.cboART.NewIndex) = a.id
-    Next a
+    For Each A In DAOART.FindAll
+        Me.cboART.AddItem A.nombre
+        Me.cboART.ItemData(Me.cboART.NewIndex) = A.id
+    Next A
 
     DAOSectores.LlenarComboXtreme Me.cboSector
 

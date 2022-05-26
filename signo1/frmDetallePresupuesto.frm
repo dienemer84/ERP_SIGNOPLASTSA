@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmVentasPresupuestoDetalle 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
@@ -41,7 +41,7 @@ Begin VB.Form frmVentasPresupuestoDetalle
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
-      PreviewColumn   =   5
+      PreviewColumn   =   "detalle"
       PreviewRowLines =   1
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
@@ -56,23 +56,24 @@ Begin VB.Form frmVentasPresupuestoDetalle
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   6
+      ColumnsCount    =   7
       Column(1)       =   "frmDetallePresupuesto.frx":000C
       Column(2)       =   "frmDetallePresupuesto.frx":0108
       Column(3)       =   "frmDetallePresupuesto.frx":01D8
       Column(4)       =   "frmDetallePresupuesto.frx":02AC
       Column(5)       =   "frmDetallePresupuesto.frx":037C
-      Column(6)       =   "frmDetallePresupuesto.frx":043C
+      Column(6)       =   "frmDetallePresupuesto.frx":0470
+      Column(7)       =   "frmDetallePresupuesto.frx":0564
       FormatStylesCount=   7
-      FormatStyle(1)  =   "frmDetallePresupuesto.frx":0530
-      FormatStyle(2)  =   "frmDetallePresupuesto.frx":0658
-      FormatStyle(3)  =   "frmDetallePresupuesto.frx":0708
-      FormatStyle(4)  =   "frmDetallePresupuesto.frx":07BC
-      FormatStyle(5)  =   "frmDetallePresupuesto.frx":0894
-      FormatStyle(6)  =   "frmDetallePresupuesto.frx":094C
-      FormatStyle(7)  =   "frmDetallePresupuesto.frx":0A2C
+      FormatStyle(1)  =   "frmDetallePresupuesto.frx":0648
+      FormatStyle(2)  =   "frmDetallePresupuesto.frx":0770
+      FormatStyle(3)  =   "frmDetallePresupuesto.frx":0820
+      FormatStyle(4)  =   "frmDetallePresupuesto.frx":08D4
+      FormatStyle(5)  =   "frmDetallePresupuesto.frx":09AC
+      FormatStyle(6)  =   "frmDetallePresupuesto.frx":0A64
+      FormatStyle(7)  =   "frmDetallePresupuesto.frx":0B44
       ImageCount      =   0
-      PrinterProperties=   "frmDetallePresupuesto.frx":0AB8
+      PrinterProperties=   "frmDetallePresupuesto.frx":0BD0
    End
    Begin VB.Frame Frame3 
       BackColor       =   &H00FF8080&
@@ -350,7 +351,7 @@ Dim presu As clsPresupuesto
 Dim tmp As clsPresupuestoDetalle
 
 Public Property Let presupuesto(T As clsPresupuesto)
-    Set presu = DAOPresupuestos.GetById(T.id)
+    Set presu = DAOPresupuestos.GetById(T.Id)
 
 
 End Property
@@ -362,7 +363,7 @@ End Sub
 Private Sub Command10_Click()
     Dim frmmat As New frmMaterializacion
 
-    frmmat.id = presu.id
+    frmmat.Id = presu.Id
     frmmat.Ot = False
     frmmat.otro = False
     frmmat.presu = True
@@ -383,16 +384,16 @@ Private Sub Command4_Click()
 End Sub
 Private Sub Command8_Click()
     Dim baseP As New classPlaneamiento
-    a = baseP.informePiezaMateriales(presu.id, 2, True)
+    A = baseP.informePiezaMateriales(presu.Id, 2, True)
 End Sub
 
 Private Sub llenarLista()
     Me.GridEX1.ItemCount = presu.DetallePresupuesto.count
 End Sub
 Private Sub mostrar()
-    Me.caption = "Presupuesto Nro. " & presu.id
+    Me.caption = "Presupuesto Nro. " & presu.Id
     Me.lblCreado = presu.UsuarioCreado.usuario
-    Me.lblFechaCreado = presu.FechaCreado
+    Me.lblFechaCreado = presu.fechaCreado
 
     If presu.UsuarioFinalizado Is Nothing Then
         Me.LblFinalizado = Empty
@@ -417,6 +418,10 @@ Private Sub Form_Load()
     mostrar
     llenarLista
     Me.GridEX1.Columns(6).Visible = Permisos.sistemaVerPrecios
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 
 
@@ -427,11 +432,11 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
         Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
 
         If tmp.Pieza.EsConjunto Then
-            Me.ver.caption = "Ver Conjunto..."
-            Me.ver.Tag = 0
+            Me.Ver.caption = "Ver Conjunto..."
+            Me.Ver.Tag = 0
         Else
-            Me.ver.caption = "Ver Desarrollo..."
-            Me.ver.Tag = -1
+            Me.Ver.caption = "Ver Desarrollo..."
+            Me.Ver.Tag = -1
         End If
 
         Me.PopupMenu Me.m1
@@ -449,20 +454,24 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(2) = tmp.Detalles
         Values(3) = tmp.Cantidad
         Values(4) = tmp.entrega
-        Values(5) = tmp.Pieza.nombre
+        Values(5) = tmp.presupuesto.moneda.NombreCorto
         Values(6) = funciones.FormatearDecimales(tmp.ValorManual)
+        Values(7) = tmp.Pieza.nombre
     End With
+    
 End Sub
+
 Private Sub mnuAdquirirADetalle_Click()
     Set arch = New classArchivos
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
-    archi.escanearDocumento OrigenArchivos.OA_PresupuestoDetalle, tmp.id
+    archi.escanearDocumento OrigenArchivos.OA_PresupuestoDetalle, tmp.Id
+    
 End Sub
 
 Private Sub mnuAdquirirAPieza_Click()
     Set archi = New classArchivos
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
-    archi.escanearDocumento OrigenArchivos.OA_Piezas, tmp.Pieza.id
+    archi.escanearDocumento OrigenArchivos.OA_Piezas, tmp.Pieza.Id
 
 End Sub
 
@@ -470,7 +479,7 @@ Private Sub mnuDesarrolloHistorico_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim F As New frmDesarrollo
     Load F
-    F.CargarDetallePresupuesto tmp.id
+    F.CargarDetallePresupuesto tmp.Id
     F.Show
 End Sub
 
@@ -478,7 +487,7 @@ Private Sub mnuVerArchivosDePedido_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OrigenArchivos.OA_PresupuestoDetalle
-    frmarchi1.ObjetoId = tmp.id
+    frmarchi1.ObjetoId = tmp.Id
     frmarchi1.caption = "Presupuesto Nº " & presu.IdFormateada & " - Item " & tmp.item & " [" & tmp.Pieza.nombre & "]"
     frmarchi1.Show
 End Sub
@@ -486,7 +495,7 @@ Private Sub mnuVerArchivosDePieza_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim frmarchi2 As New frmArchivos2
     frmarchi2.Origen = OrigenArchivos.OA_Piezas
-    frmarchi2.ObjetoId = tmp.Pieza.id
+    frmarchi2.ObjetoId = tmp.Pieza.Id
     frmarchi2.caption = "Pieza " & tmp.Pieza.nombre
     frmarchi2.Show
 End Sub
@@ -494,7 +503,7 @@ Private Sub mnuVerIncidenciasDeDetallePedido_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim inci1 As New frmVerIncidencias
 
-    inci1.referencia = tmp.id
+    inci1.referencia = tmp.Id
     inci1.Origen = OI_DetallePresupuesto
     inci1.Show
 End Sub
@@ -502,7 +511,7 @@ End Sub
 Private Sub mnuVerIncidenciasDePieza_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim inci2 As New frmVerIncidencias
-    inci2.referencia = tmp.Pieza.id
+    inci2.referencia = tmp.Pieza.Id
     inci2.Origen = OI_Piezas
     inci2.Show
 
@@ -518,7 +527,7 @@ Private Sub ver_Click()
 
     Dim F As New frmDesarrollo
     Load F
-    F.CargarPieza tmp.Pieza.id
+    F.CargarPieza tmp.Pieza.Id
     F.Show
 
 

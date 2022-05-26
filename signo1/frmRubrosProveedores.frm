@@ -73,6 +73,10 @@ Private Sub Form_Load()
     Me.GridEX1.ItemCount = 0
     Set rubros = DAORubros.FindAll
     Me.GridEX1.ItemCount = rubros.count
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 
 Private Sub Form_Resize()
@@ -90,9 +94,9 @@ Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 Private Sub GridEX1_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
-    tmpRubro.id = 0
+    tmpRubro.Id = 0
     tmpRubro.iniciales = Values(1)
-    tmpRubro.Rubro = Values(2)
+    tmpRubro.rubro = Values(2)
     rubros.Add tmpRubro
     If DAORubros.Save(tmpRubro) Then
         MsgBox "Alta exitosa!", vbInformation, "Información"
@@ -101,13 +105,13 @@ End Sub
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set tmpRubro = rubros.item(RowIndex)
     Values(1) = tmpRubro.iniciales
-    Values(2) = tmpRubro.Rubro
+    Values(2) = tmpRubro.rubro
 End Sub
 
 Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set tmpRubro = rubros.item(RowIndex)
     tmpRubro.iniciales = Values(1)
-    tmpRubro.Rubro = Values(2)
+    tmpRubro.rubro = Values(2)
     If DAORubros.Save(tmpRubro) Then
         MsgBox "Actualización exitosa!", vbInformation, "Información"
     End If

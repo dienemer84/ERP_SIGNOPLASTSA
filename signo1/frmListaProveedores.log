@@ -1,7 +1,30 @@
-Line 24: Class XtremeSuiteControls.ComboBox of control cboRubros was not a loaded control class.
-Line 37: Class XtremeSuiteControls.PushButton of control Command1 was not a loaded control class.
-Line 112: Class XtremeSuiteControls.PushButton of control cmdSinRubro was not a loaded control class.
-Line 126: Class XtremeSuiteControls.ComboBox of control cboFantasia was not a loaded control class.
-Line 140: Class XtremeSuiteControls.PushButton of control btnClearFantasia was not a loaded control class.
-Line 154: Class XtremeSuiteControls.Label of control lblCuit was not a loaded control class.
-Line 168: Class XtremeSuiteControls.Label of control Label3 was not a loaded control class.
+Line 220: Property Column(2) in grilla had an invalid file reference.
+Line 221: Property Column(3) in grilla had an invalid file reference.
+Line 222: Property Column(4) in grilla had an invalid file reference.
+Line 223: Property Column(5) in grilla had an invalid file reference.
+Line 224: Property Column(6) in grilla had an invalid file reference.
+Line 225: Property Column(7) in grilla had an invalid file reference.
+Line 226: Property Column(8) in grilla had an invalid file reference.
+Line 227: Property Column(9) in grilla had an invalid file reference.
+Line 229: Property FormatStyle(1) in grilla had an invalid file reference.
+Line 230: Property FormatStyle(2) in grilla had an invalid file reference.
+Line 231: Property FormatStyle(3) in grilla had an invalid file reference.
+Line 232: Property FormatStyle(4) in grilla had an invalid file reference.
+Line 233: Property FormatStyle(5) in grilla had an invalid file reference.
+Line 234: Property FormatStyle(6) in grilla had an invalid file reference.
+Line 236: Property PrinterProperties in grilla had an invalid file reference.
+Line 220: Property Column(2) in grilla had an invalid file reference.
+Line 221: Property Column(3) in grilla had an invalid file reference.
+Line 222: Property Column(4) in grilla had an invalid file reference.
+Line 223: Property Column(5) in grilla had an invalid file reference.
+Line 224: Property Column(6) in grilla had an invalid file reference.
+Line 225: Property Column(7) in grilla had an invalid file reference.
+Line 226: Property Column(8) in grilla had an invalid file reference.
+Line 227: Property Column(9) in grilla had an invalid file reference.
+Line 229: Property FormatStyle(1) in grilla had an invalid file reference.
+Line 230: Property FormatStyle(2) in grilla had an invalid file reference.
+Line 231: Property FormatStyle(3) in grilla had an invalid file reference.
+Line 232: Property FormatStyle(4) in grilla had an invalid file reference.
+Line 233: Property FormatStyle(5) in grilla had an invalid file reference.
+Line 234: Property FormatStyle(6) in grilla had an invalid file reference.
+Line 236: Property PrinterProperties in grilla had an invalid file reference.

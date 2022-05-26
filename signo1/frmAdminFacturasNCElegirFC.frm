@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasNCElegirFC 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -184,11 +184,11 @@ End If
     For Each fac In facs
 
         Set x = Me.lstFacturas.ListItems.Add(, , fac.GetShortDescription(False, True))
-        x.SubItems(1) = fac.Cliente.razon
+        x.SubItems(1) = fac.cliente.razon
         x.SubItems(2) = fac.FechaEmision
         x.SubItems(3) = enums.EnumEstadoDocumentoContable(fac.estado)
 
-        x.Tag = fac.id
+        x.Tag = fac.Id
     Next fac
 End Sub
 
@@ -210,9 +210,11 @@ Private Sub Form_Load()
     T = T & enums.EnumTipoDocumentoContable(i) & ","
     
     Next i
-
     
     Me.lblBuscarEn = "Busca en : " & Mid(T, 1, Len(T) - 1)
+    
+    llenarLST
+    
     
 End Sub
 

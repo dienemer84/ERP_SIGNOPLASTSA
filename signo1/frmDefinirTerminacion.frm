@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmDefinirTerminacion 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -240,7 +240,7 @@ Dim notLoading As Boolean
 Dim dto As DTOCuentasTerminacion
 Private Sub cboRubros_Click()
     If Not notLoading Then Exit Sub
-    Set dto.Rubro = DAORubros.FindById(Me.cboRubros.ItemData(Me.cboRubros.ListIndex))
+    Set dto.rubro = DAORubros.FindById(Me.cboRubros.ItemData(Me.cboRubros.ListIndex))
     LlenarCuentasMAT
 End Sub
 Private Sub cboSector_Click()
@@ -253,7 +253,7 @@ End Sub
 
 Private Sub Command1_Click()
     Dim strsql As String
-    Dim Rubro As Long
+    Dim rubro As Long
     Dim Sector As Long
     Dim idFosf As Long
     Dim idCant As Long
@@ -266,10 +266,10 @@ Private Sub Command1_Click()
     idCant = Me.cboCant.ItemData(Me.cboCant.ListIndex)
     idFosf = Me.cboFosf.ItemData(Me.cboFosf.ListIndex)
     Sector = Me.cboSector.ItemData(Me.cboSector.ListIndex)
-    Rubro = Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
+    rubro = Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
 
 
-    Set dto.Rubro = DAORubros.FindById(Rubro)
+    Set dto.rubro = DAORubros.FindById(rubro)
     Set dto.CantidadFosfatos = DAOMateriales.FindById(idFosf)
     Set dto.CantidadPintura = DAOMateriales.FindById(idCant)
     Set dto.Sector = DAOSectores.GetById(Sector)
@@ -298,28 +298,28 @@ Private Sub LlenarCuentasMDO()
     DAOTareas.LlenarComboPorSector Me.cboHorno, dto.Sector
     DAOTareas.LlenarComboPorSector Me.cboApp, dto.Sector
     DAOTareas.LlenarComboPorSector Me.cboSup, dto.Sector
-    Me.cboHorno.ListIndex = funciones.PosIndexCbo(dto.Horneado.id, Me.cboHorno)
-    Me.cboApp.ListIndex = funciones.PosIndexCbo(dto.Aplicacion.id, Me.cboApp)
-    Me.cboSup.ListIndex = funciones.PosIndexCbo(dto.Limpieza.id, Me.cboSup)
+    Me.cboHorno.ListIndex = funciones.PosIndexCbo(dto.Horneado.Id, Me.cboHorno)
+    Me.cboApp.ListIndex = funciones.PosIndexCbo(dto.Aplicacion.Id, Me.cboApp)
+    Me.cboSup.ListIndex = funciones.PosIndexCbo(dto.Limpieza.Id, Me.cboSup)
 
 End Sub
 
 Private Sub LlenarCuentasMAT()
     On Error Resume Next
-    DAOMateriales.LlenarComboPorRubro Me.cboCant, dto.Rubro
-    DAOMateriales.LlenarComboPorRubro Me.cboFosf, dto.Rubro
-    Me.cboCant.ListIndex = funciones.PosIndexCbo(dto.CantidadPintura.id, cboCant)
-    Me.cboFosf.ListIndex = funciones.PosIndexCbo(dto.CantidadFosfatos.id, cboFosf)
+    DAOMateriales.LlenarComboPorRubro Me.cboCant, dto.rubro
+    DAOMateriales.LlenarComboPorRubro Me.cboFosf, dto.rubro
+    Me.cboCant.ListIndex = funciones.PosIndexCbo(dto.CantidadPintura.Id, cboCant)
+    Me.cboFosf.ListIndex = funciones.PosIndexCbo(dto.CantidadFosfatos.Id, cboFosf)
 End Sub
 
 Private Sub LlenarRubros()
     DAORubros.LlenarCombo Me.cboRubros
-    Me.cboRubros.ListIndex = funciones.PosIndexCbo(dto.Rubro.id, Me.cboRubros)
+    Me.cboRubros.ListIndex = funciones.PosIndexCbo(dto.rubro.Id, Me.cboRubros)
 End Sub
 
 Private Sub LlenarSector()
     DAOSectores.LlenarCombo Me.cboSector
-    Me.cboSector.ListIndex = funciones.PosIndexCbo(dto.Sector.id, Me.cboSector)
+    Me.cboSector.ListIndex = funciones.PosIndexCbo(dto.Sector.Id, Me.cboSector)
 
 End Sub
 
@@ -334,6 +334,7 @@ Private Sub Form_Load()
 
     notLoading = True
 
-
+    Me.caption = caption & " (" & Name & ")"
+    
 
 End Sub

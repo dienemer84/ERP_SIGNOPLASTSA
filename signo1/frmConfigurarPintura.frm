@@ -292,15 +292,19 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     comprobar
-    base.ver_datos_pintura a, b, c, d, E, F, g, h, i
-    Me.Texta = a    'cantpintm2
-    Me.Textb = b    'cantfosfatos
+    base.ver_datos_pintura A, B, c, d, E, F, g, h, i
+    Me.Texta = A    'cantpintm2
+    Me.Textb = B    'cantfosfatos
     Me.Textc = c    'tpo prrp sup
     Me.Textd = d    'tpo pint m2
     Me.Texte = E    'tpo horno
     Me.Textf = h    'factor mdo
     Me.Textg = g    'factor mat
     Me.Text6 = i    'espesor pintura
+    
+        Me.caption = caption & " (" & Name & ")"
+        
+        
 End Sub
 
 Private Sub comprobar()

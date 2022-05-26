@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmAdminFacturasACobrar 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   5  'Sizable ToolWindow
@@ -102,6 +102,9 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     llenarLST
+    
+    Me.caption = caption & "(" & Name & ")"
+        
 
 End Sub
 
@@ -111,7 +114,7 @@ Private Sub llenarLST()
     Set rs = conectar.RSFactory("select f.saldada,f.id,f.nroFactura,c.razon,f.fechaEmision from AdminFacturas f inner join clientes c on f.idCliente=c.id where f.estado=2 and (f.saldada=0 or f.saldada=2 or f.saldada=3 or f.saldada=4)  and  f.idCliente=" & vIdCliente)
     While Not rs.EOF
         Set x = Me.lstFacturas.ListItems.Add(, , Format(rs!nroFactura, "0000"))
-        x.Tag = rs!id
+        x.Tag = rs!Id
         x.SubItems(1) = rs!razon
         x.SubItems(2) = Format(rs!FechaEmision, "dd-mm-yyyy")
         rs.MoveNext

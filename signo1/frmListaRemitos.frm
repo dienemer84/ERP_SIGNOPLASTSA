@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitosLista 
    BackColor       =   &H00C0C0C0&
@@ -401,7 +401,7 @@ Private Sub archivos_Click()
     
  Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OA_Remitos
-    frmarchi1.ObjetoId = tmpRto.id
+    frmarchi1.ObjetoId = tmpRto.Id
     frmarchi1.caption = "Remito " & tmpRto.numero
     frmarchi1.Show
     
@@ -473,16 +473,16 @@ Private Sub endRto_Click()
     On Error GoTo err454
     Dim A As Long
     Dim rtoNro As Long
-    rtoNro = tmpRto.id
+    rtoNro = tmpRto.Id
     A = Me.grilla.RowIndex(Me.grilla.row)
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
-                CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 5
-                CD.ShowPrinter
+                cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 5
+                cd.ShowPrinter
                 Dim i As Long
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAORemitoS.ImprimirRemito rtoNro
                 Next i
             End If
@@ -531,7 +531,7 @@ Private Sub listaRemitos()
     Dim remi As Remito
     Dim remitosId As New Collection
     For Each remi In remitos
-        remitosId.Add remi.id
+        remitosId.Add remi.Id
     Next
     Set facturasRemitos = New Dictionary
 
@@ -606,7 +606,7 @@ End Sub
 
 Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
-    If ColIndex = 10 And m_Archivos.item(tmpRto.id) > 0 Then
+    If ColIndex = 10 And m_Archivos.item(tmpRto.Id) > 0 Then
         IconIndex = 1
     End If
 End Sub
@@ -719,7 +719,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Dim Cant As Long
 
 
-        .value(10) = "(" & Val(m_Archivos.item(tmpRto.id)) & ")"
+        .value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
     End With
 
 End Sub
@@ -737,9 +737,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         Set tmp = EVENTO.Elemento
         For i = remitos.count To 1 Step -1
-            If remitos(i).id = tmp.id Then
+            If remitos(i).Id = tmp.Id Then
                 Set tmpRto = remitos(i)
-                tmpRto.id = tmp.id
+                tmpRto.Id = tmp.Id
                 tmpRto.detalle = tmp.detalle
                 tmpRto.estado = tmp.estado
                 tmpRto.EstadoFacturado = tmp.EstadoFacturado
@@ -800,7 +800,7 @@ Private Sub mnuEditar_Click()
 End Sub
 Private Sub mnuHistorico_Click()
     Dim frm As New frmHistoriales
-    frm.lista = DAORemitoHistorico.getAllByIdRemito(tmpRto.id)
+    frm.lista = DAORemitoHistorico.getAllByIdRemito(tmpRto.Id)
     frm.Show
 
 End Sub
@@ -836,25 +836,25 @@ Private Sub printRto_Click()
     On Error GoTo err444:
     Dim rs As Recordset
     Dim rto As Long
-    rto = tmpRto.id
+    rto = tmpRto.Id
     Set rs = conectar.RSFactory("select impreso from remitos where id=" & rto)
     Dim est As Long
     Dim i As Long
     If Not rs.BOF And Not rs.EOF Then est = rs!impreso Else Exit Sub
     If est > 0 Then
         If MsgBox("Este remito ya fué impreso," & Chr(10) & "¿Desea volver a imprimir?", vbYesNo, "Confirmación") = vbYes Then
-            CD.Flags = cdlPDUseDevModeCopies
-            CD.Copies = 5
-            CD.ShowPrinter
-            For i = 1 To CD.Copies
+            cd.Flags = cdlPDUseDevModeCopies
+            cd.Copies = 5
+            cd.ShowPrinter
+            For i = 1 To cd.Copies
                 DAORemitoS.ImprimirRemito rto
             Next i
         End If
     Else
         If MsgBox("Este remito no fue impreso." & Chr(10) & "¿Desea imprimirlo?", vbYesNo) = vbYes Then
-            CD.Copies = 5
-            CD.ShowPrinter
-            For i = 1 To CD.Copies
+            cd.Copies = 5
+            cd.ShowPrinter
+            For i = 1 To cd.Copies
                 DAORemitoS.ImprimirRemito rto
             Next
         End If
@@ -869,9 +869,9 @@ Private Sub scanear_Click()
     On Error Resume Next
     grilla_SelectionChange
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OA_Remitos, tmpRto.id) Then
+    If archivos.escanearDocumento(OA_Remitos, tmpRto.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Remitos)
-        Me.grilla.RefreshRowIndex (tmpRto.id)
+        Me.grilla.RefreshRowIndex (tmpRto.Id)
     End If
 End Sub
 Private Sub txtDescripcion_GotFocus()

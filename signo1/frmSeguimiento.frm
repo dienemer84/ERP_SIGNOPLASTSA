@@ -373,7 +373,7 @@ Dim claseP As New classPlaneamiento
 Dim claseS As New classStock
 
 Private Sub Ac_Click()
-    Dim idP As Long
+    Dim idp As Long
     Dim iditem As Long
     Dim Cant As Double
     If IsNumeric(Me.Text1) Then
@@ -381,19 +381,19 @@ Private Sub Ac_Click()
         Cant = CDbl(Me.Text1)
         'If Cant > 0 Then
         'si fabrico número positivo de piezas, continuo.
-        idP = CLng(Me.lblIdPedido)
+        idp = CLng(Me.lblIdPedido)
         iditem = CLng(Me.lblItem)
         Dim h As VbMsgBoxResult
         h = MsgBox("¿Está seguro de agregar " & Cant & " piezas fabricadas?", vbYesNo, "Confirmación")
         If h = vbYes Then
             'actualizo el campo fabricados
 
-            claseP.ejecutarComando "update detalles_pedidos set cantidad_fabricados=cantidad_fabricados+" & Cant & " where idPedido=" & idP & " and id= " & iditem
+            claseP.ejecutarComando "update detalles_pedidos set cantidad_fabricados=cantidad_fabricados+" & Cant & " where idPedido=" & idp & " and id= " & iditem
 
             Dim detalle_pedido As New DetalleOrdenTrabajo
 
             Set detalle_pedido = DAODetalleOrdenTrabajo.FindById(iditem)
-            claseP.ejecutarComando "update stock set ya_fabricado=" & conectar.Escape(True) & " where id= " & detalle_pedido.Pieza.id
+            claseP.ejecutarComando "update stock set ya_fabricado=" & conectar.Escape(True) & " where id= " & detalle_pedido.Pieza.Id
 
             DAODetalleOrdenTrabajo.SaveCantidad iditem, Cant, CantidadFabricada_, 0, 9, 0, 0, 0
 
@@ -405,14 +405,14 @@ Private Sub Ac_Click()
 
 
 
-            claseP.ejecutar_consulta "select cantidad_fabricados, cantidad, reserva_stock from detalles_pedidos where idPedido=" & idP
+            claseP.ejecutar_consulta "select cantidad_fabricados, cantidad, reserva_stock from detalles_pedidos where idPedido=" & idp
             pos = Me.lstDetallePedidos.selectedItem
             fab = claseP.Fabricados
             ped = claseP.pedidos
             stock = claseP.reservados
-            If claseP.estaTodoFabricado(idP) Then Me.Command1.Enabled = False
+            If claseP.estaTodoFabricado(idp) Then Me.Command1.Enabled = False
 
-            llenar_lista_detalle Me.lstDetallePedidos, idP, pos
+            llenar_lista_detalle Me.lstDetallePedidos, idp, pos
 
 
 
@@ -427,10 +427,10 @@ End Sub
 Private Sub Command1_Click()
     On Error GoTo er1
 
-    Dim idP As Long
+    Dim idp As Long
     If Trim(Me.txtOt) <> Empty Then
-        idP = CLng(Me.txtOt)
-        A = claseP.ExistePedido(idP)
+        idp = CLng(Me.txtOt)
+        A = claseP.ExistePedido(idp)
         If A = 0 Or A = -1 Then
             MsgBox "Dato inválido.", vbCritical, "Error"
             Me.lstDetallePedidos.ListItems.Clear
@@ -439,7 +439,7 @@ Private Sub Command1_Click()
             frame2.Enabled = False
             Me.lblIdPedido = Empty
         Else
-            claseP.ejecutar_consulta "select c.razon as cliente,p.tipo_orden,p.estado,p.descripcion,p.fechaEntrega from pedidos p,clientes c where p.id=" & idP & " and c.id=p.idCliente"
+            claseP.ejecutar_consulta "select c.razon as cliente,p.tipo_orden,p.estado,p.descripcion,p.fechaEntrega from pedidos p,clientes c where p.id=" & idp & " and c.id=p.idCliente"
             estado = claseP.estadoOT
             If claseP.TipoOrden = OT_ENTREGA Then
                 MsgBox "OT Invalida para hacer el seguimiento!", vbInformation
@@ -452,9 +452,9 @@ Private Sub Command1_Click()
             lblCliente = claseP.cliente
             lblDescripcion = claseP.descripcion
             lblFechaEntrega = claseP.FechaEntrega
-            llenar_lista_detalle Me.lstDetallePedidos, idP, 1
+            llenar_lista_detalle Me.lstDetallePedidos, idp, 1
             frame2.Enabled = True
-            Me.lblIdPedido = idP
+            Me.lblIdPedido = idp
             Me.lblItem = Me.lstDetallePedidos.selectedItem
             verSeleccionado
             'Else
@@ -480,7 +480,7 @@ Private Sub verSeleccionado()
     Me.lblItem = Me.lstDetallePedidos.selectedItem
 End Sub
 Private Sub Command2_Click()
-    Dim idP As Long
+    Dim idp As Long
     Dim Cant As Double
     Dim lbitem As Long
     If MsgBox("¿Está seguro de fabricar toda la orden?", vbYesNo, "Confirmación") = vbYes Then
@@ -500,12 +500,12 @@ Private Sub Command2_Click()
                     lbPedidos = Me.lstDetallePedidos.ListItems(P).ListSubItems(3)
                     lbTerminados = Me.lstDetallePedidos.ListItems(P).ListSubItems(5)
                     lbitem = Me.lstDetallePedidos.ListItems(P)
-                    idP = CLng(Me.lblIdPedido)
+                    idp = CLng(Me.lblIdPedido)
                     'actualizo el campo fabricados
-                    claseP.ejecutar_consulta "update detalles_pedidos set cantidad_fabricados=cantidad_fabricados+" & Cant & " where idPedido=" & idP & " and id= " & lbitem
+                    claseP.ejecutar_consulta "update detalles_pedidos set cantidad_fabricados=cantidad_fabricados+" & Cant & " where idPedido=" & idp & " and id= " & lbitem
                     DAODetalleOrdenTrabajo.SaveCantidad lbitem, Cant, CantidadFabricada_, 0, 9, 0, 0, 0
 
-                    claseP.ejecutar_consulta "select cantidad_fabricados, cantidad, reserva_stock from detalles_pedidos where idPedido=" & idP
+                    claseP.ejecutar_consulta "select cantidad_fabricados, cantidad, reserva_stock from detalles_pedidos where idPedido=" & idp
                     fab = claseP.Fabricados
                     ped = claseP.pedidos
                     stock = claseP.reservados
@@ -513,10 +513,10 @@ Private Sub Command2_Click()
             End If
         Next P
 
-        idP = CLng(Me.lblIdPedido)
+        idp = CLng(Me.lblIdPedido)
 
-        If claseP.estaTodoFabricado(idP) Then Me.Command1.Enabled = False
-        llenar_lista_detalle Me.lstDetallePedidos, idP, pos
+        If claseP.estaTodoFabricado(idp) Then Me.Command1.Enabled = False
+        llenar_lista_detalle Me.lstDetallePedidos, idp, pos
     End If
 
 End Sub
@@ -530,6 +530,9 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
+    
+        Me.caption = caption & " (" & Name & ")"
+        
 End Sub
 
 Private Sub lstDetallePedidos_DblClick()
@@ -565,7 +568,7 @@ Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
     conta = 0
     While Not rs.EOF
         conta = conta + 1
-        Set x = lst.ListItems.Add(, , Format(rs!id, "000"))    'si no anda, dejar id solo
+        Set x = lst.ListItems.Add(, , Format(rs!Id, "000"))    'si no anda, dejar id solo
         x.SubItems(1) = rs!item
         If (rs!Nota) = Empty Then
             x.SubItems(2) = rs!detalle
@@ -593,7 +596,7 @@ Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
         End If
 
         x.SubItems(10) = prom_fab
-        x.Tag = Format(rs!id, "0000")
+        x.Tag = Format(rs!Id, "0000")
         If IsNumeric(pos) Then
             If x = pos Then
                 x.Selected = True
