@@ -1009,7 +1009,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.finalizar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.editar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
-            Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba")
+            Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "diegonr" Or funciones.GetUserObj.usuario = "natalilo")
             Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
             If (Factura.estado = Saldada And Factura.OrdenPagoId > 0) Then
                 Me.MnuVerOP.Visible = True
@@ -1096,6 +1096,10 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 End Sub
 
 
+
+Private Sub GroupBox1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+
+End Sub
 
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = vId
