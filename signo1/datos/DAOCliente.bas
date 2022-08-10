@@ -24,10 +24,10 @@ Public Const TABLA_CLIENTE As String = "c"
 Public Const CAMPO_VALIDO_REMITO_FACTURA = "valido_remito_factura"
 
 
-Public Function BuscarPorID(id As Long) As clsCliente
+Public Function BuscarPorID(Id As Long) As clsCliente
 
     Dim col As Collection
-    Set col = DAOCliente.FindAll("c.id = " & id)
+    Set col = DAOCliente.FindAll("c.id = " & Id)
     If col.count > 0 Then
         Set BuscarPorID = col.item(1)
     Else
@@ -35,13 +35,13 @@ Public Function BuscarPorID(id As Long) As clsCliente
     End If
 
 End Function
-Public Function crear(Cliente As clsCliente) As Boolean
+Public Function crear(cliente As clsCliente) As Boolean
     Set cn = conectar.obternerConexion
     On Error GoTo err1
     crear = True
-    With Cliente
+    With cliente
         strsql = "insert into clientes (id_localidad,id_moneda_default, razon,domicilio,telefono,Fax,email,cuit,iva,id_provincia,FP,FP_detalle,valido_remito_factura) VALUES " _
-                 & "(" & .localidad.id & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.id & "," & .FP & ",'" & .FormaPago & "'," & Val(.ValidoRemitoFactura) & ")"
+                 & "(" & .localidad.Id & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
         cn.execute strsql
     End With
     Exit Function
@@ -50,12 +50,12 @@ err1:
 
 End Function
 
-Public Function modificar(Cliente As clsCliente) As Boolean
+Public Function modificar(cliente As clsCliente) As Boolean
     Set cn = conectar.obternerConexion
     On Error GoTo err11
     modificar = True
-    With Cliente
-        strsql = "update clientes set  id_localidad=" & .localidad.id & ", id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .id
+    With cliente
+        strsql = "update clientes set  id_localidad=" & .localidad.Id & ", id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .Id
         cn.execute strsql
     End With
     Exit Function
@@ -71,14 +71,14 @@ Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, _
                     Optional ByRef tablaPais As String = vbNullString, _
                     Optional ByRef tablaProvincia As String = vbNullString) As clsCliente
     Dim c As clsCliente
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
 
-    If id > 0 Then
+    If Id > 0 Then
         Set c = New clsCliente
-        c.id = id
+        c.Id = Id
         c.razon = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_RAZON_SOCIAL)
         c.Domicilio = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_DOMICILIO)
         c.exLocalidad = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_LOCALIDAD)
@@ -134,7 +134,7 @@ Public Function LlenarCombo(cbo As ComboBox, Optional todos As Boolean = False, 
 
     For Each cli In col
         cbo.AddItem cli.razon
-        cbo.ItemData(cbo.NewIndex) = cli.id
+        cbo.ItemData(cbo.NewIndex) = cli.Id
     Next
     'rs.MoveNext
     'Wend
@@ -173,7 +173,7 @@ Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, Opti
 
     For Each cli In col
         cbo.AddItem cli.razon
-        cbo.ItemData(cbo.NewIndex) = cli.id
+        cbo.ItemData(cbo.NewIndex) = cli.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0

@@ -216,6 +216,11 @@ Private Sub Form_Load()
     llenarLST
     
     
+    Me.cboClientes.Enabled = False
+    Me.PushButton2.Enabled = False
+    
+    
+    
 End Sub
 
 Private Sub Form_Terminate()

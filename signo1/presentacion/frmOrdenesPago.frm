@@ -504,10 +504,11 @@ Private Sub llenarLista()
     Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
     Me.gridOrdenes.ItemCount = ordenes.count
 
-    If ordenes.count = 1 And LenB(Me.txtNro.text) > 0 Then
-        Set Orden = ordenes(1)
-        If Orden.estado <> EstadoOrdenPago_Anulada Then gridOrdenes_DblClick
-    End If
+' ESTAS LINEAS DECLARAN QUE CUANDO SE ENCUENTRE UN SOLO RESULTADO SE ABRA LA PANTALLA CON LA ODP ENCONTRADA.
+'    If ordenes.count = 1 And LenB(Me.txtNro.text) > 0 Then
+'        Set Orden = ordenes(1)
+'        If Orden.estado <> EstadoOrdenPago_Anulada Then gridOrdenes_DblClick
+'    End If
 End Sub
 Private Sub Form_Resize()
     On Error Resume Next
@@ -573,7 +574,7 @@ End Sub
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And ordenes.count > 0 Then
         Set Orden = ordenes.item(RowIndex)
-        Values(1) = Orden.id
+        Values(1) = Orden.Id
         Values(2) = Orden.FEcha
 
         Values(3) = Orden.moneda.NombreCorto
@@ -611,9 +612,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         For i = ordenes.count To 1 Step -1
             Set tmp = EVENTO.Elemento
-            If ordenes(i).id = tmp.id Then
+            If ordenes(i).Id = tmp.Id Then
                 Set Orden = ordenes(i)
-                Orden.id = tmp.id
+                Orden.Id = tmp.Id
                 Orden.estado = tmp.estado
                 Me.gridOrdenes.RefreshRowIndex i
                 Exit For
@@ -624,10 +625,10 @@ End Function
 
 Private Sub mnuAnular_Click()
     If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
-        If DAOOrdenPago.Delete(Orden.id, True) Then
+        If DAOOrdenPago.Delete(Orden.Id, True) Then
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            ordenes.remove CStr(Orden.id)
+            ordenes.remove CStr(Orden.Id)
             Me.gridOrdenes.ItemCount = ordenes.count
             cmdBuscar_Click
         Else
@@ -657,7 +658,7 @@ Private Sub mnuHistorial_Click()
 Dim c As New Collection
 
 Dim F As New frmHistorico
-F.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
+F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
 F.Show
 End Sub
 
@@ -672,7 +673,7 @@ End Sub
 Private Sub Imprimir()
     With drpOrdenPago.Sections("seccion").Controls
 
-        .item("lblTitulo").caption = "SIGNOPLAST S.A. - Orden de Pago Nº " & Orden.id
+        .item("lblTitulo").caption = "SIGNOPLAST S.A. - Orden de Pago Nº " & Orden.Id
         .item("lblFecha").caption = Orden.FEcha
 
         If Orden.FacturasProveedor.count > 0 Then
@@ -682,9 +683,9 @@ Private Sub Imprimir()
         .item("lblAlicuota").caption = Orden.alicuota & "%"
 
         Dim cert As CertificadoRetencion
-        Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
+        Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.Id)
         If IsSomething(cert) Then
-            .item("lblCertificadoIIBB").caption = cert.id
+            .item("lblCertificadoIIBB").caption = cert.Id
         Else
             .item("lblCertificadoIIBB").caption = "NO POSEE"
         End If
@@ -693,7 +694,7 @@ Private Sub Imprimir()
 
 
 
-        Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
+        Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
         Dim F As clsFacturaProveedor
         Dim facs As New Collection
         For Each F In Orden.FacturasProveedor
@@ -779,7 +780,7 @@ End Sub
 
 Private Sub mnuVerCertificado_Click()
     Dim cr As Collection
-    Set cr = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.id)
+    Set cr = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.Id)
 
     If IsSomething(cr) Then
     
@@ -827,7 +828,7 @@ Private Sub PushButton1_Click()
             Dim totRet As Double
             totRet = 0
             For Each ret In colret
-                totRet = totRet + d.item(CStr(ret.id))
+                totRet = totRet + d.item(CStr(ret.Id))
             Next ret
             Orden.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
@@ -889,15 +890,15 @@ Private Sub PushButton2_Click()
             '        Q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
             '        If Not conectar.execute(Q) Then GoTo e
             If Not DAOOperacion.Save(opeCaja) Then GoTo E
-            opeCaja.id = conectar.UltimoId2
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.id & ", " & opeCaja.id & ")"
+            opeCaja.Id = conectar.UltimoId2
+            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
             If Not conectar.execute(q) Then GoTo E
-            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.id
+            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
             If Not conectar.execute(q) Then GoTo E
 
 
         End If
-        Debug.Print nop.id
+        Debug.Print nop.Id
     Next
 
 
