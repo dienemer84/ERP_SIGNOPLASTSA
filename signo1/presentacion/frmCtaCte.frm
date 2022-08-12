@@ -4,7 +4,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCtaCte 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cuenta Corriente"
-   ClientHeight    =   6450
+   ClientHeight    =   6810
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   9975
@@ -22,17 +22,30 @@ Begin VB.Form frmCtaCte
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   6450
+   ScaleHeight     =   6810
    ScaleWidth      =   9975
-   Begin XtremeSuiteControls.PushButton PushButton1 
-      Height          =   315
-      Left            =   8805
-      TabIndex        =   6
-      Top             =   495
-      Width           =   1080
+   Begin XtremeSuiteControls.PushButton button_ExportToXls 
+      Height          =   435
+      Left            =   2040
+      TabIndex        =   8
+      Top             =   6240
+      Width           =   1695
       _Version        =   786432
-      _ExtentX        =   1905
-      _ExtentY        =   556
+      _ExtentX        =   2990
+      _ExtentY        =   767
+      _StockProps     =   79
+      Caption         =   "Exportar a XLS"
+      UseVisualStyle  =   -1  'True
+   End
+   Begin XtremeSuiteControls.PushButton PushButton1 
+      Height          =   435
+      Left            =   120
+      TabIndex        =   6
+      Top             =   6240
+      Width           =   1680
+      _Version        =   786432
+      _ExtentX        =   2963
+      _ExtentY        =   767
       _StockProps     =   79
       Caption         =   "Imprimir"
       UseVisualStyle  =   -1  'True
@@ -51,13 +64,13 @@ Begin VB.Form frmCtaCte
       Text            =   "ComboBox1"
    End
    Begin GridEX20.GridEX gridDetalles 
-      Height          =   4920
+      Height          =   5040
       Left            =   90
       TabIndex        =   1
       Top             =   1005
       Width           =   9825
       _ExtentX        =   17330
-      _ExtentY        =   8678
+      _ExtentY        =   8890
       Version         =   "2.0"
       HoldSortSettings=   -1  'True
       BoundColumnIndex=   ""
@@ -119,9 +132,9 @@ Begin VB.Form frmCtaCte
    Begin VB.Label lblSaldo 
       Alignment       =   1  'Right Justify
       Height          =   285
-      Left            =   8235
+      Left            =   8400
       TabIndex        =   7
-      Top             =   6060
+      Top             =   6360
       Width           =   1425
    End
    Begin XtremeSuiteControls.Label Label6 
@@ -164,6 +177,14 @@ Private deta As DTODetalleCuentaCorriente
 Private saldo As Double
 Private saldos As New Dictionary
 
+
+Private Sub button_ExportToXls_Click()
+
+  ExportToXls
+
+       
+End Sub
+
 Private Sub cmdVerCtaCte_Click()
     If Me.cboClientes.ListIndex <> -1 Then
         Dim fecha_hasta As String
@@ -175,7 +196,8 @@ Private Sub cmdVerCtaCte_Click()
 
         Set Detalles = DAOCuentaCorriente.FindAllDetalles(Me.cboClientes.ItemData(Me.cboClientes.ListIndex), , fecha_hasta)
         saldo = 0
-
+        
+        
 
         If IsSomething(Detalles) Then
             Me.lblSaldo = "Saldo: " & funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))
@@ -284,3 +306,89 @@ Private Sub PushButton1_Click()
     Me.gridDetalles.PrintPreview frmPrintPreview.GEXPreview1
     frmPrintPreview.Show 1
 End Sub
+
+
+Public Function ExportToXls() As Boolean
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+
+    Set xlWorkbook = xlApplication.Workbooks.Add
+
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    xlWorksheet.Range("A1:E1").Merge
+    xlWorksheet.Range("A2:E2").Merge
+    xlWorksheet.Range("A1:E3").Font.Bold = True
+    xlWorksheet.Cells(1, 1).value = "Resumen de Cuenta Corriente"
+    xlWorksheet.Cells(2, 1).value = "Cliente: " & Me.cboClientes.text
+    xlWorksheet.Cells(3, 1).value = "Fecha"
+    xlWorksheet.Cells(3, 2).value = "Comprobante"
+    xlWorksheet.Cells(3, 3).value = "Debe"
+    xlWorksheet.Cells(3, 4).value = "Haber"
+    xlWorksheet.Cells(3, 5).value = "Saldo"
+
+    Dim idx As Integer
+    idx = 4
+    
+   For Each deta In Detalles
+  
+
+         xlWorksheet.Cells(idx, 1).value = deta.FEcha
+         xlWorksheet.Cells(idx, 2).value = deta.Comprobante
+         xlWorksheet.Cells(idx, 3).value = deta.Debe
+         xlWorksheet.Cells(idx, 4).value = deta.Haber
+         xlWorksheet.Cells(idx, 5).value = deta.saldo
+         
+    idx = idx + 1
+    
+     Next
+
+        xlApplication.ScreenUpdating = False
+        
+        Dim wkSt As String
+        
+        wkSt = xlWorksheet.Name
+        
+        xlWorksheet.Cells.EntireColumn.AutoFit
+        
+        xlWorkbook.Sheets(wkSt).Select
+        
+        xlApplication.ScreenUpdating = True
+        
+        xlWorksheet.PageSetup.Orientation = xlLandscape
+        xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+    
+        Dim filename As String
+        filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
+    
+        If Dir(filename) <> vbNullString Then Kill filename
+       
+        xlWorkbook.SaveAs filename
+    
+        xlWorkbook.Saved = True
+        xlWorkbook.Close
+        xlApplication.Quit
+        
+        funciones.ShellExecute 0, "open", filename, "", "", 0
+    
+        Set xlWorksheet = Nothing
+        Set xlWorkbook = Nothing
+        Set xlApplication = Nothing
+        
+
+End Function

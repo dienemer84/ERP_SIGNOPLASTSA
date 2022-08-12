@@ -1,1 +1,1 @@
-upx.exe -9 abbPermisos.exe
+upx.exe -9 abb.exe
