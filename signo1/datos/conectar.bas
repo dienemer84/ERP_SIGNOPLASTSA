@@ -187,7 +187,7 @@ Public Function Escape(value As Variant) As Variant
 End Function
 Public Function GetValue(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableName As String, ByRef fieldName As String)
     GetValue = rs.Fields.item(fieldsIndex(tableName & "." & fieldName)).value
-    If IsNull(GetValue) Then GetValue = Empty
+6    If IsNull(GetValue) Then GetValue = Empty
 End Function
 
 Public Function GetEntityId(entity As Object) As Variant

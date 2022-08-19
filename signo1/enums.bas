@@ -7,6 +7,7 @@ Dim unidad(5)
 Dim estados_material(2)
 Dim estado_orden_entrega(3)
 Dim estado_factura_proveedor(4)
+Dim forma_de_pago_cta_cte(2)
 Public estado_po(2)
 Dim estado_presupuesto(8)
 Dim estado_proceso_ot(3)
@@ -348,6 +349,11 @@ Public Enum EstadoFacturaProveedor
     pagoParcial = 4
 End Enum
 
+Public Enum FormadePagoFacturaProveedor
+    PagoCuentaCorriente = 1
+    PagoContado = 0
+End Enum
+
 Public Enum EstadoFacturaCliente
     EnProceso = 1
     Aprobada = 2
@@ -418,6 +424,9 @@ Public Function enumEstadoFacturaProveedor(indice) As String
     enumEstadoFacturaProveedor = estado_factura_proveedor(indice)
 End Function
 
+Public Function enumFormaDePagoFacturaProveedor(indice) As String
+    enumFormaDePagoFacturaProveedor = forma_de_pago_cta_cte(indice)
+End Function
 
 Public Function enumEstadoOrdenEntrega(indice) As String
 enumEstadoOrdenEntrega = estado_orden_entrega(indice)
@@ -495,19 +504,19 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
     estado_presupuesto(7) = "No Cotizado"
     estado_presupuesto(8) = "Desactivado"
     
-    
-    
+    forma_de_pago_cta_cte(0) = "Cta. Cte."
+    forma_de_pago_cta_cte(1) = "Contado"
     
 
     estado_factura_proveedor(1) = "En Proceso"    'EstadoFacturaProveedor.EnProceso
     estado_factura_proveedor(2) = "Aprobada"    ' EstadoFacturaProveedor.Aprobada
     estado_factura_proveedor(3) = "Saldada"    'EstadoFacturaProveedor.Saldada
-estado_factura_proveedor(4) = "Pago Parcial"
+    estado_factura_proveedor(4) = "Pago Parcial"
 
 
-estado_orden_entrega(1) = "Pendiente"
-estado_orden_entrega(2) = "Aprobada"
-estado_orden_entrega(3) = "Finalizada"
+   estado_orden_entrega(1) = "Pendiente"
+   estado_orden_entrega(2) = "Aprobada"
+   estado_orden_entrega(3) = "Finalizada"
 
     estado_saldado(TipoSaldadoFactura.NoSaldada) = "No Saldada"
     estado_saldado(TipoSaldadoFactura.notaCredito) = "N. Crédito"
