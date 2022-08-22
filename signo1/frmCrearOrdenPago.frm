@@ -1987,7 +1987,7 @@ Private Sub MostrarFacturas()
                        Factura.NetoGravadoAbonadoGlobalPendiente = 0 ' c(2)
                          Factura.OtrosAbonadoGlobalPendiente = 0 'c(3)
             
-                      T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"
+                      T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")" 'TipoCambio: (" & Factura.TipoCambioPago & ")"
                          If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
                           T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
                  
