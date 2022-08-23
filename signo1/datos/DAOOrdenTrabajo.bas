@@ -40,12 +40,19 @@ Public Sub ExportarExcelResumenGeneral(idOt As Long)
 Dim Ot As OrdenTrabajo
 Dim deta As DetalleOrdenTrabajo
 Set Ot = DAOOrdenTrabajo.FindById(idOt)
-Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True, True, True)
+Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, True, True, True)
 
-    Dim xlWorkbook As New Excel.Workbook
-    Dim xlWorksheet As New Excel.Worksheet
-    Dim xlApplication As New Excel.Application
-
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+    
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
 
     Dim tareas As New Dictionary
 
@@ -138,7 +145,7 @@ For Each deta2 In deta.DetallesHijasMarcoPadre
 Next
 Else
 yPos = yPos + 1
- exportarEntregas yPos, deta.id, xlWorksheet
+ exportarEntregas yPos, deta.Id, xlWorksheet
  End If
  
 yPos = yPos + 1
@@ -151,13 +158,13 @@ Dim deta2 As DetalleOrdenTrabajo
     Dim strsql As String
     Dim origenypos As Long
     origenypos = yPos
-      strsql = "Select descripcion from pedidos where id=" & deta.OrdenTrabajo.id
+      strsql = "Select descripcion from pedidos where id=" & deta.OrdenTrabajo.Id
     Set rs = conectar.RSFactory(strsql)
 
                 deta.OrdenTrabajo.descripcion = rs!descripcion
 
     xlWorksheet.Cells(yPos, 2).value = ""
-     xlWorksheet.Cells(yPos, 3).value = "OT " & deta.OrdenTrabajo.id & " - " & deta.OrdenTrabajo.descripcion
+     xlWorksheet.Cells(yPos, 3).value = "OT " & deta.OrdenTrabajo.Id & " - " & deta.OrdenTrabajo.descripcion
      xlWorksheet.Cells(yPos, 4).value = deta.CantidadPedida
      xlWorksheet.Cells(yPos, 5).value = deta.Cantidad_Entregada
 
@@ -169,7 +176,7 @@ For Each deta2 In deta.DetallesHijasMarcoPadre
     
 Next
 Else
- exportarEntregas yPos, deta.id, xlWorksheet
+ exportarEntregas yPos, deta.Id, xlWorksheet
  End If
  xlWorksheet.Range(xlWorksheet.Cells(origenypos, 3), xlWorksheet.Cells(yPos, 8)).BorderAround xlContinuous
 End Sub
@@ -201,9 +208,9 @@ Private Sub exportarEntregas(yPos, detalleid As Long, xlWorksheet)
 End Sub
 Public Sub ImprimirFaltantesFacturacion(Ot As OrdenTrabajo)
     On Error GoTo err1
-    dsrFaltantesFacturar.Sections("Sec4").Controls.item("lblOT").caption = "Orden de Trabajo Nº: " & Ot.id & " | " & Ot.descripcion
+    dsrFaltantesFacturar.Sections("Sec4").Controls.item("lblOT").caption = "Orden de Trabajo Nº: " & Ot.Id & " | " & Ot.descripcion
     dsrFaltantesFacturar.Sections("Sec4").Controls.item("lblCliente").caption = "Cliente: " & Ot.cliente.razon
-    dsrFaltantesFacturar.Sections("Sec4").Controls.item("lblTitulo").caption = "FALTANTES DE FACTURACION OT Nº " & Ot.id
+    dsrFaltantesFacturar.Sections("Sec4").Controls.item("lblTitulo").caption = "FALTANTES DE FACTURACION OT Nº " & Ot.Id
 
 
     Dim r As New Recordset
@@ -220,7 +227,7 @@ Public Sub ImprimirFaltantesFacturacion(Ot As OrdenTrabajo)
         .Fields.Append "importe_faltante", adVarChar, 255, adFldUpdatable    ' And adFldIsNullable
     End With
     r.Open
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True)
+    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, True)
     Dim deta As DetalleOrdenTrabajo
 
     Dim cod As String
@@ -239,7 +246,7 @@ Public Sub ImprimirFaltantesFacturacion(Ot As OrdenTrabajo)
 
         Total = Total + r!Pt
 
-        cod = "*R" & Format(deta.id, "00000000") & "*"
+        cod = "*R" & Format(deta.Id, "00000000") & "*"
         r!codigo = cod
         r.Update
     Next
@@ -253,9 +260,9 @@ err1:
 End Sub
 Public Sub ImprimirPreconteo(Ot As OrdenTrabajo)
     On Error GoTo err1
-    dsrPreconteo.Sections("section4").Controls.item("lblOT").caption = "Orden de Trabajo Nº: " & Ot.id & " | " & Ot.descripcion
+    dsrPreconteo.Sections("section4").Controls.item("lblOT").caption = "Orden de Trabajo Nº: " & Ot.Id & " | " & Ot.descripcion
     dsrPreconteo.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & Ot.cliente.razon
-    dsrPreconteo.Sections("section4").Controls.item("lblTitulo").caption = "PRECONTEO DE ENTREGA OT Nº " & Ot.id
+    dsrPreconteo.Sections("section4").Controls.item("lblTitulo").caption = "PRECONTEO DE ENTREGA OT Nº " & Ot.Id
 
     Dim r As New Recordset
     With r
@@ -269,7 +276,7 @@ Public Sub ImprimirPreconteo(Ot As OrdenTrabajo)
         .Fields.Append "X", adVarChar, 255, adFldUpdatable            ' And adFldIsNullable
     End With
     r.Open
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True)
+    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, True)
     Dim deta As DetalleOrdenTrabajo
 
     Dim cod As String
@@ -287,7 +294,7 @@ Public Sub ImprimirPreconteo(Ot As OrdenTrabajo)
         Else
             r!x = ""
         End If
-        cod = "*R" & Format(deta.id, "00000000") & "*"
+        cod = "*R" & Format(deta.Id, "00000000") & "*"
         r!codigo = cod
         r.Update
     Next
@@ -301,11 +308,11 @@ End Sub
 
 
 Public Sub ImprimirRuta(Ot As OrdenTrabajo, detOT As DetalleOrdenTrabajo, Optional detOTConj As DetalleOTConjuntoDTO = Nothing, Optional posOnConj As String = vbNullString)
-    pedido_pieza2.Sections("cabeza").Controls("lblOT").caption = Format("0000", Ot.id) & " | " & detOT.item  ' "." & 1 & "/" & Ot.detalles.count     '1 = pos
+    pedido_pieza2.Sections("cabeza").Controls("lblOT").caption = Format("0000", Ot.Id) & " | " & detOT.item  ' "." & 1 & "/" & Ot.detalles.count     '1 = pos
     If IsSomething(detOTConj) Then
-        pedido_pieza2.Sections("cabeza").Controls("barcode").caption = "*R" & Format(detOTConj.id, "00000000") & "*"
+        pedido_pieza2.Sections("cabeza").Controls("barcode").caption = "*R" & Format(detOTConj.Id, "00000000") & "*"
     Else
-        pedido_pieza2.Sections("cabeza").Controls("barcode").caption = "*R" & Format(detOT.id, "00000000") & "*"
+        pedido_pieza2.Sections("cabeza").Controls("barcode").caption = "*R" & Format(detOT.Id, "00000000") & "*"
     End If
     pedido_pieza2.Sections("cabeza").Controls("lblCliente").caption = Ot.cliente.razon
     pedido_pieza2.Sections("cabeza").Controls("lblReferencia").caption = Ot.descripcion
@@ -331,9 +338,9 @@ Public Sub ImprimirRuta(Ot As OrdenTrabajo, detOT As DetalleOrdenTrabajo, Option
     pedido_pieza2.Sections("observar").Controls("lblnota").caption = detOT.Nota
     Dim idPieza As Long
     If detOTConj Is Nothing Then
-        idPieza = detOT.Pieza.id
+        idPieza = detOT.Pieza.Id
     Else
-        idPieza = detOTConj.Pieza.id
+        idPieza = detOTConj.Pieza.Id
     End If
 
     Dim Cant As Long
@@ -358,14 +365,14 @@ Public Sub ImprimirRuta(Ot As OrdenTrabajo, detOT As DetalleOrdenTrabajo, Option
     pedido_pieza2.Sections("pie").Controls("incidencias").caption = texto
 
     If IsSomething(detOT) And Not IsSomething(detOTConj) Then
-        conectar.execute "UPDATE detalles_pedidos SET impresiones_ruta = " & (detOT.CantidadImpresionesDeRuta + 1) & " WHERE id = " & detOT.id
+        conectar.execute "UPDATE detalles_pedidos SET impresiones_ruta = " & (detOT.CantidadImpresionesDeRuta + 1) & " WHERE id = " & detOT.Id
     End If
 
     Dim tmpId As Long
     If detOTConj Is Nothing Then
-        tmpId = detOT.id
+        tmpId = detOT.Id
     Else
-        tmpId = detOTConj.id
+        tmpId = detOTConj.Id
     End If
 
     If IsSomething(detOTConj) Then
@@ -374,7 +381,7 @@ Public Sub ImprimirRuta(Ot As OrdenTrabajo, detOT As DetalleOrdenTrabajo, Option
         Set pedido_pieza2.DataSource = conectar.RSFactory("SELECT concat('*', dm.id,'*') as codigo, t.cantxproc,t.tarea,s.sector from tareas t,sectores s,PlaneamientoTiemposProcesos dm where dm.codigoTarea=t.id and s.id=t.id_sector and dm.idDetallePedidoConj = 0 and dm.idDetallePedido=" & tmpId)
     End If
 
-    DAOOrdenTrabajoHistorial.agregar detOT.OrdenTrabajo, "RUTA " & detOT.id & " IMPRESA"
+    DAOOrdenTrabajoHistorial.agregar detOT.OrdenTrabajo, "RUTA " & detOT.Id & " IMPRESA"
 
     pedido_pieza2.PrintReport False
 End Sub
@@ -396,7 +403,7 @@ Public Function PonerEnProduccion(T As OrdenTrabajo) As Boolean    'activar viej
     PonerEnProduccion = True
     conectar.CommitTransaction
 
-    DAOEvento.Publish T.id, TipoEventoBroadcast.TEB_OrdenTrabajoActivada
+    DAOEvento.Publish T.Id, TipoEventoBroadcast.TEB_OrdenTrabajoActivada
     Exit Function
 err1:
     T.estado = estado_ant
@@ -434,11 +441,11 @@ Public Function DescontarReservaDetalle(detalle As DetalleOrdenTrabajo, Cant As 
 On Error GoTo err1
 conectar.BeginTransaction
 Dim P As Pieza
-Set P = DAOPieza.FindById(detalle.Pieza.id, FL_0)
+Set P = DAOPieza.FindById(detalle.Pieza.Id, FL_0)
 If P.CantidadStock >= Cant Then
 
         detalle.ReservaStock = detalle.ReservaStock + Cant
-        If Not DAOPieza.ModificarStock(P, ModificarStock_BajaOT, Cant, , detalle.OrdenTrabajo.id) Then
+        If Not DAOPieza.ModificarStock(P, ModificarStock_BajaOT, Cant, , detalle.OrdenTrabajo.Id) Then
                 Err.Raise 8002, "Reserva Stock", "Imposible Descontar la Reserva"
         End If
         
@@ -469,7 +476,7 @@ Private Function DescontarReserva(Ot As OrdenTrabajo) As Boolean
 
     ok = True
     For Each det In Ot.Detalles
-        Set Pieza = DAOPieza.FindById(det.Pieza.id, FL_0)
+        Set Pieza = DAOPieza.FindById(det.Pieza.Id, FL_0)
         If Pieza.CantidadStock < det.ReservaStock Then
             ok = False
             Exit For
@@ -480,7 +487,7 @@ Private Function DescontarReserva(Ot As OrdenTrabajo) As Boolean
 
     For Each det In Ot.Detalles
         If det.ReservaStock > 0 Then
-            If Not DAOPieza.ModificarStock(Pieza, ModificarStock_BajaOT, det.ReservaStock, , Ot.id) Then
+            If Not DAOPieza.ModificarStock(Pieza, ModificarStock_BajaOT, det.ReservaStock, , Ot.Id) Then
                 GoTo err441
             End If
         End If
@@ -516,7 +523,7 @@ Public Function HacerEditable(T As OrdenTrabajo) As Boolean
         If estado_ant = EstadoOT_EnEspera Then
             For Each deta In T.Detalles
 
-                If Not DAOPieza.ModificarStock(deta.Pieza, ModificarStock_AltaOT, deta.ReservaStock, , T.id) Then GoTo err1
+                If Not DAOPieza.ModificarStock(deta.Pieza, ModificarStock_AltaOT, deta.ReservaStock, , T.Id) Then GoTo err1
                 deta.ReservaStock = 0
             Next
         End If
@@ -539,9 +546,9 @@ err1:
 
 End Function
 
-Public Function FindById(ByRef id As Long) As OrdenTrabajo
+Public Function FindById(ByRef Id As Long) As OrdenTrabajo
     Dim col As Collection
-    Set col = FindAll("p.id = " & id)
+    Set col = FindAll("p.id = " & Id)
     If col.count > 0 Then
         Set FindById = col(1)
     Else
@@ -640,24 +647,24 @@ If withDetalles Then
     While Not rs.EOF
         Set Ot = Map(rs, fieldsIndex, TABLA_PEDIDO, monedaTabla, clienteTabla, usuarioTabla, usuarioAprobadoTabla, usuarioModificadoTabla, usuarioFinalizadoTabla, ivaTabla, tipoFacturaTabla, clienteFacturarTabla)
         esta = False
-        If BuscarEnColeccion(ordenesTrabajo, CStr(Ot.id)) Then
+        If BuscarEnColeccion(ordenesTrabajo, CStr(Ot.Id)) Then
             esta = True
-            Set Ot = ordenesTrabajo.item(CStr(Ot.id))
+            Set Ot = ordenesTrabajo.item(CStr(Ot.Id))
         End If
 
 
         'If Ot.Id = 1836 Then Stop
         If withDetalles Then
             Set deta = DAODetalleOrdenTrabajo.Map(rs, fieldsIndex, "dp", "stock", withEntregados, withFabricados, withFacturados, withPorcentajeTareasFinalizadas)
-            deta.idpedido = Ot.id
-            deta.IdMoneda = Ot.moneda.id
-            If IsSomething(deta) Then Ot.Detalles.Add deta, CStr(deta.id)
+            deta.idpedido = Ot.Id
+            deta.IdMoneda = Ot.moneda.Id
+            If IsSomething(deta) Then Ot.Detalles.Add deta, CStr(deta.Id)
         End If
 
 
 
-        If Not BuscarEnColeccion(ordenesTrabajo, CStr(Ot.id)) Then
-            ordenesTrabajo.Add Ot, CStr(Ot.id)
+        If Not BuscarEnColeccion(ordenesTrabajo, CStr(Ot.Id)) Then
+            ordenesTrabajo.Add Ot, CStr(Ot.Id)
         End If
 
         rs.MoveNext
@@ -682,12 +689,12 @@ Public Function Map(ByRef rs As Recordset, _
                     ) As OrdenTrabajo
 
     Dim tmpOrdenTrabajo As OrdenTrabajo
-    Dim id As Variant
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
+    Dim Id As Variant
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set tmpOrdenTrabajo = New OrdenTrabajo
-        tmpOrdenTrabajo.id = id
+        tmpOrdenTrabajo.Id = Id
 
 
         tmpOrdenTrabajo.AnticipoFacturadoIdFactura = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ANTICIPO_FACTURA_ID)
@@ -753,7 +760,7 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
     Dim q As String
     Dim esUpdate As Boolean
 
-    If Ot.id = 0 Then
+    If Ot.Id = 0 Then
         q = "INSERT INTO pedidos" _
             & " (descripcion," _
             & " idCliente,idClienteFacturar," _
@@ -808,12 +815,12 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
 
         Guardar = conectar.execute(q)
 
-        Dim id As Long
+        Dim Id As Long
 
         If Guardar Then
-            conectar.UltimoId "pedidos", id
-            Ot.id = id
-            If Ot.id <> 0 Then DAOOrdenTrabajoHistorial.agregar Ot, "Pedido creado"
+            conectar.UltimoId "pedidos", Id
+            Ot.Id = Id
+            If Ot.Id <> 0 Then DAOOrdenTrabajoHistorial.agregar Ot, "Pedido creado"
         End If
     Else
         esUpdate = True
@@ -835,7 +842,7 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
             & " fechaAprobado = " & conectar.Escape(Ot.fechaAprobado) & " ," _
             & " idUsuarioAprobado = " & conectar.GetEntityId(Ot.UsuarioAprobado) & " ," _
             & " fechaModificado = " & conectar.Escape(Now) & " ," _
-            & " idUsuarioModificado = " & funciones.GetUserObj.id & " ," _
+            & " idUsuarioModificado = " & funciones.GetUserObj.Id & " ," _
             & " idUsuarioFinalizado = " & conectar.GetEntityId(Ot.UsuarioFinalizado) & " ," _
             & " stockDescontado = " & conectar.Escape(Ot.StockDescontado) & " ," _
             & " anticipo = " & conectar.Escape(Ot.Anticipo) & " ," _
@@ -851,7 +858,7 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
             & " marco_monto_tope = " & conectar.Escape(Ot.MontoTopeMarco) & "," _
             & " id_anticipo_factura = " & conectar.Escape(Ot.AnticipoFacturadoIdFactura) _
             & " WHERE" _
-            & " id = " & Ot.id
+            & " id = " & Ot.Id
 
         Guardar = conectar.execute(q)
     End If
@@ -859,11 +866,11 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
     c = 0
     If Guardar Then
         c = Ot.FechasPreciosMarco.count     'fuerzo la recarga
-        conectar.execute "DELETE FROM pedidos_fechas_precios WHERE id_ot_marco = " & Ot.id
+        conectar.execute "DELETE FROM pedidos_fechas_precios WHERE id_ot_marco = " & Ot.Id
         If Ot.EsMarco Then
             Dim FechaPrecio As Variant
             For Each FechaPrecio In Ot.FechasPreciosMarco
-                conectar.execute "INSERT INTO pedidos_fechas_precios VALUES (" & Ot.id & ", " & conectar.Escape(FechaPrecio) & ")"
+                conectar.execute "INSERT INTO pedidos_fechas_precios VALUES (" & Ot.Id & ", " & conectar.Escape(FechaPrecio) & ")"
             Next FechaPrecio
         End If
 
@@ -871,8 +878,8 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
 
 
             Dim deta As DetalleOrdenTrabajo
-            conectar.execute "DELETE FROM detalles_pedidos WHERE idPedido = " & Ot.id
-            conectar.execute "DELETE FROM detalles_pedidos_conjuntos WHERE idPedido = " & Ot.id
+            conectar.execute "DELETE FROM detalles_pedidos WHERE idPedido = " & Ot.Id
+            conectar.execute "DELETE FROM detalles_pedidos_conjuntos WHERE idPedido = " & Ot.Id
             c = 0
             For Each deta In Ot.Detalles
                 If Not IsSomething(deta.OrdenTrabajo) Then
@@ -880,9 +887,9 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
                 End If
                 c = c + 1
                 'Debug.Print c
-                deta.id = 0    'asi me lo toma como insert ==> (deja de hardcordear raulo) => comela toda nicocolasba -> sr, si sr.
+                deta.Id = 0    'asi me lo toma como insert ==> (deja de hardcordear raulo) => comela toda nicocolasba -> sr, si sr.
                 deta.Descuento = Ot.Descuento    '>>>> paso el descuento de la OT al dto del detalle(cuando se graba)
-                deta.IdMoneda = Ot.moneda.id   '>>> pongo la momneda en el detalle, para hacer informes 10-10-13
+                deta.IdMoneda = Ot.moneda.Id   '>>> pongo la momneda en el detalle, para hacer informes 10-10-13
                 If Not DAODetalleOrdenTrabajo.Save(deta) Then GoTo E
 
             Next deta
@@ -890,7 +897,7 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
         End If
 
         If esUpdate And publishEvent Then
-            DAOEvento.Publish Ot.id, TipoEventoBroadcast.TEB_OrdenTrabajoModificada
+            DAOEvento.Publish Ot.Id, TipoEventoBroadcast.TEB_OrdenTrabajoModificada
         End If
     Else
         GoTo E
@@ -936,10 +943,10 @@ Public Function AprobarOT(T As OrdenTrabajo, Optional progressbar As Object) As 
 
             Else
                 conectar.CommitTransaction
-                DAOEvento.Publish T.id, TipoEventoBroadcast.TEB_OrdenTrabajoAprobada
+                DAOEvento.Publish T.Id, TipoEventoBroadcast.TEB_OrdenTrabajoAprobada
 
                 If T.Anticipo > 0 Then
-                    DAOEvento.Publish T.id, TipoEventoBroadcast.TEB_OrdenConAnticipoAprobada
+                    DAOEvento.Publish T.Id, TipoEventoBroadcast.TEB_OrdenConAnticipoAprobada
                 End If
                 AprobarOT = True
             End If
@@ -972,7 +979,7 @@ Public Function desactivar(T As OrdenTrabajo) As Boolean
     desactivar = True
     conectar.CommitTransaction
 
-    DAOEvento.Publish T.id, TipoEventoBroadcast.TEB_OrdenTrabajoAnulada
+    DAOEvento.Publish T.Id, TipoEventoBroadcast.TEB_OrdenTrabajoAnulada
 
     Exit Function
 err1:
@@ -982,13 +989,13 @@ End Function
 
 
 
-Public Function informePedidoPlaneamiento(id As Long, DIALOGO As Boolean, rsSectores As ADODB.Recordset) As Boolean     '1- enviar 2-imprimir
+Public Function informePedidoPlaneamiento(Id As Long, DIALOGO As Boolean, rsSectores As ADODB.Recordset) As Boolean     '1- enviar 2-imprimir
     Dim s As New classStock
     On Error GoTo err2
     informePedidoPlaneamiento = True
     Dim strsql As String, strsql2 As String
     Dim rs As ADODB.Recordset
-    Set rs = conectar.RSFactory("select idPieza, cantidad from detalles_pedidos  where idPedido=" & id)
+    Set rs = conectar.RSFactory("select idPieza, cantidad from detalles_pedidos  where idPedido=" & Id)
     Dim c As Long
     c = 0
     While Not rs.EOF
@@ -1003,7 +1010,7 @@ Public Function informePedidoPlaneamiento(id As Long, DIALOGO As Boolean, rsSect
     End If
     pedido_planeamiento.Sections("pata").Controls("lblCMO").caption = Math.Round(c, 2) & tim
     Set s = Nothing
-    Set rs = conectar.RSFactory("select c.cuit,c.razon,p.id,p.descripcion,p.fechaEntrega as fe, p.fechaCreado, p.nroPresupuesto from pedidos p, clientes c where p.idcliente=c.id and p.id=" & id)
+    Set rs = conectar.RSFactory("select c.cuit,c.razon,p.id,p.descripcion,p.fechaEntrega as fe, p.fechaCreado, p.nroPresupuesto from pedidos p, clientes c where p.idcliente=c.id and p.id=" & Id)
     c = 0
     While Not rs.EOF
         c = c + 1
@@ -1016,12 +1023,12 @@ Public Function informePedidoPlaneamiento(id As Long, DIALOGO As Boolean, rsSect
     If c = 1 Then
         'presu = rs!NroPresupuesto
         'Cuit = rs!Cuit
-        pedido_planeamiento.Sections("cabeza").Controls("lblOT").caption = Format("00000", rs!id)
+        pedido_planeamiento.Sections("cabeza").Controls("lblOT").caption = Format("00000", rs!Id)
         pedido_planeamiento.Sections("cabeza").Controls("lblCliente").caption = rs!razon
         pedido_planeamiento.Sections("cabeza").Controls("lblReferencia").caption = rs!descripcion
         pedido_planeamiento.Sections("cabeza").Controls("lblfechaEntrega").caption = rs!fe
         pedido_planeamiento.Sections("cabeza").Controls("lblfechaCreado").caption = rs!fechaCreado
-        pedido_planeamiento.Sections("s3").Controls("lblbarcode").caption = "*" & Format(id, "0000") & "*"
+        pedido_planeamiento.Sections("s3").Controls("lblbarcode").caption = "*" & Format(Id, "0000") & "*"
         Dim RS_1 As Recordset
         'lo mando yo
         'Set RS_1 = claseS.resumenTareasPedido(Id)
@@ -1044,7 +1051,7 @@ err2:
 End Function
 
 
-Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As Boolean, Optional colListado As Collection) As Boolean    '1- enviar 2-imprimir
+Public Function informePiezaMateriales(Id As Long, Origen As Integer, DIALOGO As Boolean, Optional colListado As Collection) As Boolean    '1- enviar 2-imprimir
     On Error GoTo err2
 
     Dim Obj As PageSet.PrinterControl
@@ -1057,15 +1064,15 @@ Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As
     Dim strsql2 As String
     If Origen = 2 Then
         titulo = "Presupuesto:"
-        strsql = "select c.razon,p.id,p.detalle,p.fechaEntrega as fe from presupuestos p,clientes c where p.idcliente=c.id and p.id=" & id
+        strsql = "select c.razon,p.id,p.detalle,p.fechaEntrega as fe from presupuestos p,clientes c where p.idcliente=c.id and p.id=" & Id
     ElseIf Origen = 1 Then
         Dim fecha_entre As String
         titulo = "Pedido:"
-        strsql = "select c.razon,p.id,p.descripcion as detalle,p.fechaEntrega as fe from pedidos p,clientes c where p.idcliente=c.id and p.id=" & id
+        strsql = "select c.razon,p.id,p.descripcion as detalle,p.fechaEntrega as fe from pedidos p,clientes c where p.idcliente=c.id and p.id=" & Id
 
     ElseIf Origen = 3 Then
         titulo = "Conjunto:"
-        strsql = "select c.razon,s.detalle, s.id as id from stock s inner join clientes c on s.id_cliente=c.id where s.id=" & id
+        strsql = "select c.razon,s.detalle, s.id as id from stock s inner join clientes c on s.id_cliente=c.id where s.id=" & Id
 
     ElseIf Origen = 4 And IsSomething(colListado) Then
 
@@ -1077,7 +1084,7 @@ Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As
         Dim s As Pieza
         Dim P As OrdenTrabajo
         For Each P In colListado
-            Set P.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(P.id)
+            Set P.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(P.Id)
             For Each dp In P.Detalles
                 ListaPiezas.Add dp.Pieza, dp.CantidadPedida
             Next dp
@@ -1104,7 +1111,7 @@ Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As
     Dim totTit As String
     Dim razon As String
     Dim detalle As String
-    totTit = titulo & " " & Format("00000", rs!id)
+    totTit = titulo & " " & Format("00000", rs!Id)
 
     If Origen = 1 Then
         totTit = totTit & " (Entrega: " & fecha_entre & ")"
@@ -1129,14 +1136,14 @@ Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As
         detalle = rs!detalle
     End If
     Materiales.Sections("cabeza").Controls("lblReferencia").caption = detalle
-    Materiales.Sections("s3").Controls("lblbarcode").caption = "*" & Format(id, "0000") & "*"
+    Materiales.Sections("s3").Controls("lblbarcode").caption = "*" & Format(Id, "0000") & "*"
 
 
 
     If Origen = 4 Then
-        Set r = rs_materiales(id, Origen, ListaPiezas)
+        Set r = rs_materiales(Id, Origen, ListaPiezas)
     Else
-        Set r = rs_materiales(id, Origen)
+        Set r = rs_materiales(Id, Origen)
     End If
     Set Materiales.DataSource = r
     Obj.ChngOrientationLandscape
@@ -1149,7 +1156,7 @@ err2:
     Obj.ReSetOrientation
 End Function
 
-Private Function rs_materiales(id As Long, Origen As Integer, Optional ListaPiezas As Dictionary) As Recordset
+Private Function rs_materiales(Id As Long, Origen As Integer, Optional ListaPiezas As Dictionary) As Recordset
     On Error GoTo err4
     Dim Ot As Boolean, presu As Boolean, otro As Boolean
     Dim r_1 As New Recordset
@@ -1200,9 +1207,9 @@ Private Function rs_materiales(id As Long, Origen As Integer, Optional ListaPiez
 
     Dim stock As New classStock
     If Origen = 4 Then
-        Set r_piezas = stock.ListaPiezas(id, Ot, presu, otro, , ListaPiezas)
+        Set r_piezas = stock.ListaPiezas(Id, Ot, presu, otro, , ListaPiezas)
     Else
-        Set r_piezas = stock.ListaPiezas(id, Ot, presu, otro)
+        Set r_piezas = stock.ListaPiezas(Id, Ot, presu, otro)
     End If
     'r_piezas.MoveFirst
 
@@ -1346,22 +1353,22 @@ Public Function InformePiezasFabricadas(T As OrdenTrabajo) As Boolean
     Dim rs As Recordset
     'Set rs = conectar.RSFactory(strsql)
     If Not T Is Nothing Then
-        strsql = "select count(id) as inci from Incidencias where idReferencia=" & T.id & " and origen=2"
+        strsql = "select count(id) as inci from Incidencias where idReferencia=" & T.Id & " and origen=2"
         Set rInci = conectar.RSFactory(strsql)
 
 
-        dsrResumenFabricacion.Sections("cabeza").Controls("Etiqueta2").caption = IIf(T.EsMarco, "Contrato Marco Nº:", "OT Nº") & " " & Format("00000", T.id)
+        dsrResumenFabricacion.Sections("cabeza").Controls("Etiqueta2").caption = IIf(T.EsMarco, "Contrato Marco Nº:", "OT Nº") & " " & Format("00000", T.Id)
         dsrResumenFabricacion.Sections("cabeza").Controls("lblCliente").caption = T.cliente.razon   'r s!Razon
         dsrResumenFabricacion.Sections("cabeza").Controls("lblReferencia").caption = T.descripcion    ' rs!Descripcion
         dsrResumenFabricacion.Sections("cabeza").Controls("lblfechaEntrega").caption = T.FechaEntrega    ' rs!fe
         dsrResumenFabricacion.Sections("cabeza").Controls("lblfechaCreado").caption = T.fechaCreado  'rs!FechaCreado
-        dsrResumenFabricacion.Sections("s3").Controls("lblbarcode").caption = "*" & Format(T.id, "0000") & "*"
+        dsrResumenFabricacion.Sections("s3").Controls("lblbarcode").caption = "*" & Format(T.Id, "0000") & "*"
 
 
         strsql = "SELECT  if(s.conjunto=-1,'Un','Conj') as unidad ,dp.cantidad,dp.item,  s.detalle, dp.nota, " _
                  & " (SELECT  SUM(cantidad)  FROM detalles_pedidos dp2  Where dp2.idPieza = dp.idPieza       AND dp2.id <> dp.id) AS cantidad_fabricada " _
                  & " FROM detalles_pedidos dp  LEFT JOIN stock s   ON dp.idPieza = s.id " _
-                 & " Where dp.idpedido =  " & T.id
+                 & " Where dp.idpedido =  " & T.Id
 
 
         Set rs = conectar.RSFactory(strsql)
@@ -1456,7 +1463,7 @@ Public Function informePedido(T As OrdenTrabajo, DIALOGO As Boolean, Sector) As 
     Dim rs As Recordset
     'Set rs = conectar.RSFactory(strsql)
     If Not T Is Nothing Then
-        strsql = "select count(id) as inci from Incidencias where idReferencia=" & T.id & " and origen=2"
+        strsql = "select count(id) as inci from Incidencias where idReferencia=" & T.Id & " and origen=2"
         Set rInci = conectar.RSFactory(strsql)
 
         If rInci!inci > 0 Then
@@ -1465,14 +1472,14 @@ Public Function informePedido(T As OrdenTrabajo, DIALOGO As Boolean, Sector) As 
             informeOT.Sections("pata").Controls("lblIncidencias").caption = "No hay incidencias al momento de emitir la OT, controlar periodicamente."
         End If
 
-        informeOT.Sections("cabeza").Controls("Etiqueta2").caption = IIf(T.EsMarco, "Contrato Marco Nº:", "OT Nº") & " " & Format("00000", T.id)
+        informeOT.Sections("cabeza").Controls("Etiqueta2").caption = IIf(T.EsMarco, "Contrato Marco Nº:", "OT Nº") & " " & Format("00000", T.Id)
         informeOT.Sections("cabeza").Controls("lblCliente").caption = T.cliente.razon   'r s!Razon
         informeOT.Sections("cabeza").Controls("lblReferencia").caption = T.descripcion    ' rs!Descripcion
         informeOT.Sections("cabeza").Controls("lblfechaEntrega").caption = T.FechaEntrega    ' rs!fe
 
         informeOT.Sections("cabeza").Controls("lblSector").caption = Sector
 
-        strsql = "select CONCAT('*R', LPAD(CONVERT(dp.id,CHAR(8)),8,'0'),'*') AS codigo,dp.fechaEntrega as entregaItem,dp.item, dp.cantidad as stotal, dp.reserva_stock as reserva,dp.cantidad-dp.reserva_stock as fabricar, s.detalle,dp.nota, if(s.conjunto=-1,'Un','Conj') as unidad from detalles_pedidos dp, stock s where dp.idPieza=s.id and dp.idPedido=" & Format("00000", T.id)    'nroOT
+        strsql = "select CONCAT('*R', LPAD(CONVERT(dp.id,CHAR(8)),8,'0'),'*') AS codigo,dp.fechaEntrega as entregaItem,dp.item, dp.cantidad as stotal, dp.reserva_stock as reserva,dp.cantidad-dp.reserva_stock as fabricar, s.detalle,dp.nota, if(s.conjunto=-1,'Un','Conj') as unidad from detalles_pedidos dp, stock s where dp.idPieza=s.id and dp.idPedido=" & Format("00000", T.Id)    'nroOT
 
         'Me.ejecutar_consulta strsql
         Set rs = conectar.RSFactory(strsql)
@@ -1501,7 +1508,7 @@ Public Function informePedido(T As OrdenTrabajo, DIALOGO As Boolean, Sector) As 
         End If
 
 
-        informeOT.Sections("s3").Controls("lblbarcode").caption = "*" & Format(T.id, "0000") & "*"
+        informeOT.Sections("s3").Controls("lblbarcode").caption = "*" & Format(T.Id, "0000") & "*"
         Set informeOT.DataSource = rs
 
         'informeOT.Show
@@ -1524,7 +1531,7 @@ Public Function grillaTiempos(T As OrdenTrabajo, DIALOGO As Boolean, Sector) As 
 
 
     If Not T Is Nothing Then
-        gruilla_tiempos.Sections("cabeza").Controls("lblOT").caption = Format("00000", T.id)
+        gruilla_tiempos.Sections("cabeza").Controls("lblOT").caption = Format("00000", T.Id)
         gruilla_tiempos.Sections("cabeza").Controls("lblCliente").caption = T.cliente.razon    ' rs!Razon
         gruilla_tiempos.Sections("cabeza").Controls("lblReferencia").caption = T.descripcion    ' rs!Descripcion
         gruilla_tiempos.Sections("cabeza").Controls("lblfechaEntrega").caption = T.FechaEntrega    ' rs!fe
@@ -1571,10 +1578,10 @@ Public Function GetDTOSectoresTiempo(ordenes_trabajo_ids As Collection) As Colle
     Set ordenes = DAOOrdenTrabajo.FindAll(filter)
 
     For Each Ot In ordenes
-        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, , True, , True)
+        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, , True, , True)
         For Each deta In Ot.Detalles
             'Set procesos = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(deta.Id, deta.pieza.Id)
-            Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(deta.id)
+            Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(deta.Id)
 
             For Each proceso In procesos
                 AddTarea sectoresTiempo, proceso.Tarea, deta.CantidadPedida, proceso.OperariosCotizado, proceso.TiempoCotizado, deta.Cantidad_Fabricada, proceso
@@ -1582,9 +1589,9 @@ Public Function GetDTOSectoresTiempo(ordenes_trabajo_ids As Collection) As Colle
             Next proceso
 
             If deta.Pieza.EsConjunto Then
-                Set detallesHijos = DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, deta.Pieza.id)
+                Set detallesHijos = DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, deta.Pieza.Id)
                 For Each detaHijo In detallesHijos
-                    ProcesarDetalleOT sectoresTiempo, detaHijo, deta.id, deta.CantidadPedida, deta.Cantidad_Fabricada
+                    ProcesarDetalleOT sectoresTiempo, detaHijo, deta.Id, deta.CantidadPedida, deta.Cantidad_Fabricada
                 Next detaHijo
             End If
         Next deta
@@ -1604,7 +1611,7 @@ Private Sub ProcesarDetalleOT(sectoresTiempo As Collection, deta As DetalleOTCon
 
 
     'Set procesos = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(deta.Id, deta.pieza.Id)
-    Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(detaPadreId, deta.id)
+    Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(detaPadreId, deta.Id)
 
     For Each proceso In procesos
         AddTarea sectoresTiempo, proceso.Tarea, deta.Cantidad * cantPadre, proceso.OperariosCotizado, proceso.TiempoCotizado, cantidadFabricada, proceso
@@ -1614,7 +1621,7 @@ Private Sub ProcesarDetalleOT(sectoresTiempo As Collection, deta As DetalleOTCon
     If deta.Pieza.EsConjunto Then
         Dim Detalles As Collection
         Dim tmpDeta As DetalleOTConjuntoDTO
-        Set Detalles = DAODetalleOrdenTrabajo.FindAllConjunto(detaPadreId, deta.Pieza.id)
+        Set Detalles = DAODetalleOrdenTrabajo.FindAllConjunto(detaPadreId, deta.Pieza.Id)
 
         For Each tmpDeta In Detalles
             ProcesarDetalleOT sectoresTiempo, tmpDeta, detaPadreId, cantPadre, cantidadFabricada
@@ -1652,13 +1659,13 @@ Private Sub AddTarea(sectoresTiempo As Collection, Tarea As clsTarea, CantidadPe
         Set tiempoSectorDTO = New DTOSectoresTiempo
         Set tiempoSectorDTO.Sector = DAOSectores.GetById(Tarea.SectorID)
 
-        sectoresTiempo.Add tiempoSectorDTO, CStr(Tarea.Sector.id)
+        sectoresTiempo.Add tiempoSectorDTO, CStr(Tarea.Sector.Id)
 
     End If
 
 
-    If BuscarEnColeccion(tiempoSectorDTO.ListaDtoTareaTiempo, CStr(Tarea.id)) Then
-        Set tareaTiempoDTO = tiempoSectorDTO.ListaDtoTareaTiempo.item(CStr(Tarea.id))
+    If BuscarEnColeccion(tiempoSectorDTO.ListaDtoTareaTiempo, CStr(Tarea.Id)) Then
+        Set tareaTiempoDTO = tiempoSectorDTO.ListaDtoTareaTiempo.item(CStr(Tarea.Id))
 
     Else
         Set tareaTiempoDTO = New DTOTareaTiempo
@@ -1668,8 +1675,8 @@ Private Sub AddTarea(sectoresTiempo As Collection, Tarea As clsTarea, CantidadPe
 
 
 
-        tiempoSectorDTO.ListaDtoTareaTiempo.Add tareaTiempoDTO, CStr(Tarea.id)
-        tiempoSectorDTO.ListaDtoTareaTiempoPendiente.Add tareaTiempoDTO, CStr(Tarea.id)
+        tiempoSectorDTO.ListaDtoTareaTiempo.Add tareaTiempoDTO, CStr(Tarea.Id)
+        tiempoSectorDTO.ListaDtoTareaTiempoPendiente.Add tareaTiempoDTO, CStr(Tarea.Id)
 
     End If
 
@@ -1695,7 +1702,7 @@ Public Sub ExcelListadoTareas(ruta As String, Ot As OrdenTrabajo)
     On Error GoTo E
 
     Dim deta As DetalleOrdenTrabajo
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id)
+    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
 
     Dim xlWorkbook As New Excel.Workbook
     Dim xlWorksheet As New Excel.Worksheet
@@ -1783,32 +1790,32 @@ Private Sub ProcesarDetalle(tareas As Dictionary, pos As Long, depth As Long, xl
 
     If IsSomething(DetalleOt) Then
         'Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(DetalleOt.Id, DetalleOt.pieza.Id)
-        Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoId(DetalleOt.id)
+        Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoId(DetalleOt.Id)
         NombrePieza = "(Item " & DetalleOt.item & ") - " & DetalleOt.Pieza.nombre
-        Set detasDto = DAODetalleOrdenTrabajo.FindAllConjunto(DetalleOt.id, DetalleOt.Pieza.id)
+        Set detasDto = DAODetalleOrdenTrabajo.FindAllConjunto(DetalleOt.Id, DetalleOt.Pieza.Id)
     Else
         'Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(DetalleOtConjunto.Id, DetalleOtConjunto.pieza.Id)
-        Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoId(0, DetalleOtConjunto.id)
+        Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoId(0, DetalleOtConjunto.Id)
         NombrePieza = DetalleOtConjunto.Pieza.nombre
-        Set detasDto = DAODetalleOrdenTrabajo.FindAllConjunto(DetalleOtConjunto.idDetallePedido, DetalleOtConjunto.Pieza.id)
+        Set detasDto = DAODetalleOrdenTrabajo.FindAllConjunto(DetalleOtConjunto.idDetallePedido, DetalleOtConjunto.Pieza.Id)
     End If
 
     xlWorksheet.Cells(pos, 1).value = String(depth * 6, " ") + " - " & NombrePieza
     EncuadrarCelda xlWorksheet.Range(xlWorksheet.Cells(pos, 1), xlWorksheet.Cells(pos, 1))
 
     For Each TiempoProceso In tiemposProcesos
-        If Not tareas.Exists(CStr(TiempoProceso.Tarea.id)) Then
-            tareas.Add CStr(TiempoProceso.Tarea.id), tareas.count + 2
-            xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.id))) = TiempoProceso.Tarea.Tarea
-            EncuadrarCelda xlWorksheet.Range(xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.id))), xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.id))))
-            xlWorksheet.Range(xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.id))), xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.id)))).Orientation = 90
+        If Not tareas.Exists(CStr(TiempoProceso.Tarea.Id)) Then
+            tareas.Add CStr(TiempoProceso.Tarea.Id), tareas.count + 2
+            xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.Id))) = TiempoProceso.Tarea.Tarea
+            EncuadrarCelda xlWorksheet.Range(xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.Id))), xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.Id))))
+            xlWorksheet.Range(xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.Id))), xlWorksheet.Cells(3, tareas.item(CStr(TiempoProceso.Tarea.Id)))).Orientation = 90
         End If
         'xlWorksheet.Cells(pos, tareas.Item(CStr(TiempoProceso.Tarea.id))) = "X"
-        xlWorksheet.Range(xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.id))), xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.id)))).Interior.Color = VBA.Information.RGB(194, 194, 194)
-        EncuadrarCelda xlWorksheet.Range(xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.id))), xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.id))))
+        xlWorksheet.Range(xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.Id))), xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.Id)))).Interior.Color = VBA.Information.RGB(194, 194, 194)
+        EncuadrarCelda xlWorksheet.Range(xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.Id))), xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.Id))))
 
         If TiempoProceso.FechaFin <> 0 Then
-            xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.id))) = "X"
+            xlWorksheet.Cells(pos, tareas.item(CStr(TiempoProceso.Tarea.Id))) = "X"
         End If
     Next TiempoProceso
 
@@ -1872,14 +1879,14 @@ Function Cerrar(Ot As OrdenTrabajo, Optional a_stock = False) As Boolean
 
                 For Each deta In Ot.Detalles
                     If (deta.CantidadFabricados - deta.CantidadEntregada) > 0 Then
-                        If Not DAOPieza.ModificarStock(deta.Pieza, ModificarStock_AltaOT, deta.CantidadFabricados - deta.CantidadEntregada, , Ot.id) Then GoTo err33
+                        If Not DAOPieza.ModificarStock(deta.Pieza, ModificarStock_AltaOT, deta.CantidadFabricados - deta.CantidadEntregada, , Ot.Id) Then GoTo err33
 
 
                         If deta.Pieza.EsConjunto Then
                             Dim detaOTDto As DetalleOTConjuntoDTO
                             'si es conjunto tengo que abrirlo y actualizar todas las piezas x la cantidad de todo el conjunto en plano
-                            For Each detaOTDto In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id)
-                                If Not DAOPieza.ModificarStock(detaOTDto.Pieza, ModificarStock_AltaOT, (deta.CantidadFabricados - deta.CantidadEntregada) * detaOTDto.Cantidad, , Ot.id) Then GoTo err33
+                            For Each detaOTDto In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id)
+                                If Not DAOPieza.ModificarStock(detaOTDto.Pieza, ModificarStock_AltaOT, (deta.CantidadFabricados - deta.CantidadEntregada) * detaOTDto.Cantidad, , Ot.Id) Then GoTo err33
                             Next detaOTDto
                         End If
 
@@ -1911,7 +1918,7 @@ Public Function CopiarOT(orig As OrdenTrabajo) As Boolean
     On Error GoTo err1
     CopiarOT = True
 
-    Set orig.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(orig.id)
+    Set orig.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(orig.Id)
     Dim nue As New OrdenTrabajo
     Dim deta As DetalleOrdenTrabajo
     Dim ndeta As DetalleOrdenTrabajo

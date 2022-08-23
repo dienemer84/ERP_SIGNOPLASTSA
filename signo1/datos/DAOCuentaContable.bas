@@ -37,12 +37,12 @@ Public Function PutSaldos(col As Collection, rango As String) As Collection
     Dim c As clsCuentaContable
     Set rs = conectar.RSFactory(q)
 
-    Dim a As Integer
+    Dim A As Integer
     While Not rs.EOF And Not rs.BOF
 
 
-        If BuscarEnColeccion(col, CStr(rs!id)) Then
-            Set c = col(CStr(rs!id))
+        If BuscarEnColeccion(col, CStr(rs!Id)) Then
+            Set c = col(CStr(rs!Id))
             If IsNumeric(rs!gastado) Then
 
 
@@ -106,20 +106,20 @@ Public Function PutSaldos(col As Collection, rango As String) As Collection
         & " Where 1 = 1 " & rango _
         & " GROUP BY fpp.id_percepcion "
 
-    Dim idP As Long
+    Dim idp As Long
 
 
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
-        If rs!id = 1 Then idP = Configurar.IdCtaPercepcionesIIBB
-        If rs!id = 2 Then idP = Configurar.IdCtaPercepcionesIVA
-        If rs!id > 2 Then idP = Configurar.IdCtaPercepcionesIIBBResto
+        If rs!Id = 1 Then idp = Configurar.IdCtaPercepcionesIIBB
+        If rs!Id = 2 Then idp = Configurar.IdCtaPercepcionesIVA
+        If rs!Id > 2 Then idp = Configurar.IdCtaPercepcionesIIBBResto
 
 
 
-        If BuscarEnColeccion(col, CStr(idP)) Then
-            Set c = col(CStr(idP))
+        If BuscarEnColeccion(col, CStr(idp)) Then
+            Set c = col(CStr(idp))
             If IsNumeric(rs!gastado) Then
 
 
@@ -224,11 +224,11 @@ Public Function GetAll(Optional orderByCodigo As Boolean = False, Optional filtr
     While Not rs.EOF
         Set cta = New clsCuentaContable
         cta.codigo = rs!codigo
-        cta.id = rs!id
+        cta.Id = rs!Id
         cta.nombre = rs!nombre
 
 
-        col.Add cta, CStr(cta.id)
+        col.Add cta, CStr(cta.Id)
 
         rs.MoveNext
     Wend
@@ -246,7 +246,7 @@ Public Function GetById(id_cuenta As Long) As clsCuentaContable
     If Not rs.EOF And Not rs.BOF Then
         Set cta = New clsCuentaContable
         cta.codigo = rs!codigo
-        cta.id = rs!id
+        cta.Id = rs!Id
         cta.nombre = rs!nombre
         Set GetById = cta
 
@@ -270,7 +270,7 @@ Public Function Update(cuenta As clsCuentaContable) As Boolean
     Set cn = conectar.obternerConexion
     On Error GoTo err1
     Update = True
-    cn.execute "update AdminComprasCuentasContables set nombre='" & cuenta.nombre & "',codigo='" & cuenta.codigo & "' where id=" & cuenta.id
+    cn.execute "update AdminComprasCuentasContables set nombre='" & cuenta.nombre & "',codigo='" & cuenta.codigo & "' where id=" & cuenta.Id
     Exit Function
 err1:
     Update = False
@@ -281,11 +281,11 @@ End Function
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As clsCuentaContable
 
     Dim cc As clsCuentaContable
-    Dim id As Long: id = GetValue(rs, indice, tabla, "id")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set cc = New clsCuentaContable
-        cc.id = id
+        cc.Id = Id
         cc.codigo = GetValue(rs, indice, tabla, "codigo")
         cc.nombre = GetValue(rs, indice, tabla, "nombre")
     End If
@@ -359,10 +359,19 @@ Public Function ExportarColeccion(col As Collection, rango As String) As Boolean
     Dim Entregas As Collection
     Dim remitoDetalle As remitoDetalle
 
-    Dim xlWorkbook As New Excel.Workbook
-    Dim xlWorksheet As New Excel.Worksheet
-    Dim xlApplication As New Excel.Application
-
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+    
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+    
+    
     Set xlWorkbook = xlApplication.Workbooks.Add
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
@@ -370,26 +379,26 @@ Public Function ExportarColeccion(col As Collection, rango As String) As Boolean
 
     'fila, columna
 
-    xlWorksheet.cells(1, 1).value = "Rango Fecha "
-    xlWorksheet.cells(1, 2).value = rango
-    xlWorksheet.cells(2, 1).value = "Cód"
-    xlWorksheet.cells(2, 2).value = "Cuenta"
-    xlWorksheet.cells(2, 3).value = "Importe"
+    xlWorksheet.Cells(1, 1).value = "Rango Fecha "
+    xlWorksheet.Cells(1, 2).value = rango
+    xlWorksheet.Cells(2, 1).value = "Cód"
+    xlWorksheet.Cells(2, 2).value = "Cuenta"
+    xlWorksheet.Cells(2, 3).value = "Importe"
     Dim cta As clsCuentaContable
 
     Dim row As Long
     row = 3
     For Each cta In col
-        xlWorksheet.cells(row, 1) = cta.codigo
-        xlWorksheet.cells(row, 2) = cta.nombre
+        xlWorksheet.Cells(row, 1) = cta.codigo
+        xlWorksheet.Cells(row, 2) = cta.nombre
         'xlWorksheet.Range(xlWorksheet.Cells(row, 1), xlWorksheet.Cells(row, 1)).HorizontalAlignment = xlLeft
-        xlWorksheet.cells(row, 3) = cta.TotalAcumulado
+        xlWorksheet.Cells(row, 3) = cta.TotalAcumulado
 
         row = row + 1
     Next cta
-    xlWorksheet.cells(row + 1, 2).value = "Total"
+    xlWorksheet.Cells(row + 1, 2).value = "Total"
 
-    xlWorksheet.cells(row + 1, 3).Formula = "=sum(c3:c" & row & ")"
+    xlWorksheet.Cells(row + 1, 3).Formula = "=sum(c3:c" & row & ")"
 
 
 
@@ -397,7 +406,7 @@ Public Function ExportarColeccion(col As Collection, rango As String) As Boolean
     xlApplication.ScreenUpdating = False
     Dim wkSt As String
     wkSt = xlWorksheet.Name
-    xlWorksheet.cells.EntireColumn.AutoFit
+    xlWorksheet.Cells.EntireColumn.AutoFit
     xlWorkbook.Sheets(wkSt).Select
     xlApplication.ScreenUpdating = True
     ''

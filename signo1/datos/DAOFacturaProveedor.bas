@@ -520,6 +520,7 @@ End Function
 
 Public Function ExportarColeccion(col As Collection, Optional progressbar As Object) As Boolean
     On Error GoTo err1
+    
     ExportarColeccion = True
     
 
@@ -527,10 +528,17 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Dim Entregas As Collection
     Dim remitoDetalle As remitoDetalle
 
-    Dim xlWorkbook As New Excel.Workbook
-    Dim xlWorksheet As New Excel.Worksheet
-    Dim xlApplication As New Excel.Application
-
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+    
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
     
     Set xlWorkbook = xlApplication.Workbooks.Add
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
@@ -542,7 +550,7 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Dim offset As Long
     offset = 3
     xlWorksheet.Cells(offset, 1).value = "Cuit"
-    xlWorksheet.Cells(offset, 2).value = "Razón Social"
+    xlWorksheet.Cells(offset, 2).value = "Razon Social"
     xlWorksheet.Cells(offset, 3).value = "Comprobante"
     xlWorksheet.Cells(offset, 4).value = "Fecha"
     xlWorksheet.Cells(offset, 5).value = "Moneda"
