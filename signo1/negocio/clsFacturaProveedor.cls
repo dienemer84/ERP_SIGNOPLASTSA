@@ -63,6 +63,7 @@ End Property
 Public Property Get ImporteTotalSaldo()
  ImporteTotalSaldo = funciones.FormatearDecimales(Total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente)
 End Property
+
 Public Property Get ImporteNetoGravadoSaldo()
 ImporteNetoGravadoSaldo = funciones.FormatearDecimales(Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente) 'Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente)
 End Property
@@ -250,7 +251,7 @@ Public Property Get TotalIVA() As Double
             tot_iva = tot_iva + (vIvaAplicado(P).Monto * (vIvaAplicado(P).alicuota.alicuota / 100))
         End If
     Next
-    TotalIVA = tot_iva
+    TotalIVA = funciones.RedondearDecimales(tot_iva)
 
 
 
@@ -322,28 +323,6 @@ Public Property Get Total() As Double
 
     Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / tipo_cambio))     '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
 
-
-' POSIBLE SOLUCION A LO DE LAS PERCEPCIONES EN NEGATIVO
-
-'    CalculoPercepciones = (totalPercepciones / tipo_cambio) * negativo
-    
-'    Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + CalculoPercepciones)  '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
-    
-    
-    
-    
-'    Debug.Print NumeroFormateadoCorto
-'    'NumeroFormateado = enums.EnumTipoDocumentoContableShort(tipoDocumentoContable) & "-" & vConfigFactura.TipoFactura & "-" & vNumero
-'    Debug.Print tipoDocumentoContable
-'    Debug.Print "Total: " & Total
-'    Debug.Print "Neto Gravado: " & NetoGravado
-'    Debug.Print "Impuesto Interno: " & vImpuestoInterno
-'    Debug.Print "Redondeo: " & vRedondeo
-'    Debug.Print "Total IVA: " & TotalIVA
-'    Debug.Print "Total Percepciones: " & CalculoPercepciones
-'    Debug.Print ""
-
-
     Exit Property
 err1:
     Total = 0
@@ -402,7 +381,7 @@ Public Property Get NetoGravado() As Double
     For P = 1 To vIvaAplicado.count
         tot_ng = tot_ng + vIvaAplicado(P).Monto
     Next
-    NetoGravado = tot_ng
+    NetoGravado = funciones.FormatearDecimales(tot_ng)
 
 
 

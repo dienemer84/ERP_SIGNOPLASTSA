@@ -249,8 +249,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       '  If IsSomething(rs.Fields("ordenes_pago")) Then
    
         F.OrdenesPagoId = rs!ordenes_pago
-            
-            
+  
 
       '  End If
         
