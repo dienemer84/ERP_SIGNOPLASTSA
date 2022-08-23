@@ -45,7 +45,7 @@ Public Function Save(fc As clsFacturaProveedor) As Boolean
 
 '22/08/2022
 ' ACA AGREGO ESE CAMPO EN LA QUERY (iva_calculado) / (fc.IvaAplicado(K).Monto * (fc.IvaAplicado(K).alicuota.alicuota / 100)
-        cn.execute "insert into AdminComprasFacturasProveedoresIva (id_iva, valor, id_factura_proveedor,iva_calculado) values (" & fc.IvaAplicado(K).alicuota.Id & "," & fc.IvaAplicado(K).Monto & "," & fc.Id & "," & fc.IvaAplicado(K).Monto * (fc.IvaAplicado(K).alicuota.alicuota / 100) & " )"
+        cn.execute "insert into AdminComprasFacturasProveedoresIva (id_iva, valor, id_factura_proveedor,iva_calculado) values (" & fc.IvaAplicado(K).alicuota.Id & "," & fc.IvaAplicado(K).Monto & "," & fc.Id & ", " & fc.IvaAplicado(K).Monto * funciones.FormatearDecimales(fc.IvaAplicado(K).alicuota.alicuota / 100) & " )"
     
     Next K
 
