@@ -105,7 +105,7 @@ End Sub
 Private Sub Form_Load()
     Cargar
     
-        Me.caption = caption & " (" & Name & ")"
+        'Me.caption = caption & " (" & Name & ")"
     
 End Sub
 

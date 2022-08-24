@@ -213,6 +213,9 @@ Public Function FindAll(Optional filter As String = vbNullString) As Collection
     Dim rs As Recordset
     Dim col As New Collection
     strsql = "SELECT * FROM remitos rto LEFT JOIN clientes cli ON rto.idCliente=cli.id LEFT JOIN Localidades  ON cli.id_localidad = Localidades.ID   LEFT JOIN Provincia  ON cli.id_provincia = Provincia.ID   LEFT JOIN usuarios u1 ON rto.idUsuario=u1.id LEFT JOIN usuarios u2 ON rto.IdUsuarioAprobador=u2.id LEFT JOIN contactos cont ON rto.idContacto=cont.id WHERE 1=1 "
+    'strsql = "SELECT * FROM remitos rto LEFT JOIN clientes cli ON rto.idCliente=cli.id LEFT JOIN Localidades  ON cli.id_localidad = Localidades.ID   LEFT JOIN Provincia  ON cli.id_provincia = Provincia.ID   LEFT JOIN usuarios u1 ON rto.idUsuario=u1.id LEFT JOIN usuarios u2 ON rto.IdUsuarioAprobador=u2.id LEFT JOIN contactos cont ON rto.idContacto=cont.id LEFT JOIN entregas e ON e.Remito=rto.id LEFT JOIN detalles_pedidos dp ON dp.id=e.idDetallePedido  WHERE 1=1 "
+
+    
     If Len(filter) > 0 Then strsql = strsql & " " & filter
     strsql = strsql & " ORDER BY rto.numero DESC"
 

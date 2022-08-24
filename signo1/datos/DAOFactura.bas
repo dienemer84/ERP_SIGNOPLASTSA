@@ -118,7 +118,9 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
     End If
 
     Set rs = conectar.RSFactory(q)
+    
     BuildFieldsIndex rs, idx
+    
     While Not rs.EOF
         Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv")
         

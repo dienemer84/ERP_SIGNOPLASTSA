@@ -1188,16 +1188,16 @@ Private Sub Form_Load()
     cboEstados.ItemData(cboEstados.NewIndex) = 3
     
     Me.cboEstadosSaldada.Clear
-    cboEstadosSaldada.AddItem "No Saldado"
+    cboEstadosSaldada.AddItem "No Saldada"
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 0
-    cboEstadosSaldada.AddItem "Saldado total"
+    cboEstadosSaldada.AddItem "Total"
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 1
-    cboEstadosSaldada.AddItem "Saldado parcial"
+    cboEstadosSaldada.AddItem "Parcial"
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 2
-    cboEstadosSaldada.AddItem "Cancelado total por NC"
+    cboEstadosSaldada.AddItem "Cancela NC"
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 3
-    cboEstadosSaldada.AddItem "Cancelado parcial por NC"
-    cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 3
+    cboEstadosSaldada.AddItem "Cancela NC Parcial"
+    cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 4
     
     
      Me.cboEstadoAfip.Clear

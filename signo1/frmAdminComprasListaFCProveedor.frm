@@ -1238,9 +1238,9 @@ Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
 End Sub
 
-'Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
-'    GridEXHelper.ColumnHeaderClick Me.grilla, Column
-'End Sub
+Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
+    GridEXHelper.ColumnHeaderClick Me.grilla, Column
+End Sub
 
 Private Sub grilla_DblClick()
     verDetalle_Click

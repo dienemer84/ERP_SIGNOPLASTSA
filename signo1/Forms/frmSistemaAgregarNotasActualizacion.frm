@@ -139,7 +139,7 @@ On Error GoTo E
 If Nota Is Nothing Then Set Nota = New clsNotas
 
 
-Nota.FechaD_ = Me.DateTimePicker1.value
+Nota.FechaD_ = Now
 Nota.TextoD_ = Me.Text1
 Nota.Modulo_ = Me.Text2
 

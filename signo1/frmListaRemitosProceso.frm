@@ -160,7 +160,7 @@ Private Sub Form_Load()
     Me.GridEX1.ItemCount = 0
     LlenarGrid
     
-    Me.caption = caption & " (" & Name & ")"
+    'Me.caption = caption & " (" & Name & ")"
 
 
 End Sub
@@ -173,31 +173,30 @@ Private Sub LlenarGrid()
     filtro = ""
     If vmostrar = 0 Then    'en proceso
 
-        filtro = filtro & " and rto.estado=1  and (rto.estadoFacturado=0 or rto.estadoFacturado=1)"
-        Me.caption = "Remitos en proceso..."
+           filtro = filtro & " and rto.estado=1  and (rto.estadoFacturado=0 or rto.estadoFacturado=1)"
+           Me.caption = "Remitos en proceso..."
+        
     ElseIf vmostrar > 0 Then
         If vIdCliMostrar > 0 Then
-
-
             filtro = filtro & " and (rto.estadoFacturado=0 or rto.estadoFacturado=1) and rto.estado=2 and rto.idCliente=" & vIdCliMostrar & ""
         Else
             filtro = filtro & " and (rto.estadoFacturado=0 or rto.estadoFacturado=1) and rto.estado=2 "
 
         End If
-        Me.caption = "Remitos a facturar..."
+              Me.caption = "Remitos a facturar..."
+              
     ElseIf vmostrar = -1 Then
 
         filtro = filtro & " and rto.estado=2"
         Me.caption = "Remitos finalizados..."
     End If
-    '
-
 
 
     Set col = New Collection
+    
     Dim tmpCol As New Collection
+    
     Set tmpCol = DAORemitoS.FindAll(filtro)
-
 
     Dim rto As Remito
 
@@ -209,11 +208,11 @@ Private Sub LlenarGrid()
 
     Next
 
-
     If col.count > 0 Then
 
         Me.GridEX1.ItemCount = 0
         Me.GridEX1.ItemCount = col.count
+        
     End If
 
 End Sub
@@ -243,6 +242,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(3) = Remito.cliente.razon
         Values(4) = Remito.detalle
         Values(5) = Remito.VerEstadoFacturado
+        'Values(6) = Remito.
         'If IsSomething(Remito.contacto) Then Values(5) = Remito.contacto.nombre
         
     End If
