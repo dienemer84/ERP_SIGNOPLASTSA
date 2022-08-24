@@ -85,7 +85,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   255
             Left            =   4560
             TabIndex        =   44
-            Top             =   360
+            Top             =   400
             Width           =   1095
             _Version        =   786432
             _ExtentX        =   1931
@@ -100,7 +100,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   735
          Left            =   6240
          TabIndex        =   33
-         Top             =   1080
+         Top             =   1060
          Width           =   5775
          _Version        =   786432
          _ExtentX        =   10186
@@ -618,10 +618,8 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       PreviewRowLines =   1
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
-      AllowColumnDrag =   0   'False
       GroupByBoxInfoText=   "Arrastrar una columna para agrupar"
       AllowEdit       =   0   'False
-      GroupByBoxVisible=   0   'False
       BackColorGBBox  =   16744576
       BackColorHeader =   16761024
       ImageCount      =   1
@@ -668,10 +666,9 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    End
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   1215
-      Left            =   15480
+      Left            =   15240
       TabIndex        =   45
-      Top             =   360
-      Visible         =   0   'False
+      Top             =   1560
       Width           =   4695
       _Version        =   786432
       _ExtentX        =   8281
@@ -1016,7 +1013,7 @@ Private Sub Form_Load()
     vId = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, TipoSuscripcion.FacturaProveedor_
     FormHelper.Customize Me
-    'GridEXHelper.CustomizeGrid Me.grilla, True
+    GridEXHelper.CustomizeGrid Me.grilla, True
     
    ' DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True
    

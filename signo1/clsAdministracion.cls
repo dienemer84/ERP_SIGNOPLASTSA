@@ -456,7 +456,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
         offset = x + 3
 
 
-        b = .Cells(canti_col, x)    '"j" & Offset
+        B = .Cells(canti_col, x)    '"j" & Offset
         .Range("f1", .Cells(x + 2, canti_col)).NumberFormat = "0.00"
         .Range(.Cells(1, 1), .Cells(x + 2, canti_col)).Borders.LineStyle = xlContinuous
 
@@ -794,7 +794,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
         offset = x + 3
 
 
-        b = .Cells(canti_col, x)    '"j" & Offset
+        B = .Cells(canti_col, x)    '"j" & Offset
         .Range("f1", .Cells(x + 2, canti_col)).NumberFormat = "0.00"
         .Range(.Cells(1, 1), .Cells(x + 2, canti_col)).Borders.LineStyle = xlContinuous
 
@@ -909,24 +909,3 @@ err4:
     cn.RollbackTrans
 End Function
 
-'Public Function ProcesarArchivoCSV(ruta As String)
-'' CON ESTA FUNCION SE QUITAN LAS COMILLAS DOBLES DEL ARCHIVO CSV
-'
-'    Dim intFile As Integer
-'    Dim strData As String
-'    Dim strFile As String
-'
-'    intFile = FreeFile
-'    strFile = ruta
-'    Open strFile For Input As intFile
-'    strData = Input(LOF(intFile), intFile)
-'    Close intFile
-'    Debug.Print (strData)
-'
-'    If InStr(strData, vbCrLf) <> 0 Then strData = Replace(strData, """", "")
-'
-'    Open strFile For Output As #1
-'    Print #1, strData
-'    Close #1
-'
-'End Function
