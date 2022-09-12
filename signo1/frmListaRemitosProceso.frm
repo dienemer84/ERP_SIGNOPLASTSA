@@ -91,21 +91,22 @@ Begin VB.Form frmPlaneamientoRemitosListaProceso
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   5
+      ColumnsCount    =   6
       Column(1)       =   "frmListaRemitosProceso.frx":000C
       Column(2)       =   "frmListaRemitosProceso.frx":0178
       Column(3)       =   "frmListaRemitosProceso.frx":0264
       Column(4)       =   "frmListaRemitosProceso.frx":0358
       Column(5)       =   "frmListaRemitosProceso.frx":044C
+      Column(6)       =   "frmListaRemitosProceso.frx":0578
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmListaRemitosProceso.frx":0578
-      FormatStyle(2)  =   "frmListaRemitosProceso.frx":06B0
-      FormatStyle(3)  =   "frmListaRemitosProceso.frx":0760
-      FormatStyle(4)  =   "frmListaRemitosProceso.frx":0814
-      FormatStyle(5)  =   "frmListaRemitosProceso.frx":08EC
-      FormatStyle(6)  =   "frmListaRemitosProceso.frx":09A4
+      FormatStyle(1)  =   "frmListaRemitosProceso.frx":065C
+      FormatStyle(2)  =   "frmListaRemitosProceso.frx":0794
+      FormatStyle(3)  =   "frmListaRemitosProceso.frx":0844
+      FormatStyle(4)  =   "frmListaRemitosProceso.frx":08F8
+      FormatStyle(5)  =   "frmListaRemitosProceso.frx":09D0
+      FormatStyle(6)  =   "frmListaRemitosProceso.frx":0A88
       ImageCount      =   0
-      PrinterProperties=   "frmListaRemitosProceso.frx":0A84
+      PrinterProperties=   "frmListaRemitosProceso.frx":0B68
    End
    Begin VB.CommandButton Command1 
       Cancel          =   -1  'True
@@ -133,11 +134,13 @@ Dim filtro As String
 Dim vmostrar As tipoMostrarRemitos
 Dim col As New Collection
 Dim vIdCliMostrar As Long
+
 Public Enum tipoMostrarRemitos
     MostrarEnProceso = 0
     MostrarAFacturar = 1
     MostrarPendientes = -1
 End Enum
+
 Public Property Let idCliMostrar(nIdCliMostrar)
     vIdCliMostrar = nIdCliMostrar
 End Property
@@ -194,18 +197,26 @@ Private Sub LlenarGrid()
 
     Set col = New Collection
     
-    Dim tmpCol As New Collection
     
+    Dim tmpCol As New Collection
     Set tmpCol = DAORemitoS.FindAll(filtro)
 
     Dim rto As Remito
+    
+    
 
+    
+'    MsgBox (remitos.Detalles)
+        
     For Each rto In tmpCol
         '  If rto.estado = RemitoAprobado And (rto.EstadoFacturado = RemitoFacturadoParcial Or rto.EstadoFacturado = RemitoNoFacturado) Then
 
         col.Add rto, CStr(rto.Id)
         ' If
-
+        
+    Dim detallesRemito As New Collection
+    Set detallesRemito = DAORemitoSDetalle.FindAllByRemito(rto.Id, False, True)
+    
     Next
 
     If col.count > 0 Then
@@ -242,6 +253,10 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(3) = Remito.cliente.razon
         Values(4) = Remito.detalle
         Values(5) = Remito.VerEstadoFacturado
+        
+'e5fs52- ACA SE VA A MOSTRAR LOS DATOS DE LAS OTS QUE CONTIENE ESE REMITO, PUEDE SER ID O CONCEPTO
+
+        Values(6) = "OT N°, OT N°, Concepto, Concepto"
         'Values(6) = Remito.
         'If IsSomething(Remito.contacto) Then Values(5) = Remito.contacto.nombre
         
