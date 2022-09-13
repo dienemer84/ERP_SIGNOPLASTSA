@@ -5,7 +5,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Factura de Proveedor"
+   Caption         =   "Comprobantes de Proveedores"
    ClientHeight    =   7005
    ClientLeft      =   45
    ClientTop       =   480
@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   58458113
+      Format          =   62521345
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1088,6 +1088,10 @@ Private Sub Form_Load()
     Me.cboTipoDocContable.AddItem "Liquidacion Bancaria"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.LiquidacionBancaria
 
+'e5re52- SE AGREGA ESTE NUEVO TIPO DE COMPROBANTE COMPROBANTE DE COMPRA DE BIEN USADO
+    Me.cboTipoDocContable.AddItem "Compra Bien Usado"
+    Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.CompraBienesUsados
+
 
     Me.cboTipoDocContable.ListIndex = 1
 
@@ -1118,7 +1122,7 @@ FacturaRequiereNumeroFormateado
         Me.cmdGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.frame2.Enabled = False
+        Me.Frame2.Enabled = False
         Me.Frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
@@ -1126,7 +1130,6 @@ FacturaRequiereNumeroFormateado
         Me.txtMontoNeto.Enabled = False
         Me.txtNumeroMask.Enabled = False
         Me.txtRedondeo.Enabled = False
-        'Me.txtNoGravado.Enabled = False
         Me.DTPicker1.Enabled = False
         Me.lblTotal.Visible = True
         Me.Label10.Visible = True
@@ -1147,18 +1150,7 @@ FacturaRequiereNumeroFormateado
     
     loading = False
 
-
-
-   ' #208 revisado. No se puede agregar comprobantes a un período ya cerrado
-'   Dim fecha_liqui_max As Date
-'
-'    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
-'
-'    Me.DTPicker1.MinDate = fecha_liqui_max
-'
-'    MsgBox (DTPicker1.MinDate)
-
-    Me.caption = caption & "(" & Name & ")"
+    'Me.caption = caption & "(" & Name & ")"
 
 End Sub
 

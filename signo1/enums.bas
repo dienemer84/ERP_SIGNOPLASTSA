@@ -191,6 +191,10 @@ Public Enum tipoDocumentoContable
     notaDebito = 2
     DespachoAduana = 3
     LiquidacionBancaria = 4
+    
+'e5re52- SE AGREGA ESTE TIPO DE COMPROBANTE NUEVO
+    CompraBienesUsados = 5
+    
 End Enum
 
 

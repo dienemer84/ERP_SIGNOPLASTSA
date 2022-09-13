@@ -8,7 +8,7 @@ Begin VB.Form frmPlaneamientoRemitosListaProceso
    ClientHeight    =   6240
    ClientLeft      =   3600
    ClientTop       =   2055
-   ClientWidth     =   10125
+   ClientWidth     =   12720
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    Icon            =   "frmListaRemitosProceso.frx":0000
@@ -16,23 +16,23 @@ Begin VB.Form frmPlaneamientoRemitosListaProceso
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   6240
-   ScaleWidth      =   10125
+   ScaleWidth      =   12720
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   855
       Left            =   120
       TabIndex        =   2
-      Top             =   5160
-      Width           =   9855
+      Top             =   5040
+      Width           =   12375
       _Version        =   786432
-      _ExtentX        =   17383
+      _ExtentX        =   21828
       _ExtentY        =   1508
       _StockProps     =   79
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.PushButton PushButtonAceptar 
          Height          =   495
-         Left            =   7800
+         Left            =   10440
          TabIndex        =   4
          Top             =   240
          Width           =   1815
@@ -61,9 +61,9 @@ Begin VB.Form frmPlaneamientoRemitosListaProceso
          Left            =   2040
          TabIndex        =   5
          Top             =   240
-         Width           =   5655
+         Width           =   8295
          _Version        =   786432
-         _ExtentX        =   9975
+         _ExtentX        =   14631
          _ExtentY        =   873
          _StockProps     =   79
          Caption         =   "Seleccione el Remito y luego Acepte para continuar."
@@ -76,8 +76,8 @@ Begin VB.Form frmPlaneamientoRemitosListaProceso
       Left            =   120
       TabIndex        =   1
       Top             =   120
-      Width           =   9780
-      _ExtentX        =   17251
+      Width           =   12420
+      _ExtentX        =   21908
       _ExtentY        =   8387
       Version         =   "2.0"
       BoundColumnIndex=   ""
@@ -196,36 +196,29 @@ Private Sub LlenarGrid()
 
 
     Set col = New Collection
-    
-    
     Dim tmpCol As New Collection
     Set tmpCol = DAORemitoS.FindAll(filtro)
-
     Dim rto As Remito
-    
-    
-
-    
-'    MsgBox (remitos.Detalles)
-        
     For Each rto In tmpCol
-        '  If rto.estado = RemitoAprobado And (rto.EstadoFacturado = RemitoFacturadoParcial Or rto.EstadoFacturado = RemitoNoFacturado) Then
-
         col.Add rto, CStr(rto.Id)
-        ' If
-        
-    Dim detallesRemito As New Collection
-    Set detallesRemito = DAORemitoSDetalle.FindAllByRemito(rto.Id, False, True)
-    
+            Set remitoDetalle = DAORemitoSDetalle.FindAllByRemito(rto.Id, True, True)
+            Dim deta As remitoDetalle
+                    For Each deta In remitoDetalle
+                        If deta.idpedido = 0 Or deta.idpedido = -1 Then
+                            Set idpedido = Nothing
+                        Else
+                            If CStr(" " & deta.idpedido) <> rto.OrigenDeConceptos Then
+                                rto.OrigenDeConceptos = rto.OrigenDeConceptos & " " & deta.idpedido
+                            End If
+                        End If
+                     Next
+                     Debug.Print (rto.OrigenDeConceptos)
     Next
-
     If col.count > 0 Then
 
         Me.GridEX1.ItemCount = 0
         Me.GridEX1.ItemCount = col.count
-        
     End If
-
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -254,9 +247,11 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(4) = Remito.detalle
         Values(5) = Remito.VerEstadoFacturado
         
-'e5fs52- ACA SE VA A MOSTRAR LOS DATOS DE LAS OTS QUE CONTIENE ESE REMITO, PUEDE SER ID O CONCEPTO
-
-        Values(6) = "OT N°, OT N°, Concepto, Concepto"
+'e5fs52- ACA SE VA A MOSTRAR LOS DATOS DE LAS OTS QUE CONTIENE ESE REMITO
+        'Values(6) = "OT N°, OT N°, Concepto, Concepto"
+        Values(6) = Remito.OrigenDeConceptos
+        
+' SE TIENE QUE MOSTRAR COMO REMITO.(PUNTO) + ALGO
         'Values(6) = Remito.
         'If IsSomething(Remito.contacto) Then Values(5) = Remito.contacto.nombre
         

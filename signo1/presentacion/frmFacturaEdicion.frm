@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   59244545
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   59244545
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   59244545
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   59244545
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58523649
+         Format          =   59244545
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1566,7 +1566,7 @@ Private Sub btnItemRemito_Click()
         f11.mostrar = 2
      
         Set Selecciones.RemitoElegido = Nothing
-        f11.Show 1
+       f11.Show 1
         If IsSomething(Selecciones.RemitoElegido) Then
             Dim frm As New frmPlaneamientoRemitoVer
             Set frm.Remito = Selecciones.RemitoElegido    'DAORemitoS.FindById(Selecciones.RemitoElegido.Id)
@@ -2275,7 +2275,7 @@ Private Sub Form_Load()
     
     ValidarEsCredito
     
-    Me.caption = caption & " (" & Name & ")"
+    'Me.caption = caption & " (" & Name & ")"
     
     'Me.cboCliente.ListIndex = "336"
     

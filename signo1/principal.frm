@@ -1065,8 +1065,8 @@ Private Sub CreateRibbonBar()
 
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Compras", ID_GROUP.ID_GROUP_ADMINISTRACION__COMPRAS)
-    AddButton ribbonGroup, "Ingresar factura", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA
-    AddButton ribbonGroup, "Listado Facturas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO
+    AddButton ribbonGroup, "Ingresar Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA
+    AddButton ribbonGroup, "Listado Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Plan de cuentas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS, , , xtpControlButtonPopup)
     AddButton ribbonGroup, "Ver", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_VER, , , , cmdBarCtrl
