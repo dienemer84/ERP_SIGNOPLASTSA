@@ -875,7 +875,6 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   4320
          TabIndex        =   30
          Top             =   960
-         Visible         =   0   'False
          Width           =   585
       End
       Begin GridEX20.GridEX gridRetenciones 
@@ -961,7 +960,6 @@ Begin VB.Form frmCrearOrdenPago
          Left            =   840
          TabIndex        =   34
          Top             =   960
-         Visible         =   0   'False
          Width           =   3300
       End
    End

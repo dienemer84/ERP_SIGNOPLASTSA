@@ -23,11 +23,18 @@ Begin VB.Form frmVentasClientesLista
       _StockProps     =   79
       Caption         =   "Búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtFiltroCUIT 
+         Height          =   285
+         Left            =   1560
+         TabIndex        =   7
+         Top             =   600
+         Width           =   2175
+      End
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   375
-         Left            =   7080
+         Left            =   9360
          TabIndex        =   6
-         Top             =   240
+         Top             =   1200
          Width           =   1335
          _Version        =   786432
          _ExtentX        =   2355
@@ -44,7 +51,7 @@ Begin VB.Form frmVentasClientesLista
          List            =   "frmVentasClientesLista.frx":000A
          Style           =   2  'Dropdown List
          TabIndex        =   3
-         Top             =   600
+         Top             =   990
          Width           =   2055
       End
       Begin VB.TextBox txtFiltro 
@@ -55,6 +62,16 @@ Begin VB.Form frmVentasClientesLista
          Top             =   240
          Width           =   5175
       End
+      Begin VB.Label Label1 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00FF8080&
+         Caption         =   "CUIT:"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   8
+         Top             =   600
+         Width           =   1215
+      End
       Begin VB.Label Label2 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00FF8080&
@@ -63,7 +80,7 @@ Begin VB.Form frmVentasClientesLista
          Index           =   1
          Left            =   240
          TabIndex        =   5
-         Top             =   630
+         Top             =   1020
          Width           =   1215
       End
       Begin VB.Label Label2 
@@ -340,7 +357,15 @@ Public Sub llenar_Grilla()
         filter = Replace$(filter, "{razon}", DAOCliente.CAMPO_RAZON_SOCIAL)
         filter = Replace$(filter, "{value}", Me.txtFiltro.text)
     End If
-
+    
+  ' AGREGO ESTE FILTRO PARA CUIT
+    If LenB(Me.txtFiltroCUIT.text) > 0 Then
+        filter = filter & " AND {cliente}.{cuit} LIKE '%{value}%'"
+        filter = Replace$(filter, "{cuit}", DAOCliente.CAMPO_CUIT)
+        filter = Replace$(filter, "{value}", Me.txtFiltroCUIT.text)
+    End If
+    
+    
     filter = Replace$(filter, "{estado}", DAOCliente.CAMPO_ESTADO)
     filter = Replace$(filter, "{cliente}", DAOCliente.TABLA_CLIENTE)
 

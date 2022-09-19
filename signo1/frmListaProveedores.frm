@@ -243,16 +243,14 @@ Dim Proveedor As clsProveedor
 Public Property Let seleccionar(nvalue As Boolean)
     vSeleccionar = nvalue
 End Property
+
 Private Sub cboRubro_Change()
     Command1_Click
 End Sub
+
 Private Sub cmdSalir_Click()
     Unload Me
 End Sub
-
-'Private Sub btnClearFantasia_Click()
-'    Me.cboFantasia.ListIndex = -1
-'End Sub
 
 Private Sub cmdSinRubro_Click()
     Me.cboRubros.ListIndex = -1
@@ -275,10 +273,6 @@ Private Sub Buscar()
         filtro = filtro & " And  asignacion.id_rubro =  " & Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
     End If
 
-'    If Me.cboFantasia.ListIndex > -1 Then
-'        filtro = filtro & " And  proveedores.id =  " & Me.cboFantasia.ItemData(Me.cboFantasia.ListIndex)
-'    End If
-
     If LenB(Me.TextFantasia.text) > 0 Then
         filtro = filtro & " and razon_fantasia like '%" & Trim(Me.TextFantasia.text) & "%'"
     End If
@@ -286,8 +280,6 @@ Private Sub Buscar()
     If LenB(Me.txtCuit) > 0 Then
         filtro = filtro & " and cuit like '%" & Trim(Me.txtCuit) & "%'"
     End If
-
-
 
     Dim ctacte As Boolean
     Dim contado As Boolean
@@ -300,6 +292,7 @@ Private Sub Buscar()
     grilla.ItemCount = proveedores.count
     grilla.ReBind
 End Sub
+
 Private Sub con_tacto_Click()
     If grilla.rowcount > 0 Then
         Set rectemp = proveedores(grilla.row)
@@ -317,6 +310,7 @@ Private Sub editar_Click()
         F.Show
     End If
 End Sub
+
 Private Sub estado_Click()
     Set rectemp = proveedores(grilla.row)
     If MsgBox("¿Seguro que desea cambiar el estado del proveedor seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
@@ -340,19 +334,10 @@ Private Sub Form_Load()
     rows = 1
     llenarEstados
 
-'    Dim P As clsProveedor
-'    For Each P In DAOProveedor.FindAll()
-'
-'        If LenB(Trim$(P.razonFantasia)) > 0 Then
-'            'Me.cboFantasia.AddItem P.razonFantasia
-'            'Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.Id
-'        End If
-'    Next P
-'    'Me.cboFantasia.ListIndex = -1
 
     Buscar
     
-        Me.caption = caption & " (" & Name & ")"
+        'Me.caption = caption & " (" & Name & ")"
         
 End Sub
 
@@ -363,8 +348,6 @@ Private Sub llenarEstados()
     Me.lstEstados.ItemData(Me.lstEstados.NewIndex) = EstadoProveedor.EstadoProveedorCuentaCorriente
     Me.lstEstados.AddItem enums.EnumEstadoProveedor(EstadoProveedor.EstadoProveedorEliminado)
     Me.lstEstados.ItemData(Me.lstEstados.NewIndex) = EstadoProveedor.EstadoProveedorEliminado
-    'Me.lstEstados.Selected(PosIndexLST(EstadoProveedor.EstadoProveedorCuentaCorriente, Me.lstEstados)) = True
-    'Me.lstEstados.ListIndex = -1 'EstadoProveedor.EstadoProveedorCuentaCorriente
 
 End Sub
 
@@ -372,21 +355,11 @@ Private Sub Form_Resize()
     On Error Resume Next
     Me.grilla.Width = Me.ScaleWidth - 300
     Me.grilla.Height = Me.Height - 2700
-'    Me.grilla.Height = Me.Height - (Me.cboRubros.Height + (1500 - Me.cboRubros.Height))
     Me.grilla.ColumnAutoResize = True
     Me.GroupBox1.Width = Me.ScaleWidth - 300
-'    Me.cboRubros.Top = Me.Height - 1350
-'    Me.Text1.Top = Me.cboRubros.Top
-'    Me.Command1.Top = Me.cboRubros.Top
-'    Me.lstEstados.Top = Me.cboRubros.Top    '+ 400
-'    cmdSinRubro.Top = Me.cboRubros.Top
-'    Me.lblCuit.Top = Me.cboRubros.Top + 500
-'    Me.txtCuit.Top = Me.lblCuit.Top
-'    Me.cboFantasia.Top = Me.cboRubros.Top + 400
-'    Me.Label3.Top = Me.cboFantasia.Top
-'    Me.btnClearFantasia.Top = Me.cboFantasia.Top
 
 End Sub
+
 Private Sub Form_Terminate()
     Channel.RemoverSuscripcionTotal Me
 End Sub
@@ -398,6 +371,7 @@ End Sub
 Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     ordenar_grilla Column, Me.grilla
 End Sub
+
 Private Sub grilla_DblClick()
     A = grilla.RowIndex(grilla.row)
     If vSeleccionar And A > 0 Then
@@ -411,15 +385,18 @@ Private Sub grilla_DblClick()
         End If
     End If
 End Sub
+
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Set rectemp = proveedores(grilla.RowIndex(grilla.row))
         Me.PopupMenu m2
     End If
 End Sub
+
 Private Sub grilla_SelectionChange()
     rows = grilla.RowIndex(grilla.row)
 End Sub
+
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectemp = proveedores.item(RowIndex)  ' mcData.Item(RowIndex)
     With rectemp
@@ -434,6 +411,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(9) = .email
     End With
 End Sub
+
 Private Sub VerDetalles_Click()
     If Me.grilla.rowcount > 0 Then
         Set rectemp = proveedores(grilla.row)
@@ -442,7 +420,6 @@ Private Sub VerDetalles_Click()
         frmComprasProveedoresModifica.Show
     End If
 End Sub
-
 
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = suscriber_id
@@ -471,11 +448,8 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 Exit For
             End If
         Next
-
-
-
-
         grilla.RefreshRowIndex EVENTO.Elemento.Id
+        
     End If
     Exit Function
 err1:

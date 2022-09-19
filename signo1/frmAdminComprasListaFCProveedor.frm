@@ -1198,6 +1198,9 @@ Public Sub llenarGrilla()
     Next
 
     Me.lblTotal = "Total Filtrado: $ " & funciones.FormatearDecimales(Total)
+  
+      
+    
     Me.lblTotalNoGravadoFiltrado = "Total No Gravado: $ " & funciones.FormatearDecimales(totalno)
     Me.lblNetoGravadoFiltrado = "Total Neto Gravado: $ " & funciones.FormatearDecimales(totalneto)
     Me.lblTotalIVA = "Total IVA: $ " & funciones.FormatearDecimales(totIva)

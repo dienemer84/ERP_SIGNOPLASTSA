@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   62521345
+      Format          =   58327041
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1092,8 +1092,8 @@ Private Sub Form_Load()
     Me.cboTipoDocContable.AddItem "Compra Bien Usado"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.CompraBienesUsados
 
-
-    Me.cboTipoDocContable.ListIndex = 1
+' MODIFICO EL VALOR DEL INDICE PARA QUE SE INICIE COMO "FACTURA"
+    Me.cboTipoDocContable.ListIndex = 2
 
     Me.grilla_alicuotas.ItemCount = 0
     Me.grilla_percepciones.ItemCount = 0
@@ -1122,7 +1122,7 @@ FacturaRequiereNumeroFormateado
         Me.cmdGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.Frame2.Enabled = False
+        Me.frame2.Enabled = False
         Me.Frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False

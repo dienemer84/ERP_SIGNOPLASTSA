@@ -626,12 +626,14 @@ Public Function EnumEstadoDocumentoContable(indice) As String
     EnumEstadoDocumentoContable = estado_doc_contable(indice)
 End Function
 Public Function EnumTipoDocumentoContableShort(indice) As String
+' SE MUESTRAN EL DETALLE ABREVIADO PARA CADA TIPO DE COMPROBANTE
     Select Case indice
         Case 0: EnumTipoDocumentoContableShort = "FC"
         Case 1: EnumTipoDocumentoContableShort = "NC"
         Case 2: EnumTipoDocumentoContableShort = "ND"
         Case 3: EnumTipoDocumentoContableShort = "DA"
                 Case 4: EnumTipoDocumentoContableShort = "LB"
+                Case 5: EnumTipoDocumentoContableShort = "CBU"
         
     End Select
 End Function

@@ -4,10 +4,10 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCtaCteProv 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cuenta Corriente Proveedores"
-   ClientHeight    =   6810
+   ClientHeight    =   7515
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   9495
+   ClientWidth     =   9435
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -22,16 +22,29 @@ Begin VB.Form frmCtaCteProv
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   6810
-   ScaleWidth      =   9495
+   ScaleHeight     =   7515
+   ScaleWidth      =   9435
+   Begin XtremeSuiteControls.PushButton button_ExportToXlsProv 
+      Height          =   435
+      Left            =   2160
+      TabIndex        =   18
+      Top             =   6960
+      Width           =   1695
+      _Version        =   786432
+      _ExtentX        =   2990
+      _ExtentY        =   767
+      _StockProps     =   79
+      Caption         =   "Exportar a XLS"
+      UseVisualStyle  =   -1  'True
+   End
    Begin GridEX20.GridEX gridDetalles 
-      Height          =   4605
+      Height          =   5040
       Left            =   105
       TabIndex        =   0
       Top             =   1695
       Width           =   9225
       _ExtentX        =   16272
-      _ExtentY        =   8123
+      _ExtentY        =   8890
       Version         =   "2.0"
       HoldSortSettings=   -1  'True
       BoundColumnIndex=   ""
@@ -129,7 +142,7 @@ Begin VB.Form frmCtaCteProv
       Begin XtremeSuiteControls.CheckBox chkAnteriores 
          Height          =   240
          Left            =   2685
-         TabIndex        =   17
+         TabIndex        =   16
          Top             =   1095
          Width           =   2025
          _Version        =   786432
@@ -152,23 +165,10 @@ Begin VB.Form frmCtaCteProv
          Caption         =   "Generar Liq"
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.PushButton PushButton1 
-         Height          =   330
-         Left            =   4860
-         TabIndex        =   8
-         Top             =   1065
-         Width           =   1065
-         _Version        =   786432
-         _ExtentX        =   1879
-         _ExtentY        =   582
-         _StockProps     =   79
-         Caption         =   "Imprimir"
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.PushButton cmdVerCtaCte 
          Height          =   315
          Left            =   6000
-         TabIndex        =   9
+         TabIndex        =   8
          Top             =   270
          Width           =   1080
          _Version        =   786432
@@ -181,7 +181,7 @@ Begin VB.Form frmCtaCteProv
       Begin XtremeSuiteControls.ComboBox cboClientes 
          Height          =   315
          Left            =   1080
-         TabIndex        =   10
+         TabIndex        =   9
          Top             =   270
          Width           =   4830
          _Version        =   786432
@@ -196,7 +196,7 @@ Begin VB.Form frmCtaCteProv
       Begin XtremeSuiteControls.DateTimePicker dtpHasta 
          Height          =   315
          Left            =   1080
-         TabIndex        =   11
+         TabIndex        =   10
          Top             =   1020
          Width           =   1470
          _Version        =   786432
@@ -209,7 +209,7 @@ Begin VB.Form frmCtaCteProv
       Begin XtremeSuiteControls.ComboBox cboLiquidaciones 
          Height          =   315
          Left            =   1080
-         TabIndex        =   12
+         TabIndex        =   11
          Top             =   645
          Width           =   4830
          _Version        =   786432
@@ -225,7 +225,7 @@ Begin VB.Form frmCtaCteProv
          Default         =   -1  'True
          Height          =   315
          Left            =   5985
-         TabIndex        =   16
+         TabIndex        =   15
          Top             =   630
          Width           =   1080
          _Version        =   786432
@@ -238,7 +238,7 @@ Begin VB.Form frmCtaCteProv
       Begin XtremeSuiteControls.Label Label6 
          Height          =   195
          Left            =   555
-         TabIndex        =   15
+         TabIndex        =   14
          Top             =   1080
          Width           =   420
          _Version        =   786432
@@ -252,7 +252,7 @@ Begin VB.Form frmCtaCteProv
       Begin XtremeSuiteControls.Label Label1 
          Height          =   195
          Left            =   255
-         TabIndex        =   14
+         TabIndex        =   13
          Top             =   315
          Width           =   750
          _Version        =   786432
@@ -266,7 +266,7 @@ Begin VB.Form frmCtaCteProv
       Begin XtremeSuiteControls.Label Label2 
          Height          =   195
          Left            =   60
-         TabIndex        =   13
+         TabIndex        =   12
          Top             =   690
          Width           =   945
          _Version        =   786432
@@ -278,14 +278,27 @@ Begin VB.Form frmCtaCteProv
          AutoSize        =   -1  'True
       End
    End
+   Begin XtremeSuiteControls.PushButton PushButton1 
+      Height          =   435
+      Left            =   120
+      TabIndex        =   17
+      Top             =   6960
+      Width           =   1680
+      _Version        =   786432
+      _ExtentX        =   2963
+      _ExtentY        =   767
+      _StockProps     =   79
+      Caption         =   "Imprimir"
+      UseVisualStyle  =   -1  'True
+   End
    Begin VB.Label lblSaldo 
       Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
       Height          =   330
       Left            =   150
       TabIndex        =   5
-      Top             =   6435
-      Width           =   9225
+      Top             =   7005
+      Width           =   8625
    End
 End
 Attribute VB_Name = "frmCtaCteProv"
@@ -301,17 +314,17 @@ Private saldos As New Dictionary
 
 
 
-Private Sub LlenarLiquidaciones(id As Long)
+Private Sub LlenarLiquidaciones(Id As Long)
 
     Dim liq As CuentaCorrienteHistoric
     Dim col As Collection
     Dim i As Long
-    Set col = DAOCuentaCorrienteHistoric.GetAll(proveedor_, id, False)
+    Set col = DAOCuentaCorrienteHistoric.GetAll(proveedor_, Id, False)
     cboLiquidaciones.Clear
     For i = 1 To col.count
         Set liq = col(i)
         cboLiquidaciones.AddItem liq.Periodo
-        cboLiquidaciones.ItemData(cboLiquidaciones.NewIndex) = liq.id
+        cboLiquidaciones.ItemData(cboLiquidaciones.NewIndex) = liq.Id
     Next i
     If cboLiquidaciones.ListCount > 0 Then
         cboLiquidaciones.ListIndex = 0
@@ -321,19 +334,19 @@ End Sub
 
 
 Private Sub ver()
-    Dim id As Long
+    Dim Id As Long
     Dim condition As String
 
-
-
     If Me.cboClientes.ListIndex <> -1 Then
-        id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
-        LlenarLiquidaciones (id)
+        Id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
+        LlenarLiquidaciones (Id)
         If Not IsNull(Me.dtpHasta.value) Then
             condition = conectar.Escape(Format(Me.dtpHasta.value, "yyyy-mm-dd"))
-            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor(id, , condition, True)
+            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , condition, True)
+            saldo = 0
         Else
-            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor(id, , , True)
+            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , , True)
+            saldo = 0
         End If
 
 
@@ -353,17 +366,18 @@ Private Sub ver()
         End If
     End If
 End Sub
+
 Private Sub ver2()
 
-    Dim id As Long
+    Dim Id As Long
     Dim condition As String
     Dim cuenta As CuentaCorrienteHistoric
 
 
     If Me.cboLiquidaciones.ListIndex <> -1 Then
-        id = Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)
+        Id = Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)
 
-        Set Detalles = DAOCuentaCorrienteHistoric.GetById(proveedor_, id).Detalles
+        Set Detalles = DAOCuentaCorrienteHistoric.GetById(proveedor_, Id).Detalles
         If IsSomething(Detalles) Then
             Me.lblSaldo = "Saldo: " & funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))
         End If
@@ -375,6 +389,7 @@ Private Sub ver2()
         GridEXHelper.AutoSizeColumns Me.gridDetalles
     End If
 End Sub
+
 Private Sub LlenarProveedores()
     DAOProveedor.llenarComboXtremeSuite Me.cboClientes, (Me.chkCtaCte.value = xtpChecked), (Me.chkContado.value = xtpChecked), (Me.chkEliminado.value = xtpChecked)
     Me.cboClientes.ListIndex = -1
@@ -382,12 +397,17 @@ Private Sub LlenarProveedores()
 End Sub
 
 
+Private Sub button_ExportToXlsProv_Click()
+  ExportToXlsProv
+
+End Sub
+
 Private Sub cboClientes_Click()
-    Dim id As Long
+    Dim Id As Long
     If Me.cboClientes.ListIndex > 0 Then
-        id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
-        LlenarLiquidaciones id
-        setmaxdesde id
+        Id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
+        LlenarLiquidaciones Id
+        setmaxdesde Id
     End If
 End Sub
 
@@ -403,7 +423,7 @@ Private Sub chkEliminado_Click()
     LlenarProveedores
 End Sub
 
-Private Sub setmaxdesde(id As Long)
+Private Sub setmaxdesde(Id As Long)
     'Me.dtpHasta.MinDate = DAOCuentaCorriente.getMaxDesdeProveedor(id)
 
 End Sub
@@ -452,13 +472,17 @@ End Sub
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
     If Detalles.count = 0 Then Exit Sub
     
-    If RowBuffer.RowIndex > 0 Then
-        Set deta = Detalles.item(RowBuffer.RowIndex)
-        If Not deta.AtributoExtra And deta.Debe > 0 And deta.Haber = 0 Then    'no esta en ninguna orden
-            RowBuffer.RowStyle = "Impaga"
+        If RowBuffer.RowIndex > 0 Then
+            Set deta = Detalles.item(RowBuffer.RowIndex)
+            If Not deta.AtributoExtra And deta.Debe > 0 And deta.Haber = 0 Then    'no esta en ninguna orden
+                RowBuffer.RowStyle = "Impaga"
+            End If
         End If
-    End If
+        
+        Debug.Print (deta.IdComprobante)
+    
 End Sub
+
 Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Detalles.count > 0 Then
         Set deta = Detalles.item(RowIndex)
@@ -467,13 +491,15 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(3) = deta.Debe
         Values(4) = deta.Haber
 
-        If saldos.Exists(CStr(RowIndex)) Then
-            Values(5) = saldos.item(CStr(RowIndex))
-        Else
-            saldo = saldo + deta.Debe - deta.Haber
-            saldos.Add CStr(RowIndex), saldo
-            Values(5) = funciones.RedondearDecimales(saldo)
-        End If
+'        If saldos.Exists(CStr(RowIndex)) Then
+'            Values(5) = saldos.item(CStr(RowIndex))
+'        Else
+'            saldo = saldo + deta.Debe - deta.Haber
+'            saldos.Add CStr(RowIndex), saldo
+'            Values(5) = funciones.RedondearDecimales(saldo)
+'        End If
+'
+        Values(5) = deta.saldo
 
     End If
 End Sub
@@ -498,14 +524,14 @@ Private Sub PushButton1_Click()
 End Sub
 
 Private Sub PushButton2_Click()
-    Dim id As Long
+    Dim Id As Long
     If IsNull(Me.dtpHasta.value) Then
         MsgBox "Debe definir una fecha tope para cerrar!", vbCritical, "Advertencia"
     Else
 
         If MsgBox("¿Desea cerrar el periodo hasta " & Format(Me.dtpHasta, "dd-mm-yyyy") & " del cliente " & Me.cboClientes.text & " ?", vbYesNo, "Consulta") = vbYes Then
-            id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
-            If Not DAOCuentaCorriente.CerrarPeriodoCtaCteProveedor(id, Me.dtpHasta) Then
+            Id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
+            If Not DAOCuentaCorriente.CerrarPeriodoCtaCteProveedor(Id, Me.dtpHasta) Then
                 MsgBox "No puede cerrar el periodo seleccionado!", vbCritical
             Else
                 MsgBox "Período cerrado correctamente!", vbInformation
@@ -519,3 +545,88 @@ End Sub
 Private Sub PushButton3_Click()
     ver2
 End Sub
+
+Public Function ExportToXlsProv() As Boolean
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+
+    Set xlWorkbook = xlApplication.Workbooks.Add
+
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    xlWorksheet.Range("A1:E1").Merge
+    xlWorksheet.Range("A2:E2").Merge
+    xlWorksheet.Range("A1:E3").Font.Bold = True
+    xlWorksheet.Cells(1, 1).value = "Resumen de Cuenta Corriente"
+    xlWorksheet.Cells(2, 1).value = "Proveedor: " & Me.cboClientes.text
+    xlWorksheet.Cells(3, 1).value = "Fecha"
+    xlWorksheet.Cells(3, 2).value = "Comprobante"
+    xlWorksheet.Cells(3, 3).value = "Debe"
+    xlWorksheet.Cells(3, 4).value = "Haber"
+    xlWorksheet.Cells(3, 5).value = "Saldo"
+
+    Dim idx As Integer
+    idx = 4
+    
+   For Each deta In Detalles
+  
+
+         xlWorksheet.Cells(idx, 1).value = deta.FEcha
+         xlWorksheet.Cells(idx, 2).value = deta.Comprobante
+         xlWorksheet.Cells(idx, 3).value = deta.Debe
+         xlWorksheet.Cells(idx, 4).value = deta.Haber
+         xlWorksheet.Cells(idx, 5).value = deta.saldo
+         
+    idx = idx + 1
+    
+     Next
+
+        xlApplication.ScreenUpdating = False
+        
+        Dim wkSt As String
+        
+        wkSt = xlWorksheet.Name
+        
+        xlWorksheet.Cells.EntireColumn.AutoFit
+        
+        xlWorkbook.Sheets(wkSt).Select
+        
+        xlApplication.ScreenUpdating = True
+        
+        xlWorksheet.PageSetup.Orientation = xlLandscape
+        xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
+        xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+    
+        Dim filename As String
+        filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
+    
+        If Dir(filename) <> vbNullString Then Kill filename
+       
+        xlWorkbook.SaveAs filename
+    
+        xlWorkbook.Saved = True
+        xlWorkbook.Close
+        xlApplication.Quit
+        
+        funciones.ShellExecute 0, "open", filename, "", "", 0
+    
+        Set xlWorksheet = Nothing
+        Set xlWorkbook = Nothing
+        Set xlApplication = Nothing
+        
+
+End Function
