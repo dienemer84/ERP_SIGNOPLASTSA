@@ -42,27 +42,27 @@ Begin VB.Form frmOrdenesPago
       IntProp7        =   0
       ColumnsCount    =   9
       Column(1)       =   "frmOrdenesPago.frx":000C
-      Column(2)       =   "frmOrdenesPago.frx":0178
-      Column(3)       =   "frmOrdenesPago.frx":02AC
-      Column(4)       =   "frmOrdenesPago.frx":03A0
-      Column(5)       =   "frmOrdenesPago.frx":04D8
-      Column(6)       =   "frmOrdenesPago.frx":06E0
-      Column(7)       =   "frmOrdenesPago.frx":0814
-      Column(8)       =   "frmOrdenesPago.frx":0900
-      Column(9)       =   "frmOrdenesPago.frx":09F4
+      Column(2)       =   "frmOrdenesPago.frx":01A4
+      Column(3)       =   "frmOrdenesPago.frx":0304
+      Column(4)       =   "frmOrdenesPago.frx":044C
+      Column(5)       =   "frmOrdenesPago.frx":05B0
+      Column(6)       =   "frmOrdenesPago.frx":07E4
+      Column(7)       =   "frmOrdenesPago.frx":0944
+      Column(8)       =   "frmOrdenesPago.frx":0A84
+      Column(9)       =   "frmOrdenesPago.frx":0BA4
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmOrdenesPago.frx":0AE8
-      FormatStyle(2)  =   "frmOrdenesPago.frx":0C10
-      FormatStyle(3)  =   "frmOrdenesPago.frx":0CC0
-      FormatStyle(4)  =   "frmOrdenesPago.frx":0D74
-      FormatStyle(5)  =   "frmOrdenesPago.frx":0E4C
-      FormatStyle(6)  =   "frmOrdenesPago.frx":0F04
-      FormatStyle(7)  =   "frmOrdenesPago.frx":0FE4
-      FormatStyle(8)  =   "frmOrdenesPago.frx":1098
-      FormatStyle(9)  =   "frmOrdenesPago.frx":114C
-      FormatStyle(10) =   "frmOrdenesPago.frx":122C
+      FormatStyle(1)  =   "frmOrdenesPago.frx":0CEC
+      FormatStyle(2)  =   "frmOrdenesPago.frx":0E14
+      FormatStyle(3)  =   "frmOrdenesPago.frx":0EC4
+      FormatStyle(4)  =   "frmOrdenesPago.frx":0F78
+      FormatStyle(5)  =   "frmOrdenesPago.frx":1050
+      FormatStyle(6)  =   "frmOrdenesPago.frx":1108
+      FormatStyle(7)  =   "frmOrdenesPago.frx":11E8
+      FormatStyle(8)  =   "frmOrdenesPago.frx":129C
+      FormatStyle(9)  =   "frmOrdenesPago.frx":1350
+      FormatStyle(10) =   "frmOrdenesPago.frx":1430
       ImageCount      =   0
-      PrinterProperties=   "frmOrdenesPago.frx":12E4
+      PrinterProperties=   "frmOrdenesPago.frx":14E8
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1350
@@ -166,9 +166,9 @@ Begin VB.Form frmOrdenesPago
       Begin XtremeSuiteControls.PushButton cmdBuscar 
          Default         =   -1  'True
          Height          =   450
-         Left            =   9615
+         Left            =   9600
          TabIndex        =   3
-         Top             =   270
+         Top             =   240
          Width           =   1350
          _Version        =   786432
          _ExtentX        =   2381
@@ -221,7 +221,7 @@ Begin VB.Form frmOrdenesPago
          Height          =   315
          Left            =   7845
          TabIndex        =   14
-         Top             =   180
+         Top             =   300
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -234,7 +234,7 @@ Begin VB.Form frmOrdenesPago
          Height          =   315
          Left            =   7830
          TabIndex        =   15
-         Top             =   555
+         Top             =   795
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -289,7 +289,7 @@ Begin VB.Form frmOrdenesPago
          Height          =   195
          Left            =   7320
          TabIndex        =   17
-         Top             =   615
+         Top             =   855
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -303,7 +303,7 @@ Begin VB.Form frmOrdenesPago
          Height          =   195
          Left            =   7305
          TabIndex        =   16
-         Top             =   225
+         Top             =   345
          Width           =   465
          _Version        =   786432
          _ExtentX        =   820
@@ -579,9 +579,9 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
 
         Values(3) = Orden.moneda.NombreCorto
 
-        Values(4) = funciones.FormatearDecimales(Orden.StaticTotalOrigenes)
-        Values(5) = funciones.FormatearDecimales(Orden.StaticTotalRetenido)
-        Values(6) = funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)
+        Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
+        Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalRetenido)), "$", "")
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)), "$", "")
 
         If Orden.EsParaFacturaProveedor Then
             Set fac = Orden.FacturasProveedor.item(1)

@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmArchivos2 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Archivos"
@@ -323,7 +323,7 @@ Private Sub gridArchivos_SelectionChange()
         If pos <> 0 Then
             ext = StrConv(Mid(archivoActual.nombre, pos + 1), vbLowerCase)
             If funciones.BuscarEnColeccion(extensionesSoportadas, ext) Then
-                tmppath = clasea.exportarArchivo(archivoActual.id)
+                tmppath = clasea.exportarArchivo(archivoActual.Id)
                 If LenB(tmppath) > 0 Then
                     Set Me.imgPreview.Picture = LoadPicture(tmppath)
                     Kill tmppath
@@ -427,7 +427,7 @@ Private Sub AbrirArchivo()
         If archivoActual.DeCompra And Not Permisos.ArchivosDeCompras Then
             MsgBox "No tiene permisos para ver archivos de compras.", vbExclamation + vbOKOnly
         Else
-            clasea.exportarArchivo archivoActual.id, , True
+            clasea.exportarArchivo archivoActual.Id, , True
         End If
     End If
 End Sub
@@ -447,7 +447,7 @@ Private Sub GuardarArchivo()
             ruta = frmPrincipal.cd.filename
 
             If LenB(ruta) > 0 Then
-                ruta = clasea.exportarArchivo(archivoActual.id, ruta, False)
+                ruta = clasea.exportarArchivo(archivoActual.Id, ruta, False)
             End If
         End If
     End If
@@ -477,7 +477,7 @@ Private Sub mnuEnviar_Click()
                 Exit Sub
             End If
 
-            ERPHelper.SendMail "Envio de documentacion", "Envio de documentacion", mail, clasea.exportarArchivo(archivoActual.id, , False)
+            ERPHelper.SendMail "Envio de documentacion", "Envio de documentacion", mail, clasea.exportarArchivo(archivoActual.Id, , False)
 
             MsgBox "Se enviará por mail el documento seleccionado!", vbInformation
         End If

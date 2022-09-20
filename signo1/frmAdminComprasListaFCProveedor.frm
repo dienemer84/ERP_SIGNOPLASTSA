@@ -632,37 +632,37 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       ColumnsCount    =   20
       Column(1)       =   "frmAdminComprasListaFCProveedor.frx":0326
       Column(2)       =   "frmAdminComprasListaFCProveedor.frx":045E
-      Column(3)       =   "frmAdminComprasListaFCProveedor.frx":0532
-      Column(4)       =   "frmAdminComprasListaFCProveedor.frx":05FE
-      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":0742
-      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":08C2
-      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0A06
-      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0C72
-      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":0E6E
-      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":109E
-      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":12AE
-      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":14BA
-      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":16BA
-      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":182A
-      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1992
-      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1AEA
-      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1C56
-      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1DAE
-      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1F52
-      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":2056
+      Column(3)       =   "frmAdminComprasListaFCProveedor.frx":0586
+      Column(4)       =   "frmAdminComprasListaFCProveedor.frx":06A6
+      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":07EA
+      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":096A
+      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0AAE
+      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0D1A
+      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":0F16
+      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":1146
+      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":1336
+      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":1542
+      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":1742
+      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":18B2
+      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1A1A
+      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B72
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CDE
+      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E36
+      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1FDA
+      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":2132
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":2156
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":228E
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":233E
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":23F2
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":24CA
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":2582
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":2662
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2722
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":27E6
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":2232
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":236A
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":241A
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":24CE
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":25A6
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":265E
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":273E
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":27FE
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":28C2
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":28A6
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2BC0
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2982
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2C9C
    End
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   1215
@@ -1197,17 +1197,14 @@ Public Sub llenarGrilla()
         totalpercep = totalpercep + F.totalPercepciones * c
     Next
 
-    Me.lblTotal = "Total Filtrado: $ " & funciones.FormatearDecimales(Total)
-  
-      
-    
-    Me.lblTotalNoGravadoFiltrado = "Total No Gravado: $ " & funciones.FormatearDecimales(totalno)
-    Me.lblNetoGravadoFiltrado = "Total Neto Gravado: $ " & funciones.FormatearDecimales(totalneto)
-    Me.lblTotalIVA = "Total IVA: $ " & funciones.FormatearDecimales(totIva)
-    Me.lblTotalNeto = "Total Neto: $ " & funciones.FormatearDecimales(funciones.RedondearDecimales(totalneto) + funciones.RedondearDecimales(totalno))
+    Me.lblTotal = "Total Filtrado: " & FormatCurrency(funciones.FormatearDecimales(Total))
+    Me.lblTotalNoGravadoFiltrado = "Total No Gravado: " & FormatCurrency(funciones.FormatearDecimales(totalno))
+    Me.lblNetoGravadoFiltrado = "Total Neto Gravado: " & FormatCurrency(funciones.FormatearDecimales(totalneto))
+    Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(totIva))
+    Me.lblTotalNeto = "Total Neto: " & FormatCurrency(funciones.FormatearDecimales(funciones.RedondearDecimales(totalneto) + funciones.RedondearDecimales(totalno)))
     
     'Agregar totalizador de Percepciones
-    Me.lblTotalPercepciones = "Total Percepciones: $ " & funciones.FormatearDecimales(totalpercep)
+    Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalpercep))
     
 
     grilla.ItemCount = facturas.count
@@ -1315,13 +1312,13 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             Values(4) = Factura.numero
             Values(5) = Factura.FEcha
             Values(6) = Factura.moneda.NombreCorto
-            Values(7) = funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i
-            Values(8) = funciones.FormatearDecimales(Factura.TotalIVA) * i
-            Values(9) = funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i
-            Values(10) = funciones.FormatearDecimales(Factura.totalPercepciones) * i
-            Values(11) = funciones.FormatearDecimales(Factura.ImpuestoInterno) * i
+            Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
+            Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalIVA) * i), "$", "")
+            Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
+            Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalPercepciones) * i), "$", "")
+            Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.ImpuestoInterno) * i), "$", "")
             
-            Values(12) = funciones.FormatearDecimales(Factura.Total) * i
+            Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total) * i), "$", "")
             
             'ESTO MUESTRA TRUE O FALSE
             'Values(12) = (funciones.FormatearDecimales(Factura.Total) * i) > 2000000
@@ -1329,7 +1326,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             'ESTO MUESTRA SOLO LOS VALORES MAYORES A DOS MILLONES, LOS DEMAS LOS DEJA VACIOS
             
             If (funciones.FormatearDecimales(Factura.Total) * i) > 2000000 Then
-                Values(12) = funciones.FormatearDecimales(Factura.Total) * i
+                Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total) * i), "$", "")
             End If
             
             If Factura.cuentasContables.count > 0 Then

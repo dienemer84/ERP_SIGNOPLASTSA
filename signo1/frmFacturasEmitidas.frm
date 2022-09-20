@@ -1312,10 +1312,10 @@ Private Sub llenarGrilla()
     Next
 
 
-    Me.lblTotal = "Total: $ " & funciones.FormatearDecimales(Total)
-    Me.lblTotalPercepciones = "Total Percepciones: $ " & funciones.FormatearDecimales(totalPercepcionesIIBB)
-    Me.lblTotalIVA = "Total IVA: $ " & funciones.FormatearDecimales(TotalIVATodo)
-    Me.lblTotalNeto = "Total NG: $ " & funciones.FormatearDecimales(totalNG)
+    Me.lblTotal = "Total: " & FormatCurrency(funciones.FormatearDecimales(Total))
+    Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalPercepcionesIIBB))
+    Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(TotalIVATodo))
+    Me.lblTotalNeto = "Total NG: " & FormatCurrency(funciones.FormatearDecimales(totalNG))
 
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = facturas.count
@@ -1646,14 +1646,16 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     End If
 
 
-If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.AprobadaAFIP And Factura.estado <> EstadoFacturaCliente.EnProceso Then
-    Values(5) = "Nro. Pendiente"
-Else
-    Values(5) = Factura.NumeroFormateado
-End If
+    If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.AprobadaAFIP And Factura.estado <> EstadoFacturaCliente.EnProceso Then
+        Values(5) = "Nro. Pendiente"
+    Else
+        Values(5) = Factura.NumeroFormateado
+    End If
     
     Values(6) = Factura.FechaEmision
-    Values(7) = funciones.FormatearDecimales(Factura.TotalEstatico.Total)
+    
+    'MONTO BASE
+    Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.Total)), "$", "")
 
     If Factura.moneda.Id = 0 Then
         Values(8) = Factura.moneda.NombreCorto
@@ -1661,7 +1663,8 @@ End If
         Values(8) = Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
     End If
 
-    Values(9) = funciones.FormatearDecimales(Factura.TotalEstatico.Total * Factura.CambioAPatron)
+    'MONTO TOTAL
+    Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.Total * Factura.CambioAPatron)), "$", "")
 
     Values(10) = Factura.OrdenCompra
     Values(11) = Factura.cliente.razon

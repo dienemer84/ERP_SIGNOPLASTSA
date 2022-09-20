@@ -6,12 +6,12 @@ Begin VB.Form frmTip
    ClientHeight    =   4080
    ClientLeft      =   2370
    ClientTop       =   2400
-   ClientWidth     =   14175
+   ClientWidth     =   16650
    LinkTopic       =   "Form1"
    OLEDropMode     =   1  'Manual
    ScaleHeight     =   272
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   945
+   ScaleWidth      =   1110
    StartUpPosition =   2  'CenterScreen
    WhatsThisHelp   =   -1  'True
    Begin VB.CommandButton cmdNuevoDetalle 
@@ -28,8 +28,8 @@ Begin VB.Form frmTip
       Left            =   120
       TabIndex        =   1
       Top             =   120
-      Width           =   13935
-      _ExtentX        =   24580
+      Width           =   16335
+      _ExtentX        =   28813
       _ExtentY        =   5953
       Version         =   "2.0"
       AutomaticSort   =   -1  'True
@@ -75,7 +75,7 @@ Begin VB.Form frmTip
       Default         =   -1  'True
       Enabled         =   0   'False
       Height          =   375
-      Left            =   12840
+      Left            =   15240
       TabIndex        =   0
       Top             =   3600
       Visible         =   0   'False

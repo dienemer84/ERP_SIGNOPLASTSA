@@ -653,7 +653,7 @@ Private Sub MDIForm_Load()
         MsgBox "Se produjo un error con el archivo config.ini! Verificar la existencia de servidor."
         End
     Else
-       frmLogin.Show 1
+        frmLogin.Show 1
         'conectar.SetServidorBBDD  servidorBBDD 'ahora lohace el login
         If conectar.conectar Then
 

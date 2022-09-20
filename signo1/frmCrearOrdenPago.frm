@@ -4,7 +4,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   11100
+   ClientHeight    =   9990
    ClientLeft      =   2340
    ClientTop       =   3105
    ClientWidth     =   16950
@@ -22,7 +22,7 @@ Begin VB.Form frmCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   11100
+   ScaleHeight     =   9990
    ScaleWidth      =   16950
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   1335
@@ -170,14 +170,14 @@ Begin VB.Form frmCrearOrdenPago
       Width           =   1200
    End
    Begin XtremeSuiteControls.GroupBox grpOrigen 
-      Height          =   5655
+      Height          =   5775
       Left            =   7080
       TabIndex        =   0
-      Top             =   4200
+      Top             =   4080
       Width           =   9780
       _Version        =   786432
       _ExtentX        =   17251
-      _ExtentY        =   9975
+      _ExtentY        =   10186
       _StockProps     =   79
       Caption         =   "Valores"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -204,7 +204,6 @@ Begin VB.Form frmCrearOrdenPago
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
          ItemCount       =   5
-         SelectedItem    =   2
          Item(0).Caption =   "Cheques Propios"
          Item(0).ControlCount=   1
          Item(0).Control(0)=   "gridChequesPropios"
@@ -302,10 +301,9 @@ Begin VB.Form frmCrearOrdenPago
          End
          Begin GridEX20.GridEX gridChequesPropios 
             Height          =   4710
-            Left            =   -69895
+            Left            =   105
             TabIndex        =   9
             Top             =   435
-            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   8308
@@ -343,9 +341,10 @@ Begin VB.Form frmCrearOrdenPago
          End
          Begin GridEX20.GridEX gridCheques 
             Height          =   4710
-            Left            =   105
+            Left            =   -69895
             TabIndex        =   8
             Top             =   435
+            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   8308
@@ -703,7 +702,7 @@ Begin VB.Form frmCrearOrdenPago
       Height          =   405
       Left            =   14880
       TabIndex        =   14
-      Top             =   3720
+      Top             =   3600
       Width           =   1950
       _Version        =   786432
       _ExtentX        =   3440
@@ -713,14 +712,14 @@ Begin VB.Form frmCrearOrdenPago
       UseVisualStyle  =   -1  'True
    End
    Begin XtremeSuiteControls.GroupBox grpDestino 
-      Height          =   2895
+      Height          =   2655
       Left            =   120
       TabIndex        =   17
       Top             =   1320
       Width           =   5565
       _Version        =   786432
       _ExtentX        =   9816
-      _ExtentY        =   5106
+      _ExtentY        =   4683
       _StockProps     =   79
       Caption         =   "Destino"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -812,14 +811,14 @@ Begin VB.Form frmCrearOrdenPago
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.FlatEdit txtDetalle 
-         Height          =   1080
+         Height          =   840
          Left            =   120
          TabIndex        =   22
          Top             =   1680
          Width           =   5175
          _Version        =   786432
          _ExtentX        =   9128
-         _ExtentY        =   1905
+         _ExtentY        =   1482
          _StockProps     =   77
          BackColor       =   -2147483643
          MultiLine       =   -1  'True
@@ -845,14 +844,14 @@ Begin VB.Form frmCrearOrdenPago
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   2895
+      Height          =   2655
       Left            =   5880
       TabIndex        =   29
       Top             =   1320
       Width           =   5340
       _Version        =   786432
       _ExtentX        =   9419
-      _ExtentY        =   5106
+      _ExtentY        =   4683
       _StockProps     =   79
       Caption         =   "Retenciones"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -878,13 +877,13 @@ Begin VB.Form frmCrearOrdenPago
          Width           =   585
       End
       Begin GridEX20.GridEX gridRetenciones 
-         Height          =   1575
+         Height          =   1335
          Left            =   240
          TabIndex        =   31
          Top             =   1200
          Width           =   4935
          _ExtentX        =   8705
-         _ExtentY        =   2778
+         _ExtentY        =   2355
          Version         =   "2.0"
          AllowRowSizing  =   -1  'True
          BoundColumnIndex=   ""
@@ -918,27 +917,27 @@ Begin VB.Form frmCrearOrdenPago
          PrinterProperties=   "frmCrearOrdenPago.frx":9080
       End
       Begin XtremeSuiteControls.PushButton btnCargar 
-         Height          =   405
+         Height          =   345
          Left            =   3000
          TabIndex        =   32
-         Top             =   360
+         Top             =   480
          Width           =   2175
          _Version        =   786432
          _ExtentX        =   3836
-         _ExtentY        =   714
+         _ExtentY        =   609
          _StockProps     =   79
          Caption         =   "Traer Alicuotas Actuales"
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.PushButton btnPadronAnt 
-         Height          =   405
+         Height          =   345
          Left            =   240
          TabIndex        =   33
-         Top             =   360
+         Top             =   480
          Width           =   2175
          _Version        =   786432
          _ExtentX        =   3836
-         _ExtentY        =   714
+         _ExtentY        =   609
          _StockProps     =   79
          Caption         =   "Traer Alicuotas Anteriores"
          UseVisualStyle  =   -1  'True
@@ -964,14 +963,14 @@ Begin VB.Form frmCrearOrdenPago
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox2 
-      Height          =   5895
+      Height          =   5775
       Left            =   120
       TabIndex        =   42
-      Top             =   4200
+      Top             =   4080
       Width           =   6885
       _Version        =   786432
       _ExtentX        =   12144
-      _ExtentY        =   10398
+      _ExtentY        =   10186
       _StockProps     =   79
       Caption         =   "Mostrar Facturas"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -1045,14 +1044,14 @@ Begin VB.Form frmCrearOrdenPago
          Width           =   1425
       End
       Begin XtremeSuiteControls.ListBox lstFacturas 
-         Height          =   3255
+         Height          =   3135
          Left            =   120
          TabIndex        =   45
-         Top             =   2280
+         Top             =   2400
          Width           =   6570
          _Version        =   786432
          _ExtentX        =   11589
-         _ExtentY        =   5741
+         _ExtentY        =   5530
          _StockProps     =   77
          BackColor       =   -2147483643
          Appearance      =   6
@@ -1060,21 +1059,22 @@ Begin VB.Form frmCrearOrdenPago
       End
       Begin XtremeSuiteControls.Label lblCantidadCbtesSeleccionados 
          Height          =   255
-         Left            =   2520
+         Left            =   4560
          TabIndex        =   73
-         Top             =   5550
+         Top             =   2100
          Width           =   2175
          _Version        =   786432
          _ExtentX        =   3836
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Cbtes. Seleecionados: "
+         Caption         =   "Cbtes. Seleccionados: 200"
+         Alignment       =   1
       End
       Begin XtremeSuiteControls.Label lblCantidadComprobantes 
          Height          =   255
          Left            =   120
          TabIndex        =   72
-         Top             =   5550
+         Top             =   2100
          Width           =   2175
          _Version        =   786432
          _ExtentX        =   3836
@@ -2023,7 +2023,8 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal
     If RowIndex <= chequesDisponibles.count Then
         Set cheque = chequesDisponibles.item(RowIndex)
         Values(1) = cheque.numero
-        Values(2) = cheque.Monto
+        'FORMATCURRENCY
+        Values(2) = FormatCurrency(cheque.Monto)
         If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
         Values(5) = cheque.Id
@@ -2111,13 +2112,10 @@ End Sub
 Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If OrdenPago.ChequesPropios.count >= RowIndex Then
         Set cheque = OrdenPago.ChequesPropios.item(RowIndex)
-
         Values(1) = cheque.chequera.Description
-
         Values(2) = vbNullString
-
-
-        Values(3) = cheque.Monto
+        'FORMATCURRENCY
+        Values(3) = FormatCurrency(cheque.Monto)
         Values(4) = cheque.FechaVencimiento
         Values(5) = cheque.numero
 
@@ -2154,7 +2152,8 @@ Private Sub gridCompensatorios_UnboundReadData(ByVal RowIndex As Long, ByVal Boo
     Set compe = OrdenPago.Compensatorios.item(RowIndex)
     Values(1) = compe.Comprobante.NumeroFormateado
     Values(2) = TiposCompensatorio.item(CStr(compe.Tipo))
-    Values(3) = compe.Monto
+    'FORMATCURRENCY
+    Values(3) = FormatCurrency(compe.Monto)
     Values(4) = compe.FechaCancelacion
     Values(5) = compe.Observacion
 
@@ -2289,32 +2288,44 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     Next
     End If
     
+    'FORMATCURRENCY
+    Me.lblNgAbonar = "Total NG a Abonar en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnNG + totNGHoy))
     
-    Me.lblNgAbonar = "Total NG a Abonar en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnNG + totNGHoy)
-    Me.lblTotalFacturas = "Total Facturas en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totFact)
+    'FORMATCURRENCY
+    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact))
     
-    Me.lblDeudaCompensatorios = "Total deuda compensatorios en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totDeudaCompe)
+    'FORMATCURRENCY
+    Me.lblDeudaCompensatorios = "Total deuda compensatorios en " & FormatCurrency(funciones.FormatearDecimales(totDeudaCompe))
     
     OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
     OrdenPago.staticTotalDeudaCompensatorios = funciones.RedondearDecimales(totDeudaCompe)
-    Me.lblTotalFacturasNG = "Total NG Facturas en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG)
+    
+    'FORMATCURRENCY
+    Me.lblTotalFacturasNG = "Total NG Facturas en " & FormatCurrency(funciones.FormatearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG))
+    
     OrdenPago.StaticTotalFacturasNG = funciones.RedondearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG)
-
-    Me.lblDiferenciaCambio = "Diferencia Cambio en " & OrdenPago.moneda.NombreCorto & " " & totCambiong
+    
+    'FORMATCURRENCY
+    Me.lblDiferenciaCambio = "Diferencia Cambio en " & FormatCurrency(totCambiong)
+    'Me.lblDiferenciaCambio = "Diferencia Cambio en " & OrdenPago.moneda.NombreCorto & " " & totCambiong
+    
     OrdenPago.DiferenciaCambio = totCambio
 
     verCompensatorios
-    Me.lblTotalARetener = "Total a retener en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totRet)
+    
+    'FORMATCURRENCY
+    Me.lblTotalARetener = "Total a retener en " & FormatCurrency(funciones.FormatearDecimales(totRet))
+    'Me.lblTotalARetener = "Total a retener en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totRet)
     
     OrdenPago.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
-
-    Me.lblTotalOrdenPago = "Total a abonar en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - totRet - OrdenPago.OtrosDescuentos + OrdenPago.TotalCompensatorios + totDeudaCompe)
+    'FORMATCURRENCY
+    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - totRet - OrdenPago.OtrosDescuentos + OrdenPago.TotalCompensatorios + totDeudaCompe))
     'Me.lblTotalOP = "Total OP: " & OrdenPago.moneda.NombreCorto & " " & OrdenPago.StaticTotal
 End Sub
 
 Private Sub verCompensatorios()
-    Me.lblTotalCompensatorios = "Total compensatorios en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.TotalCompensatorios)
+    Me.lblTotalCompensatorios = "Total compensatorios en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.TotalCompensatorios))
 End Sub
 
 
@@ -2705,7 +2716,7 @@ Private Sub Totalizar()
 
     OrdenPago.StaticTotalOrigenes = OrdenPago.TotalOrigenes
   
-    Me.lblTotal.caption = "Total orden de pago en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido)
+    Me.lblTotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
     GridEXHelper.AutoSizeColumns Me.gridCheques
@@ -2747,7 +2758,6 @@ Private Function TotalizarDiferenciasCambio()
     Me.txtDifCambio = TTOTAL
 
 
-
     If ReadOnly Then
         Dim s As String
         s = OrdenPago.DiferenciaCambioEnNG
@@ -2760,7 +2770,8 @@ End Function
 Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= OrdenPago.OperacionesCaja.count Then
         Set operacion = OrdenPago.OperacionesCaja.item(RowIndex)
-        Values(1) = funciones.FormatearDecimales(operacion.Monto)
+        'FORMATCURRENCY
+        Values(1) = FormatCurrency(funciones.FormatearDecimales(operacion.Monto))
         If IsSomething(operacion.moneda) Then
             Values(2) = operacion.moneda.NombreCorto
         End If
@@ -2838,7 +2849,8 @@ End Sub
 Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= OrdenPago.OperacionesBanco.count Then
         Set operacion = OrdenPago.OperacionesBanco.item(RowIndex)
-        Values(1) = funciones.FormatearDecimales(operacion.Monto)
+        'FORMATCURRENCY
+        Values(1) = FormatCurrency(funciones.FormatearDecimales(operacion.Monto))
         If IsSomething(operacion.moneda) Then
             Values(2) = operacion.moneda.NombreCorto
         End If
@@ -2911,7 +2923,8 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
     If RowIndex <= OrdenPago.ChequesTerceros.count Then
         Set cheque = OrdenPago.ChequesTerceros.item(RowIndex)
         Values(1) = cheque.numero
-        Values(2) = cheque.Monto
+        'FORMATCURRENCY
+        Values(2) = FormatCurrency(cheque.Monto)
         If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
         Values(5) = cheque.OrigenDestino
