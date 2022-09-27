@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "Tabctl32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "tabctl32.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmAdminResumenOT 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -531,10 +531,10 @@ Public Sub llenarListas()
     Set rs = conectar.RSFactory(strsql)
     Dim x As ListItem
     While Not rs.EOF
-        Set x = Me.lstenProceso.ListItems.Add(, , Format(rs!id, "0000"))
+        Set x = Me.lstenProceso.ListItems.Add(, , Format(rs!Id, "0000"))
         x.SubItems(1) = rs!Ot
         x.SubItems(2) = rs!razon
-        x.SubItems(3) = Format(rs!FechaCreado, "dd-mm-yyyy")
+        x.SubItems(3) = Format(rs!fechaCreado, "dd-mm-yyyy")
         x.SubItems(4) = rs!descripcion
         x.SubItems(5) = Format(rs!FechaEntrega, "dd-mm-yyyy")
         x.SubItems(6) = funciones.queMoneda(rs!IdMoneda)
@@ -549,10 +549,10 @@ Public Sub llenarListas()
     strsql = "select p.id,'O/T' as ot,p.fechaCreado,p.fechaEntrega,p.descripcion, p.idmoneda,sum(dp.precio*dp.cantidad*(1-(p.dto/100))) as total, sum(dp.precio*dp.cantidad_facturada*(1-(p.dto/100))) as facturado, sum(dp.precio*(dp.cantidad-dp.cantidad_facturada)*(1-(p.dto/100))) as noFacturado,c.razon from pedidos p, detalles_pedidos dp, clientes c where p.estado=4 and dp.idPedido=p.id and c.id=p.idCliente and p.idMoneda=" & idm & " and dp.precio>0 group by p.id"
     Set rs = conectar.RSFactory(strsql)
     While Not rs.EOF
-        Set x = Me.lstProcesados.ListItems.Add(, , Format(rs!id, "0000"))
+        Set x = Me.lstProcesados.ListItems.Add(, , Format(rs!Id, "0000"))
         x.SubItems(1) = rs!Ot
         x.SubItems(2) = rs!razon
-        x.SubItems(3) = Format(rs!FechaCreado, "dd-mm-yyyy")
+        x.SubItems(3) = Format(rs!fechaCreado, "dd-mm-yyyy")
         x.SubItems(4) = rs!descripcion
         x.SubItems(5) = Format(rs!FechaEntrega, "dd-mm-yyyy")
         x.SubItems(6) = funciones.queMoneda(rs!IdMoneda)
@@ -566,10 +566,10 @@ Public Sub llenarListas()
     'select p.id,'O/E' as ot,p.fechaCreado,p.fecha as fechaEntrega,p.referencia as descripcion, p.idmoneda,sum(dp.vale*dp.cantidad) as total, sum(dp.vale*dp.cantidad_facturada) as facturado, sum(dp.vale*(dp.cantidad-dp.cantidad_facturada)) as noFacturado,c.razon from PedidosEntregas p, detallesPedidosEntregas dp, clientes c where (p.estado=2 or p.estado=3) and dp.idPedidoEntrega=p.id and c.id=p.idCliente  group by p.id
     Set rs = conectar.RSFactory("select p.id,'O/E' as ot,p.fechaCreado,p.fecha as fechaEntrega,p.referencia as descripcion, p.idmoneda,sum(dp.vale*dp.cantidad) as total, sum(dp.vale*dp.cantidad_facturada) as facturado, sum(dp.vale*(dp.cantidad-dp.cantidad_facturada)) as noFacturado,c.razon from PedidosEntregas p, detallesPedidosEntregas dp, clientes c where (p.estado=2 or p.estado=3) and dp.idPedidoEntrega=p.id and c.id=p.idCliente and p.idmoneda=" & idm & " and dp.vale>0 group by p.id")
     While Not rs.EOF
-        Set x = Me.lstEntregas.ListItems.Add(, , Format(rs!id, "0000"))
+        Set x = Me.lstEntregas.ListItems.Add(, , Format(rs!Id, "0000"))
         x.SubItems(1) = rs!Ot
         x.SubItems(2) = rs!razon
-        x.SubItems(3) = Format(rs!FechaCreado, "dd-mm-yyyy")
+        x.SubItems(3) = Format(rs!fechaCreado, "dd-mm-yyyy")
         x.SubItems(4) = rs!descripcion
         x.SubItems(5) = Format(rs!FechaEntrega, "dd-mm-yyyy")
         x.SubItems(6) = funciones.queMoneda(rs!IdMoneda)
@@ -628,28 +628,21 @@ Public Sub verTotales()
     Me.lblTotalProceso = funciones.FormatearDecimales(Total, 2)
 End Sub
 
-Private Sub detalle_Click()
-    'If Me.lstProcesados.ListItems.count > 0 Then
-    '    frmPlaneamientoPedidosDetalle.lblIdPedido = Me.lstProcesados.SelectedItem
-    '    frmPlaneamientoPedidosDetalle.Caption = "Pedido Nro. " & Format(frmPlaneamientoPedidosDetalle.lblIdPedido, "0000")
-    '    frmPlaneamientoPedidosDetalle.Show
-    'End If
 
-End Sub
 
 Private Sub facturas_Click()
     If Me.SSTab1.Tab = 2 Then  'O/E
-        id = Me.lstEntregas.selectedItem
+        Id = Me.lstEntregas.selectedItem
         Origen = 2
     ElseIf Me.SSTab1.Tab = 1 Then  'O/T fin
-        id = Me.lstProcesados.selectedItem
+        Id = Me.lstProcesados.selectedItem
         Origen = 1
     ElseIf Me.SSTab1.Tab = 0 Then  'o/t pend
-        id = Me.lstenProceso.selectedItem
+        Id = Me.lstenProceso.selectedItem
         Origen = 1
     End If
     frmAdminFacturasAplicadas.Origen = Origen
-    frmAdminFacturasAplicadas.idOrigen = CLng(id)
+    frmAdminFacturasAplicadas.idOrigen = CLng(Id)
     'frmAdminFacturasAplicadas.Frame1.Caption = "[ Nro." & id & " ]"
     frmAdminFacturasAplicadas.Show
 
@@ -719,20 +712,20 @@ End Sub
 
 Private Sub remitos_Click()
     If Me.SSTab1.Tab = 2 Then  'O/E
-        id = Me.lstEntregas.selectedItem
+        Id = Me.lstEntregas.selectedItem
         Origen = 1
     ElseIf Me.SSTab1.Tab = 1 Then  'O/T fin
-        id = Me.lstProcesados.selectedItem
+        Id = Me.lstProcesados.selectedItem
         Origen = 0
     ElseIf Me.SSTab1.Tab = 0 Then  'o/t pend
-        id = Me.lstenProceso.selectedItem
+        Id = Me.lstenProceso.selectedItem
         Origen = 0
     End If
 
 
     frmRemitosEntregados.Origen = 1
-    frmRemitosEntregados.idPedidoEntrega = id
-    frmRemitosEntregados.caption = "Nro." & id
+    frmRemitosEntregados.idPedidoEntrega = Id
+    frmRemitosEntregados.caption = "Nro." & Id
 
     frmRemitosEntregados.Show
 
