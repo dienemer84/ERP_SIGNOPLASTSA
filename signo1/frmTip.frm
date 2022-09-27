@@ -32,42 +32,46 @@ Begin VB.Form frmTip
       _ExtentX        =   28813
       _ExtentY        =   5953
       Version         =   "2.0"
-      AutomaticSort   =   -1  'True
+      PreviewRowIndent=   0
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
+      GridLineStyle   =   2
       ShowEmptyFields =   0   'False
       GroupFooterStyle=   1
+      PreviewColumn   =   "modulo"
+      PreviewRowLines =   1
       RowHeight       =   33
       TabKeyBehavior  =   1
       ColumnAutoResize=   -1  'True
-      DetectRowDrag   =   -1  'True
-      HeaderStyle     =   3
+      HeaderStyle     =   2
       UseEvenOddColor =   -1  'True
       ReadOnly        =   -1  'True
       MethodHoldFields=   -1  'True
       AllowCardSizing =   0   'False
       Options         =   -1
+      AllowColumnDrag =   0   'False
       RecordsetType   =   1
       AllowEdit       =   0   'False
-      BorderStyle     =   2
+      BorderStyle     =   3
       GroupByBoxVisible=   0   'False
       DataMode        =   99
+      GridLines       =   2
       ColumnHeaderHeight=   285
       IntProp1        =   0
       ColumnsCount    =   4
       Column(1)       =   "frmTip.frx":0000
-      Column(2)       =   "frmTip.frx":017C
-      Column(3)       =   "frmTip.frx":02F0
-      Column(4)       =   "frmTip.frx":0410
+      Column(2)       =   "frmTip.frx":0178
+      Column(3)       =   "frmTip.frx":033C
+      Column(4)       =   "frmTip.frx":04D8
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmTip.frx":0558
-      FormatStyle(2)  =   "frmTip.frx":0690
-      FormatStyle(3)  =   "frmTip.frx":0740
-      FormatStyle(4)  =   "frmTip.frx":07F4
-      FormatStyle(5)  =   "frmTip.frx":08CC
-      FormatStyle(6)  =   "frmTip.frx":0984
+      FormatStyle(1)  =   "frmTip.frx":0668
+      FormatStyle(2)  =   "frmTip.frx":07A0
+      FormatStyle(3)  =   "frmTip.frx":0850
+      FormatStyle(4)  =   "frmTip.frx":0904
+      FormatStyle(5)  =   "frmTip.frx":09DC
+      FormatStyle(6)  =   "frmTip.frx":0A94
       ImageCount      =   0
-      PrinterProperties=   "frmTip.frx":0A64
+      PrinterProperties=   "frmTip.frx":0B74
    End
    Begin VB.CommandButton cmdOK 
       Cancel          =   -1  'True
@@ -135,9 +139,9 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
         
         Set sin = actualizaciones(RowIndex)
      
-        Values(1) = sin.Id_
+        Values(1) = sin.id_
         Values(2) = sin.Fecha_
-        Values(3) = sin.Detalle_
+        Values(3) = sin.detalle_
         Values(4) = sin.Modulo_
 
 
