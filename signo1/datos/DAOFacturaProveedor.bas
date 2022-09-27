@@ -566,9 +566,10 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     xlWorksheet.Cells(offset, 15).value = "Orden de Pago"
     xlWorksheet.Cells(offset, 16).value = "Tipo de Cambio"
     xlWorksheet.Cells(offset, 17).value = "Usuario"
+    xlWorksheet.Cells(offset, 18).value = "ID"
     
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Interior.Color = &HC0C0C0
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 18)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 18)).Interior.Color = &HC0C0C0
 
 
     '.Borders.LineStyle = xlContinuous
@@ -624,9 +625,10 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
         xlWorksheet.Cells(offset, 15).value = fac.OrdenPagoId
         xlWorksheet.Cells(offset, 16).value = fac.TipoCambio
         xlWorksheet.Cells(offset, 17).value = fac.UsuarioCarga.usuario
+        xlWorksheet.Cells(offset, 18).value = fac.Id
 
 
-        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 17)).Borders.LineStyle = xlContinuous
+        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 18)).Borders.LineStyle = xlContinuous
     Next
 
 
