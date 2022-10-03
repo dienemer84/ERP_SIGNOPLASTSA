@@ -541,6 +541,7 @@ Class=ComprobantesRecibidos; ClassModule\ComprobantesRecibidos.cls
 Form=Forms\frmAdminComprobantesEmitidosCambioMoneda.frm
 Module=MonedasNOSEUSA; ClassModule\Monedas.bas
 ResFile32="Themes.res"
+Form=Forms\frmAdminFacturasEditarDatos.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""

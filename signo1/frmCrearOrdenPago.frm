@@ -4,7 +4,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   9990
+   ClientHeight    =   9945
    ClientLeft      =   2340
    ClientTop       =   3105
    ClientWidth     =   16950
@@ -22,8 +22,22 @@ Begin VB.Form frmCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   9990
+   ScaleHeight     =   9945
    ScaleWidth      =   16950
+   Begin XtremeSuiteControls.PushButton btnExportarDatos 
+      Height          =   495
+      Left            =   14880
+      TabIndex        =   74
+      Top             =   2760
+      Visible         =   0   'False
+      Width           =   1935
+      _Version        =   786432
+      _ExtentX        =   3413
+      _ExtentY        =   873
+      _StockProps     =   79
+      Caption         =   "Exportar"
+      UseVisualStyle  =   -1  'True
+   End
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   1335
       Left            =   120
@@ -699,14 +713,14 @@ Begin VB.Form frmCrearOrdenPago
       PrinterProperties=   "frmCrearOrdenPago.frx":8530
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
-      Height          =   405
+      Height          =   525
       Left            =   14880
       TabIndex        =   14
-      Top             =   3600
+      Top             =   3480
       Width           =   1950
       _Version        =   786432
       _ExtentX        =   3440
-      _ExtentY        =   714
+      _ExtentY        =   926
       _StockProps     =   79
       Caption         =   "Guardar"
       UseVisualStyle  =   -1  'True
@@ -1059,7 +1073,7 @@ Begin VB.Form frmCrearOrdenPago
       End
       Begin XtremeSuiteControls.Label lblCantidadCbtesSeleccionados 
          Height          =   255
-         Left            =   4560
+         Left            =   4500
          TabIndex        =   73
          Top             =   2100
          Width           =   2175
@@ -1067,7 +1081,6 @@ Begin VB.Form frmCrearOrdenPago
          _ExtentX        =   3836
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Cbtes. Seleccionados: 200"
          Alignment       =   1
       End
       Begin XtremeSuiteControls.Label lblCantidadComprobantes 
@@ -1080,7 +1093,6 @@ Begin VB.Form frmCrearOrdenPago
          _ExtentX        =   3836
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Comprobantes Mostrados: 0"
       End
       Begin VB.Label Label12 
          AutoSize        =   -1  'True
@@ -1379,7 +1391,7 @@ End If
                         End If
                     Next j
                     
-                    Me.lblCantidadComprobantes.caption = Me.lblCantidadCbtesSeleccionados.caption
+                    'Me.lblCantidadComprobantes.caption = Me.lblCantidadCbtesSeleccionados.caption
                     
                 End If
 
@@ -1465,7 +1477,7 @@ End If
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
-    Me.GridCajas.AllowEdit = Not ReadOnly
+    Me.gridCajas.AllowEdit = Not ReadOnly
     'Me.gridCajas.AllowDelete = Not ReadOnly
 
     Me.gridChequeras.AllowEdit = Not ReadOnly
@@ -1787,7 +1799,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1797,7 +1809,7 @@ Private Sub Form_Load()
 
 
     Set Cajas = DAOCaja.FindAll()
-    Me.GridCajas.ItemCount = Cajas.count
+    Me.gridCajas.ItemCount = Cajas.count
 
     Set Monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = Monedas.count
@@ -1846,7 +1858,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
@@ -2473,7 +2485,7 @@ Sub calcularOrigenes()
                 col.Add colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
 
 
-                Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleecionados: " & col.count
+                Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: " & col.count
                 
             End If
 
@@ -2521,7 +2533,7 @@ Sub limpiarParciales()
     Me.txtTotalParcialAbonado = 0
     Me.txtTotalParcialAbonar = 0
     
-    Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleecionados: 0"
+    Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
 End Sub
 
 Private Sub lstFacturas_ItemCheck(ByVal item As Long)
@@ -2532,7 +2544,7 @@ Private Sub lstFacturas_ItemCheck(ByVal item As Long)
 
     End If
 
-Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleecionados: 0"
+Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
     calcularOrigenes
 
 

@@ -8,13 +8,14 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   8985
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   14385
+   ClientWidth     =   9705
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8985
    ScaleMode       =   0  'User
-   ScaleWidth      =   14265
+   ScaleWidth      =   9624.04
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox grp 
       Height          =   2295
       Left            =   120
@@ -1119,14 +1120,10 @@ End Sub
 
 Private Sub cmdBuscar_Click()
     llenarGrilla
+   
 End Sub
 
-
-
-
 Private Sub cmdImprimir_Click()
-
-
     With Me.GridEX1.PrinterProperties
         .FitColumns = True
         .RepeatHeaders = True

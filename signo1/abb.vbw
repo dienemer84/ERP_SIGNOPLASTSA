@@ -495,3 +495,4 @@ DAOComprobantesRecibidos = 154, 203, 1317, 678, C
 ComprobantesRecibidos = 0, 0, 0, 0, C
 frmAdminComprobantesEmitidosCambioMoneda = 0, 0, 0, 0, C, 110, 145, 1210, 602, C
 MonedasNOSEUSA = 0, 0, 0, 0, C
+frmAdminFacturasEditarDatos = 0, 0, 0, 0, C, 154, 203, 1062, 690, C
