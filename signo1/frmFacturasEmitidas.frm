@@ -1651,6 +1651,17 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Else
         Values(5) = Factura.NumeroFormateado
     End If
+   
+   If Factura.estado = EstadoFacturaCliente.EnProceso Then
+   Values(5) = "Nro. Pendiente"
+   End If
+   
+   
+   ' If Factura.estado =  Then
+   '     Values(5) = "Nro. Pendiente"
+   ' Else
+   '     Values(5) = Factura.NumeroFormateado
+   ' End If
     
     Values(6) = Factura.FechaEmision
     

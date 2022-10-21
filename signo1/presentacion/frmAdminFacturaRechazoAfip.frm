@@ -60,7 +60,11 @@ If MsgBox("¿Está seguro de actualizar el estado de rechazo del comprobante?", vb
 
     Factura.MotivosAnulacionAFIP = Me.Text1.text
     If Me.chkRechazo.value = 1 Then
-        Factura.AnulacionAFIP = "Y"
+    ' 154541541
+    ' 21/10/2022
+    ' SE CAMBIA EL VALOR DE Y POR S (EL VALOR DE Y ESTABA DANDO ERROR ULTIMAMENTE
+    ' Factura.AnulacionAFIP = "Y"
+        Factura.AnulacionAFIP = "S"
     Else
         Factura.AnulacionAFIP = "N"
    End If
@@ -78,7 +82,7 @@ Private Sub Form_Load()
   FormHelper.Customize Me
   
   If IsSomething(Factura) Then
-         Set Factura = DAOFactura.FindById(Factura.id)
+         Set Factura = DAOFactura.FindById(Factura.Id)
        If Factura.AnulacionAFIP = "Y" Then
           
             Me.chkRechazo.value = 1
