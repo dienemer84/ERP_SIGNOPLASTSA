@@ -12,20 +12,20 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-Public id As Long
+Public Id As Long
 Public numero As Long
-Public Cliente As clsCliente
+Public cliente As clsCliente
 Public FEcha As Date
 Public detalle As String
 Public estado As EstadoRemito
 Public EstadoFacturado As EstadoRemitoFacturado
 Public contacto As clsContacto
-Public UsuarioCreador As clsUsuario
-Public UsuarioAprobador As clsUsuario
+Public usuarioCreador As clsUsuario
+Public usuarioAprobador As clsUsuario
 Public Detalles As New Collection    '(of RemitoDetalle)
-
 Public CantidadBultos As Integer
 Public ControlCargaImpresiones As Integer
+Public OrigenDeConceptos As String
 
 
 
@@ -35,7 +35,7 @@ Public Function CantidadDeLineasActuales() As Double
     Cant = 0
     If IsSomething(Detalles) Then
         For Each deta In Detalles
-            If LenB(deta.Observaciones) > 0 Then
+            If LenB(deta.observaciones) > 0 Then
                 Cant = Cant + 2
             Else
                 Cant = Cant + 1

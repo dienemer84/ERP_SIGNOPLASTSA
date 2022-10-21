@@ -677,7 +677,7 @@ Function LstOrdenar(lst As ListView, columna As Integer)
 End Function
 
 
-Function busca_en_lista(lst As ListView, id As Integer, Optional tem As Integer) As Boolean
+Function busca_en_lista(lst As ListView, Id As Integer, Optional tem As Integer) As Boolean
     On Error Resume Next
     Dim esta As Boolean
     Dim x As ListItems
@@ -690,7 +690,7 @@ Function busca_en_lista(lst As ListView, id As Integer, Optional tem As Integer)
             id2 = CInt(lst.ListItems(nn).ListSubItems(tem))
         End If
 
-        If id = id2 Then
+        If Id = id2 Then
             esta = True
 
         End If
@@ -728,7 +728,7 @@ Function amortiza(Cantidad) As Long    'para amortizar por cantidad
 End Function
 
 
-Function amortizaV2(id, Cantidad, forma As FormaCotizar, Optional amort = 0, Optional esCon As Boolean = True) As Long    'para amortizar por cantidad
+Function amortizaV2(Id, Cantidad, forma As FormaCotizar, Optional amort = 0, Optional esCon As Boolean = True) As Long    'para amortizar por cantidad
     On Error GoTo err1
     Dim rs As Recordset
     Dim canti
@@ -749,7 +749,7 @@ Function amortizaV2(id, Cantidad, forma As FormaCotizar, Optional amort = 0, Opt
         amortizaV2 = canti
 
     ElseIf forma = fabricados_ Then
-        Set rs = conectar.RSFactory("select sum(cantidad_fabricados) as a from detalles_pedidos where idPieza=" & id)
+        Set rs = conectar.RSFactory("select sum(cantidad_fabricados) as a from detalles_pedidos where idPieza=" & Id)
         If Not IsNumeric(rs!A) Then A = 0 Else A = rs!A
 
 
@@ -850,7 +850,7 @@ Function normaliza(strf As String)
     End If
 End Function
 
-Function busca_en_lista2(lst As ListView, id As Integer, Optional tem As Integer) As Long
+Function busca_en_lista2(lst As ListView, Id As Integer, Optional tem As Integer) As Long
     Dim esta As Boolean
     Dim x As ListItems
     esta = False
@@ -862,7 +862,7 @@ Function busca_en_lista2(lst As ListView, id As Integer, Optional tem As Integer
             id2 = CInt(lst.ListItems(nn).ListSubItems(tem))
         End If
 
-        If id = id2 Then
+        If Id = id2 Then
             esta = True
             pos = nn
             Exit For
@@ -1093,6 +1093,10 @@ Public Function FormatearDecimales(numero As Double, Optional ByVal cantDecimale
     FormatearDecimales = Format(numero, "0." & String$(cantDecimales, "0"))
 End Function
 
+Public Function FormatearMiles(numero As Double, Optional ByVal cantDecimales As Long = 2) As String
+    FormatearMiles = Format(numero, ".00" & String$(cantDecimales, "0"))
+End Function
+
 Public Function RedondearDecimales(numero As Double, Optional Decimales As Long = 2) As Double
     RedondearDecimales = Format(Math.Round(numero, Decimales), "0.00")
 End Function
@@ -1221,10 +1225,10 @@ Public Sub ordenar_grilla(ByVal Column As GridEX20.JSColumn, GridEX1 As GridEX)
     'Add this new sortkey
     If SortOrder = jgexSortAscending Then
         'if the column was sorted in ascending order, sort the column in descending order
-        GridEX1.SortKeys.Add Column.index, jgexSortDescending
+        GridEX1.SortKeys.Add Column.Index, jgexSortDescending
     Else
         'if was sorted in descending order or not sorted, sort the column in ascending order
-        GridEX1.SortKeys.Add Column.index, jgexSortAscending
+        GridEX1.SortKeys.Add Column.Index, jgexSortAscending
     End If
 End Sub
 Public Sub FillComboBox(ByRef combo As ComboBox, ByRef col As Collection, ByRef propertyForShow As String, ByRef propertyForId As String, ByRef selectFirst As Boolean)
@@ -1690,7 +1694,7 @@ End Function
 Public Function AjustarLineas(st As String) As String
 
     Dim A As String
-    Dim b As String
+    Dim B As String
 
     If Len(st) >= 55 Then
         Dim trozos As New Collection

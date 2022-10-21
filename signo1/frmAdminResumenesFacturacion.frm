@@ -332,7 +332,7 @@ Begin VB.Form frmAdminResumenesFacturacion
          Height          =   375
          Left            =   5115
          TabIndex        =   14
-         Top             =   2130
+         Top             =   2100
          Width           =   1185
          _Version        =   786432
          _ExtentX        =   2090
@@ -663,7 +663,7 @@ Private Sub LlenarComboContratos()
             Me.cboContratos.Clear
             For Each ot1 In otsMarco
                 Me.cboContratos.AddItem ot1.IdFormateado & " - " & ot1.descripcion & " (" & ot1.FechaInicioMarco & " - " & ot1.FechaFinMarco & ")"
-                Me.cboContratos.ItemData(Me.cboContratos.NewIndex) = ot1.id
+                Me.cboContratos.ItemData(Me.cboContratos.NewIndex) = ot1.Id
             Next ot1
             Me.cboContratos.ListIndex = -1
         End If

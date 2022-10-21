@@ -764,7 +764,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Me.mnuCrearOT.Enabled = (est = Enviado_)
 
         If Not Permisos.SistemaArchivosVer Then
-            Me.Archivos = False
+            Me.archivos = False
         End If
 
         Me.mnuCrearOT.Enabled = (Permisos.PlanOTcontrol)
@@ -920,8 +920,8 @@ Private Sub recotiza_Click()
 End Sub
 
 Private Sub scanear_Click()
-    Dim Archivos As New classArchivos
-    Archivos.escanearDocumento 2, rectmp.Id
+    Dim archivos As New classArchivos
+    archivos.escanearDocumento 2, rectmp.Id
 End Sub
 Private Sub txtCodigo_GotFocus()
     foco Me.txtCodigo
@@ -938,18 +938,18 @@ End Sub
 Private Sub llenar_Grilla()
     Set tmpIncidencias = DAOIncidencias.GetCantidadIncidenciasPorReferencia(OI_Presupuestos)
     Set tmpArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Presupuestos)
-    Dim nro As Long
+    Dim NRO As Long
     Dim cliente As Long
     grilla.ItemCount = 0
     llenarEstados
     If Me.cboClientes.ListIndex >= 0 Then cliente = Me.cboClientes.ItemData(Me.cboClientes.ListIndex) Else cliente = -1
     filtro = Trim(Me.txtFiltro)
     If Trim(txtCodigo) = vbNullString Or Not IsNumeric(txtCodigo) Then
-        nro = 0
+        NRO = 0
     Else
-        nro = CLng(Me.txtCodigo)
+        NRO = CLng(Me.txtCodigo)
     End If
-    Set presupuestos = DAOPresupuestos.GetAll(filtro, estados, cliente, nro)
+    Set presupuestos = DAOPresupuestos.GetAll(filtro, estados, cliente, NRO)
     grilla.ItemCount = presupuestos.count
     Me.caption = "Presupuestos [ Cantidad: " & presupuestos.count & " ]"
     GridEXHelper.AutoSizeColumns Me.grilla, True

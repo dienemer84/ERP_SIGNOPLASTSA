@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT 
    Caption         =   "Informe general OT"
-   ClientHeight    =   14265
+   ClientHeight    =   13995
    ClientLeft      =   -90
    ClientTop       =   450
    ClientWidth     =   28680
@@ -9,7 +9,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
    _ExtentY        =   25162
    _Version        =   393216
    _DesignerVersion=   100688210
-   ReportWidth     =   11340
+   ReportWidth     =   10755
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -198,9 +198,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
       BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaEntrega"
-         Object.Left            =   6690
+         Object.Left            =   6000
          Object.Top             =   45
-         Object.Width           =   1545
+         Object.Width           =   2205
          Object.Height          =   495
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"

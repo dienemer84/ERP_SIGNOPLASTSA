@@ -23,11 +23,18 @@ Begin VB.Form frmVentasClientesLista
       _StockProps     =   79
       Caption         =   "Búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtFiltroCUIT 
+         Height          =   285
+         Left            =   1560
+         TabIndex        =   7
+         Top             =   600
+         Width           =   2175
+      End
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   375
-         Left            =   7080
+         Left            =   9360
          TabIndex        =   6
-         Top             =   240
+         Top             =   1200
          Width           =   1335
          _Version        =   786432
          _ExtentX        =   2355
@@ -44,7 +51,7 @@ Begin VB.Form frmVentasClientesLista
          List            =   "frmVentasClientesLista.frx":000A
          Style           =   2  'Dropdown List
          TabIndex        =   3
-         Top             =   600
+         Top             =   990
          Width           =   2055
       End
       Begin VB.TextBox txtFiltro 
@@ -55,6 +62,16 @@ Begin VB.Form frmVentasClientesLista
          Top             =   240
          Width           =   5175
       End
+      Begin VB.Label Label1 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00FF8080&
+         Caption         =   "CUIT:"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   8
+         Top             =   600
+         Width           =   1215
+      End
       Begin VB.Label Label2 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00FF8080&
@@ -63,7 +80,7 @@ Begin VB.Form frmVentasClientesLista
          Index           =   1
          Left            =   240
          TabIndex        =   5
-         Top             =   630
+         Top             =   1020
          Width           =   1215
       End
       Begin VB.Label Label2 
@@ -100,7 +117,7 @@ Begin VB.Form frmVentasClientesLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   15
+      ColumnsCount    =   16
       Column(1)       =   "frmVentasClientesLista.frx":0022
       Column(2)       =   "frmVentasClientesLista.frx":012E
       Column(3)       =   "frmVentasClientesLista.frx":021A
@@ -116,15 +133,16 @@ Begin VB.Form frmVentasClientesLista
       Column(13)      =   "frmVentasClientesLista.frx":0B82
       Column(14)      =   "frmVentasClientesLista.frx":0C76
       Column(15)      =   "frmVentasClientesLista.frx":0D5A
+      Column(16)      =   "frmVentasClientesLista.frx":0E5E
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmVentasClientesLista.frx":0E5E
-      FormatStyle(2)  =   "frmVentasClientesLista.frx":0F96
-      FormatStyle(3)  =   "frmVentasClientesLista.frx":1046
-      FormatStyle(4)  =   "frmVentasClientesLista.frx":10FA
-      FormatStyle(5)  =   "frmVentasClientesLista.frx":11D2
-      FormatStyle(6)  =   "frmVentasClientesLista.frx":128A
+      FormatStyle(1)  =   "frmVentasClientesLista.frx":0FD6
+      FormatStyle(2)  =   "frmVentasClientesLista.frx":110E
+      FormatStyle(3)  =   "frmVentasClientesLista.frx":11BE
+      FormatStyle(4)  =   "frmVentasClientesLista.frx":1272
+      FormatStyle(5)  =   "frmVentasClientesLista.frx":134A
+      FormatStyle(6)  =   "frmVentasClientesLista.frx":1402
       ImageCount      =   0
-      PrinterProperties=   "frmVentasClientesLista.frx":136A
+      PrinterProperties=   "frmVentasClientesLista.frx":14E2
    End
    Begin VB.Menu m3 
       Caption         =   "m3"
@@ -194,7 +212,7 @@ Private Sub Form_Load()
     id_suscriber = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, Clientes_
     
-        Me.caption = caption & " (" & Name & ")"
+    'Me.caption = caption & " (" & Name & ")"
         
 
 End Sub
@@ -276,6 +294,14 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             Case 1
                 Values(15) = "U$S"
         End Select
+        
+        Select Case .ValidoRemitoFactura
+            Case 0
+                Values(16) = "NO"
+            Case 1
+                 Values(16) = "SI"
+        End Select
+    
     End With
 End Sub
 
@@ -318,7 +344,7 @@ End Sub
 Private Sub verDetalle_Click()
     verDeta
 End Sub
-Private Sub llenar_Grilla()
+Public Sub llenar_Grilla()
     est = Me.Combo1.ItemData(Me.Combo1.ListIndex)
     'Set clientes = DAOCliente.GetAll(Trim(Me.txtFiltro), est)
 
@@ -331,11 +357,19 @@ Private Sub llenar_Grilla()
         filter = Replace$(filter, "{razon}", DAOCliente.CAMPO_RAZON_SOCIAL)
         filter = Replace$(filter, "{value}", Me.txtFiltro.text)
     End If
-
+    
+  ' AGREGO ESTE FILTRO PARA CUIT
+    If LenB(Me.txtFiltroCUIT.text) > 0 Then
+        filter = filter & " AND {cliente}.{cuit} LIKE '%{value}%'"
+        filter = Replace$(filter, "{cuit}", DAOCliente.CAMPO_CUIT)
+        filter = Replace$(filter, "{value}", Me.txtFiltroCUIT.text)
+    End If
+    
+    
     filter = Replace$(filter, "{estado}", DAOCliente.CAMPO_ESTADO)
     filter = Replace$(filter, "{cliente}", DAOCliente.TABLA_CLIENTE)
 
-    Set clientes = DAOCliente.FindAll(filter)
+    Set clientes = DAOCliente.FindAll(filter, "c.id DESC")
 
     grilla.ItemCount = clientes.count
     grilla.ReBind

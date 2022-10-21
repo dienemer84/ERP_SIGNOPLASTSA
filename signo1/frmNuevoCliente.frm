@@ -477,7 +477,7 @@ Private Sub Guardar()
     telefono = UCase(Text1(4))
     Fax = UCase(Text1(5))
     email = UCase(Text1(6))
-    ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
+    ivan = Me.CboIVA.ItemData(Me.CboIVA.ListIndex)
     Cuit = Trim(Text1(7))
 
     FP = UCase(Me.txtFP)
@@ -518,6 +518,7 @@ Private Sub Guardar()
 
 
                 cliente.PasswordSistema = 0
+                
                 Set cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
                 Set cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
 
@@ -526,7 +527,7 @@ Private Sub Guardar()
                 cliente.telefono = telefono
                 cliente.ValidoRemitoFactura = valido
 
-                cliente.Cuit = Cuil
+                'cliente.Cuit = Cuil
                 
                 cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
 
@@ -549,21 +550,27 @@ Private Sub Guardar()
                 If DAOCliente.crear(cliente) Then
                     MsgBox "Alta Exitosa!", vbInformation, "Información"
                     
-                    
+                   
+                     
                     Set EVENTO = New clsEventoObserver
                     Set EVENTO.Elemento = cliente
                     EVENTO.EVENTO = agregar_
                     Set EVENTO.Originador = Me
                     Channel.Notificar EVENTO, Clientes_
-                    For x = 0 To 10
-                        Text1(x) = Empty
-                        Me.txtFP = Empty
-                        Me.txtDetalleFP = Empty
-                    Next x
                     
-                Else
-                    MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
-                End If
+'                    For x = 0 To 10
+'                        Text1(x) = Empty
+'                        Me.txtFP = Empty
+'                        Me.txtDetalleFP = Empty
+'                    Next x
+                    
+                    Unload Me
+                    
+                    Else
+                        MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
+                    End If
+                
+               
                 
                 End If
 
@@ -585,8 +592,10 @@ Private Sub Guardar()
 
 
             vCliente.PasswordSistema = 0
-            'Set vCliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-            'Set vCliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+            
+            Set vCliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+            Set vCliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+            
             vCliente.razon = razon
             vCliente.telefono = telefono
             vCliente.FormaPago = FP_detalle
@@ -602,6 +611,9 @@ Private Sub Guardar()
                 EVENTO.EVENTO = modificar_
                 Set EVENTO.Originador = Me
                 Channel.Notificar EVENTO, Clientes_
+                
+                Unload Me
+                
             Else
                 MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
             End If
@@ -658,7 +670,7 @@ Private Sub Form_Load()
     For x = 0 To 10
         Text1(x) = Empty
     Next x
-    DAOTipoIva.LlenarCombo Me.cboIVA
+    DAOTipoIva.LlenarCombo Me.CboIVA
     Command1.caption = "Agregar"
     Me.caption = "Agregar Cliente..."
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
@@ -670,9 +682,17 @@ Private Sub Form_Load()
     End If
 
 
-    Me.caption = caption & "(" & Name & ")"
+    'Me.caption = caption & "(" & Name & ")"
 
 
+End Sub
+
+Private Sub Form_Terminate()
+    frmVentasClientesLista.llenar_Grilla
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    frmVentasClientesLista.llenar_Grilla
 End Sub
 
 Private Sub Text1_GotFocus(Index As Integer)
@@ -706,7 +726,7 @@ Private Sub llenarForm()
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
         txtFP = .FP
         Me.txtDetalleFP = .FormaPago
-        cboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIVA)
+        CboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, CboIVA)
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vCliente.idMonedaDefault, Me.cboMonedas)
         
     End With

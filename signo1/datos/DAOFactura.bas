@@ -118,7 +118,9 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
     End If
 
     Set rs = conectar.RSFactory(q)
+    
     BuildFieldsIndex rs, idx
+    
     While Not rs.EOF
         Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv")
         
@@ -1033,21 +1035,21 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
                      
             If IsSomething(tmp) And Factura.Cancelada > 0 Then
               Dim msg1 As String
-               Dim msg2 As String
+               Dim MSG2 As String
 
             If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
                  msg1 = conectar.Escape("CANCELADA POR " & tmp.GetShortDescription(False, True))
-                 msg2 = conectar.Escape("CANCELA A " & Factura.GetShortDescription(False, True))
+                 MSG2 = conectar.Escape("CANCELA A " & Factura.GetShortDescription(False, True))
                      
             Else
                  msg1 = conectar.Escape("CANCELA A " & tmp.GetShortDescription(False, True))
-                 msg2 = conectar.Escape("CANCELADA POR " & Factura.GetShortDescription(False, True))
+                 MSG2 = conectar.Escape("CANCELADA POR " & Factura.GetShortDescription(False, True))
                  
             End If
         
                If Not conectar.execute("update AdminFacturas set observaciones_cancela=" & msg1 & " where id=" & Factura.Id) Then GoTo err5
          
-               If Not conectar.execute("update AdminFacturas set  observaciones_cancela=" & msg2 & " where id=" & tmp.Id) Then GoTo err5
+               If Not conectar.execute("update AdminFacturas set  observaciones_cancela=" & MSG2 & " where id=" & tmp.Id) Then GoTo err5
         
         End If
     
@@ -1802,16 +1804,16 @@ If saldadoTotal Then
             ''If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape(" / CANCELADA POR " & nc.GetShortDescription(False, True))
             msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
             
-            Dim msg2 As String
+            Dim MSG2 As String
             'MSG2 = conectar.Escape(nc.observaciones & " / CANCELA A " & fc.GetShortDescription(False, True))
             'If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
-            msg2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+            MSG2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
 
 
        ' If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
          '   If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & MSG2 & " where id=" & nc.id) Then GoTo er12
  If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones_cancela=" & msg1 & " where id=" & fc.Id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones_cancela=" & msg2 & " where id=" & nc.Id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones_cancela=" & MSG2 & " where id=" & nc.Id) Then GoTo er12
 
 
 
@@ -1864,23 +1866,29 @@ Public Function aplicarNCaFC(idFactura As Long, idnc As Long) As Boolean
 Dim saldadoTotal As Boolean
 saldadoTotal = False
 
-    MsgBox ("Importe total de la FC " & fc.numero & ": " & fc.moneda.NombreCorto & " " & MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.Id, nc.moneda.Id)) & vbNewLine & "" _
-             & "Importe total de la NC " & nc.numero & ": " & nc.moneda.NombreCorto & " " & (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura))
-       
+'    MsgBox ("Importe total de la FC " & fc.numero & ": " & fc.moneda.NombreCorto & " " & MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.Id, nc.moneda.Id)) & vbNewLine & "" _
+'             & "Importe total de la NC " & nc.numero & ": " & nc.moneda.NombreCorto & " " & (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura))
+'
        
     If MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.Id, nc.moneda.Id) <> (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura)) Then
 
-        
-        If MsgBox("El importe total de la NC a aplicar no es del mismo que el de la FC!" & vbNewLine & "Se realizará una cancelación parcial de la FC." & vbNewLine & "¿Desea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
-            '     If Not conectar.execute("INSERT INTO AdminFacturas_NC (idFactura, idNC) VALUES (" & idFactura & "," & idnc & ")") Then GoTo er12
-            '     If Not conectar.execute("update AdminFacturas set estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & conectar.Escape("CANCELADA POR " & nc.NumeroFormateado) & " where id=" & fc.Id) Then GoTo er12
-            saldadoTotal = False
-            ok = True
+'        MsgBox ("Importe total de la FC " & fc.numero & ": " & fc.moneda.NombreCorto & " " & MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.Id, nc.moneda.Id)) & vbNewLine & "" _
+'             & "Importe total de la NC " & nc.numero & ": " & nc.moneda.NombreCorto & " " & (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura))
+'
+        If MsgBox(("Importe total de la FC " & fc.numero & ": " & fc.moneda.NombreCorto & " " & MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.Id, nc.moneda.Id)) & vbNewLine & "" _
+                     & "Importe total de la NC " & nc.numero & ": " & nc.moneda.NombreCorto & " " & (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura)) & vbNewLine & "" _
+        & "El importe total de la NC a aplicar no es del mismo que el de la FC!" & vbNewLine & "" _
+        & "Se realizará una cancelación parcial de la FC." & vbNewLine & "¿Desea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
+ 
+ 
+        saldadoTotal = False
+        ok = True
             
         End If
         
     Else
      MsgBox ("Los importes son iguales. Se aplica por el total.")
+        saldadoTotal = True
         ok = True
     End If
 
@@ -1960,15 +1968,15 @@ If saldadoTotal Then
             msg1 = conectar.Escape("APLICADA DE " & nc.GetShortDescription(False, True))
             'msg1 = conectar.Escape("APLICADA DE COMPROB. ID (" & nc.Id & ")")
             
-            Dim msg2 As String
+            Dim MSG2 As String
             'MSG2 = conectar.Escape(nc.observaciones & " / CANCELA A " & fc.GetShortDescription(False, True))
             ' If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
             
-            msg2 = conectar.Escape("APLICADA A " & fc.GetShortDescription(False, True))
+            MSG2 = conectar.Escape("APLICADA A " & fc.GetShortDescription(False, True))
             'msg2 = conectar.Escape("APLICADA A COMPROB. ID (" & fc.Id & ")")
 
             If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & msg1 & " where id=" & fc.Id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & msg2 & " where id=" & nc.Id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & MSG2 & " where id=" & nc.Id) Then GoTo er12
 
         Next deta
 
@@ -1987,7 +1995,9 @@ er12:
     aplicarNCaFC = False
     conectar.RollBackTransaction
    
-   MsgBox Err.Description, vbCritical, "Error"
+  ' MsgBox Err.Description, vbCritical, "Error"
+   
+   MsgBox ("Operación cancelada"), vbInformation, "Información"
 End Function
 
 Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As Factura

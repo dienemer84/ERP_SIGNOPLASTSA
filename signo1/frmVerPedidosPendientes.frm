@@ -1159,6 +1159,7 @@ Private Sub Form_Load()
 
     Me.grid.ItemCount = 0
     GridEXHelper.CustomizeGrid Me.grid, True
+    
     Dim i As Long
     Me.lstEstados.Clear
     For i = LBound(funciones.estados_pedidos) To UBound(funciones.estados_pedidos)
@@ -1193,7 +1194,7 @@ Private Sub Form_Load()
     LlenarNuevaLista
     MostrarMensajePendientes
     
-        Me.caption = caption & " (" & Name & ")"
+    'Me.caption = caption & " (" & Name & ")"
         
 
 End Sub

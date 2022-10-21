@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminCobranzasReservarRecibo 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -124,7 +124,9 @@ Private Sub cmdCrear_Click()
                     MsgBox "Se produjo algún error!, no se creará el recibo!", vbCritical, "Error"
                 Else
                     MsgBox "Recibo creado con éxito!", vbInformation, "Información"
-                    Me.txtReciboNro = DAORecibo.proximo
+                    'Me.txtReciboNro = DAORecibo.proximo
+                    Me.txtReciboNro = ""
+                    DAOCliente.llenarComboXtremeSuite Me.cboClientes
                 End If
             Else
                 MsgBox "El recibo indicado ya existe en la BBDD!", vbCritical, "Error"
@@ -144,6 +146,7 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     Me.txtReciboNro = DAORecibo.proximo
+    Me.txtReciboNro = ""
     DAOCliente.llenarComboXtremeSuite Me.cboClientes
 
 End Sub

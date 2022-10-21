@@ -5,6 +5,7 @@ Public Const FondoCeleste As Long = &HF0E1E1
 'Public Const FondoCeleste As Long = &HFFDBBF
 
 Public Const FondoAzul As Long = &HD6AA88
+
 Public Const LetraAzul As Long = &H8B4215
 Public Const PreviewFondoCeleste As Long = &HE9FB9E
 Public Const GridBGHeader As Long = &HF7DCC8

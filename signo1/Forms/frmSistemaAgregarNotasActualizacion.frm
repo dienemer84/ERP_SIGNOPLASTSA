@@ -139,7 +139,7 @@ On Error GoTo E
 If Nota Is Nothing Then Set Nota = New clsNotas
 
 
-Nota.FechaD_ = Me.DateTimePicker1.value
+Nota.FechaD_ = Now
 Nota.TextoD_ = Me.Text1
 Nota.Modulo_ = Me.Text2
 
@@ -149,6 +149,8 @@ If DAOActualizar.CargarNuevoDetalle(Nota) Then
    MsgBox "Nueva nota ingresada con éxito!", vbInformation, "Información"
    
    Me.Text1 = ""
+   Me.Text2 = ""
+   
 Else
 
    MsgBox "Se produjo algún error, no se guardó la nota!", vbCritical, "Error"

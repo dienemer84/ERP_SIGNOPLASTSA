@@ -42,27 +42,27 @@ Begin VB.Form frmOrdenesPago
       IntProp7        =   0
       ColumnsCount    =   9
       Column(1)       =   "frmOrdenesPago.frx":000C
-      Column(2)       =   "frmOrdenesPago.frx":0178
-      Column(3)       =   "frmOrdenesPago.frx":02AC
-      Column(4)       =   "frmOrdenesPago.frx":03A0
-      Column(5)       =   "frmOrdenesPago.frx":04D8
-      Column(6)       =   "frmOrdenesPago.frx":06E0
-      Column(7)       =   "frmOrdenesPago.frx":0814
-      Column(8)       =   "frmOrdenesPago.frx":0900
-      Column(9)       =   "frmOrdenesPago.frx":09F4
+      Column(2)       =   "frmOrdenesPago.frx":01A4
+      Column(3)       =   "frmOrdenesPago.frx":0304
+      Column(4)       =   "frmOrdenesPago.frx":044C
+      Column(5)       =   "frmOrdenesPago.frx":05B0
+      Column(6)       =   "frmOrdenesPago.frx":07E4
+      Column(7)       =   "frmOrdenesPago.frx":0944
+      Column(8)       =   "frmOrdenesPago.frx":0A84
+      Column(9)       =   "frmOrdenesPago.frx":0BA4
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmOrdenesPago.frx":0AE8
-      FormatStyle(2)  =   "frmOrdenesPago.frx":0C10
-      FormatStyle(3)  =   "frmOrdenesPago.frx":0CC0
-      FormatStyle(4)  =   "frmOrdenesPago.frx":0D74
-      FormatStyle(5)  =   "frmOrdenesPago.frx":0E4C
-      FormatStyle(6)  =   "frmOrdenesPago.frx":0F04
-      FormatStyle(7)  =   "frmOrdenesPago.frx":0FE4
-      FormatStyle(8)  =   "frmOrdenesPago.frx":1098
-      FormatStyle(9)  =   "frmOrdenesPago.frx":114C
-      FormatStyle(10) =   "frmOrdenesPago.frx":122C
+      FormatStyle(1)  =   "frmOrdenesPago.frx":0CEC
+      FormatStyle(2)  =   "frmOrdenesPago.frx":0E14
+      FormatStyle(3)  =   "frmOrdenesPago.frx":0EC4
+      FormatStyle(4)  =   "frmOrdenesPago.frx":0F78
+      FormatStyle(5)  =   "frmOrdenesPago.frx":1050
+      FormatStyle(6)  =   "frmOrdenesPago.frx":1108
+      FormatStyle(7)  =   "frmOrdenesPago.frx":11E8
+      FormatStyle(8)  =   "frmOrdenesPago.frx":129C
+      FormatStyle(9)  =   "frmOrdenesPago.frx":1350
+      FormatStyle(10) =   "frmOrdenesPago.frx":1430
       ImageCount      =   0
-      PrinterProperties=   "frmOrdenesPago.frx":12E4
+      PrinterProperties=   "frmOrdenesPago.frx":14E8
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1350
@@ -166,9 +166,9 @@ Begin VB.Form frmOrdenesPago
       Begin XtremeSuiteControls.PushButton cmdBuscar 
          Default         =   -1  'True
          Height          =   450
-         Left            =   9615
+         Left            =   9600
          TabIndex        =   3
-         Top             =   270
+         Top             =   240
          Width           =   1350
          _Version        =   786432
          _ExtentX        =   2381
@@ -221,7 +221,7 @@ Begin VB.Form frmOrdenesPago
          Height          =   315
          Left            =   7845
          TabIndex        =   14
-         Top             =   180
+         Top             =   300
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -234,7 +234,7 @@ Begin VB.Form frmOrdenesPago
          Height          =   315
          Left            =   7830
          TabIndex        =   15
-         Top             =   555
+         Top             =   795
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -289,7 +289,7 @@ Begin VB.Form frmOrdenesPago
          Height          =   195
          Left            =   7320
          TabIndex        =   17
-         Top             =   615
+         Top             =   855
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -303,7 +303,7 @@ Begin VB.Form frmOrdenesPago
          Height          =   195
          Left            =   7305
          TabIndex        =   16
-         Top             =   225
+         Top             =   345
          Width           =   465
          _Version        =   786432
          _ExtentX        =   820
@@ -504,10 +504,11 @@ Private Sub llenarLista()
     Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
     Me.gridOrdenes.ItemCount = ordenes.count
 
-    If ordenes.count = 1 And LenB(Me.txtNro.text) > 0 Then
-        Set Orden = ordenes(1)
-        If Orden.estado <> EstadoOrdenPago_Anulada Then gridOrdenes_DblClick
-    End If
+' ESTAS LINEAS DECLARAN QUE CUANDO SE ENCUENTRE UN SOLO RESULTADO SE ABRA LA PANTALLA CON LA ODP ENCONTRADA.
+'    If ordenes.count = 1 And LenB(Me.txtNro.text) > 0 Then
+'        Set Orden = ordenes(1)
+'        If Orden.estado <> EstadoOrdenPago_Anulada Then gridOrdenes_DblClick
+'    End If
 End Sub
 Private Sub Form_Resize()
     On Error Resume Next
@@ -573,14 +574,14 @@ End Sub
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And ordenes.count > 0 Then
         Set Orden = ordenes.item(RowIndex)
-        Values(1) = Orden.id
+        Values(1) = Orden.Id
         Values(2) = Orden.FEcha
 
         Values(3) = Orden.moneda.NombreCorto
 
-        Values(4) = funciones.FormatearDecimales(Orden.StaticTotalOrigenes)
-        Values(5) = funciones.FormatearDecimales(Orden.StaticTotalRetenido)
-        Values(6) = funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)
+        Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
+        Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalRetenido)), "$", "")
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)), "$", "")
 
         If Orden.EsParaFacturaProveedor Then
             Set fac = Orden.FacturasProveedor.item(1)
@@ -611,9 +612,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         For i = ordenes.count To 1 Step -1
             Set tmp = EVENTO.Elemento
-            If ordenes(i).id = tmp.id Then
+            If ordenes(i).Id = tmp.Id Then
                 Set Orden = ordenes(i)
-                Orden.id = tmp.id
+                Orden.Id = tmp.Id
                 Orden.estado = tmp.estado
                 Me.gridOrdenes.RefreshRowIndex i
                 Exit For
@@ -624,10 +625,10 @@ End Function
 
 Private Sub mnuAnular_Click()
     If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
-        If DAOOrdenPago.Delete(Orden.id, True) Then
+        If DAOOrdenPago.Delete(Orden.Id, True) Then
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            ordenes.remove CStr(Orden.id)
+            ordenes.remove CStr(Orden.Id)
             Me.gridOrdenes.ItemCount = ordenes.count
             cmdBuscar_Click
         Else
@@ -657,7 +658,7 @@ Private Sub mnuHistorial_Click()
 Dim c As New Collection
 
 Dim F As New frmHistorico
-F.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
+F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
 F.Show
 End Sub
 
@@ -672,7 +673,7 @@ End Sub
 Private Sub Imprimir()
     With drpOrdenPago.Sections("seccion").Controls
 
-        .item("lblTitulo").caption = "SIGNOPLAST S.A. - Orden de Pago Nº " & Orden.id
+        .item("lblTitulo").caption = "SIGNOPLAST S.A. - Orden de Pago Nº " & Orden.Id
         .item("lblFecha").caption = Orden.FEcha
 
         If Orden.FacturasProveedor.count > 0 Then
@@ -682,9 +683,9 @@ Private Sub Imprimir()
         .item("lblAlicuota").caption = Orden.alicuota & "%"
 
         Dim cert As CertificadoRetencion
-        Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.id)
+        Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.Id)
         If IsSomething(cert) Then
-            .item("lblCertificadoIIBB").caption = cert.id
+            .item("lblCertificadoIIBB").caption = cert.Id
         Else
             .item("lblCertificadoIIBB").caption = "NO POSEE"
         End If
@@ -693,7 +694,7 @@ Private Sub Imprimir()
 
 
 
-        Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.id)
+        Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
         Dim F As clsFacturaProveedor
         Dim facs As New Collection
         For Each F In Orden.FacturasProveedor
@@ -779,7 +780,7 @@ End Sub
 
 Private Sub mnuVerCertificado_Click()
     Dim cr As Collection
-    Set cr = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.id)
+    Set cr = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.Id)
 
     If IsSomething(cr) Then
     
@@ -827,7 +828,7 @@ Private Sub PushButton1_Click()
             Dim totRet As Double
             totRet = 0
             For Each ret In colret
-                totRet = totRet + d.item(CStr(ret.id))
+                totRet = totRet + d.item(CStr(ret.Id))
             Next ret
             Orden.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
@@ -889,15 +890,15 @@ Private Sub PushButton2_Click()
             '        Q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
             '        If Not conectar.execute(Q) Then GoTo e
             If Not DAOOperacion.Save(opeCaja) Then GoTo E
-            opeCaja.id = conectar.UltimoId2
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.id & ", " & opeCaja.id & ")"
+            opeCaja.Id = conectar.UltimoId2
+            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
             If Not conectar.execute(q) Then GoTo E
-            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.id
+            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
             If Not conectar.execute(q) Then GoTo E
 
 
         End If
-        Debug.Print nop.id
+        Debug.Print nop.Id
     Next
 
 

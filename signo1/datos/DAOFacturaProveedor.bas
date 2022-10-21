@@ -27,7 +27,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     Dim fecha_liqui_max As Date
     fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
     If fc.FEcha <= fecha_liqui_max Then
-        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
+        MsgBox "La fecha del comprobante es invÃ¡lida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
         Exit Function
     End If
 
@@ -39,9 +39,9 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
         conectar.execute strsql
         fc.Id = conectar.UltimoId2
         A = DAOPercepcionesAplicadas.Save(fc)
-        b = DAOIvaAplicado.Save(fc)
+        B = DAOIvaAplicado.Save(fc)
         c = DAOCuentasFacturas.Save(fc)
-        If Not A Or Not b Or Not c Then
+        If Not A Or Not B Or Not c Then
             Err.Raise 100
         End If
 
@@ -55,20 +55,20 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     ' #195
     Dim fca As clsFacturaProveedor
     Set fca = DAOFacturaProveedor.FindById(fc.Id)
-    If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
+    If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fuÃ© guardada en otra sesiÃ³n, por favor actualice y vuelva a realizar la operaciÃ³n"
     
     
          
     
         strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.Id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.Id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.Id
         If Not conectar.execute(strsql) Then GoTo err1
-        b = DAOPercepcionesAplicadas.Save(fc)
+        B = DAOPercepcionesAplicadas.Save(fc)
         A = DAOIvaAplicado.Save(fc)
         c = DAOCuentasFacturas.Save(fc)
 
 
 
-        If Not A Or Not b Or Not c Then
+        If Not A Or Not B Or Not c Then
             Err.Raise 100
         End If
 
@@ -81,7 +81,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     Exit Function
 err1:
     Guardar = False
-    If Err.Number = 100 Then MsgBox "Se produjo algun error, no se  guadarán los cambios!"
+    If Err.Number = 100 Then MsgBox "Se produjo algun error, no se  guadarÃ¡n los cambios!"
     If Err.Number = 104 Then MsgBox Err.Description
 End Function
 Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
@@ -112,7 +112,7 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     
     
     
-    'remuevo task 209 en aprobación por rechazo de tarea.
+    'remuevo task 209 en aprobaciÃ³n por rechazo de tarea.
 '         '#209
 '      If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
 '   MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar.", vbCritical
@@ -123,7 +123,7 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
 '    Dim fecha_liqui_max As Date
 '    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
 '    If fc.FEcha <= fecha_liqui_max Then
-'        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
+'        MsgBox "La fecha del comprobante es invÃ¡lida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
 '        Exit Function
 '    End If
     
@@ -132,7 +132,7 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     cn.BeginTrans
         Dim fca As clsFacturaProveedor
     Set fca = DAOFacturaProveedor.FindById(fc.Id)
- If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
+ If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fuÃ© guardada en otra sesiÃ³n, por favor actualice y vuelva a realizar la operaciÃ³n"
 '
 '
 '
@@ -151,8 +151,8 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
             If Not DAOFacturaProveedor.PagarEnEfectivo(fc, fc.FEcha, False) Then GoTo err121
         End If
     Else
-      '  MsgBox "No puede cambiar el estado de la factura, ya fue aprobada!", vbInformation, "Información"
-        Err.Raise 4431, "Aprobar factura", "Error: La factura fué aprobada en otra sesión "
+      '  MsgBox "No puede cambiar el estado de la factura, ya fue aprobada!", vbInformation, "InformaciÃ³n"
+        Err.Raise 4431, "Aprobar factura", "Error: La factura fuÃ© aprobada en otra sesiÃ³n "
         
     End If
     cn.CommitTrans
@@ -249,8 +249,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       '  If IsSomething(rs.Fields("ordenes_pago")) Then
    
         F.OrdenesPagoId = rs!ordenes_pago
-            
-            
+  
 
       '  End If
         
@@ -290,6 +289,8 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
         If Not funciones.BuscarEnColeccion(col, CStr(F.Id)) Then col.Add F, CStr(F.Id)
         rs.MoveNext
     Wend
+    
+    
     Set FindAll = col
     
     
@@ -420,10 +421,10 @@ Public Function Delete(facid As Long) As Boolean
 
     Delete = True
     If facsOrphan.count > 0 Then
-        MsgBox "El comprobante " & facProv.NumeroFormateado & " fue eliminado así como también la Orden de Pago Nº " & op.Id & " a la que pertenecia." & vbNewLine & "Los siguientes comprobantes formaban parte de esa orden de pago y ahora se encuentran en estado [Pendiente] para ser incluidos en alguna otra orden de pago:" & vbNewLine & funciones.JoinCollectionValues(facsOrphan, vbNewLine, "NumeroFormateado"), vbInformation + vbOKOnly
+        MsgBox "El comprobante " & facProv.NumeroFormateado & " fue eliminado asÃ­ como tambiÃ©n la Orden de Pago NÂº " & op.Id & " a la que pertenecia." & vbNewLine & "Los siguientes comprobantes formaban parte de esa orden de pago y ahora se encuentran en estado [Pendiente] para ser incluidos en alguna otra orden de pago:" & vbNewLine & funciones.JoinCollectionValues(facsOrphan, vbNewLine, "NumeroFormateado"), vbInformation + vbOKOnly
     Else
         If IsSomething(op) Then
-            MsgBox "El comprobante " & facProv.NumeroFormateado & " fue eliminado así como también la Orden de Pago Nº " & op.Id & " a la que pertenecia.", vbInformation + vbOKOnly
+            MsgBox "El comprobante " & facProv.NumeroFormateado & " fue eliminado asÃ­ como tambiÃ©n la Orden de Pago NÂº " & op.Id & " a la que pertenecia.", vbInformation + vbOKOnly
         End If
     End If
 
@@ -519,6 +520,7 @@ End Function
 
 Public Function ExportarColeccion(col As Collection, Optional progressbar As Object) As Boolean
     On Error GoTo err1
+    
     ExportarColeccion = True
     
 
@@ -526,10 +528,17 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Dim Entregas As Collection
     Dim remitoDetalle As remitoDetalle
 
-    Dim xlWorkbook As New Excel.Workbook
-    Dim xlWorksheet As New Excel.Worksheet
-    Dim xlApplication As New Excel.Application
-
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+    
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
     
     Set xlWorkbook = xlApplication.Workbooks.Add
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
@@ -541,7 +550,7 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Dim offset As Long
     offset = 3
     xlWorksheet.Cells(offset, 1).value = "Cuit"
-    xlWorksheet.Cells(offset, 2).value = "Razón Social"
+    xlWorksheet.Cells(offset, 2).value = "Razon Social"
     xlWorksheet.Cells(offset, 3).value = "Comprobante"
     xlWorksheet.Cells(offset, 4).value = "Fecha"
     xlWorksheet.Cells(offset, 5).value = "Moneda"
@@ -557,9 +566,10 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     xlWorksheet.Cells(offset, 15).value = "Orden de Pago"
     xlWorksheet.Cells(offset, 16).value = "Tipo de Cambio"
     xlWorksheet.Cells(offset, 17).value = "Usuario"
+    xlWorksheet.Cells(offset, 18).value = "ID"
     
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Interior.Color = &HC0C0C0
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 18)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 18)).Interior.Color = &HC0C0C0
 
 
     '.Borders.LineStyle = xlContinuous
@@ -615,9 +625,10 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
         xlWorksheet.Cells(offset, 15).value = fac.OrdenPagoId
         xlWorksheet.Cells(offset, 16).value = fac.TipoCambio
         xlWorksheet.Cells(offset, 17).value = fac.UsuarioCarga.usuario
+        xlWorksheet.Cells(offset, 18).value = fac.Id
 
 
-        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 17)).Borders.LineStyle = xlContinuous
+        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 18)).Borders.LineStyle = xlContinuous
     Next
 
 

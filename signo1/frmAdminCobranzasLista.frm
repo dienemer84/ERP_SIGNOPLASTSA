@@ -425,6 +425,10 @@ Private Sub grilla_recibos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla_recibos, Column
 End Sub
 
+Private Sub grilla_recibos_DblClick()
+verRecibo_Click
+End Sub
+
 Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
 
@@ -492,8 +496,15 @@ Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 
 Private Sub grilla_recibos_SelectionChange()
+   
+    SeleccionarRecibo
+    
+End Sub
+
+Private Sub SeleccionarRecibo()
     On Error Resume Next
     Set recibo = recibos.item(Me.grilla_recibos.RowIndex(Me.grilla_recibos.row))
+
 End Sub
 
 Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
