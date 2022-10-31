@@ -515,7 +515,9 @@ Private Sub Guardar()
                 cliente.email = email
                 cliente.estado = EstadoCliente.activo
                 cliente.Fax = Fax
+                
                 cliente.FP = FP
+                
 
 
                 cliente.PasswordSistema = 0
@@ -579,6 +581,8 @@ Private Sub Guardar()
             vCliente.email = email
             vCliente.estado = EstadoCliente.activo
             vCliente.Fax = Fax
+            
+
             vCliente.FP = FP
 
 
