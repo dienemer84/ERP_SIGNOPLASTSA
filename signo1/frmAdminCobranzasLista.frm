@@ -426,7 +426,7 @@ Private Sub grilla_recibos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 Private Sub grilla_recibos_DblClick()
-verRecibo_Click
+    verRecibo_Click
 End Sub
 
 Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
@@ -614,6 +614,8 @@ Private Sub txtNroRecibo_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub verRecibo_Click()
+'31.10.2022- SE AGREGA ESTA LINEA PARA QUE PRIMERO EJECUTE LA FUNCION SELECCIONARRECIBO
+    SeleccionarRecibo
     On Error GoTo err1
     Dim F As New frmAdminCobranzasNuevoRecibo
     F.editar = False
@@ -624,3 +626,4 @@ err1:
 
 
 End Sub
+

@@ -477,7 +477,7 @@ Private Sub Guardar()
     telefono = UCase(Text1(4))
     Fax = UCase(Text1(5))
     email = UCase(Text1(6))
-    ivan = Me.CboIVA.ItemData(Me.CboIVA.ListIndex)
+    ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
     Cuit = Trim(Text1(7))
 
     FP = UCase(Me.txtFP)
@@ -507,7 +507,8 @@ Private Sub Guardar()
             
                 Dim cliente As New clsCliente
 
-                'Set cliente.TipoIVA = DAOTipoIva.GetById(ivan)
+'31.10.22- SE AGREGA ESTA LINEA PARA QUE TOME EL VALOR DEL IVA
+                Set cliente.TipoIVA = DAOTipoIva.GetById(ivan)
 
                 cliente.Cuit = Cuit
                 cliente.Domicilio = Domicilio
@@ -539,8 +540,6 @@ Private Sub Guardar()
                 End If
 
                If DAOCliente.FindAll(F).count > 0 Then
-                'MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbExclamation
-                'Err.Raise 400, "Cliente", "El CUIT ya se encuentra asignado o no tiene el formato correcto."
                 MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
                 
                 Else
@@ -549,20 +548,12 @@ Private Sub Guardar()
                  
                 If DAOCliente.crear(cliente) Then
                     MsgBox "Alta Exitosa!", vbInformation, "Información"
-                    
-                   
-                     
+                       
                     Set EVENTO = New clsEventoObserver
                     Set EVENTO.Elemento = cliente
                     EVENTO.EVENTO = agregar_
                     Set EVENTO.Originador = Me
                     Channel.Notificar EVENTO, Clientes_
-                    
-'                    For x = 0 To 10
-'                        Text1(x) = Empty
-'                        Me.txtFP = Empty
-'                        Me.txtDetalleFP = Empty
-'                    Next x
                     
                     Unload Me
                     
@@ -670,7 +661,7 @@ Private Sub Form_Load()
     For x = 0 To 10
         Text1(x) = Empty
     Next x
-    DAOTipoIva.LlenarCombo Me.CboIVA
+    DAOTipoIva.LlenarCombo Me.cboIVA
     Command1.caption = "Agregar"
     Me.caption = "Agregar Cliente..."
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
@@ -726,7 +717,7 @@ Private Sub llenarForm()
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
         txtFP = .FP
         Me.txtDetalleFP = .FormaPago
-        CboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, CboIVA)
+        cboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIVA)
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vCliente.idMonedaDefault, Me.cboMonedas)
         
     End With
