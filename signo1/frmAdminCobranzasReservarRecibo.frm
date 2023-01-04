@@ -4,34 +4,34 @@ Begin VB.Form frmAdminCobranzasReservarRecibo
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Reservar Recibo..."
-   ClientHeight    =   1725
+   ClientHeight    =   1950
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   6330
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   1725
+   ScaleHeight     =   1950
    ScaleWidth      =   6330
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   1620
+      DragMode        =   1  'Automatic
+      Height          =   1785
       Left            =   60
       TabIndex        =   0
       Top             =   30
       Width           =   6225
       _Version        =   786432
       _ExtentX        =   10980
-      _ExtentY        =   2857
+      _ExtentY        =   3149
       _StockProps     =   79
       Caption         =   "Datos"
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.PushButton cmdCrear 
          Height          =   375
-         Left            =   4710
+         Left            =   4680
          TabIndex        =   5
-         Top             =   1125
+         Top             =   1200
          Width           =   1335
          _Version        =   786432
          _ExtentX        =   2355
@@ -76,7 +76,7 @@ Begin VB.Form frmAdminCobranzasReservarRecibo
          Height          =   255
          Left            =   120
          TabIndex        =   3
-         Top             =   660
+         Top             =   690
          Width           =   735
       End
       Begin VB.Label Label1 

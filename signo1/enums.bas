@@ -182,6 +182,9 @@ Public Enum TipoComprobanteUsado
     Recibo_ = 5
     Retencion_ = 6
     SaldoInicial_ = 7
+    
+    ReciboAnticipo_ = 8
+    
 End Enum
 
 

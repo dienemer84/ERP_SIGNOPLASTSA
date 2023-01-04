@@ -110,7 +110,7 @@ Private contMinutosInformesAccidente As Long
 Dim statusBar As XtremeCommandBars.statusBar
 
 Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarControl)
-    Select Case Control.Id
+    Select Case Control.id
         Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO:
             Dim f32423 As New frmAltaEmpleados
             f32423.Show
@@ -396,6 +396,8 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__NUEVO_RECIBO:
 
             frmAdminCobranzasReservarRecibo.Show
+            
+            
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__DEUDORES:
 
@@ -450,45 +452,40 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_TOTAL:
-
             frmAdminResumenEstadoTotal.Show
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_PERIODO:
-
-
             frmAdminResumenesFacturacion.Show
+ 
+    '"Crear Recibo de Anticipo"
+        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO:
+            frmAdminCobranzasReservarReciboAnticipo.Show
 
-
+   '"Ver Recibos de Anticipo"
+       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS:
+            frmAdminCobranzasListaAnticipo.Show
+            
+    '"Ver Detalle de Cta. Cte."
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS:
-
             Dim frmcta As New frmCtaCte
             frmcta.Show
-
-
+            
+    '"Resúmen Saldos"
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS:
-
             Dim frm1144 As New frmResumenSaldosProv
             frm1144.TipoPersonaCta = TipoPersona.proveedor_
             frm1144.caption = "Resúmen de saldos de Proveedores"
-
             frm1144.Show
 
-
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS:
-
             '            frmAdminCCResumenSaldos.Show
             Dim frm11441 As New frmResumenSaldosProv
             frm11441.TipoPersonaCta = TipoPersona.cliente_
             frm1144.caption = "Resúmen de saldos de Clientes"
-
-
             frm1144.Show
 
 
-
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_VENTAS:
-
-
             Dim f3242 As New frmAdminSubdiariosVentasv2
             f3242.Show
 
@@ -750,11 +747,11 @@ Private Sub MDIForm_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Popup_ItemClick(ByVal item As Xtremesuitecontrols.IPopupControlItem)
-    If item.Id = 666 Then
+    If item.id = 666 Then
         Me.Popup.Close
     Else
         If MsgBox("Se va a aplicar una actualización." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
-            classP.actualizarSistema CLng(item.Id)
+            classP.actualizarSistema CLng(item.id)
         End If
     End If
 End Sub
@@ -774,7 +771,7 @@ Private Sub PrepararPopUp()
 
 
     Set item = Popup.AddItem(135, 10, 170, 45, "Cerrar")
-    item.Id = 666
+    item.id = 666
 
     Set item = Popup.AddItem(10, 35, 160, 80, vbNullString)
     item.caption = "Actualización para el sistema."
@@ -797,7 +794,7 @@ Private Sub Timer2_Timer()
         If classP.VerificarSiHayActualizacion(idNuevo) Then
             statusBar(5).text = "** ACTUALIZACION DISPONIBLE **"
             If Permisos.SistemaVerUpdate Then
-                Me.Popup.item(2).Id = idNuevo
+                Me.Popup.item(2).id = idNuevo
                 If Me.Popup.State = xtpPopupStateClosed Then
                     Me.Popup.Show
                 End If
@@ -808,17 +805,17 @@ Private Sub Timer2_Timer()
     End If
 End Sub
 
-Private Function AddButton(ribbonGroup As ribbonGroup, caption As String, Id As Long, Optional enabledCondition As Boolean = True, Optional iconId As Long = -1, Optional controlType As XTPControlType = xtpControlButton, Optional cmdBarCtrlParent As CommandBarControl = Nothing) As CommandBarControl
+Private Function AddButton(ribbonGroup As ribbonGroup, caption As String, id As Long, Optional enabledCondition As Boolean = True, Optional iconId As Long = -1, Optional controlType As XTPControlType = xtpControlButton, Optional cmdBarCtrlParent As CommandBarControl = Nothing) As CommandBarControl
     Dim cmdControl As CommandBarControl
 
     If IsSomething(cmdBarCtrlParent) Then
-        Set cmdControl = cmdBarCtrlParent.CommandBar.Controls.Add(controlType, Id, caption)
+        Set cmdControl = cmdBarCtrlParent.CommandBar.Controls.Add(controlType, id, caption)
     Else
-        Set cmdControl = ribbonGroup.Add(controlType, Id, caption)
+        Set cmdControl = ribbonGroup.Add(controlType, id, caption)
     End If
 
     If iconId = -1 Then
-        cmdControl.iconId = cmdControl.Id
+        cmdControl.iconId = cmdControl.id
     Else
         cmdControl.iconId = iconId
     End If
@@ -877,7 +874,7 @@ Private Sub CreateRibbonBar()
     'PANEL DE CONTROL--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(0, "Panel de Control")
-    ribbonTab.Id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
+    ribbonTab.id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
     'Set ribbonGroup = ribbonTab.Groups.AddGroup("Usuarios y Empleados", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS)
     'AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
     
@@ -908,7 +905,7 @@ Private Sub CreateRibbonBar()
   'RECURSOS HUMANOS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(1, "Recursos Humanos")
-    ribbonTab.Id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
+    ribbonTab.id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Usuarios y Empleados", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS)
     AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
@@ -919,7 +916,7 @@ Private Sub CreateRibbonBar()
     'VENTAS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(2, "Ventas")
-    ribbonTab.Id = ID_TAB.ID_TAB_VENTAS
+    ribbonTab.id = ID_TAB.ID_TAB_VENTAS
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Cotizaciones", ID_GROUP.ID_GROUP_VENTAS__COTIZACIONES)
     AddButton ribbonGroup, "Nueva", ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__NUEVA, Permisos.VentasCotizControl, ID_BUTTON.ID_BUTTON_ADD
@@ -938,7 +935,7 @@ Private Sub CreateRibbonBar()
     'COMPRAS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(3, "Compras")
-    ribbonTab.Id = ID_TAB.ID_TAB_COMPRAS
+    ribbonTab.id = ID_TAB.ID_TAB_COMPRAS
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Requerimientos", ID_GROUP.ID_GROUP_COMPRAS__REQUERIMIENTOS)
     AddButton ribbonGroup, "Nuevo", ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__NUEVO, Permisos.ComprasRequesControl
     AddButton ribbonGroup, "Listado", ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__LISTADO, Permisos.ComprasRequesConsultas, ID_BUTTON.ID_BUTTON_LISTADO
@@ -959,7 +956,7 @@ Private Sub CreateRibbonBar()
     'PLANEAMIENTO--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(4, "Planeamiento")
-    ribbonTab.Id = ID_TAB.ID_TAB_PLANEAMIENTO
+    ribbonTab.id = ID_TAB.ID_TAB_PLANEAMIENTO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Orden de Trabajo", ID_GROUP.ID_GROUP_PLANEAMIENTO__ORDEN_TRABAJO)
     AddButton ribbonGroup, "Nueva", ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__NUEVA, Permisos.PlanOTcontrol
     AddButton ribbonGroup, "Listado", ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO, Permisos.PlanOTconsultas, ID_BUTTON.ID_BUTTON_SEARCH
@@ -993,7 +990,7 @@ Private Sub CreateRibbonBar()
     'DESARROLLO--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(5, "Desarrollo")
-    ribbonTab.Id = ID_TAB.ID_TAB_DESARROLLO
+    ribbonTab.id = ID_TAB.ID_TAB_DESARROLLO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Piezas", ID_GROUP.ID_GROUP_DESARROLLO__CENTRO_DE_COSTOS)
     AddButton ribbonGroup, "Nuevo elemento", ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_ELEMENTO, Permisos.DesaControl
     AddButton ribbonGroup, "Nuevo conjunto", ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_CONJUNTO, Permisos.DesaControl
@@ -1025,10 +1022,11 @@ Private Sub CreateRibbonBar()
     'ADMINISTRACIÓN--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(6, "Administración")
-    ribbonTab.Id = ID_TAB.ID_TAB_ADMINISTRACION
+    ribbonTab.id = ID_TAB.ID_TAB_ADMINISTRACION
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Ventas", ID_GROUP.ID_GROUP_ADMINISTRACION__FACTURACION)
 
     AddButton ribbonGroup, "Remitos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS, Permisos.PlanRemitosConsultas
+    
     Set cmdBarCtrl = AddButton(ribbonGroup, "Nueva", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA, Permisos.AdminFacturaControl, , xtpControlButtonPopup)
     AddButton ribbonGroup, "Factura", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC, Permisos.AdminFacturaControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Nota de Débito", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ND, Permisos.AdminFacturaControl, , , cmdBarCtrl
@@ -1037,9 +1035,12 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Comprobantes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__FACTURAS, Permisos.AdminFacturaConsultas
 
     'Set ribbonGroup = ribbonTab.Groups.AddGroup("Ctas. Ctes. Clientes", ID_GROUP.ID_GROUP_ADMINISTRACION__CUENTAS_CORRIENTES)
-    AddButton ribbonGroup, "Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS, Permisos.AdminCtaCteControl
-    AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS, Permisos.AdminCtaCteControl
 
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Cta. Cte. Clientes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES, , , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Crear Recibo de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO, Permisos.AdminCtaCteControl, , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Recibos de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Detalle de Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
+    AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Informes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
     AddButton ribbonGroup, "Por cliente", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_CLIENTE, Permisos.AdminInformesVarios, , , cmdBarCtrl
@@ -1103,7 +1104,7 @@ Private Sub CreateRibbonBar()
     'CLIENTES PROVEEDORES--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(7, "Clientes / Proveedores")
-    ribbonTab.Id = ID_TAB.ID_TAB_CLIENTES_PROVEEDORES
+    ribbonTab.id = ID_TAB.ID_TAB_CLIENTES_PROVEEDORES
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Clientes", ID_GROUP.ID_GROUP_CLIENTES_PROVEEDORES__CLIENTES)
     AddButton ribbonGroup, "Nuevo", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO, Permisos.VentasClientesControl, ID_BUTTON.ID_BUTTON_NUEVA_PERSONA
     AddButton ribbonGroup, "Listado", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO, Permisos.VentasClientesConsultas
@@ -1122,7 +1123,7 @@ Private Sub CreateRibbonBar()
     'USUARIO--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(8, "Usuario")
-    ribbonTab.Id = ID_TAB.ID_TAB_USUARIO
+    ribbonTab.id = ID_TAB.ID_TAB_USUARIO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Herramientas", ID_GROUP.ID_GROUP_USUARIO__HERRAMIENTAS)
     AddButton ribbonGroup, "Tablero", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO
     AddButton ribbonGroup, "Agenda", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA
@@ -1142,7 +1143,7 @@ Private Sub tmrEventos_Timer()
     On Error GoTo err1
     If Me.TrayIcon.Tag = 0 Then
         Dim col As New Collection
-        Set col = DAOEvento.FindAllByUser(funciones.GetUserObj.Id, True)
+        Set col = DAOEvento.FindAllByUser(funciones.GetUserObj.id, True)
         If col.count > 0 Then
             Me.TrayIcon.Tag = 1
             If col.count = 1 Then
@@ -1173,7 +1174,7 @@ Private Sub tmrInformeAccidentes_Timer()
         If Me.WindowState <> vbMinimized Then
             If IsSomething(funciones.GetUserObj.Empleado) Then
                 Dim sin As Collection
-                Set sin = DAOSiniestroPersonal.FindAll("sp.id_accidente IS null AND sp.id_empleado_supervisor = " & funciones.GetUserObj.Empleado.Id)
+                Set sin = DAOSiniestroPersonal.FindAll("sp.id_accidente IS null AND sp.id_empleado_supervisor = " & funciones.GetUserObj.Empleado.id)
                 If sin.count > 0 Then
                     Dim nrosSiniestro As String
                     nrosSiniestro = funciones.JoinCollectionValues(sin, ", ", "NroSiniestro")

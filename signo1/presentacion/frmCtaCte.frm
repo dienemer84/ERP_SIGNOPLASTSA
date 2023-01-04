@@ -52,12 +52,12 @@ Begin VB.Form frmCtaCte
    End
    Begin XtremeSuiteControls.ComboBox cboClientes 
       Height          =   315
-      Left            =   780
+      Left            =   960
       TabIndex        =   5
-      Top             =   105
-      Width           =   7800
+      Top             =   75
+      Width           =   6840
       _Version        =   786432
-      _ExtentX        =   13758
+      _ExtentX        =   12065
       _ExtentY        =   556
       _StockProps     =   77
       BackColor       =   -2147483643
@@ -86,25 +86,25 @@ Begin VB.Form frmCtaCte
       IntProp7        =   0
       ColumnsCount    =   5
       Column(1)       =   "frmCtaCte.frx":000C
-      Column(2)       =   "frmCtaCte.frx":0184
-      Column(3)       =   "frmCtaCte.frx":02A8
-      Column(4)       =   "frmCtaCte.frx":0420
-      Column(5)       =   "frmCtaCte.frx":0598
+      Column(2)       =   "frmCtaCte.frx":01B0
+      Column(3)       =   "frmCtaCte.frx":0300
+      Column(4)       =   "frmCtaCte.frx":04A4
+      Column(5)       =   "frmCtaCte.frx":0648
       FormatStylesCount=   8
-      FormatStyle(1)  =   "frmCtaCte.frx":0710
-      FormatStyle(2)  =   "frmCtaCte.frx":0838
-      FormatStyle(3)  =   "frmCtaCte.frx":08E8
-      FormatStyle(4)  =   "frmCtaCte.frx":099C
-      FormatStyle(5)  =   "frmCtaCte.frx":0A74
-      FormatStyle(6)  =   "frmCtaCte.frx":0B2C
-      FormatStyle(7)  =   "frmCtaCte.frx":0C0C
-      FormatStyle(8)  =   "frmCtaCte.frx":0CC4
+      FormatStyle(1)  =   "frmCtaCte.frx":07EC
+      FormatStyle(2)  =   "frmCtaCte.frx":0914
+      FormatStyle(3)  =   "frmCtaCte.frx":09C4
+      FormatStyle(4)  =   "frmCtaCte.frx":0A78
+      FormatStyle(5)  =   "frmCtaCte.frx":0B50
+      FormatStyle(6)  =   "frmCtaCte.frx":0C08
+      FormatStyle(7)  =   "frmCtaCte.frx":0CE8
+      FormatStyle(8)  =   "frmCtaCte.frx":0DA0
       ImageCount      =   0
-      PrinterProperties=   "frmCtaCte.frx":0D58
+      PrinterProperties=   "frmCtaCte.frx":0E34
    End
    Begin XtremeSuiteControls.DateTimePicker dtpHasta 
       Height          =   315
-      Left            =   795
+      Left            =   960
       TabIndex        =   2
       Top             =   510
       Width           =   1470
@@ -117,51 +117,78 @@ Begin VB.Form frmCtaCte
    End
    Begin XtremeSuiteControls.PushButton cmdVerCtaCte 
       Default         =   -1  'True
-      Height          =   315
-      Left            =   8805
+      Height          =   420
+      Left            =   8400
       TabIndex        =   4
-      Top             =   75
-      Width           =   1080
+      Top             =   480
+      Width           =   1440
       _Version        =   786432
-      _ExtentX        =   1905
-      _ExtentY        =   556
+      _ExtentX        =   2540
+      _ExtentY        =   741
       _StockProps     =   79
       Caption         =   "Ver"
       UseVisualStyle  =   -1  'True
    End
    Begin VB.Label lblSaldo 
       Alignment       =   1  'Right Justify
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   285
-      Left            =   8400
+      Left            =   7440
       TabIndex        =   7
       Top             =   6360
-      Width           =   1425
+      Width           =   2385
    End
    Begin XtremeSuiteControls.Label Label6 
       Height          =   195
-      Left            =   135
+      Left            =   255
       TabIndex        =   3
       Top             =   570
-      Width           =   420
+      Width           =   540
       _Version        =   786432
-      _ExtentX        =   741
+      _ExtentX        =   953
       _ExtentY        =   344
       _StockProps     =   79
-      Caption         =   "Hasta"
+      Caption         =   "Hasta:"
       BackColor       =   12632256
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       AutoSize        =   -1  'True
    End
    Begin XtremeSuiteControls.Label Label1 
       Height          =   195
-      Left            =   225
+      Left            =   180
       TabIndex        =   0
-      Top             =   180
-      Width           =   495
+      Top             =   135
+      Width           =   630
       _Version        =   786432
-      _ExtentX        =   873
+      _ExtentX        =   1111
       _ExtentY        =   344
       _StockProps     =   79
-      Caption         =   "Cliente"
+      Caption         =   "Cliente:"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Alignment       =   1
       AutoSize        =   -1  'True
    End
@@ -198,9 +225,9 @@ Private Sub cmdVerCtaCte_Click()
         saldo = 0
         
         
-
+       
         If IsSomething(Detalles) Then
-            Me.lblSaldo = "Saldo: " & funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))
+            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))), "$", "")
         End If
         Set saldos = New Dictionary
         saldo = 0
@@ -244,6 +271,14 @@ Private Sub gridDetalles_DblClick()
         frm1.reciboId = deta.IdComprobante
         frm1.Show
     End If
+    
+    
+    If (deta.tipoComprobante = TipoComprobanteUsado.ReciboAnticipo_) Then
+        Dim frm2 As New frmAdminCobranzasNuevoReciboAnticipo
+        frm2.editar = False
+        frm2.reciboId = deta.IdComprobante
+        frm2.Show
+    End If
 
 
 
@@ -272,9 +307,12 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Set deta = Detalles.item(RowIndex)
         Values(1) = deta.FEcha
         Values(2) = deta.Comprobante
-        Values(3) = deta.Debe
-        Values(4) = deta.Haber
-
+        'Values(3) = deta.Debe
+        'Values(4) = deta.Haber
+        
+        Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(deta.Debe)), "$", "")
+        Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(deta.Haber)), "$", "")
+        
         '   If saldos.Exists(CStr(RowIndex)) Then
         '        Values(5) = saldos.item(CStr(RowIndex))
         '   Else
@@ -283,8 +321,9 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         '        Values(5) = funciones.RedondearDecimales(saldo)
         '  End If
 
-        Values(5) = deta.saldo
-
+        'Values(5) = deta.saldo
+        Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(deta.saldo)), "$", "")
+        
     End If
 End Sub
 
