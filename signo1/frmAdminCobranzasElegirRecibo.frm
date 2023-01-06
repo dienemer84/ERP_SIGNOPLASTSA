@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmAdminCobranzasElegirRecibo 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -33,6 +33,7 @@ Begin VB.Form frmAdminCobranzasElegirRecibo
       Width           =   4935
       _ExtentX        =   8705
       _ExtentY        =   6588
+      View            =   2
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
       _Version        =   393217

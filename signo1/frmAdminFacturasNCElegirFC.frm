@@ -188,7 +188,7 @@ End If
         x.SubItems(2) = fac.FechaEmision
         x.SubItems(3) = enums.EnumEstadoDocumentoContable(fac.estado)
 
-        x.Tag = fac.Id
+        x.Tag = fac.id
     Next fac
 End Sub
 

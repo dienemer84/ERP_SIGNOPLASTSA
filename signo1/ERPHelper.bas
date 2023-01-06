@@ -171,14 +171,14 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     req.CbteHasta = F.numero
     
     req.CbteFch = Format(F.FechaEmision, "yyyymmdd")
-    req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total, 2)
+    req.ImpTotal = funciones.FormatearDecimales(F.totalEstatico.Total, 2)
     'req.MonCotiz = F.CambioAPatron
 
     'req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total * F.CambioAPatron, 2)
     req.ImpTotConc = "0"    'no gavado+excento + gravado + iva + tributo
-req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
+    req.ImpNeto = funciones.FormatearDecimales(F.totalEstatico.TotalNetoGravado, 2)
     'req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
-    req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento, 2)
+    req.ImpOpEx = funciones.FormatearDecimales(F.totalEstatico.TotalExento, 2)
     'req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento * F.CambioAPatron, 2)
     
     'Reestablecida el 17.07.20 -dnemer
@@ -192,15 +192,15 @@ req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
      req.FchServHasta = Format(F.FechaVtoHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
     End If
     
-req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
+    req.ImpTrib = funciones.FormatearDecimales(F.totalEstatico.TotalPercepcionesIB, 2)
     'req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
-req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
-'    req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
+    req.ImpIVA = funciones.FormatearDecimales(F.totalEstatico.TotalIVADiscrimandoONo, 2)
+    'req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
 
     req.MonId = F.moneda.id
     'req.MonCotiz = F.Moneda.Cambio
-req.MonCotiz = F.CambioAPatron
+    req.MonCotiz = F.CambioAPatron
 
 
 
@@ -300,7 +300,7 @@ End If
     'trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)    '"400" 'revisar con tulio,2)
     
     'bug #4
-    trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)    '
+    trib.BaseImp = funciones.FormatearDecimales(F.totalEstatico.TotalNetoGravado, 2)    '
     trib.Desc = P.Percepcion
     trib.idTributoCambiar = "1"
     
@@ -308,8 +308,8 @@ End If
     'trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
 'bug #4
-    trib.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
-    If F.TotalEstatico.TotalPercepcionesIB > 0 Then
+    trib.importe = funciones.FormatearDecimales(F.totalEstatico.TotalPercepcionesIB, 2)
+    If F.totalEstatico.TotalPercepcionesIB > 0 Then
         req.Tributos.Add trib
     Else
         Set req.Tributos = Nothing
@@ -318,14 +318,14 @@ End If
 
 
     Dim Iva As New AlicIva
-    Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
+    Iva.BaseImp = funciones.FormatearDecimales(F.totalEstatico.TotalNetoGravado, 2)
     'Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
     Iva.idAlicIvaCambiar = F.AlicuotaAplicada
     
-    Iva.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
+    Iva.importe = funciones.FormatearDecimales(F.totalEstatico.TotalIVADiscrimandoONo, 2)
     'Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
 
-    If F.TotalEstatico.TotalIVADiscrimandoONo > 0 Then
+    If F.totalEstatico.TotalIVADiscrimandoONo > 0 Then
         req.Iva.Add Iva
     Else
         Set req.Iva = Nothing
@@ -408,11 +408,6 @@ End If
         
     End If
     
-
-    'Dim op As New Opcional
-    'op.Id = "1"
-    'op.Valor = "asf"
-    'req.Opcionales.Add op
     Dim FeDetReq As New FeDetReq
 
     Set FeDetReq.FECAEDetRequest = req

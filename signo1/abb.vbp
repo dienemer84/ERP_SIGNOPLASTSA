@@ -548,6 +548,7 @@ Module=DAOReciboAnticipo; ClassModule\DAOReciboAnticipo.bas
 Form=Forms\frmAdminCobranzasNuevoReciboAnticipo.frm
 Form=Forms\frmAdminCobranzasReservarReciboAnticipo.frm
 Form=Forms\frmAdminCobranzasListaAnticipo.frm
+Form=Forms\frmAdminCobranzasRemitosAnticipo.frm
 ResFile32="Themes.res"
 IconForm="frmPrincipal"
 Startup="frmPrincipal"

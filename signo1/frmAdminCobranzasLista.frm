@@ -80,30 +80,32 @@ Begin VB.Form frmAdminCobranzasLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   8
+      ColumnsCount    =   10
       Column(1)       =   "frmAdminCobranzasLista.frx":0640
-      Column(2)       =   "frmAdminCobranzasLista.frx":07A0
-      Column(3)       =   "frmAdminCobranzasLista.frx":08A0
-      Column(4)       =   "frmAdminCobranzasLista.frx":0994
-      Column(5)       =   "frmAdminCobranzasLista.frx":0AB4
-      Column(6)       =   "frmAdminCobranzasLista.frx":0BA8
-      Column(7)       =   "frmAdminCobranzasLista.frx":0D08
-      Column(8)       =   "frmAdminCobranzasLista.frx":0DFC
+      Column(2)       =   "frmAdminCobranzasLista.frx":07CC
+      Column(3)       =   "frmAdminCobranzasLista.frx":0920
+      Column(4)       =   "frmAdminCobranzasLista.frx":0A40
+      Column(5)       =   "frmAdminCobranzasLista.frx":0B8C
+      Column(6)       =   "frmAdminCobranzasLista.frx":0CD4
+      Column(7)       =   "frmAdminCobranzasLista.frx":0E48
+      Column(8)       =   "frmAdminCobranzasLista.frx":0FA0
+      Column(9)       =   "frmAdminCobranzasLista.frx":10F8
+      Column(10)      =   "frmAdminCobranzasLista.frx":1240
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":0F50
-      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":1088
-      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":1138
-      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":11EC
-      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":12C4
-      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":137C
-      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":145C
-      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1508
-      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":15B8
-      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1698
+      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":13C0
+      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":14F8
+      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":15A8
+      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":165C
+      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1734
+      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":17EC
+      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":18CC
+      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1978
+      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1A28
+      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1B08
       ImageCount      =   2
-      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1744
-      ImagePicture(2) =   "frmAdminCobranzasLista.frx":1A5E
-      PrinterProperties=   "frmAdminCobranzasLista.frx":1D78
+      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1BB4
+      ImagePicture(2) =   "frmAdminCobranzasLista.frx":1ECE
+      PrinterProperties=   "frmAdminCobranzasLista.frx":21E8
    End
    Begin XtremeSuiteControls.PushButton cmdImprimir 
       Height          =   345
@@ -267,6 +269,9 @@ Begin VB.Form frmAdminCobranzasLista
       Begin VB.Menu aprobarRecibo 
          Caption         =   "Aprobar..."
       End
+      Begin VB.Menu mnuAplicarComprobante 
+         Caption         =   "Aplicar Cbtes..."
+      End
       Begin VB.Menu mnuAnular 
          Caption         =   "Anular..."
       End
@@ -303,7 +308,7 @@ Private Sub aprobarRecibo_Click()
     Dim idRecibo As Long
     If MsgBox("¿Está seguro de aprobar este recibo?", vbYesNo, "Confirmación") = vbYes Then
 
-        Set recibo = DAORecibo.FindById(recibo.Id, True, True, True, True, True)
+        Set recibo = DAORecibo.FindById(recibo.id, True, True, True, True, True)
 
         If DAORecibo.aprobar(recibo) Then
             MsgBox "Aprobación exitosa!", vbInformation, "Información"
@@ -349,7 +354,7 @@ Private Sub Command1_Click()
 
     For Each rc In rs
         If rc.estado = EstadoRecibo.Aprobado Then
-            rc.TotalEstatico.TotalReciboEstatico = rc.Total
+            rc.totalEstatico.TotalReciboEstatico = rc.Total
         End If
     Next
 
@@ -364,7 +369,7 @@ Private Sub editarRecibo_Click()
 
     Dim F As New frmAdminCobranzasNuevoRecibo
     F.editar = True
-    F.reciboId = recibo.Id
+    F.reciboId = recibo.id
     F.Show
 End Sub
 
@@ -434,14 +439,14 @@ Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As I
 
     recibo = recibos.item(RowIndex)
 
-    If ColIndex = 6 And tmpArchivos.item(recibo.Id) > 0 Then
+    If ColIndex = 6 And tmpArchivos.item(recibo.id) > 0 Then
         IconIndex = 1
     End If
 End Sub
 
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        Me.nro.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
+        Me.nro.caption = "[ Nro. " & Format(recibo.id, "0000") & " ]"
         If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True
             Me.imprimirRecibo.Enabled = False
@@ -478,17 +483,17 @@ End Sub
 
 Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex = 0 Then Exit Sub
-    If RowBuffer.value(7) = "Aprobado" Then
-        RowBuffer.CellStyle(7) = "Verde"
-    ElseIf RowBuffer.value(7) = "Anulado" Then
+    If RowBuffer.value(9) = "Aprobado" Then
+        RowBuffer.CellStyle(9) = "Verde"
+    ElseIf RowBuffer.value(9) = "Anulado" Then
 
-        RowBuffer.CellStyle(7) = "Anulado"
+        RowBuffer.CellStyle(9) = "Anulado"
     Else
-        RowBuffer.CellStyle(7) = "Rojo"
+        RowBuffer.CellStyle(9) = "Rojo"
     End If
 
-    If RowBuffer.value(8) > 0 Then
-        RowBuffer.CellStyle(8) = "HayArchivosIncidencias"
+    If RowBuffer.value(10) > 0 Then
+        RowBuffer.CellStyle(10) = "HayArchivosIncidencias"
     End If
 
 
@@ -509,23 +514,30 @@ End Sub
 
 Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set recibo = recibos.item(RowIndex)
-    Values(1) = recibo.Id
+    Values(1) = recibo.id
     Values(2) = Format(recibo.FEcha, "yyyy/mm/dd", vbSunday)
-    
-    
-    
+          
     Values(3) = recibo.cliente.razon
-    Values(4) = recibo.FechaCreacion
+    Values(4) = recibo.fechaCreacion
     Values(5) = recibo.moneda.NombreCorto
-    Values(6) = funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico + recibo.TotalRetenciones)
-    Values(7) = enums.EnumEstadoRecibo(recibo.estado)
-    Values(8) = IIf(IsEmpty(tmpArchivos(recibo.Id)), 0, tmpArchivos(recibo.Id))
+    
+    'VALORES POR PAGAR
+    Values(6) = funciones.FormatearDecimales(recibo.totalEstatico.TotalReciboEstatico)
+    
+    'IMPORTE TOTAL PAGADO
+    Values(7) = funciones.FormatearDecimales(recibo.totalEstatico.TotalRecibidoEstatico)
+    
+    'IMPORTE SALDO TOTAL A CUENTA
+    Values(8) = funciones.RedondearDecimales(recibo.ACuentaDisponible)
+    
+    Values(9) = enums.EnumEstadoRecibo(recibo.estado)
+    Values(10) = IIf(IsEmpty(tmpArchivos(recibo.id)), 0, tmpArchivos(recibo.id))
 End Sub
 
 
 Private Sub imprimirRecibo_Click()
     If MsgBox("¿Desea imprimir el recibo?", vbYesNo, "Confirmación") = vbYes Then
-        DAORecibo.Imprimir recibo.Id
+        DAORecibo.Imprimir recibo.id
 
     End If
 
@@ -546,19 +558,19 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Dim i As Long
         For i = recibos.count To 1 Step -1
 
-            If recibos(i).Id = tmp.Id Then
+            If recibos(i).id = tmp.id Then
 
                 recibos.remove i
                 If recibos.count > 0 Then
                     If i = 1 Then    'ver esto cuand oes un solo item
-                        recibos.Add tmp, CStr(tmp.Id), 1
+                        recibos.Add tmp, CStr(tmp.id), 1
                     ElseIf (i - 1) = recibos.count Then
-                        recibos.Add tmp, CStr(tmp.Id), , i - 1
+                        recibos.Add tmp, CStr(tmp.id), , i - 1
                     Else
-                        recibos.Add tmp, CStr(tmp.Id), i
+                        recibos.Add tmp, CStr(tmp.id), i
                     End If
                 Else
-                    recibos.Add tmp, CStr(tmp.Id)
+                    recibos.Add tmp, CStr(tmp.id)
                 End If
 
 
@@ -579,9 +591,9 @@ End Function
 Private Sub mnuAdquirir_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_Recibos, recibo.Id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_Recibos, recibo.id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Recibos)
-        Me.grilla_recibos.RefreshRowIndex (recibo.Id)
+        Me.grilla_recibos.RefreshRowIndex (recibo.id)
     End If
 End Sub
 
@@ -589,7 +601,7 @@ Private Sub mnuAnular_Click()
     On Error GoTo err1
 
 
-    If MsgBox("¿Desera anular el recibo número " & recibo.Id & " ?" & Chr(10) & "Esta acción no tiene rollback", vbYesNo, "Confirmación") = vbYes Then
+    If MsgBox("¿Desera anular el recibo número " & recibo.id & " ?" & Chr(10) & "Esta acción no tiene rollback", vbYesNo, "Confirmación") = vbYes Then
         DAORecibo.Anular recibo
         MsgBox "Recibo anulado con éxito!", vbInformation, "Información"
     End If
@@ -599,11 +611,18 @@ err1:
     MsgBox Err.Description
 End Sub
 
+Private Sub mnuAplicarComprobante_Click()
+    Dim F As New frmAdminCobranzasNuevoRecibo
+    F.editar = True
+    F.reciboId = recibo.id
+    F.Show
+End Sub
+
 Private Sub mnuArchivos_Click()
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OA_Recibos
-    frmarchi1.ObjetoId = recibo.Id
-    frmarchi1.caption = "Recibo Nº " & recibo.Id
+    frmarchi1.ObjetoId = recibo.id
+    frmarchi1.caption = "Recibo Nº " & recibo.id
     frmarchi1.Show
 End Sub
 
@@ -619,7 +638,7 @@ Private Sub verRecibo_Click()
     On Error GoTo err1
     Dim F As New frmAdminCobranzasNuevoRecibo
     F.editar = False
-    F.reciboId = recibo.Id
+    F.reciboId = recibo.id
     F.Show
     Exit Sub
 err1:
