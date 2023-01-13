@@ -274,7 +274,7 @@ Private Sub Form_Load()
     base.LlenarListaSectores -1
     elegirMarcado
     
-        Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
 
 End Sub
 

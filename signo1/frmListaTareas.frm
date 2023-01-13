@@ -59,8 +59,8 @@ Private Sub CargarTareas()
 
     For Each m_tarea In m_tareas
         Set rec = Me.ReportControl.Records.Add
-        rec.Tag = m_tarea.Id
-        rec.AddItem m_tarea.Id
+        rec.Tag = m_tarea.id
+        rec.AddItem m_tarea.id
         rec.AddItem m_tarea.Sector.Sector
 
         If m_tarea.CantPorProc = 0 Then
@@ -118,7 +118,7 @@ Private Sub Form_Load()
     Me.ReportControl.AutoColumnSizing = True
     CargarTareas
 
-    Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
     
 
 End Sub

@@ -213,7 +213,7 @@ Begin VB.Form frmVentasPedidoNuevo
       _ExtentX        =   2355
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   58458113
+      Format          =   16515073
       CurrentDate     =   38861
    End
    Begin GridEX20.GridEX grilla 
@@ -442,7 +442,7 @@ Private Sub BuscarPresu()
                 Set presupuesto.DetallePresupuesto = DAOPresupuestosDetalle.GetAllByPresupuesto(presupuesto)
                 llenarLista
                 Me.lblMoneda = presupuesto.moneda.NombreCorto
-                Me.cboClientes.ListIndex = funciones.PosIndexCbo(presupuesto.cliente.Id, cboClientes)
+                Me.cboClientes.ListIndex = funciones.PosIndexCbo(presupuesto.cliente.id, cboClientes)
                 Me.txtDescripcion = presupuesto.detalle
                 Me.txtEntregaDias = presupuesto.FechaEntrega & " días"
                 Me.txtEntrega = Now + presupuesto.FechaEntrega
@@ -483,7 +483,7 @@ Private Sub Form_Load()
     MostrarOTPendientes Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
     Me.cboListaOt.ListIndex = 0
     
-        Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
         
         
 End Sub
@@ -498,8 +498,8 @@ Private Sub MostrarOTPendientes(idCliente)
     Me.cboListaOt.AddItem "Nueva OT"
     Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = -1
     For Each Ot In col
-        Me.cboListaOt.AddItem Ot.Id & " - " & Ot.descripcion
-        Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = Ot.Id
+        Me.cboListaOt.AddItem Ot.id & " - " & Ot.descripcion
+        Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = Ot.id
     Next
     Me.cboListaOt.ListIndex = 0
 End Sub

@@ -153,7 +153,7 @@ Private Sub Form_Load()
     FormHelper.Customize Me
     Me.LlenarListaAgenda Trim(Me.txtFiltro)
     
-        Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
         
         
 End Sub
@@ -199,13 +199,13 @@ Public Function LlenarListaAgenda(Optional filtro As String = Empty)
     Set rs = conectar.RSFactory(strsql)
 
     While Not rs.EOF
-        Set x = Me.lstAgenda.ListItems.Add(, , Format(rs!Id, "0000"))
+        Set x = Me.lstAgenda.ListItems.Add(, , Format(rs!id, "0000"))
         x.SubItems(1) = rs!empresa
         x.SubItems(2) = rs!direccion
         x.SubItems(3) = rs!localidad
         x.SubItems(4) = rs!email
 
-        x.Tag = rs!Id
+        x.Tag = rs!id
         rs.MoveNext
     Wend
 

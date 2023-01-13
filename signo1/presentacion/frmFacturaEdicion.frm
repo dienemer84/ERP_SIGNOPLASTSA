@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   58720257
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   58720257
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59244545
+         Format          =   58720257
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1539,8 +1539,8 @@ On Error GoTo err1
         If Me.cboOpcional27.ListIndex < 0 Then Err.Raise "Para FCE es obligatorio informar opcional 27 con valor SCA ó ADC"
             Factura.Opcional27 = Me.cboOpcional27.ItemData(Me.cboOpcional27.ListIndex)
         Else
-       
             Factura.Opcional27 = 0
+            
         End If
         
         ASociarConcepto
@@ -1555,7 +1555,7 @@ On Error GoTo err1
         
 Exit Sub
 err1:
-       MsgBox "Ocurrió un error al guardar. Controle datos y que el Nº no esté ya asignado. o Bien " & Chr(10) & Err.Description, vbCritical + vbOKOnly
+       MsgBox "Ocurrió un error al guardar." & Chr(10) & "Controle: " & Chr(10) & "- Que todos los datos estén cargados." & Chr(10) & "- Que el Nº de cbte. no esté ya asignado." & Chr(10) & "- Que se haya seleccionado OPCIÓN DE TRANSFERENCIA." & Chr(10) & "ERROR: " & Err.Description, vbCritical + vbOKOnly
 End Sub
 
 Private Sub btnItemRemito_Click()
@@ -2107,7 +2107,8 @@ Private Sub Form_Load()
         
   
         '#218 consultar con karin cual quiere dejar por default
-              Me.cboOpcional27.ListIndex = 0
+              Me.cboOpcional27.ListIndex = -1
+              
        
         If Me.cboMoneda.ListIndex <> -1 Then
             Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
@@ -2275,7 +2276,7 @@ Private Sub Form_Load()
     
     ValidarEsCredito
     
-    'Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
     
     'Me.cboCliente.ListIndex = "336"
     

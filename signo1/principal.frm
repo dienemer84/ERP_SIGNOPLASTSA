@@ -302,7 +302,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
         Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_CONJUNTO:
 
-            frmDefinirConjunto.accion = 0
+            frmDefinirConjunto.Accion = 0
             frmDefinirConjunto.Show
 
         Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__LISTADO:
@@ -457,13 +457,13 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_PERIODO:
             frmAdminResumenesFacturacion.Show
  
-    '"Crear Recibo de Anticipo"
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO:
-            frmAdminCobranzasReservarReciboAnticipo.Show
-
-   '"Ver Recibos de Anticipo"
-       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS:
-            frmAdminCobranzasListaAnticipo.Show
+'    '"Crear Recibo de Anticipo"
+'        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO:
+'            frmAdminCobranzasReservarReciboAnticipo.Show
+'
+'   '"Ver Recibos de Anticipo"
+'       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS:
+'            frmAdminCobranzasListaAnticipo.Show
             
     '"Ver Detalle de Cta. Cte."
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS:
@@ -1037,8 +1037,8 @@ Private Sub CreateRibbonBar()
     'Set ribbonGroup = ribbonTab.Groups.AddGroup("Ctas. Ctes. Clientes", ID_GROUP.ID_GROUP_ADMINISTRACION__CUENTAS_CORRIENTES)
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Cta. Cte. Clientes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES, , , xtpControlButtonPopup)
-    AddButton ribbonGroup, "Crear Recibo de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO, Permisos.AdminCtaCteControl, , , cmdBarCtrl
-    AddButton ribbonGroup, "Ver Recibos de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
+    'AddButton ribbonGroup, "Crear Recibo de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO, Permisos.AdminCtaCteControl, , , cmdBarCtrl
+    'AddButton ribbonGroup, "Ver Recibos de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Detalle de Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
 

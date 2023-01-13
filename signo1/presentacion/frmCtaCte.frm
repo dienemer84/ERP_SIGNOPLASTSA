@@ -273,16 +273,6 @@ Private Sub gridDetalles_DblClick()
     End If
     
     
-    If (deta.tipoComprobante = TipoComprobanteUsado.ReciboAnticipo_) Then
-        Dim frm2 As New frmAdminCobranzasNuevoReciboAnticipo
-        frm2.editar = False
-        frm2.reciboId = deta.IdComprobante
-        frm2.Show
-    End If
-
-
-
-
 End Sub
 
 Private Sub gridDetalles_KeyDown(KeyCode As Integer, Shift As Integer)

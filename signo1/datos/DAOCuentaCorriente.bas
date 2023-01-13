@@ -742,38 +742,6 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
         Next ret
     Next rec
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    Dim recibosAnticipo As Collection
-
-    q = "rec.idCliente = " & id_cliente & " AND rec.estado = " & EstadoRecibo.Aprobado
-
-    If LenB(fecha_hasta) Then
-        q = q & "  AND rec.fecha<=" & conectar.Escape(fecha_hasta)
-    End If
-    
-    Set recibos = DAOReciboAnticipo.FindAll(q)
-   
-    For Each rec In recibos
-        
-        Set detalle = New DTODetalleCuentaCorriente
-
-        detalle.Comprobante = "RC-ANTICIPO Nro: " & rec.id
-
-        If rec.aCuenta > 0 Then detalle.Haber = rec.aCuenta
-
-        detalle.FEcha = rec.FEcha
-        'detalle.tipoComprobante = Recibo_
-        detalle.tipoComprobante = ReciboAnticipo_
-        detalle.IdComprobante = rec.id
-        Detalles.Add detalle
-
-    Next rec
-
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
 
     If sortCollection And Detalles.count > 0 Then
 

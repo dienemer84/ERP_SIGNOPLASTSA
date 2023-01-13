@@ -133,7 +133,8 @@ Private Sub Form_Load()
     aRow = Me.grilla_material.RowIndex(Me.grilla_material.row)
     Set historicos = Materiales.item(aRow).historico
     
-        Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
+        
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -147,7 +148,7 @@ End Sub
 
 Private Sub grilla_material_SelectionChange()
     Me.GridEX1.ItemCount = 0
-    Set historicos = DAOMaterialHistorico.getAllByMaterial(tmpMaterial.Id)
+    Set historicos = DAOMaterialHistorico.getAllByMaterial(tmpMaterial.id)
     Me.GridEX1.ItemCount = historicos.count
 End Sub
 

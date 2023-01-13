@@ -393,7 +393,7 @@ Private Sub Ac_Click()
             Dim detalle_pedido As New DetalleOrdenTrabajo
 
             Set detalle_pedido = DAODetalleOrdenTrabajo.FindById(iditem)
-            claseP.ejecutarComando "update stock set ya_fabricado=" & conectar.Escape(True) & " where id= " & detalle_pedido.Pieza.Id
+            claseP.ejecutarComando "update stock set ya_fabricado=" & conectar.Escape(True) & " where id= " & detalle_pedido.Pieza.id
 
             DAODetalleOrdenTrabajo.SaveCantidad iditem, Cant, CantidadFabricada_, 0, 9, 0, 0, 0
 
@@ -531,7 +531,7 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     
-        Me.caption = caption & " (" & Name & ")"
+        'Me.caption = caption & " (" & Name & ")"
         
 End Sub
 
@@ -568,7 +568,7 @@ Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
     conta = 0
     While Not rs.EOF
         conta = conta + 1
-        Set x = lst.ListItems.Add(, , Format(rs!Id, "000"))    'si no anda, dejar id solo
+        Set x = lst.ListItems.Add(, , Format(rs!id, "000"))    'si no anda, dejar id solo
         x.SubItems(1) = rs!item
         If (rs!Nota) = Empty Then
             x.SubItems(2) = rs!detalle
@@ -596,7 +596,7 @@ Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
         End If
 
         x.SubItems(10) = prom_fab
-        x.Tag = Format(rs!Id, "0000")
+        x.Tag = Format(rs!id, "0000")
         If IsNumeric(pos) Then
             If x = pos Then
                 x.Selected = True

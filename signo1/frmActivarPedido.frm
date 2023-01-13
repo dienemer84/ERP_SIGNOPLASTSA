@@ -381,8 +381,8 @@ Private sectores As New Collection
 Private sectoresInvolucrados As New Collection
 Public Property Set Pedido(T As OrdenTrabajo)
     Set vpedido = T
-    Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
-    idpedido = T.Id
+    Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.id)
+    idpedido = T.id
     Me.caption = "Activar OT Nº " & T.IdFormateado
 End Property
 
@@ -466,7 +466,7 @@ Private Sub cmdRutas2_Click()
 
         If rec.item(1).Checked Then
             If tmpDetalle.Pieza.EsConjunto Then
-                DAOPieza.informePiezaArbol tmpDetalle.Id, 0    'rec.Item(2).value
+                DAOPieza.informePiezaArbol tmpDetalle.id, 0    'rec.Item(2).value
             End If
 
             DAOOrdenTrabajo.ImprimirRuta vpedido, tmpDetalle
@@ -573,15 +573,15 @@ Private Sub ImprimirHojaTarea(ptpId As Long, P As Pieza, d As DetalleOrdenTrabaj
     informe_tareas.Sections("Sección4").Controls("lblReferenciaOT").caption = vpedido.descripcion
     informe_tareas.Sections("Sección4").Controls("lblReferencia").caption = P.nombre
     informe_tareas.Sections("Sección4").Controls("lblfechaEntrega").caption = d.FechaEntrega
-    informe_tareas.Sections("Sección4").Controls("barCode").caption = "*" & Format(ptp.Id, "00000000") & "*"
+    informe_tareas.Sections("Sección4").Controls("barCode").caption = "*" & Format(ptp.id, "00000000") & "*"
     informe_tareas.Sections("Sección4").Controls("lblCliente").caption = vpedido.cliente.razon
 
-    informe_tareas.Sections("Sección2").Controls("Etiqueta4").caption = "Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea & " (Sector: " & ptp.Tarea.Sector.Sector & ")"
+    informe_tareas.Sections("Sección2").Controls("Etiqueta4").caption = "Tarea: " & ptp.Tarea.id & " - " & ptp.Tarea.Tarea & " (Sector: " & ptp.Tarea.Sector.Sector & ")"
 
 
     Dim empleadosHabilitados As String
     Dim emp As clsEmpleado
-    For Each emp In DAOEmpleados.GetAllByTareaId(ptp.Tarea.Id)
+    For Each emp In DAOEmpleados.GetAllByTareaId(ptp.Tarea.id)
         empleadosHabilitados = empleadosHabilitados & truncar(emp.LegajoAndNombreCompleto, 20) & vbNewLine
     Next
     informe_tareas.Sections("Sección1").Controls("Etiqueta8").caption = empleadosHabilitados
@@ -669,7 +669,7 @@ Private Sub TildarPorSectorId(rec As ReportRecord, sector_id As Long)
     If rec.Tag < 0 Then    'es planeamiento tiempo proceso
         Set ptp = DAOTiemposProceso.FindById(rec.Tag * -1)
         If IsSomething(ptp) Then
-            rec.item(1).Checked = (ptp.Tarea.Sector.Id = sector_id)
+            rec.item(1).Checked = (ptp.Tarea.Sector.id = sector_id)
         End If
     Else    'es pieza
         rec.item(1).Checked = True
@@ -688,8 +688,8 @@ Private Sub ExplorarSectorId(rec As ReportRecord, ByRef sectores_id As Dictionar
         If rec2.Tag < 0 Then    'es planeamiento tiempo proceso
             Set ptp = DAOTiemposProceso.FindById(rec2.Tag * -1)
             If IsSomething(ptp) Then
-                If Not sectores_id.Exists(CStr(ptp.Tarea.Sector.Id)) Then
-                    sectores_id.Add CStr(ptp.Tarea.Sector.Id), ptp.Tarea.Sector.Id
+                If Not sectores_id.Exists(CStr(ptp.Tarea.Sector.id)) Then
+                    sectores_id.Add CStr(ptp.Tarea.Sector.id), ptp.Tarea.Sector.id
                 End If
             End If
         End If
@@ -728,9 +728,9 @@ Private Sub Command11_Click()
 
         If rec.item(1).Checked Then
             For l = 1 To tmpDetalle.CantidadPedida
-                Set rs = conectar.RSFactory("Select p.descripcion,dp.idPedido,c.razon,dp.item,s.detalle from detalles_pedidos dp inner join pedidos p on dp.idPedido=p.id inner join stock s on dp.idPieza=s.id inner join clientes c on p.idCliente=c.id  where dp.id=" & tmpDetalle.Id)
+                Set rs = conectar.RSFactory("Select p.descripcion,dp.idPedido,c.razon,dp.item,s.detalle from detalles_pedidos dp inner join pedidos p on dp.idPedido=p.id inner join stock s on dp.idPieza=s.id inner join clientes c on p.idCliente=c.id  where dp.id=" & tmpDetalle.id)
                 If Not rs.EOF And Not rs.BOF Then
-                    codBar = "*" & Format(tmpDetalle.Id, "00000000") & "*"
+                    codBar = "*" & Format(tmpDetalle.id, "00000000") & "*"
                     linea1 = "O/T:" & vpedido.IdFormateado
                     linea2 = "Cliente:" & rs!razon
                     linea3 = rs!descripcion
@@ -830,12 +830,12 @@ Private Sub Form_Activate()
     Me.lstSectores.ListItems.Clear
     For Each tmpSector In sectores
         Me.lstSectores.ListItems.Add , , tmpSector.Sector
-        Me.lstSectores.ListItems(Me.lstSectores.ListItems.count).Tag = tmpSector.Id
+        Me.lstSectores.ListItems(Me.lstSectores.ListItems.count).Tag = tmpSector.id
     Next tmpSector
     Dim r As Recordset
     Dim rs As Recordset
 
-    Set sectoresInvolucrados = DAOTiemposProceso.GetSectoresByIdPedido(vpedido.Id)
+    Set sectoresInvolucrados = DAOTiemposProceso.GetSectoresByIdPedido(vpedido.id)
     c = 0
 
     Dim x As Long
@@ -844,14 +844,14 @@ Private Sub Form_Activate()
     Me.cboSector.Clear
     For x = 1 To sectoresInvolucrados.count
         For i = 1 To Me.lstSectores.ListItems.count
-            If sectoresInvolucrados(x).Id = Me.lstSectores.ListItems(i).Tag Or (Me.lstSectores.ListItems(i).Tag = 19 Or Me.lstSectores.ListItems(i).Tag = 2) Then
+            If sectoresInvolucrados(x).id = Me.lstSectores.ListItems(i).Tag Or (Me.lstSectores.ListItems(i).Tag = 19 Or Me.lstSectores.ListItems(i).Tag = 2) Then
                 Me.lstSectores.ListItems(i).Checked = True
                 lstSectores_ItemCheck Me.lstSectores.ListItems(i)
             End If
         Next i
 
         Me.cboSector.AddItem sectoresInvolucrados(x).Sector
-        Me.cboSector.ItemData(Me.cboSector.NewIndex) = sectoresInvolucrados(x).Id
+        Me.cboSector.ItemData(Me.cboSector.NewIndex) = sectoresInvolucrados(x).id
     Next x
     '------------------------------------------
 
@@ -878,7 +878,7 @@ Private Sub Form_Activate()
 
     For Each deta In vpedido.Detalles
         Set record = Me.ReportControl.Records.Add
-        record.Tag = deta.Id
+        record.Tag = deta.id
         record.AddItem deta.item
         Set item = record.AddItem(deta.Pieza.nombre)
         item.HasCheckbox = True
@@ -892,43 +892,43 @@ Private Sub Form_Activate()
             record.AddItem deta.CantidadPedida
         End If
 
-        AddTareas record, deta.Id
+        AddTareas record, deta.id
 
         If deta.Pieza.EsConjunto Then
 
-            For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, deta.Pieza.Id)
+            For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, deta.Pieza.id)
                 Set Record2 = record.Childs.Add()
-                Record2.Tag = tmpdeta2.Id
+                Record2.Tag = tmpdeta2.id
                 Record2.AddItem vbNullString
                 Set item = Record2.AddItem(tmpdeta2.IdentificadorPosicion & " - " & tmpdeta2.Pieza.nombre)
                 item.HasCheckbox = True
                 Record2.AddItem tmpdeta2.Cantidad & " (" & tmpdeta2.CantidadTotalStatic & " total)"
                 Record2.AddItem vbNullString
 
-                AddTareas Record2, deta.Id, tmpdeta2.Id
+                AddTareas Record2, deta.id, tmpdeta2.id
                 If tmpdeta2.Pieza.EsConjunto Then
 
-                    For Each tmpdeta3 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, tmpdeta2.Pieza.Id)
+                    For Each tmpdeta3 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, tmpdeta2.Pieza.id)
                         Set Record3 = Record2.Childs.Add
-                        Record3.Tag = tmpdeta3.Id
+                        Record3.Tag = tmpdeta3.id
                         Record3.AddItem vbNullString
                         Set item = Record3.AddItem(tmpdeta3.IdentificadorPosicion & " - " & tmpdeta3.Pieza.nombre)
                         item.HasCheckbox = True
                         Record3.AddItem tmpdeta3.Cantidad & " (" & tmpdeta3.CantidadTotalStatic & " total)"
                         Record3.AddItem vbNullString
-                        AddTareas Record3, deta.Id, tmpdeta3.Id
+                        AddTareas Record3, deta.id, tmpdeta3.id
                         pos3 = 0
                         If tmpdeta3.Pieza.EsConjunto Then
-                            For Each tmpdeta4 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, tmpdeta3.Pieza.Id)
+                            For Each tmpdeta4 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, tmpdeta3.Pieza.id)
                                 Set Record4 = Record3.Childs.Add
-                                Record4.Tag = tmpdeta4.Id
+                                Record4.Tag = tmpdeta4.id
                                 Record4.AddItem vbNullString
                                 Set item = Record4.AddItem(tmpdeta4.IdentificadorPosicion & " - " & tmpdeta4.Pieza.nombre)
                                 item.HasCheckbox = True
                                 Record4.AddItem tmpdeta4.Cantidad & " (" & tmpdeta4.CantidadTotalStatic & " total)"
                                 Record4.AddItem vbNullString
 
-                                AddTareas Record4, deta.Id, tmpdeta4.Id
+                                AddTareas Record4, deta.id, tmpdeta4.id
 
                             Next tmpdeta4
                         End If
@@ -952,9 +952,9 @@ Private Sub AddTareas(ByRef rec As ReportRecord, ByRef idDetallePedido As Long, 
     'For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(idDetallePedido, P.Id)
     For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoId(idDetallePedido, idDetallePedidoConjunto)
         Set rechijo = rec.Childs.Add
-        rechijo.Tag = (ptp.Id * -1)    'negativo para distinguir de las piezas
+        rechijo.Tag = (ptp.id * -1)    'negativo para distinguir de las piezas
         rechijo.AddItem vbNullString
-        Set item = rechijo.AddItem("Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea)
+        Set item = rechijo.AddItem("Tarea: " & ptp.Tarea.id & " - " & ptp.Tarea.Tarea)
         item.HasCheckbox = True
         rechijo.AddItem vbNullString
         rechijo.AddItem vbNullString
@@ -1012,7 +1012,7 @@ Private Sub Form_Load()
 
     procDef = False
     
-        Me.caption = caption & " (" & Name & ")"
+        'Me.caption = caption & " (" & Name & ")"
         
 End Sub
 
@@ -1065,11 +1065,11 @@ Private Sub mnuDeschequearTareas_Click()
 End Sub
 
 Private Sub PushButton1_Click()
-    DAOOrdenTrabajo.informePiezaMateriales vpedido.Id, 1, True
+    DAOOrdenTrabajo.informePiezaMateriales vpedido.id, 1, True
 End Sub
 
 Private Sub PushButton2_Click()
-    frmMaterializacion.Id = vpedido.Id
+    frmMaterializacion.id = vpedido.id
     frmMaterializacion.Ot = True
     frmMaterializacion.Show
 End Sub

@@ -74,7 +74,7 @@ Private Sub Form_Load()
     Set rubros = DAORubros.FindAll
     Me.GridEX1.ItemCount = rubros.count
     
-        Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
         
         
 End Sub
@@ -94,7 +94,7 @@ Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 Private Sub GridEX1_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
-    tmpRubro.Id = 0
+    tmpRubro.id = 0
     tmpRubro.iniciales = Values(1)
     tmpRubro.rubro = Values(2)
     rubros.Add tmpRubro

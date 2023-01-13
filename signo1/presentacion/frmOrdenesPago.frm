@@ -406,7 +406,7 @@ Private Sub cmdImprimir_Click()
         .FitColumns = True
         .RepeatHeaders = True
         .Orientation = jgexPPLandscape
-        .HeaderString(jgexHFCenter) = "Listado de Ordens de Pago "
+        .HeaderString(jgexHFCenter) = "Listado de Ordenes de Pago "
         If LenB(pro) > 1 Then
             .HeaderString(jgexHFLeft) = pro
         End If

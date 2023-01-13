@@ -234,7 +234,7 @@ Private Sub Form_Load()
         Command2.Enabled = True
     End If
     
-        Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
         
         
 End Sub

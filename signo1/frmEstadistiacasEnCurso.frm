@@ -136,12 +136,12 @@ Public Function GetTiemposPorCategoria() As Dictionary
         For Each dto1 In dto.ListaDtoTareaTiempo
 
 
-            If col1.Exists(dto1.Tarea.CategoriaSueldo.Id) Then
+            If col1.Exists(dto1.Tarea.CategoriaSueldo.id) Then
 
-                col1.item(dto1.Tarea.CategoriaSueldo.Id) = col1.item(dto1.Tarea.CategoriaSueldo.Id) + dto1.Tiempo
+                col1.item(dto1.Tarea.CategoriaSueldo.id) = col1.item(dto1.Tarea.CategoriaSueldo.id) + dto1.Tiempo
             Else
 
-                col1.Add dto1.Tarea.CategoriaSueldo.Id, dto1.Tiempo
+                col1.Add dto1.Tarea.CategoriaSueldo.id, dto1.Tiempo
 
             End If
 
@@ -255,8 +255,8 @@ Public Sub GraficoTorta()
         If avancesOT.count > 0 Then
             If funciones.BuscarEnColeccion(avancesOT, CStr(dto1.Tarea.SectorID)) Then
                 Set tmpSectorTiempo = avancesOT.item(CStr(dto1.Tarea.SectorID))
-                If funciones.BuscarEnColeccion(tmpSectorTiempo.ListaDtoTareaTiempo, CStr(dto1.Tarea.Id)) Then
-                    Set tmpTareaTiempo = tmpSectorTiempo.ListaDtoTareaTiempo.item(CStr(dto1.Tarea.Id))
+                If funciones.BuscarEnColeccion(tmpSectorTiempo.ListaDtoTareaTiempo, CStr(dto1.Tarea.id)) Then
+                    Set tmpTareaTiempo = tmpSectorTiempo.ListaDtoTareaTiempo.item(CStr(dto1.Tarea.id))
                     arrTareas(i, 3) = tmpTareaTiempo.Tiempo
                     arrTareas(i, 4) = tmpTareaTiempo.Tiempo
                     arrTareas(i, 5) = tmpTareaTiempo.Tiempo
@@ -306,8 +306,8 @@ Public Sub grafico()
         ARRSECTORES(i, 1) = dto.Sector.Sector
         ARRSECTORES(i, 2) = dto.Tiempo
         If avancesOT.count > 0 Then
-            If funciones.BuscarEnColeccion(avancesOT, CStr(dto.Sector.Id)) Then
-                Set tmpSectorTiempo = avancesOT.item(CStr(dto.Sector.Id))
+            If funciones.BuscarEnColeccion(avancesOT, CStr(dto.Sector.id)) Then
+                Set tmpSectorTiempo = avancesOT.item(CStr(dto.Sector.id))
                 ARRSECTORES(i, 4) = tmpSectorTiempo.Tiempo
 
 
@@ -349,7 +349,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.GridEX1, False, False
     Me.GridEX1.ItemCount = 0
     
-        Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
         
         
         
@@ -367,8 +367,8 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(2) = funciones.FormatearDecimales(dto.Tiempo) & " hs."
 
     If avancesOT.count > 0 Then
-        If funciones.BuscarEnColeccion(avancesOT, CStr(dto.Sector.Id)) Then
-            Set tmpSectorTiempo = avancesOT.item(CStr(dto.Sector.Id))
+        If funciones.BuscarEnColeccion(avancesOT, CStr(dto.Sector.id)) Then
+            Set tmpSectorTiempo = avancesOT.item(CStr(dto.Sector.id))
         End If
     End If
 

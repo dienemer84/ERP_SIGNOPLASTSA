@@ -337,7 +337,7 @@ Private Sub Form_Load()
 
     Buscar
     
-        'Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
         
 End Sub
 
@@ -400,7 +400,7 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectemp = proveedores.item(RowIndex)  ' mcData.Item(RowIndex)
     With rectemp
-        Values(1) = Format(.Id, "0000")
+        Values(1) = Format(.id, "0000")
         Values(2) = .RazonSocial
         Values(3) = .razonFantasia
         Values(4) = .Cuit
@@ -435,7 +435,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = proveedores.count To 1 Step -1
-            If proveedores(i).Id = tmp.Id Then
+            If proveedores(i).id = tmp.id Then
                 Set Proveedor = proveedores(i)
                 Proveedor.estado = tmp.estado
                 Proveedor.razonFantasia = tmp.razonFantasia
@@ -448,7 +448,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 Exit For
             End If
         Next
-        grilla.RefreshRowIndex EVENTO.Elemento.Id
+        grilla.RefreshRowIndex EVENTO.Elemento.id
         
     End If
     Exit Function

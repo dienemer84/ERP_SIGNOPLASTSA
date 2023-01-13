@@ -149,7 +149,7 @@ Private Sub Form_Load()
     DAOCliente.LlenarCombo Me.cboCliente, True
     'base.llenar_lista_stock Me.lstStock, -1, ""
     
-        Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
         
         
 End Sub

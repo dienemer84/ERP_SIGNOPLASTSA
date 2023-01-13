@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   59310081
+      Format          =   59179009
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1123,7 +1123,7 @@ FacturaRequiereNumeroFormateado
         Me.cmdGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.Frame2.Enabled = False
+        Me.frame2.Enabled = False
         Me.Frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
@@ -1151,7 +1151,7 @@ FacturaRequiereNumeroFormateado
     
     loading = False
 
-    'Me.caption = caption & "(" & Name & ")"
+    ''Me.caption = caption & "(" & Name & ")"
 
 End Sub
 

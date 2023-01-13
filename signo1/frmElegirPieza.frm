@@ -192,7 +192,7 @@ Private Sub llenarLista()
         Exit Sub
     End If
 
-    filtro = "s.id_cliente=" & vCliente.Id
+    filtro = "s.id_cliente=" & vCliente.id
     If Trim(Me.Text1) <> Empty Then
         filtro = filtro & " and s.detalle LIKE '%" & Me.Text1.text & "%'"
     End If
@@ -213,7 +213,7 @@ Private Sub llenarLista()
             Set dto.Pieza = deta.Pieza
 
 
-            dto.idDetalleOt = deta.Id
+            dto.idDetalleOt = deta.id
             dto.idOt = OtIdFilter
             dto.item = deta.item
             dto.Precio = deta.Precio
@@ -253,7 +253,7 @@ Private Sub Form_Load()
     llenarLista
     loading = False
     
-        Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
         
         
 End Sub

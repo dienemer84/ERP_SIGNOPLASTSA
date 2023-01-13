@@ -105,10 +105,10 @@ Private Sub Form_Load()
     Set rubros = DAORubros.FindAll
     Me.GridEX1.ItemCount = rubros.count
     Set rubroElegido = rubros.item(Me.GridEX1.row)
-    Set grupos = DAOGrupos.GetAllByRubro(rubroElegido.Id)
+    Set grupos = DAOGrupos.GetAllByRubro(rubroElegido.id)
     Me.GridEX2.ItemCount = grupos.count
     
-    Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
     
     End Sub
 
@@ -120,7 +120,7 @@ End Sub
 Private Sub GridEX1_SelectionChange()
     Me.GridEX2.ItemCount = 0
     Set rubroElegido = rubros.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
-    Set grupos = DAOGrupos.GetAllByRubro(rubroElegido.Id)
+    Set grupos = DAOGrupos.GetAllByRubro(rubroElegido.id)
     Me.GridEX2.ItemCount = grupos.count
 End Sub
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -142,7 +142,7 @@ End Sub
 Private Sub GridEX2_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set tmpGrupo = New clsGrupo
     tmpGrupo.Grupo = Values(1)
-    tmpGrupo.Id = 0
+    tmpGrupo.id = 0
     tmpGrupo.rubros = rubroElegido
 
     If DAOGrupos.Save(tmpGrupo) Then

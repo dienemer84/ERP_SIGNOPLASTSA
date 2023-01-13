@@ -163,7 +163,7 @@ Private Sub Form_Load()
     Me.GridEX1.ItemCount = 0
     LlenarGrid
     
-    'Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
 
 
 End Sub
@@ -200,8 +200,8 @@ Private Sub LlenarGrid()
     Set tmpCol = DAORemitoS.FindAll(filtro)
     Dim rto As Remito
     For Each rto In tmpCol
-        col.Add rto, CStr(rto.Id)
-            Set remitoDetalle = DAORemitoSDetalle.FindAllByRemito(rto.Id, True, True)
+        col.Add rto, CStr(rto.id)
+            Set remitoDetalle = DAORemitoSDetalle.FindAllByRemito(rto.id, True, True)
             Dim deta As remitoDetalle
                     For Each deta In remitoDetalle
                         If deta.idpedido = 0 Or deta.idpedido = -1 Then
@@ -228,7 +228,7 @@ End Sub
 Private Sub GridEX1_DblClick()
     If col.count > 0 Then
         GridEX1_SelectionChange
-        vrto = Remito.Id
+        vrto = Remito.id
         Set Selecciones.RemitoElegido = Remito
         Unload Me
     End If
@@ -261,7 +261,7 @@ End Sub
 Private Sub PushButtonAceptar_Click()
     If col.count > 0 Then
         GridEX1_SelectionChange
-        vrto = Remito.Id
+        vrto = Remito.id
         Set Selecciones.RemitoElegido = Remito
         Unload Me
     End If

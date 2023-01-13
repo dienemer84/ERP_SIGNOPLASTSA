@@ -958,9 +958,9 @@ Private Sub LlenarCuentasMDO()
     DAOTareas.LlenarComboPorSector Me.cboHorno, dto.Sector
     DAOTareas.LlenarComboPorSector Me.cboApp, dto.Sector
     DAOTareas.LlenarComboPorSector Me.cboSup, dto.Sector
-    Me.cboHorno.ListIndex = funciones.PosIndexCbo(dto.Horneado.Id, Me.cboHorno)
-    Me.cboApp.ListIndex = funciones.PosIndexCbo(dto.Aplicacion.Id, Me.cboApp)
-    Me.cboSup.ListIndex = funciones.PosIndexCbo(dto.Limpieza.Id, Me.cboSup)
+    Me.cboHorno.ListIndex = funciones.PosIndexCbo(dto.Horneado.id, Me.cboHorno)
+    Me.cboApp.ListIndex = funciones.PosIndexCbo(dto.Aplicacion.id, Me.cboApp)
+    Me.cboSup.ListIndex = funciones.PosIndexCbo(dto.Limpieza.id, Me.cboSup)
 
 End Sub
 
@@ -968,8 +968,8 @@ Private Sub LlenarCuentasMAT()
     On Error Resume Next
     DAOMateriales.LlenarComboPorRubro Me.cboCant, dto.rubro
     DAOMateriales.LlenarComboPorRubro Me.cboFosf, dto.rubro
-    Me.cboCant.ListIndex = funciones.PosIndexCbo(dto.CantidadPintura.Id, cboCant)
-    Me.cboFosf.ListIndex = funciones.PosIndexCbo(dto.CantidadFosfatos.Id, cboFosf)
+    Me.cboCant.ListIndex = funciones.PosIndexCbo(dto.CantidadPintura.id, cboCant)
+    Me.cboFosf.ListIndex = funciones.PosIndexCbo(dto.CantidadFosfatos.id, cboFosf)
 End Sub
 
 Private Sub Form_Load()
@@ -985,7 +985,7 @@ Private Sub Form_Load()
     Me.Textg = h    'factor mdo
     Me.Textf = g    'factor mat
     
-        Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
         
         
 End Sub

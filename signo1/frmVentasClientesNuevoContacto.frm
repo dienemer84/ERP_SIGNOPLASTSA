@@ -429,7 +429,7 @@ Private Sub Form_Load()
     Dim rs As New Recordset
     llenar_Grilla
     
-        Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
         
 End Sub
 
@@ -487,7 +487,7 @@ Private Sub agregarContacto()
         vContacto.email = UCase(Trim(Me.txtEmail))
         vContacto.celular = UCase(Trim(Me.txtCelular))
         vContacto.Cargo = UCase(Trim(Me.txtCargo))
-        vContacto.idPersona = vCliente.Id
+        vContacto.idPersona = vCliente.id
 
 
         If DAOContacto.modificar(vContacto) Then
@@ -505,11 +505,11 @@ End Sub
 
 Private Sub llenar_Grilla()
     If Not vCliente Is Nothing Then
-        Set contactos = DAOContacto.FindAll(cliente_, "idCliente = " & vCliente.Id)
-        idPersona = vCliente.Id
+        Set contactos = DAOContacto.FindAll(cliente_, "idCliente = " & vCliente.id)
+        idPersona = vCliente.id
     ElseIf Not vProveedor Is Nothing Then
-        Set contactos = DAOContacto.FindAll(proveedor_, "idCliente = " & vProveedor.Id)
-        idPersona = vProveedor.Id
+        Set contactos = DAOContacto.FindAll(proveedor_, "idCliente = " & vProveedor.id)
+        idPersona = vProveedor.id
     End If
     grilla.ItemCount = contactos.count
 End Sub
@@ -524,7 +524,7 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectemp = contactos(RowIndex)
     With rectemp
-        Values(1) = Format(.Id, "0000")
+        Values(1) = Format(.id, "0000")
         Values(2) = UCase(.nombre)
         Values(3) = UCase(.Cargo)
         Values(4) = .celular

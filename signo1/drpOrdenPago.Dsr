@@ -1,13 +1,13 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpOrdenPago 
    Caption         =   "Orden de Pago"
-   ClientHeight    =   12990
+   ClientHeight    =   14025
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   12705
+   ClientWidth     =   28680
    MDIChild        =   -1  'True
-   _ExtentX        =   22410
-   _ExtentY        =   22913
+   _ExtentX        =   50588
+   _ExtentY        =   24739
    _Version        =   393216
    _DesignerVersion=   100688210
    ReportWidth     =   8775

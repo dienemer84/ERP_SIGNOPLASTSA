@@ -231,7 +231,7 @@ Private Sub btnFacturar_Click()
                 MsgBox "No puede facturar un item que ya fue facturado.", vbExclamation
                 Exit Sub
             End If
-            returnCol.Add tmp, CStr(tmp.Id)
+            returnCol.Add tmp, CStr(tmp.id)
         Next js
     Else
         Set tmp = Remito.Detalles.item(Me.grilla.RowIndex(Me.grilla.row))
@@ -243,7 +243,7 @@ Private Sub btnFacturar_Click()
             MsgBox "No puede facturar un item que ya fue facturado.", vbExclamation
             Exit Sub
         End If
-        returnCol.Add tmp, CStr(tmp.Id)
+        returnCol.Add tmp, CStr(tmp.id)
     End If
 
     Dim ev As New clsEventoObserver
@@ -313,10 +313,10 @@ Private Function CrearDetalleDeOT() As Boolean
         detaEntrega.facturable = True
         detaEntrega.Facturado = False
         detaEntrega.FEcha = Now
-        detaEntrega.idDetallePedido = detapedido.Id
-        detaEntrega.idpedido = detapedido.OrdenTrabajo.Id
+        detaEntrega.idDetallePedido = detapedido.id
+        detaEntrega.idpedido = detapedido.OrdenTrabajo.id
         detaEntrega.Origen = OrigenRemitoOt
-        detaEntrega.Remito = Me.Remito.Id
+        detaEntrega.Remito = Me.Remito.id
         detaEntrega.Valor = detapedido.Precio
         detaEntrega.ValorModificado = False
         Set detaEntrega.DetallePedido = detapedido
@@ -355,18 +355,18 @@ Private Sub Form_Load()
     Channel.AgregarSuscriptor Me, RemitosDetalle_
     mostrarRemito
     
-    Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
         
 End Sub
 Private Sub mostrarRemito()
 
     If IsSomething(Remito) Then
         Me.caption = "Remito " & Remito.numero
-        Set Remito.Detalles = DAORemitoSDetalle.FindAllByRemito(Remito.Id, False, True)
+        Set Remito.Detalles = DAORemitoSDetalle.FindAllByRemito(Remito.id, False, True)
 
         Me.lblFecha.caption = Remito.FEcha
         Me.lblDetalle = Remito.detalle
-        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.cliente.Id, Me.cboClientes)
+        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.cliente.id, Me.cboClientes)
 
         grilla.Columns(6).Visible = MostrarInfoAdministracion
 

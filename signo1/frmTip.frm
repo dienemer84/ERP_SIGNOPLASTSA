@@ -109,7 +109,7 @@ End Sub
 Private Sub Form_Load()
     Cargar
     
-        'Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
     
 End Sub
 
@@ -139,9 +139,9 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
         
         Set sin = actualizaciones(RowIndex)
      
-        Values(1) = sin.id_
+        Values(1) = sin.Id_
         Values(2) = sin.Fecha_
-        Values(3) = sin.detalle_
+        Values(3) = sin.Detalle_
         Values(4) = sin.Modulo_
 
 

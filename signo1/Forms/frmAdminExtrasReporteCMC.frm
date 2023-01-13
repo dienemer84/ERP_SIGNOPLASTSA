@@ -347,7 +347,7 @@ Private Sub Form_Load()
     Me.Label2.caption = "Seleccionar el rango de fechas con el cual se va a comparar el reporte importado anteriormente." & vbCrLf & "" _
     & "Es importante que el rango sea exactamente el mismo para que el resultado de la comparación sea consistente."
 
-    Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
 
 End Sub
 

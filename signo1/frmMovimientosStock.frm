@@ -139,5 +139,5 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     
-        Me.caption = caption & " (" & Name & ")"
+        ''Me.caption = caption & " (" & Name & ")"
 End Sub

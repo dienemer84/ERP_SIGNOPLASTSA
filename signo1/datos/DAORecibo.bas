@@ -314,7 +314,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         r.redondeo = GetValue(rs, indice, tabla, "redondeo")
         r.aCuenta = GetValue(rs, indice, tabla, "a_cuenta")
         r.aCuentaUsado = GetValue(rs, indice, tabla, "a_cuenta_usado")
-        r.fecha = GetValue(rs, indice, tabla, "fecha")
+        r.FEcha = GetValue(rs, indice, tabla, "fecha")
 
 
         Dim totEstatico As New TotalEstaticoRecibo
@@ -443,14 +443,19 @@ Public Function Guardar(rec As recibo) As Boolean
     q = Replace(q, "'idMoneda'", conectar.GetEntityId(rec.moneda))
     q = Replace(q, "'redondeo'", conectar.Escape(rec.redondeo))
     'q = Replace(q, "'pagoACuenta'", conectar.Escape(rec.PagoACuenta))
-    q = Replace(q, "'fecha'", conectar.Escape(rec.fecha))
+    q = Replace(q, "'fecha'", conectar.Escape(rec.FEcha))
     q = Replace(q, "'a_cuenta'", conectar.Escape(rec.aCuenta))
 
     Dim esNuevo As Boolean
     esNuevo = False
     If Not conectar.execute(q) Then GoTo E
+    
+    'ACA ES DONDE REVISA SI ES UN RECIBO NUEVO O NO. Y EN QUE ESTADO ESTÁ
     If rec.id = 0 Then esNuevo = True
-    If rec.id <> 0 And rec.estado = EstadoRecibo.Pendiente Then  'en el insert no tiene nada de agregacion
+    
+    'If rec.id <> 0 And rec.estado = EstadoRecibo.Pendiente Then  'en el insert no tiene nada de agregacion
+    
+    If rec.id <> 0 Then   'en el insert no tiene nada de agregacion
 
         'retenciones----------------------------------------------------------
         q = "idRecibo = " & rec.id
@@ -575,7 +580,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.FontSize = origin + 3
         Printer.Print "Número: " & recibo.id
         Printer.Print "Estado: " & enums.EnumEstadoRecibo(recibo.estado)
-        Printer.Print "Fecha: " & Format(Day(recibo.fecha), "00") & "/" & Format(Month(recibo.fecha), "00") & "/" & Format(Year(recibo.fecha), "0000")
+        Printer.Print "Fecha: " & Format(Day(recibo.FEcha), "00") & "/" & Format(Month(recibo.FEcha), "00") & "/" & Format(Year(recibo.FEcha), "0000")
         Printer.Print "Cliente: " & recibo.cliente.razon
         Printer.FontSize = origin
         Printer.FontBold = False
@@ -602,7 +607,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.FontBold = False
         Dim r As retencionRecibo
         For Each r In recibo.retenciones
-            Printer.Print r.fecha, r.Retencion.nombre, r.NroRetencion, r.Valor
+            Printer.Print r.FEcha, r.Retencion.nombre, r.NroRetencion, r.Valor
         Next r
         If recibo.retenciones.count > 0 Then
             Printer.Print "Total Retenciones: " & recibo.TotalRetenciones
@@ -669,6 +674,8 @@ Public Sub Imprimir(idRecibo As Long)
         End If
         
             Printer.Print "Numero,"; vbTab; "Monto"; vbTab; vbTab; "Fecha Vto."; vbTab; "Banco"
+            
+        Dim che As cheque
         For Each che In recibo.cheques
             
             'Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto

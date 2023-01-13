@@ -1063,14 +1063,13 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Dim mtxt As String
     Dim textw As Single
     Dim lmargin As Integer
-
+    
 
 
     pic.Picture = LoadResPicture(101, vbResBitmap)
 
     Dim A As Single
     lmargin = 720
-
 
 
     TAB1 = 300

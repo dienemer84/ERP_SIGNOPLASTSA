@@ -254,7 +254,7 @@ Private Sub Form_Load()
 
     Set r = Nothing
     
-    Me.caption = caption & " (" & Name & ")"
+    ''Me.caption = caption & " (" & Name & ")"
     
 End Sub
 

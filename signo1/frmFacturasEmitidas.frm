@@ -8,13 +8,13 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   8985
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   9705
+   ClientWidth     =   17955
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8985
    ScaleMode       =   0  'User
-   ScaleWidth      =   9624.04
+   ScaleWidth      =   17805.22
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox grp 
       Height          =   2295
@@ -28,11 +28,46 @@ Begin VB.Form frmAdminFacturasEmitidas
       _StockProps     =   79
       Caption         =   "Filtros"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton PushButton2 
+         Height          =   330
+         Left            =   9000
+         TabIndex        =   48
+         Top             =   1575
+         Width           =   375
+         _Version        =   786432
+         _ExtentX        =   661
+         _ExtentY        =   582
+         _StockProps     =   79
+         Caption         =   "X"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboOrdenImporte 
+         Height          =   315
+         Left            =   6600
+         TabIndex        =   46
+         Top             =   1560
+         Width           =   2355
+         _Version        =   786432
+         _ExtentX        =   4154
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   6
+      End
       Begin XtremeSuiteControls.CheckBox chkboxVerIds 
          Height          =   255
-         Left            =   8280
+         Left            =   4440
          TabIndex        =   43
-         Top             =   1605
+         Top             =   1920
          Width           =   1095
          _Version        =   786432
          _ExtentX        =   1931
@@ -57,9 +92,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.CheckBox chkCredito 
          Height          =   255
-         Left            =   5640
+         Left            =   1920
          TabIndex        =   30
-         Top             =   1605
+         Top             =   1920
          Width           =   2055
          _Version        =   786432
          _ExtentX        =   3625
@@ -88,7 +123,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   315
          Left            =   1620
          TabIndex        =   19
-         Top             =   720
+         Top             =   765
          Width           =   3510
          _Version        =   786432
          _ExtentX        =   6191
@@ -124,7 +159,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   285
          Left            =   5190
          TabIndex        =   5
-         Top             =   735
+         Top             =   780
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -347,7 +382,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   360
          Left            =   6600
          TabIndex        =   35
-         Top             =   720
+         Top             =   742
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -410,7 +445,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   285
          Left            =   9000
          TabIndex        =   39
-         Top             =   1200
+         Top             =   1193
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -421,7 +456,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.CheckBox chkVerObservaciones 
          Height          =   225
-         Left            =   1680
+         Left            =   90
          TabIndex        =   44
          Top             =   1920
          Width           =   1695
@@ -432,6 +467,28 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Ver Observaciones"
          Appearance      =   6
          Value           =   1
+      End
+      Begin XtremeSuiteControls.Label Label11 
+         Height          =   375
+         Left            =   5340
+         TabIndex        =   47
+         Top             =   1560
+         Width           =   1215
+         _Version        =   786432
+         _ExtentX        =   2143
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Orden Importe"
+         Alignment       =   1
+         RightToLeft     =   -1  'True
+      End
+      Begin VB.Label lblTotalDolares 
+         Caption         =   "Label11"
+         Height          =   255
+         Left            =   14760
+         TabIndex        =   45
+         Top             =   1200
+         Width           =   2535
       End
       Begin VB.Label lblExportando 
          Alignment       =   1  'Right Justify
@@ -461,7 +518,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   285
          Left            =   5880
          TabIndex        =   37
-         Top             =   758
+         Top             =   780
          Width           =   675
          _Version        =   786432
          _ExtentX        =   1191
@@ -476,7 +533,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   195
          Left            =   14760
          TabIndex        =   34
-         Top             =   360
+         Top             =   240
          Width           =   1095
       End
       Begin VB.Label lblTotalIVA 
@@ -485,26 +542,26 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   195
          Left            =   14760
          TabIndex        =   33
-         Top             =   600
+         Top             =   480
          Width           =   1095
       End
       Begin VB.Label lblTotalPercepciones 
          AutoSize        =   -1  'True
          Caption         =   "Total Filtrado $:"
-         Height          =   195
+         Height          =   255
          Left            =   14760
          TabIndex        =   32
-         Top             =   840
+         Top             =   720
          Width           =   1095
       End
       Begin VB.Label lblTotal 
          AutoSize        =   -1  'True
          Caption         =   "Total Filtrado $:"
-         Height          =   195
+         Height          =   255
          Left            =   14760
          TabIndex        =   31
-         Top             =   1080
-         Width           =   1095
+         Top             =   960
+         Width           =   1335
       End
       Begin XtremeSuiteControls.Label Label10 
          Height          =   285
@@ -620,44 +677,44 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(5)       =   "frmFacturasEmitidas.frx":0856
       Column(6)       =   "frmFacturasEmitidas.frx":09AA
       Column(7)       =   "frmFacturasEmitidas.frx":0B0E
-      Column(8)       =   "frmFacturasEmitidas.frx":0D3E
-      Column(9)       =   "frmFacturasEmitidas.frx":0E86
-      Column(10)      =   "frmFacturasEmitidas.frx":1006
-      Column(11)      =   "frmFacturasEmitidas.frx":1102
-      Column(12)      =   "frmFacturasEmitidas.frx":1202
-      Column(13)      =   "frmFacturasEmitidas.frx":1362
-      Column(14)      =   "frmFacturasEmitidas.frx":14B6
-      Column(15)      =   "frmFacturasEmitidas.frx":15FE
-      Column(16)      =   "frmFacturasEmitidas.frx":1756
-      Column(17)      =   "frmFacturasEmitidas.frx":189E
-      Column(18)      =   "frmFacturasEmitidas.frx":19E6
-      Column(19)      =   "frmFacturasEmitidas.frx":1ACA
-      Column(20)      =   "frmFacturasEmitidas.frx":1C1A
-      Column(21)      =   "frmFacturasEmitidas.frx":1D5A
-      Column(22)      =   "frmFacturasEmitidas.frx":1ED2
-      Column(23)      =   "frmFacturasEmitidas.frx":2042
-      Column(24)      =   "frmFacturasEmitidas.frx":21A2
-      Column(25)      =   "frmFacturasEmitidas.frx":22DA
+      Column(8)       =   "frmFacturasEmitidas.frx":0D4E
+      Column(9)       =   "frmFacturasEmitidas.frx":0E96
+      Column(10)      =   "frmFacturasEmitidas.frx":1016
+      Column(11)      =   "frmFacturasEmitidas.frx":1112
+      Column(12)      =   "frmFacturasEmitidas.frx":1212
+      Column(13)      =   "frmFacturasEmitidas.frx":1372
+      Column(14)      =   "frmFacturasEmitidas.frx":14C6
+      Column(15)      =   "frmFacturasEmitidas.frx":160E
+      Column(16)      =   "frmFacturasEmitidas.frx":1766
+      Column(17)      =   "frmFacturasEmitidas.frx":18AE
+      Column(18)      =   "frmFacturasEmitidas.frx":19F6
+      Column(19)      =   "frmFacturasEmitidas.frx":1ADA
+      Column(20)      =   "frmFacturasEmitidas.frx":1C2A
+      Column(21)      =   "frmFacturasEmitidas.frx":1D6A
+      Column(22)      =   "frmFacturasEmitidas.frx":1EE2
+      Column(23)      =   "frmFacturasEmitidas.frx":2052
+      Column(24)      =   "frmFacturasEmitidas.frx":21B2
+      Column(25)      =   "frmFacturasEmitidas.frx":22EA
       FormatStylesCount=   16
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":242E
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":2566
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2616
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":26CA
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":27A2
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":285A
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":293A
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":29C6
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2AA6
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":2B56
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":2C0A
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":2CBA
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":2D6A
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":2E1E
-      FormatStyle(15) =   "frmFacturasEmitidas.frx":2EF6
-      FormatStyle(16) =   "frmFacturasEmitidas.frx":2FDA
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":243E
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":2576
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2626
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":26DA
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":27B2
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":286A
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":294A
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":29D6
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2AB6
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":2B66
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":2C1A
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":2CCA
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":2D7A
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":2E2E
+      FormatStyle(15) =   "frmFacturasEmitidas.frx":2F06
+      FormatStyle(16) =   "frmFacturasEmitidas.frx":2FEA
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":30BA
-      PrinterProperties=   "frmFacturasEmitidas.frx":33D4
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":30CA
+      PrinterProperties=   "frmFacturasEmitidas.frx":33E4
    End
    Begin MSComDlg.CommonDialog cd 
       Left            =   15630
@@ -724,6 +781,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin VB.Menu aplicar 
          Caption         =   "Aplicar Recibo..."
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu aplicarNCaFC 
          Caption         =   "Aplicar a Factura o ND..."
@@ -801,127 +860,6 @@ Private Sub AnularFactura_Click()
     End If
 End Sub
 
-
-
-Private Sub aplicar_Click()
-On Error GoTo err1
-    If MsgBox("¿Seguro de aplicar comprobante?", vbYesNo, "Confirmación") = vbYes Then
-        'seleccionar factura para aplicar
-
-        Set frmAdminCobranzasSeleccionarReciboAnticipo.cliente = Factura.cliente
-        
-'        frmAdminCobranzasSeleccionarReciboAnticipo.MostrarAnticipo = True
-        
-        frmAdminCobranzasSeleccionarReciboAnticipo.Show 1
-        
-        Dim Ot As OrdenTrabajo
-        
-        If IsSomething(Selecciones.OrdenTrabajo) Then
-        
-            If Not funciones.BuscarEnColeccion(Factura.OTsFacturadasAnticipo, CStr(Selecciones.OrdenTrabajo.id)) Then
-                Set Ot = DAOOrdenTrabajo.FindById(Selecciones.OrdenTrabajo.id)
-                Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True, True, True)
-
-                Factura.OTsFacturadasAnticipo.Add Ot, CStr(Ot.id)
-
-                Factura.Detalles = New Collection
-                Factura.OrdenCompra = vbNullString
-                Me.txtReferencia = "FACTURA POR ANTICIPO OT"
-                'Me.txtCondObs = vbNullString
-                'Me.txtDiasVenc = vbNullString
-
-                Dim deta As FacturaDetalle
-
-                For Each Ot In Factura.OTsFacturadasAnticipo
-                    Me.txtReferencia.text = Me.txtReferencia.text & " " & Ot.IdFormateado
-
-                    Set deta = Factura.DetalleFacturaAnticipoOt(funciones.RedondearDecimales(Ot.Anticipo))
-                    If Not IsSomething(deta) Then
-                        Set deta = New FacturaDetalle
-                        deta.Cantidad = 1
-                        deta.DescuentoAnticipo = True
-                        deta.IvaAplicado = True
-                        deta.IBAplicado = True
-                        deta.PorcentajeDescuento = 0
-                        Set deta.Factura = Factura
-                        deta.detalle = "ANTICIPO " & funciones.RedondearDecimales(Ot.Anticipo) & "% | OT"
-                        Factura.Detalles.Add deta
-                    End If
-                    deta.detalle = deta.detalle & " " & Ot.IdFormateado
-
-            'bug #2 INICIO
-            
-                                If Ot.moneda.id <> Factura.moneda.id Then
-                           
-                                    If Factura.moneda.Patron Then
-
-'                                        Set Monedas.MonedaConvertibles = Nothing
-'                                        Set frmAdminComprobantesEmitidosCambioMoneda.Ot = Ot
-'                                        Set frmAdminComprobantesEmitidosCambioMoneda.Factura = Factura
-'                                        frmAdminComprobantesEmitidosCambioMoneda.Show 1
-                                        
-                                    MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                              & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                                              & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
-                                              & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de OT: " & Ot.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                                              deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
-                                                
-                                    Else
-                                    MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                              & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                                              & "Se procede a realizar la conversión correspondiente:" & vbCrLf & "" _
-                                              & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de Comprobante: " & Factura.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                                             deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
-                                    End If
-                                    
-                                 Else
-                                     MsgBox ("La Moneda de la OT es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                     & "La Moneda del Comprobante es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                                     & "No se realiza conversión:" & vbCrLf & "" _
-                                     & "Cálculo:" & vbCrLf & " Total de OT: " & Ot.Total & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                                     deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.Anticipo) / 100)
-
-                                 End If
-
-                Next Ot
-
-                'CargarDetalles
-                
-               ' Totalizar
-            
-            End If
-        End If
-    Else
-        MsgBox "Debe seleccionar un cliente para poder operar.", vbExclamation
-    End If
-'        F.idCliente = Factura.cliente.id
-'            F.TiposDocs.Add tipoDocumentoContable.Factura
-'
-'            If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
-'                F.TiposDocs.Add tipoDocumentoContable.notaDebito
-'            End If
-'                 If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
-'                F.TiposDocs.Add tipoDocumentoContable.notaCredito
-'            End If
-'
-'            F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
-'            F.Show 1
-'
-'        If IsSomething(Selecciones.Factura) Then
-'             If DAOFactura.aplicarNCaFC(Selecciones.Factura.id, Factura.id) Then
-'             llenarGrilla
-'
-'                MsgBox "Comprobantes Vinculados: " & Factura.NumeroFormateado & " | " & Selecciones.Factura.NumeroFormateado & vbNewLine & "" _
-'                & "Aplicación exitosa!", vbInformation, "Información"
-'
-'            End If
-'        End If
-   
-Exit Sub
-err1:
-MsgBox Err.Description, vbCritical, "Error"
-End Sub
-
 Private Sub aplicarNCaFC_Click()
 On Error GoTo err1
     If MsgBox("¿Seguro de aplicar comprobante?", vbYesNo, "Confirmación") = vbYes Then
@@ -929,7 +867,7 @@ On Error GoTo err1
         Set Selecciones.Factura = Nothing
           Dim F As New frmAdminFacturasNCElegirFC
         
-        F.idCliente = Factura.cliente.id
+        F.idCliente = Factura.cliente.Id
             F.TiposDocs.Add tipoDocumentoContable.Factura
             
             If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
@@ -943,7 +881,7 @@ On Error GoTo err1
             F.Show 1
 
         If IsSomething(Selecciones.Factura) Then
-             If DAOFactura.aplicarNCaFC(Selecciones.Factura.id, Factura.id) Then
+             If DAOFactura.aplicarNCaFC(Selecciones.Factura.Id, Factura.Id) Then
              llenarGrilla
 
                 MsgBox "Comprobantes Vinculados: " & Factura.NumeroFormateado & " | " & Selecciones.Factura.NumeroFormateado & vbNewLine & "" _
@@ -1009,7 +947,7 @@ End Sub
 Private Sub archivos_Click()
     Dim F As New frmArchivos2
     F.Origen = 101
-    F.ObjetoId = Factura.id
+    F.ObjetoId = Factura.Id
     F.caption = "Comprobante " & Factura.GetShortDescription(False, True)
     F.Show
 End Sub
@@ -1114,9 +1052,9 @@ Private Sub btnExpotar_Click()
         xlWorksheet.Cells(idx, 4).value = fac.OrdenCompra
 
         If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
-            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.totalEstatico.Total * fac.CambioAPatron) * -1
+            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.TotalEstatico.Total * fac.CambioAPatron) * -1
         Else
-            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.totalEstatico.Total * fac.CambioAPatron)
+            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.TotalEstatico.Total * fac.CambioAPatron)
         End If
         
         xlWorksheet.Cells(idx, 6).value = fac.Vencimiento
@@ -1274,7 +1212,7 @@ End Sub
 Private Sub editar_Click()
 
     Dim f_c3h3 As New frmAdminFacturasEdicion
-    f_c3h3.idFactura = Factura.id
+    f_c3h3.idFactura = Factura.Id
     f_c3h3.Show
 
 End Sub
@@ -1316,11 +1254,17 @@ Private Sub Form_Load()
     cboEstadosSaldada.ItemData(cboEstadosSaldada.NewIndex) = 4
     
     
-     Me.cboEstadoAfip.Clear
+    Me.cboEstadoAfip.Clear
     cboEstadoAfip.AddItem "Sólo informadas"
     cboEstadoAfip.ItemData(cboEstadoAfip.NewIndex) = 0
     cboEstadoAfip.AddItem "Sólo no informadas"
     cboEstadoAfip.ItemData(cboEstadoAfip.NewIndex) = 1
+    
+    Me.cboOrdenImporte.Clear
+    cboOrdenImporte.AddItem "Ascendente"
+    cboOrdenImporte.ItemData(cboOrdenImporte.NewIndex) = 0
+    cboOrdenImporte.AddItem "Descendente"
+    cboOrdenImporte.ItemData(cboOrdenImporte.NewIndex) = 1
 
     Dim i As Integer
     funciones.FillComboBoxDateRanges Me.cboRangos
@@ -1331,7 +1275,7 @@ Private Sub Form_Load()
     llenarGrilla
     verObservaciones
     
-    'Me.caption = caption & "(" & Name & ")"
+    ''Me.caption = caption & "(" & Name & ")"
     
 End Sub
 
@@ -1396,8 +1340,17 @@ Private Sub llenarGrilla()
         filtro = filtro & " and AdminFacturas.aprobacion_afip=0"
    End If
     
+ Dim ordenImporte As String
+ 
+ If Me.cboOrdenImporte.ListIndex = 0 Then
+        ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron ASC"
+ ElseIf Me.cboOrdenImporte.ListIndex = 1 Then
+        ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron DESC"
+ End If
+ 
+ 'ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron ASC "
 
-   Set facturas = DAOFactura.FindAll(filtro)
+   Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
    
    Dim F As Factura
    Dim c As Integer
@@ -1408,23 +1361,25 @@ Private Sub llenarGrilla()
         Dim totalNG As Double
         Dim TotalIVATodo As Double
         Dim totalPercepcionesIIBB As Double
-        
+        Dim totalDolares As Double
         Dim Percepcion As Double
 
 
         If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-
       
-           Total = Total + MonedaConverter.ConvertirForzado2(F.totalEstatico.Total * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+           Total = Total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.Total * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
     
-           TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.totalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+           TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
     
-           totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.totalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+           totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
            
-           Percepcion = F.totalEstatico.TotalPercepcionesIB * c
+           Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
            
-           totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.totalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
-        
+           totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
+     
+        If F.moneda.Id = 1 Then
+           totalDolares = totalDolares + F.TotalEstatico.Total * c
+        End If
     Next
 
 
@@ -1432,7 +1387,9 @@ Private Sub llenarGrilla()
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalPercepcionesIIBB))
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(TotalIVATodo))
     Me.lblTotalNeto = "Total NG: " & FormatCurrency(funciones.FormatearDecimales(totalNG))
-
+    
+    Me.lblTotalDolares = "Total U$S: " & Replace(FormatCurrency(totalDolares), "$", "")
+'Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalEstatico.Total)), "$", "")
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = facturas.count
     
@@ -1479,14 +1436,14 @@ Private Sub GridEX1_DblClick()
 End Sub
 
 Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
+    If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
 Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
               Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"
@@ -1782,16 +1739,16 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(6) = Factura.FechaEmision
     
     'MONTO BASE
-    Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalEstatico.Total)), "$", "")
+    Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.Total)), "$", "")
 
-    If Factura.moneda.id = 0 Then
+    If Factura.moneda.Id = 0 Then
         Values(8) = Factura.moneda.NombreCorto
     Else
         Values(8) = Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
     End If
 
     'MONTO TOTAL
-    Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalEstatico.Total * Factura.CambioAPatron)), "$", "")
+    Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.Total * Factura.CambioAPatron)), "$", "")
 
     Values(10) = Factura.OrdenCompra
     Values(11) = Factura.cliente.razon
@@ -1875,9 +1832,9 @@ End If
 
     Values(22) = Factura.TasaAjusteMensual
 
-    Values(23) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+    Values(23) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
     
-    Values(24) = Factura.id
+    Values(24) = Factura.Id
     
     Values(25) = Factura.RecibosAplicadosId
    
@@ -1893,18 +1850,18 @@ Private Sub ImprimirFactura_Click()
 
 
     If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
-        veces = clasea.facturaImpresa(Factura.id)
+        veces = clasea.facturaImpresa(Factura.Id)
         If veces > 0 Then
             If MsgBox("Este comprobante ya fue generarlo" & Chr(10) & "¿Desea volver a generarlo?", vbYesNo, "Confirmación") = vbYes Then
                 'DAOFactura.GenerarPdf (Factura.id)
-                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
+                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.Id)
             End If
         Else
-                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
+                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.Id)
             End If
     Else
 
-        veces = clasea.facturaImpresa(Factura.id)
+        veces = clasea.facturaImpresa(Factura.Id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("'¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
                cd.Flags = cdlPDUseDevModeCopies
@@ -1912,7 +1869,7 @@ Private Sub ImprimirFactura_Click()
                 cd.ShowPrinter
                 Dim i As Long
                 For i = 1 To cd.Copies
-                    DAOFactura.Imprimir Factura.id
+                    DAOFactura.Imprimir Factura.Id
                 Next
             End If
 
@@ -1923,7 +1880,7 @@ Private Sub ImprimirFactura_Click()
                 cd.ShowPrinter
 
                 For i = 1 To cd.Copies
-                    DAOFactura.Imprimir Factura.id
+                    DAOFactura.Imprimir Factura.Id
                 Next i
             End If
 
@@ -1949,7 +1906,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Dim i As Long
         For i = facturas.count To 1 Step -1
 
-            If facturas(i).id = tmp.id Then
+            If facturas(i).Id = tmp.Id Then
 
                 '                Set Factura = facturas(i)
                 '                Factura.Id = tmp.Id
@@ -1964,14 +1921,14 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 facturas.remove i
                 If facturas.count > 0 Then
                     If i = 1 Then    'ver esto cuand oes un solo item
-                        facturas.Add tmp, CStr(tmp.id), 1
+                        facturas.Add tmp, CStr(tmp.Id), 1
                     ElseIf (i - 1) = facturas.count Then
-                        facturas.Add tmp, CStr(tmp.id), , i - 1
+                        facturas.Add tmp, CStr(tmp.Id), , i - 1
                     Else
-                        facturas.Add tmp, CStr(tmp.id), i
+                        facturas.Add tmp, CStr(tmp.Id), i
                     End If
                 Else
-                    facturas.Add tmp, CStr(tmp.id)
+                    facturas.Add tmp, CStr(tmp.Id)
                 End If
 
                 'DAOFactura.FindById(tmp.Id, True)
@@ -2101,7 +2058,7 @@ Private Sub mnuArchivos_Click()
     Dim archi As New frmArchivos2
 
     archi.Origen = OrigenArchivos.OA_factura
-    archi.ObjetoId = Factura.id
+    archi.ObjetoId = Factura.Id
     archi.caption = Factura.GetShortDescription(False, True)
     archi.Show
 
@@ -2316,6 +2273,10 @@ End Sub
 
 
 
+Private Sub PushButton2_Click()
+    Me.cboOrdenImporte.ListIndex = -1
+End Sub
+
 Private Sub PushButton3_Click()
     Me.cboPuntosVenta.ListIndex = -1
 End Sub
@@ -2333,9 +2294,9 @@ End Sub
 Private Sub scanear_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
-        Me.GridEX1.RefreshRowIndex (Factura.id)
+        Me.GridEX1.RefreshRowIndex (Factura.Id)
     End If
 End Sub
 
@@ -2347,13 +2308,13 @@ End Sub
 Private Sub verFactura_Click()
     Dim f_c3h3 As New frmAdminFacturasEdicion
     f_c3h3.ReadOnly = True
-    f_c3h3.idFactura = Factura.id
+    f_c3h3.idFactura = Factura.Id
     f_c3h3.Show
 
 End Sub
 
 Private Sub verHistorialFactura_Click()
-    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.id)
+    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.Id)
     frmHistoriales.lista = Factura.Historial
     frmHistoriales.Show
 End Sub

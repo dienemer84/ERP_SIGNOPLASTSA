@@ -140,19 +140,19 @@ Begin VB.Form frmAdminResumenesFacturacion
       IntProp7        =   0
       ColumnsCount    =   5
       Column(1)       =   "frmAdminResumenesFacturacion.frx":1DB8
-      Column(2)       =   "frmAdminResumenesFacturacion.frx":1EE8
-      Column(3)       =   "frmAdminResumenesFacturacion.frx":2038
-      Column(4)       =   "frmAdminResumenesFacturacion.frx":2170
-      Column(5)       =   "frmAdminResumenesFacturacion.frx":22B4
+      Column(2)       =   "frmAdminResumenesFacturacion.frx":1F3C
+      Column(3)       =   "frmAdminResumenesFacturacion.frx":20B8
+      Column(4)       =   "frmAdminResumenesFacturacion.frx":221C
+      Column(5)       =   "frmAdminResumenesFacturacion.frx":238C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminResumenesFacturacion.frx":23C8
-      FormatStyle(2)  =   "frmAdminResumenesFacturacion.frx":2500
-      FormatStyle(3)  =   "frmAdminResumenesFacturacion.frx":25B0
-      FormatStyle(4)  =   "frmAdminResumenesFacturacion.frx":2664
-      FormatStyle(5)  =   "frmAdminResumenesFacturacion.frx":273C
-      FormatStyle(6)  =   "frmAdminResumenesFacturacion.frx":27F4
+      FormatStyle(1)  =   "frmAdminResumenesFacturacion.frx":24CC
+      FormatStyle(2)  =   "frmAdminResumenesFacturacion.frx":2604
+      FormatStyle(3)  =   "frmAdminResumenesFacturacion.frx":26B4
+      FormatStyle(4)  =   "frmAdminResumenesFacturacion.frx":2768
+      FormatStyle(5)  =   "frmAdminResumenesFacturacion.frx":2840
+      FormatStyle(6)  =   "frmAdminResumenesFacturacion.frx":28F8
       ImageCount      =   0
-      PrinterProperties=   "frmAdminResumenesFacturacion.frx":28D4
+      PrinterProperties=   "frmAdminResumenesFacturacion.frx":29D8
    End
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1680
@@ -169,12 +169,12 @@ Begin VB.Form frmAdminResumenesFacturacion
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.Label lblTotalTotal 
          Height          =   195
-         Left            =   1785
+         Left            =   825
          TabIndex        =   12
          Top             =   1380
-         Width           =   1155
+         Width           =   2115
          _Version        =   786432
-         _ExtentX        =   2037
+         _ExtentX        =   3731
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   ".-"
@@ -183,12 +183,12 @@ Begin VB.Form frmAdminResumenesFacturacion
       End
       Begin XtremeSuiteControls.Label lblExentoTotal 
          Height          =   195
-         Left            =   1785
+         Left            =   825
          TabIndex        =   11
          Top             =   1020
-         Width           =   1155
+         Width           =   2115
          _Version        =   786432
-         _ExtentX        =   2037
+         _ExtentX        =   3731
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   ".-"
@@ -197,12 +197,12 @@ Begin VB.Form frmAdminResumenesFacturacion
       End
       Begin XtremeSuiteControls.Label lblPercepcionesTotal 
          Height          =   195
-         Left            =   1785
+         Left            =   1545
          TabIndex        =   10
          Top             =   750
-         Width           =   1155
+         Width           =   1395
          _Version        =   786432
-         _ExtentX        =   2037
+         _ExtentX        =   2461
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   ".-"
@@ -211,12 +211,12 @@ Begin VB.Form frmAdminResumenesFacturacion
       End
       Begin XtremeSuiteControls.Label lblIVATotal 
          Height          =   195
-         Left            =   1785
+         Left            =   705
          TabIndex        =   9
          Top             =   495
-         Width           =   1155
+         Width           =   2235
          _Version        =   786432
-         _ExtentX        =   2037
+         _ExtentX        =   3942
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   ".-"
@@ -225,12 +225,12 @@ Begin VB.Form frmAdminResumenesFacturacion
       End
       Begin XtremeSuiteControls.Label lblNetoGravadoTotal 
          Height          =   195
-         Left            =   1785
+         Left            =   1305
          TabIndex        =   8
          Top             =   225
-         Width           =   1155
+         Width           =   1635
          _Version        =   786432
-         _ExtentX        =   2037
+         _ExtentX        =   2884
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   ".-"
@@ -645,11 +645,11 @@ End Sub
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
     Set sv = newcol.item(RowIndex)
-    Values(2) = funciones.FormatearDecimales(sv.NetoGravado)
     Values(1) = sv.FEcha
-    Values(3) = funciones.FormatearDecimales(sv.Iva)
-    Values(4) = funciones.FormatearDecimales(sv.percepciones)
-    Values(5) = funciones.FormatearDecimales(sv.Total)
+    Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.NetoGravado)), "$", "")
+    Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.Iva)), "$", "")
+    Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.percepciones)), "$", "")
+    Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.Total)), "$", "")
     Exit Sub
 err1:
 End Sub
@@ -718,11 +718,13 @@ Private Sub Totalizar()
         '   End If
         tot_ib = tot_ib + sv.percepciones
     Next sv
-    Me.lblExentoTotal.caption = funciones.FormatearDecimales(tot_exento)
-    Me.lblIVATotal.caption = FormatearDecimales(tot_iva)
-
-    Me.lblNetoGravadoTotal.caption = FormatearDecimales(tot_neto)
-    Me.lblPercepcionesTotal.caption = FormatearDecimales(tot_ib)
+    
+    'Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.NetoGravado)), "$", "")
+    
+    Me.lblExentoTotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_exento))
+    Me.lblIVATotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_iva))
+    Me.lblNetoGravadoTotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_neto))
+    Me.lblPercepcionesTotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_ib))
     
     
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -733,7 +735,7 @@ Private Sub Totalizar()
     
     'Despues del 11.09.20 queda asi:
     'Se reincopora a la sumatoria del total total el valor de total exento indicado por pedido de Karin el 27.07.20
-    Me.lblTotalTotal.caption = FormatearDecimales(tot_neto + tot_ib + tot_iva + tot_exento)
+    Me.lblTotalTotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_neto + tot_ib + tot_iva + tot_exento))
     
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
