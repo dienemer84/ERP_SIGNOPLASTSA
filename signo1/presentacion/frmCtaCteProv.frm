@@ -453,7 +453,7 @@ Private Sub gridDetalles_DblClick()
 
 
     If deta.tipoComprobante = TipoComprobanteUsado.OrdenPago_ Then
-        Dim f22 As New frmCrearOrdenPago
+        Dim f22 As New frmAdminPagosCrearOrdenPago
         f22.Show
         f22.ReadOnly = True
         f22.Cargar DAOOrdenPago.FindById(deta.IdComprobante)

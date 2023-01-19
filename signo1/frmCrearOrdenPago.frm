@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
-Begin VB.Form frmCrearOrdenPago 
+Begin VB.Form frmAdminPagosCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
    ClientHeight    =   9945
@@ -1286,7 +1286,7 @@ Begin VB.Form frmCrearOrdenPago
       End
    End
 End
-Attribute VB_Name = "frmCrearOrdenPago"
+Attribute VB_Name = "frmAdminPagosCrearOrdenPago"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -1659,7 +1659,7 @@ Private Sub btnGuardar_Click()
 
             If n Then
                 If MsgBox("¿Desea crear una nueva orden de pago?", vbQuestion + vbYesNo) = vbYes Then
-                    Dim f12 As New frmCrearOrdenPago
+                    Dim f12 As New frmAdminPagosCrearOrdenPago
                     f12.Show
                 End If
             End If
@@ -2934,7 +2934,17 @@ End Sub
 Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= OrdenPago.ChequesTerceros.count Then
         Set cheque = OrdenPago.ChequesTerceros.item(RowIndex)
-        Values(1) = cheque.numero
+        
+        
+        'Values(1) = "ID: " & cheque.Id & "N " & cheque.numero
+        'Values(1) = "ID: " & cheque.numero & "N " & cheque.numero
+        Values(1) = cheque.numero & " "
+        'Values(1) = cheque.numero
+        
+        'If IsNumeric(Values(1)) Then Values(1) = cheque.numero
+        
+        
+        
         'FORMATCURRENCY
         Values(2) = FormatCurrency(cheque.Monto)
         If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
@@ -2944,6 +2954,7 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
  '       Totalizar
     End If
 End Sub
+
 
 Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And OrdenPago.ChequesTerceros.count >= RowIndex Then

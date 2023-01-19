@@ -16,7 +16,10 @@ Public TipoIvaID As Long
 Private mContacto As Collection
 Private vId As Long
 Private vRazon As String
+
 Private vDomicilio As String
+Private vCodigoPostal As String
+
 Public exLocalidad As String
 
 Public TipoDocumento As TipoDocumento
@@ -56,15 +59,23 @@ End Property
 Public Property Let contacto(nvalue As Collection)
     Set mContacto = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Get razon() As String
     razon = vRazon
 End Property
+
+'*****
 Public Property Get Domicilio() As String
     Domicilio = vDomicilio
 End Property
+
+Public Property Get CodigoPostal() As String
+    CodigoPostal = vCodigoPostal
+End Property
+'*****
+
 Public Property Get telefono() As String
     telefono = vTelefono
 End Property
@@ -86,15 +97,23 @@ End Property
 Public Property Get FP() As Long
     FP = vFP
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
 Public Property Let razon(nvalue As String)
     vRazon = nvalue
 End Property
+
+'*********
 Public Property Let Domicilio(nvalue As String)
     vDomicilio = nvalue
 End Property
+
+Public Property Let CodigoPostal(nvalue As String)
+    vCodigoPostal = nvalue
+End Property
+'*********
+
 Public Property Let telefono(nvalue As String)
     vTelefono = nvalue
 End Property

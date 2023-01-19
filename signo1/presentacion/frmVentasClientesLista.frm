@@ -248,7 +248,7 @@ End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Set rectemp = clientes(grilla.RowIndex(Me.grilla.row))
-        Me.numero.caption = "Nro." & Format(rectemp.id, "0000")
+        Me.numero.caption = "Nro." & Format(rectemp.Id, "0000")
         If rectemp.estado = 0 Then
             Me.CambiarEstado.caption = "Activar..."
         ElseIf rectemp.estado = 1 Then
@@ -267,12 +267,12 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
     On Error Resume Next
     Set rectemp = clientes.item(RowIndex)
     With rectemp
-        Values(1) = Format(.id, "0000")
+        Values(1) = Format(.Id, "0000")
         Values(2) = .Cuit
         Values(3) = UCase(.razon)
         Values(4) = .Domicilio
         Values(5) = .localidad.nombre
-        Values(6) = .localidad.cp
+        Values(6) = .CodigoPostal
         Values(7) = .provincia.nombre
         Values(8) = .provincia.pais.nombre
         Values(9) = .telefono

@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
-Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~2.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "Codejock.ReportControl.v12.0.2.ocx"
+Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~1.OCX"
 Begin VB.Form frmDesarrollo 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
@@ -153,6 +153,9 @@ Begin VB.Form frmDesarrollo
       Begin VB.Menu mnuCambiar 
          Caption         =   "Cambiar..."
       End
+      Begin VB.Menu mnuVerIncidencias 
+         Caption         =   "Ver Incidencias..."
+      End
       Begin VB.Menu mnuImprimir 
          Caption         =   "Imprimir..."
       End
@@ -243,14 +246,14 @@ Private Sub AgregarPieza2(ByVal Pieza As Pieza, Optional ByVal parent As ReportR
 
 
     rec.AddItem Pieza.nombre
-    If CantArchivos.item(Pieza.id) > 0 Then
+    If CantArchivos.item(Pieza.Id) > 0 Then
         rec.item(0).Icon = 13
     Else
         rec.item(0).Icon = 0
     End If
 
     rec.AddItem Pieza.Cantidad
-    rec.Tag = Pieza.id
+    rec.Tag = Pieza.Id
     rec.Expanded = True
 
     Dim piezaHija As Pieza
@@ -272,7 +275,7 @@ Private Sub AgregarPieza(ByVal tmpDetaHist As clsPresupuestoDetalleHistorico, Op
 
     rec.AddItem tmpDetaHist.NombrePieza
     rec.AddItem tmpDetaHist.DetallePresupuesto.Cantidad
-    rec.Tag = tmpDetaHist.id
+    rec.Tag = tmpDetaHist.Id
     rec.Expanded = True
 
     Dim tmpDeta As clsPresupuestoDetalleHistorico
@@ -330,9 +333,9 @@ Private Sub ArmarColumnasMateriales()
     Me.reportControlMateriales.PaintManager.VerticalGridStyle = xtpGridSmallDots
 End Sub
 
-Private Function AddColumn(ReportControl As ReportControl, ByVal index As Long, ByVal caption As String, Optional align As XTPColumnAlignment = xtpAlignmentLeft, Optional ByVal tree As Boolean = False, Optional ByVal Width As Double = 25) As ReportColumn
+Private Function AddColumn(ReportControl As ReportControl, ByVal Index As Long, ByVal caption As String, Optional align As XTPColumnAlignment = xtpAlignmentLeft, Optional ByVal tree As Boolean = False, Optional ByVal Width As Double = 25) As ReportColumn
     Dim col As ReportColumn
-    Set col = ReportControl.Columns.Add(index, caption, Width, True)
+    Set col = ReportControl.Columns.Add(Index, caption, Width, True)
     col.Icon = 0
     col.Sortable = True
     col.AllowDrag = False
@@ -370,7 +373,7 @@ Private Sub mnuArchivos_Click()
     If Not P Is Nothing Then
         Dim frmArchi As New frmArchivos2
         frmArchi.Origen = OrigenArchivos.OA_Piezas
-        frmArchi.ObjetoId = P.id
+        frmArchi.ObjetoId = P.Id
         frmArchi.caption = "Pieza " & P.nombre
         frmArchi.Show
     End If
@@ -380,20 +383,20 @@ End Sub
 Private Sub mnuCambiar_Click()
     Dim P As Pieza
     Set P = m_pieza.LocatePiezaInPiezasHijas(Me.reportControlPiezas.SelectedRows(0).record.Tag)
-Set P = DAOPieza.FindById(P.id, FL_0, True, True, False)
+Set P = DAOPieza.FindById(P.Id, FL_0, True, True, False)
     Dim basene As New classNuevoElemento
     Dim frm2 As New frmNuevoElemento
-    frm2.lblidStock = P.id
+    frm2.lblidStock = P.Id
     frm2.txtNombreElemento = P.nombre
-    frm2.cboComplejidad.ListIndex = funciones.PosIndexCbo(P.complejidad, frm2.cboComplejidad)
+    frm2.cboComplejidad.ListIndex = funciones.PosIndexCbo(P.Complejidad, frm2.cboComplejidad)
     If frm2.cboComplejidad.ListIndex = -1 Then
        frm2.cboComplejidad.ListIndex = 0
     End If
-    frm2.cboClientes.ListIndex = funciones.PosIndexCbo(P.Cliente.id, frm2.cboClientes)
-    frm2.txtIdCliente = P.Cliente.id
+    frm2.cboClientes.ListIndex = funciones.PosIndexCbo(P.cliente.Id, frm2.cboClientes)
+    frm2.txtIdCliente = P.cliente.Id
 
-    basene.llenarListaMDO P.id, frm2.ListView2
-    basene.llenarLstmateriales P.id, frm2.ListView1
+    basene.llenarListaMDO P.Id, frm2.ListView2
+    basene.llenarLstmateriales P.Id, frm2.ListView1
 
     frm2.caption = "Modificar desarrollo..."
     frm2.Command5.Visible = False
@@ -412,7 +415,7 @@ Private Sub mnuCopiar_Click()
             nuevoNombre = funciones.ingreso(P.nombre)
             If Len(Trim(nuevoNombre)) > 0 Then
                 Dim claseS As New classStock
-                If claseS.copiarConjuntoV2(P.id, nuevoNombre, 0) Then
+                If claseS.copiarConjuntoV2(P.Id, nuevoNombre, 0) Then
                     MsgBox "Conjunto copiado satisfactoriamente!", vbInformation, "Información"
                 Else
                     MsgBox "Error en la copia de conjuntos!", vbCritical, "Error"
@@ -429,7 +432,7 @@ Private Sub mnuCopiar_Click()
             If DAOPieza.FindAll(FL_0, DAOPieza.CAMPO_NOMBRE & " = " & conectar.Escape(A)).count = 0 Then
                 If MsgBox("¿Desea proceder con la copia?", vbYesNo, "Confirmación") Then
                     Dim base As New classStock
-                    If base.CopiarPieza(P.id, A) Then MsgBox "Copia exitosa!", vbInformation, "Información"
+                    If base.CopiarPieza(P.Id, A) Then MsgBox "Copia exitosa!", vbInformation, "Información"
                 End If
             Else
                 MsgBox "El detalle ya existe en la base de datos!", vbCritical, "Error"
@@ -444,8 +447,8 @@ Private Sub mnuCostos_Click()
     Dim P As Pieza
     Set P = m_pieza.LocatePiezaInPiezasHijas(Me.reportControlPiezas.SelectedRows(0).record.Tag)
 
-    frmCostosIncidencia.Cliente = P.Cliente.id
-    frmCostosIncidencia.idP = P.id
+    frmCostosIncidencia.cliente = P.cliente.Id
+    frmCostosIncidencia.idp = P.Id
     frmCostosIncidencia.Show 1
 End Sub
 
@@ -508,7 +511,7 @@ Private Sub mnuMatVerArchivos_Click()
         Set m = P(1)
         Dim frmArchi As New frmArchivos2
         frmArchi.Origen = OrigenArchivos.OA_Materiales
-        frmArchi.ObjetoId = m.Material.id
+        frmArchi.ObjetoId = m.Material.Id
         frmArchi.caption = "Material: " & m.Material.descripcion
         frmArchi.Show
     End If
@@ -524,16 +527,30 @@ Private Sub mnuModifConj_Click()
         Dim frm As New frmDefinirConjunto
 
         frm.accion = 1
-        frm.idPiezaMadre = P.id
+        frm.idPiezaMadre = P.Id
         frm.Show
     End If
 
 End Sub
 
-Private Sub reportControlMateriales_MouseDown(Button As Integer, Shift As Integer, X As Long, Y As Long)
+Private Sub mnuVerIncidencias_Click()
+
+    Dim P As Pieza
+    Set P = m_pieza.LocatePiezaInPiezasHijas(Me.reportControlPiezas.SelectedRows(0).record.Tag)
+    If Not P Is Nothing Then
+        Dim frmArchi As New frmVerIncidencias
+        frmArchi.Origen = 3
+        frmArchi.referencia = P.Id
+        frmArchi.caption = "Pieza " & P.nombre
+        frmArchi.Show
+    End If
+    
+End Sub
+
+Private Sub reportControlMateriales_MouseDown(Button As Integer, Shift As Integer, x As Long, y As Long)
     If Button = 2 And vis = DesarrolloPieza Then
         Dim hitinfo As ReportHitTestInfo
-        Set hitinfo = Me.reportControlMateriales.HitTest(X, Y)
+        Set hitinfo = Me.reportControlMateriales.HitTest(x, y)
 
         If Not hitinfo.item Is Nothing Then
 
@@ -546,10 +563,10 @@ Private Sub reportControlMateriales_MouseDown(Button As Integer, Shift As Intege
 
 End Sub
 
-Private Sub reportControlPiezas_MouseDown(Button As Integer, Shift As Integer, X As Long, Y As Long)
+Private Sub reportControlPiezas_MouseDown(Button As Integer, Shift As Integer, x As Long, y As Long)
     If Button = 2 And vis = DesarrolloPieza Then
         Dim hitinfo As ReportHitTestInfo
-        Set hitinfo = Me.reportControlPiezas.HitTest(X, Y)
+        Set hitinfo = Me.reportControlPiezas.HitTest(x, y)
 
         If Not hitinfo.item Is Nothing Then
             Dim P As Pieza
@@ -579,21 +596,21 @@ Private Sub reportControlPiezas_SelectionChanged()
 
             Me.lblCostoMateriales.caption = Me.lblCostoMateriales.Tag & funciones.FormatearDecimales(pdh.TotalCostoMateriales)
             Me.lblCostoManoObra.caption = Me.lblCostoManoObra.Tag & funciones.FormatearDecimales(pdh.TotalCostoMDO)
-            Me.lblTotalKg.caption = Me.lblTotalKg.Tag & pdh.TotalKGMateriales
+            Me.lblTotalKG.caption = Me.lblTotalKG.Tag & pdh.TotalKGMateriales
             Me.lblTotalM2.caption = Me.lblTotalM2.Tag & pdh.TotalM2Materiales
         ElseIf vis = DesarrolloPieza Then
             Dim P As Pieza
             Set P = m_pieza.LocatePiezaInPiezasHijas(Me.reportControlPiezas.SelectedRows(0).record.Tag)
             If Not P Is Nothing Then
-                Set P.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(P.id)
-                Set P.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(P.id)
+                Set P.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(P.Id)
+                Set P.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(P.Id)
 
                 CargarMateriales2 P.DesarrollosMaterial
                 CargarManoObra2 P.desarrollosManoObra
 
                 Me.lblCostoMateriales.caption = Me.lblCostoMateriales.Tag & funciones.FormatearDecimales(P.TotalCostoMateriales)
                 Me.lblCostoManoObra.caption = Me.lblCostoManoObra.Tag & funciones.FormatearDecimales(P.TotalCostoManoObra)
-                Me.lblTotalKg.caption = Me.lblTotalKg.Tag & P.TotalKG
+                Me.lblTotalKG.caption = Me.lblTotalKG.Tag & P.TotalKG
                 Me.lblTotalM2.caption = Me.lblTotalM2.Tag & P.TotalM2
 
             End If
@@ -617,7 +634,7 @@ Private Sub CargarMateriales2(desamat As Collection)
     Dim dto As DatosMaterialDTO
 
     For Each tmp In desamat
-        dto = tmp.CalcularDatosMaterial(tmp.Material.Moneda.id)
+        dto = tmp.CalcularDatosMaterial(tmp.Material.moneda.Id)
 
         Set rec = Me.reportControlMateriales.Records.Add()
 
@@ -627,8 +644,8 @@ Private Sub CargarMateriales2(desamat As Collection)
         rec.AddItem tmp.Scrap
         rec.AddItem tmp.Kg
         rec.AddItem tmp.m2
-        rec.AddItem funciones.FormatearDecimales(MonedaConverter.Convertir(dto.costo, tmp.Material.Moneda.id, 0))
-        rec.Tag = tmp.id
+        rec.AddItem funciones.FormatearDecimales(MonedaConverter.Convertir(dto.costo, tmp.Material.moneda.Id, 0))
+        rec.Tag = tmp.Id
     Next tmp
 
     Me.reportControlMateriales.Populate
@@ -641,7 +658,7 @@ Private Sub CargarMateriales(histMAT As Collection)
 
     Dim tmp As PresupuestoDetalleHistoricoMAT
     For Each tmp In histMAT
-        datosMat = tmp.CalcularDatosMaterial(tmp.Moneda.id)
+        datosMat = tmp.CalcularDatosMaterial(tmp.moneda.Id)
 
         Set rec = Me.reportControlMateriales.Records.Add()
         rec.AddItem tmp.Material.codigo
@@ -650,9 +667,9 @@ Private Sub CargarMateriales(histMAT As Collection)
         rec.AddItem tmp.Scrap
         rec.AddItem datosMat.Kg
         rec.AddItem datosMat.m2
-        rec.AddItem funciones.FormatearDecimales(MonedaConverter.Convertir(datosMat.costo, tmp.Material.Moneda.id, 0))
+        rec.AddItem funciones.FormatearDecimales(MonedaConverter.Convertir(datosMat.costo, tmp.Material.moneda.Id, 0))
 
-        rec.Tag = tmp.id
+        rec.Tag = tmp.Id
     Next tmp
 
     Me.reportControlMateriales.Populate
@@ -664,7 +681,7 @@ Private Sub CargarManoObra2(desamdo As Collection)
 
     For Each tmp In desamdo
         Set rec = Me.reportControlManoObra.Records.Add()
-        rec.AddItem tmp.Tarea.id
+        rec.AddItem tmp.Tarea.Id
         rec.AddItem tmp.Cantidad
         rec.AddItem funciones.RedondearDecimales(tmp.Tiempo)
         rec.AddItem tmp.Tarea.Sector.Sector
@@ -674,7 +691,7 @@ Private Sub CargarManoObra2(desamdo As Collection)
         rec.AddItem funciones.RedondearDecimales(tmp.Tiempo * tmp.Cantidad)
         rec.AddItem funciones.RedondearDecimales(tmp.Tiempo * tmp.Cantidad * tmp.Tarea.CategoriaSueldo.Valor)
 
-        rec.Tag = tmp.id
+        rec.Tag = tmp.Id
     Next tmp
 
     Me.reportControlManoObra.Populate
@@ -687,7 +704,7 @@ Private Sub CargarManoObra(histManoObra As Collection)
 
     For Each tmp In histManoObra
         Set rec = Me.reportControlManoObra.Records.Add()
-        rec.AddItem tmp.Tarea.id
+        rec.AddItem tmp.Tarea.Id
         rec.AddItem tmp.CantOperarios
         rec.AddItem funciones.RedondearDecimales(tmp.Tiempo)
         rec.AddItem tmp.Tarea.Sector.Sector
@@ -697,7 +714,7 @@ Private Sub CargarManoObra(histManoObra As Collection)
         rec.AddItem funciones.RedondearDecimales(tmp.Tiempo * tmp.CantOperarios)
         rec.AddItem funciones.RedondearDecimales(tmp.Tiempo * tmp.CantOperarios * tmp.Valor)
 
-        rec.Tag = tmp.id
+        rec.Tag = tmp.Id
     Next tmp
 
     Me.reportControlManoObra.Populate

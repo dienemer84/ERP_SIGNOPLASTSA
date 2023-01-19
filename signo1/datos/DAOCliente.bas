@@ -40,8 +40,8 @@ Public Function crear(cliente As clsCliente) As Boolean
     On Error GoTo err1
     crear = True
     With cliente
-        strsql = "insert into clientes (id_localidad,id_moneda_default, razon,domicilio,telefono,Fax,email,cuit,iva,id_provincia,FP,FP_detalle,valido_remito_factura) VALUES " _
-                 & "(" & .localidad.Id & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
+        strsql = "insert into clientes (id_localidad,CP, id_moneda_default, razon,domicilio,telefono,Fax,email,cuit,iva,id_provincia,FP,FP_detalle,valido_remito_factura) VALUES " _
+                 & "(" & .localidad.Id & ", " & .CodigoPostal & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
         cn.execute strsql
     End With
     Exit Function
@@ -55,7 +55,7 @@ Public Function modificar(cliente As clsCliente) As Boolean
     On Error GoTo err11
     modificar = True
     With cliente
-        strsql = "update clientes set  id_localidad=" & .localidad.Id & ", id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .Id
+        strsql = "update clientes set  id_localidad=" & .localidad.Id & ", CP=" & .CodigoPostal & ",id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .Id
         cn.execute strsql
     End With
     Exit Function
@@ -82,7 +82,7 @@ Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, _
         c.razon = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_RAZON_SOCIAL)
         c.Domicilio = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_DOMICILIO)
         c.exLocalidad = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_LOCALIDAD)
-        'c.CP = GetValue(rs, fieldsIndex, tableNameOrAlias, "CP")
+        c.CodigoPostal = GetValue(rs, fieldsIndex, tableNameOrAlias, "CP")
         c.telefono = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_TELEFONO)
         c.Fax = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_FAX)
         c.TipoDocumento = GetValue(rs, fieldsIndex, tableNameOrAlias, "tipo_doc")

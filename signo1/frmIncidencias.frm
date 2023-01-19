@@ -1,29 +1,29 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmVerIncidencias 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Incidencias"
-   ClientHeight    =   5625
+   ClientHeight    =   6405
    ClientLeft      =   45
    ClientTop       =   210
-   ClientWidth     =   8325
+   ClientWidth     =   8445
+   FillStyle       =   3  'Vertical Line
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   5625
-   ScaleWidth      =   8325
+   ScaleHeight     =   6405
+   ScaleWidth      =   8445
    ShowInTaskbar   =   0   'False
    Begin MSComctlLib.ListView lstIncidencia 
-      Height          =   2655
-      Left            =   0
+      Height          =   2775
+      Left            =   120
       TabIndex        =   5
-      Top             =   2880
-      Width           =   8295
-      _ExtentX        =   14631
-      _ExtentY        =   4683
+      Top             =   3480
+      Width           =   8175
+      _ExtentX        =   14420
+      _ExtentY        =   4895
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
@@ -72,36 +72,45 @@ Begin VB.Form frmVerIncidencias
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2775
+      Height          =   3255
       Left            =   0
       TabIndex        =   0
-      Top             =   0
+      Top             =   120
       Width           =   8295
       Begin VB.CommandButton Command3 
          Caption         =   "Nueva..."
-         Height          =   255
-         Left            =   120
+         Height          =   495
+         Left            =   5040
          TabIndex        =   6
-         Top             =   2400
-         Width           =   855
+         Top             =   2520
+         Width           =   1455
       End
       Begin VB.CommandButton Command2 
          Caption         =   "Agregar"
          Default         =   -1  'True
-         Height          =   255
-         Left            =   6120
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   6840
          TabIndex        =   4
-         Top             =   2400
-         Width           =   975
+         Top             =   2520
+         Width           =   1335
       End
       Begin VB.CommandButton Command1 
          Cancel          =   -1  'True
          Caption         =   "Salir"
-         Height          =   255
-         Left            =   7200
+         Height          =   495
+         Left            =   240
          TabIndex        =   3
-         Top             =   2400
-         Width           =   975
+         Top             =   2520
+         Width           =   1455
       End
       Begin VB.TextBox txtIncidencias 
          Height          =   1695
@@ -160,6 +169,8 @@ Private Sub Command2_Click()
             End If
 
             MsgBox "Incidencia agregada con éxito!", vbInformation, "Información"
+                Me.txtIncidencias = Empty
+                
             llenarLST
         Else
             MsgBox "Se produjo un error. No se agrego incidencia!", vbCritical, "Error"

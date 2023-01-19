@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
-Begin VB.Form frmOrdenesPago 
+Begin VB.Form frmAdminPagosOrdenesPagoLista 
    Caption         =   "Ordenes de Pago"
    ClientHeight    =   7050
    ClientLeft      =   8445
@@ -371,7 +371,7 @@ Begin VB.Form frmOrdenesPago
       End
    End
 End
-Attribute VB_Name = "frmOrdenesPago"
+Attribute VB_Name = "frmAdminPagosOrdenesPagoLista"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -649,7 +649,7 @@ Private Sub mnuAprobar_Click()
 End Sub
 
 Private Sub mnuEditar_Click()
-    Dim f22 As New frmCrearOrdenPago
+    Dim f22 As New frmAdminPagosCrearOrdenPago
     f22.Show
     f22.Cargar Orden
 End Sub
@@ -772,7 +772,7 @@ Private Sub Imprimir()
 End Sub
 
 Private Sub mnuVer_Click()
-    Dim f22 As New frmCrearOrdenPago
+    Dim f22 As New frmAdminPagosCrearOrdenPago
     f22.Show
     f22.ReadOnly = True
     f22.Cargar Orden

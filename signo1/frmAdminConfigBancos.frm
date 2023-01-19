@@ -36,16 +36,16 @@ Begin VB.Form frmAdminConfigBancos
       IntProp7        =   0
       ColumnsCount    =   2
       Column(1)       =   "frmAdminConfigBancos.frx":0000
-      Column(2)       =   "frmAdminConfigBancos.frx":0118
+      Column(2)       =   "frmAdminConfigBancos.frx":0134
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminConfigBancos.frx":020C
-      FormatStyle(2)  =   "frmAdminConfigBancos.frx":0344
-      FormatStyle(3)  =   "frmAdminConfigBancos.frx":03F4
-      FormatStyle(4)  =   "frmAdminConfigBancos.frx":04A8
-      FormatStyle(5)  =   "frmAdminConfigBancos.frx":0580
-      FormatStyle(6)  =   "frmAdminConfigBancos.frx":0638
+      FormatStyle(1)  =   "frmAdminConfigBancos.frx":0228
+      FormatStyle(2)  =   "frmAdminConfigBancos.frx":0360
+      FormatStyle(3)  =   "frmAdminConfigBancos.frx":0410
+      FormatStyle(4)  =   "frmAdminConfigBancos.frx":04C4
+      FormatStyle(5)  =   "frmAdminConfigBancos.frx":059C
+      FormatStyle(6)  =   "frmAdminConfigBancos.frx":0654
       ImageCount      =   0
-      PrinterProperties=   "frmAdminConfigBancos.frx":0718
+      PrinterProperties=   "frmAdminConfigBancos.frx":0734
    End
 End
 Attribute VB_Name = "frmAdminConfigBancos"
@@ -82,20 +82,21 @@ End Sub
 
 Private Sub GridEX1_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set Banco = New Banco
-    Banco.id = Values(1)
+    Banco.Id = Values(1)
     Banco.nombre = Values(2)
-    If DAOBancos.Save(Banco) Then bancos.Add Banco, CStr(Banco.id)
+    If DAOBancos.Save(Banco) Then bancos.Add Banco, CStr(Banco.Id)
+    
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set Banco = bancos.item(RowIndex)
-    Values(1) = Banco.id
-    Values(2) = Banco.nombre
+    Values(1) = Banco.Id
+    Values(2) = "(ID " & Banco.Id & ")- " & Banco.nombre
 End Sub
 Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
     Set Banco = bancos.item(RowIndex)
-    Banco.id = Values(1)
+    Banco.Id = Values(1)
     Banco.nombre = Values(2)
     If Not DAOBancos.Save(Banco) Then GoTo err1
     llenarLista

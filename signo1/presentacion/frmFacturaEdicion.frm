@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   58982401
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   58982401
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58720257
+         Format          =   58982401
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1481,7 +1481,7 @@ On Error GoTo err1
             Next Ot
 
             'End If
-        End If
+    End If
         
         
 
@@ -2544,7 +2544,7 @@ Private Sub MostrarCliente()
     Me.lblIVA.caption = Factura.cliente.TipoIVA.detalle
     Me.lblDireccion.caption = Factura.cliente.Domicilio
     Me.lblLocalidad.caption = Factura.cliente.localidad.nombre
-    Me.lblCodPostal.caption = Factura.cliente.localidad.cp
+    Me.lblCodPostal.caption = Factura.cliente.CodigoPostal
 
     Me.lblProvincia = Factura.cliente.provincia.nombre
 

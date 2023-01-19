@@ -594,7 +594,13 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     If esNueva Then
         hist = DAOFacturaHistorial.agregar(F, "Factura Creada")
     Else
-        hist = DAOFacturaHistorial.agregar(F, "Factura Modificada")
+
+    If F.estado <> EstadoFacturaCliente.EnProceso Then
+             hist = DAOFacturaHistorial.agregar(F, "Datos de Comprobantes Modificados")
+        Else
+                hist = DAOFacturaHistorial.agregar(F, "Factura Modificada")
+        End If
+
     End If
     If Not hist Then Err.Raise 8773, "Guardando el historial", "Se produjo un error al guardar el historial"
 
@@ -1568,7 +1574,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     conectar.BeginTransaction
 
     conectar.execute "update AdminFacturas set impresa=impresa+1 where id=" & idFactura
-    conectar.execute "insert into AdminFacturasHistorial (idFactura,Nota,Fecha,idusuario) values (" & idFactura & ",'Factura impresa','" & funciones.datetimeFormateada(Now) & "'," & getUser & " )"
+    conectar.execute "insert into AdminFacturasHistorial (idFactura,Nota,Fecha,idusuario) values (" & idFactura & ",'FACTURA IMPRESA','" & funciones.datetimeFormateada(Now) & "'," & getUser & " )"
     conectar.CommitTransaction
 
 
@@ -2301,7 +2307,7 @@ Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.Id 
         conectar.BeginTransaction
 
         conectar.execute "update AdminFacturas set impresa=impresa+1 where id=" & idFactura
-        conectar.execute "insert into AdminFacturasHistorial (idFactura,Nota,Fecha,idusuario) values (" & idFactura & ",'Factura impresa','" & funciones.datetimeFormateada(Now) & "'," & getUser & " )"
+        conectar.execute "insert into AdminFacturasHistorial (idFactura,Nota,Fecha,idusuario) values (" & idFactura & ",'FACTURA IMPRESA','" & funciones.datetimeFormateada(Now) & "'," & getUser & " )"
         conectar.CommitTransaction
 
 
