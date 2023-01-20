@@ -26,6 +26,18 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
     Dim rs As ADODB.Recordset
     Dim q As String
 
+'    q = "SELECT *" _
+'        & " FROM Cheques cheq" _
+'        & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
+'        & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
+'        & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
+'        & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
+'        & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
+'        & " LEFT JOIN ordenes_pago_facturas ordenesp ON cheq.orden_pago_origen=ordenesp.id_orden_pago" _
+'        & " LEFT JOIN AdminComprasFacturasProveedores facturasp ON ordenesp.id_factura_proveedor=facturasp.id" _
+'        & " LEFT JOIN proveedores prov ON facturasp.id_proveedor=prov.id" _
+'        & " WHERE 1 = 1 "
+
     q = "SELECT *" _
         & " FROM Cheques cheq" _
         & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
@@ -45,6 +57,8 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
 
     Set rs = conectar.RSFactory(q)
+    
+    Debug.Print (q)
 
     Dim fieldsIndex As Dictionary
     BuildFieldsIndex rs, fieldsIndex
@@ -52,10 +66,13 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
     Dim tmpCheque As cheque
 
+       
     While Not rs.EOF
-        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2")
-        Cheques.Add tmpCheque, CStr(tmpCheque.id)
+        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov")
+        Cheques.Add tmpCheque, CStr(tmpCheque.Id)
+
         rs.MoveNext
+
     Wend
 
     'tickEnd = GetTickCount
@@ -74,9 +91,9 @@ Public Function FindAllDisponiblesByChequera(chequeraId As Long) As Collection
     Set FindAllDisponiblesByChequera = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_FECHA_VENCIMIENTO & " IS NULL AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_EN_CARTERA & " = 0")
 End Function
 
-Public Function FindByChequeraAndId(chequeraId As Long, id As Long) As cheque
+Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
     Dim col As Collection
-    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " = " & id)
+    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " = " & Id)
     If col.count = 0 Then
         Set FindByChequeraAndId = Nothing
     Else
@@ -94,9 +111,9 @@ Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As chequ
     End If
 End Function
 
-Public Function FindById(id As Long) As cheque
+Public Function FindById(Id As Long) As cheque
     Dim col As Collection
-    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & "=" & id)
+    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & "=" & Id)
     If col.count = 0 Then
         Set FindById = Nothing
     Else
@@ -117,17 +134,20 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef monedaTableNameOrAlias As String = vbNullString, _
                     Optional ByRef chequeraTableNameOrAlias As String = vbNullString, _
                     Optional ByRef monedaChequeraTableNameOrAlias As String = vbNullString, _
-                    Optional ByRef bancoChequeraTableNameOrAlias As String = vbNullString _
+                    Optional ByRef bancoChequeraTableNameOrAlias As String = vbNullString, _
+                    Optional ByRef OrdenesP As String = vbNullString, _
+                    Optional ByRef FacturasP As String = vbNullString, _
+                    Optional ByRef proveedores As String = vbNullString _
                     ) As cheque
 
     Dim tmpCheque As cheque
-    Dim id As Variant
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
+    Dim Id As Variant
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set tmpCheque = New cheque
-        tmpCheque.Observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
-        tmpCheque.id = id
+        tmpCheque.observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
+        tmpCheque.Id = Id
         tmpCheque.EnCartera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_EN_CARTERA)
         tmpCheque.FechaRecibido = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_FECHA_RECIBIDO)
         tmpCheque.FechaVencimiento = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_FECHA_VENCIMIENTO)
@@ -143,7 +163,7 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
         If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
-        If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.Moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
+        If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
         If LenB(chequeraTableNameOrAlias) > 0 Then Set tmpCheque.chequera = DAOChequeras.Map(rs, fieldsIndex, chequeraTableNameOrAlias, monedaChequeraTableNameOrAlias, bancoChequeraTableNameOrAlias)
     End If
 
@@ -155,7 +175,7 @@ End Function
 Public Function Guardar(cheque As cheque) As Boolean
     Dim q As String
 
-    If cheque.id = 0 Then
+    If cheque.Id = 0 Then
         q = "INSERT INTO Cheques" _
             & "(numero," _
             & "fecha_recibido," _
@@ -206,7 +226,7 @@ Public Function Guardar(cheque As cheque) As Boolean
             & " Where " _
             & "id = 'id' " _
 
-q = Replace(q, "'id'", cheque.id)
+q = Replace(q, "'id'", cheque.Id)
     End If
 
 
@@ -215,12 +235,12 @@ q = Replace(q, "'id'", cheque.id)
     q = Replace(q, "'fecha_vencimiento'", conectar.Escape(cheque.FechaVencimiento))
     q = Replace(q, "'monto'", conectar.Escape(cheque.Monto))
     q = Replace(q, "'id_chequera'", conectar.Escape(cheque.IdChequera))
-    q = Replace(q, "'id_banco'", conectar.Escape(cheque.Banco.id))
+    q = Replace(q, "'id_banco'", conectar.Escape(cheque.Banco.Id))
     q = Replace(q, "'origen'", conectar.Escape(cheque.OrigenDestino))
     q = Replace(q, "'en_cartera'", conectar.Escape(cheque.EnCartera))
     q = Replace(q, "'propio'", conectar.Escape(cheque.Propio))
-    q = Replace(q, "'id_moneda'", conectar.Escape(cheque.Moneda.id))
-    q = Replace(q, "'observaciones'", conectar.Escape(cheque.Observaciones))
+    q = Replace(q, "'id_moneda'", conectar.Escape(cheque.moneda.Id))
+    q = Replace(q, "'observaciones'", conectar.Escape(cheque.observaciones))
     q = Replace(q, "'teceros_propio'", conectar.Escape(cheque.TercerosPropio))
     q = Replace(q, "'ingresado'", conectar.Escape(Abs(cheque.entro)))
     q = Replace(q, "'orden_pago_origen'", conectar.Escape(cheque.IdOrdenPagoOrigen))
@@ -230,10 +250,10 @@ q = Replace(q, "'id'", cheque.id)
     Guardar = conectar.execute(q)
     If Not Guardar Then Exit Function
 
-    If cheque.id = 0 Then
+    If cheque.Id = 0 Then
         Dim idche As Long
         Guardar = conectar.UltimoId("Cheques", idche)
-        cheque.id = idche
+        cheque.Id = idche
     End If
 
 

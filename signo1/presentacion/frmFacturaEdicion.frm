@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   59047937
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   59047937
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   59047937
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   59047937
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   58982401
+         Format          =   59047937
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1429,7 +1429,7 @@ End Property
 
 Private Sub btnGuardar_Click()
 
-On Error GoTo err1
+    On Error GoTo err1
 
     If Me.gridDetalles.EditMode = jgexEditModeOn Then
         MsgBox "Todavia esta editando algun detalle de la factura.", vbExclamation
@@ -1443,34 +1443,34 @@ On Error GoTo err1
         Exit Sub
     End If
 
- Factura.observaciones = Me.txtCondObs.text
+    Factura.observaciones = Me.txtCondObs.text
 
     If LenB(Factura.numero) = 0 Or _
        LenB(Factura.OrdenCompra) = 0 Or _
        Factura.observaciones = "" Or _
        Factura.CantDiasPago = 0 Then
-                MsgBox "El Comprobante debe poseer Nº, referencia, cantidad dias de vto. de FF y condición cargada.", vbExclamation + vbOKOnly
+        MsgBox "El Comprobante debe poseer Nº, referencia, cantidad dias de vto. de FF y condición cargada.", vbExclamation + vbOKOnly
     Else
-     If EsAnticipo And Factura.OTsFacturadasAnticipo.count = 0 Then
-                MsgBox "Se produjo un error en la asociación del anticipo.", vbExclamation + vbOKOnly
-        Exit Sub
-    End If
+        If EsAnticipo And Factura.OTsFacturadasAnticipo.count = 0 Then
+            MsgBox "Se produjo un error en la asociación del anticipo.", vbExclamation + vbOKOnly
+            Exit Sub
+        End If
 
 
 
-    If Me.cboMonedaAjuste.ListIndex = -1 Then
-        Factura.IdMonedaAjuste = 0
-        Factura.TipoCambioAjuste = 1
-    Else
-        Dim mon As clsMoneda
-        Set mon = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex))
-        Factura.IdMonedaAjuste = mon.Id
-        Factura.TipoCambioAjuste = mon.Cambio
-    End If
+        If Me.cboMonedaAjuste.ListIndex = -1 Then
+            Factura.IdMonedaAjuste = 0
+            Factura.TipoCambioAjuste = 1
+        Else
+            Dim mon As clsMoneda
+            Set mon = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex))
+            Factura.IdMonedaAjuste = mon.Id
+            Factura.TipoCambioAjuste = mon.Cambio
+        End If
 
 
 
-    If Factura.EsAnticipo Or EsAnticipo Then
+        If Factura.EsAnticipo Or EsAnticipo Then
             'If Factura.DetallesMismaOT > 0 Then
             Dim Ot As OrdenTrabajo
             For Each Ot In Factura.OTsFacturadasAnticipo
@@ -1481,9 +1481,9 @@ On Error GoTo err1
             Next Ot
 
             'End If
-    End If
-        
-        
+        End If
+
+
 
         Dim deta As FacturaDetalle
         'Dim ot As OrdenTrabajo
@@ -1515,47 +1515,47 @@ On Error GoTo err1
                 End If
             End If
         Next deta
-        
-        
+
+
         Factura.CBU = Me.cboCuentasCBU.text
-        
+
         Dim c As CuentaBancaria
-        
+
         Set c = DAOCuentaBancaria.FindById(Me.cboCuentasCBU.ItemData(Me.cboCuentasCBU.ListIndex))
-                        
+
         If IsSomething(c) Then
-          Factura.CBU = c.CBU
+            Factura.CBU = c.CBU
         End If
-          
+
         Factura.observaciones = Me.txtCondObs.text
         Factura.TextoAdicional = Me.txtTextoAdicional
         'Factura.FechaServDesde = Me.dtFechaServDesde.value
         'Factura.FechaServHasta = Me.dtFechaServHasta.value
         Factura.fechaPago = Me.dtFechaPagoCredito.value
         Factura.esCredito = Me.chkEsCredito.value
-        
+
         If Factura.esCredito Then
-            
-        If Me.cboOpcional27.ListIndex < 0 Then Err.Raise "Para FCE es obligatorio informar opcional 27 con valor SCA ó ADC"
+
+            If Me.cboOpcional27.ListIndex < 0 Then Err.Raise "Para FCE es obligatorio informar opcional 27 con valor SCA ó ADC"
             Factura.Opcional27 = Me.cboOpcional27.ItemData(Me.cboOpcional27.ListIndex)
         Else
             Factura.Opcional27 = 0
-            
+
         End If
-        
+
         ASociarConcepto
-                
+
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
         Else
             Err.Raise "9999", "Guardando factura", Err.Description
         End If
-               
-        End If
-        
-Exit Sub
+
+    End If
+
+    Exit Sub
 err1:
-       MsgBox "Ocurrió un error al guardar." & Chr(10) & "Controle: " & Chr(10) & "- Que todos los datos estén cargados." & Chr(10) & "- Que el Nº de cbte. no esté ya asignado." & Chr(10) & "- Que se haya seleccionado OPCIÓN DE TRANSFERENCIA." & Chr(10) & "ERROR: " & Err.Description, vbCritical + vbOKOnly
+    MsgBox "Ocurrió un error al guardar." & Chr(10) & "Controle: " & Chr(10) & "- Que todos los datos estén cargados." & Chr(10) & "- Que el Nº de cbte. no esté ya asignado." & Chr(10) & "- Que se haya seleccionado OPCIÓN DE TRANSFERENCIA." & Chr(10) & "ERROR: " & Err.Description, vbCritical + vbOKOnly
 End Sub
 
 Private Sub btnItemRemito_Click()
@@ -1564,13 +1564,13 @@ Private Sub btnItemRemito_Click()
         Dim f11 As New frmPlaneamientoRemitosListaProceso
         f11.idCliMostrar = Factura.cliente.Id
         f11.mostrar = 2
-     
+
         Set Selecciones.RemitoElegido = Nothing
-       f11.Show 1
+        f11.Show 1
         If IsSomething(Selecciones.RemitoElegido) Then
             Dim frm As New frmPlaneamientoRemitoVer
             Set frm.Remito = Selecciones.RemitoElegido    'DAORemitoS.FindById(Selecciones.RemitoElegido.Id)
-               frm.IdFormSuscriber = suscId
+            frm.IdFormSuscriber = suscId
             Me.txtReferencia = Selecciones.RemitoElegido.detalle
             frm.ParaFacturar = True
             frm.grilla.MultiSelect = True
@@ -1585,7 +1585,7 @@ Private Sub btnItemRemito_Click()
 End Sub
 
 Private Sub AgregarEntregas(col As Collection)
-    'Dim tmp As Variant
+'Dim tmp As Variant
     Dim redeta As remitoDetalle
     Dim Ot As OrdenTrabajo
     For Each redeta In col
@@ -1607,19 +1607,19 @@ Private Sub AgregarEntregas(col As Collection)
             Set Ot = DAOOrdenTrabajo.FindById(redeta.idpedido)
             If IsSomething(Ot) Then
                 detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.moneda.Id, Factura.moneda.Id)
-                
+
                 If Ot.moneda.Id <> Factura.moneda.Id Then
-                'MsgBox ("Tenemos monedas distintas")
-                MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
-                & "El importe de la Moneda del comprobante es de: " & Factura.moneda.MonedaCambio.Cambio)
+                    'MsgBox ("Tenemos monedas distintas")
+                    MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
+                          & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
+                          & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
+                          & "El importe de la Moneda del comprobante es de: " & Factura.moneda.MonedaCambio.Cambio)
 
                 Else
-                'MsgBox ("Tenemos las mismas monedas")
-                
+                    'MsgBox ("Tenemos las mismas monedas")
+
                 End If
-                
+
             End If
             detalle.IvaAplicado = True
             detalle.IBAplicado = True
@@ -1714,55 +1714,55 @@ End Sub
 
 Private Sub cboCliente_Click()
     If IsSomething(Factura) And Me.cboCliente.ListIndex <> -1 And Not dataLoading Then
-    
+
         Set Factura.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
         Factura.Detalles = New Collection
-        
+
         Set Factura.TipoIVA = Factura.cliente.TipoIVA
 
         Dim tipos As New Collection
 
         Set tipos = DAOTipoFacturaDiscriminado.FindAllByFilter("id_iva= " & Factura.TipoIVA.idIVA & " and tipo_documento=" & Factura.TipoDocumento)
-        
+
         Dim Tipo As clsTipoFacturaDiscriminado
-        
+
         Me.cboTiposFactura.Enabled = True
         Me.Label6.Enabled = True
-        
+
         Me.Label14.Enabled = True
         Me.Label15.Enabled = True
         Me.Label16.Enabled = True
-        Me.txtNumero.Enabled = True 'Not factura.Tipo.PuntoVenta.EsElectronico
+        Me.txtNumero.Enabled = True    'Not factura.Tipo.PuntoVenta.EsElectronico
         Me.dtpFecha.Enabled = True
         Me.cboMoneda.Enabled = True
-        
+
         Me.grpPercep.Enabled = True
         Me.grpInfo.Enabled = True
-        
-        Me.cboConceptosAIncluir.Enabled = True
-        
-        Me.cboTiposFactura.Clear
-        
 
-Dim id_Default As Long
-id_Default = 0
-Dim nidx As Long
+        Me.cboConceptosAIncluir.Enabled = True
+
+        Me.cboTiposFactura.Clear
+
+
+        Dim id_Default As Long
+        id_Default = 0
+        Dim nidx As Long
         'lleno el combo de tipos de factura y dejo el default marcado
         For Each Tipo In tipos
             cboTiposFactura.AddItem Tipo.descripcion
             nidx = cboTiposFactura.NewIndex
             cboTiposFactura.ItemData(nidx) = Tipo.Id
             If Tipo.PuntoVenta.default Then id_Default = nidx
-            
+
         Next Tipo
 
 
-    'pos on default pv
-    If cboTiposFactura.ListCount > 0 Then
-   'cboTiposFactura.ListIndex = id_Default
-   cboTiposFactura.ListIndex = id_Default
-            
-    End If
+        'pos on default pv
+        If cboTiposFactura.ListCount > 0 Then
+            'cboTiposFactura.ListIndex = id_Default
+            cboTiposFactura.ListIndex = id_Default
+
+        End If
 
 
 
@@ -1773,7 +1773,7 @@ Dim nidx As Long
         Factura.AlicuotaAplicada = Factura.TipoIVA.alicuota
         Set Factura.cliente = DAOCliente.BuscarPorID(Factura.cliente.Id)
         Dim classA As New classAdministracion
-    'Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(id_Default)
+        'Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(id_Default)
         If IsSomething(Factura.Tipo.TipoFactura) Then
             Factura.EstaDiscriminada = Factura.Tipo.TipoFactura.Discrimina
             Me.lblTipoFactura.caption = Factura.Tipo.TipoFactura.Tipo
@@ -1799,14 +1799,14 @@ Dim nidx As Long
         MostrarCliente
         MostrarPercepcionIIBB
         LimpiarTotales
-        
-       Set Selecciones.OrdenTrabajo = Nothing
-       
+
+        Set Selecciones.OrdenTrabajo = Nothing
+
     End If
 End Sub
 
 Private Sub MostrarPercepcionIIBB()
-    'Me.lblBuscandoPercepcion.Visible = False
+'Me.lblBuscandoPercepcion.Visible = False
     Dim tabla As String
     If Me.cboPadron.ListIndex = 0 Then
         tabla = "IIBB2_Percepcion"
@@ -1835,37 +1835,37 @@ Private Sub MostrarPercepcionIIBB()
 End Sub
 
 Private Sub ASociarConcepto()
-If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
+    If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
         Factura.ConceptoIncluir = Me.cboConceptosAIncluir.ItemData(Me.cboConceptosAIncluir.ListIndex)
-End If
+    End If
 End Sub
 
 Private Sub ConceptosIncuir()
-If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
+    If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
 
         ASociarConcepto
-        
+
         'Me.lblFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
         'Me.dtFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
-        
+
         Me.lblPeriodoFacturadoT.Enabled = Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio
-        
+
         Me.lblPeriodoFacturadoD.Enabled = Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio
         Me.dtFechaPagoCreditoDesde.Enabled = Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio
-        
+
         Me.lblPeriodoFacturadoH.Enabled = Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio
         Me.dtFechaPagoCreditoHasta.Enabled = Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio
- 
+
 
     End If
-    
-      'fce_nemer_03062020_#133
-   ' If Factura.ConceptoIncluir = ConceptoProducto Then
-            'Me.lblFechaServDesde.Enabled = False
-            'Me.dtFechaServDesde.Enabled = False
-            'Me.lblFechaServHasta.Enabled = False
-           ' Me.dtFechaServHasta.Enabled = False
-   ' End If
+
+    'fce_nemer_03062020_#133
+    ' If Factura.ConceptoIncluir = ConceptoProducto Then
+    'Me.lblFechaServDesde.Enabled = False
+    'Me.dtFechaServDesde.Enabled = False
+    'Me.lblFechaServHasta.Enabled = False
+    ' Me.dtFechaServHasta.Enabled = False
+    ' End If
 
 End Sub
 
@@ -1882,15 +1882,15 @@ Private Sub cboMoneda_Click()
 End Sub
 
 Private Sub cboMonedaAjuste_Click()
-If IsSomething(Factura) And Me.cboMoneda.ListIndex <> -1 And Not dataLoading Then
-         Factura.TipoCambioAjuste = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex)).Cambio
+    If IsSomething(Factura) And Me.cboMoneda.ListIndex <> -1 And Not dataLoading Then
+        Factura.TipoCambioAjuste = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex)).Cambio
     End If
 End Sub
 
 Private Sub cboPadron_Click()
-    
+
     If IsSomething(Factura.cliente) And Not dataLoading Then
-         MostrarPercepcionIIBB
+        MostrarPercepcionIIBB
     End If
 End Sub
 Private Sub LimpiarTotales()
@@ -1904,44 +1904,44 @@ End Sub
 
 Private Sub cboTiposFactura_Click()
 
-If Me.cboTiposFactura.ListIndex = -1 Then Exit Sub
+    If Me.cboTiposFactura.ListIndex = -1 Then Exit Sub
 
 
     Dim Id As Long
-    
+
     Id = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
-    
+
     Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(Id)
 
 
     '1 11 19
-'    Me.lblCbuCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
+    '    Me.lblCbuCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
     Me.frmFC.Enabled = Factura.esCredito
 
     'Me.dtFechaPagoCredito.Enabled = Factura.EsCredito Or Factura.Tipo.PuntoVenta.CaeManual
-    
+
     Me.dtFechaPagoCreditoDesde.Enabled = Factura.esCredito
     Me.dtFechaPagoCreditoHasta.Enabled = Factura.esCredito
-    
+
     Me.cboCuentasCBU.Enabled = Factura.esCredito
-    
+
     'Me.lblFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
     'Me.dtFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
-    
+
     Me.LblCBU.Enabled = Factura.esCredito
-   
+
     'fce_nemer_02062020_#113
     Me.lblPeriodoFacturadoT.Enabled = Factura.esCredito
     Me.lblPeriodoFacturadoD.Enabled = Factura.esCredito
     Me.lblPeriodoFacturadoH.Enabled = Factura.esCredito
-    
+
     'fce_nemer_03062020_#133
     'Me.lblFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsElectronico
     'Me.dtFechaPagoCredito.Enabled = Factura.Tipo.PuntoVenta.EsElectronico
-    
-   
+
+
     Me.lblEsCredito.caption = Factura.DescripcionCreditoAdicional
-    
+
     Me.lblVerCbu.Visible = True
     If Not Factura.esCredito Then
         Me.lblVerCbu = "NO INFORMADO"
@@ -1949,49 +1949,49 @@ If Me.cboTiposFactura.ListIndex = -1 Then Exit Sub
 
 
     If Factura.Id = 0 Then    'agregado para q no cambie el nro de factura cuando estoy en edicion yu elijo otro cliente
- '       Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
- '       If Factura.Tipo.PuntoVenta.EsElectronico Then
+        '       Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
+        '       If Factura.Tipo.PuntoVenta.EsElectronico Then
 
 
- '           Dim Ult As String
- '          Me.txtNumero.text = "0000"    'ERPHelper.GetUltimoAutorizado(Factura.Tipo.PuntoVenta.PuntoVenta, Factura.Tipo.id)
-'Else
+        '           Dim Ult As String
+        '          Me.txtNumero.text = "0000"    'ERPHelper.GetUltimoAutorizado(Factura.Tipo.PuntoVenta.PuntoVenta, Factura.Tipo.id)
+        'Else
 
 
- Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura), "00000000") 'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
-  Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
+        Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura), "00000000")    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
+        Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
 
 
-'        End If
-        Else
+        '        End If
+    Else
         If Factura.estado = EstadoFacturaCliente.Aprobada Then
-        Me.txtNumero.text = Format(Factura.numero, "00000000")   'Factura.NumeroFormateado
-      
+            Me.txtNumero.text = Format(Factura.numero, "00000000")   'Factura.NumeroFormateado
+
         Else
-         If Factura.Tipo.PuntoVenta.CaeManual Then
-            Me.txtNumero.text = Format(Factura.numero, "00000000")
-         Else
-         Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura), "00000000")
-          End If
+            If Factura.Tipo.PuntoVenta.CaeManual Then
+                Me.txtNumero.text = Format(Factura.numero, "00000000")
+            Else
+                Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura), "00000000")
+            End If
         End If
-'        If Factura.Tipo.PuntoVenta.EsElectronico Then
-'           Me.txtNumero.text = "0000"
-'        Else
-            'Me.txtNumero.text = Format(DAOFactura.proximaFactura(factura.Tipo.id), "00000000") 'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
-'        End If
-        End If
-    
- Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
-    
-ValidarEsCredito
+        '        If Factura.Tipo.PuntoVenta.EsElectronico Then
+        '           Me.txtNumero.text = "0000"
+        '        Else
+        'Me.txtNumero.text = Format(DAOFactura.proximaFactura(factura.Tipo.id), "00000000") 'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
+        '        End If
+    End If
+
+    Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
+
+    ValidarEsCredito
 End Sub
 
 Private Sub chkEsCredito_Click()
 
-Factura.esCredito = Me.chkEsCredito.value
+    Factura.esCredito = Me.chkEsCredito.value
 
-  ValidarEsCredito
-  cboTiposFactura_Click
+    ValidarEsCredito
+    cboTiposFactura_Click
 End Sub
 
 Private Sub cmdNueva_Click()
@@ -2001,24 +2001,24 @@ End Sub
 
 
 Private Sub dtFechaPagoCredito_Change()
-   If Not dataLoading Then
+    If Not dataLoading Then
         Factura.fechaPago = Me.dtFechaPagoCredito.value
     End If
-    
+
     Me.txtDiasVenc = DateDiff("d", Me.dtpFecha, Me.dtFechaPagoCredito)
-    
+
 End Sub
 
 'fce_nemer_28052020
 Private Sub dtFechaPagoCreditoDesde_Change()
-   If Not dataLoading Then
+    If Not dataLoading Then
         Factura.FechaVtoDesde = Me.dtFechaPagoCreditoDesde.value
     End If
 End Sub
 
 'fce_nemer_28052020
 Private Sub dtFechaPagoCreditoHasta_Change()
-   If Not dataLoading Then
+    If Not dataLoading Then
         Factura.FechaVtoHasta = Me.dtFechaPagoCreditoHasta.value
     End If
 End Sub
@@ -2040,20 +2040,20 @@ End Sub
 
 Private Sub dtpFecha_Change()
     If Not dataLoading Then
-        
+
         Factura.FechaEmision = Me.dtpFecha.value
-        
+
         'fce_nemer_02062020_#113
         'Me.dtFechaServDesde.value = Me.dtpFecha.value
         'Me.dtFechaServHasta.value = Me.dtpFecha.value
-        
+
         'fce_nemer_09062020
         txtDiasVenc_LostFocus
-        
+
         Me.txtDiasVenc = DateDiff("d", Me.dtpFecha, Me.dtFechaPagoCredito)
-        
+
     End If
-    
+
 
 End Sub
 
@@ -2061,7 +2061,7 @@ End Sub
 
 
 Private Sub Form_Load()
-    
+
     Customize Me
     dataLoading = True
     DAOCliente.llenarComboXtremeSuite Me.cboCliente
@@ -2070,46 +2070,46 @@ Private Sub Form_Load()
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedaAjuste, True
     DAOCuentaBancaria.llenarComboCBU Me.cboCuentasCBU
     'Me.cboCuentasCBU.Visible = False
-    
-     'opcional 27
-    
+
+    'opcional 27
+
     Me.cboOpcional27.Clear
     Me.cboOpcional27.AddItem "TRANSFERENCIA AL SISTEMA DE CIRCULACION ABIERTA"
     Me.cboOpcional27.ItemData(Me.cboOpcional27.NewIndex) = 1
-    
-       Me.cboOpcional27.AddItem "AGENTE DE DEPOSITO COLECTIVO "
-    Me.cboOpcional27.ItemData(Me.cboOpcional27.NewIndex) = 2
-  
-    
-    
 
-    
+    Me.cboOpcional27.AddItem "AGENTE DE DEPOSITO COLECTIVO "
+    Me.cboOpcional27.ItemData(Me.cboOpcional27.NewIndex) = 2
+
+
+
+
+
     If Not IsSomething(Factura) Then
         Set Factura = New Factura
         Factura.Detalles = New Collection
         Set Factura.Tipo = New clsTipoFacturaDiscriminado
-        
+
         Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(1, Me.cboConceptosAIncluir)
-        
+
         Factura.Tipo.TipoDoc = NuevoTipoDocumento
         Me.caption = "Nueva " & StrConv(Factura.TipoDocumentoDescription, vbProperCase)
         Me.dtpFecha.value = Now
-        
+
         Me.dtFechaPagoCredito.value = Now
-        
+
         'fce_nemer_28052020
         Me.dtFechaPagoCreditoDesde.value = Now
         Me.dtFechaPagoCreditoHasta.value = Now
-        
+
         'fce_nemer_02062020_#113
         'Me.dtFechaServDesde.value = Factura.FechaEmision
         'Me.dtFechaServHasta.value = Factura.FechaEmision
-        
-  
+
+
         '#218 consultar con karin cual quiere dejar por default
-              Me.cboOpcional27.ListIndex = -1
-              
-       
+        Me.cboOpcional27.ListIndex = -1
+
+
         If Me.cboMoneda.ListIndex <> -1 Then
             Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
         End If
@@ -2119,7 +2119,7 @@ Private Sub Form_Load()
 
     suscId = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, TipoSuscripcion.FacturarRemitosDetalle_, True
-   ' Me.lblBuscandoPercepcion.Visible = False
+    ' Me.lblBuscandoPercepcion.Visible = False
     GridEXHelper.CustomizeGrid Me.gridDetalles, , True
 
     Me.cboPadron.Clear
@@ -2136,17 +2136,17 @@ Private Sub Form_Load()
 
     If Factura.Id = 0 Then
         Factura.FechaEmision = Now
-        
+
         Factura.fechaPago = Now
-        
+
         'fce_nemer_28052020
         Factura.FechaVtoDesde = Now
         Factura.FechaVtoHasta = Now
-        
+
         'fce_nemer_02062020_#113
         'Me.dtFechaServDesde.value = Factura.FechaEmision
         'Me.dtFechaServHasta.value = Factura.FechaEmision
-        
+
         Factura.estado = EstadoFacturaCliente.EnProceso
         LimpiarFactura
         LimpiarCliente
@@ -2159,12 +2159,12 @@ Private Sub Form_Load()
 
     dataLoading = False
 
-     
-     
+
+
     Me.grpDatos.Enabled = Not ReadOnly
     Me.cboMonedaAjuste.Enabled = Not ReadOnly
     'Me.grpDetalles.Enabled = Not ReadOnly
-    
+
     If ReadOnly Then
         Me.gridDetalles.EditMode = jgexEditModeOff
         Me.gridDetalles.AllowAddNew = False
@@ -2183,7 +2183,7 @@ Private Sub Form_Load()
     End If
 
     If EsAnticipo Or Factura.EsAnticipo Then
-    
+
         Me.caption = "Anticipo " & Me.caption
         Me.gridDetalles.Columns(1).EditType = jgexEditNone
         Me.gridDetalles.AllowDelete = False
@@ -2195,7 +2195,7 @@ Private Sub Form_Load()
     Me.PushButton2.Enabled = Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT
     Me.btnGuardar.Enabled = Not ReadOnly Or EsAnticipo
     Me.btnItemRemito.Enabled = Not ReadOnly And Not EsAnticipo
-    
+
     'fce_nemer_16062020
     Me.frmTextoAdicional.Enabled = Not ReadOnly
     Me.txtTextoAdicional.Enabled = Not ReadOnly
@@ -2209,14 +2209,14 @@ Private Sub Form_Load()
     Me.Label6.Enabled = Not ReadOnly
     Me.cboTiposFactura.Enabled = Not ReadOnly
     Me.Label14.Enabled = Not ReadOnly
-    
+
     If IsSomething(Factura) And IsSomething(Factura.Tipo) And IsSomething(Factura.Tipo.PuntoVenta) Then
         Me.txtNumero.Enabled = Not ReadOnly And (Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual)
     Else
-        Me.txtNumero.Enabled = Not ReadOnly 'And Not factura.Tipo.PuntoVenta.EsElectronico
+        Me.txtNumero.Enabled = Not ReadOnly    'And Not factura.Tipo.PuntoVenta.EsElectronico
     End If
-    
-  '  Me.txtNumero.Enabled = Not ReadOnly 'And Not factura.Tipo.PuntoVenta.EsElectronico
+
+    '  Me.txtNumero.Enabled = Not ReadOnly 'And Not factura.Tipo.PuntoVenta.EsElectronico
     Me.Label15.Enabled = Not ReadOnly
     Me.dtpFecha.Enabled = Not ReadOnly
     Me.Label16.Enabled = Not ReadOnly
@@ -2268,18 +2268,18 @@ Private Sub Form_Load()
     Me.Label13.Enabled = Not ReadOnly
     Me.chkEsCredito.Enabled = Not ReadOnly
     Me.Label23.Enabled = Not ReadOnly
-        
+
     Me.Frame1.Enabled = Not ReadOnly
-    
+
     Me.PushButton1.Enabled = Not ReadOnly
     Me.PushButton2.Enabled = Not ReadOnly
-    
+
     ValidarEsCredito
-    
+
     ''Me.caption = caption & " (" & Name & ")"
-    
+
     'Me.cboCliente.ListIndex = "336"
-    
+
 End Sub
 
 Private Sub LimpiarFactura()
@@ -2288,9 +2288,9 @@ Private Sub LimpiarFactura()
     'Me.lblNCND.caption = vbNullString
     Me.txtReferencia.text = vbNullString
     Me.txtDiasVenc.text = vbNullString
-    
+
     Me.txtCondObs.text = vbNullString
-    
+
 End Sub
 
 Private Sub LimpiarCliente()
@@ -2302,12 +2302,12 @@ Private Sub LimpiarCliente()
     Me.lblCodPostal.caption = vbNullString
 End Sub
 
- Private Sub CargarFactura()
-    
+Private Sub CargarFactura()
+
     If Not IsSomething(Factura) Then Exit Sub
     Me.cboTiposFactura.Enabled = Not (Factura.estado = EstadoFacturaCliente.Aprobada)
-    
-    
+
+
     Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual And Not ReadOnly
 
 
@@ -2323,16 +2323,16 @@ End Sub
 
         Me.txtDetallesCAE.caption = ""
     End If
-    
-    
+
+
     If IsSomething(Factura.cliente) Then
         Me.cboCliente.ListIndex = funciones.PosIndexCbo(Factura.cliente.Id, Me.cboCliente)
         MostrarCliente
     Else
         LimpiarCliente
     End If
-    
-    
+
+
     Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.Id, Me.cboMoneda)
     Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(Factura.ConceptoIncluir, Me.cboConceptosAIncluir)
 
@@ -2341,23 +2341,23 @@ End Sub
     If Factura.Id = 0 Then
         'creo que aaca no entra nunca
         Dim classA As New classAdministracion
-        Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura)) 'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
+        Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura))    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
     Else
-        
-             If Factura.estado = EstadoFacturaCliente.EnProceso Then
 
-                If Factura.Tipo.PuntoVenta.CaeManual Then
+        If Factura.estado = EstadoFacturaCliente.EnProceso Then
+
+            If Factura.Tipo.PuntoVenta.CaeManual Then
                 Me.txtNumero.text = Format(Factura.numero)
-                Else
-            
-                    Dim prox As Long
-                    prox = DAOFactura.proximaFactura(Factura)
-                    Factura.numero = prox
-                   Me.txtNumero.text = Format(prox)
-                   End If
+            Else
+
+                Dim prox As Long
+                prox = DAOFactura.proximaFactura(Factura)
+                Factura.numero = prox
+                Me.txtNumero.text = Format(prox)
+            End If
         End If
-        
-        
+
+
         Set tipos = DAOTipoFacturaDiscriminado.FindAllByFilter("id_iva=" & Factura.TipoIVA.idIVA & " and tipo_Documento=" & Factura.TipoDocumento)    'acft.id IN (select TipoFactura FROM AdminConfigFacturas where idIVA = " & Factura.TipoIVA.idIVA & ")")
 
         Me.cboTiposFactura.Clear
@@ -2374,7 +2374,7 @@ End Sub
 
         Me.txtNumero.text = Factura.numero
     End If
-    
+
     Me.dtpFecha.value = Factura.FechaEmision
     Me.txtPercepcion.text = Round((Factura.AlicuotaPercepcionesIIBB - 1) * 100, 2)
     Me.txtDiasVenc.text = Factura.CantDiasPago
@@ -2382,85 +2382,85 @@ End Sub
     Me.txtCondObs.text = Factura.observaciones
     Me.txtTextoAdicional.text = Factura.TextoAdicional
     Me.lblTipoFactura.caption = Factura.Tipo.TipoFactura.Tipo
-    
+
     Me.dtFechaPagoCredito = Factura.fechaPago
-          
-        'fce_nemer_28052020
-        Me.dtFechaPagoCreditoDesde = Factura.FechaVtoDesde
-        Me.dtFechaPagoCreditoHasta = Factura.FechaVtoHasta
-          
-        'fce_nemer_02062020_#113
-        'Me.dtFechaServDesde = Factura.FechaServDesde
-        'Me.dtFechaServHasta = Factura.FechaServHasta
 
-    
+    'fce_nemer_28052020
+    Me.dtFechaPagoCreditoDesde = Factura.FechaVtoDesde
+    Me.dtFechaPagoCreditoHasta = Factura.FechaVtoHasta
+
+    'fce_nemer_02062020_#113
+    'Me.dtFechaServDesde = Factura.FechaServDesde
+    'Me.dtFechaServHasta = Factura.FechaServHasta
+
+
     Me.txtTasaAjuste.text = Factura.TasaAjusteMensual
-   ' Me.txtCbuCredito = Factura.CBU
-    
-   Dim c As CuentaBancaria
-   
-         If Factura.esCredito And LenB(Factura.CBU) > 0 Then
-         
-        Set c = DAOCuentaBancaria.FindByCBU(Factura.CBU)
-      
-        Me.chkEsCredito.value = Factura.esCredito
-    
-      
-      
-      
-      If ReadOnly Then
-      
-            Me.cboCuentasCBU.Visible = IsSomething(c)
-        
-            Me.lblVerCbu.Visible = Not IsSomething(c)
-         Me.chkEsCredito.Enabled = False
-         Me.cboOpcional27.Enabled = False
-     
-       If IsSomething(c) Then
-                 Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.Id, Me.cboCuentasCBU)
-       Else
-                Me.lblVerCbu = Factura.CBU
-       End If
-      
-      
-       Else
-        Me.lblVerCbu.Visible = False
-             If IsSomething(c) Then
-                 Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.Id, Me.cboCuentasCBU)
-       End If
-        
-      
-       End If
+    ' Me.txtCbuCredito = Factura.CBU
 
-          
-      Else
-       Me.cboCuentasCBU.Visible = False
-            Me.lblVerCbu.Visible = True
-            Me.lblVerCbu = "NO INFORMADO"
-      End If
-          ConceptosIncuir
-          
-      '''TODO: SEGUIR ACA 1-5-2020
-'          If IsSomething(c) Then
-'          Me.lblVerCbu.Visible = False
-'          Me.cboCuentasCBU.Visible = True
-'            Set c = DAOCuentaBancaria.FindByCBU(Factura.CBU)
-'             Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
-'          Else
-'            Me.lblVerCbu.Visible = True
-'            Me.cboCuentasCBU.Visible = False
-'             Me.lblVerCbu = Factura.CBU
-'          End If
-'        End If
-    
+    Dim c As CuentaBancaria
+
+    If Factura.esCredito And LenB(Factura.CBU) > 0 Then
+
+        Set c = DAOCuentaBancaria.FindByCBU(Factura.CBU)
+
+        Me.chkEsCredito.value = Factura.esCredito
+
+
+
+
+        If ReadOnly Then
+
+            Me.cboCuentasCBU.Visible = IsSomething(c)
+
+            Me.lblVerCbu.Visible = Not IsSomething(c)
+            Me.chkEsCredito.Enabled = False
+            Me.cboOpcional27.Enabled = False
+
+            If IsSomething(c) Then
+                Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.Id, Me.cboCuentasCBU)
+            Else
+                Me.lblVerCbu = Factura.CBU
+            End If
+
+
+        Else
+            Me.lblVerCbu.Visible = False
+            If IsSomething(c) Then
+                Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.Id, Me.cboCuentasCBU)
+            End If
+
+
+        End If
+
+
+    Else
+        Me.cboCuentasCBU.Visible = False
+        Me.lblVerCbu.Visible = True
+        Me.lblVerCbu = "NO INFORMADO"
+    End If
+    ConceptosIncuir
+
+    '''TODO: SEGUIR ACA 1-5-2020
+    '          If IsSomething(c) Then
+    '          Me.lblVerCbu.Visible = False
+    '          Me.cboCuentasCBU.Visible = True
+    '            Set c = DAOCuentaBancaria.FindByCBU(Factura.CBU)
+    '             Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
+    '          Else
+    '            Me.lblVerCbu.Visible = True
+    '            Me.cboCuentasCBU.Visible = False
+    '             Me.lblVerCbu = Factura.CBU
+    '          End If
+    '        End If
+
 
     CargarDetalles
-    
+
     Totalizar
     ValidarEsCredito
-    
+
     Me.cboOpcional27.ListIndex = funciones.PosIndexCbo(Factura.Opcional27, Me.cboOpcional27)
-    
+
 End Sub
 
 Private Sub ValidarEsElectronico()
@@ -2498,21 +2498,21 @@ Private Sub ValidarEsElectronico()
 End Sub
 
 Private Sub ValidarEsCredito()
-ValidarEsElectronico
- 
-  Me.frmFC.Enabled = Factura.esCredito
-  
-  Me.LblCBU.Enabled = Factura.esCredito
-  Me.cboCuentasCBU.Enabled = Factura.esCredito
-  Me.cboOpcional27.Enabled = Factura.esCredito
-  Me.cboCuentasCBU.Visible = Factura.esCredito
-  Me.txtCondObs.ListIndex = 1
-  
-    
+    ValidarEsElectronico
+
+    Me.frmFC.Enabled = Factura.esCredito
+
+    Me.LblCBU.Enabled = Factura.esCredito
+    Me.cboCuentasCBU.Enabled = Factura.esCredito
+    Me.cboOpcional27.Enabled = Factura.esCredito
+    Me.cboCuentasCBU.Visible = Factura.esCredito
+    Me.txtCondObs.ListIndex = 1
+
+
     ConceptosIncuir
     If IsSomething(Factura) And IsSomething(Factura.Tipo) And IsSomething(Factura.Tipo.TipoFactura) Then
         If Factura.Tipo.TipoFactura.Tipo = "E" Then
-        chkEsCredito.Enabled = False
+            chkEsCredito.Enabled = False
         End If
     End If
 End Sub
@@ -2675,11 +2675,11 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 
 
-Dim A As frmPlaneamientoRemitoVer
+    Dim A As frmPlaneamientoRemitoVer
 
-Set A = EVENTO.Originador
+    Set A = EVENTO.Originador
 
-If A.IdFormSuscriber <> ISuscriber_id Then Exit Function
+    If A.IdFormSuscriber <> ISuscriber_id Then Exit Function
 
     If EVENTO.Tipo = FacturarRemitosDetalle_ Then
         If ReadOnly Then
@@ -2751,7 +2751,7 @@ End Function
 
 Private Sub Label23_Click()
     cboTiposFactura_Click
-    
+
 End Sub
 
 Private Sub mnuAplicarDetalleRemito_Click()
@@ -2789,17 +2789,17 @@ Private Sub PushButton1_Click()
 
     If IsSomething(Factura.cliente) Then
         Set Selecciones.OrdenTrabajo = Nothing
-        
+
         Set frmPlaneamientoPedidosSeleccion.cliente = Factura.cliente
-        
+
         frmPlaneamientoPedidosSeleccion.MostrarAnticipo = True
-        
+
         frmPlaneamientoPedidosSeleccion.Show 1
-        
+
         Dim Ot As OrdenTrabajo
-        
+
         If IsSomething(Selecciones.OrdenTrabajo) Then
-        
+
             If Not funciones.BuscarEnColeccion(Factura.OTsFacturadasAnticipo, CStr(Selecciones.OrdenTrabajo.Id)) Then
                 Set Ot = DAOOrdenTrabajo.FindById(Selecciones.OrdenTrabajo.Id)
                 Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, True, True, True)
@@ -2831,46 +2831,46 @@ Private Sub PushButton1_Click()
                     End If
                     deta.detalle = deta.detalle & " " & Ot.IdFormateado
 
-            'bug #2 INICIO
-            
-                                If Ot.moneda.Id <> Factura.moneda.Id Then
-                           
-                                    If Factura.moneda.Patron Then
+                    'bug #2 INICIO
 
-'                                        Set Monedas.MonedaConvertibles = Nothing
-'                                        Set frmAdminComprobantesEmitidosCambioMoneda.Ot = Ot
-'                                        Set frmAdminComprobantesEmitidosCambioMoneda.Factura = Factura
-'                                        frmAdminComprobantesEmitidosCambioMoneda.Show 1
-                                        
-                                    MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                              & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                                              & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
-                                              & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de OT: " & Ot.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                                              deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
-                                                
-                                    Else
-                                    MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                              & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                                              & "Se procede a realizar la conversión correspondiente:" & vbCrLf & "" _
-                                              & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de Comprobante: " & Factura.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                                             deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
-                                    End If
-                                    
-                                 Else
-                                     MsgBox ("La Moneda de la OT es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                     & "La Moneda del Comprobante es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                                     & "No se realiza conversión:" & vbCrLf & "" _
-                                     & "Cálculo:" & vbCrLf & " Total de OT: " & Ot.Total & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                                     deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.Anticipo) / 100)
+                    If Ot.moneda.Id <> Factura.moneda.Id Then
 
-                                 End If
+                        If Factura.moneda.Patron Then
+
+                            '                                        Set Monedas.MonedaConvertibles = Nothing
+                            '                                        Set frmAdminComprobantesEmitidosCambioMoneda.Ot = Ot
+                            '                                        Set frmAdminComprobantesEmitidosCambioMoneda.Factura = Factura
+                            '                                        frmAdminComprobantesEmitidosCambioMoneda.Show 1
+
+                            MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
+                                  & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
+                                  & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
+                                  & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de OT: " & Ot.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
+                            deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
+
+                        Else
+                            MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
+                                  & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
+                                  & "Se procede a realizar la conversión correspondiente:" & vbCrLf & "" _
+                                  & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de Comprobante: " & Factura.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
+                            deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
+                        End If
+
+                    Else
+                        MsgBox ("La Moneda de la OT es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
+                              & "La Moneda del Comprobante es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
+                              & "No se realiza conversión:" & vbCrLf & "" _
+                              & "Cálculo:" & vbCrLf & " Total de OT: " & Ot.Total & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
+                        deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.Anticipo) / 100)
+
+                    End If
 
                 Next Ot
 
                 CargarDetalles
-                
+
                 Totalizar
-            
+
             End If
         End If
     Else
@@ -2882,25 +2882,25 @@ End Sub
 'fce_nemer_09062020
 Public Sub txtDiasVenc_LostFocus()
     If Me.txtDiasVenc = vbNullString Then
-    Me.txtDiasVenc = 0
+        Me.txtDiasVenc = 0
     End If
 
-            Me.dtFechaPagoCredito.value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
+    Me.dtFechaPagoCredito.value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
 
 End Sub
-    
+
 
 
 
 Private Sub txtDiasVenc_Change()
     If Not dataLoading Then
         Factura.CantDiasPago = Val(Me.txtDiasVenc.text)
-        
+
 
     End If
-    
 
-    
+
+
 End Sub
 
 Private Sub txtNumero_Change()
