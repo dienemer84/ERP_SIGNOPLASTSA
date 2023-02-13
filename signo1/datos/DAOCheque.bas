@@ -58,7 +58,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
     Set rs = conectar.RSFactory(q)
     
-    Debug.Print (q)
+'    Debug.Print (q)
 
     Dim fieldsIndex As Dictionary
     BuildFieldsIndex rs, fieldsIndex
@@ -78,7 +78,8 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
     'tickEnd = GetTickCount
 
     'Debug.Print tickEnd - tickStart, "ms elapsed"
-
+    
+    
     Set FindAll = Cheques
     Exit Function
 
@@ -87,8 +88,8 @@ err1:
 End Function
 
 Public Function FindAllDisponiblesByChequera(chequeraId As Long) As Collection
-
     Set FindAllDisponiblesByChequera = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_FECHA_VENCIMIENTO & " IS NULL AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_EN_CARTERA & " = 0")
+
 End Function
 
 Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
@@ -99,6 +100,7 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
     Else
         Set FindByChequeraAndId = col.item(1)
     End If
+    
 End Function
 
 Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As cheque
@@ -109,6 +111,7 @@ Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As chequ
     Else
         Set FindByChequeraAndNro = col.item(1)
     End If
+    
 End Function
 
 Public Function FindById(Id As Long) As cheque
@@ -121,7 +124,6 @@ Public Function FindById(Id As Long) As cheque
     End If
 
 End Function
-
 
 Public Function FindAllByChequeraId(chequeraId As Long) As Collection
     Set FindAllByChequeraId = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId)

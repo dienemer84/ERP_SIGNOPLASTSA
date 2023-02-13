@@ -68,9 +68,12 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
+      SelectedItem    =   3
       Item(0).Caption =   "Cartera"
-      Item(0).ControlCount=   1
+      Item(0).ControlCount=   3
       Item(0).Control(0)=   "grid_cartera_cheques"
+      Item(0).Control(1)=   "Frame3"
+      Item(0).Control(2)=   "Frame4"
       Item(1).Caption =   "Administrar Chequeras"
       Item(1).ControlCount=   3
       Item(1).Control(0)=   "grid_chequeras"
@@ -85,12 +88,58 @@ Begin VB.Form frmAdminCheques
       Item(3).Control(0)=   "GroupBox3"
       Item(3).Control(1)=   "grpContador"
       Item(3).Control(2)=   "grdCheques3eros"
-      Begin XtremeSuiteControls.GroupBox grpContador 
-         Height          =   615
+      Begin VB.Frame Frame4 
+         Caption         =   "Frame4"
+         Height          =   735
          Left            =   -69880
-         TabIndex        =   44
+         TabIndex        =   50
          Top             =   2040
          Visible         =   0   'False
+         Width           =   15135
+      End
+      Begin VB.Frame Frame3 
+         Caption         =   "Frame3"
+         Height          =   1695
+         Left            =   -69880
+         TabIndex        =   49
+         Top             =   360
+         Visible         =   0   'False
+         Width           =   15135
+         Begin VB.TextBox Text1 
+            Height          =   375
+            Left            =   1320
+            TabIndex        =   52
+            Top             =   360
+            Width           =   2535
+         End
+         Begin XtremeSuiteControls.PushButton btnBuscarEnCartera 
+            Height          =   495
+            Left            =   13320
+            TabIndex        =   51
+            Top             =   720
+            Width           =   1575
+            _Version        =   786432
+            _ExtentX        =   2778
+            _ExtentY        =   873
+            _StockProps     =   79
+            Caption         =   "Buscar"
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            UseVisualStyle  =   -1  'True
+         End
+      End
+      Begin XtremeSuiteControls.GroupBox grpContador 
+         Height          =   615
+         Left            =   120
+         TabIndex        =   44
+         Top             =   2040
          Width           =   15135
          _Version        =   786432
          _ExtentX        =   26696
@@ -121,10 +170,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grdCheques3eros 
          Height          =   5055
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   38
          Top             =   2640
-         Visible         =   0   'False
          Width           =   15135
          _ExtentX        =   26696
          _ExtentY        =   8916
@@ -160,10 +208,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox3 
          Height          =   1695
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   37
          Top             =   360
-         Visible         =   0   'False
          Width           =   15135
          _Version        =   786432
          _ExtentX        =   26696
@@ -728,13 +775,14 @@ Begin VB.Form frmAdminCheques
          PrinterProperties=   "frmAdminCheques.frx":42B8
       End
       Begin GridEX20.GridEX grid_cartera_cheques 
-         Height          =   6825
-         Left            =   120
+         Height          =   4785
+         Left            =   -69880
          TabIndex        =   18
-         Top             =   600
+         Top             =   2880
+         Visible         =   0   'False
          Width           =   15075
          _ExtentX        =   26591
-         _ExtentY        =   12039
+         _ExtentY        =   8440
          Version         =   "2.0"
          DefaultGroupMode=   1
          BoundColumnIndex=   ""
@@ -873,6 +921,130 @@ End Sub
 
 
 
+Private Sub btnExportar_Click()
+
+    'FUNCIÓN PARA EXPORTAR A EXCEL
+
+
+    'INICIA EL PROGRESSBAR Y LO MUESTRA
+'    Me.progreso.Visible = True
+'    Me.lblExportando.Visible = True
+
+    'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+'    progreso.min = 0
+'    progreso.max = facturas.count
+
+
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+
+
+    Set xlWorkbook = xlApplication.Workbooks.Add
+
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    xlWorksheet.Cells(1, 1).value = "Reporte de Cheques de 3ros Utilizados"
+
+    xlWorksheet.Columns(4).HorizontalAlignment = xlLeft
+    xlWorksheet.Columns(7).HorizontalAlignment = xlLeft
+
+    xlWorksheet.Cells(2, 1).value = "Origen"
+    xlWorksheet.Cells(2, 2).value = "Banco"
+    xlWorksheet.Cells(2, 3).value = "Fecha Emisión"
+    xlWorksheet.Cells(2, 4).value = "Número Cheque"
+    xlWorksheet.Cells(2, 5).value = "Importe"
+    xlWorksheet.Cells(2, 6).value = "Fecha Vencimiento"
+    xlWorksheet.Cells(2, 7).value = "N° OP"
+
+
+    Dim idx As Integer
+    idx = 3
+
+    Dim che As cheque
+
+    'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
+
+
+    For Each che In cheques3
+
+        Debug.Print
+
+        xlWorksheet.Cells(idx, 1).value = che.OrigenDestino
+        xlWorksheet.Cells(idx, 2).value = che.Banco.nombre
+        xlWorksheet.Cells(idx, 3).value = che.FechaEmision
+        xlWorksheet.Cells(idx, 4).value = che.numero
+        xlWorksheet.Cells(idx, 5).value = che.Monto
+        xlWorksheet.Cells(idx, 6).value = che.FechaVencimiento
+        xlWorksheet.Cells(idx, 7).value = che.IdOrdenPagoOrigen
+        
+
+
+        idx = idx + 1
+
+        'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+'        progreso.value = d
+
+
+    Next
+
+    xlWorksheet.Cells(idx, 5).Formula = "=SUM(E3:E" & idx - 1 & ")"
+
+    'AUTOSIZE
+    xlApplication.ScreenUpdating = False
+
+    Dim wkSt As String
+
+    wkSt = xlWorksheet.Name
+
+    xlWorksheet.Cells.EntireColumn.AutoFit
+
+    xlWorkbook.Sheets(wkSt).Select
+
+    xlApplication.ScreenUpdating = True
+
+    xlWorksheet.PageSetup.Orientation = xlLandscape
+    xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+
+    Dim filename As String
+    filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
+
+    If Dir(filename) <> vbNullString Then Kill filename
+
+    xlWorkbook.SaveAs filename
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    funciones.ShellExecute 0, "open", filename, "", "", 0
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    'REINICIA EL PROGRESSBAR Y LO OCULTA
+'    progreso.value = 0
+'    Me.progreso.Visible = False
+'    Me.lblExportando.Visible = False
+End Sub
+
 Private Sub cmdCrear_Click()
     Dim x As Long
     Dim col As Collection
@@ -987,7 +1159,7 @@ Private Sub MostrarCartera()
     Set cartera = DAOCheques.FindAllEnCartera()
     Me.grid_cartera_cheques.ItemCount = 0
     Me.grid_cartera_cheques.ItemCount = cartera.count
-    
+
 
 
 End Sub
@@ -1027,9 +1199,9 @@ Private Sub grid_cartera_cheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBool
     cond2 = Not (IsNumeric(Me.grid_cartera_cheques.value(2)) And IsNumeric(Me.grid_cartera_cheques.value(1)))
     cond3 = False    ' Not (IsNumeric(Me.grid_cartera_cheques.value(5)) And Val(Me.grid_cartera_cheques.value(5)) > 0)
     Cancel = cond1 Or cond2 Or cond3
-    
 
-    
+
+
 End Sub
 
 Private Sub grid_cartera_cheques_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
@@ -1075,8 +1247,8 @@ Private Sub grid_cartera_cheques_UnboundReadData(ByVal RowIndex As Long, ByVal B
     End With
 
 
-    
-    
+
+
     Exit Sub
 err1:
 
