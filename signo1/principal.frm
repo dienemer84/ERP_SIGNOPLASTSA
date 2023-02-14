@@ -409,6 +409,12 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
             Dim frmMover As New frmMovimientoDeFondos
             frmMover.Show
+            
+        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA:
+
+            Dim f12323 As New frmAdminPagosCrearLiquidaciondeCaja
+            f12323.Show
+
 
         Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO:
 
@@ -1054,6 +1060,7 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Caja y Bancos", ID_GROUP.ID_GROUP_ADMINISTRACION__CAJAYBANCOS)
     AddButton ribbonGroup, "Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Depositos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR, Permisos.AdminCajayBancos
+    AddButton ribbonGroup, "Liquidación de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Crear Orden Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO, Permisos.AdminOPControl
     AddButton ribbonGroup, "Orden Pago Lista", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas
     AddButton ribbonGroup, "Compensatorios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS, Permisos.AdminOPControl
