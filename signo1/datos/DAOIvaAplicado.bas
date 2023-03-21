@@ -31,13 +31,13 @@ Public Function Save(fc As clsFacturaProveedor) As Boolean
 ' EN ESTA FUNCION AGREGO EL CALCULO QUE VA EN LA NUEVA COLUMNA IVA_CALCULADO
 ' EN ESTA COLUMNA VA EL VALOR DEL MONTO * VALOR DE ALICUOTA /100
 
-        Debug.Print ("-------------------")
-        Debug.Print (fc.IvaAplicado(K).alicuota.Id)
-        Debug.Print (fc.IvaAplicado(K).Monto)
-        Debug.Print (fc.Id)
-        Debug.Print (fc.IvaAplicado(K).alicuota.alicuota)
-        Debug.Print (fc.IvaAplicado(K).Monto * (fc.IvaAplicado(K).alicuota.alicuota / 100))
-        Debug.Print ("-------------------")
+'        'debug.print ("-------------------")
+'        'debug.print (fc.IvaAplicado(K).alicuota.Id)
+'        'debug.print (fc.IvaAplicado(K).Monto)
+'        'debug.print (fc.Id)
+'        'debug.print (fc.IvaAplicado(K).alicuota.alicuota)
+'        'debug.print (fc.IvaAplicado(K).Monto * (fc.IvaAplicado(K).alicuota.alicuota / 100))
+'        'debug.print ("-------------------")
         
 '22/08/2022
 ' COMENTO LA QUERY ANTERIOR

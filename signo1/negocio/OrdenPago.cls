@@ -258,6 +258,7 @@ Public Property Get IsValid() As Boolean
     End If
 
     If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
+
         AddValidationMessage "El total supuesto a pagar (" & Me.moneda.NombreCorto & " " & (Me.StaticTotal) & ") debe ser igual a lo que se va a pagar con valores (" & Me.moneda.NombreCorto & " " & Me.TotalOrigenes & ")."
     End If
 

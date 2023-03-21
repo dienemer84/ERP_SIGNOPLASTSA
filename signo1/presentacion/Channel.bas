@@ -35,16 +35,18 @@ Public Enum TipoSuscripcion
     FacturarRemitosDetalle_ = 21
     EnvioMail_ = 22
     Recibos_ = 23
+    
+    LiquidacionCaja_ = 24
 End Enum
 Private suscriptores As New Dictionary
 Public Function AgregarSuscriptor(value As ISuscriber, Tipo As TipoSuscripcion, Optional privateBroadcast As Boolean = False) As Boolean
     Dim tmpCol As Collection
     AgregarSuscriptor = True
 
-    If CStr(value.id) = vbNullString Then GoTo err1
+    If CStr(value.Id) = vbNullString Then GoTo err1
 
-    If suscriptores.Exists(CStr(value.id)) Then    'ya esta el suscriptor, le cambio la suscripcion que me pide, o la agrego
-        Set tmpCol = suscriptores.item(CStr(value.id))
+    If suscriptores.Exists(CStr(value.Id)) Then    'ya esta el suscriptor, le cambio la suscripcion que me pide, o la agrego
+        Set tmpCol = suscriptores.item(CStr(value.Id))
         If Not funciones.BuscarEnColeccion(tmpCol, CStr(Tipo)) Then tmpCol.Add Tipo, CStr(Tipo)
     Else    'lo agrego
         Set tmpCol = New Collection
@@ -52,7 +54,7 @@ Public Function AgregarSuscriptor(value As ISuscriber, Tipo As TipoSuscripcion, 
         tmpCol.Add Tipo, CStr(Tipo)
         tmpCol.Add privateBroadcast, "privateBroadcast"    'esto aca esta mal, porque tendria que ser por tipo no en general
 
-        suscriptores.Add CStr(value.id), tmpCol
+        suscriptores.Add CStr(value.Id), tmpCol
     End If
     Exit Function
 err1:
@@ -62,15 +64,15 @@ End Function
 
 Public Function RemoverSuscriptorParcial(value As ISuscriber, Tipo As TipoSuscripcion)
     Dim tmp As Collection
-    If suscriptores.Exists(CStr(value.id)) Then
-        Set tmp = suscriptores.item(CStr(value.id))
+    If suscriptores.Exists(CStr(value.Id)) Then
+        Set tmp = suscriptores.item(CStr(value.Id))
         If funciones.BuscarEnColeccion(tmp, CStr(Tipo)) Then
             tmp.remove CStr(Tipo)
         End If
     End If
 End Function
 Public Function RemoverSuscripcionTotal(value As ISuscriber)
-    If suscriptores.Exists(CStr(value.id)) Then suscriptores.remove (CStr(value.id))
+    If suscriptores.Exists(CStr(value.Id)) Then suscriptores.remove (CStr(value.Id))
 End Function
 
 

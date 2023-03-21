@@ -127,7 +127,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
                         
         perTodas = perTodas + per.Monto
                 
-        Debug.Print perTodas
+        'Debug.Print perTodas
         
         Next
 

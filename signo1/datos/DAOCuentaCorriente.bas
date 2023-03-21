@@ -18,10 +18,10 @@ Public Function ResumenSaldoProveedor() As Collection
     While Not rs.EOF And Not rs.BOF
 
 
-        Set col = DAOCuentaCorriente.FindAllDetallesProveedor(rs!id)
+        Set col = DAOCuentaCorriente.FindAllDetallesProveedor(rs!Id)
         saldo = GetSaldo(col)
 
-        If saldo > 0 Then dic.Add saldo, CStr(rs!id)
+        If saldo > 0 Then dic.Add saldo, CStr(rs!Id)
 
 
         rs.MoveNext
@@ -29,7 +29,7 @@ Public Function ResumenSaldoProveedor() As Collection
 
     Set ResumenSaldoProveedor = dic
     tickend = GetTickCount
-    Debug.Print tickend - tickStart
+    'Debug.Print tickend - tickStart
 
 
     Exit Function
@@ -240,7 +240,7 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
 
        ' If Orden.estado <> EstadoOrdenPago_Anulada Then
             Set detalle = New DTODetalleCuentaCorriente
-            detalle.Comprobante = "OP-" & Orden.id
+            detalle.Comprobante = "OP-" & Orden.Id
 
             '#178
             If (Orden.estado = EstadoOrdenPago_pendiente) Then
@@ -252,7 +252,7 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
             End If
 
             detalle.tipoComprobante = OrdenPago_
-            detalle.IdComprobante = Orden.id
+            detalle.IdComprobante = Orden.Id
 
             If (Orden.estado = EstadoOrdenPago_Anulada) Then
 
@@ -292,7 +292,7 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
         End If
 
         detalle.tipoComprobante = TipoComprobanteUsado.FacturaProveedor_
-        detalle.IdComprobante = fac.id
+        detalle.IdComprobante = fac.Id
 
         If InStr(fac.OrdenesPagoId, ",") > 0 Then
           detalle.Comprobante = detalle.Comprobante & " (Ops." & fac.OrdenesPagoId & ")"
@@ -320,7 +320,7 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
 
         detalle.AtributoExtra = False
         For Each Orden In ordenes
-            detalle.AtributoExtra = funciones.BuscarEnColeccion(Orden.FacturasProveedor, CStr(fac.id))
+            detalle.AtributoExtra = funciones.BuscarEnColeccion(Orden.FacturasProveedor, CStr(fac.Id))
             If detalle.AtributoExtra = True Then Exit For
         Next Orden
 
@@ -373,13 +373,13 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
         Next detalle
 
         Set Detalles = New Collection
-        Dim id As Long
-id = 0
+        Dim Id As Long
+Id = 0
         Set rs = conectar.RSFactory("SELECT * FROM tmp_cta_cte_sort ORDER BY fecha ASC")
         While Not rs.EOF
-        id = id + 1
+        Id = Id + 1
             Set detalle = New DTODetalleCuentaCorriente
-            detalle.tmpId = id
+            detalle.tmpId = Id
             detalle.Comprobante = rs!Comprobante
             If Not IsNull(rs!FEcha) Then detalle.FEcha = rs!FEcha
             detalle.Debe = rs!Debe
@@ -463,7 +463,7 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
 
        ' If Orden.estado <> EstadoOrdenPago_Anulada Then
             Set detalle = New DTODetalleCuentaCorriente
-            detalle.Comprobante = "OP-" & Orden.id
+            detalle.Comprobante = "OP-" & Orden.Id
             
             '#178
             If (Orden.estado = EstadoOrdenPago_pendiente) Then
@@ -475,7 +475,7 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
             End If
             
             detalle.tipoComprobante = OrdenPago_
-            detalle.IdComprobante = Orden.id
+            detalle.IdComprobante = Orden.Id
 
             If (Orden.estado = EstadoOrdenPago_Anulada) Then
             
@@ -515,7 +515,7 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         End If
         
         detalle.tipoComprobante = TipoComprobanteUsado.FacturaProveedor_
-        detalle.IdComprobante = fac.id
+        detalle.IdComprobante = fac.Id
         
         If InStr(fac.OrdenesPagoId, ",") > 0 Then
           detalle.Comprobante = detalle.Comprobante & " (Ops." & fac.OrdenesPagoId & ")"
@@ -540,7 +540,7 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
 
         detalle.AtributoExtra = False
         For Each Orden In ordenes
-            detalle.AtributoExtra = funciones.BuscarEnColeccion(Orden.FacturasProveedor, CStr(fac.id))
+            detalle.AtributoExtra = funciones.BuscarEnColeccion(Orden.FacturasProveedor, CStr(fac.Id))
             If detalle.AtributoExtra = True Then Exit For
         Next Orden
 
@@ -583,18 +583,18 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         saldo = 0
 
         Set Detalles = New Collection
-        Dim id As Long
-id = 0
+        Dim Id As Long
+Id = 0
         Set rs = conectar.RSFactory("SELECT * FROM tmp_cta_cte_sort ORDER BY fecha ASC")
         
         While Not rs.EOF
-        id = id + 1
+        Id = Id + 1
 
         'Agrego esto 2
         saldo = saldo + rs!Debe - rs!Haber
 
             Set detalle = New DTODetalleCuentaCorriente
-            detalle.tmpId = id
+            detalle.tmpId = Id
             detalle.Comprobante = rs!Comprobante
             If Not IsNull(rs!FEcha) Then detalle.FEcha = rs!FEcha
             detalle.Debe = rs!Debe
@@ -654,7 +654,7 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
         If fac.Saldado Then
             recs = vbNullString
-            Set rs = RSFactory("SELECT * FROM AdminRecibosDetalleFacturas WHERE idFactura =" & fac.id)
+            Set rs = RSFactory("SELECT * FROM AdminRecibosDetalleFacturas WHERE idFactura =" & fac.Id)
             While Not rs.EOF
                 recs = recs & "RC-" & rs!idRecibo & " "
                 rs.MoveNext
@@ -670,10 +670,10 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
         
         If fac.Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then
             detalle.Debe = 0
-            detalle.Haber = fac.totalEstatico.Total * fac.CambioAPatron
+            detalle.Haber = fac.TotalEstatico.Total * fac.CambioAPatron
             
         Else
-            detalle.Debe = fac.totalEstatico.Total * fac.CambioAPatron
+            detalle.Debe = fac.TotalEstatico.Total * fac.CambioAPatron
             detalle.Haber = 0
             
         End If
@@ -681,7 +681,7 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
         detalle.FEcha = fac.FechaEmision
         detalle.AtributoExtra = (fac.Saldado = TipoSaldadoFactura.saldadoTotal) Or (fac.Saldado = TipoSaldadoFactura.notaCredito)
         detalle.tipoComprobante = Factura_
-        detalle.IdComprobante = fac.id
+        detalle.IdComprobante = fac.Id
         
         Detalles.Add detalle
 
@@ -706,18 +706,18 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
     For Each rec In recibos
         Set detalle = New DTODetalleCuentaCorriente
 
-        detalle.Comprobante = "RC-" & rec.id
+        detalle.Comprobante = "RC-" & rec.Id
 
 
 
         'detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalEstatico.TotalReciboEstatico, rec.Moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.Moneda.Id), 2)
-        If rec.totalEstatico.TotalRecibidoEstatico > 0 Then
-            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.totalEstatico.TotalReciboEstatico, rec.moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.id), 2) + funciones.RedondearDecimales(MonedaConverter.Convertir(rec.aCuenta, rec.moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.id), 2)
+        If rec.TotalEstatico.TotalRecibidoEstatico > 0 Then
+            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalEstatico.TotalReciboEstatico, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2) + funciones.RedondearDecimales(MonedaConverter.Convertir(rec.ACuenta, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2)
         Else
             'Set rec.facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idFactura FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id & ")")
 
-            Set rec.cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.id & ")")
-            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalRecibido, rec.moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.id), 2)
+            Set rec.Cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id & ")")
+            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalRecibido, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2)
 
             'comentado el 3-7-13
             'detalle.Haber = detalle.Haber - rec.TotalRetenciones
@@ -727,13 +727,13 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
         detalle.FEcha = rec.FEcha
         detalle.tipoComprobante = Recibo_
-        detalle.IdComprobante = rec.id
+        detalle.IdComprobante = rec.Id
         Detalles.Add detalle
 
         For Each ret In rec.retenciones
             Set detalle = New DTODetalleCuentaCorriente
             detalle.tipoComprobante = Retencion_
-            detalle.IdComprobante = rec.id
+            detalle.IdComprobante = rec.Id
             detalle.Comprobante = "RET-" & ret.NroRetencion
             detalle.Haber = ret.Valor
             detalle.FEcha = rec.FEcha

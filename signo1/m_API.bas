@@ -369,7 +369,7 @@ Public Function AreLargePatternSupported() As Boolean
     osInfo.dwOSVersionInfoSize = Len(osInfo)
 
     Call GetVersionEx(osInfo)
-    Debug.Print osInfo.dwMinorVersion
+    'Debug.Print osInfo.dwMinorVersion
 
     '//**** Is the OS version is Win98+ or Win2k+ ****
     If ((osInfo.dwPlatformId = VER_PLATFORM_WIN32_WINDOWS) And ((osInfo.dwMajorVersion >= 4) And (osInfo.dwMinorVersion > 0))) Or _

@@ -58,7 +58,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
     Set rs = conectar.RSFactory(q)
     
-'    Debug.Print (q)
+'    'debug.print (q)
 
     Dim fieldsIndex As Dictionary
     BuildFieldsIndex rs, fieldsIndex

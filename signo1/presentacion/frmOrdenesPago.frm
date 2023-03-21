@@ -512,8 +512,8 @@ Private Sub llenarLista()
 End Sub
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.gridOrdenes.Width = Me.ScaleWidth - 50
-    Me.gridOrdenes.Height = Me.ScaleHeight - Me.gridOrdenes.Top
+    Me.gridOrdenes.Width = Me.ScaleWidth - 400
+    Me.gridOrdenes.Height = Me.ScaleHeight - 1800
 
     Me.GroupBox1.Width = Me.gridOrdenes.Width - 100
     GridEXHelper.AutoSizeColumns Me.gridOrdenes

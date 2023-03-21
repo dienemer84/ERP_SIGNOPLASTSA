@@ -774,7 +774,7 @@ Private Sub Command1_Click()
 
         If Not conectar.execute("INSERT INTO sp.detalles_pedidos_cantidad (id_detalle_pedido, cantidad, fecha, tipo_cantidad, monto) VALUES  (' " & rs!Id & " ',   '" & rs!Cantidad & " ',  '" & funciones.datetimeFormateada(Now) & "',    '2',    ' " & rs!Valor & " '     )") Then GoTo error1
         c = c + 1
-        Debug.Print c
+        'Debug.Print c
 
 
         rs.MoveNext

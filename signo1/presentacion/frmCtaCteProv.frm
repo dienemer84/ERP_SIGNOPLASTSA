@@ -479,7 +479,7 @@ Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
             End If
         End If
         
-        Debug.Print (deta.IdComprobante)
+        ''debug.print (deta.IdComprobante)
     
 End Sub
 

@@ -6,17 +6,17 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ClientHeight    =   8430
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   18915
+   ClientWidth     =   14280
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   4000
    ScaleMode       =   0  'User
-   ScaleWidth      =   21960
+   ScaleWidth      =   16578.84
    Begin XtremeSuiteControls.GroupBox GroupBox5 
       Height          =   2880
       Left            =   11160
-      TabIndex        =   37
+      TabIndex        =   35
       Top             =   0
       Width           =   7575
       _Version        =   786432
@@ -28,7 +28,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.GroupBox GroupBox4 
          Height          =   1935
          Left            =   120
-         TabIndex        =   38
+         TabIndex        =   36
          Top             =   120
          Width           =   7335
          _Version        =   786432
@@ -40,7 +40,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.ProgressBar progreso 
             Height          =   135
             Left            =   0
-            TabIndex        =   50
+            TabIndex        =   48
             Top             =   1800
             Visible         =   0   'False
             Width           =   7335
@@ -55,7 +55,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   44
+            TabIndex        =   42
             Top             =   1320
             Width           =   1095
          End
@@ -64,7 +64,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   43
+            TabIndex        =   41
             Top             =   240
             Width           =   1095
          End
@@ -73,7 +73,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   42
+            TabIndex        =   40
             Top             =   510
             Width           =   1095
          End
@@ -82,7 +82,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   41
+            TabIndex        =   39
             Top             =   1050
             Width           =   1095
          End
@@ -91,7 +91,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   40
+            TabIndex        =   38
             Top             =   780
             Width           =   1095
          End
@@ -100,7 +100,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   39
+            TabIndex        =   37
             Top             =   1590
             Width           =   1095
          End
@@ -108,7 +108,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.GroupBox gbBotones 
          Height          =   735
          Left            =   120
-         TabIndex        =   45
+         TabIndex        =   43
          Top             =   2040
          Width           =   7335
          _Version        =   786432
@@ -121,7 +121,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Default         =   -1  'True
             Height          =   390
             Left            =   120
-            TabIndex        =   46
+            TabIndex        =   44
             Top             =   240
             Width           =   1245
             _Version        =   786432
@@ -135,7 +135,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.PushButton cmdImprimir 
             Height          =   390
             Left            =   3000
-            TabIndex        =   47
+            TabIndex        =   45
             Top             =   240
             Width           =   1245
             _Version        =   786432
@@ -149,7 +149,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.PushButton cmdExportar 
             Height          =   390
             Left            =   1560
-            TabIndex        =   48
+            TabIndex        =   46
             Top             =   240
             Width           =   1245
             _Version        =   786432
@@ -163,7 +163,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.CheckBox checkVerIds 
             Height          =   255
             Left            =   4560
-            TabIndex        =   49
+            TabIndex        =   47
             Top             =   285
             Width           =   1095
             _Version        =   786432
@@ -177,23 +177,37 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   2880
+      Height          =   3360
       Left            =   0
       TabIndex        =   1
       Top             =   0
       Width           =   11130
       _Version        =   786432
       _ExtentX        =   19632
-      _ExtentY        =   5080
+      _ExtentY        =   5927
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       BackColor       =   16744576
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton btnClearCtaCble_Click 
+         Height          =   255
+         Left            =   5520
+         TabIndex        =   51
+         Top             =   1980
+         Width           =   420
+         _Version        =   786432
+         _ExtentX        =   741
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
       Begin XtremeSuiteControls.ComboBox cboOrdenImporte 
          Height          =   315
          Left            =   1440
-         TabIndex        =   21
-         Top             =   2360
+         TabIndex        =   19
+         Top             =   2835
          Width           =   3885
          _Version        =   786432
          _ExtentX        =   6853
@@ -204,15 +218,15 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin VB.TextBox txtMontoHasta1 
          Height          =   315
          Left            =   3720
-         TabIndex        =   18
-         Top             =   1965
+         TabIndex        =   16
+         Top             =   2445
          Width           =   1600
       End
       Begin VB.TextBox txtMontoDesde1 
          Height          =   315
          Left            =   1440
-         TabIndex        =   17
-         Top             =   1965
+         TabIndex        =   15
+         Top             =   2445
          Width           =   1600
       End
       Begin XtremeSuiteControls.PushButton btnClearFormaDePago 
@@ -310,7 +324,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.GroupBox GroupBox3 
          Height          =   1215
          Left            =   6240
-         TabIndex        =   23
+         TabIndex        =   21
          Top             =   240
          Width           =   4695
          _Version        =   786432
@@ -323,7 +337,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.DateTimePicker dtpDesdeCarga 
             Height          =   315
             Left            =   720
-            TabIndex        =   24
+            TabIndex        =   22
             Top             =   720
             Width           =   1470
             _Version        =   786432
@@ -336,7 +350,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.DateTimePicker dtpHastaCarga 
             Height          =   315
             Left            =   2925
-            TabIndex        =   25
+            TabIndex        =   23
             Top             =   720
             Width           =   1470
             _Version        =   786432
@@ -349,7 +363,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.ComboBox cboRangosCarga 
             Height          =   315
             Left            =   720
-            TabIndex        =   26
+            TabIndex        =   24
             Top             =   300
             Width           =   3675
             _Version        =   786432
@@ -363,7 +377,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.Label Label7 
             Height          =   195
             Left            =   120
-            TabIndex        =   29
+            TabIndex        =   27
             Top             =   360
             Width           =   480
             _Version        =   786432
@@ -378,7 +392,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Index           =   0
             Left            =   165
-            TabIndex        =   28
+            TabIndex        =   26
             Top             =   780
             Width           =   465
             _Version        =   786432
@@ -393,7 +407,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Index           =   0
             Left            =   2400
-            TabIndex        =   27
+            TabIndex        =   25
             Top             =   780
             Width           =   420
             _Version        =   786432
@@ -408,7 +422,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.GroupBox GroupBox2 
          Height          =   1215
          Left            =   6240
-         TabIndex        =   30
+         TabIndex        =   28
          Top             =   1560
          Width           =   4695
          _Version        =   786432
@@ -421,7 +435,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
             Left            =   720
-            TabIndex        =   31
+            TabIndex        =   29
             Top             =   720
             Width           =   1470
             _Version        =   786432
@@ -434,7 +448,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.DateTimePicker dtpHasta 
             Height          =   315
             Left            =   2925
-            TabIndex        =   32
+            TabIndex        =   30
             Top             =   720
             Width           =   1470
             _Version        =   786432
@@ -447,7 +461,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.ComboBox cboRangos 
             Height          =   315
             Left            =   720
-            TabIndex        =   33
+            TabIndex        =   31
             Top             =   300
             Width           =   3675
             _Version        =   786432
@@ -461,7 +475,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.Label Label6 
             Height          =   195
             Left            =   2400
-            TabIndex        =   36
+            TabIndex        =   34
             Top             =   780
             Width           =   420
             _Version        =   786432
@@ -475,7 +489,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.Label Label5 
             Height          =   195
             Left            =   165
-            TabIndex        =   35
+            TabIndex        =   33
             Top             =   780
             Width           =   465
             _Version        =   786432
@@ -489,7 +503,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.Label Label4 
             Height          =   195
             Left            =   120
-            TabIndex        =   34
+            TabIndex        =   32
             Top             =   360
             Width           =   480
             _Version        =   786432
@@ -501,22 +515,50 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             AutoSize        =   -1  'True
          End
       End
+      Begin XtremeSuiteControls.ComboBox cboCuentasContables 
+         Height          =   315
+         Left            =   1425
+         TabIndex        =   49
+         Top             =   1920
+         Width           =   3885
+         _Version        =   786432
+         _ExtentX        =   6853
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Sorted          =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label12 
+         Height          =   195
+         Left            =   360
+         TabIndex        =   50
+         Top             =   1950
+         Width           =   960
+         _Version        =   786432
+         _ExtentX        =   1693
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Cta. Contable"
+         BackColor       =   12632256
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
       Begin VB.Label Label11 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
          Caption         =   "Ordenar"
          Height          =   195
          Left            =   720
-         TabIndex        =   22
-         Top             =   2420
+         TabIndex        =   20
+         Top             =   2895
          Width           =   615
       End
       Begin XtremeSuiteControls.Label Label8 
          Height          =   195
          Index           =   1
          Left            =   300
-         TabIndex        =   20
-         Top             =   2040
+         TabIndex        =   18
+         Top             =   2520
          Width           =   1035
          _Version        =   786432
          _ExtentX        =   1826
@@ -530,8 +572,8 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   195
          Index           =   1
          Left            =   3240
-         TabIndex        =   19
-         Top             =   2040
+         TabIndex        =   17
+         Top             =   2520
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -603,23 +645,26 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Height          =   5175
       Left            =   0
       TabIndex        =   0
-      Top             =   2880
+      Top             =   3480
       Width           =   18690
       _ExtentX        =   32967
       _ExtentY        =   9128
       Version         =   "2.0"
       PreviewRowIndent=   100
+      AutomaticSort   =   -1  'True
       DefaultGroupMode=   1
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
       PreviewRowLines =   1
+      OLEDropMode     =   1
       ColumnAutoResize=   -1  'True
       HeaderStyle     =   2
       MethodHoldFields=   -1  'True
-      LockType        =   2
-      AllowColumnDrag =   0   'False
+      ContScroll      =   -1  'True
+      LockType        =   4
       GroupByBoxInfoText=   ""
       AllowEdit       =   0   'False
+      BorderStyle     =   0
       BackColorGBBox  =   16744576
       BackColorHeader =   16761024
       ImageCount      =   1
@@ -678,34 +723,6 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Sorted          =   -1  'True
       Text            =   "cboProveedores"
    End
-   Begin XtremeSuiteControls.ComboBox cboCuentasContables 
-      Height          =   315
-      Left            =   6225
-      TabIndex        =   15
-      Top             =   0
-      Width           =   3885
-      _Version        =   786432
-      _ExtentX        =   6853
-      _ExtentY        =   556
-      _StockProps     =   77
-      BackColor       =   -2147483643
-      Sorted          =   -1  'True
-   End
-   Begin XtremeSuiteControls.Label Label12 
-      Height          =   195
-      Left            =   5160
-      TabIndex        =   16
-      Top             =   30
-      Width           =   960
-      _Version        =   786432
-      _ExtentX        =   1693
-      _ExtentY        =   344
-      _StockProps     =   79
-      Caption         =   "Cta. Contable"
-      BackColor       =   12632256
-      Alignment       =   1
-      AutoSize        =   -1  'True
-   End
    Begin XtremeSuiteControls.Label Label3 
       Height          =   195
       Left            =   0
@@ -752,6 +769,8 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
       Begin VB.Menu MnuVerOP 
          Caption         =   "Ver Orden de Pago..."
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu verHistorial 
          Caption         =   "Historial..."
@@ -773,9 +792,6 @@ Private Factura As clsFacturaProveedor
 Private facturas As Collection
 Dim m_Archivos As Dictionary
 
-Private Sub btnClearCtaCble_Click()
-Me.cboCuentasContables.ListIndex = -1
-End Sub
 
 Private Sub btnClearDesdeTT_Click()
     Me.txtMontoDesde1 = ""
@@ -787,6 +803,10 @@ End Sub
 
 Private Sub btnClearFantasia_Click()
     Me.cboFantasia.ListIndex = -1
+End Sub
+
+Private Sub btnClearCtaCble_Click_Click()
+Me.cboCuentasContables.ListIndex = -1
 End Sub
 
 Private Sub btnClearFormaDePago_Click()
@@ -874,6 +894,7 @@ Private Sub cmdImprimir_Click()
         .FooterString(jgexHFLeft) = rf
         .BottomMargin = 1500
         .FooterDistance = 1400
+        
     End With
     Load frmPrintPreview
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
@@ -1225,7 +1246,7 @@ End Sub
 Private Sub Form_Resize()
     On Error Resume Next
     Me.grilla.Width = Me.ScaleWidth - 50
-    Me.grilla.Height = Me.ScaleHeight - 1500
+    Me.grilla.Height = Me.ScaleHeight - 1800
     
     'Me.GroupBox1.Width = Me.grilla.Width
     
@@ -1347,9 +1368,32 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
                 Values(15) = "Contado"
             End If
     
-            'If Factura.OrdenPagoId > 0 Then Values(16) = Factura.OrdenPagoId
+'            'If Factura.OrdenPagoId > 0 Then Values(16) = Factura.OrdenPagoId
+'            Values(16) = Factura.OrdenesPagoId ' Or Factura.LiquidacionCajaId
+'            'Values(16) = Factura.LiquidacionCajaId
+'            If Values(16) = "-" Then
+'                Values(16) = "LC- " & Factura.LiquidacionCajaId
+'            End If
+'            If Factura.estado = EstadoFacturaProveedor.Saldada Or EstadoFacturaProveedor.pagoParcial Then
+'             Values(16) = Factura.OrdenesPagoId
+'            If Values(16) = "-" Then
+'                Values(16) = "LC- " & Factura.LiquidacionCajaId
+'            End If
+'            End If
             
-            Values(16) = Factura.OrdenesPagoId
+            If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
+             Values(16) = Factura.OrdenesPagoId
+             If Values(16) = "-" Then
+             Values(16) = "LC- " & Factura.LiquidacionesCajaId
+             End If
+
+            End If
+            
+            
+'            Values(16) = "OP- " & Factura.OrdenesPagoId
+            
+
+            
             Values(17) = Factura.UsuarioCarga.usuario
             Values(18) = Factura.TipoCambio
             Values(19) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"

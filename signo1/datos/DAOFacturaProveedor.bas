@@ -200,7 +200,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
       q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
       q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2 ),NCHAR) AS ordenes_pago "
-    
+      'q = q & ",   CONVERT((SELECT IFNULL(GROUP_CONCAT(id_liquidacion_caja),'-') From liquidaciones_caja_facturas INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja=liquidaciones_caja.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND liquidaciones_caja.estado<>2),NCHAR) AS liquidaciones_caja "
       q = q & " From" _
         & " AdminComprasFacturasProveedores" _
         & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
@@ -216,6 +216,8 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
         & " LEFT JOIN AdminComprasCuentasContables  ON (AdminComprasCuentasFacturas.id_cuenta = AdminComprasCuentasContables.id) " _
         & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id " _
         & " WHERE 1=1 "
+        '& " LEFT JOIN liquidaciones_caja_facturas ON (AdminComprasFacturasProveedores.id = liquidaciones_caja_facturas.id_factura_proveedor) " _"
+
     If LenB(filtro) > 0 Then
         q = q & " and " & filtro
     End If
@@ -249,6 +251,10 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
       '  If IsSomething(rs.Fields("ordenes_pago")) Then
    
         F.OrdenesPagoId = rs!ordenes_pago
+        
+        'F.LiquidacionesCajaId = rs!liquidaciones_caja
+        
+
   
 
       '  End If
@@ -302,7 +308,8 @@ End Function
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaProveedor As String = vbNullString, _
                     Optional tablaAdminConfigFacturasProveedor As String = vbNullString, _
-                    Optional tablaAdminConfigIVAProveedor As String = vbNullString, Optional tablaMoneda As String = vbNullString) As clsFacturaProveedor
+                    Optional tablaAdminConfigIVAProveedor As String = vbNullString, _
+                    Optional tablaMoneda As String = vbNullString) As clsFacturaProveedor
 
     Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
     Dim fc As clsFacturaProveedor
@@ -324,6 +331,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         fc.TotalAbonado = GetValue(rs, indice, tabla, "total_abonado")
         fc.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
         fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
+        
+        If indice.Exists(".id_liquidacion_caja") Then fc.LiquidacionCajaId = GetValue(rs, indice, vbNullString, "id_liquidacion_caja")
         
         Set fc.UsuarioCarga = DAOUsuarios.Map(rs, indice, "usuarios")
         
@@ -436,6 +445,10 @@ End Function
 
 Public Function FindAllByOrdenPago(ByVal opid As Long) As Collection
     Set FindAllByOrdenPago = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id IN (SELECT id_factura_proveedor FROM ordenes_pago_facturas WHERE id_orden_pago = " & opid & ")")
+End Function
+
+Public Function FindAllByLiquidacionCaja(ByVal lcid As Long) As Collection
+    Set FindAllByLiquidacionCaja = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & lcid & ")")
 End Function
 
 Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, insideTransaction As Boolean) As Boolean

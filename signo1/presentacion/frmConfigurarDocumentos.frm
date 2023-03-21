@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmConfigurarDocumentos 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
@@ -487,10 +487,10 @@ Private Sub FillFields()
 
     Me.ListView1.ListItems.Clear
 
-    Dim a As DTOCampoBD
-    For Each a In dic
-        Set x = Me.ListView1.ListItems.Add(, , a.NombreCampo)
-        x.Tag = a.CampoEnBD
+    Dim A As DTOCampoBD
+    For Each A In dic
+        Set x = Me.ListView1.ListItems.Add(, , A.NombreCampo)
+        x.Tag = A.CampoEnBD
     Next
 
 
@@ -654,8 +654,8 @@ End Sub
 Private Sub Command2_Click()
     On Error GoTo err1
     Dim archivo As String
-    frmPrincipal.cd.ShowOpen
-    archivo = frmPrincipal.cd.filename
+    frmPrincipal.CD.ShowOpen
+    archivo = frmPrincipal.CD.filename
     Me.PicContainer.Picture = LoadPicture(archivo)
     ShowContainerSize
     Exit Sub
@@ -698,7 +698,7 @@ Private Sub Command3_Click()
 
 End Sub
 Private Sub Command4_Click()
-    Debug.Print DAODocumentos.FindAll(True).count
+    'Debug.Print DAODocumentos.FindAll(True).count
 End Sub
 
 Private Sub DragEventsTrash_ObjectDrop(hWndContainerSource As Long, hWndContainer As Long, hWndObject As Long, Reject As Boolean)
@@ -766,26 +766,26 @@ Private Sub PushButton2_Click()
     On Error GoTo err1
     Set ctrl = LocateLastControlInContainer
 
-    frmPrincipal.cd.Flags = cdlCFPrinterFonts
+    frmPrincipal.CD.Flags = cdlCFPrinterFonts
 
     If IsSomething(ctrl) Then
-        frmPrincipal.cd.FontBold = ctrl.FontBold
-        frmPrincipal.cd.FontItalic = ctrl.FontItalic
-        frmPrincipal.cd.FontName = ctrl.FontName
-        frmPrincipal.cd.FontStrikethru = ctrl.FontStrikethru
+        frmPrincipal.CD.FontBold = ctrl.FontBold
+        frmPrincipal.CD.FontItalic = ctrl.FontItalic
+        frmPrincipal.CD.FontName = ctrl.FontName
+        frmPrincipal.CD.FontStrikethru = ctrl.FontStrikethru
 
-        frmPrincipal.cd.FontUnderline = ctrl.FontUnderline
-        frmPrincipal.cd.FontSize = ctrl.FontSize
+        frmPrincipal.CD.FontUnderline = ctrl.FontUnderline
+        frmPrincipal.CD.FontSize = ctrl.FontSize
 
-        frmPrincipal.cd.ShowFont
+        frmPrincipal.CD.ShowFont
 
 
-        stdfont.Bold = frmPrincipal.cd.FontBold
-        stdfont.Italic = frmPrincipal.cd.FontItalic
-        stdfont.Underline = frmPrincipal.cd.FontUnderline
-        stdfont.Strikethrough = frmPrincipal.cd.FontStrikethru
-        stdfont.Size = frmPrincipal.cd.FontSize
-        stdfont.Name = frmPrincipal.cd.FontName
+        stdfont.Bold = frmPrincipal.CD.FontBold
+        stdfont.Italic = frmPrincipal.CD.FontItalic
+        stdfont.Underline = frmPrincipal.CD.FontUnderline
+        stdfont.Strikethrough = frmPrincipal.CD.FontStrikethru
+        stdfont.Size = frmPrincipal.CD.FontSize
+        stdfont.Name = frmPrincipal.CD.FontName
 
         SetearFormato stdfont
         Set ctrl.Font = stdfont

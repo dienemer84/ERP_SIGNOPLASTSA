@@ -398,7 +398,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
         
             Dim fac As clsFacturaProveedor
             Set fac = DAOFacturaProveedor.FindById(F.Id)
-            Debug.Print (F.Id & "- " & F.NumeroFormateado)
+'            'debug.print (F.Id & "- " & F.NumeroFormateado)
             
             If fac.estado = EstadoFacturaProveedor.EnProceso Then
                 Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"

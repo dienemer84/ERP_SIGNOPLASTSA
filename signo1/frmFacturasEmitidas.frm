@@ -8,13 +8,12 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   8985
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   17955
+   ClientWidth     =   14280
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8985
-   ScaleMode       =   0  'User
-   ScaleWidth      =   17805.22
+   ScaleWidth      =   14280
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox grp 
       Height          =   2295
@@ -596,7 +595,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   195
          Left            =   630
          TabIndex        =   21
-         Top             =   1590
+         Top             =   1570
          Width           =   900
       End
       Begin VB.Label Label3 
@@ -616,7 +615,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   270
          Left            =   270
          TabIndex        =   16
-         Top             =   1125
+         Top             =   1180
          Width           =   1260
       End
       Begin VB.Label Label1 
@@ -626,7 +625,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   270
          Left            =   270
          TabIndex        =   15
-         Top             =   735
+         Top             =   790
          Width           =   1260
       End
       Begin VB.Label Label4 
@@ -1002,27 +1001,38 @@ Private Sub btnExpotar_Click()
 
     xlWorksheet.Cells(2, 1).value = "Comprobante"
     xlWorksheet.Cells(2, 2).value = "Emision"
+
     xlWorksheet.Cells(2, 3).value = "Moneda"
-    xlWorksheet.Cells(2, 4).value = "Detalle"
-    xlWorksheet.Cells(2, 5).value = "Importe en " & DAOMoneda.FindFirstByPatronOrDefault.NombreCorto
+    xlWorksheet.Cells(2, 4).value = "Cotización"
 
-    xlWorksheet.Cells(2, 6).value = "Vencimiento"
-    xlWorksheet.Cells(2, 7).value = "Atraso"
-    xlWorksheet.Cells(2, 8).value = "Entrega"
-    xlWorksheet.Cells(2, 9).value = "Atraso"
+    xlWorksheet.Cells(2, 5).value = "Detalle"
 
-    '    If (id < 0) Then xlWorksheet.Cells(2, 10).value = "Cliente"
+    xlWorksheet.Cells(2, 6).value = "Neto Gravado $ ARS"
+    xlWorksheet.Cells(2, 7).value = "Neto Gravado U$S"
 
-    xlWorksheet.Cells(2, 10).value = "Cliente"
+    xlWorksheet.Cells(2, 8).value = "Percepciones $ ARS"
+    xlWorksheet.Cells(2, 9).value = "Percepciones U$S"
 
-    xlWorksheet.Cells(2, 11).value = "Cuit"
+    xlWorksheet.Cells(2, 10).value = "IVA $ ARS"
+    xlWorksheet.Cells(2, 11).value = "IVA U$S"
 
-    xlWorksheet.Cells(2, 12).value = "Observaciones"
+    xlWorksheet.Cells(2, 12).value = "Exento $ ARS"
+    xlWorksheet.Cells(2, 13).value = "Exento U$S"
 
-    xlWorksheet.Cells(2, 13).value = "Observaciones Cancela"
+    xlWorksheet.Cells(2, 14).value = "Importe en $ ARS"
+    xlWorksheet.Cells(2, 15).value = "Importe en U$S"
 
-    xlWorksheet.Cells(2, 14).value = "Recibos Asociados"
+    xlWorksheet.Cells(2, 16).value = "Vencimiento"
+    xlWorksheet.Cells(2, 17).value = "Atraso / Estado"
+    xlWorksheet.Cells(2, 18).value = "Entrega"
+    xlWorksheet.Cells(2, 19).value = "Atraso / Dias"
+    xlWorksheet.Cells(2, 20).value = "Cliente"
+    xlWorksheet.Cells(2, 21).value = "Cuit"
+    xlWorksheet.Cells(2, 22).value = "Observaciones"
+    xlWorksheet.Cells(2, 23).value = "Observaciones Cancela"
+    xlWorksheet.Cells(2, 24).value = "Recibos Asociados"
 
+    xlWorksheet.Range("A2:S2").Font.Bold = True
 
     Dim idx As Integer
     idx = 3
@@ -1034,59 +1044,114 @@ Private Sub btnExpotar_Click()
     d = 0
 
 
-    '   Set facturas = DAOFactura.FindAll(filtro)
-    '
-    '   Dim F As Factura
-
-    '   For Each F In facturas
-    '
-    '   For Each fac In col
-
     For Each fac In facturas
 
-        Debug.Print
-
-
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
-        'xlWorksheet.Cells(idx, 1).value = fac.NumeroFormateado
-        'xlWorksheet.Cells(idx, 1).value = fac.numero
         xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
         xlWorksheet.Cells(idx, 3).value = fac.moneda.NombreCorto
-        xlWorksheet.Cells(idx, 4).value = fac.OrdenCompra
+        xlWorksheet.Cells(idx, 4).value = fac.CambioAPatron
+        xlWorksheet.Cells(idx, 5).value = fac.OrdenCompra
+        
+       If fac.moneda.Cambio = 1 Then
 
         If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
-            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.TotalEstatico.Total * fac.CambioAPatron) * -1
+        ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
+            xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA) * -1
+            xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
+            xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
+            xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
+            xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron * -1
+            'dolares
+            xlWorksheet.Cells(idx, 7).value = "0"
+            'dolares
+            xlWorksheet.Cells(idx, 9).value = "0"
+            'dolares
+            xlWorksheet.Cells(idx, 11).value = ""
+            'dolares
+            xlWorksheet.Cells(idx, 13).value = "0"
+            'dolares
+            xlWorksheet.Cells(idx, 15).value = "0"
+            
         Else
-            xlWorksheet.Cells(idx, 5).value = funciones.RedondearDecimales(fac.TotalEstatico.Total * fac.CambioAPatron)
+        ' VAN TODOS POSITIVOS AL NO SER NOTA DE CREDITO
+            xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA)
+            xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
+            xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
+            xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
+            xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron
+            'dolares
+            xlWorksheet.Cells(idx, 7).value = "0"
+            'dolares
+            xlWorksheet.Cells(idx, 9).value = "0"
+            'dolares
+            xlWorksheet.Cells(idx, 11).value = "0"
+            'dolares
+            xlWorksheet.Cells(idx, 13).value = "0"
+            'dolares
+            xlWorksheet.Cells(idx, 15).value = "0"
+        End If
+    
+Else
+        If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+        ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
+            xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron * -1
+            xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
+            xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
+            xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
+            xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron * -1
+            'dolares
+            xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado * -1
+            'dolares
+            xlWorksheet.Cells(idx, 9).value = fac.TotalEstatico.TotalPercepcionesIB * -1
+            'dolares
+            xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA * -1
+            'dolares
+            xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento * -1
+            'dolares
+            xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.Total * -1
+            
+        Else
+        ' VAN TODOS POSITIVOS AL NO SER NOTA DE CREDITO
+            xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron
+            xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
+            xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
+            xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
+            xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron
+            'dolares
+            xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado
+            'dolares
+            xlWorksheet.Cells(idx, 9).value = fac.TotalEstatico.TotalPercepcionesIB
+            'dolares
+            xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA
+            'dolares
+            xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento
+            'dolares
+            xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.Total
         End If
 
-        xlWorksheet.Cells(idx, 6).value = fac.Vencimiento
-        xlWorksheet.Cells(idx, 7).value = fac.StringDiasAtraso
+End If
+
+
+        xlWorksheet.Cells(idx, 16).value = fac.Vencimiento
+        xlWorksheet.Cells(idx, 17).value = fac.StringDiasAtraso
+
+        If xlWorksheet.Cells(idx, 17).value = "En Edición" Then
+            xlWorksheet.Cells(idx, 17).Interior.ColorIndex = 46    ' naranja
+        End If
 
         If (fac.DiferenciaDiasEntrega <> -1) Then
-            xlWorksheet.Cells(idx, 8).value = Format(fac.FechaEntrega, "dd/mm/yyyy")
-            xlWorksheet.Cells(idx, 9).value = fac.DiferenciaDiasEntrega & " dias"
+            xlWorksheet.Cells(idx, 18).value = Format(fac.FechaEntrega, "dd/mm/yyyy")
+            xlWorksheet.Cells(idx, 19).value = fac.DiferenciaDiasEntrega & " dias"
         Else
-            xlWorksheet.Cells(idx, 8).value = "no definida"
-            xlWorksheet.Cells(idx, 9).value = 0
+            xlWorksheet.Cells(idx, 18).value = "no definida"
+            xlWorksheet.Cells(idx, 19).value = 0
         End If
 
-        '        If (id < 0) Then xlWorksheet.Cells(idx, 10).value = fac.cliente.razon
-
-        xlWorksheet.Cells(idx, 10).value = fac.cliente.razon
-
-        xlWorksheet.Cells(idx, 11).value = fac.cliente.Cuit
-
-
-        xlWorksheet.Cells(idx, 12).value = fac.observaciones
-        xlWorksheet.Cells(idx, 13).value = fac.observaciones_cancela
-
-        '        xlWorksheet.Cells(idx, 14).value = fac.Id
-        '        xlWorksheet.Cells(idx, 15).value = fac.Cancelada
-
-        xlWorksheet.Cells(idx, 14).value = fac.RecibosAplicadosId
-
-
+        xlWorksheet.Cells(idx, 20).value = fac.cliente.razon
+        xlWorksheet.Cells(idx, 21).value = fac.cliente.Cuit
+        xlWorksheet.Cells(idx, 22).value = fac.observaciones
+        xlWorksheet.Cells(idx, 23).value = fac.observaciones_cancela
+        xlWorksheet.Cells(idx, 24).value = fac.RecibosAplicadosId
 
 
         idx = idx + 1
@@ -1098,7 +1163,34 @@ Private Sub btnExpotar_Click()
 
     Next
 
-    xlWorksheet.Cells(idx, 5).Formula = "=SUM(E3:E" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 5).value = "Totales: "
+    xlWorksheet.Cells(idx + 1, 5).HorizontalAlignment = xlRight
+
+    xlWorksheet.Cells(idx + 1, 6).Formula = "=SUM(F3:F" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 7).Formula = "=SUM(G3:G" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 8).Formula = "=SUM(H3:H" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 9).Formula = "=SUM(I3:I" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 10).Formula = "=SUM(J3:J" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 11).Formula = "=SUM(K3:K" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 12).Formula = "=SUM(L3:L" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 13).Formula = "=SUM(M3:M" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 14).Formula = "=SUM(N3:N" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 15).Formula = "=SUM(O3:O" & idx - 1 & ")"
+
+    xlWorksheet.Cells(idx + 1, 6).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 7).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 8).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 9).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 10).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 11).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 12).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 13).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 14).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 15).Font.Bold = True
+
+    xlWorksheet.Range("F3:O15").NumberFormat = "#,##0.00"
+    xlWorksheet.Range("F3:O" & idx + 1).HorizontalAlignment = xlRight
+    xlWorksheet.Range("F3:O" & idx + 1).NumberFormat = "#,##0.00"
 
     'AUTOSIZE
     xlApplication.ScreenUpdating = False
@@ -1118,6 +1210,10 @@ Private Sub btnExpotar_Click()
     xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
     xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
     xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+
+    xlWorksheet.Activate
+    xlWorksheet.Range("A3").Select
+    xlWorksheet.Application.ActiveWindow.FreezePanes = True
 
     Dim filename As String
     filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
@@ -1274,6 +1370,7 @@ Private Sub Form_Load()
     For i = 0 To Me.cboRangos.ListCount - 1
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
     Next i
+
     Me.cboRangos.ListIndex = i
     llenarGrilla
     verObservaciones
@@ -1413,7 +1510,7 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.GridEX1.Width = Me.ScaleWidth - 50
+    Me.GridEX1.Width = Me.ScaleWidth - 400
     Me.GridEX1.Height = Me.ScaleHeight - 2900
 
 End Sub

@@ -3,21 +3,19 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitosListaProceso 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   3  'Fixed Dialog
+   BorderStyle     =   1  'Fixed Single
    Caption         =   "Remitos en proceso"
    ClientHeight    =   6240
    ClientLeft      =   3600
    ClientTop       =   2055
    ClientWidth     =   12720
    ClipControls    =   0   'False
-   ControlBox      =   0   'False
    Icon            =   "frmListaRemitosProceso.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   6240
    ScaleWidth      =   12720
-   ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   855
@@ -163,8 +161,9 @@ Private Sub Form_Load()
     Me.GridEX1.ItemCount = 0
     LlenarGrid
     
-    ''Me.caption = caption & " (" & Name & ")"
+    Me.caption = "Remitos a procesar [Cantidad: " & col.count & "]"
 
+    
 
 End Sub
 
@@ -186,7 +185,7 @@ Private Sub LlenarGrid()
             filtro = filtro & " and (rto.estadoFacturado=0 or rto.estadoFacturado=1) and rto.estado=2 "
 
         End If
-              Me.caption = "Remitos a facturar..."
+            Me.caption = "Remitos a facturar..."
               
     ElseIf vmostrar = -1 Then
 
@@ -200,8 +199,8 @@ Private Sub LlenarGrid()
     Set tmpCol = DAORemitoS.FindAll(filtro)
     Dim rto As Remito
     For Each rto In tmpCol
-        col.Add rto, CStr(rto.id)
-            Set remitoDetalle = DAORemitoSDetalle.FindAllByRemito(rto.id, True, True)
+        col.Add rto, CStr(rto.Id)
+            Set remitoDetalle = DAORemitoSDetalle.FindAllByRemito(rto.Id, True, True)
             Dim deta As remitoDetalle
                     For Each deta In remitoDetalle
                         If deta.idpedido = 0 Or deta.idpedido = -1 Then
@@ -212,12 +211,13 @@ Private Sub LlenarGrid()
                             End If
                         End If
                      Next
-                     Debug.Print (rto.OrigenDeConceptos)
+'                     ''debug.print (rto.OrigenDeConceptos)
     Next
     If col.count > 0 Then
 
         Me.GridEX1.ItemCount = 0
         Me.GridEX1.ItemCount = col.count
+        
     End If
 End Sub
 
@@ -228,7 +228,7 @@ End Sub
 Private Sub GridEX1_DblClick()
     If col.count > 0 Then
         GridEX1_SelectionChange
-        vrto = Remito.id
+        vrto = Remito.Id
         Set Selecciones.RemitoElegido = Remito
         Unload Me
     End If
@@ -261,7 +261,7 @@ End Sub
 Private Sub PushButtonAceptar_Click()
     If col.count > 0 Then
         GridEX1_SelectionChange
-        vrto = Remito.id
+        vrto = Remito.Id
         Set Selecciones.RemitoElegido = Remito
         Unload Me
     End If

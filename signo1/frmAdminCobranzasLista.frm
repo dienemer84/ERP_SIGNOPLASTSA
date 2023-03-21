@@ -5,17 +5,15 @@ Begin VB.Form frmAdminCobranzasLista
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Recibos"
-   ClientHeight    =   6915
+   ClientHeight    =   7035
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   13635
+   ClientWidth     =   13770
    Icon            =   "frmAdminCobranzasLista.frx":0000
    LinkTopic       =   "Form1"
-   MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   MinButton       =   0   'False
-   ScaleHeight     =   6915
-   ScaleWidth      =   13635
+   ScaleHeight     =   7035
+   ScaleWidth      =   13770
    Begin VB.CommandButton Command1 
       Caption         =   "Command1"
       Height          =   615
@@ -427,8 +425,8 @@ End Sub
 
 Private Sub Form_Resize()
     If Me.ScaleHeight > 0 Then
-        Me.grilla_recibos.Height = Me.ScaleHeight - 1200
-    End If
+        Me.grilla_recibos.Height = Me.ScaleHeight - 1800
+        End If
     Me.grilla_recibos.Width = Me.ScaleWidth
 End Sub
 

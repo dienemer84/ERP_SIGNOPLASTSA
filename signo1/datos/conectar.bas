@@ -45,7 +45,7 @@ Public Function RSFactory(consulta) As ADODB.Recordset
     vcount = vcount + 1
     Exit Function
 err10:
-Debug.Print (consulta)
+'''debug.print (consulta)
     Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & consulta
 
 End Function
@@ -86,20 +86,20 @@ End Sub
 Public Sub RollBackTransaction()
     cn.RollbackTrans
 End Sub
-Public Function UltimoId(tableName As String, ByRef id As Long) As Boolean
+Public Function UltimoId(tableName As String, ByRef Id As Long) As Boolean
     On Error GoTo er1
     UltimoId = True
     Dim rs As Recordset
     Set rs = RSFactory("select last_insert_id() as ultimo from " & tableName)
     If Not rs.EOF And Not rs.BOF Then
-        id = rs!ultimo
+        Id = rs!ultimo
     Else
         GoTo er1
     End If
     Exit Function
 er1:
     UltimoId = False
-    id = 0
+    Id = 0
 End Function
 
 Public Function UltimoId2() As Long
@@ -132,7 +132,7 @@ Public Sub BuildFieldsIndex(ByRef rs As Recordset, ByRef fieldsIndex As Dictiona
         
         
         counter = counter + 1
-        'Debug.Print (F.Name)
+        '''debug.print (F.Name)
     Next F
     
 End Sub
@@ -149,7 +149,7 @@ Public Function ProximoId(tableName As String) As Long
     Exit Function
 er1:
     ProximoId = False
-    id = 0
+    Id = 0
 End Function
 Public Function Escape(value As Variant) As Variant
     Dim retorno As Variant
@@ -187,6 +187,7 @@ Public Function Escape(value As Variant) As Variant
 
 End Function
 Public Function GetValue(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableName As String, ByRef fieldName As String)
+'    ''debug.print (tableName & "." & fieldName)
     GetValue = rs.Fields.item(fieldsIndex(tableName & "." & fieldName)).value
     If IsNull(GetValue) Then GetValue = Empty
 End Function
@@ -195,7 +196,7 @@ Public Function GetEntityId(entity As Object) As Variant
     If entity Is Nothing Then
         GetEntityId = 0    '"NULL"
     Else
-        GetEntityId = entity.id
+        GetEntityId = entity.Id
     End If
 End Function
 

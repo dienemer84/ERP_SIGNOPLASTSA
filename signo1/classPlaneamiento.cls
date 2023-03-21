@@ -103,10 +103,10 @@ Public Function ExistePedido(idpedido As Long) As Integer
         ExistePedido = -1
     End If
 End Function
-Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optional t1 As OrdenTrabajo) As Boolean     '1- enviar 2-imprimir
+Public Function informePedidoContaduria(Id As Integer, DIALOGO As Boolean, Optional t1 As OrdenTrabajo) As Boolean     '1- enviar 2-imprimir
 
     Dim T As OrdenTrabajo
-    Set T = DAOOrdenTrabajo.FindById(t1.id)
+    Set T = DAOOrdenTrabajo.FindById(t1.Id)
 
     Dim tot As Double
     Dim subto As Double
@@ -114,7 +114,7 @@ Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optio
     On Error GoTo err2
     informePedidoContaduria = True
     Dim strsql As String, strsql2 As String
-    strsql = "select p.id_ot_padre,c.cuit,p.idMoneda,c.razon,p.dto,p.id,p.descripcion,p.fechaEntrega as fe, p.fechaCreado, p.nroPresupuesto from pedidos p, clientes c where p.idcliente=c.id and p.id=" & id
+    strsql = "select p.id_ot_padre,c.cuit,p.idMoneda,c.razon,p.dto,p.id,p.descripcion,p.fechaEntrega as fe, p.fechaCreado, p.nroPresupuesto from pedidos p, clientes c where p.idcliente=c.id and p.id=" & Id
     Me.ejecutar_consulta strsql
     c = 0
     While Not rs.EOF
@@ -125,7 +125,7 @@ Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optio
         rs.MoveFirst
     End If
     If c = 1 Then
-        strsql = "select count(id) as inci from Incidencias where idReferencia=" & id & " and origen=2"
+        strsql = "select count(id) as inci from Incidencias where idReferencia=" & Id & " and origen=2"
         Set rInci = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
             If rInci!inci > 0 Then
@@ -141,11 +141,11 @@ Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optio
         Dim EsMarco As Boolean
         Dim contrato_id As Long
         Dim DependeDeMarco As Boolean
-        nroOT = Format("00000", rs!id)
+        nroOT = Format("00000", rs!Id)
         ref = rs!descripcion
 
         DependeDeMarco = (rs!id_ot_padre > 0)
-        monedas = funciones.queMoneda(rs!IdMoneda)
+        Monedas = funciones.queMoneda(rs!IdMoneda)
         EsMarco = (rs!id_ot_padre = -1)
         contrato_id = rs!id_ot_padre
 
@@ -167,7 +167,7 @@ Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optio
         End If
 
 
-        pedido_contaduria.Sections("cabeza").Controls("lblOT").caption = tit & T.id
+        pedido_contaduria.Sections("cabeza").Controls("lblOT").caption = tit & T.Id
         pedido_contaduria.Sections("cabeza").Controls("lblCliente").caption = razon
         pedido_contaduria.Sections("cabeza").Controls("lblReferencia").caption = ref
         pedido_contaduria.Sections("cabeza").Controls("lblfechaEntrega").caption = entrega
@@ -186,17 +186,17 @@ Public Function informePedidoContaduria(id As Integer, DIALOGO As Boolean, Optio
             subto = subto + (rs!Precio * rs!Cantidad)
 
             subtodto = subtodto + funciones.RedondearDecimales(rs!Precio * rs!Cantidad * (1 - (rs!Descuento / 100)))
-            Debug.Print (funciones.RedondearDecimales(rs!stotaldto) * rs!Cantidad)
+'            'debug.print (funciones.RedondearDecimales(rs!stotaldto) * rs!Cantidad)
             c = c + 1
             rs.MoveNext
         Wend
         tot = subto * dtos
         tot = funciones.RedondearDecimales(tot, 2)
 
-        pedido_contaduria.Sections("pie").Controls("lblSubTotal").caption = monedas & " " & funciones.RedondearDecimales(subto, 2)
+        pedido_contaduria.Sections("pie").Controls("lblSubTotal").caption = Monedas & " " & funciones.RedondearDecimales(subto, 2)
         pedido_contaduria.Sections("pie").Controls("lbldto").caption = dto & "%"
-        pedido_contaduria.Sections("pie").Controls("lblTotal").caption = monedas & " " & funciones.RedondearDecimales(subtodto, 2)
-        pedido_contaduria.Sections("s3").Controls("lblbarcode").caption = "*" & Format(id, "0000") & "*"
+        pedido_contaduria.Sections("pie").Controls("lblTotal").caption = Monedas & " " & funciones.RedondearDecimales(subtodto, 2)
+        pedido_contaduria.Sections("s3").Controls("lblbarcode").caption = "*" & Format(Id, "0000") & "*"
 
 
 
@@ -370,7 +370,7 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
                 If mostrar_obs Then
                     cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ",'" & deta.Nota & "')"
                 Else
-                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!id & "," & CantAEntregar - Entregados & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
+                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & CantAEntregar - Entregados & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
                 End If
             End If
             rs.MoveNext
@@ -441,7 +441,7 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
                         If mostrar_obs Then
                             cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ",'" & UCase(Nota) & "')"
                         Else
-                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!id & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
+                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
                         End If
 
                     End If
@@ -466,7 +466,7 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
                         If mostrar_obs Then
                             cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ",'" & UCase(Nota) & "')"
                         Else
-                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!id & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
+                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
                         End If
 
 
@@ -692,7 +692,7 @@ Public Function informePieza2(idPiezaPedido, DIALOGO As Boolean, Optional conjun
     End If
 
     While Not rs.EOF
-        nroOT = Format("0000", rs!id)
+        nroOT = Format("0000", rs!Id)
         ref = rs!descripcion
         eni = rs!ei
         fecEnt = rs!FechaEntrega
@@ -1058,7 +1058,7 @@ End Sub
 
 
 
-Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As Boolean) As Boolean   '1- enviar 2-imprimir
+Public Function informePiezaMateriales(Id As Long, Origen As Integer, DIALOGO As Boolean) As Boolean   '1- enviar 2-imprimir
     On Error GoTo err2
 
     Dim Obj As PageSet.PrinterControl
@@ -1070,13 +1070,13 @@ Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As
     Dim strsql As String, strsql2 As String
     If Origen = 2 Then
         titulo = "Presupuesto:"
-        strsql = "select c.razon,p.id,p.detalle,p.fechaEntrega as fe from presupuestos p,clientes c where p.idcliente=c.id and p.id=" & id
+        strsql = "select c.razon,p.id,p.detalle,p.fechaEntrega as fe from presupuestos p,clientes c where p.idcliente=c.id and p.id=" & Id
     ElseIf Origen = 1 Then
         titulo = "Pedido:"
-        strsql = "select c.razon,p.id,p.descripcion as detalle,p.fechaEntrega as fe from pedidos p,clientes c where p.idcliente=c.id and p.id=" & id
+        strsql = "select c.razon,p.id,p.descripcion as detalle,p.fechaEntrega as fe from pedidos p,clientes c where p.idcliente=c.id and p.id=" & Id
     ElseIf Origen = 3 Then
         titulo = "Conjunto:"
-        strsql = "select c.razon,s.detalle from stock s inner join clientes c on s.id_cliente=c.id where s.id=" & id
+        strsql = "select c.razon,s.detalle from stock s inner join clientes c on s.id_cliente=c.id where s.id=" & Id
     End If
 
     Me.ejecutar_consulta strsql
@@ -1087,7 +1087,7 @@ Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As
     ref = rs!detalle
     If Origen = 1 Or Origen = 2 Then
         fecEnt = rs!fe
-        nroOT = Format("00000", rs!id)
+        nroOT = Format("00000", rs!Id)
     Else
         fecEnt = Empty
 
@@ -1098,12 +1098,12 @@ Public Function informePiezaMateriales(id As Long, Origen As Integer, DIALOGO As
     Materiales.Sections("cabeza").Controls("lblOT").caption = titulo & ": " & nroOT
     Materiales.Sections("cabeza").Controls("lblCliente").caption = razon
     Materiales.Sections("cabeza").Controls("lblReferencia").caption = ref
-    Materiales.Sections("s3").Controls("lblbarcode").caption = "*" & Format(id, "0000") & "*"
+    Materiales.Sections("s3").Controls("lblbarcode").caption = "*" & Format(Id, "0000") & "*"
 
 
 
 
-    Set r = rs_materiales(id, Origen)
+    Set r = rs_materiales(Id, Origen)
 
 
     Set Materiales.DataSource = r
@@ -1117,7 +1117,7 @@ err2:
     Obj.ReSetOrientation
 End Function
 
-Public Function rs_materiales(id As Long, Origen As Integer) As Recordset
+Public Function rs_materiales(Id As Long, Origen As Integer) As Recordset
     On Error GoTo err4
     Dim Ot As Boolean, presu As Boolean, otro As Boolean
     Dim r_1 As New Recordset
@@ -1161,7 +1161,7 @@ Public Function rs_materiales(id As Long, Origen As Integer) As Recordset
 
     End If
     Dim stock As New classStock
-    Set r_piezas = stock.ListaPiezas(id, Ot, presu, otro)
+    Set r_piezas = stock.ListaPiezas(Id, Ot, presu, otro)
     'r_piezas.MoveFirst
     While Not r_piezas.EOF
         Pieza = CLng(r_piezas!idPieza)

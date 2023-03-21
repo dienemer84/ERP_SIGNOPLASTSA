@@ -38,10 +38,14 @@ Public TotalAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de l
 Public NetoGravadoAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
 Public OtrosAbonadoGlobalPendiente As Double
 
-Public OrdenesPagoId As String
 
+Public OrdenesPagoId As String
+Public LiquidacionesCajaId As String
 
 Public OrdenPagoId As Long
+Public LiquidacionCajaId As Long
+
+
 Public TotalAbonado As Double
 Dim vTipoCambio As Double
 Public TotalPago As Double

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmTiempoProcesoDetalle 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Carga y Descarga de Tareas"
@@ -751,7 +751,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 
     lastkeypressMS = GetTickCount
 
-    Debug.Print KeyAscii, Chr(KeyAscii)
+    'Debug.Print KeyAscii, Chr(KeyAscii)
     If KeyAscii = vbKeyReturn Then
         'perform action
         'Debug.Print scannerBuffer
@@ -814,11 +814,11 @@ Private Sub GetProceso()
                 mismoDeta = False
                 Dim deta As PlaneamientoTiempoProcesoDetalle
 
-                Set col = DAOTiemposProcesosDetalles.FindAllWithoutFinishByEmpleado(Empleado.id)
+                Set col = DAOTiemposProcesosDetalles.FindAllWithoutFinishByEmpleado(Empleado.Id)
 
 
                 For Each deta In col
-                    If proceso.Tarea.id = deta.PlaneamientoTiempoProceso.Tarea.id Then
+                    If proceso.Tarea.Id = deta.PlaneamientoTiempoProceso.Tarea.Id Then
                         esta = True
                         Exit For
                     End If
@@ -826,7 +826,7 @@ Private Sub GetProceso()
 
 
                 For Each deta In col
-                    If proceso.id = deta.IdPlaneamientoTiempoProceso Then
+                    If proceso.Id = deta.IdPlaneamientoTiempoProceso Then
                         mismoDeta = True
                         Set det = deta
                         Exit For
@@ -956,13 +956,13 @@ Private Sub FinalizarProcesoPost()
 End Sub
 
 Private Sub IniciarProceso()
-    If DAOEmpleados.GetTareasIdAsignadasByPersonalId(Empleado.id).Exists(proceso.Tarea.id) Then
+    If DAOEmpleados.GetTareasIdAsignadasByPersonalId(Empleado.Id).Exists(proceso.Tarea.Id) Then
 
         Set det = New PlaneamientoTiempoProcesoDetalle
         Set det.Empleado = Empleado
         det.FechaCarga = Now
         det.FechaInicioTarea = Now
-        det.IdPlaneamientoTiempoProceso = proceso.id
+        det.IdPlaneamientoTiempoProceso = proceso.Id
         det.legajo = Empleado.legajo
         If DAOTiemposProcesosDetalles.Save(det) Then
             ClearEmpleadoProcesoObject
@@ -988,7 +988,7 @@ Private Sub CargarInfoProceso()
             Me.lblPieza.caption = proceso.DetalleOtConjunto.Pieza.nombre
         End If
 
-        Me.lblTiempoProcesoID.caption = proceso.id
+        Me.lblTiempoProcesoID.caption = proceso.Id
         Me.lblOT.caption = proceso.idpedido
         Me.lblTarea.caption = proceso.Tarea.Description
     End If
@@ -1025,11 +1025,11 @@ Private Sub ShowMessage(msg As String)
 End Sub
 
 Private Sub PintarMensaje()
-    If Me.lblMensajes.BackColor = vbWhite Then
-        Me.lblMensajes.BackColor = FormHelper.LetraAzul
+    If Me.lblMensajes.backColor = vbWhite Then
+        Me.lblMensajes.backColor = FormHelper.LetraAzul
         Me.lblMensajes.ForeColor = vbWhite
     Else
-        Me.lblMensajes.BackColor = vbWhite
+        Me.lblMensajes.backColor = vbWhite
         Me.lblMensajes.ForeColor = FormHelper.LetraAzul
     End If
 End Sub

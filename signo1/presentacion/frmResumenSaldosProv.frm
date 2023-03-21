@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmResumenSaldosProv 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Resúmen de Saldos de Proveedores"
@@ -238,13 +238,13 @@ Private Sub Obtener_Click()
 
         If TipoPersonaCta = TipoPersona.proveedor_ Then
 
-            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor(rs!id, , condition, True, False)
+            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor(rs!Id, , condition, True, False)
 
         Else
             If Not IsNull(Me.dtpHasta.value) Then
                 condition = Format(Me.dtpHasta.value, "yyyy-mm-dd")
             End If
-            Set Detalles = DAOCuentaCorriente.FindAllDetalles(rs!id, , condition)
+            Set Detalles = DAOCuentaCorriente.FindAllDetalles(rs!Id, , condition)
         End If
 
 
@@ -275,7 +275,7 @@ Private Sub Obtener_Click()
     Me.lblTotal = "Total: " & funciones.FormatearDecimales(T)
     Me.lblCant.Visible = False
     tickend = GetTickCount
-    Debug.Print "Tiempo total  ", tickend - tickStart
+    'Debug.Print "Tiempo total  ", tickend - tickStart
 End Sub
 
 Private Sub PushButton1_Click()
