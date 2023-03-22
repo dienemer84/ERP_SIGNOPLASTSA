@@ -6,7 +6,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
    ClientHeight    =   7050
    ClientLeft      =   8445
    ClientTop       =   3465
-   ClientWidth     =   12660
+   ClientWidth     =   12885
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -20,14 +20,74 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   7050
-   ScaleWidth      =   12660
+   ScaleWidth      =   12885
+   Begin VB.Frame Frame1 
+      Height          =   855
+      Left            =   9600
+      TabIndex        =   21
+      Top             =   240
+      Width           =   5055
+      Begin XtremeSuiteControls.PushButton btnExportar 
+         Height          =   450
+         Left            =   1680
+         TabIndex        =   22
+         Top             =   240
+         Width           =   1335
+         _Version        =   786432
+         _ExtentX        =   2355
+         _ExtentY        =   794
+         _StockProps     =   79
+         Caption         =   "Exportar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton cmdBuscar 
+         Default         =   -1  'True
+         Height          =   450
+         Left            =   120
+         TabIndex        =   23
+         Top             =   240
+         Width           =   1350
+         _Version        =   786432
+         _ExtentX        =   2381
+         _ExtentY        =   794
+         _StockProps     =   79
+         Caption         =   "Buscar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton cmdImprimir 
+         Height          =   450
+         Left            =   3360
+         TabIndex        =   24
+         Top             =   240
+         Width           =   1350
+         _Version        =   786432
+         _ExtentX        =   2381
+         _ExtentY        =   794
+         _StockProps     =   79
+         Caption         =   "Imprimir"
+         UseVisualStyle  =   -1  'True
+      End
+   End
+   Begin XtremeSuiteControls.ProgressBar progreso 
+      Height          =   135
+      Left            =   9600
+      TabIndex        =   20
+      Top             =   1200
+      Visible         =   0   'False
+      Width           =   5055
+      _Version        =   786432
+      _ExtentX        =   8916
+      _ExtentY        =   238
+      _StockProps     =   93
+      Appearance      =   4
+   End
    Begin GridEX20.GridEX gridOrdenes 
       Height          =   5505
       Left            =   120
       TabIndex        =   0
-      Top             =   1440
-      Width           =   12510
-      _ExtentX        =   22066
+      Top             =   1680
+      Width           =   14775
+      _ExtentX        =   26061
       _ExtentY        =   9710
       Version         =   "2.0"
       BoundColumnIndex=   ""
@@ -65,31 +125,31 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       PrinterProperties=   "frmOrdenesPago.frx":14E8
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   1350
+      Height          =   1470
       Left            =   45
       TabIndex        =   1
       Top             =   90
-      Width           =   12525
+      Width           =   14805
       _Version        =   786432
-      _ExtentX        =   22093
-      _ExtentY        =   2381
+      _ExtentX        =   26114
+      _ExtentY        =   2593
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
       Begin VB.PictureBox pic 
          Height          =   540
-         Left            =   11745
+         Left            =   14520
          ScaleHeight     =   480
          ScaleWidth      =   300
-         TabIndex        =   18
-         Top             =   195
+         TabIndex        =   16
+         Top             =   3120
          Visible         =   0   'False
          Width           =   360
       End
       Begin XtremeSuiteControls.PushButton PushButton2 
          Height          =   330
          Left            =   11340
-         TabIndex        =   12
+         TabIndex        =   11
          Top             =   2490
          Visible         =   0   'False
          Width           =   1245
@@ -101,21 +161,21 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
-         Height          =   1095
+         Height          =   1215
          Left            =   4890
-         TabIndex        =   8
+         TabIndex        =   7
          Top             =   105
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
-         _ExtentY        =   1931
+         _ExtentY        =   2143
          _StockProps     =   79
          Caption         =   "Estado Proveedor"
          UseVisualStyle  =   -1  'True
          Begin XtremeSuiteControls.CheckBox chkContado 
             Height          =   195
             Left            =   405
-            TabIndex        =   9
+            TabIndex        =   8
             Top             =   225
             Width           =   1635
             _Version        =   786432
@@ -129,7 +189,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Begin XtremeSuiteControls.CheckBox chkCtaCte 
             Height          =   315
             Left            =   405
-            TabIndex        =   10
+            TabIndex        =   9
             Top             =   465
             Width           =   1800
             _Version        =   786432
@@ -143,7 +203,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Begin XtremeSuiteControls.CheckBox chkEliminado 
             Height          =   315
             Left            =   405
-            TabIndex        =   11
+            TabIndex        =   10
             Top             =   765
             Width           =   1800
             _Version        =   786432
@@ -163,24 +223,10 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Top             =   285
          Width           =   840
       End
-      Begin XtremeSuiteControls.PushButton cmdBuscar 
-         Default         =   -1  'True
-         Height          =   450
-         Left            =   9600
-         TabIndex        =   3
-         Top             =   240
-         Width           =   1350
-         _Version        =   786432
-         _ExtentX        =   2381
-         _ExtentY        =   794
-         _StockProps     =   79
-         Caption         =   "Buscar"
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.ComboBox cboProveedores 
          Height          =   315
          Left            =   945
-         TabIndex        =   4
+         TabIndex        =   3
          Top             =   615
          Width           =   3525
          _Version        =   786432
@@ -193,7 +239,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.PushButton btnClearProveedor 
          Height          =   255
          Left            =   4530
-         TabIndex        =   5
+         TabIndex        =   4
          Top             =   630
          Width           =   300
          _Version        =   786432
@@ -204,23 +250,10 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          BackColor       =   12632256
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.PushButton cmdImprimir 
-         Height          =   450
-         Left            =   9615
-         TabIndex        =   13
-         Top             =   765
-         Width           =   1350
-         _Version        =   786432
-         _ExtentX        =   2381
-         _ExtentY        =   794
-         _StockProps     =   79
-         Caption         =   "Imprimir"
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
          Height          =   315
          Left            =   7845
-         TabIndex        =   14
+         TabIndex        =   12
          Top             =   300
          Width           =   1470
          _Version        =   786432
@@ -233,7 +266,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.DateTimePicker dtpHasta 
          Height          =   315
          Left            =   7830
-         TabIndex        =   15
+         TabIndex        =   13
          Top             =   795
          Width           =   1470
          _Version        =   786432
@@ -246,7 +279,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.ComboBox cboEstado 
          Height          =   315
          Left            =   945
-         TabIndex        =   19
+         TabIndex        =   17
          Top             =   960
          Width           =   3510
          _Version        =   786432
@@ -260,7 +293,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
          Height          =   255
          Left            =   4530
-         TabIndex        =   21
+         TabIndex        =   19
          Top             =   960
          Width           =   300
          _Version        =   786432
@@ -274,7 +307,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.Label Label4 
          Height          =   195
          Left            =   360
-         TabIndex        =   20
+         TabIndex        =   18
          Top             =   1020
          Width           =   495
          _Version        =   786432
@@ -288,7 +321,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.Label Label6 
          Height          =   195
          Left            =   7320
-         TabIndex        =   17
+         TabIndex        =   15
          Top             =   855
          Width           =   420
          _Version        =   786432
@@ -302,7 +335,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.Label Label5 
          Height          =   195
          Left            =   7305
-         TabIndex        =   16
+         TabIndex        =   14
          Top             =   345
          Width           =   465
          _Version        =   786432
@@ -316,7 +349,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.Label lbl 
          Height          =   195
          Left            =   165
-         TabIndex        =   7
+         TabIndex        =   6
          Top             =   660
          Width           =   750
          _Version        =   786432
@@ -330,7 +363,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.Label Label1 
          Height          =   195
          Left            =   195
-         TabIndex        =   6
+         TabIndex        =   5
          Top             =   330
          Width           =   675
          _Version        =   786432
@@ -387,6 +420,25 @@ Private fac As clsFacturaProveedor
 
 Private Sub btnClearProveedor_Click()
     Me.cboProveedores.ListIndex = -1
+End Sub
+
+Private Sub btnExportar_Click()
+
+    Me.progreso.Visible = True
+    'Me.lblExportando.Visible = True
+    
+    If IsSomething(ordenes) Then
+'        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
+        If Not DAOOrdenPago.ExportarColeccion(ordenes, Me.progreso) Then GoTo err1
+    End If
+    
+    Me.progreso.Visible = False
+    'Me.lblExportando.Visible = False
+    
+    Exit Sub
+err1:
+    MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
+
 End Sub
 
 Private Sub cmdBuscar_Click()
@@ -504,11 +556,8 @@ Private Sub llenarLista()
     Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
     Me.gridOrdenes.ItemCount = ordenes.count
 
-' ESTAS LINEAS DECLARAN QUE CUANDO SE ENCUENTRE UN SOLO RESULTADO SE ABRA LA PANTALLA CON LA ODP ENCONTRADA.
-'    If ordenes.count = 1 And LenB(Me.txtNro.text) > 0 Then
-'        Set Orden = ordenes(1)
-'        If Orden.estado <> EstadoOrdenPago_Anulada Then gridOrdenes_DblClick
-'    End If
+    Me.caption = "Ordenes de Pago (" & ordenes.count & " Ordenes encontradas)"
+    
 End Sub
 Private Sub Form_Resize()
     On Error Resume Next

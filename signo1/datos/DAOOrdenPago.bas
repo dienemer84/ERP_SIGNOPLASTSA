@@ -1053,6 +1053,141 @@ err1:
     ResumenPagos = False
 End Function
 
+Public Function ExportarColeccion(col As Collection, Optional progressbar As Object) As Boolean
+    On Error GoTo err1
+    
+    ExportarColeccion = True
+
+'    Dim detalle As DetalleOrdenTrabajo
+'    Dim Entregas As Collection
+'    Dim remitoDetalle As remitoDetalle
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+    
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+    
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+    
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    'fila, columna
+
+    Dim offset As Long
+    offset = 3
+    xlWorksheet.Cells(offset, 1).value = "Número Orden"
+    xlWorksheet.Cells(offset, 2).value = "Fecha"
+    xlWorksheet.Cells(offset, 3).value = "Moneda"
+    xlWorksheet.Cells(offset, 4).value = "Valores"
+    xlWorksheet.Cells(offset, 5).value = "Retenciones"
+    xlWorksheet.Cells(offset, 6).value = "Total"
+    xlWorksheet.Cells(offset, 7).value = "Tipo"
+    xlWorksheet.Cells(offset, 8).value = "Destino"
+    xlWorksheet.Cells(offset, 9).value = "Estado"
+    
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 9)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 9)).Interior.Color = &HC0C0C0
+
+    Dim ord As OrdenPago
+    Dim fac As clsFacturaProveedor
+    
+    Dim initoffset As Long
+    initoffset = offset
+
+    progressbar.min = 0
+    progressbar.max = col.count
+    
+
+    Dim d As Long
+    d = 0
+    
+    For Each ord In col
+        
+        Dim i As Integer
+        
+        i = 1
+    
+        d = d + 1
+        progressbar.value = d
+        
+        offset = offset + 1
+        
+         xlWorksheet.Cells(offset, 1).value = ord.Id
+         xlWorksheet.Cells(offset, 2).value = ord.FEcha
+         xlWorksheet.Cells(offset, 3).value = ord.moneda.NombreCorto
+         xlWorksheet.Cells(offset, 4).value = ord.StaticTotalOrigenes
+         xlWorksheet.Cells(offset, 5).value = ord.StaticTotalRetenido
+         xlWorksheet.Cells(offset, 6).value = (ord.StaticTotalOrigenes + ord.StaticTotalRetenido)
+         
+        If ord.EsParaFacturaProveedor Then
+            Set fac = ord.FacturasProveedor.item(1)
+            xlWorksheet.Cells(offset, 7).value = "Factura Proveedor"
+            xlWorksheet.Cells(offset, 8).value = UCase(fac.Proveedor.RazonSocial)
+        Else
+            xlWorksheet.Cells(offset, 7).value = "Cuenta Contable"
+                If IsSomething(ord.CuentaContable) Then
+                    xlWorksheet.Cells(offset, 8).value = ord.CuentaContable.nombre & " (" & ord.CuentaContable.codigo & ")"
+                End If
+        End If
+        
+        If ord.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
+            xlWorksheet.Cells(offset, 9).value = "Aprobada"
+        ElseIf ord.estado = EstadoOrdenPago_Anulada Then
+            xlWorksheet.Cells(offset, 9).value = "Anulada"
+        ElseIf ord.estado = EstadoOrdenPago_pendiente Then
+            xlWorksheet.Cells(offset, 9).value = "Pendiene"
+
+        End If
+        
+         
+
+        
+    Next
+    
+    xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 9)).Borders.LineStyle = xlContinuous
+
+    'autosize
+    xlApplication.ScreenUpdating = False
+    Dim wkSt As String
+    wkSt = xlWorksheet.Name
+    xlWorksheet.Cells.EntireColumn.AutoFit
+    xlWorkbook.Sheets(wkSt).Select
+    xlApplication.ScreenUpdating = True
+    ''
+
+    Dim ruta As String
+    ruta = Environ$("TEMP")
+    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
+    If LenB(ruta) = 0 Then ruta = App.path
+    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
+
+    xlWorkbook.SaveAs ruta
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    progressbar.value = 0
+    
+    Exit Function
+err1:
+    ExportarColeccion = False
+End Function
+
 
 
 Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean

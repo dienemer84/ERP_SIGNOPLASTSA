@@ -5,49 +5,95 @@ Begin VB.Form frmAdminCobranzasLista
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Recibos"
-   ClientHeight    =   7035
+   ClientHeight    =   8445
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   13770
+   ClientWidth     =   17265
    Icon            =   "frmAdminCobranzasLista.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   7035
-   ScaleWidth      =   13770
+   ScaleHeight     =   8445
+   ScaleWidth      =   17265
+   Begin VB.Frame Frame1 
+      Height          =   855
+      Left            =   11160
+      TabIndex        =   14
+      Top             =   120
+      Width           =   5535
+      Begin XtremeSuiteControls.PushButton btnExportar 
+         Height          =   465
+         Left            =   1920
+         TabIndex        =   15
+         Top             =   240
+         Width           =   1515
+         _Version        =   786432
+         _ExtentX        =   2672
+         _ExtentY        =   820
+         _StockProps     =   79
+         Caption         =   "Exportar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton cmdBuscar 
+         Height          =   465
+         Left            =   120
+         TabIndex        =   16
+         Top             =   240
+         Width           =   1515
+         _Version        =   786432
+         _ExtentX        =   2672
+         _ExtentY        =   820
+         _StockProps     =   79
+         Caption         =   "Buscar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton cmdImprimir 
+         Height          =   465
+         Left            =   3720
+         TabIndex        =   17
+         Top             =   240
+         Width           =   1515
+         _Version        =   786432
+         _ExtentX        =   2672
+         _ExtentY        =   820
+         _StockProps     =   79
+         Caption         =   "Imprimir"
+         UseVisualStyle  =   -1  'True
+      End
+   End
+   Begin XtremeSuiteControls.ProgressBar progreso 
+      Height          =   135
+      Left            =   11160
+      TabIndex        =   13
+      Top             =   960
+      Visible         =   0   'False
+      Width           =   5535
+      _Version        =   786432
+      _ExtentX        =   9763
+      _ExtentY        =   238
+      _StockProps     =   93
+      Appearance      =   6
+   End
    Begin VB.CommandButton Command1 
       Caption         =   "Command1"
       Height          =   615
-      Left            =   12330
-      TabIndex        =   6
-      Top             =   240
+      Left            =   360
+      TabIndex        =   5
+      Top             =   7200
       Visible         =   0   'False
       Width           =   1140
    End
    Begin XtremeSuiteControls.ComboBox cboCliente 
       Height          =   315
       Left            =   1395
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   240
-      Width           =   5865
+      Width           =   4785
       _Version        =   786432
-      _ExtentX        =   10345
+      _ExtentX        =   8440
       _ExtentY        =   556
       _StockProps     =   77
       BackColor       =   -2147483643
       Text            =   "ComboBox1"
-   End
-   Begin XtremeSuiteControls.PushButton cmdBuscar 
-      Height          =   345
-      Left            =   4155
-      TabIndex        =   4
-      Top             =   660
-      Width           =   1515
-      _Version        =   786432
-      _ExtentX        =   2672
-      _ExtentY        =   609
-      _StockProps     =   79
-      Caption         =   "Buscar"
-      UseVisualStyle  =   -1  'True
    End
    Begin VB.TextBox txtNroRecibo 
       Height          =   285
@@ -58,11 +104,11 @@ Begin VB.Form frmAdminCobranzasLista
    End
    Begin GridEX20.GridEX grilla_recibos 
       Height          =   5640
-      Left            =   0
+      Left            =   120
       TabIndex        =   0
       Top             =   1185
-      Width           =   13575
-      _ExtentX        =   23945
+      Width           =   16575
+      _ExtentX        =   29236
       _ExtentY        =   9948
       Version         =   "2.0"
       HoldSortSettings=   -1  'True
@@ -108,24 +154,11 @@ Begin VB.Form frmAdminCobranzasLista
       ImagePicture(2) =   "frmAdminCobranzasLista.frx":1ECE
       PrinterProperties=   "frmAdminCobranzasLista.frx":21E8
    End
-   Begin XtremeSuiteControls.PushButton cmdImprimir 
-      Height          =   345
-      Left            =   5760
-      TabIndex        =   7
-      Top             =   660
-      Width           =   1515
-      _Version        =   786432
-      _ExtentX        =   2672
-      _ExtentY        =   609
-      _StockProps     =   79
-      Caption         =   "Imprimir"
-      UseVisualStyle  =   -1  'True
-   End
    Begin XtremeSuiteControls.GroupBox GroupBox2 
       Height          =   1050
-      Left            =   7395
-      TabIndex        =   8
-      Top             =   75
+      Left            =   6360
+      TabIndex        =   6
+      Top             =   120
       Width           =   4695
       _Version        =   786432
       _ExtentX        =   8281
@@ -137,7 +170,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
          Height          =   315
          Left            =   825
-         TabIndex        =   9
+         TabIndex        =   7
          Top             =   615
          Width           =   1470
          _Version        =   786432
@@ -150,7 +183,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.DateTimePicker dtpHasta 
          Height          =   315
          Left            =   3000
-         TabIndex        =   10
+         TabIndex        =   8
          Top             =   615
          Width           =   1470
          _Version        =   786432
@@ -163,7 +196,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.ComboBox cboRangos 
          Height          =   315
          Left            =   825
-         TabIndex        =   11
+         TabIndex        =   9
          Top             =   225
          Width           =   3645
          _Version        =   786432
@@ -177,7 +210,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.Label Label7 
          Height          =   195
          Left            =   240
-         TabIndex        =   14
+         TabIndex        =   12
          Top             =   285
          Width           =   480
          _Version        =   786432
@@ -190,7 +223,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.Label Label5 
          Height          =   195
          Left            =   255
-         TabIndex        =   13
+         TabIndex        =   11
          Top             =   660
          Width           =   465
          _Version        =   786432
@@ -203,7 +236,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.Label Label6 
          Height          =   195
          Left            =   2430
-         TabIndex        =   12
+         TabIndex        =   10
          Top             =   675
          Width           =   420
          _Version        =   786432
@@ -321,6 +354,24 @@ Private Sub aprobarRecibo_Click()
     End If
 End Sub
 
+Private Sub btnExportar_Click()
+
+    Me.progreso.Visible = True
+    'Me.lblExportando.Visible = True
+    
+    If IsSomething(recibos) Then
+'        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
+        If Not DAORecibo.ExportarColeccion(recibos, Me.progreso) Then GoTo err1
+    End If
+    
+    Me.progreso.Visible = False
+    'Me.lblExportando.Visible = False
+    
+    Exit Sub
+err1:
+    MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
+End Sub
+
 Private Sub cboRangos_Click()
     funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde, Me.dtpHasta
 End Sub
@@ -420,6 +471,8 @@ Private Sub llenarLista()
     Set recibos = DAORecibo.FindAll(F)
     Me.grilla_recibos.ItemCount = 0
     Me.grilla_recibos.ItemCount = recibos.count
+    
+    Me.caption = "Recibos (" & recibos.count & " Recibos encontrados)"
 
 End Sub
 
@@ -427,7 +480,7 @@ Private Sub Form_Resize()
     If Me.ScaleHeight > 0 Then
         Me.grilla_recibos.Height = Me.ScaleHeight - 1800
         End If
-    Me.grilla_recibos.Width = Me.ScaleWidth
+    Me.grilla_recibos.Width = Me.ScaleWidth - 400
 End Sub
 
 Private Sub grilla_recibos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
@@ -545,7 +598,7 @@ Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmar
     
     'VALORES POR PAGAR
     Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico)), "$", "")
-    
+
     'IMPORTE TOTAL PAGADO
     Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalRecibidoEstatico)), "$", "")
     

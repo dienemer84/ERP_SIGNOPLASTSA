@@ -1198,6 +1198,8 @@ Public Sub llenarGrilla()
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     Set facturas = DAOFacturaProveedor.FindAll(condition, , ordenImporte, Permisos.AdminFaPVerSoloPropias)
+    
+
 
 
     Dim F As clsFacturaProveedor
@@ -1237,7 +1239,7 @@ Public Sub llenarGrilla()
 
     GridEXHelper.AutoSizeColumns Me.grilla, True
 
-    Me.caption = "Facturas Proveedores (" & facturas.count & " comprobantes encontrados)"
+    Me.caption = "Cbtes. Proveedores (" & facturas.count & " comprobantes encontrados)"
     
 End Sub
 
