@@ -29,7 +29,7 @@ Public Function QueIdMaterial(codigos As String) As Long
     Wend
     If c = 1 Then
         rs1.MoveFirst
-        QueIdMaterial = rs1!id  'si exist codigo, dvuelvo id
+        QueIdMaterial = rs1!Id  'si exist codigo, dvuelvo id
     Else
         QueIdMaterial = -1    'sino devuelvo -1
     End If
@@ -70,7 +70,7 @@ Public Function rubro_terminacion() As Integer
     Wend
     If c = 1 Then
         rs.MoveFirst
-        rubro_terminacion = rs!Rubro
+        rubro_terminacion = rs!rubro
     Else
         MsgBox "Se produjo un error interno en las BBDD", vbCritical, "Error"
     End If
@@ -104,9 +104,9 @@ Function ver_datos_pintura(ByRef cantPintM2, ByRef CantForfatosM2, ByRef TpoPrep
 
     If rs!Cantidad = 1 Then
         rs.MoveFirst
-        id = rs!id
+        Id = rs!Id
         'selecciono
-        strsql = "select * from Terminacion where id=" & id
+        strsql = "select * from Terminacion where id=" & Id
         Me.ejecutar strsql
         cantPintM2 = rs!cantPintM2
         CantForfatosM2 = rs!CantForfatosM2
@@ -154,7 +154,7 @@ Public Sub LlenarListaGastos(lista As ListView)
     strsql = "select * from gastos"
     ejecutar strsql
     While Not rs.EOF
-        Set x = lista.ListItems.Add(, , rs!id)
+        Set x = lista.ListItems.Add(, , rs!Id)
         x.SubItems(1) = rs!Concepto
         x.SubItems(2) = rs!porcentual & "%"
         x.SubItems(3) = rs!porcentual
@@ -214,7 +214,7 @@ Public Sub LlenarDatosVarios(frm As frmDatosVarios)
 End Sub
 
 Public Sub Calcular_terminacion(lst As ListView, aumMdo As Double, cantPintM2 As Double, Espesor As Double, ByRef cantPintREF As Double, ByRef cantFosfREF, fosfatos As Double, tpoPrep As Double, ByRef supREF As Double, ByRef aplicPintREF, tiempoAplic As Double, ByRef hornoREF As Double, tpoHorno As Double, Optional largoTot As Double, Optional anchoTot As Double)
-    'Cantidad de pintura
+'Cantidad de pintura
     Dim m2 As Double, Largo As Double, Ancho As Double
     For i = 1 To lst.ListItems.count
         m2 = CDbl(lst.ListItems(i).ListSubItems(3))
@@ -236,9 +236,9 @@ Public Sub Calcular_terminacion(lst As ListView, aumMdo As Double, cantPintM2 As
         hornoREF = ((((Largo * Ancho / 1000000)) * (capas * caras) * tpoHorno) * canti) + hornoREF
     Next i
 End Sub
-Public Sub VerParaModificar(id As Integer, frm As frmConfigurarGastos)
+Public Sub VerParaModificar(Id As Integer, frm As frmConfigurarGastos)
     If rs.State = 1 Then rs.Close
-    strsql = "select * from gastos where id=" & id
+    strsql = "select * from gastos where id=" & Id
     rs.Open strsql, cn, adOpenDynamic, adLockOptimistic, adCmdText
     frm.Text4 = rs!Concepto
     frm.Text3 = rs!porcentual
@@ -254,18 +254,18 @@ err34:
 End Function
 
 Public Sub llenarCboMonedas(cbo As ComboBox)
-    'cbo.AddItem "AR$"
-    'cbo.ItemData(cbo.NewIndex) = 0
-    'cbo.AddItem "US$", 1
-    'cbo.ItemData(cbo.NewIndex) = 1
-    'cbo.ListIndex = 0
+'cbo.AddItem "AR$"
+'cbo.ItemData(cbo.NewIndex) = 0
+'cbo.AddItem "US$", 1
+'cbo.ItemData(cbo.NewIndex) = 1
+'cbo.ListIndex = 0
     Me.ejecutar "select nombre_corto,id from AdminConfigMonedas"
     cbo.Clear
     pri = -999
     While Not rs.EOF
         cbo.AddItem rs!Nombre_corto
-        cbo.ItemData(cbo.NewIndex) = rs!id
-        If pri = -999 Then pri = rs!id
+        cbo.ItemData(cbo.NewIndex) = rs!Id
+        If pri = -999 Then pri = rs!Id
         rs.MoveNext
     Wend
     If pri <> -999 Then
@@ -288,12 +288,12 @@ err545:
     ejecutar_comando = False
 End Function
 Public Function llenarComboAlmacenes(cbo As ComboBox)
-    'Dim rs As Recordset
+'Dim rs As Recordset
     Me.ejecutar "select * from materialesAlmacenes"    '-1 es porq el datalist usa como valor bool -1 en true
     While Not rs.EOF
-        muestra = Format(rs!id, "000") & " - " & rs!detalle
+        muestra = Format(rs!Id, "000") & " - " & rs!detalle
         cbo.AddItem muestra
-        cbo.ItemData(cbo.NewIndex) = rs!id
+        cbo.ItemData(cbo.NewIndex) = rs!Id
         rs.MoveNext
     Wend
     If cbo.ListCount > 0 Then

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmTareasAsignadasInicio 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Inicio de Tareas Asignadas"
@@ -574,7 +574,7 @@ End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
 
-    'si la ultima tecla fue hace mas de 10 segundos, empezar de vuelta
+'si la ultima tecla fue hace mas de 10 segundos, empezar de vuelta
     If (GetTickCount - lastkeypressMS) > 30000 Then
         LimpiarData
         finalizandoProceso = False
@@ -614,7 +614,7 @@ Private Sub GetTareasAsignadasSinIniciar()
     Dim tmpTiempoProcesoDetalle As PlaneamientoTiempoProcesoDetalle
 
 
-    Set tareasAsignadasSinIniciar = DAOTiemposProcesosDetalles.FindAllAsignedNotFinishedByEmpleado(Empleado.id)
+    Set tareasAsignadasSinIniciar = DAOTiemposProcesosDetalles.FindAllAsignedNotFinishedByEmpleado(Empleado.Id)
 
 
     Me.gridProcesos.ItemCount = 0
@@ -751,11 +751,11 @@ End Sub
 Private Sub IniciarProceso()
 
 
-    If DAOEmpleados.GetTareasIdAsignadasByPersonalId(Empleado.id).Exists(tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.id) Then
+    If DAOEmpleados.GetTareasIdAsignadasByPersonalId(Empleado.Id).Exists(tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Id) Then
 
         'me tengo que fijar que de los que tenga sin terminar sean el mismo tipo de tarea que la que va a iniciar
         Dim detallesSinTerminar As Collection
-        Set detallesSinTerminar = DAOTiemposProcesosDetalles.FindAllWithoutFinishByEmpleado(Empleado.id)
+        Set detallesSinTerminar = DAOTiemposProcesosDetalles.FindAllWithoutFinishByEmpleado(Empleado.Id)
         Dim tmpProcesoDet As PlaneamientoTiempoProcesoDetalle
         Dim tmpProcesoDetInconcluso As PlaneamientoTiempoProcesoDetalle
 
@@ -763,9 +763,9 @@ Private Sub IniciarProceso()
         Dim tareaAsignadaYaIniciada As Boolean: tareaAsignadaYaIniciada = False
         If IsSomething(detallesSinTerminar) Then
             For Each tmpProcesoDet In detallesSinTerminar
-                tareaAsignadaYaIniciada = tareaAsignadaYaIniciada Or (tmpProcesoDet.IdPlaneamientoTiempoProceso = tiempoProcesoDet.PlaneamientoTiempoProceso.id)
+                tareaAsignadaYaIniciada = tareaAsignadaYaIniciada Or (tmpProcesoDet.IdPlaneamientoTiempoProceso = tiempoProcesoDet.PlaneamientoTiempoProceso.Id)
 
-                mismaTarea = mismaTarea And (tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.id = tmpProcesoDet.PlaneamientoTiempoProceso.Tarea.id)
+                mismaTarea = mismaTarea And (tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Id = tmpProcesoDet.PlaneamientoTiempoProceso.Tarea.Id)
                 If Not mismaTarea Then
                     Set tmpProcesoDetInconcluso = tmpProcesoDet
                     Exit For
@@ -782,7 +782,7 @@ Private Sub IniciarProceso()
                 Set newProcesoDet.Empleado = Empleado
                 newProcesoDet.FechaCarga = Now
                 newProcesoDet.FechaInicioTarea = Now
-                newProcesoDet.IdPlaneamientoTiempoProceso = tiempoProcesoDet.PlaneamientoTiempoProceso.id
+                newProcesoDet.IdPlaneamientoTiempoProceso = tiempoProcesoDet.PlaneamientoTiempoProceso.Id
                 newProcesoDet.legajo = Empleado.legajo
                 If DAOTiemposProcesosDetalles.Save(newProcesoDet) Then
                     Me.gridProcesos.ItemCount = 0
@@ -853,11 +853,11 @@ Private Sub ShowMessage(msg As String)
 End Sub
 
 Private Sub PintarMensaje()
-    If Me.lblMensajes.BackColor = vbWhite Then
-        Me.lblMensajes.BackColor = FormHelper.LetraAzul
+    If Me.lblMensajes.backColor = vbWhite Then
+        Me.lblMensajes.backColor = FormHelper.LetraAzul
         Me.lblMensajes.ForeColor = vbWhite
     Else
-        Me.lblMensajes.BackColor = vbWhite
+        Me.lblMensajes.backColor = vbWhite
         Me.lblMensajes.ForeColor = FormHelper.LetraAzul
     End If
 End Sub
@@ -919,7 +919,7 @@ End Sub
 Private Sub gridProcesos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex >= 1 And RowIndex <= tareasAsignadasSinIniciar.count Then
         Set tiempoProcesoDet = tareasAsignadasSinIniciar.item(RowIndex)
-        Values.value(1) = tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.id & " - " & tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Tarea
+        Values.value(1) = tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Id & " - " & tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Tarea
         Values.value(2) = tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Sector.Sector
         Values.value(3) = tiempoProcesoDet.PlaneamientoTiempoProceso.idpedido & "/" & Format(tiempoProcesoDet.PlaneamientoTiempoProceso.item, "000")
     End If

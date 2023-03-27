@@ -14,75 +14,75 @@ Public Function FindAllWithAlicuotas(Cuit As String) As Collection
     Dim d As New clsDTOPadronIIBB
     Dim col2 As New Collection
     Dim ali As New Collection
-          
-            Set col2 = DTOPadronIIBB.FindByCUIT2(Cuit)
-          
-            Dim retenciones As Collection
-            Set retenciones = FindAllEsAgente
-                 
-            Dim rx As Retencion
-            Dim c As clsDTOPadronIIBB
-            Set alicuotas = New Collection
-            Dim x As DTORetencionAlicuota
-            For Each c In col2
-        
-                    For Each rx In retenciones
-                    
-                    If rx.IdPadron = c.IdPadron Then
-                        
-                    Set x = New DTORetencionAlicuota
-                    x.alicuotaRetencion = c.alicuotaRetencion
-                    x.alicuotaPercepcion = c.alicuotaPercepcion
-                    x.importe = 0
-                    x.dePadron = True
-                    Set x.Retencion = rx
-                    ali.Add x, CStr(c.IdPadron)
-                        
-                    End If
-            
-            Next
-        
+
+    Set col2 = DTOPadronIIBB.FindByCUIT2(Cuit)
+
+    Dim retenciones As Collection
+    Set retenciones = FindAllEsAgente
+
+    Dim rx As Retencion
+    Dim c As clsDTOPadronIIBB
+    Set alicuotas = New Collection
+    Dim x As DTORetencionAlicuota
+    For Each c In col2
+
+        For Each rx In retenciones
+
+            If rx.IdPadron = c.IdPadron Then
+
+                Set x = New DTORetencionAlicuota
+                x.alicuotaRetencion = c.alicuotaRetencion
+                x.alicuotaPercepcion = c.alicuotaPercepcion
+                x.importe = 0
+                x.dePadron = True
+                Set x.Retencion = rx
+                ali.Add x, CStr(c.IdPadron)
+
+            End If
+
         Next
-        
-        Dim P As New Collection
-                    Set P = DAORetenciones.FindAllEsAgente
-                    
-                    Dim aa As Retencion
-                    
-                    
-                    For Each aa In P
-                        If Not Contains(aa, ali) Then
-                            
-                            Dim xl As New DTORetencionAlicuota
-                            Set xl = New DTORetencionAlicuota
-                            
-                            Set xl.Retencion = aa
-                            xl.dePadron = False
-                            If aa.IdPadron = 0 Then
-                                 ali.Add xl ', aa.nombre
-                            Else
-                            ali.Add xl ', aa.IdPadron
-                            End If
-                        End If
-                    Next
-        
-        
-        
-        
-        
-        Set FindAllWithAlicuotas = ali
-        
+
+    Next
+
+    Dim P As New Collection
+    Set P = DAORetenciones.FindAllEsAgente
+
+    Dim aa As Retencion
+
+
+    For Each aa In P
+        If Not Contains(aa, ali) Then
+
+            Dim xl As New DTORetencionAlicuota
+            Set xl = New DTORetencionAlicuota
+
+            Set xl.Retencion = aa
+            xl.dePadron = False
+            If aa.IdPadron = 0 Then
+                ali.Add xl    ', aa.nombre
+            Else
+                ali.Add xl    ', aa.IdPadron
+            End If
+        End If
+    Next
+
+
+
+
+
+    Set FindAllWithAlicuotas = ali
+
 End Function
 Private Function Contains(r As Retencion, c As Collection)
-Dim c1 As Boolean
-c1 = False
-Dim i As DTORetencionAlicuota
-For Each i In c
- If i.Retencion.id = r.id Then
-   c1 = True
- End If
-Next i
-Contains = c1
+    Dim c1 As Boolean
+    c1 = False
+    Dim i As DTORetencionAlicuota
+    For Each i In c
+        If i.Retencion.Id = r.Id Then
+            c1 = True
+        End If
+    Next i
+    Contains = c1
 End Function
 
 
@@ -91,40 +91,40 @@ Public Function FindAllWithAlicuotasAnt(Cuit As String) As Collection
     Dim d As New clsDTOPadronIIBB
     Dim col2 As New Collection
     Dim ali As New Collection
-          
-            Set col2 = DTOPadronIIBB.FindByCUITAnt(Cuit)
-          
-            Dim retenciones As Collection
-            Set retenciones = FindAllEsAgente
-                 
-            Dim rx As Retencion
-            Dim c As clsDTOPadronIIBB
-            Set alicuotas = New Collection
-            Dim x As DTORetencionAlicuota
-            For Each c In col2
-        
-            For Each rx In retenciones
-            
+
+    Set col2 = DTOPadronIIBB.FindByCUITAnt(Cuit)
+
+    Dim retenciones As Collection
+    Set retenciones = FindAllEsAgente
+
+    Dim rx As Retencion
+    Dim c As clsDTOPadronIIBB
+    Set alicuotas = New Collection
+    Dim x As DTORetencionAlicuota
+    For Each c In col2
+
+        For Each rx In retenciones
+
             If rx.IdPadron = c.IdPadron Then
-                
-            Set x = New DTORetencionAlicuota
-            x.alicuotaRetencion = c.alicuotaRetencion
-            x.alicuotaPercepcion = c.alicuotaPercepcion
-            Set x.Retencion = rx
-            ali.Add x, CStr(c.IdPadron)
-                
+
+                Set x = New DTORetencionAlicuota
+                x.alicuotaRetencion = c.alicuotaRetencion
+                x.alicuotaPercepcion = c.alicuotaPercepcion
+                Set x.Retencion = rx
+                ali.Add x, CStr(c.IdPadron)
+
             End If
-            
-            Next
-        
+
         Next
-        
-        Set FindAllWithAlicuotasAnt = ali
-        
+
+    Next
+
+    Set FindAllWithAlicuotasAnt = ali
+
 End Function
 
-Public Function FindById(id As Long) As Retencion
-    Dim col As Collection: Set col = FindAll("id = " & id)
+Public Function FindById(Id As Long) As Retencion
+    Dim col As Collection: Set col = FindAll("id = " & Id)
     If col.count = 0 Then
         Set FindById = Nothing
     Else
@@ -155,7 +155,7 @@ Public Function FindAll(Optional whereFilter As String = "1 = 1") As Collection
 
     While Not rs.EOF
         Set ret = Map(rs, fieldsIndex, DAORetenciones.TABLA_RETENCION)
-        col.Add ret, CStr(ret.id)
+        col.Add ret, CStr(ret.Id)
         rs.MoveNext
     Wend
 
@@ -165,11 +165,11 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As Retencion
     Dim T As Retencion
-    Dim id As Long
-    id = GetValue(rs, indice, tabla, DAOTareas.CAMPO_ID)
-    If id > 0 Then
+    Dim Id As Long
+    Id = GetValue(rs, indice, tabla, DAOTareas.CAMPO_ID)
+    If Id > 0 Then
         Set T = New Retencion
-        T.id = id
+        T.Id = Id
         T.codigo = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_CODIGO)
         T.nombre = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_NOMBRE)
         T.Porcentaje = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_PORCENTAJE)
@@ -188,7 +188,7 @@ Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
 
     For Each ret In col
         cbo.AddItem ret.codigo & "-" & ret.nombre
-        cbo.ItemData(cbo.NewIndex) = ret.id
+        cbo.ItemData(cbo.NewIndex) = ret.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0

@@ -26,26 +26,26 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
     Dim rs As ADODB.Recordset
     Dim q As String
 
-'    q = "SELECT *" _
-'        & " FROM Cheques cheq" _
-'        & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
-'        & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
-'        & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
-'        & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
-'        & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
-'        & " LEFT JOIN ordenes_pago_facturas ordenesp ON cheq.orden_pago_origen=ordenesp.id_orden_pago" _
-'        & " LEFT JOIN AdminComprasFacturasProveedores facturasp ON ordenesp.id_factura_proveedor=facturasp.id" _
-'        & " LEFT JOIN proveedores prov ON facturasp.id_proveedor=prov.id" _
-'        & " WHERE 1 = 1 "
+    '    q = "SELECT *" _
+         '        & " FROM Cheques cheq" _
+         '        & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
+         '        & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
+         '        & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
+         '        & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
+         '        & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
+         '        & " LEFT JOIN ordenes_pago_facturas ordenesp ON cheq.orden_pago_origen=ordenesp.id_orden_pago" _
+         '        & " LEFT JOIN AdminComprasFacturasProveedores facturasp ON ordenesp.id_factura_proveedor=facturasp.id" _
+         '        & " LEFT JOIN proveedores prov ON facturasp.id_proveedor=prov.id" _
+         '        & " WHERE 1 = 1 "
 
     q = "SELECT *" _
-        & " FROM Cheques cheq" _
-        & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
-        & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
-        & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
-        & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
-        & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
-        & " WHERE 1 = 1 "
+      & " FROM Cheques cheq" _
+      & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
+      & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
+      & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
+      & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
+      & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
+      & " WHERE 1 = 1 "
 
     If LenB(filter) > 0 Then
         q = q & " AND " & filter
@@ -57,8 +57,8 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
 
     Set rs = conectar.RSFactory(q)
-    
-'    'debug.print (q)
+
+    '    'debug.print (q)
 
     Dim fieldsIndex As Dictionary
     BuildFieldsIndex rs, fieldsIndex
@@ -66,7 +66,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
     Dim tmpCheque As cheque
 
-       
+
     While Not rs.EOF
         Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov")
         Cheques.Add tmpCheque, CStr(tmpCheque.Id)
@@ -78,8 +78,8 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
     'tickEnd = GetTickCount
 
     'Debug.Print tickEnd - tickStart, "ms elapsed"
-    
-    
+
+
     Set FindAll = Cheques
     Exit Function
 
@@ -100,7 +100,7 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
     Else
         Set FindByChequeraAndId = col.item(1)
     End If
-    
+
 End Function
 
 Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As cheque
@@ -111,7 +111,7 @@ Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As chequ
     Else
         Set FindByChequeraAndNro = col.item(1)
     End If
-    
+
 End Function
 
 Public Function FindById(Id As Long) As cheque
@@ -140,7 +140,7 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef OrdenesP As String = vbNullString, _
                     Optional ByRef FacturasP As String = vbNullString, _
                     Optional ByRef proveedores As String = vbNullString _
-                    ) As cheque
+                  ) As cheque
 
     Dim tmpCheque As cheque
     Dim Id As Variant
@@ -179,54 +179,54 @@ Public Function Guardar(cheque As cheque) As Boolean
 
     If cheque.Id = 0 Then
         q = "INSERT INTO Cheques" _
-            & "(numero," _
-            & "fecha_recibido," _
-            & "fecha_vencimiento," _
-            & "monto," _
-            & "id_chequera," _
-            & "id_banco," _
-            & "origen," _
-            & "en_cartera," _
-            & "propio," _
-            & "id_moneda," _
-            & "observaciones, teceros_propio,ingresado,fecha_emision,orden_pago_origen,depositado" _
-            & ") Values " _
-            & "('numero'," _
-            & "'fecha_recibido'," _
-            & "'fecha_vencimiento'," _
-            & "'monto'," _
-            & "'id_chequera'," _
-            & "'id_banco'," _
-            & "'origen'," _
-            & "'en_cartera'," _
-            & "'propio'," _
-            & "'id_moneda'," _
-            & "'observaciones', 'teceros_propio','ingresado','fecha_emision','orden_pago_origen','depositado' " _
-            & ")"
+          & "(numero," _
+          & "fecha_recibido," _
+          & "fecha_vencimiento," _
+          & "monto," _
+          & "id_chequera," _
+          & "id_banco," _
+          & "origen," _
+          & "en_cartera," _
+          & "propio," _
+          & "id_moneda," _
+          & "observaciones, teceros_propio,ingresado,fecha_emision,orden_pago_origen,depositado" _
+          & ") Values " _
+          & "('numero'," _
+          & "'fecha_recibido'," _
+          & "'fecha_vencimiento'," _
+          & "'monto'," _
+          & "'id_chequera'," _
+          & "'id_banco'," _
+          & "'origen'," _
+          & "'en_cartera'," _
+          & "'propio'," _
+          & "'id_moneda'," _
+          & "'observaciones', 'teceros_propio','ingresado','fecha_emision','orden_pago_origen','depositado' " _
+          & ")"
 
     Else
 
         q = "Update Cheques" _
-            & " SET " _
-            & "numero = 'numero' , " _
-            & "fecha_recibido = 'fecha_recibido' ," _
-            & "fecha_vencimiento = 'fecha_vencimiento' ," _
-            & "monto = 'monto' ," _
-            & "id_chequera = 'id_chequera' ," _
-            & "id_banco = 'id_banco' ," _
-            & "origen = 'origen' ," _
-            & "en_cartera = 'en_cartera' ," _
-            & "propio = 'propio' ," _
-            & "id_moneda = 'id_moneda' ," _
-            & "observaciones = 'observaciones' ," _
-            & "teceros_propio='teceros_propio', " _
-            & "ingresado='ingresado', " _
-            & "fecha_emision='fecha_emision', " _
-            & "orden_pago_origen='orden_pago_origen', " _
-            & "estado='estado', " _
-            & "depositado='depositado' " _
-            & " Where " _
-            & "id = 'id' " _
+          & " SET " _
+          & "numero = 'numero' , " _
+          & "fecha_recibido = 'fecha_recibido' ," _
+          & "fecha_vencimiento = 'fecha_vencimiento' ," _
+          & "monto = 'monto' ," _
+          & "id_chequera = 'id_chequera' ," _
+          & "id_banco = 'id_banco' ," _
+          & "origen = 'origen' ," _
+          & "en_cartera = 'en_cartera' ," _
+          & "propio = 'propio' ," _
+          & "id_moneda = 'id_moneda' ," _
+          & "observaciones = 'observaciones' ," _
+          & "teceros_propio='teceros_propio', " _
+          & "ingresado='ingresado', " _
+          & "fecha_emision='fecha_emision', " _
+          & "orden_pago_origen='orden_pago_origen', " _
+          & "estado='estado', " _
+          & "depositado='depositado' " _
+          & " Where " _
+          & "id = 'id' " _
 
 q = Replace(q, "'id'", cheque.Id)
     End If

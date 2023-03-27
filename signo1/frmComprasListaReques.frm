@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasRequeLista 
    BackColor       =   &H00FF8080&
    Caption         =   "Lista de Requerimientos"
@@ -365,11 +365,11 @@ Private Sub llenar_Grilla()
     GridEXHelper.AutoSizeColumns Me.grilla
 End Sub
 Private Sub aprobar_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
-        Set rectmp = requerimientos.item(a)
-        Set rectmp = DAORequerimiento.FindById(rectmp.id, True, True, True, True)   'lo traigo full porque necesito los materiales
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
+        Set rectmp = requerimientos.item(A)
+        Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)   'lo traigo full porque necesito los materiales
         If MsgBox("¿Está seguro de aprobar el requerimiento?", vbYesNo + vbQuestion) = vbYes Then
             If DAORequerimiento.aprobar(rectmp) Then
                 llenar_Grilla
@@ -422,11 +422,11 @@ Private Sub cmdBuscar_Click()
 End Sub
 
 Private Sub crearPO_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
-        Set rectmp = requerimientos.item(a)
-        Set rectmp = DAORequerimiento.FindById(rectmp.id, True, True, True, True)     'lo traigo full porque necesito los materiales
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
+        Set rectmp = requerimientos.item(A)
+        Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)     'lo traigo full porque necesito los materiales
         If MsgBox("¿Está seguro de crear peticiones de oferta para este Requerimiento?", vbYesNo + vbQuestion) = vbYes Then
             If DAOPeticionOferta.Nueva(rectmp) Then
                 llenar_Grilla
@@ -445,23 +445,23 @@ End Sub
 
 
 Private Sub editReq_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
         Set frmNuevo = New frmComprasRequesNuevo
-        Set rectmp = requerimientos.item(a)
+        Set rectmp = requerimientos.item(A)
 
-        frmNuevo.Requerimiento = rectmp.id
+        frmNuevo.Requerimiento = rectmp.Id
         frmNuevo.Show
     End If
 End Sub
 
 Private Sub fin_proceso_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
-        Set rectmp = requerimientos.item(a)
-        Set rectmp = DAORequerimiento.FindById(rectmp.id, True, True, True, True)    'lo traigo full porque necesito los materiales
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
+        Set rectmp = requerimientos.item(A)
+        Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)    'lo traigo full porque necesito los materiales
         If MsgBox("¿Está seguro terminar el proceso?", vbYesNo + vbQuestion) = vbYes Then
             If DAORequerimiento.FinProceso(rectmp) Then
                 llenar_Grilla
@@ -474,11 +474,11 @@ Private Sub fin_proceso_Click()
 End Sub
 
 Private Sub finalizar_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
-        Set rectmp = requerimientos.item(a)
-        Set rectmp = DAORequerimiento.FindById(rectmp.id, True, True, True, True)    'lo traigo full porque necesito los materiales
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
+        Set rectmp = requerimientos.item(A)
+        Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)    'lo traigo full porque necesito los materiales
 
         If rectmp.ValidarEntregas Then
             If MsgBox("¿Está seguro de finalizar el requerimiento?", vbYesNo + vbQuestion) = vbYes Then
@@ -577,7 +577,7 @@ Private Sub MouseUp(gri As GridEX)
     gr = gri.RowIndex(gri.row)
     If gr = 0 Then Exit Sub
     Set rectmp = requerimientos.item(gr)
-    idr = rectmp.id
+    idr = rectmp.Id
     est = rectmp.estado
 
     Me.editReq.Enabled = (est = EnEdición_ And Permisos.ComprasRequesControl) Or (est = EstadoRequeCompra.Finalizado_ And Permisos.ComprasRequesAprobaciones)
@@ -596,9 +596,9 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo E
     Set rectmp = requerimientos(RowBuffer.RowIndex)
 
-    If vencidos.Exists(CStr(rectmp.id)) Then RowBuffer.CellStyle(7) = "vencidos"
-    If vencenhoy.Exists(CStr(rectmp.id)) Then RowBuffer.CellStyle(8) = "vencenhoy"
-    If avencer.Exists(CStr(rectmp.id)) Then RowBuffer.CellStyle(9) = "avencer"
+    If vencidos.Exists(CStr(rectmp.Id)) Then RowBuffer.CellStyle(7) = "vencidos"
+    If vencenhoy.Exists(CStr(rectmp.Id)) Then RowBuffer.CellStyle(8) = "vencenhoy"
+    If avencer.Exists(CStr(rectmp.Id)) Then RowBuffer.CellStyle(9) = "avencer"
 
 E:
 End Sub
@@ -612,9 +612,9 @@ Private Sub hydrate(RowIndex As Long, Values As GridEX20.JSRowData)
     Dim ote As String
     With rectmp
         'If .tipo = stock_ Then ote = vbNullString Else ote = " " & .DestinoOT
-        Values(1) = .id
+        Values(1) = .Id
         Values(2) = .Sector.Sector
-        Values(3) = .FechaCreado
+        Values(3) = .fechaCreado
         Values(4) = .StringDestino    ' enums.enumDestino(.tipo) & ote
         Values(5) = .Usuario_creador.usuario
         Values(6) = enums.enumEstadoRequeCompra(.estado)
@@ -630,7 +630,7 @@ End Property
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim tmp As clsRequerimiento
     If EVENTO.EVENTO = agregar_ Then
-        requerimientos.Add EVENTO.Elemento, CStr(EVENTO.Elemento.id)
+        requerimientos.Add EVENTO.Elemento, CStr(EVENTO.Elemento.Id)
         grillaActual.ItemCount = requerimientos.count
     ElseIf EVENTO.EVENTO = modificar_ Then
         '        Set tmp = evento.Elemento
@@ -701,13 +701,13 @@ Private Function GetFilter() As String
 End Function
 
 Private Sub mnuAnular_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
 
         If MsgBox("¿Está seguro de anular el requerimiento?", vbYesNo + vbQuestion) = vbYes Then
-            Set rectmp = requerimientos.item(a)
-            Set rectmp = DAORequerimiento.FindById(rectmp.id, True, True, True, True)
+            Set rectmp = requerimientos.item(A)
+            Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)
 
             If DAORequerimiento.Anular(rectmp) Then
                 llenar_Grilla
@@ -721,21 +721,21 @@ Private Sub mnuAnular_Click()
 End Sub
 
 Private Sub mnuExportarExcel_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
-        Set rectmp = requerimientos.item(a)
-        DAORequerimiento.ExportExcel rectmp.id, (MsgBox("¿Desea exportar con información acerca de la OC y las PO?", vbYesNo + vbQuestion) = vbYes)
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
+        Set rectmp = requerimientos.item(A)
+        DAORequerimiento.ExportExcel rectmp.Id, (MsgBox("¿Desea exportar con información acerca de la OC y las PO?", vbYesNo + vbQuestion) = vbYes)
     End If
 
 End Sub
 
 Private Sub mnuProveedoresReq_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
-        Set rectmp = requerimientos.item(a)
-        Set rectmp = DAORequerimiento.FindById(rectmp.id, True, True, True, True)    'lo traigo full porque necesito los materiales
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
+        Set rectmp = requerimientos.item(A)
+        Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)    'lo traigo full porque necesito los materiales
 
         Dim F As New frmComprasRequesProcesar
         F.ReadOnly = True
@@ -745,13 +745,13 @@ Private Sub mnuProveedoresReq_Click()
 End Sub
 
 Private Sub procesar_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
     Dim idReque As Long
-    If a > 0 And grillaActual.rowcount > 0 Then
-        Set rectmp = requerimientos.item(a)
-        idReque = rectmp.id
-        Set rectmp = DAORequerimiento.FindById(rectmp.id, True, True, True, True)  'lo traigo full porque necesito los materiales
+    If A > 0 And grillaActual.rowcount > 0 Then
+        Set rectmp = requerimientos.item(A)
+        idReque = rectmp.Id
+        Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)  'lo traigo full porque necesito los materiales
         If rectmp.estado = Aprobado_ Then
             If MsgBox("¿Está seguro de procesar el requerimiento seleccionado?", vbYesNo + vbQuestion) = vbYes Then
                 If DAORequerimiento.procesar(rectmp) Then
@@ -778,14 +778,14 @@ End Sub
 
 
 Private Sub verDetalle_Click()
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
         Set frmNuevo = New frmComprasRequesNuevo
-        Set rectmp = requerimientos.item(a)
+        Set rectmp = requerimientos.item(A)
 
         frmNuevo.SoloVer = True
-        frmNuevo.Requerimiento = rectmp.id
+        frmNuevo.Requerimiento = rectmp.Id
         frmNuevo.Show
     End If
 
@@ -793,11 +793,11 @@ End Sub
 
 Private Sub verHistorial_Click()
     Dim req As clsRequerimiento
-    Dim a As Long
-    a = grillaActual.RowIndex(grillaActual.row)
-    If a > 0 And grillaActual.rowcount > 0 Then
-        Set req = requerimientos.item(a)
-        frmHistoriales.lista = DAORequeHistorial.getAllByIdReque(req.id)
+    Dim A As Long
+    A = grillaActual.RowIndex(grillaActual.row)
+    If A > 0 And grillaActual.rowcount > 0 Then
+        Set req = requerimientos.item(A)
+        frmHistoriales.lista = DAORequeHistorial.getAllByIdReque(req.Id)
         frmHistoriales.Show
     End If
 

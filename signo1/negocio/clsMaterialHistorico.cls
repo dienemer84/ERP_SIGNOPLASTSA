@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 Dim vFecha As Date
 Dim vValor As String
 Dim vMoneda As clsMoneda
-Public Property Let Moneda(nvalue As clsMoneda)
+Public Property Let moneda(nvalue As clsMoneda)
     Set vMoneda = nvalue
 End Property
 Public Property Let FEcha(nvalue As Date)
@@ -29,8 +29,8 @@ End Property
 Public Property Get Valor() As String
     Valor = vValor
 End Property
-Public Property Get Moneda() As clsMoneda
-    Set Moneda = vMoneda
+Public Property Get moneda() As clsMoneda
+    Set moneda = vMoneda
 End Property
 
 

@@ -785,7 +785,7 @@ Private Sub agregar_comentario_Click()
 End Sub
 
 Private Sub cal1_DayClicked(Index As Integer, ByVal Button As Integer, ByVal Shift As Integer, ByVal iDay As Integer, Cancel As Boolean)
-    'mostrarEvento cal1(Index).cDay, cal1(Index).cMonth, cal1(Index).cYear
+'mostrarEvento cal1(Index).cDay, cal1(Index).cMonth, cal1(Index).cYear
     mess = Me.cal1(Index).cMonth
     anioo = Me.cal1(Index).cYear
     ddia = iDay
@@ -958,14 +958,14 @@ Public Sub mostrarEvento(dia, mes, anio)
     MsgBox "evento para " & dia & "-" & mes & "-" & anio
 End Sub
 Private Sub calcularMesDesplazado(actual As Date, desplazamiento, atras As Boolean, ByRef anioDesplazado, ByRef mesDesplazado)
-MsgBox ("Función Desactivada")
+    MsgBox ("Función Desactivada")
 
-'    desplazado = desplazamiento
-'    If atras Then desplazado = desplazamiento * -1
-'    Dim m As Integer
-'    m = DateAdd("m", desplazado, actual)
-'    mesDesplazado = Month(m)    'a
-'    anioDesplazado = Year(m)    'anio
+    '    desplazado = desplazamiento
+    '    If atras Then desplazado = desplazamiento * -1
+    '    Dim m As Integer
+    '    m = DateAdd("m", desplazado, actual)
+    '    mesDesplazado = Month(m)    'a
+    '    anioDesplazado = Year(m)    'anio
 End Sub
 Private Function mesAnio(mesA, anio) As String
     Dim mes(1 To 12) As String
@@ -1007,7 +1007,7 @@ Private Sub verEventos(mes, anio, Grupo)
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-    '    frmPrincipal.SmartMenuXP1.MenuItems.value(131) = smiUnchecked
+'    frmPrincipal.SmartMenuXP1.MenuItems.value(131) = smiUnchecked
 End Sub
 
 
@@ -1089,7 +1089,7 @@ Private Sub stCalendar1_DayClicked(ByVal Button As Integer, ByVal Shift As Integ
         End If
         x.SubItems(2) = estado
         x.SubItems(3) = r!fechaCreado
-        x.Tag = r!id
+        x.Tag = r!Id
         If marcado = x Then
             x.Selected = True
             x.EnsureVisible

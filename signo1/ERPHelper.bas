@@ -14,7 +14,7 @@ Private Function ApiConnect(sUrl As String, verb As verbo, async As Boolean, Opt
     On Error GoTo err1
     Dim verbo As String
     verbo = "POST"
-srv = LeerIni(App.path & "\config.ini", "Configurar", "ERPHelperAddress", vbNullString)
+    srv = LeerIni(App.path & "\config.ini", "Configurar", "ERPHelperAddress", vbNullString)
     Dim xmlhttp As New MSXML2.xmlhttp
 
 
@@ -59,16 +59,16 @@ err1:
 End Function
 
 Public Function RecuperarCae(idPtoVta As String, tipoCbte As String, nroCbte As String) As String
-On Error GoTo err1
-Dim resp As String
-If CheckDummyAfip Then
+    On Error GoTo err1
+    Dim resp As String
+    If CheckDummyAfip Then
         resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoCbte & "/" & nroCbte, POST_, False)
     Else
-  Err.Raise 1002, "Afip", "Imposible obtener el cae solicitado"
-End If
-Exit Function
+        Err.Raise 1002, "Afip", "Imposible obtener el cae solicitado"
+    End If
+    Exit Function
 err1:
-Err.Raise Err.Number, Err.Source, Err.Description
+    Err.Raise Err.Number, Err.Source, Err.Description
 End Function
 
 'Desactivada el 17.07.20 -dnemer
@@ -76,23 +76,23 @@ Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As Strin
     On Error GoTo err1
     Dim resp As String
     If CheckDummyAfip Then
-    
-    'Reestablecida esta linea de codigo el 17.07.20 -dnemer
-    'resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
-    
-    
-    'Desactivada el 17.07.20 -dnemer
+
+        'Reestablecida esta linea de codigo el 17.07.20 -dnemer
+        'resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
+
+
+        'Desactivada el 17.07.20 -dnemer
         If esCredito Then
-                    resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante & "/true", POST_, False)
+            resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante & "/true", POST_, False)
         Else
-                resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
+            resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
         End If
     Else
         Err.Raise 1002, "Afip", "Imposible obtener ultimo comprobante autorizado"
     End If
-'    If resp = "0" Then
-        'Err.Raise 1005, "Afip", "Error al obtener ultimo autorizado"
-'    End If
+    '    If resp = "0" Then
+    'Err.Raise 1005, "Afip", "Error al obtener ultimo autorizado"
+    '    End If
     GetUltimoAutorizado = resp
 
     Exit Function
@@ -138,30 +138,30 @@ End Function
 
 
 Public Function ObtenerUltimoActual(F As Factura) As Integer
-Dim id
-    
-    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    Dim Id
 
-ObtenerUltimoActual = id
+    Id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.Id, F.esCredito))
+
+    ObtenerUltimoActual = Id
 End Function
 
 Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     On Error GoTo err1
-    
+
     Dim body As String
 
-    
+
     'Set f = DAOFactura.FindById(idFactura)
-    Dim id
-    
+    Dim Id
+
     'Desactivada el 17.07.20 -dnemer
-    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
-    
+    Id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.Id, F.esCredito))
+
     'Reestablecida esta linea de codigo el 17.07.20 -dnemer
     'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
-    
-    
-    F.numero = id + 1
+
+
+    F.numero = Id + 1
 
     Dim req As New FECAEDetRequest
     req.Concepto = F.ConceptoIncluir
@@ -169,36 +169,36 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     req.DocNro = F.cliente.Cuit
     req.CbteDesde = F.numero
     req.CbteHasta = F.numero
-    
+
     req.CbteFch = Format(F.FechaEmision, "yyyymmdd")
-    req.ImpTotal = funciones.FormatearDecimales(F.totalEstatico.Total, 2)
+    req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total, 2)
     'req.MonCotiz = F.CambioAPatron
 
     'req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total * F.CambioAPatron, 2)
     req.ImpTotConc = "0"    'no gavado+excento + gravado + iva + tributo
-    req.ImpNeto = funciones.FormatearDecimales(F.totalEstatico.TotalNetoGravado, 2)
+    req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'req.ImpNeto = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
-    req.ImpOpEx = funciones.FormatearDecimales(F.totalEstatico.TotalExento, 2)
+    req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento, 2)
     'req.ImpOpEx = funciones.FormatearDecimales(F.TotalEstatico.TotalExento * F.CambioAPatron, 2)
-    
+
     'Reestablecida el 17.07.20 -dnemer
     'req.FchServDesde = ""    ' obligatorio para concepto de tipo 3 y 2
     'req.FchServHasta = ""    ' obligatorio para concepto de tipo 3 y 2
-    
+
     'Desactivada el 17.07.20 -dnemer
-    
+
     If F.ConceptoIncluir = ConceptoIncluir.ConceptoProductoServicio Or F.ConceptoIncluir = ConceptoIncluir.ConceptoServicio Then
-     req.FchServDesde = Format(F.FechaVtoDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
-     req.FchServHasta = Format(F.FechaVtoHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
+        req.FchServDesde = Format(F.FechaVtoDesde, "yyyymmdd")   ' obligatorio para concepto de tipo 3 y 2
+        req.FchServHasta = Format(F.FechaVtoHasta, "yyyymmdd")     ' obligatorio para concepto de tipo 3 y 2
     End If
-    
-    req.ImpTrib = funciones.FormatearDecimales(F.totalEstatico.TotalPercepcionesIB, 2)
+
+    req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     'req.ImpTrib = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
-    req.ImpIVA = funciones.FormatearDecimales(F.totalEstatico.TotalIVADiscrimandoONo, 2)
+    req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
 
-    req.MonId = F.moneda.id
+    req.MonId = F.moneda.Id
     'req.MonCotiz = F.Moneda.Cambio
     req.MonCotiz = F.CambioAPatron
 
@@ -208,65 +208,65 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     'req.FchVtoPago = ""    'obligatorio para concepto 2 y 3
 
     'Desactivada el 17.07.20 -dnemer
-    
+
     If Not F.esCredito Then
-    
-    If F.ConceptoIncluir = ConceptoProductoServicio Or F.ConceptoIncluir = ConceptoProductoServicio Then
-      req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
-    End If
-    
+
+        If F.ConceptoIncluir = ConceptoProductoServicio Or F.ConceptoIncluir = ConceptoProductoServicio Then
+            req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")       'obligatorio para concepto 2 y 3
+        End If
+
     Else
-            ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), el campo
+        ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), el campo
         '“fecha de vencimiento para el pago” <FchVtoPago> no debe informarse si NO es
         'Factura de Crédito. En el caso de ser Débito o Crédito, solo puede informarse si es de Anulación.
-       
-    
-           If F.TipoDocumento = tipoDocumentoContable.Factura Then
+
+
+        If F.TipoDocumento = tipoDocumentoContable.Factura Then
             req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")
-           Else
-                If F.AnulacionAFIP = "S" Then
-                   req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")
-                End If
-           End If
+        Else
+            If F.AnulacionAFIP = "S" Then
+                req.FchVtoPago = Format(F.fechaPago, "yyyymmdd")
+            End If
+        End If
     End If
-    
+
     'Desactivada el 17.07.20 -dnemer
-    
-    
+
+
     'NB: afip rechaza nc y nd que no sean mi pyme sin tener cbte asociado (err 10197 afip)
     'If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
- 
-If F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito Then
-   Dim ftmp As Factura
-   Set ftmp = DAOFactura.FindById(F.Cancelada)
-  '23-8 NB: no puedo informar un comprobnte asociado que no esté previamente informado. (en caso que sea crédito o débido mipyme)
-   
-  If IsSomething(ftmp) Then
-   If Not ftmp.AprobadaAFIP Then
-      Err.Raise 22211, "El comprobante asociado debe estar informado previamente a AFIP"
-   End If
-End If
-   If IsSomething(ftmp) Then
-          Dim cbt As CbteAsoc
-      Set cbt = New CbteAsoc
 
-'       cbt.NRO = f.Cancelada
+    If F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito Then
+        Dim ftmp As Factura
+        Set ftmp = DAOFactura.FindById(F.Cancelada)
+        '23-8 NB: no puedo informar un comprobnte asociado que no esté previamente informado. (en caso que sea crédito o débido mipyme)
 
-       cbt.nro = ftmp.numero
-       If ftmp.esCredito Then
+        If IsSomething(ftmp) Then
+            If Not ftmp.AprobadaAFIP Then
+                Err.Raise 22211, "El comprobante asociado debe estar informado previamente a AFIP"
+            End If
+        End If
+        If IsSomething(ftmp) Then
+            Dim cbt As CbteAsoc
+            Set cbt = New CbteAsoc
+
+            '       cbt.NRO = f.Cancelada
+
+            cbt.nro = ftmp.numero
+            If ftmp.esCredito Then
                 cbt.esCredito = "true"
-       Else
-          cbt.esCredito = "false"
-       End If
-       cbt.PtoVta = ftmp.Tipo.PuntoVenta.PuntoVenta
-       cbt.Tipo = ftmp.Tipo.id
-       cbt.CbteFch = Format(ftmp.FechaEmision, "yyyymmdd")
-       cbt.Cuit = "30657604972"
-        req.CbtesAsoc.Add cbt
-       End If
-       
+            Else
+                cbt.esCredito = "false"
+            End If
+            cbt.PtoVta = ftmp.Tipo.PuntoVenta.PuntoVenta
+            cbt.Tipo = ftmp.Tipo.Id
+            cbt.CbteFch = Format(ftmp.FechaEmision, "yyyymmdd")
+            cbt.Cuit = "30657604972"
+            req.CbtesAsoc.Add cbt
+        End If
 
-End If
+
+    End If
 
 
 
@@ -298,18 +298,18 @@ End If
 
     trib.Alic = funciones.FormatearDecimales(((F.AlicuotaPercepcionesIIBB - 1) * 100), 2)
     'trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)    '"400" 'revisar con tulio,2)
-    
+
     'bug #4
-    trib.BaseImp = funciones.FormatearDecimales(F.totalEstatico.TotalNetoGravado, 2)    '
+    trib.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)    '
     trib.Desc = P.Percepcion
     trib.idTributoCambiar = "1"
-    
-    
+
+
     'trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
-'bug #4
-    trib.importe = funciones.FormatearDecimales(F.totalEstatico.TotalPercepcionesIB, 2)
-    If F.totalEstatico.TotalPercepcionesIB > 0 Then
+    'bug #4
+    trib.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
+    If F.TotalEstatico.TotalPercepcionesIB > 0 Then
         req.Tributos.Add trib
     Else
         Set req.Tributos = Nothing
@@ -318,14 +318,14 @@ End If
 
 
     Dim Iva As New AlicIva
-    Iva.BaseImp = funciones.FormatearDecimales(F.totalEstatico.TotalNetoGravado, 2)
+    Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado, 2)
     'Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
     Iva.idAlicIvaCambiar = F.AlicuotaAplicada
-    
-    Iva.importe = funciones.FormatearDecimales(F.totalEstatico.TotalIVADiscrimandoONo, 2)
+
+    Iva.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
 
-    If F.totalEstatico.TotalIVADiscrimandoONo > 0 Then
+    If F.TotalEstatico.TotalIVADiscrimandoONo > 0 Then
         req.Iva.Add Iva
     Else
         Set req.Iva = Nothing
@@ -335,97 +335,97 @@ End If
 
 
     If F.esCredito Then
-    
-    
-    '4-4-21 #218
-    'Si el tipo de comprobante que está autorizando es Factura del tipo MiPyMEs (201, 206, 211), es
-    'obligatorio informar <Opcionales> con id = 27. Los valores posiblesson SCA o ADC
-          
-    
-    'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), es obligatorio informar al menos uno de los sig. códigos
-    '2101, 22.
-         
-         If F.TipoDocumento = tipoDocumentoContable.Factura Then
-                
-             
-    '4-4-21 #218
-    'Si el tipo de comprobante que está autorizando es Factura del tipo MiPyMEs (201, 206, 211), es
-    'obligatorio informar <Opcionales> con id = 27. Los valores posiblesson SCA o ADC
-                
-                      Dim op27 As New Opcional
-                op27.idOpcionalCambiar = "27"
-                
-                If F.Opcional27 = 1 Then
-                    op27.Valor = "SCA"
-                ElseIf F.Opcional27 = 2 Then
-                  op27.Valor = "ADC"
-                End If
-                
-                req.Opcionales.Add op27
-                
-                
-                'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código
-                '2101 es un CBU numérico de 22 caracteres.
-                
-                'Si el tipo de comprobante que está autorizando es Factura (201, 206, 211) del tipo MiPyMEs (FCE), informa opcionales, es
-                'obligatorio informar CBU.
-                
-                'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Debito (202, 207, 212) o Crédito (203, 208, 213) No
-                'no informar CBU y ALIAS.
-                If Len(F.CBU) <> 22 Then
-                    Err.Raise 222101, "El cbu debe tener 22 caracteres"
-                End If
-                
-                Dim op As New Opcional
-                op.idOpcionalCambiar = "2101"
-                op.Valor = F.CBU
-                req.Opcionales.Add op
+
+
+        '4-4-21 #218
+        'Si el tipo de comprobante que está autorizando es Factura del tipo MiPyMEs (201, 206, 211), es
+        'obligatorio informar <Opcionales> con id = 27. Los valores posiblesson SCA o ADC
+
+
+        'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), es obligatorio informar al menos uno de los sig. códigos
+        '2101, 22.
+
+        If F.TipoDocumento = tipoDocumentoContable.Factura Then
+
+
+            '4-4-21 #218
+            'Si el tipo de comprobante que está autorizando es Factura del tipo MiPyMEs (201, 206, 211), es
+            'obligatorio informar <Opcionales> con id = 27. Los valores posiblesson SCA o ADC
+
+            Dim op27 As New Opcional
+            op27.idOpcionalCambiar = "27"
+
+            If F.Opcional27 = 1 Then
+                op27.Valor = "SCA"
+            ElseIf F.Opcional27 = 2 Then
+                op27.Valor = "ADC"
+            End If
+
+            req.Opcionales.Add op27
+
+
+            'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código
+            '2101 es un CBU numérico de 22 caracteres.
+
+            'Si el tipo de comprobante que está autorizando es Factura (201, 206, 211) del tipo MiPyMEs (FCE), informa opcionales, es
+            'obligatorio informar CBU.
+
+            'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Debito (202, 207, 212) o Crédito (203, 208, 213) No
+            'no informar CBU y ALIAS.
+            If Len(F.CBU) <> 22 Then
+                Err.Raise 222101, "El cbu debe tener 22 caracteres"
+            End If
+
+            Dim op As New Opcional
+            op.idOpcionalCambiar = "2101"
+            op.Valor = F.CBU
+            req.Opcionales.Add op
         End If
         If F.TipoDocumento <> tipoDocumentoContable.Factura Then
             ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código 22
             ' es “S” o “N”: S = Es de Anulación N = No es de Anulación
-            
+
             'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Factura (201, 206, 211), no informar Código de Anulación
-            
+
             'Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), Debito (202, 207, 212) o Crédito (203, 208, 213) informar
             'Código de Anulación
-            
-         If Len(F.AnulacionAFIP) <> 1 Then
-            Err.Raise 22221, "El campo anulacion afip debe informarse"
-        End If
-        
-        
-             If F.AnulacionAFIP <> "N" And F.AnulacionAFIP <> "S" Then
-            Err.Raise 22222, "El campo anulacion afip debe ser S o N"
+
+            If Len(F.AnulacionAFIP) <> 1 Then
+                Err.Raise 22221, "El campo anulacion afip debe informarse"
             End If
-            
+
+
+            If F.AnulacionAFIP <> "N" And F.AnulacionAFIP <> "S" Then
+                Err.Raise 22222, "El campo anulacion afip debe ser S o N"
+            End If
+
             Set op = New Opcional
             op.idOpcionalCambiar = "22"
             op.Valor = F.AnulacionAFIP
             req.Opcionales.Add op
         End If
-        
-        
+
+
     End If
-    
+
     Dim FeDetReq As New FeDetReq
 
     Set FeDetReq.FECAEDetRequest = req
     Dim FeCabReq As New FeCabReq
     FeCabReq.CantReg = "1"
-    FeCabReq.CbteTipo = F.Tipo.id
-    
-    
-       If F.esCredito Then
-              FeCabReq.esCredito = "true"
-       Else
-            FeCabReq.esCredito = "false"
-       End If
-    
-   
-    
-    
-    FeCabReq.PtoVta = F.Tipo.PuntoVenta.id
+    FeCabReq.CbteTipo = F.Tipo.Id
+
+
+    If F.esCredito Then
+        FeCabReq.esCredito = "true"
+    Else
+        FeCabReq.esCredito = "false"
+    End If
+
+
+
+
+    FeCabReq.PtoVta = F.Tipo.PuntoVenta.Id
     Dim FeCAEReq As New FeCAEReq
 
     Set FeCAEReq.FeCabReq = FeCabReq
@@ -454,7 +454,7 @@ End If
 
     For intx = 0 To UBound(m)
         m2 = Split(m(intx), "-")
-        
+
         If m2(0) = "ESTADO" Then resp.Resultado = m2(1)
         If resp.Resultado = "APROBADO" Then
 
@@ -466,10 +466,10 @@ End If
             If m2(0) = "OBS" Then resp.observaciones = m2(1)
         ElseIf resp.Resultado = "RECHAZADO" Then
             resp.Errores = m2(0) & " - " & m2(1)
-        
+
         End If
-        
-    
+
+
 
     Next intx
 
@@ -503,7 +503,7 @@ Public Function SendMail(asunto As String, mensaje As String, destino As String,
     Dim verb As verbo
     Dim withfile As Boolean
     Dim baBuffer() As Byte
-srv = LeerIni(App.path & "\config.ini", "Configurar", "ERPHelperAddress", vbNullString)
+    srv = LeerIni(App.path & "\config.ini", "Configurar", "ERPHelperAddress", vbNullString)
     Dim de As String
     de = funciones.GetUserObj().Empleado.email
 

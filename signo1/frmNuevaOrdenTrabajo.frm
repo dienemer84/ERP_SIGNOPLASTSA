@@ -113,7 +113,7 @@ Begin VB.Form frmNuevaOrdenTrabajo
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   59244545
+      Format          =   58589185
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdGuardar 
@@ -323,7 +323,7 @@ Private Sub cboTipoOt_Change()
 
 
 
-Me.grpMarco.Enabled = (TipoOt = OT_TRADICIONAL)
+    Me.grpMarco.Enabled = (TipoOt = OT_TRADICIONAL)
 
 
 End Sub
@@ -332,7 +332,7 @@ End Sub
 
 Private Sub cboTipoOt_Click()
 
-Me.grpMarco.Enabled = (TipoOt = OT_TRADICIONAL)
+    Me.grpMarco.Enabled = (TipoOt = OT_TRADICIONAL)
 
 End Sub
 
@@ -364,26 +364,26 @@ Private Sub cmdGuardar_Click()
         MsgBox "Debe seleccionar un contrato marco.", vbInformation
         Exit Sub
     End If
-    
+
     If Me.cboMoneda.ListIndex = 3 Then
         MsgBox "No se puede cargar una OT con Moneda U$A Administrativo. Modifiquelo por favor.", vbInformation
         Exit Sub
     End If
-    
-    
+
+
     Dim Ot As New OrdenTrabajo
 
     Ot.TipoOrden = Me.cboTipoOt.ListIndex + 1
-    
+
     Set Ot.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
     Set Ot.ClienteFacturar = DAOCliente.BuscarPorID(Me.cboClienteFacturar.ItemData(Me.cboClienteFacturar.ListIndex))
-    
+
     Ot.FechaEntrega = Me.dtpFechaEntrega.value
     Ot.descripcion = Me.txtReferencia.text
-    
-    
+
+
     Set Ot.moneda = Monedas.item(CStr(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
-    
+
 
     If Me.chkMarco.value = xtpChecked And Me.cboContratos.ListIndex <> -1 Then
         Ot.OTMarcoIdPadre = Me.cboContratos.ItemData(Me.cboContratos.ListIndex)
@@ -429,15 +429,15 @@ Private Sub Form_Load()
 
     Me.cboTipoOt.AddItem "Tradicional"
     Me.cboTipoOt.ItemData(Me.cboTipoOt.NewIndex) = 1
-    
+
     Me.cboTipoOt.AddItem "De Stock"
     Me.cboTipoOt.ItemData(Me.cboTipoOt.NewIndex) = 2
     Me.cboTipoOt.AddItem "De Entrega"
     Me.cboTipoOt.ItemData(Me.cboTipoOt.NewIndex) = 3
-    
+
     Me.cboTipoOt.ListIndex = 0
-    
-    
+
+
     Set otsMarco = DAOOrdenTrabajo.FindAll("p.id_ot_padre = -1 and p.estado = " & EstadoOrdenTrabajo.EstadoOT_EnProceso)
     Dim ot1 As OrdenTrabajo
     Me.cboContratos.Clear

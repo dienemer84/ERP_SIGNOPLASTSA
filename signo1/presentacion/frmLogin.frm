@@ -232,8 +232,8 @@ Private Sub Command1_Click()
 
 
     Dim fullserver() As String
-     fullserver = Split(Me.cboServidor.text, ":")
-    
+    fullserver = Split(Me.cboServidor.text, ":")
+
     Dim port As String
     port = "3306"
     Dim ip As String
@@ -243,7 +243,7 @@ Private Sub Command1_Click()
         ip = fullserver(0)
     Else
         If UBound(fullserver) = 0 Then
-           ip = fullserver(0)
+            ip = fullserver(0)
         End If
     End If
 
@@ -251,7 +251,7 @@ Private Sub Command1_Click()
     frmPrincipal.servidorActual = Me.cboServidor.text
     conectar.port = port
     conectar.SetServidorBBDD ip
-    
+
     If Not conectar.conectar Then GoTo errh000
 
     Dim r As Recordset
@@ -296,24 +296,24 @@ Private Sub Command1_Click()
                     If Not funciones.InIDE Then
                         If clssp.VerificarSiHayActualizacion(idnueva) Then
                             If MsgBox("Hay una nueva actualización del sistema." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
-                    
+
                                 frmTip.Show 1
-                                 
+
                                 clssp.actualizarSistema CLng(idnueva)
-               
+
                             End If
-                                                           
+
                         End If
                     Else
-                    
-                    'frmTip.Show 1
- 
+
+                        'frmTip.Show 1
+
                     End If
 
 
                     Unload Me
 
-                    
+
                 Else
                     Me.mensaje = "* Password incorrecto *"
                     Me.Text2 = Empty
@@ -489,7 +489,7 @@ Private Sub Form_Load()
         Me.Text1.text = "nicolasba"
         Me.Text2.text = "022916"
         'Command1_Click
-        
+
     Else
         Dim Puesto As String
         Puesto = LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)
@@ -527,9 +527,9 @@ Private Sub ProcesarDetaOT(detaOT As DetalleOrdenTrabajo, Optional detaOTDto As 
         Next ptp
 
         ProcesarDetaOT detaOT, tmpDeta
-        
+
     Next tmpDeta
-    
+
 End Sub
 
 Private Sub Text1_GotFocus()

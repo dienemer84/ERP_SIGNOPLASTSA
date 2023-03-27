@@ -18,7 +18,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     cbo.Clear
     For Each bco In col
         cbo.AddItem bco.Description
-        cbo.ItemData(cbo.NewIndex) = bco.id
+        cbo.ItemData(cbo.NewIndex) = bco.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -33,35 +33,35 @@ Public Function Guardar(chequera As chequera) As Boolean
     Dim nuevo_id As Long
     Dim q As String
     q = "INSERT INTO Chequeras" _
-        & "(numero," _
-        & "id_banco," _
-        & "numero_desde," _
-        & "numero_hasta," _
-        & "fecha_creacion," _
-        & "id_moneda," _
-        & "observaciones) Values" _
-        & "('numero'," _
-        & "'id_banco'," _
-        & "'numero_desde'," _
-        & "'numero_hasta'," _
-        & "'fecha_creacion'," _
-        & "'id_moneda','observaciones')" _
+      & "(numero," _
+      & "id_banco," _
+      & "numero_desde," _
+      & "numero_hasta," _
+      & "fecha_creacion," _
+      & "id_moneda," _
+      & "observaciones) Values" _
+      & "('numero'," _
+      & "'id_banco'," _
+      & "'numero_desde'," _
+      & "'numero_hasta'," _
+      & "'fecha_creacion'," _
+      & "'id_moneda','observaciones')" _
 
 q = Replace(q, "'numero'", Escape(chequera.numero))
-    q = Replace(q, "'id_banco'", Escape(chequera.Banco.id))
+    q = Replace(q, "'id_banco'", Escape(chequera.Banco.Id))
     q = Replace(q, "'numero_desde'", Escape(chequera.NumeroDesde))
     q = Replace(q, "'numero_hasta'", Escape(chequera.NumeroHasta))
-    q = Replace(q, "'id_moneda'", Escape(chequera.Moneda.id))
+    q = Replace(q, "'id_moneda'", Escape(chequera.moneda.Id))
     q = Replace(q, "'fecha_creacion'", Escape(chequera.FechaCreacion))
-    q = Replace(q, "'observaciones'", Escape(chequera.Observaciones))
+    q = Replace(q, "'observaciones'", Escape(chequera.observaciones))
 
     Guardar = conectar.execute(q)
     If Not Guardar Then GoTo err1
     conectar.UltimoId "Chequeras", nuevo_id
-    chequera.id = nuevo_id
+    chequera.Id = nuevo_id
     If chequera.Cheques.count > 0 Then
         For Each cheque In chequera.Cheques
-            cheque.IdChequera = chequera.id
+            cheque.IdChequera = chequera.Id
             If Not DAOCheques.Guardar(cheque) Then GoTo err1
         Next cheque
     End If
@@ -72,9 +72,9 @@ err1:
     conectar.RollBackTransaction
 End Function
 
-Public Function GetById(id As Long) As chequera
+Public Function GetById(Id As Long) As chequera
     Dim col As Collection
-    Set col = GetAll("chs.id = " & id)
+    Set col = GetAll("chs.id = " & Id)
     If col.count = 0 Then
         Set GetById = Nothing
     Else
@@ -116,17 +116,17 @@ End Function
 Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tablaChequera As String, Optional tablaMoneda As String, Optional tablaBanco As String) As chequera
     Dim tmp As chequera
 
-    Dim id As Variant
-    id = GetValue(rs, indice, tablaChequera, CAMPO_ID)
-    If id > 0 Then
+    Dim Id As Variant
+    Id = GetValue(rs, indice, tablaChequera, CAMPO_ID)
+    If Id > 0 Then
         Set tmp = New chequera
 
-        tmp.id = id
+        tmp.Id = Id
         tmp.numero = GetValue(rs, indice, tablaChequera, DAOChequeras.CAMPO_NUMERO)
         tmp.NumeroDesde = GetValue(rs, indice, tablaChequera, CAMPO_DESDE)
         tmp.FechaCreacion = GetValue(rs, indice, tablaChequera, CAMPO_FECHA_CREACION)
         tmp.NumeroHasta = GetValue(rs, indice, tablaChequera, CAMPO_HASTA)
-        If LenB(tablaMoneda) > 0 Then Set tmp.Moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        If LenB(tablaMoneda) > 0 Then Set tmp.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         If LenB(tablaBanco) > 0 Then Set tmp.Banco = DAOBancos.Map(rs, indice, tablaBanco)
 
 

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAccidente 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Informe de Accidente"
@@ -436,7 +436,7 @@ Private Sub btnGuardar_Click()
 
         Unload Me
     Else
-        If m_sin.InformeAccidente.id = 0 Then Set m_sin.InformeAccidente = Nothing
+        If m_sin.InformeAccidente.Id = 0 Then Set m_sin.InformeAccidente = Nothing
         MsgBox "Hubo un error al guardar el informe de accidente.", vbCritical + vbOK
     End If
 

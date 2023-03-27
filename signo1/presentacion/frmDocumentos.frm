@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmDocumentos 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Documentos"
@@ -69,7 +69,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Implements ISuscriber
-Private id_ As String
+Private Id_ As String
 Dim Doc As documento
 
 Private Sub cmdNuevo_Click()
@@ -94,7 +94,7 @@ End Sub
 
 Private Sub Form_Load()
     Customize Me
-    id_ = funciones.CreateGUID
+    Id_ = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, Documentos_
     LlenarCbo
 End Sub
@@ -112,7 +112,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Property Get ISuscriber_id() As String
-    ISuscriber_id = id_
+    ISuscriber_id = Id_
 End Property
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant

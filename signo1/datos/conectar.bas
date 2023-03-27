@@ -16,7 +16,7 @@ Public Function conectar() As Boolean
 
 
 
-'cn.ConnectionString = "driver={MySQL ODBC 3.51 Driver};server=" & serverBBDD & ";uid=root;pwd=3l3c720n;database=sp;ConvertZeroDateTime=True"
+    'cn.ConnectionString = "driver={MySQL ODBC 3.51 Driver};server=" & serverBBDD & ";uid=root;pwd=3l3c720n;database=sp;ConvertZeroDateTime=True"
 
 
     cn.Open
@@ -45,7 +45,7 @@ Public Function RSFactory(consulta) As ADODB.Recordset
     vcount = vcount + 1
     Exit Function
 err10:
-'''debug.print (consulta)
+    '''debug.print (consulta)
     Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & consulta
 
 End Function
@@ -129,12 +129,12 @@ Public Sub BuildFieldsIndex(ByRef rs As Recordset, ByRef fieldsIndex As Dictiona
         'Next prop
 
         fieldsIndex.Add F.Properties(3).value & "." & F.Name, counter
-        
-        
+
+
         counter = counter + 1
         '''debug.print (F.Name)
     Next F
-    
+
 End Sub
 Public Function ProximoId(tableName As String) As Long
     On Error GoTo er1
@@ -156,33 +156,33 @@ Public Function Escape(value As Variant) As Variant
     retorno = value
 
     Select Case VarType(value)
-        Case VbVarType.vbString
-            If LenB(Trim$(value)) = 0 Then
-                retorno = "NULL"
-            Else
-                retorno = value
-                retorno = Replace$(retorno, "'", "\'")
+    Case VbVarType.vbString
+        If LenB(Trim$(value)) = 0 Then
+            retorno = "NULL"
+        Else
+            retorno = value
+            retorno = Replace$(retorno, "'", "\'")
 
-                retorno = "'" & retorno & "'"
-            End If
-        Case VbVarType.vbDate
-            If CDbl(value) = 0 Then
-                retorno = "NULL"
+            retorno = "'" & retorno & "'"
+        End If
+    Case VbVarType.vbDate
+        If CDbl(value) = 0 Then
+            retorno = "NULL"
+        Else
+            If (CDbl(value) - Int(CDbl(value))) = 0 Then    'no tiene decimales es solo fecha sin hora
+                retorno = Format(value, "yyyy-MM-dd")
             Else
-                If (CDbl(value) - Int(CDbl(value))) = 0 Then    'no tiene decimales es solo fecha sin hora
-                    retorno = Format(value, "yyyy-MM-dd")
-                Else
-                    retorno = Format(value, "yyyy-MM-dd HH:mm:ss")
-                End If
-
-                retorno = "'" & retorno & "'"
+                retorno = Format(value, "yyyy-MM-dd HH:mm:ss")
             End If
-        Case VbVarType.vbBoolean
-            retorno = CInt(value) * -1
-        Case VbVarType.vbDouble
-            retorno = "'" & Trim$(str$(value)) & "'"
+
+            retorno = "'" & retorno & "'"
+        End If
+    Case VbVarType.vbBoolean
+        retorno = CInt(value) * -1
+    Case VbVarType.vbDouble
+        retorno = "'" & Trim$(str$(value)) & "'"
     End Select
-     'If retorno = vbEmpty Then retorno = " "
+    'If retorno = vbEmpty Then retorno = " "
     Escape = retorno
 
 End Function

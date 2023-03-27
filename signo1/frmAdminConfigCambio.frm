@@ -382,25 +382,25 @@ End Sub
 
 Private Sub Command2_Click()
     If MsgBox("¿Está seguro de actualizar?", vbYesNo, "Confirmación") = vbYes Then
-    
+
         If MsgBox("La moneda que está actualizando es: " & vbCrLf & Me.txtMoneda & "-" & Me.txtDetalle & vbCrLf & "Desea continuar con la actualización?", vbYesNo, "Confirmación") = vbYes Then
 
-        Id = rs!Id
-        idMonedaCambio = Me.cboMonedaCambio.ListIndex
-        Cambio = CDbl(Me.txtCambio)
-        hoy = Format(Now, "yyyy-mm-dd")
-        detalle = Me.txtDetalle
-        moneda = Me.txtMoneda
+            Id = rs!Id
+            idMonedaCambio = Me.cboMonedaCambio.ListIndex
+            Cambio = CDbl(Me.txtCambio)
+            hoy = Format(Now, "yyyy-mm-dd")
+            detalle = Me.txtDetalle
+            moneda = Me.txtMoneda
 
-        'comentado el 15-07-2014 por solicitud de sabrina scaldafferro
-        'If Cambio = cambioOriginal Then
-        '    clasea.ejecutarComando "update AdminConfigMonedas set idMonedaCambio=" & idMonedaCambio & ", cambio= " & Cambio & ", nombre_largo='" & detalle & "',nombre_corto='" & Moneda & "' where id=" & Id
-        ' Else
-        clasea.ejecutarComando "update AdminConfigMonedas set idMonedaCambio=" & idMonedaCambio & ", cambio= " & Cambio & ", nombre_largo='" & detalle & "',nombre_corto='" & moneda & "',fechaActual='" & hoy & "' where id=" & Id
-        ' End If
+            'comentado el 15-07-2014 por solicitud de sabrina scaldafferro
+            'If Cambio = cambioOriginal Then
+            '    clasea.ejecutarComando "update AdminConfigMonedas set idMonedaCambio=" & idMonedaCambio & ", cambio= " & Cambio & ", nombre_largo='" & detalle & "',nombre_corto='" & Moneda & "' where id=" & Id
+            ' Else
+            clasea.ejecutarComando "update AdminConfigMonedas set idMonedaCambio=" & idMonedaCambio & ", cambio= " & Cambio & ", nombre_largo='" & detalle & "',nombre_corto='" & moneda & "',fechaActual='" & hoy & "' where id=" & Id
+            ' End If
 
-        clasea.ejecutarComando "insert into AdminConfigMonedasHistorial (IdMoneda, FechaActualizacion, idUsuarioActualizacion,Valor) values (" & Id & ",'" & funciones.datetimeFormateada(Now) & "'," & funciones.getUser & "," & Cambio & ")"
-        Me.mostrarRS
+            clasea.ejecutarComando "insert into AdminConfigMonedasHistorial (IdMoneda, FechaActualizacion, idUsuarioActualizacion,Valor) values (" & Id & ",'" & funciones.datetimeFormateada(Now) & "'," & funciones.getUser & "," & Cambio & ")"
+            Me.mostrarRS
         End If
 
     End If

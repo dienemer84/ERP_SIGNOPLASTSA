@@ -97,12 +97,12 @@ Public Function grabarArchivo(idPieza As Long, nombre As String, ruta As String,
 
     Dim tipoEvento As TipoEventoBroadcast: tipoEvento = -1
     Select Case Origen
-        Case OrigenArchivos.OA_OrdenesTrabajo
-            tipoEvento = TipoEventoBroadcast.TEB_ArchivoOrdenTrabajo
-        Case OrigenArchivos.OA_OrdenesTrabajoDetalle
-            tipoEvento = TipoEventoBroadcast.TEB_ArchivoDetalleOrdenTrabajo
-        Case OrigenArchivos.OA_Piezas
-            tipoEvento = TipoEventoBroadcast.TEB_ArchivoPieza
+    Case OrigenArchivos.OA_OrdenesTrabajo
+        tipoEvento = TipoEventoBroadcast.TEB_ArchivoOrdenTrabajo
+    Case OrigenArchivos.OA_OrdenesTrabajoDetalle
+        tipoEvento = TipoEventoBroadcast.TEB_ArchivoDetalleOrdenTrabajo
+    Case OrigenArchivos.OA_Piezas
+        tipoEvento = TipoEventoBroadcast.TEB_ArchivoPieza
     End Select
 
     If tipoEvento <> -1 Then
@@ -116,7 +116,7 @@ err22:
 
 End Function
 
-Public Function exportarArchivo(id As Long, Optional ByVal ruta As String = vbNullString, Optional ejecutar As Boolean = False) As String
+Public Function exportarArchivo(Id As Long, Optional ByVal ruta As String = vbNullString, Optional ejecutar As Boolean = False) As String
 
     On Error GoTo err22
 
@@ -125,7 +125,7 @@ Public Function exportarArchivo(id As Long, Optional ByVal ruta As String = vbNu
     Dim My As New ADODB.Stream
     exportarArchivo = True
     rsmy.CursorLocation = adUseClient
-    rsmy.Open "select * from sp_archivos.archivos where id=" & id, cn, adOpenKeyset, adLockOptimistic
+    rsmy.Open "select * from sp_archivos.archivos where id=" & Id, cn, adOpenKeyset, adLockOptimistic
     c = 0
     While Not rsmy.EOF
         c = c + 1
@@ -158,7 +158,7 @@ Public Function exportarArchivo(id As Long, Optional ByVal ruta As String = vbNu
         If ejecutar Then
             ShellExecute -1, "open", ruta, "", "", 4
             'ShellExecute frmPrincipal.hwnd, "open", ruta, "", "", 4
-            
+
         End If
 
         exportarArchivo = ruta
@@ -189,9 +189,9 @@ Public Function cargarActualizacion(nom, rut, vmax, vmin, vrev, Optional notas A
     cargarActualizacion = True
     Dim My As ADODB.Stream
     Set My = New ADODB.Stream
-    
+
     My.Open
-    
+
     Me.ejecutar "select * from ActualizacionSistema limit 1"
 
     rs.AddNew
@@ -200,16 +200,16 @@ Public Function cargarActualizacion(nom, rut, vmax, vmin, vrev, Optional notas A
     rs!version_max = vmax
     rs!version_min = vmin
     rs!version_rev = vrev
-    
+
     My.Type = adTypeBinary
-    
+
     My.LoadFromFile rut
-    
+
     rs!archivo = My.Read
     rs!Tamano = My.Size
     rs!FEcha = funciones.datetimeFormateada(Now)
     rs!notas_version = notas
-    
+
     My.Close
 
     rs.Update
@@ -219,9 +219,9 @@ Public Function cargarActualizacion(nom, rut, vmax, vmin, vrev, Optional notas A
 
 
     Dim Id_ As Long
-    
+
     MsgBox "Carga exitosa!", vbInformation, "Información"
-    
+
     conectar.UltimoId "ActualizacionSistema", Id_
 
 
@@ -257,7 +257,7 @@ Public Function CompararConVersionActual(max, min, rev, Optional ByRef idnueva) 
     On Error GoTo err3
     CompararConVersionActual = False
     Me.ejecutar "select max(id) as id from ActualizacionSistema limit 1"
-    idnueva = rs!id
+    idnueva = rs!Id
 
     If Not IsNumeric(idnueva) Then Exit Function
     Me.ejecutar "select version_max,version_min,version_rev from ActualizacionSistema where id=" & idnueva
@@ -308,7 +308,7 @@ Public Function exportarArchivoSistema(idarchivo As Long) As Boolean
     Wend
 
     If c = 1 Then
-        id_ver = rsmy!id
+        id_ver = rsmy!Id
         rs.MoveFirst
         My.Type = adTypeBinary
         My.Open
@@ -357,7 +357,7 @@ err22:
 End Function
 
 
-Public Function escanearDocumento(Origen As Integer, id As Long, Optional tipoColor As TWAIN_MDL_COLOURTYPE = RGB, Optional resol As Long = 130) As Boolean
+Public Function escanearDocumento(Origen As Integer, Id As Long, Optional tipoColor As TWAIN_MDL_COLOURTYPE = RGB, Optional resol As Long = 130) As Boolean
     On Error GoTo err1
     escanearDocumento = True
     If Permisos.SistemaArchivosScannear Then
@@ -365,7 +365,7 @@ Public Function escanearDocumento(Origen As Integer, id As Long, Optional tipoCo
 
         If newdoc = 0 Then
             'newdoc = sTwain.TransferWithUI(App.Path & "\tmp.bmp")
-            newdoc = sTwain.TransferWithoutUI(resol, tipoColor, 0, 0, 0, 0, App.path & "\tmp.bmp", id, Origen)
+            newdoc = sTwain.TransferWithoutUI(resol, tipoColor, 0, 0, 0, 0, App.path & "\tmp.bmp", Id, Origen)
             If newdoc = 0 Then
                 MsgBox "Se introdujo exitosamente el documento!", vbInformation, "Información"
 
@@ -382,7 +382,7 @@ Public Function escanearDocumento(Origen As Integer, id As Long, Optional tipoCo
 err1:
     escanearDocumento = False
 End Function
-Public Function grabarEscaneado(id As Long, Origen As Integer, ruta)
+Public Function grabarEscaneado(Id As Long, Origen As Integer, ruta)
     Dim nombr As String
     Dim rutas As String
 
@@ -402,12 +402,12 @@ Public Function grabarEscaneado(id As Long, Origen As Integer, ruta)
     ElseIf Origen = 11 Then
         Tipo = "DETALLE_PEDIDO"
     End If
-    nombr = Tipo & id & ".JPG"
+    nombr = Tipo & Id & ".JPG"
 
 
     A = Me.exportarJPG(App.path & "\tmp.bmp", App.path & "\tmp.jpg")
     If A = 0 Then
-        If classArchivos.grabarArchivo(id, nombr, App.path & "\tmp.jpg", "ESCANEO DIRECTO", Origen, False) Then
+        If classArchivos.grabarArchivo(Id, nombr, App.path & "\tmp.jpg", "ESCANEO DIRECTO", Origen, False) Then
             Kill App.path & "\tmp.bmp"
         End If
     End If
@@ -445,14 +445,14 @@ err22:
 End Function
 
 
-Public Function previewImage(id) As Picture
+Public Function previewImage(Id) As Picture
 
     On Error GoTo err22
     Dim rsmy As New ADODB.Recordset
     Dim My As New ADODB.Stream
     rsmy.CursorLocation = adUseClient
     My.Type = adTypeBinary
-    rsmy.Open "select * from sp_archivos.archivos where id=" & id, cn, adOpenKeyset, adLockOptimistic
+    rsmy.Open "select * from sp_archivos.archivos where id=" & Id, cn, adOpenKeyset, adLockOptimistic
     c = 0
     While Not rsmy.EOF
         c = c + 1

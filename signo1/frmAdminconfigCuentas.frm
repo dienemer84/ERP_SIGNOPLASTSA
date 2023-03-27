@@ -156,7 +156,7 @@ Private cuentas As New Collection
 Private cuenta As CuentaBancaria
 Private bancos As New Collection
 Private Banco As Banco
-Private monedas As New Collection
+Private Monedas As New Collection
 Private moneda As clsMoneda
 
 Private Sub Form_Load()
@@ -166,8 +166,8 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
 
-    Set monedas = DAOMoneda.GetAll()
-    Me.gridMonedas.ItemCount = monedas.count
+    Set Monedas = DAOMoneda.GetAll()
+    Me.gridMonedas.ItemCount = Monedas.count
     Set grid.Columns("moneda").DropDownControl = Me.gridMonedas
 
     Set bancos = DAOBancos.GetAll()
@@ -183,7 +183,7 @@ Private Sub CargarCuentas()
 End Sub
 
 Private Sub grid_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
-    'Cancel = (MsgBox("¿Desea eliminar la cuenta?", vbYesNo + vbQuestion) = vbNo)
+'Cancel = (MsgBox("¿Desea eliminar la cuenta?", vbYesNo + vbQuestion) = vbNo)
 End Sub
 
 
@@ -197,7 +197,7 @@ Private Sub grid_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, By
         If IsNumeric(Values(4)) And Not IsEmpty(Values(4)) Then Set .moneda = DAOMoneda.GetById(Values(4))
     End With
     If DAOCuentaBancaria.Save(cuenta) Then
-        cuentas.Add cuenta, CStr(cuenta.id)
+        cuentas.Add cuenta, CStr(cuenta.Id)
     Else
         MsgBox "Hubo un error al guardar los valores"
     End If
@@ -234,19 +234,19 @@ Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As
     If RowIndex > bancos.count Then Exit Sub
     Set Banco = bancos.item(RowIndex)
     With Banco
-        Values(1) = .id
+        Values(1) = .Id
         Values(2) = .nombre
-      
+
     End With
 End Sub
 
 
 
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > monedas.count Then Exit Sub
-    Set moneda = monedas.item(RowIndex)
+    If RowIndex > Monedas.count Then Exit Sub
+    Set moneda = Monedas.item(RowIndex)
     With moneda
-        Values(1) = .id
+        Values(1) = .Id
         Values(2) = .NombreCorto
     End With
 End Sub

@@ -351,7 +351,7 @@ Dim presu As clsPresupuesto
 Dim tmp As clsPresupuestoDetalle
 
 Public Property Let presupuesto(T As clsPresupuesto)
-    Set presu = DAOPresupuestos.GetById(T.id)
+    Set presu = DAOPresupuestos.GetById(T.Id)
 
 
 End Property
@@ -363,7 +363,7 @@ End Sub
 Private Sub Command10_Click()
     Dim frmmat As New frmMaterializacion
 
-    frmmat.id = presu.id
+    frmmat.Id = presu.Id
     frmmat.Ot = False
     frmmat.otro = False
     frmmat.presu = True
@@ -384,14 +384,14 @@ Private Sub Command4_Click()
 End Sub
 Private Sub Command8_Click()
     Dim baseP As New classPlaneamiento
-    A = baseP.informePiezaMateriales(presu.id, 2, True)
+    A = baseP.informePiezaMateriales(presu.Id, 2, True)
 End Sub
 
 Private Sub llenarLista()
     Me.GridEX1.ItemCount = presu.DetallePresupuesto.count
 End Sub
 Private Sub mostrar()
-    Me.caption = "Presupuesto Nro. " & presu.id
+    Me.caption = "Presupuesto Nro. " & presu.Id
     Me.lblCreado = presu.UsuarioCreado.usuario
     Me.lblFechaCreado = presu.fechaCreado
 
@@ -418,10 +418,10 @@ Private Sub Form_Load()
     mostrar
     llenarLista
     Me.GridEX1.Columns(6).Visible = Permisos.sistemaVerPrecios
-    
-        ''Me.caption = caption & " (" & Name & ")"
-        
-        
+
+    ''Me.caption = caption & " (" & Name & ")"
+
+
 End Sub
 
 
@@ -458,20 +458,20 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(6) = funciones.FormatearDecimales(tmp.ValorManual)
         Values(7) = tmp.Pieza.nombre
     End With
-    
+
 End Sub
 
 Private Sub mnuAdquirirADetalle_Click()
     Set arch = New classArchivos
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
-    archi.escanearDocumento OrigenArchivos.OA_PresupuestoDetalle, tmp.id
-    
+    archi.escanearDocumento OrigenArchivos.OA_PresupuestoDetalle, tmp.Id
+
 End Sub
 
 Private Sub mnuAdquirirAPieza_Click()
     Set archi = New classArchivos
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
-    archi.escanearDocumento OrigenArchivos.OA_Piezas, tmp.Pieza.id
+    archi.escanearDocumento OrigenArchivos.OA_Piezas, tmp.Pieza.Id
 
 End Sub
 
@@ -479,7 +479,7 @@ Private Sub mnuDesarrolloHistorico_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim F As New frmDesarrollo
     Load F
-    F.CargarDetallePresupuesto tmp.id
+    F.CargarDetallePresupuesto tmp.Id
     F.Show
 End Sub
 
@@ -487,7 +487,7 @@ Private Sub mnuVerArchivosDePedido_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OrigenArchivos.OA_PresupuestoDetalle
-    frmarchi1.ObjetoId = tmp.id
+    frmarchi1.ObjetoId = tmp.Id
     frmarchi1.caption = "Presupuesto Nº " & presu.IdFormateada & " - Item " & tmp.item & " [" & tmp.Pieza.nombre & "]"
     frmarchi1.Show
 End Sub
@@ -495,7 +495,7 @@ Private Sub mnuVerArchivosDePieza_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim frmarchi2 As New frmArchivos2
     frmarchi2.Origen = OrigenArchivos.OA_Piezas
-    frmarchi2.ObjetoId = tmp.Pieza.id
+    frmarchi2.ObjetoId = tmp.Pieza.Id
     frmarchi2.caption = "Pieza " & tmp.Pieza.nombre
     frmarchi2.Show
 End Sub
@@ -503,7 +503,7 @@ Private Sub mnuVerIncidenciasDeDetallePedido_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim inci1 As New frmVerIncidencias
 
-    inci1.referencia = tmp.id
+    inci1.referencia = tmp.Id
     inci1.Origen = OI_DetallePresupuesto
     inci1.Show
 End Sub
@@ -511,7 +511,7 @@ End Sub
 Private Sub mnuVerIncidenciasDePieza_Click()
     Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
     Dim inci2 As New frmVerIncidencias
-    inci2.referencia = tmp.Pieza.id
+    inci2.referencia = tmp.Pieza.Id
     inci2.Origen = OI_Piezas
     inci2.Show
 
@@ -527,7 +527,7 @@ Private Sub ver_Click()
 
     Dim F As New frmDesarrollo
     Load F
-    F.CargarPieza tmp.Pieza.id
+    F.CargarPieza tmp.Pieza.Id
     F.Show
 
 

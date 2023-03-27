@@ -191,5 +191,5 @@ Private Sub Form_Load()
     Me.lblMuMDO = vpresu.PorcMDO & "%"
 
     'Me.caption = caption & " (" & Name & ")"
-    
+
 End Sub

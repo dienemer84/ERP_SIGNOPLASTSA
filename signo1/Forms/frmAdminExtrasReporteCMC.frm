@@ -327,25 +327,25 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-    
+
     GridEXHelper.CustomizeGrid Me.GridEXComprobantes, True
     Me.GridEXComprobantes.ItemCount = 0
 
     Dim i As Integer
-    
+
     funciones.FillComboBoxDateRanges Me.cboRangos
-    
+
     For i = 0 To Me.cboRangos.ListCount - 1
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
     Next i
-    
+
     Me.cboRangos.ListIndex = 5
-    
+
     Me.Label1.caption = "Importar el archivo CSV que se reporta desde el portal de AFIP." & vbCrLf & "" & vbCrLf & "" _
-    & "> AFIP " & vbCrLf & "> Mis Comprobantes " & vbCrLf & "> Recibidos " & vbCrLf & "> Consulta " & vbCrLf & "> Buscar (según rango de fechas) " & vbCrLf & "> Exportar resultados en formato CSV."
-    
+                      & "> AFIP " & vbCrLf & "> Mis Comprobantes " & vbCrLf & "> Recibidos " & vbCrLf & "> Consulta " & vbCrLf & "> Buscar (según rango de fechas) " & vbCrLf & "> Exportar resultados en formato CSV."
+
     Me.Label2.caption = "Seleccionar el rango de fechas con el cual se va a comparar el reporte importado anteriormente." & vbCrLf & "" _
-    & "Es importante que el rango sea exactamente el mismo para que el resultado de la comparación sea consistente."
+                      & "Es importante que el rango sea exactamente el mismo para que el resultado de la comparación sea consistente."
 
     ''Me.caption = caption & " (" & Name & ")"
 
@@ -356,35 +356,35 @@ Private Sub PushButtonImportarArchivoAFIP_Click()
     On Error GoTo err4
 
     Dim filename As String
-   
+
     Me.CommonDialog1.filter = "CSV File (*.csv)|*.csv"
     Me.CommonDialog1.DialogTitle = "Open CSV"
     Me.CommonDialog1.ShowOpen
     filename = CommonDialog1.filename
     'filename = "\\192.168.0.1\temporal\TEXTOS\1.csv"
     filename = Replace(filename, "\", "/")
-    
-        If c.ImportarComprobantesAFIP(filename) Then
-            MsgBox "Importación del archivo realizada!", vbInformation, "Información"
-            
-            Me.FramePaso2.Enabled = True
-            Me.cboRangos.Enabled = True
-            Me.dtpDesde.Enabled = True
-            Me.dtpHasta.Enabled = True
-            Me.LabelDesde.Enabled = True
-            Me.LabelHasta.Enabled = True
-            Me.LabelRango.Enabled = True
-            Me.Label2.Enabled = True
-            Me.PushButtonProcesar.Enabled = True
-            
-            Me.Frame1.Enabled = False
-            Me.Label1.Enabled = False
-            Me.PushButtonImportarArchivoAFIP.Enabled = False
-            
-        Else
-            MsgBox "Error, la importación del archivo no se efectuó!", vbInformation, "Información"
-            
-        End If
+
+    If c.ImportarComprobantesAFIP(filename) Then
+        MsgBox "Importación del archivo realizada!", vbInformation, "Información"
+
+        Me.FramePaso2.Enabled = True
+        Me.cboRangos.Enabled = True
+        Me.dtpDesde.Enabled = True
+        Me.dtpHasta.Enabled = True
+        Me.LabelDesde.Enabled = True
+        Me.LabelHasta.Enabled = True
+        Me.LabelRango.Enabled = True
+        Me.Label2.Enabled = True
+        Me.PushButtonProcesar.Enabled = True
+
+        Me.Frame1.Enabled = False
+        Me.Label1.Enabled = False
+        Me.PushButtonImportarArchivoAFIP.Enabled = False
+
+    Else
+        MsgBox "Error, la importación del archivo no se efectuó!", vbInformation, "Información"
+
+    End If
 
     Exit Sub
 err4:
@@ -395,7 +395,7 @@ End Sub
 
 Private Sub PushButtonProcesar_Click()
     On Error GoTo err4
-    
+
     Dim condition As String
     condition = " 1 = 1 "
 
@@ -406,30 +406,30 @@ Private Sub PushButtonProcesar_Click()
     If Not IsNull(Me.dtpHasta.value) Then
         condition = condition & " AND AdminComprasFacturasProveedores.fecha <= " & conectar.Escape(Me.dtpHasta.value)
     End If
-    
+
     Set comprobantes = DAOFacturaProveedor.FindAll(condition, , "AdminComprasFacturasProveedores.id DESC")
-                    
+
     If DAOFacturaProveedor.CrearTablaTempComprobantes(comprobantes) Then
-       MsgBox "Procesamiento completo!", vbInformation, "Información"
-       
-            Me.FramePaso3.Enabled = True
-            Me.PushButtonExportarResultados.Enabled = True
-            Me.PushButtonMostrarResultados.Enabled = True
-            Me.PushButtonRestaurar.Enabled = True
-            
-            Me.FramePaso2.Enabled = False
-            Me.cboRangos.Enabled = False
-            Me.dtpDesde.Enabled = False
-            Me.dtpHasta.Enabled = False
-            Me.LabelDesde.Enabled = False
-            Me.LabelHasta.Enabled = False
-            Me.LabelRango.Enabled = False
-            Me.Label2.Enabled = False
-            Me.PushButtonProcesar.Enabled = False
+        MsgBox "Procesamiento completo!", vbInformation, "Información"
+
+        Me.FramePaso3.Enabled = True
+        Me.PushButtonExportarResultados.Enabled = True
+        Me.PushButtonMostrarResultados.Enabled = True
+        Me.PushButtonRestaurar.Enabled = True
+
+        Me.FramePaso2.Enabled = False
+        Me.cboRangos.Enabled = False
+        Me.dtpDesde.Enabled = False
+        Me.dtpHasta.Enabled = False
+        Me.LabelDesde.Enabled = False
+        Me.LabelHasta.Enabled = False
+        Me.LabelRango.Enabled = False
+        Me.Label2.Enabled = False
+        Me.PushButtonProcesar.Enabled = False
     Else
-       MsgBox "Error en SQL!, no se pudo procesar la información.", vbInformation, "Información"
+        MsgBox "Error en SQL!, no se pudo procesar la información.", vbInformation, "Información"
     End If
-    
+
     Exit Sub
 err4:
     If Err.Number <> 32755 Then MsgBox "Se produjo algun error!", vbCritical, "Error"
@@ -439,23 +439,23 @@ End Sub
 
 Private Sub PushButtonMostrarResultados_Click()
     llenar_Grilla
- 
- End Sub
+
+End Sub
 
 
 Private Sub llenar_Grilla()
     On Error GoTo err4
-    
+
     GridEXComprobantes.ItemCount = 0
- 
+
     Set comprobantes = DAOComprobantesRecibidos.FindAll()
-    
+
     GridEXComprobantes.ItemCount = comprobantes.count
-    
+
     GridEXHelper.AutoSizeColumns Me.GridEXComprobantes, True
-    
+
     Me.Frame3.caption = "Comprobantes encontrados: " & comprobantes.count
-    
+
     Exit Sub
 err4:
     If Err.Number <> 32755 Then MsgBox "Se produjo algun error!", vbCritical, "Error"
@@ -464,24 +464,24 @@ End Sub
 
 Private Sub GridEXComprobantes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-If comprobantes.count < 0 Then
-    MsgBox "No hay comprobantes que mostrar.", vbCritical, "Error"
+    If comprobantes.count < 0 Then
+        MsgBox "No hay comprobantes que mostrar.", vbCritical, "Error"
 
-Else
-    Set tmpComprobantes = comprobantes.item(RowIndex)
+    Else
+        Set tmpComprobantes = comprobantes.item(RowIndex)
 
-    Values(1) = tmpComprobantes.Fecha_
-    Values(2) = tmpComprobantes.Tipo_
-    Values(3) = tmpComprobantes.PuntoDeVenta_
-    Values(4) = tmpComprobantes.NumeroDesde_
-    Values(5) = tmpComprobantes.NroDocEmisor_
-    Values(6) = tmpComprobantes.DenominacionEmisor_
-    Values(7) = tmpComprobantes.TipoCambio_
-    Values(8) = tmpComprobantes.Moneda_
-    Values(9) = tmpComprobantes.Iva_
-    Values(10) = tmpComprobantes.ImpTotal_
+        Values(1) = tmpComprobantes.Fecha_
+        Values(2) = tmpComprobantes.Tipo_
+        Values(3) = tmpComprobantes.PuntoDeVenta_
+        Values(4) = tmpComprobantes.NumeroDesde_
+        Values(5) = tmpComprobantes.NroDocEmisor_
+        Values(6) = tmpComprobantes.DenominacionEmisor_
+        Values(7) = tmpComprobantes.TipoCambio_
+        Values(8) = tmpComprobantes.Moneda_
+        Values(9) = tmpComprobantes.Iva_
+        Values(10) = tmpComprobantes.ImpTotal_
 
-End If
+    End If
 End Sub
 
 
@@ -493,14 +493,14 @@ End Sub
 
 Public Function ExportarResultado() As Boolean
     On Error GoTo errEXCEL
-    
-'INICIA EL PROGRESSBAR Y LO MUESTRA
+
+    'INICIA EL PROGRESSBAR Y LO MUESTRA
     Me.progreso.Visible = True
-    
-'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+
+    'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
     progreso.min = 0
     progreso.max = comprobantes.count
-    
+
     'Dim xlApplication As New Excel.Application
     Dim xls As Object
     Set xls = CreateObject("Excel.Application")
@@ -522,38 +522,38 @@ Public Function ExportarResultado() As Boolean
 
     Set xlb = xls.Workbooks.Add
     Set xla = xlb.Worksheets.Add
-    
+
     xla.Activate
 
     With xla
         .Range("A1:M1").Font.Bold = True
         .Range("A1:M1").Interior.Color = &HC0C0C0
-        
+
         'Dim Column As JSColumn
-        
+
         Dim x As Integer
-                
-                .Cells(x + 1, 1).value = "Fecha"
-                .Cells(x + 1, 2).value = "Tipo"
-                .Cells(x + 1, 3).value = "Punto de Venta"
-                .Cells(x + 1, 4).value = "Numero "
-                .Cells(x + 1, 5).value = "CUIT"
-                .Cells(x + 1, 6).value = "Razón Social"
-                .Cells(x + 1, 7).value = "Tipo de Cambio"
-                .Cells(x + 1, 8).value = "Moneda"
-                .Cells(x + 1, 9).value = "Imp Neto Gravado"
-                .Cells(x + 1, 10).value = "Imp Neto No Gravado"
-                .Cells(x + 1, 11).value = "Imp Op Exentas"
-                .Cells(x + 1, 12).value = "Iva"
-                .Cells(x + 1, 13).value = "Imp Total"
+
+        .Cells(x + 1, 1).value = "Fecha"
+        .Cells(x + 1, 2).value = "Tipo"
+        .Cells(x + 1, 3).value = "Punto de Venta"
+        .Cells(x + 1, 4).value = "Numero "
+        .Cells(x + 1, 5).value = "CUIT"
+        .Cells(x + 1, 6).value = "Razón Social"
+        .Cells(x + 1, 7).value = "Tipo de Cambio"
+        .Cells(x + 1, 8).value = "Moneda"
+        .Cells(x + 1, 9).value = "Imp Neto Gravado"
+        .Cells(x + 1, 10).value = "Imp Neto No Gravado"
+        .Cells(x + 1, 11).value = "Imp Op Exentas"
+        .Cells(x + 1, 12).value = "Iva"
+        .Cells(x + 1, 13).value = "Imp Total"
         x = 1
-        
-'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
-    Dim d As Long
-    d = 0
-    
+
+        'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+        Dim d As Long
+        d = 0
+
         .Columns("a:m").HorizontalAlignment = xlHAlignCenter
-        
+
         .Columns("a").ColumnWidth = 15
         .Columns("b").ColumnWidth = 23
         .Columns("c").ColumnWidth = 15
@@ -567,35 +567,35 @@ Public Function ExportarResultado() As Boolean
         .Columns("k").ColumnWidth = 15
         .Columns("l").ColumnWidth = 15
         .Columns("m").ColumnWidth = 15
-   
+
         For Each tmpComprobantes In comprobantes
-                .Cells(x + 1, 1).value = tmpComprobantes.Fecha_
-                .Cells(x + 1, 2).value = tmpComprobantes.Tipo_
-                .Cells(x + 1, 3).value = tmpComprobantes.PuntoDeVenta_
-                .Cells(x + 1, 4).value = tmpComprobantes.NumeroDesde_
-                .Cells(x + 1, 5).value = tmpComprobantes.NroDocEmisor_
-                .Cells(x + 1, 6).value = tmpComprobantes.DenominacionEmisor_
-                .Cells(x + 1, 7).value = tmpComprobantes.TipoCambio_
-                .Cells(x + 1, 8).value = tmpComprobantes.Moneda_
-                .Cells(x + 1, 9).value = tmpComprobantes.ImpNetoGravado_
-                .Cells(x + 1, 10).value = tmpComprobantes.ImpNetoNoGravado_
-                .Cells(x + 1, 11).value = tmpComprobantes.ImpOpExentas_
-                .Cells(x + 1, 12).value = tmpComprobantes.Iva_
-                .Cells(x + 1, 13).value = tmpComprobantes.ImpTotal_
-                
+            .Cells(x + 1, 1).value = tmpComprobantes.Fecha_
+            .Cells(x + 1, 2).value = tmpComprobantes.Tipo_
+            .Cells(x + 1, 3).value = tmpComprobantes.PuntoDeVenta_
+            .Cells(x + 1, 4).value = tmpComprobantes.NumeroDesde_
+            .Cells(x + 1, 5).value = tmpComprobantes.NroDocEmisor_
+            .Cells(x + 1, 6).value = tmpComprobantes.DenominacionEmisor_
+            .Cells(x + 1, 7).value = tmpComprobantes.TipoCambio_
+            .Cells(x + 1, 8).value = tmpComprobantes.Moneda_
+            .Cells(x + 1, 9).value = tmpComprobantes.ImpNetoGravado_
+            .Cells(x + 1, 10).value = tmpComprobantes.ImpNetoNoGravado_
+            .Cells(x + 1, 11).value = tmpComprobantes.ImpOpExentas_
+            .Cells(x + 1, 12).value = tmpComprobantes.Iva_
+            .Cells(x + 1, 13).value = tmpComprobantes.ImpTotal_
+
             x = x + 1
-        
-'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
-        d = d + 1
-        progreso.value = d
-        
+
+            'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+            d = d + 1
+            progreso.value = d
+
         Next tmpComprobantes
 
 
         A = "m" & x
         offset = x + 2
         B = "m" & offset
-        
+
         .Range("A1:M1").NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
@@ -605,7 +605,7 @@ Public Function ExportarResultado() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        
+
         Set CDLGMAIN = frmPrincipal.cd
 
         '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
@@ -618,9 +618,9 @@ Public Function ExportarResultado() As Boolean
 
         Dim archi As String
         archi = "COMPARACIÓN CTES COMPRAS " & Periodo & ".xlsx"
-        
+
         frmPrincipal.cd.CancelError = True
-        
+
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -636,18 +636,18 @@ Public Function ExportarResultado() As Boolean
         xlb.Saved = True
         xlb.Close
         xls.Quit
-       
+
         Set xls = Nothing
         Set xla = Nothing
         Set xlb = Nothing
-        
-'REINICIA EL PROGRESSBAR Y LO OCULTA
+
+        'REINICIA EL PROGRESSBAR Y LO OCULTA
         progreso.value = 0
         Me.progreso.Visible = False
-        
+
         ExportarResultado = True
 
-        End With
+    End With
     Exit Function
 errEXCEL:
     If Err.Number = -2147221080 Then
@@ -659,7 +659,7 @@ errEXCEL:
     End If
     xlb.Saved = True
     xlb.Close
-    
+
     Set xls = Nothing
     Set xla = Nothing
     Set xlb = Nothing
@@ -669,29 +669,29 @@ End Function
 
 
 Private Sub PushButtonRestaurar_Click()
-    
+
 
     Me.GridEXComprobantes.ItemCount = 0
 
     Dim i As Integer
-    
+
     funciones.FillComboBoxDateRanges Me.cboRangos
-    
+
     For i = 0 To Me.cboRangos.ListCount - 1
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
     Next i
-    
+
     Me.cboRangos.ListIndex = 5
-    
+
     Me.Frame1.Enabled = True
     Me.Label1.Enabled = True
     Me.PushButtonImportarArchivoAFIP.Enabled = True
-    
+
     Me.FramePaso3.Enabled = False
     Me.PushButtonExportarResultados.Enabled = False
     Me.PushButtonMostrarResultados.Enabled = False
     Me.PushButtonRestaurar.Enabled = False
-    
-    
-    
+
+
+
 End Sub

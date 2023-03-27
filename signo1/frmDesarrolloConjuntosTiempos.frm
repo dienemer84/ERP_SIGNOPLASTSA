@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmDesarrolloConjuntosTiempos 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -468,7 +468,7 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Command2_Click()
-    'base.ver_detalle_elemento Trim(Me.txtCodigoMaterial), Me, 0
+'base.ver_detalle_elemento Trim(Me.txtCodigoMaterial), Me, 0
     For i = 1 To Me.ListView2.ListItems.count
         If Me.ListView2.ListItems(i).Checked Then
             Me.ListView2.ListItems(i).Checked = False
@@ -641,7 +641,7 @@ Private Sub txtCodigoMDO_LostFocus()
 End Sub
 
 Private Sub txtCodigoMDO_Validate(Cancel As Boolean)
-    'If Not IsNumeric(Me.txtCodigoMDO) Then Cancel = True
+'If Not IsNumeric(Me.txtCodigoMDO) Then Cancel = True
 End Sub
 
 

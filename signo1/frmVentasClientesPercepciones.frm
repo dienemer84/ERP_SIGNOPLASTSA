@@ -179,13 +179,13 @@ End Sub
 Private Sub Command3_Click()
     On Error GoTo err4
     'saco de una
-    id = Me.lstDisponibles.ItemData(Me.lstDisponibles.ListIndex)
+    Id = Me.lstDisponibles.ItemData(Me.lstDisponibles.ListIndex)
     Percepcion = Me.lstDisponibles
     Me.lstDisponibles.RemoveItem Me.lstDisponibles.ListIndex
 
     'pongo en la otra
     Me.lstAplicadas.AddItem Percepcion
-    Me.lstAplicadas.ItemData(Me.lstAplicadas.NewIndex) = id
+    Me.lstAplicadas.ItemData(Me.lstAplicadas.NewIndex) = Id
     grabado = False
     Exit Sub
 err4:
@@ -194,12 +194,12 @@ End Sub
 Private Sub Command4_Click()
     On Error GoTo err4
     'saco de la otra
-    id = Me.lstAplicadas.ItemData(Me.lstAplicadas.ListIndex)
+    Id = Me.lstAplicadas.ItemData(Me.lstAplicadas.ListIndex)
     Percepcion = Me.lstAplicadas
     Me.lstAplicadas.RemoveItem Me.lstAplicadas.ListIndex
     'pongo en una
     Me.lstDisponibles.AddItem Percepcion
-    Me.lstDisponibles.ItemData(Me.lstDisponibles.NewIndex) = id
+    Me.lstDisponibles.ItemData(Me.lstDisponibles.NewIndex) = Id
     grabado = False
     Exit Sub
 err4:
@@ -228,14 +228,14 @@ Private Sub verListas()
     Dim rs1 As Recordset
     Set rs = conectar.RSFactory("select * from AdminConfigPercepciones")
     While Not rs.EOF
-        idPercepcion = rs!id
+        idPercepcion = rs!Id
         Set rs1 = conectar.RSFactory("select count(id) as cant from clientesPercepciones where idCliente=" & vIdCliente & " and idPercepcion=" & idPercepcion)
         If rs1!Cant = 1 Then
             Me.lstAplicadas.AddItem rs!codigo & " - " & rs!Percepcion
-            Me.lstAplicadas.ItemData(Me.lstAplicadas.NewIndex) = rs!id
+            Me.lstAplicadas.ItemData(Me.lstAplicadas.NewIndex) = rs!Id
         Else
             Me.lstDisponibles.AddItem rs!codigo & " - " & rs!Percepcion
-            Me.lstDisponibles.ItemData(Me.lstDisponibles.NewIndex) = rs!id
+            Me.lstDisponibles.ItemData(Me.lstDisponibles.NewIndex) = rs!Id
         End If
 
 
@@ -246,5 +246,5 @@ Private Sub verListas()
 End Sub
 
 Private Sub lstDisponibles_Click()
-    a = Me.lstDisponibles.ListIndex
+    A = Me.lstDisponibles.ListIndex
 End Sub

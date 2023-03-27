@@ -749,7 +749,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   58982401
+         Format          =   58654721
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -979,14 +979,14 @@ Public Property Let reciboId(nIdRecibo As Long)
     If recibo Is Nothing Then
         MsgBox "recibo no encontrado, cierre pantalla", vbCritical
     End If
-    
+
 
     Me.dtpFecha.value = recibo.FEcha
     lblNumeroRecibo.caption = "Número: " & recibo.Id
     Me.txtRedondeo.text = recibo.Redondeo
 
     Set Cajas = DAOCaja.FindAll()
-    Me.GridCajas.ItemCount = Cajas.count
+    Me.gridCajas.ItemCount = Cajas.count
 
     Set Monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = Monedas.count
@@ -1007,7 +1007,7 @@ Public Property Let reciboId(nIdRecibo As Long)
     Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
 
     Set retenciones = DAORetenciones.FindAll()
@@ -1050,12 +1050,12 @@ Public Property Let reciboId(nIdRecibo As Long)
     Me.gridCheques.AllowAddNew = Editar_
     gridDepositosOperaciones.AllowAddNew = Editar_
     Me.Frame1.Enabled = Editar_
-    
-'    Me.cmdGuardar.Enabled = Editar_
-'    Me.cmdActualizar.Enabled = Editar_
-    
+
+    '    Me.cmdGuardar.Enabled = Editar_
+    '    Me.cmdActualizar.Enabled = Editar_
+
     dataLoaded = True
-    
+
 End Property
 
 Private Sub CargarFacturasCliente()
@@ -1121,31 +1121,31 @@ Private Sub cmdActualizar_Click()
     End If
 
     If DAORecibo.Save(recibo) And DAORecibo.aprobar(recibo) Then
-    
-            MsgBox "Aprobación actualizada!", vbInformation, "Información"
-        
+
+        MsgBox "Aprobación actualizada!", vbInformation, "Información"
+
         Unload Me
     Else
         MsgBox "Hubo un error al intentar actualizar el recibo.", vbCritical
 
     End If
 
-   'Dim idRecibo As Long
-'   'If MsgBox("¿Está seguro de aprobar este recibo?", vbYesNo, "Confirmación") = vbYes Then
-'
-'        Set recibo = DAORecibo.FindById(recibo.id, True, True, True, True, True)
-'
-'        If DAORecibo.aprobar(recibo) Then
-'            MsgBox "Aprobación actualizada!", vbInformation, "Información"
-   '        Else
-   '            MsgBox "Error, no se pudo actualizar el recibo nuevamente!", vbCritical, "Error"
-   '        End If
-   'End If
-    
+    'Dim idRecibo As Long
+    '   'If MsgBox("¿Está seguro de aprobar este recibo?", vbYesNo, "Confirmación") = vbYes Then
+    '
+    '        Set recibo = DAORecibo.FindById(recibo.id, True, True, True, True, True)
+    '
+    '        If DAORecibo.aprobar(recibo) Then
+    '            MsgBox "Aprobación actualizada!", vbInformation, "Información"
+    '        Else
+    '            MsgBox "Error, no se pudo actualizar el recibo nuevamente!", vbCritical, "Error"
+    '        End If
+    'End If
+
 End Sub
 
 Private Sub cmdCerrar_Click()
-        Unload Me
+    Unload Me
 End Sub
 
 Private Sub cmdGuardar_Click()
@@ -1230,7 +1230,7 @@ Private Sub Form_Load()
 
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
 
     GridEXHelper.CustomizeGrid Me.gridDepositosOperaciones, False, True
     GridEXHelper.CustomizeGrid Me.gridCajaOperaciones, False, True

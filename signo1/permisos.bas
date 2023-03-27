@@ -425,7 +425,7 @@ End Property
 
 Public Function crearPermisos(idUsuario As Long) As Boolean
 
-    'Plan
+'Plan
     vPlanOTmodificar = clssp.verSeleccionado(strPermisos.ePlanOTmodificar, idUsuario)
     vPlanOEmodificar = clssp.verSeleccionado(strPermisos.ePlanOEmodificar, idUsuario)
     vPlanOTaprobaciones = clssp.verSeleccionado(strPermisos.ePlanOTaprobaciones, idUsuario)

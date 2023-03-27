@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmCompensatorios 
    Caption         =   "Documentos Compensatorios"
    ClientHeight    =   4215
@@ -109,7 +109,7 @@ End Sub
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
     Set comp = col.item(RowIndex)
-    Values(1) = comp.id
+    Values(1) = comp.Id
     Values(2) = comp.IdOrdenPago
     Values(3) = comp.FechaCancelacion
     Values(4) = comp.Monto

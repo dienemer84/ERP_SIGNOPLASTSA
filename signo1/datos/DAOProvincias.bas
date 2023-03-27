@@ -43,11 +43,11 @@ End Function
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Optional tablaPais As String) As provincia
 
     Dim prov As provincia
-    Dim id As Long: id = GetValue(rs, indice, tabla, "ID")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "ID")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set prov = New provincia
-        prov.id = id
+        prov.Id = Id
         prov.nombre = GetValue(rs, indice, tabla, "Nombre")
         If LenB(tablaPais) > 0 Then Set prov.pais = DAOPais.Map(rs, indice, tablaPais)
     End If
@@ -55,15 +55,15 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Opti
     Set Map = prov
 End Function
 
-Public Function LlenarCombo(cbo As Xtremesuitecontrols.ComboBox, id As Long)
+Public Function LlenarCombo(cbo As Xtremesuitecontrols.ComboBox, Id As Long)
     Dim P As provincia
     cbo.Clear
     Dim col As New Collection
-    Set col = FindAllByPais(id)
+    Set col = FindAllByPais(Id)
     For Each P In col
         If IsSomething(P) Then
             cbo.AddItem P.nombre
-            cbo.ItemData(cbo.NewIndex) = P.id
+            cbo.ItemData(cbo.NewIndex) = P.Id
         End If
     Next
     If cbo.ListCount > 0 Then
@@ -76,17 +76,17 @@ Public Function Save(P As provincia) As Boolean
     Dim q As String
     On Error GoTo err1
     Dim n As Boolean
-    If P.id > 0 Then
+    If P.Id > 0 Then
 
-        q = "UPDATE sp.Provincia  SET  idPais=" & P.pais.id & ", Nombre = '" & UCase(P.nombre) & "'   WHERE   ID = '" & P.id & "' "
+        q = "UPDATE sp.Provincia  SET  idPais=" & P.pais.Id & ", Nombre = '" & UCase(P.nombre) & "'   WHERE   ID = '" & P.Id & "' "
         n = False
     Else
-        q = "INSERT INTO sp.Provincia (Nombre,idPais)VALUES('" & UCase(P.nombre) & "'," & P.pais.id & ")"
+        q = "INSERT INTO sp.Provincia (Nombre,idPais)VALUES('" & UCase(P.nombre) & "'," & P.pais.Id & ")"
         n = True
     End If
 
     If Not conectar.execute(q) Then GoTo err1
-    If n Then P.id = conectar.UltimoId2
+    If n Then P.Id = conectar.UltimoId2
 
     Exit Function
 err1:

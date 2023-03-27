@@ -14,8 +14,8 @@ Public Const formaPagoSaldo_ As String = "forma_pago_saldo"
 Public Const saldo_ As String = "saldo"
 Public Const estado_ As String = "estado"
 Public Const fechaEntrega_ As String = "fechaEntrega"
-Public Const detalle_ As String = "detalle"
-Public Const fecha_ As String = "fecha"
+Public Const Detalle_ As String = "detalle"
+Public Const Fecha_ As String = "fecha"
 Public Const fechaFinalizado_ As String = "fechaFinalizado"
 Public Const fechaModificado_ As String = "fechaModificado"
 Public Const fechaProcesado_ As String = "fechaProcesado"
@@ -32,14 +32,14 @@ Public Const VencimientoPresupuesto_ As String = "vencimientoPresupuesto"
 Public Const Descuento_ As String = "descuento"
 Public Function aprobar(T As clsPresupuesto) As Boolean
     On Error GoTo err1
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
     conectar.BeginTransaction
     fecha_anterior = T.FechaModificado
     Set usuario_anterior = T.UsuarioFinalizado
@@ -55,7 +55,7 @@ Public Function aprobar(T As clsPresupuesto) As Boolean
     End If
     DAOPresupuestoHistorial.agregar T, "Presupuesto aprobado"
     conectar.CommitTransaction
-    DAOEvento.Publish T.id, TipoEventoBroadcast.TEB_PresupuestoAprobado
+    DAOEvento.Publish T.Id, TipoEventoBroadcast.TEB_PresupuestoAprobado
     Exit Function
 err1:
     T.EstadoPresupuesto = ACotizar_
@@ -88,7 +88,7 @@ Public Function desactivar(T As clsPresupuesto) As Boolean
     desactivar = CambiarEstado(T, Desactivado)
     If desactivar Then
         DAOPresupuestoHistorial.agregar T, "Presupuesto desactivado"
-        DAOEvento.Publish T.id, TipoEventoBroadcast.TEB_PresupuestoAnulado
+        DAOEvento.Publish T.Id, TipoEventoBroadcast.TEB_PresupuestoAnulado
         conectar.CommitTransaction
     Else
         GoTo err1
@@ -124,7 +124,7 @@ Public Function enviar(T As clsPresupuesto) As Boolean
     End If
     conectar.CommitTransaction
 
-    DAOEvento.Publish T.id, TipoEventoBroadcast.TEB_PresupuestoEnviado
+    DAOEvento.Publish T.Id, TipoEventoBroadcast.TEB_PresupuestoEnviado
     Exit Function
 err1:
     enviar = False
@@ -144,21 +144,21 @@ err1:
     conectar.RollBackTransaction
 
 End Function
-Public Function GetById(id As Long) As clsPresupuesto
+Public Function GetById(Id As Long) As clsPresupuesto
     strsql = "SELECT " _
-             & "p.*, u1.*, u2.*, u3.*,m.*, c.* " _
-             & "FROM presupuestos p " _
-             & "INNER JOIN clientes c " _
-             & "ON p.idCliente = c.id " _
-             & "LEFT JOIN usuarios u1 " _
-             & "ON p.idVendedor = u1.id " _
-             & "LEFT JOIN  usuarios u2 " _
-             & "ON p.idUsuarioFinalizado=u2.id " _
-             & "LEFT JOIN usuarios u3 " _
-             & "ON p.idUsuarioModificado=u3.id " _
-             & "LEFT JOIN AdminConfigMonedas m " _
-             & "ON p.idMoneda=m.id " _
-             & " where p.id=" & id
+           & "p.*, u1.*, u2.*, u3.*,m.*, c.* " _
+           & "FROM presupuestos p " _
+           & "INNER JOIN clientes c " _
+           & "ON p.idCliente = c.id " _
+           & "LEFT JOIN usuarios u1 " _
+           & "ON p.idVendedor = u1.id " _
+           & "LEFT JOIN  usuarios u2 " _
+           & "ON p.idUsuarioFinalizado=u2.id " _
+           & "LEFT JOIN usuarios u3 " _
+           & "ON p.idUsuarioModificado=u3.id " _
+           & "LEFT JOIN AdminConfigMonedas m " _
+           & "ON p.idMoneda=m.id " _
+           & " where p.id=" & Id
     Set rs = conectar.RSFactory(strsql)
     Dim fieldsIndex As New Dictionary
     BuildFieldsIndex rs, fieldsIndex
@@ -170,19 +170,19 @@ End Function
 Public Function GetAll(Optional filtro As String = Empty, Optional estados As Collection = Nothing, Optional cliente As Long = -1, Optional numero As Long = 0) As Collection
     Dim col As Collection
     strsql = "SELECT " _
-             & "p.*, u1.*, u2.*, u3.*,m.*, c.* " _
-             & "FROM presupuestos p " _
-             & "INNER JOIN clientes c " _
-             & "ON p.idCliente = c.id " _
-             & "LEFT JOIN usuarios u1 " _
-             & "ON p.idVendedor = u1.id " _
-             & "LEFT JOIN  usuarios u2 " _
-             & "ON p.idUsuarioFinalizado=u2.id " _
-             & "LEFT JOIN usuarios u3 " _
-             & "ON p.idUsuarioModificado=u3.id " _
-             & "LEFT JOIN AdminConfigMonedas m " _
-             & "ON p.idMoneda=m.id " _
-             & " where 1=1"
+           & "p.*, u1.*, u2.*, u3.*,m.*, c.* " _
+           & "FROM presupuestos p " _
+           & "INNER JOIN clientes c " _
+           & "ON p.idCliente = c.id " _
+           & "LEFT JOIN usuarios u1 " _
+           & "ON p.idVendedor = u1.id " _
+           & "LEFT JOIN  usuarios u2 " _
+           & "ON p.idUsuarioFinalizado=u2.id " _
+           & "LEFT JOIN usuarios u3 " _
+           & "ON p.idUsuarioModificado=u3.id " _
+           & "LEFT JOIN AdminConfigMonedas m " _
+           & "ON p.idMoneda=m.id " _
+           & " where 1=1"
 
     If Not estados Is Nothing And estados.count > 0 Then
         strsql = strsql & " and ("
@@ -217,7 +217,7 @@ Public Function GetAll(Optional filtro As String = Empty, Optional estados As Co
     While Not rs.EOF
         Set tmp = Map(rs, fieldsIndex, tablaPresu, tablaCliente, tablaMoneda, tablaU1, tablaU2, tablaU3)
 
-        col.Add tmp, CStr(tmp.id)
+        col.Add tmp, CStr(tmp.Id)
 
         rs.MoveNext
     Wend
@@ -228,40 +228,40 @@ Public Function GetAll(Optional filtro As String = Empty, Optional estados As Co
     Set GetAll = col
 End Function
 
-Public Function Map(ByRef rs As Recordset, index As Dictionary, ByRef tableNameOrAlias As String, Optional ByRef tableNameOrAliasCliente As String = vbNullString, Optional ByRef tableNameOrAliasMoneda As String = vbNullString, Optional tableUsuarioCreado As String = vbNullString, Optional tableUsuarioModificado As String = vbNullString, Optional tableUsuarioFinalizado As String = vbNullString) As clsPresupuesto
-    'Dim P As clsPresupuesto
-    Dim id As Variant
-    id = GetValue(rs, index, tableNameOrAlias, "id")
-    If id > 0 Then
+Public Function Map(ByRef rs As Recordset, Index As Dictionary, ByRef tableNameOrAlias As String, Optional ByRef tableNameOrAliasCliente As String = vbNullString, Optional ByRef tableNameOrAliasMoneda As String = vbNullString, Optional tableUsuarioCreado As String = vbNullString, Optional tableUsuarioModificado As String = vbNullString, Optional tableUsuarioFinalizado As String = vbNullString) As clsPresupuesto
+'Dim P As clsPresupuesto
+    Dim Id As Variant
+    Id = GetValue(rs, Index, tableNameOrAlias, "id")
+    If Id > 0 Then
         Set P = New clsPresupuesto
-        P.id = id
-        P.EstadoPresupuesto = GetValue(rs, index, tableNameOrAlias, estado_)
-        P.FechaEntrega = GetValue(rs, index, tableNameOrAlias, fechaEntrega_)
-        P.Anticipo = GetValue(rs, index, tableNameOrAlias, anticipo_)
-        P.FormaPagoAnticipo = GetValue(rs, index, tableNameOrAlias, formaPagoAnticipo_)
-        P.FormaPagoSaldo = GetValue(rs, index, tableNameOrAlias, formaPagoSaldo_)
-        P.detalle = GetValue(rs, index, tableNameOrAlias, detalle_)
-        P.fechaCreado = GetValue(rs, index, tableNameOrAlias, fecha_)
-        P.FechaFinalizado = GetValue(rs, index, tableNameOrAlias, fechaFinalizado_)
-        P.FechaModificado = GetValue(rs, index, tableNameOrAlias, fechaModificado_)
-        P.FechaProcesado = GetValue(rs, index, tableNameOrAlias, fechaProcesado_)
-        P.Gastos = GetValue(rs, index, tableNameOrAlias, gastos_)
-        P.manteOferta = GetValue(rs, index, tableNameOrAlias, manteOferta_)
-        P.PorcMen15 = GetValue(rs, index, tableNameOrAlias, PorcMen15_)
-        P.PorcMDO = GetValue(rs, index, tableNameOrAlias, PorcMDO_)
-        P.PorcMen10 = GetValue(rs, index, tableNameOrAlias, PorcMen10_)
-        P.PorcMas15 = GetValue(rs, index, tableNameOrAlias, PorcMas15_)
-        P.PorcentajeManoObraMuerta = GetValue(rs, index, tableNameOrAlias, PorcentajeManoObraMuerta_)
-        P.VencimientoPresupuesto = GetValue(rs, index, tableNameOrAlias, VencimientoPresupuesto_)
-        P.Descuento = GetValue(rs, index, tableNameOrAlias, Descuento_)
-        P.DiasPagoAnticipo = GetValue(rs, index, tableNameOrAlias, diasPagoAnticipo_)
-        P.DiasPagoSaldo = GetValue(rs, index, tableNameOrAlias, diasPagoSaldo_)
+        P.Id = Id
+        P.EstadoPresupuesto = GetValue(rs, Index, tableNameOrAlias, estado_)
+        P.FechaEntrega = GetValue(rs, Index, tableNameOrAlias, fechaEntrega_)
+        P.Anticipo = GetValue(rs, Index, tableNameOrAlias, anticipo_)
+        P.FormaPagoAnticipo = GetValue(rs, Index, tableNameOrAlias, formaPagoAnticipo_)
+        P.FormaPagoSaldo = GetValue(rs, Index, tableNameOrAlias, formaPagoSaldo_)
+        P.detalle = GetValue(rs, Index, tableNameOrAlias, Detalle_)
+        P.fechaCreado = GetValue(rs, Index, tableNameOrAlias, Fecha_)
+        P.FechaFinalizado = GetValue(rs, Index, tableNameOrAlias, fechaFinalizado_)
+        P.FechaModificado = GetValue(rs, Index, tableNameOrAlias, fechaModificado_)
+        P.FechaProcesado = GetValue(rs, Index, tableNameOrAlias, fechaProcesado_)
+        P.Gastos = GetValue(rs, Index, tableNameOrAlias, gastos_)
+        P.manteOferta = GetValue(rs, Index, tableNameOrAlias, manteOferta_)
+        P.PorcMen15 = GetValue(rs, Index, tableNameOrAlias, PorcMen15_)
+        P.PorcMDO = GetValue(rs, Index, tableNameOrAlias, PorcMDO_)
+        P.PorcMen10 = GetValue(rs, Index, tableNameOrAlias, PorcMen10_)
+        P.PorcMas15 = GetValue(rs, Index, tableNameOrAlias, PorcMas15_)
+        P.PorcentajeManoObraMuerta = GetValue(rs, Index, tableNameOrAlias, PorcentajeManoObraMuerta_)
+        P.VencimientoPresupuesto = GetValue(rs, Index, tableNameOrAlias, VencimientoPresupuesto_)
+        P.Descuento = GetValue(rs, Index, tableNameOrAlias, Descuento_)
+        P.DiasPagoAnticipo = GetValue(rs, Index, tableNameOrAlias, diasPagoAnticipo_)
+        P.DiasPagoSaldo = GetValue(rs, Index, tableNameOrAlias, diasPagoSaldo_)
 
-        If LenB(tableNameOrAliasCliente) > 0 Then Set P.cliente = DAOCliente.Map(rs, index, tableNameOrAliasCliente)
-        If LenB(tableNameOrAliasMoneda) > 0 Then Set P.moneda = DAOMoneda.Map(rs, index, tableNameOrAliasMoneda)
-        If LenB(tableUsuarioModificado) > 0 Then Set P.UsuarioModificado = DAOUsuarios.Map(rs, index, tableUsuarioModificado)
-        If LenB(tableUsuarioFinalizado) > 0 Then Set P.UsuarioFinalizado = DAOUsuarios.Map(rs, index, tableUsuarioFinalizado)
-        If LenB(tableUsuarioCreado) > 0 Then Set P.UsuarioCreado = DAOUsuarios.Map(rs, index, tableUsuarioCreado)
+        If LenB(tableNameOrAliasCliente) > 0 Then Set P.cliente = DAOCliente.Map(rs, Index, tableNameOrAliasCliente)
+        If LenB(tableNameOrAliasMoneda) > 0 Then Set P.moneda = DAOMoneda.Map(rs, Index, tableNameOrAliasMoneda)
+        If LenB(tableUsuarioModificado) > 0 Then Set P.UsuarioModificado = DAOUsuarios.Map(rs, Index, tableUsuarioModificado)
+        If LenB(tableUsuarioFinalizado) > 0 Then Set P.UsuarioFinalizado = DAOUsuarios.Map(rs, Index, tableUsuarioFinalizado)
+        If LenB(tableUsuarioCreado) > 0 Then Set P.UsuarioCreado = DAOUsuarios.Map(rs, Index, tableUsuarioCreado)
 
     End If
 
@@ -271,14 +271,14 @@ Public Function Guardar(T As clsPresupuesto, Optional Cascade As Boolean = False
     On Error GoTo err1
     Dim u_anterior As clsUsuario
     Dim f_anterior As Date
-    Dim id As Long
+    Dim Id As Long
     Dim tmp As clsPresupuesto
     Guardar = True
     Dim insert As Boolean
 
-    If T.id > 0 Then
+    If T.Id > 0 Then
         'update
-        Set tmp = DAOPresupuestos.GetById(T.id)
+        Set tmp = DAOPresupuestos.GetById(T.Id)
         Set T.UsuarioModificado = funciones.GetUserObj
         If T.FechaModificado = tmp.FechaModificado Then
             Set u_anterior = T.UsuarioModificado
@@ -290,33 +290,33 @@ Public Function Guardar(T As clsPresupuesto, Optional Cascade As Boolean = False
             If T.UsuarioFinalizado Is Nothing Then
                 id_u_fin = 0
             Else
-                id_u_fin = T.UsuarioFinalizado.id
+                id_u_fin = T.UsuarioFinalizado.Id
             End If
             strsql = "update presupuestos" _
-                     & " SET " _
-                     & "fecha = '" & funciones.datetimeFormateada(T.fechaCreado) & "' ," _
-                     & "fechaEntrega = " & T.FechaEntrega & " ," _
-                     & "idCliente = " & T.cliente.id & " ," _
-                     & "idVendedor = '" & T.UsuarioCreado.id & "'," _
-                     & "estado = " & T.EstadoPresupuesto & "," _
-                     & "detalle = '" & T.detalle & "' ," _
-                     & "descuento = " & T.Descuento & "," _
-                     & "PorcMDO = " & T.PorcMDO & " ," _
-                     & "PorcMen10 = " & T.PorcMen10 & " ," _
-                     & "PorcMen15 = " & T.PorcMen15 & "," _
-                     & "PorcMas15 = " & T.PorcMas15 & " ," _
-                     & "gastos = " & T.Gastos & " ," _
-                     & "porcentaje_mano_obra_muerta = " & T.PorcentajeManoObraMuerta & " ," _
-                     & "ManteOferta = " & T.manteOferta & " ," _
-                     & "vencimientoPresupuesto = '" & funciones.dateFormateada(T.VencimientoPresupuesto) & "'," _
-                     & "fechaProcesado = '" & fecha_procesada & "'," _
-                     & "idUsuarioFinalizado = " & id_u_fin & " ," _
-                     & "fechaFinalizado = '" & fecha_finalizada & "' ," _
-                     & "idMoneda = " & T.moneda.id & " ," & "fechaModificado = '" & fecha_modif & "' ," _
-                     & "anticipo= " & T.Anticipo & "," _
-                     & "forma_pago_anticipo= '" & T.FormaPagoAnticipo & "', " & "forma_pago_saldo= '" & T.FormaPagoSaldo & "', " _
-                     & "dias_pago_anticipo =" & T.DiasPagoAnticipo & ", dias_pago_saldo = " & T.DiasPagoSaldo & ", " _
-                     & "idUsuarioModificado = " & T.UsuarioModificado.id & " Where id =" & T.id
+                   & " SET " _
+                   & "fecha = '" & funciones.datetimeFormateada(T.fechaCreado) & "' ," _
+                   & "fechaEntrega = " & T.FechaEntrega & " ," _
+                   & "idCliente = " & T.cliente.Id & " ," _
+                   & "idVendedor = '" & T.UsuarioCreado.Id & "'," _
+                   & "estado = " & T.EstadoPresupuesto & "," _
+                   & "detalle = '" & T.detalle & "' ," _
+                   & "descuento = " & T.Descuento & "," _
+                   & "PorcMDO = " & T.PorcMDO & " ," _
+                   & "PorcMen10 = " & T.PorcMen10 & " ," _
+                   & "PorcMen15 = " & T.PorcMen15 & "," _
+                   & "PorcMas15 = " & T.PorcMas15 & " ," _
+                   & "gastos = " & T.Gastos & " ," _
+                   & "porcentaje_mano_obra_muerta = " & T.PorcentajeManoObraMuerta & " ," _
+                   & "ManteOferta = " & T.manteOferta & " ," _
+                   & "vencimientoPresupuesto = '" & funciones.dateFormateada(T.VencimientoPresupuesto) & "'," _
+                   & "fechaProcesado = '" & fecha_procesada & "'," _
+                   & "idUsuarioFinalizado = " & id_u_fin & " ," _
+                   & "fechaFinalizado = '" & fecha_finalizada & "' ," _
+                   & "idMoneda = " & T.moneda.Id & " ," & "fechaModificado = '" & fecha_modif & "' ," _
+                   & "anticipo= " & T.Anticipo & "," _
+                   & "forma_pago_anticipo= '" & T.FormaPagoAnticipo & "', " & "forma_pago_saldo= '" & T.FormaPagoSaldo & "', " _
+                   & "dias_pago_anticipo =" & T.DiasPagoAnticipo & ", dias_pago_saldo = " & T.DiasPagoSaldo & ", " _
+                   & "idUsuarioModificado = " & T.UsuarioModificado.Id & " Where id =" & T.Id
             If Not conectar.execute(strsql) Then GoTo err1
             If Not T.DetallePresupuesto Is Nothing Then
 
@@ -332,16 +332,16 @@ Public Function Guardar(T As clsPresupuesto, Optional Cascade As Boolean = False
         'insert
         insert = True
         strsql = "insert into `sp`.`presupuestos` " _
-                 & "(fecha, fechaEntrega, idCliente, idVendedor, estado, " _
-                 & " detalle, descuento, PorcMDO, PorcMen10, PorcMen15, PorcMas15, " _
-                 & "gastos, ManteOferta, vencimientoPresupuesto, idMoneda, dias_pago_saldo,forma_pago_saldo,porcentaje_mano_obra_muerta) " _
-                 & " values " _
-                 & " ('" & funciones.datetimeFormateada(T.fechaCreado) & "','" & T.FechaEntrega & "'," & T.cliente.id & " ," & T.UsuarioCreado.id & "," & T.EstadoPresupuesto & ",'" & T.detalle & "'," & T.Descuento & ", " _
-                 & " " & T.PorcMDO & "," & T.PorcMen10 & "," & T.PorcMen15 & "," & T.PorcMas15 & "," & T.Gastos & "," & T.manteOferta & ",'" & funciones.datetimeFormateada(T.VencimientoPresupuesto) & "' " _
-                 & "," & T.moneda.id & "," & T.cliente.FP & ",'" & T.cliente.FormaPago & "'," & T.PorcentajeManoObraMuerta & ")"
+               & "(fecha, fechaEntrega, idCliente, idVendedor, estado, " _
+               & " detalle, descuento, PorcMDO, PorcMen10, PorcMen15, PorcMas15, " _
+               & "gastos, ManteOferta, vencimientoPresupuesto, idMoneda, dias_pago_saldo,forma_pago_saldo,porcentaje_mano_obra_muerta) " _
+               & " values " _
+               & " ('" & funciones.datetimeFormateada(T.fechaCreado) & "','" & T.FechaEntrega & "'," & T.cliente.Id & " ," & T.UsuarioCreado.Id & "," & T.EstadoPresupuesto & ",'" & T.detalle & "'," & T.Descuento & ", " _
+               & " " & T.PorcMDO & "," & T.PorcMen10 & "," & T.PorcMen15 & "," & T.PorcMas15 & "," & T.Gastos & "," & T.manteOferta & ",'" & funciones.datetimeFormateada(T.VencimientoPresupuesto) & "' " _
+               & "," & T.moneda.Id & "," & T.cliente.FP & ",'" & T.cliente.FormaPago & "'," & T.PorcentajeManoObraMuerta & ")"
         If Not conectar.execute(strsql) Then GoTo err1
-        conectar.UltimoId "presupuestos", id
-        T.id = id
+        conectar.UltimoId "presupuestos", Id
+        T.Id = Id
         DAOPresupuestoHistorial.agregar T, "Presupuesto ingresado"
         If Not T.DetallePresupuesto Is Nothing Then
 
@@ -352,7 +352,7 @@ Public Function Guardar(T As clsPresupuesto, Optional Cascade As Boolean = False
     End If
 
     If insert Then
-        DAOEvento.Publish T.id, TipoEventoBroadcast.TEB_PresupuestoCreado
+        DAOEvento.Publish T.Id, TipoEventoBroadcast.TEB_PresupuestoCreado
     End If
 
     Guardar = True
@@ -437,7 +437,7 @@ Public Function ImprimirPresupuesto(T As clsPresupuesto) As Boolean    '1- envia
         presu1.Sections("fondo").Controls("lblSaldo_header").Visible = True
     End If
     ImprimirPresupuesto = True
-    strsql = "select concat(s.detalle,' ',dp.masdetalles) as deta, dp.entregaitem,dp.masdetalles,dp.item as item,dp.cantidad as cantidad, dp.valorunitario as unitario, s.detalle as detalle, dp.cantidad*dp.valorunitario as total from detalle_presupuesto dp, stock s where dp.idpieza=s.id and dp.idpresupuesto=" & T.id
+    strsql = "select concat(s.detalle,' ',dp.masdetalles) as deta, dp.entregaitem,dp.masdetalles,dp.item as item,dp.cantidad as cantidad, dp.valorunitario as unitario, s.detalle as detalle, dp.cantidad*dp.valorunitario as total from detalle_presupuesto dp, stock s where dp.idpieza=s.id and dp.idpresupuesto=" & T.Id
     Set presu1.DataSource = conectar.RSFactory(strsql)
     presu1.Show 1
     Exit Function
@@ -489,7 +489,7 @@ Public Function exporta(T As clsPresupuesto, Optional enviar As Boolean = False)
         .Range("C3:E3").HorizontalAlignment = xlHAlignLeft
         .Range("C4:E4").HorizontalAlignment = xlHAlignLeft
         .Cells(1, 1).value = "Presupuesto Nro."
-        .Cells(1, 3).value = str(Format(T.id, "0000"))
+        .Cells(1, 3).value = str(Format(T.Id, "0000"))
         .Cells(2, 1).value = "Fecha presupuesto"
         .Cells(2, 3).value = str(T.fechaCreado)
         .Cells(3, 1).value = "Cliente"
@@ -659,7 +659,7 @@ Public Function CrearOT(T As clsPresupuesto, idpedido As Long, DetalleOt As Stri
         Set Ot.Detalles = New Collection
     Else
         Set Ot = DAOOrdenTrabajo.FindById(idpedido)
-        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id)
+        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
     End If
 
 
@@ -680,7 +680,7 @@ Public Function CrearOT(T As clsPresupuesto, idpedido As Long, DetalleOt As Stri
     Ot.estado = EstadoOT_Pendiente
     Ot.MismaFechaEntregaParaDetalles = True
     Set Ot.moneda = T.moneda
-    Ot.NroPresupuesto = T.id
+    Ot.NroPresupuesto = T.Id
     Ot.StockDescontado = False
     'creo el detalle
     For Each detalle In T.DetallePresupuesto
@@ -703,7 +703,7 @@ Public Function CrearOT(T As clsPresupuesto, idpedido As Long, DetalleOt As Stri
         detalle_ot.PrecioModificado = False
         detalle_ot.ReservaStock = 0
         detalle_ot.Retirado = False
-        detalle_ot.idPresupuestoOrigen = T.id
+        detalle_ot.idPresupuestoOrigen = T.Id
         Ot.Detalles.Add detalle_ot
     Next detalle
     Dim ptmp As New clsPresupuesto
@@ -760,7 +760,7 @@ Public Function ReCotizar(PresupuestoOriginal As clsPresupuesto) As Boolean
         P.FormaPagoAnticipo = .FormaPagoAnticipo
         P.FormaPagoSaldo = .FormaPagoSaldo
         P.Gastos = .Gastos
-        P.id = 0
+        P.Id = 0
         P.manteOferta = .manteOferta
         Set P.moneda = .moneda
         P.PorcentajeManoObraMuerta = .PorcentajeManoObraMuerta

@@ -5,39 +5,39 @@ Dim cn As ADODB.Connection
 
 Public Function GetAll() As Collection
     Dim col As New Collection
-    Dim a As clsPercepciones
+    Dim A As clsPercepciones
 
     Set rs = conectar.RSFactory("select * from AdminConfigPercepciones")
 
     While Not rs.EOF
 
 
-        Set a = New clsPercepciones
-        a.id = rs!id
-        a.Percepcion = rs!Percepcion
-        a.Porcentaje = rs!Porcentaje
-        a.valido = rs!valido
+        Set A = New clsPercepciones
+        A.Id = rs!Id
+        A.Percepcion = rs!Percepcion
+        A.Porcentaje = rs!Porcentaje
+        A.valido = rs!valido
 
-        col.Add a
+        col.Add A
 
         rs.MoveNext
     Wend
-    Set a = Nothing
+    Set A = Nothing
     Set GetAll = col
 End Function
 Public Function GetById(id_percepcion As Long) As clsPercepciones
-    Dim a As clsPercepciones
+    Dim A As clsPercepciones
     Set rs = conectar.RSFactory("select * from AdminConfigPercepciones where id=" & id_percepcion)
     If Not rs.EOF And Not rs.BOF Then
-        Set a = New clsPercepciones
-        a.id = rs!id
-        a.Percepcion = rs!Percepcion
-        a.Porcentaje = rs!Porcentaje
-        a.valido = rs!valido
+        Set A = New clsPercepciones
+        A.Id = rs!Id
+        A.Percepcion = rs!Percepcion
+        A.Porcentaje = rs!Porcentaje
+        A.valido = rs!valido
     Else
-        Set a = Nothing
+        Set A = Nothing
     End If
-    Set GetById = a
+    Set GetById = A
 
 End Function
 
@@ -46,12 +46,12 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As clsPercepciones
 
-    Dim id As Long: id = GetValue(rs, indice, tabla, "id")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
     Dim P As clsPercepciones
 
-    If id > 0 Then
+    If Id > 0 Then
         Set P = New clsPercepciones
-        P.id = id
+        P.Id = Id
         P.Porcentaje = GetValue(rs, indice, tabla, "porcentaje")
         P.valido = GetValue(rs, indice, tabla, "Valido")
         P.codigo = GetValue(rs, indice, tabla, "Codigo")

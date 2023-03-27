@@ -27,8 +27,8 @@ err1:
     Set FindAll = Nothing
 
 End Function
-Public Function FindById(id As Long) As Departamento
-    Set FindById = FindAll("And d.id=" & id)(0)
+Public Function FindById(Id As Long) As Departamento
+    Set FindById = FindAll("And d.id=" & Id)(0)
 End Function
 Public Function FindAllByProvincia(idprovincia As Long) As Collection
     Dim c As New Collection
@@ -38,14 +38,14 @@ End Function
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaProv As String = vbNullString, _
                     Optional tablaPais As String = vbNullString _
-                    ) As Departamento
+                  ) As Departamento
 
     Dim dep As Departamento
-    Dim id As Long: id = GetValue(rs, indice, tabla, "ID")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "ID")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set dep = New Departamento
-        dep.id = id
+        dep.Id = Id
         dep.nombre = GetValue(rs, indice, tabla, "Nombre")
         If LenB(tablaProv) > 0 Then Set dep.provincia = DAOProvincias.Map(rs, indice, tablaProv, tablaPais)
 
@@ -62,7 +62,7 @@ Public Function LlenarCombo(cbo As Xtremesuitecontrols.ComboBox, idprovincia As 
     For Each P In col
         If IsSomething(P) Then
             cbo.AddItem P.nombre
-            cbo.ItemData(cbo.NewIndex) = P.id
+            cbo.ItemData(cbo.NewIndex) = P.Id
         End If
     Next
     If cbo.ListCount > 0 Then

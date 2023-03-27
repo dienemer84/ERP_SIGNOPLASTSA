@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmDesarrolloVerTiempos 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -162,39 +162,39 @@ Private Sub llenarLST()
     If claseS.EsConjunto(idPieza) = -1 Then    'no es conjunto
         'Set rs = conectar.RSFactory("select t.tarea,dmdo.codigo,dmdo.cantidad,dmdo.tiempo from desarrollo_mdo dmdo inner join tareas t on dmdo.codigo=t.id and dmdo.id_pieza=" & idPieza)
         q = "SELECT" _
-            & " m.codigo AS cod_tarea," _
-            & " t.tarea," _
-            & " (m.tiempo * m.cantidad) AS Cant_Total," _
-            & " (AVG(d.tiempo)/ AVG(d.cantidad_procesada)) AS Cant_Prom," _
-            & " 0        AS Agregada" _
-            & " FROM desarrollo_mdo m" _
-            & " INNER JOIN stock s" _
-            & " ON s.id = m.id_pieza" _
-            & " LEFT JOIN PlaneamientoTiemposProcesos p" _
-            & " ON p.idPieza = s.id" _
-            & " AND m.codigo = p.codigoTarea" _
-            & " And p.agregado = 0" _
-            & " LEFT JOIN PlaneamientoTiemposProcesosDetalle d" _
-            & " ON p.id = d.idTiemposProcesos" _
-            & " LEFT JOIN tareas t" _
-            & " ON t.id = m.codigo" _
-            & " Where m.id_pieza = " & idPieza _
-            & " GROUP BY m.codigo "
+          & " m.codigo AS cod_tarea," _
+          & " t.tarea," _
+          & " (m.tiempo * m.cantidad) AS Cant_Total," _
+          & " (AVG(d.tiempo)/ AVG(d.cantidad_procesada)) AS Cant_Prom," _
+          & " 0        AS Agregada" _
+          & " FROM desarrollo_mdo m" _
+          & " INNER JOIN stock s" _
+          & " ON s.id = m.id_pieza" _
+          & " LEFT JOIN PlaneamientoTiemposProcesos p" _
+          & " ON p.idPieza = s.id" _
+          & " AND m.codigo = p.codigoTarea" _
+          & " And p.agregado = 0" _
+          & " LEFT JOIN PlaneamientoTiemposProcesosDetalle d" _
+          & " ON p.id = d.idTiemposProcesos" _
+          & " LEFT JOIN tareas t" _
+          & " ON t.id = m.codigo" _
+          & " Where m.id_pieza = " & idPieza _
+          & " GROUP BY m.codigo "
         q = q & " Union"
         q = q & " SELECT" _
-            & " p.codigotarea," _
-            & " t.tarea," _
-            & " NULL," _
-            & " (AVG(d.tiempo) / AVG(d.cantidad_procesada))," _
-            & " 1" _
-            & " FROM PlaneamientoTiemposProcesos p" _
-            & " LEFT JOIN PlaneamientoTiemposProcesosDetalle d" _
-            & " ON d.idTiemposProcesos = p.id" _
-            & " INNER JOIN tareas t" _
-            & " ON t.id = p.codigoTarea" _
-            & " Where idPieza = " & idPieza _
-            & " AND p.agregado = 1" _
-            & " GROUP BY p.codigotarea"
+          & " p.codigotarea," _
+          & " t.tarea," _
+          & " NULL," _
+          & " (AVG(d.tiempo) / AVG(d.cantidad_procesada))," _
+          & " 1" _
+          & " FROM PlaneamientoTiemposProcesos p" _
+          & " LEFT JOIN PlaneamientoTiemposProcesosDetalle d" _
+          & " ON d.idTiemposProcesos = p.id" _
+          & " INNER JOIN tareas t" _
+          & " ON t.id = p.codigoTarea" _
+          & " Where idPieza = " & idPieza _
+          & " AND p.agregado = 1" _
+          & " GROUP BY p.codigotarea"
 
         Set rs = conectar.RSFactory(q)
     Else

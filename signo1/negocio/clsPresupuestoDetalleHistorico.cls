@@ -12,7 +12,7 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-Public id As Long
+Public Id As Long
 Public NombrePieza As String
 Public Pieza As Pieza
 Public HistoricoHijos As New Collection
@@ -27,7 +27,7 @@ Public Property Get TotalKGMateriales() As Double
     Dim tot As Double
 
     For Each T In Me.HistoricoMAT
-        tot = tot + T.CalcularDatosMaterial(DetallePresupuesto.presupuesto.Moneda.id).Kg
+        tot = tot + T.CalcularDatosMaterial(DetallePresupuesto.presupuesto.moneda.Id).Kg
     Next T
 
     TotalKGMateriales = tot
@@ -37,7 +37,7 @@ Public Property Get TotalM2Materiales() As Double
     Dim tot As Double
 
     For Each T In Me.HistoricoMAT
-        tot = tot + T.CalcularDatosMaterial(DetallePresupuesto.presupuesto.Moneda.id).m2
+        tot = tot + T.CalcularDatosMaterial(DetallePresupuesto.presupuesto.moneda.Id).m2
     Next T
 
     TotalM2Materiales = tot
@@ -47,7 +47,7 @@ Public Property Get TotalCostoMateriales() As Double
     Dim tot As Double
 
     For Each T In Me.HistoricoMAT
-        tot = tot + T.CalcularDatosMaterial(DetallePresupuesto.presupuesto.Moneda.id).costo
+        tot = tot + T.CalcularDatosMaterial(DetallePresupuesto.presupuesto.moneda.Id).costo
     Next T
 
     TotalCostoMateriales = tot

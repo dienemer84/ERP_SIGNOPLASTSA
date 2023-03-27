@@ -207,9 +207,9 @@ Private saldos As New Dictionary
 
 Private Sub button_ExportToXls_Click()
 
-  ExportToXls
+    ExportToXls
 
-       
+
 End Sub
 
 Private Sub cmdVerCtaCte_Click()
@@ -223,9 +223,9 @@ Private Sub cmdVerCtaCte_Click()
 
         Set Detalles = DAOCuentaCorriente.FindAllDetalles(Me.cboClientes.ItemData(Me.cboClientes.ListIndex), , fecha_hasta)
         saldo = 0
-        
-        
-       
+
+
+
         If IsSomething(Detalles) Then
             Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))), "$", "")
         End If
@@ -252,7 +252,7 @@ End Sub
 
 
 Private Sub gridDetalles_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
-    'GridEXHelper.ColumnHeaderClick Me.gridDetalles, Column
+'GridEXHelper.ColumnHeaderClick Me.gridDetalles, Column
 End Sub
 
 Private Sub gridDetalles_DblClick()
@@ -271,8 +271,8 @@ Private Sub gridDetalles_DblClick()
         frm1.reciboId = deta.IdComprobante
         frm1.Show
     End If
-    
-    
+
+
 End Sub
 
 Private Sub gridDetalles_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -299,10 +299,10 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(2) = deta.Comprobante
         'Values(3) = deta.Debe
         'Values(4) = deta.Haber
-        
+
         Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(deta.Debe)), "$", "")
         Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(deta.Haber)), "$", "")
-        
+
         '   If saldos.Exists(CStr(RowIndex)) Then
         '        Values(5) = saldos.item(CStr(RowIndex))
         '   Else
@@ -313,7 +313,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
 
         'Values(5) = deta.saldo
         Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(deta.saldo)), "$", "")
-        
+
     End If
 End Sub
 
@@ -338,8 +338,8 @@ End Sub
 
 
 Public Function ExportToXls() As Boolean
-    
-    'Dim xlApplication As New Excel.Application
+
+'Dim xlApplication As New Excel.Application
     Dim xlApplication As Object
     Set xlApplication = CreateObject("Excel.Application")
 
@@ -370,54 +370,54 @@ Public Function ExportToXls() As Boolean
 
     Dim idx As Integer
     idx = 4
-    
-   For Each deta In Detalles
-  
 
-         xlWorksheet.Cells(idx, 1).value = deta.FEcha
-         xlWorksheet.Cells(idx, 2).value = deta.Comprobante
-         xlWorksheet.Cells(idx, 3).value = deta.Debe
-         xlWorksheet.Cells(idx, 4).value = deta.Haber
-         xlWorksheet.Cells(idx, 5).value = deta.saldo
-         
-    idx = idx + 1
-    
-     Next
+    For Each deta In Detalles
 
-        xlApplication.ScreenUpdating = False
-        
-        Dim wkSt As String
-        
-        wkSt = xlWorksheet.Name
-        
-        xlWorksheet.Cells.EntireColumn.AutoFit
-        
-        xlWorkbook.Sheets(wkSt).Select
-        
-        xlApplication.ScreenUpdating = True
-        
-        xlWorksheet.PageSetup.Orientation = xlLandscape
-        xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
-        xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
-        xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
-        xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
-    
-        Dim filename As String
-        filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
-    
-        If Dir(filename) <> vbNullString Then Kill filename
-       
-        xlWorkbook.SaveAs filename
-    
-        xlWorkbook.Saved = True
-        xlWorkbook.Close
-        xlApplication.Quit
-        
-        funciones.ShellExecute 0, "open", filename, "", "", 0
-    
-        Set xlWorksheet = Nothing
-        Set xlWorkbook = Nothing
-        Set xlApplication = Nothing
-        
+
+        xlWorksheet.Cells(idx, 1).value = deta.FEcha
+        xlWorksheet.Cells(idx, 2).value = deta.Comprobante
+        xlWorksheet.Cells(idx, 3).value = deta.Debe
+        xlWorksheet.Cells(idx, 4).value = deta.Haber
+        xlWorksheet.Cells(idx, 5).value = deta.saldo
+
+        idx = idx + 1
+
+    Next
+
+    xlApplication.ScreenUpdating = False
+
+    Dim wkSt As String
+
+    wkSt = xlWorksheet.Name
+
+    xlWorksheet.Cells.EntireColumn.AutoFit
+
+    xlWorkbook.Sheets(wkSt).Select
+
+    xlApplication.ScreenUpdating = True
+
+    xlWorksheet.PageSetup.Orientation = xlLandscape
+    xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+
+    Dim filename As String
+    filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
+
+    If Dir(filename) <> vbNullString Then Kill filename
+
+    xlWorkbook.SaveAs filename
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    funciones.ShellExecute 0, "open", filename, "", "", 0
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
 
 End Function

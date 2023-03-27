@@ -31,7 +31,7 @@ Private Function histMAT(MAT As DesarrolloMaterial) As PresupuestoDetalleHistori
     Set HistoricoMAT.Material = MAT.Material
     HistoricoMAT.Scrap = MAT.Scrap
     HistoricoMAT.Valor = MAT.Material.Valor    '1* (1 + (MAT.Scrap / 100)) * MAT.Cantidad
-    Set HistoricoMAT.Moneda = MAT.Material.Moneda
+    Set HistoricoMAT.moneda = MAT.Material.moneda
     Set histMAT = HistoricoMAT
 End Function
 
@@ -70,25 +70,25 @@ Private Function Guardar(historico As Collection, historicoPadreId As String) As
     For Each h In historico
 
         strsql = "  INSERT INTO detalle_presupuesto_historico" _
-                 & "(nombre_pieza, pieza_id, fecha, id_detalle_presupuesto, id_detalle_presupuesto_historico_padre) Values" _
-                 & "(" & conectar.Escape(h.Pieza.nombre) & "," & h.Pieza.id & " , " & conectar.Escape(h.FEcha) & " , " & h.DetallePresupuesto.id & ", " & historicoPadreId & ")"
+               & "(nombre_pieza, pieza_id, fecha, id_detalle_presupuesto, id_detalle_presupuesto_historico_padre) Values" _
+               & "(" & conectar.Escape(h.Pieza.nombre) & "," & h.Pieza.Id & " , " & conectar.Escape(h.FEcha) & " , " & h.DetallePresupuesto.Id & ", " & historicoPadreId & ")"
 
         If Not conectar.execute(strsql) Then GoTo err1
         conectar.UltimoId "detalle_presupuesto_historico", ultimo_id
 
         For Each MAT In h.HistoricoMAT
             strsql = "INSERT INTO detalle_presupuesto_historico_mat  (material_id,  largo,   ancho,  largo_pieza, " _
-                     & " ancho_pieza, Scrap,    cantidad, valor, id_detalle_presupuesto_historico, id_moneda) Values " _
-                     & "( " & MAT.Material.id & " ," & MAT.Largo & "," & MAT.Ancho & "," & MAT.LargoPieza & "," & MAT.AnchoPieza & " , " & MAT.Scrap & " , " & MAT.Cantidad & ", " & MAT.Valor & " , " & ultimo_id & "," & MAT.Moneda.id & "   )"
+                   & " ancho_pieza, Scrap,    cantidad, valor, id_detalle_presupuesto_historico, id_moneda) Values " _
+                   & "( " & MAT.Material.Id & " ," & MAT.Largo & "," & MAT.Ancho & "," & MAT.LargoPieza & "," & MAT.AnchoPieza & " , " & MAT.Scrap & " , " & MAT.Cantidad & ", " & MAT.Valor & " , " & ultimo_id & "," & MAT.moneda.Id & "   )"
 
             If Not conectar.execute(strsql) Then GoTo err1
         Next MAT
 
         For Each mo In h.historicoMDO
             strsql = "INSERT INTO detalle_presupuesto_historico_mdo" _
-                     & " (tarea_id, valor, tiempo, cantidad, id_detalle_presupuesto_historico)" _
-                     & " VALUES (" _
-                     & mo.Tarea.id & "," & conectar.Escape(mo.Valor) & "," & conectar.Escape(mo.Tiempo) & "," & mo.CantOperarios & "," & ultimo_id & ")"
+                   & " (tarea_id, valor, tiempo, cantidad, id_detalle_presupuesto_historico)" _
+                   & " VALUES (" _
+                   & mo.Tarea.Id & "," & conectar.Escape(mo.Valor) & "," & conectar.Escape(mo.Tiempo) & "," & mo.CantOperarios & "," & ultimo_id & ")"
             If Not conectar.execute(strsql) Then GoTo err1
         Next mo
 
@@ -107,7 +107,7 @@ Public Function Create(T As clsPresupuesto, Optional Save As Boolean = True) As 
     Dim deta As clsPresupuestoDetalle
     Dim col As New Collection
     For Each deta In DAOPresupuestosDetalle.GetAllByPresupuesto(T)
-        col.Add CrearHistorico(DAOPieza.FindById(deta.Pieza.id, FL_4, True, True), deta)
+        col.Add CrearHistorico(DAOPieza.FindById(deta.Pieza.Id, FL_4, True, True), deta)
     Next
     If Not col Is Nothing Then If Not Guardar(col, "NULL") Then GoTo err1
 

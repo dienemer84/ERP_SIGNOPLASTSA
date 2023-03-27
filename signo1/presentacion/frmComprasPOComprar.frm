@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasPOComprar 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Comprar"
@@ -219,8 +219,8 @@ Private Sub Form_Load()
     Set reqs = DAORequerimiento.FindAll(, True, , , True)
 
     For Each req In reqs
-        Me.cboPOs.AddItem req.id & " | " & req.Sector.Sector & " | " & req.StringDestino
-        Me.cboPOs.ItemData(Me.cboPOs.NewIndex) = req.id
+        Me.cboPOs.AddItem req.Id & " | " & req.Sector.Sector & " | " & req.StringDestino
+        Me.cboPOs.ItemData(Me.cboPOs.NewIndex) = req.Id
     Next req
 
 
@@ -258,7 +258,7 @@ Private Sub gridPO_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
     Values(2) = DAOProveedor.FindById(pod.ProveedorId).RazonSocial
     Values(3) = pod.Total
     Values(4) = pod.Valor
-    If Not BuscarEnColeccion(compra, CStr(pod.id)) Then
+    If Not BuscarEnColeccion(compra, CStr(pod.Id)) Then
         Values(5) = enums.EstadosPeticionOfertaDetalle.item(CStr(pod.estado))
     Else
         Values(5) = enums.EstadosPeticionOfertaDetalle.item(CStr(EstadoPeticionOfertaDetalle.EPOD_comprado))
@@ -275,7 +275,7 @@ Private Sub gridReq_SelectionChange()
 
 
 
-    Set pos = DAOPeticionOfertaDetalle.FindAll(, "id_detalle_reque=" & vDetalle.id, False)
+    Set pos = DAOPeticionOfertaDetalle.FindAll(, "id_detalle_reque=" & vDetalle.Id, False)
     Me.gridPO.ItemCount = 0
     Me.gridPO.ItemCount = pos.count
     '
@@ -293,9 +293,9 @@ Private Sub gridReq_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Set vDetalle = req.Materiales.item(RowIndex)
         With vDetalle
             Values(1) = .Cantidad
-            Values(2) = .Observaciones
+            Values(2) = .observaciones
             Values(3) = .Material.codigo
-            Values(4) = .Material.Grupo.rubros.Rubro
+            Values(4) = .Material.Grupo.rubros.rubro
             Values(5) = .Material.Grupo.Grupo
             Values(6) = "Material: " & .Material.descripcion & " | Medidas: " & funciones.JoinCollectionValues(.Material.Atributos, ", ")
             Values(7) = enums.enumEstadoRequeCompra(.estado)
@@ -305,6 +305,6 @@ End Sub
 
 Private Sub PushButton1_Click()
 
-    If Not funciones.BuscarEnColeccion(compra, CStr(pod.id)) Then compra.Add pod, CStr(pod.id)
+    If Not funciones.BuscarEnColeccion(compra, CStr(pod.Id)) Then compra.Add pod, CStr(pod.Id)
     Me.gridCompra.ItemCount = compra.count
 End Sub

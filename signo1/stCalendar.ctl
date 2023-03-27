@@ -178,22 +178,22 @@ End Sub
 Private Sub GetHeaderText()
     Dim cl As Integer
     Select Case ViewHeaderLang
-        Case Dutch
-            For cl = 0 To 6
-                CellTxt(cl) = Left(Choose(cl + 1, "Maa", "Din", "Woe", "Don", "Vri", "Zat", "Zon"), ViewHeaderChar)
-            Next cl
-        Case French
-            For cl = 0 To 6
-                CellTxt(cl) = Left(Choose(cl + 1, "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"), ViewHeaderChar)
-            Next cl
-        Case English
-            For cl = 0 To 6
-                CellTxt(cl) = Left(Choose(cl + 1, "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"), ViewHeaderChar)
-            Next cl
-        Case Spanish
-            For cl = 0 To 6
-                CellTxt(cl) = Left(Choose(cl + 1, "Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"), ViewHeaderChar)
-            Next cl
+    Case Dutch
+        For cl = 0 To 6
+            CellTxt(cl) = Left(Choose(cl + 1, "Maa", "Din", "Woe", "Don", "Vri", "Zat", "Zon"), ViewHeaderChar)
+        Next cl
+    Case French
+        For cl = 0 To 6
+            CellTxt(cl) = Left(Choose(cl + 1, "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"), ViewHeaderChar)
+        Next cl
+    Case English
+        For cl = 0 To 6
+            CellTxt(cl) = Left(Choose(cl + 1, "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"), ViewHeaderChar)
+        Next cl
+    Case Spanish
+        For cl = 0 To 6
+            CellTxt(cl) = Left(Choose(cl + 1, "Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"), ViewHeaderChar)
+        Next cl
     End Select
     For cl = 0 To 6
         CellTpe(cl) = header
@@ -220,32 +220,32 @@ Private Sub DrawCell(ByVal x As Long, ByVal y As Long, _
     cy = y + (szY - TextHeight(Trim(txt))) / 2
 
     Select Case mode
-        Case NormalBlanco
-            Line (x + 15, y + 15)-Step(szX - 30, szY - 30), QBColor(15), BF
-            CurrentX = cx: CurrentY = cy: Print Trim(txt)
-        Case BlueSelect
-            Line (x + 15, y + 15)-Step(szX - 30, szY - 30), QBColor(9), BF
-            Line (x, y)-Step(szX, szY), QBColor(15), B
-            ForeColor = QBColor(15)
-            CurrentX = cx: CurrentY = cy: Print Trim(txt)
-            ForeColor = 0
-        Case LightGray
-            Line (x + 15, y + 15)-Step(szX - 30, szY - 30), QBColor(7), BF
-            ForeColor = QBColor(15)
-            CurrentX = cx: CurrentY = cy: Print Trim(txt)
-            ForeColor = 0
-        Case DarkGray
-            Line (x, y)-Step(szX, szY), QBColor(7), BF
-            Line (x + 15, y + 15)-Step(szX - 30, szY - 30), QBColor(8), BF
-            ForeColor = QBColor(15)
-            CurrentX = cx: CurrentY = cy: Print Trim(txt)
-            ForeColor = 0
-        Case BevelIN
-            DoBevel x, y, x + szX, y + szY, 0, 1
-            CurrentX = cx: CurrentY = cy: Print Trim(txt)
-        Case BevelOUT
-            DoBevel x, y, x + szX, y + szY, 1, 1
-            CurrentX = cx: CurrentY = cy: Print Trim(txt)
+    Case NormalBlanco
+        Line (x + 15, y + 15)-Step(szX - 30, szY - 30), QBColor(15), BF
+        CurrentX = cx: CurrentY = cy: Print Trim(txt)
+    Case BlueSelect
+        Line (x + 15, y + 15)-Step(szX - 30, szY - 30), QBColor(9), BF
+        Line (x, y)-Step(szX, szY), QBColor(15), B
+        ForeColor = QBColor(15)
+        CurrentX = cx: CurrentY = cy: Print Trim(txt)
+        ForeColor = 0
+    Case LightGray
+        Line (x + 15, y + 15)-Step(szX - 30, szY - 30), QBColor(7), BF
+        ForeColor = QBColor(15)
+        CurrentX = cx: CurrentY = cy: Print Trim(txt)
+        ForeColor = 0
+    Case DarkGray
+        Line (x, y)-Step(szX, szY), QBColor(7), BF
+        Line (x + 15, y + 15)-Step(szX - 30, szY - 30), QBColor(8), BF
+        ForeColor = QBColor(15)
+        CurrentX = cx: CurrentY = cy: Print Trim(txt)
+        ForeColor = 0
+    Case BevelIN
+        DoBevel x, y, x + szX, y + szY, 0, 1
+        CurrentX = cx: CurrentY = cy: Print Trim(txt)
+    Case BevelOUT
+        DoBevel x, y, x + szX, y + szY, 1, 1
+        CurrentX = cx: CurrentY = cy: Print Trim(txt)
     End Select
 End Sub
 
@@ -316,10 +316,10 @@ Attribute CalendarRedraw.VB_UserMemId = -550
         x = (cl Mod 7) * szX
         y = (cl \ 7) * szY
         Select Case CellTpe(cl)
-            Case header: DrawCell x, y, szX, szY, CellTxt(cl), m_ViewHeaderCell
-            Case Normal: DrawCell x, y, szX, szY, CellTxt(cl), m_ViewDayCell
-            Case EmptyC: DrawCell x, y, szX, szY, CellTxt(cl), m_ViewEmptyCell
-            Case Selected: DrawCell x + 15, y + 15, szX - 30, szY - 30, CellTxt(cl), m_ViewSelCell
+        Case header: DrawCell x, y, szX, szY, CellTxt(cl), m_ViewHeaderCell
+        Case Normal: DrawCell x, y, szX, szY, CellTxt(cl), m_ViewDayCell
+        Case EmptyC: DrawCell x, y, szX, szY, CellTxt(cl), m_ViewEmptyCell
+        Case Selected: DrawCell x + 15, y + 15, szX - 30, szY - 30, CellTxt(cl), m_ViewSelCell
         End Select
         If CellMrk(cl) <> 0 Then DrawMarkers x, y, CellMrk(cl)
     Next cl
@@ -329,27 +329,27 @@ End Sub
 ' routine to draw one of four types of markers
 Private Sub DrawMarkers(ByVal x As Long, ByVal y As Long, _
                         ByVal Marker As Integer)
-    Dim b As Integer
+    Dim B As Integer
     Dim dx As Integer, dY As Integer
     dx = szX * 0.15
     dY = szY * 0.15
-    b = 45
+    B = 45
     If (Marker And 1) = 1 Then
-        Line (x + b, y + b)-Step(dx, dY), MarkColor(0), BF
+        Line (x + B, y + B)-Step(dx, dY), MarkColor(0), BF
     End If
     If (Marker And 2) = 2 Then
-        Line (x + szX - dx - b, y + b)-Step(dx, dY), MarkColor(1), BF
+        Line (x + szX - dx - B, y + B)-Step(dx, dY), MarkColor(1), BF
     End If
     If (Marker And 4) = 4 Then
-        Line (x + szX - dx - b, y + szY - dY - b)-Step(dx, dY), MarkColor(2), BF
+        Line (x + szX - dx - B, y + szY - dY - B)-Step(dx, dY), MarkColor(2), BF
     End If
     If (Marker And 8) = 8 Then
-        Line (x + b, y + szY - dY - b)-Step(dx, dY), MarkColor(3), BF
+        Line (x + B, y + szY - dY - B)-Step(dx, dY), MarkColor(3), BF
     End If
 End Sub
 
 Private Sub UserControl_Initialize()
-    'debug.Print "initialize"
+'debug.Print "initialize"
     SetMarkColors
     CalcCalendar
 End Sub
@@ -365,35 +365,35 @@ Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, x As Sing
         If Cancel = True Then Exit Sub    ' user code canceled
     End If
     Select Case SelectionType
-        Case Single_Cell
-            If CellTpe(cl) = header Or cl = CurrentCell Then Exit Sub
-            DrawCell (CurrentCell Mod 7) * szX, (CurrentCell \ 7) * szY, szX, szY, CellTxt(CurrentCell), ViewDayCell
-            CellTpe(CurrentCell) = Normal
-            DrawMarkers (CurrentCell Mod 7) * szX, (CurrentCell \ 7) * szY, CellMrk(CurrentCell)
-            DrawCell (x \ szX) * szX + 15, (y \ szY) * szY + 15, szX - 30, szY - 30, CellTxt(cl), ViewSelCell
+    Case Single_Cell
+        If CellTpe(cl) = header Or cl = CurrentCell Then Exit Sub
+        DrawCell (CurrentCell Mod 7) * szX, (CurrentCell \ 7) * szY, szX, szY, CellTxt(CurrentCell), ViewDayCell
+        CellTpe(CurrentCell) = Normal
+        DrawMarkers (CurrentCell Mod 7) * szX, (CurrentCell \ 7) * szY, CellMrk(CurrentCell)
+        DrawCell (x \ szX) * szX + 15, (y \ szY) * szY + 15, szX - 30, szY - 30, CellTxt(cl), ViewSelCell
+        CellTpe(cl) = Selected
+        DrawMarkers (x \ szX) * szX, (y \ szY) * szY, CellMrk(cl)
+        CurrentCell = cl
+        m_cDay = Val(CellTxt(cl))
+    Case Multi_Cell
+        Select Case CellTpe(cl)
+        Case header: DaySelectAll cl
+        Case Selected
+            CellTpe(cl) = Normal
+            DrawCell (x \ szX) * szX, (y \ szY) * szY, szX, szY, CellTxt(cl), ViewDayCell
+        Case Normal
             CellTpe(cl) = Selected
-            DrawMarkers (x \ szX) * szX, (y \ szY) * szY, CellMrk(cl)
-            CurrentCell = cl
-            m_cDay = Val(CellTxt(cl))
-        Case Multi_Cell
-            Select Case CellTpe(cl)
-                Case header: DaySelectAll cl
-                Case Selected
-                    CellTpe(cl) = Normal
-                    DrawCell (x \ szX) * szX, (y \ szY) * szY, szX, szY, CellTxt(cl), ViewDayCell
-                Case Normal
-                    CellTpe(cl) = Selected
-                    DrawCell (x \ szX) * szX + 15, (y \ szY) * szY + 15, szX - 30, szY - 30, CellTxt(cl), ViewSelCell
-            End Select
-            If CellTpe(cl) <> header Then m_cDay = Val(CellTxt(cl))
-            DrawMarkers (x \ szX) * szX, (y \ szY) * szY, CellMrk(cl)
+            DrawCell (x \ szX) * szX + 15, (y \ szY) * szY + 15, szX - 30, szY - 30, CellTxt(cl), ViewSelCell
+        End Select
+        If CellTpe(cl) <> header Then m_cDay = Val(CellTxt(cl))
+        DrawMarkers (x \ szX) * szX, (y \ szY) * szY, CellMrk(cl)
     End Select
 
     RaiseEvent SelChanged
 End Sub
 
 Private Sub UserControl_Resize()
-    'debug.Print "Resize"
+'debug.Print "Resize"
     szX = (ScaleWidth - 15) / 7
     szY = (ScaleHeight - 15) / 7
     CalendarRedraw
@@ -467,7 +467,7 @@ End Sub
 
 'Load property values from storage
 Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
-    'debug.Print "ReadProperties"
+'debug.Print "ReadProperties"
     UserControl.BorderStyle = PropBag.ReadProperty("BorderStyle", 0)
     UserControl.Enabled = PropBag.ReadProperty("Enabled", True)
     m_ViewHeaderCell = PropBag.ReadProperty("ViewHeaderCell", m_def_ViewHeaderCell)
@@ -486,7 +486,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
 End Sub
 
 Private Sub UserControl_Show()
-    'debug.Print "Show"
+'debug.Print "Show"
 End Sub
 
 'Write property values to storage
@@ -554,7 +554,7 @@ Attribute SelectionType.VB_ProcData.VB_Invoke_Property = ";Calendar"
 End Property
 
 Public Property Let SelectionType(ByVal New_SelectionType As SelectTypeList)
-    '   If Ambient.UserMode Then Err.Raise 393
+'   If Ambient.UserMode Then Err.Raise 393
     m_SelectionType = New_SelectionType
     PropertyChanged "SelectionType"
     If m_SelectionType = Single_Cell Then SetSingleSelect

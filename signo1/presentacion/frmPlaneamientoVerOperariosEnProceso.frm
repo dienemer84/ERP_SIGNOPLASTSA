@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoVerOperariosEnProceso 
    Caption         =   "Empleados en Proceso"
    ClientHeight    =   5190
@@ -161,7 +161,7 @@ Private Sub Explore(rows As ReportRows, ptp As PlaneamientoTiempoProcesoDetalle,
 
                         F.ReportControlDetalles.SelectedRows.DeleteAll
                         For Each row3 In F.ReportControlDetalles.rows
-                            If row3.record.Tag = ptp.id Then
+                            If row3.record.Tag = ptp.Id Then
                                 F.ReportControlDetalles.SelectedRows.Add row3
                                 row3.EnsureVisible
                                 Exit For

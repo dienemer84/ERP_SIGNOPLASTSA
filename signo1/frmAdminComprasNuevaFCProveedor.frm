@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   59179009
+      Format          =   58654721
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -794,7 +794,7 @@ Public Property Let ver(nVer As Boolean)
 End Property
 Public Property Let Factura(nFactura As clsFacturaProveedor)
     If IsSomething(nFactura) Then
-        Set vFactura = DAOFacturaProveedor.FindById(nFactura.id)
+        Set vFactura = DAOFacturaProveedor.FindById(nFactura.Id)
     End If
 End Property
 Private Sub LlenarCuentasContables()
@@ -809,9 +809,9 @@ Private Sub llenarTiposFacturas()
     Me.cboTiposFactura.Clear
 
     For i = 1 To Proveedor.TipoIVA.configFacturas.count
-        idIVA = Proveedor.TipoIVA.id
+        idIVA = Proveedor.TipoIVA.Id
         Me.cboTiposFactura.AddItem Proveedor.TipoIVA.configFacturas(i).TipoFactura
-        Me.cboTiposFactura.ItemData(Me.cboTiposFactura.NewIndex) = Proveedor.TipoIVA.configFacturas(i).id
+        Me.cboTiposFactura.ItemData(Me.cboTiposFactura.NewIndex) = Proveedor.TipoIVA.configFacturas(i).Id
     Next i
 
 
@@ -843,7 +843,7 @@ Private Sub cboProveedores_Click()
     If Me.cboProveedores.ListIndex <> -1 Then
         Me.txtCodigoProveedor = Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
     End If
-     
+
 
 End Sub
 
@@ -856,7 +856,7 @@ Private Sub cboTiposFactura_Click()
 
     grabado = False
     'vFactura.IvaAplicado = Nothing
-FacturaRequiereNumeroFormateado
+    FacturaRequiereNumeroFormateado
     If Me.cboTiposFactura.ListCount > 0 Then
         Dim idtipo As Long
         idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
@@ -870,7 +870,7 @@ FacturaRequiereNumeroFormateado
                 vFactura.IvaAplicado = Nothing
                 Me.grilla_alicuotas.ItemCount = 0
                 Me.grilla_alicuotas.Refresh
-                AddDefaultAlicuota colAlicuotas(1).id
+                AddDefaultAlicuota colAlicuotas(1).Id
 
             End If
         End If
@@ -888,7 +888,7 @@ Private Sub mostrar()
             Me.txtCuit = Proveedor.Cuit
             Me.txtIB = Proveedor.IIBB
             Me.txtRazonSocial = Proveedor.RazonSocial
-            Me.cboTipoIva.ListIndex = funciones.PosIndexCbo(Proveedor.TipoIVA.id, Me.cboTipoIva)
+            Me.cboTipoIva.ListIndex = funciones.PosIndexCbo(Proveedor.TipoIVA.Id, Me.cboTipoIva)
             llenarTiposFacturas
             ProtegerProveedor
         End If
@@ -905,7 +905,7 @@ End Sub
 Private Sub cmdDisponer_Click()
 
 
-    If Proveedor.id = 0 Then
+    If Proveedor.Id = 0 Then
         Proveedor.RazonSocial = Me.txtRazonSocial
         Proveedor.Cuit = Replace(Me.txtCuit, "-", vbNullString)
         Proveedor.IIBB = Me.txtIB
@@ -962,7 +962,7 @@ Private Sub cmdGuardar_Click()
 
 
     montonero = CDbl(Me.txtMontoNeto)
-    
+
     If Me.txtNumeroMask.text <> "____-________" And Len(Me.txtNumeroMask.text) > 0 Then
 
 
@@ -978,7 +978,7 @@ Private Sub cmdGuardar_Click()
 
         'creo el proveedor si es contado
 
-        If vFactura.Proveedor.id = 0 Then
+        If vFactura.Proveedor.Id = 0 Then
             If Trim(Me.txtRazonSocial) = vbNullString Or Not IsNumeric(Replace(Me.txtCuit, "-", vbNullString)) Then
                 If Not funciones.VerificarCUIT(Replace(Me.txtCuit, "-", vbNullString)) Then
                     Err.Raise 1000
@@ -995,7 +995,7 @@ Private Sub cmdGuardar_Click()
         If DAOFacturaProveedor.existeFactura(vFactura) Then Err.Raise 101
 
         Dim Nueva As Boolean
-        Nueva = (vFactura.id = 0)
+        Nueva = (vFactura.Id = 0)
 
         If DAOFacturaProveedor.Guardar(vFactura) Then
             Set EVENTO = New clsEventoObserver
@@ -1007,10 +1007,10 @@ Private Sub cmdGuardar_Click()
             End If
             Set EVENTO.Originador = Me
             EVENTO.Tipo = TipoSuscripcion.FacturaProveedor_
-            
+
             ' Desactivo este evento Notificar porque aparentemente da Error (dienemer 11.09.20)
-                   'Channel.Notificar EVENTO, TipoSuscripcion.FacturaProveedor_
-                   
+            'Channel.Notificar EVENTO, TipoSuscripcion.FacturaProveedor_
+
             MsgBox "Factura almacenada con éxito!", vbInformation, "Información"
             grabado = True
         Else
@@ -1056,8 +1056,8 @@ End Sub
 
 Private Sub Form_Load()
     loading = True
-    
-  
+
+
     Me.txtCuit.SetMask "00-00000000-0", "__-________-_"
 
     FormHelper.Customize Me
@@ -1089,27 +1089,27 @@ Private Sub Form_Load()
     Me.cboTipoDocContable.AddItem "Liquidacion Bancaria"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.LiquidacionBancaria
 
-'e5re52- SE AGREGA ESTE NUEVO TIPO DE COMPROBANTE COMPROBANTE DE COMPRA DE BIEN USADO
+    'e5re52- SE AGREGA ESTE NUEVO TIPO DE COMPROBANTE COMPROBANTE DE COMPRA DE BIEN USADO
     Me.cboTipoDocContable.AddItem "Compra Bien Usado"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.CompraBienesUsados
 
-' MODIFICO EL VALOR DEL INDICE PARA QUE SE INICIE COMO "FACTURA"
+    ' MODIFICO EL VALOR DEL INDICE PARA QUE SE INICIE COMO "FACTURA"
     Me.cboTipoDocContable.ListIndex = 2
 
     Me.grilla_alicuotas.ItemCount = 0
     Me.grilla_percepciones.ItemCount = 0
     Me.grid_cuentascontables.ItemCount = 0
-'    If vFactura.configFactura.FormateaNumero Then
-'       Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
-'       Me.txtNumeroMask.MaxLength = 0
-'  End If
-FacturaRequiereNumeroFormateado
+    '    If vFactura.configFactura.FormateaNumero Then
+    '       Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+    '       Me.txtNumeroMask.MaxLength = 0
+    '  End If
+    FacturaRequiereNumeroFormateado
     llenarGrillaPercepciones
     LlenarCuentasContables
 
 
     Me.DTPicker1 = Now
-    If vFactura.id > 0 Then
+    If vFactura.Id > 0 Then
         nroFacturaAnterior = vFactura.numero
         LlenarFactura
     End If
@@ -1123,7 +1123,7 @@ FacturaRequiereNumeroFormateado
         Me.cmdGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.frame2.Enabled = False
+        Me.Frame2.Enabled = False
         Me.Frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
@@ -1139,16 +1139,16 @@ FacturaRequiereNumeroFormateado
         Me.PushButton2.Visible = False
         Me.txtTipoCambio = vFactura.TipoCambio
         Me.lblTipoCambioPago = "Tipo de cambio Pago: " & vFactura.TipoCambioPago
-        
+
         grabado = True
-        
+
     End If
-    
-    
+
+
     Me.lblTipoCambioPago.Visible = VVer
-    
+
     TotalFactura
-    
+
     loading = False
 
     ''Me.caption = caption & "(" & Name & ")"
@@ -1159,19 +1159,19 @@ Private Sub FacturaRequiereNumeroFormateado()
 'dnemer
     Dim idtipo As Integer
     idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
- Dim cx As clsConfigFacturaProveedor
- 
- Set cx = DAOConfigFacturaProveedor.GetById(idtipo)
+    Dim cx As clsConfigFacturaProveedor
 
-If IsSomething(cx) Then
-   If cx.FormateaNumero Then
-       Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
-       Me.txtNumeroMask.MaxLength = 13
-  Else
-    Me.txtNumeroMask.SetMask "", ""
-       Me.txtNumeroMask.MaxLength = 0
-  End If
-End If
+    Set cx = DAOConfigFacturaProveedor.GetById(idtipo)
+
+    If IsSomething(cx) Then
+        If cx.FormateaNumero Then
+            Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+            Me.txtNumeroMask.MaxLength = 13
+        Else
+            Me.txtNumeroMask.SetMask "", ""
+            Me.txtNumeroMask.MaxLength = 0
+        End If
+    End If
 End Sub
 
 Private Sub llenarGrillaPercepciones()
@@ -1183,7 +1183,7 @@ Private Sub llenarGrillaPercepciones()
     Set Me.grilla_percepciones.Columns("percepcion").DropDownControl = Me.grilla_percepcion
 End Sub
 Private Sub ProtegerProveedor()
-    Me.GroupBox1.Enabled = (Proveedor.id = 0)
+    Me.GroupBox1.Enabled = (Proveedor.Id = 0)
     Me.cmdDisponer.Visible = Me.GroupBox1.Enabled
 End Sub
 
@@ -1206,7 +1206,7 @@ End Sub
 Private Sub grid_cuenta_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set ctaContable = colCuentas.item(RowIndex)
     Values(1) = ctaContable.codigo & " - " & ctaContable.nombre
-    Values(2) = ctaContable.id
+    Values(2) = ctaContable.Id
 End Sub
 Private Sub grid_cuentascontables_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not (MsgBox("¿Está seguro de eliminar la cuenta contable seleccionada?", vbYesNo, "Confirmación") = vbYes)
@@ -1245,7 +1245,7 @@ End Sub
 Private Sub grilla_alicuota_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set alicuota = colAlicuotas.item(RowIndex)
     Values(1) = funciones.FormatearDecimales(alicuota.alicuota)
-    Values(2) = alicuota.id
+    Values(2) = alicuota.Id
 End Sub
 
 Private Sub grilla_alicuotas_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
@@ -1308,7 +1308,7 @@ End Sub
 Private Sub grilla_percepcion_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set Percepcion = colPercepciones.item(RowIndex)
     Values(1) = Percepcion.Percepcion
-    Values(2) = Percepcion.id
+    Values(2) = Percepcion.Id
 End Sub
 
 Private Sub grilla_percepciones_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
@@ -1475,7 +1475,7 @@ End Sub
 
 Private Sub txtRedondeo_Change()
     On Error Resume Next
-    vFactura.redondeo = CDbl(Me.txtRedondeo)
+    vFactura.Redondeo = CDbl(Me.txtRedondeo)
     TotalFactura
     grabado = False
 End Sub
@@ -1488,21 +1488,21 @@ Private Sub LlenarFactura()
     Me.DTPicker1 = vFactura.FEcha
 
 
-If vFactura.configFactura.FormateaNumero Then
-    If InStr(1, vFactura.numero, "-") = 0 Then
-      Me.txtNumeroMask.text = vFactura.numero
-        'Me.txtNumeroMask.text = Mid(vFactura.numero, 1, 4) & "-" & String(8 - Len(Mid(vFactura.numero, 5)), "0") & Mid(vFactura.numero, 5)
+    If vFactura.configFactura.FormateaNumero Then
+        If InStr(1, vFactura.numero, "-") = 0 Then
+            Me.txtNumeroMask.text = vFactura.numero
+            'Me.txtNumeroMask.text = Mid(vFactura.numero, 1, 4) & "-" & String(8 - Len(Mid(vFactura.numero, 5)), "0") & Mid(vFactura.numero, 5)
+        Else
+            Me.txtNumeroMask.text = vFactura.numero
+        End If
     Else
         Me.txtNumeroMask.text = vFactura.numero
     End If
-Else
-      Me.txtNumeroMask.text = vFactura.numero
-End If
-    Me.txtRedondeo = vFactura.redondeo
+    Me.txtRedondeo = vFactura.Redondeo
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
-    Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.id, Me.cboProveedores)
-    Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(vFactura.configFactura.id, Me.cboTiposFactura)
-    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.moneda.id, Me.cboMonedas)
+    Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.Id, Me.cboProveedores)
+    Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(vFactura.configFactura.Id, Me.cboTiposFactura)
+    Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.moneda.Id, Me.cboMonedas)
     Me.txtMontoNeto = vFactura.NetoGravado
 
     Me.optContado.value = Not vFactura.FormaPagoCuentaCorriente

@@ -110,9 +110,9 @@ End Sub
 
 Private Sub Form_Load()
     Cargar
-    
-        ''Me.caption = caption & " (" & Name & ")"
-    
+
+    ''Me.caption = caption & " (" & Name & ")"
+
 End Sub
 
 Private Sub Cargar()
@@ -126,21 +126,21 @@ Private Sub Form_Resize()
     On Error Resume Next
     Me.grid.Width = Me.ScaleWidth - 20
     Me.grid.Height = Me.ScaleHeight - 50
-    
+
     'Me.cmdOK.Left = Me.ScaleWidth - 180
     'Me.cmdOK.Top = Me.grid.Height + 100
-    
+
     'Me.Height = 4600
     'Me.grid.ColumnAutoResize = True
 
 End Sub
 
 Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    
+
     If RowIndex > 0 And actualizaciones.count > 0 Then
-        
+
         Set sin = actualizaciones(RowIndex)
-     
+
         Values(1) = sin.Id_
         Values(2) = sin.Fecha_
         Values(3) = sin.Detalle_

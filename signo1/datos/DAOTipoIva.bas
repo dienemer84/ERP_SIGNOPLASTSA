@@ -9,26 +9,26 @@ Dim cn As ADODB.Connection
 
 Public Function GetAll() As Collection
     Dim col As New Collection
-    Dim a As clsTipoIVA
+    Dim A As clsTipoIVA
     Set rs = conectar.RSFactory("select * from AdminConfigIVA")
     While Not rs.EOF
-        Set a = New clsTipoIVA
-        a.idIVA = rs!idIVA
-        a.Alicuota = rs!Alicuota
-        a.detalle = rs!detalle
-        a.valido = rs!valido
+        Set A = New clsTipoIVA
+        A.idIVA = rs!idIVA
+        A.alicuota = rs!alicuota
+        A.detalle = rs!detalle
+        A.valido = rs!valido
         'Set a.TipoFactura = DAOTipoFactura.GetById(rs!tipo_factura)
-        col.Add a
+        col.Add A
         rs.MoveNext
     Wend
-    Set a = Nothing
+    Set A = Nothing
     Set GetAll = col
 End Function
-Public Function GetById(id) As clsTipoIVA
+Public Function GetById(Id) As clsTipoIVA
     Dim TipoIVA As New clsTipoIVA
-    Set rs = conectar.RSFactory("select * from AdminConfigIVA where idIVA=" & id)
+    Set rs = conectar.RSFactory("select * from AdminConfigIVA where idIVA=" & Id)
     If Not rs.EOF And Not rs.EOF Then
-        TipoIVA.Alicuota = rs!Alicuota
+        TipoIVA.alicuota = rs!alicuota
         TipoIVA.valido = rs!valido
         TipoIVA.detalle = rs!detalle
         TipoIVA.idIVA = rs!idIVA
@@ -66,14 +66,14 @@ End Function
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String) As clsTipoIVA
     Dim TIVA As clsTipoIVA
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
-    If id >= 0 Then
+    If Id >= 0 Then
         Set TIVA = New clsTipoIVA
-        TIVA.idIVA = id
-        TIVA.Alicuota = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ALICUOTA)
+        TIVA.idIVA = Id
+        TIVA.alicuota = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ALICUOTA)
         TIVA.detalle = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_DETALLE)
         TIVA.valido = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_VALIDO)
         'If LenB(tipoFacturaTableNameOrAlias) > 0 Then Set tiva.TipoFactura = DAOTipoFactura.Map(rs, fieldsIndex, tipoFacturaTableNameOrAlias)

@@ -923,19 +923,19 @@ End Sub
 
 Private Sub btnExportar_Click()
 
-    'FUNCIÓN PARA EXPORTAR A EXCEL
+'FUNCIÓN PARA EXPORTAR A EXCEL
 
 
-    'INICIA EL PROGRESSBAR Y LO MUESTRA
+'INICIA EL PROGRESSBAR Y LO MUESTRA
 '    Me.progreso.Visible = True
 '    Me.lblExportando.Visible = True
 
-    'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
 '    progreso.min = 0
 '    progreso.max = facturas.count
 
 
-    'Dim xlApplication As New Excel.Application
+'Dim xlApplication As New Excel.Application
     Dim xlApplication As Object
     Set xlApplication = CreateObject("Excel.Application")
 
@@ -989,14 +989,14 @@ Private Sub btnExportar_Click()
         xlWorksheet.Cells(idx, 5).value = che.Monto
         xlWorksheet.Cells(idx, 6).value = che.FechaVencimiento
         xlWorksheet.Cells(idx, 7).value = che.IdOrdenPagoOrigen
-        
+
 
 
         idx = idx + 1
 
         'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
         d = d + 1
-'        progreso.value = d
+        '        progreso.value = d
 
 
     Next
@@ -1040,9 +1040,9 @@ Private Sub btnExportar_Click()
     Set xlApplication = Nothing
 
     'REINICIA EL PROGRESSBAR Y LO OCULTA
-'    progreso.value = 0
-'    Me.progreso.Visible = False
-'    Me.lblExportando.Visible = False
+    '    progreso.value = 0
+    '    Me.progreso.Visible = False
+    '    Me.lblExportando.Visible = False
 End Sub
 
 Private Sub cmdCrear_Click()

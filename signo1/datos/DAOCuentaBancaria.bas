@@ -8,7 +8,7 @@ Public Sub LlenarCombo(cbo As ComboBox)
 
     For Each c In col
         cbo.AddItem c.DescripcionFormateada
-        cbo.ItemData(cbo.NewIndex) = c.id
+        cbo.ItemData(cbo.NewIndex) = c.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -22,7 +22,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
 
     For Each c In col
         cbo.AddItem c.DescripcionFormateada
-        cbo.ItemData(cbo.NewIndex) = c.id
+        cbo.ItemData(cbo.NewIndex) = c.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -37,7 +37,7 @@ Public Sub llenarComboCBU(cbo As ComboBox)
 
     For Each c In col
         cbo.AddItem c.DescripcionCBUFormateada
-        cbo.ItemData(cbo.NewIndex) = c.id
+        cbo.ItemData(cbo.NewIndex) = c.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -48,13 +48,13 @@ End Sub
 Public Function FindAllWithCBU() As Collection
     Dim col As Collection
     Set col = FindAll("cbu IS NOT null")
-    
+
     Set FindAllWithCBU = col
 End Function
 
-Public Function FindById(id As Long) As CuentaBancaria
+Public Function FindById(Id As Long) As CuentaBancaria
     Dim col As Collection
-    Set col = FindAll("c.id = " & id)
+    Set col = FindAll("c.id = " & Id)
     If col.count = 0 Then
         Set FindById = Nothing
     Else
@@ -78,9 +78,9 @@ End Function
 Public Function FindAll(Optional ByVal filter As String = " 1 = 1 ") As Collection
     Dim q As String
     q = "SELECT *" _
-        & " FROM AdminConfigCuentas c" _
-        & " LEFT JOIN AdminConfigBancos b ON b.id = c.idBanco" _
-        & " LEFT JOIN AdminConfigMonedas m ON m.id = c.moneda_id WHERE " & filter
+      & " FROM AdminConfigCuentas c" _
+      & " LEFT JOIN AdminConfigBancos b ON b.id = c.idBanco" _
+      & " LEFT JOIN AdminConfigMonedas m ON m.id = c.moneda_id WHERE " & filter
 
     Dim col As New Collection
     Dim rs As Recordset
@@ -91,7 +91,7 @@ Public Function FindAll(Optional ByVal filter As String = " 1 = 1 ") As Collecti
 
     While Not rs.EOF
         Set tmp = Map(rs, fieldsIndex, "c", "b", "m")
-        col.Add tmp, CStr(tmp.id)
+        col.Add tmp, CStr(tmp.Id)
         rs.MoveNext
     Wend
 
@@ -102,16 +102,16 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Optional tablaBanco As String = vbNullString, Optional tablaMoneda As String = vbNullString) As CuentaBancaria
     Dim c As CuentaBancaria
-    Dim id As Long
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, "id")
+    Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set c = New CuentaBancaria
-        c.id = id
+        c.Id = Id
         c.numero = GetValue(rs, indice, tabla, "cuenta")
         c.TipoCuenta = GetValue(rs, indice, tabla, "tipo")
-             c.CBU = GetValue(rs, indice, tabla, "cbu")
+        c.CBU = GetValue(rs, indice, tabla, "cbu")
         If LenB(tablaBanco) > 0 Then Set c.Banco = DAOBancos.Map(rs, indice, tablaBanco)
         If LenB(tablaMoneda) > 0 Then Set c.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
     End If
@@ -121,25 +121,25 @@ End Function
 
 Public Function Save(cuenta As CuentaBancaria) As Boolean
     Dim q As String
-    If cuenta.id = 0 Then
+    If cuenta.Id = 0 Then
         q = "INSERT INTO AdminConfigCuentas (idBanco, cuenta, tipo, moneda_id,CBU)" _
-            & " VALUES (" & GetEntityId(cuenta.Banco) & ", " & Escape(cuenta.numero) & "," & cuenta.TipoCuenta & "," & GetEntityId(cuenta.moneda) & "," & Escape(cuenta.CBU) & " )"
+          & " VALUES (" & GetEntityId(cuenta.Banco) & ", " & Escape(cuenta.numero) & "," & cuenta.TipoCuenta & "," & GetEntityId(cuenta.moneda) & "," & Escape(cuenta.CBU) & " )"
     Else
         q = "Update AdminConfigCuentas" _
-            & " SET" _
-            & " idBanco = " & GetEntityId(cuenta.Banco) & " ," _
-            & " cuenta = " & Escape(cuenta.numero) & " ," _
-            & " tipo = " & cuenta.TipoCuenta & " ," _
-            & " moneda_id = " & GetEntityId(cuenta.moneda) _
-            & ", cbu = " & Escape(cuenta.CBU) _
-            & " WHERE id = " & cuenta.id
+          & " SET" _
+          & " idBanco = " & GetEntityId(cuenta.Banco) & " ," _
+          & " cuenta = " & Escape(cuenta.numero) & " ," _
+          & " tipo = " & cuenta.TipoCuenta & " ," _
+          & " moneda_id = " & GetEntityId(cuenta.moneda) _
+          & ", cbu = " & Escape(cuenta.CBU) _
+          & " WHERE id = " & cuenta.Id
     End If
 
     Save = conectar.execute(q)
-    Dim id As Long
-    If Save And cuenta.id = 0 Then
-        If conectar.UltimoId("AdminConfigCuentas", id) Then
-            cuenta.id = id
+    Dim Id As Long
+    If Save And cuenta.Id = 0 Then
+        If conectar.UltimoId("AdminConfigCuentas", Id) Then
+            cuenta.Id = Id
         End If
     End If
 End Function

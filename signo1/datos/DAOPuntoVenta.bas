@@ -26,25 +26,25 @@ err1:
 
 End Function
 
-Public Function FindById(id As Long) As PuntoVenta
+Public Function FindById(Id As Long) As PuntoVenta
 
-    Set FindById = FindAll(" And pv.id=" & id)(1)
+    Set FindById = FindAll(" And pv.id=" & Id)(1)
 End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As PuntoVenta
 
     Dim pv As PuntoVenta
-    Dim id As Long: id = GetValue(rs, indice, tabla, "id")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set pv = New PuntoVenta
-        pv.id = id
+        pv.Id = Id
         pv.descripcion = GetValue(rs, indice, tabla, "descripcion")
         pv.PuntoVenta = GetValue(rs, indice, tabla, "punto_venta")
         pv.EsElectronico = GetValue(rs, indice, tabla, "esElectronico")
         'pv.EsCredito = GetValue(rs, indice, tabla, "esCredito")
-      pv.CaeManual = GetValue(rs, indice, tabla, "caeManual")
-    pv.default = GetValue(rs, indice, tabla, "default")
+        pv.CaeManual = GetValue(rs, indice, tabla, "caeManual")
+        pv.default = GetValue(rs, indice, tabla, "default")
 
     End If
 
@@ -53,7 +53,7 @@ End Function
 
 
 Public Function GetDefaultOrFirst() As PuntoVenta
-Set GetDefaultOrFirst = FindAll(" And pv.default=1")(1)
+    Set GetDefaultOrFirst = FindAll(" And pv.default=1")(1)
 End Function
 
 
@@ -73,14 +73,14 @@ Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, Opti
     For Each pv In col
         cbo.AddItem Format(pv.PuntoVenta, "000") & " - " & pv.descripcion
         nidx = cbo.NewIndex
-        cbo.ItemData(nidx) = pv.id
+        cbo.ItemData(nidx) = pv.Id
         If pv.default Then idDefault = nidx
     Next
-    
+
     If marcarDefault Then
         cbo.ListIndex = idDefault
     End If
-    
-    
+
+
 
 End Function

@@ -19,10 +19,10 @@ Public Const CAMPO_TIPO As String = "tipo"
 Public Const CAMPO_ID_PERSONA As String = "idCliente"
 
 
-Public Function GetAllByPersona(id As Long, Tipo As TipoPersona) As Collection
+Public Function GetAllByPersona(Id As Long, Tipo As TipoPersona) As Collection
     On Error GoTo err34
     Dim col As New Collection
-    strsql = "select * from contactos where idCliente=" & id & " and tipo=" & Tipo
+    strsql = "select * from contactos where idCliente=" & Id & " and tipo=" & Tipo
 
     Set rs = conectar.RSFactory(strsql)
     While Not rs.EOF
@@ -33,7 +33,7 @@ Public Function GetAllByPersona(id As Long, Tipo As TipoPersona) As Collection
         contacto.detalle = rs!detalle
         contacto.Domicilio = rs!direccion
         contacto.email = rs!email
-        contacto.id = rs!id
+        contacto.Id = rs!Id
         contacto.localidad = rs!localidad
         contacto.nombre = rs!nombre
         contacto.pais = rs!país
@@ -49,15 +49,15 @@ err34:
     Set GetAllByPersona = Nothing
 End Function
 
-Public Function LlenarComboByPersona(cbo As Xtremesuitecontrols.ComboBox, id As Long, Tipo As TipoPersona)
+Public Function LlenarComboByPersona(cbo As Xtremesuitecontrols.ComboBox, Id As Long, Tipo As TipoPersona)
 
     Dim contacto As clsContacto
-    Set col = GetAllByPersona(id, Tipo)
+    Set col = GetAllByPersona(Id, Tipo)
 
     For Each contacto In col
         If IsSomething(contacto) Then
             cbo.AddItem contacto.nombre
-            cbo.ItemData(cbo.NewIndex) = contacto.id
+            cbo.ItemData(cbo.NewIndex) = contacto.Id
         End If
     Next
 
@@ -79,7 +79,7 @@ Public Function agregar(contacto As clsContacto) As Boolean
 
         Set rs = conectar.RSFactory("select last_insert_id() AS Ultimo from contactos")
         If Not rs.EOF And Not rs.BOF Then
-            contacto.id = rs!ultimo
+            contacto.Id = rs!ultimo
         Else
             GoTo err1
         End If
@@ -97,7 +97,7 @@ Public Function modificar(contacto As clsContacto) As Boolean
     Set cn = conectar.obternerConexion
     modificar = True
     With contacto
-        strsql = "update contactos set idCliente= " & .idPersona & ",nombre='" & .nombre & "',tel='" & .telefono & "',direccion='" & .Domicilio & "',localidad='" & .localidad & "',provincia='" & .provincia & "', país='" & .pais & "',detalle='" & .detalle & "',cargo='" & .Cargo & "',celular='" & .celular & "',email='" & .email & "',tipo=" & .Tipo & " where id=" & .id
+        strsql = "update contactos set idCliente= " & .idPersona & ",nombre='" & .nombre & "',tel='" & .telefono & "',direccion='" & .Domicilio & "',localidad='" & .localidad & "',provincia='" & .provincia & "', país='" & .pais & "',detalle='" & .detalle & "',cargo='" & .Cargo & "',celular='" & .celular & "',email='" & .email & "',tipo=" & .Tipo & " where id=" & .Id
         cn.execute strsql
     End With
     Exit Function
@@ -105,8 +105,8 @@ err1:
     modificar = False
 
 End Function
-Public Function FindById(Tipo As TipoPersona, id As Long) As clsContacto
-    Set FindById = FindAll(Tipo, "id=" & id)(1)
+Public Function FindById(Tipo As TipoPersona, Id As Long) As clsContacto
+    Set FindById = FindAll(Tipo, "id=" & Id)(1)
 End Function
 
 Public Function FindAll(ByRef Tipo As TipoPersona, Optional ByRef filter As String = vbNullString) As Collection
@@ -120,9 +120,9 @@ Public Function FindAll(ByRef Tipo As TipoPersona, Optional ByRef filter As Stri
     Dim contactos As New Collection
 
     q = "SELECT" _
-        & " contact.*" _
-        & " FROM contactos contact" _
-        & " WHERE contact.tipo = " & Tipo
+      & " contact.*" _
+      & " FROM contactos contact" _
+      & " WHERE contact.tipo = " & Tipo
 
     If LenB(filter) > 0 Then
         q = q & " AND " & filter
@@ -149,13 +149,13 @@ End Function
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String) As clsContacto
     Dim c As clsContacto
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set c = New clsContacto
-        c.id = id
+        c.Id = Id
         c.Cargo = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CARGO)
         c.celular = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CELULAR)
         'c.detalle = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOContacto.CAMPO_DETALLE)

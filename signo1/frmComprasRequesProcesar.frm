@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GRIDEX20.OCX"
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Begin VB.Form frmComprasRequesProcesar 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
@@ -279,7 +279,7 @@ Private Sub Command1_Click()
     Unload Me
 End Sub
 Private Sub Command2_Click()
-    'If vReque.ValidarProveedores Then
+'If vReque.ValidarProveedores Then
     If MsgBox("¿Está seguro de guardar?", vbYesNo + vbQuestion) = vbYes Then
         If Not DAORequerimiento.Save(vReque) Then
             MsgBox "Se produjo algún error, no se guardarán los cambios!", vbCritical, "Error"
@@ -304,7 +304,7 @@ Private Sub Command3_Click()
     IdElegido = Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
     Dim h As Integer
     For h = 1 To vProveedores.count
-        If vProveedores.item(h).id = IdElegido Then
+        If vProveedores.item(h).Id = IdElegido Then
             esta = True
             Exit For
         End If
@@ -330,15 +330,15 @@ Private Sub Form_Load()
     cargarDatosReque
 End Sub
 Private Sub cargarDatosReque()
-    Set vRequeTmp = DAORequerimiento.FindById(vReque.id, True, True, True, True)
+    Set vRequeTmp = DAORequerimiento.FindById(vReque.Id, True, True, True, True)
     If vRequeTmp.Guardado <> vReque.Guardado Then
         MsgBox "Error de inconcistencia de datos!", vbCritical, "Error"
         Exit Sub
     End If
-    Me.caption = "Procesar proveedores requerimiento Nº " & vReque.id
+    Me.caption = "Procesar proveedores requerimiento Nº " & vReque.Id
     Me.lblSector = vReque.Sector.Sector
     Me.lblFecha = vReque.fechaCreado
-    Me.lblNumero = vReque.id
+    Me.lblNumero = vReque.Id
     Me.lblDestino = vReque.StringDestino
     Me.grilla_materiales.ItemCount = vReque.Materiales.count
 End Sub
@@ -352,7 +352,7 @@ Private Sub grilla_materiales_SelectionChange()
     Set vProveedores = tmpMaterial.ListaProveedores
     Me.grilla_proveedores.ItemCount = vProveedores.count
 
-    DAOProveedor.LlenarCombo Me.cboProveedores, True, , , tmpMaterial.Material.Grupo.rubros.id
+    DAOProveedor.LlenarCombo Me.cboProveedores, True, , , tmpMaterial.Material.Grupo.rubros.Id
 
     Me.cboProveedores.Enabled = (tmpMaterial.estado = EnProceso_ And Not ReadOnly)
     Me.Command3.Enabled = (tmpMaterial.estado = EnProceso_ And Not ReadOnly)

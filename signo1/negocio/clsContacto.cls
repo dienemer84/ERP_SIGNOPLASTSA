@@ -32,8 +32,8 @@ End Property
 
 
 
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Get nombre() As String
     nombre = vNombre
@@ -68,7 +68,7 @@ End Property
 Public Property Get Tipo() As Long
     Tipo = vTipo
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
 Public Property Let idPersona(nvalue As Long)

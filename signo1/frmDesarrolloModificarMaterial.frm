@@ -359,17 +359,17 @@ Private Sub Command1_Click()
             yhoja = CDbl(Me.txtYHoja)
             xpieza = CDbl(Me.txtXPieza)
             ypieza = CDbl(Me.txtYPieza)
-            id = baseM.QueIdMaterial(Trim(Me.txtCodigo))
-            baseS.calcularM2MLKGMaterial ypieza, xpieza, id, Scrap, yhoja, xhoja, Cantidad, Kg, m2ml, Pieza, costo, 0
+            Id = baseM.QueIdMaterial(Trim(Me.txtCodigo))
+            baseS.calcularM2MLKGMaterial ypieza, xpieza, Id, Scrap, yhoja, xhoja, Cantidad, Kg, m2ml, Pieza, costo, 0
 
             'x1 es hoja
             'x es pieza
-            baseS.ejecutar "select m.id_unidad,m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g,rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & id
+            baseS.ejecutar "select m.id_unidad,m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g,rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & Id
             descripcion = baseS.descripcion
             Espesor = baseS.Espesor
             Grupo = baseS.Grupo
-            Rubro = baseS.Rubro
-            descripcionPieza = Rubro & " " & Grupo & " " & descripcion
+            rubro = baseS.rubro
+            descripcionPieza = rubro & " " & Grupo & " " & descripcion
 
 
             'hay que modificar el peso los m2ml el detalle.. etc etc etc
@@ -390,7 +390,7 @@ Private Sub Command1_Click()
             '    frmNuevoElemento.ListView1.SelectedItem.Tag = UCase(Trim(Me.txtDetalle))
 
             formu.ListView1.selectedItem = codigo
-            formu.ListView1.selectedItem.ListSubItems(1) = id
+            formu.ListView1.selectedItem.ListSubItems(1) = Id
             formu.ListView1.selectedItem.ListSubItems(2) = descripcionPieza
             formu.ListView1.selectedItem.ListSubItems(3) = Espesor
             formu.ListView1.selectedItem.ListSubItems(4) = Pieza
@@ -432,7 +432,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub txtCodigo_Change()
-    'ver estado. si es=0 no se puede usar para cotizar... (valor 0)
+'ver estado. si es=0 no se puede usar para cotizar... (valor 0)
     If baseM.QueIdMaterial(Trim(Me.txtCodigo)) > 1 Then    'existe codigo
         IdMaterial = baseM.QueIdMaterial(Trim(Me.txtCodigo))
         verDetalleMateriales IdMaterial
@@ -471,18 +471,18 @@ Private Sub txtCodigo_Change()
         Me.lblMaterial = "Código inexistente"
     End If
 End Sub
-Private Function verDetalleMateriales(id)
+Private Function verDetalleMateriales(Id)
     Dim Kg As Double, m2ml As Double
     Dim descripcion As String
     Dim costo As Double
     cxh = funciones.cantxhoja(x, y, x1, y1)
-    baseS.ejecutar "select m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g, rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & id
+    baseS.ejecutar "select m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g, rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & Id
     descripcion = baseS.descripcion
     Espesor = baseS.Espesor
     Grupo = baseS.Grupo
-    Rubro = baseS.Rubro
+    rubro = baseS.rubro
 
-    Me.lblMaterial = truncar(Rubro, 40) & " " & truncar(Grupo, 40) & " " & truncar(MAT, 40)
+    Me.lblMaterial = truncar(rubro, 40) & " " & truncar(Grupo, 40) & " " & truncar(MAT, 40)
     If Espesor > 0 Then
         Me.lblMaterial = Me.lblMaterial & " " & Espesor & "mm"
     End If

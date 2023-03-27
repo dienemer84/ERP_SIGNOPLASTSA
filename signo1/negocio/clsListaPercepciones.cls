@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Private vPercepcion As clsPercepciones
 Private vMonto As Double
-Public id As Long
+Public Id As Long
 Public Property Let Percepcion(nPercepcion As clsPercepciones)
     Set vPercepcion = nPercepcion
 End Property

@@ -32,205 +32,205 @@ End Function
 
 Public Function verSeleccionado(ByVal indice, idUsuario As Long, Optional actualizar As Boolean = False, Optional Valor = Empty) As String
     Select Case indice
-            'panel de control y config
-        Case 100: strs = "rootPanelControl"
-            strtabla = "Config"
-        Case 101: strs = "Activo"
-            strtabla = "Config"
-        Case 102: strs = "tableros"
-            strtabla = "Config"
-        Case 103: strs = "AgendaVer"
-            strtabla = "Config"
-        Case 104: strs = "AgendaModif"
-            strtabla = "Config"
-        Case 107: strs = "GrupoDefault"
-            strtabla = "Config"
-        Case 108: strs = "manoObraConfig"
-            strtabla = "Config"
-        Case 109: strs = "materialesConfig"
-            strtabla = "Config"
-        Case 110: strs = "verPrecios"
-            strtabla = "Config"
-        Case 110: strs = "verPrecios"
-            strtabla = "Config"
-        Case 111: strs = "PanelControlGeneral"
-            strtabla = "Config"
-        Case 112: strs = "ArchivosVer"
-            strtabla = "Config"
-        Case 113: strs = "ArchivosScannear"
-            strtabla = "Config"
-        Case 114: strs = "ArchivosCompra"
-            strtabla = "Config"
+        'panel de control y config
+    Case 100: strs = "rootPanelControl"
+        strtabla = "Config"
+    Case 101: strs = "Activo"
+        strtabla = "Config"
+    Case 102: strs = "tableros"
+        strtabla = "Config"
+    Case 103: strs = "AgendaVer"
+        strtabla = "Config"
+    Case 104: strs = "AgendaModif"
+        strtabla = "Config"
+    Case 107: strs = "GrupoDefault"
+        strtabla = "Config"
+    Case 108: strs = "manoObraConfig"
+        strtabla = "Config"
+    Case 109: strs = "materialesConfig"
+        strtabla = "Config"
+    Case 110: strs = "verPrecios"
+        strtabla = "Config"
+    Case 110: strs = "verPrecios"
+        strtabla = "Config"
+    Case 111: strs = "PanelControlGeneral"
+        strtabla = "Config"
+    Case 112: strs = "ArchivosVer"
+        strtabla = "Config"
+    Case 113: strs = "ArchivosScannear"
+        strtabla = "Config"
+    Case 114: strs = "ArchivosCompra"
+        strtabla = "Config"
 
-        Case 115: strs = "VerUpdates"
-            strtabla = "Config"
+    Case 115: strs = "VerUpdates"
+        strtabla = "Config"
 
-        Case 116: strs = "VerEventos"
-            strtabla = "Config"
-
-
-
-            'ventas
-        Case 200: strs = "rootVentas"
-            strtabla = "Ventas"
-        Case 201: strs = "CotizControl"
-            strtabla = "Ventas"
-        Case 202: strs = "CotizConsultas"
-            strtabla = "Ventas"
-        Case 203: strs = "CotizAprobaciones"
-            strtabla = "Ventas"
-        Case 204: strs = "PedidosControl"
-            strtabla = "Ventas"
-        Case 205: strs = "PedidosConsultas"
-            strtabla = "Ventas"
-        Case 206: strs = "ClientesControl"
-            strtabla = "Ventas"
-        Case 207: strs = "ClientesConsultas"
-            strtabla = "Ventas"
-        Case 208: strs = "InfoPantalla"
-            strtabla = "Ventas"
-        Case 209: strs = "CotizModificar"
-            strtabla = "Ventas"
-
-            '---------------------------------'
-            'Planeamiento
-
-        Case 300: strs = "rootPlan"
-            strtabla = "Plan"
-        Case 301: strs = "infoPantalla"
-            strtabla = "Plan"
-        Case 302: strs = "OEcontrol"
-            strtabla = "Plan"
-        Case 303: strs = "OEconsultas"
-            strtabla = "Plan"
-        Case 304: strs = "OEaprobaciones"
-            strtabla = "Plan"
-        Case 305: strs = "OTcontrol"
-            strtabla = "Plan"
-        Case 306: strs = "OTconsultas"
-            strtabla = "Plan"
-        Case 307: strs = "OTaprobaciones"
-            strtabla = "Plan"
-        Case 308: strs = "SeguimientoGlobal"
-            strtabla = "Plan"
-        Case 309: strs = "SeguimientoRutas"
-            strtabla = "Plan"
-        Case 310: strs = "RemitosControl"
-            strtabla = "Plan"
-        Case 311: strs = "RemitosConsultas"
-            strtabla = "Plan"
-        Case 312: strs = "RemitosAprobaciones"
-            strtabla = "Plan"
-        Case 313: strs = "OTmodificar"
-            strtabla = "Plan"
-        Case 314: strs = "OEmodificar"
-            strtabla = "Plan"
-
-            '---------------------------------'
-            'desarrollo
-
-        Case 400: strs = "rootDesa"
-            strtabla = "Desarrollo"
-        Case 401: strs = "infoPantalla"
-            strtabla = "Desarrollo"
-        Case 402: strs = "Control"
-            strtabla = "Desarrollo"
-        Case 403: strs = "Consultas"
-            strtabla = "Desarrollo"
-        Case 404: strs = "ConsultaTiempos"
-            strtabla = "Desarrollo"
-        Case 405: strs = "manejoStock"
-            strtabla = "Desarrollo"
+    Case 116: strs = "VerEventos"
+        strtabla = "Config"
 
 
-            '--------------------------------
-            'ventas
+
+        'ventas
+    Case 200: strs = "rootVentas"
+        strtabla = "Ventas"
+    Case 201: strs = "CotizControl"
+        strtabla = "Ventas"
+    Case 202: strs = "CotizConsultas"
+        strtabla = "Ventas"
+    Case 203: strs = "CotizAprobaciones"
+        strtabla = "Ventas"
+    Case 204: strs = "PedidosControl"
+        strtabla = "Ventas"
+    Case 205: strs = "PedidosConsultas"
+        strtabla = "Ventas"
+    Case 206: strs = "ClientesControl"
+        strtabla = "Ventas"
+    Case 207: strs = "ClientesConsultas"
+        strtabla = "Ventas"
+    Case 208: strs = "InfoPantalla"
+        strtabla = "Ventas"
+    Case 209: strs = "CotizModificar"
+        strtabla = "Ventas"
+
+        '---------------------------------'
+        'Planeamiento
+
+    Case 300: strs = "rootPlan"
+        strtabla = "Plan"
+    Case 301: strs = "infoPantalla"
+        strtabla = "Plan"
+    Case 302: strs = "OEcontrol"
+        strtabla = "Plan"
+    Case 303: strs = "OEconsultas"
+        strtabla = "Plan"
+    Case 304: strs = "OEaprobaciones"
+        strtabla = "Plan"
+    Case 305: strs = "OTcontrol"
+        strtabla = "Plan"
+    Case 306: strs = "OTconsultas"
+        strtabla = "Plan"
+    Case 307: strs = "OTaprobaciones"
+        strtabla = "Plan"
+    Case 308: strs = "SeguimientoGlobal"
+        strtabla = "Plan"
+    Case 309: strs = "SeguimientoRutas"
+        strtabla = "Plan"
+    Case 310: strs = "RemitosControl"
+        strtabla = "Plan"
+    Case 311: strs = "RemitosConsultas"
+        strtabla = "Plan"
+    Case 312: strs = "RemitosAprobaciones"
+        strtabla = "Plan"
+    Case 313: strs = "OTmodificar"
+        strtabla = "Plan"
+    Case 314: strs = "OEmodificar"
+        strtabla = "Plan"
+
+        '---------------------------------'
+        'desarrollo
+
+    Case 400: strs = "rootDesa"
+        strtabla = "Desarrollo"
+    Case 401: strs = "infoPantalla"
+        strtabla = "Desarrollo"
+    Case 402: strs = "Control"
+        strtabla = "Desarrollo"
+    Case 403: strs = "Consultas"
+        strtabla = "Desarrollo"
+    Case 404: strs = "ConsultaTiempos"
+        strtabla = "Desarrollo"
+    Case 405: strs = "manejoStock"
+        strtabla = "Desarrollo"
 
 
-            'admin
-        Case 500: strs = "rootAdmin"
-            strtabla = "Administracion"
-        Case 501: strs = "FacturasControl"
-            strtabla = "Administracion"
-        Case 502: strs = "FacturasConsulta"
-            strtabla = "Administracion"
-        Case 503: strs = "FacturasAprobacion"
-            strtabla = "Administracion"
-        Case 504: strs = "CobroControl"
-            strtabla = "Administracion"
-        Case 505: strs = "CobroConsulta"
-            strtabla = "Administracion"
-        Case 506: strs = "CobroAprobacion"
-            strtabla = "Administracion"
-        Case 507: strs = "SubdiariosControl"
-            strtabla = "Administracion"
-        Case 511: strs = "CCControl"
-            strtabla = "Administracion"
-        Case 512: strs = "infoPantalla"
-            strtabla = "Administracion"
-        Case 508: strs = "IIBBAdmin"
-            strtabla = "Administracion"
-        Case 509: strs = "IIBBAdminActualizar"
-            strtabla = "Administracion"
-        Case 510: strs = "centroCambio"
-            strtabla = "Administracion"
-        Case 513: strs = "informesCashFlow"
-            strtabla = "Administracion"
-        Case 514: strs = "informesVarios"
-            strtabla = "Administracion"
-
-        Case 515: strs = "cajaybancos"
-            strtabla = "Administracion"
-        Case 516: strs = "opcontrol"
-            strtabla = "Administracion"
-        Case 517: strs = "opconsultas"
-            strtabla = "Administracion"
-
-        Case 518: strs = "fpcontrol"
-            strtabla = "Administracion"
-        Case 519: strs = "fpconsultas"
-            strtabla = "Administracion"
-        Case 520: strs = "plancuentas"
-            strtabla = "Administracion"
-        Case 521: strs = "fpversolopropias"
-            strtabla = "Administracion"
+        '--------------------------------
+        'ventas
 
 
-        Case 700: strs = "rootCompras"
-            strtabla = "Compras"
-        Case 701: strs = "infoPantalla"
-            strtabla = "Compras"
-        Case 702: strs = "ProveedoresControl"
-            strtabla = "Compras"
-        Case 703: strs = "ProveedoresConsultas"
-            strtabla = "Compras"
-        Case 704: strs = "RequesProcesar"
-            strtabla = "Compras"
-        Case 705: strs = "RequesControl"
-            strtabla = "Compras"
-        Case 706: strs = "RequesConsultas"
-            strtabla = "Compras"
-        Case 707: strs = "requesAprobaciones"
-            strtabla = "Compras"
-        Case 708: strs = "requesAnular"
-            strtabla = "Compras"
-        Case 709: strs = "poCrear"
-            strtabla = "Compras"
-        Case 710: strs = "poConsultar"
-            strtabla = "Compras"
-        Case 711: strs = "ocControl"
-            strtabla = "Compras"
-        Case 712: strs = "ocConsultas"
-            strtabla = "Compras"
-        Case 713: strs = "adminPrecios"
-            strtabla = "Compras"
-        Case 714: strs = "verPrecios"
-            strtabla = "Compras"
+        'admin
+    Case 500: strs = "rootAdmin"
+        strtabla = "Administracion"
+    Case 501: strs = "FacturasControl"
+        strtabla = "Administracion"
+    Case 502: strs = "FacturasConsulta"
+        strtabla = "Administracion"
+    Case 503: strs = "FacturasAprobacion"
+        strtabla = "Administracion"
+    Case 504: strs = "CobroControl"
+        strtabla = "Administracion"
+    Case 505: strs = "CobroConsulta"
+        strtabla = "Administracion"
+    Case 506: strs = "CobroAprobacion"
+        strtabla = "Administracion"
+    Case 507: strs = "SubdiariosControl"
+        strtabla = "Administracion"
+    Case 511: strs = "CCControl"
+        strtabla = "Administracion"
+    Case 512: strs = "infoPantalla"
+        strtabla = "Administracion"
+    Case 508: strs = "IIBBAdmin"
+        strtabla = "Administracion"
+    Case 509: strs = "IIBBAdminActualizar"
+        strtabla = "Administracion"
+    Case 510: strs = "centroCambio"
+        strtabla = "Administracion"
+    Case 513: strs = "informesCashFlow"
+        strtabla = "Administracion"
+    Case 514: strs = "informesVarios"
+        strtabla = "Administracion"
 
-        Case 800: strs = "Siniestro"
-            strtabla = "rrhh"
-        Case 801: strs = "InformeAccidente"
-            strtabla = "rrhh"
+    Case 515: strs = "cajaybancos"
+        strtabla = "Administracion"
+    Case 516: strs = "opcontrol"
+        strtabla = "Administracion"
+    Case 517: strs = "opconsultas"
+        strtabla = "Administracion"
+
+    Case 518: strs = "fpcontrol"
+        strtabla = "Administracion"
+    Case 519: strs = "fpconsultas"
+        strtabla = "Administracion"
+    Case 520: strs = "plancuentas"
+        strtabla = "Administracion"
+    Case 521: strs = "fpversolopropias"
+        strtabla = "Administracion"
+
+
+    Case 700: strs = "rootCompras"
+        strtabla = "Compras"
+    Case 701: strs = "infoPantalla"
+        strtabla = "Compras"
+    Case 702: strs = "ProveedoresControl"
+        strtabla = "Compras"
+    Case 703: strs = "ProveedoresConsultas"
+        strtabla = "Compras"
+    Case 704: strs = "RequesProcesar"
+        strtabla = "Compras"
+    Case 705: strs = "RequesControl"
+        strtabla = "Compras"
+    Case 706: strs = "RequesConsultas"
+        strtabla = "Compras"
+    Case 707: strs = "requesAprobaciones"
+        strtabla = "Compras"
+    Case 708: strs = "requesAnular"
+        strtabla = "Compras"
+    Case 709: strs = "poCrear"
+        strtabla = "Compras"
+    Case 710: strs = "poConsultar"
+        strtabla = "Compras"
+    Case 711: strs = "ocControl"
+        strtabla = "Compras"
+    Case 712: strs = "ocConsultas"
+        strtabla = "Compras"
+    Case 713: strs = "adminPrecios"
+        strtabla = "Compras"
+    Case 714: strs = "verPrecios"
+        strtabla = "Compras"
+
+    Case 800: strs = "Siniestro"
+        strtabla = "rrhh"
+    Case 801: strs = "InformeAccidente"
+        strtabla = "rrhh"
 
     End Select
 
@@ -314,7 +314,7 @@ Public Sub llenarLstRubros(lst As ListView)
     Me.ejecutar "select * from rubros"
     Dim x As ListItem
     While Not rs.EOF
-        Set x = lst.ListItems.Add(, , rs!id)
+        Set x = lst.ListItems.Add(, , rs!Id)
         x.SubItems(1) = rs!rubro
         rs.MoveNext
     Wend
@@ -342,7 +342,7 @@ Public Function llenarLstGrupos(id_rubro As Integer, lst As ListView)
         While Not rs.EOF
             Dim x As ListItem
             Dim i As Integer
-            Set x = lst.ListItems.Add(, , rs!id)
+            Set x = lst.ListItems.Add(, , rs!Id)
             x.SubItems(1) = rs!Grupo
             rs.MoveNext
         Wend
@@ -383,7 +383,7 @@ Public Function llenarLstmateriales(id_rubro As Integer, id_grupo As Integer, ls
         While Not rs.EOF
             Dim x As ListItem
             Dim i As Integer
-            Set x = lst.ListItems.Add(, , rs!id)
+            Set x = lst.ListItems.Add(, , rs!Id)
             x.SubItems(1) = rs!codigo & " - " & rs!descripcion & " " & rs!Espesor & "mm"
             x.SubItems(2) = queMoneda(rs!id_moneda)
             x.SubItems(3) = funciones.RedondearDecimales(rs!valor_unitario, 3)
@@ -401,7 +401,7 @@ Public Function llenar_combo_rubros(cbo As ComboBox)
     Me.ejecutar "select * from rubros"
     While Not rs.EOF
         cbo.AddItem rs!rubro
-        cbo.ItemData(cbo.NewIndex) = rs!id
+        cbo.ItemData(cbo.NewIndex) = rs!Id
         rs.MoveNext
     Wend
 
@@ -480,7 +480,7 @@ Public Function llenarComboRubrosGrupos(cbo As ComboBox, idUsuario) As Long
     c = 0
     While Not rs.EOF
         cbo.AddItem rs!Grupo
-        cbo.ItemData(cbo.NewIndex) = rs!id
+        cbo.ItemData(cbo.NewIndex) = rs!Id
         rs.MoveNext
         c = c + 1
     Wend
@@ -514,8 +514,8 @@ Public Function actualizarGrupos(idUsuario, lst As ListView) As Boolean
     cn.execute "delete from usuariosGruposDetalle where idUsuario=" & idUsuario
     'agrego la nueva lista
     For x = 1 To lst.ListItems.count
-        id = lst.ListItems(x).Tag
-        cn.execute "insert into usuariosGruposDetalle (idUsuario,idGrupo) values (" & idUsuario & "," & id & ")"
+        Id = lst.ListItems(x).Tag
+        cn.execute "insert into usuariosGruposDetalle (idUsuario,idGrupo) values (" & idUsuario & "," & Id & ")"
 
     Next x
 
@@ -548,12 +548,12 @@ End Function
 Public Function actualizarSistema(idNuevo As Long) As Boolean
     If clasea.exportarArchivoSistema(idNuevo) Then
         aa = App.path & "\updater.exe " & App.path & "\abb.exe|" & App.path & "\abb.tmp"
-        
+
         Shell aa, vbNormalFocus
-        
+
 
         SalirForzado
-        
+
         End
     Else
         MsgBox "Hubo un error al exportar la nueva versión del sistema.", vbCritical

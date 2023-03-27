@@ -25,7 +25,7 @@ End Property
 
 Public Property Get EventosSuscriptos() As Dictionary
     If Not IsSomething(m_EventosSuscriptos) Then
-        Set m_EventosSuscriptos = DAOEvento.GetEventBroadCastTypesSuscribedForUser(Me.id)
+        Set m_EventosSuscriptos = DAOEvento.GetEventBroadCastTypesSuscribedForUser(Me.Id)
     End If
 
     Set EventosSuscriptos = m_EventosSuscriptos
@@ -35,7 +35,7 @@ End Property
 Public Property Let usuario(nvalue As String)
     vUsuario = nvalue
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
 Public Property Let PassWord(nvalue As String)
@@ -51,8 +51,8 @@ End Property
 Public Property Get usuario() As String
     usuario = vUsuario
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Get PassWord() As String
     PassWord = vPassword

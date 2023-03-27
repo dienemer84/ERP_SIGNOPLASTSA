@@ -77,13 +77,13 @@ End Property
 Public Property Get ListaProveedores() As Collection
     Set ListaProveedores = mProveedores
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
-Public Property Let Observaciones(nvalue As String)
+Public Property Let observaciones(nvalue As String)
     vObservaciones = nvalue
 End Property
 Public Property Let Material(nvalue As clsMaterial)
@@ -98,8 +98,8 @@ End Property
 Public Property Let Entregas(nvalue As Collection)
     Set mEntregas = nvalue
 End Property
-Public Property Get Observaciones() As String
-    Observaciones = vObservaciones
+Public Property Get observaciones() As String
+    observaciones = vObservaciones
 End Property
 Public Property Get Material() As clsMaterial
     Set Material = mMaterial

@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "Tabctl32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "tabctl32.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmUsuarios 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00C0C0C0&
@@ -99,118 +99,118 @@ Begin VB.Form frmUsuarios
       TabCaption(0)   =   "Configuracion"
       TabPicture(0)   =   "frmUsuarios.frx":0000
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "chConf(72)"
+      Tab(0).Control(0)=   "Label1"
       Tab(0).Control(0).Enabled=   0   'False
-      Tab(0).Control(1)=   "chConf(71)"
+      Tab(0).Control(1)=   "Label4"
       Tab(0).Control(1).Enabled=   0   'False
-      Tab(0).Control(2)=   "chConf(65)"
+      Tab(0).Control(2)=   "chConf(4)"
       Tab(0).Control(2).Enabled=   0   'False
-      Tab(0).Control(3)=   "chConf(64)"
+      Tab(0).Control(3)=   "chConf(5)"
       Tab(0).Control(3).Enabled=   0   'False
-      Tab(0).Control(4)=   "chConf(63)"
+      Tab(0).Control(4)=   "chConf(7)"
       Tab(0).Control(4).Enabled=   0   'False
-      Tab(0).Control(5)=   "chConf(3)"
+      Tab(0).Control(5)=   "chConf(8)"
       Tab(0).Control(5).Enabled=   0   'False
-      Tab(0).Control(6)=   "chConf(2)"
+      Tab(0).Control(6)=   "chConf(6)"
       Tab(0).Control(6).Enabled=   0   'False
-      Tab(0).Control(7)=   "chConf(1)"
+      Tab(0).Control(7)=   "chConf(0)"
       Tab(0).Control(7).Enabled=   0   'False
-      Tab(0).Control(8)=   "chConf(0)"
+      Tab(0).Control(8)=   "chConf(1)"
       Tab(0).Control(8).Enabled=   0   'False
-      Tab(0).Control(9)=   "chConf(6)"
+      Tab(0).Control(9)=   "chConf(2)"
       Tab(0).Control(9).Enabled=   0   'False
-      Tab(0).Control(10)=   "chConf(8)"
+      Tab(0).Control(10)=   "chConf(3)"
       Tab(0).Control(10).Enabled=   0   'False
-      Tab(0).Control(11)=   "chConf(7)"
+      Tab(0).Control(11)=   "chConf(63)"
       Tab(0).Control(11).Enabled=   0   'False
-      Tab(0).Control(12)=   "chConf(5)"
+      Tab(0).Control(12)=   "chConf(64)"
       Tab(0).Control(12).Enabled=   0   'False
-      Tab(0).Control(13)=   "chConf(4)"
+      Tab(0).Control(13)=   "chConf(65)"
       Tab(0).Control(13).Enabled=   0   'False
-      Tab(0).Control(14)=   "Label4"
+      Tab(0).Control(14)=   "chConf(71)"
       Tab(0).Control(14).Enabled=   0   'False
-      Tab(0).Control(15)=   "Label1"
+      Tab(0).Control(15)=   "chConf(72)"
       Tab(0).Control(15).Enabled=   0   'False
       Tab(0).ControlCount=   16
       TabCaption(1)   =   "Ventas"
       TabPicture(1)   =   "frmUsuarios.frx":001C
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "chConf(14)"
+      Tab(1).Control(0)=   "Label2"
       Tab(1).Control(0).Enabled=   0   'False
-      Tab(1).Control(1)=   "chConf(18)"
+      Tab(1).Control(1)=   "Label3"
       Tab(1).Control(1).Enabled=   0   'False
-      Tab(1).Control(2)=   "chConf(11)"
+      Tab(1).Control(2)=   "chConf(10)"
       Tab(1).Control(2).Enabled=   0   'False
-      Tab(1).Control(3)=   "chConf(12)"
+      Tab(1).Control(3)=   "chConf(9)"
       Tab(1).Control(3).Enabled=   0   'False
-      Tab(1).Control(4)=   "chConf(13)"
+      Tab(1).Control(4)=   "chConf(17)"
       Tab(1).Control(4).Enabled=   0   'False
-      Tab(1).Control(5)=   "chConf(15)"
+      Tab(1).Control(5)=   "chConf(16)"
       Tab(1).Control(5).Enabled=   0   'False
-      Tab(1).Control(6)=   "chConf(16)"
+      Tab(1).Control(6)=   "chConf(15)"
       Tab(1).Control(6).Enabled=   0   'False
-      Tab(1).Control(7)=   "chConf(17)"
+      Tab(1).Control(7)=   "chConf(13)"
       Tab(1).Control(7).Enabled=   0   'False
-      Tab(1).Control(8)=   "chConf(9)"
+      Tab(1).Control(8)=   "chConf(12)"
       Tab(1).Control(8).Enabled=   0   'False
-      Tab(1).Control(9)=   "chConf(10)"
+      Tab(1).Control(9)=   "chConf(11)"
       Tab(1).Control(9).Enabled=   0   'False
-      Tab(1).Control(10)=   "Label3"
+      Tab(1).Control(10)=   "chConf(18)"
       Tab(1).Control(10).Enabled=   0   'False
-      Tab(1).Control(11)=   "Label2"
+      Tab(1).Control(11)=   "chConf(14)"
       Tab(1).Control(11).Enabled=   0   'False
       Tab(1).ControlCount=   12
       TabCaption(2)   =   "Compras"
       TabPicture(2)   =   "frmUsuarios.frx":0038
       Tab(2).ControlEnabled=   0   'False
-      Tab(2).Control(0)=   "chConf(76)"
-      Tab(2).Control(1)=   "chConf(75)"
-      Tab(2).Control(2)=   "chConf(74)"
-      Tab(2).Control(3)=   "chConf(73)"
-      Tab(2).Control(4)=   "chConf(70)"
-      Tab(2).Control(5)=   "chConf(69)"
-      Tab(2).Control(6)=   "chConf(68)"
-      Tab(2).Control(7)=   "chConf(62)"
+      Tab(2).Control(0)=   "Label8"
+      Tab(2).Control(1)=   "Label9"
+      Tab(2).Control(2)=   "chConf(41)"
+      Tab(2).Control(3)=   "chConf(42)"
+      Tab(2).Control(4)=   "chConf(56)"
+      Tab(2).Control(5)=   "chConf(57)"
+      Tab(2).Control(6)=   "chConf(59)"
+      Tab(2).Control(7)=   "chConf(60)"
       Tab(2).Control(8)=   "chConf(61)"
-      Tab(2).Control(9)=   "chConf(60)"
-      Tab(2).Control(10)=   "chConf(59)"
-      Tab(2).Control(11)=   "chConf(57)"
-      Tab(2).Control(12)=   "chConf(56)"
-      Tab(2).Control(13)=   "chConf(42)"
-      Tab(2).Control(14)=   "chConf(41)"
-      Tab(2).Control(15)=   "Label9"
-      Tab(2).Control(16)=   "Label8"
+      Tab(2).Control(9)=   "chConf(62)"
+      Tab(2).Control(10)=   "chConf(68)"
+      Tab(2).Control(11)=   "chConf(69)"
+      Tab(2).Control(12)=   "chConf(70)"
+      Tab(2).Control(13)=   "chConf(73)"
+      Tab(2).Control(14)=   "chConf(74)"
+      Tab(2).Control(15)=   "chConf(75)"
+      Tab(2).Control(16)=   "chConf(76)"
       Tab(2).ControlCount=   17
       TabCaption(3)   =   "Planeamiento"
       TabPicture(3)   =   "frmUsuarios.frx":0054
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "chConf(33)"
-      Tab(3).Control(1)=   "chConf(31)"
-      Tab(3).Control(2)=   "chConf(32)"
-      Tab(3).Control(3)=   "chConf(27)"
-      Tab(3).Control(4)=   "chConf(28)"
-      Tab(3).Control(5)=   "chConf(25)"
-      Tab(3).Control(6)=   "chConf(26)"
-      Tab(3).Control(7)=   "chConf(23)"
-      Tab(3).Control(8)=   "chConf(24)"
-      Tab(3).Control(9)=   "chConf(29)"
-      Tab(3).Control(10)=   "chConf(30)"
-      Tab(3).Control(11)=   "chConf(19)"
-      Tab(3).Control(12)=   "chConf(20)"
-      Tab(3).Control(13)=   "chConf(21)"
-      Tab(3).Control(14)=   "chConf(22)"
-      Tab(3).Control(15)=   "Label6"
+      Tab(3).Control(0)=   "Label6"
+      Tab(3).Control(1)=   "chConf(22)"
+      Tab(3).Control(2)=   "chConf(21)"
+      Tab(3).Control(3)=   "chConf(20)"
+      Tab(3).Control(4)=   "chConf(19)"
+      Tab(3).Control(5)=   "chConf(30)"
+      Tab(3).Control(6)=   "chConf(29)"
+      Tab(3).Control(7)=   "chConf(24)"
+      Tab(3).Control(8)=   "chConf(23)"
+      Tab(3).Control(9)=   "chConf(26)"
+      Tab(3).Control(10)=   "chConf(25)"
+      Tab(3).Control(11)=   "chConf(28)"
+      Tab(3).Control(12)=   "chConf(27)"
+      Tab(3).Control(13)=   "chConf(32)"
+      Tab(3).Control(14)=   "chConf(31)"
+      Tab(3).Control(15)=   "chConf(33)"
       Tab(3).ControlCount=   16
       TabCaption(4)   =   "Desarrollo"
       TabPicture(4)   =   "frmUsuarios.frx":0070
       Tab(4).ControlEnabled=   0   'False
-      Tab(4).Control(0)=   "Label5"
-      Tab(4).Control(1)=   "chConf(37)"
-      Tab(4).Control(2)=   "chConf(34)"
+      Tab(4).Control(0)=   "chConf(39)"
+      Tab(4).Control(1)=   "chConf(38)"
+      Tab(4).Control(2)=   "chConf(36)"
       Tab(4).Control(3)=   "chConf(35)"
-      Tab(4).Control(4)=   "chConf(36)"
-      Tab(4).Control(5)=   "chConf(38)"
-      Tab(4).Control(6)=   "chConf(39)"
+      Tab(4).Control(4)=   "chConf(34)"
+      Tab(4).Control(5)=   "chConf(37)"
+      Tab(4).Control(6)=   "Label5"
       Tab(4).ControlCount=   7
       TabCaption(5)   =   "Administración"
       TabPicture(5)   =   "frmUsuarios.frx":008C
@@ -265,9 +265,9 @@ Begin VB.Form frmUsuarios
       TabCaption(6)   =   "RRHH"
       TabPicture(6)   =   "frmUsuarios.frx":00A8
       Tab(6).ControlEnabled=   0   'False
-      Tab(6).Control(0)=   "Label10"
+      Tab(6).Control(0)=   "chConf(67)"
       Tab(6).Control(1)=   "chConf(66)"
-      Tab(6).Control(2)=   "chConf(67)"
+      Tab(6).Control(2)=   "Label10"
       Tab(6).ControlCount=   3
       Begin VB.CheckBox chConf 
          Caption         =   "FP Ver solo propias"
@@ -2347,7 +2347,7 @@ Dim claseSP As New classSignoplast
 
 
 Private Sub AgConsultar_Click()
-    'If Not Me.AgConsultar.value Then Me.AgModificar.value = False
+'If Not Me.AgConsultar.value Then Me.AgModificar.value = False
 End Sub
 Private Function OnOff(Valor)
     If Valor = 0 Then OnOff = "Off" Else OnOff = "On"
@@ -2412,19 +2412,19 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub Command6_Click()
-    'veo si está en la lista
+'veo si está en la lista
     Dim esta As Boolean
     For x = 1 To Me.lstGruposDisponibles.ListItems.count
         If Me.lstGruposDisponibles.ListItems(x).Checked Then
-            id = CLng(Me.lstGruposDisponibles.ListItems(x).Tag)
+            Id = CLng(Me.lstGruposDisponibles.ListItems(x).Tag)
             grupos = Me.lstGruposDisponibles.ListItems(x)
             esta = False
             For i = 1 To Me.LstGruposUsuarios.ListItems.count
-                If id = Me.LstGruposUsuarios.ListItems(i).Tag Then esta = True
+                If Id = Me.LstGruposUsuarios.ListItems(i).Tag Then esta = True
             Next i
             If Not esta Then
                 Set P = Me.LstGruposUsuarios.ListItems.Add(, , grupos)
-                P.Tag = id
+                P.Tag = Id
             End If
         End If
     Next x
@@ -2450,9 +2450,9 @@ Private Sub Command8_Click()
         gru = CLng(Me.LstGruposUsuarios.selectedItem.Tag)
         If claseSP.ejecutarComando("update sp_permisos.Config set GrupoDefault=" & gru & " where idUsuario=" & idUsu) Then
             MsgBox "Cambio exitoso!", vbInformation, "Información"
-            Dim id As Long
-            id = CLng(Me.lstUsuarios.selectedItem.Tag)
-            llenarLSTGruposUsuario id
+            Dim Id As Long
+            Id = CLng(Me.lstUsuarios.selectedItem.Tag)
+            llenarLSTGruposUsuario Id
         Else
             MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
         End If
@@ -2460,14 +2460,14 @@ Private Sub Command8_Click()
 End Sub
 
 Private Sub Form_Activate()
-    Dim id As Long
+    Dim Id As Long
 
     llenarLST
     llenarLSTGruposDisponibles
     lstUsuarios_ItemClick Me.LstGruposUsuarios.selectedItem
     If Me.lstUsuarios.ListItems.count > 0 Then
-        id = CLng(Me.lstUsuarios.selectedItem.Tag)
-        llenarLSTGruposUsuario id
+        Id = CLng(Me.lstUsuarios.selectedItem.Tag)
+        llenarLSTGruposUsuario Id
     End If
     Me.SSTab1.SetFocus
 End Sub
@@ -2482,7 +2482,7 @@ Private Function llenarLST()
         Set x = Me.lstUsuarios.ListItems.Add(, , rs!usuario)
         If Not IsNull(rs!nombre) Then x.SubItems(1) = rs!nombre
         If Not IsNull(rs!Apellido) Then x.SubItems(2) = rs!Apellido
-        x.Tag = rs!id
+        x.Tag = rs!Id
 
         rs.MoveNext
     Wend
@@ -2497,7 +2497,7 @@ Private Function llenarLSTGruposDisponibles()
     Me.lstGruposDisponibles.ListItems.Clear
     While Not rs.EOF
         Set x = Me.lstGruposDisponibles.ListItems.Add(, , rs!Grupo)
-        x.Tag = rs!id
+        x.Tag = rs!Id
 
         rs.MoveNext
     Wend
@@ -2520,9 +2520,9 @@ Private Function llenarLSTGruposUsuario(idUsuario As Long)
     Me.LstGruposUsuarios.ListItems.Clear
     While Not rs.EOF
         Set x = Me.LstGruposUsuarios.ListItems.Add(, , rs!Grupo)
-        x.Tag = rs!id
+        x.Tag = rs!Id
 
-        If defa = rs!id Then
+        If defa = rs!Id Then
             x.ForeColor = vbRed
         End If
         rs.MoveNext
@@ -2540,22 +2540,22 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub lstUsuarios_ItemClick(ByVal item As MSComctlLib.ListItem)
-    Dim id As Long
+    Dim Id As Long
     If Me.lstUsuarios.ListItems.count > 0 Then
-        id = CLng(Me.lstUsuarios.selectedItem.Tag)
-        llenarLSTGruposUsuario id
+        Id = CLng(Me.lstUsuarios.selectedItem.Tag)
+        llenarLSTGruposUsuario Id
         Set permi = Nothing
-        verPermisos id
+        verPermisos Id
     End If
 End Sub
 
 
-Public Sub verPermisos(id As Long)
+Public Sub verPermisos(Id As Long)
 
     it = Me.chConf.count
     For x = 0 To it - 1
         nro = Me.chConf(x).Tag
-        Me.chConf(x).value = claseSP.verSeleccionado(nro, id)
+        Me.chConf(x).value = claseSP.verSeleccionado(nro, Id)
     Next x
 
 End Sub

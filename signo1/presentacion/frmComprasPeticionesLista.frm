@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasPeticionesLista 
    BackColor       =   &H00F0E1D1&
    Caption         =   "Peticiones de Oferta"
@@ -219,8 +219,8 @@ End Sub
 Private Sub editar_Click()
     Dim frm As frmComprasPeticionesOfertaNueva
     Set frm = New frmComprasPeticionesOfertaNueva
-    a = Me.GridEX1.RowIndex(Me.GridEX1.row)
-    frm.peticion = peticiones.item(a)
+    A = Me.GridEX1.RowIndex(Me.GridEX1.row)
+    frm.peticion = peticiones.item(A)
     frm.Show
 End Sub
 Private Sub Form_Load()
@@ -322,9 +322,9 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(4) = .FechaEmision
         Values(5) = .FechaSolicitada
         Values(6) = .Proveedor.RazonSocial
-        Values(7) = .UsuarioCreador.usuario
+        Values(7) = .usuarioCreador.usuario
         Values(8) = enums.enumEstadoPO(.estado)
-        Values(9) = .Moneda.NombreCorto
+        Values(9) = .moneda.NombreCorto
 
         Set tmpColNombreMateriales = New Collection
         For Each tmpDetPetOferta In .detalle

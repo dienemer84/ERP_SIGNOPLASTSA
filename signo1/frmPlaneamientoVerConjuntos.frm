@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmDesarrolloVerConjuntos 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -70,21 +70,21 @@ Private Sub cargarConjunto()
         If rs!conjunto = 0 Then
 
             'agrego el nombre
-            a = rs!detalle
-            .Add , tvwroot, "'" & vIdConjunto & "'", a
+            A = rs!detalle
+            .Add , tvwroot, "'" & vIdConjunto & "'", A
             'agrego las ramas nivel 1
 
             Set rs = conectar.RSFactory("select sc.cantidad,sc.idPiezaHija,s.detalle,s.conjunto from stock s inner join stockConjuntos sc on s.id=sc.idPiezaHija where idPiezaPadre=" & vIdConjunto)
             While Not rs.EOF
                 xy = xy + 1
-                b = rs!idPiezaHija
-                .Add "'" & vIdConjunto & "'", tvwChild, "'" & b & xy & "'", rs!Cantidad & " -> " & rs!detalle
+                B = rs!idPiezaHija
+                .Add "'" & vIdConjunto & "'", tvwChild, "'" & B & xy & "'", rs!Cantidad & " -> " & rs!detalle
                 If rs!conjunto > -1 Then
-                    Set rs2 = conectar.RSFactory("select sc.cantidad,sc.idPiezaHija,s.detalle,s.conjunto from stock s inner join stockConjuntos sc on s.id=sc.idPiezaHija where idPiezaPadre=" & b)
+                    Set rs2 = conectar.RSFactory("select sc.cantidad,sc.idPiezaHija,s.detalle,s.conjunto from stock s inner join stockConjuntos sc on s.id=sc.idPiezaHija where idPiezaPadre=" & B)
                     While Not rs2.EOF
                         xyz = xyz + 1
                         c = rs2!idPiezaHija
-                        .Add "'" & b & xy & "'", tvwChild, "'" & c & xyz & "'", rs2!Cantidad * rs!Cantidad & " -> " & rs2!detalle
+                        .Add "'" & B & xy & "'", tvwChild, "'" & c & xyz & "'", rs2!Cantidad * rs!Cantidad & " -> " & rs2!detalle
                         If rs2!conjunto > -1 Then
                             Set rs3 = conectar.RSFactory("select sc.cantidad,sc.idPiezaHija,s.detalle,s.conjunto from stock s inner join stockConjuntos sc on s.id=sc.idPiezaHija where idPiezaPadre=" & c)
                             While Not rs3.EOF

@@ -1,9 +1,9 @@
 Attribute VB_Name = "DAOCaja"
 Option Explicit
 
-Public Function FindById(id As Long) As caja
+Public Function FindById(Id As Long) As caja
     Dim col As Collection
-    Set col = FindAll("c.id = " & id)
+    Set col = FindAll("c.id = " & Id)
     If col.count = 0 Then
         Set FindById = Nothing
     Else
@@ -14,7 +14,7 @@ End Function
 Public Function FindAll(Optional ByVal filter As String = " 1 = 1 ") As Collection
     Dim q As String
     q = "SELECT *" _
-        & " FROM cajas c WHERE " & filter
+      & " FROM cajas c WHERE " & filter
 
     Dim col As New Collection
     Dim rs As Recordset
@@ -25,7 +25,7 @@ Public Function FindAll(Optional ByVal filter As String = " 1 = 1 ") As Collecti
 
     While Not rs.EOF
         Set tmp = Map(rs, fieldsIndex, "c")
-        col.Add tmp, CStr(tmp.id)
+        col.Add tmp, CStr(tmp.Id)
         rs.MoveNext
     Wend
 
@@ -41,7 +41,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     For i = 1 To col.count
         Set caja = col(i)
         cbo.AddItem caja.nombre
-        cbo.ItemData(cbo.NewIndex) = caja.id
+        cbo.ItemData(cbo.NewIndex) = caja.Id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -51,13 +51,13 @@ End Sub
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As caja
     Dim c As caja
-    Dim id As Long
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, "id")
+    Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set c = New caja
-        c.id = id
+        c.Id = Id
         c.nombre = GetValue(rs, indice, tabla, "nombre")
     End If
 

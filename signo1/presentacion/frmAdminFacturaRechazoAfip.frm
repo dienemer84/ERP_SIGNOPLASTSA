@@ -54,40 +54,40 @@ Attribute VB_Exposed = False
 Public Factura As Factura
 
 Private Sub cmdGuardar_Click()
-On Error GoTo errCae
+    On Error GoTo errCae
 
-If MsgBox("¿Está seguro de actualizar el estado de rechazo del comprobante?", vbYesNo, "Confirmación") = vbYes Then
+    If MsgBox("¿Está seguro de actualizar el estado de rechazo del comprobante?", vbYesNo, "Confirmación") = vbYes Then
 
-    Factura.MotivosAnulacionAFIP = Me.Text1.text
-    If Me.chkRechazo.value = 1 Then
-    ' 154541541
-    ' 21/10/2022
-    ' SE CAMBIA EL VALOR DE Y POR S (EL VALOR DE Y ESTABA DANDO ERROR ULTIMAMENTE
-    ' Factura.AnulacionAFIP = "Y"
-        Factura.AnulacionAFIP = "S"
-    Else
-        Factura.AnulacionAFIP = "N"
-   End If
-    DAOFactura.RechazoAfip Factura
-    MsgBox "Datos de estado de rechazo actualizados correctamente", vbInformation, "Proceso correcto"
-   Unload Me
-End If
-Exit Sub
+        Factura.MotivosAnulacionAFIP = Me.Text1.text
+        If Me.chkRechazo.value = 1 Then
+            ' 154541541
+            ' 21/10/2022
+            ' SE CAMBIA EL VALOR DE Y POR S (EL VALOR DE Y ESTABA DANDO ERROR ULTIMAMENTE
+            ' Factura.AnulacionAFIP = "Y"
+            Factura.AnulacionAFIP = "S"
+        Else
+            Factura.AnulacionAFIP = "N"
+        End If
+        DAOFactura.RechazoAfip Factura
+        MsgBox "Datos de estado de rechazo actualizados correctamente", vbInformation, "Proceso correcto"
+        Unload Me
+    End If
+    Exit Sub
 
 errCae:
- MsgBox Err.Description, vbCritical, "Se produjo un error"
+    MsgBox Err.Description, vbCritical, "Se produjo un error"
 End Sub
 
 Private Sub Form_Load()
-  FormHelper.Customize Me
-  
-  If IsSomething(Factura) Then
-         Set Factura = DAOFactura.FindById(Factura.Id)
-       If Factura.AnulacionAFIP = "Y" Then
-          
+    FormHelper.Customize Me
+
+    If IsSomething(Factura) Then
+        Set Factura = DAOFactura.FindById(Factura.Id)
+        If Factura.AnulacionAFIP = "Y" Then
+
             Me.chkRechazo.value = 1
         Else
-        Me.chkRechazo.value = 0
+            Me.chkRechazo.value = 0
         End If
         Me.Text1.text = Factura.MotivosAnulacionAFIP
     End If

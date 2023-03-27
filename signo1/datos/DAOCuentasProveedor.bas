@@ -33,11 +33,11 @@ Public Function Save(Proveedor As clsProveedor) As Boolean
     Save = True
     Set cn = conectar.obternerConexion
     cn.BeginTrans
-    cn.execute "delete from AdminComprasCuentasProveedores where id_proveedor=" & Proveedor.id
+    cn.execute "delete from AdminComprasCuentasProveedores where id_proveedor=" & Proveedor.Id
 
     For P = 1 To Proveedor.cuentasContables.count
 
-        cn.execute "insert into AdminComprasCuentasProveedores   (id_proveedor, id_cuenta)   values  (" & Proveedor.id & "," & Proveedor.cuentasContables(P).id & ")"
+        cn.execute "insert into AdminComprasCuentasProveedores   (id_proveedor, id_cuenta)   values  (" & Proveedor.Id & "," & Proveedor.cuentasContables(P).Id & ")"
     Next P
 
 

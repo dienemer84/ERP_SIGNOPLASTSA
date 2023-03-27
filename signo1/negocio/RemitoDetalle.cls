@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public DetallePedido As DetalleOrdenTrabajo
 Public idDetallePedido As Long
 Public idpedido As Long
@@ -28,7 +28,7 @@ Public Valor As Double
 Public ValorModificado As Boolean
 Public EstadoRemito As EstadoRemito
 Public RemitoAlQuePertenece As Remito
-Public Observaciones As String
+Public observaciones As String
 
 Public Property Let Concepto(Valor As String)
     If Origen = OrigenRemitoConcepto Or Origen = OrigenRemitoAplicado Then

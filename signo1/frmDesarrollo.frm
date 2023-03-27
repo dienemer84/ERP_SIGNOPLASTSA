@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "Codejock.ReportControl.v12.0.2.ocx"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
 Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~1.OCX"
 Begin VB.Form frmDesarrollo 
    BackColor       =   &H00FFC0C0&
@@ -383,14 +383,14 @@ End Sub
 Private Sub mnuCambiar_Click()
     Dim P As Pieza
     Set P = m_pieza.LocatePiezaInPiezasHijas(Me.reportControlPiezas.SelectedRows(0).record.Tag)
-Set P = DAOPieza.FindById(P.Id, FL_0, True, True, False)
+    Set P = DAOPieza.FindById(P.Id, FL_0, True, True, False)
     Dim basene As New classNuevoElemento
     Dim frm2 As New frmNuevoElemento
     frm2.lblidStock = P.Id
     frm2.txtNombreElemento = P.nombre
     frm2.cboComplejidad.ListIndex = funciones.PosIndexCbo(P.Complejidad, frm2.cboComplejidad)
     If frm2.cboComplejidad.ListIndex = -1 Then
-       frm2.cboComplejidad.ListIndex = 0
+        frm2.cboComplejidad.ListIndex = 0
     End If
     frm2.cboClientes.ListIndex = funciones.PosIndexCbo(P.cliente.Id, frm2.cboClientes)
     frm2.txtIdCliente = P.cliente.Id
@@ -544,7 +544,7 @@ Private Sub mnuVerIncidencias_Click()
         frmArchi.caption = "Pieza " & P.nombre
         frmArchi.Show
     End If
-    
+
 End Sub
 
 Private Sub reportControlMateriales_MouseDown(Button As Integer, Shift As Integer, x As Long, y As Long)

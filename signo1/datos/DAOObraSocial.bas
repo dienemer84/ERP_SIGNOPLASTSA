@@ -3,34 +3,34 @@ Option Explicit
 
 Public Function Save(os As ObraSocial) As Boolean
     On Error GoTo err1
- 
+
     conectar.BeginTransaction
     Dim q As String
-    If os.id = 0 Then    'el insert se hace classPersonal
+    If os.Id = 0 Then    'el insert se hace classPersonal
         q = "INSERT INTO ObraSocial " _
-            & " (id," _
-            & " nombre)"
+          & " (id," _
+          & " nombre)"
         q = q & " Values" _
-            & " ('id'," _
-            & " 'nombre')"
+          & " ('id'," _
+          & " 'nombre')"
 
 
-        q = Replace$(q, "'id'", Escape(os.id))
+        q = Replace$(q, "'id'", Escape(os.Id))
         q = Replace$(q, "'nombre'", Escape(os.nombre))
-        
+
 
 
     Else
 
         q = "Update ObraSocial" _
-            & " SET" _
-            & " nombre = " & Escape(os.nombre) _
-            & " Where id = " & Escape(os.id)
+          & " SET" _
+          & " nombre = " & Escape(os.nombre) _
+          & " Where id = " & Escape(os.Id)
 
     End If
 
     Save = conectar.execute(q)
-    If Save Then If os.id = 0 Then os.id = conectar.UltimoId2
+    If Save Then If os.Id = 0 Then os.Id = conectar.UltimoId2
 
     conectar.CommitTransaction
     Exit Function
@@ -49,27 +49,27 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     Set col = GetAll
     Dim o As ObraSocial
     cbo.Clear
-    
+
     Dim i As Integer
-    
+
     For i = 1 To col.count
         Set o = col(i)
-    
-            cbo.AddItem o.nombre
-        
-        cbo.ItemData(cbo.NewIndex) = o.id
+
+        cbo.AddItem o.nombre
+
+        cbo.ItemData(cbo.NewIndex) = o.Id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
     End If
 End Sub
 
-Public Function GetById(id As Integer) As ObraSocial
-    
-    Set GetById = GetAll("ObraSocial.id=" & id)(1)
+Public Function GetById(Id As Integer) As ObraSocial
+
+    Set GetById = GetAll("ObraSocial.id=" & Id)(1)
 End Function
 Public Function GetDefault() As ObraSocial
-    
+
     Set GetDefault = GetAll("ObraSocial.es_default=1")(1)
 End Function
 
@@ -83,8 +83,8 @@ Public Function GetAll(Optional filter As String = vbNullString) As Collection
     While Not rs.EOF
         Dim fieldsIndex As Dictionary
         BuildFieldsIndex rs, fieldsIndex
-   
-    
+
+
         col.Add Map(rs, fieldsIndex, "ObraSocial")
         rs.MoveNext
     Wend
@@ -93,13 +93,13 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As ObraSocial
     Dim E As ObraSocial
-    Dim id As Long
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, "id")
+    Id = GetValue(rs, indice, tabla, "id")
 
-    If id <> 0 Then
+    If Id <> 0 Then
         Set E = New ObraSocial
-        E.id = id
+        E.Id = Id
         E.nombre = GetValue(rs, indice, tabla, "nombre")
         E.default = GetValue(rs, indice, tabla, "es_default")
 

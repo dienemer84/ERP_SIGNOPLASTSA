@@ -32,27 +32,27 @@ err1:
 
 End Function
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, tablaCtaContable As String) As clsCuentaFactura
-    Dim id As Long: id = GetValue(rs, indice, tabla, "id")
-    Dim a As clsCuentaFactura
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
+    Dim A As clsCuentaFactura
 
-    If id > 0 Then
-        Set a = New clsCuentaFactura
-        a.id = id
-        a.cuentas = DAOCuentaContable.Map(rs, indice, tablaCtaContable)
-        a.Monto = GetValue(rs, indice, tabla, "monto")
+    If Id > 0 Then
+        Set A = New clsCuentaFactura
+        A.Id = Id
+        A.cuentas = DAOCuentaContable.Map(rs, indice, tablaCtaContable)
+        A.Monto = GetValue(rs, indice, tabla, "monto")
     End If
-    Set Map = a
+    Set Map = A
 End Function
 Public Function Save(Factura As clsFacturaProveedor) As Boolean
     On Error GoTo err1
     Save = True
     Set cn = conectar.obternerConexion
-    cn.execute "delete from AdminComprasCuentasFacturas where id_factura=" & Factura.id
+    cn.execute "delete from AdminComprasCuentasFacturas where id_factura=" & Factura.Id
     Dim ctatmp As clsCuentaFactura
     For P = 1 To Factura.cuentasContables.count
         Set ctatmp = Factura.cuentasContables(P)
 
-        cn.execute "insert into AdminComprasCuentasFacturas   (id_factura, id_cuenta,monto)   values  (" & Factura.id & "," & ctatmp.cuentas.id & "," & ctatmp.Monto & ")"
+        cn.execute "insert into AdminComprasCuentasFacturas   (id_factura, id_cuenta,monto)   values  (" & Factura.Id & "," & ctatmp.cuentas.Id & "," & ctatmp.Monto & ")"
     Next P
     Exit Function
 err1:

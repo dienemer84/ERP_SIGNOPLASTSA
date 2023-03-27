@@ -136,23 +136,23 @@ Private Sub Form_Load()
     Me.GridEX1.ItemCount = 0
     Me.caption = "Conversión de Moneda (" & Name & ")"
 
-    Me.Label1.caption = "La OT origen a facturar tiene como Moneda asignada: " & vbCrLf & "" & Ot.Moneda.NombreCorto & " -" & Ot.Moneda.NombreLargo & ". " & vbCrLf & " " & vbCrLf & "" _
-    & "¿Desea realizar la conversión de acuerdo al valor de otra moneda? " & vbCrLf & "" & vbCrLf & "" _
-    & " Si desea modificarlo, seleccione el valor por el cual convertir y luego Acepte esta ventana. " & vbCrLf & "" _
-    & " En el caso de que desea mantener el mismo valor, seleccione Cancelar esta ventana."
-    
-    Me.Label2.caption = "Moneda de OT: " & Ot.Moneda.NombreCorto & "- " & Ot.Moneda.NombreLargo & "."
-    
-    Me.Label3.caption = "Moneda de Comprobante: " & Factura.Moneda.NombreCorto & "- " & Factura.Moneda.NombreLargo & "."
-    
-    
+    Me.Label1.caption = "La OT origen a facturar tiene como Moneda asignada: " & vbCrLf & "" & Ot.moneda.NombreCorto & " -" & Ot.moneda.NombreLargo & ". " & vbCrLf & " " & vbCrLf & "" _
+                      & "¿Desea realizar la conversión de acuerdo al valor de otra moneda? " & vbCrLf & "" & vbCrLf & "" _
+                      & " Si desea modificarlo, seleccione el valor por el cual convertir y luego Acepte esta ventana. " & vbCrLf & "" _
+                      & " En el caso de que desea mantener el mismo valor, seleccione Cancelar esta ventana."
+
+    Me.Label2.caption = "Moneda de OT: " & Ot.moneda.NombreCorto & "- " & Ot.moneda.NombreLargo & "."
+
+    Me.Label3.caption = "Moneda de Comprobante: " & Factura.moneda.NombreCorto & "- " & Factura.moneda.NombreLargo & "."
+
+
     llenarLista
 
 End Sub
 
 Private Sub llenarLista()
     Set mon = DAOMoneda.GetAll(q)
-    
+
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = mon.count
 
@@ -160,13 +160,13 @@ End Sub
 
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.GridEX1, Column
-    
+
 End Sub
 
 
 Private Sub GridEX1_SelectionChange()
     Set Mn = mon.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
-    
+
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -183,12 +183,12 @@ Private Sub PushButtonAceptar_Click()
     GridEX1_SelectionChange
     'Set Monedas.MonedaConvertibles = Mn
     Unload Me
-    
+
 End Sub
 
 Private Sub PushButtonCancelar_Click()
-    'Set Monedas.MonedaConvertibles = Factura.moneda.MonedaCambio
+'Set Monedas.MonedaConvertibles = Factura.moneda.MonedaCambio
     MsgBox ("Se calculará por el valor de la moneda de la Factura")
     Unload Me
-        
+
 End Sub

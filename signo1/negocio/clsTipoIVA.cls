@@ -33,11 +33,11 @@ End Property
 Public Property Get detalle() As String
     detalle = vDetalle
 End Property
-Public Property Let Alicuota(nAlicuota As Double)
+Public Property Let alicuota(nAlicuota As Double)
     vAlicuota = nAlicuota
 End Property
-Public Property Get Alicuota() As Double
-    Alicuota = vAlicuota
+Public Property Get alicuota() As Double
+    alicuota = vAlicuota
 End Property
 
 Public Property Let valido(nValido As Boolean)

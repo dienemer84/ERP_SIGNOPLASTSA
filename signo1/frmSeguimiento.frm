@@ -393,7 +393,7 @@ Private Sub Ac_Click()
             Dim detalle_pedido As New DetalleOrdenTrabajo
 
             Set detalle_pedido = DAODetalleOrdenTrabajo.FindById(iditem)
-            claseP.ejecutarComando "update stock set ya_fabricado=" & conectar.Escape(True) & " where id= " & detalle_pedido.Pieza.id
+            claseP.ejecutarComando "update stock set ya_fabricado=" & conectar.Escape(True) & " where id= " & detalle_pedido.Pieza.Id
 
             DAODetalleOrdenTrabajo.SaveCantidad iditem, Cant, CantidadFabricada_, 0, 9, 0, 0, 0
 
@@ -436,7 +436,7 @@ Private Sub Command1_Click()
             Me.lstDetallePedidos.ListItems.Clear
             Me.lblTerminados = Empty
             Me.lblPedidos = Empty
-            frame2.Enabled = False
+            Frame2.Enabled = False
             Me.lblIdPedido = Empty
         Else
             claseP.ejecutar_consulta "select c.razon as cliente,p.tipo_orden,p.estado,p.descripcion,p.fechaEntrega from pedidos p,clientes c where p.id=" & idp & " and c.id=p.idCliente"
@@ -445,7 +445,7 @@ Private Sub Command1_Click()
                 MsgBox "OT Invalida para hacer el seguimiento!", vbInformation
                 Exit Sub
             End If
-            
+
 
 
             '    If estado = 2 Then 'esta en proceso
@@ -453,7 +453,7 @@ Private Sub Command1_Click()
             lblDescripcion = claseP.descripcion
             lblFechaEntrega = claseP.FechaEntrega
             llenar_lista_detalle Me.lstDetallePedidos, idp, 1
-            frame2.Enabled = True
+            Frame2.Enabled = True
             Me.lblIdPedido = idp
             Me.lblItem = Me.lstDetallePedidos.selectedItem
             verSeleccionado
@@ -530,9 +530,9 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-    
-        'Me.caption = caption & " (" & Name & ")"
-        
+
+    'Me.caption = caption & " (" & Name & ")"
+
 End Sub
 
 Private Sub lstDetallePedidos_DblClick()
@@ -568,7 +568,7 @@ Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
     conta = 0
     While Not rs.EOF
         conta = conta + 1
-        Set x = lst.ListItems.Add(, , Format(rs!id, "000"))    'si no anda, dejar id solo
+        Set x = lst.ListItems.Add(, , Format(rs!Id, "000"))    'si no anda, dejar id solo
         x.SubItems(1) = rs!item
         If (rs!Nota) = Empty Then
             x.SubItems(2) = rs!detalle
@@ -596,7 +596,7 @@ Private Sub llenar_lista_detalle(lst As ListView, idpedido, Optional pos)
         End If
 
         x.SubItems(10) = prom_fab
-        x.Tag = Format(rs!id, "0000")
+        x.Tag = Format(rs!Id, "0000")
         If IsNumeric(pos) Then
             If x = pos Then
                 x.Selected = True

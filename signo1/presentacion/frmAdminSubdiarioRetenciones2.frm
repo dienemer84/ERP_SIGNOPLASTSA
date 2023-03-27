@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminSubdiarioRetenciones2 
    Caption         =   "Subdiario de retenciones"
    ClientHeight    =   7500
@@ -76,7 +76,7 @@ Begin VB.Form frmAdminSubdiarioRetenciones2
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16646145
+         Format          =   58327041
          CurrentDate     =   39660
       End
       Begin MSComCtl2.DTPicker DTDesde 
@@ -88,7 +88,7 @@ Begin VB.Form frmAdminSubdiarioRetenciones2
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16646145
+         Format          =   58327041
          CurrentDate     =   39660
       End
       Begin VB.Label Label1 
@@ -165,7 +165,7 @@ Private Sub ArmarCol()
     Me.gridSubdiario.Columns.Add "CUIT", jgexText, jgexEditNone, "cuit"
     Me.gridSubdiario.Columns.Add "Nro. Retencion", jgexText, jgexEditNone, "nroRet"
     For Each ret In colret
-        Me.gridSubdiario.Columns.Add ret.codigo, jgexText, jgexEditNone, ret.id
+        Me.gridSubdiario.Columns.Add ret.codigo, jgexText, jgexEditNone, ret.Id
     Next
 
 

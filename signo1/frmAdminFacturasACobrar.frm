@@ -102,9 +102,9 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     llenarLST
-    
+
     'Me.caption = caption & "(" & Name & ")"
-        
+
 
 End Sub
 
@@ -114,7 +114,7 @@ Private Sub llenarLST()
     Set rs = conectar.RSFactory("select f.saldada,f.id,f.nroFactura,c.razon,f.fechaEmision from AdminFacturas f inner join clientes c on f.idCliente=c.id where f.estado=2 and (f.saldada=0 or f.saldada=2 or f.saldada=3 or f.saldada=4)  and  f.idCliente=" & vIdCliente)
     While Not rs.EOF
         Set x = Me.lstFacturas.ListItems.Add(, , Format(rs!nroFactura, "0000"))
-        x.Tag = rs!id
+        x.Tag = rs!Id
         x.SubItems(1) = rs!razon
         x.SubItems(2) = Format(rs!FechaEmision, "dd-mm-yyyy")
         rs.MoveNext
@@ -123,7 +123,7 @@ Private Sub llenarLST()
 End Sub
 
 Private Sub lstFacturas_DblClick()
-    'funciones.idFactura = CLng(Me.lstFacturas.SelectedItem)
-    'Unload Me
+'funciones.idFactura = CLng(Me.lstFacturas.SelectedItem)
+'Unload Me
     Command2_Click
 End Sub

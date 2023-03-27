@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Object = "{1A9D2E18-63A4-11D3-9EC5-5C91AD000000}#2.5#0"; "phGantXControl.ocx"
 Begin VB.Form frmPlanificacionTemporal 
    Caption         =   "Planificacion Temporal"
@@ -15,6 +15,23 @@ Begin VB.Form frmPlanificacionTemporal
    ScaleHeight     =   8190
    ScaleWidth      =   17040
    WindowState     =   2  'Maximized
+   Begin XtremeReportControl.ReportControl ReportControl 
+      Height          =   6435
+      Left            =   15
+      TabIndex        =   0
+      Top             =   1470
+      Width           =   5700
+      _Version        =   786432
+      _ExtentX        =   10054
+      _ExtentY        =   11351
+      _StockProps     =   64
+      BorderStyle     =   3
+      PreviewMode     =   -1  'True
+      AllowColumnRemove=   0   'False
+      AllowColumnReorder=   0   'False
+      AllowColumnSort =   0   'False
+      ShowHeaderRows  =   -1  'True
+   End
    Begin phGantXControl.phGantX phGantX1 
       Height          =   7935
       Left            =   5805
@@ -162,7 +179,7 @@ Begin VB.Form frmPlanificacionTemporal
       ScaleMinStart   =   0
       ScaleMaxStop    =   767011
       DrawLongLines   =   -1  'True
-      PrintSettingsPrinterName=   "RICOH Aficio 1018D PCL 6"
+      PrintSettingsPrinterName=   "novaPDF"
       TodayLineOnOff  =   -1  'True
       TodayLineColor  =   0
       TimeItemAutoScroll=   0
@@ -175,23 +192,6 @@ Begin VB.Form frmPlanificacionTemporal
       FavourMoveOverResizeOnSmallTimeItems=   -1  'True
       InplaceDateTimeClearStatesBetweenEdits=   -1  'True
       SupressOnUserDrawExceptions=   0   'False
-   End
-   Begin XtremeReportControl.ReportControl ReportControl 
-      Height          =   6435
-      Left            =   15
-      TabIndex        =   0
-      Top             =   1470
-      Width           =   5700
-      _Version        =   786432
-      _ExtentX        =   10054
-      _ExtentY        =   11351
-      _StockProps     =   64
-      BorderStyle     =   3
-      PreviewMode     =   -1  'True
-      AllowColumnRemove=   0   'False
-      AllowColumnReorder=   0   'False
-      AllowColumnSort =   0   'False
-      ShowHeaderRows  =   -1  'True
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1365
@@ -318,10 +318,10 @@ Private Sub AgregarTareas(row As ReportRow)
             Set time = phGantX1.AddGantTime(newactivity, 0)
             time.UserVariantReference = ptp
 
-            If ptp.Planificacion.id = 0 Then
+            If ptp.Planificacion.Id = 0 Then
                 ptp.Planificacion.Inicio = Date
                 ptp.Planificacion.Fin = DateAdd("d", 1, Date)
-                ptp.Planificacion.idTiempoProceso = ptp.id
+                ptp.Planificacion.idTiempoProceso = ptp.Id
                 ptp.Planificacion.Color = ColorConstants.vbBlue
                 ptp.Planificacion.Prioridad = c
             End If
@@ -344,7 +344,7 @@ Private Sub cmdBuscar_Click()
     If LenB(Me.txtOt) > 0 And IsNumeric(Me.txtOt) Then
         Set vpedido = DAOOrdenTrabajo.FindById(Val(Me.txtOt))
         If IsSomething(vpedido) Then
-            Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.id)
+            Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
             MostrarGantt
         End If
     End If
@@ -364,16 +364,16 @@ Private Sub Form_Load()
     End If
 End Sub
 Private Sub MostrarGantt()
-    Me.txtOt = vpedido.id
-    Me.lblCliente = "Cliente: " & vpedido.Cliente.razon
+    Me.txtOt = vpedido.Id
+    Me.lblCliente = "Cliente: " & vpedido.cliente.razon
     Me.lblDescripcion = "Descripcion: " & vpedido.descripcion & "  | Fecha entrega: " & vpedido.FechaEntrega
     ArmarGantt
     Me.phGantX1.Start = Date - 5
 End Sub
 
 Private Sub BuscarPedido()
-    Set vpedido = DAOOrdenTrabajo.FindById(vpedido.id)
-    Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.id)
+    Set vpedido = DAOOrdenTrabajo.FindById(vpedido.Id)
+    Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
 End Sub
 
 Private Sub ArmarColGantt()
@@ -426,7 +426,7 @@ Private Sub Form_Resize()
 
 End Sub
 Private Sub ArmarColumnas()
-    '--------------------
+'--------------------
     Dim Column As ReportColumn
     Set Column = Me.ReportControl.Columns.Add(0, "Item", 10, True)
     Column.Icon = 0
@@ -473,7 +473,7 @@ Private Sub ArmarGantt()
     Dim item As ReportRecordItem
     For Each deta In vpedido.Detalles
         Set record = Me.ReportControl.Records.Add
-        record.Tag = deta.id
+        record.Tag = deta.Id
         record.AddItem deta.item
         Set item = record.AddItem(deta.Pieza.nombre)
 
@@ -481,26 +481,26 @@ Private Sub ArmarGantt()
         record.AddItem deta.CantidadPedida
         record.AddItem deta.FechaEntrega
         If deta.Pieza.EsConjunto Then
-            For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, deta.Pieza.id)
+            For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, deta.Pieza.Id)
 
                 Set Record2 = record.Childs.Add()
-                Record2.Tag = tmpdeta2.id
+                Record2.Tag = tmpdeta2.Id
                 Record2.AddItem vbNullString
                 Set item = Record2.AddItem(tmpdeta2.Pieza.nombre)
                 Record2.AddItem tmpdeta2.Cantidad
                 Record2.AddItem vbNullString
                 If tmpdeta2.Pieza.EsConjunto Then
-                    For Each tmpdeta3 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, tmpdeta2.Pieza.id)
+                    For Each tmpdeta3 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, tmpdeta2.Pieza.Id)
                         Set Record3 = Record2.Childs.Add
-                        Record3.Tag = tmpdeta3.id
+                        Record3.Tag = tmpdeta3.Id
                         Record3.AddItem vbNullString
                         Set item = Record3.AddItem(tmpdeta3.Pieza.nombre)
                         Record3.AddItem tmpdeta3.Cantidad
                         Record3.AddItem vbNullString
                         If tmpdeta3.Pieza.EsConjunto Then
-                            For Each tmpdeta4 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, tmpdeta3.Pieza.id)
+                            For Each tmpdeta4 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, tmpdeta3.Pieza.Id)
                                 Set Record4 = Record3.Childs.Add
-                                Record4.Tag = tmpdeta4.id
+                                Record4.Tag = tmpdeta4.Id
                                 Record4.AddItem vbNullString
                                 Set item = Record4.AddItem(tmpdeta4.Pieza.nombre)
                                 Record4.AddItem tmpdeta4.Cantidad
@@ -539,7 +539,7 @@ Private Sub mnuAsignarRecursos_Click()
 
     Dim F As New frmAsigacionRecursos
     Load F
-    F.llenar vpedido.id, col
+    F.llenar vpedido.Id, col
     F.Show
 
 End Sub
@@ -558,19 +558,19 @@ Private Sub mnuTareaAPieza_Click()
             Set deta = DAODetalleOrdenTrabajo.FindById(row.record.Tag)
             If deta Is Nothing Then Exit Sub
 
-            F.PIEZA_ID = deta.Pieza.id
-            F.idDetallePedido = deta.id
+            F.PIEZA_ID = deta.Pieza.Id
+            F.idDetallePedido = deta.Id
         Else    'es el detalle de algun detalle
             Set detadto = DAODetalleOrdenTrabajo.FindConjuntoById(row.record.Tag)
             If detadto Is Nothing Then Exit Sub
 
-            F.PIEZA_ID = detadto.Pieza.id
-            F.idDetallePedidoConjunto = detadto.id
+            F.PIEZA_ID = detadto.Pieza.Id
+            F.idDetallePedidoConjunto = detadto.Id
             F.idDetallePedido = detadto.idDetallePedido
         End If
 
         TareaAgregada = False
-        F.pedido_id = vpedido.id
+        F.pedido_id = vpedido.Id
         F.Show 1
         If TareaAgregada Then
             AgregarTareas Me.ReportControl.SelectedRows(0)

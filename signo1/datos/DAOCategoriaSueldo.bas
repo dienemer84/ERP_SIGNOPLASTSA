@@ -34,7 +34,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString) As Colle
 
     While Not rs.EOF
         Set catSueldo = DAOCategoriaSueldo.Map(rs, fieldsIndex, DAOCategoriaSueldo.TABLA_CATEGORIA_SUELDO, "mon")
-        categorias.Add catSueldo, CStr(catSueldo.id)
+        categorias.Add catSueldo, CStr(catSueldo.Id)
         rs.MoveNext
     Wend
 
@@ -47,17 +47,17 @@ End Function
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String, ByRef tablaMoneda As String) As CategoriaSueldo
     Dim c As CategoriaSueldo
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set c = New CategoriaSueldo
-        c.id = id
+        c.Id = Id
         c.nombre = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_NOMBRE)
         c.PorcentajeEspecializacion = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_PORCENTAJE_ESPECIALIZACION)
         c.Valor = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_VALOR)
-        If LenB(tablaMoneda) > 0 Then Set c.Moneda = DAOMoneda.Map(rs, fieldsIndex, tablaMoneda)
+        If LenB(tablaMoneda) > 0 Then Set c.moneda = DAOMoneda.Map(rs, fieldsIndex, tablaMoneda)
     End If
 
     Set Map = c
@@ -68,33 +68,33 @@ Public Function Save(catSueldo As CategoriaSueldo) As Boolean
     Save = True
     Dim q As String
 
-    If catSueldo.id = 0 Then
+    If catSueldo.Id = 0 Then
 
         q = "INSERT INTO categoria_sueldo" _
-            & " (nombre, " _
-            & " valor," _
-            & " porcentaje_especializacion)" _
-            & " VALUES (" & conectar.Escape(UCase(catSueldo.nombre)) & ", " _
-            & conectar.Escape(catSueldo.Valor) & "," _
-            & conectar.Escape(catSueldo.PorcentajeEspecializacion) & ")"
+          & " (nombre, " _
+          & " valor," _
+          & " porcentaje_especializacion)" _
+          & " VALUES (" & conectar.Escape(UCase(catSueldo.nombre)) & ", " _
+          & conectar.Escape(catSueldo.Valor) & "," _
+          & conectar.Escape(catSueldo.PorcentajeEspecializacion) & ")"
     Else
         q = "update categoria_sueldo" _
-            & " SET" _
-            & " nombre = " & conectar.Escape(UCase(catSueldo.nombre)) & "," _
-            & " valor = " & conectar.Escape(catSueldo.Valor) & "," _
-            & " porcentaje_especializacion = " & conectar.Escape(catSueldo.PorcentajeEspecializacion) _
-            & " Where" _
-            & " id = " & catSueldo.id
+          & " SET" _
+          & " nombre = " & conectar.Escape(UCase(catSueldo.nombre)) & "," _
+          & " valor = " & conectar.Escape(catSueldo.Valor) & "," _
+          & " porcentaje_especializacion = " & conectar.Escape(catSueldo.PorcentajeEspecializacion) _
+          & " Where" _
+          & " id = " & catSueldo.Id
     End If
 
     If conectar.execute(q) Then
 
-        If catSueldo.id = 0 Then
-            conectar.UltimoId "categoria_sueldo", catSueldo.id
+        If catSueldo.Id = 0 Then
+            conectar.UltimoId "categoria_sueldo", catSueldo.Id
         End If
 
         q = "INSERT INTO categoria_sueldo_historico (id_categoria_sueldo, valor, fecha, id_usuario)   VALUES " _
-            & "(" & catSueldo.id & "," & catSueldo.Valor & "," & conectar.Escape(Now) & "," & funciones.getUser & ")"
+          & "(" & catSueldo.Id & "," & catSueldo.Valor & "," & conectar.Escape(Now) & "," & funciones.getUser & ")"
         Save = conectar.execute(q)
 
 
@@ -109,7 +109,7 @@ End Function
 
 Public Function Delete(catSueldo As CategoriaSueldo) As Boolean
     On Error GoTo E
-    Delete = conectar.execute("DELETE FROM categoria_sueldo WHERE id = " & catSueldo.id)
+    Delete = conectar.execute("DELETE FROM categoria_sueldo WHERE id = " & catSueldo.Id)
     Exit Function
 E:
     Delete = False

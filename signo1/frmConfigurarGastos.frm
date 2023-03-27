@@ -233,10 +233,10 @@ Private Sub Form_Load()
     Else
         Command2.Enabled = True
     End If
-    
-        ''Me.caption = caption & " (" & Name & ")"
-        
-        
+
+    ''Me.caption = caption & " (" & Name & ")"
+
+
 End Sub
 
 Private Sub lstGastos_Click()

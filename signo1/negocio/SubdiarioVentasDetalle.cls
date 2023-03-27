@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public FEcha As String
 
 Public ListaPercepciones As Collection
@@ -43,7 +43,7 @@ Public Function TienePercepcionesIVA() As Boolean
 
     For Each P In ListaPercepciones
 
-        If P.Percepcion.id = Configurar.IdPercepcionIVA Then
+        If P.Percepcion.Id = Configurar.IdPercepcionIVA Then
             TienePercepcionesIVA = True
             Exit Function
         End If
@@ -63,7 +63,7 @@ Public Function TienePercepcionesIIBB() As Boolean
 
 
         For Each tp In Configurar.idPercepcionesIIBB
-            If tp.id = P.Percepcion.id Then
+            If tp.Id = P.Percepcion.Id Then
                 TienePercepcionesIIBB = True
                 Exit Function
             End If

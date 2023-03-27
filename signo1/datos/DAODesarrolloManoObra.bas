@@ -29,13 +29,13 @@ Public Function FindAll(Optional whereFilter As String = vbNullString, Optional 
     Dim desarrollosManoObra As New Collection
 
     q = "SELECT dmo.*, tar.*, sec.*, vmo.*, mon.*, cs.*" _
-        & " FROM desarrollo_mdo dmo" _
-        & " LEFT JOIN tareas tar ON tar.id = dmo.codigo" _
-        & " LEFT JOIN sectores sec ON sec.id = tar.id_sector" _
-        & " LEFT JOIN valores_MDO vmo ON vmo.id_tarea = tar.id" _
-        & " LEFT JOIN categoria_sueldo cs ON cs.id = tar.categoria_sueldo_id" _
-        & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cs.id_moneda" _
-        & " WHERE 1 = 1"
+      & " FROM desarrollo_mdo dmo" _
+      & " LEFT JOIN tareas tar ON tar.id = dmo.codigo" _
+      & " LEFT JOIN sectores sec ON sec.id = tar.id_sector" _
+      & " LEFT JOIN valores_MDO vmo ON vmo.id_tarea = tar.id" _
+      & " LEFT JOIN categoria_sueldo cs ON cs.id = tar.categoria_sueldo_id" _
+      & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cs.id_moneda" _
+      & " WHERE 1 = 1"
 
     If LenB(whereFilter) > 0 Then
         q = q & " AND " & whereFilter
@@ -57,9 +57,9 @@ Public Function FindAll(Optional whereFilter As String = vbNullString, Optional 
                                             DAODesarrolloManoObra.TABLA_MONEDA, "cs")
 
         If withPromedioHistorico Then
-            dmo.TiempoPromedioHistorico = DAOTiemposProcesosDetalles.FindPromedioByTareaOfPieza(dmo.Tarea.id, rs.Fields(fieldsIndex.item("dmo.id_pieza")))
+            dmo.TiempoPromedioHistorico = DAOTiemposProcesosDetalles.FindPromedioByTareaOfPieza(dmo.Tarea.Id, rs.Fields(fieldsIndex.item("dmo.id_pieza")))
         End If
-        desarrollosManoObra.Add dmo, CStr(dmo.id)
+        desarrollosManoObra.Add dmo, CStr(dmo.Id)
         rs.MoveNext
     Wend
 
@@ -81,16 +81,16 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef valoresMOTableNameOrAlias As String = vbNullString, _
                     Optional ByRef monedaTableNameOrAlias As String = vbNullString, _
                     Optional ByRef CategoriaSueldoTabla As String = vbNullString _
-                    ) As DesarrolloManoObra
+                  ) As DesarrolloManoObra
 
     Dim dmo As DesarrolloManoObra
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set dmo = New DesarrolloManoObra
-        dmo.id = id
+        dmo.Id = Id
         dmo.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_CANTIDAD)
         dmo.detalle = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_DETALLE)
         dmo.Tiempo = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_TIEMPO)
@@ -104,18 +104,18 @@ End Function
 Public Function Save(dmo As DesarrolloManoObra, Optional ByVal paraRevision As Boolean = False) As Boolean
     Dim q As String
 
-    If dmo.id = 0 Then
+    If dmo.Id = 0 Then
         q = "INSERT INTO {tabla} (id_pieza, codigo, cantidad, tiempo, detalle)" _
-            & " Values" _
-            & " ('id_pieza', 'codigo', 'cantidad', 'tiempo', 'detalle')"
+          & " Values" _
+          & " ('id_pieza', 'codigo', 'cantidad', 'tiempo', 'detalle')"
     Else
         q = "UPDATE {tabla} SET" _
-            & " id_pieza = 'id_pieza'," _
-            & " codigo = 'codigo'," _
-            & " cantidad = 'cantidad'," _
-            & " tiempo = 'tiempo'," _
-            & " detalle = 'detalle'" _
-            & " Where id = 'id'"
+          & " id_pieza = 'id_pieza'," _
+          & " codigo = 'codigo'," _
+          & " cantidad = 'cantidad'," _
+          & " tiempo = 'tiempo'," _
+          & " detalle = 'detalle'" _
+          & " Where id = 'id'"
     End If
 
     If paraRevision Then
@@ -125,12 +125,12 @@ Public Function Save(dmo As DesarrolloManoObra, Optional ByVal paraRevision As B
     End If
 
 
-    q = Replace$(q, "'id_pieza'", dmo.Pieza.id)
-    q = Replace$(q, "'codigo'", dmo.Tarea.id)
+    q = Replace$(q, "'id_pieza'", dmo.Pieza.Id)
+    q = Replace$(q, "'codigo'", dmo.Tarea.Id)
     q = Replace$(q, "'cantidad'", Escape(dmo.Cantidad))
     q = Replace$(q, "'tiempo'", Escape(dmo.Tiempo))
     q = Replace$(q, "'detalle'", Escape(dmo.detalle))
-    q = Replace$(q, "'id'", dmo.id)
+    q = Replace$(q, "'id'", dmo.Id)
 
     Save = conectar.execute(q)
 End Function

@@ -21,50 +21,50 @@ Public Function Guardar(deta As remitoDetalle) As Boolean
     Guardar = True
     Dim q As String
     Dim n As Boolean
-    If deta.id = 0 Then
+    If deta.Id = 0 Then
         n = True
         q = " INSERT INTO entregas  (" _
-            & "idPedido, " _
-            & "idDetallePedido," _
-            & "cantidad, " _
-            & "Remito, " _
-            & "fecha, " _
-            & "origen, " _
-            & "facturado, " _
-            & "valor, " _
-            & "concepto, " _
-            & "ModifValor, " _
-            & "facturable, observaciones ) " _
-            & "Values  ( " _
-            & conectar.Escape(deta.idpedido) & "," _
-            & conectar.Escape(deta.idDetallePedido) & "," _
-            & conectar.Escape(deta.Cantidad) & "," _
-            & conectar.Escape(deta.Remito) & "," _
-            & conectar.Escape(deta.FEcha) & "," _
-            & conectar.Escape(deta.Origen) & "," _
-            & conectar.Escape(deta.Facturado) & "," _
-            & conectar.Escape(deta.Valor) & "," _
-            & conectar.Escape(deta.Concepto) & "," _
-            & conectar.Escape(deta.ValorModificado) & "," _
-            & conectar.Escape(deta.facturable) & "," & conectar.Escape(deta.Observaciones) & ")"
+          & "idPedido, " _
+          & "idDetallePedido," _
+          & "cantidad, " _
+          & "Remito, " _
+          & "fecha, " _
+          & "origen, " _
+          & "facturado, " _
+          & "valor, " _
+          & "concepto, " _
+          & "ModifValor, " _
+          & "facturable, observaciones ) " _
+          & "Values  ( " _
+          & conectar.Escape(deta.idpedido) & "," _
+          & conectar.Escape(deta.idDetallePedido) & "," _
+          & conectar.Escape(deta.Cantidad) & "," _
+          & conectar.Escape(deta.Remito) & "," _
+          & conectar.Escape(deta.FEcha) & "," _
+          & conectar.Escape(deta.Origen) & "," _
+          & conectar.Escape(deta.Facturado) & "," _
+          & conectar.Escape(deta.Valor) & "," _
+          & conectar.Escape(deta.Concepto) & "," _
+          & conectar.Escape(deta.ValorModificado) & "," _
+          & conectar.Escape(deta.facturable) & "," & conectar.Escape(deta.observaciones) & ")"
 
     Else
         n = False
         q = "update sp.entregas   SET " _
-            & "idPedido = 'idPedido' ," _
-            & "idDetallePedido = 'idDetallePedido' , " _
-            & "cantidad = 'cantidad' , " _
-            & " Remito = 'Remito' , " _
-            & " fecha = 'fecha' , " _
-            & " origen = 'origen' ," _
-            & " facturado = 'facturado' ," _
-            & "valor = 'valor' , " _
-            & "concepto = 'concepto' ," _
-            & "ModifValor = 'ModifValor' ," _
-            & "observaciones = 'observaciones' ," _
-            & "facturable = 'facturable'  Where  id = 'id' "
+          & "idPedido = 'idPedido' ," _
+          & "idDetallePedido = 'idDetallePedido' , " _
+          & "cantidad = 'cantidad' , " _
+          & " Remito = 'Remito' , " _
+          & " fecha = 'fecha' , " _
+          & " origen = 'origen' ," _
+          & " facturado = 'facturado' ," _
+          & "valor = 'valor' , " _
+          & "concepto = 'concepto' ," _
+          & "ModifValor = 'ModifValor' ," _
+          & "observaciones = 'observaciones' ," _
+          & "facturable = 'facturable'  Where  id = 'id' "
 
-        q = Replace$(q, "'id'", conectar.Escape(deta.id))
+        q = Replace$(q, "'id'", conectar.Escape(deta.Id))
         q = Replace$(q, "'idPedido'", conectar.Escape(deta.idpedido))
         q = Replace$(q, "'idDetallePedido'", conectar.Escape(deta.idDetallePedido))
         q = Replace$(q, "'cantidad'", conectar.Escape(deta.Cantidad))
@@ -76,7 +76,7 @@ Public Function Guardar(deta As remitoDetalle) As Boolean
         q = Replace$(q, "'concepto'", conectar.Escape(deta.Concepto))
         q = Replace$(q, "'ModifValor'", conectar.Escape(deta.ValorModificado))
         q = Replace$(q, "'facturable'", conectar.Escape(deta.facturable))
-        q = Replace$(q, "'observaciones'", conectar.Escape(deta.Observaciones))
+        q = Replace$(q, "'observaciones'", conectar.Escape(deta.observaciones))
 
     End If
     If Not conectar.execute(q) Then GoTo err1
@@ -90,10 +90,10 @@ End Function
 
 Public Function Delete(detalle As remitoDetalle) As Boolean
 
-    Delete = conectar.execute("delete from entregas where id=" & detalle.id)  ' And DAODetalleOrdenTrabajo.SaveCantidad(detalle.DetallePedido.Id, detalle.Cantidad * -1, CantidadEntregada_, 0, detalle.Remito)
+    Delete = conectar.execute("delete from entregas where id=" & detalle.Id)  ' And DAODetalleOrdenTrabajo.SaveCantidad(detalle.DetallePedido.Id, detalle.Cantidad * -1, CantidadEntregada_, 0, detalle.Remito)
 
 
-    ' Stop
+' Stop
 
 
 End Function
@@ -111,12 +111,12 @@ Public Function FindAllByDetallePedido(idDP As Long) As Collection
     Set FindAllByDetallePedido = FindAll(q, True, False)
 End Function
 
-Public Function FindById(id As Long) As remitoDetalle
-    If id = -1 Then
+Public Function FindById(Id As Long) As remitoDetalle
+    If Id = -1 Then
         Set FindById = Nothing
     Else
         Dim col As New Collection
-        Set col = FindAll("AND " & TABLA_ENTREGA & "." & CAMPO_ID & "=" & id, True, True)
+        Set col = FindAll("AND " & TABLA_ENTREGA & "." & CAMPO_ID & "=" & Id, True, True)
         If col.count > 0 Then
             Set FindById = col.item(1)
         Else
@@ -155,9 +155,9 @@ End Function
 
 
 Public Function Map(rs As Recordset, indice As Dictionary, tablaEntrega As String, Optional tablaRemito As String = vbNullString) As remitoDetalle
-    Dim id As Variant
-    id = GetValue(rs, indice, tablaEntrega, CAMPO_ID)
-    If id > 0 Then
+    Dim Id As Variant
+    Id = GetValue(rs, indice, tablaEntrega, CAMPO_ID)
+    If Id > 0 Then
         Dim dr As remitoDetalle
         Set dr = New remitoDetalle
         dr.Origen = GetValue(rs, indice, tablaEntrega, CAMPO_ORIGEN)
@@ -172,8 +172,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tablaEntrega As Strin
         dr.Remito = GetValue(rs, indice, tablaEntrega, CAMPO_IDREMITO)
         dr.Valor = GetValue(rs, indice, tablaEntrega, CAMPO_VALOR)
         dr.ValorModificado = GetValue(rs, indice, tablaEntrega, CAMPO_VALOR_MODIFICADO)
-        dr.Observaciones = GetValue(rs, indice, tablaEntrega, CAMPO_OBSERVACIONES)
-        dr.id = id
+        dr.observaciones = GetValue(rs, indice, tablaEntrega, CAMPO_OBSERVACIONES)
+        dr.Id = Id
 
         If LenB(tablaRemito) > 0 Then
             Set dr.RemitoAlQuePertenece = DAORemitoS.Map(rs, indice, tablaRemito)
@@ -187,7 +187,7 @@ End Function
 
 Public Function CambiarEstadoFacturable(nuevoEstado As Boolean, deta As remitoDetalle) As Boolean
     On Error GoTo err1
-    CambiarEstadoFacturable = conectar.execute("update entregas set facturable=" & Abs(nuevoEstado) & " where id=" & deta.id)
+    CambiarEstadoFacturable = conectar.execute("update entregas set facturable=" & Abs(nuevoEstado) & " where id=" & deta.Id)
 
 
 

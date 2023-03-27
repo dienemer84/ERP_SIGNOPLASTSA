@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasRequesNuevo 
    AutoRedraw      =   -1  'True
    BorderStyle     =   1  'Fixed Single
@@ -525,8 +525,8 @@ Dim vSoloVer As Boolean
 Public Property Let SoloVer(nvalue As Boolean)
     vSoloVer = nvalue
 End Property
-Public Property Let Requerimiento(id As Long)
-    Set vReque = DAORequerimiento.FindById(id, True, True, True, True)
+Public Property Let Requerimiento(Id As Long)
+    Set vReque = DAORequerimiento.FindById(Id, True, True, True, True)
     cargarDatosReque
 End Property
 
@@ -604,8 +604,8 @@ Private Sub Guardar()
 
 
 
-    If vReque.id = 0 Then
-        vReque.FechaCreado = Date
+    If vReque.Id = 0 Then
+        vReque.fechaCreado = Date
         vReque.estado = EstadoRequeCompra.EnEdición_
         vReque.Usuario_creador = DAOUsuarios.GetById(funciones.getUser)
     End If
@@ -617,7 +617,7 @@ Private Sub Guardar()
     nuevo = True
 
     Dim aid As Long
-    aid = vReque.id    'para saber si hay q agregarlo o modificar la colection
+    aid = vReque.Id    'para saber si hay q agregarlo o modificar la colection
 
 
     If vReque.ValidarEntregas Then
@@ -636,7 +636,7 @@ Private Sub Guardar()
             Channel.Notificar EVENTO, RequerimientosCompra_
 
             If aid = 0 Then
-                MsgBox "Requerimiento Nº " & vReque.id & " creado correctamente.", vbInformation + vbOKOnly
+                MsgBox "Requerimiento Nº " & vReque.Id & " creado correctamente.", vbInformation + vbOKOnly
             Else
                 MsgBox "Requerimiento modificado correctamente.", vbInformation + vbOKOnly
             End If
@@ -658,7 +658,7 @@ Private Sub LlenarComboMateriales()
     Dim mattt As clsMaterial
     For Each mattt In DAOMateriales.FindAll()
         Me.cboMateriales.AddItem mattt.codigo & " - " & mattt.descripcion
-        Me.cboMateriales.ItemData(Me.cboMateriales.NewIndex) = mattt.id
+        Me.cboMateriales.ItemData(Me.cboMateriales.NewIndex) = mattt.Id
     Next mattt
 
 End Sub
@@ -693,7 +693,7 @@ Private Sub Form_Load()
     Channel.AgregarSuscriptor Me, Materiales_
 
     If IsSomething(vReque) Then
-        Set requeVerificador = DAORequerimiento.FindById(vReque.id, True, True, True, True)
+        Set requeVerificador = DAORequerimiento.FindById(vReque.Id, True, True, True, True)
 
         If requeVerificador.Guardado <> vReque.Guardado Then
             MsgBox "El requerimiento ya fue guardado y editado por alguien, se actualizará!"
@@ -709,9 +709,9 @@ Private Sub Form_Load()
     End If
 End Sub
 Private Sub cargarDatosReque()
-    Me.caption = "Requerimiento Nº " & vReque.id
+    Me.caption = "Requerimiento Nº " & vReque.Id
     'Me.lblFecha = vReque.FechaCreado
-    Me.cboSectores.ListIndex = funciones.PosIndexCbo(vReque.Sector.id, Me.cboSectores)
+    Me.cboSectores.ListIndex = funciones.PosIndexCbo(vReque.Sector.Id, Me.cboSectores)
     Dim Pedido As Long
     Pedido = vReque.DestinoOT
     If vReque.Tipo = ot_ Then
@@ -737,7 +737,7 @@ Private Sub GridEX_AfterDelete()
     seleccionarItem
 End Sub
 Private Sub GridEX_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
-    If vDetalle.id = 0 Or vReque.estado = EnEdición_ Then
+    If vDetalle.Id = 0 Or vReque.estado = EnEdición_ Then
         Cancel = (MsgBox("¿Está seguro de eliminar el item?", vbYesNo + vbQuestion) = vbNo)
     Else
         Cancel = True
@@ -746,9 +746,9 @@ Private Sub GridEX_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
 End Sub
 Private Sub seleccionarItem()
     On Error Resume Next
-    Dim a As Long
-    a = Me.GridEX.RowIndex(Me.GridEX.row)
-    Set vDetalle = vReque.Materiales.item(a)
+    Dim A As Long
+    A = Me.GridEX.RowIndex(Me.GridEX.row)
+    Set vDetalle = vReque.Materiales.item(A)
     'Set vMaterial = vDetalle.Material
     'mostrarMaterial vMaterial
 End Sub
@@ -803,9 +803,9 @@ Private Sub GridEX_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Set vDetalle = vReque.Materiales.item(RowIndex)
         With vDetalle
             Values(1) = .Cantidad
-            Values(2) = .Observaciones
+            Values(2) = .observaciones
             Values(3) = .Material.codigo
-            Values(4) = .Material.Grupo.rubros.Rubro
+            Values(4) = .Material.Grupo.rubros.rubro
             Values(5) = .Material.Grupo.Grupo
             Values(6) = "Material: " & .Material.descripcion & " | Medidas: " & funciones.JoinCollectionValues(.Material.Atributos, ", ")
             Values(7) = enums.enumEstadoRequeCompra(.estado)
@@ -817,7 +817,7 @@ Private Sub GridEX_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Varia
     If RowIndex > 0 And vReque.Materiales.count > 0 Then
         Set vDetalle = vReque.Materiales.item(RowIndex)
         vDetalle.Cantidad = Val(Values(1))
-        vDetalle.Observaciones = Values(2)
+        vDetalle.observaciones = Values(2)
     End If
 End Sub
 
@@ -870,9 +870,9 @@ End Sub
 
 
 Private Property Get ISuscriber_id() As String
-    Static id As String
-    If LenB(id) = 0 Then id = funciones.CreateGUID()
-    ISuscriber_id = id
+    Static Id As String
+    If LenB(Id) = 0 Then Id = funciones.CreateGUID()
+    ISuscriber_id = Id
 End Property
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
@@ -1011,7 +1011,7 @@ Private Sub PushButton1_Click()
     If IsSomething(Selecciones.Material) Then
         Set vmaterial = Selecciones.Material
         Set Selecciones.Material = Nothing
-        Me.cboMateriales.ListIndex = PosIndexCbo(vmaterial.id, Me.cboMateriales)
+        Me.cboMateriales.ListIndex = PosIndexCbo(vmaterial.Id, Me.cboMateriales)
     End If
     Exit Sub
 err1:
@@ -1054,7 +1054,7 @@ End Sub
 
 Private Sub MostrarMaterial(vmat As clsMaterial)
     Me.lblDescripcion = vmat.descripcion
-    Me.lblRubro = vmat.Grupo.rubros.Rubro
+    Me.lblRubro = vmat.Grupo.rubros.rubro
     Me.lblEspesor = vmat.Espesor
     Me.lblGrupo = vmat.Grupo.Grupo
     Me.lblKgM2 = vmat.PesoXUnidad

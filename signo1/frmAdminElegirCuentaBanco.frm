@@ -73,7 +73,7 @@ Begin VB.Form frmAdminElegirCuentaBanco
          _ExtentX        =   2566
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   58851329
+         Format          =   58982401
          CurrentDate     =   39220
       End
       Begin VB.Label Label4 

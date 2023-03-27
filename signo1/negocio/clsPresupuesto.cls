@@ -11,7 +11,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Public id As Long
+Public Id As Long
 Public EstadoPresupuesto As EstadoPresupuesto
 Public FechaEntrega As Long
 Public PorcMDO As Double
@@ -22,15 +22,15 @@ Public Gastos As Double
 Public manteOferta As Integer
 Public detalle As String
 Public FechaProcesado As Date
-Public FechaCreado As Date
-Public Moneda As clsMoneda
+Public fechaCreado As Date
+Public moneda As clsMoneda
 Public UsuarioCreado As clsUsuario
 Public FechaModificado As Date
 Public UsuarioModificado As clsUsuario
 Public FechaFinalizado As Date
 Public UsuarioFinalizado As clsUsuario
 Public DetallePresupuesto As Collection    'of clsPresupuestoDetalle
-Public Cliente As clsCliente
+Public cliente As clsCliente
 Public VencimientoPresupuesto As Date
 Public Descuento As Double
 Public Anticipo As Double
@@ -39,7 +39,7 @@ Public FormaPagoSaldo As String
 Public PorcentajeManoObraMuerta As Double
 Public DiasPagoSaldo As Long
 Public DiasPagoAnticipo As Long
-Private detalle_ As clsPresupuestoDetalle
+Private Detalle_ As clsPresupuestoDetalle
 Enum SistemaManual
     Sistema = 1
     Manual = 2
@@ -93,17 +93,17 @@ End Property
 
 
 Public Property Get IdFormateada() As String
-    IdFormateada = Format("0000", id)
+    IdFormateada = Format("0000", Id)
 End Property
 
-Public Function SubTotal(a As SistemaManual) As Double
+Public Function SubTotal(A As SistemaManual) As Double
     Dim tot As Double
     tot = 0
-    For Each detalle_ In DetallePresupuesto
-        If a = Sistema Then
-            tot = tot + detalle_.ValorSistema * detalle_.Cantidad
-        ElseIf a = Manual Then
-            tot = tot + detalle_.ValorManual * detalle_.Cantidad
+    For Each Detalle_ In DetallePresupuesto
+        If A = Sistema Then
+            tot = tot + Detalle_.ValorSistema * Detalle_.Cantidad
+        ElseIf A = Manual Then
+            tot = tot + Detalle_.ValorManual * Detalle_.Cantidad
         End If
     Next
     SubTotal = funciones.RedondearDecimales(tot)
@@ -113,24 +113,24 @@ End Function
 
 
 
-Public Function Total(a As SistemaManual) As Double
+Public Function Total(A As SistemaManual) As Double
     Dim tot As Double
     tot = 0
-    For Each detalle_ In DetallePresupuesto
-        If a = Sistema Then
-            tot = tot + detalle_.ValorSistema * detalle_.Cantidad
-        ElseIf a = Manual Then
-            tot = tot + detalle_.ValorManual * detalle_.Cantidad
-        ElseIf a = SMCosto Then
-            tot = tot + detalle_.costo    '* detalle_.cantidad
-        ElseIf a = SMGG Then
-            tot = tot + detalle_.TotalGastosGenerales
+    For Each Detalle_ In DetallePresupuesto
+        If A = Sistema Then
+            tot = tot + Detalle_.ValorSistema * Detalle_.Cantidad
+        ElseIf A = Manual Then
+            tot = tot + Detalle_.ValorManual * Detalle_.Cantidad
+        ElseIf A = SMCosto Then
+            tot = tot + Detalle_.costo    '* detalle_.cantidad
+        ElseIf A = SMGG Then
+            tot = tot + Detalle_.TotalGastosGenerales
 
         End If
 
 
     Next
-    If a = SMUtilidad Then
+    If A = SMUtilidad Then
         tot = Me.Total(Manual) - Me.Total(SMCosto)
     End If
 
@@ -139,12 +139,12 @@ End Function
 
 
 Public Function TotalMateriales()
-    Dim a As clsPresupuestoDetalle
+    Dim A As clsPresupuestoDetalle
     Dim c As Double
     c = 0
-    For Each a In Me.DetallePresupuesto
-        c = c + (a.TotalMateriales)
-    Next a
+    For Each A In Me.DetallePresupuesto
+        c = c + (A.TotalMateriales)
+    Next A
 
     TotalMateriales = c
 
@@ -153,12 +153,12 @@ End Function
 
 
 Public Function TotalMDO()
-    Dim a As clsPresupuestoDetalle
+    Dim A As clsPresupuestoDetalle
     Dim c As Double
     c = 0
-    For Each a In Me.DetallePresupuesto
-        c = c + (a.TotalMDO)
-    Next a
+    For Each A In Me.DetallePresupuesto
+        c = c + (A.TotalMDO)
+    Next A
 
     TotalMDO = c
 
@@ -167,6 +167,6 @@ End Function
 
 
 
-Public Function TotalConDescuento(a As SistemaManual) As Double
-    TotalConDescuento = Total(a) * (1 - (Descuento / 100))
+Public Function TotalConDescuento(A As SistemaManual) As Double
+    TotalConDescuento = Total(A) * (1 - (Descuento / 100))
 End Function

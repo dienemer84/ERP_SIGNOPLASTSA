@@ -35,7 +35,7 @@ Public Enum TipoSuscripcion
     FacturarRemitosDetalle_ = 21
     EnvioMail_ = 22
     Recibos_ = 23
-    
+
     LiquidacionCaja_ = 24
 End Enum
 Private suscriptores As New Dictionary

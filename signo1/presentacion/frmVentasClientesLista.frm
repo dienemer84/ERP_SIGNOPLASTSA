@@ -211,9 +211,9 @@ Private Sub Form_Load()
     rows = 1
     id_suscriber = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, Clientes_
-    
+
     ''Me.caption = caption & " (" & Name & ")"
-        
+
 
 End Sub
 
@@ -223,9 +223,9 @@ Private Sub Form_Resize()
     Me.grilla.Width = Me.ScaleWidth - 300
     Me.grilla.Height = Me.Height - 2700
     Me.grilla.ColumnAutoResize = True
-    
+
     Me.GroupBoxBusqueda.Width = Me.ScaleWidth - 300
-   
+
     'Me.Combo1.Top = Me.Height - 950
     'Me.txtFiltro.Top = Me.Combo1.Top
     'Me.Command1.Top = Me.Combo1.Top
@@ -260,7 +260,7 @@ End Sub
 
 Private Sub grilla_SelectionChange()
     rows = grilla.RowIndex(grilla.row)
-    
+
 End Sub
 
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -289,19 +289,19 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(14) = .FP
 
         Select Case .idMonedaDefault
-            Case 0
-                Values(15) = "ARS"
-            Case 1
-                Values(15) = "U$S"
+        Case 0
+            Values(15) = "ARS"
+        Case 1
+            Values(15) = "U$S"
         End Select
-        
+
         Select Case .ValidoRemitoFactura
-            Case 0
-                Values(16) = "NO"
-            Case 1
-                 Values(16) = "SI"
+        Case 0
+            Values(16) = "NO"
+        Case 1
+            Values(16) = "SI"
         End Select
-    
+
     End With
 End Sub
 
@@ -357,15 +357,15 @@ Public Sub llenar_Grilla()
         filter = Replace$(filter, "{razon}", DAOCliente.CAMPO_RAZON_SOCIAL)
         filter = Replace$(filter, "{value}", Me.txtFiltro.text)
     End If
-    
-  ' AGREGO ESTE FILTRO PARA CUIT
+
+    ' AGREGO ESTE FILTRO PARA CUIT
     If LenB(Me.txtFiltroCUIT.text) > 0 Then
         filter = filter & " AND {cliente}.{cuit} LIKE '%{value}%'"
         filter = Replace$(filter, "{cuit}", DAOCliente.CAMPO_CUIT)
         filter = Replace$(filter, "{value}", Me.txtFiltroCUIT.text)
     End If
-    
-    
+
+
     filter = Replace$(filter, "{estado}", DAOCliente.CAMPO_ESTADO)
     filter = Replace$(filter, "{cliente}", DAOCliente.TABLA_CLIENTE)
 

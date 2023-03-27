@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmMaterialesLista2 
    Caption         =   "Lista de materiales"
    ClientHeight    =   7950
@@ -248,12 +248,12 @@ Private Sub cmdFiltrar_Click()
     grilla.ItemCount = 0
     grilla.ItemCount = Materiales.count
     grilla.ReBind
-    
+
     Dim P As Integer
     If Me.cboRubros.ListIndex > -1 Then
-    P = Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
+        P = Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
     Else
-    P = -1
+        P = -1
     End If
     Filtros.FiltroBusquedaMaterial Me.txtFiltro, P
     GridEXHelper.AutoSizeColumns Me.grilla, True
@@ -307,9 +307,9 @@ Private Sub Form_Load()
     Me.cboRubros.ListIndex = -1
     rows = 1
     Set archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Materiales)
-    
+
     vId = funciones.CreateGUID
-    
+
     Me.txtFiltro = Filtros.vFiltroBusquedaMaterial.nombre
     Me.cboRubros.ListIndex = funciones.PosIndexCbo(Filtros.vFiltroBusquedaMaterial.rubro, Me.cboRubros)
     Channel.AgregarSuscriptor Me, Materiales_
@@ -343,7 +343,7 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla, Column
 End Sub
 Private Sub grilla_DblClick()
-    '    editamos
+'    editamos
 
 End Sub
 
@@ -351,7 +351,7 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
     On Error Resume Next
     Set rectemp = Materiales(grid.RowIndex(RowPosition))
 
-    If ColIndex = 16 And archivos.item(rectemp.id) > 0 Then
+    If ColIndex = 16 And archivos.item(rectemp.Id) > 0 Then
         IconIndex = 1
     End If
 
@@ -401,11 +401,11 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(10) = .FechaValor
         Values(11) = .Cantidad
         Values(12) = .almacen.almacen
-        Values(13) = enums.enumEstadoMaterial(.Estado)
+        Values(13) = enums.enumEstadoMaterial(.estado)
         If .Tipo <> 0 Then Values(14) = enums.EnumTipoMaterial(.Tipo)
         Values(15) = funciones.JoinCollectionValues(.Atributos, ", ")
         Values(17) = .Aprobado
-        
+
     End With
 End Sub
 Private Sub llenar_Grilla()
@@ -437,17 +437,17 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = Materiales.count To 1 Step -1
-            If Materiales(i).id = tmp.id Then
+            If Materiales(i).Id = tmp.Id Then
                 Set rectemp = Materiales(i)
-                rectemp.id = tmp.id
+                rectemp.Id = tmp.Id
                 rectemp.Valor = tmp.Valor
                 rectemp.descripcion = tmp.descripcion
                 rectemp.Grupo = tmp.Grupo
-                rectemp.Estado = tmp.Estado
+                rectemp.estado = tmp.estado
                 rectemp.almacen = tmp.almacen
                 rectemp.Cantidad = tmp.Cantidad
                 rectemp.FechaValor = tmp.FechaValor
-rectemp.Aprobado = tmp.Aprobado
+                rectemp.Aprobado = tmp.Aprobado
                 grilla.RefreshRowIndex i
                 'GridEXHelper.AutoSizeColumns Me.grilla
                 Exit For
@@ -459,27 +459,27 @@ rectemp.Aprobado = tmp.Aprobado
 End Function
 
 Private Sub mnuAprobar_Click()
-On Error GoTo err1
-If MsgBox("¿Está seguro de aprobar el material?", vbYesNo) = vbYes Then
+    On Error GoTo err1
+    If MsgBox("¿Está seguro de aprobar el material?", vbYesNo) = vbYes Then
 
-If Not rectemp.Aprobado Then
-If DAOMateriales.aprobar(rectemp) Then
-    MsgBox "Material aprobado con éxito!", vbExclamation
+        If Not rectemp.Aprobado Then
+            If DAOMateriales.aprobar(rectemp) Then
+                MsgBox "Material aprobado con éxito!", vbExclamation
 
-End If
-End If
-End If
-Exit Sub
+            End If
+        End If
+    End If
+    Exit Sub
 
 err1:
-MsgBox "Error al aprobar: " & Err.Description
+    MsgBox "Error al aprobar: " & Err.Description
 End Sub
 
 Private Sub mnuArchivos_Click()
     grilla_SelectionChange
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OA_Materiales
-    frmarchi1.ObjetoId = rectemp.id
+    frmarchi1.ObjetoId = rectemp.Id
     frmarchi1.caption = "Material  " & rectemp.descripcion
     frmarchi1.Show
 End Sub
@@ -497,7 +497,7 @@ Private Sub mnuCopiar_Click()
         If LenB(nombre) = 0 Then
             MsgBox "Debe ingresar un nombre para el material", vbExclamation
         Else
-            m1.id = 0       'asi hace insert
+            m1.Id = 0       'asi hace insert
             m1.descripcion = nombre
             m1.codigo = Me.BuildCodigoMaterial(m1)
             If DAOMateriales.crear(m1) Then
@@ -516,13 +516,13 @@ Public Function BuildCodigoMaterial(MAT As clsMaterial) As String
     Dim cod As String
 
     cod = MAT.Grupo.rubros.iniciales
-    cod = cod & Format(MAT.Grupo.id, "000")
+    cod = cod & Format(MAT.Grupo.Id, "000")
 
     BuildCodigoMaterial = cod
 End Function
 
 Private Sub mnuHistoricoaAprobacion_Click()
-Dim F As New frmHistoricoMateriales
-F.IdMaterial = rectemp.id
-F.Show
+    Dim F As New frmHistoricoMateriales
+    F.IdMaterial = rectemp.Id
+    F.Show
 End Sub

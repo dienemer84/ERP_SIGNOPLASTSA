@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "Codejock.ReportControl.v12.0.2.ocx"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmListaTareas 
    BackColor       =   &H00C0C0C0&
    Caption         =   "Tareas"
@@ -59,8 +59,8 @@ Private Sub CargarTareas()
 
     For Each m_tarea In m_tareas
         Set rec = Me.ReportControl.Records.Add
-        rec.Tag = m_tarea.id
-        rec.AddItem m_tarea.id
+        rec.Tag = m_tarea.Id
+        rec.AddItem m_tarea.Id
         rec.AddItem m_tarea.Sector.Sector
 
         If m_tarea.CantPorProc = 0 Then
@@ -119,7 +119,7 @@ Private Sub Form_Load()
     CargarTareas
 
     ''Me.caption = caption & " (" & Name & ")"
-    
+
 
 End Sub
 

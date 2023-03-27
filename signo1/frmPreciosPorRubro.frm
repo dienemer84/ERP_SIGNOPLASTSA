@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmComprasPreciosPorRubro 
    Appearance      =   0  'Flat
    BackColor       =   &H00C0C0C0&
@@ -453,11 +453,11 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub Form_Activate()
-    frame3.Enabled = True
+    Frame3.Enabled = True
     Frame4.Enabled = False
     Frame5.Enabled = False
     llenarListas
-    Command1.Default = True
+    Command1.default = True
     Me.txtPorRubro.SetFocus
 
 End Sub
@@ -476,25 +476,25 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub lstGrupos_Click()
-    frame3.Enabled = False
+    Frame3.Enabled = False
     Frame4.Enabled = True
     Frame5.Enabled = False
     baseSP.llenarLstmateriales CInt(Me.lstRubros.selectedItem), CInt(Me.lstGrupos.selectedItem), Me.lstMateriales
     leerListas
-    Me.Command2.Default = True
+    Me.Command2.default = True
     Me.txtPorGrupo.SetFocus
 End Sub
 Private Sub lstMateriales_Click()
-    frame3.Enabled = False
+    Frame3.Enabled = False
     Frame4.Enabled = False
     Frame5.Enabled = True
     leerListas
-    Me.Command3.Default = True
+    Me.Command3.default = True
     Me.txtPorMat.SetFocus
 End Sub
 Private Sub lstRubros_Click()
     On Error Resume Next
-    frame3.Enabled = True
+    Frame3.Enabled = True
     Frame4.Enabled = False
     Frame5.Enabled = False
     Me.lstGrupos.ListItems.Clear
@@ -502,14 +502,14 @@ Private Sub lstRubros_Click()
     baseSP.llenarLstGrupos CInt(Me.lstRubros.selectedItem), Me.lstGrupos
     baseSP.llenarLstmateriales CInt(Me.lstRubros.selectedItem), CInt(Me.lstGrupos.selectedItem), Me.lstMateriales
     leerListas
-    Command1.Default = True
+    Command1.default = True
 
     Me.txtPorRubro.SetFocus
 End Sub
 
 
 Private Sub leerListas()
-    'grupos
+'grupos
     If Me.lstGrupos.ListItems.count > 0 Then
         Me.lblGrupo = Me.lstGrupos.selectedItem.ListSubItems(1)
         Me.idGrupo = Me.lstGrupos.selectedItem

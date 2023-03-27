@@ -301,10 +301,10 @@ Private Sub Form_Load()
     Me.Textf = h    'factor mdo
     Me.Textg = g    'factor mat
     Me.Text6 = i    'espesor pintura
-    
-        ''Me.caption = caption & " (" & Name & ")"
-        
-        
+
+    ''Me.caption = caption & " (" & Name & ")"
+
+
 End Sub
 
 Private Sub comprobar()

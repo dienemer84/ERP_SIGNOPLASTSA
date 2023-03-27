@@ -14,14 +14,14 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public Banco As Banco
 Public NumeroDesde As Long
 Public NumeroHasta As Long
 Public FechaCreacion As Date
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 Public numero As Long
-Public Observaciones As String
+Public observaciones As String
 Public Cheques As New Collection
 
 Public Property Get Description() As String
@@ -29,6 +29,6 @@ Public Property Get Description() As String
     If IsSomething(Me.Banco) Then
         ret = Me.Banco.nombre
     End If
-    ret = ret & " (Nº " & Me.NumeroDesde & " a Nº " & Me.NumeroHasta & ") [" & Me.Moneda.NombreCorto & "]"
+    ret = ret & " (Nº " & Me.NumeroDesde & " a Nº " & Me.NumeroHasta & ") [" & Me.moneda.NombreCorto & "]"
     Description = ret
 End Property

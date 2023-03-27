@@ -23,9 +23,9 @@ Public Sub CustomizeGrid(grid As GridEX20.GridEX, Optional GroupByVisible As Boo
     grid.ColumnHeaderFont = "Tahoma"
     BuildStyles grid
 End Sub
-Public Sub AddColumnReportControl(ReportControl As ReportControl, ByVal index As Long, ByVal caption As String, Optional align As XTPColumnAlignment = xtpAlignmentLeft, Optional ByVal tree As Boolean = False, Optional ByVal Width As Double = 25)
+Public Sub AddColumnReportControl(ReportControl As ReportControl, ByVal Index As Long, ByVal caption As String, Optional align As XTPColumnAlignment = xtpAlignmentLeft, Optional ByVal tree As Boolean = False, Optional ByVal Width As Double = 25)
     Dim col As ReportColumn
-    Set col = ReportControl.Columns.Add(index, caption, Width, True)
+    Set col = ReportControl.Columns.Add(Index, caption, Width, True)
     col.Icon = 0
     col.Sortable = True
     col.AllowDrag = False
@@ -38,13 +38,13 @@ Public Sub AddColumnReportControl(ReportControl As ReportControl, ByVal index As
     End If
 End Sub
 Private Sub CustomizeGridColors(grid As GridEX20.GridEX)
-    grid.FormatStyles(5).BackColor = FormHelper.FondoCeleste
+    grid.FormatStyles(5).backColor = FormHelper.FondoCeleste
     grid.FormatStyles(5).ForeColor = FormHelper.LetraAzul     'vbBlack  'vbWhite 'FormHelper.FondoCeleste
     grid.ContinuousScroll = True
     grid.FormatStyles(5).FontBold = True
     grid.ColumnHeaderFont = "Tahoma"
     grid.ColumnHeaderFont.Bold = False
-    grid.BackColor = vbWhite    ' FormHelper.FondoCeleste
+    grid.backColor = vbWhite    ' FormHelper.FondoCeleste
     grid.BackColorGBBox = FormHelper.FondoAzul    'GRILLA_BACKCOLOR_GBBOX_INFOTEXT
     grid.BackColorInfoText = FormHelper.FondoAzul    'GRILLA_BACKCOLOR_GBBOX_INFOTEXT
     grid.ForeColorHeader = FormHelper.LetraAzul
@@ -63,7 +63,7 @@ Public Sub ColumnHeaderClick(ByRef grid As GridEX20.GridEX, ByRef Column As Grid
     If Column.IsGrouped Then
 
         For Each grTemp In grid.Groups
-            If grTemp.ColIndex = Column.index Then
+            If grTemp.ColIndex = Column.Index Then
                 GroupByBoxHeaderClick grTemp
                 Exit For
             End If
@@ -72,16 +72,16 @@ Public Sub ColumnHeaderClick(ByRef grid As GridEX20.GridEX, ByRef Column As Grid
         SortOrder = Column.SortOrder
         grid.SortKeys.Clear
         If SortOrder = jgexSortAscending Then
-            grid.SortKeys.Add Column.index, jgexSortDescending
+            grid.SortKeys.Add Column.Index, jgexSortDescending
         Else
-            grid.SortKeys.Add Column.index, jgexSortAscending
+            grid.SortKeys.Add Column.Index, jgexSortAscending
         End If
     End If
     grid.row = 0
 End Sub
 
 Public Sub GroupByBoxHeaderClick(ByRef Group As GridEX20.JSGroup)
-    'When clicking in a group by box header we change SortOrder for that group
+'When clicking in a group by box header we change SortOrder for that group
     Group.SortOrder = -Group.SortOrder
 End Sub
 Public Sub Grid2Clipboard(grid As GridEX)
@@ -156,9 +156,9 @@ End Sub
 
 
 
-Public Function ReportControlAddColumn(ReportControl As ReportControl, ByVal index As Long, ByVal caption As String, Optional align As XTPColumnAlignment = xtpAlignmentLeft, Optional ByVal tree As Boolean = False, Optional ByVal Width As Double = 25) As ReportColumn
+Public Function ReportControlAddColumn(ReportControl As ReportControl, ByVal Index As Long, ByVal caption As String, Optional align As XTPColumnAlignment = xtpAlignmentLeft, Optional ByVal tree As Boolean = False, Optional ByVal Width As Double = 25) As ReportColumn
     Dim col As ReportColumn
-    Set col = ReportControl.Columns.Add(index, caption, Width, True)
+    Set col = ReportControl.Columns.Add(Index, caption, Width, True)
     col.Icon = 0
     col.Sortable = True
     col.AllowDrag = False

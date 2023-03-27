@@ -6,21 +6,21 @@ Dim rs As ADODB.Recordset
 Public Function Save(ptpp As TiempoProcesoPlanificado) As Boolean
     On Error GoTo er1
     Dim strsql As String
-    Dim a As Long
+    Dim A As Long
     Save = True
     Dim n As Boolean
 
-    If ptpp.id = 0 Then
+    If ptpp.Id = 0 Then
         n = True
         strsql = "INSERT INTO sp.PlaneamientoTiemposProcesosPlanificacion   (" _
-                 & "id_ptp,   inicio,   Fin, color, critica,prioridad  ) " _
-                 & " Values " _
-                 & "('id_ptp',  'inicio',  'fin', 'color', 'critica','prioridad' );"
+               & "id_ptp,   inicio,   Fin, color, critica,prioridad  ) " _
+               & " Values " _
+               & "('id_ptp',  'inicio',  'fin', 'color', 'critica','prioridad' );"
 
     Else
         strsql = "Update sp.PlaneamientoTiemposProcesosPlanificacion   SET " _
-                 & "  id_ptp = 'id_ptp' ,  inicio = 'inicio' ,   fin = 'fin' , color ='color' , critica='critica' , prioridad ='prioridad' " _
-                 & " Where     id = 'id'  "
+               & "  id_ptp = 'id_ptp' ,  inicio = 'inicio' ,   fin = 'fin' , color ='color' , critica='critica' , prioridad ='prioridad' " _
+               & " Where     id = 'id'  "
 
         n = False
     End If
@@ -36,7 +36,7 @@ Public Function Save(ptpp As TiempoProcesoPlanificado) As Boolean
 
     Save = conectar.execute(strsql)
 
-    If n Then ptpp.id = conectar.UltimoId2
+    If n Then ptpp.Id = conectar.UltimoId2
 
 
     Exit Function
@@ -45,9 +45,9 @@ er1:
 
 End Function
 
-Public Function FindByIdTiempoProceso(id As Long) As clsRubros
+Public Function FindByIdTiempoProceso(Id As Long) As clsRubros
     Dim col As Collection
-    Set col = FindAll("PlaneamientoTiemposProcesos.id = " & id)
+    Set col = FindAll("PlaneamientoTiemposProcesos.id = " & Id)
     If col.count = 0 Then
         Set FindByIdTiempoProceso = Nothing
     Else
@@ -55,9 +55,9 @@ Public Function FindByIdTiempoProceso(id As Long) As clsRubros
     End If
 End Function
 
-Public Function FindById(id As Long) As clsRubros
+Public Function FindById(Id As Long) As clsRubros
     Dim col As Collection
-    Set col = FindAll("PlaneamientoTiemposProcesosPlanificacion.id = " & id)
+    Set col = FindAll("PlaneamientoTiemposProcesosPlanificacion.id = " & Id)
     If col.count = 0 Then
         Set FindById = Nothing
     Else
@@ -72,10 +72,10 @@ Public Function FindAll(Optional filter As String = " WHERE 1=1") As Collection
     Dim r As TiempoProcesoPlanificado
 
     q = "SELECT * " _
-        & "From PlaneamientoTiemposProcesosPlanificacion " _
-        & "LEFT JOIN tareas " _
-        & "ON PlaneamientoTiemposProcesos.codigoTarea=tarea.id " _
-        & "WHERE " & filter
+      & "From PlaneamientoTiemposProcesosPlanificacion " _
+      & "LEFT JOIN tareas " _
+      & "ON PlaneamientoTiemposProcesos.codigoTarea=tarea.id " _
+      & "WHERE " & filter
 
 
     Set rs = conectar.RSFactory(q)
@@ -86,7 +86,7 @@ Public Function FindAll(Optional filter As String = " WHERE 1=1") As Collection
 
     While Not rs.EOF
         Set r = Map(rs, fieldsIndex, "PlaneamientoTiemposProcesosPlanificacion", "tareas")
-        ptpp.Add r, CStr(r.id)
+        ptpp.Add r, CStr(r.Id)
         rs.MoveNext
     Wend
 
@@ -95,13 +95,13 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Optional tablaTarea As String = vbNullString) As TiempoProcesoPlanificado
     Dim r As TiempoProcesoPlanificado
-    Dim id As Long
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, "id")
+    Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set r = New TiempoProcesoPlanificado
-        r.id = id
+        r.Id = Id
         r.Fin = GetValue(rs, indice, tabla, "fin")
         r.Inicio = GetValue(rs, indice, tabla, "inicio")
         r.Color = GetValue(rs, indice, tabla, "color")

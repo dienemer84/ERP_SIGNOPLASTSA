@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmMaterialesLista2_modal 
    Caption         =   "Seleccione Material"
    ClientHeight    =   8010
@@ -191,9 +191,9 @@ Private Sub cmdFiltrar_Click()
     grilla.ReBind
     Dim P As Integer
     If Me.cboRubros.ListIndex > -1 Then
-    P = Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
+        P = Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
     Else
-    P = -1
+        P = -1
     End If
     Filtros.FiltroBusquedaMaterial Me.txtFiltro, P
     GridEXHelper.AutoSizeColumns Me.grilla, True
@@ -242,10 +242,10 @@ Private Sub Form_Load()
     DAORubros.LlenarComboExtremeSuite Me.cboRubros
     Me.cboRubros.ListIndex = -1
     rows = 1
-    
+
     vId = funciones.CreateGUID
-    
-     Me.txtFiltro = Filtros.vFiltroBusquedaMaterial.nombre
+
+    Me.txtFiltro = Filtros.vFiltroBusquedaMaterial.nombre
     Me.cboRubros.ListIndex = funciones.PosIndexCbo(Filtros.vFiltroBusquedaMaterial.rubro, Me.cboRubros)
     Channel.AgregarSuscriptor Me, Materiales_
     cmdFiltrar_Click
@@ -319,7 +319,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(6) = .unidad
         Values(7) = .PesoXUnidad
         Values(8) = .Valor
-        Values(9) = .Moneda.NombreCorto
+        Values(9) = .moneda.NombreCorto
         Values(10) = .FechaValor
         Values(11) = .Cantidad
         Values(12) = .almacen.almacen
@@ -355,9 +355,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = Materiales.count To 1 Step -1
-            If Materiales(i).id = tmp.id Then
+            If Materiales(i).Id = tmp.Id Then
                 Set rectemp = Materiales(i)
-                rectemp.id = tmp.id
+                rectemp.Id = tmp.Id
                 rectemp.Valor = tmp.Valor
                 rectemp.descripcion = tmp.descripcion
                 rectemp.Grupo = tmp.Grupo

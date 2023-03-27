@@ -30,9 +30,9 @@ err1:
 
 End Function
 
-Public Function FindById(id As Long) As localidad
+Public Function FindById(Id As Long) As localidad
     Dim col As New Collection
-    Set col = FindAll("And l.id=" & id)
+    Set col = FindAll("And l.id=" & Id)
     Set FindById = col(1)
 End Function
 Public Function FindAllByProvincia(idDto As Long) As Collection
@@ -43,14 +43,14 @@ End Function
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaProv As String = vbNullString, _
                     Optional tablaPais As String = vbNullString _
-                    ) As localidad
+                  ) As localidad
 
     Dim loc As localidad
-    Dim id As Long: id = GetValue(rs, indice, tabla, "ID")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "ID")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set loc = New localidad
-        loc.id = id
+        loc.Id = Id
         loc.nombre = GetValue(rs, indice, tabla, "Nombre")
         loc.cp = GetValue(rs, indice, tabla, "CP")
         If LenB(tablaProv) > 0 Then Set loc.provincia = DAOProvincias.Map(rs, indice, tablaProv, tablaPais)
@@ -62,15 +62,15 @@ End Function
 
 
 
-Public Function LlenarCombo(cbo As Xtremesuitecontrols.ComboBox, id As Long)
+Public Function LlenarCombo(cbo As Xtremesuitecontrols.ComboBox, Id As Long)
     Dim P As localidad
     cbo.Clear
     Dim col As New Collection
-    Set col = FindAllByProvincia(id)
+    Set col = FindAllByProvincia(Id)
     For Each P In col
         If IsSomething(P) Then
             cbo.AddItem P.nombre
-            cbo.ItemData(cbo.NewIndex) = P.id
+            cbo.ItemData(cbo.NewIndex) = P.Id
         End If
     Next
     If cbo.ListCount > 0 Then
@@ -81,11 +81,11 @@ End Function
 Public Function Save(l As localidad) As Boolean
     Dim q As String
     On Error GoTo err1
-    If l.id > 0 Then
+    If l.Id > 0 Then
 
-        q = "UPDATE sp.Localidades  SET  CP='" & l.cp & "', idProvincia=" & l.provincia.id & ", Nombre = '" & UCase(l.nombre) & "'   WHERE   ID = '" & l.id & "' "
+        q = "UPDATE sp.Localidades  SET  CP='" & l.cp & "', idProvincia=" & l.provincia.Id & ", Nombre = '" & UCase(l.nombre) & "'   WHERE   ID = '" & l.Id & "' "
     Else
-        q = "INSERT INTO sp.Localidades (Nombre,idProvincia,CP)VALUES('" & UCase(l.nombre) & "'," & l.provincia.id & ",'" & l.cp & "')"
+        q = "INSERT INTO sp.Localidades (Nombre,idProvincia,CP)VALUES('" & UCase(l.nombre) & "'," & l.provincia.Id & ",'" & l.cp & "')"
     End If
 
     If Not conectar.execute(q) Then GoTo err1

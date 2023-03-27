@@ -24,10 +24,10 @@ Private vContador As Long
 'Public Property Get grupos() As Collection
 'Set grupos = vGrupos
 'End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Let Rubro(nvalue As String)
+Public Property Let rubro(nvalue As String)
     vRubro = UCase(nvalue)
 End Property
 Public Property Let iniciales(nvalue As String)
@@ -36,11 +36,11 @@ End Property
 Public Property Let Contador(nvalue As Long)
     vContador = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
-Public Property Get Rubro() As String
-    Rubro = vRubro
+Public Property Get rubro() As String
+    rubro = vRubro
 End Property
 Public Property Get iniciales() As String
     iniciales = vIniciales

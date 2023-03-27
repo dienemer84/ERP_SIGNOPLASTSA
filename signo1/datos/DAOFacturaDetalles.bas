@@ -2,31 +2,31 @@ Attribute VB_Name = "DAOFacturaDetalles"
 Option Explicit
 
 Public Function Guardar(detalle As FacturaDetalle) As Boolean
-On Error GoTo err1
+    On Error GoTo err1
     Guardar = True
     Dim q As String
-    If detalle.id > 0 Then
+    If detalle.Id > 0 Then
         q = "Update sp.AdminFacturasDetalleNueva  SET " _
-            & "idEntrega = 'idEntrega' ," _
-            & "idFactura = 'idFactura' ," _
-            & "estado = 'estado' ," _
-            & "Valor = 'Valor' ," _
-            & "detalle = 'detalle' ," _
-            & "Cantidad = 'Cantidad' ," _
-            & "iva = 'iva' ," _
-            & "observaciones = 'observaciones' ," _
-            & "IB = 'IB' ," _
-            & "aplicada = 'aplicada' ," _
-            & "descuento_anticipo = 'descuento_anticipo', idOt_anticipo = 'idOt_anticipo' " _
-            & " Where id = 'id' "
+          & "idEntrega = 'idEntrega' ," _
+          & "idFactura = 'idFactura' ," _
+          & "estado = 'estado' ," _
+          & "Valor = 'Valor' ," _
+          & "detalle = 'detalle' ," _
+          & "Cantidad = 'Cantidad' ," _
+          & "iva = 'iva' ," _
+          & "observaciones = 'observaciones' ," _
+          & "IB = 'IB' ," _
+          & "aplicada = 'aplicada' ," _
+          & "descuento_anticipo = 'descuento_anticipo', idOt_anticipo = 'idOt_anticipo' " _
+          & " Where id = 'id' "
 
-        q = Replace$(q, "'id'", conectar.Escape(detalle.id))
+        q = Replace$(q, "'id'", conectar.Escape(detalle.Id))
     Else
         q = " INSERT INTO sp.AdminFacturasDetalleNueva " _
-            & "(idEntrega, idFactura,  estado, Valor, " _
-            & "detalle,  Cantidad,    iva,   IB,  aplicada, observaciones,    porcentaje_descuento,descuento_anticipo,idOt_anticipo  )  Values " _
-            & " ('idEntrega',  'idFactura',  'estado',  'Valor',  'detalle', " _
-            & "'Cantidad', 'iva', 'IB', 'aplicada', 'observaciones', 'porcentaje_descuento', 'descuento_anticipo','idOt_anticipo')"
+          & "(idEntrega, idFactura,  estado, Valor, " _
+          & "detalle,  Cantidad,    iva,   IB,  aplicada, observaciones,    porcentaje_descuento,descuento_anticipo,idOt_anticipo  )  Values " _
+          & " ('idEntrega',  'idFactura',  'estado',  'Valor',  'detalle', " _
+          & "'Cantidad', 'iva', 'IB', 'aplicada', 'observaciones', 'porcentaje_descuento', 'descuento_anticipo','idOt_anticipo')"
     End If
 
 
@@ -39,7 +39,7 @@ On Error GoTo err1
     q = Replace$(q, "'detalle'", conectar.Escape(detalle.detalle))
     q = Replace$(q, "'Cantidad'", conectar.Escape(detalle.Cantidad))
     q = Replace$(q, "'iva'", conectar.Escape(detalle.IvaAplicado))
-    q = Replace$(q, "'id'", conectar.Escape(detalle.id))
+    q = Replace$(q, "'id'", conectar.Escape(detalle.Id))
     q = Replace$(q, "'IB'", conectar.Escape(detalle.IBAplicado))
     q = Replace$(q, "'observaciones'", conectar.Escape(detalle.Observacion))
     q = Replace$(q, "'porcentaje_descuento'", conectar.Escape(detalle.PorcentajeDescuento))
@@ -49,11 +49,11 @@ On Error GoTo err1
 
 
 
-   If Not conectar.execute(q) Then Err.Raise 4784, "Guardando detalle de factura", "Se produjo un error al guardar un detalle de factura"
+    If Not conectar.execute(q) Then Err.Raise 4784, "Guardando detalle de factura", "Se produjo un error al guardar un detalle de factura"
 
     Exit Function
 err1:
-Err.Raise Err.Number, Err.Source, Err.Description
+    Err.Raise Err.Number, Err.Source, Err.Description
     Guardar = False
 End Function
 
@@ -80,7 +80,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withF
     Dim F As FacturaDetalle
     Dim indice As Dictionary
     q = "SELECT * From sp.AdminFacturasDetalleNueva " _
-        & "LEFT JOIN sp.entregas ON (AdminFacturasDetalleNueva.idEntrega = entregas.id) WHERE 1=1"
+      & "LEFT JOIN sp.entregas ON (AdminFacturasDetalleNueva.idEntrega = entregas.id) WHERE 1=1"
 
     If LenB(filtro) > 0 Then
         q = q & " and " & filtro
@@ -95,7 +95,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withF
         If withFacturaNoLazy Then
             Set F.Factura = DAOFactura.FindById(F.idFactura)
         End If
-        col.Add F, CStr(F.id)
+        col.Add F, CStr(F.Id)
         rs.MoveNext
     Wend
 
@@ -104,20 +104,20 @@ End Function
 
 
 Public Function Map(rs As Recordset, indice As Dictionary, tablaFacturaDetalle As String, Optional tablaEntrega As String = vbNullString) As FacturaDetalle
-    Dim id As Long
+    Dim Id As Long
     Dim F As FacturaDetalle
-    id = GetValue(rs, indice, tablaFacturaDetalle, "id")
+    Id = GetValue(rs, indice, tablaFacturaDetalle, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set F = New FacturaDetalle
-        F.id = id
+        F.Id = Id
         F.AplicadoARemito = GetValue(rs, indice, tablaFacturaDetalle, "aplicada")
         F.IBAplicado = GetValue(rs, indice, tablaFacturaDetalle, "IB")
         F.IvaAplicado = GetValue(rs, indice, tablaFacturaDetalle, "iva")
         F.Bruto = GetValue(rs, indice, tablaFacturaDetalle, "Valor")
-        
+
         F.detalle = GetValue(rs, indice, tablaFacturaDetalle, "detalle")
-        
+
         F.estado = GetValue(rs, indice, tablaFacturaDetalle, "estado")
         F.idFactura = GetValue(rs, indice, tablaFacturaDetalle, "idFactura")
         F.Cantidad = GetValue(rs, indice, tablaFacturaDetalle, "Cantidad")
@@ -126,7 +126,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tablaFacturaDetalle A
         F.PorcentajeDescuento = GetValue(rs, indice, tablaFacturaDetalle, "porcentaje_descuento")
         F.DescuentoAnticipo = GetValue(rs, indice, tablaFacturaDetalle, "descuento_anticipo")
         F.OtIdAnticipo = GetValue(rs, indice, tablaFacturaDetalle, "idOt_anticipo")
-      
+
         If LenB(tablaEntrega) > 0 Then
             Set F.detalleRemito = DAORemitoSDetalle.Map(rs, indice, tablaEntrega)
         End If

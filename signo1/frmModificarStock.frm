@@ -253,9 +253,9 @@ Private Sub Form_Load()
 
 
     Set r = Nothing
-    
+
     ''Me.caption = caption & " (" & Name & ")"
-    
+
 End Sub
 
 Private Sub txtCantaIngresar_Validate(Cancel As Boolean)

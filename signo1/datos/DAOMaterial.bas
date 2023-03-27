@@ -30,43 +30,43 @@ Public Const CAMPO_ID_MONEDA As String = "id_moneda"
 Public Function LlenarComboPorRubro(cbo As ComboBox, rubro As clsRubros)
     Dim col As Collection
     cbo.Clear
-    Set col = DAOMateriales.FindAll(DAOMateriales.TABLA_MATERIALES & ".id_rubro" & "=" & rubro.id)
+    Set col = DAOMateriales.FindAll(DAOMateriales.TABLA_MATERIALES & ".id_rubro" & "=" & rubro.Id)
     Dim m As clsMaterial
 
     For Each m In col
         cbo.AddItem m.descripcion
-        cbo.ItemData(cbo.NewIndex) = m.id
+        cbo.ItemData(cbo.NewIndex) = m.Id
 
     Next
 
 End Function
 
 
-Public Function desaprobar(id As Long) As Boolean
-On Error GoTo err1
-Dim strsql As String
+Public Function desaprobar(Id As Long) As Boolean
+    On Error GoTo err1
+    Dim strsql As String
 
-     strsql = "update materiales set aprobado='0'  WHERE id=" & id
-   desaprobar = conectar.execute(strsql)
-   
-   Exit Function
+    strsql = "update materiales set aprobado='0'  WHERE id=" & Id
+    desaprobar = conectar.execute(strsql)
+
+    Exit Function
 err1:
-   Err.Raise Err.Number
+    Err.Raise Err.Number
 End Function
 
-Public Function aprobar(material As clsMaterial) As Boolean
-On Error GoTo err1
-If Not material.Aprobado Then
-     material.Aprobado = True
-     If Not modificar(material) Then
-     Err.Raise 101213, , "no se pudo aprobar el material"
-     Else
-     DaoHistorico.Save "materiales_historial", "Material aprobado", material.id
-     End If
-End If
-Exit Function
+Public Function aprobar(Material As clsMaterial) As Boolean
+    On Error GoTo err1
+    If Not Material.Aprobado Then
+        Material.Aprobado = True
+        If Not modificar(Material) Then
+            Err.Raise 101213, , "no se pudo aprobar el material"
+        Else
+            DaoHistorico.Save "materiales_historial", "Material aprobado", Material.Id
+        End If
+    End If
+    Exit Function
 err1:
-Err.Raise Err.Number
+    Err.Raise Err.Number
 End Function
 
 
@@ -83,23 +83,23 @@ Public Function existeCodigo(codigo As String) As Boolean
     End If
 
 End Function
-Public Function modificar(material As clsMaterial, Optional desaprobar As Boolean = False) As Boolean
+Public Function modificar(Material As clsMaterial, Optional desaprobar As Boolean = False) As Boolean
     Dim EVENTO As New clsEventoObserver
     On Error GoTo er1
     modificar = True
-    
+
     Dim apro As Boolean
-    
-    
-    With material
-    apro = .Aprobado
-    If desaprobar Then apro = False
-    material.Aprobado = apro
-    
-        strsql = "update materiales set aprobado=" & conectar.Escape(apro) & ", valor_compra = " & .ValorCompra & ", unidad_compra=" & .UnidadCompra & " , unidad_pedido=" & .UnidadPedido & ", id_moneda=" & .Moneda.id & ", fecha_valor=" & Escape(.FechaValor) & ", valor_unitario=" & Escape(.Valor) & ", largo=" & .Largo & ",ancho=" & .Ancho & ",id_rubro=" & .Grupo.rubros.id & ",id_grupo=" & .Grupo.id & ",id_unidad=" & .unidad & ",codigo='" & .codigo & "',descripcion='" & .descripcion & "',espesor=" & .Espesor & ",pesoxunidad=" & .PesoXUnidad & ",idAlmacen=" & .almacen.id & ",cantidad=" & .Cantidad & ", altura = " & conectar.Escape(.Altura) & ", tipo=" & .Tipo & ", puntoReposicion = " & Escape(.PuntoReposicion) & ", stockMinimo =" & Escape(.StockMinimo) & "  WHERE id=" & material.id
+
+
+    With Material
+        apro = .Aprobado
+        If desaprobar Then apro = False
+        Material.Aprobado = apro
+
+        strsql = "update materiales set aprobado=" & conectar.Escape(apro) & ", valor_compra = " & .ValorCompra & ", unidad_compra=" & .UnidadCompra & " , unidad_pedido=" & .UnidadPedido & ", id_moneda=" & .moneda.Id & ", fecha_valor=" & Escape(.FechaValor) & ", valor_unitario=" & Escape(.Valor) & ", largo=" & .Largo & ",ancho=" & .Ancho & ",id_rubro=" & .Grupo.rubros.Id & ",id_grupo=" & .Grupo.Id & ",id_unidad=" & .unidad & ",codigo='" & .codigo & "',descripcion='" & .descripcion & "',espesor=" & .Espesor & ",pesoxunidad=" & .PesoXUnidad & ",idAlmacen=" & .almacen.Id & ",cantidad=" & .Cantidad & ", altura = " & conectar.Escape(.Altura) & ", tipo=" & .Tipo & ", puntoReposicion = " & Escape(.PuntoReposicion) & ", stockMinimo =" & Escape(.StockMinimo) & "  WHERE id=" & Material.Id
     End With
     If Not conectar.execute(strsql) Then GoTo er1
-    Set EVENTO.Elemento = material
+    Set EVENTO.Elemento = Material
     EVENTO.EVENTO = modificar_
     EVENTO.Tipo = Materiales_
     Channel.Notificar EVENTO, Materiales_
@@ -110,41 +110,41 @@ er1:
 End Function
 
 
-Public Function crear(material As clsMaterial) As Boolean
+Public Function crear(Material As clsMaterial) As Boolean
     Dim UltimoId As Long
     On Error GoTo err1
 
     crear = True
     conectar.BeginTransaction
-    With material
-        strsql = "insert into materiales (valor_compra,unidad_pedido,unidad_compra,codigo,id_rubro,id_grupo,id_unidad,descripcion,espesor,pesoxunidad,estado,IdAlmacen,largo,ancho,valor_unitario,fecha_valor,id_moneda,tipo,altura,stockMinimo,puntoReposicion) Values (" & Escape(.ValorCompra) & " ," & Escape(.UnidadPedido) & "," & Escape(.UnidadCompra) & "," & Escape(.codigo) & "," & .Grupo.rubros.id & "," & .Grupo.id & "," & .unidad & ",'" & .descripcion & "'," & .Espesor & "," & .PesoXUnidad & "," & .estado & "," & .almacen.id & "," & .Largo & "," & .Ancho & "," & Escape(.Valor) & "," & Escape(.FechaValor) & "," & .Moneda.id & ", " & .Tipo & ", " & conectar.Escape(.Altura) & ", " & Escape(.StockMinimo) & ", " & Escape(.PuntoReposicion) & ")"
+    With Material
+        strsql = "insert into materiales (valor_compra,unidad_pedido,unidad_compra,codigo,id_rubro,id_grupo,id_unidad,descripcion,espesor,pesoxunidad,estado,IdAlmacen,largo,ancho,valor_unitario,fecha_valor,id_moneda,tipo,altura,stockMinimo,puntoReposicion) Values (" & Escape(.ValorCompra) & " ," & Escape(.UnidadPedido) & "," & Escape(.UnidadCompra) & "," & Escape(.codigo) & "," & .Grupo.rubros.Id & "," & .Grupo.Id & "," & .unidad & ",'" & .descripcion & "'," & .Espesor & "," & .PesoXUnidad & "," & .estado & "," & .almacen.Id & "," & .Largo & "," & .Ancho & "," & Escape(.Valor) & "," & Escape(.FechaValor) & "," & .moneda.Id & ", " & .Tipo & ", " & conectar.Escape(.Altura) & ", " & Escape(.StockMinimo) & ", " & Escape(.PuntoReposicion) & ")"
     End With
     If Not conectar.execute(strsql) Then
         Err.Raise 1231, , "insert" & vbNewLine & strsql
         'GoTo err
     End If
 
-    material.id = conectar.UltimoId2
-    If material.id = 0 Then
+    Material.Id = conectar.UltimoId2
+    If Material.Id = 0 Then
         Err.Raise 1231, , "ultimoid2"
         'GoTo err1
     End If
 
-    strsql = "update materiales set codigo = CONCAT(codigo, '-', id) where id = " & material.id
+    strsql = "update materiales set codigo = CONCAT(codigo, '-', id) where id = " & Material.Id
     If Not conectar.execute(strsql) Then
         Err.Raise 1231, , "update materiales" & vbNewLine & strsql
         'GoTo err1
     End If
 
-    If material.Valor = 0 Then MsgBox "Recuerde que el material queda pendiente de activación", vbInformation, "Información"
-    If Not DAOMaterialHistorico.crear(material) Then
+    If Material.Valor = 0 Then MsgBox "Recuerde que el material queda pendiente de activación", vbInformation, "Información"
+    If Not DAOMaterialHistorico.crear(Material) Then
         Err.Raise 1231, , "materialhistorico.crear"
         'GoTo err1
     End If
     conectar.CommitTransaction
 
     Dim EVENTO As New clsEventoObserver
-    Set EVENTO.Elemento = material
+    Set EVENTO.Elemento = Material
     EVENTO.EVENTO = agregar_
     EVENTO.Tipo = Materiales_
     Channel.Notificar EVENTO, Materiales_
@@ -157,9 +157,9 @@ err1:
 End Function
 
 
-Public Function FindById(id As Long, Optional includeHistorico As Boolean = False) As clsMaterial
+Public Function FindById(Id As Long, Optional includeHistorico As Boolean = False) As clsMaterial
     Dim col As Collection
-    Set col = DAOMateriales.FindAll(DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_ID & " = " & id, includeHistorico)
+    Set col = DAOMateriales.FindAll(DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_ID & " = " & Id, includeHistorico)
     If col.count > 0 Then
         Set FindById = col(1)
     Else
@@ -176,12 +176,12 @@ Public Function FindAll(Optional whereFilter As String = vbNullString, Optional 
     Dim Materiales As New Collection
 
     q = "SELECT m.*, g.*, r.*, a.*, mon.*" _
-        & " FROM materiales m" _
-        & " LEFT JOIN grupos g ON g.id = m.id_grupo" _
-        & " LEFT JOIN rubros r ON r.id = g.id_rubro" _
-        & " LEFT JOIN materialesAlmacenes a ON a.id = m.idAlmacen" _
-        & " LEFT JOIN AdminConfigMonedas mon ON mon.id = m.id_moneda" _
-        & " WHERE 1 = 1"
+      & " FROM materiales m" _
+      & " LEFT JOIN grupos g ON g.id = m.id_grupo" _
+      & " LEFT JOIN rubros r ON r.id = g.id_rubro" _
+      & " LEFT JOIN materialesAlmacenes a ON a.id = m.idAlmacen" _
+      & " LEFT JOIN AdminConfigMonedas mon ON mon.id = m.id_moneda" _
+      & " WHERE 1 = 1"
 
     If LenB(whereFilter) > 0 Then
         q = q & " AND " & whereFilter
@@ -197,10 +197,10 @@ Public Function FindAll(Optional whereFilter As String = vbNullString, Optional 
         Set MAT = DAOMateriales.Map(rs, fieldsIndex, TABLA_MATERIALES, TABLA_ID_ALMACEN, TABLA_ID_MONEDA, TABlA_ID_GRUPO, TABlA_ID_RUBRO)
 
         If includeHistorico Then
-            MAT.Historico = DAOMaterialHistorico.getAllByMaterial(MAT.id)
+            MAT.historico = DAOMaterialHistorico.getAllByMaterial(MAT.Id)
         End If
 
-        Materiales.Add MAT, CStr(MAT.id)
+        Materiales.Add MAT, CStr(MAT.Id)
         rs.MoveNext
     Wend
 
@@ -209,13 +209,13 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Optional tablaAlmacen As String = vbNullString, Optional tablaMoneda As String = vbNullString, Optional tablaGrupo As String = vbNullString, Optional tablaRubro As String = vbNullString) As clsMaterial
     Dim m As clsMaterial
-    Dim id As Long
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, DAOMateriales.CAMPO_ID)
+    Id = GetValue(rs, indice, tabla, DAOMateriales.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set m = New clsMaterial
-        m.id = id
+        m.Id = Id
 
         m.Ancho = GetValue(rs, indice, tabla, DAOMateriales.CAMPO_ANCHO)
         m.Cantidad = GetValue(rs, indice, tabla, DAOMateriales.CAMPO_CANTIDAD)
@@ -236,14 +236,14 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Opti
         m.Tipo = GetValue(rs, indice, tabla, DAOMateriales.CAMPO_TIPO)
         m.StockMinimo = GetValue(rs, indice, tabla, "stockMinimo")
         m.PuntoReposicion = GetValue(rs, indice, tabla, "puntoReposicion")
-m.Aprobado = GetValue(rs, indice, tabla, "aprobado")
+        m.Aprobado = GetValue(rs, indice, tabla, "aprobado")
         'If LenB(tablaAlmacen) > 0 Then Set m.almacen = DAOAlmacenes.Map(rs, indice, tablaAlmacen)
         'If LenB(tablaGrupo) Then Set m.grupo = DAOGrupos.Map(rs, indice, tablaGrupo, tablaRubro)
         'If LenB(tablaMoneda) Then Set m.Moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
 
         'historico?
 
-        If LenB(tablaMoneda) > 0 Then m.Moneda = DAOMoneda.Map(rs, indice, tablaMoneda)  'poner set
+        If LenB(tablaMoneda) > 0 Then m.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)  'poner set
         If LenB(tablaAlmacen) > 0 Then m.almacen = DAOAlmacenes.Map(rs, indice, tablaAlmacen)    'poner set
         If Len(tablaGrupo) > 0 Then m.Grupo = DAOGrupos.Map(rs, indice, tablaGrupo, tablaRubro)    'poner set
 

@@ -9,39 +9,39 @@ Public Function Save(sin As SiniestroPersonal) As Boolean
 
     conectar.BeginTransaction
 
-    If sin.id = 0 Then
+    If sin.Id = 0 Then
         q = "INSERT INTO siniestros_personal  (id_empleado_asegurado,id_empleado_supervisor, id_accidente, nro_siniestro, fecha_ocurrido, diagnostico, prestador_medico, tipo_accidente, tipo_tratamiento,tipo_gravedad,renauda_tareas,gestor,id_art, id_sector) VALUES (" _
-            & "'id_empleado_asegurado','id_empleado_supervisor', 'id_accidente'," _
-            & "'nro_siniestro'," _
-            & "'fecha_ocurrido'," _
-            & "'diagnostico'," _
-            & "'prestador_medico'," _
-            & "'tipo_accidente'," _
-            & "'tipo_tratamiento'," _
-            & "'tipo_gravedad'," _
-            & "'renauda_tareas'," _
-            & "'gestor', 'id_art', 'id_sector')"
+          & "'id_empleado_asegurado','id_empleado_supervisor', 'id_accidente'," _
+          & "'nro_siniestro'," _
+          & "'fecha_ocurrido'," _
+          & "'diagnostico'," _
+          & "'prestador_medico'," _
+          & "'tipo_accidente'," _
+          & "'tipo_tratamiento'," _
+          & "'tipo_gravedad'," _
+          & "'renauda_tareas'," _
+          & "'gestor', 'id_art', 'id_sector')"
     Else
         q = "Update siniestros_personal SET" _
-            & " id = 'id' ," _
-            & " id_empleado_asegurado = 'id_empleado_asegurado' ," _
-            & " id_empleado_supervisor = 'id_empleado_supervisor'," _
-            & " id_accidente  = 'id_accidente'," _
-            & " nro_siniestro = 'nro_siniestro' ," _
-            & " fecha_ocurrido = 'fecha_ocurrido' ," _
-            & " diagnostico = 'diagnostico' ," _
-            & " prestador_medico = 'prestador_medico' ," _
-            & " tipo_accidente = 'tipo_accidente' ," _
-            & " tipo_tratamiento = 'tipo_tratamiento' ," _
-            & " tipo_gravedad = 'tipo_gravedad' ," _
-            & " renauda_tareas = 'renauda_tareas' ," _
-            & " gestor = 'gestor'," _
-            & " id_art = 'id_art'," _
-            & " id_sector = 'id_sector'" _
-            & " Where id = 'id'"
+          & " id = 'id' ," _
+          & " id_empleado_asegurado = 'id_empleado_asegurado' ," _
+          & " id_empleado_supervisor = 'id_empleado_supervisor'," _
+          & " id_accidente  = 'id_accidente'," _
+          & " nro_siniestro = 'nro_siniestro' ," _
+          & " fecha_ocurrido = 'fecha_ocurrido' ," _
+          & " diagnostico = 'diagnostico' ," _
+          & " prestador_medico = 'prestador_medico' ," _
+          & " tipo_accidente = 'tipo_accidente' ," _
+          & " tipo_tratamiento = 'tipo_tratamiento' ," _
+          & " tipo_gravedad = 'tipo_gravedad' ," _
+          & " renauda_tareas = 'renauda_tareas' ," _
+          & " gestor = 'gestor'," _
+          & " id_art = 'id_art'," _
+          & " id_sector = 'id_sector'" _
+          & " Where id = 'id'"
     End If
 
-    q = Replace$(q, "'id'", sin.id)
+    q = Replace$(q, "'id'", sin.Id)
     q = Replace$(q, "'id_empleado_asegurado'", GetEntityId(sin.Asegurado))
     q = Replace$(q, "'fecha_ocurrido'", Escape(sin.FechaHoraOcurrido))
     q = Replace$(q, "'nro_siniestro'", Escape(sin.NroSiniestro))
@@ -59,15 +59,15 @@ Public Function Save(sin As SiniestroPersonal) As Boolean
 
     Save = conectar.execute(q)
 
-    If sin.id = 0 And Save Then
-        sin.id = conectar.UltimoId2()
-        Save = (sin.id <> 0)
+    If sin.Id = 0 And Save Then
+        sin.Id = conectar.UltimoId2()
+        Save = (sin.Id <> 0)
     End If
 
     If Save And IsSomething(sin.InformeAccidente) Then
         Save = DAOInformeAccidente.Save(sin.InformeAccidente)
         If Save Then
-            Save = conectar.execute("UPDATE siniestros_personal SET id_accidente = " & sin.InformeAccidente.id & " WHERE id = " & sin.id)
+            Save = conectar.execute("UPDATE siniestros_personal SET id_accidente = " & sin.InformeAccidente.Id & " WHERE id = " & sin.Id)
         End If
     End If
 
@@ -87,13 +87,13 @@ End Function
 Public Function FindAll(Optional ByVal filter As String = vbNullString) As Collection
     Dim q As String
     q = "SELECT *" _
-        & " FROM siniestros_personal sp" _
-        & " LEFT JOIN personal p ON p.id = sp.id_empleado_asegurado" _
-        & " LEFT JOIN personal p2 ON p2.id = sp.id_empleado_supervisor" _
-        & " LEFT JOIN art a ON a.id = sp.id_art" _
-        & " LEFT JOIN accidentes acc ON acc.id = sp.id_accidente" _
-        & " LEFT JOIN sectores sec ON sec.id = sp.id_sector" _
-        & " WHERE 1 = 1"
+      & " FROM siniestros_personal sp" _
+      & " LEFT JOIN personal p ON p.id = sp.id_empleado_asegurado" _
+      & " LEFT JOIN personal p2 ON p2.id = sp.id_empleado_supervisor" _
+      & " LEFT JOIN art a ON a.id = sp.id_art" _
+      & " LEFT JOIN accidentes acc ON acc.id = sp.id_accidente" _
+      & " LEFT JOIN sectores sec ON sec.id = sp.id_sector" _
+      & " WHERE 1 = 1"
 
     If LenB(filter) > 0 Then
         q = q & " AND " & filter
@@ -108,7 +108,7 @@ Public Function FindAll(Optional ByVal filter As String = vbNullString) As Colle
 
     While Not rs.EOF
         Set sin = Map(rs, fieldsIndex, "sp", "p", "p2", "a", "acc", "sec")
-        col.Add sin, CStr(sin.id)
+        col.Add sin, CStr(sin.Id)
         rs.MoveNext
     Wend
 
@@ -119,13 +119,13 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Optional tablaEmpleado As String = vbNullString, Optional tablaEmpleadoSupervisor As String = vbNullString, Optional tablaART As String = vbNullString, Optional tablaAccidente As String = vbNullString, Optional tablaSector As String = vbNullString) As SiniestroPersonal
     Dim s As SiniestroPersonal
-    Dim id As Long
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, "id")
+    Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set s = New SiniestroPersonal
-        s.id = id
+        s.Id = Id
         s.Diagnostico = GetValue(rs, indice, tabla, "diagnostico")
         s.FechaHoraOcurrido = GetValue(rs, indice, tabla, "fecha_ocurrido")
         s.Gestor = GetValue(rs, indice, tabla, "gestor")

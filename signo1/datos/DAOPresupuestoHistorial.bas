@@ -5,21 +5,21 @@ Dim cn As ADODB.Connection
 Public Function getAllByPresu(id_presu As Long, Optional ShowIt As Boolean = False) As Collection
     Dim campos As New Dictionary
     Dim col As New Collection
-    Dim a As clsHistorial
+    Dim A As clsHistorial
     Set rs = conectar.RSFactory("SELECT h.*, u.* FROM historico_presupuesto h LEFT JOIN usuarios u ON h.idUsuario = u.id WHERE idPresupuesto=" & id_presu)
 
     conectar.BuildFieldsIndex rs, campos
 
     While Not rs.EOF
-        Set a = New clsHistorial
-        a.FEcha = GetValue(rs, campos, "h", "fecha")
-        a.mensaje = GetValue(rs, campos, "h", "Nota")
-        a.usuario = DAOUsuarios.Map(rs, campos, "u")
-        col.Add a
+        Set A = New clsHistorial
+        A.FEcha = GetValue(rs, campos, "h", "fecha")
+        A.mensaje = GetValue(rs, campos, "h", "Nota")
+        A.usuario = DAOUsuarios.Map(rs, campos, "u")
+        col.Add A
 
         rs.MoveNext
     Wend
-    Set a = Nothing
+    Set A = Nothing
     Set getAllByIdPresu = col
 
     If ShowIt Then
@@ -34,7 +34,7 @@ Public Function agregar(presu As clsPresupuesto, mensaje As String)
     fech = funciones.datetimeFormateada(Now)
     Dim usuario As clsUsuario
     Set usuario = funciones.GetUserObj
-    conectar.execute "insert into historico_presupuesto (idPresupuesto,fecha,nota,idUsuario) values (" & presu.id & ",'" & fech & "','" & UCase(mensaje) & "'," & usuario.id & " )"
+    conectar.execute "insert into historico_presupuesto (idPresupuesto,fecha,nota,idUsuario) values (" & presu.Id & ",'" & fech & "','" & UCase(mensaje) & "'," & usuario.Id & " )"
 End Function
 
 

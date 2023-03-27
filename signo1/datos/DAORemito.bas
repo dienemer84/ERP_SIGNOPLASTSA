@@ -61,34 +61,34 @@ Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Option
     If T.Id = 0 Then
         Nueva = True
         q = "INSERT INTO remitos (detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
-            & "idUsuario, numero,idUsuarioAprobador) Values (" _
-            & conectar.Escape(T.detalle) & ", " _
-            & conectar.GetEntityId(T.cliente) & ", " _
-            & conectar.Escape(T.FEcha) & ", " _
-            & conectar.Escape(T.estado) & "," _
-            & "0," _
-            & conectar.Escape(T.EstadoFacturado) & ", " _
-            & conectar.GetEntityId(T.contacto) & "," _
-            & conectar.GetEntityId(T.usuarioCreador) & ", " _
-            & conectar.Escape(T.numero) & ", " _
-            & conectar.GetEntityId(T.usuarioAprobador) & ")"
+          & "idUsuario, numero,idUsuarioAprobador) Values (" _
+          & conectar.Escape(T.detalle) & ", " _
+          & conectar.GetEntityId(T.cliente) & ", " _
+          & conectar.Escape(T.FEcha) & ", " _
+          & conectar.Escape(T.estado) & "," _
+          & "0," _
+          & conectar.Escape(T.EstadoFacturado) & ", " _
+          & conectar.GetEntityId(T.contacto) & "," _
+          & conectar.GetEntityId(T.usuarioCreador) & ", " _
+          & conectar.Escape(T.numero) & ", " _
+          & conectar.GetEntityId(T.usuarioAprobador) & ")"
 
 
     Else
         Nueva = False
         q = "Update remitos " _
-            & "SET" _
-            & " detalle = " & conectar.Escape(T.detalle) & " ," _
-            & "idCliente =" & conectar.GetEntityId(T.cliente) & " ," _
-            & "fecha = " & conectar.Escape(T.FEcha) & " ," _
-            & "estado =" & conectar.Escape(T.estado) & "," _
-            & "estadoFacturado =" & conectar.Escape(T.EstadoFacturado) & "," _
-            & "idContacto = " & conectar.GetEntityId(T.contacto) & "," _
-            & "numero = " & conectar.Escape(T.numero) & "," _
-            & "idUsuario = " & conectar.GetEntityId(T.usuarioCreador) & "," _
-            & "cantidad_bultos = " & conectar.Escape(T.CantidadBultos) & "," _
-            & "idUsuarioAprobador = " & conectar.GetEntityId(T.usuarioAprobador) & " Where " _
-            & "id =" & T.Id
+          & "SET" _
+          & " detalle = " & conectar.Escape(T.detalle) & " ," _
+          & "idCliente =" & conectar.GetEntityId(T.cliente) & " ," _
+          & "fecha = " & conectar.Escape(T.FEcha) & " ," _
+          & "estado =" & conectar.Escape(T.estado) & "," _
+          & "estadoFacturado =" & conectar.Escape(T.EstadoFacturado) & "," _
+          & "idContacto = " & conectar.GetEntityId(T.contacto) & "," _
+          & "numero = " & conectar.Escape(T.numero) & "," _
+          & "idUsuario = " & conectar.GetEntityId(T.usuarioCreador) & "," _
+          & "cantidad_bultos = " & conectar.Escape(T.CantidadBultos) & "," _
+          & "idUsuarioAprobador = " & conectar.GetEntityId(T.usuarioAprobador) & " Where " _
+          & "id =" & T.Id
 
     End If
     If Not conectar.execute(q) Then GoTo err1
@@ -215,7 +215,7 @@ Public Function FindAll(Optional filter As String = vbNullString) As Collection
     strsql = "SELECT * FROM remitos rto LEFT JOIN clientes cli ON rto.idCliente=cli.id LEFT JOIN Localidades  ON cli.id_localidad = Localidades.ID   LEFT JOIN Provincia  ON cli.id_provincia = Provincia.ID   LEFT JOIN usuarios u1 ON rto.idUsuario=u1.id LEFT JOIN usuarios u2 ON rto.IdUsuarioAprobador=u2.id LEFT JOIN contactos cont ON rto.idContacto=cont.id WHERE 1=1 "
     'strsql = "SELECT * FROM remitos rto LEFT JOIN clientes cli ON rto.idCliente=cli.id LEFT JOIN Localidades  ON cli.id_localidad = Localidades.ID   LEFT JOIN Provincia  ON cli.id_provincia = Provincia.ID   LEFT JOIN usuarios u1 ON rto.idUsuario=u1.id LEFT JOIN usuarios u2 ON rto.IdUsuarioAprobador=u2.id LEFT JOIN contactos cont ON rto.idContacto=cont.id LEFT JOIN entregas e ON e.Remito=rto.id LEFT JOIN detalles_pedidos dp ON dp.id=e.idDetallePedido  WHERE 1=1 "
 
-    
+
     If Len(filter) > 0 Then strsql = strsql & " " & filter
     strsql = strsql & " ORDER BY rto.numero DESC"
 
@@ -575,16 +575,16 @@ Public Function ImprimirControlCarga(rto As Remito) As Boolean
         Else
             r!item = deta.DetallePedido.item
         End If
-        
+
         If deta.Origen = OrigenRemitoOt Or deta.Origen = OrigenRemitoAplicado Then
-'            r!Nota = deta.DetallePedido.Nota
+            '            r!Nota = deta.DetallePedido.Nota
             If deta.DetallePedido.Nota = deta.observaciones Then
-            r!Nota = ""
+                r!Nota = ""
             Else
-            r!Nota = deta.DetallePedido.Nota
+                r!Nota = deta.DetallePedido.Nota
             End If
         End If
-        
+
         r!detalle = deta.VerElemento
         r.Update
     Next

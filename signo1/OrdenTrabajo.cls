@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public descripcion As String
 Public TipoOrden As TipoOt
 Public cliente As clsCliente  'centro de costos....
@@ -60,9 +60,9 @@ Public Property Get FechasPreciosMarco() As Collection
     If Me.EsMarco Then
         If m_FechasPreciosMarco Is Nothing Then
             Set m_FechasPreciosMarco = New Collection
-            If Me.id > 0 Then
+            If Me.Id > 0 Then
                 Dim r As New Recordset
-                Set r = conectar.RSFactory("SELECT fecha FROM pedidos_fechas_precios WHERE id_ot_marco = " & Me.id)
+                Set r = conectar.RSFactory("SELECT fecha FROM pedidos_fechas_precios WHERE id_ot_marco = " & Me.Id)
                 While Not r.EOF
                     m_FechasPreciosMarco.Add CDate(r!FEcha)
                     r.MoveNext
@@ -131,8 +131,8 @@ Public Property Get PorcentajeFacturado() As Double
     Dim valor2 As Double
 
     'creo qu eestoy haciendo al pedo la conversion a moneda
-    valor1 = MonedaConverter.Convertir(Me.Total, Me.moneda.id, MonedaConverter.Patron.id)
-    valor2 = MonedaConverter.Convertir(Me.TotalFacturado, Me.moneda.id, MonedaConverter.Patron.id)
+    valor1 = MonedaConverter.Convertir(Me.Total, Me.moneda.Id, MonedaConverter.Patron.Id)
+    valor2 = MonedaConverter.Convertir(Me.TotalFacturado, Me.moneda.Id, MonedaConverter.Patron.Id)
     If valor1 > 0 Then
         PorcentajeFacturado = funciones.RedondearDecimales((valor2 * 100) / valor1)
     Else
@@ -150,7 +150,7 @@ Private Sub Class_Initialize()
     Set Me.usuario = funciones.GetUserObj
 End Sub
 Public Property Get IdFormateado() As String
-    IdFormateado = Format(Me.id, "0000")
+    IdFormateado = Format(Me.Id, "0000")
 End Property
 Public Property Get SubTotal() As Double
 
@@ -347,7 +347,7 @@ Public Property Get PorcentajeAvance() As Double
     Dim porc2 As Double
     Dim prom As Double
     For Each det In Me.Detalles
-        DAODetalleOrdenTrabajo.CalcularPorcentajeAvanceYPromedioFabricado det.id, porc, prom
+        DAODetalleOrdenTrabajo.CalcularPorcentajeAvanceYPromedioFabricado det.Id, porc, prom
         porc2 = porc2 + porc
     Next
 

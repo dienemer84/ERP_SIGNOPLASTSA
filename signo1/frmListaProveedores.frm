@@ -268,7 +268,7 @@ Private Sub Buscar()
     If LenB(Me.Text1.text) > 0 Then
         filtro = filtro & " and razon like '%" & Trim(Me.Text1.text) & "%'"
     End If
-    
+
     If Me.cboRubros.ListIndex > -1 Then
         filtro = filtro & " And  asignacion.id_rubro =  " & Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
     End If
@@ -276,7 +276,7 @@ Private Sub Buscar()
     If LenB(Me.TextFantasia.text) > 0 Then
         filtro = filtro & " and razon_fantasia like '%" & Trim(Me.TextFantasia.text) & "%'"
     End If
-    
+
     If LenB(Me.txtCuit) > 0 Then
         filtro = filtro & " and cuit like '%" & Trim(Me.txtCuit) & "%'"
     End If
@@ -336,9 +336,9 @@ Private Sub Form_Load()
 
 
     Buscar
-    
-        ''Me.caption = caption & " (" & Name & ")"
-        
+
+    ''Me.caption = caption & " (" & Name & ")"
+
 End Sub
 
 Private Sub llenarEstados()
@@ -400,7 +400,7 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectemp = proveedores.item(RowIndex)  ' mcData.Item(RowIndex)
     With rectemp
-        Values(1) = Format(.id, "0000")
+        Values(1) = Format(.Id, "0000")
         Values(2) = .RazonSocial
         Values(3) = .razonFantasia
         Values(4) = .Cuit
@@ -435,7 +435,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = proveedores.count To 1 Step -1
-            If proveedores(i).id = tmp.id Then
+            If proveedores(i).Id = tmp.Id Then
                 Set Proveedor = proveedores(i)
                 Proveedor.estado = tmp.estado
                 Proveedor.razonFantasia = tmp.razonFantasia
@@ -448,8 +448,8 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 Exit For
             End If
         Next
-        grilla.RefreshRowIndex EVENTO.Elemento.id
-        
+        grilla.RefreshRowIndex EVENTO.Elemento.Id
+
     End If
     Exit Function
 err1:

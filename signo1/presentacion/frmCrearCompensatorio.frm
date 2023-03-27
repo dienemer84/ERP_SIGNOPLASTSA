@@ -158,7 +158,7 @@ Private Sub PushButton1_Click()
     compe.Observacion = Me.txtObservaciones
     compe.FechaCancelacion = Me.DateTimePicker1.value
     compe.Tipo = Me.cboTipos.ItemData(Me.cboTipos.ListIndex)
-    compe.IdOrdenPago = op.id
+    compe.IdOrdenPago = op.Id
     compe.alicuotaPercepcion = op.alicuota
     compe.NetoGravadoCompensado = (funciones.FormatearDecimales(compe.Monto / (1 + funciones.FormatearDecimales(compe.Comprobante.IvaAplicado(1).alicuota.alicuota / 100))))
     compe.MontoAPercibir = compe.Monto - compe.NetoGravadoCompensado

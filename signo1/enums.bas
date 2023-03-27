@@ -39,9 +39,9 @@ Dim estado_proveedor(3)
 'End Enum
 
 Public Enum TipoComplejidad
-ComplejidadAlta = 3
-ComplejidadMedia = 2
-ComplejidadBaja = 1
+    ComplejidadAlta = 3
+    ComplejidadMedia = 2
+    ComplejidadBaja = 1
 End Enum
 
 Public Enum TipoPadron
@@ -49,9 +49,9 @@ Public Enum TipoPadron
     TipoPadronPercepcion = 1
     'Agrega Nemer para poder cargar el Padron CABA
     TipoPadronUnificadoCABA = 2
-    
- 
-    
+
+
+
 End Enum
 
 Public Enum TipoDocumento
@@ -81,7 +81,7 @@ Public Enum ConceptoIncluir
     ConceptoProducto = 1
     ConceptoServicio = 2
     ConceptoProductoServicio = 3
-    
+
 End Enum
 
 Public Enum EstadoOrdenPago
@@ -89,7 +89,7 @@ Public Enum EstadoOrdenPago
     EstadoOrdenPago_Aprobada = 1
     EstadoOrdenPago_Anulada = 2
 
-        
+
 End Enum
 
 
@@ -182,9 +182,9 @@ Public Enum TipoComprobanteUsado
     Recibo_ = 5
     Retencion_ = 6
     SaldoInicial_ = 7
-    
+
     ReciboAnticipo_ = 8
-    
+
 End Enum
 
 
@@ -194,10 +194,10 @@ Public Enum tipoDocumentoContable
     notaDebito = 2
     DespachoAduana = 3
     LiquidacionBancaria = 4
-    
-'e5re52- SE AGREGA ESTE TIPO DE COMPROBANTE NUEVO
+
+    'e5re52- SE AGREGA ESTE TIPO DE COMPROBANTE NUEVO
     CompraBienesUsados = 5
-    
+
 End Enum
 
 
@@ -364,7 +364,7 @@ End Enum
 Public Enum EstadoFacturaCliente
     EnProceso = 1
     Aprobada = 2
-    Anulada = 3 'no se usa mas
+    Anulada = 3    'no se usa mas
     CanceladaNC = 4
     CanceladaNCParcial = 5
 End Enum
@@ -436,7 +436,7 @@ Public Function enumFormaDePagoFacturaProveedor(indice) As String
 End Function
 
 Public Function enumEstadoOrdenEntrega(indice) As String
-enumEstadoOrdenEntrega = estado_orden_entrega(indice)
+    enumEstadoOrdenEntrega = estado_orden_entrega(indice)
 End Function
 
 
@@ -459,9 +459,9 @@ Public Function enumUnidades(indice) As String
     enumUnidades = unidad(indice)
 End Function
 Public Function LlenarArrays()
-tipo_complejidad(ComplejidadBaja) = "Baja"
-tipo_complejidad(ComplejidadMedia) = "Media"
-tipo_complejidad(ComplejidadAlta) = "Alta"
+    tipo_complejidad(ComplejidadBaja) = "Baja"
+    tipo_complejidad(ComplejidadMedia) = "Media"
+    tipo_complejidad(ComplejidadAlta) = "Alta"
 
     estado_doc_contable(EstadoFacturaCliente.Anulada) = "Anulada"
     estado_doc_contable(EstadoFacturaCliente.Aprobada) = "Aprobada"
@@ -510,10 +510,10 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
     estado_presupuesto(6) = "A Cotizar"
     estado_presupuesto(7) = "No Cotizado"
     estado_presupuesto(8) = "Desactivado"
-    
+
     forma_de_pago_cta_cte(0) = "Cta. Cte."
     forma_de_pago_cta_cte(1) = "Contado"
-    
+
 
     estado_factura_proveedor(1) = "En Proceso"    'EstadoFacturaProveedor.EnProceso
     estado_factura_proveedor(2) = "Aprobada"    ' EstadoFacturaProveedor.Aprobada
@@ -521,9 +521,9 @@ tipo_complejidad(ComplejidadAlta) = "Alta"
     estado_factura_proveedor(4) = "Pago Parcial"
 
 
-   estado_orden_entrega(1) = "Pendiente"
-   estado_orden_entrega(2) = "Aprobada"
-   estado_orden_entrega(3) = "Finalizada"
+    estado_orden_entrega(1) = "Pendiente"
+    estado_orden_entrega(2) = "Aprobada"
+    estado_orden_entrega(3) = "Finalizada"
 
     estado_saldado(TipoSaldadoFactura.NoSaldada) = "No Saldada"
     estado_saldado(TipoSaldadoFactura.notaCredito) = "N. Crédito"
@@ -631,13 +631,13 @@ End Function
 Public Function EnumTipoDocumentoContableShort(indice) As String
 ' SE MUESTRAN EL DETALLE ABREVIADO PARA CADA TIPO DE COMPROBANTE
     Select Case indice
-        Case 0: EnumTipoDocumentoContableShort = "FC"
-        Case 1: EnumTipoDocumentoContableShort = "NC"
-        Case 2: EnumTipoDocumentoContableShort = "ND"
-        Case 3: EnumTipoDocumentoContableShort = "DA"
-                Case 4: EnumTipoDocumentoContableShort = "LB"
-                Case 5: EnumTipoDocumentoContableShort = "CBU"
-        
+    Case 0: EnumTipoDocumentoContableShort = "FC"
+    Case 1: EnumTipoDocumentoContableShort = "NC"
+    Case 2: EnumTipoDocumentoContableShort = "ND"
+    Case 3: EnumTipoDocumentoContableShort = "DA"
+    Case 4: EnumTipoDocumentoContableShort = "LB"
+    Case 5: EnumTipoDocumentoContableShort = "CBU"
+
     End Select
 End Function
 Public Function EnumPeriodo(indice) As String

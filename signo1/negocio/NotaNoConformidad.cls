@@ -13,11 +13,11 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public TiempoProceso As PlaneamientoTiempoProceso
 Public FechaCreacion As Date
 Public FechaResolucion As Date
-Public UsuarioCreador As clsUsuario
+Public usuarioCreador As clsUsuario
 Public Operario As clsEmpleado
 Public Encargado As clsEmpleado
 Public descripcion As String
@@ -32,9 +32,9 @@ Public Property Get Resuelta() As Boolean
 End Property
 
 Public Property Get EsInterna() As Boolean
-    EsInterna = (Me.TareaOrigen.Sector.id = TiempoProceso.Tarea.Sector.id)
+    EsInterna = (Me.TareaOrigen.Sector.Id = TiempoProceso.Tarea.Sector.Id)
 End Property
 
 Public Property Get numero() As String
-    If EsInterna Then numero = "I-" & Format(id, "0000") Else numero = "E-" & Format(id, "0000")
+    If EsInterna Then numero = "I-" & Format(Id, "0000") Else numero = "E-" & Format(Id, "0000")
 End Property

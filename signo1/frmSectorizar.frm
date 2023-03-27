@@ -236,16 +236,16 @@ Public Sub Command1_Click()
     If Trim(Me.Text1) <> Empty Then
         If Not IsNumeric(Me.Text1) Then
             errando1 = "Ingrese un legajo válido."
-            Me.frame2.Enabled = False
+            Me.Frame2.Enabled = False
         Else
             If IsSomething(DAOEmpleados.GetByLegajo(CLng(Me.Text1))) Then
-                Me.frame2.Enabled = True
+                Me.Frame2.Enabled = True
                 llenar
             Else
                 MsgBox "El legajo indicado no existe.", vbCritical, "Error"
                 llenarLstSectores
                 limpiar
-                Me.frame2.Enabled = False
+                Me.Frame2.Enabled = False
             End If
         End If
     End If
@@ -260,7 +260,7 @@ Private Sub llenar()
 
     Set emple = DAOEmpleados.GetByLegajo(Me.Text1)
     If IsSomething(emple) Then
-        IdEmpleado = emple.id
+        IdEmpleado = emple.Id
         Me.lblApellido = emple.NombreCompleto
         Me.lblLegajo = emple.legajo
         llenarLstSectoresEmpleados
@@ -272,7 +272,7 @@ Private Sub llenarLstSectores()
     Set rec = claseSP.ListaSectores
     While Not rec.EOF
         Set x = Me.lstSectores.ListItems.Add(, , rec!Sector)
-        x.SubItems(1) = rec!id
+        x.SubItems(1) = rec!Id
         rec.MoveNext
     Wend
 End Sub
@@ -287,7 +287,7 @@ Private Sub llenarLstSectoresEmpleados()
 
     For Each Sector In sectores
         Set x = Me.lstSectoresEmpleados.ListItems.Add(, , Sector.Sector)
-        x.SubItems(1) = Sector.id
+        x.SubItems(1) = Sector.Id
     Next Sector
 
 
@@ -306,7 +306,7 @@ Private Sub Command2_Click()
                 If Me.lstSectoresEmpleados.ListItems(i) = Me.lstSectores.ListItems(x) Then esta = True
             Next i
             If Not esta Then
-            Dim h As ListItem
+                Dim h As ListItem
                 Set h = Me.lstSectoresEmpleados.ListItems.Add(, , Me.lstSectores.ListItems(x))
                 h.SubItems(1) = Me.lstSectores.ListItems(x).ListSubItems(1)
             End If
@@ -350,10 +350,10 @@ End Sub
 Private Sub valida()
     If Trim(Text1) = Empty Then
         Command1.Enabled = False
-        Me.frame2.Enabled = False
+        Me.Frame2.Enabled = False
     Else
         Command1.Enabled = True
-        Me.frame2.Enabled = True
+        Me.Frame2.Enabled = True
     End If
 End Sub
 

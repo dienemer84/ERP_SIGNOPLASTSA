@@ -58,8 +58,8 @@ Attribute VB_Exposed = False
 Dim tmp As Historial
 Dim vLista As Collection
 
-Public Property Let idMaterial(id As Long)
-    Set vLista = DaoHistorico.GetAll("materiales_historial", id)
+Public Property Let IdMaterial(Id As Long)
+    Set vLista = DaoHistorico.GetAll("materiales_historial", Id)
 End Property
 
 Private Sub Command1_Click()
@@ -78,7 +78,7 @@ End Sub
 Private Sub Form_Resize()
     Me.GridEX1.Width = Me.ScaleWidth
     Me.GridEX1.Height = Me.ScaleHeight - 150
-    
+
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmContAbiertoDetalle 
    Caption         =   "Contrato Abierto Nº "
    ClientHeight    =   6540
@@ -41,10 +41,10 @@ Private Sub Form_Load()
 
 
     'If OTMarco.Detalles Is Nothing Or OTMarco.Detalles.count = 0 Then
-    Set OTMarco.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(OTMarco.id, True, True, True)
+    Set OTMarco.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(OTMarco.Id, True, True, True)
     'End If
 
-    Me.caption = "Contrato Abierto Nº " & OTMarco.id
+    Me.caption = "Contrato Abierto Nº " & OTMarco.Id
 
     Me.ReportControl.Columns.DeleteAll
     Me.ReportControl.Records.DeleteAll
@@ -76,12 +76,12 @@ Private Sub Form_Load()
             If deta2.OrdenTrabajo.estado = EstadoOT_EnProceso Or deta2.OrdenTrabajo.estado = EstadoOT_Finalizado Then
                 ' If deta2.item = "002" And deta2.OrdenTrabajo.id = 972 Then Stop
 
-                strsql = "Select descripcion from pedidos where id=" & deta2.OrdenTrabajo.id
+                strsql = "Select descripcion from pedidos where id=" & deta2.OrdenTrabajo.Id
                 Set rs = conectar.RSFactory(strsql)
 
                 deta2.OrdenTrabajo.descripcion = rs!descripcion
 
-                rec2.AddItem "OT" & deta2.OrdenTrabajo.id & " | " & deta2.item & " | " & deta2.OrdenTrabajo.descripcion
+                rec2.AddItem "OT" & deta2.OrdenTrabajo.Id & " | " & deta2.item & " | " & deta2.OrdenTrabajo.descripcion
                 rec2.AddItem deta2.CantidadPedida
                 rec2.AddItem deta2.Cantidad_Fabricada
                 rec2.AddItem deta2.Cantidad_Facturada

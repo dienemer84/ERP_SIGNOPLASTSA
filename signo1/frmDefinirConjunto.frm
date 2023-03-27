@@ -289,7 +289,7 @@ Private Sub Command1_Click()
         MsgBox "El nombre asignado ya existe en la base de datos", vbCritical, "Error"
     Else
         If Me.lstDetalleConj.ListItems.count > 0 Then
-        Dim h As VbMsgBoxResult
+            Dim h As VbMsgBoxResult
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
                 Dim idcli As Long
@@ -312,7 +312,7 @@ End Sub
 
 Private Sub Command3_Click()
     If Me.lstDetalleConj.ListItems.count > 0 Then
-    Dim h As VbMsgBoxResult
+        Dim h As VbMsgBoxResult
         h = MsgBox("¿Está seguro de modificar el conjunto?", vbYesNo, "Confirmación")
         If h = 6 Then
             Dim idcli As Long
@@ -395,13 +395,13 @@ End Sub
 
 Private Sub lstDetalleConj_OLEDragDrop(data As MSComctlLib.DataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim rs As Recordset
-    idP = data.GetData(1)
-    strsql = "select detalle from stock where id=" & idP
+    idp = data.GetData(1)
+    strsql = "select detalle from stock where id=" & idp
     Set rs = conectar.RSFactory(strsql)
     If Not rs.EOF And Not rs.BOF Then
         Me.txtCantidad = 1
         Me.txtPieza = rs!detalle
-        Me.idPieza = idP
+        Me.idPieza = idp
         Dim A As ListItem
         Set A = Me.lstDetalleConj.ListItems.Add(, , Trim(Me.txtCantidad))
         A.SubItems(1) = Me.txtPieza

@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public nombre As String
 Public desde As Date
 Public hasta As Date
@@ -22,8 +22,8 @@ Public EsDeVenta As Boolean    'venta o compra
 
 
 Public Property Get Detalles() As Collection
-    If Not IsSomething(m_detalles) And Me.id <> 0 Then
-        Set m_detalles = DAOSubdiarios.FindAllDetallesLiquiVentaByLiquiVenta(Me.id, Me.EsDeVenta)
+    If Not IsSomething(m_detalles) And Me.Id <> 0 Then
+        Set m_detalles = DAOSubdiarios.FindAllDetallesLiquiVentaByLiquiVenta(Me.Id, Me.EsDeVenta)
     End If
     Set Detalles = m_detalles
 End Property

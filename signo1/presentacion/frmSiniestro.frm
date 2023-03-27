@@ -98,7 +98,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm"
-      Format          =   58589187
+      Format          =   58327043
       CurrentDate     =   40414.6993055556
    End
    Begin VB.TextBox txtNroSiniestro 
@@ -221,7 +221,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CheckBox        =   -1  'True
-      Format          =   58589185
+      Format          =   58327041
       CurrentDate     =   40414
    End
    Begin XtremeSuiteControls.ComboBox cboART 
@@ -611,12 +611,12 @@ Public Sub Cargar()
     Me.txtNroSiniestro.text = sin.NroSiniestro
     Me.dtpFechaOcurrido.value = sin.FechaHoraOcurrido
     If IsSomething(sin.ART) Then
-        Me.cboART.ListIndex = funciones.PosIndexCbo(sin.ART.id, Me.cboART)
+        Me.cboART.ListIndex = funciones.PosIndexCbo(sin.ART.Id, Me.cboART)
     Else
         Me.cboART.ListIndex = -1
     End If
-    Me.cboAsegurado.ListIndex = funciones.PosIndexCbo(sin.Asegurado.id, Me.cboAsegurado)
-    Me.cboSupervisor.ListIndex = funciones.PosIndexCbo(sin.Supervisor.id, Me.cboSupervisor)
+    Me.cboAsegurado.ListIndex = funciones.PosIndexCbo(sin.Asegurado.Id, Me.cboAsegurado)
+    Me.cboSupervisor.ListIndex = funciones.PosIndexCbo(sin.Supervisor.Id, Me.cboSupervisor)
     Me.txtDiagnostico.text = sin.Diagnostico
     Me.txtPrestadorMedico.text = sin.PrestadorMedico
     Me.cboTipoAccidente.ListIndex = funciones.PosIndexCbo(sin.TipoAccidente, Me.cboTipoAccidente)
@@ -625,7 +625,7 @@ Public Sub Cargar()
 
     Me.txtGestor.text = sin.Gestor
     If IsSomething(sin.Sector) Then
-        Me.cboSector.ListIndex = funciones.PosIndexCbo(sin.Sector.id, Me.cboSector)
+        Me.cboSector.ListIndex = funciones.PosIndexCbo(sin.Sector.Id, Me.cboSector)
     Else
         Me.cboSector.ListIndex = -1
     End If
@@ -724,13 +724,13 @@ Private Sub Form_Load()
     Me.cboAsegurado.Clear
     For Each emp In emps
         Me.cboAsegurado.AddItem emp.NombreCompleto & " (Leg " & emp.legajo & ")"
-        Me.cboAsegurado.ItemData(Me.cboAsegurado.NewIndex) = emp.id
+        Me.cboAsegurado.ItemData(Me.cboAsegurado.NewIndex) = emp.Id
     Next emp
 
     Me.cboSupervisor.Clear
     For Each emp In emps
         Me.cboSupervisor.AddItem emp.NombreCompleto & " (Leg " & emp.legajo & ")"
-        Me.cboSupervisor.ItemData(Me.cboSupervisor.NewIndex) = emp.id
+        Me.cboSupervisor.ItemData(Me.cboSupervisor.NewIndex) = emp.Id
     Next emp
 
     Dim K As Variant
@@ -756,7 +756,7 @@ Private Sub Form_Load()
     Me.cboART.Clear
     For Each A In DAOART.FindAll
         Me.cboART.AddItem A.nombre
-        Me.cboART.ItemData(Me.cboART.NewIndex) = A.id
+        Me.cboART.ItemData(Me.cboART.NewIndex) = A.Id
     Next A
 
     DAOSectores.LlenarComboXtreme Me.cboSector

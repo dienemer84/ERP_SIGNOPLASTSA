@@ -22,15 +22,15 @@ Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
 
     For Each Doc In col
         cbo.AddItem Doc.nombre
-        cbo.ItemData(cbo.NewIndex) = Doc.id
+        cbo.ItemData(cbo.NewIndex) = Doc.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
     End If
 End Function
 
-Public Function FindById(id As Long) As documento
-    Set FindById = FindAll(True, "Documentos.id=" & id)(1)
+Public Function FindById(Id As Long) As documento
+    Set FindById = FindAll(True, "Documentos.id=" & Id)(1)
 End Function
 
 Public Function SaveDocumento(d As documento, Optional SaveWithDetalles As Boolean) As Boolean
@@ -39,24 +39,24 @@ Public Function SaveDocumento(d As documento, Optional SaveWithDetalles As Boole
     conectar.BeginTransaction
     SaveDocumento = True
     Dim q As String
-    If d.id = 0 Then
+    If d.Id = 0 Then
         q = "INSERT INTO sp.Documentos    ( Nombre,    Alto,    Ancho,    id_archivo,    Activo ,tipo_documento   )    Values" _
-            & " ('Nombre',    'Alto',    'Ancho',    'id_archivo',    'Activo' ,'tipo_documento'   )"
+          & " ('Nombre',    'Alto',    'Ancho',    'id_archivo',    'Activo' ,'tipo_documento'   )"
         o.EVENTO = agregar_
     Else
         q = "Update sp.Documentos     SET     id = 'id' ,     Nombre = 'Nombre' ,     Alto = 'Alto' ,     Ancho = 'Ancho' ,     id_archivo = 'id_archivo' , " _
-            & " Activo = 'Activo', tipo_documento ='tipo_documento'         Where    id = 'id' "
+          & " Activo = 'Activo', tipo_documento ='tipo_documento'         Where    id = 'id' "
         o.EVENTO = modificar_
     End If
 
 
-    q = Replace(q, "'id'", conectar.Escape(d.id))
+    q = Replace(q, "'id'", conectar.Escape(d.Id))
     q = Replace(q, "'Nombre'", conectar.Escape(d.nombre))
     q = Replace(q, "'Alto'", conectar.Escape(d.Alto))
     q = Replace(q, "'Ancho'", conectar.Escape(d.Ancho))
     q = Replace(q, "'id_archivo'", conectar.Escape(d.Imagen))
     q = Replace(q, "'Activo'", conectar.Escape(d.estado))
-    q = Replace(q, "'id_archivo'", conectar.Escape(d.id))
+    q = Replace(q, "'id_archivo'", conectar.Escape(d.Id))
     q = Replace(q, "'tipo_documento'", conectar.Escape(d.TipoDocumento))
 
     If Not conectar.execute(q) Then GoTo err1
@@ -64,13 +64,13 @@ Public Function SaveDocumento(d As documento, Optional SaveWithDetalles As Boole
     If SaveWithDetalles Then
         Dim deta As DocumentoDetalle
 
-        If d.id > 0 Then
-            If Not conectar.execute("delete from DocumentoDetalles where id_documento=" & d.id) Then GoTo err1
+        If d.Id > 0 Then
+            If Not conectar.execute("delete from DocumentoDetalles where id_documento=" & d.Id) Then GoTo err1
         End If
 
         For Each deta In d.Detalles
 
-            deta.id = 0
+            deta.Id = 0
             If Not DAODocumentos.SaveDetalles(deta) Then GoTo err1
 
         Next
@@ -78,7 +78,7 @@ Public Function SaveDocumento(d As documento, Optional SaveWithDetalles As Boole
 
     End If
 
-    d.id = conectar.UltimoId2
+    d.Id = conectar.UltimoId2
 
 
     Set o.Elemento = d
@@ -101,30 +101,30 @@ Private Function SaveDetalles(det As DocumentoDetalle) As Boolean
 
     Dim q As String
     SaveDetalles = True
-    If det.id = 0 Then
+    If det.Id = 0 Then
 
         q = "INSERT INTO sp.DocumentoDetalles " _
-            & " ( id_documento,   pos_x,   pos_y,   alto,   ancho,   fijo,   alineacion,   negrita,   cursiva,   tachado,   subrayado,   nombre_fuente,    tamanio,   Tag   ) " _
-            & " Values " _
-            & " ('id_documento',    'pos_x',    'pos_y',    'alto',    'ancho',    'fijo',    'alineacion',    'negrita',    'cursiva',     'tachado',    'subrayado',    'nombre_fuente'," _
-            & " 'tamanio',     'tag'    )"
+          & " ( id_documento,   pos_x,   pos_y,   alto,   ancho,   fijo,   alineacion,   negrita,   cursiva,   tachado,   subrayado,   nombre_fuente,    tamanio,   Tag   ) " _
+          & " Values " _
+          & " ('id_documento',    'pos_x',    'pos_y',    'alto',    'ancho',    'fijo',    'alineacion',    'negrita',    'cursiva',     'tachado',    'subrayado',    'nombre_fuente'," _
+          & " 'tamanio',     'tag'    )"
 
 
     Else
 
         q = "  UPDATE sp.DocumentoDetalles     SET " _
-            & " id = 'id' ,     id_documento = 'id_documento' ,    pos_x = 'pos_x' ," _
-            & " pos_y = 'pos_y' ,     alto = 'alto' ,    ancho = 'ancho' ,     fijo = 'fijo' , " _
-            & " alineacion = 'alineacion' ,     negrita = 'negrita' ,    cursiva = 'cursiva' , " _
-            & " tachado = 'tachado' ,     subrayado = 'subrayado' ,     nombre_fuente = 'nombre_fuente' , " _
-            & " tamanio = 'tamanio' ,     tag = 'tag'     Where     id = 'id'  "
+          & " id = 'id' ,     id_documento = 'id_documento' ,    pos_x = 'pos_x' ," _
+          & " pos_y = 'pos_y' ,     alto = 'alto' ,    ancho = 'ancho' ,     fijo = 'fijo' , " _
+          & " alineacion = 'alineacion' ,     negrita = 'negrita' ,    cursiva = 'cursiva' , " _
+          & " tachado = 'tachado' ,     subrayado = 'subrayado' ,     nombre_fuente = 'nombre_fuente' , " _
+          & " tamanio = 'tamanio' ,     tag = 'tag'     Where     id = 'id'  "
 
 
     End If
 
 
-    q = Replace(q, "'id'", conectar.Escape(det.id))
-    q = Replace(q, "'id_documento'", conectar.Escape(det.documento.id))
+    q = Replace(q, "'id'", conectar.Escape(det.Id))
+    q = Replace(q, "'id_documento'", conectar.Escape(det.documento.Id))
     q = Replace(q, "'pos_x'", conectar.Escape(det.PosX))
     q = Replace(q, "'pos_y'", conectar.Escape(det.PosY))
     q = Replace(q, "'alto'", conectar.Escape(det.Alto))
@@ -144,7 +144,7 @@ Private Function SaveDetalles(det As DocumentoDetalle) As Boolean
 
 
 
-    det.id = conectar.UltimoId2
+    det.Id = conectar.UltimoId2
 
     Exit Function
 err1:
@@ -170,7 +170,7 @@ Public Function FindAll(Optional IncluyeDetalles As Boolean = False, Optional fi
     conectar.BuildFieldsIndex rs, idx
     While Not rs.EOF And Not rs.BOF
         Set d = Map(rs, idx, "Documentos")
-        If IncluyeDetalles Then Set d.Detalles = MapDetalles(d.id, d)
+        If IncluyeDetalles Then Set d.Detalles = MapDetalles(d.Id, d)
         col.Add d
 
         rs.MoveNext
@@ -183,10 +183,10 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As documento
     Dim d As documento
-    Dim id As Long: id = GetValue(rs, indice, tabla, "id")
-    If id > 0 Then
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
+    If Id > 0 Then
         Set d = New documento
-        d.id = id
+        d.Id = Id
         d.Alto = GetValue(rs, indice, tabla, "Alto")
         d.Ancho = GetValue(rs, indice, tabla, "Ancho")
         d.estado = GetValue(rs, indice, tabla, "Activo")
@@ -210,7 +210,7 @@ Private Function MapDetalles(idDocumento As Long, d As documento) As Collection
     While Not rs.EOF And Not rs.BOF
 
         Set deta = New DocumentoDetalle
-        deta.id = GetValue(rs, idx, "DocumentoDetalles", "id")
+        deta.Id = GetValue(rs, idx, "DocumentoDetalles", "id")
         deta.Alineacion = GetValue(rs, idx, "DocumentoDetalles", "alineacion")
         deta.Ancho = GetValue(rs, idx, "DocumentoDetalles", "ancho")
         deta.Alto = GetValue(rs, idx, "DocumentoDetalles", "alto")

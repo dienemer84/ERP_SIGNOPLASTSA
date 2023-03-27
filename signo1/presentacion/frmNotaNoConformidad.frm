@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmNotaNoConformidad 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Nota No Conformidad"
@@ -376,28 +376,28 @@ End Property
 
 Private Sub SetUpForm()
     Set Pieza = DAOPieza.FindById(TiempoProceso.idPieza, FL_0)
-    Set Tarea = DAOTareas.FindById(TiempoProceso.Tarea.id)
+    Set Tarea = DAOTareas.FindById(TiempoProceso.Tarea.Id)
 End Sub
 Public Property Let idTiempoProceso(nvalue As Long)
-    'si entra por acá es porque  es una nueva nnc
+'si entra por acá es porque  es una nueva nnc
     Dim d As DetalleOTConjuntoDTO
     Set TiempoProceso = DAOTiemposProceso.FindById(nvalue)
     SetUpForm
 
-    Dim id As Long
+    Dim Id As Long
 
     If TiempoProceso.EsConjunto Then
-        
+
         Dim detalle As DetalleOTConjuntoDTO
-       Set detalle = DAODetalleOrdenTrabajo.FindConjuntoById(TiempoProceso.idDetallePedido)
+        Set detalle = DAODetalleOrdenTrabajo.FindConjuntoById(TiempoProceso.idDetallePedido)
         If IsSomething(detalle) Then
-       id = detalle.idDetallePedido
+            Id = detalle.idDetallePedido
         End If
     Else
-        id = TiempoProceso.idDetallePedido
+        Id = TiempoProceso.idDetallePedido
     End If
-    
-    Set TiempoProceso.DetalleOt = DAODetalleOrdenTrabajo.FindById(id)
+
+    Set TiempoProceso.DetalleOt = DAODetalleOrdenTrabajo.FindById(Id)
     Set TiempoProceso.Tarea = Tarea
 
 
@@ -406,10 +406,10 @@ End Property
 
 
 Private Sub A_Click()
-Dim frmarchi1 As New frmArchivos2
+    Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OrigenArchivos.OA_NotaNoConformidad
-    frmarchi1.ObjetoId = n.id
-    frmarchi1.caption = "NNC Nº " & n.id
+    frmarchi1.ObjetoId = n.Id
+    frmarchi1.caption = "NNC Nº " & n.Id
     frmarchi1.Show
 End Sub
 
@@ -422,7 +422,7 @@ Private Sub cmdCrear_Click()
         Set n.UsuarioResolucionador = funciones.GetUserObj
         Me.lblAprobador = n.UsuarioResolucionador.Empleado.NombreCompleto
         n.estado = NNC_Resuelta
-  
+
         If guardarNNC(n) Then
             MsgBox "Se creó correctamente la resolución de la NNC " & n.numero
             Unload Me
@@ -444,14 +444,14 @@ Private Function guardarNNC(n As NotaNoConformidad) As Boolean
     guardarNNC = False
     ea = n.estado
     n.descripcion = Me.txtFalla
-      n.Incidencias = Me.txtIncidencias
+    n.Incidencias = Me.txtIncidencias
     If Me.cboTareasDisponibles.ListIndex <> -1 Then
         Set n.TareaOrigen = DAOTareas.FindById(Me.cboTareasDisponibles.ItemData(Me.cboTareasDisponibles.ListIndex))
     End If
     If Me.cboOperario.ListIndex <> -1 Then
         Set n.Operario = DAOEmpleados.GetById(Me.cboOperario.ItemData(Me.cboOperario.ListIndex))
     End If
-    Set n.UsuarioCreador = funciones.GetUserObj
+    Set n.usuarioCreador = funciones.GetUserObj
     If DAONotaNoConformidad.Guardar(n) Then
         guardarNNC = True
         MsgBox "Nota de No Conformidad guardada.", vbOKOnly + vbInformation
@@ -484,11 +484,11 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
- If IsSomething(n) Then
-  '  Me.caption = Me.caption & " " & n.numero
-Else
+    If IsSomething(n) Then
+        '  Me.caption = Me.caption & " " & n.numero
+    Else
         Me.caption = "Nueva nota no conformidad"
-End If
+    End If
     Me.TabControl1.selectedItem = 0
 
     Set n.TiempoProceso = TiempoProceso
@@ -496,26 +496,26 @@ End If
     Me.txtAccion = n.AccionTomada
     Me.lblEstado = enums.EnumEstadoNNC(n.estado)
     Me.txtIncidencias = n.Incidencias
-    Me.lblPiezaTarea = Pieza.nombre & " / " & TiempoProceso.Tarea.id & " - " & Tarea.Tarea
+    Me.lblPiezaTarea = Pieza.nombre & " / " & TiempoProceso.Tarea.Id & " - " & Tarea.Tarea
     Me.lblOTItem = TiempoProceso.idpedido & " / " & TiempoProceso.DetalleOt.item
     Me.lblOriginador = funciones.GetUserObj.Empleado.NombreCompleto
-    Me.lblSectorDestino = Tarea.Sector.Sector & " (" & Tarea.id & " - " & Tarea.Tarea & ")"
+    Me.lblSectorDestino = Tarea.Sector.Sector & " (" & Tarea.Id & " - " & Tarea.Tarea & ")"
     Me.cboOperario.Clear
     Dim empleados As Collection
     Dim emp As clsEmpleado
-    Set empleados = DAOEmpleados.GetAllByTareaId(TiempoProceso.Tarea.id)
+    Set empleados = DAOEmpleados.GetAllByTareaId(TiempoProceso.Tarea.Id)
     For Each emp In empleados
         Me.cboOperario.AddItem emp.NombreCompleto
-        Me.cboOperario.ItemData(Me.cboOperario.NewIndex) = emp.id
+        Me.cboOperario.ItemData(Me.cboOperario.NewIndex) = emp.Id
     Next emp
 
-    If IsSomething(n.UsuarioResolucionador) Then Me.lblAprobador = "Por " & n.UsuarioResolucionador.id
-    
+    If IsSomething(n.UsuarioResolucionador) Then Me.lblAprobador = "Por " & n.UsuarioResolucionador.Id
 
-If IsSomething(n.Operario) Then
-Me.cboOperario.ListIndex = PosIndexCbo(n.Operario.id, cboOperario)
-End If
-   ' Me.cmdTerminar.Enabled = (n.estado = NNC_EnEdicion)
+
+    If IsSomething(n.Operario) Then
+        Me.cboOperario.ListIndex = PosIndexCbo(n.Operario.Id, cboOperario)
+    End If
+    ' Me.cmdTerminar.Enabled = (n.estado = NNC_EnEdicion)
     'Me.cmdCrear.Enabled = (n.estado = NNC_Pendiente)
     'Me.cmdGuardar.Enabled = (n.estado = NNC_EnEdicion)
 
@@ -529,19 +529,19 @@ End Sub
 Private Sub llenarComboTareas()
     Dim col As Collection
 
-    Set col = DAOTareas.FindAll("t.id IN (SELECT tarea_id FROM empleado_tarea WHERE personal_id = " & funciones.GetUserObj.Empleado.id & ")")
+    Set col = DAOTareas.FindAll("t.id IN (SELECT tarea_id FROM empleado_tarea WHERE personal_id = " & funciones.GetUserObj.Empleado.Id & ")")
 
     Dim tar As clsTarea
     For Each tar In col
         Me.cboTareasDisponibles.AddItem tar.Tarea & " (" & tar.Sector.Sector & ")"
-        Me.cboTareasDisponibles.ItemData(Me.cboTareasDisponibles.NewIndex) = tar.id
+        Me.cboTareasDisponibles.ItemData(Me.cboTareasDisponibles.NewIndex) = tar.Id
     Next
 
     If col.count > 0 Then Me.cboTareasDisponibles.ListIndex = 0
 End Sub
 
 Private Sub Imprimir_Click()
-    If n.id > 0 Then
+    If n.Id > 0 Then
         DAONotaNoConformidad.Imprimir n
     Else
         MsgBox "Debe grabar la NNC antes de imprimir!", vbOKOnly + vbInformation

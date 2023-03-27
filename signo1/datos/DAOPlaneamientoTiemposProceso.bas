@@ -68,21 +68,21 @@ End Function
 
 
 Public Function GetSectoresByIdPedido(idpedido As Long) As Collection
-    Dim index As Dictionary
+    Dim Index As Dictionary
     Set rs = conectar.RSFactory("select sec.* FROM PlaneamientoTiemposProcesos p INNER JOIN tareas t ON t.id=p.codigoTarea INNER JOIN sectores sec ON t.id_sector=sec.id  WHERE idPedido=" & idpedido & " GROUP BY sec.id")
-    conectar.BuildFieldsIndex rs, index
+    conectar.BuildFieldsIndex rs, Index
     Dim col As New Collection
     While Not rs.EOF
-        col.Add DAOSectores.Map(rs, index, DAOSectores.TABLA_SECTOR), CStr(rs.Fields(index("sec.id")).value)
+        col.Add DAOSectores.Map(rs, Index, DAOSectores.TABLA_SECTOR), CStr(rs.Fields(Index("sec.id")).value)
         rs.MoveNext
     Wend
     Set GetSectoresByIdPedido = col
 End Function
 
 
-Public Function FindById(id As Long) As PlaneamientoTiempoProceso
+Public Function FindById(Id As Long) As PlaneamientoTiempoProceso
     Dim col As Collection
-    Set col = FindAll("ptp.id = " & id, True)
+    Set col = FindAll("ptp.id = " & Id, True)
 
     If col.count > 0 Then
         Set FindById = col.item(1)
@@ -98,24 +98,24 @@ Public Function GetAvancesOTBySectorAndTareaFinalizada(Ot As Long) As Collection
     Dim q As String
 
     q = "SELECT " _
-        & " s.*, " _
-        & " SUM(1) AS TotalPorSector,  SUM(ptp.fechaFin > 0) AS TotalFinalizado ,  (1-(  SUM(ptp.fechaFin > 0)/SUM(1))) AS IndiceTotalFinalizado " _
-        & "From" _
-        & "PlaneamientoTiemposProcesos ptp   LEFT JOIN tareas t     ON ptp.codigoTarea = t.id " _
-        & "LEFT JOIN sectores s     ON t.`id_sector` = s.`id`  LEFT JOIN detalles_pedidos dp " _
-        & " ON ptp.idDetallePedido = dp.id Where  1=1 and  ptp.idPedido in (" & Ot & ") GROUP BY s.id "
+      & " s.*, " _
+      & " SUM(1) AS TotalPorSector,  SUM(ptp.fechaFin > 0) AS TotalFinalizado ,  (1-(  SUM(ptp.fechaFin > 0)/SUM(1))) AS IndiceTotalFinalizado " _
+      & "From" _
+      & "PlaneamientoTiemposProcesos ptp   LEFT JOIN tareas t     ON ptp.codigoTarea = t.id " _
+      & "LEFT JOIN sectores s     ON t.`id_sector` = s.`id`  LEFT JOIN detalles_pedidos dp " _
+      & " ON ptp.idDetallePedido = dp.id Where  1=1 and  ptp.idPedido in (" & Ot & ") GROUP BY s.id "
 
-    Dim index As Dictionary
+    Dim Index As Dictionary
     Set rs = conectar.RSFactory(q)
-    conectar.BuildFieldsIndex rs, index
+    conectar.BuildFieldsIndex rs, Index
     Dim col As New Collection
     Dim P As DTOSectoresTiempo
 
     While Not rs.EOF
         Set P = New DTOSectoresTiempo
-        Set P.Sector = DAOSectores.Map(rs, index, "sectores")
+        Set P.Sector = DAOSectores.Map(rs, Index, "sectores")
 
-        col.Add P, CStr(P.Sector.id)
+        col.Add P, CStr(P.Sector.Id)
         rs.MoveNext
     Wend
 
@@ -127,10 +127,10 @@ Public Function FindAll(Optional filter As String = vbNullString, Optional WithD
     'If WithDetalle Then q = q & ",ptpd.*,u.*,p.*"
 
     q = q & " FROM PlaneamientoTiemposProcesos ptp" _
-        & " LEFT JOIN tareas t" _
-        & " ON t.id = ptp.codigoTarea" _
-        & " LEFT JOIN sectores sec" _
-        & " ON sec.id = t.id_sector" _
+      & " LEFT JOIN tareas t" _
+      & " ON t.id = ptp.codigoTarea" _
+      & " LEFT JOIN sectores sec" _
+      & " ON sec.id = t.id_sector" _
 
 If WithDetalle Then
         q = q & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd  ON ptpd.idTiemposProcesos=ptp.id"
@@ -146,46 +146,46 @@ If WithDetalle Then
 
     Dim tmpTiempoProc As PlaneamientoTiempoProceso
 
-    Dim index As Dictionary
+    Dim Index As Dictionary
     Set rs = conectar.RSFactory(q)
-    conectar.BuildFieldsIndex rs, index
+    conectar.BuildFieldsIndex rs, Index
     Dim col As New Collection
 
     While Not rs.EOF
 
-        If funciones.BuscarEnColeccion(col, CStr(rs.Fields(index("ptp.id")))) Then
-            Set tmpTiempoProc = col.item(CStr(rs.Fields(index("ptp.id"))))
+        If funciones.BuscarEnColeccion(col, CStr(rs.Fields(Index("ptp.id")))) Then
+            Set tmpTiempoProc = col.item(CStr(rs.Fields(Index("ptp.id"))))
         Else
             Set tmpTiempoProc = New PlaneamientoTiempoProceso
             Set tmpTiempoProc.Detalles = New Collection
 
-            tmpTiempoProc.id = rs.Fields(index("ptp.id"))
-            tmpTiempoProc.idDetallePedido = rs.Fields(index("ptp.idDetallePedido"))
-            tmpTiempoProc.idDetallePedidoConj = rs.Fields(index("ptp.idDetallePedidoConj"))
-            tmpTiempoProc.idpedido = rs.Fields(index("ptp.idPedido"))
-            tmpTiempoProc.TiempoCotizado = GetValue(rs, index, "ptp", DAOTiemposProceso.CAMPO_TIEMPO_COTIZADO)
-            tmpTiempoProc.OperariosCotizado = GetValue(rs, index, "ptp", DAOTiemposProceso.CAMPO_OPERARIOS_COTIZADO)
-            tmpTiempoProc.item = GetValue(rs, index, "ptp", DAOTiemposProceso.CAMPO_ITEM)
-            tmpTiempoProc.idPieza = rs.Fields(index("ptp.idPieza"))
-            tmpTiempoProc.FechaFin = GetValue(rs, index, "ptp", "fechaFin")
-            tmpTiempoProc.EsConjunto = GetValue(rs, index, "ptp", "conjunto")
-            tmpTiempoProc.Observacion = GetValue(rs, index, "ptp", "observacion_agregado")
+            tmpTiempoProc.Id = rs.Fields(Index("ptp.id"))
+            tmpTiempoProc.idDetallePedido = rs.Fields(Index("ptp.idDetallePedido"))
+            tmpTiempoProc.idDetallePedidoConj = rs.Fields(Index("ptp.idDetallePedidoConj"))
+            tmpTiempoProc.idpedido = rs.Fields(Index("ptp.idPedido"))
+            tmpTiempoProc.TiempoCotizado = GetValue(rs, Index, "ptp", DAOTiemposProceso.CAMPO_TIEMPO_COTIZADO)
+            tmpTiempoProc.OperariosCotizado = GetValue(rs, Index, "ptp", DAOTiemposProceso.CAMPO_OPERARIOS_COTIZADO)
+            tmpTiempoProc.item = GetValue(rs, Index, "ptp", DAOTiemposProceso.CAMPO_ITEM)
+            tmpTiempoProc.idPieza = rs.Fields(Index("ptp.idPieza"))
+            tmpTiempoProc.FechaFin = GetValue(rs, Index, "ptp", "fechaFin")
+            tmpTiempoProc.EsConjunto = GetValue(rs, Index, "ptp", "conjunto")
+            tmpTiempoProc.Observacion = GetValue(rs, Index, "ptp", "observacion_agregado")
 
 
-            If withPlanificacion Then Set tmpTiempoProc.Planificacion = DAOTiempoProcesoPlanificado.Map(rs, index, "ptpp", "ptp")
-            Set tmpTiempoProc.Tarea = DAOTareas.Map(rs, index, "t", , "sec")
+            If withPlanificacion Then Set tmpTiempoProc.Planificacion = DAOTiempoProcesoPlanificado.Map(rs, Index, "ptpp", "ptp")
+            Set tmpTiempoProc.Tarea = DAOTareas.Map(rs, Index, "t", , "sec")
 
 
         End If
 
         If WithDetalle Then
-            If Not IsNull(rs.Fields(index("ptpd.id"))) Then
-                tmpTiempoProc.Detalles.Add DAOTiemposProcesosDetalles.Map(rs, index, "ptpd", , "p"), CStr(rs.Fields(index("ptpd.id")))
+            If Not IsNull(rs.Fields(Index("ptpd.id"))) Then
+                tmpTiempoProc.Detalles.Add DAOTiemposProcesosDetalles.Map(rs, Index, "ptpd", , "p"), CStr(rs.Fields(Index("ptpd.id")))
             End If
         End If
 
-        If Not funciones.BuscarEnColeccion(col, CStr(rs.Fields(index("ptp.id")))) Then
-            col.Add tmpTiempoProc, CStr(tmpTiempoProc.id)
+        If Not funciones.BuscarEnColeccion(col, CStr(rs.Fields(Index("ptp.id")))) Then
+            col.Add tmpTiempoProc, CStr(tmpTiempoProc.Id)
         End If
         rs.MoveNext
     Wend
@@ -225,7 +225,7 @@ Public Function SectorColl2RS(sectores As Collection) As ADODB.Recordset
     r.Open
     For Each sec In sectores
         r.AddNew
-        r.Fields("idsector").value = sec.id
+        r.Fields("idsector").value = sec.Id
         r.Fields("sector").value = sec.Sector
         r.MoveNext
     Next sec
@@ -236,12 +236,12 @@ End Function
 Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tabla As String, Optional ByRef tablaTarea As String, Optional tablaPlanificacion As String = vbNullString, Optional tablaSectores As String = vbNullString) As PlaneamientoTiempoProceso
 
     Dim ptp As PlaneamientoTiempoProceso
-    Dim id As Variant
-    id = GetValue(rs, indice, tabla, CAMPO_ID)
+    Dim Id As Variant
+    Id = GetValue(rs, indice, tabla, CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set ptp = New PlaneamientoTiempoProceso
-        ptp.id = id
+        ptp.Id = Id
         ptp.TiempoCotizado = GetValue(rs, indice, tabla, DAOTiemposProceso.CAMPO_TIEMPO_COTIZADO)
         ptp.OperariosCotizado = GetValue(rs, indice, tabla, DAOTiemposProceso.CAMPO_OPERARIOS_COTIZADO)
         ptp.idDetallePedido = GetValue(rs, indice, tabla, DAOTiemposProceso.CAMPO_ID_DETALLE_PEDIDO)
@@ -275,7 +275,7 @@ Private Function CargarTiempoProceso(deta As DetalleOrdenTrabajo, Pieza As Pieza
 
         For Each desa In detalleOrdenTrabajoConjunto.Pieza.desarrollosManoObra
             q = "insert into PlaneamientoTiemposProcesos (idPedido, idPieza, idDetallePedido, idDetallePedidoConj, codigoTarea, OperariosCotizado,TiempoCotizado,item,conjunto,observacion_agregado) values " _
-                & "( " & deta.OrdenTrabajo.id & "," & Pieza.id & "," & deta.id & "," & detalleOrdenTrabajoConjunto.id & "," & desa.Tarea.id & "," & conectar.Escape(desa.Cantidad) & "," & conectar.Escape(desa.Tiempo) & "," & conectar.Escape(deta.item) & "," & Abs(deta.Pieza.EsConjunto) & "," & Escape(desa.detalle) & ")"
+              & "( " & deta.OrdenTrabajo.Id & "," & Pieza.Id & "," & deta.Id & "," & detalleOrdenTrabajoConjunto.Id & "," & desa.Tarea.Id & "," & conectar.Escape(desa.Cantidad) & "," & conectar.Escape(desa.Tiempo) & "," & conectar.Escape(deta.item) & "," & Abs(deta.Pieza.EsConjunto) & "," & Escape(desa.detalle) & ")"
 
             If conectar.execute(q) Then
                 ptpId = 0
@@ -306,7 +306,7 @@ Private Function CargarTiempoProceso(deta As DetalleOrdenTrabajo, Pieza As Pieza
         For Each desa In Pieza.desarrollosManoObra
 
             q = "insert into PlaneamientoTiemposProcesos (idPedido, idPieza, idDetallePedido, codigoTarea, OperariosCotizado,TiempoCotizado,item,conjunto,observacion_agregado) values " _
-                & "( " & deta.OrdenTrabajo.id & "," & Pieza.id & "," & deta.id & "," & desa.Tarea.id & "," & desa.Cantidad & "," & desa.Tiempo & "," & conectar.Escape(deta.item) & "," & Abs(deta.Pieza.EsConjunto) & "," & Escape(desa.detalle) & ")"
+              & "( " & deta.OrdenTrabajo.Id & "," & Pieza.Id & "," & deta.Id & "," & desa.Tarea.Id & "," & desa.Cantidad & "," & desa.Tiempo & "," & conectar.Escape(deta.item) & "," & Abs(deta.Pieza.EsConjunto) & "," & Escape(desa.detalle) & ")"
 
             If conectar.execute(q) Then
                 ptpId = 0
@@ -336,7 +336,7 @@ Private Function CargarTiempoProceso(deta As DetalleOrdenTrabajo, Pieza As Pieza
 
 
     If Pieza.EsConjunto Then
-        Set col = DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, Pieza.id, , True)
+        Set col = DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, Pieza.Id, , True)
 
         For Each detalleOrdenTrabajoConjunto In col
             CargarTiempoProceso = CargarTiempoProceso(deta, detalleOrdenTrabajoConjunto.Pieza, detalleOrdenTrabajoConjunto)
@@ -365,7 +365,7 @@ Public Function crear(Pedido As OrdenTrabajo, Optional progressbar As Object) As
 
 
     EsConjunto = False
-    conectar.execute "delete from PlaneamientoTiemposProcesos where idPedido=" & Pedido.id
+    conectar.execute "delete from PlaneamientoTiemposProcesos where idPedido=" & Pedido.Id
     progressbar.min = 0
     progressbar.max = Pedido.Detalles.count
     Dim c As Long
@@ -373,7 +373,7 @@ Public Function crear(Pedido As OrdenTrabajo, Optional progressbar As Object) As
     For Each deta In Pedido.Detalles
         c = c + 1
         progressbar.value = c
-        Set deta.Pieza = DAOPieza.FindById(deta.Pieza.id, FL_4, True)
+        Set deta.Pieza = DAOPieza.FindById(deta.Pieza.Id, FL_4, True)
 
         If Not CargarTiempoProceso(deta, deta.Pieza) Then GoTo errt
 
@@ -393,15 +393,15 @@ Public Function GetAvancesHsPorOTs(OtsId As Collection) As Collection
 
     Dim q As String
     q = "SELECT " _
-        & " ifnull(SUM((TIME_TO_SEC(TIMEDIFF(ptpd.fin,ptpd.inico)) / 60) / 60),0) AS sum_horas," _
-        & " t.id_sector," _
-        & " ptp.codigoTarea" _
-        & " FROM PlaneamientoTiemposProcesos ptp" _
-        & " INNER JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
-        & " ON ptpd.idTiemposProcesos = ptp.id" _
-        & " INNER JOIN tareas t" _
-        & " ON t.id = ptp.codigoTarea" _
-        & " Where 1 = 1"
+      & " ifnull(SUM((TIME_TO_SEC(TIMEDIFF(ptpd.fin,ptpd.inico)) / 60) / 60),0) AS sum_horas," _
+      & " t.id_sector," _
+      & " ptp.codigoTarea" _
+      & " FROM PlaneamientoTiemposProcesos ptp" _
+      & " INNER JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
+      & " ON ptpd.idTiemposProcesos = ptp.id" _
+      & " INNER JOIN tareas t" _
+      & " ON t.id = ptp.codigoTarea" _
+      & " Where 1 = 1"
 
     Dim orden_trabajo_id As Variant
     Dim filter As String

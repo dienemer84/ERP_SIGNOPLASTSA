@@ -219,7 +219,7 @@ Private Sub Form_Load()
     Customize Me
     GridEXHelper.CustomizeGrid Me.GridEX1, True, False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
-    
+
     'CMDsINCliente_Click
 
     If IsSomething(cliente) Then
@@ -231,14 +231,14 @@ Private Sub Form_Load()
 
     Me.GridEX1.Columns(5).Visible = MostrarAnticipo
     Me.GridEX1.ItemCount = 0
-    
+
     Me.caption = "Lista OT (" & Name & ")"
 
-' SE COMPLETA EL GRID AUTOMATICAMENTE AL CARGAR EL FORM
+    ' SE COMPLETA EL GRID AUTOMATICAMENTE AL CARGAR EL FORM
     Set Ot = Nothing
-    
+
     llenarLista
-    
+
 End Sub
 Private Sub llenarLista()
     q = "{pedido}.{activo}=1"
@@ -252,25 +252,25 @@ Private Sub llenarLista()
 
     q = Replace$(q, "{pedido}", DAOOrdenTrabajo.TABLA_PEDIDO)
     q = Replace$(q, "{activo}", DAOOrdenTrabajo.CAMPO_ACTIVO)
-    
+
     Set ots = DAOOrdenTrabajo.FindAll(q)
-    
+
     Me.GridEX1.ItemCount = 0
-    
+
     Me.GridEX1.ItemCount = ots.count
-    
+
     If Me.GridEX1.ItemCount = 0 Then
         Me.LabeSinResultados.caption = "No hay resultados para mostrar..."
-        
+
     End If
-    
+
 
 
 End Sub
 
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.GridEX1, Column
-    
+
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -293,14 +293,14 @@ Private Sub PushButtonAceptar_Click()
     Else
         Set Selecciones.OrdenTrabajo = Nothing
     End If
-    
+
     Unload Me
-    
+
 End Sub
 
 Private Sub PushButtonCancelar_Click()
     Set Selecciones.OrdenTrabajo = Nothing
-    
+
     Unload Me
-    
+
 End Sub

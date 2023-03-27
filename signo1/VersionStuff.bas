@@ -151,60 +151,60 @@ Public Function VersionInformation1(ByVal file_name As String) As VersionInforma
 
         ' Target operating system.
         Select Case .dwFileOS
-            Case VOS_DOS_WINDOWS16
-                result.TargetOperatingSystem = "DOS-Win16"
-            Case VOS_DOS_WINDOWS32
-                result.TargetOperatingSystem = "DOS-Win32"
-            Case VOS_OS216_PM16
-                result.TargetOperatingSystem = "OS/2-16 PM-16"
-            Case VOS_OS232_PM32
-                result.TargetOperatingSystem = "OS/2-16 PM-32"
-            Case VOS_NT_WINDOWS32
-                result.TargetOperatingSystem = "NT-Win32"
-            Case Else
-                result.TargetOperatingSystem = "Unknown"
+        Case VOS_DOS_WINDOWS16
+            result.TargetOperatingSystem = "DOS-Win16"
+        Case VOS_DOS_WINDOWS32
+            result.TargetOperatingSystem = "DOS-Win32"
+        Case VOS_OS216_PM16
+            result.TargetOperatingSystem = "OS/2-16 PM-16"
+        Case VOS_OS232_PM32
+            result.TargetOperatingSystem = "OS/2-16 PM-32"
+        Case VOS_NT_WINDOWS32
+            result.TargetOperatingSystem = "NT-Win32"
+        Case Else
+            result.TargetOperatingSystem = "Unknown"
         End Select
 
         ' File type.
         Select Case .dwFileType
-            Case VFT_APP
-                result.FileType = "App"
-            Case VFT_DLL
-                result.FileType = "DLL"
-            Case VFT_DRV
-                result.FileType = "Driver"
-                Select Case fixed_file_info.dwFileSubtype
-                    Case VFT2_DRV_PRINTER
-                        result.FileSubtype = "Printer drv"
-                    Case VFT2_DRV_KEYBOARD
-                        result.FileSubtype = "Keyboard drv"
-                    Case VFT2_DRV_LANGUAGE
-                        result.FileSubtype = "Language drv"
-                    Case VFT2_DRV_DISPLAY
-                        result.FileSubtype = "Display drv"
-                    Case VFT2_DRV_MOUSE
-                        result.FileSubtype = "Mouse drv"
-                    Case VFT2_DRV_NETWORK
-                        result.FileSubtype = "Network drv"
-                    Case VFT2_DRV_SYSTEM
-                        result.FileSubtype = "System drv"
-                    Case VFT2_DRV_INSTALLABLE
-                        result.FileSubtype = "Installable"
-                    Case VFT2_DRV_SOUND
-                        result.FileSubtype = "Sound drv"
-                    Case VFT2_DRV_COMM
-                        result.FileSubtype = "Comm drv"
-                    Case VFT2_UNKNOWN
-                        result.FileSubtype = "Unknown"
-                End Select
-            Case VFT_FONT
-                result.FileType = "Font"
-            Case VFT_VXD
-                result.FileType = "VxD"
-            Case VFT_STATIC_LIB
-                result.FileType = "Lib"
-            Case Else
-                result.FileType = "Unknown"
+        Case VFT_APP
+            result.FileType = "App"
+        Case VFT_DLL
+            result.FileType = "DLL"
+        Case VFT_DRV
+            result.FileType = "Driver"
+            Select Case fixed_file_info.dwFileSubtype
+            Case VFT2_DRV_PRINTER
+                result.FileSubtype = "Printer drv"
+            Case VFT2_DRV_KEYBOARD
+                result.FileSubtype = "Keyboard drv"
+            Case VFT2_DRV_LANGUAGE
+                result.FileSubtype = "Language drv"
+            Case VFT2_DRV_DISPLAY
+                result.FileSubtype = "Display drv"
+            Case VFT2_DRV_MOUSE
+                result.FileSubtype = "Mouse drv"
+            Case VFT2_DRV_NETWORK
+                result.FileSubtype = "Network drv"
+            Case VFT2_DRV_SYSTEM
+                result.FileSubtype = "System drv"
+            Case VFT2_DRV_INSTALLABLE
+                result.FileSubtype = "Installable"
+            Case VFT2_DRV_SOUND
+                result.FileSubtype = "Sound drv"
+            Case VFT2_DRV_COMM
+                result.FileSubtype = "Comm drv"
+            Case VFT2_UNKNOWN
+                result.FileSubtype = "Unknown"
+            End Select
+        Case VFT_FONT
+            result.FileType = "Font"
+        Case VFT_VXD
+            result.FileType = "VxD"
+        Case VFT_STATIC_LIB
+            result.FileType = "Lib"
+        Case Else
+            result.FileType = "Unknown"
         End Select
     End With
 

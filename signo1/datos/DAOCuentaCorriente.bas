@@ -238,34 +238,34 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     For Each Orden In ordenes
         'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
 
-       ' If Orden.estado <> EstadoOrdenPago_Anulada Then
-            Set detalle = New DTODetalleCuentaCorriente
-            detalle.Comprobante = "OP-" & Orden.Id
+        ' If Orden.estado <> EstadoOrdenPago_Anulada Then
+        Set detalle = New DTODetalleCuentaCorriente
+        detalle.Comprobante = "OP-" & Orden.Id
 
-            '#178
-            If (Orden.estado = EstadoOrdenPago_pendiente) Then
-                detalle.Comprobante = detalle.Comprobante & " (Pendiente)"
-            End If
+        '#178
+        If (Orden.estado = EstadoOrdenPago_pendiente) Then
+            detalle.Comprobante = detalle.Comprobante & " (Pendiente)"
+        End If
 
-            If (Orden.estado = EstadoOrdenPago_Anulada) Then
-                detalle.Comprobante = detalle.Comprobante & " (Anulada)"
-            End If
+        If (Orden.estado = EstadoOrdenPago_Anulada) Then
+            detalle.Comprobante = detalle.Comprobante & " (Anulada)"
+        End If
 
-            detalle.tipoComprobante = OrdenPago_
-            detalle.IdComprobante = Orden.Id
+        detalle.tipoComprobante = OrdenPago_
+        detalle.IdComprobante = Orden.Id
 
-            If (Orden.estado = EstadoOrdenPago_Anulada) Then
+        If (Orden.estado = EstadoOrdenPago_Anulada) Then
 
-                    detalle.Haber = 0
-            Else
+            detalle.Haber = 0
+        Else
 
 
             detalle.Haber = funciones.RedondearDecimales(Orden.TotalOrdenPago)          '.StaticTotalFacturas + Orden.TotalCompensatorios)
-            End If
-            detalle.FEcha = Orden.FEcha
+        End If
+        detalle.FEcha = Orden.FEcha
 
-            Detalles.Add detalle
-      ' End If
+        Detalles.Add detalle
+        ' End If
     Next Orden
 
     Dim facturas As Collection
@@ -295,20 +295,20 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
         detalle.IdComprobante = fac.Id
 
         If InStr(fac.OrdenesPagoId, ",") > 0 Then
-          detalle.Comprobante = detalle.Comprobante & " (Ops." & fac.OrdenesPagoId & ")"
-       Else
+            detalle.Comprobante = detalle.Comprobante & " (Ops." & fac.OrdenesPagoId & ")"
+        Else
 
-        If fac.OrdenPagoId > 0 Then
-            If BuscarEnColeccion(ordenes, CStr(fac.OrdenPagoId)) Then
-                detalle.Comprobante = detalle.Comprobante & " (Op." & fac.OrdenPagoId & " " & ordenes.item(CStr(fac.OrdenPagoId)).FEcha & ")"
+            If fac.OrdenPagoId > 0 Then
+                If BuscarEnColeccion(ordenes, CStr(fac.OrdenPagoId)) Then
+                    detalle.Comprobante = detalle.Comprobante & " (Op." & fac.OrdenPagoId & " " & ordenes.item(CStr(fac.OrdenPagoId)).FEcha & ")"
 
 
 
+
+                End If
 
             End If
-
         End If
-    End If
 
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
             detalle.Haber = fac.Total
@@ -374,10 +374,10 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
 
         Set Detalles = New Collection
         Dim Id As Long
-Id = 0
+        Id = 0
         Set rs = conectar.RSFactory("SELECT * FROM tmp_cta_cte_sort ORDER BY fecha ASC")
         While Not rs.EOF
-        Id = Id + 1
+            Id = Id + 1
             Set detalle = New DTODetalleCuentaCorriente
             detalle.tmpId = Id
             detalle.Comprobante = rs!Comprobante
@@ -461,34 +461,34 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
     For Each Orden In ordenes
         'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
 
-       ' If Orden.estado <> EstadoOrdenPago_Anulada Then
-            Set detalle = New DTODetalleCuentaCorriente
-            detalle.Comprobante = "OP-" & Orden.Id
-            
-            '#178
-            If (Orden.estado = EstadoOrdenPago_pendiente) Then
-                detalle.Comprobante = detalle.Comprobante & " (Pendiente)"
-            End If
-            
-            If (Orden.estado = EstadoOrdenPago_Anulada) Then
-                detalle.Comprobante = detalle.Comprobante & " (Anulada)"
-            End If
-            
-            detalle.tipoComprobante = OrdenPago_
-            detalle.IdComprobante = Orden.Id
+        ' If Orden.estado <> EstadoOrdenPago_Anulada Then
+        Set detalle = New DTODetalleCuentaCorriente
+        detalle.Comprobante = "OP-" & Orden.Id
 
-            If (Orden.estado = EstadoOrdenPago_Anulada) Then
-            
-                    detalle.Haber = 0
-            Else
-            
-            
+        '#178
+        If (Orden.estado = EstadoOrdenPago_pendiente) Then
+            detalle.Comprobante = detalle.Comprobante & " (Pendiente)"
+        End If
+
+        If (Orden.estado = EstadoOrdenPago_Anulada) Then
+            detalle.Comprobante = detalle.Comprobante & " (Anulada)"
+        End If
+
+        detalle.tipoComprobante = OrdenPago_
+        detalle.IdComprobante = Orden.Id
+
+        If (Orden.estado = EstadoOrdenPago_Anulada) Then
+
+            detalle.Haber = 0
+        Else
+
+
             detalle.Haber = funciones.RedondearDecimales(Orden.TotalOrdenPago)          '.StaticTotalFacturas + Orden.TotalCompensatorios)
-            End If
-            detalle.FEcha = Orden.FEcha
-            
-            Detalles.Add detalle
-      ' End If
+        End If
+        detalle.FEcha = Orden.FEcha
+
+        Detalles.Add detalle
+        ' End If
     Next Orden
 
     Dim facturas As Collection
@@ -513,22 +513,22 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         Else
             detalle.Comprobante = fac.NumeroFormateado
         End If
-        
+
         detalle.tipoComprobante = TipoComprobanteUsado.FacturaProveedor_
         detalle.IdComprobante = fac.Id
-        
+
         If InStr(fac.OrdenesPagoId, ",") > 0 Then
-          detalle.Comprobante = detalle.Comprobante & " (Ops." & fac.OrdenesPagoId & ")"
-       Else
-        
-        If fac.OrdenPagoId > 0 Then
-            If BuscarEnColeccion(ordenes, CStr(fac.OrdenPagoId)) Then
-                detalle.Comprobante = detalle.Comprobante & " (Op." & fac.OrdenPagoId & " " & ordenes.item(CStr(fac.OrdenPagoId)).FEcha & ")"
+            detalle.Comprobante = detalle.Comprobante & " (Ops." & fac.OrdenesPagoId & ")"
+        Else
+
+            If fac.OrdenPagoId > 0 Then
+                If BuscarEnColeccion(ordenes, CStr(fac.OrdenPagoId)) Then
+                    detalle.Comprobante = detalle.Comprobante & " (Op." & fac.OrdenPagoId & " " & ordenes.item(CStr(fac.OrdenPagoId)).FEcha & ")"
+
+                End If
 
             End If
-
         End If
-    End If
 
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
             detalle.Haber = fac.Total
@@ -547,10 +547,10 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         Detalles.Add detalle
     Next fac
 
-   
+
     If sortCollection And Detalles.count > 0 Then
         Dim q As String
-        
+
         ' Agrego esto 7 y 8
         Dim saldo As Double
         saldo = 0
@@ -565,7 +565,7 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
             q = "INSERT INTO tmp_cta_cte_sort VALUES ('fecha', 'comprobante', 'debe', 'haber', 'extra','id_comprobante', 'tipo_comprobante')"
             ' Agrego esto 6
             saldo = saldo + detalle.Debe - detalle.Haber
-            
+
             q = Replace$(q, "'fecha'", Escape(detalle.FEcha))
             q = Replace$(q, "'comprobante'", Escape(detalle.Comprobante))
             q = Replace$(q, "'debe'", Escape(detalle.Debe))
@@ -584,14 +584,14 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
 
         Set Detalles = New Collection
         Dim Id As Long
-Id = 0
+        Id = 0
         Set rs = conectar.RSFactory("SELECT * FROM tmp_cta_cte_sort ORDER BY fecha ASC")
-        
-        While Not rs.EOF
-        Id = Id + 1
 
-        'Agrego esto 2
-        saldo = saldo + rs!Debe - rs!Haber
+        While Not rs.EOF
+            Id = Id + 1
+
+            'Agrego esto 2
+            saldo = saldo + rs!Debe - rs!Haber
 
             Set detalle = New DTODetalleCuentaCorriente
             detalle.tmpId = Id
@@ -603,7 +603,7 @@ Id = 0
             detalle.tipoComprobante = rs!tipo_comprobante
             detalle.IdComprobante = rs!id_comprobante
 
-        'Agrego esto 3
+            'Agrego esto 3
             detalle.saldo = saldo
 
             Detalles.Add detalle
@@ -616,14 +616,14 @@ End Function
 
 
 Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As Boolean = True, Optional fecha_hasta As String) As Collection
-    'si se llama desde resumen de saldo no se necesita que este ordenado y me ahorro el overhead del ordenado por la base de datos
+'si se llama desde resumen de saldo no se necesita que este ordenado y me ahorro el overhead del ordenado por la base de datos
 
     Dim detalle As DTODetalleCuentaCorriente
     Dim Detalles As New Collection
     Dim q As String
     Dim rs As Recordset
 
-    
+
     Set rs = conectar.RSFactory("SELECT saldo_inicial FROM saldo_inicial_cliente WHERE id_cliente = " & id_cliente)
     If Not rs.EOF Then
         Set detalle = New DTODetalleCuentaCorriente
@@ -635,7 +635,7 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
     Dim facturas As Collection
     Dim fac As Factura
-    
+
     '12:03 AGREGO QUE TAMBIEN TENGA EN CUENTA LOS COMPROBANTES QUE ESTAN CANCELADOS PARCIALMENTE (AdminFacturas.estado = 5)
     q = "AdminFacturas.idCliente = " & id_cliente & "  and (AdminFacturas.estado = " & EstadoFacturaCliente.Aprobada & " or AdminFacturas.estado = " & EstadoFacturaCliente.CanceladaNC & " or AdminFacturas.estado = " & EstadoFacturaCliente.CanceladaNCParcial & ")"
 
@@ -643,11 +643,11 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
     If LenB(fecha_hasta) > 0 Then
         q = q & " and  AdminFacturas.FechaEmision <=" & conectar.Escape(fecha_hasta)
     End If
-    
+
     Dim recs As String
-    
+
     Set facturas = DAOFactura.FindAll(q)
-    
+
     For Each fac In facturas
         Set detalle = New DTODetalleCuentaCorriente
         detalle.Comprobante = fac.GetShortDescription(False, True)
@@ -665,30 +665,30 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
         If fac.Cancelada Then
             detalle.Comprobante = detalle.Comprobante & " (cancelada NC)"
-            
+
         End If
-        
+
         If fac.Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then
             detalle.Debe = 0
             detalle.Haber = fac.TotalEstatico.Total * fac.CambioAPatron
-            
+
         Else
             detalle.Debe = fac.TotalEstatico.Total * fac.CambioAPatron
             detalle.Haber = 0
-            
+
         End If
-        
+
         detalle.FEcha = fac.FechaEmision
         detalle.AtributoExtra = (fac.Saldado = TipoSaldadoFactura.saldadoTotal) Or (fac.Saldado = TipoSaldadoFactura.notaCredito)
         detalle.tipoComprobante = Factura_
         detalle.IdComprobante = fac.Id
-        
+
         Detalles.Add detalle
 
     Next fac
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     Dim recibos As Collection
     Dim ret As retencionRecibo
@@ -698,11 +698,11 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
     If LenB(fecha_hasta) Then
         q = q & "  AND rec.fecha<=" & conectar.Escape(fecha_hasta)
     End If
-    
+
     Set recibos = DAORecibo.FindAll(q)
 
     Dim rec As recibo
-    
+
     For Each rec In recibos
         Set detalle = New DTODetalleCuentaCorriente
 
@@ -809,7 +809,7 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 End Function
 
 Public Function ResumenSaldo() As Double
-    'pide los detalles los recorre y calcula el saldo, traer todos o por cliente?
+'pide los detalles los recorre y calcula el saldo, traer todos o por cliente?
 End Function
 
 

@@ -18,7 +18,7 @@ Private vUsuarioCreador As clsUsuario
 Private vIdReque As Long
 Private vNumero As Long
 Private vFechaEmision As Date
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 Private vFechaSolicitada As Date
 Private vProveedor As clsProveedor
 Private vDetalle As New Collection    'of peticion oferta detalle
@@ -34,11 +34,11 @@ Public Property Get Modificado() As Date
     Modificado = vModificado
 End Property
 
-Public Property Let UsuarioCreador(nvalue As clsUsuario)
+Public Property Let usuarioCreador(nvalue As clsUsuario)
     Set vUsuarioCreador = nvalue
 End Property
-Public Property Get UsuarioCreador() As clsUsuario
-    Set UsuarioCreador = vUsuarioCreador
+Public Property Get usuarioCreador() As clsUsuario
+    Set usuarioCreador = vUsuarioCreador
 End Property
 Public Property Let detalle(nvalue As Collection)
     Set vDetalle = nvalue

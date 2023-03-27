@@ -22,7 +22,7 @@ Public Entregas As New Collection    '<EntregaPetOfDetalle>
 Public EnOrdenCompra As Boolean    ' lelenarrrrrrrs
 
 Public ProveedorId As Long    'shortcut al proveeedor de la PO
-Public Moneda As clsMoneda    'shortcut a Moneda de la PO
+Public moneda As clsMoneda    'shortcut a Moneda de la PO
 
 Public estado As EstadoPeticionOfertaDetalle
 
@@ -40,11 +40,11 @@ Public Property Get Total() As Double
 End Property
 
 
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Let Terminado(nvalue As Boolean)
     vTerminado = nvalue

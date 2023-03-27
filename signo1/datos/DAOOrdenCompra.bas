@@ -15,9 +15,9 @@ Public Function FindAll(Optional whereFilter As String = vbNullString, Optional 
     Dim ordenes As New Collection
 
     q = "SELECT oc.*, p.*" _
-        & " FROM ComprasOrdenes oc" _
-        & " LEFT JOIN proveedores p ON p.id = oc.idProveedor" _
-        & " WHERE 1=1"
+      & " FROM ComprasOrdenes oc" _
+      & " LEFT JOIN proveedores p ON p.id = oc.idProveedor" _
+      & " WHERE 1=1"
 
     If LenB(whereFilter) > 0 Then q = q & " AND " & whereFilter
 
@@ -31,7 +31,7 @@ Public Function FindAll(Optional whereFilter As String = vbNullString, Optional 
     While Not rs.EOF
         'traer los detalles por afuera con el dao si son necesarios
         Set oc = DAOOrdenCompra.Map(rs, fieldsIndex, DAOOrdenCompra.TABLA_ORDEN_COMPRA, "p")
-        ordenes.Add oc, CStr(oc.id)
+        ordenes.Add oc, CStr(oc.Id)
         rs.MoveNext
     Wend
 
@@ -40,12 +40,12 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Optional ByVal tablaProveedor As String = vbNullString) As OrdenCompra
     Dim oc As OrdenCompra
-    Dim id As Long
-    id = GetValue(rs, indice, tabla, DAOOrdenCompra.CAMPO_ID)
+    Dim Id As Long
+    Id = GetValue(rs, indice, tabla, DAOOrdenCompra.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set oc = New OrdenCompra
-        oc.id = id
+        oc.Id = Id
 
         oc.estado = GetValue(rs, indice, tabla, DAOOrdenCompra.CAMPO_ESTADO)
         oc.FechaCreacion = GetValue(rs, indice, tabla, DAOOrdenCompra.CAMPO_FECHA_CREACION)
@@ -77,10 +77,10 @@ Public Function CrearOrdenCompra(po As clsPeticionOferta) As Boolean
 
     Dim q As String
     q = "INSERT INTO ComprasOrdenes" _
-        & " (idProveedor, FechaCreacion, estado) VALUES (" _
-        & po.Proveedor.id & ", " _
-        & conectar.Escape(Date) & ", " _
-        & 0 & ")"
+      & " (idProveedor, FechaCreacion, estado) VALUES (" _
+      & po.Proveedor.Id & ", " _
+      & conectar.Escape(Date) & ", " _
+      & 0 & ")"
 
     If conectar.execute(q) Then
         If conectar.UltimoId("ComprasOrdenes", IdOrdenCompra) Then
@@ -90,12 +90,12 @@ Public Function CrearOrdenCompra(po As clsPeticionOferta) As Boolean
                 For Each deta In po.detalle
 
                     q = "INSERT INTO ComprasOrdenesDetalles" _
-                        & " (id_orden_compra, id_peticion_oferta_detalle, valor, cantidad, descripcion) Values (" _
-                        & IdOrdenCompra & ", " _
-                        & deta.id & ", " _
-                        & conectar.Escape(deta.Valor) & ", " _
-                        & conectar.Escape(deta.Cantidad) & ", " _
-                        & conectar.Escape(vbNullString) & ")"
+                      & " (id_orden_compra, id_peticion_oferta_detalle, valor, cantidad, descripcion) Values (" _
+                      & IdOrdenCompra & ", " _
+                      & deta.Id & ", " _
+                      & conectar.Escape(deta.Valor) & ", " _
+                      & conectar.Escape(deta.Cantidad) & ", " _
+                      & conectar.Escape(vbNullString) & ")"
 
                     If conectar.execute(q) Then
                         IdDetalleOrdenCompra = 0
@@ -103,10 +103,10 @@ Public Function CrearOrdenCompra(po As clsPeticionOferta) As Boolean
                             If IdDetalleOrdenCompra <> 0 Then
                                 For Each entrega In deta.Entregas
                                     q = "INSERT INTO ComprasOrdenesDetallesEntregas" _
-                                        & "(fecha, cant, id_detalle_orden_compra) VALUES (" _
-                                        & conectar.Escape(entrega.FEcha) & ", " _
-                                        & entrega.Cantidad & ", " _
-                                        & IdDetalleOrdenCompra & ")"
+                                      & "(fecha, cant, id_detalle_orden_compra) VALUES (" _
+                                      & conectar.Escape(entrega.FEcha) & ", " _
+                                      & entrega.Cantidad & ", " _
+                                      & IdDetalleOrdenCompra & ")"
 
                                     If Not conectar.execute(q) Then GoTo E
                                 Next entrega
@@ -156,9 +156,9 @@ Public Function UpdateEstado(oc As OrdenCompra) As Boolean
      & " Where id = " & oc.Id
 
     q = "Update ComprasOrdenes" _
-        & " SET" _
-        & " estado = " & oc.estado _
-        & " Where id = " & oc.id
+      & " SET" _
+      & " estado = " & oc.estado _
+      & " Where id = " & oc.Id
 
     UpdateEstado = conectar.execute(q)
 End Function

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmVentasPresupuestoNuevo 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
@@ -247,7 +247,7 @@ Private Sub Guardar()
         tmpPresu.EstadoPresupuesto = ACotizar_
 
         If DAOPresupuestos.Save(tmpPresu) Then
-            DAOEvento.Publish tmpPresu.id, TipoEventoBroadcast.TEB_PresupuestoCreado
+            DAOEvento.Publish tmpPresu.Id, TipoEventoBroadcast.TEB_PresupuestoCreado
 
             Dim EVENTO As New clsEventoObserver
             Set EVENTO.Elemento = tmpPresu

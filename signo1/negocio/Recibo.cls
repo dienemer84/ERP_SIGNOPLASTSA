@@ -13,17 +13,17 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
-Public Cliente As clsCliente
+Public Id As Long
+Public cliente As clsCliente
 Public FechaCreacion As Date
 Public FechaModificacion As Date
 Public FechaAprobacion As Date
-Public UsuarioCreador As clsUsuario
-Public UsuarioAprobador As clsUsuario
+Public usuarioCreador As clsUsuario
+Public usuarioAprobador As clsUsuario
 Public estado As EstadoRecibo
 Public Redondeo As Double
 'Public PagoACuenta As Boolean NO VA MAS
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 
 Public FEcha As Date
 
@@ -64,10 +64,10 @@ Public Property Get TotalFacturas() As Double
             negativo = 1
         End If
 
-        If Me.PagosDeFacturas.Exists(CStr(F.id)) Then
+        If Me.PagosDeFacturas.Exists(CStr(F.Id)) Then
 
             'tot = tot + MonedaConverter.Convertir(Me.PagosDeFacturas.Item(CStr(F.Id)) * negativo, F.Moneda.Id, Me.Moneda.Id)
-            tot = tot + (Me.PagosDeFacturas.item(CStr(F.id)) * negativo * F.CambioAPatron)
+            tot = tot + (Me.PagosDeFacturas.item(CStr(F.Id)) * negativo * F.CambioAPatron)
         Else
             tot = tot + F.Total * negativo * F.CambioAPatron
         End If
@@ -81,7 +81,7 @@ Public Property Get TotalRetenciones() As Double
     Dim r As retencionRecibo
     Dim tot As Double
     For Each r In Me.retenciones
-        tot = tot + MonedaConverter.Convertir(r.Valor, 0, Me.Moneda.id)
+        tot = tot + MonedaConverter.Convertir(r.Valor, 0, Me.moneda.Id)
     Next r
     TotalRetenciones = tot
 End Property
@@ -91,8 +91,8 @@ Public Property Get TotalCheques() As Double
     Dim tot As Double
 
     For Each che In Me.Cheques
-        If IsSomething(che.Moneda) And IsSomething(Me.Moneda) Then
-            tot = tot + MonedaConverter.Convertir(che.Monto, che.Moneda.id, Me.Moneda.id)
+        If IsSomething(che.moneda) And IsSomething(Me.moneda) Then
+            tot = tot + MonedaConverter.Convertir(che.Monto, che.moneda.Id, Me.moneda.Id)
         End If
     Next che
     TotalCheques = tot
@@ -103,7 +103,7 @@ Public Property Get TotalOperacionesCaja() As Double
     Dim tot As Double
 
     For Each op In Me.OperacionesCaja
-        tot = tot + MonedaConverter.Convertir(op.Monto, op.Moneda.id, Me.Moneda.id)
+        tot = tot + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
     Next op
     TotalOperacionesCaja = tot
 End Property
@@ -112,7 +112,7 @@ Public Property Get TotalOperacionesBanco() As Double
     Dim tot As Double
 
     For Each op In Me.OperacionesBanco
-        tot = tot + MonedaConverter.Convertir(op.Monto, op.Moneda.id, Me.Moneda.id)
+        tot = tot + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
     Next op
     TotalOperacionesBanco = tot
 End Property
@@ -120,7 +120,7 @@ Public Property Get Total() As Double
     Total = funciones.RedondearDecimales(Me.TotalFacturas - Me.TotalRetenciones, 2)
 End Property
 Public Property Get TotalRecibido() As Double
-    TotalRecibido = funciones.RedondearDecimales(MonedaConverter.Convertir(Me.TotalCheques + Me.TotalOperacionesBanco + Me.TotalOperacionesCaja, Me.Moneda.id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(Me.Redondeo, DAOMoneda.MONEDA_PESO_ID, Me.Moneda.id), 2)
+    TotalRecibido = funciones.RedondearDecimales(MonedaConverter.Convertir(Me.TotalCheques + Me.TotalOperacionesBanco + Me.TotalOperacionesCaja, Me.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(Me.Redondeo, DAOMoneda.MONEDA_PESO_ID, Me.moneda.Id), 2)
 End Property
 Private Sub AddValidationMessage(msg As String)
     If LenB(m_validationMessages) > 0 Then m_validationMessages = m_validationMessages & vbNewLine

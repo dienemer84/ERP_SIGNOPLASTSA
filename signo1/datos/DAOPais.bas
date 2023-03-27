@@ -1,8 +1,8 @@
 Attribute VB_Name = "DAOPais"
 Option Explicit
 
-Public Function FindById(id As Long) As pais
-    Set FindById = FindAll(" And pa.id=" & id)(1)
+Public Function FindById(Id As Long) As pais
+    Set FindById = FindAll(" And pa.id=" & Id)(1)
 End Function
 
 Public Function FindAll(Optional filtro As String) As Collection
@@ -34,11 +34,11 @@ End Function
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As pais
 
     Dim pais As pais
-    Dim id As Long: id = GetValue(rs, indice, tabla, "ID")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "ID")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set pais = New pais
-        pais.id = id
+        pais.Id = Id
         pais.nombre = GetValue(rs, indice, tabla, "Nombre")
 
     End If
@@ -53,7 +53,7 @@ Public Function LlenarCombo(cbo As Xtremesuitecontrols.ComboBox)
     For Each P In col
         If IsSomething(P) Then
             cbo.AddItem P.nombre
-            cbo.ItemData(cbo.NewIndex) = P.id
+            cbo.ItemData(cbo.NewIndex) = P.Id
         End If
     Next
     If cbo.ListCount > 0 Then
@@ -67,15 +67,15 @@ Public Function Save(pais As pais) As Boolean
     Dim n As Boolean
     n = False
     On Error GoTo err1
-    If pais.id > 0 Then
-        q = "UPDATE sp.Pais  SET   Nombre = '" & UCase(pais.nombre) & "'   WHERE   ID = '" & pais.id & "' "
+    If pais.Id > 0 Then
+        q = "UPDATE sp.Pais  SET   Nombre = '" & UCase(pais.nombre) & "'   WHERE   ID = '" & pais.Id & "' "
     Else
         q = "INSERT INTO sp.Pais (Nombre)VALUES('" & UCase(pais.nombre) & "')"
         n = True
     End If
 
     If Not conectar.execute(q) Then GoTo err1
-    If n Then pais.id = conectar.UltimoId2
+    If n Then pais.Id = conectar.UltimoId2
     Exit Function
 err1:
     Save = False
