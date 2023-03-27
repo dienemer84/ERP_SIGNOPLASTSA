@@ -10,10 +10,10 @@ Dim rs As Recordset
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As Banco
     Dim Banco As Banco
     Set Banco = New Banco
-    Dim id As Long
-    id = GetValue(rs, indice, tabla, CAMPO_ID)
-    If id > 0 Then
-        Banco.id = id
+    Dim Id As Long
+    Id = GetValue(rs, indice, tabla, CAMPO_ID)
+    If Id > 0 Then
+        Banco.Id = Id
         Banco.nombre = GetValue(rs, indice, tabla, CAMPO_NOMBRE)
 
     End If
@@ -21,9 +21,9 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As B
 End Function
 
 
-Public Function GetById(id As Long) As Banco
+Public Function GetById(Id As Long) As Banco
     Dim col As Collection
-    Set col = GetAll(DAOBancos.CAMPO_ID & "=" & id)
+    Set col = GetAll(DAOBancos.CAMPO_ID & "=" & Id)
     If col.count = 0 Then
         Set GetById = Nothing
     Else
@@ -50,7 +50,7 @@ Public Function GetAll(Optional filtro As String = Empty) As Collection
     While Not rs.EOF
         Set bco = New Banco
         Set bco = Map(rs, indice, TABLA_BANCO)
-        col.Add bco, CStr(bco.id)
+        col.Add bco, CStr(bco.Id)
         rs.MoveNext
     Wend
 
@@ -67,7 +67,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     cbo.Clear
     For Each bco In col
         cbo.AddItem bco.nombre
-        cbo.ItemData(cbo.NewIndex) = bco.id
+        cbo.ItemData(cbo.NewIndex) = bco.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -78,7 +78,7 @@ Public Function Save(Banco As Banco) As Boolean
     Dim q As String
     Save = True
     Dim n As Boolean
-    If Banco.id = 0 Then
+    If Banco.Id = 0 Then
         q = "INSERT INTO sp.AdminConfigBancos  (Nombre)  Values  ('Nombre')"
         n = True
     Else
@@ -86,10 +86,10 @@ Public Function Save(Banco As Banco) As Boolean
         n = False
     End If
     q = Replace(q, "'Nombre'", Escape(Banco.nombre))
-    q = Replace(q, "'id'", Escape(Banco.id))
+    q = Replace(q, "'id'", Escape(Banco.Id))
 
     Save = conectar.execute(q)
-    If n Then Banco.id = conectar.UltimoId2
+    If n Then Banco.Id = conectar.UltimoId2
     Exit Function
 err1:
     Save = False

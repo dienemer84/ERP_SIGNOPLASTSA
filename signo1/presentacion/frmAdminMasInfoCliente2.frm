@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminMasInfoCliente2 
    Caption         =   "Resúmen de Facturación por Cliente / OT"
    ClientHeight    =   7590
@@ -489,8 +489,8 @@ Private Sub cmdImprimir_Click()
     End If
 
     footerright = "Total A Facturar: " & MonedaConverter.Patron.NombreCorto & " " & tot & Chr(10) _
-                  & "Total Facturado: " & MonedaConverter.Patron.NombreCorto & " " & totFact & Chr(10) _
-                  & "Total Pendiente: " & MonedaConverter.Patron.NombreCorto & " " & tot - totFact
+                & "Total Facturado: " & MonedaConverter.Patron.NombreCorto & " " & totFact & Chr(10) _
+                & "Total Pendiente: " & MonedaConverter.Patron.NombreCorto & " " & tot - totFact
 
 
 

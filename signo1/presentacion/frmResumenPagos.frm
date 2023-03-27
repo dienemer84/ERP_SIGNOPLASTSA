@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmResumenPagos 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Resúmen de Pagos por Período"
@@ -431,7 +431,7 @@ Dim bancos As New Collection
 
 Private Sub cmdBuscar_Click()
     Me.gridCheques.ItemCount = 0
-    Me.GridCajas.ItemCount = 0
+    Me.gridCajas.ItemCount = 0
     Me.gridBancos.ItemCount = 0
     Me.gridCompensatorios.ItemCount = 0
 
@@ -456,20 +456,20 @@ Private Sub cmdBuscar_Click()
     DAOOrdenPago.ResumenPagos Cheques, Cajas, bancos, compe, retenciones, cheques3, condition
 
     Me.gridCheques.ItemCount = 0
-    Me.GridCajas.ItemCount = 0
+    Me.gridCajas.ItemCount = 0
     Me.gridBancos.ItemCount = 0
     Me.gridCompensatorios.ItemCount = 0
     Me.gridRetenciones.ItemCount = 0
     Me.gridChequesTerceros.ItemCount = 0
 
     Me.gridCheques.ItemCount = Cheques.count
-    Me.GridCajas.ItemCount = Cajas.count
+    Me.gridCajas.ItemCount = Cajas.count
     Me.gridBancos.ItemCount = bancos.count
     Me.gridCompensatorios.ItemCount = compe.count
     Me.gridRetenciones.ItemCount = retenciones.count
     Me.gridChequesTerceros.ItemCount = cheques3.count
 
-    GridEXHelper.AutoSizeColumns GridCajas
+    GridEXHelper.AutoSizeColumns gridCajas
     GridEXHelper.AutoSizeColumns gridCheques
     GridEXHelper.AutoSizeColumns gridBancos
     GridEXHelper.AutoSizeColumns Me.gridCompensatorios
@@ -606,7 +606,7 @@ Private Sub Form_Load()
     Customize Me
 
     GridEXHelper.CustomizeGrid Me.gridCheques, False, False
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesTerceros, False, False
@@ -615,7 +615,7 @@ Private Sub Form_Load()
     Me.gridRetenciones.ItemCount = 0
     Me.gridChequesTerceros.ItemCount = 0
     Me.gridCheques.ItemCount = 0
-    Me.GridCajas.ItemCount = 0
+    Me.gridCajas.ItemCount = 0
     Me.gridBancos.ItemCount = 0
     Me.gridCompensatorios.ItemCount = 0
 End Sub

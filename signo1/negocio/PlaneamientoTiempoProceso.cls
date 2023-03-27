@@ -12,7 +12,7 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-Public id As Long
+Public Id As Long
 Public idpedido As Long
 Public idPieza As Long
 Public idDetallePedido As Long

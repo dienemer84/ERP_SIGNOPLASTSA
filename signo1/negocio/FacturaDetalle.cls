@@ -38,7 +38,7 @@ Public OtIdAnticipo As Long
 Public Factura As Factura
 
 Public Property Get detalleRemito() As remitoDetalle
-    'lazy load simulation
+'lazy load simulation
     If m_DetalleRemito Is Nothing And Me.Id > 0 And DetalleRemitoId <> -1 Then    ' creo que DetalleRemitoId tiene que ser <> -1 si no es concepto
         Set m_DetalleRemito = DAORemitoSDetalle.FindById(DetalleRemitoId)
     End If
@@ -68,7 +68,7 @@ End Property
 
 'no tiene iva ni percep
 Public Property Get NetoGravado() As Double
-    'Debug.Assert factura.numero <> 9126
+'Debug.Assert factura.numero <> 9126
 
     NetoGravado = funciones.RedondearDecimales((Me.Bruto) * ((100 - Me.PorcentajeDescuento) / 100))
 End Property
@@ -82,14 +82,14 @@ Public Property Get VerOrigen() As String
     'If Me.AplicadoARemito Then
 
 
-'debug.print (Me.AplicadoARemito)
+    'debug.print (Me.AplicadoARemito)
 
 
     If Not Me.AplicadoARemito Then
-'   Si el item no está aplicado a ningun remito, entonces...
-      If DetalleRemitoId <= 0 Then
-                VerOrigen = "CONCEPTO"
-      Else
+        '   Si el item no está aplicado a ningun remito, entonces...
+        If DetalleRemitoId <= 0 Then
+            VerOrigen = "CONCEPTO"
+        Else
             If IsSomething(Me.detalleRemito) Then
                 VerOrigen = "RTO " & rto.numero & " | " & Me.detalleRemito.VerOrigen(True)
             Else
@@ -97,14 +97,14 @@ Public Property Get VerOrigen() As String
             End If
         End If
     Else
-    
-' Si el item está aplicado a algun remito, entonces...
+
+        ' Si el item está aplicado a algun remito, entonces...
 
         Dim r As Recordset
         Dim Cant As Long
-        
+
         Set r = conectar.RSFactory("SELECT COUNT(0) as cant FROM AdminFacturasDetalleAplicacionRemitos WHERE idFacturaDetalle = " & Me.Id)
-        
+
         If Not r.EOF Then Cant = r!Cant
 
         If Cant = 1 Then
@@ -113,16 +113,16 @@ Public Property Get VerOrigen() As String
             Else
                 VerOrigen = "EL DETALLE ESTA ENLAZADO A UNA ENTREGA INEXISTENTE"
             End If
-            
+
         ElseIf Cant > 1 Then
-                VerOrigen = "APLICADO A VARIOS RTOS"
-            
+            VerOrigen = "APLICADO A VARIOS RTOS"
+
         ElseIf Cant = 0 Then
-                 If Not IsSomething(rto) Then
-                 VerOrigen = vbNullString
-                 Else
+            If Not IsSomething(rto) Then
+                VerOrigen = vbNullString
+            Else
                 VerOrigen = "ORIGEN RTO " & rto.numero & "| DE " & Me.detalleRemito.VerOrigen(True)
-                End If
+            End If
         End If
 
     End If

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAsigacionRecursos 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Asignación de Recursos para OT Nº"
@@ -181,17 +181,17 @@ Public Sub llenar(idOt As Long, col As Collection)
         If TypeName(detaVariant) = "DetalleOrdenTrabajo" Then
             Set deta = detaVariant
             'Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(deta.Id, deta.pieza.Id)
-            Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoId(deta.id)
+            Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoId(deta.Id)
         Else
             Set detadto = detaVariant
             'Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(detadto.Id, detadto.pieza.Id)
-            Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoId(0, detadto.id)
+            Set tiemposProcesos = DAOTiemposProceso.FindAllByDetallePedidoId(0, detadto.Id)
         End If
 
         For Each TiempoProceso In tiemposProcesos
-            ProcesosId.Add CStr(TiempoProceso.id), TiempoProceso.Tarea.id
-            If Not funciones.BuscarEnColeccion(tareas, CStr(TiempoProceso.Tarea.id)) Then
-                tareas.Add TiempoProceso.Tarea, CStr(TiempoProceso.Tarea.id)
+            ProcesosId.Add CStr(TiempoProceso.Id), TiempoProceso.Tarea.Id
+            If Not funciones.BuscarEnColeccion(tareas, CStr(TiempoProceso.Tarea.Id)) Then
+                tareas.Add TiempoProceso.Tarea, CStr(TiempoProceso.Tarea.Id)
             End If
         Next TiempoProceso
 
@@ -222,11 +222,11 @@ Private Sub gridTareas_SelectionChange()
     If Me.gridTareas.RowIndex(Me.gridTareas.row) > 0 Then
         Set Tarea = tareas.item(Me.gridTareas.RowIndex(Me.gridTareas.row))
         Me.lstPersonal.Clear
-        Set empleados = DAOEmpleados.GetEmpleadosByTareaId(Tarea.id)
+        Set empleados = DAOEmpleados.GetEmpleadosByTareaId(Tarea.Id)
         For Each empl In empleados
             Me.lstPersonal.AddItem empl.NombreCompleto & " (" & empl.legajo & ")"
-            Me.lstPersonal.ItemData(Me.lstPersonal.NewIndex) = empl.id
-            Me.lstPersonal.Checked(Me.lstPersonal.NewIndex) = FindAllAsignedByEmpleadoAndTiempoProcesoAndTareaId(empl.id, ProcesosId, Tarea.id).count > 0
+            Me.lstPersonal.ItemData(Me.lstPersonal.NewIndex) = empl.Id
+            Me.lstPersonal.Checked(Me.lstPersonal.NewIndex) = FindAllAsignedByEmpleadoAndTiempoProcesoAndTareaId(empl.Id, ProcesosId, Tarea.Id).count > 0
         Next empl
     End If
 End Sub
@@ -246,7 +246,7 @@ Private Sub lstPersonal_ItemCheck(ByVal item As Long)
 
     'delete antes por si las moscas
     Dim q As String
-    q = "DELETE FROM PlaneamientoTiemposProcesosDetalle WHERE idTiemposProcesos IN (" & funciones.JoinDictionaryKeyValues(ProcesosId, ", ") & ") AND inico = '0000-00-00 00:00:00' AND legajo = " & empleados.item(CStr(Me.lstPersonal.ItemData(item))).id
+    q = "DELETE FROM PlaneamientoTiemposProcesosDetalle WHERE idTiemposProcesos IN (" & funciones.JoinDictionaryKeyValues(ProcesosId, ", ") & ") AND inico = '0000-00-00 00:00:00' AND legajo = " & empleados.item(CStr(Me.lstPersonal.ItemData(item))).Id
     If Not conectar.execute(q) Then GoTo E
 
     If Me.lstPersonal.Checked(item) Then
@@ -254,7 +254,7 @@ Private Sub lstPersonal_ItemCheck(ByVal item As Long)
         Dim procId As Variant
         Dim tpd As PlaneamientoTiempoProcesoDetalle
         For Each procId In ProcesosId
-            If ProcesosId.item(procId) = Tarea.id Then
+            If ProcesosId.item(procId) = Tarea.Id Then
                 Set tpd = New PlaneamientoTiempoProcesoDetalle
                 tpd.IdPlaneamientoTiempoProceso = procId
                 Set tpd.Empleado = empleados.item(CStr(Me.lstPersonal.ItemData(item)))

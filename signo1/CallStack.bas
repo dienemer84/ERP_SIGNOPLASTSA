@@ -64,21 +64,21 @@ Public Sub RuntimeError( _
        ByVal objErr As ErrObject, _
        Optional ByVal ErrLine As Long = 0, _
        Optional ByVal UserDescription As String = "" _
-       )
+     )
 Attribute RuntimeError.VB_Description = "Function called from error handler to log error"
 
-    '--------------------------------------------------------------------------------
-    ' Procedure  : RuntimeError
-    ' Created by : Paul Welter
-    ' Date-Time  : 2/20/2002 3:08:24 PM
-    ' ##SUMMARY Function called from error handler to log error
-    ' ##PARAM ModuleName Name of the module the error occurred in
-    ' ##PARAM ProcedureName Name of the method the error occurred in
-    ' ##PARAM objErr The error object
-    ' ##PARAM ErrLine The line number that the error occurred on. User _
-      ERL and add line numbers to method to get this information.
-    ' ##PARAM UserDescription Optional developer description of error
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : RuntimeError
+' Created by : Paul Welter
+' Date-Time  : 2/20/2002 3:08:24 PM
+' ##SUMMARY Function called from error handler to log error
+' ##PARAM ModuleName Name of the module the error occurred in
+' ##PARAM ProcedureName Name of the method the error occurred in
+' ##PARAM objErr The error object
+' ##PARAM ErrLine The line number that the error occurred on. User _
+  ERL and add line numbers to method to get this information.
+' ##PARAM UserDescription Optional developer description of error
+'--------------------------------------------------------------------------------
 
     Dim strMsgText As String    '  text of error report
     Dim strDebugMsg As String
@@ -129,18 +129,18 @@ Public Sub StackAdd( _
        ByVal ModuleName As String, _
        ByVal ProcedureName As String, _
        ParamArray ParamList() _
-       )
+     )
 Attribute StackAdd.VB_Description = "Adds a procedure to the debug call stack"
 
-    '--------------------------------------------------------------------------------
-    ' Procedure  : StackAdd
-    ' Created by : Paul Welter
-    ' Date-Time  : 2/20/2002 2:45:14 PM
-    ' ##SUMMARY Adds a procedure to the debug call stack
-    ' ##PARAM ModuleName The name of the class or module
-    ' ##PARAM ProcedureName The name of the method that is currently being executing
-    ' ##PARAM ParamList List of input parameter for the current method
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : StackAdd
+' Created by : Paul Welter
+' Date-Time  : 2/20/2002 2:45:14 PM
+' ##SUMMARY Adds a procedure to the debug call stack
+' ##PARAM ModuleName The name of the class or module
+' ##PARAM ProcedureName The name of the method that is currently being executing
+' ##PARAM ParamList List of input parameter for the current method
+'--------------------------------------------------------------------------------
     On Error Resume Next
 
     Dim intCounter As Integer
@@ -179,12 +179,12 @@ End Sub
 
 Public Sub StackRemove()
 Attribute StackRemove.VB_Description = "Removes the last call from the stack"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : StackRemove
-    ' Created by : Paul Welter
-    ' Date-Time  : 2/20/2002 3:07:08 PM
-    ' ##SUMMARY Removes the last call from the stack
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : StackRemove
+' Created by : Paul Welter
+' Date-Time  : 2/20/2002 3:07:08 PM
+' ##SUMMARY Removes the last call from the stack
+'--------------------------------------------------------------------------------
 
     On Error Resume Next
 
@@ -217,13 +217,13 @@ End Sub
 
 Public Function StackRead() As String
 Attribute StackRead.VB_Description = "Formats the CallStack to a string message for error logging"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : StackRead
-    ' Created by : Paul Welter
-    ' Date-Time  : 2/20/2002 3:32:57 PM
-    ' ##SUMMARY Formats the CallStack to a string message for error logging
-    ' ##RETURNS Returns a formatted string from the call stack
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : StackRead
+' Created by : Paul Welter
+' Date-Time  : 2/20/2002 3:32:57 PM
+' ##SUMMARY Formats the CallStack to a string message for error logging
+' ##RETURNS Returns a formatted string from the call stack
+'--------------------------------------------------------------------------------
 
     On Error Resume Next
 
@@ -253,17 +253,17 @@ End Function
 Public Function WriteLogFile( _
        ByVal v_strMessage As String, _
        Optional ByVal v_strPath As String = "" _
-       ) As Boolean
+     ) As Boolean
 Attribute WriteLogFile.VB_Description = "Writes text to a log file"
 
-    '--------------------------------------------------------------------------------
-    ' Procedure  : WriteLogFile
-    ' Created by : Paul Welter
-    ' Date-Time  : 7/29/2002 - 9:33:40 AM
-    ' ##SUMMARY Writes text to a log file
-    ' ##PARAM v_strMessage The message to write to the log file
-    ' ##PARAM v_strPath The path of the log file. Defaults to App.Path\Logfiles.
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : WriteLogFile
+' Created by : Paul Welter
+' Date-Time  : 7/29/2002 - 9:33:40 AM
+' ##SUMMARY Writes text to a log file
+' ##PARAM v_strMessage The message to write to the log file
+' ##PARAM v_strPath The path of the log file. Defaults to App.Path\Logfiles.
+'--------------------------------------------------------------------------------
 
     On Error GoTo ExitPoint:
 
@@ -314,12 +314,12 @@ ExitPoint:
 End Function
 Public Sub ClearError()
 Attribute ClearError.VB_Description = "Clears global error properties"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : ClearError
-    ' Created by : Paul Welter
-    ' Date-Time  : 9/17/2002 - 2:22:52 PM
-    ' ##SUMMARY Clears global error properties
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : ClearError
+' Created by : Paul Welter
+' Date-Time  : 9/17/2002 - 2:22:52 PM
+' ##SUMMARY Clears global error properties
+'--------------------------------------------------------------------------------
 
     On Error Resume Next
 
@@ -332,12 +332,12 @@ End Sub
 
 Private Function VarToString(ByVal v_varVariable As Variant) As String
 Attribute VarToString.VB_Description = "Converts a variable to a string value"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : VarToString
-    ' Created by : Paul Welter
-    ' Date-Time  : 7/29/2002 - 9:34:20 AM
-    ' ##SUMMARY Converts a variable to a string value
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : VarToString
+' Created by : Paul Welter
+' Date-Time  : 7/29/2002 - 9:34:20 AM
+' ##SUMMARY Converts a variable to a string value
+'--------------------------------------------------------------------------------
 
     On Error Resume Next
 
@@ -345,22 +345,22 @@ Attribute VarToString.VB_Description = "Converts a variable to a string value"
         VarToString = "{Array}"
     Else
         Select Case VarType(v_varVariable)
-            Case vbInteger, vbLong, vbByte, vbSingle, vbDouble, vbCurrency, vbBoolean, vbDecimal
-                VarToString = CStr(v_varVariable)
-            Case vbDate
-                VarToString = "'" & CStr(v_varVariable) & "'"
-            Case vbError
-                VarToString = ""
-            Case vbEmpty
-                VarToString = "{Empty}"
-            Case vbNull
-                VarToString = "{Null}"
-            Case vbString
-                VarToString = "'" & v_varVariable & "'"
-            Case vbObject
-                VarToString = "{" & TypeName(v_varVariable) & "}"    'Value of Nothing will be shown as "Nothing"
-            Case Else
-                VarToString = "{?}"
+        Case vbInteger, vbLong, vbByte, vbSingle, vbDouble, vbCurrency, vbBoolean, vbDecimal
+            VarToString = CStr(v_varVariable)
+        Case vbDate
+            VarToString = "'" & CStr(v_varVariable) & "'"
+        Case vbError
+            VarToString = ""
+        Case vbEmpty
+            VarToString = "{Empty}"
+        Case vbNull
+            VarToString = "{Null}"
+        Case vbString
+            VarToString = "'" & v_varVariable & "'"
+        Case vbObject
+            VarToString = "{" & TypeName(v_varVariable) & "}"    'Value of Nothing will be shown as "Nothing"
+        Case Else
+            VarToString = "{?}"
         End Select
     End If
 

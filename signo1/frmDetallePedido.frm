@@ -584,12 +584,12 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Command2_Click()
-    frmMaterializacion.id = m_pedido.id
+    frmMaterializacion.Id = m_pedido.Id
     frmMaterializacion.Ot = True
     frmMaterializacion.otro = False
     frmMaterializacion.presu = False
     frmMaterializacion.Show
-    
+
 End Sub
 
 Private Sub mostrarDetalles()
@@ -598,8 +598,8 @@ Private Sub mostrarDetalles()
     Me.lblFormaPagoSaldo = m_pedido.CondicionesComercialesSaldo
     Me.lblCliente = m_pedido.cliente.razon
     Me.lblDetalle = m_pedido.descripcion
-    
-    
+
+
     Dim creador As String, aprobador As String, modificador As String, finalizador As String
     creador = m_pedido.usuario.usuario
 
@@ -652,14 +652,14 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-    Set m_pedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_pedido.id)
-    Me.caption = "OT Nro. " & Format(m_pedido.id, "0000")
+    Set m_pedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_pedido.Id)
+    Me.caption = "OT Nro. " & Format(m_pedido.Id, "0000")
     GridEXHelper.CustomizeGrid Me.grilla
-    
+
     If m_pedido.EsHija Then
-    Me.caption = Me.caption & " (Corresponde a OTA " & m_pedido.OTMarcoIdPadre & ")"
+        Me.caption = Me.caption & " (Corresponde a OTA " & m_pedido.OTMarcoIdPadre & ")"
     End If
-    
+
     mostrarDetalles
     llenarLista
 
@@ -667,10 +667,10 @@ Private Sub Form_Load()
     Set m_Archivos_detalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
 
     Me.grilla.Columns(4).Visible = Permisos.sistemaVerPrecios
-    
-        ''Me.caption = caption & " (" & Name & ")"
-        
-        
+
+    ''Me.caption = caption & " (" & Name & ")"
+
+
 End Sub
 
 Private Sub llenarLista()
@@ -683,11 +683,11 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
     On Error Resume Next
     Set rectmp = m_pedido.Detalles(RowIndex)    'grilla.RowIndex(grilla.row))
 
-    If ColIndex = 8 And m_Archivos.item(rectmp.Pieza.id) > 0 Then
+    If ColIndex = 8 And m_Archivos.item(rectmp.Pieza.Id) > 0 Then
         IconIndex = 1
     End If
 
-    If ColIndex = 9 And m_archivos_Detalles.item(rectmp.id) > 0 Then
+    If ColIndex = 9 And m_archivos_Detalles.item(rectmp.Id) > 0 Then
         IconIndex = 1
     End If
 
@@ -727,7 +727,7 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
     Set rectmp = m_pedido.Detalles(RowIndex)
-    
+
     With rectmp
         Values(1) = rectmp.item
         Values(2) = rectmp.Nota
@@ -738,8 +738,8 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(7) = IIf(rectmp.Pieza.EsConjunto, "Conjunto", "Unidad")
         Values(8) = rectmp.Pieza.nombre
 
-        Values(9) = m_Archivos.item(rectmp.Pieza.id)
-        Values(10) = m_Archivos_detalle.item(rectmp.id)
+        Values(9) = m_Archivos.item(rectmp.Pieza.Id)
+        Values(10) = m_Archivos_detalle.item(rectmp.Id)
 
 
     End With
@@ -757,26 +757,26 @@ End Sub
 Private Sub mnuArchivosPedido_Click()
     Dim frmar2 As New frmArchivos2
     frmar2.Origen = OrigenArchivos.OA_OrdenesTrabajoDetalle
-    frmar2.ObjetoId = rectmp.id
+    frmar2.ObjetoId = rectmp.Id
     frmar2.caption = "OT Nº " & m_pedido.IdFormateado & " - Item " & rectmp.item & " [" & rectmp.Pieza.nombre & "]"
     frmar2.Show
 End Sub
 Private Sub mnuArchivosPieza_Click()
     Dim frmar1 As New frmArchivos2
     frmar1.Origen = OrigenArchivos.OA_Piezas
-    frmar1.ObjetoId = rectmp.Pieza.id
+    frmar1.ObjetoId = rectmp.Pieza.Id
     frmar1.caption = "Pieza " & rectmp.Pieza.nombre
     frmar1.Show
 End Sub
 Private Sub mnuInciPedido_Click()
     Dim frminci1 As New frmVerIncidencias
-    frminci1.referencia = rectmp.id
+    frminci1.referencia = rectmp.Id
     frminci1.Origen = OI_OrdenesTrabajoDetalles
     frminci1.Show
 End Sub
 Private Sub mnuInciPieza_Click()
     Dim frminci2 As New frmVerIncidencias
-    frminci2.referencia = rectmp.Pieza.id
+    frminci2.referencia = rectmp.Pieza.Id
     frminci2.Origen = OI_Piezas
     frminci2.Show
 End Sub
@@ -786,7 +786,7 @@ End Sub
 Private Sub VerDesarrollo_Click()
     Dim F As New frmDesarrollo
     Load F
-    F.CargarPieza rectmp.Pieza.id
+    F.CargarPieza rectmp.Pieza.Id
     F.Show
 End Sub
 

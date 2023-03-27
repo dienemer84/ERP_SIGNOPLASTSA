@@ -412,7 +412,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   58654720
+         Format          =   58589184
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -425,7 +425,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58654721
+         Format          =   58589185
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -438,7 +438,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   58654721
+         Format          =   58589185
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -927,62 +927,62 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
 
         If Not rs.EOF And Not rs.BOF Then
 
-'
-              Me.Frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
-              
+            '
+            Me.Frame2.caption = "[ Resultado Padrón  " & rs!detalle & "]"
 
-          '   Me.lblGrupo = rs!GrupoPercepcion
+
+            '   Me.lblGrupo = rs!GrupoPercepcion
             Me.lblAlicuotaP = rs!alicuotaPercepcion
 
-              
-              
-           
+
+
+
             Me.lblAlicuotaR = rs!alicuotaRetencion
 
-                       If Not IsNull(rs.Fields("FechaDesdePercepcion").value) Then
-                        Me.lblVigenciaDesdeP = ConvertirAFecha(rs!FechaDesdePercepcion)
-                       End If
-                       
-                       If Not IsNull(rs.Fields("FechaDesdeRetencion").value) Then
-                        Me.lblVigenciaDesdeR = ConvertirAFecha(rs!FechaDesdeRetencion)
-                       End If
-                       
-                       If Not IsNull(rs.Fields("FechaHastaPercepcion").value) Then
-                      Me.lblVigenciaHastaP = ConvertirAFecha(rs!FechaHastaPercepcion)
-                       End If
-                       
-                        If Not IsNull(rs.Fields("FechaHastaRetencion").value) Then
-                        Me.lblVigenciaHastaR = ConvertirAFecha(rs!FechaHastaRetencion)
-                       End If
-            
-'             Me.lblVigenciaDesdeR = rs!FechaDesdeRetencion
-'             Me.lblVigenciaHastaP = rs!FechaHastaPercepcion
-'             Me.lblVigenciaHastaR = rs!FechaHastaRetencion
-             
-'            f_desde_anio = Right(FechaDesde, 4)
-'            f_desde_mes = Mid(FechaDesde, 3, 2)
-'            f_desde_dia = Mid(FechaDesde, 1, 2)
-'            Me.Fdesde = f_desde_dia & "/" & f_desde_mes & "/" & f_desde_anio
+            If Not IsNull(rs.Fields("FechaDesdePercepcion").value) Then
+                Me.lblVigenciaDesdeP = ConvertirAFecha(rs!FechaDesdePercepcion)
+            End If
 
-             '  Me.Fhasta = rs!FechaHasta
-'            f_hasta_anio = Right(FechaHasta, 4)
-'            f_hasta_mes = Mid(FechaHasta, 3, 2)
-'            f_hasta_dia = Mid(FechaHasta, 1, 2)
-'            Me.Fhasta = f_hasta_dia & "/" & f_hasta_mes & "/" & f_hasta_anio
+            If Not IsNull(rs.Fields("FechaDesdeRetencion").value) Then
+                Me.lblVigenciaDesdeR = ConvertirAFecha(rs!FechaDesdeRetencion)
+            End If
 
+            If Not IsNull(rs.Fields("FechaHastaPercepcion").value) Then
+                Me.lblVigenciaHastaP = ConvertirAFecha(rs!FechaHastaPercepcion)
+            End If
 
-'            fechapub = rs!FechaPublicacion
-'            f_pub_anio = Right(fechapub, 4)
-'            f_pub_mes = Mid(fechapub, 3, 2)
-'            f_pub_dia = Mid(fechapub, 1, 2)
-'            Me.Fpublicacion = f_pub_dia & "/" & f_pub_mes & "/" & f_pub_anio
+            If Not IsNull(rs.Fields("FechaHastaRetencion").value) Then
+                Me.lblVigenciaHastaR = ConvertirAFecha(rs!FechaHastaRetencion)
+            End If
+
+            '             Me.lblVigenciaDesdeR = rs!FechaDesdeRetencion
+            '             Me.lblVigenciaHastaP = rs!FechaHastaPercepcion
+            '             Me.lblVigenciaHastaR = rs!FechaHastaRetencion
+
+            '            f_desde_anio = Right(FechaDesde, 4)
+            '            f_desde_mes = Mid(FechaDesde, 3, 2)
+            '            f_desde_dia = Mid(FechaDesde, 1, 2)
+            '            Me.Fdesde = f_desde_dia & "/" & f_desde_mes & "/" & f_desde_anio
+
+            '  Me.Fhasta = rs!FechaHasta
+            '            f_hasta_anio = Right(FechaHasta, 4)
+            '            f_hasta_mes = Mid(FechaHasta, 3, 2)
+            '            f_hasta_dia = Mid(FechaHasta, 1, 2)
+            '            Me.Fhasta = f_hasta_dia & "/" & f_hasta_mes & "/" & f_hasta_anio
 
 
-'            If Now() > Fhasta Then
-'                Me.lblVencida.Visible = True
-'            Else
-'                Me.lblVencida.Visible = False
-'            End If
+            '            fechapub = rs!FechaPublicacion
+            '            f_pub_anio = Right(fechapub, 4)
+            '            f_pub_mes = Mid(fechapub, 3, 2)
+            '            f_pub_dia = Mid(fechapub, 1, 2)
+            '            Me.Fpublicacion = f_pub_dia & "/" & f_pub_mes & "/" & f_pub_anio
+
+
+            '            If Now() > Fhasta Then
+            '                Me.lblVencida.Visible = True
+            '            Else
+            '                Me.lblVencida.Visible = False
+            '            End If
 
 
 
@@ -997,12 +997,12 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
 
 End Sub
 Public Function ConvertirAFecha(entrada As String) As String
-Dim FEcha As String
-Dim f_anio As String, f_mes As String, f_dia As String
-f_anio = Right(entrada, 4)
-f_mes = Mid(entrada, 3, 2)
- f_dia = Mid(entrada, 1, 2)
-ConvertirAFecha = f_dia & "/" & f_mes & "/" & f_anio
+    Dim FEcha As String
+    Dim f_anio As String, f_mes As String, f_dia As String
+    f_anio = Right(entrada, 4)
+    f_mes = Mid(entrada, 3, 2)
+    f_dia = Mid(entrada, 1, 2)
+    ConvertirAFecha = f_dia & "/" & f_mes & "/" & f_anio
 End Function
 
 
@@ -1053,44 +1053,44 @@ End Sub
 
 Private Sub btnBuscar_Click()
 
-    'Dim F As New frmLoading
-    
+'Dim F As New frmLoading
+
 
     Dim tabla As String
 
 
     If Me.cboPadron.ListIndex = 1 Then
-    
+
         'PADRON ACTUAL
         tabla = "Padron_Detalles_Ant"
-            
-        Else
+
+    Else
         'PADRON ANTERIOR'
-            tabla = "Padron_Detalles"
-    
+        tabla = "Padron_Detalles"
+
     End If
 
     If Me.cboRegion.ListIndex = -1 Then
-    
-    MsgBox ("Debe seleccionar el padrón correspondiente")
-    
+
+        MsgBox ("Debe seleccionar el padrón correspondiente")
+
     Else
-    
-   
-    MostrarResultado2 Me.txtCuit, Me.cboRegion.ItemData(Me.cboRegion.ListIndex), tabla
-    
-    Me.Frame5.Enabled = True
 
-    
+
+        MostrarResultado2 Me.txtCuit, Me.cboRegion.ItemData(Me.cboRegion.ListIndex), tabla
+
+        Me.Frame5.Enabled = True
+
+
     End If
-    
 
-    
-    
+
+
+
 End Sub
 
 Private Sub btnProcesar_Click()
-    
+
     On Error GoTo err4
 
     If MsgBox("¿Está seguro de continuar con el procesamiento?", vbYesNo, "Confirmación") = vbYes Then
@@ -1242,23 +1242,23 @@ End Sub
 
 Private Sub Form_Load()
 
-   'Me.Left = (Screen.Width - Me.Width) / 2
-   'Me.Top = (Screen.Height - Me.Height) / 5
-    
+'Me.Left = (Screen.Width - Me.Width) / 2
+'Me.Top = (Screen.Height - Me.Height) / 5
+
     Me.cboPadron.Clear
     cboPadron.AddItem "Actual"
     Me.cboPadron.ItemData(Me.cboPadron.NewIndex) = 0
     cboPadron.AddItem "Anterior"
     Me.cboPadron.ItemData(Me.cboPadron.NewIndex) = 1
     Me.cboPadron.ListIndex = 0
-    
-'    Me.cboTipo.Clear
-'    cboTipo.AddItem "Percepciones"
-'    Me.cboTipo.ItemData(Me.cboTipo.NewIndex) = 0
-'    cboTipo.AddItem "Retenciones"
-'    Me.cboTipo.ItemData(Me.cboTipo.NewIndex) = 1
-'    'Me.cboTipo.ListIndex = 0
-    
+
+    '    Me.cboTipo.Clear
+    '    cboTipo.AddItem "Percepciones"
+    '    Me.cboTipo.ItemData(Me.cboTipo.NewIndex) = 0
+    '    cboTipo.AddItem "Retenciones"
+    '    Me.cboTipo.ItemData(Me.cboTipo.NewIndex) = 1
+    '    'Me.cboTipo.ListIndex = 0
+
     Me.cboRegion.Clear
     cboRegion.AddItem "CABA"
     Me.cboRegion.ItemData(Me.cboRegion.NewIndex) = 2
@@ -1272,11 +1272,11 @@ Private Sub Form_Load()
     Else
         'Me.Command3.Enabled = False
     End If
-    
-   
+
+
 End Sub
 
-Private Sub TaskDialog1_ButtonClicked(ByVal id As Long, CloseDialog As Variant)
+Private Sub TaskDialog1_ButtonClicked(ByVal Id As Long, CloseDialog As Variant)
 
 End Sub
 

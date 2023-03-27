@@ -6,25 +6,25 @@ Public Const CAMPO_RUBRO As String = "rubro"
 Public Const CAMPO_INICIALES As String = "iniciales"
 Public Const CAMPO_CONTADOR As String = "contador"
 
-Public Function Save(Rubro As clsRubros) As Boolean
+Public Function Save(rubro As clsRubros) As Boolean
     On Error GoTo er1
     Dim strsql As String
-    Dim a As Long
+    Dim A As Long
     Save = True
     Dim n As Boolean
 
-    If Rubro.id = 0 Then
+    If rubro.Id = 0 Then
         n = True
-        strsql = "insert into rubros (rubro,iniciales) VALUES ('" & Rubro.Rubro & "','" & Rubro.iniciales & "')"
+        strsql = "insert into rubros (rubro,iniciales) VALUES ('" & rubro.rubro & "','" & rubro.iniciales & "')"
     Else
-        strsql = "update rubros set rubro='" & Rubro.Rubro & "',iniciales='" & Rubro.iniciales & "' where id=" & Rubro.id
+        strsql = "update rubros set rubro='" & rubro.rubro & "',iniciales='" & rubro.iniciales & "' where id=" & rubro.Id
         n = False
     End If
     Save = conectar.execute(strsql)
 
-    Rubro.id = conectar.UltimoId2
+    rubro.Id = conectar.UltimoId2
     Dim EVENTO As New clsEventoObserver
-    Set vento.Elemento = Rubro
+    Set vento.Elemento = rubro
     If n Then
         EVENTO.EVENTO = agregar_
     Else
@@ -40,9 +40,9 @@ er1:
 
 End Function
 
-Public Function FindById(id As Long) As clsRubros
+Public Function FindById(Id As Long) As clsRubros
     Dim col As Collection
-    Set col = FindAll("id = " & id)
+    Set col = FindAll("id = " & Id)
     If col.count = 0 Then
         Set FindById = Nothing
     Else
@@ -65,7 +65,7 @@ Public Function FindAll(Optional filter As String = "1=1") As Collection
 
     While Not rs.EOF
         Set r = Map(rs, fieldsIndex, "rubros")
-        rubros.Add r, CStr(r.id)
+        rubros.Add r, CStr(r.Id)
         rs.MoveNext
     Wend
 
@@ -87,8 +87,8 @@ Public Sub LlenarCombo(cbo As ComboBox)
 
     For i = 1 To col.count
         Set rub = col(i)
-        cbo.AddItem rub.iniciales & " - " & rub.Rubro
-        cbo.ItemData(cbo.NewIndex) = rub.id
+        cbo.AddItem rub.iniciales & " - " & rub.rubro
+        cbo.ItemData(cbo.NewIndex) = rub.Id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -104,8 +104,8 @@ Public Sub LlenarComboExtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
 
     For i = 1 To col.count
         Set rub = col(i)
-        cbo.AddItem rub.iniciales & " - " & rub.Rubro
-        cbo.ItemData(cbo.NewIndex) = rub.id
+        cbo.AddItem rub.iniciales & " - " & rub.rubro
+        cbo.ItemData(cbo.NewIndex) = rub.Id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -114,14 +114,14 @@ End Sub
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As clsRubros
     Dim r As clsRubros
-    Dim id As Long
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, DAORubros.CAMPO_ID)
+    Id = GetValue(rs, indice, tabla, DAORubros.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set r = New clsRubros
-        r.id = id
-        r.Rubro = GetValue(rs, indice, tabla, DAORubros.CAMPO_RUBRO)
+        r.Id = Id
+        r.rubro = GetValue(rs, indice, tabla, DAORubros.CAMPO_RUBRO)
         r.Contador = GetValue(rs, indice, tabla, DAORubros.CAMPO_CONTADOR)
         r.iniciales = GetValue(rs, indice, tabla, DAORubros.CAMPO_INICIALES)
     End If

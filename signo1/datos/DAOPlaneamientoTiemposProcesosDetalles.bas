@@ -19,8 +19,8 @@ Public Function FindAllByTiempoProceso(tiempoProcesoId As Long) As Collection
 End Function
 
 
-Public Function FindById(id As Long) As PlaneamientoTiempoProcesoDetalle
-    Dim F As String: F = "ptpd." & DAOTiemposProcesosDetalles.CAMPO_ID & " = " & id
+Public Function FindById(Id As Long) As PlaneamientoTiempoProcesoDetalle
+    Dim F As String: F = "ptpd." & DAOTiemposProcesosDetalles.CAMPO_ID & " = " & Id
     Dim col As Collection
     Set col = DAOTiemposProcesosDetalles.FindAll(F)
     If col.count > 0 Then
@@ -136,11 +136,11 @@ Public Function FindAllPorPeriodoAgrupado(filter As String) As Collection
     Dim indice As Dictionary
     Dim strsql As String
     strsql = "SELECT *,ifnull(SUM(TIMESTAMPDIFF(SECOND,inico,fin)/60)/60,0) AS suma_dif " _
-             & "FROM PlaneamientoTiemposProcesosDetalle ptpd " _
-             & "LEFT JOIN PlaneamientoTiemposProcesos ptp " _
-             & "ON ptpd.idTiemposProcesos = ptp.id " _
-             & " LEFT JOIN personal per ON per.id = ptpd.legajo" _
-             & " where 1=1 "
+           & "FROM PlaneamientoTiemposProcesosDetalle ptpd " _
+           & "LEFT JOIN PlaneamientoTiemposProcesos ptp " _
+           & "ON ptpd.idTiemposProcesos = ptp.id " _
+           & " LEFT JOIN personal per ON per.id = ptpd.legajo" _
+           & " where 1=1 "
 
     If Len(filter) > 0 Then strsql = strsql & " AND " & filter
 
@@ -155,7 +155,7 @@ Public Function FindAllPorPeriodoAgrupado(filter As String) As Collection
         Set det = Map(rs, indice, TABLA_TIEMPO_PROCESO_DETALLE, , DAOTiemposProcesosDetalles.TABLA_PERSONAL, "ptp")
         det.PlaneamientoTiempoProceso.TiempoTotalReal = rs!suma_dif
 
-        col.Add det, CStr(det.id)
+        col.Add det, CStr(det.Id)
         rs.MoveNext
     Wend
     Set FindAllPorPeriodoAgrupado = col
@@ -173,14 +173,14 @@ Public Function FindAll(filter As String, Optional ptpExtraJoin As String = vbNu
     Dim indice As Dictionary
     Dim strsql As String
     strsql = "SELECT  *" _
-             & " FROM PlaneamientoTiemposProcesosDetalle ptpd" _
-             & " LEFT JOIN usuarios usu ON ptpd.id_usuario = usu.id" _
-             & " LEFT JOIN personal per ON per.id = ptpd.legajo" _
-             & " LEFT JOIN PlaneamientoTiemposProcesos ptp ON ptp.Id = ptpd.idTiemposProcesos " & ptpExtraJoin
+           & " FROM PlaneamientoTiemposProcesosDetalle ptpd" _
+           & " LEFT JOIN usuarios usu ON ptpd.id_usuario = usu.id" _
+           & " LEFT JOIN personal per ON per.id = ptpd.legajo" _
+           & " LEFT JOIN PlaneamientoTiemposProcesos ptp ON ptp.Id = ptpd.idTiemposProcesos " & ptpExtraJoin
 
     strsql = strsql & " LEFT JOIN tareas t ON t.id = ptp.codigoTarea" _
-             & " LEFT JOIN sectores s ON s.id = t.id_sector" _
-             & " WHERE 1=1"
+           & " LEFT JOIN sectores s ON s.id = t.id_sector" _
+           & " WHERE 1=1"
     If Len(filter) > 0 Then strsql = strsql & " AND " & filter
 
 
@@ -191,7 +191,7 @@ Public Function FindAll(filter As String, Optional ptpExtraJoin As String = vbNu
 
     While Not rs.EOF And Not rs.BOF
         Set det = Map(rs, indice, TABLA_TIEMPO_PROCESO_DETALLE, TABLA_USUARIO, "per", "ptp", "t", "s")
-        col.Add det, CStr(det.id)
+        col.Add det, CStr(det.Id)
         rs.MoveNext
     Wend
     Set FindAll = col
@@ -204,12 +204,12 @@ End Function
 Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tabla As String, Optional ByRef tablaUsuario As String = vbNullString, Optional ByRef tablaPersonal As String = vbNullString, Optional ByRef tablaPTP As String = vbNullString, Optional ByRef tablaTarea As String = vbNullString, Optional ByRef tablaSectores As String = vbNullString) As PlaneamientoTiempoProcesoDetalle
 
     Dim ptpd As PlaneamientoTiempoProcesoDetalle
-    Dim id As Variant
-    id = GetValue(rs, indice, tabla, CAMPO_ID)
+    Dim Id As Variant
+    Id = GetValue(rs, indice, tabla, CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set ptpd = New PlaneamientoTiempoProcesoDetalle
-        ptpd.id = id
+        ptpd.Id = Id
         ptpd.CantidadProcesada = GetValue(rs, indice, tabla, DAOTiemposProcesosDetalles.CAMPO_CANTIDAD_PROCESADA)
         ptpd.FechaCarga = GetValue(rs, indice, tabla, DAOTiemposProcesosDetalles.CAMPO_FECHA)
         ptpd.FechaFinTarea = GetValue(rs, indice, tabla, DAOTiemposProcesosDetalles.CAMPO_FIN)
@@ -229,51 +229,51 @@ Public Function Save(tpd As PlaneamientoTiempoProcesoDetalle, Optional ByVal rep
 
     Dim q As String
 
-    If tpd.id = 0 Then
+    If tpd.Id = 0 Then
         q = "INSERT INTO PlaneamientoTiemposProcesosDetalle" _
-            & " (idTiemposProcesos," _
-            & " legajo," _
-            & " fecha," _
-            & " inico," _
-            & " fin," _
-            & " cantidad_procesada," _
-            & " id_usuario)" _
-            & " Values (" _
-            & conectar.Escape(tpd.IdPlaneamientoTiempoProceso) & "," _
-            & conectar.GetEntityId(tpd.Empleado) & "," _
-            & conectar.Escape(Now) & "," _
-            & conectar.Escape(IIf(replaceInicio, "'0000-00-00 00:00:00'", tpd.FechaInicioTarea)) & "," _
-            & conectar.Escape(tpd.FechaFinTarea) & "," _
-            & conectar.Escape(tpd.CantidadProcesada) & "," _
-            & conectar.Escape(funciones.GetUserObj().id) & ")"
+          & " (idTiemposProcesos," _
+          & " legajo," _
+          & " fecha," _
+          & " inico," _
+          & " fin," _
+          & " cantidad_procesada," _
+          & " id_usuario)" _
+          & " Values (" _
+          & conectar.Escape(tpd.IdPlaneamientoTiempoProceso) & "," _
+          & conectar.GetEntityId(tpd.Empleado) & "," _
+          & conectar.Escape(Now) & "," _
+          & conectar.Escape(IIf(replaceInicio, "'0000-00-00 00:00:00'", tpd.FechaInicioTarea)) & "," _
+          & conectar.Escape(tpd.FechaFinTarea) & "," _
+          & conectar.Escape(tpd.CantidadProcesada) & "," _
+          & conectar.Escape(funciones.GetUserObj().Id) & ")"
     Else
         q = "UPDATE PlaneamientoTiemposProcesosDetalle" _
-            & " SET" _
-            & " inico = " & conectar.Escape(tpd.FechaInicioTarea) & "," _
-            & " fin = " & conectar.Escape(tpd.FechaFinTarea) & "," _
-            & " cantidad_procesada = " & conectar.Escape(tpd.CantidadProcesada) _
-            & " Where id = " & tpd.id
+          & " SET" _
+          & " inico = " & conectar.Escape(tpd.FechaInicioTarea) & "," _
+          & " fin = " & conectar.Escape(tpd.FechaFinTarea) & "," _
+          & " cantidad_procesada = " & conectar.Escape(tpd.CantidadProcesada) _
+          & " Where id = " & tpd.Id
     End If
 
     Save = conectar.execute(q)
 End Function
 Public Function FindPromedioByTareaOfPieza(idTarea As Long, idPieza As Long) As Double
-    Dim a As Double
+    Dim A As Double
     Dim q As String
     On Error Resume Next
     q = " SELECT " _
-        & "SUM(TIMESTAMPDIFF(SECOND,inico,fin)/60) AS b,SUM(cantidad_procesada), t.codigoTarea, t.idPieza, IF(ta.cantxproc>0,(SUM(TIMESTAMPDIFF(SECOND,inico,fin)/60))/SUM(d.cantidad_procesada),SUM(TIMESTAMPDIFF(SECOND,inico,fin)/60)) AS promedio " _
-        & " FROM PlaneamientoTiemposProcesosDetalle d " _
-        & " INNER JOIN PlaneamientoTiemposProcesos t" _
-        & " ON d.idTiemposProcesos = t.id" _
-        & " INNER JOIN tareas ta ON " _
-        & " t.codigoTarea = ta.Id " _
-        & " Where t.estado = 1" _
-        & " AND t.idpieza = " & idPieza _
-        & " and t.codigoTarea=" & idTarea _
-        & " GROUP BY t.idPieza, t.codigoTarea"
-    a = 0
-    a = conectar.RSFactory(q)!promedio
+      & "SUM(TIMESTAMPDIFF(SECOND,inico,fin)/60) AS b,SUM(cantidad_procesada), t.codigoTarea, t.idPieza, IF(ta.cantxproc>0,(SUM(TIMESTAMPDIFF(SECOND,inico,fin)/60))/SUM(d.cantidad_procesada),SUM(TIMESTAMPDIFF(SECOND,inico,fin)/60)) AS promedio " _
+      & " FROM PlaneamientoTiemposProcesosDetalle d " _
+      & " INNER JOIN PlaneamientoTiemposProcesos t" _
+      & " ON d.idTiemposProcesos = t.id" _
+      & " INNER JOIN tareas ta ON " _
+      & " t.codigoTarea = ta.Id " _
+      & " Where t.estado = 1" _
+      & " AND t.idpieza = " & idPieza _
+      & " and t.codigoTarea=" & idTarea _
+      & " GROUP BY t.idPieza, t.codigoTarea"
+    A = 0
+    A = conectar.RSFactory(q)!promedio
 
-    FindPromedioByTareaOfPieza = a
+    FindPromedioByTareaOfPieza = A
 End Function

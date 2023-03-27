@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoAgregarTareaAProceso 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -224,9 +224,9 @@ Private Sub btnGuardar_Click()
 
 
     q = "insert into PlaneamientoTiemposProcesos" _
-        & " (idPedido, idPieza, idDetallePedido, idDetallePedidoConj, codigoTarea, estado, conjunto, duracion, agregado, observacion_agregado)" _
-        & " Values" _
-        & " ({idPedido}, {idPieza}, {idDetallePedido}, {idDetallePedidoConj}, {codigoTarea}, 0, {conjunto}, 0, 1, {observacion_agregado})"
+      & " (idPedido, idPieza, idDetallePedido, idDetallePedidoConj, codigoTarea, estado, conjunto, duracion, agregado, observacion_agregado)" _
+      & " Values" _
+      & " ({idPedido}, {idPieza}, {idDetallePedido}, {idDetallePedidoConj}, {codigoTarea}, 0, {conjunto}, 0, 1, {observacion_agregado})"
 
     q = Replace$(q, "{idPieza}", PIEZA_ID)
     q = Replace$(q, "{idPedido}", Me.pedido_id)
@@ -278,7 +278,7 @@ Private Sub Form_Load()
     If DAOUsuarios.GetById(funciones.getUser).Empleado Is Nothing Then
         Set sectores = DAOSectores.GetAll()
     Else
-        Set sectores = DAOSectores.GetByIdEmpleado(DAOUsuarios.GetById(funciones.getUser).Empleado.id)
+        Set sectores = DAOSectores.GetByIdEmpleado(DAOUsuarios.GetById(funciones.getUser).Empleado.Id)
     End If
 
     'FillComboBox Me.cboSectores, sectores, "Sector", "id", True

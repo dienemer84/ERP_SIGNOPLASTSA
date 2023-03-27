@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59047937
+         Format          =   59310081
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59047937
+         Format          =   59310081
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59047937
+         Format          =   59310081
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59047937
+         Format          =   59310081
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59047937
+         Format          =   59310081
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1627,10 +1627,10 @@ Private Sub AgregarEntregas(col As Collection)
             detalle.AplicadoARemito = True
             Set detalle.detalleRemito = redeta
             detalle.DetalleRemitoId = redeta.Id
-            
+
             'detalle.detalleRemito = redeta.VerOrigen
-            
-            
+
+
 
             Factura.Detalles.Add detalle
 
@@ -1640,7 +1640,7 @@ prox:
     Next redeta
 
     CargarDetalles
-    
+
     Totalizar
 End Sub
 
@@ -2533,8 +2533,8 @@ End Sub
 Private Sub CargarDetalles()
     Me.gridDetalles.ItemCount = 0
     Me.gridDetalles.ItemCount = Factura.Detalles.count
-     ActualizarCantDetalles
-    
+    ActualizarCantDetalles
+
 End Sub
 
 Private Sub ActualizarCantDetalles()
@@ -2654,10 +2654,10 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(8) = detalle.IBAplicado
         Values(9) = detalle.VerOrigen
         'Values(9) = "PRUEBA"
-        
+
         ''debug.print (detalle.VerOrigen)
         'MsgBox (detalle.VerOrigen)
-        
+
         Values(10) = detalle.idprovincia
     End If
 End Sub

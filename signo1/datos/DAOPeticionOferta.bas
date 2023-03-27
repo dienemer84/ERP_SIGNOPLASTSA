@@ -2,23 +2,23 @@ Attribute VB_Name = "DAOPeticionOferta"
 Dim rs As ADODB.Recordset
 
 
-Public Function GetById(id As Long) As clsPeticionOferta
+Public Function GetById(Id As Long) As clsPeticionOferta
 
     On Error GoTo err1
     Dim col As New Collection
     Dim po As clsPeticionOferta
-    strsql = "Select * from ComprasPeticionOferta where id=" & id
+    strsql = "Select * from ComprasPeticionOferta where id=" & Id
     Set rs = conectar.RSFactory(strsql)
     If Not rs.EOF And Not rs.BOF Then
         Set po = New clsPeticionOferta
         po.idReque = rs!id_reque
         po.FechaEmision = rs!FechaEmision
         po.FechaSolicitada = rs!FechaPedido
-        po.UsuarioCreador = DAOUsuarios.GetById(rs!UsuarioCreador)
-        po.numero = rs!id
+        po.usuarioCreador = DAOUsuarios.GetById(rs!usuarioCreador)
+        po.numero = rs!Id
         po.Modificado = Now
         po.estado = rs!estado
-        Set po.Moneda = DAOMoneda.GetById(rs!moneda_id)
+        Set po.moneda = DAOMoneda.GetById(rs!moneda_id)
         po.Proveedor = DAOProveedor.FindById(rs!id_proveedor)
         po.detalle = Nothing    'DAOPeticionOfertaDetalle.GetByIdPO(rs!id)
 
@@ -56,13 +56,13 @@ Public Function GetAll(Optional filter As String = vbNullString) As Collection
         po.idReque = rs!id_reque
         po.FechaEmision = rs!FechaEmision
         po.FechaSolicitada = rs!FechaPedido
-        po.UsuarioCreador = DAOUsuarios.GetById(rs!UsuarioCreador)
-        po.numero = rs!id
+        po.usuarioCreador = DAOUsuarios.GetById(rs!usuarioCreador)
+        po.numero = rs!Id
         'po.Modificado = Now
         po.estado = rs!estado
-        Set po.Moneda = DAOMoneda.GetById(rs!moneda_id)
+        Set po.moneda = DAOMoneda.GetById(rs!moneda_id)
         po.Proveedor = DAOProveedor.FindById(rs!id_proveedor)
-        po.detalle = DAOPeticionOfertaDetalle.FindAll(rs!id)    'Nothing 'experimental
+        po.detalle = DAOPeticionOfertaDetalle.FindAll(rs!Id)    'Nothing 'experimental
 
         po.FormaDePago = rs!FormaPago
         po.CantidadDiasPago = rs!CantDiasPago
@@ -82,18 +82,18 @@ End Function
 Public Function Update(po As clsPeticionOferta) As Boolean
     Dim q As String
     q = "UPDATE ComprasPeticionOferta SET" _
-        & " moneda_id = " & GetEntityId(po.Moneda) _
-        & ", formaPago = " & conectar.Escape(po.FormaDePago) _
-        & ", cantDiasPago = " & conectar.Escape(po.CantidadDiasPago) _
-        & ", porcentajeDescuento = " & conectar.Escape(po.PorcentajeDescuento) _
-        & ", entregaRetiramos = " & conectar.Escape(po.EntregaRetiramos) _
-        & " WHERE id = " & po.numero
+      & " moneda_id = " & GetEntityId(po.moneda) _
+      & ", formaPago = " & conectar.Escape(po.FormaDePago) _
+      & ", cantDiasPago = " & conectar.Escape(po.CantidadDiasPago) _
+      & ", porcentajeDescuento = " & conectar.Escape(po.PorcentajeDescuento) _
+      & ", entregaRetiramos = " & conectar.Escape(po.EntregaRetiramos) _
+      & " WHERE id = " & po.numero
     Update = conectar.execute(q)
 End Function
 
 
 Public Function Nueva(T As clsRequerimiento) As Boolean
-    'crea todas las peticiones de oferta de este requerimiento (para cada proveedor)
+'crea todas las peticiones de oferta de este requerimiento (para cada proveedor)
     On Error GoTo err1
 
     antestado = T.estado
@@ -106,7 +106,7 @@ Public Function Nueva(T As clsRequerimiento) As Boolean
 
         If Not Nueva Then GoTo err1
 
-        Dim id_ As Long
+        Dim Id_ As Long
         Dim colProv As Collection
         Dim colItems As Collection
         Dim colPOItems As New Collection
@@ -119,13 +119,13 @@ Public Function Nueva(T As clsRequerimiento) As Boolean
         'creo el detalle
 
         Dim entregaDetalle As EntregaPetOfDetalle
-        Dim a As clsRequeEntregas
+        Dim A As clsRequeEntregas
 
         For x = 1 To colProv.count
             Set tmpProv = colProv.item(x)
             Set po = New clsPeticionOferta
             'Debug.Print tmpProv.id & " " & tmpProv.razonFantasia
-            Set colItems = DAORequeMateriales.GetByRequeByProveedor(T.id, tmpProv.id)
+            Set colItems = DAORequeMateriales.GetByRequeByProveedor(T.Id, tmpProv.Id)
             Set colPOItems = Nothing
             For y = 1 To colItems.count
                 Set tmpDetallePO = New clsPeticionOfertaDetalle
@@ -135,12 +135,12 @@ Public Function Nueva(T As clsRequerimiento) As Boolean
                 tmpDetallePO.DetalleReque = tmpRequeDetalle
                 tmpDetallePO.FechaValor = Now
                 tmpDetallePO.Valor = 0
-                For Each a In tmpRequeDetalle.Entregas
+                For Each A In tmpRequeDetalle.Entregas
                     Set entregaDetalle = New EntregaPetOfDetalle
-                    entregaDetalle.Cantidad = a.Cantidad
-                    entregaDetalle.FEcha = a.FEcha
+                    entregaDetalle.Cantidad = A.Cantidad
+                    entregaDetalle.FEcha = A.FEcha
                     tmpDetallePO.Entregas.Add entregaDetalle
-                Next a
+                Next A
 
                 If tmpRequeDetalle.estado = Anulado Then
                     tmpDetallePO.estado = EPOD_Anulado
@@ -156,15 +156,15 @@ Public Function Nueva(T As clsRequerimiento) As Boolean
             po.FechaEmision = funciones.dateFormateada(Now)
             po.FechaSolicitada = funciones.dateFormateada(Now)
             po.Proveedor = tmpProv
-            po.UsuarioCreador = DAOUsuarios.GetById(funciones.getUser)
-            po.idReque = T.id
+            po.usuarioCreador = DAOUsuarios.GetById(funciones.getUser)
+            po.idReque = T.Id
             po.Modificado = Now
 
-            strsql = "insert into ComprasPeticionOferta (FechaEmision, FechaPedido, UsuarioCreador, id_proveedor,id_reque,estado,modificado, moneda_id)  values  ('" & Format(po.FechaEmision, "yyyy-mm-yy") & "','" & Format(po.FechaSolicitada, "yyyy-mm-yy") & "'," & po.UsuarioCreador.id & "," & po.Proveedor.id & "," & po.idReque & ",0,'" & po.Modificado & "', 0)"
+            strsql = "insert into ComprasPeticionOferta (FechaEmision, FechaPedido, UsuarioCreador, id_proveedor,id_reque,estado,modificado, moneda_id)  values  ('" & Format(po.FechaEmision, "yyyy-mm-yy") & "','" & Format(po.FechaSolicitada, "yyyy-mm-yy") & "'," & po.usuarioCreador.Id & "," & po.Proveedor.Id & "," & po.idReque & ",0,'" & po.Modificado & "', 0)"
             If Not conectar.execute(strsql) Then
                 GoTo err1
             Else
-                If conectar.UltimoId("ComprasPeticionOferta", id_) Then po.numero = id_ Else GoTo err1
+                If conectar.UltimoId("ComprasPeticionOferta", Id_) Then po.numero = Id_ Else GoTo err1
                 If Not DAOPeticionOfertaDetalle.Guardar(po) Then GoTo err1
             End If
         Next x
@@ -196,7 +196,7 @@ Public Function crearPO(Detalles As Collection) As Boolean
     Dim requeDeta As clsRequeMateriales
     Dim ent As clsRequeEntregas
     Dim q As String
-    Dim id_ As Long
+    Dim Id_ As Long
 
     crearPO = True
 
@@ -213,8 +213,8 @@ Public Function crearPO(Detalles As Collection) As Boolean
             petOf.FechaEmision = Now
             petOf.FechaSolicitada = Now
             petOf.Proveedor = prov
-            Set petOf.Moneda = prov.Moneda
-            petOf.UsuarioCreador = DAOUsuarios.GetById(funciones.getUser)
+            Set petOf.moneda = prov.moneda
+            petOf.usuarioCreador = DAOUsuarios.GetById(funciones.getUser)
             petOf.idReque = requeDeta.RequeId
             petOf.Modificado = Now
 
@@ -239,11 +239,11 @@ Public Function crearPO(Detalles As Collection) As Boolean
                 End If
             Next pair2
 
-            q = "insert into ComprasPeticionOferta (FechaEmision, FechaPedido, UsuarioCreador, id_proveedor,id_reque,estado,modificado, moneda_id)  values  ('" & Format(petOf.FechaEmision, "yyyy-mm-yy") & "','" & Format(petOf.FechaSolicitada, "yyyy-mm-yy") & "'," & petOf.UsuarioCreador.id & "," & petOf.Proveedor.id & "," & petOf.idReque & ",0,'" & petOf.Modificado & "', 0)"
+            q = "insert into ComprasPeticionOferta (FechaEmision, FechaPedido, UsuarioCreador, id_proveedor,id_reque,estado,modificado, moneda_id)  values  ('" & Format(petOf.FechaEmision, "yyyy-mm-yy") & "','" & Format(petOf.FechaSolicitada, "yyyy-mm-yy") & "'," & petOf.usuarioCreador.Id & "," & petOf.Proveedor.Id & "," & petOf.idReque & ",0,'" & petOf.Modificado & "', 0)"
             If Not conectar.execute(q) Then
                 GoTo err1
             Else
-                If conectar.UltimoId("ComprasPeticionOferta", id_) Then petOf.numero = id_ Else GoTo err1
+                If conectar.UltimoId("ComprasPeticionOferta", Id_) Then petOf.numero = Id_ Else GoTo err1
                 If Not DAOPeticionOfertaDetalle.Guardar(petOf) Then GoTo err1
             End If
 
@@ -308,20 +308,20 @@ Public Sub ExportarExcel(POid As Long, cmd As CommonDialog)
     Dim ItemCount As Long
 
     With xlsheet
-        .Range(.cells(rowStart, 1), .cells(rowStart + 3, 2)).rows.Font.Bold = True
-        .Range(.cells(rowStart, 2), .cells(rowStart + 3, 3)).HorizontalAlignment = XlHAlign.xlHAlignLeft
+        .Range(.Cells(rowStart, 1), .Cells(rowStart + 3, 2)).rows.Font.Bold = True
+        .Range(.Cells(rowStart, 2), .Cells(rowStart + 3, 3)).HorizontalAlignment = XlHAlign.xlHAlignLeft
 
 
-        .cells(rowStart, 2) = "PO Nº"
-        .cells(rowStart, 3) = vPeticion.numero
+        .Cells(rowStart, 2) = "PO Nº"
+        .Cells(rowStart, 3) = vPeticion.numero
         rowStart = rowStart + 1
 
-        .cells(rowStart, 2) = "Proveedor"
-        .cells(rowStart, 3) = vPeticion.Proveedor.RazonSocial
+        .Cells(rowStart, 2) = "Proveedor"
+        .Cells(rowStart, 3) = vPeticion.Proveedor.RazonSocial
         rowStart = rowStart + 1
 
-        .cells(rowStart, 2) = "Fecha Emisión"
-        .cells(rowStart, 3) = vPeticion.FechaEmision
+        .Cells(rowStart, 2) = "Fecha Emisión"
+        .Cells(rowStart, 3) = vPeticion.FechaEmision
         rowStart = rowStart + 1
 
         rowStart = 12
@@ -335,33 +335,33 @@ Public Sub ExportarExcel(POid As Long, cmd As CommonDialog)
 
         Dim rowInicio As Long
 
-        .cells(rowStart, 1) = "Item"
-        .cells(rowStart, 2) = "Cantidad"
-        .cells(rowStart, 3) = "UM"
-        .cells(rowStart, 4) = "Material"
-        .cells(rowStart, 5) = "Precio Unitario"
-        .cells(rowStart, 6) = "Precio Total"
-        .Range(.cells(rowStart, 1), .cells(rowStart, 6)).Interior.ColorIndex = 15
-        .Range(.cells(rowStart, 1), .cells(rowStart, 6)).rows.Font.Bold = True
-        .Range(.cells(rowStart, 1), .cells(rowStart, 6)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
+        .Cells(rowStart, 1) = "Item"
+        .Cells(rowStart, 2) = "Cantidad"
+        .Cells(rowStart, 3) = "UM"
+        .Cells(rowStart, 4) = "Material"
+        .Cells(rowStart, 5) = "Precio Unitario"
+        .Cells(rowStart, 6) = "Precio Total"
+        .Range(.Cells(rowStart, 1), .Cells(rowStart, 6)).Interior.ColorIndex = 15
+        .Range(.Cells(rowStart, 1), .Cells(rowStart, 6)).rows.Font.Bold = True
+        .Range(.Cells(rowStart, 1), .Cells(rowStart, 6)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
 
 
-        .cells(rowStart - 1, 7) = "Entregas"
-        .Range(.cells(rowStart - 1, 7), .cells(rowStart - 1, 8)).MergeCells = True
-        .cells(rowStart - 1, 7).HorizontalAlignment = VtHorizontalAlignment.VtHorizontalAlignmentFill
-        .Range(.cells(rowStart - 1, 7), .cells(rowStart - 1, 8)).Interior.ColorIndex = 15
-        .Range(.cells(rowStart - 1, 7), .cells(rowStart - 1, 8)).rows.Font.Bold = True
-        .Range(.cells(rowStart - 1, 7), .cells(rowStart - 1, 8)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
+        .Cells(rowStart - 1, 7) = "Entregas"
+        .Range(.Cells(rowStart - 1, 7), .Cells(rowStart - 1, 8)).MergeCells = True
+        .Cells(rowStart - 1, 7).HorizontalAlignment = VtHorizontalAlignment.VtHorizontalAlignmentFill
+        .Range(.Cells(rowStart - 1, 7), .Cells(rowStart - 1, 8)).Interior.ColorIndex = 15
+        .Range(.Cells(rowStart - 1, 7), .Cells(rowStart - 1, 8)).rows.Font.Bold = True
+        .Range(.Cells(rowStart - 1, 7), .Cells(rowStart - 1, 8)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
 
 
         'rowStart = rowStart + 1
-        .cells(rowStart, 7) = "Fecha"
-        .cells(rowStart, 7).HorizontalAlignment = VtHorizontalAlignment.VtHorizontalAlignmentFill
-        .cells(rowStart, 8) = "Cantidad"
-        .cells(rowStart, 8).HorizontalAlignment = VtHorizontalAlignment.VtHorizontalAlignmentFill
-        .Range(.cells(rowStart, 7), .cells(rowStart, 8)).Interior.ColorIndex = 15
-        .Range(.cells(rowStart, 7), .cells(rowStart, 8)).rows.Font.Bold = True
-        .Range(.cells(rowStart, 7), .cells(rowStart, 8)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
+        .Cells(rowStart, 7) = "Fecha"
+        .Cells(rowStart, 7).HorizontalAlignment = VtHorizontalAlignment.VtHorizontalAlignmentFill
+        .Cells(rowStart, 8) = "Cantidad"
+        .Cells(rowStart, 8).HorizontalAlignment = VtHorizontalAlignment.VtHorizontalAlignmentFill
+        .Range(.Cells(rowStart, 7), .Cells(rowStart, 8)).Interior.ColorIndex = 15
+        .Range(.Cells(rowStart, 7), .Cells(rowStart, 8)).rows.Font.Bold = True
+        .Range(.Cells(rowStart, 7), .Cells(rowStart, 8)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
 
 
         For Each tmpDeta In vPeticion.detalle
@@ -371,29 +371,29 @@ Public Sub ExportarExcel(POid As Long, cmd As CommonDialog)
 
             rowStart = rowStart + 1
 
-            .cells(rowStart, 1) = ItemCount
-            .cells(rowStart, 2) = tmpDeta.Total
-            .cells(rowStart + 1, 2) = tmpDeta.DetalleReque.Cantidad
-            .cells(rowStart, 2).NumberFormat = "0.00"
-            .cells(rowStart + 1, 2).NumberFormat = "0.00"
-            .cells(rowStart, 3) = enums.enumUnidades(tmpDeta.DetalleReque.Material.UnidadCompra)
-            .cells(rowStart + 1, 3) = enums.enumUnidades(tmpDeta.DetalleReque.Material.UnidadPedido)
+            .Cells(rowStart, 1) = ItemCount
+            .Cells(rowStart, 2) = tmpDeta.Total
+            .Cells(rowStart + 1, 2) = tmpDeta.DetalleReque.Cantidad
+            .Cells(rowStart, 2).NumberFormat = "0.00"
+            .Cells(rowStart + 1, 2).NumberFormat = "0.00"
+            .Cells(rowStart, 3) = enums.enumUnidades(tmpDeta.DetalleReque.Material.UnidadCompra)
+            .Cells(rowStart + 1, 3) = enums.enumUnidades(tmpDeta.DetalleReque.Material.UnidadPedido)
 
-            .cells(rowStart, 4) = tmpDeta.DetalleReque.Material.Grupo.rubros.Rubro & "  " & tmpDeta.DetalleReque.Material.Grupo.Grupo & " | " & tmpDeta.DetalleReque.Material.descripcion
-            .cells(rowStart + 1, 4) = funciones.JoinCollectionValues(tmpDeta.DetalleReque.Material.Atributos, ", ")
+            .Cells(rowStart, 4) = tmpDeta.DetalleReque.Material.Grupo.rubros.rubro & "  " & tmpDeta.DetalleReque.Material.Grupo.Grupo & " | " & tmpDeta.DetalleReque.Material.descripcion
+            .Cells(rowStart + 1, 4) = funciones.JoinCollectionValues(tmpDeta.DetalleReque.Material.Atributos, ", ")
 
-            .cells(rowStart, 5) = tmpDeta.Valor
-            .cells(rowStart, 5).NumberFormat = "0.00"
+            .Cells(rowStart, 5) = tmpDeta.Valor
+            .Cells(rowStart, 5).NumberFormat = "0.00"
             '.Range(.Cells(rowStart, 5), .Cells(rowStart, 6)).Locked = False
-            .cells(rowStart, 6) = "=(E" & rowStart & "*B" & rowStart & ")"
+            .Cells(rowStart, 6) = "=(E" & rowStart & "*B" & rowStart & ")"
 
-            .Range(.cells(rowStart, 5), .cells(rowStart, 6)).NumberFormat = "0.00"
+            .Range(.Cells(rowStart, 5), .Cells(rowStart, 6)).NumberFormat = "0.00"
 
 
             rowStart = rowStart + 2
 
-            .cells(rowStart, 4) = tmpDeta.DetalleReque.Observaciones
-            .Range(.cells(rowStart, 4), .cells(rowStart, 6)).MergeCells = True
+            .Cells(rowStart, 4) = tmpDeta.DetalleReque.observaciones
+            .Range(.Cells(rowStart, 4), .Cells(rowStart, 6)).MergeCells = True
 
 
 
@@ -402,13 +402,13 @@ Public Sub ExportarExcel(POid As Long, cmd As CommonDialog)
 
             rowStart = rowStart + 1
 
-            Set Entregas = DAORequeEntregas.GetEntregaById(tmpDeta.DetalleReque.id, material_)
+            Set Entregas = DAORequeEntregas.GetEntregaById(tmpDeta.DetalleReque.Id, material_)
             For Each entrega In Entregas
-                .cells(rowStart, 7) = entrega.FEcha
-                .cells(rowStart, 8) = entrega.Cantidad & " " & enums.enumUnidades(tmpDeta.DetalleReque.Material.UnidadPedido)
+                .Cells(rowStart, 7) = entrega.FEcha
+                .Cells(rowStart, 8) = entrega.Cantidad & " " & enums.enumUnidades(tmpDeta.DetalleReque.Material.UnidadPedido)
 
-                .Range(.cells(rowStart, 7), .cells(rowStart, 8)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
-                .Range(.cells(rowStart, 7), .cells(rowStart, 8)).Borders(xlInsideVertical).LineStyle = XlLineStyle.xlContinuous
+                .Range(.Cells(rowStart, 7), .Cells(rowStart, 8)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
+                .Range(.Cells(rowStart, 7), .Cells(rowStart, 8)).Borders(xlInsideVertical).LineStyle = XlLineStyle.xlContinuous
                 '.Range(.Cells(rowStart, 5), .Cells(rowStart, 6)).Borders(xlInsideHorizontal).LineStyle = XlLineStyle.xlContinuous
 
                 rowFin = rowStart
@@ -423,12 +423,12 @@ Public Sub ExportarExcel(POid As Long, cmd As CommonDialog)
 
 
             If rowStart - rowEntrega - 1 = 1 Then
-                .Range(.cells(rowEntrega + 1, 1), .cells(rowStart, 6)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
-                .Range(.cells(rowEntrega + 1, 1), .cells(rowStart, 6)).Interior.ColorIndex = 2
+                .Range(.Cells(rowEntrega + 1, 1), .Cells(rowStart, 6)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
+                .Range(.Cells(rowEntrega + 1, 1), .Cells(rowStart, 6)).Interior.ColorIndex = 2
             Else
 
-                .Range(.cells(rowEntrega + 1, 1), .cells(rowStart - 1, 6)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
-                .Range(.cells(rowEntrega + 1, 1), .cells(rowStart - 1, 6)).Interior.ColorIndex = 2
+                .Range(.Cells(rowEntrega + 1, 1), .Cells(rowStart - 1, 6)).BorderAround XlLineStyle.xlContinuous, xlThin, xlColorIndexAutomatic, 30
+                .Range(.Cells(rowEntrega + 1, 1), .Cells(rowStart - 1, 6)).Interior.ColorIndex = 2
             End If
 
 
@@ -440,26 +440,26 @@ Public Sub ExportarExcel(POid As Long, cmd As CommonDialog)
 
         rowStart = rowStart + 1
 
-        .Range(.cells(rowStart, 1), .cells(rowStart + 4, 1)).rows.Font.Bold = True
+        .Range(.Cells(rowStart, 1), .Cells(rowStart + 4, 1)).rows.Font.Bold = True
 
-        .cells(rowStart, 5) = "Total"
-        .cells(rowStart, 6).NumberFormat = "0.00"
-        .Range(.cells(rowStart, 6), .cells(rowStart, 6)).Formula = "=SUM(D6:D" & rowFin & ")"
-        .Range(.cells(rowStart, 5), .cells(rowStart + 4, 5)).rows.Font.Bold = True
+        .Cells(rowStart, 5) = "Total"
+        .Cells(rowStart, 6).NumberFormat = "0.00"
+        .Range(.Cells(rowStart, 6), .Cells(rowStart, 6)).Formula = "=SUM(D6:D" & rowFin & ")"
+        .Range(.Cells(rowStart, 5), .Cells(rowStart + 4, 5)).rows.Font.Bold = True
 
         rowStart = rowStart + 1
-        .cells(rowStart, 5) = "Moneda"
-        .cells(rowStart, 6) = vPeticion.Moneda.NombreCorto
+        .Cells(rowStart, 5) = "Moneda"
+        .Cells(rowStart, 6) = vPeticion.moneda.NombreCorto
         '.Range(.Cells(rowStart, 6), .Cells(rowStart, 6)).Locked = False
         rowStart = rowStart + 1
 
-        .cells(rowStart, 5) = "Forma de pago"
+        .Cells(rowStart, 5) = "Forma de pago"
         '.Range(.Cells(rowStart, 6), .Cells(rowStart, 6)).Locked = False
         rowStart = rowStart + 1
-        .cells(rowStart, 5) = "Descuento"
+        .Cells(rowStart, 5) = "Descuento"
         '.Range(.Cells(rowStart, 6), .Cells(rowStart, 6)).Locked = False
 
-        .cells.EntireColumn.AutoFit
+        .Cells.EntireColumn.AutoFit
     End With
 
 

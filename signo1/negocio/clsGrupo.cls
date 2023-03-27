@@ -16,7 +16,7 @@ Private vGrupo As String
 Private mRubros As clsRubros
 
 
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
 Public Property Let Grupo(nvalue As String)
@@ -26,8 +26,8 @@ Public Property Let rubros(nvalue As clsRubros)
     Set mRubros = nvalue
 End Property
 
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Get Grupo() As String
     Grupo = vGrupo

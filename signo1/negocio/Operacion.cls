@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public Monto As Double
 Public moneda As clsMoneda
 Public FechaCarga As Date

@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public RazonSocial As String
 Public IdOrdenPago As Long
 Public Cuit As String
@@ -40,11 +40,11 @@ End Property
 
 Public Property Get TotalRetenido() As Double
     Dim det As CertificadoRetencionDetalles
-    Dim a As Double
+    Dim A As Double
     For Each det In Detalles
-        a = a + det.TotalRetenido(Me)
+        A = A + det.TotalRetenido(Me)
     Next
-    TotalRetenido = a
+    TotalRetenido = A
 End Property
 Public Property Get DomicilioFormateado() As String
     DomicilioFormateado = Me.Domicilio & "  |  " & Me.localidad & " (" & Me.cp & ")"

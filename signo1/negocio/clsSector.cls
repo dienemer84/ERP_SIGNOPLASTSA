@@ -19,10 +19,10 @@ End Property
 Public Property Get Sector() As String
     Sector = vSector
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 

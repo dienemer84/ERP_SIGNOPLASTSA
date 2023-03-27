@@ -299,8 +299,8 @@ End Sub
 
 
 Private Sub AprobarOE_Click()
-    'Dim vidOe As Long
-    'vidOe = CLng(Me.lstOE.selectedItem)
+'Dim vidOe As Long
+'vidOe = CLng(Me.lstOE.selectedItem)
 '    If MsgBox("¿Está seguro de aprobar la O/E?", vbYesNo, "Confirmación") = vbYes Then
 '        If claseP.AprobarOrdenEntrega(vidOe) Then
 '            MsgBox "Orden de Entrega aprobada con éxito!", vbInformation, "Información"
@@ -312,7 +312,7 @@ Private Sub AprobarOE_Click()
 End Sub
 
 Private Sub cmdBuscar_Click()
-LlenarListaOE
+    LlenarListaOE
 End Sub
 
 Private Sub Command1_Click()
@@ -321,64 +321,64 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-        GridEXHelper.CustomizeGrid Me.gridEntregas, True
-        GridEXHelper.AutoSizeColumns Me.gridEntregas, True
-        Me.gridEntregas.ItemCount = 0
+    GridEXHelper.CustomizeGrid Me.gridEntregas, True
+    GridEXHelper.AutoSizeColumns Me.gridEntregas, True
+    Me.gridEntregas.ItemCount = 0
 End Sub
 
 
 
 Private Sub lstOE_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    'If Me.lstOE.ListItems.count > 0 Then
-        If Button = 2 Then
-            'IDOE = Me.lstOE.selectedItem
-            Me.OENumero.caption = "[ Nro. " & IDOE & " ]"
-            Set rs = conectar.RSFactory("select estado from PedidosEntregas where id=" & IDOE)
+'If Me.lstOE.ListItems.count > 0 Then
+    If Button = 2 Then
+        'IDOE = Me.lstOE.selectedItem
+        Me.OENumero.caption = "[ Nro. " & IDOE & " ]"
+        Set rs = conectar.RSFactory("select estado from PedidosEntregas where id=" & IDOE)
 
-            If rs!estado = 1 Then    'pendiente
-                Me.vereditar.caption = "Editar..."
-                Me.remitar.Enabled = False
-                Me.cerrarOE.Enabled = False
-                Me.RtosEntregados.Enabled = False
-                vereditarOE = 1
-                Me.printOrder.Enabled = False
-                Me.AprobarOE.Enabled = True
-            ElseIf rs!estado = 2 Then    'aprobado
-                Me.remitar.Enabled = True
-                Me.vereditar.Enabled = True
-                Me.cerrarOE.Enabled = False
-                Me.RtosEntregados.Enabled = False
-                Me.vereditar.caption = "Ver..."
-                vereditarOE = 3
-                Me.printOrder.Enabled = True
-                Me.AprobarOE.Enabled = False
-            ElseIf rs!estado = 4 Then    'entregada
-                Me.remitar.Enabled = False
-                Me.cerrarOE.Enabled = True
-                Me.RtosEntregados.Enabled = False
-                Me.vereditar.caption = "Ver..."
-                vereditarOE = 3
-                Me.printOrder.Enabled = False
-                Me.AprobarOE.Enabled = False
-            ElseIf rs!estado = 3 Then    'finalizada
-                Me.vereditar.caption = "Ver..."
-                vereditarOE = 3
-                Me.remitar.Enabled = False
-                Me.cerrarOE.Enabled = False
-                Me.RtosEntregados.Enabled = True
-                Me.printOrder.Enabled = False
-                Me.AprobarOE.Enabled = False
-            End If
-
-            If Not Permisos.planOEaprobaciones Then Me.AprobarOE.Enabled = False
-            Me.PopupMenu entrega
+        If rs!estado = 1 Then    'pendiente
+            Me.vereditar.caption = "Editar..."
+            Me.remitar.Enabled = False
+            Me.cerrarOE.Enabled = False
+            Me.RtosEntregados.Enabled = False
+            vereditarOE = 1
+            Me.printOrder.Enabled = False
+            Me.AprobarOE.Enabled = True
+        ElseIf rs!estado = 2 Then    'aprobado
+            Me.remitar.Enabled = True
+            Me.vereditar.Enabled = True
+            Me.cerrarOE.Enabled = False
+            Me.RtosEntregados.Enabled = False
+            Me.vereditar.caption = "Ver..."
+            vereditarOE = 3
+            Me.printOrder.Enabled = True
+            Me.AprobarOE.Enabled = False
+        ElseIf rs!estado = 4 Then    'entregada
+            Me.remitar.Enabled = False
+            Me.cerrarOE.Enabled = True
+            Me.RtosEntregados.Enabled = False
+            Me.vereditar.caption = "Ver..."
+            vereditarOE = 3
+            Me.printOrder.Enabled = False
+            Me.AprobarOE.Enabled = False
+        ElseIf rs!estado = 3 Then    'finalizada
+            Me.vereditar.caption = "Ver..."
+            vereditarOE = 3
+            Me.remitar.Enabled = False
+            Me.cerrarOE.Enabled = False
+            Me.RtosEntregados.Enabled = True
+            Me.printOrder.Enabled = False
+            Me.AprobarOE.Enabled = False
         End If
+
+        If Not Permisos.planOEaprobaciones Then Me.AprobarOE.Enabled = False
+        Me.PopupMenu entrega
+    End If
     'End If
 
 End Sub
 
 Private Sub gridEntregas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-On Error Resume Next
+    On Error Resume Next
     Set tmpOe = ordenes.item(RowIndex)
     With Values
         .value(1) = tmpOe.Id
@@ -393,38 +393,38 @@ On Error Resume Next
 End Sub
 
 Private Sub printOrder_Click()
-   ' If Me.lstOE.ListItems.count > 0 Then
-        'claseP.imprimirOrdenEntrega (CLng(Me.lstOE.selectedItem))
-  '  End If
+' If Me.lstOE.ListItems.count > 0 Then
+'claseP.imprimirOrdenEntrega (CLng(Me.lstOE.selectedItem))
+'  End If
 
 
 End Sub
 
 Private Sub remitar_Click()
-   'If Me.lstOE.ListItems.count > 0 Then
-        'frmRemitar.idPedidoEntrega = CLng(Me.lstOE.selectedItem)
+'If Me.lstOE.ListItems.count > 0 Then
+'frmRemitar.idPedidoEntrega = CLng(Me.lstOE.selectedItem)
 '        frmRemitar.idPe = CLng(Me.lstOE.selectedItem)
 '        frmRemitar.Frame1.caption = "[ Nro." & Me.lstOE.selectedItem & " ]"
 '        frmRemitar.Show
-   ' End If
+' End If
 End Sub
 
 
 Private Sub RtosEntregados_Click()
-  '  If Me.lstOE.ListItems.count > 0 Then
-        frmRemitosEntregados.Origen = 2
-        'frmRemitosEntregados.idPedidoEntrega = Me.lstOE.selectedItem
-        'frmRemitosEntregados.caption = "Nro." & Me.lstOE.selectedItem
-'        frmRemitosEntregados.Show
-   ' End If
+'  If Me.lstOE.ListItems.count > 0 Then
+    frmRemitosEntregados.Origen = 2
+    'frmRemitosEntregados.idPedidoEntrega = Me.lstOE.selectedItem
+    'frmRemitosEntregados.caption = "Nro." & Me.lstOE.selectedItem
+    '        frmRemitosEntregados.Show
+    ' End If
 End Sub
 
 Private Sub vereditar_Click()
     If vereditarOE = 3 Then    'ver (porque la oe esta finalziada)
-     '   frmPlaneamientoOEVer.IDOE = CLng(Me.lstOE.selectedItem)
+'   frmPlaneamientoOEVer.IDOE = CLng(Me.lstOE.selectedItem)
         frmPlaneamientoOEVer.Show
     ElseIf vereditarOE = 1 Then    'editar (porq la oe esta en proceso)
-    '    frmPlaneamientoOEEditar.IDOE = CLng(Me.lstOE.selectedItem)
+        '    frmPlaneamientoOEEditar.IDOE = CLng(Me.lstOE.selectedItem)
         frmPlaneamientoOEEditar.Show
     End If
 End Sub

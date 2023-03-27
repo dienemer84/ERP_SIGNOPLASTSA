@@ -2,14 +2,14 @@ Attribute VB_Name = "DAOCuentaCorrienteHistoric"
 Option Explicit
 
 
-Public Function GetById(TipoPersona As TipoPersona, id As Long) As CuentaCorrienteHistoric
+Public Function GetById(TipoPersona As TipoPersona, Id As Long) As CuentaCorrienteHistoric
     Dim col As New Collection
     Dim strsql As String
     Dim rs As Recordset
     Dim cta As CuentaCorrienteHistoric
     Dim rsdeta As Recordset
     Dim idx As Dictionary
-    strsql = "select * from cuenta_corriente_historic where id = " & id
+    strsql = "select * from cuenta_corriente_historic where id = " & Id
 
     Set rs = conectar.RSFactory(strsql)
     conectar.BuildFieldsIndex rs, idx
@@ -33,14 +33,14 @@ End Function
 Public Function Map(ByRef rs As Recordset, ByRef idx As Dictionary, ByRef tableNameOrAlias As String, withDetalles As Boolean) As CuentaCorrienteHistoric
 
     Dim cta As CuentaCorrienteHistoric
-    Dim id As Variant
+    Dim Id As Variant
     Dim rsdeta As Recordset
-    id = GetValue(rs, idx, tableNameOrAlias, "id")
+    Id = GetValue(rs, idx, tableNameOrAlias, "id")
 
-    If id >= 0 Then
+    If Id >= 0 Then
         Set cta = New CuentaCorrienteHistoric
         Set cta.Detalles = New Collection
-        cta.id = id
+        cta.Id = Id
 
         cta.FechaHasta = GetValue(rs, idx, tableNameOrAlias, "fecha_hasta")
         cta.id_persona = GetValue(rs, idx, tableNameOrAlias, "id_persona")
@@ -48,7 +48,7 @@ Public Function Map(ByRef rs As Recordset, ByRef idx As Dictionary, ByRef tableN
         cta.TipoPersona = GetValue(rs, idx, tableNameOrAlias, "tipo_persona")
         If withDetalles Then
             Dim deta As DTODetalleCuentaCorriente
-            Set rsdeta = conectar.RSFactory(" select * from cuenta_corriente_historic_detalle where id_cuenta_corriente_historic = " & cta.id)
+            Set rsdeta = conectar.RSFactory(" select * from cuenta_corriente_historic_detalle where id_cuenta_corriente_historic = " & cta.Id)
             While Not rsdeta.EOF
                 Set deta = New DTODetalleCuentaCorriente
                 deta.Comprobante = rsdeta!detalle
@@ -74,11 +74,11 @@ Public Function Map(ByRef rs As Recordset, ByRef idx As Dictionary, ByRef tableN
 
 End Function
 
-Public Function IsValidFechaHasta(id As Long, TipoPersona As TipoPersona, FechaHasta As String) As Boolean
+Public Function IsValidFechaHasta(Id As Long, TipoPersona As TipoPersona, FechaHasta As String) As Boolean
 
     Dim col As New Collection
     Dim cta As CuentaCorrienteHistoric
-    Set col = GetAll(TipoPersona, id, False)
+    Set col = GetAll(TipoPersona, Id, False)
     Dim valir As Boolean
     IsValidFechaHasta = True
     For Each cta In col
@@ -92,7 +92,7 @@ Public Function IsValidFechaHasta(id As Long, TipoPersona As TipoPersona, FechaH
 
 End Function
 
-Public Function GetAllDetallesFromProveedor(id As Long, Optional condicion As String = "1=1") As Collection
+Public Function GetAllDetallesFromProveedor(Id As Long, Optional condicion As String = "1=1") As Collection
 
     Dim col As New Collection
     Dim deta As DTODetalleCuentaCorriente
@@ -100,7 +100,7 @@ Public Function GetAllDetallesFromProveedor(id As Long, Optional condicion As St
     Dim strsql As String
 
     strsql = " SELECT   hd.* From   cuenta_corriente_historic h LEFT JOIN cuenta_corriente_historic_detalle hd " _
-             & " ON hd.id_cuenta_corriente_historic = h.`id`  where id_persona = " & id & " and tipo_persona= " & TipoPersona.proveedor_
+           & " ON hd.id_cuenta_corriente_historic = h.`id`  where id_persona = " & Id & " and tipo_persona= " & TipoPersona.proveedor_
 
     strsql = strsql & " and  hd.fecha<= " & condicion
 
@@ -127,14 +127,14 @@ Public Function GetAllDetallesFromProveedor(id As Long, Optional condicion As St
     Set GetAllDetallesFromProveedor = col
 End Function
 
-Public Function GetAll(TipoPersona As TipoPersona, id As Long, withDetalles As Boolean, Optional filtro As String = "1 = 1 ") As Collection
+Public Function GetAll(TipoPersona As TipoPersona, Id As Long, withDetalles As Boolean, Optional filtro As String = "1 = 1 ") As Collection
     Dim col As New Collection
     Dim strsql As String
     Dim rs As Recordset
     Dim cta As CuentaCorrienteHistoric
     Dim rsdeta As Recordset
     Dim idx As Dictionary
-    strsql = "select * from cuenta_corriente_historic where id_persona=" & id & " and tipo_persona=" & TipoPersona & " and 1 = 1 and " & filtro
+    strsql = "select * from cuenta_corriente_historic where id_persona=" & Id & " and tipo_persona=" & TipoPersona & " and 1 = 1 and " & filtro
 
     Set rs = conectar.RSFactory(strsql)
     conectar.BuildFieldsIndex rs, idx
@@ -158,7 +158,7 @@ Public Function Save(cta As CuentaCorrienteHistoric) As Boolean
     Dim strsql As String
     conectar.BeginTransaction
     strsql = "INSERT INTO cuenta_corriente_historic (periodo,id_persona,tipo_persona,fecha_hasta) VALUES " _
-             & " ('periodo', 'id_persona', 'tipo_persona', 'fecha_hasta') "
+           & " ('periodo', 'id_persona', 'tipo_persona', 'fecha_hasta') "
 
     strsql = Replace$(strsql, "'periodo'", conectar.Escape(cta.Periodo))
     strsql = Replace$(strsql, "'id_persona'", conectar.Escape(cta.id_persona))
@@ -174,7 +174,7 @@ Public Function Save(cta As CuentaCorrienteHistoric) As Boolean
 
     For Each deta In cta.Detalles
         strsql = " INSERT INTO `sp`.`cuenta_corriente_historic_detalle`    (`id_cuenta_corriente_historic`, `detalle`,`debe`,`haber`,`saldo`,`id_comprobante`,`tipo_comprobante`,fecha) " _
-                 & " VALUES ('id_cuenta_corriente_historic','detalle', 'debe','haber','saldo', 'id_comprobante', 'tipo_comprobante','fecha') "
+               & " VALUES ('id_cuenta_corriente_historic','detalle', 'debe','haber','saldo', 'id_comprobante', 'tipo_comprobante','fecha') "
         strsql = Replace$(strsql, "'id_cuenta_corriente_historic'", conectar.Escape(id_cuenta))
         strsql = Replace$(strsql, "'detalle'", conectar.Escape(deta.Comprobante))
         strsql = Replace$(strsql, "'debe'", conectar.Escape(deta.Debe))
@@ -215,7 +215,7 @@ Public Function Save(cta As CuentaCorrienteHistoric) As Boolean
         saldo_inicial = DAOCuentaCorriente.GetSaldo(cta.Detalles)
 
         strsql = "INSERT INTO `sp`.`saldo_inicial_proveedor` (`id_proveedor`, `saldo_inicial`,    `fecha`) " _
-                 & " VALUES ('id_proveedor', 'saldo_inicial', 'fecha')"
+               & " VALUES ('id_proveedor', 'saldo_inicial', 'fecha')"
 
         strsql = Replace$(strsql, "'id_proveedor'", conectar.Escape(cta.id_persona))
         strsql = Replace$(strsql, "'saldo_inicial'", conectar.Escape(saldo_inicial))

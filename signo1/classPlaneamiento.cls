@@ -186,7 +186,7 @@ Public Function informePedidoContaduria(Id As Integer, DIALOGO As Boolean, Optio
             subto = subto + (rs!Precio * rs!Cantidad)
 
             subtodto = subtodto + funciones.RedondearDecimales(rs!Precio * rs!Cantidad * (1 - (rs!Descuento / 100)))
-'            'debug.print (funciones.RedondearDecimales(rs!stotaldto) * rs!Cantidad)
+            '            'debug.print (funciones.RedondearDecimales(rs!stotaldto) * rs!Cantidad)
             c = c + 1
             rs.MoveNext
         Wend
@@ -244,15 +244,15 @@ Public Function informePedidoContaduria(Id As Integer, DIALOGO As Boolean, Optio
         pedido_contaduria.Sections("pie").Controls("lblSaldo_header").Visible = True
         If c > 0 Then rs.MoveFirst
         Set pedido_contaduria.DataSource = rs
-        
+
         '22/01/2021 DNEMER
         'Comento el envio de la impresión directa para que primero se muestre la vista previa de la hoja de Contaduria.
         'Entonces ahora va a mostrar la vista previa desde donde se puede enviar o no a IMPRIMIR
-        
+
         'pedido_contaduria.PrintReport False
 
         pedido_contaduria.Show 1
-        
+
         If Not DAOOrdenTrabajoHistorial.agregar(T, "Caratula de Contaduria previsualizado") Then
             GoTo err2
         End If
@@ -496,8 +496,8 @@ End Sub
 
 
 Public Function estaTodoFabricado(idpedido As Long) As Boolean
-    'si está todo fabricado,
-    'cambio el estado del pedido.
+'si está todo fabricado,
+'cambio el estado del pedido.
     Dim esta As Boolean
     Me.ejecutar_consulta "select dp.retirado,dp.cantidad,dp.cantidad_fabricados,dp.reserva_stock from detalles_pedidos dp, pedidos p where dp.idPedido=p.id and p.id=" & idpedido
     esta = True
@@ -1231,7 +1231,7 @@ err4:
 End Function
 
 Private Sub agregarARSmateriales(r_mat As Recordset, unidad, IdMaterial, m2kg, totUnit, codigo, descripcion, rubro, Grupo, Espesor, UN, valor_unit, fec_act, moneda)
-    'busco en el rs
+'busco en el rs
     If r_mat.RecordCount > 0 Then r_mat.MoveFirst
 
     r_mat.Find "idmaterial=" & IdMaterial

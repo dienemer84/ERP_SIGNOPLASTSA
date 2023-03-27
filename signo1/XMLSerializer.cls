@@ -97,16 +97,16 @@ End Sub
 
 Private Sub IVBSAXContentHandler_characters( _
         strChars As String _
-        )
+      )
 Attribute IVBSAXContentHandler_characters.VB_Description = "This event is fired when the sax parser reaches the contents of an xml node"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : IVBSAXContentHandler_characters
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/16/2003 - 3:02:17 PM
-    ' ##SUMMARY This event is fired when the sax parser reaches the contents of an xml node
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : IVBSAXContentHandler_characters
+' Created by : Paul Welter
+' Date-Time  : 1/16/2003 - 3:02:17 PM
+' ##SUMMARY This event is fired when the sax parser reaches the contents of an xml node
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo IVBSAXContentHandler_characters_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -137,23 +137,23 @@ IVBSAXContentHandler_characters_Error:
 End Sub
 
 Private Sub IVBSAXContentHandler_endDocument()
-    'do nothing
+'do nothing
 End Sub
 
 Private Sub IVBSAXContentHandler_endElement( _
         strNamespaceURI As String, _
         strLocalName As String, _
         strQName As String _
-        )
+      )
 Attribute IVBSAXContentHandler_endElement.VB_Description = "This event is fired when parser reached the end of an XML node"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : IVBSAXContentHandler_endElement
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/16/2003 - 3:02:57 PM
-    ' ##SUMMARY This event is fired when parser reached the end of an XML node
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : IVBSAXContentHandler_endElement
+' Created by : Paul Welter
+' Date-Time  : 1/16/2003 - 3:02:57 PM
+' ##SUMMARY This event is fired when parser reached the end of an XML node
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo IVBSAXContentHandler_endElement_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -192,31 +192,31 @@ End Sub
 
 Private Sub IVBSAXContentHandler_endPrefixMapping( _
         strPrefix As String _
-        )
-    'do nothing
+      )
+'do nothing
 End Sub
 
 Private Sub IVBSAXContentHandler_ignorableWhitespace( _
         strChars As String _
-        )
-    'do nothing
+      )
+'do nothing
 End Sub
 
 Private Sub IVBSAXContentHandler_processingInstruction( _
         strTarget As String, _
         strData As String _
-        )
-    'do nothing
+      )
+'do nothing
 End Sub
 
 Private Sub IVBSAXContentHandler_skippedEntity( _
         strName As String _
-        )
-    'do nothing
+      )
+'do nothing
 End Sub
 
 Private Sub IVBSAXContentHandler_startDocument()
-    'do nothing
+'do nothing
 End Sub
 
 Private Sub IVBSAXContentHandler_startElement( _
@@ -224,16 +224,16 @@ Private Sub IVBSAXContentHandler_startElement( _
         strLocalName As String, _
         strQName As String, _
         ByVal oAttributes As MSXML2.IVBSAXAttributes _
-        )
+      )
 Attribute IVBSAXContentHandler_startElement.VB_Description = "This event is fired when the parser reaches the start of an XML node"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : IVBSAXContentHandler_startElement
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/16/2003 - 3:03:26 PM
-    ' ##SUMMARY This event is fired when the parser reaches the start of an XML node
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : IVBSAXContentHandler_startElement
+' Created by : Paul Welter
+' Date-Time  : 1/16/2003 - 3:03:26 PM
+' ##SUMMARY This event is fired when the parser reaches the start of an XML node
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo IVBSAXContentHandler_startElement_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -257,10 +257,10 @@ Attribute IVBSAXContentHandler_startElement.VB_Description = "This event is fire
     With oAttributes
         For lCount = 0 To .Length - 1
             Select Case .getLocalName(lCount)
-                Case "Object"    'object attribute indicates this node is the start of an object
-                    sObject = .GetValue(lCount)
-                Case "Index"    'index attribute indicates this node is part of a collection
-                    sIndex = .GetValue(lCount)
+            Case "Object"    'object attribute indicates this node is the start of an object
+                sObject = .GetValue(lCount)
+            Case "Index"    'index attribute indicates this node is part of a collection
+                sIndex = .GetValue(lCount)
             End Select
         Next
     End With
@@ -298,30 +298,30 @@ End Sub
 Private Sub IVBSAXContentHandler_startPrefixMapping( _
         strPrefix As String, _
         strURI As String _
-        )
-    'do nothing
+      )
+'do nothing
 End Sub
 
 Private Property Set IVBSAXContentHandler_documentLocator( _
         ByVal RHS As MSXML2.IVBSAXLocator _
-        )
-    'do nothing
+      )
+'do nothing
 End Property
 
 Private Sub IVBSAXErrorHandler_error( _
         ByVal oLocator As MSXML2.IVBSAXLocator, _
         strErrorMessage As String, _
         ByVal nErrorCode As Long _
-        )
+      )
 Attribute IVBSAXErrorHandler_error.VB_Description = "This events is called when there is a parser error"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : IVBSAXErrorHandler_error
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/16/2003 - 3:03:42 PM
-    ' ##SUMMARY This events is called when there is a parser error
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : IVBSAXErrorHandler_error
+' Created by : Paul Welter
+' Date-Time  : 1/16/2003 - 3:03:42 PM
+' ##SUMMARY This events is called when there is a parser error
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo IVBSAXErrorHandler_error_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -350,16 +350,16 @@ Private Sub IVBSAXErrorHandler_fatalError( _
         ByVal oLocator As MSXML2.IVBSAXLocator, _
         strErrorMessage As String, _
         ByVal nErrorCode As Long _
-        )
+      )
 Attribute IVBSAXErrorHandler_fatalError.VB_Description = "This events is called when there is a fatal parser error"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : IVBSAXErrorHandler_fatalError
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/16/2003 - 3:03:51 PM
-    ' ##SUMMARY This events is called when there is a fatal parser error
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : IVBSAXErrorHandler_fatalError
+' Created by : Paul Welter
+' Date-Time  : 1/16/2003 - 3:03:51 PM
+' ##SUMMARY This events is called when there is a fatal parser error
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo IVBSAXErrorHandler_fatalError_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -388,16 +388,16 @@ Private Sub IVBSAXErrorHandler_ignorableWarning( _
         ByVal oLocator As MSXML2.IVBSAXLocator, _
         strErrorMessage As String, _
         ByVal nErrorCode As Long _
-        )
+      )
 Attribute IVBSAXErrorHandler_ignorableWarning.VB_Description = "This event is called when there is a parser warning"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : IVBSAXErrorHandler_ignorableWarning
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/16/2003 - 3:19:12 PM
-    ' ##SUMMARY This event is called when there is a parser warning
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : IVBSAXErrorHandler_ignorableWarning
+' Created by : Paul Welter
+' Date-Time  : 1/16/2003 - 3:19:12 PM
+' ##SUMMARY This event is called when there is a parser warning
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo IVBSAXErrorHandler_ignorableWarning_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -427,14 +427,14 @@ Private Function GetObjectProperty( _
         ByVal sName As String, _
         ByRef oReturnObject As Object, _
         Optional ByVal tCallType As VbCallType = VbGet _
-        ) As Boolean
+      ) As Boolean
 Attribute GetObjectProperty.VB_Description = "wrapper for CallByName for getting an object reference"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : GetObjectProperty
-    ' Created by : Paul Welter
-    ' Date-Time  : 11/18/2002 - 12:24:18 AM
-    ' ##SUMMARY wrapper for CallByName for getting an object reference
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : GetObjectProperty
+' Created by : Paul Welter
+' Date-Time  : 11/18/2002 - 12:24:18 AM
+' ##SUMMARY wrapper for CallByName for getting an object reference
+'--------------------------------------------------------------------------------
 
     On Error GoTo ErrorExit
 
@@ -451,14 +451,14 @@ Private Function GetProperty( _
         ByVal oSourceObject As Object, _
         ByVal sName As String, _
         ByRef vValue As Variant _
-        ) As Boolean
+      ) As Boolean
 Attribute GetProperty.VB_Description = "wrapper for CallByName for getting the contents of a property"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : GetProperty
-    ' Created by : Paul Welter
-    ' Date-Time  : 11/18/2002 - 12:22:41 AM
-    ' ##SUMMARY wrapper for CallByName for getting the contents of a property
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : GetProperty
+' Created by : Paul Welter
+' Date-Time  : 11/18/2002 - 12:22:41 AM
+' ##SUMMARY wrapper for CallByName for getting the contents of a property
+'--------------------------------------------------------------------------------
     On Error GoTo ErrorExit
 
     vValue = CallByName(oSourceObject, sName, VbGet)
@@ -472,12 +472,12 @@ End Function
 
 Private Function IsIgnored(ByVal sName As String) As Boolean
 Attribute IsIgnored.VB_Description = "Checks to see if name is in ignore list"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : IsIgnored
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/16/2003 - 3:19:59 PM
-    ' ##SUMMARY Checks to see if name is in ignore list
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : IsIgnored
+' Created by : Paul Welter
+' Date-Time  : 1/16/2003 - 3:19:59 PM
+' ##SUMMARY Checks to see if name is in ignore list
+'--------------------------------------------------------------------------------
     On Error Resume Next
     IsIgnored = InStr(1, ";" & m_strIgnoreList & ";", ";" & sName & ";")
 End Function
@@ -486,14 +486,14 @@ Private Function LetProperty( _
         ByVal oSourceObject As Object, _
         ByVal sName As String, _
         ByRef vValue As Variant _
-        ) As Boolean
+      ) As Boolean
 Attribute LetProperty.VB_Description = "wrapper for CallByName for passing in the contents of a property"
-    '--------------------------------------------------------------------------------
-    ' Procedure  : LetProperty
-    ' Created by : Paul Welter
-    ' Date-Time  : 11/18/2002 - 12:23:28 AM
-    ' ##SUMMARY wrapper for CallByName for passing in the contents of a property
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : LetProperty
+' Created by : Paul Welter
+' Date-Time  : 11/18/2002 - 12:23:28 AM
+' ##SUMMARY wrapper for CallByName for passing in the contents of a property
+'--------------------------------------------------------------------------------
 
     On Error GoTo ErrorExit
 
@@ -511,14 +511,14 @@ Private Function SerializeObject( _
         ByRef oSourceObject As Object, _
         Optional ByVal lItemIndex As Long = 0, _
         Optional ByVal colname As String = "") As Boolean
-    '--------------------------------------------------------------------------------
-    ' Procedure  : SerializeObject
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/14/2003 - 4:48:22 PM
-    ' ##SUMMARY recursive loop through objects to serialize them to xml
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : SerializeObject
+' Created by : Paul Welter
+' Date-Time  : 1/14/2003 - 4:48:22 PM
+' ##SUMMARY recursive loop through objects to serialize them to xml
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo SerializeObject_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -625,17 +625,17 @@ End Function
 Public Function Deserialize( _
        TargetObject As Object, _
        ByVal sXML As String _
-       ) As Boolean
+     ) As Boolean
 Attribute Deserialize.VB_Description = "Deserializes an XML document to the object reference"
 Attribute Deserialize.VB_HelpID = 2006
-    '--------------------------------------------------------------------------------
-    ' Procedure  : Deserialize
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/15/2003 - 4:09:38 PM
-    ' ##SUMMARY Deserializes an XML document to the object reference
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : Deserialize
+' Created by : Paul Welter
+' Date-Time  : 1/15/2003 - 4:09:38 PM
+' ##SUMMARY Deserializes an XML document to the object reference
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo Deserialize_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -677,18 +677,18 @@ End Function
 
 Public Function Serialize( _
        ByRef SourceObject As Object _
-       ) As String
+     ) As String
 Attribute Serialize.VB_Description = "Serializes an object into an XML document"
 Attribute Serialize.VB_HelpID = 2007
 
-    '--------------------------------------------------------------------------------
-    ' Procedure  : Serialize
-    ' Created by : Paul Welter
-    ' Date-Time  : 1/14/2003 - 4:14:23 PM
-    ' ##SUMMARY Serializes an object into an XML document
-    '--------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------
+' Procedure  : Serialize
+' Created by : Paul Welter
+' Date-Time  : 1/14/2003 - 4:14:23 PM
+' ##SUMMARY Serializes an object into an XML document
+'--------------------------------------------------------------------------------
 
-    '<EhHeader>
+'<EhHeader>
     On Error GoTo Serialize_Error
     Dim blnErrorResume As Boolean    'tells error handler to resume after error
     Dim strErrorDescription As String    'string to set extended error information
@@ -704,7 +704,7 @@ Attribute Serialize.VB_HelpID = 2007
     'setting up sax xml writer
     With m_oSaxWriter
         .indent = True
-        .Encoding = "UTF-8"
+        .encoding = "UTF-8"
         .omitXMLDeclaration = True
     End With
 

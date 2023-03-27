@@ -657,10 +657,10 @@ Private Sub llenarLista()
 'Me.dtpHasta.value = "31/12/2021"
 
     If Me.rdoRangoFechas.value Then
-       Set col = DAOSubdiarios.SubDiarioVentas(Me.dtpDesde.value, Me.dtpHasta.value)
-        
-       'Set col = DAOSubdiarios.SubDiarioVentas("01/01/2021", "31/12/2021")
-    
+        Set col = DAOSubdiarios.SubDiarioVentas(Me.dtpDesde.value, Me.dtpHasta.value)
+
+        'Set col = DAOSubdiarios.SubDiarioVentas("01/01/2021", "31/12/2021")
+
     Else
         If Me.cboLiquidaciones.ListIndex <> -1 Then
             Set liqui = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
@@ -772,7 +772,7 @@ Private Sub PushButton2_Click()
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
     Me.GridEX1.PrintPreview frmPrintPreview.GEXPreview1, Me.GridEX1.SelectedItems.count > 1
     frmPrintPreview.Show 1
-    
+
 End Sub
 
 Private Sub rdoLiquidacion_Click()
@@ -827,21 +827,21 @@ End Sub
 
 
 Public Function ExportaSubDiarioVentas() As Boolean
-   
+
     On Error GoTo errEXCEL
-    
-'INICIA EL PROGRESSBAR Y LO MUESTRA
+
+    'INICIA EL PROGRESSBAR Y LO MUESTRA
     Me.progreso.Visible = True
 
-    
-'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+
+    'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
     progreso.min = 0
     progreso.max = col.count
-    
-    
-'    Dim xlb As New Excel.Workbook
-'    Dim xla As New Excel.Worksheet
-'    Dim xls As New Excel.Application
+
+
+    '    Dim xlb As New Excel.Workbook
+    '    Dim xla As New Excel.Worksheet
+    '    Dim xls As New Excel.Application
 
     'Dim xlApplication As New Excel.Application
     Dim xls As Object
@@ -864,7 +864,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
     Set xlb = xls.Workbooks.Add
     Set xla = xlb.Worksheets.Add
-    
+
     xla.Activate
 
     With xla
@@ -941,10 +941,10 @@ Public Function ExportaSubDiarioVentas() As Boolean
         totexen = 0
 
         x = 1
-        
-'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
-    Dim d As Long
-    d = 0
+
+        'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+        Dim d As Long
+        d = 0
 
         For Each item In col
             If item.estado = Anulada Then
@@ -966,7 +966,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
 
                 '.Cells(x + 3, 1).value = item.FEcha
-                
+
                 .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
                 .Cells(x + 3, 2).value = item.Comprobante
                 .Cells(x + 3, 3).value = item.RazonSocial
@@ -982,11 +982,11 @@ Public Function ExportaSubDiarioVentas() As Boolean
             End If
 
             x = x + 1
-        
-'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
-        d = d + 1
-        progreso.value = d
-        
+
+            'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+            d = d + 1
+            progreso.value = d
+
         Next item
 
 
@@ -1050,8 +1050,8 @@ Public Function ExportaSubDiarioVentas() As Boolean
         Set xls = Nothing
         Set xla = Nothing
         Set xlb = Nothing
-        
-'REINICIA EL PROGRESSBAR Y LO OCULTA
+
+        'REINICIA EL PROGRESSBAR Y LO OCULTA
         progreso.value = 0
         Me.progreso.Visible = False
 

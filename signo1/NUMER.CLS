@@ -13,8 +13,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public Function ValorEnLetras(ElValor As Double, Optional Moneda As String = "Cordobas") As String
-    Moneda = Empty
+Public Function ValorEnLetras(ElValor As Double, Optional moneda As String = "Cordobas") As String
+    moneda = Empty
     Dim Letras1 As String, Letras2 As String, Letras3 As String
 
     Dim ElValor1 As Long, ElValor2 As Long, LetrasM As String
@@ -49,7 +49,7 @@ Public Function ValorEnLetras(ElValor As Double, Optional Moneda As String = "Co
 
         If ElValor2 = 0 Then
 
-            ValorEnLetras = IIf(ElValor < 0, "Menos ", "") & LetrasM & IIf(LetrasM <> "", IIf((Int(ElValor1 / 1000000)) > 1, "Millones ", "Millon "), "") & Letras1 & IIf(Letras1 <> "", "", "") & Letras2 & " " & Moneda '& " Netos"
+            ValorEnLetras = IIf(ElValor < 0, "Menos ", "") & LetrasM & IIf(LetrasM <> "", IIf((Int(ElValor1 / 1000000)) > 1, "Millones ", "Millon "), "") & Letras1 & IIf(Letras1 <> "", "", "") & Letras2 & " " & moneda    '& " Netos"
 
         Else
 
@@ -57,11 +57,11 @@ Public Function ValorEnLetras(ElValor As Double, Optional Moneda As String = "Co
 
             If ElValor <> (ElValor2 / 100) Then
 
-                ValorEnLetras = IIf(ElValor < 0, "Menos ", "") & LetrasM & IIf(LetrasM <> "", IIf((Int(ElValor1 / 1000000)) > 1, "Millones ", "Millon "), "") & Letras1 & IIf(Letras1 <> "", "", "") & Letras2 & " " & Moneda & " con " & Letras3 & " centavos"
+                ValorEnLetras = IIf(ElValor < 0, "Menos ", "") & LetrasM & IIf(LetrasM <> "", IIf((Int(ElValor1 / 1000000)) > 1, "Millones ", "Millon "), "") & Letras1 & IIf(Letras1 <> "", "", "") & Letras2 & " " & moneda & " con " & Letras3 & " centavos"
 
             Else
 
-                ValorEnLetras = IIf(ElValor < 0, "Menos ", "") & Letras3 & " centavos de " & IIf(UCase$(Moneda) = "DOLARES" Or UCase$(Moneda) = UCase$("DóLARES"), "Dólar", "Córdoba")
+                ValorEnLetras = IIf(ElValor < 0, "Menos ", "") & Letras3 & " centavos de " & IIf(UCase$(moneda) = "DOLARES" Or UCase$(moneda) = UCase$("DóLARES"), "Dólar", "Córdoba")
 
             End If
 
@@ -91,53 +91,53 @@ Private Function CienMiles(Centenar As Long) As String
 
         Select Case Int(Centenar / 100)
 
-            Case 0
+        Case 0
 
-                Cadena = ""
+            Cadena = ""
 
-            Case 1
+        Case 1
 
-                If (Centenar - (100 * Int(Centenar / 100))) = 0 Then
+            If (Centenar - (100 * Int(Centenar / 100))) = 0 Then
 
-                    Cadena = Cadena & "Cien "
+                Cadena = Cadena & "Cien "
 
-                Else
+            Else
 
-                    Cadena = Cadena & "Ciento "
+                Cadena = Cadena & "Ciento "
 
-                End If
+            End If
 
-            Case 2
+        Case 2
 
-                Cadena = Cadena & "Doscientos "
+            Cadena = Cadena & "Doscientos "
 
-            Case 3
+        Case 3
 
-                Cadena = Cadena & "Trescientos "
+            Cadena = Cadena & "Trescientos "
 
-            Case 4
+        Case 4
 
-                Cadena = Cadena & "Cuatrocientos "
+            Cadena = Cadena & "Cuatrocientos "
 
-            Case 5
+        Case 5
 
-                Cadena = Cadena & "Quinientos "
+            Cadena = Cadena & "Quinientos "
 
-            Case 6
+        Case 6
 
-                Cadena = Cadena & "Seiscientos "
+            Cadena = Cadena & "Seiscientos "
 
-            Case 7
+        Case 7
 
-                Cadena = Cadena & "Setecientos "
+            Cadena = Cadena & "Setecientos "
 
-            Case 8
+        Case 8
 
-                Cadena = Cadena & "Ochocientos "
+            Cadena = Cadena & "Ochocientos "
 
-            Case 9
+        Case 9
 
-                Cadena = Cadena & "Novecientos "
+            Cadena = Cadena & "Novecientos "
 
 
 
@@ -159,69 +159,69 @@ Private Function CienMiles(Centenar As Long) As String
 
     Select Case valor2
 
-        Case 10
+    Case 10
 
-            Cadena = Cadena & "Diez "
+        Cadena = Cadena & "Diez "
 
-        Case 11
+    Case 11
 
-            Cadena = Cadena & "Once "
+        Cadena = Cadena & "Once "
 
-        Case 12
+    Case 12
 
-            Cadena = Cadena & "Doce "
+        Cadena = Cadena & "Doce "
 
-        Case 13
+    Case 13
 
-            Cadena = Cadena & "Trece "
+        Cadena = Cadena & "Trece "
 
-        Case 14
+    Case 14
 
-            Cadena = Cadena & "Catorce "
+        Cadena = Cadena & "Catorce "
 
-        Case 15
+    Case 15
 
-            Cadena = Cadena & "Quince "
+        Cadena = Cadena & "Quince "
 
-        Case 16 To 19
+    Case 16 To 19
 
-            Cadena = Cadena & "Diez "
+        Cadena = Cadena & "Diez "
 
-        Case 20 To 29
+    Case 20 To 29
 
-            Cadena = Cadena & "Veinte "
+        Cadena = Cadena & "Veinte "
 
-        Case 30 To 39
+    Case 30 To 39
 
-            Cadena = Cadena & "Treinta "
+        Cadena = Cadena & "Treinta "
 
-        Case 40 To 49
+    Case 40 To 49
 
-            Cadena = Cadena & "Cuarenta "
+        Cadena = Cadena & "Cuarenta "
 
-        Case 50 To 59
+    Case 50 To 59
 
-            Cadena = Cadena & "Cincuenta "
+        Cadena = Cadena & "Cincuenta "
 
-        Case 60 To 69
+    Case 60 To 69
 
-            Cadena = Cadena & "Sesenta "
+        Cadena = Cadena & "Sesenta "
 
-        Case 70 To 79
+    Case 70 To 79
 
-            Cadena = Cadena & "Setenta "
+        Cadena = Cadena & "Setenta "
 
-        Case 80 To 89
+    Case 80 To 89
 
-            Cadena = Cadena & "Ochenta "
+        Cadena = Cadena & "Ochenta "
 
-        Case 90 To 99
+    Case 90 To 99
 
-            Cadena = Cadena & "Noventa "
+        Cadena = Cadena & "Noventa "
 
 
 
-        Case Else
+    Case Else
 
 
 
@@ -263,57 +263,57 @@ Private Function CienMiles(Centenar As Long) As String
 
 
 
-            Case 1
+        Case 1
 
-                Cadena = Cadena & "Un "
-
-
-
-            Case 2
-
-                Cadena = Cadena & "Dos "
+            Cadena = Cadena & "Un "
 
 
 
-            Case 3
+        Case 2
 
-                Cadena = Cadena & "Tres "
-
-
-
-            Case 4
-
-                Cadena = Cadena & "Cuatro "
+            Cadena = Cadena & "Dos "
 
 
 
-            Case 5
+        Case 3
 
-                Cadena = Cadena & "Cinco "
-
-
-
-            Case 6
-
-                Cadena = Cadena & "Seis "
+            Cadena = Cadena & "Tres "
 
 
 
-            Case 7
+        Case 4
 
-                Cadena = Cadena & "Siete "
-
-
-
-            Case 8
-
-                Cadena = Cadena & "Ocho "
+            Cadena = Cadena & "Cuatro "
 
 
 
-            Case 9
+        Case 5
 
-                Cadena = Cadena & "Nueve "
+            Cadena = Cadena & "Cinco "
+
+
+
+        Case 6
+
+            Cadena = Cadena & "Seis "
+
+
+
+        Case 7
+
+            Cadena = Cadena & "Siete "
+
+
+
+        Case 8
+
+            Cadena = Cadena & "Ocho "
+
+
+
+        Case 9
+
+            Cadena = Cadena & "Nueve "
 
 
 

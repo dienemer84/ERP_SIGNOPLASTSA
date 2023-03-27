@@ -23,7 +23,7 @@ Public entrega As Long
 Public Amortizacion As Double
 Public FormaCotizar As FormaCotizar
 Public FechaPresupuesto As Date
-Public id As Long
+Public Id As Long
 Private PorcMO As Double
 Private porcMAT As Double
 Public presupuesto As clsPresupuesto
@@ -90,9 +90,9 @@ Public Function CalcularPrecioSistema(Optional ByRef costo As Double, Optional B
     TotalGastosGenerales = costo - (costo / (1 + (presupuesto.Gastos / 100)))
     If mo + ma = 0 Then c = c - 1
     If Not Pieza.EsConjunto Then
-    'PorcMO = funciones.RedondearDecimales((mo * 100) / (mo + ma), 0)
-    'porcMAT = funciones.RedondearDecimales((ma * 100) / (mo + ma), 0)
-  '  Exit Function porq puse esto? 15-3-16
+        'PorcMO = funciones.RedondearDecimales((mo * 100) / (mo + ma), 0)
+        'porcMAT = funciones.RedondearDecimales((ma * 100) / (mo + ma), 0)
+        '  Exit Function porq puse esto? 15-3-16
     End If
 
     For Each Pie In Pieza.PiezasHijas
@@ -127,22 +127,22 @@ Public Function CalcularPrecioSistema(Optional ByRef costo As Double, Optional B
             Next pie3
         Next pie2
     Next Pie
-    
-    
-    
-    'importe mat e importe mo
-    
-'18-12-15
- Dim T As Double
- T = mo + ma
 
-PorcMO = funciones.RedondearDecimales((mo * 100) / T, 0)
-porcMAT = funciones.RedondearDecimales((ma * 100) / T, 0)
-    
-'18-12-15
-'se calcula el porcentaje en base al importe y no a los porcentajes de cada pieza dentro de un conjunto
-'    PorcMO = funciones.RedondearDecimales(mo / c, 0)
-'    porcMAT = funciones.RedondearDecimales(ma / c, 0)
+
+
+    'importe mat e importe mo
+
+    '18-12-15
+    Dim T As Double
+    T = mo + ma
+
+    PorcMO = funciones.RedondearDecimales((mo * 100) / T, 0)
+    porcMAT = funciones.RedondearDecimales((ma * 100) / T, 0)
+
+    '18-12-15
+    'se calcula el porcentaje en base al importe y no a los porcentajes de cada pieza dentro de un conjunto
+    '    PorcMO = funciones.RedondearDecimales(mo / c, 0)
+    '    porcMAT = funciones.RedondearDecimales(ma / c, 0)
 
 
 
@@ -180,15 +180,15 @@ Private Function CalcularValorPieza(piez As Pieza, ByRef mo As Double, ByRef ma 
 
 
 
-    amort = funciones.amortizaV2(piez.id, Cantidad, FormaCotizar, Amortizacion, conj)
+    amort = funciones.amortizaV2(piez.Id, Cantidad, FormaCotizar, Amortizacion, conj)
 
 
 
-        claseS.calcular_valor_materiales piez.id, Kg, Precio, presupuesto.Moneda.id  '--> VER DE REEMPLAZAR
+    claseS.calcular_valor_materiales piez.Id, Kg, Precio, presupuesto.moneda.Id  '--> VER DE REEMPLAZAR
 
 
     'Precio = piez.TotalCostoMateriales  'LO AGREGE 29-7-11
-    piez.CalcularValorMDO presupuesto.Moneda, Fijo, Cambio, MDO
+    piez.CalcularValorMDO presupuesto.moneda, Fijo, Cambio, MDO
 
     Kg = piez.TotalKG
 
@@ -213,15 +213,15 @@ Private Function CalcularValorPieza(piez As Pieza, ByRef mo As Double, ByRef ma 
 
     TotalGastosGenerales = vcosto - (vcosto * (presupuesto.Gastos / 100))
 
-    
-   '18-12-15 --------
-   'cambio pedido por marceolo tadiotto, que enlugar de calculaar los porcentajes en base a los porcentajes de
-   'los conjuntos, lo haga ne base a los importes por cada grupo
-   'mo = funciones.RedondearDecimales((mocosto * 100) / (mocosto + mCosto))
-   ' ma = funciones.RedondearDecimales((mCosto * 100) / (mocosto + mCosto))
-   mo = mocosto
-   ma = mCosto
-   '------------------------------------------------
+
+    '18-12-15 --------
+    'cambio pedido por marceolo tadiotto, que enlugar de calculaar los porcentajes en base a los porcentajes de
+    'los conjuntos, lo haga ne base a los importes por cada grupo
+    'mo = funciones.RedondearDecimales((mocosto * 100) / (mocosto + mCosto))
+    ' ma = funciones.RedondearDecimales((mCosto * 100) / (mocosto + mCosto))
+    mo = mocosto
+    ma = mCosto
+    '------------------------------------------------
     CalcularValorPieza = funciones.RedondearDecimales(((manodeobra + Materiales)), 2)
     Exit Function
 err1:

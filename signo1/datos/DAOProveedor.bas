@@ -4,35 +4,35 @@ Dim Proveedor As clsProveedor
 Public Function FindAllProveedoresWithFacturasImpagas() As Collection    'of proveedor
     Set FindAllProveedoresWithFacturasImpagas = FindAll("proveedores.id IN (SELECT DISTINCT id_proveedor from AdminComprasFacturasProveedores WHERE estado = " & EstadoFacturaProveedor.pagoParcial & " or estado = " & EstadoFacturaProveedor.Aprobada & ")")
 End Function
-Public Function Map2(ByRef rs As Recordset, index As Dictionary, ByRef tableNameOrAlias As String, _
+Public Function Map2(ByRef rs As Recordset, Index As Dictionary, ByRef tableNameOrAlias As String, _
                      Optional ByRef AdminConfigIVAProveedor As String = vbNullString, _
                      Optional ByRef AdminConfigFacturasProveedor As String = vbNullString) As clsProveedor
     Dim P As clsProveedor
-    Dim id As Long: id = GetValue(rs, index, tableNameOrAlias, "id")
+    Dim Id As Long: Id = GetValue(rs, Index, tableNameOrAlias, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set P = New clsProveedor
-        P.id = id
-        P.razonFantasia = GetValue(rs, index, tableNameOrAlias, "razon_fantasia")
-        P.IIBB = GetValue(rs, index, tableNameOrAlias, "iibb")
-        P.Ciudad = GetValue(rs, index, tableNameOrAlias, "ciudad")
-        P.contacto = GetValue(rs, index, tableNameOrAlias, "contacto")
-        P.cp = GetValue(rs, index, tableNameOrAlias, "cp")
-        P.direccion = GetValue(rs, index, tableNameOrAlias, "direccion")
-        P.email = GetValue(rs, index, tableNameOrAlias, "email")
-        P.estado = GetValue(rs, index, tableNameOrAlias, "estado")
-        P.Fax = GetValue(rs, index, tableNameOrAlias, "fax")
-        P.FormaPago = GetValue(rs, index, tableNameOrAlias, "FP")
-        P.Cuit = GetValue(rs, index, tableNameOrAlias, "cuit")
-        P.pagocontraEntrega = GetValue(rs, index, tableNameOrAlias, "PCE")
-        P.pagoDolares = GetValue(rs, index, tableNameOrAlias, "DOLAR")
-        P.bonificacion = GetValue(rs, index, tableNameOrAlias, "bonificacion")
-        P.RazonSocial = GetValue(rs, index, tableNameOrAlias, "razon")
-        P.tel = GetValue(rs, index, tableNameOrAlias, "tel")
+        P.Id = Id
+        P.razonFantasia = GetValue(rs, Index, tableNameOrAlias, "razon_fantasia")
+        P.IIBB = GetValue(rs, Index, tableNameOrAlias, "iibb")
+        P.Ciudad = GetValue(rs, Index, tableNameOrAlias, "ciudad")
+        P.contacto = GetValue(rs, Index, tableNameOrAlias, "contacto")
+        P.cp = GetValue(rs, Index, tableNameOrAlias, "cp")
+        P.direccion = GetValue(rs, Index, tableNameOrAlias, "direccion")
+        P.email = GetValue(rs, Index, tableNameOrAlias, "email")
+        P.estado = GetValue(rs, Index, tableNameOrAlias, "estado")
+        P.Fax = GetValue(rs, Index, tableNameOrAlias, "fax")
+        P.FormaPago = GetValue(rs, Index, tableNameOrAlias, "FP")
+        P.Cuit = GetValue(rs, Index, tableNameOrAlias, "cuit")
+        P.pagocontraEntrega = GetValue(rs, Index, tableNameOrAlias, "PCE")
+        P.pagoDolares = GetValue(rs, Index, tableNameOrAlias, "DOLAR")
+        P.bonificacion = GetValue(rs, Index, tableNameOrAlias, "bonificacion")
+        P.RazonSocial = GetValue(rs, Index, tableNameOrAlias, "razon")
+        P.tel = GetValue(rs, Index, tableNameOrAlias, "tel")
 
         '    Set P.Moneda = DAOMoneda.GetById(GetValue(rs, Index, tableNameOrAlias, "id_moneda"))
 
-        Set P.moneda = DAOMoneda.Map(rs, index, "AdminConfigMonedas")
+        Set P.moneda = DAOMoneda.Map(rs, Index, "AdminConfigMonedas")
     End If
     Set Map2 = P
 End Function
@@ -57,20 +57,20 @@ Public Function FindAll(Optional filtro As String = vbNullString, _
     Dim tipIva As clsTipoIvaProveedor
     Dim q As String
     q = "SELECT * from sp.proveedores " _
-        & "LEFT JOIN sp.AdminConfigIVAProveedor        ON (proveedores.id_iva = AdminConfigIVAProveedor.id) " _
-        & "LEFT JOIN sp.AdminConfigFacturasProveedor   ON (AdminConfigFacturasProveedor.id_iva = AdminConfigIVAProveedor.id) " _
+      & "LEFT JOIN sp.AdminConfigIVAProveedor        ON (proveedores.id_iva = AdminConfigIVAProveedor.id) " _
+      & "LEFT JOIN sp.AdminConfigFacturasProveedor   ON (AdminConfigFacturasProveedor.id_iva = AdminConfigIVAProveedor.id) " _
 
 If WithCuentasContables Then
         cuentas = " AdminComprasCuentasContables"
         cuentaProv = " AdminComprasCuentasProveedores"
         q = q & " LEFT JOIN sp.AdminComprasCuentasProveedores ON (AdminComprasCuentasProveedores.id_proveedor = proveedores.id) " _
-            & " LEFT JOIN sp.AdminComprasCuentasContables   ON (AdminComprasCuentasProveedores.id_cuenta = AdminComprasCuentasContables.id) "
+          & " LEFT JOIN sp.AdminComprasCuentasContables   ON (AdminComprasCuentasProveedores.id_cuenta = AdminComprasCuentasContables.id) "
     End If
     If WithRubros Then
         rubros = "rubros"
         asignacion = "asignacion"
         q = q & " LEFT JOIN sp.asignacion  ON (asignacion.id_proveedor = proveedores.id) " _
-            & " LEFT JOIN sp.rubros  ON (asignacion.id_rubro = rubros.id) "
+          & " LEFT JOIN sp.rubros  ON (asignacion.id_rubro = rubros.id) "
     End If
     If WithContactos Then
         contacto = "contactos"
@@ -123,17 +123,17 @@ If WithCuentasContables Then
 
 
         Set prov = Map2(rs, indice, "proveedores", "AdminConfigIVAProveedor", "AdminConfigFacturasProveedor")
-        If funciones.BuscarEnColeccion(col, CStr(prov.id)) Then
-            Set prov = col.item(CStr(prov.id))
+        If funciones.BuscarEnColeccion(col, CStr(prov.Id)) Then
+            Set prov = col.item(CStr(prov.Id))
         Else
-            col.Add prov, CStr(prov.id)
+            col.Add prov, CStr(prov.Id)
         End If
 
         If WithContactos Then
             Set cont = DAOContacto.Map(rs, indice, contacto)
             If IsSomething(cont) Then
-                If Not funciones.BuscarEnColeccion(prov.contactos, CStr(cont.id)) Then
-                    prov.contactos.Add cont, CStr(cont.id)
+                If Not funciones.BuscarEnColeccion(prov.contactos, CStr(cont.Id)) Then
+                    prov.contactos.Add cont, CStr(cont.Id)
                 End If
             End If
         End If
@@ -141,8 +141,8 @@ If WithCuentasContables Then
         If WithRubros Then
             Set rub = DAORubros.Map(rs, indice, "rubros")
             If IsSomething(rub) Then
-                If Not funciones.BuscarEnColeccion(prov.rubros, CStr(rub.id)) Then
-                    prov.rubros.Add rub, CStr(rub.id)
+                If Not funciones.BuscarEnColeccion(prov.rubros, CStr(rub.Id)) Then
+                    prov.rubros.Add rub, CStr(rub.Id)
                 End If
             End If
         End If
@@ -155,17 +155,17 @@ If WithCuentasContables Then
             Set confac = DAOConfigFacturaProveedor.Map(rs, indice, "AdminConfigFacturasProveedor")
             If IsSomething(confac) Then
 
-                If funciones.BuscarEnColeccion(prov.TipoIVA.configFacturas, CStr(confac.id)) Then
-                    Set confac = prov.TipoIVA.configFacturas.item(CStr(confac.id))
+                If funciones.BuscarEnColeccion(prov.TipoIVA.configFacturas, CStr(confac.Id)) Then
+                    Set confac = prov.TipoIVA.configFacturas.item(CStr(confac.Id))
                 Else
-                    prov.TipoIVA.configFacturas.Add confac, CStr(confac.id)
+                    prov.TipoIVA.configFacturas.Add confac, CStr(confac.Id)
                 End If
 
                 If WithAlicuotas Then
                     Set ali = DAOAlicuotas.Map(rs, indice, "AdminConfigIvaAlicuotas")
                     If IsSomething(ali) Then
-                        If Not funciones.BuscarEnColeccion(confac.alicuotas, CStr(ali.id)) Then
-                            confac.alicuotas.Add ali, CStr(ali.id)
+                        If Not funciones.BuscarEnColeccion(confac.alicuotas, CStr(ali.Id)) Then
+                            confac.alicuotas.Add ali, CStr(ali.Id)
                         End If
                     End If
                 End If
@@ -174,8 +174,8 @@ If WithCuentasContables Then
                     Set cuenta = DAOCuentaContable.Map(rs, indice, "AdminComprasCuentasContables")
 
                     If IsSomething(cuenta) Then
-                        If Not funciones.BuscarEnColeccion(prov.cuentasContables, CStr(cuenta.id)) Then
-                            prov.cuentasContables.Add cuenta, CStr(cuenta.id)
+                        If Not funciones.BuscarEnColeccion(prov.cuentasContables, CStr(cuenta.Id)) Then
+                            prov.cuentasContables.Add cuenta, CStr(cuenta.Id)
                         End If
                     End If
                 End If
@@ -191,14 +191,14 @@ Public Function FindAllByRubro(rubroId As Long) As Collection
 End Function
 
 
-Public Function FindById(id As Long, _
+Public Function FindById(Id As Long, _
                          Optional WithContactos As Boolean = True, _
                          Optional WithCuentasContables As Boolean = True, _
                          Optional WithAlicuotas As Boolean = True, _
                          Optional WithRubros As Boolean = True _
-                         ) As clsProveedor
+                       ) As clsProveedor
     On Error GoTo err1
-    Set FindById = DAOProveedor.FindAll("proveedores.id = " & id, WithContactos, WithCuentasContables, WithAlicuotas, , , , WithRubros).item(1)
+    Set FindById = DAOProveedor.FindAll("proveedores.id = " & Id, WithContactos, WithCuentasContables, WithAlicuotas, , , , WithRubros).item(1)
     Exit Function
 err1:
     Set FindById = Nothing
@@ -222,7 +222,7 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
     Dim strsql As String
     Dim rs As Recordset
     Dim n As Boolean
-    If Proveedor.id = 0 Then
+    If Proveedor.Id = 0 Then
         n = True
         strsql = "insert into proveedores (id_moneda,razon,direccion,ciudad,cp,tel,fax,email,contacto,FP,PCE,dolar,bonificacion,id_iva,razon_fantasia,iibb,cuit,estado) VALUES "
         If Not IsSomething(Proveedor.moneda) Then
@@ -230,32 +230,32 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
             Set Proveedor.moneda = DAOMoneda.GetById(0)
         End If
 
-        strsql = strsql & " ( " & Proveedor.moneda.id & "," & conectar.Escape(Proveedor.RazonSocial) & "," & conectar.Escape(Proveedor.direccion) & "," & conectar.Escape(Proveedor.Ciudad) & "," & conectar.Escape(Proveedor.cp) & "," & conectar.Escape(Proveedor.tel) & "," & conectar.Escape(Proveedor.Fax) & "," & conectar.Escape(Proveedor.email) & "," & conectar.Escape(Proveedor.contacto) & "," & conectar.Escape(Proveedor.FormaPago) & "," & conectar.Escape(Proveedor.pagocontraEntrega) & "," & conectar.Escape(Proveedor.pagoDolares) & "," & conectar.Escape(Proveedor.bonificacion) & "," & conectar.Escape(Proveedor.TipoIVA.id) & "," & conectar.Escape(Proveedor.razonFantasia) & "," & conectar.Escape(Proveedor.IIBB) & "," & conectar.Escape(Proveedor.Cuit) & "," & conectar.Escape(Proveedor.estado) & ")"
+        strsql = strsql & " ( " & Proveedor.moneda.Id & "," & conectar.Escape(Proveedor.RazonSocial) & "," & conectar.Escape(Proveedor.direccion) & "," & conectar.Escape(Proveedor.Ciudad) & "," & conectar.Escape(Proveedor.cp) & "," & conectar.Escape(Proveedor.tel) & "," & conectar.Escape(Proveedor.Fax) & "," & conectar.Escape(Proveedor.email) & "," & conectar.Escape(Proveedor.contacto) & "," & conectar.Escape(Proveedor.FormaPago) & "," & conectar.Escape(Proveedor.pagocontraEntrega) & "," & conectar.Escape(Proveedor.pagoDolares) & "," & conectar.Escape(Proveedor.bonificacion) & "," & conectar.Escape(Proveedor.TipoIVA.Id) & "," & conectar.Escape(Proveedor.razonFantasia) & "," & conectar.Escape(Proveedor.IIBB) & "," & conectar.Escape(Proveedor.Cuit) & "," & conectar.Escape(Proveedor.estado) & ")"
         If Not conectar.execute(strsql) Then GoTo E
 
         Set rs = conectar.RSFactory("select last_insert_id() as idd from proveedores")
         Dim ultid As Long
         ultid = rs!idd
-        Proveedor.id = ultid
+        Proveedor.Id = ultid
         'cargo todos los rubros nuevos
         Dim ru As clsRubros
         Dim F As Long
         For F = 1 To Proveedor.rubros.count
             Set ru = New clsRubros
-            If Not conectar.execute("insert into asignacion (id_proveedor,id_rubro) values (" & ultid & "," & ru.id & ")") Then GoTo E
+            If Not conectar.execute("insert into asignacion (id_proveedor,id_rubro) values (" & ultid & "," & ru.Id & ")") Then GoTo E
         Next F
-        Proveedor.id = ultid
+        Proveedor.Id = ultid
     Else
         n = False
-        strsql = "update proveedores set id_moneda=" & Proveedor.moneda.id & " ,  id_iva=" & conectar.Escape(Proveedor.TipoIVA.id) & ", cuit=" & conectar.Escape(Proveedor.Cuit) & ", razon=" & conectar.Escape(Proveedor.RazonSocial) & ", direccion=" & conectar.Escape(Proveedor.direccion) & ", ciudad = " & conectar.Escape(Proveedor.Ciudad) & ", cp=" & conectar.Escape(Proveedor.cp) & ", tel= " & conectar.Escape(Proveedor.tel) & ", fax=" & conectar.Escape(Proveedor.Fax) & ", contacto=" & conectar.Escape(Proveedor.contacto) & ",FP=" & conectar.Escape(Proveedor.FormaPago) & ", PCE=" & conectar.Escape(Proveedor.pagocontraEntrega) & ", dolar=" & conectar.Escape(Proveedor.pagoDolares) & ", bonificacion=" & conectar.Escape(Proveedor.bonificacion) & ",razon_fantasia=" & conectar.Escape(Proveedor.razonFantasia) & ",iibb=" & conectar.Escape(Proveedor.IIBB) & ",estado=" & conectar.Escape(Proveedor.estado) & ",email=" & conectar.Escape(Proveedor.email) & "  where id =" & conectar.Escape(Proveedor.id)
+        strsql = "update proveedores set id_moneda=" & Proveedor.moneda.Id & " ,  id_iva=" & conectar.Escape(Proveedor.TipoIVA.Id) & ", cuit=" & conectar.Escape(Proveedor.Cuit) & ", razon=" & conectar.Escape(Proveedor.RazonSocial) & ", direccion=" & conectar.Escape(Proveedor.direccion) & ", ciudad = " & conectar.Escape(Proveedor.Ciudad) & ", cp=" & conectar.Escape(Proveedor.cp) & ", tel= " & conectar.Escape(Proveedor.tel) & ", fax=" & conectar.Escape(Proveedor.Fax) & ", contacto=" & conectar.Escape(Proveedor.contacto) & ",FP=" & conectar.Escape(Proveedor.FormaPago) & ", PCE=" & conectar.Escape(Proveedor.pagocontraEntrega) & ", dolar=" & conectar.Escape(Proveedor.pagoDolares) & ", bonificacion=" & conectar.Escape(Proveedor.bonificacion) & ",razon_fantasia=" & conectar.Escape(Proveedor.razonFantasia) & ",iibb=" & conectar.Escape(Proveedor.IIBB) & ",estado=" & conectar.Escape(Proveedor.estado) & ",email=" & conectar.Escape(Proveedor.email) & "  where id =" & conectar.Escape(Proveedor.Id)
         If Not conectar.execute(strsql) Then GoTo E
-        If Not conectar.execute("delete from asignacion where id_proveedor=" & Proveedor.id) Then GoTo E
+        If Not conectar.execute("delete from asignacion where id_proveedor=" & Proveedor.Id) Then GoTo E
         'cargo todos los rubros nuevos
 
         For F = 1 To Proveedor.rubros.count
             Set ru = New clsRubros
             Set ru = Proveedor.rubros(F)
-            If Not conectar.execute("insert into asignacion (id_proveedor,id_rubro) values (" & Proveedor.id & "," & ru.id & ")") Then GoTo E
+            If Not conectar.execute("insert into asignacion (id_proveedor,id_rubro) values (" & Proveedor.Id & "," & ru.Id & ")") Then GoTo E
         Next F
 
     End If
@@ -275,7 +275,7 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
 
 E:
     Guardar = False
-    If n Then Proveedor.id = 0
+    If n Then Proveedor.Id = 0
     'MsgBox Err.Description
 
 End Function
@@ -283,9 +283,9 @@ Public Function CambiarEstado(Proveedor As clsProveedor) As Boolean
     On Error GoTo err1
     CambiarEstado = True
     If Proveedor.estado = 1 Then
-        conectar.execute "update proveedores set estado=0 where id=" & Proveedor.id
+        conectar.execute "update proveedores set estado=0 where id=" & Proveedor.Id
     ElseIf Proveedor.estado = 0 Then
-        conectar.execute "update proveedores set estado=1 where id=" & Proveedor.id
+        conectar.execute "update proveedores set estado=1 where id=" & Proveedor.Id
     End If
     Exit Function
 err1:
@@ -309,7 +309,7 @@ Public Sub LlenarCombo(cbo As ComboBox, _
     For i = 1 To col.count
         Set prov = col(i)
         cbo.AddItem prov.RazonSocial
-        cbo.ItemData(cbo.NewIndex) = prov.id
+        cbo.ItemData(cbo.NewIndex) = prov.Id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -327,7 +327,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, _
     For i = 1 To col.count
         Set prov = col(i)
         cbo.AddItem prov.RazonSocial
-        cbo.ItemData(cbo.NewIndex) = prov.id
+        cbo.ItemData(cbo.NewIndex) = prov.Id
     Next i
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -351,7 +351,7 @@ Public Function ValidarCuit(Proveedor As clsProveedor) As Boolean
 
     q = "select count(id) as cantidad from proveedores where cuit=" & Proveedor.Cuit
 
-    If Proveedor.id <> 0 Then q = q & " and proveedores.id <> " & Proveedor.id
+    If Proveedor.Id <> 0 Then q = q & " and proveedores.id <> " & Proveedor.Id
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
         If rs!Cantidad >= 0 Then

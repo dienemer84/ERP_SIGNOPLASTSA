@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
+Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "msdatgrd.ocx"
 Begin VB.Form frmAdminFacturasEmisibles 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -290,7 +290,7 @@ Private Sub LlenarCbo()
     strsql = "select idIVA,detalle,alicuota from AdminConfigIVA where idIVA not in (select idIVA from AdminConfigFacturas)"
     Set rs = conectar.RSFactory(strsql)
     While Not rs.EOF
-        muestra = rs!detalle & " " & rs!Alicuota & "%"
+        muestra = rs!detalle & " " & rs!alicuota & "%"
         Me.cboIVA.AddItem muestra
         Me.cboIVA.ItemData(cboIVA.NewIndex) = rs!idIVA
         rs.MoveNext

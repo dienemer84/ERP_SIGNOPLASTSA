@@ -849,9 +849,9 @@ End Sub
 Private Sub AprobarOT_Click()
     Dim A As Long
     If Not aux_ordenTrabajo Is Nothing Then
-        If MsgBox("¿Está seguro de aprobar la OT " & aux_ordenTrabajo.id & "?", vbYesNo, "Confirmación") = vbNo Then Exit Sub
+        If MsgBox("¿Está seguro de aprobar la OT " & aux_ordenTrabajo.Id & "?", vbYesNo, "Confirmación") = vbNo Then Exit Sub
         A = grid.RowIndex(grid.row)
-        Set aux_ordenTrabajo.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(aux_ordenTrabajo.id)
+        Set aux_ordenTrabajo.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(aux_ordenTrabajo.Id)
 
         If Not aux_ordenTrabajo.Detalles Is Nothing Then
 
@@ -867,7 +867,7 @@ Private Sub archivos_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmArchivos2
         F.Origen = OrigenArchivos.OA_OrdenesTrabajo
-        F.ObjetoId = aux_ordenTrabajo.id
+        F.ObjetoId = aux_ordenTrabajo.Id
         F.caption = "Archivos OT Nº " & aux_ordenTrabajo.IdFormateado
         F.Show
     End If
@@ -958,7 +958,7 @@ Private Sub Command1_Click()
         Set ped = m_ordenesTrabajo.item(selectedItem.RowIndex)
 
         If ped.estado = EstadoOT_Pendiente Then
-            Set ped.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(ped.id)
+            Set ped.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(ped.Id)
             For Each dp In ped.Detalles
                 Set dto = New DTOPiezaCantidad
                 Set dto.Pieza = dp.Pieza
@@ -967,7 +967,7 @@ Private Sub Command1_Click()
             Next dp
         ElseIf ped.estado = EstadoOT_Desactivado Then    ' no hace nada
         Else
-            ots_id.Add ped.id
+            ots_id.Add ped.Id
         End If
 
     Next selectedItem
@@ -996,21 +996,21 @@ Private Function MergeEstadisticas(colOT As Collection, colPiezas As Collection)
     Dim tmpTareaTiempo As DTOTareaTiempo
 
     For Each sectorTiempo In colPiezas
-        If funciones.BuscarEnColeccion(colOT, CStr(sectorTiempo.Sector.id)) Then
-            Set tmpSectorTiempo = colOT.item(CStr(sectorTiempo.Sector.id))
+        If funciones.BuscarEnColeccion(colOT, CStr(sectorTiempo.Sector.Id)) Then
+            Set tmpSectorTiempo = colOT.item(CStr(sectorTiempo.Sector.Id))
         Else
             Set tmpSectorTiempo = New DTOSectoresTiempo
             Set tmpSectorTiempo.Sector = sectorTiempo.Sector
-            colOT.Add tmpSectorTiempo, CStr(tmpSectorTiempo.Sector.id)
+            colOT.Add tmpSectorTiempo, CStr(tmpSectorTiempo.Sector.Id)
         End If
 
         For Each tareaTiempo In sectorTiempo.ListaDtoTareaTiempo
-            If BuscarEnColeccion(tmpSectorTiempo.ListaDtoTareaTiempo, CStr(tareaTiempo.Tarea.id)) Then
-                Set tmpTareaTiempo = tmpSectorTiempo.ListaDtoTareaTiempo.item(CStr(tareaTiempo.Tarea.id))
+            If BuscarEnColeccion(tmpSectorTiempo.ListaDtoTareaTiempo, CStr(tareaTiempo.Tarea.Id)) Then
+                Set tmpTareaTiempo = tmpSectorTiempo.ListaDtoTareaTiempo.item(CStr(tareaTiempo.Tarea.Id))
             Else
                 Set tmpTareaTiempo = New DTOTareaTiempo
                 Set tmpTareaTiempo.Tarea = tareaTiempo.Tarea
-                tmpSectorTiempo.ListaDtoTareaTiempo.Add tmpTareaTiempo, CStr(tmpTareaTiempo.Tarea.id)
+                tmpSectorTiempo.ListaDtoTareaTiempo.Add tmpTareaTiempo, CStr(tmpTareaTiempo.Tarea.Id)
             End If
 
             tmpTareaTiempo.Tiempo = tmpTareaTiempo.Tiempo + tareaTiempo.Tiempo
@@ -1055,7 +1055,7 @@ Private Sub desactivar_Click()
         If Not aux_ordenTrabajo Is Nothing Then
 
             If DAOOrdenTrabajo.desactivar(aux_ordenTrabajo) Then
-                MsgBox "La OT " & aux_ordenTrabajo.id & " se desactivo correctamente!", vbInformation, "Información"
+                MsgBox "La OT " & aux_ordenTrabajo.Id & " se desactivo correctamente!", vbInformation, "Información"
                 grid.RefreshRowIndex A
             Else
                 MsgBox "Se produjo un error al desactivar!", vbCritical, "Error"
@@ -1068,10 +1068,10 @@ End Sub
 Private Sub editOT_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmPlaneamientoOTNueva
-        F.OrdenTrabajoId = aux_ordenTrabajo.id
+        F.OrdenTrabajoId = aux_ordenTrabajo.Id
         F.Show
     End If
-    
+
 End Sub
 
 
@@ -1159,7 +1159,7 @@ Private Sub Form_Load()
 
     Me.grid.ItemCount = 0
     GridEXHelper.CustomizeGrid Me.grid, True
-    
+
     Dim i As Long
     Me.lstEstados.Clear
     For i = LBound(funciones.estados_pedidos) To UBound(funciones.estados_pedidos)
@@ -1171,7 +1171,7 @@ Private Sub Form_Load()
     Me.cboClientes.Clear
     For Each tmpCliente In DAOCliente.FindAll()
         Me.cboClientes.AddItem tmpCliente.razon
-        Me.cboClientes.ItemData(Me.cboClientes.NewIndex) = tmpCliente.id
+        Me.cboClientes.ItemData(Me.cboClientes.NewIndex) = tmpCliente.Id
     Next
 
 
@@ -1193,9 +1193,9 @@ Private Sub Form_Load()
 
     LlenarNuevaLista
     MostrarMensajePendientes
-    
+
     ''Me.caption = caption & " (" & Name & ")"
-        
+
 
 End Sub
 
@@ -1291,7 +1291,7 @@ Private Sub grid_DblClick()
     If grid.RowIndex(grid.row) = 0 Then Exit Sub
     If Not aux_ordenTrabajo Is Nothing Then
         frmPlaneamientoPedidosDetalle.Pedido = aux_ordenTrabajo
-        frmPlaneamientoPedidosDetalle.caption = "Pedido Nro. " & Format(aux_ordenTrabajo.id, "0000")
+        frmPlaneamientoPedidosDetalle.caption = "Pedido Nro. " & Format(aux_ordenTrabajo.Id, "0000")
         frmPlaneamientoPedidosDetalle.Show
     End If
 End Sub
@@ -1301,7 +1301,7 @@ Private Sub grid_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, By
     On Error Resume Next
     aux_ordenTrabajo = m_ordenesTrabajo.item(RowIndex)
 
-    If ColIndex = 11 And m_Archivos.item(aux_ordenTrabajo.id) > 0 Then
+    If ColIndex = 11 And m_Archivos.item(aux_ordenTrabajo.Id) > 0 Then
         IconIndex = 1
     End If
 End Sub
@@ -1377,7 +1377,7 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
     If m_ordenesTrabajo.count > 0 Then
         Set aux_ordenTrabajo = m_ordenesTrabajo.item(RowIndex)
         With aux_ordenTrabajo
-            Values(1) = Format(.id, "0000")
+            Values(1) = Format(.Id, "0000")
             Values(2) = .ClienteFacturar.razon
             If CDbl(.FechaEntrega) > 0 Then Values(3) = .FechaEntrega
             Values(4) = IIf(.NroPresupuesto = -1, "Manual", Format(.NroPresupuesto, "0000"))
@@ -1392,15 +1392,15 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
             End If
             Values(9) = funciones.estado_pedido(.estado)
 
-            Values(10) = IIf(IsEmpty(m_Incidencias.item(.id)), 0, m_Incidencias.item(.id))
-            Values(11) = IIf(IsEmpty(m_Archivos.item(.id)), 0, "(" & m_Archivos.item(.id) & ")")
-            
+            Values(10) = IIf(IsEmpty(m_Incidencias.item(.Id)), 0, m_Incidencias.item(.Id))
+            Values(11) = IIf(IsEmpty(m_Archivos.item(.Id)), 0, "(" & m_Archivos.item(.Id) & ")")
+
             If .EsMarco Then
                 Values(12) = "Marco"
             Else
                 Values(12) = EnumTipoOT(.TipoOrden - 1)
             End If
-            
+
             Values(13) = .cliente.razon
 
             'cambio entre values2 y values13 por pedido de karin hecho el 7-4
@@ -1413,11 +1413,11 @@ End Property
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim x As Integer
     If EVENTO.EVENTO = agregar_ Then
-        m_ordenesTrabajo.Add EVENTO.Elemento, CStr(EVENTO.Elemento.id)
+        m_ordenesTrabajo.Add EVENTO.Elemento, CStr(EVENTO.Elemento.Id)
         LlenarNuevaLista
     ElseIf EVENTO.EVENTO = modificar_ Then
         For x = 1 To m_ordenesTrabajo.count
-            If m_ordenesTrabajo(x).id = EVENTO.Elemento.id Then
+            If m_ordenesTrabajo(x).Id = EVENTO.Elemento.Id Then
                 m_ordenesTrabajo(x).descripcion = EVENTO.Elemento.descripcion
                 m_ordenesTrabajo(x).FechaEntrega = EVENTO.Elemento.FechaEntrega
                 Set m_ordenesTrabajo(x).moneda = EVENTO.Elemento.moneda
@@ -1450,9 +1450,9 @@ Private Sub mnuAsociarFacturaAnticipo_Click()
     Dim selecFac As New frmAdminFacturasNCElegirFC
     selecFac.EstadosDocs.Add EstadoFacturaCliente.Aprobada
     selecFac.TiposDocs.Add tipoDocumentoContable.Factura
-    
-    
-    
+
+
+
     Set Selecciones.Factura = Nothing
     selecFac.Show 1
 
@@ -1470,8 +1470,8 @@ Private Sub mnuAsociarFacturaAnticipo_Click()
                 Exit Sub
             End If
 
-            If Not funciones.BuscarEnColeccion(fac.OTsFacturadasAnticipo, CStr(otTMP.id)) Then
-                fac.OTsFacturadasAnticipo.Add otTMP, CStr(otTMP.id)
+            If Not funciones.BuscarEnColeccion(fac.OTsFacturadasAnticipo, CStr(otTMP.Id)) Then
+                fac.OTsFacturadasAnticipo.Add otTMP, CStr(otTMP.Id)
             End If
         Next selItem
 
@@ -1541,8 +1541,8 @@ End Sub
 
 Private Sub mnuExportarResumenGeneral_Click()
 
-If Not aux_ordenTrabajo Is Nothing Then
-    DAOOrdenTrabajo.ExportarExcelResumenGeneral aux_ordenTrabajo.id
+    If Not aux_ordenTrabajo Is Nothing Then
+        DAOOrdenTrabajo.ExportarExcelResumenGeneral aux_ordenTrabajo.Id
 
     End If
 
@@ -1552,7 +1552,7 @@ Private Sub mnuFacturasAplicadas_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmAdminFacturasAplicadas
         F.Origen = 1
-        F.idOrigen = aux_ordenTrabajo.id
+        F.idOrigen = aux_ordenTrabajo.Id
         F.Show
     End If
 End Sub
@@ -1578,7 +1578,7 @@ Private Sub mnuPrecios_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmPlaneamientoOTNueva
         F.ActualizacionPrecios = True
-        F.OrdenTrabajoId = aux_ordenTrabajo.id
+        F.OrdenTrabajoId = aux_ordenTrabajo.Id
         F.Show
     End If
 End Sub
@@ -1587,21 +1587,21 @@ Private Sub mnuRemitosEntregados_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmRemitosEntregados
         F.Origen = 1
-        F.idPedidoEntrega = aux_ordenTrabajo.id
-        F.caption = "Nro." & aux_ordenTrabajo.id
+        F.idPedidoEntrega = aux_ordenTrabajo.Id
+        F.caption = "Nro." & aux_ordenTrabajo.Id
         F.Show
     End If
 End Sub
 Private Sub mnuScanear_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim archivos As New classArchivos
-        archivos.escanearDocumento OrigenArchivos.OA_OrdenesTrabajo, aux_ordenTrabajo.id
+        archivos.escanearDocumento OrigenArchivos.OA_OrdenesTrabajo, aux_ordenTrabajo.Id
     End If
 End Sub
 Private Sub mnuSeguimiento_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmPlaneamientoSeguimiento
-        F.txtOt = aux_ordenTrabajo.id
+        F.txtOt = aux_ordenTrabajo.Id
         F.Show
     End If
 End Sub
@@ -1644,12 +1644,12 @@ Private Sub VerDetalles_Click()
 End Sub
 Private Sub verHistorial_Click()
     If Not aux_ordenTrabajo Is Nothing Then
-        DAOOrdenTrabajoHistorial.getAllByOrdenTrabajo aux_ordenTrabajo.id, True
+        DAOOrdenTrabajoHistorial.getAllByOrdenTrabajo aux_ordenTrabajo.Id, True
     End If
 End Sub
 Private Sub verIncidencias_Click()
     If Not aux_ordenTrabajo Is Nothing Then
-        frmVerIncidencias.referencia = aux_ordenTrabajo.id
+        frmVerIncidencias.referencia = aux_ordenTrabajo.Id
         frmVerIncidencias.Origen = OrigenIncidencias.OI_OrdenesTrabajo
         frmVerIncidencias.Show
     End If

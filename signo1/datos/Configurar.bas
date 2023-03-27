@@ -60,9 +60,9 @@ End Property
 
 Public Function EstaActualizando(cs As String) As Boolean
 
-  Dim cn As ADODB.Connection
+    Dim cn As ADODB.Connection
 
-  
+
 
     Set cn = New ADODB.Connection
 
@@ -70,17 +70,17 @@ Public Function EstaActualizando(cs As String) As Boolean
     cn.Open
 
 
-Dim rstmp As New ADODB.Recordset
+    Dim rstmp As New ADODB.Recordset
 
-Dim rs As Recordset
+    Dim rs As Recordset
     If rstmp.State = 1 Then rstmp.Close
     rstmp.Open "select actualizando from configuracion", cn, CursorTypeEnum.adOpenStatic, LockTypeEnum.adLockOptimistic, adCmdText
     Set rs = rstmp
- 
+
     EstaActualizando = rs!Actualizando
     rs.Close
     cn.Close
-    
+
 
 
 End Function
@@ -118,8 +118,8 @@ Public Function LoadConfiguration() As Boolean
         Set percepcionesIIBB = New Collection
         While Not rs_iibb.EOF
             Set P = New clsPercepciones
-            P.id = rs_iibb!idPercepcion
-            percepcionesIIBB.Add P, CStr(P.id)
+            P.Id = rs_iibb!idPercepcion
+            percepcionesIIBB.Add P, CStr(P.Id)
             rs_iibb.MoveNext
         Wend
 

@@ -516,20 +516,20 @@ End Property
 Private Sub Guardar()
     Dim Cuit
     Dim EVENTO As clsEventoObserver
-    
+
     On Error GoTo err2
-    
+
     razon = UCase(Text1(0))
     Domicilio = UCase(Text1(1))
     telefono = UCase(Text1(4))
     Fax = UCase(Text1(5))
     email = UCase(Text1(6))
-    ivan = Me.CboIVA.ItemData(Me.CboIVA.ListIndex)
+    ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
     Cuit = Trim(Text1(7))
     FP = UCase(Me.txtFP)
     FP_detalle = UCase(Me.txtDetalleFP)
     valido = Val(Me.chkValido.value)
-    
+
     CodigoPOS = UCase(txtCP)
 
 
@@ -543,17 +543,17 @@ Private Sub Guardar()
                 errorCode2 = 1
             End If
 
-                If ErrorCode > 0 Then
-                    aa = "Debe introducir datos correctos para: "
-                    If errorCode2 = 1 Then
-                        aa = aa & Chr(10) & "CUIT"
-                    End If
-                    MsgBox aa, vbCritical, "Error"
-                Else
-            
+            If ErrorCode > 0 Then
+                aa = "Debe introducir datos correctos para: "
+                If errorCode2 = 1 Then
+                    aa = aa & Chr(10) & "CUIT"
+                End If
+                MsgBox aa, vbCritical, "Error"
+            Else
+
                 Dim cliente As New clsCliente
 
-'31.10.22- SE AGREGA ESTA LINEA PARA QUE TOME EL VALOR DEL IVA
+                '31.10.22- SE AGREGA ESTA LINEA PARA QUE TOME EL VALOR DEL IVA
                 Set cliente.TipoIVA = DAOTipoIva.GetById(ivan)
 
                 cliente.Cuit = Cuit
@@ -569,41 +569,41 @@ Private Sub Guardar()
                 cliente.ValidoRemitoFactura = valido
                 cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
                 cliente.CodigoPostal = CodigoPOS
-                
+
                 Set cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
                 Set cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
 
                 Dim F As String
                 F = "c.cuit = " & Escape(Text1(7))
-                
+
                 If IsSomething(vCliente) Then
-                F = F & " AND c.id <> " & vCliente.Id
+                    F = F & " AND c.id <> " & vCliente.Id
                 End If
 
-               If DAOCliente.FindAll(F).count > 0 Then
-                MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
-                
-               Else
-                
+                If DAOCliente.FindAll(F).count > 0 Then
+                    MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
 
-                 
-                If DAOCliente.crear(cliente) Then
-                    MsgBox "Alta Exitosa!", vbInformation, "Información"
-                       
-                    Set EVENTO = New clsEventoObserver
-                    Set EVENTO.Elemento = cliente
-                    EVENTO.EVENTO = agregar_
-                    Set EVENTO.Originador = Me
-                    Channel.Notificar EVENTO, Clientes_
-                    
-                    Unload Me
-                    
+                Else
+
+
+
+                    If DAOCliente.crear(cliente) Then
+                        MsgBox "Alta Exitosa!", vbInformation, "Información"
+
+                        Set EVENTO = New clsEventoObserver
+                        Set EVENTO.Elemento = cliente
+                        EVENTO.EVENTO = agregar_
+                        Set EVENTO.Originador = Me
+                        Channel.Notificar EVENTO, Clientes_
+
+                        Unload Me
+
                     Else
                         MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
                     End If
-                
-               
-                
+
+
+
                 End If
 
 
@@ -627,31 +627,31 @@ Private Sub Guardar()
             vCliente.FormaPago = FP_detalle
             vCliente.ValidoRemitoFactura = valido
             vCliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
-            
+
             vCliente.CodigoPostal = CodigoPOS
-            
+
             Set vCliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
             Set vCliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
 
-            
+
             If DAOCliente.modificar(vCliente) Then
                 MsgBox "Modificación Exitosa!", vbInformation, "Información"
-                
-                
+
+
                 Set EVENTO = New clsEventoObserver
                 Set EVENTO.Elemento = cliente
                 EVENTO.EVENTO = modificar_
                 Set EVENTO.Originador = Me
                 Channel.Notificar EVENTO, Clientes_
-                
+
                 Unload Me
-                
+
             Else
                 MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
             End If
-            
+
         End If
-        End If
+    End If
     Exit Sub
 err2:
 
@@ -665,7 +665,7 @@ Private Sub btnSalir_Click()
     If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
         Unload Me
     End If
-    
+
 End Sub
 
 Private Sub cboPaises_Click()
@@ -713,7 +713,7 @@ Private Sub Form_Load()
     For x = 0 To 10
         Text1(x) = Empty
     Next x
-    DAOTipoIva.LlenarCombo Me.CboIVA
+    DAOTipoIva.LlenarCombo Me.cboIVA
     Command1.caption = "Agregar"
     Me.caption = "Agregar Cliente..."
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
@@ -771,9 +771,9 @@ Private Sub llenarForm()
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
         txtFP = .FP
         Me.txtDetalleFP = .FormaPago
-        CboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, CboIVA)
+        cboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIVA)
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vCliente.idMonedaDefault, Me.cboMonedas)
-        
+
     End With
 
     Exit Sub

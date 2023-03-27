@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{65E121D4-0C60-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCHRT20.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasAdeudadas2 
    Caption         =   "Cashflow"
    ClientHeight    =   7545
@@ -493,19 +493,19 @@ Private Sub Graficar()
         End If
 
         Select Case tr
-            Case TipoResumen.TR_Diario
-                dateIndex = FormatDateTime(fechaParaTrabajar, vbShortDate)
-            Case TipoResumen.TR_Mensual
-                dateIndex = Year(fechaParaTrabajar) & "-" & IIf(Month(fechaParaTrabajar) < 10, "0" & Month(fechaParaTrabajar), Month(fechaParaTrabajar))
+        Case TipoResumen.TR_Diario
+            dateIndex = FormatDateTime(fechaParaTrabajar, vbShortDate)
+        Case TipoResumen.TR_Mensual
+            dateIndex = Year(fechaParaTrabajar) & "-" & IIf(Month(fechaParaTrabajar) < 10, "0" & Month(fechaParaTrabajar), Month(fechaParaTrabajar))
         End Select
 
         If Factura.Saldado = SaldadoParcial Then
-            Total = Factura.TotalEstatico.Total - DAOFactura.PagosRealizados(Factura.id)
+            Total = Factura.TotalEstatico.Total - DAOFactura.PagosRealizados(Factura.Id)
         Else
             Total = Factura.TotalEstatico.Total
         End If
         'por los dolares
-        Total = MonedaConverter.Convertir(Total, Factura.Moneda.id, MonedaConverter.Patron.id)
+        Total = MonedaConverter.Convertir(Total, Factura.moneda.Id, MonedaConverter.Patron.Id)
 
         If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then Total = Total * -1
 
@@ -536,19 +536,19 @@ Private Sub Graficar()
         For Each it In Orden.TotalOrigenesDiscriminado
 
             Select Case tr
-                Case TipoResumen.TR_Diario
-                    dateIndex = FormatDateTime(it.item(1), vbShortDate)
-                Case TipoResumen.TR_Mensual
-                    dateIndex = Year(it.item(1)) & "-" & IIf(Month(it.item(1)) < 10, "0" & Month(it.item(1)), Month(it.item(1)))
+            Case TipoResumen.TR_Diario
+                dateIndex = FormatDateTime(it.item(1), vbShortDate)
+            Case TipoResumen.TR_Mensual
+                dateIndex = Year(it.item(1)) & "-" & IIf(Month(it.item(1)) < 10, "0" & Month(it.item(1)), Month(it.item(1)))
             End Select
 
             If funciones.BuscarEnColeccion(flowItems, CStr(dateIndex)) Then
                 Set item = flowItems.item(CStr(dateIndex))
-                item.ValorPago = item.ValorPago + MonedaConverter.Convertir(it.item(2), Orden.Moneda.id, MonedaConverter.Patron.id)
+                item.ValorPago = item.ValorPago + MonedaConverter.Convertir(it.item(2), Orden.moneda.Id, MonedaConverter.Patron.Id)
             Else
                 Set item = New CashFlowItem
                 item.FechaIndex = dateIndex
-                item.ValorPago = MonedaConverter.Convertir(it.item(2), Orden.Moneda.id, MonedaConverter.Patron.id)
+                item.ValorPago = MonedaConverter.Convertir(it.item(2), Orden.moneda.Id, MonedaConverter.Patron.Id)
                 flowItems.Add item, dateIndex
             End If
 
@@ -577,27 +577,27 @@ Private Sub Graficar()
         For Each deta In detallesOrdenes
 
             Select Case tr
-                Case TipoResumen.TR_Diario
-                    dateIndex = FormatDateTime(deta.FechaEntrega, vbShortDate)
-                Case TipoResumen.TR_Mensual
-                    dateIndex = Year(deta.FechaEntrega) & "-" & IIf(Month(deta.FechaEntrega) < 10, "0" & Month(deta.FechaEntrega), Month(deta.FechaEntrega))
+            Case TipoResumen.TR_Diario
+                dateIndex = FormatDateTime(deta.FechaEntrega, vbShortDate)
+            Case TipoResumen.TR_Mensual
+                dateIndex = Year(deta.FechaEntrega) & "-" & IIf(Month(deta.FechaEntrega) < 10, "0" & Month(deta.FechaEntrega), Month(deta.FechaEntrega))
             End Select
 
             'falta moneda
 
-            If Not funciones.BuscarEnColeccion(ordenes, CStr(deta.OrdenTrabajo.id)) Then
-                ordenes.Add DAOOrdenTrabajo.FindById(deta.OrdenTrabajo.id), CStr(deta.OrdenTrabajo.id)
+            If Not funciones.BuscarEnColeccion(ordenes, CStr(deta.OrdenTrabajo.Id)) Then
+                ordenes.Add DAOOrdenTrabajo.FindById(deta.OrdenTrabajo.Id), CStr(deta.OrdenTrabajo.Id)
             End If
 
-            Set monedaTmp = ordenes.item(CStr(deta.OrdenTrabajo.id)).Moneda
+            Set monedaTmp = ordenes.item(CStr(deta.OrdenTrabajo.Id)).moneda
 
             If funciones.BuscarEnColeccion(flowItems, CStr(dateIndex)) Then
                 Set item = flowItems.item(CStr(dateIndex))
-                item.ValorAFacturarOT = item.ValorAFacturarOT + MonedaConverter.Convertir(deta.TotalConDescuento, monedaTmp.id, MonedaConverter.Patron.id)
+                item.ValorAFacturarOT = item.ValorAFacturarOT + MonedaConverter.Convertir(deta.TotalConDescuento, monedaTmp.Id, MonedaConverter.Patron.Id)
             Else
                 Set item = New CashFlowItem
                 item.FechaIndex = dateIndex
-                item.ValorAFacturarOT = MonedaConverter.Convertir(deta.TotalConDescuento, monedaTmp.id, MonedaConverter.Patron.id)
+                item.ValorAFacturarOT = MonedaConverter.Convertir(deta.TotalConDescuento, monedaTmp.Id, MonedaConverter.Patron.Id)
                 flowItems.Add item, dateIndex
             End If
         Next deta
@@ -611,19 +611,19 @@ Private Sub Graficar()
             For Each deta In Ot.Detalles
                 If deta.FechaEntrega >= Me.dtpDesde.value And deta.FechaEntrega <= Me.dtpHasta.value Then
                     Select Case tr
-                        Case TipoResumen.TR_Diario
-                            dateIndex = FormatDateTime(deta.FechaEntrega, vbShortDate)
-                        Case TipoResumen.TR_Mensual
-                            dateIndex = Year(deta.FechaEntrega) & "-" & IIf(Month(deta.FechaEntrega) < 10, "0" & Month(deta.FechaEntrega), Month(deta.FechaEntrega))
+                    Case TipoResumen.TR_Diario
+                        dateIndex = FormatDateTime(deta.FechaEntrega, vbShortDate)
+                    Case TipoResumen.TR_Mensual
+                        dateIndex = Year(deta.FechaEntrega) & "-" & IIf(Month(deta.FechaEntrega) < 10, "0" & Month(deta.FechaEntrega), Month(deta.FechaEntrega))
                     End Select
 
                     If funciones.BuscarEnColeccion(flowItems, CStr(dateIndex)) Then
                         Set item = flowItems.item(CStr(dateIndex))
-                        item.ValorAFacturarOT = item.ValorAFacturarOT + MonedaConverter.Convertir(deta.TotalConDescuento, Ot.Moneda.id, MonedaConverter.Patron.id)
+                        item.ValorAFacturarOT = item.ValorAFacturarOT + MonedaConverter.Convertir(deta.TotalConDescuento, Ot.moneda.Id, MonedaConverter.Patron.Id)
                     Else
                         Set item = New CashFlowItem
                         item.FechaIndex = dateIndex
-                        item.ValorAFacturarOT = MonedaConverter.Convertir(deta.TotalConDescuento, Ot.Moneda.id, MonedaConverter.Patron.id)
+                        item.ValorAFacturarOT = MonedaConverter.Convertir(deta.TotalConDescuento, Ot.moneda.Id, MonedaConverter.Patron.Id)
                         flowItems.Add item, dateIndex
                     End If
 

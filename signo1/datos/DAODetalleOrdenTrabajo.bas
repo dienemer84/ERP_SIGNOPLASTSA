@@ -23,29 +23,29 @@ Public Const CAMPO_ID_PRESU = "id_presupuesto_origen"
 Public Const CAMPO_DESCUENTO = "descuento"
 
 Public Sub EnviarAStock(detalle As DetalleOrdenTrabajo, Cantidad As Double)
-On Error GoTo err1
-'reload
-Set detalle = DAODetalleOrdenTrabajo.FindById(detalle.id)
+    On Error GoTo err1
+    'reload
+    Set detalle = DAODetalleOrdenTrabajo.FindById(detalle.Id)
 
-'valido nuevamente
-If detalle.CantidadPedida >= detalle.CantidadEnviadasAStock + Cantidad Then
-    detalle.CantidadEnviadasAStock = detalle.CantidadEnviadasAStock + Cantidad
-    conectar.BeginTransaction
+    'valido nuevamente
+    If detalle.CantidadPedida >= detalle.CantidadEnviadasAStock + Cantidad Then
+        detalle.CantidadEnviadasAStock = detalle.CantidadEnviadasAStock + Cantidad
+        conectar.BeginTransaction
         Save (detalle)
-    conectar.CommitTransaction
-Else
-    Err.Raise 2020, "Asignación de Stock", "La cantidad de stock que se intenta asignar supera a la cantidad disponible"
-End If
-Exit Sub
+        conectar.CommitTransaction
+    Else
+        Err.Raise 2020, "Asignación de Stock", "La cantidad de stock que se intenta asignar supera a la cantidad disponible"
+    End If
+    Exit Sub
 err1:
     conectar.RollBackTransaction
     Err.Raise Err.Number, Err.Source, Err.Description
 End Sub
 
 
-Public Function CountPrintedLabels(id As Long) As Boolean
+Public Function CountPrintedLabels(Id As Long) As Boolean
     On Error GoTo err1
-    conectar.execute "update detalles_pedidos set etiquetas_impresas = etiquetas_impresas+1 where id=" & id
+    conectar.execute "update detalles_pedidos set etiquetas_impresas = etiquetas_impresas+1 where id=" & Id
     CountPrintedLabels = True
     Exit Function
 err1:
@@ -68,18 +68,18 @@ End Function
 Public Function PendientesEntregaPorPieza(idPieza As Long) As Double
 
 'busco todas las ordenes activas donde se est'e fabricando esta pieza
-Dim sql As String
-sql = " SELECT SUM(dp.cantidad)-SUM(dpc.cantidad)  as pendientes FROM detalles_pedidos_cantidad dpc " _
+    Dim sql As String
+    sql = " SELECT SUM(dp.cantidad)-SUM(dpc.cantidad)  as pendientes FROM detalles_pedidos_cantidad dpc " _
         & "INNER JOIN detalles_pedidos dp ON dpc.id_detalle_pedido=dp.id " _
-    & "Where tipo_cantidad = 2 And id_detalle_pedido " _
+        & "Where tipo_cantidad = 2 And id_detalle_pedido " _
         & "IN (SELECT dp.id FROM pedidos p INNER JOIN detalles_pedidos dp ON dp.idPedido=p.id  WHERE p.estado=2 AND dp.idPieza = " & idPieza & ") " _
         & " GROUP BY dp.idPieza"
 
-Dim rs As New Recordset
-Set rs = RSFactory(sql)
-If Not rs.EOF And Not rs.BOF Then
-    PendientesEntregaPorPieza = rs!pendientes
-End If
+    Dim rs As New Recordset
+    Set rs = RSFactory(sql)
+    If Not rs.EOF And Not rs.BOF Then
+        PendientesEntregaPorPieza = rs!pendientes
+    End If
 
 
 
@@ -106,9 +106,9 @@ Public Function FindAllByOrdenTrabajo(orden_trabajo_id As Long, Optional withEnt
     Set FindAllByOrdenTrabajo = DAODetalleOrdenTrabajo.FindAll(filter, withEntregados, withFabricados, withFacturados, , , , WithTareasFinalizadas)
 End Function
 
-Public Function FindConjuntoById(id As Long) As DetalleOTConjuntoDTO
+Public Function FindConjuntoById(Id As Long) As DetalleOTConjuntoDTO
     Dim col As Collection
-    Set col = FindAllConjunto(, , , , id) ', , "dpc.id = " & id)
+    Set col = FindAllConjunto(, , , , Id)    ', , "dpc.id = " & id)
     If col.count > 0 Then
         Set FindConjuntoById = col.item(1)
     Else
@@ -131,22 +131,22 @@ Public Function FindAllConjunto(Optional ByVal idDetallePedido As Long = 0, Opti
     Dim detaOrdenesTrabajo As New Collection
 
     q = "SELECT" _
-        & " dpc.*," _
-        & " s.*," _
-        & " dp.*" _
-        & " FROM detalles_pedidos_conjuntos dpc" _
-        & " LEFT JOIN stock s" _
-        & " ON s.id = dpc.idPieza" _
-        & " LEFT JOIN detalles_pedidos dp" _
-        & " ON dp.id = dpc.idDetalle_pedido" _
-        & " WHERE 1 = 1"
+      & " dpc.*," _
+      & " s.*," _
+      & " dp.*" _
+      & " FROM detalles_pedidos_conjuntos dpc" _
+      & " LEFT JOIN stock s" _
+      & " ON s.id = dpc.idPieza" _
+      & " LEFT JOIN detalles_pedidos dp" _
+      & " ON dp.id = dpc.idDetalle_pedido" _
+      & " WHERE 1 = 1"
 
     If idDetallePedido > 0 Then
         q = q & " AND dpc.idDetalle_Pedido = " & idDetallePedido
     End If
-    
+
     If idDetalleConjunto > 0 Then
-    q = q & " And dpc.id = " & idDetalleConjunto
+        q = q & " And dpc.id = " & idDetalleConjunto
     End If
     If idPiezaPadre > 0 Then
         q = q & " And dpc.idPiezaPadre = " & idPiezaPadre
@@ -170,10 +170,10 @@ Public Function FindAllConjunto(Optional ByVal idDetallePedido As Long = 0, Opti
         Set tmpDeta = DAODetalleOrdenTrabajo.MapConjunto(rs, fieldsIndex, "dpc", piezaTabla, "dp")
 
         If withDesarrolloManoObra Then
-            Set tmpDeta.Pieza.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpDeta.Pieza.id)
+            Set tmpDeta.Pieza.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpDeta.Pieza.Id)
         End If
 
-        detaOrdenesTrabajo.Add tmpDeta, CStr(tmpDeta.id)
+        detaOrdenesTrabajo.Add tmpDeta, CStr(tmpDeta.Id)
         rs.MoveNext
     Wend
 
@@ -189,7 +189,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, _
                         Optional withColFabricados As Boolean = False, _
                         Optional withColFacturados As Boolean = False, _
                         Optional WithTareasFinalizadas As Boolean = False _
-                        ) As Collection
+                      ) As Collection
 
     On Error GoTo err1
     Dim tickStart As Double
@@ -265,16 +265,16 @@ If Facturados Then
 
 
         If withColEntregados Then
-            Set tmpDeta.colCantidadesEntregadas = MapCantidad(tmpDeta.id, CantidadEntregada_, tmpDeta.OrdenTrabajo.IdMoneda)
+            Set tmpDeta.colCantidadesEntregadas = MapCantidad(tmpDeta.Id, CantidadEntregada_, tmpDeta.OrdenTrabajo.IdMoneda)
         End If
         If withColFabricados Then
-            Set tmpDeta.colCantidadesFabricadas = MapCantidad(tmpDeta.id, CantidadFabricada_, tmpDeta.OrdenTrabajo.IdMoneda)
+            Set tmpDeta.colCantidadesFabricadas = MapCantidad(tmpDeta.Id, CantidadFabricada_, tmpDeta.OrdenTrabajo.IdMoneda)
         End If
         If withColFacturados Then
-            Set tmpDeta.colCantidadesFacturadas = MapCantidad(tmpDeta.id, CantidadFacturada_, tmpDeta.OrdenTrabajo.IdMoneda)
+            Set tmpDeta.colCantidadesFacturadas = MapCantidad(tmpDeta.Id, CantidadFacturada_, tmpDeta.OrdenTrabajo.IdMoneda)
         End If
 
-        detaOrdenesTrabajo.Add tmpDeta, CStr(tmpDeta.id)
+        detaOrdenesTrabajo.Add tmpDeta, CStr(tmpDeta.Id)
         rs.MoveNext
     Wend
 
@@ -299,16 +299,16 @@ Public Function MapConjunto(ByRef rs As Recordset, _
                             ByRef tableNameOrAlias As String, _
                             Optional ByRef piezaTableNameOrAlias As String = vbNullString, _
                             Optional ByRef detallePedidoTableNameOrAlias As String = vbNullString _
-                            ) As DetalleOTConjuntoDTO
+                          ) As DetalleOTConjuntoDTO
 
     Dim tmpDeta As DetalleOTConjuntoDTO
-    Dim id As Variant
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, "id")
+    Dim Id As Variant
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set tmpDeta = New DetalleOTConjuntoDTO
 
-        tmpDeta.id = id
+        tmpDeta.Id = Id
         tmpDeta.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
         tmpDeta.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "procesos_definidos")
         tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
@@ -333,16 +333,16 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional Fabricados As Boolean = False, _
                     Optional Facturados As Boolean = False, _
                     Optional WithTareasFinalizadas As Boolean = False _
-                    ) As DetalleOrdenTrabajo
+                  ) As DetalleOrdenTrabajo
 
     Dim tmpDetaOrdenTrabajo As DetalleOrdenTrabajo
-    Dim id As Variant
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODetalleOrdenTrabajo.CAMPO_ID)
+    Dim Id As Variant
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODetalleOrdenTrabajo.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set tmpDetaOrdenTrabajo = New DetalleOrdenTrabajo
 
-        tmpDetaOrdenTrabajo.id = id
+        tmpDetaOrdenTrabajo.Id = Id
         tmpDetaOrdenTrabajo.item = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ITEM)
         tmpDetaOrdenTrabajo.CantidadPedida = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CANTIDAD_PEDIDA)
         tmpDetaOrdenTrabajo.NombrePiezaHistorico = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_NOMBRE_PIEZA_HISTORICO)
@@ -364,7 +364,7 @@ Public Function Map(ByRef rs As Recordset, _
         tmpDetaOrdenTrabajo.CantidadEnviadasAStock = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_a_stock")
         'pseudo proxy
         Set tmpDetaOrdenTrabajo.OrdenTrabajo = New OrdenTrabajo
-        tmpDetaOrdenTrabajo.OrdenTrabajo.id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PEDIDO_ID)
+        tmpDetaOrdenTrabajo.OrdenTrabajo.Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PEDIDO_ID)
 
         If LenB(piezaTableNameOrAlias) > 0 Then Set tmpDetaOrdenTrabajo.Pieza = DAOPieza.Map(rs, fieldsIndex, piezaTableNameOrAlias)
 
@@ -414,65 +414,65 @@ Public Function Save(deta As DetalleOrdenTrabajo) As Boolean
 
 
 
-    If deta.id = 0 Then
+    If deta.Id = 0 Then
         q = q & "INSERT INTO detalles_pedidos" _
-            & " (item," _
-            & " idPedido," _
-            & " idPieza," _
-            & " cantidad, " _
-            & " detalle_pieza_temporal," _
-            & " nota," _
-            & " reserva_stock," _
-            & " cantidad_fabricados," _
-            & " retirado," _
-            & " precio," _
-            & " cantidad_entregada," _
-            & " fechaEntrega," _
-            & " cantidad_facturada," _
-            & " nota_produccion," _
-            & " impresiones_ruta," _
-            & " precio_modificado," _
-            & " procesos_definidos, IdDetalleOtPadre,id_presupuesto_origen,descuento,id_moneda,cantidad_a_stock)" _
-            & " VALUES (" _
-            & conectar.Escape(deta.item) & "," _
-            & conectar.GetEntityId(deta.OrdenTrabajo) & "," _
-            & conectar.GetEntityId(deta.Pieza) & "," _
-            & conectar.Escape(deta.CantidadPedida) & "," _
-            & conectar.Escape(deta.NombrePiezaHistorico) & ","
+          & " (item," _
+          & " idPedido," _
+          & " idPieza," _
+          & " cantidad, " _
+          & " detalle_pieza_temporal," _
+          & " nota," _
+          & " reserva_stock," _
+          & " cantidad_fabricados," _
+          & " retirado," _
+          & " precio," _
+          & " cantidad_entregada," _
+          & " fechaEntrega," _
+          & " cantidad_facturada," _
+          & " nota_produccion," _
+          & " impresiones_ruta," _
+          & " precio_modificado," _
+          & " procesos_definidos, IdDetalleOtPadre,id_presupuesto_origen,descuento,id_moneda,cantidad_a_stock)" _
+          & " VALUES (" _
+          & conectar.Escape(deta.item) & "," _
+          & conectar.GetEntityId(deta.OrdenTrabajo) & "," _
+          & conectar.GetEntityId(deta.Pieza) & "," _
+          & conectar.Escape(deta.CantidadPedida) & "," _
+          & conectar.Escape(deta.NombrePiezaHistorico) & ","
 
         Dim d As Integer
         d = conectar.Escape(deta.CantidadImpresionesDeRuta)
 
         q = q & "'" & deta.Nota & "'," _
-            & conectar.Escape(deta.ReservaStock) & "," _
-            & conectar.Escape(deta.CantidadFabricados) & "," _
-            & conectar.Escape(deta.Retirado) & "," _
-            & conectar.Escape(deta.Precio) & "," _
-            & conectar.Escape(deta.CantidadEntregada) & "," _
-            & conectar.Escape(deta.FechaEntrega) & "," _
-            & conectar.Escape(deta.CantidadFacturada) & "," _
-            & "'" & deta.NotaProduccion & "'," _
-            & d & "," _
-            & conectar.Escape(deta.PrecioModificado) & "," _
-            & conectar.Escape(deta.EstadoProceso) & ", " & deta.idDetalleOtPadre & "," & Escape(deta.idPresupuestoOrigen) & "," & Escape(deta.Descuento) & "," & Escape(deta.IdMoneda) & "," & Escape(deta.CantidadEnviadasAStock) & ")"
+          & conectar.Escape(deta.ReservaStock) & "," _
+          & conectar.Escape(deta.CantidadFabricados) & "," _
+          & conectar.Escape(deta.Retirado) & "," _
+          & conectar.Escape(deta.Precio) & "," _
+          & conectar.Escape(deta.CantidadEntregada) & "," _
+          & conectar.Escape(deta.FechaEntrega) & "," _
+          & conectar.Escape(deta.CantidadFacturada) & "," _
+          & "'" & deta.NotaProduccion & "'," _
+          & d & "," _
+          & conectar.Escape(deta.PrecioModificado) & "," _
+          & conectar.Escape(deta.EstadoProceso) & ", " & deta.idDetalleOtPadre & "," & Escape(deta.idPresupuestoOrigen) & "," & Escape(deta.Descuento) & "," & Escape(deta.IdMoneda) & "," & Escape(deta.CantidadEnviadasAStock) & ")"
 
         Save = conectar.execute(q)
 
-        Dim id As Long
+        Dim Id As Long
 
         If Save Then
-            conectar.UltimoId "detalles_pedidos", id
-            deta.id = id
+            conectar.UltimoId "detalles_pedidos", Id
+            deta.Id = Id
 
             If deta.Pieza.EsConjunto Then
                 Dim st As New classStock
                 Dim r_arbol As Recordset
                 'traigo el recordset con el arbol en plano
-                Set r_arbol = st.ArbolConjunto(deta.Pieza.id)
+                Set r_arbol = st.ArbolConjunto(deta.Pieza.Id)
                 'cargo el detalle_pedido de conjuntos para teenr el despiece separado
                 While Not r_arbol.EOF
                     q = "insert into detalles_pedidos_conjuntos  (idPedido, idDetalle_pedido, IdPiezaPadre, idPieza, esConjunto, cantidad, reserva_stock,cantidadPieza,cantidad_total_static,identificador_posicion)"
-                    q = q & " values (" & deta.OrdenTrabajo.id & "," & deta.id & "," & r_arbol!idPiezaPadre & "," & r_arbol!idPieza & "," & r_arbol!conjunto & "," & r_arbol!Cantidad & "," & 0 & "," & r_arbol!Cantidad & "," & r_arbol!Cantt * deta.CantidadPedida & ",'" & r_arbol!id_pos & "')"
+                    q = q & " values (" & deta.OrdenTrabajo.Id & "," & deta.Id & "," & r_arbol!idPiezaPadre & "," & r_arbol!idPieza & "," & r_arbol!conjunto & "," & r_arbol!Cantidad & "," & 0 & "," & r_arbol!Cantidad & "," & r_arbol!Cantt * deta.CantidadPedida & ",'" & r_arbol!id_pos & "')"
                     Save = conectar.execute(q)
 
                     r_arbol.MoveNext
@@ -484,30 +484,30 @@ Public Function Save(deta As DetalleOrdenTrabajo) As Boolean
     Else
 
         q = "update detalles_pedidos" _
-            & " SET" _
-            & " item = " & conectar.Escape(deta.item) & " ," _
-            & " idPedido = " & conectar.GetEntityId(deta.OrdenTrabajo) & " ," _
-            & " idPieza = " & conectar.GetEntityId(deta.Pieza) & "," _
-            & " cantidad = " & conectar.Escape(deta.CantidadPedida) & " ," _
-            & " detalle_pieza_temporal = " & conectar.Escape(deta.NombrePiezaHistorico) & " ," _
-            & " nota = " & conectar.Escape(deta.Nota) & " ," _
-            & " reserva_stock = " & conectar.Escape(deta.ReservaStock) & " ," _
-            & " cantidad_fabricados = " & conectar.Escape(deta.CantidadFabricados) & " ," _
-            & " retirado = " & conectar.Escape(deta.Retirado) & " ," _
-            & " precio = " & conectar.Escape(deta.Precio) & " ," _
-            & " cantidad_entregada = " & conectar.Escape(deta.CantidadEntregada) & " ," _
-            & " fechaEntrega = " & conectar.Escape(deta.FechaEntrega) & " ," _
-            & " cantidad_facturada = " & conectar.Escape(deta.CantidadFacturada) & " ," _
-            & " nota_produccion = " & conectar.Escape(deta.NotaProduccion) & " ," _
-            & " impresiones_ruta = " & conectar.Escape(deta.CantidadImpresionesDeRuta) & " ," _
-            & " precio_modificado = " & conectar.Escape(deta.PrecioModificado) & " ," _
-            & " procesos_definidos = " & conectar.Escape(deta.EstadoProceso) & ", " _
-            & " id_presupuesto_origen = " & conectar.Escape(deta.idPresupuestoOrigen) & ", " _
-            & " idDetalleOtPadre = " & conectar.Escape(deta.idDetalleOtPadre) & "," _
-            & " id_moneda = " & conectar.Escape(deta.IdMoneda) & "," _
-            & " descuento = " & conectar.Escape(deta.Descuento) _
-            & " Where" _
-            & " id = " & deta.id
+          & " SET" _
+          & " item = " & conectar.Escape(deta.item) & " ," _
+          & " idPedido = " & conectar.GetEntityId(deta.OrdenTrabajo) & " ," _
+          & " idPieza = " & conectar.GetEntityId(deta.Pieza) & "," _
+          & " cantidad = " & conectar.Escape(deta.CantidadPedida) & " ," _
+          & " detalle_pieza_temporal = " & conectar.Escape(deta.NombrePiezaHistorico) & " ," _
+          & " nota = " & conectar.Escape(deta.Nota) & " ," _
+          & " reserva_stock = " & conectar.Escape(deta.ReservaStock) & " ," _
+          & " cantidad_fabricados = " & conectar.Escape(deta.CantidadFabricados) & " ," _
+          & " retirado = " & conectar.Escape(deta.Retirado) & " ," _
+          & " precio = " & conectar.Escape(deta.Precio) & " ," _
+          & " cantidad_entregada = " & conectar.Escape(deta.CantidadEntregada) & " ," _
+          & " fechaEntrega = " & conectar.Escape(deta.FechaEntrega) & " ," _
+          & " cantidad_facturada = " & conectar.Escape(deta.CantidadFacturada) & " ," _
+          & " nota_produccion = " & conectar.Escape(deta.NotaProduccion) & " ," _
+          & " impresiones_ruta = " & conectar.Escape(deta.CantidadImpresionesDeRuta) & " ," _
+          & " precio_modificado = " & conectar.Escape(deta.PrecioModificado) & " ," _
+          & " procesos_definidos = " & conectar.Escape(deta.EstadoProceso) & ", " _
+          & " id_presupuesto_origen = " & conectar.Escape(deta.idPresupuestoOrigen) & ", " _
+          & " idDetalleOtPadre = " & conectar.Escape(deta.idDetalleOtPadre) & "," _
+          & " id_moneda = " & conectar.Escape(deta.IdMoneda) & "," _
+          & " descuento = " & conectar.Escape(deta.Descuento) _
+          & " Where" _
+          & " id = " & deta.Id
 
 
 
@@ -569,7 +569,7 @@ Public Function arreglarCagada()
 
         For Each det In Ot.Detalles
 
-            det.IdMoneda = Ot.moneda.id
+            det.IdMoneda = Ot.moneda.Id
             ''If ot.Moneda.Id = 1 Then Stop
             DAODetalleOrdenTrabajo.Save det
 
@@ -649,18 +649,18 @@ Public Sub CalcularPorcentajeAvanceYPromedioFabricado(idDetallePedido As Long, B
     'calculo el porcentaje de avance de todas las tareas del detalle del pedido
 
     q = "SELECT" _
-        & " dp.cantidad AS cantidad_pedida," _
-        & " ptp.codigoTarea," _
-        & " SUM(ptpd.cantidad_procesada) AS cantidad_procesada," _
-        & " udf_hasta_cien(((SUM(ptpd.cantidad_procesada) / dp.cantidad) * 100)) AS porcentaje_realizado_tarea," _
-        & " ((SELECT (1 / COUNT(ptp2.id)) * 100 FROM PlaneamientoTiemposProcesos ptp2 WHERE ptp2.iddetallepedido = dp.id) * udf_hasta_cien(((SUM(ptpd.cantidad_procesada) / dp.cantidad) * 100))) / 100  AS porcentaje_tarea_pedido" _
-        & " FROM detalles_pedidos dp" _
-        & " INNER JOIN PlaneamientoTiemposProcesos ptp" _
-        & " ON ptp.idDetallePedido = dp.id" _
-        & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
-        & " ON ptpd.idTiemposProcesos = ptp.id" _
-        & " Where dp.id = " & idDetallePedido _
-        & " GROUP BY ptp.id"
+      & " dp.cantidad AS cantidad_pedida," _
+      & " ptp.codigoTarea," _
+      & " SUM(ptpd.cantidad_procesada) AS cantidad_procesada," _
+      & " udf_hasta_cien(((SUM(ptpd.cantidad_procesada) / dp.cantidad) * 100)) AS porcentaje_realizado_tarea," _
+      & " ((SELECT (1 / COUNT(ptp2.id)) * 100 FROM PlaneamientoTiemposProcesos ptp2 WHERE ptp2.iddetallepedido = dp.id) * udf_hasta_cien(((SUM(ptpd.cantidad_procesada) / dp.cantidad) * 100))) / 100  AS porcentaje_tarea_pedido" _
+      & " FROM detalles_pedidos dp" _
+      & " INNER JOIN PlaneamientoTiemposProcesos ptp" _
+      & " ON ptp.idDetallePedido = dp.id" _
+      & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
+      & " ON ptpd.idTiemposProcesos = ptp.id" _
+      & " Where dp.id = " & idDetallePedido _
+      & " GROUP BY ptp.id"
 
     porcentajeAvanceTareas = -1
     Set tmpRS = conectar.RSFactory(q)
@@ -683,14 +683,14 @@ Public Sub CalcularPorcentajeAvanceYPromedioFabricado(idDetallePedido As Long, B
     'piezasRealizadasDeDetallePedido = 0
 
     q = "SELECT (SELECT COUNT(ptp2.id) FROM PlaneamientoTiemposProcesos ptp2 WHERE ptp2.idDetallePedido = dp.id) AS cantidad_tareas," _
-        & " IFNULL(SUM(ptpd.cantidad_procesada), 0) As cantidad_piezas_procesadas_tarea" _
-        & " FROM detalles_pedidos dp" _
-        & " INNER JOIN PlaneamientoTiemposProcesos ptp" _
-        & " ON ptp.idDetallePedido = dp.id" _
-        & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
-        & " ON ptpd.idTiemposProcesos = ptp.id" _
-        & " Where dp.id = " & idDetallePedido _
-        & " GROUP BY ptp.id"
+      & " IFNULL(SUM(ptpd.cantidad_procesada), 0) As cantidad_piezas_procesadas_tarea" _
+      & " FROM detalles_pedidos dp" _
+      & " INNER JOIN PlaneamientoTiemposProcesos ptp" _
+      & " ON ptp.idDetallePedido = dp.id" _
+      & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
+      & " ON ptpd.idTiemposProcesos = ptp.id" _
+      & " Where dp.id = " & idDetallePedido _
+      & " GROUP BY ptp.id"
 
     Set tmpRS = conectar.RSFactory(q)
     minTemp = -1
@@ -740,18 +740,18 @@ Public Sub CalcularPorcentajeAvanceYPromedioFabricado(idDetallePedido As Long, B
 
         While Not tmpRS.EOF
             q = "SELECT" _
-                & " dp.cantidad AS cantidad_pedida," _
-                & " ptp.codigoTarea," _
-                & " SUM(ptpd.cantidad_procesada) AS cantidad_procesada," _
-                & " udf_hasta_cien(((SUM(ptpd.cantidad_procesada) / dp.cantidad) * 100)) AS porcentaje_realizado_tarea," _
-                & " ((SELECT (1 / COUNT(ptp2.id)) * 100 FROM PlaneamientoTiemposProcesos ptp2 WHERE ptp2.iddetallepedido = dp.id) * udf_hasta_cien(((SUM(ptpd.cantidad_procesada) / dp.cantidad) * 100))) / 100  AS porcentaje_tarea_pedido" _
-                & " FROM detalles_pedidos_conjuntos dp" _
-                & " INNER JOIN PlaneamientoTiemposProcesos ptp" _
-                & " ON ptp.idDetallePedido = dp.id" _
-                & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
-                & " ON ptpd.idTiemposProcesos = ptp.id" _
-                & " Where dp.id = " & tmpRS!id & " And ptp.conjunto = 1" _
-                & " GROUP BY ptp.id"
+              & " dp.cantidad AS cantidad_pedida," _
+              & " ptp.codigoTarea," _
+              & " SUM(ptpd.cantidad_procesada) AS cantidad_procesada," _
+              & " udf_hasta_cien(((SUM(ptpd.cantidad_procesada) / dp.cantidad) * 100)) AS porcentaje_realizado_tarea," _
+              & " ((SELECT (1 / COUNT(ptp2.id)) * 100 FROM PlaneamientoTiemposProcesos ptp2 WHERE ptp2.iddetallepedido = dp.id) * udf_hasta_cien(((SUM(ptpd.cantidad_procesada) / dp.cantidad) * 100))) / 100  AS porcentaje_tarea_pedido" _
+              & " FROM detalles_pedidos_conjuntos dp" _
+              & " INNER JOIN PlaneamientoTiemposProcesos ptp" _
+              & " ON ptp.idDetallePedido = dp.id" _
+              & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
+              & " ON ptpd.idTiemposProcesos = ptp.id" _
+              & " Where dp.id = " & tmpRS!Id & " And ptp.conjunto = 1" _
+              & " GROUP BY ptp.id"
 
 
             tmpContador = 0
@@ -769,18 +769,18 @@ Public Sub CalcularPorcentajeAvanceYPromedioFabricado(idDetallePedido As Long, B
 
             'calculo el prom de piezas de lo que integra el conjunto
             q = "SELECT" _
-                & " (SELECT" _
-                & " count(ptp2.id)" _
-                & " FROM PlaneamientoTiemposProcesos ptp2" _
-                & " WHERE ptp2.idDetallePedido = dp.id) AS cantidad_tareas," _
-                & " IFNULL(SUM(ptpd.cantidad_procesada), 0) As cantidad_piezas_procesadas_tarea" _
-                & " FROM detalles_pedidos_conjuntos dp" _
-                & " INNER JOIN PlaneamientoTiemposProcesos ptp" _
-                & " ON ptp.idDetallePedido = dp.id" _
-                & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
-                & " ON ptpd.idTiemposProcesos = ptp.id" _
-                & " Where dp.id = " & tmpRS!id & " And ptp.conjunto = 1" _
-                & " GROUP BY ptp.id"
+              & " (SELECT" _
+              & " count(ptp2.id)" _
+              & " FROM PlaneamientoTiemposProcesos ptp2" _
+              & " WHERE ptp2.idDetallePedido = dp.id) AS cantidad_tareas," _
+              & " IFNULL(SUM(ptpd.cantidad_procesada), 0) As cantidad_piezas_procesadas_tarea" _
+              & " FROM detalles_pedidos_conjuntos dp" _
+              & " INNER JOIN PlaneamientoTiemposProcesos ptp" _
+              & " ON ptp.idDetallePedido = dp.id" _
+              & " LEFT JOIN PlaneamientoTiemposProcesosDetalle ptpd" _
+              & " ON ptpd.idTiemposProcesos = ptp.id" _
+              & " Where dp.id = " & tmpRS!Id & " And ptp.conjunto = 1" _
+              & " GROUP BY ptp.id"
 
             minimoTmp = -1
             Set tmpRS2 = conectar.RSFactory(q)

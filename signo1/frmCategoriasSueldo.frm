@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~2.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmCategoriasSueldo 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
@@ -193,19 +193,19 @@ End Sub
 
 Private Sub cmdActualizarValores_Click()
     On Error GoTo err1:
-    Dim sueldo As Double
-    
-    sueldo = Val(InputBox("Ingrese incremental", "Actualización Salarial Global", 0))
+    Dim Sueldo As Double
+
+    Sueldo = Val(InputBox("Ingrese incremental", "Actualización Salarial Global", 0))
     Dim cat As CategoriaSueldo
-    
+
     Dim categorias As Collection
     conectar.BeginTransaction
     Set categorias = DAOCategoriaSueldo.FindAll()
     Dim porc As Double
-    porc = 1 + (sueldo / 100)
+    porc = 1 + (Sueldo / 100)
     For Each cat In categorias
-    cat.Valor = funciones.RedondearDecimales(cat.Valor * porc, 2)
-     If Not DAOCategoriaSueldo.Save(cat) Then GoTo err1
+        cat.Valor = funciones.RedondearDecimales(cat.Valor * porc, 2)
+        If Not DAOCategoriaSueldo.Save(cat) Then GoTo err1
     Next
     conectar.CommitTransaction
     MsgBox "Actualización correcta de categorias", vbInformation, "Información"
@@ -343,7 +343,7 @@ Private Sub CargarLista()
         rec.AddItem categoria.nombre
         rec.AddItem funciones.FormatearDecimales(categoria.Valor)
         rec.AddItem categoria.PorcentajeEspecializacion
-        rec.Tag = categoria.id
+        rec.Tag = categoria.Id
     Next categoria
 
     Set categoria = Nothing
@@ -363,7 +363,7 @@ Private Sub ReportControl_SelectionChanged()
     End If
 
     If Me.ReportControl.SelectedRows.count > 0 Then
-        registro = Me.ReportControl.SelectedRows(0).index
+        registro = Me.ReportControl.SelectedRows(0).Index
     End If
 
     ActivarControles

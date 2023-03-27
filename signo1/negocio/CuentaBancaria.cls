@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public Banco As Banco
 Public numero As String
 Public TipoCuenta As TipoCuentaBancaria
@@ -44,8 +44,8 @@ Public Property Get DescripcionCBUFormateada() As String
     If IsSomething(Me.moneda) Then
         col.Add Me.moneda.NombreCorto
     End If
-    
-    
+
+
     col.Add "CBU: " & Me.CBU
 
     Dim i As Long

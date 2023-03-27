@@ -24,10 +24,10 @@ Public Function PutSaldos(col As Collection, rango As String) As Collection
 
 
     q = "select  cc.id, SUM( IF(tipo_doc_contable=1, -1* cf.monto,cf.monto )) AS gastado,  IF (fp.id_moneda=0,1,fp.`tipo_cambio`) AS cambio FROM AdminComprasCuentasContables cc" _
-        & " LEFT JOIN AdminComprasCuentasFacturas cf " _
-        & " ON cf.id_cuenta = cc.id   LEFT JOIN AdminComprasFacturasProveedores fp " _
-        & " ON cf.id_factura = fp.id  " _
-        & " Where 1 = 1   " & rango
+      & " LEFT JOIN AdminComprasCuentasFacturas cf " _
+      & " ON cf.id_cuenta = cc.id   LEFT JOIN AdminComprasFacturasProveedores fp " _
+      & " ON cf.id_factura = fp.id  " _
+      & " Where 1 = 1   " & rango
 
     q = q & "GROUP BY cc.id ORDER BY cc.codigo ASC "
 
@@ -66,10 +66,10 @@ Public Function PutSaldos(col As Collection, rango As String) As Collection
 
 
     q = "SELECT   SUM(   ( IF(tipo_doc_contable=1, -1* fpi.valor ,fpi.valor ))*(acia.alicuota/100)     ) AS gastado ,  IF (fp.id_moneda=0,1,fp.`tipo_cambio`) AS cambio FROM AdminComprasFacturasProveedores fp " _
-        & " LEFT JOIN AdminComprasFacturasProveedoresIva fpi     ON fpi.id_factura_proveedor = fp.id " _
-        & " LEFT JOIN AdminConfigIvaAlicuotas acia ON fpi.id_iva=acia.id " _
-        & " Where 1 = 1 " & rango _
-        & " group by fp.id"
+      & " LEFT JOIN AdminComprasFacturasProveedoresIva fpi     ON fpi.id_factura_proveedor = fp.id " _
+      & " LEFT JOIN AdminConfigIvaAlicuotas acia ON fpi.id_iva=acia.id " _
+      & " Where 1 = 1 " & rango _
+      & " group by fp.id"
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
@@ -100,11 +100,11 @@ Public Function PutSaldos(col As Collection, rango As String) As Collection
      & " GROUP BY fpp.id_percepcion "
 
     q = " SELECT acp.id, SUM( IF(tipo_doc_contable=1, -1* fpp.valor * (IF (    fp.id_moneda = 0,    1,    fp.`tipo_cambio`  )), fpp.valor * (IF (    fp.id_moneda = 0,    1,    fp.`tipo_cambio`  )) )) AS gastado,  IF (fp.id_moneda=0,1,fp.`tipo_cambio`) AS cambio   FROM AdminComprasFacturasProveedores fp " _
-        & "  LEFT JOIN AdminConfigMonedas cm  ON fp.id_moneda = cm.id " _
-        & " LEFT JOIN AdminComprasFacturasProveedoresPercepciones fpp ON fpp.id_factura_proveedor=fp.id " _
-        & " LEFT JOIN AdminConfigPercepciones acp ON fpp.id_percepcion=acp.id " _
-        & " Where 1 = 1 " & rango _
-        & " GROUP BY fpp.id_percepcion "
+      & "  LEFT JOIN AdminConfigMonedas cm  ON fp.id_moneda = cm.id " _
+      & " LEFT JOIN AdminComprasFacturasProveedoresPercepciones fpp ON fpp.id_factura_proveedor=fp.id " _
+      & " LEFT JOIN AdminConfigPercepciones acp ON fpp.id_percepcion=acp.id " _
+      & " Where 1 = 1 " & rango _
+      & " GROUP BY fpp.id_percepcion "
 
     Dim idp As Long
 
@@ -135,8 +135,8 @@ Public Function PutSaldos(col As Collection, rango As String) As Collection
 
 
     q = " SELECT SUM( IF(tipo_doc_contable=1, -1* fp.impuesto_interno ,fp.impuesto_interno )) AS gastado ,  IF (fp.id_moneda=0,1,fp.`tipo_cambio`) AS cambio FROM AdminComprasFacturasProveedores fp " _
-        & " LEFT JOIN AdminConfigMonedas cm  ON fp.id_moneda = cm.id " _
-        & " Where 1 = 1 " & rango & " group by fp.id"
+      & " LEFT JOIN AdminConfigMonedas cm  ON fp.id_moneda = cm.id " _
+      & " Where 1 = 1 " & rango & " group by fp.id"
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
@@ -160,8 +160,8 @@ Public Function PutSaldos(col As Collection, rango As String) As Collection
      & " Where 1 = 1 " & rango
 
     q = " SELECT SUM( IF(tipo_doc_contable=1, -1* fp.redondeo_iva ,fp.redondeo_iva )) AS gastado , IF (fp.id_moneda=0,1,fp.`tipo_cambio`) AS cambio FROM AdminComprasFacturasProveedores fp " _
-        & " LEFT JOIN AdminConfigMonedas cm  ON fp.id_moneda = cm.id " _
-        & " Where 1 = 1 " & rango & " group by fp.id"
+      & " LEFT JOIN AdminConfigMonedas cm  ON fp.id_moneda = cm.id " _
+      & " Where 1 = 1 " & rango & " group by fp.id"
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
@@ -362,16 +362,16 @@ Public Function ExportarColeccion(col As Collection, rango As String) As Boolean
     'Dim xlWorkbook As New Excel.Workbook
     Dim xlWorkbook As Object
     Set xlWorkbook = CreateObject("Excel.Application")
-    
+
     'Dim xlWorksheet As New Excel.Worksheet
     Dim xlWorksheet As Object
     Set xlWorksheet = CreateObject("Excel.Application")
-    
+
     'Dim xlApplication As New Excel.Application
     Dim xlApplication As Object
     Set xlApplication = CreateObject("Excel.Application")
-    
-    
+
+
     Set xlWorkbook = xlApplication.Workbooks.Add
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 

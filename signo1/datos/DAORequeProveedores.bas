@@ -8,7 +8,7 @@ Public Function GetAllByReque(T As clsRequerimiento) As Collection
     Dim rs As Recordset
     Dim strsql As String
 
-    strsql = "select idProveedor from ComprasRequerimientosProveedores p inner join ComprasRequerimientosDetalleMaterial m on p.idDetalleReque=m.id where m.idReque=" & T.id & " group by idProveedor"
+    strsql = "select idProveedor from ComprasRequerimientosProveedores p inner join ComprasRequerimientosDetalleMaterial m on p.idDetalleReque=m.id where m.idReque=" & T.Id & " group by idProveedor"
     Set rs = conectar.RSFactory(strsql)
 
     While Not rs.EOF And Not rs.BOF
@@ -27,12 +27,12 @@ err1:
 
 End Function
 
-Public Function GetByDetalleReque(id_detalle_reque As Long, b As tipoEntrega) As Collection
+Public Function GetByDetalleReque(id_detalle_reque As Long, B As tipoEntrega) As Collection
     On Error GoTo err1
     Dim rs As Recordset
     Dim col As New Collection
     Dim prov As clsProveedor
-    strsql = "select * from ComprasRequerimientosProveedores where idDetalleReque=" & id_detalle_reque & " and tipoDetalleReque=" & b
+    strsql = "select * from ComprasRequerimientosProveedores where idDetalleReque=" & id_detalle_reque & " and tipoDetalleReque=" & B
     Set rs = conectar.RSFactory(strsql)
     While Not rs.EOF And Not rs.BOF
         Set prov = DAOProveedor.FindById(rs!idProveedor)
@@ -55,7 +55,7 @@ Public Function Save(T As Collection, id_reque_detalle As Long, Tipo As tipoEntr
     For i = 1 To T.count
         Set prove = T.item(i)
 
-        conectar.execute "insert into ComprasRequerimientosProveedores (idDetalleReque,idProveedor,tipoDetalleReque) values (" & id_reque_detalle & "," & prove.id & "," & Tipo & ")"
+        conectar.execute "insert into ComprasRequerimientosProveedores (idDetalleReque,idProveedor,tipoDetalleReque) values (" & id_reque_detalle & "," & prove.Id & "," & Tipo & ")"
     Next
 
 

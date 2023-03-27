@@ -4,12 +4,12 @@ Option Explicit
 Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As String = "1 = 1") As Collection
     Dim q As String
     q = "SELECT *, (op.pertenencia + 0) as pertenencia2 From" _
-        & " operaciones op" _
-        & " LEFT JOIN AdminComprasCuentasContables cc ON op.cuenta_contable_id = cc.id" _
-        & " LEFT JOIN AdminConfigMonedas mon ON op.moneda_id = mon.id" _
-        & " LEFT JOIN cajas caj ON caj.id = op.cuentabanc_o_caja_id" _
-        & " LEFT JOIN AdminConfigCuentas cu ON cu.id = op.cuentabanc_o_caja_id" _
-        & " WHERE op.pertenencia = " & Origen & " AND " & extraFilter
+      & " operaciones op" _
+      & " LEFT JOIN AdminComprasCuentasContables cc ON op.cuenta_contable_id = cc.id" _
+      & " LEFT JOIN AdminConfigMonedas mon ON op.moneda_id = mon.id" _
+      & " LEFT JOIN cajas caj ON caj.id = op.cuentabanc_o_caja_id" _
+      & " LEFT JOIN AdminConfigCuentas cu ON cu.id = op.cuentabanc_o_caja_id" _
+      & " WHERE op.pertenencia = " & Origen & " AND " & extraFilter
 
     Dim col As New Collection
     Dim op As operacion
@@ -23,7 +23,7 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
     While Not rs.EOF
         Set op = Map(rs, idx, "op", "cc", "mon", "cu", "caj")
 
-        col.Add op, CStr(op.id)
+        col.Add op, CStr(op.Id)
         rs.MoveNext
 
     Wend
@@ -41,14 +41,14 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaMoneda As String = vbNullString, _
                     Optional tablaCuentaBanc As String = vbNullString, _
                     Optional tablaCaja As String = vbNullString _
-                    ) As operacion
+                  ) As operacion
 
     Dim op As operacion
-    Dim id As Long: id = GetValue(rs, indice, tabla, "id")
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set op = New operacion
-        op.id = id
+        op.Id = Id
 
         op.FechaCarga = GetValue(rs, indice, tabla, "fecha_carga")
         op.FechaOperacion = GetValue(rs, indice, tabla, "fecha_operacion")
@@ -58,7 +58,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
 
         op.Monto = GetValue(rs, indice, tabla, "monto")
         op.EntradaSalida = GetValue(rs, indice, tabla, "entrada_salida")
-  op.Comprobante = GetValue(rs, indice, tabla, "comprobante")
+        op.Comprobante = GetValue(rs, indice, tabla, "comprobante")
         If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         If LenB(tablaCuentaContable) > 0 Then Set op.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
 
@@ -80,21 +80,21 @@ Public Function Save(ope As operacion) As Boolean
     Dim q As String
 
     q = "INSERT INTO operaciones" _
-        & " (monto," _
-        & " moneda_id," _
-        & " fecha_carga," _
-        & " fecha_operacion," _
-        & " cuenta_contable_id," _
-        & " pertenencia," _
-        & " cuentabanc_o_caja_id, entrada_salida,comprobante)" _
-        & " Values" _
-        & " ('monto'," _
-        & " 'moneda_id'," _
-        & " 'fecha_carga'," _
-        & " 'fecha_operacion'," _
-        & " 'cuenta_contable_id'," _
-        & " 'pertenencia'," _
-        & " 'cuentabanc_o_caja_id', 'entrada_salida','comprobante')"
+      & " (monto," _
+      & " moneda_id," _
+      & " fecha_carga," _
+      & " fecha_operacion," _
+      & " cuenta_contable_id," _
+      & " pertenencia," _
+      & " cuentabanc_o_caja_id, entrada_salida,comprobante)" _
+      & " Values" _
+      & " ('monto'," _
+      & " 'moneda_id'," _
+      & " 'fecha_carga'," _
+      & " 'fecha_operacion'," _
+      & " 'cuenta_contable_id'," _
+      & " 'pertenencia'," _
+      & " 'cuentabanc_o_caja_id', 'entrada_salida','comprobante')"
 
     ope.FechaCarga = Now
 
@@ -105,13 +105,13 @@ Public Function Save(ope As operacion) As Boolean
     q = Replace(q, "'cuenta_contable_id'", conectar.GetEntityId(ope.CuentaContable))
     q = Replace(q, "'pertenencia'", ope.Pertenencia)
     q = Replace(q, "'entrada_salida'", ope.EntradaSalida)
-    
+
     If LenB(ope.Comprobante) = 0 Then
-    q = Replace(q, "'comprobante'", "'-'")
+        q = Replace(q, "'comprobante'", "'-'")
     Else
-    
-q = Replace(q, "'comprobante'", conectar.Escape(ope.Comprobante))
-End If
+
+        q = Replace(q, "'comprobante'", conectar.Escape(ope.Comprobante))
+    End If
     If ope.Pertenencia = Banco Then
         q = Replace(q, "'cuentabanc_o_caja_id'", conectar.GetEntityId(ope.CuentaBancaria))
     Else

@@ -16,7 +16,7 @@ Public TipoFactura As clsTipoFactura
 Public TipoDoc As tipoDocumentoContable
 Public Numeracion As Long
 Public PuntoVenta As PuntoVenta
-Public id As Long
+Public Id As Long
 Public Property Get descripcion() As String
     If IsSomething(PuntoVenta) Then
         descripcion = Format(Me.PuntoVenta.PuntoVenta, "000") & "-" & Me.PuntoVenta.descripcion

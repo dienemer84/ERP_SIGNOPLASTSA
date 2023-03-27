@@ -19,7 +19,7 @@ Public Function FindAll() As Collection
 
     While Not rs.EOF
         Set usuario = DAOUsuarios.Map(rs, fieldsIndex, "usuarios", "p")
-        usuarios.Add usuario, CStr(usuario.id)
+        usuarios.Add usuario, CStr(usuario.Id)
         rs.MoveNext
     Wend
 
@@ -27,17 +27,17 @@ Public Function FindAll() As Collection
 End Function
 
 
-Public Function GetById(Optional id As Long) As clsUsuario
+Public Function GetById(Optional Id As Long) As clsUsuario
 
 
     On Error GoTo err1
     Dim usuario As clsUsuario
-    Set rs = conectar.RSFactory("select * from usuarios where id=" & id)
+    Set rs = conectar.RSFactory("select * from usuarios where id=" & Id)
     If Not rs.EOF And Not rs.BOF Then
         Set usuario = New clsUsuario
         If Not IsNull(rs!IdEmpleado) Then usuario.Empleado = DAOEmpleados.GetById(rs!IdEmpleado)
         'Usuario.estado = rs!estado
-        usuario.id = rs!id
+        usuario.Id = rs!Id
         usuario.PassWord = rs!PassWord
         usuario.usuario = rs!usuario
         'usuario.Memo = rs!Memo_interno
@@ -52,18 +52,18 @@ err1:
 End Function
 
 Public Function GetEmpleado(usuario As clsUsuario) As clsEmpleado
-    GetEmpleado = DAOEmpleados.GetById(usuario.id)
+    GetEmpleado = DAOEmpleados.GetById(usuario.Id)
 End Function
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String, Optional ByVal tablaEmpleado As String = vbNullString) As clsUsuario
     Dim u As clsUsuario
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set u = New clsUsuario
-        u.id = id
+        u.Id = Id
         'u.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ESTADO)
         u.usuario = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_USUARIO)
         u.PassWord = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PASSWORD)

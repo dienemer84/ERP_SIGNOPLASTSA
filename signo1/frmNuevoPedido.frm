@@ -213,7 +213,7 @@ Begin VB.Form frmVentasPedidoNuevo
       _ExtentX        =   2355
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16515073
+      Format          =   16449537
       CurrentDate     =   38861
    End
    Begin GridEX20.GridEX grilla 
@@ -442,7 +442,7 @@ Private Sub BuscarPresu()
                 Set presupuesto.DetallePresupuesto = DAOPresupuestosDetalle.GetAllByPresupuesto(presupuesto)
                 llenarLista
                 Me.lblMoneda = presupuesto.moneda.NombreCorto
-                Me.cboClientes.ListIndex = funciones.PosIndexCbo(presupuesto.cliente.id, cboClientes)
+                Me.cboClientes.ListIndex = funciones.PosIndexCbo(presupuesto.cliente.Id, cboClientes)
                 Me.txtDescripcion = presupuesto.detalle
                 Me.txtEntregaDias = presupuesto.FechaEntrega & " días"
                 Me.txtEntrega = Now + presupuesto.FechaEntrega
@@ -450,11 +450,11 @@ Private Sub BuscarPresu()
                 Me.txtDto = presupuesto.Descuento
             Else
                 Select Case presupuesto.EstadoPresupuesto
-                    Case 1: MsgBox "Primero debería mandar el presupuesto al cliente.", vbCritical, "Error"
-                    Case 3: MsgBox "No puede procesar un prespuesto ya procesado por planeamiento.", vbCritical, "Error"
-                    Case 5: MsgBox "Error 5"
-                    Case 6: MsgBox "No puede procesar un prespuesto no terminado.", vbCritical, "Error"
-                    Case 8: MsgBox "No puede procesar un prespuesto desactivado.", vbCritical, "Error"
+                Case 1: MsgBox "Primero debería mandar el presupuesto al cliente.", vbCritical, "Error"
+                Case 3: MsgBox "No puede procesar un prespuesto ya procesado por planeamiento.", vbCritical, "Error"
+                Case 5: MsgBox "Error 5"
+                Case 6: MsgBox "No puede procesar un prespuesto no terminado.", vbCritical, "Error"
+                Case 8: MsgBox "No puede procesar un prespuesto desactivado.", vbCritical, "Error"
                 End Select
                 Exit Sub
             End If
@@ -482,10 +482,10 @@ Private Sub Form_Load()
     formLoading = False
     MostrarOTPendientes Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
     Me.cboListaOt.ListIndex = 0
-    
-        ''Me.caption = caption & " (" & Name & ")"
-        
-        
+
+    ''Me.caption = caption & " (" & Name & ")"
+
+
 End Sub
 Private Sub MostrarOTPendientes(idCliente)
 
@@ -498,8 +498,8 @@ Private Sub MostrarOTPendientes(idCliente)
     Me.cboListaOt.AddItem "Nueva OT"
     Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = -1
     For Each Ot In col
-        Me.cboListaOt.AddItem Ot.id & " - " & Ot.descripcion
-        Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = Ot.id
+        Me.cboListaOt.AddItem Ot.Id & " - " & Ot.descripcion
+        Me.cboListaOt.ItemData(Me.cboListaOt.NewIndex) = Ot.Id
     Next
     Me.cboListaOt.ListIndex = 0
 End Sub
@@ -540,7 +540,7 @@ Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Varia
 End Sub
 
 Private Sub txtDescripcion_Change()
-    '    presupuesto.detalle = UCase(Me.txtDescripcion)
+'    presupuesto.detalle = UCase(Me.txtDescripcion)
 
 End Sub
 Private Sub txtDto_Change()

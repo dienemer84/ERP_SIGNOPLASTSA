@@ -80,7 +80,7 @@ Private Sub Command1_Click()
     If claseP.RealizarEntrega(2, remitoId, , , Pedido, 1) Then
         Dim Ot As OrdenTrabajo
         Set Ot = DAOOrdenTrabajo.FindById(Pedido)
-        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True, True, True)
+        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, True, True, True)
 
         If DAOOrdenTrabajo.Cerrar(Ot) Then
             Dim EVENTO As New clsEventoObserver
@@ -103,7 +103,7 @@ Private Sub Command2_Click()
 
     Dim Ot As OrdenTrabajo
     Set Ot = DAOOrdenTrabajo.FindById(Pedido)
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True, True, True)
+    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, True, True, True)
 
     If DAOOrdenTrabajo.Cerrar(Ot, True) Then
         Dim EVENTO As New clsEventoObserver
@@ -143,7 +143,7 @@ Private Sub txtNroRto_DblClick()
     frmPlaneamientoRemitosListaProceso.Show 1
     If IsSomething(Selecciones.RemitoElegido) Then
         Me.txtNroRto = Selecciones.RemitoElegido.numero
-        remitoId = Selecciones.RemitoElegido.id
+        remitoId = Selecciones.RemitoElegido.Id
     Else
         Me.txtNroRto = Empty
     End If

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPieza 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Nueva Pieza"
@@ -549,10 +549,10 @@ Private Function buscarMaterial() As Boolean
         Exit Function
     End If
     buscarMaterial = True
-    Set material = DAOMateriales.FindById(Me.cboMateriales.ItemData(Me.cboMateriales.ListIndex))
-    If IsSomething(material) Then
-        MostrarMaterial material
-        Me.lblUnidad = enums.enumUnidades(material.unidad)
+    Set Material = DAOMateriales.FindById(Me.cboMateriales.ItemData(Me.cboMateriales.ListIndex))
+    If IsSomething(Material) Then
+        MostrarMaterial Material
+        Me.lblUnidad = enums.enumUnidades(Material.unidad)
         buscarMaterial = True
     Else
         limpiar
@@ -562,7 +562,7 @@ Private Function buscarMaterial() As Boolean
 End Function
 
 Private Sub Command1_Click()
-    If IsSomething(material) Then
+    If IsSomething(Material) Then
         Set desamat = New DesarrolloMaterial
         desamat.Ancho = Val(Me.txtAnchoPieza)
         desamat.AnchoTerm = Val(Me.txtAnchoTerm)
@@ -570,7 +570,7 @@ Private Sub Command1_Click()
         desamat.LargoTerm = Val(Me.txtLargoTerm)
         desamat.Cantidad = Val(Me.txtCantidad)
         desamat.Scrap = Val(Me.txtScrap)
-        Set desamat.material = material
+        Set desamat.Material = Material
 
         colmat.Add desamat
         LlenarListaMateriales
@@ -588,31 +588,31 @@ Private Sub Command6_Click()
     frm.Usable = True
     frm.Show 1
 
-    If IsSomething(Selecciones.material) Then
-        Set material = Selecciones.material
-        MostrarMaterial material
-        Me.cboMateriales.ListIndex = funciones.PosIndexCbo(material.id, Me.cboMateriales)
-        Set Selecciones.material = Nothing
+    If IsSomething(Selecciones.Material) Then
+        Set Material = Selecciones.Material
+        MostrarMaterial Material
+        Me.cboMateriales.ListIndex = funciones.PosIndexCbo(Material.Id, Me.cboMateriales)
+        Set Selecciones.Material = Nothing
     End If
 
 End Sub
 
 Private Sub validarControles()
 
-    If IsSomething(material) Then
+    If IsSomething(Material) Then
         Me.Command1.Enabled = True
 
 
-        If material.unidad = m2_ Then
+        If Material.unidad = m2_ Then
             'habilito los campos necesarios para M2
-            Me.txtAnchoTerm = material.Ancho
-            Me.txtLargoTerm = material.Largo
+            Me.txtAnchoTerm = Material.Ancho
+            Me.txtLargoTerm = Material.Largo
             Me.txtAnchoPieza.Enabled = True
             Me.txtAnchoTerm.Enabled = True
             Me.txtLargoPieza.Enabled = True
             Me.txtLargoTerm.Enabled = True
             Me.txtScrap.Enabled = True
-        ElseIf material.unidad = kg_ Or material.unidad = un_ Then
+        ElseIf Material.unidad = kg_ Or Material.unidad = un_ Then
             'si es un elemento unitario o por Kg deshabilito todo
             Me.txtAnchoPieza = 0
             Me.txtLargoPieza = 0
@@ -624,7 +624,7 @@ Private Sub validarControles()
             Me.txtLargoTerm.Enabled = False
             Me.txtScrap = 0
             Me.txtScrap.Enabled = False
-        ElseIf material.unidad = Ml_ Then
+        ElseIf Material.unidad = Ml_ Then
             'habilito lo  necesitan los ml
             Me.txtAnchoPieza.Enabled = False
             Me.txtAnchoTerm.Enabled = False
@@ -632,7 +632,7 @@ Private Sub validarControles()
             Me.txtLargoTerm.Enabled = True
             Me.txtAnchoTerm = 0
             Me.txtAnchoPieza = 0
-            Me.txtLargoTerm = material.Largo
+            Me.txtLargoTerm = Material.Largo
 
             Me.txtScrap.Enabled = True
         End If
@@ -654,7 +654,7 @@ Private Sub LlenarComboMateriales()
     Dim mattt As clsMaterial
     For Each mattt In DAOMateriales.FindAll()
         Me.cboMateriales.AddItem mattt.codigo & " - " & mattt.descripcion
-        Me.cboMateriales.ItemData(Me.cboMateriales.NewIndex) = mattt.id
+        Me.cboMateriales.ItemData(Me.cboMateriales.NewIndex) = mattt.Id
     Next mattt
 
 End Sub
@@ -690,7 +690,7 @@ Private Sub GridEX1_SelectionChange()
         GridEX1.Columns(9).EditType = jgexEditTextBox
 
 
-        If desamat.material.unidad = un_ Or desamat.material.unidad = kg_ Or desamat.material.unidad = litro_ Then
+        If desamat.Material.unidad = un_ Or desamat.Material.unidad = kg_ Or desamat.Material.unidad = litro_ Then
             GridEX1.Columns(5).EditType = jgexEditNone
             GridEX1.Columns(6).EditType = jgexEditNone
             GridEX1.Columns(7).EditType = jgexEditNone
@@ -699,7 +699,7 @@ Private Sub GridEX1_SelectionChange()
         End If
 
 
-        If desamat.material.unidad = Ml_ Then
+        If desamat.Material.unidad = Ml_ Then
             GridEX1.Columns(6).EditType = jgexEditNone
             GridEX1.Columns(8).EditType = jgexEditNone
         End If
@@ -722,19 +722,19 @@ End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set desamat = colmat.item(RowIndex)
-    Values(1) = desamat.material.codigo & " | " & desamat.material.descripcion
+    Values(1) = desamat.Material.codigo & " | " & desamat.Material.descripcion
     Values(2) = desamat.Cantidad
     Values(3) = desamat.detalle
-    Values(4) = desamat.material.Espesor
+    Values(4) = desamat.Material.Espesor
     Values(5) = desamat.Largo
     Values(6) = desamat.Ancho
     Values(7) = desamat.LargoTerm
     Values(8) = desamat.AnchoTerm
     Values(9) = desamat.Scrap
     Values(10) = desamat.Kg
-    IdMoneda = DAOMoneda.FindFirstByPatronOrDefault.id
+    IdMoneda = DAOMoneda.FindFirstByPatronOrDefault.Id
     Values(11) = desamat.CalcularDatosMaterial(IdMoneda).m2
-    Values(12) = desamat.material.Moneda.NombreCorto & "  " & desamat.CalcularDatosMaterial(desamat.material.Moneda.id).costo
+    Values(12) = desamat.Material.moneda.NombreCorto & "  " & desamat.CalcularDatosMaterial(desamat.Material.moneda.Id).costo
 End Sub
 
 Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)

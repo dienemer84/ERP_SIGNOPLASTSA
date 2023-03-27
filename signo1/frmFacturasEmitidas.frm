@@ -8,21 +8,21 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   8985
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   14280
+   ClientWidth     =   17235
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8985
-   ScaleWidth      =   14280
+   ScaleWidth      =   17235
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox grp 
       Height          =   2295
       Left            =   120
       TabIndex        =   1
       Top             =   0
-      Width           =   19095
+      Width           =   23775
       _Version        =   786432
-      _ExtentX        =   33681
+      _ExtentX        =   41936
       _ExtentY        =   4048
       _StockProps     =   79
       Caption         =   "Filtros"
@@ -466,6 +466,19 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Ver Observaciones"
          Appearance      =   6
          Value           =   1
+      End
+      Begin XtremeSuiteControls.PushButton btnExportarAvanzado 
+         Height          =   495
+         Left            =   19200
+         TabIndex        =   49
+         Top             =   1560
+         Width           =   1815
+         _Version        =   786432
+         _ExtentX        =   3201
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Exportar Avanzar"
+         UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.Label Label11 
          Height          =   375
@@ -955,6 +968,282 @@ Private Sub archivos_Click()
 End Sub
 
 
+Private Sub btnExportarAvanzado_Click()
+'FUNCIÓN PARA EXPORTAR A EXCEL
+
+
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+    Me.progreso.Visible = True
+    Me.lblExportando.Visible = True
+
+    'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+    progreso.min = 0
+    progreso.max = facturas.count
+
+
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+
+
+    Set xlWorkbook = xlApplication.Workbooks.Add
+
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    xlWorksheet.Cells(1, 1).value = "Reporte de comprobantes emitidos"
+
+    '    If (id > 0) Then
+    '        xlWorksheet.Cells(1, 2).value = DAOCliente.BuscarPorID(id).razon
+    '    Else
+    '        xlWorksheet.Cells(1, 2).value = "Todos"
+    '    End If
+
+    xlWorksheet.Columns(4).HorizontalAlignment = xlLeft
+    xlWorksheet.Columns(12).HorizontalAlignment = xlLeft
+
+    xlWorksheet.Cells(2, 1).value = "Documento"
+    xlWorksheet.Cells(2, 2).value = "Letra"
+    xlWorksheet.Cells(2, 3).value = "PV"
+    xlWorksheet.Cells(2, 4).value = "FCE"
+    xlWorksheet.Cells(2, 5).value = "Numero"
+    xlWorksheet.Cells(2, 6).value = "Emision"
+    xlWorksheet.Cells(2, 7).value = "Monto"
+    xlWorksheet.Cells(2, 8).value = "Moneda"
+    xlWorksheet.Cells(2, 9).value = "Monto AR $"
+    xlWorksheet.Cells(2, 10).value = "Orden de Compra"
+    xlWorksheet.Cells(2, 11).value = "Cliente"
+    xlWorksheet.Cells(2, 12).value = "Estado Local"
+    xlWorksheet.Cells(2, 13).value = "Estado Afip"
+    xlWorksheet.Cells(2, 14).value = "Saldada"
+    xlWorksheet.Cells(2, 15).value = "Vencimiento"
+    xlWorksheet.Cells(2, 16).value = "Atraso"
+    xlWorksheet.Cells(2, 17).value = "Entregada"
+    xlWorksheet.Cells(2, 18).value = "& AM"
+    xlWorksheet.Cells(2, 19).value = "Archivo"
+    xlWorksheet.Cells(2, 20).value = "Recibos Asociados"
+    xlWorksheet.Cells(2, 21).value = "Aprobada"
+    xlWorksheet.Cells(2, 22).value = "Creada"
+    xlWorksheet.Cells(2, 23).value = ""
+
+
+
+
+    xlWorksheet.Range("A2:S2").Font.Bold = True
+
+    Dim idx As Integer
+    idx = 3
+
+    Dim fac As Factura
+
+    'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
+
+
+    For Each fac In facturas
+
+        xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
+        xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
+        xlWorksheet.Cells(idx, 3).value = fac.moneda.NombreCorto
+        xlWorksheet.Cells(idx, 4).value = fac.CambioAPatron
+        xlWorksheet.Cells(idx, 5).value = fac.OrdenCompra
+
+        If fac.moneda.Cambio = 1 Then
+
+            If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+                ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
+                xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA) * -1
+                xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron * -1
+                'dolares
+                xlWorksheet.Cells(idx, 7).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 9).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 11).value = ""
+                'dolares
+                xlWorksheet.Cells(idx, 13).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 15).value = "0"
+
+            Else
+                ' VAN TODOS POSITIVOS AL NO SER NOTA DE CREDITO
+                xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA)
+                xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron
+                'dolares
+                xlWorksheet.Cells(idx, 7).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 9).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 11).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 13).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 15).value = "0"
+            End If
+
+        Else
+            If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+                ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
+                xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron * -1
+                'dolares
+                xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado * -1
+                'dolares
+                xlWorksheet.Cells(idx, 9).value = fac.TotalEstatico.TotalPercepcionesIB * -1
+                'dolares
+                xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA * -1
+                'dolares
+                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento * -1
+                'dolares
+                xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.Total * -1
+
+            Else
+                ' VAN TODOS POSITIVOS AL NO SER NOTA DE CREDITO
+                xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron
+                'dolares
+                xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado
+                'dolares
+                xlWorksheet.Cells(idx, 9).value = fac.TotalEstatico.TotalPercepcionesIB
+                'dolares
+                xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA
+                'dolares
+                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento
+                'dolares
+                xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.Total
+            End If
+
+        End If
+
+
+        xlWorksheet.Cells(idx, 16).value = fac.Vencimiento
+        xlWorksheet.Cells(idx, 17).value = fac.StringDiasAtraso
+
+        If xlWorksheet.Cells(idx, 17).value = "En Edición" Then
+            xlWorksheet.Cells(idx, 17).Interior.ColorIndex = 46    ' naranja
+        End If
+
+        If (fac.DiferenciaDiasEntrega <> -1) Then
+            xlWorksheet.Cells(idx, 18).value = Format(fac.FechaEntrega, "dd/mm/yyyy")
+            xlWorksheet.Cells(idx, 19).value = fac.DiferenciaDiasEntrega & " dias"
+        Else
+            xlWorksheet.Cells(idx, 18).value = "no definida"
+            xlWorksheet.Cells(idx, 19).value = 0
+        End If
+
+        xlWorksheet.Cells(idx, 20).value = fac.cliente.razon
+        xlWorksheet.Cells(idx, 21).value = fac.cliente.Cuit
+        xlWorksheet.Cells(idx, 22).value = fac.observaciones
+        xlWorksheet.Cells(idx, 23).value = fac.observaciones_cancela
+        xlWorksheet.Cells(idx, 24).value = fac.RecibosAplicadosId
+
+
+        idx = idx + 1
+
+        'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+        progreso.value = d
+
+
+    Next
+
+    xlWorksheet.Cells(idx + 1, 5).value = "Totales: "
+    xlWorksheet.Cells(idx + 1, 5).HorizontalAlignment = xlRight
+
+    xlWorksheet.Cells(idx + 1, 6).Formula = "=SUM(F3:F" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 7).Formula = "=SUM(G3:G" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 8).Formula = "=SUM(H3:H" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 9).Formula = "=SUM(I3:I" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 10).Formula = "=SUM(J3:J" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 11).Formula = "=SUM(K3:K" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 12).Formula = "=SUM(L3:L" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 13).Formula = "=SUM(M3:M" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 14).Formula = "=SUM(N3:N" & idx - 1 & ")"
+    xlWorksheet.Cells(idx + 1, 15).Formula = "=SUM(O3:O" & idx - 1 & ")"
+
+    xlWorksheet.Cells(idx + 1, 6).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 7).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 8).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 9).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 10).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 11).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 12).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 13).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 14).Font.Bold = True
+    xlWorksheet.Cells(idx + 1, 15).Font.Bold = True
+
+    xlWorksheet.Range("F3:O15").NumberFormat = "#,##0.00"
+    xlWorksheet.Range("F3:O" & idx + 1).HorizontalAlignment = xlRight
+    xlWorksheet.Range("F3:O" & idx + 1).NumberFormat = "#,##0.00"
+
+    'AUTOSIZE
+    xlApplication.ScreenUpdating = False
+
+    Dim wkSt As String
+
+    wkSt = xlWorksheet.Name
+
+    xlWorksheet.Cells.EntireColumn.AutoFit
+
+    xlWorkbook.Sheets(wkSt).Select
+
+    xlApplication.ScreenUpdating = True
+
+    xlWorksheet.PageSetup.Orientation = xlLandscape
+    xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+
+    xlWorksheet.Activate
+    xlWorksheet.Range("A3").Select
+    xlWorksheet.Application.ActiveWindow.FreezePanes = True
+
+    Dim filename As String
+    filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
+
+    If Dir(filename) <> vbNullString Then Kill filename
+
+    xlWorkbook.SaveAs filename
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    funciones.ShellExecute 0, "open", filename, "", "", 0
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    'REINICIA EL PROGRESSBAR Y LO OCULTA
+    progreso.value = 0
+    Me.progreso.Visible = False
+    Me.lblExportando.Visible = False
+End Sub
+
 Private Sub btnExpotar_Click()
 
 'FUNCIÓN PARA EXPORTAR A EXCEL
@@ -1051,85 +1340,85 @@ Private Sub btnExpotar_Click()
         xlWorksheet.Cells(idx, 3).value = fac.moneda.NombreCorto
         xlWorksheet.Cells(idx, 4).value = fac.CambioAPatron
         xlWorksheet.Cells(idx, 5).value = fac.OrdenCompra
-        
-       If fac.moneda.Cambio = 1 Then
 
-        If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
-        ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
-            xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA) * -1
-            xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
-            xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
-            xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
-            xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron * -1
-            'dolares
-            xlWorksheet.Cells(idx, 7).value = "0"
-            'dolares
-            xlWorksheet.Cells(idx, 9).value = "0"
-            'dolares
-            xlWorksheet.Cells(idx, 11).value = ""
-            'dolares
-            xlWorksheet.Cells(idx, 13).value = "0"
-            'dolares
-            xlWorksheet.Cells(idx, 15).value = "0"
-            
-        Else
-        ' VAN TODOS POSITIVOS AL NO SER NOTA DE CREDITO
-            xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA)
-            xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
-            xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
-            xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
-            xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron
-            'dolares
-            xlWorksheet.Cells(idx, 7).value = "0"
-            'dolares
-            xlWorksheet.Cells(idx, 9).value = "0"
-            'dolares
-            xlWorksheet.Cells(idx, 11).value = "0"
-            'dolares
-            xlWorksheet.Cells(idx, 13).value = "0"
-            'dolares
-            xlWorksheet.Cells(idx, 15).value = "0"
-        End If
-    
-Else
-        If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
-        ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
-            xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron * -1
-            xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
-            xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
-            xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
-            xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron * -1
-            'dolares
-            xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado * -1
-            'dolares
-            xlWorksheet.Cells(idx, 9).value = fac.TotalEstatico.TotalPercepcionesIB * -1
-            'dolares
-            xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA * -1
-            'dolares
-            xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento * -1
-            'dolares
-            xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.Total * -1
-            
-        Else
-        ' VAN TODOS POSITIVOS AL NO SER NOTA DE CREDITO
-            xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron
-            xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
-            xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
-            xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
-            xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron
-            'dolares
-            xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado
-            'dolares
-            xlWorksheet.Cells(idx, 9).value = fac.TotalEstatico.TotalPercepcionesIB
-            'dolares
-            xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA
-            'dolares
-            xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento
-            'dolares
-            xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.Total
-        End If
+        If fac.moneda.Cambio = 1 Then
 
-End If
+            If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+                ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
+                xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA) * -1
+                xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron * -1
+                'dolares
+                xlWorksheet.Cells(idx, 7).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 9).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 11).value = ""
+                'dolares
+                xlWorksheet.Cells(idx, 13).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 15).value = "0"
+
+            Else
+                ' VAN TODOS POSITIVOS AL NO SER NOTA DE CREDITO
+                xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA)
+                xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron
+                'dolares
+                xlWorksheet.Cells(idx, 7).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 9).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 11).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 13).value = "0"
+                'dolares
+                xlWorksheet.Cells(idx, 15).value = "0"
+            End If
+
+        Else
+            If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+                ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
+                xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron * -1
+                'dolares
+                xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado * -1
+                'dolares
+                xlWorksheet.Cells(idx, 9).value = fac.TotalEstatico.TotalPercepcionesIB * -1
+                'dolares
+                xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA * -1
+                'dolares
+                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento * -1
+                'dolares
+                xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.Total * -1
+
+            Else
+                ' VAN TODOS POSITIVOS AL NO SER NOTA DE CREDITO
+                xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.Total * fac.CambioAPatron
+                'dolares
+                xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado
+                'dolares
+                xlWorksheet.Cells(idx, 9).value = fac.TotalEstatico.TotalPercepcionesIB
+                'dolares
+                xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA
+                'dolares
+                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento
+                'dolares
+                xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.Total
+            End If
+
+        End If
 
 
         xlWorksheet.Cells(idx, 16).value = fac.Vencimiento
@@ -1870,9 +2159,11 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 
     Values(14) = EnumTipoSaldadoFactura(Factura.Saldado)
 
-
-    Values(15) = Factura.Vencimiento
-
+    If Factura.Vencimiento < Factura.FechaEmision Then
+        Values(15) = "No definido"
+    Else
+        Values(15) = Factura.Vencimiento
+    End If
 
     Values(16) = Factura.StringDiasAtraso
 

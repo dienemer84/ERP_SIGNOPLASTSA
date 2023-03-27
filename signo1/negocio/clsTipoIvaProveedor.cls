@@ -15,11 +15,11 @@ Attribute VB_Exposed = False
 Private vDetalle As String
 Private mConfigFacturas As Collection
 Private vId As Long
-Public Property Let id(nId As String)
+Public Property Let Id(nId As String)
     vId = nId
 End Property
-Public Property Get id() As String
-    id = vId
+Public Property Get Id() As String
+    Id = vId
 End Property
 Public Property Let configFacturas(nConfigFacturas As Collection)
     Set mConfigFacturas = nConfigFacturas

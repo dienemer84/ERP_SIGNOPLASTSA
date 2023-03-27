@@ -32,10 +32,10 @@ Public FormaPagoCuentaCorriente As Boolean
 'Public ConceptoNoGravado As Double
 Public OtrosAbonadoGlobal As Double
 
-Public NetoGravadoAbonadoGlobal As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+Public NetoGravadoAbonadoGlobal As Double    'dto para saber cuanto se pago de la factura en todsa las OP
 
-Public TotalAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
-Public NetoGravadoAbonadoGlobalPendiente As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+Public TotalAbonadoGlobalPendiente As Double    'dto para saber cuanto se pago de la factura en todsa las OP
+Public NetoGravadoAbonadoGlobalPendiente As Double    'dto para saber cuanto se pago de la factura en todsa las OP
 Public OtrosAbonadoGlobalPendiente As Double
 
 
@@ -59,29 +59,29 @@ Public UsuarioCarga As clsUsuario
 
 Public TotalCompensado As Double
 
-Public Property Get TotalAbonadoGlobal() As Double 'dto para saber cuanto se pago de la factura en todsa las OP
+Public Property Get TotalAbonadoGlobal() As Double    'dto para saber cuanto se pago de la factura en todsa las OP
     TotalAbonadoGlobal = funciones.FormatearDecimales(Me.OtrosAbonadoGlobal + Me.NetoGravadoAbonadoGlobal + Me.NetoGravadoAbonadoGlobalPendiente + Me.OtrosAbonadoGlobalPendiente)
 End Property
 
 
 Public Property Get ImporteTotalSaldo()
- ImporteTotalSaldo = funciones.FormatearDecimales(Total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente)
+    ImporteTotalSaldo = funciones.FormatearDecimales(Total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente)
 End Property
 
 Public Property Get ImporteNetoGravadoSaldo()
-ImporteNetoGravadoSaldo = funciones.FormatearDecimales(Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente) 'Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente)
+    ImporteNetoGravadoSaldo = funciones.FormatearDecimales(Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente)    'Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente)
 End Property
 
 Public Property Get ImporteOtrosSaldo()
-ImporteOtrosSaldo = funciones.FormatearDecimales(Me.TotalOtros - Me.OtrosAbonadoGlobal - Me.OtrosAbonadoGlobalPendiente)
+    ImporteOtrosSaldo = funciones.FormatearDecimales(Me.TotalOtros - Me.OtrosAbonadoGlobal - Me.OtrosAbonadoGlobalPendiente)
 End Property
 
 Public Property Get TotalOtros()
-TotalOtros = Me.Total - Me.NetoGravado
+    TotalOtros = Me.Total - Me.NetoGravado
 End Property
 
 Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
-  Dim tot_iva As Double
+    Dim tot_iva As Double
     tot_iva = 0
     Dim P As Long
     For P = 1 To vIvaAplicado.count
@@ -94,11 +94,11 @@ Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
     CalcularIvaTotalAbonadoParcial = tot_iva
 End Function
 Public Function CalcularTotalAbonadoParcial(ng As Double)
-Dim Iva As Double
+    Dim Iva As Double
 
-Iva = CalcularIvaTotalAbonadoParcial(ng)
+    Iva = CalcularIvaTotalAbonadoParcial(ng)
 
-CalcularTotalAbonadoParcial = ng + Iva
+    CalcularTotalAbonadoParcial = ng + Iva
 End Function
 
 
@@ -132,7 +132,7 @@ End Property
 
 Public Property Get NumeroFormateadoCorto() As String
     NumeroFormateadoCorto = enums.EnumTipoDocumentoContableShort(tipoDocumentoContable) & "-" & vConfigFactura.TipoFactura
-    End Property
+End Property
 
 
 Public Property Let Historial(nvalue As Collection)
@@ -306,7 +306,7 @@ Public Property Get Total() As Double
     Dim tipo_cambio As Double
     Dim negativo As Integer
     Dim CalculoPercepciones As Double
-    
+
     On Error GoTo err1
 
     If tipoDocumentoContable = 1 Then
@@ -365,16 +365,16 @@ Public Property Get NetoGravadoAbonadoDiaPago() As Double
 End Property
 
 Public Property Get NetoNoGravado() As Double
-  Dim tot_ng As Double
+    Dim tot_ng As Double
     tot_ng = 0
     Dim P As Long
     Dim A As clsAlicuotaAplicada
-    
+
     For P = 1 To vIvaAplicado.count
-Set A = vIvaAplicado(P)
-    If A.alicuota.alicuota = 0 Then
-        tot_ng = tot_ng + vIvaAplicado(P).Monto
-    End If
+        Set A = vIvaAplicado(P)
+        If A.alicuota.alicuota = 0 Then
+            tot_ng = tot_ng + vIvaAplicado(P).Monto
+        End If
     Next
     NetoNoGravado = tot_ng
 End Property

@@ -534,9 +534,9 @@ Private Sub btnCerrar_Click()
                 fEntTotal.Show 1
                 Unload Me
             Else
-                
+
                 MsgBox "Para cerrar la OT debe tener todo fabricado o proveniente de stock.", vbExclamation
-            
+
             End If
         End If
     End If
@@ -691,7 +691,7 @@ Private Sub btnRemitar_Click()
         fEntrega.lblOT = m_ot.Id
         fEntrega.lblItem = detaOT.item
         fEntrega.TipoOrden = m_ot.TipoOrden
-        
+
         fEntrega.Show 1
 
     ElseIf Me.gridDetalles.SelectedItems.count > 1 Then
@@ -708,28 +708,28 @@ End Sub
 Private Sub btnTomarDeStock_Click()
 
 
-On Error GoTo err1
- 'Bug #3 - probar
- If Me.gridDetalles.SelectedItems.count = 1 Then
-    Set detalle = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).RowIndex)
-    If detalle Is Nothing Then Exit Sub
-End If
-'bug #3
-Dim res As String
-res = InputBox("Ingrese la cantidad a tomar de stock (Máximo " & detalle.Pieza.CantidadStock & ")", "Reserva de Stock", "0")
-If IsNumeric(res) Then
-
-    Dim reserva As Double: reserva = Val(res)
-    
-    If DAOOrdenTrabajo.DescontarReservaDetalle(detalle, reserva) Then
-            MsgBox "Reserva de Stock realizada!", vbInformation
+    On Error GoTo err1
+    'Bug #3 - probar
+    If Me.gridDetalles.SelectedItems.count = 1 Then
+        Set detalle = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).RowIndex)
+        If detalle Is Nothing Then Exit Sub
     End If
+    'bug #3
+    Dim res As String
+    res = InputBox("Ingrese la cantidad a tomar de stock (Máximo " & detalle.Pieza.CantidadStock & ")", "Reserva de Stock", "0")
+    If IsNumeric(res) Then
 
-End If
-Exit Sub
+        Dim reserva As Double: reserva = Val(res)
+
+        If DAOOrdenTrabajo.DescontarReservaDetalle(detalle, reserva) Then
+            MsgBox "Reserva de Stock realizada!", vbInformation
+        End If
+
+    End If
+    Exit Sub
 
 err1:
-MsgBox Err.Description
+    MsgBox Err.Description
 
 End Sub
 
@@ -800,15 +800,15 @@ Private Sub Form_Load()
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     Set CantArchivosDetalle = DAOArchivo.GetCantidadArchivosPorReferencia(OA_OrdenesTrabajoDetalle)
 
-valid = (m_ot.TipoOrden = OT_TRADICIONAL Or m_ot.TipoOrden = OT_ENTREGA)
+    valid = (m_ot.TipoOrden = OT_TRADICIONAL Or m_ot.TipoOrden = OT_ENTREGA)
 
-Me.btnAplicarRemito.Enabled = valid
-Me.btnCerrar.Enabled = valid
-Me.mnuAtajo.Enabled = valid
-Me.btnRemitar.Enabled = valid Or m_ot.TipoOrden = OT_STOCK
-Me.btnTomarDeStock.Enabled = valid
+    Me.btnAplicarRemito.Enabled = valid
+    Me.btnCerrar.Enabled = valid
+    Me.mnuAtajo.Enabled = valid
+    Me.btnRemitar.Enabled = valid Or m_ot.TipoOrden = OT_STOCK
+    Me.btnTomarDeStock.Enabled = valid
 
-gridDetalles_SelectionChange
+    gridDetalles_SelectionChange
 
 End Sub
 
@@ -876,13 +876,13 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(1) = detalle.item
         Values(2) = detalle.Nota
         Values(3) = detalle.Pieza.nombre
-        
+
         Values(4) = detalle.CantidadPedida
-        
+
         If m_ot.TipoOrden = OT_STOCK Then
             Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.Id) & ")"
         End If
-        
+
         Values(5) = detalle.FechaEntrega
         Values(6) = detalle.CantidadFabricados
         Values(7) = detalle.CantidadEntregada

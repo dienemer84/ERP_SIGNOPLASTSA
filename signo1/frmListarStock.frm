@@ -409,14 +409,14 @@ Private Sub grid_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 
 
- If tpieza_actualcomplejidad = ComplejidadAlta Then
+    If tpieza_actualcomplejidad = ComplejidadAlta Then
         RowBuffer.CellStyle(8) = "comp_alta"
     ElseIf pieza_actual.Complejidad = ComplejidadMedia Then
         RowBuffer.CellStyle(8) = "comp_media"
-        ElseIf pieza_actual.Complejidad = ComplejidadBaja Then
+    ElseIf pieza_actual.Complejidad = ComplejidadBaja Then
         RowBuffer.CellStyle(8) = "comp_baja"
-        
-        
+
+
     End If
 
 End Sub
@@ -433,7 +433,7 @@ Private Sub grid_SelectionChange()
 End Sub
 
 Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    'On Error Resume Next
+'On Error Resume Next
     If m_piezas.count > 0 Then
         Set pieza_actual = m_piezas.item(RowIndex)
         With pieza_actual

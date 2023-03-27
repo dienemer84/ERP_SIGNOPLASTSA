@@ -12,18 +12,18 @@ Public Function FindAll(Optional ByVal POid As Long = 0, Optional filter As Stri
 
     If withEntregas Then
         strsql = "SELECT *" _
-                 & " FROM ComprasPeticionOfertaDetalle pod" _
-                 & " LEFT JOIN ComprasPeticionOfertaDetalleEntregas pode ON pode.id_peticion_oferta_detalle_id = pod.id" _
-                 & " LEFT JOIN ComprasPeticionOferta po ON po.id = pod.id_peticion_oferta" _
-                 & " LEFT JOIN AdminConfigMonedas mon ON mon.id = po.moneda_id" _
-                 & " Where 1=1 "
+               & " FROM ComprasPeticionOfertaDetalle pod" _
+               & " LEFT JOIN ComprasPeticionOfertaDetalleEntregas pode ON pode.id_peticion_oferta_detalle_id = pod.id" _
+               & " LEFT JOIN ComprasPeticionOferta po ON po.id = pod.id_peticion_oferta" _
+               & " LEFT JOIN AdminConfigMonedas mon ON mon.id = po.moneda_id" _
+               & " Where 1=1 "
 
     Else
         strsql = "SELECT *" _
-                 & " FROM ComprasPeticionOfertaDetalle pod" _
-                 & " LEFT JOIN ComprasPeticionOferta po ON po.id = pod.id_peticion_oferta" _
-                 & " LEFT JOIN AdminConfigMonedas mon ON mon.id = po.moneda_id" _
-                 & " Where 1=1 "
+               & " FROM ComprasPeticionOfertaDetalle pod" _
+               & " LEFT JOIN ComprasPeticionOferta po ON po.id = pod.id_peticion_oferta" _
+               & " LEFT JOIN AdminConfigMonedas mon ON mon.id = po.moneda_id" _
+               & " Where 1=1 "
 
     End If
 
@@ -61,26 +61,26 @@ Public Function FindAll(Optional ByVal POid As Long = 0, Optional filter As Stri
                 tmpDetalle.FechaValor = GetValue(rs, idx, "pod", "fecha")
                 tmpDetalle.Terminado = GetValue(rs, idx, "pod", "finalizado")
                 tmpDetalle.Valor = GetValue(rs, idx, "pod", "valor")
-                tmpDetalle.id = GetValue(rs, idx, "pod", "id")
+                tmpDetalle.Id = GetValue(rs, idx, "pod", "id")
                 tmpDetalle.Cantidad = GetValue(rs, idx, "pod", "cantidad")
                 tmpDetalle.ProveedorId = GetValue(rs, idx, "po", "id_proveedor")
                 tmpDetalle.POid = GetValue(rs, idx, "pod", "id_peticion_oferta")
                 tmpDetalle.estado = GetValue(rs, idx, "pod", "estado")
-                Set tmpDetalle.Moneda = DAOMoneda.Map(rs, idx, "mon")
+                Set tmpDetalle.moneda = DAOMoneda.Map(rs, idx, "mon")
             End If
 
             If withEntregas Then
                 Set ent = New EntregaPetOfDetalle
-                ent.id = GetValue(rs, idx, "pode", "id")
+                ent.Id = GetValue(rs, idx, "pode", "id")
                 ent.FEcha = GetValue(rs, idx, "pode", "fecha")
                 ent.Cantidad = GetValue(rs, idx, "pode", "cantidad")
 
-                tmpDetalle.Entregas.Add ent, CStr(ent.id)
+                tmpDetalle.Entregas.Add ent, CStr(ent.Id)
             End If
 
 
 
-            If Not inCol Then col.Add tmpDetalle, CStr(tmpDetalle.id)
+            If Not inCol Then col.Add tmpDetalle, CStr(tmpDetalle.Id)
 
             rs.MoveNext
         Wend
@@ -98,13 +98,13 @@ Public Function FindAll(Optional ByVal POid As Long = 0, Optional filter As Stri
             tmpDetalle.FechaValor = GetValue(rs, idx, "pod", "fecha")
             tmpDetalle.Terminado = GetValue(rs, idx, "pod", "finalizado")
             tmpDetalle.Valor = GetValue(rs, idx, "pod", "valor")
-            tmpDetalle.id = GetValue(rs, idx, "pod", "id")
+            tmpDetalle.Id = GetValue(rs, idx, "pod", "id")
             tmpDetalle.Cantidad = GetValue(rs, idx, "pod", "cantidad")
             tmpDetalle.ProveedorId = GetValue(rs, idx, "po", "id_proveedor")
             tmpDetalle.POid = GetValue(rs, idx, "pod", "id_peticion_oferta")
             tmpDetalle.estado = GetValue(rs, idx, "pod", "estado")
-            Set tmpDetalle.Moneda = DAOMoneda.Map(rs, idx, "mon")
-            col.Add tmpDetalle, CStr(tmpDetalle.id)
+            Set tmpDetalle.moneda = DAOMoneda.Map(rs, idx, "mon")
+            col.Add tmpDetalle, CStr(tmpDetalle.Id)
 
             rs.MoveNext
         Wend
@@ -130,10 +130,10 @@ Public Function Guardar(T As clsPeticionOferta) As Boolean
     Dim x As Long
     For x = 1 To T.detalle.count
         Set tmpDetalle = T.detalle.item(x)
-        Dim a As Integer
-        a = tmpDetalle.Terminado
+        Dim A As Integer
+        A = tmpDetalle.Terminado
 
-        strsql = "insert into ComprasPeticionOfertaDetalle (id_detalle_reque, id_detalle_proveedor, valor, fecha, id_peticion_oferta, finalizado, cantidad)  values  (" & tmpDetalle.DetalleReque.id & "," & T.Proveedor.id & "," & tmpDetalle.Valor & ",'" & Format(tmpDetalle.FechaValor, "yyyy-mm-dd") & "'," & T.numero & "," & a & ", " & tmpDetalle.Cantidad & ")"
+        strsql = "insert into ComprasPeticionOfertaDetalle (id_detalle_reque, id_detalle_proveedor, valor, fecha, id_peticion_oferta, finalizado, cantidad)  values  (" & tmpDetalle.DetalleReque.Id & "," & T.Proveedor.Id & "," & tmpDetalle.Valor & ",'" & Format(tmpDetalle.FechaValor, "yyyy-mm-dd") & "'," & T.numero & "," & A & ", " & tmpDetalle.Cantidad & ")"
 
         If Not conectar.execute(strsql) Then GoTo err1
 
@@ -141,12 +141,12 @@ Public Function Guardar(T As clsPeticionOferta) As Boolean
 
             For Each ent In tmpDetalle.Entregas
                 q = "INSERT INTO ComprasPeticionOfertaDetalleEntregas" _
-                    & " (id_peticion_oferta_detalle_id," _
-                    & " cantidad," _
-                    & " fecha)" _
-                    & " VALUES (" & id_peticion_oferta_detalle_id & ", " _
-                    & " " & ent.Cantidad & "," _
-                    & " " & conectar.Escape(ent.FEcha) & ")"
+                  & " (id_peticion_oferta_detalle_id," _
+                  & " cantidad," _
+                  & " fecha)" _
+                  & " VALUES (" & id_peticion_oferta_detalle_id & ", " _
+                  & " " & ent.Cantidad & "," _
+                  & " " & conectar.Escape(ent.FEcha) & ")"
 
                 If Not conectar.execute(q) Then GoTo err1
             Next ent
@@ -183,24 +183,24 @@ Public Function Update(ByRef deta As clsPeticionOfertaDetalle, pet As clsPeticio
     'Update  = True
 
     q = "Update ComprasPeticionOfertaDetalle" _
-        & " SET" _
-        & " valor = " & conectar.Escape(deta.Valor) & " ," _
-        & " cantidad = " & conectar.Escape(deta.Cantidad) & ", " _
-        & " estado = " & conectar.Escape(deta.estado) _
-        & " Where id = " & deta.id
+      & " SET" _
+      & " valor = " & conectar.Escape(deta.Valor) & " ," _
+      & " cantidad = " & conectar.Escape(deta.Cantidad) & ", " _
+      & " estado = " & conectar.Escape(deta.estado) _
+      & " Where id = " & deta.Id
 
     Update = conectar.execute(q)
     If Not Update Then GoTo E
 
-    q = "DELETE FROM ComprasPeticionOfertaDetalleEntregas WHERE id_peticion_oferta_detalle_id = " & deta.id
+    q = "DELETE FROM ComprasPeticionOfertaDetalleEntregas WHERE id_peticion_oferta_detalle_id = " & deta.Id
     Update = conectar.execute(q)
     If Not Update Then GoTo E
 
     Dim ent As EntregaPetOfDetalle
     For Each ent In deta.Entregas
         q = "INSERT INTO ComprasPeticionOfertaDetalleEntregas " _
-            & " (id_peticion_oferta_detalle_id, cantidad, fecha) VALUES (" _
-            & deta.id & ", " & ent.Cantidad & ", " & Escape(ent.FEcha) & ")"
+          & " (id_peticion_oferta_detalle_id, cantidad, fecha) VALUES (" _
+          & deta.Id & ", " & ent.Cantidad & ", " & Escape(ent.FEcha) & ")"
 
         Update = conectar.execute(q)
         If Not Update Then GoTo E

@@ -40,14 +40,14 @@ Public localidad As localidad
 Public provincia As provincia
 
 Public Property Get razonFixed()
-Dim q As String
-q = Replace(razon, " ", "")
-q = Replace(razon, "/", "")
-q = Replace(razon, "\", "")
-q = Replace(razon, "'", "")
-q = Replace(razon, ".", "")
+    Dim q As String
+    q = Replace(razon, " ", "")
+    q = Replace(razon, "/", "")
+    q = Replace(razon, "\", "")
+    q = Replace(razon, "'", "")
+    q = Replace(razon, ".", "")
 
-razonFixed = q
+    razonFixed = q
 
 End Property
 

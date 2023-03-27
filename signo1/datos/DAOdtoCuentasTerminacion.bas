@@ -11,7 +11,7 @@ Public Function GetConfigTerminacion() As DTOCuentasTerminacion
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
         Set dto.Sector = DAOSectores.GetById(rs!Sector)
-        Set dto.Rubro = DAORubros.FindById(rs!Rubro)
+        Set dto.rubro = DAORubros.FindById(rs!rubro)
         Set dto.CantidadFosfatos = DAOMateriales.FindById(rs!fosfatos)
         Set dto.CantidadPintura = DAOMateriales.FindById(rs!cantPint)
         Set dto.Aplicacion = DAOTareas.FindById(rs!Aplicacion)
@@ -28,9 +28,9 @@ End Function
 
 Public Function SaveConfigTerminacion(dto As DTOCuentasTerminacion) As Boolean
     Dim strsql As String
-    strsql = "update terminacion_cuentas set CantPint=" & dto.CantidadPintura.id & ", Fosfatos=" & dto.CantidadFosfatos.id & "," _
-             & " superficie=" & dto.Limpieza.id & ", aplicacion=" & dto.Aplicacion.id & ", horneado=" & dto.Horneado.id & ", sector=" _
-             & dto.Sector.id & ", rubro= " & dto.Rubro.id
+    strsql = "update terminacion_cuentas set CantPint=" & dto.CantidadPintura.Id & ", Fosfatos=" & dto.CantidadFosfatos.Id & "," _
+           & " superficie=" & dto.Limpieza.Id & ", aplicacion=" & dto.Aplicacion.Id & ", horneado=" & dto.Horneado.Id & ", sector=" _
+           & dto.Sector.Id & ", rubro= " & dto.rubro.Id
 
     SaveConfigTerminacion = conectar.execute(strsql)
 

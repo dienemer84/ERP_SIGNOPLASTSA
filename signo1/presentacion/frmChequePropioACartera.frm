@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmChequePropioACartera 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cheque Propio a Cartera"
@@ -171,10 +171,10 @@ Private Sub btnPasar_Click()
         Exit Sub
     End If
 
-    If MsgBox("¿Confirma el pasaje del cheque propio a cartera con los sgtes datos?" & vbNewLine & "Monto: " & Me.cheque.Moneda.NombreCorto & " " & funciones.FormatearDecimales(Val(Me.txtMonto.text)) & vbNewLine & "Fecha Vencimiento: " & Me.dtpFechaVenc.value, vbQuestion + vbYesNo, "Pasaje") = vbYes Then
+    If MsgBox("¿Confirma el pasaje del cheque propio a cartera con los sgtes datos?" & vbNewLine & "Monto: " & Me.cheque.moneda.NombreCorto & " " & funciones.FormatearDecimales(Val(Me.txtMonto.text)) & vbNewLine & "Fecha Vencimiento: " & Me.dtpFechaVenc.value, vbQuestion + vbYesNo, "Pasaje") = vbYes Then
         Me.cheque.FechaVencimiento = Me.dtpFechaVenc.value
         Me.cheque.Monto = Val(Me.txtMonto.text)
-        Me.cheque.Observaciones = Me.txtOrigenDestino.text
+        Me.cheque.observaciones = Me.txtOrigenDestino.text
         Me.cheque.EnCartera = True
 
         If DAOCheques.Guardar(Me.cheque) Then
@@ -199,7 +199,7 @@ Private Sub Form_Load()
     Me.lblNumero.caption = "Número: " & Me.cheque.numero
     Me.lblBanco.caption = "Banco: " & Me.cheque.Banco.nombre
     Me.lblChequera.caption = "Chequera: " & ch.numero & " (" & ch.NumeroDesde & " - " & ch.NumeroHasta & ")"
-    Me.lblMoneda.caption = "Moneda: " & cheque.Moneda.NombreCorto
+    Me.lblMoneda.caption = "Moneda: " & cheque.moneda.NombreCorto
 
     Me.dtpFechaVenc.value = DateAdd("d", 30, CLng(Now))
 

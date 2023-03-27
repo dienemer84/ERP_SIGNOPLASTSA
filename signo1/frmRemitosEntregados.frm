@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmRemitosEntregados 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -92,8 +92,8 @@ End Sub
 Private Sub llenarLstRemitos()
     Me.lstRemitos.ListItems.Clear
     Dim rs As Recordset
-    idP = CLng(Me.idPedidoEntrega)
-    Set rs = conectar.RSFactory("select r.id,r.numero from entregas e inner join remitos r on e.remito=r.id where idPedido=" & idP & " and origen=" & vorigen & " group by remito")
+    idp = CLng(Me.idPedidoEntrega)
+    Set rs = conectar.RSFactory("select r.id,r.numero from entregas e inner join remitos r on e.remito=r.id where idPedido=" & idp & " and origen=" & vorigen & " group by remito")
 
 
 
@@ -103,7 +103,7 @@ Private Sub llenarLstRemitos()
         'si el remito es -1, significa que no sale y queda en stock
         If rs!numero > 0 Then
             Set x = Me.lstRemitos.ListItems.Add(, , rs!numero, 1)
-            x.Tag = rs!id
+            x.Tag = rs!Id
         End If
         rs.MoveNext
     Wend

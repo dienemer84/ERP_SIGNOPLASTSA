@@ -57,9 +57,9 @@ End Function
 
 
 Public Function FindAll(ByVal Origen As OrigenArchivos, Optional ByRef filter As String = vbNullString) As Collection
-    'Dim tickStart As Double
-    'Dim tickEnd As Double
-    'tickStart = GetTickCount
+'Dim tickStart As Double
+'Dim tickEnd As Double
+'tickStart = GetTickCount
 
     Dim rs As ADODB.Recordset
     Dim q As String
@@ -67,12 +67,12 @@ Public Function FindAll(ByVal Origen As OrigenArchivos, Optional ByRef filter As
     Dim archivos As New Collection
 
     q = "SELECT" _
-        & " arch.id,arch.idPieza,arch.nombre,arch.tamano,arch.comentario,arch.usuario,arch.origen,arch.sincro,arch.fecha,arch.de_compra," _
-        & " u.*" _
-        & " from sp_archivos.archivos arch" _
-        & " LEFT JOIN usuarios u" _
-        & " ON u.id = arch.usuario" _
-        & " WHERE 1 = 1 AND arch.origen = " & Origen
+      & " arch.id,arch.idPieza,arch.nombre,arch.tamano,arch.comentario,arch.usuario,arch.origen,arch.sincro,arch.fecha,arch.de_compra," _
+      & " u.*" _
+      & " from sp_archivos.archivos arch" _
+      & " LEFT JOIN usuarios u" _
+      & " ON u.id = arch.usuario" _
+      & " WHERE 1 = 1 AND arch.origen = " & Origen
 
 
     If LenB(filter) > 0 Then
@@ -106,13 +106,13 @@ End Function
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String, Optional ByRef usuarioTableNameOrAlias As String = vbNullString) As archivo
     Dim A As archivo
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOArchivo.CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOArchivo.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set A = New archivo
-        A.id = id
+        A.Id = Id
         A.Comentario = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOArchivo.CAMPO_COMENTARIO)
         'a.Contenido = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOArchivo.CAMPO_CONTENIDO)
         A.IdReferencia = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOArchivo.CAMPO_ID_REFERENCIA)
@@ -171,12 +171,12 @@ Public Function grabarArchivo(idPieza As Long, nombre As String, ruta As String,
 
     Dim tipoEvento As TipoEventoBroadcast: tipoEvento = -1
     Select Case Origen
-        Case OrigenArchivos.OA_OrdenesTrabajo
-            tipoEvento = TipoEventoBroadcast.TEB_ArchivoOrdenTrabajo
-        Case OrigenArchivos.OA_OrdenesTrabajoDetalle
-            tipoEvento = TipoEventoBroadcast.TEB_ArchivoDetalleOrdenTrabajo
-        Case OrigenArchivos.OA_Piezas
-            tipoEvento = TipoEventoBroadcast.TEB_ArchivoPieza
+    Case OrigenArchivos.OA_OrdenesTrabajo
+        tipoEvento = TipoEventoBroadcast.TEB_ArchivoOrdenTrabajo
+    Case OrigenArchivos.OA_OrdenesTrabajoDetalle
+        tipoEvento = TipoEventoBroadcast.TEB_ArchivoDetalleOrdenTrabajo
+    Case OrigenArchivos.OA_Piezas
+        tipoEvento = TipoEventoBroadcast.TEB_ArchivoPieza
     End Select
 
     If tipoEvento <> -1 Then

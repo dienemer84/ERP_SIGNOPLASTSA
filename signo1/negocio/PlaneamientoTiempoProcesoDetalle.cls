@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public IdPlaneamientoTiempoProceso As Long
 Public legajo As Long
 Public FechaCarga As Date

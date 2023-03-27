@@ -48,10 +48,10 @@ Public Function PrintEtiquetaPedido(Pedido As OrdenTrabajo) As Boolean
     Printer.Font.Size = 14
     Printer.Font = "ARIAL BLACK"
     Printer.FontBold = True
-    Printer.CurrentX = CentrarImpresion(Pedido.Cliente.razon)
-    Printer.Print Pedido.Cliente.razon
+    Printer.CurrentX = CentrarImpresion(Pedido.cliente.razon)
+    Printer.Print Pedido.cliente.razon
     Printer.CurrentX = 50
-    Printer.Print "OT:  " & Pedido.id
+    Printer.Print "OT:  " & Pedido.Id
 
 
     Printer.CurrentX = 50
@@ -96,10 +96,10 @@ Public Function PrintEtiquetaDetallePedido(Pedido As OrdenTrabajo, deta As Detal
         Printer.Font.Size = 15
         Printer.Font = "ARIAL BLACK"
         Printer.FontBold = True
-        Printer.CurrentX = CentrarImpresion(Trim(Pedido.Cliente.razon))
+        Printer.CurrentX = CentrarImpresion(Trim(Pedido.cliente.razon))
         Printer.Print Pedido.ClienteFacturar.razon
         Printer.CurrentX = 50
-        Printer.Print "OT| ITEM:  " & Pedido.id & " | " & deta.item
+        Printer.Print "OT| ITEM:  " & Pedido.Id & " | " & deta.item
         Printer.CurrentX = 50
         Printer.Print "Cantidad :" & Total
         Printer.Font.Size = 10
@@ -166,7 +166,7 @@ Public Function PrintEtiquetaDetallePedido(Pedido As OrdenTrabajo, deta As Detal
         Printer.Line (0, Printer.CurrentY + 10)-(Printer.ScaleWidth, Printer.CurrentY + 10)
 
         Dim barra As String
-        barra = "*" & deta.id & "*"
+        barra = "*" & deta.Id & "*"
 
 
         Printer.CurrentX = funciones.CentrarImpresion(barra) + 130
@@ -189,12 +189,12 @@ Public Function PrintEtiquetaDetallePedido(Pedido As OrdenTrabajo, deta As Detal
         Printer.CurrentY = 1400
         Printer.CurrentX = 100
         Printer.FontSize = 9
-        Printer.Print deta.OrdenTrabajo.id & "|" & deta.item
+        Printer.Print deta.OrdenTrabajo.Id & "|" & deta.item
         Printer.Line (1200, 950)-(1200, 1700)
         Printer.Line (1205, 950)-(1205, 1700)
 
         'incremento la cant de etiquetas del item?
-        DAODetalleOrdenTrabajo.CountPrintedLabels deta.id
+        DAODetalleOrdenTrabajo.CountPrintedLabels deta.Id
 
         Printer.EndDoc
 

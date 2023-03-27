@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmEventos 
    Caption         =   "Eventos"
    ClientHeight    =   6315
@@ -270,12 +270,12 @@ Private Sub btnMarcarNoLeidosComoLeidos_Click()
         If it.RowIndex > 0 Then
             Set ev = eventos.item(it.RowIndex)
 
-            If Not funciones.BuscarEnColeccion(ev.Lecturas, CStr(funciones.GetUserObj.id)) Then
-                If DAOEvento.Read(ev.id) Then
+            If Not funciones.BuscarEnColeccion(ev.Lecturas, CStr(funciones.GetUserObj.Id)) Then
+                If DAOEvento.Read(ev.Id) Then
                     Dim lectura As New LecturaEvento
                     lectura.FechaLectura = Now
-                    lectura.idUsuario = funciones.GetUserObj.id
-                    ev.Lecturas.Add lectura, CStr(funciones.GetUserObj.id)
+                    lectura.idUsuario = funciones.GetUserObj.Id
+                    ev.Lecturas.Add lectura, CStr(funciones.GetUserObj.Id)
                 End If
             End If
         End If
@@ -327,7 +327,7 @@ Private Sub Form_Load()
         nameToShow = usuario.usuario
         If IsSomething(usuario.Empleado) Then nameToShow = nameToShow & " (" & usuario.Empleado.NombreCompleto & ")"
         Me.cboUsuarios.AddItem nameToShow
-        Me.cboUsuarios.ItemData(Me.cboUsuarios.NewIndex) = usuario.id
+        Me.cboUsuarios.ItemData(Me.cboUsuarios.NewIndex) = usuario.Id
     Next usuario
     Me.cboUsuarios.ListIndex = -1
 
@@ -368,7 +368,7 @@ Public Sub llenar()
             F = F & " AND e.fecha_creacion <= " & conectar.Escape(tmpFecha)
         End If
 
-        Set eventos = DAOEvento.FindAllByUser(funciones.GetUserObj.id, False, F)
+        Set eventos = DAOEvento.FindAllByUser(funciones.GetUserObj.Id, False, F)
         Me.grilla.ItemCount = 0
         Me.grilla.ItemCount = eventos.count
         UpdateCaption
@@ -381,7 +381,7 @@ Private Sub UpdateCaption()
     Dim noLeidos As Long
     Dim ev As EVENTO
     For Each ev In eventos
-        If funciones.BuscarEnColeccion(ev.Lecturas, CStr(funciones.GetUserObj.id)) Then
+        If funciones.BuscarEnColeccion(ev.Lecturas, CStr(funciones.GetUserObj.Id)) Then
             leidos = leidos + 1
         Else
             noLeidos = noLeidos + 1
@@ -403,7 +403,7 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 And RowBuffer.RowIndex <= eventos.count And eventos.count > 0 Then
         Set EVENTO = eventos.item(RowBuffer.RowIndex)
 
-        If Not funciones.BuscarEnColeccion(EVENTO.Lecturas, CStr(funciones.GetUserObj.id)) Then
+        If Not funciones.BuscarEnColeccion(EVENTO.Lecturas, CStr(funciones.GetUserObj.Id)) Then
             RowBuffer.RowStyle = "noleido"
         End If
     End If
@@ -413,7 +413,7 @@ Private Sub grilla_SelectionChange()
     Me.tmrMarcarLeido.Enabled = False
     If Me.grilla.RowIndex(Me.grilla.row) > 0 And eventos.count > 0 Then
         Set EVENTO = eventos.item(Me.grilla.RowIndex(Me.grilla.row))
-        Me.tmrMarcarLeido.Enabled = Not funciones.BuscarEnColeccion(EVENTO.Lecturas, CStr(funciones.GetUserObj.id))
+        Me.tmrMarcarLeido.Enabled = Not funciones.BuscarEnColeccion(EVENTO.Lecturas, CStr(funciones.GetUserObj.Id))
     End If
 End Sub
 
@@ -439,12 +439,12 @@ End Sub
 
 Private Sub tmrMarcarLeido_Timer()
     If IsSomething(EVENTO) Then
-        If Not funciones.BuscarEnColeccion(EVENTO.Lecturas, CStr(funciones.GetUserObj.id)) Then
-            If DAOEvento.Read(EVENTO.id) Then
+        If Not funciones.BuscarEnColeccion(EVENTO.Lecturas, CStr(funciones.GetUserObj.Id)) Then
+            If DAOEvento.Read(EVENTO.Id) Then
                 Dim lectura As New LecturaEvento
                 lectura.FechaLectura = Now
-                lectura.idUsuario = funciones.GetUserObj.id
-                EVENTO.Lecturas.Add lectura, CStr(funciones.GetUserObj.id)
+                lectura.idUsuario = funciones.GetUserObj.Id
+                EVENTO.Lecturas.Add lectura, CStr(funciones.GetUserObj.Id)
                 Dim row As Long
                 row = Me.grilla.row
                 Me.grilla.ReBind

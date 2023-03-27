@@ -38,33 +38,33 @@ Public Function Convertir(Valor As Double, monedaOrigenId As Long, monedaDestino
     If monedaPatron.Id = monDestino.Id Then Cambio = 1
     If monOrigen.Id = monDestino.Id Then Cambio = 1
 
-'    If monOrigen.Id <> monDestino.Id Then
-'    MsgBox ("Tenemos monedas distintas")
-'        MsgBox ("Moneda de la OT del Remito asociado: " & monOrigen.NombreCorto & " | Moneda del Comprobante: " & monDestino.NombreCorto)
-'        MsgBox ("Moneda de la OT del Remito asociado: " & monOrigen.NombreCorto & vbCrLf & "" _
-'        & "La Moneda del Comprobante que se está cargando es: " & monDestino.NombreCorto & vbCrLf & "" _
-'       & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
-'        & "Cálculo:" & vbCrLf & "" _
-'       & "Importe del item: " & monOrigen.NombreCorto & " " & Valor & vbCrLf & "" _
-'       & " * Valor de Moneda de OT: " & monDestino.NombreCorto & " " & monOrigen.Cambio)
-    
+    '    If monOrigen.Id <> monDestino.Id Then
+    '    MsgBox ("Tenemos monedas distintas")
+    '        MsgBox ("Moneda de la OT del Remito asociado: " & monOrigen.NombreCorto & " | Moneda del Comprobante: " & monDestino.NombreCorto)
+    '        MsgBox ("Moneda de la OT del Remito asociado: " & monOrigen.NombreCorto & vbCrLf & "" _
+             '        & "La Moneda del Comprobante que se está cargando es: " & monDestino.NombreCorto & vbCrLf & "" _
+             '       & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
+             '        & "Cálculo:" & vbCrLf & "" _
+             '       & "Importe del item: " & monOrigen.NombreCorto & " " & Valor & vbCrLf & "" _
+             '       & " * Valor de Moneda de OT: " & monDestino.NombreCorto & " " & monOrigen.Cambio)
+
     Convertir = ((Valor * monOrigen.Cambio) / monDestino.Cambio * Cambio) / monedaPatron.Cambio
-'    Else
-'    MsgBox ("Tenemos las mismas monedas")
-'
-'    End If
+    '    Else
+    '    MsgBox ("Tenemos las mismas monedas")
+    '
+    '    End If
 
-    
 
-    
+
+
 End Function
 
 
 
 
 Public Function ConvertirForzado2(Valor As Double, monedaOrigenId As Long, monedaDestinoId As Long, cambioforzado As Double) As Double
-    'si no se inicializaron las monedas o se actualizaron hace mas de 15 minutos, actualizo las monedas
-    'If (monedas Is Nothing Or monedaPatron Is Nothing) Or (DateDiff("n", lastUpdate, Now) > 15) Then
+'si no se inicializaron las monedas o se actualizaron hace mas de 15 minutos, actualizo las monedas
+'If (monedas Is Nothing Or monedaPatron Is Nothing) Or (DateDiff("n", lastUpdate, Now) > 15) Then
     If DateDiff("n", lastUpdate, Now) > 15 Then ActualizarMonedas
 
     Dim monOrigen As clsMoneda
@@ -94,8 +94,8 @@ Public Function ConvertirForzado2(Valor As Double, monedaOrigenId As Long, moned
 End Function
 
 Public Function ConvertirForzado(Valor As Double, monedaOrigenId As Long, cambioforzado As Double) As Double
-    'si no se inicializaron las monedas o se actualizaron hace mas de 15 minutos, actualizo las monedas
-    'If (monedas Is Nothing Or monedaPatron Is Nothing) Or (DateDiff("n", lastUpdate, Now) > 15) Then
+'si no se inicializaron las monedas o se actualizaron hace mas de 15 minutos, actualizo las monedas
+'If (monedas Is Nothing Or monedaPatron Is Nothing) Or (DateDiff("n", lastUpdate, Now) > 15) Then
     If DateDiff("n", lastUpdate, Now) > 15 Then ActualizarMonedas
 
     Dim monOrigen As clsMoneda

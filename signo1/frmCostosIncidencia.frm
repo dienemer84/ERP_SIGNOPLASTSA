@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmCostosIncidencia 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -222,11 +222,11 @@ Dim classStock As New classStock
 Dim idPieza As Long
 Dim strsql As String
 Dim cli As Long
-Public Property Let Cliente(ncli As Long)
+Public Property Let cliente(ncli As Long)
     cli = ncli
 End Property
-Public Property Let idP(id As Long)
-    idPieza = id
+Public Property Let idp(Id As Long)
+    idPieza = Id
 End Property
 
 Private Sub Command1_Click()
@@ -308,7 +308,7 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Command2_Click()
-    a = classStock.exporta(idPieza, Me.lstCostos)
+    A = classStock.exporta(idPieza, Me.lstCostos)
 End Sub
 
 Private Sub Command3_Click()
@@ -360,7 +360,7 @@ Private Sub Form_Load()
         Set x = Me.lstCostos.ListItems.Add(, , "Materiales")
         While Not rs1.EOF
             Set x = Me.lstCostos.ListItems.Add(, , "")
-            x.SubItems(1) = rs1!Rubro
+            x.SubItems(1) = rs1!rubro
             x.SubItems(2) = Math.Round((rs1!Valor / c) * 100, 0) & "%"
             rs1.MoveNext
         Wend

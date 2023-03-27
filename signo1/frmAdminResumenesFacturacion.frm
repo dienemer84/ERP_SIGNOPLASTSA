@@ -718,25 +718,25 @@ Private Sub Totalizar()
         '   End If
         tot_ib = tot_ib + sv.percepciones
     Next sv
-    
+
     'Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.NetoGravado)), "$", "")
-    
+
     Me.lblExentoTotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_exento))
     Me.lblIVATotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_iva))
     Me.lblNetoGravadoTotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_neto))
     Me.lblPercepcionesTotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_ib))
-    
-    
+
+
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    
+
     'Antes del 11.09.20 esto estaba asi:
-    
+
     'Me.lblTotalTotal.caption = FormatearDecimales(tot_neto + tot_ib + tot_iva)   'tot_exento +  borrado 24-02-15
-    
+
     'Despues del 11.09.20 queda asi:
     'Se reincopora a la sumatoria del total total el valor de total exento indicado por pedido de Karin el 27.07.20
     Me.lblTotalTotal.caption = FormatCurrency(funciones.FormatearDecimales(tot_neto + tot_ib + tot_iva + tot_exento))
-    
+
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 End Sub

@@ -23,7 +23,7 @@ Public Function LlenarListaSectores(marcado As Integer)
     Cant = vCantidad
     If Cant > 0 Then
         While Not rs.EOF
-            Set x = frmSectores.lstSectores.ListItems.Add(, , rs!id)
+            Set x = frmSectores.lstSectores.ListItems.Add(, , rs!Id)
             x.SubItems(1) = rs!Sector
             If x = marcado Then
                 x.Selected = True

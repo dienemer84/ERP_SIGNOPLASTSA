@@ -16,11 +16,11 @@ Dim vId As Long
 Dim vValido As Integer
 Dim vPorcentaje As Double
 Public codigo As String
-Public Property Let id(nId As Long)
+Public Property Let Id(nId As Long)
     vId = nId
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 
 Public Property Let Percepcion(nPercepcion As String)

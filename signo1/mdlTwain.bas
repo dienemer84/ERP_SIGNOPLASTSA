@@ -59,7 +59,7 @@ Private Type TW_VERSION
 End Type
 
 Private Type TW_IDENTITY
-    id As Long                     ' TW_UINT32
+    Id As Long                     ' TW_UINT32
     Version As TW_VERSION    ' TW_VERSION
     ProtocolMajor As Integer    ' TW_UINT16
     ProtocolMinor As Integer    ' TW_UINT16
@@ -289,24 +289,24 @@ Public Function TransferWithoutUI(ByVal sngResolution As Single, _
                                   ByVal sngImageBottom As Single, _
                                   ByVal sBMPFileName As String, Optional id_documento As Long, Optional Origen As Integer) As Long
 
-    '----------------------------------------------------------------------------
-    ' Function transfers one image from Twain data source without showing
-    '   the data source user interface (silent transfer).
-    '
-    ' Input values
-    '   - sngResolution (Single) - resolution of the image in DPI
-    '                              (dots per inch)
-    '   - tColourType (UDT) - colour depth of the imaged - monochromatic (BW),
-    '                         colours of grey (GREY), full colours (COLOUR)
-    '   - sngImageLeft, sngImageTop, sngImageRight, sngImageBottom (Single) -
-    '       values determine the rectangle on the scanner glass that will
-    '       be scanned (default units are inches) - if you set Right and Bottom
-    '       values to 0, the module sets maximum values the scanner driver allows
-    '       (the bottom right corner of the scanner glass)
-    '   - sBMPFileName (String) - the file name of the saved image
-    '
-    ' Function returns 0 if OK, 1 if an error occurs
-    '----------------------------------------------------------------------------
+'----------------------------------------------------------------------------
+' Function transfers one image from Twain data source without showing
+'   the data source user interface (silent transfer).
+'
+' Input values
+'   - sngResolution (Single) - resolution of the image in DPI
+'                              (dots per inch)
+'   - tColourType (UDT) - colour depth of the imaged - monochromatic (BW),
+'                         colours of grey (GREY), full colours (COLOUR)
+'   - sngImageLeft, sngImageTop, sngImageRight, sngImageBottom (Single) -
+'       values determine the rectangle on the scanner glass that will
+'       be scanned (default units are inches) - if you set Right and Bottom
+'       values to 0, the module sets maximum values the scanner driver allows
+'       (the bottom right corner of the scanner glass)
+'   - sBMPFileName (String) - the file name of the saved image
+'
+' Function returns 0 if OK, 1 if an error occurs
+'----------------------------------------------------------------------------
 
     Dim lRtn As Long
     Dim ltmp As Long
@@ -413,15 +413,15 @@ End Function
 
 Public Function TransferWithUI(ByVal sBMPFileName As String) As Long
 
-    '-------------------------------------------------------------------
-    ' Function transfers one image from Twain data source using the data
-    '   source user interface to set image attributes.
-    '
-    ' Input values
-    '   - sBMPFileName (String) - the file name of the saved image
-    '
-    ' Function returns 0 if OK, 1 if an error occurs
-    '-------------------------------------------------------------
+'-------------------------------------------------------------------
+' Function transfers one image from Twain data source using the data
+'   source user interface to set image attributes.
+'
+' Input values
+'   - sBMPFileName (String) - the file name of the saved image
+'
+' Function returns 0 if OK, 1 if an error occurs
+'-------------------------------------------------------------
 
     Dim lRtn As Long
     Dim blTwainOpen As Boolean
@@ -482,11 +482,11 @@ End Function
 
 Public Function PopupSelectSourceDialog() As Long
 
-    '------------------------------------------------------------------
-    ' Function shows the Twain dialog for selecting default data source
-    '
-    ' Function returns 0 if OK, 1 if an error occurs
-    '------------------------------------------------------------------
+'------------------------------------------------------------------
+' Function shows the Twain dialog for selecting default data source
+'
+' Function returns 0 if OK, 1 if an error occurs
+'------------------------------------------------------------------
 
     Dim iRtn As Integer
     Dim lRtn As Long
@@ -738,10 +738,10 @@ Private Function TwainTransfer(ByRef blShowUI As Boolean, _
         iRtn = DSM_Entry(m_tAppID, m_tSrcID, DG_CONTROL, DAT_EVENT, _
                          MSG_PROCESSEVENT, tEvent)
         Select Case tEvent.TWMessage
-            Case MSG_XFERREADY
-                GoTo MSGGET
-            Case MSG_CLOSEDSREQ
-                GoTo MSGDISABLEDS
+        Case MSG_XFERREADY
+            GoTo MSGGET
+        Case MSG_CLOSEDSREQ
+            GoTo MSGDISABLEDS
         End Select
         lRtn = TranslateMessage(tMSG)
         lRtn = DispatchMessage(tMSG)
@@ -798,9 +798,9 @@ End Function
 Private Function SaveDIBToFile(ByRef lhDIB As Long, _
                                ByRef sFileName As String, Optional id_documento As Long, Optional Origen As Integer) As Long
 
-    '---------------------------------------------------------------------------
-    ' Function saves the handle to DIB (device independent bitmap) into BMP file
-    '---------------------------------------------------------------------------
+'---------------------------------------------------------------------------
+' Function saves the handle to DIB (device independent bitmap) into BMP file
+'---------------------------------------------------------------------------
 
     Dim tBFH As BITMAPFILEHEADER
     Dim tBIH As BITMAPINFOHEADER
@@ -867,14 +867,14 @@ Private Function TwainSetOneValue(ByVal Cap As TWAIN_MDL_CAPABILITY, _
                                   ByVal ItemType As TWAIN_MDL_ITEMYPE, _
                                   ByRef item As Variant) As Long
 
-    '-----------------------------------------------------------------------
-    ' There are four types of containers that TWAIN defines for capabilities
-    ' (TW_ONEVALUE, TW_ARRAY, TW_RANGE and TW_ENUMERATION)
-    ' This module deals with one of them only - TW_ONEVALUE (single value)
-    ' To set some capability you have to fill TW_ONEVALUE fields and use
-    '   the triplet DG_CONTROL DAT_CAPABILITY MSG_SET
-    ' The macros that convert some data types are used here as well
-    '-----------------------------------------------------------------------
+'-----------------------------------------------------------------------
+' There are four types of containers that TWAIN defines for capabilities
+' (TW_ONEVALUE, TW_ARRAY, TW_RANGE and TW_ENUMERATION)
+' This module deals with one of them only - TW_ONEVALUE (single value)
+' To set some capability you have to fill TW_ONEVALUE fields and use
+'   the triplet DG_CONTROL DAT_CAPABILITY MSG_SET
+' The macros that convert some data types are used here as well
+'-----------------------------------------------------------------------
     On Local Error GoTo ErrPlace
 
     Dim tCapability As TW_CAPABILITY
@@ -892,14 +892,14 @@ Private Function TwainSetOneValue(ByVal Cap As TWAIN_MDL_CAPABILITY, _
     tOneValue.ItemType = ItemType
 
     Select Case ItemType
-        Case INT16
-            tOneValue.Item1 = CInt(item)
-        Case UINT16, BOOL
-            If ToUnsignedShort(CLng(item), iTmp) Then GoTo ErrPlace
-            Call CopyMemory(VarPtr(tOneValue.Item1), VarPtr(iTmp), 2&)
-        Case FIX32
-            If FloatToFix32(CSng(item), tFix32) Then GoTo ErrPlace
-            Call CopyMemory(VarPtr(tOneValue.Item1), VarPtr(tFix32), 4&)
+    Case INT16
+        tOneValue.Item1 = CInt(item)
+    Case UINT16, BOOL
+        If ToUnsignedShort(CLng(item), iTmp) Then GoTo ErrPlace
+        Call CopyMemory(VarPtr(tOneValue.Item1), VarPtr(iTmp), 2&)
+    Case FIX32
+        If FloatToFix32(CSng(item), tFix32) Then GoTo ErrPlace
+        Call CopyMemory(VarPtr(tOneValue.Item1), VarPtr(tFix32), 4&)
     End Select
 
     lhOneValue = GlobalAlloc(GHND, Len(tOneValue))
@@ -926,14 +926,14 @@ End Function
 Private Function TwainGetOneValue(ByVal Cap As TWAIN_MDL_CAPABILITY, _
                                   ByRef item As Variant) As Long
 
-    '-----------------------------------------------------------------------
-    ' There are four types of containers that TWAIN defines for capabilities
-    ' (TW_ONEVALUE, TW_ARRAY, TW_RANGE and TW_ENUMERATION)
-    ' This module deals with one of them only - TW_ONEVALUE (single value)
-    ' To get some capability you have to fill TW_ONEVALUE fields and use
-    '   the triplet DG_CONTROL DAT_CAPABILITY MSG_GET
-    ' The macros that convert some data types are used here as well
-    '-----------------------------------------------------------------------
+'-----------------------------------------------------------------------
+' There are four types of containers that TWAIN defines for capabilities
+' (TW_ONEVALUE, TW_ARRAY, TW_RANGE and TW_ENUMERATION)
+' This module deals with one of them only - TW_ONEVALUE (single value)
+' To get some capability you have to fill TW_ONEVALUE fields and use
+'   the triplet DG_CONTROL DAT_CAPABILITY MSG_GET
+' The macros that convert some data types are used here as well
+'-----------------------------------------------------------------------
 
     On Local Error GoTo ErrPlace
 
@@ -957,13 +957,13 @@ Private Function TwainGetOneValue(ByVal Cap As TWAIN_MDL_CAPABILITY, _
     lRtn = GlobalFree(tCapability.hContainer)
 
     Select Case tOneValue.ItemType
-        Case INT16
-            item = tOneValue.Item1
-        Case UINT16, BOOL
-            item = FromUnsignedShort(tOneValue.Item1)
-        Case FIX32
-            Call CopyMemory(VarPtr(tFix32), VarPtr(tOneValue.Item1), 4&)
-            item = Fix32ToFloat(tFix32)
+    Case INT16
+        item = tOneValue.Item1
+    Case UINT16, BOOL
+        item = FromUnsignedShort(tOneValue.Item1)
+    Case FIX32
+        Call CopyMemory(VarPtr(tFix32), VarPtr(tOneValue.Item1), 4&)
+        item = Fix32ToFloat(tFix32)
     End Select
 
     TwainGetOneValue = 0
@@ -976,12 +976,12 @@ End Function
 Private Function ToUnsignedShort(ByRef lSrc As Long, _
                                  ByRef iDst As Integer) As Long
 
-    '------------------------------------------------------------------------
-    ' Sets number ranging from 0 to 65535 into 2-byte VB Integer
-    ' (useful for communicating with other dll that uses unsigned data types)
-    '
-    ' Function returns 0 is OK, 1 if an error occurs
-    '------------------------------------------------------------------------
+'------------------------------------------------------------------------
+' Sets number ranging from 0 to 65535 into 2-byte VB Integer
+' (useful for communicating with other dll that uses unsigned data types)
+'
+' Function returns 0 is OK, 1 if an error occurs
+'------------------------------------------------------------------------
 
     On Local Error GoTo ErrPlace
 
@@ -1001,12 +1001,12 @@ End Function
 
 Private Function FromUnsignedShort(ByRef iSrc As Integer) As Long
 
-    '------------------------------------------------------------------------
-    ' Gets the 2-byte unsigned number from VB Integer data type
-    ' (useful for communicating with other dll that uses unsigned data types)
-    '
-    ' Function returns unsigned 2-byte value (in VB Long type)
-    '------------------------------------------------------------------------
+'------------------------------------------------------------------------
+' Gets the 2-byte unsigned number from VB Integer data type
+' (useful for communicating with other dll that uses unsigned data types)
+'
+' Function returns unsigned 2-byte value (in VB Long type)
+'------------------------------------------------------------------------
 
     Dim ltmp As Long
 
@@ -1022,12 +1022,12 @@ End Function
 Private Function ToUnsignedLong(ByRef sngSrc As Single, _
                                 ByRef lDst As Long) As Long
 
-    '------------------------------------------------------------------------
-    ' Sets number ranging from 0 to 4294967295 into 4-byte VB Long
-    ' (useful for communicating with other dll that uses unsigned data types)
-    '
-    ' Function returns 0 is OK, 1 if an error occurs
-    '------------------------------------------------------------------------
+'------------------------------------------------------------------------
+' Sets number ranging from 0 to 4294967295 into 4-byte VB Long
+' (useful for communicating with other dll that uses unsigned data types)
+'
+' Function returns 0 is OK, 1 if an error occurs
+'------------------------------------------------------------------------
 
     On Local Error GoTo ErrPlace
 
@@ -1044,12 +1044,12 @@ End Function
 
 Private Function FromUnsignedLong(ByRef lSrc As Long) As Single
 
-    '------------------------------------------------------------------------
-    ' Gets the 4-byte unsigned number from VB Long data type
-    ' (useful for communicating with other dll that uses unsigned data types)
-    '
-    ' Function returns unsigned 4-byte value (in VB Single type)
-    '------------------------------------------------------------------------
+'------------------------------------------------------------------------
+' Gets the 4-byte unsigned number from VB Long data type
+' (useful for communicating with other dll that uses unsigned data types)
+'
+' Function returns unsigned 4-byte value (in VB Single type)
+'------------------------------------------------------------------------
 
     Dim sngTmp As Single
 
@@ -1060,12 +1060,12 @@ End Function
 
 Private Function Fix32ToFloat(ByRef tFix32 As TW_FIX32) As Single
 
-    '----------------------------------------------------------------
-    ' Converts TWAIN TW_FIX32 data structure into VB Single data type
-    ' (needed for communicating with TWAIN)
-    '
-    ' Function returns floating-point number in VB Single data type
-    '----------------------------------------------------------------
+'----------------------------------------------------------------
+' Converts TWAIN TW_FIX32 data structure into VB Single data type
+' (needed for communicating with TWAIN)
+'
+' Function returns floating-point number in VB Single data type
+'----------------------------------------------------------------
 
     Dim sngTmp As Single
 
@@ -1077,12 +1077,12 @@ End Function
 Private Function FloatToFix32(ByRef sngSrc As Single, _
                               ByRef tFix32 As TW_FIX32) As Long
 
-    '----------------------------------------------------------------
-    ' Converts VB Single data type into TWAIN TW_FIX32 data structure
-    ' (needed for communicating with TWAIN)
-    '
-    ' Function returns 0 is OK, 1 if an error occurs
-    '----------------------------------------------------------------
+'----------------------------------------------------------------
+' Converts VB Single data type into TWAIN TW_FIX32 data structure
+' (needed for communicating with TWAIN)
+'
+' Function returns 0 is OK, 1 if an error occurs
+'----------------------------------------------------------------
 
     On Local Error GoTo ErrPlace
 

@@ -17,7 +17,7 @@ Option Explicit
 Public legajo As Long
 Public documento As Long
 Public Apellido As String
-Public Nombre As String
+Public nombre As String
 Public Nombres As String
 Public direccion As String
 Public localidad As String
@@ -26,7 +26,7 @@ Public Telefono2 As String
 Public estado As EstadoUsuario
 Public email As String
 Public sectores As Collection
-Public id As Long
+Public Id As Long
 Public FechaIngreso As Date
 Public FechaNacimiento As Date
 Public GrupoSanguineo As String
@@ -41,7 +41,7 @@ Public UltimaActualizacion As Date
 Public Property Get NombreAbreviado() As String
     Dim nom As String
     If LenB(Me.Apellido) > 0 Then nom = nom & Me.Apellido & " "
-    If LenB(Me.Nombre) > 0 Then nom = nom & Left(Me.Nombre, 1) & "."
+    If LenB(Me.nombre) > 0 Then nom = nom & Left(Me.nombre, 1) & "."
 
     NombreAbreviado = nom
 End Property
@@ -49,7 +49,7 @@ End Property
 Public Property Get NombreCompleto() As String
     Dim nom As String
     If LenB(Me.Apellido) > 0 Then nom = nom & Me.Apellido & " "
-    If LenB(Me.Nombre) > 0 Then nom = nom & Me.Nombre
+    If LenB(Me.nombre) > 0 Then nom = nom & Me.nombre
 
     NombreCompleto = nom
 End Property

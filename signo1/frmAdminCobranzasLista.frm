@@ -8,22 +8,196 @@ Begin VB.Form frmAdminCobranzasLista
    ClientHeight    =   8445
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   17265
+   ClientWidth     =   17625
    Icon            =   "frmAdminCobranzasLista.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8445
-   ScaleWidth      =   17265
+   ScaleWidth      =   17625
+   Begin VB.Frame Frame2 
+      Caption         =   "Parámetros de Búsqueda"
+      Height          =   1455
+      Left            =   120
+      TabIndex        =   7
+      Top             =   120
+      Width           =   11775
+      Begin XtremeSuiteControls.PushButton btnLimpiarCliente 
+         Height          =   255
+         Left            =   6240
+         TabIndex        =   19
+         Top             =   385
+         Width           =   420
+         _Version        =   786432
+         _ExtentX        =   741
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin VB.TextBox txtNroRecibo 
+         Height          =   285
+         Left            =   1320
+         TabIndex        =   9
+         Top             =   795
+         Width           =   1500
+      End
+      Begin XtremeSuiteControls.ComboBox cboCliente 
+         Height          =   315
+         Left            =   1320
+         TabIndex        =   8
+         Top             =   360
+         Width           =   4785
+         _Version        =   786432
+         _ExtentX        =   8440
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Text            =   "ComboBox1"
+      End
+      Begin XtremeSuiteControls.GroupBox GroupBox2 
+         Height          =   1050
+         Left            =   6960
+         TabIndex        =   12
+         Top             =   240
+         Width           =   4695
+         _Version        =   786432
+         _ExtentX        =   8281
+         _ExtentY        =   1852
+         _StockProps     =   79
+         Caption         =   "Fecha Emision"
+         BackColor       =   -2147483633
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.DateTimePicker dtpDesde 
+            Height          =   315
+            Left            =   825
+            TabIndex        =   13
+            Top             =   615
+            Width           =   1470
+            _Version        =   786432
+            _ExtentX        =   2593
+            _ExtentY        =   556
+            _StockProps     =   68
+            CheckBox        =   -1  'True
+            Format          =   1
+         End
+         Begin XtremeSuiteControls.DateTimePicker dtpHasta 
+            Height          =   315
+            Left            =   3000
+            TabIndex        =   14
+            Top             =   615
+            Width           =   1470
+            _Version        =   786432
+            _ExtentX        =   2593
+            _ExtentY        =   556
+            _StockProps     =   68
+            CheckBox        =   -1  'True
+            Format          =   1
+         End
+         Begin XtremeSuiteControls.ComboBox cboRangos 
+            Height          =   315
+            Left            =   825
+            TabIndex        =   15
+            Top             =   225
+            Width           =   3645
+            _Version        =   786432
+            _ExtentX        =   6429
+            _ExtentY        =   556
+            _StockProps     =   77
+            BackColor       =   -2147483643
+            Style           =   2
+            Text            =   "ComboBox1"
+         End
+         Begin XtremeSuiteControls.Label Label6 
+            Height          =   195
+            Left            =   2430
+            TabIndex        =   18
+            Top             =   675
+            Width           =   420
+            _Version        =   786432
+            _ExtentX        =   741
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Hasta"
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label Label5 
+            Height          =   195
+            Left            =   255
+            TabIndex        =   17
+            Top             =   660
+            Width           =   465
+            _Version        =   786432
+            _ExtentX        =   820
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Desde"
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label Label7 
+            Height          =   195
+            Left            =   240
+            TabIndex        =   16
+            Top             =   285
+            Width           =   480
+            _Version        =   786432
+            _ExtentX        =   847
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Rango"
+            AutoSize        =   -1  'True
+         End
+      End
+      Begin VB.Label Label1 
+         AutoSize        =   -1  'True
+         BackColor       =   &H00FF8080&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nro Recibo"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   195
+         Left            =   240
+         TabIndex        =   11
+         Top             =   825
+         Width           =   975
+      End
+      Begin VB.Label P 
+         AutoSize        =   -1  'True
+         BackColor       =   &H00FF8080&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cliente"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   195
+         Left            =   615
+         TabIndex        =   10
+         Top             =   420
+         Width           =   600
+      End
+   End
    Begin VB.Frame Frame1 
       Height          =   855
-      Left            =   11160
-      TabIndex        =   14
+      Left            =   12000
+      TabIndex        =   3
       Top             =   120
       Width           =   5535
       Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   465
          Left            =   1920
-         TabIndex        =   15
+         TabIndex        =   4
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -36,7 +210,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.PushButton cmdBuscar 
          Height          =   465
          Left            =   120
-         TabIndex        =   16
+         TabIndex        =   5
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -49,7 +223,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.PushButton cmdImprimir 
          Height          =   465
          Left            =   3720
-         TabIndex        =   17
+         TabIndex        =   6
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -62,9 +236,9 @@ Begin VB.Form frmAdminCobranzasLista
    End
    Begin XtremeSuiteControls.ProgressBar progreso 
       Height          =   135
-      Left            =   11160
-      TabIndex        =   13
-      Top             =   960
+      Left            =   12000
+      TabIndex        =   2
+      Top             =   1080
       Visible         =   0   'False
       Width           =   5535
       _Version        =   786432
@@ -76,40 +250,20 @@ Begin VB.Form frmAdminCobranzasLista
    Begin VB.CommandButton Command1 
       Caption         =   "Command1"
       Height          =   615
-      Left            =   360
-      TabIndex        =   5
-      Top             =   7200
+      Left            =   17640
+      TabIndex        =   1
+      Top             =   240
       Visible         =   0   'False
       Width           =   1140
    End
-   Begin XtremeSuiteControls.ComboBox cboCliente 
-      Height          =   315
-      Left            =   1395
-      TabIndex        =   4
-      Top             =   240
-      Width           =   4785
-      _Version        =   786432
-      _ExtentX        =   8440
-      _ExtentY        =   556
-      _StockProps     =   77
-      BackColor       =   -2147483643
-      Text            =   "ComboBox1"
-   End
-   Begin VB.TextBox txtNroRecibo 
-      Height          =   285
-      Left            =   1395
-      TabIndex        =   1
-      Top             =   675
-      Width           =   1500
-   End
    Begin GridEX20.GridEX grilla_recibos 
-      Height          =   5640
+      Height          =   6120
       Left            =   120
       TabIndex        =   0
-      Top             =   1185
-      Width           =   16575
-      _ExtentX        =   29236
-      _ExtentY        =   9948
+      Top             =   1680
+      Width           =   17415
+      _ExtentX        =   30718
+      _ExtentY        =   10795
       Version         =   "2.0"
       HoldSortSettings=   -1  'True
       DefaultGroupMode=   1
@@ -153,139 +307,6 @@ Begin VB.Form frmAdminCobranzasLista
       ImagePicture(1) =   "frmAdminCobranzasLista.frx":1BB4
       ImagePicture(2) =   "frmAdminCobranzasLista.frx":1ECE
       PrinterProperties=   "frmAdminCobranzasLista.frx":21E8
-   End
-   Begin XtremeSuiteControls.GroupBox GroupBox2 
-      Height          =   1050
-      Left            =   6360
-      TabIndex        =   6
-      Top             =   120
-      Width           =   4695
-      _Version        =   786432
-      _ExtentX        =   8281
-      _ExtentY        =   1852
-      _StockProps     =   79
-      Caption         =   "Fecha Emision"
-      BackColor       =   -2147483633
-      UseVisualStyle  =   -1  'True
-      Begin XtremeSuiteControls.DateTimePicker dtpDesde 
-         Height          =   315
-         Left            =   825
-         TabIndex        =   7
-         Top             =   615
-         Width           =   1470
-         _Version        =   786432
-         _ExtentX        =   2593
-         _ExtentY        =   556
-         _StockProps     =   68
-         CheckBox        =   -1  'True
-         Format          =   1
-      End
-      Begin XtremeSuiteControls.DateTimePicker dtpHasta 
-         Height          =   315
-         Left            =   3000
-         TabIndex        =   8
-         Top             =   615
-         Width           =   1470
-         _Version        =   786432
-         _ExtentX        =   2593
-         _ExtentY        =   556
-         _StockProps     =   68
-         CheckBox        =   -1  'True
-         Format          =   1
-      End
-      Begin XtremeSuiteControls.ComboBox cboRangos 
-         Height          =   315
-         Left            =   825
-         TabIndex        =   9
-         Top             =   225
-         Width           =   3645
-         _Version        =   786432
-         _ExtentX        =   6429
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Style           =   2
-         Text            =   "ComboBox1"
-      End
-      Begin XtremeSuiteControls.Label Label7 
-         Height          =   195
-         Left            =   240
-         TabIndex        =   12
-         Top             =   285
-         Width           =   480
-         _Version        =   786432
-         _ExtentX        =   847
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Rango"
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label Label5 
-         Height          =   195
-         Left            =   255
-         TabIndex        =   11
-         Top             =   660
-         Width           =   465
-         _Version        =   786432
-         _ExtentX        =   820
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Desde"
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label Label6 
-         Height          =   195
-         Left            =   2430
-         TabIndex        =   10
-         Top             =   675
-         Width           =   420
-         _Version        =   786432
-         _ExtentX        =   741
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Hasta"
-         AutoSize        =   -1  'True
-      End
-   End
-   Begin VB.Label P 
-      AutoSize        =   -1  'True
-      BackColor       =   &H00FF8080&
-      BackStyle       =   0  'Transparent
-      Caption         =   "Cliente"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   195
-      Left            =   690
-      TabIndex        =   3
-      Top             =   300
-      Width           =   600
-   End
-   Begin VB.Label Label1 
-      AutoSize        =   -1  'True
-      BackColor       =   &H00FF8080&
-      BackStyle       =   0  'Transparent
-      Caption         =   "Nro Recibo"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   195
-      Left            =   315
-      TabIndex        =   2
-      Top             =   705
-      Width           =   975
    End
    Begin VB.Menu mnu 
       Caption         =   "mnu"
@@ -358,18 +379,22 @@ Private Sub btnExportar_Click()
 
     Me.progreso.Visible = True
     'Me.lblExportando.Visible = True
-    
+
     If IsSomething(recibos) Then
-'        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
+        '        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
         If Not DAORecibo.ExportarColeccion(recibos, Me.progreso) Then GoTo err1
     End If
-    
+
     Me.progreso.Visible = False
     'Me.lblExportando.Visible = False
-    
+
     Exit Sub
 err1:
     MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
+End Sub
+
+Private Sub btnLimpiarCliente_Click()
+    Me.cboCliente.ListIndex = -1
 End Sub
 
 Private Sub cboRangos_Click()
@@ -441,9 +466,9 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = i
     llenarLista
-    
+
     ''Me.caption = caption & "(" & Name & ")"
-        
+
 End Sub
 
 Private Sub llenarLista()
@@ -471,7 +496,7 @@ Private Sub llenarLista()
     Set recibos = DAORecibo.FindAll(F)
     Me.grilla_recibos.ItemCount = 0
     Me.grilla_recibos.ItemCount = recibos.count
-    
+
     Me.caption = "Recibos (" & recibos.count & " Recibos encontrados)"
 
 End Sub
@@ -479,7 +504,7 @@ End Sub
 Private Sub Form_Resize()
     If Me.ScaleHeight > 0 Then
         Me.grilla_recibos.Height = Me.ScaleHeight - 1800
-        End If
+    End If
     Me.grilla_recibos.Width = Me.ScaleWidth - 400
 End Sub
 
@@ -503,55 +528,55 @@ End Sub
 
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-    SeleccionarRecibo
+        SeleccionarRecibo
         Me.nro.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
-            
-            If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
-                    Me.editarRecibo.Enabled = True
-                    Me.imprimirRecibo.Enabled = False
-                    Me.mnuAnular.Enabled = False
-                    Me.aprobarRecibo.Enabled = True
-                    Me.mnuAplicarComprobante.Enabled = False
-                    If Permisos.AdminCobrosAprobaciones = False Then
-                        Me.aprobarRecibo.Enabled = False
-                    End If
-                
-                ElseIf recibo.estado = EstadoRecibo.Aprobado Then      'aprobado
-                        Me.imprimirRecibo.Enabled = True
-                        Me.editarRecibo.Enabled = False
-                        Me.aprobarRecibo.Enabled = False
-                        Me.mnuAnular.Enabled = True
-                
-                        If Permisos.AdminCobrosAprobaciones = False Then
-                                Me.mnuAnular.Enabled = False
-                        End If
-                        
-                        If recibo.ACuentaDisponible > 0 Then
-                                Me.mnuAplicarComprobante.Enabled = True
-                        End If
-                
-                        If recibo.ACuentaDisponible <= 0 Then
-                            Me.mnuAplicarComprobante.Enabled = False
-                        End If
-    
-                ElseIf recibo.estado = EstadoRecibo.Pendiente Then    'pendiente
-                    Me.editarRecibo.Enabled = False
-                    Me.imprimirRecibo.Enabled = True
-                    Me.aprobarRecibo.Enabled = False
-                    Me.mnuAnular.Enabled = False
-    
-                ElseIf recibo.estado = EstadoRecibo.Reciboanulado Then    'anulado
-                    Me.editarRecibo.Enabled = False
-                    Me.imprimirRecibo.Enabled = True
-                    Me.aprobarRecibo.Enabled = False
-                    Me.mnuAnular.Enabled = False
-        
+
+        If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
+            Me.editarRecibo.Enabled = True
+            Me.imprimirRecibo.Enabled = False
+            Me.mnuAnular.Enabled = False
+            Me.aprobarRecibo.Enabled = True
+            Me.mnuAplicarComprobante.Enabled = False
+            If Permisos.AdminCobrosAprobaciones = False Then
+                Me.aprobarRecibo.Enabled = False
+            End If
+
+        ElseIf recibo.estado = EstadoRecibo.Aprobado Then      'aprobado
+            Me.imprimirRecibo.Enabled = True
+            Me.editarRecibo.Enabled = False
+            Me.aprobarRecibo.Enabled = False
+            Me.mnuAnular.Enabled = True
+
+            If Permisos.AdminCobrosAprobaciones = False Then
+                Me.mnuAnular.Enabled = False
+            End If
+
+            If recibo.ACuentaDisponible > 0 Then
+                Me.mnuAplicarComprobante.Enabled = True
+            End If
+
+            If recibo.ACuentaDisponible <= 0 Then
+                Me.mnuAplicarComprobante.Enabled = False
+            End If
+
+        ElseIf recibo.estado = EstadoRecibo.Pendiente Then    'pendiente
+            Me.editarRecibo.Enabled = False
+            Me.imprimirRecibo.Enabled = True
+            Me.aprobarRecibo.Enabled = False
+            Me.mnuAnular.Enabled = False
+
+        ElseIf recibo.estado = EstadoRecibo.Reciboanulado Then    'anulado
+            Me.editarRecibo.Enabled = False
+            Me.imprimirRecibo.Enabled = True
+            Me.aprobarRecibo.Enabled = False
+            Me.mnuAnular.Enabled = False
+
             'End If
-        
-       End If
-       
+
+        End If
+
         Me.PopupMenu Me.mnu
-        
+
     End If
 
 End Sub
@@ -576,9 +601,9 @@ Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 
 Private Sub grilla_recibos_SelectionChange()
-   
+
     SeleccionarRecibo
-    
+
 End Sub
 
 Private Sub SeleccionarRecibo()
@@ -591,20 +616,20 @@ Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmar
     Set recibo = recibos.item(RowIndex)
     Values(1) = recibo.Id
     Values(2) = Format(recibo.FEcha, "yyyy/mm/dd", vbSunday)
-          
+
     Values(3) = recibo.cliente.razon
     Values(4) = recibo.FechaCreacion
     Values(5) = recibo.moneda.NombreCorto
-    
+
     'VALORES POR PAGAR
     Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico)), "$", "")
 
     'IMPORTE TOTAL PAGADO
     Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalRecibidoEstatico)), "$", "")
-    
+
     'IMPORTE SALDO TOTAL A CUENTA
     Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.ACuentaDisponible)), "$", "")
-    
+
     Values(9) = enums.EnumEstadoRecibo(recibo.estado)
     Values(10) = IIf(IsEmpty(tmpArchivos(recibo.Id)), 0, tmpArchivos(recibo.Id))
 End Sub
@@ -627,9 +652,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     If EVENTO.EVENTO = agregar_ Then
         llenarLista
         Me.grilla_recibos.Refresh
-        
+
     ElseIf EVENTO.EVENTO = modificar_ Then
-    
+
         Set tmp = EVENTO.Elemento
 
         Dim i As Long
@@ -649,9 +674,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 Else
                     recibos.Add tmp, CStr(tmp.Id)
                 End If
-                
+
                 Me.grilla_recibos.RefreshRowIndex i
-                
+
                 Exit For
 
             End If
@@ -686,14 +711,14 @@ err1:
 End Sub
 
 Private Sub mnuAplicarComprobante_Click()
-    
+
     Dim F As New frmAdminCobranzasNuevoRecibo
     F.editar = True
     F.cmdActualizar.Enabled = True
     F.cmdGuardar.Enabled = False
     F.reciboId = recibo.Id
     F.Show
-    
+
 End Sub
 
 Private Sub mnuArchivos_Click()

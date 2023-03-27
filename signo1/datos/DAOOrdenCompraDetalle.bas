@@ -22,10 +22,10 @@ Public Function FindAll(Optional whereFilter As String = vbNullString) As Collec
     Dim Detalles As New Collection
 
     q = "SELECT *" _
-        & " FROM ComprasOrdenesDetalles ocd" _
-        & " LEFT JOIN ComprasOrdenesDetallesEntregas ocde ON ocde.id_detalle_orden_compra = ocd.id" _
-        & " LEFT JOIN ComprasRemitosDetalles dr ON dr.id_detalle_orden_compra = ocd.id" _
-        & " WHERE 1 = 1"
+      & " FROM ComprasOrdenesDetalles ocd" _
+      & " LEFT JOIN ComprasOrdenesDetallesEntregas ocde ON ocde.id_detalle_orden_compra = ocd.id" _
+      & " LEFT JOIN ComprasRemitosDetalles dr ON dr.id_detalle_orden_compra = ocd.id" _
+      & " WHERE 1 = 1"
 
     If LenB(whereFilter) > 0 Then q = q & " AND " & whereFilter
 
@@ -49,16 +49,16 @@ Public Function FindAll(Optional whereFilter As String = vbNullString) As Collec
 
         If Not funciones.BuscarEnColeccion(ocd.DetallesRemitos, CStr(GetValue(rs, fieldsIndex, "dr", "id"))) Then
             Set drto = DAORemitoProveedorDetalle.Map(rs, fieldsIndex, "dr")
-            If IsSomething(drto) Then ocd.DetallesRemitos.Add drto, CStr(drto.id)
+            If IsSomething(drto) Then ocd.DetallesRemitos.Add drto, CStr(drto.Id)
         End If
 
         If Not funciones.BuscarEnColeccion(ocd.Entregas, CStr(GetValue(rs, fieldsIndex, "ocde", "id"))) Then
             Set ocde = DAOOrdenCompraDetalleEntrega.Map(rs, fieldsIndex, "ocde")
-            If IsSomething(ocde) Then ocd.Entregas.Add ocde, CStr(ocde.id)
+            If IsSomething(ocde) Then ocd.Entregas.Add ocde, CStr(ocde.Id)
         End If
 
         If Not funciones.BuscarEnColeccion(Detalles, CStr(GetValue(rs, fieldsIndex, "ocd", "id"))) Then
-            Detalles.Add ocd, CStr(ocd.id)
+            Detalles.Add ocd, CStr(ocd.Id)
         End If
 
         rs.MoveNext
@@ -69,12 +69,12 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As OrdenCompraDetalle
     Dim ocd As OrdenCompraDetalle
-    Dim id As Long
-    id = GetValue(rs, indice, tabla, DAOOrdenCompraDetalle.CAMPO_ID)
+    Dim Id As Long
+    Id = GetValue(rs, indice, tabla, DAOOrdenCompraDetalle.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set ocd = New OrdenCompraDetalle
-        ocd.id = id
+        ocd.Id = Id
 
         ocd.Cantidad = GetValue(rs, indice, tabla, DAOOrdenCompraDetalle.CAMPO_CANTIDAD)
         ocd.descripcion = GetValue(rs, indice, tabla, DAOOrdenCompraDetalle.CAMPO_DESCRIPCION)
@@ -91,11 +91,11 @@ Public Function Update(ocd As OrdenCompraDetalle) As Boolean
     Dim q As String
 
     q = "Update ComprasOrdenesDetalles" _
-        & " SET" _
-        & " valor = " & conectar.Escape(ocd.Valor) & " ," _
-        & " cantidad = " & conectar.Escape(ocd.Cantidad) & " ," _
-        & " descripcion = " & conectar.Escape(ocd.descripcion) _
-        & " Where id = " & ocd.id
+      & " SET" _
+      & " valor = " & conectar.Escape(ocd.Valor) & " ," _
+      & " cantidad = " & conectar.Escape(ocd.Cantidad) & " ," _
+      & " descripcion = " & conectar.Escape(ocd.descripcion) _
+      & " Where id = " & ocd.Id
 
     Update = conectar.execute(q)
 End Function

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmDepositarCheque 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Boleta de Deposito"
@@ -415,8 +415,8 @@ Private Sub cmdAgregarCheque_Click()
     Set cheque = DAOCheques.FindById(Me.cboCheques.ItemData(Me.cboCheques.ListIndex))
     If IsSomething(cheque) Then
 
-        If Not BuscarEnColeccion(Cheques, cheque.id) Then
-            Cheques.Add cheque, CStr(cheque.id)
+        If Not BuscarEnColeccion(Cheques, cheque.Id) Then
+            Cheques.Add cheque, CStr(cheque.Id)
         End If
 
     End If
@@ -427,7 +427,7 @@ End Sub
 
 Private Sub Form_Load()
     Customize Me
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, True
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, True
     GridEXHelper.CustomizeGrid Me.gridCheques, False, False
 
     Me.DateTimePicker1.value = Now
@@ -436,14 +436,14 @@ Private Sub Form_Load()
     DAOCaja.llenarComboXtremeSuite Me.cboCaja
 
     Me.gridCheques.ItemCount = 0
-    Me.GridCajas.ItemCount = 0
+    Me.gridCajas.ItemCount = 0
 End Sub
 
 Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set cheque = Cheques(RowIndex)
     Values(1) = cheque.numero
     Values(2) = cheque.FechaVencimiento
-    Values(3) = cheque.Moneda.NombreCorto & " " & cheque.Monto
+    Values(3) = cheque.moneda.NombreCorto & " " & cheque.Monto
     Values(4) = cheque.Banco.nombre
     Values(5) = cheque.FechaRecibido
     Values(6) = cheque.OrigenCheque
@@ -489,9 +489,9 @@ Private Sub txtNroCheque_Change()
 
             If LenB(cheque.OrigenDestino) > 0 Then mostrar = mostrar & " | " & cheque.OrigenDestino
 
-            mostrar = mostrar & " | " & cheque.Moneda.NombreCorto & " " & cheque.Monto & " | " & cheque.FechaVencimiento
+            mostrar = mostrar & " | " & cheque.moneda.NombreCorto & " " & cheque.Monto & " | " & cheque.FechaVencimiento
             Me.cboCheques.AddItem mostrar
-            cboCheques.ItemData(cboCheques.NewIndex) = cheque.id
+            cboCheques.ItemData(cboCheques.NewIndex) = cheque.Id
         Next cheque
 
         If cboCheques.ListCount > 0 Then cboCheques.ListIndex = 0

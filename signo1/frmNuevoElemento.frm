@@ -1161,7 +1161,7 @@ Dim m2
 Public Sub calcularTotalMateriales(ByVal lst As ListView, ByRef Kg, ByRef m2, ByRef costo)
     Dim K As Double, m As Double, c As Double
     Dim i As Integer
-    
+
     For i = 1 To lst.ListItems.count
         K = K + CDbl(lst.ListItems(i).ListSubItems(10))
         m = m + CDbl(lst.ListItems(i).ListSubItems(11))
@@ -1191,7 +1191,7 @@ Public Sub calcular_totales_mdo()
     Me.lblCambio = Math.Round(totalCAMBIO, 2)
     Me.lblCtoMDO = Math.Round(cto, 2)
 End Sub
-Private Function verDetalleMateriales(id)
+Private Function verDetalleMateriales(Id)
     Dim Kg As Double, m2ml As Double
     Dim descripcion As String
     Dim costo As Double
@@ -1207,10 +1207,10 @@ Private Function verDetalleMateriales(id)
 
     Cant = CDbl(Me.txtCantidad)
 
-    baseS.calcularM2MLKGMaterial x1, y1, id, Scrap, x, y, Cant, Kg, m2ml, Pieza, costo, 0
+    baseS.calcularM2MLKGMaterial x1, y1, Id, Scrap, x, y, Cant, Kg, m2ml, Pieza, costo, 0
     cxh = funciones.cantxhoja(x, y, x1, y1)
 
-    baseS.ejecutar "select m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g, rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & id
+    baseS.ejecutar "select m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g, rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & Id
     descripcion = baseS.descripcion
     Espesor = baseS.Espesor
     Grupo = baseS.Grupo
@@ -1224,7 +1224,7 @@ Private Sub btnAgregarMDO_Click()
         MsgBox "Ingrese datos válidos por favor", vbCritical, "Error"
     Else
 
-        Set x = Me.ListView2.ListItems.Add(, , id)
+        Set x = Me.ListView2.ListItems.Add(, , Id)
         x.SubItems(1) = Me.lblidMDO
         x.SubItems(2) = Me.txtCantOp
         x.SubItems(3) = Me.txtTiempo
@@ -1266,10 +1266,10 @@ Private Sub btnModificar_Click()
         If Trim(Me.txtNombreElemento) = Empty Then
             MsgBox "Error, debe completar todos los campos.", vbCritical, "Error"
         Else
-        Dim h As VbMsgBoxResult
-        
-        
-        
+            Dim h As VbMsgBoxResult
+
+
+
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
                 base.modificar Me.ListView1, Me.ListView2, Me.txtNombreElemento, CInt(Me.txtIdCliente), idPieza, CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
@@ -1291,8 +1291,8 @@ Private Sub cboClientes_Click()
 End Sub
 
 Private Sub cboComplejidad_KeyDown(KeyCode As Integer, Shift As Integer)
- On Error Resume Next
-    
+    On Error Resume Next
+
 End Sub
 
 Private Sub Command1_Click()
@@ -1301,7 +1301,7 @@ Private Sub Command1_Click()
     Dim descripcion As String
     If Trim(Me.txtCodigoMaterial) <> Empty Then
         codigo = UCase(Me.txtCodigoMaterial)
-        id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+        Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
         x = Me.txtAnchoPieza
         y = Me.txtLargoPieza
         x1 = Me.txtAnchoTerm
@@ -1314,14 +1314,14 @@ Private Sub Command1_Click()
 
         Cant = CDbl(Me.txtCantidad)
         'si existe el código
-        If id <> -1 Then
+        If Id <> -1 Then
             cxh = funciones.cantxhoja(x, y, x1, y1)
             'si cxh = 0 then exit
             If cxh <= 0 Then
                 MsgBox "No puede procesar con estas dimensiones!", vbInformation, "Error"
                 Exit Sub
             End If
-            baseS.ejecutar "select m.id_unidad,m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g,rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & id
+            baseS.ejecutar "select m.id_unidad,m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g,rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & Id
             descripcion = baseS.descripcion
             Espesor = baseS.Espesor
             Grupo = baseS.Grupo
@@ -1344,11 +1344,11 @@ Private Sub Command1_Click()
             End If
             Dim costo As Double
 
-            baseS.calcularM2MLKGMaterial x, y, id, Scrap, x1, y1, Cant, Kg, m2ml, Pieza, costo, 0
+            baseS.calcularM2MLKGMaterial x, y, Id, Scrap, x1, y1, Cant, Kg, m2ml, Pieza, costo, 0
             'agrego datos a la lista
             Dim h As ListItem
             Set h = Me.ListView1.ListItems.Add(, , codigo)
-            h.SubItems(1) = id
+            h.SubItems(1) = Id
             h.SubItems(2) = rubro & " " & Grupo & " " & descripcion
             h.SubItems(3) = Espesor
             h.SubItems(4) = Pieza
@@ -1399,7 +1399,7 @@ Private Sub Command10_Click()
 End Sub
 
 Private Sub Command2_Click()
-    'base.ver_detalle_elemento Trim(Me.txtCodigoMaterial), Me, 0
+'base.ver_detalle_elemento Trim(Me.txtCodigoMaterial), Me, 0
     For i = 1 To Me.ListView2.ListItems.count
         If Me.ListView2.ListItems(i).Checked Then
             Me.ListView2.ListItems(i).Checked = False
@@ -1483,7 +1483,7 @@ Private Sub Command5_Click()
         If Me.txtIdCliente = vbNullString Or Me.txtIdCliente = 0 Or Trim(Me.txtNombreElemento) = Empty Then
             MsgBox "Error, debe completar todos los campos.", vbCritical, "Error"
         Else
-        Dim h As VbMsgBoxResult
+            Dim h As VbMsgBoxResult
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
                 base.agregar Me.ListView1, Me.ListView2, Me.txtNombreElemento, CInt(Me.txtIdCliente), CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
@@ -1579,18 +1579,18 @@ Private Sub Form_Load()
     Me.lblTotalM2 = m2
     grabado = False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes
-    
-     cboComplejidad.AddItem "Baja"
-        cboComplejidad.ItemData(cboComplejidad.NewIndex) = 1
-     cboComplejidad.AddItem "Media"
-        cboComplejidad.ItemData(cboComplejidad.NewIndex) = 2
-     cboComplejidad.AddItem "Alta"
-        cboComplejidad.ItemData(cboComplejidad.NewIndex) = 3
-        Me.cboComplejidad.ListIndex = 0
-        
+
+    cboComplejidad.AddItem "Baja"
+    cboComplejidad.ItemData(cboComplejidad.NewIndex) = 1
+    cboComplejidad.AddItem "Media"
+    cboComplejidad.ItemData(cboComplejidad.NewIndex) = 2
+    cboComplejidad.AddItem "Alta"
+    cboComplejidad.ItemData(cboComplejidad.NewIndex) = 3
+    Me.cboComplejidad.ListIndex = 0
+
     ''Me.caption = caption & " (" & Name & ")"
-            
-            
+
+
 End Sub
 Function limpiar_txt()
     Me.txtAnchoPieza = Empty
@@ -1698,9 +1698,9 @@ End Sub
 
 Private Sub txtAnchoPieza_LostFocus()
     Me.Command1.SetFocus
-    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
-    If id <> -1 Then
-        verDetalleMateriales (id)
+    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    If Id <> -1 Then
+        verDetalleMateriales (Id)
     End If
 End Sub
 
@@ -1717,9 +1717,9 @@ Private Sub txtAnchoTerm_GotFocus()
 End Sub
 
 Private Sub txtAnchoTerm_LostFocus()
-    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
-    If id <> -1 Then
-        verDetalleMateriales (id)
+    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    If Id <> -1 Then
+        verDetalleMateriales (Id)
     End If
 End Sub
 
@@ -1769,18 +1769,18 @@ Private Sub txtCodigoMaterial_Change()
     If Trim(Me.txtCodigoMaterial) = Empty Then Exit Sub
 
 
-    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
 
-    Set rss = conectar.RSFactory("select valor_unitario from materiales where id=" & id)
-    If id <> -1 Then
+    Set rss = conectar.RSFactory("select valor_unitario from materiales where id=" & Id)
+    If Id <> -1 Then
         estado = rss!valor_unitario
         If estado > 0 Then
-            If id <> -1 Then
+            If Id <> -1 Then
                 Me.Command1.Enabled = True
                 Me.Frame3.Enabled = True
                 Me.Frame4.Enabled = True
-                verDetalleMateriales (id)
-                Set r = RSFactory("select largo,ancho, id_unidad from materiales where id=" & id)
+                verDetalleMateriales (Id)
+                Set r = RSFactory("select largo,ancho, id_unidad from materiales where id=" & Id)
                 If Not r.EOF And Not r.BOF Then
                     idUnidad = r!id_Unidad
                     Largo = r!Largo
@@ -1918,9 +1918,9 @@ Private Sub txtLargoPieza_GotFocus()
 End Sub
 
 Private Sub txtLargoPieza_LostFocus()
-    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
-    If id <> -1 Then
-        verDetalleMateriales (id)
+    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    If Id <> -1 Then
+        verDetalleMateriales (Id)
     End If
 End Sub
 
@@ -1936,9 +1936,9 @@ Private Sub txtLargoTerm_GotFocus()
 End Sub
 
 Private Sub txtLargoTerm_LostFocus()
-    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
-    If id <> -1 Then
-        verDetalleMateriales (id)
+    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    If Id <> -1 Then
+        verDetalleMateriales (Id)
     End If
 End Sub
 

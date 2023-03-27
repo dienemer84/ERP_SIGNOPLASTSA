@@ -90,21 +90,21 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Public idP As Long
+Public idp As Long
 Dim claseP As New classPlaneamiento
 Dim vec()
 Private remitoId As Long
-Private tipoOT As tipoOT
-Public Property Let tipoOrden(tipo As tipoOT)
-tipoOT = tipo
-ver
+Private TipoOt As TipoOt
+Public Property Let TipoOrden(Tipo As TipoOt)
+    TipoOt = Tipo
+    ver
 End Property
 
 
 
 
 Public Function vector(nvec() As Long)
-    'Erase vec
+'Erase vec
     ReDim vec(UBound(nvec))
     For i = 0 To UBound(nvec)
         vec(i) = nvec(i)
@@ -124,14 +124,14 @@ Private Sub Command1_Click()
 
     If MsgBox("Incluír información de la orden trabajo?", vbYesNo, "Consulta") = vbYes Then
         Dim Ot As OrdenTrabajo
-        Set Ot = DAOOrdenTrabajo.FindById(idP)
+        Set Ot = DAOOrdenTrabajo.FindById(idp)
         If IsSomething(Ot) Then
             mostrar_header = Ot.descripcion
         End If
     End If
 
 
-    If Not claseP.RealizarEntrega(3, remitoId, , , idP, 1, vec, , , mostrar_obs, mostrar_header) Then    'modo 3 es entrega multiple
+    If Not claseP.RealizarEntrega(3, remitoId, , , idp, 1, vec, , , mostrar_obs, mostrar_header) Then    'modo 3 es entrega multiple
         MsgBox "Se produjo algun error", vbCritical, "Error"
     Else
         MsgBox "Entregado correctamente!", vbInformation, "Información"
@@ -147,11 +147,11 @@ Private Sub Command2_Click()
     rto = -1
 
     Dim Ot As OrdenTrabajo
-    Set Ot = DAOOrdenTrabajo.FindById(idP)
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True, True, True)
+    Set Ot = DAOOrdenTrabajo.FindById(idp)
+    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, True, True, True)
 
     If DAOOrdenTrabajo.Cerrar(Ot, True) Then
-        MsgBox "El pedido " & Pedido.id & " se cerro correctamente.", vbInformation, "Información"
+        MsgBox "El pedido " & Pedido.Id & " se cerro correctamente.", vbInformation, "Información"
         Unload Me
         Unload frmEntrega
 
@@ -178,10 +178,10 @@ Private Sub txtNroRto_Change()
     ver
 End Sub
 Public Sub ver()
-    Command1.Enabled = Trim(txtNroRto) <> Empty And tipoOT <> OT_STOCK
-'        Command1.Enabled = Trim(txtNroRto) <> Empty And tipoOrden = OT_ENTREGA
-    
-    
+    Command1.Enabled = Trim(txtNroRto) <> Empty And TipoOt <> OT_STOCK
+    '        Command1.Enabled = Trim(txtNroRto) <> Empty And tipoOrden = OT_ENTREGA
+
+
 End Sub
 
 Private Sub txtNroRto_DblClick()
@@ -189,7 +189,7 @@ Private Sub txtNroRto_DblClick()
     frmPlaneamientoRemitosListaProceso.Show 1
     If IsSomething(Selecciones.RemitoElegido) Then
         Me.txtNroRto = Selecciones.RemitoElegido.numero
-        remitoId = Selecciones.RemitoElegido.id
+        remitoId = Selecciones.RemitoElegido.Id
         ver
     Else
         Me.txtNroRto = Empty

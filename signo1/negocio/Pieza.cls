@@ -13,9 +13,9 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public nombre As String
-Public Cliente As clsCliente
+Public cliente As clsCliente
 Public CantidadStock As Long
 Public Activa As Boolean
 Public EsConjunto As Boolean
@@ -35,11 +35,11 @@ Public Complejidad As TipoComplejidad
 
 
 Public Function MatreialValido() As Boolean
-    Dim t As Boolean: t = False
+    Dim T As Boolean: T = False
     Dim m As DesarrolloMaterial
     For Each m In DesarrollosMaterial
-        If Not m.material.Aprobado Then
-            t = False
+        If Not m.Material.Aprobado Then
+            T = False
             Exit For
         End If
     Next m
@@ -61,7 +61,7 @@ Public Property Get Kilage() As Double
 End Property
 
 Public Function LocatePiezaInPiezasHijas(piezaId As Long) As Pieza
-    If Me.id = piezaId Then
+    If Me.Id = piezaId Then
         Set LocatePiezaInPiezasHijas = Me
     Else
         Dim tmpPieza As Pieza
@@ -75,7 +75,7 @@ End Function
 Public Function CalcularValorMDO(ByVal MonedaDestino As clsMoneda, ByRef Fijo As Double, ByRef Cambio As Double, ByRef MDO As Double) As Boolean
 
 
-    'cambiar el moneda origen a categoeria sueldo!!!!
+'cambiar el moneda origen a categoeria sueldo!!!!
 
     Dim clasea As New classAdministracion
     Fijo = 0
@@ -86,11 +86,11 @@ Public Function CalcularValorMDO(ByVal MonedaDestino As clsMoneda, ByRef Fijo As
     Dim desarrollo As DesarrolloManoObra
     For Each desarrollo In desarrollosManoObra
         If desarrollo.Tarea.CantPorProc = 0 Then
-            Fijo = Fijo + (desarrollo.Cantidad * desarrollo.Tiempo * clasea.realizaCambio(desarrollo.Tarea.CategoriaSueldo.Valor, desarrollo.Tarea.CategoriaSueldo.Moneda.id, MonedaDestino.id))
+            Fijo = Fijo + (desarrollo.Cantidad * desarrollo.Tiempo * clasea.realizaCambio(desarrollo.Tarea.CategoriaSueldo.Valor, desarrollo.Tarea.CategoriaSueldo.moneda.Id, MonedaDestino.Id))
         ElseIf desarrollo.Tarea.CantPorProc = -1 Then
-            Cambio = Cambio + (clasea.realizaCambio(desarrollo.Tarea.CategoriaSueldo.Valor, desarrollo.Tarea.CategoriaSueldo.Moneda.id, MonedaDestino.id) * desarrollo.Cantidad * desarrollo.Tiempo)
+            Cambio = Cambio + (clasea.realizaCambio(desarrollo.Tarea.CategoriaSueldo.Valor, desarrollo.Tarea.CategoriaSueldo.moneda.Id, MonedaDestino.Id) * desarrollo.Cantidad * desarrollo.Tiempo)
         Else
-            MDO = MDO + ((clasea.realizaCambio(desarrollo.Tarea.CategoriaSueldo.Valor, desarrollo.Tarea.CategoriaSueldo.Moneda.id, MonedaDestino.id) * desarrollo.Cantidad * desarrollo.Tiempo) / desarrollo.Tarea.CantPorProc)
+            MDO = MDO + ((clasea.realizaCambio(desarrollo.Tarea.CategoriaSueldo.Valor, desarrollo.Tarea.CategoriaSueldo.moneda.Id, MonedaDestino.Id) * desarrollo.Cantidad * desarrollo.Tiempo) / desarrollo.Tarea.CantPorProc)
         End If
     Next desarrollo
     Exit Function

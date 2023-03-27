@@ -134,30 +134,30 @@ End Sub
 
 Private Sub CargarDetalleNuevo()
 
-On Error GoTo E
+    On Error GoTo E
 
-If Nota Is Nothing Then Set Nota = New clsNotas
-
-
-Nota.FechaD_ = Now
-Nota.TextoD_ = Me.Text1
-Nota.Modulo_ = Me.Text2
+    If Nota Is Nothing Then Set Nota = New clsNotas
 
 
-If DAOActualizar.CargarNuevoDetalle(Nota) Then
-   
-   MsgBox "Nueva nota ingresada con éxito!", vbInformation, "Información"
-   
-   Me.Text1 = ""
-   Me.Text2 = ""
-   
-Else
+    Nota.FechaD_ = Now
+    Nota.TextoD_ = Me.Text1
+    Nota.Modulo_ = Me.Text2
 
-   MsgBox "Se produjo algún error, no se guardó la nota!", vbCritical, "Error"
 
-End If
+    If DAOActualizar.CargarNuevoDetalle(Nota) Then
 
-Exit Sub
+        MsgBox "Nueva nota ingresada con éxito!", vbInformation, "Información"
+
+        Me.Text1 = ""
+        Me.Text2 = ""
+
+    Else
+
+        MsgBox "Se produjo algún error, no se guardó la nota!", vbCritical, "Error"
+
+    End If
+
+    Exit Sub
 E:
     MsgBox Err.Description, vbCritical
 
@@ -165,6 +165,6 @@ End Sub
 
 
 Private Sub PushButtonCerrar_Click()
-Unload Me
+    Unload Me
 
 End Sub

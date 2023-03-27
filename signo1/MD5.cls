@@ -99,11 +99,11 @@ Public Function GetValues() As String
     GetValues = LongToString(State(1)) & LongToString(State(2)) & LongToString(State(3)) & LongToString(State(4))
 End Function
 Private Function LongToString(Num As Long) As String
-    Dim a As Byte, b As Byte, c As Byte, d As Byte
-    a = Num And &HFF&
-    If a < 16 Then LongToString = "0" & Hex(a) Else LongToString = Hex(a)
-    b = (Num And &HFF00&) \ 256
-    If b < 16 Then LongToString = LongToString & "0" & Hex(b) Else LongToString = LongToString & Hex(b)
+    Dim A As Byte, B As Byte, c As Byte, d As Byte
+    A = Num And &HFF&
+    If A < 16 Then LongToString = "0" & Hex(A) Else LongToString = Hex(A)
+    B = (Num And &HFF00&) \ 256
+    If B < 16 Then LongToString = LongToString & "0" & Hex(B) Else LongToString = LongToString & Hex(B)
     c = (Num And &HFF0000) \ 65536
     If c < 16 Then LongToString = LongToString & "0" & Hex(c) Else LongToString = LongToString & Hex(c)
     If Num < 0 Then d = ((Num And &H7F000000) \ 16777216) Or &H80& Else d = (Num And &HFF000000) \ 16777216
@@ -162,83 +162,83 @@ Public Sub MD5Update(InputLen As Long, InputBuffer() As Byte)
     Next K
 End Sub
 Private Sub MD5Transform(buffer() As Byte)
-    Dim x(16) As Long, a As Long, b As Long, c As Long, d As Long
+    Dim x(16) As Long, A As Long, B As Long, c As Long, d As Long
 
-    a = State(1)
-    b = State(2)
+    A = State(1)
+    B = State(2)
     c = State(3)
     d = State(4)
     Decode 64, x, buffer
-    ff a, b, c, d, x(0), S11, -680876936
-    ff d, a, b, c, x(1), S12, -389564586
-    ff c, d, a, b, x(2), S13, 606105819
-    ff b, c, d, a, x(3), S14, -1044525330
-    ff a, b, c, d, x(4), S11, -176418897
-    ff d, a, b, c, x(5), S12, 1200080426
-    ff c, d, a, b, x(6), S13, -1473231341
-    ff b, c, d, a, x(7), S14, -45705983
-    ff a, b, c, d, x(8), S11, 1770035416
-    ff d, a, b, c, x(9), S12, -1958414417
-    ff c, d, a, b, x(10), S13, -42063
-    ff b, c, d, a, x(11), S14, -1990404162
-    ff a, b, c, d, x(12), S11, 1804603682
-    ff d, a, b, c, x(13), S12, -40341101
-    ff c, d, a, b, x(14), S13, -1502002290
-    ff b, c, d, a, x(15), S14, 1236535329
+    ff A, B, c, d, x(0), S11, -680876936
+    ff d, A, B, c, x(1), S12, -389564586
+    ff c, d, A, B, x(2), S13, 606105819
+    ff B, c, d, A, x(3), S14, -1044525330
+    ff A, B, c, d, x(4), S11, -176418897
+    ff d, A, B, c, x(5), S12, 1200080426
+    ff c, d, A, B, x(6), S13, -1473231341
+    ff B, c, d, A, x(7), S14, -45705983
+    ff A, B, c, d, x(8), S11, 1770035416
+    ff d, A, B, c, x(9), S12, -1958414417
+    ff c, d, A, B, x(10), S13, -42063
+    ff B, c, d, A, x(11), S14, -1990404162
+    ff A, B, c, d, x(12), S11, 1804603682
+    ff d, A, B, c, x(13), S12, -40341101
+    ff c, d, A, B, x(14), S13, -1502002290
+    ff B, c, d, A, x(15), S14, 1236535329
 
-    gg a, b, c, d, x(1), S21, -165796510
-    gg d, a, b, c, x(6), S22, -1069501632
-    gg c, d, a, b, x(11), S23, 643717713
-    gg b, c, d, a, x(0), S24, -373897302
-    gg a, b, c, d, x(5), S21, -701558691
-    gg d, a, b, c, x(10), S22, 38016083
-    gg c, d, a, b, x(15), S23, -660478335
-    gg b, c, d, a, x(4), S24, -405537848
-    gg a, b, c, d, x(9), S21, 568446438
-    gg d, a, b, c, x(14), S22, -1019803690
-    gg c, d, a, b, x(3), S23, -187363961
-    gg b, c, d, a, x(8), S24, 1163531501
-    gg a, b, c, d, x(13), S21, -1444681467
-    gg d, a, b, c, x(2), S22, -51403784
-    gg c, d, a, b, x(7), S23, 1735328473
-    gg b, c, d, a, x(12), S24, -1926607734
+    gg A, B, c, d, x(1), S21, -165796510
+    gg d, A, B, c, x(6), S22, -1069501632
+    gg c, d, A, B, x(11), S23, 643717713
+    gg B, c, d, A, x(0), S24, -373897302
+    gg A, B, c, d, x(5), S21, -701558691
+    gg d, A, B, c, x(10), S22, 38016083
+    gg c, d, A, B, x(15), S23, -660478335
+    gg B, c, d, A, x(4), S24, -405537848
+    gg A, B, c, d, x(9), S21, 568446438
+    gg d, A, B, c, x(14), S22, -1019803690
+    gg c, d, A, B, x(3), S23, -187363961
+    gg B, c, d, A, x(8), S24, 1163531501
+    gg A, B, c, d, x(13), S21, -1444681467
+    gg d, A, B, c, x(2), S22, -51403784
+    gg c, d, A, B, x(7), S23, 1735328473
+    gg B, c, d, A, x(12), S24, -1926607734
 
-    HH a, b, c, d, x(5), S31, -378558
-    HH d, a, b, c, x(8), S32, -2022574463
-    HH c, d, a, b, x(11), S33, 1839030562
-    HH b, c, d, a, x(14), S34, -35309556
-    HH a, b, c, d, x(1), S31, -1530992060
-    HH d, a, b, c, x(4), S32, 1272893353
-    HH c, d, a, b, x(7), S33, -155497632
-    HH b, c, d, a, x(10), S34, -1094730640
-    HH a, b, c, d, x(13), S31, 681279174
-    HH d, a, b, c, x(0), S32, -358537222
-    HH c, d, a, b, x(3), S33, -722521979
-    HH b, c, d, a, x(6), S34, 76029189
-    HH a, b, c, d, x(9), S31, -640364487
-    HH d, a, b, c, x(12), S32, -421815835
-    HH c, d, a, b, x(15), S33, 530742520
-    HH b, c, d, a, x(2), S34, -995338651
+    HH A, B, c, d, x(5), S31, -378558
+    HH d, A, B, c, x(8), S32, -2022574463
+    HH c, d, A, B, x(11), S33, 1839030562
+    HH B, c, d, A, x(14), S34, -35309556
+    HH A, B, c, d, x(1), S31, -1530992060
+    HH d, A, B, c, x(4), S32, 1272893353
+    HH c, d, A, B, x(7), S33, -155497632
+    HH B, c, d, A, x(10), S34, -1094730640
+    HH A, B, c, d, x(13), S31, 681279174
+    HH d, A, B, c, x(0), S32, -358537222
+    HH c, d, A, B, x(3), S33, -722521979
+    HH B, c, d, A, x(6), S34, 76029189
+    HH A, B, c, d, x(9), S31, -640364487
+    HH d, A, B, c, x(12), S32, -421815835
+    HH c, d, A, B, x(15), S33, 530742520
+    HH B, c, d, A, x(2), S34, -995338651
 
-    II a, b, c, d, x(0), S41, -198630844
-    II d, a, b, c, x(7), S42, 1126891415
-    II c, d, a, b, x(14), S43, -1416354905
-    II b, c, d, a, x(5), S44, -57434055
-    II a, b, c, d, x(12), S41, 1700485571
-    II d, a, b, c, x(3), S42, -1894986606
-    II c, d, a, b, x(10), S43, -1051523
-    II b, c, d, a, x(1), S44, -2054922799
-    II a, b, c, d, x(8), S41, 1873313359
-    II d, a, b, c, x(15), S42, -30611744
-    II c, d, a, b, x(6), S43, -1560198380
-    II b, c, d, a, x(13), S44, 1309151649
-    II a, b, c, d, x(4), S41, -145523070
-    II d, a, b, c, x(11), S42, -1120210379
-    II c, d, a, b, x(2), S43, 718787259
-    II b, c, d, a, x(9), S44, -343485551
+    II A, B, c, d, x(0), S41, -198630844
+    II d, A, B, c, x(7), S42, 1126891415
+    II c, d, A, B, x(14), S43, -1416354905
+    II B, c, d, A, x(5), S44, -57434055
+    II A, B, c, d, x(12), S41, 1700485571
+    II d, A, B, c, x(3), S42, -1894986606
+    II c, d, A, B, x(10), S43, -1051523
+    II B, c, d, A, x(1), S44, -2054922799
+    II A, B, c, d, x(8), S41, 1873313359
+    II d, A, B, c, x(15), S42, -30611744
+    II c, d, A, B, x(6), S43, -1560198380
+    II B, c, d, A, x(13), S44, 1309151649
+    II A, B, c, d, x(4), S41, -145523070
+    II d, A, B, c, x(11), S42, -1120210379
+    II c, d, A, B, x(2), S43, 718787259
+    II B, c, d, A, x(9), S44, -343485551
 
-    State(1) = LongOverflowAdd(State(1), a)
-    State(2) = LongOverflowAdd(State(2), b)
+    State(1) = LongOverflowAdd(State(1), A)
+    State(2) = LongOverflowAdd(State(2), B)
     State(3) = LongOverflowAdd(State(3), c)
     State(4) = LongOverflowAdd(State(4), d)
 End Sub
@@ -251,25 +251,25 @@ Private Sub Decode(Length As Integer, OutputBuffer() As Long, InputBuffer() As B
         intDblIndex = intDblIndex + 1
     Next intByteIndex
 End Sub
-Private Function ff(a As Long, b As Long, c As Long, d As Long, x As Long, s As Long, Ac As Long) As Long
-    a = LongOverflowAdd4(a, (b And c) Or (Not (b) And d), x, Ac)
-    a = LongLeftRotate(a, s)
-    a = LongOverflowAdd(a, b)
+Private Function ff(A As Long, B As Long, c As Long, d As Long, x As Long, s As Long, Ac As Long) As Long
+    A = LongOverflowAdd4(A, (B And c) Or (Not (B) And d), x, Ac)
+    A = LongLeftRotate(A, s)
+    A = LongOverflowAdd(A, B)
 End Function
-Private Function gg(a As Long, b As Long, c As Long, d As Long, x As Long, s As Long, Ac As Long) As Long
-    a = LongOverflowAdd4(a, (b And d) Or (c And Not (d)), x, Ac)
-    a = LongLeftRotate(a, s)
-    a = LongOverflowAdd(a, b)
+Private Function gg(A As Long, B As Long, c As Long, d As Long, x As Long, s As Long, Ac As Long) As Long
+    A = LongOverflowAdd4(A, (B And d) Or (c And Not (d)), x, Ac)
+    A = LongLeftRotate(A, s)
+    A = LongOverflowAdd(A, B)
 End Function
-Private Function HH(a As Long, b As Long, c As Long, d As Long, x As Long, s As Long, Ac As Long) As Long
-    a = LongOverflowAdd4(a, b Xor c Xor d, x, Ac)
-    a = LongLeftRotate(a, s)
-    a = LongOverflowAdd(a, b)
+Private Function HH(A As Long, B As Long, c As Long, d As Long, x As Long, s As Long, Ac As Long) As Long
+    A = LongOverflowAdd4(A, B Xor c Xor d, x, Ac)
+    A = LongLeftRotate(A, s)
+    A = LongOverflowAdd(A, B)
 End Function
-Private Function II(a As Long, b As Long, c As Long, d As Long, x As Long, s As Long, Ac As Long) As Long
-    a = LongOverflowAdd4(a, c Xor (b Or Not (d)), x, Ac)
-    a = LongLeftRotate(a, s)
-    a = LongOverflowAdd(a, b)
+Private Function II(A As Long, B As Long, c As Long, d As Long, x As Long, s As Long, Ac As Long) As Long
+    A = LongOverflowAdd4(A, c Xor (B Or Not (d)), x, Ac)
+    A = LongLeftRotate(A, s)
+    A = LongOverflowAdd(A, B)
 End Function
 
 Function LongLeftRotate(value As Long, bits As Long) As Long

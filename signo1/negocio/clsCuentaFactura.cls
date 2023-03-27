@@ -15,7 +15,7 @@ Attribute VB_Exposed = False
 Dim vMonto As Double
 Dim vCuentas As clsCuentaContable
 
-Public id As Long
+Public Id As Long
 Public Property Let Monto(nvalue As Double)
     vMonto = nvalue
 End Property

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasCuentasDefinir 
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
@@ -191,7 +191,7 @@ Private Sub llenarComboProveedores()
     Set col = DAOProveedor.FindAll(, , True)
     For x = 1 To col.count
         Me.cboProveedores.AddItem UCase(col(x).RazonSocial)
-        Me.cboProveedores.ItemData(cboProveedores.NewIndex) = col(x).id
+        Me.cboProveedores.ItemData(cboProveedores.NewIndex) = col(x).Id
     Next x
     If Me.cboProveedores.ListCount > 0 Then Me.cboProveedores.ListIndex = 0
 End Sub
@@ -201,18 +201,18 @@ Private Sub cboProveedores_Click()
     marcar CLng(Me.txtCodigo)
 End Sub
 Private Sub Command1_Click()
-    Dim id As Long
+    Dim Id As Long
     Dim esta As Boolean
     Dim cta As clsCuentaContable
     If cboCuentas.ListIndex <> -1 Then
 
-        id = CLng(Me.cboCuentas.ItemData(Me.cboCuentas.ListIndex))
+        Id = CLng(Me.cboCuentas.ItemData(Me.cboCuentas.ListIndex))
     End If
-    Set cta = DAOCuentaContable.GetById(id)
+    Set cta = DAOCuentaContable.GetById(Id)
     esta = False
 
     For Each vcta In vProveedor.cuentasContables
-        If vcta.id = cta.id Then
+        If vcta.Id = cta.Id Then
             esta = True
             Exit For
         End If
@@ -244,7 +244,7 @@ Private Sub Form_Load()
     llenarComboProveedores
     llenarComboCuentas
     If IsSomething(vProveedor) Then
-        Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vProveedor.id, Me.cboProveedores)
+        Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vProveedor.Id, Me.cboProveedores)
         Me.cboProveedores.Enabled = False
         Me.txtCodigo.Enabled = False
     End If
@@ -287,7 +287,7 @@ Private Sub llenarComboCuentas()
     Set col = DAOCuentaContable.GetAll
     For x = 1 To col.count
         Me.cboCuentas.AddItem UCase(col(x).nombre)
-        Me.cboCuentas.ItemData(cboCuentas.NewIndex) = col(x).id
+        Me.cboCuentas.ItemData(cboCuentas.NewIndex) = col(x).Id
     Next x
     If Me.cboCuentas.ListCount > 0 Then Me.cboCuentas.ListIndex = 0
 End Sub

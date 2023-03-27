@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public numero As String
 Public FechaRecibido As Date
 Public FechaVencimiento As Date
@@ -25,8 +25,8 @@ Public Banco As Banco
 Public OrigenDestino As String
 Public EnCartera As Boolean
 Public Propio As Boolean
-Public Moneda As clsMoneda
-Public Observaciones As String
+Public moneda As clsMoneda
+Public observaciones As String
 Public TercerosPropio As Boolean
 Public FechaEmision As Date
 Public IdOrdenPagoOrigen As Long

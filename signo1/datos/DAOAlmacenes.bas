@@ -13,7 +13,7 @@ Public Function GetAll() As Collection
     While Not rs.EOF
         Set almacen = New clsAlmacen
         almacen.almacen = rs!detalle
-        almacen.id = rs!id
+        almacen.Id = rs!Id
         col.Add almacen
         rs.MoveNext
     Wend
@@ -24,15 +24,15 @@ err1:
     Set GetAll = Nothing
 End Function
 
-Public Function GetById(id As Long) As clsAlmacen
+Public Function GetById(Id As Long) As clsAlmacen
     On Error GoTo err1
     Dim Grupo As New clsGrupo
     Dim almacen As clsAlmacen
-    Set rs = conectar.RSFactory("select * from materialesAlmacenes where id=" & id)
+    Set rs = conectar.RSFactory("select * from materialesAlmacenes where id=" & Id)
     If Not rs.EOF And Not rs.BOF Then
         Set almacen = New clsAlmacen
         almacen.almacen = rs!detalle
-        almacen.id = rs!id
+        almacen.Id = rs!Id
         Set GetById = almacen
 
     Else
@@ -54,7 +54,7 @@ Public Sub LlenarCombo(cbo As ComboBox)
     For i = 1 To col.count
         Set alma = col(i)
         cbo.AddItem alma.almacen
-        cbo.ItemData(cbo.NewIndex) = alma.id
+        cbo.ItemData(cbo.NewIndex) = alma.Id
 
     Next i
     If cbo.ListCount > 0 Then
@@ -71,7 +71,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     For i = 1 To col.count
         Set alma = col(i)
         cbo.AddItem alma.almacen
-        cbo.ItemData(cbo.NewIndex) = alma.id
+        cbo.ItemData(cbo.NewIndex) = alma.Id
 
     Next i
     If cbo.ListCount > 0 Then
@@ -85,10 +85,10 @@ Public Function Save(T As clsAlmacen) As Boolean
     On Error GoTo err1
     Save = True
     Dim strsql As String
-    If T.id = 0 Then
+    If T.Id = 0 Then
         strsql = "insert into materialesAlmacenes (detalle) values ('" & T.almacen & "')"
     Else
-        strsql = "update materialesAlmacenes set detalle='" & T.almacen & "' where id=" & T.id
+        strsql = "update materialesAlmacenes set detalle='" & T.almacen & "' where id=" & T.Id
     End If
     Save = conectar.execute(strsql)
     Exit Function
@@ -98,16 +98,16 @@ End Function
 
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As clsAlmacen
-    Dim a As clsAlmacen
-    Dim id As Long
+    Dim A As clsAlmacen
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, CAMPO_ID)
+    Id = GetValue(rs, indice, tabla, CAMPO_ID)
 
-    If id > 0 Then
-        Set a = New clsAlmacen
-        a.id = id
-        a.almacen = GetValue(rs, indice, tabla, CAMPO_DETALLE)
+    If Id > 0 Then
+        Set A = New clsAlmacen
+        A.Id = Id
+        A.almacen = GetValue(rs, indice, tabla, CAMPO_DETALLE)
     End If
 
-    Set Map = a
+    Set Map = A
 End Function

@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoVerTiempos 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Ver Tiempos"
@@ -596,7 +596,7 @@ Private Sub AgregarPieza(Pieza As Pieza, parent As ReportRecord)
     rr.AddItem Pieza.nombre
     For Each tar In Pieza.desarrollosManoObra
         Set rr2 = rr.Childs.Add
-        rr2.AddItem "Tarea: " & tar.Tarea.id & " - " & tar.Tarea.Tarea
+        rr2.AddItem "Tarea: " & tar.Tarea.Id & " - " & tar.Tarea.Tarea
         rr2.AddItem tar.Cantidad
         rr2.AddItem funciones.FormatearDecimales(tar.Tiempo)
         rr2.AddItem 0
@@ -619,7 +619,7 @@ Private Sub LlenarListaPorOT()
         filtro = " ptp.idPedido=" & OtId
         ReportControl.Records.DeleteAll
         Set Ot = DAOOrdenTrabajo.FindById(OtId)
-        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id)
+        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
         CargarDetallesOT
     End If
 
@@ -635,13 +635,13 @@ Private Sub AddTareas(ByRef rec As ReportRecord, ByRef idDetallePedido As Long, 
     'For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(idDetallePedido, P.Id, True )
     For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoId(idDetallePedido, idDetallePedidoConjunto, True)
         Set rechijo = rec.Childs.Add
-        rechijo.Tag = (ptp.id * -1)
+        rechijo.Tag = (ptp.Id * -1)
         rechijo.AddItem vbNullString
         SUM = 0
         For Each deta In ptp.Detalles
             SUM = SUM + deta.DiferenciaTiempos
         Next
-        Set item = rechijo.AddItem("Tarea: " & ptp.Tarea.id & " - " & ptp.Tarea.Tarea)
+        Set item = rechijo.AddItem("Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea)
 
         rechijo.AddItem vbNullString
         rechijo.AddItem vbNullString
@@ -664,52 +664,52 @@ Private Sub CargarDetallesOT()
     Dim item As ReportRecordItem
     For Each deta2 In Ot.Detalles
         Set record = Me.ReportControl.Records.Add
-        record.Tag = deta2.id
+        record.Tag = deta2.Id
         record.AddItem deta2.item
         Set item = record.AddItem(deta2.Pieza.nombre)
         record.PreviewText = deta2.Nota
         record.AddItem deta2.CantidadPedida
         record.AddItem deta2.FechaEntrega
-        DAODetalleOrdenTrabajo.CalcularPorcentajeAvanceYPromedioFabricado deta2.id, porc, prom
+        DAODetalleOrdenTrabajo.CalcularPorcentajeAvanceYPromedioFabricado deta2.Id, porc, prom
 
         record.AddItem funciones.FormatearDecimales(porc) & "% avance"
 
-        AddTareas record, deta2.id
+        AddTareas record, deta2.Id
 
         If deta2.Pieza.EsConjunto Then
-            For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta2.id, deta2.Pieza.id)
+            For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta2.Id, deta2.Pieza.Id)
                 Set Record2 = record.Childs.Add()
-                Record2.Tag = tmpdeta2.id
+                Record2.Tag = tmpdeta2.Id
                 Record2.AddItem vbNullString
                 Set item = Record2.AddItem(tmpdeta2.Pieza.nombre)
                 Record2.Expanded = True
                 Record2.AddItem tmpdeta2.Cantidad * record.item(2).value
                 Record2.AddItem vbNullString
 
-                AddTareas Record2, deta2.id, tmpdeta2.id
+                AddTareas Record2, deta2.Id, tmpdeta2.Id
 
                 If tmpdeta2.Pieza.EsConjunto Then
-                    For Each tmpdeta3 In DAODetalleOrdenTrabajo.FindAllConjunto(deta2.id, tmpdeta2.Pieza.id)
+                    For Each tmpdeta3 In DAODetalleOrdenTrabajo.FindAllConjunto(deta2.Id, tmpdeta2.Pieza.Id)
                         Set Record3 = Record2.Childs.Add
-                        Record3.Tag = tmpdeta3.id
+                        Record3.Tag = tmpdeta3.Id
                         Record3.AddItem vbNullString
                         Set item = Record3.AddItem(tmpdeta3.Pieza.nombre)
                         Record3.Expanded = True
                         'Item.HasCheckbox = True
                         Record3.AddItem tmpdeta3.Cantidad * Record2.item(2).value
                         Record3.AddItem vbNullString
-                        AddTareas Record3, deta2.id, tmpdeta3.id
+                        AddTareas Record3, deta2.Id, tmpdeta3.Id
                         If tmpdeta3.Pieza.EsConjunto Then
-                            For Each tmpdeta4 In DAODetalleOrdenTrabajo.FindAllConjunto(deta2.id, tmpdeta3.Pieza.id)
+                            For Each tmpdeta4 In DAODetalleOrdenTrabajo.FindAllConjunto(deta2.Id, tmpdeta3.Pieza.Id)
                                 Set Record4 = Record3.Childs.Add
-                                Record4.Tag = tmpdeta4.id
+                                Record4.Tag = tmpdeta4.Id
                                 Record4.AddItem vbNullString
                                 Set item = Record4.AddItem(tmpdeta4.Pieza.nombre)
                                 Record4.Expanded = True
                                 'Item.HasCheckbox = True
                                 Record4.AddItem tmpdeta4.Cantidad * Record3.item(2).value
                                 Record4.AddItem vbNullString
-                                AddTareas Record4, deta2.id, tmpdeta4.id
+                                AddTareas Record4, deta2.Id, tmpdeta4.Id
                             Next tmpdeta4
                         End If
                     Next tmpdeta3
@@ -722,7 +722,7 @@ End Sub
 Public Sub AgregarTareas(deta As DetalleOrdenTrabajo, Optional ByVal parent As ReportRecord = Nothing)
     Dim rec As ReportRecord
     'Set colptp = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(deta.Id, pieza.Id)
-    Set colptp = DAOTiemposProceso.FindAllByDetallePedidoId(deta.id)
+    Set colptp = DAOTiemposProceso.FindAllByDetallePedidoId(deta.Id)
     If colptp.count = 0 Then Exit Sub
 
     For Each ptp In colptp
@@ -807,7 +807,7 @@ Private Sub LlenarListaPorPeriodo()
         mes_ = colMeses2.item(cboMeses2.ItemData(cboMeses2.ListIndex)).mes
         anio_ = colMeses2.item(cboMeses2.ItemData(cboMeses2.ListIndex)).Año
         filtro = "MONTH(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & mes_ & "' AND MONTH(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & mes_ & "'" _
-                 & " AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & anio_ & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & anio_ & "'"
+               & " AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & anio_ & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & anio_ & "'"
     ElseIf Me.rbAño2 Then
         anio_ = colAnio2.item(Me.cboAño2.ItemData(Me.cboAño2.ListIndex)).Año
         filtro = "YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & anio_ & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & anio_ & "'"
@@ -852,8 +852,8 @@ Private Sub LlenarListaPorLegajo()
 
 
             filtro = "per.legajo=" & CLng(Me.txtLegajo.text) _
-                     & " AND MONTH(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & mes_ & "' AND MONTH(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & mes_ & "'" _
-                     & " AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & anio_ & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & anio_ & "'"
+                   & " AND MONTH(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & mes_ & "' AND MONTH(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & mes_ & "'" _
+                   & " AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & anio_ & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & anio_ & "'"
         ElseIf Me.rbAno Then
             filtro = "per.legajo=" & CLng(Me.txtLegajo.text) & " AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & fecha_elegida & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & fecha_elegida & "'"
         End If
@@ -878,7 +878,7 @@ Private Sub grilla_por_legajo_UnboundReadData(ByVal RowIndex As Long, ByVal Book
     If detalles_leg.count > 0 Then
         Set deta = detalles_leg(RowIndex)
         With Values
-            .value(1) = deta.PlaneamientoTiempoProceso.Tarea.id & " - " & deta.PlaneamientoTiempoProceso.Tarea.Tarea
+            .value(1) = deta.PlaneamientoTiempoProceso.Tarea.Id & " - " & deta.PlaneamientoTiempoProceso.Tarea.Tarea
             .value(2) = deta.PlaneamientoTiempoProceso.idpedido & "/" & deta.PlaneamientoTiempoProceso.item
             .value(3) = deta.FechaInicioTarea
             .value(4) = deta.FechaFinTarea
@@ -927,10 +927,10 @@ Private Sub PushButton1_Click()
 End Sub
 
 Private Sub TabControl1_SelectedChanged(ByVal item As Xtremesuitecontrols.ITabControlItem)
-    Me.Command1.Default = (item.index = 0)
-    cmdBuscarPorPeriodo.Default = (item.index = 1)
-    Me.Command2.Default = (item.index = 2)
-    PushButton1.Default = (item.index = 3)
+    Me.Command1.default = (item.Index = 0)
+    cmdBuscarPorPeriodo.default = (item.Index = 1)
+    Me.Command2.default = (item.Index = 2)
+    PushButton1.default = (item.Index = 3)
 
 End Sub
 
@@ -944,7 +944,7 @@ Private Sub AgregarPieza2(ByVal Pieza As Pieza, Optional ByVal parent As ReportR
 
     rec.AddItem Pieza.nombre
     rec.AddItem Pieza.Cantidad
-    rec.Tag = Pieza.id
+    rec.Tag = Pieza.Id
     rec.Expanded = False
     AgregarTareas deta, rec
 

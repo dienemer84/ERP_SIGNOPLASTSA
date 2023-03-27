@@ -45,14 +45,14 @@ Public Enum ModificarStockMovimientos
     ModificarStockMovimientos_error = -1
 End Enum
 
-Public Function FindById(ByRef id As Long, _
+Public Function FindById(ByRef Id As Long, _
                          fetch As FetchLevel, _
                          Optional includeDesarrolloManoObra As Boolean = False, _
                          Optional includeDesarrolloMaterial As Boolean = False, _
                          Optional withTiempoHistorico As Boolean = False _
-                         ) As Pieza
+                       ) As Pieza
     Dim col As Collection
-    Set col = DAOPieza.FindAll(fetch, TABLA_PIEZA & ".id = " & id, , includeDesarrolloManoObra, includeDesarrolloMaterial, withTiempoHistorico)
+    Set col = DAOPieza.FindAll(fetch, TABLA_PIEZA & ".id = " & Id, , includeDesarrolloManoObra, includeDesarrolloMaterial, withTiempoHistorico)
     If col.count > 0 Then
         Set FindById = col(1)
     Else
@@ -68,7 +68,7 @@ Public Function FindAll(fetch As FetchLevel, _
                         Optional withTiempoHistorico As Boolean = False, _
                         Optional onlyActives As Boolean = False, _
                         Optional orderByItemMarco As String = vbNullString _
-                        ) As Collection
+                      ) As Collection
     Dim rs As ADODB.Recordset
     Dim q As String
     On Error GoTo err1
@@ -85,31 +85,31 @@ Public Function FindAll(fetch As FetchLevel, _
     If fetch >= FL_4 Then q = q & ", sc4.*, m5.*, c5.*, s5.*"
 
     q = q & " FROM stock s" _
-        & " LEFT JOIN AdminConfigMonedas m1 ON m1.id = s.id_moneda_precio" _
-        & " LEFT JOIN clientes c1 ON c1.id = s.id_cliente"
+      & " LEFT JOIN AdminConfigMonedas m1 ON m1.id = s.id_moneda_precio" _
+      & " LEFT JOIN clientes c1 ON c1.id = s.id_cliente"
     If fetch >= FL_1 Then
         q = q & " LEFT JOIN stockConjuntos sc ON sc.idPiezaPadre = s.id" _
-            & " LEFT JOIN stock s2 ON s2.id = sc.idPiezaHija" _
-            & " LEFT JOIN AdminConfigMonedas m2 ON m2.id = s2.id_moneda_precio" _
-            & " LEFT JOIN clientes c2 ON c2.id = s2.id_cliente"
+          & " LEFT JOIN stock s2 ON s2.id = sc.idPiezaHija" _
+          & " LEFT JOIN AdminConfigMonedas m2 ON m2.id = s2.id_moneda_precio" _
+          & " LEFT JOIN clientes c2 ON c2.id = s2.id_cliente"
     End If
     If fetch >= FL_2 Then
         q = q & " LEFT JOIN stockConjuntos sc2 ON sc2.idPiezaPadre = s2.id" _
-            & " LEFT JOIN stock s3 ON s3.id = sc2.idPiezaHija" _
-            & " LEFT JOIN AdminConfigMonedas m3 ON m3.id = s3.id_moneda_precio" _
-            & " LEFT JOIN clientes c3 ON c3.id = s3.id_cliente"
+          & " LEFT JOIN stock s3 ON s3.id = sc2.idPiezaHija" _
+          & " LEFT JOIN AdminConfigMonedas m3 ON m3.id = s3.id_moneda_precio" _
+          & " LEFT JOIN clientes c3 ON c3.id = s3.id_cliente"
     End If
     If fetch >= FL_3 Then
         q = q & " LEFT JOIN stockConjuntos sc3 ON sc3.idPiezaPadre = s3.id" _
-            & " LEFT JOIN stock s4 ON s4.id = sc3.idPiezaHija" _
-            & " LEFT JOIN AdminConfigMonedas m4 ON m4.id = s4.id_moneda_precio" _
-            & " LEFT JOIN clientes c4 ON c4.id = s4.id_cliente"
+          & " LEFT JOIN stock s4 ON s4.id = sc3.idPiezaHija" _
+          & " LEFT JOIN AdminConfigMonedas m4 ON m4.id = s4.id_moneda_precio" _
+          & " LEFT JOIN clientes c4 ON c4.id = s4.id_cliente"
     End If
     If fetch >= FL_4 Then
         q = q & " LEFT JOIN stockConjuntos sc4 ON sc4.idPiezaPadre = s4.id" _
-            & " LEFT JOIN stock s5 ON s5.id = sc4.idPiezaHija" _
-            & " LEFT JOIN AdminConfigMonedas m5 ON m5.id = s5.id_moneda_precio" _
-            & " LEFT JOIN clientes c5 ON c5.id = s5.id_cliente"
+          & " LEFT JOIN stock s5 ON s5.id = sc4.idPiezaHija" _
+          & " LEFT JOIN AdminConfigMonedas m5 ON m5.id = s5.id_moneda_precio" _
+          & " LEFT JOIN clientes c5 ON c5.id = s5.id_cliente"
     End If
 
     q = q & " WHERE 1 = 1"
@@ -202,56 +202,56 @@ Public Function FindAll(fetch As FetchLevel, _
             Set tmpPieza = DAOPieza.Map(rs, fieldsIndex, TABLA_PIEZA, DAOPieza.TABLA_MONEDA1, DAOPieza.TABLA_CLIENTE1)
             If includeDesarrolloManoObra Then
                 Set tmpPieza.desarrollosManoObra = New Collection
-                Set tmpPieza.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza.id, withTiempoHistorico)
+                Set tmpPieza.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza.Id, withTiempoHistorico)
             End If
             If includeDesarrolloMaterial Then
                 Set tmpPieza.DesarrollosMaterial = New Collection
-                Set tmpPieza.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza.id)
+                Set tmpPieza.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza.Id)
             End If
         End If
 
         If fetch >= FL_1 And Not IsNull(rs.Fields(piezaId2Index).value) Then    ' no importa que no diga que no es conjunto, por las dudas
             If Not BuscarEnColeccion(tmpPieza.PiezasHijas, CStr(rs.Fields(piezaId2Index).value)) Then
                 Set tmpPieza2 = DAOPieza.Map(rs, fieldsIndex, tablaStock2, tablaMoneda2, tablaCliente2, tablaStockConjuntos)
-                If includeDesarrolloManoObra Then Set tmpPieza2.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza2.id, withTiempoHistorico)
-                If includeDesarrolloMaterial Then Set tmpPieza2.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza2.id)
+                If includeDesarrolloManoObra Then Set tmpPieza2.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza2.Id, withTiempoHistorico)
+                If includeDesarrolloMaterial Then Set tmpPieza2.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza2.Id)
 
-                tmpPieza.PiezasHijas.Add tmpPieza2, CStr(tmpPieza2.id)
+                tmpPieza.PiezasHijas.Add tmpPieza2, CStr(tmpPieza2.Id)
             End If
         End If
 
         If fetch >= FL_2 And Not IsNull(rs.Fields(piezaId3Index).value) Then
             If Not BuscarEnColeccion(tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas, CStr(rs.Fields(piezaId3Index).value)) Then
                 Set tmpPieza2 = DAOPieza.Map(rs, fieldsIndex, tablaStock3, tablaMoneda3, tablaCliente3, tablaStockConjuntos2)
-                If includeDesarrolloManoObra Then Set tmpPieza2.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza2.id, withTiempoHistorico)
-                If includeDesarrolloMaterial Then Set tmpPieza2.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza2.id)
+                If includeDesarrolloManoObra Then Set tmpPieza2.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza2.Id, withTiempoHistorico)
+                If includeDesarrolloMaterial Then Set tmpPieza2.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza2.Id)
 
-                tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas.Add tmpPieza2, CStr(tmpPieza2.id)    ' CStr(rs.Fields(piezaId3Index).value)
+                tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas.Add tmpPieza2, CStr(tmpPieza2.Id)    ' CStr(rs.Fields(piezaId3Index).value)
             End If
         End If
 
         If fetch >= FL_3 And Not IsNull(rs.Fields(piezaId4Index).value) Then
             If Not BuscarEnColeccion(tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId3Index).value)).PiezasHijas, CStr(rs.Fields(piezaId4Index).value)) Then
                 Set tmpPieza2 = DAOPieza.Map(rs, fieldsIndex, tablaStock4, tablaMoneda4, tablaCliente4, tablaStockConjuntos3)
-                If includeDesarrolloManoObra Then Set tmpPieza2.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza2.id, withTiempoHistorico)
-                If includeDesarrolloMaterial Then Set tmpPieza2.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza2.id)
+                If includeDesarrolloManoObra Then Set tmpPieza2.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza2.Id, withTiempoHistorico)
+                If includeDesarrolloMaterial Then Set tmpPieza2.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza2.Id)
 
-                tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId3Index).value)).PiezasHijas.Add tmpPieza2, CStr(tmpPieza2.id)  ' CStr(rs.Fields(piezaId4Index).value)
+                tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId3Index).value)).PiezasHijas.Add tmpPieza2, CStr(tmpPieza2.Id)  ' CStr(rs.Fields(piezaId4Index).value)
             End If
         End If
 
         If fetch >= FL_4 And Not IsNull(rs.Fields(piezaId5Index).value) Then
             If Not BuscarEnColeccion(tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId3Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId4Index).value)).PiezasHijas, CStr(rs.Fields(piezaId5Index).value)) Then
                 Set tmpPieza2 = DAOPieza.Map(rs, fieldsIndex, tablaStock5, tablaMoneda5, tablaCliente5, tablaStockConjuntos4)
-                If includeDesarrolloManoObra Then Set tmpPieza2.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza2.id, withTiempoHistorico)
-                If includeDesarrolloMaterial Then Set tmpPieza2.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza2.id)
+                If includeDesarrolloManoObra Then Set tmpPieza2.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpPieza2.Id, withTiempoHistorico)
+                If includeDesarrolloMaterial Then Set tmpPieza2.DesarrollosMaterial = DAODesarrolloMaterial.FindAllByPiezaId(tmpPieza2.Id)
 
-                tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId3Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId4Index).value)).PiezasHijas.Add tmpPieza2, CStr(tmpPieza2.id)  ' CStr(rs.Fields(piezaId4Index).value)
+                tmpPieza.PiezasHijas.item(CStr(rs.Fields(piezaId2Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId3Index).value)).PiezasHijas.item(CStr(rs.Fields(piezaId4Index).value)).PiezasHijas.Add tmpPieza2, CStr(tmpPieza2.Id)  ' CStr(rs.Fields(piezaId4Index).value)
             End If
         End If
 
-        If Not BuscarEnColeccion(piezas, CStr(tmpPieza.id)) Then
-            piezas.Add tmpPieza, CStr(tmpPieza.id)
+        If Not BuscarEnColeccion(piezas, CStr(tmpPieza.Id)) Then
+            piezas.Add tmpPieza, CStr(tmpPieza.Id)
         End If
 
         rs.MoveNext
@@ -273,13 +273,13 @@ End Function
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String, Optional ByRef monedaTableNameOrAlias As String = vbNullString, Optional ByVal clienteTableNameOrAlias As String = vbNullString, Optional ByRef stockConjuntoTableNameOrAlias As String = vbNullString) As Pieza
     Dim P As Pieza
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set P = New Pieza
-        P.id = id
+        P.Id = Id
 
         P.Activa = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOPieza.CAMPO_ACTIVA)
         If LenB(stockConjuntoTableNameOrAlias) > 0 Then P.Cantidad = GetValue(rs, fieldsIndex, stockConjuntoTableNameOrAlias, DAOPieza.CAMPO_CANTIDAD_DE_PIEZAS_EN_CONJUNTO)
@@ -311,11 +311,11 @@ Public Function ModificarStock(T As Pieza, operacion As ModificarStockOperacione
     '>0 nro. orden de trabajo
 
     If operacion = 1 Then charO = "+" Else charO = "-"
-    conectar.execute "select * from stock where id =" & T.id
+    conectar.execute "select * from stock where id =" & T.Id
     If IsEmpty(ubicacion) Then
-        conectar.execute "update stock set cantidad = cantidad" & charO & Cantidad & " where id=" & T.id
+        conectar.execute "update stock set cantidad = cantidad" & charO & Cantidad & " where id=" & T.Id
     Else
-        conectar.execute "update stock set detalle_stock='" & UCase(ubicacion) & "',cantidad = cantidad" & charO & Cantidad & " where id=" & T.id
+        conectar.execute "update stock set detalle_stock='" & UCase(ubicacion) & "',cantidad = cantidad" & charO & Cantidad & " where id=" & T.Id
     End If
     If operacion = ModificarStock_Ingreso Then
         Nota = 0
@@ -324,7 +324,7 @@ Public Function ModificarStock(T As Pieza, operacion As ModificarStockOperacione
     Else
         Nota = OTOEid
     End If
-    conectar.execute "insert into movimiento_stock (id_pieza,cantidad,operacion,fecha,nota)values (" & T.id & "," & Cantidad & "," & operacion & ",'" & Format(Date, "yyyy/mm/dd") & "'," & Nota & ")"
+    conectar.execute "insert into movimiento_stock (id_pieza,cantidad,operacion,fecha,nota)values (" & T.Id & "," & Cantidad & "," & operacion & ",'" & Format(Date, "yyyy/mm/dd") & "'," & Nota & ")"
     ModificarStock = True
     Exit Function
 
@@ -343,14 +343,14 @@ Private Sub CargarTiempoDto(ByRef dm As DesarrolloManoObra, ByRef lista As Colle
     End If
 
 
-    If BuscarEnColeccion(lista, CStr(dm.Tarea.id)) Then
-        Set dto1 = lista.item(CStr(dm.Tarea.id))
+    If BuscarEnColeccion(lista, CStr(dm.Tarea.Id)) Then
+        Set dto1 = lista.item(CStr(dm.Tarea.Id))
         dto1.Tiempo = dto1.Tiempo + funciones.RedondearDecimales(tempo)
     Else
         Set dto1 = New DTOTareaTiempo
         Set dto1.Tarea = dm.Tarea
         dto1.Tiempo = funciones.RedondearDecimales(tempo)
-        lista.Add dto1, CStr(dm.Tarea.id)
+        lista.Add dto1, CStr(dm.Tarea.Id)
     End If
 End Sub
 
@@ -361,14 +361,14 @@ Private Sub recorre(col As Collection, Pieza As Pieza, Cantidad As Double)
 
     For Each dm In Pieza.desarrollosManoObra
 
-        If BuscarEnColeccion(col, CStr(dm.Tarea.Sector.id)) Then
-            Set dto = col.item(CStr(dm.Tarea.Sector.id))
+        If BuscarEnColeccion(col, CStr(dm.Tarea.Sector.Id)) Then
+            Set dto = col.item(CStr(dm.Tarea.Sector.Id))
             CargarTiempoDto dm, dto.ListaDtoTareaTiempo, Cantidad
         Else
             Set dto = New DTOSectoresTiempo
             Set dto.Sector = dm.Tarea.Sector
             CargarTiempoDto dm, dto.ListaDtoTareaTiempo, Cantidad
-            col.Add dto, CStr(dm.Tarea.Sector.id)
+            col.Add dto, CStr(dm.Tarea.Sector.Id)
         End If
 
     Next dm
@@ -389,7 +389,7 @@ Public Function ListaDTOTiempoPorSector(listadtopiezacantidad As Collection) As 
     For Each dto1 In listadtopiezacantidad
 
         If IsSomething(dto1.Pieza) Then
-            Set dto1.Pieza = DAOPieza.FindById(dto1.Pieza.id, FL_4, True, False, False)
+            Set dto1.Pieza = DAOPieza.FindById(dto1.Pieza.Id, FL_4, True, False, False)
         End If
 
         recorre col, dto1.Pieza, dto1.Cantidad
@@ -403,29 +403,29 @@ End Function
 Public Function Save(P As Pieza, Optional ByVal paraRevision As Boolean = False) As Boolean
     Dim q As String
 
-    If P.id <> 0 Then
+    If P.Id <> 0 Then
         q = "Update {tabla} SET" _
-            & " detalle = 'detalle' ," _
-            & " id_cliente = 'id_cliente' ," _
-            & " cantidad = 'cantidad' ," _
-            & " estado = 'estado' ," _
-            & " conjunto = 'conjunto' ," _
-            & " ya_fabricado = 'ya_fabricado' ," _
-            & " detalle_stock = 'detalle_stock' ," _
-            & " precio_definido = 'precio_definido' ," _
-            & " fecha_precio_definido = 'fecha_precio_definido' ," _
-            & " id_moneda_precio = 'id_moneda_precio', " _
-            & " id_pieza_ultima_revision = 'id_pieza_ultima_revision' ," _
-            & " revision = 'revision'" _
-            & " tipo_complejidad = 'tipo_complejidad'" _
-            & " Where id = 'id'"
+          & " detalle = 'detalle' ," _
+          & " id_cliente = 'id_cliente' ," _
+          & " cantidad = 'cantidad' ," _
+          & " estado = 'estado' ," _
+          & " conjunto = 'conjunto' ," _
+          & " ya_fabricado = 'ya_fabricado' ," _
+          & " detalle_stock = 'detalle_stock' ," _
+          & " precio_definido = 'precio_definido' ," _
+          & " fecha_precio_definido = 'fecha_precio_definido' ," _
+          & " id_moneda_precio = 'id_moneda_precio', " _
+          & " id_pieza_ultima_revision = 'id_pieza_ultima_revision' ," _
+          & " revision = 'revision'" _
+          & " tipo_complejidad = 'tipo_complejidad'" _
+          & " Where id = 'id'"
     Else
         q = "INSERT INTO {tabla}" _
-            & " (tipo_complejidad,detalle, id_cliente, cantidad, estado, conjunto, detalle_stock, precio_definido, fecha_precio_definido," _
-            & " id_moneda_precio, ya_fabricado, id_pieza_ultima_revision,revision)" _
-            & " Values " _
-            & " ('tipo_complejidad','detalle', 'id_cliente', 'cantidad', 'estado', 'conjunto', 'detalle_stock', 'precio_definido', 'fecha_precio_definido'," _
-            & "'id_moneda_precio','ya_fabricado','id_pieza_ultima_revision','revision')"
+          & " (tipo_complejidad,detalle, id_cliente, cantidad, estado, conjunto, detalle_stock, precio_definido, fecha_precio_definido," _
+          & " id_moneda_precio, ya_fabricado, id_pieza_ultima_revision,revision)" _
+          & " Values " _
+          & " ('tipo_complejidad','detalle', 'id_cliente', 'cantidad', 'estado', 'conjunto', 'detalle_stock', 'precio_definido', 'fecha_precio_definido'," _
+          & "'id_moneda_precio','ya_fabricado','id_pieza_ultima_revision','revision')"
     End If
 
 
@@ -444,18 +444,18 @@ Public Function Save(P As Pieza, Optional ByVal paraRevision As Boolean = False)
     q = Replace$(q, "'detalle_stock'", conectar.Escape(P.CantidadStock))
     q = Replace$(q, "'precio_definido'", conectar.Escape(P.Precio))
     q = Replace$(q, "'fecha_precio_definido'", conectar.Escape(P.FechaPrecio))
-    q = Replace$(q, "'id_moneda_precio'", conectar.Escape(P.MonedaPrecio.id))
+    q = Replace$(q, "'id_moneda_precio'", conectar.Escape(P.MonedaPrecio.Id))
     q = Replace$(q, "'id_pieza_ultima_revision'", conectar.Escape(P.IdPiezaUltimaRevision))
     q = Replace$(q, "'revision'", conectar.Escape(P.Revision))
     q = Replace$(q, "'tipo_complejidad'", conectar.Escape(P.Complejidad))
-    
-    q = Replace$(q, "'id'", conectar.Escape(P.id))
+
+    q = Replace$(q, "'id'", conectar.Escape(P.Id))
 
     Save = conectar.execute(q)
 
-    If Save And P.id = 0 Then
-        P.id = conectar.UltimoId2()
-        Save = (P.id <> 0)
+    If Save And P.Id = 0 Then
+        P.Id = conectar.UltimoId2()
+        Save = (P.Id <> 0)
     End If
 
 End Function
@@ -501,7 +501,7 @@ Public Function informePiezaArbol(idConjunto, pos)    'idConjunto=detalle pedido
     Dim strsql As String, strsql2 As String
     Dim r_tmp As Recordset
     Dim rs1 As Recordset, rs2 As Recordset, rs3 As Recordset
-    Dim id As Long, id2 As Long, id3 As Long
+    Dim Id As Long, id2 As Long, id3 As Long
     Dim cant1 As Double, cant2 As Double, cant3 As Double
     Dim detail2
     Dim detail3
@@ -530,7 +530,7 @@ Public Function informePiezaArbol(idConjunto, pos)    'idConjunto=detalle pedido
     FECHAENT = rs1!FechaEntrega
     ENTREGAITEM = rs1!ENTREGAITEM
 
-    idDetallePedido = rs1!id
+    idDetallePedido = rs1!Id
 
     Nota = rs1!Nota
 
@@ -578,7 +578,7 @@ Public Function informePiezaArbol(idConjunto, pos)    'idConjunto=detalle pedido
     c1 = 0
     While Not rs1.EOF    'itero sobre la primer rama del arbol
         c1 = c1 + 1
-        id = rs1!idPieza
+        Id = rs1!idPieza
         idDetallesPedidosConjuntos = rs1!id1
         Cantidad = rs1!Cantidad
 
@@ -590,10 +590,10 @@ Public Function informePiezaArbol(idConjunto, pos)    'idConjunto=detalle pedido
             'strsql = "select * from stockConjuntos where idPiezaPadre=" & id
 
             'strsql = "select s.cantidad as stock,sc.idPiezaHija,sc.cantidad,s.detalle from stockConjuntos sc inner join stock s on sc.idPiezaHija=s.id  where idPiezaPadre=" & id
-            strsql = "select sc.id as id1,sc.esConjunto,s.cantidad as stock,sc.idPieza,sc.cantidad,s.detalle from detalles_pedidos_conjuntos sc inner join stock s on sc.idPieza=s.id  where idPiezaPadre=" & id & " and idDetalle_pedido=" & idDetallePedido
+            strsql = "select sc.id as id1,sc.esConjunto,s.cantidad as stock,sc.idPieza,sc.cantidad,s.detalle from detalles_pedidos_conjuntos sc inner join stock s on sc.idPieza=s.id  where idPiezaPadre=" & Id & " and idDetalle_pedido=" & idDetallePedido
 
             r_tmp.AddNew
-            r_tmp!idPieza = id
+            r_tmp!idPieza = Id
             r_tmp!idDetallesPedidosConjuntos = idDetallesPedidosConjuntos
             r_tmp!Cantt = Cantidad * CantConj
             r_tmp!cantU = Cantidad
@@ -667,7 +667,7 @@ Public Function informePiezaArbol(idConjunto, pos)    'idConjunto=detalle pedido
             Wend
         Else
             r_tmp.AddNew
-            r_tmp!idPieza = id
+            r_tmp!idPieza = Id
             r_tmp!Cantt = Cantidad * CantConj
             r_tmp!cantU = Cantidad
             r_tmp!idDetallesPedidosConjuntos = idDetallesPedidosConjuntos

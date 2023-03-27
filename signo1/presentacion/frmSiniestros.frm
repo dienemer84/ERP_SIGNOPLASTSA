@@ -138,7 +138,7 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
         Else
             If Permisos.RRHHInformeAccidente Then
                 If IsSomething(funciones.GetUserObj().Empleado) Then
-                    Me.mnuAccidente.Enabled = (sin.Supervisor.id = funciones.GetUserObj.Empleado.id)
+                    Me.mnuAccidente.Enabled = (sin.Supervisor.Id = funciones.GetUserObj.Empleado.Id)
                 Else
                     Me.mnuAccidente.Enabled = False
                 End If
@@ -184,7 +184,7 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
             Values(10) = enums.TiposGravedad.item(CStr(sin.TipoGravedad))
         End If
         If CDbl(sin.RenaudaTareas) > 0 Then Values(11) = sin.RenaudaTareas
-        Values(12) = Val(CantArchivos(sin.id))
+        Values(12) = Val(CantArchivos(sin.Id))
         Values(13) = sin.InformeAccidenteConfeccionado
     End If
 End Sub
@@ -209,7 +209,7 @@ Private Sub mnuArchivosSiniestro_Click()
     If Not sin Is Nothing Then
         Dim frmArchi As New frmArchivos2
         frmArchi.Origen = OrigenArchivos.OA_Siniestros
-        frmArchi.ObjetoId = sin.id
+        frmArchi.ObjetoId = sin.Id
         frmArchi.caption = "Siniestro Nº" & sin.NroSiniestro
         frmArchi.Show
     End If

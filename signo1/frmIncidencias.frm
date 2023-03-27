@@ -156,12 +156,12 @@ Private Sub Command2_Click()
 
             Dim tipoEv As TipoEventoBroadcast: tipoEv = -1
             Select Case vorigen
-                Case OrigenIncidencias.OI_OrdenesTrabajo
-                    tipoEv = TEB_IncidenciaOrdenTrabajo
-                Case OrigenIncidencias.OI_Piezas
-                    tipoEv = TEB_IncidenciaPieza
-                Case OrigenIncidencias.OI_OrdenesTrabajoDetalles
-                    tipoEv = TEB_IncidenciaDetalleOrdenTrabajo
+            Case OrigenIncidencias.OI_OrdenesTrabajo
+                tipoEv = TEB_IncidenciaOrdenTrabajo
+            Case OrigenIncidencias.OI_Piezas
+                tipoEv = TEB_IncidenciaPieza
+            Case OrigenIncidencias.OI_OrdenesTrabajoDetalles
+                tipoEv = TEB_IncidenciaDetalleOrdenTrabajo
             End Select
 
             If tipoEv <> -1 Then
@@ -169,8 +169,8 @@ Private Sub Command2_Click()
             End If
 
             MsgBox "Incidencia agregada con éxito!", vbInformation, "Información"
-                Me.txtIncidencias = Empty
-                
+            Me.txtIncidencias = Empty
+
             llenarLST
         Else
             MsgBox "Se produjo un error. No se agrego incidencia!", vbCritical, "Error"

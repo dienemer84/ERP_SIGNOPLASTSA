@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Private vMonto As Double
 Private vAlicuota As clsAlicuotas
-Public id As Long
+Public Id As Long
 
 Public Property Let Monto(nMonto As Double)
     vMonto = nMonto
@@ -21,10 +21,10 @@ End Property
 Public Property Get Monto() As Double
     Monto = vMonto
 End Property
-Public Property Let Alicuota(nAlicuota As clsAlicuotas)
+Public Property Let alicuota(nAlicuota As clsAlicuotas)
     Set vAlicuota = nAlicuota
 End Property
-Public Property Get Alicuota() As clsAlicuotas
-    Set Alicuota = vAlicuota
+Public Property Get alicuota() As clsAlicuotas
+    Set alicuota = vAlicuota
 End Property
 

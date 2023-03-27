@@ -111,526 +111,526 @@ Dim statusBar As XtremeCommandBars.statusBar
 
 Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarControl)
     Select Case Control.Id
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO:
-            Dim f32423 As New frmAltaEmpleados
-            f32423.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO:
+        Dim f32423 As New frmAltaEmpleados
+        f32423.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS:
-            Dim f4333 As New frmListaEmpleados
-            frmListaEmpleados.Show
-            
-              Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS:
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS:
+        Dim f4333 As New frmListaEmpleados
+        frmListaEmpleados.Show
 
-           ' Dim f43334 As New frmObraSocial
-            frmObraSocial.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS:
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SECTORIZAR:
-            frmSectorizar.Show
+        ' Dim f43334 As New frmObraSocial
+        frmObraSocial.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__USUARIOS:
-            frmUsuarios.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SECTORIZAR:
+        frmSectorizar.Show
+
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__USUARIOS:
+        frmUsuarios.Show
 
         'Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS:
-       '     Dim F939393 As New frmSiniestros
-      '      F939393.Show
+        '     Dim F939393 As New frmSiniestros
+        '      F939393.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__LUGARES
-            Dim faa1 As New frmUbicaciones
-            frmUbicaciones.Show
-            
-       Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__VER_ACTUALIZACIONES
-            frmTip.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__LUGARES
+        Dim faa1 As New frmUbicaciones
+        frmUbicaciones.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__SISTEMA:
-            frmConfigurarSistema.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__VER_ACTUALIZACIONES
+        frmTip.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__COTIZACIONES__GASTOS:
-            frmConfigurarGastos.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__SISTEMA:
+        frmConfigurarSistema.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__COTIZACIONES__DATOS_VARIOS:
-            frmDatosVarios.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__COTIZACIONES__GASTOS:
+        frmConfigurarGastos.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__TERMINACION__CONFIG_PINTURA:
-            frmConfigurarPintura.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__COTIZACIONES__DATOS_VARIOS:
+        frmDatosVarios.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__TERMINACION__DEFINIR_CUENTAS:
-            frmDefinirTerminacion.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__TERMINACION__CONFIG_PINTURA:
+        frmConfigurarPintura.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__IVA:
-            frmAdminIVA.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__TERMINACION__DEFINIR_CUENTAS:
+        frmDefinirTerminacion.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__FACTURAS:
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__IVA:
+        frmAdminIVA.Show
 
-            frmAdminFacturasEmisibles.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__FACTURAS:
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__RETENCIONES:
-            frmAdminConfigRetenciones.Show
+        frmAdminFacturasEmisibles.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__PERCEPCIONES:
-            frmAdminconfigPercepciones.Show
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__RETENCIONES:
+        frmAdminConfigRetenciones.Show
 
-        Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS:
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__PERCEPCIONES:
+        frmAdminconfigPercepciones.Show
 
-            frmAdminConfigBancos.Show
+    Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS:
 
-        Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS:
-            frmAdminconfigCuentas.Show
+        frmAdminConfigBancos.Show
 
+    Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS:
+        frmAdminconfigCuentas.Show
 
-        Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__NUEVA:
-            Dim frm2001 As frmVentasPresupuestoNuevo
-            Set frm2001 = New frmVentasPresupuestoNuevo
-            frm2001.Show
 
-        Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__LISTADO:
-            Dim frm2002 As frmVentasPresupuestoLista
-            Set frm2002 = New frmVentasPresupuestoLista
-            frm2002.Show
-        Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__INFORME_HISTORICO:
-            frmVentasHistoricosVentas.Show
+    Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__NUEVA:
+        Dim frm2001 As frmVentasPresupuestoNuevo
+        Set frm2001 = New frmVentasPresupuestoNuevo
+        frm2001.Show
 
+    Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__LISTADO:
+        Dim frm2002 As frmVentasPresupuestoLista
+        Set frm2002 = New frmVentasPresupuestoLista
+        frm2002.Show
+    Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__INFORME_HISTORICO:
+        frmVentasHistoricosVentas.Show
 
-        Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__INFORME_DINAMICO:
-            frmVentasEstadisticasCotizaciones.Show
 
-        Case ID_BUTTON.ID_BUTTON_VENTAS__PEDIDOS__NUEVO:
-            Dim frm2006 As frmVentasPedidoNuevo
-            Set frm2006 = New frmVentasPedidoNuevo
-            frm2006.Show
+    Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__INFORME_DINAMICO:
+        frmVentasEstadisticasCotizaciones.Show
 
+    Case ID_BUTTON.ID_BUTTON_VENTAS__PEDIDOS__NUEVO:
+        Dim frm2006 As frmVentasPedidoNuevo
+        Set frm2006 = New frmVentasPedidoNuevo
+        frm2006.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__NUEVA:
 
-            Dim frmNuevaOT As New frmNuevaOrdenTrabajo
-            frmNuevaOT.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__NUEVA:
 
+        Dim frmNuevaOT As New frmNuevaOrdenTrabajo
+        frmNuevaOT.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO:
-            Dim frmpp As New frmPlaneamientoPedidosPendientes
-            frmpp.Show
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__HISTORICO
 
-            frmPlaneamientoResumenProduccion.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO:
+        Dim frmpp As New frmPlaneamientoPedidosPendientes
+        frmpp.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__HISTORICO
 
+        frmPlaneamientoResumenProduccion.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__MARCO_NUEVA:
-            Dim fofo As New frmNuevoContratoMarco
-            fofo.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_ENTREGA__NUEVA:
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__MARCO_NUEVA:
+        Dim fofo As New frmNuevoContratoMarco
+        fofo.Show
 
-            frmPlaneamientoOENueva.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_ENTREGA__NUEVA:
 
+        frmPlaneamientoOENueva.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__PLANIFICAR:
-            Dim frm_merla As New frmPlanificacionTemporal
-            frm_merla.Show
 
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__PLANIFICAR:
+        Dim frm_merla As New frmPlanificacionTemporal
+        frm_merla.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_ENTREGA__LISTADO:
 
-            frmPlaneamientoOELista.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_ENTREGA__LISTADO:
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__GLOBAL:
+        frmPlaneamientoOELista.Show
 
-            frmPlaneamientoSeguimiento.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__GLOBAL:
 
+        frmPlaneamientoSeguimiento.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__DE_RUTAS:
 
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__DE_RUTAS:
 
-            Dim fff As New frmPlaneamientoSeguimientoRutas3
-            fff.Show
 
+        Dim fff As New frmPlaneamientoSeguimientoRutas3
+        fff.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_PROCESOS:
-            Dim frmT As New frmTiempoProcesoDetalle
-            frmT.Show 1
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_RUTAS:
-            Dim frmSep As New frmSeguimientoEspecialPorRuta
-            frmSep.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_PROCESOS:
+        Dim frmT As New frmTiempoProcesoDetalle
+        frmT.Show 1
 
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_RUTAS:
+        Dim frmSep As New frmSeguimientoEspecialPorRuta
+        frmSep.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__VER_TIEMPOS
-            frmPlaneamientoVerTiempos.Show
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__OPER_PROCESO
-            Dim f123433 As New frmPlaneamientoVerOperariosEnProceso
-            f123433.Show
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__VER_NNC
-            Dim fzzz As New frmNotasNoConformidad
-            fzzz.Show
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__REMITOS__NUEVO:
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__VER_TIEMPOS
+        frmPlaneamientoVerTiempos.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__OPER_PROCESO
+        Dim f123433 As New frmPlaneamientoVerOperariosEnProceso
+        f123433.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__VER_NNC
+        Dim fzzz As New frmNotasNoConformidad
+        fzzz.Show
 
-            frmPlaneamientoRemitosNuevo.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__REMITOS__NUEVO:
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__REMITOS__LISTADO:
+        frmPlaneamientoRemitosNuevo.Show
 
-            Dim frm3033 As New frmPlaneamientoRemitosLista
-            frm3033.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__REMITOS__LISTADO:
 
-        Case ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__NUEVO:
-            Dim frm4001 As frmComprasRequesNuevo
-            Set frm4001 = New frmComprasRequesNuevo
-            frm4001.Show
-        Case ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__LISTADO: frmComprasRequeLista.Show
-        Case ID_BUTTON.ID_BUTTON_COMPRAS__PETICION_OFERTA__NUEVA: Dim f12312 As New frmComprasArmaPO: f12312.Show
-        Case ID_BUTTON.ID_BUTTON_COMPRAS__PETICION_OFERTA__LISTADO: Dim f34242 As New frmComprasPeticionesLista: f34242.Show
+        Dim frm3033 As New frmPlaneamientoRemitosLista
+        frm3033.Show
 
-        Case ID_BUTTON.ID_BUTTON_COMPRAS__PETICION_OFERTA__COMPRAR:
-            Dim faaf As New frmComprasPOComprar
-            faaf.Show
+    Case ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__NUEVO:
+        Dim frm4001 As frmComprasRequesNuevo
+        Set frm4001 = New frmComprasRequesNuevo
+        frm4001.Show
+    Case ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__LISTADO: frmComprasRequeLista.Show
+    Case ID_BUTTON.ID_BUTTON_COMPRAS__PETICION_OFERTA__NUEVA: Dim f12312 As New frmComprasArmaPO: f12312.Show
+    Case ID_BUTTON.ID_BUTTON_COMPRAS__PETICION_OFERTA__LISTADO: Dim f34242 As New frmComprasPeticionesLista: f34242.Show
 
-            '        Case ID_BUTTON.ID_BUTTON_COMPRAS__ORDEN_COMPRA__NUEVA: frmComprasOrdenesNueva.Show
-        Case ID_BUTTON.ID_BUTTON_COMPRAS__ORDEN_COMPRA__LISTADO: frmComprasOrdenesLista.Show
-        Case ID_BUTTON.ID_BUTTON_COMPRAS__PRECIOS__ADMINISTRAR: frmComprasPreciosPorRubro.Show
-        Case ID_BUTTON.ID_BUTTON_COMPRAS__PRECIOS__HISTORICO: frmComprasPreciosHistorico.Show
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_ELEMENTO:
+    Case ID_BUTTON.ID_BUTTON_COMPRAS__PETICION_OFERTA__COMPRAR:
+        Dim faaf As New frmComprasPOComprar
+        faaf.Show
 
-            Dim frm5001 As frmNuevoElemento
-            Set frm5001 = New frmNuevoElemento
-            frm5001.btnModificar.Visible = False
-            frm5001.lblidStock = Empty
-            frm5001.Show
+        '        Case ID_BUTTON.ID_BUTTON_COMPRAS__ORDEN_COMPRA__NUEVA: frmComprasOrdenesNueva.Show
+    Case ID_BUTTON.ID_BUTTON_COMPRAS__ORDEN_COMPRA__LISTADO: frmComprasOrdenesLista.Show
+    Case ID_BUTTON.ID_BUTTON_COMPRAS__PRECIOS__ADMINISTRAR: frmComprasPreciosPorRubro.Show
+    Case ID_BUTTON.ID_BUTTON_COMPRAS__PRECIOS__HISTORICO: frmComprasPreciosHistorico.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_ELEMENTO:
 
+        Dim frm5001 As frmNuevoElemento
+        Set frm5001 = New frmNuevoElemento
+        frm5001.btnModificar.Visible = False
+        frm5001.lblidStock = Empty
+        frm5001.Show
 
-            'Dim frm9988 As New frmPieza
-            ' frm9988.Show
 
+        'Dim frm9988 As New frmPieza
+        ' frm9988.Show
 
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_CONJUNTO:
 
-            frmDefinirConjunto.accion = 0
-            frmDefinirConjunto.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_CONJUNTO:
 
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__LISTADO:
+        frmDefinirConjunto.accion = 0
+        frmDefinirConjunto.Show
 
-            frmListarStock.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__LISTADO:
 
+        frmListarStock.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__NUEVO_MATERIAL: frmMaterialesNuevo.Show
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__RUBROS:
 
-            frmComprasProveedoresRubros.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__NUEVO_MATERIAL: frmMaterialesNuevo.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__RUBROS:
 
+        frmComprasProveedoresRubros.Show
 
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__GRUPOS: frmRubrosGrupos.Show
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__ALMACENES: frmMaterialesAlmacenes.Show
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__LISTADO:
-            Dim frm1112 As New frmMaterialesLista2
-            frm1112.Show
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__HISTORIAL: frmComprasPreciosHistorico.Show
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__NUEVA_TAREA:
 
-            frmNuevaMDO.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__GRUPOS: frmRubrosGrupos.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__ALMACENES: frmMaterialesAlmacenes.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__LISTADO:
+        Dim frm1112 As New frmMaterialesLista2
+        frm1112.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__HISTORIAL: frmComprasPreciosHistorico.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__NUEVA_TAREA:
 
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SECTORES:
+        frmNuevaMDO.Show
 
-            frmSectores.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SECTORES:
 
+        frmSectores.Show
 
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__TAREAS:
 
-            Dim ffff As New frmListaTareas
-            ffff.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__TAREAS:
 
+        Dim ffff As New frmListaTareas
+        ffff.Show
 
 
 
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__CATEGORIA_SUELDOS:
-            Dim F As New frmCategoriasSueldo
-            F.Show
-        Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SUELDO:
-            Dim cs As New CategoriaSueldo
-            cs.EspecificarSueldo
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS:
-            Dim frm6001 As frmPlaneamientoRemitosLista
-            Set frm6001 = New frmPlaneamientoRemitosLista
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__CATEGORIA_SUELDOS:
+        Dim F As New frmCategoriasSueldo
+        F.Show
+    Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SUELDO:
+        Dim cs As New CategoriaSueldo
+        cs.EspecificarSueldo
 
-            frm6001.VerInfoAdministracion = True
-            frm6001.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS:
+        Dim frm6001 As frmPlaneamientoRemitosLista
+        Set frm6001 = New frmPlaneamientoRemitosLista
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC:
+        frm6001.VerInfoAdministracion = True
+        frm6001.Show
 
-            Dim f324 As New frmAdminFacturasEdicion
-            f324.NuevoTipoDocumento = tipoDocumentoContable.Factura
-            f324.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC:
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_NC:
+        Dim f324 As New frmAdminFacturasEdicion
+        f324.NuevoTipoDocumento = tipoDocumentoContable.Factura
+        f324.Show
 
-            Dim f3241 As New frmAdminFacturasEdicion
-            f3241.NuevoTipoDocumento = tipoDocumentoContable.notaCredito
-            f3241.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_NC:
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ND:
+        Dim f3241 As New frmAdminFacturasEdicion
+        f3241.NuevoTipoDocumento = tipoDocumentoContable.notaCredito
+        f3241.Show
 
-            Dim f32412 As New frmAdminFacturasEdicion
-            f32412.NuevoTipoDocumento = tipoDocumentoContable.notaDebito
-            f32412.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ND:
 
+        Dim f32412 As New frmAdminFacturasEdicion
+        f32412.NuevoTipoDocumento = tipoDocumentoContable.notaDebito
+        f32412.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ANTICIPO:
 
-            Dim f324121 As New frmAdminFacturasEdicion
-            f324121.NuevoTipoDocumento = tipoDocumentoContable.Factura
-            f324121.EsAnticipo = True
-            f324121.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ANTICIPO:
 
+        Dim f324121 As New frmAdminFacturasEdicion
+        f324121.NuevoTipoDocumento = tipoDocumentoContable.Factura
+        f324121.EsAnticipo = True
+        f324121.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__FACTURAS:
 
-            frmAdminFacturasEmitidas.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__FACTURAS:
 
+        frmAdminFacturasEmitidas.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__RECIBOS:
 
-            Dim fffff As New frmAdminCobranzasLista
-            fffff.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__RECIBOS:
 
+        Dim fffff As New frmAdminCobranzasLista
+        fffff.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__NUEVO_RECIBO:
 
-            frmAdminCobranzasReservarRecibo.Show
-            
-            
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__NUEVO_RECIBO:
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__DEUDORES:
+        frmAdminCobranzasReservarRecibo.Show
 
-            Dim frm1122 As New frmAdminFacturasAdeudadas2
-            frm1122.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS:
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__DEUDORES:
 
-            Dim frmMover As New frmMovimientoDeFondos
-            frmMover.Show
-            
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA:
-        
+        Dim frm1122 As New frmAdminFacturasAdeudadas2
+        frm1122.Show
+
+
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS:
+
+        Dim frmMover As New frmMovimientoDeFondos
+        frmMover.Show
+
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA:
+
         MsgBox ("Función en desarollo")
 
-'            Dim f12323 As New frmAdminPagosLiquidaciondeCajaCrear
-'            f12323.Show
+        '            Dim f12323 As New frmAdminPagosLiquidaciondeCajaCrear
+        '            f12323.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA:
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA:
         MsgBox ("Función en desarollo")
-        
-'            Dim f12324 As New frmAdminPagosLiquidaciondeCajaLista
-'            f12324.Show
-            
-            
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO:
 
-            Dim f12322 As New frmAdminPagosCrearOrdenPago
-            f12322.Show
+        '            Dim f12324 As New frmAdminPagosLiquidaciondeCajaLista
+        '            f12324.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA:
-            Dim fffffffffff As New frmAdminPagosOrdenesPagoLista
-            fffffffffff.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO:
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS
-            Dim hdp As New frmCompensatorios
-            hdp.Show
+        Dim f12322 As New frmAdminPagosCrearOrdenPago
+        f12322.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA:
+        Dim fffffffffff As New frmAdminPagosOrdenesPagoLista
+        fffffffffff.Show
 
-            Dim hdp1 As New frmResumenPagos
-            hdp1.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS
+        Dim hdp As New frmCompensatorios
+        hdp.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS
 
-        Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS:
+        Dim hdp1 As New frmResumenPagos
+        hdp1.Show
 
-            frmAdminConfigBancos.Show
 
-        Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS:
-            frmAdminconfigCuentas.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_CLIENTE:
+    Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS:
 
-            Dim frm1111 As New frmAdminMasInfoCliente2
-            frm1111.Show
+        frmAdminConfigBancos.Show
 
+    Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS:
+        frmAdminconfigCuentas.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_CLIENTE:
 
+        Dim frm1111 As New frmAdminMasInfoCliente2
+        frm1111.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_ORDEN_TRABAJO:
 
-            frmAdminResumenOT.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_TOTAL:
-            frmAdminResumenEstadoTotal.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_ORDEN_TRABAJO:
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_PERIODO:
-            frmAdminResumenesFacturacion.Show
- 
-'    '"Crear Recibo de Anticipo"
-'        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO:
-'            frmAdminCobranzasReservarReciboAnticipo.Show
-'
-'   '"Ver Recibos de Anticipo"
-'       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS:
-'            frmAdminCobranzasListaAnticipo.Show
-            
-    '"Ver Detalle de Cta. Cte."
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS:
-            Dim frmcta As New frmCtaCte
-            frmcta.Show
-            
-    '"Resúmen Saldos"
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS:
-            Dim frm1144 As New frmResumenSaldosProv
-            frm1144.TipoPersonaCta = TipoPersona.proveedor_
-            frm1144.caption = "Resúmen de saldos de Proveedores"
-            frm1144.Show
+        frmAdminResumenOT.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS:
-            '            frmAdminCCResumenSaldos.Show
-            Dim frm11441 As New frmResumenSaldosProv
-            frm11441.TipoPersonaCta = TipoPersona.cliente_
-            frm1144.caption = "Resúmen de saldos de Clientes"
-            frm1144.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_TOTAL:
+        frmAdminResumenEstadoTotal.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_VENTAS:
-            Dim f3242 As New frmAdminSubdiariosVentasv2
-            f3242.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_PERIODO:
+        frmAdminResumenesFacturacion.Show
 
+        '    '"Crear Recibo de Anticipo"
+        '        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO:
+        '            frmAdminCobranzasReservarReciboAnticipo.Show
+        '
+        '   '"Ver Recibos de Anticipo"
+        '       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS:
+        '            frmAdminCobranzasListaAnticipo.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_COBRANZAS:
+        '"Ver Detalle de Cta. Cte."
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS:
+        Dim frmcta As New frmCtaCte
+        frmcta.Show
 
-            Dim f4444 As New frmAdminSubdiarioCobranzas
-            f4444.Show
+        '"Resúmen Saldos"
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS:
+        Dim frm1144 As New frmResumenSaldosProv
+        frm1144.TipoPersonaCta = TipoPersona.proveedor_
+        frm1144.caption = "Resúmen de saldos de Proveedores"
+        frm1144.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS:
+        '            frmAdminCCResumenSaldos.Show
+        Dim frm11441 As New frmResumenSaldosProv
+        frm11441.TipoPersonaCta = TipoPersona.cliente_
+        frm1144.caption = "Resúmen de saldos de Clientes"
+        frm1144.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_RETENCIONES:
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_VENTAS:
+        Dim f3242 As New frmAdminSubdiariosVentasv2
+        f3242.Show
 
-            Dim f4445 As New frmAdminSubdiarioRetenciones
-            f4445.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_COBRANZAS:
 
+        Dim f4444 As New frmAdminSubdiarioCobranzas
+        f4444.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_IVACOMPRAS
 
-            Dim f4446 As New frmAdminSubdiarioCompras
-            f4446.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_RETENCIONES:
 
+        Dim f4445 As New frmAdminSubdiarioRetenciones
+        f4445.Show
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA:
-            Dim frm1 As frmAdminComprasNuevaFCProveedor
-            Set frm1 = New frmAdminComprasNuevaFCProveedor
 
-            frm1.Factura = Nothing
-            frm1.Show
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO: frmAdminComprasListaFCProveedor.Show
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_VER: frmAdminComprasPlanCuentasAdmin.Show
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_DEFINIR: frmAdminComprasCuentasDefinir.Show
 
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_IVACOMPRAS
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__PADRON_IIBB:
+        Dim f4446 As New frmAdminSubdiarioCompras
+        f4446.Show
 
-            frmAdminIIBB.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA:
+        Dim frm1 As frmAdminComprasNuevaFCProveedor
+        Set frm1 = New frmAdminComprasNuevaFCProveedor
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__CENTRO_CAMBIO:
+        frm1.Factura = Nothing
+        frm1.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO: frmAdminComprasListaFCProveedor.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_VER: frmAdminComprasPlanCuentasAdmin.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_DEFINIR: frmAdminComprasCuentasDefinir.Show
 
-            frmAdminConfigCambio.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC:
-        
-            frmAdminExtrasReporteCMC.Show
-            
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__PADRON_IIBB:
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES:
-            Dim cccfff As New frmAdminCheques
-            cccfff.Show
+        frmAdminIIBB.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR:
-            Dim dep As New frmDepositarCheque
-            dep.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__CENTRO_CAMBIO:
 
-        Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO:
-            Dim ff111 As New frmVentasClienteNuevo
-            ff111.cliente = Nothing
-            ff111.Show
-            
-        Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO:   frmVentasClientesLista.Show
-        
-        
-        Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__NUEVO:
+        frmAdminConfigCambio.Show
 
-            Dim frmaa As New frmComprasProveedoresModifica
-            frmaa.Show
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC:
 
-        Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__LISTADO:
+        frmAdminExtrasReporteCMC.Show
 
 
-            frmComprasProveedoresLista.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES:
+        Dim cccfff As New frmAdminCheques
+        cccfff.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER: frmSistemaAgendaGlobal.Show
-        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO: frmSistemaTablero.Show
-        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA:
-            frmCambiarPassword.Frame1 = "[ " & funciones.GetUserObj.usuario & " ]"
-            frmCambiarPassword.Show
-        
-' Desactivaciones dienemer 11.09.20
-'        Se desactiva AGENDA porque da error. Aparentemente no está desarrollada.
-'        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA:
-'               frmUsuariosAgendaPersonal.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR:
+        Dim dep As New frmDepositarCheque
+        dep.Show
 
-'        Se desactiva EVENTOS porque da error. Para ver luego.
-'        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__EVENTOS:
-'            Dim f2k2 As New frmEventos
-'            f2k2.Show
-'            f2k2.llenar
+    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO:
+        Dim ff111 As New frmVentasClienteNuevo
+        ff111.cliente = Nothing
+        ff111.Show
 
-'       Se desactiva ASIGNACION EVENTOS porque da error. No recuerdo si esto funcionaba
-'        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS___ASIGNACION_EVENTOS
-'            Dim f212l As New frmUsuariosEventos
-'            f212l.Show
+    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO: frmVentasClientesLista.Show
 
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_INICIO_TAREAS_ASIGNADAS
-            Dim F2221KMA As New frmTareasAsignadasInicio
-            F2221KMA.Show
+    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__NUEVO:
 
-        Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_FIN_TAREAS_ASIGNADAS
-            Dim f454 As New frmTareasIniciadasFin
-            f454.Show
+        Dim frmaa As New frmComprasProveedoresModifica
+        frmaa.Show
 
-        Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__DOCUMENTOS
-'            Dim f4442 As New frmDocumentos
-'            f4442.Show
-            MsgBox ("No desarrollado.")
 
-        Case ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__ASOCRUBROS
-            Dim f233 As New frmRubroProveedor
-            f233.Show
+    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__LISTADO:
 
-        Case ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BUSQUEDA_PROGRAMAS
-            Dim f22222 As New frmConsultaProgramasRadan
-            f22222.Show
 
-        Case ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_POSICION_IVA_MENSUAL
-            DAOSubdiarios.PosicionIvaMensual
+        frmComprasProveedoresLista.Show
 
-        Case ID_BUTTON_ADMINISTRACION__COMPRAS__CTA_CTE
-            Dim famigo As New frmCtaCteProv
-            famigo.Show
+
+    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER: frmSistemaAgendaGlobal.Show
+    Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO: frmSistemaTablero.Show
+    Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA:
+        frmCambiarPassword.Frame1 = "[ " & funciones.GetUserObj.usuario & " ]"
+        frmCambiarPassword.Show
+
+        ' Desactivaciones dienemer 11.09.20
+        '        Se desactiva AGENDA porque da error. Aparentemente no está desarrollada.
+        '        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA:
+        '               frmUsuariosAgendaPersonal.Show
+
+        '        Se desactiva EVENTOS porque da error. Para ver luego.
+        '        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__EVENTOS:
+        '            Dim f2k2 As New frmEventos
+        '            f2k2.Show
+        '            f2k2.llenar
+
+        '       Se desactiva ASIGNACION EVENTOS porque da error. No recuerdo si esto funcionaba
+        '        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS___ASIGNACION_EVENTOS
+        '            Dim f212l As New frmUsuariosEventos
+        '            f212l.Show
+
+
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_INICIO_TAREAS_ASIGNADAS
+        Dim F2221KMA As New frmTareasAsignadasInicio
+        F2221KMA.Show
+
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_FIN_TAREAS_ASIGNADAS
+        Dim f454 As New frmTareasIniciadasFin
+        f454.Show
+
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__DOCUMENTOS
+        '            Dim f4442 As New frmDocumentos
+        '            f4442.Show
+        MsgBox ("No desarrollado.")
+
+    Case ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__ASOCRUBROS
+        Dim f233 As New frmRubroProveedor
+        f233.Show
+
+    Case ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BUSQUEDA_PROGRAMAS
+        Dim f22222 As New frmConsultaProgramasRadan
+        f22222.Show
+
+    Case ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_POSICION_IVA_MENSUAL
+        DAOSubdiarios.PosicionIvaMensual
+
+    Case ID_BUTTON_ADMINISTRACION__COMPRAS__CTA_CTE
+        Dim famigo As New frmCtaCteProv
+        famigo.Show
 
     End Select
 End Sub
@@ -680,28 +680,28 @@ Private Sub MDIForm_Load()
             Me.tmrEventos.Enabled = Not funciones.InIDE
 
             frmPrincipal.Show
-            
+
             Me.TrayIcon.text = "Signo Plast Event Handler"
-            
+
             Set Me.TrayIcon.Icon = pic
-                       
-            
-'            Dim idNuevo As Long
-'                If funciones.InIDE Then
-'                    If classP.VerificarSiHayActualizacion(idNuevo) Then
-'                    MsgBox ("Aca tiene que haber texto porque hubo actualización.")
-''                        statusBar(5).text = "** ACTUALIZACION DISPONIBLE **"
-''                        If Permisos.SistemaVerUpdate Then
-''                            Me.Popup.item(2).id = idNuevo
-''                            If Me.Popup.State = xtpPopupStateClosed Then
-''                                Me.Popup.Show
-''                            End If
-''                        End If
-'                    Else
-'                        MsgBox ("No hay nada para decir porque no hubo actualización.")
-'                    End If
-'                End If
-            
+
+
+            '            Dim idNuevo As Long
+            '                If funciones.InIDE Then
+            '                    If classP.VerificarSiHayActualizacion(idNuevo) Then
+            '                    MsgBox ("Aca tiene que haber texto porque hubo actualización.")
+            ''                        statusBar(5).text = "** ACTUALIZACION DISPONIBLE **"
+            ''                        If Permisos.SistemaVerUpdate Then
+            ''                            Me.Popup.item(2).id = idNuevo
+            ''                            If Me.Popup.State = xtpPopupStateClosed Then
+            ''                                Me.Popup.Show
+            ''                            End If
+            ''                        End If
+            '                    Else
+            '                        MsgBox ("No hay nada para decir porque no hubo actualización.")
+            '                    End If
+            '                End If
+
             If LenB(LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)) > 0 And InStr(1, funciones.GetUserObj.usuario, "puesto") Then
                 Dim frmT As New frmTiempoProcesoDetalle
                 frmT.Show 1
@@ -890,7 +890,7 @@ Private Sub CreateRibbonBar()
     ribbonTab.Id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
     'Set ribbonGroup = ribbonTab.Groups.AddGroup("Usuarios y Empleados", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS)
     'AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
-    
+
     'AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
     'AddButton ribbonGroup, "Siniestros", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS, (Permisos.RRHHInformeAccidente Or Permisos.RRHHSiniestros)
     'AddButton ribbonGroup, "Obras Sociales", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS, Permisos.sistemaPanelControlGeneral
@@ -915,7 +915,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Ubicaciones", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__LUGARES, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Actualizaciones", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__VER_ACTUALIZACIONES, Permisos.sistemaPanelControlGeneral
 
-  'RECURSOS HUMANOS--------------------------------------------------------------------------------------------------------------------
+    'RECURSOS HUMANOS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(1, "Recursos Humanos")
     ribbonTab.Id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
@@ -924,8 +924,8 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
     'AddButton ribbonGroup, "Siniestros", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS, (Permisos.RRHHInformeAccidente Or Permisos.RRHHSiniestros)
     AddButton ribbonGroup, "Obras Sociales", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS, Permisos.sistemaPanelControlGeneral, 100
-   
-   
+
+
     'VENTAS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(2, "Ventas")
@@ -1039,7 +1039,7 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Ventas", ID_GROUP.ID_GROUP_ADMINISTRACION__FACTURACION)
 
     AddButton ribbonGroup, "Remitos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS, Permisos.PlanRemitosConsultas
-    
+
     Set cmdBarCtrl = AddButton(ribbonGroup, "Nueva", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA, Permisos.AdminFacturaControl, , xtpControlButtonPopup)
     AddButton ribbonGroup, "Factura", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC, Permisos.AdminFacturaControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Nota de Débito", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ND, Permisos.AdminFacturaControl, , , cmdBarCtrl
@@ -1067,17 +1067,17 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Caja y Bancos", ID_GROUP.ID_GROUP_ADMINISTRACION__CAJAYBANCOS)
     AddButton ribbonGroup, "Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Depositos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR, Permisos.AdminCajayBancos
-    
-Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS, , , xtpControlButtonPopup)
+
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS, , , xtpControlButtonPopup)
     AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
 
-    
+
     AddButton ribbonGroup, "Crear Orden Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO, Permisos.AdminOPControl
     AddButton ribbonGroup, "Orden Pago Lista", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas
-    'AddButton ribbonGroup, "Compensatorios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS, Permisos.AdminOPControl
-    'AddButton ribbonGroup, "Resúmen de pagos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS, Permisos.AdminOPConsultas
-    'AddButton ribbonGroup, "Movimiento de Fondos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS, Permisos.AdminOPConsultas
+    AddButton ribbonGroup, "Compensatorios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS, Permisos.AdminOPControl
+    AddButton ribbonGroup, "Resúmen de pagos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS, Permisos.AdminOPConsultas
+    AddButton ribbonGroup, "Movimiento de Fondos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS, Permisos.AdminOPConsultas
 
     AddButton ribbonGroup, "Bancos", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Cuentas", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS, Permisos.AdminCajayBancos
@@ -1110,7 +1110,7 @@ Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BU
     AddButton ribbonGroup, "Retenciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_RETENCIONES, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Posición IVA Mensual", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_POSICION_IVA_MENSUAL, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
 
-' REPORTE DE COMPARACIÓN DE COMPROBANTES SIGNO VS AFIP
+    ' REPORTE DE COMPARACIÓN DE COMPROBANTES SIGNO VS AFIP
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Extras", ID_GROUP.ID_GROUP_ADMINISTRACION__EXTRAS)
     AddButton ribbonGroup, "Comparación Compras", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC, Permisos.AdminSubdiariosControl
     'frmAdminExtrasReporteCMC
@@ -1226,8 +1226,8 @@ End Sub
 
 Private Sub TrayIcon_DblClick()
     Select Case Me.WindowState
-        Case FormWindowStateConstants.vbMinimized, FormWindowStateConstants.vbNormal
-            Me.WindowState = FormWindowStateConstants.vbMaximized
+    Case FormWindowStateConstants.vbMinimized, FormWindowStateConstants.vbNormal
+        Me.WindowState = FormWindowStateConstants.vbMaximized
     End Select
     Me.SetFocus
 End Sub

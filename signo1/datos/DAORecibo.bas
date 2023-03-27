@@ -607,7 +607,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.FontBold = False
         Dim r As retencionRecibo
         For Each r In recibo.retenciones
-            Printer.Print r.FEcha, r.Retencion.nombre, r.NroRetencion, r.valor
+            Printer.Print r.FEcha, r.Retencion.nombre, r.NroRetencion, r.Valor
         Next r
         If recibo.retenciones.count > 0 Then
             Printer.Print "Total Retenciones: " & recibo.TotalRetenciones
@@ -777,23 +777,23 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
         xlWorksheet.Cells(offset, 7).value = rec.TotalEstatico.TotalRecibidoEstatico
         xlWorksheet.Cells(offset, 8).value = rec.ACuentaDisponible
 
-            Select Case rec.estado
-            Case 1
-                xlWorksheet.Cells(offset, 9).value = "Pendiente"
-            Case 2
-                xlWorksheet.Cells(offset, 9).value = "Aprobado"
-            Case 3
-                xlWorksheet.Cells(offset, 9).value = "Anulado"
+        Select Case rec.estado
+        Case 1
+            xlWorksheet.Cells(offset, 9).value = "Pendiente"
+        Case 2
+            xlWorksheet.Cells(offset, 9).value = "Aprobado"
+        Case 3
+            xlWorksheet.Cells(offset, 9).value = "Anulado"
         End Select
-        
-        
-'        xlWorksheet.Cells(offset, 9).value = rec.EstadoRecibo
-'    Pendiente = 1
-'    Aprobado = 2
-'    Reciboanulado = 3
-'End Enum
-        
-        
+
+
+        '        xlWorksheet.Cells(offset, 9).value = rec.EstadoRecibo
+        '    Pendiente = 1
+        '    Aprobado = 2
+        '    Reciboanulado = 3
+        'End Enum
+
+
     Next
 
     xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 9)).Borders.LineStyle = xlContinuous

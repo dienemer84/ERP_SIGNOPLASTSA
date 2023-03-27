@@ -18,7 +18,7 @@ Public Function FindAll(Optional ByVal filter As String = vbNullString, _
                         Optional fetchUsuarioAprobador As Boolean = False, _
                         Optional fetchUsuarioCreador As Boolean = False, _
                         Optional fetchMateriales As Boolean = False _
-                        ) As Collection
+                      ) As Collection
 
     On Error GoTo err1
     Dim col As New Collection
@@ -32,18 +32,18 @@ Public Function FindAll(Optional ByVal filter As String = vbNullString, _
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF
         Set reque = New clsRequerimiento
-        reque.id = rs!id
+        reque.Id = rs!Id
         reque.estado = rs!estado
-        reque.FechaCreado = rs!FechaCreado
+        reque.fechaCreado = rs!fechaCreado
         If fetcSector Then reque.Sector = DAOSectores.GetById(rs!idSector)         '''''''''''''''''
         If fetchUsuarioAprobador Then reque.Usuario_aprobador = DAOUsuarios.GetById(rs!idUsuarioAprobador)    '''''''''''''''''
         If fetchUsuarioCreador Then reque.Usuario_creador = DAOUsuarios.GetById(rs!idUsuarioCreador)    '''''''''''''''''
         reque.DestinoOT = rs!idpedido
         reque.Tipo = rs!destino
-        If fetchMateriales Then reque.Materiales = DAORequeMateriales.GetByReque(rs!id)          '''''''''''''''''
+        If fetchMateriales Then reque.Materiales = DAORequeMateriales.GetByReque(rs!Id)          '''''''''''''''''
         reque.Guardado = rs!Guardado
         '   reque.Conceptos = DAORequeConceptos.GetByIdDetalleReque(rs!id)
-        col.Add reque, CStr(reque.id)
+        col.Add reque, CStr(reque.Id)
         rs.MoveNext
     Wend
 
@@ -65,7 +65,7 @@ err1:
 End Function
 
 Public Function Guardar(T As clsRequerimiento) As Boolean
-    Dim id_ As Long
+    Dim Id_ As Long
     Dim antGuardado As Date
     Dim nuevo As Boolean
     On Error GoTo err1
@@ -75,16 +75,16 @@ Public Function Guardar(T As clsRequerimiento) As Boolean
     antGuardado = T.Guardado
     nuevo = True
 
-    If T.id > 0 Then
+    If T.Id > 0 Then
         nuevo = False
 
-        Set req = FindById(T.id, True, True, True, True)
+        Set req = FindById(T.Id, True, True, True, True)
 
         Dim usuApro As Long
         If req.Guardado = T.Guardado Then
             T.Guardado = Now
-            If T.Usuario_aprobador Is Nothing Then usuApro = 0 Else usuApro = T.Usuario_aprobador.id
-            Guardar = conectar.execute("update ComprasRequerimientos set idSector=" & T.Sector.id & ",idPedido=" & T.DestinoOT & ", guardado=" & conectar.Escape(T.Guardado) & ",destino=" & T.Tipo & ",estado=" & T.estado & ",idUsuarioAprobador=" & usuApro & " where id=" & T.id)
+            If T.Usuario_aprobador Is Nothing Then usuApro = 0 Else usuApro = T.Usuario_aprobador.Id
+            Guardar = conectar.execute("update ComprasRequerimientos set idSector=" & T.Sector.Id & ",idPedido=" & T.DestinoOT & ", guardado=" & conectar.Escape(T.Guardado) & ",destino=" & T.Tipo & ",estado=" & T.estado & ",idUsuarioAprobador=" & usuApro & " where id=" & T.Id)
         Else
             MsgBox "El requerimiento ya fue guardado con anterioridad en otra sesión!", vbInformation, "Información"
             Guardar = False
@@ -95,9 +95,9 @@ Public Function Guardar(T As clsRequerimiento) As Boolean
     Else
 
         T.Guardado = Now
-        Guardar = conectar.execute("insert into ComprasRequerimientos (idSector, estado, idPedido, FechaCreado, idUsuarioCreador, idUsuarioAprobador, destino,guardado)   values  (" & T.Sector.id & "," & T.estado & "," & T.DestinoOT & ",'" & funciones.dateFormateada(T.FechaCreado) & "'," & GetEntityId(T.Usuario_creador) & "," & GetEntityId(T.Usuario_aprobador) & "," & T.Tipo & ",'" & funciones.datetimeFormateada(T.Guardado) & "')")
-        conectar.UltimoId "ComprasRequerimientos", id_
-        T.id = id_
+        Guardar = conectar.execute("insert into ComprasRequerimientos (idSector, estado, idPedido, FechaCreado, idUsuarioCreador, idUsuarioAprobador, destino,guardado)   values  (" & T.Sector.Id & "," & T.estado & "," & T.DestinoOT & ",'" & funciones.dateFormateada(T.fechaCreado) & "'," & GetEntityId(T.Usuario_creador) & "," & GetEntityId(T.Usuario_aprobador) & "," & T.Tipo & ",'" & funciones.datetimeFormateada(T.Guardado) & "')")
+        conectar.UltimoId "ComprasRequerimientos", Id_
+        T.Id = Id_
     End If
 
     If Not DAORequeMateriales.Save(T) Then
@@ -111,7 +111,7 @@ Public Function Guardar(T As clsRequerimiento) As Boolean
 
 
 err1:
-    If nuevo Then T.id = 0
+    If nuevo Then T.Id = 0
     Set req = Nothing
     T.Guardado = antGuardado
     Guardar = False
@@ -149,7 +149,7 @@ Public Function aprobar(T As clsRequerimiento) As Boolean
         aprobar = Save(T)
         If aprobar Then
             DAORequeHistorial.agregar T, "REQUERIMIENTO APROBADO"
-            DAOEvento.Publish T.id, TEB_RequerimientoCompraAprobado
+            DAOEvento.Publish T.Id, TEB_RequerimientoCompraAprobado
         End If
     End If
     Exit Function
@@ -173,7 +173,7 @@ Public Function finalizar(T As clsRequerimiento) As Boolean
         finalizar = Save(T)
         If finalizar Then
             DAORequeHistorial.agregar T, "REQUERIMIENTO FINALIZADO"
-            DAOEvento.Publish T.id, TEB_RequerimientoCompraFinalizado
+            DAOEvento.Publish T.Id, TEB_RequerimientoCompraFinalizado
         End If
     End If
 
@@ -227,7 +227,7 @@ Public Function procesar(T As clsRequerimiento) As Boolean
         Dim i As Long
         For i = 1 To T.Materiales.count
             Set tmpMat = T.Materiales.item(i)
-            T.Materiales.item(i).ListaProveedores = DAOProveedor.FindAllByRubro(tmpMat.Material.Grupo.rubros.id)      'DAORequeProveedores.GetByRubro(T.Materiales.Item(I).id, material_)
+            T.Materiales.item(i).ListaProveedores = DAOProveedor.FindAllByRubro(tmpMat.Material.Grupo.rubros.Id)      'DAORequeProveedores.GetByRubro(T.Materiales.Item(I).id, material_)
         Next i
 
         procesar = Save(T)
@@ -317,7 +317,7 @@ Public Function Anular(T As clsRequerimiento) As Boolean
     Dim pos As New Collection
     Dim po As clsPeticionOferta
     Dim pod As clsPeticionOfertaDetalle
-    Set pos = DAOPeticionOferta.GetAll("and id_reque=" & T.id)
+    Set pos = DAOPeticionOferta.GetAll("and id_reque=" & T.Id)
     For Each po In pos
         For Each pod In po.detalle
             pod.estado = EPOD_Anulado
@@ -331,7 +331,7 @@ Public Function Anular(T As clsRequerimiento) As Boolean
 
     If Anular Then
         DAORequeHistorial.agregar T, "REQUERIMIENTO ANULADO"
-        DAOEvento.Publish T.id, TEB_RequerimientoCompraAnulado
+        DAOEvento.Publish T.Id, TEB_RequerimientoCompraAnulado
     Else
         GoTo err1
     End If
@@ -366,7 +366,7 @@ Public Sub ExportExcel(reqId As Long, withOCProveedoresColumn As Boolean)
     xlWorksheet.Cells(2, 1).value = "Sector Solicitante"
     xlWorksheet.Cells(2, 2).value = req.Sector.Sector
     xlWorksheet.Cells(3, 1).value = "Fecha Creación"
-    xlWorksheet.Cells(3, 2).value = req.FechaCreado
+    xlWorksheet.Cells(3, 2).value = req.fechaCreado
     xlWorksheet.Cells(4, 1).value = "Destino"
     xlWorksheet.Cells(4, 2).value = req.StringDestino
 
@@ -440,8 +440,8 @@ Public Sub ExportExcel(reqId As Long, withOCProveedoresColumn As Boolean)
 
         For Each MAT In req.Materiales
             For Each prov In MAT.ListaProveedores
-                If Not funciones.BuscarEnColeccion(proveedoresIdx, CStr(prov.id)) Then
-                    proveedoresIdx.Add colIdx, CStr(prov.id)
+                If Not funciones.BuscarEnColeccion(proveedoresIdx, CStr(prov.Id)) Then
+                    proveedoresIdx.Add colIdx, CStr(prov.Id)
                     xlWorksheet.Cells(rowStart + 1, colIdx).value = truncar(prov.RazonSocial, 13)
                     xlWorksheet.Cells(rowStart + 1, colIdx).Font.Size = 6
 
@@ -472,7 +472,7 @@ Public Sub ExportExcel(reqId As Long, withOCProveedoresColumn As Boolean)
     rowStart = rowStart + 2
     Dim poDetalle As clsPeticionOfertaDetalle
     Dim colPoDet As Collection
-    Dim b As Long
+    Dim B As Long
     For Each MAT In req.Materiales
         xlWorksheet.Cells(rowStart, 1).value = MAT.Material.codigo
         xlWorksheet.Cells(rowStart + 1, 1).value = enums.enumEstadoRequeCompra(MAT.estado)
@@ -489,22 +489,22 @@ Public Sub ExportExcel(reqId As Long, withOCProveedoresColumn As Boolean)
         xlWorksheet.Cells(rowStart + 1, 3).value = enums.enumUnidades(MAT.Material.UnidadCompra)
         xlWorksheet.Cells(rowStart + 2, 3).value = enums.enumUnidades(MAT.Material.unidad)
 
-        xlWorksheet.Cells(rowStart, 4).value = MAT.Material.Grupo.rubros.Rubro & " " & MAT.Material.Grupo.Grupo & " " & MAT.Material.descripcion
+        xlWorksheet.Cells(rowStart, 4).value = MAT.Material.Grupo.rubros.rubro & " " & MAT.Material.Grupo.Grupo & " " & MAT.Material.descripcion
         xlWorksheet.Cells(rowStart + 1, 4).value = funciones.JoinCollectionValues(MAT.Material.Atributos, ", ")
 
-        If Len(MAT.Observaciones) > 0 Then xlWorksheet.Cells(rowStart + 2, 4).value = "Observaciones: " & MAT.Observaciones
+        If Len(MAT.observaciones) > 0 Then xlWorksheet.Cells(rowStart + 2, 4).value = "Observaciones: " & MAT.observaciones
 
         If withOCProveedoresColumn Then
-            Set colPoDet = DAOPeticionOfertaDetalle.FindAll(, "id_detalle_reque = " & MAT.id)
+            Set colPoDet = DAOPeticionOfertaDetalle.FindAll(, "id_detalle_reque = " & MAT.Id)
             'xlWorksheet.Range(xlWorksheet.Cells(rowStart, 8), xlWorksheet.Cells(rowStart, colIdx)).Interior.Color = Information.RGB(215, 215, 215)
 
             If MAT.Entregas.count > 3 Then
-                b = rowStart + MAT.Entregas.count
+                B = rowStart + MAT.Entregas.count
             Else
-                b = rowStart + 2
+                B = rowStart + 2
             End If
 
-            xlWorksheet.Range(xlWorksheet.Cells(rowStart, 8), xlWorksheet.Cells(b, colIdx)).Interior.Color = Information.RGB(215, 215, 215)
+            xlWorksheet.Range(xlWorksheet.Cells(rowStart, 8), xlWorksheet.Cells(B, colIdx)).Interior.Color = Information.RGB(215, 215, 215)
 
 
 
@@ -514,17 +514,17 @@ Public Sub ExportExcel(reqId As Long, withOCProveedoresColumn As Boolean)
 
                 For Each poDetalle In colPoDet
                     If MAT.estado <> Anulado And MAT.estado <> AnuladoParcial Then
-                        xlWorksheet.Cells(rowStart, proveedoresIdx(CStr(poDetalle.ProveedorId))).value = poDetalle.Moneda.NombreCorto & " " & funciones.FormatearDecimales(poDetalle.Valor)
+                        xlWorksheet.Cells(rowStart, proveedoresIdx(CStr(poDetalle.ProveedorId))).value = poDetalle.moneda.NombreCorto & " " & funciones.FormatearDecimales(poDetalle.Valor)
                         xlWorksheet.Cells(rowStart, proveedoresIdx(CStr(poDetalle.ProveedorId))).HorizontalAlignment = xlRight
                         xlWorksheet.Range(xlWorksheet.Cells(rowStart, proveedoresIdx(CStr(poDetalle.ProveedorId))), xlWorksheet.Cells(rowStart + 1, proveedoresIdx(CStr(poDetalle.ProveedorId)))).Interior.Color = vbWhite
                         If MAT.Entregas.count > 3 Then
-                            b = rowStart + MAT.Entregas.count
+                            B = rowStart + MAT.Entregas.count
                         Else
-                            b = rowStart + 3
+                            B = rowStart + 3
                         End If
 
 
-                        xlWorksheet.Range(xlWorksheet.Cells(rowStart + 1, proveedoresIdx(CStr(poDetalle.ProveedorId))), xlWorksheet.Cells(b - 1, proveedoresIdx(CStr(poDetalle.ProveedorId)))).Merge
+                        xlWorksheet.Range(xlWorksheet.Cells(rowStart + 1, proveedoresIdx(CStr(poDetalle.ProveedorId))), xlWorksheet.Cells(B - 1, proveedoresIdx(CStr(poDetalle.ProveedorId)))).Merge
 
 
 
@@ -534,8 +534,8 @@ Public Sub ExportExcel(reqId As Long, withOCProveedoresColumn As Boolean)
         End If
 
         tmpValue = rowStart
-        Dim a As Long
-        a = rowStart
+        Dim A As Long
+        A = rowStart
         For Each ent In MAT.Entregas
             xlWorksheet.Cells(tmpValue, 5).value = ent.FEcha
             xlWorksheet.Cells(tmpValue, 6).value = ent.Cantidad
@@ -603,7 +603,7 @@ Public Sub ExportExcel(reqId As Long, withOCProveedoresColumn As Boolean)
     xlWorksheet.PageSetup.FitToPagesTall = 1
 
     Dim filename As String
-    filename = funciones.GetTmpPath() & "Requerimiento Materiales Nº " & req.id & ".xls"
+    filename = funciones.GetTmpPath() & "Requerimiento Materiales Nº " & req.Id & ".xls"
 
     If Dir(filename) <> vbNullString Then Kill filename
 

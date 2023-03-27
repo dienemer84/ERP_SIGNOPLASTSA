@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmNotasNoConformidad 
    Caption         =   "Notas de No Conformidad"
    ClientHeight    =   6375
@@ -164,7 +164,7 @@ Private Sub gridNotas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As 
         Values(4) = Nota.TiempoProceso.DetalleOt.Pieza.nombre
         Values(5) = Nota.FechaCreacion
         If CDbl(Nota.FechaResolucion) > 0 Then Values(6) = Nota.FechaResolucion
-        If IsSomething(Nota.UsuarioCreador) Then Values(7) = Nota.UsuarioCreador.usuario
+        If IsSomething(Nota.usuarioCreador) Then Values(7) = Nota.usuarioCreador.usuario
         Values(8) = enums.EnumEstadoNNC(Nota.estado)
         Values(9) = Nota.TareaOrigen.Tarea
     End If

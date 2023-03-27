@@ -287,7 +287,7 @@ End Function
 '// Metric conversion
 '//***************************************************************************************
 Public Function ScreenRectToClient(hWnd As Long, lpRect As RECT)
-    '//**** Convert Left and Top positions ****
+'//**** Convert Left and Top positions ****
     Dim Pt As POINTAPI
     Pt.x = lpRect.Left: Pt.y = lpRect.Top
     Call ScreenToClient(hWnd, Pt)
@@ -295,7 +295,7 @@ Public Function ScreenRectToClient(hWnd As Long, lpRect As RECT)
     Call OffsetRect(lpRect, (Pt.x - lpRect.Left), (Pt.y - lpRect.Top))
 End Function
 Public Function ClientRectToScreen(hWnd As Long, lpRect As RECT)
-    '//**** Convert Left and Top positions ****
+'//**** Convert Left and Top positions ****
     Dim Pt As POINTAPI
     Pt.x = lpRect.Left: Pt.y = lpRect.Top
     Call ClientToScreen(hWnd, Pt)

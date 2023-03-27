@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmUsuariosAgendaPersonal 
    BackColor       =   &H00FF8080&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -128,7 +128,6 @@ Begin VB.Form frmUsuariosAgendaPersonal
       ViewHeaderCell  =   5
       ViewSelCell     =   5
       ViewEmptyCell   =   4
-      DayCount        =   30
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -213,7 +212,7 @@ Private Sub verEventos()
     Dim x As ListItem
     Set rs = conectar.RSFactory("select id, tipo, memo from usuariosAgenda where month(fecha)=" & Me.stCalendar1.cMonth & " and day(fecha)=" & diahoy & " and idUsuario=" & funciones.getUser)
     While Not rs.EOF
-        Set x = Me.lstEventos.ListItems.Add(, , Format(rs!id, "0000"))
+        Set x = Me.lstEventos.ListItems.Add(, , Format(rs!Id, "0000"))
 
         If rs!Tipo = 0 Then
             Tipo = "Violeta"

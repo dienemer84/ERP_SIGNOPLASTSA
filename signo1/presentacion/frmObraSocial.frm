@@ -65,7 +65,7 @@ Dim os As Collection
 Private Sub Form_Load()
     FormHelper.Customize Me
 
-  
+
 
     CargarOS
 End Sub
@@ -76,15 +76,15 @@ Private Sub CargarOS()
 End Sub
 
 Private Sub grid_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
- Dim o As ObraSocial
- Set o = New ObraSocial
+    Dim o As ObraSocial
+    Set o = New ObraSocial
     With o
-   
+
         .nombre = Values(1)
-        
+
     End With
     If DAOObraSocial.Save(o) Then
-        os.Add o, CStr(o.id)
+        os.Add o, CStr(o.Id)
     Else
         MsgBox "Hubo un error al guardar los valores"
     End If
@@ -92,26 +92,26 @@ Private Sub grid_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, By
 End Sub
 
 Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-   If RowIndex > os.count Then Exit Sub
-    
-  Dim o As ObraSocial
+    If RowIndex > os.count Then Exit Sub
+
+    Dim o As ObraSocial
     Set o = os.item(RowIndex)
     With o
         Values(1) = .nombre
-        
+
     End With
 End Sub
 
 Private Sub grid_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-If RowIndex > os.count Then Exit Sub
-    
-    
-  Dim o As ObraSocial
+    If RowIndex > os.count Then Exit Sub
+
+
+    Dim o As ObraSocial
     Set o = os.item(RowIndex)
     With o
-    
+
         .nombre = Values(1)
-        
+
     End With
     If Not DAOObraSocial.Save(o) Then MsgBox "Hubo un error al guardar los valores"
 End Sub

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmConsultaProgramasRadan 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Consulta de programas de Radan©"
@@ -157,7 +157,7 @@ Private Sub btnBuscar_Click()
 
     Dim piezasId As New Collection
     For Each Pieza In piezas
-        piezasId.Add Pieza.id
+        piezasId.Add Pieza.Id
     Next Pieza
     If piezasId.count = 0 Then
         Set Detalles = New Collection
@@ -179,7 +179,7 @@ Private Sub btnBuscar_Click()
         Set Pieza = piezas.item(CStr(archivo.IdReferencia))
 
         For Each detalle In Detalles
-            If detalle.Pieza.id = Pieza.id Then
+            If detalle.Pieza.Id = Pieza.Id Then
                 found = True
                 Set dtoArchivo = New DTOArchivoOT
                 dtoArchivo.Comentario = archivo.Comentario
@@ -187,7 +187,7 @@ Private Sub btnBuscar_Click()
                 dtoArchivo.SubidoPor = archivo.usuario.usuario
 
                 dtoArchivo.Pieza = detalle.Pieza.nombre
-                dtoArchivo.Ot = detalle.OrdenTrabajo.id
+                dtoArchivo.Ot = detalle.OrdenTrabajo.Id
                 dtoArchivo.item = detalle.item
 
                 dtosArchivo.Add dtoArchivo
@@ -195,7 +195,7 @@ Private Sub btnBuscar_Click()
         Next detalle
 
         For Each detalleConjunto In detallesConjunto
-            If detalleConjunto.Pieza.id = Pieza.id Then
+            If detalleConjunto.Pieza.Id = Pieza.Id Then
                 found = True
 
                 Set dtoArchivo = New DTOArchivoOT
@@ -252,7 +252,7 @@ Private Sub btnBuscar_Click()
         dtoArchivo.SubidoPor = archivo.usuario.usuario
 
         dtoArchivo.Pieza = detalle.Pieza.nombre
-        dtoArchivo.Ot = detalle.OrdenTrabajo.id
+        dtoArchivo.Ot = detalle.OrdenTrabajo.Id
         dtoArchivo.item = detalle.item
         dtosArchivo.Add dtoArchivo
     Next archivo
@@ -305,12 +305,12 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
     If RowIndex > 0 And dtosArchivo.count > 0 Then
         Set dtoArchivo = dtosArchivo.item(RowIndex)
 
-        Values(Me.grid.Columns("pieza").index) = dtoArchivo.Pieza
-        Values(Me.grid.Columns("programa").index) = dtoArchivo.Programa
-        Values(Me.grid.Columns("ot").index) = dtoArchivo.Ot
-        Values(Me.grid.Columns("item").index) = dtoArchivo.item
-        Values(Me.grid.Columns("subidopor").index) = dtoArchivo.SubidoPor
-        Values(Me.grid.Columns("comentario").index) = dtoArchivo.Comentario
+        Values(Me.grid.Columns("pieza").Index) = dtoArchivo.Pieza
+        Values(Me.grid.Columns("programa").Index) = dtoArchivo.Programa
+        Values(Me.grid.Columns("ot").Index) = dtoArchivo.Ot
+        Values(Me.grid.Columns("item").Index) = dtoArchivo.item
+        Values(Me.grid.Columns("subidopor").Index) = dtoArchivo.SubidoPor
+        Values(Me.grid.Columns("comentario").Index) = dtoArchivo.Comentario
     End If
 
 End Sub

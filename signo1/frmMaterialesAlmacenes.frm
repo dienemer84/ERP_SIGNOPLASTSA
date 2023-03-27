@@ -73,7 +73,7 @@ End Sub
 
 Private Sub GridEX1_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set tmpAlmacen = New clsAlmacen
-    tmpAlmacen.id = 0
+    tmpAlmacen.Id = 0
     tmpAlmacen.almacen = Values(1)
     almacenes.Add tmpAlmacen
     If DAOAlmacenes.Save(tmpAlmacen) Then MsgBox "Alta exitosa!", vbInformation, "Información"

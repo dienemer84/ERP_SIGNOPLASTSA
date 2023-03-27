@@ -234,14 +234,14 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.grilla, False, True
-    Me.caption = "O/T " & Format(id, "0000")
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id)
+    Me.caption = "O/T " & Format(Id, "0000")
+    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
     Set deta = Ot.Detalles
     llenarLista
     id_suscriber = funciones.CreateGUID
-    
-        'Me.caption = caption & " (" & Name & ")"
-        
+
+    'Me.caption = caption & " (" & Name & ")"
+
 End Sub
 Private Sub llenarLista()
     grilla.ItemCount = deta.count
@@ -310,7 +310,7 @@ End Sub
 Private Sub imprimir_lista()
     Exit Sub
     Dim rs As Recordset
-    Set rs = conectar.RSFactory("select idCliente from pedidos where id=" & id)
+    Set rs = conectar.RSFactory("select idCliente from pedidos where id=" & Id)
     If Not rs.EOF And Not rs.BOF Then
         cli = rs!idCliente
     End If
@@ -321,7 +321,7 @@ Private Sub imprimir_lista()
     Printer.Font.Bold = True
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.Print
-    Printer.Print "LISTA DE ELEMENTOS EN STOCK O/T " & id
+    Printer.Print "LISTA DE ELEMENTOS EN STOCK O/T " & Id
     Printer.Print
     Printer.Print "Cliente: " & cli & " - " & clie
     Printer.Print
@@ -334,7 +334,7 @@ Private Sub imprimir_lista()
     Printer.Print "En stock";
     Printer.Print Tab(80);
     Printer.Print "Reserva"
-    Set rs = conectar.RSFactory("select dp.item,s.detalle_stock as donde,s.detalle,dp.cantidad as Pedidos,s.cantidad as EnStock, if (dp.cantidad>s.Cantidad,s.cantidad,dp.cantidad) as reserva from detalles_pedidos dp inner join stock s on dp.idPieza=s.id where dp.idPedido=" & id & " and s.cantidad>0")
+    Set rs = conectar.RSFactory("select dp.item,s.detalle_stock as donde,s.detalle,dp.cantidad as Pedidos,s.cantidad as EnStock, if (dp.cantidad>s.Cantidad,s.cantidad,dp.cantidad) as reserva from detalles_pedidos dp inner join stock s on dp.idPieza=s.id where dp.idPedido=" & Id & " and s.cantidad>0")
     While Not rs.EOF
         Printer.Print rs!item & " - " & rs!detalle;
         Printer.Print Tab(50);

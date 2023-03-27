@@ -20,9 +20,9 @@ Public Const CAMPO_ID = "id"
 Dim col As Collection
 
 
-Public Function GetAllById(id As Long) As clsPresupuestoDetalle
+Public Function GetAllById(Id As Long) As clsPresupuestoDetalle
 
-    strsql = "SELECT dp.*,s.*, p.* FROM detalle_presupuesto dp LEFT JOIN stock s ON dp.idPieza=s.id  left join presupuestos p on dp.idPresupuesto=p.id WHERE dp.id = " & id & " ORDER BY dp.item"
+    strsql = "SELECT dp.*,s.*, p.* FROM detalle_presupuesto dp LEFT JOIN stock s ON dp.idPieza=s.id  left join presupuestos p on dp.idPresupuesto=p.id WHERE dp.id = " & Id & " ORDER BY dp.item"
 
 
     Set col = New Collection
@@ -38,7 +38,7 @@ Public Function GetAllById(id As Long) As clsPresupuestoDetalle
 
 
 
-        col.Add tmp, CStr(tmp.id)
+        col.Add tmp, CStr(tmp.Id)
         rs.MoveNext
     Wend
 
@@ -63,7 +63,7 @@ Public Function GetAllByPieza(idPieza As Long) As Collection
 
 
 
-        col.Add tmp, CStr(tmp.id)
+        col.Add tmp, CStr(tmp.Id)
         rs.MoveNext
     Wend
 
@@ -74,7 +74,7 @@ End Function
 
 Public Function GetAllByPresupuesto(T As clsPresupuesto) As Collection
 
-    strsql = "SELECT dp.*,s.*,p.*  FROM detalle_presupuesto dp LEFT JOIN stock s ON dp.idPieza=s.id left join presupuestos p on dp.idPresupuesto=p.id WHERE dp.idPresupuesto = " & T.id & " ORDER BY dp.item"
+    strsql = "SELECT dp.*,s.*,p.*  FROM detalle_presupuesto dp LEFT JOIN stock s ON dp.idPieza=s.id left join presupuestos p on dp.idPresupuesto=p.id WHERE dp.idPresupuesto = " & T.Id & " ORDER BY dp.item"
 
 
     Set col = New Collection
@@ -90,7 +90,7 @@ Public Function GetAllByPresupuesto(T As clsPresupuesto) As Collection
 
 
 
-        col.Add tmp, CStr(tmp.id)
+        col.Add tmp, CStr(tmp.Id)
         rs.MoveNext
     Wend
 
@@ -103,13 +103,13 @@ Public Function Save(T As clsPresupuesto) As Boolean
     Save = True
     'elimino los datos viejos
     Dim tmp As clsPresupuestoDetalle
-    conectar.execute "delete from detalle_presupuesto where idPresupuesto=" & T.id
+    conectar.execute "delete from detalle_presupuesto where idPresupuesto=" & T.Id
 
     For i = 1 To T.DetallePresupuesto.count
         Set tmp = T.DetallePresupuesto.item(i)
         If tmp.entrega = 0 Then tmp.entrega = T.FechaEntrega
         If T.FechaEntrega = 0 Then tmp.entrega = 0
-        strsql = "insert into detalle_presupuesto (indice_ajuste,idpresupuesto,item,idpieza,cantidad,valorunitario,valorUnitarioManual,masDetalles,entregaItem,amort,forma_cotizar) VALUES (" & tmp.indiceAjuste & " ," & T.id & ",'" & tmp.item & "'," & tmp.Pieza.id & "," & tmp.Cantidad & "," & tmp.ValorManual & "," & tmp.ValorSistema & ",'" & tmp.Detalles & "'," & tmp.entrega & "," & tmp.Amortizacion & "," & tmp.FormaCotizar & ")"
+        strsql = "insert into detalle_presupuesto (indice_ajuste,idpresupuesto,item,idpieza,cantidad,valorunitario,valorUnitarioManual,masDetalles,entregaItem,amort,forma_cotizar) VALUES (" & tmp.indiceAjuste & " ," & T.Id & ",'" & tmp.item & "'," & tmp.Pieza.Id & "," & tmp.Cantidad & "," & tmp.ValorManual & "," & tmp.ValorSistema & ",'" & tmp.Detalles & "'," & tmp.entrega & "," & tmp.Amortizacion & "," & tmp.FormaCotizar & ")"
         conectar.execute strsql
     Next
     Exit Function
@@ -118,25 +118,25 @@ er1:
 End Function
 
 
-Public Function Map(ByRef rs As Recordset, index As Dictionary, ByRef tableNameOrAlias As String, Optional tablePieza As String = vbNullString) As clsPresupuestoDetalle
-    Dim id As Long
-    id = GetValue(rs, index, tableNameOrAlias, CAMPO_ID)
-    If id > 0 Then
+Public Function Map(ByRef rs As Recordset, Index As Dictionary, ByRef tableNameOrAlias As String, Optional tablePieza As String = vbNullString) As clsPresupuestoDetalle
+    Dim Id As Long
+    Id = GetValue(rs, Index, tableNameOrAlias, CAMPO_ID)
+    If Id > 0 Then
         Set tmpPresupuestoDetalle = New clsPresupuestoDetalle
-        tmpPresupuestoDetalle.Cantidad = GetValue(rs, index, tableNameOrAlias, CAMPO_CANTIDAD)
-        tmpPresupuestoDetalle.Amortizacion = GetValue(rs, index, tableNameOrAlias, CAMPO_AMORT)
-        tmpPresupuestoDetalle.entrega = GetValue(rs, index, tableNameOrAlias, CAMPO_ENTREGA_ITEM)
-        tmpPresupuestoDetalle.FormaCotizar = GetValue(rs, index, tableNameOrAlias, CAMPO_FORMA_COTIZAR)
-        tmpPresupuestoDetalle.id = id
-        tmpPresupuestoDetalle.FechaPresupuesto = GetValue(rs, index, "p", "fecha")
-        tmpPresupuestoDetalle.idPreuspuesto = GetValue(rs, index, tableNameOrAlias, "idPresupuesto")
-        tmpPresupuestoDetalle.item = GetValue(rs, index, tableNameOrAlias, CAMPO_ITEM)
+        tmpPresupuestoDetalle.Cantidad = GetValue(rs, Index, tableNameOrAlias, CAMPO_CANTIDAD)
+        tmpPresupuestoDetalle.Amortizacion = GetValue(rs, Index, tableNameOrAlias, CAMPO_AMORT)
+        tmpPresupuestoDetalle.entrega = GetValue(rs, Index, tableNameOrAlias, CAMPO_ENTREGA_ITEM)
+        tmpPresupuestoDetalle.FormaCotizar = GetValue(rs, Index, tableNameOrAlias, CAMPO_FORMA_COTIZAR)
+        tmpPresupuestoDetalle.Id = Id
+        tmpPresupuestoDetalle.FechaPresupuesto = GetValue(rs, Index, "p", "fecha")
+        tmpPresupuestoDetalle.idPreuspuesto = GetValue(rs, Index, tableNameOrAlias, "idPresupuesto")
+        tmpPresupuestoDetalle.item = GetValue(rs, Index, tableNameOrAlias, CAMPO_ITEM)
         'tmpPresupuestoDetalle.pieza = GetValue(rs, Index, tableNameOrAlias, CAMPO_PIEZA_ID)
-        tmpPresupuestoDetalle.ValorManual = GetValue(rs, index, tableNameOrAlias, CAMPO_PRECIO_SISTEMA)
-        tmpPresupuestoDetalle.ValorSistema = GetValue(rs, index, tableNameOrAlias, CAMPO_PRECIO_MANUAL)
-        tmpPresupuestoDetalle.Detalles = GetValue(rs, index, tableNameOrAlias, CAMPO_MAS_DETALLE)
-        tmpPresupuestoDetalle.indiceAjuste = GetValue(rs, index, tableNameOrAlias, "indice_ajuste")
-        Set tmpPresupuestoDetalle.Pieza = DAOPieza.Map(rs, index, TABLA_PIEZA)
+        tmpPresupuestoDetalle.ValorManual = GetValue(rs, Index, tableNameOrAlias, CAMPO_PRECIO_SISTEMA)
+        tmpPresupuestoDetalle.ValorSistema = GetValue(rs, Index, tableNameOrAlias, CAMPO_PRECIO_MANUAL)
+        tmpPresupuestoDetalle.Detalles = GetValue(rs, Index, tableNameOrAlias, CAMPO_MAS_DETALLE)
+        tmpPresupuestoDetalle.indiceAjuste = GetValue(rs, Index, tableNameOrAlias, "indice_ajuste")
+        Set tmpPresupuestoDetalle.Pieza = DAOPieza.Map(rs, Index, TABLA_PIEZA)
 
         Set Map = tmpPresupuestoDetalle
     End If

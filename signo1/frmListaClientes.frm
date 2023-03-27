@@ -213,7 +213,7 @@ End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Set rectemp = clientes(grilla.RowIndex(Me.grilla.row))
-        Me.numero.caption = "Nro." & Format(rectemp.id, "0000")
+        Me.numero.caption = "Nro." & Format(rectemp.Id, "0000")
         If rectemp.estado = 0 Then
             Me.CambiarEstado.caption = "Activar..."
         ElseIf rectemp.estado = 1 Then
@@ -229,7 +229,7 @@ End Sub
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectemp = clientes.item(RowIndex)
     With rectemp
-        Values(1) = Format(.id, "0000")
+        Values(1) = Format(.Id, "0000")
         Values(2) = UCase(.razon)
         Values(3) = .Domicilio
         Values(4) = .localidad.nombre
@@ -266,7 +266,7 @@ End Function
 Private Sub masContacto_Click()
     If grilla.rowcount > 0 Then
         Set rectemp = clientes(grilla.RowIndex(grilla.row))
-        frmVentasClientesNuevoContacto.Cliente = rectemp
+        frmVentasClientesNuevoContacto.cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
     End If
@@ -304,7 +304,7 @@ End Sub
 Private Sub verDeta()
     If grilla.rowcount Then
         Set rectemp = clientes(grilla.RowIndex(grilla.row))
-        frmVentasClienteNuevo.Cliente = rectemp
+        frmVentasClienteNuevo.cliente = rectemp
         frmVentasClienteNuevo.Show
     End If
 End Sub

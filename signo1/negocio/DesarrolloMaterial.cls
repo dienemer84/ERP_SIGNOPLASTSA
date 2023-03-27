@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As Long
+Public Id As Long
 Public Pieza As Pieza
 Public Scrap As Double
 Public Largo As Double
@@ -99,7 +99,7 @@ Friend Function CalcularDatosMaterial(ByVal idMonedaDestino As Long) As DatosMat
         Kg = funciones.RedondearDecimales(Material.PesoXUnidad * (Me.Largo / 1000) * Me.Cantidad)
         m2ml = funciones.RedondearDecimales(Me.Largo / 1000 * Cantidad)
         Precio = Me.Material.Valor * Me.Material.PesoXUnidad
-        Precio = clasea.realizaCambio(Precio, Me.Material.Moneda.id, idMonedaDestino)
+        Precio = clasea.realizaCambio(Precio, Me.Material.moneda.Id, idMonedaDestino)
         Precio = ((Precio * Me.Largo * scrap_ * 2) / 1000) * Cantidad
         Precio = Precio / 2
 
@@ -110,7 +110,7 @@ Friend Function CalcularDatosMaterial(ByVal idMonedaDestino As Long) As DatosMat
         Kg = funciones.RedondearDecimales(Material.PesoXUnidad * Cantidad)
         m2ml = 0
         Precio = Me.Material.Valor * Material.PesoXUnidad
-        Precio = clasea.realizaCambio(Precio, Me.Material.Moneda.id, idMonedaDestino)
+        Precio = clasea.realizaCambio(Precio, Me.Material.moneda.Id, idMonedaDestino)
         Precio = (Precio * Cantidad)
         dimension_material = Cantidad
         dimension_pieza = Cantidad
@@ -124,7 +124,7 @@ Friend Function CalcularDatosMaterial(ByVal idMonedaDestino As Long) As DatosMat
 
 
 
-        Precio = clasea.realizaCambio(Precio, Me.Material.Moneda.id, idMonedaDestino)
+        Precio = clasea.realizaCambio(Precio, Me.Material.moneda.Id, idMonedaDestino)
         dimension_material = Cantidad & "x" & Me.LargoTerm & "x" & Me.AnchoTerm
         dimension_pieza = Cantidad & "x" & Me.Largo & "x" & Me.Ancho
 
@@ -132,7 +132,7 @@ Friend Function CalcularDatosMaterial(ByVal idMonedaDestino As Long) As DatosMat
 
         m2ml = 0
         Precio = Me.Material.Valor
-        Precio = clasea.realizaCambio(Precio, Me.Material.Moneda.id, idMonedaDestino)
+        Precio = clasea.realizaCambio(Precio, Me.Material.moneda.Id, idMonedaDestino)
         Precio = Precio * Cantidad
 
         Kg = Cantidad

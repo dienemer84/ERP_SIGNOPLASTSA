@@ -5,10 +5,10 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
     Dim r As String
     r = "<FeCAEReq>"
     r = r & "<FeCabReq>"
-    
+
     'Desactivado el 17.07.20 - dnemer
-     r = r & "<EsCredito>" & c.FeCabReq.esCredito & "</EsCredito>"
-     
+    r = r & "<EsCredito>" & c.FeCabReq.esCredito & "</EsCredito>"
+
     r = r & "<CantReg>" & c.FeCabReq.CantReg & "</CantReg>"
     r = r & "<PtoVta>" & c.FeCabReq.PtoVta & "</PtoVta>"
     r = r & "<CbteTipo>" & c.FeCabReq.CbteTipo & "</CbteTipo>"
@@ -33,11 +33,11 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
     If LenB(c.FeDetReq.FECAEDetRequest.FchServHasta) > 0 Then
         r = r & "<FchServHasta>" & c.FeDetReq.FECAEDetRequest.FchServHasta & "</FchServHasta>"
     End If
-    
+
     If LenB(c.FeDetReq.FECAEDetRequest.FchVtoPago) > 0 Then
-        
+
         r = r & "<FchVtoPago>" & c.FeDetReq.FECAEDetRequest.FchVtoPago & "</FchVtoPago>"
-    
+
     End If
     r = r & "<MonId>" & c.FeDetReq.FECAEDetRequest.MonId & "</MonId>"
     r = r & "<MonCotiz>" & c.FeDetReq.FECAEDetRequest.MonCotiz & "</MonCotiz>"
@@ -47,17 +47,17 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
         r = r & "<CbtesAsoc>"
         For Each ca In c.FeDetReq.FECAEDetRequest.CbtesAsoc
             r = r & "<CbteAsoc>"
-            
+
             'Desactivado el 17.07.20 - dnemer
             r = r & "<EsCredito>" & ca.esCredito & "</EsCredito>"
-             r = r & "<CbteFch>" & ca.CbteFch & "</CbteFch>"
+            r = r & "<CbteFch>" & ca.CbteFch & "</CbteFch>"
             r = r & "<Tipo>" & ca.Tipo & "</Tipo>"
             r = r & "<PtoVta>" & ca.PtoVta & "</PtoVta>"
             r = r & "<Nro>" & ca.nro & "</Nro>"
-            
+
             'Desactivado el 17.07.20 - dnemer
             r = r & "<Cuit>" & ca.Cuit & "</Cuit>"
-            
+
             r = r & "</CbteAsoc>"
         Next
         r = r & "</CbtesAsoc>"
@@ -73,7 +73,7 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
             r = r & "<Id>" & T.idTributoCambiar & "</Id>"
             r = r & "<Desc>" & T.Desc & "</Desc>"
             r = r & "<Alic>" & T.Alic & "</Alic>"
-            r = r & "<Importe>" & T.Importe & "</Importe>"
+            r = r & "<Importe>" & T.importe & "</Importe>"
             r = r & "<BaseImp>" & T.BaseImp & "</BaseImp>"
             r = r & "</Tributo>"
         Next
@@ -87,7 +87,7 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
             r = r & "<AlicIva>"
             r = r & "<Id>" & i.idAlicIvaCambiar & "</Id>"
             r = r & "<BaseImp>" & i.BaseImp & "</BaseImp>"
-            r = r & "<Importe>" & i.Importe & "</Importe>"
+            r = r & "<Importe>" & i.importe & "</Importe>"
             r = r & "</AlicIva>"
         Next
         r = r & "</Iva>"
@@ -95,21 +95,21 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
     If c.FeDetReq.FECAEDetRequest.Opcionales.count > 0 Then
         Dim o As Opcional
         r = r & "<Opcionales>"
-        
+
         Dim ox As Opcional
-         For Each ox In c.FeDetReq.FECAEDetRequest.Opcionales
+        For Each ox In c.FeDetReq.FECAEDetRequest.Opcionales
             r = r & "<Opcional>"
             r = r & "<Id>" & ox.idOpcionalCambiar & "</Id>"
             r = r & "<Valor>" & ox.Valor & "</Valor>"
             r = r & "</Opcional>"
         Next
-        
-'        For Each o In c.FeDetReq.FECAEDetRequest.Iva
-'            r = r & "<Opcional>"
-'            r = r & "<Id>" & o.idOpcionalCambiar & "</Id>"
-'            r = r & "<Valor>" & o.Valor & "</Valor>"
-'            r = r & "<Opcional>"
-'        Next
+
+        '        For Each o In c.FeDetReq.FECAEDetRequest.Iva
+        '            r = r & "<Opcional>"
+        '            r = r & "<Id>" & o.idOpcionalCambiar & "</Id>"
+        '            r = r & "<Valor>" & o.Valor & "</Valor>"
+        '            r = r & "<Opcional>"
+        '        Next
         r = r & "</Opcionales>"
     End If
 

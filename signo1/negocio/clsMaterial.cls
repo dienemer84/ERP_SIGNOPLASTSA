@@ -61,17 +61,17 @@ End Property
 Public Property Let FechaValor(nValor As Date)
     vFechaValor = nValor
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
-Public Property Let Moneda(nvalue As clsMoneda)
+Public Property Let moneda(nvalue As clsMoneda)
     Set mMoneda = nvalue
 End Property
-Public Property Get Moneda() As clsMoneda
-    Set Moneda = mMoneda
+Public Property Get moneda() As clsMoneda
+    Set moneda = mMoneda
 End Property
 Public Property Let codigo(nvalue As String)
     vcodigo = nvalue

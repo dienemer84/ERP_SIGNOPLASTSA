@@ -25,7 +25,7 @@ Private vTel As String
 Private vFax As String
 Private vEmail As String
 Private vContacto As String
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 
 Private mContactos As New Collection
 Private vForma_pago As String
@@ -84,11 +84,11 @@ End Property
 Public Property Get bonificacion() As Double
     bonifacion = vBonificacion
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Let direccion(nvalue As String)
     vDireccion = nvalue

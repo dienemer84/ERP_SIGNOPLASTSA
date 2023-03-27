@@ -35,19 +35,19 @@ Public Function FindAll(Optional whereFilter As String = vbNullString) As Collec
     Dim DesarrollosMaterial As New Collection
 
     q = "SELECT " _
-        & " dm.*, g.*, r.*, a.*, mon.*, m.*" _
-        & " FROM desarrollo_material dm" _
-        & " INNER JOIN materiales m" _
-        & " ON m.id = dm.id_material" _
-        & " LEFT JOIN grupos g" _
-        & " ON g.id = m.id_grupo" _
-        & " LEFT JOIN rubros r" _
-        & " ON r.id = g.id_rubro" _
-        & " LEFT JOIN materialesAlmacenes a" _
-        & " ON a.id = m.idAlmacen" _
-        & " LEFT JOIN AdminConfigMonedas mon" _
-        & " ON mon.id = m.id_moneda" _
-        & " WHERE 1 = 1"
+      & " dm.*, g.*, r.*, a.*, mon.*, m.*" _
+      & " FROM desarrollo_material dm" _
+      & " INNER JOIN materiales m" _
+      & " ON m.id = dm.id_material" _
+      & " LEFT JOIN grupos g" _
+      & " ON g.id = m.id_grupo" _
+      & " LEFT JOIN rubros r" _
+      & " ON r.id = g.id_rubro" _
+      & " LEFT JOIN materialesAlmacenes a" _
+      & " ON a.id = m.idAlmacen" _
+      & " LEFT JOIN AdminConfigMonedas mon" _
+      & " ON mon.id = m.id_moneda" _
+      & " WHERE 1 = 1"
 
     If LenB(whereFilter) > 0 Then
         q = q & " AND " & whereFilter
@@ -62,7 +62,7 @@ Public Function FindAll(Optional whereFilter As String = vbNullString) As Collec
 
     While Not rs.EOF
         Set dmat = DAODesarrolloMaterial.Map(rs, fieldsIndex, DAODesarrolloMaterial.TABLA_DESARROLLO_MATERIAL, DAODesarrolloMaterial.TABLA_MATERIAL, DAODesarrolloMaterial.TABLA_GRUPO, DAODesarrolloMaterial.TABLA_RUBRO, DAODesarrolloMaterial.TABLA_ALMACEN, DAODesarrolloMaterial.TABLA_MONEDA)
-        DesarrollosMaterial.Add dmat, CStr(dmat.id)
+        DesarrollosMaterial.Add dmat, CStr(dmat.Id)
         rs.MoveNext
     Wend
 
@@ -84,16 +84,16 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef rubroTableNameOrAlias As String = vbNullString, _
                     Optional ByRef almacenTableNameOrAlias As String = vbNullString, _
                     Optional ByRef monedaTableNameOrAlias As String = vbNullString _
-                    ) As DesarrolloMaterial
+                  ) As DesarrolloMaterial
 
     Dim dm As DesarrolloMaterial
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloMaterial.CAMPO_ID)
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloMaterial.CAMPO_ID)
 
-    If id > 0 Then
+    If Id > 0 Then
         Set dm = New DesarrolloMaterial
-        dm.id = id
+        dm.Id = Id
         dm.Ancho = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloMaterial.CAMPO_ANCHO)
         dm.AnchoTerm = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloMaterial.CAMPO_ANCHO_TERM)
         dm.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloMaterial.CAMPO_CANTIDAD)
@@ -112,24 +112,24 @@ Public Function Save(dm As DesarrolloMaterial, Optional ByVal paraRevision As Bo
 
     Dim q As String
 
-    If dm.id = 0 Then
+    If dm.Id = 0 Then
         q = "INSERT INTO {tabla} " _
-            & " (id_pieza,scrap,largo,ancho,LargoTerm,AnchoTerm,id_material,cantidad,detalle)" _
-            & " Values" _
-            & " ('id_pieza','scrap','largo','ancho','LargoTerm','AnchoTerm','id_material','cantidad','detalle')"
+          & " (id_pieza,scrap,largo,ancho,LargoTerm,AnchoTerm,id_material,cantidad,detalle)" _
+          & " Values" _
+          & " ('id_pieza','scrap','largo','ancho','LargoTerm','AnchoTerm','id_material','cantidad','detalle')"
     Else
         q = "Update {tabla} " _
-            & " SET" _
-            & " id_pieza = 'id_pieza'," _
-            & " scrap = 'scrap'," _
-            & " largo = 'largo'," _
-            & " ancho = 'ancho'," _
-            & " LargoTerm = 'LargoTerm'," _
-            & " AnchoTerm = 'AnchoTerm'," _
-            & " id_material = 'id_material'," _
-            & " cantidad = 'cantidad'," _
-            & " detalle = 'detalle'" _
-            & " WHERE id = 'id'"
+          & " SET" _
+          & " id_pieza = 'id_pieza'," _
+          & " scrap = 'scrap'," _
+          & " largo = 'largo'," _
+          & " ancho = 'ancho'," _
+          & " LargoTerm = 'LargoTerm'," _
+          & " AnchoTerm = 'AnchoTerm'," _
+          & " id_material = 'id_material'," _
+          & " cantidad = 'cantidad'," _
+          & " detalle = 'detalle'" _
+          & " WHERE id = 'id'"
     End If
 
     If paraRevision Then

@@ -6,15 +6,15 @@ Private Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePr
 
 Public Sub ChangeRegionalSettings()
 
-    'http://www.vbforums.com/showthread.php?t=379056
-    'http://msdn.microsoft.com/en-us/library/dd464799%28v=vs.85%29.aspx
-    'Private Const LOCALE_SDECIMAL = &HE '14
-    'Private Const LOCALE_STHOUSAND = &HF '15
-    'Private Const LOCALE_SMONDECIMALSEP = &H16 '22
-    'Private Const LOCALE_SMONTHOUSANDSEP = &H17 '23
+'http://www.vbforums.com/showthread.php?t=379056
+'http://msdn.microsoft.com/en-us/library/dd464799%28v=vs.85%29.aspx
+'Private Const LOCALE_SDECIMAL = &HE '14
+'Private Const LOCALE_STHOUSAND = &HF '15
+'Private Const LOCALE_SMONDECIMALSEP = &H16 '22
+'Private Const LOCALE_SMONTHOUSANDSEP = &H17 '23
 
 
-    'setea las configuraciones reginales para que el sistema ande ok
+'setea las configuraciones reginales para que el sistema ande ok
     SetRegionalSetting 14, "."    'deberia ir en "," pero se caga todo el sistema, no esta internacionalizado
     SetRegionalSetting 15, "."
     SetRegionalSetting 22, ","
@@ -29,13 +29,13 @@ End Function
 
 
 Public Function LeerIni(lpFileName As String, lpAppName As String, lpKeyName As String, Optional vDefault) As String
-    'Los parámetros son:
-    'lpFileName:    La Aplicación (fichero INI)
-    'lpAppName:     La sección que suele estar entrre corchetes
-    'lpKeyName:     Clave
-    'vDefault:      Valor opcional que devolverá
-    '               si no se encuentra la clave.
-    '
+'Los parámetros son:
+'lpFileName:    La Aplicación (fichero INI)
+'lpAppName:     La sección que suele estar entrre corchetes
+'lpKeyName:     Clave
+'vDefault:      Valor opcional que devolverá
+'               si no se encuentra la clave.
+'
     Dim lpString As String
     Dim ltmp As Long
     Dim sRetVal As String
@@ -62,10 +62,10 @@ End Function
 
 
 Sub GuardarIni(lpFileName As String, lpAppName As String, lpKeyName As String, lpString As String)
-    'Guarda los datos de configuración
-    'Los parámetros son los mismos que en LeerIni
-    'Siendo lpString el valor a guardar
-    '
+'Guarda los datos de configuración
+'Los parámetros son los mismos que en LeerIni
+'Siendo lpString el valor a guardar
+'
     Dim ltmp As Long
 
     ltmp = WritePrivateProfileString(lpAppName, lpKeyName, lpString, lpFileName)

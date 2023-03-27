@@ -19,7 +19,7 @@ Public Function GetAll(Optional filtro As String = vbNullString) As Collection
     On Error GoTo err1
     Dim col As New Collection
     Dim idx As Dictionary
-        
+
     Dim moneda As clsMoneda
     Dim q As String
 
@@ -62,7 +62,7 @@ Public Function GetById(Id As Long) As clsMoneda
     Exit Function
 err1:
     Set GetById = Nothing
-    
+
 End Function
 
 Public Sub LlenarCombo(cbo As ComboBox)
@@ -78,7 +78,7 @@ Public Sub LlenarCombo(cbo As ComboBox)
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
     End If
-    
+
 End Sub
 
 

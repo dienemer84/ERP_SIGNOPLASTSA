@@ -398,14 +398,14 @@ Private Sub AnularRto_Click()
 End Sub
 
 Private Sub archivos_Click()
-    
- Dim frmarchi1 As New frmArchivos2
+
+    Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OA_Remitos
     frmarchi1.ObjetoId = tmpRto.Id
     frmarchi1.caption = "Remito " & tmpRto.numero
     frmarchi1.Show
-    
-    
+
+
     frmarchi1.Show
 
 
@@ -450,7 +450,7 @@ Private Sub cmdImprimir_Click()
         If IsNull(Me.dtpHasta) And IsNull(Me.dtpDesde) Then
             q = "PERIODO SIN ESPECIFICAR" & Chr(10)
         End If
-        
+
 
         If LenB(q) > 1 Then
             .HeaderString(jgexHFRight) = q
@@ -466,7 +466,7 @@ Private Sub cmdImprimir_Click()
 End Sub
 
 Private Sub cmdLimpiaEstado_Click()
-Me.cboEstadoFacturado.ListIndex = -1
+    Me.cboEstadoFacturado.ListIndex = -1
 End Sub
 
 Private Sub endRto_Click()
@@ -519,7 +519,7 @@ Private Sub listaRemitos()
     End If
 
 
- If Me.cboEstadoFacturado.ListIndex > -1 Then
+    If Me.cboEstadoFacturado.ListIndex > -1 Then
         filtro = filtro & " and " & DAORemitoS.CAMPO_ESTADO_FACTURADO & "=" & (Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.ListIndex))
     End If
 
@@ -567,18 +567,18 @@ Private Sub Form_Load()
     Me.cboRangos.ListIndex = i
 
 
-Me.cboEstadoFacturado.Clear
-Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoNoFacturado)
-Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoNoFacturado
-Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoNoFacturable)
+    Me.cboEstadoFacturado.Clear
+    Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoNoFacturado)
+    Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoNoFacturado
+    Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoNoFacturable)
 
-Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoNoFacturable
-Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoFacturadoParcial)
-Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoFacturadoParcial
+    Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoNoFacturable
+    Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoFacturadoParcial)
+    Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoFacturadoParcial
 
-Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoFacturadoTotal)
+    Me.cboEstadoFacturado.AddItem enums.EnumEstadoRemitoFacturado(EstadoRemitoFacturado.RemitoFacturadoTotal)
 
-Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoFacturadoTotal
+    Me.cboEstadoFacturado.ItemData(Me.cboEstadoFacturado.NewIndex) = EstadoRemitoFacturado.RemitoFacturadoTotal
 
 
     listaRemitos
@@ -881,7 +881,7 @@ Private Sub txtNroRemito_GotFocus()
     foco Me.txtNroRemito
 End Sub
 Private Sub txtNroRemito_Validate(Cancel As Boolean)
-    '    funciones.ValidarTextBox Me.txtNroRemito, Cancel
+'    funciones.ValidarTextBox Me.txtNroRemito, Cancel
 End Sub
 Private Sub verRto_Click()
     Dim frm As frmPlaneamientoRemitoVer

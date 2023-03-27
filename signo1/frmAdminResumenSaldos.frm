@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmAdminCCResumenSaldos 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -82,7 +82,7 @@ Private Sub llenarLST()
     Set rs = conectar.RSFactory(strsql)
     Me.lstSaldos.ListItems.Clear
     While Not rs.EOF
-        client = Format(rs!id, "0000") & " - " & rs!razon
+        client = Format(rs!Id, "0000") & " - " & rs!razon
         Set x = Me.lstSaldos.ListItems.Add(, , client)
         x.SubItems(1) = funciones.FormatearDecimales(rs!saldo, 2)
         If rs!saldo < 0 Then

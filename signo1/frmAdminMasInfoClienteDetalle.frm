@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmAdminMasInfoClienteDetalle 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -299,7 +299,7 @@ Private Sub Form_Load()
         x.SubItems(8) = funciones.FormatearDecimales(rs!total_facturado * Desc, 2)
         x.SubItems(9) = funciones.FormatearDecimales(rs!no_Facturado, 2)
         x.SubItems(10) = funciones.FormatearDecimales(rs!total_no_facturado * Desc, 2)
-        x.Tag = rs!id
+        x.Tag = rs!Id
         rs.MoveNext
     Wend
     Set rs = Nothing

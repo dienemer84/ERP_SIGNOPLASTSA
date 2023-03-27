@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasArmaPO 
    BackColor       =   &H8000000A&
    BorderStyle     =   1  'Fixed Single
@@ -158,7 +158,7 @@ Private Sub btnCrearPO_Click()
         If potenciales(i).GenerarPetOf Then
             Set tmpCol = New Collection
             tmpCol.Add potenciales(i).detalle
-            tmpCol.Add potenciales(i).Proveedor.id
+            tmpCol.Add potenciales(i).Proveedor.Id
             col.Add tmpCol
         End If
     Next i
@@ -193,7 +193,7 @@ Private Sub btnSeleccionar_Click()
         provid = Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
         Dim i As Long
         For i = 1 To UBound(potenciales, 1)
-            potenciales(i).GenerarPetOf = (potenciales(i).Proveedor.id = provid)
+            potenciales(i).GenerarPetOf = (potenciales(i).Proveedor.Id = provid)
         Next i
 
         Me.grid.ItemCount = 0
@@ -226,7 +226,7 @@ Private Sub FillGrid()
     Dim i As Long
     For Each det In Detalles
         For i = det.ListaProveedores.count To 1 Step -1
-            If DAOPeticionOfertaDetalle.FindAll(, "pod.id_detalle_reque = " & det.id & " and po.id_proveedor = " & det.ListaProveedores(i).id).count > 0 Then
+            If DAOPeticionOfertaDetalle.FindAll(, "pod.id_detalle_reque = " & det.Id & " and po.id_proveedor = " & det.ListaProveedores(i).Id).count > 0 Then
                 det.ListaProveedores.remove i
             End If
         Next i
@@ -247,8 +247,8 @@ Private Sub FillGrid()
             Set pot.detalle = det
             Set pot.Proveedor = prov
 
-            If Not funciones.BuscarEnColeccion(proveedores, CStr(prov.id)) Then
-                proveedores.Add prov, CStr(prov.id)
+            If Not funciones.BuscarEnColeccion(proveedores, CStr(prov.Id)) Then
+                proveedores.Add prov, CStr(prov.Id)
             End If
 
             pot.GenerarPetOf = False
@@ -266,7 +266,7 @@ Private Sub FillGrid()
     Me.cboProveedores.Clear
     For Each prov In proveedores
         Me.cboProveedores.AddItem prov.RazonSocial
-        Me.cboProveedores.ItemData(Me.cboProveedores.NewIndex) = prov.id
+        Me.cboProveedores.ItemData(Me.cboProveedores.NewIndex) = prov.Id
     Next prov
     Me.cboProveedores.ListIndex = -1
 
@@ -279,7 +279,7 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
         Values(1) = pot.Proveedor.RazonSocial
         Values(2) = pot.detalle.RequeId
         Values(3) = pot.detalle.Material.descripcion
-        Values(4) = pot.detalle.Observaciones
+        Values(4) = pot.detalle.observaciones
         Values(5) = pot.GenerarPetOf
     End If
 End Sub

@@ -92,7 +92,7 @@ Private m_InvalidMove As Boolean
 '// Properties
 '//**************************************************************************
 Property Let GridSize(Container As Object, GridSize As Long)
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -122,7 +122,7 @@ Property Let GridSize(Container As Object, GridSize As Long)
     Call RefreshContainer(hWndContainer)
 End Property
 Property Get GridSize(Container As Object) As Long
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -130,7 +130,7 @@ Property Get GridSize(Container As Object) As Long
     GridSize = GetProp(hWndContainer, PropName_GridSize)
 End Property
 Property Let ShowGrid(Container As Object, ShowGrid As Boolean)
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -146,7 +146,7 @@ Property Let ShowGrid(Container As Object, ShowGrid As Boolean)
     Call RefreshContainer(hWndContainer)
 End Property
 Property Get ShowGrid(Container As Object) As Boolean
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -154,7 +154,7 @@ Property Get ShowGrid(Container As Object) As Boolean
     ShowGrid = IIf(GetProp(hWndContainer, PropName_ShowGrid) <> 0, True, False)
 End Property
 Property Let SnapToGrid(Container As Object, SnapToGrid As Boolean)
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -162,7 +162,7 @@ Property Let SnapToGrid(Container As Object, SnapToGrid As Boolean)
     Call SetProp(hWndContainer, PropName_SnapToGrid, IIf(SnapToGrid, 1, 0))
 End Property
 Property Get SnapToGrid(Container As Object) As Boolean
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -170,7 +170,7 @@ Property Get SnapToGrid(Container As Object) As Boolean
     SnapToGrid = IIf(GetProp(hWndContainer, PropName_SnapToGrid) <> 0, True, False)
 End Property
 Property Let AcceptDragDrop(Container As Object, Accept As Boolean)
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -178,7 +178,7 @@ Property Let AcceptDragDrop(Container As Object, Accept As Boolean)
     Call SetProp(hWndContainer, PropName_AcceptDragDrop, IIf(Accept, 1, 0))
 End Property
 Property Get AcceptDragDrop(Container As Object) As Boolean
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -186,7 +186,7 @@ Property Get AcceptDragDrop(Container As Object) As Boolean
     AcceptDragDrop = IIf(GetProp(hWndContainer, PropName_AcceptDragDrop) <> 0, True, False)
 End Property
 Property Let AllowEdit(Container As Object, Allow As Boolean)
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -194,7 +194,7 @@ Property Let AllowEdit(Container As Object, Allow As Boolean)
     Call SetProp(hWndContainer, PropName_AllowEdit, IIf(Allow, 1, 0))
 End Property
 Property Get AllowEdit(Container As Object) As Boolean
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     Dim hWndContainer As Long
     hWndContainer = GetContainerHwnd(Container)
     If (hWndContainer = 0) Then Exit Property
@@ -202,7 +202,7 @@ Property Get AllowEdit(Container As Object) As Boolean
     AllowEdit = IIf(GetProp(hWndContainer, PropName_AllowEdit), True, False)
 End Property
 Private Function GetContainerHwnd(Container As Object) As Long
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     On Error Resume Next
     GetContainerHwnd = Container.hWnd
     On Local Error GoTo 0
@@ -219,7 +219,7 @@ Private Sub RefreshContainer(hWnd As Long)
     Call RedrawWindow(hWnd, ByVal 0&, ByVal 0&, RDW_ERASE Or RDW_ERASENOW Or RDW_INVALIDATE)
 End Sub
 Public Function InitializeContainer(Container As Object, Optional InitializeAllChild As Boolean = True, Optional AcceptDragDrop, Optional AllowEdit, Optional EventObject As ClsEvents) As Boolean
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     On Error Resume Next
     Dim hWnd As Long
     hWnd = Container.hWnd
@@ -292,7 +292,7 @@ Private Sub RemoveFromContainerList(hWnd As Long)
     ContainerList = Left(ContainerList, lStart - 1) & Mid(ContainerList, lEnd + 1)
 End Sub
 Public Sub UnInitializeContainer(Container As Object)
-    '//**** Get the handle of the container ****
+'//**** Get the handle of the container ****
     On Error Resume Next
     Dim hWnd As Long
     hWnd = Container.hWnd
@@ -466,7 +466,7 @@ Private Sub UnSubclassAllChild(hWndContainer As Long)
     Call EnumChildWindows(hWndContainer, AddressOf EnumChildProc, EnumMode_UnSubclass)
 End Sub
 Private Function UnSubclassChild(hWnd As Long) As Boolean
-    '//**** Get the address of the previous procedure ****
+'//**** Get the address of the previous procedure ****
     Dim prevWndProc As Long
     prevWndProc = GetProp(hWnd, PropName_PrevWndProc)
 
@@ -511,18 +511,18 @@ End Function
 Private Function EnumChildProc(ByVal hWnd As Long, ByVal lParam As Long) As Long
     Select Case lParam
 
-        Case EnumMode_EnableDrag
-            EnumChildProc = EnableControlDrag(hWnd, True)
+    Case EnumMode_EnableDrag
+        EnumChildProc = EnableControlDrag(hWnd, True)
 
-        Case EnumMode_DisableDrag
-            EnumChildProc = EnableControlDrag(hWnd, False)
+    Case EnumMode_DisableDrag
+        EnumChildProc = EnableControlDrag(hWnd, False)
 
-        Case EnumMode_UnSubclass
-            EnumChildProc = UnSubclassChild(hWnd)
+    Case EnumMode_UnSubclass
+        EnumChildProc = UnSubclassChild(hWnd)
     End Select
 End Function
 Private Function WindowProcContainer(ByVal hWnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-    '//**** Get the address of the previous procedure ****
+'//**** Get the address of the previous procedure ****
     Dim prevWndProc As Long
     prevWndProc = GetProp(hWnd, PropName_PrevWndProc)
 
@@ -533,92 +533,92 @@ Private Function WindowProcContainer(ByVal hWnd As Long, ByVal uMsg As Long, ByV
     End If
 
     Select Case uMsg
-        Case WM_ERASEBKGND
-            '//**** Get the grid brush ****
-            Dim hBrush As Long
-            hBrush = GetProp(hWnd, PropName_GridBrush)
+    Case WM_ERASEBKGND
+        '//**** Get the grid brush ****
+        Dim hBrush As Long
+        hBrush = GetProp(hWnd, PropName_GridBrush)
 
-            Dim ShowGrid As Boolean
-            ShowGrid = IIf(GetProp(hWnd, PropName_ShowGrid) <> 0, 1, 0)
+        Dim ShowGrid As Boolean
+        ShowGrid = IIf(GetProp(hWnd, PropName_ShowGrid) <> 0, 1, 0)
 
-            If (hBrush <> 0) And (ShowGrid) Then
-                Dim ClientRc As RECT
-                Call GetClientRect(hWnd, ClientRc)
+        If (hBrush <> 0) And (ShowGrid) Then
+            Dim ClientRc As RECT
+            Call GetClientRect(hWnd, ClientRc)
 
-                '//**** Validate the update region to keep vb from drawing over. VB is so well made :) ****
-                Dim UpdateRc As RECT
-                Call GetUpdateRect(hWnd, UpdateRc, True)
-                Call ValidateRect(hWnd, UpdateRc)
+            '//**** Validate the update region to keep vb from drawing over. VB is so well made :) ****
+            Dim UpdateRc As RECT
+            Call GetUpdateRect(hWnd, UpdateRc, True)
+            Call ValidateRect(hWnd, UpdateRc)
 
-                '//**** Ask vb wich color to use ****
-                Call SendMessage(hWnd, WM_CTLCOLORSTATIC, wParam, ByVal hWnd)
+            '//**** Ask vb wich color to use ****
+            Call SendMessage(hWnd, WM_CTLCOLORSTATIC, wParam, ByVal hWnd)
 
-                Dim GridSize As Long
-                GridSize = GetProp(hWnd, PropName_GridSize)
+            Dim GridSize As Long
+            GridSize = GetProp(hWnd, PropName_GridSize)
 
-                '//**** Set the brush draw origin to (-1,-1) ****
-                Dim PrevOrg As POINTAPI
-                Call SetBrushOrgEx(wParam, -1, -1, PrevOrg)
+            '//**** Set the brush draw origin to (-1,-1) ****
+            Dim PrevOrg As POINTAPI
+            Call SetBrushOrgEx(wParam, -1, -1, PrevOrg)
 
-                '//**** Swap background and foreground colors ****
-                Call SwapBkColors(wParam)
+            '//**** Swap background and foreground colors ****
+            Call SwapBkColors(wParam)
 
-                '//**** Fill the background ****
-                Call FillRect(wParam, UpdateRc, hBrush)
+            '//**** Fill the background ****
+            Call FillRect(wParam, UpdateRc, hBrush)
 
-                WindowProcContainer = True
-                Exit Function
-            End If
+            WindowProcContainer = True
+            Exit Function
+        End If
 
-        Case WM_PAINT
-            '//**** Get the grid brush ****
-            hBrush = GetProp(hWnd, PropName_GridBrush)
+    Case WM_PAINT
+        '//**** Get the grid brush ****
+        hBrush = GetProp(hWnd, PropName_GridBrush)
 
-            ShowGrid = IIf(GetProp(hWnd, PropName_ShowGrid) <> 0, 1, 0)
+        ShowGrid = IIf(GetProp(hWnd, PropName_ShowGrid) <> 0, 1, 0)
 
-            If (hBrush <> 0) And (ShowGrid) Then
-                Dim ps As PAINTSTRUCT
-                Call BeginPaint(hWnd, ps)
-                Call EndPaint(hWnd, ps)
+        If (hBrush <> 0) And (ShowGrid) Then
+            Dim ps As PAINTSTRUCT
+            Call BeginPaint(hWnd, ps)
+            Call EndPaint(hWnd, ps)
 
-                Exit Function
-            End If
+            Exit Function
+        End If
 
-        Case WM_DESTROY
-            Call UnSubclassAllChild(hWnd)
+    Case WM_DESTROY
+        Call UnSubclassAllChild(hWnd)
 
-        Case WM_LBUTTONDOWN
-            Call onButtonDown(hWnd, 1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam))
+    Case WM_LBUTTONDOWN
+        Call onButtonDown(hWnd, 1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam))
 
-        Case WM_LBUTTONUP
-            Call EndControlDrag(hWnd)
+    Case WM_LBUTTONUP
+        Call EndControlDrag(hWnd)
 
-        Case WM_LBUTTONDBLCLK
-            Call onButtonDblClk(hWnd, 1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam))
+    Case WM_LBUTTONDBLCLK
+        Call onButtonDblClk(hWnd, 1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam))
 
-        Case WM_MOUSEMOVE
-            Call DragMove
+    Case WM_MOUSEMOVE
+        Call DragMove
 
-        Case WM_SETCURSOR
-            If onSetCursor() Then Exit Function
+    Case WM_SETCURSOR
+        If onSetCursor() Then Exit Function
 
-        Case WM_CTLCOLOREDIT
-            Dim hdc As Long
-            hdc = wParam
+    Case WM_CTLCOLOREDIT
+        Dim hdc As Long
+        hdc = wParam
 
-            If (lParam = m_EditboxHwnd) Then
-                Call SetTextColor(hdc, GetSysColor(COLOR_WINDOWTEXT))
+        If (lParam = m_EditboxHwnd) Then
+            Call SetTextColor(hdc, GetSysColor(COLOR_WINDOWTEXT))
 
-                WindowProcContainer = GetSysColorBrush(COLOR_WINDOW)
-                Exit Function
-            End If
+            WindowProcContainer = GetSysColorBrush(COLOR_WINDOW)
+            Exit Function
+        End If
     End Select
 
     '//**** Call the previous window procedure ****
     WindowProcContainer = CallWindowProc(prevWndProc, hWnd, uMsg, wParam, lParam)
 End Function
 Private Function WindowProcChild(ByVal hWnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-    '//**** Get the address of the previous procedure ****
+'//**** Get the address of the previous procedure ****
     Dim prevWndProc As Long
     prevWndProc = GetProp(hWnd, PropName_PrevWndProc)
 
@@ -639,25 +639,25 @@ Private Function WindowProcChild(ByVal hWnd As Long, ByVal uMsg As Long, ByVal w
     SelectedHwnd = GetProp(hParent, PropName_SelectedHwnd)
 
     Select Case uMsg
-        Case WM_NCHITTEST
+    Case WM_NCHITTEST
 
-            If (DragEnabled) Then
-                WindowProcChild = HTTRANSPARENT
-                Exit Function
-            End If
+        If (DragEnabled) Then
+            WindowProcChild = HTTRANSPARENT
+            Exit Function
+        End If
 
-        Case WM_MOVE, WM_SIZE
-            If (SelectedHwnd = hWnd) Then
-                Call ShowGrabBoxes(hParent, hWnd)
-            End If
+    Case WM_MOVE, WM_SIZE
+        If (SelectedHwnd = hWnd) Then
+            Call ShowGrabBoxes(hParent, hWnd)
+        End If
 
-        Case WM_DESTROY
-            If (SelectedHwnd = hWnd) Then
-                Call SelectControl(hParent, 0)
-                Call HideGrabBoxes(hParent)
+    Case WM_DESTROY
+        If (SelectedHwnd = hWnd) Then
+            Call SelectControl(hParent, 0)
+            Call HideGrabBoxes(hParent)
 
-                Exit Function
-            End If
+            Exit Function
+        End If
     End Select
 
     '//**** Call the previous window procedure ****
@@ -708,13 +708,13 @@ End Function
 Private Function onSetCursor() As Boolean
     Dim hIcon As Long
     Select Case m_DragMode
-        Case 1, 8: hIcon = LoadCursor(ByVal 0&, IDC_SIZENWSE)
-        Case 2, 7: hIcon = LoadCursor(ByVal 0&, IDC_SIZENS)
-        Case 3, 6: hIcon = LoadCursor(ByVal 0&, IDC_SIZENESW)
-        Case 4, 5: hIcon = LoadCursor(ByVal 0&, IDC_SIZEWE)
-        Case Else
+    Case 1, 8: hIcon = LoadCursor(ByVal 0&, IDC_SIZENWSE)
+    Case 2, 7: hIcon = LoadCursor(ByVal 0&, IDC_SIZENS)
+    Case 3, 6: hIcon = LoadCursor(ByVal 0&, IDC_SIZENESW)
+    Case 4, 5: hIcon = LoadCursor(ByVal 0&, IDC_SIZEWE)
+    Case Else
 
-            Exit Function
+        Exit Function
     End Select
 
 
@@ -930,36 +930,36 @@ Private Sub DragMove()
 
     '//**** Move the drag rect ****
     Select Case m_DragMode
-        Case DragMode_Move
-            Call OffsetRect(m_DragRc, OffsetX, OffSetY)
+    Case DragMode_Move
+        Call OffsetRect(m_DragRc, OffsetX, OffSetY)
 
-        Case DragMode_SizeNW
-            m_DragRc.Left = m_DragRc.Left + OffsetX
-            m_DragRc.Top = m_DragRc.Top + OffSetY
+    Case DragMode_SizeNW
+        m_DragRc.Left = m_DragRc.Left + OffsetX
+        m_DragRc.Top = m_DragRc.Top + OffSetY
 
-        Case DragMode_SizeN
-            m_DragRc.Top = m_DragRc.Top + OffSetY
+    Case DragMode_SizeN
+        m_DragRc.Top = m_DragRc.Top + OffSetY
 
-        Case DragMode_SizeNE
-            m_DragRc.Right = m_DragRc.Right + OffsetX
-            m_DragRc.Top = m_DragRc.Top + OffSetY
+    Case DragMode_SizeNE
+        m_DragRc.Right = m_DragRc.Right + OffsetX
+        m_DragRc.Top = m_DragRc.Top + OffSetY
 
-        Case DragMode_SizeW
-            m_DragRc.Left = m_DragRc.Left + OffsetX
+    Case DragMode_SizeW
+        m_DragRc.Left = m_DragRc.Left + OffsetX
 
-        Case DragMode_SizeE
-            m_DragRc.Right = m_DragRc.Right + OffsetX
+    Case DragMode_SizeE
+        m_DragRc.Right = m_DragRc.Right + OffsetX
 
-        Case DragMode_SizeSW
-            m_DragRc.Left = m_DragRc.Left + OffsetX
-            m_DragRc.Bottom = m_DragRc.Bottom + OffSetY
+    Case DragMode_SizeSW
+        m_DragRc.Left = m_DragRc.Left + OffsetX
+        m_DragRc.Bottom = m_DragRc.Bottom + OffSetY
 
-        Case DragMode_SizeS
-            m_DragRc.Bottom = m_DragRc.Bottom + OffSetY
+    Case DragMode_SizeS
+        m_DragRc.Bottom = m_DragRc.Bottom + OffSetY
 
-        Case DragMode_SizeSE
-            m_DragRc.Right = m_DragRc.Right + OffsetX
-            m_DragRc.Bottom = m_DragRc.Bottom + OffSetY
+    Case DragMode_SizeSE
+        m_DragRc.Right = m_DragRc.Right + OffsetX
+        m_DragRc.Bottom = m_DragRc.Bottom + OffSetY
     End Select
 
 
@@ -990,36 +990,36 @@ Private Sub DragMove()
 
         '//**** Apply the new position ****
         Select Case m_DragMode
-            Case DragMode_Move
-                Call OffsetRect(m_SnapRc, (DragRc.Left - m_SnapRc.Left), (DragRc.Top - m_SnapRc.Top))
+        Case DragMode_Move
+            Call OffsetRect(m_SnapRc, (DragRc.Left - m_SnapRc.Left), (DragRc.Top - m_SnapRc.Top))
 
-            Case DragMode_SizeE
-                m_SnapRc.Right = DragRc.Right
+        Case DragMode_SizeE
+            m_SnapRc.Right = DragRc.Right
 
-            Case DragMode_SizeSE
-                m_SnapRc.Right = DragRc.Right
-                m_SnapRc.Bottom = DragRc.Bottom
+        Case DragMode_SizeSE
+            m_SnapRc.Right = DragRc.Right
+            m_SnapRc.Bottom = DragRc.Bottom
 
-            Case DragMode_SizeS
-                m_SnapRc.Bottom = DragRc.Bottom
+        Case DragMode_SizeS
+            m_SnapRc.Bottom = DragRc.Bottom
 
-            Case DragMode_SizeSW
-                m_SnapRc.Left = DragRc.Left
-                m_SnapRc.Bottom = DragRc.Bottom
+        Case DragMode_SizeSW
+            m_SnapRc.Left = DragRc.Left
+            m_SnapRc.Bottom = DragRc.Bottom
 
-            Case DragMode_SizeW
-                m_SnapRc.Left = DragRc.Left
+        Case DragMode_SizeW
+            m_SnapRc.Left = DragRc.Left
 
-            Case DragMode_SizeNW
-                m_SnapRc.Left = DragRc.Left
-                m_SnapRc.Top = DragRc.Top
+        Case DragMode_SizeNW
+            m_SnapRc.Left = DragRc.Left
+            m_SnapRc.Top = DragRc.Top
 
-            Case DragMode_SizeN
-                m_SnapRc.Top = DragRc.Top
+        Case DragMode_SizeN
+            m_SnapRc.Top = DragRc.Top
 
-            Case DragMode_SizeNE
-                m_SnapRc.Top = DragRc.Top
-                m_SnapRc.Right = DragRc.Right
+        Case DragMode_SizeNE
+            m_SnapRc.Top = DragRc.Top
+            m_SnapRc.Right = DragRc.Right
         End Select
     Else
         Let m_SnapRc = m_DragRc
@@ -1115,54 +1115,54 @@ End Function
 '//--- Call back ---
 Private Function WindowProcGrab(ByVal hWnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 
-    Dim id As Long
-    id = GetProp(hWnd, PropName_GrabBoxID)
+    Dim Id As Long
+    Id = GetProp(hWnd, PropName_GrabBoxID)
 
     Select Case uMsg
 
-        Case WM_ERASEBKGND
-            Dim hdc As Long
-            hdc = wParam
+    Case WM_ERASEBKGND
+        Dim hdc As Long
+        hdc = wParam
 
 
-            Dim hBrush As Long
-            hBrush = GetSysColorBrush(COLOR_HIGHLIGHT)
-            Call SelectObject(hdc, hBrush)
+        Dim hBrush As Long
+        hBrush = GetSysColorBrush(COLOR_HIGHLIGHT)
+        Call SelectObject(hdc, hBrush)
 
-            Dim hPen As Long, hOldPen As Long
-            hPen = CreatePen(PS_SOLID, 0, GetSysColor(COLOR_HIGHLIGHTTEXT))
-            hOldPen = SelectObject(hdc, hPen)
+        Dim hPen As Long, hOldPen As Long
+        hPen = CreatePen(PS_SOLID, 0, GetSysColor(COLOR_HIGHLIGHTTEXT))
+        hOldPen = SelectObject(hdc, hPen)
 
-            Dim ClientRc As RECT
-            Call GetClientRect(hWnd, ClientRc)
-            Call Rectangle(hdc, 0, 0, ClientRc.Right, ClientRc.Bottom)
+        Dim ClientRc As RECT
+        Call GetClientRect(hWnd, ClientRc)
+        Call Rectangle(hdc, 0, 0, ClientRc.Right, ClientRc.Bottom)
 
-            Call SelectObject(hdc, hOldPen)
-            Call DeleteObject(hPen)
+        Call SelectObject(hdc, hOldPen)
+        Call DeleteObject(hPen)
 
-        Case WM_SETCURSOR
-            Dim hIcon As Long
-            Select Case id
-                Case 1, 8: hIcon = LoadCursor(ByVal 0&, IDC_SIZENWSE)
-                Case 2, 7: hIcon = LoadCursor(ByVal 0&, IDC_SIZENS)
-                Case 3, 6: hIcon = LoadCursor(ByVal 0&, IDC_SIZENESW)
-                Case 4, 5: hIcon = LoadCursor(ByVal 0&, IDC_SIZEWE)
-            End Select
+    Case WM_SETCURSOR
+        Dim hIcon As Long
+        Select Case Id
+        Case 1, 8: hIcon = LoadCursor(ByVal 0&, IDC_SIZENWSE)
+        Case 2, 7: hIcon = LoadCursor(ByVal 0&, IDC_SIZENS)
+        Case 3, 6: hIcon = LoadCursor(ByVal 0&, IDC_SIZENESW)
+        Case 4, 5: hIcon = LoadCursor(ByVal 0&, IDC_SIZEWE)
+        End Select
 
-            Call SetCursor(hIcon)
-            Exit Function
+        Call SetCursor(hIcon)
+        Exit Function
 
 
-        Case WM_LBUTTONDOWN
-            Dim hWndSelected As Long
-            hWndSelected = GetProp(GetParent(hWnd), PropName_SelectedHwnd)
+    Case WM_LBUTTONDOWN
+        Dim hWndSelected As Long
+        hWndSelected = GetProp(GetParent(hWnd), PropName_SelectedHwnd)
 
-            If (hWndSelected <> 0) Then
-                Call HideGrabBoxes(GetParent(hWnd))
-                DoEvents
+        If (hWndSelected <> 0) Then
+            Call HideGrabBoxes(GetParent(hWnd))
+            DoEvents
 
-                Call BeginControlDrag(GetParent(hWnd), hWndSelected, id)
-            End If
+            Call BeginControlDrag(GetParent(hWnd), hWndSelected, Id)
+        End If
     End Select
     WindowProcGrab = DefWindowProc(hWnd, uMsg, wParam, lParam)
 End Function
@@ -1178,7 +1178,7 @@ Private Sub HideGrabBoxes(hWndContainer As Long)
 End Sub
 Private Sub ShowGrabBoxes(hWndContainer As Long, hWnd As Long)
 
-    '//**** Hide all boxes ***
+'//**** Hide all boxes ***
     Dim hwndGrab(8) As Long
     Dim i As Long
     For i = 1 To 8

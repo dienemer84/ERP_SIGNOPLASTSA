@@ -139,40 +139,40 @@ Dim strsql As String
 Public idCliente As Long
 Dim tipos As String
 Dim estados As String
-Public TiposDocs As New Collection 'of  tipoDocumentoContable
-Public EstadosDocs As New Collection 'of Estado Factura
+Public TiposDocs As New Collection    'of  tipoDocumentoContable
+Public EstadosDocs As New Collection    'of Estado Factura
 
 
 Private Sub llenarLST()
     Dim F As String
     F = "1 = 1 "
-'    f = f & "acftd.tipo_documento = " & tipoDocumentoContable.Factura
-'    f = f & " or acftd.tipo_documento = " & tipoDocumentoContable.NotaDebito
-'
-'
-'
-'    f = f & " AND AdminFacturas.estado = " & EstadoFacturaCliente.Aprobada
-    
-    
-    
+    '    f = f & "acftd.tipo_documento = " & tipoDocumentoContable.Factura
+    '    f = f & " or acftd.tipo_documento = " & tipoDocumentoContable.NotaDebito
+    '
+    '
+    '
+    '    f = f & " AND AdminFacturas.estado = " & EstadoFacturaCliente.Aprobada
+
+
+
     If idCliente > 0 Then
         F = F & " and AdminFacturas.idCliente=" & idCliente
     End If
 
 
-If LenB(Me.Text1) > 0 Then
-F = F & " and AdminFacturas.NroFactura like '%" & Me.Text1 & "%'"
-End If
+    If LenB(Me.Text1) > 0 Then
+        F = F & " and AdminFacturas.NroFactura like '%" & Me.Text1 & "%'"
+    End If
 
 
 
 
- F = F & " and acftd.tipo_documento IN (" & tipos & ")"
+    F = F & " and acftd.tipo_documento IN (" & tipos & ")"
 
 
 
 
- F = F & " and AdminFacturas.estado  IN (" & estados & ")"
+    F = F & " and AdminFacturas.estado  IN (" & estados & ")"
 
 
     Dim facs As Collection
@@ -188,7 +188,7 @@ End If
         x.SubItems(2) = fac.FechaEmision
         x.SubItems(3) = enums.EnumEstadoDocumentoContable(fac.estado)
 
-        x.Tag = fac.id
+        x.Tag = fac.Id
     Next fac
 End Sub
 
@@ -196,31 +196,31 @@ Private Sub Form_Load()
     FormHelper.Customize Me
     DAOCliente.llenarComboXtremeSuite Me.cboClientes
     If idCliente > 0 Then
-     Me.cboClientes.ListIndex = funciones.PosIndexCbo(Me.idCliente, cboClientes)
+        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Me.idCliente, cboClientes)
     Else
-     Me.cboClientes.ListIndex = -1
+        Me.cboClientes.ListIndex = -1
     End If
-    
-    
+
+
     tipos = funciones.JoinCollectionValues(TiposDocs, ",")
     estados = funciones.JoinCollectionValues(EstadosDocs, ",")
-    
+
     Dim T As String
     For Each i In TiposDocs
-    T = T & enums.EnumTipoDocumentoContable(i) & ","
-    
+        T = T & enums.EnumTipoDocumentoContable(i) & ","
+
     Next i
-    
+
     Me.lblBuscarEn = "Busca en : " & Mid(T, 1, Len(T) - 1)
-    
+
     llenarLST
-    
-    
+
+
     Me.cboClientes.Enabled = False
     Me.PushButton2.Enabled = False
-    
-    
-    
+
+
+
 End Sub
 
 Private Sub Form_Terminate()
@@ -237,9 +237,9 @@ Private Sub lstFacturas_DblClick()
 End Sub
 
 Private Sub PushButton1_Click()
-llenarLST
+    llenarLST
 End Sub
 
 Private Sub PushButton2_Click()
-Me.cboClientes.ListIndex = -1
+    Me.cboClientes.ListIndex = -1
 End Sub

@@ -143,13 +143,13 @@ Private Function ConvertStringToBytes(ByVal s As String) As Byte()
     ConvertStringToBytes = b2
 End Function
 
-Private Function ConvertBytesToString(b() As Byte) As String
-    Dim l As Long: l = UBound(b) - LBound(b) + 1
+Private Function ConvertBytesToString(B() As Byte) As String
+    Dim l As Long: l = UBound(B) - LBound(B) + 1
     Dim b2() As Byte
     ReDim b2(0 To (2 * l) - 1) As Byte
-    Dim p0 As Long: p0 = LBound(b)
+    Dim p0 As Long: p0 = LBound(B)
     Dim P As Long
-    For P = 0 To l - 1: b2(2 * P) = b(p0 + P): Next
+    For P = 0 To l - 1: b2(2 * P) = B(p0 + P): Next
     Dim s As String: s = b2
     ConvertBytesToString = s
 End Function

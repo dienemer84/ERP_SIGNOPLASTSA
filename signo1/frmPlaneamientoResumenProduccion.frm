@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmPlaneamientoResumenProduccion 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -267,7 +267,7 @@ Private Sub Command1_Click()
         While Not rs.EOF
 
 
-            Set deta = DAODetalleOrdenTrabajo.FindById(rs!id, True)
+            Set deta = DAODetalleOrdenTrabajo.FindById(rs!Id, True)
 
 
             Me.lblCliente = rs!razon
@@ -283,7 +283,7 @@ Private Sub Command1_Click()
             x.SubItems(3) = funciones.RedondearDecimales(rs!Precio)
             valo = valo + (rs!Precio * rs!Cantidad)
 
-            x.SubItems(4) = rs!FechaCreado
+            x.SubItems(4) = rs!fechaCreado
             rs.MoveNext
         Wend
 

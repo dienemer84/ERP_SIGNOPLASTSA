@@ -669,7 +669,7 @@ Private lastkeypressMS As Double
 
 
 Private Sub MandarTecla(KeyCode As Integer)
-    'Form_KeyDown keycode, 0
+'Form_KeyDown keycode, 0
     Form_KeyPress KeyCode
     EnfocarTextBox
 End Sub
@@ -743,7 +743,7 @@ End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
 
-    'si la ultima tecla fue hace mas de 10 segundos, empezar de vuelta
+'si la ultima tecla fue hace mas de 10 segundos, empezar de vuelta
     If (GetTickCount - lastkeypressMS) > 30000 Then
         LimpiarData
         finalizandoProceso = False
@@ -907,19 +907,19 @@ Private Sub TieneTarea(det As PlaneamientoTiempoProcesoDetalle)
 End Sub
 
 Private Sub FinalizarProceso()
-    '    det.FechaFinTarea = Now
-    '    Dim Cant As String
-    '    Cant = InputBox("Ingrese la cantidad procesada para finalizar la tarea")
-    '    If LenB(Cant) = 0 Or Not IsNumeric(Cant) Then
-    '        ShowMessage "Debe ingresar la cantidad para finalizar la tarea"
-    '    Else
-    '        det.CantidadProcesada = Val(Cant)
-    '        If DAOTiemposProcesosDetalles.Save(det) Then
-    '            ShowMessage "La tarea ha sido finalizada (Duración: " & det.DiferenciaTiempoHorasMinutos & ")"
-    '        Else
-    '            ShowMessage "Hubo un error al finalizar la tarea"
-    '        End If
-    '    End If
+'    det.FechaFinTarea = Now
+'    Dim Cant As String
+'    Cant = InputBox("Ingrese la cantidad procesada para finalizar la tarea")
+'    If LenB(Cant) = 0 Or Not IsNumeric(Cant) Then
+'        ShowMessage "Debe ingresar la cantidad para finalizar la tarea"
+'    Else
+'        det.CantidadProcesada = Val(Cant)
+'        If DAOTiemposProcesosDetalles.Save(det) Then
+'            ShowMessage "La tarea ha sido finalizada (Duración: " & det.DiferenciaTiempoHorasMinutos & ")"
+'        Else
+'            ShowMessage "Hubo un error al finalizar la tarea"
+'        End If
+'    End If
 
 
 

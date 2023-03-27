@@ -15,11 +15,11 @@ Dim vId As Long
 Dim vcodigo As String
 Dim vNombre As String
 Public TotalAcumulado As Double
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Let codigo(nvalue As String)
     vcodigo = nvalue

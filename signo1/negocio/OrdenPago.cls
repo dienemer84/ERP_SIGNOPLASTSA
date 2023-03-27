@@ -292,11 +292,11 @@ Public Property Get EsParaFacturaProveedor() As Boolean
 End Property
 
 Public Property Get TotalOrdenPago() As Double
-    'If Id = 7180 Then Stop
+'If Id = 7180 Then Stop
 
 
 
-    'Debug.Print "totales", Me.TotalOrigenes + Me.StaticTotalRetenido, "totales staticos", Me.StaticTotalOrigenes + Me.StaticTotalRetenido
+'Debug.Print "totales", Me.TotalOrigenes + Me.StaticTotalRetenido, "totales staticos", Me.StaticTotalOrigenes + Me.StaticTotalRetenido
 
     TotalOrdenPago = Me.TotalOrigenes + Me.StaticTotalRetenido    '+ Me.TotalCompensatorios
 

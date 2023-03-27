@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmSistemaTableroVerComentarios 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -187,7 +187,7 @@ Private Sub Form_Load()
     'muestro el encabezado
     Set r = conectar.RSFactory("select tipo,fechaCreado,titulo from usuariosTablero where id=" & vIdEVento)
     If Not r.EOF And Not r.BOF Then
-        Me.lblFecha = r!FechaCreado
+        Me.lblFecha = r!fechaCreado
         Me.lblTitulo = r!titulo
         Me.lblTipo = funciones.tipoEvento(r!Tipo)
     End If
@@ -198,7 +198,7 @@ Private Sub Form_Load()
         Set x = Me.lstComentarios.ListItems.Add(, , r!FEcha)
         x.SubItems(1) = claseSP.queUsuario(r!idUsuario)
         x.SubItems(2) = r!Comentario
-        x.Tag = r!id
+        x.Tag = r!Id
         r.MoveNext
     Wend
     lstComentarios_ItemClick Me.lstComentarios.selectedItem
@@ -207,9 +207,9 @@ End Sub
 Private Sub lstComentarios_ItemClick(ByVal item As MSComctlLib.ListItem)
 
     If Me.lstComentarios.ListItems.count > 0 Then
-        id = CLng(Me.lstComentarios.selectedItem.Tag)
+        Id = CLng(Me.lstComentarios.selectedItem.Tag)
 
-        Set r = conectar.RSFactory("select comentario from usuariosTableroComentarios where id=" & id)
+        Set r = conectar.RSFactory("select comentario from usuariosTableroComentarios where id=" & Id)
         If Not r.EOF And Not r.BOF Then
             Me.txtComentario = r!Comentario
         End If

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmPlaneamientoConsultasMultiples 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00C0C0C0&
@@ -136,8 +136,8 @@ Public OTElegidas As New Collection
 
 Private Sub Command1_Click()
     Select Case Me.cboConsultas.ListIndex
-        Case 0: piezasEnComun
-        Case 1: MaterialesEnComun
+    Case 0: piezasEnComun
+    Case 1: MaterialesEnComun
 
 
     End Select
@@ -145,7 +145,7 @@ End Sub
 
 
 Private Sub piezasEnComun()
-    'armo el encabezado
+'armo el encabezado
     Me.lstResult.ColumnHeaders.Clear
     Me.lstResult.ListItems.Clear
     Me.lstResult.ColumnHeaders.Add = "Cantidad"
@@ -193,7 +193,7 @@ Private Sub Form_Load()
     Dim tmpOrden As OrdenTrabajo
     For x = 1 To Me.OTElegidas.count
         Set tmpOrden = Me.OTElegidas(x)
-        Me.lstOTSelected.ListItems.Add , , tmpOrden.id    'col(X)
+        Me.lstOTSelected.ListItems.Add , , tmpOrden.Id    'col(X)
     Next x
     Me.lstOTSelected.Refresh
 End Sub

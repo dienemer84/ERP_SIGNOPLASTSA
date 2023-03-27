@@ -41,7 +41,7 @@ Public Function crear(cliente As clsCliente) As Boolean
     crear = True
     With cliente
         strsql = "insert into clientes (id_localidad,CP, id_moneda_default, razon,domicilio,telefono,Fax,email,cuit,iva,id_provincia,FP,FP_detalle,valido_remito_factura) VALUES " _
-                 & "(" & .localidad.Id & ", " & .CodigoPostal & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
+               & "(" & .localidad.Id & ", " & .CodigoPostal & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
         cn.execute strsql
     End With
     Exit Function
@@ -193,18 +193,18 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
     Dim clientes As New Collection
 
     q = "SELECT * " _
-        & " FROM clientes c" _
-        & " LEFT JOIN AdminConfigIVA iva" _
-        & " ON (iva.idIVA = c.iva)" _
-        & " LEFT JOIN AdminConfigFacturasTipos tfact" _
-        & " ON (tfact.id = iva.tipo_factura)" _
-        & " LEFT JOIN Localidades l" _
-        & " ON (c.id_localidad = l.ID)" _
-        & " LEFT JOIN Provincia p" _
-        & " ON (l.idProvincia = p.ID)" _
-        & " LEFT JOIN Pais pa" _
-        & " ON (p.idPais = pa.ID)" _
-        & " WHERE 1 = 1"
+      & " FROM clientes c" _
+      & " LEFT JOIN AdminConfigIVA iva" _
+      & " ON (iva.idIVA = c.iva)" _
+      & " LEFT JOIN AdminConfigFacturasTipos tfact" _
+      & " ON (tfact.id = iva.tipo_factura)" _
+      & " LEFT JOIN Localidades l" _
+      & " ON (c.id_localidad = l.ID)" _
+      & " LEFT JOIN Provincia p" _
+      & " ON (l.idProvincia = p.ID)" _
+      & " LEFT JOIN Pais pa" _
+      & " ON (p.idPais = pa.ID)" _
+      & " WHERE 1 = 1"
 
     If LenB(filter) > 0 Then
         q = q & " AND " & filter

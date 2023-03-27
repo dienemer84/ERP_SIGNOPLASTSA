@@ -426,15 +426,15 @@ Private Sub btnExportar_Click()
 
     Me.progreso.Visible = True
     'Me.lblExportando.Visible = True
-    
+
     If IsSomething(ordenes) Then
-'        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
+        '        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
         If Not DAOOrdenPago.ExportarColeccion(ordenes, Me.progreso) Then GoTo err1
     End If
-    
+
     Me.progreso.Visible = False
     'Me.lblExportando.Visible = False
-    
+
     Exit Sub
 err1:
     MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
@@ -473,7 +473,7 @@ Private Sub cmdImprimir_Click()
 End Sub
 
 Private Sub cmdLimpiaEstado_Click()
-Me.cboEstado.ListIndex = -1
+    Me.cboEstado.ListIndex = -1
 End Sub
 
 Private Sub Form_Load()
@@ -490,7 +490,7 @@ Private Sub Form_Load()
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     ids = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, OrdenesPago_
-    
+
     Me.cboEstado.Clear
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_pendiente)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_pendiente
@@ -499,9 +499,9 @@ Private Sub Form_Load()
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
 
-        
-        
-    
+
+
+
 End Sub
 
 Private Sub llenarLista()
@@ -542,7 +542,7 @@ Private Sub llenarLista()
     End If
 
 
- If Me.cboEstado.ListIndex > -1 Then
+    If Me.cboEstado.ListIndex > -1 Then
         filter = filter & " AND ordenes_pago.estado = " & Me.cboEstado.ItemData(Me.cboEstado.ListIndex)
     End If
 
@@ -557,7 +557,7 @@ Private Sub llenarLista()
     Me.gridOrdenes.ItemCount = ordenes.count
 
     Me.caption = "Ordenes de Pago (" & ordenes.count & " Ordenes encontradas)"
-    
+
 End Sub
 Private Sub Form_Resize()
     On Error Resume Next
@@ -704,11 +704,11 @@ Private Sub mnuEditar_Click()
 End Sub
 
 Private Sub mnuHistorial_Click()
-Dim c As New Collection
+    Dim c As New Collection
 
-Dim F As New frmHistorico
-F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
-F.Show
+    Dim F As New frmHistorico
+    F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
+    F.Show
 End Sub
 
 Private Sub mnuImprimir_Click()
@@ -832,8 +832,8 @@ Private Sub mnuVerCertificado_Click()
     Set cr = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.Id)
 
     If IsSomething(cr) Then
-    
-    Dim c As CertificadoRetencion
+
+        Dim c As CertificadoRetencion
         For Each c In cr
             DAOCertificadoRetencion.VerCertificado c
         Next

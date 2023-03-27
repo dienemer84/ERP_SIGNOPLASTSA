@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmUbicaciones 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Ubicaciones"
@@ -15,14 +15,14 @@ Begin VB.Form frmUbicaciones
    ScaleHeight     =   7365
    ScaleWidth      =   12195
    ShowInTaskbar   =   0   'False
-   Begin XtremeReportControl.ReportControl repLocalidades 
+   Begin XtremeReportControl.ReportControl repPaises 
       Height          =   5820
-      Left            =   6885
-      TabIndex        =   2
-      Top             =   15
-      Width           =   5265
+      Left            =   45
+      TabIndex        =   0
+      Top             =   0
+      Width           =   3360
       _Version        =   786432
-      _ExtentX        =   9287
+      _ExtentX        =   5927
       _ExtentY        =   10266
       _StockProps     =   64
    End
@@ -37,14 +37,14 @@ Begin VB.Form frmUbicaciones
       _ExtentY        =   10266
       _StockProps     =   64
    End
-   Begin XtremeReportControl.ReportControl repPaises 
+   Begin XtremeReportControl.ReportControl repLocalidades 
       Height          =   5820
-      Left            =   45
-      TabIndex        =   0
-      Top             =   0
-      Width           =   3360
+      Left            =   6885
+      TabIndex        =   2
+      Top             =   15
+      Width           =   5265
       _Version        =   786432
-      _ExtentX        =   5927
+      _ExtentX        =   9287
       _ExtentY        =   10266
       _StockProps     =   64
    End
@@ -274,7 +274,7 @@ Private Sub CargarPaises()
     For Each P In paises
         Set rec = Me.repPaises.Records.Add
         rec.AddItem P.nombre
-        rec.Tag = P.id
+        rec.Tag = P.Id
     Next P
     Me.repPaises.Populate
 End Sub
@@ -286,7 +286,7 @@ Private Sub CargarProvincias()
     For Each P In provincias
         Set rec = Me.repProvincias.Records.Add
         rec.AddItem P.nombre
-        rec.Tag = P.id
+        rec.Tag = P.Id
     Next P
     Me.repProvincias.Populate
 End Sub
@@ -300,7 +300,7 @@ Private Sub CargarLocalidades()
         Set rec = Me.repLocalidades.Records.Add
         rec.AddItem l.cp
         rec.AddItem l.nombre
-        rec.Tag = l.id
+        rec.Tag = l.Id
     Next l
     Me.repLocalidades.Populate
 

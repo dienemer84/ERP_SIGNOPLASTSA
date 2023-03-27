@@ -109,8 +109,8 @@ Public Sub PrintHead(Obj As Object)
         sngYFac = Screen.TwipsPerPixelY / Obj.TwipsPerPixelY
         intPad = 3 * sngXFac
     End If  'TypeOf Obj Is
-    lngBUpScalemode = Obj.scaleMode
-    Obj.scaleMode = vbPixels
+    lngBUpScalemode = Obj.ScaleMode
+    Obj.ScaleMode = vbPixels
     intSpace_Btn_Txt_n_Pic = Obj.ScaleX(400, vbTwips, vbPixels)
 
     lngPosX = Obj.ScaleX(PosX, vbTwips, vbPixels)
@@ -167,7 +167,7 @@ Public Sub PrintHead(Obj As Object)
 
     End With  'RectBox
     bHeadPrinted = True
-    Obj.scaleMode = lngBUpScalemode
+    Obj.ScaleMode = lngBUpScalemode
 End Sub
 
 
@@ -196,8 +196,8 @@ Public Sub PrintBody(Obj As Object)
         intPad = 3 * sngXFac
     End If
 
-    lngBUpScalemode = Obj.scaleMode
-    Obj.scaleMode = vbPixels
+    lngBUpScalemode = Obj.ScaleMode
+    Obj.ScaleMode = vbPixels
     intSpace_Btn_Txt_n_Pic = Obj.ScaleX(260, vbTwips, vbPixels)
     Obj.DrawWidth = lngWidthHor
     lngMaxRow = objListView.ListItems.count
@@ -295,7 +295,7 @@ Public Sub PrintBody(Obj As Object)
         End If
     End With  'rectbox
     bHeadPrinted = False
-    Obj.scaleMode = lngBUpScalemode
+    Obj.ScaleMode = lngBUpScalemode
 End Sub
 
 'Sets the ListViewControl
@@ -304,7 +304,7 @@ Public Property Set ListViewName(ByVal oNewValue As Object)
 End Property
 
 'LineWidth and Color setting, Printer can have non integer value such as 1.2, 1.5, 2.1 etc.
-Public Sub SetLine(Obj As Object, id As LineID, Optional Width As Single = 1#, Optional Color As Long = vbBlack)
+Public Sub SetLine(Obj As Object, Id As LineID, Optional Width As Single = 1#, Optional Color As Long = vbBlack)
     Dim intWidth As Integer
     Dim sngMul As Single
     If Width = 1 Then intWidth = 1: GoTo DownThere
@@ -316,16 +316,16 @@ Public Sub SetLine(Obj As Object, id As LineID, Optional Width As Single = 1#, O
         If intWidth = 0 Then intWidth = 1
     End If
 DownThere:
-    Select Case id
-        Case HorizontalLines
-            lngWidthHor = intWidth
-            lngColorHor = Color
-        Case VerticalLines
-            lngWidthVer = intWidth
-            lngColorVer = Color
-        Case BorderLines
-            lngWidthBor = intWidth
-            lngColorBor = Color
+    Select Case Id
+    Case HorizontalLines
+        lngWidthHor = intWidth
+        lngColorHor = Color
+    Case VerticalLines
+        lngWidthVer = intWidth
+        lngColorVer = Color
+    Case BorderLines
+        lngWidthBor = intWidth
+        lngColorBor = Color
     End Select
 End Sub
 

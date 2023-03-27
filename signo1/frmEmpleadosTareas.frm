@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmEmpleadosTareas 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Tareas posibles para empleado"
@@ -83,9 +83,9 @@ Public Property Let personalId(value As Long)
 
     Dim tar As clsTarea
     For Each tar In DAOTareas.FindAll()
-        If funciones.BuscarEnColeccion(emp.sectores, CStr(tar.Sector.id)) Then    'solo mostrar las tareas que pertenezcan a un sector donde este asignado el empleado
+        If funciones.BuscarEnColeccion(emp.sectores, CStr(tar.Sector.Id)) Then    'solo mostrar las tareas que pertenezcan a un sector donde este asignado el empleado
             Set rec = ReportControl.Records.Add
-            rec.Tag = tar.id
+            rec.Tag = tar.Id
             rec.AddItem tar.Sector.Sector
             rec.AddItem tar.Tarea
             rec.item(1).HasCheckbox = True

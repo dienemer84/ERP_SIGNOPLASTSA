@@ -22,13 +22,13 @@ Private vCantXProc As Double
 Public IdValorMDO As Long
 Public Valor As Double
 Public FEcha As Date
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 Public descripcion As String
 
 Public CategoriaSueldo As CategoriaSueldo
 Public SectorID As Long
 
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
 
@@ -46,8 +46,8 @@ Public Property Let CantPorProc(nvalue As Double)
 End Property
 
 
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 
 Public Property Get Sector() As clsSector
@@ -63,7 +63,7 @@ Public Property Get CantPorProc() As Double
 End Property
 
 Public Property Get Description() As String
-    Description = Me.id & " - " & Me.Tarea
+    Description = Me.Id & " - " & Me.Tarea
 End Property
 
 

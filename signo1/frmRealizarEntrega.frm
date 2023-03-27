@@ -265,11 +265,11 @@ Public deta As DetalleOrdenTrabajo
 Dim baseP As New classPlaneamiento
 Dim strsql As String
 Private remitoId As Long
-Private tipo As tipoOt
+Private Tipo As TipoOt
 
-Public Property Let TipoOrden(t As tipoOt)
-     tipo = t
-    Me.Command1.Enabled = (tipo = OT_Entrega Or tipo = OT_TRADICIONAL)
+Public Property Let TipoOrden(T As TipoOt)
+    Tipo = T
+    Me.Command1.Enabled = (Tipo = OT_ENTREGA Or Tipo = OT_TRADICIONAL)
 End Property
 
 
@@ -315,7 +315,7 @@ Private Sub Command1_Click()
             If MsgBox("Incluír información de la orden trabajo?", vbYesNo, "Consulta") = vbYes Then
 
                 Dim rss As Recordset
-                Set rss = conectar.RSFactory("select descripcion from pedidos where id=" & deta.OrdenTrabajo.id)
+                Set rss = conectar.RSFactory("select descripcion from pedidos where id=" & deta.OrdenTrabajo.Id)
 
 
                 mostrar_header = rss!descripcion
@@ -344,33 +344,33 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Command2_Click()
-On Error GoTo err1
-Dim Cant As Double
+    On Error GoTo err1
+    Dim Cant As Double
 
     Dim Disponibles As Double
     Disponibles = deta.CantidadFabricados - deta.CantidadEnviadasAStock
-  
+
     Dim res As String
 
     Dim envio As Double: envio = Val(Me.Text1)
-    
-    
-    
-    
-  If Disponibles - envio < 0 Then
+
+
+
+
+    If Disponibles - envio < 0 Then
         MsgBox "Cantidad Insuficiente Para enviar a Stock"
         Exit Sub
-  End If
-    
-     DAODetalleOrdenTrabajo.EnviarAStock deta, envio
-    
+    End If
+
+    DAODetalleOrdenTrabajo.EnviarAStock deta, envio
 
 
 
 
-Exit Sub
+
+    Exit Sub
 err1:
-MsgBox Err.Description, vbCritical, Err.Source
+    MsgBox Err.Description, vbCritical, Err.Source
 
 End Sub
 
@@ -380,8 +380,8 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-        
-    
+
+
 End Sub
 
 Private Sub Text1_Validate(Cancel As Boolean)
@@ -393,7 +393,7 @@ Private Sub Text2_DblClick()
     frmPlaneamientoRemitosListaProceso.Show 1
     If IsSomething(Selecciones.RemitoElegido) Then
         Me.Text2 = Selecciones.RemitoElegido.numero
-        remitoId = Selecciones.RemitoElegido.id
+        remitoId = Selecciones.RemitoElegido.Id
     Else
         Me.Text2 = Empty
     End If

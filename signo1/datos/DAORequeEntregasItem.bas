@@ -2,16 +2,16 @@ Attribute VB_Name = "DAORequeEntregas"
 Dim rs As Recordset
 Public Function GetEntregaById(id_detalle_reque As Long, Tipo As tipoEntrega) As Collection
     On Error GoTo er1
-    Dim a As clsRequeEntregas
+    Dim A As clsRequeEntregas
     Dim col As New Collection
     Set rs = conectar.RSFactory("select * from ComprasRequerimientosDetallesEntregas where tipo=" & Tipo & " and id_detalle_material=" & id_detalle_reque)
     While Not rs.EOF
-        Set a = New clsRequeEntregas
-        a.Cantidad = rs!Cantidad
-        a.FEcha = rs!FEcha
-        a.id = rs!id
-        a.Tipo = rs!Tipo
-        col.Add a
+        Set A = New clsRequeEntregas
+        A.Cantidad = rs!Cantidad
+        A.FEcha = rs!FEcha
+        A.Id = rs!Id
+        A.Tipo = rs!Tipo
+        col.Add A
         rs.MoveNext
     Wend
     Set GetEntregaById = col

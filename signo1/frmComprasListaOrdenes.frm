@@ -127,7 +127,7 @@ End Sub
 Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 Then
         Set Orden = ordenes.item(RowIndex)
-        Values(1) = Orden.id
+        Values(1) = Orden.Id
         If Orden.Proveedor Is Nothing Then
             Values(2) = Empty
         Else

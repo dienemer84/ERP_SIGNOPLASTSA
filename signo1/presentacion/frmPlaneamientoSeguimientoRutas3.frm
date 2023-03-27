@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoSeguimientoRutas3 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Seguimiento de rutas"
@@ -308,21 +308,21 @@ Public Sub cmdBuscar_Click()
         MsgBox "La Orden de Trabajo Nº " & Me.txtOTNro.text & " no existe.", vbInformation + vbOKOnly
     Else
 
-        Me.fraDatosOT.caption = Me.fraDatosOT.Tag & Ot.id
-        Me.lblCliente.caption = "Cliente: " & Ot.Cliente.razon
-        Me.lblFechaCreado.caption = "Fecha Creada: " & Ot.FechaCreado
+        Me.fraDatosOT.caption = Me.fraDatosOT.Tag & Ot.Id
+        Me.lblCliente.caption = "Cliente: " & Ot.cliente.razon
+        Me.lblFechaCreado.caption = "Fecha Creada: " & Ot.fechaCreado
         Me.lblFechaEntrega.caption = "Fecha Entrega: " & Ot.FechaEntrega
         Me.lblEstado.caption = "Estado: " & funciones.estado_pedido(Ot.estado)
 
         Dim tareas As Collection
         Dim tareaFilter As String
-        tareaFilter = "t.id in (SELECT DISTINCT codigoTarea FROM PlaneamientoTiemposProcesos WHERE idPedido = " & Ot.id & ")"
+        tareaFilter = "t.id in (SELECT DISTINCT codigoTarea FROM PlaneamientoTiemposProcesos WHERE idPedido = " & Ot.Id & ")"
         Set tareas = DAOTareas.FindAll(tareaFilter)
         Me.cboTarea.Clear
         Dim T As clsTarea
         For Each T In tareas
             Me.cboTarea.AddItem T.Description
-            Me.cboTarea.ItemData(Me.cboTarea.NewIndex) = T.id
+            Me.cboTarea.ItemData(Me.cboTarea.NewIndex) = T.Id
         Next T
         Me.cboTarea.ListIndex = -1
 
@@ -331,7 +331,7 @@ Public Sub cmdBuscar_Click()
 End Sub
 
 Private Sub LlenarData()
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id)
+    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
     CargarDetallesOT
 End Sub
 
@@ -360,7 +360,7 @@ Private Sub CargarDetallesOT()
 
     For Each deta In Ot.Detalles
         Set record = Me.ReportControl.Records.Add
-        record.Tag = deta.id
+        record.Tag = deta.Id
         record.AddItem deta.item
         Set item = record.AddItem(deta.Pieza.nombre)
         'Item.HasCheckbox = True
@@ -369,16 +369,16 @@ Private Sub CargarDetallesOT()
         record.AddItem deta.CantidadPedida
         record.AddItem deta.FechaEntrega
         'AddTareas record, deta.Id, deta.pieza
-        AddTareas record, deta.id
+        AddTareas record, deta.Id
 
 
         If deta.Pieza.EsConjunto Then
             record.Expanded = True
             'For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, deta.pieza.Id)
-            For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, deta.Pieza.id)
+            For Each tmpdeta2 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, deta.Pieza.Id)
 
                 Set Record2 = record.Childs.Add()
-                Record2.Tag = tmpdeta2.id
+                Record2.Tag = tmpdeta2.Id
                 Record2.AddItem vbNullString
                 Set item = Record2.AddItem(tmpdeta2.Pieza.nombre)
 
@@ -387,14 +387,14 @@ Private Sub CargarDetallesOT()
                 Record2.AddItem vbNullString
 
                 'AddTareas Record2, tmpdeta2.Id, tmpdeta2.pieza
-                AddTareas Record2, deta.id, tmpdeta2.id
+                AddTareas Record2, deta.Id, tmpdeta2.Id
 
                 If tmpdeta2.Pieza.EsConjunto Then
                     Record2.Expanded = True
-                    For Each tmpdeta3 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, tmpdeta2.Pieza.id)
+                    For Each tmpdeta3 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, tmpdeta2.Pieza.Id)
 
                         Set Record3 = Record2.Childs.Add
-                        Record3.Tag = tmpdeta3.id
+                        Record3.Tag = tmpdeta3.Id
                         Record3.AddItem vbNullString
                         Set item = Record3.AddItem(tmpdeta3.Pieza.nombre)
 
@@ -403,15 +403,15 @@ Private Sub CargarDetallesOT()
                         Record3.AddItem vbNullString
 
                         'AddTareas Record3, tmpdeta3.Id, tmpdeta3.pieza
-                        AddTareas Record3, deta.id, tmpdeta3.id
+                        AddTareas Record3, deta.Id, tmpdeta3.Id
 
 
                         If tmpdeta3.Pieza.EsConjunto Then
                             Record3.Expanded = True
-                            For Each tmpdeta4 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.id, tmpdeta3.Pieza.id)
+                            For Each tmpdeta4 In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id, tmpdeta3.Pieza.Id)
 
                                 Set Record4 = Record3.Childs.Add
-                                Record4.Tag = tmpdeta4.id
+                                Record4.Tag = tmpdeta4.Id
                                 Record4.AddItem vbNullString
                                 Set item = Record4.AddItem(tmpdeta4.Pieza.nombre)
 
@@ -420,7 +420,7 @@ Private Sub CargarDetallesOT()
                                 Record4.AddItem vbNullString
 
                                 'AddTareas Record4, tmpdeta4.Id, tmpdeta4.pieza
-                                AddTareas Record4, deta.id, tmpdeta4.id
+                                AddTareas Record4, deta.Id, tmpdeta4.Id
                                 'Record4.Expanded = True
 
                             Next tmpdeta4
@@ -551,11 +551,11 @@ Private Sub AddTareas(ByRef rec As ReportRecord, ByRef idDetallePedido As Long, 
     For Each ptp In DAOTiemposProceso.FindAllByDetallePedidoId(idDetallePedido, idDetallePedidoConj, , , tareaId)
         finalizada = vbNullString
         Set rechijo = rec.Childs.Add
-        rechijo.Tag = (ptp.id * -1)    'negativo para distinguir de las piezas
+        rechijo.Tag = (ptp.Id * -1)    'negativo para distinguir de las piezas
         rechijo.AddItem vbNullString
 
 
-        Set item = rechijo.AddItem("Tarea: " & ptp.Tarea.id & " - " & ptp.Tarea.Tarea & finalizada & " (" & ptp.id & ")")
+        Set item = rechijo.AddItem("Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea & finalizada & " (" & ptp.Id & ")")
         rechijo.PreviewText = ptp.Tarea.descripcion
 
         'Item.HasCheckbox = True
@@ -585,7 +585,7 @@ Private Sub mnuAgregarRemito_Click()
 
         If Not IsSomething(rto) Then Exit Sub
 
-        Set rto.Detalles = DAORemitoSDetalle.FindAllByRemito(rto.id)
+        Set rto.Detalles = DAORemitoSDetalle.FindAllByRemito(rto.Id)
 
         If rto.Detalles.count = funciones.itemsPorRemito Then
             MsgBox "El remito llego al limite de items, cree otro remito.", vbCritical
@@ -663,18 +663,18 @@ Private Sub mnuAgregarTarea_Click()
             Set deta = DAODetalleOrdenTrabajo.FindById(row.record.Tag)
             If deta Is Nothing Then Exit Sub
 
-            F.PIEZA_ID = deta.Pieza.id
-            F.idDetallePedido = deta.id
+            F.PIEZA_ID = deta.Pieza.Id
+            F.idDetallePedido = deta.Id
         Else    'es el detalle de algun detalle
             Set detadto = DAODetalleOrdenTrabajo.FindConjuntoById(row.record.Tag)
             If detadto Is Nothing Then Exit Sub
 
-            F.PIEZA_ID = detadto.Pieza.id
-            F.idDetallePedidoConjunto = detadto.id
+            F.PIEZA_ID = detadto.Pieza.Id
+            F.idDetallePedidoConjunto = detadto.Id
             F.idDetallePedido = detadto.idDetallePedido
         End If
 
-        F.pedido_id = Ot.id
+        F.pedido_id = Ot.Id
         F.Show 1
         If TareaAgregada Then CargarDetallesOT
     End If
@@ -698,7 +698,7 @@ Private Sub mnuArchivoDetalleOT_Click()
         Set deta = DAODetalleOrdenTrabajo.FindById(row.record.Tag)
         If deta Is Nothing Then Exit Sub
 
-        frmar2.ObjetoId = deta.id
+        frmar2.ObjetoId = deta.Id
         frmar2.caption = "OT Nº " & Ot.IdFormateado & " - Item " & deta.item & " [" & deta.Pieza.nombre & "]"
 
     Else        'es el detalle de algun detalle
@@ -708,8 +708,8 @@ Private Sub mnuArchivoDetalleOT_Click()
 
         Set deta = DAODetalleOrdenTrabajo.FindById(detadto.idDetallePedido)
 
-        frmar2.ObjetoId = detadto.id
-        frmar2.caption = "OT Nº " & Ot.IdFormateado & " - Item " & deta.item & " - Subitem " & detadto.id & " [" & deta.Pieza.nombre & "]"
+        frmar2.ObjetoId = detadto.Id
+        frmar2.caption = "OT Nº " & Ot.IdFormateado & " - Item " & deta.item & " - Subitem " & detadto.Id & " [" & deta.Pieza.nombre & "]"
     End If
 
     frmar2.Show
@@ -729,12 +729,12 @@ Private Sub mnuArchivoPieza_Click()
     If row.ParentRow Is Nothing Then        'es el detalle de la ot
         Set deta = DAODetalleOrdenTrabajo.FindById(row.record.Tag)
         If deta Is Nothing Then Exit Sub
-        frmar1.ObjetoId = deta.Pieza.id
+        frmar1.ObjetoId = deta.Pieza.Id
         frmar1.caption = "Pieza " & deta.Pieza.nombre
     Else        'es el detalle de algun detalle
         Set detadto = DAODetalleOrdenTrabajo.FindConjuntoById(row.record.Tag)
         If detadto Is Nothing Then Exit Sub
-        frmar1.ObjetoId = detadto.Pieza.id
+        frmar1.ObjetoId = detadto.Pieza.Id
         frmar1.caption = "Pieza " & detadto.Pieza.nombre
     End If
 
@@ -754,7 +754,7 @@ Private Sub mnuEditarTiempo_Click()
 End Sub
 
 Private Sub mnuFinalizarTarea_Click()
-    'ANTES CHEQUEAR QUE SE PUEDA FINALIZAR
+'ANTES CHEQUEAR QUE SE PUEDA FINALIZAR
     Dim ret As Integer
     ret = DAOTiemposProceso.CanFinalize(CLng(Me.ReportControl.SelectedRows(0).record.Tag * -1))
 
@@ -768,7 +768,7 @@ Private Sub mnuFinalizarTarea_Click()
                 Dim ptp As PlaneamientoTiempoProceso
                 Set ptp = DAOTiemposProceso.FindById(CLng(Me.ReportControl.SelectedRows(0).record.Tag * -1))
                 If IsSomething(ptp) Then
-                    If ptp.Tarea.id = 15 Then    'archivo punzonado then
+                    If ptp.Tarea.Id = 15 Then    'archivo punzonado then
                         'preguntar si quiere agergar al detalle o a la pieza
 
                         Me.taskDialog.Reset
@@ -930,7 +930,7 @@ Private Sub LlenarDetalles()
 
     For Each det In Detalles
         Set record = Me.ReportControlDetalles.Records.Add
-        record.Tag = det.id
+        record.Tag = det.Id
 
         If det.Empleado Is Nothing Then
             record.AddItem Empty

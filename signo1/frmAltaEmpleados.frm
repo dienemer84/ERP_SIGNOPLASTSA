@@ -59,7 +59,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   58720257
+      Format          =   16449537
       CurrentDate     =   40119
    End
    Begin VB.TextBox txtGrupoSanguineo 
@@ -207,7 +207,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   58720257
+      Format          =   16449537
       CurrentDate     =   40119
    End
    Begin VB.Label lblDatoActualizacion 
@@ -575,11 +575,11 @@ Private m_empleado As clsEmpleado
 
 Public Property Set Empleado(value As clsEmpleado)
     On Error GoTo err1
-    
-    
-    
-    Set m_empleado = DAOEmpleados.GetById(value.id)
-    
+
+
+
+    Set m_empleado = DAOEmpleados.GetById(value.Id)
+
     txtDireccion = m_empleado.direccion
     txtApellido = m_empleado.Apellido
     txtNombre = m_empleado.nombre
@@ -596,28 +596,28 @@ Public Property Set Empleado(value As clsEmpleado)
     Me.txtGrupoSanguineo.text = m_empleado.GrupoSanguineo
     Me.dtpFechaIng.value = m_empleado.FechaIngreso
     Me.dtpFechaNac.value = m_empleado.FechaNacimiento
-    
+
     Me.txtCuil = m_empleado.Cuil
     Me.lblDatoActualizacion = m_empleado.UltimaActualizacion
 
 
     If IsSomething(m_empleado.ObraSocial) Then
-    
-      Me.cboOS.ListIndex = PosIndexCbo(m_empleado.ObraSocial.id, Me.cboOS)
+
+        Me.cboOS.ListIndex = PosIndexCbo(m_empleado.ObraSocial.Id, Me.cboOS)
     Else
 
-        
-        
+
+
         Dim tmp As ObraSocial
         Set tmp = DAOObraSocial.GetDefault()
-        
+
         If IsSomething(tmp) Then
-              Me.cboOS.ListIndex = PosIndexCbo(tmp.id, Me.cboOS)
+            Me.cboOS.ListIndex = PosIndexCbo(tmp.Id, Me.cboOS)
         End If
-        
-                MsgBox "El empleado no tiene asignada una obra social, se cargará una por default", vbCritical
+
+        MsgBox "El empleado no tiene asignada una obra social, se cargará una por default", vbCritical
     End If
-    
+
 
     If IsSomething(m_empleado) Then
 
@@ -626,11 +626,11 @@ Public Property Set Empleado(value As clsEmpleado)
         '  Dim col As New Collection
         Dim Foto As archivo
 
-        Set Foto = DAOArchivo.FindAll(OA_FotoEmpleado, "idPieza=" & m_empleado.id)(1)
+        Set Foto = DAOArchivo.FindAll(OA_FotoEmpleado, "idPieza=" & m_empleado.Id)(1)
 
         If IsSomething(Foto) Then
 
-            tmppath = clasea.exportarArchivo(Foto.id)
+            tmppath = clasea.exportarArchivo(Foto.Id)
             If LenB(tmppath) > 0 Then
                 Set Me.Image1.Picture = LoadPicture(tmppath)
                 Kill tmppath
@@ -653,8 +653,8 @@ Private Sub cmdGuardar_Click()
 
     If Not IsSomething(m_empleado) Then
         Set m_empleado = New clsEmpleado
-        Dim b As Boolean
-        b = True
+        Dim B As Boolean
+        B = True
 
 
 
@@ -664,7 +664,7 @@ Private Sub cmdGuardar_Click()
     Set tmpEmp = DAOEmpleados.GetByLegajo(CLng(Me.txtNroLegajo))
 
     If IsSomething(tmpEmp) Then
-        If tmpEmp.id <> m_empleado.id Then
+        If tmpEmp.Id <> m_empleado.Id Then
             MsgBox "El número de legajo ya existe", vbCritical, "Error"
             Exit Sub
         End If
@@ -687,12 +687,12 @@ Private Sub cmdGuardar_Click()
     m_empleado.FechaIngreso = Me.dtpFechaIng.value
     m_empleado.FechaNacimiento = Me.dtpFechaNac.value
     m_empleado.estado = EstadoUsuario.activo
-    
+
     m_empleado.Cuil = Me.txtCuil
-    
- Set m_empleado.ObraSocial = DAOObraSocial.GetById(Me.cboOS.ItemData(Me.cboOS.ListIndex))
-    
-    
+
+    Set m_empleado.ObraSocial = DAOObraSocial.GetById(Me.cboOS.ItemData(Me.cboOS.ListIndex))
+
+
     m_empleado.UltimaActualizacion = Me.lblDatoActualizacion
 
 
@@ -704,7 +704,7 @@ Private Sub cmdGuardar_Click()
         If LenB(Me.Image1.Tag) > 0 Then
 
             Dim clasea As New classArchivos
-            If Not clasea.grabarArchivo(m_empleado.id, funciones.GetFileName(Me.Image1.Tag), CStr(Me.Image1.Tag), "Empleado", 812, False) Then GoTo err44
+            If Not clasea.grabarArchivo(m_empleado.Id, funciones.GetFileName(Me.Image1.Tag), CStr(Me.Image1.Tag), "Empleado", 812, False) Then GoTo err44
 
 
         End If
@@ -737,12 +737,12 @@ Private Sub limpiar()
     Me.txtGrupoSanguineo.text = vbNullString
     Me.dtpFechaIng.value = Now
     Me.dtpFechaNac.value = Now
-    
-    
+
+
     Me.txtCuil = Empty
     Me.cboOS = Empty
     Me.lblDatoActualizacion = Now
-    
+
 End Sub
 
 Private Sub cmdSalir_Click()
@@ -756,9 +756,9 @@ Private Sub Form_Load()
     FormHelper.Customize Me
 
     limpiar
-    
+
     DAOObraSocial.llenarComboXtremeSuite Me.cboOS
-    
+
 
 
 

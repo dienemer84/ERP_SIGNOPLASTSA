@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmSeguimientoEspecialPorRuta 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Seguimiento por Rutas"
@@ -571,7 +571,7 @@ End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
 
-    'si la ultima tecla fue hace mas de 10 segundos, empezar de vuelta
+'si la ultima tecla fue hace mas de 10 segundos, empezar de vuelta
     If (GetTickCount - lastkeypressMS) > 30000 Then
         LimpiarData
         finalizandoProceso = False
@@ -636,23 +636,23 @@ Private Sub GetDetalleOT()
         If IsSomething(DetalleOt) Or IsSomething(DetalleOtConjunto) Then
             If IsSomething(DetalleOt) Then
                 'Set procesos = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(DetalleOt.Id, DetalleOt.pieza.Id)
-                Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(DetalleOt.id)
+                Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(DetalleOt.Id)
 
             Else
                 'Set procesos = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(DetalleOtConjunto.Id, DetalleOtConjunto.pieza.Id)
-                Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(0, DetalleOtConjunto.id)
+                Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(0, DetalleOtConjunto.Id)
             End If
 
             'ver esto para terminar el proceso
             Dim procesosDetallesSinTerminar As Collection
-            Set procesosDetallesSinTerminar = DAOTiemposProcesosDetalles.FindAllWithoutFinishByEmpleado(Empleado.id)
+            Set procesosDetallesSinTerminar = DAOTiemposProcesosDetalles.FindAllWithoutFinishByEmpleado(Empleado.Id)
 
             Dim ptpd As PlaneamientoTiempoProcesoDetalle
             Dim tmpProc As PlaneamientoTiempoProceso
             If IsSomething(procesosDetallesSinTerminar) Then
                 For Each ptpd In procesosDetallesSinTerminar
                     For Each tmpProc In procesos
-                        If tmpProc.id = ptpd.IdPlaneamientoTiempoProceso Then
+                        If tmpProc.Id = ptpd.IdPlaneamientoTiempoProceso Then
                             'tiene un detalle para terminar!
                             Set tiempoProcesoDet = ptpd
                             FinalizarProceso
@@ -734,18 +734,18 @@ Private Sub FinalizarProcesoPost()
 End Sub
 
 Private Sub IniciarProceso()
-    If DAOEmpleados.GetTareasIdAsignadasByPersonalId(Empleado.id).Exists(proceso.Tarea.id) Then
+    If DAOEmpleados.GetTareasIdAsignadasByPersonalId(Empleado.Id).Exists(proceso.Tarea.Id) Then
 
         'me tengo que fijar que de los que tenga sin terminar sean el mismo tipo de tarea que la que va a iniciar
         Dim detallesSinTerminar As Collection
-        Set detallesSinTerminar = DAOTiemposProcesosDetalles.FindAllWithoutFinishByEmpleado(Empleado.id)
+        Set detallesSinTerminar = DAOTiemposProcesosDetalles.FindAllWithoutFinishByEmpleado(Empleado.Id)
         Dim tmpProcesoDet As PlaneamientoTiempoProcesoDetalle
         Dim tmpProcesoDetInconcluso As PlaneamientoTiempoProcesoDetalle
 
         Dim mismaTarea As Boolean: mismaTarea = True
         If IsSomething(detallesSinTerminar) Then
             For Each tmpProcesoDet In detallesSinTerminar
-                mismaTarea = mismaTarea And (proceso.Tarea.id = tmpProcesoDet.PlaneamientoTiempoProceso.Tarea.id)
+                mismaTarea = mismaTarea And (proceso.Tarea.Id = tmpProcesoDet.PlaneamientoTiempoProceso.Tarea.Id)
                 If Not mismaTarea Then
                     Set tmpProcesoDetInconcluso = tmpProcesoDet
                     Exit For
@@ -758,7 +758,7 @@ Private Sub IniciarProceso()
             Set tiempoProcesoDet.Empleado = Empleado
             tiempoProcesoDet.FechaCarga = Now
             tiempoProcesoDet.FechaInicioTarea = Now
-            tiempoProcesoDet.IdPlaneamientoTiempoProceso = proceso.id
+            tiempoProcesoDet.IdPlaneamientoTiempoProceso = proceso.Id
             tiempoProcesoDet.legajo = Empleado.legajo
             If DAOTiemposProcesosDetalles.Save(tiempoProcesoDet) Then
                 Me.gridProcesos.ItemCount = 0
@@ -828,11 +828,11 @@ Private Sub ShowMessage(msg As String)
 End Sub
 
 Private Sub PintarMensaje()
-    If Me.lblMensajes.BackColor = vbWhite Then
-        Me.lblMensajes.BackColor = FormHelper.LetraAzul
+    If Me.lblMensajes.backColor = vbWhite Then
+        Me.lblMensajes.backColor = FormHelper.LetraAzul
         Me.lblMensajes.ForeColor = vbWhite
     Else
-        Me.lblMensajes.BackColor = vbWhite
+        Me.lblMensajes.backColor = vbWhite
         Me.lblMensajes.ForeColor = FormHelper.LetraAzul
     End If
 End Sub
@@ -894,7 +894,7 @@ End Sub
 Private Sub gridProcesos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex >= 1 And RowIndex <= procesos.count Then
         Set proceso = procesos.item(RowIndex)
-        Values.value(1) = proceso.Tarea.id & " - " & proceso.Tarea.Tarea
+        Values.value(1) = proceso.Tarea.Id & " - " & proceso.Tarea.Tarea
         Values.value(2) = proceso.Tarea.Sector.Sector
     End If
 End Sub

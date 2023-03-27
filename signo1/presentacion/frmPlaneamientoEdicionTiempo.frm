@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~3.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoEdicionTiempo 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Tiempo"
@@ -43,7 +43,7 @@ Begin VB.Form frmPlaneamientoEdicionTiempo
       _ExtentY        =   582
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm:ss"
-      Format          =   65732611
+      Format          =   58458115
       CurrentDate     =   40140
    End
    Begin VB.ComboBox cboEmpleado 
@@ -64,7 +64,7 @@ Begin VB.Form frmPlaneamientoEdicionTiempo
       _ExtentY        =   582
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm:ss"
-      Format          =   65732611
+      Format          =   58458115
       CurrentDate     =   40140
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
@@ -182,7 +182,7 @@ Public Property Set detalle(value As PlaneamientoTiempoProcesoDetalle)
 
     Me.cboEmpleado.Clear
     Me.cboEmpleado.AddItem value.Empleado.legajo & " - " & value.Empleado.NombreCompleto
-    Me.cboEmpleado.ItemData(Me.cboEmpleado.NewIndex) = value.Empleado.id
+    Me.cboEmpleado.ItemData(Me.cboEmpleado.NewIndex) = value.Empleado.Id
     Me.cboEmpleado.ListIndex = 0
     Me.cboEmpleado.Enabled = False
 
@@ -195,7 +195,7 @@ Public Property Set detalleEditar(value As PlaneamientoTiempoProcesoDetalle)
 
     Me.cboEmpleado.Clear
     Me.cboEmpleado.AddItem value.Empleado.legajo & " - " & value.Empleado.NombreCompleto
-    Me.cboEmpleado.ItemData(Me.cboEmpleado.NewIndex) = value.Empleado.id
+    Me.cboEmpleado.ItemData(Me.cboEmpleado.NewIndex) = value.Empleado.Id
     Me.cboEmpleado.ListIndex = 0
     Me.cboEmpleado.Enabled = False
 
@@ -215,16 +215,16 @@ Public Property Let PlaneamientoTiempoProcesoId(value As Long)
     Me.dtpInicio.value = Now
 
     Dim col As Collection
-    Set col = GetEmpleadosByTareaId(ptp.Tarea.id)
+    Set col = GetEmpleadosByTareaId(ptp.Tarea.Id)
     Me.cboEmpleado.Clear
     Dim empl As clsEmpleado
     For Each empl In col
         Me.cboEmpleado.AddItem empl.legajo & " - " & empl.NombreCompleto
-        Me.cboEmpleado.ItemData(Me.cboEmpleado.NewIndex) = empl.id
+        Me.cboEmpleado.ItemData(Me.cboEmpleado.NewIndex) = empl.Id
     Next
-    If col.count = 0 Then MsgBox "No hay empleados asignados para poder realizar la tarea [" & ptp.Tarea.id & " - " & ptp.Tarea.Tarea & "]." & vbNewLine & "Primero sectorice empleados y luego asignele tareas permitidas.", vbInformation
+    If col.count = 0 Then MsgBox "No hay empleados asignados para poder realizar la tarea [" & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea & "]." & vbNewLine & "Primero sectorice empleados y luego asignele tareas permitidas.", vbInformation
 
-    Me.lblTarea.caption = "Tarea:  " & ptp.Tarea.id & " - " & ptp.Tarea.Tarea
+    Me.lblTarea.caption = "Tarea:  " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea
 
     ActivarControles
 End Property
@@ -247,7 +247,7 @@ Private Sub btnGuardar_Click()
             Dim dett As PlaneamientoTiempoProcesoDetalle
             Set dett = DAOTiemposProcesosDetalles.FindFirstWithoutFinishByEmpleadoId(Me.cboEmpleado.ItemData(Me.cboEmpleado.ListIndex))
             If Not dett Is Nothing Then
-                If dett.PlaneamientoTiempoProceso.Tarea.id <> DAOTiemposProceso.FindById(planeamiento_tiempo_proceso_id).Tarea.id Then
+                If dett.PlaneamientoTiempoProceso.Tarea.Id <> DAOTiemposProceso.FindById(planeamiento_tiempo_proceso_id).Tarea.Id Then
                     MsgBox "El empleado [" & Me.cboEmpleado.text & "] tiene una tarea iniciada sin finalizar desde el " & dett.FechaInicioTarea, vbInformation + vbOKOnly
                     Exit Sub
                 End If

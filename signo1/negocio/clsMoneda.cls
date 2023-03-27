@@ -19,11 +19,11 @@ Private vfechaActual As Date
 Private vId As Long
 Public MonedaCambio As clsMoneda
 
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Let NombreCorto(nvalue As String)
     vNombreCorto = nvalue

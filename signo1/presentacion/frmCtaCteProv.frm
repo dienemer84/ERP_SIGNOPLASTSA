@@ -356,9 +356,9 @@ Private Sub ver()
 
         saldo = 0
         Set saldos = New Dictionary
-       'trello  #179
+        'trello  #179
         Me.gridDetalles.Refetch
-        
+
         Me.gridDetalles.ItemCount = 0
         If Detalles.count > 0 Then
             Me.gridDetalles.ItemCount = Detalles.count
@@ -398,7 +398,7 @@ End Sub
 
 
 Private Sub button_ExportToXlsProv_Click()
-  ExportToXlsProv
+    ExportToXlsProv
 
 End Sub
 
@@ -424,7 +424,7 @@ Private Sub chkEliminado_Click()
 End Sub
 
 Private Sub setmaxdesde(Id As Long)
-    'Me.dtpHasta.MinDate = DAOCuentaCorriente.getMaxDesdeProveedor(id)
+'Me.dtpHasta.MinDate = DAOCuentaCorriente.getMaxDesdeProveedor(id)
 
 End Sub
 
@@ -471,16 +471,16 @@ End Sub
 
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
     If Detalles.count = 0 Then Exit Sub
-    
-        If RowBuffer.RowIndex > 0 Then
-            Set deta = Detalles.item(RowBuffer.RowIndex)
-            If Not deta.AtributoExtra And deta.Debe > 0 And deta.Haber = 0 Then    'no esta en ninguna orden
-                RowBuffer.RowStyle = "Impaga"
-            End If
+
+    If RowBuffer.RowIndex > 0 Then
+        Set deta = Detalles.item(RowBuffer.RowIndex)
+        If Not deta.AtributoExtra And deta.Debe > 0 And deta.Haber = 0 Then    'no esta en ninguna orden
+            RowBuffer.RowStyle = "Impaga"
         End If
-        
-        ''debug.print (deta.IdComprobante)
-    
+    End If
+
+    ''debug.print (deta.IdComprobante)
+
 End Sub
 
 Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -491,14 +491,14 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(3) = deta.Debe
         Values(4) = deta.Haber
 
-'        If saldos.Exists(CStr(RowIndex)) Then
-'            Values(5) = saldos.item(CStr(RowIndex))
-'        Else
-'            saldo = saldo + deta.Debe - deta.Haber
-'            saldos.Add CStr(RowIndex), saldo
-'            Values(5) = funciones.RedondearDecimales(saldo)
-'        End If
-'
+        '        If saldos.Exists(CStr(RowIndex)) Then
+        '            Values(5) = saldos.item(CStr(RowIndex))
+        '        Else
+        '            saldo = saldo + deta.Debe - deta.Haber
+        '            saldos.Add CStr(RowIndex), saldo
+        '            Values(5) = funciones.RedondearDecimales(saldo)
+        '        End If
+        '
         Values(5) = deta.saldo
 
     End If
@@ -547,8 +547,8 @@ Private Sub PushButton3_Click()
 End Sub
 
 Public Function ExportToXlsProv() As Boolean
-    
-    'Dim xlApplication As New Excel.Application
+
+'Dim xlApplication As New Excel.Application
     Dim xlApplication As Object
     Set xlApplication = CreateObject("Excel.Application")
 
@@ -579,54 +579,54 @@ Public Function ExportToXlsProv() As Boolean
 
     Dim idx As Integer
     idx = 4
-    
-   For Each deta In Detalles
-  
 
-         xlWorksheet.Cells(idx, 1).value = deta.FEcha
-         xlWorksheet.Cells(idx, 2).value = deta.Comprobante
-         xlWorksheet.Cells(idx, 3).value = deta.Debe
-         xlWorksheet.Cells(idx, 4).value = deta.Haber
-         xlWorksheet.Cells(idx, 5).value = deta.saldo
-         
-    idx = idx + 1
-    
-     Next
+    For Each deta In Detalles
 
-        xlApplication.ScreenUpdating = False
-        
-        Dim wkSt As String
-        
-        wkSt = xlWorksheet.Name
-        
-        xlWorksheet.Cells.EntireColumn.AutoFit
-        
-        xlWorkbook.Sheets(wkSt).Select
-        
-        xlApplication.ScreenUpdating = True
-        
-        xlWorksheet.PageSetup.Orientation = xlLandscape
-        xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
-        xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
-        xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
-        xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
-    
-        Dim filename As String
-        filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
-    
-        If Dir(filename) <> vbNullString Then Kill filename
-       
-        xlWorkbook.SaveAs filename
-    
-        xlWorkbook.Saved = True
-        xlWorkbook.Close
-        xlApplication.Quit
-        
-        funciones.ShellExecute 0, "open", filename, "", "", 0
-    
-        Set xlWorksheet = Nothing
-        Set xlWorkbook = Nothing
-        Set xlApplication = Nothing
-        
+
+        xlWorksheet.Cells(idx, 1).value = deta.FEcha
+        xlWorksheet.Cells(idx, 2).value = deta.Comprobante
+        xlWorksheet.Cells(idx, 3).value = deta.Debe
+        xlWorksheet.Cells(idx, 4).value = deta.Haber
+        xlWorksheet.Cells(idx, 5).value = deta.saldo
+
+        idx = idx + 1
+
+    Next
+
+    xlApplication.ScreenUpdating = False
+
+    Dim wkSt As String
+
+    wkSt = xlWorksheet.Name
+
+    xlWorksheet.Cells.EntireColumn.AutoFit
+
+    xlWorkbook.Sheets(wkSt).Select
+
+    xlApplication.ScreenUpdating = True
+
+    xlWorksheet.PageSetup.Orientation = xlLandscape
+    xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+
+    Dim filename As String
+    filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
+
+    If Dir(filename) <> vbNullString Then Kill filename
+
+    xlWorkbook.SaveAs filename
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    funciones.ShellExecute 0, "open", filename, "", "", 0
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
 
 End Function

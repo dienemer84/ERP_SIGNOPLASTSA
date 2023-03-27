@@ -12,8 +12,8 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-Public Moneda As clsMoneda
-Public id As Long
+Public moneda As clsMoneda
+Public Id As Long
 Public nombre As String
 Public Valor As Double
 Public PorcentajeEspecializacion As Double

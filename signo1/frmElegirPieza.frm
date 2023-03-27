@@ -192,7 +192,7 @@ Private Sub llenarLista()
         Exit Sub
     End If
 
-    filtro = "s.id_cliente=" & vCliente.id
+    filtro = "s.id_cliente=" & vCliente.Id
     If Trim(Me.Text1) <> Empty Then
         filtro = filtro & " and s.detalle LIKE '%" & Me.Text1.text & "%'"
     End If
@@ -213,7 +213,7 @@ Private Sub llenarLista()
             Set dto.Pieza = deta.Pieza
 
 
-            dto.idDetalleOt = deta.id
+            dto.idDetalleOt = deta.Id
             dto.idOt = OtIdFilter
             dto.item = deta.item
             dto.Precio = deta.Precio
@@ -252,10 +252,10 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.GridEX1
     llenarLista
     loading = False
-    
-        ''Me.caption = caption & " (" & Name & ")"
-        
-        
+
+    ''Me.caption = caption & " (" & Name & ")"
+
+
 End Sub
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.GridEX1, Column

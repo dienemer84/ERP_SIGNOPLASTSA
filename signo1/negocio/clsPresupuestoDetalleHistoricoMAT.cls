@@ -12,7 +12,7 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-Public id As Long
+Public Id As Long
 Public Material As clsMaterial
 Public Largo As Double
 Public Ancho As Double
@@ -21,7 +21,7 @@ Public AnchoPieza As Double
 Public Scrap As Double
 Public Cantidad As Double
 Public Valor As Double
-Public Moneda As clsMoneda
+Public moneda As clsMoneda
 Private scrap_ As Double
 
 
@@ -46,7 +46,7 @@ Friend Function CalcularDatosMaterial(ByVal idMonedaDestino As Long) As DatosMat
         Kg = funciones.RedondearDecimales(Material.PesoXUnidad * (Me.LargoPieza / 1000) * Me.Cantidad)
         m2ml = funciones.RedondearDecimales(Me.LargoPieza / 1000 * Cantidad)
         Precio = Me.Valor * Me.Material.PesoXUnidad
-        Precio = clasea.realizaCambio(Precio, Moneda.id, idMonedaDestino)
+        Precio = clasea.realizaCambio(Precio, moneda.Id, idMonedaDestino)
         Precio = ((Precio * LargoPieza * scrap_ * 2) / 1000) * Cantidad
         Precio = Precio / 2
 
@@ -57,7 +57,7 @@ Friend Function CalcularDatosMaterial(ByVal idMonedaDestino As Long) As DatosMat
         Kg = funciones.RedondearDecimales(Material.PesoXUnidad * Cantidad)
         m2ml = 0
         Precio = Valor * Material.PesoXUnidad
-        Precio = clasea.realizaCambio(Precio, Moneda.id, idMonedaDestino)
+        Precio = clasea.realizaCambio(Precio, moneda.Id, idMonedaDestino)
         Precio = (Precio * Cantidad)
         dimension_material = Cantidad
         dimension_pieza = Cantidad
@@ -66,7 +66,7 @@ Friend Function CalcularDatosMaterial(ByVal idMonedaDestino As Long) As DatosMat
         Kg = funciones.RedondearDecimales(Material.PesoXUnidad * ((AnchoPieza * LargoPieza) / 1000000) * Cantidad)
         m2ml = funciones.RedondearDecimales((AnchoPieza * LargoPieza) / 1000000 * Cantidad)
         Precio = Valor * Material.PesoXUnidad
-        Precio = clasea.realizaCambio(Precio, Moneda.id, idMonedaDestino)
+        Precio = clasea.realizaCambio(Precio, moneda.Id, idMonedaDestino)
         Precio = Precio * (Cantidad * AnchoPieza * LargoPieza * scrap_) / 1000000
 
         dimension_material = Cantidad & "x" & Largo & "x" & Ancho
@@ -76,7 +76,7 @@ Friend Function CalcularDatosMaterial(ByVal idMonedaDestino As Long) As DatosMat
 
         m2ml = 0
         Precio = Valor
-        Precio = clasea.realizaCambio(Precio, Moneda.id, idMonedaDestino)
+        Precio = clasea.realizaCambio(Precio, moneda.Id, idMonedaDestino)
         Precio = Precio * Cantidad
 
         Kg = Cantidad

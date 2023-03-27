@@ -16,7 +16,7 @@ Public Function Notificarse(EVENTO As clsEventoObserver)
 
 End Function
 
-Public Property Get id() As String
+Public Property Get Id() As String
 
 End Property
 

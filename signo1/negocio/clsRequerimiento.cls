@@ -54,11 +54,11 @@ End Property
 Public Property Get DestinoOT() As Long
     DestinoOT = vDestinoOT
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Let Sector(nvalue As clsSector)
     Set mSector = nvalue
@@ -66,7 +66,7 @@ End Property
 Public Property Let estado(nvalue As EstadoRequeCompra)
     vEstado = nvalue
 End Property
-Public Property Let FechaCreado(nvalue As Date)
+Public Property Let fechaCreado(nvalue As Date)
     vFechaCreado = nvalue
 End Property
 Public Property Get Sector() As clsSector
@@ -75,8 +75,8 @@ End Property
 Public Property Get estado() As EstadoRequeCompra
     estado = vEstado
 End Property
-Public Property Get FechaCreado() As Date
-    FechaCreado = vFechaCreado
+Public Property Get fechaCreado() As Date
+    fechaCreado = vFechaCreado
 End Property
 Public Property Let Usuario_creador(nvalue As clsUsuario)
     Set mUsuario_creador = nvalue

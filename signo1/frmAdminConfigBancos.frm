@@ -75,8 +75,8 @@ Private Sub GridEX1_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not (MsgBox("¿Está seguro de actualizar los datos?", vbYesNo, "Consulta") = vbYes)
 End Sub
 Private Sub GridEX1_SelectionChange()
-    'On Error Resume Next'
-    '   Set banco = bancos.Item(Me.GridEX1.RowIndex(Me.GridEX1.Row))
+'On Error Resume Next'
+'   Set banco = bancos.Item(Me.GridEX1.RowIndex(Me.GridEX1.Row))
 End Sub
 
 
@@ -85,7 +85,7 @@ Private Sub GridEX1_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant,
     Banco.Id = Values(1)
     Banco.nombre = Values(2)
     If DAOBancos.Save(Banco) Then bancos.Add Banco, CStr(Banco.Id)
-    
+
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)

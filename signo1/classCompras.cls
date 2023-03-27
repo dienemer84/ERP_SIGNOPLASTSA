@@ -28,7 +28,7 @@ Private Sub Class_Initialize()
 err22:
     MsgBox Err.Description
 End Sub
-Public Function cambiarPrecios(id As Integer, incremental As Double, accion As Integer, Optional accion2 As Integer) As Boolean
+Public Function cambiarPrecios(Id As Integer, incremental As Double, accion As Integer, Optional accion2 As Integer) As Boolean
     On Error GoTo erra
     Dim Valor As Double
 
@@ -36,11 +36,11 @@ Public Function cambiarPrecios(id As Integer, incremental As Double, accion As I
     fech = Format(Date, "yyyy/mm/dd")    'fecha actual
     cambiarPrecios = True
     If accion = 1 Then    'por rubro
-        Me.ejecutar_consulta "select m.id,m.valor_unitario,m.id_moneda from  materiales m where  m.id_Rubro=" & id
+        Me.ejecutar_consulta "select m.id,m.valor_unitario,m.id_moneda from  materiales m where  m.id_Rubro=" & Id
     ElseIf accion = 2 Then    'por grupo
-        Me.ejecutar_consulta "select m.id,m.valor_unitario,m.id_moneda from  materiales m where m.id_grupo=" & id
+        Me.ejecutar_consulta "select m.id,m.valor_unitario,m.id_moneda from  materiales m where m.id_grupo=" & Id
     ElseIf accion = 3 Then    'por material
-        Me.ejecutar_consulta "select m.id,m.valor_unitario,m.id_moneda from  materiales m where m.id=" & id
+        Me.ejecutar_consulta "select m.id,m.valor_unitario,m.id_moneda from  materiales m where m.id=" & Id
     End If
 
     While Not rs.EOF
@@ -51,7 +51,7 @@ Public Function cambiarPrecios(id As Integer, incremental As Double, accion As I
             Valor = rs!valor_unitario * inc
         End If
 
-        IdMaterial = rs!id
+        IdMaterial = rs!Id
 
         Valor = funciones.RedondearDecimales(Valor, 2)
 

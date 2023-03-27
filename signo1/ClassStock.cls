@@ -51,11 +51,11 @@ err22:
 End Sub
 
 
-Public Function calcular_valor_materiales(ByVal id As Integer, ByRef kgs As Double, ByRef precio2 As Double, ByVal idMonedaDestino As Long)
-    'Busco detalles pieza
+Public Function calcular_valor_materiales(ByVal Id As Integer, ByRef kgs As Double, ByRef precio2 As Double, ByVal idMonedaDestino As Long)
+'Busco detalles pieza
 
     Dim strsql As String
-    strsql = "select m.fecha_valor,c.dolar,m.valor_unitario,m.id_moneda,dm.largoTerm,dm.anchoTerm,dm.largo, dm.ancho, dm.scrap, dm.cantidad, m.pesoxunidad, m.id as idmat,m.id_unidad from desarrollo_material dm, materiales m, stock s, configuracion c where dm.id_material=m.id  and s.id=" & id & " and dm.id_pieza=" & id
+    strsql = "select m.fecha_valor,c.dolar,m.valor_unitario,m.id_moneda,dm.largoTerm,dm.anchoTerm,dm.largo, dm.ancho, dm.scrap, dm.cantidad, m.pesoxunidad, m.id as idmat,m.id_unidad from desarrollo_material dm, materiales m, stock s, configuracion c where dm.id_material=m.id  and s.id=" & Id & " and dm.id_pieza=" & Id
     Me.ejecutar2 strsql
     prec = 0
     While Not rs2.EOF
@@ -63,7 +63,7 @@ Public Function calcular_valor_materiales(ByVal id As Integer, ByRef kgs As Doub
         PesoXUnidad = rs2!PesoXUnidad
         valor_unitario = rs2!valor_unitario
 
-        Moneda = rs2!id_moneda  'moneda origen material (en que moneda está costeado)
+        moneda = rs2!id_moneda  'moneda origen material (en que moneda está costeado)
 
         y = rs2!Largo   'CAMBIADOSSSSS 28-3-8
         x = rs2!Ancho
@@ -102,10 +102,10 @@ err62:
     MsgBox "Se produjo un error: " & Err.Description
 End Sub
 
-Public Sub llenar_lista_stock(lst As ListView, Cliente As Long, filtro As String, Optional marcado, Optional Cantidad, Optional elegir As Boolean = False)
+Public Sub llenar_lista_stock(lst As ListView, cliente As Long, filtro As String, Optional marcado, Optional Cantidad, Optional elegir As Boolean = False)
     On Error Resume Next
     lst.ListItems.Clear
-    If Trim(Cliente) = -1 Then
+    If Trim(cliente) = -1 Then
         'si son todos los clientes.
         If Trim(filtro) = Empty Then
             If elegir Then
@@ -120,7 +120,7 @@ Public Sub llenar_lista_stock(lst As ListView, Cliente As Long, filtro As String
                 strsql = "select S.conjunto,S.estado,S.id,S.detalle, S.cantidad , c.razon From stock S inner join clientes c on S.id_cliente=c.id  WHERE S.detalle LIKE '%" & Trim(filtro) & "%' AND S.estado=1 group by S.id order by S.detalle asc"
             End If
         End If
-    ElseIf Trim(Cliente) = -2 Then    'si quieren ver los registros marcados para eliminar
+    ElseIf Trim(cliente) = -2 Then    'si quieren ver los registros marcados para eliminar
         If elegir Then
             strsql = "SELECT S.conjunto,S.estado,S.id,S.detalle, S.cantidad , c.razon From stock S inner join clientes c on S.id_cliente=c.id WHERE S.estado=0 group by S.id order by S.detalle asc"
         Else
@@ -130,16 +130,16 @@ Public Sub llenar_lista_stock(lst As ListView, Cliente As Long, filtro As String
         'si hay filtro de cliente
         If Trim(filtro) = Empty Then
             If elegir Then
-                strsql = "select S.conjunto,S.estado,S.id,S.detalle,  S.Cantidad,  c.razon From stock S inner join clientes c on S.id_cliente=c.id AND S.id_cliente = " & Cliente & " AND S.estado=1 group by S.id order by S.detalle asc"
+                strsql = "select S.conjunto,S.estado,S.id,S.detalle,  S.Cantidad,  c.razon From stock S inner join clientes c on S.id_cliente=c.id AND S.id_cliente = " & cliente & " AND S.estado=1 group by S.id order by S.detalle asc"
             Else
-                strsql = "select S.conjunto,S.estado,S.id,S.detalle,  S.Cantidad,  c.razon From stock S inner join clientes c on S.id_cliente=c.id AND S.id_cliente = " & Cliente & " AND S.estado=1 group by S.id order by S.detalle asc"
+                strsql = "select S.conjunto,S.estado,S.id,S.detalle,  S.Cantidad,  c.razon From stock S inner join clientes c on S.id_cliente=c.id AND S.id_cliente = " & cliente & " AND S.estado=1 group by S.id order by S.detalle asc"
             End If
 
         Else
             If elegir Then
-                strsql = "select S.conjunto,S.estado,S.id,S.detalle,  S.Cantidad,  c.razon From stock S inner join clientes c on S.id_cliente=c.id AND S.id_cliente = " & Cliente & "  WHERE S.detalle LIKE '%" & Trim(filtro) & "%' AND S.estado=1 group by S.id order by S.detalle asc"
+                strsql = "select S.conjunto,S.estado,S.id,S.detalle,  S.Cantidad,  c.razon From stock S inner join clientes c on S.id_cliente=c.id AND S.id_cliente = " & cliente & "  WHERE S.detalle LIKE '%" & Trim(filtro) & "%' AND S.estado=1 group by S.id order by S.detalle asc"
             Else
-                strsql = "select S.conjunto,S.estado,S.id,S.detalle,  S.Cantidad,  c.razon From stock S inner join clientes c on S.id_cliente=c.id AND S.id_cliente = " & Cliente & "  WHERE S.detalle LIKE '%" & Trim(filtro) & "%' AND S.estado=1 group by S.id order by S.detalle asc"
+                strsql = "select S.conjunto,S.estado,S.id,S.detalle,  S.Cantidad,  c.razon From stock S inner join clientes c on S.id_cliente=c.id AND S.id_cliente = " & cliente & "  WHERE S.detalle LIKE '%" & Trim(filtro) & "%' AND S.estado=1 group by S.id order by S.detalle asc"
             End If
 
         End If
@@ -154,8 +154,8 @@ Public Sub llenar_lista_stock(lst As ListView, Cliente As Long, filtro As String
         lst.Visible = False
 
         While Not rs.EOF
-            Set x = lst.ListItems.Add(, , rs!id)
-            x.Tag = rs!id
+            Set x = lst.ListItems.Add(, , rs!Id)
+            x.Tag = rs!Id
             x.SubItems(1) = rs!razon
             x.SubItems(2) = UCase(rs!detalle)
             x.SubItems(3) = rs!Cantidad
@@ -179,7 +179,7 @@ End Sub
 
 
 
-Public Sub modifica_Stock(id As Long, operacion As Integer, Nota, Cantidad, Optional ubicacion = Empty)
+Public Sub modifica_Stock(Id As Long, operacion As Integer, Nota, Cantidad, Optional ubicacion = Empty)
     On Error GoTo err5
     'operacion
     '0- ingreso a stock
@@ -193,23 +193,23 @@ Public Sub modifica_Stock(id As Long, operacion As Integer, Nota, Cantidad, Opti
     '>0 nro. orden de trabajo
     'CN.BeginTrans
     If operacion = 1 Then charO = "+" Else charO = "-"
-    Me.ejecutar "select * from stock where id =" & id
+    Me.ejecutar "select * from stock where id =" & Id
     If IsEmpty(ubicacion) Then
-        cn.execute "update stock set cantidad = cantidad" & charO & Cantidad & " where id=" & id
+        cn.execute "update stock set cantidad = cantidad" & charO & Cantidad & " where id=" & Id
     Else
-        cn.execute "update stock set detalle_stock='" & UCase(ubicacion) & "',cantidad = cantidad" & charO & Cantidad & " where id=" & id
+        cn.execute "update stock set detalle_stock='" & UCase(ubicacion) & "',cantidad = cantidad" & charO & Cantidad & " where id=" & Id
     End If
 
     cha = Format(Date, "yyyy/mm/dd")
-    cn.execute "insert into movimiento_stock (id_pieza,cantidad,operacion,fecha,nota)values (" & id & "," & Cantidad & "," & operacion & ",'" & cha & "'," & Nota & ")"
+    cn.execute "insert into movimiento_stock (id_pieza,cantidad,operacion,fecha,nota)values (" & Id & "," & Cantidad & "," & operacion & ",'" & cha & "'," & Nota & ")"
     'CN.CommitTrans
     Exit Sub
 err5:
     'CN.RollbackTrans
 End Sub
-Function llenar_historico_stock(id As Integer, lst As ListView)
+Function llenar_historico_stock(Id As Integer, lst As ListView)
     Dim strsql As String
-    strsql = "select * from movimiento_stock where id_pieza = " & id
+    strsql = "select * from movimiento_stock where id_pieza = " & Id
     Me.ejecutar strsql
     Dim operacion(0 To 4)
 
@@ -239,7 +239,7 @@ Function llenar_historico_stock(id As Integer, lst As ListView)
             End If
         End If
 
-        Set x = lst.ListItems.Add(, , rs!id)
+        Set x = lst.ListItems.Add(, , rs!Id)
         x.SubItems(1) = rs!Cantidad
         x.SubItems(2) = operacion(rs!operacion)
 
@@ -253,9 +253,9 @@ Function llenar_historico_stock(id As Integer, lst As ListView)
     'End If
 End Function
 
-Public Function cambiar_estado(id As Integer, accion As Integer) As Boolean
+Public Function cambiar_estado(Id As Integer, accion As Integer) As Boolean
     Dim strsql As String
-    strsql = "select estado from stock where id = " & id
+    strsql = "select estado from stock where id = " & Id
     Me.ejecutar strsql
     c = 0
     While Not rs.EOF
@@ -269,13 +269,13 @@ Public Function cambiar_estado(id As Integer, accion As Integer) As Boolean
             If estado = 0 Then
                 MsgBox "Esta pieza ya fue inhabilitada", vbCritical, "Error"
             Else
-                cn.execute "update stock set estado=0 where id=" & id
+                cn.execute "update stock set estado=0 where id=" & Id
             End If
         ElseIf accion = 0 Then
             If estado = 1 Then
                 MsgBox "Esta pieza ya fue habilitada", vbCritical, "Error"
             Else
-                cn.execute "update stock set estado=1 where id=" & id
+                cn.execute "update stock set estado=1 where id=" & Id
             End If
 
         End If
@@ -299,16 +299,16 @@ Function buscar_pieza(str As String) As Integer
     Wend
     If c = 1 Then
         rs.MoveFirst
-        buscar_pieza = rs!id
+        buscar_pieza = rs!Id
     Else
         buscar_pieza = -1    'error
     End If
 
 End Function
 
-Public Function detalle_pieza(id As Long) As String
+Public Function detalle_pieza(Id As Long) As String
     Dim strsql As String
-    strsql = "Select detalle from stock where id=" & id
+    strsql = "Select detalle from stock where id=" & Id
     Me.ejecutar strsql
     c = 0
     While Not rs.EOF
@@ -325,9 +325,9 @@ Public Function detalle_pieza(id As Long) As String
     End If
     detalle_pieza = A
 End Function
-Public Function cLiente_pieza(id As Integer) As String
+Public Function cLiente_pieza(Id As Integer) As String
     Dim strsql As String
-    strsql = "Select c.razon AS AA from stock s, clientes c where s.id_cliente=c.id and s.id=" & id
+    strsql = "Select c.razon AS AA from stock s, clientes c where s.id_cliente=c.id and s.id=" & Id
     Me.ejecutar strsql
     c = 0
     While Not rs.EOF
@@ -361,13 +361,13 @@ Public Function TiemposPieza(idPieza As Integer, Cantidad As Long) As Double
 
 End Function
 
-Function calcularM2MLKGMaterial(ByVal x2, ByVal y2, ByVal idMaterial, ByVal Scrap, ByVal x, ByVal y, ByVal Cant As Double, ByRef Kg, ByRef m2ml, ByRef Pieza, ByRef costo, ByVal idMonedaDestino As Long) As Double
+Function calcularM2MLKGMaterial(ByVal x2, ByVal y2, ByVal IdMaterial, ByVal Scrap, ByVal x, ByVal y, ByVal Cant As Double, ByRef Kg, ByRef m2ml, ByRef Pieza, ByRef costo, ByVal idMonedaDestino As Long) As Double
 
     Dim Precio As Double
     Dim id_moneda_origen As Long
     'strsql = "select s.detalle,dm.largoTerm,dm.AnchoTerm,dm.scrap,dm.id_pieza,dm.largo,dm.ancho,dm.cantidad,dm.id_material,m.id_unidad,m.pesoxunidad, vm.valor_unitario,s.id from stock.stock s inner join stock.desarrollo_material dm on dm.id_pieza=s.id inner join signoplast.materiales m on dm.id_material=m.id inner join signoplast.valores_MATERIALES vm on vm.id_material=m.id and m.id=" & IdMaterial
 
-    strsql = "select m.fecha_valor, m.id_moneda as monedaOrigen,m.valor_unitario, m.pesoxunidad, m.id_unidad from materiales m where m.id=" & idMaterial
+    strsql = "select m.fecha_valor, m.id_moneda as monedaOrigen,m.valor_unitario, m.pesoxunidad, m.id_unidad from materiales m where m.id=" & IdMaterial
     Me.ejecutar strsql
     c = 0
     While Not rs.EOF
@@ -499,14 +499,14 @@ err00:
 End Function
 
 
-Public Function definirConjunto2(detalle As String, Cliente As Long, lista As ListView) As Boolean
+Public Function definirConjunto2(detalle As String, cliente As Long, lista As ListView) As Boolean
     On Error GoTo err55
     definirConjunto = True
     Dim tra As Boolean
     cn.BeginTrans
     tra = True
     'inserto el elemento en stock
-    cn.execute "insert into stock (detalle,id_cliente,conjunto) values ('" & detalle & "'," & Cliente & ",0 )"
+    cn.execute "insert into stock (detalle,id_cliente,conjunto) values ('" & detalle & "'," & cliente & ",0 )"
     Me.ejecutar "select last_insert_id() as ultid from stock"
     idPiezaPadre = rs!ultid
     For K = 1 To lista.ListItems.count
@@ -521,14 +521,14 @@ err55:
     If tra Then cn.RollbackTrans
     definirConjunto = False
 End Function
-Public Function modificarConjunto(detalle As String, Cliente As Long, lista As ListView, idConjunto As Long) As Boolean
+Public Function modificarConjunto(detalle As String, cliente As Long, lista As ListView, idConjunto As Long) As Boolean
     On Error GoTo err55
     modificarConjunto = True
     Dim tra As Boolean
     cn.BeginTrans
     tra = True
     'updateo la pieza padre en tabla stock
-    cn.execute "update stock  set detalle='" & detalle & "',id_cliente=" & Cliente & " ,conjunto=0 where id=" & idConjunto
+    cn.execute "update stock  set detalle='" & detalle & "',id_cliente=" & cliente & " ,conjunto=0 where id=" & idConjunto
     'elimino la definicion anterior del conjunto
     cn.execute "delete from stockConjuntos where idPiezaPadre=" & idConjunto
     'agrego nuevos datos
@@ -548,7 +548,7 @@ End Function
 
 Public Function exporta(idPieza As Long, lst As ListView) As Boolean
     Me.ejecutar "select s.detalle, c.razon from stock s, clientes c where s.id=" & idPieza & " and s.id_cliente=c.id"
-    Cliente = rs!razon
+    cliente = rs!razon
     Pieza = rs!detalle
     On Error GoTo errEXCEL
     Dim xlb As New Excel.Workbook
@@ -584,7 +584,7 @@ Public Function exporta(idPieza As Long, lst As ListView) As Boolean
         .Cells(2, 2).value = Pieza
 
         .Cells(3, 1).value = "Cliente"
-        .Cells(3, 2).value = Cliente
+        .Cells(3, 2).value = cliente
         .Cells(5, 1).value = "Rubro"
         .Cells(5, 2).value = "Incidencia"
 
@@ -706,8 +706,8 @@ err1:
 End Function
 
 
-Public Function copiarConjuntoV2(idConjunto As Long, nombreNuevo As String, Cliente As Long) As Boolean
-    'Dim rs As Recordset
+Public Function copiarConjuntoV2(idConjunto As Long, nombreNuevo As String, cliente As Long) As Boolean
+'Dim rs As Recordset
     Dim rs1 As Recordset
     Dim rs2 As Recordset
     Dim rs3 As Recordset
@@ -720,9 +720,9 @@ Public Function copiarConjuntoV2(idConjunto As Long, nombreNuevo As String, Clie
     tra = True
     'selecciono el id_cliente para el nvo conj
     Me.ejecutar "Select id_cliente from stock where id=" & idConjunto
-    Cliente = rs!id_cliente
+    cliente = rs!id_cliente
 
-    cn.execute "insert into stock (detalle,id_cliente,conjunto) values ('" & UCase(nombreNuevo) & "'," & Cliente & ",0 )"
+    cn.execute "insert into stock (detalle,id_cliente,conjunto) values ('" & UCase(nombreNuevo) & "'," & cliente & ",0 )"
 
     Me.ejecutar "select last_insert_id() as ultid from stock"
     idPiezaPadre = rs!ultid
@@ -732,10 +732,10 @@ Public Function copiarConjuntoV2(idConjunto As Long, nombreNuevo As String, Clie
         strsql = "select * from stockConjuntos where idPiezaPadre=" & idPiezaPadre
         Set rs1 = conectar.RSFactory(strsql)
         While Not rs1.EOF    'itero sobre la primer rama del arbol
-            id = rs1!idPiezaHija
-            If s.EsConjunto(id) = 0 Then
+            Id = rs1!idPiezaHija
+            If s.EsConjunto(Id) = 0 Then
                 'si es conjunto, analizo la rama
-                strsql = "select * from stockConjuntos where idPiezaPadre=" & id
+                strsql = "select * from stockConjuntos where idPiezaPadre=" & Id
                 Set rs2 = conectar.RSFactory(strsql)
                 While Not rs2.EOF    'itero sobre la segunda rama del arbol
                     id2 = rs2!idPiezaHija
@@ -772,7 +772,7 @@ Public Function copiarConjuntoV2(idConjunto As Long, nombreNuevo As String, Clie
                     rs2.MoveNext
                 Wend
             Else
-                Me.ejecutar "select * from stockConjuntos where idPiezaPadre=" & id
+                Me.ejecutar "select * from stockConjuntos where idPiezaPadre=" & Id
                 While Not rs.EOF
                     Cantidad = rs!Cantidad
                     idPiezaHija = rs!idPiezaHija
@@ -825,7 +825,7 @@ Public Function ArbolConjunto(idConjunto) As Recordset  'idConjunto=detalle pedi
     Dim strsql As String, strsql2 As String
     Dim r_tmp As Recordset
     Dim rs1 As Recordset, rs2 As Recordset, rs3 As Recordset
-    Dim id As Long, id2 As Long, id3 As Long
+    Dim Id As Long, id2 As Long, id3 As Long
     Dim cant1 As Double, cant2 As Double, cant3 As Double
     Set r_tmp = New Recordset
     CantConj = 1    'lo pongo en uno para que no quede empty
@@ -847,16 +847,16 @@ Public Function ArbolConjunto(idConjunto) As Recordset  'idConjunto=detalle pedi
     c1 = 0
     While Not rs1.EOF    'itero sobre la primer rama del arbol
         c1 = c1 + 1
-        id = rs1!idPiezaHija
+        Id = rs1!idPiezaHija
 
         idPiezaPadre = rs1!idPiezaPadre
         Cantidad = rs1!Cantidad
-        If Me.EsConjunto(id) = 0 Then
+        If Me.EsConjunto(Id) = 0 Then
             'si es conjunto, analizo la rama
             'strsql = "select * from stockConjuntos where idPiezaPadre=" & id
-            strsql = "select s.cantidad as stock,sc.idPiezaPadre,sc.idPiezaHija,sc.idPiezaHija,sc.cantidad,s.detalle from stockConjuntos sc inner join stock s on sc.idPiezaHija=s.id  where idPiezaPadre=" & id
+            strsql = "select s.cantidad as stock,sc.idPiezaPadre,sc.idPiezaHija,sc.idPiezaHija,sc.cantidad,s.detalle from stockConjuntos sc inner join stock s on sc.idPiezaHija=s.id  where idPiezaPadre=" & Id
             r_tmp.AddNew
-            r_tmp!idPieza = id
+            r_tmp!idPieza = Id
             r_tmp!Cantt = Cantidad * CantConj
             r_tmp!conjunto = 1
             r_tmp!idPiezaPadre = idPiezaPadre
@@ -920,7 +920,7 @@ Public Function ArbolConjunto(idConjunto) As Recordset  'idConjunto=detalle pedi
             Wend
         Else
             r_tmp.AddNew
-            r_tmp!idPieza = id
+            r_tmp!idPieza = Id
             r_tmp!Cantt = Cantidad * CantConj
             r_tmp!conjunto = 0
             r_tmp!idPiezaPadre = idPiezaPadre
@@ -945,7 +945,7 @@ err2:
     MsgBox Err.Description
     ArbolConjunto False
 End Function
-Public Function ListaPiezas(id As Long, Optional Ot As Boolean = False, Optional presupuesto As Boolean = False, Optional otro As Boolean = False, Optional OTGrabada As Boolean = False, Optional ListaPieza As Dictionary) As Recordset
+Public Function ListaPiezas(Id As Long, Optional Ot As Boolean = False, Optional presupuesto As Boolean = False, Optional otro As Boolean = False, Optional OTGrabada As Boolean = False, Optional ListaPieza As Dictionary) As Recordset
     On Error GoTo err5
     Dim clsC As New classStock
     Dim conju As Integer
@@ -961,11 +961,11 @@ Public Function ListaPiezas(id As Long, Optional Ot As Boolean = False, Optional
     r1.Open
 
     If presupuesto Then
-        strsql = "select dp.idPieza,dp.cantidad,s.conjunto as cc,s.detalle from detalle_presupuesto dp inner join stock s on dp.idPieza=s.id where idPresupuesto=" & id
+        strsql = "select dp.idPieza,dp.cantidad,s.conjunto as cc,s.detalle from detalle_presupuesto dp inner join stock s on dp.idPieza=s.id where idPresupuesto=" & Id
     ElseIf Ot Then
-        strsql = "select dp.idpieza,dp.cantidad,s.conjunto as cc,s.detalle from detalles_pedidos dp inner join stock s on dp.idPieza=s.id where idPedido=" & id
+        strsql = "select dp.idpieza,dp.cantidad,s.conjunto as cc,s.detalle from detalles_pedidos dp inner join stock s on dp.idPieza=s.id where idPedido=" & Id
     ElseIf otro Then
-        strsql = "select id as idpieza,1 as cantidad,conjunto as cc,s.detalle from stock s where id=" & id
+        strsql = "select id as idpieza,1 as cantidad,conjunto as cc,s.detalle from stock s where id=" & Id
     Else
         Dim K As Variant
         Dim pp As Variant
@@ -982,7 +982,7 @@ Public Function ListaPiezas(id As Long, Optional Ot As Boolean = False, Optional
             For Each K In ListaPieza
                 r2.AddNew
                 r2!Cantidad = ListaPieza(K)
-                r2!idPieza = K.id
+                r2!idPieza = K.Id
                 r2!cc = IIf(K.EsConjunto, "0", "-1")
                 r2!detalle = K.nombre
                 r2.Update
@@ -1005,14 +1005,14 @@ Public Function ListaPiezas(id As Long, Optional Ot As Boolean = False, Optional
 
     While Not r_l.EOF
         Cantidad = r_l!Cantidad
-        idP = r_l!idPieza
+        idp = r_l!idPieza
         conju = r_l!cc
 
 
         If conju = 0 Then
             'si es conjunto
 
-            Set r_conj = clsC.ArbolConjunto(idP)
+            Set r_conj = clsC.ArbolConjunto(idp)
             While Not r_conj.EOF
 
                 idPieza_c = r_conj!idPieza
@@ -1030,7 +1030,7 @@ Public Function ListaPiezas(id As Long, Optional Ot As Boolean = False, Optional
         '        Else
         'si no es conjunto
         r1.AddNew
-        r1!idPieza = idP
+        r1!idPieza = idp
         r1!Cantidad = Cantidad
         r1.Update
         'End If
@@ -1059,7 +1059,7 @@ End Function
 
 
 
-Public Function exportaMaterializacion(id As Long, Optional vpresu As Boolean = False, Optional vot As Boolean = False, Optional votro As Boolean = False) As Boolean
+Public Function exportaMaterializacion(Id As Long, Optional vpresu As Boolean = False, Optional vot As Boolean = False, Optional votro As Boolean = False) As Boolean
     On Error GoTo errEXCEL
     Dim claseP As New classPlaneamiento
     Dim claseS As New classStock
@@ -1075,12 +1075,12 @@ Public Function exportaMaterializacion(id As Long, Optional vpresu As Boolean = 
     Set xla = xlb.Worksheets.Add
     xla.Activate
     If vot Then    'desde ot
-        strsql = "select c.razon,p.descripcion, p.fechaEntrega as fecha from pedidos p inner join clientes c on p.idCliente=c.id where p.id=" & id
-        strsql2 = "select dp.precio,dp.idPieza,dp.item,s.detalle,dp.cantidad  from detalles_pedidos dp inner join stock s on dp.idPieza=s.id where idPedido=" & id
+        strsql = "select c.razon,p.descripcion, p.fechaEntrega as fecha from pedidos p inner join clientes c on p.idCliente=c.id where p.id=" & Id
+        strsql2 = "select dp.precio,dp.idPieza,dp.item,s.detalle,dp.cantidad  from detalles_pedidos dp inner join stock s on dp.idPieza=s.id where idPedido=" & Id
         enc = "OT"
     ElseIf vpresu Then    'desde presu
-        strsql = "select c.razon,p.detalle as descripcion, concat(p.fechaEntrega, ' días') as fecha from  presupuestos p inner join clientes c on p.idCliente=c.id where p.id=" & id
-        strsql2 = "select dp.valorUnitarioManual,dp.idPieza,dp.item,s.detalle,dp.cantidad  from detalle_presupuesto dp inner join stock s on dp.idPieza=s.id where idPresupuesto=" & id
+        strsql = "select c.razon,p.detalle as descripcion, concat(p.fechaEntrega, ' días') as fecha from  presupuestos p inner join clientes c on p.idCliente=c.id where p.id=" & Id
+        strsql2 = "select dp.valorUnitarioManual,dp.idPieza,dp.item,s.detalle,dp.cantidad  from detalle_presupuesto dp inner join stock s on dp.idPieza=s.id where idPresupuesto=" & Id
         enc = "PRES"
     End If
 
@@ -1116,7 +1116,7 @@ Public Function exportaMaterializacion(id As Long, Optional vpresu As Boolean = 
         .Range("B4:C4").Merge
 
         .Cells(1, 1).value = enc
-        .Cells(1, 2).value = str(Format(id, "0000"))
+        .Cells(1, 2).value = str(Format(Id, "0000"))
         .Cells(2, 1).value = "Fecha"
         .Cells(2, 2).value = rs!FEcha
         .Cells(3, 1).value = "Cliente"
@@ -1192,8 +1192,8 @@ Public Function exportaMaterializacion(id As Long, Optional vpresu As Boolean = 
                     rs_c.MoveNext
                 Wend
                 A = "a" & offsetInicial
-                b = "i" & offset
-                .Range(A, b).BorderAround , xlMedium
+                B = "i" & offset
+                .Range(A, B).BorderAround , xlMedium
             Else
                 Set rs_mm = Me.materializacion(idPieza)
 
@@ -1222,8 +1222,8 @@ Public Function exportaMaterializacion(id As Long, Optional vpresu As Boolean = 
 
                     offset = offset + 1
                     A = "a" & offsetInicial
-                    b = "i" & offset
-                    .Range(A, b).BorderAround , xlMedium
+                    B = "i" & offset
+                    .Range(A, B).BorderAround , xlMedium
                     rs_mm.MoveNext
                 Wend
                 offset = offset - 1
@@ -1257,7 +1257,7 @@ Public Function exportaMaterializacion(id As Long, Optional vpresu As Boolean = 
         Dim refe As String
         refe = ref
 
-        archi = enc & Format(id, "00000") & ".xls"
+        archi = enc & Format(Id, "00000") & ".xls"
         '        frmPrincipal.cd.CancelError = True
         frmPrincipal.cd.filename = archi
         frmPrincipal.cd.ShowSave

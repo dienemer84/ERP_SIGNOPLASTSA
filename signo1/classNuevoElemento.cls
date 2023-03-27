@@ -19,7 +19,7 @@ Dim rs2 As ADODB.Recordset
 Dim rs3 As ADODB.Recordset
 Dim valor_dolar As Double
 Private Sub Class_Initialize()
-    'On Error GoTo err22
+'On Error GoTo err22
     Set cn = conectar.obternerConexion
     Exit Sub
 err22:
@@ -67,19 +67,19 @@ Public Sub ver_detalle_elemento(ByVal cod As String, frm As frmNuevoElemento, ac
             valor_dolar = 3    'modificar este valor por uno en tabla configuraciones
             PesoXUnidad = rs1!PesoXUnidad
             unidad = rs1!id_Unidad
-            id_material = rs1!id
+            id_material = rs1!Id
             rubro = rs1!rubro
             Grupo = rs1!Grupo
             descripcion = rs1!descripcion
             Espesor = rs1!Espesor
             valorxunidad = rs1!valor_unitario
-            Moneda = rs1!id_moneda
+            moneda = rs1!id_moneda
             frm.lblEspesor = Espesor
             frm.lblMaterial = rubro & " " & Grupo
-            If Moneda = 1 Then
+            If moneda = 1 Then
                 Precio = Precio * valor_dolar
             End If
-            IdMaterial = rs1!id
+            IdMaterial = rs1!Id
             If Trim(frm.txtAnchoPieza) = Empty Or Trim(frm.txtLargoPieza) = Empty Then
             Else
                 If IsNumeric(frm.txtAnchoPieza) And IsNumeric(frm.txtLargoPieza) Then
@@ -132,19 +132,19 @@ Public Sub ver_detalle_elemento(ByVal cod As String, frm As frmNuevoElemento, ac
                     prec = prec / valor_dolar
                     prec = Math.Round(prec, 3)
                     If accion = 1 Then    'agregar
-                        Set X = frm.ListView1.ListItems.Add(, , id)
-                        X.SubItems(1) = UCase(cod)
-                        X.SubItems(2) = frm.lblMaterial & " " & frm.lblEspesor & " mm"
-                        X.SubItems(3) = Pieza
-                        X.SubItems(4) = anchop
-                        X.SubItems(5) = largop
-                        X.SubItems(6) = Scrap
-                        X.SubItems(7) = Math.Round(CDbl(frm.lblkg), 3)
-                        X.SubItems(8) = Math.Round(CDbl(frm.lblm2), 3)
-                        X.SubItems(9) = cantidad_h
-                        X.SubItems(10) = id_material
-                        X.SubItems(11) = ""    'agregar term
-                        X.SubItems(12) = "x"    'suma?
+                        Set x = frm.ListView1.ListItems.Add(, , Id)
+                        x.SubItems(1) = UCase(cod)
+                        x.SubItems(2) = frm.lblMaterial & " " & frm.lblEspesor & " mm"
+                        x.SubItems(3) = Pieza
+                        x.SubItems(4) = anchop
+                        x.SubItems(5) = largop
+                        x.SubItems(6) = Scrap
+                        x.SubItems(7) = Math.Round(CDbl(frm.lblkg), 3)
+                        x.SubItems(8) = Math.Round(CDbl(frm.lblm2), 3)
+                        x.SubItems(9) = cantidad_h
+                        x.SubItems(10) = id_material
+                        x.SubItems(11) = ""    'agregar term
+                        x.SubItems(12) = "x"    'suma?
 
 
                     End If
@@ -215,7 +215,7 @@ End Sub
 
 
 
-Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id_cliente As Integer, complejidad As Integer)
+Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id_cliente As Integer, Complejidad As Integer)
     On Error GoTo er2
     'id_cliente = 120
     detail = UCase(detalle)
@@ -223,43 +223,43 @@ Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id
 
     cn.BeginTrans
     'alta en stock.
-    
+
     Dim tipo_complejidad As TipoComplejidad
     tipo_complejidad = ComplejidadBaja
-    If complejidad = 1 Then tipo_complejidad = ComplejidadMedia
-    If complejidad = 2 Then tipo_complejidad = ComplejidadAlta
-    
-    cn.execute "insert into stock (detalle,id_cliente,cantidad, tipo_complejidad) VALUES ('" & detail & "'," & id_cliente & "," & Cantidad & "," & complejidad & ")"
+    If Complejidad = 1 Then tipo_complejidad = ComplejidadMedia
+    If Complejidad = 2 Then tipo_complejidad = ComplejidadAlta
+
+    cn.execute "insert into stock (detalle,id_cliente,cantidad, tipo_complejidad) VALUES ('" & detail & "'," & id_cliente & "," & Cantidad & "," & Complejidad & ")"
 
     Me.ejecutar_consulta3 "select last_insert_id() as idd from stock"
     ultid = rs3!idd
     cantL1 = lstMAT.ListItems.count
     'alta en desarrollo materiales del elemento
-    For X = 1 To cantL1
-        Scrap = lstMAT.ListItems(X).ListSubItems(9)
-        id_material = lstMAT.ListItems(X).ListSubItems(1)
-        Largo = lstMAT.ListItems(X).ListSubItems(5)
-        Ancho = lstMAT.ListItems(X).ListSubItems(6)
-        largoT = lstMAT.ListItems(X).ListSubItems(7)
-        anchoT = lstMAT.ListItems(X).ListSubItems(8)
-        Cantidad = lstMAT.ListItems(X).ListSubItems(14)
-        deta = UCase(Trim(lstMAT.ListItems(X).Tag))
+    For x = 1 To cantL1
+        Scrap = lstMAT.ListItems(x).ListSubItems(9)
+        id_material = lstMAT.ListItems(x).ListSubItems(1)
+        Largo = lstMAT.ListItems(x).ListSubItems(5)
+        Ancho = lstMAT.ListItems(x).ListSubItems(6)
+        largoT = lstMAT.ListItems(x).ListSubItems(7)
+        anchoT = lstMAT.ListItems(x).ListSubItems(8)
+        Cantidad = lstMAT.ListItems(x).ListSubItems(14)
+        deta = UCase(Trim(lstMAT.ListItems(x).Tag))
         cn.execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(Scrap) & "," & CDbl(Largo) & "," & CDbl(Ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & Cantidad & ",'" & deta & "')"
 
 
-    Next X
+    Next x
 
     cantL2 = lstMdo.ListItems.count
     'alta en desarrollo de mdo del elemento
-    For Y = 1 To cantL2
+    For y = 1 To cantL2
 
 
-        id_mdo = lstMdo.ListItems(Y).ListSubItems(1)
-        Cant = lstMdo.ListItems(Y).ListSubItems(2)
-        Tiempo = lstMdo.ListItems(Y).ListSubItems(3)
-        deta1 = UCase(Trim(lstMdo.ListItems(Y).Tag))
+        id_mdo = lstMdo.ListItems(y).ListSubItems(1)
+        Cant = lstMdo.ListItems(y).ListSubItems(2)
+        Tiempo = lstMdo.ListItems(y).ListSubItems(3)
+        deta1 = UCase(Trim(lstMdo.ListItems(y).Tag))
         cn.execute "insert into desarrollo_mdo (id_pieza,codigo,cantidad,tiempo,detalle) values (" & CInt(ultid) & "," & CInt(id_mdo) & "," & CDbl(Cant) & "," & CDbl(Tiempo) & ",'" & deta1 & "')"
-    Next Y
+    Next y
 
 
     baseS.crearHistoricoPieza2 ultid, "PIEZA AGREGADA"
@@ -279,12 +279,12 @@ End Sub
 
 
 Public Sub llenarListaMDO(idPieza, lst As ListView)
-    Dim X As ListItem
+    Dim x As ListItem
 
     'Me.ejecutar_consulta1 "select vm.valor,t.tarea,d.id,t.id as codigo,t.cantxproc,d.cantidad,d.tiempo,s.sector,t.cantxproc from sectores s,stock.desarrollo_mdo d, tareas t  where d.id_pieza=" & idPieza & " and t.id=d.codigo and s.id=t.id_sector"
     Me.ejecutar_consulta1 "select vm.valor,t.cantxproc,vm.descripcion,t.id as codigo,d.id,d.cantidad,t.tarea,d.detalle,d.tiempo,s.sector,t.cantxproc from valores_MDO vm,sectores s,desarrollo_mdo d, tareas t  where d.id_pieza=" & idPieza & " and t.id=d.codigo and s.id=t.id_sector and t.id=vm.id_tarea"
     While Not rs1.EOF
-        Set X = lst.ListItems.Add(, , rs1!id)
+        Set x = lst.ListItems.Add(, , rs1!Id)
         Valor = rs1!Valor
         Tiempo = rs1!Tiempo
         cantop = rs1!Cantidad
@@ -297,14 +297,14 @@ Public Sub llenarListaMDO(idPieza, lst As ListView)
         deta = rs1!detalle
         If cpa = -1 Then cpa = "Cambio"
         If cpa = 0 Then cpa = "Fijo"
-        X.SubItems(1) = codigo
-        X.SubItems(2) = cantop
-        X.SubItems(3) = Tiempo
-        X.SubItems(4) = Sector
-        X.SubItems(5) = cpa
-        X.SubItems(6) = Tarea
-        X.SubItems(7) = cpp
-        X.SubItems(8) = Desc
+        x.SubItems(1) = codigo
+        x.SubItems(2) = cantop
+        x.SubItems(3) = Tiempo
+        x.SubItems(4) = Sector
+        x.SubItems(5) = cpa
+        x.SubItems(6) = Tarea
+        x.SubItems(7) = cpp
+        x.SubItems(8) = Desc
 
 
         If cpp > 0 Then    '(cpp variable)
@@ -315,9 +315,9 @@ Public Sub llenarListaMDO(idPieza, lst As ListView)
             totplata = totmin * Valor
 
         End If
-        X.SubItems(9) = Math.Round(totmin, 2)
-        X.SubItems(10) = Math.Round(totplata, 2)
-        X.Tag = deta
+        x.SubItems(9) = Math.Round(totmin, 2)
+        x.SubItems(10) = Math.Round(totplata, 2)
+        x.Tag = deta
         rs1.MoveNext
     Wend
 End Sub
@@ -329,9 +329,9 @@ Public Sub llenarLstmateriales(idPieza, lst As ListView)
     'Me.ejecutar_consulta1 "select * from stock.desarrollo_material where id_pieza=" & idPieza
     Me.ejecutar_consulta1 "select d.id,d.id_pieza,d.cantidad,d.scrap,d.largo,d.ancho,d.LargoTerm,d.AnchoTerm,d.id_material,m.codigo,d.detalle from desarrollo_material d, materiales m where d.id_pieza=" & idPieza & " and m.id=d.id_material"
     While Not rs1.EOF
-        id = rs1!id_material
-        X = rs1!Ancho
-        Y = rs1!Largo
+        Id = rs1!id_material
+        x = rs1!Ancho
+        y = rs1!Largo
         x1 = rs1!AnchoTerm
         y1 = rs1!LargoTerm
         deta = rs1!detalle
@@ -339,9 +339,9 @@ Public Sub llenarLstmateriales(idPieza, lst As ListView)
         Cant = rs1!Cantidad
         codigo = rs1!codigo
         'si existe el código
-        If id <> -1 Then
-            cxh = funciones.cantxhoja(X, Y, x1, y1)
-            baseS.ejecutar "select m.id_unidad,m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g, rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & id
+        If Id <> -1 Then
+            cxh = funciones.cantxhoja(x, y, x1, y1)
+            baseS.ejecutar "select m.id_unidad,m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g, rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & Id
             descripcion = baseS.descripcion
             Espesor = baseS.Espesor
             Grupo = baseS.Grupo
@@ -353,23 +353,23 @@ Public Sub llenarLstmateriales(idPieza, lst As ListView)
             'si son ml cantxhoja debe quedar en 1
 
             If uni = 4 Then
-                X = 0
+                x = 0
                 x1 = 0
-                Y = 0
+                y = 0
                 y1 = 0
             End If
             Dim costo As Double
 
-            baseS.calcularM2MLKGMaterial x1, y1, id, Scrap, X, Y, Cant, Kg, m2ml, Pieza, costo, 0
+            baseS.calcularM2MLKGMaterial x1, y1, Id, Scrap, x, y, Cant, Kg, m2ml, Pieza, costo, 0
             'agrego datos a la lista
             Dim h As ListItem
             Set h = lst.ListItems.Add(, , codigo)
-            h.SubItems(1) = id
+            h.SubItems(1) = Id
             h.SubItems(2) = rubro & " " & Grupo & " " & descripcion
             h.SubItems(3) = Espesor
             h.SubItems(4) = Pieza
-            h.SubItems(5) = Y    'ancho
-            h.SubItems(6) = X
+            h.SubItems(5) = y    'ancho
+            h.SubItems(6) = x
             h.SubItems(7) = y1    'ancho T
             h.SubItems(8) = x1
             h.SubItems(9) = Scrap
@@ -391,7 +391,7 @@ Public Sub llenarLstmateriales(idPieza, lst As ListView)
 End Sub
 
 
-Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, id_cliente As Integer, idPieza As Long, complejidad As TipoComplejidad)
+Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, id_cliente As Integer, idPieza As Long, Complejidad As TipoComplejidad)
     On Error GoTo err555
     detail = UCase(detalle)
     Cantidad = 0
@@ -399,7 +399,7 @@ Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, 
     tra = True
     'modifico en stock.
 
-    cn.execute "update stock set tipo_complejidad='" & complejidad & "', detalle='" & detail & "',id_cliente= " & id_cliente & " where id=" & idPieza
+    cn.execute "update stock set tipo_complejidad='" & Complejidad & "', detalle='" & detail & "',id_cliente= " & id_cliente & " where id=" & idPieza
 
 
 
@@ -408,34 +408,34 @@ Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, 
     'elimino datos anteriores
     cn.execute "delete from desarrollo_material where id_pieza=" & idPieza
     'alta en desarrollo materiales del elemento
-    For X = 1 To cantL1
-        Scrap = lstMAT.ListItems(X).ListSubItems(9)
-        id_material = lstMAT.ListItems(X).ListSubItems(1)
-        Largo = lstMAT.ListItems(X).ListSubItems(5)
-        Ancho = lstMAT.ListItems(X).ListSubItems(6)
-        largoT = lstMAT.ListItems(X).ListSubItems(7)
-        anchoT = lstMAT.ListItems(X).ListSubItems(8)
-        Cantidad = lstMAT.ListItems(X).ListSubItems(14)
-        deta = UCase(Trim(lstMAT.ListItems(X).Tag))
+    For x = 1 To cantL1
+        Scrap = lstMAT.ListItems(x).ListSubItems(9)
+        id_material = lstMAT.ListItems(x).ListSubItems(1)
+        Largo = lstMAT.ListItems(x).ListSubItems(5)
+        Ancho = lstMAT.ListItems(x).ListSubItems(6)
+        largoT = lstMAT.ListItems(x).ListSubItems(7)
+        anchoT = lstMAT.ListItems(x).ListSubItems(8)
+        Cantidad = lstMAT.ListItems(x).ListSubItems(14)
+        deta = UCase(Trim(lstMAT.ListItems(x).Tag))
         cn.execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(Scrap) & "," & CDbl(Largo) & "," & CDbl(Ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & Cantidad & ",'" & deta & "')"
         'CN3.Execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(scrap) & "," & CDbl(largo) & "," & CDbl(ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & cantidad & ")"
 
-    Next X
+    Next x
 
     cantL2 = lstMdo.ListItems.count
     'elimino datos anteriores
     cn.execute "delete from desarrollo_mdo where id_pieza=" & idPieza
     'alta en desarrollo de mdo del elemento
-    For Y = 1 To cantL2
+    For y = 1 To cantL2
 
 
-        id_mdo = lstMdo.ListItems(Y).ListSubItems(1)
-        Cant = lstMdo.ListItems(Y).ListSubItems(2)
-        Tiempo = lstMdo.ListItems(Y).ListSubItems(3)
-        deta1 = UCase(Trim(lstMdo.ListItems(Y).Tag))
+        id_mdo = lstMdo.ListItems(y).ListSubItems(1)
+        Cant = lstMdo.ListItems(y).ListSubItems(2)
+        Tiempo = lstMdo.ListItems(y).ListSubItems(3)
+        deta1 = UCase(Trim(lstMdo.ListItems(y).Tag))
         cn.execute "insert into desarrollo_mdo (id_pieza,codigo,cantidad,tiempo,detalle) values (" & CInt(ultid) & "," & CInt(id_mdo) & "," & CDbl(Cant) & "," & CDbl(Tiempo) & ",'" & deta1 & "')"
         'CN3.Execute "insert into desarrollo_mdo (id_pieza,codigo,cantidad,tiempo) values (" & CInt(ultid) & "," & CInt(id_mdo) & "," & CDbl(Cant) & "," & CDbl(tiempo) & ")"
-    Next Y
+    Next y
     tra = False
 
     cn.CommitTrans

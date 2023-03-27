@@ -1,5 +1,5 @@
 Attribute VB_Name = "funciones"
- 
+
 
 Public TareaAgregada As Boolean
 Public DescuentoDetalleFactura As Double
@@ -170,10 +170,10 @@ Public Property Let idReciboElegido(nIdReciboElegido As Long)
 End Property
 
 Public Sub SalirForzado()
-On Error Resume Next
-Dim aa As String
-aa = App.path & "\AbbKiller.exe"
-        Shell aa, vbNormalFocus
+    On Error Resume Next
+    Dim aa As String
+    aa = App.path & "\AbbKiller.exe"
+    Shell aa, vbNormalFocus
 End Sub
 
 Public Function GetFileName(ByVal path As String) As String
@@ -284,12 +284,12 @@ End Function
 
 Public Function Iva(niva As Integer) As String
     Select Case niva
-        Case 0: Iva = "Exento"
-        Case 1: Iva = "Resp. Monotributo"
-        Case 2: Iva = "Resp. No Inscripto"
-        Case 3: Iva = "Resp. Inscripto"
-        Case 4: Iva = "N/d"
-        Case 5: Iva = "Consumidor Final"
+    Case 0: Iva = "Exento"
+    Case 1: Iva = "Resp. Monotributo"
+    Case 2: Iva = "Resp. No Inscripto"
+    Case 3: Iva = "Resp. Inscripto"
+    Case 4: Iva = "N/d"
+    Case 5: Iva = "Consumidor Final"
     End Select
 
 
@@ -407,10 +407,10 @@ End Property
 
 Public Function tipoEvento(indice) As String
     Select Case indice
-        Case 0: tipoEvento = "Notas"
-        Case 1: tipoEvento = "Vencimientos"
-        Case 2: tipoEvento = "Avisos"
-        Case 3: tipoEvento = "Mensajes"
+    Case 0: tipoEvento = "Notas"
+    Case 1: tipoEvento = "Vencimientos"
+    Case 2: tipoEvento = "Avisos"
+    Case 3: tipoEvento = "Mensajes"
     End Select
 
 End Function
@@ -564,10 +564,10 @@ Function estado_reque(indice As Integer) As String
 End Function
 
 Function normalizaVieja(str As String)
-    'normaliza un string para que la primer letra
-    'sea Mayúscula y el resto minúscula.
-    'y reemplaza los caracteres por los
-    'caracteres de escape correspondientes
+'normaliza un string para que la primer letra
+'sea Mayúscula y el resto minúscula.
+'y reemplaza los caracteres por los
+'caracteres de escape correspondientes
     strt = Trim(str)
     If strt <> Empty Then
         strt = Replace(strt, Chr(92), "\\")
@@ -595,8 +595,8 @@ Function CentrarImpresion(texto As String) As Long
 End Function
 
 Function truncar(str, Cantidad As Long) As String
-    'trunca el texto a la cantidad de
-    'caracteres que quiera
+'trunca el texto a la cantidad de
+'caracteres que quiera
     If Trim(str) <> Empty Then
         If Len(Trim(str)) > Cantidad Then
             str = Left(str, Cantidad - 3)
@@ -606,8 +606,8 @@ Function truncar(str, Cantidad As Long) As String
     End If
 End Function
 Function FEcha(d As Date) As String
-    'devuelve un string con la fecha de hoy en formato
-    'Lunes, 25 de diciembre de 2005
+'devuelve un string con la fecha de hoy en formato
+'Lunes, 25 de diciembre de 2005
     Dim mes(1 To 12) As String
     Dim dia(1 To 7) As String
     mes(1) = "Enero"
@@ -632,9 +632,9 @@ Function FEcha(d As Date) As String
     FEcha = dia(Weekday(d)) & ", " & Day(d) & " de " & mes(Month(d)) & " de " & Year(d)
 End Function
 Function PosIndexCbo(Valor As Long, cbo As Object) As Integer
-    'devuelve el indice de un combo... para poder posicionar cuando
-    'se hace una modificacion
-    'ej: me.cbo.listindex=posindexcbo(valor_a_modificar,cbo)
+'devuelve el indice de un combo... para poder posicionar cuando
+'se hace una modificacion
+'ej: me.cbo.listindex=posindexcbo(valor_a_modificar,cbo)
     For i = 0 To cbo.ListCount - 1
         If cbo.ItemData(i) = Valor Then
             PosIndexCbo = i
@@ -644,9 +644,9 @@ Function PosIndexCbo(Valor As Long, cbo As Object) As Integer
     PosIndexCbo = -1
 End Function
 Function PosIndexLST(Valor As Long, lst As Object) As Integer
-    'devuelve el indice de un combo... para poder posicionar cuando
-    'se hace una modificacion
-    'ej: me.cbo.listindex=posindexcbo(valor_a_modificar,cbo)
+'devuelve el indice de un combo... para poder posicionar cuando
+'se hace una modificacion
+'ej: me.cbo.listindex=posindexcbo(valor_a_modificar,cbo)
     For i = 0 To lst.ListCount - 1
         If lst.ItemData(i) = Valor Then
             PosIndexLST = i
@@ -657,8 +657,8 @@ End Function
 
 
 Public Sub foco(ByRef texto As Object)
-    'selecciona para modificar cualquier textbox
-    'q se pase como argumento
+'selecciona para modificar cualquier textbox
+'q se pase como argumento
     texto.SelStart = 0
     texto.SelLength = Len(texto)
 End Sub
@@ -781,10 +781,10 @@ Function valorPorPeso(Kg, men10, men15, mas15) As Double
 End Function
 
 Function normaliza(strf As String)
-    'normaliza un string para que la primer letra
-    'sea Mayúscula y el resto minúscula.
-    'y reemplaza los caracteres por los
-    'caracteres de escape correspondientes
+'normaliza un string para que la primer letra
+'sea Mayúscula y el resto minúscula.
+'y reemplaza los caracteres por los
+'caracteres de escape correspondientes
     strt = Trim(strf)
     If strt <> Empty Then
         strt = Replace(strt, Chr(92), "\\")
@@ -894,7 +894,7 @@ Public Sub mostrarInforme()
 End Sub
 
 Public Function calcularTamañoArchivo(ByVal tamOrig As Double, ByRef tamDest As Double, uni As String)
-    'si pesa meno de 1kb lo muestro en bytes
+'si pesa meno de 1kb lo muestro en bytes
     If tamOrig < 1024 Then
         tamDest = tamOrig
         uni = "By"
@@ -1080,12 +1080,12 @@ Public Sub vaciarControles(frm As Form)
 End Sub
 
 Public Function ConvertirAFechaAfip(entrada As String) As String
-Dim FEcha As String
-Dim f_anio As String, f_mes As String, f_dia As String
-f_anio = Right(entrada, 4)
-f_mes = Mid(entrada, 3, 2)
- f_dia = Mid(entrada, 1, 2)
-ConvertirAFechaAfip = f_dia & "/" & f_mes & "/" & f_anio
+    Dim FEcha As String
+    Dim f_anio As String, f_mes As String, f_dia As String
+    f_anio = Right(entrada, 4)
+    f_mes = Mid(entrada, 3, 2)
+    f_dia = Mid(entrada, 1, 2)
+    ConvertirAFechaAfip = f_dia & "/" & f_mes & "/" & f_anio
 End Function
 
 
@@ -1250,7 +1250,7 @@ er1:
 End Function
 
 Public Function VerificarCUIT(Cuit) As Boolean
-    'Verifica si el tamaño es el correcto.
+'Verifica si el tamaño es el correcto.
     VerificarCUIT = True
 
     If Len(Cuit) = 11 Then
@@ -1455,7 +1455,7 @@ Public Sub ListFiles(ByRef result As Collection, ByVal start_dir As String, ByVa
                Then
                 fname = file_data.cFileName
                 fname = Left$(fname, InStr(fname, Chr$(0)) _
-                                     - 1)
+                                   - 1)
                 If fname <> "." And fname <> ".." Then
                     num_dirs = num_dirs + 1
                     ReDim Preserve dir_names(1 To num_dirs)
@@ -1583,53 +1583,53 @@ Public Sub CalculateDateRange(ByRef combo As Xtremesuitecontrols.ComboBox, ByRef
         rangeDateId = combo.ItemData(combo.ListIndex)
 
         Select Case rangeDateId
-            Case DateRangeValue.DRV_Today
-                desde = Date
-                hasta = Date
-            Case DateRangeValue.DRV_Yesterday
-                desde = DateAdd("d", -1, Date)
-                hasta = DateAdd("d", -1, Date)
-            Case DateRangeValue.DRV_WeekCurrent
-                desde = Date
-                While (Weekday(desde, vbMonday) <> 1)
-                    desde = DateAdd("d", -1, desde)
-                Wend
-                hasta = DateAdd("d", 6, desde)
-            Case DateRangeValue.DRV_WeekLast
-                'calculo semana actual y le resto 7 dias
-                desde = Date
-                While (Weekday(desde, vbMonday) <> 1)
-                    desde = DateAdd("d", -1, desde)
-                Wend
-                hasta = DateAdd("d", 6, desde)
+        Case DateRangeValue.DRV_Today
+            desde = Date
+            hasta = Date
+        Case DateRangeValue.DRV_Yesterday
+            desde = DateAdd("d", -1, Date)
+            hasta = DateAdd("d", -1, Date)
+        Case DateRangeValue.DRV_WeekCurrent
+            desde = Date
+            While (Weekday(desde, vbMonday) <> 1)
+                desde = DateAdd("d", -1, desde)
+            Wend
+            hasta = DateAdd("d", 6, desde)
+        Case DateRangeValue.DRV_WeekLast
+            'calculo semana actual y le resto 7 dias
+            desde = Date
+            While (Weekday(desde, vbMonday) <> 1)
+                desde = DateAdd("d", -1, desde)
+            Wend
+            hasta = DateAdd("d", 6, desde)
 
-                desde = DateAdd("d", -7, desde)
-                hasta = DateAdd("d", -7, hasta)
+            desde = DateAdd("d", -7, desde)
+            hasta = DateAdd("d", -7, hasta)
 
-            Case DateRangeValue.DRV_MonthCurrent
-                desde = DateSerial(Year(Date), Month(Date), 1)
-                hasta = DateAdd("d", -1, DateAdd("m", 1, desde))
+        Case DateRangeValue.DRV_MonthCurrent
+            desde = DateSerial(Year(Date), Month(Date), 1)
+            hasta = DateAdd("d", -1, DateAdd("m", 1, desde))
 
-            Case DateRangeValue.DRV_MonthLast
-                'calculo mest actual y resto 1 mes
-                desde = DateSerial(Year(Date), Month(Date), 1)
-                hasta = DateAdd("d", -1, DateAdd("m", 1, desde))
+        Case DateRangeValue.DRV_MonthLast
+            'calculo mest actual y resto 1 mes
+            desde = DateSerial(Year(Date), Month(Date), 1)
+            hasta = DateAdd("d", -1, DateAdd("m", 1, desde))
 
-                hasta = DateAdd("d", -1, desde)
-                desde = DateAdd("m", -1, desde)
+            hasta = DateAdd("d", -1, desde)
+            desde = DateAdd("m", -1, desde)
 
-            Case DateRangeValue.DRV_YearCurrent
-                desde = DateSerial(Year(Date), 1, 1)
-                hasta = DateSerial(Year(Date), 12, 31)
-            Case DateRangeValue.DRV_YearLast
-                desde = DateSerial(Year(Date) - 1, 1, 1)
-                hasta = DateSerial(Year(Date) - 1, 12, 31)
-            Case DateRangeValue.DRV_MonthNext
-                desde = DateSerial(Year(Date), Month(Date) + 1, 1)
-                hasta = DateAdd("d", -1, DateAdd("m", 1, desde))
+        Case DateRangeValue.DRV_YearCurrent
+            desde = DateSerial(Year(Date), 1, 1)
+            hasta = DateSerial(Year(Date), 12, 31)
+        Case DateRangeValue.DRV_YearLast
+            desde = DateSerial(Year(Date) - 1, 1, 1)
+            hasta = DateSerial(Year(Date) - 1, 12, 31)
+        Case DateRangeValue.DRV_MonthNext
+            desde = DateSerial(Year(Date), Month(Date) + 1, 1)
+            hasta = DateAdd("d", -1, DateAdd("m", 1, desde))
 
-                'h 'asta = DateAdd("d", -1, desde)
-                'desde = DateAdd("m", 1, desde)
+            'h 'asta = DateAdd("d", -1, desde)
+            'desde = DateAdd("m", 1, desde)
 
 
         End Select
@@ -1679,14 +1679,14 @@ Function GetFilePath(filename As String) As String
     Dim i As Long
     For i = Len(filename) To 1 Step -1
         Select Case Mid$(filename, i, 1)
-            Case ":"
-                ' colons are always included in the result
-                GetFilePath = Left$(filename, i)
-                Exit For
-            Case "\"
-                ' backslash aren't included in the result
-                GetFilePath = Left$(filename, i - 1)
-                Exit For
+        Case ":"
+            ' colons are always included in the result
+            GetFilePath = Left$(filename, i)
+            Exit For
+        Case "\"
+            ' backslash aren't included in the result
+            GetFilePath = Left$(filename, i - 1)
+            Exit For
         End Select
     Next
 End Function

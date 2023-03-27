@@ -155,153 +155,153 @@ Public Function Publish(ObjetoId As Long, tipoEvento As TipoEventoBroadcast, Opt
 
     Dim fact As Factura
     Select Case tipoEvento
-        Case TipoEventoBroadcast.TEB_ArchivoDetalleOrdenTrabajo
-            Dim detaOT As DetalleOrdenTrabajo
-            Set detaOT = DAODetalleOrdenTrabajo.FindById(ObjetoId)
-            descripcion = "Se ha agregado un archivo al item [" & detaOT.item & "] de la OT Nº " & detaOT.OrdenTrabajo.id
+    Case TipoEventoBroadcast.TEB_ArchivoDetalleOrdenTrabajo
+        Dim detaOT As DetalleOrdenTrabajo
+        Set detaOT = DAODetalleOrdenTrabajo.FindById(ObjetoId)
+        descripcion = "Se ha agregado un archivo al item [" & detaOT.item & "] de la OT Nº " & detaOT.OrdenTrabajo.Id
 
-        Case TipoEventoBroadcast.TEB_ArchivoOrdenTrabajo
-            'Dim ot As OrdenTrabajo
-            'Set ot = DAOOrdenTrabajo.FindById(objetoId)
-            descripcion = "Se ha agregado un archivo a la OT Nº " & ObjetoId
-             Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
-            If IsSomething(Ot) Then
-                descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
-            End If
-            
-            
-        Case TipoEventoBroadcast.TEB_ArchivoPieza
-            descripcion = "Se ha agregado un archivo a la pieza [" & DAOPieza.FindById(ObjetoId, FL_0).nombre & "] - codigo de pieza [" & ObjetoId & "]"
+    Case TipoEventoBroadcast.TEB_ArchivoOrdenTrabajo
+        'Dim ot As OrdenTrabajo
+        'Set ot = DAOOrdenTrabajo.FindById(objetoId)
+        descripcion = "Se ha agregado un archivo a la OT Nº " & ObjetoId
+        Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
+        If IsSomething(Ot) Then
+            descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
+        End If
 
 
-        Case TipoEventoBroadcast.TEB_IncidenciaDetalleOrdenTrabajo
-            Set detaOT = DAODetalleOrdenTrabajo.FindById(ObjetoId)
-            descripcion = "Se ha agregado una incidencia al item [" & detaOT.item & "] de la OT Nº " & detaOT.OrdenTrabajo.id
-        Case TipoEventoBroadcast.TEB_IncidenciaOrdenTrabajo
-            'Dim ot As OrdenTrabajo
-            'Set ot = DAOOrdenTrabajo.FindById(objetoId)
-            descripcion = "Se ha agregado una incidencia a la OT Nº " & ObjetoId
-        Case TipoEventoBroadcast.TEB_IncidenciaPieza
-            descripcion = "Se ha agregado una incidencia a la pieza [" & DAOPieza.FindById(ObjetoId, FL_0).nombre & "] - codigo de pieza [" & ObjetoId & "]"
+    Case TipoEventoBroadcast.TEB_ArchivoPieza
+        descripcion = "Se ha agregado un archivo a la pieza [" & DAOPieza.FindById(ObjetoId, FL_0).nombre & "] - codigo de pieza [" & ObjetoId & "]"
 
 
-        Case TipoEventoBroadcast.TEB_FacturaAprobada
-
-            Set fact = DAOFactura.FindById(ObjetoId)
-            descripcion = "Se ha aprobado el comprobante " & fact.GetShortDescription(False, True)
-            descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
-
-        Case TipoEventoBroadcast.TEB_FacturaAnulada
-            Set fact = DAOFactura.FindById(ObjetoId)
-            descripcion = "Se ha anulado el comprobante " & fact.GetShortDescription(False, True)
-            descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
-
-
-        Case TipoEventoBroadcast.TEB_FacturaCreada
-            Set fact = DAOFactura.FindById(ObjetoId)
-            descripcion = "Se ha creado el comprobante " & fact.GetShortDescription(False, True)
-            descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
+    Case TipoEventoBroadcast.TEB_IncidenciaDetalleOrdenTrabajo
+        Set detaOT = DAODetalleOrdenTrabajo.FindById(ObjetoId)
+        descripcion = "Se ha agregado una incidencia al item [" & detaOT.item & "] de la OT Nº " & detaOT.OrdenTrabajo.Id
+    Case TipoEventoBroadcast.TEB_IncidenciaOrdenTrabajo
+        'Dim ot As OrdenTrabajo
+        'Set ot = DAOOrdenTrabajo.FindById(objetoId)
+        descripcion = "Se ha agregado una incidencia a la OT Nº " & ObjetoId
+    Case TipoEventoBroadcast.TEB_IncidenciaPieza
+        descripcion = "Se ha agregado una incidencia a la pieza [" & DAOPieza.FindById(ObjetoId, FL_0).nombre & "] - codigo de pieza [" & ObjetoId & "]"
 
 
+    Case TipoEventoBroadcast.TEB_FacturaAprobada
+
+        Set fact = DAOFactura.FindById(ObjetoId)
+        descripcion = "Se ha aprobado el comprobante " & fact.GetShortDescription(False, True)
+        descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
+
+    Case TipoEventoBroadcast.TEB_FacturaAnulada
+        Set fact = DAOFactura.FindById(ObjetoId)
+        descripcion = "Se ha anulado el comprobante " & fact.GetShortDescription(False, True)
+        descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
 
 
-            'Case TipoEventoBroadcast.TEB_OrdenEntregaAprobada
-            '    Dim ordenEntrega As daoor
-
-        Case TipoEventoBroadcast.TEB_OrdenTrabajoAprobada
-            descripcion = "Se ha aprobado la OT Nº " & ObjetoId
-
-            Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
-            If IsSomething(Ot) Then
-                descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
-            End If
-
-        Case TipoEventoBroadcast.TEB_OrdenTrabajoModificada
-            descripcion = "Se ha modificado la OT Nº " & ObjetoId
-
-            Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
-            If IsSomething(Ot) Then
-                descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
-            End If
-
-        Case TipoEventoBroadcast.TEB_OrdenTrabajoAnulada
-            descripcion = "Se ha anulado la OT Nº " & ObjetoId
-
-            Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
-            If IsSomething(Ot) Then
-                descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
-            End If
-
-        Case TipoEventoBroadcast.TEB_OrdenTrabajoActivada
-            descripcion = "Se ha puesto en producción la OT Nº " & ObjetoId
-
-            Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
-            If IsSomething(Ot) Then
-                descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
-            End If
+    Case TipoEventoBroadcast.TEB_FacturaCreada
+        Set fact = DAOFactura.FindById(ObjetoId)
+        descripcion = "Se ha creado el comprobante " & fact.GetShortDescription(False, True)
+        descripcion2 = "<b>Cliente:</b>  " & fact.cliente.razon & "<br>" & " <b>OC:</b> " & fact.OrdenCompra
 
 
 
 
-        Case TipoEventoBroadcast.TEB_RemitoAprobado
-            Dim rto As Remito
-            Set rto = DAORemitoS.FindById(ObjetoId)
-            descripcion = "Se ha aprobado el remito Nº " & rto.numero
-            descripcion2 = "<b>Cliente:</b>  " & rto.cliente.razon & "<br>" & " <b>Descripcion:</b> " & rto.detalle
+        'Case TipoEventoBroadcast.TEB_OrdenEntregaAprobada
+        '    Dim ordenEntrega As daoor
 
-        Case TipoEventoBroadcast.TEB_RemitoAnulado
-            Set rto = DAORemitoS.FindById(ObjetoId)
-            descripcion = "Se ha anulado el remito Nº " & rto.numero
-            descripcion2 = "<b>Cliente:</b>  " & rto.cliente.razon & "<br>" & " <b>Descripcion:</b> " & rto.detalle
+    Case TipoEventoBroadcast.TEB_OrdenTrabajoAprobada
+        descripcion = "Se ha aprobado la OT Nº " & ObjetoId
 
-        Case TipoEventoBroadcast.TEB_RemitoCreado
-            Set rto = DAORemitoS.FindById(ObjetoId)
-            descripcion = "Se ha creado el remito Nº " & rto.numero
+        Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
+        If IsSomething(Ot) Then
+            descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
+        End If
+
+    Case TipoEventoBroadcast.TEB_OrdenTrabajoModificada
+        descripcion = "Se ha modificado la OT Nº " & ObjetoId
+
+        Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
+        If IsSomething(Ot) Then
+            descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
+        End If
+
+    Case TipoEventoBroadcast.TEB_OrdenTrabajoAnulada
+        descripcion = "Se ha anulado la OT Nº " & ObjetoId
+
+        Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
+        If IsSomething(Ot) Then
+            descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
+        End If
+
+    Case TipoEventoBroadcast.TEB_OrdenTrabajoActivada
+        descripcion = "Se ha puesto en producción la OT Nº " & ObjetoId
+
+        Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
+        If IsSomething(Ot) Then
+            descripcion2 = "<b>Cliente:</b>  " & Ot.ClienteFacturar.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion
+        End If
 
 
 
-        Case TipoEventoBroadcast.TEB_PresupuestoAnulado
-            descripcion = "Se ha anulado el presupuesto Nº " & ObjetoId
 
-        Case TipoEventoBroadcast.TEB_PresupuestoEnviado
-            descripcion = "Se ha enviado el presupuesto Nº " & ObjetoId
+    Case TipoEventoBroadcast.TEB_RemitoAprobado
+        Dim rto As Remito
+        Set rto = DAORemitoS.FindById(ObjetoId)
+        descripcion = "Se ha aprobado el remito Nº " & rto.numero
+        descripcion2 = "<b>Cliente:</b>  " & rto.cliente.razon & "<br>" & " <b>Descripcion:</b> " & rto.detalle
 
-        Case TipoEventoBroadcast.TEB_PresupuestoCreado
-            descripcion = "Se ha creado el presupuesto Nº " & ObjetoId
+    Case TipoEventoBroadcast.TEB_RemitoAnulado
+        Set rto = DAORemitoS.FindById(ObjetoId)
+        descripcion = "Se ha anulado el remito Nº " & rto.numero
+        descripcion2 = "<b>Cliente:</b>  " & rto.cliente.razon & "<br>" & " <b>Descripcion:</b> " & rto.detalle
 
-        Case TipoEventoBroadcast.TEB_PresupuestoAprobado
-            descripcion = "Se ha aprobado el presupuesto Nº " & ObjetoId
+    Case TipoEventoBroadcast.TEB_RemitoCreado
+        Set rto = DAORemitoS.FindById(ObjetoId)
+        descripcion = "Se ha creado el remito Nº " & rto.numero
 
-        Case TipoEventoBroadcast.TEB_RequerimientoCompraFinalizado
-            descripcion = "Se ha finalizado el requerimiento de compra Nº " & ObjetoId & " y esta listo para su aprobación"
 
-        Case TipoEventoBroadcast.TEB_RequerimientoCompraAprobado
-            descripcion = "Se ha aprobado el requerimiento de compra Nº " & ObjetoId
 
-        Case TipoEventoBroadcast.TEB_RequerimientoCompraAnulado
-            descripcion = "Se ha anulado el requerimiento de compra Nº " & ObjetoId
+    Case TipoEventoBroadcast.TEB_PresupuestoAnulado
+        descripcion = "Se ha anulado el presupuesto Nº " & ObjetoId
 
-        Case TipoEventoBroadcast.TEB_PeticionOfertaCreada
-            descripcion = "Se ha creado la petición de oferta Nº " & ObjetoId
-        Case TipoEventoBroadcast.TEB_OrdenConAnticipoAprobada
-            descripcion = "Se ha aprobado la Orden de Trabajo con Anticipo Nº " & ObjetoId
+    Case TipoEventoBroadcast.TEB_PresupuestoEnviado
+        descripcion = "Se ha enviado el presupuesto Nº " & ObjetoId
 
-            Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
-            If IsSomething(Ot) Then
-                descripcion2 = "<b>Cliente:</b>  " & Ot.cliente.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion & "<br>" & " <b>Anticipo:</b> " & Ot.Anticipo & "%" & "<b>Facturado: " & Ot.AnticipoFacturado
-            End If
+    Case TipoEventoBroadcast.TEB_PresupuestoCreado
+        descripcion = "Se ha creado el presupuesto Nº " & ObjetoId
 
-        Case Else
-            descripcion = "Ocurrió un evento desconocido"
+    Case TipoEventoBroadcast.TEB_PresupuestoAprobado
+        descripcion = "Se ha aprobado el presupuesto Nº " & ObjetoId
+
+    Case TipoEventoBroadcast.TEB_RequerimientoCompraFinalizado
+        descripcion = "Se ha finalizado el requerimiento de compra Nº " & ObjetoId & " y esta listo para su aprobación"
+
+    Case TipoEventoBroadcast.TEB_RequerimientoCompraAprobado
+        descripcion = "Se ha aprobado el requerimiento de compra Nº " & ObjetoId
+
+    Case TipoEventoBroadcast.TEB_RequerimientoCompraAnulado
+        descripcion = "Se ha anulado el requerimiento de compra Nº " & ObjetoId
+
+    Case TipoEventoBroadcast.TEB_PeticionOfertaCreada
+        descripcion = "Se ha creado la petición de oferta Nº " & ObjetoId
+    Case TipoEventoBroadcast.TEB_OrdenConAnticipoAprobada
+        descripcion = "Se ha aprobado la Orden de Trabajo con Anticipo Nº " & ObjetoId
+
+        Set Ot = DAOOrdenTrabajo.FindById(ObjetoId)
+        If IsSomething(Ot) Then
+            descripcion2 = "<b>Cliente:</b>  " & Ot.cliente.razon & "<br>" & " <b>Descripcion:</b> " & Ot.descripcion & "<br>" & " <b>Anticipo:</b> " & Ot.Anticipo & "%" & "<b>Facturado: " & Ot.AnticipoFacturado
+        End If
+
+    Case Else
+        descripcion = "Ocurrió un evento desconocido"
     End Select
 
 
     Dim q As String
     q = "INSERT INTO eventos" _
-        & " (id_usuario_involucrado,descripcion,id_tipo_evento,id_objeto_involucrado) Values" _
-        & " ('id_usuario_involucrado','descripcion','id_tipo_evento','id_objeto_involucrado')"
+      & " (id_usuario_involucrado,descripcion,id_tipo_evento,id_objeto_involucrado) Values" _
+      & " ('id_usuario_involucrado','descripcion','id_tipo_evento','id_objeto_involucrado')"
 
-    q = Replace$(q, "'id_usuario_involucrado'", funciones.GetUserObj.id)
+    q = Replace$(q, "'id_usuario_involucrado'", funciones.GetUserObj.Id)
     q = Replace$(q, "'descripcion'", conectar.Escape(descripcion))
     q = Replace$(q, "'id_tipo_evento'", tipoEvento)
     q = Replace$(q, "'id_objeto_involucrado'", ObjetoId)
@@ -350,12 +350,12 @@ Public Function FindAllByUser(idUsuario As Long, Optional ByVal unreadOnly As Bo
     Dim q As String
 
     q = "SELECT *" _
-        & " FROM eventos e" _
-        & " INNER JOIN eventos_suscripciones es ON es.id_tipo_evento = e.id_tipo_evento" _
-        & " LEFT JOIN usuarios u ON u.id = e.id_usuario_involucrado" _
-        & " LEFT JOIN personal p ON p.id = u.idEmpleado" _
-        & " LEFT JOIN eventos_lecturas el ON (el.id_evento = e.id AND (el.id_usuario = " & idUsuario & " OR el.id_usuario IS NULL))" _
-        & " Where es.id_usuario = " & idUsuario & " AND e.fecha_creacion >= es.fecha_suscripcion"
+      & " FROM eventos e" _
+      & " INNER JOIN eventos_suscripciones es ON es.id_tipo_evento = e.id_tipo_evento" _
+      & " LEFT JOIN usuarios u ON u.id = e.id_usuario_involucrado" _
+      & " LEFT JOIN personal p ON p.id = u.idEmpleado" _
+      & " LEFT JOIN eventos_lecturas el ON (el.id_evento = e.id AND (el.id_usuario = " & idUsuario & " OR el.id_usuario IS NULL))" _
+      & " Where es.id_usuario = " & idUsuario & " AND e.fecha_creacion >= es.fecha_suscripcion"
 
     If unreadOnly Then
         q = q & " AND el.id IS NULL"
@@ -377,7 +377,7 @@ Public Function FindAllByUser(idUsuario As Long, Optional ByVal unreadOnly As Bo
 
     While Not rs.EOF
         Set EVENTO = DAOEvento.Map(rs, fieldsIndex, "e", "u", "el", "p")
-        If Not funciones.BuscarEnColeccion(eventos, CStr(EVENTO.id)) Then eventos.Add EVENTO, CStr(EVENTO.id)
+        If Not funciones.BuscarEnColeccion(eventos, CStr(EVENTO.Id)) Then eventos.Add EVENTO, CStr(EVENTO.Id)
         rs.MoveNext
     Wend
 
@@ -390,10 +390,10 @@ Public Function FindUsersByEventType(tipoEvento As TipoEventoBroadcast)
     Dim q As String
 
     q = "SELECT * from " _
-        & "  sp.eventos_suscripciones es " _
-        & " LEFT JOIN sp.usuarios u ON u.id = es.id_usuario" _
-        & " LEFT JOIN sp.personal p ON p.id = u.idEmpleado" _
-        & " Where es.id_tipo_evento = " & tipoEvento
+      & "  sp.eventos_suscripciones es " _
+      & " LEFT JOIN sp.usuarios u ON u.id = es.id_usuario" _
+      & " LEFT JOIN sp.personal p ON p.id = u.idEmpleado" _
+      & " Where es.id_tipo_evento = " & tipoEvento
 
 
 
@@ -424,12 +424,12 @@ End Function
 
 Public Function Map(rs As Recordset, fieldsIndex As Dictionary, tablaEvento As String, tablaUsuario As String, tablaLectura As String, tablaEmpleado As String) As EVENTO
     Dim tmpEvento As EVENTO
-    Dim id As Variant
-    id = GetValue(rs, fieldsIndex, tablaEvento, "id")
+    Dim Id As Variant
+    Id = GetValue(rs, fieldsIndex, tablaEvento, "id")
 
-    If id <> 0 Then
+    If Id <> 0 Then
         Set tmpEvento = New EVENTO
-        tmpEvento.id = id
+        tmpEvento.Id = Id
         tmpEvento.descripcion = GetValue(rs, fieldsIndex, tablaEvento, "descripcion")
         tmpEvento.FechaCreacion = GetValue(rs, fieldsIndex, tablaEvento, "fecha_creacion")
         tmpEvento.IdObjetoInvolucrado = GetValue(rs, fieldsIndex, tablaEvento, "id_objeto_involucrado")
@@ -439,7 +439,7 @@ Public Function Map(rs As Recordset, fieldsIndex As Dictionary, tablaEvento As S
 
         If GetValue(rs, fieldsIndex, tablaLectura, "id") Then
             Dim lectura As New LecturaEvento
-            lectura.id = GetValue(rs, fieldsIndex, tablaLectura, "id")
+            lectura.Id = GetValue(rs, fieldsIndex, tablaLectura, "id")
             lectura.FechaLectura = GetValue(rs, fieldsIndex, tablaLectura, "fecha_lectura")
             lectura.idUsuario = GetValue(rs, fieldsIndex, tablaLectura, "id_usuario")
             'set lectura.Usuario
@@ -456,7 +456,7 @@ Public Function Read(evento_id As Long) As Boolean
     Dim q As String
     q = "INSERT INTO eventos_lecturas (id_evento, id_usuario) VALUES ('id_evento', 'id_usuario') ON duplicate KEY UPDATE id_evento=id_evento"
     q = Replace$(q, "'id_evento'", evento_id)
-    q = Replace$(q, "'id_usuario'", funciones.GetUserObj.id)
+    q = Replace$(q, "'id_usuario'", funciones.GetUserObj.Id)
     Read = conectar.execute(q)
 End Function
 
@@ -486,7 +486,7 @@ Public Function AddBroadCastTypesSuscribedForUser(idUsuario As Long, types As Di
 
     For Each Tipo In types
         q = "INSERT INTO eventos_suscripciones (id_tipo_evento, id_usuario)" _
-            & " VALUES ('id_tipo_evento', 'id_usuario') ON DUPLICATE KEY UPDATE id_usuario = " & idUsuario
+          & " VALUES ('id_tipo_evento', 'id_usuario') ON DUPLICATE KEY UPDATE id_usuario = " & idUsuario
 
         q = Replace$(q, "'id_tipo_evento'", Tipo)
         q = Replace$(q, "'id_usuario'", idUsuario)

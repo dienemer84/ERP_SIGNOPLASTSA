@@ -187,9 +187,9 @@ Private Sub cmdAgregar_Click()
         fechaAnio = Year(FechaEvento)
         Tipo = Me.cboEventos.ListIndex
         mem = Trim(UCase(Me.Text1))
-        modificable = Me.Check1.value
-        FechaCreado = funciones.datetimeFormateada(Now)
-        strsql = "insert into usuariosTablero (idUsuario, FechaDia, FechaMes, FechaAnio, tipo,titulo,EventoModificable,GrupoUsuarios,fechaCreado) values (" & idUsuario & "," & FechaDia & "," & fechaMes & "," & fechaAnio & "," & Tipo & ",'" & mem & "'," & modificable & "," & vGrupoEvento & ",'" & FechaCreado & "' )"
+        Modificable = Me.Check1.value
+        fechaCreado = funciones.datetimeFormateada(Now)
+        strsql = "insert into usuariosTablero (idUsuario, FechaDia, FechaMes, FechaAnio, tipo,titulo,EventoModificable,GrupoUsuarios,fechaCreado) values (" & idUsuario & "," & FechaDia & "," & fechaMes & "," & fechaAnio & "," & Tipo & ",'" & mem & "'," & Modificable & "," & vGrupoEvento & ",'" & fechaCreado & "' )"
         Unload Me
         If Not claseP.ejecutarComando(strsql) Then MsgBox "Se produjo algun error al agregar el dato!", vbCritical, "Error"
 

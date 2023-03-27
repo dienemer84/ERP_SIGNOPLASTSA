@@ -231,7 +231,7 @@ Private Sub btnFacturar_Click()
                 MsgBox "No puede facturar un item que ya fue facturado.", vbExclamation
                 Exit Sub
             End If
-            returnCol.Add tmp, CStr(tmp.id)
+            returnCol.Add tmp, CStr(tmp.Id)
         Next js
     Else
         Set tmp = Remito.Detalles.item(Me.grilla.RowIndex(Me.grilla.row))
@@ -243,7 +243,7 @@ Private Sub btnFacturar_Click()
             MsgBox "No puede facturar un item que ya fue facturado.", vbExclamation
             Exit Sub
         End If
-        returnCol.Add tmp, CStr(tmp.id)
+        returnCol.Add tmp, CStr(tmp.Id)
     End If
 
     Dim ev As New clsEventoObserver
@@ -313,10 +313,10 @@ Private Function CrearDetalleDeOT() As Boolean
         detaEntrega.facturable = True
         detaEntrega.Facturado = False
         detaEntrega.FEcha = Now
-        detaEntrega.idDetallePedido = detapedido.id
-        detaEntrega.idpedido = detapedido.OrdenTrabajo.id
+        detaEntrega.idDetallePedido = detapedido.Id
+        detaEntrega.idpedido = detapedido.OrdenTrabajo.Id
         detaEntrega.Origen = OrigenRemitoOt
-        detaEntrega.Remito = Me.Remito.id
+        detaEntrega.Remito = Me.Remito.Id
         detaEntrega.Valor = detapedido.Precio
         detaEntrega.ValorModificado = False
         Set detaEntrega.DetallePedido = detapedido
@@ -354,19 +354,19 @@ Private Sub Form_Load()
     vId = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, RemitosDetalle_
     mostrarRemito
-    
+
     ''Me.caption = caption & " (" & Name & ")"
-        
+
 End Sub
 Private Sub mostrarRemito()
 
     If IsSomething(Remito) Then
         Me.caption = "Remito " & Remito.numero
-        Set Remito.Detalles = DAORemitoSDetalle.FindAllByRemito(Remito.id, False, True)
+        Set Remito.Detalles = DAORemitoSDetalle.FindAllByRemito(Remito.Id, False, True)
 
         Me.lblFecha.caption = Remito.FEcha
         Me.lblDetalle = Remito.detalle
-        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.cliente.id, Me.cboClientes)
+        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.cliente.Id, Me.cboClientes)
 
         grilla.Columns(6).Visible = MostrarInfoAdministracion
 
@@ -402,10 +402,10 @@ Private Sub grilla_AfterUpdate()
 End Sub
 
 Private Sub grilla_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
-    'Cancel = True
-    'If tmp.Origen = OrigenRemitoConcepto And remito.estado = RemitoPendiente Then
+'Cancel = True
+'If tmp.Origen = OrigenRemitoConcepto And remito.estado = RemitoPendiente Then
     Cancel = MsgBox("¿Está seguro de eliminar el detalle?", vbYesNo + vbInformation, "Confirmación") = vbNo     'Or tmp.Origen <> OrigenRemitoConcepto Or remito.estado <> RemitoPendiente
-    'End If
+'End If
 End Sub
 
 Private Sub grilla_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
@@ -447,7 +447,7 @@ End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 And IsSomething(tmp) Then
         Me.mnuNoFacturable.Enabled = Not tmp.Facturado And Remito.estado = EstadoRemito.RemitoAprobado And (Remito.EstadoFacturado = RemitoNoFacturado Or Remito.EstadoFacturado = RemitoFacturadoParcial)
-        
+
         If tmp.facturable Then
             Me.mnuNoFacturable.caption = "Hacer No Facturable"
         Else
@@ -561,7 +561,7 @@ Private Sub grilla_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Varia
 End Sub
 
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    'If RowIndex = 1 Then item = 0
+'If RowIndex = 1 Then item = 0
 
     On Error Resume Next
     '    Set deta_pedi = DAODetalleOrdenTrabajo.FindById(tmp.idDetallePedido)

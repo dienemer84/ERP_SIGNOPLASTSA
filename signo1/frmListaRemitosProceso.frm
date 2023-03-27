@@ -160,24 +160,24 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.GridEX1
     Me.GridEX1.ItemCount = 0
     LlenarGrid
-    
+
     Me.caption = "Remitos a procesar [Cantidad: " & col.count & "]"
 
-    
+
 
 End Sub
 
 Private Sub Form_Terminate()
-    'Set Selecciones.RemitoElegido = Nothing
-    'Unload Me
+'Set Selecciones.RemitoElegido = Nothing
+'Unload Me
 End Sub
 Private Sub LlenarGrid()
     filtro = ""
     If vmostrar = 0 Then    'en proceso
 
-           filtro = filtro & " and rto.estado=1  and (rto.estadoFacturado=0 or rto.estadoFacturado=1)"
-           Me.caption = "Remitos en proceso..."
-        
+        filtro = filtro & " and rto.estado=1  and (rto.estadoFacturado=0 or rto.estadoFacturado=1)"
+        Me.caption = "Remitos en proceso..."
+
     ElseIf vmostrar > 0 Then
         If vIdCliMostrar > 0 Then
             filtro = filtro & " and (rto.estadoFacturado=0 or rto.estadoFacturado=1) and rto.estado=2 and rto.idCliente=" & vIdCliMostrar & ""
@@ -185,8 +185,8 @@ Private Sub LlenarGrid()
             filtro = filtro & " and (rto.estadoFacturado=0 or rto.estadoFacturado=1) and rto.estado=2 "
 
         End If
-            Me.caption = "Remitos a facturar..."
-              
+        Me.caption = "Remitos a facturar..."
+
     ElseIf vmostrar = -1 Then
 
         filtro = filtro & " and rto.estado=2"
@@ -200,29 +200,29 @@ Private Sub LlenarGrid()
     Dim rto As Remito
     For Each rto In tmpCol
         col.Add rto, CStr(rto.Id)
-            Set remitoDetalle = DAORemitoSDetalle.FindAllByRemito(rto.Id, True, True)
-            Dim deta As remitoDetalle
-                    For Each deta In remitoDetalle
-                        If deta.idpedido = 0 Or deta.idpedido = -1 Then
-                            Set idpedido = Nothing
-                        Else
-                            If CStr(" " & deta.idpedido) <> rto.OrigenDeConceptos Then
-                                rto.OrigenDeConceptos = rto.OrigenDeConceptos & " " & deta.idpedido
-                            End If
-                        End If
-                     Next
-'                     ''debug.print (rto.OrigenDeConceptos)
+        Set remitoDetalle = DAORemitoSDetalle.FindAllByRemito(rto.Id, True, True)
+        Dim deta As remitoDetalle
+        For Each deta In remitoDetalle
+            If deta.idpedido = 0 Or deta.idpedido = -1 Then
+                Set idpedido = Nothing
+            Else
+                If CStr(" " & deta.idpedido) <> rto.OrigenDeConceptos Then
+                    rto.OrigenDeConceptos = rto.OrigenDeConceptos & " " & deta.idpedido
+                End If
+            End If
+        Next
+        '                     ''debug.print (rto.OrigenDeConceptos)
     Next
     If col.count > 0 Then
 
         Me.GridEX1.ItemCount = 0
         Me.GridEX1.ItemCount = col.count
-        
+
     End If
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-    'Set Selecciones.RemitoElegido = Nothing
+'Set Selecciones.RemitoElegido = Nothing
 End Sub
 
 Private Sub GridEX1_DblClick()
@@ -246,15 +246,15 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(3) = Remito.cliente.razon
         Values(4) = Remito.detalle
         Values(5) = Remito.VerEstadoFacturado
-        
-'e5fs52- ACA SE VA A MOSTRAR LOS DATOS DE LAS OTS QUE CONTIENE ESE REMITO
+
+        'e5fs52- ACA SE VA A MOSTRAR LOS DATOS DE LAS OTS QUE CONTIENE ESE REMITO
         'Values(6) = "OT N°, OT N°, Concepto, Concepto"
         Values(6) = Remito.OrigenDeConceptos
-        
-' SE TIENE QUE MOSTRAR COMO REMITO.(PUNTO) + ALGO
+
+        ' SE TIENE QUE MOSTRAR COMO REMITO.(PUNTO) + ALGO
         'Values(6) = Remito.
         'If IsSomething(Remito.contacto) Then Values(5) = Remito.contacto.nombre
-        
+
     End If
 End Sub
 

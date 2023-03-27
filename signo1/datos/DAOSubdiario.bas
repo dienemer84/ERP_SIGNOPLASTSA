@@ -8,39 +8,39 @@ Public Enum FcGroupMethod
 End Enum
 
 Public Function ExisteComprobanteEnLiquidacion(Id As Long) As Boolean
-On Error GoTo err1
-Dim qry As String
-Dim rs As Recordset
-qry = "select count(id) as c from liquidacion_subdiario_compras_detalles"
-Set rs = conectar.RSFactory(qry)
-Dim Cantidad As Integer
-While Not rs.EOF
-    Cantidad = rs!c
-Wend
+    On Error GoTo err1
+    Dim qry As String
+    Dim rs As Recordset
+    qry = "select count(id) as c from liquidacion_subdiario_compras_detalles"
+    Set rs = conectar.RSFactory(qry)
+    Dim Cantidad As Integer
+    While Not rs.EOF
+        Cantidad = rs!c
+    Wend
 
-ExisteComprobanteEnLiquidacion = Cantidad > 0
+    ExisteComprobanteEnLiquidacion = Cantidad > 0
 
 err1:
-ExisteComprobanteEnLiquidacion = False
+    ExisteComprobanteEnLiquidacion = False
 
 End Function
 
 Public Function ComprobanteComprasLiquidado(Id As Long) As Boolean
-On Error GoTo err1
-Dim qry As String
-Dim rs As Recordset
-qry = "select count(id) as c from liquidacion_subdiario_compras_detalles where id_factura=" & Id
-Set rs = conectar.RSFactory(qry)
-Dim Cantidad As Integer
-While Not rs.EOF
-    Cantidad = rs!c
-    rs.MoveNext
-Wend
+    On Error GoTo err1
+    Dim qry As String
+    Dim rs As Recordset
+    qry = "select count(id) as c from liquidacion_subdiario_compras_detalles where id_factura=" & Id
+    Set rs = conectar.RSFactory(qry)
+    Dim Cantidad As Integer
+    While Not rs.EOF
+        Cantidad = rs!c
+        rs.MoveNext
+    Wend
 
-ComprobanteComprasLiquidado = Cantidad > 0
-Exit Function
+    ComprobanteComprasLiquidado = Cantidad > 0
+    Exit Function
 err1:
-ComprobanteComprasLiquidado = True
+    ComprobanteComprasLiquidado = True
 
 End Function
 
@@ -93,7 +93,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
         'If sv.ComprobanteNro = 9225 Then Stop
         sv.Iva = RedondearDecimales(fc.TotalIVA) * negativo * tipo_cambio
-        
+
         For Each ali In alicuotas
             sv.AlicuotasIva.Add fc.TotalIVADiscriminado(CDbl(ali)) * negativo * tipo_cambio, CStr(ali)
             sv.NetosGravado.Add fc.TotalNetoGravadoDiscriminado(CDbl(ali)) * negativo * tipo_cambio, CStr(ali)
@@ -103,32 +103,32 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
 
         Dim per As clsPercepcionesAplicadas
-        
+
         Set sv.ListaPercepciones = New Collection
-        
+
 
         'ver aca el indice de la coleccion  per.id o per.percepciones.id
 
         For Each per In fc.percepciones
-        
-  
+
+
             If Not BuscarEnColeccion(sv.ListaPercepciones, CStr(per.Percepcion.Id)) Then sv.ListaPercepciones.Add per, CStr(per.Percepcion.Id)
-           
-        
+
+
             per.Monto = fc.TotalPercepcionesDiscriminado(per.Percepcion.Id) * negativo * tipo_cambio
 
         Next
-        
+
         Dim perTodas As Double
-        
+
         perTodas = 0
-        
+
         For Each per In sv.ListaPercepciones
-                        
-        perTodas = perTodas + per.Monto
-                
-        'Debug.Print perTodas
-        
+
+            perTodas = perTodas + per.Monto
+
+            'Debug.Print perTodas
+
         Next
 
 
@@ -136,8 +136,8 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
 
         'sv.percepciones = RedondearDecimales(fc.totalPercepciones) * negativo * tipo_cambio
-        
-        sv.percepciones = RedondearDecimales(perTodas) '* negativo * tipo_cambio
+
+        sv.percepciones = RedondearDecimales(perTodas)    '* negativo * tipo_cambio
 
 
 
@@ -149,14 +149,14 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
         sv.NetoGravado = RedondearDecimales(fc.NetoGravado) * negativo * tipo_cambio
         sv.ImpuestoInterno = RedondearDecimales(fc.ImpuestoInterno) * negativo * tipo_cambio
         sv.Redondeo = fc.Redondeo * negativo * tipo_cambio
-        
-        ' If fc.Id = 16325 Then Stop
-        
-        'sv.Total = funciones.RedondearDecimales(fc.Total) * negativo * tipo_cambio
-        
-        sv.Total = funciones.RedondearDecimales(sv.NetoGravado + sv.ImpuestoInterno + sv.Redondeo + sv.Iva + (sv.percepciones / tipo_cambio)) '* negativo * tipo_cambio
 
-       
+        ' If fc.Id = 16325 Then Stop
+
+        'sv.Total = funciones.RedondearDecimales(fc.Total) * negativo * tipo_cambio
+
+        sv.Total = funciones.RedondearDecimales(sv.NetoGravado + sv.ImpuestoInterno + sv.Redondeo + sv.Iva + (sv.percepciones / tipo_cambio))    '* negativo * tipo_cambio
+
+
 
         sv.RazonSocial = fc.Proveedor.RazonSocial
         sv.estado = fc.estado
@@ -529,10 +529,10 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
             If liq.EsDeVenta Then
                 q = "INSERT INTO liquidacion_subdiario_detalles (id_liquidacion, fecha, comprobante, razon_social, cuit, condicion_iva, neto_gravado, iva, percepciones_iibb, exento, total, estado_factura, id_factura) " _
-                    & " VALUES ('id_liquidacion', 'fecha', 'comprobante', 'razon_social', 'cuit', 'condicion_iva', 'neto_gravado', 'iva', 'percepciones_iibb', 'exento', 'total', 'estado_factura', 'id_factura')"
+                  & " VALUES ('id_liquidacion', 'fecha', 'comprobante', 'razon_social', 'cuit', 'condicion_iva', 'neto_gravado', 'iva', 'percepciones_iibb', 'exento', 'total', 'estado_factura', 'id_factura')"
             Else
                 q = "INSERT INTO liquidacion_subdiario_compras_detalles (id_liquidacion, fecha, comprobante, razon_social, cuit, condicion_iva, neto_gravado, iva, percepciones_iibb, exento, total, estado_factura, id_factura, percepciones_iva, impuesto_interno, redondeo) " _
-                    & " VALUES ('id_liquidacion', 'fecha', 'comprobante', 'razon_social', 'cuit', 'condicion_iva', 'neto_gravado', 'iva', 'percepciones_iibb', 'exento', 'total', 'estado_factura', 'id_factura', 'percepciones_iva', 'impuesto_interno', 'redondeo')"
+                  & " VALUES ('id_liquidacion', 'fecha', 'comprobante', 'razon_social', 'cuit', 'condicion_iva', 'neto_gravado', 'iva', 'percepciones_iibb', 'exento', 'total', 'estado_factura', 'id_factura', 'percepciones_iva', 'impuesto_interno', 'redondeo')"
             End If
 
             det.LiquidacionId = Id
@@ -566,7 +566,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
                 For Each tmpAli In colAlicuotas
                     If funciones.BuscarEnColeccion(det.AlicuotasIva, CStr(tmpAli)) Then
                         q = "INSERT INTO liquidacion_subdiario_compras_detalles_iva (monto, alicuota_iva_id, subd_compra_detalle_id)" _
-                            & " VALUES ('monto', 'alicuota_iva_id', 'subd_compra_detalle_id')"
+                          & " VALUES ('monto', 'alicuota_iva_id', 'subd_compra_detalle_id')"
 
                         q = Replace$(q, "'monto'", conectar.Escape(det.AlicuotasIva.item(CStr(tmpAli))))
                         q = Replace$(q, "'alicuota_iva_id'", conectar.Escape(tmpAli))
@@ -577,7 +577,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
                     If funciones.BuscarEnColeccion(det.NetosGravado, CStr(tmpAli)) Then
                         q = "INSERT INTO liquidacion_subdiario_compras_detalles_ng (monto, alicuota_iva_id, subd_compra_detalle_id)" _
-                            & " VALUES ('monto', 'alicuota_iva_id', 'subd_compra_detalle_id')"
+                          & " VALUES ('monto', 'alicuota_iva_id', 'subd_compra_detalle_id')"
 
                         q = Replace$(q, "'monto'", conectar.Escape(det.NetosGravado.item(CStr(tmpAli))))
                         q = Replace$(q, "'alicuota_iva_id'", conectar.Escape(tmpAli))

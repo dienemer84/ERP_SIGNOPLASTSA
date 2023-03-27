@@ -25,7 +25,7 @@ Public Function FindAll(Optional filter As String = " 1 = 1") As Collection
 
     While Not rs.EOF
         Set ret = DAOReciboRetencion.Map(rs, indice, TABLA_RECXRET, TABLA_RETENCION)
-        col.Add ret, CStr(ret.id)
+        col.Add ret, CStr(ret.Id)
         rs.MoveNext
     Wend
 
@@ -35,12 +35,12 @@ End Function
 
 
 Public Function Map(rs As Recordset, indice As Dictionary, Tabla1 As String, TablaRetenciones As String) As retencionRecibo
-    Dim id As Long
+    Dim Id As Long
     Dim T As retencionRecibo
-    id = GetValue(rs, indice, Tabla1, DAORetenciones.CAMPO_ID)
-    If id <> 0 Then
+    Id = GetValue(rs, indice, Tabla1, DAORetenciones.CAMPO_ID)
+    If Id <> 0 Then
         Set T = New retencionRecibo
-        T.id = id
+        T.Id = Id
         T.idRecibo = GetValue(rs, indice, Tabla1, DAOReciboRetencion.CAMPO_RECIBO)
         T.NroRetencion = GetValue(rs, indice, Tabla1, DAOReciboRetencion.CAMPO_NRO_RET)
         Set T.Retencion = DAORetenciones.Map(rs, indice, TablaRetenciones)
@@ -60,16 +60,16 @@ Public Function Save(Retencion As retencionRecibo, recibo As recibo) As Boolean
 
 
     q = "INSERT INTO AdminRecibosDetalleRetenciones" _
-        & " (idRecibo," _
-        & " idRetencion," _
-        & " valor," _
-        & " nroRetencion,fecha)" _
-        & " Values" _
-        & " ('idRecibo'," _
-        & " 'idRetencion'," _
-        & " 'valor'," _
-        & " 'nroRetencion'," _
-        & " 'fecha')"
+      & " (idRecibo," _
+      & " idRetencion," _
+      & " valor," _
+      & " nroRetencion,fecha)" _
+      & " Values" _
+      & " ('idRecibo'," _
+      & " 'idRetencion'," _
+      & " 'valor'," _
+      & " 'nroRetencion'," _
+      & " 'fecha')"
 
     q = Replace(q, "'idRecibo'", conectar.GetEntityId(recibo))
     q = Replace(q, "'idRetencion'", conectar.GetEntityId(Retencion.Retencion))

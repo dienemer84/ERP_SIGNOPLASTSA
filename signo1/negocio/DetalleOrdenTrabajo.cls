@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Private deta As clsDetalleOrdenTrabajoCantidades
-Public id As Long
+Public Id As Long
 Public item As String
 Public OrdenTrabajo As OrdenTrabajo
 Public Pieza As Pieza
@@ -84,7 +84,7 @@ Public Property Get TotalConDescuento() As Double
     saldo_piezas = Me.CantidadPedida - Me.Cantidad_Facturada
 
     If saldo_piezas > 0 Then
-        tot = (saldo_piezas * (1 - (Me.Descuento / 100)) * (MonedaConverter.Convertir(Precio, Me.IdMoneda, MonedaConverter.Patron.id)))
+        tot = (saldo_piezas * (1 - (Me.Descuento / 100)) * (MonedaConverter.Convertir(Precio, Me.IdMoneda, MonedaConverter.Patron.Id)))
     End If
 
     TotalConDescuento = funciones.RedondearDecimales(Me.Monto_Facturado + tot)
@@ -94,7 +94,7 @@ Public Property Get TotalAFacturar() As Double
     TotalAFacturar = Me.TotalConDescuento - Me.Monto_Facturado
 End Property
 Public Property Get TotalSinDescuento() As Double
-    '    TotalSinDescuento = Me.Precio * Me.CantidadPedida
+'    TotalSinDescuento = Me.Precio * Me.CantidadPedida
     Dim saldo_piezas As Double
     Dim tot As Double
     tot = 0
@@ -209,9 +209,9 @@ End Property
 
 
 Public Property Get DetallesHijasMarcoPadre() As Collection
-    If m_DetallesHijasMarcoPadre Is Nothing And Me.id > 0 Then
+    If m_DetallesHijasMarcoPadre Is Nothing And Me.Id > 0 Then
 
-        Set m_DetallesHijasMarcoPadre = DAODetalleOrdenTrabajo.FindAll("dp.IdDetalleOtPadre = " & Me.id, True, True, True)
+        Set m_DetallesHijasMarcoPadre = DAODetalleOrdenTrabajo.FindAll("dp.IdDetalleOtPadre = " & Me.Id, True, True, True)
 
     End If
     Set DetallesHijasMarcoPadre = m_DetallesHijasMarcoPadre
@@ -228,7 +228,7 @@ Public Property Get CantidadConsumida() As Double
 
         'If LenB(deta2.OrdenTrabajo.Descripcion) = 0 Then
 
-        strsql = "Select estado,descripcion from pedidos where id=" & deta2.OrdenTrabajo.id
+        strsql = "Select estado,descripcion from pedidos where id=" & deta2.OrdenTrabajo.Id
         Set rs = conectar.RSFactory(strsql)
 
         deta2.OrdenTrabajo.descripcion = rs!descripcion

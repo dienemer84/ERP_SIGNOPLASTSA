@@ -34,69 +34,69 @@ Public Function FindByCUIT(Cuit As String, Tipo As TipoPadron) As clsDTOPadronII
 End Function
 
 Public Function FindByCUIT2(Cuit As String, Optional padron As Long = 0) As Collection
-    
+
     Dim rs As Recordset
     Dim dto As clsDTOPadronIIBB
     Dim col As New Collection
     Dim q As String
-   
 
-        q = "select * from sp_permisos.Padron_Detalles where Cuit=" & Cuit
 
-   
-        If padron > 0 Then
-         q = q & " id_padron=" & padron
-        End If
+    q = "select * from sp_permisos.Padron_Detalles where Cuit=" & Cuit
+
+
+    If padron > 0 Then
+        q = q & " id_padron=" & padron
+    End If
 
 
     Set rs = conectar.RSFactory(q)
-        While Not rs.EOF
-            Set dto = New clsDTOPadronIIBB
-            
-            dto.id = rs!id
-            dto.alicuotaRetencion = CDbl(rs!alicuotaRetencion)
-            dto.alicuotaPercepcion = CDbl(rs!alicuotaPercepcion)
-            dto.IdPadron = CLng(rs!padron)
-    
-            col.Add dto, dto.id
-            rs.MoveNext
-            
-        Wend
-    
+    While Not rs.EOF
+        Set dto = New clsDTOPadronIIBB
+
+        dto.Id = rs!Id
+        dto.alicuotaRetencion = CDbl(rs!alicuotaRetencion)
+        dto.alicuotaPercepcion = CDbl(rs!alicuotaPercepcion)
+        dto.IdPadron = CLng(rs!padron)
+
+        col.Add dto, dto.Id
+        rs.MoveNext
+
+    Wend
+
     Set FindByCUIT2 = col
-    
+
 End Function
 
 Public Function FindByCUITAnt(Cuit As String, Optional padron As Long = 0) As Collection
-    
+
     Dim rs As Recordset
     Dim dto As clsDTOPadronIIBB
     Dim col As New Collection
     Dim q As String
-   
 
-        q = "select * from sp_permisos.Padron_Detalles_Ant where Cuit=" & Cuit
 
-   
-        If padron > 0 Then
-         q = q & " id_padron=" & padron
-        End If
+    q = "select * from sp_permisos.Padron_Detalles_Ant where Cuit=" & Cuit
+
+
+    If padron > 0 Then
+        q = q & " id_padron=" & padron
+    End If
 
 
     Set rs = conectar.RSFactory(q)
-        While Not rs.EOF
-            Set dto = New clsDTOPadronIIBB
-            
-            dto.id = rs!id
-            dto.alicuotaRetencion = CDbl(rs!alicuotaRetencion)
-            dto.alicuotaPercepcion = CDbl(rs!alicuotaPercepcion)
-            dto.IdPadron = CLng(rs!padron)
-    
-            col.Add dto, dto.id
-            rs.MoveNext
-            
-        Wend
-    
+    While Not rs.EOF
+        Set dto = New clsDTOPadronIIBB
+
+        dto.Id = rs!Id
+        dto.alicuotaRetencion = CDbl(rs!alicuotaRetencion)
+        dto.alicuotaPercepcion = CDbl(rs!alicuotaPercepcion)
+        dto.IdPadron = CLng(rs!padron)
+
+        col.Add dto, dto.Id
+        rs.MoveNext
+
+    Wend
+
     Set FindByCUITAnt = col
-    
+
 End Function

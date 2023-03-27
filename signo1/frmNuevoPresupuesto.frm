@@ -277,7 +277,7 @@ Begin VB.Form frmVentasPresupuestoEditar
          _ExtentX        =   2143
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   58458113
+         Format          =   58392577
          CurrentDate     =   38926
       End
       Begin XtremeSuiteControls.PushButton Command6 
@@ -1697,8 +1697,8 @@ Dim vcosto As Double
 
 Dim claseS As New classStock
 Dim tmpPresupuesto As clsPresupuesto
-Public Property Let nroPresu(id As Long)
-    idpresu = id
+Public Property Let nroPresu(Id As Long)
+    idpresu = Id
 End Property
 Public Function ProximoItem() As String
     If tmpPresupuesto.DetallePresupuesto.count = 0 Then
@@ -1727,11 +1727,11 @@ Public Function MostrarPresupuesto(Optional BeforSave As Boolean = False)
     Me.txtFormaPagoAnticipo = tmpPresupuesto.FormaPagoAnticipo
     Me.txtFormaPagoSaldo = tmpPresupuesto.FormaPagoSaldo
     Me.manteOferta = tmpPresupuesto.manteOferta
-    Me.cboMoneda.ListIndex = tmpPresupuesto.moneda.id
+    Me.cboMoneda.ListIndex = tmpPresupuesto.moneda.Id
     Me.txtReferencia = tmpPresupuesto.detalle
     Me.txtDias = tmpPresupuesto.FechaEntrega
     Me.txtDescuento = tmpPresupuesto.Descuento
-    Me.cboCliente.ListIndex = PosIndexCbo(tmpPresupuesto.cliente.id, Me.cboCliente)
+    Me.cboCliente.ListIndex = PosIndexCbo(tmpPresupuesto.cliente.Id, Me.cboCliente)
     Me.DTVencimiento = tmpPresupuesto.VencimientoPresupuesto
 
     If Not BeforSave Then llenarLista
@@ -1746,8 +1746,8 @@ Public Function llenarLista()
 End Function
 Private Function Guardar() As Boolean
     Dim tmpParaEstado As New clsPresupuesto
-    Set tmpParaEstado = DAOPresupuestos.GetById(tmpPresupuesto.id)
-    
+    Set tmpParaEstado = DAOPresupuestos.GetById(tmpPresupuesto.Id)
+
     If Me.cboMoneda.ListIndex = 3 Then
         MsgBox "No se puede guardar un presupuesto con Moneda U$A Administrativo. Modifiquelo por favor.", vbInformation + vbOKOnly
         Exit Function
@@ -1769,7 +1769,7 @@ Private Function Guardar() As Boolean
         tmpPresupuesto.DiasPagoAnticipo = CLng(Me.txtDiasPagoAnticipo)
         tmpPresupuesto.DiasPagoSaldo = CLng(Me.txtDiasPagoSaldo)
         tmpPresupuesto.Gastos = CDbl(Me.lblGastos)
-        tmpPresupuesto.id = idpresu
+        tmpPresupuesto.Id = idpresu
         tmpPresupuesto.manteOferta = Me.manteOferta
         Set tmpPresupuesto.moneda = DAOMoneda.GetById(CLng(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
         tmpPresupuesto.PorcMas15 = CDbl(mas15)
@@ -1813,14 +1813,14 @@ Private Sub cboCliente_Click()
     Inicio = Inicio + 1
     On Error GoTo err1
     If Not tmpPresupuesto Is Nothing Then
-    Dim h As VbMsgBoxResult
-        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> CInt(tmpPresupuesto.cliente.id) Then
+        Dim h As VbMsgBoxResult
+        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> CInt(tmpPresupuesto.cliente.Id) Then
             h = MsgBox("¿Desea cambiar el cliente seleccionado?", vbYesNo, "Confirmación")
             If h = 6 Then
                 Me.grilla.ItemCount = 0
                 Set tmpPresupuesto.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ListIndex)
             Else
-                Me.cboCliente.ItemData(Me.cboCliente.ListIndex) = tmpPresupuesto.cliente.id
+                Me.cboCliente.ItemData(Me.cboCliente.ListIndex) = tmpPresupuesto.cliente.Id
             End If
 
         End If
@@ -1836,17 +1836,17 @@ End Sub
 
 Private Sub cboMoneda_Click()
     On Error Resume Next
-    
+
     Dim vmo As clsMoneda
-    
+
     Set vmo = DAOMoneda.GetById(cboMoneda.ItemData(Me.cboMoneda.ListIndex))
-    
+
     Set tmpPresupuesto.moneda = DAOMoneda.GetById(cboMoneda.ItemData(Me.cboMoneda.ListIndex))
-    
+
 End Sub
 Private Sub Command1_Click()
     Dim col As Collection
-    Dim id As Long
+    Dim Id As Long
     Dim f222 As New frmElegirPieza
     f222.Origen = 1    'desde un presupuesto
     f222.cliente = tmpPresupuesto.cliente
@@ -1879,7 +1879,7 @@ Private Sub Command11_Click()
 
         For Each A In grilla.SelectedItems
             Set d = tmpPresupuesto.DetallePresupuesto(A.RowIndex)
-            d.Amortizacion = claseP.cantidadFabricada(d.Pieza.id, d.Cantidad)
+            d.Amortizacion = claseP.cantidadFabricada(d.Pieza.Id, d.Cantidad)
             grilla.RefreshRowIndex A.RowIndex
         Next
 
@@ -1929,7 +1929,7 @@ Private Sub Command4_Click()
 
     For Each Pieza In col
 
-        Cant = claseP.cantidadFabricada(Pieza.id)
+        Cant = claseP.cantidadFabricada(Pieza.Id)
 
         If Cant > 0 Then
             Pieza.YaFabricada = True
@@ -1960,24 +1960,24 @@ End Sub
 Private Sub imprimirPresu()
     Dim header As String
 
-    headercenter = "PRESUPUESTO NUMERO " & tmpPresupuesto.id & Chr(10) _
-                   & "Cliente: " & tmpPresupuesto.cliente.id & " " & tmpPresupuesto.cliente.razon & Chr(10) _
-                   & "Referencia: " & tmpPresupuesto.detalle & Chr(10) _
-                   & "Entrega: " & tmpPresupuesto.FechaEntrega & " días" & Chr(10)
+    headercenter = "PRESUPUESTO NUMERO " & tmpPresupuesto.Id & Chr(10) _
+                 & "Cliente: " & tmpPresupuesto.cliente.Id & " " & tmpPresupuesto.cliente.razon & Chr(10) _
+                 & "Referencia: " & tmpPresupuesto.detalle & Chr(10) _
+                 & "Entrega: " & tmpPresupuesto.FechaEntrega & " días" & Chr(10)
 
 
     headerLeft = "Mark Up: " & Chr(10) _
-                 & Space(5) & "Gastos Grales: " & tmpPresupuesto.Gastos & "%, M.O.M: " & tmpPresupuesto.PorcentajeManoObraMuerta & "%" & Chr(10) _
-                 & Space(5) & "Mano de Obra: " & tmpPresupuesto.PorcMDO & "%" & Chr(10) _
-                 & Space(5) & "Materiales: " & Chr(10) _
-                 & Space(10) & "<10Kg: " & tmpPresupuesto.PorcMen10 & "%" & Chr(10) _
-                 & Space(10) & "<15Kg: " & tmpPresupuesto.PorcMen15 & "%" & Chr(10) _
-                 & Space(10) & ">15Kg: " & tmpPresupuesto.PorcMas15 & "%" & Chr(10)
+               & Space(5) & "Gastos Grales: " & tmpPresupuesto.Gastos & "%, M.O.M: " & tmpPresupuesto.PorcentajeManoObraMuerta & "%" & Chr(10) _
+               & Space(5) & "Mano de Obra: " & tmpPresupuesto.PorcMDO & "%" & Chr(10) _
+               & Space(5) & "Materiales: " & Chr(10) _
+               & Space(10) & "<10Kg: " & tmpPresupuesto.PorcMen10 & "%" & Chr(10) _
+               & Space(10) & "<15Kg: " & tmpPresupuesto.PorcMen15 & "%" & Chr(10) _
+               & Space(10) & ">15Kg: " & tmpPresupuesto.PorcMas15 & "%" & Chr(10)
 
 
     footerLeft = "Total Sistema: " & tmpPresupuesto.moneda.NombreCorto & Space(1) & tmpPresupuesto.Total(Sistema) & Chr(10) _
-                 & "Total Manual: " & tmpPresupuesto.moneda.NombreCorto & Space(1) & tmpPresupuesto.Total(Manual) & Chr(10) _
-                 & "Anticipo " & tmpPresupuesto.Anticipo & " Saldo / FP: " & tmpPresupuesto.FormaPagoAnticipo
+               & "Total Manual: " & tmpPresupuesto.moneda.NombreCorto & Space(1) & tmpPresupuesto.Total(Manual) & Chr(10) _
+               & "Anticipo " & tmpPresupuesto.Anticipo & " Saldo / FP: " & tmpPresupuesto.FormaPagoAnticipo
 
 
 
@@ -2079,13 +2079,13 @@ Private Sub Form_Load()
 
     Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
     grabado = True
-    
+
     DAOMoneda.llenarComboXtremeSuite Me.ComboBoxValorMoneda, True
     Me.ComboBoxValorMoneda.ListIndex = 3
-    
+
     ''Me.caption = caption & " (" & Name & ")"
-        
-        
+
+
 End Sub
 Private Sub Form_Terminate()
     Channel.RemoverSuscripcionTotal Me
@@ -2127,7 +2127,7 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
     On Error Resume Next
     Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(grilla.RowIndex(RowIndex))
 
-    If CantArchivos.item(tmpDetalle.Pieza.id) > 0 Then
+    If CantArchivos.item(tmpDetalle.Pieza.Id) > 0 Then
         If ColIndex = 12 Then
             IconIndex = 1
         End If
@@ -2151,7 +2151,7 @@ Private Sub grilla_KeyUp(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-    Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If tmpPresupuesto.DetallePresupuesto.count > 0 Then
         Set tmpDetalle = tmpPresupuesto.DetallePresupuesto(grilla.RowIndex(grilla.row))
         If Button = 2 Then
@@ -2188,26 +2188,26 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
         RowBuffer.CellStyle(14) = "comp_alta"
     ElseIf tmpDetalle.Pieza.Complejidad = ComplejidadMedia Then
         RowBuffer.CellStyle(14) = "comp_media"
-        ElseIf tmpDetalle.Pieza.Complejidad = ComplejidadBaja Then
+    ElseIf tmpDetalle.Pieza.Complejidad = ComplejidadBaja Then
         RowBuffer.CellStyle(14) = "comp_baja"
     End If
 
 
 
-If tmpDetalle.indiceAjuste < 0 Then
- RowBuffer.CellStyle(13) = "comp_alta"
-ElseIf tmpDetalle.indiceAjuste > 0 Then
- RowBuffer.CellStyle(13) = "naranja"
-Else
-End If
+    If tmpDetalle.indiceAjuste < 0 Then
+        RowBuffer.CellStyle(13) = "comp_alta"
+    ElseIf tmpDetalle.indiceAjuste > 0 Then
+        RowBuffer.CellStyle(13) = "naranja"
+    Else
+    End If
 
 End Sub
 Private Sub MostrarFormaCotizar(A As FormaCotizar)
     Select Case A
-        Case FormaCotizar.automatica_: Me.opAutomatica.value = True
-        Case FormaCotizar.Cantidad_: Me.opCantidad.value = True
-        Case FormaCotizar.fabricados_: Me.opFabricados.value = True
-        Case FormaCotizar.fijo_: Me.opFijo.value = True
+    Case FormaCotizar.automatica_: Me.opAutomatica.value = True
+    Case FormaCotizar.Cantidad_: Me.opCantidad.value = True
+    Case FormaCotizar.fabricados_: Me.opFabricados.value = True
+    Case FormaCotizar.fijo_: Me.opFijo.value = True
     End Select
 End Sub
 Private Sub grilla_SelectionChange()
@@ -2245,7 +2245,7 @@ Private Sub MostrarHistorico(Tipo As Integer)
             hist.Cantidad = deta.CantidadPedida
             hist.FEcha = deta.FechaEntrega
             hist.Monto = deta.Precio
-            hist.Origen = deta.OrdenTrabajo.id & " | " & deta.item
+            hist.Origen = deta.OrdenTrabajo.Id & " | " & deta.item
             historico.Add hist
         Next
 
@@ -2255,7 +2255,7 @@ Private Sub MostrarHistorico(Tipo As Integer)
         Me.gridHistFab.ColumnAutoResize = True
     ElseIf Tipo = 1 Then    'cotizado
 
-        Set col1 = DAOPresupuestosDetalle.GetAllByPieza(tmpDetalle.Pieza.id)
+        Set col1 = DAOPresupuestosDetalle.GetAllByPieza(tmpDetalle.Pieza.Id)
         For Each deta1 In col1
             Set hist = New dtoHistoricoPieza
 
@@ -2287,8 +2287,8 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(10) = .PorcentajeMAT & "% (" & .TotalMateriales & ")"
         Values(9) = .PorcentajeMDO & "% (" & .TotalMDO & ")"
         Values(11) = .Pieza.nombre
-    Values(13) = .indiceAjuste
-    Values(14) = enums.EnumTiposComplejidad(.Pieza.Complejidad)
+        Values(13) = .indiceAjuste
+        Values(14) = enums.EnumTiposComplejidad(.Pieza.Complejidad)
     End With
 End Sub
 
@@ -2327,7 +2327,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 tmpDetalle.Detalles = ""
                 tmpDetalle.entrega = 1
                 tmpDetalle.FormaCotizar = automatica_
-                tmpDetalle.id = 0
+                tmpDetalle.Id = 0
                 tmpDetalle.item = ProximoItem
                 Set tmpDetalle.presupuesto = tmpPresupuesto
                 Set tmpDetalle.Pieza = dto.Pieza    ' col(X)
@@ -2453,34 +2453,34 @@ End Sub
 Private Sub mnuArchiPedido_Click()
     Dim ar2 As New frmArchivos2
     ar2.Origen = 11
-    ar2.ObjetoId = tmpDetalle.id
-    ar2.caption = "Presupuesto Nº  " & tmpDetalle.id
+    ar2.ObjetoId = tmpDetalle.Id
+    ar2.caption = "Presupuesto Nº  " & tmpDetalle.Id
     ar2.Show
 End Sub
 Private Sub mnuArchiPieza_Click()
     Dim ar1 As New frmArchivos2
     ar1.Origen = 1
-    ar1.ObjetoId = tmpDetalle.Pieza.id
+    ar1.ObjetoId = tmpDetalle.Pieza.Id
     ar1.caption = "Pieza " & tmpDetalle.Pieza.nombre
     ar1.Show
 End Sub
 Private Sub mnuEscaPedido_Click()
     Dim archivos As New classArchivos
-    archivos.escanearDocumento 11, tmpDetalle.id
+    archivos.escanearDocumento 11, tmpDetalle.Id
 End Sub
 Private Sub mnuEscaPieza_Click()
     Dim archivos As New classArchivos
-    archivos.escanearDocumento 1, tmpDetalle.Pieza.id
+    archivos.escanearDocumento 1, tmpDetalle.Pieza.Id
 End Sub
 Private Sub mnuInciPedido_Click()
     Dim i1 As New frmVerIncidencias
-    i1.referencia = tmpDetalle.id
+    i1.referencia = tmpDetalle.Id
     i1.Origen = 33
     i1.Show
 End Sub
 Private Sub mnuInciPieza_Click()
     Dim i2 As New frmVerIncidencias
-    i2.referencia = tmpDetalle.Pieza.id
+    i2.referencia = tmpDetalle.Pieza.Id
     i2.Origen = 3
     i2.Show
 End Sub
@@ -2605,7 +2605,7 @@ Public Sub recalcule()
     Dim Precio As Double, Kg As Double
     Dim rs As Recordset
     Dim FormaCotizar As FormaCotizar
-    Dim id As Long
+    Dim Id As Long
     Dim pp1 As Double
     Dim amorti As Long
     Dim pp2 As Double
@@ -2636,7 +2636,7 @@ Public Sub recalcule()
         Else
             fl = FL_4
         End If
-        Set deta.Pieza = DAOPieza.FindById(deta.Pieza.id, fl, True, True)
+        Set deta.Pieza = DAOPieza.FindById(deta.Pieza.Id, fl, True, True)
         deta.CalcularPrecioSistema vcosto, mo, ma
         t_mo = t_mo + mo
         t_ma = t_ma + ma
@@ -2644,7 +2644,7 @@ Public Sub recalcule()
 
     Next
 
-            
+
 
     Me.progreso.Visible = False
     Me.lblRecalculando.Visible = False
@@ -2685,7 +2685,7 @@ Private Sub ver_Click()
 
         Dim F As New frmDesarrollo
         Load F
-        F.CargarPieza tmpDetalle.Pieza.id
+        F.CargarPieza tmpDetalle.Pieza.Id
         F.Show
 
     End If

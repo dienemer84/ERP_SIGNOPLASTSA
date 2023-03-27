@@ -91,9 +91,9 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
         cn.execute "INSERT INTO sp_permisos.IIBB2_PercepcionAnt SELECT * FROM sp_permisos.IIBB2_Percepcion"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Percepcion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Percepcion FIELDS TERMINATED BY ';'"
-        
-       'cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='1'"
-       'cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, Alicuota, '0,00', '1' FROM sp_permisos.IIBB2_Percepcion"
+
+        'cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='1'"
+        'cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, Alicuota, '0,00', '1' FROM sp_permisos.IIBB2_Percepcion"
 
 
     ElseIf Tipo = TipoPadronRetencion Then
@@ -101,23 +101,23 @@ Public Function ActualizarPadronIB(ruta As String, Tipo As TipoPadron) As Boolea
         cn.execute "INSERT INTO sp_permisos.IIBB2_RetencionAnt SELECT * FROM sp_permisos.IIBB2_Retencion"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Retencion"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Retencion FIELDS TERMINATED BY ';'"
- 
+
         'cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = (SELECT c.Alicuota from sp_permisos.IIBB2_Retencion c WHERE f.Cuit = c.Cuit)"
         'cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, '0,00', Alicuota, '1' FROM sp_permisos.IIBB2_Retencion WHERE Cuit NOT IN (SELECT Cuit FROM sp_permisos.IIBB2_Percepcion)"
         'cn.execute "UPDATE sp_permisos.Padron_Detalles f SET f.AlicuotaRetencion = '0,00' WHERE f.AlicuotaRetencion IS NULL"
-        
-                    
+
+
     ElseIf Tipo = TipoPadronUnificadoCABA Then
         cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA_Ant"
         cn.execute "INSERT INTO sp_permisos.IIBB2_Padron_CABA_Ant SELECT * FROM sp_permisos.IIBB2_Padron_CABA"
         cn.execute "TRUNCATE sp_permisos.IIBB2_Padron_CABA"
         cn.execute "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_permisos.IIBB2_Padron_CABA FIELDS TERMINATED BY ';'"
-        
+
         'cn.execute "DELETE FROM sp_permisos.Padron_Detalles WHERE Padron='2'"
         'cn.execute "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron) SELECT Cuit, AlicuotaPercepcion, AlicuotaRetencion, '2' FROM sp_permisos.IIBB2_Padron_CABA"
-        
+
     End If
-    
+
     cn.CommitTrans
     Exit Function
 err4:
@@ -131,28 +131,28 @@ Public Function ProcesarPadronIB() As Boolean
     ProcesarPadronIB = True
     cn.BeginTrans
 
-        cn.execute "TRUNCATE sp_permisos.Padron_Detalles_Ant"
-        cn.execute "INSERT INTO sp_permisos.Padron_Detalles_Ant SELECT * FROM sp_permisos.Padron_Detalles"
-      
-        cn.execute "TRUNCATE sp_permisos.Padron_Detalles"
-        
-        
-        Dim q  As String
-        q = "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron, FechaDesdePercepcion, FechaHastaPercepcion, FechaDesdeRetencion, FechaHastaRetencion)" _
-                     & "select * from (SELECT p.Cuit, p.Alicuota AS AlicuotaPercepcion, IFNULL(r.Alicuota,'0,00') AS AlicuotaRetencion, '1', p.FechaDesde AS pd, p.FechaHasta AS ph,r.FechaDesde,r.FechaHasta FROM sp_permisos.IIBB2_Percepcion p LEFT JOIN sp_permisos.IIBB2_Retencion r ON r.Cuit=p.Cuit" _
-                     & " UNION SELECT r.Cuit, r.Alicuota AS AlicuotaRetencion, 0, '1','' AS c,'' AS d, r.FechaDesde AS a, r.FechaHasta AS b FROM sp_permisos.IIBB2_Retencion r WHERE NOT EXISTS (SELECT * FROM sp_permisos.IIBB2_Percepcion p WHERE p.Cuit=r.Cuit)" _
-                     & " UNION SELECT c.Cuit, c.AlicuotaPercepcion, c.AlicuotaRetencion, '2' ,c.FechaDesde, c.FechaHasta, c.FechaDesde, c.FechaHasta FROM sp_permisos.IIBB2_Padron_CABA c) q"
+    cn.execute "TRUNCATE sp_permisos.Padron_Detalles_Ant"
+    cn.execute "INSERT INTO sp_permisos.Padron_Detalles_Ant SELECT * FROM sp_permisos.Padron_Detalles"
 
-        
-        cn.execute q
-        
-        cn.CommitTrans
-        
-      
+    cn.execute "TRUNCATE sp_permisos.Padron_Detalles"
+
+
+    Dim q As String
+    q = "INSERT INTO sp_permisos.Padron_Detalles (Cuit, AlicuotaPercepcion, AlicuotaRetencion, Padron, FechaDesdePercepcion, FechaHastaPercepcion, FechaDesdeRetencion, FechaHastaRetencion)" _
+      & "select * from (SELECT p.Cuit, p.Alicuota AS AlicuotaPercepcion, IFNULL(r.Alicuota,'0,00') AS AlicuotaRetencion, '1', p.FechaDesde AS pd, p.FechaHasta AS ph,r.FechaDesde,r.FechaHasta FROM sp_permisos.IIBB2_Percepcion p LEFT JOIN sp_permisos.IIBB2_Retencion r ON r.Cuit=p.Cuit" _
+      & " UNION SELECT r.Cuit, r.Alicuota AS AlicuotaRetencion, 0, '1','' AS c,'' AS d, r.FechaDesde AS a, r.FechaHasta AS b FROM sp_permisos.IIBB2_Retencion r WHERE NOT EXISTS (SELECT * FROM sp_permisos.IIBB2_Percepcion p WHERE p.Cuit=r.Cuit)" _
+      & " UNION SELECT c.Cuit, c.AlicuotaPercepcion, c.AlicuotaRetencion, '2' ,c.FechaDesde, c.FechaHasta, c.FechaDesde, c.FechaHasta FROM sp_permisos.IIBB2_Padron_CABA c) q"
+
+
+    cn.execute q
+
+    cn.CommitTrans
+
+
     Exit Function
-    
+
 err4:
-        ProcesarPadronIB = False
+    ProcesarPadronIB = False
     cn.RollbackTrans
 End Function
 
@@ -286,12 +286,12 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
         ia = 9
         ia_orig = ia
         Dim d As Double
-        
+
         For o = 10 To 10 + TOTAL_DE_RET - 1
-         x.SubItems(o - 1) = "0.00"
+            x.SubItems(o - 1) = "0.00"
         Next
-        
-        
+
+
         For o = 10 To 10 + TOTAL_DE_RET - 1    '
             For Each ret In r.retenciones
 
@@ -347,15 +347,15 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
 End Function
 
 Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) As Boolean
-    
+
     On Error GoTo errEXCEL
-    
-'INICIA EL PROGRESSBAR Y LO MUESTRA
+
+    'INICIA EL PROGRESSBAR Y LO MUESTRA
     progreso.Visible = True
-    
-'    Dim xlb As New Excel.Workbook
-'    Dim xla As New Excel.Worksheet
-'    Dim xls As New Excel.Application
+
+    '    Dim xlb As New Excel.Workbook
+    '    Dim xla As New Excel.Worksheet
+    '    Dim xls As New Excel.Application
 
     'Dim xlApplication As New Excel.Application
     Dim xls As Object
@@ -391,14 +391,14 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
 
         .Range(.Cells(3, 1), .Cells(3, canti_col)).Interior.Color = &HC0C0C0
         .Range(.Cells(3, 1), .Cells(3, canti_col)).Font.Bold = True
-        
-'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
-    progreso.min = 0
-    progreso.max = lst.ListItems.count
 
-'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
-    Dim d As Long
-    d = 0
+        'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+        progreso.min = 0
+        progreso.max = lst.ListItems.count
+
+        'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+        Dim d As Long
+        d = 0
 
 
         For x = 1 To canti_col
@@ -434,21 +434,21 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
             .Cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
             .Cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
             .Cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
-            
-            
+
+
 
             'campos numericos
             For y = 4 To canti_col - 1
                 .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
                 vec(y - 4) = vec(y - 4) + CDbl(lst.ListItems(x).ListSubItems(y))
-                
-'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
-        d = d + 1
-        progreso.value = d
+
+                'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+                d = d + 1
+                progreso.value = d
 
 
             Next y
-            
+
 
         Next x
         A = 1
@@ -508,12 +508,12 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
             strMsg = strMsg & CDLGMAIN.filename
             MsgBox strMsg, vbExclamation, "Hoja de calculo guardada"
             archi = CDLGMAIN.filename
-            
-'REINICIA EL PROGRESSBAR Y LO OCULTA
-        progreso.value = 0
-        progreso.Visible = False
-        
-        
+
+            'REINICIA EL PROGRESSBAR Y LO OCULTA
+            progreso.value = 0
+            progreso.Visible = False
+
+
         Else
             exportaSubDiarioCobros = False
         End If
@@ -590,7 +590,7 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
     Dim y As ListItem
     'TRAIGO LOS DATOS
     'strsql = "SELECT c.razon,c.cuit,r.fechaCreacion,r.id,r.idMoneda from AdminRecibos r inner join clientes c on r.idCliente=c.id where r.fechaCreacion >= '" & Format(desde, "yyyy-mm-dd") & "' and r.fechaCreacion <=  '" & Format(hasta, "yyyy-mm-dd") & "'"
-    
+
     'Desactivo esta consulta ya que traia registros NULL y eso provocaba el error al intentar reportar
     'Se agrega linea de r.id IS NOT NULL para filtrar. Queda Funcionando
     'DNEMER 23.09.20 | #163
@@ -682,15 +682,15 @@ End Function
 
 
 Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progreso) As Boolean
-    
+
     On Error GoTo errEXCEL
-    
-'INICIA EL PROGRESSBAR Y LO MUESTRA
+
+    'INICIA EL PROGRESSBAR Y LO MUESTRA
     progreso.Visible = True
-  
-'    Dim xlb As New Excel.Workbook
-'    Dim xla As New Excel.Worksheet
-'    Dim xls As New Excel.Application
+
+    '    Dim xlb As New Excel.Workbook
+    '    Dim xla As New Excel.Worksheet
+    '    Dim xls As New Excel.Application
 
     'Dim xlApplication As New Excel.Application
     Dim xls As Object
@@ -727,17 +727,17 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
 
         .Range(.Cells(3, 1), .Cells(3, canti_col)).Interior.Color = &HC0C0C0
         .Range(.Cells(3, 1), .Cells(3, canti_col)).Font.Bold = True
-        
 
-'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
-    progreso.min = 0
-    progreso.max = lst.ListItems.count
-    
-  
 
-'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
-    Dim d As Long
-    d = 0
+        'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+        progreso.min = 0
+        progreso.max = lst.ListItems.count
+
+
+
+        'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+        Dim d As Long
+        d = 0
 
         For x = 1 To canti_col
             .Cells(3, x).value = lst.ColumnHeaders(x).text
@@ -779,12 +779,12 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
             For y = 5 To canti_col - 1
                 .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
                 vec(y - 5) = vec(y - 5) + CDbl(lst.ListItems(x).ListSubItems(y))
-                
-'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
-        d = d + 1
-        progreso.value = d
-        
-        
+
+                'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+                d = d + 1
+                progreso.value = d
+
+
             Next y
             '
             '
@@ -835,11 +835,11 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
             strMsg = strMsg & CDLGMAIN.filename
             MsgBox strMsg, vbExclamation, "Hoja de calculo guardada"
             archi = CDLGMAIN.filename
-            
-'REINICIA EL PROGRESSBAR Y LO OCULTA
-        progreso.value = 0
-        progreso.Visible = False
-        
+
+            'REINICIA EL PROGRESSBAR Y LO OCULTA
+            progreso.value = 0
+            progreso.Visible = False
+
         Else
             exportaSubDiarioRetenciones = False
         End If
@@ -883,24 +883,24 @@ End Function
 Public Function ImportarComprobantesAFIP(ruta As String) As Boolean
     On Error GoTo err4
     ImportarComprobantesAFIP = True
-    
+
     'ProcesarArchivoCSV (ruta)
-    
+
     Dim rs As Recordset
     Dim strsql As String
     strsql = "TRUNCATE sp_temporal.ComprobantesRecibidosAFIP"
     Set rs = conectar.RSFactory(strsql)
- 
+
     strsql = "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_temporal.ComprobantesRecibidosAFIP" _
-        & " FIELDS TERMINATED BY ','" _
-        & " ENCLOSED BY " & Chr(39) & """" & Chr(39) & " " _
-        & " LINES TERMINATED BY '\r\n'" _
-        & " IGNORE 1 LINES" _
-        & " SET" _
-        & " puntodeventa = CONCAT(REPEAT('0',4 - LENGTH(puntodeventa)), puntodeventa)," _
-        & " numerodesde = CONCAT(REPEAT('0',8 - LENGTH(numerodesde)), numerodesde)," _
-        & " clave = CONCAT(puntodeventa,'-',numerodesde,nrodocemisor)"
-        
+           & " FIELDS TERMINATED BY ','" _
+           & " ENCLOSED BY " & Chr(39) & """" & Chr(39) & " " _
+           & " LINES TERMINATED BY '\r\n'" _
+           & " IGNORE 1 LINES" _
+           & " SET" _
+           & " puntodeventa = CONCAT(REPEAT('0',4 - LENGTH(puntodeventa)), puntodeventa)," _
+           & " numerodesde = CONCAT(REPEAT('0',8 - LENGTH(numerodesde)), numerodesde)," _
+           & " clave = CONCAT(puntodeventa,'-',numerodesde,nrodocemisor)"
+
     Set rs = conectar.RSFactory(strsql)
 
     Exit Function

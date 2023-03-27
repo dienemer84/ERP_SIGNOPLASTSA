@@ -90,7 +90,7 @@ Private Sub Form_Load()
     Dim x As ListItem
     Set rs = conectar.RSFactory("select id,fechaCreacion as fecha from AdminRecibos where pagoACuenta=1 and (todo_aplicado=0 or todo_aplicado=1)")
     While Not rs.EOF
-        Set x = Me.lstRecibos.ListItems.Add(, , Format(rs!id, "0000"), 1)
+        Set x = Me.lstRecibos.ListItems.Add(, , Format(rs!Id, "0000"), 1)
         x.SubItems(1) = Format(rs!FEcha, "dd-mm-yyyy")
 
         rs.MoveNext

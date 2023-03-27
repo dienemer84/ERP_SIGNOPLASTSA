@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmMaterializacion 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -96,7 +96,7 @@ Dim vot As Boolean
 Dim vpresu As Boolean
 Dim votro As Boolean
 
-Public Property Let id(nId As Long)
+Public Property Let Id(nId As Long)
     vId = nId
 End Property
 
@@ -166,11 +166,11 @@ Private Sub Form_Load()
     'lista.Sort
 
     While Not lista.EOF
-        a = claseS.detalle_pieza(lista!idPieza)
-        Set x = Me.lstMaterialiazacion.ListItems.Add(, , a)
+        A = claseS.detalle_pieza(lista!idPieza)
+        Set x = Me.lstMaterialiazacion.ListItems.Add(, , A)
         Set r = claseS.materializacion(lista!idPieza)
         While Not r.EOF
-            x.SubItems(1) = r!codigo & " " & r!Rubro & " " & r!Grupo & " " & r!descripcion & " " & Math.Round(r!Espesor, 2) & "mm"
+            x.SubItems(1) = r!codigo & " " & r!rubro & " " & r!Grupo & " " & r!descripcion & " " & Math.Round(r!Espesor, 2) & "mm"
             Set x = Me.lstMaterialiazacion.ListItems.Add
             r.MoveNext
         Wend

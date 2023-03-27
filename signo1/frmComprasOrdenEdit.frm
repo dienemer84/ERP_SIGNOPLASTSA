@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~1.OCX"
+Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
 Begin VB.Form frmComprasOrdenEdit 
    Caption         =   "Edición de Orden de Compra Nº "
    ClientHeight    =   7515
