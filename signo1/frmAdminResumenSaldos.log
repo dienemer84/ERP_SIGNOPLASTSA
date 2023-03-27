@@ -1,0 +1,13 @@
+Line 40: Class MSComctlLib.ListView of control lstSaldos was not a loaded control class.
+Line 46: The property name _ExtentX in lstSaldos is invalid.
+Line 47: The property name _ExtentY in lstSaldos is invalid.
+Line 48: The property name View in lstSaldos is invalid.
+Line 49: The property name LabelEdit in lstSaldos is invalid.
+Line 50: The property name LabelWrap in lstSaldos is invalid.
+Line 51: The property name HideSelection in lstSaldos is invalid.
+Line 52: The property name FullRowSelect in lstSaldos is invalid.
+Line 53: The property name GridLines in lstSaldos is invalid.
+Line 54: The property name _Version in lstSaldos is invalid.
+Line 59: The property name NumItems in lstSaldos is invalid.
+Line 63: The property name ColumnHeader(1) in lstSaldos is invalid.
+Line 69: The property name ColumnHeader(2) in lstSaldos is invalid.
