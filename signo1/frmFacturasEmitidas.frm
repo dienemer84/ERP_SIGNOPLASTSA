@@ -863,7 +863,7 @@ Dim m_Archivos As Dictionary
 Private Sub AnularFactura_Click()
     Dim r As Long
     r = Me.GridEX1.RowIndex(Me.GridEX1.row)
-    If MsgBox("¿Desea anular el comprobante?", vbYesNo, "Confirmacion") = vbYes Then
+    If MsgBox("¿Desea anular el comprobante seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
 
         If DAOFactura.Anular(Factura) Then
             MsgBox "Comprobante anulado con éxito!", vbInformation, "Información"
@@ -1832,7 +1832,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
                 Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"
