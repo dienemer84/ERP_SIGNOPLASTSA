@@ -1,5 +1,2 @@
-Line 21: Class XtremeSuiteControls.ComboBox of control cboIva was not a loaded control class.
-Line 43: Class XtremeSuiteControls.GroupBox of control GroupBox1 was not a loaded control class.
-Line 296: Class XtremeSuiteControls.PushButton of control cmdPlanCuentas was not a loaded control class.
-Line 309: Class XtremeSuiteControls.PushButton of control btnCrear was not a loaded control class.
-Line 322: Class XtremeSuiteControls.ComboBox of control cboMonedas was not a loaded control class.
+Line 108: Class MSComctlLib.ListView of control lstRubros was not a loaded control class.
+Line 133: Class MSComctlLib.ListView of control ListView1 was not a loaded control class.
