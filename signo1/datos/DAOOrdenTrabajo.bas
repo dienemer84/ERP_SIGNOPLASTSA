@@ -184,7 +184,7 @@ End Sub
 
 Private Sub exportarEntregas(yPos, detalleid As Long, xlWorksheet)
     Dim Entregas As New Collection
-    Dim facturas As Collection
+    Dim Facturas As Collection
     Dim origenypos As Long
     origenypos = yPos
     Dim entrega As remitoDetalle

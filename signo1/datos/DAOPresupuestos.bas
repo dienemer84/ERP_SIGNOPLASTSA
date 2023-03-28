@@ -602,13 +602,13 @@ Public Function exporta(T As clsPresupuesto, Optional enviar As Boolean = False)
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
         sFilter = "Hoja de Calculo|*.xls"
         CDLGMAIN.filter = sFilter
         Dim refe As String
         refe = ref
         archi = "PRES" & Format(T.IdFormateada, "00000") & ".xlsx  "
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
         If CDLGMAIN.filename <> Empty Then

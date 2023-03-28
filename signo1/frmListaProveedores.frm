@@ -237,20 +237,20 @@ Dim suscriber_id As String
 Dim vSeleccionar As Boolean
 Dim rows As Long
 Dim rectemp As clsProveedor
-Dim id_rubro As Long
+'Dim id_rubro As Long
 Dim proveedores As Collection
 Dim Proveedor As clsProveedor
 Public Property Let seleccionar(nvalue As Boolean)
     vSeleccionar = nvalue
 End Property
 
-Private Sub cboRubro_Change()
-    Command1_Click
-End Sub
+'Private Sub cboRubro_Change()
+'    Command1_Click
+'End Sub
 
-Private Sub cmdSalir_Click()
-    Unload Me
-End Sub
+'Private Sub cmdSalir_Click()
+'    Unload Me
+'End Sub
 
 Private Sub cmdSinRubro_Click()
     Me.cboRubros.ListIndex = -1
@@ -311,17 +311,17 @@ Private Sub editar_Click()
     End If
 End Sub
 
-Private Sub estado_Click()
-    Set rectemp = proveedores(grilla.row)
-    If MsgBox("¿Seguro que desea cambiar el estado del proveedor seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
-        If DAOProveedor.CambiarEstado(rectemp) Then
-            MsgBox "Cambio exitoso!", vbInformation, "Información"
-        Else
-            MsgBox "Se produjo algún error. No se realizó el cambio!", vbCritical, "Error"
-        End If
-    End If
-
-End Sub
+'Private Sub estado_Click()
+'    Set rectemp = proveedores(grilla.row)
+'    If MsgBox("¿Seguro que desea cambiar el estado del proveedor seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
+'        If DAOProveedor.CambiarEstado(rectemp) Then
+'            MsgBox "Cambio exitoso!", vbInformation, "Información"
+'        Else
+'            MsgBox "Se produjo algún error. No se realizó el cambio!", vbCritical, "Error"
+'        End If
+'    End If
+'
+'End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
@@ -411,15 +411,15 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(9) = .email
     End With
 End Sub
-
-Private Sub VerDetalles_Click()
-    If Me.grilla.rowcount > 0 Then
-        Set rectemp = proveedores(grilla.row)
-        frmComprasProveedoresModifica.tipoOperacion = ver
-        frmComprasProveedoresModifica.Proveedor = rectemp
-        frmComprasProveedoresModifica.Show
-    End If
-End Sub
+'
+'Private Sub VerDetalles_Click()
+'    If Me.grilla.rowcount > 0 Then
+'        Set rectemp = proveedores(grilla.row)
+'        frmComprasProveedoresModifica.tipoOperacion = Ver
+'        frmComprasProveedoresModifica.Proveedor = rectemp
+'        frmComprasProveedoresModifica.Show
+'    End If
+'End Sub
 
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = suscriber_id

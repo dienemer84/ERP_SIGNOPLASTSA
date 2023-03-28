@@ -173,7 +173,7 @@ Public Function calcular_totales_material(frm As frmNuevoElemento)
             TotalM2 = TotalM2 + CDbl(frm.ListView1.ListItems(i).ListSubItems(8))
         End If
     Next i
-    frm.lblTotalKG = Math.Round(TotalKG, 3)
+    frm.lblTotalKg = Math.Round(TotalKG, 3)
     frm.lblTotalM2 = Math.Round(TotalM2, 3)
 
 End Function

@@ -18,7 +18,7 @@ Begin VB.Form frmAdminCobranzasLista
       Caption         =   "Parámetros de Búsqueda"
       Height          =   1455
       Left            =   120
-      TabIndex        =   7
+      TabIndex        =   0
       Top             =   120
       Width           =   11775
       Begin XtremeSuiteControls.PushButton btnLimpiarCliente 
@@ -37,14 +37,14 @@ Begin VB.Form frmAdminCobranzasLista
       Begin VB.TextBox txtNroRecibo 
          Height          =   285
          Left            =   1320
-         TabIndex        =   9
+         TabIndex        =   10
          Top             =   795
          Width           =   1500
       End
       Begin XtremeSuiteControls.ComboBox cboCliente 
          Height          =   315
          Left            =   1320
-         TabIndex        =   8
+         TabIndex        =   2
          Top             =   360
          Width           =   4785
          _Version        =   786432
@@ -183,7 +183,7 @@ Begin VB.Form frmAdminCobranzasLista
          EndProperty
          Height          =   195
          Left            =   615
-         TabIndex        =   10
+         TabIndex        =   1
          Top             =   420
          Width           =   600
       End
@@ -191,13 +191,13 @@ Begin VB.Form frmAdminCobranzasLista
    Begin VB.Frame Frame1 
       Height          =   855
       Left            =   12000
-      TabIndex        =   3
+      TabIndex        =   6
       Top             =   120
       Width           =   5535
       Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   465
          Left            =   1920
-         TabIndex        =   4
+         TabIndex        =   7
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -210,7 +210,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.PushButton cmdBuscar 
          Height          =   465
          Left            =   120
-         TabIndex        =   5
+         TabIndex        =   8
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -223,7 +223,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.PushButton cmdImprimir 
          Height          =   465
          Left            =   3720
-         TabIndex        =   6
+         TabIndex        =   9
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -237,7 +237,7 @@ Begin VB.Form frmAdminCobranzasLista
    Begin XtremeSuiteControls.ProgressBar progreso 
       Height          =   135
       Left            =   12000
-      TabIndex        =   2
+      TabIndex        =   5
       Top             =   1080
       Visible         =   0   'False
       Width           =   5535
@@ -251,7 +251,7 @@ Begin VB.Form frmAdminCobranzasLista
       Caption         =   "Command1"
       Height          =   615
       Left            =   17640
-      TabIndex        =   1
+      TabIndex        =   4
       Top             =   240
       Visible         =   0   'False
       Width           =   1140
@@ -259,7 +259,7 @@ Begin VB.Form frmAdminCobranzasLista
    Begin GridEX20.GridEX grilla_recibos 
       Height          =   6120
       Left            =   120
-      TabIndex        =   0
+      TabIndex        =   3
       Top             =   1680
       Width           =   17415
       _ExtentX        =   30718
@@ -352,16 +352,16 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Implements ISuscriber
 Dim vId As String
-Dim strsql As String
+'Dim strsql As String
 Dim rs As New Recordset
-Dim clasea As New classAdministracion
+'Dim clasea As New classAdministracion
 Dim recibos As Collection    'of recibo
 Dim recibo As recibo
 Private tmpIncidencias As New Dictionary
 Private tmpArchivos As New Dictionary
 
 Private Sub aprobarRecibo_Click()
-    Dim idRecibo As Long
+'    Dim idRecibo As Long
     If MsgBox("¿Está seguro de aprobar este recibo?", vbYesNo, "Confirmación") = vbYes Then
 
         Set recibo = DAORecibo.FindById(recibo.Id, True, True, True, True, True)

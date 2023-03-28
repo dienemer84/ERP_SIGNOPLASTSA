@@ -268,7 +268,7 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
         ' End If
     Next Orden
 
-    Dim facturas As Collection
+    Dim Facturas As Collection
     Dim fac As clsFacturaProveedor
 
     Dim cond2 As String
@@ -280,8 +280,8 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     End If
 
 
-    Set facturas = DAOFacturaProveedor.FindAll(cond2)
-    For Each fac In facturas
+    Set Facturas = DAOFacturaProveedor.FindAll(cond2)
+    For Each fac In Facturas
         Set detalle = New DTODetalleCuentaCorriente
         detalle.Comprobante = fac.NumeroFormateado
         '#234
@@ -491,7 +491,7 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         ' End If
     Next Orden
 
-    Dim facturas As Collection
+    Dim Facturas As Collection
     Dim fac As clsFacturaProveedor
 
     Dim cond2 As String
@@ -503,8 +503,8 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
     End If
 
 
-    Set facturas = DAOFacturaProveedor.FindAll(cond2)
-    For Each fac In facturas
+    Set Facturas = DAOFacturaProveedor.FindAll(cond2)
+    For Each fac In Facturas
         Set detalle = New DTODetalleCuentaCorriente
         detalle.Comprobante = fac.NumeroFormateado
         '#234
@@ -633,7 +633,7 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
     End If
 
 
-    Dim facturas As Collection
+    Dim Facturas As Collection
     Dim fac As Factura
 
     '12:03 AGREGO QUE TAMBIEN TENGA EN CUENTA LOS COMPROBANTES QUE ESTAN CANCELADOS PARCIALMENTE (AdminFacturas.estado = 5)
@@ -646,9 +646,9 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
     Dim recs As String
 
-    Set facturas = DAOFactura.FindAll(q)
+    Set Facturas = DAOFactura.FindAll(q)
 
-    For Each fac In facturas
+    For Each fac In Facturas
         Set detalle = New DTODetalleCuentaCorriente
         detalle.Comprobante = fac.GetShortDescription(False, True)
 

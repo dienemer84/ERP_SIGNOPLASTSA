@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#13.2#0"; "CODEJO~3.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.UserControl ctrlCboIDPersona 
    BackColor       =   &H8000000D&
    ClientHeight    =   405
@@ -21,7 +21,7 @@ Begin VB.UserControl ctrlCboIDPersona
       TabIndex        =   1
       Top             =   0
       Width           =   7470
-      _Version        =   851970
+      _Version        =   786432
       _ExtentX        =   13176
       _ExtentY        =   556
       _StockProps     =   77

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasProveedoresModifica 
    BackColor       =   &H00FF8080&
@@ -702,7 +702,7 @@ Option Explicit
 Dim Id As Long
 Dim vTipo As TipoOperacionProveedor
 Dim proveedor_ As clsProveedor
-Dim baseP As New classCompras
+'Dim baseP As New classCompras
 
 Public Property Let Proveedor(nvalue As clsProveedor)
     Set proveedor_ = DAOProveedor.FindById(nvalue.Id)
@@ -715,11 +715,11 @@ Public Property Let idProveedor(nId As Long)
     Id = nId
 End Property
 
-Private Sub Command1_Click()
-    If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
-        Unload Me
-    End If
-End Sub
+'Private Sub Command1_Click()
+'    If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
+'        Unload Me
+'    End If
+'End Sub
 
 Private Sub btnCrearNew_Click(Index As Integer)
     If Trim(Text1(9)) = Empty Then Text1(9) = 0
@@ -806,7 +806,7 @@ Private Function accion() As Boolean
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
     proveedor_.Cuit = Me.Text1(10)
     Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
-    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIVA.ItemData(Me.cboIVA.ListIndex)))
+    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIva.ItemData(Me.cboIva.ListIndex)))
 
     'busco rubros
 
@@ -855,7 +855,7 @@ Private Sub mostrarCampos()
     Text1(11) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
     cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.Id, cboMonedas)
-    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIVA)
+    cboIva.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIva)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
 End Sub
 Private Sub Form_Load()
@@ -868,7 +868,7 @@ Private Sub Form_Load()
     Else
         Me.caption = "Crear Modificar Proveedor..."
     End If
-    If vTipo = ver Then
+    If vTipo = Ver Then
         Me.caption = "Consultar Proveedor..."
     End If
     LlenarEstadosProveedor
@@ -938,13 +938,13 @@ Function limpiar()
 
 End Function
 
-Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
-    If EVENTO.EVENTO = agregar_ Then
-
-    Else
-
-    End If
-End Function
+'Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
+'    If EVENTO.EVENTO = agregar_ Then
+'
+'    Else
+'
+'    End If
+'End Function
 
 Private Sub lstRubros_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
     funciones.LstOrdenar Me.lstRubros, ColumnHeader.Index
@@ -954,7 +954,7 @@ Private Sub Text1_GotFocus(Index As Integer)
     foco Me.Text1(Index)
 End Sub
 Public Sub llenarIva()
-    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIVA
+    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIva
 End Sub
 
 Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)

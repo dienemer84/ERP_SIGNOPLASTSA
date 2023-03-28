@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmAdminMasInfoClienteDetalle 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -308,7 +308,7 @@ End Sub
 Private Sub lstDetalle_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Me.lstDetalle.ListItems.count > 0 Then
         If Button = 2 Then
-            Me.PopupMenu Me.ver
+            Me.PopupMenu Me.Ver
         End If
     End If
 End Sub

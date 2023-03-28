@@ -346,7 +346,7 @@ End Enum
 Public Enum TipoOperacionProveedor
     Alta = 1
     Modificacion = 2
-    ver = 3
+    Ver = 3
 End Enum
 
 Public Enum EstadoFacturaProveedor

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitosLista 
@@ -478,11 +478,11 @@ Private Sub endRto_Click()
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 5
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 5
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAORemitoS.ImprimirRemito rtoNro
                 Next i
             End If
@@ -843,18 +843,18 @@ Private Sub printRto_Click()
     If Not rs.BOF And Not rs.EOF Then est = rs!impreso Else Exit Sub
     If est > 0 Then
         If MsgBox("Este remito ya fué impreso," & Chr(10) & "¿Desea volver a imprimir?", vbYesNo, "Confirmación") = vbYes Then
-            cd.Flags = cdlPDUseDevModeCopies
-            cd.Copies = 5
-            cd.ShowPrinter
-            For i = 1 To cd.Copies
+            CD.Flags = cdlPDUseDevModeCopies
+            CD.Copies = 5
+            CD.ShowPrinter
+            For i = 1 To CD.Copies
                 DAORemitoS.ImprimirRemito rto
             Next i
         End If
     Else
         If MsgBox("Este remito no fue impreso." & Chr(10) & "¿Desea imprimirlo?", vbYesNo) = vbYes Then
-            cd.Copies = 5
-            cd.ShowPrinter
-            For i = 1 To cd.Copies
+            CD.Copies = 5
+            CD.ShowPrinter
+            For i = 1 To CD.Copies
                 DAORemitoS.ImprimirRemito rto
             Next
         End If

@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmVentasEstadisticasCotizaciones 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
@@ -50,7 +50,7 @@ Begin VB.Form frmVentasEstadisticasCotizaciones
             _ExtentX        =   2355
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   58982401
+            Format          =   62259201
             CurrentDate     =   39069
          End
          Begin VB.CheckBox chFecha 
@@ -107,7 +107,7 @@ Begin VB.Form frmVentasEstadisticasCotizaciones
             _ExtentX        =   2355
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   58982401
+            Format          =   62259201
             CurrentDate     =   39069
          End
       End

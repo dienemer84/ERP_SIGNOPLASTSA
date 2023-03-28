@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminCobranzasNuevoRecibo 
@@ -749,7 +749,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   58654721
+         Format          =   63111169
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -1014,7 +1014,7 @@ Public Property Let reciboId(nIdRecibo As Long)
     Me.gridTipoRetenciones.ItemCount = retenciones.count
 
     Me.gridRetenciones.ItemCount = recibo.retenciones.count
-    Me.gridFacturas.ItemCount = recibo.facturas.count
+    Me.gridFacturas.ItemCount = recibo.Facturas.count
 
     DAOMoneda.LlenarCombo Me.cboMonedas
     Me.cboMonedas.ListIndex = PosIndexCbo(recibo.moneda.Id, Me.cboMonedas)
@@ -1073,7 +1073,7 @@ Private Sub cboClientes_Click()
 
     If Me.cboClientes.ListIndex <> -1 Then
         If dataLoaded Then
-            If recibo.facturas.count > 0 Then
+            If recibo.Facturas.count > 0 Then
                 If MsgBox("Va a cambiar de cliente y perder las facturas." & vbNewLine & "¿Desea continuar?", vbQuestion + vbYesNo) = vbNo Then
                     clienteChange = True
                     Me.cboClientes.ListIndex = funciones.PosIndexCbo(recibo.cliente.Id, Me.cboClientes)
@@ -1105,7 +1105,7 @@ End Sub
 
 
 Private Sub VaciarFacturasRetenciones(Optional ByVal cleanRetenciones As Boolean = True)
-    Set recibo.facturas = New Collection
+    Set recibo.Facturas = New Collection
     Me.gridFacturas.ItemCount = 0
 
     If cleanRetenciones Then
@@ -1496,7 +1496,7 @@ End Sub
 Private Sub gridFacturas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     If IsNumeric(Values(1)) Then
         Set Factura = DAOFactura.FindById(Values(1), True)
-        recibo.facturas.Add Factura
+        recibo.Facturas.Add Factura
 
         If recibo.PagosDeFacturas.Exists(CStr(Factura.Id)) Then
             recibo.PagosDeFacturas.remove CStr(Factura.Id)
@@ -1515,8 +1515,8 @@ Private Sub gridFacturas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
 End Sub
 
 Private Sub gridFacturas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And recibo.facturas.count >= RowIndex Then
-        recibo.facturas.remove RowIndex
+    If RowIndex > 0 And recibo.Facturas.count >= RowIndex Then
+        recibo.Facturas.remove RowIndex
         If recibo.PagosDeFacturas.Exists(CStr(Factura.Id)) Then
             recibo.PagosDeFacturas.remove CStr(Factura.Id)
         End If
@@ -1525,8 +1525,8 @@ Private Sub gridFacturas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As
 End Sub
 
 Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And recibo.facturas.count >= RowIndex Then
-        Set Factura = recibo.facturas.item(RowIndex)
+    If RowIndex > 0 And recibo.Facturas.count >= RowIndex Then
+        Set Factura = recibo.Facturas.item(RowIndex)
         Values(1) = Factura.GetShortDescription(False, True)
         Values(2) = funciones.FormatearDecimales(Factura.Total)
         Values(3) = funciones.FormatearDecimales(Factura.Total - DAOFactura.PagosRealizados(Factura.Id))
@@ -1541,8 +1541,8 @@ Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
 End Sub
 
 Private Sub gridFacturas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And recibo.facturas.count >= RowIndex Then
-        Set Factura = recibo.facturas.item(RowIndex)
+    If RowIndex > 0 And recibo.Facturas.count >= RowIndex Then
+        Set Factura = recibo.Facturas.item(RowIndex)
         'Set Factura = DAOFactura.FindById(Values(1), True)
         'recibo.facturas.Add Factura, , , RowIndex
         'recibo.facturas.Remove RowIndex

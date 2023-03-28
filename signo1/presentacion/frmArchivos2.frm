@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmArchivos2 
@@ -442,9 +442,9 @@ Private Sub GuardarArchivo()
         Else
             Dim ruta As String
 
-            frmPrincipal.cd.filename = archivoActual.nombre
-            frmPrincipal.cd.ShowSave
-            ruta = frmPrincipal.cd.filename
+            frmPrincipal.CD.filename = archivoActual.nombre
+            frmPrincipal.CD.ShowSave
+            ruta = frmPrincipal.CD.filename
 
             If LenB(ruta) > 0 Then
                 ruta = clasea.exportarArchivo(archivoActual.Id, ruta, False)

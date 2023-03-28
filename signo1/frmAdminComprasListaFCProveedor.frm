@@ -789,21 +789,21 @@ Implements ISuscriber
 Dim vId As String
 Private desde
 Private Factura As clsFacturaProveedor
-Private facturas As Collection
+Private Facturas As Collection
 Dim m_Archivos As Dictionary
 
 
-Private Sub btnClearDesdeTT_Click()
-    Me.txtMontoDesde1 = ""
-End Sub
+'Private Sub btnClearDesdeTT_Click()
+'    Me.txtMontoDesde1 = ""
+'End Sub
 
-Private Sub btnClearHastaTT_Click()
-    Me.txtMontoHasta1 = ""
-End Sub
+'Private Sub btnClearHastaTT_Click()
+'    Me.txtMontoHasta1 = ""
+'End Sub
 
-Private Sub btnClearFantasia_Click()
-    Me.cboFantasia.ListIndex = -1
-End Sub
+'Private Sub btnClearFantasia_Click()
+'    Me.cboFantasia.ListIndex = -1
+'End Sub
 
 Private Sub btnClearCtaCble_Click_Click()
     Me.cboCuentasContables.ListIndex = -1
@@ -841,8 +841,8 @@ Private Sub cmdExportar_Click()
     Me.progreso.Visible = True
     'Me.lblExportando.Visible = True
 
-    If IsSomething(facturas) Then
-        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
+    If IsSomething(Facturas) Then
+        If Not DAOFacturaProveedor.ExportarColeccion(Facturas, Me.progreso) Then GoTo err1
     End If
 
     Me.progreso.Visible = False
@@ -906,59 +906,59 @@ Private Sub CMDsINCliente_Click()
     Me.cboProveedores.ListIndex = -1
 End Sub
 
-Private Sub Command1_Click()
-    Dim elegidos As Boolean
-    If grilla.SelectedItems.count > 1 Then
-        elegidos = True
-    Else
-        elegidos = False
-    End If
-
-    With Me.grilla.PrinterProperties
-        .FitColumns = True
-        .RepeatHeaders = True
-        .Orientation = jgexPPLandscape
-        .HeaderString(jgexHFCenter) = "Lista de Facturas de proveedores"
-        .FooterString(jgexHFCenter) = Now
-    End With
-    Load frmPrintPreview
-    frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
-    grilla.PrintPreview frmPrintPreview.GEXPreview1, elegidos
-    frmPrintPreview.Show 1
-End Sub
+'Private Sub Command1_Click()
+'    Dim elegidos As Boolean
+'    If grilla.SelectedItems.count > 1 Then
+'        elegidos = True
+'    Else
+'        elegidos = False
+'    End If
+'
+'    With Me.grilla.PrinterProperties
+'        .FitColumns = True
+'        .RepeatHeaders = True
+'        .Orientation = jgexPPLandscape
+'        .HeaderString(jgexHFCenter) = "Lista de Facturas de proveedores"
+'        .FooterString(jgexHFCenter) = Now
+'    End With
+'    Load frmPrintPreview
+'    frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
+'    grilla.PrintPreview frmPrintPreview.GEXPreview1, elegidos
+'    frmPrintPreview.Show 1
+'End Sub
 
 Private Sub Command2_Click()
     llenarGrilla
 End Sub
 
-Private Sub Command4_Click()
-    Unload Me
-End Sub
+'Private Sub Command4_Click()
+'    Unload Me
+'End Sub
 
-Private Sub Command3_Click()
-    Dim q As String
-
-    conectar.BeginTransaction
-    For Each Factura In facturas
-
-        If Factura.estado = Saldada Then
-            q = "UPDATE AdminComprasFacturasProveedores SET total_abonado = " & Factura.Total & " WHERE id=" & Factura.Id
-            If Not conectar.execute(q) Then GoTo E
-        End If
-
-    Next
-    conectar.CommitTransaction
-    Exit Sub
-E:
-    conectar.RollBackTransaction
-End Sub
+'Private Sub Command3_Click()
+'    Dim q As String
+'
+'    conectar.BeginTransaction
+'    For Each Factura In facturas
+'
+'        If Factura.estado = Saldada Then
+'            q = "UPDATE AdminComprasFacturasProveedores SET total_abonado = " & Factura.Total & " WHERE id=" & Factura.Id
+'            If Not conectar.execute(q) Then GoTo E
+'        End If
+'
+'    Next
+'    conectar.CommitTransaction
+'    Exit Sub
+'E:
+'    conectar.RollBackTransaction
+'End Sub
 
 Private Sub editar_Click()
-    Set Factura = facturas.item(grilla.RowIndex(grilla.row))
+    Set Factura = Facturas.item(grilla.RowIndex(grilla.row))
     Dim frm As frmAdminComprasNuevaFCProveedor
     Set frm = New frmAdminComprasNuevaFCProveedor
 
-    frm.ver = False
+    frm.Ver = False
     frm.Factura = Factura
     frm.Show
 End Sub
@@ -976,8 +976,8 @@ Private Sub finalizar_Click()
                 '---------------------------------------
                 If Not Factura.FormaPagoCuentaCorriente Then MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().Id & ".", vbInformation
 
-                Dim tmp As clsFacturaProveedor
-                facturas.item(grilla.RowIndex(grilla.row)).estado = Factura.estado
+                '                Dim tmp As clsFacturaProveedor
+                Facturas.item(grilla.RowIndex(grilla.row)).estado = Factura.estado
 
 
                 grilla.RefreshRowIndex l
@@ -1066,7 +1066,7 @@ End Sub
 
 
 Public Sub llenarGrilla()
-    Dim tot As Double
+'    Dim tot As Double
     grilla.ItemCount = 0
     Dim condition As String
     condition = " 1 = 1 "
@@ -1197,7 +1197,7 @@ Public Sub llenarGrilla()
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    Set facturas = DAOFacturaProveedor.FindAll(condition, , ordenImporte, Permisos.AdminFaPVerSoloPropias)
+    Set Facturas = DAOFacturaProveedor.FindAll(condition, , ordenImporte, Permisos.AdminFaPVerSoloPropias)
 
 
 
@@ -1212,7 +1212,7 @@ Public Sub llenarGrilla()
     Dim c As Integer
     Total = 0
 
-    For Each F In facturas
+    For Each F In Facturas
 
 
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
@@ -1235,11 +1235,11 @@ Public Sub llenarGrilla()
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalpercep))
 
 
-    grilla.ItemCount = facturas.count
+    grilla.ItemCount = Facturas.count
 
     GridEXHelper.AutoSizeColumns Me.grilla, True
 
-    Me.caption = "Cbtes. Proveedores (" & facturas.count & " comprobantes encontrados)"
+    Me.caption = "Cbtes. Proveedores (" & Facturas.count & " comprobantes encontrados)"
 
 End Sub
 
@@ -1306,7 +1306,7 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
 '    If RowBuffer.RowIndex > 0 Then
 '        Set tmpRto = remitos(RowBuffer.RowIndex)
     On Error GoTo err1
-    Set Factura = facturas(RowBuffer.RowIndex)
+    Set Factura = Facturas(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaProveedor.Aprobada Then
         RowBuffer.CellStyle(14) = "EstadoAprobado"
@@ -1321,7 +1321,7 @@ End Sub
 
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set Factura = facturas.item(RowIndex)
+    Set Factura = Facturas.item(RowIndex)
 
     Dim i As Integer
 
@@ -1415,16 +1415,16 @@ End Property
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
     If EVENTO.EVENTO = agregar_ Then
-        facturas.Add EVENTO.Elemento
-        Me.grilla.ItemCount = facturas.count
+        Facturas.Add EVENTO.Elemento
+        Me.grilla.ItemCount = Facturas.count
     ElseIf EVENTO.EVENTO = modificar_ Then
         Dim rectmp As clsFacturaProveedor
         Dim tmp As clsFacturaProveedor
         Set tmp = EVENTO.Elemento
 
-        For i = facturas.count To 1 Step -1
-            If facturas(i).Id = tmp.Id Then
-                Set rectmp = facturas(i)
+        For i = Facturas.count To 1 Step -1
+            If Facturas(i).Id = tmp.Id Then
+                Set rectmp = Facturas(i)
                 rectmp.Id = tmp.Id
                 rectmp.estado = tmp.estado
                 rectmp.Proveedor = tmp.Proveedor
@@ -1471,7 +1471,7 @@ End Sub
 
 Private Sub mnuPagarEnEfectivo_Click()
     If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
-        Dim fechaPago As String
+        '        Dim fechaPago As String
         'fechaPago = InputBox("Ingrese la fecha de pago de factura", , Factura.FEcha)
         MsgBox "Se creará una OP con fecha " + CStr(Factura.FEcha)
         If IsDate(Factura.FEcha) Then
@@ -1511,9 +1511,6 @@ Private Sub MnuVerOP_Click()
     f22.Cargar Orden
 End Sub
 
-Private Sub PushButton1_Click()
-
-End Sub
 
 Private Sub txtComprobante_GotFocus()
     foco Me.txtComprobante
@@ -1524,10 +1521,11 @@ Private Sub verDetalle_Click()
     Dim frm As frmAdminComprasNuevaFCProveedor
     Set frm = New frmAdminComprasNuevaFCProveedor
 
-    frm.ver = True
+    frm.Ver = True
     frm.Factura = Factura
     frm.Show
 End Sub
+
 Private Sub verHistorial_Click()
     If grilla.ItemCount > 0 Then
         SeleccionarFactura
@@ -1536,7 +1534,8 @@ Private Sub verHistorial_Click()
         frmHistoriales.Show
     End If
 End Sub
+
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(grilla.RowIndex(grilla.row))
+    Set Factura = Facturas.item(grilla.RowIndex(grilla.row))
 End Sub

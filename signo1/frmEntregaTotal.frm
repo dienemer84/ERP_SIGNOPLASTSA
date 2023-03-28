@@ -124,13 +124,13 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-    ver
+    Ver
 End Sub
 
 Private Sub txtNroRto_Change()
-    ver
+    Ver
 End Sub
-Public Sub ver()
+Public Sub Ver()
     If Trim(txtNroRto) = Empty Then
         Command1.Enabled = False
     Else

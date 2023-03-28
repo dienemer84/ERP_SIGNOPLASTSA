@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminSubdiarioCobranzas 
    BackColor       =   &H00C0C0C0&
@@ -98,7 +98,7 @@ Begin VB.Form frmAdminSubdiarioCobranzas
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   58851329
+         Format          =   62324737
          CurrentDate     =   39660
       End
       Begin MSComCtl2.DTPicker DTDesde 
@@ -110,7 +110,7 @@ Begin VB.Form frmAdminSubdiarioCobranzas
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   58851329
+         Format          =   62324737
          CurrentDate     =   39660
       End
       Begin VB.Label Label1 

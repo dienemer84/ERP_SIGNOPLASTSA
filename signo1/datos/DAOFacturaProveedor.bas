@@ -697,7 +697,7 @@ err1:
     ExportarColeccion = False
 End Function
 
-Public Function CrearTablaTempComprobantes(facturas) As Boolean
+Public Function CrearTablaTempComprobantes(Facturas) As Boolean
 
 
     On Error GoTo err1
@@ -718,7 +718,7 @@ Public Function CrearTablaTempComprobantes(facturas) As Boolean
 
     cn.BeginTrans
 
-    For Each fac In facturas
+    For Each fac In Facturas
 
         strsql = "INSERT INTO sp_temporal.ComprobantesCargadosSP (idcomprobante, numero, cuit, clave)" _
                & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & fac.numero + fac.Proveedor.Cuit & "')"

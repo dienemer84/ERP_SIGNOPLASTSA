@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmAdminElegirCuentaBanco 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   5  'Sizable ToolWindow
@@ -73,7 +73,7 @@ Begin VB.Form frmAdminElegirCuentaBanco
          _ExtentX        =   2566
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   58982401
+         Format          =   16777217
          CurrentDate     =   39220
       End
       Begin VB.Label Label4 

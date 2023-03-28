@@ -57,11 +57,11 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim rubros As Collection
 Dim tmpRubro As clsRubros
-Private Sub Command2_Click()
-    If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
-        Unload Me
-    End If
-End Sub
+'Private Sub Command2_Click()
+'    If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
+'        Unload Me
+'    End If
+'End Sub
 
 Private Sub Form_Activate()
     Me.GridEX1.Refresh

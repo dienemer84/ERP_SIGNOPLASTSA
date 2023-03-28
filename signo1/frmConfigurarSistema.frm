@@ -190,8 +190,8 @@ Private Sub Command3_Click()
     Dim nombre As String
     Dim notas As String
     Dim version_information As VersionInformationType
-    frmPrincipal.cd.ShowOpen
-    vruta = frmPrincipal.cd.filename
+    frmPrincipal.CD.ShowOpen
+    vruta = frmPrincipal.CD.filename
     nombre = funciones.GetFileName(vruta)
 
     version_information = VersionInformation1(vruta)

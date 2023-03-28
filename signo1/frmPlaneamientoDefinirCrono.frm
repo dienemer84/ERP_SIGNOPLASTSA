@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmPlaneamientoDefinirCrono 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -88,7 +88,7 @@ Begin VB.Form frmPlaneamientoDefinirCrono
       _ExtentX        =   2355
       _ExtentY        =   450
       _Version        =   393216
-      Format          =   58523649
+      Format          =   63242241
       CurrentDate     =   39847
    End
    Begin VB.TextBox txtCantidad 

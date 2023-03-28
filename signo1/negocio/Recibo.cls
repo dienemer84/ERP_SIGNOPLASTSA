@@ -27,7 +27,7 @@ Public moneda As clsMoneda
 
 Public FEcha As Date
 
-Public facturas As New Collection
+Public Facturas As New Collection
 
 'valores
 Public Cheques As New Collection
@@ -57,7 +57,7 @@ Public Property Get TotalFacturas() As Double
     Dim tot As Double
     Dim negativo As Integer
 
-    For Each F In Me.facturas
+    For Each F In Me.Facturas
         If F.TipoDocumento = tipoDocumentoContable.notaCredito Then
             negativo = -1
         Else
@@ -130,7 +130,7 @@ Public Property Get IsValid() As Boolean
     m_validationMessages = vbNullString
     Dim F As Factura
     Dim facturas_id As New Dictionary
-    For Each F In Me.facturas
+    For Each F In Me.Facturas
         If facturas_id.Exists(CStr(F.GetShortDescription(False, True))) Then
             AddValidationMessage "Alguna de las facturas aparece mas de 1 vez en el recibo."
             Exit For

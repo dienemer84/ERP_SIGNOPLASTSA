@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmSiniestro 
    BorderStyle     =   1  'Fixed Single
@@ -98,7 +98,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm"
-      Format          =   58327043
+      Format          =   62783491
       CurrentDate     =   40414.6993055556
    End
    Begin VB.TextBox txtNroSiniestro 
@@ -221,7 +221,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CheckBox        =   -1  'True
-      Format          =   58327041
+      Format          =   62783489
       CurrentDate     =   40414
    End
    Begin XtremeSuiteControls.ComboBox cboART 

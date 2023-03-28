@@ -97,7 +97,7 @@ Private remitoId As Long
 Private TipoOt As TipoOt
 Public Property Let TipoOrden(Tipo As TipoOt)
     TipoOt = Tipo
-    ver
+    Ver
 End Property
 
 
@@ -171,13 +171,13 @@ End Sub
 Private Sub Form_Load()
 
     FormHelper.Customize Me
-    ver
+    Ver
 End Sub
 
 Private Sub txtNroRto_Change()
-    ver
+    Ver
 End Sub
-Public Sub ver()
+Public Sub Ver()
     Command1.Enabled = Trim(txtNroRto) <> Empty And TipoOt <> OT_STOCK
     '        Command1.Enabled = Trim(txtNroRto) <> Empty And tipoOrden = OT_ENTREGA
 
@@ -190,7 +190,7 @@ Private Sub txtNroRto_DblClick()
     If IsSomething(Selecciones.RemitoElegido) Then
         Me.txtNroRto = Selecciones.RemitoElegido.numero
         remitoId = Selecciones.RemitoElegido.Id
-        ver
+        Ver
     Else
         Me.txtNroRto = Empty
     End If

@@ -596,7 +596,7 @@ Private Sub reportControlPiezas_SelectionChanged()
 
             Me.lblCostoMateriales.caption = Me.lblCostoMateriales.Tag & funciones.FormatearDecimales(pdh.TotalCostoMateriales)
             Me.lblCostoManoObra.caption = Me.lblCostoManoObra.Tag & funciones.FormatearDecimales(pdh.TotalCostoMDO)
-            Me.lblTotalKG.caption = Me.lblTotalKG.Tag & pdh.TotalKGMateriales
+            Me.lblTotalKg.caption = Me.lblTotalKg.Tag & pdh.TotalKGMateriales
             Me.lblTotalM2.caption = Me.lblTotalM2.Tag & pdh.TotalM2Materiales
         ElseIf vis = DesarrolloPieza Then
             Dim P As Pieza
@@ -610,7 +610,7 @@ Private Sub reportControlPiezas_SelectionChanged()
 
                 Me.lblCostoMateriales.caption = Me.lblCostoMateriales.Tag & funciones.FormatearDecimales(P.TotalCostoMateriales)
                 Me.lblCostoManoObra.caption = Me.lblCostoManoObra.Tag & funciones.FormatearDecimales(P.TotalCostoManoObra)
-                Me.lblTotalKG.caption = Me.lblTotalKG.Tag & P.TotalKG
+                Me.lblTotalKg.caption = Me.lblTotalKg.Tag & P.TotalKG
                 Me.lblTotalM2.caption = Me.lblTotalM2.Tag & P.TotalM2
 
             End If

@@ -379,7 +379,7 @@ End Sub
 
 Private Sub Copiar_Click()
     On Error GoTo err1
-    frmPrincipal.cd.ShowPrinter
+    frmPrincipal.CD.ShowPrinter
 
     Printer.Orientation = 2
     Me.grafico.EditCopy
@@ -460,7 +460,7 @@ Private Sub Graficar()
     End If
 
 
-    Dim facturas As Collection
+    Dim Facturas As Collection
     Dim Factura As Factura
     Dim valores As New Dictionary
 
@@ -482,9 +482,9 @@ Private Sub Graficar()
 
     '------------------------------------------------------------------------
 
-    Set facturas = DAOFactura.FindAllNoSaldadasNiVencidas(Me.dtpDesde.value, Me.dtpHasta.value, cliente_id)
+    Set Facturas = DAOFactura.FindAllNoSaldadasNiVencidas(Me.dtpDesde.value, Me.dtpHasta.value, cliente_id)
 
-    For Each Factura In facturas
+    For Each Factura In Facturas
 
         If Factura.EstaAtrasada Then
             fechaParaTrabajar = Factura.FechaPropuestaPago

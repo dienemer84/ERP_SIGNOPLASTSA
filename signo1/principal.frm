@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~1.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.MDIForm frmPrincipal 
@@ -116,7 +116,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         f32423.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS:
-        Dim f4333 As New frmListaEmpleados
+'        Dim f4333 As New frmListaEmpleados
         frmListaEmpleados.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS:
@@ -135,7 +135,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         '      F939393.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__LUGARES
-        Dim faa1 As New frmUbicaciones
+'        Dim faa1 As New frmUbicaciones
         frmUbicaciones.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__VER_ACTUALIZACIONES
@@ -685,23 +685,6 @@ Private Sub MDIForm_Load()
 
             Set Me.TrayIcon.Icon = pic
 
-
-            '            Dim idNuevo As Long
-            '                If funciones.InIDE Then
-            '                    If classP.VerificarSiHayActualizacion(idNuevo) Then
-            '                    MsgBox ("Aca tiene que haber texto porque hubo actualización.")
-            ''                        statusBar(5).text = "** ACTUALIZACION DISPONIBLE **"
-            ''                        If Permisos.SistemaVerUpdate Then
-            ''                            Me.Popup.item(2).id = idNuevo
-            ''                            If Me.Popup.State = xtpPopupStateClosed Then
-            ''                                Me.Popup.Show
-            ''                            End If
-            ''                        End If
-            '                    Else
-            '                        MsgBox ("No hay nada para decir porque no hubo actualización.")
-            '                    End If
-            '                End If
-
             If LenB(LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)) > 0 And InStr(1, funciones.GetUserObj.usuario, "puesto") Then
                 Dim frmT As New frmTiempoProcesoDetalle
                 frmT.Show 1
@@ -715,6 +698,8 @@ Private Sub MDIForm_Load()
 
     CreateRibbonBar
 
+         frmAdminPagosLiquidaciondeCajaCrear.Show
+            
 End Sub
 
 Private Sub MDIForm_QueryUnload(Cancel As Integer, UnloadMode As Integer)
@@ -738,20 +723,20 @@ Public Sub mostrarTablero()
     End If
 End Sub
 
-
-Private Sub stbar1_PanelClick(ByVal panel As MSComctlLib.panel)
-    If panel.Index = 5 Then
-        If MsgBox("Hay una nueva actualización, ¿desea aplicarla ahora?", vbYesNo, "Confirmación") = vbYes Then
-
-        End If
-
-    ElseIf panel.Index = 2 Then
-        If MsgBox("¿Desea cambiar el password ahora?", vbYesNo, "Confirmación") = vbYes Then
-            frmCambiarPassword.Show
-        End If
-
-    End If
-End Sub
+'
+'Private Sub stbar1_PanelClick(ByVal panel As MSComctlLib.panel)
+'    If panel.Index = 5 Then
+'        If MsgBox("Hay una nueva actualización, ¿desea aplicarla ahora?", vbYesNo, "Confirmación") = vbYes Then
+'
+'        End If
+'
+'    ElseIf panel.Index = 2 Then
+'        If MsgBox("¿Desea cambiar el password ahora?", vbYesNo, "Confirmación") = vbYes Then
+'            frmCambiarPassword.Show
+'        End If
+'
+'    End If
+'End Sub
 
 Private Sub MDIForm_Unload(Cancel As Integer)
     SalirForzado
@@ -836,6 +821,7 @@ Private Function AddButton(ribbonGroup As ribbonGroup, caption As String, Id As 
     Set AddButton = cmdControl
 End Function
 
+
 Private Sub CreateRibbonBar()
 
     Set statusBar = CommandBars.statusBar
@@ -870,7 +856,7 @@ Private Sub CreateRibbonBar()
     statusbarpane.text = vbNullString
     statusbarpane.Width = 0
 
-    Dim cmdControl As CommandBarControl
+'    Dim cmdControl As CommandBarControl
     Dim ribbonTab As ribbonTab
     Dim ribbonGroup As ribbonGroup
 

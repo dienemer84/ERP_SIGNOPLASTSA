@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasEdicion 
@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59310081
+         Format          =   63111169
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59310081
+         Format          =   63111169
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59310081
+         Format          =   63111169
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59310081
+         Format          =   63111169
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   59310081
+         Format          =   63111169
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1415,7 +1415,7 @@ Private Factura As Factura
 Private dataLoading As Boolean
 Private detalle As FacturaDetalle
 Private suscId As String
-Private ErrorAfip As Boolean
+'Private ErrorAfip As Boolean
 Public NuevoTipoDocumento As tipoDocumentoContable
 Public EsAnticipo As Boolean
 
@@ -1560,7 +1560,7 @@ End Sub
 
 Private Sub btnItemRemito_Click()
     If IsSomething(Factura.cliente) Then
-        Dim idEntrega As Long
+        '        Dim idEntrega As Long
         Dim f11 As New frmPlaneamientoRemitosListaProceso
         f11.idCliMostrar = Factura.cliente.Id
         f11.mostrar = 2
@@ -1777,7 +1777,7 @@ Private Sub cboCliente_Click()
 
         Factura.AlicuotaAplicada = Factura.TipoIVA.alicuota
         Set Factura.cliente = DAOCliente.BuscarPorID(Factura.cliente.Id)
-        Dim classA As New classAdministracion
+        '        Dim classA As New classAdministracion
         'Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(id_Default)
         If IsSomething(Factura.Tipo.TipoFactura) Then
             Factura.EstaDiscriminada = Factura.Tipo.TipoFactura.Discrimina
@@ -2345,7 +2345,7 @@ Private Sub CargarFactura()
 
     If Factura.Id = 0 Then
         'creo que aaca no entra nunca
-        Dim classA As New classAdministracion
+        '        Dim classA As New classAdministracion
         Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura))    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
     Else
 

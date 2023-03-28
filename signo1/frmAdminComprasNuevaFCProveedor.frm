@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasNuevaFCProveedor 
@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   58654721
+      Format          =   67502081
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -789,7 +789,7 @@ Dim idProveedor As Long
 Dim vFactura As clsFacturaProveedor
 Dim VVer As Boolean
 
-Public Property Let ver(nVer As Boolean)
+Public Property Let Ver(nVer As Boolean)
     VVer = nVer
 End Property
 Public Property Let Factura(nFactura As clsFacturaProveedor)
@@ -862,7 +862,7 @@ Private Sub cboTiposFactura_Click()
         idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
         llenarAlicuotas idtipo
 
-        Dim id_ali As Long
+        '        Dim id_ali As Long
 
         If Not loading Then
 
@@ -881,8 +881,8 @@ End Sub
 Private Sub mostrar()
     If Me.cboProveedores.ListIndex <> -1 Then
         idProveedor = CLng(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex))
-        Dim lstRubros As ListView
-        Dim accion As Integer
+        '        Dim lstRubros As ListView
+        '        Dim accion As Integer
         Set Proveedor = DAOProveedor.FindById(idProveedor, False, False, False, False)
         If IsSomething(Proveedor) Then
             Me.txtCuit = Proveedor.Cuit
@@ -942,9 +942,9 @@ Private Sub cmdGuardar_Click()
 
 
     conectar.BeginTransaction
-    Dim A As Boolean
+    '    Dim A As Boolean
     Dim montonero As Double
-    Dim nroNuevo As Long
+    '    Dim nroNuevo As Long
     Dim EVENTO As clsEventoObserver
     Dim nuevoproveedor As Boolean
 
@@ -1046,10 +1046,10 @@ err1:
         MsgBox Err.Description, vbCritical
     End If
 End Sub
-Private Sub Command2_Click()
-    grabado = False
-    TotalFactura
-End Sub
+'Private Sub Command2_Click()
+'    grabado = False
+'    TotalFactura
+'End Sub
 Private Sub DTPicker1_Click()
     grabado = False
 End Sub
@@ -1424,9 +1424,9 @@ End Sub
 Private Sub txtMontoNeto_GotFocus()
     foco Me.txtMontoNeto
 End Sub
-Private Sub txtMontoPercep_Change()
-    grabado = False
-End Sub
+'Private Sub txtMontoPercep_Change()
+'    grabado = False
+'End Sub
 
 'Private Sub txtNumero_Change()
 '    On Error Resume Next
@@ -1445,11 +1445,12 @@ Private Sub llenarAlicuotas(idtipo As Long)
     Me.grilla_alicuota.ItemCount = colAlicuotas.count
     Set Me.grilla_alicuotas.Columns("alicuota").DropDownControl = Me.grilla_alicuota
 End Sub
-Private Sub limpiar()
-    If MsgBox("¿Desea limpiar la factura?", vbYesNo, "Confirmación") Then
-        Me.txtNumeroMask.text = vbNullString
-    End If
-End Sub
+
+'Private Sub limpiar()
+'    If MsgBox("¿Desea limpiar la factura?", vbYesNo, "Confirmación") Then
+'        Me.txtNumeroMask.text = vbNullString
+'    End If
+'End Sub
 
 'Private Sub txtNoGravado_Change()
 '    On Error Resume Next

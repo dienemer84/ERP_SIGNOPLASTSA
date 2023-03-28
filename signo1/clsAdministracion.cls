@@ -485,7 +485,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -498,7 +498,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         archi = "SUB_COBRANZAS_" & Periodo & ".xlsx"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -812,7 +812,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -825,7 +825,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         archi = "SUB_RETENCIONES_" & Periodo & ".xlsx"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

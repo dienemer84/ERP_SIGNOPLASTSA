@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmArchivosActualizacion 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -117,8 +117,8 @@ End Sub
 
 Private Sub Command1_Click()
     On Error GoTo er1
-    frmPrincipal.cd.ShowOpen
-    vruta = frmPrincipal.cd.filename
+    frmPrincipal.CD.ShowOpen
+    vruta = frmPrincipal.CD.filename
     nombre = funciones.GetFileName(vruta)
     Set x = Me.lstArchivos.ListItems.Add(, , nombre)
     x.Tag = vruta

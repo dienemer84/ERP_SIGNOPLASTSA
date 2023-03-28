@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmPlaneamientoOEEditar 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00C0C0C0&
@@ -193,7 +193,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             _ExtentX        =   2143
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   58982401
+            Format          =   62259201
             CurrentDate     =   38923
          End
          Begin MSComctlLib.ListView lstOE 

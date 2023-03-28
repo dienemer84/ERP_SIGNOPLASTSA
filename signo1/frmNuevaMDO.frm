@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmNuevaMDO 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
@@ -35,7 +35,7 @@ Begin VB.Form frmNuevaMDO
       _ExtentX        =   2223
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   58458113
+      Format          =   63045633
       CurrentDate     =   40101
    End
    Begin VB.CommandButton cmdGuardar 
@@ -209,9 +209,9 @@ Private Sub CargarTarea()
     Me.txtValor.text = m_tarea.Valor
 End Sub
 
-Private Sub cmdBorrarCategoria_Click()
-    Me.cboCategoria.ListIndex = -1
-End Sub
+'Private Sub cmdBorrarCategoria_Click()
+'    Me.cboCategoria.ListIndex = -1
+'End Sub
 
 Private Sub cmdGuardar_Click()
     On Error GoTo E

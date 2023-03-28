@@ -1247,7 +1247,7 @@ Public Function exportaMaterializacion(Id As Long, Optional vpresu As Boolean = 
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -1259,8 +1259,8 @@ Public Function exportaMaterializacion(Id As Long, Optional vpresu As Boolean = 
 
         archi = enc & Format(Id, "00000") & ".xls"
         '        frmPrincipal.cd.CancelError = True
-        frmPrincipal.cd.filename = archi
-        frmPrincipal.cd.ShowSave
+        frmPrincipal.CD.filename = archi
+        frmPrincipal.CD.ShowSave
 
         'CDLGMAIN.filename = archi
         '    CDLGMAIN.ShowSave

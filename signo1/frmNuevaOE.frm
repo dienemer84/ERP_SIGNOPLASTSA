@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmPlaneamientoOENueva 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -59,7 +59,7 @@ Begin VB.Form frmPlaneamientoOENueva
       _ExtentX        =   2355
       _ExtentY        =   450
       _Version        =   393216
-      Format          =   58654721
+      Format          =   62914561
       CurrentDate     =   38923
    End
    Begin VB.Label Label1 

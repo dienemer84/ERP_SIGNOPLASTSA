@@ -1629,21 +1629,21 @@ Public Function FindAllByRemitos(remitosNumeros As Collection) As Dictionary
 
     Dim remitosFacturas As New Dictionary
 
-    Dim facturas As Collection
+    Dim Facturas As Collection
     If facturas_id.count > 0 Then
-        Set facturas = DAOFactura.FindAll("AdminFacturas.id IN (" & funciones.JoinCollectionValues(facturas_id, ", ") & ")")
+        Set Facturas = DAOFactura.FindAll("AdminFacturas.id IN (" & funciones.JoinCollectionValues(facturas_id, ", ") & ")")
     End If
     Dim Factura As Factura
 
 
     If recordsetConItems Then rs.MoveFirst
     While Not rs.EOF
-        If funciones.BuscarEnColeccion(facturas, CStr(rs.Fields("idFactura").value)) Then
+        If funciones.BuscarEnColeccion(Facturas, CStr(rs.Fields("idFactura").value)) Then
             If Not remitosFacturas.Exists(CStr(rs.Fields("numero").value)) Then
                 remitosFacturas.Add CStr(rs.Fields("numero").value), vbNullString
             End If
 
-            Set Factura = facturas.item(CStr(rs.Fields("idFactura").value))
+            Set Factura = Facturas.item(CStr(rs.Fields("idFactura").value))
             remitosFacturas.item(CStr(rs.Fields("numero").value)) = remitosFacturas.item(CStr(rs.Fields("numero").value)) & Factura.GetShortDescription(False, True) & ", "
         End If
         rs.MoveNext
@@ -1651,12 +1651,12 @@ Public Function FindAllByRemitos(remitosNumeros As Collection) As Dictionary
 
     If recordsetConItems2 Then rs2.MoveFirst
     While Not rs2.EOF
-        If funciones.BuscarEnColeccion(facturas, CStr(rs2.Fields("idFactura").value)) Then
+        If funciones.BuscarEnColeccion(Facturas, CStr(rs2.Fields("idFactura").value)) Then
             If Not remitosFacturas.Exists(CStr(rs2.Fields("numero").value)) Then
                 remitosFacturas.Add CStr(rs2.Fields("numero").value), vbNullString
             End If
 
-            Set Factura = facturas.item(CStr(rs2.Fields("idFactura").value))
+            Set Factura = Facturas.item(CStr(rs2.Fields("idFactura").value))
             If InStr(1, remitosFacturas.item(CStr(rs2.Fields("numero").value)), Factura.GetShortDescription(False, True)) = 0 Then
                 remitosFacturas.item(CStr(rs2.Fields("numero").value)) = remitosFacturas.item(CStr(rs2.Fields("numero").value)) & Factura.GetShortDescription(False, True) & ", "
             End If
@@ -2010,11 +2010,11 @@ End Function
 
 
 Public Function MontoTotalAplicadoNCFC(idFac As Long, Optional porNetoGravado As Boolean = False) As Double
-    Dim facturas As Collection
+    Dim Facturas As Collection
     Dim tot As Double: tot = 0
-    Set facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idNC from AdminFacturas_NC where idFactura = " & idFac & ")", True)
+    Set Facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idNC from AdminFacturas_NC where idFactura = " & idFac & ")", True)
     Dim fac As Factura
-    For Each fac In facturas
+    For Each fac In Facturas
         If porNetoGravado Then
             tot = tot + fac.TotalEstatico.TotalNetoGravado
         Else

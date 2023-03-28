@@ -168,7 +168,7 @@ Public Function aprobar(recibo As recibo) As Boolean
         Dim r2 As Recordset
         Dim newEstadoSaldadoFactura As TipoSaldadoFactura
 
-        For Each Factura In recibo.facturas
+        For Each Factura In recibo.Facturas
             montoSaldado = DAOFactura.PagosRealizados(Factura.Id)
 
             If montoSaldado = 0 Then
@@ -264,7 +264,7 @@ Dim col As New Collection
         End If
 
         If includeFacturas Then
-            Set rec.facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idFactura FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id & ")", True, True)
+            Set rec.Facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idFactura FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id & ")", True, True)
 
             'traigo los montos pagados de cada factura
             Dim q2 As String
@@ -494,7 +494,7 @@ Public Function Guardar(rec As recibo) As Boolean
         If Not conectar.execute(q) Then GoTo E
         Dim fac As Factura
         Dim montoPagado As Double
-        For Each fac In rec.facturas
+        For Each fac In rec.Facturas
             If rec.PagosDeFacturas.Exists(CStr(fac.Id)) Then
                 montoPagado = rec.PagosDeFacturas.item(CStr(fac.Id))
             Else
@@ -592,11 +592,11 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.Print "Facturas "
         Printer.FontBold = False
         Dim F As Factura
-        For Each F In recibo.facturas
+        For Each F In recibo.Facturas
             Printer.Print F.FechaEmision, F.GetShortDescription(False, True), F.moneda.NombreCorto & " " & recibo.PagosDeFacturas(CStr(F.Id))
         Next F
 
-        If recibo.facturas.count > 0 Then
+        If recibo.Facturas.count > 0 Then
             Printer.Print "Total Facturas: " & recibo.TotalFacturas
         End If
         Printer.Print Chr(10)

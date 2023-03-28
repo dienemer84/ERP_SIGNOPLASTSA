@@ -15,14 +15,14 @@ Begin VB.Form frmUbicaciones
    ScaleHeight     =   7365
    ScaleWidth      =   12195
    ShowInTaskbar   =   0   'False
-   Begin XtremeReportControl.ReportControl repPaises 
+   Begin XtremeReportControl.ReportControl repLocalidades 
       Height          =   5820
-      Left            =   45
-      TabIndex        =   0
-      Top             =   0
-      Width           =   3360
+      Left            =   6885
+      TabIndex        =   2
+      Top             =   15
+      Width           =   5265
       _Version        =   786432
-      _ExtentX        =   5927
+      _ExtentX        =   9287
       _ExtentY        =   10266
       _StockProps     =   64
    End
@@ -37,14 +37,14 @@ Begin VB.Form frmUbicaciones
       _ExtentY        =   10266
       _StockProps     =   64
    End
-   Begin XtremeReportControl.ReportControl repLocalidades 
+   Begin XtremeReportControl.ReportControl repPaises 
       Height          =   5820
-      Left            =   6885
-      TabIndex        =   2
-      Top             =   15
-      Width           =   5265
+      Left            =   45
+      TabIndex        =   0
+      Top             =   0
+      Width           =   3360
       _Version        =   786432
-      _ExtentX        =   9287
+      _ExtentX        =   5927
       _ExtentY        =   10266
       _StockProps     =   64
    End

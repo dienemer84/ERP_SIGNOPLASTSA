@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAltaEmpleados 
    BackColor       =   &H00C0C0C0&
@@ -59,7 +59,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16449537
+      Format          =   16777217
       CurrentDate     =   40119
    End
    Begin VB.TextBox txtGrupoSanguineo 
@@ -207,7 +207,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16449537
+      Format          =   16777217
       CurrentDate     =   40119
    End
    Begin VB.Label lblDatoActualizacion 
@@ -783,8 +783,8 @@ End Sub
 Private Sub PushButton1_Click()
 
     On Error GoTo err1
-    frmPrincipal.cd.ShowOpen
-    Me.Image1.Tag = frmPrincipal.cd.filename
+    frmPrincipal.CD.ShowOpen
+    Me.Image1.Tag = frmPrincipal.CD.filename
     Set Me.Image1.Picture = LoadPicture(Me.Image1.Tag)
     Exit Sub
 err1:

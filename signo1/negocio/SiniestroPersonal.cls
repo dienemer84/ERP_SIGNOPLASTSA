@@ -32,6 +32,3 @@ Public Property Get InformeAccidenteConfeccionado() As Boolean
     InformeAccidenteConfeccionado = IsSomething(Me.InformeAccidente)
 End Property
 
-Private Sub Class_Initialize()
-
-End Sub

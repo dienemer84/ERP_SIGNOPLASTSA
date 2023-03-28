@@ -1,15 +1,15 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} presu1 
    Caption         =   "Presupuestos"
-   ClientHeight    =   11010
+   ClientHeight    =   9345
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   15240
    StartUpPosition =   2  'CenterScreen
    _ExtentX        =   26882
-   _ExtentY        =   19420
+   _ExtentY        =   16484
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   10017
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"

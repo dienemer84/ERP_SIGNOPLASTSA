@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "msdatgrd.ocx"
+Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
 Begin VB.Form frmAdminFacturasEmisibles 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
@@ -30,13 +30,13 @@ Begin VB.Form frmAdminFacturasEmisibles
       EndProperty
       Height          =   1935
       Left            =   3480
-      TabIndex        =   3
+      TabIndex        =   8
       Top             =   0
       Width           =   3975
       Begin MSDataGridLib.DataGrid DataGrid1 
          Height          =   1575
          Left            =   120
-         TabIndex        =   8
+         TabIndex        =   9
          Top             =   240
          Width           =   3735
          _ExtentX        =   6588
@@ -157,7 +157,7 @@ Begin VB.Form frmAdminFacturasEmisibles
          Height          =   255
          Left            =   1680
          Style           =   1  'Graphical
-         TabIndex        =   9
+         TabIndex        =   7
          Top             =   1560
          Width           =   975
       End
@@ -168,7 +168,7 @@ Begin VB.Form frmAdminFacturasEmisibles
          Height          =   255
          Left            =   600
          Style           =   1  'Graphical
-         TabIndex        =   7
+         TabIndex        =   6
          Top             =   1560
          Width           =   975
       End
@@ -177,7 +177,7 @@ Begin VB.Form frmAdminFacturasEmisibles
          Caption         =   "Discrimina el I.V.A."
          Height          =   255
          Left            =   960
-         TabIndex        =   6
+         TabIndex        =   5
          Top             =   1080
          Width           =   1695
       End
@@ -185,7 +185,7 @@ Begin VB.Form frmAdminFacturasEmisibles
          Height          =   315
          Left            =   960
          Style           =   2  'Dropdown List
-         TabIndex        =   5
+         TabIndex        =   3
          Top             =   720
          Width           =   2295
       End
@@ -241,7 +241,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim clasea As New classAdministracion
+'Dim clasea As New classAdministracion
 
 Private Sub Command1_Click()
     Unload Me

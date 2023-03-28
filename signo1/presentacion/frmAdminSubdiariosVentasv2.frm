@@ -18,14 +18,13 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    EndProperty
    Icon            =   "frmAdminSubdiariosVentasv2.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MDIChild        =   -1  'True
    ScaleHeight     =   8625
    ScaleWidth      =   14655
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1680
       Left            =   10545
-      TabIndex        =   16
+      TabIndex        =   17
       Top             =   6765
       Width           =   3090
       _Version        =   786432
@@ -37,7 +36,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblTotalTotal 
          Height          =   195
          Left            =   1785
-         TabIndex        =   26
+         TabIndex        =   27
          Top             =   1380
          Width           =   1155
          _Version        =   786432
@@ -63,7 +62,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblPercepcionesTotal 
          Height          =   195
          Left            =   1785
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   750
          Width           =   1155
          _Version        =   786432
@@ -76,7 +75,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblIVATotal 
          Height          =   195
          Left            =   1785
-         TabIndex        =   23
+         TabIndex        =   21
          Top             =   495
          Width           =   1155
          _Version        =   786432
@@ -89,7 +88,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblNetoGravadoTotal 
          Height          =   195
          Left            =   1785
-         TabIndex        =   22
+         TabIndex        =   19
          Top             =   225
          Width           =   1155
          _Version        =   786432
@@ -110,7 +109,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblTotal 
          Height          =   195
          Left            =   180
-         TabIndex        =   21
+         TabIndex        =   26
          Top             =   1380
          Width           =   420
          _Version        =   786432
@@ -123,7 +122,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblExento 
          Height          =   195
          Left            =   180
-         TabIndex        =   20
+         TabIndex        =   24
          Top             =   1020
          Width           =   570
          _Version        =   786432
@@ -136,7 +135,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblPercepcionesIIBB 
          Height          =   195
          Left            =   180
-         TabIndex        =   19
+         TabIndex        =   22
          Top             =   750
          Width           =   1350
          _Version        =   786432
@@ -149,7 +148,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblIVA 
          Height          =   195
          Left            =   180
-         TabIndex        =   18
+         TabIndex        =   20
          Top             =   495
          Width           =   315
          _Version        =   786432
@@ -162,7 +161,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.Label lblNetoGravado 
          Height          =   195
          Left            =   165
-         TabIndex        =   17
+         TabIndex        =   18
          Top             =   225
          Width           =   1065
          _Version        =   786432
@@ -176,7 +175,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    Begin GridEX20.GridEX GridEX1 
       Height          =   4890
       Left            =   120
-      TabIndex        =   1
+      TabIndex        =   16
       Top             =   1800
       Width           =   13575
       _ExtentX        =   23945
@@ -240,22 +239,22 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       EndProperty
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.ProgressBar progreso 
-         Height          =   420
-         Left            =   9000
-         TabIndex        =   27
-         Top             =   1100
+         Height          =   180
+         Left            =   8880
+         TabIndex        =   15
+         Top             =   1200
          Visible         =   0   'False
-         Width           =   4215
+         Width           =   4455
          _Version        =   786432
-         _ExtentX        =   7435
-         _ExtentY        =   741
+         _ExtentX        =   7858
+         _ExtentY        =   317
          _StockProps     =   93
          Appearance      =   6
       End
       Begin XtremeSuiteControls.RadioButton rdoRangoFechas 
          Height          =   255
          Left            =   420
-         TabIndex        =   5
+         TabIndex        =   1
          Top             =   300
          Width           =   1725
          _Version        =   786432
@@ -268,7 +267,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.PushButton btnMostrar 
          Height          =   360
          Left            =   8850
-         TabIndex        =   2
+         TabIndex        =   3
          Top             =   300
          Width           =   2235
          _Version        =   786432
@@ -290,7 +289,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.PushButton PushButton2 
          Height          =   360
          Left            =   11100
-         TabIndex        =   3
+         TabIndex        =   4
          Top             =   300
          Width           =   2235
          _Version        =   786432
@@ -312,7 +311,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   360
          Left            =   11100
-         TabIndex        =   4
+         TabIndex        =   14
          Top             =   715
          Width           =   2235
          _Version        =   786432
@@ -334,7 +333,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.RadioButton rdoLiquidacion 
          Height          =   255
          Left            =   3225
-         TabIndex        =   6
+         TabIndex        =   2
          Top             =   300
          Width           =   1290
          _Version        =   786432
@@ -347,7 +346,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.GroupBox grpRangoFechas 
          Height          =   1140
          Left            =   255
-         TabIndex        =   7
+         TabIndex        =   5
          Top             =   330
          Width           =   2595
          _Version        =   786432
@@ -358,7 +357,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
             Left            =   915
-            TabIndex        =   8
+            TabIndex        =   7
             Top             =   300
             Width           =   1440
             _Version        =   786432
@@ -402,7 +401,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Begin XtremeSuiteControls.Label Label1 
             Height          =   195
             Left            =   300
-            TabIndex        =   13
+            TabIndex        =   8
             Top             =   675
             Width           =   480
             _Version        =   786432
@@ -415,7 +414,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Begin XtremeSuiteControls.Label lblDesde 
             Height          =   195
             Left            =   270
-            TabIndex        =   12
+            TabIndex        =   6
             Top             =   345
             Width           =   510
             _Version        =   786432
@@ -440,7 +439,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Begin XtremeSuiteControls.ComboBox cboLiquidaciones 
             Height          =   315
             Left            =   1170
-            TabIndex        =   14
+            TabIndex        =   12
             Top             =   450
             Width           =   4185
             _Version        =   786432
@@ -468,7 +467,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Begin XtremeSuiteControls.PushButton btnGuardarLiquidacion 
          Height          =   360
          Left            =   8850
-         TabIndex        =   15
+         TabIndex        =   13
          Top             =   715
          Width           =   2235
          _Version        =   786432
@@ -523,7 +522,7 @@ Private Sub Totalizar()
     Set totales = New Dictionary
 
     Dim i As SubdiarioVentasDetalle
-    Dim c As Double
+    '    Dim c As Double
     For Each i In col
         If i.estado <> Anulada Then
             sumNeto = sumNeto + i.NetoGravado
@@ -978,7 +977,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
                 .Cells(x + 3, 7).value = item.Iva
                 .Cells(x + 3, 8).value = item.percepciones
                 .Cells(x + 3, 9).value = item.Exento
-                .Cells(x + 3, 10).value = item.Total
+                .Cells(x + 3, 10).value = item.Total + item.Exento
             End If
 
             x = x + 1
@@ -1016,7 +1015,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -1030,7 +1029,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_VENTAS_" & Periodo & ".xlsx"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

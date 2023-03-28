@@ -333,7 +333,7 @@ Private Sub LlenarLiquidaciones(Id As Long)
 End Sub
 
 
-Private Sub ver()
+Private Sub Ver()
     Dim Id As Long
     Dim condition As String
 
@@ -429,7 +429,7 @@ Private Sub setmaxdesde(Id As Long)
 End Sub
 
 Private Sub cmdVerCtaCte_Click()
-    ver
+    Ver
 End Sub
 
 Private Sub Form_Load()
@@ -446,7 +446,7 @@ Private Sub gridDetalles_DblClick()
 
         Dim frm As frmAdminComprasNuevaFCProveedor
         Set frm = New frmAdminComprasNuevaFCProveedor
-        frm.ver = True
+        frm.Ver = True
         frm.Factura = DAOFacturaProveedor.FindById(deta.IdComprobante)
         frm.Show
     End If
