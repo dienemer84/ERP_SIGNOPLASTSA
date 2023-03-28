@@ -1,4 +1,4 @@
-frmPrincipal = -171, 105, 1164, 512, Z, -152, 99, 938, 679, C
+frmPrincipal = 60, 78, 1395, 485, , -152, 99, 938, 679, C
 funciones = 17, 251, 669, 681, I
 frmRubrosGrupos = 483, 66, 1450, 797, C, 198, 261, 1288, 841, C
 frmMaterialesNuevo = 176, 232, 828, 696, C, 0, 0, 1090, 580, C
@@ -496,3 +496,7 @@ ComprobantesRecibidos = 0, 0, 0, 0, C
 frmAdminComprobantesEmitidosCambioMoneda = 110, 110, 1102, 687, C, 220, 220, 1413, 797, C
 MonedasNOSEUSA = 0, 0, 0, 0, C
 frmAdminFacturasEditarDatos = 0, 0, 0, 0, C, 242, 242, 1435, 819, C
+frmAdminPagosLiquidaciondeCajaCrear = 156, 39, 1137, 612, Z, 18, 60, 999, 676, C
+clsLiquidacionCaja = 0, 0, 0, 0, C
+DAOLiquidacionCaja = 0, 0, 0, 0, C
+frmAdminPagosLiquidaciondeCajaLista = 0, 0, 0, 0, C, 0, 0, 0, 0, C

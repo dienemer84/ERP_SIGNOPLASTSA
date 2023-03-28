@@ -1,108 +1,2631 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Bitbucket</title>
-    <meta id="bb-bootstrap" data-current-user="{&quot;isAuthenticated&quot;: true, &quot;isKbdShortcutsEnabled&quot;: true, &quot;isSshEnabled&quot;: false, &quot;id&quot;: 16383922, &quot;uuid&quot;: &quot;{4cda2cba-403e-4487-b583-c6777f4c89a4}&quot;, &quot;displayName&quot;: &quot;Diego Nemer signoplast@gmail.com&quot;, &quot;nickname&quot;: &quot;signoplast&quot;, &quot;avatarUrl&quot;: &quot;https://secure.gravatar.com/avatar/3f7bbabc71d45cb9d5751cfba97febae?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FDS-5.png&quot;, &quot;avatarUrl2x&quot;: &quot;https://secure.gravatar.com/avatar/3f7bbabc71d45cb9d5751cfba97febae?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FDS-5.png&amp;s=64&quot;, &quot;isTeam&quot;: false, &quot;hasPremium&quot;: false, &quot;mention_id&quot;: &quot;5e4ef73f3df51b0c9374d347&quot;}"
-data-atlassian-id="5e4ef73f3df51b0c9374d347" />
-    <meta name="frontbucket-version" content="ba6cc9ff7250e25b51040265f0018c9094a8e713">
-    <meta name="frontbucket-environment" content="production">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script nonce="PZ0dmA19R97OoXHjg1wdWw==" type="text/javascript">(window.NREUM||(NREUM={})).init={privacy:{cookies_enabled:false},ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={xpid:"VwMGVVZSGwQJVFVXDwcPXg==",licenseKey:"a2cef8c3d3",applicationID:"790458688"};;(()=>{var e,t,r={9071:(e,t,r)=>{"use strict";r.d(t,{I:()=>n});var n=0,i=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);i&&(n=+i[1])},6562:(e,t,r)=>{"use strict";r.d(t,{P_:()=>g,Mt:()=>v,C5:()=>d,DL:()=>y,OP:()=>N,lF:()=>L,Yu:()=>E,Dg:()=>p,CX:()=>f,GE:()=>w,sU:()=>k});var n={};r.r(n),r.d(n,{agent:()=>T,match:()=>S,version:()=>A});var i=r(6797),o=r(909),a=r(8610);class s{constructor(e,t){try{if(!e||"object"!=typeof e)return(0,a.Z)("New setting a Configurable requires an object as input");if(!t||"object"!=typeof t)return(0,a.Z)("Setting a Configurable requires a model to set its initial properties");Object.assign(this,t),Object.entries(e).forEach((e=>{let[t,r]=e;const n=(0,o.q)(t);n.length&&r&&"object"==typeof r&&n.forEach((e=>{e in r&&((0,a.Z)('"'.concat(e,'" is a protected attribute and can not be changed in feature ').concat(t,".  It will have no effect.")),delete r[e])})),this[t]=r}))}catch(e){(0,a.Z)("An error occured while setting a Configurable",e)}}}const c={beacon:i.ce.beacon,errorBeacon:i.ce.errorBeacon,licenseKey:void 0,applicationID:void 0,sa:void 0,queueTime:void 0,applicationTime:void 0,ttGuid:void 0,user:void 0,account:void 0,product:void 0,extra:void 0,jsAttributes:{},userAttributes:void 0,atts:void 0,transactionName:void 0,tNamePlain:void 0},u={};function d(e){if(!e)throw new Error("All info objects require an agent identifier!");if(!u[e])throw new Error("Info for ".concat(e," was never set"));return u[e]}function f(e,t){if(!e)throw new Error("All info objects require an agent identifier!");u[e]=new s(t,c),(0,i.Qy)(e,u[e],"info")}const l={allow_bfcache:!0,privacy:{cookies_enabled:!0},ajax:{deny_list:void 0,enabled:!0,harvestTimeSeconds:10},distributed_tracing:{enabled:void 0,exclude_newrelic_header:void 0,cors_use_newrelic_header:void 0,cors_use_tracecontext_headers:void 0,allowed_origins:void 0},ssl:void 0,obfuscate:void 0,jserrors:{enabled:!0,harvestTimeSeconds:10},metrics:{enabled:!0},page_action:{enabled:!0,harvestTimeSeconds:30},page_view_event:{enabled:!0},page_view_timing:{enabled:!0,harvestTimeSeconds:30,long_task:!1},session_trace:{enabled:!0,harvestTimeSeconds:10},spa:{enabled:!0,harvestTimeSeconds:10}},h={};function g(e){if(!e)throw new Error("All configuration objects require an agent identifier!");if(!h[e])throw new Error("Configuration for ".concat(e," was never set"));return h[e]}function p(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");h[e]=new s(t,l),(0,i.Qy)(e,h[e],"config")}function v(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");var r=g(e);if(r){for(var n=t.split("."),i=0;i<n.length-1;i++)if("object"!=typeof(r=r[n[i]]))return;r=r[n[n.length-1]]}return r}const m={accountID:void 0,trustKey:void 0,agentID:void 0,licenseKey:void 0,applicationID:void 0,xpid:void 0},b={};function y(e){if(!e)throw new Error("All loader-config objects require an agent identifier!");if(!b[e])throw new Error("LoaderConfig for ".concat(e," was never set"));return b[e]}function w(e,t){if(!e)throw new Error("All loader-config objects require an agent identifier!");b[e]=new s(t,m),(0,i.Qy)(e,b[e],"loader_config")}const E=(0,i.mF)().o;var T=null,A=null;if(navigator.userAgent){var x=navigator.userAgent,_=x.match(/Version\/(\S+)\s+Safari/);_&&-1===x.indexOf("Chrome")&&-1===x.indexOf("Chromium")&&(T="Safari",A=_[1])}function S(e,t){if(!T)return!1;if(e!==T)return!1;if(!t)return!0;if(!A)return!1;for(var r=A.split("."),n=t.split("."),i=0;i<n.length;i++)if(n[i]!==r[i])return!1;return!0}var O=r(5526),P=r(2374);const D="NRBA_SESSION_ID";function j(){if(!P.il)return null;try{let e;return null===(e=window.sessionStorage.getItem(D))&&(e=(0,O.ky)(16),window.sessionStorage.setItem(D,e)),e}catch(e){return null}}var C=r(8226);const I=e=>({customTransaction:void 0,disabled:!1,isolatedBacklog:!1,loaderType:void 0,maxBytes:3e4,offset:Math.floor(P._A?.performance?.timeOrigin||P._A?.performance?.timing?.navigationStart||Date.now()),onerror:void 0,origin:""+P._A.location,ptid:void 0,releaseIds:{},sessionId:1==v(e,"privacy.cookies_enabled")?j():null,xhrWrappable:"function"==typeof P._A.XMLHttpRequest?.prototype?.addEventListener,userAgent:n,version:C.q}),R={};function N(e){if(!e)throw new Error("All runtime objects require an agent identifier!");if(!R[e])throw new Error("Runtime for ".concat(e," was never set"));return R[e]}function k(e,t){if(!e)throw new Error("All runtime objects require an agent identifier!");R[e]=new s(t,I(e)),(0,i.Qy)(e,R[e],"runtime")}function L(e){return function(e){try{const t=d(e);return!!t.licenseKey&&!!t.errorBeacon&&!!t.applicationID}catch(e){return!1}}(e)}},8226:(e,t,r)=>{"use strict";r.d(t,{q:()=>n});const n="1228.PROD"},9557:(e,t,r)=>{"use strict";r.d(t,{w:()=>o});var n=r(8610);const i={agentIdentifier:""};class o{constructor(e){try{if("object"!=typeof e)return(0,n.Z)("shared context requires an object as input");this.sharedContext={},Object.assign(this.sharedContext,i),Object.entries(e).forEach((e=>{let[t,r]=e;Object.keys(i).includes(t)&&(this.sharedContext[t]=r)}))}catch(e){(0,n.Z)("An error occured while setting SharedContext",e)}}}},4329:(e,t,r)=>{"use strict";r.d(t,{L:()=>d,R:()=>c});var n=r(3752),i=r(7022),o=r(4045),a=r(2325);const s={};function c(e,t){const r={staged:!1,priority:a.p[t]||0};u(e),s[e].get(t)||s[e].set(t,r)}function u(e){e&&(s[e]||(s[e]=new Map))}function d(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"feature";if(u(e),!e||!s[e].get(t))return a(t);s[e].get(t).staged=!0;const r=Array.from(s[e]);function a(t){const r=e?n.ee.get(e):n.ee,a=o.X.handlers;if(r.backlog&&a){var s=r.backlog[t],c=a[t];if(c){for(var u=0;s&&u<s.length;++u)f(s[u],c);(0,i.D)(c,(function(e,t){(0,i.D)(t,(function(t,r){r[0].on(e,r[1])}))}))}delete a[t],r.backlog[t]=null,r.emit("drain-"+t,[])}}r.every((e=>{let[t,r]=e;return r.staged}))&&(r.sort(((e,t)=>e[1].priority-t[1].priority)),r.forEach((e=>{let[t]=e;a(t)})))}function f(e,t){var r=e[1];(0,i.D)(t[r],(function(t,r){var n=e[0];if(r[0]===n){var i=r[1],o=e[3],a=e[2];i.apply(o,a)}}))}},3752:(e,t,r)=>{"use strict";r.d(t,{ee:()=>u});var n=r(6797),i=r(3916),o=r(7022),a=r(6562),s="nr@context";let c=(0,n.fP)();var u;function d(){}function f(){return new d}function l(){u.aborted=!0,u.backlog={}}c.ee?u=c.ee:(u=function e(t,r){var n={},c={},h={},g=!1;try{g=16===r.length&&(0,a.OP)(r).isolatedBacklog}catch(e){}var p={on:b,addEventListener:b,removeEventListener:y,emit:m,get:E,listeners:w,context:v,buffer:T,abort:l,aborted:!1,isBuffering:A,debugId:r,backlog:g?{}:t&&"object"==typeof t.backlog?t.backlog:{}};return p;function v(e){return e&&e instanceof d?e:e?(0,i.X)(e,s,f):f()}function m(e,r,n,i,o){if(!1!==o&&(o=!0),!u.aborted||i){t&&o&&t.emit(e,r,n);for(var a=v(n),s=w(e),d=s.length,f=0;f<d;f++)s[f].apply(a,r);var l=x()[c[e]];return l&&l.push([p,e,r,a]),a}}function b(e,t){n[e]=w(e).concat(t)}function y(e,t){var r=n[e];if(r)for(var i=0;i<r.length;i++)r[i]===t&&r.splice(i,1)}function w(e){return n[e]||[]}function E(t){return h[t]=h[t]||e(p,t)}function T(e,t){var r=x();p.aborted||(0,o.D)(e,(function(e,n){t=t||"feature",c[n]=t,t in r||(r[t]=[])}))}function A(e){return!!x()[c[e]]}function x(){return p.backlog}}(void 0,"globalEE"),c.ee=u)},9252:(e,t,r)=>{"use strict";r.d(t,{E:()=>n,p:()=>i});var n=r(3752).ee.get("handle");function i(e,t,r,i,o){o?(o.buffer([e],i),o.emit(e,t,r)):(n.buffer([e],i),n.emit(e,t,r))}},4045:(e,t,r)=>{"use strict";r.d(t,{X:()=>o});var n=r(9252);o.on=a;var i=o.handlers={};function o(e,t,r,o){a(o||n.E,i,e,t,r)}function a(e,t,r,i,o){o||(o="feature"),e||(e=n.E);var a=t[o]=t[o]||{};(a[r]=a[r]||[]).push([e,i])}},8544:(e,t,r)=>{"use strict";r.d(t,{bP:()=>s,iz:()=>c,m$:()=>a});var n=r(2374);let i=!1,o=!1;try{const e={get passive(){return i=!0,!1},get signal(){return o=!0,!1}};n._A.addEventListener("test",null,e),n._A.removeEventListener("test",null,e)}catch(e){}function a(e,t){return i||o?{capture:!!e,passive:i,signal:t}:!!e}function s(e,t){let r=arguments.length>2&&void 0!==arguments[2]&&arguments[2];window.addEventListener(e,t,a(r))}function c(e,t){let r=arguments.length>2&&void 0!==arguments[2]&&arguments[2];document.addEventListener(e,t,a(r))}},5526:(e,t,r)=>{"use strict";r.d(t,{Ht:()=>a,M:()=>o,Rl:()=>i,ky:()=>s});var n=r(2374);function i(){var e=null,t=0,r=n._A?.crypto||n._A?.msCrypto;function i(){return e?15&e[t++]:16*Math.random()|0}r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var o,a="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",s="",c=0;c<a.length;c++)s+="x"===(o=a[c])?i().toString(16):"y"===o?(o=3&i()|8).toString(16):o;return s}function o(){return s(16)}function a(){return s(32)}function s(e){var t=null,r=0,n=self.crypto||self.msCrypto;n&&n.getRandomValues&&Uint8Array&&(t=n.getRandomValues(new Uint8Array(31)));for(var i=[],o=0;o<e;o++)i.push(a().toString(16));return i.join("");function a(){return t?15&t[r++]:16*Math.random()|0}}},2053:(e,t,r)=>{"use strict";r.d(t,{B:()=>n,z:()=>i});const n=(new Date).getTime();function i(){return Math.round(performance.now())}},8283:(e,t,r)=>{"use strict";r.d(t,{B:()=>a,L:()=>s});var n=r(6562),i=r(2053),o={};function a(e,t,r){void 0===r&&(r=(0,i.z)()+(0,n.OP)(e).offset),o[e]=o[e]||{},o[e][t]=r}function s(e,t,r,n){const i=e.sharedContext.agentIdentifier;var a=o[i]?.[r],s=o[i]?.[n];void 0!==a&&void 0!==s&&e.store("measures",t,{value:s-a})}},2545:(e,t,r)=>{"use strict";r.d(t,{L:()=>c});var n=r(9071),i=r(8544),o=r(8305),a=r(2374),s=r(6998);if(a.v6){a._A.cleanupTasks=[];const e=a._A.close;a._A.close=()=>{for(let e of a._A.cleanupTasks)e();e()}}function c(e,t){if(a.il)if(t)(0,s.N)(e,!0),(0,i.bP)("pagehide",e);else{var r=(0,o.Z)(e);!n.I||navigator.sendBeacon?(0,i.bP)("pagehide",r):(0,i.bP)("beforeunload",r),(0,i.bP)("unload",r)}else a.v6&&a._A.cleanupTasks.push(e)}},6368:(e,t,r)=>{"use strict";r.d(t,{e:()=>o});var n=r(2374),i={};function o(e){if(e in i)return i[e];if(0===(e||"").indexOf("data:"))return{protocol:"data"};let t;var r=n._A?.location,o={};if(n.il)t=document.createElement("a"),t.href=e;else try{t=new URL(e,r.href)}catch(e){return o}o.port=t.port;var a=t.href.split("://");!o.port&&a[1]&&(o.port=a[1].split("/")[0].split("@").pop().split(":")[1]),o.port&&"0"!==o.port||(o.port="https"===a[0]?"443":"80"),o.hostname=t.hostname||r.hostname,o.pathname=t.pathname,o.protocol=a[0],"/"!==o.pathname.charAt(0)&&(o.pathname="/"+o.pathname);var s=!t.protocol||":"===t.protocol||t.protocol===r.protocol,c=t.hostname===r.hostname&&t.port===r.port;return o.sameOrigin=s&&(!t.hostname||c),"/"===o.pathname&&(i[e]=o),o}},8610:(e,t,r)=>{"use strict";function n(e,t){console&&console.warn&&"function"==typeof console.warn&&(console.warn("New Relic: ".concat(e)),t&&console.warn(t))}r.d(t,{Z:()=>n})},3916:(e,t,r)=>{"use strict";r.d(t,{X:()=>i});var n=Object.prototype.hasOwnProperty;function i(e,t,r){if(n.call(e,t))return e[t];var i=r();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:i,writable:!0,enumerable:!1}),i}catch(e){}return e[t]=i,i}},2374:(e,t,r)=>{"use strict";r.d(t,{_A:()=>o,il:()=>n,lW:()=>a,v6:()=>i});const n=Boolean("undefined"!=typeof window&&window.document),i=Boolean("undefined"!=typeof WorkerGlobalScope&&self.navigator instanceof WorkerNavigator);let o=(()=>{if(n)return window;if(i){if("undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope)return globalThis;if(self instanceof WorkerGlobalScope)return self}throw new Error('New Relic browser agent shutting down due to error: Unable to locate global scope. This is possibly due to code redefining browser global variables like "self" and "window".')})();function a(){return o}},7022:(e,t,r)=>{"use strict";r.d(t,{D:()=>i});var n=Object.prototype.hasOwnProperty;function i(e,t){var r=[],i="",o=0;for(i in e)n.call(e,i)&&(r[o]=t(i,e[i]),o+=1);return r}},8305:(e,t,r)=>{"use strict";r.d(t,{Z:()=>o});var n=r(8683),i=r.n(n);function o(e){var t,r=!1;return function(){return r?t:(r=!0,t=e.apply(this,i()(arguments)))}}},2438:(e,t,r)=>{"use strict";r.d(t,{P:()=>o});var n=r(3752);const i=()=>{const e=new WeakSet;return(t,r)=>{if("object"==typeof r&&null!==r){if(e.has(r))return;e.add(r)}return r}};function o(e){try{return JSON.stringify(e,i())}catch(e){try{n.ee.emit("internal-error",[e])}catch(e){}}}},2650:(e,t,r)=>{"use strict";r.d(t,{K:()=>a,b:()=>o});var n=r(8544);function i(){return"undefined"==typeof document||"complete"===document.readyState}function o(e,t){if(i())return e();(0,n.bP)("load",e,t)}function a(e){if(i())return e();(0,n.iz)("DOMContentLoaded",e)}},6797:(e,t,r)=>{"use strict";r.d(t,{EZ:()=>u,Qy:()=>c,ce:()=>o,fP:()=>a,gG:()=>d,mF:()=>s});var n=r(2053),i=r(2374);const o={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net"};function a(){return i._A.NREUM||(i._A.NREUM={}),void 0===i._A.newrelic&&(i._A.newrelic=i._A.NREUM),i._A.NREUM}function s(){let e=a();return e.o||(e.o={ST:i._A.setTimeout,SI:i._A.setImmediate,CT:i._A.clearTimeout,XHR:i._A.XMLHttpRequest,REQ:i._A.Request,EV:i._A.Event,PR:i._A.Promise,MO:i._A.MutationObserver,FETCH:i._A.fetch}),e}function c(e,t,r){let i=a();const o=i.initializedAgents||{},s=o[e]||{};return Object.keys(s).length||(s.initializedAt={ms:(0,n.z)(),date:new Date}),i.initializedAgents={...o,[e]:{...s,[r]:t}},i}function u(e,t){a()[e]=t}function d(){return function(){let e=a();const t=e.info||{};e.info={beacon:o.beacon,errorBeacon:o.errorBeacon,...t}}(),function(){let e=a();const t=e.init||{};e.init={...t}}(),s(),function(){let e=a();const t=e.loader_config||{};e.loader_config={...t}}(),a()}},6998:(e,t,r)=>{"use strict";r.d(t,{N:()=>i,e:()=>o});var n=r(8544);function i(e){let t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];return void(0,n.iz)("visibilitychange",(function(){if(t){if("hidden"!=document.visibilityState)return;e()}e(document.visibilityState)}))}function o(){return"hidden"===document.visibilityState?-1:1/0}},6408:(e,t,r)=>{"use strict";r.d(t,{W:()=>i});var n=r(2374);function i(){return"function"==typeof n._A?.PerformanceObserver}},8675:(e,t,r)=>{"use strict";r.d(t,{t:()=>n});const n=r(2325).D.ajax},8322:(e,t,r)=>{"use strict";r.d(t,{A:()=>i,t:()=>n});const n=r(2325).D.jserrors,i="nr@seenError"},6034:(e,t,r)=>{"use strict";r.d(t,{gF:()=>o,mY:()=>i,t9:()=>n,vz:()=>s,xS:()=>a});const n=r(2325).D.metrics,i="sm",o="cm",a="storeSupportabilityMetrics",s="storeEventMetrics"},6486:(e,t,r)=>{"use strict";r.d(t,{t:()=>n});const n=r(2325).D.pageAction},2484:(e,t,r)=>{"use strict";r.d(t,{t:()=>n});const n=r(2325).D.pageViewEvent},6382:(e,t,r)=>{"use strict";r.d(t,{t:()=>n});const n=r(2325).D.pageViewTiming},2628:(e,t,r)=>{"use strict";r.r(t),r.d(t,{ADD_EVENT_LISTENER:()=>p,BST_RESOURCE:()=>a,BST_TIMER:()=>l,END:()=>u,FEATURE_NAME:()=>i,FN_END:()=>f,FN_START:()=>d,ORIG_EVENT:()=>g,PUSH_STATE:()=>h,RESOURCE:()=>s,RESOURCE_TIMING_BUFFER_FULL:()=>o,START:()=>c});var n=r(6562);const i=r(2325).D.sessionTrace,o="resourcetimingbufferfull",a="bstResource",s="resource",c="-start",u="-end",d="fn"+c,f="fn"+u,l="bstTimer",h="pushState",g=n.Yu.EV,p="addEventListener"},1509:(e,t,r)=>{"use strict";r.d(t,{W:()=>s});var n=r(6562),i=r(3752),o=r(2384),a=r(6797);class s{constructor(e,t,r){this.agentIdentifier=e,this.aggregator=t,this.ee=i.ee.get(e,(0,n.OP)(this.agentIdentifier).isolatedBacklog),this.featureName=r,this.blocked=!1,this.checkConfiguration()}checkConfiguration(){if(!(0,n.lF)(this.agentIdentifier)){let e={...(0,a.gG)().info?.jsAttributes};try{e={...e,...(0,n.C5)(this.agentIdentifier)?.jsAttributes}}catch(e){}(0,o.j)(this.agentIdentifier,{...(0,a.gG)(),info:{...(0,a.gG)().info,jsAttributes:e}})}}}},2384:(e,t,r)=>{"use strict";r.d(t,{j:()=>w});var n=r(8683),i=r.n(n),o=r(2325),a=r(6562),s=r(9252),c=r(7022),u=r(3752),d=r(2053),f=r(4329),l=r(2650),h=r(2374),g=r(8610),p=r(6034);function v(e){["setErrorHandler","finished","addToTrace","inlineHit","addRelease","addPageAction","setCurrentRouteName","setPageViewName","setCustomAttribute","interaction","noticeError"].forEach((t=>{e[t]=function(){for(var r=arguments.length,n=new Array(r),i=0;i<r;i++)n[i]=arguments[i];return function(t){for(var r=arguments.length,n=new Array(r>1?r-1:0),i=1;i<r;i++)n[i-1]=arguments[i];Object.values(e.initializedAgents).forEach((e=>{e.exposed&&e.api[t]&&e.api[t](...n)}))}(t,...n)}}))}var m=r(6797);const b={stn:[o.D.sessionTrace],err:[o.D.jserrors,o.D.metrics],ins:[o.D.pageAction],spa:[o.D.spa]};const y={};function w(e){let t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},n=arguments.length>2?arguments[2]:void 0,w=arguments.length>3?arguments[3]:void 0,{init:E,info:T,loader_config:A,runtime:x={loaderType:n},exposed:_=!0}=t;const S=(0,m.gG)();let O={};return T||(E=S.init,T=S.info,A=S.loader_config,O=S),h.v6&&(T.jsAttributes={...T.jsAttributes,isWorker:!0}),(0,a.CX)(e,T),(0,a.Dg)(e,E||{}),(0,a.GE)(e,A||{}),(0,a.sU)(e,x),function(e,t,n){n||(0,f.R)(e,"api"),v(t);var m=u.ee.get(e),b=m.get("tracer"),y="api-",w=y+"ixn-";function E(){}(0,c.D)(["setErrorHandler","finished","addToTrace","inlineHit","addRelease"],(function(e,r){t[r]=A(y,r,!0,"api")})),t.addPageAction=A(y,"addPageAction",!0,o.D.pageAction),t.setCurrentRouteName=A(y,"routeName",!0,o.D.spa),t.setPageViewName=function(t,r){if("string"==typeof t)return"/"!==t.charAt(0)&&(t="/"+t),(0,a.OP)(e).customTransaction=(r||"http://custom.transaction")+t,A(y,"setPageViewName",!0,"api")()},t.setCustomAttribute=function(t,r){const n=(0,a.C5)(e);return(0,a.CX)(e,{...n,jsAttributes:{...n.jsAttributes,[t]:r}}),A(y,"setCustomAttribute",!0,"api")()},t.interaction=function(){return(new E).get()};var T=E.prototype={createTracer:function(e,t){var r={},n=this,i="function"==typeof t;return(0,s.p)(w+"tracer",[(0,d.z)(),e,r],n,o.D.spa,m),function(){if(b.emit((i?"":"no-")+"fn-start",[(0,d.z)(),n,i],r),i)try{return t.apply(this,arguments)}catch(e){throw b.emit("fn-err",[arguments,this,"string"==typeof e?new Error(e):e],r),e}finally{b.emit("fn-end",[(0,d.z)()],r)}}}};function A(e,t,r,n){return function(){return(0,s.p)(p.xS,["API/"+t+"/called"],void 0,o.D.metrics,m),(0,s.p)(e+t,[(0,d.z)()].concat(i()(arguments)),r?null:this,n,m),r?void 0:this}}function x(){r.e(439).then(r.bind(r,5692)).then((t=>{let{setAPI:r}=t;r(e),(0,f.L)(e,"api")})).catch((()=>(0,g.Z)("Downloading runtime APIs failed...")))}(0,c.D)("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),(function(e,t){T[t]=A(w,t,void 0,o.D.spa)})),t.noticeError=function(e,t){"string"==typeof e&&(e=new Error(e)),(0,s.p)(p.xS,["API/noticeError/called"],void 0,o.D.metrics,m),(0,s.p)("err",[e,(0,d.z)(),!1,t],void 0,o.D.jserrors,m)},h.v6?x():(0,l.b)((()=>x()),!0)}(e,O,w),(0,m.Qy)(e,S,"api"),(0,m.Qy)(e,_,"exposed"),(0,m.EZ)("activatedFeatures",y),(0,m.EZ)("setToken",(t=>function(e,t){var r=u.ee.get(t);e&&"object"==typeof e&&((0,c.D)(e,(function(e,t){if(!t)return(b[e]||[]).forEach((t=>{(0,s.p)("block-"+e,[],void 0,t,r)}));y[e]||((0,s.p)("feat-"+e,[],void 0,b[e],r),y[e]=!0)})),(0,f.L)(t,o.D.pageViewEvent))}(t,e))),O}},909:(e,t,r)=>{"use strict";r.d(t,{Z:()=>i,q:()=>o});var n=r(2325);function i(e){switch(e){case n.D.ajax:return[n.D.jserrors];case n.D.sessionTrace:return[n.D.ajax,n.D.pageViewEvent];case n.D.pageViewTiming:return[n.D.pageViewEvent];default:return[]}}function o(e){return e===n.D.jserrors?[]:["auto"]}},2325:(e,t,r)=>{"use strict";r.d(t,{D:()=>n,p:()=>i});const n={ajax:"ajax",jserrors:"jserrors",metrics:"metrics",pageAction:"page_action",pageViewEvent:"page_view_event",pageViewTiming:"page_view_timing",sessionTrace:"session_trace",spa:"spa"},i={[n.pageViewEvent]:1,[n.pageViewTiming]:2,[n.metrics]:3,[n.jserrors]:4,[n.ajax]:5,[n.sessionTrace]:6,[n.pageAction]:7,[n.spa]:8}},8683:e=>{e.exports=function(e,t,r){t||(t=0),void 0===r&&(r=e?e.length:0);for(var n=-1,i=r-t||0,o=Array(i<0?0:i);++n<i;)o[n]=e[t+n];return o}}},n={};function i(e){var t=n[e];if(void 0!==t)return t.exports;var o=n[e]={exports:{}};return r[e](o,o.exports,i),o.exports}i.m=r,i.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return i.d(t,{a:t}),t},i.d=(e,t)=>{for(var r in t)i.o(t,r)&&!i.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},i.f={},i.e=e=>Promise.all(Object.keys(i.f).reduce(((t,r)=>(i.f[r](e,t),t)),[])),i.u=e=>(({78:"page_action-aggregate",147:"metrics-aggregate",193:"session_trace-aggregate",317:"jserrors-aggregate",348:"page_view_timing-aggregate",439:"async-api",729:"lazy-loader",786:"page_view_event-aggregate",873:"spa-aggregate",898:"ajax-aggregate"}[e]||e)+"."+{78:"1ef08094",147:"56d9a464",193:"ada8b15b",317:"64f61365",348:"ced8c919",439:"61caf4d9",729:"37550b27",786:"46b69e61",862:"e74e95d2",873:"7222cbb6",898:"e6085a9a"}[e]+"-1228.min.js"),i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),e={},t="NRBA:",i.l=(r,n,o,a)=>{if(e[r])e[r].push(n);else{var s,c;if(void 0!==o)for(var u=document.getElementsByTagName("script"),d=0;d<u.length;d++){var f=u[d];if(f.getAttribute("src")==r||f.getAttribute("data-webpack")==t+o){s=f;break}}s||(c=!0,(s=document.createElement("script")).charset="utf-8",s.timeout=120,i.nc&&s.setAttribute("nonce",i.nc),s.setAttribute("data-webpack",t+o),s.src=r),e[r]=[n];var l=(t,n)=>{s.onerror=s.onload=null,clearTimeout(h);var i=e[r];if(delete e[r],s.parentNode&&s.parentNode.removeChild(s),i&&i.forEach((e=>e(n))),t)return t(n)},h=setTimeout(l.bind(null,void 0,{type:"timeout",target:s}),12e4);s.onerror=l.bind(null,s.onerror),s.onload=l.bind(null,s.onload),c&&document.head.appendChild(s)}},i.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.p="https://js-agent.newrelic.com/",(()=>{var e={785:0,357:0};i.f.j=(t,r)=>{var n=i.o(e,t)?e[t]:void 0;if(0!==n)if(n)r.push(n[2]);else{var o=new Promise(((r,i)=>n=e[t]=[r,i]));r.push(n[2]=o);var a=i.p+i.u(t),s=new Error;i.l(a,(r=>{if(i.o(e,t)&&(0!==(n=e[t])&&(e[t]=void 0),n)){var o=r&&("load"===r.type?"missing":r.type),a=r&&r.target&&r.target.src;s.message="Loading chunk "+t+" failed.\n("+o+": "+a+")",s.name="ChunkLoadError",s.type=o,s.request=a,n[1](s)}}),"chunk-"+t,t)}};var t=(t,r)=>{var n,o,[a,s,c]=r,u=0;if(a.some((t=>0!==e[t]))){for(n in s)i.o(s,n)&&(i.m[n]=s[n]);if(c)c(i)}for(t&&t(r);u<a.length;u++)o=a[u],i.o(e,o)&&e[o]&&e[o][0](),e[o]=0},r=window.webpackChunkNRBA=window.webpackChunkNRBA||[];r.forEach(t.bind(null,0)),r.push=t.bind(null,r.push.bind(r))})();var o={};(()=>{"use strict";i.r(o);var e=i(2325),t=i(6562);const r=Object.values(e.D);function n(e){const n={};return r.forEach((r=>{n[r]=function(e,r){return!1!==(0,t.Mt)(r,"".concat(e,".enabled"))}(r,e)})),n}var a=i(2384),s=i(909),c=i(9252),u=i(2053),d=i(8283),f=i(4329),l=i(1509),h=i(2650),g=i(2374),p=i(8610);class v extends l.W{constructor(e,t,r){let n=!(arguments.length>3&&void 0!==arguments[3])||arguments[3];super(e,t,r),this.hasAggregator=!1,this.auto=n,this.abortHandler,n&&(0,f.R)(e,r)}importAggregator(){if(this.hasAggregator||!this.auto)return;this.hasAggregator=!0;const e=async()=>{try{const{lazyLoader:e}=await i.e(729).then(i.bind(i,8110)),{Aggregate:t}=await e(this.featureName,"aggregate");new t(this.agentIdentifier,this.aggregator)}catch(e){(0,p.Z)("Downloading ".concat(this.featureName," failed...")),this.abortHandler?.()}};g.v6?e():(0,h.b)((()=>e()),!0)}}var m,b,y,w=i(2484);class E extends v{constructor(e,r){let n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,r,w.t,n),(0,d.B)(e,"starttime",(0,t.OP)(e).offset),(0,d.B)(e,"firstbyte",u.B),(0,h.K)((()=>this.measureDomContentLoaded())),(0,h.b)((()=>this.measureWindowLoaded()),!0),this.importAggregator()}measureWindowLoaded(){var r=(0,u.z)();(0,d.B)(this.agentIdentifier,"onload",r+(0,t.OP)(this.agentIdentifier).offset),(0,c.p)("timing",["load",r],void 0,e.D.pageViewTiming,this.ee)}measureDomContentLoaded(){(0,d.B)(this.agentIdentifier,"domContent",(0,u.z)()+(0,t.OP)(this.agentIdentifier).offset)}}m=E,b="featureName",y=w.t,(b=function(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var n=r.call(e,t||"default");if("object"!=typeof n)return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}(b))in m?Object.defineProperty(m,b,{value:y,enumerable:!0,configurable:!0,writable:!0}):m[b]=y;var T=i(9557),A=i(7022);class x extends T.w{constructor(e){super(e),this.aggregatedData={}}store(e,t,r,n,i){var o=this.getBucket(e,t,r,i);return o.metrics=function(e,t){t||(t={count:0});return t.count+=1,(0,A.D)(e,(function(e,r){t[e]=_(r,t[e])})),t}(n,o.metrics),o}merge(e,t,r,n,i){var o=this.getBucket(e,t,n,i);if(o.metrics){var a=o.metrics;a.count+=r.count,(0,A.D)(r,(function(e,t){if("count"!==e){var n=a[e],i=r[e];i&&!i.c?a[e]=_(i.t,n):a[e]=function(e,t){if(!t)return e;t.c||(t=S(t.t));return t.min=Math.min(e.min,t.min),t.max=Math.max(e.max,t.max),t.t+=e.t,t.sos+=e.sos,t.c+=e.c,t}(i,a[e])}}))}else o.metrics=r}storeMetric(e,t,r,n){var i=this.getBucket(e,t,r);return i.stats=_(n,i.stats),i}getBucket(e,t,r,n){this.aggregatedData[e]||(this.aggregatedData[e]={});var i=this.aggregatedData[e][t];return i||(i=this.aggregatedData[e][t]={params:r||{}},n&&(i.custom=n)),i}get(e,t){return t?this.aggregatedData[e]&&this.aggregatedData[e][t]:this.aggregatedData[e]}take(e){for(var t={},r="",n=!1,i=0;i<e.length;i++)t[r=e[i]]=O(this.aggregatedData[r]),t[r].length&&(n=!0),delete this.aggregatedData[r];return n?t:null}}function _(e,t){return null==e?function(e){e?e.c++:e={c:1};return e}(t):t?(t.c||(t=S(t.t)),t.c+=1,t.t+=e,t.sos+=e*e,e>t.max&&(t.max=e),e<t.min&&(t.min=e),t):{t:e}}function S(e){return{t:e,min:e,max:e,sos:e*e,c:1}}function O(e){return"object"!=typeof e?[]:(0,A.D)(e,P)}function P(e,t){return t}var D=i(6797),j=i(5526),C=i(2438);var I,R=i(6998),N=i(8544),k=i(6382),L=-1,H=function(e){addEventListener("pageshow",(function(t){t.persisted&&(L=t.timeStamp,e(t))}),!0)},z=function(){return window.performance&&performance.getEntriesByType&&performance.getEntriesByType("navigation")[0]},M=function(){var e=z();return e&&e.activationStart||0},B=function(e,t){var r=z(),n="navigate";return L>=0?n="back-forward-cache":r&&(n=document.prerendering||M()>0?"prerender":document.wasDiscarded?"restore":r.type.replace(/_/g,"-")),{name:e,value:void 0===t?-1:t,rating:"good",delta:0,entries:[],id:"v3-".concat(Date.now(),"-").concat(Math.floor(8999999999999*Math.random())+1e12),navigationType:n}},F=function(e,t,r){try{if(PerformanceObserver.supportedEntryTypes.includes(e)){var n=new PerformanceObserver((function(e){Promise.resolve().then((function(){t(e.getEntries())}))}));return n.observe(Object.assign({type:e,buffered:!0},r||{})),n}}catch(e){}},U=function(e,t,r,n){var i,o;return function(a){t.value>=0&&(a||n)&&((o=t.value-(i||0))||void 0===i)&&(i=t.value,t.delta=o,t.rating=function(e,t){return e>t[1]?"poor":e>t[0]?"needs-improvement":"good"}(t.value,r),e(t))}},V=function(e){var t=function(t){"pagehide"!==t.type&&"hidden"!==document.visibilityState||e(t)};addEventListener("visibilitychange",t,!0),addEventListener("pagehide",t,!0)},W=function(e){document.prerendering?addEventListener("prerenderingchange",(function(){return e()}),!0):e()},q=(new Date,0),G=1/0,X=0,Z=function(e){e.forEach((function(e){e.interactionId&&(G=Math.min(G,e.interactionId),X=Math.max(X,e.interactionId),q=X?(X-G)/7+1:0)}))},Q=function(){return I?q:performance.interactionCount||0},$=function(){"interactionCount"in performance||I||(I=F("event",Z,{type:"event",buffered:!0,durationThreshold:0}))},Y=[200,500],K=0,J=function(){return Q()-K},ee=[],te={},re=function(e){var t=ee[ee.length-1],r=te[e.interactionId];if(r||ee.length<10||e.duration>t.latency){if(r)r.entries.push(e),r.latency=Math.max(r.latency,e.duration);else{var n={id:e.interactionId,latency:e.duration,entries:[e]};te[n.id]=n,ee.push(n)}ee.sort((function(e,t){return t.latency-e.latency})),ee.splice(10).forEach((function(e){delete te[e.id]}))}},ne=i(2545);class ie extends v{constructor(r,n){var i;let o=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];if(super(r,n,k.t,o),i=this,g.il){if(this.pageHiddenTime=(0,R.e)(),this.performanceObserver,this.lcpPerformanceObserver,this.clsPerformanceObserver,this.fiRecorded=!1,"PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){this.performanceObserver=new PerformanceObserver((function(){return i.perfObserver(...arguments)}));try{this.performanceObserver.observe({entryTypes:["paint"]})}catch(e){}this.lcpPerformanceObserver=new PerformanceObserver((function(){return i.lcpObserver(...arguments)}));try{this.lcpPerformanceObserver.observe({entryTypes:["largest-contentful-paint"]})}catch(e){}this.clsPerformanceObserver=new PerformanceObserver((function(){return i.clsObserver(...arguments)}));try{this.clsPerformanceObserver.observe({type:"layout-shift",buffered:!0})}catch(e){}}this.fiRecorded=!1;["click","keydown","mousedown","pointerdown","touchstart"].forEach((e=>{(0,N.iz)(e,(function(){return i.captureInteraction(...arguments)}))})),function(e,t){t=t||{},W((function(){$();var r,n=B("INP"),i=function(e){e.forEach((function(e){e.interactionId&&re(e),"first-input"===e.entryType&&!ee.some((function(t){return t.entries.some((function(t){return e.duration===t.duration&&e.startTime===t.startTime}))}))&&re(e)}));var t,i=(t=Math.min(ee.length-1,Math.floor(J()/50)),ee[t]);i&&i.latency!==n.value&&(n.value=i.latency,n.entries=i.entries,r())},o=F("event",i,{durationThreshold:t.durationThreshold||40});r=U(e,n,Y,t.reportAllChanges),o&&(o.observe({type:"first-input",buffered:!0}),V((function(){i(o.takeRecords()),n.value<0&&J()>0&&(n.value=0,n.entries=[]),r(!0)})),H((function(){ee=[],K=Q(),n=B("INP"),r=U(e,n,Y,t.reportAllChanges)})))}))}((t=>{let{name:r,value:n,id:i}=t;(0,c.p)("timing",[r.toLowerCase(),n,{metricId:i}],void 0,e.D.pageViewTiming,this.ee)})),!0===(0,t.Mt)(this.agentIdentifier,"page_view_timing.long_task")&&(e=>{const t=t=>{t.forEach((t=>{const r={name:"LT",value:t.duration,info:{ltFrame:t.name,ltStart:t.startTime,ltCtr:t.attribution[0].containerType}};"window"!==r.info.ltCtr&&Object.assign(r.info,{ltCtrSrc:t.attribution[0].containerSrc,ltCtrId:t.attribution[0].containerId,ltCtrName:t.attribution[0].containerName}),e(r)}))};let r;try{PerformanceObserver.supportedEntryTypes.includes("longtask")&&(r=new PerformanceObserver((e=>{Promise.resolve().then((()=>{t(e.getEntries())}))})),r.observe({type:"longtask",buffered:!0}))}catch(e){}r&&(0,ne.L)((()=>{t(r.takeRecords())}),!0)})((t=>{let{name:r,value:n,info:i}=t;(0,c.p)("timing",[r.toLowerCase(),n,i],void 0,e.D.pageViewTiming,this.ee)})),(0,R.N)((()=>{this.pageHiddenTime=(0,u.z)(),(0,c.p)("docHidden",[this.pageHiddenTime],void 0,e.D.pageViewTiming,this.ee)}),!0),(0,N.bP)("pagehide",(()=>(0,c.p)("winPagehide",[(0,u.z)()],void 0,e.D.pageViewTiming,this.ee))),this.importAggregator()}}perfObserver(t,r){t.getEntries().forEach((t=>{"first-paint"===t.name?(0,c.p)("timing",["fp",Math.floor(t.startTime)],void 0,e.D.pageViewTiming,this.ee):"first-contentful-paint"===t.name&&(0,c.p)("timing",["fcp",Math.floor(t.startTime)],void 0,e.D.pageViewTiming,this.ee)}))}lcpObserver(t,r){var n=t.getEntries();if(n.length>0){var i=n[n.length-1];if(this.pageHiddenTime<i.startTime)return;var o=[i],a=this.addConnectionAttributes({});a&&o.push(a),(0,c.p)("lcp",o,void 0,e.D.pageViewTiming,this.ee)}}clsObserver(t){t.getEntries().forEach((t=>{t.hadRecentInput||(0,c.p)("cls",[t],void 0,e.D.pageViewTiming,this.ee)}))}addConnectionAttributes(e){var t=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(t)return t.type&&(e["net-type"]=t.type),t.effectiveType&&(e["net-etype"]=t.effectiveType),t.rtt&&(e["net-rtt"]=t.rtt),t.downlink&&(e["net-dlink"]=t.downlink),e}captureInteraction(r){if(r instanceof t.Yu.EV&&!this.fiRecorded){var n=Math.round(r.timeStamp),i={type:r.type};this.addConnectionAttributes(i);const o=(0,t.OP)(this.agentIdentifier).offset;n<=(0,u.z)()?i.fid=(0,u.z)()-n:n>o&&n<=Date.now()?(n-=o,i.fid=(0,u.z)()-n):n=(0,u.z)(),this.fiRecorded=!0,(0,c.p)("timing",["fi",n,i],void 0,e.D.pageViewTiming,this.ee)}}}!function(e,t,r){(t=function(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var n=r.call(e,t||"default");if("object"!=typeof n)return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r}(ie,"featureName",k.t);const oe={dedicated:Boolean(g._A?.Worker),shared:Boolean(g._A?.SharedWorker),service:Boolean(g._A?.navigator?.serviceWorker)};let ae,se,ce;var ue=i(6034);class de extends v{constructor(t,r){let n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(t,r,ue.t9,n),function(e){if(!ae){if(oe.dedicated){ae=Worker;try{g._A.Worker=r(ae,"Dedicated")}catch(e){o(e,"Dedicated")}if(oe.shared){se=SharedWorker;try{g._A.SharedWorker=r(se,"Shared")}catch(e){o(e,"Shared")}}else n("Shared");if(oe.service){ce=navigator.serviceWorker.register;try{g._A.navigator.serviceWorker.register=(t=ce,function(){for(var e=arguments.length,r=new Array(e),n=0;n<e;n++)r[n]=arguments[n];return i("Service",r[1]?.type),t.apply(navigator.serviceWorker,r)})}catch(e){o(e,"Service")}}else n("Service");var t;return}n("All")}function r(e,t){return"undefined"==typeof Proxy?e:new Proxy(e,{construct:(e,r)=>(i(t,r[1]?.type),new e(...r))})}function n(t){g.v6||e("Workers/".concat(t,"/Unavailable"))}function i(t,r){e("Workers/".concat(t,"module"===r?"/Module":"/Classic"))}function o(t,r){e("Workers/".concat(r,"/SM/Unsupported")),(0,p.Z)("NR Agent: Unable to capture ".concat(r," workers."),t)}}((t=>(0,c.p)(ue.xS,[t],void 0,e.D.metrics,this.ee))),this.importAggregator()}}!function(e,t,r){(t=function(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var n=r.call(e,t||"default");if("object"!=typeof n)return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r}(de,"featureName",ue.t9);var fe=i(3916),le=i(3752),he=i(8683),ge=i.n(he);const pe="nr@original";var ve=Object.prototype.hasOwnProperty,me=!1;function be(e,t){return e||(e=le.ee),r.inPlace=function(e,t,n,i,o){n||(n="");var a,s,c,u="-"===n.charAt(0);for(c=0;c<t.length;c++)Ee(a=e[s=t[c]])||(e[s]=r(a,u?s+n:n,i,s,o))},r.flag=pe,r;function r(t,r,i,o,a){return Ee(t)?t:(r||(r=""),nrWrapper[pe]=t,we(t,nrWrapper,e),nrWrapper);function nrWrapper(){var s,c,u,d;try{c=this,s=ge()(arguments),u="function"==typeof i?i(s,c):i||{}}catch(t){ye([t,"",[s,c,o],u],e)}n(r+"start",[s,c,o],u,a);try{return d=t.apply(c,s)}catch(e){throw n(r+"err",[s,c,e],u,a),e}finally{n(r+"end",[s,c,d],u,a)}}}function n(r,n,i,o){if(!me||t){var a=me;me=!0;try{e.emit(r,n,i,t,o)}catch(t){ye([t,r,n,i],e)}me=a}}}function ye(e,t){t||(t=le.ee);try{t.emit("internal-error",e)}catch(e){}}function we(e,t,r){if(Object.defineProperty&&Object.keys)try{return Object.keys(e).forEach((function(r){Object.defineProperty(t,r,{get:function(){return e[r]},set:function(t){return e[r]=t,t}})})),t}catch(e){ye([e],r)}for(var n in e)ve.call(e,n)&&(t[n]=e[n]);return t}function Ee(e){return!(e&&e instanceof Function&&e.apply&&!e[pe])}var Te="fetch-",Ae=Te+"body-",xe=["arrayBuffer","blob","json","text","formData"],_e=g._A.Request,Se=g._A.Response,Oe="prototype",Pe="nr@context";const De={};function je(e){const t=function(e){return(e||le.ee).get("fetch")}(e);if(!(_e&&Se&&g._A.fetch))return t;if(De[t.debugId]++)return t;function r(e,r,n){var i=e[r];"function"==typeof i&&(e[r]=function(){var e,r=ge()(arguments),o={};t.emit(n+"before-start",[r],o),o[Pe]&&o[Pe].dt&&(e=o[Pe].dt);var a=i.apply(this,r);return t.emit(n+"start",[r,e],a),a.then((function(e){return t.emit(n+"end",[null,e],a),e}),(function(e){throw t.emit(n+"end",[e],a),e}))},e[r][pe]=i)}return De[t.debugId]=1,xe.forEach((e=>{r(_e[Oe],e,Ae),r(Se[Oe],e,Ae)})),r(g._A,"fetch",Te),t.on(Te+"end",(function(e,r){var n=this;if(r){var i=r.headers.get("content-length");null!==i&&(n.rxSize=i),t.emit(Te+"done",[null,r],n)}else t.emit(Te+"done",[e],n)})),t}const Ce={},Ie="setTimeout",Re="setInterval",Ne="clearTimeout",ke="-start",Le="-",He=[Ie,"setImmediate",Re,Ne,"clearImmediate"];function ze(e){const t=function(e){return(e||le.ee).get("timer")}(e);if(Ce[t.debugId]++)return t;Ce[t.debugId]=1;var r=be(t);return r.inPlace(g._A,He.slice(0,2),Ie+Le),r.inPlace(g._A,He.slice(2,3),Re+Le),r.inPlace(g._A,He.slice(3),Ne+Le),t.on(Re+ke,(function(e,t,n){e[0]=r(e[0],"fn-",null,n)})),t.on(Ie+ke,(function(e,t,n){this.method=n,this.timerDuration=isNaN(e[1])?0:+e[1],e[0]=r(e[0],"fn-",this,n)})),t}const Me={},Be="requestAnimationFrame";function Fe(e){const t=function(e){return(e||le.ee).get("raf")}(e);if(!g.il||Me[t.debugId]++)return t;Me[t.debugId]=1;var r=be(t);return r.inPlace(window,[Be],"raf-"),t.on("raf-start",(function(e){e[0]=r(e[0],"fn-")})),t}const Ue={},Ve=["pushState","replaceState"];function We(e){const t=function(e){return(e||le.ee).get("history")}(e);return!g.il||Ue[t.debugId]++||(Ue[t.debugId]=1,be(t).inPlace(window.history,Ve,"-")),t}const qe={},Ge=XMLHttpRequest,Xe="addEventListener",Ze="removeEventListener";function Qe(e){var t=function(e){return(e||le.ee).get("events")}(e);if(qe[t.debugId]++)return t;qe[t.debugId]=1;var r=be(t,!0);function n(e){r.inPlace(e,[Xe,Ze],"-",i)}function i(e,t){return e[1]}return"getPrototypeOf"in Object&&(g.il&&$e(document,n),$e(g._A,n),$e(Ge.prototype,n)),t.on(Xe+"-start",(function(e,t){var n=e[1];if(null!==n&&("function"==typeof n||"object"==typeof n)){var i=(0,fe.X)(n,"nr@wrapped",(function(){var e={object:function(){if("function"!=typeof n.handleEvent)return;return n.handleEvent.apply(n,arguments)},function:n}[typeof n];return e?r(e,"fn-",null,e.name||"anonymous"):n}));this.wrapped=e[1]=i}})),t.on(Ze+"-start",(function(e){e[1]=this.wrapped||e[1]})),t}function $e(e,t){let r=e;for(;"object"==typeof r&&!Object.prototype.hasOwnProperty.call(r,Xe);)r=Object.getPrototypeOf(r);for(var n=arguments.length,i=new Array(n>2?n-2:0),o=2;o<n;o++)i[o-2]=arguments[o];r&&t(r,...i)}const Ye={},Ke=["open","send"];function Je(e){var r=e||le.ee;const n=function(e){return(e||le.ee).get("xhr")}(r);if(Ye[n.debugId]++)return n;Ye[n.debugId]=1,Qe(r);var i=be(n),o=t.Yu.XHR,a=t.Yu.MO,s=t.Yu.PR,c=t.Yu.SI,u="readystatechange",d=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],f=[],l=g._A.XMLHttpRequest.listeners,h=g._A.XMLHttpRequest=function(e){var t=new o(e);function r(){try{n.emit("new-xhr",[t],t),t.addEventListener(u,m,(0,N.m$)(!1))}catch(e){(0,p.Z)("An error occured while intercepting XHR",e);try{n.emit("internal-error",[e])}catch(e){}}}return this.listeners=l?[...l,r]:[r],this.listeners.forEach((e=>e())),t};function v(e,t){i.inPlace(t,["onreadystatechange"],"fn-",T)}function m(){var e=this,t=n.context(e);e.readyState>3&&!t.resolved&&(t.resolved=!0,n.emit("xhr-resolved",[],e)),i.inPlace(e,d,"fn-",T)}if(function(e,t){for(var r in e)t[r]=e[r]}(o,h),h.prototype=o.prototype,i.inPlace(h.prototype,Ke,"-xhr-",T),n.on("send-xhr-start",(function(e,t){v(e,t),function(e){f.push(e),a&&(b?b.then(E):c?c(E):(y=-y,w.data=y))}(t)})),n.on("open-xhr-start",v),a){var b=s&&s.resolve();if(!c&&!s){var y=1,w=document.createTextNode(y);new a(E).observe(w,{characterData:!0})}}else r.on("fn-end",(function(e){e[0]&&e[0].type===u||E()}));function E(){for(var e=0;e<f.length;e++)v(0,f[e]);f.length&&(f=[])}function T(e,t){return t}return n}var et,tt={};try{et=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(tt.console=!0,-1!==et.indexOf("dev")&&(tt.dev=!0),-1!==et.indexOf("nr_dev")&&(tt.nrDev=!0))}catch(e){}function rt(e){try{tt.console&&rt(e)}catch(e){}}tt.nrDev&&le.ee.on("internal-error",(function(e){rt(e.stack)})),tt.dev&&le.ee.on("fn-err",(function(e,t,r){rt(r.stack)})),tt.dev&&(rt("NR AGENT IN DEVELOPMENT MODE"),rt("flags: "+(0,A.D)(tt,(function(e,t){return e})).join(", ")));var nt=i(8322);function it(e,t){!function(e,t){if(t.has(e))throw new TypeError("Cannot initialize the same private elements twice on an object")}(e,t),t.add(e)}var ot=new WeakSet;class at extends v{constructor(r,n){var i;let o=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(r,n,nt.t,o),i=this,it(this,ot),this.skipNext=0,this.origOnerror=g._A.onerror;try{this.removeOnAbort=new AbortController}catch(e){}const a=this;a.ee.on("fn-start",(function(e,t,r){a.abortHandler&&(a.skipNext+=1)})),a.ee.on("fn-err",(function(e,t,r){a.abortHandler&&!r[nt.A]&&((0,fe.X)(r,nt.A,(function(){return!0})),this.thrown=!0,ut(r,void 0,a.ee))})),a.ee.on("fn-end",(function(){a.abortHandler&&!this.thrown&&a.skipNext>0&&(a.skipNext-=1)})),a.ee.on("internal-error",(function(t){(0,c.p)("ierr",[t,(0,u.z)(),!0],void 0,e.D.jserrors,a.ee)})),g._A.onerror=function(){return i.origOnerror&&i.origOnerror(...arguments),i.onerrorHandler(...arguments),!1},g._A.addEventListener("unhandledrejection",(t=>{const r=function(e){let t="Unhandled Promise Rejection: ";if(e instanceof Error)try{return e.message=t+e.message,e}catch(t){return e}if(void 0===e)return new Error(t);try{return new Error(t+(0,C.P)(e))}catch(e){return new Error(t)}}(t.reason);(0,c.p)("err",[r,(0,u.z)(),!1,{unhandledPromiseRejection:1}],void 0,e.D.jserrors,this.ee)}),(0,N.m$)(!1,this.removeOnAbort?.signal)),Fe(this.ee),ze(this.ee),Qe(this.ee),(0,t.OP)(r).xhrWrappable&&Je(this.ee),this.abortHandler=function(e,t,r){if(!t.has(e))throw new TypeError("attempted to get private field on non-instance");return r}(this,ot,st),this.importAggregator()}onerrorHandler(t,r,n,i,o){try{this.skipNext?this.skipNext-=1:ut(o||new ct(t,r,n),!0,this.ee)}catch(t){try{(0,c.p)("ierr",[t,(0,u.z)(),!0],void 0,e.D.jserrors,this.ee)}catch(e){}}return"function"==typeof this.origOnerror&&this.origOnerror.apply(this,ge()(arguments))}}function st(){this.removeOnAbort?.abort(),this.abortHandler=void 0}function ct(e,t,r){this.message=e||"Uncaught error with no additional information",this.sourceURL=t,this.line=r}function ut(t,r,n){var i=r?null:(0,u.z)();(0,c.p)("err",[t,i],void 0,e.D.jserrors,n)}!function(e,t,r){(t=function(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var n=r.call(e,t||"default");if("object"!=typeof n)return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r}(at,"featureName",nt.t);var dt=1,ft="nr@id";function lt(e){var t=typeof e;return!e||"object"!==t&&"function"!==t?-1:e===g._A?0:(0,fe.X)(e,ft,(function(){return dt++}))}var ht=i(9071);function gt(e){if("string"==typeof e&&e.length)return e.length;if("object"==typeof e){if("undefined"!=typeof ArrayBuffer&&e instanceof ArrayBuffer&&e.byteLength)return e.byteLength;if("undefined"!=typeof Blob&&e instanceof Blob&&e.size)return e.size;if(!("undefined"!=typeof FormData&&e instanceof FormData))try{return(0,C.P)(e).length}catch(e){return}}}var pt=i(6368);class vt{constructor(e){this.agentIdentifier=e,this.generateTracePayload=this.generateTracePayload.bind(this),this.shouldGenerateTrace=this.shouldGenerateTrace.bind(this)}generateTracePayload(e){if(!this.shouldGenerateTrace(e))return null;var r=(0,t.DL)(this.agentIdentifier);if(!r)return null;var n=(r.accountID||"").toString()||null,i=(r.agentID||"").toString()||null,o=(r.trustKey||"").toString()||null;if(!n||!i)return null;var a=(0,j.M)(),s=(0,j.Ht)(),c=Date.now(),u={spanId:a,traceId:s,timestamp:c};return(e.sameOrigin||this.isAllowedOrigin(e)&&this.useTraceContextHeadersForCors())&&(u.traceContextParentHeader=this.generateTraceContextParentHeader(a,s),u.traceContextStateHeader=this.generateTraceContextStateHeader(a,c,n,i,o)),(e.sameOrigin&&!this.excludeNewrelicHeader()||!e.sameOrigin&&this.isAllowedOrigin(e)&&this.useNewrelicHeaderForCors())&&(u.newrelicHeader=this.generateTraceHeader(a,s,c,n,i,o)),u}generateTraceContextParentHeader(e,t){return"00-"+t+"-"+e+"-01"}generateTraceContextStateHeader(e,t,r,n,i){return i+"@nr=0-1-"+r+"-"+n+"-"+e+"----"+t}generateTraceHeader(e,t,r,n,i,o){if(!("function"==typeof g._A?.btoa))return null;var a={v:[0,1],d:{ty:"Browser",ac:n,ap:i,id:e,tr:t,ti:r}};return o&&n!==o&&(a.d.tk=o),btoa((0,C.P)(a))}shouldGenerateTrace(e){return this.isDtEnabled()&&this.isAllowedOrigin(e)}isAllowedOrigin(e){var r=!1,n={};if((0,t.Mt)(this.agentIdentifier,"distributed_tracing")&&(n=(0,t.P_)(this.agentIdentifier).distributed_tracing),e.sameOrigin)r=!0;else if(n.allowed_origins instanceof Array)for(var i=0;i<n.allowed_origins.length;i++){var o=(0,pt.e)(n.allowed_origins[i]);if(e.hostname===o.hostname&&e.protocol===o.protocol&&e.port===o.port){r=!0;break}}return r}isDtEnabled(){var e=(0,t.Mt)(this.agentIdentifier,"distributed_tracing");return!!e&&!!e.enabled}excludeNewrelicHeader(){var e=(0,t.Mt)(this.agentIdentifier,"distributed_tracing");return!!e&&!!e.exclude_newrelic_header}useNewrelicHeaderForCors(){var e=(0,t.Mt)(this.agentIdentifier,"distributed_tracing");return!!e&&!1!==e.cors_use_newrelic_header}useTraceContextHeadersForCors(){var e=(0,t.Mt)(this.agentIdentifier,"distributed_tracing");return!!e&&!!e.cors_use_tracecontext_headers}}var mt=i(8675);var bt=["load","error","abort","timeout"],yt=bt.length,wt=t.Yu.REQ,Et=g._A.XMLHttpRequest;class Tt extends v{constructor(r,n){let i=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(r,n,mt.t,i),(0,t.OP)(r).xhrWrappable&&(this.dt=new vt(r),this.handler=(e,t,r,n)=>(0,c.p)(e,t,r,n,this.ee),je(this.ee),Je(this.ee),function(r,n,i,o){function a(e){var t=this;t.totalCbs=0,t.called=0,t.cbTime=0,t.end=A,t.ended=!1,t.xhrGuids={},t.lastSize=null,t.loadCaptureCalled=!1,t.params=this.params||{},t.metrics=this.metrics||{},e.addEventListener("load",(function(r){_(t,e)}),(0,N.m$)(!1)),ht.I||e.addEventListener("progress",(function(e){t.lastSize=e.loaded}),(0,N.m$)(!1))}function s(e){this.params={method:e[0]},x(this,e[1]),this.metrics={}}function c(e,n){var i=(0,t.DL)(r);"xpid"in i&&this.sameOrigin&&n.setRequestHeader("X-NewRelic-ID",i.xpid);var a=o.generateTracePayload(this.parsedOrigin);if(a){var s=!1;a.newrelicHeader&&(n.setRequestHeader("newrelic",a.newrelicHeader),s=!0),a.traceContextParentHeader&&(n.setRequestHeader("traceparent",a.traceContextParentHeader),a.traceContextStateHeader&&n.setRequestHeader("tracestate",a.traceContextStateHeader),s=!0),s&&(this.dt=a)}}function d(e,t){var r=this.metrics,i=e[0],o=this;if(r&&i){var a=gt(i);a&&(r.txSize=a)}this.startTime=(0,u.z)(),this.listener=function(e){try{"abort"!==e.type||o.loadCaptureCalled||(o.params.aborted=!0),("load"!==e.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof t.onload)&&"function"==typeof o.end)&&o.end(t)}catch(e){try{n.emit("internal-error",[e])}catch(e){}}};for(var s=0;s<yt;s++)t.addEventListener(bt[s],this.listener,(0,N.m$)(!1))}function f(e,t,r){this.cbTime+=e,t?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof r.onload||"function"!=typeof this.end||this.end(r)}function l(e,t){var r=""+lt(e)+!!t;this.xhrGuids&&!this.xhrGuids[r]&&(this.xhrGuids[r]=!0,this.totalCbs+=1)}function h(e,t){var r=""+lt(e)+!!t;this.xhrGuids&&this.xhrGuids[r]&&(delete this.xhrGuids[r],this.totalCbs-=1)}function p(){this.endTime=(0,u.z)()}function v(e,t){t instanceof Et&&"load"===e[0]&&n.emit("xhr-load-added",[e[1],e[2]],t)}function m(e,t){t instanceof Et&&"load"===e[0]&&n.emit("xhr-load-removed",[e[1],e[2]],t)}function b(e,t,r){t instanceof Et&&("onload"===r&&(this.onload=!0),("load"===(e[0]&&e[0].type)||this.onload)&&(this.xhrCbStart=(0,u.z)()))}function y(e,t){this.xhrCbStart&&n.emit("xhr-cb-time",[(0,u.z)()-this.xhrCbStart,this.onload,t],t)}function w(e){var t,r=e[1]||{};"string"==typeof e[0]?t=e[0]:e[0]&&e[0].url?t=e[0].url:g._A?.URL&&e[0]&&e[0]instanceof URL&&(t=e[0].href),t&&(this.parsedOrigin=(0,pt.e)(t),this.sameOrigin=this.parsedOrigin.sameOrigin);var n=o.generateTracePayload(this.parsedOrigin);if(n&&(n.newrelicHeader||n.traceContextParentHeader))if("string"==typeof e[0]||g._A?.URL&&e[0]&&e[0]instanceof URL){var i={};for(var a in r)i[a]=r[a];i.headers=new Headers(r.headers||{}),s(i.headers,n)&&(this.dt=n),e.length>1?e[1]=i:e.push(i)}else e[0]&&e[0].headers&&s(e[0].headers,n)&&(this.dt=n);function s(e,t){var r=!1;return t.newrelicHeader&&(e.set("newrelic",t.newrelicHeader),r=!0),t.traceContextParentHeader&&(e.set("traceparent",t.traceContextParentHeader),t.traceContextStateHeader&&e.set("tracestate",t.traceContextStateHeader),r=!0),r}}function E(e,t){this.params={},this.metrics={},this.startTime=(0,u.z)(),this.dt=t,e.length>=1&&(this.target=e[0]),e.length>=2&&(this.opts=e[1]);var r,n=this.opts||{},i=this.target;"string"==typeof i?r=i:"object"==typeof i&&i instanceof wt?r=i.url:g._A?.URL&&"object"==typeof i&&i instanceof URL&&(r=i.href),x(this,r);var o=(""+(i&&i instanceof wt&&i.method||n.method||"GET")).toUpperCase();this.params.method=o,this.txSize=gt(n.body)||0}function T(t,r){var n;this.endTime=(0,u.z)(),this.params||(this.params={}),this.params.status=r?r.status:0,"string"==typeof this.rxSize&&this.rxSize.length>0&&(n=+this.rxSize);var o={txSize:this.txSize,rxSize:n,duration:(0,u.z)()-this.startTime};i("xhr",[this.params,o,this.startTime,this.endTime,"fetch"],this,e.D.ajax)}function A(t){var r=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var o=0;o<yt;o++)t.removeEventListener(bt[o],this.listener,!1);r.aborted||(n.duration=(0,u.z)()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==r.status&&(r.status=0):_(this,t),n.cbTime=this.cbTime,i("xhr",[r,n,this.startTime,this.endTime,"xhr"],this,e.D.ajax))}}function x(e,t){var r=(0,pt.e)(t),n=e.params;n.hostname=r.hostname,n.port=r.port,n.protocol=r.protocol,n.host=r.hostname+":"+r.port,n.pathname=r.pathname,e.parsedOrigin=r,e.sameOrigin=r.sameOrigin}function _(e,t){e.params.status=t.status;var r=function(e,t){var r=e.responseType;return"json"===r&&null!==t?t:"arraybuffer"===r||"blob"===r||"json"===r?gt(e.response):"text"===r||""===r||void 0===r?gt(e.responseText):void 0}(t,e.lastSize);if(r&&(e.metrics.rxSize=r),e.sameOrigin){var n=t.getResponseHeader("X-NewRelic-App-Data");n&&(e.params.cat=n.split(", ").pop())}e.loadCaptureCalled=!0}n.on("new-xhr",a),n.on("open-xhr-start",s),n.on("open-xhr-end",c),n.on("send-xhr-start",d),n.on("xhr-cb-time",f),n.on("xhr-load-added",l),n.on("xhr-load-removed",h),n.on("xhr-resolved",p),n.on("addEventListener-end",v),n.on("removeEventListener-end",m),n.on("fn-end",y),n.on("fetch-before-start",w),n.on("fetch-start",E),n.on("fn-start",b),n.on("fetch-done",T)}(r,this.ee,this.handler,this.dt),this.importAggregator())}}!function(e,t,r){(t=function(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var n=r.call(e,t||"default");if("object"!=typeof n)return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r}(Tt,"featureName",mt.t);var At=i(6408),xt=i(2628);function _t(e,t){!function(e,t){if(t.has(e))throw new TypeError("Cannot initialize the same private elements twice on an object")}(e,t),t.add(e)}const{BST_RESOURCE:St,BST_TIMER:Ot,END:Pt,FEATURE_NAME:Dt,FN_END:jt,FN_START:Ct,ADD_EVENT_LISTENER:It,PUSH_STATE:Rt,RESOURCE:Nt,RESOURCE_TIMING_BUFFER_FULL:kt,START:Lt,ORIG_EVENT:Ht}=xt,zt="clearResourceTimings";var Mt=new WeakSet;class Bt extends v{constructor(t,r){if(super(t,r,Dt,!(arguments.length>2&&void 0!==arguments[2])||arguments[2]),_t(this,Mt),!g.il)return;const n=this.ee;this.timerEE=ze(n),this.rafEE=Fe(n),We(n),Qe(n),n.on(Ct,(function(e,t){e[0]instanceof Ht&&(this.bstStart=(0,u.z)())})),n.on(jt,(function(t,r){var i=t[0];i instanceof Ht&&(0,c.p)("bst",[i,r,this.bstStart,(0,u.z)()],void 0,e.D.sessionTrace,n)})),this.timerEE.on(Ct,(function(e,t,r){this.bstStart=(0,u.z)(),this.bstType=r})),this.timerEE.on(jt,(function(t,r){(0,c.p)(Ot,[r,this.bstStart,(0,u.z)(),this.bstType],void 0,e.D.sessionTrace,n)})),this.rafEE.on(Ct,(function(){this.bstStart=(0,u.z)()})),this.rafEE.on(jt,(function(t,r){(0,c.p)(Ot,[r,this.bstStart,(0,u.z)(),"requestAnimationFrame"],void 0,e.D.sessionTrace,n)})),n.on(Rt+Lt,(function(e){this.time=(0,u.z)(),this.startPath=location.pathname+location.hash})),n.on(Rt+Pt,(function(t){(0,c.p)("bstHist",[location.pathname+location.hash,this.startPath,this.time],void 0,e.D.sessionTrace,n)})),(0,At.W)()?((0,c.p)(St,[window.performance.getEntriesByType("resource")],void 0,e.D.sessionTrace,n),function(){var t=new PerformanceObserver(((t,r)=>{var i=t.getEntries();(0,c.p)(St,[i],void 0,e.D.sessionTrace,n)}));try{t.observe({entryTypes:["resource"]})}catch(e){}}()):window.performance[zt]&&window.performance[It]&&window.performance.addEventListener(kt,this.onResourceTimingBufferFull,(0,N.m$)(!1)),document.addEventListener("scroll",this.noOp,(0,N.m$)(!1)),document.addEventListener("keypress",this.noOp,(0,N.m$)(!1)),document.addEventListener("click",this.noOp,(0,N.m$)(!1)),this.abortHandler=function(e,t,r){if(!t.has(e))throw new TypeError("attempted to get private field on non-instance");return r}(this,Mt,Ft),this.importAggregator()}noOp(e){}onResourceTimingBufferFull(t){if((0,c.p)(St,[window.performance.getEntriesByType(Nt)],void 0,e.D.sessionTrace,this.ee),window.performance[zt])try{window.performance.removeEventListener(kt,this.onResourceTimingBufferFull,!1)}catch(e){}}}function Ft(){window.performance.removeEventListener(kt,this.onResourceTimingBufferFull,!1),this.abortHandler=void 0}!function(e,t,r){(t=function(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var n=r.call(e,t||"default");if("object"!=typeof n)return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r}(Bt,"featureName",Dt);var Ut=i(6486);class Vt extends v{constructor(e,t){let r=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,Ut.t,r),this.importAggregator()}}!function(e,t,r){(t=function(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var n=r.call(e,t||"default");if("object"!=typeof n)return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r}(Vt,"featureName",Ut.t),new class{constructor(e){let t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:(0,j.ky)(16);this.agentIdentifier=t,this.sharedAggregator=new x({agentIdentifier:this.agentIdentifier}),this.features={},this.desiredFeatures=new Set(e.features||[]),this.desiredFeatures.add(E),Object.assign(this,(0,a.j)(this.agentIdentifier,e,e.loaderType||"agent")),this.start()}get config(){return{info:(0,t.C5)(this.agentIdentifier),init:(0,t.P_)(this.agentIdentifier),loader_config:(0,t.DL)(this.agentIdentifier),runtime:(0,t.OP)(this.agentIdentifier)}}start(){const t="features";try{const r=n(this.agentIdentifier),i=Array.from(this.desiredFeatures);i.sort(((t,r)=>e.p[t.featureName]-e.p[r.featureName])),i.forEach((t=>{if(r[t.featureName]||t.featureName===e.D.pageViewEvent){const e=(0,s.Z)(t.featureName),n=e.every((e=>r[e]));n||(0,p.Z)("".concat(t.featureName," is enabled but one or more dependent features has been disabled (").concat((0,C.P)(e),"). This may cause unintended consequences or missing data...")),this.features[t.featureName]=new t(this.agentIdentifier,this.sharedAggregator)}})),(0,D.Qy)(this.agentIdentifier,this.features,t)}catch(e){(0,p.Z)("Failed to initialize all enabled instrument classes (agent aborted) -",e);for(const e in this.features)this.features[e].abortHandler?.();const r=(0,D.fP)();return delete r.initializedAgents[this.agentIdentifier]?.api,delete r.initializedAgents[this.agentIdentifier]?.[t],delete this.sharedAggregator,r.ee?.abort(),delete r.ee?.get(this.agentIdentifier),!1}}}({features:[E,ie,Bt,Tt,de,Vt,at],loaderType:"pro"})})(),window.NRBA=o})();</script>
-    
+VERSION 5.00
+Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
+Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear 
+   Caption         =   "Crear LiquidaciÃ³n de Caja"
+   ClientHeight    =   11070
+   ClientLeft      =   165
+   ClientTop       =   555
+   ClientWidth     =   23010
+   LinkTopic       =   "Form1"
+   MDIChild        =   -1  'True
+   ScaleHeight     =   11070
+   ScaleWidth      =   23010
+   WindowState     =   2  'Maximized
+   Begin VB.TextBox txtOtrosDescuentos 
+      Alignment       =   1  'Right Justify
+      Height          =   285
+      Left            =   120
+      TabIndex        =   30
+      Top             =   8520
+      Visible         =   0   'False
+      Width           =   960
+   End
+   Begin VB.TextBox txtDifCambioNG1 
+      Alignment       =   1  'Right Justify
+      Height          =   285
+      Left            =   1200
+      TabIndex        =   29
+      Top             =   8520
+      Visible         =   0   'False
+      Width           =   960
+   End
+   Begin VB.TextBox txtDifCambioTOTAL1 
+      Alignment       =   1  'Right Justify
+      Height          =   285
+      Left            =   2400
+      TabIndex        =   28
+      Top             =   8520
+      Visible         =   0   'False
+      Width           =   960
+   End
+   Begin XtremeSuiteControls.GroupBox grpOrigen 
+      Height          =   3255
+      Left            =   120
+      TabIndex        =   0
+      Top             =   4320
+      Width           =   11100
+      _Version        =   786432
+      _ExtentX        =   19579
+      _ExtentY        =   5741
+      _StockProps     =   79
+      Caption         =   "Valores"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.TabControl TabControl 
+         Height          =   2820
+         Left            =   120
+         TabIndex        =   1
+         Top             =   240
+         Width           =   10740
+         _Version        =   786432
+         _ExtentX        =   18944
+         _ExtentY        =   4974
+         _StockProps     =   68
+         Appearance      =   10
+         Color           =   32
+         PaintManager.ShowIcons=   -1  'True
+         ItemCount       =   2
+         Item(0).Caption =   "Banco"
+         Item(0).ControlCount=   2
+         Item(0).Control(0)=   "gridDepositosOperaciones"
+         Item(0).Control(1)=   "gridCompensatorios"
+         Item(1).Caption =   "Caja"
+         Item(1).ControlCount=   1
+         Item(1).Control(0)=   "gridCajaOperaciones"
+         Begin GridEX20.GridEX gridDepositosOperaciones 
+            Height          =   2070
+            Left            =   120
+            TabIndex        =   2
+            Top             =   600
+            Width           =   10410
+            _ExtentX        =   18362
+            _ExtentY        =   3651
+            Version         =   "2.0"
+            BoundColumnIndex=   ""
+            ReplaceColumnIndex=   ""
+            ColumnAutoResize=   -1  'True
+            MethodHoldFields=   -1  'True
+            ContScroll      =   -1  'True
+            AllowDelete     =   -1  'True
+            GroupByBoxVisible=   0   'False
+            RowHeaders      =   -1  'True
+            DataMode        =   99
+            AllowAddNew     =   -1  'True
+            ColumnHeaderHeight=   285
+            IntProp1        =   0
+            IntProp2        =   0
+            IntProp7        =   0
+            ColumnsCount    =   5
+            Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0000
+            Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0160
+            Column(3)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":029C
+            Column(4)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":03D0
+            Column(5)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0514
+            FormatStylesCount=   6
+            FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0618
+            FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0750
+            FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0800
+            FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":08B4
+            FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":098C
+            FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0A44
+            ImageCount      =   0
+            PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":0B24
+         End
+         Begin GridEX20.GridEX gridCajaOperaciones 
+            Height          =   2055
+            Left            =   -69880
+            TabIndex        =   3
+            Top             =   600
+            Visible         =   0   'False
+            Width           =   10410
+            _ExtentX        =   18362
+            _ExtentY        =   3625
+            Version         =   "2.0"
+            BoundColumnIndex=   ""
+            ReplaceColumnIndex=   ""
+            ColumnAutoResize=   -1  'True
+            MethodHoldFields=   -1  'True
+            ContScroll      =   -1  'True
+            AllowDelete     =   -1  'True
+            GroupByBoxVisible=   0   'False
+            RowHeaders      =   -1  'True
+            DataMode        =   99
+            AllowAddNew     =   -1  'True
+            ColumnHeaderHeight=   285
+            IntProp1        =   0
+            IntProp2        =   0
+            IntProp7        =   0
+            ColumnsCount    =   5
+            Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0CFC
+            Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0E5C
+            Column(3)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":0F98
+            Column(4)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":10CC
+            Column(5)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1200
+            FormatStylesCount=   6
+            FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1304
+            FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":143C
+            FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":14EC
+            FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":15A0
+            FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1678
+            FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1730
+            ImageCount      =   0
+            PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":1810
+         End
+         Begin GridEX20.GridEX gridCompensatorios 
+            Height          =   4710
+            Left            =   -69895
+            TabIndex        =   4
+            Top             =   435
+            Visible         =   0   'False
+            Width           =   9330
+            _ExtentX        =   16457
+            _ExtentY        =   8308
+            Version         =   "2.0"
+            BoundColumnIndex=   ""
+            ReplaceColumnIndex=   ""
+            PreviewColumn   =   "observacion"
+            PreviewRowLines =   1
+            ColumnAutoResize=   -1  'True
+            MethodHoldFields=   -1  'True
+            ContScroll      =   -1  'True
+            AllowColumnDrag =   0   'False
+            AllowDelete     =   -1  'True
+            GroupByBoxVisible=   0   'False
+            RowHeaders      =   -1  'True
+            DataMode        =   99
+            ColumnHeaderHeight=   285
+            IntProp1        =   0
+            IntProp2        =   0
+            IntProp7        =   0
+            ColumnsCount    =   5
+            Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":19E8
+            Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1B30
+            Column(3)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1C3C
+            Column(4)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1D28
+            Column(5)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1E2C
+            FormatStylesCount=   6
+            FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":1F6C
+            FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":20A4
+            FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2154
+            FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2208
+            FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":22E0
+            FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2398
+            ImageCount      =   0
+            PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":2478
+         End
+      End
+   End
+   Begin XtremeSuiteControls.GroupBox GroupBox2 
+      Height          =   2895
+      Left            =   120
+      TabIndex        =   5
+      Top             =   1440
+      Width           =   11085
+      _Version        =   786432
+      _ExtentX        =   19553
+      _ExtentY        =   5106
+      _StockProps     =   79
+      Caption         =   "Mostrar Facturas"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtBuscarFactura 
+         Alignment       =   1  'Right Justify
+         Height          =   285
+         Left            =   120
+         TabIndex        =   6
+         Top             =   480
+         Width           =   5010
+      End
+      Begin XtremeSuiteControls.ListBox lstFacturas 
+         Height          =   1575
+         Left            =   120
+         TabIndex        =   7
+         Top             =   1200
+         Width           =   10770
+         _Version        =   786432
+         _ExtentX        =   18997
+         _ExtentY        =   2778
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Appearance      =   4
+         Style           =   1
+      End
+      Begin XtremeSuiteControls.Label lblCantidadCbtesSeleccionados 
+         Height          =   135
+         Left            =   8640
+         TabIndex        =   10
+         Top             =   960
+         Width           =   2175
+         _Version        =   786432
+         _ExtentX        =   3836
+         _ExtentY        =   238
+         _StockProps     =   79
+         Caption         =   "Seleccionados"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Alignment       =   1
+      End
+      Begin XtremeSuiteControls.Label lblCantidadComprobantes 
+         Height          =   135
+         Left            =   120
+         TabIndex        =   9
+         Top             =   960
+         Width           =   2175
+         _Version        =   786432
+         _ExtentX        =   3836
+         _ExtentY        =   238
+         _StockProps     =   79
+         Caption         =   "Total Comprobantes"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      End
+      Begin VB.Label Label3 
+         AutoSize        =   -1  'True
+         Caption         =   "Buscar factura en la lista:"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   8
+         Top             =   240
+         Width           =   1830
+      End
+   End
+   Begin XtremeSuiteControls.GroupBox GroupBox3 
+      Height          =   1335
+      Left            =   120
+      TabIndex        =   11
+      Top             =   120
+      Width           =   11100
+      _Version        =   786432
+      _ExtentX        =   19579
+      _ExtentY        =   2355
+      _StockProps     =   79
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton btnMostrarFacturas 
+         Height          =   615
+         Left            =   720
+         TabIndex        =   24
+         Top             =   360
+         Width           =   1815
+         _Version        =   786432
+         _ExtentX        =   3201
+         _ExtentY        =   1085
+         _StockProps     =   79
+         Caption         =   "Mostrar Comprobantes"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.DateTimePicker dtpFecha 
+         Height          =   330
+         Left            =   9720
+         TabIndex        =   12
+         Top             =   240
+         Width           =   1245
+         _Version        =   786432
+         _ExtentX        =   2196
+         _ExtentY        =   582
+         _StockProps     =   68
+         Format          =   1
+         CurrentDate     =   40183.7263657407
+      End
+      Begin XtremeSuiteControls.PushButton btnGuardar 
+         Height          =   495
+         Left            =   9240
+         TabIndex        =   23
+         Top             =   720
+         Width           =   1695
+         _Version        =   786432
+         _ExtentX        =   2990
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Guardar"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin VB.Label lblTotalFacturas 
+         AutoSize        =   -1  'True
+         Caption         =   "Total facturas: "
+         Height          =   195
+         Left            =   5040
+         TabIndex        =   22
+         Top             =   840
+         Width           =   1110
+      End
+      Begin VB.Label lblTotal 
+         AutoSize        =   -1  'True
+         Caption         =   "Total Pagos:"
+         Height          =   195
+         Left            =   5040
+         TabIndex        =   21
+         Tag             =   "Total: "
+         Top             =   240
+         Width           =   900
+      End
+      Begin VB.Label Label2 
+         Alignment       =   1  'Right Justify
+         AutoSize        =   -1  'True
+         Caption         =   "Fecha"
+         Height          =   195
+         Left            =   9135
+         TabIndex        =   13
+         Tag             =   "Total: "
+         Top             =   330
+         Width           =   435
+      End
+   End
+   Begin GridEX20.GridEX gridBancos 
+      Height          =   1845
+      Left            =   1560
+      TabIndex        =   14
+      Top             =   11040
+      Visible         =   0   'False
+      Width           =   3465
+      _ExtentX        =   6112
+      _ExtentY        =   3254
+      Version         =   "2.0"
+      BoundColumnIndex=   "id"
+      ReplaceColumnIndex=   "nombre"
+      ActAsDropDown   =   -1  'True
+      ColumnAutoResize=   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      NewRowPos       =   1
+      RowHeaders      =   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   2
+      Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2650
+      Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2750
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2840
+      FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2978
+      FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2A28
+      FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2ADC
+      FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2BB4
+      FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2C6C
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":2D4C
+   End
+   Begin GridEX20.GridEX gridCuentasBancarias 
+      Height          =   1935
+      Left            =   10560
+      TabIndex        =   15
+      Top             =   11040
+      Visible         =   0   'False
+      Width           =   1665
+      _ExtentX        =   2937
+      _ExtentY        =   3413
+      Version         =   "2.0"
+      BoundColumnIndex=   "id"
+      ReplaceColumnIndex=   "cuenta"
+      ActAsDropDown   =   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      NewRowPos       =   1
+      RowHeaders      =   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   2
+      Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":2F24
+      Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3048
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":313C
+      FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3274
+      FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3324
+      FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":33D8
+      FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":34B0
+      FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3568
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":3648
+   End
+   Begin GridEX20.GridEX gridMonedas 
+      Height          =   1815
+      Left            =   120
+      TabIndex        =   16
+      Top             =   11040
+      Visible         =   0   'False
+      Width           =   1380
+      _ExtentX        =   2434
+      _ExtentY        =   3201
+      Version         =   "2.0"
+      BoundColumnIndex=   "id"
+      ReplaceColumnIndex=   "moneda"
+      ActAsDropDown   =   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      NewRowPos       =   1
+      RowHeaders      =   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   2
+      Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3820
+      Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3944
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3A38
+      FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3B70
+      FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3C20
+      FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3CD4
+      FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3DAC
+      FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":3E64
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":3F44
+   End
+   Begin GridEX20.GridEX gridCajas 
+      Height          =   1935
+      Left            =   14520
+      TabIndex        =   17
+      Top             =   11040
+      Visible         =   0   'False
+      Width           =   1500
+      _ExtentX        =   2646
+      _ExtentY        =   3413
+      Version         =   "2.0"
+      BoundColumnIndex=   "id"
+      ReplaceColumnIndex=   "caja"
+      ActAsDropDown   =   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      ColumnHeaders   =   0   'False
+      NewRowPos       =   1
+      RowHeaders      =   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      ColumnsCount    =   2
+      Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":411C
+      Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":421C
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":4308
+      FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":4440
+      FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":44F0
+      FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":45A4
+      FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":467C
+      FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":4734
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":4814
+   End
+   Begin GridEX20.GridEX gridChequesDisponibles 
+      Height          =   1920
+      Left            =   5160
+      TabIndex        =   18
+      Top             =   11040
+      Visible         =   0   'False
+      Width           =   3675
+      _ExtentX        =   6482
+      _ExtentY        =   3387
+      Version         =   "2.0"
+      BoundColumnIndex=   "id"
+      ReplaceColumnIndex=   "numero"
+      ActAsDropDown   =   -1  'True
+      ColumnAutoResize=   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      RowHeaders      =   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   7
+      Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":49EC
+      Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":4B6C
+      Column(3)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":4D0C
+      Column(4)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":4E48
+      Column(5)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":4F54
+      Column(6)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5074
+      Column(7)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5180
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5274
+      FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":53AC
+      FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":545C
+      FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5510
+      FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":55E8
+      FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":56A0
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":5780
+   End
+   Begin GridEX20.GridEX gridChequeras 
+      Height          =   1935
+      Left            =   9000
+      TabIndex        =   19
+      Top             =   11040
+      Width           =   1395
+      _ExtentX        =   2461
+      _ExtentY        =   3413
+      Version         =   "2.0"
+      BoundColumnIndex=   "id"
+      ReplaceColumnIndex=   "chequera"
+      ActAsDropDown   =   -1  'True
+      ColumnAutoResize=   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowColumnDrag =   0   'False
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      ColumnHeaders   =   0   'False
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   2
+      Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5958
+      Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5A78
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5B78
+      FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5CB0
+      FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5D60
+      FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5E14
+      FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5EEC
+      FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":5FA4
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":6084
+   End
+   Begin GridEX20.GridEX gridChequesChequera 
+      Height          =   1935
+      Left            =   12360
+      TabIndex        =   20
+      Top             =   11040
+      Width           =   1980
+      _ExtentX        =   3493
+      _ExtentY        =   3413
+      Version         =   "2.0"
+      HoldSortSettings=   -1  'True
+      BoundColumnIndex=   "id"
+      ReplaceColumnIndex=   "nro"
+      ActAsDropDown   =   -1  'True
+      ColumnAutoResize=   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowColumnDrag =   0   'False
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      ColumnHeaders   =   0   'False
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   2
+      Column(1)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":625C
+      Column(2)       =   "frmAdminPagosCrearLiquidaciondeCaja.frx":638C
+      SortKeysCount   =   1
+      SortKey(1)      =   "frmAdminPagosCrearLiquidaciondeCaja.frx":648C
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":64F4
+      FormatStyle(2)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":662C
+      FormatStyle(3)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":66DC
+      FormatStyle(4)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":6790
+      FormatStyle(5)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":6868
+      FormatStyle(6)  =   "frmAdminPagosCrearLiquidaciondeCaja.frx":6920
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminPagosCrearLiquidaciondeCaja.frx":6A00
+   End
+   Begin XtremeSuiteControls.RadioButton radioFacturaProveedor 
+      Height          =   210
+      Left            =   120
+      TabIndex        =   25
+      Top             =   7680
+      Visible         =   0   'False
+      Width           =   2760
+      _Version        =   786432
+      _ExtentX        =   4868
+      _ExtentY        =   370
+      _StockProps     =   79
+      Caption         =   "Seleccione Proveedor"
+      Appearance      =   6
+      Value           =   -1  'True
+   End
+   Begin XtremeSuiteControls.ComboBox cboMonedas 
+      Height          =   315
+      Left            =   765
+      TabIndex        =   26
+      Top             =   8040
+      Visible         =   0   'False
+      Width           =   1245
+      _Version        =   786432
+      _ExtentX        =   2196
+      _ExtentY        =   556
+      _StockProps     =   77
+      BackColor       =   -2147483643
+      Style           =   2
+      Text            =   "cboMonedas"
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      AutoSize        =   -1  'True
+      Caption         =   "Moneda"
+      Height          =   195
+      Left            =   120
+      TabIndex        =   27
+      Tag             =   "Total: "
+      Top             =   8100
+      Visible         =   0   'False
+      Width           =   570
+   End
+End
+Attribute VB_Name = "frmAdminPagosLiquidaciondeCajaCrear"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+Implements ISuscriber
+Private id_susc As String
+Dim formLoading As Boolean
+Dim formLoaded As Boolean
+Dim alicuotas As New Collection
+
+Dim total_por_factura As New Dictionary
+Dim vFactElegida As clsFacturaProveedor
+Dim vCompeElegido As Compensatorio
+Dim vFacturaProveedor As clsFacturaProveedor
+Dim colProveedores As New Collection
+Dim colFacturas As New Collection
+Dim colDeudaCompensatorios As New Collection
+Dim prov As clsProveedor
+Dim Factura As clsFacturaProveedor
+
+Private Banco As Banco
+Private caja As caja
+Private CuentaBancaria As CuentaBancaria
+Private moneda As clsMoneda
+Private alicuotaRetencion As DTORetencionAlicuota
+Private cuentasBancarias As New Collection
+Private retenciones As New Collection
+Private Monedas As New Collection
+Private Cajas As New Collection
+Private bancos As New Collection
+Private chequesDisponibles As New Collection
+Private chequeras As New Collection
+
+Dim compe As Compensatorio
+
+Private LiquidacionCaja As New clsLiquidacionCaja
+Private OrdenPago As New OrdenPago
+
+Private operacion As operacion
+Private cheque As cheque
+Private tmpChequera As chequera
+
+Private chequesChequeraSeleccionada As New Collection
+
+Public ReadOnly As Boolean
+
+Public Sub Cargar(op As OrdenPago)
 
 
-<meta name="bb-env" content="production" />
-<meta id="bb-canon-url" name="bb-canon-url" content="https://bitbucket.org">
-<meta name="bb-api-canon-url" content="https://api.bitbucket.org">
-<meta name="apitoken" content="{&quot;token&quot;: &quot;V1fc1lb3vGlw6h45ByULZFuPrBGl0PbZ5ydH1he6mYY1Ca5XVVoH_D7bVo_ztBraDaeTibELPvVzNJuyDjwCNGGoYaxHG44njLX8wOL0fbetlxoOpjPfiuWBrF5yeeP0CHzhaaI2Np0CRiJjGsGxJXZ3t5-D&quot;, &quot;expiration&quot;: 1680007205.1563823, &quot;expires_in&quot;: 300}">
+If Not IsSomething(op) Then
+    MsgBox "La OP que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
+    Unload Me
+    Exit Sub
+
+End If
 
 
-<meta name="bitbucket-commit-hash" content="fdb44d60f5b8">
-<meta name="bb-app-node" content="38588a290827">
-<meta name="bb-dce-env" content="micros">
-<meta name="bb-view-name" content="bitbucket.apps.repo2.views.SourceView">
-<meta name="ignore-whitespace" content="False">
-<meta name="tab-size" content="None">
-<meta name="locale" content="en">
-<meta name="application-name" content="Bitbucket">
-<meta name="apple-mobile-web-app-title" content="Bitbucket">
-<meta name="slack-app-id" content="A8W8QLZD1">
-<meta name="statuspage-api-host" content="https://bqlf8qjztdtr.statuspage.io">
+    Set OrdenPago = DAOLiquidacionCaja.FindById(op.Id)
+    Set LiquidacionCaja.Compensatorios = DAOCompensatorios.FindByOP(LiquidacionCaja.Id)
+
+    Dim i As Long
+    Dim j As Long
+    With OrdenPago
+
+        If .EsParaFacturaProveedor Then
+            radioFacturaProveedor.value = True
+
+            If .FacturasProveedor.count > 0 Then
+
+'                Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
+
+'                If Me.cboProveedores.ListIndex = -1 Then    'el proveedor no esta en la lista porque no tiene mas facturas sin saldar
+'                    Me.cboProveedores.AddItem .FacturasProveedor.item(1).Proveedor.RazonSocial
+'                    Me.cboProveedores.ItemData(Me.cboProveedores.NewIndex) = .FacturasProveedor.item(1).Proveedor.Id
+'                    colProveedores.Add .FacturasProveedor.item(1).Proveedor, CStr(.FacturasProveedor.item(1).Proveedor.Id)
+'                    Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
+'                End If
+
+         cmdMostrarDatosProveedor_Click
 
 
-<meta name="theme-color" content="#0049B0">
-<meta name="msapplication-TileColor" content="#0052CC">
-<meta name="msapplication-TileImage" content="https://d301sr5gafysq2.cloudfront.net/fdb44d60f5b8/img/logos/bitbucket/mstile-150x150.png">
-<link rel="apple-touch-icon" sizes="180x180" type="image/png" href="https://d301sr5gafysq2.cloudfront.net/fdb44d60f5b8/img/logos/bitbucket/apple-touch-icon.png">
-<link rel="icon" sizes="192x192" type="image/png" href="https://d301sr5gafysq2.cloudfront.net/fdb44d60f5b8/img/logos/bitbucket/android-chrome-192x192.png">
+       Dim idx As Integer
+       idx = -1
+                For i = 1 To .FacturasProveedor.count
+                    For j = 0 To Me.lstFacturas.ListCount - 1
+                        If Me.lstFacturas.ItemData(j) = .FacturasProveedor.item(i).Id Then
+                            Me.lstFacturas.Checked(j) = True
+                            idx = i
+                        End If
+                    Next j
+                Next i
 
-<link rel="icon" sizes="16x16 24x24 32x32 64x64" type="image/x-icon" href="/favicon.ico?v=2">
-<link rel="mask-icon" href="https://d301sr5gafysq2.cloudfront.net/fdb44d60f5b8/img/logos/bitbucket/safari-pinned-tab.svg" color="#0052CC">
+            'acaa
 
-<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="Bitbucket">
 
-    <meta name="description" content="">
-    <meta name="bb-single-page-app" content="true">
-    
-      <link rel="stylesheet" href="https://d301sr5gafysq2.cloudfront.net/frontbucket/assets/present/vendor.bb4e7dc5.css">
-    
-    
-    
-    <script nonce="PZ0dmA19R97OoXHjg1wdWw==">
 
-if (window.performance) {
 
-  
-  window.performance.okayToSendMetrics = !document.hidden && 'onvisibilitychange' in document;
 
-  if (window.performance.okayToSendMetrics) {
+                If ReadOnly Then
+                    For j = Me.lstFacturas.ListCount - 1 To 0 Step -1
+                        If Not Me.lstFacturas.Checked(j) Then
+                            Me.lstFacturas.RemoveItem j
+                        End If
+                    Next j
 
-    
-    window.addEventListener('visibilitychange', function () {
-      if (document.hidden) {
-        window.performance.okayToSendMetrics = false;
-      }
-    });
-  }
+                    'Me.lblCantidadComprobantes.caption = Me.lblCantidadCbtesSeleccionados.caption
 
-  
-  
-}
-</script>
-  </head>
-  <body>
-    <div id="root">
-    <script nonce="PZ0dmA19R97OoXHjg1wdWw==">
-      window.__webpack_public_path__ = "https://d301sr5gafysq2.cloudfront.net/frontbucket/assets/present/";
-    </script>
-    
-    
-    
-    </div>
-    <script nonce="PZ0dmA19R97OoXHjg1wdWw==">
-      
-        window.__sentry__ = {"dsn": "https://2dcda83904474d8c86928ebbfa1ab294@o55978.ingest.sentry.io/1480772", "environment": "production", "tags": {"dc_location": "Micros-3", "micros_deployment_id": "p87e237q9atf4hk2", "micros_service": "bbc-website", "micros_envtype": "prod", "micros_service_version": "52650", "micros_instance_id": "i-0e415a46ab62d8a3f", "micros_zone": "us-east-1.prod.atl-paas.net", "revision": "fdb44d60f5b8"}};
-      
-      window.__app_data__ = {"navigationIsOpen": true, "tenantId": "f97a7152-9d5e-4238-bcba-54ce403dd28d", "features": {"deployments-ui-in-frontbucket": true, "create-pr-spa": true, "workspace-view": true, "project-settings-branch-restrictions": false, "project-settings-branch-permissions": false, "bbc-project-permissions-enabled": false, "bbc-workspace-permissions-page-enabled": false, "workspace-default-groups": true, "workspace-invitations-restrictions": true}, "links": {"backButtonUrl": "https://bitbucket.org/cuervoeste/signosofterp/src/master/signo1/", "overviewUrl": "/cuervoeste/workspace/overview"}, "user": {"aaid": "5e4ef73f3df51b0c9374d347", "uuid": "4cda2cba-403e-4487-b583-c6777f4c89a4", "isAtlassian": false, "isBitbucket": false}, "frontbucket_version": "ba6cc9ff7250e25b51040265f0018c9094a8e713", "frontbucket_environment": "production"};
-      
-        window.__initial_state__ = {"global": {"geoip_country": "AR", "is_mobile_user_agent": false, "site_message": "", "needs_marketing_consent": false, "marketing_consent_locale": null, "whats_new_feed": "https://bitbucket.org/blog/wp-json/wp/v2/posts?categories=196&context=embed&per_page=6&orderby=date&order=desc", "locale": "en", "path": "/cuervoeste/signosofterp/src/master/signo1/frmAdminPagosCrearLiquidaciondeCaja.frm", "isFocusedTask": false, "focusedTaskBackButtonUrl": "https://bitbucket.org/cuervoeste/signosofterp/src/master/signo1/", "features": {"reset-changes-requested-status": true, "sync-workspace-user-active": true, "async-bbbs-queue-update-account": true, "lookup-pr-approvers-from-prs": true, "enable-repository-replication-cronman": true, "log-asap-errors": true, "provisioning-install-pipelines-addon": true, "fd-prs-client-cache-fallback": true, "block-non-pipelines-custom-events-webhooks": true, "view-source-filtering-upon-timeout": true, "read-only-message-migrations": true, "provisioning-skip-workspace-creation": true, "hot-91446-add-tracing-x-b3": true, "fd-repository-page-loading-error-guard": true, "uninstall-dvcs-addon-only-when-jira-is-removed": true, "show-upgrade-plans-banner": true, "auth-flow-adg3": true, "fd-undo-last-push": false, "show-pr-update-activity-changes": true, "workspace-member-set-last-accessed": true, "use-elasticache-lsn-storage": true, "account-switcher": true, "whitelisted_throttle_exemption": true, "exp-new-user-survey": true, "atlassian-editor": true, "bbc.core.pride-logo": false, "bbc.core.disable-repository-statuses-fetch": false, "bbc.core.disable-directory-metadata": false, "deployments-ui-in-frontbucket": true, "pipelines-settings-ui-in-frontbucket": false, "pr-dependencies": false, "workspace-view": true, "commit-expand-inno": false, "syntax-highlighting": false, "syntax-highlighting-popup": true, "commit-page-spa": false, "user-code-owners": false, "pr-max-commits-behind-mergecheck": true, "create-pr-spa": true, "project-settings-branch-restrictions": false, "project-settings-branch-permissions": false, "bbc-project-permissions-enabled": false, "bbc-workspace-permissions-page-enabled": false, "workspace-default-groups": true, "workspace-invitations-restrictions": true, "workspace-resolvable-comments": false, "workspace-code-owners": false}, "isNavigationOpen": true, "flags": [], "horizontalNavigationItems": {"mainItems": [{"id": "overview-tab", "label": "Your work", "tab_name": "overview", "anchor": true, "weight": 100, "is_premium": null, "url": "/cuervoeste/workspace/overview", "target": "_self", "can_display": true, "icon_class": "", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "overview", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": ""}, {"id": "pullrequests-tab", "label": "Pull requests", "tab_name": "pullrequests", "anchor": true, "weight": 140, "is_premium": null, "url": "/cuervoeste/workspace/pull-requests", "target": "_self", "can_display": true, "icon_class": "", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "pullrequests", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": ""}, {"id": "repositories-tab", "label": "Repositories", "tab_name": "repositories", "anchor": true, "weight": 160, "is_premium": null, "url": "/cuervoeste/workspace/repositories", "target": "_self", "can_display": true, "icon_class": "", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repositories", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": true, "test_id": null, "children": [], "type": "menu_item", "icon": ""}, {"id": "projects-tab", "label": "Projects", "tab_name": "projects", "anchor": true, "weight": 200, "is_premium": null, "url": "/cuervoeste/workspace/projects/", "target": "_self", "can_display": true, "icon_class": "", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "projects", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": true, "test_id": null, "children": [], "type": "menu_item", "icon": ""}, {"id": "people-tab", "label": "People", "tab_name": "people", "anchor": true, "weight": 220, "is_premium": null, "url": "/cuervoeste/workspace/members/", "target": "_self", "can_display": true, "icon_class": "", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "people", "analytics_payload": {}, "is_client_link": false, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": ""}], "secondaryItems": [{"id": "snippets-tab", "label": "Snippets", "tab_name": "snippets", "anchor": true, "weight": 400, "is_premium": null, "url": "/cuervoeste/workspace/snippets/", "target": "_self", "can_display": true, "icon_class": "", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "snippets", "analytics_payload": {}, "is_client_link": false, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": ""}], "settingsItems": []}, "currentUser": {"display_name": "Diego Nemer signoplast@gmail.com", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/users/%7B4cda2cba-403e-4487-b583-c6777f4c89a4%7D"}, "avatar": {"href": "https://secure.gravatar.com/avatar/3f7bbabc71d45cb9d5751cfba97febae?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FDS-5.png"}, "html": {"href": "https://bitbucket.org/%7B4cda2cba-403e-4487-b583-c6777f4c89a4%7D/"}}, "created_on": "2020-02-20T21:21:17.217858+00:00", "is_active": true, "type": "user", "uuid": "{4cda2cba-403e-4487-b583-c6777f4c89a4}", "has_2fa_enabled": null, "properties": {}, "is_staff": false, "account_id": "5e4ef73f3df51b0c9374d347", "nickname": "signoplast", "account_status": "active", "zoneinfo": null, "location": null, "organization": null, "department": null, "job_title": null, "extra": {"has_atlassian_account": true, "has_ssh_key": false, "has_premium": false, "has_workspace": true, "workspace_id": "signoplast_dnemer"}}, "currentUserEmail": "signoplast@gmail.com", "theme": null, "isCodeReviewSidebarOpen": true, "isCodeReviewWelcomeDialogOpen": true, "isCommitViewSidebarOpen": true, "isPullRequestIgnoreWhitespaceEnabled": false, "isPullRequestWordDiffEnabled": true, "isPullRequestColorBlindModeEnabled": false, "isPullRequestAnnotationsEnabled": true, "isPullRequestSingleFileModeEnabled": false, "isSourceBrowserSidebarOpen": true, "isBranchSidebarOpen": true, "isCommitSidebarOpen": false, "isCreatePRSidebarOpen": true, "sourceBrowserSidebarWidth": "280", "pullRequestDiffViewMode": null, "pullRequestFileViewMode": null, "pullRequestDiffTabSize": null, "commitViewSidebarWidth": null, "codeReviewSidebarWidth": null, "branchSidebarWidth": "280", "commitSidebarWidth": null, "createPRSidebarWidth": null, "importBitbucketActions": [], "bitbucketActions": [{"id": "snippet-create-dropdown-item", "label": "Snippet", "tab_name": null, "anchor": true, "weight": 130, "is_premium": null, "url": "/cuervoeste/workspace/snippets/new", "target": "_self", "can_display": true, "icon_class": "", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "createSnippet", "analytics_payload": {}, "is_client_link": false, "is_external_link": false, "is_dropdown_item": false, "test_id": "snippet-create-item", "children": [], "type": "menu_item", "icon": ""}], "targetUser": {"display_name": "Nicolas Battaglia", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/users/%7Bf97a7152-9d5e-4238-bcba-54ce403dd28d%7D"}, "avatar": {"href": "https://secure.gravatar.com/avatar/35d417e82a1557641035b811215567ef?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FNB-3.png"}, "html": {"href": "https://bitbucket.org/%7Bf97a7152-9d5e-4238-bcba-54ce403dd28d%7D/"}}, "created_on": "2014-09-04T11:52:29.517534+00:00", "is_active": true, "type": "user", "uuid": "{f97a7152-9d5e-4238-bcba-54ce403dd28d}", "has_2fa_enabled": null, "properties": {}, "is_staff": false, "account_id": "557058:8a6e2324-bca2-4e81-906e-7a092401e116", "nickname": "cuervoeste", "account_status": "active", "zoneinfo": null, "location": null, "organization": "None", "department": null, "job_title": null}, "targetFeatures": {"reset-changes-requested-status": true, "sync-workspace-user-active": true, "async-bbbs-queue-update-account": true, "lookup-pr-approvers-from-prs": true, "enable-repository-replication-cronman": true, "log-asap-errors": true, "provisioning-install-pipelines-addon": true, "fd-prs-client-cache-fallback": true, "block-non-pipelines-custom-events-webhooks": true, "view-source-filtering-upon-timeout": true, "read-only-message-migrations": true, "provisioning-skip-workspace-creation": true, "hot-91446-add-tracing-x-b3": true, "fd-repository-page-loading-error-guard": true, "uninstall-dvcs-addon-only-when-jira-is-removed": true, "show-upgrade-plans-banner": true, "auth-flow-adg3": true, "fd-undo-last-push": false, "show-pr-update-activity-changes": true, "workspace-member-set-last-accessed": true, "use-elasticache-lsn-storage": true, "account-switcher": true, "whitelisted_throttle_exemption": true, "exp-new-user-survey": true, "atlassian-editor": true}}, "section": {"repository": {"bitbucketActions": [{"id": "repo-create-branch-link", "label": "Branch", "tab_name": "create-branch", "anchor": true, "weight": 200, "is_premium": null, "url": "/cuervoeste/signosofterp/branch", "target": "_self", "can_display": true, "icon_class": "icon-create-branch", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repository.create_branch", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-create-branch"}, {"id": "repo-create-pull-request-link", "label": "Pull request", "tab_name": "create-pullreqst", "anchor": true, "weight": 300, "is_premium": null, "url": "/cuervoeste/signosofterp/pull-requests/new", "target": "_self", "can_display": true, "icon_class": "icon-create-pull-request", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "create_pullrequest", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": "pull-request-create-item", "children": [], "type": "menu_item", "icon": "icon-create-pull-request"}], "cloneProtocol": "https", "connectActions": [], "currentRepository": {"type": "repository", "full_name": "cuervoeste/signosofterp", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/repositories/cuervoeste/signosofterp"}, "html": {"href": "https://bitbucket.org/cuervoeste/signosofterp"}, "avatar": {"href": "https://bytebucket.org/ravatar/%7Bcfa8a9d9-e4c5-4646-9afa-5c1ed4b64074%7D?ts=default"}, "clone": [{"name": "https", "href": "https://signoplast_dnemer@bitbucket.org/cuervoeste/signosofterp.git"}, {"name": "ssh", "href": "git@bitbucket.org:cuervoeste/signosofterp.git"}]}, "name": "SignosoftERP", "slug": "signosofterp", "description": "", "scm": "git", "website": "", "owner": {"display_name": "Nicolas Battaglia", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/users/%7Bf97a7152-9d5e-4238-bcba-54ce403dd28d%7D"}, "avatar": {"href": "https://secure.gravatar.com/avatar/35d417e82a1557641035b811215567ef?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FNB-3.png"}, "html": {"href": "https://bitbucket.org/%7Bf97a7152-9d5e-4238-bcba-54ce403dd28d%7D/"}}, "type": "user", "uuid": "{f97a7152-9d5e-4238-bcba-54ce403dd28d}", "account_id": "557058:8a6e2324-bca2-4e81-906e-7a092401e116", "nickname": "cuervoeste"}, "workspace": {"type": "workspace", "uuid": "{f97a7152-9d5e-4238-bcba-54ce403dd28d}", "name": "Nicol\u00e1s Battaglia", "slug": "cuervoeste", "is_private": false, "links": {"avatar": {"href": "https://bitbucket.org/workspaces/cuervoeste/avatar/?ts=1543625137"}, "html": {"href": "https://bitbucket.org/cuervoeste/"}, "self": {"href": "https://bitbucket.org/!api/2.0/workspaces/cuervoeste"}}, "created_on": "2018-12-01T00:45:37.238880+00:00"}, "is_private": true, "project": {"type": "project", "owner": {"display_name": "Nicolas Battaglia", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/users/%7Bf97a7152-9d5e-4238-bcba-54ce403dd28d%7D"}, "avatar": {"href": "https://secure.gravatar.com/avatar/35d417e82a1557641035b811215567ef?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FNB-3.png"}, "html": {"href": "https://bitbucket.org/%7Bf97a7152-9d5e-4238-bcba-54ce403dd28d%7D/"}}, "type": "user", "uuid": "{f97a7152-9d5e-4238-bcba-54ce403dd28d}", "account_id": "557058:8a6e2324-bca2-4e81-906e-7a092401e116", "nickname": "cuervoeste"}, "workspace": {"type": "workspace", "uuid": "{f97a7152-9d5e-4238-bcba-54ce403dd28d}", "name": "Nicol\u00e1s Battaglia", "slug": "cuervoeste", "links": {"avatar": {"href": "https://bitbucket.org/workspaces/cuervoeste/avatar/?ts=1543625137"}, "html": {"href": "https://bitbucket.org/cuervoeste/"}, "self": {"href": "https://bitbucket.org/!api/2.0/workspaces/cuervoeste"}}}, "key": "PROJ", "uuid": "{d0c52166-6863-4735-8e5a-956e5ef512fb}", "is_private": false, "name": "Untitled project", "description": "Project created by Bitbucket for Nicol\u00e1s Battaglia", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/cuervoeste/projects/PROJ"}, "html": {"href": "https://bitbucket.org/cuervoeste/workspace/projects/PROJ"}, "avatar": {"href": "https://bitbucket.org/account/user/cuervoeste/projects/PROJ/avatar/32?ts=1543625137"}}, "created_on": "2018-12-01T00:45:37.243072+00:00", "updated_on": "2018-12-01T00:45:37.243085+00:00", "has_publicly_visible_repos": false}, "fork_policy": "no_public_forks", "updated_on": "2023-03-27T17:26:22.079068+00:00", "language": "", "uuid": "{cfa8a9d9-e4c5-4646-9afa-5c1ed4b64074}", "mainbranch": {"name": "master"}, "landing_page": "source"}, "menuItems": [{"id": "repo-source-link", "label": "Source", "tab_name": "source", "anchor": true, "weight": 200, "is_premium": null, "url": "/cuervoeste/signosofterp/src", "target": "_self", "can_display": true, "icon_class": "icon-source", "badge_label": null, "matching_url_prefixes": ["/diff", "/history-node"], "analytics_label": "repository.source", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-source"}, {"id": "repo-commits-link", "label": "Commits", "tab_name": "commits", "anchor": true, "weight": 300, "is_premium": null, "url": "/cuervoeste/signosofterp/commits/", "target": "_self", "can_display": true, "icon_class": "icon-commits", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repository.commits", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-commits"}, {"id": "repo-branches-link", "label": "Branches", "tab_name": "branches", "anchor": true, "weight": 400, "is_premium": null, "url": "/cuervoeste/signosofterp/branches/", "target": "_self", "can_display": true, "icon_class": "icon-branches", "badge_label": null, "matching_url_prefixes": ["/branch"], "analytics_label": "repository.branches", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-branches"}, {"id": "repo-pullrequests-link", "label": "Pull requests", "tab_name": "pullrequests", "anchor": true, "weight": 500, "is_premium": null, "url": "/cuervoeste/signosofterp/pull-requests/", "target": "_self", "can_display": true, "icon_class": "icon-pull-requests", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repository.pullrequests", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-pull-requests"}, {"id": "repo-pipelines-link", "label": "Pipelines", "tab_name": "pipelines", "anchor": true, "weight": 550, "is_premium": null, "url": "/cuervoeste/signosofterp/pipelines", "target": "_self", "can_display": true, "icon_class": "icon-pipelines", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repository.pipelines", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-pipelines"}, {"id": "repo-deployments-link", "label": "Deployments", "tab_name": "deployments", "anchor": true, "weight": 560, "is_premium": null, "url": "/cuervoeste/signosofterp/deployments", "target": "_self", "can_display": true, "icon_class": "icon-deployments", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repository.deployments", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-deployments"}, {"id": "repo-jira-link", "label": "Jira issues", "tab_name": "jira", "anchor": true, "weight": 600, "is_premium": null, "url": "/cuervoeste/signosofterp/jira", "target": "_self", "can_display": true, "icon_class": "icon-jira", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repository.jira", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-jira"}, {"id": "repo-security-link", "label": "Security", "tab_name": "security", "anchor": true, "weight": 610, "is_premium": null, "url": "/cuervoeste/signosofterp/security", "target": "_self", "can_display": true, "icon_class": "icon-security", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repository.security", "analytics_payload": {}, "is_client_link": true, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-security"}, {"id": "repo-downloads-link", "label": "Downloads", "tab_name": "downloads", "anchor": true, "weight": 800, "is_premium": null, "url": "/cuervoeste/signosofterp/downloads/", "target": "_self", "can_display": true, "icon_class": "icon-downloads", "badge_label": null, "matching_url_prefixes": [], "analytics_label": "repository.downloads", "analytics_payload": {}, "is_client_link": false, "is_external_link": false, "is_dropdown_item": false, "test_id": null, "children": [], "type": "menu_item", "icon": "icon-downloads"}], "mirrors": [], "sizeLimits": {"hard": 4294967296, "soft": 2147483648.0, "readOnly": 10737418240.0}, "override_settings": {"default_merge_strategy": false, "branching_model": false}, "activeMenuItem": "source"}}, "repository": {"source": {"section": {"hash": "69d033955db289284f11630405f3bf86211fa4ae", "ref": {"name": "master", "target": {"type": "commit", "hash": "69d033955db289284f11630405f3bf86211fa4ae", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/repositories/cuervoeste/signosofterp/commit/69d033955db289284f11630405f3bf86211fa4ae"}, "html": {"href": "https://bitbucket.org/cuervoeste/signosofterp/commits/69d033955db289284f11630405f3bf86211fa4ae"}}}, "links": {"self": {"href": "https://bitbucket.org/!api/2.0/repositories/cuervoeste/signosofterp/refs/branches/master"}, "html": {"href": "https://bitbucket.org/cuervoeste/signosofterp/branch/master"}}}, "atRef": null}}}};
-      
-      window.__settings__ = {"API_CANON_URL": "https://api.bitbucket.org", "CANON_URL": "https://bitbucket.org", "LOGIN_URL": "/account/signin/", "SOCIAL_AUTH_ATLASSIANID_LOGIN_PROMPT_URL": "https://id.atlassian.com/login", "SOCIAL_AUTH_ATLASSIANID_LOGOUT_URL": "https://id.atlassian.com/logout", "SOCIAL_AUTH_ATLASSIANID_PROFILE_URL": "https://id.atlassian.com/manage-profile/", "ATLASSIANID_LOGIN_URL": "https://id.atlassian.com/login", "ATLASSIANID_LOGOUT_URL": "https://id.atlassian.com/logout", "ATLASSIANID_MANAGE_PROFILE_URL": "https://id.atlassian.com/manage-profile/", "MARKETPLACE_TERMS_OF_USE_URL": null, "CONSENT_HUB_FRONTEND_BASE_URL": "https://preferences.atlassian.com", "EMOJI_STANDARD_BASE_URL": "https://bitbucket.org/gateway/api/emoji/", "STATUSPAGE_URL": "https://bitbucket.status.atlassian.com/"};
-      window.__webpack_nonce__ = 'PZ0dmA19R97OoXHjg1wdWw==';
-      window.isInitialLoadApdex = true;
-      
-      
-    </script>
-    
-      <script nonce="PZ0dmA19R97OoXHjg1wdWw==" src="https://d301sr5gafysq2.cloudfront.net/frontbucket/assets/present/ajs.f7584b67.js"></script>
-    
-      <script nonce="PZ0dmA19R97OoXHjg1wdWw==" src="https://d301sr5gafysq2.cloudfront.net/frontbucket/assets/present/app.c6034928.js"></script>
-    
-    
-      <script nonce="PZ0dmA19R97OoXHjg1wdWw==" src="https://d301sr5gafysq2.cloudfront.net/frontbucket/assets/present/performance-timing.4c623d2e.js" defer></script>
-    
-    <script nonce="PZ0dmA19R97OoXHjg1wdWw==" type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","errorBeacon":"bam.nr-data.net","licenseKey":"a2cef8c3d3","applicationID":"790458688","transactionName":"MwMEZ0BQCEcHW0JYDQpJIEZcUhJdCVYZUwsQBBNQWVQSGgdIRkJMFgMWXAAfEF0DT0ULBA0KA1FAXhFHAw==","queueTime":0,"applicationTime":428,"agent":""}</script>
-  </body>
-</html>
+                End If
+
+            End If
+'            Me.txtRetenciones.text = .alicuota
+
+        Else
+'            Me.radioConcepto.value = True
+
+'            If IsSomething(.CuentaContable) Then
+'                Me.cboCuentas.ListIndex = funciones.PosIndexCbo(.CuentaContable.Id, Me.cboCuentas)
+'                Me.txtDetalle.text = .CuentaContableDescripcion
+'            Else
+'                Me.cboCuentas.ListIndex = -1
+'                Me.txtDetalle.text = vbNullString
+'            End If
+
+        End If
+
+
+        If idx >= 0 Then
+             lstFacturas.ListIndex = lstFacturas.ListCount - 1
+
+         End If
+
+
+
+
+'        Me.gridCajaOperaciones.ItemCount = .OperacionesCaja.count
+'        Me.gridDepositosOperaciones.ItemCount = .OperacionesBanco.count
+'        Me.gridCheques.ItemCount = .ChequesTerceros.count
+'        Me.gridChequesPropios.ItemCount = .ChequesPropios.count
+'
+'        Me.gridRetenciones.ItemCount = .RetencionesAlicuota.count
+'        Set alicuotas = .RetencionesAlicuota
+'
+'
+'        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.Id, Me.cboMonedas)
+'        Me.dtpFecha.value = .FEcha
+'        Me.txtDifCambio.text = .DiferenciaCambio
+'        Me.txtOtrosDescuentos.text = .OtrosDescuentos
+
+    End With
+    mostrarCompensatorios
+
+
+
+
+
+'    Me.caption = "Orden de Pago Nº " & LiquidacionCaja.Id
+'
+'    'Me.grpDestino.Enabled = Not ReadOnly
+'    Me.txtDifCambioNG1.Enabled = Not ReadOnly
+'    Me.txtDifCambioTOTAL1.Enabled = Not ReadOnly
+'    Me.cmdMostrarDatosProveedor.Enabled = Not ReadOnly
+'    Me.btnPadronAnt.Enabled = Not ReadOnly
+'    Me.btnCargar.Enabled = Not ReadOnly
+'
+'    Me.gridRetenciones.AllowEdit = Not ReadOnly
+
+'    GroupBox2.Enabled = Not ReadOnly
+'
+'    GroupBox1.Enabled = Not ReadOnly
+
+
+    Me.radioConcepto.Enabled = Not ReadOnly
+    Me.radioFacturaProveedor.Enabled = Not ReadOnly
+    Me.cboCuentas.Enabled = Not ReadOnly
+    Me.cboProveedores.Enabled = Not ReadOnly
+    Me.txtDetalle.Enabled = Not ReadOnly
+    Me.btnClearProveedor.Enabled = Not ReadOnly
+
+    'Me.grpOrigen.Enabled = Not ReadOnly
+
+
+
+    Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
+    Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
+
+    Me.gridBancos.AllowEdit = Not ReadOnly
+    'Me.gridBancos.AllowDelete = Not ReadOnly
+
+    Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
+    Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
+
+    Me.gridCajas.AllowEdit = Not ReadOnly
+    'Me.gridCajas.AllowDelete = Not ReadOnly
+
+    Me.gridChequeras.AllowEdit = Not ReadOnly
+    'Me.gridChequeras.AllowDelete = Not ReadOnly
+
+    Me.gridCheques.AllowEdit = Not ReadOnly
+    Me.gridCheques.AllowDelete = Not ReadOnly
+
+    Me.gridChequesChequera.AllowEdit = Not ReadOnly
+    'Me.gridChequesChequera.AllowDelete = Not ReadOnly
+
+    Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
+    'Me.gridChequesDisponibles.AllowDelete = Not ReadOnly
+
+    Me.gridChequesPropios.AllowEdit = Not ReadOnly
+    Me.gridChequesPropios.AllowDelete = Not ReadOnly
+
+    Me.cboMonedas.Enabled = Not ReadOnly
+    Me.dtpFecha.Enabled = Not ReadOnly
+    Me.btnGuardar.Enabled = Not ReadOnly
+    Me.txtDifCambio.Enabled = Not ReadOnly
+    Me.txtOtrosDescuentos.Enabled = Not ReadOnly
+
+    Totalizar
+
+End Sub
+
+
+Public Property Get FacturaProveedor(nvalue As clsFacturaProveedor)
+    Set vFacturaProveedor = nvalue
+End Property
+
+
+Private Sub btnBorrar_Click()
+
+    cboProveedores.ListIndex = -1
+    Me.gridRetenciones.ItemCount = 0
+    Me.txtRetenciones.text = 0
+    Me.lstFacturas.Clear
+    Set prov = Nothing
+
+
+End Sub
+
+Private Sub ActualizarAlicuotas()
+
+  Dim A As DTORetencionAlicuota
+                    Dim B As DTORetencionAlicuota
+                       For Each A In alicuotas
+
+                       For Each B In LiquidacionCaja.RetencionesAlicuota
+                                If A.Retencion.Id = B.Retencion.Id Then
+                                  If B.importe > 0 Then
+                                    A.importe = B.importe
+                                  End If
+
+                                End If
+
+                    Next
+
+                    Next
+
+End Sub
+
+
+Private Sub btnCargar_Click()
+
+    If Me.cboProveedores.ListIndex <> -1 Then
+        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
+
+                If IsSomething(prov) Then
+
+                 ' #fix 180
+                If LiquidacionCaja.estado = EstadoOrdenPago_pendiente Then
+                    Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+                    ActualizarAlicuotas
+                End If
+
+
+                End If
+    Else
+        Set prov = Nothing
+
+    End If
+
+    Me.gridRetenciones.ItemCount = 0
+    Me.gridRetenciones.ItemCount = alicuotas.count
+    Me.gridRetenciones.Refresh
+
+'MostrarFacturas
+    Totalizar
+
+End Sub
+
+Private Sub btnClearProveedor_Click()
+    cboProveedores.ListIndex = -1
+    Me.gridRetenciones.ItemCount = 0
+    Me.txtRetenciones.text = 0
+    Me.lstFacturas.Clear
+    Set prov = Nothing
+End Sub
+
+
+Private Sub btnGuardar_Click()
+    If Me.gridCajaOperaciones.EditMode = jgexEditModeOn Then
+        MsgBox "Todavia esta editando la grilla de caja.", vbExclamation
+        Exit Sub
+    End If
+
+    If Me.gridDepositosOperaciones.EditMode = jgexEditModeOn Then
+        MsgBox "Todavia esta editando la grilla de banco.", vbExclamation
+        Exit Sub
+    End If
+
+
+'    Set LiquidacionCaja.CuentaContable = Nothing
+'    LiquidacionCaja.CuentaContableDescripcion = vbNullString
+    Set LiquidacionCaja.FacturasProveedor = New Collection
+'    Set LiquidacionCaja.RetencionesAlicuota = alicuotas
+
+
+
+
+    If Me.radioFacturaProveedor.value Then
+        Dim T As Long
+        For T = 0 To Me.lstFacturas.ListCount - 1
+            If Me.lstFacturas.Checked(T) Then
+                LiquidacionCaja.FacturasProveedor.Add colFacturas.item(CStr(Me.lstFacturas.ItemData(T)))
+            End If
+        Next T
+
+    Else
+
+'        If Me.cboCuentas.ListIndex > -1 Then
+'            Set LiquidacionCaja.CuentaContable = DAOCuentaContable.GetById(Me.cboCuentas.ItemData(Me.cboCuentas.ListIndex))
+'        End If
+'        LiquidacionCaja.CuentaContableDescripcion = Me.txtDetalle.text
+
+    End If
+
+'     For i = 0 To Me.lstDeudaCompensatorios.ListCount - 1
+'            If Me.lstDeudaCompensatorios.Checked(i) Then
+'                LiquidacionCaja.DeudaCompensatorios.Add colDeudaCompensatorios.item(CStr(Me.lstDeudaCompensatorios.ItemData(i)))
+'            End If
+'        Next i
+
+
+'    If IsNumeric(Me.txtRetenciones) Then LiquidacionCaja.alicuota = Val(Me.txtRetenciones)
+
+    If LiquidacionCaja.IsValid Then
+
+        Dim n As Boolean: n = (LiquidacionCaja.Id = 0)
+
+        If DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
+
+            If n Then
+                MsgBox "Liquidación de Caja Nº " & LiquidacionCaja.Id & " creada con exito.", vbInformation
+            Else
+
+                MsgBox "Liquidación de Caja modificada con exito.", vbInformation
+            End If
+
+            Dim EVENTO As New clsEventoObserver
+            Set EVENTO.Elemento = LiquidacionCaja
+            EVENTO.Tipo = LiquidacionCaja_
+            Set EVENTO.Originador = Me
+
+            If n Then
+                EVENTO.EVENTO = agregar_
+            Else
+                EVENTO.EVENTO = modificar_
+            End If
+            Channel.Notificar EVENTO, LiquidacionCaja_
+
+            If n Then
+                If MsgBox("¿Desea crear una Liquidación de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
+                    Dim f12 As New frmAdminPagosLiquidaciondeCajaCrear
+                    f12.Show
+                End If
+            End If
+
+            Unload Me
+        Else
+            MsgBox "Hubo un problema al guardar la Liquidación.", vbCritical
+        End If
+    Else
+        MsgBox LiquidacionCaja.ValidationMessages, vbCritical, "Error"
+    End If
+
+
+End Sub
+
+Private Sub btnPadronAnt_Click()
+
+    If Me.cboProveedores.ListIndex <> -1 Then
+        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
+
+                If IsSomething(prov) Then
+                    Set alicuotas = DAORetenciones.FindAllWithAlicuotasAnt(prov.Cuit)
+        ActualizarAlicuotas
+
+                End If
+    Else
+        Set prov = Nothing
+
+    End If
+
+    Me.gridRetenciones.ItemCount = 0
+    Me.gridRetenciones.ItemCount = alicuotas.count
+    Me.gridRetenciones.Refresh
+
+'MostrarFacturas
+    Totalizar
+
+End Sub
+
+Private Sub btnMostrarFacturas_Click()
+MostrarFacturas
+End Sub
+
+Private Sub cboMonedas_Click()
+    If Me.cboMonedas.ListIndex = -1 Then
+        Set LiquidacionCaja.moneda = Nothing
+    Else
+        Set LiquidacionCaja.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+    End If
+    Totalizar
+End Sub
+
+
+
+Private Sub cboProveedores_Click()
+
+Me.gridRetenciones.ItemCount = 0
+Me.lstFacturas.Clear
+
+Me.txtBuscarFactura = ""
+Me.txtParcialAbonar = ""
+
+End Sub
+
+
+Private Sub cmdMostrarDatosProveedor_Click()
+  If Me.cboProveedores.ListIndex <> -1 Then
+
+        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
+
+
+
+        Dim d As clsDTOPadronIIBB
+
+            Set d = DTOPadronIIBB.FindByCUIT(prov.Cuit, TipoPadronRetencion)
+
+            If IsSomething(d) Then
+              Me.txtRetenciones = str(d.alicuota)   ' Val(d.Retencion )
+            Else
+                Me.txtRetenciones = 0
+            End If
+
+
+        'If IsSomething(prov) Then
+         'Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+
+       ' End If
+    Else
+        Set prov = Nothing
+    End If
+
+
+MostrarFacturas
+MostrarDeudaCompensatorios
+btnCargar_Click
+
+End Sub
+
+Private Sub Command1_Click()
+
+
+    If Me.cboProveedores.ListIndex <> -1 Then
+
+        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
+        If IsSomething(prov) Then
+
+         Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+
+        ActualizarAlicuotas
+
+        End If
+    Else
+        Set prov = Nothing
+    End If
+    Me.gridRetenciones.ItemCount = 0
+
+    Me.gridRetenciones.ItemCount = alicuotas.count
+
+    Me.gridRetenciones.Refresh
+
+    MostrarFacturas
+
+End Sub
+
+Private Sub dtpFecha_Change()
+    LiquidacionCaja.FEcha = Me.dtpFecha.value
+End Sub
+
+Private Sub Form_Load()
+    formLoading = True
+'    Me.gridChequeras.Visible = False
+'    Me.gridChequesChequera.Visible = False
+    Me.gridCompensatorios.ItemCount = 0
+    id_susc = funciones.CreateGUID
+    Channel.AgregarSuscriptor Me, PasajeChequePropioCartera
+    FormHelper.Customize Me
+    GridEXHelper.CustomizeGrid Me.gridCajaOperaciones, False, True
+    GridEXHelper.CustomizeGrid Me.gridDepositosOperaciones, False, True
+'    GridEXHelper.CustomizeGrid Me.gridCheques, False, True
+'    GridEXHelper.CustomizeGrid Me.gridChequesDisponibles, False, False
+    GridEXHelper.CustomizeGrid Me.gridBancos, False, False
+'    GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
+    GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
+'    GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
+    GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
+'    GridEXHelper.CustomizeGrid Me.gridChequesChequera
+'    GridEXHelper.CustomizeGrid Me.gridRetenciones, False, True
+
+
+
+    Set Cajas = DAOCaja.FindAll()
+    Me.gridCajas.ItemCount = Cajas.count
+
+    Set Monedas = DAOMoneda.GetAll()
+    Me.gridMonedas.ItemCount = Monedas.count
+
+    Set cuentasBancarias = DAOCuentaBancaria.FindAll()
+    Me.gridCuentasBancarias.ItemCount = cuentasBancarias.count
+
+    Set bancos = DAOBancos.GetAll()
+    Me.gridBancos.ItemCount = bancos.count
+
+    Set chequeras = DAOChequeras.FindAllWithChequesDisponibles()
+    Me.gridChequeras.ItemCount = chequeras.count
+
+
+    CargarChequesDisponibles
+
+
+'    Set colProveedores = DAOProveedor.FindAllProveedoresWithFacturasImpagas
+'    For Each prov In colProveedores
+'        cboProveedores.AddItem prov.RazonSocial
+'        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
+'    Next
+
+'    Dim cuentasContables As Collection
+'    Set cuentasContables = DAOCuentaContable.GetAll()
+'    Dim cc As clsCuentaContable
+'    Me.cboCuentas.Clear
+'    For Each cc In cuentasContables
+'        cboCuentas.AddItem cc.nombre & " - " & cc.codigo
+'        cboCuentas.ItemData(cboCuentas.NewIndex) = cc.Id
+'    Next cc
+
+
+    radioFacturaProveedor_Click
+
+    Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.OperacionesCaja.count
+    Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.OperacionesBanco.count
+'    Me.gridCheques.ItemCount = LiquidacionCaja.ChequesTerceros.count
+'    Me.gridChequesPropios.ItemCount = LiquidacionCaja.ChequesPropios.count
+
+
+
+'    Set Me.gridCheques.Columns("numero").DropDownControl = Me.gridChequesDisponibles
+
+    Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
+    Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
+
+    Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
+
+'    Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
+'    Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
+    gridChequesChequera.ItemCount = 0
+    GridEXHelper.AutoSizeColumns Me.gridChequeras
+
+
+    DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
+
+    Me.dtpFecha.value = LiquidacionCaja.FEcha
+
+'lstFacturas_Click
+    Totalizar
+
+    formLoaded = True
+    formLoading = False
+End Sub
+
+Private Sub CargarChequesDisponibles()
+    Set chequesDisponibles = DAOCheques.FindAllEnCarteraDeTerceros
+    Me.gridChequesDisponibles.ItemCount = chequesDisponibles.count
+End Sub
+
+Private Sub MostrarDeudaCompensatorios()
+    Me.lstDeudaCompensatorios.Clear
+    If IsSomething(prov) Then
+        Set colDeudaCompensatorios = DAOCompensatorios.FindAllPendientesByProveedor(prov.Id)  'DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & " or  AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & ")", False, "", False, True)
+
+
+
+        Dim c As Compensatorio
+
+
+'        If LiquidacionCaja.id <> 0 And LiquidacionCaja.EsParaFacturaProveedor Then
+'            If prov.id = LiquidacionCaja.FacturasProveedor.item(1).Proveedor.id Then
+'                For Each Factura In LiquidacionCaja.FacturasProveedor
+'                    If Not funciones.BuscarEnColeccion(colFacturas, CStr(Factura.id)) Then
+'                        colFacturas.Add DAOFacturaProveedor.FindById(Factura.id), CStr(Factura.id)
+'                    End If
+'                Next
+'            End If
+'        End If
+
+        For Each c In colDeudaCompensatorios
+            Me.lstDeudaCompensatorios.AddItem "Cód: " & c.Id & " (OP: " & c.IdOrdenPago & ", Cbte: " & c.Comprobante.NumeroFormateado & ", Importe: " & c.Monto & ")"
+            Me.lstDeudaCompensatorios.ItemData(Me.lstDeudaCompensatorios.NewIndex) = c.Id
+        Next
+
+
+
+
+    Else
+        Set colFacturas = New Collection
+    End If
+End Sub
+
+
+
+Private Sub MostrarFacturas()
+
+    Me.lstFacturas.Clear
+
+    If 1 = 1 Then
+                'Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.Id & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & " or AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & ")", False, "", False, True)
+
+                Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & 6003 & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & ")", False, "", False, True)
+
+                Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.estado = " & EstadoFacturaProveedor.Aprobada & "", False, "", False, True)
+
+
+            If LiquidacionCaja.Id <> 0 And LiquidacionCaja.EsParaFacturaProveedor Then
+                If prov.Id = LiquidacionCaja.FacturasProveedor.item(1).Proveedor.Id Then
+                    For Each Factura In LiquidacionCaja.FacturasProveedor
+                        If Not funciones.BuscarEnColeccion(colFacturas, CStr(Factura.Id)) Then
+
+                            colFacturas.Add DAOFacturaProveedor.FindById(Factura.Id), CStr(Factura.Id)
+                        End If
+                    Next
+                End If
+            End If
+
+        Dim T As String
+
+            For Each Factura In colFacturas 'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
+
+               Dim c As Collection
+                  Set c = DAOLiquidacionCaja.FindAbonadoPendiente(Factura.Id, LiquidacionCaja.Id)
+
+                   Factura.TotalAbonadoGlobalPendiente = 0 ' c(1) 'que esta en ops sin aprobar
+                       Factura.NetoGravadoAbonadoGlobalPendiente = 0 ' c(2)
+                         Factura.OtrosAbonadoGlobalPendiente = 0 'c(3)
+
+                      T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")" 'TipoCambio: (" & Factura.TipoCambioPago & ")"
+                         If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
+                          T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
+
+                 'MsgBox (c.count)
+
+                 End If
+
+                  Me.lstFacturas.AddItem T
+                  Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
+
+
+            Next
+
+' 22/08/2022
+'AGREGO UN LABEL QUE MUESTRA LA CANTIDAD DE COMPROBANTES MOSTRADOS EN EL LIST
+
+            Me.lblCantidadComprobantes.caption = "Cbtes. Mostrados: " & colFacturas.count
+
+        Else
+
+            Set colFacturas = New Collection
+
+            'MsgBox (colFacturas.count)
+
+    End If
+
+End Sub
+
+
+Private Sub Form_Unload(Cancel As Integer)
+    Channel.RemoverSuscripcionTotal Me
+End Sub
+
+Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= bancos.count Then
+        Set Banco = bancos.item(RowIndex)
+        Values(1) = Banco.Id
+        Values(2) = Banco.nombre
+    End If
+End Sub
+
+Private Sub gridCajaOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+    Dim cond1 As Boolean
+    Dim cond2 As Boolean
+    Dim cond3 As Boolean
+    Dim cond4 As Boolean
+
+
+    cond1 = Not IsNumeric(Me.gridCajaOperaciones.value(1))
+    cond2 = Not IsNumeric(Me.gridCajaOperaciones.value(2)) And LenB(Me.gridCajaOperaciones.value(2)) = 0
+    cond3 = Not IsDate(Me.gridCajaOperaciones.value(3))
+    cond4 = LenB(Me.gridCajaOperaciones.value(4)) = 0 Or IsEmpty(Me.gridCajaOperaciones.value(4))    'or Not IsNumeric(Me.gridCajaOperaciones.value(4))
+
+    Cancel = cond1 Or cond2 Or cond3 Or cond4
+End Sub
+
+Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And Cajas.count > 0 Then
+        Set caja = Cajas.item(RowIndex)
+        Values(1) = caja.Id
+        Values(2) = caja.nombre
+    End If
+End Sub
+
+Private Sub gridChequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= chequeras.count Then
+        Set tmpChequera = chequeras.item(RowIndex)
+        Values(1) = tmpChequera.Description
+        Values(2) = tmpChequera.Id
+    End If
+End Sub
+
+
+Private Sub gridChequesChequera_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And chequesChequeraSeleccionada.count > 0 Then
+        Values(1) = chequesChequeraSeleccionada(RowIndex).numero
+        Values(2) = chequesChequeraSeleccionada(RowIndex).Id
+    End If
+End Sub
+
+Private Sub gridChequesDisponibles_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
+    GridEXHelper.ColumnHeaderClick Me.gridChequesDisponibles, Column
+End Sub
+
+Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= chequesDisponibles.count Then
+        Set cheque = chequesDisponibles.item(RowIndex)
+        Values(1) = cheque.numero
+        'FORMATCURRENCY
+        Values(2) = FormatCurrency(cheque.Monto)
+        If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
+        If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
+        Values(5) = cheque.Id
+        Values(6) = cheque.OrigenCheque
+        Values(7) = cheque.OrigenDestino
+
+    End If
+
+End Sub
+
+
+
+Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+    Dim msg As New Collection
+
+    If LenB(Me.gridChequesPropios.value(1)) = 0 Then
+        msg.Add "Debe especificar una chequera."
+    End If
+
+    If LenB(Me.gridChequesPropios.value(2)) = 0 Then
+        msg.Add "Debe especificar un cheque."
+    End If
+
+' REVISA QUE EN LA COLECCION DE CHEQUES PROPIOS QUE SE ESTAN CARGANDO NO ESTÉ INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
+    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
+        msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
+    End If
+
+    If Not IsNumeric(Me.gridChequesPropios.value(3)) Then
+        msg.Add "Debe especificar un monto válido."
+    End If
+' REVISA QUE SE HAYA CARGADO UN MONTO DEL CHEQUE INGRESADO, SI NO SE CARGA GENERA MSG DE ERROR
+
+    If LenB(Me.gridChequesPropios.value(3)) = 0 Then
+        msg.Add "Debe especificar un monto mayor a 0."
+    End If
+
+    If Not IsDate(Me.gridChequesPropios.value(4)) Then
+        msg.Add "Debe especificar una fecha valida."
+    End If
+
+    Cancel = (msg.count > 0)
+    If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
+
+End Sub
+
+
+
+
+
+Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal value As Variant)
+    If ColIndex = 1 Then
+        'If Not IsNumeric(Me.gridChequesPropios.Value(1)) Or LenB(Me.gridChequesPropios.Value(1)) = 0 Then
+        If Not IsNumeric(value) Or LenB(value) = 0 Then
+            Set chequesChequeraSeleccionada = New Collection
+        Else
+            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(Val(value))  ' Me.gridChequesPropios.Value(1))
+        End If
+
+        Me.gridChequesChequera.ItemCount = chequesChequeraSeleccionada.count
+    End If
+End Sub
+
+Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
+    Set cheque = Nothing
+    If IsNumeric(Values(2)) Then Set cheque = DAOCheques.FindById(Values(2))
+    If IsSomething(cheque) Then
+        cheque.Monto = Values(3)
+        cheque.FechaVencimiento = Values(4)
+
+        LiquidacionCaja.ChequesPropios.Add cheque, CStr(cheque.Id)
+
+
+    End If
+    Totalizar
+End Sub
+
+Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    If RowIndex > 0 Then
+        LiquidacionCaja.ChequesPropios.remove RowIndex
+        Totalizar
+    End If
+End Sub
+
+Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If LiquidacionCaja.ChequesPropios.count >= RowIndex Then
+        Set cheque = LiquidacionCaja.ChequesPropios.item(RowIndex)
+        Values(1) = cheque.chequera.Description
+        Values(2) = vbNullString
+        'FORMATCURRENCY
+        Values(3) = FormatCurrency(cheque.Monto)
+        Values(4) = cheque.FechaVencimiento
+        Values(5) = cheque.numero
+
+
+        Totalizar
+    End If
+End Sub
+
+Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If LiquidacionCaja.ChequesPropios.count >= RowIndex Then
+        Set cheque = LiquidacionCaja.ChequesPropios.item(RowIndex)
+
+        '        If Values(2) <> Cheque.Id Then
+        '            LiquidacionCaja.ChequesPropios.remove CStr(Cheque.Id)
+        '            Set Cheque = DAOCheques.FindById(Values(2))
+        '            LiquidacionCaja.ChequesPropios.Add Cheque, CStr(Cheque.Id)
+        '        End If
+
+        cheque.Monto = Values(3)
+        cheque.FechaVencimiento = Values(4)
+    End If
+
+    Totalizar
+End Sub
+
+
+Private Sub gridCompensatorios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    LiquidacionCaja.Compensatorios.remove (RowIndex)
+End Sub
+
+Private Sub gridCompensatorios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+
+    On Error Resume Next
+    Set compe = LiquidacionCaja.Compensatorios.item(RowIndex)
+    Values(1) = compe.Comprobante.NumeroFormateado
+    Values(2) = TiposCompensatorio.item(CStr(compe.Tipo))
+    'FORMATCURRENCY
+    Values(3) = FormatCurrency(compe.Monto)
+    Values(4) = compe.FechaCancelacion
+    Values(5) = compe.Observacion
+
+End Sub
+
+Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If cuentasBancarias.count >= RowIndex Then
+        Set CuentaBancaria = cuentasBancarias.item(RowIndex)
+        Values(1) = CuentaBancaria.Id
+        Values(2) = CuentaBancaria.DescripcionFormateada
+    End If
+End Sub
+
+Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And Monedas.count > 0 Then
+        Set moneda = Monedas.item(RowIndex)
+        Values(1) = moneda.Id
+        Values(2) = moneda.NombreCorto
+    End If
+End Sub
+
+
+Private Sub gridRetenciones_RowFormat(RowBuffer As GridEX20.JSRowData)
+
+ On Error GoTo err1
+
+        Set alicuotaRetencion = alicuotas.item(RowBuffer.RowIndex)
+
+            If alicuotaRetencion.importe > 0 Then '.Retencion.id <> 2 Then
+            RowBuffer.RowStyle = "padronganancias"
+            Else
+            RowBuffer.RowStyle = "padroningresos"
+
+        End If
+
+      Exit Sub
+
+err1:
+
+End Sub
+
+Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If alicuotas.count >= RowIndex Then
+        Set alicuotaRetencion = alicuotas.item(RowIndex)
+        Values(2) = alicuotaRetencion.alicuotaRetencion
+        Values(1) = alicuotaRetencion.Retencion.nombre
+        Values(3) = alicuotaRetencion.importe
+    End If
+End Sub
+
+Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+ If alicuotas.count >= RowIndex Then
+        Set alicuotaRetencion = alicuotas.item(RowIndex)
+       alicuotaRetencion.alicuotaRetencion = Values(2)
+       If Not IsNumeric(Values(3)) Then
+       alicuotaRetencion.importe = 0
+       Else
+       alicuotaRetencion.importe = Values(3)
+       End If
+       Totalizar
+
+    End If
+End Sub
+
+Private Property Get ISuscriber_id() As String
+    ISuscriber_id = id_susc
+End Property
+Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
+    CargarChequesDisponibles
+End Function
+Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Collection = Nothing)
+    Dim d As New Dictionary
+    Dim ret As Retencion
+    Dim colret As Collection
+    Set colret = DAORetenciones.FindAllEsAgente
+    Set d = DAOCertificadoRetencion.VerPosibleRetenciones2(col, alicuotas, Val(Me.txtDifCambioNG1), LiquidacionCaja.TotalNGCompensatorios)
+    Dim totRet As Double
+
+    totRet = 0
+
+    If IsSomething(prov) Then
+
+
+        For Each ret In colret
+            totRet = totRet + d.item(CStr(ret.Id))
+        Next ret
+
+    End If
+
+
+    totRet = funciones.RedondearDecimales(totRet)
+    Dim c As Compensatorio
+    Dim F As clsFacturaProveedor
+    Dim totFact As Double
+    Dim TotNG As Double
+    Dim totFactHoy As Double
+    Dim Cambio As Double
+    Dim totCambio As Double
+    Dim totCambiong As Double
+    Dim totNGHoy As Double
+    Dim totDeudaCompe As Double
+    totDeudaCompe = 0
+    For Each F In col
+
+
+        'totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravadoDiaPago * -1, f.NetoGravadoDiaPago), f.Moneda.Id, LiquidacionCaja.Moneda.Id, f.TipoCambioPago)
+        ' totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.total * -1, f.total), f.Moneda.Id, LiquidacionCaja.Moneda.Id, f.TipoCambioPago) cambiado el 22-9-14 por tema de pagos parciales
+        'totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.TotalDiaPago * -1, f.TotalDiaPago), f.Moneda.Id, LiquidacionCaja.Moneda.Id, f.TipoCambioPago)
+        'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, LiquidacionCaja.Moneda.Id, f.TipoCambioPago)
+        'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, LiquidacionCaja.moneda.id, F.TipoCambioPago)
+        'fix 004
+
+
+        'ORIGINAL- totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalAbonado * -1, F.TotalAbonado), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
+
+        totFact = totFact + F.Total
+
+        totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
+
+        TotNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonado * -1, F.NetoGravadoAbonado), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
+        totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonadoDiaPago * -1, F.NetoGravadoAbonadoDiaPago), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
+        totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionTOTAL * -1, F.DiferenciaPorTipoDeCambionTOTAL), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
+        totCambiong = totCambiong + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionNG * -1, F.DiferenciaPorTipoDeCambionNG), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
+
+    Next F
+
+
+    If IsSomething(colc) Then
+    For Each c In colc
+
+            Dim ff As clsFacturaProveedor
+
+            Set ff = DAOFacturaProveedor.FindById(c.Comprobante.Id)
+               totDeudaCompe = totDeudaCompe + MonedaConverter.ConvertirForzado2(IIf(c.Tipo = TC_Credito, c.Monto * -1, c.Monto), ff.moneda.Id, LiquidacionCaja.moneda.Id, ff.TipoCambioPago)
+
+    Next
+
+    End If
+
+    'FORMATCURRENCY
+'    Me.lblNgAbonar = "Total NG a Abonar en " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.DiferenciaCambioEnNG + totNGHoy))
+
+    'FORMATCURRENCY
+'    MsgBox ("Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact)))
+    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact))
+
+    'FORMATCURRENCY
+'    Me.lblDeudaCompensatorios = "Total deuda compensatorios en " & FormatCurrency(funciones.FormatearDecimales(totDeudaCompe))
+
+    LiquidacionCaja.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
+    LiquidacionCaja.staticTotalDeudaCompensatorios = funciones.RedondearDecimales(totDeudaCompe)
+
+    'FORMATCURRENCY
+'    Me.lblTotalFacturasNG = "Total NG Facturas en " & FormatCurrency(funciones.FormatearDecimales(TotNG + LiquidacionCaja.DiferenciaCambioEnNG))
+
+    LiquidacionCaja.StaticTotalFacturasNG = funciones.RedondearDecimales(TotNG + LiquidacionCaja.DiferenciaCambioEnNG)
+
+    'FORMATCURRENCY
+'    Me.lblDiferenciaCambio = "Diferencia Cambio en " & FormatCurrency(totCambiong)
+    'Me.lblDiferenciaCambio = "Diferencia Cambio en " & LiquidacionCaja.moneda.NombreCorto & " " & totCambiong
+
+    LiquidacionCaja.DiferenciaCambio = totCambio
+
+    verCompensatorios
+
+    'FORMATCURRENCY
+'    Me.lblTotalARetener = "Total a retener en " & FormatCurrency(funciones.FormatearDecimales(totRet))
+    'Me.lblTotalARetener = "Total a retener en " & LiquidacionCaja.moneda.NombreCorto & " " & funciones.FormatearDecimales(totRet)
+
+    LiquidacionCaja.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
+
+    'FORMATCURRENCY
+'    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.DiferenciaCambioEnTOTAL + totFactHoy - totRet - LiquidacionCaja.OtrosDescuentos + LiquidacionCaja.TotalCompensatorios + totDeudaCompe))
+'    'Me.lblTotalOP = "Total OP: " & LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.StaticTotal
+End Sub
+
+Private Sub verCompensatorios()
+'    Me.lblTotalCompensatorios = "Total compensatorios en " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.TotalCompensatorios))
+End Sub
+
+
+
+Private Sub MostrarPago(F As clsFacturaProveedor)
+
+    If IsSomething(F) Then
+
+'        Me.txtTotalParcialAbonado = F.TotalAbonadoGlobal
+'        Me.txtOtrosParcialAbonado = F.OtrosAbonadoGlobal + F.OtrosAbonadoGlobalPendiente
+'        Me.txtParcialAbonado = F.NetoGravadoAbonadoGlobal + F.NetoGravadoAbonadoGlobalPendiente
+
+
+       ' If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
+        If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
+          If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.Total - F.NetoGravado '- F.NetoNoGravado  (2do cambio en fix 004)
+
+'        Me.txtParcialAbonar = F.ImporteNetoGravadoSaldo ' F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
+'        Me.txtTotalParcialAbonar = F.ImporteTotalAbonado
+'        Me.txtOtrosParcialAbonar = F.ImporteOtrosSaldo  'F.OtrosAbonado - F.OtrosAbonadoGlobal
+
+'RecalcularTotalFacturaElegida
+
+   '     vFactElegida.NetoGravadoAbonado = CDbl(Me.txtParcialAbonar)
+      '    vFactElegida.ImporteTotalAbonado =    'vFactElegida.CalcularTotalAbonadoParcial(CDbl(Me.txtParcialAbonar))
+
+
+           'esto debería calcular el total en base a las alícuotas de la factura
+
+
+        If F.TotalAbonado + F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente > F.Total Then
+            MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
+        End If
+        'Me.txtnetogravadoabonado = F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
+       ' Me.txtParcialAbonado = F.TotalAbonado - F.TotalAbonadoGlobal
+    End If
+    Totalizar
+End Sub
+
+
+Private Sub Label13_Click()
+
+End Sub
+
+Private Sub lstDeudaCompensatorios_Click()
+
+
+Set vCompeElegido = colDeudaCompensatorios.item(CStr(Me.lstDeudaCompensatorios.ItemData(Me.lstDeudaCompensatorios.ListIndex)))
+If IsSomething(vCompeElegido) Then
+
+
+'    MostrarPago vFactElegida
+End If
+
+End Sub
+
+Private Sub lstDeudaCompensatorios_ItemCheck(ByVal item As Long)
+    calcularOrigenes
+End Sub
+
+Private Sub lstFacturas_Click()
+
+'    'debug.print (Me.lstFacturas.ItemData(Me.lstFacturas.ListIndex))
+
+    Set vFactElegida = colFacturas.item(CStr(Me.lstFacturas.ItemData(Me.lstFacturas.ListIndex)))
+
+
+'    'debug.print (vFactElegida.Id)
+
+
+If IsSomething(vFactElegida) Then
+
+   Dim c As Collection
+
+'Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: " & c.count
+
+
+    If LiquidacionCaja.estado = EstadoOrdenPago_pendiente And vFactElegida.NetoGravadoAbonado = 0 And vFactElegida.OtrosAbonado = 0 Then
+        Set c = DAOLiquidacionCaja.FindAbonadoFactura(vFactElegida.Id, LiquidacionCaja.Id)
+
+        'vFactElegida.TotalAbonadoGlobalPendiente = c(1)
+        vFactElegida.NetoGravadoAbonado = c(2)
+        vFactElegida.OtrosAbonado = c(3)
+    End If
+
+
+'    If vFactElegida.ImporteTotalAbonado = 0 Then
+'        vFactElegida.ImporteTotalAbonado = vFactElegida.TotalPendiente
+'
+'    End If
+
+    MostrarPago vFactElegida
+'    RecalcularFacturaElegida
+End If
+Totalizar
+
+End Sub
+
+Private Sub lstFacturas_DblClick()
+    Dim i As Long
+    Dim change As Double
+    Dim F As clsFacturaProveedor
+    Dim col As New Collection
+    For i = 0 To Me.lstFacturas.ListCount - 1
+        If Me.lstFacturas.Selected(i) Then
+            Set F = colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
+
+            MostrarPago vFactElegida
+        End If
+    Next
+
+    On Error GoTo err1
+    change = InputBox("Establezca el tipo de cambio con el cual se va a abonar la factura", "Tipo de cambio", F.TipoCambioPago)
+
+
+    If LenB(change) = 0 Then
+        change = 1
+    Else
+        F.TipoCambioPago = change
+
+    End If
+    Totalizar
+    Exit Sub
+
+
+
+err1:
+    Totalizar
+    change = 1
+End Sub
+
+Sub calcularOrigenes()
+  Dim i As Long
+    Dim col As New Collection
+    Dim colc As New Collection
+
+
+
+
+    For i = 0 To Me.lstFacturas.ListCount - 1
+        If Me.lstFacturas.Checked(i) Then
+
+
+            If funciones.BuscarEnColeccion(colFacturas, CStr(Me.lstFacturas.ItemData(i))) Then
+
+
+                col.Add colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
+
+
+                Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: " & col.count
+
+            End If
+
+        Else
+
+
+            'si destildo tengo q ver q no existan compensatorios. Si existen debería primero eliminarlos.
+            Dim ff As clsFacturaProveedor
+            Dim c As Compensatorio
+            For Each c In LiquidacionCaja.Compensatorios
+                Set ff = colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
+                If c.Comprobante.Id = ff.Id Then
+                    MsgBox "Existen compensatorios para este comprobante. Eliminelos primero!", vbCritical, "Error"
+                    Me.lstFacturas.Checked(i) = True
+                End If
+            Next
+
+
+        End If
+    Next i
+
+
+'    For i = 0 To Me.lstDeudaCompensatorios.ListCount - 1
+'        If Me.lstDeudaCompensatorios.Checked(i) Then
+'
+'            If funciones.BuscarEnColeccion(colDeudaCompensatorios, CStr(Me.lstDeudaCompensatorios.ItemData(i))) Then
+'                colc.Add colDeudaCompensatorios.item(CStr(Me.lstDeudaCompensatorios.ItemData(i)))
+'
+'
+'            End If
+'
+'        End If
+'    Next i
+
+    TotalizarDiferenciasCambio
+    MostrarPosiblesRetenciones col, colc
+End Sub
+
+
+Sub limpiarParciales()
+    Me.txtParcialAbonado = 0
+    Me.txtParcialAbonar = 0
+    Me.txtOtrosParcialAbonado = 0
+    Me.txtOtrosParcialAbonar = 0
+    Me.txtTotalParcialAbonado = 0
+    Me.txtTotalParcialAbonar = 0
+
+    Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
+End Sub
+
+Private Sub lstFacturas_ItemCheck(ByVal item As Long)
+
+    If item < -1 Then
+                 Dim f1
+                         Set f1 = DAOFacturaProveedor.FindById(CStr(Me.lstFacturas.ItemData(item)))
+
+    End If
+
+Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
+    calcularOrigenes
+
+
+    If lstFacturas.ListCount > 0 And item > -1 Then
+
+        Dim x As Integer
+
+''            Me.txtParcialAbonado.Enabled = lstFacturas.Checked(item)
+'            Me.txtParcialAbonar.Enabled = lstFacturas.Checked(item)
+'            Me.txtOtrosParcialAbonado.Enabled = lstFacturas.Checked(item)
+'            Me.txtOtrosParcialAbonar.Enabled = lstFacturas.Checked(item)
+'            Me.txtTotalParcialAbonado.Enabled = lstFacturas.Checked(item)
+'            Me.txtTotalParcialAbonar.Enabled = lstFacturas.Checked(item)
+
+
+
+    End If
+
+End Sub
+
+'Private Sub lstFacturas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+'    Dim i As Integer
+'    If Button = 2 Then
+'
+'        For i = 0 To Me.lstFacturas.ListCount - 1
+'
+'            If Me.lstFacturas.Selected(i) Then
+'                Me.mnuCrearCompensatorio.Enabled = Me.lstFacturas.Checked(i)
+'                PopupMenu Me.emergente
+'            End If
+'        Next
+'
+'
+'    End If
+'
+'End Sub
+
+Private Sub mnuCrearCompensatorio_Click()
+
+    Dim d As New frmCrearCompensatorio
+    Dim i As Long
+    Dim ivamax As Boolean
+
+    For i = 0 To Me.lstFacturas.ListCount - 1
+        If Me.lstFacturas.Selected(i) Then
+            Set Factura = colFacturas(CStr(Me.lstFacturas.ItemData(i)))
+
+            If Factura.IvaAplicado.count > 1 Then ivamax = True
+
+
+            'chequeo que no exista un compensatorio para esa factura.
+
+            Dim c As Compensatorio
+            Dim hay As Boolean
+            hay = False
+            For Each c In LiquidacionCaja.Compensatorios
+                If c.Comprobante.Id = Factura.Id Then
+                    hay = True
+                    Exit For
+                End If
+
+            Next c
+
+            Dim Cant As Long
+
+            If DAOCompensatorios.FindAll("id_orden_pago= " & LiquidacionCaja.Id & " and  id_comprobante=" & Factura.Id).count > 0 Then hay = True
+
+            If hay Then
+                MsgBox "Ya existe un compensatorio para el comprobante indicado!", vbInformation, "Error"
+            Else
+                If ivamax Then
+                    MsgBox "No puede crear un compensatorio cuando hay multiples alícuotas!", vbInformation, "Error"
+                Else
+                    d.Cargar Factura, OrdenPago
+                    d.Show 1
+                    mostrarCompensatorios
+                    lstFacturas_ItemCheck 1
+                End If
+            End If
+        End If
+    Next i
+End Sub
+
+Private Sub mostrarCompensatorios()
+    Me.gridCompensatorios.ItemCount = LiquidacionCaja.Compensatorios.count
+    verCompensatorios
+End Sub
+
+
+
+Private Sub PushButton1_Click()
+
+    If Me.cboProveedores.ListIndex <> -1 Then
+        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
+
+                If IsSomething(prov) Then
+                    Dim Nueva As New Collection
+                Set Nueva = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
+
+
+                   Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit) '
+        ActualizarAlicuotas
+                End If
+    Else
+        Set prov = Nothing
+
+    End If
+
+    MostrarFacturas
+End Sub
+
+Private Sub radioConcepto_Click()
+    If formLoaded Then
+        LimpiarFacturasYValores
+        MostrarPosiblesRetenciones New Collection
+        Totalizar
+    End If
+    ActivarControles
+End Sub
+
+Private Sub LimpiarFacturasYValores()
+    Set colFacturas = New Collection
+End Sub
+
+Private Sub ActivarControles()
+'    Me.cboProveedores.Enabled = Me.radioFacturaProveedor.value
+'    Me.lstFacturas.Enabled = Me.radioFacturaProveedor.value
+
+'    Me.cboCuentas.Enabled = Me.radioConcepto.value
+'    Me.txtDetalle.Enabled = Me.radioConcepto.value
+
+'    Me.txtRetenciones.text = 0
+
+'    If Not Me.cboProveedores.Enabled Then Me.cboProveedores.ListIndex = -1
+    If Not Me.lstFacturas.Enabled Then Me.lstFacturas.Clear
+'
+'    If Not Me.cboCuentas.Enabled Then Me.cboCuentas.ListIndex = -1
+'    If Not Me.txtDetalle.Enabled Then Me.txtDetalle.text = vbNullString
+
+
+End Sub
+
+Private Sub radioFacturaProveedor_Click()
+    If formLoaded Then
+        LimpiarFacturasYValores
+        MostrarPosiblesRetenciones New Collection
+        Totalizar
+    End If
+    ActivarControles
+End Sub
+
+Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
+    Set operacion = New operacion
+    'operacion.IdPertenencia = recibo.Id
+    operacion.Pertenencia = OrigenOperacion.caja
+    operacion.Monto = Values(1)
+    operacion.Comprobante = Values(5)
+    If IsNumeric(Values(2)) Then
+        Set operacion.moneda = DAOMoneda.GetById(Values(2))
+    End If
+    operacion.FechaOperacion = Values(3)
+    If IsNumeric(Values(4)) Then
+        Set operacion.caja = DAOCaja.FindById(Values(4))
+    End If
+    operacion.EntradaSalida = OPSalida
+    LiquidacionCaja.OperacionesCaja.Add operacion
+    Totalizar
+End Sub
+
+Private Sub gridCajaOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    If RowIndex > 0 And LiquidacionCaja.OperacionesCaja.count >= RowIndex Then
+        LiquidacionCaja.OperacionesCaja.remove RowIndex
+        Totalizar
+    End If
+End Sub
+
+Private Sub Totalizar()
+
+
+
+
+    LiquidacionCaja.StaticTotalOrigenes = LiquidacionCaja.TotalOrigenes
+
+    Me.lblTotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
+    GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
+    GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
+'    GridEXHelper.AutoSizeColumns Me.gridCheques
+    'GridEXHelper.AutoSizeColumns Me.gridChequesPropios
+    lstFacturas_ItemCheck -1
+    'Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleecionados: 0"
+
+    TotalizarDiferenciasCambio
+
+
+
+End Sub
+Private Function TotalizarDiferenciasCambio()
+    Dim F As clsFacturaProveedor
+    Dim col As New Collection
+    Dim i As Long
+    Dim T As Double
+    Dim TIVA As Double
+    Dim TTOTAL As Double
+    For i = 0 To Me.lstFacturas.ListCount - 1
+        If Me.lstFacturas.Checked(i) Then
+
+            If funciones.BuscarEnColeccion(colFacturas, CStr(Me.lstFacturas.ItemData(i))) Then
+                col.Add colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
+            End If
+        End If
+    Next
+
+
+
+    For Each F In col
+        T = T + F.DiferenciaPorTipoDeCambionNG
+        TIVA = TIVA + F.DiferenciaPorTipoDeCambionIVA
+        TTOTAL = TTOTAL + F.DiferenciaPorTipoDeCambionTOTAL
+    Next
+
+'    Me.txtDiferenciaCambioPago.text = T
+''    Me.txtDifTipoCambioIVA.text = TIVA
+'    Me.txtDifCambio = TTOTAL
+
+
+    If ReadOnly Then
+        Dim s As String
+        s = LiquidacionCaja.DiferenciaCambioEnNG
+'        Me.txtDifCambioNG1.text = s
+        s = LiquidacionCaja.DiferenciaCambioEnTOTAL
+'        Me.txtDifCambioTOTAL1.text = s
+    End If
+
+End Function
+Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= LiquidacionCaja.OperacionesCaja.count Then
+        Set operacion = LiquidacionCaja.OperacionesCaja.item(RowIndex)
+        'FORMATCURRENCY
+        Values(1) = FormatCurrency(funciones.FormatearDecimales(operacion.Monto))
+        If IsSomething(operacion.moneda) Then
+            Values(2) = operacion.moneda.NombreCorto
+        End If
+        Values(3) = operacion.FechaOperacion
+        If IsSomething(operacion.caja) Then
+            Values(4) = operacion.caja.nombre
+        End If
+                If IsSomething(operacion) Then
+            Values(5) = operacion.Comprobante
+        End If
+    End If
+End Sub
+
+Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And LiquidacionCaja.OperacionesCaja.count > 0 Then
+        Set operacion = LiquidacionCaja.OperacionesCaja.item(RowIndex)
+        'operacion.IdPertenencia = recibo.id
+        'operacion.Pertenencia = Banco
+        operacion.Monto = Values(1)
+        operacion.Comprobante = Values(5)
+        If IsNumeric(Values(2)) Then
+            Set operacion.moneda = DAOMoneda.GetById(Values(2))
+        End If
+        operacion.FechaOperacion = Values(3)
+        If IsNumeric(Values(4)) Then
+            Set operacion.caja = DAOCaja.FindById(Values(4))
+        End If
+        operacion.EntradaSalida = OPSalida
+        Totalizar
+    End If
+End Sub
+
+
+Private Sub gridDepositosOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+
+    Dim cond1 As Boolean
+    Dim cond2 As Boolean
+    Dim cond3 As Boolean
+    Dim cond4 As Boolean
+
+
+    cond1 = Not IsNumeric(Me.gridDepositosOperaciones.value(1))
+    cond2 = Not IsNumeric(Me.gridDepositosOperaciones.value(2)) And LenB(Me.gridDepositosOperaciones.value(2)) = 0
+    cond3 = Not IsDate(Me.gridDepositosOperaciones.value(3))
+    cond4 = Not IsNumeric(Me.gridDepositosOperaciones.value(4)) And LenB(Me.gridDepositosOperaciones.value(4)) = 0
+
+    Cancel = cond1 Or cond2 Or cond3 Or cond4
+End Sub
+
+Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
+    Set operacion = New operacion
+    'operacion.IdPertenencia = recibo.Id
+    operacion.Pertenencia = OrigenOperacion.Banco
+    operacion.Monto = Values(1)
+    operacion.Comprobante = Values(5)
+    If IsNumeric(Values(2)) Then
+        Set operacion.moneda = DAOMoneda.GetById(Values(2))
+    End If
+    operacion.FechaOperacion = Values(3)
+    If IsNumeric(Values(4)) Then
+        Set operacion.CuentaBancaria = DAOCuentaBancaria.FindById(Values(4))
+    End If
+    operacion.EntradaSalida = OPSalida
+    LiquidacionCaja.OperacionesBanco.Add operacion
+    Totalizar
+End Sub
+
+Private Sub gridDepositosOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    If RowIndex > 0 And LiquidacionCaja.OperacionesBanco.count >= RowIndex Then
+        LiquidacionCaja.OperacionesBanco.remove RowIndex
+        Totalizar
+    End If
+End Sub
+
+Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= LiquidacionCaja.OperacionesBanco.count Then
+        Set operacion = LiquidacionCaja.OperacionesBanco.item(RowIndex)
+        'FORMATCURRENCY
+        Values(1) = FormatCurrency(funciones.FormatearDecimales(operacion.Monto))
+        If IsSomething(operacion.moneda) Then
+            Values(2) = operacion.moneda.NombreCorto
+        End If
+        Values(3) = operacion.FechaOperacion
+        If IsSomething(operacion.CuentaBancaria) Then
+            Values(4) = operacion.CuentaBancaria.DescripcionFormateada
+        End If
+             If IsSomething(operacion) Then
+            Values(5) = operacion.Comprobante
+            End If
+    End If
+End Sub
+
+Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And LiquidacionCaja.OperacionesBanco.count > 0 Then
+        Set operacion = LiquidacionCaja.OperacionesBanco.item(RowIndex)
+        'operacion.IdPertenencia = recibo.id
+        'operacion.Pertenencia = Banco
+        operacion.Monto = Values(1)
+        operacion.Comprobante = Values(5)
+        If IsNumeric(Values(2)) Then
+            Set operacion.moneda = DAOMoneda.GetById(Values(2))
+        End If
+        operacion.FechaOperacion = Values(3)
+        If IsNumeric(Values(4)) Then
+            Set operacion.CuentaBancaria = DAOCuentaBancaria.FindById(Values(4))
+        End If
+        operacion.EntradaSalida = OPSalida
+        Totalizar
+    End If
+End Sub
+
+
+Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+    Dim msg As New Collection
+
+' REVISA QUE EN LA COLECCION DE CHEQUES DE TERCEROS QUE SE ESTAN CARGANDO NO ESTÉ INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
+    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesTerceros, CStr(Me.gridCheques.value(1))) Then
+        msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
+    End If
+
+    Cancel = (msg.count > 0)
+    If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
+
+End Sub
+
+
+
+Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
+    Set cheque = Nothing
+    If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
+    If IsSomething(cheque) Then
+        LiquidacionCaja.ChequesTerceros.Add cheque, CStr(cheque.Id)
+
+    End If
+    Totalizar
+
+
+End Sub
+
+Private Sub gridCheques_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    If RowIndex > 0 Then
+        LiquidacionCaja.ChequesTerceros.remove RowIndex
+        Totalizar
+    End If
+End Sub
+
+
+Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= LiquidacionCaja.ChequesTerceros.count Then
+        Set cheque = LiquidacionCaja.ChequesTerceros.item(RowIndex)
+
+
+        'Values(1) = "ID: " & cheque.Id & "N " & cheque.numero
+        'Values(1) = "ID: " & cheque.numero & "N " & cheque.numero
+        Values(1) = cheque.numero & " "
+        'Values(1) = cheque.numero
+
+        'If IsNumeric(Values(1)) Then Values(1) = cheque.numero
+
+
+
+        'FORMATCURRENCY
+        Values(2) = FormatCurrency(cheque.Monto)
+        If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
+        If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
+        Values(5) = cheque.OrigenDestino
+        Values(6) = cheque.OrigenCheque
+ '       Totalizar
+    End If
+End Sub
+
+
+Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And LiquidacionCaja.ChequesTerceros.count >= RowIndex Then
+        Set cheque = Nothing
+        If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
+        If IsSomething(cheque) Then
+            LiquidacionCaja.ChequesTerceros.Add cheque, , , RowIndex
+            LiquidacionCaja.ChequesTerceros.remove RowIndex
+        End If
+        Totalizar
+    End If
+End Sub
+
+Private Sub Text1_Change()
+
+End Sub
+
+Private Sub MostrarFacturas_Click()
+MostrarFacturas
+End Sub
+
+Private Sub txtBuscarFactura_GotFocus()
+    Me.txtBuscarFactura.SelStart = 0
+    Me.txtBuscarFactura.SelLength = Len(Me.txtBuscarFactura.text)
+End Sub
+
+'Private Sub txtBuscarFactura_KeyDown(KeyCode As Integer, Shift As Integer)
+'    If KeyCode = 13 Then
+'        'buscar en facturas y tildar
+'
+'        If LenB(Me.txtBuscarFactura.text) > 0 Then
+'            Dim cont As Long
+'
+'            If colFacturas.count > 0 Then
+'                Dim i As Long
+'                For Each vFacturaProveedor In colFacturas
+'                    If InStr(1, vFacturaProveedor.numero, Me.txtBuscarFactura.text) > 0 Then    'aplica
+'                        For i = 0 To Me.lstFacturas.ListCount - 1
+'                            If Me.lstFacturas.ItemData(i) = vFacturaProveedor.Id Then
+'                                Me.lstFacturas.Checked(i) = True
+'                                cont = cont + 1
+'                                Exit For
+'                            End If
+'                        Next i
+'                    End If
+'                Next vFacturaProveedor
+'
+'                If cont = 0 Then
+'                    MsgBox "No se encontraron facturas con ese número en la lista.", vbOKOnly + vbExclamation
+'                Else
+'                    lstFacturas_ItemCheck -1
+'                    MsgBox "Se encontró " & cont & " factura/s.", vbOKOnly + vbInformation
+'                    Me.txtBuscarFactura.text = vbNullString
+'                    Me.txtBuscarFactura.SetFocus
+'                End If
+'            End If
+'        End If
+'    End If
+'End Sub
+
+Private Sub txtBuscarFactura_KeyDown(KeyCode As Integer, Shift As Integer)
+    If KeyCode = 13 Then
+        'buscar en facturas y tildar
+
+        If LenB(Me.txtBuscarFactura.text) > 0 Then
+            Dim cont As Long
+            Dim i As Long
+            
+            ' Elimina todas las facturas existentes en la lista
+            Me.lstFacturas.Clear
+            
+            If colFacturas.count > 0 Then
+                For Each vFacturaProveedor In colFacturas
+                    If InStr(1, vFacturaProveedor.numero, Me.txtBuscarFactura.text) > 0 Then    'aplica
+                        ' Agrega solo las facturas que coinciden con el texto del cuadro de búsqueda
+                        Me.lstFacturas.AddItem vFacturaProveedor.numero
+                        Me.lstFacturas.ItemData(Me.lstFacturas.ListCount - 1) = vFacturaProveedor.Id
+                        
+                        cont = cont + 1
+                    End If
+                Next vFacturaProveedor
+                
+                If cont = 0 Then
+                    MsgBox "No se encontraron facturas con ese número en la lista.", vbOKOnly + vbExclamation
+                Else
+                    lstFacturas_ItemCheck -1
+                    MsgBox "Se encontró " & cont & " factura/s.", vbOKOnly + vbInformation
+                    Me.txtBuscarFactura.text = vbNullString
+                    Me.txtBuscarFactura.SetFocus
+                End If
+            End If
+        End If
+    End If
+End Sub
+
+
+
+Private Sub txtDifCambio_GotFocus()
+    foco Me.txtDifCambio
+End Sub
+
+
+Private Sub txtDifCambioNG1_Change()
+    LiquidacionCaja.DiferenciaCambioEnNG = Val(Me.txtDifCambioNG1)
+    Totalizar
+End Sub
+
+Private Sub txtDifCambioTOTAL1_Change()
+    LiquidacionCaja.DiferenciaCambioEnTOTAL = Val(Me.txtDifCambioTOTAL1)
+    Totalizar
+End Sub
+
+Private Sub txtnetogravadoabonado_Change()
+    If LenB(Me.txtnetogravadoabonado) > 0 Then
+        vFactElegida.NetoGravadoAbonado = CDbl(Me.txtnetogravadoabonado)
+    Else
+        vFactElegida.ImporteTotalAbonado = 0
+    End If
+
+    Totalizar
+End Sub
+
+Private Sub txtOtrosDescuentos_LostFocus()
+    LiquidacionCaja.OtrosDescuentos = Val(Me.txtOtrosDescuentos.text)
+    Totalizar
+End Sub
+
+
+Public Sub RecalcularOtrosFacturaelegida()
+ If LenB(Me.txtOtrosParcialAbonar) > 0 And IsNumeric(Me.txtOtrosParcialAbonar) Then
+
+        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
+        RecalcularTotalFacturaElegida
+
+
+    End If
+
+End Sub
+
+Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
+ RecalcularOtrosFacturaelegida
+
+    Totalizar
+End Sub
+
+''''''Private Sub RecalcularTotalFacturaElegida()
+''''''    Me.txtTotalParcialAbonar = (CDbl(txtParcialAbonar)) + (CDbl(Me.txtOtrosParcialAbonar))
+''''''
+''''''    If Me.txtTotalParcialAbonar = "0" Then Me.txtTotalParcialAbonar = "0.00"
+''''''
+''''''
+''''''       vFactElegida.TotalAbonado = CDbl(txtTotalParcialAbonar)
+''''''
+''''''End Sub
+
+
+Private Sub txtOtrosParcialAbonar_LostFocus()
+'  If LenB(Me.txtOtrosParcialAbonar) > 0 Then
+'
+'        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
+'        recalcularTotalFacturaelegida
+'
+'
+'    End If
+'
+'    Totalizar
+End Sub
+
+Private Sub txtOtrosParcialAbonar_Validate(Cancel As Boolean)
+If Not IsNumeric(Me.txtOtrosParcialAbonar) Then
+ Cancel = True
+Else
+'COMENTO ESTA LINEA PORQUE ESTA COMPROBACIÓN HACE QUE EL FORM SE CONGELE Y NO SE PUEDA AVANZAR CON LA CARGA.
+'QUEDA PARA VER CON NICOLAS
+
+'Cancel = CDbl(Me.txtOtrosParcialAbonar) > vFactElegida.ImporteOtrosSaldo Or Not IsNumeric(Me.txtOtrosParcialAbonar) Or CDbl(Me.txtOtrosParcialAbonar) < 0
+End If
+If Cancel Then
+    Me.txtOtrosParcialAbonar.backColor = vbRed
+    Me.txtOtrosParcialAbonar.ForeColor = vbWhite
+Else
+    Me.txtOtrosParcialAbonar.backColor = vbWhite
+    Me.txtOtrosParcialAbonar.ForeColor = vbBlack
+End If
+End Sub
+
+
+'Private Sub RecalcularFacturaElegida()
+'RecalcularNetoGravadoFacturaElegida
+'RecalcularOtrosFacturaelegida
+'End Sub
+
+'''''Private Sub RecalcularNetoGravadoFacturaElegida()
+''''' If LenB(txtParcialAbonar) > 0 And IsNumeric(txtParcialAbonar) Then
+'''''
+'''''
+'''''       vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
+'''''        RecalcularTotalFacturaElegida
+'''''    End If
+'''''End Sub
+
+Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
+  RecalcularNetoGravadoFacturaElegida
+
+'
+
+    Totalizar
+End Sub
+
+Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
+If Not IsNumeric(Me.txtParcialAbonar) Then
+Cancel = True
+Else
+'Cancel = CDbl(Me.txtParcialAbonar) > vFactElegida.ImporteNetoGravadoSaldo Or Not IsNumeric(Me.txtParcialAbonar) Or CDbl(Me.txtParcialAbonar) < 0
+End If
+If Cancel Then
+    Me.txtParcialAbonar.backColor = vbRed
+    Me.txtParcialAbonar.ForeColor = vbWhite
+Else
+    Me.txtParcialAbonar.backColor = vbWhite
+    Me.txtParcialAbonar.ForeColor = vbBlack
+End If
+End Sub
+
+Private Sub txtRetenciones_GotFocus()
+    foco Me.txtRetenciones
+End Sub
+
+Private Sub txtRetenciones_LostFocus()
+    Totalizar
+End Sub
+
+Private Sub txtRetenciones_Validate(Cancel As Boolean)
+    funciones.ValidarTextBox Me.txtRetenciones, Cancel
+End Sub
+
+
+Private Sub txtTotalParcialAbonar_Change()
+ If IsSomething(vFactElegida) Then
+     If CDbl(Me.txtTotalParcialAbonar) > vFactElegida.ImporteTotalSaldo Or CDbl(Me.txtParcialAbonar) < 0 Then
+                  Me.txtTotalParcialAbonar.backColor = vbRed
+        Me.txtTotalParcialAbonar.ForeColor = vbWhite
+    Else
+        Me.txtTotalParcialAbonar.backColor = vbWhite
+        Me.txtTotalParcialAbonar.ForeColor = vbBlack
+    End If
+End If
+End Sub
+
