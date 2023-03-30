@@ -35,7 +35,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     Dim strsql As String
     If fc.Id = 0 Then
         'guardo la factura
-        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte,ultima_actualizacion) values (" & funciones.GetUserObj.Id & " , " & fc.TipoCambio & ", " & fc.configFactura.Id & "," & fc.estado & "," & fc.Proveedor.Id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.Redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & "," & Escape(Now) & ")"
+        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte,ultima_actualizacion) values (" & funciones.GetUserObj.Id & " , " & fc.TipoCambio & ", " & fc.configFactura.Id & "," & fc.Estado & "," & fc.Proveedor.Id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.Redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & "," & Escape(Now) & ")"
         conectar.execute strsql
         fc.Id = conectar.UltimoId2
         A = DAOPercepcionesAplicadas.Save(fc)
@@ -60,7 +60,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
 
 
 
-        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.Id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.Id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.Id
+        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.Id & ",estado=" & fc.Estado & ",id_proveedor=" & fc.Proveedor.Id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.Id
         If Not conectar.execute(strsql) Then GoTo err1
         B = DAOPercepcionesAplicadas.Save(fc)
         A = DAOIvaAplicado.Save(fc)
@@ -84,13 +84,13 @@ err1:
     If Err.Number = 100 Then MsgBox "Se produjo algun error, no se  guadarán los cambios!"
     If Err.Number = 104 Then MsgBox Err.Description
 End Function
-Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
+Public Function existeFactura(factura As clsFacturaProveedor) As Boolean
     On Error GoTo err4
     Dim q As String
-    q = "select count(id) as cantidad from AdminComprasFacturasProveedores where id_proveedor=" & Factura.Proveedor.Id & " and numero_factura=" & Escape(Factura.numero) & " and id_config_factura=" & Escape(Factura.configFactura.Id) & "  AND tipo_doc_contable=" & Escape(Factura.tipoDocumentoContable)
+    q = "select count(id) as cantidad from AdminComprasFacturasProveedores where id_proveedor=" & factura.Proveedor.Id & " and numero_factura=" & Escape(factura.numero) & " and id_config_factura=" & Escape(factura.configFactura.Id) & "  AND tipo_doc_contable=" & Escape(factura.tipoDocumentoContable)
 
 
-    If Factura.Id <> 0 Then q = q & " and AdminComprasFacturasProveedores.id <> " & Factura.Id
+    If factura.Id <> 0 Then q = q & " and AdminComprasFacturasProveedores.id <> " & factura.Id
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
@@ -101,7 +101,7 @@ Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
 err4:
 End Function
 Public Function GetByDate(desde As Date, Optional hasta As Date) As Collection
-    Dim Factura As clsFacturaProveedor
+    Dim factura As clsFacturaProveedor
     Dim col As New Collection
 
     Set GetByDate = DAOFacturaProveedor.FindAll("fecha>='" & Format(desde, "yyyy-mm-dd") & "' and fecha<= '" & Format(hasta, "yyyy-mm-dd") & "'", False)
@@ -139,11 +139,11 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
 
     Dim estadoAnterior As EstadoFacturaProveedor
     aprobar = True
-    If fc.estado = EstadoFacturaProveedor.EnProceso Then
+    If fc.Estado = EstadoFacturaProveedor.EnProceso Then
 
 
 
-        fc.estado = EstadoFacturaProveedor.Aprobada
+        fc.Estado = EstadoFacturaProveedor.Aprobada
         cn.execute "update AdminComprasFacturasProveedores SET ultima_actualizacion= " & Escape(Now) & ", estado=2 where id=" & fc.Id
         DaoFacturaProveedorHistorial.agregar fc, "Factura aprobada"
 
@@ -165,7 +165,7 @@ err121:
     End If
     cn.RollbackTrans
     aprobar = False
-    fc.estado = estadoAnterior
+    fc.Estado = estadoAnterior
 End Function
 
 
@@ -318,7 +318,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         Set fc = New clsFacturaProveedor
         fc.Id = Id
         fc.tipoDocumentoContable = GetValue(rs, indice, tabla, "tipo_doc_contable")
-        fc.estado = GetValue(rs, indice, tabla, "estado")
+        fc.Estado = GetValue(rs, indice, tabla, "estado")
         fc.FEcha = GetValue(rs, indice, tabla, "fecha")
         fc.ImpuestoInterno = GetValue(rs, indice, tabla, "impuesto_interno")
         fc.Monto = GetValue(rs, indice, tabla, "monto_neto")
@@ -392,11 +392,11 @@ Public Function Delete(facid As Long) As Boolean
     Set op = DAOOrdenPago.FindByFacturaId(facid)
 
     If IsSomething(op) Then
-        If op.estado = EstadoOrdenPago_Aprobada Then
+        If op.Estado = EstadoOrdenPago_Aprobada Then
             Delete = False
             MsgBox "La factura ya se encuentra incluida en una orden de pago aprobada, no se puede eliminar.", vbExclamation
             Exit Function
-        ElseIf op.estado = EstadoOrdenPago_pendiente Or op.estado = EstadoOrdenPago_Anulada Then
+        ElseIf op.Estado = EstadoOrdenPago_pendiente Or op.Estado = EstadoOrdenPago_Anulada Then
 
             Dim facs As Collection
             Dim F As clsFacturaProveedor
@@ -465,7 +465,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     fac.OtrosAbonado = fac.Total - fac.NetoGravado
 
     op.FEcha = fechaPago
-    op.estado = EstadoOrdenPago_pendiente
+    op.Estado = EstadoOrdenPago_pendiente
     Set op.moneda = fac.moneda
 
 
@@ -522,7 +522,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
 
     PagarEnEfectivo = True
 
-    fac.estado = EstadoFacturaProveedor.Saldada
+    fac.Estado = EstadoFacturaProveedor.Saldada
 
     Exit Function
 eh:
@@ -633,7 +633,7 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
         xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(fac.ImpuestoInterno * i)
         xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales(fac.Total * i)
         If fac.cuentasContables.count > 0 Then xlWorksheet.Cells(offset, 12).value = fac.cuentasContables.item(1).cuentas.codigo
-        xlWorksheet.Cells(offset, 13).value = enums.enumEstadoFacturaProveedor(fac.estado)
+        xlWorksheet.Cells(offset, 13).value = enums.enumEstadoFacturaProveedor(fac.Estado)
         If fac.FormaPagoCuentaCorriente Then xlWorksheet.Cells(offset, 14).value = "Cta. Cte." Else xlWorksheet.Cells(offset, 13).value = "Contado"
         xlWorksheet.Cells(offset, 15).value = fac.OrdenPagoId
         xlWorksheet.Cells(offset, 16).value = fac.TipoCambio
@@ -697,7 +697,7 @@ err1:
     ExportarColeccion = False
 End Function
 
-Public Function CrearTablaTempComprobantes(Facturas) As Boolean
+Public Function CrearTablaTempComprobantes(facturas) As Boolean
 
 
     On Error GoTo err1
@@ -718,7 +718,7 @@ Public Function CrearTablaTempComprobantes(Facturas) As Boolean
 
     cn.BeginTrans
 
-    For Each fac In Facturas
+    For Each fac In facturas
 
         strsql = "INSERT INTO sp_temporal.ComprobantesCargadosSP (idcomprobante, numero, cuit, clave)" _
                & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & fac.numero + fac.Proveedor.Cuit & "')"

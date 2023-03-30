@@ -317,7 +317,7 @@ Private Function CrearDetalleDeOT() As Boolean
         detaEntrega.idpedido = detapedido.OrdenTrabajo.Id
         detaEntrega.Origen = OrigenRemitoOt
         detaEntrega.Remito = Me.Remito.Id
-        detaEntrega.Valor = detapedido.Precio
+        detaEntrega.valor = detapedido.Precio
         detaEntrega.ValorModificado = False
         Set detaEntrega.DetallePedido = detapedido
 
@@ -344,7 +344,7 @@ Private Sub Form_Load()
     Me.btnFacturar.Visible = Me.ParaFacturar Or Me.Usable
 
     GridEXHelper.CustomizeGrid grilla, False, True
-    Me.grilla.AllowDelete = (editar And Remito.estado = RemitoPendiente)
+    Me.grilla.AllowDelete = (editar And Remito.Estado = RemitoPendiente)
 
     Me.cboClientes.Locked = Not editar  'Or Not valorizable And Not Usable
     Me.lblDetalle.Locked = Not editar
@@ -373,6 +373,7 @@ Private Sub mostrarRemito()
         Me.cmdValorizar.Enabled = conceptuable Or valorizable Or editar And Not Usable
         grilla.AllowEdit = editar Or valorizable And Not Usable
         grilla.AllowAddNew = editar And Not Usable
+        
         llenarLista
 
         'grilla.AllowAddNew = Not usable
@@ -446,7 +447,7 @@ End Sub
 
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 And IsSomething(tmp) Then
-        Me.mnuNoFacturable.Enabled = Not tmp.Facturado And Remito.estado = EstadoRemito.RemitoAprobado And (Remito.EstadoFacturado = RemitoNoFacturado Or Remito.EstadoFacturado = RemitoFacturadoParcial)
+        Me.mnuNoFacturable.Enabled = Not tmp.Facturado And Remito.Estado = EstadoRemito.RemitoAprobado And (Remito.EstadoFacturado = RemitoNoFacturado Or Remito.EstadoFacturado = RemitoFacturadoParcial)
 
         If tmp.facturable Then
             Me.mnuNoFacturable.caption = "Hacer No Facturable"
@@ -524,7 +525,7 @@ Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, 
         tmp.Concepto = UCase(Values(2))
         'Values(3) 'origen
         tmp.Cantidad = CDbl(Values(4))
-        If grilla.Columns(5).Visible Then tmp.Valor = Values(5)
+        If grilla.Columns(5).Visible Then tmp.valor = Values(5)
 
 
         tmp.facturable = True
@@ -585,7 +586,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             '                .value(3) = tmp.VerOrigen & " | " & tmp.DetallePedido.item
             '            End If
             .value(4) = funciones.FormatearDecimales(tmp.Cantidad, 2)
-            .value(5) = funciones.FormatearDecimales(tmp.Valor, 2)
+            .value(5) = funciones.FormatearDecimales(tmp.valor, 2)
             .value(6) = tmp.VerFacturado
 
 
@@ -604,7 +605,7 @@ Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Varia
         tmp.Cantidad = CDbl(Values(4))
 
 
-        If grilla.Columns(5).Visible Then tmp.Valor = Values(5)
+        If grilla.Columns(5).Visible Then tmp.valor = Values(5)
 
     End If
 End Sub
