@@ -3,21 +3,349 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosLiquidaciondeCajaLista 
    Caption         =   "Listado de Liquidaciones de Caja"
-   ClientHeight    =   8475
+   ClientHeight    =   10380
    ClientLeft      =   165
-   ClientTop       =   855
-   ClientWidth     =   14415
+   ClientTop       =   555
+   ClientWidth     =   18105
    LinkTopic       =   "Form1"
-   ScaleHeight     =   8475
-   ScaleWidth      =   14415
-   StartUpPosition =   3  'Windows Default
+   MDIChild        =   -1  'True
+   ScaleHeight     =   10380
+   ScaleWidth      =   18105
+   Begin XtremeSuiteControls.GroupBox GroupBox1 
+      Height          =   1695
+      Left            =   120
+      TabIndex        =   0
+      Top             =   120
+      Width           =   15765
+      _Version        =   786432
+      _ExtentX        =   27808
+      _ExtentY        =   2990
+      _StockProps     =   79
+      Caption         =   "Parámetros de búsqueda"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtNro 
+         Alignment       =   1  'Right Justify
+         Height          =   285
+         Left            =   1320
+         TabIndex        =   7
+         Top             =   285
+         Width           =   840
+      End
+      Begin VB.PictureBox pic 
+         Height          =   540
+         Left            =   15240
+         ScaleHeight     =   480
+         ScaleWidth      =   300
+         TabIndex        =   1
+         Top             =   195
+         Visible         =   0   'False
+         Width           =   360
+      End
+      Begin XtremeSuiteControls.PushButton PushButton2 
+         Height          =   330
+         Left            =   11340
+         TabIndex        =   2
+         Top             =   2490
+         Visible         =   0   'False
+         Width           =   1245
+         _Version        =   786432
+         _ExtentX        =   2196
+         _ExtentY        =   582
+         _StockProps     =   79
+         Caption         =   "PushButton2"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.GroupBox GroupBox2 
+         Height          =   1335
+         Left            =   5760
+         TabIndex        =   3
+         Top             =   240
+         Width           =   2355
+         _Version        =   786432
+         _ExtentX        =   4154
+         _ExtentY        =   2355
+         _StockProps     =   79
+         Caption         =   "Estado Proveedor"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.CheckBox chkContado 
+            Height          =   195
+            Left            =   405
+            TabIndex        =   4
+            Top             =   360
+            Width           =   1635
+            _Version        =   786432
+            _ExtentX        =   2884
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Contado"
+            UseVisualStyle  =   -1  'True
+            Value           =   1
+         End
+         Begin XtremeSuiteControls.CheckBox chkCtaCte 
+            Height          =   315
+            Left            =   405
+            TabIndex        =   5
+            Top             =   600
+            Width           =   1800
+            _Version        =   786432
+            _ExtentX        =   3175
+            _ExtentY        =   556
+            _StockProps     =   79
+            Caption         =   "Cuenta Corriente"
+            UseVisualStyle  =   -1  'True
+            Value           =   1
+         End
+         Begin XtremeSuiteControls.CheckBox chkEliminado 
+            Height          =   315
+            Left            =   405
+            TabIndex        =   6
+            Top             =   900
+            Width           =   1800
+            _Version        =   786432
+            _ExtentX        =   3175
+            _ExtentY        =   556
+            _StockProps     =   79
+            Caption         =   "Inactivos"
+            UseVisualStyle  =   -1  'True
+            Value           =   1
+         End
+      End
+      Begin XtremeSuiteControls.PushButton cmdBuscar 
+         Default         =   -1  'True
+         Height          =   450
+         Left            =   11280
+         TabIndex        =   8
+         Top             =   1080
+         Width           =   1830
+         _Version        =   786432
+         _ExtentX        =   3228
+         _ExtentY        =   794
+         _StockProps     =   79
+         Caption         =   "Buscar"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboProveedores 
+         Height          =   315
+         Left            =   1305
+         TabIndex        =   9
+         Top             =   735
+         Width           =   3525
+         _Version        =   786432
+         _ExtentX        =   6218
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Text            =   "cboProveedores"
+      End
+      Begin XtremeSuiteControls.PushButton btnClearProveedor 
+         Height          =   375
+         Left            =   4920
+         TabIndex        =   10
+         Top             =   720
+         Width           =   405
+         _Version        =   786432
+         _ExtentX        =   714
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "X"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton cmdImprimir 
+         Height          =   450
+         Left            =   13440
+         TabIndex        =   11
+         Top             =   1080
+         Width           =   1710
+         _Version        =   786432
+         _ExtentX        =   3016
+         _ExtentY        =   794
+         _StockProps     =   79
+         Caption         =   "Imprimir"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboEstado 
+         Height          =   315
+         Left            =   1305
+         TabIndex        =   12
+         Top             =   1200
+         Width           =   3510
+         _Version        =   786432
+         _ExtentX        =   6191
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Style           =   2
+         Text            =   "ComboBox1"
+      End
+      Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
+         Height          =   375
+         Left            =   4920
+         TabIndex        =   13
+         Top             =   1170
+         Width           =   405
+         _Version        =   786432
+         _ExtentX        =   714
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "X"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.GroupBox GroupBox 
+         Height          =   1335
+         Index           =   0
+         Left            =   8280
+         TabIndex        =   17
+         Top             =   240
+         Width           =   2655
+         _Version        =   786432
+         _ExtentX        =   4683
+         _ExtentY        =   2355
+         _StockProps     =   79
+         Caption         =   "Fecha de Creación"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.DateTimePicker dtpDesde 
+            Height          =   315
+            Left            =   900
+            TabIndex        =   18
+            Top             =   360
+            Width           =   1470
+            _Version        =   786432
+            _ExtentX        =   2593
+            _ExtentY        =   556
+            _StockProps     =   68
+            CheckBox        =   -1  'True
+            Format          =   1
+         End
+         Begin XtremeSuiteControls.DateTimePicker dtpHasta 
+            Height          =   315
+            Left            =   885
+            TabIndex        =   19
+            Top             =   855
+            Width           =   1470
+            _Version        =   786432
+            _ExtentX        =   2593
+            _ExtentY        =   556
+            _StockProps     =   68
+            CheckBox        =   -1  'True
+            Format          =   1
+         End
+         Begin XtremeSuiteControls.Label Label5 
+            Height          =   195
+            Left            =   360
+            TabIndex        =   21
+            Top             =   405
+            Width           =   465
+            _Version        =   786432
+            _ExtentX        =   820
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Desde"
+            BackColor       =   12632256
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label Label6 
+            Height          =   195
+            Left            =   375
+            TabIndex        =   20
+            Top             =   915
+            Width           =   420
+            _Version        =   786432
+            _ExtentX        =   741
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Hasta"
+            BackColor       =   12632256
+            AutoSize        =   -1  'True
+         End
+      End
+      Begin XtremeSuiteControls.Label Label1 
+         Height          =   195
+         Left            =   180
+         TabIndex        =   16
+         Top             =   330
+         Width           =   1080
+         _Version        =   786432
+         _ExtentX        =   1905
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Nº Liquidación:"
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label lbl 
+         Height          =   195
+         Left            =   480
+         TabIndex        =   15
+         Top             =   780
+         Width           =   780
+         _Version        =   786432
+         _ExtentX        =   1376
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Proveedor:"
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label4 
+         Height          =   195
+         Left            =   720
+         TabIndex        =   14
+         Top             =   1260
+         Width           =   540
+         _Version        =   786432
+         _ExtentX        =   953
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Estado:"
+         BackColor       =   12632256
+         AutoSize        =   -1  'True
+      End
+   End
    Begin GridEX20.GridEX gridOrdenes 
       Height          =   5505
-      Left            =   195
-      TabIndex        =   0
-      Top             =   1470
-      Width           =   12510
-      _ExtentX        =   22066
+      Left            =   120
+      TabIndex        =   22
+      Top             =   1920
+      Width           =   15735
+      _ExtentX        =   27755
       _ExtentY        =   9710
       Version         =   "2.0"
       BoundColumnIndex=   ""
@@ -39,298 +367,20 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":07D8
       Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0938
       Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0A78
-      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0B98
+      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0B7C
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0CE0
-      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0E08
-      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0EB8
-      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0F6C
-      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1044
-      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":10FC
-      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":11DC
-      FormatStyle(8)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1290
-      FormatStyle(9)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1344
-      FormatStyle(10) =   "frmAdminPagosLiquidaciondeCajaLista.frx":1424
+      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0CC4
+      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0DEC
+      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0E9C
+      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0F50
+      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1028
+      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":10E0
+      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":11C0
+      FormatStyle(8)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1274
+      FormatStyle(9)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1328
+      FormatStyle(10) =   "frmAdminPagosLiquidaciondeCajaLista.frx":1408
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":14DC
-   End
-   Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   1350
-      Left            =   120
-      TabIndex        =   1
-      Top             =   120
-      Width           =   12525
-      _Version        =   786432
-      _ExtentX        =   22093
-      _ExtentY        =   2381
-      _StockProps     =   79
-      Caption         =   "Parámetros de búsqueda"
-      UseVisualStyle  =   -1  'True
-      Begin VB.TextBox txtNro 
-         Alignment       =   1  'Right Justify
-         Height          =   285
-         Left            =   945
-         TabIndex        =   8
-         Top             =   285
-         Width           =   840
-      End
-      Begin VB.PictureBox pic 
-         Height          =   540
-         Left            =   11745
-         ScaleHeight     =   480
-         ScaleWidth      =   300
-         TabIndex        =   2
-         Top             =   195
-         Visible         =   0   'False
-         Width           =   360
-      End
-      Begin XtremeSuiteControls.PushButton PushButton2 
-         Height          =   330
-         Left            =   11340
-         TabIndex        =   3
-         Top             =   2490
-         Visible         =   0   'False
-         Width           =   1245
-         _Version        =   786432
-         _ExtentX        =   2196
-         _ExtentY        =   582
-         _StockProps     =   79
-         Caption         =   "PushButton2"
-         UseVisualStyle  =   -1  'True
-      End
-      Begin XtremeSuiteControls.GroupBox GroupBox2 
-         Height          =   1095
-         Left            =   4890
-         TabIndex        =   4
-         Top             =   105
-         Width           =   2355
-         _Version        =   786432
-         _ExtentX        =   4154
-         _ExtentY        =   1931
-         _StockProps     =   79
-         Caption         =   "Estado Proveedor"
-         UseVisualStyle  =   -1  'True
-         Begin XtremeSuiteControls.CheckBox chkContado 
-            Height          =   195
-            Left            =   405
-            TabIndex        =   5
-            Top             =   225
-            Width           =   1635
-            _Version        =   786432
-            _ExtentX        =   2884
-            _ExtentY        =   344
-            _StockProps     =   79
-            Caption         =   "Contado"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-         Begin XtremeSuiteControls.CheckBox chkCtaCte 
-            Height          =   315
-            Left            =   405
-            TabIndex        =   6
-            Top             =   465
-            Width           =   1800
-            _Version        =   786432
-            _ExtentX        =   3175
-            _ExtentY        =   556
-            _StockProps     =   79
-            Caption         =   "Cuenta Corriente"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-         Begin XtremeSuiteControls.CheckBox chkEliminado 
-            Height          =   315
-            Left            =   405
-            TabIndex        =   7
-            Top             =   765
-            Width           =   1800
-            _Version        =   786432
-            _ExtentX        =   3175
-            _ExtentY        =   556
-            _StockProps     =   79
-            Caption         =   "Inactivos"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-      End
-      Begin XtremeSuiteControls.PushButton cmdBuscar 
-         Default         =   -1  'True
-         Height          =   450
-         Left            =   9600
-         TabIndex        =   9
-         Top             =   240
-         Width           =   1350
-         _Version        =   786432
-         _ExtentX        =   2381
-         _ExtentY        =   794
-         _StockProps     =   79
-         Caption         =   "Buscar"
-         UseVisualStyle  =   -1  'True
-      End
-      Begin XtremeSuiteControls.ComboBox cboProveedores 
-         Height          =   315
-         Left            =   945
-         TabIndex        =   10
-         Top             =   615
-         Width           =   3525
-         _Version        =   786432
-         _ExtentX        =   6218
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Text            =   "cboProveedores"
-      End
-      Begin XtremeSuiteControls.PushButton btnClearProveedor 
-         Height          =   255
-         Left            =   4530
-         TabIndex        =   11
-         Top             =   630
-         Width           =   300
-         _Version        =   786432
-         _ExtentX        =   529
-         _ExtentY        =   450
-         _StockProps     =   79
-         Caption         =   "X"
-         BackColor       =   12632256
-         UseVisualStyle  =   -1  'True
-      End
-      Begin XtremeSuiteControls.PushButton cmdImprimir 
-         Height          =   450
-         Left            =   9615
-         TabIndex        =   12
-         Top             =   765
-         Width           =   1350
-         _Version        =   786432
-         _ExtentX        =   2381
-         _ExtentY        =   794
-         _StockProps     =   79
-         Caption         =   "Imprimir"
-         UseVisualStyle  =   -1  'True
-      End
-      Begin XtremeSuiteControls.DateTimePicker dtpDesde 
-         Height          =   315
-         Left            =   7845
-         TabIndex        =   13
-         Top             =   300
-         Width           =   1470
-         _Version        =   786432
-         _ExtentX        =   2593
-         _ExtentY        =   556
-         _StockProps     =   68
-         CheckBox        =   -1  'True
-         Format          =   1
-      End
-      Begin XtremeSuiteControls.DateTimePicker dtpHasta 
-         Height          =   315
-         Left            =   7830
-         TabIndex        =   14
-         Top             =   795
-         Width           =   1470
-         _Version        =   786432
-         _ExtentX        =   2593
-         _ExtentY        =   556
-         _StockProps     =   68
-         CheckBox        =   -1  'True
-         Format          =   1
-      End
-      Begin XtremeSuiteControls.ComboBox cboEstado 
-         Height          =   315
-         Left            =   945
-         TabIndex        =   15
-         Top             =   960
-         Width           =   3510
-         _Version        =   786432
-         _ExtentX        =   6191
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Style           =   2
-         Text            =   "ComboBox1"
-      End
-      Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
-         Height          =   255
-         Left            =   4530
-         TabIndex        =   16
-         Top             =   960
-         Width           =   300
-         _Version        =   786432
-         _ExtentX        =   529
-         _ExtentY        =   450
-         _StockProps     =   79
-         Caption         =   "X"
-         BackColor       =   12632256
-         UseVisualStyle  =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label Label1 
-         Height          =   195
-         Left            =   195
-         TabIndex        =   21
-         Top             =   330
-         Width           =   675
-         _Version        =   786432
-         _ExtentX        =   1191
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Nº Orden"
-         Alignment       =   1
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label lbl 
-         Height          =   195
-         Left            =   165
-         TabIndex        =   20
-         Top             =   660
-         Width           =   750
-         _Version        =   786432
-         _ExtentX        =   1323
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Proveedor"
-         Alignment       =   1
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label Label5 
-         Height          =   195
-         Left            =   7305
-         TabIndex        =   19
-         Top             =   345
-         Width           =   465
-         _Version        =   786432
-         _ExtentX        =   820
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Desde"
-         BackColor       =   12632256
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label Label6 
-         Height          =   195
-         Left            =   7320
-         TabIndex        =   18
-         Top             =   855
-         Width           =   420
-         _Version        =   786432
-         _ExtentX        =   741
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Hasta"
-         BackColor       =   12632256
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label Label4 
-         Height          =   195
-         Left            =   360
-         TabIndex        =   17
-         Top             =   1020
-         Width           =   495
-         _Version        =   786432
-         _ExtentX        =   873
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Estado"
-         BackColor       =   12632256
-         AutoSize        =   -1  'True
-      End
+      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":14C0
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -499,11 +549,13 @@ Private Sub llenarLista()
 End Sub
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.gridOrdenes.Width = Me.ScaleWidth - 50
-    Me.gridOrdenes.Height = Me.ScaleHeight - Me.gridOrdenes.Top
-
+    Me.gridOrdenes.Width = Me.ScaleWidth - 150
+'    Me.GroupBoxGrid(0).Width = Me.gridOrdenes.Width - 100
+'    Me.gridOrdenes.Height = Me.ScaleHeight - Me.gridOrdenes.Top
+    Me.gridOrdenes.Height = Me.ScaleHeight - 2000
     Me.GroupBox1.Width = Me.gridOrdenes.Width - 100
-    GridEXHelper.AutoSizeColumns Me.gridOrdenes
+   
+   GridEXHelper.AutoSizeColumns Me.gridOrdenes
 End Sub
 
 Private Sub Form_Terminate()
@@ -518,25 +570,25 @@ Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.gridOrdenes, Column
 End Sub
 
-Private Sub gridOrdenes_DblClick()
-    gridOrdenes_SelectionChange
-    mnuVer_Click
-End Sub
+'Private Sub gridOrdenes_DblClick()
+'    gridOrdenes_SelectionChange
+'    mnuVer_Click
+'End Sub
 
-Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If liquidaciones.count > 0 Then
-        gridOrdenes_SelectionChange
-        If Button = 2 Then
-            '            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
-            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoOrdenPago_pendiente)
-            Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoOrdenPago_pendiente)
-            Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoOrdenPago_Anulada)
-            Me.mnuVer.Enabled = Not (LiquidacionCaja.estado = EstadoOrdenPago_Anulada)
-
-            Me.PopupMenu menu
-        End If
-    End If
-End Sub
+'Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+'    If liquidaciones.count > 0 Then
+'        gridOrdenes_SelectionChange
+'        If Button = 2 Then
+'            '            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
+'            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoOrdenPago_pendiente)
+'            Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoOrdenPago_pendiente)
+'            Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoOrdenPago_Anulada)
+'            Me.mnuVer.Enabled = Not (LiquidacionCaja.estado = EstadoOrdenPago_Anulada)
+'
+'            Me.PopupMenu menu
+'        End If
+'    End If
+'End Sub
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
@@ -553,10 +605,10 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 End Sub
 
-Private Sub gridOrdenes_SelectionChange()
-    On Error Resume Next
-    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
-End Sub
+'Private Sub gridOrdenes_SelectionChange()
+'    On Error Resume Next
+'    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
+'End Sub
 
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And liquidaciones.count > 0 Then

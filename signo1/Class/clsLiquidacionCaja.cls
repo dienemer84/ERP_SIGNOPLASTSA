@@ -250,11 +250,11 @@ Public Property Get IsValid() As Boolean
 
 
     If Me.TotalOrigenes = 0 Then
-        AddValidationMessage "El total de la orden debe ser mayor a cero."
+        AddValidationMessage "El total de la Liquidación debe ser mayor a cero."
     End If
 
     If Me.CuentaContable Is Nothing And Me.FacturasProveedor.count = 0 Then
-        AddValidationMessage "La orden de pago debe contener facturas o cuenta contable."
+        AddValidationMessage "La Liquidación de Caja debe contener Comprobantes."
     End If
 
     If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
@@ -272,7 +272,9 @@ Public Property Get IsValid() As Boolean
 End Property
 
 Property Get StaticTotal() As Double
-    StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.DiferenciaCambio - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
+    'StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.DiferenciaCambio - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
+    StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
+
 End Property
 
 

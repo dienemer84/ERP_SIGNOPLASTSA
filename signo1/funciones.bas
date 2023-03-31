@@ -1127,9 +1127,9 @@ Public Function Redondear(dblntor As Double, Optional cntdecas As Integer) As Do
 End Function
 
 
-Public Function ImprimirLista(titulo, lst As ListView, CD As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
+Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
     On Error GoTo err91
-    CD.ShowPrinter
+    cd.ShowPrinter
 
     AnchoCol = 0
 
@@ -1243,7 +1243,7 @@ End Sub
 Public Function BuscarEnColeccion(col As Collection, indice As String) As Boolean
     On Error GoTo er1
     BuscarEnColeccion = True
-    col (indice)
+     col (indice)
     Exit Function
 er1:
     BuscarEnColeccion = False

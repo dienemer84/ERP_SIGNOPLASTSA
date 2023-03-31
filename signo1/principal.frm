@@ -411,17 +411,12 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frmMover.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA:
-
-        MsgBox ("Función en desarollo")
-
-        '            Dim f12323 As New frmAdminPagosLiquidaciondeCajaCrear
-        '            f12323.Show
+                    Dim f12323 As New frmAdminPagosLiquidaciondeCajaCrear
+                    f12323.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA:
-        MsgBox ("Función en desarollo")
-
-        '            Dim f12324 As New frmAdminPagosLiquidaciondeCajaLista
-        '            f12324.Show
+                    Dim f12324 As New frmAdminPagosLiquidaciondeCajaLista
+                    f12324.Show
 
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO:
@@ -698,7 +693,7 @@ Private Sub MDIForm_Load()
 
     CreateRibbonBar
 
-         frmAdminPagosLiquidaciondeCajaCrear.Show
+'         frmAdminPagosLiquidaciondeCajaCrear.Show
             
 End Sub
 

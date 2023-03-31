@@ -471,7 +471,8 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   495
          Left            =   19200
          TabIndex        =   49
-         Top             =   1560
+         Top             =   1440
+         Visible         =   0   'False
          Width           =   1815
          _Version        =   786432
          _ExtentX        =   3201
@@ -855,7 +856,7 @@ Option Explicit
 Implements ISuscriber
 
 Dim vId As String
-Dim Facturas As Collection
+Dim facturas As Collection
 Dim Factura As Factura
 Dim m_Archivos As Dictionary
 
@@ -978,7 +979,7 @@ Private Sub btnExportarAvanzado_Click()
 
     'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
     progreso.min = 0
-    progreso.max = Facturas.count
+    progreso.max = facturas.count
 
 
     'Dim xlApplication As New Excel.Application
@@ -1050,7 +1051,7 @@ Private Sub btnExportarAvanzado_Click()
     d = 0
 
 
-    For Each fac In Facturas
+    For Each fac In facturas
 
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
         xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
@@ -1255,7 +1256,7 @@ Private Sub btnExpotar_Click()
 
     'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
     progreso.min = 0
-    progreso.max = Facturas.count
+    progreso.max = facturas.count
 
 
     'Dim xlApplication As New Excel.Application
@@ -1333,7 +1334,7 @@ Private Sub btnExpotar_Click()
     d = 0
 
 
-    For Each fac In Facturas
+    For Each fac In facturas
 
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
         xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
@@ -1739,12 +1740,12 @@ Private Sub llenarGrilla()
 
     'ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron ASC "
 
-    Set Facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
+    Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
 
     Dim F As Factura
     Dim c As Integer
 
-    For Each F In Facturas
+    For Each F In facturas
 
         Dim Total As Double
         Dim totalNG As Double
@@ -1780,12 +1781,12 @@ Private Sub llenarGrilla()
     Me.lblTotalDolares = "Total U$S: " & Replace(FormatCurrency(totalDolares), "$", "")
     'Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalEstatico.Total)), "$", "")
     Me.GridEX1.ItemCount = 0
-    Me.GridEX1.ItemCount = Facturas.count
+    Me.GridEX1.ItemCount = facturas.count
 
     ' 1451- AGREGO FUNCION DE MOSTRAR ID U OCULTAR
     Me.GridEX1.Columns(24).Visible = False
 
-    Me.caption = "Emitidos [Cantidad: " & Facturas.count & "]"
+    Me.caption = "Emitidos [Cantidad: " & facturas.count & "]"
 
     ' Desabilito la apertura directa de la Factura al encontrar exacto
     'If facturas.count = 1 Then
@@ -1829,7 +1830,7 @@ Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer,
 End Sub
 
 Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Facturas.count > 0 Then
+    If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
             Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
@@ -2050,7 +2051,7 @@ End Sub
 
 Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = Facturas.item(RowBuffer.RowIndex)
+    Set Factura = facturas.item(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaCliente.Anulada Then
         RowBuffer.RowStyle = "anulada"
@@ -2090,13 +2091,13 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = Facturas.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+    Set Factura = facturas.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
 
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = Facturas.item(RowIndex)
+    Set Factura = facturas.item(RowIndex)
 
 
     Values(1) = Factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
@@ -2301,9 +2302,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         Dim i As Long
-        For i = Facturas.count To 1 Step -1
+        For i = facturas.count To 1 Step -1
 
-            If Facturas(i).Id = tmp.Id Then
+            If facturas(i).Id = tmp.Id Then
 
                 '                Set Factura = facturas(i)
                 '                Factura.Id = tmp.Id
@@ -2315,17 +2316,17 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 '                Factura.TasaAjusteMensual = tmp.TasaAjusteMensual
                 '                Set Factura.Cliente = tmp.Cliente
 
-                Facturas.remove i
-                If Facturas.count > 0 Then
+                facturas.remove i
+                If facturas.count > 0 Then
                     If i = 1 Then    'ver esto cuand oes un solo item
-                        Facturas.Add tmp, CStr(tmp.Id), 1
-                    ElseIf (i - 1) = Facturas.count Then
-                        Facturas.Add tmp, CStr(tmp.Id), , i - 1
+                        facturas.Add tmp, CStr(tmp.Id), 1
+                    ElseIf (i - 1) = facturas.count Then
+                        facturas.Add tmp, CStr(tmp.Id), , i - 1
                     Else
-                        Facturas.Add tmp, CStr(tmp.Id), i
+                        facturas.Add tmp, CStr(tmp.Id), i
                     End If
                 Else
-                    Facturas.Add tmp, CStr(tmp.Id)
+                    facturas.Add tmp, CStr(tmp.Id)
                 End If
 
                 'DAOFactura.FindById(tmp.Id, True)
