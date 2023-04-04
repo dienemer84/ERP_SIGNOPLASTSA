@@ -25,7 +25,7 @@ Public ChequesPropios As New Collection
 Public OperacionesCaja As New Collection
 Public OperacionesBanco As New Collection
 Public Compensatorios As New Collection
-Public estado As EstadoOrdenPago
+Public estado As EstadoLiquidacionCaja
 Public CertificadoRetencion As New CertificadoRetencion
 Public alicuota As Double
 Private m_validationMessages As String

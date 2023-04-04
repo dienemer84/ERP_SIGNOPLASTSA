@@ -364,23 +364,23 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":02F8
       Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0440
       Column(5)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":05A4
-      Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":07D8
-      Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0938
-      Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0A78
-      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0B7C
+      Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":07F4
+      Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0954
+      Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0A94
+      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0BDC
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0CC4
-      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0DEC
-      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0E9C
-      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0F50
-      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1028
-      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":10E0
-      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":11C0
-      FormatStyle(8)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1274
-      FormatStyle(9)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1328
-      FormatStyle(10) =   "frmAdminPagosLiquidaciondeCajaLista.frx":1408
+      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0D24
+      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0E4C
+      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0EFC
+      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0FB0
+      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1088
+      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1140
+      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1220
+      FormatStyle(8)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":12D4
+      FormatStyle(9)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1388
+      FormatStyle(10) =   "frmAdminPagosLiquidaciondeCajaLista.frx":1468
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":14C0
+      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":1520
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -415,10 +415,12 @@ Implements ISuscriber
 
 Dim ids As String
 Private liquidaciones As New Collection
-Private LiquidacionCaja As OrdenPago
-Private ordenes As New Collection
-Private Orden As OrdenPago
+Private LiquidacionCaja As clsLiquidacionCaja
 Private fac As clsFacturaProveedor
+
+'Private ordenes As New Collection
+'Private Orden As OrdenPago
+
 
 Private Sub btnClearProveedor_Click()
     Me.cboProveedores.ListIndex = -1
@@ -499,8 +501,6 @@ Private Sub llenarLista()
         filter = filter & " AND  liquidaciones_caja.id  = " & Val(Me.txtNro.text)
     End If
 
-
-
     Dim filtroor As String
 
     If Not IsNull(Me.dtpDesde.value) Then
@@ -510,19 +510,6 @@ Private Sub llenarLista()
     If Not IsNull(Me.dtpHasta.value) Then
         filter = filter & " AND liquidaciones_caja.fecha <= " & conectar.Escape(Me.dtpHasta.value)
     End If
-
-
-    '    If Me.chkContado.value = xtpChecked Then
-    '        filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorContado
-    '    End If
-    '
-    '    If Me.chkCtaCte.value = xtpChecked Then
-    '        filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorCuentaCorriente
-    '    End If
-    '
-    '    If Me.chkEliminado.value = xtpChecked Then
-    '        filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorEliminado
-    '    End If
 
 
     If Me.cboEstado.ListIndex > -1 Then
@@ -550,12 +537,12 @@ End Sub
 Private Sub Form_Resize()
     On Error Resume Next
     Me.gridOrdenes.Width = Me.ScaleWidth - 150
-'    Me.GroupBoxGrid(0).Width = Me.gridOrdenes.Width - 100
-'    Me.gridOrdenes.Height = Me.ScaleHeight - Me.gridOrdenes.Top
+    '    Me.GroupBoxGrid(0).Width = Me.gridOrdenes.Width - 100
+    '    Me.gridOrdenes.Height = Me.ScaleHeight - Me.gridOrdenes.Top
     Me.gridOrdenes.Height = Me.ScaleHeight - 2000
     Me.GroupBox1.Width = Me.gridOrdenes.Width - 100
-   
-   GridEXHelper.AutoSizeColumns Me.gridOrdenes
+
+    GridEXHelper.AutoSizeColumns Me.gridOrdenes
 End Sub
 
 Private Sub Form_Terminate()
@@ -575,43 +562,44 @@ End Sub
 '    mnuVer_Click
 'End Sub
 
-'Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-'    If liquidaciones.count > 0 Then
-'        gridOrdenes_SelectionChange
-'        If Button = 2 Then
-'            '            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
-'            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoOrdenPago_pendiente)
-'            Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoOrdenPago_pendiente)
-'            Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoOrdenPago_Anulada)
-'            Me.mnuVer.Enabled = Not (LiquidacionCaja.estado = EstadoOrdenPago_Anulada)
-'
-'            Me.PopupMenu menu
-'        End If
-'    End If
-'End Sub
+Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If liquidaciones.count > 0 Then
+        gridOrdenes_SelectionChange
+        If Button = 2 Then
+            '            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
+            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+            Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+            Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
+            Me.mnuVer.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
+
+            Me.PopupMenu menu
+        End If
+    End If
+End Sub
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowBuffer.RowIndex)
-        If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
+    If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
+        Set LiquidacionCaja = liquidaciones.item(RowBuffer.RowIndex)
+        If LiquidacionCaja.estado = EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada Then
             RowBuffer.CellStyle(9) = "aprobada"
-        ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
+        ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada Then
             RowBuffer.RowStyle = "anulada2"
 
             RowBuffer.CellStyle(9) = "anulada"
-        ElseIf Orden.estado = EstadoOrdenPago_pendiente Then
+        ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente Then
             RowBuffer.CellStyle(9) = "pendiente"
         End If
     End If
 End Sub
 
-'Private Sub gridOrdenes_SelectionChange()
-'    On Error Resume Next
-'    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
-'End Sub
+Private Sub gridOrdenes_SelectionChange()
+    On Error Resume Next
+    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
+End Sub
 
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And liquidaciones.count > 0 Then
+    
         Debug.Print (liquidaciones.count())
 
         Set LiquidacionCaja = liquidaciones.item(RowIndex)
@@ -680,7 +668,7 @@ Private Sub mnuAnular_Click()
 End Sub
 
 Private Sub mnuAprobar_Click()
-    If DAOOrdenPago.aprobar(Orden, True) Then
+    If DAOLiquidacionCaja.aprobar(LiquidacionCaja, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
         Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
@@ -690,10 +678,13 @@ Private Sub mnuAprobar_Click()
 
 End Sub
 
+
+
 Private Sub mnuEditar_Click()
-    Dim f22 As New frmAdminPagosCrearOrdenPago
+    Dim f22 As New frmAdminPagosLiquidaciondeCajaCrear
     f22.Show
-    f22.Cargar Orden
+    Dim liq As clsLiquidacionCaja
+    f22.Cargar liq
 End Sub
 
 Private Sub mnuHistorial_Click()
@@ -814,10 +805,10 @@ Private Sub Imprimir()
 End Sub
 
 Private Sub mnuVer_Click()
-    Dim f22 As New frmAdminPagosCrearOrdenPago
+    Dim f22 As New frmAdminPagosLiquidaciondeCajaCrear
     f22.Show
     f22.ReadOnly = True
-    f22.Cargar Orden
+    f22.Cargar LiquidacionCaja
 End Sub
 
 Private Sub mnuVerCertificado_Click()

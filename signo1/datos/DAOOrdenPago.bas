@@ -378,7 +378,9 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     If insideTransaction Then conectar.BeginTransaction
 
     '3-10-2020 recargo la OP para que se actualicen los estados de las facturas y se validen bien
+    
     Dim op As OrdenPago
+    
     Set op = DAOOrdenPago.FindById(op_mem.Id)
 
     If Not IsSomething(op) Then
@@ -503,12 +505,19 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
         Else
             GoTo err1
         End If
+        
     End If
+    
+        MsgBox (op.Id)
+        
     DaoHistorico.Save "orden_pago_historial", "OP Aprobada", op.Id
     aprobar = True
+    
+            MsgBox (op.Id)
     If insideTransaction Then conectar.CommitTransaction
     Exit Function
 err1:
+        MsgBox (op.Id)
     op.estado = es
     If insideTransaction Then conectar.RollBackTransaction
     aprobar = False

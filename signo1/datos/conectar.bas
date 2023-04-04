@@ -136,6 +136,7 @@ Public Sub BuildFieldsIndex(ByRef rs As Recordset, ByRef fieldsIndex As Dictiona
     Next F
 
 End Sub
+
 Public Function ProximoId(tableName As String) As Long
     On Error GoTo er1
     ProximoId = True

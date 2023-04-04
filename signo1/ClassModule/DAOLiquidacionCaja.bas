@@ -144,8 +144,8 @@ Public Function FindAllByProveedor(provid As Long, Optional cond As String, Opti
     End If
 End Function
 
-Public Function FindById(Id As Long) As OrdenPago
-    Set FindById = FindAll("ordenes_pago.id=" & Id)(1)
+Public Function FindById(Id As Long) As clsLiquidacionCaja
+    Set FindById = FindAll("liquidaciones_caja.id=" & Id)(1)
 End Function
 
 
@@ -247,7 +247,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
 
 
     Dim col As New Collection
-    Dim op As OrdenPago
+    Dim liq As clsLiquidacionCaja
     Dim fac As clsFacturaProveedor
     Dim che As cheque
     Dim oper As operacion
@@ -261,31 +261,31 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     BuildFieldsIndex rs, idx
 
     While Not rs.EOF
-        Set op = Map(rs, idx, "liquidaciones_caja", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones")    ', "certificados_retencion")
+        Set liq = Map(rs, idx, "liquidaciones_caja", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones")    ', "certificados_retencion")
 
-        If funciones.BuscarEnColeccion(col, CStr(op.Id)) Then
-            Set op = col.item(CStr(op.Id))
+        If funciones.BuscarEnColeccion(col, CStr(liq.Id)) Then
+            Set liq = col.item(CStr(liq.Id))
         Else
-            col.Add op, CStr(op.Id)
+            col.Add liq, CStr(liq.Id)
         End If
 
         Set fac = DAOFacturaProveedor.Map(rs, idx, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", , "monFacProv")
 
         If IsSomething(fac) Then
-            If Not funciones.BuscarEnColeccion(op.FacturasProveedor, CStr(fac.Id)) Then
-                op.FacturasProveedor.Add fac, CStr(fac.Id)
+            If Not funciones.BuscarEnColeccion(liq.FacturasProveedor, CStr(fac.Id)) Then
+                liq.FacturasProveedor.Add fac, CStr(fac.Id)
             End If
         End If
 
         Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco")
         If IsSomething(che) Then
             If che.Propio Then
-                If Not funciones.BuscarEnColeccion(op.ChequesPropios, CStr(che.Id)) Then
-                    op.ChequesPropios.Add che, CStr(che.Id)
+                If Not funciones.BuscarEnColeccion(liq.ChequesPropios, CStr(che.Id)) Then
+                    liq.ChequesPropios.Add che, CStr(che.Id)
                 End If
             Else
-                If Not funciones.BuscarEnColeccion(op.ChequesTerceros, CStr(che.Id)) Then
-                    op.ChequesTerceros.Add che, CStr(che.Id)
+                If Not funciones.BuscarEnColeccion(liq.ChequesTerceros, CStr(che.Id)) Then
+                    liq.ChequesTerceros.Add che, CStr(che.Id)
                 End If
             End If
         End If
@@ -293,21 +293,21 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
         Set oper = DAOOperacion.Map(rs, idx, "operaciones", "AdminComprasCuentasContables", "monedaoperacion", "AdminConfigCuentas", "cajas")
         If IsSomething(oper) Then
             If oper.Pertenencia = Banco Then
-                If Not funciones.BuscarEnColeccion(op.OperacionesBanco, CStr(oper.Id)) Then
+                If Not funciones.BuscarEnColeccion(liq.OperacionesBanco, CStr(oper.Id)) Then
 
-                    op.OperacionesBanco.Add oper, CStr(oper.Id)
+                    liq.OperacionesBanco.Add oper, CStr(oper.Id)
                 End If
             ElseIf oper.Pertenencia = caja Then
-                If Not funciones.BuscarEnColeccion(op.OperacionesCaja, CStr(oper.Id)) Then
-                    op.OperacionesCaja.Add oper, CStr(oper.Id)
+                If Not funciones.BuscarEnColeccion(liq.OperacionesCaja, CStr(oper.Id)) Then
+                    liq.OperacionesCaja.Add oper, CStr(oper.Id)
                 End If
             End If
         End If
 
         Set ra = MapAlicuotaRetencion(rs, idx, "opr", "r")
         If IsSomething(ra) Then
-            If Not funciones.BuscarEnColeccion(op.RetencionesAlicuota, CStr(ra.Retencion.Id)) Then
-                op.RetencionesAlicuota.Add ra, CStr(ra.Retencion.Id)
+            If Not funciones.BuscarEnColeccion(liq.RetencionesAlicuota, CStr(ra.Retencion.Id)) Then
+                liq.RetencionesAlicuota.Add ra, CStr(ra.Retencion.Id)
             End If
         End If
 
@@ -323,41 +323,41 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
                     Optional ByVal tablaMoneda As String = vbNullString, _
                     Optional ByVal tablaCuentaContable As String = vbNullString, _
                     Optional ByVal TablaRetenciones As String = vbNullString _
-                  ) As OrdenPago
+                  ) As clsLiquidacionCaja
 
 'Optional ByVal tablaCertRetencion As String = vbNullString _
 
-  Dim op As OrdenPago
+  Dim liq As clsLiquidacionCaja
 
 'id_certificado_retencion
     Dim Id As Long
     Id = GetValue(rs, indice, tabla, "id")
 
     If Id > 0 Then
-        Set op = New OrdenPago
-        op.Id = Id
+        Set liq = New clsLiquidacionCaja
+        liq.Id = Id
 
-        op.FEcha = GetValue(rs, indice, tabla, "fecha")
-        op.CuentaContableDescripcion = GetValue(rs, indice, tabla, "cuenta_contable_desc")
-        op.estado = GetValue(rs, indice, tabla, "estado")
-        op.alicuota = GetValue(rs, indice, tabla, "alicuota")
+        liq.FEcha = GetValue(rs, indice, tabla, "fecha")
+        liq.CuentaContableDescripcion = GetValue(rs, indice, tabla, "cuenta_contable_desc")
+        liq.estado = GetValue(rs, indice, tabla, "estado")
+        liq.alicuota = GetValue(rs, indice, tabla, "alicuota")
 
-        op.StaticTotalFacturas = GetValue(rs, indice, tabla, "static_total_facturas")
-        op.StaticTotalFacturasNG = GetValue(rs, indice, tabla, "static_total_factura_ng")
-        op.StaticTotalRetenido = GetValue(rs, indice, tabla, "static_total_a_retener")
-        op.StaticTotalOrigenes = GetValue(rs, indice, tabla, "static_total_origen")
+        liq.StaticTotalFacturas = GetValue(rs, indice, tabla, "static_total_facturas")
+        liq.StaticTotalFacturasNG = GetValue(rs, indice, tabla, "static_total_factura_ng")
+        liq.StaticTotalRetenido = GetValue(rs, indice, tabla, "static_total_a_retener")
+        liq.StaticTotalOrigenes = GetValue(rs, indice, tabla, "static_total_origen")
 
-        op.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
-        op.DiferenciaCambio = GetValue(rs, indice, tabla, "dif_cambio")
-        op.OtrosDescuentos = GetValue(rs, indice, tabla, "otros_descuentos")
-        op.DiferenciaCambioEnNG = GetValue(rs, indice, tabla, "dif_cambio_ng")
-        op.DiferenciaCambioEnTOTAL = GetValue(rs, indice, tabla, "dif_cambio_total")
-        If LenB(tablaCuentaContable) > 0 Then Set op.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
-        If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        liq.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
+        liq.DiferenciaCambio = GetValue(rs, indice, tabla, "dif_cambio")
+        liq.OtrosDescuentos = GetValue(rs, indice, tabla, "otros_descuentos")
+        liq.DiferenciaCambioEnNG = GetValue(rs, indice, tabla, "dif_cambio_ng")
+        liq.DiferenciaCambioEnTOTAL = GetValue(rs, indice, tabla, "dif_cambio_total")
+        If LenB(tablaCuentaContable) > 0 Then Set liq.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
+        If LenB(tablaMoneda) > 0 Then Set liq.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
     End If
 
-    Set Map = op
+    Set Map = liq
 End Function
 
 
@@ -405,16 +405,18 @@ End Function
 
 
 
-Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Boolean
+Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Boolean) As Boolean
 
     On Error GoTo err1
     If insideTransaction Then conectar.BeginTransaction
 
     '3-10-2020 recargo la OP para que se actualicen los estados de las facturas y se validen bien
-    Dim op As OrdenPago
-    Set op = DAOOrdenPago.FindById(op_mem.Id)
 
-    If Not IsSomething(op) Then
+    Dim liq As clsLiquidacionCaja
+    
+    Set liq = DAOLiquidacionCaja.FindById(liq_mem.Id)
+
+    If Not IsSomething(liq) Then
         GoTo err1
     End If
 
@@ -427,11 +429,11 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     Dim otrosvalores As Double
 
     Dim esf As EstadoFacturaProveedor
-    For Each F In op.FacturasProveedor
+    For Each F In liq.FacturasProveedor
 
         Dim fac As clsFacturaProveedor
         Set fac = DAOFacturaProveedor.FindById(F.Id)
-        '        'debug.print (F.Id & "- " & F.NumeroFormateado)
+        Debug.Print (F.Id & "- " & F.NumeroFormateado & liq.Id)
 
         If fac.estado = EstadoFacturaProveedor.EnProceso Then
             Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"
@@ -439,7 +441,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
 
         Dim x
 
-        Set x = DAOOrdenPago.FindAbonadoPendienteEnEstaOP(fac.Id, op.Id)
+        Set x = DAOLiquidacionCaja.FindAbonadoPendienteEnEstaOP(fac.Id, liq.Id)
 
         nopago1 = fac.Total - fac.TotalAbonadoGlobal    '- (funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3)))))
 
@@ -462,54 +464,55 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
         conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & fac.Id
     Next F
 
+'    MsgBox (liq.Id)
 
 
+    
+    If liq.estado = EstadoLiquidacionCaja_pendiente Then
+        Dim es As EstadoLiquidacionCaja
+        es = liq.estado
+        liq.estado = EstadoLiquidacionCaja_Aprobada
+
+        If liq.EsParaFacturaProveedor Then
 
 
-    If op.estado = EstadoOrdenPago_pendiente Then
-        Dim es As EstadoOrdenPago
-        es = op.estado
-        op.estado = EstadoOrdenPago_Aprobada
-
-        If op.EsParaFacturaProveedor Then
-
-
-            If op.FacturasProveedor.count > 0 Then
-                If op.FacturasProveedor(1).Proveedor.estado <> 2 Then
+            If liq.FacturasProveedor.count > 0 Then
+                If liq.FacturasProveedor(1).Proveedor.estado <> 2 Then
                     Dim d As New clsDTOPadronIIBB
                     'todo: cambiar validacion
-                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
+                    Set d = DTOPadronIIBB.FindByCUIT(liq.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
                     Dim ret As Double
 
                     If IsSomething(d) Then
                         ret = d.alicuota
 
-                        If ret <> op.alicuota Then
-                            If MsgBox("La alicuota de retención actual del proveedor en el padrón difiere de la especificada en la orden de pago." & vbNewLine & "¿Quiere editar la orden de pago con la nueva alicuota de retención? o ¿Usar la especificada de todas maneras?" & vbNewLine & "[SI] - Continuar usando la especificada." & "[NO] - Cancelar y editar la orden de pago.", vbQuestion + vbYesNo) = vbNo Then
-                                GoTo err1
-                            End If
-                        End If
-
+'                                                If ret <> liq.alicuota Then
+'                                                    If MsgBox("La alicuota de retención actual del proveedor en el padrón difiere de la especificada en la orden de pago." & vbNewLine & "¿Quiere editar la orden de pago con la nueva alicuota de retención? o ¿Usar la especificada de todas maneras?" & vbNewLine & "[SI] - Continuar usando la especificada." & "[NO] - Cancelar y editar la orden de pago.", vbQuestion + vbYesNo) = vbNo Then
+'                                                        GoTo err1
+'                                                    End If
                     End If
-                Else
-                    MsgBox "El proveedor es de tipo contado! " & vbNewLine & "No se le realizará ninguna retención!", vbInformation, "Información"
+
                 End If
+            Else
+'                MsgBox "El proveedor es de tipo contado! " & vbNewLine & "No se le realizará ninguna retención!", vbInformation, "Información"
             End If
         End If
+    End If
 
 
-        'analizo las facturas de proveedores
+    'analizo las facturas de proveedores
 
 
-        'TODO: debo verificar que los deudas por compensatorio no esten utilizadas en otra OP aprobada ni que esten ya canceladas en otro proceso
+    'TODO: debo verificar que los deudas por compensatorio no esten utilizadas en otra OP aprobada ni que esten ya canceladas en otro proceso
 
-
-        If Guardar(op) Then
+'   MsgBox (liq.Id)
+   
+        If Guardar(liq) Then
 
 
 
             Dim fac1 As clsFacturaProveedor
-            For Each fac1 In op.FacturasProveedor
+            For Each fac1 In liq.FacturasProveedor
                 If fac1.estado = EstadoFacturaProveedor.Saldada Then
                     If Not DaoFacturaProveedorHistorial.agregar(fac1, "SALDADA") Then GoTo err1
                 End If
@@ -519,13 +522,13 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
             Next
 
 
-            If op.StaticTotalRetenido > 0 Then
+            If liq.StaticTotalRetenido > 0 Then
 
                 Dim ra As DTORetencionAlicuota
-                For Each ra In op.RetencionesAlicuota
+                For Each ra In liq.RetencionesAlicuota
 
 
-                    If IsSomething(DAOCertificadoRetencion.Create(op, ra.Retencion, ra.alicuotaRetencion, True)) Then
+                    If IsSomething(DAOCertificadoRetencion.Create(liq, ra.Retencion, ra.alicuotaRetencion, True)) Then
                         MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
                     Else
                         GoTo err1
@@ -536,13 +539,20 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
         Else
             GoTo err1
         End If
-    End If
-    DaoHistorico.Save "orden_pago_historial", "OP Aprobada", op.Id
+        
+'   End If
+    
+'   MsgBox (liq_mem.Id)
+    
+    DaoHistorico.Save "orden_pago_historial", "OP Aprobada", liq.Id
     aprobar = True
+'   MsgBox (liq_mem.Id)
     If insideTransaction Then conectar.CommitTransaction
     Exit Function
+    
 err1:
-    op.estado = es
+
+    liq.estado = es
     If insideTransaction Then conectar.RollBackTransaction
     aprobar = False
 End Function

@@ -583,7 +583,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frmCambiarPassword.Show
 
         ' Desactivaciones dienemer 11.09.20
-        '        Se desactiva AGENDA porque da error. Aparentemente no está desarrollada.
+        '        Se desactiva AGENDA porque da error. Aparentemente no est? desarrollada.
         '        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA:
         '               frmUsuariosAgendaPersonal.Show
 
@@ -645,7 +645,7 @@ Private Sub MDIForm_Load()
     Dim IdU As Long
 
     Dim tmpsrv As String
-    'leo el .ini y verifico que esté configurado el servidor
+    'leo el .ini y verifico que est? configurado el servidor
 
     Dim jjj As Long
     servidorBBDD.Add LeerIni(App.path & "\config.ini", "Configurar", "ServidorBBDD", vbNullString)
@@ -694,11 +694,12 @@ Private Sub MDIForm_Load()
     CreateRibbonBar
 
 '         frmAdminPagosLiquidaciondeCajaCrear.Show
+         frmAdminPagosLiquidaciondeCajaLista.Show
             
 End Sub
 
 Private Sub MDIForm_QueryUnload(Cancel As Integer, UnloadMode As Integer)
-    If MsgBox("¿Está seguro de salir del sistema?", vbYesNo + vbQuestion) = vbNo Then Cancel = 1
+    If MsgBox("Está seguro de salir del sistema?", vbYesNo + vbQuestion) = vbNo Then Cancel = 1
 End Sub
 
 Public Sub mostrarTablero()
@@ -721,12 +722,12 @@ End Sub
 '
 'Private Sub stbar1_PanelClick(ByVal panel As MSComctlLib.panel)
 '    If panel.Index = 5 Then
-'        If MsgBox("Hay una nueva actualización, ¿desea aplicarla ahora?", vbYesNo, "Confirmación") = vbYes Then
+'        If MsgBox("Hay una nueva actualización, ?desea aplicarla ahora?", vbYesNo, "Confirmación") = vbYes Then
 '
 '        End If
 '
 '    ElseIf panel.Index = 2 Then
-'        If MsgBox("¿Desea cambiar el password ahora?", vbYesNo, "Confirmación") = vbYes Then
+'        If MsgBox("?Desea cambiar el password ahora?", vbYesNo, "Confirmación") = vbYes Then
 '            frmCambiarPassword.Show
 '        End If
 '
@@ -743,7 +744,7 @@ Private Sub Popup_ItemClick(ByVal item As Xtremesuitecontrols.IPopupControlItem)
     If item.Id = 666 Then
         Me.Popup.Close
     Else
-        If MsgBox("Se va a aplicar una actualización." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
+        If MsgBox("Se va a aplicar una actualización." & vbNewLine & "Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
             classP.actualizarSistema CLng(item.Id)
         End If
     End If
@@ -1013,7 +1014,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Categoria sueldos", ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__CATEGORIA_SUELDOS, Permisos.sistemaManoObraConfig
     AddButton ribbonGroup, "Sueldo", ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SUELDO, Permisos.sistemaManoObraConfig
 
-    'ADMINISTRACIÓN--------------------------------------------------------------------------------------------------------------------
+    'ADMINISTRAción--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(6, "Administración")
     ribbonTab.Id = ID_TAB.ID_TAB_ADMINISTRACION
@@ -1049,22 +1050,27 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Depositos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR, Permisos.AdminCajayBancos
 
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS, , , xtpControlButtonPopup)
-    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
-    AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
-
-
-    AddButton ribbonGroup, "Crear Orden Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO, Permisos.AdminOPControl
-    AddButton ribbonGroup, "Orden Pago Lista", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas
     AddButton ribbonGroup, "Compensatorios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS, Permisos.AdminOPControl
     AddButton ribbonGroup, "Resúmen de pagos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS, Permisos.AdminOPConsultas
-    AddButton ribbonGroup, "Movimiento de Fondos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS, Permisos.AdminOPConsultas
+'    AddButton ribbonGroup, "Movimiento de Fondos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS, Permisos.AdminOPConsultas
 
     AddButton ribbonGroup, "Bancos", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Cuentas", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS, Permisos.AdminCajayBancos
 
+    Set ribbonGroup = ribbonTab.Groups.AddGroup("Pagos", ID_GROUP.ID_GROUP_ADMINISTRACION__VARIOS)
 
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
 
+'    Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS, , , xtpControlButtonPopup)
+'    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
+'    AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
+    
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Crear Orden Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO, Permisos.AdminOPControl, , , cmdBarCtrl
+    AddButton ribbonGroup, "Orden Pago Lista", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas, , , cmdBarCtrl
+   
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Compras", ID_GROUP.ID_GROUP_ADMINISTRACION__COMPRAS)
     AddButton ribbonGroup, "Ingresar Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA
     AddButton ribbonGroup, "Listado Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO
@@ -1091,7 +1097,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Retenciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_RETENCIONES, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Posición IVA Mensual", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_POSICION_IVA_MENSUAL, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
 
-    ' REPORTE DE COMPARACIÓN DE COMPROBANTES SIGNO VS AFIP
+    ' REPORTE DE COMPARAción DE COMPROBANTES SIGNO VS AFIP
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Extras", ID_GROUP.ID_GROUP_ADMINISTRACION__EXTRAS)
     AddButton ribbonGroup, "Comparación Compras", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC, Permisos.AdminSubdiariosControl
     'frmAdminExtrasReporteCMC
@@ -1127,7 +1133,7 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Herramientas", ID_GROUP.ID_GROUP_USUARIO__HERRAMIENTAS)
     AddButton ribbonGroup, "Tablero", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO
     AddButton ribbonGroup, "Agenda", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA
-    AddButton ribbonGroup, "Cambiar contraseña", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA
+    AddButton ribbonGroup, "Cambiar contraseÑa", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA
     AddButton ribbonGroup, "Eventos", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__EVENTOS
     AddButton ribbonGroup, "Asignación Eventos", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS___ASIGNACION_EVENTOS, (funciones.GetUserObj.usuario = "marceloto" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "raulco")
 
@@ -1212,4 +1218,5 @@ Private Sub TrayIcon_DblClick()
     End Select
     Me.SetFocus
 End Sub
+
 

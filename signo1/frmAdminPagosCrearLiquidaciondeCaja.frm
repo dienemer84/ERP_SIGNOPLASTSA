@@ -1033,7 +1033,6 @@ Dim colDeudaCompensatorios As New Collection
 Dim prov As clsProveedor
 Dim Factura As clsFacturaProveedor
 Dim compe As Compensatorio
-
 Private Banco As Banco
 Private caja As caja
 Private CuentaBancaria As CuentaBancaria
@@ -1046,8 +1045,10 @@ Private Cajas As New Collection
 Private bancos As New Collection
 Private chequesDisponibles As New Collection
 Private chequeras As New Collection
+
 Private LiquidacionCaja As New clsLiquidacionCaja
 Private OrdenPago As New OrdenPago
+Private LiquidacionCajaSeleccionada As clsLiquidacionCaja
 Private operacion As operacion
 Private cheque As cheque
 Private tmpChequera As chequera
@@ -1055,9 +1056,9 @@ Private chequesChequeraSeleccionada As New Collection
 
 Public ReadOnly As Boolean
 
-Public Sub Cargar(op As OrdenPago)
+Public Sub Cargar(liq As OrdenPago)
 
-    If Not IsSomething(op) Then
+    If Not IsSomething(liq) Then
         MsgBox "La OP que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
         Unload Me
         Exit Sub
@@ -1065,19 +1066,20 @@ Public Sub Cargar(op As OrdenPago)
     End If
 
 
-    Set OrdenPago = DAOLiquidacionCaja.FindById(op.Id)
-    Set LiquidacionCaja.Compensatorios = DAOCompensatorios.FindByOP(LiquidacionCaja.Id)
+    Set Orden = DAOLiquidacionCaja.FindById(liq.Id)
+    '    Set LiquidacionCaja.Compensatorios = DAOCompensatorios.FindByOP(LiquidacionCaja.Id)
 
     Dim i As Long
     Dim j As Long
     With OrdenPago
 
+    MsgBox (OrdenPago.FacturasProveedor)
         If .EsParaFacturaProveedor Then
             radioFacturaProveedor.value = True
 
             If .FacturasProveedor.count > 0 Then
 
-                cmdMostrarDatosProveedor_Click
+                '                cmdMostrarDatosProveedor_Click
 
 
                 Dim idx As Integer
@@ -1101,23 +1103,14 @@ Public Sub Cargar(op As OrdenPago)
                     Next j
 
                 End If
-
             End If
-
-
         Else
-
-
         End If
-
 
         If idx >= 0 Then
             lstFacturas.ListIndex = lstFacturas.ListCount - 1
 
         End If
-
-
-
     End With
 
     mostrarCompensatorios
@@ -1128,12 +1121,12 @@ Public Sub Cargar(op As OrdenPago)
     '
     '    GroupBox.Enabled = Not ReadOnly
 
-    Me.radioConcepto.Enabled = Not ReadOnly
+    '    Me.radioConcepto.Enabled = Not ReadOnly
     Me.radioFacturaProveedor.Enabled = Not ReadOnly
-    Me.cboCuentas.Enabled = Not ReadOnly
-    Me.cboProveedores.Enabled = Not ReadOnly
-    Me.txtDetalle.Enabled = Not ReadOnly
-    Me.btnClearProveedor.Enabled = Not ReadOnly
+    '    Me.cboCuentas.Enabled = Not ReadOnly
+    '    Me.cboProveedores.Enabled = Not ReadOnly
+    '    Me.txtDetalle.Enabled = Not ReadOnly
+    '    Me.btnClearProveedor.Enabled = Not ReadOnly
 
     'Me.grpOrigen.Enabled = Not ReadOnly
 
@@ -1153,8 +1146,8 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridChequeras.AllowEdit = Not ReadOnly
     'Me.gridChequeras.AllowDelete = Not ReadOnly
 
-    Me.gridCheques.AllowEdit = Not ReadOnly
-    Me.gridCheques.AllowDelete = Not ReadOnly
+    '    Me.gridCheques.AllowEdit = Not ReadOnly
+    '    Me.gridCheques.AllowDelete = Not ReadOnly
 
     Me.gridChequesChequera.AllowEdit = Not ReadOnly
     'Me.gridChequesChequera.AllowDelete = Not ReadOnly
@@ -1162,13 +1155,13 @@ Public Sub Cargar(op As OrdenPago)
     Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
     'Me.gridChequesDisponibles.AllowDelete = Not ReadOnly
 
-    Me.gridChequesPropios.AllowEdit = Not ReadOnly
-    Me.gridChequesPropios.AllowDelete = Not ReadOnly
+    '    Me.gridChequesPropios.AllowEdit = Not ReadOnly
+    '    Me.gridChequesPropios.AllowDelete = Not ReadOnly
 
     Me.cboMonedas.Enabled = Not ReadOnly
     Me.dtpFecha.Enabled = Not ReadOnly
     Me.btnGuardar.Enabled = Not ReadOnly
-    Me.txtDifCambio.Enabled = Not ReadOnly
+    '    Me.txtDifCambio.Enabled = Not ReadOnly
     Me.txtOtrosDescuentos.Enabled = Not ReadOnly
 
     Totalizar
@@ -1202,34 +1195,34 @@ Private Sub ActualizarAlicuotas()
 End Sub
 
 
-Private Sub btnCargar_Click()
-
-    If Me.cboProveedores.ListIndex <> -1 Then
-        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
-
-        If IsSomething(prov) Then
-
-            ' #fix 180
-            If LiquidacionCaja.estado = EstadoOrdenPago_pendiente Then
-                Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
-                ActualizarAlicuotas
-            End If
-
-
-        End If
-    Else
-        Set prov = Nothing
-
-    End If
-
-    Me.gridRetenciones.ItemCount = 0
-    Me.gridRetenciones.ItemCount = alicuotas.count
-    Me.gridRetenciones.Refresh
-
-    'MostrarFacturas
-    Totalizar
-
-End Sub
+'Private Sub btnCargar_Click()
+'
+'    If Me.cboProveedores.ListIndex <> -1 Then
+'        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
+'
+'        If IsSomething(prov) Then
+'
+'            ' #fix 180
+'            If LiquidacionCaja.estado = EstadoOrdenPago_pendiente Then
+'                Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+'                ActualizarAlicuotas
+'            End If
+'
+'
+'        End If
+'    Else
+'        Set prov = Nothing
+'
+'    End If
+'
+'    Me.gridRetenciones.ItemCount = 0
+'    Me.gridRetenciones.ItemCount = alicuotas.count
+'    Me.gridRetenciones.Refresh
+'
+'    'MostrarFacturas
+'    Totalizar
+'
+'End Sub
 
 
 Private Sub btnConfirmarSeleccion_Click()
@@ -1468,37 +1461,37 @@ Private Sub cboMonedas_Click()
 End Sub
 
 
-Private Sub cmdMostrarDatosProveedor_Click()
-    If Me.cboProveedores.ListIndex <> -1 Then
-
-        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
-
-
-
-        Dim d As clsDTOPadronIIBB
-
-        Set d = DTOPadronIIBB.FindByCUIT(prov.Cuit, TipoPadronRetencion)
-
-        If IsSomething(d) Then
-            Me.txtRetenciones = str(d.alicuota)   ' Val(d.Retencion )
-        Else
-            Me.txtRetenciones = 0
-        End If
-
-        'If IsSomething(prov) Then
-        'Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
-
-        ' End If
-    Else
-        Set prov = Nothing
-    End If
-
-
-    MostrarFacturas
-    MostrarDeudaCompensatorios
-    btnCargar_Click
-
-End Sub
+'Private Sub cmdMostrarDatosProveedor_Click()
+'    If Me.cboProveedores.ListIndex <> -1 Then
+'
+'        Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
+'
+'
+'
+'        Dim d As clsDTOPadronIIBB
+'
+'        Set d = DTOPadronIIBB.FindByCUIT(prov.Cuit, TipoPadronRetencion)
+'
+'        If IsSomething(d) Then
+'            Me.txtRetenciones = str(d.alicuota)   ' Val(d.Retencion )
+'        Else
+'            Me.txtRetenciones = 0
+'        End If
+'
+'        'If IsSomething(prov) Then
+'        'Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
+'
+'        ' End If
+'    Else
+'        Set prov = Nothing
+'    End If
+'
+'
+'    MostrarFacturas
+'    MostrarDeudaCompensatorios
+'    btnCargar_Click
+'
+'End Sub
 
 
 Private Sub dtpFecha_Change()
@@ -1508,7 +1501,7 @@ End Sub
 Private Sub Form_Load()
 
     formLoading = True
-    
+
     Me.gridCompensatorios.ItemCount = 0
 
     id_susc = funciones.CreateGUID
@@ -1567,14 +1560,14 @@ Private Sub Form_Load()
 
     'lstFacturas_Click
     Totalizar
-    
+
     MostrarFacturas
-    
+
     Me.txtInstruccion.text = "Se muestran los Comprobantes Impagos." & vbCrLf & "Para realizar el pago, debe seleccionar el Comprobante clickeando en el Check correspondiente." & vbCrLf & "Puede ir confirmando el Comprobante para que se guarde en la lista de Comprobantes Confirmados clickeando en el Botón: Confirmar Comprobantes."
-    
+
     Me.txtInstruccionDos.text = "Se muestran los Comprobantes Confirmados." & vbCrLf & "La sumatoria de los importes se verá reflejado en el totalizado superior Total Comprobantes" & vbCrLf & "Puede borrar alguno o todos los Comprobantes que se fueron agregando."
     '(226,225,241,255)
-    
+
     formLoaded = True
     formLoading = False
 
@@ -1586,21 +1579,21 @@ Private Sub CargarChequesDisponibles()
 End Sub
 
 
-Private Sub MostrarDeudaCompensatorios()
-    Me.lstDeudaCompensatorios.Clear
-    If IsSomething(prov) Then
-        Set colDeudaCompensatorios = DAOCompensatorios.FindAllPendientesByProveedor(prov.Id)  'DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & " or  AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & ")", False, "", False, True)
-        Dim c As Compensatorio
-
-        For Each c In colDeudaCompensatorios
-            Me.lstDeudaCompensatorios.AddItem "Cód: " & c.Id & " (OP: " & c.IdOrdenPago & ", Cbte: " & c.Comprobante.NumeroFormateado & ", Importe: " & c.Monto & ")"
-            Me.lstDeudaCompensatorios.ItemData(Me.lstDeudaCompensatorios.NewIndex) = c.Id
-        Next
-
-    Else
-        Set colFacturas = New Collection
-    End If
-End Sub
+'Private Sub MostrarDeudaCompensatorios()
+'    Me.lstDeudaCompensatorios.Clear
+'    If IsSomething(prov) Then
+'        Set colDeudaCompensatorios = DAOCompensatorios.FindAllPendientesByProveedor(prov.Id)  'DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & " or  AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & ")", False, "", False, True)
+'        Dim c As Compensatorio
+'
+'        For Each c In colDeudaCompensatorios
+'            Me.lstDeudaCompensatorios.AddItem "Cód: " & c.Id & " (OP: " & c.IdOrdenPago & ", Cbte: " & c.Comprobante.NumeroFormateado & ", Importe: " & c.Monto & ")"
+'            Me.lstDeudaCompensatorios.ItemData(Me.lstDeudaCompensatorios.NewIndex) = c.Id
+'        Next
+'
+'    Else
+'        Set colFacturas = New Collection
+'    End If
+'End Sub
 
 
 
@@ -1728,39 +1721,39 @@ End Sub
 
 
 
-Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Dim msg As New Collection
-
-    If LenB(Me.gridChequesPropios.value(1)) = 0 Then
-        msg.Add "Debe especificar una chequera."
-    End If
-
-    If LenB(Me.gridChequesPropios.value(2)) = 0 Then
-        msg.Add "Debe especificar un cheque."
-    End If
-
-    ' REVISA QUE EN LA COLECCION DE CHEQUES PROPIOS QUE SE ESTAN CARGANDO NO ESTÉ INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
-        msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
-    End If
-
-    If Not IsNumeric(Me.gridChequesPropios.value(3)) Then
-        msg.Add "Debe especificar un monto válido."
-    End If
-    ' REVISA QUE SE HAYA CARGADO UN MONTO DEL CHEQUE INGRESADO, SI NO SE CARGA GENERA MSG DE ERROR
-
-    If LenB(Me.gridChequesPropios.value(3)) = 0 Then
-        msg.Add "Debe especificar un monto mayor a 0."
-    End If
-
-    If Not IsDate(Me.gridChequesPropios.value(4)) Then
-        msg.Add "Debe especificar una fecha valida."
-    End If
-
-    Cancel = (msg.count > 0)
-    If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
-
-End Sub
+'Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+'    Dim msg As New Collection
+'
+'    If LenB(Me.gridChequesPropios.value(1)) = 0 Then
+'        msg.Add "Debe especificar una chequera."
+'    End If
+'
+'    If LenB(Me.gridChequesPropios.value(2)) = 0 Then
+'        msg.Add "Debe especificar un cheque."
+'    End If
+'
+'    ' REVISA QUE EN LA COLECCION DE CHEQUES PROPIOS QUE SE ESTAN CARGANDO NO ESTÉ INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
+'    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
+'        msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
+'    End If
+'
+'    If Not IsNumeric(Me.gridChequesPropios.value(3)) Then
+'        msg.Add "Debe especificar un monto válido."
+'    End If
+'    ' REVISA QUE SE HAYA CARGADO UN MONTO DEL CHEQUE INGRESADO, SI NO SE CARGA GENERA MSG DE ERROR
+'
+'    If LenB(Me.gridChequesPropios.value(3)) = 0 Then
+'        msg.Add "Debe especificar un monto mayor a 0."
+'    End If
+'
+'    If Not IsDate(Me.gridChequesPropios.value(4)) Then
+'        msg.Add "Debe especificar una fecha valida."
+'    End If
+'
+'    Cancel = (msg.count > 0)
+'    If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
+'
+'End Sub
 
 
 
@@ -1818,10 +1811,10 @@ End Sub
 Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If LiquidacionCaja.ChequesPropios.count >= RowIndex Then
         Set cheque = LiquidacionCaja.ChequesPropios.item(RowIndex)
-        
+
         cheque.Monto = Values(3)
         cheque.FechaVencimiento = Values(4)
-        
+
     End If
 
     Totalizar
@@ -2201,12 +2194,12 @@ End Sub
 
 
 Sub limpiarParciales()
-    Me.txtParcialAbonado = 0
-    Me.txtParcialAbonar = 0
-    Me.txtOtrosParcialAbonado = 0
-    Me.txtOtrosParcialAbonar = 0
-    Me.txtTotalParcialAbonado = 0
-    Me.txtTotalParcialAbonar = 0
+'    Me.txtParcialAbonado = 0
+'    Me.txtParcialAbonar = 0
+'    Me.txtOtrosParcialAbonado = 0
+'    Me.txtOtrosParcialAbonar = 0
+'    Me.txtTotalParcialAbonado = 0
+'    Me.txtTotalParcialAbonar = 0
 
     Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
 End Sub
@@ -2390,7 +2383,7 @@ Private Function TotalizarDiferenciasCambio()
         TIVA = TIVA + F.DiferenciaPorTipoDeCambionIVA
         TTOTAL = TTOTAL + F.DiferenciaPorTipoDeCambionTOTAL
     Next
-    
+
     If ReadOnly Then
         Dim s As String
         s = LiquidacionCaja.DiferenciaCambioEnNG
@@ -2517,18 +2510,18 @@ Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal
 End Sub
 
 
-Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Dim msg As New Collection
-
-    ' REVISA QUE EN LA COLECCION DE CHEQUES DE TERCEROS QUE SE ESTAN CARGANDO NO ESTÉ INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesTerceros, CStr(Me.gridCheques.value(1))) Then
-        msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
-    End If
-
-    Cancel = (msg.count > 0)
-    If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
-
-End Sub
+'Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+'    Dim msg As New Collection
+'
+'    ' REVISA QUE EN LA COLECCION DE CHEQUES DE TERCEROS QUE SE ESTAN CARGANDO NO ESTÉ INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
+'    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesTerceros, CStr(Me.gridCheques.value(1))) Then
+'        msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
+'    End If
+'
+'    Cancel = (msg.count > 0)
+'    If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
+'
+'End Sub
 
 
 
@@ -2660,13 +2653,13 @@ Private Sub txtOtrosDescuentos_LostFocus()
 End Sub
 
 
-Public Sub RecalcularOtrosFacturaelegida()
-    If LenB(Me.txtOtrosParcialAbonar) > 0 And IsNumeric(Me.txtOtrosParcialAbonar) Then
-
-        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
-        RecalcularTotalFacturaElegida
-    
-    End If
-
-End Sub
+'Public Sub RecalcularOtrosFacturaelegida()
+'    If LenB(Me.txtOtrosParcialAbonar) > 0 And IsNumeric(Me.txtOtrosParcialAbonar) Then
+'
+'        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
+'        RecalcularTotalFacturaElegida
+'
+'    End If
+'
+'End Sub
 
