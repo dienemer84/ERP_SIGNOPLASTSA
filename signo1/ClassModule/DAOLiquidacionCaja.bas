@@ -413,7 +413,7 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
     '3-10-2020 recargo la OP para que se actualicen los estados de las facturas y se validen bien
 
     Dim liq As clsLiquidacionCaja
-    
+
     Set liq = DAOLiquidacionCaja.FindById(liq_mem.Id)
 
     If Not IsSomething(liq) Then
@@ -443,31 +443,31 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
 
         Set x = DAOLiquidacionCaja.FindAbonadoPendienteEnEstaOP(fac.Id, liq.Id)
 
-        nopago1 = fac.Total - fac.TotalAbonadoGlobal    '- (funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3)))))
-
-        'nopago = fac.Total - fac.TotalAbonadoGlobal - funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
-
+        nopago1 = fac.Total - fac.TotalAbonadoGlobal
+        Debug.Print ("NoPago1: " & nopago1)
         otrosvalores = funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
-
-        nopago = funciones.RedondearDecimales(nopago1) - otrosvalores
-
+        Debug.Print ("Otros Valores: " & otrosvalores)
+        nopago = funciones.RedondearDecimales(nopago1) - otrosvalores - nopago1
+        Debug.Print ("NoPago: " & nopago)
         esf = EstadoFacturaProveedor.Aprobada
-
+        Debug.Print ("ESF: " & esf)
         If nopago < 0 Then
-            Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
+            Err.Raise 44, "aprobar liquidacion", "El comprobante " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
         End If
+        
         If nopago > 0 Then
             esf = EstadoFacturaProveedor.pagoParcial
         Else
             esf = EstadoFacturaProveedor.Saldada
         End If
         conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & fac.Id
+    
     Next F
 
-'    MsgBox (liq.Id)
+    '    MsgBox (liq.Id)
 
 
-    
+
     If liq.estado = EstadoLiquidacionCaja_pendiente Then
         Dim es As EstadoLiquidacionCaja
         es = liq.estado
@@ -486,15 +486,15 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
                     If IsSomething(d) Then
                         ret = d.alicuota
 
-'                                                If ret <> liq.alicuota Then
-'                                                    If MsgBox("La alicuota de retención actual del proveedor en el padrón difiere de la especificada en la orden de pago." & vbNewLine & "¿Quiere editar la orden de pago con la nueva alicuota de retención? o ¿Usar la especificada de todas maneras?" & vbNewLine & "[SI] - Continuar usando la especificada." & "[NO] - Cancelar y editar la orden de pago.", vbQuestion + vbYesNo) = vbNo Then
-'                                                        GoTo err1
-'                                                    End If
+                        '                                                If ret <> liq.alicuota Then
+                        '                                                    If MsgBox("La alicuota de retención actual del proveedor en el padrón difiere de la especificada en la orden de pago." & vbNewLine & "¿Quiere editar la orden de pago con la nueva alicuota de retención? o ¿Usar la especificada de todas maneras?" & vbNewLine & "[SI] - Continuar usando la especificada." & "[NO] - Cancelar y editar la orden de pago.", vbQuestion + vbYesNo) = vbNo Then
+                        '                                                        GoTo err1
+                        '                                                    End If
                     End If
 
                 End If
             Else
-'                MsgBox "El proveedor es de tipo contado! " & vbNewLine & "No se le realizará ninguna retención!", vbInformation, "Información"
+                '                MsgBox "El proveedor es de tipo contado! " & vbNewLine & "No se le realizará ninguna retención!", vbInformation, "Información"
             End If
         End If
     End If
@@ -505,51 +505,51 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
 
     'TODO: debo verificar que los deudas por compensatorio no esten utilizadas en otra OP aprobada ni que esten ya canceladas en otro proceso
 
-'   MsgBox (liq.Id)
-   
-        If Guardar(liq) Then
+    '   MsgBox (liq.Id)
+
+    If Guardar(liq) Then
 
 
 
-            Dim fac1 As clsFacturaProveedor
-            For Each fac1 In liq.FacturasProveedor
-                If fac1.estado = EstadoFacturaProveedor.Saldada Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "SALDADA") Then GoTo err1
-                End If
-                If fac1.estado = EstadoFacturaProveedor.pagoParcial Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "PAGO PARCIAL") Then GoTo err1
+        Dim fac1 As clsFacturaProveedor
+        For Each fac1 In liq.FacturasProveedor
+            If fac1.estado = EstadoFacturaProveedor.Saldada Then
+                If Not DaoFacturaProveedorHistorial.agregar(fac1, "SALDADA") Then GoTo err1
+            End If
+            If fac1.estado = EstadoFacturaProveedor.pagoParcial Then
+                If Not DaoFacturaProveedorHistorial.agregar(fac1, "PAGO PARCIAL") Then GoTo err1
+            End If
+        Next
+
+
+        If liq.StaticTotalRetenido > 0 Then
+
+            Dim ra As DTORetencionAlicuota
+            For Each ra In liq.RetencionesAlicuota
+
+
+                If IsSomething(DAOCertificadoRetencion.Create(liq, ra.Retencion, ra.alicuotaRetencion, True)) Then
+                    MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
+                Else
+                    GoTo err1
                 End If
             Next
 
-
-            If liq.StaticTotalRetenido > 0 Then
-
-                Dim ra As DTORetencionAlicuota
-                For Each ra In liq.RetencionesAlicuota
-
-
-                    If IsSomething(DAOCertificadoRetencion.Create(liq, ra.Retencion, ra.alicuotaRetencion, True)) Then
-                        MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
-                    Else
-                        GoTo err1
-                    End If
-                Next
-
-            End If
-        Else
-            GoTo err1
         End If
-        
-'   End If
-    
-'   MsgBox (liq_mem.Id)
-    
+    Else
+        GoTo err1
+    End If
+
+    '   End If
+
+    '   MsgBox (liq_mem.Id)
+
     DaoHistorico.Save "orden_pago_historial", "OP Aprobada", liq.Id
     aprobar = True
-'   MsgBox (liq_mem.Id)
+    '   MsgBox (liq_mem.Id)
     If insideTransaction Then conectar.CommitTransaction
     Exit Function
-    
+
 err1:
 
     liq.estado = es
@@ -880,66 +880,75 @@ Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
 
 End Function
 
-Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boolean
+Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Boolean
     On Error GoTo E
 
-    Dim op As OrdenPago
-    Set op = DAOOrdenPago.FindById(opid)
-
-
-
+    Dim liq As clsLiquidacionCaja
+    Set liq = DAOLiquidacionCaja.FindById(liqid)
 
     If useInternalTransaction Then conectar.BeginTransaction
 
     Dim q As String
 
-    q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & opid & ")"
+    q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & liqid & ")"
     If Not conectar.execute(q) Then GoTo E
     ' q = "DELETE FROM ordenes_pago_facturas WHERE id_liquidacion_caja = " & opid
     '     If Not conectar.execute(q) Then GoTo E
 
-    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_liquidacion_caja = " & opid & ")"
-    If Not conectar.execute(q) Then GoTo E
-    q = "DELETE FROM ordenes_pago_operaciones WHERE id_liquidacion_caja = " & opid
+    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid & ")"
     If Not conectar.execute(q) Then GoTo E
 
+    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid
+    If Not conectar.execute(q) Then GoTo E
 
     'se deben borrar los cheques creados para esta orden de pago (solo los propios)
     'fix 14-10-2020
     'q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & opid & ")"
-    q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & opid & ") and propio=1"
-    If Not conectar.execute(q) Then GoTo E
 
-    q = "UPDATE Cheques SET orden_pago_origen=0,en_cartera = 1  WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & opid & ") and propio=0"
+    '    q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & liqid & ") and propio=1"
+    '    If Not conectar.execute(q) Then GoTo E
+    '
+    '    q = "UPDATE Cheques SET orden_pago_origen=0,en_cartera = 1  WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & liqid & ") and propio=0"
+    '
+    '    If Not conectar.execute(q) Then GoTo E
+    '    q = "DELETE FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & liqid
+    '
+    '    If Not conectar.execute(q) Then GoTo E
+    '    q = "DELETE FROM ordenes_pago_compensatorios WHERE id_liquidacion_caja = " & liqid
+    '
+    '    If Not conectar.execute(q) Then GoTo E
+    '
+    '    '    q = "DELETE FROM ordenes_pago WHERE id = " & opid
+    '    If Not conectar.execute(q) Then GoTo E
 
+    Dim estado_anterior As EstadoLiquidacionCaja
+    estado_anterior = liq.estado
+    liq.estado = EstadoLiquidacionCaja_Anulada
+    If Not DAOLiquidacionCaja.Guardar(liq, False) Then GoTo E
 
-
-
-    If Not conectar.execute(q) Then GoTo E
-
-
-    q = "DELETE FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & opid
-    If Not conectar.execute(q) Then GoTo E
-
-    q = "DELETE FROM ordenes_pago_compensatorios WHERE id_liquidacion_caja = " & opid
-    If Not conectar.execute(q) Then GoTo E
-
-    '    q = "DELETE FROM ordenes_pago WHERE id = " & opid
-    If Not conectar.execute(q) Then GoTo E
-    Dim estado_anterior As EstadoOrdenPago
-    estado_anterior = op.estado
-    op.estado = EstadoOrdenPago_Anulada
-    If Not DAOOrdenPago.Guardar(op, False) Then GoTo E
-
-
-    DaoHistorico.Save "orden_pago_historial", "OP Anulada", op.Id
+    DaoHistorico.Save "orden_pago_historial", "OP Anulada", liq.Id
 
     If useInternalTransaction Then conectar.CommitTransaction
 
     Delete = True
+
+    'CARGA_LOG_EVENTOS
+
+    'Abre el archivo de texto para escritura en modo "append"
+    Open "C:\repo\log_sp.txt" For Append As #1
+
+    'Escribe el registro en el archivo
+    Print #1, Date & "- " & time & ": " & liq.Id & " ANULADA."
+
+
+    'Cierra el archivo
+    Close #1
+
+    'CIERRA_LOG_EVENTOS
+
     Exit Function
 E:
-    op.estado = estado_anterior
+    liq.estado = estado_anterior
     If useInternalTransaction Then conectar.RollBackTransaction
     Delete = False
 End Function
@@ -1100,9 +1109,10 @@ End Function
 
 
 
-Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
+Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBox) As Boolean
     Dim TAB1 As Integer
     Dim TAB2 As Integer
+    Dim TAB3 As Integer
     Dim maxw As Single
     Dim c As Long
     Dim mtxt As String
@@ -1119,107 +1129,121 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
 
     TAB1 = 300
     TAB2 = 300
+    TAB3 = 300
+
     Printer.CurrentY = lmargin
     maxw = Printer.Width - lmargin * 2
     A = lmargin + (maxw - 3200) / 2
     Printer.PaintPicture pic.Picture, A, 100, 3200, 600
+   
     Printer.FontBold = True
-
     Printer.FontSize = 12
-    mtxt = "Orden de Pago Nº " & Orden.Id
+    mtxt = "Liquidación de Caja Nº " & LiquidacionCaja.Id
     textw = Printer.TextWidth(mtxt)
+    
     Printer.CurrentX = lmargin + (maxw - textw) / 2
     Printer.Print mtxt
     Printer.FontSize = 10
-
     Printer.CurrentX = lmargin
     Printer.Print "Fecha: ";
     Printer.FontBold = False
-    Printer.Print Orden.FEcha
+    Printer.Print LiquidacionCaja.FEcha
 
 
 
-    If Orden.FacturasProveedor.count > 0 Then
-
-        Printer.FontBold = True
-        Printer.CurrentX = lmargin
-        Printer.Print "Proveedor: ";
-        Printer.FontBold = False
-        Printer.Print Orden.FacturasProveedor(1).Proveedor.RazonSocial
-    End If
+'    If LiquidacionCaja.FacturasProveedor.count > 0 Then
+'
+'        Printer.FontBold = True
+'        Printer.CurrentX = lmargin
+'        Printer.Print "Proveedor: ";
+'        Printer.FontBold = False
+'
+'        Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
+'
+'        Dim F As clsFacturaProveedor
+'        Dim facs As New Collection
+'
+'        If LiquidacionCaja.FacturasProveedor.count = 1 Then
+'            For Each F In LiquidacionCaja.FacturasProveedor
+'                Printer.Print F.Proveedor.RazonSocial;
+'            Next F
+'        Else
+'            Printer.Print "En Detalle"
+'        End If
+'
+'
+'    End If
 
     Dim existeIIBB As Boolean
     existeIIBB = False
 
-    Dim ra As DTORetencionAlicuota
-    For Each ra In Orden.RetencionesAlicuota
+    '    Dim ra As DTORetencionAlicuota
+    '    For Each ra In LiquidacionCaja.RetencionesAlicuota
+    '
+    '        Printer.FontBold = True
+    '        Printer.CurrentX = lmargin
+    '        Printer.Print "Alícuota " & ra.Retencion.nombre & ": ";
+    '        Printer.FontBold = False
+    '        Printer.Print ra.alicuotaRetencion & "%"
+    '
+    '        If ra.Retencion.Id = 5 Then existeIIBB = True
+    '
+    '    Next
 
-        Printer.FontBold = True
-        Printer.CurrentX = lmargin
-        Printer.Print "Alícuota " & ra.Retencion.nombre & ": ";
-        Printer.FontBold = False
-        Printer.Print ra.alicuotaRetencion & "%"
-
-        If ra.Retencion.Id = 5 Then existeIIBB = True
-
-    Next
-
-    If Not existeIIBB Then
-        Printer.FontBold = True
-        Printer.CurrentX = lmargin
-        Printer.Print "Alícuota IIBB BS AS: ";
-        Printer.FontBold = False
-        Printer.Print Orden.alicuota & "%"
-    End If
-
-
-
-
-    Dim cert As CertificadoRetencion
-    Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.Id)
-
-
-    Dim allcert As Collection
-    Set allcert = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.Id)
-
-    ' For Each cert In cert.CertificadoRetencion
-    ' Printer.Print cert.id & "%"
-    ' Next
-
-    If allcert Is Nothing Then
-        Set allcert = New Collection
-    End If
-
-    If allcert Is Nothing Or Not IsSomething(allcert) Or allcert.count = 0 Then
-        Printer.FontBold = True
-        Printer.CurrentX = lmargin
-        Printer.Print "Certificado IIBB Nº: ";
-        Printer.FontBold = False
-        Printer.Print " NO POSEE"
-    Else
-        If allcert.count = 1 Then
-            Printer.FontBold = True
-            Printer.CurrentX = lmargin
-            Printer.Print "Certificado IIBB Nº: ";
-            Printer.FontBold = False
-            Printer.Print allcert(1).Id
-        Else
-
-            Printer.FontBold = True
-            Printer.CurrentX = lmargin
-            Printer.Print "Certificados IIBB Nº: ";
-            Printer.FontBold = False
-
-            Dim c1 As CertificadoRetencion
-            Dim t1 As String
-            For Each c1 In allcert
-                t1 = t1 & c1.Id & " "
-            Next
-
-            Printer.Print t1
-
-        End If
-    End If
+    '    If Not existeIIBB Then
+    '        Printer.FontBold = True
+    '        Printer.CurrentX = lmargin
+    '        Printer.Print "Alícuota IIBB BS AS: ";
+    '        Printer.FontBold = False
+    '        Printer.Print LiquidacionCaja.alicuota & "%"
+    '    End If
+    '
+    '
+    '    Dim cert As CertificadoRetencion
+    '    Set cert = DAOCertificadoRetencion.FindByOrdenPago(LiquidacionCaja.Id)
+    '
+    '
+    '    Dim allcert As Collection
+    '    Set allcert = DAOCertificadoRetencion.FindAllByOrdenPago(LiquidacionCaja.Id)
+    '
+    '    ' For Each cert In cert.CertificadoRetencion
+    '    ' Printer.Print cert.id & "%"
+    '    ' Next
+    '
+    '    If allcert Is Nothing Then
+    '        Set allcert = New Collection
+    '    End If
+    '
+    '    If allcert Is Nothing Or Not IsSomething(allcert) Or allcert.count = 0 Then
+    '        Printer.FontBold = True
+    '        Printer.CurrentX = lmargin
+    '        Printer.Print "Certificado IIBB Nº: ";
+    '        Printer.FontBold = False
+    '        Printer.Print " NO POSEE"
+    '    Else
+    '        If allcert.count = 1 Then
+    '            Printer.FontBold = True
+    '            Printer.CurrentX = lmargin
+    '            Printer.Print "Certificado IIBB Nº: ";
+    '            Printer.FontBold = False
+    '            Printer.Print allcert(1).Id
+    '        Else
+    '
+    '            Printer.FontBold = True
+    '            Printer.CurrentX = lmargin
+    '            Printer.Print "Certificados IIBB Nº: ";
+    '            Printer.FontBold = False
+    '
+    '            Dim c1 As CertificadoRetencion
+    '            Dim t1 As String
+    '            For Each c1 In allcert
+    '                t1 = t1 & c1.Id & " "
+    '            Next
+    '
+    '            Printer.Print t1
+    '
+    '        End If
+    '    End If
 
 
 
@@ -1229,19 +1253,19 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Moneda: ";
     Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.moneda.NombreLargo
+    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.moneda.NombreLargo
 
-    Printer.FontBold = True
-    Printer.CurrentX = lmargin
-    Printer.Print "Otros Descuentos: ";
-    Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.OtrosDescuentos
+    '    Printer.FontBold = True
+    '    Printer.CurrentX = lmargin
+    '    Printer.Print "Otros Descuentos: ";
+    '    Printer.FontBold = False
+    '    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.OtrosDescuentos
 
-    Printer.FontBold = True
-    Printer.CurrentX = lmargin
-    Printer.Print "Dif. Por Tipo de Cambio: ";
-    Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.DiferenciaCambio
+    '    Printer.FontBold = True
+    '    Printer.CurrentX = lmargin
+    '    Printer.Print "Dif. Por Tipo de Cambio: ";
+    '    Printer.FontBold = False
+    '    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.DiferenciaCambio
 
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
@@ -1251,20 +1275,20 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontSize = 10
     Printer.FontBold = True
     Printer.CurrentX = lmargin + TAB1
-    Printer.Print "Facturas: "
+    Printer.Print "Comprobantes: "
     Printer.FontBold = False
     Printer.FontSize = 8
-    Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
-    Dim F As clsFacturaProveedor
-    Dim facs As New Collection
+        Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
+        Dim F As clsFacturaProveedor
+        Dim facs As New Collection
     c = 0
-    For Each F In Orden.FacturasProveedor
+    For Each F In LiquidacionCaja.FacturasProveedor
         c = c + 1
-        Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
+        Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
+        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
     Next F
     If c = 0 Then
-        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"
     End If
     Printer.Print
@@ -1273,39 +1297,40 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.CurrentX = lmargin
     Printer.FontBold = True
     Printer.Print "Valores: "
-    Printer.FontSize = 8
-    Printer.CurrentX = lmargin
-    Printer.Print "Cheques Propios: "
-    Printer.FontBold = False
-    Dim cheq As cheque
+
+    '    Printer.FontSize = 8
+    '    Printer.CurrentX = lmargin
+    '    Printer.Print "Cheques Propios: "
+    '    Printer.FontBold = False
+    '    Dim cheq As cheque
     Dim tmpCol As New Collection
-    c = 0
-    For Each cheq In Orden.ChequesPropios
-        c = c + 1
-        Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
-    Next cheq
-    If c = 0 Then
-        Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print "NO POSEE CHEQUES PROPIOS"
-    End If
-    Printer.Print
-    Printer.FontBold = True
-    Printer.CurrentX = lmargin + TAB1
-    Printer.Print "Cheques de Terceros: "
-    Printer.FontBold = False
+    '    c = 0
+    '    For Each cheq In LiquidacionCaja.ChequesPropios
+    '        c = c + 1
+    '        Printer.CurrentX = lmargin + TAB1 + TAB2
+    '        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
+    '    Next cheq
+    '    If c = 0 Then
+    '        Printer.CurrentX = lmargin + TAB1 + TAB2
+    '        Printer.Print "NO POSEE CHEQUES PROPIOS"
+    '    End If
+    '    Printer.Print
+    '    Printer.FontBold = True
+    '    Printer.CurrentX = lmargin + TAB1
+    '    Printer.Print "Cheques de Terceros: "
+    '    Printer.FontBold = False
     Set tmpCol = New Collection
-    c = 0
-    For Each cheq In Orden.ChequesTerceros
-        c = c + 1
-        Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
-    Next cheq
-    If c = 0 Then
-        Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print "NO POSEE CHEQUES DE TERCEROS"
-    End If
-    Printer.Print
+    '    c = 0
+    '    For Each cheq In LiquidacionCaja.ChequesTerceros
+    '        c = c + 1
+    '        Printer.CurrentX = lmargin + TAB1 + TAB2
+    '        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
+    '    Next cheq
+    '    If c = 0 Then
+    '        Printer.CurrentX = lmargin + TAB1 + TAB2
+    '        Printer.Print "NO POSEE CHEQUES DE TERCEROS"
+    '    End If
+    '    Printer.Print
     Printer.FontBold = True
     Printer.CurrentX = lmargin + TAB1
     Printer.Print "Transferencias: "
@@ -1314,7 +1339,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Dim op As operacion
     Set tmpCol = New Collection
     c = 0
-    For Each op In Orden.OperacionesBanco
+    For Each op In LiquidacionCaja.OperacionesBanco
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
@@ -1326,13 +1351,13 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.Print
     Printer.FontBold = True
     Printer.CurrentX = lmargin + TAB1
-    Printer.Print "Efectivo: "
+    Printer.Print "Caja: "
     Printer.FontBold = False
 
 
     Set tmpCol = New Collection
     c = 0
-    For Each op In Orden.OperacionesCaja
+    For Each op In LiquidacionCaja.OperacionesCaja
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
@@ -1351,24 +1376,24 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Total Facturas: ";
     Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalFacturas
+    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.StaticTotalFacturas
 
-    Printer.FontBold = True
-    Printer.CurrentX = lmargin
-    Printer.Print "Total Retenido: ";
-    Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalRetenido
+    '    Printer.FontBold = True
+    '    Printer.CurrentX = lmargin
+    '    Printer.Print "Total Retenido: ";
+    '    Printer.FontBold = False
+    '    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.StaticTotalRetenido
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Total Abonado: ";
     Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalOrigenes
+    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.StaticTotalOrigenes
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.EndDoc
 
-    DaoHistorico.Save "orden_pago_historial", "OP Impresa", Orden.Id
+    DaoHistorico.Save "orden_pago_historial", "OP Impresa", LiquidacionCaja.Id
 End Function
 
 

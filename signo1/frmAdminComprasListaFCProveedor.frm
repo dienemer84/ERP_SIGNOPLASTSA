@@ -691,23 +691,23 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(14)      =   "frmAdminComprasListaFCProveedor.frx":18B2
       Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1A1A
       Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B72
-      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CDE
-      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E36
-      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1FDA
-      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":2132
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CD6
+      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E2E
+      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1FD2
+      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":212A
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":2232
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":236A
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":241A
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":24CE
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":25A6
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":265E
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":273E
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":27FE
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":28C2
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":222A
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":2362
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":2412
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":24C6
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":259E
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":2656
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":2736
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":27F6
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":28BA
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2982
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2C9C
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":297A
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2C94
    End
    Begin XtremeSuiteControls.ComboBox cboFantasia 
       Height          =   315
@@ -1288,14 +1288,14 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.editar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
             Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "diegonr" Or funciones.GetUserObj.usuario = "natalilo")
-            Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
-            If (Factura.estado = Saldada And Factura.OrdenPagoId > 0) Then
-                Me.MnuVerOP.Visible = True
-                Me.MnuVerOP.caption = "Ver OP Nº " & Factura.OrdenPagoId
-            Else
-                Me.MnuVerOP.Visible = False
-                Me.MnuVerOP.caption = "No hay OP asociada"
-            End If
+'            Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
+'            If (Factura.estado = Saldada And Factura.OrdenPagoId > 0) Then
+'                Me.MnuVerOP.Visible = True
+'                Me.MnuVerOP.caption = "Ver OP Nº " & Factura.OrdenPagoId
+'            Else
+'                Me.MnuVerOP.Visible = False
+'                Me.MnuVerOP.caption = "No hay OP asociada"
+'            End If
 
             Me.PopupMenu menu
         End If
@@ -1501,15 +1501,15 @@ Private Sub mnuScan_Click()
 
 End Sub
 
-Private Sub MnuVerOP_Click()
-
-    Dim Orden As OrdenPago
-    Set Orden = DAOOrdenPago.FindByFacturaId(Factura.Id)
-    Dim f22 As New frmAdminPagosCrearOrdenPago
-    f22.Show
-    f22.ReadOnly = True
-    f22.Cargar Orden
-End Sub
+'Private Sub MnuVerOP_Click()
+'
+'    Dim Orden As OrdenPago
+'    Set Orden = DAOOrdenPago.FindByFacturaId(Factura.Id)
+'    Dim f22 As New frmAdminPagosCrearOrdenPago
+'    f22.Show
+'    f22.ReadOnly = True
+'    f22.Cargar Orden
+'End Sub
 
 
 Private Sub txtComprobante_GotFocus()

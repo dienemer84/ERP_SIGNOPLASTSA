@@ -1056,7 +1056,7 @@ Private chequesChequeraSeleccionada As New Collection
 
 Public ReadOnly As Boolean
 
-Public Sub Cargar(liq As OrdenPago)
+Public Sub Cargar(liq As clsLiquidacionCaja)
 
     If Not IsSomething(liq) Then
         MsgBox "La OP que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
@@ -1066,14 +1066,14 @@ Public Sub Cargar(liq As OrdenPago)
     End If
 
 
-    Set Orden = DAOLiquidacionCaja.FindById(liq.Id)
+    Set liq = DAOLiquidacionCaja.FindById(liq.Id)
     '    Set LiquidacionCaja.Compensatorios = DAOCompensatorios.FindByOP(LiquidacionCaja.Id)
 
     Dim i As Long
     Dim j As Long
-    With OrdenPago
+    With liq
 
-    MsgBox (OrdenPago.FacturasProveedor)
+    Debug.Print (liq.FacturasProveedor.count)
         If .EsParaFacturaProveedor Then
             radioFacturaProveedor.value = True
 
@@ -1085,20 +1085,23 @@ Public Sub Cargar(liq As OrdenPago)
                 Dim idx As Integer
                 idx = -1
                 For i = 1 To .FacturasProveedor.count
-                    For j = 0 To Me.lstFacturas.ListCount - 1
-                        If Me.lstFacturas.ItemData(j) = .FacturasProveedor.item(i).Id Then
-                            Me.lstFacturas.Checked(j) = True
+                Debug.Print (.FacturasProveedor.count)
+                    For j = 0 To Me.lstFacturasFiltradas.ListCount - 1
+                        If Me.lstFacturasFiltradas.ItemData(j) = .FacturasProveedor.item(i).Id Then
+                            Me.lstFacturasFiltradas.Checked(j) = True
                             idx = i
                         End If
                     Next j
+
+            End If
                 Next i
 
                 'acaa
 
                 If ReadOnly Then
-                    For j = Me.lstFacturas.ListCount - 1 To 0 Step -1
-                        If Not Me.lstFacturas.Checked(j) Then
-                            Me.lstFacturas.RemoveItem j
+                    For j = Me.lstFacturasFiltradas.ListCount - 1 To 0 Step -1
+                        If Not Me.lstFacturasFiltradas.Checked(j) Then
+                            Me.lstFacturasFiltradas.RemoveItem j
                         End If
                     Next j
 
@@ -1108,7 +1111,7 @@ Public Sub Cargar(liq As OrdenPago)
         End If
 
         If idx >= 0 Then
-            lstFacturas.ListIndex = lstFacturas.ListCount - 1
+            Me.lstFacturasFiltradas.ListIndex = Me.lstFacturasFiltradas.ListCount - 1
 
         End If
     End With

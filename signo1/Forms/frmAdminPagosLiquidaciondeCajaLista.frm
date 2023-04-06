@@ -386,6 +386,8 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Caption         =   "menu"
       Begin VB.Menu mnuEditar 
          Caption         =   "Editar"
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu mnuAprobar 
          Caption         =   "Aprobar"
@@ -395,12 +397,16 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       End
       Begin VB.Menu mnuVer 
          Caption         =   "Ver"
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu mnuImprimir 
          Caption         =   "Imprimir"
       End
       Begin VB.Menu mnuHistorial 
          Caption         =   "Ver Historial"
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
    End
 End
@@ -567,12 +573,12 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
         gridOrdenes_SelectionChange
         If Button = 2 Then
             '            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
-            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+            'Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
             Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
             Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
-            Me.mnuVer.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
-
+            'Me.mnuVer.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
             Me.PopupMenu menu
+            
         End If
     End If
 End Sub
@@ -600,7 +606,7 @@ End Sub
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And liquidaciones.count > 0 Then
     
-        Debug.Print (liquidaciones.count())
+'        Debug.Print (liquidaciones.count())
 
         Set LiquidacionCaja = liquidaciones.item(RowIndex)
 
@@ -654,15 +660,15 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 End Function
 
 Private Sub mnuAnular_Click()
-    If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
-        If DAOOrdenPago.Delete(Orden.Id, True) Then
+    If MsgBox("¿Desea anular la Liquidación?", vbQuestion + vbYesNo) = vbYes Then
+        If DAOLiquidacionCaja.Delete(LiquidacionCaja.Id, True) Then
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            ordenes.remove CStr(Orden.Id)
-            Me.gridOrdenes.ItemCount = ordenes.count
+            liquidaciones.remove CStr(LiquidacionCaja.Id)
+            Me.gridOrdenes.ItemCount = liquidaciones.count
             cmdBuscar_Click
         Else
-            MsgBox "No se pudo borrar.", vbCritical + vbOKOnly
+            MsgBox "No se pudo anular la Liquidación.", vbCritical + vbOKOnly
         End If
     End If
 End Sub
@@ -697,7 +703,7 @@ End Sub
 
 Private Sub mnuImprimir_Click()
 
-    If Not DAOOrdenPago.PrintOP(Orden, Me.pic) Then GoTo err1
+    If Not DAOLiquidacionCaja.PrintLiq(LiquidacionCaja, Me.pic) Then GoTo err1
 
     Exit Sub
 err1:
@@ -931,7 +937,7 @@ Private Sub PushButton2_Click()
 
 
         End If
-        Debug.Print nop.Id
+'        Debug.Print nop.Id
     Next
 
 
