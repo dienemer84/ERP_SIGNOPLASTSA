@@ -637,7 +637,7 @@ Private Sub llenarLista()
         totFact = Ot.TotalFacturado + totFact
     Next Ot
 
-    Me.lblTotal.caption = MonedaConverter.Patron.NombreCorto & " " & funciones.FormatearDecimales(tot, 2)
+    Me.lbltotal.caption = MonedaConverter.Patron.NombreCorto & " " & funciones.FormatearDecimales(tot, 2)
     Me.lblTotalFacturado.caption = MonedaConverter.Patron.NombreCorto & " " & funciones.FormatearDecimales(totFact, 2)
     Me.lblTotalPendiente.caption = MonedaConverter.Patron.NombreCorto & " " & funciones.FormatearDecimales(tot - totFact, 2)
 

@@ -1601,7 +1601,7 @@ End Sub
 Private Sub mnuSeguimiento_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmPlaneamientoSeguimiento
-        F.txtOt = aux_ordenTrabajo.Id
+        F.txtOT = aux_ordenTrabajo.Id
         F.Show
     End If
 End Sub

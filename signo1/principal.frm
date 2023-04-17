@@ -694,7 +694,7 @@ Private Sub MDIForm_Load()
     CreateRibbonBar
 
 '         frmAdminPagosLiquidaciondeCajaCrear.Show
-         frmAdminPagosLiquidaciondeCajaLista.Show
+'         frmAdminPagosLiquidaciondeCajaLista.Show
             
 End Sub
 
@@ -1063,13 +1063,9 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
 
-'    Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS, , , xtpControlButtonPopup)
-'    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
-'    AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
-    
     Set cmdBarCtrl = AddButton(ribbonGroup, "Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
     AddButton ribbonGroup, "Crear Orden Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO, Permisos.AdminOPControl, , , cmdBarCtrl
-    AddButton ribbonGroup, "Orden Pago Lista", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas, , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Listado de Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas, , , cmdBarCtrl
    
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Compras", ID_GROUP.ID_GROUP_ADMINISTRACION__COMPRAS)
     AddButton ribbonGroup, "Ingresar Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA
@@ -1081,10 +1077,6 @@ Private Sub CreateRibbonBar()
 
     AddButton ribbonGroup, "Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__CTA_CTE
     AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS
-
-    'Set ribbonGroup = ribbonTab.Groups.AddGroup("Liquidaciones", ID_GROUP.ID_GROUP_ADMINISTRACION__LIQUIDACIONES)
-    'AddButton ribbonGroup, "Listado", ID_BUTTON.ID_BUTTON_ADMIN_LIQUIDACIONES_VER
-    'AddButton ribbonGroup, "Crear", ID_BUTTON.ID_BUTTON_ADMIN_LIQUIDACIONES_VER
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Varios", ID_GROUP.ID_GROUP_ADMINISTRACION__VARIOS)
     AddButton ribbonGroup, "Padrones IIBB", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__PADRON_IIBB, Permisos.AdminIIBB

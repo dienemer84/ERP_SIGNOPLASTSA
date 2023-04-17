@@ -277,7 +277,7 @@ Begin VB.Form frmVentasPresupuestoEditar
          _ExtentX        =   2143
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   63045633
+         Format          =   147193857
          CurrentDate     =   38926
       End
       Begin XtremeSuiteControls.PushButton Command6 

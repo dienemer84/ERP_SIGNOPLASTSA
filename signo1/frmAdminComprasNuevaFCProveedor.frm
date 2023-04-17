@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   67502081
+      Format          =   147062785
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1132,7 +1132,7 @@ Private Sub Form_Load()
         Me.txtNumeroMask.Enabled = False
         Me.txtRedondeo.Enabled = False
         Me.DTPicker1.Enabled = False
-        Me.lblTotal.Visible = True
+        Me.lbltotal.Visible = True
         Me.Label10.Visible = True
         Me.Label17.Visible = False
         Me.txtMontoManual.Visible = False
@@ -1190,13 +1190,13 @@ End Sub
 Private Sub TotalFactura()
     On Error GoTo er1
     Me.txtMontoNeto = funciones.FormatearDecimales(vFactura.NetoGravado)
-    Me.lblTotal = funciones.FormatearDecimales(vFactura.Total)
+    Me.lbltotal = funciones.FormatearDecimales(vFactura.Total)
     Me.txtIVA.text = funciones.FormatearDecimales(vFactura.TotalIVA)
 
     Me.fraAlicuotas.caption = Replace$(Me.fraAlicuotas.Tag, "{VALUE}", funciones.FormatearDecimales(vFactura.TotalIVA))
     Exit Sub
 er1:
-    Me.lblTotal = 0
+    Me.lbltotal = 0
 End Sub
 
 Private Sub Form_Terminate()

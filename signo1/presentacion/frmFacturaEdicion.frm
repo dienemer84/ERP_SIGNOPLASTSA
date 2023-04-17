@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63111169
+         Format          =   147062785
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63111169
+         Format          =   147062785
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63111169
+         Format          =   147062785
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63111169
+         Format          =   147062785
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   63111169
+         Format          =   147062785
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1902,7 +1902,7 @@ Private Sub LimpiarTotales()
     Me.lblSubTotal.caption = funciones.FormatearDecimales(0)
     Me.lblPercepciones.caption = funciones.FormatearDecimales(0)
     Me.lblIVATot.caption = funciones.FormatearDecimales(0)
-    Me.lblTotal.caption = funciones.FormatearDecimales(0)
+    Me.lbltotal.caption = funciones.FormatearDecimales(0)
 End Sub
 
 
@@ -2265,7 +2265,7 @@ Private Sub Form_Load()
     Me.lblSubTotal.Enabled = Not ReadOnly
     Me.lblPercepciones.Enabled = Not ReadOnly
     Me.lblIVATot.Enabled = Not ReadOnly
-    Me.lblTotal.Enabled = Not ReadOnly
+    Me.lbltotal.Enabled = Not ReadOnly
     Me.Label10.Enabled = Not ReadOnly
     Me.lblIva2.Enabled = Not ReadOnly
     Me.Label8.Enabled = Not ReadOnly
@@ -2525,7 +2525,7 @@ Private Sub Totalizar()
     Me.lblSubTotal.caption = funciones.FormatearDecimales(Factura.TotalSubTotal)
     Me.lblPercepciones.caption = funciones.FormatearDecimales(Factura.totalPercepciones)
     Me.lblIVATot.caption = funciones.FormatearDecimales(Factura.TotalIVA)
-    Me.lblTotal.caption = funciones.FormatearDecimales(Factura.Total)
+    Me.lbltotal.caption = funciones.FormatearDecimales(Factura.Total)
 
     GridEXHelper.AutoSizeColumns Me.gridDetalles
 End Sub

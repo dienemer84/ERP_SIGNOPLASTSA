@@ -100,11 +100,10 @@ Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
     Exit Function
 err4:
 End Function
-Public Function GetByDate(desde As Date, Optional hasta As Date) As Collection
-    Dim Factura As clsFacturaProveedor
-    Dim col As New Collection
 
+Public Function GetByDate(desde As Date, Optional hasta As Date) As Collection
     Set GetByDate = DAOFacturaProveedor.FindAll("fecha>='" & Format(desde, "yyyy-mm-dd") & "' and fecha<= '" & Format(hasta, "yyyy-mm-dd") & "'", False)
+
 End Function
 Public Function aprobar(fc As clsFacturaProveedor) As Boolean
 
@@ -340,6 +339,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         If LenB(tablaAdminConfigFacturasProveedor) > 0 Then fc.configFactura = DAOConfigFacturaProveedor.Map(rs, indice, tablaAdminConfigFacturasProveedor, tablaAdminConfigIVAProveedor)
 
         If indice.Exists(".nro_orden") Then fc.OrdenPagoId = GetValue(rs, indice, vbNullString, "nro_orden")
+        
+        
 
         If indice.Exists(".total_compensado") Then fc.TotalCompensado = GetValue(rs, indice, vbNullString, "total_compensado")
 
@@ -535,11 +536,6 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
 
     ExportarColeccion = True
 
-
-    Dim detalle As DetalleOrdenTrabajo
-    Dim Entregas As Collection
-    Dim remitoDetalle As remitoDetalle
-
     'Dim xlWorkbook As New Excel.Workbook
     Dim xlWorkbook As Object
     Set xlWorkbook = CreateObject("Excel.Application")
@@ -572,16 +568,17 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     xlWorksheet.Cells(offset, 9).value = "Percepciones"
     xlWorksheet.Cells(offset, 10).value = "Imp. Total"
     xlWorksheet.Cells(offset, 11).value = "Total"
-    xlWorksheet.Cells(offset, 12).value = "Cta. Contable"
-    xlWorksheet.Cells(offset, 13).value = "Estado"
-    xlWorksheet.Cells(offset, 14).value = "Forma de Pago"
-    xlWorksheet.Cells(offset, 15).value = "Orden de Pago"
-    xlWorksheet.Cells(offset, 16).value = "Tipo de Cambio"
-    xlWorksheet.Cells(offset, 17).value = "Usuario"
-    xlWorksheet.Cells(offset, 18).value = "ID"
+    xlWorksheet.Cells(offset, 12).value = "Saldo a Pagar"
+    xlWorksheet.Cells(offset, 13).value = "Cta. Contable"
+    xlWorksheet.Cells(offset, 14).value = "Estado"
+    xlWorksheet.Cells(offset, 15).value = "Forma de Pago"
+    xlWorksheet.Cells(offset, 16).value = "Orden de Pago"
+    xlWorksheet.Cells(offset, 17).value = "Tipo de Cambio"
+    xlWorksheet.Cells(offset, 18).value = "Usuario"
+    xlWorksheet.Cells(offset, 19).value = "ID"
 
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 18)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 18)).Interior.Color = &HC0C0C0
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 19)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 19)).Interior.Color = &HC0C0C0
 
 
     '.Borders.LineStyle = xlContinuous
@@ -631,16 +628,19 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
         xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(fac.totalPercepciones * i)
         xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(fac.ImpuestoInterno * i)
         xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales(fac.Total * i)
-        If fac.cuentasContables.count > 0 Then xlWorksheet.Cells(offset, 12).value = fac.cuentasContables.item(1).cuentas.codigo
-        xlWorksheet.Cells(offset, 13).value = enums.enumEstadoFacturaProveedor(fac.estado)
-        If fac.FormaPagoCuentaCorriente Then xlWorksheet.Cells(offset, 14).value = "Cta. Cte." Else xlWorksheet.Cells(offset, 13).value = "Contado"
-        xlWorksheet.Cells(offset, 15).value = fac.OrdenPagoId
-        xlWorksheet.Cells(offset, 16).value = fac.TipoCambio
-        xlWorksheet.Cells(offset, 17).value = fac.UsuarioCarga.usuario
-        xlWorksheet.Cells(offset, 18).value = fac.Id
+        
+        xlWorksheet.Cells(offset, 12).value = funciones.FormatearDecimales(fac.Total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * i
+        
+        If fac.cuentasContables.count > 0 Then xlWorksheet.Cells(offset, 13).value = fac.cuentasContables.item(1).cuentas.codigo
+        xlWorksheet.Cells(offset, 14).value = enums.enumEstadoFacturaProveedor(fac.estado)
+        If fac.FormaPagoCuentaCorriente Then xlWorksheet.Cells(offset, 15).value = "Cta. Cte." Else xlWorksheet.Cells(offset, 15).value = "Contado"
+        xlWorksheet.Cells(offset, 16).value = fac.OrdenPagoId
+        xlWorksheet.Cells(offset, 17).value = fac.TipoCambio
+        xlWorksheet.Cells(offset, 18).value = fac.UsuarioCarga.usuario
+        xlWorksheet.Cells(offset, 19).value = fac.Id
 
 
-        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 18)).Borders.LineStyle = xlContinuous
+        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 19)).Borders.LineStyle = xlContinuous
     Next
 
 
@@ -659,8 +659,6 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     xlWorksheet.Cells(offset + 8, 3).value = Total
     xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 8, 3)).Borders.LineStyle = xlContinuous
     xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 8, 2)).Interior.Color = &HC0C0C0
-
-
 
     'autosize
     xlApplication.ScreenUpdating = False

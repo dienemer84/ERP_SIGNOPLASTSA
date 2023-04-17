@@ -254,7 +254,7 @@ Private Sub llenarPlan()
     For Each c In cuentas
         T = T + c.TotalAcumulado
     Next
-    Me.lblTotal.caption = "Total AR$ " & funciones.FormatearDecimales(T)
+    Me.lbltotal.caption = "Total AR$ " & funciones.FormatearDecimales(T)
 
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = cuentas.count

@@ -367,7 +367,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   63045633
+         Format          =   147062785
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -379,7 +379,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   63045633
+         Format          =   147062785
          CurrentDate     =   38926
       End
       Begin VB.Label Re 

@@ -1306,7 +1306,7 @@ Dim colProveedores As New Collection
 Dim colFacturas As New Collection
 Dim colDeudaCompensatorios As New Collection
 Dim prov As clsProveedor
-Dim factura As clsFacturaProveedor
+Dim Factura As clsFacturaProveedor
 
 Private Banco As Banco
 Private caja As caja
@@ -1551,7 +1551,7 @@ Private Sub btnCargar_Click()
         If IsSomething(prov) Then
 
             ' #fix 180
-            If OrdenPago.Estado = EstadoOrdenPago_pendiente Then
+            If OrdenPago.estado = EstadoOrdenPago_pendiente Then
                 Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
                 ActualizarAlicuotas
             End If
@@ -1928,10 +1928,10 @@ Private Sub MostrarFacturas()
 
         If OrdenPago.Id <> 0 And OrdenPago.EsParaFacturaProveedor Then
             If prov.Id = OrdenPago.FacturasProveedor.item(1).Proveedor.Id Then
-                For Each factura In OrdenPago.FacturasProveedor
-                    If Not funciones.BuscarEnColeccion(colFacturas, CStr(factura.Id)) Then
+                For Each Factura In OrdenPago.FacturasProveedor
+                    If Not funciones.BuscarEnColeccion(colFacturas, CStr(Factura.Id)) Then
 
-                        colFacturas.Add DAOFacturaProveedor.FindById(factura.Id), CStr(factura.Id)
+                        colFacturas.Add DAOFacturaProveedor.FindById(Factura.Id), CStr(Factura.Id)
                     End If
                 Next
             End If
@@ -1939,25 +1939,25 @@ Private Sub MostrarFacturas()
 
         Dim T As String
 
-        For Each factura In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
+        For Each Factura In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
 
             Dim c As Collection
-            Set c = DAOOrdenPago.FindAbonadoPendiente(factura.Id, OrdenPago.Id)
+            Set c = DAOOrdenPago.FindAbonadoPendiente(Factura.Id, OrdenPago.Id)
 
-            factura.TotalAbonadoGlobalPendiente = 0    ' c(1) 'que esta en ops sin aprobar
-            factura.NetoGravadoAbonadoGlobalPendiente = 0    ' c(2)
-            factura.OtrosAbonadoGlobalPendiente = 0    'c(3)
+            Factura.TotalAbonadoGlobalPendiente = 0    ' c(1) 'que esta en ops sin aprobar
+            Factura.NetoGravadoAbonadoGlobalPendiente = 0    ' c(2)
+            Factura.OtrosAbonadoGlobalPendiente = 0    'c(3)
 
-            T = factura.NumeroFormateado & " (" & factura.moneda.NombreCorto & " " & factura.Total & ")" & " (" & factura.FEcha & ")"    'TipoCambio: (" & Factura.TipoCambioPago & ")"
-            If factura.TotalAbonadoGlobal + factura.TotalAbonadoGlobalPendiente > 0 Then
-                T = factura.NumeroFormateado & " (" & factura.moneda.NombreCorto & " " & factura.Total & " - Abonado: " & factura.TotalAbonadoGlobal + factura.TotalAbonadoGlobalPendiente & ")" & " (" & factura.FEcha & ")"
+            T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"    'TipoCambio: (" & Factura.TipoCambioPago & ")"
+            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
+                T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
 
                 'MsgBox (c.count)
 
             End If
 
             Me.lstFacturas.AddItem T
-            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = factura.Id
+            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
 
 
         Next
@@ -2418,7 +2418,7 @@ Private Sub lstFacturas_Click()
         'Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: " & c.count
 
 
-        If OrdenPago.Estado = EstadoOrdenPago_pendiente And vFactElegida.NetoGravadoAbonado = 0 And vFactElegida.OtrosAbonado = 0 Then
+        If OrdenPago.estado = EstadoOrdenPago_pendiente And vFactElegida.NetoGravadoAbonado = 0 And vFactElegida.OtrosAbonado = 0 Then
             Set c = DAOOrdenPago.FindAbonadoFactura(vFactElegida.Id, OrdenPago.Id)
 
             'vFactElegida.TotalAbonadoGlobalPendiente = c(1)
@@ -2595,9 +2595,9 @@ Private Sub mnuCrearCompensatorio_Click()
 
     For i = 0 To Me.lstFacturas.ListCount - 1
         If Me.lstFacturas.Selected(i) Then
-            Set factura = colFacturas(CStr(Me.lstFacturas.ItemData(i)))
+            Set Factura = colFacturas(CStr(Me.lstFacturas.ItemData(i)))
 
-            If factura.IvaAplicado.count > 1 Then ivamax = True
+            If Factura.IvaAplicado.count > 1 Then ivamax = True
 
 
             'chequeo que no exista un compensatorio para esa factura.
@@ -2606,7 +2606,7 @@ Private Sub mnuCrearCompensatorio_Click()
             Dim hay As Boolean
             hay = False
             For Each c In OrdenPago.Compensatorios
-                If c.Comprobante.Id = factura.Id Then
+                If c.Comprobante.Id = Factura.Id Then
                     hay = True
                     Exit For
                 End If
@@ -2615,7 +2615,7 @@ Private Sub mnuCrearCompensatorio_Click()
 
             Dim Cant As Long
 
-            If DAOCompensatorios.FindAll("id_orden_pago= " & OrdenPago.Id & " and  id_comprobante=" & factura.Id).count > 0 Then hay = True
+            If DAOCompensatorios.FindAll("id_orden_pago= " & OrdenPago.Id & " and  id_comprobante=" & Factura.Id).count > 0 Then hay = True
 
             If hay Then
                 MsgBox "Ya existe un compensatorio para el comprobante indicado!", vbInformation, "Error"
@@ -2623,7 +2623,7 @@ Private Sub mnuCrearCompensatorio_Click()
                 If ivamax Then
                     MsgBox "No puede crear un compensatorio cuando hay multiples alícuotas!", vbInformation, "Error"
                 Else
-                    d.Cargar factura, OrdenPago
+                    d.Cargar Factura, OrdenPago
                     d.Show 1
                     mostrarCompensatorios
                     lstFacturas_ItemCheck 1
@@ -2733,7 +2733,7 @@ Private Sub Totalizar()
 
     OrdenPago.StaticTotalOrigenes = OrdenPago.TotalOrigenes
 
-    Me.lblTotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
+    Me.lbltotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
     GridEXHelper.AutoSizeColumns Me.gridCheques

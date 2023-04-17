@@ -340,7 +340,7 @@ Public Sub grafico()
     grafica.ColumnLabel = "asdsad"
     grafica.Refresh
 
-    Me.lblTotal = "Carga Total: " & funciones.FormatearDecimales(c) & " horas"
+    Me.lbltotal = "Carga Total: " & funciones.FormatearDecimales(c) & " horas"
 
 End Sub
 

@@ -43,7 +43,7 @@ Begin VB.Form frmPlaneamientoEdicionTiempo
       _ExtentY        =   582
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm:ss"
-      Format          =   16777219
+      Format          =   147062787
       CurrentDate     =   40140
    End
    Begin VB.ComboBox cboEmpleado 
@@ -64,7 +64,7 @@ Begin VB.Form frmPlaneamientoEdicionTiempo
       _ExtentY        =   582
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm:ss"
-      Format          =   16777219
+      Format          =   147062787
       CurrentDate     =   40140
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 

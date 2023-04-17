@@ -425,15 +425,12 @@ End Sub
 Private Sub btnExportar_Click()
 
     Me.progreso.Visible = True
-    'Me.lblExportando.Visible = True
 
     If IsSomething(ordenes) Then
-        '        If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
         If Not DAOOrdenPago.ExportarColeccion(ordenes, Me.progreso) Then GoTo err1
     End If
 
     Me.progreso.Visible = False
-    'Me.lblExportando.Visible = False
 
     Exit Sub
 err1:
@@ -747,10 +744,7 @@ Private Sub Imprimir()
         Dim F As clsFacturaProveedor
         Dim facs As New Collection
         For Each F In Orden.FacturasProveedor
-            'facs.Add F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.Moneda.NombreCorto & " " & F.Total
-
             facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.moneda.NombreCorto & " " & F.Total
-
         Next F
         If facs.count = 0 Then
             .item("lblFacturas").caption = "NO POSEE FACTURAS"
@@ -856,9 +850,6 @@ Private Sub PushButton1_Click()
 
     Dim facturasPosta As Collection
 
-    'conectar.execute "TRUNCATE certificados_retencion"
-    'conectar.execute "TRUNCATE certificados_retencion_detalles"
-
     For Each Orden In ordenes
         If Orden.FacturasProveedor.count > 0 Then    'no traia las facturas bien, faltaban datos y no me daban los totales
             Set facturasPosta = New Collection
@@ -884,7 +875,6 @@ Private Sub PushButton1_Click()
             If Not DAOOrdenPago.Guardar(Orden) Then Stop
 
             If Orden.estado = EstadoOrdenPago_Aprobada And Orden.StaticTotalRetenido > 0 Then
-                ' If Not IsSomething(DAOCertificadoRetencion.Create(Orden,) Then Stop
                 Err.Raise "ver error en frmOrdenesPago"
             End If
 
@@ -933,11 +923,6 @@ Private Sub PushButton2_Click()
             Set opeCaja.caja = DAOCaja.FindById(1)
             opeCaja.EntradaSalida = OPSalida
 
-
-            'Q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
-            '        If Not conectar.execute(Q) Then GoTo e
-            '        Q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
-            '        If Not conectar.execute(Q) Then GoTo e
             If Not DAOOperacion.Save(opeCaja) Then GoTo E
             opeCaja.Id = conectar.UltimoId2
             q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"

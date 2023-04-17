@@ -113,7 +113,7 @@ Begin VB.Form frmNuevaOrdenTrabajo
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   67502081
+      Format          =   147062785
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdGuardar 

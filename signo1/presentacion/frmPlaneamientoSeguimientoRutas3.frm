@@ -311,7 +311,7 @@ Public Sub cmdBuscar_Click()
         Me.fraDatosOT.caption = Me.fraDatosOT.Tag & Ot.Id
         Me.lblCliente.caption = "Cliente: " & Ot.cliente.razon
         Me.lblFechaCreado.caption = "Fecha Creada: " & Ot.fechaCreado
-        Me.lblFechaEntrega.caption = "Fecha Entrega: " & Ot.FechaEntrega
+        Me.lblfechaEntrega.caption = "Fecha Entrega: " & Ot.FechaEntrega
         Me.lblEstado.caption = "Estado: " & funciones.estado_pedido(Ot.estado)
 
         Dim tareas As Collection
@@ -771,35 +771,35 @@ Private Sub mnuFinalizarTarea_Click()
                     If ptp.Tarea.Id = 15 Then    'archivo punzonado then
                         'preguntar si quiere agergar al detalle o a la pieza
 
-                        Me.taskDialog.Reset
-                        Me.taskDialog.MessageBoxStyle = True
-                        Me.taskDialog.WindowTitle = "Subir archivo"
-                        Me.taskDialog.MainInstructionText = "¿Donde desea subir el programa de radan y su correspondiente PDF?"
-                        Me.taskDialog.ContentText = "Elija donde subir los archivos."
-                        taskDialog.RelativePosition = False
+                        Me.TaskDialog.Reset
+                        Me.TaskDialog.MessageBoxStyle = True
+                        Me.TaskDialog.WindowTitle = "Subir archivo"
+                        Me.TaskDialog.MainInstructionText = "¿Donde desea subir el programa de radan y su correspondiente PDF?"
+                        Me.TaskDialog.ContentText = "Elija donde subir los archivos."
+                        TaskDialog.RelativePosition = False
 
-                        Me.taskDialog.CommonButtons = 0
-                        taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonOk
+                        Me.TaskDialog.CommonButtons = 0
+                        TaskDialog.CommonButtons = TaskDialog.CommonButtons Or xtpTaskButtonOk
                         'taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonCancel
 
 
-                        taskDialog.AddRadioButton "A la pieza", 1
-                        taskDialog.AddRadioButton "Al detalle de la OT", 2
-                        taskDialog.AddRadioButton "No voy a subir archivos", 3
-                        taskDialog.DefaultRadioButton = 3
+                        TaskDialog.AddRadioButton "A la pieza", 1
+                        TaskDialog.AddRadioButton "Al detalle de la OT", 2
+                        TaskDialog.AddRadioButton "No voy a subir archivos", 3
+                        TaskDialog.DefaultRadioButton = 3
 
-                        taskDialog.MainIcon = xtpTaskIconInformation
-                        taskDialog.ShowDialog
+                        TaskDialog.MainIcon = xtpTaskIconInformation
+                        TaskDialog.ShowDialog
 
-                        If Me.taskDialog.DefaultRadioButton <> 3 Then
+                        If Me.TaskDialog.DefaultRadioButton <> 3 Then
                             Dim row As ReportRow
                             Set row = Me.ReportControl.SelectedRows.row(0)
                             Me.ReportControl.SelectedRows.DeleteAll
                             Me.ReportControl.SelectedRows.Add row.ParentRow
 
-                            If Me.taskDialog.DefaultRadioButton = 1 Then
+                            If Me.TaskDialog.DefaultRadioButton = 1 Then
                                 mnuArchivoPieza_Click
-                            ElseIf Me.taskDialog.DefaultRadioButton = 2 Then
+                            ElseIf Me.TaskDialog.DefaultRadioButton = 2 Then
                                 mnuArchivoDetalleOT_Click
                             End If
 

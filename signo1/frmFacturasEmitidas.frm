@@ -856,7 +856,7 @@ Option Explicit
 Implements ISuscriber
 
 Dim vId As String
-Dim facturas As Collection
+Dim Facturas As Collection
 Dim Factura As Factura
 Dim m_Archivos As Dictionary
 
@@ -979,7 +979,7 @@ Private Sub btnExportarAvanzado_Click()
 
     'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
     progreso.min = 0
-    progreso.max = facturas.count
+    progreso.max = Facturas.count
 
 
     'Dim xlApplication As New Excel.Application
@@ -1051,7 +1051,7 @@ Private Sub btnExportarAvanzado_Click()
     d = 0
 
 
-    For Each fac In facturas
+    For Each fac In Facturas
 
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
         xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
@@ -1256,7 +1256,7 @@ Private Sub btnExpotar_Click()
 
     'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
     progreso.min = 0
-    progreso.max = facturas.count
+    progreso.max = Facturas.count
 
 
     'Dim xlApplication As New Excel.Application
@@ -1334,7 +1334,7 @@ Private Sub btnExpotar_Click()
     d = 0
 
 
-    For Each fac In facturas
+    For Each fac In Facturas
 
         xlWorksheet.Cells(idx, 1).value = fac.GetShortDescription(False, True)
         xlWorksheet.Cells(idx, 2).value = fac.FechaEmision
@@ -1578,7 +1578,7 @@ Private Sub cmdImprimir_Click()
         .FooterString(jgexHFCenter) = Now
         '202
         .FooterDistance = 1500
-        .FooterString(jgexHFLeft) = lblTotalNeto & Chr(10) & lblTotalIVA & Chr(10) & lblTotalPercepciones & Chr(10) & lblTotal
+        .FooterString(jgexHFLeft) = lblTotalNeto & Chr(10) & lblTotalIVA & Chr(10) & lblTotalPercepciones & Chr(10) & lbltotal
         '202
 
     End With
@@ -1740,12 +1740,12 @@ Private Sub llenarGrilla()
 
     'ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron ASC "
 
-    Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
+    Set Facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
 
     Dim F As Factura
     Dim c As Integer
 
-    For Each F In facturas
+    For Each F In Facturas
 
         Dim Total As Double
         Dim totalNG As Double
@@ -1773,7 +1773,7 @@ Private Sub llenarGrilla()
     Next
 
 
-    Me.lblTotal = "Total: " & FormatCurrency(funciones.FormatearDecimales(Total))
+    Me.lbltotal = "Total: " & FormatCurrency(funciones.FormatearDecimales(Total))
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalPercepcionesIIBB))
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(TotalIVATodo))
     Me.lblTotalNeto = "Total NG: " & FormatCurrency(funciones.FormatearDecimales(totalNG))
@@ -1781,12 +1781,12 @@ Private Sub llenarGrilla()
     Me.lblTotalDolares = "Total U$S: " & Replace(FormatCurrency(totalDolares), "$", "")
     'Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalEstatico.Total)), "$", "")
     Me.GridEX1.ItemCount = 0
-    Me.GridEX1.ItemCount = facturas.count
+    Me.GridEX1.ItemCount = Facturas.count
 
     ' 1451- AGREGO FUNCION DE MOSTRAR ID U OCULTAR
     Me.GridEX1.Columns(24).Visible = False
 
-    Me.caption = "Emitidos [Cantidad: " & facturas.count & "]"
+    Me.caption = "Emitidos [Cantidad: " & Facturas.count & "]"
 
     ' Desabilito la apertura directa de la Factura al encontrar exacto
     'If facturas.count = 1 Then
@@ -1830,7 +1830,7 @@ Private Sub GridEX1_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer,
 End Sub
 
 Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If facturas.count > 0 Then
+    If Facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
             Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
@@ -2051,7 +2051,7 @@ End Sub
 
 Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(RowBuffer.RowIndex)
+    Set Factura = Facturas.item(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaCliente.Anulada Then
         RowBuffer.RowStyle = "anulada"
@@ -2091,13 +2091,13 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+    Set Factura = Facturas.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
 
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(RowIndex)
+    Set Factura = Facturas.item(RowIndex)
 
 
     Values(1) = Factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
@@ -2302,9 +2302,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         Dim i As Long
-        For i = facturas.count To 1 Step -1
+        For i = Facturas.count To 1 Step -1
 
-            If facturas(i).Id = tmp.Id Then
+            If Facturas(i).Id = tmp.Id Then
 
                 '                Set Factura = facturas(i)
                 '                Factura.Id = tmp.Id
@@ -2316,17 +2316,17 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 '                Factura.TasaAjusteMensual = tmp.TasaAjusteMensual
                 '                Set Factura.Cliente = tmp.Cliente
 
-                facturas.remove i
-                If facturas.count > 0 Then
+                Facturas.remove i
+                If Facturas.count > 0 Then
                     If i = 1 Then    'ver esto cuand oes un solo item
-                        facturas.Add tmp, CStr(tmp.Id), 1
-                    ElseIf (i - 1) = facturas.count Then
-                        facturas.Add tmp, CStr(tmp.Id), , i - 1
+                        Facturas.Add tmp, CStr(tmp.Id), 1
+                    ElseIf (i - 1) = Facturas.count Then
+                        Facturas.Add tmp, CStr(tmp.Id), , i - 1
                     Else
-                        facturas.Add tmp, CStr(tmp.Id), i
+                        Facturas.Add tmp, CStr(tmp.Id), i
                     End If
                 Else
-                    facturas.Add tmp, CStr(tmp.Id)
+                    Facturas.Add tmp, CStr(tmp.Id)
                 End If
 
                 'DAOFactura.FindById(tmp.Id, True)
@@ -2424,31 +2424,31 @@ Private Sub mnuArchivos_Click()
 End Sub
 
 Private Sub mnuCrearCopiaFactura_Click()
-    Me.taskDialog.Reset
-    Me.taskDialog.MessageBoxStyle = True
-    Me.taskDialog.WindowTitle = "Copia fiel de Comprobante"
-    Me.taskDialog.MainInstructionText = "¿De que tipo es el nuevo comprobante?"
-    Me.taskDialog.ContentText = "Elija el tipo de comprobante para el nuevo comprobante."
-    taskDialog.RelativePosition = False
+    Me.TaskDialog.Reset
+    Me.TaskDialog.MessageBoxStyle = True
+    Me.TaskDialog.WindowTitle = "Copia fiel de Comprobante"
+    Me.TaskDialog.MainInstructionText = "¿De que tipo es el nuevo comprobante?"
+    Me.TaskDialog.ContentText = "Elija el tipo de comprobante para el nuevo comprobante."
+    TaskDialog.RelativePosition = False
 
-    Me.taskDialog.CommonButtons = 0
-    taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonOk
-    taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonCancel
+    Me.TaskDialog.CommonButtons = 0
+    TaskDialog.CommonButtons = TaskDialog.CommonButtons Or xtpTaskButtonOk
+    TaskDialog.CommonButtons = TaskDialog.CommonButtons Or xtpTaskButtonCancel
 
-    taskDialog.DefaultRadioButton = -1
-    taskDialog.AddRadioButton "Factura", tipoDocumentoContable.Factura
-    taskDialog.AddRadioButton "Nota de Débito", tipoDocumentoContable.notaDebito
-    taskDialog.AddRadioButton "Nota de Crédito", tipoDocumentoContable.notaCredito
+    TaskDialog.DefaultRadioButton = -1
+    TaskDialog.AddRadioButton "Factura", tipoDocumentoContable.Factura
+    TaskDialog.AddRadioButton "Nota de Débito", tipoDocumentoContable.notaDebito
+    TaskDialog.AddRadioButton "Nota de Crédito", tipoDocumentoContable.notaCredito
 
 
-    taskDialog.MainIcon = xtpTaskIconInformation
+    TaskDialog.MainIcon = xtpTaskIconInformation
 
-    If taskDialog.ShowDialog = xtpTaskButtonOk Then
-        If Me.taskDialog.DefaultRadioButton = -1 Then
+    If TaskDialog.ShowDialog = xtpTaskButtonOk Then
+        If Me.TaskDialog.DefaultRadioButton = -1 Then
             MsgBox "Debe seleccionar un tipo para el nuevo comprobante.", vbExclamation + vbOKOnly
         Else
             Dim newFact As Factura
-            Set newFact = DAOFactura.CrearCopiaFiel(Factura, Me.taskDialog.DefaultRadioButton)
+            Set newFact = DAOFactura.CrearCopiaFiel(Factura, Me.TaskDialog.DefaultRadioButton)
             If IsSomething(newFact) Then
                 MsgBox "Se creó un nuevo comprobante (" & newFact.GetShortDescription(False, True) & ")", vbInformation + vbOKOnly
             Else

@@ -213,7 +213,7 @@ Begin VB.Form frmVentasPedidoNuevo
       _ExtentX        =   2355
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   62324737
+      Format          =   147128321
       CurrentDate     =   38861
    End
    Begin GridEX20.GridEX grilla 

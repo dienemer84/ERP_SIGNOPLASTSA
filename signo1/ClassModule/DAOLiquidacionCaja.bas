@@ -181,39 +181,6 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orde
 End Function
 Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
-    '    q = "SELECT *, (operaciones.pertenencia + 0) as pertenencia2" _
-         '      & " From ordenes_pago" _
-         '      & " LEFT JOIN ordenes_pago_cheques ON (ordenes_pago.id = ordenes_pago_cheques.id_liquidacion_caja)" _
-         '      & " LEFT JOIN ordenes_pago_operaciones ON (ordenes_pago.id = ordenes_pago_operaciones.id_liquidacion_caja)" _
-         '      & " LEFT JOIN liquidaciones_caja_facturas ON (ordenes_pago.id = liquidaciones_caja_facturas.id_liquidacion_caja)" _
-         '      & " LEFT JOIN AdminComprasCuentasContables cuentacontableordenpago ON (ordenes_pago.id_cuenta_contable = cuentacontableordenpago.id)" _
-         '      & " LEFT JOIN operaciones ON (operaciones.id = ordenes_pago_operaciones.id_operacion)" _
-         '      & " LEFT JOIN Cheques ON (Cheques.id = ordenes_pago_cheques.id_cheque)" _
-         '      & " LEFT JOIN Chequeras ON (Chequeras.id = Cheques.id_chequera)" _
-         '      & " LEFT JOIN AdminConfigBancos monbanco ON (monbanco.id = Chequeras.id_banco)" _
-         '      & " LEFT JOIN AdminConfigMonedas monchequera ON (monchequera.id = Chequeras.id_moneda)" _
-         '      & " LEFT JOIN AdminComprasFacturasProveedores ON (AdminComprasFacturasProveedores.id = liquidaciones_caja_facturas.id_factura_proveedor)" _
-         '      & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = ordenes_pago.id_moneda)" _
-         '      & " LEFT JOIN AdminConfigMonedas monFacProv ON (monFacProv.id = AdminComprasFacturasProveedores.id_moneda)" _
-         '      & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
-         '      & " LEFT JOIN AdminConfigMonedas monedaoperacion ON (monedaoperacion.id = operaciones.moneda_id)" _
-         '      & " LEFT JOIN AdminComprasCuentasContables ON (AdminComprasCuentasContables.id = operaciones.cuenta_contable_id)" _
-         '      & " LEFT JOIN cajas ON (cajas.id = operaciones.cuentabanc_o_caja_id)" _
-         '      & " LEFT JOIN AdminConfigCuentas ON (AdminConfigCuentas.id = operaciones.cuentabanc_o_caja_id)" _
-         '      & " LEFT JOIN AdminConfigMonedas moncuentabancaria ON (moncuentabancaria.id = AdminConfigCuentas.moneda_id)" _
-         '      & " LEFT JOIN AdminConfigMonedas moncheque ON (moncheque.id = Cheques.id_moneda)" _
-         '      & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id " _
-'      & " LEFT JOIN AdminConfigBancos ON (AdminConfigBancos.id = AdminConfigCuentas.idBanco)"
-    '    q = q & " LEFT JOIN AdminConfigBancos bancocheque  ON (bancocheque.id = Cheques.id_banco)" _
-         '      & " LEFT JOIN proveedores ON (proveedores.id = AdminComprasFacturasProveedores.id_proveedor)" _
-         '       ' & " LEFT JOIN certificados_retencion ON (certificados_retencion.id_liquidacion_caja = ordenes_pago.id)" _
-         '       ' & " LEFT JOIN retenciones ON (certificados_retencion.id_retencion = retenciones.id)"
-    '
-    '
-    '    q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = ordenes_pago.id " _
-         '      & " LEFT JOIN retenciones r ON r.id = opr.id_retencion "
-    '    q = q & " WHERE " & filter
-    '    q = q & " ORDER BY " & orderBy
 
     q = "SELECT *, (operaciones.pertenencia + 0) AS pertenencia2" _
       & " FROM liquidaciones_caja" _
@@ -454,14 +421,14 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
         If nopago < 0 Then
             Err.Raise 44, "aprobar liquidacion", "El comprobante " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
         End If
-        
+
         If nopago > 0 Then
             esf = EstadoFacturaProveedor.pagoParcial
         Else
             esf = EstadoFacturaProveedor.Saldada
         End If
         conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & fac.Id
-    
+
     Next F
 
     '    MsgBox (liq.Id)
@@ -636,32 +603,32 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         Wend
 
 
-        q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
+        '        q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
+        '        If Not conectar.execute(q) Then GoTo E
 
-        Dim che As cheque
-        For Each che In op.ChequesTerceros
-            che.EnCartera = False
-            che.IdOrdenPagoOrigen = op.Id
-            che.FechaEmision = op.FEcha
-            'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
-            If Not DAOCheques.Guardar(che) Then GoTo E
+        '        Dim che As cheque
+        '        For Each che In op.ChequesTerceros
+        '            che.EnCartera = False
+        '            che.IdOrdenPagoOrigen = op.Id
+        '            che.FechaEmision = op.FEcha
+        '            'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
+        '            If Not DAOCheques.Guardar(che) Then GoTo E
+        '
+        '            q = "INSERT INTO ordenes_pago_cheques VALUES (" & op.Id & ", " & che.Id & ")"
+        '            If Not conectar.execute(q) Then GoTo E
+        '        Next che
 
-            q = "INSERT INTO ordenes_pago_cheques VALUES (" & op.Id & ", " & che.Id & ")"
-            If Not conectar.execute(q) Then GoTo E
-        Next che
-
-        For Each che In op.ChequesPropios
-            che.EnCartera = False
-            che.IdOrdenPagoOrigen = op.Id
-            che.FechaEmision = op.FEcha
-            'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
-            If op.EsParaFacturaProveedor And op.FacturasProveedor.count > 0 Then che.OrigenDestino = op.FacturasProveedor(1).Proveedor.RazonSocial
-            If Not DAOCheques.Guardar(che) Then GoTo E
-
-            q = "INSERT INTO ordenes_pago_cheques VALUES (" & op.Id & ", " & che.Id & ")"
-            If Not conectar.execute(q) Then GoTo E
-        Next che
+        '        For Each che In op.ChequesPropios
+        '            che.EnCartera = False
+        '            che.IdOrdenPagoOrigen = op.Id
+        '            che.FechaEmision = op.FEcha
+        '            'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
+        '            If op.EsParaFacturaProveedor And op.FacturasProveedor.count > 0 Then che.OrigenDestino = op.FacturasProveedor(1).Proveedor.RazonSocial
+        '            If Not DAOCheques.Guardar(che) Then GoTo E
+        '
+        '            q = "INSERT INTO ordenes_pago_cheques VALUES (" & op.Id & ", " & che.Id & ")"
+        '            If Not conectar.execute(q) Then GoTo E
+        '        Next che
 
 
         '------------------------------------------------------
@@ -1095,13 +1062,6 @@ If LenB(filtro) > 0 Then
         cheques3.Add d
         rs.MoveNext
     Wend
-
-
-
-
-
-
-
     Exit Function
 err1:
     ResumenPagos = False
@@ -1135,12 +1095,12 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     maxw = Printer.Width - lmargin * 2
     A = lmargin + (maxw - 3200) / 2
     Printer.PaintPicture pic.Picture, A, 100, 3200, 600
-   
+
     Printer.FontBold = True
     Printer.FontSize = 12
     mtxt = "Liquidación de Caja Nº " & LiquidacionCaja.Id
     textw = Printer.TextWidth(mtxt)
-    
+
     Printer.CurrentX = lmargin + (maxw - textw) / 2
     Printer.Print mtxt
     Printer.FontSize = 10
@@ -1149,33 +1109,31 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.FontBold = False
     Printer.Print LiquidacionCaja.FEcha
 
-
-
-'    If LiquidacionCaja.FacturasProveedor.count > 0 Then
-'
-'        Printer.FontBold = True
-'        Printer.CurrentX = lmargin
-'        Printer.Print "Proveedor: ";
-'        Printer.FontBold = False
-'
-'        Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
-'
-'        Dim F As clsFacturaProveedor
-'        Dim facs As New Collection
-'
-'        If LiquidacionCaja.FacturasProveedor.count = 1 Then
-'            For Each F In LiquidacionCaja.FacturasProveedor
-'                Printer.Print F.Proveedor.RazonSocial;
-'            Next F
-'        Else
-'            Printer.Print "En Detalle"
-'        End If
-'
-'
-'    End If
-
-    Dim existeIIBB As Boolean
-    existeIIBB = False
+    '    If LiquidacionCaja.FacturasProveedor.count > 0 Then
+    '
+    '        Printer.FontBold = True
+    '        Printer.CurrentX = lmargin
+    '        Printer.Print "Proveedor: ";
+    '        Printer.FontBold = False
+    '
+    '        Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
+    '
+    '        Dim F As clsFacturaProveedor
+    '        Dim facs As New Collection
+    '
+    '        If LiquidacionCaja.FacturasProveedor.count = 1 Then
+    '            For Each F In LiquidacionCaja.FacturasProveedor
+    '                Printer.Print F.Proveedor.RazonSocial;
+    '            Next F
+    '        Else
+    '            Printer.Print "En Detalle"
+    '        End If
+    '
+    '
+    '    End If
+    '
+    '    Dim existeIIBB As Boolean
+    '    existeIIBB = False
 
     '    Dim ra As DTORetencionAlicuota
     '    For Each ra In LiquidacionCaja.RetencionesAlicuota
@@ -1245,10 +1203,6 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     '        End If
     '    End If
 
-
-
-
-
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Moneda: ";
@@ -1278,9 +1232,9 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.Print "Comprobantes: "
     Printer.FontBold = False
     Printer.FontSize = 8
-        Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
-        Dim F As clsFacturaProveedor
-        Dim facs As New Collection
+    Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
+    Dim F As clsFacturaProveedor
+    Dim facs As New Collection
     c = 0
     For Each F In LiquidacionCaja.FacturasProveedor
         c = c + 1

@@ -173,7 +173,7 @@ Begin VB.Form frmPlanificacionTemporal
       AllowKeyNavigationInGrid=   -1  'True
       LongDatesToLeftEnd=   0   'False
       FavourMoveOverResizeOnSmallTimeItems=   -1  'True
-      InplaceDateTimeClearStatesBetweenEdits=   -1  'True
+      InplaceDateTimeClearStatesBetweenEdits=   0   'False
       SupressOnUserDrawExceptions=   0   'False
    End
    Begin XtremeReportControl.ReportControl ReportControl 
@@ -341,8 +341,8 @@ Private Sub AgregarTareas(row As ReportRow)
     Next
 End Sub
 Private Sub cmdBuscar_Click()
-    If LenB(Me.txtOt) > 0 And IsNumeric(Me.txtOt) Then
-        Set vpedido = DAOOrdenTrabajo.FindById(Val(Me.txtOt))
+    If LenB(Me.txtOT) > 0 And IsNumeric(Me.txtOT) Then
+        Set vpedido = DAOOrdenTrabajo.FindById(Val(Me.txtOT))
         If IsSomething(vpedido) Then
             Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
             MostrarGantt
@@ -364,7 +364,7 @@ Private Sub Form_Load()
     End If
 End Sub
 Private Sub MostrarGantt()
-    Me.txtOt = vpedido.Id
+    Me.txtOT = vpedido.Id
     Me.lblCliente = "Cliente: " & vpedido.cliente.razon
     Me.lblDescripcion = "Descripcion: " & vpedido.descripcion & "  | Fecha entrega: " & vpedido.FechaEntrega
     ArmarGantt
