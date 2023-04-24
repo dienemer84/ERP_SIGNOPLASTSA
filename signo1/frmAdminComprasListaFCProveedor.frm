@@ -14,67 +14,67 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ScaleMode       =   0  'User
    ScaleWidth      =   16578.84
    Begin XtremeSuiteControls.GroupBox GroupBox5 
-      Height          =   2880
+      Height          =   3360
       Left            =   11160
       TabIndex        =   35
       Top             =   0
       Width           =   7575
       _Version        =   786432
       _ExtentX        =   13361
-      _ExtentY        =   5080
+      _ExtentY        =   5927
       _StockProps     =   79
       BackColor       =   16744576
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.GroupBox GroupBox4 
-         Height          =   1935
+         Height          =   2415
          Left            =   120
          TabIndex        =   36
          Top             =   120
          Width           =   7335
          _Version        =   786432
          _ExtentX        =   12938
-         _ExtentY        =   3413
+         _ExtentY        =   4260
          _StockProps     =   79
          BackColor       =   16744576
          Appearance      =   4
          Begin XtremeSuiteControls.ProgressBar progreso 
-            Height          =   135
+            Height          =   255
             Left            =   0
-            TabIndex        =   48
-            Top             =   1800
+            TabIndex        =   42
+            Top             =   2160
             Visible         =   0   'False
             Width           =   7335
             _Version        =   786432
             _ExtentX        =   12938
-            _ExtentY        =   238
+            _ExtentY        =   450
             _StockProps     =   93
-            Appearance      =   4
+            Appearance      =   6
          End
-         Begin VB.Label lblTotalPercepciones 
+         Begin VB.Label lblTotal 
+            AutoSize        =   -1  'True
+            Caption         =   "Total Filtrado $:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   195
+            Left            =   120
+            TabIndex        =   52
+            Top             =   1890
+            Width           =   1365
+         End
+         Begin VB.Label lblTotalNeto 
             AutoSize        =   -1  'True
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   42
-            Top             =   1320
-            Width           =   1095
-         End
-         Begin VB.Label lblNetoGravadoFiltrado 
-            AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
-            Height          =   195
-            Left            =   120
-            TabIndex        =   41
-            Top             =   240
-            Width           =   1095
-         End
-         Begin VB.Label lblTotalNoGravadoFiltrado 
-            AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
-            Height          =   195
-            Left            =   120
-            TabIndex        =   40
-            Top             =   510
+            TabIndex        =   51
+            Top             =   780
             Width           =   1095
          End
          Begin VB.Label lblTotalIVA 
@@ -82,34 +82,61 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   39
+            TabIndex        =   50
             Top             =   1050
             Width           =   1095
          End
-         Begin VB.Label lblTotalNeto 
+         Begin VB.Label lblTotalNoGravadoFiltrado 
             AutoSize        =   -1  'True
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   38
-            Top             =   780
+            TabIndex        =   49
+            Top             =   510
             Width           =   1095
          End
-         Begin VB.Label lblTotal 
+         Begin VB.Label lblNetoGravadoFiltrado 
             AutoSize        =   -1  'True
             Caption         =   "Total Filtrado $:"
             Height          =   195
             Left            =   120
-            TabIndex        =   37
-            Top             =   1590
+            TabIndex        =   48
+            Top             =   240
             Width           =   1095
+         End
+         Begin VB.Label lblTotalPercepciones 
+            AutoSize        =   -1  'True
+            Caption         =   "Total Filtrado $:"
+            Height          =   195
+            Left            =   120
+            TabIndex        =   47
+            Top             =   1320
+            Width           =   1095
+         End
+         Begin VB.Label lblTotalPendiente 
+            AutoSize        =   -1  'True
+            Caption         =   "Total Pendiente $"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   195
+            Left            =   120
+            TabIndex        =   46
+            Top             =   1605
+            Width           =   1530
          End
       End
       Begin XtremeSuiteControls.GroupBox gbBotones 
          Height          =   735
          Left            =   120
-         TabIndex        =   43
-         Top             =   2040
+         TabIndex        =   37
+         Top             =   2520
          Width           =   7335
          _Version        =   786432
          _ExtentX        =   12938
@@ -121,7 +148,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Default         =   -1  'True
             Height          =   390
             Left            =   120
-            TabIndex        =   44
+            TabIndex        =   38
             Top             =   240
             Width           =   1245
             _Version        =   786432
@@ -135,7 +162,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.PushButton cmdImprimir 
             Height          =   390
             Left            =   3000
-            TabIndex        =   45
+            TabIndex        =   39
             Top             =   240
             Width           =   1245
             _Version        =   786432
@@ -149,7 +176,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.PushButton cmdExportar 
             Height          =   390
             Left            =   1560
-            TabIndex        =   46
+            TabIndex        =   40
             Top             =   240
             Width           =   1245
             _Version        =   786432
@@ -163,7 +190,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Begin XtremeSuiteControls.CheckBox checkVerIds 
             Height          =   255
             Left            =   4560
-            TabIndex        =   47
+            TabIndex        =   41
             Top             =   285
             Width           =   1095
             _Version        =   786432
@@ -192,7 +219,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.PushButton btnClearCtaCble_Click 
          Height          =   255
          Left            =   5520
-         TabIndex        =   51
+         TabIndex        =   45
          Top             =   1980
          Width           =   420
          _Version        =   786432
@@ -518,7 +545,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.ComboBox cboCuentasContables 
          Height          =   315
          Left            =   1425
-         TabIndex        =   49
+         TabIndex        =   43
          Top             =   1920
          Width           =   3885
          _Version        =   786432
@@ -531,7 +558,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.Label Label12 
          Height          =   195
          Left            =   360
-         TabIndex        =   50
+         TabIndex        =   44
          Top             =   1950
          Width           =   960
          _Version        =   786432
@@ -772,6 +799,9 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Caption         =   "Ver Orden de Pago..."
          Enabled         =   0   'False
          Visible         =   0   'False
+         Begin VB.Menu ver_OP 
+            Caption         =   "Ver OP"
+         End
       End
       Begin VB.Menu verHistorial 
          Caption         =   "Historial..."
@@ -1200,22 +1230,20 @@ Public Sub llenarGrilla()
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     Set facturas = DAOFacturaProveedor.FindAll(condition, , ordenImporte, Permisos.AdminFaPVerSoloPropias)
-
-
-
-
+    
     Dim F As clsFacturaProveedor
     Dim Total As Double
     Dim totalneto As Double
     Dim totIva As Double
     Dim totalno As Double
-    'Agrega DNEMER 03/02/2021
     Dim totalpercep As Double
+    Dim totalsaldo As Double
+    
     Dim c As Integer
+    
     Total = 0
 
     For Each F In facturas
-
 
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
         Total = Total + MonedaConverter.Convertir(F.Total * c, F.moneda.Id, MonedaConverter.Patron.Id)
@@ -1225,6 +1253,10 @@ Public Sub llenarGrilla()
 
         'Agrega DNEMER 03/02/2021
         totalpercep = totalpercep + F.totalPercepciones * c
+        
+        '(Factura.Total - (Factura.NetoGravadoAbonadoGlobal + Factura.OtrosAbonadoGlobal)) * i)
+        totalsaldo = totalsaldo + ((F.Total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * c)
+        
     Next
 
     Me.lblTotal = "Total Filtrado: " & FormatCurrency(funciones.FormatearDecimales(Total))
@@ -1232,6 +1264,9 @@ Public Sub llenarGrilla()
     Me.lblNetoGravadoFiltrado = "Total Neto Gravado: " & FormatCurrency(funciones.FormatearDecimales(totalneto))
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(totIva))
     Me.lblTotalNeto = "Total Neto: " & FormatCurrency(funciones.FormatearDecimales(funciones.RedondearDecimales(totalneto) + funciones.RedondearDecimales(totalno)))
+    
+    'Agregar totalizador de Pendientes
+    Me.lblTotalPendiente = "Total Saldo: " & FormatCurrency(funciones.FormatearDecimales(funciones.RedondearDecimales(totalsaldo))) & ""
 
     'Agregar totalizador de Percepciones
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalpercep))
@@ -1290,16 +1325,26 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.editar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
             Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "diegonr" Or funciones.GetUserObj.usuario = "natalilo")
+            
 '            Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
 '            If (Factura.estado = Saldada And Factura.OrdenPagoId > 0) Then
 '                Me.MnuVerOP.Visible = True
-'                Me.MnuVerOP.caption = "Ver OP Nº " & Factura.OrdenPagoId
-'            Else
-'                Me.MnuVerOP.Visible = False
-'                Me.MnuVerOP.caption = "No hay OP asociada"
-'            End If
+'                Me.MnuVerOP.caption = "Ver OP"
+'                    Me.ver_OP.Visible = True
+'                    Me.ver_OP.caption = "OP Nº: " & Factura.OrdenPagoId
+            Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
+            
+            If (Factura.estado = Saldada And Factura.OrdenPagoId > 0) Then
+                Me.MnuVerOP.Visible = True
+                Me.MnuVerOP.caption = "Ver OP"
+            Else
+                Me.MnuVerOP.Visible = False
+                Me.MnuVerOP.caption = "No hay OP asociada"
+            End If
+
 
             Me.PopupMenu menu
+            
         End If
     End If
 End Sub

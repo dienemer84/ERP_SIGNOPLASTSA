@@ -508,16 +508,19 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
         
     End If
     
-        MsgBox (op.Id)
+'        MsgBox (op.Id)
         
     DaoHistorico.Save "orden_pago_historial", "OP Aprobada", op.Id
     aprobar = True
     
-            MsgBox (op.Id)
+'        MsgBox (op.Id)
+
     If insideTransaction Then conectar.CommitTransaction
     Exit Function
 err1:
-        MsgBox (op.Id)
+
+'        MsgBox (op.Id)
+
     op.estado = es
     If insideTransaction Then conectar.RollBackTransaction
     aprobar = False

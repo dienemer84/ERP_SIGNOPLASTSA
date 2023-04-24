@@ -594,6 +594,7 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Dim totIva As Double
     'Agregar DNEMER 03/02/2021
     Dim totalpercep As Double
+    Dim totalpendiente As Double
 
     progressbar.min = 0
     progressbar.max = col.count
@@ -604,12 +605,17 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
 
     For Each fac In col
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-        Total = Total + MonedaConverter.Convertir(fac.Total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
-        totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
-        totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
-        totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.Id, MonedaConverter.Patron.Id)
-        'Agrega DNEMER 03/02/2021
-        totalpercep = totalpercep + fac.totalPercepciones * c
+            Total = Total + MonedaConverter.Convertir(fac.Total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+            totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+            totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+            totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+            
+            'Agrega DNEMER 03/02/2021
+            totalpercep = totalpercep + fac.totalPercepciones * c
+            'Agrega DNEMER 24/04/2023
+            totalpendiente = totalpendiente + ((fac.Total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
+
+            
 
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
@@ -634,7 +640,11 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
         If fac.cuentasContables.count > 0 Then xlWorksheet.Cells(offset, 13).value = fac.cuentasContables.item(1).cuentas.codigo
         xlWorksheet.Cells(offset, 14).value = enums.enumEstadoFacturaProveedor(fac.estado)
         If fac.FormaPagoCuentaCorriente Then xlWorksheet.Cells(offset, 15).value = "Cta. Cte." Else xlWorksheet.Cells(offset, 15).value = "Contado"
-        xlWorksheet.Cells(offset, 16).value = fac.OrdenPagoId
+        'xlWorksheet.Cells(offset, 16).value = fac.OrdenPagoId
+        
+        xlWorksheet.Cells(offset, 16).value = fac.OrdenesPagoId
+        xlWorksheet.Cells(offset, 16).NumberFormat = "@"
+        
         xlWorksheet.Cells(offset, 17).value = fac.TipoCambio
         xlWorksheet.Cells(offset, 18).value = fac.UsuarioCarga.usuario
         xlWorksheet.Cells(offset, 19).value = fac.Id
@@ -649,16 +659,19 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     xlWorksheet.Cells(offset + 5, 2).value = "Total Neto"
     xlWorksheet.Cells(offset + 6, 2).value = "Tota IVA"
     xlWorksheet.Cells(offset + 7, 2).value = "Tota Percepciones"
-    xlWorksheet.Cells(offset + 8, 2).value = "Total Filtrado"
+    xlWorksheet.Cells(offset + 8, 2).value = "Tota Pendiente"
+    xlWorksheet.Cells(offset + 9, 2).value = "Total Filtrado"
 
     xlWorksheet.Cells(offset + 3, 3).value = totalneto
     xlWorksheet.Cells(offset + 4, 3).value = totalno
     xlWorksheet.Cells(offset + 5, 3).value = totalneto + totalno
     xlWorksheet.Cells(offset + 6, 3).value = totIva
     xlWorksheet.Cells(offset + 7, 3).value = totalpercep
-    xlWorksheet.Cells(offset + 8, 3).value = Total
-    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 8, 3)).Borders.LineStyle = xlContinuous
-    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 8, 2)).Interior.Color = &HC0C0C0
+    xlWorksheet.Cells(offset + 8, 3).value = totalpendiente
+    xlWorksheet.Cells(offset + 9, 3).value = Total
+    
+    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 3)).Borders.LineStyle = xlContinuous
+    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 2)).Interior.Color = &HC0C0C0
 
     'autosize
     xlApplication.ScreenUpdating = False
