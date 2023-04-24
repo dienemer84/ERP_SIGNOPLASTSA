@@ -524,16 +524,19 @@ Private Sub Guardar()
     telefono = UCase(Text1(4))
     Fax = UCase(Text1(5))
     email = UCase(Text1(6))
-    ivan = Me.cboIva.ItemData(Me.cboIva.ListIndex)
+    ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
     Cuit = Trim(Text1(7))
     FP = UCase(Me.txtFP)
     FP_detalle = UCase(Me.txtDetalleFP)
     valido = Val(Me.chkValido.value)
 
     CodigoPOS = UCase(txtCP)
-
-
-
+    
+    If CodigoPOS = "" Then
+        MsgBox "Debe introducir el código postal.", vbCritical, "Error"
+        Exit Sub
+    End If
+    
     If MsgBox("¿Está conforme con los datos?", vbYesNo, "Confirmación") = vbYes Then
         If vCliente Is Nothing Then
             ErrorCode = 0
@@ -601,14 +604,7 @@ Private Sub Guardar()
                     Else
                         MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
                     End If
-
-
-
                 End If
-
-
-
-
             End If
         Else
             'se modifica
@@ -713,7 +709,7 @@ Private Sub Form_Load()
     For x = 0 To 10
         Text1(x) = Empty
     Next x
-    DAOTipoIva.LlenarCombo Me.cboIva
+    DAOTipoIva.LlenarCombo Me.cboIVA
     Command1.caption = "Agregar"
     Me.caption = "Agregar Cliente..."
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
@@ -771,7 +767,7 @@ Private Sub llenarForm()
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
         txtFP = .FP
         Me.txtDetalleFP = .FormaPago
-        cboIva.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIva)
+        cboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIVA)
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vCliente.idMonedaDefault, Me.cboMonedas)
 
     End With

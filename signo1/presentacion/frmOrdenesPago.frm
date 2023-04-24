@@ -701,11 +701,10 @@ Private Sub mnuEditar_Click()
 End Sub
 
 Private Sub mnuHistorial_Click()
-    Dim c As New Collection
-
     Dim F As New frmHistorico
     F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
     F.Show
+    
 End Sub
 
 Private Sub mnuImprimir_Click()
@@ -716,103 +715,103 @@ Private Sub mnuImprimir_Click()
 err1:
 End Sub
 
-Private Sub Imprimir()
-    With drpOrdenPago.Sections("seccion").Controls
-
-        .item("lblTitulo").caption = "SIGNOPLAST S.A. - Orden de Pago Nº " & Orden.Id
-        .item("lblFecha").caption = Orden.FEcha
-
-        If Orden.FacturasProveedor.count > 0 Then
-            .item("lblProveedor").caption = Orden.FacturasProveedor(1).Proveedor.RazonSocial
-        End If
-
-        .item("lblAlicuota").caption = Orden.alicuota & "%"
-
-        Dim cert As CertificadoRetencion
-        Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.Id)
-        If IsSomething(cert) Then
-            .item("lblCertificadoIIBB").caption = cert.Id
-        Else
-            .item("lblCertificadoIIBB").caption = "NO POSEE"
-        End If
-
-        .item("lblMoneda").caption = Orden.moneda.NombreCorto & " " & Orden.moneda.NombreLargo
-
-
-
-        Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
-        Dim F As clsFacturaProveedor
-        Dim facs As New Collection
-        For Each F In Orden.FacturasProveedor
-            facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.moneda.NombreCorto & " " & F.Total
-        Next F
-        If facs.count = 0 Then
-            .item("lblFacturas").caption = "NO POSEE FACTURAS"
-        Else
-            .item("lblFacturas").caption = funciones.JoinCollectionValues(facs, "  ||  ")
-        End If
-
-
-        Dim cheq As cheque
-        Dim tmpCol As New Collection
-        For Each cheq In Orden.ChequesPropios
-            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
-        Next cheq
-        If tmpCol.count = 0 Then
-            .item("lblChequesPropios").caption = "NO POSEE CHEQUES PROPIOS"
-        Else
-            .item("lblChequesPropios").caption = funciones.JoinCollectionValues(tmpCol, " - ")
-        End If
-
-
-        Set tmpCol = New Collection
-        For Each cheq In Orden.ChequesTerceros
-            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
-        Next cheq
-        If tmpCol.count = 0 Then
-            .item("lblChequesTerceros").caption = "NO POSEE CHEQUES DE 3ros"
-        Else
-            .item("lblChequesTerceros").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
-        End If
-
-
-        Dim op As operacion
-        Set tmpCol = New Collection
-        For Each op In Orden.OperacionesBanco
-            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
-        Next op
-        If tmpCol.count = 0 Then
-            .item("lblTransferencias").caption = "NO POSEE OPERACIONES DE BANCO"
-        Else
-            .item("lblTransferencias").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
-        End If
-
-
-        Set tmpCol = New Collection
-        For Each op In Orden.OperacionesCaja
-            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
-        Next op
-        If tmpCol.count = 0 Then
-            .item("lblEfectivo").caption = "NO POSEE OPERACIONES DE CAJA"
-        Else
-            .item("lblEfectivo").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
-        End If
-
-
-        .item("lblDifTipoCambio").caption = Orden.moneda.NombreCorto & " " & Orden.DiferenciaCambio
-        .item("lblOtrosDescuentos").caption = Orden.moneda.NombreCorto & " " & Orden.OtrosDescuentos
-
-        .item("lblTotalFacturas").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalFacturas
-        .item("lblTotalRetenido").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalRetenido
-        .item("lblTotalAbonado").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalOrigenes    '+ Orden.StaticTotalRetenido
-
-
-        Dim r As Recordset
-        Set r = conectar.RSFactory("SELECT 1")
-        Set drpOrdenPago.DataSource = r
-
-    End With
-End Sub
+'Private Sub Imprimir()
+'    With drpOrdenPago.Sections("seccion").Controls
+'
+'        .item("lblTitulo").caption = "SIGNOPLAST S.A. - Orden de Pago Nº " & Orden.Id
+'        .item("lblFecha").caption = Orden.FEcha
+'
+'        If Orden.FacturasProveedor.count > 0 Then
+'            .item("lblProveedor").caption = Orden.FacturasProveedor(1).Proveedor.RazonSocial
+'        End If
+'
+'        .item("lblAlicuota").caption = Orden.alicuota & "%"
+'
+'        Dim cert As CertificadoRetencion
+'        Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.Id)
+'        If IsSomething(cert) Then
+'            .item("lblCertificadoIIBB").caption = cert.Id
+'        Else
+'            .item("lblCertificadoIIBB").caption = "NO POSEE"
+'        End If
+'
+'        .item("lblMoneda").caption = Orden.moneda.NombreCorto & " " & Orden.moneda.NombreLargo
+'
+'
+'
+'        Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
+'        Dim F As clsFacturaProveedor
+'        Dim facs As New Collection
+'        For Each F In Orden.FacturasProveedor
+'            facs.Add F.NumeroFormateado & " del " & F.FEcha & " por " & F.moneda.NombreCorto & " " & F.Total
+'        Next F
+'        If facs.count = 0 Then
+'            .item("lblFacturas").caption = "NO POSEE FACTURAS"
+'        Else
+'            .item("lblFacturas").caption = funciones.JoinCollectionValues(facs, "  ||  ")
+'        End If
+'
+'
+'        Dim cheq As cheque
+'        Dim tmpCol As New Collection
+'        For Each cheq In Orden.ChequesPropios
+'            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
+'        Next cheq
+'        If tmpCol.count = 0 Then
+'            .item("lblChequesPropios").caption = "NO POSEE CHEQUES PROPIOS"
+'        Else
+'            .item("lblChequesPropios").caption = funciones.JoinCollectionValues(tmpCol, " - ")
+'        End If
+'
+'
+'        Set tmpCol = New Collection
+'        For Each cheq In Orden.ChequesTerceros
+'            tmpCol.Add cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
+'        Next cheq
+'        If tmpCol.count = 0 Then
+'            .item("lblChequesTerceros").caption = "NO POSEE CHEQUES DE 3ros"
+'        Else
+'            .item("lblChequesTerceros").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
+'        End If
+'
+'
+'        Dim op As operacion
+'        Set tmpCol = New Collection
+'        For Each op In Orden.OperacionesBanco
+'            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
+'        Next op
+'        If tmpCol.count = 0 Then
+'            .item("lblTransferencias").caption = "NO POSEE OPERACIONES DE BANCO"
+'        Else
+'            .item("lblTransferencias").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
+'        End If
+'
+'
+'        Set tmpCol = New Collection
+'        For Each op In Orden.OperacionesCaja
+'            tmpCol.Add op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
+'        Next op
+'        If tmpCol.count = 0 Then
+'            .item("lblEfectivo").caption = "NO POSEE OPERACIONES DE CAJA"
+'        Else
+'            .item("lblEfectivo").caption = funciones.JoinCollectionValues(tmpCol, vbNewLine)
+'        End If
+'
+'
+'        .item("lblDifTipoCambio").caption = Orden.moneda.NombreCorto & " " & Orden.DiferenciaCambio
+'        .item("lblOtrosDescuentos").caption = Orden.moneda.NombreCorto & " " & Orden.OtrosDescuentos
+'
+'        .item("lblTotalFacturas").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalFacturas
+'        .item("lblTotalRetenido").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalRetenido
+'        .item("lblTotalAbonado").caption = Orden.moneda.NombreCorto & " " & Orden.StaticTotalOrigenes    '+ Orden.StaticTotalRetenido
+'
+'
+'        Dim r As Recordset
+'        Set r = conectar.RSFactory("SELECT 1")
+'        Set drpOrdenPago.DataSource = r
+'
+'    End With
+'End Sub
 
 Private Sub mnuVer_Click()
     Dim f22 As New frmAdminPagosCrearOrdenPago
@@ -836,56 +835,56 @@ Private Sub mnuVerCertificado_Click()
     End If
 End Sub
 
-Private Sub PushButton1_Click()
-    Dim ordenes As Collection
-    Set ordenes = DAOOrdenPago.FindAll()
-    Dim Orden As OrdenPago
-
-    Dim d As New Dictionary
-    Dim ret As Retencion
-    Dim colret As Collection
-
-    conectar.BeginTransaction
-
-
-    Dim facturasPosta As Collection
-
-    For Each Orden In ordenes
-        If Orden.FacturasProveedor.count > 0 Then    'no traia las facturas bien, faltaban datos y no me daban los totales
-            Set facturasPosta = New Collection
-            Set facturasPosta = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id IN (" & funciones.JoinCollectionValues(Orden.FacturasProveedor, ", ", "Id") & ")")
-            Set Orden.FacturasProveedor = facturasPosta
-        End If
-
-        If Orden.StaticTotalFacturas = 0 Then
-
-            Orden.StaticTotalFacturas = Orden.TotalFacturas
-            Orden.StaticTotalFacturasNG = Orden.TotalFacturasNG
-            Orden.StaticTotalOrigenes = Orden.TotalOrigenes
-
-            Set colret = DAORetenciones.FindAllEsAgente
-            Set d = DAOCertificadoRetencion.VerPosibleRetenciones(Orden.FacturasProveedor, colret, Orden.alicuota, Orden.DiferenciaCambio)
-            Dim totRet As Double
-            totRet = 0
-            For Each ret In colret
-                totRet = totRet + d.item(CStr(ret.Id))
-            Next ret
-            Orden.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
-
-            If Not DAOOrdenPago.Guardar(Orden) Then Stop
-
-            If Orden.estado = EstadoOrdenPago_Aprobada And Orden.StaticTotalRetenido > 0 Then
-                Err.Raise "ver error en frmOrdenesPago"
-            End If
-
-        End If
-    Next Orden
-
-    conectar.CommitTransaction
-
-
-
-End Sub
+'Private Sub PushButton1_Click()
+'    Dim ordenes As Collection
+'    Set ordenes = DAOOrdenPago.FindAll()
+'    Dim Orden As OrdenPago
+'
+'    Dim d As New Dictionary
+'    Dim ret As Retencion
+'    Dim colret As Collection
+'
+'    conectar.BeginTransaction
+'
+'
+'    Dim facturasPosta As Collection
+'
+'    For Each Orden In ordenes
+'        If Orden.FacturasProveedor.count > 0 Then    'no traia las facturas bien, faltaban datos y no me daban los totales
+'            Set facturasPosta = New Collection
+'            Set facturasPosta = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id IN (" & funciones.JoinCollectionValues(Orden.FacturasProveedor, ", ", "Id") & ")")
+'            Set Orden.FacturasProveedor = facturasPosta
+'        End If
+'
+'        If Orden.StaticTotalFacturas = 0 Then
+'
+'            Orden.StaticTotalFacturas = Orden.TotalFacturas
+'            Orden.StaticTotalFacturasNG = Orden.TotalFacturasNG
+'            Orden.StaticTotalOrigenes = Orden.TotalOrigenes
+'
+'            Set colret = DAORetenciones.FindAllEsAgente
+'            Set d = DAOCertificadoRetencion.VerPosibleRetenciones(Orden.FacturasProveedor, colret, Orden.alicuota, Orden.DiferenciaCambio)
+'            Dim totRet As Double
+'            totRet = 0
+'            For Each ret In colret
+'                totRet = totRet + d.item(CStr(ret.Id))
+'            Next ret
+'            Orden.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
+'
+'            If Not DAOOrdenPago.Guardar(Orden) Then Stop
+'
+'            If Orden.estado = EstadoOrdenPago_Aprobada And Orden.StaticTotalRetenido > 0 Then
+'                Err.Raise "ver error en frmOrdenesPago"
+'            End If
+'
+'        End If
+'    Next Orden
+'
+'    conectar.CommitTransaction
+'
+'
+'
+'End Sub
 
 Private Sub PushButton2_Click()
     conectar.BeginTransaction

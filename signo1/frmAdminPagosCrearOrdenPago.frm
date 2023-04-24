@@ -1788,6 +1788,10 @@ End Sub
 
 Private Sub Form_Load()
     formLoading = True
+    
+    Me.Left = frmPrincipal.ScaleWidth / 6
+    Me.Top = frmPrincipal.ScaleHeight / 22
+    
     Me.gridChequeras.Visible = False
     Me.gridChequesChequera.Visible = False
     Me.gridCompensatorios.ItemCount = 0
@@ -2231,6 +2235,8 @@ Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark
 
     End If
 End Sub
+
+
 
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = id_susc
@@ -2733,7 +2739,7 @@ Private Sub Totalizar()
 
     OrdenPago.StaticTotalOrigenes = OrdenPago.TotalOrigenes
 
-    Me.lbltotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
+    Me.lblTotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
     GridEXHelper.AutoSizeColumns Me.gridCheques

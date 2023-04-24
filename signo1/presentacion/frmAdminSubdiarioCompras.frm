@@ -616,8 +616,6 @@ Private Sub Totalizar()
     Dim sumRedondeo As Double: sumRedondeo = 0
     Dim tmpValue As Double
     Dim i As SubdiarioVentasDetalle
-    Dim alis21 As New Collection
-    Dim c As Double
     Dim ali As Variant
     Dim per As clsPercepciones
 
@@ -633,13 +631,13 @@ Private Sub Totalizar()
 
     Set percepciones = DAOPercepciones.GetAll
 
-    Dim dtop As DTOPercepcionImporte
+    Dim dtOP As DTOPercepcionImporte
     Set totalesper = New Collection
     For Each per In percepciones
-        Set dtop = New DTOPercepcionImporte
-        dtop.importe = 0
-        Set dtop.Percepcion = per
-        totalesper.Add dtop, CStr(per.Id)
+        Set dtOP = New DTOPercepcionImporte
+        dtOP.importe = 0
+        Set dtOP.Percepcion = per
+        totalesper.Add dtOP, CStr(per.Id)
     Next
 
     Dim pera As clsPercepcionesAplicadas
@@ -663,13 +661,13 @@ Private Sub Totalizar()
 
         For Each pera In i.ListaPercepciones
 
-            Set dtop = totalesper(CStr(pera.Percepcion.Id))
+            Set dtOP = totalesper(CStr(pera.Percepcion.Id))
             'tmpValue = funciones.RedondearDecimales(totalesper(CStr(pera.Percepcion.Id)).importe)
             totalesper.remove CStr(pera.Percepcion.Id)
 
 
-            dtop.importe = funciones.RedondearDecimales(dtop.importe + pera.Monto)
-            totalesper.Add dtop, CStr(pera.Percepcion.Id)
+            dtOP.importe = funciones.RedondearDecimales(dtOP.importe + pera.Monto)
+            totalesper.Add dtOP, CStr(pera.Percepcion.Id)
         Next
 
 
@@ -953,7 +951,7 @@ Private Sub GridEX1_DblClick()
         Dim frm As frmAdminComprasNuevaFCProveedor
         Set frm = New frmAdminComprasNuevaFCProveedor
 
-        frm.Ver = True
+        frm.ver = True
         frm.Factura = Factura
         frm.Show
     End If
@@ -1074,11 +1072,6 @@ End Sub
 
 
 Private Sub GridEX2_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Dim dtop As New DTOPercepcionImporte
-
-
-
-
     Values(2) = funciones.FormatearDecimales(totalesper(RowIndex).importe)    '/ (va / 100))
     If IsSomething(totalesper(RowIndex).Percepcion) Then
         Values(1) = totalesper(RowIndex).Percepcion.Percepcion
@@ -1283,11 +1276,9 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         .Range("A3:AQ3").Interior.Color = &HC0C0C0
 
-
         Dim Column As JSColumn
         Dim x As Integer
-        Dim n As Integer
-
+        
         For Each Column In Me.GridEX1.Columns
             x = x + 1
             .Cells(3, x).value = Column.caption
@@ -1681,24 +1672,13 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
         .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario compras" & " (LIQUIDADO)"
 
-        Dim desde As Date
-        Dim hasta As Date
-
-        '           Dim liq As LiquidacionSubdiarioCompras
-        '            Set liq = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
-        '            desde = liq.desde
-        '            hasta = liq.hasta
-
-
         .Cells(2, 1).value = "Periodo " & Format(liqui.desde, "dd/mm/yyyy") & " - " & Format(liqui.hasta, "dd/mm/yyyy")
 
 
         .Range("A3:an3").Interior.Color = &HC0C0C0
 
-
         Dim Column As JSColumn
         Dim x As Integer
-        Dim n As Integer
 
         For Each Column In Me.GridEX1.Columns
             x = x + 1

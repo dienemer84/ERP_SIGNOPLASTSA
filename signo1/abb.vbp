@@ -544,7 +544,9 @@ Form=frmAdminPagosCrearLiquidaciondeCaja.frm
 Class=clsLiquidacionCaja; Class\clsLiquidacionCaja.cls
 Module=DAOLiquidacionCaja; ClassModule\DAOLiquidacionCaja.bas
 Form=Forms\frmAdminPagosLiquidaciondeCajaLista.frm
+Form=Forms\frmSistemasTests.frm
 ResFile32="Themes.res"
+Form=Forms\frmAdminComprasListaOPSegunCbte.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""
@@ -557,7 +559,7 @@ HelpContextID="0"
 CompatibleMode="0"
 MajorVer=9
 MinorVer=2
-RevisionVer=9
+RevisionVer=10
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionComments="Signo Plast SA"
@@ -585,3 +587,13 @@ DebugStartupOption=0
 
 [MS Transaction Server]
 AutoRefresh=1
+
+[TaskList]
+Num=1
+
+[TASK1]
+Description=Dato de Form
+Status=0
+Priority=1
+AssignedTo=
+Comment=frmAdminComprasListaOPSegunCbte frmAdminComprasListaFCProveedor 

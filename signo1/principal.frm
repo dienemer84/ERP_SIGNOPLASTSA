@@ -608,10 +608,14 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         f454.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__DOCUMENTOS
-        '            Dim f4442 As New frmDocumentos
-        '            f4442.Show
         MsgBox ("No desarrollado.")
 
+    Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__TESTS
+'        MsgBox ("Iniciando pruebas.")
+        Dim f234 As New frmSistemasTests
+        f234.Show
+        
+        
     Case ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__ASOCRUBROS
         Dim f233 As New frmRubroProveedor
         f233.Show
@@ -896,7 +900,8 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Documentos", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__DOCUMENTOS, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Ubicaciones", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__LUGARES, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Actualizaciones", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__VER_ACTUALIZACIONES, Permisos.sistemaPanelControlGeneral
-
+    AddButton ribbonGroup, "Tests", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__TESTS, Permisos.sistemaPanelControlGeneral
+  
     'RECURSOS HUMANOS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(1, "Recursos Humanos")

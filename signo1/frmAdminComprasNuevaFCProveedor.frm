@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   147062785
+      Format          =   62390273
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -789,7 +789,7 @@ Dim idProveedor As Long
 Dim vFactura As clsFacturaProveedor
 Dim VVer As Boolean
 
-Public Property Let Ver(nVer As Boolean)
+Public Property Let ver(nVer As Boolean)
     VVer = nVer
 End Property
 Public Property Let Factura(nFactura As clsFacturaProveedor)
@@ -963,8 +963,8 @@ Private Sub cmdGuardar_Click()
 
     montonero = CDbl(Me.txtMontoNeto)
 
-    If Me.txtNumeroMask.text <> "____-________" And Len(Me.txtNumeroMask.text) > 0 Then
-
+'    If Me.txtNumeroMask.text <> "____-________" And Len(Me.txtNumeroMask.text) > 0 Then
+    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
 
         If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
 
@@ -1099,10 +1099,7 @@ Private Sub Form_Load()
     Me.grilla_alicuotas.ItemCount = 0
     Me.grilla_percepciones.ItemCount = 0
     Me.grid_cuentascontables.ItemCount = 0
-    '    If vFactura.configFactura.FormateaNumero Then
-    '       Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
-    '       Me.txtNumeroMask.MaxLength = 0
-    '  End If
+
     FacturaRequiereNumeroFormateado
     llenarGrillaPercepciones
     LlenarCuentasContables
@@ -1132,7 +1129,7 @@ Private Sub Form_Load()
         Me.txtNumeroMask.Enabled = False
         Me.txtRedondeo.Enabled = False
         Me.DTPicker1.Enabled = False
-        Me.lbltotal.Visible = True
+        Me.lblTotal.Visible = True
         Me.Label10.Visible = True
         Me.Label17.Visible = False
         Me.txtMontoManual.Visible = False
@@ -1165,11 +1162,11 @@ Private Sub FacturaRequiereNumeroFormateado()
 
     If IsSomething(cx) Then
         If cx.FormateaNumero Then
-            Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
-            Me.txtNumeroMask.MaxLength = 13
+'            Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+'            Me.txtNumeroMask.MaxLength = 13
         Else
-            Me.txtNumeroMask.SetMask "", ""
-            Me.txtNumeroMask.MaxLength = 0
+'            Me.txtNumeroMask.SetMask "", ""
+'            Me.txtNumeroMask.MaxLength = 0
         End If
     End If
 End Sub
@@ -1190,13 +1187,13 @@ End Sub
 Private Sub TotalFactura()
     On Error GoTo er1
     Me.txtMontoNeto = funciones.FormatearDecimales(vFactura.NetoGravado)
-    Me.lbltotal = funciones.FormatearDecimales(vFactura.Total)
+    Me.lblTotal = funciones.FormatearDecimales(vFactura.Total)
     Me.txtIVA.text = funciones.FormatearDecimales(vFactura.TotalIVA)
 
     Me.fraAlicuotas.caption = Replace$(Me.fraAlicuotas.Tag, "{VALUE}", funciones.FormatearDecimales(vFactura.TotalIVA))
     Exit Sub
 er1:
-    Me.lbltotal = 0
+    Me.lblTotal = 0
 End Sub
 
 Private Sub Form_Terminate()
@@ -1461,7 +1458,8 @@ End Sub
 
 Private Sub txtNumeroMask_Change()
     On Error Resume Next
-    If Me.txtNumeroMask.text <> "____-________" Then
+'    If Me.txtNumeroMask.text <> "____-________" Then
+    If Me.txtNumeroMask.text <> "" Then
         vFactura.numero = Me.txtNumeroMask.text
         TotalFactura
         grabado = False
@@ -1535,6 +1533,7 @@ Private Sub armarFactura()
     idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
     vFactura.tipoDocumentoContable = Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.ListIndex)
     vFactura.configFactura = DAOConfigFacturaProveedor.GetById(idtipo)
+    
 End Sub
 Private Sub llenarComboProveedores()
     DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, False

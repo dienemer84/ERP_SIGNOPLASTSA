@@ -333,7 +333,7 @@ Private Sub LlenarLiquidaciones(Id As Long)
 End Sub
 
 
-Private Sub Ver()
+Private Sub ver()
     Dim Id As Long
     Dim condition As String
 
@@ -370,9 +370,6 @@ End Sub
 Private Sub ver2()
 
     Dim Id As Long
-    Dim condition As String
-    Dim cuenta As CuentaCorrienteHistoric
-
 
     If Me.cboLiquidaciones.ListIndex <> -1 Then
         Id = Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)
@@ -429,7 +426,7 @@ Private Sub setmaxdesde(Id As Long)
 End Sub
 
 Private Sub cmdVerCtaCte_Click()
-    Ver
+    ver
 End Sub
 
 Private Sub Form_Load()
@@ -446,7 +443,7 @@ Private Sub gridDetalles_DblClick()
 
         Dim frm As frmAdminComprasNuevaFCProveedor
         Set frm = New frmAdminComprasNuevaFCProveedor
-        frm.Ver = True
+        frm.ver = True
         frm.Factura = DAOFacturaProveedor.FindById(deta.IdComprobante)
         frm.Show
     End If

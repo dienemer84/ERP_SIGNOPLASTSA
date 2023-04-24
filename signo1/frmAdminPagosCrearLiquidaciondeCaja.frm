@@ -1074,12 +1074,26 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
-
+    
+    frmLoading.ProgressBar.min = 0
+    
     Set colProveedores = DAOProveedor.FindAll()
+    
+    frmLoading.ProgressBar.max = colProveedores.count
+    Dim i As Integer
+    i = 0
+    
     For Each prov In colProveedores
+        i = i + 1
+        
         cboProveedor.AddItem UCase(prov.RazonSocial)
         cboProveedor.ItemData(cboProveedor.NewIndex) = prov.Id
+        
+        frmLoading.ProgressBar.value = i
+        
     Next
+    
+    If i = frmLoading.ProgressBar.max Then Unload frmLoading
 
     Set Cajas = DAOCaja.FindAll()
     Me.gridCajas.ItemCount = Cajas.count
@@ -1518,9 +1532,14 @@ End Sub
 Private Sub MostrarFacturas()
 
     Me.lstFacturas.Clear
-
+    
+    frmLoading.ProgressBar.min = 0
+    
     If 1 = 1 Then
+    
         Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.estado = " & EstadoFacturaProveedor.Aprobada & "", False, "proveedores.razon ASC", False, True)
+
+        frmLoading.ProgressBar.max = colFacturas.count
 
         If LiquidacionCaja.Id <> 0 And LiquidacionCaja.EsParaFacturaProveedor Then
             If prov.Id = LiquidacionCaja.FacturasProveedor.item(1).Proveedor.Id Then
@@ -1534,9 +1553,15 @@ Private Sub MostrarFacturas()
         End If
 
         Dim T As String
+        
+        Dim i As Integer
+        i = 0
 
         For Each Factura In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
 
+        i = i + 1
+        frmLoading.ProgressBar.value = i
+            
             Dim c As Collection
             Set c = DAOLiquidacionCaja.FindAbonadoPendiente(Factura.Id, LiquidacionCaja.Id)
 
@@ -1551,10 +1576,13 @@ Private Sub MostrarFacturas()
 
             Me.lstFacturas.AddItem T
             Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
-
+            
+            'aca va otro iterable
 
         Next
-
+        
+        If i = frmLoading.ProgressBar.max Then Unload frmLoading
+        
         Me.lblCantidadComprobantes.caption = "Cbtes. Mostrados: " & colFacturas.count
 
     Else

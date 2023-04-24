@@ -98,7 +98,7 @@ Begin VB.Form frmAdminSubdiarioCobranzas
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   62324737
+         Format          =   62390273
          CurrentDate     =   39660
       End
       Begin MSComCtl2.DTPicker DTDesde 
@@ -110,7 +110,7 @@ Begin VB.Form frmAdminSubdiarioCobranzas
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   62324737
+         Format          =   62390273
          CurrentDate     =   39660
       End
       Begin VB.Label Label1 
@@ -186,9 +186,7 @@ Dim hasta As Date
 
 Private Sub Command2_Click()
 
-    Dim x As ListItem
     Me.lstSubdiarioCobranzas.ListItems.Clear
-
 
     If Me.DTDesde > Me.DTHasta Then
         MsgBox "Error en la seleccion de fechas!", vbCritical, "Error"

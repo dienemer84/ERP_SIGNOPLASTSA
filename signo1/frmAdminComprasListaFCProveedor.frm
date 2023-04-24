@@ -115,7 +115,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          End
          Begin VB.Label lblTotalPendiente 
             AutoSize        =   -1  'True
-            Caption         =   "Total Pendiente $"
+            Caption         =   "Total Filtrado $:"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -129,7 +129,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Left            =   120
             TabIndex        =   46
             Top             =   1605
-            Width           =   1530
+            Width           =   1365
          End
       End
       Begin XtremeSuiteControls.GroupBox gbBotones 
@@ -799,9 +799,6 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Caption         =   "Ver Orden de Pago..."
          Enabled         =   0   'False
          Visible         =   0   'False
-         Begin VB.Menu ver_OP 
-            Caption         =   "Ver OP"
-         End
       End
       Begin VB.Menu verHistorial 
          Caption         =   "Historial..."
@@ -1074,8 +1071,8 @@ Private Sub Form_Load()
             Me.cboCuentasContables.ItemData(Me.cboCuentasContables.NewIndex) = cc.Id
         End If
     Next cc
+    
     Me.cboCuentasContables.ListIndex = -1
-
 
     Me.grilla.ItemCount = 0
     CMDsINCliente_Click
@@ -1332,9 +1329,10 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 '                Me.MnuVerOP.caption = "Ver OP"
 '                    Me.ver_OP.Visible = True
 '                    Me.ver_OP.caption = "OP Nº: " & Factura.OrdenPagoId
-            Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
+'            Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
             
-            If (Factura.estado = Saldada And Factura.OrdenPagoId > 0) Then
+            If (Factura.estado = Saldada Or Factura.estado = pagoParcial) Then
+                Me.MnuVerOP.Enabled = True
                 Me.MnuVerOP.Visible = True
                 Me.MnuVerOP.caption = "Ver OP"
             Else
@@ -1525,6 +1523,15 @@ Private Sub mnuScan_Click()
 
     End If
 
+End Sub
+
+Private Sub MnuVerOP_Click()
+    Dim f123 As New frmAdminComprasListaOPSegunCbte
+  
+'    frm.ver = True
+    f123.Factura = Factura
+    f123.Show
+    
 End Sub
 
 'Private Sub MnuVerOP_Click()
