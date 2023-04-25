@@ -435,7 +435,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   62390273
+      Format          =   62193665
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -963,8 +963,8 @@ Private Sub cmdGuardar_Click()
 
     montonero = CDbl(Me.txtMontoNeto)
 
-'    If Me.txtNumeroMask.text <> "____-________" And Len(Me.txtNumeroMask.text) > 0 Then
-    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
+    If Me.txtNumeroMask.text <> "______-________" And Len(Me.txtNumeroMask.text) > 0 Then
+'    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
 
         If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
 
@@ -1162,11 +1162,11 @@ Private Sub FacturaRequiereNumeroFormateado()
 
     If IsSomething(cx) Then
         If cx.FormateaNumero Then
-'            Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
-'            Me.txtNumeroMask.MaxLength = 13
+            Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
+            Me.txtNumeroMask.MaxLength = 15
         Else
-'            Me.txtNumeroMask.SetMask "", ""
-'            Me.txtNumeroMask.MaxLength = 0
+            Me.txtNumeroMask.SetMask "", ""
+            Me.txtNumeroMask.MaxLength = 0
         End If
     End If
 End Sub
@@ -1458,8 +1458,8 @@ End Sub
 
 Private Sub txtNumeroMask_Change()
     On Error Resume Next
-'    If Me.txtNumeroMask.text <> "____-________" Then
-    If Me.txtNumeroMask.text <> "" Then
+    If Me.txtNumeroMask.text <> "______-________" Then
+'    If Me.txtNumeroMask.text <> "" Then
         vFactura.numero = Me.txtNumeroMask.text
         TotalFactura
         grabado = False
