@@ -1323,14 +1323,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
             Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "diegonr" Or funciones.GetUserObj.usuario = "natalilo")
             
-'            Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
-'            If (Factura.estado = Saldada And Factura.OrdenPagoId > 0) Then
-'                Me.MnuVerOP.Visible = True
-'                Me.MnuVerOP.caption = "Ver OP"
-'                    Me.ver_OP.Visible = True
-'                    Me.ver_OP.caption = "OP Nº: " & Factura.OrdenPagoId
-'            Me.MnuVerOP.Enabled = (Factura.estado = Saldada And Factura.OrdenPagoId > 0)
-            
+          
             If (Factura.estado = Saldada Or Factura.estado = pagoParcial) Then
                 Me.MnuVerOP.Enabled = True
                 Me.MnuVerOP.Visible = True
