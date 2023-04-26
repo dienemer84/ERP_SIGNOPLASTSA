@@ -241,21 +241,11 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
 
     While Not rs.EOF
         Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
-
-        ' F.TotalAbonadoGlobal = rs!total_abonado
+        
         F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
         F.OtrosAbonadoGlobal = rs!otros_abonado
-
-        '  If IsSomething(rs.Fields("ordenes_pago")) Then
-
         F.OrdenesPagoId = rs!ordenes_pago
-
         F.LiquidacionesCajaId = rs!liquidaciones_caja
-
-
-
-
-        '  End If
 
         If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
             Set F = col.item(CStr(F.Id))
@@ -292,6 +282,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
 
         If Not funciones.BuscarEnColeccion(col, CStr(F.Id)) Then col.Add F, CStr(F.Id)
         rs.MoveNext
+    
     Wend
 
 
@@ -531,7 +522,7 @@ eh:
 End Function
 
 
-Public Function ExportarColeccion(col As Collection, Optional progressbar As Object) As Boolean
+Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Object) As Boolean
     On Error GoTo err1
 
     ExportarColeccion = True
@@ -594,10 +585,10 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Dim totIva As Double
     'Agregar DNEMER 03/02/2021
     Dim totalpercep As Double
-    Dim totalpendiente As Double
+    Dim TotalPendiente As Double
 
-    progressbar.min = 0
-    progressbar.max = col.count
+    ProgressBar.min = 0
+    ProgressBar.max = col.count
 
 
     Dim d As Long
@@ -613,14 +604,14 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
             'Agrega DNEMER 03/02/2021
             totalpercep = totalpercep + fac.totalPercepciones * c
             'Agrega DNEMER 24/04/2023
-            totalpendiente = totalpendiente + ((fac.Total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
+            TotalPendiente = TotalPendiente + ((fac.Total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
 
             
 
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
         d = d + 1
-        progressbar.value = d
+        ProgressBar.value = d
 
         offset = offset + 1
         xlWorksheet.Cells(offset, 1).value = fac.Proveedor.Cuit
@@ -667,7 +658,7 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     xlWorksheet.Cells(offset + 5, 3).value = totalneto + totalno
     xlWorksheet.Cells(offset + 6, 3).value = totIva
     xlWorksheet.Cells(offset + 7, 3).value = totalpercep
-    xlWorksheet.Cells(offset + 8, 3).value = totalpendiente
+    xlWorksheet.Cells(offset + 8, 3).value = TotalPendiente
     xlWorksheet.Cells(offset + 9, 3).value = Total
     
     xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 3)).Borders.LineStyle = xlContinuous
@@ -700,7 +691,7 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
-    progressbar.value = 0
+    ProgressBar.value = 0
 
     Exit Function
 err1:
