@@ -389,7 +389,7 @@ Public Function Anular(Remito As Remito) As Boolean
     Set Remito.Detalles = DAORemitoSDetalle.FindAllByRemito(Remito.Id)
 
     For Each detalle In Remito.Detalles
-        canti = detalle.Cantidad    'FIX 08-02-2010 | para que reste la cantidad entregada
+        canti = detalle.cantidad    'FIX 08-02-2010 | para que reste la cantidad entregada
 
         'resto la cantidad entregada
         If detalle.Origen = 1 Then
@@ -465,12 +465,12 @@ Public Function aprobar(Remito As Remito) As Boolean
 
         Else
             Set deta.DetallePedido = DAODetalleOrdenTrabajo.FindById(deta.DetallePedido.Id, True, True, False)
-            If (deta.DetallePedido.Cantidad_Fabricada + deta.DetallePedido.ReservaStock) - deta.DetallePedido.Cantidad_Entregada >= deta.Cantidad Then
+            If (deta.DetallePedido.Cantidad_Fabricada + deta.DetallePedido.ReservaStock) - deta.DetallePedido.Cantidad_Entregada >= deta.cantidad Then
             Else
                 segui = False
             End If
 
-            If (deta.DetallePedido.CantidadPedida - deta.DetallePedido.CantidadConsumida) < deta.Cantidad Then
+            If (deta.DetallePedido.CantidadPedida - deta.DetallePedido.CantidadConsumida) < deta.cantidad Then
                 cantok = False
                 Items = Items & " " & deta.DetallePedido.item
             End If
@@ -516,13 +516,13 @@ Public Function aprobar(Remito As Remito) As Boolean
             'antes de aprobar tengo q volver a validar, por un tema de concurrencia.
 
 
-            If deta.DetallePedido.CantidadEntregada + deta.Cantidad > deta.DetallePedido.CantidadPedida Then
+            If deta.DetallePedido.CantidadEntregada + deta.cantidad > deta.DetallePedido.CantidadPedida Then
                 MsgBox "No puede entregar más de lo que tiene pedido!, por favor revea el remito!", vbInformation
                 Exit Function
 
             Else
-                conectar.execute "update detalles_pedidos set cantidad_entregada=cantidad_entregada+" & deta.Cantidad & " Where idPedido=" & deta.idpedido & " and id=" & deta.idDetallePedido
-                DAODetalleOrdenTrabajo.SaveCantidad deta.idDetallePedido, deta.Cantidad, CantidadEntregada_, 0, Remito.Id, 0, 0, 0
+                conectar.execute "update detalles_pedidos set cantidad_entregada=cantidad_entregada+" & deta.cantidad & " Where idPedido=" & deta.idpedido & " and id=" & deta.idDetallePedido
+                DAODetalleOrdenTrabajo.SaveCantidad deta.idDetallePedido, deta.cantidad, CantidadEntregada_, 0, Remito.Id, 0, 0, 0
                 If Ot.Anticipo > 0 And Ot.AnticipoFacturado Then
                     deta.Facturado = True
                     deta.facturable = True
@@ -532,7 +532,7 @@ Public Function aprobar(Remito As Remito) As Boolean
             End If
 
         ElseIf deta.Origen = OrigenRemitooe Then
-            conectar.execute "update detallesPedidosEntregas set entregados=entregados+" & deta.Cantidad & " Where id=" & deta.idDetallePedido
+            conectar.execute "update detallesPedidosEntregas set entregados=entregados+" & deta.cantidad & " Where id=" & deta.idDetallePedido
         End If
 
 
@@ -578,7 +578,7 @@ Public Function ImprimirControlCarga(rto As Remito) As Boolean
     Dim deta As remitoDetalle
     For Each deta In rto.Detalles
         r.AddNew
-        r!Cantidad = IIf(deta.Cantidad = 0, "", funciones.FormatearDecimales(deta.Cantidad))
+        r!cantidad = IIf(deta.cantidad = 0, "", funciones.FormatearDecimales(deta.cantidad))
         r!Origen = deta.VerOrigen
         r!observaciones = deta.observaciones
         If deta.Origen = OrigenRemitoConcepto Then
@@ -689,8 +689,17 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     'cli = Format(nroCli, "0000") & " - " & cli
     client = Format(nroCli, "0000") & " - " & cli
 
-    observaciones_cabecera = rs!observaciones_cabecera
-    datos_entrega_footer = rs!datos_entrega_footer
+    If Not IsNull(rs!observaciones_cabecera) Then
+        observaciones_cabecera = rs!observaciones_cabecera
+    Else
+        observaciones_cabecera = ""
+    End If
+    
+    If Not IsNull(rs!datos_entrega_footer) Then
+        datos_entrega_footer = rs!datos_entrega_footer
+    Else
+        datos_entrega_footer = ""
+    End If
 
     Printer.Font.Size = 14
     Printer.Line (8800, 1400)-(10100, 1400)
@@ -788,7 +797,7 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     While Not rs.EOF
         ci = ci + 1
         Printer.Print Tab(6);
-        Printer.Print Format(Math.Round(rs!Cantidad, 2), "0.00");
+        Printer.Print Format(Math.Round(rs!cantidad, 2), "0.00");
         Printer.Print Tab(15);
         Dim it
         Dim ite
@@ -836,8 +845,8 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     If cant_bultos > 0 Then
         Printer.CurrentY = 13500
         fuente = Printer.Font.Size
-        Printer.Font.Size = 12
-        Printer.Print Tab(8); "Son " & cant_bultos & " bultos"
+        Printer.Font.Size = 10
+        Printer.Print Tab(8); "SON " & cant_bultos & " BULTOS"
         Printer.Font.Size = fuente
 
 

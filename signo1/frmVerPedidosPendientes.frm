@@ -962,7 +962,7 @@ Private Sub Command1_Click()
             For Each dp In ped.Detalles
                 Set dto = New DTOPiezaCantidad
                 Set dto.Pieza = dp.Pieza
-                dto.Cantidad = dp.CantidadPedida
+                dto.cantidad = dp.CantidadPedida
                 listadtopiezacantidad.Add dto
             Next dp
         ElseIf ped.estado = EstadoOT_Desactivado Then    ' no hace nada
@@ -1192,9 +1192,8 @@ Private Sub Form_Load()
     Channel.AgregarSuscriptor Me, ordenesTrabajo
 
     LlenarNuevaLista
+    
     MostrarMensajePendientes
-
-    ''Me.caption = caption & " (" & Name & ")"
 
 
 End Sub
@@ -1207,6 +1206,7 @@ Private Sub MostrarMensajePendientes()
 
     haypend = HayPendientes
     hayactiv = HayParaActivar
+    
     msg = "hay " & haypend & " ordenes pendientes para aprobar"
     MSG2 = "hay " & hayactiv & " ordenes aprobadas para activar"
 
@@ -1228,6 +1228,7 @@ Private Sub MostrarMensajePendientes()
     Me.LBLMENSAJE2.Visible = (haypend > 0 And hayactiv > 0)
 
 End Sub
+
 Private Function HayPendientes() As Integer
 
     If Permisos.planOTaprobaciones Then
@@ -1237,7 +1238,7 @@ Private Function HayPendientes() As Integer
         strsql = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_Pendiente
         Set rs = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
-            HayPendientes = rs!Cantidad
+            HayPendientes = rs!cantidad
         End If
     End If
 
@@ -1253,7 +1254,7 @@ Private Function HayParaActivar() As Integer
 
         Set rs = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
-            HayParaActivar = rs!Cantidad
+            HayParaActivar = rs!cantidad
         End If
     End If
 
@@ -1435,7 +1436,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     End If
 
     Dim m As OrdenTrabajo
+    
     MostrarMensajePendientes
+    
 End Function
 
 
@@ -1601,7 +1604,7 @@ End Sub
 Private Sub mnuSeguimiento_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmPlaneamientoSeguimiento
-        F.txtOT = aux_ordenTrabajo.Id
+        F.txtOt = aux_ordenTrabajo.Id
         F.Show
     End If
 End Sub
