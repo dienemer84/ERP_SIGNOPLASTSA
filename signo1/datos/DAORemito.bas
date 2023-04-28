@@ -1,8 +1,9 @@
 Attribute VB_Name = "DAORemitoS"
 Option Explicit
-Dim clasea As New classAdministracion
 
 Public Const CAMPO_ID As String = "id"
+Public Const CAMPO_OBSERVACIONES As String = "observaciones_cabecera"
+Public Const CAMPO_LUGAR_ENTREGA As String = "datos_entrega_footer"
 Public Const CAMPO_DETALLE As String = "detalle"
 Public Const CAMPO_NUMERO As String = "numero"
 Public Const CAMPO_ESTADO As String = "estado"
@@ -57,11 +58,27 @@ End Function
 Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Optional NotificarObserver As Boolean = True) As Boolean
     Dim q As String
     Guardar = True
+
     Dim Nueva As Boolean
     If T.Id = 0 Then
         Nueva = True
-        q = "INSERT INTO remitos (detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
+        '        q = "INSERT INTO remitos (detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
+                 '          & "idUsuario, numero,idUsuarioAprobador) Values (" _
+                 '          & conectar.Escape(T.detalle) & ", " _
+                 '          & conectar.GetEntityId(T.cliente) & ", " _
+                 '          & conectar.Escape(T.FEcha) & ", " _
+                 '          & conectar.Escape(T.estado) & "," _
+                 '          & "0," _
+                 '          & conectar.Escape(T.EstadoFacturado) & ", " _
+                 '          & conectar.GetEntityId(T.contacto) & "," _
+                 '          & conectar.GetEntityId(T.usuarioCreador) & ", " _
+                 '          & conectar.Escape(T.numero) & ", " _
+                 '          & conectar.GetEntityId(T.usuarioAprobador) & ")"
+
+        q = "INSERT INTO remitos (observaciones_cabecera, datos_entrega_footer, detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
           & "idUsuario, numero,idUsuarioAprobador) Values (" _
+          & conectar.Escape(T.observaciones) & ", " _
+          & conectar.Escape(T.lugarEntrega) & ", " _
           & conectar.Escape(T.detalle) & ", " _
           & conectar.GetEntityId(T.cliente) & ", " _
           & conectar.Escape(T.FEcha) & ", " _
@@ -73,12 +90,13 @@ Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Option
           & conectar.Escape(T.numero) & ", " _
           & conectar.GetEntityId(T.usuarioAprobador) & ")"
 
-
     Else
         Nueva = False
         q = "Update remitos " _
-          & "SET" _
-          & " detalle = " & conectar.Escape(T.detalle) & " ," _
+          & "SET " _
+          & "observaciones_cabecera = " & conectar.Escape(T.observaciones) & " ," _
+          & "datos_entrega_footer = " & conectar.Escape(T.lugarEntrega) & " ," _
+          & "detalle = " & conectar.Escape(T.detalle) & " ," _
           & "idCliente =" & conectar.GetEntityId(T.cliente) & " ," _
           & "fecha = " & conectar.Escape(T.FEcha) & " ," _
           & "estado =" & conectar.Escape(T.estado) & "," _
@@ -206,8 +224,6 @@ err1:
 End Function
 
 Public Function FindAll(Optional filter As String = vbNullString) As Collection
-    Dim Inicio As Long
-    Dim Fin As Long
     Dim strsql As String
     Dim indice As Dictionary
     Dim rs As Recordset
@@ -245,6 +261,8 @@ Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tab
     If Id > 0 Then
         Set Remito = New Remito
         Remito.Id = Id
+        Remito.observaciones = GetValue(rs, indice, tabla, DAORemitoS.CAMPO_OBSERVACIONES)
+        Remito.lugarEntrega = GetValue(rs, indice, tabla, DAORemitoS.CAMPO_LUGAR_ENTREGA)
         Remito.detalle = GetValue(rs, indice, tabla, DAORemitoS.CAMPO_DETALLE)
         Remito.numero = GetValue(rs, indice, tabla, DAORemitoS.CAMPO_NUMERO)
         Remito.estado = GetValue(rs, indice, tabla, CAMPO_ESTADO)
@@ -343,12 +361,9 @@ End Function
 
 Public Function Anular(Remito As Remito) As Boolean
     On Error GoTo erranu
-    Dim rs As Recordset
-    Dim strsql As String
     Dim FEcha As Date
     Dim Autor As Long
     Dim tra As Boolean
-    Dim estado_facturacion_remito As Integer
     Dim canti As Long
     Dim rs_s As Recordset
     Dim estado_p As Integer
@@ -361,10 +376,6 @@ Public Function Anular(Remito As Remito) As Boolean
 
 
     If Remito.estado = RemitoAnulado Then Err.Raise 1911, , "No se puede anular un remito ya anulado!"
-
-
-
-
 
     If Remito.EstadoFacturado = RemitoFacturadoParcial Or Remito.EstadoFacturado = RemitoFacturadoTotal Then
         MsgBox "Remito facturado total o parcialmente!" & Chr(10) & "Por favor primero anule la/s facturas involucradas!", vbInformation, "Información"
@@ -612,17 +623,17 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     Dim nroCli
     Dim cli
     Dim direccion
-    Dim Ciudad
     Dim Cuit
     Dim ivva
     Dim detalle
+    Dim observaciones_cabecera
+    Dim datos_entrega_footer
     Dim mes
     Dim dia
     Dim anio
     Dim client
     Dim localidad
     Dim fe As Date
-    Dim oc As String
     Dim ci
     On Error GoTo err91
     Dim tra As Boolean
@@ -635,10 +646,11 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     Dim ImprimirRemitoNuevo As Boolean
     Dim comp
     ImprimirRemitoNuevo = True
-    Set rs = conectar.RSFactory("select r.numero, r.cantidad_bultos,r.idContacto,r.id,r.detalle as detalleRro,r.fecha,r.estado,c.domicilio,c.ciudad,c.cuit,c.id as idcliente,i.detalle,c.razon from remitos r inner join clientes c on r.idcliente=c.id inner join AdminConfigIVA i on i.idIVA=c.iva where r.id= " & IdRemito)
-    Printer.Orientation = 1
+    Set rs = conectar.RSFactory("select r.numero, r.cantidad_bultos,r.idContacto,r.id,r.detalle AS detalleRro,r.fecha,r.estado,c.domicilio,c.ciudad,c.cuit,c.id AS idcliente,i.detalle,c.razon, r.observaciones_cabecera,r.datos_entrega_footer from remitos r inner join clientes c on r.idcliente=c.id inner join AdminConfigIVA i on i.idIVA=c.iva where r.id= " & IdRemito)
+    'Printer.Orientation = 1
 
     Dim client2 As New clsCliente
+
     Dim cant_bultos As Integer
     Dim Obj As PageSet.PrinterControl
     Set Obj = New PrinterControl
@@ -676,6 +688,9 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     anio = Year(fe)
     'cli = Format(nroCli, "0000") & " - " & cli
     client = Format(nroCli, "0000") & " - " & cli
+
+    observaciones_cabecera = rs!observaciones_cabecera
+    datos_entrega_footer = rs!datos_entrega_footer
 
     Printer.Font.Size = 14
     Printer.Line (8800, 1400)-(10100, 1400)
@@ -732,9 +747,10 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     Printer.FontBold = False
     Printer.Print Tab(4);
     Printer.Print "Observaciones: "
+    '    Printer.Print truncar(observaciones_cabecera, 150)
     Printer.Print Tab(4);
-    Printer.Font.Size = 8
-    Printer.Print observaciones
+    Printer.Font.Size = 11
+    Printer.Print observaciones_cabecera
     'detalle y encabezado de detalle de la factura
 
 
@@ -818,7 +834,7 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     Dim fuente
 
     If cant_bultos > 0 Then
-        Printer.CurrentY = 14100
+        Printer.CurrentY = 13500
         fuente = Printer.Font.Size
         Printer.Font.Size = 12
         Printer.Print Tab(8); "Son " & cant_bultos & " bultos"
@@ -840,7 +856,28 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     End If
 
 
+    Printer.CurrentY = 14500
+    Printer.CurrentX = 900
 
+    Dim texto_largo As String
+    Dim caracteres_max As Integer
+
+    texto_largo = datos_entrega_footer
+    caracteres_max = 30
+ 
+    
+    If Len(texto_largo) > caracteres_max Then
+        Printer.Print Tab(4);
+        Printer.Font.Size = 10
+        Printer.Print Left(texto_largo, caracteres_max)
+        Printer.Print Tab(4);
+        Printer.Font.Size = 10
+        Printer.Print Mid(texto_largo, caracteres_max + 1) & vbCrLf
+    Else
+        Printer.Print Tab(4);
+        Printer.Font.Size = 10
+        Printer.Print texto_largo
+    End If
 
     Printer.EndDoc
     tra = False

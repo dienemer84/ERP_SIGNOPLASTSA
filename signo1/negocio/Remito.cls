@@ -27,6 +27,9 @@ Public CantidadBultos As Integer
 Public ControlCargaImpresiones As Integer
 Public OrigenDeConceptos As String
 
+Public observaciones As String
+Public lugarEntrega As String
+
 
 
 Public Function CantidadDeLineasActuales() As Double

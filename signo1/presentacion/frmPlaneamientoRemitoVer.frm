@@ -5,46 +5,149 @@ Begin VB.Form frmPlaneamientoRemitoVer
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Remito"
-   ClientHeight    =   6120
+   ClientHeight    =   8910
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   8790
    Icon            =   "frmPlaneamientoRemitoVer.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   6120
+   ScaleHeight     =   8910
    ScaleWidth      =   8790
-   Begin VB.TextBox lblDetalle 
-      Height          =   300
-      Left            =   946
-      TabIndex        =   8
-      Top             =   950
-      Width           =   6045
-   End
-   Begin XtremeSuiteControls.PushButton cmdValorizar 
-      Height          =   405
-      Left            =   7260
+   Begin XtremeSuiteControls.GroupBox GroupBox 
+      Height          =   1095
+      Index           =   2
+      Left            =   120
       TabIndex        =   5
-      Top             =   405
-      Width           =   1380
+      Top             =   6840
+      Width           =   8535
       _Version        =   786432
-      _ExtentX        =   2434
-      _ExtentY        =   714
+      _ExtentX        =   15055
+      _ExtentY        =   1931
       _StockProps     =   79
-      Caption         =   "Guardar"
-      Appearance      =   6
+      UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtLugarEntrega 
+         Height          =   375
+         Left            =   120
+         TabIndex        =   15
+         Top             =   480
+         Width           =   8175
+      End
+      Begin VB.Label lblEntrega 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Lugar de Entrega:"
+         Height          =   375
+         Left            =   120
+         TabIndex        =   14
+         Top             =   240
+         Width           =   1695
+      End
+   End
+   Begin XtremeSuiteControls.GroupBox GroupBox 
+      Height          =   1935
+      Index           =   0
+      Left            =   120
+      TabIndex        =   1
+      Top             =   0
+      Width           =   8535
+      _Version        =   786432
+      _ExtentX        =   15055
+      _ExtentY        =   3413
+      _StockProps     =   79
+      UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtObservaciones 
+         Height          =   375
+         Left            =   1560
+         TabIndex        =   13
+         Top             =   1440
+         Width           =   6495
+      End
+      Begin VB.TextBox lblDetalle 
+         Height          =   300
+         Left            =   1560
+         TabIndex        =   6
+         Top             =   975
+         Width           =   6525
+      End
+      Begin XtremeSuiteControls.ComboBox cboClientes 
+         Height          =   315
+         Left            =   1560
+         TabIndex        =   7
+         Top             =   600
+         Width           =   5220
+         _Version        =   786432
+         _ExtentX        =   9208
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Sorted          =   -1  'True
+         Style           =   2
+         Appearance      =   6
+         UseVisualStyle  =   -1  'True
+         Text            =   "ComboBox1"
+         AutoComplete    =   -1  'True
+      End
+      Begin VB.Label lblObservaciones 
+         Alignment       =   1  'Right Justify
+         BackStyle       =   0  'Transparent
+         Caption         =   "Observaciones:"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   12
+         Top             =   1500
+         Width           =   1335
+      End
+      Begin VB.Label lblFecha 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "00/00/0000"
+         Height          =   195
+         Left            =   1560
+         TabIndex        =   11
+         Top             =   240
+         Width           =   870
+      End
+      Begin VB.Label dsfsadf 
+         Alignment       =   1  'Right Justify
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cliente:"
+         Height          =   255
+         Left            =   600
+         TabIndex        =   10
+         Top             =   630
+         Width           =   855
+      End
+      Begin VB.Label Label2 
+         Alignment       =   1  'Right Justify
+         BackStyle       =   0  'Transparent
+         Caption         =   "Fecha:"
+         Height          =   240
+         Left            =   600
+         TabIndex        =   9
+         Top             =   225
+         Width           =   855
+      End
+      Begin VB.Label Label3 
+         Alignment       =   1  'Right Justify
+         BackStyle       =   0  'Transparent
+         Caption         =   "Detalle:"
+         Height          =   255
+         Left            =   630
+         TabIndex        =   8
+         Top             =   998
+         Width           =   825
+      End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   4590
-      Left            =   105
-      TabIndex        =   4
-      Top             =   1425
+      Height          =   4695
+      Left            =   120
+      TabIndex        =   0
+      Top             =   2040
       Width           =   8550
       _ExtentX        =   15081
-      _ExtentY        =   8096
+      _ExtentY        =   8281
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
@@ -83,103 +186,63 @@ Begin VB.Form frmPlaneamientoRemitoVer
       ImageCount      =   0
       PrinterProperties=   "frmPlaneamientoRemitoVer.frx":0FD4
    End
-   Begin XtremeSuiteControls.ComboBox cboClientes 
-      Height          =   315
-      Left            =   945
-      TabIndex        =   6
-      Top             =   570
-      Width           =   6060
-      _Version        =   786432
-      _ExtentX        =   10689
-      _ExtentY        =   556
-      _StockProps     =   77
-      BackColor       =   -2147483643
-      Sorted          =   -1  'True
-      Style           =   2
-      Appearance      =   6
-      UseVisualStyle  =   -1  'True
-      Text            =   "ComboBox1"
-      AutoComplete    =   -1  'True
-   End
-   Begin XtremeSuiteControls.PushButton btnFacturar 
-      Height          =   405
-      Left            =   7260
-      TabIndex        =   7
-      Top             =   855
-      Width           =   1380
-      _Version        =   786432
-      _ExtentX        =   2434
-      _ExtentY        =   714
-      _StockProps     =   79
-      Caption         =   "Facturar"
-      Appearance      =   6
-   End
-   Begin VB.Label Label3 
-      Alignment       =   1  'Right Justify
-      BackStyle       =   0  'Transparent
-      Caption         =   "Detalle:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   255
-      Left            =   60
-      TabIndex        =   3
-      Top             =   990
-      Width           =   825
-   End
-   Begin VB.Label Label2 
-      Alignment       =   1  'Right Justify
-      BackStyle       =   0  'Transparent
-      Caption         =   "Fecha:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   255
-      Left            =   30
+   Begin XtremeSuiteControls.GroupBox GroupBox 
+      Height          =   855
+      Index           =   1
+      Left            =   120
       TabIndex        =   2
-      Top             =   210
-      Width           =   855
+      Top             =   7920
+      Width           =   8535
+      _Version        =   786432
+      _ExtentX        =   15055
+      _ExtentY        =   1508
+      _StockProps     =   79
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton cmdValorizar 
+         Height          =   495
+         Left            =   6000
+         TabIndex        =   3
+         Top             =   240
+         Width           =   2295
+         _Version        =   786432
+         _ExtentX        =   4048
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Guardar"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton btnFacturar 
+         Height          =   495
+         Left            =   2760
+         TabIndex        =   4
+         Top             =   240
+         Width           =   2295
+         _Version        =   786432
+         _ExtentX        =   4048
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Facturar"
+         UseVisualStyle  =   -1  'True
+      End
    End
-   Begin VB.Label dsfsadf 
-      Alignment       =   1  'Right Justify
+   Begin VB.Label lblIndicaciones 
       BackStyle       =   0  'Transparent
-      Caption         =   "Cliente:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
+      Caption         =   "Para cambiar el estado a Item NO FACTURABLE. Abra el menu con click derecho sobre el item seleccionado."
       Height          =   255
-      Left            =   30
-      TabIndex        =   0
-      Top             =   600
-      Width           =   855
-   End
-   Begin VB.Label lblFecha 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "00/00/0000"
-      Height          =   195
-      Left            =   945
-      TabIndex        =   1
-      Top             =   225
-      Width           =   870
+      Left            =   240
+      TabIndex        =   16
+      Top             =   2280
+      Visible         =   0   'False
+      Width           =   8415
    End
    Begin VB.Menu mnuDetalleRemito 
       Caption         =   "mnuDetalleRemito"
@@ -208,16 +271,12 @@ Public conceptuable As Boolean
 Public Usable As Boolean
 Dim it As Long
 Dim item
-Dim mostrar As String
+
 Public Remito As Remito
 Dim tmp As remitoDetalle
-Private EsDetalleNuevo As Boolean
+
 Dim vId As String
 Public ParaFacturar As Boolean
-
-Private scannerBuffer As String
-
-
 Public IdFormSuscriber As String
 
 Private Sub btnFacturar_Click()
@@ -267,9 +326,6 @@ Private Sub btnFacturar_Click()
 End Sub
 
 
-
-
-
 Private Sub cmdValorizar_Click()
     On Error GoTo err1
     If MsgBox("¿Seguro de guardar los cambios?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
@@ -277,6 +333,9 @@ Private Sub cmdValorizar_Click()
         Set cli_viejo = Remito.cliente
 
         Remito.detalle = UCase(Me.lblDetalle)
+        Remito.observaciones = UCase(Me.txtObservaciones)
+        Remito.lugarEntrega = UCase(Me.txtLugarEntrega)
+        
         Set Remito.cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
         If Not DAORemitoS.Save(Remito, True, False) Then
             MsgBox "Se produjo algun error al guardar!", vbCritical, "Error"
@@ -294,10 +353,6 @@ Private Sub cmdValorizar_Click()
 err1:
     Set Remito.cliente = cli_viejo
 
-End Sub
-
-Private Sub Command1_Click()
-    Unload Me
 End Sub
 
 
@@ -336,7 +391,6 @@ End Function
 
 
 
-
 Private Sub Form_Load()
     DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
     FormHelper.Customize Me
@@ -348,16 +402,19 @@ Private Sub Form_Load()
 
     Me.cboClientes.Locked = Not editar  'Or Not valorizable And Not Usable
     Me.lblDetalle.Locked = Not editar
+    Me.txtLugarEntrega = Not editar
+    Me.txtObservaciones = Not editar
 
     If Me.Usable Then Me.btnFacturar.caption = "Usar Item"
 
     vId = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, RemitosDetalle_
+    
     mostrarRemito
 
-    ''Me.caption = caption & " (" & Name & ")"
-
 End Sub
+
+
 Private Sub mostrarRemito()
 
     If IsSomething(Remito) Then
@@ -367,34 +424,38 @@ Private Sub mostrarRemito()
         Me.lblFecha.caption = Remito.FEcha
         Me.lblDetalle = Remito.detalle
         Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.cliente.Id, Me.cboClientes)
+        Me.txtObservaciones = Remito.observaciones
+        Me.txtLugarEntrega = Remito.lugarEntrega
 
         grilla.Columns(6).Visible = MostrarInfoAdministracion
 
         Me.cmdValorizar.Enabled = conceptuable Or valorizable Or editar And Not Usable
         grilla.AllowEdit = editar Or valorizable And Not Usable
         grilla.AllowAddNew = editar And Not Usable
-        
-        llenarLista
 
-        'grilla.AllowAddNew = Not usable
-        'grilla.AllowEdit = Not usable
+        llenarLista
 
     End If
 
 End Sub
 
+
 Private Sub llenarLista()
     Me.grilla.ItemCount = 0
     Me.grilla.ItemCount = Remito.Detalles.count
+    
 End Sub
+
 
 Private Sub Form_Terminate()
     Channel.RemoverSuscripcionTotal Me
 End Sub
 
+
 Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
 End Sub
+
 
 Private Sub grilla_AfterUpdate()
     If Not noadd Then
@@ -402,17 +463,15 @@ Private Sub grilla_AfterUpdate()
     End If
 End Sub
 
+
 Private Sub grilla_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
-'Cancel = True
-'If tmp.Origen = OrigenRemitoConcepto And remito.estado = RemitoPendiente Then
     Cancel = MsgBox("¿Está seguro de eliminar el detalle?", vbYesNo + vbInformation, "Confirmación") = vbNo     'Or tmp.Origen <> OrigenRemitoConcepto Or remito.estado <> RemitoPendiente
-'End If
+
 End Sub
 
 Private Sub grilla_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-
-
     Cancel = (grilla.value(5) < 0 Or Not IsNumeric(grilla.value(5)))
+
 End Sub
 
 
@@ -424,7 +483,6 @@ Private Sub grilla_DblClick()
         Set Selecciones.RemitoElegido = Remito
         Unload Me
     End If
-
 
     If editar Then
         pos = grilla.RowIndex(grilla.row)
@@ -441,9 +499,8 @@ Private Sub grilla_DblClick()
     grilla.RefreshRowIndex pos
 
 
-
-
 End Sub
+
 
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 And IsSomething(tmp) Then
@@ -457,6 +514,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Me.PopupMenu Me.mnuDetalleRemito
     End If
 End Sub
+
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
@@ -474,6 +532,7 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
         End If
     End If
 End Sub
+
 
 Private Sub grilla_SelectionChange()
     Dim it As Long
@@ -501,6 +560,7 @@ Private Sub grilla_SelectionChange()
     End If
 End Sub
 
+
 Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
 
     Dim cod As String
@@ -517,13 +577,10 @@ Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, 
 
     Else
 
-
-
         Set tmp = New remitoDetalle
         tmp.Origen = OrigenRemitoConcepto
 
         tmp.Concepto = UCase(Values(2))
-        'Values(3) 'origen
         tmp.Cantidad = CDbl(Values(4))
         If grilla.Columns(5).Visible Then tmp.Valor = Values(5)
 
@@ -532,13 +589,10 @@ Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, 
         tmp.Facturado = False
         tmp.FEcha = Now
 
-
-
-
-
         Remito.Detalles.Add tmp
     End If
 End Sub
+
 
 Private Sub grilla_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 And Remito.Detalles.count > 0 Then
@@ -561,15 +615,13 @@ Private Sub grilla_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Varia
     End If
 End Sub
 
+
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-'If RowIndex = 1 Then item = 0
-
     On Error Resume Next
-    '    Set deta_pedi = DAODetalleOrdenTrabajo.FindById(tmp.idDetallePedido)
-
     If RowIndex > 0 And Remito.Detalles.count > 0 Then
+    Debug.Print (Remito.Detalles.count)
         Set tmp = Remito.Detalles(RowIndex)
-        'item = item + 1
+
         With Values
             .value(1) = RowIndex
             .value(2) = tmp.VerElemento
@@ -579,24 +631,14 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             Else
                 .value(7) = tmp.VerOrigen & " | " & tmp.DetallePedido.item & Chr(10) & tmp.observaciones
             End If
-
-            '            If tmp.Origen = OrigenRemitooe Then
-            '                .value(3) = tmp.VerOrigen & " | "
-            '            Else
-            '                .value(3) = tmp.VerOrigen & " | " & tmp.DetallePedido.item
-            '            End If
             .value(4) = funciones.FormatearDecimales(tmp.Cantidad, 2)
             .value(5) = funciones.FormatearDecimales(tmp.Valor, 2)
             .value(6) = tmp.VerFacturado
-
-
         End With
-
-
     End If
 
-
 End Sub
+
 
 Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Remito.Detalles.count > 0 Then
@@ -610,14 +652,15 @@ Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Varia
     End If
 End Sub
 
+
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = vId
 End Property
 
+
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     mostrarRemito
 End Function
-
 
 Private Sub mnuNoFacturable_Click()
     Dim A As Long

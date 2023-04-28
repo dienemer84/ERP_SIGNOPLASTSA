@@ -132,12 +132,14 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional WithC
     Dim col As New Collection
     Dim strsql As String
     strsql = "SELECT * FROM entregas e LEFT JOIN detalles_pedidos dp ON e.idDetallePedido=dp.id LEFT JOIN remitos r ON r.id = e.Remito WHERE 1=1 "
+    
     If LenB(filtro) > 0 Then strsql = strsql & filtro
+    
     Set rs = conectar.RSFactory(strsql)
+    
     conectar.BuildFieldsIndex rs, indice
 
     Dim detalle As remitoDetalle
-
 
     While Not rs.EOF
         Set detalle = New remitoDetalle
@@ -149,8 +151,8 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional WithC
         rs.MoveNext
     Wend
 
-
     Set FindAll = col
+    
 End Function
 
 

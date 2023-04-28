@@ -8,59 +8,150 @@ Begin VB.Form frmPlaneamientoRemitosLista
    ClientHeight    =   8805
    ClientLeft      =   1455
    ClientTop       =   2130
-   ClientWidth     =   13500
+   ClientWidth     =   12825
    Icon            =   "frmListaRemitos.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8805
-   ScaleWidth      =   13500
+   ScaleWidth      =   12825
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   1545
+      Height          =   2505
       Left            =   120
       TabIndex        =   1
-      Top             =   90
+      Top             =   120
       Width           =   12525
       _Version        =   786432
       _ExtentX        =   22093
-      _ExtentY        =   2725
+      _ExtentY        =   4419
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.GroupBox GroupBox 
+         Height          =   1335
+         Left            =   6600
+         TabIndex        =   14
+         Top             =   240
+         Width           =   4695
+         _Version        =   786432
+         _ExtentX        =   8281
+         _ExtentY        =   2355
+         _StockProps     =   79
+         Caption         =   "Fecha"
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.DateTimePicker dtpDesde 
+            Height          =   315
+            Left            =   855
+            TabIndex        =   15
+            Top             =   735
+            Width           =   1470
+            _Version        =   786432
+            _ExtentX        =   2593
+            _ExtentY        =   556
+            _StockProps     =   68
+            CheckBox        =   -1  'True
+            Format          =   1
+         End
+         Begin XtremeSuiteControls.DateTimePicker dtpHasta 
+            Height          =   315
+            Left            =   3030
+            TabIndex        =   16
+            Top             =   735
+            Width           =   1470
+            _Version        =   786432
+            _ExtentX        =   2593
+            _ExtentY        =   556
+            _StockProps     =   68
+            CheckBox        =   -1  'True
+            Format          =   1
+         End
+         Begin XtremeSuiteControls.ComboBox cboRangos 
+            Height          =   315
+            Left            =   825
+            TabIndex        =   17
+            Top             =   240
+            Width           =   2190
+            _Version        =   786432
+            _ExtentX        =   3863
+            _ExtentY        =   556
+            _StockProps     =   77
+            BackColor       =   -2147483643
+            Style           =   2
+            Text            =   "ComboBox1"
+         End
+         Begin XtremeSuiteControls.Label Label6 
+            Height          =   195
+            Left            =   2460
+            TabIndex        =   20
+            Top             =   795
+            Width           =   420
+            _Version        =   786432
+            _ExtentX        =   741
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Hasta"
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label Label5 
+            Height          =   195
+            Left            =   285
+            TabIndex        =   19
+            Top             =   780
+            Width           =   465
+            _Version        =   786432
+            _ExtentX        =   820
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Desde"
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label Label7 
+            Height          =   195
+            Left            =   240
+            TabIndex        =   18
+            Top             =   300
+            Width           =   480
+            _Version        =   786432
+            _ExtentX        =   847
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Rango"
+            AutoSize        =   -1  'True
+         End
+      End
       Begin VB.TextBox txtDescripcion 
          Height          =   285
-         Left            =   1425
+         Left            =   1080
          TabIndex        =   3
-         Top             =   645
-         Width           =   4215
+         Top             =   1065
+         Width           =   4575
       End
       Begin VB.TextBox txtNroRemito 
          Height          =   285
-         Left            =   1425
+         Left            =   1080
          TabIndex        =   2
          Top             =   240
          Width           =   1695
       End
       Begin XtremeSuiteControls.ComboBox cboClientes 
          Height          =   315
-         Left            =   4530
+         Left            =   1080
          TabIndex        =   7
-         Top             =   240
-         Width           =   6015
+         Top             =   600
+         Width           =   4575
          _Version        =   786432
-         _ExtentX        =   10610
+         _ExtentX        =   8070
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
-         Text            =   "ComboBox1"
       End
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   285
-         Left            =   10620
+         Left            =   5760
          TabIndex        =   8
-         Top             =   270
-         Width           =   495
+         Top             =   615
+         Width           =   420
          _Version        =   786432
-         _ExtentX        =   873
+         _ExtentX        =   741
          _ExtentY        =   503
          _StockProps     =   79
          Caption         =   "X"
@@ -68,76 +159,45 @@ Begin VB.Form frmPlaneamientoRemitosLista
       End
       Begin XtremeSuiteControls.PushButton cmdBuscar 
          Default         =   -1  'True
-         Height          =   375
-         Left            =   11280
+         Height          =   495
+         Left            =   9960
          TabIndex        =   9
-         Top             =   720
-         Width           =   1095
+         Top             =   1800
+         Width           =   2415
          _Version        =   786432
-         _ExtentX        =   1931
-         _ExtentY        =   661
+         _ExtentX        =   4260
+         _ExtentY        =   873
          _StockProps     =   79
          Caption         =   "Buscar"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.DateTimePicker dtpDesde 
-         Height          =   315
-         Left            =   5730
-         TabIndex        =   10
-         Top             =   1065
-         Width           =   1470
-         _Version        =   786432
-         _ExtentX        =   2593
-         _ExtentY        =   556
-         _StockProps     =   68
-         CheckBox        =   -1  'True
-         Format          =   1
-      End
-      Begin XtremeSuiteControls.DateTimePicker dtpHasta 
-         Height          =   315
-         Left            =   7905
-         TabIndex        =   11
-         Top             =   1065
-         Width           =   1470
-         _Version        =   786432
-         _ExtentX        =   2593
-         _ExtentY        =   556
-         _StockProps     =   68
-         CheckBox        =   -1  'True
-         Format          =   1
-      End
-      Begin XtremeSuiteControls.ComboBox cboRangos 
-         Height          =   315
-         Left            =   1380
-         TabIndex        =   12
-         Top             =   1050
-         Width           =   3645
-         _Version        =   786432
-         _ExtentX        =   6429
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Style           =   2
-         Text            =   "ComboBox1"
-      End
       Begin XtremeSuiteControls.PushButton cmdImprimir 
-         Height          =   375
-         Left            =   11280
-         TabIndex        =   16
-         Top             =   240
-         Width           =   1080
+         Height          =   495
+         Left            =   7320
+         TabIndex        =   10
+         Top             =   1800
+         Width           =   2400
          _Version        =   786432
-         _ExtentX        =   1905
-         _ExtentY        =   661
+         _ExtentX        =   4233
+         _ExtentY        =   873
          _StockProps     =   79
          Caption         =   "Imprimir"
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.ComboBox cboEstadoFacturado 
          Height          =   315
-         Left            =   6600
-         TabIndex        =   17
-         Top             =   645
+         Left            =   1080
+         TabIndex        =   11
+         Top             =   1485
          Width           =   1590
          _Version        =   786432
          _ExtentX        =   2805
@@ -148,23 +208,23 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Text            =   "ComboBox1"
       End
       Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
-         Height          =   255
-         Left            =   8280
-         TabIndex        =   19
-         Top             =   690
-         Width           =   300
+         Height          =   285
+         Left            =   2760
+         TabIndex        =   13
+         Top             =   1500
+         Width           =   420
          _Version        =   786432
-         _ExtentX        =   529
-         _ExtentY        =   450
+         _ExtentX        =   741
+         _ExtentY        =   503
          _StockProps     =   79
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.Label Label4 
          Height          =   195
-         Left            =   5760
-         TabIndex        =   18
-         Top             =   710
+         Left            =   240
+         TabIndex        =   12
+         Top             =   1545
          Width           =   720
          _Version        =   786432
          _ExtentX        =   1270
@@ -173,54 +233,15 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Caption         =   "Facturado"
          AutoSize        =   -1  'True
       End
-      Begin XtremeSuiteControls.Label Label7 
-         Height          =   195
-         Left            =   795
-         TabIndex        =   15
-         Top             =   1110
-         Width           =   480
-         _Version        =   786432
-         _ExtentX        =   847
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Rango"
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label Label5 
-         Height          =   195
-         Left            =   5160
-         TabIndex        =   14
-         Top             =   1110
-         Width           =   465
-         _Version        =   786432
-         _ExtentX        =   820
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Desde"
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label Label6 
-         Height          =   195
-         Left            =   7335
-         TabIndex        =   13
-         Top             =   1125
-         Width           =   420
-         _Version        =   786432
-         _ExtentX        =   741
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Hasta"
-         AutoSize        =   -1  'True
-      End
       Begin VB.Label Label1 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0C0C0&
          Caption         =   "Cliente"
          Height          =   255
-         Left            =   3315
+         Left            =   360
          TabIndex        =   6
-         Top             =   240
-         Width           =   1095
+         Top             =   630
+         Width           =   615
       End
       Begin VB.Label Label2 
          Alignment       =   1  'Right Justify
@@ -228,9 +249,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
          BackStyle       =   0  'Transparent
          Caption         =   "Descripción"
          Height          =   255
-         Left            =   240
+         Left            =   -120
          TabIndex        =   5
-         Top             =   710
+         Top             =   1080
          Width           =   1095
       End
       Begin VB.Label Label3 
@@ -239,20 +260,20 @@ Begin VB.Form frmPlaneamientoRemitosLista
          BackStyle       =   0  'Transparent
          Caption         =   "Número"
          Height          =   255
-         Left            =   270
+         Left            =   240
          TabIndex        =   4
-         Top             =   270
-         Width           =   1095
+         Top             =   240
+         Width           =   735
       End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   6615
+      Height          =   5655
       Left            =   120
       TabIndex        =   0
-      Top             =   1800
+      Top             =   2760
       Width           =   12495
       _ExtentX        =   22040
-      _ExtentY        =   11668
+      _ExtentY        =   9975
       Version         =   "2.0"
       PreviewRowIndent=   200
       DefaultGroupMode=   1
@@ -382,6 +403,8 @@ Public VerInfoPlaneamiento As Boolean
 Dim claseP As New classPlaneamiento
 Dim facturasRemitos As Dictionary
 Dim m_Archivos As Dictionary
+
+
 Private Sub AnularRto_Click()
     Dim IdRemito As Long
     Dim A As Long
@@ -559,7 +582,9 @@ Private Sub Form_Load()
     Channel.AgregarSuscriptor Me, Remitos_
     Me.grilla.ItemCount = 0
     Me.grilla.Update
+    
     Dim i As Integer
+    
     funciones.FillComboBoxDateRanges Me.cboRangos
     For i = 0 To Me.cboRangos.ListCount - 1
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
