@@ -26,10 +26,26 @@ Begin VB.Form frmPlaneamientoRemitosLista
       _ExtentY        =   609
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
-         NumPanels       =   1
+         NumPanels       =   7
          BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Text            =   "Contadores"
             TextSave        =   "Contadores"
+         EndProperty
+         BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+         EndProperty
+         BeginProperty Panel3 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+         EndProperty
+         BeginProperty Panel4 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+         EndProperty
+         BeginProperty Panel5 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+            Text            =   "Contadores"
+            TextSave        =   "Contadores"
+         EndProperty
+         BeginProperty Panel6 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+            Text            =   "Contadores"
+            TextSave        =   "Contadores"
+         EndProperty
+         BeginProperty Panel7 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
          EndProperty
       EndProperty
    End
@@ -38,9 +54,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
       Left            =   120
       TabIndex        =   1
       Top             =   120
-      Width           =   16965
+      Width           =   11325
       _Version        =   786432
-      _ExtentX        =   29924
+      _ExtentX        =   19976
       _ExtentY        =   5054
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
@@ -49,7 +65,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Height          =   285
          Left            =   2880
          TabIndex        =   25
-         Top             =   2175
+         Top             =   2195
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -71,23 +87,23 @@ Begin VB.Form frmPlaneamientoRemitosLista
          BackColor       =   -2147483643
       End
       Begin XtremeSuiteControls.GroupBox GroupBox 
-         Height          =   1335
+         Height          =   975
          Index           =   1
-         Left            =   11280
+         Left            =   6360
          TabIndex        =   20
-         Top             =   1320
-         Width           =   5175
+         Top             =   1680
+         Width           =   4695
          _Version        =   786432
-         _ExtentX        =   9128
-         _ExtentY        =   2355
+         _ExtentX        =   8281
+         _ExtentY        =   1720
          _StockProps     =   79
          UseVisualStyle  =   -1  'True
          Begin XtremeSuiteControls.PushButton cmdBuscar 
             Default         =   -1  'True
             Height          =   495
-            Left            =   2520
+            Left            =   2160
             TabIndex        =   21
-            Top             =   480
+            Top             =   330
             Width           =   2415
             _Version        =   786432
             _ExtentX        =   4260
@@ -107,9 +123,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
          End
          Begin XtremeSuiteControls.PushButton cmdImprimir 
             Height          =   495
-            Left            =   240
+            Left            =   120
             TabIndex        =   22
-            Top             =   480
+            Top             =   330
             Width           =   1680
             _Version        =   786432
             _ExtentX        =   2963
@@ -124,7 +140,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Index           =   0
          Left            =   6360
          TabIndex        =   12
-         Top             =   1320
+         Top             =   240
          Width           =   4695
          _Version        =   786432
          _ExtentX        =   8281
@@ -481,6 +497,9 @@ Private Sub AnularRto_Click()
         If DAORemitoS.Anular(tmpRto) Then
             MsgBox "Remito anulado con éxito!", vbExclamation, "Información"
             Me.grilla.RefreshRowIndex A
+            
+            llenarContadoresStatusBar
+            
         Else
             MsgBox "Se produjo algún error al anular el remito!", vbExclamation, "Información"
         End If
@@ -639,6 +658,10 @@ Private Sub listaRemitos()
     Me.grilla.ItemCount = 0
     Me.grilla.ItemCount = remitos.count
     Me.grilla.Update
+    
+    llenarContadoresStatusBar
+    
+    Me.caption = "Remitos [Cantidad: " & remitos.count & "]"
 
 End Sub
 
@@ -691,42 +714,150 @@ Private Sub Form_Load()
 End Sub
 
 Public Sub llenarContadoresStatusBar()
-    'ContarTotal
-    ContarPendientes
-    'ContarAprobados
-    'ContarAnulados
 
+    ContarPendientes
+    ContarAprobados
+    ContarAnulados
+    
+    ContarNoFacturados
+    ContarNoFacturables
+    ContarFacturadosParcial
+    ContarFacturadosTotal
+    
     MostrarCantidadPendientes
+    MostrarCantidadAnulados
+    MostrarCantidadAprobados
+    
+    MostrarFacturadosTotal
+    MostrarNoFacturados
+    MostrarNoFacturables
+    MostrarFacturadosParcial
     
     StatusBar1.Height = 350
-    StatusBar1.Panels(1).Width = Me.ScaleWidth - 100
+    StatusBar1.Panels(1).Width = 2000
+    StatusBar1.Panels(2).Width = 2000
+    StatusBar1.Panels(3).Width = 2000
     
+    StatusBar1.Panels(4).Width = 2000
+    StatusBar1.Panels(5).Width = 2000
+    StatusBar1.Panels(6).Width = 2000
+    StatusBar1.Panels(7).Width = 2000
 End Sub
 
-Private Function ContarPendientes() As Integer
 
+Private Sub MostrarCantidadPendientes()
+    Dim Cantidad As Integer
+    Cantidad = ContarPendientes()
+    StatusBar1.Panels(1).text = "Pendientes Total: " & Cantidad
+End Sub
+Private Sub MostrarCantidadAnulados()
+    Dim Cantidad As Integer
+    Cantidad = ContarAnulados()
+    StatusBar1.Panels(2).text = "Anulados Total: " & Cantidad
+End Sub
+Private Sub MostrarCantidadAprobados()
+    Dim Cantidad As Integer
+    Cantidad = ContarAprobados()
+    StatusBar1.Panels(3).text = "Aprobados Total: " & Cantidad
+End Sub
+Private Sub MostrarFacturadosTotal()
+    Dim Cantidad As Integer
+    Cantidad = ContarFacturadosTotal()
+    StatusBar1.Panels(4).text = "Facturados Total: " & Cantidad
+End Sub
+Private Sub MostrarNoFacturados()
+    Dim Cantidad As Integer
+    Cantidad = ContarNoFacturados()
+    StatusBar1.Panels(5).text = "No Facturados: " & Cantidad
+End Sub
+Private Sub MostrarNoFacturables()
+    Dim Cantidad As Integer
+    Cantidad = ContarNoFacturables()
+    StatusBar1.Panels(6).text = "No Facturables: " & Cantidad
+End Sub
+Private Sub MostrarFacturadosParcial()
+    Dim Cantidad As Integer
+    Cantidad = ContarFacturadosParcial()
+    StatusBar1.Panels(7).text = "Facturados Parcial: " & Cantidad
+End Sub
+
+Private Function ContarAprobados() As Integer
+    Dim rs As Recordset
+    Dim strsql As String
+    ContarAprobados = 0
+    strsql = "select count(id) as cantidad from remitos where estado= " & EstadoRemito.RemitoAprobado
+    Set rs = conectar.RSFactory(strsql)
+    If Not rs.EOF And Not rs.BOF Then
+        ContarAprobados = rs!Cantidad
+    End If
+End Function
+
+Private Function ContarPendientes() As Integer
     Dim rs As Recordset
     Dim strsql As String
     ContarPendientes = 0
-    'strsql = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_Pendiente
     strsql = "select count(id) as cantidad from remitos where estado= " & EstadoRemito.RemitoPendiente
-    
     Set rs = conectar.RSFactory(strsql)
-    
     If Not rs.EOF And Not rs.BOF Then
-        ContarPendientes = rs!cantidad
+        ContarPendientes = rs!Cantidad
     End If
-
 End Function
 
-Private Sub MostrarCantidadPendientes()
-    ' Llama a la función HayPendientes para obtener la cantidad de pedidos pendientes
-    Dim cantidad As Integer
-    cantidad = ContarPendientes()
+Private Function ContarAnulados() As Integer
+    Dim rs As Recordset
+    Dim strsql As String
+    ContarAnulados = 0
+    strsql = "select count(id) as cantidad from remitos where estado= " & EstadoRemito.RemitoAnulado
+    Set rs = conectar.RSFactory(strsql)
+    If Not rs.EOF And Not rs.BOF Then
+        ContarAnulados = rs!Cantidad
+    End If
+End Function
 
-    ' Muestra la cantidad en el StatusBar
-    StatusBar1.Panels(1).text = "Remitos Pendientes: " & cantidad
-End Sub
+Private Function ContarNoFacturados() As Integer
+    Dim rs As Recordset
+    Dim strsql As String
+    ContarNoFacturados = 0
+    strsql = "select count(id) as cantidad from remitos where estadoFacturado= " & EstadoRemitoFacturado.RemitoNoFacturado
+    Set rs = conectar.RSFactory(strsql)
+    If Not rs.EOF And Not rs.BOF Then
+        ContarNoFacturados = rs!Cantidad
+    End If
+End Function
+
+Private Function ContarNoFacturables() As Integer
+    Dim rs As Recordset
+    Dim strsql As String
+    ContarNoFacturables = 0
+    strsql = "select count(id) as cantidad from remitos where estadoFacturado= " & EstadoRemitoFacturado.RemitoNoFacturable
+    Set rs = conectar.RSFactory(strsql)
+    If Not rs.EOF And Not rs.BOF Then
+        ContarNoFacturables = rs!Cantidad
+    End If
+End Function
+
+Private Function ContarFacturadosParcial() As Integer
+    Dim rs As Recordset
+    Dim strsql As String
+    ContarFacturadosParcial = 0
+    strsql = "select count(id) as cantidad from remitos where estadoFacturado= " & EstadoRemitoFacturado.RemitoFacturadoParcial
+    Set rs = conectar.RSFactory(strsql)
+    If Not rs.EOF And Not rs.BOF Then
+        ContarFacturadosParcial = rs!Cantidad
+    End If
+End Function
+
+Private Function ContarFacturadosTotal() As Integer
+    Dim rs As Recordset
+    Dim strsql As String
+    ContarFacturadosTotal = 0
+    strsql = "select count(id) as cantidad from remitos where estadoFacturado= " & EstadoRemitoFacturado.RemitoFacturadoTotal
+    Set rs = conectar.RSFactory(strsql)
+    If Not rs.EOF And Not rs.BOF Then
+        ContarFacturadosTotal = rs!Cantidad
+    End If
+End Function
+
 
 
 Private Sub Form_Resize()
@@ -957,6 +1088,9 @@ Private Sub mnuNoFacturable_Click()
     DAORemitoS.CambiarEstadoFacturable tmpRto
 
     grilla.RefreshRowIndex A
+    
+    llenarContadoresStatusBar
+    
 End Sub
 
 Private Sub mnuPrintBultos_Click()
