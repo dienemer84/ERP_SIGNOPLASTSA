@@ -1,0 +1,407 @@
+[Root]
+Most Recent Package=Standard Setup Package 1
+
+
+[Package|Dep File 1|Root]
+SubWizProgID=PDWizard.DepPkgSubWiz
+BuildFolder=C:\repo
+
+[Package|Dep File 1|Configure DAO ISAMs]
+Applicable=No
+
+[Package|Dep File 1|Configure DAO ODBC]
+JetWorkspace=
+ODBCDirect=
+
+[Package|Dep File 1|Files Found]
+
+[Package|Dep File 1|Files Released]
+ImageUtils.dll=
+
+[Package|Dep File 1|Missing Dependency Information]
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\phGantXControl.ocx=
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.Controls.v12.0.2.ocx=
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.CommandBars.v12.0.2.ocx=
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.ReportControl.v12.0.2.ocx=
+C:\WINDOWS\system32\Jspp20.ocx=
+C:\WINDOWS\system32\Dialogos.ocx=
+C:\Documents and Settings\nicolasba\Desktop\repo\Librerias\ingresar.ocx=
+C:\WINDOWS\SysWOW64\MSDBRPT.DLL=
+C:\Documents and Settings\nicolasba\Desktop\apps\VB6IDEMouseWheelAddin.dll=
+C:\WINDOWS\system32\msxml6.dll=
+C:\WINDOWS\system32\TLBINF32.DLL=
+C:\Program Files\Common Files\System\ado\msado25.tlb=
+C:\WINDOWS\system32\Pageset.dll=
+C:\Program Files\Microsoft Office\Office12\EXCEL.EXE=
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\CTRLWIZ.DLL=
+C:\WINDOWS\system32\wininet.dll=
+C:\WINDOWS\twain_32.dll=
+
+[Package|Dep File 1|Out-of-Date Dependency Information]
+C:\WINDOWS\system32\COMCT332.OCX=
+C:\WINDOWS\system32\Richtx32.ocx=
+C:\WINDOWS\system32\MSCOMCT2.OCX=
+C:\WINDOWS\system32\mscomctl.ocx=
+C:\WINDOWS\system32\comdlg32.OCX=
+C:\WINDOWS\system32\scrrun.dll=
+C:\WINDOWS\system32\MSSTDFMT.DLL=
+
+[Package|Dep File 1|Files Added]
+
+[Package|Dep File 1|Files Removed]
+
+[Package|Dep File 1|Files In Project]
+C:\repo\abb.exe=Yes
+C:\WINDOWS\system32\msvbvm60.dll=Yes
+C:\WINDOWS\system32\oleaut32.dll=Yes
+C:\WINDOWS\system32\olepro32.dll=Yes
+C:\WINDOWS\system32\asycfilt.dll=Yes
+C:\WINDOWS\system32\stdole2.tlb=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
+C:\WINDOWS\twain_32.dll=Yes
+C:\WINDOWS\system32\wininet.dll=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\qrcodelib.dll=Yes
+C:\WINDOWS\system32\MSBIND.DLL=Yes
+C:\WINDOWS\system32\MSSTDFMT.DLL=Yes
+C:\Program Files\Common Files\designer\MSDERUN.DLL=Yes
+C:\Program Files\Common Files\System\ado\msado15.dll=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\CTRLWIZ.DLL=Yes
+C:\Program Files\Microsoft Office\Office12\EXCEL.EXE=Yes
+C:\WINDOWS\system32\Pageset.dll=Yes
+C:\WINDOWS\system32\scrrun.dll=Yes
+C:\WINDOWS\system32\msvcrt.dll=Yes
+C:\Program Files\Common Files\System\ado\msado25.tlb=Yes
+C:\WINDOWS\system32\TLBINF32.DLL=Yes
+C:\WINDOWS\system32\msxml6.dll=Yes
+C:\Documents and Settings\nicolasba\Desktop\apps\VB6IDEMouseWheelAddin.dll=Yes
+C:\WINDOWS\SysWOW64\MSDBRPT.DLL=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\Librerias\ingresar.ocx=Yes
+C:\WINDOWS\system32\MSRDC20.OCX=Yes
+C:\WINDOWS\system32\MSRDO20.DLL=Yes
+C:\WINDOWS\system32\RDOCURS.DLL=Yes
+C:\WINDOWS\system32\odbc32.dll=Yes
+C:\WINDOWS\system32\TABCTL32.OCX=Yes
+C:\WINDOWS\system32\MSFLXGRD.OCX=Yes
+C:\WINDOWS\system32\comdlg32.OCX=Yes
+C:\WINDOWS\system32\mscomctl.ocx=Yes
+C:\WINDOWS\system32\MSCOMCT2.OCX=Yes
+C:\WINDOWS\system32\MSINET.OCX=Yes
+C:\WINDOWS\system32\Richtx32.ocx=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\RICHED32.DLL=Yes
+C:\WINDOWS\system32\MSCHRT20.OCX=Yes
+C:\WINDOWS\system32\MSWINSCK.OCX=Yes
+C:\WINDOWS\system32\MSMAPI32.OCX=Yes
+C:\WINDOWS\system32\MCI32.OCX=Yes
+C:\WINDOWS\system32\PICCLP32.OCX=Yes
+C:\WINDOWS\system32\MSMASK32.OCX=Yes
+C:\WINDOWS\system32\MSDATGRD.OCX=Yes
+C:\WINDOWS\system32\MSDATLST.OCX=Yes
+C:\WINDOWS\system32\COMCT332.OCX=Yes
+C:\WINDOWS\system32\MSADODC.OCX=Yes
+C:\WINDOWS\system32\Dialogos.ocx=Yes
+C:\Program Files\Microsoft Office\Office12\MSCAL.OCX=Yes
+C:\Program Files\Janus Systems Components\Janus GridEX 2000\OCXs Files\GridEX20.ocx=Yes
+C:\WINDOWS\system32\Jspp20.ocx=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.ReportControl.v12.0.2.ocx=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.CommandBars.v12.0.2.ocx=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.Controls.v12.0.2.ocx=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\phGantXControl.ocx=Yes
+
+[Package|Dep File 1|Configure Registry Files]
+Applicable=
+
+[Package|Dep File 1|Configure Remote Servers]
+Applicable=
+
+[Package|Dep File 1|Install Locations]
+C:\repo\abb.exe=$(AppPath)
+C:\WINDOWS\system32\msvbvm60.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\oleaut32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\olepro32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\asycfilt.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\stdole2.tlb=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\twain_32.dll=$(WinSysPath)
+C:\WINDOWS\system32\wininet.dll=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\qrcodelib.dll=$(AppPath)
+C:\WINDOWS\system32\MSBIND.DLL=$(WinSysPath)
+C:\WINDOWS\system32\MSSTDFMT.DLL=$(WinSysPath)
+C:\Program Files\Common Files\designer\MSDERUN.DLL=$(CommonFiles)\designer
+C:\Program Files\Common Files\System\ado\msado15.dll=$(CommonFilesSys)\ADO
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\CTRLWIZ.DLL=$(WinSysPath)
+C:\Program Files\Microsoft Office\Office12\EXCEL.EXE=$(AppPath)
+C:\WINDOWS\system32\Pageset.dll=$(WinSysPath)
+C:\WINDOWS\system32\scrrun.dll=$(WinSysPath)
+C:\WINDOWS\system32\msvcrt.dll=$(WinSysPathSysFile)
+C:\Program Files\Common Files\System\ado\msado25.tlb=$(WinSysPath)
+C:\WINDOWS\system32\TLBINF32.DLL=$(WinSysPath)
+C:\WINDOWS\system32\msxml6.dll=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\apps\VB6IDEMouseWheelAddin.dll=$(WinSysPath)
+C:\WINDOWS\SysWOW64\MSDBRPT.DLL=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\Librerias\ingresar.ocx=$(WinSysPath)
+C:\WINDOWS\system32\MSRDC20.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSRDO20.DLL=$(WinSysPath)
+C:\WINDOWS\system32\RDOCURS.DLL=$(WinSysPath)
+C:\WINDOWS\system32\odbc32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\TABCTL32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSFLXGRD.OCX=$(WinSysPath)
+C:\WINDOWS\system32\comdlg32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\mscomctl.ocx=$(WinSysPath)
+C:\WINDOWS\system32\MSCOMCT2.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSINET.OCX=$(WinSysPath)
+C:\WINDOWS\system32\Richtx32.ocx=$(WinSysPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\RICHED32.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\system32\MSCHRT20.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSWINSCK.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSMAPI32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MCI32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\PICCLP32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSMASK32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSDATGRD.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSDATLST.OCX=$(WinSysPath)
+C:\WINDOWS\system32\COMCT332.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSADODC.OCX=$(WinSysPath)
+C:\WINDOWS\system32\Dialogos.ocx=$(WinSysPath)
+C:\Program Files\Microsoft Office\Office12\MSCAL.OCX=$(AppPath)
+C:\Program Files\Janus Systems Components\Janus GridEX 2000\OCXs Files\GridEX20.ocx=$(WinSysPath)
+C:\WINDOWS\system32\Jspp20.ocx=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.ReportControl.v12.0.2.ocx=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.CommandBars.v12.0.2.ocx=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.Controls.v12.0.2.ocx=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\phGantXControl.ocx=$(WinSysPath)
+
+[Package|Dep File 1|Configure Shared Files]
+Applicable=
+
+[Package|Dep File 1|DepFile]
+DepCabFile=abb.CAB
+DepCabRun=abb.INF
+
+[Package|Dep File 1|Package]
+PackageFolder=C:\repo
+ProjectFolder=C:\Documents and Settings\nicolasba\Desktop\repo\signo1
+ServerSideCab=
+File1=C:\repo\abb.DEP
+Handler1=PDWizard.FolderDplySubWiz
+Handler2=PDWizard.WebPostDplySubWiz
+
+
+[Package|Standard Setup Package 1|Root]
+SubWizProgID=PDWizard.SetupPkgSubWiz
+BuildFolder=C:\repo\New Folder
+
+[Package|Standard Setup Package 1|Configure DAO ISAMs]
+Applicable=No
+
+[Package|Standard Setup Package 1|Configure DAO ODBC]
+JetWorkspace=
+ODBCDirect=
+
+[Package|Standard Setup Package 1|Files Found]
+
+[Package|Standard Setup Package 1|Files Released]
+ImageUtils.dll=
+
+[Package|Standard Setup Package 1|Missing Dependency Information]
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\phGantXControl.ocx=
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.Controls.v12.0.2.ocx=
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.CommandBars.v12.0.2.ocx=
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.ReportControl.v12.0.2.ocx=
+C:\WINDOWS\system32\Jspp20.ocx=
+C:\WINDOWS\system32\Dialogos.ocx=
+C:\Documents and Settings\nicolasba\Desktop\repo\Librerias\ingresar.ocx=
+C:\WINDOWS\SysWOW64\MSDBRPT.DLL=
+C:\Documents and Settings\nicolasba\Desktop\apps\VB6IDEMouseWheelAddin.dll=
+C:\WINDOWS\system32\msxml6.dll=
+C:\WINDOWS\system32\TLBINF32.DLL=
+C:\Program Files\Common Files\System\ado\msado25.tlb=
+C:\WINDOWS\system32\Pageset.dll=
+C:\Program Files\Microsoft Office\Office12\EXCEL.EXE=
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\CTRLWIZ.DLL=
+C:\WINDOWS\system32\wininet.dll=
+C:\WINDOWS\twain_32.dll=
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.Controls.v13.2.1.ocx=
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.CommandBars.v13.2.1.ocx=
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.ReportControl.v13.2.1.ocx=
+
+[Package|Standard Setup Package 1|Out-of-Date Dependency Information]
+C:\WINDOWS\system32\COMCT332.OCX=
+C:\WINDOWS\system32\Richtx32.ocx=
+C:\WINDOWS\system32\MSCOMCT2.OCX=
+C:\WINDOWS\system32\mscomctl.ocx=
+C:\WINDOWS\system32\comdlg32.OCX=
+C:\WINDOWS\system32\scrrun.dll=
+C:\WINDOWS\system32\MSSTDFMT.DLL=
+
+[Package|Standard Setup Package 1|Files Added]
+
+[Package|Standard Setup Package 1|Files Removed]
+
+[Package|Standard Setup Package 1|Files In Project]
+C:\repo\abb.exe=Yes
+C:\WINDOWS\system32\msvbvm60.dll=Yes
+C:\WINDOWS\system32\oleaut32.dll=Yes
+C:\WINDOWS\system32\olepro32.dll=Yes
+C:\WINDOWS\system32\asycfilt.dll=Yes
+C:\WINDOWS\system32\stdole2.tlb=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
+C:\WINDOWS\twain_32.dll=Yes
+C:\WINDOWS\system32\wininet.dll=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\qrcodelib.dll=Yes
+C:\WINDOWS\system32\MSBIND.DLL=Yes
+C:\WINDOWS\system32\MSSTDFMT.DLL=Yes
+C:\Program Files\Common Files\designer\MSDERUN.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\CTRLWIZ.DLL=Yes
+C:\Program Files\Microsoft Office\Office12\EXCEL.EXE=Yes
+C:\WINDOWS\system32\Pageset.dll=Yes
+C:\WINDOWS\system32\scrrun.dll=Yes
+C:\WINDOWS\system32\msvcrt.dll=Yes
+C:\Program Files\Common Files\System\ado\msado25.tlb=Yes
+C:\WINDOWS\system32\TLBINF32.DLL=Yes
+C:\WINDOWS\system32\msxml6.dll=Yes
+C:\Documents and Settings\nicolasba\Desktop\apps\VB6IDEMouseWheelAddin.dll=Yes
+C:\WINDOWS\SysWOW64\MSDBRPT.DLL=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\Librerias\ingresar.ocx=Yes
+C:\WINDOWS\system32\MSRDC20.OCX=Yes
+C:\WINDOWS\system32\MSRDO20.DLL=Yes
+C:\WINDOWS\system32\RDOCURS.DLL=Yes
+C:\WINDOWS\system32\TABCTL32.OCX=Yes
+C:\WINDOWS\system32\MSFLXGRD.OCX=Yes
+C:\WINDOWS\system32\comdlg32.OCX=Yes
+C:\WINDOWS\system32\mscomctl.ocx=Yes
+C:\WINDOWS\system32\MSCOMCT2.OCX=Yes
+C:\WINDOWS\system32\MSINET.OCX=Yes
+C:\WINDOWS\system32\Richtx32.ocx=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\RICHED32.DLL=Yes
+C:\WINDOWS\system32\MSCHRT20.OCX=Yes
+C:\WINDOWS\system32\MSWINSCK.OCX=Yes
+C:\WINDOWS\system32\MSMAPI32.OCX=Yes
+C:\WINDOWS\system32\MCI32.OCX=Yes
+C:\WINDOWS\system32\PICCLP32.OCX=Yes
+C:\WINDOWS\system32\MSMASK32.OCX=Yes
+C:\WINDOWS\system32\MSDATGRD.OCX=Yes
+C:\WINDOWS\system32\MSDATLST.OCX=Yes
+C:\WINDOWS\system32\COMCT332.OCX=Yes
+C:\WINDOWS\system32\MSADODC.OCX=Yes
+C:\WINDOWS\system32\Dialogos.ocx=Yes
+C:\Program Files\Microsoft Office\Office12\MSCAL.OCX=Yes
+C:\Program Files\Janus Systems Components\Janus GridEX 2000\OCXs Files\GridEX20.ocx=Yes
+C:\WINDOWS\system32\Jspp20.ocx=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\phGantXControl.ocx=Yes
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.ReportControl.v13.2.1.ocx=Yes
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.CommandBars.v13.2.1.ocx=Yes
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.Controls.v13.2.1.ocx=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\MDAC_TYP.EXE=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=Yes
+C:\WINDOWS\system32\VB6STKIT.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=Yes
+
+[Package|Standard Setup Package 1|Configure Registry Files]
+Applicable=No
+
+[Package|Standard Setup Package 1|Configure Remote Servers]
+Applicable=No
+
+[Package|Standard Setup Package 1|Install Locations]
+C:\repo\abb.exe=$(AppPath)
+C:\WINDOWS\system32\msvbvm60.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\oleaut32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\olepro32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\asycfilt.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\stdole2.tlb=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\twain_32.dll=$(WinSysPath)
+C:\WINDOWS\system32\wininet.dll=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\qrcodelib.dll=$(AppPath)
+C:\WINDOWS\system32\MSBIND.DLL=$(WinSysPath)
+C:\WINDOWS\system32\MSSTDFMT.DLL=$(WinSysPath)
+C:\Program Files\Common Files\designer\MSDERUN.DLL=$(CommonFiles)\designer
+C:\Program Files\Common Files\System\ado\msado15.dll=$(CommonFilesSys)\ADO
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\CTRLWIZ.DLL=$(WinSysPath)
+C:\Program Files\Microsoft Office\Office12\EXCEL.EXE=$(AppPath)
+C:\WINDOWS\system32\Pageset.dll=$(WinSysPath)
+C:\WINDOWS\system32\scrrun.dll=$(WinSysPath)
+C:\WINDOWS\system32\msvcrt.dll=$(WinSysPathSysFile)
+C:\Program Files\Common Files\System\ado\msado25.tlb=$(WinSysPath)
+C:\WINDOWS\system32\TLBINF32.DLL=$(WinSysPath)
+C:\WINDOWS\system32\msxml6.dll=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\apps\VB6IDEMouseWheelAddin.dll=$(WinSysPath)
+C:\WINDOWS\SysWOW64\MSDBRPT.DLL=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\Librerias\ingresar.ocx=$(WinSysPath)
+C:\WINDOWS\system32\MSRDC20.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSRDO20.DLL=$(WinSysPath)
+C:\WINDOWS\system32\RDOCURS.DLL=$(WinSysPath)
+C:\WINDOWS\system32\odbc32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\TABCTL32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSFLXGRD.OCX=$(WinSysPath)
+C:\WINDOWS\system32\comdlg32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\mscomctl.ocx=$(WinSysPath)
+C:\WINDOWS\system32\MSCOMCT2.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSINET.OCX=$(WinSysPath)
+C:\WINDOWS\system32\Richtx32.ocx=$(WinSysPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\RICHED32.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\system32\MSCHRT20.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSWINSCK.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSMAPI32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MCI32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\PICCLP32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSMASK32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSDATGRD.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSDATLST.OCX=$(WinSysPath)
+C:\WINDOWS\system32\COMCT332.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSADODC.OCX=$(WinSysPath)
+C:\WINDOWS\system32\Dialogos.ocx=$(WinSysPath)
+C:\Program Files\Microsoft Office\Office12\MSCAL.OCX=$(AppPath)
+C:\Program Files\Janus Systems Components\Janus GridEX 2000\OCXs Files\GridEX20.ocx=$(WinSysPath)
+C:\WINDOWS\system32\Jspp20.ocx=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.ReportControl.v12.0.2.ocx=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.CommandBars.v12.0.2.ocx=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\Codejock.Controls.v12.0.2.ocx=$(WinSysPath)
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\phGantXControl.ocx=$(WinSysPath)
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.ReportControl.v13.2.1.ocx=$(WinSysPath)
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.CommandBars.v13.2.1.ocx=$(WinSysPath)
+C:\Program Files\Codejock Software\ActiveX\Xtreme SuitePro ActiveX v13.2.1\Bin\Codejock.Controls.v13.2.1.ocx=$(WinSysPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\MDAC_TYP.EXE=$(AppPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=$(AppPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=$(WinPath)
+C:\WINDOWS\system32\VB6STKIT.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=$(WinPath)
+
+[Package|Standard Setup Package 1|Configure Shared Files]
+Applicable=Yes
+C:\repo\abb.exe=Yes
+C:\Documents and Settings\nicolasba\Desktop\repo\signo1\qrcodelib.dll=Yes
+C:\Program Files\Microsoft Office\Office12\EXCEL.EXE=Yes
+C:\Program Files\Microsoft Office\Office12\MSCAL.OCX=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\MDAC_TYP.EXE=Yes
+
+[Package|Standard Setup Package 1|DepFile]
+DepCabFile=abb.CAB
+DepCabRun=abb.INF
+
+[Package|Standard Setup Package 1|Distribution]
+Type=single
+Size=
+Title=Signo Plast S.A.
+
+[Package|Standard Setup Package 1|IconGroups]
+Group0=Signo Plast S.A.
+PrivateGroup0=True
+Parent0=$(Programs)
+
+[Package|Standard Setup Package 1|Signo Plast S.A.]
+Icon1=abb.exe
+Title1=Signo Plast S.A.
+StartIn1=$(AppPath)
+Key1=Icon1
+
+[Package|Standard Setup Package 1|Package]
+PackageFolder=C:\repo\New Folder
+ProjectFolder=C:\Documents and Settings\nicolasba\Desktop\repo\signo1
+ServerSideCab=
+File1=C:\repo\New Folder\setup.exe
+File2=C:\repo\New Folder\Setup.Lst
+File3=C:\repo\New Folder\abb.CAB
+Handler1=PDWizard.FolderDplySubWiz
+Handler2=PDWizard.WebPostDplySubWiz
