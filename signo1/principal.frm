@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~1.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.MDIForm frmPrincipal 
@@ -59,17 +59,6 @@ Begin VB.MDIForm frmPrincipal
          EndProperty
       EndProperty
    End
-   Begin XtremeSuiteControls.TrayIcon TrayIcon 
-      Left            =   4020
-      Tag             =   "0"
-      Top             =   5415
-      _Version        =   786432
-      _ExtentX        =   423
-      _ExtentY        =   423
-      _StockProps     =   16
-      Text            =   "balblablbalba"
-      Picture         =   "principal.frx":2AD8
-   End
    Begin XtremeSuiteControls.PopupControl Popup 
       Left            =   990
       Top             =   2505
@@ -77,15 +66,6 @@ Begin VB.MDIForm frmPrincipal
       _ExtentX        =   635
       _ExtentY        =   635
       _StockProps     =   4
-   End
-   Begin XtremeCommandBars.ImageManager ImageManager 
-      Left            =   1320
-      Top             =   3465
-      _Version        =   786432
-      _ExtentX        =   635
-      _ExtentY        =   635
-      _StockProps     =   0
-      Icons           =   "principal.frx":3072
    End
    Begin XtremeCommandBars.CommandBars CommandBars 
       Left            =   1020
@@ -95,6 +75,24 @@ Begin VB.MDIForm frmPrincipal
       _ExtentY        =   635
       _StockProps     =   0
       VisualTheme     =   7
+   End
+   Begin XtremeSuiteControls.TrayIcon TrayIcon 
+      Left            =   4020
+      Top             =   5415
+      _Version        =   786432
+      _ExtentX        =   423
+      _ExtentY        =   423
+      _StockProps     =   16
+      Text            =   "balblablbalba"
+   End
+   Begin XtremeCommandBars.ImageManager ImageManager 
+      Left            =   1320
+      Top             =   3465
+      _Version        =   786432
+      _ExtentX        =   635
+      _ExtentY        =   635
+      _StockProps     =   0
+      Icons           =   "principal.frx":2AD8
    End
 End
 Attribute VB_Name = "frmPrincipal"
