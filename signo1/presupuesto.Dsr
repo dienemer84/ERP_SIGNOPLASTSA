@@ -942,6 +942,4 @@ Attribute VB_Exposed = False
 Attribute VB_Ext_KEY = "RVB_ModelStereotype" ,"DataReport"
 Private Sub DataReport_Error(ByVal JobType As MSDataReportLib.AsyncTypeConstants, ByVal Cookie As Long, ByVal ErrObj As MSDataReportLib.RptError, ShowError As Boolean)
     ShowError = True
-'    MSDataReportLib.rptPARight = 1000
-    
 End Sub
