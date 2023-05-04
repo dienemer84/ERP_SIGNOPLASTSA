@@ -1,15 +1,14 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} materiales 
    Caption         =   "Detalle por pieza"
-   ClientHeight    =   14850
-   ClientLeft      =   60
-   ClientTop       =   345
+   ClientHeight    =   14025
+   ClientLeft      =   12720
+   ClientTop       =   540
    ClientWidth     =   19080
-   StartUpPosition =   2  'CenterScreen
    _ExtentX        =   33655
    _ExtentY        =   26194
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   14205
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
@@ -729,7 +728,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} materiales
          Object.Width           =   1305
          Object.Height          =   840
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "IDAutomationHC39M"
+            Name            =   "Arial"
             Size            =   12
             Charset         =   0
             Weight          =   400

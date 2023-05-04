@@ -5,8 +5,8 @@ Begin VB.Form frmAdminCheques
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Administración de cheques"
    ClientHeight    =   7830
-   ClientLeft      =   45
-   ClientTop       =   735
+   ClientLeft      =   8250
+   ClientTop       =   2565
    ClientWidth     =   15390
    Icon            =   "frmAdminCheques.frx":0000
    LinkTopic       =   "Form1"
