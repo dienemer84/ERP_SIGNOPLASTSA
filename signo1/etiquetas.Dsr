@@ -1,13 +1,13 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} etiquetas 
    Caption         =   "DataReport1"
-   ClientHeight    =   9810
+   ClientHeight    =   14025
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   11295
+   ClientWidth     =   28680
    StartUpPosition =   3  'Windows Default
-   _ExtentX        =   19923
-   _ExtentY        =   17304
+   _ExtentX        =   50588
+   _ExtentY        =   24739
    _Version        =   393216
    _DesignerVersion=   100684101
    ReportWidth     =   10920
@@ -507,10 +507,10 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} etiquetas
          Object.Width           =   690
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Arial"
+            Name            =   "Arial Black"
             Size            =   8.25
             Charset         =   0
-            Weight          =   700
+            Weight          =   900
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
