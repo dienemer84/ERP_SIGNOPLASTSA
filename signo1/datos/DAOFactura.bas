@@ -362,7 +362,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
           & " impresa = 'impresa' , anulacion_afip='anulacion_afip'," _
           & " tipo_borrar= 'tipo_borrar' , " _
           & " saldada = 'saldada' , id_tipo_discriminado= 'id_tipo_discriminado', " _
-          & " observaciones = 'observaciones', texto_adicional = 'texto_adicional'," _
+          & " observaciones = 'observaciones', observaciones_cancela = 'observaciones_cancela', texto_adicional = 'texto_adicional'," _
           & " AliPercIB = 'AliPercIB', Opcional27='Opcional27', " _
           & " cambio_a_patron = 'cambio_a_patron' ," _
           & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega' , " _
@@ -395,7 +395,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
           & " impresa, " _
           & " tipo_borrar, " _
           & " saldada, " _
-          & " observaciones, texto_adicional," _
+          & " observaciones, observaciones_cancela, texto_adicional," _
           & " AliPercIB, " _
           & " cambio_a_patron, " _
           & " FormaPago, " _
@@ -419,7 +419,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
           & " 'impresa', " _
           & " 'tipo_borrar', " _
           & " 'saldada', " _
-          & " 'observaciones', 'texto_adicional'," _
+          & " 'observaciones', 'observaciones_cancela', 'texto_adicional'," _
           & " 'AliPercIB', " _
           & " 'cambio_a_patron', " _
           & " 'FormaPago', " _
@@ -471,6 +471,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'tipo_borrar'", conectar.Escape(F.TipoDocumento))
     q = Replace$(q, "'saldada'", conectar.Escape(F.Saldado))
     q = Replace$(q, "'observaciones'", conectar.Escape(F.observaciones))
+    q = Replace$(q, "'observaciones_cancela'", conectar.Escape(F.observaciones_cancela))
     q = Replace$(q, "'texto_adicional'", conectar.Escape(F.TextoAdicional))
     'q = Replace$(q, "'AliPercIB'", conectar.Escape(1 + (f.AlicuotaPercepcionesIIBB / 100)))
     q = Replace$(q, "'AliPercIB'", conectar.Escape(F.AlicuotaPercepcionesIIBB))
@@ -2240,8 +2241,8 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(F.totalPercepciones)
         seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.Total)
 
-        'QRHelper.generar F
-        'Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.Id & ".bmp")
+        QRHelper.generar F
+        Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.Id & ".bmp")
 
 
         'rptFacturaElectronica.ReportWidth = Largo

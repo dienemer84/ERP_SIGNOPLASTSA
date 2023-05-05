@@ -1023,37 +1023,18 @@ Private Sub Form_Load()
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.grilla, True
 
-    ' DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True
-
     Set colProveedores = DAOProveedor.FindAll
     For Each prov In colProveedores
         cboProveedores.AddItem prov.RazonSocial
         cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
     Next
-
-
-    Me.cboEstado.Clear
-    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(1)
-    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.EnProceso
-    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(2)
-    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.Aprobada
-    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(3)
-    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.Saldada
-    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(4)
-    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.pagoParcial
-
-    Me.cboBoxFormaDePago.Clear
-    Me.cboBoxFormaDePago.AddItem enums.enumFormaDePagoFacturaProveedor(1)
-    Me.cboBoxFormaDePago.ItemData(Me.cboBoxFormaDePago.NewIndex) = FormadePagoFacturaProveedor.PagoContado
-    Me.cboBoxFormaDePago.AddItem enums.enumFormaDePagoFacturaProveedor(0)
-    Me.cboBoxFormaDePago.ItemData(Me.cboBoxFormaDePago.NewIndex) = FormadePagoFacturaProveedor.PagoCuentaCorriente
-
-    Me.cboOrdenImporte.Clear
-    cboOrdenImporte.AddItem "Ascendente"
-    cboOrdenImporte.ItemData(cboOrdenImporte.NewIndex) = 0
-    cboOrdenImporte.AddItem "Descendente"
-    cboOrdenImporte.ItemData(cboOrdenImporte.NewIndex) = 1
-
+    
+    llenarComboEstado
+    
+    llenarComboFormaPago
+    
+    llenarComboOrdenImporte
+    
     Dim P As clsProveedor
     For Each P In DAOProveedor.FindAll()
         If LenB(Trim$(P.razonFantasia)) > 0 Then
@@ -1071,28 +1052,58 @@ Private Sub Form_Load()
             Me.cboCuentasContables.ItemData(Me.cboCuentasContables.NewIndex) = cc.Id
         End If
     Next cc
-    
+
     Me.cboCuentasContables.ListIndex = -1
 
     Me.grilla.ItemCount = 0
     CMDsINCliente_Click
     desde = DateSerial(Year(Date), Month(Date), 1)   ' CDate(1 & "-" & Month(Now) & "-" & Year(Now))
     funciones.FillComboBoxDateRanges Me.cboRangos
+    
     For i = 0 To Me.cboRangos.ListCount - 1
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
     Next i
     Me.cboRangos.ListIndex = i
 
     funciones.FillComboBoxDateRanges Me.cboRangosCarga
+    
     Me.dtpDesdeCarga.value = Null
     Me.dtpHastaCarga.value = Null
 
     Me.grilla.Refresh
 
-    '    'Me.caption = caption & " (" & Name & ")"
+End Sub
+
+Private Sub llenarComboEstado()
+    Me.cboEstado.Clear
+    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(1)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.EnProceso
+    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(2)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.Aprobada
+    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(3)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.Saldada
+    Me.cboEstado.AddItem enums.enumEstadoFacturaProveedor(4)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoFacturaProveedor.pagoParcial
 
 End Sub
 
+
+Private Sub llenarComboFormaPago()
+    Me.cboBoxFormaDePago.Clear
+    Me.cboBoxFormaDePago.AddItem enums.enumFormaDePagoFacturaProveedor(1)
+    Me.cboBoxFormaDePago.ItemData(Me.cboBoxFormaDePago.NewIndex) = FormadePagoFacturaProveedor.PagoContado
+    Me.cboBoxFormaDePago.AddItem enums.enumFormaDePagoFacturaProveedor(0)
+    Me.cboBoxFormaDePago.ItemData(Me.cboBoxFormaDePago.NewIndex) = FormadePagoFacturaProveedor.PagoCuentaCorriente
+End Sub
+
+
+Private Sub llenarComboOrdenImporte()
+    Me.cboOrdenImporte.Clear
+    cboOrdenImporte.AddItem "Ascendente"
+    cboOrdenImporte.ItemData(cboOrdenImporte.NewIndex) = 0
+    cboOrdenImporte.AddItem "Descendente"
+    cboOrdenImporte.ItemData(cboOrdenImporte.NewIndex) = 1
+End Sub
 
 Public Sub llenarGrilla()
 '    Dim tot As Double
@@ -1227,7 +1238,7 @@ Public Sub llenarGrilla()
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     Set facturas = DAOFacturaProveedor.FindAll(condition, , ordenImporte, Permisos.AdminFaPVerSoloPropias)
-    
+
     Dim F As clsFacturaProveedor
     Dim Total As Double
     Dim totalneto As Double
@@ -1235,9 +1246,9 @@ Public Sub llenarGrilla()
     Dim totalno As Double
     Dim totalpercep As Double
     Dim totalsaldo As Double
-    
+
     Dim c As Integer
-    
+
     Total = 0
 
     For Each F In facturas
@@ -1250,10 +1261,10 @@ Public Sub llenarGrilla()
 
         'Agrega DNEMER 03/02/2021
         totalpercep = totalpercep + F.totalPercepciones * c
-        
+
         '(Factura.Total - (Factura.NetoGravadoAbonadoGlobal + Factura.OtrosAbonadoGlobal)) * i)
         totalsaldo = totalsaldo + ((F.Total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * c)
-        
+
     Next
 
     Me.lblTotal = "Total Filtrado: " & FormatCurrency(funciones.FormatearDecimales(Total))
@@ -1261,7 +1272,7 @@ Public Sub llenarGrilla()
     Me.lblNetoGravadoFiltrado = "Total Neto Gravado: " & FormatCurrency(funciones.FormatearDecimales(totalneto))
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(totIva))
     Me.lblTotalNeto = "Total Neto: " & FormatCurrency(funciones.FormatearDecimales(funciones.RedondearDecimales(totalneto) + funciones.RedondearDecimales(totalno)))
-    
+
     'Agregar totalizador de Pendientes
     Me.lblTotalPendiente = "Total Saldo: " & FormatCurrency(funciones.FormatearDecimales(funciones.RedondearDecimales(totalsaldo))) & ""
 
@@ -1322,8 +1333,8 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.editar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
             Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "diegonr" Or funciones.GetUserObj.usuario = "natalilo")
-            
-          
+
+
             If (Factura.estado = Saldada Or Factura.estado = pagoParcial) Then
                 Me.MnuVerOP.Enabled = True
                 Me.MnuVerOP.Visible = True
@@ -1335,7 +1346,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
 
             Me.PopupMenu menu
-            
+
         End If
     End If
 End Sub
@@ -1366,7 +1377,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
     If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
     With Factura
-        
+
         If IsSomething(Factura.Proveedor) Then
             Values(1) = funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial)
         End If
@@ -1406,19 +1417,19 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Else
             Values(16) = "Contado"
         End If
-        
+
         If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
             Values(17) = Factura.OrdenesPagoId
             If Values(17) = "-" Then
                 Values(17) = "LC- " & Factura.LiquidacionesCajaId
             End If
         End If
-        
+
         Values(18) = Factura.UsuarioCarga.usuario
         Values(19) = Factura.TipoCambio
         Values(20) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
         Values(21) = Factura.Id
-    
+
     End With
 
 End Sub
@@ -1520,11 +1531,11 @@ End Sub
 
 Private Sub MnuVerOP_Click()
     Dim f123 As New frmAdminComprasListaOPSegunCbte
-  
-'    frm.ver = True
+
+    '    frm.ver = True
     f123.Factura = Factura
     f123.Show
-    
+
 End Sub
 
 'Private Sub MnuVerOP_Click()

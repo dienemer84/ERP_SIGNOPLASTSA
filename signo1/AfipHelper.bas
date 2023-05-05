@@ -12,6 +12,8 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
     r = r & "<CantReg>" & c.FeCabReq.CantReg & "</CantReg>"
     r = r & "<PtoVta>" & c.FeCabReq.PtoVta & "</PtoVta>"
     r = r & "<CbteTipo>" & c.FeCabReq.CbteTipo & "</CbteTipo>"
+    Debug.Print ("Comprobante Tipo ND : " & c.FeCabReq.CbteTipo)
+    
     r = r & "</FeCabReq>"
     r = r & "<FeDetReq>"
     r = r & "<FECAEDetRequest>"
@@ -47,7 +49,7 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
         r = r & "<CbtesAsoc>"
         For Each ca In c.FeDetReq.FECAEDetRequest.CbtesAsoc
             r = r & "<CbteAsoc>"
-
+            Debug.Print ("Comprobante Asociado Tipo FC : " & ca.Tipo)
             'Desactivado el 17.07.20 - dnemer
             r = r & "<EsCredito>" & ca.esCredito & "</EsCredito>"
             r = r & "<CbteFch>" & ca.CbteFch & "</CbteFch>"

@@ -45,7 +45,7 @@ Private Function ApiConnect(sUrl As String, verb As verbo, async As Boolean, Opt
 
 
     xmlhttp.setRequestHeader "Content-Type", "text/plain"
-    xmlhttp.Send s    'objXMLSendDoc.XML
+    xmlhttp.send s    'objXMLSendDoc.XML
     Dim response As String
     response = xmlhttp.responseText
     Debug.Print response
@@ -432,8 +432,6 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     Set FeCAEReq.FeDetReq = FeDetReq
 
 
-
-
     Dim msg As String
     Dim resp As New CAESolicitar
 
@@ -565,12 +563,12 @@ Public Function SendMail(asunto As String, mensaje As String, destino As String,
         ' xmlhttp.setRequestHeader "Content-Type", "application/octet-stream; boundary=" & STR_BOUNDARY
         'xmlhttp.setRequestHeader "User-Agent", "Alalala"
         xmlhttp.setRequestHeader "Content-Type", "multipart/form-data; boundary=" & STR_BOUNDARY
-        xmlhttp.Send pvToByteArray(sPostData)
+        xmlhttp.send pvToByteArray(sPostData)
     Else
         sUrl = "mailsender/send?para=" & destino & "&asunto=" & asunto & "&msg=" & mensaje & " &de=" & de & " &de_firma=" & de_firma
         xmlhttp.Open verbo, srv + sUrl, async
         xmlhttp.setRequestHeader "Content-Type", "text/plain"
-        xmlhttp.Send
+        xmlhttp.send
     End If
 
 

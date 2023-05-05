@@ -4,7 +4,7 @@ Begin VB.Form frmLogin
    BackColor       =   &H00FF8080&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Acceso al sistema"
-   ClientHeight    =   2460
+   ClientHeight    =   2295
    ClientLeft      =   45
    ClientTop       =   285
    ClientWidth     =   4980
@@ -13,7 +13,7 @@ Begin VB.Form frmLogin
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2460
+   ScaleHeight     =   2295
    ScaleWidth      =   4980
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
@@ -128,19 +128,6 @@ Begin VB.Form frmLogin
       TabIndex        =   1
       Top             =   600
       Width           =   2535
-   End
-   Begin XtremeSuiteControls.Label lblEstado 
-      Height          =   255
-      Left            =   1800
-      TabIndex        =   15
-      Top             =   2040
-      Width           =   2895
-      _Version        =   786432
-      _ExtentX        =   5106
-      _ExtentY        =   450
-      _StockProps     =   79
-      Caption         =   "ESPERANDO..."
-      Alignment       =   1
    End
    Begin VB.Image Image 
       Height          =   720
@@ -328,16 +315,16 @@ Private Sub Command1_Click()
 
 
                 Else
-                    Me.mensaje = "* Password incorrecto *"
+                    Me.Mensaje = "* Password incorrecto *"
                     Me.Text2 = Empty
                 End If
             Else
-                Me.mensaje = "* Usuario no válido en el sistema *"
+                Me.Mensaje = "* Usuario no válido en el sistema *"
                 Me.Text1 = Empty
                 Me.Text2 = Empty
             End If
         Else
-            Me.mensaje = "* Usuario inexistente *"
+            Me.Mensaje = "* Usuario inexistente *"
             Me.Text1 = Empty
             Me.Text2 = Empty
         End If
