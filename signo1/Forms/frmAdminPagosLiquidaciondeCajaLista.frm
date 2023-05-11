@@ -644,7 +644,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
 
         Set LiquidacionCaja = liquidaciones.item(RowIndex)
 
-        Values(1) = LiquidacionCaja.Id
+        Values(1) = LiquidacionCaja.NumeroLiq
         Values(2) = LiquidacionCaja.FEcha
 
         Values(3) = LiquidacionCaja.moneda.NombreCorto

@@ -105,21 +105,21 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim claseS As New classStock
 Dim strsql As String
 Dim clasea As New classAdministracion
+
+
 Private Sub cmdCrear_Click()
     If IsNumeric(Me.txtReciboNro) Then
         If MsgBox("¿Desea crear el recibo?", vbYesNo, "Confirmación") = vbYes Then
-            If Not IsSomething(DAORecibo.FindById(CLng(Me.txtReciboNro))) Then   '   claseA.existeRecibo(CLng(Me.txtReciboNro)) Then
+
+            If Not IsSomething(DAORecibo.FindById(CLng(Me.txtReciboNro))) Then
                 vIdRecibo = CLng(Me.txtReciboNro)
                 vIdCliente = CLng(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
-                'FechaCreacion =funciones.datetimeFormateada(Now)' Format(Me.DTPicker1, "yyyy-mm-dd")    'funciones.datetimeFormateada(Now)
                 idUsuarioCreador = funciones.getUser
 
-
-
                 strsql = "insert into AdminRecibos (id,idCliente,fechaCreacion,idUsuarioCreador, fecha) values (" & vIdRecibo & "," & vIdCliente & ",NOW()," & idUsuarioCreador & ", NOW())"
+
                 If Not clasea.ejecutarComando(strsql) Then
                     MsgBox "Se produjo algún error!, no se creará el recibo!", vbCritical, "Error"
                 Else
@@ -136,12 +136,8 @@ Private Sub cmdCrear_Click()
     Else
         MsgBox "Ingrese datos válidos!", vbCritical, "Error"
     End If
-
 End Sub
 
-Private Sub Command1_Click()
-    Unload Me
-End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me

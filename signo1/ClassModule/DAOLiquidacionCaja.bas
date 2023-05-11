@@ -144,10 +144,19 @@ Public Function FindAllByProveedor(provid As Long, Optional cond As String, Opti
     End If
 End Function
 
-Public Function FindById(Id As Long) As clsLiquidacionCaja
-    Set FindById = FindAll("liquidaciones_caja.id=" & Id)(1)
-End Function
+'Public Function FindById(Id As Long) As clsLiquidacionCaja
+'    Set FindById = FindAll("liquidaciones_caja.id=" & Id)(1)
+'End Function
 
+Public Function FindById(Id As Long) As clsLiquidacionCaja
+    Dim col As Collection
+    Set col = FindAll("liquidaciones_caja.id=" & Id)
+    If col.count = 0 Then
+        Set FindById = Nothing
+    Else
+        Set FindById = col.item(1)
+    End If
+End Function
 
 
 Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
@@ -319,6 +328,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
         liq.OtrosDescuentos = GetValue(rs, indice, tabla, "otros_descuentos")
         liq.DiferenciaCambioEnNG = GetValue(rs, indice, tabla, "dif_cambio_ng")
         liq.DiferenciaCambioEnTOTAL = GetValue(rs, indice, tabla, "dif_cambio_total")
+        liq.NumeroLiq = GetValue(rs, indice, tabla, "numero_liq")
         If LenB(tablaCuentaContable) > 0 Then Set liq.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
         If LenB(tablaMoneda) > 0 Then Set liq.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
@@ -537,8 +547,8 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
     If op.Id = 0 Then
         Nueva = True
-        q = "INSERT INTO liquidaciones_caja (id_moneda_pago,tipo_cambio,id_moneda, fecha, id_cuenta_contable,cuenta_contable_desc,estado,alicuota,static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen,dif_cambio, otros_descuentos,dif_cambio_ng,dif_cambio_total)" _
-          & " VALUES ('id_moneda_pago','tipo_cambio','id_moneda', 'fecha', 'id_cuenta_contable', 'cuenta_contable_desc','0','alicuota','static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio', 'otros_descuentos','dif_cambio_ng','dif_cambio_total')"
+        q = "INSERT INTO liquidaciones_caja (id_moneda_pago,tipo_cambio,id_moneda, fecha, id_cuenta_contable,cuenta_contable_desc,estado,alicuota,static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen,dif_cambio, otros_descuentos,dif_cambio_ng,dif_cambio_total,numero_liq)" _
+          & " VALUES ('id_moneda_pago','tipo_cambio','id_moneda', 'fecha', 'id_cuenta_contable', 'cuenta_contable_desc','0','alicuota','static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio', 'otros_descuentos','dif_cambio_ng','dif_cambio_total','numero_liq')"
     Else
         q = "UPDATE liquidaciones_caja" _
           & " SET id_moneda = 'id_moneda'," _
@@ -557,6 +567,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
           & " id_moneda_pago = 'id_moneda_pago'," _
           & " dif_cambio_ng = 'dif_cambio_ng'," _
           & " dif_cambio_total = 'dif_cambio_total'" _
+          & " numero_liq = 'numero_liq'" _
           & " WHERE id = 'id'"
         q = Replace(q, "'id'", GetEntityId(op))
     End If
@@ -577,6 +588,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     q = Replace(q, "'tipo_cambio'", Escape(op.TipoCambio))
     q = Replace(q, "'dif_cambio_ng'", Escape(op.DiferenciaCambioEnNG))
     q = Replace(q, "'dif_cambio_total'", Escape(op.DiferenciaCambioEnTOTAL))
+    q = Replace(q, "'numero_liq'", Escape(op.NumeroLiq))
 
 
     If Not conectar.execute(q) Then GoTo E
@@ -584,23 +596,23 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     If Nueva Then op.Id = conectar.UltimoId2()
     If op.Id = 0 Then GoTo E
 
-    If cascada Then
-
-        q = "SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
-        q = q & " AND id_cheque NOT IN (-1"
-        If op.ChequesTerceros.count > 0 Then
-            q = q & ", " & funciones.JoinCollectionValues(op.ChequesTerceros, ", ", "id")
-        End If
-        If op.ChequesPropios.count > 0 Then
-            q = q & ", " & funciones.JoinCollectionValues(op.ChequesPropios, ", ", "id")
-        End If
-        q = q & ")"
-        Set rs = conectar.RSFactory(q)
-        While Not rs.EOF
-            q = "UPDATE Cheques SET  en_cartera = 1, observaciones = NULL, origen= NULL WHERE id = " & rs!id_cheque
-            If Not conectar.execute(q) Then GoTo E
-            rs.MoveNext
-        Wend
+'    If cascada Then
+'
+'        q = "SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
+'        q = q & " AND id_cheque NOT IN (-1"
+'        If op.ChequesTerceros.count > 0 Then
+'            q = q & ", " & funciones.JoinCollectionValues(op.ChequesTerceros, ", ", "id")
+'        End If
+'        If op.ChequesPropios.count > 0 Then
+'            q = q & ", " & funciones.JoinCollectionValues(op.ChequesPropios, ", ", "id")
+'        End If
+'        q = q & ")"
+'        Set rs = conectar.RSFactory(q)
+'        While Not rs.EOF
+'            q = "UPDATE Cheques SET  en_cartera = 1, observaciones = NULL, origen= NULL WHERE id = " & rs!id_cheque
+'            If Not conectar.execute(q) Then GoTo E
+'            rs.MoveNext
+'        Wend
 
 
         '        q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
@@ -803,12 +815,12 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
             If Not conectar.execute(q) Then GoTo E
         Next ra
 
-    End If
+'    End If
 
     Dim msg As String
-    msg = "OP Creada"
+    msg = "LIQ Creada"
 
-    If Not Nueva Then msg = "OP Actualizada"
+    If Not Nueva Then msg = "LIQ Actualizada"
     DaoHistorico.Save "orden_pago_historial", msg, op.Id
 
     Guardar = True

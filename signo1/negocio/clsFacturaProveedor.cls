@@ -42,7 +42,7 @@ Public OtrosAbonadoGlobalPendiente As Double
 Public OrdenesPagoId As String
 Public LiquidacionesCajaId As String
 
-Public OrdenPagoId As Long
+Public OrdenPagoID As Long
 Public LiquidacionCajaId As Long
 
 
@@ -194,6 +194,7 @@ Public Property Let numero(nNumero As String)
 End Property
 Public Property Get numero() As String
     numero = vNumero
+
 End Property
 Public Property Let FEcha(nFecha As Date)
     vFecha = nFecha

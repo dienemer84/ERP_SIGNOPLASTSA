@@ -14,6 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Id As Long
+Public NumeroLiq As Long
 Public moneda As clsMoneda
 Public FEcha As Date
 Public FacturasProveedor As New Collection

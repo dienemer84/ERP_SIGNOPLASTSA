@@ -17,6 +17,37 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    MinButton       =   0   'False
    ScaleHeight     =   7005
    ScaleWidth      =   10515
+   Begin XtremeSuiteControls.PushButton btnFormatoNumeroLIbre 
+      Height          =   255
+      Left            =   8700
+      TabIndex        =   55
+      Top             =   2160
+      Width           =   1635
+      _Version        =   786432
+      _ExtentX        =   2884
+      _ExtentY        =   450
+      _StockProps     =   79
+      Caption         =   "Quitar Formato"
+      UseVisualStyle  =   -1  'True
+   End
+   Begin VB.TextBox txtNumeroCargado 
+      Alignment       =   1  'Right Justify
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   285
+      Left            =   8700
+      TabIndex        =   54
+      Text            =   "txtNumeroCargado"
+      Top             =   1785
+      Width           =   1635
+   End
    Begin VB.TextBox txtTipoCambio 
       Alignment       =   1  'Right Justify
       Height          =   285
@@ -403,7 +434,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Left            =   8700
       TabIndex        =   8
       Text            =   "0"
-      Top             =   2475
+      Top             =   2835
       Width           =   1635
    End
    Begin VB.TextBox txtMontoNeto 
@@ -423,7 +454,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Left            =   8700
       TabIndex        =   7
       Text            =   "0"
-      Top             =   2130
+      Top             =   2490
       Width           =   1635
    End
    Begin MSComCtl2.DTPicker DTPicker1 
@@ -435,7 +466,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   62193665
+      Format          =   62586881
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -611,7 +642,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Height          =   255
       Left            =   7005
       TabIndex        =   53
-      Top             =   3210
+      Top             =   3240
       Width           =   3345
    End
    Begin VB.Label Label15 
@@ -681,7 +712,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Height          =   255
       Left            =   7260
       TabIndex        =   30
-      Top             =   2520
+      Top             =   2880
       Width           =   1335
    End
    Begin VB.Label Label5 
@@ -699,9 +730,9 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Impuestos"
       Height          =   255
-      Left            =   7140
+      Left            =   7080
       TabIndex        =   28
-      Top             =   2145
+      Top             =   2505
       Width           =   1455
    End
    Begin VB.Label Label12 
@@ -769,6 +800,7 @@ Dim aliaplicada As clsAlicuotaAplicada
 
 Dim colPercepciones As Collection
 Dim colPercepcionesTMP As New Collection
+Dim quitarFormato As Boolean
 
 
 
@@ -824,6 +856,30 @@ Private Sub llenarTiposFacturas()
         llenarAlicuotas idtipo
     End If
 End Sub
+
+
+
+
+Private Sub btnFormatoNumeroLIbre_Click()
+
+    If quitarFormato = True Then
+        Me.txtNumeroMask.SetMask "", ""
+        Me.txtNumeroMask.MaxLength = 16
+        Me.btnFormatoNumeroLIbre.caption = "Reestablecer"
+        quitarFormato = False
+
+    Else
+
+        Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+        Me.txtNumeroMask.MaxLength = 13
+        Me.btnFormatoNumeroLIbre.caption = "Quitar Formato"
+        quitarFormato = True
+
+    End If
+
+End Sub
+
+
 
 Private Sub cboMonedas_Click()
     Set moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
@@ -964,7 +1020,7 @@ Private Sub cmdGuardar_Click()
     montonero = CDbl(Me.txtMontoNeto)
 
     If Me.txtNumeroMask.text <> "______-________" And Len(Me.txtNumeroMask.text) > 0 Then
-'    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
+        '    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
 
         If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
 
@@ -1060,12 +1116,20 @@ Private Sub Form_Load()
 
     Me.txtCuit.SetMask "00-00000000-0", "__-________-_"
 
+    Me.txtNumeroMask.Visible = True
+    Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+    Me.txtNumeroMask.MaxLength = 13
+
+    quitarFormato = True
+
+    Me.txtNumeroCargado.Visible = False
+
     FormHelper.Customize Me
+
     '    Set vFactura = DAOFacturaProveedor.FindById(vFactura.id)
 
 
     If Not IsSomething(vFactura) Then Set vFactura = New clsFacturaProveedor
-
 
     GridEXHelper.CustomizeGrid Me.grilla_alicuota, False, False
     GridEXHelper.CustomizeGrid Me.grilla_alicuotas, False, True
@@ -1101,6 +1165,7 @@ Private Sub Form_Load()
     Me.grid_cuentascontables.ItemCount = 0
 
     FacturaRequiereNumeroFormateado
+
     llenarGrillaPercepciones
     LlenarCuentasContables
 
@@ -1120,8 +1185,8 @@ Private Sub Form_Load()
         Me.cmdGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.Frame2.Enabled = False
-        Me.Frame3.Enabled = False
+        Me.frame2.Enabled = False
+        Me.frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
         Me.txtImpuestos.Enabled = False
@@ -1144,6 +1209,8 @@ Private Sub Form_Load()
 
     Me.lblTipoCambioPago.Visible = VVer
 
+    '    Me.txtNumeroMask.text = "ACCA!"
+
     TotalFactura
 
     loading = False
@@ -1160,15 +1227,36 @@ Private Sub FacturaRequiereNumeroFormateado()
 
     Set cx = DAOConfigFacturaProveedor.GetById(idtipo)
 
-    If IsSomething(cx) Then
-        If cx.FormateaNumero Then
-            Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
-            Me.txtNumeroMask.MaxLength = 15
-        Else
-            Me.txtNumeroMask.SetMask "", ""
-            Me.txtNumeroMask.MaxLength = 0
-        End If
-    End If
+    Debug.Print (Len(vFactura.numero))
+
+    '    If IsSomething(cx) Then
+    '        If (Len(vFactura.numero)) = 15 Then
+    '            If cx.FormateaNumero Then
+    '
+    '                Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
+    '                Me.txtNumeroMask.MaxLength = 15
+    '            End If
+    '        ElseIf (Len(vFactura.numero)) = 13 Then
+    '            If cx.FormateaNumero Then
+    '
+    '                Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+    '                Me.txtNumeroMask.MaxLength = 13
+    '            End If
+    '        Else
+    '            Me.txtNumeroMask.SetMask "", ""
+    '            Me.txtNumeroMask.MaxLength = 0
+    '        End If
+    'End If
+    '    If IsSomething(cx) Then
+    '        If cx.FormateaNumero Then
+    '        Debug.Print (Me.txtNumeroMask)
+    '            Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
+    '            Me.txtNumeroMask.MaxLength = 15
+    '        Else
+    '            Me.txtNumeroMask.SetMask "", ""
+    '            Me.txtNumeroMask.MaxLength = 0
+    '        End If
+    '    End If
 End Sub
 
 Private Sub llenarGrillaPercepciones()
@@ -1225,11 +1313,25 @@ Private Sub grid_cuentascontables_UnboundDelete(ByVal RowIndex As Long, ByVal Bo
     TotalFactura
     grabado = False
 End Sub
+
+
 Private Sub grid_cuentascontables_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    On Error GoTo ErrorHandler
+    
     Set ctaAplicada = vFactura.cuentasContables.item(RowIndex)
-    Values(1) = ctaAplicada.cuentas.codigo & " - " & ctaAplicada.cuentas.nombre
-    Values(2) = funciones.FormatearDecimales(ctaAplicada.Monto)
+    
+    If Len(ctaAplicada.cuentas.codigo) > 0 Then
+        Values(1) = ctaAplicada.cuentas.codigo & " - " & ctaAplicada.cuentas.nombre
+        Values(2) = funciones.FormatearDecimales(ctaAplicada.Monto)
+    End If
+    
+    Exit Sub
+    
+ErrorHandler:
+    MsgBox "Se produjo un error al cargar un valor vacío. Descripcion del Error:" & Err.Description, vbExclamation
 End Sub
+
+
 Private Sub grid_cuentascontables_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
         vFactura.cuentasContables(RowIndex).cuentas = DAOCuentaContable.GetById(Values(1))
@@ -1332,9 +1434,18 @@ Private Sub grilla_percepciones_UnboundDelete(ByVal RowIndex As Long, ByVal Book
 End Sub
 
 Private Sub grilla_percepciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+
+    On Error GoTo ErrorHandler
+    
     Set perAplicada = vFactura.percepciones.item(RowIndex)
     Values(1) = perAplicada.Percepcion.Percepcion
     Values(2) = funciones.FormatearDecimales(perAplicada.Monto)
+    
+    Exit Sub
+    
+ErrorHandler:
+    MsgBox "Se produjo un error al cargar un valor vacío. Descripcion del Error: " & Err.Description, vbExclamation
+
 End Sub
 Private Sub grilla_percepciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
@@ -1456,17 +1567,17 @@ End Sub
 '    grabado = False
 'End Sub
 
-Private Sub txtNumeroMask_Change()
-    On Error Resume Next
-    If Me.txtNumeroMask.text <> "______-________" Then
-'    If Me.txtNumeroMask.text <> "" Then
-        vFactura.numero = Me.txtNumeroMask.text
-        TotalFactura
-        grabado = False
-    End If
-
-
-End Sub
+'Private Sub txtNumeroMask_Change()
+'    On Error Resume Next
+'    If Me.txtNumeroMask.text <> "______-________" Then
+'        '    If Me.txtNumeroMask.text <> "" Then
+'        vFactura.numero = Me.txtNumeroMask.text
+'        TotalFactura
+'        grabado = False
+'    End If
+'
+'
+'End Sub
 
 Private Sub txtNumeroMask_GotFocus()
     foco Me.txtNumeroMask
@@ -1481,22 +1592,33 @@ End Sub
 Private Sub txtRedondeo_GotFocus()
     foco Me.txtRedondeo
 End Sub
+
+
 Private Sub LlenarFactura()
+
     Me.cboTipoDocContable.ListIndex = funciones.PosIndexCbo(vFactura.tipoDocumentoContable, Me.cboTipoDocContable)
     Me.txtImpuestos = funciones.FormatearDecimales(vFactura.ImpuestoInterno)
     Me.DTPicker1 = vFactura.FEcha
 
+    '    Me.Label12.Visible = False
+    Me.txtNumeroMask.Visible = False
 
-    If vFactura.configFactura.FormateaNumero Then
-        If InStr(1, vFactura.numero, "-") = 0 Then
-            Me.txtNumeroMask.text = vFactura.numero
-            'Me.txtNumeroMask.text = Mid(vFactura.numero, 1, 4) & "-" & String(8 - Len(Mid(vFactura.numero, 5)), "0") & Mid(vFactura.numero, 5)
-        Else
-            Me.txtNumeroMask.text = vFactura.numero
-        End If
-    Else
-        Me.txtNumeroMask.text = vFactura.numero
-    End If
+    Me.txtNumeroCargado.Visible = True
+    Me.txtNumeroCargado.text = vFactura.numero
+
+
+    '''    If vFactura.configFactura.FormateaNumero Then
+    '''        If InStr(1, vFactura.numero, "-") = 0 Then
+    '''            Me.txtNumeroMask.text = vFactura.numero
+    '''            'Me.txtNumeroMask.text = Mid(vFactura.numero, 1, 4) & "-" & String(8 - Len(Mid(vFactura.numero, 5)), "0") & Mid(vFactura.numero, 5)
+    '''        Else
+    '''            Me.txtNumeroMask.text = vFactura.numero
+    '''            Me.txtNumeroCargado.text = vFactura.numero
+    '''        End If
+    '''    Else
+    '''        Me.txtNumeroMask.text = vFactura.numero
+    '''    End If
+
     Me.txtRedondeo = vFactura.Redondeo
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.Id, Me.cboProveedores)
@@ -1510,12 +1632,16 @@ Private Sub LlenarFactura()
     Me.grid_cuentascontables.ItemCount = 0
     Me.grid_cuentascontables.ItemCount = vFactura.cuentasContables.count
 
+    '    Me.txtNumeroCargado.text = vFactura.NumeroFormateado
+
     mostrarALicuotas
 
     Me.grilla_percepciones.ItemCount = 0
     Me.grilla_percepciones.ItemCount = vFactura.percepciones.count
     grabado = True
 End Sub
+
+
 Private Sub mostrarALicuotas()
     Me.grilla_alicuotas.ItemCount = 0
     Me.grilla_alicuotas.ItemCount = vFactura.IvaAplicado.count
@@ -1533,7 +1659,7 @@ Private Sub armarFactura()
     idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
     vFactura.tipoDocumentoContable = Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.ListIndex)
     vFactura.configFactura = DAOConfigFacturaProveedor.GetById(idtipo)
-    
+
 End Sub
 Private Sub llenarComboProveedores()
     DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, False
