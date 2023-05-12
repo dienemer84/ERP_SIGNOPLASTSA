@@ -22,6 +22,7 @@ Dim tipos_Doc(2)
 Dim tipo_complejidad(3)
 Dim estado_saldado(5)
 Dim estado_orden_pago(3)
+Dim estado_liquidacion_caja(3)
 Public tipoMateriales As New Dictionary
 Public EstadosPeticionOfertaDetalle As New Dictionary
 Public TiposAccidente As New Dictionary
@@ -667,6 +668,9 @@ Public Function EnumEstadoPresupuesto(indice, Optional ByRef matriz)
 End Function
 Public Function EnumEstadoOrdenPago(indice) As String
     EnumEstadoOrdenPago = estado_orden_pago(indice)
+End Function
+Public Function EnumEstadoLiquidacionCaja(indice) As String
+    EnumEstadoLiquidacionCaja = estado_liquidacion_caja(indice)
 End Function
 
 

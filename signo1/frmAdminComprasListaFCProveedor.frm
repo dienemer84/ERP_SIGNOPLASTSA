@@ -144,7 +144,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          _StockProps     =   79
          BackColor       =   16744576
          Appearance      =   4
-         Begin XtremeSuiteControls.PushButton Command2 
+         Begin XtremeSuiteControls.PushButton btnBuscar 
             Default         =   -1  'True
             Height          =   390
             Left            =   120
@@ -290,7 +290,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          BackColor       =   -2147483643
          Text            =   "cboProveedores"
       End
-      Begin XtremeSuiteControls.PushButton CMDsINCliente 
+      Begin XtremeSuiteControls.PushButton btnRemoveProveedor 
          Height          =   255
          Left            =   5520
          TabIndex        =   4
@@ -931,7 +931,7 @@ Private Sub cmdImprimir_Click()
     frmPrintPreview.Show 1
 End Sub
 
-Private Sub CMDsINCliente_Click()
+Private Sub btnRemoveProveedor_Click()
     Me.cboProveedores.ListIndex = -1
 End Sub
 
@@ -956,7 +956,7 @@ End Sub
 '    frmPrintPreview.Show 1
 'End Sub
 
-Private Sub Command2_Click()
+Private Sub btnBuscar_Click()
     llenarGrilla
 End Sub
 
@@ -1056,7 +1056,7 @@ Private Sub Form_Load()
     Me.cboCuentasContables.ListIndex = -1
 
     Me.grilla.ItemCount = 0
-    CMDsINCliente_Click
+    btnRemoveProveedor_Click
     desde = DateSerial(Year(Date), Month(Date), 1)   ' CDate(1 & "-" & Month(Now) & "-" & Year(Now))
     funciones.FillComboBoxDateRanges Me.cboRangos
     
@@ -1299,7 +1299,7 @@ Private Sub Form_Resize()
 
     '    Me.cmdImprimir.Left = Me.GroupBox1.Width - (Me.cmdImprimir.Width + 500)
     '    Me.cmdExportar.Left = Me.cmdImprimir.Left
-    '    Me.Command2.Left = Me.cmdImprimir.Left
+    '    Me.btnBuscar.Left = Me.cmdImprimir.Left
 
 End Sub
 
@@ -1421,7 +1421,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
             Values(17) = Factura.OrdenesPagoId
             If Values(17) = "-" Then
-                Values(17) = "LC- " & Factura.LiquidacionesCajaId
+                Values(17) = "LC- " & Factura.NumeroLiqCaja
             End If
         End If
 

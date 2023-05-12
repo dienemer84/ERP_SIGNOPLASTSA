@@ -242,8 +242,22 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
     While Not rs.EOF
         Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
         
-        F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
-        F.OtrosAbonadoGlobal = rs!otros_abonado
+        Dim neto_gravado_liquidado As Variant
+        neto_gravado_liquidado = rs!neto_gravado_liquidado
+        If Not IsNull(neto_gravado_liquidado) Then
+            F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado + neto_gravado_liquidado
+        Else
+            F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
+        End If
+        
+        Dim otros_liquidado As Variant
+        otros_liquidado = rs!otros_liquidado
+        If Not IsNull(otros_liquidado) Then
+            F.OtrosAbonadoGlobal = rs!otros_abonado + otros_liquidado
+        Else
+             F.OtrosAbonadoGlobal = rs!otros_abonado
+        End If
+        
         F.OrdenesPagoId = rs!ordenes_pago
         F.LiquidacionesCajaId = rs!liquidaciones_caja
 
@@ -294,6 +308,8 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
 err1:
     MsgBox Err.Description
 End Function
+
+
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaProveedor As String = vbNullString, _
                     Optional tablaAdminConfigFacturasProveedor As String = vbNullString, _
@@ -317,19 +333,28 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         fc.FormaPagoCuentaCorriente = GetValue(rs, indice, tabla, "forma_de_pago_cta_cte")
         fc.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
         fc.TipoCambioPago = GetValue(rs, indice, tabla, "tipo_cambio_pago")
+        
         fc.TotalAbonado = GetValue(rs, indice, tabla, "total_abonado")
         fc.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
-        fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
 
+        If indice.Exists(".total_liquidado") Then fc.TotalAbonado = fc.TotalAbonado + GetValue(rs, indice, vbNullString, "total_liquidado")
+        If indice.Exists(".neto_gravado_liquidado") Then fc.NetoGravadoAbonadoGlobal = fc.NetoGravadoAbonadoGlobal + GetValue(rs, indice, vbNullString, "neto_gravado_liquidado")
+        If indice.Exists(".otros_liquidado") Then fc.OtrosAbonadoGlobal = fc.OtrosAbonadoGlobal + GetValue(rs, indice, vbNullString, "otros_liquidado")
+        
+        
+        fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
+        
         If indice.Exists(".id_liquidacion_caja") Then fc.LiquidacionCajaId = GetValue(rs, indice, vbNullString, "id_liquidacion_caja")
 
+        If indice.Exists(".numero_liq") Then fc.NumeroLiqCaja = GetValue(rs, indice, vbNullString, "numero_liq")
+        
         Set fc.UsuarioCarga = DAOUsuarios.Map(rs, indice, "usuarios")
 
         If LenB(tablaMoneda) > 0 Then Set fc.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         fc.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
         If LenB(tablaAdminConfigFacturasProveedor) > 0 Then fc.configFactura = DAOConfigFacturaProveedor.Map(rs, indice, tablaAdminConfigFacturasProveedor, tablaAdminConfigIVAProveedor)
 
-        If indice.Exists(".nro_orden") Then fc.OrdenPagoId = GetValue(rs, indice, vbNullString, "nro_orden")
+        If indice.Exists(".nro_orden") Then fc.OrdenPagoID = GetValue(rs, indice, vbNullString, "nro_orden")
         
         
 

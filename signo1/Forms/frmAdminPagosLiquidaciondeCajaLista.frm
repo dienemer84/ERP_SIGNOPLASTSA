@@ -389,8 +389,6 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Caption         =   "menu"
       Begin VB.Menu mnuEditar 
          Caption         =   "Editar"
-         Enabled         =   0   'False
-         Visible         =   0   'False
       End
       Begin VB.Menu mnuAprobar 
          Caption         =   "Aprobar"
@@ -400,8 +398,6 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       End
       Begin VB.Menu mnuVer 
          Caption         =   "Ver"
-         Enabled         =   0   'False
-         Visible         =   0   'False
       End
       Begin VB.Menu mnuImprimir 
          Caption         =   "Imprimir"
@@ -437,7 +433,7 @@ Private Sub Form_Load()
     Me.gridOrdenes.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     ids = funciones.CreateGUID
-'    Channel.AgregarSuscriptor Me, OrdenesPago_
+    '    Channel.AgregarSuscriptor Me, OrdenesPago_
 
     Me.cboEstado.Clear
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_pendiente)
@@ -449,6 +445,7 @@ Private Sub Form_Load()
 
 End Sub
 
+
 Private Sub Form_Resize()
     On Error Resume Next
     Me.gridOrdenes.Width = Me.ScaleWidth - 150
@@ -457,6 +454,7 @@ Private Sub Form_Resize()
 
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
 End Sub
+
 
 'Private Sub Form_Terminate()
 '    Channel.RemoverSuscripcionTotal Me
@@ -505,26 +503,25 @@ Private Sub cmdLimpiaEstado_Click()
     Me.cboEstado.ListIndex = -1
 End Sub
 
+Private Sub gridOrdenes_DblClick()
+    gridOrdenes_SelectionChange
+    mnuVer_Click
+End Sub
+
 Private Sub PushButton2_Click()
     conectar.BeginTransaction
     Dim newcol As New Collection
 
     Dim nop As OrdenPago
 
-
-
     For Each nop In liquidaciones
         If (nop.StaticTotalOrigenes + nop.StaticTotalRetenido) = 0 And nop.estado = EstadoOrdenPago_Aprobada Then
             newcol.Add nop
-
 
         End If
     Next
     Dim q As String
     Dim opeCaja As operacion
-
-
-
 
     For Each nop In newcol
 
@@ -540,7 +537,7 @@ Private Sub PushButton2_Click()
             opeCaja.FechaCarga = Now
             Set opeCaja.caja = DAOCaja.FindById(1)
             opeCaja.EntradaSalida = OPSalida
-            
+
             If Not DAOOperacion.Save(opeCaja) Then GoTo E
             opeCaja.Id = conectar.UltimoId2
             q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
@@ -612,6 +609,7 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
         gridOrdenes_SelectionChange
         If Button = 2 Then
             Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
             Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
             Me.PopupMenu menu
 
@@ -694,10 +692,11 @@ Private Sub mnuAprobar_Click()
 End Sub
 
 Private Sub mnuEditar_Click()
-    Dim f22 As New frmAdminPagosLiquidaciondeCajaCrear
-    f22.Show
-    Dim liq As clsLiquidacionCaja
-    f22.Cargar liq
+'    MsgBox ("Funcion en desarrollo")
+        Dim f22 As New frmAdminPagosLiquidaciondeCajaCrear
+        f22.Show
+'        Dim LiquidacionCaja As clsLiquidacionCaja
+        f22.Cargar LiquidacionCaja
 End Sub
 
 'Private Sub mnuHistorial_Click()

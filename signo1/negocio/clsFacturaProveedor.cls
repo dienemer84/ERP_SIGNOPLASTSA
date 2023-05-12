@@ -42,9 +42,11 @@ Public OtrosAbonadoGlobalPendiente As Double
 Public OrdenesPagoId As String
 Public LiquidacionesCajaId As String
 
+
 Public OrdenPagoID As Long
 Public LiquidacionCajaId As Long
 
+Public NumeroLiqCaja As Long
 
 Public TotalAbonado As Double
 Dim vTipoCambio As Double

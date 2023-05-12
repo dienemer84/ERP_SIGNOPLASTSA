@@ -551,6 +551,7 @@ Private Sub llenarLista()
 
     Me.gridOrdenes.ItemCount = 0
     Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
+    
     Me.gridOrdenes.ItemCount = ordenes.count
 
     Me.caption = "Ordenes de Pago (" & ordenes.count & " Ordenes encontradas)"
