@@ -10,6 +10,19 @@ Begin VB.Form frmSistemasTests
    MDIChild        =   -1  'True
    ScaleHeight     =   7530
    ScaleWidth      =   2415
+   Begin XtremeSuiteControls.PushButton PushButton 
+      Height          =   615
+      Left            =   240
+      TabIndex        =   4
+      Top             =   4560
+      Width           =   1935
+      _Version        =   786432
+      _ExtentX        =   3413
+      _ExtentY        =   1085
+      _StockProps     =   79
+      Caption         =   "Prueba_05 (Lista Liquidacion Caja)"
+      UseVisualStyle  =   -1  'True
+   End
    Begin XtremeSuiteControls.PushButton btnPrueba_04 
       Height          =   615
       Left            =   240
@@ -173,5 +186,12 @@ Private Sub Form_Load()
 
     Me.Height = 8040
     Me.Width = 2535
+
+End Sub
+
+
+Private Sub PushButton_Click()
+    Dim f12324 As New frmAdminPagosLiquidaciondeCajaLista
+    f12324.Show
 
 End Sub

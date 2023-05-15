@@ -44,11 +44,11 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
 
     Dim q As String
 
-    q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+    q = "SELECT IFNULL( (SELECT SUM(total_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS total_pendiente, " _
-      & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+      & " IFNULL( (SELECT SUM(neto_gravado_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS netogravado_pendiente, " _
-      & " IFNULL( (SELECT SUM(otros_abonado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+      & " IFNULL( (SELECT SUM(otros_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS otros_pendiente "
 
     'q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
@@ -79,11 +79,11 @@ Public Function FindAbonadoFactura(facid As Long, ocid As Long) As Collection
 
     Dim q As String
 
-    q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+    q = "SELECT IFNULL( (SELECT SUM(total_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS total_pendiente, " _
-      & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+      & " IFNULL( (SELECT SUM(neto_gravado_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS netogravado_pendiente, " _
-      & " IFNULL( (SELECT SUM(otros_abonado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+      & " IFNULL( (SELECT SUM(otros_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS otros_pendiente "
 
     'q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
@@ -188,6 +188,8 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orde
     Set FindAllSoloOP = col
 
 End Function
+
+
 Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
 
@@ -335,6 +337,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
     End If
 
     Set Map = liq
+    
 End Function
 
 
@@ -542,7 +545,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
     Dim q As String
     Dim rs As Recordset
-    On Error GoTo E
+    On Error GoTo e
     Dim Nueva As Boolean: Nueva = False
 
     If op.Id = 0 Then
@@ -591,10 +594,10 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     q = Replace(q, "'numero_liq'", Escape(op.NumeroLiq))
 
 
-    If Not conectar.execute(q) Then GoTo E
+    If Not conectar.execute(q) Then GoTo e
 
     If Nueva Then op.Id = conectar.UltimoId2()
-    If op.Id = 0 Then GoTo E
+    If op.Id = 0 Then GoTo e
 
 '    If cascada Then
 '
@@ -652,12 +655,12 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
         For Each fcp In op.FacturasProveedor
             q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
         Next
 
 
         q = "DELETE FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
+        If Not conectar.execute(q) Then GoTo e
 
 
         Dim es As EstadoFacturaProveedor
@@ -668,7 +671,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         For Each fac In op.FacturasProveedor
             q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
 
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
 
             '            If BuscarEnColeccion(op.Compensatorios, CStr(fac.id)) Then
             '
@@ -692,7 +695,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
 
             q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
 
             Dim c As Compensatorio
 
@@ -701,12 +704,12 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
                 q = "INSERT INTO  orden_pago_deuda_compensatorios (id_orden_pago, id_compensatorio) values (" & op.Id & "," & c.Id & ")"
 
 
-                If Not conectar.execute(q) Then GoTo E
+                If Not conectar.execute(q) Then GoTo e
 
                 q = "UPDATE  ordenes_pago_compensatorios   SET cancelado=1 where id_liquidacion_caja=" & op.Id & " and id=" & c.Id
 
 
-                If Not conectar.execute(q) Then GoTo E
+                If Not conectar.execute(q) Then GoTo e
 
 
             Next c
@@ -729,7 +732,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
             ' End If
             q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
             'q = "UPDATE AdminComprasFacturasProveedores SET estado = " & fac.AnalizarEstado & " WHERE id = " & fac.Id
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
 
 
         Next fac
@@ -739,9 +742,9 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
 
         q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
-        If Not conectar.execute(q) Then GoTo E
+        If Not conectar.execute(q) Then GoTo e
         q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
+        If Not conectar.execute(q) Then GoTo e
 
         Dim oper As operacion
         For Each oper In op.OperacionesBanco
@@ -749,11 +752,11 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
             oper.FechaCarga = Now
             If DAOOperacion.Save(oper) Then
                 oper.Id = conectar.UltimoId2
-                If oper.Id = 0 Then GoTo E
+                If oper.Id = 0 Then GoTo e
                 q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
-                If Not conectar.execute(q) Then GoTo E
+                If Not conectar.execute(q) Then GoTo e
             Else
-                GoTo E
+                GoTo e
             End If
         Next oper
 
@@ -762,11 +765,11 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
             oper.FechaCarga = Now
             If DAOOperacion.Save(oper) Then
                 oper.Id = conectar.UltimoId2
-                If oper.Id = 0 Then GoTo E
+                If oper.Id = 0 Then GoTo e
                 q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
-                If Not conectar.execute(q) Then GoTo E
+                If Not conectar.execute(q) Then GoTo e
             Else
-                GoTo E
+                GoTo e
             End If
         Next oper
 
@@ -785,20 +788,20 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
         'guardo los compensatorios
         q = "DELETE FROM ordenes_pago_compensatorios WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
+        If Not conectar.execute(q) Then GoTo e
 
         Dim c1 As Compensatorio
 
         For Each c1 In op.Compensatorios
             c1.IdOrdenPago = op.Id
-            If Not DAOCompensatorios.Guardar(c1) Then GoTo E
+            If Not DAOCompensatorios.Guardar(c1) Then GoTo e
 
         Next c1
 
 
         'guardo las retenciones
         q = "DELETE FROM ordenes_pago_retenciones WHERE id_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
+        If Not conectar.execute(q) Then GoTo e
 
         Dim ra As DTORetencionAlicuota
 
@@ -812,7 +815,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
             q = Replace(q, "'fecha'", Escape(op.FEcha))
             q = Replace(q, "'alicuota'", Escape(ra.alicuotaRetencion))
             q = Replace(q, "'total'", Escape(ra.importe))
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
         Next ra
 
 '    End If
@@ -826,7 +829,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     Guardar = True
 
     Exit Function
-E:
+e:
     Guardar = False
     If Nueva Then op.Id = 0
 
@@ -860,7 +863,7 @@ Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
 End Function
 
 Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Boolean
-    On Error GoTo E
+    On Error GoTo e
 
     Dim liq As clsLiquidacionCaja
     Set liq = DAOLiquidacionCaja.FindById(liqid)
@@ -870,15 +873,15 @@ Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Bool
     Dim q As String
 
     q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & liqid & ")"
-    If Not conectar.execute(q) Then GoTo E
+    If Not conectar.execute(q) Then GoTo e
     ' q = "DELETE FROM ordenes_pago_facturas WHERE id_liquidacion_caja = " & opid
     '     If Not conectar.execute(q) Then GoTo E
 
     q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid & ")"
-    If Not conectar.execute(q) Then GoTo E
+    If Not conectar.execute(q) Then GoTo e
 
     q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid
-    If Not conectar.execute(q) Then GoTo E
+    If Not conectar.execute(q) Then GoTo e
 
     'se deben borrar los cheques creados para esta orden de pago (solo los propios)
     'fix 14-10-2020
@@ -903,7 +906,7 @@ Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Bool
     Dim estado_anterior As EstadoLiquidacionCaja
     estado_anterior = liq.estado
     liq.estado = EstadoLiquidacionCaja_Anulada
-    If Not DAOLiquidacionCaja.Guardar(liq, False) Then GoTo E
+    If Not DAOLiquidacionCaja.Guardar(liq, False) Then GoTo e
 
     DaoHistorico.Save "orden_pago_historial", "OP Anulada", liq.Id
 
@@ -926,7 +929,7 @@ Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Bool
     'CIERRA_LOG_EVENTOS
 
     Exit Function
-E:
+e:
     liq.estado = estado_anterior
     If useInternalTransaction Then conectar.RollBackTransaction
     Delete = False

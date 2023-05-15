@@ -218,6 +218,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
          ItemCount       =   5
+         SelectedItem    =   3
          Item(0).Caption =   "Cheques Propios"
          Item(0).ControlCount=   1
          Item(0).Control(0)=   "gridChequesPropios"
@@ -275,10 +276,9 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          End
          Begin GridEX20.GridEX gridCajaOperaciones 
             Height          =   4710
-            Left            =   -69895
+            Left            =   105
             TabIndex        =   10
             Top             =   435
-            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   8308
@@ -315,9 +315,10 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          End
          Begin GridEX20.GridEX gridChequesPropios 
             Height          =   4710
-            Left            =   105
+            Left            =   -69895
             TabIndex        =   9
             Top             =   435
+            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   8308
@@ -1334,14 +1335,12 @@ Public ReadOnly As Boolean
 
 Public Sub Cargar(op As OrdenPago)
 
-
     If Not IsSomething(op) Then
         MsgBox "La OP que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
         Unload Me
         Exit Sub
 
     End If
-
 
     Set OrdenPago = DAOOrdenPago.FindById(op.Id)
     Set OrdenPago.Compensatorios = DAOCompensatorios.FindByOP(OrdenPago.Id)
@@ -1421,7 +1420,9 @@ Public Sub Cargar(op As OrdenPago)
 
 
         Me.gridCajaOperaciones.ItemCount = .OperacionesCaja.count
+                MsgBox (.OperacionesCaja.count)
         Me.gridDepositosOperaciones.ItemCount = .OperacionesBanco.count
+                MsgBox (.OperacionesBanco.count)
         Me.gridCheques.ItemCount = .ChequesTerceros.count
         Me.gridChequesPropios.ItemCount = .ChequesPropios.count
 
@@ -1436,10 +1437,6 @@ Public Sub Cargar(op As OrdenPago)
 
     End With
     mostrarCompensatorios
-
-
-
-
 
     Me.caption = "Orden de Pago Nº " & OrdenPago.Id
 
@@ -1465,8 +1462,6 @@ Public Sub Cargar(op As OrdenPago)
     Me.btnClearProveedor.Enabled = Not ReadOnly
 
     'Me.grpOrigen.Enabled = Not ReadOnly
-
-
 
     Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
     Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
@@ -1787,6 +1782,7 @@ Private Sub dtpFecha_Change()
 End Sub
 
 Private Sub Form_Load()
+    
     formLoading = True
     
     Me.Left = frmPrincipal.ScaleWidth / 6
@@ -1798,6 +1794,7 @@ Private Sub Form_Load()
     id_susc = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, PasajeChequePropioCartera
     FormHelper.Customize Me
+    
     GridEXHelper.CustomizeGrid Me.gridCajaOperaciones, False, True
     GridEXHelper.CustomizeGrid Me.gridDepositosOperaciones, False, True
     GridEXHelper.CustomizeGrid Me.gridCheques, False, True
@@ -1852,7 +1849,9 @@ Private Sub Form_Load()
     radioFacturaProveedor_Click
 
     Me.gridCajaOperaciones.ItemCount = OrdenPago.OperacionesCaja.count
+'        MsgBox (OrdenPago.OperacionesCaja.count)
     Me.gridDepositosOperaciones.ItemCount = OrdenPago.OperacionesBanco.count
+'        MsgBox (OrdenPago.OperacionesBanco.count)
     Me.gridCheques.ItemCount = OrdenPago.ChequesTerceros.count
     Me.gridChequesPropios.ItemCount = OrdenPago.ChequesPropios.count
 
@@ -1993,6 +1992,7 @@ Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As
         Values(2) = Banco.nombre
     End If
 End Sub
+
 
 Private Sub gridCajaOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Dim cond1 As Boolean
@@ -2734,9 +2734,6 @@ End Sub
 
 Private Sub Totalizar()
 
-
-
-
     OrdenPago.StaticTotalOrigenes = OrdenPago.TotalOrigenes
 
     Me.lblTotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
@@ -2748,8 +2745,6 @@ Private Sub Totalizar()
     'Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleecionados: 0"
 
     TotalizarDiferenciasCambio
-
-
 
 End Sub
 Private Function TotalizarDiferenciasCambio()

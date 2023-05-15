@@ -443,6 +443,8 @@ Private Sub Form_Load()
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
 
+    llenarLista
+    
 End Sub
 
 
@@ -538,12 +540,12 @@ Private Sub PushButton2_Click()
             Set opeCaja.caja = DAOCaja.FindById(1)
             opeCaja.EntradaSalida = OPSalida
 
-            If Not DAOOperacion.Save(opeCaja) Then GoTo E
+            If Not DAOOperacion.Save(opeCaja) Then GoTo e
             opeCaja.Id = conectar.UltimoId2
             q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
             q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
 
 
         End If
@@ -554,7 +556,7 @@ Private Sub PushButton2_Click()
 
     conectar.CommitTransaction
     Exit Sub
-E:
+e:
     conectar.RollBackTransaction
 
 
