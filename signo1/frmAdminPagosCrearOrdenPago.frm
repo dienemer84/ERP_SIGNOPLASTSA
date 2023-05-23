@@ -1335,170 +1335,176 @@ Public ReadOnly As Boolean
 
 Public Sub Cargar(op As OrdenPago)
 
-    If Not IsSomething(op) Then
-        MsgBox "La OP que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
-        Unload Me
-        Exit Sub
+100     If Not IsSomething(op) Then
+102         MsgBox "La OP que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
+104         Unload Me
+            Exit Sub
 
-    End If
+        End If
 
-    Set OrdenPago = DAOOrdenPago.FindById(op.Id)
-    Set OrdenPago.Compensatorios = DAOCompensatorios.FindByOP(OrdenPago.Id)
+106     Set OrdenPago = DAOOrdenPago.FindById(op.Id)
+108     Set OrdenPago.Compensatorios = DAOCompensatorios.FindByOP(OrdenPago.Id)
 
-    Dim i As Long
-    Dim j As Long
-    With OrdenPago
+        Dim i As Long
 
-        If .EsParaFacturaProveedor Then
-            radioFacturaProveedor.value = True
+        Dim j As Long
 
-            If .FacturasProveedor.count > 0 Then
+110     With OrdenPago
 
-                Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
+112         If .EsParaFacturaProveedor Then
+114             radioFacturaProveedor.value = True
 
-                If Me.cboProveedores.ListIndex = -1 Then    'el proveedor no esta en la lista porque no tiene mas facturas sin saldar
-                    Me.cboProveedores.AddItem .FacturasProveedor.item(1).Proveedor.RazonSocial
-                    Me.cboProveedores.ItemData(Me.cboProveedores.NewIndex) = .FacturasProveedor.item(1).Proveedor.Id
-                    colProveedores.Add .FacturasProveedor.item(1).Proveedor, CStr(.FacturasProveedor.item(1).Proveedor.Id)
-                    Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
+116             If .FacturasProveedor.count > 0 Then
+
+118                 Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
+
+120                 If Me.cboProveedores.ListIndex = -1 Then    'el proveedor no esta en la lista porque no tiene mas facturas sin saldar
+122                     Me.cboProveedores.AddItem .FacturasProveedor.item(1).Proveedor.RazonSocial
+124                     Me.cboProveedores.ItemData(Me.cboProveedores.NewIndex) = .FacturasProveedor.item(1).Proveedor.Id
+126                     colProveedores.Add .FacturasProveedor.item(1).Proveedor, CStr(.FacturasProveedor.item(1).Proveedor.Id)
+128                     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
+
+                    End If
+
+130                 cmdMostrarDatosProveedor_Click
+
+                    Dim idx As Integer
+
+132                 idx = -1
+
+134                 For i = 1 To .FacturasProveedor.count
+136                     For j = 0 To Me.lstFacturas.ListCount - 1
+
+138                         If Me.lstFacturas.ItemData(j) = .FacturasProveedor.item(i).Id Then
+140                             Me.lstFacturas.Checked(j) = True
+142                             idx = i
+
+                            End If
+
+144                     Next j
+146                 Next i
+
+                    'acaa
+
+148                 If ReadOnly Then
+
+150                     For j = Me.lstFacturas.ListCount - 1 To 0 Step -1
+
+152                         If Not Me.lstFacturas.Checked(j) Then
+154                             Me.lstFacturas.RemoveItem j
+
+                            End If
+
+156                     Next j
+
+                        'Me.lblCantidadComprobantes.caption = Me.lblCantidadCbtesSeleccionados.caption
+
+                    End If
+
                 End If
 
-                cmdMostrarDatosProveedor_Click
+158             Me.txtRetenciones.text = .alicuota
 
-
-                Dim idx As Integer
-                idx = -1
-                For i = 1 To .FacturasProveedor.count
-                    For j = 0 To Me.lstFacturas.ListCount - 1
-                        If Me.lstFacturas.ItemData(j) = .FacturasProveedor.item(i).Id Then
-                            Me.lstFacturas.Checked(j) = True
-                            idx = i
-                        End If
-                    Next j
-                Next i
-
-                'acaa
-
-
-
-
-
-                If ReadOnly Then
-                    For j = Me.lstFacturas.ListCount - 1 To 0 Step -1
-                        If Not Me.lstFacturas.Checked(j) Then
-                            Me.lstFacturas.RemoveItem j
-                        End If
-                    Next j
-
-                    'Me.lblCantidadComprobantes.caption = Me.lblCantidadCbtesSeleccionados.caption
-
-                End If
-
-            End If
-            Me.txtRetenciones.text = .alicuota
-
-        Else
-            Me.radioConcepto.value = True
-
-            If IsSomething(.CuentaContable) Then
-                Me.cboCuentas.ListIndex = funciones.PosIndexCbo(.CuentaContable.Id, Me.cboCuentas)
-                Me.txtDetalle.text = .CuentaContableDescripcion
             Else
-                Me.cboCuentas.ListIndex = -1
-                Me.txtDetalle.text = vbNullString
+160             Me.radioConcepto.value = True
+
+162             If IsSomething(.CuentaContable) Then
+164                 Me.cboCuentas.ListIndex = funciones.PosIndexCbo(.CuentaContable.Id, Me.cboCuentas)
+166                 Me.txtDetalle.text = .CuentaContableDescripcion
+                Else
+168                 Me.cboCuentas.ListIndex = -1
+170                 Me.txtDetalle.text = vbNullString
+
+                End If
+
             End If
 
-        End If
+172         If idx >= 0 Then
+174             lstFacturas.ListIndex = lstFacturas.ListCount - 1
 
+            End If
 
-        If idx >= 0 Then
-            lstFacturas.ListIndex = lstFacturas.ListCount - 1
+176         Me.gridCajaOperaciones.ItemCount = .OperacionesCaja.count
+'178         MsgBox (.OperacionesCaja.count)
+180         Me.gridDepositosOperaciones.ItemCount = .OperacionesBanco.count
+'182         MsgBox (.OperacionesBanco.count)
+184         Me.gridCheques.ItemCount = .ChequesTerceros.count
+186         Me.gridChequesPropios.ItemCount = .ChequesPropios.count
 
-        End If
+188         Me.gridRetenciones.ItemCount = .RetencionesAlicuota.count
+190         Set alicuotas = .RetencionesAlicuota
 
+192         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.Id, Me.cboMonedas)
+194         Me.dtpFecha.value = .FEcha
+196         Me.txtDifCambio.text = .DiferenciaCambio
+198         Me.txtOtrosDescuentos.text = .OtrosDescuentos
 
+        End With
 
+200     mostrarCompensatorios
 
-        Me.gridCajaOperaciones.ItemCount = .OperacionesCaja.count
-                MsgBox (.OperacionesCaja.count)
-        Me.gridDepositosOperaciones.ItemCount = .OperacionesBanco.count
-                MsgBox (.OperacionesBanco.count)
-        Me.gridCheques.ItemCount = .ChequesTerceros.count
-        Me.gridChequesPropios.ItemCount = .ChequesPropios.count
+202     Me.caption = "Orden de Pago Nº " & OrdenPago.Id
 
-        Me.gridRetenciones.ItemCount = .RetencionesAlicuota.count
-        Set alicuotas = .RetencionesAlicuota
+        'Me.grpDestino.Enabled = Not ReadOnly
+204     Me.txtDifCambioNG1.Enabled = Not ReadOnly
+206     Me.txtDifCambioTOTAL1.Enabled = Not ReadOnly
+208     Me.cmdMostrarDatosProveedor.Enabled = Not ReadOnly
+210     Me.btnPadronAnt.Enabled = Not ReadOnly
+212     Me.btnCargar.Enabled = Not ReadOnly
 
+214     Me.gridRetenciones.AllowEdit = Not ReadOnly
 
-        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.Id, Me.cboMonedas)
-        Me.dtpFecha.value = .FEcha
-        Me.txtDifCambio.text = .DiferenciaCambio
-        Me.txtOtrosDescuentos.text = .OtrosDescuentos
+        '    GroupBox2.Enabled = Not ReadOnly
+        '
+        '    GroupBox1.Enabled = Not ReadOnly
 
-    End With
-    mostrarCompensatorios
+216     Me.radioConcepto.Enabled = Not ReadOnly
+218     Me.radioFacturaProveedor.Enabled = Not ReadOnly
+220     Me.cboCuentas.Enabled = Not ReadOnly
+222     Me.cboProveedores.Enabled = Not ReadOnly
+224     Me.txtDetalle.Enabled = Not ReadOnly
+226     Me.btnClearProveedor.Enabled = Not ReadOnly
 
-    Me.caption = "Orden de Pago Nº " & OrdenPago.Id
+        'Me.grpOrigen.Enabled = Not ReadOnly
 
-    'Me.grpDestino.Enabled = Not ReadOnly
-    Me.txtDifCambioNG1.Enabled = Not ReadOnly
-    Me.txtDifCambioTOTAL1.Enabled = Not ReadOnly
-    Me.cmdMostrarDatosProveedor.Enabled = Not ReadOnly
-    Me.btnPadronAnt.Enabled = Not ReadOnly
-    Me.btnCargar.Enabled = Not ReadOnly
+228     Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
+230     Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
 
-    Me.gridRetenciones.AllowEdit = Not ReadOnly
+232     Me.gridBancos.AllowEdit = Not ReadOnly
+        'Me.gridBancos.AllowDelete = Not ReadOnly
 
-    '    GroupBox2.Enabled = Not ReadOnly
-    '
-    '    GroupBox1.Enabled = Not ReadOnly
+234     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
+236     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
 
+238     Me.gridCajas.AllowEdit = Not ReadOnly
+        'Me.gridCajas.AllowDelete = Not ReadOnly
 
-    Me.radioConcepto.Enabled = Not ReadOnly
-    Me.radioFacturaProveedor.Enabled = Not ReadOnly
-    Me.cboCuentas.Enabled = Not ReadOnly
-    Me.cboProveedores.Enabled = Not ReadOnly
-    Me.txtDetalle.Enabled = Not ReadOnly
-    Me.btnClearProveedor.Enabled = Not ReadOnly
+240     Me.gridChequeras.AllowEdit = Not ReadOnly
+        'Me.gridChequeras.AllowDelete = Not ReadOnly
 
-    'Me.grpOrigen.Enabled = Not ReadOnly
+242     Me.gridCheques.AllowEdit = Not ReadOnly
+244     Me.gridCheques.AllowDelete = Not ReadOnly
 
-    Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
-    Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
+246     Me.gridChequesChequera.AllowEdit = Not ReadOnly
+        'Me.gridChequesChequera.AllowDelete = Not ReadOnly
 
-    Me.gridBancos.AllowEdit = Not ReadOnly
-    'Me.gridBancos.AllowDelete = Not ReadOnly
+248     Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
+        'Me.gridChequesDisponibles.AllowDelete = Not ReadOnly
 
-    Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
-    Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
+250     Me.gridChequesPropios.AllowEdit = Not ReadOnly
+252     Me.gridChequesPropios.AllowDelete = Not ReadOnly
 
-    Me.gridCajas.AllowEdit = Not ReadOnly
-    'Me.gridCajas.AllowDelete = Not ReadOnly
+254     Me.cboMonedas.Enabled = Not ReadOnly
+256     Me.dtpFecha.Enabled = Not ReadOnly
+258     Me.btnGuardar.Enabled = Not ReadOnly
+260     Me.txtDifCambio.Enabled = Not ReadOnly
+262     Me.txtOtrosDescuentos.Enabled = Not ReadOnly
 
-    Me.gridChequeras.AllowEdit = Not ReadOnly
-    'Me.gridChequeras.AllowDelete = Not ReadOnly
-
-    Me.gridCheques.AllowEdit = Not ReadOnly
-    Me.gridCheques.AllowDelete = Not ReadOnly
-
-    Me.gridChequesChequera.AllowEdit = Not ReadOnly
-    'Me.gridChequesChequera.AllowDelete = Not ReadOnly
-
-    Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
-    'Me.gridChequesDisponibles.AllowDelete = Not ReadOnly
-
-    Me.gridChequesPropios.AllowEdit = Not ReadOnly
-    Me.gridChequesPropios.AllowDelete = Not ReadOnly
-
-    Me.cboMonedas.Enabled = Not ReadOnly
-    Me.dtpFecha.Enabled = Not ReadOnly
-    Me.btnGuardar.Enabled = Not ReadOnly
-    Me.txtDifCambio.Enabled = Not ReadOnly
-    Me.txtOtrosDescuentos.Enabled = Not ReadOnly
-
-    Totalizar
+264     Totalizar
 
 End Sub
+'#End Region
+
 
 
 Public Property Get FacturaProveedor(nvalue As clsFacturaProveedor)
@@ -1703,8 +1709,8 @@ Private Sub cboMonedas_Click()
         Set OrdenPago.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
     End If
     Totalizar
+    
 End Sub
-
 
 
 Private Sub cboProveedores_Click()
@@ -1719,41 +1725,35 @@ End Sub
 
 
 Private Sub cmdMostrarDatosProveedor_Click()
+
     If Me.cboProveedores.ListIndex <> -1 Then
 
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
-
-
 
         Dim d As clsDTOPadronIIBB
 
         Set d = DTOPadronIIBB.FindByCUIT(prov.Cuit, TipoPadronRetencion)
 
         If IsSomething(d) Then
-            Me.txtRetenciones = str(d.alicuota)   ' Val(d.Retencion )
+            Me.txtRetenciones = str(d.alicuota)
         Else
             Me.txtRetenciones = 0
         End If
 
-
-        'If IsSomething(prov) Then
-        'Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)
-
-        ' End If
     Else
         Set prov = Nothing
     End If
 
-
     MostrarFacturas
+    
     MostrarDeudaCompensatorios
+    
     btnCargar_Click
 
 End Sub
 
+
 Private Sub Command1_Click()
-
-
     If Me.cboProveedores.ListIndex <> -1 Then
 
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
@@ -1777,9 +1777,12 @@ Private Sub Command1_Click()
 
 End Sub
 
+
 Private Sub dtpFecha_Change()
     OrdenPago.FEcha = Me.dtpFecha.value
+    
 End Sub
+
 
 Private Sub Form_Load()
     
@@ -1880,22 +1883,22 @@ Private Sub Form_Load()
 
     formLoaded = True
     formLoading = False
+    
 End Sub
+
 
 Private Sub CargarChequesDisponibles()
     Set chequesDisponibles = DAOCheques.FindAllEnCarteraDeTerceros
     Me.gridChequesDisponibles.ItemCount = chequesDisponibles.count
 End Sub
 
+
 Private Sub MostrarDeudaCompensatorios()
     Me.lstDeudaCompensatorios.Clear
     If IsSomething(prov) Then
         Set colDeudaCompensatorios = DAOCompensatorios.FindAllPendientesByProveedor(prov.Id)  'DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id_proveedor=" & prov.id & " and (AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & " or  AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & ")", False, "", False, True)
 
-
-
         Dim c As Compensatorio
-
 
         '        If OrdenPago.id <> 0 And OrdenPago.EsParaFacturaProveedor Then
         '            If prov.id = OrdenPago.FacturasProveedor.item(1).Proveedor.id Then
@@ -1911,15 +1914,10 @@ Private Sub MostrarDeudaCompensatorios()
             Me.lstDeudaCompensatorios.AddItem "Cód: " & c.Id & " (OP: " & c.IdOrdenPago & ", Cbte: " & c.Comprobante.NumeroFormateado & ", Importe: " & c.Monto & ")"
             Me.lstDeudaCompensatorios.ItemData(Me.lstDeudaCompensatorios.NewIndex) = c.Id
         Next
-
-
-
-
     Else
         Set colFacturas = New Collection
     End If
 End Sub
-
 
 
 Private Sub MostrarFacturas()
@@ -1952,12 +1950,12 @@ Private Sub MostrarFacturas()
             Factura.OtrosAbonadoGlobalPendiente = 0    'c(3)
 
             T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"    'TipoCambio: (" & Factura.TipoCambioPago & ")"
-            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
-                T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
-
-                'MsgBox (c.count)
-
-            End If
+'            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
+'                T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
+'
+'                'MsgBox (c.count)
+'
+'            End If
 
             Me.lstFacturas.AddItem T
             Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
@@ -1985,6 +1983,7 @@ Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
 End Sub
 
+
 Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= bancos.count Then
         Set Banco = bancos.item(RowIndex)
@@ -2000,7 +1999,6 @@ Private Sub gridCajaOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoole
     Dim cond3 As Boolean
     Dim cond4 As Boolean
 
-
     cond1 = Not IsNumeric(Me.gridCajaOperaciones.value(1))
     cond2 = Not IsNumeric(Me.gridCajaOperaciones.value(2)) And LenB(Me.gridCajaOperaciones.value(2)) = 0
     cond3 = Not IsDate(Me.gridCajaOperaciones.value(3))
@@ -2009,6 +2007,7 @@ Private Sub gridCajaOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoole
     Cancel = cond1 Or cond2 Or cond3 Or cond4
 End Sub
 
+
 Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Cajas.count > 0 Then
         Set caja = Cajas.item(RowIndex)
@@ -2016,6 +2015,7 @@ Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As 
         Values(2) = caja.nombre
     End If
 End Sub
+
 
 Private Sub gridChequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= chequeras.count Then
@@ -2033,9 +2033,11 @@ Private Sub gridChequesChequera_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
     End If
 End Sub
 
+
 Private Sub gridChequesDisponibles_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.gridChequesDisponibles, Column
 End Sub
+
 
 Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= chequesDisponibles.count Then
@@ -2052,7 +2054,6 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal
     End If
 
 End Sub
-
 
 
 Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
@@ -2090,9 +2091,6 @@ Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolea
 End Sub
 
 
-
-
-
 Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal value As Variant)
     If ColIndex = 1 Then
         'If Not IsNumeric(Me.gridChequesPropios.Value(1)) Or LenB(Me.gridChequesPropios.Value(1)) = 0 Then
@@ -2106,6 +2104,7 @@ Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal Val
     End If
 End Sub
 
+
 Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set cheque = Nothing
     If IsNumeric(Values(2)) Then Set cheque = DAOCheques.FindById(Values(2))
@@ -2114,11 +2113,11 @@ Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JS
         cheque.FechaVencimiento = Values(4)
 
         OrdenPago.ChequesPropios.Add cheque, CStr(cheque.Id)
-
-
     End If
     Totalizar
+    
 End Sub
+
 
 Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 Then
@@ -2126,6 +2125,7 @@ Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookm
         Totalizar
     End If
 End Sub
+
 
 Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If OrdenPago.ChequesPropios.count >= RowIndex Then
@@ -2137,10 +2137,10 @@ Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Boo
         Values(4) = cheque.FechaVencimiento
         Values(5) = cheque.numero
 
-
         Totalizar
     End If
 End Sub
+
 
 Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If OrdenPago.ChequesPropios.count >= RowIndex Then
@@ -2164,6 +2164,7 @@ Private Sub gridCompensatorios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookm
     OrdenPago.Compensatorios.remove (RowIndex)
 End Sub
 
+
 Private Sub gridCompensatorios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     On Error Resume Next
@@ -2177,6 +2178,7 @@ Private Sub gridCompensatorios_UnboundReadData(ByVal RowIndex As Long, ByVal Boo
 
 End Sub
 
+
 Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If cuentasBancarias.count >= RowIndex Then
         Set CuentaBancaria = cuentasBancarias.item(RowIndex)
@@ -2184,6 +2186,7 @@ Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal B
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
 End Sub
+
 
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Monedas.count > 0 Then
@@ -2195,7 +2198,6 @@ End Sub
 
 
 Private Sub gridRetenciones_RowFormat(RowBuffer As GridEX20.JSRowData)
-
     On Error GoTo err1
 
     Set alicuotaRetencion = alicuotas.item(RowBuffer.RowIndex)
@@ -2213,6 +2215,7 @@ err1:
 
 End Sub
 
+
 Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If alicuotas.count >= RowIndex Then
         Set alicuotaRetencion = alicuotas.item(RowIndex)
@@ -2221,6 +2224,7 @@ Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
         Values(3) = alicuotaRetencion.importe
     End If
 End Sub
+
 
 Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If alicuotas.count >= RowIndex Then
@@ -2237,13 +2241,16 @@ Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark
 End Sub
 
 
-
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = id_susc
 End Property
+
+
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     CargarChequesDisponibles
 End Function
+
+
 Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Collection = Nothing)
     Dim d As New Dictionary
     Dim ret As Retencion
@@ -2255,14 +2262,11 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     totRet = 0
 
     If IsSomething(prov) Then
-
-
         For Each ret In colret
             totRet = totRet + d.item(CStr(ret.Id))
         Next ret
 
     End If
-
 
     totRet = funciones.RedondearDecimales(totRet)
     Dim c As Compensatorio
@@ -2277,14 +2281,14 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     Dim totDeudaCompe As Double
     totDeudaCompe = 0
     For Each F In col
-
-
+    
         'totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravadoDiaPago * -1, f.NetoGravadoDiaPago), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         ' totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.total * -1, f.total), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago) cambiado el 22-9-14 por tema de pagos parciales
         'totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.TotalDiaPago * -1, f.TotalDiaPago), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
         'fix 004
+        
         totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalAbonado * -1, F.TotalAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
 
         totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
@@ -2345,10 +2349,10 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     'Me.lblTotalOP = "Total OP: " & OrdenPago.moneda.NombreCorto & " " & OrdenPago.StaticTotal
 End Sub
 
+
 Private Sub verCompensatorios()
     Me.lblTotalCompensatorios = "Total compensatorios en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.TotalCompensatorios))
 End Sub
-
 
 
 Private Sub MostrarPago(F As clsFacturaProveedor)
@@ -2387,10 +2391,6 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
 End Sub
 
 
-Private Sub Label13_Click()
-
-End Sub
-
 Private Sub lstDeudaCompensatorios_Click()
 
 
@@ -2403,9 +2403,11 @@ Private Sub lstDeudaCompensatorios_Click()
 
 End Sub
 
+
 Private Sub lstDeudaCompensatorios_ItemCheck(ByVal item As Long)
     calcularOrigenes
 End Sub
+
 
 Private Sub lstFacturas_Click()
 
@@ -2445,6 +2447,7 @@ Private Sub lstFacturas_Click()
 
 End Sub
 
+
 Private Sub lstFacturas_DblClick()
     Dim i As Long
     Dim change As Double
@@ -2471,20 +2474,16 @@ Private Sub lstFacturas_DblClick()
     Totalizar
     Exit Sub
 
-
-
 err1:
     Totalizar
     change = 1
 End Sub
 
+
 Sub calcularOrigenes()
     Dim i As Long
     Dim col As New Collection
     Dim colc As New Collection
-
-
-
 
     For i = 0 To Me.lstFacturas.ListCount - 1
         If Me.lstFacturas.Checked(i) Then
@@ -2547,6 +2546,7 @@ Sub limpiarParciales()
     Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
 End Sub
 
+
 Private Sub lstFacturas_ItemCheck(ByVal item As Long)
 
     If item < -1 Then
@@ -2576,6 +2576,7 @@ Private Sub lstFacturas_ItemCheck(ByVal item As Long)
 
 End Sub
 
+
 Private Sub lstFacturas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim i As Integer
     If Button = 2 Then
@@ -2592,6 +2593,7 @@ Private Sub lstFacturas_MouseDown(Button As Integer, Shift As Integer, x As Sing
     End If
 
 End Sub
+
 
 Private Sub mnuCrearCompensatorio_Click()
 
@@ -2639,11 +2641,11 @@ Private Sub mnuCrearCompensatorio_Click()
     Next i
 End Sub
 
+
 Private Sub mostrarCompensatorios()
     Me.gridCompensatorios.ItemCount = OrdenPago.Compensatorios.count
     verCompensatorios
 End Sub
-
 
 
 Private Sub PushButton1_Click()
@@ -2667,6 +2669,7 @@ Private Sub PushButton1_Click()
     MostrarFacturas
 End Sub
 
+
 Private Sub radioConcepto_Click()
     If formLoaded Then
         LimpiarFacturasYValores
@@ -2676,9 +2679,11 @@ Private Sub radioConcepto_Click()
     ActivarControles
 End Sub
 
+
 Private Sub LimpiarFacturasYValores()
     Set colFacturas = New Collection
 End Sub
+
 
 Private Sub ActivarControles()
     Me.cboProveedores.Enabled = Me.radioFacturaProveedor.value
@@ -2695,8 +2700,8 @@ Private Sub ActivarControles()
     If Not Me.cboCuentas.Enabled Then Me.cboCuentas.ListIndex = -1
     If Not Me.txtDetalle.Enabled Then Me.txtDetalle.text = vbNullString
 
-
 End Sub
+
 
 Private Sub radioFacturaProveedor_Click()
     If formLoaded Then
@@ -2706,6 +2711,7 @@ Private Sub radioFacturaProveedor_Click()
     End If
     ActivarControles
 End Sub
+
 
 Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set operacion = New operacion
@@ -2725,6 +2731,7 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
     Totalizar
 End Sub
 
+
 Private Sub gridCajaOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 And OrdenPago.OperacionesCaja.count >= RowIndex Then
         OrdenPago.OperacionesCaja.remove RowIndex
@@ -2732,8 +2739,8 @@ Private Sub gridCajaOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Book
     End If
 End Sub
 
-Private Sub Totalizar()
 
+Private Sub Totalizar()
     OrdenPago.StaticTotalOrigenes = OrdenPago.TotalOrigenes
 
     Me.lblTotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
@@ -2747,6 +2754,8 @@ Private Sub Totalizar()
     TotalizarDiferenciasCambio
 
 End Sub
+
+
 Private Function TotalizarDiferenciasCambio()
     Dim F As clsFacturaProveedor
     Dim col As New Collection
@@ -2762,8 +2771,6 @@ Private Function TotalizarDiferenciasCambio()
             End If
         End If
     Next
-
-
 
     For Each F In col
         T = T + F.DiferenciaPorTipoDeCambionNG
@@ -2785,6 +2792,8 @@ Private Function TotalizarDiferenciasCambio()
     End If
 
 End Function
+
+
 Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= OrdenPago.OperacionesCaja.count Then
         Set operacion = OrdenPago.OperacionesCaja.item(RowIndex)
@@ -2802,6 +2811,7 @@ Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
         End If
     End If
 End Sub
+
 
 Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And OrdenPago.OperacionesCaja.count > 0 Then
@@ -2839,6 +2849,7 @@ Private Sub gridDepositosOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRet
     Cancel = cond1 Or cond2 Or cond3 Or cond4
 End Sub
 
+
 Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set operacion = New operacion
     'operacion.IdPertenencia = recibo.Id
@@ -2857,12 +2868,14 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
     Totalizar
 End Sub
 
+
 Private Sub gridDepositosOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 And OrdenPago.OperacionesBanco.count >= RowIndex Then
         OrdenPago.OperacionesBanco.remove RowIndex
         Totalizar
     End If
 End Sub
+
 
 Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= OrdenPago.OperacionesBanco.count Then
@@ -2881,6 +2894,7 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByV
         End If
     End If
 End Sub
+
 
 Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And OrdenPago.OperacionesBanco.count > 0 Then
@@ -2916,7 +2930,6 @@ Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
 End Sub
 
 
-
 Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set cheque = Nothing
     If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
@@ -2925,9 +2938,8 @@ Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVari
 
     End If
     Totalizar
-
-
 End Sub
+
 
 Private Sub gridCheques_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 Then
@@ -2974,14 +2986,12 @@ Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As 
     End If
 End Sub
 
-Private Sub Text1_Change()
-
-End Sub
 
 Private Sub txtBuscarFactura_GotFocus()
     Me.txtBuscarFactura.SelStart = 0
     Me.txtBuscarFactura.SelLength = Len(Me.txtBuscarFactura.text)
 End Sub
+
 
 Private Sub txtBuscarFactura_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = 13 Then
@@ -3017,12 +3027,10 @@ Private Sub txtBuscarFactura_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
+
 Private Sub txtDifCambio_GotFocus()
     foco Me.txtDifCambio
 End Sub
-
-
-
 
 
 Private Sub txtDifCambioNG1_Change()
@@ -3030,10 +3038,12 @@ Private Sub txtDifCambioNG1_Change()
     Totalizar
 End Sub
 
+
 Private Sub txtDifCambioTOTAL1_Change()
     OrdenPago.DiferenciaCambioEnTOTAL = Val(Me.txtDifCambioTOTAL1)
     Totalizar
 End Sub
+
 
 Private Sub txtnetogravadoabonado_Change()
     If LenB(Me.txtnetogravadoabonado) > 0 Then
@@ -3044,6 +3054,7 @@ Private Sub txtnetogravadoabonado_Change()
 
     Totalizar
 End Sub
+
 
 Private Sub txtOtrosDescuentos_LostFocus()
     OrdenPago.OtrosDescuentos = Val(Me.txtOtrosDescuentos.text)
@@ -3056,17 +3067,17 @@ Public Sub RecalcularOtrosFacturaelegida()
 
         vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
         RecalcularTotalFacturaElegida
-
-
     End If
 
 End Sub
+
 
 Private Sub txtOtrosParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
     RecalcularOtrosFacturaelegida
 
     Totalizar
 End Sub
+
 
 Private Sub RecalcularTotalFacturaElegida()
     Me.txtTotalParcialAbonar = (CDbl(txtParcialAbonar)) + (CDbl(Me.txtOtrosParcialAbonar))
@@ -3078,18 +3089,6 @@ Private Sub RecalcularTotalFacturaElegida()
 
 End Sub
 
-
-Private Sub txtOtrosParcialAbonar_LostFocus()
-'  If LenB(Me.txtOtrosParcialAbonar) > 0 Then
-'
-'        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
-'        recalcularTotalFacturaelegida
-'
-'
-'    End If
-'
-'    Totalizar
-End Sub
 
 Private Sub txtOtrosParcialAbonar_Validate(Cancel As Boolean)
     If Not IsNumeric(Me.txtOtrosParcialAbonar) Then
@@ -3115,14 +3114,15 @@ Private Sub RecalcularFacturaElegida()
     RecalcularOtrosFacturaelegida
 End Sub
 
+
 Private Sub RecalcularNetoGravadoFacturaElegida()
     If LenB(txtParcialAbonar) > 0 And IsNumeric(txtParcialAbonar) Then
-
 
         vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
         RecalcularTotalFacturaElegida
     End If
 End Sub
+
 
 Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
     RecalcularNetoGravadoFacturaElegida
@@ -3131,6 +3131,7 @@ Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
 
     Totalizar
 End Sub
+
 
 Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
     If Not IsNumeric(Me.txtParcialAbonar) Then
@@ -3147,13 +3148,16 @@ Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
     End If
 End Sub
 
+
 Private Sub txtRetenciones_GotFocus()
     foco Me.txtRetenciones
 End Sub
 
+
 Private Sub txtRetenciones_LostFocus()
     Totalizar
 End Sub
+
 
 Private Sub txtRetenciones_Validate(Cancel As Boolean)
     funciones.ValidarTextBox Me.txtRetenciones, Cancel

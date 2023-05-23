@@ -4,17 +4,17 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Crear Liquidación de Caja"
-   ClientHeight    =   14055
+   ClientHeight    =   10545
    ClientLeft      =   5940
    ClientTop       =   1470
-   ClientWidth     =   19800
+   ClientWidth     =   17280
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   14055
-   ScaleWidth      =   19800
-   Begin XtremeSuiteControls.GroupBox grpCbtesConfirmados_ 
+   ScaleHeight     =   10545
+   ScaleWidth      =   17280
+   Begin XtremeSuiteControls.GroupBox grpCbtesConfirmados 
       Height          =   5655
       Index           =   1
       Left            =   8760
@@ -36,13 +36,6 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
-      Begin VB.CommandButton Command 
-         Height          =   615
-         Left            =   4200
-         TabIndex        =   47
-         Top             =   4800
-         Width           =   735
-      End
       Begin VB.TextBox txtInstruccionDos 
          BackColor       =   &H8000000F&
          BorderStyle     =   0  'None
@@ -119,7 +112,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin XtremeSuiteControls.GroupBox grpFiltros 
       Height          =   1935
       Left            =   120
-      TabIndex        =   26
+      TabIndex        =   0
       Top             =   120
       Width           =   8535
       _Version        =   786432
@@ -148,6 +141,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          _ExtentY        =   661
          _StockProps     =   79
          Caption         =   "X"
+         Enabled         =   0   'False
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.PushButton btnLimpiarNúmero 
@@ -183,19 +177,20 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
+         Enabled         =   0   'False
          Text            =   "cboProveedor"
       End
       Begin XtremeSuiteControls.PushButton btnFiltrarResultados 
          Height          =   495
          Left            =   6000
-         TabIndex        =   28
+         TabIndex        =   29
          Top             =   1140
          Width           =   2295
          _Version        =   786432
          _ExtentX        =   4048
          _ExtentY        =   873
          _StockProps     =   79
-         Caption         =   "Buscar"
+         Caption         =   "Mostrar"
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -219,12 +214,13 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          EndProperty
          Height          =   375
          Left            =   120
-         TabIndex        =   27
+         TabIndex        =   28
          Top             =   480
          Width           =   2295
       End
       Begin VB.Label lblProveedor 
          Caption         =   "Filtro por Proveedor"
+         Enabled         =   0   'False
          Height          =   255
          Left            =   120
          TabIndex        =   34
@@ -235,7 +231,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Caption         =   "Filtro por Número de comprobante"
          Height          =   255
          Left            =   120
-         TabIndex        =   29
+         TabIndex        =   1
          Top             =   240
          Width           =   4095
       End
@@ -244,7 +240,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Height          =   1935
       Index           =   0
       Left            =   8760
-      TabIndex        =   20
+      TabIndex        =   22
       Top             =   120
       Width           =   8580
       _Version        =   786432
@@ -281,7 +277,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Begin XtremeSuiteControls.DateTimePicker dtpFecha 
          Height          =   375
          Left            =   2760
-         TabIndex        =   23
+         TabIndex        =   25
          Top             =   502
          Width           =   1365
          _Version        =   786432
@@ -303,7 +299,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Begin XtremeSuiteControls.PushButton btnGuardar 
          Height          =   495
          Left            =   6000
-         TabIndex        =   24
+         TabIndex        =   26
          Top             =   1200
          Width           =   2295
          _Version        =   786432
@@ -354,7 +350,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          EndProperty
          Height          =   195
          Left            =   2760
-         TabIndex        =   25
+         TabIndex        =   27
          Tag             =   "Total: "
          Top             =   240
          Width           =   600
@@ -373,7 +369,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          EndProperty
          Height          =   195
          Left            =   240
-         TabIndex        =   22
+         TabIndex        =   24
          Tag             =   "Total: "
          Top             =   1080
          Width           =   1695
@@ -392,7 +388,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          EndProperty
          Height          =   195
          Left            =   240
-         TabIndex        =   21
+         TabIndex        =   23
          Top             =   1440
          Width           =   2370
       End
@@ -401,7 +397,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Alignment       =   1  'Right Justify
       Height          =   285
       Left            =   17760
-      TabIndex        =   19
+      TabIndex        =   21
       Top             =   11760
       Visible         =   0   'False
       Width           =   960
@@ -410,7 +406,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Alignment       =   1  'Right Justify
       Height          =   285
       Left            =   19080
-      TabIndex        =   18
+      TabIndex        =   20
       Top             =   11760
       Visible         =   0   'False
       Width           =   960
@@ -419,7 +415,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Alignment       =   1  'Right Justify
       Height          =   285
       Left            =   20280
-      TabIndex        =   17
+      TabIndex        =   19
       Top             =   11760
       Visible         =   0   'False
       Width           =   960
@@ -427,7 +423,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin XtremeSuiteControls.GroupBox grpOrigen 
       Height          =   2535
       Left            =   120
-      TabIndex        =   0
+      TabIndex        =   2
       Top             =   7920
       Width           =   17175
       _Version        =   786432
@@ -448,7 +444,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Begin XtremeSuiteControls.TabControl TabControl 
          Height          =   2100
          Left            =   120
-         TabIndex        =   1
+         TabIndex        =   3
          Top             =   240
          Width           =   16740
          _Version        =   786432
@@ -458,25 +454,19 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Appearance      =   10
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
-         ItemCount       =   5
-         SelectedItem    =   3
-         Item(0).Caption =   "Cheques Propios"
-         Item(0).ControlCount=   1
+         ItemCount       =   2
+         SelectedItem    =   1
+         Item(0).Caption =   "Banco"
+         Item(0).ControlCount=   2
          Item(0).Control(0)=   "gridCompensatorios"
-         Item(1).Caption =   "Banco"
+         Item(0).Control(1)=   "gridDepositosOperaciones"
+         Item(1).Caption =   "Caja"
          Item(1).ControlCount=   1
-         Item(1).Control(0)=   "gridDepositosOperaciones"
-         Item(2).Caption =   "Cheques 3ros"
-         Item(2).ControlCount=   0
-         Item(3).Caption =   "Caja"
-         Item(3).ControlCount=   1
-         Item(3).Control(0)=   "gridCajaOperaciones"
-         Item(4).Caption =   "Compensatorios"
-         Item(4).ControlCount=   0
+         Item(1).Control(0)=   "gridCajaOperaciones"
          Begin GridEX20.GridEX gridCompensatorios 
             Height          =   4710
             Left            =   -1.39895e5
-            TabIndex        =   2
+            TabIndex        =   4
             Top             =   435
             Visible         =   0   'False
             Width           =   9330
@@ -558,7 +548,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Begin GridEX20.GridEX gridCajaOperaciones 
             Height          =   1455
             Left            =   120
-            TabIndex        =   48
+            TabIndex        =   47
             Top             =   480
             Width           =   9210
             _ExtentX        =   16245
@@ -599,7 +589,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin XtremeSuiteControls.GroupBox grpCbtesImpagos 
       Height          =   5655
       Left            =   120
-      TabIndex        =   3
+      TabIndex        =   5
       Top             =   2160
       Width           =   8565
       _Version        =   786432
@@ -680,7 +670,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Begin XtremeSuiteControls.ListBox lstFacturas 
          Height          =   3015
          Left            =   120
-         TabIndex        =   4
+         TabIndex        =   6
          Top             =   1680
          Width           =   8205
          _Version        =   786432
@@ -703,14 +693,14 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Begin XtremeSuiteControls.Label lblCantidadCbtesSeleccionados 
          Height          =   255
          Left            =   6000
-         TabIndex        =   6
+         TabIndex        =   8
          Top             =   1320
          Width           =   2295
          _Version        =   786432
          _ExtentX        =   4048
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Seleccionados"
+         Caption         =   "Cbtes. Seleccionado: 0"
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -725,7 +715,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Begin XtremeSuiteControls.Label lblCantidadComprobantes 
          Height          =   255
          Left            =   120
-         TabIndex        =   5
+         TabIndex        =   7
          Top             =   1320
          Width           =   2895
          _Version        =   786432
@@ -747,7 +737,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
       Left            =   1440
-      TabIndex        =   7
+      TabIndex        =   9
       Top             =   10560
       Visible         =   0   'False
       Width           =   3465
@@ -786,7 +776,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   1935
       Left            =   10080
-      TabIndex        =   8
+      TabIndex        =   10
       Top             =   10560
       Visible         =   0   'False
       Width           =   3825
@@ -824,7 +814,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin GridEX20.GridEX gridMonedas 
       Height          =   1815
       Left            =   120
-      TabIndex        =   9
+      TabIndex        =   11
       Top             =   10560
       Visible         =   0   'False
       Width           =   1380
@@ -862,7 +852,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin GridEX20.GridEX gridCajas 
       Height          =   1935
       Left            =   16080
-      TabIndex        =   10
+      TabIndex        =   12
       Top             =   10560
       Visible         =   0   'False
       Width           =   1500
@@ -898,7 +888,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin GridEX20.GridEX gridChequesDisponibles 
       Height          =   1920
       Left            =   4920
-      TabIndex        =   11
+      TabIndex        =   13
       Top             =   10560
       Visible         =   0   'False
       Width           =   3675
@@ -941,7 +931,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin GridEX20.GridEX gridChequeras 
       Height          =   1935
       Left            =   8640
-      TabIndex        =   12
+      TabIndex        =   14
       Top             =   10560
       Width           =   1395
       _ExtentX        =   2461
@@ -979,7 +969,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin GridEX20.GridEX gridChequesChequera 
       Height          =   1935
       Left            =   14040
-      TabIndex        =   13
+      TabIndex        =   15
       Top             =   10560
       Width           =   1980
       _ExtentX        =   3493
@@ -1020,7 +1010,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin XtremeSuiteControls.RadioButton radioFacturaProveedor 
       Height          =   210
       Left            =   17760
-      TabIndex        =   14
+      TabIndex        =   16
       Top             =   10920
       Visible         =   0   'False
       Width           =   2760
@@ -1035,7 +1025,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
    Begin XtremeSuiteControls.ComboBox cboMonedas 
       Height          =   315
       Left            =   18645
-      TabIndex        =   15
+      TabIndex        =   17
       Top             =   11280
       Visible         =   0   'False
       Width           =   1245
@@ -1053,7 +1043,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
       Caption         =   "Moneda"
       Height          =   195
       Left            =   17760
-      TabIndex        =   16
+      TabIndex        =   18
       Tag             =   "Total: "
       Top             =   11340
       Visible         =   0   'False
@@ -1073,16 +1063,12 @@ Dim formLoading As Boolean
 Dim formLoaded As Boolean
 Dim alicuotas As New Collection
 
-Dim total_por_factura As New Dictionary
 Dim vFactElegida As clsFacturaProveedor
-Dim vCompeElegido As Compensatorio
 Dim vFacturaProveedor As clsFacturaProveedor
-Dim colProveedores As New Collection
 Dim colFacturas As New Collection
-Dim colFacturasConfirmadas As New Collection
-Dim colDeudaCompensatorios As New Collection
+
 Dim prov As clsProveedor
-Dim Comprobante As clsFacturaProveedor
+Dim Factura As clsFacturaProveedor
 
 'Dim compe As Compensatorio
 
@@ -1090,9 +1076,7 @@ Private Banco As Banco
 Private caja As caja
 Private CuentaBancaria As CuentaBancaria
 Private moneda As clsMoneda
-Private alicuotaRetencion As DTORetencionAlicuota
 Private cuentasBancarias As New Collection
-Private retenciones As New Collection
 Private Monedas As New Collection
 Private Cajas As New Collection
 Private bancos As New Collection
@@ -1109,19 +1093,15 @@ Private tmpChequera As chequera
 Private chequesChequeraSeleccionada As New Collection
 
 Public ReadOnly As Boolean
+Public EsNueva As Boolean
 
-Private Sub Command_Click()
-    Cargar (LiquidacionCaja)
-End Sub
+'Private Sub Command_Click()
+'    Cargar (LiquidacionCaja)
+'End Sub
 
 Private Sub Form_Load()
 
     formLoading = True
-
-
-
-
-
 
     Me.gridCompensatorios.ItemCount = 0
     id_susc = funciones.CreateGUID
@@ -1159,39 +1139,11 @@ Private Sub Form_Load()
 
     CargarChequesDisponibles
 
-    '    frmLoading.ProgressBar.min = 0
-    '
-    '    Set colProveedores = DAOProveedor.FindAll()
-    '
-    '    frmLoading.ProgressBar.max = colProveedores.count
-    '    Dim i As Integer
-    '    i = 0
-    '
-    '    For Each prov In colProveedores
-    '        i = i + 1
-    '
-    '        cboProveedor.AddItem UCase(prov.RazonSocial)
-    '        cboProveedor.ItemData(cboProveedor.NewIndex) = prov.Id
-    '
-    '        frmLoading.ProgressBar.value = i
-    '
-    '    Next
-    '
-    '    If i = frmLoading.ProgressBar.max Then Unload frmLoading
-
     radioFacturaProveedor_Click
 
     Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.OperacionesCaja.count
-    'MsgBox (LiquidacionCaja.OperacionesCaja.count)
+
     Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.OperacionesBanco.count
-    'MsgBox (LiquidacionCaja.OperacionesBanco.count)
-
-    '    Me.gridCheques.ItemCount = OrdenPago.ChequesTerceros.count
-    '    Me.gridChequesPropios.ItemCount = OrdenPago.ChequesPropios.count
-
-
-
-    '    Set Me.gridCheques.Columns("numero").DropDownControl = Me.gridChequesDisponibles
 
     Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
@@ -1199,11 +1151,8 @@ Private Sub Form_Load()
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
     Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
 
-    '    Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
-    '    Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
     gridChequesChequera.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridChequeras
-
 
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
 
@@ -1212,12 +1161,10 @@ Private Sub Form_Load()
     'lstFacturas_Click
     Totalizar
 
-    MostrarFacturas
-
-    Set colFacturasConfirmadas = New Collection
-
     Me.txtInstruccion.text = "Se muestran los Comprobantes Impagos." & vbCrLf & "Para realizar el pago, debe seleccionar el Comprobante clickeando en el Check correspondiente." & vbCrLf & "Puede ir confirmando el Comprobante para que se guarde en la lista de Comprobantes Confirmados clickeando en el Botón: Confirmar Comprobantes."
     Me.txtInstruccionDos.text = "Se muestran los Comprobantes Confirmados." & vbCrLf & "La sumatoria de los importes se verá reflejado en el totalizado superior Total Comprobantes" & vbCrLf & "Puede borrar alguno o todos los Comprobantes que se fueron agregando."
+
+    EsNueva = True
 
     formLoaded = True
     formLoading = False
@@ -1228,7 +1175,6 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Public Sub Cargar(liq As clsLiquidacionCaja)
-
 
     If Not IsSomething(liq) Then
         MsgBox "La Liquidación que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
@@ -1250,105 +1196,105 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
 
             If .FacturasProveedor.count > 0 Then
 
-                ' Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
-
-                ' If Me.cboProveedores.ListIndex = -1 Then    'el proveedor no esta en la lista porque no tiene mas facturas sin saldar
-                '     Me.cboProveedores.AddItem .FacturasProveedor.item(1).Proveedor.RazonSocial
-                '     Me.cboProveedores.ItemData(Me.cboProveedores.NewIndex) = .FacturasProveedor.item(1).Proveedor.Id
-                '     colProveedores.Add .FacturasProveedor.item(1).Proveedor, CStr(.FacturasProveedor.item(1).Proveedor.Id)
-                '     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
-                ' End If
-
-                ' cmdMostrarDatosProveedor_Click
+                MostrarFacturas
 
 
-            For i = 1 To .FacturasProveedor.count
+                Dim idx As Integer
+                idx = -1
+                For i = 1 To .FacturasProveedor.count
+                    For j = 0 To Me.lstFacturas.ListCount - 1
+                        If Me.lstFacturas.ItemData(j) = .FacturasProveedor.item(i).Id Then
+                            Me.lstFacturas.Checked(j) = True
+                            idx = i
+                        End If
+                    Next j
+                Next i
 
-                T = .FacturasProveedor(i).NumeroFormateado & " (" & .FacturasProveedor(i).moneda.NombreCorto & " " & .FacturasProveedor(i).Monto & ")" & " (" & .FacturasProveedor(i).FEcha & ") | " & UCase(.FacturasProveedor(i).Proveedor.RazonSocial)
+                'acaa
 
-'                                T = .FacturasProveedor(i).NumeroFormateado & " (" & .FacturasProveedor(i).moneda.NombreCorto & " " & .FacturasProveedor(i).Total & ")" & " (" & .FacturasProveedor(i).FEcha & ") | " & UCase(.FacturasProveedor(i).Proveedor.RazonSocial)
-                'T = liq.FacturasProveedor.NumeroFormateado & " (" & liq.FacturasProveedor.moneda.NombreCorto & " " & liq.FacturasProveedor.Total & ")" & " (" & liq.FacturasProveedor.FEcha & ") | " & UCase(liq.FacturasProveedor.Proveedor.RazonSocial)
+                If ReadOnly Then
+                    For j = Me.lstFacturas.ListCount - 1 To 0 Step -1
+                        If Not Me.lstFacturas.Checked(j) Then
+                            Me.lstFacturas.RemoveItem j
+                        End If
+                    Next j
 
-                lstFacturasFiltradas.AddItem T
+                    'Me.lblCantidadComprobantes.caption = Me.lblCantidadCbtesSeleccionados.caption
 
-                lstFacturasFiltradas.ListIndex = lstFacturasFiltradas.NewIndex
-                lstFacturasFiltradas.Checked(lstFacturasFiltradas.ListIndex) = True
-
-            Next
-            lstFacturasFiltradas.ListIndex = lstFacturasFiltradas.ListCount - 1
-
-
-
-
-
-                ' If ReadOnly Then
-                '     For j = Me.lstFacturas.ListCount - 1 To 0 Step -1
-                '         If Not Me.lstFacturas.Checked(j) Then
-                '             Me.lstFacturas.RemoveItem j
-                '         End If
-                '     Next j
-
-                '     'Me.lblCantidadComprobantes.caption = Me.lblCantidadCbtesSeleccionados.caption
-
-                ' End If
-
+                End If
             End If
-'            Me.txtRetenciones.text = .alicuota
 
         Else
-            ' Me.radioConcepto.value = True
-
-            ' If IsSomething(.CuentaContable) Then
-            '     Me.cboCuentas.ListIndex = funciones.PosIndexCbo(.CuentaContable.Id, Me.cboCuentas)
-            '     Me.txtDetalle.text = .CuentaContableDescripcion
-            ' Else
-            '     Me.cboCuentas.ListIndex = -1
-            '     Me.txtDetalle.text = vbNullString
-            ' End If
 
         End If
 
+        If idx >= 0 Then
+            lstFacturas.ListIndex = lstFacturas.ListCount - 1
 
-'        If idx >= 0 Then
-            lstFacturasFiltradas.ListIndex = lstFacturasFiltradas.ListCount - 1
+        End If
 
-'        End If
+        btnConfirmarSeleccion_Click
 
-        Me.txtNumerodeLiquidacion = .NumeroLiq
-
-        Me.dtpFecha = .FEcha
         Me.gridCajaOperaciones.ItemCount = .OperacionesCaja.count
-        '                MsgBox (liq.OperacionesCaja.count)
         Me.gridDepositosOperaciones.ItemCount = .OperacionesBanco.count
-        '                MsgBox (liq.OperacionesBanco.count)
+
+        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.Id, Me.cboMonedas)
+        Me.dtpFecha.value = .FEcha
+        Me.txtOtrosDescuentos.text = .OtrosDescuentos
 
     End With
+    mostrarCompensatorios
 
-    Me.caption = "Liquidacion de Caja N° " & liq.NumeroLiq
+    Me.caption = "Liquidación Nº " & LiquidacionCaja.NumeroLiq
 
+    Me.txtNumerodeLiquidacion = LiquidacionCaja.NumeroLiq
 
-
-
-    '    Me.lblCantidadComprobantesConfirmados.caption = "Cbtes. Confirmados: " & Me.lstFacturasFiltradas.ListCount
+    Me.txtDifCambioNG1.Enabled = Not ReadOnly
+    Me.txtDifCambioTOTAL1.Enabled = Not ReadOnly
 
     Me.radioFacturaProveedor.Enabled = Not ReadOnly
+
     Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
     Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
+
     Me.gridBancos.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
+
+    Me.gridCajas.AllowEdit = Not ReadOnly
     Me.gridChequeras.AllowEdit = Not ReadOnly
+    Me.gridChequesChequera.AllowEdit = Not ReadOnly
+    Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
+
     Me.cboMonedas.Enabled = Not ReadOnly
     Me.dtpFecha.Enabled = Not ReadOnly
     Me.btnGuardar.Enabled = Not ReadOnly
-    Me.txtOtrosDescuentos.Enabled = Not ReadOnly
-    Me.txtNumerodeLiquidacion.Enabled = Not ReadOnly
-    Me.dtpFecha.Enabled = Not ReadOnly
+    Me.btnFiltrarResultados.Enabled = Not ReadOnly
+    Me.btnConfirmarSeleccion.Enabled = Not ReadOnly
+    Me.btnDesseleccionarTodo.Enabled = Not ReadOnly
+    Me.btnSacarSeleccionado.Enabled = Not ReadOnly
+    Me.btnSacarTodos.Enabled = Not ReadOnly
+    Me.btnSeleccionarTodo.Enabled = Not ReadOnly
+    Me.txtFiltroNumero.Enabled = Not ReadOnly
+    Me.lblNumero.Enabled = Not ReadOnly
+    Me.btnLimpiarNúmero.Enabled = Not ReadOnly
+    Me.lblCantidadCbtesSeleccionados.Visible = Not ReadOnly
+    Me.lblCantidadComprobantes.Visible = Not ReadOnly
+    Me.Label1.Enabled = Not ReadOnly
+    Me.Label2.Enabled = Not ReadOnly
     Me.grpFiltros.Enabled = Not ReadOnly
-    Me.grpCbtesConfirmados_(1).Enabled = Not ReadOnly
+    Me.lblNúmero.Enabled = Not ReadOnly
+    Me.txtInstruccion.Enabled = Not ReadOnly
+    Me.txtInstruccionDos.Enabled = Not ReadOnly
+    Me.txtNumerodeLiquidacion.Enabled = Not ReadOnly
     Me.grpCbtesImpagos.Enabled = Not ReadOnly
+    Me.txtOtrosDescuentos.Enabled = Not ReadOnly
+    Me.lstFacturas.Enabled = Not ReadOnly
+    Me.lstFacturasFiltradas.Enabled = Not ReadOnly
 
     Totalizar
+
+    EsNueva = False
 
 End Sub
 
@@ -1367,59 +1313,26 @@ End Sub
 
 Private Sub btnFiltrarResultados_Click()
 
-    Me.lstFacturas.Clear
-    Dim condition As String
-    condition = " 1 = 1 "
 
-    If LenB(Me.txtFiltroNumero) > 0 Then
-        condition = condition & " AND AdminComprasFacturasProveedores.numero_factura like '%" & Trim(Me.txtFiltroNumero.text) & "%'"
-    End If
+    MostrarFacturas
 
-    If cboProveedor.ListIndex > -1 Then
-        condition = condition & " AND AdminComprasFacturasProveedores.id_proveedor = " & cboProveedor.ItemData(Me.cboProveedor.ListIndex)
-    End If
-
-    '    Dim estado As String
-
-    If 1 = 1 Then
-        Set colFacturas = DAOFacturaProveedor.FindAll(condition & " AND AdminComprasFacturasProveedores.estado = " & EstadoFacturaProveedor.Aprobada & "", False, "proveedores.razon ASC", False, True)
-
-        Dim T As String
-
-        For Each Comprobante In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
-
-            T = Comprobante.NumeroFormateado & " (" & Comprobante.moneda.NombreCorto & " " & Comprobante.Total & ")" & " (" & Comprobante.FEcha & ") | " & UCase(Comprobante.Proveedor.RazonSocial)
-
-            If Comprobante.TotalAbonadoGlobal + Comprobante.TotalAbonadoGlobalPendiente > 0 Then
-                T = Comprobante.NumeroFormateado & " (" & Comprobante.moneda.NombreCorto & " " & Comprobante.Total & " - Abonado: " & Comprobante.TotalAbonadoGlobal + Comprobante.TotalAbonadoGlobalPendiente & ")" & " (" & Comprobante.FEcha & ")"
-            End If
-
-            Me.lstFacturas.AddItem T
-            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Comprobante.Id
-
-        Next
-
-        '        Dim i As Integer
-
-        ' Marca los elementos de la colección en el ListBox
-        '            For i = 1 To colCheckeados.count
-        '                Me.lstFacturas.Checked(colCheckeados.item(i)) = True
-        '            Next i
-        Me.lblCantidadComprobantes.caption = "Cbtes. Mostrados: " & colFacturas.count
-
-        Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0 "
-
-
-
-    Else
-        Set colFacturas = New Collection
-
-    End If
 
 End Sub
 Private Sub btnGuardar_Click()
 
+
+    If Me.gridCajaOperaciones.EditMode = jgexEditModeOn Then
+        MsgBox "Todavia esta editando la grilla de caja.", vbExclamation
+        Exit Sub
+    End If
+
+    If Me.gridDepositosOperaciones.EditMode = jgexEditModeOn Then
+        MsgBox "Todavia esta editando la grilla de banco.", vbExclamation
+        Exit Sub
+    End If
+
     LiquidacionCaja.FEcha = Me.dtpFecha.value
+
     If Me.txtNumerodeLiquidacion.text = "" Then
         MsgBox ("El número de Liquidación no puede estar vacío.")
         Exit Sub
@@ -1429,152 +1342,61 @@ Private Sub btnGuardar_Click()
 
     End If
 
-    Debug.Print (LiquidacionCaja.NumeroLiq)
 
 
-    If IsNumeric(Me.txtNumerodeLiquidacion) Then
-        If MsgBox("Confirma la creación de la Liquidación?", vbYesNo, "Confirmación") = vbYes Then
+    Set LiquidacionCaja.FacturasProveedor = New Collection
 
-            If Not IsSomething(DAOLiquidacionCaja.FindById(CLng(Me.txtNumerodeLiquidacion))) Then
-
-                'Aca va todo el código correcto
-                If Me.gridCajaOperaciones.EditMode = jgexEditModeOn Then
-                    MsgBox "Todavia esta editando la grilla de caja.", vbExclamation
-                    Exit Sub
-                End If
-
-                If Me.gridDepositosOperaciones.EditMode = jgexEditModeOn Then
-                    MsgBox "Todavia esta editando la grilla de banco.", vbExclamation
-                    Exit Sub
-                End If
-
-                Set LiquidacionCaja.FacturasProveedor = New Collection
-
-                If Me.radioFacturaProveedor.value Then
-                    Dim T As Long
-                    For T = 0 To Me.lstFacturasFiltradas.ListCount - 1
-                        If Me.lstFacturasFiltradas.Checked(T) Then
-                            LiquidacionCaja.FacturasProveedor.Add colFacturas.item(CStr(Me.lstFacturasFiltradas.ItemData(T)))
-                        End If
-                    Next T
-                End If
-
-
-                If LiquidacionCaja.IsValid Then
-
-                    Dim n As Boolean: n = (LiquidacionCaja.Id = 0)
-
-                    If DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
-
-                        If n Then
-                            MsgBox "Liquidación de Caja Nº " & Me.txtNumerodeLiquidacion & " creada con exito.", vbInformation
-                        Else
-
-                            MsgBox "Liquidación de Caja modificada con exito.", vbInformation
-                        End If
-
-                        Dim EVENTO As New clsEventoObserver
-                        Set EVENTO.elemento = LiquidacionCaja
-                        EVENTO.Tipo = LiquidacionCaja_
-                        Set EVENTO.Originador = Me
-
-                        If n Then
-                            EVENTO.EVENTO = agregar_
-                        Else
-                            EVENTO.EVENTO = modificar_
-                        End If
-                        Channel.Notificar EVENTO, LiquidacionCaja_
-
-                        If n Then
-                            If MsgBox("¿Desea crear una Liquidación de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
-                                Dim f12 As New frmAdminPagosLiquidaciondeCajaCrear
-                                f12.Show
-                            End If
-                        End If
-
-                        Unload Me
-                    Else
-                        MsgBox "Hubo un problema al guardar la Liquidación.", vbCritical
-                    End If
-                Else
-                    MsgBox LiquidacionCaja.ValidationMessages, vbCritical, "Error"
-                End If
-
-            Else
-                MsgBox "Ya existe una Liquidación con ese número!", vbCritical, "Error"
-                Exit Sub
+    If Me.radioFacturaProveedor.value Then
+        Dim T As Long
+        For T = 0 To Me.lstFacturasFiltradas.ListCount - 1
+            If Me.lstFacturasFiltradas.Checked(T) Then
+                LiquidacionCaja.FacturasProveedor.Add colFacturas.item(CStr(Me.lstFacturasFiltradas.ItemData(T)))
             End If
-        End If
-    Else
-        MsgBox "Ingrese datos válidos en el número de Liquidación!", vbCritical, "Error"
+        Next T
     End If
 
+    If LiquidacionCaja.IsValid Then
+
+        Dim n As Boolean: n = (LiquidacionCaja.Id = 0)
+
+        If DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
+
+            If n Then
+                MsgBox "Liquidación de Caja Nº " & Me.txtNumerodeLiquidacion & " creada con exito.", vbInformation
+            Else
+                MsgBox "Liquidación de Caja modificada con exito.", vbInformation
+            End If
+
+            Dim EVENTO As New clsEventoObserver
+            Set EVENTO.Elemento = LiquidacionCaja
+            EVENTO.Tipo = LiquidacionCaja_
+            Set EVENTO.Originador = Me
+
+            If n Then
+                EVENTO.EVENTO = agregar_
+            Else
+                EVENTO.EVENTO = modificar_
+            End If
+            Channel.Notificar EVENTO, LiquidacionCaja_
+
+            If n Then
+                If MsgBox("¿Desea crear una Liquidación de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
+                    Dim f12 As New frmAdminPagosLiquidaciondeCajaCrear
+                    f12.Show
+                End If
+            End If
+
+            Unload Me
+        Else
+            MsgBox "Hubo un problema al guardar la Liquidación.", vbCritical
+        End If
+    Else
+        MsgBox LiquidacionCaja.ValidationMessages, vbCritical, "Error"
+    End If
+
+
+
 End Sub
-
-'''Private Sub btnGuardar_Click()
-'''
-'''    If Me.gridCajaOperaciones.EditMode = jgexEditModeOn Then
-'''        MsgBox "Todavia esta editando la grilla de caja.", vbExclamation
-'''        Exit Sub
-'''    End If
-'''
-'''    If Me.gridDepositosOperaciones.EditMode = jgexEditModeOn Then
-'''        MsgBox "Todavia esta editando la grilla de banco.", vbExclamation
-'''        Exit Sub
-'''    End If
-'''
-'''    Set LiquidacionCaja.FacturasProveedor = New Collection
-'''
-'''    If Me.radioFacturaProveedor.value Then
-'''        Dim T As Long
-'''        For T = 0 To Me.lstFacturasFiltradas.ListCount - 1
-'''            If Me.lstFacturasFiltradas.Checked(T) Then
-'''                LiquidacionCaja.FacturasProveedor.Add colFacturas.item(CStr(Me.lstFacturasFiltradas.ItemData(T)))
-'''            End If
-'''        Next T
-'''    End If
-'''
-'''
-'''    If LiquidacionCaja.IsValid Then
-'''        Dim n As Boolean: n = (LiquidacionCaja.Id = 0)
-'''
-'''        If DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
-'''
-'''            If n Then
-'''                MsgBox "Liquidación de Caja Nº " & LiquidacionCaja.Id & " creada con exito.", vbInformation
-'''            Else
-'''
-'''                MsgBox "Liquidación de Caja modificada con exito.", vbInformation
-'''            End If
-'''
-'''            Dim EVENTO As New clsEventoObserver
-'''            Set EVENTO.Elemento = LiquidacionCaja
-'''            EVENTO.Tipo = LiquidacionCaja_
-'''            Set EVENTO.Originador = Me
-'''
-'''            If n Then
-'''                EVENTO.EVENTO = agregar_
-'''            Else
-'''                EVENTO.EVENTO = modificar_
-'''            End If
-'''            Channel.Notificar EVENTO, LiquidacionCaja_
-'''
-'''            If n Then
-'''                If MsgBox("¿Desea crear una Liquidación de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
-'''                    Dim f12 As New frmAdminPagosLiquidaciondeCajaCrear
-'''                    f12.Show
-'''                End If
-'''            End If
-'''
-'''            Unload Me
-'''        Else
-'''            MsgBox "Hubo un problema al guardar la Liquidación.", vbCritical
-'''        End If
-'''    Else
-'''        MsgBox LiquidacionCaja.ValidationMessages, vbCritical, "Error"
-'''    End If
-'''End Sub
-
 Private Sub btnLimpiarNúmero_Click()
     Me.txtFiltroNumero = ""
 
@@ -1633,7 +1455,9 @@ Private Sub cboMonedas_Click()
     Else
         Set LiquidacionCaja.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
     End If
+
     Totalizar
+
 End Sub
 
 'Private Sub cmdMostrarDatosProveedor_Click()
@@ -1683,68 +1507,62 @@ Private Sub MostrarFacturas()
 
     Me.lstFacturas.Clear
 
-    frmLoading.ProgressBar.min = 0
+    '    If IsSomething(prov) Then
+    'Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada & " or AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.pagoParcial & ")", False, "", False, True)
+    Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.estado=" & EstadoFacturaProveedor.Aprobada)
 
-    If 1 = 1 Then
+    If LiquidacionCaja.Id <> 0 And LiquidacionCaja.EsParaFacturaProveedor Then
+        '            If prov.Id = LiquidacionCaja.FacturasProveedor.item(1).Proveedor.Id Then
+        For Each Factura In LiquidacionCaja.FacturasProveedor
+            If Not funciones.BuscarEnColeccion(colFacturas, CStr(Factura.Id)) Then
 
-        Set colFacturas = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.estado = " & EstadoFacturaProveedor.Aprobada & "", False, "proveedores.razon ASC", False, True)
-
-        'Set colFacturas = DAOFacturaProveedor.FindAll("proveedores.id=639 AND AdminComprasFacturasProveedores.estado = " & EstadoFacturaProveedor.Aprobada & "", False, "proveedores.razon ASC", False, True)
-
-
-        frmLoading.ProgressBar.max = colFacturas.count
-
-        If LiquidacionCaja.Id <> 0 And LiquidacionCaja.EsParaFacturaProveedor Then
-            If prov.Id = LiquidacionCaja.FacturasProveedor.item(1).Proveedor.Id Then
-                For Each Comprobante In LiquidacionCaja.FacturasProveedor
-                    If Not funciones.BuscarEnColeccion(colFacturas, CStr(Comprobante.Id)) Then
-
-                        colFacturas.Add DAOFacturaProveedor.FindById(Comprobante.Id), CStr(Comprobante.Id)
-                    End If
-                Next
+                colFacturas.Add DAOFacturaProveedor.FindById(Factura.Id), CStr(Factura.Id)
             End If
-        End If
-
-        Dim T As String
-
-        Dim i As Integer
-        i = 0
-
-        For Each Comprobante In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
-
-            i = i + 1
-            frmLoading.ProgressBar.value = i
-
-            Dim c As Collection
-            Set c = DAOLiquidacionCaja.FindAbonadoPendiente(Comprobante.Id, LiquidacionCaja.Id)
-
-
-            T = Comprobante.NumeroFormateado & " (" & Comprobante.moneda.NombreCorto & " " & Comprobante.Total & ")" & " (" & Comprobante.FEcha & ") | " & UCase(Comprobante.Proveedor.RazonSocial)
-
-            If Comprobante.TotalAbonadoGlobal + Comprobante.TotalAbonadoGlobalPendiente > 0 Then
-                T = Comprobante.NumeroFormateado & " (" & Comprobante.moneda.NombreCorto & " " & Comprobante.Total & " - Abonado: " & Comprobante.TotalAbonadoGlobal + Comprobante.TotalAbonadoGlobalPendiente & ")" & " (" & Comprobante.FEcha & ")"
-
-
-            End If
-
-            Me.lstFacturas.AddItem T
-            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Comprobante.Id
-
-            'aca va otro iterable
-
         Next
-
-        If i = frmLoading.ProgressBar.max Then Unload frmLoading
-
-        Me.lblCantidadComprobantes.caption = "Cbtes. Mostrados: " & colFacturas.count
-
-    Else
-
-        Set colFacturas = New Collection
-
+        '            End If
     End If
 
+    Dim T As String
+
+    For Each Factura In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
+
+        Dim c As Collection
+        Set c = DAOOrdenPago.FindAbonadoPendiente(Factura.Id, LiquidacionCaja.Id)
+
+        Factura.TotalAbonadoGlobalPendiente = 0    ' c(1) 'que esta en ops sin aprobar
+        Factura.NetoGravadoAbonadoGlobalPendiente = 0    ' c(2)
+        Factura.OtrosAbonadoGlobalPendiente = 0    'c(3)
+
+        T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"    'TipoCambio: (" & Factura.TipoCambioPago & ")"
+        '            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
+        '                T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
+        '
+        '                'MsgBox (c.count)
+        '
+        '            End If
+
+        Me.lstFacturas.AddItem T
+        Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
+
+
+    Next
+
+    ' 22/08/2022
+    'AGREGO UN LABEL QUE MUESTRA LA CANTIDAD DE COMPROBANTES MOSTRADOS EN EL LIST
+
+    Me.lblCantidadComprobantes.caption = "Cbtes. Mostrados: " & colFacturas.count
+
+    '    Else
+    '
+    '        Set colFacturas = New Collection
+    '
+    '        'MsgBox (colFacturas.count)
+
+    '    End If
+
 End Sub
+
+
 
 Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= bancos.count Then
@@ -1912,7 +1730,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
 
     End If
 
-    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact))
+    Me.lblTotalFacturas = "Total Comprobantes: :" & FormatCurrency(funciones.FormatearDecimales(totFact))
     Me.lblTotal.caption = "Total valores cargados: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
 
     LiquidacionCaja.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
@@ -2042,7 +1860,6 @@ Sub calcularOrigenes()
 
 
     For i = 0 To Me.lstFacturas.ListCount - 1
-
         If Me.lstFacturas.Checked(i) Then
 
             If funciones.BuscarEnColeccion(colFacturas, CStr(Me.lstFacturas.ItemData(i))) Then
@@ -2062,6 +1879,26 @@ Sub calcularOrigenes()
 
 End Sub
 
+Sub contadorSeleccionados()
+    Dim i As Long
+    Dim col As New Collection
+
+    For i = 0 To Me.lstFacturas.ListCount - 1
+        If Me.lstFacturas.Checked(i) Then
+
+            If funciones.BuscarEnColeccion(colFacturas, CStr(Me.lstFacturas.ItemData(i))) Then
+
+                col.Add colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
+
+                Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: " & col.count
+
+            End If
+        End If
+    Next i
+
+End Sub
+
+
 Private Sub btnConfirmarSeleccion_Click()
     Dim i As Integer
     Dim j As Integer
@@ -2079,6 +1916,10 @@ Private Sub btnConfirmarSeleccion_Click()
                 If InStr(1, Me.lstFacturasFiltradas.list(j), facturas, vbTextCompare) > 0 Then
                     FacturaExiste = True
                     MsgBox ("El Comprobante " & facturas & " ya existe en la lista confirmada.")
+
+
+                    'Me.lstFacturas.ItemChecked(i) = False
+
                     Exit For
                 End If
             Next j
@@ -2088,23 +1929,19 @@ Private Sub btnConfirmarSeleccion_Click()
                 Me.lstFacturasFiltradas.AddItem facturas
                 Me.lstFacturasFiltradas.ItemData(Me.lstFacturasFiltradas.NewIndex) = idFactura
                 Me.lstFacturasFiltradas.Checked(Me.lstFacturasFiltradas.ListCount - 1) = True
-
+                calcularTotalesCbtesFiltrados
             End If
         End If
     Next i
 
+    btnDesseleccionarTodo_Click
+
     lstFacturasFiltradas.ListIndex = lstFacturasFiltradas.ListCount - 1
 
+    '    calcularTotalesCbtesFiltrados
     Me.lblCantidadComprobantesConfirmados.caption = "Cbtes. Confirmados: " & Me.lstFacturasFiltradas.ListCount
+    Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
 
-    '    MsgBox ("Ultima instancia de carga")
-
-    '   calcularTotalesCbtesFitlradosNuevo
-
-    '    ESTO DE ACA NO VA
-    calcularTotalesCbtesFiltrados
-    '
-    '    TotalizarImportesCbtesFiltrados colFacturasConfirmadas
 
     Me.txtFiltroNumero.text = ""
     Me.txtFiltroNumero.SetFocus
@@ -2133,7 +1970,7 @@ Sub calcularTotalesCbtesFiltrados()
     Next i
 
     Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: " & colCheckeadosDos.count
-    Debug.Print (colCheckeadosDos.count)
+    '    Debug.Print (colCheckeadosDos.count)
 
 
     MostrarPosiblesRetenciones col
@@ -2187,7 +2024,7 @@ Private Sub TotalizarImportesCbtesFiltrados(col As Collection)
 
     Next F
 
-    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact))
+    Me.lblTotalFacturas = "Total Comprobantes: " & FormatCurrency(funciones.FormatearDecimales(totFact))
 
 
 End Sub
@@ -2200,35 +2037,13 @@ End Sub
 
 Private Sub lstFacturas_ItemCheck(ByVal item As Long)
 
-
     If item < -1 Then
         Dim f1
         Set f1 = DAOFacturaProveedor.FindById(CStr(Me.lstFacturas.ItemData(item)))
 
     End If
 
-
-    Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
-    'calcularOrigenes
-
-
-    Dim i As Long
-    Dim col As New Collection
-
-    For i = 0 To Me.lstFacturas.ListCount - 1
-
-        If Me.lstFacturas.Checked(i) Then
-
-            If funciones.BuscarEnColeccion(colFacturas, CStr(Me.lstFacturas.ItemData(i))) Then
-
-                col.Add colFacturas.item(CStr(Me.lstFacturas.ItemData(i)))
-
-                Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: " & col.count
-
-            End If
-        End If
-    Next i
-
+    contadorSeleccionados
 
 End Sub
 
@@ -2357,7 +2172,7 @@ Private Sub Totalizar()
 
 
     LiquidacionCaja.StaticTotalOrigenes = LiquidacionCaja.TotalOrigenes
-    'Me.lblTotalFacturas = "Total Facturas: 0"
+    'Me.lblTotalFacturas = "Total Comprobantes: 0"
     Me.lblTotal.caption = "Total valores cargados: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
@@ -2542,18 +2357,18 @@ Private Sub txtFiltroNumero_Change()
 
     Me.lstFacturas.Clear
 
-    For Each Comprobante In colFacturas
+    For Each Factura In colFacturas
         ' Aplica el filtro visualmente en base al texto ingresado en el TextBox
-        If InStr(1, Comprobante.NumeroFormateado, filterText, vbTextCompare) > 0 Then
+        If InStr(1, Factura.NumeroFormateado, filterText, vbTextCompare) > 0 Then
             Dim displayText As String
-            displayText = Comprobante.NumeroFormateado & " (" & Comprobante.moneda.NombreCorto & " " & Comprobante.Total & ") " & "(" & Comprobante.FEcha & ") | " & UCase(Comprobante.Proveedor.RazonSocial)
+            displayText = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ") " & "(" & Factura.FEcha & ") | " & UCase(Factura.Proveedor.RazonSocial)
 
-            If Comprobante.TotalAbonadoGlobal + Comprobante.TotalAbonadoGlobalPendiente > 0 Then
-                displayText = Comprobante.NumeroFormateado & " (" & Comprobante.moneda.NombreCorto & " " & Comprobante.Total & " - Abonado: " & Comprobante.TotalAbonadoGlobal + Comprobante.TotalAbonadoGlobalPendiente & ") " & "(" & Comprobante.FEcha & ")"
+            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
+                displayText = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ") " & "(" & Factura.FEcha & ")"
             End If
 
             Me.lstFacturas.AddItem displayText
-            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Comprobante.Id
+            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
         End If
     Next
 

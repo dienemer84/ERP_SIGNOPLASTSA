@@ -554,7 +554,8 @@ Private Sub llenarLista()
     
     Me.gridOrdenes.ItemCount = ordenes.count
 
-    Me.caption = "Ordenes de Pago (" & ordenes.count & " Ordenes encontradas)"
+    Me.caption = "Listado de Ordenes de Pago" & " [Cantidad: " & ordenes.count & "]"
+
 
 End Sub
 Private Sub Form_Resize()

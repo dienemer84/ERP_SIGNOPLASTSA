@@ -128,7 +128,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
             Value           =   1
          End
       End
-      Begin XtremeSuiteControls.PushButton cmdBuscar 
+      Begin XtremeSuiteControls.PushButton btnBuscar 
          Default         =   -1  'True
          Height          =   450
          Left            =   11280
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Enabled         =   0   'False
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.PushButton cmdImprimir 
+      Begin XtremeSuiteControls.PushButton btnImprimir 
          Height          =   450
          Left            =   13920
          TabIndex        =   11
@@ -443,7 +443,7 @@ Private Sub Form_Load()
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
 
-    llenarLista
+    'llenarLista
     
 End Sub
 
@@ -470,12 +470,12 @@ Private Sub btnClearProveedor_Click()
     Me.cboProveedores.ListIndex = -1
 End Sub
 
-Private Sub cmdBuscar_Click()
+Private Sub btnBuscar_Click()
     If (Me.chkContado.value = xtpChecked Or Me.chkCtaCte.value = xtpChecked Or Me.chkEliminado.value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
 
 End Sub
 
-Private Sub cmdImprimir_Click()
+Private Sub btnImprimir_Click()
 
     Dim pro As String
     If Me.cboProveedores.ListIndex > -1 Then
@@ -540,12 +540,12 @@ Private Sub PushButton2_Click()
             Set opeCaja.caja = DAOCaja.FindById(1)
             opeCaja.EntradaSalida = OPSalida
 
-            If Not DAOOperacion.Save(opeCaja) Then GoTo e
+            If Not DAOOperacion.Save(opeCaja) Then GoTo E
             opeCaja.Id = conectar.UltimoId2
             q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
             q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
 
 
         End If
@@ -556,7 +556,7 @@ Private Sub PushButton2_Click()
 
     conectar.CommitTransaction
     Exit Sub
-e:
+E:
     conectar.RollBackTransaction
 
 
@@ -572,7 +572,7 @@ Private Sub llenarLista()
     End If
 
     If LenB(Me.txtNro.text) > 0 Then
-        filter = filter & " AND  liquidaciones_caja.id  = " & Val(Me.txtNro.text)
+        filter = filter & " AND  liquidaciones_caja.numero_liq  = " & Val(Me.txtNro.text)
     End If
 
     Dim filtroor As String
@@ -675,7 +675,7 @@ Private Sub mnuAnular_Click()
             Me.gridOrdenes.ItemCount = 0
             liquidaciones.remove CStr(LiquidacionCaja.Id)
             Me.gridOrdenes.ItemCount = liquidaciones.count
-            cmdBuscar_Click
+            btnBuscar_Click
         Else
             MsgBox "No se pudo anular la Liquidación.", vbCritical + vbOKOnly
         End If
@@ -686,7 +686,7 @@ Private Sub mnuAprobar_Click()
     If DAOLiquidacionCaja.aprobar(LiquidacionCaja, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
         Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
-        cmdBuscar_Click
+        btnBuscar_Click
     Else
         MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
     End If

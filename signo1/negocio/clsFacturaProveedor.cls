@@ -329,7 +329,7 @@ Public Property Get Total() As Double
     'Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / Me.TipoCambio)) '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
 
     Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / tipo_cambio))     '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
-
+    'MsgBox (Total)
     Exit Property
 err1:
     Total = 0
