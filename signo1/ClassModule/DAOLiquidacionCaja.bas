@@ -1,26 +1,16 @@
 Attribute VB_Name = "DAOLiquidacionCaja"
 Option Explicit
 
-
 Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Collection
 
     Dim q As String
 
     q = "SELECT IFNULL( (SELECT SUM(total_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & "),0 ) AS total_pendiente, " _
-      & " IFNULL( (SELECT SUM(neto_gravado_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & "),0 ) AS netogravado_pendiente, " _
-      & " IFNULL( (SELECT SUM(otros_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & "),0 ) AS otros_pendiente "
-
-    'q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS total_pendiente, " _
-     '    & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS netogravado_pendiente, " _
-     '     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS otros_pendiente "
-
-
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & "),0 ) AS total_pendiente, " _
+        & " IFNULL( (SELECT SUM(neto_gravado_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & "),0 ) AS netogravado_pendiente, " _
+        & " IFNULL( (SELECT SUM(otros_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & "),0 ) AS otros_pendiente "
 
     Dim rs As Recordset
     Set rs = conectar.RSFactory(q)
@@ -35,9 +25,8 @@ Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Col
     c.Add ng
     c.Add Otros
     Set FindAbonadoPendienteEnEstaOP = c
+
 End Function
-
-
 
 
 Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
@@ -45,20 +34,11 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
     Dim q As String
 
     q = "SELECT IFNULL( (SELECT SUM(total_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS total_pendiente, " _
-      & " IFNULL( (SELECT SUM(neto_gravado_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS netogravado_pendiente, " _
-      & " IFNULL( (SELECT SUM(otros_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS otros_pendiente "
-
-    'q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS total_pendiente, " _
-     '    & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS netogravado_pendiente, " _
-     '     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS otros_pendiente "
-
-
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS total_pendiente, " _
+        & " IFNULL( (SELECT SUM(neto_gravado_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS netogravado_pendiente, " _
+        & " IFNULL( (SELECT SUM(otros_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja <> " & ocid & "),0 ) AS otros_pendiente "
 
     Dim rs As Recordset
     Set rs = conectar.RSFactory(q)
@@ -75,25 +55,17 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
     Set FindAbonadoPendiente = c
 End Function
 
+
 Public Function FindAbonadoFactura(facid As Long, ocid As Long) As Collection
 
     Dim q As String
 
     q = "SELECT IFNULL( (SELECT SUM(total_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS total_pendiente, " _
-      & " IFNULL( (SELECT SUM(neto_gravado_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS netogravado_pendiente, " _
-      & " IFNULL( (SELECT SUM(otros_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS otros_pendiente "
-
-    'q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS total_pendiente, " _
-     '    & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS netogravado_pendiente, " _
-     '     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_liquidacion_caja=" & ocid & "),0 ) AS otros_pendiente "
-
-
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS total_pendiente, " _
+        & " IFNULL( (SELECT SUM(neto_gravado_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS netogravado_pendiente, " _
+        & " IFNULL( (SELECT SUM(otros_liquidado) FROM liquidaciones_caja_facturas opf JOIN ordenes_pago op1 ON opf.id_liquidacion_caja=op1.id " _
+        & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_liquidacion_caja = " & ocid & " and op1.estado=1),0 ) AS otros_pendiente "
 
     Dim rs As Recordset
     Set rs = conectar.RSFactory(q)
@@ -108,12 +80,14 @@ Public Function FindAbonadoFactura(facid As Long, ocid As Long) As Collection
     c.Add ng
     c.Add Otros
     Set FindAbonadoFactura = c
+
 End Function
 
 
 Public Function FindLast() As OrdenPago
     Set FindLast = FindAll("ordenes_pago.id = (SELECT MAX(id) FROM ordenes_pago)")(1)
 End Function
+
 
 Public Function FindByFacturaId(facid As Long) As OrdenPago
     Dim col As Collection
@@ -124,6 +98,7 @@ Public Function FindByFacturaId(facid As Long) As OrdenPago
         Set FindByFacturaId = Nothing
     End If
 End Function
+
 
 Public Function FindAllByProveedor(provid As Long, Optional cond As String, Optional soloOp As Boolean = False) As Collection
     Dim q As String
@@ -144,9 +119,6 @@ Public Function FindAllByProveedor(provid As Long, Optional cond As String, Opti
     End If
 End Function
 
-'Public Function FindById(Id As Long) As clsLiquidacionCaja
-'    Set FindById = FindAll("liquidaciones_caja.id=" & Id)(1)
-'End Function
 
 Public Function FindById(Id As Long) As clsLiquidacionCaja
     Dim col As Collection
@@ -158,6 +130,7 @@ Public Function FindById(Id As Long) As clsLiquidacionCaja
     End If
 End Function
 
+
 Public Function FindByNumeroLiq(NumeroLiq As Long) As clsLiquidacionCaja
     Dim col As Collection
     Set col = FindAll("liquidaciones_caja.numero_liq=" & NumeroLiq)
@@ -168,11 +141,12 @@ Public Function FindByNumeroLiq(NumeroLiq As Long) As clsLiquidacionCaja
     End If
 End Function
 
+
 Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
     q = "SELECT * " _
-      & " From ordenes_pago" _
-      & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = ordenes_pago.id_moneda)"
+        & " From ordenes_pago" _
+        & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = ordenes_pago.id_moneda)"
 
     q = q & " WHERE " & filter
     q = q & " ORDER BY " & orderBy
@@ -203,40 +177,38 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     Dim q As String
 
     q = "SELECT *, (operaciones.pertenencia + 0) AS pertenencia2" _
-      & " FROM liquidaciones_caja" _
-      & " LEFT JOIN ordenes_pago_cheques ON (liquidaciones_caja.id = ordenes_pago_cheques.id_orden_pago)" _
-      & " LEFT JOIN ordenes_pago_operaciones ON (liquidaciones_caja.id = ordenes_pago_operaciones.id_orden_pago)" _
-      & " LEFT JOIN liquidaciones_caja_facturas ON (liquidaciones_caja.id = liquidaciones_caja_facturas.id_liquidacion_caja)" _
-      & " LEFT JOIN AdminComprasCuentasContables cuentacontableordenpago ON (liquidaciones_caja.id_cuenta_contable = cuentacontableordenpago.id)" _
-      & " LEFT JOIN operaciones ON (operaciones.id = ordenes_pago_operaciones.id_operacion)" _
-      & " LEFT JOIN Cheques ON (Cheques.id = ordenes_pago_cheques.id_cheque)" _
-      & " LEFT JOIN Chequeras ON (Chequeras.id = Cheques.id_chequera)" _
-      & " LEFT JOIN AdminConfigBancos monbanco ON (monbanco.id = Chequeras.id_banco)" _
-      & " LEFT JOIN AdminConfigMonedas monchequera ON (monchequera.id = Chequeras.id_moneda)" _
-      & " LEFT JOIN AdminComprasFacturasProveedores ON (AdminComprasFacturasProveedores.id = liquidaciones_caja_facturas.id_factura_proveedor)" _
-      & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = liquidaciones_caja.id_moneda)" _
-      & " LEFT JOIN AdminConfigMonedas monFacProv ON (monFacProv.id = AdminComprasFacturasProveedores.id_moneda)" _
-      & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
-      & " LEFT JOIN AdminConfigMonedas monedaoperacion ON (monedaoperacion.id = operaciones.moneda_id)" _
-      & " LEFT JOIN AdminComprasCuentasContables ON (AdminComprasCuentasContables.id = operaciones.cuenta_contable_id)" _
-      & " LEFT JOIN cajas ON (cajas.id = operaciones.cuentabanc_o_caja_id)" _
-      & " LEFT JOIN AdminConfigCuentas ON (AdminConfigCuentas.id = operaciones.cuentabanc_o_caja_id)" _
-      & " LEFT JOIN AdminConfigMonedas moncuentabancaria ON (moncuentabancaria.id = AdminConfigCuentas.moneda_id)" _
-      & " LEFT JOIN AdminConfigMonedas moncheque ON (moncheque.id = Cheques.id_moneda)" _
-      & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id"
+        & " FROM liquidaciones_caja" _
+        & " LEFT JOIN ordenes_pago_cheques ON (liquidaciones_caja.id = ordenes_pago_cheques.id_orden_pago)" _
+        & " LEFT JOIN ordenes_pago_operaciones ON (liquidaciones_caja.id = ordenes_pago_operaciones.id_orden_pago)" _
+        & " LEFT JOIN liquidaciones_caja_facturas ON (liquidaciones_caja.id = liquidaciones_caja_facturas.id_liquidacion_caja)" _
+        & " LEFT JOIN AdminComprasCuentasContables cuentacontableordenpago ON (liquidaciones_caja.id_cuenta_contable = cuentacontableordenpago.id)" _
+        & " LEFT JOIN operaciones ON (operaciones.id = ordenes_pago_operaciones.id_operacion)" _
+        & " LEFT JOIN Cheques ON (Cheques.id = ordenes_pago_cheques.id_cheque)" _
+        & " LEFT JOIN Chequeras ON (Chequeras.id = Cheques.id_chequera)" _
+        & " LEFT JOIN AdminConfigBancos monbanco ON (monbanco.id = Chequeras.id_banco)" _
+        & " LEFT JOIN AdminConfigMonedas monchequera ON (monchequera.id = Chequeras.id_moneda)" _
+        & " LEFT JOIN AdminComprasFacturasProveedores ON (AdminComprasFacturasProveedores.id = liquidaciones_caja_facturas.id_factura_proveedor)" _
+        & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = liquidaciones_caja.id_moneda)" _
+        & " LEFT JOIN AdminConfigMonedas monFacProv ON (monFacProv.id = AdminComprasFacturasProveedores.id_moneda)" _
+        & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
+        & " LEFT JOIN AdminConfigMonedas monedaoperacion ON (monedaoperacion.id = operaciones.moneda_id)" _
+        & " LEFT JOIN AdminComprasCuentasContables ON (AdminComprasCuentasContables.id = operaciones.cuenta_contable_id)" _
+        & " LEFT JOIN cajas ON (cajas.id = operaciones.cuentabanc_o_caja_id)" _
+        & " LEFT JOIN AdminConfigCuentas ON (AdminConfigCuentas.id = operaciones.cuentabanc_o_caja_id)" _
+        & " LEFT JOIN AdminConfigMonedas moncuentabancaria ON (moncuentabancaria.id = AdminConfigCuentas.moneda_id)" _
+        & " LEFT JOIN AdminConfigMonedas moncheque ON (moncheque.id = Cheques.id_moneda)" _
+        & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id"
     q = q & " LEFT JOIN AdminConfigBancos ON (AdminConfigBancos.id = AdminConfigCuentas.idBanco)" _
-      & " LEFT JOIN AdminConfigBancos bancocheque ON (bancocheque.id = Cheques.id_banco)" _
-      & " LEFT JOIN proveedores ON (proveedores.id = AdminComprasFacturasProveedores.id_proveedor)"
+        & " LEFT JOIN AdminConfigBancos bancocheque ON (bancocheque.id = Cheques.id_banco)" _
+        & " LEFT JOIN proveedores ON (proveedores.id = AdminComprasFacturasProveedores.id_proveedor)"
     q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = liquidaciones_caja.id" _
-      & " LEFT JOIN retenciones r ON r.id = opr.id_retencion "
+        & " LEFT JOIN retenciones r ON r.id = opr.id_retencion "
     q = q & " WHERE " & filter
     q = q & " ORDER BY " & orderBy
-
 
     Dim col As New Collection
     Dim liq As clsLiquidacionCaja
     Dim fac As clsFacturaProveedor
-    Dim che As cheque
     Dim oper As operacion
 
     Dim idx As Dictionary
@@ -265,19 +237,6 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
 
         End If
 
-'        Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco")
-'        If IsSomething(che) Then
-'            If che.Propio Then
-'                If Not funciones.BuscarEnColeccion(liq.ChequesPropios, CStr(che.Id)) Then
-'                    liq.ChequesPropios.Add che, CStr(che.Id)
-'                End If
-'            Else
-'                If Not funciones.BuscarEnColeccion(liq.ChequesTerceros, CStr(che.Id)) Then
-'                    liq.ChequesTerceros.Add che, CStr(che.Id)
-'                End If
-'            End If
-'        End If
-
         Set oper = DAOOperacion.Map(rs, idx, "operaciones", "AdminComprasCuentasContables", "monedaoperacion", "AdminConfigCuentas", "cajas")
         If IsSomething(oper) Then
             If oper.Pertenencia = Banco Then
@@ -299,26 +258,24 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
             End If
         End If
 
-
         rs.MoveNext
     Wend
 
     Set FindAll = col
-    
+
 End Function
+
 
 Public Function Map(rs As Recordset, indice As Dictionary, _
                     tabla As String, _
                     Optional ByVal tablaMoneda As String = vbNullString, _
                     Optional ByVal tablaCuentaContable As String = vbNullString, _
                     Optional ByVal TablaRetenciones As String = vbNullString _
-                  ) As clsLiquidacionCaja
+                    ) As clsLiquidacionCaja
 
-'Optional ByVal tablaCertRetencion As String = vbNullString _
+    Dim liq As clsLiquidacionCaja
 
-  Dim liq As clsLiquidacionCaja
-
-'id_certificado_retencion
+    'id_certificado_retencion
     Dim Id As Long
     Id = GetValue(rs, indice, tabla, "id")
 
@@ -344,24 +301,21 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
         liq.NumeroLiq = GetValue(rs, indice, tabla, "numero_liq")
         If LenB(tablaCuentaContable) > 0 Then Set liq.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
         If LenB(tablaMoneda) > 0 Then Set liq.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
-        'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
+
     End If
 
     Set Map = liq
-    
-End Function
 
+End Function
 
 
 Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
                                      tabla As String, _
                                      ByVal TablaRetenciones As String) As DTORetencionAlicuota
 
-'Optional ByVal tablaCertRetencion As String = vbNullString _
+    Dim ra As DTORetencionAlicuota
 
-  Dim ra As DTORetencionAlicuota
-
-'id_certificado_retencion
+    'id_certificado_retencion
     Dim Id As Long
     Id = GetValue(rs, indice, tabla, "id_retencion")
 
@@ -378,8 +332,6 @@ Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
 End Function
 
 
-
-
 Public Function Save(op As clsLiquidacionCaja, Optional cascada As Boolean = False) As Boolean
 'Public Function Save(1=1, Optional cascada As Boolean = False) As Boolean
     On Error GoTo err1
@@ -391,9 +343,6 @@ err1:
     Save = False
     conectar.RollBackTransaction
 End Function
-
-
-
 
 
 Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Boolean) As Boolean
@@ -457,8 +406,6 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
 
     '    MsgBox (liq.Id)
 
-
-
     If liq.estado = EstadoLiquidacionCaja_pendiente Then
         Dim es As EstadoLiquidacionCaja
         es = liq.estado
@@ -476,11 +423,6 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
 
                     If IsSomething(d) Then
                         ret = d.alicuota
-
-                        '                                                If ret <> liq.alicuota Then
-                        '                                                    If MsgBox("La alicuota de retención actual del proveedor en el padrón difiere de la especificada en la orden de pago." & vbNewLine & "¿Quiere editar la orden de pago con la nueva alicuota de retención? o ¿Usar la especificada de todas maneras?" & vbNewLine & "[SI] - Continuar usando la especificada." & "[NO] - Cancelar y editar la orden de pago.", vbQuestion + vbYesNo) = vbNo Then
-                        '                                                        GoTo err1
-                        '                                                    End If
                     End If
 
                 End If
@@ -493,14 +435,9 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
 
     'analizo las facturas de proveedores
 
-
     'TODO: debo verificar que los deudas por compensatorio no esten utilizadas en otra OP aprobada ni que esten ya canceladas en otro proceso
 
-    '   MsgBox (liq.Id)
-
-    If Guardar(liq) Then
-
-
+    If GuardarAprobada(liq) Then
 
         Dim fac1 As clsFacturaProveedor
         For Each fac1 In liq.FacturasProveedor
@@ -531,13 +468,9 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
         GoTo err1
     End If
 
-    '   End If
 
-    '   MsgBox (liq_mem.Id)
-
-    DaoHistorico.Save "orden_pago_historial", "OP Aprobada", liq.Id
+    DaoHistorico.Save "orden_pago_historial", "LC Aprobada", liq.Id
     aprobar = True
-    '   MsgBox (liq_mem.Id)
     If insideTransaction Then conectar.CommitTransaction
     Exit Function
 
@@ -551,48 +484,46 @@ End Function
 
 Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = False) As Boolean
 
-
 'TODO: tengo que revisar que las facturas no esten en otra op aprobada antes de continuar
 
     Dim q As String
-    Dim rs As Recordset
     On Error GoTo E
     Dim Nueva As Boolean: Nueva = False
-    
-    
 
     If op.Id = 0 Then
-    
+
         If IsSomething(DAOLiquidacionCaja.FindByNumeroLiq(CLng(op.NumeroLiq))) Then
             MsgBox "Ya existe una Liquidación con ese número!", vbCritical, "Error"
             Exit Function
         End If
-        
-        
+
+
         Nueva = True
+'        MsgBox ("Es nueva")
         q = "INSERT INTO liquidaciones_caja (id_moneda_pago,tipo_cambio,id_moneda, fecha, id_cuenta_contable,cuenta_contable_desc,estado,alicuota,static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen,dif_cambio, otros_descuentos,dif_cambio_ng,dif_cambio_total,numero_liq)" _
-          & " VALUES ('id_moneda_pago','tipo_cambio','id_moneda', 'fecha', 'id_cuenta_contable', 'cuenta_contable_desc','0','alicuota','static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio', 'otros_descuentos','dif_cambio_ng','dif_cambio_total','numero_liq')"
-    
+            & " VALUES ('id_moneda_pago','tipo_cambio','id_moneda', 'fecha', 'id_cuenta_contable', 'cuenta_contable_desc','0','alicuota','static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio', 'otros_descuentos','dif_cambio_ng','dif_cambio_total','numero_liq')"
+
     Else
+'        MsgBox ("No es nueva, estoy aprobando una existente")
         q = "UPDATE liquidaciones_caja" _
-          & " SET id_moneda = 'id_moneda'," _
-          & " fecha = 'fecha'," _
-          & " id_cuenta_contable = 'id_cuenta_contable'," _
-          & " alicuota = 'alicuota'," _
-          & " cuenta_contable_desc = 'cuenta_contable_desc'," _
-          & " estado = 'estado'," _
-          & " static_total_facturas = 'static_total_facturas'," _
-          & " static_total_factura_ng = 'static_total_factura_ng'," _
-          & " static_total_a_retener = 'static_total_a_retener'," _
-          & " static_total_origen = 'static_total_origen'," _
-          & " dif_cambio = 'dif_cambio'," _
-          & " otros_descuentos = 'otros_descuentos'," _
-          & " tipo_cambio = 'tipo_cambio'," _
-          & " id_moneda_pago = 'id_moneda_pago'," _
-          & " dif_cambio_ng = 'dif_cambio_ng'," _
-          & " dif_cambio_total = 'dif_cambio_total'," _
-          & " numero_liq = 'numero_liq'" _
-          & " WHERE id = 'id'"
+            & " SET id_moneda = 'id_moneda'," _
+            & " fecha = 'fecha'," _
+            & " id_cuenta_contable = 'id_cuenta_contable'," _
+            & " alicuota = 'alicuota'," _
+            & " cuenta_contable_desc = 'cuenta_contable_desc'," _
+            & " estado = 'estado'," _
+            & " static_total_facturas = 'static_total_facturas'," _
+            & " static_total_factura_ng = 'static_total_factura_ng'," _
+            & " static_total_a_retener = 'static_total_a_retener'," _
+            & " static_total_origen = 'static_total_origen'," _
+            & " dif_cambio = 'dif_cambio'," _
+            & " otros_descuentos = 'otros_descuentos'," _
+            & " tipo_cambio = 'tipo_cambio'," _
+            & " id_moneda_pago = 'id_moneda_pago'," _
+            & " dif_cambio_ng = 'dif_cambio_ng'," _
+            & " dif_cambio_total = 'dif_cambio_total'," _
+            & " numero_liq = 'numero_liq'" _
+            & " WHERE id = 'id'"
         q = Replace(q, "'id'", GetEntityId(op))
     End If
 
@@ -620,159 +551,100 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     If Nueva Then op.Id = conectar.UltimoId2()
     If op.Id = 0 Then GoTo E
 
+    '------------------------------------------------------
+    '------------------------------------------------------
+
+    Dim fcp As clsFacturaProveedor
+
+    For Each fcp In op.FacturasProveedor
+        q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
+        If Not conectar.execute(q) Then GoTo E
+    Next
+
+
+    q = "DELETE FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & op.Id
+    If Not conectar.execute(q) Then GoTo E
+
+
+    Dim es As EstadoFacturaProveedor
+    Dim nopago As Double
+    Dim fac As clsFacturaProveedor
     
+    For Each fac In op.FacturasProveedor
+        fac.ImporteTotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
 
-        '------------------------------------------------------
+        If Not conectar.execute(q) Then GoTo E
 
-
-        Dim fcp As clsFacturaProveedor
-
-        For Each fcp In op.FacturasProveedor
-            q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
-            If Not conectar.execute(q) Then GoTo E
-        Next
+        nopago = 0
 
 
-        q = "DELETE FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & op.Id
+        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+
+        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+
+        nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+        'nopago = fac.Total - fac.TotalPendiente
+
+        '            MsgBox ("Acá como es nueva hace: fac.Total: " & fac.Total & " - fac.TotalPendiente :" & fac.TotalPendiente & " == " & nopago)
+
+
+        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
+        If Not conectar.execute(q) Then GoTo E
+
+        'If op.estado = EstadoOrdenPago_Aprobada Then
+
+        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+
+        es = EstadoFacturaProveedor.Aprobada
+        If nopago > 0 Then
+            es = EstadoFacturaProveedor.pagoParcial
+        Else
+            es = EstadoFacturaProveedor.Saldada
+        End If
+
+        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
+
         If Not conectar.execute(q) Then GoTo E
 
 
-        Dim es As EstadoFacturaProveedor
-        Dim nopago As Double
-        Dim compe As Compensatorio
-        Dim cp As Compensatorio
-        Dim fac As clsFacturaProveedor
-        For Each fac In op.FacturasProveedor
-            q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
+    Next fac
 
+
+    '------------------------------------------------------
+
+
+    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
+    If Not conectar.execute(q) Then GoTo E
+    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
+    If Not conectar.execute(q) Then GoTo E
+
+    Dim oper As operacion
+    For Each oper In op.OperacionesBanco
+        'oper.IdPertenencia = op.Id no se usa creo
+        oper.FechaCarga = Now
+        If DAOOperacion.Save(oper) Then
+            oper.Id = conectar.UltimoId2
+            If oper.Id = 0 Then GoTo E
+            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
             If Not conectar.execute(q) Then GoTo E
+        Else
+            GoTo E
+        End If
+    Next oper
 
-            '            If BuscarEnColeccion(op.Compensatorios, CStr(fac.id)) Then
-            '
-            '                Set compe = op.Compensatorios(CStr(fac.id))
-            '                nopago = compe.Monto
-            '            Else
-            '                nopago = 0
-            '            End If
-            nopago = 0
-            'validar si se pagan facturas o compensatorios
-
-            For Each cp In op.Compensatorios
-                nopago = nopago + cp.Monto
-
-            Next cp
-
-
-            'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
-
-            nopago = fac.Total - fac.TotalPendiente
-
-
-            q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
+    For Each oper In op.OperacionesCaja
+        'oper.IdPertenencia = op.Id no se usa creo
+        oper.FechaCarga = Now
+        If DAOOperacion.Save(oper) Then
+            oper.Id = conectar.UltimoId2
+            If oper.Id = 0 Then GoTo E
+            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
             If Not conectar.execute(q) Then GoTo E
-
-            Dim c As Compensatorio
-
-            For Each c In op.DeudaCompensatorios
-                If c.Cancelado Then Err.Raise "El compensatorio " & c.Id & " ya está cancelado!"
-                q = "INSERT INTO  orden_pago_deuda_compensatorios (id_orden_pago, id_compensatorio) values (" & op.Id & "," & c.Id & ")"
-
-
-                If Not conectar.execute(q) Then GoTo E
-
-                q = "UPDATE  ordenes_pago_compensatorios   SET cancelado=1 where id_liquidacion_caja=" & op.Id & " and id=" & c.Id
-
-
-                If Not conectar.execute(q) Then GoTo E
-
-
-            Next c
-
-
-            es = EstadoFacturaProveedor.Aprobada
-            If nopago > 0 Then
-                es = EstadoFacturaProveedor.pagoParcial
-            Else
-                es = EstadoFacturaProveedor.Saldada
-            End If
-
-
-            q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
-            'q = "UPDATE AdminComprasFacturasProveedores SET estado = " & fac.AnalizarEstado & " WHERE id = " & fac.Id
-            If Not conectar.execute(q) Then GoTo E
-
-
-        Next fac
-
-
-        '------------------------------------------------------
-
-
-        q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
-        If Not conectar.execute(q) Then GoTo E
-        q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
-
-        Dim oper As operacion
-        For Each oper In op.OperacionesBanco
-            'oper.IdPertenencia = op.Id no se usa creo
-            oper.FechaCarga = Now
-            If DAOOperacion.Save(oper) Then
-                oper.Id = conectar.UltimoId2
-                If oper.Id = 0 Then GoTo E
-                q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
-                If Not conectar.execute(q) Then GoTo E
-            Else
-                GoTo E
-            End If
-        Next oper
-
-        For Each oper In op.OperacionesCaja
-            'oper.IdPertenencia = op.Id no se usa creo
-            oper.FechaCarga = Now
-            If DAOOperacion.Save(oper) Then
-                oper.Id = conectar.UltimoId2
-                If oper.Id = 0 Then GoTo E
-                q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
-                If Not conectar.execute(q) Then GoTo E
-            Else
-                GoTo E
-            End If
-        Next oper
-
-
-        q = "DELETE FROM ordenes_pago_compensatorios WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
-
-        Dim c1 As Compensatorio
-
-        For Each c1 In op.Compensatorios
-            c1.IdOrdenPago = op.Id
-            If Not DAOCompensatorios.Guardar(c1) Then GoTo E
-
-        Next c1
-
-
-        'guardo las retenciones
-        q = "DELETE FROM ordenes_pago_retenciones WHERE id_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
-
-        Dim ra As DTORetencionAlicuota
-
-        For Each ra In op.RetencionesAlicuota
-
-
-            q = " INSERT INTO ordenes_pago_retenciones (id_pago,id_retencion,fecha,alicuota,total) values('id_pago','id_retencion','fecha','alicuota','total')"
-
-            q = Replace(q, "'id_pago'", GetEntityId(op))
-            q = Replace(q, "'id_retencion'", GetEntityId(ra.Retencion))
-            q = Replace(q, "'fecha'", Escape(op.FEcha))
-            q = Replace(q, "'alicuota'", Escape(ra.alicuotaRetencion))
-            q = Replace(q, "'total'", Escape(ra.importe))
-            If Not conectar.execute(q) Then GoTo E
-        Next ra
-
-'    End If
+        Else
+            GoTo E
+        End If
+    Next oper
 
     Dim msg As String
     msg = "LIQ Creada"
@@ -788,6 +660,188 @@ E:
     If Nueva Then op.Id = 0
 
 End Function
+
+
+Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Boolean = False) As Boolean
+
+'TODO: tengo que revisar que las facturas no esten en otra op aprobada antes de continuar
+
+    Dim q As String
+    On Error GoTo E
+    Dim Nueva As Boolean: Nueva = False
+
+    If op.Id = 0 Then
+
+        If IsSomething(DAOLiquidacionCaja.FindByNumeroLiq(CLng(op.NumeroLiq))) Then
+            MsgBox "Ya existe una Liquidación con ese número!", vbCritical, "Error"
+            Exit Function
+        End If
+
+
+        Nueva = True
+'        MsgBox ("Es nueva")
+        q = "INSERT INTO liquidaciones_caja (id_moneda_pago,tipo_cambio,id_moneda, fecha, id_cuenta_contable,cuenta_contable_desc,estado,alicuota,static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen,dif_cambio, otros_descuentos,dif_cambio_ng,dif_cambio_total,numero_liq)" _
+            & " VALUES ('id_moneda_pago','tipo_cambio','id_moneda', 'fecha', 'id_cuenta_contable', 'cuenta_contable_desc','0','alicuota','static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio', 'otros_descuentos','dif_cambio_ng','dif_cambio_total','numero_liq')"
+
+    Else
+'        MsgBox ("No es nueva, estoy aprobando una existente")
+        q = "UPDATE liquidaciones_caja" _
+            & " SET id_moneda = 'id_moneda'," _
+            & " fecha = 'fecha'," _
+            & " id_cuenta_contable = 'id_cuenta_contable'," _
+            & " alicuota = 'alicuota'," _
+            & " cuenta_contable_desc = 'cuenta_contable_desc'," _
+            & " estado = 'estado'," _
+            & " static_total_facturas = 'static_total_facturas'," _
+            & " static_total_factura_ng = 'static_total_factura_ng'," _
+            & " static_total_a_retener = 'static_total_a_retener'," _
+            & " static_total_origen = 'static_total_origen'," _
+            & " dif_cambio = 'dif_cambio'," _
+            & " otros_descuentos = 'otros_descuentos'," _
+            & " tipo_cambio = 'tipo_cambio'," _
+            & " id_moneda_pago = 'id_moneda_pago'," _
+            & " dif_cambio_ng = 'dif_cambio_ng'," _
+            & " dif_cambio_total = 'dif_cambio_total'," _
+            & " numero_liq = 'numero_liq'" _
+            & " WHERE id = 'id'"
+        q = Replace(q, "'id'", GetEntityId(op))
+    End If
+
+    q = Replace(q, "'id_moneda'", GetEntityId(op.moneda))
+    q = Replace(q, "'alicuota'", Escape(op.alicuota))
+    q = Replace(q, "'fecha'", Escape(op.FEcha))
+    q = Replace(q, "'id_cuenta_contable'", GetEntityId(op.CuentaContable))
+    q = Replace(q, "'cuenta_contable_desc'", Escape(op.CuentaContableDescripcion))
+    q = Replace(q, "'estado'", Escape(op.estado))
+    q = Replace(q, "'static_total_facturas'", Escape(op.StaticTotalFacturas))
+    q = Replace(q, "'static_total_factura_ng'", Escape(op.StaticTotalFacturasNG))
+    q = Replace(q, "'static_total_a_retener'", Escape(op.StaticTotalRetenido))
+    q = Replace(q, "'static_total_origen'", Escape(op.StaticTotalOrigenes))
+    q = Replace(q, "'dif_cambio'", Escape(op.DiferenciaCambio))
+    q = Replace(q, "'otros_descuentos'", Escape(op.OtrosDescuentos))
+    q = Replace(q, "'id_moneda_pago'", Escape(op.IdMonedaPago))
+    q = Replace(q, "'tipo_cambio'", Escape(op.TipoCambio))
+    q = Replace(q, "'dif_cambio_ng'", Escape(op.DiferenciaCambioEnNG))
+    q = Replace(q, "'dif_cambio_total'", Escape(op.DiferenciaCambioEnTOTAL))
+    q = Replace(q, "'numero_liq'", Escape(op.NumeroLiq))
+
+
+    If Not conectar.execute(q) Then GoTo E
+
+    If Nueva Then op.Id = conectar.UltimoId2()
+    If op.Id = 0 Then GoTo E
+
+    '------------------------------------------------------
+    '------------------------------------------------------
+
+    Dim fcp As clsFacturaProveedor
+
+'    For Each fcp In op.FacturasProveedor
+'        q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
+'        If Not conectar.execute(q) Then GoTo E
+'    Next
+
+'
+'    q = "DELETE FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & op.Id
+'    If Not conectar.execute(q) Then GoTo E
+
+
+'    Dim es As EstadoFacturaProveedor
+'    Dim nopago As Double
+'    Dim fac As clsFacturaProveedor
+'
+'    For Each fac In op.FacturasProveedor
+'        fac.ImporteTotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
+'
+'        If Not conectar.execute(q) Then GoTo E
+'
+'        nopago = 0
+'
+'
+'        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+'
+'        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+'
+'        nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+        'nopago = fac.Total - fac.TotalPendiente
+
+        '            MsgBox ("Acá como es nueva hace: fac.Total: " & fac.Total & " - fac.TotalPendiente :" & fac.TotalPendiente & " == " & nopago)
+
+
+'        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
+'        If Not conectar.execute(q) Then GoTo E
+'
+'        'If op.estado = EstadoOrdenPago_Aprobada Then
+'
+'        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+'
+'        es = EstadoFacturaProveedor.Aprobada
+'        If nopago > 0 Then
+'            es = EstadoFacturaProveedor.pagoParcial
+'        Else
+'            es = EstadoFacturaProveedor.Saldada
+'        End If
+'
+'        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
+'
+'        If Not conectar.execute(q) Then GoTo E
+'
+'
+'    Next fac
+
+
+    '------------------------------------------------------
+
+
+'    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
+'    If Not conectar.execute(q) Then GoTo E
+'    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
+'    If Not conectar.execute(q) Then GoTo E
+
+'    Dim oper As operacion
+'    For Each oper In op.OperacionesBanco
+'        'oper.IdPertenencia = op.Id no se usa creo
+'        oper.FechaCarga = Now
+'        If DAOOperacion.Save(oper) Then
+'            oper.Id = conectar.UltimoId2
+'            If oper.Id = 0 Then GoTo E
+'            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
+'            If Not conectar.execute(q) Then GoTo E
+'        Else
+'            GoTo E
+'        End If
+'    Next oper
+'
+'    For Each oper In op.OperacionesCaja
+'        'oper.IdPertenencia = op.Id no se usa creo
+'        oper.FechaCarga = Now
+'        If DAOOperacion.Save(oper) Then
+'            oper.Id = conectar.UltimoId2
+'            If oper.Id = 0 Then GoTo E
+'            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
+'            If Not conectar.execute(q) Then GoTo E
+'        Else
+'            GoTo E
+'        End If
+'    Next oper
+'
+'    Dim msg As String
+'    msg = "LIQ Creada"
+'
+'    If Not Nueva Then msg = "LIQ Actualizada"
+'    DaoHistorico.Save "orden_pago_historial", msg, op.Id
+
+    GuardarAprobada = True
+
+    Exit Function
+E:
+    GuardarAprobada = False
+    If Nueva Then op.Id = 0
+
+End Function
+
+
 
 Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
     RemoveFactura = False
@@ -816,6 +870,7 @@ Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
 
 End Function
 
+
 Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Boolean
     On Error GoTo E
 
@@ -827,67 +882,38 @@ Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Bool
     Dim q As String
 
     q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & liqid & ")"
+    Debug.Print (q)
     If Not conectar.execute(q) Then GoTo E
-    ' q = "DELETE FROM ordenes_pago_facturas WHERE id_liquidacion_caja = " & opid
-    '     If Not conectar.execute(q) Then GoTo E
 
     q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid & ")"
+    Debug.Print (q)
     If Not conectar.execute(q) Then GoTo E
 
     q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid
+    Debug.Print (q)
     If Not conectar.execute(q) Then GoTo E
 
-    'se deben borrar los cheques creados para esta orden de pago (solo los propios)
-    'fix 14-10-2020
-    'q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & opid & ")"
 
-    '    q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & liqid & ") and propio=1"
-    '    If Not conectar.execute(q) Then GoTo E
-    '
-    '    q = "UPDATE Cheques SET orden_pago_origen=0,en_cartera = 1  WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & liqid & ") and propio=0"
-    '
-    '    If Not conectar.execute(q) Then GoTo E
-    '    q = "DELETE FROM ordenes_pago_cheques WHERE id_liquidacion_caja = " & liqid
-    '
-    '    If Not conectar.execute(q) Then GoTo E
-    '    q = "DELETE FROM ordenes_pago_compensatorios WHERE id_liquidacion_caja = " & liqid
-    '
-    '    If Not conectar.execute(q) Then GoTo E
-    '
-    '    '    q = "DELETE FROM ordenes_pago WHERE id = " & opid
-    '    If Not conectar.execute(q) Then GoTo E
-
+    If Not conectar.execute(q) Then GoTo E
     Dim estado_anterior As EstadoLiquidacionCaja
     estado_anterior = liq.estado
     liq.estado = EstadoLiquidacionCaja_Anulada
+
     If Not DAOLiquidacionCaja.Guardar(liq, False) Then GoTo E
 
-    DaoHistorico.Save "orden_pago_historial", "OP Anulada", liq.Id
+    DaoHistorico.Save "orden_pago_historial", "LIQUIDACION Anulada", liq.NumeroLiq
 
     If useInternalTransaction Then conectar.CommitTransaction
 
     Delete = True
-
-    'CARGA_LOG_EVENTOS
-
-    'Abre el archivo de texto para escritura en modo "append"
-    Open "C:\repo\log_sp.txt" For Append As #1
-
-    'Escribe el registro en el archivo
-    Print #1, Date & "- " & time & ": " & liq.Id & " ANULADA."
-
-
-    'Cierra el archivo
-    Close #1
-
-    'CIERRA_LOG_EVENTOS
-
     Exit Function
 E:
     liq.estado = estado_anterior
     If useInternalTransaction Then conectar.RollBackTransaction
     Delete = False
 End Function
+
+
 Public Function ResumenPagos(ByRef Cheques As Collection, ByRef caja As Collection, ByRef bancos As Collection, ByRef comp As Collection, ByRef retenciones As Collection, ByRef cheques3 As Collection, Optional filtro As String, Optional idProveedor As Long = -1) As Boolean
     On Error GoTo err1
     ResumenPagos = True
@@ -896,10 +922,10 @@ Public Function ResumenPagos(ByRef Cheques As Collection, ByRef caja As Collecti
 
     '#'CHEQUES'
     q = "SELECT b.Nombre,SUM(monto * acm.cambio) as monto FROM ordenes_pago  op " _
-      & " INNER JOIN ordenes_pago_cheques opc ON opc.id_liquidacion_caja=op.id " _
-      & " LEFT JOIN Cheques c ON opc.id_cheque=c.id " _
-      & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
-      & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=1 and 1=1 " _
+        & " INNER JOIN ordenes_pago_cheques opc ON opc.id_liquidacion_caja=op.id " _
+        & " LEFT JOIN Cheques c ON opc.id_cheque=c.id " _
+        & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
+        & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=1 and 1=1 " _
 
 If LenB(filtro) > 0 Then
         q = q & " and " & filtro
@@ -917,17 +943,13 @@ If LenB(filtro) > 0 Then
         rs.MoveNext
     Wend
 
-
-
-    '
-    '
     '#OPERACIONES CAJA
     q = " SELECT ca.nombre,SUM(monto * acm.cambio ) as monto FROM ordenes_pago op " _
-      & " INNER JOIN ordenes_pago_operaciones opo ON opo.id_liquidacion_caja=op.id " _
-      & " LEFT JOIN operaciones o ON opo.id_operacion=o.id " _
-      & " LEFT JOIN cajas ca ON ca.id=o.cuentabanc_o_caja_id " _
-      & " LEFT JOIN AdminConfigMonedas acm ON o.moneda_id=acm.id " _
-      & " WHERE o.pertenencia='caja' AND entrada_salida=-1 AND 1=1 "
+        & " INNER JOIN ordenes_pago_operaciones opo ON opo.id_liquidacion_caja=op.id " _
+        & " LEFT JOIN operaciones o ON opo.id_operacion=o.id " _
+        & " LEFT JOIN cajas ca ON ca.id=o.cuentabanc_o_caja_id " _
+        & " LEFT JOIN AdminConfigMonedas acm ON o.moneda_id=acm.id " _
+        & " WHERE o.pertenencia='caja' AND entrada_salida=-1 AND 1=1 "
     If LenB(filtro) > 0 Then
         q = q & " and " & filtro
     End If
@@ -943,15 +965,13 @@ If LenB(filtro) > 0 Then
         rs.MoveNext
     Wend
 
-
-    '
     '#OPERACIONES BANCO
     q = "SELECT  ba.nombre,  SUM(monto * acm.cambio ) AS monto " _
-      & " FROM ordenes_pago op   INNER JOIN ordenes_pago_operaciones opo     ON opo.id_liquidacion_caja = op.id " _
-      & " LEFT JOIN operaciones o     ON opo.id_operacion = o.id " _
-      & " LEFT JOIN AdminConfigCuentas cba     ON cba.id = o.cuentabanc_o_caja_id " _
-      & " INNER JOIN AdminConfigBancos ba ON cba.idBanco=ba.id    LEFT JOIN AdminConfigMonedas acm     ON o.moneda_id = acm.id " _
-      & " WHERE o.pertenencia='banco' AND entrada_salida=-1 AND 1=1 "
+        & " FROM ordenes_pago op   INNER JOIN ordenes_pago_operaciones opo     ON opo.id_liquidacion_caja = op.id " _
+        & " LEFT JOIN operaciones o     ON opo.id_operacion = o.id " _
+        & " LEFT JOIN AdminConfigCuentas cba     ON cba.id = o.cuentabanc_o_caja_id " _
+        & " INNER JOIN AdminConfigBancos ba ON cba.idBanco=ba.id    LEFT JOIN AdminConfigMonedas acm     ON o.moneda_id = acm.id " _
+        & " WHERE o.pertenencia='banco' AND entrada_salida=-1 AND 1=1 "
     If LenB(filtro) > 0 Then
         q = q & " and " & filtro
     End If
@@ -971,9 +991,9 @@ If LenB(filtro) > 0 Then
 
     '#compensatorios
     q = "SELECT fp.numero_factura, (IF (com.tipo=1,(com.importe * acm.cambio),(com.importe * acm.cambio*-1))) AS monto  FROM ordenes_pago op " _
-      & " INNER JOIN ordenes_pago_compensatorios com ON com.id_liquidacion_caja=op.id " _
-      & " INNER JOIN AdminComprasFacturasProveedores fp ON com.id_comprobante=fp.id " _
-      & " INNER JOIN AdminConfigMonedas acm ON fp.id_moneda=acm.id  where 1=1 "
+        & " INNER JOIN ordenes_pago_compensatorios com ON com.id_liquidacion_caja=op.id " _
+        & " INNER JOIN AdminComprasFacturasProveedores fp ON com.id_comprobante=fp.id " _
+        & " INNER JOIN AdminConfigMonedas acm ON fp.id_moneda=acm.id  where 1=1 "
 
     If LenB(filtro) > 0 Then
         q = q & " and " & filtro
@@ -1007,21 +1027,17 @@ If LenB(filtro) > 0 Then
         rs.MoveNext
     Wend
 
-
-
     '#'CHEQUES 3ROS'
     q = "SELECT b.Nombre,SUM(monto * acm.cambio) as monto FROM ordenes_pago  op " _
-      & " INNER JOIN ordenes_pago_cheques opc ON opc.id_liquidacion_caja=op.id " _
-      & " LEFT JOIN Cheques c ON opc.id_cheque=c.id " _
-      & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
-      & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=0 and 1=1 " _
+        & " INNER JOIN ordenes_pago_cheques opc ON opc.id_liquidacion_caja=op.id " _
+        & " LEFT JOIN Cheques c ON opc.id_cheque=c.id " _
+        & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
+        & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=0 and 1=1 " _
 
 If LenB(filtro) > 0 Then
         q = q & " and " & filtro
     End If
     q = q & " GROUP BY b.id "
-
-
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
@@ -1034,8 +1050,8 @@ If LenB(filtro) > 0 Then
     Exit Function
 err1:
     ResumenPagos = False
-End Function
 
+End Function
 
 
 Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBox) As Boolean
@@ -1047,8 +1063,6 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Dim mtxt As String
     Dim textw As Single
     Dim lmargin As Integer
-
-
 
     pic.Picture = LoadResPicture(101, vbResBitmap)
 
@@ -1095,7 +1109,6 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.FontSize = 8
     Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
     Dim F As clsFacturaProveedor
-    Dim facs As New Collection
     c = 0
     For Each F In LiquidacionCaja.FacturasProveedor
         c = c + 1
@@ -1164,12 +1177,6 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.Print "Total Facturas: ";
     Printer.FontBold = False
     Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.StaticTotalFacturas
-
-    '    Printer.FontBold = True
-    '    Printer.CurrentX = lmargin
-    '    Printer.Print "Total Retenido: ";
-    '    Printer.FontBold = False
-    '    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.StaticTotalRetenido
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin

@@ -395,6 +395,8 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       End
       Begin VB.Menu mnuAnular 
          Caption         =   "Anular"
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu mnuVer 
          Caption         =   "Ver"
@@ -563,6 +565,7 @@ E:
 
 End Sub
 
+
 Private Sub llenarLista()
     Dim filter As String
     filter = "1 = 1"
@@ -602,9 +605,11 @@ Private Sub llenarLista()
 
 End Sub
 
+
 Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.gridOrdenes, Column
 End Sub
+
 
 Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If liquidaciones.count > 0 Then
@@ -612,12 +617,16 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
         If Button = 2 Then
             Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
             Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
-            Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
+            
+            'OCULTO LA OPCION DE ANULAR QUE NO ESTÁ DESARROLLADA (DNEMER 30.05.2023)
+            'Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
+
             Me.PopupMenu menu
 
         End If
     End If
 End Sub
+
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
@@ -634,10 +643,12 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 End Sub
 
+
 Private Sub gridOrdenes_SelectionChange()
     On Error Resume Next
     Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
 End Sub
+
 
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And liquidaciones.count > 0 Then

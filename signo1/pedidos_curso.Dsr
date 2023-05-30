@@ -5,15 +5,15 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedidos_curso
    ClientHeight    =   6570
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   10455
+   ClientWidth     =   13935
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
-   _ExtentX        =   18441
+   _ExtentX        =   24580
    _ExtentY        =   11589
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   11310
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"

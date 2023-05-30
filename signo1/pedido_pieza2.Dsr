@@ -9,8 +9,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
    _ExtentX        =   25400
    _ExtentY        =   22225
    _Version        =   393216
-   _DesignerVersion=   100688210
-   ReportWidth     =   11070
+   _DesignerVersion=   100684101
+   ReportWidth     =   11115
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -28,7 +28,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
    BeginProperty Section0 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "cabeza"
-      Object.Height          =   4125
+      Object.Height          =   5565
       NumControls     =   21
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -37,7 +37,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
          Object.Left            =   30
          Object.Top             =   600
          Object.Width           =   11040
-         Object.Height          =   3495
+         Object.Height          =   4920
          BackColor       =   14737632
          BackStyle       =   1
       EndProperty
@@ -45,13 +45,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item1 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "LblMasDetalle"
-         Object.Left            =   180
-         Object.Top             =   3705
-         Object.Width           =   8775
-         Object.Height          =   330
+         Object.Left            =   150
+         Object.Top             =   4815
+         Object.Width           =   10845
+         Object.Height          =   630
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
-            Size            =   15.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -109,8 +109,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta4"
-         Object.Left            =   8730
-         Object.Width           =   2010
+         Object.Left            =   8535
+         Object.Width           =   2205
          Object.Height          =   675
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -148,8 +148,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item7 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta9"
-         Object.Left            =   120
-         Object.Top             =   2445
+         Object.Left            =   105
+         Object.Top             =   3540
          Object.Width           =   1140
          Object.Height          =   360
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -186,13 +186,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item9 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaEntrega"
-         Object.Left            =   2355
-         Object.Top             =   1665
+         Object.Left            =   2295
+         Object.Top             =   2835
          Object.Width           =   6555
          Object.Height          =   405
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
-            Size            =   15.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -204,13 +204,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item10 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblReferencia"
-         Object.Left            =   1800
-         Object.Top             =   1320
-         Object.Width           =   7035
-         Object.Height          =   345
+         Object.Left            =   90
+         Object.Top             =   1695
+         Object.Width           =   8700
+         Object.Height          =   1065
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
-            Size            =   15.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -222,13 +222,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblitem"
-         Object.Left            =   1290
-         Object.Top             =   2445
+         Object.Left            =   1185
+         Object.Top             =   3600
          Object.Width           =   7635
          Object.Height          =   330
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
-            Size            =   15.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -240,13 +240,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item12 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "entregaIt"
-         Object.Left            =   2115
-         Object.Top             =   2070
+         Object.Left            =   2025
+         Object.Top             =   3225
          Object.Width           =   6810
          Object.Height          =   405
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
-            Size            =   15.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -258,9 +258,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item13 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta10"
-         Object.Left            =   120
-         Object.Top             =   2070
-         Object.Width           =   1980
+         Object.Left            =   90
+         Object.Top             =   3180
+         Object.Width           =   1905
          Object.Height          =   390
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
@@ -277,8 +277,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta3"
-         Object.Left            =   105
-         Object.Top             =   1665
+         Object.Left            =   75
+         Object.Top             =   2775
          Object.Width           =   2235
          Object.Height          =   390
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -315,13 +315,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item16 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblDetalle"
-         Object.Left            =   150
-         Object.Top             =   2805
-         Object.Width           =   10695
-         Object.Height          =   840
+         Object.Left            =   135
+         Object.Top             =   3990
+         Object.Width           =   10830
+         Object.Height          =   825
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
-            Size            =   15.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -359,7 +359,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
          Object.Height          =   375
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Times New Roman"
-            Size            =   21.75
+            Size            =   18
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -371,12 +371,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
       BeginProperty Item19 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "barCode"
-         Object.Left            =   7860
+         Object.Left            =   8460
          Object.Top             =   720
-         Object.Width           =   2910
+         Object.Width           =   2310
          Object.Height          =   915
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "IDAutomationHC39M"
+            Name            =   "Arial"
             Size            =   12
             Charset         =   0
             Weight          =   400
@@ -597,7 +597,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} pedido_pieza2
          Object.Width           =   2190
          Object.Height          =   390
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "IDAutomationHC39M"
+            Name            =   "Arial"
             Size            =   9.75
             Charset         =   0
             Weight          =   400

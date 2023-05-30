@@ -818,21 +818,7 @@ Dim vId As String
 Private desde
 Private Factura As clsFacturaProveedor
 Private facturas As Collection
-Private OrdenPago As OrdenPago
 Dim m_Archivos As Dictionary
-
-
-'Private Sub btnClearDesdeTT_Click()
-'    Me.txtMontoDesde1 = ""
-'End Sub
-
-'Private Sub btnClearHastaTT_Click()
-'    Me.txtMontoHasta1 = ""
-'End Sub
-
-'Private Sub btnClearFantasia_Click()
-'    Me.cboFantasia.ListIndex = -1
-'End Sub
 
 Private Sub btnClearCtaCble_Click_Click()
     Me.cboCuentasContables.ListIndex = -1
@@ -868,14 +854,13 @@ End Sub
 Private Sub cmdExportar_Click()
 
     Me.progreso.Visible = True
-    'Me.lblExportando.Visible = True
+
 
     If IsSomething(facturas) Then
         If Not DAOFacturaProveedor.ExportarColeccion(facturas, Me.progreso) Then GoTo err1
     End If
 
     Me.progreso.Visible = False
-    'Me.lblExportando.Visible = False
 
     Exit Sub
 err1:
@@ -935,52 +920,9 @@ Private Sub btnRemoveProveedor_Click()
     Me.cboProveedores.ListIndex = -1
 End Sub
 
-'Private Sub Command1_Click()
-'    Dim elegidos As Boolean
-'    If grilla.SelectedItems.count > 1 Then
-'        elegidos = True
-'    Else
-'        elegidos = False
-'    End If
-'
-'    With Me.grilla.PrinterProperties
-'        .FitColumns = True
-'        .RepeatHeaders = True
-'        .Orientation = jgexPPLandscape
-'        .HeaderString(jgexHFCenter) = "Lista de Facturas de proveedores"
-'        .FooterString(jgexHFCenter) = Now
-'    End With
-'    Load frmPrintPreview
-'    frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
-'    grilla.PrintPreview frmPrintPreview.GEXPreview1, elegidos
-'    frmPrintPreview.Show 1
-'End Sub
-
 Private Sub btnBuscar_Click()
     llenarGrilla
 End Sub
-
-'Private Sub Command4_Click()
-'    Unload Me
-'End Sub
-
-'Private Sub Command3_Click()
-'    Dim q As String
-'
-'    conectar.BeginTransaction
-'    For Each Factura In facturas
-'
-'        If Factura.estado = Saldada Then
-'            q = "UPDATE AdminComprasFacturasProveedores SET total_abonado = " & Factura.Total & " WHERE id=" & Factura.Id
-'            If Not conectar.execute(q) Then GoTo E
-'        End If
-'
-'    Next
-'    conectar.CommitTransaction
-'    Exit Sub
-'E:
-'    conectar.RollBackTransaction
-'End Sub
 
 Private Sub editar_Click()
     Set Factura = facturas.item(grilla.RowIndex(grilla.row))
@@ -1028,13 +970,13 @@ Private Sub Form_Load()
         cboProveedores.AddItem prov.RazonSocial
         cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
     Next
-    
+
     llenarComboEstado
-    
+
     llenarComboFormaPago
-    
+
     llenarComboOrdenImporte
-    
+
     Dim P As clsProveedor
     For Each P In DAOProveedor.FindAll()
         If LenB(Trim$(P.razonFantasia)) > 0 Then
@@ -1059,14 +1001,14 @@ Private Sub Form_Load()
     btnRemoveProveedor_Click
     desde = DateSerial(Year(Date), Month(Date), 1)   ' CDate(1 & "-" & Month(Now) & "-" & Year(Now))
     funciones.FillComboBoxDateRanges Me.cboRangos
-    
+
     For i = 0 To Me.cboRangos.ListCount - 1
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
     Next i
     Me.cboRangos.ListIndex = i
 
     funciones.FillComboBoxDateRanges Me.cboRangosCarga
-    
+
     Me.dtpDesdeCarga.value = Null
     Me.dtpHastaCarga.value = Null
 
@@ -1158,39 +1100,39 @@ Public Sub llenarGrilla()
 
     If Me.txtMontoDesde1 <> "" Then
         condition = condition & " AND (ROUND(AdminComprasFacturasProveedores.monto_neto + " _
-                  & "AdminComprasFacturasProveedores.redondeo_iva +" _
-                  & " AdminComprasFacturasProveedores.impuesto_interno +" _
-                  & " (SELECT SUM(iva_calculado)         FROM sp.AdminComprasFacturasProveedoresIva acfpi " _
-                  & " JOIN AdminComprasFacturasProveedores acfp ON acfpi.id_factura_proveedor=acfp.id " _
-                  & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                  & " )                + " _
-                  & " IF((SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
-                  & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
-                  & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                  & ") IS NULL,0," _
-                  & " (SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
-                  & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
-                  & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                  & ")),2)                *             (IF (AdminComprasFacturasProveedores.tipo_doc_contable = 1,'-1','1'))) >= " & Me.txtMontoDesde1
+                    & "AdminComprasFacturasProveedores.redondeo_iva +" _
+                    & " AdminComprasFacturasProveedores.impuesto_interno +" _
+                    & " (SELECT SUM(iva_calculado)         FROM sp.AdminComprasFacturasProveedoresIva acfpi " _
+                    & " JOIN AdminComprasFacturasProveedores acfp ON acfpi.id_factura_proveedor=acfp.id " _
+                    & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                    & " )                + " _
+                    & " IF((SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
+                    & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
+                    & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                    & ") IS NULL,0," _
+                    & " (SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
+                    & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
+                    & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                    & ")),2)                *             (IF (AdminComprasFacturasProveedores.tipo_doc_contable = 1,'-1','1'))) >= " & Me.txtMontoDesde1
 
     End If
 
     If Me.txtMontoHasta1 <> "" Then
         condition = condition & " AND (ROUND(AdminComprasFacturasProveedores.monto_neto + " _
-                  & "AdminComprasFacturasProveedores.redondeo_iva +" _
-                  & " AdminComprasFacturasProveedores.impuesto_interno +" _
-                  & " (SELECT SUM(iva_calculado)         FROM sp.AdminComprasFacturasProveedoresIva acfpi " _
-                  & " JOIN AdminComprasFacturasProveedores acfp ON acfpi.id_factura_proveedor=acfp.id " _
-                  & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                  & " )                + " _
-                  & " IF((SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
-                  & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
-                  & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                  & ") IS NULL,0," _
-                  & " (SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
-                  & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
-                  & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                  & ")),2)                *             (IF (AdminComprasFacturasProveedores.tipo_doc_contable = 1,'-1','1'))) <= " & Me.txtMontoHasta1
+                    & "AdminComprasFacturasProveedores.redondeo_iva +" _
+                    & " AdminComprasFacturasProveedores.impuesto_interno +" _
+                    & " (SELECT SUM(iva_calculado)         FROM sp.AdminComprasFacturasProveedoresIva acfpi " _
+                    & " JOIN AdminComprasFacturasProveedores acfp ON acfpi.id_factura_proveedor=acfp.id " _
+                    & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                    & " )                + " _
+                    & " IF((SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
+                    & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
+                    & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                    & ") IS NULL,0," _
+                    & " (SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
+                    & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
+                    & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                    & ")),2)                *             (IF (AdminComprasFacturasProveedores.tipo_doc_contable = 1,'-1','1'))) <= " & Me.txtMontoHasta1
 
     End If
 
@@ -1198,41 +1140,37 @@ Public Sub llenarGrilla()
 
     If Me.cboOrdenImporte.ListIndex = 0 Then
         ordenImporte = "(ROUND(AdminComprasFacturasProveedores.monto_neto + " _
-                     & "AdminComprasFacturasProveedores.redondeo_iva +" _
-                     & " AdminComprasFacturasProveedores.impuesto_interno +" _
-                     & " (SELECT SUM(iva_calculado)         FROM sp.AdminComprasFacturasProveedoresIva acfpi " _
-                     & " JOIN AdminComprasFacturasProveedores acfp ON acfpi.id_factura_proveedor=acfp.id " _
-                     & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                     & " )                + " _
-                     & " IF((SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
-                     & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
-                     & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                     & ") IS NULL,0," _
-                     & " (SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
-                     & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
-                     & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                     & ")),2)                *             (IF (AdminComprasFacturasProveedores.tipo_doc_contable = 1,'-1','1'))) ASC"
+                       & "AdminComprasFacturasProveedores.redondeo_iva +" _
+                       & " AdminComprasFacturasProveedores.impuesto_interno +" _
+                       & " (SELECT SUM(iva_calculado)         FROM sp.AdminComprasFacturasProveedoresIva acfpi " _
+                       & " JOIN AdminComprasFacturasProveedores acfp ON acfpi.id_factura_proveedor=acfp.id " _
+                       & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                       & " )                + " _
+                       & " IF((SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
+                       & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
+                       & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                       & ") IS NULL,0," _
+                       & " (SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
+                       & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
+                       & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                       & ")),2)                *             (IF (AdminComprasFacturasProveedores.tipo_doc_contable = 1,'-1','1'))) ASC"
     ElseIf Me.cboOrdenImporte.ListIndex = 1 Then
         ordenImporte = "(ROUND(AdminComprasFacturasProveedores.monto_neto + " _
-                     & "AdminComprasFacturasProveedores.redondeo_iva +" _
-                     & " AdminComprasFacturasProveedores.impuesto_interno +" _
-                     & " (SELECT SUM(iva_calculado)         FROM sp.AdminComprasFacturasProveedoresIva acfpi " _
-                     & " JOIN AdminComprasFacturasProveedores acfp ON acfpi.id_factura_proveedor=acfp.id " _
-                     & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                     & " )                + " _
-                     & " IF((SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
-                     & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
-                     & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                     & ") IS NULL,0," _
-                     & " (SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
-                     & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
-                     & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
-                     & ")),2)                *             (IF (AdminComprasFacturasProveedores.tipo_doc_contable = 1,'-1','1'))) DESC"
+                       & "AdminComprasFacturasProveedores.redondeo_iva +" _
+                       & " AdminComprasFacturasProveedores.impuesto_interno +" _
+                       & " (SELECT SUM(iva_calculado)         FROM sp.AdminComprasFacturasProveedoresIva acfpi " _
+                       & " JOIN AdminComprasFacturasProveedores acfp ON acfpi.id_factura_proveedor=acfp.id " _
+                       & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                       & " )                + " _
+                       & " IF((SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
+                       & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
+                       & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                       & ") IS NULL,0," _
+                       & " (SELECT SUM(valor)         FROM AdminComprasFacturasProveedoresPercepciones acfpp " _
+                       & " JOIN AdminComprasFacturasProveedores acfp ON acfpp.id_factura_proveedor=acfp.id " _
+                       & " Where id_factura_proveedor = AdminComprasFacturasProveedores.Id " _
+                       & ")),2)                *             (IF (AdminComprasFacturasProveedores.tipo_doc_contable = 1,'-1','1'))) DESC"
     End If
-
-    'ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron ASC "
-
-    ' Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1279,12 +1217,11 @@ Public Sub llenarGrilla()
     'Agregar totalizador de Percepciones
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalpercep))
 
-
     grilla.ItemCount = facturas.count
 
     GridEXHelper.AutoSizeColumns Me.grilla, True
 
-    Me.caption = "Cbtes. Proveedores (" & facturas.count & " comprobantes encontrados)"
+    Me.caption = "Cbtes. filtrados [Cantidad: " & facturas.count & "]"
 
 End Sub
 
@@ -1294,12 +1231,6 @@ Private Sub Form_Resize()
     On Error Resume Next
     Me.grilla.Width = Me.ScaleWidth - 50
     Me.grilla.Height = Me.ScaleHeight - 1800
-
-    'Me.GroupBox1.Width = Me.grilla.Width
-
-    '    Me.cmdImprimir.Left = Me.GroupBox1.Width - (Me.cmdImprimir.Width + 500)
-    '    Me.cmdExportar.Left = Me.cmdImprimir.Left
-    '    Me.btnBuscar.Left = Me.cmdImprimir.Left
 
 End Sub
 
@@ -1352,8 +1283,6 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
-'    If RowBuffer.RowIndex > 0 Then
-'        Set tmpRto = remitos(RowBuffer.RowIndex)
     On Error GoTo err1
     Set Factura = facturas(RowBuffer.RowIndex)
 
@@ -1404,8 +1333,8 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         End If
 
         'Values(14) = "DESARROLLANDOSE..."
-        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total - (Factura.NetoGravadoAbonadoGlobal + Factura.OtrosAbonadoGlobal)) * i), "$", "")
-
+        'Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total - (Factura.NetoGravadoAbonadoGlobal + Factura.OtrosAbonadoGlobal)) * i), "$", "")
+        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalPendiente - Factura.TotalAbonadoGlobal) * i), "$", "")
         If Factura.cuentasContables.count > 0 Then
             Values(13) = Factura.cuentasContables.item(1).cuentas.codigo
         End If
@@ -1421,7 +1350,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
             Values(17) = Factura.OrdenesPagoId
             If Values(17) = "-" Then
-                Values(17) = "LC- " & Factura.NumeroLiqCaja
+                Values(17) = "LC- " & Factura.LiquidacionesCajaId
             End If
         End If
 
@@ -1441,7 +1370,6 @@ End Property
 
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
-
     If EVENTO.EVENTO = agregar_ Then
         facturas.Add EVENTO.Elemento
         Me.grilla.ItemCount = facturas.count
@@ -1474,17 +1402,15 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 End Function
 
 
-
-
 Private Sub mnuArchivos_Click()
     Dim archi As New frmArchivos2
-
     archi.Origen = OrigenArchivos.OA_FacturaProveedor
     archi.ObjetoId = Factura.Id
     archi.caption = Factura.NumeroFormateado
     archi.Show
 
 End Sub
+
 
 Private Sub mnuEliminar_Click()
     If MsgBox("¿Está seguro de eliminar la " & Factura.NumeroFormateado & " de " & Factura.Proveedor.RazonSocial & "?", vbInformation + vbYesNo) = vbYes Then
@@ -1497,10 +1423,10 @@ Private Sub mnuEliminar_Click()
     End If
 End Sub
 
+
 Private Sub mnuPagarEnEfectivo_Click()
     If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
-        '        Dim fechaPago As String
-        'fechaPago = InputBox("Ingrese la fecha de pago de factura", , Factura.FEcha)
+
         MsgBox "Se creará una OP con fecha " + CStr(Factura.FEcha)
         If IsDate(Factura.FEcha) Then
             If DAOFacturaProveedor.PagarEnEfectivo(Factura, Factura.FEcha, True) Then
@@ -1517,7 +1443,6 @@ Private Sub mnuPagarEnEfectivo_Click()
 End Sub
 
 
-
 Private Sub mnuScan_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
@@ -1531,27 +1456,16 @@ End Sub
 
 Private Sub MnuVerOP_Click()
     Dim f123 As New frmAdminComprasListaOPSegunCbte
-
-    '    frm.ver = True
     f123.Factura = Factura
     f123.Show
 
 End Sub
 
-'Private Sub MnuVerOP_Click()
-'
-'    Dim Orden As OrdenPago
-'    Set Orden = DAOOrdenPago.FindByFacturaId(Factura.Id)
-'    Dim f22 As New frmAdminPagosCrearOrdenPago
-'    f22.Show
-'    f22.ReadOnly = True
-'    f22.Cargar Orden
-'End Sub
-
 
 Private Sub txtComprobante_GotFocus()
     foco Me.txtComprobante
 End Sub
+
 
 Private Sub verDetalle_Click()
     SeleccionarFactura
@@ -1562,6 +1476,7 @@ Private Sub verDetalle_Click()
     frm.Factura = Factura
     frm.Show
 End Sub
+
 
 Private Sub verHistorial_Click()
     If grilla.ItemCount > 0 Then

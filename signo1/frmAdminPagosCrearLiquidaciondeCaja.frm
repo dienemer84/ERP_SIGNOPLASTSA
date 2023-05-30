@@ -134,7 +134,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Height          =   375
          Left            =   4800
          TabIndex        =   36
-         Top             =   1200
+         Top             =   480
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -148,7 +148,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Height          =   375
          Left            =   2520
          TabIndex        =   35
-         Top             =   480
+         Top             =   1200
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -161,7 +161,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Height          =   360
          Left            =   120
          TabIndex        =   33
-         Top             =   1207
+         Top             =   480
          Width           =   4575
          _Version        =   786432
          _ExtentX        =   8070
@@ -184,13 +184,13 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Height          =   495
          Left            =   6000
          TabIndex        =   29
-         Top             =   1140
+         Top             =   360
          Width           =   2295
          _Version        =   786432
          _ExtentX        =   4048
          _ExtentY        =   873
          _StockProps     =   79
-         Caption         =   "Mostrar"
+         Caption         =   "Mostrar comprobantes"
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -215,7 +215,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Height          =   375
          Left            =   120
          TabIndex        =   28
-         Top             =   480
+         Top             =   1200
          Width           =   2295
       End
       Begin VB.Label lblProveedor 
@@ -224,7 +224,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Height          =   255
          Left            =   120
          TabIndex        =   34
-         Top             =   960
+         Top             =   240
          Width           =   2175
       End
       Begin VB.Label lblNúmero 
@@ -232,7 +232,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Height          =   255
          Left            =   120
          TabIndex        =   1
-         Top             =   240
+         Top             =   960
          Width           =   4095
       End
    End
@@ -1176,6 +1176,51 @@ End Sub
 
 Public Sub Cargar(liq As clsLiquidacionCaja)
 
+    Me.txtDifCambioNG1.Enabled = Not ReadOnly
+    Me.txtDifCambioTOTAL1.Enabled = Not ReadOnly
+
+    Me.radioFacturaProveedor.Enabled = Not ReadOnly
+
+    Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
+    Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
+
+    Me.gridBancos.AllowEdit = Not ReadOnly
+    Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
+    Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
+
+    Me.gridCajas.AllowEdit = Not ReadOnly
+    Me.gridChequeras.AllowEdit = Not ReadOnly
+    Me.gridChequesChequera.AllowEdit = Not ReadOnly
+    Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
+    Me.lblNúmero.Enabled = Not ReadOnly
+    Me.cboMonedas.Enabled = Not ReadOnly
+    Me.dtpFecha.Enabled = Not ReadOnly
+    Me.btnGuardar.Enabled = Not ReadOnly
+    Me.btnFiltrarResultados.Enabled = Not ReadOnly
+    Me.btnConfirmarSeleccion.Enabled = Not ReadOnly
+    Me.btnDesseleccionarTodo.Enabled = Not ReadOnly
+    Me.btnSacarSeleccionado.Enabled = Not ReadOnly
+    Me.btnSacarTodos.Enabled = Not ReadOnly
+    Me.btnSeleccionarTodo.Enabled = Not ReadOnly
+    Me.txtFiltroNumero.Enabled = Not ReadOnly
+    Me.lblNumero.Enabled = Not ReadOnly
+    Me.btnLimpiarNúmero.Enabled = Not ReadOnly
+    Me.lblCantidadCbtesSeleccionados.Visible = Not ReadOnly
+    Me.lblCantidadComprobantes.Visible = Not ReadOnly
+    Me.Label1.Enabled = Not ReadOnly
+    Me.Label2.Enabled = Not ReadOnly
+    Me.grpFiltros.Enabled = Not ReadOnly
+
+    Me.txtInstruccion.Enabled = Not ReadOnly
+    Me.txtInstruccionDos.Enabled = Not ReadOnly
+    Me.txtNumerodeLiquidacion.Enabled = Not ReadOnly
+    Me.grpCbtesImpagos.Enabled = Not ReadOnly
+    Me.grpCbtesConfirmados(1).Enabled = Not ReadOnly
+    Me.txtOtrosDescuentos.Enabled = Not ReadOnly
+    Me.lstFacturas.Enabled = Not ReadOnly
+    Me.lstFacturasFiltradas.Enabled = Not ReadOnly
+    
+    
     If Not IsSomething(liq) Then
         MsgBox "La Liquidación que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
         Unload Me
@@ -1249,49 +1294,6 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
 
     Me.txtNumerodeLiquidacion = LiquidacionCaja.NumeroLiq
 
-    Me.txtDifCambioNG1.Enabled = Not ReadOnly
-    Me.txtDifCambioTOTAL1.Enabled = Not ReadOnly
-
-    Me.radioFacturaProveedor.Enabled = Not ReadOnly
-
-    Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
-    Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
-
-    Me.gridBancos.AllowEdit = Not ReadOnly
-    Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
-    Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
-
-    Me.gridCajas.AllowEdit = Not ReadOnly
-    Me.gridChequeras.AllowEdit = Not ReadOnly
-    Me.gridChequesChequera.AllowEdit = Not ReadOnly
-    Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
-
-    Me.cboMonedas.Enabled = Not ReadOnly
-    Me.dtpFecha.Enabled = Not ReadOnly
-    Me.btnGuardar.Enabled = Not ReadOnly
-    Me.btnFiltrarResultados.Enabled = Not ReadOnly
-    Me.btnConfirmarSeleccion.Enabled = Not ReadOnly
-    Me.btnDesseleccionarTodo.Enabled = Not ReadOnly
-    Me.btnSacarSeleccionado.Enabled = Not ReadOnly
-    Me.btnSacarTodos.Enabled = Not ReadOnly
-    Me.btnSeleccionarTodo.Enabled = Not ReadOnly
-    Me.txtFiltroNumero.Enabled = Not ReadOnly
-    Me.lblNumero.Enabled = Not ReadOnly
-    Me.btnLimpiarNúmero.Enabled = Not ReadOnly
-    Me.lblCantidadCbtesSeleccionados.Visible = Not ReadOnly
-    Me.lblCantidadComprobantes.Visible = Not ReadOnly
-    Me.Label1.Enabled = Not ReadOnly
-    Me.Label2.Enabled = Not ReadOnly
-    Me.grpFiltros.Enabled = Not ReadOnly
-    Me.lblNúmero.Enabled = Not ReadOnly
-    Me.txtInstruccion.Enabled = Not ReadOnly
-    Me.txtInstruccionDos.Enabled = Not ReadOnly
-    Me.txtNumerodeLiquidacion.Enabled = Not ReadOnly
-    Me.grpCbtesImpagos.Enabled = Not ReadOnly
-    Me.txtOtrosDescuentos.Enabled = Not ReadOnly
-    Me.lstFacturas.Enabled = Not ReadOnly
-    Me.lstFacturasFiltradas.Enabled = Not ReadOnly
-
     Totalizar
 
     EsNueva = False
@@ -1320,7 +1322,6 @@ Private Sub btnFiltrarResultados_Click()
 End Sub
 Private Sub btnGuardar_Click()
 
-
     If Me.gridCajaOperaciones.EditMode = jgexEditModeOn Then
         MsgBox "Todavia esta editando la grilla de caja.", vbExclamation
         Exit Sub
@@ -1337,12 +1338,9 @@ Private Sub btnGuardar_Click()
         MsgBox ("El número de Liquidación no puede estar vacío.")
         Exit Sub
     Else
-
         LiquidacionCaja.NumeroLiq = Me.txtNumerodeLiquidacion.text
 
     End If
-
-
 
     Set LiquidacionCaja.FacturasProveedor = New Collection
 
@@ -1393,8 +1391,6 @@ Private Sub btnGuardar_Click()
     Else
         MsgBox LiquidacionCaja.ValidationMessages, vbCritical, "Error"
     End If
-
-
 
 End Sub
 Private Sub btnLimpiarNúmero_Click()
@@ -1533,13 +1529,7 @@ Private Sub MostrarFacturas()
         Factura.NetoGravadoAbonadoGlobalPendiente = 0    ' c(2)
         Factura.OtrosAbonadoGlobalPendiente = 0    'c(3)
 
-        T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")"    'TipoCambio: (" & Factura.TipoCambioPago & ")"
-        '            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
-        '                T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
-        '
-        '                'MsgBox (c.count)
-        '
-        '            End If
+        T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")" & "  | " & UCase(Factura.Proveedor.RazonSocial)
 
         Me.lstFacturas.AddItem T
         Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
@@ -1944,7 +1934,10 @@ Private Sub btnConfirmarSeleccion_Click()
 
 
     Me.txtFiltroNumero.text = ""
-    Me.txtFiltroNumero.SetFocus
+    
+    If Me.txtFiltroNumero.Enabled = True Then
+        Me.txtFiltroNumero.SetFocus
+    End If
 
 End Sub
 
