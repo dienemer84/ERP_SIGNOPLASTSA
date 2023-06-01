@@ -45,7 +45,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Left            =   8700
       TabIndex        =   54
       Text            =   "txtNumeroCargado"
-      Top             =   1785
+      Top             =   1800
       Width           =   1635
    End
    Begin VB.TextBox txtTipoCambio 
@@ -135,7 +135,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   -2147483643
       Text            =   "ComboBox1"
    End
-   Begin XtremeSuiteControls.PushButton PushButton1 
+   Begin XtremeSuiteControls.PushButton btnNuevoProveedor 
       Height          =   300
       Left            =   4755
       TabIndex        =   14
@@ -160,7 +160,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _StockProps     =   79
       Caption         =   "Datos del proveedor"
       UseVisualStyle  =   -1  'True
-      Begin XtremeSuiteControls.PushButton cmdDisponer 
+      Begin XtremeSuiteControls.PushButton btnDisponerProveedor 
          Height          =   375
          Left            =   5160
          TabIndex        =   19
@@ -399,7 +399,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       ImageCount      =   0
       PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":19DC
    End
-   Begin XtremeSuiteControls.PushButton cmdGuardar 
+   Begin XtremeSuiteControls.PushButton btnGuardar 
       Height          =   390
       Left            =   8745
       TabIndex        =   20
@@ -466,7 +466,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   62586881
+      Format          =   165478401
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -608,7 +608,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Sorted          =   -1  'True
       Text            =   "ComboBox1"
    End
-   Begin XtremeSuiteControls.PushButton PushButton2 
+   Begin XtremeSuiteControls.PushButton btnNuevoCbte 
       Height          =   390
       Left            =   7035
       TabIndex        =   23
@@ -739,10 +739,10 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FF8080&
       Caption         =   "Número"
-      Height          =   285
+      Height          =   195
       Left            =   7635
       TabIndex        =   26
-      Top             =   1800
+      Top             =   1845
       Width           =   975
    End
    Begin VB.Label Label11 
@@ -884,7 +884,6 @@ End Sub
 Private Sub cboMonedas_Click()
     Set moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
 
-
     If IsSomething(vFactura) Then Set vFactura.moneda = moneda
     If IsSomething(moneda) Then
         If Not VVer Then
@@ -958,7 +957,7 @@ Private Sub LimpiarProveedor()
 End Sub
 
 
-Private Sub cmdDisponer_Click()
+Private Sub btnDisponerProveedor_Click()
 
 
     If Proveedor.Id = 0 Then
@@ -971,7 +970,8 @@ Private Sub cmdDisponer_Click()
     End If
 End Sub
 
-Private Sub cmdGuardar_Click()
+
+Private Sub btnGuardar_Click()
     On Error GoTo err1
 
     If Me.grilla_alicuotas.EditMode = jgexEditModeOn Then
@@ -1182,7 +1182,7 @@ Private Sub Form_Load()
         Me.txtTipoCambio.Enabled = False
         Me.cboTipoDocContable.Enabled = False
         Me.cboMonedas.Enabled = False
-        Me.cmdGuardar.Enabled = False
+        Me.btnGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
         Me.frame2.Enabled = False
@@ -1198,7 +1198,7 @@ Private Sub Form_Load()
         Me.Label10.Visible = True
         Me.Label17.Visible = False
         Me.txtMontoManual.Visible = False
-        Me.PushButton2.Visible = False
+        Me.btnNuevoCbte.Visible = False
         Me.txtTipoCambio = vFactura.TipoCambio
         Me.lblTipoCambioPago = "Tipo de cambio Pago: " & vFactura.TipoCambioPago
 
@@ -1269,7 +1269,7 @@ Private Sub llenarGrillaPercepciones()
 End Sub
 Private Sub ProtegerProveedor()
     Me.GroupBox1.Enabled = (Proveedor.Id = 0)
-    Me.cmdDisponer.Visible = Me.GroupBox1.Enabled
+    Me.btnDisponerProveedor.Visible = Me.GroupBox1.Enabled
 End Sub
 
 Private Sub TotalFactura()
@@ -1317,16 +1317,16 @@ End Sub
 
 Private Sub grid_cuentascontables_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo ErrorHandler
-    
+
     Set ctaAplicada = vFactura.cuentasContables.item(RowIndex)
-    
+
     If Len(ctaAplicada.cuentas.codigo) > 0 Then
         Values(1) = ctaAplicada.cuentas.codigo & " - " & ctaAplicada.cuentas.nombre
         Values(2) = funciones.FormatearDecimales(ctaAplicada.Monto)
     End If
-    
+
     Exit Sub
-    
+
 ErrorHandler:
     MsgBox "Se produjo un error al cargar un valor vacío. Descripcion del Error:" & Err.Description, vbExclamation
 End Sub
@@ -1436,13 +1436,13 @@ End Sub
 Private Sub grilla_percepciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     On Error GoTo ErrorHandler
-    
+
     Set perAplicada = vFactura.percepciones.item(RowIndex)
     Values(1) = perAplicada.Percepcion.Percepcion
     Values(2) = funciones.FormatearDecimales(perAplicada.Monto)
-    
+
     Exit Sub
-    
+
 ErrorHandler:
     MsgBox "Se produjo un error al cargar un valor vacío. Descripcion del Error: " & Err.Description, vbExclamation
 
@@ -1467,13 +1467,13 @@ Private Sub optCtaCte_Click()
     vFactura.FormaPagoCuentaCorriente = True
 End Sub
 
-Private Sub PushButton1_Click()
+Private Sub btnNuevoProveedor_Click()
     Set Proveedor = New clsProveedor
     LimpiarProveedor
     ProtegerProveedor
 End Sub
 
-Private Sub PushButton2_Click()
+Private Sub btnNuevoCbte_Click()
     Dim frm1 As New frmAdminComprasNuevaFCProveedor
     frm1.Factura = Nothing
     frm1.Show
@@ -1521,7 +1521,7 @@ End Function
 
 
 Private Sub txtMontoManual_KeyDown(KeyCode As Integer, Shift As Integer)
-    If KeyCode = 13 Then cmdGuardar_Click
+    If KeyCode = 13 Then btnGuardar_Click
 End Sub
 
 
@@ -1649,7 +1649,12 @@ End Sub
 
 Private Sub armarFactura()
     vFactura.FEcha = (CDate(Format(Me.DTPicker1, "yyyy-mm-dd")))
-    vFactura.numero = Me.txtNumeroMask.text
+
+    If Me.txtNumeroCargado.text = "txtNumeroCargado" Then
+        vFactura.numero = Me.txtNumeroMask.text
+    Else
+        vFactura.numero = Me.txtNumeroCargado.text
+    End If
 
     vFactura.Proveedor = Proveedor
     vFactura.ImpuestoInterno = CDbl(Me.txtImpuestos)
