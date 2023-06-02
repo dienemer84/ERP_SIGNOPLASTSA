@@ -261,7 +261,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
         F.OrdenesPagoId = rs!ordenes_pago
         'F.LiquidacionesCajaId = rs!liquidaciones_caja
         F.LiquidacionesCajaId = rs!num_liquidaciones_caja
-''        Debug.Print (num_liquidaciones_caja)
+        ''        Debug.Print (num_liquidaciones_caja)
 
 
 
@@ -348,9 +348,9 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
 
         fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
 
-'        If indice.Exists(".id_liquidacion_caja") Then fc.LiquidacionCajaId = GetValue(rs, indice, vbNullString, "id_liquidacion_caja")
-'
-'        If indice.Exists(".numero_liq") Then fc.NumeroLiqCaja = GetValue(rs, indice, vbNullString, "numero_liq")
+        '        If indice.Exists(".id_liquidacion_caja") Then fc.LiquidacionCajaId = GetValue(rs, indice, vbNullString, "id_liquidacion_caja")
+        '
+        '        If indice.Exists(".numero_liq") Then fc.NumeroLiqCaja = GetValue(rs, indice, vbNullString, "numero_liq")
 
         Set fc.UsuarioCarga = DAOUsuarios.Map(rs, indice, "usuarios")
 
@@ -365,7 +365,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         If indice.Exists(".total_compensado") Then fc.TotalCompensado = GetValue(rs, indice, vbNullString, "total_compensado")
 
         If indice.Exists(".num_liquidaciones_caja") Then fc.LiquidacionesCajaId = GetValue(rs, indice, vbNullString, "num_liquidaciones_caja")
-    
+
     End If
 
     Set Map = fc
@@ -595,12 +595,13 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     xlWorksheet.Cells(offset, 14).value = "Estado"
     xlWorksheet.Cells(offset, 15).value = "Forma de Pago"
     xlWorksheet.Cells(offset, 16).value = "Orden de Pago"
-    xlWorksheet.Cells(offset, 17).value = "Tipo de Cambio"
-    xlWorksheet.Cells(offset, 18).value = "Usuario"
-    xlWorksheet.Cells(offset, 19).value = "ID"
+    xlWorksheet.Cells(offset, 17).value = "Liquidacion C"
+    xlWorksheet.Cells(offset, 18).value = "Tipo de Cambio"
+    xlWorksheet.Cells(offset, 19).value = "Usuario"
+    xlWorksheet.Cells(offset, 20).value = "ID"
 
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 19)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 19)).Interior.Color = &HC0C0C0
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 20)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 20)).Interior.Color = &HC0C0C0
 
 
     '.Borders.LineStyle = xlContinuous
@@ -662,17 +663,20 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         If fac.cuentasContables.count > 0 Then xlWorksheet.Cells(offset, 13).value = fac.cuentasContables.item(1).cuentas.codigo
         xlWorksheet.Cells(offset, 14).value = enums.enumEstadoFacturaProveedor(fac.estado)
         If fac.FormaPagoCuentaCorriente Then xlWorksheet.Cells(offset, 15).value = "Cta. Cte." Else xlWorksheet.Cells(offset, 15).value = "Contado"
-        'xlWorksheet.Cells(offset, 16).value = fac.OrdenPagoId
 
         xlWorksheet.Cells(offset, 16).value = fac.OrdenesPagoId
+        
+        xlWorksheet.Cells(offset, 17).value = fac.LiquidacionesCajaId
+      
         xlWorksheet.Cells(offset, 16).NumberFormat = "@"
 
-        xlWorksheet.Cells(offset, 17).value = fac.TipoCambio
-        xlWorksheet.Cells(offset, 18).value = fac.UsuarioCarga.usuario
-        xlWorksheet.Cells(offset, 19).value = fac.Id
+        xlWorksheet.Cells(offset, 18).value = fac.TipoCambio
+        xlWorksheet.Cells(offset, 19).value = fac.UsuarioCarga.usuario
+        xlWorksheet.Cells(offset, 20).value = fac.Id
 
 
-        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 19)).Borders.LineStyle = xlContinuous
+        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 20)).Borders.LineStyle = xlContinuous
+        
     Next
 
 

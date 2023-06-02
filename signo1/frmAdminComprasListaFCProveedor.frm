@@ -701,7 +701,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   21
+      ColumnsCount    =   22
       Column(1)       =   "frmAdminComprasListaFCProveedor.frx":0326
       Column(2)       =   "frmAdminComprasListaFCProveedor.frx":048A
       Column(3)       =   "frmAdminComprasListaFCProveedor.frx":05B2
@@ -719,23 +719,24 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1A1E
       Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B86
       Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CDE
-      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E42
-      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1F9A
-      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":213E
-      Column(21)      =   "frmAdminComprasListaFCProveedor.frx":2296
+      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E36
+      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1F6E
+      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":20C6
+      Column(21)      =   "frmAdminComprasListaFCProveedor.frx":226A
+      Column(22)      =   "frmAdminComprasListaFCProveedor.frx":23C2
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":23C2
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":24FA
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":25AA
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":265E
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":2736
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":27EE
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":28CE
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":298E
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2A52
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":24D2
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":260A
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":26BA
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":276E
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":2846
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":28FE
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":29DE
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2A9E
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2B62
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2B12
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2E2C
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2C22
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2F3C
    End
    Begin XtremeSuiteControls.ComboBox cboFantasia 
       Height          =   315
@@ -842,11 +843,11 @@ End Sub
 
 Private Sub checkVerIds_Click()
     If Me.checkVerIds.value = xtpUnchecked Then
-        Me.grilla.Columns(21).Visible = False
+        Me.grilla.Columns(22).Visible = False
 
     ElseIf Me.checkVerIds.value = xtpChecked Then
-        Me.grilla.Columns(21).Visible = True
-        Me.grilla.Columns(21).Width = 800
+        Me.grilla.Columns(22).Visible = True
+        Me.grilla.Columns(22).Width = 800
     End If
 
 End Sub
@@ -1269,10 +1270,10 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If (Factura.estado = Saldada Or Factura.estado = pagoParcial) Then
                 Me.MnuVerOP.Enabled = True
                 Me.MnuVerOP.Visible = True
-                Me.MnuVerOP.caption = "Ver OP"
+                Me.MnuVerOP.caption = "Ver OP / LIQ"
             Else
                 Me.MnuVerOP.Visible = False
-                Me.MnuVerOP.caption = "No hay OP asociada"
+                Me.MnuVerOP.caption = "No hay OP o LIQ asociada"
             End If
 
 
@@ -1349,15 +1350,13 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 
         If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
             Values(17) = Factura.OrdenesPagoId
-            If Values(17) = "-" Then
-                Values(17) = "LC- " & Factura.LiquidacionesCajaId
-            End If
+            Values(18) = Factura.LiquidacionesCajaId
         End If
 
-        Values(18) = Factura.UsuarioCarga.usuario
-        Values(19) = Factura.TipoCambio
-        Values(20) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
-        Values(21) = Factura.Id
+        Values(19) = Factura.UsuarioCarga.usuario
+        Values(20) = Factura.TipoCambio
+        Values(21) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
+        Values(22) = Factura.Id
 
     End With
 
