@@ -806,7 +806,7 @@ Private Function accion() As Boolean
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
     proveedor_.Cuit = Me.Text1(10)
     Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
-    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIva.ItemData(Me.cboIva.ListIndex)))
+    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIVA.ItemData(Me.cboIVA.ListIndex)))
 
     'busco rubros
 
@@ -855,7 +855,7 @@ Private Sub mostrarCampos()
     Text1(11) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
     cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.Id, cboMonedas)
-    cboIva.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIva)
+    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIVA)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
 End Sub
 Private Sub Form_Load()
@@ -868,7 +868,7 @@ Private Sub Form_Load()
     Else
         Me.caption = "Crear Modificar Proveedor..."
     End If
-    If vTipo = Ver Then
+    If vTipo = ver Then
         Me.caption = "Consultar Proveedor..."
     End If
     LlenarEstadosProveedor
@@ -954,7 +954,7 @@ Private Sub Text1_GotFocus(Index As Integer)
     foco Me.Text1(Index)
 End Sub
 Public Sub llenarIva()
-    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIva
+    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIVA
 End Sub
 
 Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)

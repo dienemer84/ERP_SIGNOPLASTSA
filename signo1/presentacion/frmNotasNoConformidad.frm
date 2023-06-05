@@ -129,8 +129,8 @@ End Sub
 Private Sub Buscar()
     Dim F As String
     F = "1 = 1"
-    If LenB(Me.txtOT.text) > 0 Then
-        F = F & " AND PlaneamientoTiemposProcesos.idPedido = " & Me.txtOT.text
+    If LenB(Me.txtOt.text) > 0 Then
+        F = F & " AND PlaneamientoTiemposProcesos.idPedido = " & Me.txtOt.text
     End If
     Me.gridNotas.ItemCount = 0
     Set notas = DAONotaNoConformidad.FindAll(F)
@@ -180,5 +180,5 @@ Private Sub mnuResolver_Click()
 End Sub
 
 Private Sub txtOT_Validate(Cancel As Boolean)
-    Cancel = Not IsNumeric(Me.txtOT.text) And LenB(Me.txtOT.text) > 0
+    Cancel = Not IsNumeric(Me.txtOt.text) And LenB(Me.txtOt.text) > 0
 End Sub

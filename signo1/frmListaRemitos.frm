@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoRemitosLista 
@@ -484,22 +484,20 @@ Dim filtro As String
 Dim id_suscriber As String
 Public VerInfoAdministracion As Boolean
 Public VerInfoPlaneamiento As Boolean
-Dim claseP As New classPlaneamiento
 Dim facturasRemitos As Dictionary
 Dim m_Archivos As Dictionary
 
 
 Private Sub AnularRto_Click()
-    Dim IdRemito As Long
     Dim A As Long
     A = Me.grilla.RowIndex(Me.grilla.row)
     If MsgBox("¿Está seguro de anular el remito?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.Anular(tmpRto) Then
             MsgBox "Remito anulado con éxito!", vbExclamation, "Información"
             Me.grilla.RefreshRowIndex A
-            
+
             llenarContadoresStatusBar
-            
+
         Else
             MsgBox "Se produjo algún error al anular el remito!", vbExclamation, "Información"
         End If
@@ -528,9 +526,6 @@ End Sub
 
 Private Sub cmdBuscar_Click()
     listaRemitos
-End Sub
-Private Sub Command1_Click()
-    Unload Me
 End Sub
 
 Private Sub cmdImprimir_Click()
@@ -658,9 +653,9 @@ Private Sub listaRemitos()
     Me.grilla.ItemCount = 0
     Me.grilla.ItemCount = remitos.count
     Me.grilla.Update
-    
+
     llenarContadoresStatusBar
-    
+
     Me.caption = "Remitos [Cantidad: " & remitos.count & "]"
 
 End Sub
@@ -706,7 +701,7 @@ Private Sub Form_Load()
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoRemito.RemitoPendiente
     Me.cboEstado.AddItem enums.EnumEstadoRemito(EstadoRemito.RemitoAnulado)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoRemito.RemitoAnulado
-    
+
     listaRemitos
 
     llenarContadoresStatusBar
@@ -718,26 +713,26 @@ Public Sub llenarContadoresStatusBar()
     ContarPendientes
     ContarAprobados
     ContarAnulados
-    
+
     ContarNoFacturados
     ContarNoFacturables
     ContarFacturadosParcial
     ContarFacturadosTotal
-    
+
     MostrarCantidadPendientes
     MostrarCantidadAnulados
     MostrarCantidadAprobados
-    
+
     MostrarFacturadosTotal
     MostrarNoFacturados
     MostrarNoFacturables
     MostrarFacturadosParcial
-    
+
     StatusBar1.Height = 350
     StatusBar1.Panels(1).Width = 2000
     StatusBar1.Panels(2).Width = 2000
     StatusBar1.Panels(3).Width = 2000
-    
+
     StatusBar1.Panels(4).Width = 2000
     StatusBar1.Panels(5).Width = 2000
     StatusBar1.Panels(6).Width = 2000
@@ -750,21 +745,29 @@ Private Sub MostrarCantidadPendientes()
     Cantidad = ContarPendientes()
     StatusBar1.Panels(1).text = "Pendientes Total: " & Cantidad
 End Sub
+
+
 Private Sub MostrarCantidadAnulados()
     Dim Cantidad As Integer
     Cantidad = ContarAnulados()
     StatusBar1.Panels(2).text = "Anulados Total: " & Cantidad
 End Sub
+
+
 Private Sub MostrarCantidadAprobados()
     Dim Cantidad As Integer
     Cantidad = ContarAprobados()
     StatusBar1.Panels(3).text = "Aprobados Total: " & Cantidad
 End Sub
+
+
 Private Sub MostrarFacturadosTotal()
     Dim Cantidad As Integer
     Cantidad = ContarFacturadosTotal()
     StatusBar1.Panels(4).text = "Facturados Total: " & Cantidad
 End Sub
+
+
 Private Sub MostrarNoFacturados()
     Dim Cantidad As Integer
     Cantidad = ContarNoFacturados()
@@ -865,7 +868,7 @@ Private Sub Form_Resize()
     Me.grilla.Width = Me.ScaleWidth - 180
     Me.grilla.Height = Me.ScaleHeight - 3200
     Me.GroupBox1.Width = Me.ScaleWidth - 180
-    
+
 End Sub
 
 
@@ -971,32 +974,41 @@ Private Sub grilla_SelectionChange()
     End If
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, _
+                                   ByVal Bookmark As Variant, _
+                                   ByVal Values As GridEX20.JSRowData)
+
     On Error Resume Next
+
     Set tmpRto = remitos.item(RowIndex)
+
     With Values
         .value(1) = tmpRto.numero
         .value(6) = tmpRto.detalle
         .value(3) = tmpRto.FEcha
         .value(4) = enums.EnumEstadoRemito(tmpRto.estado)
         .value(5) = tmpRto.usuarioCreador.usuario
+
         If IsSomething(tmpRto.cliente) Then .value(2) = tmpRto.cliente.razon
         If IsSomething(tmpRto.usuarioAprobador) Then
             .value(7) = tmpRto.usuarioAprobador.usuario
         Else
             .value(7) = vbNullString
+
         End If
+
         .value(8) = tmpRto.VerEstadoFacturado
 
         If facturasRemitos.Exists(CStr(tmpRto.numero)) Then
             If LenB(facturasRemitos.item(CStr(tmpRto.numero))) >= 0 Then
-                .value(9) = Left(facturasRemitos.item(CStr(tmpRto.numero)), Len(facturasRemitos.item(CStr(tmpRto.numero))) - 2)
-            End If
-        End If
-        Dim Cant As Long
+                .value(9) = Left$(facturasRemitos.item(CStr(tmpRto.numero)), Len(facturasRemitos.item(CStr(tmpRto.numero))) - 2)
 
+            End If
+
+        End If
 
         .value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
+
     End With
 
 End Sub
@@ -1043,10 +1055,6 @@ Private Sub mnuDefinirBultos_Click()
     On Error GoTo err1
     Dim Cant As Integer
 
-
-
-
-
     Cant = InputBox("Ingrese cantidad de bultos", "Cantidad de bultos", tmpRto.CantidadBultos)
 
     If Cant <> tmpRto.CantidadBultos And Cant > 0 Then
@@ -1075,6 +1083,8 @@ Private Sub mnuEditar_Click()
     frm3.MostrarInfoAdministracion = VerInfoAdministracion
     frm3.Show
 End Sub
+
+
 Private Sub mnuHistorico_Click()
     Dim frm As New frmHistoriales
     frm.lista = DAORemitoHistorico.getAllByIdRemito(tmpRto.Id)
@@ -1088,9 +1098,9 @@ Private Sub mnuNoFacturable_Click()
     DAORemitoS.CambiarEstadoFacturable tmpRto
 
     grilla.RefreshRowIndex A
-    
+
     llenarContadoresStatusBar
-    
+
 End Sub
 
 Private Sub mnuPrintBultos_Click()
@@ -1142,9 +1152,13 @@ Private Sub printRto_Click()
     Exit Sub
 err444:
 End Sub
+
+
 Private Sub PushButton1_Click()
     Me.cboClientes.ListIndex = -1
 End Sub
+
+
 Private Sub scanear_Click()
     On Error Resume Next
     grilla_SelectionChange

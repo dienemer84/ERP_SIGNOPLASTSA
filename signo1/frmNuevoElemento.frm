@@ -1170,7 +1170,7 @@ Public Sub calcularTotalMateriales(ByVal lst As ListView, ByRef Kg, ByRef m2, By
     Kg = K
     m2 = m
     costo = c
-    Me.lblTotalKg = Kg
+    Me.lblTotalKG = Kg
     Me.lblTotalM2 = m2
     Me.lblCosto = costo
 End Sub
@@ -1188,7 +1188,7 @@ Public Sub calcular_totales_mdo()
     Next i
     Me.lblfijos = Math.Round(totalFIJO, 2)
     Me.lblmdo = Math.Round(TotalMDO, 2)
-    Me.lblcambio = Math.Round(totalCAMBIO, 2)
+    Me.lblCambio = Math.Round(totalCAMBIO, 2)
     Me.lblCtoMDO = Math.Round(cto, 2)
 End Sub
 Private Function verDetalleMateriales(Id)
@@ -1216,7 +1216,7 @@ Private Function verDetalleMateriales(Id)
     Grupo = baseS.Grupo
     rubro = baseS.rubro
     Scrap = Val(Me.txtScrap)
-    verDetalle cxh, descripcion, Espesor, Kg, m2ml, Grupo, rubro
+    VerDetalle cxh, descripcion, Espesor, Kg, m2ml, Grupo, rubro
 End Function
 
 Private Sub btnAgregarMDO_Click()
@@ -1364,7 +1364,7 @@ Private Sub Command1_Click()
             h.SubItems(14) = Cant
 
 
-            verDetalle cxh, descripcion, Espesor, Kg, m2ml, Grupo, rubro
+            VerDetalle cxh, descripcion, Espesor, Kg, m2ml, Grupo, rubro
 
         End If
     End If
@@ -1377,7 +1377,7 @@ erra:
 
 End Sub
 
-Private Function verDetalle(cantxhoja, MAT As String, esp, Kg, m2, Grupo, rubro)
+Private Function VerDetalle(cantxhoja, MAT As String, esp, Kg, m2, Grupo, rubro)
     Me.lblXHoja = cantxhoja
     Me.lblEspesor = esp
     Me.lblm2 = m2
@@ -1575,7 +1575,7 @@ Private Sub Form_Load()
     Me.calcular_totales_mdo
     'Me.calcularTotalMateriales Me.ListView1, kg, m2, costo
     Me.lblCosto = costo
-    Me.lblTotalKg = Kg
+    Me.lblTotalKG = Kg
     Me.lblTotalM2 = m2
     grabado = False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes

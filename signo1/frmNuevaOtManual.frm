@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
@@ -367,7 +367,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   147062785
+         Format          =   170786817
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -379,7 +379,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   147062785
+         Format          =   170786817
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -1193,11 +1193,11 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
 
     If Button = 2 And idx > 0 Then
         If m_ot.Detalles(idx).Pieza.EsConjunto Then
-            Me.Ver.caption = "Ver Conjunto..."
-            Me.Ver.Tag = 0
+            Me.ver.caption = "Ver Conjunto..."
+            Me.ver.Tag = 0
         Else
-            Me.Ver.caption = "Ver Desarrollo..."
-            Me.Ver.Tag = -1
+            Me.ver.caption = "Ver Desarrollo..."
+            Me.ver.Tag = -1
         End If
 
         Me.PopupMenu Me.m1

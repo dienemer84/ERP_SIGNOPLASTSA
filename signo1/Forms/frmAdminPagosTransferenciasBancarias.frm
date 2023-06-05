@@ -499,3 +499,11 @@ Private Sub mnuVer_Click()
     f22.ReadOnly = True
     f22.Cargar TransfBancaria.OrdenPago
 End Sub
+
+
+Private Sub Form_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then ' 13 es el código ASCII de la tecla Enter
+        ' Realizar la acción de búsqueda aquí
+        CompletarGridEx
+    End If
+End Sub

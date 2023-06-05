@@ -98,7 +98,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm"
-      Format          =   147062787
+      Format          =   164233219
       CurrentDate     =   40414.6993055556
    End
    Begin VB.TextBox txtNroSiniestro 
@@ -221,7 +221,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CheckBox        =   -1  'True
-      Format          =   147062785
+      Format          =   164233217
       CurrentDate     =   40414
    End
    Begin XtremeSuiteControls.ComboBox cboART 

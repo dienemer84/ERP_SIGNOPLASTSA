@@ -162,7 +162,7 @@ Begin VB.Form frmPlanificacionTemporal
       ScaleMinStart   =   0
       ScaleMaxStop    =   767011
       DrawLongLines   =   -1  'True
-      PrintSettingsPrinterName=   "Send To OneNote 2007"
+      PrintSettingsPrinterName=   "Bullzip PDF Printer"
       TodayLineOnOff  =   -1  'True
       TodayLineColor  =   0
       TimeItemAutoScroll=   0
@@ -341,8 +341,8 @@ Private Sub AgregarTareas(row As ReportRow)
     Next
 End Sub
 Private Sub cmdBuscar_Click()
-    If LenB(Me.txtOT) > 0 And IsNumeric(Me.txtOT) Then
-        Set vpedido = DAOOrdenTrabajo.FindById(Val(Me.txtOT))
+    If LenB(Me.txtOt) > 0 And IsNumeric(Me.txtOt) Then
+        Set vpedido = DAOOrdenTrabajo.FindById(Val(Me.txtOt))
         If IsSomething(vpedido) Then
             Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
             MostrarGantt
@@ -364,7 +364,7 @@ Private Sub Form_Load()
     End If
 End Sub
 Private Sub MostrarGantt()
-    Me.txtOT = vpedido.Id
+    Me.txtOt = vpedido.Id
     Me.lblCliente = "Cliente: " & vpedido.cliente.razon
     Me.lblDescripcion = "Descripcion: " & vpedido.descripcion & "  | Fecha entrega: " & vpedido.FechaEntrega
     ArmarGantt

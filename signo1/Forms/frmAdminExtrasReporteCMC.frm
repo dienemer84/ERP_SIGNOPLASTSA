@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminExtrasReporteCMC 
@@ -606,7 +606,7 @@ Public Function ExportarResultado() As Boolean
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
 
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
         '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
         sFilter = "Hoja de Calculo|*.xls"
@@ -619,7 +619,7 @@ Public Function ExportarResultado() As Boolean
         Dim archi As String
         archi = "COMPARACIÓN CTES COMPRAS " & Periodo & ".xlsx"
 
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
 
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave

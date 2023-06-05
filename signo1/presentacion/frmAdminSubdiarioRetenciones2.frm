@@ -76,7 +76,7 @@ Begin VB.Form frmAdminSubdiarioRetenciones2
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   62783489
+         Format          =   16842753
          CurrentDate     =   39660
       End
       Begin MSComCtl2.DTPicker DTDesde 
@@ -88,7 +88,7 @@ Begin VB.Form frmAdminSubdiarioRetenciones2
          _ExtentX        =   2778
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   62783489
+         Format          =   16842753
          CurrentDate     =   39660
       End
       Begin VB.Label Label1 

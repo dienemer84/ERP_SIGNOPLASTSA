@@ -56,7 +56,7 @@ Begin VB.Form frmAdminFacturasAprobarSinAfip
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62783489
+         Format          =   163905537
          CurrentDate     =   43960
       End
       Begin VB.Label Label1 

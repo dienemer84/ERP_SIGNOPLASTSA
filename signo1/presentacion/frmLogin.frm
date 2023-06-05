@@ -315,16 +315,16 @@ Private Sub Command1_Click()
 
 
                 Else
-                    Me.Mensaje = "* Password incorrecto *"
+                    Me.mensaje = "* Password incorrecto *"
                     Me.Text2 = Empty
                 End If
             Else
-                Me.Mensaje = "* Usuario no válido en el sistema *"
+                Me.mensaje = "* Usuario no válido en el sistema *"
                 Me.Text1 = Empty
                 Me.Text2 = Empty
             End If
         Else
-            Me.Mensaje = "* Usuario inexistente *"
+            Me.mensaje = "* Usuario inexistente *"
             Me.Text1 = Empty
             Me.Text2 = Empty
         End If

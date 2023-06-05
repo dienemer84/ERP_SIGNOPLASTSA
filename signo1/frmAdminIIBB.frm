@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminIIBB 
@@ -412,7 +412,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   147062784
+         Format          =   164495360
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -425,7 +425,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   147062785
+         Format          =   164495361
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -438,7 +438,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   147062785
+         Format          =   164495361
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -874,7 +874,7 @@ Private Sub MostrarResultado(tabla As String, Cuit As String)
                 Me.Frame2.caption = "[ Sin resultado ]"
             End If
             Me.lblAltaBaja = rs!AltaBaja
-            Me.lblcambio = rs!Cambio
+            Me.lblCambio = rs!Cambio
             Me.lblGrupo = rs!Grupo
             Me.lblAlicuota = rs!alicuota
             Me.lblTipo = rs!Tipo
@@ -1033,8 +1033,8 @@ Private Sub Command3ss_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1112,8 +1112,8 @@ Private Sub btnRetenciones_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1156,8 +1156,8 @@ Private Sub Command3_Click(Index As Integer)
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1179,8 +1179,8 @@ Private Sub Command5_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronPercepcion) Then
@@ -1212,8 +1212,8 @@ Private Sub Command7_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.CD.ShowOpen
-    filename = CD.filename
+    Me.cd.ShowOpen
+    filename = cd.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronUnificadoCABA) Then

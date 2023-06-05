@@ -654,8 +654,8 @@ End Sub
 Private Sub Command2_Click()
     On Error GoTo err1
     Dim archivo As String
-    frmPrincipal.CD.ShowOpen
-    archivo = frmPrincipal.CD.filename
+    frmPrincipal.cd.ShowOpen
+    archivo = frmPrincipal.cd.filename
     Me.PicContainer.Picture = LoadPicture(archivo)
     ShowContainerSize
     Exit Sub
@@ -766,26 +766,26 @@ Private Sub PushButton2_Click()
     On Error GoTo err1
     Set ctrl = LocateLastControlInContainer
 
-    frmPrincipal.CD.Flags = cdlCFPrinterFonts
+    frmPrincipal.cd.Flags = cdlCFPrinterFonts
 
     If IsSomething(ctrl) Then
-        frmPrincipal.CD.FontBold = ctrl.FontBold
-        frmPrincipal.CD.FontItalic = ctrl.FontItalic
-        frmPrincipal.CD.FontName = ctrl.FontName
-        frmPrincipal.CD.FontStrikethru = ctrl.FontStrikethru
+        frmPrincipal.cd.FontBold = ctrl.FontBold
+        frmPrincipal.cd.FontItalic = ctrl.FontItalic
+        frmPrincipal.cd.FontName = ctrl.FontName
+        frmPrincipal.cd.FontStrikethru = ctrl.FontStrikethru
 
-        frmPrincipal.CD.FontUnderline = ctrl.FontUnderline
-        frmPrincipal.CD.FontSize = ctrl.FontSize
+        frmPrincipal.cd.FontUnderline = ctrl.FontUnderline
+        frmPrincipal.cd.FontSize = ctrl.FontSize
 
-        frmPrincipal.CD.ShowFont
+        frmPrincipal.cd.ShowFont
 
 
-        stdfont.Bold = frmPrincipal.CD.FontBold
-        stdfont.Italic = frmPrincipal.CD.FontItalic
-        stdfont.Underline = frmPrincipal.CD.FontUnderline
-        stdfont.Strikethrough = frmPrincipal.CD.FontStrikethru
-        stdfont.Size = frmPrincipal.CD.FontSize
-        stdfont.Name = frmPrincipal.CD.FontName
+        stdfont.Bold = frmPrincipal.cd.FontBold
+        stdfont.Italic = frmPrincipal.cd.FontItalic
+        stdfont.Underline = frmPrincipal.cd.FontUnderline
+        stdfont.Strikethrough = frmPrincipal.cd.FontStrikethru
+        stdfont.Size = frmPrincipal.cd.FontSize
+        stdfont.Name = frmPrincipal.cd.FontName
 
         SetearFormato stdfont
         Set ctrl.Font = stdfont

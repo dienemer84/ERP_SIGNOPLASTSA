@@ -1545,7 +1545,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1559,7 +1559,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -1935,7 +1935,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1949,7 +1949,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

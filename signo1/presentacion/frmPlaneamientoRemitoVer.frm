@@ -364,7 +364,7 @@ Private Function CrearDetalleDeOT() As Boolean
     Set detapedido = DAODetalleOrdenTrabajo.FindById(idDetallePedido)
 
     If IsSomething(detapedido) Then
-        detaEntrega.cantidad = detapedido.CantidadPedida
+        detaEntrega.Cantidad = detapedido.CantidadPedida
         detaEntrega.facturable = True
         detaEntrega.Facturado = False
         detaEntrega.FEcha = Now
@@ -582,7 +582,7 @@ Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, 
         tmp.Origen = OrigenRemitoConcepto
 
         tmp.Concepto = UCase(Values(2))
-        tmp.cantidad = CDbl(Values(4))
+        tmp.Cantidad = CDbl(Values(4))
         If grilla.Columns(5).Visible Then tmp.Valor = Values(5)
 
 
@@ -632,7 +632,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             Else
                 .value(7) = tmp.VerOrigen & " | " & tmp.DetallePedido.item & Chr(10) & tmp.observaciones
             End If
-            .value(4) = funciones.FormatearDecimales(tmp.cantidad, 2)
+            .value(4) = funciones.FormatearDecimales(tmp.Cantidad, 2)
             .value(5) = funciones.FormatearDecimales(tmp.Valor, 2)
             .value(6) = tmp.VerFacturado
         End With
@@ -645,7 +645,7 @@ Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Varia
     If RowIndex > 0 And Remito.Detalles.count > 0 Then
         Set tmp = Remito.Detalles.item(RowIndex)
         tmp.Concepto = UCase(Values(2))
-        tmp.cantidad = CDbl(Values(4))
+        tmp.Cantidad = CDbl(Values(4))
 
 
         If grilla.Columns(5).Visible Then tmp.Valor = Values(5)

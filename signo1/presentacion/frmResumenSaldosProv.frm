@@ -272,7 +272,7 @@ Private Sub Obtener_Click()
     For Each dto In col2
         T = T + dto.Monto
     Next
-    Me.lbltotal = "Total: " & funciones.FormatearDecimales(T)
+    Me.lblTotal = "Total: " & funciones.FormatearDecimales(T)
     Me.lblCant.Visible = False
     tickend = GetTickCount
     'Debug.Print "Tiempo total  ", tickend - tickStart
@@ -290,7 +290,7 @@ Private Sub PushButton1_Click()
             .HeaderString(jgexHFLeft) = "Hasta  " & Format(Me.dtpHasta, "dd-mm-yyyy")
         End If
         .FooterString(jgexHFCenter) = Now
-        .FooterString(jgexHFRight) = Me.lbltotal
+        .FooterString(jgexHFRight) = Me.lblTotal
     End With
     Load frmPrintPreview
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height

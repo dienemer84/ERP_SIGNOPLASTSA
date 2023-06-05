@@ -1420,9 +1420,9 @@ Public Sub Cargar(op As OrdenPago)
 
 
         Me.gridCajaOperaciones.ItemCount = .OperacionesCaja.count
-                MsgBox (.OperacionesCaja.count)
+'                MsgBox (.OperacionesCaja.count)
         Me.gridDepositosOperaciones.ItemCount = .OperacionesBanco.count
-                MsgBox (.OperacionesBanco.count)
+'                MsgBox (.OperacionesBanco.count)
         Me.gridCheques.ItemCount = .ChequesTerceros.count
         Me.gridChequesPropios.ItemCount = .ChequesPropios.count
 
@@ -1983,6 +1983,7 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
+    
 End Sub
 
 Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)

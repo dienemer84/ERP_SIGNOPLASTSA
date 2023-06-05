@@ -1015,7 +1015,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1029,7 +1029,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_VENTAS_" & Periodo & ".xlsx"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

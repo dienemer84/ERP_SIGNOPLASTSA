@@ -962,7 +962,7 @@ Private Sub Command1_Click()
             For Each dp In ped.Detalles
                 Set dto = New DTOPiezaCantidad
                 Set dto.Pieza = dp.Pieza
-                dto.cantidad = dp.CantidadPedida
+                dto.Cantidad = dp.CantidadPedida
                 listadtopiezacantidad.Add dto
             Next dp
         ElseIf ped.estado = EstadoOT_Desactivado Then    ' no hace nada
@@ -1238,7 +1238,7 @@ Private Function HayPendientes() As Integer
         strsql = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_Pendiente
         Set rs = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
-            HayPendientes = rs!cantidad
+            HayPendientes = rs!Cantidad
         End If
     End If
 
@@ -1254,7 +1254,7 @@ Private Function HayParaActivar() As Integer
 
         Set rs = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
-            HayParaActivar = rs!cantidad
+            HayParaActivar = rs!Cantidad
         End If
     End If
 

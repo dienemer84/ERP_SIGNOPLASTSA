@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmEntregas2 
@@ -427,7 +427,7 @@ Option Explicit
 Private m_ot As OrdenTrabajo
 Private detalle As DetalleOrdenTrabajo
 Private Entregas As Collection
-Private Facturas As Collection
+Private facturas As Collection
 Private detalleRemito As remitoDetalle
 Private detalleFactura As FacturaDetalle
 Dim claseP As New classPlaneamiento
@@ -858,9 +858,9 @@ Private Sub gridDetalles_SelectionChange()
 
         If Permisos.AdminFacturaConsultas Then
             Me.gridFacturas.ItemCount = 0
-            Set Facturas = DAOFacturaDetalles.FindAll("entregas.idDetallePedido =" & detalle.Id, True)
+            Set facturas = DAOFacturaDetalles.FindAll("entregas.idDetallePedido =" & detalle.Id, True)
 
-            Me.gridFacturas.ItemCount = Facturas.count
+            Me.gridFacturas.ItemCount = facturas.count
         End If
         Me.gridEntregas.ItemCount = Entregas.count
 
@@ -1034,8 +1034,8 @@ End Sub
 
 Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    If RowIndex > 0 And Facturas.count > 0 Then
-        Set detalleFactura = Facturas.item(RowIndex)
+    If RowIndex > 0 And facturas.count > 0 Then
+        Set detalleFactura = facturas.item(RowIndex)
         Values(1) = detalleFactura.Factura.numero
         Values(2) = detalleFactura.Cantidad
         Values(3) = detalleFactura.Factura.FechaEmision

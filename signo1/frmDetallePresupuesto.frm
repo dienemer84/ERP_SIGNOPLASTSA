@@ -432,11 +432,11 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
         Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
 
         If tmp.Pieza.EsConjunto Then
-            Me.Ver.caption = "Ver Conjunto..."
-            Me.Ver.Tag = 0
+            Me.ver.caption = "Ver Conjunto..."
+            Me.ver.Tag = 0
         Else
-            Me.Ver.caption = "Ver Desarrollo..."
-            Me.Ver.Tag = -1
+            Me.ver.caption = "Ver Desarrollo..."
+            Me.ver.Tag = -1
         End If
 
         Me.PopupMenu Me.m1

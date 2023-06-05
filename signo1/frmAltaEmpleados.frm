@@ -59,7 +59,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   147128321
+      Format          =   164495361
       CurrentDate     =   40119
    End
    Begin VB.TextBox txtGrupoSanguineo 
@@ -207,7 +207,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   147128321
+      Format          =   164495361
       CurrentDate     =   40119
    End
    Begin VB.Label lblDatoActualizacion 
@@ -580,10 +580,10 @@ Public Property Set Empleado(value As clsEmpleado)
 
     Set m_empleado = DAOEmpleados.GetById(value.Id)
 
-    TxtDireccion = m_empleado.direccion
+    txtDireccion = m_empleado.direccion
     txtApellido = m_empleado.Apellido
     txtNombre = m_empleado.nombre
-    TxtLocalidad = m_empleado.localidad
+    txtLocalidad = m_empleado.localidad
     txtTel1 = m_empleado.Telefono1
     txtNroDocumento = m_empleado.documento
     txtTel2 = m_empleado.Telefono2
@@ -678,8 +678,8 @@ Private Sub cmdGuardar_Click()
     m_empleado.documento = CLng(Me.txtNroDocumento)
     m_empleado.Apellido = Me.txtApellido
     m_empleado.nombre = Me.txtNombre
-    m_empleado.direccion = Me.TxtDireccion
-    m_empleado.localidad = Me.TxtLocalidad
+    m_empleado.direccion = Me.txtDireccion
+    m_empleado.localidad = Me.txtLocalidad
     m_empleado.Telefono1 = Me.txtTel1
     m_empleado.Telefono2 = Me.txtTel2
     m_empleado.Nombres = Me.txtNombres
@@ -722,10 +722,10 @@ err44:
 
 End Sub
 Private Sub limpiar()
-    TxtDireccion = Empty
+    txtDireccion = Empty
     txtApellido = Empty
     txtNombre = Empty
-    TxtLocalidad = Empty
+    txtLocalidad = Empty
     txtTel1 = Empty
     txtNroDocumento = Empty
     txtTel2 = Empty
@@ -783,8 +783,8 @@ End Sub
 Private Sub PushButton1_Click()
 
     On Error GoTo err1
-    frmPrincipal.CD.ShowOpen
-    Me.Image1.Tag = frmPrincipal.CD.filename
+    frmPrincipal.cd.ShowOpen
+    Me.Image1.Tag = frmPrincipal.cd.filename
     Set Me.Image1.Picture = LoadPicture(Me.Image1.Tag)
     Exit Sub
 err1:
@@ -809,13 +809,13 @@ Private Sub TxtDireccion_Change()
     verificar
 End Sub
 Private Sub TxtDireccion_GotFocus()
-    foco TxtDireccion
+    foco txtDireccion
 End Sub
 Private Sub TxtLocalidad_Change()
     verificar
 End Sub
 Private Sub TxtLocalidad_GotFocus()
-    foco TxtLocalidad
+    foco txtLocalidad
 End Sub
 Private Sub TxtNombre_Change()
     verificar
@@ -880,7 +880,7 @@ Private Sub txtTel2_GotFocus()
     foco txtTel2
 End Sub
 Public Sub verificar()
-    If Trim(Me.txtNroDocumento) = Empty Or Trim(Me.txtApellido) = Empty Or Trim(Me.TxtDireccion) = Empty Or Trim(Me.TxtLocalidad) = Empty Or Trim(Me.TxtLocalidad) = Empty Or Trim(Me.txtNombre) = Empty Or Trim(Me.txtNroLegajo) = Empty Or Trim(Me.txtTel1) = Empty Or Trim(Me.txtTel2) = Empty Then
+    If Trim(Me.txtNroDocumento) = Empty Or Trim(Me.txtApellido) = Empty Or Trim(Me.txtDireccion) = Empty Or Trim(Me.txtLocalidad) = Empty Or Trim(Me.txtLocalidad) = Empty Or Trim(Me.txtNombre) = Empty Or Trim(Me.txtNroLegajo) = Empty Or Trim(Me.txtTel1) = Empty Or Trim(Me.txtTel2) = Empty Then
         cmdGuardar.Enabled = False
     Else
         cmdGuardar.Enabled = True
