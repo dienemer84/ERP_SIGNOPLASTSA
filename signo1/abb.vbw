@@ -505,3 +505,4 @@ frmAdminComprasListaOPSegunCbte = 228, 42, 742, 615, C, 239, 189, 1229, 762, C
 clsTransferenciaBcaria = 727, 178, 1363, 595, C
 DAOTransferenciaBcaria = 0, 0, 575, 665, C
 frmAdminPagosTransferenciasBancarias = 383, 340, 766, 510, C, 383, 0, 766, 170, C
+frmAdminPagosLiqCajaListaDG = 110, 145, 721, 570, Z, 88, 116, 699, 541, C

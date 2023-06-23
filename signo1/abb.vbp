@@ -552,6 +552,7 @@ Class=clsTransferenciaBcaria; Class\clsTransferenciaBcaria.cls
 Module=DAOTransferenciaBcaria; Modules\DAOTransferenciaBcaria.bas
 Form=Forms\frmAdminPagosTransferenciasBancarias.frm
 ResFile32="Themes.res"
+Form=Forms\frmAdminPagosLiqCajaListaDG.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""

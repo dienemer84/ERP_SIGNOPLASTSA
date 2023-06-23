@@ -1093,7 +1093,7 @@ Private tmpChequera As chequera
 Private chequesChequeraSeleccionada As New Collection
 
 Public ReadOnly As Boolean
-Public EsNueva As Boolean
+Public esNueva As Boolean
 
 'Private Sub Command_Click()
 '    Cargar (LiquidacionCaja)
@@ -1164,7 +1164,7 @@ Private Sub Form_Load()
     Me.txtInstruccion.text = "Se muestran los Comprobantes Impagos." & vbCrLf & "Para realizar el pago, debe seleccionar el Comprobante clickeando en el Check correspondiente." & vbCrLf & "Puede ir confirmando el Comprobante para que se guarde en la lista de Comprobantes Confirmados clickeando en el Botón: Confirmar Comprobantes."
     Me.txtInstruccionDos.text = "Se muestran los Comprobantes Confirmados." & vbCrLf & "La sumatoria de los importes se verá reflejado en el totalizado superior Total Comprobantes" & vbCrLf & "Puede borrar alguno o todos los Comprobantes que se fueron agregando."
 
-    EsNueva = True
+    esNueva = True
 
     formLoaded = True
     formLoading = False
@@ -1296,7 +1296,7 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
 
     Totalizar
 
-    EsNueva = False
+    esNueva = False
 
 End Sub
 
@@ -2004,23 +2004,32 @@ End Sub
 'End Sub
 
 Private Sub TotalizarImportesCbtesFiltrados(col As Collection)
-
     Dim F As clsFacturaProveedor
+    Dim totFactura As Double
+    Dim totNotaCredito As Double
     Dim totFact As Double
     Dim totFactHoy As Double
 
+    totFactura = 0
+    totNotaCredito = 0
+    totFact = 0
+    totFactHoy = 0
+
     For Each F In col
+        If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+            totNotaCredito = (totNotaCredito - (F.Total * -1)) * -1
+        Else
+            totFactura = totFactura + F.Total
+        End If
 
-        totFact = totFact + F.Total
+        totFact = totFactura + totNotaCredito
 
-        totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
-
+        'totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
     Next F
 
     Me.lblTotalFacturas = "Total Comprobantes: " & FormatCurrency(funciones.FormatearDecimales(totFact))
-
-
 End Sub
+
 
 
 Sub limpiarParciales()
