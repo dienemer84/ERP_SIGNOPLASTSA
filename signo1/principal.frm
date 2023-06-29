@@ -1166,10 +1166,10 @@ Private Sub tmrEventos_Timer()
             Me.TrayIcon.Tag = 1
             If col.count = 1 Then
 
-                Dim E As EVENTO
-                Set E = col.item(0)
+                Dim e As EVENTO
+                Set e = col.item(0)
 
-                Me.TrayIcon.ShowBalloonTip 10, "Eventos en Signo Plast ERP", E.descripcion & vbNewLine & "Haga click aquí para leerlos.", 1
+                Me.TrayIcon.ShowBalloonTip 10, "Eventos en Signo Plast ERP", e.descripcion & vbNewLine & "Haga click aquí para leerlos.", 1
             Else
 
                 Me.TrayIcon.ShowBalloonTip 10, "Eventos en Signo Plast ERP", "Han ocurrido nuevos eventos o tiene eventos sin leer." & vbNewLine & "Haga click aquí para leerlos.", 1

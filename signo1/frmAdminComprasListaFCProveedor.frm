@@ -1257,7 +1257,7 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
 
 End Sub
 
-Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Me.grilla.ItemCount > 0 Then
         If Button = 2 Then
             SeleccionarFactura

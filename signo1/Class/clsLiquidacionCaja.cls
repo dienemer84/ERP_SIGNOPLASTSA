@@ -90,7 +90,7 @@ Public Property Get TotalFacturas() As Double
     Dim F As clsFacturaProveedor
     Dim SUM As Double
     For Each F In Me.FacturasProveedor
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.Total * -1, F.Total), F.moneda.Id, Me.moneda.Id)
+        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
     Next F
     TotalFacturas = funciones.RedondearDecimales(SUM)
 End Property
@@ -106,16 +106,16 @@ End Property
 
 Public Property Get TotalOrigenes() As Double
 
-    If Me.moneda Is Nothing Then
-        TotalOrigenes = 0
-        Exit Property
-    End If
+'    If Me.moneda Is Nothing Then
+'        TotalOrigenes = 0
+'        Exit Property
+'    End If
 
-    Dim Total As Double
+    Dim total As Double
     Dim cheq As cheque
     For Each cheq In Me.ChequesTerceros
         If IsSomething(cheq.moneda) Then
-            Total = Total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
         End If
     Next cheq
 
@@ -124,20 +124,20 @@ Public Property Get TotalOrigenes() As Double
             '  Debug.Print cheq.numero, cheq.Monto
 
 
-            Total = Total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
         End If
     Next cheq
 
     Dim op As operacion
     For Each op In Me.OperacionesBanco
         If IsSomething(op.moneda) Then
-            Total = Total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, 0)
         End If
     Next op
 
     For Each op In Me.OperacionesCaja
         If IsSomething(op.moneda) Then
-            Total = Total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, 0)
         End If
     Next op
     '13/08/12 corregi con sabrina esta funcion para que cierre bien la Op. A pedido de karin. chequear.
@@ -145,7 +145,7 @@ Public Property Get TotalOrigenes() As Double
     ' TotalOrigenes = funciones.RedondearDecimales(Total + Me.OtrosDescuentos + Me.DiferenciaCambio)
 
     '15/10/12 corregi con sabrina esta funcion para que cierre bien la Op.  reemplazo funcion anterior
-    TotalOrigenes = funciones.RedondearDecimales(Total + Me.OtrosDescuentos + 0)
+    TotalOrigenes = funciones.RedondearDecimales(total + Me.OtrosDescuentos + 0)
 End Property
 
 
@@ -167,7 +167,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
     Dim colRetorno As New Collection
     Dim itemRetorno As Collection
 
-    Dim Total As Double
+    Dim total As Double
     Dim cheq As cheque
     For Each cheq In Me.ChequesTerceros
         If IsSomething(cheq.moneda) Then
@@ -254,13 +254,14 @@ Public Property Get IsValid() As Boolean
         AddValidationMessage "El total de la Liquidación debe ser mayor a cero."
     End If
 
-    If Me.CuentaContable Is Nothing And Me.FacturasProveedor.count = 0 Then
+    If Me.FacturasProveedor.count = 0 Then
+    Debug.Print (FacturasProveedor.count)
         AddValidationMessage "La Liquidación de Caja debe contener Comprobantes."
     End If
 
     If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
 
-        AddValidationMessage "El total supuesto a pagar (" & Me.moneda.NombreCorto & " " & (Me.StaticTotal) & ") debe ser igual a lo que se va a pagar con valores (" & Me.moneda.NombreCorto & " " & Me.TotalOrigenes & ")."
+        AddValidationMessage "El total supuesto a pagar (" & "$" & " " & (Me.StaticTotal) & ") debe ser igual a lo que se va a pagar con valores (" & "$" & " " & Me.TotalOrigenes & ")."
     End If
 
 
@@ -274,7 +275,7 @@ End Property
 
 Property Get StaticTotal() As Double
     'StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.DiferenciaCambio - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
-    StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
+    StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.OtrosDescuentos + Me.DiferenciaCambioEnTOTAL
 
 End Property
 

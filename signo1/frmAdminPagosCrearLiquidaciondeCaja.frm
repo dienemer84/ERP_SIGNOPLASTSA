@@ -4,16 +4,16 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Crear Liquidación de Caja"
-   ClientHeight    =   10545
+   ClientHeight    =   12885
    ClientLeft      =   5940
    ClientTop       =   1470
-   ClientWidth     =   17280
+   ClientWidth     =   18765
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10545
-   ScaleWidth      =   17280
+   ScaleHeight     =   12885
+   ScaleWidth      =   18765
    Begin XtremeSuiteControls.GroupBox grpCbtesConfirmados 
       Height          =   5655
       Index           =   1
@@ -355,7 +355,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Top             =   240
          Width           =   600
       End
-      Begin VB.Label lblTotal 
+      Begin VB.Label lblTotalValores 
          AutoSize        =   -1  'True
          Caption         =   "Total Pagos: $ 0,00"
          BeginProperty Font 
@@ -455,7 +455,6 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
          ItemCount       =   2
-         SelectedItem    =   1
          Item(0).Caption =   "Banco"
          Item(0).ControlCount=   2
          Item(0).Control(0)=   "gridCompensatorios"
@@ -465,10 +464,9 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          Item(1).Control(0)=   "gridCajaOperaciones"
          Begin GridEX20.GridEX gridCompensatorios 
             Height          =   4710
-            Left            =   -1.39895e5
+            Left            =   -69895
             TabIndex        =   4
             Top             =   435
-            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   8308
@@ -507,10 +505,9 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          End
          Begin GridEX20.GridEX gridDepositosOperaciones 
             Height          =   1455
-            Left            =   -69880
+            Left            =   120
             TabIndex        =   37
             Top             =   480
-            Visible         =   0   'False
             Width           =   9210
             _ExtentX        =   16245
             _ExtentY        =   2566
@@ -547,9 +544,10 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaCrear
          End
          Begin GridEX20.GridEX gridCajaOperaciones 
             Height          =   1455
-            Left            =   120
+            Left            =   -69880
             TabIndex        =   47
             Top             =   480
+            Visible         =   0   'False
             Width           =   9210
             _ExtentX        =   16245
             _ExtentY        =   2566
@@ -1068,7 +1066,7 @@ Dim vFacturaProveedor As clsFacturaProveedor
 Dim colFacturas As New Collection
 
 Dim prov As clsProveedor
-Dim Factura As clsFacturaProveedor
+Dim factura As clsFacturaProveedor
 
 'Dim compe As Compensatorio
 
@@ -1509,10 +1507,10 @@ Private Sub MostrarFacturas()
 
     If LiquidacionCaja.Id <> 0 And LiquidacionCaja.EsParaFacturaProveedor Then
         '            If prov.Id = LiquidacionCaja.FacturasProveedor.item(1).Proveedor.Id Then
-        For Each Factura In LiquidacionCaja.FacturasProveedor
-            If Not funciones.BuscarEnColeccion(colFacturas, CStr(Factura.Id)) Then
+        For Each factura In LiquidacionCaja.FacturasProveedor
+            If Not funciones.BuscarEnColeccion(colFacturas, CStr(factura.Id)) Then
 
-                colFacturas.Add DAOFacturaProveedor.FindById(Factura.Id), CStr(Factura.Id)
+                colFacturas.Add DAOFacturaProveedor.FindById(factura.Id), CStr(factura.Id)
             End If
         Next
         '            End If
@@ -1520,19 +1518,19 @@ Private Sub MostrarFacturas()
 
     Dim T As String
 
-    For Each Factura In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
+    For Each factura In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
 
         Dim c As Collection
-        Set c = DAOOrdenPago.FindAbonadoPendiente(Factura.Id, LiquidacionCaja.Id)
+        Set c = DAOOrdenPago.FindAbonadoPendiente(factura.Id, LiquidacionCaja.Id)
 
-        Factura.TotalAbonadoGlobalPendiente = 0    ' c(1) 'que esta en ops sin aprobar
-        Factura.NetoGravadoAbonadoGlobalPendiente = 0    ' c(2)
-        Factura.OtrosAbonadoGlobalPendiente = 0    'c(3)
+        factura.TotalAbonadoGlobalPendiente = 0    ' c(1) 'que esta en ops sin aprobar
+        factura.NetoGravadoAbonadoGlobalPendiente = 0    ' c(2)
+        factura.OtrosAbonadoGlobalPendiente = 0    'c(3)
 
-        T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ")" & " (" & Factura.FEcha & ")" & "  | " & UCase(Factura.Proveedor.RazonSocial)
+        T = factura.NumeroFormateado & " (" & factura.moneda.NombreCorto & " " & factura.total & ")" & " (" & factura.FEcha & ")" & "  | " & UCase(factura.Proveedor.RazonSocial)
 
         Me.lstFacturas.AddItem T
-        Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
+        Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = factura.Id
 
 
     Next
@@ -1696,7 +1694,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     totDeudaCompe = 0
     For Each F In col
 
-        totFact = totFact + F.Total
+        totFact = totFact + F.total
 
         totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, LiquidacionCaja.moneda.Id, F.TipoCambioPago)
 
@@ -1721,7 +1719,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     End If
 
     Me.lblTotalFacturas = "Total Comprobantes: :" & FormatCurrency(funciones.FormatearDecimales(totFact))
-    Me.lblTotal.caption = "Total valores cargados: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
+    Me.lblTotalValores.caption = "Total valores cargados: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
 
     LiquidacionCaja.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
     LiquidacionCaja.staticTotalDeudaCompensatorios = funciones.RedondearDecimales(totDeudaCompe)
@@ -1748,7 +1746,7 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
 
         ' If F.ImporteTotalAbonado = 0 Then F.ImporteTotalAbonado = F.Total
         If F.NetoGravadoAbonado = 0 Then F.NetoGravadoAbonado = F.NetoGravado    '- F.NetoNoGravado  (2do cambio en fix 004)
-        If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.Total - F.NetoGravado    '- F.NetoNoGravado  (2do cambio en fix 004)
+        If F.OtrosAbonado = 0 Then F.OtrosAbonado = F.total - F.NetoGravado    '- F.NetoNoGravado  (2do cambio en fix 004)
 
         '        Me.txtParcialAbonar = F.ImporteNetoGravadoSaldo ' F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
         '        Me.txtTotalParcialAbonar = F.ImporteTotalAbonado
@@ -1763,7 +1761,7 @@ Private Sub MostrarPago(F As clsFacturaProveedor)
         'esto debería calcular el total en base a las alícuotas de la factura
 
 
-        If F.TotalAbonado + F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente > F.Total Then
+        If F.TotalAbonado + F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente > F.total Then
             MsgBox "El importe que desea abonar, supera el monto total del comprobante seleccionado"
         End If
         'Me.txtnetogravadoabonado = F.NetoGravadoAbonado - F.NetoGravadoAbonadoGlobal
@@ -2017,9 +2015,9 @@ Private Sub TotalizarImportesCbtesFiltrados(col As Collection)
 
     For Each F In col
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
-            totNotaCredito = (totNotaCredito - (F.Total * -1)) * -1
+            totNotaCredito = (totNotaCredito - (F.total * -1)) * -1
         Else
-            totFactura = totFactura + F.Total
+            totFactura = totFactura + F.total
         End If
 
         totFact = totFactura + totNotaCredito
@@ -2175,13 +2173,10 @@ Private Sub Totalizar()
 
     LiquidacionCaja.StaticTotalOrigenes = LiquidacionCaja.TotalOrigenes
     'Me.lblTotalFacturas = "Total Comprobantes: 0"
-    Me.lblTotal.caption = "Total valores cargados: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
+    Me.lblTotalValores.caption = "Total Valores Cargados: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
-    '    GridEXHelper.AutoSizeColumns Me.gridCheques
-    'GridEXHelper.AutoSizeColumns Me.gridChequesPropios
     lstFacturas_ItemCheck -1
-    'Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleecionados: 0"
 
     TotalizarDiferenciasCambio
 
@@ -2359,18 +2354,18 @@ Private Sub txtFiltroNumero_Change()
 
     Me.lstFacturas.Clear
 
-    For Each Factura In colFacturas
+    For Each factura In colFacturas
         ' Aplica el filtro visualmente en base al texto ingresado en el TextBox
-        If InStr(1, Factura.NumeroFormateado, filterText, vbTextCompare) > 0 Then
+        If InStr(1, factura.NumeroFormateado, filterText, vbTextCompare) > 0 Then
             Dim displayText As String
-            displayText = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & ") " & "(" & Factura.FEcha & ") | " & UCase(Factura.Proveedor.RazonSocial)
+            displayText = factura.NumeroFormateado & " (" & factura.moneda.NombreCorto & " " & factura.total & ") " & "(" & factura.FEcha & ") | " & UCase(factura.Proveedor.RazonSocial)
 
-            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
-                displayText = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.Total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ") " & "(" & Factura.FEcha & ")"
+            If factura.TotalAbonadoGlobal + factura.TotalAbonadoGlobalPendiente > 0 Then
+                displayText = factura.NumeroFormateado & " (" & factura.moneda.NombreCorto & " " & factura.total & " - Abonado: " & factura.TotalAbonadoGlobal + factura.TotalAbonadoGlobalPendiente & ") " & "(" & factura.FEcha & ")"
             End If
 
             Me.lstFacturas.AddItem displayText
-            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
+            Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = factura.Id
         End If
     Next
 

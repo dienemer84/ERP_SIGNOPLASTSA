@@ -542,12 +542,12 @@ Private Sub PushButton2_Click()
             Set opeCaja.caja = DAOCaja.FindById(1)
             opeCaja.EntradaSalida = OPSalida
 
-            If Not DAOOperacion.Save(opeCaja) Then GoTo E
+            If Not DAOOperacion.Save(opeCaja) Then GoTo e
             opeCaja.Id = conectar.UltimoId2
             q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
             q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
-            If Not conectar.execute(q) Then GoTo E
+            If Not conectar.execute(q) Then GoTo e
 
 
         End If
@@ -558,7 +558,7 @@ Private Sub PushButton2_Click()
 
     conectar.CommitTransaction
     Exit Sub
-E:
+e:
     conectar.RollBackTransaction
 
 
@@ -611,7 +611,7 @@ Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 
-Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If liquidaciones.count > 0 Then
         gridOrdenes_SelectionChange
         If Button = 2 Then
