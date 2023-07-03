@@ -542,12 +542,12 @@ Private Sub PushButton2_Click()
             Set opeCaja.caja = DAOCaja.FindById(1)
             opeCaja.EntradaSalida = OPSalida
 
-            If Not DAOOperacion.Save(opeCaja) Then GoTo e
+            If Not DAOOperacion.Save(opeCaja) Then GoTo E
             opeCaja.Id = conectar.UltimoId2
             q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
             q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
 
 
         End If
@@ -558,7 +558,7 @@ Private Sub PushButton2_Click()
 
     conectar.CommitTransaction
     Exit Sub
-e:
+E:
     conectar.RollBackTransaction
 
 
@@ -706,7 +706,7 @@ End Sub
 
 Private Sub mnuEditar_Click()
 '    MsgBox ("Funcion en desarrollo")
-        Dim f22 As New frmAdminPagosLiquidaciondeCajaCrear
+        Dim f22 As New frmAdminPagosLiqCajaListaDG
         f22.Show
 '        Dim LiquidacionCaja As clsLiquidacionCaja
         f22.Cargar LiquidacionCaja

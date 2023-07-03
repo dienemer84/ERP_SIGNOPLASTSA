@@ -371,35 +371,39 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
     Dim esf As EstadoFacturaProveedor
     For Each F In liq.FacturasProveedor
 
-        Dim fac As clsFacturaProveedor
-        Set fac = DAOFacturaProveedor.FindById(F.Id)
-        Debug.Print (F.Id & "- " & F.NumeroFormateado & liq.Id)
+'        Dim fac As clsFacturaProveedor
+'        Set fac = DAOFacturaProveedor.FindById(F.Id)
+'        Debug.Print (F.Id & "- " & F.NumeroFormateado & liq.Id)
+'
+'        If fac.estado = EstadoFacturaProveedor.EnProceso Then
+'            Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"
+'        End If
+'
+'        Dim X
+'
+'        Set X = DAOLiquidacionCaja.FindAbonadoPendienteEnEstaOP(fac.Id, liq.Id)
+'
+'        nopago1 = fac.total - fac.TotalAbonadoGlobal
+'        Debug.Print ("NoPago1: " & nopago1)
+'        otrosvalores = funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(X(1))) + funciones.RedondearDecimales(CDbl(X(2))) + funciones.RedondearDecimales(CDbl(X(3))))
+'        Debug.Print ("Otros Valores: " & otrosvalores)
+'        nopago = funciones.RedondearDecimales(nopago1) - otrosvalores - nopago1
+'        Debug.Print ("NoPago: " & nopago)
+'        esf = EstadoFacturaProveedor.Aprobada
+'        Debug.Print ("ESF: " & esf)
+'
+'        If nopago < 0 Then
+'            Err.Raise 44, "aprobar liquidacion", "El comprobante " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
+'        End If
 
-        If fac.estado = EstadoFacturaProveedor.EnProceso Then
-            Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"
-        End If
+        esf = EstadoFacturaProveedor.Saldada
 
-        Dim x
+'        If nopago > 0 Then
+'            esf = EstadoFacturaProveedor.pagoParcial
+'        Else
+'            esf = EstadoFacturaProveedor.Saldada
+'        End If
 
-        Set x = DAOLiquidacionCaja.FindAbonadoPendienteEnEstaOP(fac.Id, liq.Id)
-
-        nopago1 = fac.Total - fac.TotalAbonadoGlobal
-        Debug.Print ("NoPago1: " & nopago1)
-        otrosvalores = funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
-        Debug.Print ("Otros Valores: " & otrosvalores)
-        nopago = funciones.RedondearDecimales(nopago1) - otrosvalores - nopago1
-        Debug.Print ("NoPago: " & nopago)
-        esf = EstadoFacturaProveedor.Aprobada
-        Debug.Print ("ESF: " & esf)
-        If nopago < 0 Then
-            Err.Raise 44, "aprobar liquidacion", "El comprobante " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
-        End If
-
-        If nopago > 0 Then
-            esf = EstadoFacturaProveedor.pagoParcial
-        Else
-            esf = EstadoFacturaProveedor.Saldada
-        End If
         conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & fac.Id
 
     Next F
@@ -578,30 +582,33 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
         nopago = 0
 
-
-        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+'        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+        
+        fac.TotalAbonado = fac.TotalPendiente
 
         'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
 
-        nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+        nopago = fac.total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+        
         'nopago = fac.Total - fac.TotalPendiente
 
         '            MsgBox ("Acá como es nueva hace: fac.Total: " & fac.Total & " - fac.TotalPendiente :" & fac.TotalPendiente & " == " & nopago)
 
-
-        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo E
+'        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
+'        If Not conectar.execute(q) Then GoTo E
 
         'If op.estado = EstadoOrdenPago_Aprobada Then
 
         'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
 
-        es = EstadoFacturaProveedor.Aprobada
-        If nopago > 0 Then
-            es = EstadoFacturaProveedor.pagoParcial
-        Else
-            es = EstadoFacturaProveedor.Saldada
-        End If
+        'es = EstadoFacturaProveedor.Aprobada
+        es = EstadoFacturaProveedor.Saldada
+'
+'        If nopago > 0 Then
+'            es = EstadoFacturaProveedor.pagoParcial
+'        Else
+'            es = EstadoFacturaProveedor.Saldada
+'        End If
 
         q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
 
@@ -1113,7 +1120,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     For Each F In LiquidacionCaja.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
+        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
     Next F
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3

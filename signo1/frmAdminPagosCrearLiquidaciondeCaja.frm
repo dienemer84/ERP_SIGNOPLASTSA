@@ -1953,8 +1953,12 @@ Sub calcularTotalesCbtesFiltrados()
             If funciones.BuscarEnColeccion(colFacturas, CStr(Me.lstFacturasFiltradas.ItemData(i))) Then
 
                 col.Add colFacturas.item(CStr(Me.lstFacturasFiltradas.ItemData(i)))
+                
+                               
                 colCheckeadosDos.Add colFacturas.item(CStr(Me.lstFacturasFiltradas.ItemData(i)))
+                
 
+                
             End If
         End If
 
