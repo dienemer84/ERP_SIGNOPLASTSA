@@ -20,11 +20,11 @@ Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Col
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoPendienteEnEstaOP = c
+    Dim C As New Collection
+    C.Add tot
+    C.Add ng
+    C.Add Otros
+    Set FindAbonadoPendienteEnEstaOP = C
 
 End Function
 
@@ -48,11 +48,11 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoPendiente = c
+    Dim C As New Collection
+    C.Add tot
+    C.Add ng
+    C.Add Otros
+    Set FindAbonadoPendiente = C
 End Function
 
 
@@ -75,11 +75,11 @@ Public Function FindAbonadoFactura(facid As Long, ocid As Long) As Collection
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoFactura = c
+    Dim C As New Collection
+    C.Add tot
+    C.Add ng
+    C.Add Otros
+    Set FindAbonadoFactura = C
 
 End Function
 
@@ -371,40 +371,40 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
     Dim esf As EstadoFacturaProveedor
     For Each F In liq.FacturasProveedor
 
-'        Dim fac As clsFacturaProveedor
-'        Set fac = DAOFacturaProveedor.FindById(F.Id)
-'        Debug.Print (F.Id & "- " & F.NumeroFormateado & liq.Id)
-'
-'        If fac.estado = EstadoFacturaProveedor.EnProceso Then
-'            Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"
-'        End If
-'
-'        Dim X
-'
-'        Set X = DAOLiquidacionCaja.FindAbonadoPendienteEnEstaOP(fac.Id, liq.Id)
-'
-'        nopago1 = fac.total - fac.TotalAbonadoGlobal
-'        Debug.Print ("NoPago1: " & nopago1)
-'        otrosvalores = funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(X(1))) + funciones.RedondearDecimales(CDbl(X(2))) + funciones.RedondearDecimales(CDbl(X(3))))
-'        Debug.Print ("Otros Valores: " & otrosvalores)
-'        nopago = funciones.RedondearDecimales(nopago1) - otrosvalores - nopago1
-'        Debug.Print ("NoPago: " & nopago)
-'        esf = EstadoFacturaProveedor.Aprobada
-'        Debug.Print ("ESF: " & esf)
-'
-'        If nopago < 0 Then
-'            Err.Raise 44, "aprobar liquidacion", "El comprobante " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
-'        End If
+        '        Dim fac As clsFacturaProveedor
+        '        Set fac = DAOFacturaProveedor.FindById(F.Id)
+        '        Debug.Print (F.Id & "- " & F.NumeroFormateado & liq.Id)
+        '
+        '        If fac.estado = EstadoFacturaProveedor.EnProceso Then
+        '            Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"
+        '        End If
+        '
+        '        Dim X
+        '
+        '        Set X = DAOLiquidacionCaja.FindAbonadoPendienteEnEstaOP(fac.Id, liq.Id)
+        '
+        '        nopago1 = fac.total - fac.TotalAbonadoGlobal
+        '        Debug.Print ("NoPago1: " & nopago1)
+        '        otrosvalores = funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(X(1))) + funciones.RedondearDecimales(CDbl(X(2))) + funciones.RedondearDecimales(CDbl(X(3))))
+        '        Debug.Print ("Otros Valores: " & otrosvalores)
+        '        nopago = funciones.RedondearDecimales(nopago1) - otrosvalores - nopago1
+        '        Debug.Print ("NoPago: " & nopago)
+        '        esf = EstadoFacturaProveedor.Aprobada
+        '        Debug.Print ("ESF: " & esf)
+        '
+        '        If nopago < 0 Then
+        '            Err.Raise 44, "aprobar liquidacion", "El comprobante " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
+        '        End If
 
         esf = EstadoFacturaProveedor.Saldada
 
-'        If nopago > 0 Then
-'            esf = EstadoFacturaProveedor.pagoParcial
-'        Else
-'            esf = EstadoFacturaProveedor.Saldada
-'        End If
+        '        If nopago > 0 Then
+        '            esf = EstadoFacturaProveedor.pagoParcial
+        '        Else
+        '            esf = EstadoFacturaProveedor.Saldada
+        '        End If
 
-        conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & fac.Id
+        conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & F.Id
 
     Next F
 
@@ -454,20 +454,20 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
         Next
 
 
-        If liq.StaticTotalRetenido > 0 Then
-
-            Dim ra As DTORetencionAlicuota
-            For Each ra In liq.RetencionesAlicuota
-
-
-                If IsSomething(DAOCertificadoRetencion.Create(liq, ra.Retencion, ra.alicuotaRetencion, True)) Then
-                    MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
-                Else
-                    GoTo err1
-                End If
-            Next
-
-        End If
+        '        If liq.StaticTotalRetenido > 0 Then
+        '
+        '            Dim ra As DTORetencionAlicuota
+        '            For Each ra In liq.RetencionesAlicuota
+        '
+        '
+        '                If IsSomething(DAOCertificadoRetencion.Create(liq, ra.Retencion, ra.alicuotaRetencion, True)) Then
+        '                    MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
+        '                Else
+        '                    GoTo err1
+        '                End If
+        '            Next
+        '
+        '        End If
     Else
         GoTo err1
     End If
@@ -503,12 +503,12 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
 
         Nueva = True
-'        MsgBox ("Es nueva")
+        '        MsgBox ("Es nueva")
         q = "INSERT INTO liquidaciones_caja (id_moneda_pago,tipo_cambio,id_moneda, fecha, id_cuenta_contable,cuenta_contable_desc,estado,alicuota,static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen,dif_cambio, otros_descuentos,dif_cambio_ng,dif_cambio_total,numero_liq)" _
             & " VALUES ('id_moneda_pago','tipo_cambio','id_moneda', 'fecha', 'id_cuenta_contable', 'cuenta_contable_desc','0','alicuota','static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio', 'otros_descuentos','dif_cambio_ng','dif_cambio_total','numero_liq')"
 
     Else
-'        MsgBox ("No es nueva, estoy aprobando una existente")
+        '        MsgBox ("No es nueva, estoy aprobando una existente")
         q = "UPDATE liquidaciones_caja" _
             & " SET id_moneda = 'id_moneda'," _
             & " fecha = 'fecha'," _
@@ -573,29 +573,30 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     Dim es As EstadoFacturaProveedor
     Dim nopago As Double
     Dim fac As clsFacturaProveedor
-    
+
     For Each fac In op.FacturasProveedor
-        fac.ImporteTotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
-        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
+        '        fac.ImporteTotalAbonado = fac.NetoGravado + fac.OtrosAbonado
+        fac.ImporteTotalAbonado = fac.TotalAplicadoACuentas + fac.TotalOtros
+        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.TotalAplicadoACuentas & "," & fac.TotalOtros & ")"
 
         If Not conectar.execute(q) Then GoTo E
 
         nopago = 0
 
-'        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
-        
+        '        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+
         fac.TotalAbonado = fac.TotalPendiente
 
         'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
 
         nopago = fac.total - fac.TotalAbonadoGlobal - fac.TotalAbonado
-        
+
         'nopago = fac.Total - fac.TotalPendiente
 
         '            MsgBox ("Acá como es nueva hace: fac.Total: " & fac.Total & " - fac.TotalPendiente :" & fac.TotalPendiente & " == " & nopago)
 
-'        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
-'        If Not conectar.execute(q) Then GoTo E
+        '        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
+        '        If Not conectar.execute(q) Then GoTo E
 
         'If op.estado = EstadoOrdenPago_Aprobada Then
 
@@ -603,12 +604,12 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
         'es = EstadoFacturaProveedor.Aprobada
         es = EstadoFacturaProveedor.Saldada
-'
-'        If nopago > 0 Then
-'            es = EstadoFacturaProveedor.pagoParcial
-'        Else
-'            es = EstadoFacturaProveedor.Saldada
-'        End If
+        '
+        '        If nopago > 0 Then
+        '            es = EstadoFacturaProveedor.pagoParcial
+        '        Else
+        '            es = EstadoFacturaProveedor.Saldada
+        '        End If
 
         q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
 
@@ -686,12 +687,12 @@ Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Bo
 
 
         Nueva = True
-'        MsgBox ("Es nueva")
+        '        MsgBox ("Es nueva")
         q = "INSERT INTO liquidaciones_caja (id_moneda_pago,tipo_cambio,id_moneda, fecha, id_cuenta_contable,cuenta_contable_desc,estado,alicuota,static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen,dif_cambio, otros_descuentos,dif_cambio_ng,dif_cambio_total,numero_liq)" _
             & " VALUES ('id_moneda_pago','tipo_cambio','id_moneda', 'fecha', 'id_cuenta_contable', 'cuenta_contable_desc','0','alicuota','static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio', 'otros_descuentos','dif_cambio_ng','dif_cambio_total','numero_liq')"
 
     Else
-'        MsgBox ("No es nueva, estoy aprobando una existente")
+        '        MsgBox ("No es nueva, estoy aprobando una existente")
         q = "UPDATE liquidaciones_caja" _
             & " SET id_moneda = 'id_moneda'," _
             & " fecha = 'fecha'," _
@@ -743,101 +744,101 @@ Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Bo
 
     Dim fcp As clsFacturaProveedor
 
-'    For Each fcp In op.FacturasProveedor
-'        q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
-'        If Not conectar.execute(q) Then GoTo E
-'    Next
+    '    For Each fcp In op.FacturasProveedor
+    '        q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
+    '        If Not conectar.execute(q) Then GoTo E
+    '    Next
 
-'
-'    q = "DELETE FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & op.Id
-'    If Not conectar.execute(q) Then GoTo E
-
-
-'    Dim es As EstadoFacturaProveedor
-'    Dim nopago As Double
-'    Dim fac As clsFacturaProveedor
-'
-'    For Each fac In op.FacturasProveedor
-'        fac.ImporteTotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
-'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
-'
-'        If Not conectar.execute(q) Then GoTo E
-'
-'        nopago = 0
-'
-'
-'        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
-'
-'        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
-'
-'        nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
-        'nopago = fac.Total - fac.TotalPendiente
-
-        '            MsgBox ("Acá como es nueva hace: fac.Total: " & fac.Total & " - fac.TotalPendiente :" & fac.TotalPendiente & " == " & nopago)
+    '
+    '    q = "DELETE FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & op.Id
+    '    If Not conectar.execute(q) Then GoTo E
 
 
-'        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
-'        If Not conectar.execute(q) Then GoTo E
-'
-'        'If op.estado = EstadoOrdenPago_Aprobada Then
-'
-'        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
-'
-'        es = EstadoFacturaProveedor.Aprobada
-'        If nopago > 0 Then
-'            es = EstadoFacturaProveedor.pagoParcial
-'        Else
-'            es = EstadoFacturaProveedor.Saldada
-'        End If
-'
-'        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
-'
-'        If Not conectar.execute(q) Then GoTo E
-'
-'
-'    Next fac
+    '    Dim es As EstadoFacturaProveedor
+    '    Dim nopago As Double
+    '    Dim fac As clsFacturaProveedor
+    '
+    '    For Each fac In op.FacturasProveedor
+    '        fac.ImporteTotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+    '        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
+    '
+    '        If Not conectar.execute(q) Then GoTo E
+    '
+    '        nopago = 0
+    '
+    '
+    '        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
+    '
+    '        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+    '
+    '        nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+    'nopago = fac.Total - fac.TotalPendiente
+
+    '            MsgBox ("Acá como es nueva hace: fac.Total: " & fac.Total & " - fac.TotalPendiente :" & fac.TotalPendiente & " == " & nopago)
+
+
+    '        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
+    '        If Not conectar.execute(q) Then GoTo E
+    '
+    '        'If op.estado = EstadoOrdenPago_Aprobada Then
+    '
+    '        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+    '
+    '        es = EstadoFacturaProveedor.Aprobada
+    '        If nopago > 0 Then
+    '            es = EstadoFacturaProveedor.pagoParcial
+    '        Else
+    '            es = EstadoFacturaProveedor.Saldada
+    '        End If
+    '
+    '        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
+    '
+    '        If Not conectar.execute(q) Then GoTo E
+    '
+    '
+    '    Next fac
 
 
     '------------------------------------------------------
 
 
-'    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
-'    If Not conectar.execute(q) Then GoTo E
-'    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
-'    If Not conectar.execute(q) Then GoTo E
+    '    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
+    '    If Not conectar.execute(q) Then GoTo E
+    '    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
+    '    If Not conectar.execute(q) Then GoTo E
 
-'    Dim oper As operacion
-'    For Each oper In op.OperacionesBanco
-'        'oper.IdPertenencia = op.Id no se usa creo
-'        oper.FechaCarga = Now
-'        If DAOOperacion.Save(oper) Then
-'            oper.Id = conectar.UltimoId2
-'            If oper.Id = 0 Then GoTo E
-'            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
-'            If Not conectar.execute(q) Then GoTo E
-'        Else
-'            GoTo E
-'        End If
-'    Next oper
-'
-'    For Each oper In op.OperacionesCaja
-'        'oper.IdPertenencia = op.Id no se usa creo
-'        oper.FechaCarga = Now
-'        If DAOOperacion.Save(oper) Then
-'            oper.Id = conectar.UltimoId2
-'            If oper.Id = 0 Then GoTo E
-'            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
-'            If Not conectar.execute(q) Then GoTo E
-'        Else
-'            GoTo E
-'        End If
-'    Next oper
-'
-'    Dim msg As String
-'    msg = "LIQ Creada"
-'
-'    If Not Nueva Then msg = "LIQ Actualizada"
-'    DaoHistorico.Save "orden_pago_historial", msg, op.Id
+    '    Dim oper As operacion
+    '    For Each oper In op.OperacionesBanco
+    '        'oper.IdPertenencia = op.Id no se usa creo
+    '        oper.FechaCarga = Now
+    '        If DAOOperacion.Save(oper) Then
+    '            oper.Id = conectar.UltimoId2
+    '            If oper.Id = 0 Then GoTo E
+    '            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
+    '            If Not conectar.execute(q) Then GoTo E
+    '        Else
+    '            GoTo E
+    '        End If
+    '    Next oper
+    '
+    '    For Each oper In op.OperacionesCaja
+    '        'oper.IdPertenencia = op.Id no se usa creo
+    '        oper.FechaCarga = Now
+    '        If DAOOperacion.Save(oper) Then
+    '            oper.Id = conectar.UltimoId2
+    '            If oper.Id = 0 Then GoTo E
+    '            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
+    '            If Not conectar.execute(q) Then GoTo E
+    '        Else
+    '            GoTo E
+    '        End If
+    '    Next oper
+    '
+    '    Dim msg As String
+    '    msg = "LIQ Creada"
+    '
+    '    If Not Nueva Then msg = "LIQ Actualizada"
+    '    DaoHistorico.Save "orden_pago_historial", msg, op.Id
 
     GuardarAprobada = True
 
@@ -1066,7 +1067,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Dim TAB2 As Integer
     Dim TAB3 As Integer
     Dim maxw As Single
-    Dim c As Long
+    Dim C As Long
     Dim mtxt As String
     Dim textw As Single
     Dim lmargin As Integer
@@ -1116,13 +1117,13 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.FontSize = 8
     Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
     Dim F As clsFacturaProveedor
-    c = 0
+    C = 0
     For Each F In LiquidacionCaja.FacturasProveedor
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
         Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
     Next F
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"
     End If
@@ -1145,13 +1146,13 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
 
     Dim op As operacion
     Set tmpCol = New Collection
-    c = 0
+    C = 0
     For Each op In LiquidacionCaja.OperacionesBanco
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
+        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto & " | Cta.Bancaria: " & op.CuentaBancaria.DescripcionFormateada & " | Nro. Cbte: " & op.Comprobante
     Next op
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE TRANSFERENCIAS"
     End If
@@ -1163,13 +1164,13 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
 
 
     Set tmpCol = New Collection
-    c = 0
+    C = 0
     For Each op In LiquidacionCaja.OperacionesCaja
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
     Next op
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE OPERACIONES EN EFECTIVO"
     End If

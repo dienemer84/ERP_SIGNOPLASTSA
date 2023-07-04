@@ -355,7 +355,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC:
 
         Dim f324 As New frmAdminFacturasEdicion
-        f324.NuevoTipoDocumento = tipoDocumentoContable.Factura
+        f324.NuevoTipoDocumento = tipoDocumentoContable.factura
         f324.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_NC:
@@ -375,7 +375,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ANTICIPO:
 
         Dim f324121 As New frmAdminFacturasEdicion
-        f324121.NuevoTipoDocumento = tipoDocumentoContable.Factura
+        f324121.NuevoTipoDocumento = tipoDocumentoContable.factura
         f324121.EsAnticipo = True
         f324121.Show
 
@@ -536,7 +536,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim frm1 As frmAdminComprasNuevaFCProveedor
         Set frm1 = New frmAdminComprasNuevaFCProveedor
 
-        frm1.Factura = Nothing
+        frm1.factura = Nothing
         frm1.Show
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO: frmAdminComprasListaFCProveedor.Show
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_VER: frmAdminComprasPlanCuentasAdmin.Show
@@ -1077,7 +1077,7 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Pagos", ID_GROUP.ID_GROUP_ADMINISTRACION__VARIOS)
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
-    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
+'    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
     AddButton ribbonGroup, "Crear Liquidación con DataGrid", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA_DG, , , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
 
@@ -1166,10 +1166,10 @@ Private Sub tmrEventos_Timer()
             Me.TrayIcon.Tag = 1
             If col.count = 1 Then
 
-                Dim e As EVENTO
-                Set e = col.item(0)
+                Dim E As EVENTO
+                Set E = col.item(0)
 
-                Me.TrayIcon.ShowBalloonTip 10, "Eventos en Signo Plast ERP", e.descripcion & vbNewLine & "Haga click aquí para leerlos.", 1
+                Me.TrayIcon.ShowBalloonTip 10, "Eventos en Signo Plast ERP", E.descripcion & vbNewLine & "Haga click aquí para leerlos.", 1
             Else
 
                 Me.TrayIcon.ShowBalloonTip 10, "Eventos en Signo Plast ERP", "Han ocurrido nuevos eventos o tiene eventos sin leer." & vbNewLine & "Haga click aquí para leerlos.", 1

@@ -611,7 +611,7 @@ Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 
-Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If liquidaciones.count > 0 Then
         gridOrdenes_SelectionChange
         If Button = 2 Then
@@ -629,8 +629,8 @@ End Sub
 
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
-        Set LiquidacionCaja = liquidaciones.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 And liquidaciones.count > 0 Then
+        Set LiquidacionCaja = liquidaciones.item(RowBuffer.rowIndex)
         If LiquidacionCaja.estado = EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada Then
             RowBuffer.CellStyle(9) = "aprobada"
         ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada Then
@@ -646,14 +646,14 @@ End Sub
 
 Private Sub gridOrdenes_SelectionChange()
     On Error Resume Next
-    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
+    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.rowIndex(gridOrdenes.row))
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And liquidaciones.count > 0 Then
+Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And liquidaciones.count > 0 Then
 
-        Set LiquidacionCaja = liquidaciones.item(RowIndex)
+        Set LiquidacionCaja = liquidaciones.item(rowIndex)
 
         Values(1) = LiquidacionCaja.NumeroLiq
         Values(2) = LiquidacionCaja.FEcha
@@ -696,7 +696,7 @@ End Sub
 Private Sub mnuAprobar_Click()
     If DAOLiquidacionCaja.aprobar(LiquidacionCaja, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
         btnBuscar_Click
     Else
         MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
@@ -720,6 +720,8 @@ End Sub
 
 Private Sub mnuImprimir_Click()
 
+    gridOrdenes_SelectionChange
+
     If Not DAOLiquidacionCaja.PrintLiq(LiquidacionCaja, Me.pic) Then GoTo err1
 
     Exit Sub
@@ -727,10 +729,16 @@ err1:
 End Sub
 
 Private Sub mnuVer_Click()
-    Dim f22 As New frmAdminPagosLiquidaciondeCajaCrear
+'    Dim f22 As New frmAdminPagosLiquidaciondeCajaCrear
+'    f22.Show
+'    f22.ReadOnly = True
+'    f22.Cargar LiquidacionCaja
+
+    Dim f22 As New frmAdminPagosLiqCajaListaDG
     f22.Show
     f22.ReadOnly = True
     f22.Cargar LiquidacionCaja
+
 End Sub
 
 
