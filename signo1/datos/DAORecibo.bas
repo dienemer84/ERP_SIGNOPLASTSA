@@ -957,7 +957,10 @@ If LenB(filtro) > 0 Then
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
         Set d = New DTONombreMonto
-        d.Monto = rs!Monto
+        
+        If Not IsNull(rs!Monto) Then d.Monto = rs!Monto Else d.Monto = 0
+                
+'        d.Monto = rs!Monto
         d.nombre = rs!nombre
         retenciones.Add d
         rs.MoveNext
@@ -990,6 +993,7 @@ If LenB(filtro) > 0 Then
     Exit Function
 err1:
     ResumenPagos = False
+    MsgBox ("Consulte al administrador del sistema porque ha ocurrido un error en la búsqueda de datos")
 End Function
 
 
