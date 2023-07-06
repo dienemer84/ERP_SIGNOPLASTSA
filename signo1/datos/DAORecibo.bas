@@ -67,7 +67,7 @@ Public Function Anular(recibo As recibo) As Boolean
         q = "select * from AdminRecibosDetalleFacturas where idRecibo=" & recibo.Id
         Dim rs As Recordset
         Set rs = conectar.RSFactory(q)
-        Dim F As Factura
+        Dim F As factura
         Dim rs2 As Recordset
         While Not rs.EOF And Not rs.BOF
 
@@ -142,7 +142,7 @@ Public Function aprobar(recibo As recibo) As Boolean
     On Error GoTo err5
     Dim estAnt As EstadoRecibo
     Dim fechaAnt As Variant
-    Dim Factura As Factura
+    Dim factura As factura
     conectar.BeginTransaction
 
 
@@ -158,7 +158,7 @@ Public Function aprobar(recibo As recibo) As Boolean
         totEst.TotalChequesEstatico = recibo.TotalCheques
         totEst.TotalDepositosEstatico = recibo.TotalOperacionesBanco
         totEst.TotalEfectivoEstatico = recibo.TotalOperacionesCaja
-        totEst.TotalReciboEstatico = recibo.Total
+        totEst.TotalReciboEstatico = recibo.total
         Set recibo.TotalEstatico = totEst
 
         If Not DAORecibo.Guardar(recibo) Then GoTo err5
@@ -168,22 +168,22 @@ Public Function aprobar(recibo As recibo) As Boolean
         Dim r2 As Recordset
         Dim newEstadoSaldadoFactura As TipoSaldadoFactura
 
-        For Each Factura In recibo.Facturas
-            montoSaldado = DAOFactura.PagosRealizados(Factura.Id)
+        For Each factura In recibo.facturas
+            montoSaldado = DAOFactura.PagosRealizados(factura.Id)
 
             If montoSaldado = 0 Then
                 newEstadoSaldadoFactura = NoSaldada
-            ElseIf montoSaldado >= Factura.Total Then
+            ElseIf montoSaldado >= factura.total Then
                 newEstadoSaldadoFactura = saldadoTotal
             Else
                 newEstadoSaldadoFactura = SaldadoParcial
             End If
 
-            If Not conectar.execute("update AdminFacturas set saldada=" & newEstadoSaldadoFactura & " where id=" & Factura.Id) Then
+            If Not conectar.execute("update AdminFacturas set saldada=" & newEstadoSaldadoFactura & " where id=" & factura.Id) Then
                 GoTo err5
             End If
 
-        Next Factura
+        Next factura
 
     Else
         GoTo err5
@@ -264,7 +264,7 @@ Dim col As New Collection
         End If
 
         If includeFacturas Then
-            Set rec.Facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idFactura FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id & ")", True, True)
+            Set rec.facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idFactura FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id & ")", True, True)
 
             'traigo los montos pagados de cada factura
             Dim q2 As String
@@ -492,9 +492,9 @@ Public Function Guardar(rec As recibo) As Boolean
         'facturas''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         q = "DELETE FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id
         If Not conectar.execute(q) Then GoTo E
-        Dim fac As Factura
+        Dim fac As factura
         Dim montoPagado As Double
-        For Each fac In rec.Facturas
+        For Each fac In rec.facturas
             If rec.PagosDeFacturas.Exists(CStr(fac.Id)) Then
                 montoPagado = rec.PagosDeFacturas.item(CStr(fac.Id))
             Else
@@ -591,12 +591,12 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.FontBold = True
         Printer.Print "Facturas "
         Printer.FontBold = False
-        Dim F As Factura
-        For Each F In recibo.Facturas
+        Dim F As factura
+        For Each F In recibo.facturas
             Printer.Print F.FechaEmision, F.GetShortDescription(False, True), F.moneda.NombreCorto & " " & recibo.PagosDeFacturas(CStr(F.Id))
         Next F
 
-        If recibo.Facturas.count > 0 Then
+        If recibo.facturas.count > 0 Then
             Printer.Print "Total Facturas: " & recibo.TotalFacturas
         End If
         Printer.Print Chr(10)
@@ -692,7 +692,7 @@ Public Sub Imprimir(idRecibo As Long)
 
 
 
-        Printer.Print " Total Recibo:  " & recibo.Total
+        Printer.Print " Total Recibo:  " & recibo.total
         Printer.Print " Total Recibido:  " & recibo.TotalRecibido
         Printer.FontBold = False
         Printer.EndDoc
@@ -700,7 +700,7 @@ Public Sub Imprimir(idRecibo As Long)
 
 End Sub
 
-Public Function ExportarColeccion(col As Collection, Optional progressbar As Object) As Boolean
+Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Object) As Boolean
     On Error GoTo err1
 
     ExportarColeccion = True
@@ -750,8 +750,8 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Dim initoffset As Long
     initoffset = offset
 
-    progressbar.min = 0
-    progressbar.max = col.count
+    ProgressBar.min = 0
+    ProgressBar.max = col.count
 
 
     Dim d As Long
@@ -764,7 +764,7 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
         i = 1
 
         d = d + 1
-        progressbar.value = d
+        ProgressBar.value = d
 
         offset = offset + 1
 
@@ -825,14 +825,171 @@ Public Function ExportarColeccion(col As Collection, Optional progressbar As Obj
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
-    progressbar.value = 0
+    ProgressBar.value = 0
 
     Exit Function
 err1:
     ExportarColeccion = False
 End Function
 
+Public Function ResumenPagos(ByRef Cheques As Collection, ByRef caja As Collection, ByRef bancos As Collection, ByRef comp As Collection, ByRef retenciones As Collection, ByRef cheques3 As Collection, Optional filtro As String, Optional idProveedor As Long = -1) As Boolean
+    On Error GoTo err1
+    ResumenPagos = True
+    Dim q As String
+    Dim rs As Recordset
+
+    '#'CHEQUES'
+    q = "SELECT b.Nombre,SUM(monto * acm.cambio) as monto FROM AdminRecibos rec " _
+      & " INNER JOIN AdminRecibosCheques arc ON arc.idRecibo = rec.id " _
+      & " LEFT JOIN Cheques c ON c.id = arc.idCheque " _
+      & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
+      & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=1 AND rec.estado = 2 and 1=1 " _
+
+If LenB(filtro) > 0 Then
+        q = q & " and " & filtro
+    End If
+    q = q & " GROUP BY b.id "
+
+    Dim d As DTONombreMonto
+
+    Set rs = conectar.RSFactory(q)
+    While Not rs.EOF And Not rs.BOF
+        Set d = New DTONombreMonto
+        d.Monto = rs!Monto
+        d.nombre = rs!nombre
+        Cheques.Add d
+        rs.MoveNext
+    Wend
+
+   '#OPERACIONES CAJA
+    q = " SELECT ca.nombre,SUM(monto * acm.cambio ) as monto FROM AdminRecibos rec " _
+      & " INNER JOIN operaciones_recibos opr ON opr.reciboId=rec.id " _
+      & " LEFT JOIN operaciones o ON o.id=opr.operacionId " _
+      & " LEFT JOIN cajas ca ON ca.id=o.cuentabanc_o_caja_id " _
+      & " LEFT JOIN AdminConfigMonedas acm ON o.moneda_id=acm.id " _
+      & " WHERE o.pertenencia='caja' AND entrada_salida=1 AND rec.estado = 2 AND 1=1 "
+      
+    If LenB(filtro) > 0 Then
+        q = q & " and " & filtro
+    End If
+
+    q = q & " GROUP BY o.cuentabanc_o_caja_id"
+
+    Set rs = conectar.RSFactory(q)
+    While Not rs.EOF And Not rs.BOF
+        Set d = New DTONombreMonto
+        d.Monto = rs!Monto
+        
+'        d.nombre = rs!nombre
+        
+        If Not IsNull(rs!nombre) Then
+            d.nombre = rs!nombre
+        Else
+            d.nombre = ""
+        End If
+        
+        caja.Add d
+        rs.MoveNext
+    Wend
 
 
+    '
+    '#OPERACIONES BANCO
+    q = "SELECT  ba.nombre, SUM(monto * acm.cambio ) AS monto " _
+      & " FROM AdminRecibos rec INNER JOIN operaciones_recibos opr ON opr.reciboId=rec.id " _
+      & " LEFT JOIN operaciones o ON o.id=opr.operacionId " _
+      & " LEFT JOIN AdminConfigCuentas cba ON cba.id = o.cuentabanc_o_caja_id " _
+      & " INNER JOIN AdminConfigBancos ba ON cba.idBanco=ba.id LEFT JOIN AdminConfigMonedas acm ON o.moneda_id = acm.id " _
+      & " WHERE o.pertenencia='banco' AND entrada_salida= 1 AND 1=1 AND rec.estado = 2"
+    If LenB(filtro) > 0 Then
+        q = q & " and " & filtro
+    End If
+
+    q = q & "GROUP BY o.cuentabanc_o_caja_id"
+    Set rs = conectar.RSFactory(q)
+    While Not rs.EOF And Not rs.BOF
+        Set d = New DTONombreMonto
+        d.Monto = rs!Monto
+
+        If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
+
+        bancos.Add d
+        rs.MoveNext
+    Wend
+
+''#COMPENSATORIOS
+'
+'    q = "SELECT fp.numero_factura, (IF (com.tipo=1,(com.importe * acm.cambio),(com.importe * acm.cambio*-1))) AS monto  FROM ordenes_pago op " _
+'      & " INNER JOIN ordenes_pago_compensatorios com ON com.id_orden_pago=op.id " _
+'      & " INNER JOIN AdminComprasFacturasProveedores fp ON com.id_comprobante=fp.id " _
+'      & " INNER JOIN AdminConfigMonedas acm ON fp.id_moneda=acm.id  where 1=1 "
+'
+'    If LenB(filtro) > 0 Then
+'        q = q & " and " & filtro
+'    End If
+'
+'
+'    Set rs = conectar.RSFactory(q)
+'    While Not rs.EOF And Not rs.BOF
+'        Set d = New DTONombreMonto
+'        d.Monto = rs!Monto
+'        If Not IsNull(rs!numero_factura) Then d.nombre = rs!numero_factura Else d.nombre = vbNullString
+'
+'        comp.Add d
+'        rs.MoveNext
+'    Wend
+
+'#RETENCIONES
+
+'    q = "SELECT 'IIBB' AS nombre, SUM(static_total_a_retener) AS monto FROM ordenes_pago op WHERE 1=1"
+    
+    q = "SELECT 'Retenciones' AS nombre, SUM(recr.valor) AS monto" _
+        & " FROM AdminRecibosDetalleRetenciones recr" _
+        & " INNER JOIN AdminRecibos rec ON rec.id = recr.idRecibo" _
+        & " WHERE 1=1 AND rec.estado = 2"
+
+    If LenB(filtro) > 0 Then
+        q = q & " and " & filtro
+    End If
+
+    'q = q & " GROUP BY id "
+
+    Set rs = conectar.RSFactory(q)
+    While Not rs.EOF And Not rs.BOF
+        Set d = New DTONombreMonto
+        d.Monto = rs!Monto
+        d.nombre = rs!nombre
+        retenciones.Add d
+        rs.MoveNext
+    Wend
+
+
+    '#'CHEQUES 3ROS'
+    q = "SELECT b.Nombre, SUM(monto * acm.cambio) AS monto FROM AdminRecibos rec " _
+      & " INNER JOIN AdminRecibosCheques arc ON arc.idRecibo = rec.id " _
+      & " LEFT JOIN Cheques c ON c.id = arc.idCheque " _
+      & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
+      & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=0 and 1=1 AND rec.estado = 2 " _
+
+If LenB(filtro) > 0 Then
+        q = q & " and " & filtro
+    End If
+    q = q & " GROUP BY b.id "
+
+
+
+    Set rs = conectar.RSFactory(q)
+    While Not rs.EOF And Not rs.BOF
+        Set d = New DTONombreMonto
+        d.Monto = rs!Monto
+        If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
+        cheques3.Add d
+        rs.MoveNext
+    Wend
+
+    Exit Function
+err1:
+    ResumenPagos = False
+End Function
 
 

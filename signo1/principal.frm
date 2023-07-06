@@ -438,22 +438,22 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         f12325.Show
 
 
-
-
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS
         Dim hdp As New frmCompensatorios
         hdp.Show
 
-    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS
         Dim hdp1 As New frmResumenPagos
         hdp1.Show
 
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_COBROS
+        Dim hdp2 As New frmResumenCobros
+        hdp2.Show
+
 
     Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS:
-
         frmAdminConfigBancos.Show
 
     Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS:
@@ -1062,13 +1062,16 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Cobranzas", ID_GROUP.ID_GROUP_ADMINISTRACION__COBRANZAS)
     AddButton ribbonGroup, "Recibos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__RECIBOS, Permisos.AdminCobroConsulta
     AddButton ribbonGroup, "Nuevo recibo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__NUEVO_RECIBO, Permisos.AdminCobroControl
+    AddButton ribbonGroup, "Resúmen de cobros", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_COBROS, Permisos.AdminOPConsultas
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Caja y Bancos", ID_GROUP.ID_GROUP_ADMINISTRACION__CAJAYBANCOS)
     AddButton ribbonGroup, "Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Depositos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR, Permisos.AdminCajayBancos
 
     AddButton ribbonGroup, "Compensatorios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS, Permisos.AdminOPControl
-    AddButton ribbonGroup, "Resúmen de pagos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS, Permisos.AdminOPConsultas
+    
+    
+
 '    AddButton ribbonGroup, "Movimiento de Fondos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS, Permisos.AdminOPConsultas
 
     AddButton ribbonGroup, "Bancos", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS, Permisos.AdminCajayBancos
@@ -1078,7 +1081,7 @@ Private Sub CreateRibbonBar()
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
 '    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
-    AddButton ribbonGroup, "Crear Liquidación con DataGrid", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA_DG, , , , cmdBarCtrl
+    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA_DG, , , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
@@ -1086,7 +1089,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Ver Listado de Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas, , , cmdBarCtrl
 
     AddButton ribbonGroup, "Transferencias", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__TRANSFERENCIAS, Permisos.AdminCajayBancos
-   
+    AddButton ribbonGroup, "Resúmen de pagos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS, Permisos.AdminOPConsultas
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Compras", ID_GROUP.ID_GROUP_ADMINISTRACION__COMPRAS)
     AddButton ribbonGroup, "Ingresar Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA
     AddButton ribbonGroup, "Listado Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO

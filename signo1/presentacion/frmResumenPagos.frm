@@ -623,38 +623,35 @@ End Sub
 Private Sub Form_Resize()
     Me.GroupBox1.Width = Me.ScaleWidth - 100
 End Sub
-Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = bancos(RowIndex)
+Private Sub gridBancos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set dto = bancos(rowIndex)
     Values(1) = dto.nombre
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub
 
-Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = Cajas(RowIndex)
+Private Sub gridCajas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set dto = Cajas(rowIndex)
     Values(1) = dto.nombre
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub
-Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = Cheques(RowIndex)
+Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set dto = Cheques(rowIndex)
     Values(1) = dto.nombre
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub
-Private Sub gridChequesTerceros_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = cheques3(RowIndex)
+Private Sub gridChequesTerceros_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set dto = cheques3(rowIndex)
     Values(1) = dto.nombre
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub
-Private Sub gridCompensatorios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = compe(RowIndex)
+Private Sub gridCompensatorios_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set dto = compe(rowIndex)
     Values(1) = dto.nombre
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub
-Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = retenciones(RowIndex)
+Private Sub gridRetenciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set dto = retenciones(rowIndex)
     Values(1) = dto.nombre
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub
 
-Private Sub PushButton1_Click()
-
-End Sub

@@ -926,7 +926,7 @@ Private Sub btnBuscar_Click()
 End Sub
 
 Private Sub editar_Click()
-    Set factura = facturas.item(grilla.RowIndex(grilla.row))
+    Set factura = facturas.item(grilla.rowIndex(grilla.row))
     Dim frm As frmAdminComprasNuevaFCProveedor
     Set frm = New frmAdminComprasNuevaFCProveedor
 
@@ -938,7 +938,7 @@ Private Sub finalizar_Click()
     If Me.grilla.ItemCount > 0 Then
         SeleccionarFactura
         Dim l As Long
-        l = grilla.RowIndex(grilla.row)
+        l = grilla.rowIndex(grilla.row)
         If MsgBox("¿Desea aprobar la factura?", vbQuestion + vbYesNo) = vbYes Then
             If DAOFacturaProveedor.aprobar(factura) Then
                 MsgBox "Factura aprobada con éxito!", vbInformation, "Información"
@@ -949,7 +949,7 @@ Private Sub finalizar_Click()
                 If Not factura.FormaPagoCuentaCorriente Then MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().Id & ".", vbInformation
 
                 '                Dim tmp As clsFacturaProveedor
-                facturas.item(grilla.RowIndex(grilla.row)).estado = factura.estado
+                facturas.item(grilla.rowIndex(grilla.row)).estado = factura.estado
 
 
                 grilla.RefreshRowIndex l
@@ -1252,12 +1252,12 @@ Private Sub grilla_DblClick()
     verDetalle_Click
 End Sub
 
-Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     If ColIndex = 15 And m_Archivos.item(factura.Id) > 0 Then IconIndex = 1
 
 End Sub
 
-Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Me.grilla.ItemCount > 0 Then
         If Button = 2 Then
             SeleccionarFactura
@@ -1285,7 +1285,7 @@ End Sub
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set factura = facturas(RowBuffer.RowIndex)
+    Set factura = facturas(RowBuffer.rowIndex)
 
     If factura.estado = EstadoFacturaProveedor.Aprobada Then
         RowBuffer.CellStyle(15) = "EstadoAprobado"
@@ -1298,9 +1298,9 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
 err1:
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set factura = facturas.item(RowIndex)
+    Set factura = facturas.item(rowIndex)
 
     Dim i As Integer
 
@@ -1489,5 +1489,5 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set factura = facturas.item(grilla.RowIndex(grilla.row))
+    Set factura = facturas.item(grilla.rowIndex(grilla.row))
 End Sub

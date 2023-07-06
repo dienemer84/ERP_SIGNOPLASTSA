@@ -3,7 +3,7 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminCobranzasLista 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   1  'Fixed Single
+   BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Recibos"
    ClientHeight    =   8445
    ClientLeft      =   45
@@ -11,9 +11,12 @@ Begin VB.Form frmAdminCobranzasLista
    ClientWidth     =   17625
    Icon            =   "frmAdminCobranzasLista.frx":0000
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
    MDIChild        =   -1  'True
+   MinButton       =   0   'False
    ScaleHeight     =   8445
    ScaleWidth      =   17625
+   ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame2 
       Caption         =   "Parámetros de Búsqueda"
       Height          =   1455
@@ -432,7 +435,7 @@ Private Sub Command1_Click()
 
     For Each rc In rs
         If rc.estado = EstadoRecibo.Aprobado Then
-            rc.TotalEstatico.TotalReciboEstatico = rc.Total
+            rc.TotalEstatico.TotalReciboEstatico = rc.total
         End If
     Next
 
@@ -505,7 +508,7 @@ Private Sub Form_Resize()
     If Me.ScaleHeight > 0 Then
         Me.grilla_recibos.Height = Me.ScaleHeight - 1800
     End If
-    Me.grilla_recibos.Width = Me.ScaleWidth - 400
+'    Me.grilla_recibos.Width = Me.ScaleWidth - 400
 End Sub
 
 Private Sub grilla_recibos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
@@ -516,10 +519,10 @@ Private Sub grilla_recibos_DblClick()
     verRecibo_Click
 End Sub
 
-Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_recibos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
 
-    recibo = recibos.item(RowIndex)
+    recibo = recibos.item(rowIndex)
 
     If ColIndex = 6 And tmpArchivos.item(recibo.Id) > 0 Then
         IconIndex = 1
@@ -582,7 +585,7 @@ Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Sin
 End Sub
 
 Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex = 0 Then Exit Sub
+    If RowBuffer.rowIndex = 0 Then Exit Sub
     If RowBuffer.value(9) = "Aprobado" Then
         RowBuffer.CellStyle(9) = "Verde"
     ElseIf RowBuffer.value(9) = "Anulado" Then
@@ -608,12 +611,12 @@ End Sub
 
 Private Sub SeleccionarRecibo()
     On Error Resume Next
-    Set recibo = recibos.item(Me.grilla_recibos.RowIndex(Me.grilla_recibos.row))
+    Set recibo = recibos.item(Me.grilla_recibos.rowIndex(Me.grilla_recibos.row))
 
 End Sub
 
-Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set recibo = recibos.item(RowIndex)
+Private Sub grilla_recibos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set recibo = recibos.item(rowIndex)
     Values(1) = recibo.Id
     Values(2) = Format(recibo.FEcha, "yyyy/mm/dd", vbSunday)
 
