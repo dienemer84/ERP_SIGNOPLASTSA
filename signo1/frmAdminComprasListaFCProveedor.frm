@@ -220,10 +220,10 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   255
          Left            =   5520
          TabIndex        =   45
-         Top             =   1980
-         Width           =   420
+         Top             =   1920
+         Width           =   495
          _Version        =   786432
-         _ExtentX        =   741
+         _ExtentX        =   873
          _ExtentY        =   450
          _StockProps     =   79
          Caption         =   "X"
@@ -1257,7 +1257,7 @@ Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, 
 
 End Sub
 
-Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Me.grilla.ItemCount > 0 Then
         If Button = 2 Then
             SeleccionarFactura

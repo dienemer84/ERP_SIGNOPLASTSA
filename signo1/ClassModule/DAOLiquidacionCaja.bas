@@ -20,11 +20,11 @@ Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Col
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim C As New Collection
-    C.Add tot
-    C.Add ng
-    C.Add Otros
-    Set FindAbonadoPendienteEnEstaOP = C
+    Dim c As New Collection
+    c.Add tot
+    c.Add ng
+    c.Add Otros
+    Set FindAbonadoPendienteEnEstaOP = c
 
 End Function
 
@@ -48,11 +48,11 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim C As New Collection
-    C.Add tot
-    C.Add ng
-    C.Add Otros
-    Set FindAbonadoPendiente = C
+    Dim c As New Collection
+    c.Add tot
+    c.Add ng
+    c.Add Otros
+    Set FindAbonadoPendiente = c
 End Function
 
 
@@ -75,11 +75,11 @@ Public Function FindAbonadoFactura(facid As Long, ocid As Long) As Collection
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim C As New Collection
-    C.Add tot
-    C.Add ng
-    C.Add Otros
-    Set FindAbonadoFactura = C
+    Dim c As New Collection
+    c.Add tot
+    c.Add ng
+    c.Add Otros
+    Set FindAbonadoFactura = c
 
 End Function
 
@@ -369,7 +369,18 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
     Dim otrosvalores As Double
 
     Dim esf As EstadoFacturaProveedor
+    
+    Dim q As String
+    
     For Each F In liq.FacturasProveedor
+'        '        fac.ImporteTotalAbonado = fac.NetoGravado + fac.OtrosAbonado
+'        F.ImporteTotalAbonado = F.TotalAplicadoACuentas + F.TotalOtros
+'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & liq.Id & ", " & F.Id & "," & F.ImporteTotalAbonado & "," & F.TotalAplicadoACuentas & "," & F.TotalOtros & ")"
+'
+''        q = "UPDATE liquidaciones_caja_facturas SET total_liquidado = " & F.ImporteTotalAbonado & ", neto_gravado_liquidado = " & F.TotalAplicadoACuentas & ", otros_liquidado = " & F.TotalOtros & " WHERE id_liquidacion_caja =" & liq.Id & " AND id_factura_proveedor =" & F.Id
+'
+'        If Not conectar.execute(q) Then GoTo err1
+    
 
         '        Dim fac As clsFacturaProveedor
         '        Set fac = DAOFacturaProveedor.FindById(F.Id)
@@ -575,47 +586,27 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     Dim fac As clsFacturaProveedor
 
     For Each fac In op.FacturasProveedor
-        '        fac.ImporteTotalAbonado = fac.NetoGravado + fac.OtrosAbonado
+    
         fac.ImporteTotalAbonado = fac.TotalAplicadoACuentas + fac.TotalOtros
-        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.TotalAplicadoACuentas & "," & fac.TotalOtros & ")"
+        
+'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.TotalAplicadoACuentas & "," & fac.TotalOtros & ")"
+
+        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & 0 & "," & 0 & "," & 0 & ")"
 
         If Not conectar.execute(q) Then GoTo E
 
         nopago = 0
 
-        '        fac.TotalAbonado = fac.NetoGravadoAbonado + fac.OtrosAbonado
-
         fac.TotalAbonado = fac.TotalPendiente
-
-        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
 
         nopago = fac.total - fac.TotalAbonadoGlobal - fac.TotalAbonado
 
-        'nopago = fac.Total - fac.TotalPendiente
-
-        '            MsgBox ("Acá como es nueva hace: fac.Total: " & fac.Total & " - fac.TotalPendiente :" & fac.TotalPendiente & " == " & nopago)
-
-        '        q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
-        '        If Not conectar.execute(q) Then GoTo E
-
-        'If op.estado = EstadoOrdenPago_Aprobada Then
-
-        'nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
-
-        'es = EstadoFacturaProveedor.Aprobada
         es = EstadoFacturaProveedor.Saldada
-        '
-        '        If nopago > 0 Then
-        '            es = EstadoFacturaProveedor.pagoParcial
-        '        Else
-        '            es = EstadoFacturaProveedor.Saldada
-        '        End If
 
         q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
 
         If Not conectar.execute(q) Then GoTo E
-
-
+    
     Next fac
 
 
@@ -742,7 +733,35 @@ Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Bo
     '------------------------------------------------------
     '------------------------------------------------------
 
-    Dim fcp As clsFacturaProveedor
+    
+    Dim es As EstadoFacturaProveedor
+    Dim nopago As Double
+    Dim fac As clsFacturaProveedor
+
+    For Each fac In op.FacturasProveedor
+    
+        fac.ImporteTotalAbonado = fac.Monto
+        
+'q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.Monto & "," & fac.TotalOtros & ")"
+
+'q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & 0 & "," & 0 & "," & 0 & ")"
+
+        q = "UPDATE liquidaciones_caja_facturas SET total_liquidado =" & fac.Monto & ", neto_gravado_liquidado = " & fac.Monto & ", otros_liquidado = 0 WHERE id_liquidacion_caja = " & op.Id & " And id_factura_proveedor = " & fac.Id & ""
+        If Not conectar.execute(q) Then GoTo E
+
+        nopago = 0
+
+        fac.TotalAbonado = fac.TotalPendiente
+
+        nopago = fac.total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+
+        es = EstadoFacturaProveedor.Saldada
+
+        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
+
+        If Not conectar.execute(q) Then GoTo E
+    
+    Next fac
 
     '    For Each fcp In op.FacturasProveedor
     '        q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
@@ -1067,7 +1086,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Dim TAB2 As Integer
     Dim TAB3 As Integer
     Dim maxw As Single
-    Dim C As Long
+    Dim c As Long
     Dim mtxt As String
     Dim textw As Single
     Dim lmargin As Integer
@@ -1117,13 +1136,13 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.FontSize = 8
     Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
     Dim F As clsFacturaProveedor
-    C = 0
+    c = 0
     For Each F In LiquidacionCaja.FacturasProveedor
-        C = C + 1
+        c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
         Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
     Next F
-    If C = 0 Then
+    If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"
     End If
@@ -1146,13 +1165,13 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
 
     Dim op As operacion
     Set tmpCol = New Collection
-    C = 0
+    c = 0
     For Each op In LiquidacionCaja.OperacionesBanco
-        C = C + 1
+        c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto & " | Cta.Bancaria: " & op.CuentaBancaria.DescripcionFormateada & " | Nro. Cbte: " & op.Comprobante
     Next op
-    If C = 0 Then
+    If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE TRANSFERENCIAS"
     End If
@@ -1164,13 +1183,13 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
 
 
     Set tmpCol = New Collection
-    C = 0
+    c = 0
     For Each op In LiquidacionCaja.OperacionesCaja
-        C = C + 1
+        c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
     Next op
-    If C = 0 Then
+    If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE OPERACIONES EN EFECTIVO"
     End If

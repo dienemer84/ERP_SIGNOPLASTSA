@@ -84,13 +84,13 @@ err1:
     If Err.Number = 100 Then MsgBox "Se produjo algun error, no se  guadarán los cambios!"
     If Err.Number = 104 Then MsgBox Err.Description
 End Function
-Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
+Public Function existeFactura(factura As clsFacturaProveedor) As Boolean
     On Error GoTo err4
     Dim q As String
-    q = "select count(id) as cantidad from AdminComprasFacturasProveedores where id_proveedor=" & Factura.Proveedor.Id & " and numero_factura=" & Escape(Factura.numero) & " and id_config_factura=" & Escape(Factura.configFactura.Id) & "  AND tipo_doc_contable=" & Escape(Factura.tipoDocumentoContable)
+    q = "select count(id) as cantidad from AdminComprasFacturasProveedores where id_proveedor=" & factura.Proveedor.Id & " and numero_factura=" & Escape(factura.numero) & " and id_config_factura=" & Escape(factura.configFactura.Id) & "  AND tipo_doc_contable=" & Escape(factura.tipoDocumentoContable)
 
 
-    If Factura.Id <> 0 Then q = q & " and AdminComprasFacturasProveedores.id <> " & Factura.Id
+    If factura.Id <> 0 Then q = q & " and AdminComprasFacturasProveedores.id <> " & factura.Id
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
@@ -105,26 +105,11 @@ Public Function GetByDate(desde As Date, Optional hasta As Date) As Collection
     Set GetByDate = DAOFacturaProveedor.FindAll("fecha>='" & Format(desde, "yyyy-mm-dd") & "' and fecha<= '" & Format(hasta, "yyyy-mm-dd") & "'", False)
 
 End Function
+
 Public Function aprobar(fc As clsFacturaProveedor) As Boolean
 
     Set fc = DAOFacturaProveedor.FindById(fc.Id)
 
-
-
-    'remuevo task 209 en aprobación por rechazo de tarea.
-    '         '#209
-    '      If DAOSubdiarios.ComprobanteComprasLiquidado(fc.id) Then
-    '   MsgBox "El comprobante se encuentra liquidado, no se puede volver a modificar.", vbCritical
-    '   Exit Function
-    '  End If
-    '
-    '    '#209
-    '    Dim fecha_liqui_max As Date
-    '    fecha_liqui_max = DAOSubdiarios.MaxFechaLiqui(False)
-    '    If fc.FEcha <= fecha_liqui_max Then
-    '        MsgBox "La fecha del comprobante es inválida ya que corresponde a un periodo ya liquidado", vbCritical, "Error"
-    '        Exit Function
-    '    End If
 
     Set cn = conectar.obternerConexion
     On Error GoTo err121
@@ -132,9 +117,6 @@ Public Function aprobar(fc As clsFacturaProveedor) As Boolean
     Dim fca As clsFacturaProveedor
     Set fca = DAOFacturaProveedor.FindById(fc.Id)
     If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
-    '
-    '
-    '
 
     Dim estadoAnterior As EstadoFacturaProveedor
     aprobar = True
@@ -167,6 +149,45 @@ err121:
     fc.estado = estadoAnterior
 End Function
 
+Public Function ForzarEstadoAprobado(fc As clsFacturaProveedor) As Boolean
+
+    Set fc = DAOFacturaProveedor.FindById(fc.Id)
+
+    Set cn = conectar.obternerConexion
+    On Error GoTo err121
+    cn.BeginTrans
+    Dim fca As clsFacturaProveedor
+    Set fca = DAOFacturaProveedor.FindById(fc.Id)
+    If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
+
+    Dim estadoAnterior As EstadoFacturaProveedor
+    aprobar = True
+    If fc.estado = EstadoFacturaProveedor.EnProceso Then
+
+        fc.estado = EstadoFacturaProveedor.Aprobada
+        cn.execute "update AdminComprasFacturasProveedores SET ultima_actualizacion= " & Escape(Now) & ", estado=2 where id=" & fc.Id
+        DaoFacturaProveedorHistorial.agregar fc, "Factura aprobada"
+
+        If Not fc.FormaPagoCuentaCorriente Then
+            If Not DAOFacturaProveedor.PagarEnEfectivo(fc, fc.FEcha, False) Then GoTo err121
+        End If
+    Else
+        
+        Err.Raise 4431, "Aprobar factura", "Error: La factura fué aprobada en otra sesión "
+
+    End If
+    cn.CommitTrans
+    Exit Function
+err121:
+    If Err.Number = 104 Or Err.Number = 4431 Then
+        MsgBox Err.Description
+    Else
+        MsgBox "Se produjo un error y no se pudo aprobar la factura", vbCritical
+    End If
+    cn.RollbackTrans
+    aprobar = False
+    fc.estado = estadoAnterior
+End Function
 
 
 Public Function FindById(Id As Long) As clsFacturaProveedor
@@ -481,22 +502,21 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
 
     Dim op As New OrdenPago
     op.FacturasProveedor.Add fac
-    fac.TotalAbonado = fac.Total
+    fac.TotalAbonado = fac.total
     fac.TipoCambio = 1
     fac.NetoGravadoAbonado = fac.NetoGravado
-    fac.OtrosAbonado = fac.Total - fac.NetoGravado
+    fac.OtrosAbonado = fac.total - fac.NetoGravado
 
     op.FEcha = fechaPago
     op.estado = EstadoOrdenPago_pendiente
     Set op.moneda = fac.moneda
 
 
-
     Dim opeCaja As New operacion
     opeCaja.Pertenencia = OrigenOperacion.caja
-    opeCaja.Monto = fac.Total
+    opeCaja.Monto = fac.total
     If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
-        opeCaja.Monto = fac.Total * -1
+        opeCaja.Monto = fac.total * -1
     End If
 
     Set opeCaja.moneda = fac.moneda
@@ -527,7 +547,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     '    totRet = totRet + d2.Item(CStr(ret.Id))
     'Next ret
 
-    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.Total * -1, fac.Total), fac.moneda.Id, op.moneda.Id))
+    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.total * -1, fac.total), fac.moneda.Id, op.moneda.Id))
     op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.moneda.Id, op.moneda.Id))
     op.StaticTotalOrigenes = op.TotalOrigenes
     op.StaticTotalRetenido = 0    'funciones.RedondearDecimales(totRet)
@@ -611,7 +631,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     initoffset = offset
 
     Dim c As Integer
-    Dim Total As Double
+    Dim total As Double
     Dim totalneto As Double
     Dim totalno As Double
     Dim totIva As Double
@@ -628,7 +648,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 
     For Each fac In col
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-        Total = Total + MonedaConverter.Convertir(fac.Total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+        total = total + MonedaConverter.Convertir(fac.total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
         totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
         totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
         totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.Id, MonedaConverter.Patron.Id)
@@ -636,7 +656,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         'Agrega DNEMER 03/02/2021
         totalpercep = totalpercep + fac.totalPercepciones * c
         'Agrega DNEMER 24/04/2023
-        TotalPendiente = TotalPendiente + ((fac.Total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
+        TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
 
 
 
@@ -651,14 +671,14 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         xlWorksheet.Cells(offset, 3).value = fac.NumeroFormateado
         xlWorksheet.Cells(offset, 4).value = fac.FEcha
         xlWorksheet.Cells(offset, 5).value = fac.moneda.NombreCorto
-        xlWorksheet.Cells(offset, 6).value = funciones.FormatearDecimales(fac.Total - (fac.TotalIVA + fac.totalPercepciones + fac.ImpuestoInterno + fac.TotalNetoGravadoDiscriminado(0))) * i
+        xlWorksheet.Cells(offset, 6).value = funciones.FormatearDecimales(fac.total - (fac.TotalIVA + fac.totalPercepciones + fac.ImpuestoInterno + fac.TotalNetoGravadoDiscriminado(0))) * i
         xlWorksheet.Cells(offset, 7).value = funciones.FormatearDecimales(fac.TotalIVA * i)
         xlWorksheet.Cells(offset, 8).value = funciones.FormatearDecimales(fac.TotalNetoGravadoDiscriminado(0) * i)
         xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(fac.totalPercepciones * i)
         xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(fac.ImpuestoInterno * i)
-        xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales(fac.Total * i)
+        xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales(fac.total * i)
 
-        xlWorksheet.Cells(offset, 12).value = funciones.FormatearDecimales(fac.Total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * i
+        xlWorksheet.Cells(offset, 12).value = funciones.FormatearDecimales(fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * i
 
         If fac.cuentasContables.count > 0 Then xlWorksheet.Cells(offset, 13).value = fac.cuentasContables.item(1).cuentas.codigo
         xlWorksheet.Cells(offset, 14).value = enums.enumEstadoFacturaProveedor(fac.estado)
@@ -694,7 +714,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     xlWorksheet.Cells(offset + 6, 3).value = totIva
     xlWorksheet.Cells(offset + 7, 3).value = totalpercep
     xlWorksheet.Cells(offset + 8, 3).value = TotalPendiente
-    xlWorksheet.Cells(offset + 9, 3).value = Total
+    xlWorksheet.Cells(offset + 9, 3).value = total
 
     xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 3)).Borders.LineStyle = xlContinuous
     xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 2)).Interior.Color = &HC0C0C0
