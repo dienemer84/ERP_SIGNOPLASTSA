@@ -84,13 +84,13 @@ err1:
     If Err.Number = 100 Then MsgBox "Se produjo algun error, no se  guadarán los cambios!"
     If Err.Number = 104 Then MsgBox Err.Description
 End Function
-Public Function existeFactura(factura As clsFacturaProveedor) As Boolean
+Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
     On Error GoTo err4
     Dim q As String
-    q = "select count(id) as cantidad from AdminComprasFacturasProveedores where id_proveedor=" & factura.Proveedor.Id & " and numero_factura=" & Escape(factura.numero) & " and id_config_factura=" & Escape(factura.configFactura.Id) & "  AND tipo_doc_contable=" & Escape(factura.tipoDocumentoContable)
+    q = "select count(id) as cantidad from AdminComprasFacturasProveedores where id_proveedor=" & Factura.Proveedor.Id & " and numero_factura=" & Escape(Factura.numero) & " and id_config_factura=" & Escape(Factura.configFactura.Id) & "  AND tipo_doc_contable=" & Escape(Factura.tipoDocumentoContable)
 
 
-    If factura.Id <> 0 Then q = q & " and AdminComprasFacturasProveedores.id <> " & factura.Id
+    If Factura.Id <> 0 Then q = q & " and AdminComprasFacturasProveedores.id <> " & Factura.Id
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
@@ -161,7 +161,7 @@ Public Function ForzarEstadoAprobado(fc As clsFacturaProveedor) As Boolean
     If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
 
     Dim estadoAnterior As EstadoFacturaProveedor
-    aprobar = True
+    ForzarEstadoAprobado = True
     If fc.estado = EstadoFacturaProveedor.EnProceso Then
 
         fc.estado = EstadoFacturaProveedor.Aprobada
@@ -185,7 +185,7 @@ err121:
         MsgBox "Se produjo un error y no se pudo aprobar la factura", vbCritical
     End If
     cn.RollbackTrans
-    aprobar = False
+    ForzarEstadoAprobado = False
     fc.estado = estadoAnterior
 End Function
 

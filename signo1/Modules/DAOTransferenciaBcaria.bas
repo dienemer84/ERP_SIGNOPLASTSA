@@ -12,6 +12,8 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
       & " LEFT JOIN ordenes_pago_operaciones opope ON opope.id_operacion = op.id" _
       & " LEFT JOIN ordenes_pago opp ON opp.id = opope.id_orden_pago" _
       & " LEFT JOIN ordenes_pago_facturas opfac ON opfac.id_orden_pago = opp.id" _
+      & " LEFT JOIN liquidaciones_caja liqc ON liqc.id = opope.id_orden_pago" _
+      & " LEFT JOIN liquidaciones_caja_facturas liqf ON liqf.id_liquidacion_caja = liqc.id" _
       & " LEFT JOIN AdminComprasFacturasProveedores facprov ON facprov.id = opfac.id_factura_proveedor" _
       & " LEFT JOIN proveedores prov ON prov.id = facprov.id_proveedor" _
       & " WHERE op.pertenencia = " & Origen & " AND op.entrada_salida = '-1' AND " & extraFilter
@@ -28,7 +30,7 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
 
     While Not rs.EOF
 
-        Set op = Map(rs, idx, "op", "cu", "mon", "ban", "opope", "opp", "opfac", "facprov", "prov")
+        Set op = Map(rs, idx, "op", "cu", "mon", "ban", "opope", "opp", "opfac", "liqc", "liqf", "facprov", "prov")
         
         If Not funciones.BuscarEnColeccion(col, CStr(op.Id)) Then col.Add op, CStr(op.Id)
         rs.MoveNext
@@ -46,6 +48,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaOrdenesPagoOperaciones As String = vbNullString, _
                     Optional tablaOrdenesPago As String = vbNullString, _
                     Optional tablaOrdenesPagoFacturas As String = vbNullString, _
+                    Optional tablaLiquidacionesCaja As String = vbNullString, _
+                    Optional tablaLiquidacionesCajaFacturas As String = vbNullString, _
                     Optional tablaFacturasProveedores As String = vbNullString, _
                     Optional tablaProveedores As String = vbNullString _
                   ) As clsTransferenciaBcaria
@@ -65,6 +69,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         op.Comprobante = GetValue(rs, indice, tabla, "comprobante")
 
         If LenB(tablaOrdenesPago) > 0 Then Set op.OrdenPago = DAOOrdenPago.Map(rs, indice, tablaOrdenesPago)
+        
+        If LenB(tablaLiquidacionesCaja) > 0 Then Set op.LiquidacionCaja = DAOLiquidacionCaja.Map(rs, indice, tablaLiquidacionesCaja)
      
         If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
      
@@ -111,7 +117,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     xlWorksheet.Cells(offset, 5).value = "Moneda"
     xlWorksheet.Cells(offset, 6).value = "Monto"
     xlWorksheet.Cells(offset, 7).value = "Comprobante"
-    xlWorksheet.Cells(offset, 8).value = "OP"
+    xlWorksheet.Cells(offset, 8).value = "OP/LIQ"
         
     xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 8)).Font.Bold = True
     xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 8)).Interior.Color = &HC0C0C0
@@ -135,13 +141,24 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         offset = offset + 1
        
         xlWorksheet.Cells(offset, 1).value = transf.Id
-        xlWorksheet.Cells(offset, 2).value = UCase(transf.ProveedorRazon)
+        
+        If transf.LiquidacionCaja Is Nothing Then
+             xlWorksheet.Cells(offset, 2).value = UCase(transf.ProveedorRazon)
+        Else
+            xlWorksheet.Cells(offset, 2).value = "VARIOS"
+        End If
+        
         xlWorksheet.Cells(offset, 3).value = "N° " & transf.CuentaBancaria & " | " & transf.NombreBanco
         xlWorksheet.Cells(offset, 4).value = transf.FechaOperacion
         xlWorksheet.Cells(offset, 5).value = transf.moneda.NombreCorto
         xlWorksheet.Cells(offset, 6).value = transf.Monto
         xlWorksheet.Cells(offset, 7).value = transf.Comprobante
-        xlWorksheet.Cells(offset, 8).value = transf.OrdenPago.Id
+        
+        If transf.LiquidacionCaja Is Nothing Then
+             xlWorksheet.Cells(offset, 8).value = transf.OrdenPago.Id
+        Else
+            xlWorksheet.Cells(offset, 8).value = transf.LiquidacionCaja.NumeroLiq
+        End If
         
         frmLoading.ProgressBar.value = i
         

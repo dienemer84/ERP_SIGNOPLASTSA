@@ -29,6 +29,7 @@ Public Comprobante As String
 
 Public OrdenPagoID As String
 Public OrdenPago As OrdenPago
+Public LiquidacionCaja As clsLiquidacionCaja
 
 Public ProveedorRazon As String
 Public Proveedor As clsProveedor

@@ -39,6 +39,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          Width           =   3885
       End
       Begin VB.TextBox txtOP 
+         Enabled         =   0   'False
          Height          =   315
          Left            =   1155
          TabIndex        =   11
@@ -276,6 +277,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          _StockProps     =   79
          Caption         =   "Nº OP"
          BackColor       =   12632256
+         Enabled         =   0   'False
          AutoSize        =   -1  'True
       End
    End
@@ -309,14 +311,14 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Column(7)       =   "frmAdminPagosTransferenciasBancarias.frx":0838
       Column(8)       =   "frmAdminPagosTransferenciasBancarias.frx":0998
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0AEC
-      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":0C24
-      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":0CD4
-      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":0D88
-      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":0E60
-      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":0F18
+      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0AE0
+      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":0C18
+      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":0CC8
+      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":0D7C
+      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":0E54
+      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":0F0C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":0FF8
+      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":0FEC
    End
    Begin XtremeSuiteControls.Label Label 
       Height          =   375
@@ -328,7 +330,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       _ExtentX        =   30295
       _ExtentY        =   661
       _StockProps     =   79
-      Caption         =   $"frmAdminPagosTransferenciasBancarias.frx":11D0
+      Caption         =   $"frmAdminPagosTransferenciasBancarias.frx":11C4
    End
 End
 Attribute VB_Name = "frmAdminPagosTransferenciasBancarias"
@@ -463,24 +465,34 @@ Private Sub Form_Load()
 End Sub
 
 
-Private Sub gridTransferencias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-If RowIndex > 0 And transferencias.count > 0 Then
-    Set TransfBancaria = transferencias.item(RowIndex)
+Private Sub gridTransferencias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+If rowIndex > 0 And transferencias.count > 0 Then
+    Set TransfBancaria = transferencias.item(rowIndex)
         Values(1) = TransfBancaria.Id
-        Values(2) = UCase(TransfBancaria.ProveedorRazon)
+        
+
         Values(3) = "N° " & TransfBancaria.CuentaBancaria & " | " & TransfBancaria.NombreBanco
         Values(4) = TransfBancaria.FechaOperacion
         Values(5) = TransfBancaria.moneda.NombreCorto
         Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(TransfBancaria.Monto)), "$", "")
         Values(7) = TransfBancaria.Comprobante
-        Values(8) = TransfBancaria.OrdenPago.Id
+        
+        If TransfBancaria.LiquidacionCaja Is Nothing Then
+                Values(8) = "OP: " & TransfBancaria.OrdenPago.Id
+                Values(2) = UCase(TransfBancaria.ProveedorRazon)
+        Else
+                Values(8) = "LIQ: " & TransfBancaria.LiquidacionCaja.NumeroLiq
+                Values(2) = "VARIOS"
+        End If
+
+
 End If
  
 End Sub
 
 Private Sub gridTransferencias_SelectionChange()
     On Error Resume Next
-    Set TransfBancaria = transferencias.item(gridTransferencias.RowIndex(gridTransferencias.row))
+    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
 End Sub
 
 
@@ -494,10 +506,18 @@ Private Sub gridTransferencias_DblClick()
 End Sub
 
 Private Sub mnuVer_Click()
-    Dim f22 As New frmAdminPagosCrearOrdenPago
-    f22.Show
-    f22.ReadOnly = True
-    f22.Cargar TransfBancaria.OrdenPago
+    
+    If TransfBancaria.LiquidacionCaja Is Nothing Then
+        Dim f22 As New frmAdminPagosCrearOrdenPago
+        f22.Show
+        f22.ReadOnly = True
+        f22.Cargar TransfBancaria.OrdenPago
+    Else
+        Dim f25 As New frmAdminPagosLiqCajaListaDG
+        f25.Show
+        f25.ReadOnly = True
+        f25.Cargar TransfBancaria.LiquidacionCaja
+    End If
 End Sub
 
 
