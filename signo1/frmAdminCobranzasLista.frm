@@ -284,7 +284,7 @@ Begin VB.Form frmAdminCobranzasLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   10
+      ColumnsCount    =   12
       Column(1)       =   "frmAdminCobranzasLista.frx":0640
       Column(2)       =   "frmAdminCobranzasLista.frx":07CC
       Column(3)       =   "frmAdminCobranzasLista.frx":0920
@@ -292,24 +292,26 @@ Begin VB.Form frmAdminCobranzasLista
       Column(5)       =   "frmAdminCobranzasLista.frx":0B8C
       Column(6)       =   "frmAdminCobranzasLista.frx":0CD4
       Column(7)       =   "frmAdminCobranzasLista.frx":0E44
-      Column(8)       =   "frmAdminCobranzasLista.frx":0FA0
-      Column(9)       =   "frmAdminCobranzasLista.frx":10F8
-      Column(10)      =   "frmAdminCobranzasLista.frx":1240
+      Column(8)       =   "frmAdminCobranzasLista.frx":0F58
+      Column(9)       =   "frmAdminCobranzasLista.frx":1074
+      Column(10)      =   "frmAdminCobranzasLista.frx":11D0
+      Column(11)      =   "frmAdminCobranzasLista.frx":1328
+      Column(12)      =   "frmAdminCobranzasLista.frx":1470
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":13C0
-      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":14F8
-      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":15A8
-      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":165C
-      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1734
-      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":17EC
-      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":18CC
-      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1978
-      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1A28
-      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1B08
+      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":15F0
+      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":1728
+      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":17D8
+      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":188C
+      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1964
+      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":1A1C
+      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":1AFC
+      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1BA8
+      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1C58
+      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1D38
       ImageCount      =   2
-      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1BB4
-      ImagePicture(2) =   "frmAdminCobranzasLista.frx":1ECE
-      PrinterProperties=   "frmAdminCobranzasLista.frx":21E8
+      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1DE4
+      ImagePicture(2) =   "frmAdminCobranzasLista.frx":20FE
+      PrinterProperties=   "frmAdminCobranzasLista.frx":2418
    End
    Begin VB.Menu mnu 
       Caption         =   "mnu"
@@ -444,7 +446,9 @@ End Sub
 
 Public Sub cmdBuscar_Click()
     llenarLista
+    
 End Sub
+
 
 Private Sub editarRecibo_Click()
     Dim F As New frmAdminCobranzasNuevoRecibo
@@ -497,6 +501,7 @@ Private Sub llenarLista()
 
 
     Set recibos = DAORecibo.FindAll(F)
+    
     Me.grilla_recibos.ItemCount = 0
     Me.grilla_recibos.ItemCount = recibos.count
 
@@ -529,7 +534,7 @@ Private Sub grilla_recibos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As I
     End If
 End Sub
 
-Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Button = 2 Then
         SeleccionarRecibo
         Me.nro.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
@@ -586,13 +591,13 @@ End Sub
 
 Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.rowIndex = 0 Then Exit Sub
-    If RowBuffer.value(9) = "Aprobado" Then
-        RowBuffer.CellStyle(9) = "Verde"
-    ElseIf RowBuffer.value(9) = "Anulado" Then
+    If RowBuffer.value(11) = "Aprobado" Then
+        RowBuffer.CellStyle(11) = "Verde"
+    ElseIf RowBuffer.value(11) = "Anulado" Then
 
-        RowBuffer.CellStyle(9) = "Anulado"
+        RowBuffer.CellStyle(11) = "Anulado"
     Else
-        RowBuffer.CellStyle(9) = "Rojo"
+        RowBuffer.CellStyle(11) = "Rojo"
     End If
 
     If RowBuffer.value(10) > 0 Then
@@ -617,24 +622,37 @@ End Sub
 
 Private Sub grilla_recibos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set recibo = recibos.item(rowIndex)
+    
     Values(1) = recibo.Id
     Values(2) = Format(recibo.FEcha, "yyyy/mm/dd", vbSunday)
 
     Values(3) = recibo.cliente.razon
     Values(4) = recibo.FechaCreacion
     Values(5) = recibo.moneda.NombreCorto
+    
+    If recibo.estado = 1 Then
+    Values(7) = "NO CALCULA PENDIENTE"
+    Values(8) = "NO CALCULA PENDIENTE"
+    Else
+        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico + recibo.TotalRetenciones)), "$", "")
+        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalRetenciones)), "$", "")
+    End If
+    
+
 
     'VALORES POR PAGAR
     Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico)), "$", "")
 
     'IMPORTE TOTAL PAGADO
-    Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalRecibidoEstatico)), "$", "")
+    Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalRecibidoEstatico)), "$", "")
 
     'IMPORTE SALDO TOTAL A CUENTA
-    Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.ACuentaDisponible)), "$", "")
+    Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.ACuentaDisponible)), "$", "")
 
-    Values(9) = enums.EnumEstadoRecibo(recibo.estado)
-    Values(10) = IIf(IsEmpty(tmpArchivos(recibo.Id)), 0, tmpArchivos(recibo.Id))
+    Values(11) = enums.EnumEstadoRecibo(recibo.estado)
+    
+    Values(12) = IIf(IsEmpty(tmpArchivos(recibo.Id)), 0, tmpArchivos(recibo.Id))
+    
 End Sub
 
 

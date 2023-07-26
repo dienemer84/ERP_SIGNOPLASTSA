@@ -587,11 +587,11 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
     For Each fac In op.FacturasProveedor
     
-        fac.ImporteTotalAbonado = fac.TotalAplicadoACuentas + fac.TotalOtros
+        fac.ImporteTotalAbonado = fac.NetoGravado + fac.TotalOtros
         
-'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.TotalAplicadoACuentas & "," & fac.TotalOtros & ")"
+        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravado & "," & fac.TotalOtros & ")"
 
-        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & 0 & "," & 0 & "," & 0 & ")"
+'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & 0 & "," & 0 & "," & 0 & ")"
 
         If Not conectar.execute(q) Then GoTo E
 
@@ -740,20 +740,20 @@ Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Bo
 
     For Each fac In op.FacturasProveedor
     
-        fac.ImporteTotalAbonado = fac.Monto
-        
-'q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.Monto & "," & fac.TotalOtros & ")"
-
-'q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & 0 & "," & 0 & "," & 0 & ")"
-
-        q = "UPDATE liquidaciones_caja_facturas SET total_liquidado =" & fac.Monto & ", neto_gravado_liquidado = " & fac.Monto & ", otros_liquidado = 0 WHERE id_liquidacion_caja = " & op.Id & " And id_factura_proveedor = " & fac.Id & ""
-        If Not conectar.execute(q) Then GoTo E
-
-        nopago = 0
-
-        fac.TotalAbonado = fac.TotalPendiente
-
-        nopago = fac.total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+'        fac.ImporteTotalAbonado = fac.NetoGravado + fac.TotalOtros
+'
+''q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.Monto & "," & fac.TotalOtros & ")"
+'
+''q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & 0 & "," & 0 & "," & 0 & ")"
+'
+'        q = "UPDATE liquidaciones_caja_facturas SET total_liquidado =" & fac.ImporteTotalAbonado & ", neto_gravado_liquidado = " & fac.NetoGravado & ", otros_liquidado = " & fac.TotalOtros & " WHERE id_liquidacion_caja = " & op.Id & " And id_factura_proveedor = " & fac.Id & ""
+'        If Not conectar.execute(q) Then GoTo E
+'
+'        nopago = 0
+'
+'        fac.TotalAbonado = fac.TotalPendiente
+'
+'        nopago = fac.total - fac.TotalAbonadoGlobal - fac.TotalAbonado
 
         es = EstadoFacturaProveedor.Saldada
 

@@ -368,20 +368,15 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
 
 
         fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
-
-        '        If indice.Exists(".id_liquidacion_caja") Then fc.LiquidacionCajaId = GetValue(rs, indice, vbNullString, "id_liquidacion_caja")
-        '
-        '        If indice.Exists(".numero_liq") Then fc.NumeroLiqCaja = GetValue(rs, indice, vbNullString, "numero_liq")
-
-        Set fc.UsuarioCarga = DAOUsuarios.Map(rs, indice, "usuarios")
+        
+'        Set fc.UsuarioCarga = DAOUsuarios.Map(rs, indice, "usuarios")
 
         If LenB(tablaMoneda) > 0 Then Set fc.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+
         fc.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
         If LenB(tablaAdminConfigFacturasProveedor) > 0 Then fc.configFactura = DAOConfigFacturaProveedor.Map(rs, indice, tablaAdminConfigFacturasProveedor, tablaAdminConfigIVAProveedor)
 
         If indice.Exists(".nro_orden") Then fc.OrdenPagoID = GetValue(rs, indice, vbNullString, "nro_orden")
-
-
 
         If indice.Exists(".total_compensado") Then fc.TotalCompensado = GetValue(rs, indice, vbNullString, "total_compensado")
 
@@ -790,4 +785,311 @@ err1:
     CrearTablaTempComprobantes = False
     cn.RollbackTrans
 End Function
+
+Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, Optional FechaFIN As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
+    On Error Resume Next
+    On Error GoTo err1
+    Dim indice As New Dictionary
+    Dim q As String
+    
+
+    Dim rs As Recordset
+    Dim col As New Collection
+    q = "SELECT *, (SELECT max(id_orden_pago) FROM ordenes_pago_facturas inner join ordenes_pago on ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  limit 1) as nro_orden"
+    
+    
+    If widhCompensatorios Then
+        q = q & ", (SELECT SUM(IF (tipo=1, c.importe,-c.importe)) FROM ordenes_pago_compensatorios c JOIN ordenes_pago op ON c.id_orden_pago=op.id AND op.estado=1 WHERE c.id_comprobante = AdminComprasFacturasProveedores.id AND c.cancelado=0 ) as total_compensado"
+    
+
+    
+    Else
+        q = q & ",0 as total_compensado "
+    End If
+
+    q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFIN & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
+    q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFIN & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
+    q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <=" & FechaFIN & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
+    q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  AND ordenes_pago.fecha <=" & FechaFIN & "),NCHAR) AS ordenes_pago "
+    q = q & ",   CONVERT((SELECT IFNULL(GROUP_CONCAT(numero_liq),'-') From liquidaciones_caja_facturas INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja=liquidaciones_caja.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND liquidaciones_caja.estado<>2  AND liquidaciones_caja.fecha <=" & FechaFIN & "),NCHAR) AS num_liquidaciones_caja "
+    q = q & " From" _
+        & " AdminComprasFacturasProveedores" _
+        & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
+        & " LEFT JOIN proveedores ON (AdminComprasFacturasProveedores.id_proveedor = proveedores.id)" _
+        & " LEFT JOIN AdminConfigMonedas ON (AdminComprasFacturasProveedores.id_moneda = AdminConfigMonedas.id)" _
+        & " LEFT JOIN AdminConfigIVAProveedor ON (AdminConfigFacturasProveedor.id_iva = AdminConfigIVAProveedor.id)" _
+        & " LEFT JOIN AdminConfigIvaAlicuotas ON (AdminConfigFacturasProveedor.id = AdminConfigIvaAlicuotas.id_config_factura)" _
+        & " LEFT JOIN AdminComprasFacturasProveedoresIva ON AdminComprasFacturasProveedoresIva.id_factura_proveedor=    AdminComprasFacturasProveedores.id " _
+        & " LEFT JOIN AdminComprasFacturasProveedoresPercepciones ON AdminComprasFacturasProveedoresPercepciones.id_factura_proveedor=AdminComprasFacturasProveedores.id  " _
+        & " LEFT JOIN AdminConfigPercepciones ON AdminComprasFacturasProveedoresPercepciones.id_percepcion=AdminConfigPercepciones.id " _
+        & " LEFT JOIN AdminConfigIvaAlicuotas AS a1 ON AdminComprasFacturasProveedoresIva.id_iva=a1.id " _
+        & " LEFT JOIN liquidaciones_caja_facturas ON (AdminComprasFacturasProveedores.id = liquidaciones_caja_facturas.id_factura_proveedor) " _
+        & " WHERE 1=1 "
+    If LenB(filtro) > 0 Then
+        q = q & " and " & filtro
+    End If
+    
+'    q = q & " HAVING ordenes_pago <> '-' OR num_liquidaciones_caja <> '-'"
+
+    If soloPropias Then
+        q = q & " and AdminComprasFacturasProveedores.id_usuario_creador=" & funciones.GetUserObj.Id
+
+    End If
+
+    If LenB(orderBy) > 0 Then
+        q = q & " ORDER BY " & orderBy
+    End If
+
+
+    Set rs = conectar.RSFactory(q)
+
+    BuildFieldsIndex rs, indice
+    
+
+
+    Dim F As clsFacturaProveedor
+    Dim per As clsPercepcionesAplicadas
+    Dim Iva As clsAlicuotaAplicada
+
+    While Not rs.EOF
+        Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
+
+        If rs!ordenes_pago <> "-" Or rs!num_liquidaciones_caja <> "-" Then
+        
+                Dim neto_gravado_liquidado As Variant
+                neto_gravado_liquidado = rs!neto_gravado_liquidado
+                If Not IsNull(neto_gravado_liquidado) Then
+                    F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado + neto_gravado_liquidado
+                Else
+                    F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
+                End If
+        
+                Dim otros_liquidado As Variant
+                otros_liquidado = rs!otros_liquidado
+                If Not IsNull(otros_liquidado) Then
+                    F.OtrosAbonadoGlobal = rs!otros_abonado + otros_liquidado
+                Else
+                    F.OtrosAbonadoGlobal = rs!otros_abonado
+                End If
+        
+        End If
+
+        F.OrdenesPagoId = rs!ordenes_pago
+        F.LiquidacionesCajaId = rs!num_liquidaciones_caja
+
+
+
+
+        If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
+            Set F = col.item(CStr(F.Id))
+        Else
+            If withHistorial Then
+                F.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(F.Id)
+            End If
+        End If
+
+        If IsSomething(F.configFactura) Then
+            F.configFactura.alicuotas.Add DAOAlicuotas.Map(rs, indice, "AdminConfigIvaAlicuotas")
+        End If
+
+        Set per = DAOPercepcionesAplicadas.Map(rs, indice, "AdminComprasFacturasProveedoresPercepciones", "AdminConfigPercepciones")
+        If IsSomething(per) Then
+            If Not funciones.BuscarEnColeccion(F.percepciones, CStr(per.Id)) Then
+                If per.Id <> 0 Then F.percepciones.Add per, CStr(per.Id)
+            End If
+        End If
+        
+        Set Iva = DAOIvaAplicado.Map(rs, indice, "AdminComprasFacturasProveedoresIva", "a1")
+        If IsSomething(Iva) Then
+            If Not funciones.BuscarEnColeccion(F.IvaAplicado, CStr(Iva.Id)) Then
+                F.IvaAplicado.Add Iva, CStr(Iva.Id)
+            End If
+        End If
+        
+       If Not funciones.BuscarEnColeccion(col, CStr(F.Id)) Then col.Add F, CStr(F.Id)
+       rs.MoveNext
+       
+    Wend
+
+    Set FindAllTotalizadores = col
+
+    Exit Function
+
+err1:
+    MsgBox Err.Description
+End Function
+
+Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFIN As String) As Boolean
+    On Error GoTo err1
+
+    ExportarColeccionTotalizadores = True
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+        xlWorksheet.Range("A1:K1").Merge
+        xlWorksheet.Range("A2:K2").Merge
+        xlWorksheet.Range("A1:K3").HorizontalAlignment = xlHAlignCenter
+       xlWorksheet.Range("A1:K2").Font.Bold = True
+        xlWorksheet.Range("A3:K2").Font.Bold = True
+        
+                Dim fin As Date
+
+
+        fin = FechaFIN
+
+    'fila, columna
+    xlWorksheet.Cells(1, 1).value = "REPORTE DE COMPROBANTES DE COMPRA ADEUDADOS AL " & Format(fin, "dd/mm/yyyy")
+
+    Dim offset As Long
+    offset = 3
+    xlWorksheet.Cells(offset, 1).value = "ID"
+    xlWorksheet.Cells(offset, 2).value = "Razon Social"
+    xlWorksheet.Cells(offset, 3).value = "CUIT"
+    xlWorksheet.Cells(offset, 4).value = "Documento"
+    xlWorksheet.Cells(offset, 5).value = "Letra"
+    xlWorksheet.Cells(offset, 6).value = "Número"
+    xlWorksheet.Cells(offset, 7).value = "Fecha"
+    xlWorksheet.Cells(offset, 8).value = "Moneda"
+    xlWorksheet.Cells(offset, 9).value = "Total"
+    xlWorksheet.Cells(offset, 10).value = "Pagado"
+    xlWorksheet.Cells(offset, 11).value = "Saldo"
+
+
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 11)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 11)).Interior.Color = &HC0C0C0
+
+
+    '.Borders.LineStyle = xlContinuous
+
+    Dim fac As clsFacturaProveedor
+    Dim initoffset As Long
+    initoffset = offset
+
+    Dim c As Integer
+    Dim total As Double
+    Dim totalneto As Double
+    Dim totalno As Double
+    Dim totIva As Double
+    'Agregar DNEMER 03/02/2021
+    Dim totalpercep As Double
+    Dim TotalPendiente As Double
+
+    ProgressBar.min = 0
+    ProgressBar.max = col.count
+
+
+    Dim d As Long
+    d = 0
+
+    For Each fac In col
+        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+'        total = total + MonedaConverter.Convertir(fac.total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+        totalneto = totalneto + fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0)
+        totalno = totalno + fac.TotalNetoGravadoDiscriminado(0) * c
+        totIva = totIva + fac.TotalIVA * c
+
+        'Agrega DNEMER 03/02/2021
+        totalpercep = totalpercep + fac.totalPercepciones * c
+        'Agrega DNEMER 24/04/2023
+        TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
+
+
+
+        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+
+        d = d + 1
+        ProgressBar.value = d
+
+        offset = offset + 1
+        xlWorksheet.Cells(offset, 1).value = fac.Id
+        xlWorksheet.Cells(offset, 2).value = fac.Proveedor.RazonSocial
+        xlWorksheet.Cells(offset, 3).value = fac.Proveedor.Cuit
+        xlWorksheet.Cells(offset, 4).value = enums.EnumTipoDocumentoContableShort(fac.tipoDocumentoContable)
+        xlWorksheet.Cells(offset, 5).value = fac.configFactura.TipoFactura
+        xlWorksheet.Cells(offset, 6).value = fac.numero
+        xlWorksheet.Cells(offset, 7).value = fac.FEcha
+        xlWorksheet.Cells(offset, 8).value = fac.moneda.NombreCorto
+        
+        Dim TotalFactura As Double
+        TotalFactura = (fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno
+        
+        xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(TotalFactura + fac.Redondeo) * i
+        
+        xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(fac.TotalAbonadoGlobal) * i
+        
+        xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales((TotalFactura + fac.Redondeo) - fac.TotalAbonadoGlobal) * i
+
+        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 11)).Borders.LineStyle = xlContinuous
+        
+    Next
+
+
+'    xlWorksheet.Cells(offset + 3, 2).value = "Total NG"
+'    xlWorksheet.Cells(offset + 4, 2).value = "Total NNG"
+'    xlWorksheet.Cells(offset + 5, 2).value = "Total Neto"
+'    xlWorksheet.Cells(offset + 6, 2).value = "Tota IVA"
+'    xlWorksheet.Cells(offset + 7, 2).value = "Tota Percepciones"
+'    xlWorksheet.Cells(offset + 8, 2).value = "Tota Pendiente"
+'    xlWorksheet.Cells(offset + 9, 2).value = "Total Filtrado"
+'
+'    xlWorksheet.Cells(offset + 3, 3).value = totalneto
+'    xlWorksheet.Cells(offset + 4, 3).value = totalno
+'    xlWorksheet.Cells(offset + 5, 3).value = totalneto + totalno
+'    xlWorksheet.Cells(offset + 6, 3).value = totIva
+'    xlWorksheet.Cells(offset + 7, 3).value = totalpercep
+'    xlWorksheet.Cells(offset + 8, 3).value = TotalPendiente
+'    xlWorksheet.Cells(offset + 9, 3).value = total
+
+'    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 3)).Borders.LineStyle = xlContinuous
+'    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 2)).Interior.Color = &HC0C0C0
+
+    'autosize
+    xlApplication.ScreenUpdating = False
+    Dim wkSt As String
+    wkSt = xlWorksheet.Name
+    xlWorksheet.Cells.EntireColumn.AutoFit
+    xlWorkbook.Sheets(wkSt).Select
+    xlApplication.ScreenUpdating = True
+    ''
+
+    Dim ruta As String
+    ruta = Environ$("TEMP")
+    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
+    If LenB(ruta) = 0 Then ruta = App.path
+    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
+
+    xlWorkbook.SaveAs ruta
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    ProgressBar.value = 0
+
+    Exit Function
+err1:
+    ExportarColeccionTotalizadores = False
+End Function
+
+
 

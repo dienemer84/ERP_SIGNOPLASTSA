@@ -92,7 +92,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          Appearance      =   10
          Color           =   32
          ItemCount       =   2
-         Item(0).Caption =   "Facturas"
+         Item(0).Caption =   "Comprobantes"
          Item(0).ControlCount=   2
          Item(0).Control(0)=   "gridFacturas"
          Item(0).Control(1)=   "gridFacturasCombo"
@@ -201,18 +201,18 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             IntProp7        =   0
             ColumnsCount    =   4
             Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":1518
-            Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":1654
-            Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":179C
-            Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":18F4
+            Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":1660
+            Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":17A8
+            Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":1900
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":1A24
-            FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":1B5C
-            FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":1C0C
-            FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":1CC0
-            FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":1D98
-            FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":1E50
+            FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":1A30
+            FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":1B68
+            FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":1C18
+            FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":1CCC
+            FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":1DA4
+            FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":1E5C
             ImageCount      =   0
-            PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":1F30
+            PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":1F3C
          End
          Begin GridEX20.GridEX gridRetenciones 
             Height          =   3870
@@ -239,19 +239,19 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             IntProp2        =   0
             IntProp7        =   0
             ColumnsCount    =   4
-            Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":2108
-            Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":2240
-            Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":2374
-            Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":24B0
+            Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":2114
+            Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":224C
+            Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":2380
+            Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":24BC
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":25BC
-            FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":26F4
-            FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":27A4
-            FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":2858
-            FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":2930
-            FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":29E8
+            FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":25C8
+            FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":2700
+            FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":27B0
+            FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":2864
+            FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":293C
+            FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":29F4
             ImageCount      =   0
-            PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":2AC8
+            PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":2AD4
          End
       End
       Begin VB.TextBox txtRedondeo 
@@ -324,22 +324,22 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                IntProp2        =   0
                IntProp7        =   0
                ColumnsCount    =   7
-               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":2CA0
-               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":2E2C
-               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":2F94
-               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":30FC
-               Column(5)       =   "frmAdminCobranzasNuevoRecibo.frx":3234
-               Column(6)       =   "frmAdminCobranzasNuevoRecibo.frx":3378
-               Column(7)       =   "frmAdminCobranzasNuevoRecibo.frx":34E0
+               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":2CAC
+               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":2E38
+               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":2FA0
+               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":3108
+               Column(5)       =   "frmAdminCobranzasNuevoRecibo.frx":3240
+               Column(6)       =   "frmAdminCobranzasNuevoRecibo.frx":3384
+               Column(7)       =   "frmAdminCobranzasNuevoRecibo.frx":34EC
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":35DC
-               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":3714
-               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":37C4
-               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":3878
-               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":3950
-               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":3A08
+               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":35E8
+               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":3720
+               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":37D0
+               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":3884
+               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":395C
+               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":3A14
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":3AE8
+               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":3AF4
             End
             Begin GridEX20.GridEX gridBancos 
                Height          =   1845
@@ -368,17 +368,17 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                IntProp2        =   0
                IntProp7        =   0
                ColumnsCount    =   2
-               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":3CC0
-               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":3DC0
+               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":3CCC
+               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":3DCC
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":3EB4
-               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":3FEC
-               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":409C
-               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":4150
-               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":4228
-               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":42E0
+               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":3EC0
+               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":3FF8
+               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":40A8
+               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":415C
+               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":4234
+               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":42EC
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":43C0
+               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":43CC
             End
          End
          Begin XtremeSuiteControls.GroupBox grpBanco 
@@ -418,19 +418,19 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                IntProp2        =   0
                IntProp7        =   0
                ColumnsCount    =   4
-               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":4598
-               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":4724
-               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":48B4
-               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":4A3C
+               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":45A4
+               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":4730
+               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":48C0
+               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":4A48
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":4BAC
-               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":4CE4
-               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":4D94
-               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":4E48
-               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":4F20
-               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":4FD8
+               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":4BB8
+               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":4CF0
+               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":4DA0
+               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":4E54
+               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":4F2C
+               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":4FE4
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":50B8
+               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":50C4
             End
          End
          Begin XtremeSuiteControls.GroupBox grpCaja 
@@ -469,19 +469,19 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                IntProp2        =   0
                IntProp7        =   0
                ColumnsCount    =   4
-               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":5290
-               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":541C
-               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":5584
-               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":570C
+               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":529C
+               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":5428
+               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":5590
+               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":5718
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":5840
-               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":5978
-               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":5A28
-               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":5ADC
-               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":5BB4
-               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":5C6C
+               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":584C
+               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":5984
+               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":5A34
+               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":5AE8
+               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":5BC0
+               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":5C78
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":5D4C
+               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":5D58
             End
          End
       End
@@ -678,7 +678,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       Begin VB.Label lblTotalFactura 
          AutoSize        =   -1  'True
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Total Facturas:"
+         Caption         =   "Total Cbtes:"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -692,7 +692,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          Left            =   270
          TabIndex        =   17
          Top             =   4815
-         Width           =   1305
+         Width           =   1050
       End
       Begin VB.Label lblTotalRetenciones 
          AutoSize        =   -1  'True
@@ -749,7 +749,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   164036609
+         Format          =   62521345
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -836,17 +836,17 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":5F24
-      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":6048
+      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":5F30
+      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":6054
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":6134
-      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":626C
-      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":631C
-      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":63D0
-      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":64A8
-      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":6560
+      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":6140
+      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":6278
+      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":6328
+      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":63DC
+      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":64B4
+      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":656C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":6640
+      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":664C
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   975
@@ -874,17 +874,17 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":6818
-      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":693C
+      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":6824
+      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":6948
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":6A30
-      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":6B68
-      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":6C18
-      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":6CCC
-      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":6DA4
-      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":6E5C
+      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":6A3C
+      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":6B74
+      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":6C24
+      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":6CD8
+      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":6DB0
+      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":6E68
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":6F3C
+      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":6F48
    End
    Begin GridEX20.GridEX gridMonedas 
       Height          =   1215
@@ -912,31 +912,17 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":7114
-      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":7238
+      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":7120
+      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":7244
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":732C
-      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":7464
-      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":7514
-      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":75C8
-      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":76A0
-      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":7758
+      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":7338
+      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":7470
+      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":7520
+      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":75D4
+      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":76AC
+      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":7764
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":7838
-   End
-   Begin XtremeSuiteControls.ComboBox ComboBox1 
-      Height          =   315
-      Left            =   0
-      TabIndex        =   39
-      Top             =   0
-      Visible         =   0   'False
-      Width           =   2460
-      _Version        =   786432
-      _ExtentX        =   4339
-      _ExtentY        =   556
-      _StockProps     =   77
-      BackColor       =   -2147483643
-      Text            =   "ComboBox1"
+      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":7844
    End
 End
 Attribute VB_Name = "frmAdminCobranzasNuevoRecibo"
@@ -1174,7 +1160,7 @@ Private Sub Totalizar()
     Me.lblTotalCaja.caption = "Total Caja: " & funciones.FormatearDecimales(recibo.TotalOperacionesCaja)
 
     Dim totalRecibo As Double
-    totalRecibo = funciones.FormatearDecimales(recibo.Total)
+    totalRecibo = funciones.FormatearDecimales(recibo.total)
     Dim totalCancelado As Double
     totalCancelado = funciones.FormatearDecimales(recibo.TotalRecibido)
 
@@ -1245,9 +1231,9 @@ End Sub
 ''
 'End Sub
 
-Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= bancos.count Then
-        Set Banco = bancos.item(RowIndex)
+Private Sub gridBancos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= bancos.count Then
+        Set Banco = bancos.item(rowIndex)
         Values(1) = Banco.Id
         Values(2) = Banco.nombre
     End If
@@ -1280,16 +1266,16 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
     Totalizar
 End Sub
 
-Private Sub gridCajaOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And recibo.OperacionesCaja.count >= RowIndex Then
-        recibo.OperacionesCaja.remove RowIndex
+Private Sub gridCajaOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And recibo.OperacionesCaja.count >= rowIndex Then
+        recibo.OperacionesCaja.remove rowIndex
         Totalizar
     End If
 End Sub
 
-Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= recibo.OperacionesCaja.count Then
-        Set operacion = recibo.OperacionesCaja.item(RowIndex)
+Private Sub gridCajaOperaciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= recibo.OperacionesCaja.count Then
+        Set operacion = recibo.OperacionesCaja.item(rowIndex)
         Values(1) = funciones.FormatearDecimales(operacion.Monto)
         If IsSomething(operacion.moneda) Then
             Values(2) = operacion.moneda.NombreCorto
@@ -1302,9 +1288,9 @@ Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
     End If
 End Sub
 
-Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And recibo.OperacionesCaja.count > 0 Then
-        Set operacion = recibo.OperacionesCaja.item(RowIndex)
+Private Sub gridCajaOperaciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And recibo.OperacionesCaja.count > 0 Then
+        Set operacion = recibo.OperacionesCaja.item(rowIndex)
         'operacion.IdPertenencia = recibo.id
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
@@ -1320,9 +1306,9 @@ Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Book
     End If
 End Sub
 
-Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Cajas.count > 0 Then
-        Set caja = Cajas.item(RowIndex)
+Private Sub gridCajas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Cajas.count > 0 Then
+        Set caja = Cajas.item(rowIndex)
         Values(1) = caja.Id
         Values(2) = caja.nombre
     End If
@@ -1366,16 +1352,16 @@ Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVari
     Totalizar
 End Sub
 
-Private Sub gridCheques_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 Then
-        recibo.Cheques.remove RowIndex
+Private Sub gridCheques_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 Then
+        recibo.Cheques.remove rowIndex
         Totalizar
     End If
 End Sub
 
-Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= recibo.Cheques.count Then
-        Set cheque = recibo.Cheques.item(RowIndex)
+Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= recibo.Cheques.count Then
+        Set cheque = recibo.Cheques.item(rowIndex)
         Values(1) = cheque.numero
         Values(2) = funciones.FormatearDecimales(cheque.Monto)
         Values(6) = cheque.TercerosPropio
@@ -1387,9 +1373,9 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
     End If
 End Sub
 
-Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And recibo.Cheques.count >= RowIndex Then
-        Set cheque = recibo.Cheques.item(RowIndex)
+Private Sub gridCheques_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And recibo.Cheques.count >= rowIndex Then
+        Set cheque = recibo.Cheques.item(rowIndex)
         If IsNumeric(Values(4)) Then Set cheque.Banco = DAOBancos.GetById(Values(4))
         cheque.EnCartera = True
         cheque.FechaRecibido = recibo.FEcha
@@ -1410,9 +1396,9 @@ End Sub
 
 
 
-Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If cuentasBancarias.count >= RowIndex Then
-        Set CuentaBancaria = cuentasBancarias.item(RowIndex)
+Private Sub gridCuentasBancarias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If cuentasBancarias.count >= rowIndex Then
+        Set CuentaBancaria = cuentasBancarias.item(rowIndex)
         Values(1) = CuentaBancaria.Id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
@@ -1446,16 +1432,16 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
     Totalizar
 End Sub
 
-Private Sub gridDepositosOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And recibo.OperacionesBanco.count >= RowIndex Then
-        recibo.OperacionesBanco.remove RowIndex
+Private Sub gridDepositosOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And recibo.OperacionesBanco.count >= rowIndex Then
+        recibo.OperacionesBanco.remove rowIndex
         Totalizar
     End If
 End Sub
 
-Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= recibo.OperacionesBanco.count Then
-        Set operacion = recibo.OperacionesBanco.item(RowIndex)
+Private Sub gridDepositosOperaciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= recibo.OperacionesBanco.count Then
+        Set operacion = recibo.OperacionesBanco.item(rowIndex)
         Values(1) = funciones.FormatearDecimales(operacion.Monto)
         If IsSomething(operacion.moneda) Then
             Values(2) = operacion.moneda.NombreCorto
@@ -1468,9 +1454,9 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByV
     End If
 End Sub
 
-Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And recibo.OperacionesBanco.count > 0 Then
-        Set operacion = recibo.OperacionesBanco.item(RowIndex)
+Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And recibo.OperacionesBanco.count > 0 Then
+        Set operacion = recibo.OperacionesBanco.item(rowIndex)
         'operacion.IdPertenencia = recibo.id
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
@@ -1501,7 +1487,7 @@ Private Sub gridFacturas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
 
 
 
-        recibo.PagosDeFacturas.Add CStr(Factura.Id), Factura.Total - DAOFactura.PagosRealizados(Factura.Id)
+        recibo.PagosDeFacturas.Add CStr(Factura.Id), Factura.total - DAOFactura.PagosRealizados(Factura.Id)
 
 
 
@@ -1511,9 +1497,9 @@ Private Sub gridFacturas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
 
 End Sub
 
-Private Sub gridFacturas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And recibo.facturas.count >= RowIndex Then
-        recibo.facturas.remove RowIndex
+Private Sub gridFacturas_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And recibo.facturas.count >= rowIndex Then
+        recibo.facturas.remove rowIndex
         If recibo.PagosDeFacturas.Exists(CStr(Factura.Id)) Then
             recibo.PagosDeFacturas.remove CStr(Factura.Id)
         End If
@@ -1521,12 +1507,12 @@ Private Sub gridFacturas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As
     End If
 End Sub
 
-Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And recibo.facturas.count >= RowIndex Then
-        Set Factura = recibo.facturas.item(RowIndex)
+Private Sub gridFacturas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And recibo.facturas.count >= rowIndex Then
+        Set Factura = recibo.facturas.item(rowIndex)
         Values(1) = Factura.GetShortDescription(False, True)
-        Values(2) = funciones.FormatearDecimales(Factura.Total)
-        Values(3) = funciones.FormatearDecimales(Factura.Total - DAOFactura.PagosRealizados(Factura.Id))
+        Values(2) = funciones.FormatearDecimales(Factura.total)
+        Values(3) = funciones.FormatearDecimales(Factura.total - DAOFactura.PagosRealizados(Factura.Id))
 
         If recibo.PagosDeFacturas.Exists(CStr(Factura.Id)) Then
             Values(4) = funciones.FormatearDecimales(recibo.PagosDeFacturas.item(CStr(Factura.Id)))
@@ -1537,9 +1523,9 @@ Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
     End If
 End Sub
 
-Private Sub gridFacturas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And recibo.facturas.count >= RowIndex Then
-        Set Factura = recibo.facturas.item(RowIndex)
+Private Sub gridFacturas_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And recibo.facturas.count >= rowIndex Then
+        Set Factura = recibo.facturas.item(rowIndex)
         'Set Factura = DAOFactura.FindById(Values(1), True)
         'recibo.facturas.Add Factura, , , RowIndex
         'recibo.facturas.Remove RowIndex
@@ -1553,18 +1539,18 @@ Private Sub gridFacturas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As
     End If
 End Sub
 
-Private Sub gridFacturasCombo_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And facturasCliente.count >= RowIndex Then
-        Set Factura = facturasCliente.item(RowIndex)
+Private Sub gridFacturasCombo_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And facturasCliente.count >= rowIndex Then
+        Set Factura = facturasCliente.item(rowIndex)
         Values(1) = Factura.Id
         Values(2) = Factura.GetShortDescription(False, True)
-        Values(3) = funciones.FormatearDecimales(Factura.Total)
+        Values(3) = funciones.FormatearDecimales(Factura.total)
     End If
 End Sub
 
-Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Monedas.count > 0 Then
-        Set moneda = Monedas.item(RowIndex)
+Private Sub gridMonedas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Monedas.count > 0 Then
+        Set moneda = Monedas.item(rowIndex)
         Values(1) = moneda.Id
         Values(2) = moneda.NombreCorto
     End If
@@ -1576,17 +1562,17 @@ Private Sub gridRetenciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
              Not IsNumeric(Me.gridRetenciones.value(3))
 End Sub
 
-Private Sub gridRetenciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 Then
-        recibo.retenciones.remove RowIndex
+Private Sub gridRetenciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 Then
+        recibo.retenciones.remove rowIndex
         Totalizar
     End If
 End Sub
 
-Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And RowIndex <= recibo.retenciones.count Then
+Private Sub gridRetenciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And rowIndex <= recibo.retenciones.count Then
 
-        Set retencionRecibo = recibo.retenciones.item(RowIndex)
+        Set retencionRecibo = recibo.retenciones.item(rowIndex)
         Values(1) = retencionRecibo.NroRetencion
         If IsSomething(retencionRecibo.Retencion) Then
             Values(2) = retencionRecibo.Retencion.nombre
@@ -1621,17 +1607,17 @@ Private Sub gridRetenciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRet
     Totalizar
 End Sub
 
-Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 Then
-        Set retencionRecibo = recibo.retenciones(RowIndex)
+Private Sub gridRetenciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 Then
+        Set retencionRecibo = recibo.retenciones(rowIndex)
         UpdateAddRetencion retencionRecibo, Values
         Totalizar
     End If
 End Sub
 
-Private Sub gridTipoRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If retenciones.count >= RowIndex Then
-        Set Retencion = retenciones.item(RowIndex)
+Private Sub gridTipoRetenciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If retenciones.count >= rowIndex Then
+        Set Retencion = retenciones.item(rowIndex)
         Values(1) = Retencion.nombre
         Values(2) = Retencion.Id
         Values(3) = Retencion.codigo

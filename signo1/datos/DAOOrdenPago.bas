@@ -411,7 +411,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
 
         Set x = DAOOrdenPago.FindAbonadoPendienteEnEstaOP(fac.Id, op.Id)
 
-        nopago1 = fac.Total - fac.TotalAbonadoGlobal    '- (funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3)))))
+        nopago1 = fac.total - fac.TotalAbonadoGlobal    '- (funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3)))))
 
         'nopago = fac.Total - fac.TotalAbonadoGlobal - funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
 
@@ -535,7 +535,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
 
     Dim q As String
     Dim rs As Recordset
-    On Error GoTo e
+    On Error GoTo E
     Dim Nueva As Boolean: Nueva = False
     If op.Id = 0 Then
         Nueva = True
@@ -581,10 +581,10 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
     q = Replace(q, "'dif_cambio_total'", Escape(op.DiferenciaCambioEnTOTAL))
 
 
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
 
     If Nueva Then op.Id = conectar.UltimoId2()
-    If op.Id = 0 Then GoTo e
+    If op.Id = 0 Then GoTo E
 
     If cascada Then
 
@@ -600,13 +600,13 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         Set rs = conectar.RSFactory(q)
         While Not rs.EOF
             q = "UPDATE Cheques SET  en_cartera = 1, observaciones = NULL, origen= NULL WHERE id = " & rs!id_cheque
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
             rs.MoveNext
         Wend
 
 
         q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo e
+        If Not conectar.execute(q) Then GoTo E
 
         Dim che As cheque
         For Each che In op.ChequesTerceros
@@ -614,10 +614,10 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             che.IdOrdenPagoOrigen = op.Id
             che.FechaEmision = op.FEcha
             'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
-            If Not DAOCheques.Guardar(che) Then GoTo e
+            If Not DAOCheques.Guardar(che) Then GoTo E
 
             q = "INSERT INTO ordenes_pago_cheques VALUES (" & op.Id & ", " & che.Id & ")"
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
         Next che
 
         For Each che In op.ChequesPropios
@@ -626,10 +626,10 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             che.FechaEmision = op.FEcha
             'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
             If op.EsParaFacturaProveedor And op.FacturasProveedor.count > 0 Then che.OrigenDestino = op.FacturasProveedor(1).Proveedor.RazonSocial
-            If Not DAOCheques.Guardar(che) Then GoTo e
+            If Not DAOCheques.Guardar(che) Then GoTo E
 
             q = "INSERT INTO ordenes_pago_cheques VALUES (" & op.Id & ", " & che.Id & ")"
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
         Next che
         '------------------------------------------------------
 
@@ -638,7 +638,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         Dim fcp As clsFacturaProveedor
         For Each fcp In op.FacturasProveedor
             q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
         Next
 
 
@@ -646,7 +646,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
 
 
         q = "DELETE FROM ordenes_pago_facturas WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo e
+        If Not conectar.execute(q) Then GoTo E
 
 
         Dim es As EstadoFacturaProveedor
@@ -657,7 +657,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         For Each fac In op.FacturasProveedor
             q = "INSERT INTO ordenes_pago_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravadoAbonado & "," & fac.OtrosAbonado & ")"
 
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
 
             '            If BuscarEnColeccion(op.Compensatorios, CStr(fac.id)) Then
             '
@@ -675,10 +675,10 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             Next cp
 
 
-            nopago = fac.Total - fac.TotalAbonadoGlobal - fac.TotalAbonado
+            nopago = fac.total - fac.TotalAbonadoGlobal - fac.TotalAbonado
 
             q = "DELETE FROM orden_pago_deuda_compensatorios WHERE id_orden_pago = " & op.Id
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
 
             Dim c As Compensatorio
 
@@ -687,12 +687,12 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
                 q = "INSERT INTO  orden_pago_deuda_compensatorios (id_orden_pago, id_compensatorio) values (" & op.Id & "," & c.Id & ")"
 
 
-                If Not conectar.execute(q) Then GoTo e
+                If Not conectar.execute(q) Then GoTo E
 
                 q = "UPDATE  ordenes_pago_compensatorios   SET cancelado=1 where id_orden_pago=" & op.Id & " and id=" & c.Id
 
 
-                If Not conectar.execute(q) Then GoTo e
+                If Not conectar.execute(q) Then GoTo E
 
 
             Next c
@@ -715,7 +715,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             ' End If
             q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
             'q = "UPDATE AdminComprasFacturasProveedores SET estado = " & fac.AnalizarEstado & " WHERE id = " & fac.Id
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
 
 
         Next fac
@@ -725,9 +725,9 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
 
 
         q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
-        If Not conectar.execute(q) Then GoTo e
+        If Not conectar.execute(q) Then GoTo E
         q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo e
+        If Not conectar.execute(q) Then GoTo E
 
         Dim oper As operacion
         For Each oper In op.OperacionesBanco
@@ -735,11 +735,11 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             oper.FechaCarga = Now
             If DAOOperacion.Save(oper) Then
                 oper.Id = conectar.UltimoId2
-                If oper.Id = 0 Then GoTo e
+                If oper.Id = 0 Then GoTo E
                 q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
-                If Not conectar.execute(q) Then GoTo e
+                If Not conectar.execute(q) Then GoTo E
             Else
-                GoTo e
+                GoTo E
             End If
         Next oper
 
@@ -748,11 +748,11 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             oper.FechaCarga = Now
             If DAOOperacion.Save(oper) Then
                 oper.Id = conectar.UltimoId2
-                If oper.Id = 0 Then GoTo e
+                If oper.Id = 0 Then GoTo E
                 q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
-                If Not conectar.execute(q) Then GoTo e
+                If Not conectar.execute(q) Then GoTo E
             Else
-                GoTo e
+                GoTo E
             End If
         Next oper
 
@@ -774,20 +774,20 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
 
         'guardo los compensatorios
         q = "DELETE FROM ordenes_pago_compensatorios WHERE id_orden_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo e
+        If Not conectar.execute(q) Then GoTo E
 
         Dim c1 As Compensatorio
 
         For Each c1 In op.Compensatorios
             c1.IdOrdenPago = op.Id
-            If Not DAOCompensatorios.Guardar(c1) Then GoTo e
+            If Not DAOCompensatorios.Guardar(c1) Then GoTo E
 
         Next c1
 
 
         'guardo las retenciones
         q = "DELETE FROM ordenes_pago_retenciones WHERE id_pago = " & op.Id
-        If Not conectar.execute(q) Then GoTo e
+        If Not conectar.execute(q) Then GoTo E
 
         Dim ra As DTORetencionAlicuota
 
@@ -801,7 +801,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             q = Replace(q, "'fecha'", Escape(op.FEcha))
             q = Replace(q, "'alicuota'", Escape(ra.alicuotaRetencion))
             q = Replace(q, "'total'", Escape(ra.importe))
-            If Not conectar.execute(q) Then GoTo e
+            If Not conectar.execute(q) Then GoTo E
         Next ra
 
     End If
@@ -815,7 +815,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
     Guardar = True
 
     Exit Function
-e:
+E:
     Guardar = False
     If Nueva Then op.Id = 0
 
@@ -849,7 +849,7 @@ Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
 End Function
 
 Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boolean
-    On Error GoTo e
+    On Error GoTo E
 
     Dim op As OrdenPago
     Set op = DAOOrdenPago.FindById(opid)
@@ -862,42 +862,42 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
     Dim q As String
 
     q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM ordenes_pago_facturas WHERE id_orden_pago = " & opid & ")"
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
     ' q = "DELETE FROM ordenes_pago_facturas WHERE id_orden_pago = " & opid
     '     If Not conectar.execute(q) Then GoTo E
 
     q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & opid & ")"
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
     q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & opid
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
 
 
     'se deben borrar los cheques creados para esta orden de pago (solo los propios)
     'fix 14-10-2020
     'q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ")"
     q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=1"
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
 
     q = "UPDATE Cheques SET orden_pago_origen=0,en_cartera = 1  WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=0"
 
 
 
 
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
 
 
     q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
 
     q = "DELETE FROM ordenes_pago_compensatorios WHERE id_orden_pago = " & opid
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
 
     '    q = "DELETE FROM ordenes_pago WHERE id = " & opid
-    If Not conectar.execute(q) Then GoTo e
+    If Not conectar.execute(q) Then GoTo E
     Dim estado_anterior As EstadoOrdenPago
     estado_anterior = op.estado
     op.estado = EstadoOrdenPago_Anulada
-    If Not DAOOrdenPago.Guardar(op, False) Then GoTo e
+    If Not DAOOrdenPago.Guardar(op, False) Then GoTo E
 
 
     DaoHistorico.Save "orden_pago_historial", "OP Anulada", op.Id
@@ -906,7 +906,7 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
 
     Delete = True
     Exit Function
-e:
+E:
     op.estado = estado_anterior
     If useInternalTransaction Then conectar.RollBackTransaction
     Delete = False
@@ -1364,11 +1364,11 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each F In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.Total
+        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total
     Next F
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print "NO POSEE FACTURAS ASOCIADAS"
+        Printer.Print "NO POSEE COMPROBANTES ASOCIADOS"
     End If
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
@@ -1420,7 +1420,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each op In Orden.OperacionesBanco
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
+        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto & " | " & op.CuentaBancaria.DescripcionFormateada
     Next op
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -1452,7 +1452,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
-    Printer.Print "Total Facturas: ";
+    Printer.Print "Total Comprobantes: ";
     Printer.FontBold = False
     Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalFacturas
 

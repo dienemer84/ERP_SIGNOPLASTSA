@@ -2,16 +2,20 @@ VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasListaOPSegunCbte 
+   BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Ordenes de Pago vinculadas"
    ClientHeight    =   4755
-   ClientLeft      =   60
-   ClientTop       =   450
+   ClientLeft      =   45
+   ClientTop       =   435
    ClientWidth     =   6750
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
    MDIChild        =   -1  'True
+   MinButton       =   0   'False
    ScaleHeight     =   4755
    ScaleWidth      =   6750
+   ShowInTaskbar   =   0   'False
    Begin XtremeSuiteControls.GroupBox GroupBox 
       Height          =   855
       Left            =   120
@@ -82,7 +86,7 @@ Begin VB.Form frmAdminComprasListaOPSegunCbte
       _ExtentX        =   11456
       _ExtentY        =   661
       _StockProps     =   79
-      Caption         =   "* Doble click para abrir la OP / LIQ seleccionada."
+      Caption         =   "* Doble click para abrir la OP seleccionada."
    End
    Begin XtremeSuiteControls.Label lblNumeroCbte 
       Height          =   375
@@ -113,6 +117,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Dim vFactura As clsFacturaProveedor
+
 Dim ordenes As New Collection
 Private Orden As OrdenPago
 
@@ -167,8 +172,8 @@ Private Sub gridOP_DblClick()
 End Sub
 
 Private Sub gridOP_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.item(RowBuffer.rowIndex)
         If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
             RowBuffer.CellStyle(3) = "aprobada"
         ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
@@ -181,10 +186,10 @@ Private Sub gridOP_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 End Sub
 
-Private Sub gridOP_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And ordenes.count > 0 Then
+Private Sub gridOP_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And ordenes.count > 0 Then
     
-        Set Orden = ordenes.item(RowIndex)
+        Set Orden = ordenes.item(rowIndex)
         
         Values(1) = Orden.Id
         Values(2) = Orden.FEcha
@@ -203,6 +208,6 @@ End Sub
 
 Private Sub gridOP_SelectionChange()
     On Error Resume Next
-    Set Orden = ordenes.item(gridOP.RowIndex(gridOP.row))
+    Set Orden = ordenes.item(gridOP.rowIndex(gridOP.row))
     
 End Sub

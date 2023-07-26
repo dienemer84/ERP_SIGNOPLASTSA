@@ -3,16 +3,16 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminComprasListaFCProveedor 
    Caption         =   "Comprobantes de Proveedores"
-   ClientHeight    =   8430
+   ClientHeight    =   9345
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   14280
+   ClientWidth     =   20370
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   4000
+   ScaleHeight     =   5081.851
    ScaleMode       =   0  'User
-   ScaleWidth      =   16578.84
+   ScaleWidth      =   24955.33
    Begin XtremeSuiteControls.GroupBox GroupBox5 
       Height          =   3360
       Left            =   11160
@@ -796,6 +796,11 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin VB.Menu n2 
          Caption         =   "-"
       End
+      Begin VB.Menu MnuVerLIQ 
+         Caption         =   "Ver Liquidacion de Caja..."
+         Enabled         =   0   'False
+         Visible         =   0   'False
+      End
       Begin VB.Menu MnuVerOP 
          Caption         =   "Ver Orden de Pago..."
          Enabled         =   0   'False
@@ -817,7 +822,7 @@ Attribute VB_Exposed = False
 Implements ISuscriber
 Dim vId As String
 Private desde
-Private factura As clsFacturaProveedor
+Private Factura As clsFacturaProveedor
 Private facturas As Collection
 Dim m_Archivos As Dictionary
 
@@ -926,12 +931,12 @@ Private Sub btnBuscar_Click()
 End Sub
 
 Private Sub editar_Click()
-    Set factura = facturas.item(grilla.rowIndex(grilla.row))
+    Set Factura = facturas.item(grilla.rowIndex(grilla.row))
     Dim frm As frmAdminComprasNuevaFCProveedor
     Set frm = New frmAdminComprasNuevaFCProveedor
 
     frm.ver = False
-    frm.factura = factura
+    frm.Factura = Factura
     frm.Show
 End Sub
 Private Sub finalizar_Click()
@@ -940,16 +945,16 @@ Private Sub finalizar_Click()
         Dim l As Long
         l = grilla.rowIndex(grilla.row)
         If MsgBox("¿Desea aprobar la factura?", vbQuestion + vbYesNo) = vbYes Then
-            If DAOFacturaProveedor.aprobar(factura) Then
+            If DAOFacturaProveedor.aprobar(Factura) Then
                 MsgBox "Factura aprobada con éxito!", vbInformation, "Información"
                 '--------------- added 28-1-11
                 txtComprobante.SetFocus
                 funciones.foco Me.txtComprobante
                 '---------------------------------------
-                If Not factura.FormaPagoCuentaCorriente Then MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().Id & ".", vbInformation
+                If Not Factura.FormaPagoCuentaCorriente Then MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().Id & ".", vbInformation
 
                 '                Dim tmp As clsFacturaProveedor
-                facturas.item(grilla.rowIndex(grilla.row)).estado = factura.estado
+                facturas.item(grilla.rowIndex(grilla.row)).estado = Factura.estado
 
 
                 grilla.RefreshRowIndex l
@@ -1253,29 +1258,44 @@ Private Sub grilla_DblClick()
 End Sub
 
 Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 15 And m_Archivos.item(factura.Id) > 0 Then IconIndex = 1
+    If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 
 End Sub
 
-Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Me.grilla.ItemCount > 0 Then
         If Button = 2 Then
             SeleccionarFactura
-            Me.finalizar.Enabled = (factura.estado = EstadoFacturaProveedor.EnProceso)
-            Me.editar.Enabled = (factura.estado = EstadoFacturaProveedor.EnProceso)
-            Me.mnuPagarEnEfectivo.Enabled = (factura.estado = EstadoFacturaProveedor.Aprobada)
+            Me.finalizar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
+            Me.editar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
+            Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
             Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "diegonr" Or funciones.GetUserObj.usuario = "natalilo")
 
-
-            If (factura.estado = Saldada Or factura.estado = pagoParcial) Then
-                Me.MnuVerOP.Enabled = True
-                Me.MnuVerOP.Visible = True
-                Me.MnuVerOP.caption = "Ver OP / LIQ"
+            If (Factura.estado = Saldada Or Factura.estado = pagoParcial) Then
+                 
+                If Factura.LiquidacionesCajaId = "-" Then
+                    
+                    Me.MnuVerOP.Enabled = True
+                    Me.MnuVerOP.Visible = True
+                    
+                    Me.MnuVerLIQ.Enabled = False
+                    Me.MnuVerLIQ.Visible = False
+                    
+                Else
+                
+                    Me.MnuVerLIQ.Enabled = True
+                    Me.MnuVerLIQ.Visible = True
+                    
+                    Me.MnuVerOP.Enabled = False
+                    Me.MnuVerOP.Visible = False
+                    
+                End If
             Else
-                Me.MnuVerOP.Visible = False
-                Me.MnuVerOP.caption = "No hay OP o LIQ asociada"
+                    Me.MnuVerOP.Enabled = False
+                    Me.MnuVerOP.Visible = False
+                    Me.MnuVerLIQ.Enabled = False
+                    Me.MnuVerLIQ.Visible = False
             End If
-
 
             Me.PopupMenu menu
 
@@ -1285,13 +1305,13 @@ End Sub
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set factura = facturas(RowBuffer.rowIndex)
+    Set Factura = facturas(RowBuffer.rowIndex)
 
-    If factura.estado = EstadoFacturaProveedor.Aprobada Then
+    If Factura.estado = EstadoFacturaProveedor.Aprobada Then
         RowBuffer.CellStyle(15) = "EstadoAprobado"
-    ElseIf factura.estado = EstadoFacturaProveedor.EnProceso Then
+    ElseIf Factura.estado = EstadoFacturaProveedor.EnProceso Then
         RowBuffer.CellStyle(15) = " EstadoEnProceso"
-    ElseIf factura.estado = EstadoFacturaProveedor.Saldada Then
+    ElseIf Factura.estado = EstadoFacturaProveedor.Saldada Then
         RowBuffer.CellStyle(15) = "EstadoSaldado"
     End If
     Exit Sub
@@ -1300,64 +1320,64 @@ End Sub
 
 Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set factura = facturas.item(rowIndex)
+    Set Factura = facturas.item(rowIndex)
 
     Dim i As Integer
 
-    If factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
-    With factura
+    With Factura
 
-        If IsSomething(factura.Proveedor) Then
-            Values(1) = funciones.RazonSocialFormateada(factura.Proveedor.RazonSocial)
+        If IsSomething(Factura.Proveedor) Then
+            Values(1) = funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial)
         End If
 
-        Values(2) = enums.EnumTipoDocumentoContableShort(factura.tipoDocumentoContable)
-        Values(3) = factura.configFactura.TipoFactura
-        Values(4) = factura.numero
-        Values(5) = factura.FEcha
-        Values(6) = factura.moneda.NombreCorto
-        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(factura.Monto - factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
-        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(factura.TotalIVA) * i), "$", "")
-        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
-        Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(factura.totalPercepciones) * i), "$", "")
-        Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(factura.ImpuestoInterno) * i), "$", "")
-        Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(factura.total) * i), "$", "")
+        Values(2) = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
+        Values(3) = Factura.configFactura.TipoFactura
+        Values(4) = Factura.numero
+        Values(5) = Factura.FEcha
+        Values(6) = Factura.moneda.NombreCorto
+        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
+        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalIVA) * i), "$", "")
+        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
+        Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalPercepciones) * i), "$", "")
+        Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.ImpuestoInterno) * i), "$", "")
+        Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
 
         'ESTO MUESTRA TRUE O FALSE
         'Values(12) = (funciones.FormatearDecimales(Factura.Total) * i) > 2000000
 
         'ESTO MUESTRA SOLO LOS VALORES MAYORES A DOS MILLONES, LOS DEMAS LOS DEJA VACIOS
 
-        If (funciones.FormatearDecimales(factura.total) * i) > 2000000 Then
-            Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(factura.total) * i), "$", "")
+        If (funciones.FormatearDecimales(Factura.total) * i) > 2000000 Then
+            Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
         End If
 
         'Values(14) = "DESARROLLANDOSE..."
         'Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total - (Factura.NetoGravadoAbonadoGlobal + Factura.OtrosAbonadoGlobal)) * i), "$", "")
         
-        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(factura.TotalPendiente - factura.TotalAbonadoGlobal) * i), "$", "")
-        If factura.cuentasContables.count > 0 Then
-            Values(13) = factura.cuentasContables.item(1).cuentas.codigo
+        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalPendiente - Factura.TotalAbonadoGlobal) * i), "$", "")
+        If Factura.cuentasContables.count > 0 Then
+            Values(13) = Factura.cuentasContables.item(1).cuentas.codigo
         End If
 
-        Values(15) = enums.enumEstadoFacturaProveedor(factura.estado)
+        Values(15) = enums.enumEstadoFacturaProveedor(Factura.estado)
 
-        If factura.FormaPagoCuentaCorriente Then
+        If Factura.FormaPagoCuentaCorriente Then
             Values(16) = "Cta. Cte."
         Else
             Values(16) = "Contado"
         End If
 
-        If factura.estado = EstadoFacturaProveedor.Saldada Or factura.estado = EstadoFacturaProveedor.pagoParcial Then
-            Values(17) = factura.OrdenesPagoId
-            Values(18) = factura.LiquidacionesCajaId
+        If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
+            Values(17) = Factura.OrdenesPagoId
+            Values(18) = Factura.LiquidacionesCajaId
         End If
 
-        Values(19) = factura.UsuarioCarga.usuario
-        Values(20) = factura.TipoCambio
-        Values(21) = "(" & Val(m_Archivos.item(factura.Id)) & ")"
-        Values(22) = factura.Id
+        Values(19) = Factura.UsuarioCarga.usuario
+        Values(20) = Factura.TipoCambio
+        Values(21) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
+        Values(22) = Factura.Id
 
     End With
 
@@ -1405,16 +1425,16 @@ End Function
 Private Sub mnuArchivos_Click()
     Dim archi As New frmArchivos2
     archi.Origen = OrigenArchivos.OA_FacturaProveedor
-    archi.ObjetoId = factura.Id
-    archi.caption = factura.NumeroFormateado
+    archi.ObjetoId = Factura.Id
+    archi.caption = Factura.NumeroFormateado
     archi.Show
 
 End Sub
 
 
 Private Sub mnuEliminar_Click()
-    If MsgBox("¿Está seguro de eliminar la " & factura.NumeroFormateado & " de " & factura.Proveedor.RazonSocial & "?", vbInformation + vbYesNo) = vbYes Then
-        If DAOFacturaProveedor.Delete(factura.Id) Then
+    If MsgBox("¿Está seguro de eliminar la " & Factura.NumeroFormateado & " de " & Factura.Proveedor.RazonSocial & "?", vbInformation + vbYesNo) = vbYes Then
+        If DAOFacturaProveedor.Delete(Factura.Id) Then
             MsgBox "Factura eliminada.", vbInformation
             llenarGrilla
         Else
@@ -1425,11 +1445,11 @@ End Sub
 
 
 Private Sub mnuPagarEnEfectivo_Click()
-    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & factura.NumeroFormateado & " de " & factura.moneda.NombreCorto & " " & factura.total & "?", vbInformation + vbYesNo) = vbYes Then
+    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.total & "?", vbInformation + vbYesNo) = vbYes Then
 
-        MsgBox "Se creará una OP con fecha " + CStr(factura.FEcha)
-        If IsDate(factura.FEcha) Then
-            If DAOFacturaProveedor.PagarEnEfectivo(factura, factura.FEcha, True) Then
+        MsgBox "Se creará una OP con fecha " + CStr(Factura.FEcha)
+        If IsDate(Factura.FEcha) Then
+            If DAOFacturaProveedor.PagarEnEfectivo(Factura, Factura.FEcha, True) Then
                 MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().Id & ".", vbInformation
                 llenarGrilla
                 Me.txtComprobante.SetFocus
@@ -1446,17 +1466,24 @@ End Sub
 Private Sub mnuScan_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_FacturaProveedor, factura.Id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_FacturaProveedor, Factura.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_FacturaProveedor)
-        Me.grilla.RefreshRowIndex (factura.Id)
+        Me.grilla.RefreshRowIndex (Factura.Id)
 
     End If
 
 End Sub
 
+Private Sub MnuVerLIQ_Click()
+    Dim f123 As New frmAdminComprasListaLIQSegunCbte
+    f123.Factura = Factura
+    f123.Show
+
+End Sub
+
 Private Sub MnuVerOP_Click()
     Dim f123 As New frmAdminComprasListaOPSegunCbte
-    f123.factura = factura
+    f123.Factura = Factura
     f123.Show
 
 End Sub
@@ -1473,7 +1500,7 @@ Private Sub verDetalle_Click()
     Set frm = New frmAdminComprasNuevaFCProveedor
 
     frm.ver = True
-    frm.factura = factura
+    frm.Factura = Factura
     frm.Show
 End Sub
 
@@ -1481,13 +1508,13 @@ End Sub
 Private Sub verHistorial_Click()
     If grilla.ItemCount > 0 Then
         SeleccionarFactura
-        factura.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(factura.Id)
-        frmHistoriales.lista = factura.Historial
+        Factura.Historial = DaoFacturaProveedorHistorial.getAllByIdFactura(Factura.Id)
+        frmHistoriales.lista = Factura.Historial
         frmHistoriales.Show
     End If
 End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set factura = facturas.item(grilla.rowIndex(grilla.row))
+    Set Factura = facturas.item(grilla.rowIndex(grilla.row))
 End Sub
