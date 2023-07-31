@@ -119,9 +119,9 @@ End Sub
 
 Private Sub grilla_DblClick()
     If Me.grilla.row > 0 Then
-        If Me.grilla.RowIndex(Me.grilla.row) > 0 Then
+        If Me.grilla.rowIndex(Me.grilla.row) > 0 Then
             Dim ptp As PlaneamientoTiempoProcesoDetalle
-            Set ptp = operarios.item(Me.grilla.RowIndex(Me.grilla.row))
+            Set ptp = operarios.item(Me.grilla.rowIndex(Me.grilla.row))
             Dim F As New frmPlaneamientoSeguimientoRutas3
             F.txtOTNro.text = ptp.PlaneamientoTiempoProceso.idpedido
             F.cmdBuscar_Click
@@ -194,9 +194,9 @@ Private Sub ExpandParents(rowToExpand As ReportRow)
     End If
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set ptp = operarios.item(RowIndex)
+    Set ptp = operarios.item(rowIndex)
     Values(1) = ptp.Empleado.LegajoAndNombreCompleto
     Values(2) = ptp.PlaneamientoTiempoProceso.Tarea.Description
     Values(3) = ptp.PlaneamientoTiempoProceso.idpedido & " - " & ptp.PlaneamientoTiempoProceso.item

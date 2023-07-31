@@ -642,14 +642,14 @@ Private Sub llenarLista()
     Me.GridEX1.ItemCount = newcol.count
     Totalizar
 End Sub
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set sv = newcol.item(RowIndex)
+    Set sv = newcol.item(rowIndex)
     Values(1) = sv.FEcha
     Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.NetoGravado)), "$", "")
     Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.Iva)), "$", "")
     Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.percepciones)), "$", "")
-    Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.Total)), "$", "")
+    Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.total)), "$", "")
     Exit Sub
 err1:
 End Sub
@@ -753,7 +753,7 @@ Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGrou
                 sv2.Iva = sv.Iva
                 sv2.NetoGravado = sv.NetoGravado
                 sv2.percepciones = sv.percepciones
-                sv2.Total = sv.Total
+                sv2.total = sv.total
                 newcol2.Add sv2, CStr(sv.FEcha)
             Else
                 Set sv2 = newcol2.item(CStr(sv.FEcha))
@@ -761,7 +761,7 @@ Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGrou
                 sv2.Iva = sv2.Iva + sv.Iva
                 sv2.NetoGravado = sv2.NetoGravado + sv.NetoGravado
                 sv2.percepciones = sv2.percepciones + sv.percepciones
-                sv2.Total = sv2.Total + sv.Total
+                sv2.total = sv2.total + sv.total
                 sv2.FEcha = CStr(sv2.FEcha)
             End If
         Next
@@ -774,7 +774,7 @@ Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGrou
                 sv2.Iva = sv.Iva
                 sv2.NetoGravado = sv.NetoGravado
                 sv2.percepciones = sv.percepciones
-                sv2.Total = sv.Total
+                sv2.total = sv.total
                 newcol2.Add sv2, CStr(ArmarSTR_YYYY_MM(sv2.FEcha))
             Else
                 Set sv2 = newcol2.item(CStr(ArmarSTR_YYYY_MM(sv.FEcha)))
@@ -782,7 +782,7 @@ Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGrou
                 sv2.Iva = sv2.Iva + sv.Iva
                 sv2.NetoGravado = sv2.NetoGravado + sv.NetoGravado
                 sv2.percepciones = sv2.percepciones + sv.percepciones
-                sv2.Total = sv2.Total + sv.Total
+                sv2.total = sv2.total + sv.total
                 sv2.FEcha = CStr(ArmarSTR_YYYY_MM(sv.FEcha))
             End If
         Next
@@ -796,7 +796,7 @@ Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGrou
                 sv2.Iva = sv.Iva
                 sv2.NetoGravado = sv.NetoGravado
                 sv2.percepciones = sv.percepciones
-                sv2.Total = sv.Total
+                sv2.total = sv.total
                 newcol2.Add sv2, CStr(ArmarSTR_YYYY(sv.FEcha))
             Else
                 Set sv2 = newcol2.item(CStr(ArmarSTR_YYYY(sv.FEcha)))
@@ -805,7 +805,7 @@ Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGrou
                 sv2.Iva = sv2.Iva + sv.Iva
                 sv2.NetoGravado = sv2.NetoGravado + sv.NetoGravado
                 sv2.percepciones = sv2.percepciones + sv.percepciones
-                sv2.Total = sv2.Total + sv.Total
+                sv2.total = sv2.total + sv.total
 
             End If
         Next

@@ -412,7 +412,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   164495360
+         Format          =   16777216
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -425,7 +425,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   164495361
+         Format          =   16777217
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -438,7 +438,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   164495361
+         Format          =   16777217
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -1033,8 +1033,8 @@ Private Sub Command3ss_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1112,8 +1112,8 @@ Private Sub btnRetenciones_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1156,8 +1156,8 @@ Private Sub Command3_Click(Index As Integer)
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
@@ -1179,8 +1179,8 @@ Private Sub Command5_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronPercepcion) Then
@@ -1212,8 +1212,8 @@ Private Sub Command7_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
         If c.ActualizarPadronIB(filename, TipoPadronUnificadoCABA) Then

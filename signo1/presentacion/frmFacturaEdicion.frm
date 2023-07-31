@@ -52,7 +52,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   164626433
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   164626433
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -180,7 +180,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   164626433
+         Format          =   16777217
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -202,7 +202,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   164626433
+         Format          =   16777217
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -791,7 +791,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   164626433
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1704,7 +1704,7 @@ Private Sub btnItemsDescuentoAnticipo_Click()
                                     Exit Sub
                                 End If
                             End If
-                            detalleAnticipo.Bruto = detalleAnticipo.Bruto + funciones.RedondearDecimales(detalle.Total * Factura.moneda.Cambio)
+                            detalleAnticipo.Bruto = detalleAnticipo.Bruto + funciones.RedondearDecimales(detalle.total * Factura.moneda.Cambio)
                         End If
                     End If
                 End If
@@ -2525,7 +2525,7 @@ Private Sub Totalizar()
     Me.lblSubTotal.caption = funciones.FormatearDecimales(Factura.TotalSubTotal)
     Me.lblPercepciones.caption = funciones.FormatearDecimales(Factura.totalPercepciones)
     Me.lblIVATot.caption = funciones.FormatearDecimales(Factura.TotalIVA)
-    Me.lblTotal.caption = funciones.FormatearDecimales(Factura.Total)
+    Me.lblTotal.caption = funciones.FormatearDecimales(Factura.total)
 
     GridEXHelper.AutoSizeColumns Me.gridDetalles
 End Sub
@@ -2581,7 +2581,7 @@ Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Sin
     If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
         Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
         If row > 0 Then
-            Set detalle = Factura.Detalles.item(Me.gridDetalles.RowIndex(row))
+            Set detalle = Factura.Detalles.item(Me.gridDetalles.rowIndex(row))
             If IsSomething(detalle) Then
                 If (Not detalle.OrigenEsConcepto And detalle.AplicadoARemito) Or detalle.OrigenEsConcepto Then
                     Me.PopupMenu Me.mnuDetalles
@@ -2603,7 +2603,7 @@ Private Sub gridDetalles_SelectionChange()
 
 
     Dim it As Long
-    it = Me.gridDetalles.RowIndex(gridDetalles.row)
+    it = Me.gridDetalles.rowIndex(gridDetalles.row)
     If it > 0 Then
         Set detalle = Factura.Detalles.item(it)
 
@@ -2634,22 +2634,22 @@ Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
     Totalizar
 End Sub
 
-Private Sub gridDetalles_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And Factura.Detalles.count > 0 Then
-        Factura.Detalles.remove RowIndex
+Private Sub gridDetalles_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And Factura.Detalles.count > 0 Then
+        Factura.Detalles.remove rowIndex
         Totalizar
     End If
 End Sub
 
-Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= Factura.Detalles.count Then
-        Set detalle = Factura.Detalles.item(RowIndex)
+Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= Factura.Detalles.count Then
+        Set detalle = Factura.Detalles.item(rowIndex)
         Values(1) = funciones.FormatearDecimales(detalle.Cantidad)
         Values(2) = detalle.detalle
         Values(3) = funciones.FormatearDecimales(detalle.PorcentajeDescuento)
         Values(4) = funciones.FormatearDecimales(detalle.Bruto)
         Values(5) = funciones.FormatearDecimales(detalle.SubTotal)
-        Values(6) = funciones.FormatearDecimales(detalle.Total)
+        Values(6) = funciones.FormatearDecimales(detalle.total)
         Values(7) = detalle.IvaAplicado
         Values(8) = detalle.IBAplicado
         Values(9) = detalle.VerOrigen
@@ -2662,9 +2662,9 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
     End If
 End Sub
 
-Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Factura.Detalles.count > 0 Then
-        Set detalle = Factura.Detalles.item(RowIndex)
+Private Sub gridDetalles_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Factura.Detalles.count > 0 Then
+        Set detalle = Factura.Detalles.item(rowIndex)
 
         detalle.Cantidad = Values(1)
         detalle.detalle = Values(2)
@@ -2788,7 +2788,7 @@ Private Sub mnuAplicarDetalleRemito_Click()
         frm.grilla.MultiSelect = False
         frm.MostrarInfoAdministracion = True
 
-        Set detaFactRemito = Factura.Detalles(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
+        Set detaFactRemito = Factura.Detalles(Me.gridDetalles.rowIndex(Me.gridDetalles.row))
 
         frm.Show
     End If
@@ -2856,23 +2856,23 @@ Private Sub PushButton1_Click()
                             MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
                                   & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
                                   & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
-                                  & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de OT: " & Ot.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                            deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
+                                  & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.total & vbCrLf & " * Valor de Moneda de OT: " & Ot.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
+                            deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
 
                         Else
                             MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
                                   & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
                                   & "Se procede a realizar la conversión correspondiente:" & vbCrLf & "" _
-                                  & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.Total & vbCrLf & " * Valor de Moneda de Comprobante: " & Factura.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                            deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
+                                  & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.total & vbCrLf & " * Valor de Moneda de Comprobante: " & Factura.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
+                            deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
                         End If
 
                     Else
                         MsgBox ("La Moneda de la OT es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
                               & "La Moneda del Comprobante es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
                               & "No se realiza conversión:" & vbCrLf & "" _
-                              & "Cálculo:" & vbCrLf & " Total de OT: " & Ot.Total & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                        deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.Total * Ot.Anticipo) / 100)
+                              & "Cálculo:" & vbCrLf & " Total de OT: " & Ot.total & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
+                        deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.total * Ot.Anticipo) / 100)
 
                     End If
 

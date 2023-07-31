@@ -260,13 +260,13 @@ Private Sub grilla_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not (MsgBox("¿Seguro de eliminar?", vbInformation + vbYesNo, "Confirmar") = vbYes)
 End Sub
 
-Private Sub grilla_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    vProveedor.cuentasContables.remove RowIndex
+Private Sub grilla_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    vProveedor.cuentasContables.remove rowIndex
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set vcta = vProveedor.cuentasContables.item(RowIndex)
+    Set vcta = vProveedor.cuentasContables.item(rowIndex)
     Values(1) = vcta.codigo
     Values(2) = vcta.nombre
 End Sub

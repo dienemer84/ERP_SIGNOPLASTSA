@@ -1,7 +1,7 @@
 Attribute VB_Name = "DAOTransferenciaBcaria"
 Option Explicit
 
-Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As String = "1 = 1") As Collection
+Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
      
     q = "SELECT *, (op.pertenencia + 0) as pertenencia2 FROM" _
@@ -16,13 +16,18 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
       & " LEFT JOIN liquidaciones_caja_facturas liqf ON liqf.id_liquidacion_caja = liqc.id" _
       & " LEFT JOIN AdminComprasFacturasProveedores facprov ON facprov.id = opfac.id_factura_proveedor" _
       & " LEFT JOIN proveedores prov ON prov.id = facprov.id_proveedor" _
-      & " WHERE op.pertenencia = " & Origen & " AND op.entrada_salida = '-1' AND " & extraFilter
+      & " WHERE op.pertenencia = " & Origen & "" _
+      & " AND op.entrada_salida = '-1'" _
+      & " AND " & extraFilter & ""
+      
+    q = q & " ORDER BY " & orderBy
       
     Dim col As New Collection
 
     Dim op As clsTransferenciaBcaria
     
     Dim idx As Dictionary
+    
     Dim rs As Recordset
 
     Set rs = conectar.RSFactory(q)
@@ -84,6 +89,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
 
     Set Map = op
 End Function
+
 
 Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Object) As Boolean
     On Error GoTo err1
@@ -200,3 +206,40 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 err1:
     ExportarColeccion = False
 End Function
+
+
+Public Function FindById(Id As Long) As clsTransferenciaBcaria
+    Dim col As Collection
+    Dim filtro As String
+   
+    filtro = "op.id = " & Id
+    
+    Set col = FindAll(Banco, filtro)
+    
+    If col.count = 0 Then
+        Set FindById = Nothing
+    Else
+        Set FindById = col.item(1)
+    End If
+    
+End Function
+
+Public Function ActualizarNroComprobante(T As clsTransferenciaBcaria) As Boolean
+    On Error GoTo err1
+
+    Dim q As String
+    q = "UPDATE sp.operaciones SET comprobante='comprobante' where id='id'"
+
+    q = Replace$(q, "'id'", conectar.Escape(T.Id))
+    q = Replace$(q, "'comprobante'", conectar.Escape(T.Comprobante))
+
+    If Not conectar.execute(q) Then
+        Err.Raise 112233, "No se pudieron actualizar los datos de la transferencia."
+    End If
+    ActualizarNroComprobante = True
+    Exit Function
+err1:
+    Err.Raise Err.Number, Err.Description
+End Function
+
+

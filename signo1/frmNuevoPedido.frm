@@ -213,7 +213,7 @@ Begin VB.Form frmVentasPedidoNuevo
       _ExtentX        =   2355
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   163774465
+      Format          =   62914561
       CurrentDate     =   38861
    End
    Begin GridEX20.GridEX grilla 
@@ -504,17 +504,17 @@ Private Sub MostrarOTPendientes(idCliente)
     Me.cboListaOt.ListIndex = 0
 End Sub
 
-Private Sub grilla_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And presupuesto.DetallePresupuesto.count > 0 Then
-        presupuesto.DetallePresupuesto.remove RowIndex
+Private Sub grilla_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And presupuesto.DetallePresupuesto.count > 0 Then
+        presupuesto.DetallePresupuesto.remove rowIndex
         verTotal
     End If
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If presupuesto Is Nothing Then Exit Sub
-    If RowIndex > presupuesto.DetallePresupuesto.count Then Exit Sub
-    Set detalle = presupuesto.DetallePresupuesto.item(RowIndex)
+    If rowIndex > presupuesto.DetallePresupuesto.count Then Exit Sub
+    Set detalle = presupuesto.DetallePresupuesto.item(rowIndex)
     With detalle
         Values(1) = .item
         Values(2) = .Cantidad
@@ -527,15 +527,15 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 End Sub
 Public Function verTotal()
     Me.txtDto = presupuesto.Descuento
-    Me.lblSubTotal = funciones.FormatearDecimales(presupuesto.Total(Manual))
+    Me.lblSubTotal = funciones.FormatearDecimales(presupuesto.total(Manual))
     Me.lblTotalTotal = funciones.FormatearDecimales(presupuesto.TotalConDescuento(Manual))
 End Function
 
-Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    presupuesto.DetallePresupuesto(RowIndex).Cantidad = Values(2)
-    presupuesto.DetallePresupuesto(RowIndex).ValorManual = Values(4)
-    presupuesto.DetallePresupuesto(RowIndex).Detalles = Values(3)
-    presupuesto.DetallePresupuesto(RowIndex).entrega = Values(6)
+Private Sub grilla_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    presupuesto.DetallePresupuesto(rowIndex).Cantidad = Values(2)
+    presupuesto.DetallePresupuesto(rowIndex).ValorManual = Values(4)
+    presupuesto.DetallePresupuesto(rowIndex).Detalles = Values(3)
+    presupuesto.DetallePresupuesto(rowIndex).entrega = Values(6)
     verTotal
 End Sub
 

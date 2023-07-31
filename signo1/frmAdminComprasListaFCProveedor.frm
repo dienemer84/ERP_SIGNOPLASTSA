@@ -6,7 +6,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ClientHeight    =   9345
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   20370
+   ClientWidth     =   19080
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True

@@ -247,7 +247,7 @@ End Sub
 
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        Set rectemp = clientes(grilla.RowIndex(Me.grilla.row))
+        Set rectemp = clientes(grilla.rowIndex(Me.grilla.row))
         Me.numero.caption = "Nro." & Format(rectemp.Id, "0000")
         If rectemp.estado = 0 Then
             Me.CambiarEstado.caption = "Activar..."
@@ -259,13 +259,13 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 
 Private Sub grilla_SelectionChange()
-    rows = grilla.RowIndex(grilla.row)
+    rows = grilla.rowIndex(grilla.row)
 
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set rectemp = clientes.item(RowIndex)
+    Set rectemp = clientes.item(rowIndex)
     With rectemp
         Values(1) = Format(.Id, "0000")
         Values(2) = .Cuit
@@ -318,7 +318,7 @@ End Function
 
 Private Sub masContacto_Click()
     If grilla.rowcount > 0 Then
-        Set rectemp = clientes(grilla.RowIndex(grilla.row))
+        Set rectemp = clientes(grilla.rowIndex(grilla.row))
         frmVentasClientesNuevoContacto.cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
@@ -327,7 +327,7 @@ End Sub
 
 Private Sub masContactos_Click()
     If grilla.rowcount > 0 Then
-        Set rectemp = clientes(grilla.RowIndex(grilla.row))
+        Set rectemp = clientes(grilla.rowIndex(grilla.row))
         frmVentasClientesNuevoContacto.cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
@@ -377,7 +377,7 @@ End Sub
 
 Private Sub verDeta()
     If grilla.rowcount Then
-        Set rectemp = clientes(grilla.RowIndex(grilla.row))
+        Set rectemp = clientes(grilla.rowIndex(grilla.row))
         frmVentasClienteNuevo.cliente = rectemp
         frmVentasClienteNuevo.Show
     End If

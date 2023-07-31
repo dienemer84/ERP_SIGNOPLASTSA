@@ -1,5 +1,1 @@
-Line 36: Class XtremeSuiteControls.GroupBox of control grpArchivosASubir was not a loaded control class.
-Line 73: Class XtremeSuiteControls.PushButton of control btnSeleccionar was not a loaded control class.
-Line 86: Class XtremeSuiteControls.PushButton of control btnLimpiarLista was not a loaded control class.
-Line 99: Class XtremeSuiteControls.PushButton of control btnSubir was not a loaded control class.
-Line 130: Class XtremeSuiteControls.GroupBox of control grpArchivos was not a loaded control class.
+Line 142: Cannot load control gridArchivos.

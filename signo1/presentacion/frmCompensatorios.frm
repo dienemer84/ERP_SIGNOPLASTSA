@@ -106,9 +106,9 @@ Private Sub Form_Resize()
     Me.GridEX1.Width = Me.GroupBox1.Width
     Me.GridEX1.Height = Me.ScaleHeight - 500
 End Sub
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set comp = col.item(RowIndex)
+    Set comp = col.item(rowIndex)
     Values(1) = comp.Id
     Values(2) = comp.IdOrdenPago
     Values(3) = comp.FechaCancelacion

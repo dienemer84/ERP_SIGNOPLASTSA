@@ -367,7 +367,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   170786817
+         Format          =   67895297
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -379,7 +379,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   170786817
+         Format          =   67895297
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -978,8 +978,8 @@ Private Sub cmdDefinirPrecios_Click()
         Dim va As Boolean
         Dim si As GridEX20.JSSelectedItem
         For Each si In Me.grid.SelectedItems
-            If si.RowIndex > 0 And si.RowIndex <= m_ot.Detalles.count Then
-                Set tmpDetalle = m_ot.Detalles.item(si.RowIndex)
+            If si.rowIndex > 0 And si.rowIndex <= m_ot.Detalles.count Then
+                Set tmpDetalle = m_ot.Detalles.item(si.rowIndex)
                 va = baseP.definirPrecios(tmpDetalle.Pieza.Id, tmpDetalle.Precio, m_ot.moneda.Id)
             End If
         Next si
@@ -1168,7 +1168,7 @@ Private Sub grid_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grid, Column
 End Sub
 
-Private Sub grid_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grid_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
 '        On Error Resume Next
 '        Set tmpDetalle = m_ot.Detalles.item(RowIndex)
 '
@@ -1189,7 +1189,7 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
     On Error Resume Next
 
     Dim idx As Long
-    idx = Me.grid.RowIndex(Me.grid.row)
+    idx = Me.grid.rowIndex(Me.grid.row)
 
     If Button = 2 And idx > 0 Then
         If m_ot.Detalles(idx).Pieza.EsConjunto Then
@@ -1206,12 +1206,12 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
 End Sub
 
 Private Sub grid_SelectionChange()
-    Set tmpDetalle = m_ot.Detalles.item(grid.RowIndex(grid.row))
+    Set tmpDetalle = m_ot.Detalles.item(grid.rowIndex(grid.row))
 End Sub
 
-Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And RowIndex <= m_ot.Detalles.count Then
-        Set tmpDetalle = m_ot.Detalles.item(RowIndex)
+Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And rowIndex <= m_ot.Detalles.count Then
+        Set tmpDetalle = m_ot.Detalles.item(rowIndex)
         Values(1) = tmpDetalle.item
         Values(2) = tmpDetalle.CantidadPedida
         Values(3) = tmpDetalle.Pieza.nombre
@@ -1227,13 +1227,13 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
     End If
 End Sub
 
-Private Sub grid_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo E:
 
     Set tmpDetalle = Nothing
 
-    If RowIndex > 0 And RowIndex <= m_ot.Detalles.count Then
-        Set tmpDetalle = m_ot.Detalles.item(RowIndex)
+    If rowIndex > 0 And rowIndex <= m_ot.Detalles.count Then
+        Set tmpDetalle = m_ot.Detalles.item(rowIndex)
         tmpDetalle.item = Values(1)
         tmpDetalle.CantidadPedida = Values(2)
         tmpDetalle.Precio = Values(4)
@@ -1367,8 +1367,8 @@ Private Sub PushButton1_Click()
         Dim va As Boolean
         Dim si As GridEX20.JSSelectedItem
         For Each si In Me.grid.SelectedItems
-            If si.RowIndex > 0 And si.RowIndex <= m_ot.Detalles.count Then
-                Set tmpDetalle = m_ot.Detalles.item(si.RowIndex)
+            If si.rowIndex > 0 And si.rowIndex <= m_ot.Detalles.count Then
+                Set tmpDetalle = m_ot.Detalles.item(si.rowIndex)
                 tmpDetalle.Precio = DAODetalleOrdenTrabajo.FindBestPriceByPiezaId(tmpDetalle.Pieza.Id)
             End If
         Next si
@@ -1384,7 +1384,7 @@ Private Sub Qui_Click()
 
     For i = m_ot.Detalles.count To 1 Step -1
         For Each si In Me.grid.SelectedItems
-            If si.RowIndex = i Then
+            If si.rowIndex = i Then
                 m_ot.Detalles.remove i
                 Exit For
             End If
@@ -1418,7 +1418,7 @@ Private Sub CalcularValorOt()
         Set tmpDetalle.Pieza = tmpPieza
     Next tmpDetalle
 
-    Me.lbltot.caption = funciones.FormatearDecimales(m_ot.Total, 2)
+    Me.lbltot.caption = funciones.FormatearDecimales(m_ot.total, 2)
 
 End Sub
 
@@ -1432,7 +1432,7 @@ Private Sub imprimirOT()
                  & "Referencia: " & m_ot.descripcion & Chr(10) _
                  & "Entrega: " & m_ot.FechaEntrega & Chr(10)
 
-    headerLeft = "Total: " & m_ot.moneda.NombreCorto & " " & Format$(m_ot.Total, "0.00") & vbNewLine _
+    headerLeft = "Total: " & m_ot.moneda.NombreCorto & " " & Format$(m_ot.total, "0.00") & vbNewLine _
                & "% Descuento: " & m_ot.Descuento & "%" & Chr(10) _
                & "% Anticipo: " & m_ot.Anticipo & "%" & Chr(10) _
                & "Anticipo a " & m_ot.CantDiasAnticipo & " días | FP: " & m_ot.FormaDePagoAnticipo & Chr(10) _
@@ -1522,7 +1522,7 @@ End Sub
 Private Sub ver_Click()
     grid_SelectionChange
     Dim idx As Long
-    idx = Me.grid.RowIndex(Me.grid.row)
+    idx = Me.grid.rowIndex(Me.grid.row)
     If idx > 0 Then
         Dim F As New frmDesarrollo
         Load F

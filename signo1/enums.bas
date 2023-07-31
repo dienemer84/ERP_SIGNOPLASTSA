@@ -226,6 +226,8 @@ Public Enum TipoPeriodo
     TipoPeriodoMes = 2
     TipoPeriodoAño = 3
 End Enum
+
+
 Public Enum OrigenOperacion
     caja = 1
     Banco = 2

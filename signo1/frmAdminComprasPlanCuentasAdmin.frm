@@ -280,9 +280,9 @@ err1:
 
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set vCuenta = cuentas.item(RowIndex)
+    Set vCuenta = cuentas.item(rowIndex)
     Values(1) = vCuenta.codigo
     Values(2) = vCuenta.nombre
     Values(3) = funciones.FormatearDecimales(vCuenta.TotalAcumulado)
@@ -290,9 +290,9 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 err1:
 End Sub
 
-Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set vCuenta = cuentas(RowIndex)
+    Set vCuenta = cuentas(rowIndex)
     vCuenta.codigo = UCase(Values(1))
     vCuenta.nombre = UCase(Values(2))
     If Not DAOCuentaContable.Update(vCuenta) Then GoTo err1

@@ -219,7 +219,7 @@ End Sub
 Private Sub editar_Click()
     Dim frm As frmComprasPeticionesOfertaNueva
     Set frm = New frmComprasPeticionesOfertaNueva
-    A = Me.GridEX1.RowIndex(Me.GridEX1.row)
+    A = Me.GridEX1.rowIndex(Me.GridEX1.row)
     frm.peticion = peticiones.item(A)
     frm.Show
 End Sub
@@ -295,7 +295,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     If Button = 2 Then
         Dim r As Recordset
         Dim est As EstadoPO
-        gr = Me.GridEX1.RowIndex(Me.GridEX1.row)
+        gr = Me.GridEX1.rowIndex(Me.GridEX1.row)
         If gr = 0 Then Exit Sub
         Set rectmp = peticiones.item(gr)
         Me.editar.Enabled = (rectmp.estado = EstadoPO.Pendiente_)
@@ -306,15 +306,15 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 End Sub
 
 Private Sub GridEX1_SelectionChange()
-    If Me.GridEX1.RowIndex(Me.GridEX1.row) > 0 Then
-        Set po = peticiones(Me.GridEX1.RowIndex(Me.GridEX1.row))
+    If Me.GridEX1.rowIndex(Me.GridEX1.row) > 0 Then
+        Set po = peticiones(Me.GridEX1.rowIndex(Me.GridEX1.row))
     Else
         Set po = Nothing
     End If
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmp = peticiones.item(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmp = peticiones.item(rowIndex)
     With tmp
         Values(1) = .idReque
         Values(2) = .numero
@@ -348,7 +348,7 @@ Private Sub mnuCrearOrdenCompra_Click()
     If Not po Is Nothing Then
         If MsgBox("¿Desea crear la orden de compra?", vbQuestion + vbYesNo) = vbYes Then
             If CrearOrdenCompra(po) Then
-                Me.GridEX1.RefreshRowIndex Me.GridEX1.RowIndex(Me.GridEX1.row)
+                Me.GridEX1.RefreshRowIndex Me.GridEX1.rowIndex(Me.GridEX1.row)
             Else
                 MsgBox "Hubo un error", vbCritical
             End If
@@ -366,7 +366,7 @@ Private Sub mnuFinalizar_Click()
         If po.IsValid() Then
             If MsgBox("¿Desea establecer la PO como finalizada?", vbQuestion + vbYesNo) = vbYes Then
                 If DAOPeticionOferta.CambiarEstado(po, EstadoPO.Finalizado_) Then
-                    Me.GridEX1.RefreshRowIndex Me.GridEX1.RowIndex(Me.GridEX1.row)
+                    Me.GridEX1.RefreshRowIndex Me.GridEX1.rowIndex(Me.GridEX1.row)
                 Else
                     MsgBox "Hubo un error", vbCritical
                 End If

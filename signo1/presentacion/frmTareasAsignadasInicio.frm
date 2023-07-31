@@ -909,16 +909,16 @@ Private Sub gridProcesos_DblClick()
         finalizandoProceso = False
         ShowMessage "Tiempo agotado"
     Else
-        If Me.gridProcesos.RowIndex(Me.gridProcesos.row) > 0 And tareasAsignadasSinIniciar.count > 0 Then
-            Set tiempoProcesoDet = tareasAsignadasSinIniciar.item(Me.gridProcesos.RowIndex(Me.gridProcesos.row))
+        If Me.gridProcesos.rowIndex(Me.gridProcesos.row) > 0 And tareasAsignadasSinIniciar.count > 0 Then
+            Set tiempoProcesoDet = tareasAsignadasSinIniciar.item(Me.gridProcesos.rowIndex(Me.gridProcesos.row))
             IniciarProceso
         End If
     End If
 End Sub
 
-Private Sub gridProcesos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex >= 1 And RowIndex <= tareasAsignadasSinIniciar.count Then
-        Set tiempoProcesoDet = tareasAsignadasSinIniciar.item(RowIndex)
+Private Sub gridProcesos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex >= 1 And rowIndex <= tareasAsignadasSinIniciar.count Then
+        Set tiempoProcesoDet = tareasAsignadasSinIniciar.item(rowIndex)
         Values.value(1) = tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Id & " - " & tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Tarea
         Values.value(2) = tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Sector.Sector
         Values.value(3) = tiempoProcesoDet.PlaneamientoTiempoProceso.idpedido & "/" & Format(tiempoProcesoDet.PlaneamientoTiempoProceso.item, "000")

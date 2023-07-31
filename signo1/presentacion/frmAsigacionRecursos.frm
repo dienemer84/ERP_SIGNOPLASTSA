@@ -203,24 +203,24 @@ Public Sub llenar(idOt As Long, col As Collection)
 End Sub
 
 
-Private Sub gridPiezas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridPiezas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    If RowIndex > 0 And m_col.count > 0 Then
+    If rowIndex > 0 And m_col.count > 0 Then
         Set deta = Nothing
         Set detadto = Nothing
-        If TypeName(m_col.item(RowIndex)) = "DetalleOrdenTrabajo" Then
-            Set deta = m_col.item(RowIndex)
+        If TypeName(m_col.item(rowIndex)) = "DetalleOrdenTrabajo" Then
+            Set deta = m_col.item(rowIndex)
             Values(1) = deta.Pieza.nombre
         Else
-            Set detadto = m_col.item(RowIndex)
+            Set detadto = m_col.item(rowIndex)
             Values(1) = detadto.Pieza.nombre
         End If
     End If
 End Sub
 
 Private Sub gridTareas_SelectionChange()
-    If Me.gridTareas.RowIndex(Me.gridTareas.row) > 0 Then
-        Set Tarea = tareas.item(Me.gridTareas.RowIndex(Me.gridTareas.row))
+    If Me.gridTareas.rowIndex(Me.gridTareas.row) > 0 Then
+        Set Tarea = tareas.item(Me.gridTareas.rowIndex(Me.gridTareas.row))
         Me.lstPersonal.Clear
         Set empleados = DAOEmpleados.GetEmpleadosByTareaId(Tarea.Id)
         For Each empl In empleados
@@ -231,16 +231,16 @@ Private Sub gridTareas_SelectionChange()
     End If
 End Sub
 
-Private Sub gridTareas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And tareas.count > 0 Then
-        Set Tarea = tareas.item(RowIndex)
+Private Sub gridTareas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And tareas.count > 0 Then
+        Set Tarea = tareas.item(rowIndex)
         Values(1) = Tarea.Description
     End If
 End Sub
 
 Private Sub lstPersonal_ItemCheck(ByVal item As Long)
     On Error GoTo E
-    Set Tarea = tareas.item(Me.gridTareas.RowIndex(Me.gridTareas.row))
+    Set Tarea = tareas.item(Me.gridTareas.rowIndex(Me.gridTareas.row))
 
     conectar.BeginTransaction
 

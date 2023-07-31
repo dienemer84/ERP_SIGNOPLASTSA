@@ -443,7 +443,7 @@ End Sub
 Private Sub GridEX1_SelectionChange()
     GrillaEntregas.ItemCount = 0
 
-    If Me.GridEX1.RowIndex(Me.GridEX1.row) > 0 Then
+    If Me.GridEX1.rowIndex(Me.GridEX1.row) > 0 Then
         Set detalleActual = detalle.item(Me.GridEX1.row)
         Me.GrillaEntregas.ItemCount = detalleActual.Entregas.count
     Else
@@ -452,8 +452,8 @@ Private Sub GridEX1_SelectionChange()
 
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmp = detalle.item(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmp = detalle.item(rowIndex)
     With tmp
         Values(1) = .Cantidad
         Values(2) = .DetalleReque.Material.codigo & " | " & .DetalleReque.Material.descripcion
@@ -461,16 +461,16 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
         Values(4) = .DetalleReque.m2
         Values(5) = .DetalleReque.ML
         Values(6) = .Valor
-        Values(7) = .Total
+        Values(7) = .total
         Values(8) = .DetalleReque.observaciones
         Values(9) = enums.EstadosPeticionOfertaDetalle.item(CStr(.estado))
         Values(10) = funciones.JoinCollectionValues(.DetalleReque.Material.Atributos, "|")
     End With
 End Sub
 
-Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set tmp = detalle.item(RowIndex)
+    Set tmp = detalle.item(rowIndex)
     tmp.Cantidad = Values(1)
     tmp.Valor = Values(6)
 End Sub
@@ -493,22 +493,22 @@ Private Sub GrillaEntregas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetV
     End If
 End Sub
 
-Private Sub GrillaEntregas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+Private Sub GrillaEntregas_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
     On Error Resume Next
-    detalleActual.Entregas.remove (RowIndex)
+    detalleActual.Entregas.remove (rowIndex)
 End Sub
 
-Private Sub GrillaEntregas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GrillaEntregas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If Not detalleActual Is Nothing Then
-        Set tmpEntrega = detalleActual.Entregas(RowIndex)
+        Set tmpEntrega = detalleActual.Entregas(rowIndex)
         Values(1) = tmpEntrega.Cantidad
         Values(2) = tmpEntrega.FEcha
     End If
 End Sub
 
-Private Sub GrillaEntregas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GrillaEntregas_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set tmpEntrega = detalleActual.Entregas.item(RowIndex)
+    Set tmpEntrega = detalleActual.Entregas.item(rowIndex)
     tmpEntrega.Cantidad = Values(1)
     tmpEntrega.FEcha = Values(2)
 End Sub

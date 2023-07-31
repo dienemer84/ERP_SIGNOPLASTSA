@@ -2,15 +2,15 @@ VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosTransferenciasBancarias 
-   Caption         =   "Transferencias Bancarias en OP"
-   ClientHeight    =   9345
+   Caption         =   "Modificar"
+   ClientHeight    =   10005
    ClientLeft      =   60
-   ClientTop       =   450
+   ClientTop       =   750
    ClientWidth     =   17475
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   9345
+   ScaleHeight     =   10005
    ScaleWidth      =   17475
    Begin XtremeSuiteControls.GroupBox GroupBox 
       Height          =   1815
@@ -44,13 +44,14 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          Left            =   1155
          TabIndex        =   11
          Top             =   1365
+         Visible         =   0   'False
          Width           =   2205
       End
       Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   495
          Left            =   14640
          TabIndex        =   10
-         Top             =   240
+         Top             =   960
          Width           =   2295
          _Version        =   786432
          _ExtentX        =   4048
@@ -61,9 +62,10 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       End
       Begin XtremeSuiteControls.PushButton btnTraerDatos 
          Height          =   495
+         Index           =   0
          Left            =   14640
          TabIndex        =   2
-         Top             =   960
+         Top             =   240
          Width           =   2295
          _Version        =   786432
          _ExtentX        =   4048
@@ -82,7 +84,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.GroupBox GroupBox 
-         Height          =   1215
+         Height          =   1335
          Index           =   1
          Left            =   5880
          TabIndex        =   3
@@ -90,7 +92,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          Width           =   4695
          _Version        =   786432
          _ExtentX        =   8281
-         _ExtentY        =   2143
+         _ExtentY        =   2355
          _StockProps     =   79
          Caption         =   "Fecha de Operación"
          BackColor       =   16744576
@@ -270,6 +272,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          Left            =   600
          TabIndex        =   14
          Top             =   1440
+         Visible         =   0   'False
          Width           =   450
          _Version        =   786432
          _ExtentX        =   794
@@ -285,7 +288,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Height          =   6615
       Left            =   120
       TabIndex        =   0
-      Top             =   2520
+      Top             =   3120
       Width           =   17175
       _ExtentX        =   30295
       _ExtentY        =   11668
@@ -321,16 +324,74 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":0FEC
    End
    Begin XtremeSuiteControls.Label Label 
-      Height          =   375
+      Height          =   255
+      Index           =   3
+      Left            =   240
+      TabIndex        =   24
+      Top             =   2760
+      Width           =   13575
+      _Version        =   786432
+      _ExtentX        =   23945
+      _ExtentY        =   450
+      _StockProps     =   79
+      Caption         =   "* Modificar el número de transferencia ingresado."
+   End
+   Begin XtremeSuiteControls.Label Label 
+      Height          =   255
+      Index           =   2
+      Left            =   240
+      TabIndex        =   23
+      Top             =   2520
+      Width           =   13575
+      _Version        =   786432
+      _ExtentX        =   23945
+      _ExtentY        =   450
+      _StockProps     =   79
+      Caption         =   "* Ver los Documentos de Pago (OP/LIQ)."
+   End
+   Begin XtremeSuiteControls.Label Label 
+      Height          =   255
+      Index           =   1
+      Left            =   240
+      TabIndex        =   22
+      Top             =   2280
+      Width           =   17175
+      _Version        =   786432
+      _ExtentX        =   30295
+      _ExtentY        =   450
+      _StockProps     =   79
+      Caption         =   "Menú del boton derecho sobre cada transferencia:"
+   End
+   Begin XtremeSuiteControls.Label Label 
+      Height          =   255
+      Index           =   0
       Left            =   240
       TabIndex        =   21
       Top             =   2040
       Width           =   17175
       _Version        =   786432
       _ExtentX        =   30295
-      _ExtentY        =   661
+      _ExtentY        =   450
       _StockProps     =   79
-      Caption         =   $"frmAdminPagosTransferenciasBancarias.frx":11C4
+      Caption         =   "Se muestran las transferencias que están aplicadas a cada OP o Liquidación."
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+   End
+   Begin VB.Menu menu 
+      Caption         =   "menu"
+      Begin VB.Menu mnuVer 
+         Caption         =   "Ver Documento de Pago"
+      End
+      Begin VB.Menu mnuModificar 
+         Caption         =   "Modificar Nro. Transferencia"
+      End
    End
 End
 Attribute VB_Name = "frmAdminPagosTransferenciasBancarias"
@@ -360,11 +421,6 @@ err1:
     MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
 
     
-End Sub
-
-Private Sub btnTraerDatos_Click()
-    CompletarGridEx
-
 End Sub
 
 Private Sub CompletarGridEx()
@@ -400,7 +456,7 @@ Private Sub CompletarGridEx()
     
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    Set transferencias = DAOTransferenciaBcaria.FindAll(Banco, condition)
+    Set transferencias = DAOTransferenciaBcaria.FindAll(Banco, condition, "op.id DESC")
     
     Me.gridTransferencias.ItemCount = transferencias.count
 
@@ -408,6 +464,11 @@ Private Sub CompletarGridEx()
 
     Me.caption = "Transferencias [Cantidad: " & transferencias.count & "]"
   
+End Sub
+
+Public Sub btnTraerDatos_Click(Index As Integer)
+    CompletarGridEx
+
 End Sub
 
 Private Sub cboRangos_Click()
@@ -462,6 +523,33 @@ Private Sub Form_Load()
     Next
     'FIN- Llenado de Combo Proveedores
     
+    Me.gridTransferencias.ItemCount = 0
+    
+    
+End Sub
+
+Private Sub gridTransferencias_SelectionChange()
+    On Error Resume Next
+    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
+End Sub
+
+
+Private Sub gridTransferencias_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    If transferencias.count > 0 Then
+        gridTransferencias_SelectionChange
+        If Button = 2 Then
+'            Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+'            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+            Me.mnuVer.Enabled = True
+            Me.mnuModificar.Enabled = True
+            'OCULTO LA OPCION DE ANULAR QUE NO ESTÁ DESARROLLADA (DNEMER 30.05.2023)
+            'Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
+
+            Me.PopupMenu menu
+
+        End If
+    End If
 End Sub
 
 
@@ -490,10 +578,11 @@ End If
  
 End Sub
 
-Private Sub gridTransferencias_SelectionChange()
-    On Error Resume Next
-    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
-End Sub
+'Private Sub gridTransferencias_SelectionChange()
+'    On Error Resume Next
+'    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
+'End Sub
+
 
 
 Private Sub gridTransferencias_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
@@ -503,6 +592,13 @@ End Sub
 Private Sub gridTransferencias_DblClick()
     gridTransferencias_SelectionChange
     mnuVer_Click
+End Sub
+
+Private Sub mnuModificar_Click()
+    Dim f_ADFE As New frmAdminPagosTransferenciasBancariasEditar
+    f_ADFE.idTransfBancaria = TransfBancaria.Id
+    f_ADFE.Show
+    
 End Sub
 
 Private Sub mnuVer_Click()
@@ -526,4 +622,8 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
         ' Realizar la acción de búsqueda aquí
         CompletarGridEx
     End If
+End Sub
+
+Private Sub Mnu_Transferencia_Click(Index As Integer)
+
 End Sub

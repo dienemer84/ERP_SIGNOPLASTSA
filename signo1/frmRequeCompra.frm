@@ -747,7 +747,7 @@ End Sub
 Private Sub seleccionarItem()
     On Error Resume Next
     Dim A As Long
-    A = Me.GridEX.RowIndex(Me.GridEX.row)
+    A = Me.GridEX.rowIndex(Me.GridEX.row)
     Set vDetalle = vReque.Materiales.item(A)
     'Set vMaterial = vDetalle.Material
     'mostrarMaterial vMaterial
@@ -770,7 +770,7 @@ End Sub
 
 Private Sub GridEX_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo E
-    Set vDetalle = vReque.Materiales.item(RowBuffer.RowIndex)
+    Set vDetalle = vReque.Materiales.item(RowBuffer.rowIndex)
 
     If vDetalle.estado = EstadoRequeCompra.Aprobado_ _
        Or vDetalle.estado = EstadoRequeCompra.EnProceso_ _
@@ -795,12 +795,12 @@ Private Sub GridEX_SelectionChange()
     seleccionarItem
     MostrarEntregasMateriales
 End Sub
-Private Sub GridEX_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    vReque.Materiales.remove RowIndex
+Private Sub GridEX_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    vReque.Materiales.remove rowIndex
 End Sub
-Private Sub GridEX_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If vReque.Materiales.count > 0 Then
-        Set vDetalle = vReque.Materiales.item(RowIndex)
+        Set vDetalle = vReque.Materiales.item(rowIndex)
         With vDetalle
             Values(1) = .Cantidad
             Values(2) = .observaciones
@@ -813,9 +813,9 @@ Private Sub GridEX_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
     End If
 End Sub
 
-Private Sub GridEX_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And vReque.Materiales.count > 0 Then
-        Set vDetalle = vReque.Materiales.item(RowIndex)
+Private Sub GridEX_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And vReque.Materiales.count > 0 Then
+        Set vDetalle = vReque.Materiales.item(rowIndex)
         vDetalle.Cantidad = Val(Values(1))
         vDetalle.observaciones = Values(2)
     End If
@@ -847,14 +847,14 @@ Private Sub grilla_entregas_materiales_UnboundAddNew(ByVal NewRowBookmark As Gri
     End If
 End Sub
 
-Private Sub grilla_entregas_materiales_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+Private Sub grilla_entregas_materiales_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
     On Error Resume Next
-    vDetalle.Entregas.remove (RowIndex)
+    vDetalle.Entregas.remove (rowIndex)
 End Sub
 
-Private Sub grilla_entregas_materiales_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_entregas_materiales_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set tmpEntrega = vDetalle.Entregas.item(RowIndex)
+    Set tmpEntrega = vDetalle.Entregas.item(rowIndex)
     With tmpEntrega
         Values(1) = .Cantidad
         Values(2) = .FEcha
@@ -862,8 +862,8 @@ Private Sub grilla_entregas_materiales_UnboundReadData(ByVal RowIndex As Long, B
 
 End Sub
 
-Private Sub grilla_entregas_materiales_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmpEntrega = vDetalle.Entregas.item(RowIndex)
+Private Sub grilla_entregas_materiales_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmpEntrega = vDetalle.Entregas.item(rowIndex)
     tmpEntrega.Cantidad = Values(1)
     tmpEntrega.FEcha = Values(2)
 End Sub

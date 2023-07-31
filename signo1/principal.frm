@@ -563,6 +563,10 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     
         frmAdminExtrasCbtesAdeudadosAl.Show
         
+    Case ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_VAA:
+    
+        frmAdminExtrasCbtesVentasAdeudadosAl.Show
+        
     
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES:
         Dim cccfff As New frmAdminCheques
@@ -679,6 +683,8 @@ Private Sub MDIForm_Load()
     If servidorBBDD.count = 0 Then
         MsgBox "Se produjo un error con el archivo config.ini! Verificar la existencia de servidor."
         End
+    
+    
     
     Else: frmLogin.Show 1
         'conectar.SetServidorBBDD  servidorBBDD 'ahora lohace el login
@@ -1121,7 +1127,9 @@ Private Sub CreateRibbonBar()
     ' REPORTE DE COMPARAción DE COMPROBANTES SIGNO VS AFIP
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Extras", ID_GROUP.ID_GROUP_ADMINISTRACION__EXTRAS)
     AddButton ribbonGroup, "Comparación Compras", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC, Permisos.AdminSubdiariosControl
-    AddButton ribbonGroup, "Comprobantes adeudados al ...", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CAA, Permisos.AdminSubdiariosControl
+    AddButton ribbonGroup, "Saldos Compras", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CAA, Permisos.AdminSubdiariosControl
+    AddButton ribbonGroup, "Saldos Ventas", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_VAA, Permisos.AdminSubdiariosControl
+    
     'frmAdminExtrasReporteCMC
 
     '        Set cmdBarCtrl = AddButton(ribbonGroup, "Subdiarios Compras ", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_COMPRAS, , , xtpControlButtonPopup)

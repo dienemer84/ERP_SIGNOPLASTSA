@@ -366,7 +366,7 @@ Private Sub llenar_Grilla()
 End Sub
 Private Sub aprobar_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set rectmp = requerimientos.item(A)
         Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)   'lo traigo full porque necesito los materiales
@@ -423,7 +423,7 @@ End Sub
 
 Private Sub crearPO_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set rectmp = requerimientos.item(A)
         Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)     'lo traigo full porque necesito los materiales
@@ -446,7 +446,7 @@ End Sub
 
 Private Sub editReq_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set frmNuevo = New frmComprasRequesNuevo
         Set rectmp = requerimientos.item(A)
@@ -458,7 +458,7 @@ End Sub
 
 Private Sub fin_proceso_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set rectmp = requerimientos.item(A)
         Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)    'lo traigo full porque necesito los materiales
@@ -475,7 +475,7 @@ End Sub
 
 Private Sub finalizar_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set rectmp = requerimientos.item(A)
         Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)    'lo traigo full porque necesito los materiales
@@ -574,7 +574,7 @@ Private Sub MouseUp(gri As GridEX)
     Dim est As EstadoRequeCompra
     Dim gr As Long
     Dim idr As Long
-    gr = gri.RowIndex(gri.row)
+    gr = gri.rowIndex(gri.row)
     If gr = 0 Then Exit Sub
     Set rectmp = requerimientos.item(gr)
     idr = rectmp.Id
@@ -594,7 +594,7 @@ End Sub
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo E
-    Set rectmp = requerimientos(RowBuffer.RowIndex)
+    Set rectmp = requerimientos(RowBuffer.rowIndex)
 
     If vencidos.Exists(CStr(rectmp.Id)) Then RowBuffer.CellStyle(7) = "vencidos"
     If vencenhoy.Exists(CStr(rectmp.Id)) Then RowBuffer.CellStyle(8) = "vencenhoy"
@@ -603,12 +603,12 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
 E:
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    hydrate RowIndex, Values
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    hydrate rowIndex, Values
 End Sub
 
-Private Sub hydrate(RowIndex As Long, Values As GridEX20.JSRowData)
-    Set rectmp = requerimientos.item(RowIndex)
+Private Sub hydrate(rowIndex As Long, Values As GridEX20.JSRowData)
+    Set rectmp = requerimientos.item(rowIndex)
     Dim ote As String
     With rectmp
         'If .tipo = stock_ Then ote = vbNullString Else ote = " " & .DestinoOT
@@ -702,7 +702,7 @@ End Function
 
 Private Sub mnuAnular_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
 
         If MsgBox("¿Está seguro de anular el requerimiento?", vbYesNo + vbQuestion) = vbYes Then
@@ -722,7 +722,7 @@ End Sub
 
 Private Sub mnuExportarExcel_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set rectmp = requerimientos.item(A)
         DAORequerimiento.ExportExcel rectmp.Id, (MsgBox("¿Desea exportar con información acerca de la OC y las PO?", vbYesNo + vbQuestion) = vbYes)
@@ -732,7 +732,7 @@ End Sub
 
 Private Sub mnuProveedoresReq_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set rectmp = requerimientos.item(A)
         Set rectmp = DAORequerimiento.FindById(rectmp.Id, True, True, True, True)    'lo traigo full porque necesito los materiales
@@ -746,7 +746,7 @@ End Sub
 
 Private Sub procesar_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     Dim idReque As Long
     If A > 0 And grillaActual.rowcount > 0 Then
         Set rectmp = requerimientos.item(A)
@@ -779,7 +779,7 @@ End Sub
 
 Private Sub verDetalle_Click()
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set frmNuevo = New frmComprasRequesNuevo
         Set rectmp = requerimientos.item(A)
@@ -794,7 +794,7 @@ End Sub
 Private Sub verHistorial_Click()
     Dim req As clsRequerimiento
     Dim A As Long
-    A = grillaActual.RowIndex(grillaActual.row)
+    A = grillaActual.rowIndex(grillaActual.row)
     If A > 0 And grillaActual.rowcount > 0 Then
         Set req = requerimientos.item(A)
         frmHistoriales.lista = DAORequeHistorial.getAllByIdReque(req.Id)

@@ -273,9 +273,9 @@ Private Sub FillGrid()
 End Sub
 
 
-Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And UBound(potenciales, 1) > 0 Then
-        pot = potenciales(RowIndex)
+Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And UBound(potenciales, 1) > 0 Then
+        pot = potenciales(rowIndex)
         Values(1) = pot.Proveedor.RazonSocial
         Values(2) = pot.detalle.RequeId
         Values(3) = pot.detalle.Material.descripcion
@@ -284,8 +284,8 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
     End If
 End Sub
 
-Private Sub grid_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And UBound(potenciales, 1) > 0 Then
-        potenciales(RowIndex).GenerarPetOf = CBool(Values(5))
+Private Sub grid_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And UBound(potenciales, 1) > 0 Then
+        potenciales(rowIndex).GenerarPetOf = CBool(Values(5))
     End If
 End Sub

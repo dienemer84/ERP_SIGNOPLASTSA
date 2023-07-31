@@ -680,7 +680,7 @@ Private Sub GridEX1_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
 End Sub
 
 Private Sub GridEX1_SelectionChange()
-    Dim it As Long: it = Me.GridEX1.RowIndex(Me.GridEX1.row)
+    Dim it As Long: it = Me.GridEX1.rowIndex(Me.GridEX1.row)
     If it > 0 Then
         Set desamat = colmat.item(it)
         GridEX1.Columns(5).EditType = jgexEditTextBox
@@ -715,13 +715,13 @@ Private Sub GridEX1_SelectionChange()
 
 End Sub
 
-Private Sub GridEx1_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    colmat.remove (RowIndex)
+Private Sub GridEx1_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    colmat.remove (rowIndex)
     LlenarListaMateriales
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set desamat = colmat.item(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set desamat = colmat.item(rowIndex)
     Values(1) = desamat.Material.codigo & " | " & desamat.Material.descripcion
     Values(2) = desamat.Cantidad
     Values(3) = desamat.detalle
@@ -737,8 +737,8 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(12) = desamat.Material.moneda.NombreCorto & "  " & desamat.CalcularDatosMaterial(desamat.Material.moneda.Id).costo
 End Sub
 
-Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set desamat = colmat.item(RowIndex)
+Private Sub GridEX1_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set desamat = colmat.item(rowIndex)
     desamat.Cantidad = Values(2)
     desamat.Largo = Values(5)
     desamat.Ancho = Values(6)

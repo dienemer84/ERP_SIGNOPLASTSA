@@ -534,7 +534,7 @@ Private Sub grilla_recibos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As I
     End If
 End Sub
 
-Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         SeleccionarRecibo
         Me.nro.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
@@ -631,24 +631,26 @@ Private Sub grilla_recibos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmar
     Values(5) = recibo.moneda.NombreCorto
     
     If recibo.estado = 1 Then
-    Values(7) = "NO CALCULA PENDIENTE"
-    Values(8) = "NO CALCULA PENDIENTE"
+    Values(6) = "-"
+    Values(7) = "-"
+    Values(8) = "-"
+    Values(9) = "-"
+    Values(10) = "-"
+    
     Else
         Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico + recibo.TotalRetenciones)), "$", "")
         Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalRetenciones)), "$", "")
-    End If
+        'VALORES POR PAGAR
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico)), "$", "")
+
+        'IMPORTE TOTAL PAGADO
+        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalRecibidoEstatico)), "$", "")
+
+        'IMPORTE SALDO TOTAL A CUENTA
+        Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.ACuentaDisponible)), "$", "")
+
+End If
     
-
-
-    'VALORES POR PAGAR
-    Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico)), "$", "")
-
-    'IMPORTE TOTAL PAGADO
-    Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalRecibidoEstatico)), "$", "")
-
-    'IMPORTE SALDO TOTAL A CUENTA
-    Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.ACuentaDisponible)), "$", "")
-
     Values(11) = enums.EnumEstadoRecibo(recibo.estado)
     
     Values(12) = IIf(IsEmpty(tmpArchivos(recibo.Id)), 0, tmpArchivos(recibo.Id))

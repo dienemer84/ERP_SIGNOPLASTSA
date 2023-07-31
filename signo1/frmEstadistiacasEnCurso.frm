@@ -357,12 +357,12 @@ End Sub
 
 
 Private Sub GridEX1_SelectionChange()
-    Set dto = col.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+    Set dto = col.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
     GraficoTorta
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = col(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set dto = col(rowIndex)
     Values(1) = dto.Sector.Sector
     Values(2) = funciones.FormatearDecimales(dto.Tiempo) & " hs."
 

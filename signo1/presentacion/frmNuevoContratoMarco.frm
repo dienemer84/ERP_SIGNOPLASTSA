@@ -121,7 +121,7 @@ Begin VB.Form frmNuevoContratoMarco
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   170590209
+      Format          =   16777217
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdCerrar 
@@ -146,7 +146,7 @@ Begin VB.Form frmNuevoContratoMarco
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   170590209
+      Format          =   16777217
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.ComboBox cboCliente 
@@ -390,19 +390,19 @@ Private Sub gridFechasPrecios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSR
     fechas.Add Values(1)
 End Sub
 
-Private Sub gridFechasPrecios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And fechas.count > 0 Then
-        fechas.remove RowIndex
+Private Sub gridFechasPrecios_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And fechas.count > 0 Then
+        fechas.remove rowIndex
     End If
 End Sub
 
-Private Sub gridFechasPrecios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And fechas.count > 0 Then Values(1) = fechas.item(RowIndex)
+Private Sub gridFechasPrecios_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And fechas.count > 0 Then Values(1) = fechas.item(rowIndex)
 End Sub
 
-Private Sub gridFechasPrecios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And fechas.count > 0 Then
-        fechas.Add Values(1), , , RowIndex
-        fechas.remove RowIndex
+Private Sub gridFechasPrecios_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And fechas.count > 0 Then
+        fechas.Add Values(1), , , rowIndex
+        fechas.remove rowIndex
     End If
 End Sub

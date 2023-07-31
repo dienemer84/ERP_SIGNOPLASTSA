@@ -630,7 +630,7 @@ Private Sub llenarLista()
 
     For Each Ot In ordenes
 
-        tot = tot + Ot.Total
+        tot = tot + Ot.total
 
 
 
@@ -666,9 +666,9 @@ Private Sub GridEX1_KeyDown(KeyCode As Integer, Shift As Integer)
 
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Ot = ordenes.item(RowIndex)
+    Set Ot = ordenes.item(rowIndex)
     'If OT.id = 1197 Then Stop
 
     Values(1) = Ot.IdFormateado
@@ -678,7 +678,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(4) = Ot.descripcion
     Values(5) = Ot.FechaEntrega
     Values(6) = funciones.estado_pedido(Ot.estado)
-    Values(7) = funciones.FormatearDecimales((Ot.Total))    ', ot.Moneda.Id, MonedaConverter.Patron.Id))
+    Values(7) = funciones.FormatearDecimales((Ot.total))    ', ot.Moneda.Id, MonedaConverter.Patron.Id))
     Values(8) = funciones.FormatearDecimales(Ot.TotalFacturado)
     Values(9) = funciones.FormatearDecimales(Values(7) - Values(8))
     Values(10) = funciones.FormatearDecimales((Values(8) * 100) / Values(7))

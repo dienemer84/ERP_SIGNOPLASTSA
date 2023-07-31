@@ -649,7 +649,7 @@ Private Sub Totalizar()
 
         sumExento = sumExento + i.AlicuotasIva(CStr(0))
 
-        sumTot = sumTot + i.Total
+        sumTot = sumTot + i.total
         sumImpuestoInterno = sumImpuestoInterno + i.ImpuestoInterno
         sumRedondeo = sumRedondeo + i.Redondeo
 
@@ -946,7 +946,7 @@ End Sub
 Private Sub GridEX1_DblClick()
     If col.count > 0 Then
 
-        Set Factura = DAOFacturaProveedor.FindById(col(Me.GridEX1.RowIndex(Me.GridEX1.row)).FacturaId)
+        Set Factura = DAOFacturaProveedor.FindById(col(Me.GridEX1.rowIndex(Me.GridEX1.row)).FacturaId)
 
         Dim frm As frmAdminComprasNuevaFCProveedor
         Set frm = New frmAdminComprasNuevaFCProveedor
@@ -978,15 +978,15 @@ End Sub
 
 Private Sub GridEX1_SelectionChange()
     If Me.GridEX1.row <> -1 Then
-        If Me.GridEX1.RowIndex(Me.GridEX1.row) <> 0 Then
-            Set item = col.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+        If Me.GridEX1.rowIndex(Me.GridEX1.row) <> 0 Then
+            Set item = col.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
         End If
     End If
 End Sub
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 'On Error Resume Next
     If col.count > 0 Then
-        Set item = col.item(RowIndex)
+        Set item = col.item(rowIndex)
 
         Values(1) = item.FEcha
         Values(2) = item.Comprobante
@@ -1042,7 +1042,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
 
         Values(Me.GridEX1.Columns.item("impuestointerno").Index) = funciones.FormatearDecimales(item.ImpuestoInterno)
         Values(Me.GridEX1.Columns.item("redondeo").Index) = funciones.FormatearDecimales(item.Redondeo)
-        Values(Me.GridEX1.Columns.item("total").Index) = funciones.FormatearDecimales(item.Total)
+        Values(Me.GridEX1.Columns.item("total").Index) = funciones.FormatearDecimales(item.total)
     End If
 
 End Sub
@@ -1051,16 +1051,16 @@ Private Sub btnMostrar_Click()
 End Sub
 
 
-Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 Then
+Private Sub GridEX1_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 Then
         '   If Item.estado = Anulada Then
         If MsgBox("?Desea realmente actualizar los valores del item?", vbYesNo + vbQuestion) = vbYes Then
-            Set item = col.item(RowIndex)
+            Set item = col.item(rowIndex)
             item.NetoGravado = Values(6)
             item.Iva = Values(7)
             item.percepciones = Values(8)
             item.Exento = Values(9)
-            item.Total = Values(10)
+            item.total = Values(10)
 
             DAOSubdiarios.UpdateDetalle item
             Totalizar
@@ -1071,24 +1071,24 @@ End Sub
 
 
 
-Private Sub GridEX2_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Values(2) = funciones.FormatearDecimales(totalesper(RowIndex).importe)    '/ (va / 100))
-    If IsSomething(totalesper(RowIndex).Percepcion) Then
-        Values(1) = totalesper(RowIndex).Percepcion.Percepcion
+Private Sub GridEX2_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Values(2) = funciones.FormatearDecimales(totalesper(rowIndex).importe)    '/ (va / 100))
+    If IsSomething(totalesper(rowIndex).Percepcion) Then
+        Values(1) = totalesper(rowIndex).Percepcion.Percepcion
     Else
         Values(1) = funciones.FormatearDecimales(0)
     End If
 
 End Sub
 
-Private Sub gridTotalesIVA_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridTotalesIVA_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Dim va As Variant
-    va = alicuotas(RowIndex)
+    va = alicuotas(rowIndex)
 
-    Values(1) = funciones.FormatearDecimales(totalesIva(RowIndex) / (va / 100))
+    Values(1) = funciones.FormatearDecimales(totalesIva(rowIndex) / (va / 100))
     Values(2) = va & "%"
 
-    Values(3) = totalesIva(RowIndex)
+    Values(3) = totalesIva(rowIndex)
 
 End Sub
 
@@ -1339,12 +1339,12 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         .Columns("an").ColumnWidth = 15
         .Columns("ao").ColumnWidth = 15
 
-        Dim Total As Double
+        Dim total As Double
         Dim totnetog As Double
         Dim totIV As Double
         Dim totperi As Double
         Dim totexen As Double
-        Total = 0
+        total = 0
         totnetog = 0
         totIV = 0
         totperi = 0
@@ -1478,7 +1478,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
             .Cells(x + 3, 41).value = item.ImpuestoInterno
             .Cells(x + 3, 42).value = item.Redondeo
-            .Cells(x + 3, 43).value = item.Total
+            .Cells(x + 3, 43).value = item.total
 
             x = x + 1
 
@@ -1545,7 +1545,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -1559,7 +1559,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -1740,12 +1740,12 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         .Columns("an").ColumnWidth = 15
 
 
-        Dim Total As Double
+        Dim total As Double
         Dim totnetog As Double
         Dim totIV As Double
         Dim totperi As Double
         Dim totexen As Double
-        Total = 0
+        total = 0
         totnetog = 0
         totIV = 0
         totperi = 0
@@ -1869,7 +1869,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
             End If
 
             .Cells(x + 3, 39).value = item.ImpuestoInterno
-            .Cells(x + 3, 40).value = item.Total
+            .Cells(x + 3, 40).value = item.total
 
             x = x + 1
 
@@ -1935,7 +1935,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -1949,7 +1949,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

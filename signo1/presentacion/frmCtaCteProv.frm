@@ -436,7 +436,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub gridDetalles_DblClick()
-    Set deta = Detalles.item(gridDetalles.RowIndex(gridDetalles.row))
+    Set deta = Detalles.item(gridDetalles.rowIndex(gridDetalles.row))
 
 
     If (deta.tipoComprobante = TipoComprobanteUsado.FacturaProveedor_) Then
@@ -469,8 +469,8 @@ End Sub
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
     If Detalles.count = 0 Then Exit Sub
 
-    If RowBuffer.RowIndex > 0 Then
-        Set deta = Detalles.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 Then
+        Set deta = Detalles.item(RowBuffer.rowIndex)
         If Not deta.AtributoExtra And deta.Debe > 0 And deta.Haber = 0 Then    'no esta en ninguna orden
             RowBuffer.RowStyle = "Impaga"
         End If
@@ -480,9 +480,9 @@ Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
 
 End Sub
 
-Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Detalles.count > 0 Then
-        Set deta = Detalles.item(RowIndex)
+Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Detalles.count > 0 Then
+        Set deta = Detalles.item(rowIndex)
         Values(1) = deta.FEcha
         Values(2) = deta.Comprobante
         Values(3) = deta.Debe

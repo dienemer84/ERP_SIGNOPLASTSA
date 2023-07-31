@@ -429,7 +429,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 
     On Error GoTo err1
     If Button = 2 Then
-        Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+        Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
 
         If tmp.Pieza.EsConjunto Then
             Me.ver.caption = "Ver Conjunto..."
@@ -446,8 +446,8 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 err1:
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmp = presu.DetallePresupuesto(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmp = presu.DetallePresupuesto(rowIndex)
 
     With tmp
         Values(1) = tmp.item
@@ -463,20 +463,20 @@ End Sub
 
 Private Sub mnuAdquirirADetalle_Click()
     Set arch = New classArchivos
-    Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+    Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
     archi.escanearDocumento OrigenArchivos.OA_PresupuestoDetalle, tmp.Id
 
 End Sub
 
 Private Sub mnuAdquirirAPieza_Click()
     Set archi = New classArchivos
-    Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+    Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
     archi.escanearDocumento OrigenArchivos.OA_Piezas, tmp.Pieza.Id
 
 End Sub
 
 Private Sub mnuDesarrolloHistorico_Click()
-    Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+    Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
     Dim F As New frmDesarrollo
     Load F
     F.CargarDetallePresupuesto tmp.Id
@@ -484,7 +484,7 @@ Private Sub mnuDesarrolloHistorico_Click()
 End Sub
 
 Private Sub mnuVerArchivosDePedido_Click()
-    Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+    Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OrigenArchivos.OA_PresupuestoDetalle
     frmarchi1.ObjetoId = tmp.Id
@@ -492,7 +492,7 @@ Private Sub mnuVerArchivosDePedido_Click()
     frmarchi1.Show
 End Sub
 Private Sub mnuVerArchivosDePieza_Click()
-    Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+    Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
     Dim frmarchi2 As New frmArchivos2
     frmarchi2.Origen = OrigenArchivos.OA_Piezas
     frmarchi2.ObjetoId = tmp.Pieza.Id
@@ -500,7 +500,7 @@ Private Sub mnuVerArchivosDePieza_Click()
     frmarchi2.Show
 End Sub
 Private Sub mnuVerIncidenciasDeDetallePedido_Click()
-    Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+    Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
     Dim inci1 As New frmVerIncidencias
 
     inci1.referencia = tmp.Id
@@ -509,7 +509,7 @@ Private Sub mnuVerIncidenciasDeDetallePedido_Click()
 End Sub
 
 Private Sub mnuVerIncidenciasDePieza_Click()
-    Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+    Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
     Dim inci2 As New frmVerIncidencias
     inci2.referencia = tmp.Pieza.Id
     inci2.Origen = OI_Piezas
@@ -523,7 +523,7 @@ Private Sub PushButton1_Click()
 End Sub
 
 Private Sub ver_Click()
-    Set tmp = presu.DetallePresupuesto(GridEX1.RowIndex(GridEX1.row))
+    Set tmp = presu.DetallePresupuesto(GridEX1.rowIndex(GridEX1.row))
 
     Dim F As New frmDesarrollo
     Load F

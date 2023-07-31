@@ -155,9 +155,9 @@ Private Sub gridNotas_MouseDown(Button As Integer, Shift As Integer, x As Single
     End If
 End Sub
 
-Private Sub gridNotas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If notas.count > 0 And RowIndex <= notas.count Then
-        Set Nota = notas.item(RowIndex)
+Private Sub gridNotas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If notas.count > 0 And rowIndex <= notas.count Then
+        Set Nota = notas.item(rowIndex)
         Values(1) = Nota.numero
         Values(2) = Nota.TiempoProceso.idpedido
         Values(3) = Nota.TiempoProceso.DetalleOt.item
@@ -171,8 +171,8 @@ Private Sub gridNotas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As 
 End Sub
 
 Private Sub mnuResolver_Click()
-    If Me.gridNotas.RowIndex(Me.gridNotas.row) > 0 Then
-        Set Nota = notas.item(Me.gridNotas.RowIndex(Me.gridNotas.row))
+    If Me.gridNotas.rowIndex(Me.gridNotas.row) > 0 Then
+        Set Nota = notas.item(Me.gridNotas.rowIndex(Me.gridNotas.row))
         Dim F As New frmNotaNoConformidad
         F.nnc = Nota
         F.Show

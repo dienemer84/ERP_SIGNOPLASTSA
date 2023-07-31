@@ -165,12 +165,12 @@ End Sub
 
 
 Private Sub GridEX1_SelectionChange()
-    Set Mn = mon.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+    Set Mn = mon.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
 
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set Mn = mon.item(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set Mn = mon.item(rowIndex)
 
     Values(1) = Mn.NombreCorto
     Values(2) = Mn.NombreLargo

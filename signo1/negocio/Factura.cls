@@ -77,6 +77,7 @@ Public FechaServDesde As Date
 Public FechaServHasta As Date
 
 Public RecibosAplicadosId As String
+Public MontoCobrado As Double
 
 Public TasaAjusteMensual As Double  'de aca se empieza
 
@@ -279,7 +280,7 @@ Public Property Get MostrarConcepto() As String
     If Me.ConceptoIncluir = 3 Then MostrarConcepto = "Productos y Servicios"
 
 End Property
-Public Property Get Total() As Double
+Public Property Get total() As Double
     Dim totIva As Double
     Dim totPercepciones As Double
     Dim totSub As Double
@@ -287,7 +288,7 @@ Public Property Get Total() As Double
     totIva = Me.TotalIVA
     totPercepciones = Me.totalPercepciones
     totSub = Me.TotalSubTotal
-    Total = funciones.RedondearDecimales(totIva + totPercepciones + totSub)
+    total = funciones.RedondearDecimales(totIva + totPercepciones + totSub)
 End Property
 
 Public Property Get TipoDocumentoDescription() As String
@@ -369,7 +370,7 @@ Public Property Get TotalSubTotal() As Double
 
 
     For Each det In Me.Detalles
-        subT = subT + det.Total
+        subT = subT + det.total
         'Debug.Print det.Total
     Next det
 
@@ -416,7 +417,7 @@ Private Property Get CalcularIva(Optional conIva As Boolean = True) As Double
     If Me.EstaDiscriminada Then
         For Each det In Me.Detalles
             If conIva And det.IvaAplicado Then
-                totIva = totIva + funciones.RedondearDecimales(det.Total * (Me.AlicuotaAplicada / 100))
+                totIva = totIva + funciones.RedondearDecimales(det.total * (Me.AlicuotaAplicada / 100))
             End If
         Next det
     Else
@@ -448,7 +449,7 @@ Public Property Get totalPercepciones() As Double
                             End If
                         End If
                     Else
-                        totPercep = totPercep + funciones.RedondearDecimales(det.Total * (Me.AlicuotaPercepcionesIIBB - 1))
+                        totPercep = totPercep + funciones.RedondearDecimales(det.total * (Me.AlicuotaPercepcionesIIBB - 1))
                     End If
                 End If
             End If

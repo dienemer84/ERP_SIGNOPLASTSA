@@ -377,9 +377,9 @@ Private Sub lstOE_MouseUp(Button As Integer, Shift As Integer, x As Single, y As
 
 End Sub
 
-Private Sub gridEntregas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridEntregas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set tmpOe = ordenes.item(RowIndex)
+    Set tmpOe = ordenes.item(rowIndex)
     With Values
         .value(1) = tmpOe.Id
         .value(2) = tmpOe.FEcha

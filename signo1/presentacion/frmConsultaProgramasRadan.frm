@@ -301,9 +301,9 @@ Private Sub grid_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grid, Column
 End Sub
 
-Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And dtosArchivo.count > 0 Then
-        Set dtoArchivo = dtosArchivo.item(RowIndex)
+Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And dtosArchivo.count > 0 Then
+        Set dtoArchivo = dtosArchivo.item(rowIndex)
 
         Values(Me.grid.Columns("pieza").Index) = dtoArchivo.Pieza
         Values(Me.grid.Columns("programa").Index) = dtoArchivo.Programa

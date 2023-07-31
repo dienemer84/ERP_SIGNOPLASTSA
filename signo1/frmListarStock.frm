@@ -334,9 +334,9 @@ Private Sub grid_DblClick()
     End If
 End Sub
 
-Private Sub grid_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grid_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
-    Set pieza_actual = m_piezas(grid.RowIndex(RowPosition))
+    Set pieza_actual = m_piezas(grid.rowIndex(RowPosition))
 
     If ColIndex = 7 And CantArchivos.item(pieza_actual.Id) > 0 Then
         IconIndex = 1
@@ -403,8 +403,8 @@ End Sub
 Private Sub grid_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.value(5) > 0 Then RowBuffer.CellStyle(5) = "TieneIncidenciasArchivos"
 
-    If RowBuffer.RowIndex > 0 Then
-        Set pieza_actual = m_piezas.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 Then
+        Set pieza_actual = m_piezas.item(RowBuffer.rowIndex)
         If Not pieza_actual.Activa Then RowBuffer.RowStyle = "desactivado"
     End If
 
@@ -425,17 +425,17 @@ Private Sub grid_SelectionChange()
     On Error Resume Next
     Dim RowPosition As Long
     RowPosition = grid.row
-    If grid.RowIndex(RowPosition) > 0 Then
-        Set pieza_actual = m_piezas(grid.RowIndex(RowPosition))
+    If grid.rowIndex(RowPosition) > 0 Then
+        Set pieza_actual = m_piezas(grid.rowIndex(RowPosition))
     Else
         Set pieza_actual = Nothing
     End If
 End Sub
 
-Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 'On Error Resume Next
     If m_piezas.count > 0 Then
-        Set pieza_actual = m_piezas.item(RowIndex)
+        Set pieza_actual = m_piezas.item(rowIndex)
         With pieza_actual
             Values(1) = .Id
             Values(2) = .nombre

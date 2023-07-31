@@ -244,12 +244,12 @@ Private Sub GridEX1_DblClick()
 End Sub
 
 Private Sub GridEX1_SelectionChange()
-    Set Remito = col.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+    Set Remito = col.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If col.count > 0 And RowIndex > 0 Then
-        Set Remito = col.item(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If col.count > 0 And rowIndex > 0 Then
+        Set Remito = col.item(rowIndex)
         Values(1) = Remito.numero
         Values(2) = Remito.FEcha
         Values(3) = Remito.cliente.razon

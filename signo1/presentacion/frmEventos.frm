@@ -267,8 +267,8 @@ Private Sub btnMarcarNoLeidosComoLeidos_Click()
     Dim ev As EVENTO
     Dim it As JSSelectedItem
     For Each it In Me.grilla.SelectedItems
-        If it.RowIndex > 0 Then
-            Set ev = eventos.item(it.RowIndex)
+        If it.rowIndex > 0 Then
+            Set ev = eventos.item(it.rowIndex)
 
             If Not funciones.BuscarEnColeccion(ev.Lecturas, CStr(funciones.GetUserObj.Id)) Then
                 If DAOEvento.Read(ev.Id) Then
@@ -400,8 +400,8 @@ Private Sub Form_Resize()
 End Sub
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And RowBuffer.RowIndex <= eventos.count And eventos.count > 0 Then
-        Set EVENTO = eventos.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 And RowBuffer.rowIndex <= eventos.count And eventos.count > 0 Then
+        Set EVENTO = eventos.item(RowBuffer.rowIndex)
 
         If Not funciones.BuscarEnColeccion(EVENTO.Lecturas, CStr(funciones.GetUserObj.Id)) Then
             RowBuffer.RowStyle = "noleido"
@@ -411,15 +411,15 @@ End Sub
 
 Private Sub grilla_SelectionChange()
     Me.tmrMarcarLeido.Enabled = False
-    If Me.grilla.RowIndex(Me.grilla.row) > 0 And eventos.count > 0 Then
-        Set EVENTO = eventos.item(Me.grilla.RowIndex(Me.grilla.row))
+    If Me.grilla.rowIndex(Me.grilla.row) > 0 And eventos.count > 0 Then
+        Set EVENTO = eventos.item(Me.grilla.rowIndex(Me.grilla.row))
         Me.tmrMarcarLeido.Enabled = Not funciones.BuscarEnColeccion(EVENTO.Lecturas, CStr(funciones.GetUserObj.Id))
     End If
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And RowIndex <= eventos.count And eventos.count > 0 Then
-        Set EVENTO = eventos.item(RowIndex)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And rowIndex <= eventos.count And eventos.count > 0 Then
+        Set EVENTO = eventos.item(rowIndex)
         Values(1) = EVENTO.FechaCreacion
         If IsSomething(EVENTO.UsuarioInvolucrado.Empleado) Then
             Values(2) = EVENTO.UsuarioInvolucrado.Empleado.NombreCompleto

@@ -402,7 +402,7 @@ Dim vAccion As Integer
 Private Sub AprobarPresu_Click()
     If MsgBox("¿Está seguro de aprobar el presupuesto?", vbYesNo, "Confirmación") = vbYes Then
         If DAOPresupuestos.aprobar(rectmp) Then
-            ROWS_ = grilla.RowIndex(grilla.row)
+            ROWS_ = grilla.rowIndex(grilla.row)
             grilla.RefreshRowIndex ROWS_
         Else
             llenar_Grilla
@@ -481,7 +481,7 @@ Private Sub cmdEstad_Click()
 
 
     For Each P In Me.grilla.SelectedItems
-        Set pto = presupuestos.item(P.RowIndex)
+        Set pto = presupuestos.item(P.rowIndex)
         Set pto.DetallePresupuesto = DAOPresupuestosDetalle.GetAllByPresupuesto(pto)
 
         If pto.EstadoPresupuesto = EstadoPresupuesto.Desactivado Then
@@ -599,7 +599,7 @@ Private Sub Command5_Click()
 End Sub
 Private Sub desactiva_Click()
     If MsgBox("¿Está seguro de desactivar este presupuesto?", vbYesNo, "Confirmación") = vbYes Then    '
-        A = grilla.RowIndex(grilla.row)
+        A = grilla.rowIndex(grilla.row)
         If Not DAOPresupuestos.desactivar(rectmp) Then
             MsgBox "Se produjo algún error al intentar desactivar el presupuesto!", vbCritical, "Error"
         Else
@@ -631,7 +631,7 @@ Private Sub enviar_Click()
 
     On Error GoTo A
     Dim T As Long
-    T = grilla.RowIndex(grilla.row)
+    T = grilla.rowIndex(grilla.row)
     If DAOPresupuestos.enviar(rectmp) Then
         MsgBox "Presupuesto Exportado Correctamente!", vbInformation, "Información"
         grilla.RefreshRowIndex T
@@ -689,7 +689,7 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick grilla, Column
 End Sub
 Private Sub grilla_DblClick()
-    If grilla.RowIndex(grilla.row) = 0 Then Exit Sub
+    If grilla.rowIndex(grilla.row) = 0 Then Exit Sub
     Dim frmver As frmVentasPresupuestoDetalle
     Dim FRMEDIT As frmVentasPresupuestoEditar
     If rectmp.EstadoPresupuesto = ACotizar_ Then
@@ -712,8 +712,8 @@ Private Sub grilla_DblClick()
     End If
 End Sub
 
-Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    Set rec2 = presupuestos(RowIndex)
+Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+    Set rec2 = presupuestos(rowIndex)
     If rec2.EstadoPresupuesto = Enviado_ Then
         IconIndex = 1
     ElseIf rec2.EstadoPresupuesto = ACotizar_ Then
@@ -733,7 +733,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     Dim est As EstadoPresupuesto
     Dim gr
-    gr = grilla.RowIndex(grilla.row)
+    gr = grilla.rowIndex(grilla.row)
     If gr = 0 Or presupuestos.count = 0 Then Exit Sub
     Set rectmp = presupuestos.item(gr)
     est = rectmp.EstadoPresupuesto
@@ -774,8 +774,8 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex = 0 Then Exit Sub
-    Set rectmp = presupuestos.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex = 0 Then Exit Sub
+    Set rectmp = presupuestos.item(RowBuffer.rowIndex)
     If RowBuffer.value(8) < Now Then
         RowBuffer.CellStyle(8) = "Vencidos"
     ElseIf RowBuffer.value(8) = Format(Now, "dd/mm/yyyy") Then
@@ -793,7 +793,7 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 End Sub
 Private Sub grilla_SelectionChange()
-    srow = Me.grilla.RowIndex(Me.grilla.row)
+    srow = Me.grilla.rowIndex(Me.grilla.row)
     If srow > 0 Then
         Set rectmp = presupuestos.item(srow)
     End If
@@ -877,7 +877,7 @@ End Sub
 Private Sub ncotizar_Click()
 
     If MsgBox("¿Está seguro de no cotizar este presupuesto?", vbYesNo, "Confirmación") = vbYes Then
-        A = grilla.RowIndex(grilla.row)
+        A = grilla.rowIndex(grilla.row)
         DAOPresupuestos.NoCotizar rectmp
         grilla.RefreshRowIndex A
     End If
@@ -969,8 +969,8 @@ Private Sub Form_Resize()
 
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set rectmp = presupuestos.item(RowIndex)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set rectmp = presupuestos.item(rowIndex)
     With rectmp
         Values(1) = Format(.Id, "0000")
         Values(2) = .cliente.razon

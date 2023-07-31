@@ -608,8 +608,8 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
 End Sub
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.item(RowBuffer.rowIndex)
         If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
             RowBuffer.CellStyle(9) = "aprobada"
         ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
@@ -628,13 +628,13 @@ End Sub
 
 Private Sub SeleccionarOP()
     On Error Resume Next
-    Set Orden = ordenes.item(gridOrdenes.RowIndex(gridOrdenes.row))
+    Set Orden = ordenes.item(gridOrdenes.rowIndex(gridOrdenes.row))
 '    MsgBox (Orden.Id)
 End Sub
 
-Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowIndex)
+Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.item(rowIndex)
         Values(1) = Orden.Id
         Values(2) = Orden.FEcha
 
@@ -706,7 +706,7 @@ Private Sub mnuAprobar_Click()
     
     If DAOOrdenPago.aprobar(Orden, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
     Else
         MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly

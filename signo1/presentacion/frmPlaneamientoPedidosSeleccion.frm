@@ -273,8 +273,8 @@ Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set Ot = ots.item(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set Ot = ots.item(rowIndex)
 
     Values(1) = Ot.Id
     Values(2) = Ot.descripcion
@@ -288,7 +288,7 @@ End Sub
 
 Private Sub PushButtonAceptar_Click()
     If IsSomething(Ot) Then
-        Set Ot = ots.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+        Set Ot = ots.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
         Set Selecciones.OrdenTrabajo = Ot
     Else
         Set Selecciones.OrdenTrabajo = Nothing

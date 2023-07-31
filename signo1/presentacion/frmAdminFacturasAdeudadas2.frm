@@ -379,7 +379,7 @@ End Sub
 
 Private Sub Copiar_Click()
     On Error GoTo err1
-    frmPrincipal.cd.ShowPrinter
+    frmPrincipal.CD.ShowPrinter
 
     Printer.Orientation = 2
     Me.grafico.EditCopy
@@ -475,7 +475,7 @@ Private Sub Graficar()
     Dim datos()
     Dim flowItems As New Collection
     Dim dateIndex As String
-    Dim Total As Double
+    Dim total As Double
     Dim item As CashFlowItem
 
     Dim fechaParaTrabajar As Date
@@ -500,22 +500,22 @@ Private Sub Graficar()
         End Select
 
         If Factura.Saldado = SaldadoParcial Then
-            Total = Factura.TotalEstatico.Total - DAOFactura.PagosRealizados(Factura.Id)
+            total = Factura.TotalEstatico.total - DAOFactura.PagosRealizados(Factura.Id)
         Else
-            Total = Factura.TotalEstatico.Total
+            total = Factura.TotalEstatico.total
         End If
         'por los dolares
-        Total = MonedaConverter.Convertir(Total, Factura.moneda.Id, MonedaConverter.Patron.Id)
+        total = MonedaConverter.Convertir(total, Factura.moneda.Id, MonedaConverter.Patron.Id)
 
-        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then Total = Total * -1
+        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then total = total * -1
 
         If funciones.BuscarEnColeccion(flowItems, CStr(dateIndex)) Then
             Set item = flowItems.item(CStr(dateIndex))
-            item.ValorCobro = item.ValorCobro + Total
+            item.ValorCobro = item.ValorCobro + total
         Else
             Set item = New CashFlowItem
             item.FechaIndex = dateIndex
-            item.ValorCobro = Total
+            item.ValorCobro = total
             flowItems.Add item, dateIndex
         End If
 

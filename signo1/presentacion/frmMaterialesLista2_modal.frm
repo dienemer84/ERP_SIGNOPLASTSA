@@ -303,13 +303,13 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 Private Sub grilla_SelectionChange()
     On Error GoTo err1
-    rows = grilla.RowIndex(grilla.row)
-    Set rectemp = Materiales.item(grilla.RowIndex(grilla.row))
+    rows = grilla.rowIndex(grilla.row)
+    Set rectemp = Materiales.item(grilla.rowIndex(grilla.row))
     Exit Sub
 err1:
 End Sub
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set rectemp = Materiales.item(RowIndex)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set rectemp = Materiales.item(rowIndex)
     With rectemp
         Values(1) = .codigo
         Values(2) = .Grupo.rubros.rubro
@@ -333,11 +333,11 @@ Private Sub llenar_Grilla()
 End Sub
 Private Sub editamos()
     If grilla.rowcount > 0 Then
-        A = grilla.RowIndex(grilla.row)
+        A = grilla.rowIndex(grilla.row)
         If A = 0 Then Exit Sub
 
         Dim frm1 As New frmMaterialesNuevo
-        frm1.Material = Materiales(grilla.RowIndex(grilla.row))
+        frm1.Material = Materiales(grilla.rowIndex(grilla.row))
         frm1.Show
     End If
 End Sub

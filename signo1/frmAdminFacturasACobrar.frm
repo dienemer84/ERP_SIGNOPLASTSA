@@ -79,7 +79,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim rs As New Recordset
 Dim vIdCliente As Long
-Dim clasea As New classAdministracion
+
 Public Property Let idCliente(nIdCliente As Long)
     vIdCliente = nIdCliente
 End Property

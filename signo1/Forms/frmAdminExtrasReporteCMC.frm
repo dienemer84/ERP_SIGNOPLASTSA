@@ -462,13 +462,13 @@ err4:
 End Sub
 
 
-Private Sub GridEXComprobantes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEXComprobantes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     If comprobantes.count < 0 Then
         MsgBox "No hay comprobantes que mostrar.", vbCritical, "Error"
 
     Else
-        Set tmpComprobantes = comprobantes.item(RowIndex)
+        Set tmpComprobantes = comprobantes.item(rowIndex)
 
         Values(1) = tmpComprobantes.Fecha_
         Values(2) = tmpComprobantes.Tipo_

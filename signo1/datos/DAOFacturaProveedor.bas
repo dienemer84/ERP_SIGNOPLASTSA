@@ -786,7 +786,7 @@ err1:
     cn.RollbackTrans
 End Function
 
-Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, Optional FechaFIN As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
+Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, Optional FechaFIn As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
     On Error Resume Next
     On Error GoTo err1
     Dim indice As New Dictionary
@@ -807,11 +807,11 @@ Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, O
         q = q & ",0 as total_compensado "
     End If
 
-    q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFIN & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
-    q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFIN & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
-    q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <=" & FechaFIN & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
-    q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  AND ordenes_pago.fecha <=" & FechaFIN & "),NCHAR) AS ordenes_pago "
-    q = q & ",   CONVERT((SELECT IFNULL(GROUP_CONCAT(numero_liq),'-') From liquidaciones_caja_facturas INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja=liquidaciones_caja.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND liquidaciones_caja.estado<>2  AND liquidaciones_caja.fecha <=" & FechaFIN & "),NCHAR) AS num_liquidaciones_caja "
+    q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFIn & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
+    q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFIn & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
+    q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <=" & FechaFIn & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
+    q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  AND ordenes_pago.fecha <=" & FechaFIn & "),NCHAR) AS ordenes_pago "
+    q = q & ",   CONVERT((SELECT IFNULL(GROUP_CONCAT(numero_liq),'-') From liquidaciones_caja_facturas INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja=liquidaciones_caja.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND liquidaciones_caja.estado<>2  AND liquidaciones_caja.fecha <=" & FechaFIn & "),NCHAR) AS num_liquidaciones_caja "
     q = q & " From" _
         & " AdminComprasFacturasProveedores" _
         & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
@@ -829,8 +829,6 @@ Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, O
         q = q & " and " & filtro
     End If
     
-'    q = q & " HAVING ordenes_pago <> '-' OR num_liquidaciones_caja <> '-'"
-
     If soloPropias Then
         q = q & " and AdminComprasFacturasProveedores.id_usuario_creador=" & funciones.GetUserObj.Id
 
@@ -919,20 +917,17 @@ err1:
     MsgBox Err.Description
 End Function
 
-Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFIN As String) As Boolean
+Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFIn As String) As Boolean
     On Error GoTo err1
 
     ExportarColeccionTotalizadores = True
 
-    'Dim xlWorkbook As New Excel.Workbook
     Dim xlWorkbook As Object
     Set xlWorkbook = CreateObject("Excel.Application")
 
-    'Dim xlWorksheet As New Excel.Worksheet
     Dim xlWorksheet As Object
     Set xlWorksheet = CreateObject("Excel.Application")
 
-    'Dim xlApplication As New Excel.Application
     Dim xlApplication As Object
     Set xlApplication = CreateObject("Excel.Application")
 
@@ -946,13 +941,13 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
        xlWorksheet.Range("A1:K2").Font.Bold = True
         xlWorksheet.Range("A3:K2").Font.Bold = True
         
-                Dim fin As Date
+                Dim Fin As Date
 
 
-        fin = FechaFIN
+        Fin = FechaFIn
 
     'fila, columna
-    xlWorksheet.Cells(1, 1).value = "REPORTE DE COMPROBANTES DE COMPRA ADEUDADOS AL " & Format(fin, "dd/mm/yyyy")
+    xlWorksheet.Cells(1, 1).value = "REPORTE DE COMPROBANTES DE COMPRA ADEUDADOS AL " & Format(Fin, "dd/mm/yyyy")
 
     Dim offset As Long
     offset = 3
@@ -1006,8 +1001,16 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         totalpercep = totalpercep + fac.totalPercepciones * c
         'Agrega DNEMER 24/04/2023
         TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
-
-
+        
+        Dim TotalFactura As Double
+        TotalFactura = (fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno
+        
+        Dim saldoComprobante As Double
+        
+        saldoComprobante = FormatearDecimales((TotalFactura + fac.Redondeo) - fac.TotalAbonadoGlobal)
+        
+        If saldoComprobante <> 0 Then
+        
 
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
@@ -1016,55 +1019,30 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
 
         offset = offset + 1
         xlWorksheet.Cells(offset, 1).value = fac.Id
-        xlWorksheet.Cells(offset, 2).value = fac.Proveedor.RazonSocial
+        xlWorksheet.Cells(offset, 2).value = UCase(fac.Proveedor.RazonSocial)
         xlWorksheet.Cells(offset, 3).value = fac.Proveedor.Cuit
         xlWorksheet.Cells(offset, 4).value = enums.EnumTipoDocumentoContableShort(fac.tipoDocumentoContable)
         xlWorksheet.Cells(offset, 5).value = fac.configFactura.TipoFactura
         xlWorksheet.Cells(offset, 6).value = fac.numero
         xlWorksheet.Cells(offset, 7).value = fac.FEcha
         xlWorksheet.Cells(offset, 8).value = fac.moneda.NombreCorto
-        
-        Dim TotalFactura As Double
-        TotalFactura = (fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno
-        
         xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(TotalFactura + fac.Redondeo) * i
-        
         xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(fac.TotalAbonadoGlobal) * i
-        
         xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales((TotalFactura + fac.Redondeo) - fac.TotalAbonadoGlobal) * i
-
         xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 11)).Borders.LineStyle = xlContinuous
+
+        End If
         
     Next
-
-
-'    xlWorksheet.Cells(offset + 3, 2).value = "Total NG"
-'    xlWorksheet.Cells(offset + 4, 2).value = "Total NNG"
-'    xlWorksheet.Cells(offset + 5, 2).value = "Total Neto"
-'    xlWorksheet.Cells(offset + 6, 2).value = "Tota IVA"
-'    xlWorksheet.Cells(offset + 7, 2).value = "Tota Percepciones"
-'    xlWorksheet.Cells(offset + 8, 2).value = "Tota Pendiente"
-'    xlWorksheet.Cells(offset + 9, 2).value = "Total Filtrado"
-'
-'    xlWorksheet.Cells(offset + 3, 3).value = totalneto
-'    xlWorksheet.Cells(offset + 4, 3).value = totalno
-'    xlWorksheet.Cells(offset + 5, 3).value = totalneto + totalno
-'    xlWorksheet.Cells(offset + 6, 3).value = totIva
-'    xlWorksheet.Cells(offset + 7, 3).value = totalpercep
-'    xlWorksheet.Cells(offset + 8, 3).value = TotalPendiente
-'    xlWorksheet.Cells(offset + 9, 3).value = total
-
-'    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 3)).Borders.LineStyle = xlContinuous
-'    xlWorksheet.Range(xlWorksheet.Cells(offset + 3, 2), xlWorksheet.Cells(offset + 9, 2)).Interior.Color = &HC0C0C0
-
-    'autosize
+    
+    ProgressBar.value = col.count
+    
     xlApplication.ScreenUpdating = False
     Dim wkSt As String
     wkSt = xlWorksheet.Name
     xlWorksheet.Cells.EntireColumn.AutoFit
     xlWorkbook.Sheets(wkSt).Select
     xlApplication.ScreenUpdating = True
-    ''
 
     Dim ruta As String
     ruta = Environ$("TEMP")
@@ -1089,7 +1067,5 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     Exit Function
 err1:
     ExportarColeccionTotalizadores = False
+    
 End Function
-
-
-

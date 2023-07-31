@@ -439,8 +439,8 @@ Private Sub Form_Load()
     Me.gridCajas.ItemCount = 0
 End Sub
 
-Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set cheque = Cheques(RowIndex)
+Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set cheque = Cheques(rowIndex)
     Values(1) = cheque.numero
     Values(2) = cheque.FechaVencimiento
     Values(3) = cheque.moneda.NombreCorto & " " & cheque.Monto

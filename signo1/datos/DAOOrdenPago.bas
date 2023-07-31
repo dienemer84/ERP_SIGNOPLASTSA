@@ -1353,8 +1353,8 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
 
     Printer.FontSize = 10
     Printer.FontBold = True
-    Printer.CurrentX = lmargin + TAB1
-    Printer.Print "Facturas: "
+    Printer.CurrentX = lmargin
+    Printer.Print "COMPROBANTES: "
     Printer.FontBold = False
     Printer.FontSize = 8
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
@@ -1364,7 +1364,8 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each F In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total
+        Printer.Print F.NumeroFormateado & String$(8, " | del ") & " | " & F.FEcha & String$(8, " | por ") & " | " & F.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(F.total)), "$", "")
+    
     Next F
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -1386,7 +1387,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each cheq In Orden.ChequesPropios
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(24, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
+        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
     Next cheq
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -1402,7 +1403,7 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each cheq In Orden.ChequesTerceros
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print cheq.numero & String$(8, " ") & cheq.Banco.nombre & String$(16, " ") & cheq.FechaVencimiento & String$(8, " ") & cheq.moneda.NombreCorto & " " & cheq.Monto
+        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
     Next cheq
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -1420,8 +1421,15 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     For Each op In Orden.OperacionesBanco
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto & " | " & op.CuentaBancaria.DescripcionFormateada
+        
+        Dim ctaBancaria As CuentaBancaria
+        
+        Set ctaBancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
+        
+        Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctaBancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
+    
     Next op
+    
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE TRANSFERENCIAS"
@@ -1432,13 +1440,13 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.Print "Efectivo: "
     Printer.FontBold = False
 
-
+'Replace(FormatCurrency(funciones.FormatearDecimales(factura.TotalIVA) * i), "$", "")
     Set tmpCol = New Collection
     c = 0
     For Each op In Orden.OperacionesCaja
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
+        Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
     Next op
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -1454,19 +1462,19 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Total Comprobantes: ";
     Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalFacturas
+    Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalFacturas)), "$", "")
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Total Retenido: ";
     Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalRetenido
+    Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalRetenido)), "$", "")
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Total Abonado: ";
     Printer.FontBold = False
-    Printer.Print Orden.moneda.NombreCorto & " " & Orden.StaticTotalOrigenes
+    Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.EndDoc

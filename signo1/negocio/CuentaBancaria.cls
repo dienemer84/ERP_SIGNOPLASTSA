@@ -19,6 +19,7 @@ Public numero As String
 Public TipoCuenta As TipoCuentaBancaria
 Public moneda As clsMoneda
 Public CBU As String
+Public BancoNombre As String
 
 
 

@@ -67,7 +67,7 @@ Public Function Anular(recibo As recibo) As Boolean
         q = "select * from AdminRecibosDetalleFacturas where idRecibo=" & recibo.Id
         Dim rs As Recordset
         Set rs = conectar.RSFactory(q)
-        Dim F As factura
+        Dim F As Factura
         Dim rs2 As Recordset
         While Not rs.EOF And Not rs.BOF
 
@@ -142,7 +142,7 @@ Public Function aprobar(recibo As recibo) As Boolean
     On Error GoTo err5
     Dim estAnt As EstadoRecibo
     Dim fechaAnt As Variant
-    Dim factura As factura
+    Dim Factura As Factura
     conectar.BeginTransaction
 
 
@@ -168,22 +168,22 @@ Public Function aprobar(recibo As recibo) As Boolean
         Dim r2 As Recordset
         Dim newEstadoSaldadoFactura As TipoSaldadoFactura
 
-        For Each factura In recibo.facturas
-            montoSaldado = DAOFactura.PagosRealizados(factura.Id)
+        For Each Factura In recibo.facturas
+            montoSaldado = DAOFactura.PagosRealizados(Factura.Id)
 
             If montoSaldado = 0 Then
                 newEstadoSaldadoFactura = NoSaldada
-            ElseIf montoSaldado >= factura.total Then
+            ElseIf montoSaldado >= Factura.total Then
                 newEstadoSaldadoFactura = saldadoTotal
             Else
                 newEstadoSaldadoFactura = SaldadoParcial
             End If
 
-            If Not conectar.execute("update AdminFacturas set saldada=" & newEstadoSaldadoFactura & " where id=" & factura.Id) Then
+            If Not conectar.execute("update AdminFacturas set saldada=" & newEstadoSaldadoFactura & " where id=" & Factura.Id) Then
                 GoTo err5
             End If
 
-        Next factura
+        Next Factura
 
     Else
         GoTo err5
@@ -492,7 +492,7 @@ Public Function Guardar(rec As recibo) As Boolean
         'facturas''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         q = "DELETE FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id
         If Not conectar.execute(q) Then GoTo E
-        Dim fac As factura
+        Dim fac As Factura
         Dim montoPagado As Double
         For Each fac In rec.facturas
             If rec.PagosDeFacturas.Exists(CStr(fac.Id)) Then
@@ -562,13 +562,7 @@ Public Sub Imprimir(idRecibo As Long)
     Set recibo = DAORecibo.FindById(idRecibo, True, True, True, True, True)
 
     If IsSomething(recibo) Then
-        '        Printer.CurrentY = 300
-        '        Printer.CurrentX = 6800
-        '        Printer.Font.Size = 12
-        '        Printer.Font.Size = 14
-        '        Printer.Line (8800, 1400)-(10100, 1400)
-        '        Printer.Print Format(Day(objFac.FechaEmision), "00") & "/" & Format(Month(objFac.FechaEmision), "00") & "/" & Format(Year(objFac.FechaEmision) - 2000, "00")
-        '        Printer.Print Tab(14);
+        
         Dim origin As Integer
 
         Printer.FontBold = True
@@ -591,7 +585,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.FontBold = True
         Printer.Print "Facturas "
         Printer.FontBold = False
-        Dim F As factura
+        Dim F As Factura
         For Each F In recibo.facturas
             Printer.Print F.FechaEmision, F.GetShortDescription(False, True), F.moneda.NombreCorto & " " & recibo.PagosDeFacturas(CStr(F.Id))
         Next F

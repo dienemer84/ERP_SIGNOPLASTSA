@@ -908,8 +908,8 @@ Private Sub gridProcesos_DblClick()
         finalizandoProceso = False
         ShowMessage "Tiempo agotado"
     Else
-        If Me.gridProcesos.RowIndex(Me.gridProcesos.row) > 0 And tareasEnProgreso.count > 0 Then
-            Set tiempoProcesoDet = tareasEnProgreso.item(Me.gridProcesos.RowIndex(Me.gridProcesos.row))
+        If Me.gridProcesos.rowIndex(Me.gridProcesos.row) > 0 And tareasEnProgreso.count > 0 Then
+            Set tiempoProcesoDet = tareasEnProgreso.item(Me.gridProcesos.rowIndex(Me.gridProcesos.row))
             FinalizarProceso
         End If
     End If
@@ -919,9 +919,9 @@ Private Sub gridProcesos_GotFocus()
     EnfocarTextBox
 End Sub
 
-Private Sub gridProcesos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex >= 1 And RowIndex <= tareasEnProgreso.count Then
-        Set tiempoProcesoDet = tareasEnProgreso.item(RowIndex)
+Private Sub gridProcesos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex >= 1 And rowIndex <= tareasEnProgreso.count Then
+        Set tiempoProcesoDet = tareasEnProgreso.item(rowIndex)
         Values.value(1) = tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Id & " - " & tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Tarea
         Values.value(2) = tiempoProcesoDet.PlaneamientoTiempoProceso.Tarea.Sector.Sector
         Values.value(3) = tiempoProcesoDet.PlaneamientoTiempoProceso.idpedido & "/" & Format(tiempoProcesoDet.PlaneamientoTiempoProceso.item, "000")

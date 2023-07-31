@@ -309,7 +309,7 @@ End Sub
 Private Sub gridArchivos_SelectionChange()
     On Error Resume Next
 
-    Dim idx As Long: idx = Me.gridArchivos.RowIndex(Me.gridArchivos.row)
+    Dim idx As Long: idx = Me.gridArchivos.rowIndex(Me.gridArchivos.row)
 
     If idx > 0 Then
         Dim ext As String
@@ -336,10 +336,10 @@ Private Sub gridArchivos_SelectionChange()
     End If
 End Sub
 
-Private Sub gridArchivos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And RowIndex <= m_Archivos.count Then
+Private Sub gridArchivos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And rowIndex <= m_Archivos.count Then
 
-        Set archivoActual = m_Archivos(RowIndex)
+        Set archivoActual = m_Archivos(rowIndex)
         With archivoActual
             Values(1) = .nombre
             Values(1) = .FileSizeInKB
@@ -442,9 +442,9 @@ Private Sub GuardarArchivo()
         Else
             Dim ruta As String
 
-            frmPrincipal.cd.filename = archivoActual.nombre
-            frmPrincipal.cd.ShowSave
-            ruta = frmPrincipal.cd.filename
+            frmPrincipal.CD.filename = archivoActual.nombre
+            frmPrincipal.CD.ShowSave
+            ruta = frmPrincipal.CD.filename
 
             If LenB(ruta) > 0 Then
                 ruta = clasea.exportarArchivo(archivoActual.Id, ruta, False)

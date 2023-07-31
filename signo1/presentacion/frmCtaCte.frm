@@ -256,7 +256,7 @@ Private Sub gridDetalles_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 Private Sub gridDetalles_DblClick()
-    Set deta = Detalles.item(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
+    Set deta = Detalles.item(Me.gridDetalles.rowIndex(Me.gridDetalles.row))
 
     If (deta.tipoComprobante = TipoComprobanteUsado.Factura_) Then
         Dim frm As New frmAdminFacturasEdicion
@@ -286,15 +286,15 @@ End Sub
 
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
 
-    Set deta = Detalles.item(RowBuffer.RowIndex)
+    Set deta = Detalles.item(RowBuffer.rowIndex)
     If deta.AtributoExtra Then
         RowBuffer.RowStyle = "saldado"
     End If
 End Sub
 
-Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Detalles.count > 0 Then
-        Set deta = Detalles.item(RowIndex)
+Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Detalles.count > 0 Then
+        Set deta = Detalles.item(rowIndex)
         Values(1) = deta.FEcha
         Values(2) = deta.Comprobante
         'Values(3) = deta.Debe

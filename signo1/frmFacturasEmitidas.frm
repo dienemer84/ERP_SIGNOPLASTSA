@@ -28,14 +28,14 @@ Begin VB.Form frmAdminFacturasEmitidas
       Caption         =   "Filtros"
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.PushButton PushButton2 
-         Height          =   330
+         Height          =   285
          Left            =   9000
          TabIndex        =   48
          Top             =   1575
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
-         _ExtentY        =   582
+         _ExtentY        =   503
          _StockProps     =   79
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
@@ -287,7 +287,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Imprimir"
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.PushButton btnExpotar 
+      Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   420
          Left            =   12240
          TabIndex        =   22
@@ -1247,7 +1247,7 @@ Private Sub btnExportarAvanzado_Click()
     Me.lblExportando.Visible = False
 End Sub
 
-Private Sub btnExpotar_Click()
+Private Sub btnExportar_Click()
 
 'FUNCIÓN PARA EXPORTAR A EXCEL
 
@@ -2128,13 +2128,6 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
         Values(5) = "Nro. Pendiente"
     End If
 
-
-    ' If Factura.estado =  Then
-    '     Values(5) = "Nro. Pendiente"
-    ' Else
-    '     Values(5) = Factura.NumeroFormateado
-    ' End If
-
     Values(6) = Factura.FechaEmision
 
     'MONTO BASE
@@ -2265,22 +2258,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.Id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("'¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fue impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next i
             End If

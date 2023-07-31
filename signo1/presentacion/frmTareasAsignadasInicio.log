@@ -1,15 +1,1 @@
-Line 67: Class XtremeSuiteControls.PushButton of control cmd1 was not a loaded control class.
-Line 90: Class XtremeSuiteControls.PushButton of control cmd4 was not a loaded control class.
-Line 113: Class XtremeSuiteControls.PushButton of control cmd7 was not a loaded control class.
-Line 136: Class XtremeSuiteControls.PushButton of control cmd2 was not a loaded control class.
-Line 159: Class XtremeSuiteControls.PushButton of control cmd5 was not a loaded control class.
-Line 182: Class XtremeSuiteControls.PushButton of control cmd8 was not a loaded control class.
-Line 205: Class XtremeSuiteControls.PushButton of control cmd3 was not a loaded control class.
-Line 228: Class XtremeSuiteControls.PushButton of control cmd6 was not a loaded control class.
-Line 251: Class XtremeSuiteControls.PushButton of control cmd9 was not a loaded control class.
-Line 274: Class XtremeSuiteControls.PushButton of control CMD0 was not a loaded control class.
-Line 298: Class XtremeSuiteControls.PushButton of control cmdEmpleado was not a loaded control class.
-Line 321: Class XtremeSuiteControls.PushButton of control cmdEnter was not a loaded control class.
-Line 344: Class XtremeSuiteControls.PushButton of control cmdPunto was not a loaded control class.
-Line 368: Class XtremeSuiteControls.PushButton of control btnIniciarTarea was not a loaded control class.
-Line 410: Class XtremeSuiteControls.Label of control lblMensajes was not a loaded control class.
+Line 21: Cannot load control gridProcesos.

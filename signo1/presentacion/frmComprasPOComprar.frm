@@ -237,26 +237,26 @@ End Sub
 
 
 
-Private Sub gridCompra_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set item = compra.item(RowIndex)
+Private Sub gridCompra_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set item = compra.item(rowIndex)
 
     Values(1) = item.POid
     Values(2) = DAOProveedor.FindById(pod.ProveedorId).RazonSocial
-    Values(3) = item.Total
+    Values(3) = item.total
     Values(4) = item.Valor
 End Sub
 
 Private Sub gridPO_SelectionChange()
-    Set pod = pos(Me.gridPO.RowIndex(Me.gridPO.row))
+    Set pod = pos(Me.gridPO.rowIndex(Me.gridPO.row))
 
 End Sub
 
-Private Sub gridPO_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set pod = pos.item(RowIndex)
+Private Sub gridPO_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set pod = pos.item(rowIndex)
 
     Values(1) = pod.POid
     Values(2) = DAOProveedor.FindById(pod.ProveedorId).RazonSocial
-    Values(3) = pod.Total
+    Values(3) = pod.total
     Values(4) = pod.Valor
     If Not BuscarEnColeccion(compra, CStr(pod.Id)) Then
         Values(5) = enums.EstadosPeticionOfertaDetalle.item(CStr(pod.estado))
@@ -270,7 +270,7 @@ End Sub
 
 Private Sub gridReq_SelectionChange()
     On Error Resume Next
-    Set vDetalle = req.Materiales.item(Me.gridReq.RowIndex(Me.gridReq.row))
+    Set vDetalle = req.Materiales.item(Me.gridReq.rowIndex(Me.gridReq.row))
 
 
 
@@ -288,9 +288,9 @@ Private Sub gridReq_SelectionChange()
     '    GridEXHelper.AutoSizeColumns Me.gridPO, True
 End Sub
 
-Private Sub gridReq_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridReq_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If req.Materiales.count > 0 Then
-        Set vDetalle = req.Materiales.item(RowIndex)
+        Set vDetalle = req.Materiales.item(rowIndex)
         With vDetalle
             Values(1) = .Cantidad
             Values(2) = .observaciones

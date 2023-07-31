@@ -884,16 +884,16 @@ Private Sub gridProcesos_DblClick()
         finalizandoProceso = False
         ShowMessage "Tiempo agotado"
     Else
-        If Me.gridProcesos.RowIndex(Me.gridProcesos.row) > 0 And procesos.count > 0 Then
-            Set proceso = procesos.item(Me.gridProcesos.RowIndex(Me.gridProcesos.row))
+        If Me.gridProcesos.rowIndex(Me.gridProcesos.row) > 0 And procesos.count > 0 Then
+            Set proceso = procesos.item(Me.gridProcesos.rowIndex(Me.gridProcesos.row))
             IniciarProceso
         End If
     End If
 End Sub
 
-Private Sub gridProcesos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex >= 1 And RowIndex <= procesos.count Then
-        Set proceso = procesos.item(RowIndex)
+Private Sub gridProcesos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex >= 1 And rowIndex <= procesos.count Then
+        Set proceso = procesos.item(rowIndex)
         Values.value(1) = proceso.Tarea.Id & " - " & proceso.Tarea.Tarea
         Values.value(2) = proceso.Tarea.Sector.Sector
     End If

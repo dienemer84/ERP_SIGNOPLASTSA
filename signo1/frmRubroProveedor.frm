@@ -187,17 +187,17 @@ Private Sub Form_Load()
     Me.gridProveedores.ItemCount = 0
 End Sub
 
-Private Sub gridProveedores_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And proveedoresRubro.count > 0 Then
+Private Sub gridProveedores_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And proveedoresRubro.count > 0 Then
         If conectar.execute("DELETE FROM asignacion WHERE id_proveedor = " & Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex) & " AND id_rubro = " & Me.cboRubro.ItemData(Me.cboRubro.ListIndex)) Then
-            proveedoresRubro.remove RowIndex
+            proveedoresRubro.remove rowIndex
         End If
     End If
 End Sub
 
-Private Sub gridProveedores_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And proveedoresRubro.count > 0 Then
-        Set P = proveedoresRubro.item(RowIndex)
+Private Sub gridProveedores_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And proveedoresRubro.count > 0 Then
+        Set P = proveedoresRubro.item(rowIndex)
         Values(1) = P.RazonSocial
     End If
 End Sub

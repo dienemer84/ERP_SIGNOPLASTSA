@@ -1,4 +1,1 @@
-Line 28: Class XtremeSuiteControls.GroupBox of control GroupBox1 was not a loaded control class.
-Line 78: Class XtremeSuiteControls.ComboBox of control cboRubro was not a loaded control class.
-Line 93: Class XtremeSuiteControls.ComboBox of control cboProveedores was not a loaded control class.
-Line 108: Class XtremeSuiteControls.PushButton of control cmdAsignar was not a loaded control class.
+Line 40: Cannot load control gridProveedores.

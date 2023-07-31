@@ -873,10 +873,10 @@ Public Sub CalcularTotalTiempos()
     Me.lblTotalHorasPorLegajo = tot & " horas"
 End Sub
 
-Private Sub grilla_por_legajo_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_por_legajo_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     If detalles_leg.count > 0 Then
-        Set deta = detalles_leg(RowIndex)
+        Set deta = detalles_leg(rowIndex)
         With Values
             .value(1) = deta.PlaneamientoTiempoProceso.Tarea.Id & " - " & deta.PlaneamientoTiempoProceso.Tarea.Tarea
             .value(2) = deta.PlaneamientoTiempoProceso.idpedido & "/" & deta.PlaneamientoTiempoProceso.item
@@ -914,9 +914,9 @@ Private Sub ArmarColumnasPorOt()
 End Sub
 
 
-Private Sub grilla_por_periodo_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_por_periodo_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set deta = detalles_per.item(RowIndex)
+    Set deta = detalles_per.item(rowIndex)
     Values(1) = deta.Empleado.legajo & " - " & deta.Empleado.NombreCompleto
     Values(2) = funciones.FormatearDecimales(deta.PlaneamientoTiempoProceso.TiempoTotalReal) & " hs"
 End Sub

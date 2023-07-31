@@ -152,22 +152,22 @@ Private Sub Form_Load()
     Me.gridUsuarios.row = -1
 End Sub
 
-Private Sub gridEventos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And tipoEventos.count > 0 Then
-        Values(1) = usuario.EventosSuscriptos.Exists(CStr(tipoEventos.item(RowIndex)(1)))
-        Values(2) = tipoEventos.item(RowIndex)(2)
+Private Sub gridEventos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And tipoEventos.count > 0 Then
+        Values(1) = usuario.EventosSuscriptos.Exists(CStr(tipoEventos.item(rowIndex)(1)))
+        Values(2) = tipoEventos.item(rowIndex)(2)
     End If
 End Sub
 
-Private Sub gridEventos_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 Then
+Private Sub gridEventos_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 Then
         If Values(1) Then
-            If Not usuario.EventosSuscriptos.Exists(CStr(tipoEventos.item(RowIndex)(1))) Then
-                usuario.EventosSuscriptos.Add CStr(tipoEventos.item(RowIndex)(1)), tipoEventos.item(RowIndex)(1)
+            If Not usuario.EventosSuscriptos.Exists(CStr(tipoEventos.item(rowIndex)(1))) Then
+                usuario.EventosSuscriptos.Add CStr(tipoEventos.item(rowIndex)(1)), tipoEventos.item(rowIndex)(1)
             End If
         Else
-            If usuario.EventosSuscriptos.Exists(CStr(tipoEventos.item(RowIndex)(1))) Then
-                usuario.EventosSuscriptos.remove CStr(tipoEventos.item(RowIndex)(1))
+            If usuario.EventosSuscriptos.Exists(CStr(tipoEventos.item(rowIndex)(1))) Then
+                usuario.EventosSuscriptos.remove CStr(tipoEventos.item(rowIndex)(1))
             End If
         End If
     End If
@@ -175,7 +175,7 @@ End Sub
 
 Private Sub gridUsuarios_SelectionChange()
     If Me.gridUsuarios.row > 0 And IsSomething(tipoEventos) Then
-        Set usuario = usuarios.item(Me.gridUsuarios.RowIndex(Me.gridUsuarios.row))
+        Set usuario = usuarios.item(Me.gridUsuarios.rowIndex(Me.gridUsuarios.row))
         Set usuario.EventosSuscriptos = Nothing
         Me.gridEventos.ItemCount = 0
         Me.gridEventos.ItemCount = tipoEventos.count
@@ -183,9 +183,9 @@ Private Sub gridUsuarios_SelectionChange()
     End If
 End Sub
 
-Private Sub gridUsuarios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And usuarios.count > 0 Then
-        Set usuario = usuarios.item(RowIndex)
+Private Sub gridUsuarios_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And usuarios.count > 0 Then
+        Set usuario = usuarios.item(rowIndex)
         Values(1) = usuario.usuario
     End If
 End Sub

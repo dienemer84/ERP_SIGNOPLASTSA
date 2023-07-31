@@ -59,7 +59,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   164495361
+      Format          =   62652417
       CurrentDate     =   40119
    End
    Begin VB.TextBox txtGrupoSanguineo 
@@ -207,7 +207,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   164495361
+      Format          =   62652417
       CurrentDate     =   40119
    End
    Begin VB.Label lblDatoActualizacion 
@@ -783,8 +783,8 @@ End Sub
 Private Sub PushButton1_Click()
 
     On Error GoTo err1
-    frmPrincipal.cd.ShowOpen
-    Me.Image1.Tag = frmPrincipal.cd.filename
+    frmPrincipal.CD.ShowOpen
+    Me.Image1.Tag = frmPrincipal.CD.filename
     Set Me.Image1.Picture = LoadPicture(Me.Image1.Tag)
     Exit Sub
 err1:

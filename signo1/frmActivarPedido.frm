@@ -716,7 +716,7 @@ err4:
 End Sub
 Private Sub Command11_Click()
     On Error GoTo er1
-    frmPrincipal.cd.ShowPrinter
+    frmPrincipal.CD.ShowPrinter
     Dim rec As ReportRecord
     Dim tmpDetalle As DetalleOrdenTrabajo
     Dim l As Long

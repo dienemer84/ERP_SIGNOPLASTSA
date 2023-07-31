@@ -469,7 +469,7 @@ Private Sub btnAplicarRemito_Click()
     Dim detaOT As DetalleOrdenTrabajo
 
     If Me.gridDetalles.SelectedItems.count = 1 Then
-        Set detaOT = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).RowIndex)
+        Set detaOT = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).rowIndex)
 
         If detaOT.CantidadFabricados + detaOT.ReservaStock - detaOT.CantidadEntregada > 0 Then
             'si hay elementos disponibles, procedo con elegir el item del remito que voy a aplicar
@@ -662,7 +662,7 @@ Private Sub btnRemitar_Click()
     ReDim detasId(0) As Long
 
     For Each item In Me.gridDetalles.SelectedItems
-        Set detaOT = m_ot.Detalles.item(item.RowIndex)
+        Set detaOT = m_ot.Detalles.item(item.rowIndex)
         If detasId(0) <> 0 Then
             ReDim Preserve detasId(UBound(detasId, 1) + 1)
         End If
@@ -679,7 +679,7 @@ Private Sub btnRemitar_Click()
     If Me.gridDetalles.SelectedItems.count = 1 Then    'entrega 1
         Dim fEntrega As New frmPlaneamientoRealizarEntrega
 
-        Set detaOT = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).RowIndex)
+        Set detaOT = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).rowIndex)
         Set fEntrega.deta = detaOT
         fEntrega.lblIdPieza = detaOT.Id    ' detaOT.pieza.Id
         fEntrega.lblPieza = detaOT.Pieza.nombre
@@ -711,7 +711,7 @@ Private Sub btnTomarDeStock_Click()
     On Error GoTo err1
     'Bug #3 - probar
     If Me.gridDetalles.SelectedItems.count = 1 Then
-        Set detalle = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).RowIndex)
+        Set detalle = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).rowIndex)
         If detalle Is Nothing Then Exit Sub
     End If
     'bug #3
@@ -819,7 +819,7 @@ End Sub
 Private Sub gridDetalles_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     Dim idx As Long
-    idx = Me.gridDetalles.RowIndex(Me.gridDetalles.row)
+    idx = Me.gridDetalles.rowIndex(Me.gridDetalles.row)
 
     If Button = 2 And idx > 0 Then
 
@@ -837,7 +837,7 @@ End Sub
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
 
-    Set detalle = m_ot.Detalles.item(RowBuffer.RowIndex)
+    Set detalle = m_ot.Detalles.item(RowBuffer.rowIndex)
 
     If detalle.FechaEntrega < Date Then
         RowBuffer.CellStyle(5) = GridEXHelper.GRID_FORMATSTYLE_ROJO
@@ -852,8 +852,8 @@ End Sub
 Private Sub gridDetalles_SelectionChange()
     Me.gridEntregas.ItemCount = 0
 
-    If Me.gridDetalles.RowIndex(Me.gridDetalles.row) > 0 Then
-        Set detalle = m_ot.Detalles.item(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
+    If Me.gridDetalles.rowIndex(Me.gridDetalles.row) > 0 Then
+        Set detalle = m_ot.Detalles.item(Me.gridDetalles.rowIndex(Me.gridDetalles.row))
         Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalle.Id)
 
         If Permisos.AdminFacturaConsultas Then
@@ -870,9 +870,9 @@ Private Sub gridDetalles_SelectionChange()
 
 End Sub
 
-Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And m_ot.Detalles.count > 0 Then
-        Set detalle = m_ot.Detalles.item(RowIndex)
+Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And m_ot.Detalles.count > 0 Then
+        Set detalle = m_ot.Detalles.item(rowIndex)
         Values(1) = detalle.item
         Values(2) = detalle.Nota
         Values(3) = detalle.Pieza.nombre
@@ -897,7 +897,7 @@ End Sub
 Private Sub gridEntregas_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
 
-    Set detalleRemito = Entregas.item(RowBuffer.RowIndex)
+    Set detalleRemito = Entregas.item(RowBuffer.rowIndex)
 
     If detalleRemito.RemitoAlQuePertenece.estado = RemitoPendiente Then
         RowBuffer.RowStyle = "Pendiente"
@@ -920,10 +920,10 @@ Private Sub gridEntregas_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 End Sub
 
-Private Sub gridEntregas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridEntregas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    If RowIndex > 0 And Entregas.count > 0 Then
-        Set detalleRemito = Entregas.item(RowIndex)
+    If rowIndex > 0 And Entregas.count > 0 Then
+        Set detalleRemito = Entregas.item(rowIndex)
         Values(1) = detalleRemito.RemitoAlQuePertenece.numero
         Values(2) = detalleRemito.Cantidad
         Values(3) = detalleRemito.FEcha
@@ -1032,10 +1032,10 @@ Private Sub ImprimirEntregas()
 End Sub
 
 
-Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridFacturas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    If RowIndex > 0 And facturas.count > 0 Then
-        Set detalleFactura = facturas.item(RowIndex)
+    If rowIndex > 0 And facturas.count > 0 Then
+        Set detalleFactura = facturas.item(rowIndex)
         Values(1) = detalleFactura.Factura.numero
         Values(2) = detalleFactura.Cantidad
         Values(3) = detalleFactura.Factura.FechaEmision
@@ -1061,7 +1061,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
         Set detalle = Nothing
         If Me.gridDetalles.row > 0 Then
-            Set detalle = m_ot.Detalles.item(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
+            Set detalle = m_ot.Detalles.item(Me.gridDetalles.rowIndex(Me.gridDetalles.row))
         End If
 
 

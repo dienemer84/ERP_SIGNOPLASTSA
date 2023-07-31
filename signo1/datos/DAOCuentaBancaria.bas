@@ -105,7 +105,6 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Opti
     Dim Id As Long
 
     Id = GetValue(rs, indice, tabla, "id")
-
     If Id > 0 Then
         Set c = New CuentaBancaria
         c.Id = Id
