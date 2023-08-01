@@ -747,20 +747,6 @@ Public Sub mostrarTablero()
     End If
 End Sub
 
-'
-'Private Sub stbar1_PanelClick(ByVal panel As MSComctlLib.panel)
-'    If panel.Index = 5 Then
-'        If MsgBox("Hay una nueva actualización, ?desea aplicarla ahora?", vbYesNo, "Confirmación") = vbYes Then
-'
-'        End If
-'
-'    ElseIf panel.Index = 2 Then
-'        If MsgBox("?Desea cambiar el password ahora?", vbYesNo, "Confirmación") = vbYes Then
-'            frmCambiarPassword.Show
-'        End If
-'
-'    End If
-'End Sub
 
 Private Sub MDIForm_Unload(Cancel As Integer)
     SalirForzado

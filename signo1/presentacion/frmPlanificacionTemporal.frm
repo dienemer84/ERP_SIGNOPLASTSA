@@ -15,6 +15,23 @@ Begin VB.Form frmPlanificacionTemporal
    ScaleHeight     =   8190
    ScaleWidth      =   17040
    WindowState     =   2  'Maximized
+   Begin XtremeReportControl.ReportControl ReportControl 
+      Height          =   6435
+      Left            =   15
+      TabIndex        =   0
+      Top             =   1470
+      Width           =   5700
+      _Version        =   786432
+      _ExtentX        =   10054
+      _ExtentY        =   11351
+      _StockProps     =   64
+      BorderStyle     =   3
+      PreviewMode     =   -1  'True
+      AllowColumnRemove=   0   'False
+      AllowColumnReorder=   0   'False
+      AllowColumnSort =   0   'False
+      ShowHeaderRows  =   -1  'True
+   End
    Begin phGantXControl.phGantX phGantX1 
       Height          =   7935
       Left            =   5805
@@ -175,23 +192,6 @@ Begin VB.Form frmPlanificacionTemporal
       FavourMoveOverResizeOnSmallTimeItems=   -1  'True
       InplaceDateTimeClearStatesBetweenEdits=   0   'False
       SupressOnUserDrawExceptions=   0   'False
-   End
-   Begin XtremeReportControl.ReportControl ReportControl 
-      Height          =   6435
-      Left            =   15
-      TabIndex        =   0
-      Top             =   1470
-      Width           =   5700
-      _Version        =   786432
-      _ExtentX        =   10054
-      _ExtentY        =   11351
-      _StockProps     =   64
-      BorderStyle     =   3
-      PreviewMode     =   -1  'True
-      AllowColumnRemove=   0   'False
-      AllowColumnReorder=   0   'False
-      AllowColumnSort =   0   'False
-      ShowHeaderRows  =   -1  'True
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1365

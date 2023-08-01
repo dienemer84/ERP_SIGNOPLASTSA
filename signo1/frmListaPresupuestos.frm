@@ -938,18 +938,18 @@ End Sub
 Private Sub llenar_Grilla()
     Set tmpIncidencias = DAOIncidencias.GetCantidadIncidenciasPorReferencia(OI_Presupuestos)
     Set tmpArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Presupuestos)
-    Dim nro As Long
+    Dim NRO As Long
     Dim cliente As Long
     grilla.ItemCount = 0
     llenarEstados
     If Me.cboClientes.ListIndex >= 0 Then cliente = Me.cboClientes.ItemData(Me.cboClientes.ListIndex) Else cliente = -1
     filtro = Trim(Me.txtFiltro)
     If Trim(txtCodigo) = vbNullString Or Not IsNumeric(txtCodigo) Then
-        nro = 0
+        NRO = 0
     Else
-        nro = CLng(Me.txtCodigo)
+        NRO = CLng(Me.txtCodigo)
     End If
-    Set presupuestos = DAOPresupuestos.GetAll(filtro, estados, cliente, nro)
+    Set presupuestos = DAOPresupuestos.GetAll(filtro, estados, cliente, NRO)
     grilla.ItemCount = presupuestos.count
     Me.caption = "Presupuestos [ Cantidad: " & presupuestos.count & " ]"
     GridEXHelper.AutoSizeColumns Me.grilla, True

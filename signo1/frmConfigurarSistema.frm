@@ -145,16 +145,6 @@ Private Sub Command1_Click()
                 End If
             End If
 
-            'verifico el smtp de correo externo, si hubo cambios y ademas no esta vacio
-            'grabo
-            'If Trim(Me.Text2) > 0 And smtpE2 <> smtpE Then
-            ' GuardarIni App.Path & "\config.ini", "Configurar", "ServidorSmtpExterno", smtpE2
-            ' funciones.serverSMTPe = smtpE2
-            'End If
-
-
-
-
             leerDatos
             If SALIR Then End
         End If
@@ -190,8 +180,8 @@ Private Sub Command3_Click()
     Dim nombre As String
     Dim notas As String
     Dim version_information As VersionInformationType
-    frmPrincipal.CD.ShowOpen
-    vruta = frmPrincipal.CD.filename
+    frmPrincipal.cd.ShowOpen
+    vruta = frmPrincipal.cd.filename
     nombre = funciones.GetFileName(vruta)
 
     version_information = VersionInformation1(vruta)
@@ -210,12 +200,6 @@ Private Sub Command3_Click()
     If Not clasea.CompararConVersionActual(ve_max, ve_min, ve_Rev) Then
         If MsgBox("¿Seguro de subir la actualizacion?", vbYesNo, "Confirmación") = vbYes Then
             If clasea.cargarActualizacion(nombre, vruta, ve_max, ve_min, ve_Rev, notas) Then
-
-
-
-
-
-
             Else
                 MsgBox "No se cargo la actualización!", vbCritical, "Error"
             End If
@@ -225,7 +209,7 @@ Private Sub Command3_Click()
     End If
     Exit Sub
 err1:
-    'MsgBox "Se produjo algun error al cargar la actualizacion!", vbCritical, "Error"
+
 End Sub
 
 Private Sub Form_Load()

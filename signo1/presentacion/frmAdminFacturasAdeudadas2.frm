@@ -379,7 +379,7 @@ End Sub
 
 Private Sub Copiar_Click()
     On Error GoTo err1
-    frmPrincipal.CD.ShowPrinter
+    frmPrincipal.cd.ShowPrinter
 
     Printer.Orientation = 2
     Me.grafico.EditCopy

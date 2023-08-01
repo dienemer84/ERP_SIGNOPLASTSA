@@ -715,11 +715,6 @@ Public Property Let idProveedor(nId As Long)
     Id = nId
 End Property
 
-'Private Sub Command1_Click()
-'    If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
-'        Unload Me
-'    End If
-'End Sub
 
 Private Sub btnCrearNew_Click(Index As Integer)
     If Trim(Text1(9)) = Empty Then Text1(9) = 0

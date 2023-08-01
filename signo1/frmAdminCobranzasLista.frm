@@ -537,7 +537,7 @@ End Sub
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         SeleccionarRecibo
-        Me.nro.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
+        Me.NRO.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
 
         If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True

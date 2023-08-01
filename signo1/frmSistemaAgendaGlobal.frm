@@ -28,10 +28,10 @@ Begin VB.Form frmSistemaAgendaGlobal
    End
    Begin VB.TextBox txtFiltro 
       Height          =   285
-      Left            =   960
+      Left            =   1200
       TabIndex        =   2
       Top             =   4320
-      Width           =   10095
+      Width           =   9735
    End
    Begin VB.CommandButton Command2 
       Cancel          =   -1  'True
@@ -101,7 +101,7 @@ Begin VB.Form frmSistemaAgendaGlobal
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   0
+      Left            =   120
       TabIndex        =   4
       Top             =   4320
       Width           =   975

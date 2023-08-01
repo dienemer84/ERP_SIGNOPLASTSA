@@ -57,11 +57,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim rubros As Collection
 Dim tmpRubro As clsRubros
-'Private Sub Command2_Click()
-'    If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
-'        Unload Me
-'    End If
-'End Sub
+
 
 Private Sub Form_Activate()
     Me.GridEX1.Refresh
@@ -73,8 +69,6 @@ Private Sub Form_Load()
     Me.GridEX1.ItemCount = 0
     Set rubros = DAORubros.FindAll
     Me.GridEX1.ItemCount = rubros.count
-
-    ''Me.caption = caption & " (" & Name & ")"
 
 
 End Sub
@@ -102,14 +96,14 @@ Private Sub GridEX1_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant,
         MsgBox "Alta exitosa!", vbInformation, "Información"
     End If
 End Sub
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmpRubro = rubros.item(RowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmpRubro = rubros.item(rowIndex)
     Values(1) = tmpRubro.iniciales
     Values(2) = tmpRubro.rubro
 End Sub
 
-Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmpRubro = rubros.item(RowIndex)
+Private Sub GridEX1_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmpRubro = rubros.item(rowIndex)
     tmpRubro.iniciales = Values(1)
     tmpRubro.rubro = Values(2)
     If DAORubros.Save(tmpRubro) Then

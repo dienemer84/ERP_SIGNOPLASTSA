@@ -39,13 +39,13 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Appearance      =   4
          Begin XtremeSuiteControls.ProgressBar progreso 
             Height          =   255
-            Left            =   0
+            Left            =   120
             TabIndex        =   42
-            Top             =   2160
+            Top             =   2125
             Visible         =   0   'False
-            Width           =   7335
+            Width           =   6975
             _Version        =   786432
-            _ExtentX        =   12938
+            _ExtentX        =   12303
             _ExtentY        =   450
             _StockProps     =   93
             Appearance      =   6
@@ -159,7 +159,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             BackColor       =   16744576
             UseVisualStyle  =   -1  'True
          End
-         Begin XtremeSuiteControls.PushButton cmdImprimir 
+         Begin XtremeSuiteControls.PushButton btnImprimir 
             Height          =   390
             Left            =   3000
             TabIndex        =   39
@@ -173,7 +173,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             BackColor       =   16744576
             UseVisualStyle  =   -1  'True
          End
-         Begin XtremeSuiteControls.PushButton cmdExportar 
+         Begin XtremeSuiteControls.PushButton btnExportar 
             Height          =   390
             Left            =   1560
             TabIndex        =   40
@@ -857,7 +857,7 @@ Private Sub checkVerIds_Click()
 
 End Sub
 
-Private Sub cmdExportar_Click()
+Private Sub btnExportar_Click()
 
     Me.progreso.Visible = True
 
@@ -873,7 +873,7 @@ err1:
     MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
 End Sub
 
-Private Sub cmdImprimir_Click()
+Private Sub btnImprimir_Click()
     Dim elegidos As Boolean
     Dim q As String
 

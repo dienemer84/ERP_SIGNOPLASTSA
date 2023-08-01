@@ -982,7 +982,7 @@ Private Function mesAnio(mesA, anio) As String
     mes(11) = "NOV"
     mes(12) = "DIC"
 
-    mesAnio = mes(mesA) & " " & anio
+'    mesAnio = mes(mesA) & " " & anio
 End Function
 
 Private Sub verEventos(mes, anio, Grupo)

@@ -369,7 +369,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
 
         fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
         
-'        Set fc.UsuarioCarga = DAOUsuarios.Map(rs, indice, "usuarios")
+        Set fc.UsuarioCarga = DAOUsuarios.Map(rs, indice, "usuarios")
 
         If LenB(tablaMoneda) > 0 Then Set fc.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
 
@@ -823,6 +823,7 @@ Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, O
         & " LEFT JOIN AdminComprasFacturasProveedoresPercepciones ON AdminComprasFacturasProveedoresPercepciones.id_factura_proveedor=AdminComprasFacturasProveedores.id  " _
         & " LEFT JOIN AdminConfigPercepciones ON AdminComprasFacturasProveedoresPercepciones.id_percepcion=AdminConfigPercepciones.id " _
         & " LEFT JOIN AdminConfigIvaAlicuotas AS a1 ON AdminComprasFacturasProveedoresIva.id_iva=a1.id " _
+        & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id " _
         & " LEFT JOIN liquidaciones_caja_facturas ON (AdminComprasFacturasProveedores.id = liquidaciones_caja_facturas.id_factura_proveedor) " _
         & " WHERE 1=1 "
     If LenB(filtro) > 0 Then

@@ -442,9 +442,9 @@ Private Sub GuardarArchivo()
         Else
             Dim ruta As String
 
-            frmPrincipal.CD.filename = archivoActual.nombre
-            frmPrincipal.CD.ShowSave
-            ruta = frmPrincipal.CD.filename
+            frmPrincipal.cd.filename = archivoActual.nombre
+            frmPrincipal.cd.ShowSave
+            ruta = frmPrincipal.cd.filename
 
             If LenB(ruta) > 0 Then
                 ruta = clasea.exportarArchivo(archivoActual.Id, ruta, False)

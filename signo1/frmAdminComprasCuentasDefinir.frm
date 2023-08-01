@@ -275,9 +275,9 @@ Private Sub txtCodigo_Change()
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(CLng(Me.txtCodigo), Me.cboProveedores)
     marcar CLng(Me.txtCodigo)
 End Sub
-Public Sub marcar(nro As Long)
+Public Sub marcar(NRO As Long)
     If Not loading Then
-        vcodigo = nro
+        vcodigo = NRO
         Set vProveedor = DAOProveedor.FindById(vcodigo)
         LlenarPlan2
     End If

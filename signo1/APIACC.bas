@@ -6,12 +6,6 @@ Private Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePr
 
 Public Sub ChangeRegionalSettings()
 
-'http://www.vbforums.com/showthread.php?t=379056
-'http://msdn.microsoft.com/en-us/library/dd464799%28v=vs.85%29.aspx
-'Private Const LOCALE_SDECIMAL = &HE '14
-'Private Const LOCALE_STHOUSAND = &HF '15
-'Private Const LOCALE_SMONDECIMALSEP = &H16 '22
-'Private Const LOCALE_SMONTHOUSANDSEP = &H17 '23
 
 
 'setea las configuraciones reginales para que el sistema ande ok

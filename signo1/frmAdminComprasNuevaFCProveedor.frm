@@ -466,7 +466,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16777217
+      Format          =   62980097
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 

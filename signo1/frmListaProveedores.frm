@@ -311,17 +311,6 @@ Private Sub editar_Click()
     End If
 End Sub
 
-'Private Sub estado_Click()
-'    Set rectemp = proveedores(grilla.row)
-'    If MsgBox("¿Seguro que desea cambiar el estado del proveedor seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
-'        If DAOProveedor.CambiarEstado(rectemp) Then
-'            MsgBox "Cambio exitoso!", vbInformation, "Información"
-'        Else
-'            MsgBox "Se produjo algún error. No se realizó el cambio!", vbCritical, "Error"
-'        End If
-'    End If
-'
-'End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me

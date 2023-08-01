@@ -267,14 +267,14 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim Tipo As clsTipoFactura
+
 Private Factura As Factura
-Private dataLoading As Boolean
-Private detalle As FacturaDetalle
-Private suscId As String
 
 
-Private detaFactRemito As FacturaDetalle
+
+
+
+
 
 Public Property Let idFactura(value As Long)
     Set Factura = DAOFactura.FindById(value, True, True)
