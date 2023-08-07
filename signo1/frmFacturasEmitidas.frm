@@ -30,7 +30,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton PushButton2 
          Height          =   285
          Left            =   9000
-         TabIndex        =   48
+         TabIndex        =   47
          Top             =   1575
          Width           =   375
          _Version        =   786432
@@ -43,7 +43,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboOrdenImporte 
          Height          =   315
          Left            =   6600
-         TabIndex        =   46
+         TabIndex        =   45
          Top             =   1560
          Width           =   2355
          _Version        =   786432
@@ -65,7 +65,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.CheckBox chkboxVerIds 
          Height          =   255
          Left            =   4440
-         TabIndex        =   43
+         TabIndex        =   42
          Top             =   1920
          Width           =   1095
          _Version        =   786432
@@ -78,7 +78,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ProgressBar progreso 
          Height          =   420
          Left            =   14760
-         TabIndex        =   41
+         TabIndex        =   40
          Top             =   1500
          Visible         =   0   'False
          Width           =   4215
@@ -92,7 +92,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.CheckBox chkCredito 
          Height          =   255
          Left            =   1920
-         TabIndex        =   30
+         TabIndex        =   29
          Top             =   1920
          Width           =   2055
          _Version        =   786432
@@ -101,15 +101,6 @@ Begin VB.Form frmAdminFacturasEmitidas
          _StockProps     =   79
          Caption         =   "DE CRÉDITO (MI PYME)"
          UseVisualStyle  =   -1  'True
-      End
-      Begin VB.CommandButton Command1 
-         Caption         =   "Command1"
-         Height          =   315
-         Left            =   17400
-         TabIndex        =   23
-         Top             =   480
-         Visible         =   0   'False
-         Width           =   1005
       End
       Begin VB.TextBox txtReferencia 
          Height          =   300
@@ -304,7 +295,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboPuntosVenta 
          Height          =   360
          Left            =   3585
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   300
          Width           =   1530
          _Version        =   786432
@@ -329,7 +320,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton PushButton3 
          Height          =   285
          Left            =   5190
-         TabIndex        =   25
+         TabIndex        =   24
          Top             =   338
          Width           =   375
          _Version        =   786432
@@ -342,7 +333,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboEstados 
          Height          =   360
          Left            =   6600
-         TabIndex        =   27
+         TabIndex        =   26
          Top             =   315
          Width           =   2355
          _Version        =   786432
@@ -367,7 +358,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton PushButton4 
          Height          =   285
          Left            =   9000
-         TabIndex        =   29
+         TabIndex        =   28
          Top             =   360
          Width           =   375
          _Version        =   786432
@@ -380,7 +371,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboEstadosSaldada 
          Height          =   360
          Left            =   6600
-         TabIndex        =   35
+         TabIndex        =   34
          Top             =   742
          Width           =   2355
          _Version        =   786432
@@ -405,7 +396,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton PushButton5 
          Height          =   285
          Left            =   9000
-         TabIndex        =   36
+         TabIndex        =   35
          Top             =   780
          Width           =   375
          _Version        =   786432
@@ -418,7 +409,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboEstadoAfip 
          Height          =   360
          Left            =   6600
-         TabIndex        =   38
+         TabIndex        =   37
          Top             =   1155
          Width           =   2355
          _Version        =   786432
@@ -443,7 +434,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton cmdLimpiarCboEstadoAfip 
          Height          =   285
          Left            =   9000
-         TabIndex        =   39
+         TabIndex        =   38
          Top             =   1193
          Width           =   375
          _Version        =   786432
@@ -456,7 +447,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.CheckBox chkVerObservaciones 
          Height          =   225
          Left            =   90
-         TabIndex        =   44
+         TabIndex        =   43
          Top             =   1920
          Width           =   1695
          _Version        =   786432
@@ -470,7 +461,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton btnExportarAvanzado 
          Height          =   495
          Left            =   19200
-         TabIndex        =   49
+         TabIndex        =   48
          Top             =   1440
          Visible         =   0   'False
          Width           =   1815
@@ -484,7 +475,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.Label Label11 
          Height          =   375
          Left            =   5340
-         TabIndex        =   47
+         TabIndex        =   46
          Top             =   1560
          Width           =   1215
          _Version        =   786432
@@ -496,12 +487,21 @@ Begin VB.Form frmAdminFacturasEmitidas
          RightToLeft     =   -1  'True
       End
       Begin VB.Label lblTotalDolares 
-         Caption         =   "Label11"
+         Caption         =   "Total U$S: 00,00 "
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   14760
-         TabIndex        =   45
-         Top             =   1200
-         Width           =   2535
+         Left            =   18000
+         TabIndex        =   44
+         Top             =   960
+         Width           =   2655
       End
       Begin VB.Label lblExportando 
          Alignment       =   1  'Right Justify
@@ -509,7 +509,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Exportando..."
          Height          =   255
          Left            =   17160
-         TabIndex        =   42
+         TabIndex        =   41
          Top             =   1200
          Visible         =   0   'False
          Width           =   1815
@@ -517,7 +517,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.Label Label14 
          Height          =   285
          Left            =   5520
-         TabIndex        =   40
+         TabIndex        =   39
          Top             =   1200
          Width           =   1035
          _Version        =   786432
@@ -530,7 +530,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.Label Label12 
          Height          =   285
          Left            =   5880
-         TabIndex        =   37
+         TabIndex        =   36
          Top             =   780
          Width           =   675
          _Version        =   786432
@@ -542,44 +542,53 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin VB.Label lblTotalNeto 
          AutoSize        =   -1  'True
-         Caption         =   "Total Filtrado $:"
-         Height          =   195
-         Left            =   14760
-         TabIndex        =   34
-         Top             =   240
-         Width           =   1095
-      End
-      Begin VB.Label lblTotalIVA 
-         AutoSize        =   -1  'True
-         Caption         =   "Total Filtrado $:"
+         Caption         =   "Total NG: $ 00,00"
          Height          =   195
          Left            =   14760
          TabIndex        =   33
+         Top             =   240
+         Width           =   1275
+      End
+      Begin VB.Label lblTotalIVA 
+         AutoSize        =   -1  'True
+         Caption         =   "Total IVA: $ 0,00"
+         Height          =   195
+         Left            =   14760
+         TabIndex        =   32
          Top             =   480
-         Width           =   1095
+         Width           =   1200
       End
       Begin VB.Label lblTotalPercepciones 
          AutoSize        =   -1  'True
-         Caption         =   "Total Filtrado $:"
-         Height          =   255
+         Caption         =   "Tota Percepciones: $ 00,00"
+         Height          =   195
          Left            =   14760
-         TabIndex        =   32
+         TabIndex        =   31
          Top             =   720
-         Width           =   1095
+         Width           =   1980
       End
       Begin VB.Label lblTotal 
          AutoSize        =   -1  'True
-         Caption         =   "Total Filtrado $:"
-         Height          =   255
+         Caption         =   "Total: $ 00,00"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   195
          Left            =   14760
-         TabIndex        =   31
+         TabIndex        =   30
          Top             =   960
-         Width           =   1335
+         Width           =   1215
       End
       Begin XtremeSuiteControls.Label Label10 
          Height          =   285
          Left            =   6000
-         TabIndex        =   28
+         TabIndex        =   27
          Top             =   360
          Width           =   555
          _Version        =   786432
@@ -592,7 +601,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.Label Label9 
          Height          =   285
          Left            =   3240
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   330
          Width           =   585
          _Version        =   786432
@@ -886,11 +895,11 @@ Private Sub aplicarNCaFC_Click()
         F.idCliente = Factura.cliente.Id
         F.TiposDocs.Add tipoDocumentoContable.Factura
 
-        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
+        If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
             F.TiposDocs.Add tipoDocumentoContable.notaDebito
         End If
         If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
-            F.TiposDocs.Add tipoDocumentoContable.notaCredito
+            F.TiposDocs.Add tipoDocumentoContable.NotaCredito
         End If
 
         F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
@@ -1061,7 +1070,7 @@ Private Sub btnExportarAvanzado_Click()
 
         If fac.moneda.Cambio = 1 Then
 
-            If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+            If fac.TipoDocumento = tipoDocumentoContable.NotaCredito Then
                 ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
                 xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA) * -1
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
@@ -1099,7 +1108,7 @@ Private Sub btnExportarAvanzado_Click()
             End If
 
         Else
-            If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+            If fac.TipoDocumento = tipoDocumentoContable.NotaCredito Then
                 ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
                 xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
@@ -1346,7 +1355,7 @@ Private Sub btnExportar_Click()
 
         If fac.moneda.Cambio = 1 Then
 
-            If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+            If fac.TipoDocumento = tipoDocumentoContable.NotaCredito Then
                 ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
                 xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA) * -1
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
@@ -1384,7 +1393,7 @@ Private Sub btnExportar_Click()
             End If
 
         Else
-            If fac.TipoDocumento = tipoDocumentoContable.notaCredito Then
+            If fac.TipoDocumento = tipoDocumentoContable.NotaCredito Then
                 ' VAN TODOS NEGATIVOS SI ES NOTA DE CREDITO
                 xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
@@ -1758,7 +1767,7 @@ Private Sub llenarGrilla()
         Dim Percepcion As Double
 
 
-        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If F.TipoDocumento = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
 
         total = total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.total * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
 
@@ -1773,6 +1782,7 @@ Private Sub llenarGrilla()
         If F.moneda.Id = 1 Then
             totalDolares = totalDolares + F.TotalEstatico.total * c
         End If
+        
     Next
 
 
@@ -1781,15 +1791,16 @@ Private Sub llenarGrilla()
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(TotalIVATodo))
     Me.lblTotalNeto = "Total NG: " & FormatCurrency(funciones.FormatearDecimales(totalNG))
 
+
     Me.lblTotalDolares = "Total U$S: " & Replace(FormatCurrency(totalDolares), "$", "")
-    'Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalEstatico.Total)), "$", "")
+    
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = facturas.count
 
     ' 1451- AGREGO FUNCION DE MOSTRAR ID U OCULTAR
     Me.GridEX1.Columns(24).Visible = False
 
-    Me.caption = "Emitidos [Cantidad: " & facturas.count & "]"
+    Me.caption = "Cbtes. Venta [Cant: " & facturas.count & "]"
 
     ' Desabilito la apertura directa de la Factura al encontrar exacto
     'If facturas.count = 1 Then
@@ -1850,7 +1861,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
             'actualizo leyenda para aplicación
 
             'Aplicar a Factura o ND...
-            If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
+            If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
                 Me.aplicarNCaFC.caption = "Aplicar a Factura o ND..."
             End If
 
@@ -1972,8 +1983,8 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 
                         '                             Me.aplicar.Visible = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.SaldadoParcial)
                         '                             Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
-                        Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                        Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+                        Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+                        Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                         'Me.mnuAplicarANC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                         'Me.mnuAplicarANC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
 
@@ -1990,7 +2001,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                     '                        Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
                     '                        Me.aplicar.Visible = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
 
-                    Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+                    Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                     'Me.mnuAplicarANC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                     'Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                     'Me.mnuAplicarANC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
@@ -2434,7 +2445,7 @@ Private Sub mnuCrearCopiaFactura_Click()
     taskDialog.DefaultRadioButton = -1
     taskDialog.AddRadioButton "Factura", tipoDocumentoContable.Factura
     taskDialog.AddRadioButton "Nota de Débito", tipoDocumentoContable.notaDebito
-    taskDialog.AddRadioButton "Nota de Crédito", tipoDocumentoContable.notaCredito
+    taskDialog.AddRadioButton "Nota de Crédito", tipoDocumentoContable.NotaCredito
 
 
     taskDialog.MainIcon = xtpTaskIconInformation

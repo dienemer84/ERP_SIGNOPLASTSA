@@ -150,14 +150,14 @@ End Function
 
 
 
-Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
+Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional OrderBy As String = "1") As Collection
     Dim q As String
     q = "SELECT * " _
       & " From ordenes_pago" _
       & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = ordenes_pago.id_moneda)"
 
     q = q & " WHERE " & filter
-    q = q & " ORDER BY " & orderBy
+    q = q & " ORDER BY " & OrderBy
     Dim col As New Collection
     Dim op As OrdenPago
     Dim idx As Dictionary
@@ -179,7 +179,7 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orde
     Set FindAllSoloOP = col
 
 End Function
-Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
+Public Function FindAll(Optional filter As String = "1 = 1", Optional OrderBy As String = "1") As Collection
     Dim q As String
     q = "SELECT *, (operaciones.pertenencia + 0) as pertenencia2" _
       & " From ordenes_pago" _
@@ -213,7 +213,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = ordenes_pago.id " _
       & " LEFT JOIN retenciones r ON r.id = opr.id_retencion "
     q = q & " WHERE " & filter
-    q = q & " ORDER BY " & orderBy
+    q = q & " ORDER BY " & OrderBy
 
     Dim col As New Collection
     Dim op As OrdenPago
@@ -1204,6 +1204,7 @@ End Function
 
 
 Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
+'Public Function PrintOP(Orden As OrdenPago) As Boolean
     Dim TAB1 As Integer
     Dim TAB2 As Integer
     Dim maxw As Single
@@ -1422,11 +1423,11 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         
-        Dim ctaBancaria As CuentaBancaria
+        Dim ctabancaria As CuentaBancaria
         
-        Set ctaBancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
+        Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
         
-        Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctaBancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
+        Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
     
     Next op
     

@@ -73,7 +73,7 @@ Begin VB.Form frmAdminElegirCuentaBanco
          _ExtentX        =   2566
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   16777217
+         Format          =   77004801
          CurrentDate     =   39220
       End
       Begin VB.Label Label4 
@@ -159,7 +159,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim clasea As New classAdministracion
 
 
 Private Sub cboBancos_Click()

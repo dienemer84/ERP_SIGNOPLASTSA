@@ -624,6 +624,4 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     End If
 End Sub
 
-Private Sub Mnu_Transferencia_Click(Index As Integer)
 
-End Sub

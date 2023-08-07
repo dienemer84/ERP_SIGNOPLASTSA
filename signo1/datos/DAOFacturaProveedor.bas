@@ -983,9 +983,14 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     'Agregar DNEMER 03/02/2021
     Dim totalpercep As Double
     Dim TotalPendiente As Double
+    Dim pagado As Double
+    Dim saldo As Double
+    Dim TotalFactura As Double
+    Dim TotalPagado As Double
+    Dim totalsaldo As Double
 
-    ProgressBar.min = 0
-    ProgressBar.max = col.count
+    ProgressBar(0).min = 0
+    ProgressBar(0).max = col.count
 
 
     Dim d As Long
@@ -993,17 +998,23 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
 
     For Each fac In col
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-'        total = total + MonedaConverter.Convertir(fac.total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
-        totalneto = totalneto + fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0)
-        totalno = totalno + fac.TotalNetoGravadoDiscriminado(0) * c
-        totIva = totIva + fac.TotalIVA * c
+        
+        TotalFactura = ((fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno + fac.Redondeo) * c
+        total = total + TotalFactura
+              
+        TotalPagado = (fac.TotalAbonadoGlobal) * c
+        pagado = pagado + TotalPagado
+        
+        
+        TotalSaldado = TotalFactura - TotalPagado
+        saldo = saldo + TotalSaldado
 
         'Agrega DNEMER 03/02/2021
         totalpercep = totalpercep + fac.totalPercepciones * c
         'Agrega DNEMER 24/04/2023
         TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
         
-        Dim TotalFactura As Double
+
         TotalFactura = (fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno
         
         Dim saldoComprobante As Double
@@ -1016,7 +1027,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
         d = d + 1
-        ProgressBar.value = d
+        ProgressBar(0).value = d
 
         offset = offset + 1
         xlWorksheet.Cells(offset, 1).value = fac.Id
@@ -1036,7 +1047,15 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         
     Next
     
-    ProgressBar.value = col.count
+'    xlWorksheet.Cells(offset + 3, 2).value = "Total"
+'    xlWorksheet.Cells(offset + 4, 2).value = "Total Pagado"
+'    xlWorksheet.Cells(offset + 5, 2).value = "Total Saldo"
+'
+'    xlWorksheet.Cells(offset + 3, 3).value = total
+'    xlWorksheet.Cells(offset + 4, 3).value = pagado
+'    xlWorksheet.Cells(offset + 5, 3).value = total - pagado
+'
+    ProgressBar(0).value = col.count
     
     xlApplication.ScreenUpdating = False
     Dim wkSt As String
@@ -1063,7 +1082,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
-    ProgressBar.value = 0
+    ProgressBar(0).value = 0
 
     Exit Function
 err1:

@@ -16,28 +16,13 @@ Public Const CAMPO_OBSERVACIONES As String = "observaciones"
 Public Const CAMPO_TERCEROS_PROPIO As String = "teceros_propio"
 Public Const TABLA_CHEQUE As String = "cheq"
 
-Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional orderBy As String) As Collection
+Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional ByRef filter2 As String, Optional OrderBy As String) As Collection
     On Error GoTo err1
 
-    'Dim tickStart As Double
-    'Dim tickEnd As Double
-    'tickStart = GetTickCount
-
     Dim rs As ADODB.Recordset
+    
     Dim q As String
-
-    '    q = "SELECT *" _
-         '        & " FROM Cheques cheq" _
-         '        & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
-         '        & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
-         '        & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
-         '        & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
-         '        & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
-         '        & " LEFT JOIN ordenes_pago_facturas ordenesp ON cheq.orden_pago_origen=ordenesp.id_orden_pago" _
-         '        & " LEFT JOIN AdminComprasFacturasProveedores facturasp ON ordenesp.id_factura_proveedor=facturasp.id" _
-         '        & " LEFT JOIN proveedores prov ON facturasp.id_proveedor=prov.id" _
-         '        & " WHERE 1 = 1 "
-
+    
     q = "SELECT *" _
       & " FROM Cheques cheq" _
       & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
@@ -50,15 +35,17 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
     If LenB(filter) > 0 Then
         q = q & " AND " & filter
     End If
+    
+    If LenB(filter2) > 0 Then
+        q = q & " AND " & filter2
+    End If
 
-    If LenB(orderBy) > 0 Then
-        q = q & " ORDER BY " & orderBy
+    If LenB(OrderBy) > 0 Then
+        q = q & " ORDER BY " & OrderBy
     End If
 
 
     Set rs = conectar.RSFactory(q)
-
-    '    'debug.print (q)
 
     Dim fieldsIndex As Dictionary
     BuildFieldsIndex rs, fieldsIndex
@@ -74,11 +61,6 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
         rs.MoveNext
 
     Wend
-
-    'tickEnd = GetTickCount
-
-    'Debug.Print tickEnd - tickStart, "ms elapsed"
-
 
     Set FindAll = Cheques
     Exit Function
@@ -103,9 +85,9 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
 
 End Function
 
-Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As cheque
+Public Function FindByChequeraAndNro(chequeraId As Long, NRO As String) As cheque
     Dim col As Collection
-    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(nro))
+    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(NRO))
     If col.count = 0 Then
         Set FindByChequeraAndNro = Nothing
     Else
@@ -261,8 +243,8 @@ q = Replace(q, "'id'", cheque.Id)
 
 End Function
 
-Public Function FindAllEnCartera() As Collection
-    Set FindAllEnCartera = FindAll(DAOCheques.CAMPO_EN_CARTERA & " = 1")
+Public Function FindAllEnCartera(Optional ByRef filter2 As String, Optional ByRef OrderBy As String) As Collection
+    Set FindAllEnCartera = FindAll(DAOCheques.CAMPO_EN_CARTERA & " = 1", filter2, OrderBy)
 End Function
 
 Public Function FindAllEnCarteraDeTerceros() As Collection

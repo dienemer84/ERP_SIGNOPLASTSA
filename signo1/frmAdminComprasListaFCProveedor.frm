@@ -6,13 +6,13 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ClientHeight    =   9345
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   19080
+   ClientWidth     =   15360
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   5081.851
    ScaleMode       =   0  'User
-   ScaleWidth      =   24955.33
+   ScaleWidth      =   20089.83
    Begin XtremeSuiteControls.GroupBox GroupBox5 
       Height          =   3360
       Left            =   11160
@@ -52,7 +52,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          End
          Begin VB.Label lblTotal 
             AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
+            Caption         =   "Total Filtrado: $ 00,00"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -66,56 +66,56 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Left            =   120
             TabIndex        =   52
             Top             =   1890
-            Width           =   1365
+            Width           =   1905
          End
          Begin VB.Label lblTotalNeto 
             AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
+            Caption         =   "Total Neto: $ 00,00"
             Height          =   195
             Left            =   120
             TabIndex        =   51
             Top             =   780
-            Width           =   1095
+            Width           =   1380
          End
          Begin VB.Label lblTotalIVA 
             AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
+            Caption         =   "Total IVA $ 00,00"
             Height          =   195
             Left            =   120
             TabIndex        =   50
             Top             =   1050
-            Width           =   1095
+            Width           =   1245
          End
          Begin VB.Label lblTotalNoGravadoFiltrado 
             AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
+            Caption         =   "Total No Gravado: $ 00,00"
             Height          =   195
             Left            =   120
             TabIndex        =   49
             Top             =   510
-            Width           =   1095
+            Width           =   1905
          End
          Begin VB.Label lblNetoGravadoFiltrado 
             AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
+            Caption         =   "Total Neto Gravado: $ 00,00"
             Height          =   195
             Left            =   120
             TabIndex        =   48
             Top             =   240
-            Width           =   1095
+            Width           =   2040
          End
          Begin VB.Label lblTotalPercepciones 
             AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
+            Caption         =   "Total Percepciones: $ 00,00"
             Height          =   195
             Left            =   120
             TabIndex        =   47
             Top             =   1320
-            Width           =   1095
+            Width           =   2010
          End
          Begin VB.Label lblTotalPendiente 
             AutoSize        =   -1  'True
-            Caption         =   "Total Filtrado $:"
+            Caption         =   "Total Saldo: $ 00,00"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -129,7 +129,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Left            =   120
             TabIndex        =   46
             Top             =   1605
-            Width           =   1365
+            Width           =   1755
          End
       End
       Begin XtremeSuiteControls.GroupBox gbBotones 
@@ -1197,7 +1197,7 @@ Public Sub llenarGrilla()
 
     For Each F In facturas
 
-        If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
         total = total + MonedaConverter.Convertir(F.total * c, F.moneda.Id, MonedaConverter.Patron.Id)
         totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
         totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
@@ -1227,7 +1227,7 @@ Public Sub llenarGrilla()
 
     GridEXHelper.AutoSizeColumns Me.grilla, True
 
-    Me.caption = "Cbtes. filtrados [Cantidad: " & facturas.count & "]"
+    Me.caption = "Cbtes. compra [Cant: " & facturas.count & "]"
 
 End Sub
 
@@ -1324,7 +1324,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
 
     Dim i As Integer
 
-    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+    If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
 
     With Factura
 

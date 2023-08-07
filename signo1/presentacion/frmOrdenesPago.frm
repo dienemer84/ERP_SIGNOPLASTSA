@@ -3,7 +3,7 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosOrdenesPagoLista 
    Caption         =   "Ordenes de Pago"
-   ClientHeight    =   7050
+   ClientHeight    =   9105
    ClientLeft      =   8445
    ClientTop       =   3465
    ClientWidth     =   12885
@@ -19,18 +19,49 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
    Icon            =   "frmOrdenesPago.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   7050
+   ScaleHeight     =   9105
    ScaleWidth      =   12885
+   Begin VB.PictureBox pic 
+      Height          =   495
+      Left            =   240
+      ScaleHeight     =   435
+      ScaleWidth      =   555
+      TabIndex        =   31
+      Top             =   8400
+      Width           =   615
+   End
+   Begin VB.Frame Frame1 
+      Height          =   735
+      Index           =   1
+      Left            =   9840
+      TabIndex        =   29
+      Top             =   360
+      Width           =   5055
+      Begin XtremeSuiteControls.ProgressBar progreso 
+         Height          =   375
+         Left            =   120
+         TabIndex        =   30
+         Top             =   240
+         Visible         =   0   'False
+         Width           =   4815
+         _Version        =   786432
+         _ExtentX        =   8493
+         _ExtentY        =   661
+         _StockProps     =   93
+         Appearance      =   6
+      End
+   End
    Begin VB.Frame Frame1 
       Height          =   855
-      Left            =   9600
-      TabIndex        =   21
-      Top             =   240
+      Index           =   0
+      Left            =   9840
+      TabIndex        =   18
+      Top             =   1080
       Width           =   5055
       Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   450
-         Left            =   1680
-         TabIndex        =   22
+         Left            =   1920
+         TabIndex        =   19
          Top             =   240
          Width           =   1335
          _Version        =   786432
@@ -41,10 +72,9 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.PushButton cmdBuscar 
-         Default         =   -1  'True
          Height          =   450
          Left            =   120
-         TabIndex        =   23
+         TabIndex        =   20
          Top             =   240
          Width           =   1350
          _Version        =   786432
@@ -56,8 +86,8 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       End
       Begin XtremeSuiteControls.PushButton cmdImprimir 
          Height          =   450
-         Left            =   3360
-         TabIndex        =   24
+         Left            =   3600
+         TabIndex        =   21
          Top             =   240
          Width           =   1350
          _Version        =   786432
@@ -68,24 +98,11 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          UseVisualStyle  =   -1  'True
       End
    End
-   Begin XtremeSuiteControls.ProgressBar progreso 
-      Height          =   135
-      Left            =   9600
-      TabIndex        =   20
-      Top             =   1200
-      Visible         =   0   'False
-      Width           =   5055
-      _Version        =   786432
-      _ExtentX        =   8916
-      _ExtentY        =   238
-      _StockProps     =   93
-      Appearance      =   4
-   End
    Begin GridEX20.GridEX gridOrdenes 
       Height          =   5505
       Left            =   120
       TabIndex        =   0
-      Top             =   1680
+      Top             =   2160
       Width           =   14775
       _ExtentX        =   26061
       _ExtentY        =   9710
@@ -125,46 +142,24 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       PrinterProperties=   "frmOrdenesPago.frx":14E8
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   1470
+      Height          =   1935
       Left            =   45
       TabIndex        =   1
-      Top             =   90
+      Top             =   120
       Width           =   14805
       _Version        =   786432
       _ExtentX        =   26114
-      _ExtentY        =   2593
+      _ExtentY        =   3413
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
-      Begin VB.PictureBox pic 
-         Height          =   540
-         Left            =   14520
-         ScaleHeight     =   480
-         ScaleWidth      =   300
-         TabIndex        =   16
-         Top             =   3120
-         Visible         =   0   'False
-         Width           =   360
-      End
-      Begin XtremeSuiteControls.PushButton PushButton2 
-         Height          =   330
-         Left            =   11340
-         TabIndex        =   11
-         Top             =   2490
-         Visible         =   0   'False
-         Width           =   1245
-         _Version        =   786432
-         _ExtentX        =   2196
-         _ExtentY        =   582
-         _StockProps     =   79
-         Caption         =   "PushButton2"
-         UseVisualStyle  =   -1  'True
-      End
-      Begin XtremeSuiteControls.GroupBox GroupBox2 
+      Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
          Height          =   1215
-         Left            =   4890
+         Index           =   0
+         Left            =   240
          TabIndex        =   7
-         Top             =   105
+         Top             =   1920
+         Visible         =   0   'False
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -252,9 +247,10 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       End
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
          Height          =   315
-         Left            =   7845
-         TabIndex        =   12
-         Top             =   300
+         Index           =   0
+         Left            =   3405
+         TabIndex        =   11
+         Top             =   2100
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -265,9 +261,10 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       End
       Begin XtremeSuiteControls.DateTimePicker dtpHasta 
          Height          =   315
-         Left            =   7830
-         TabIndex        =   13
-         Top             =   795
+         Index           =   0
+         Left            =   3390
+         TabIndex        =   12
+         Top             =   2595
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -279,7 +276,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.ComboBox cboEstado 
          Height          =   315
          Left            =   945
-         TabIndex        =   17
+         TabIndex        =   15
          Top             =   960
          Width           =   3510
          _Version        =   786432
@@ -293,7 +290,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
          Height          =   255
          Left            =   4530
-         TabIndex        =   19
+         TabIndex        =   17
          Top             =   960
          Width           =   300
          _Version        =   786432
@@ -304,10 +301,113 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          BackColor       =   12632256
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.Label Label4 
+      Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
+         Height          =   1575
+         Index           =   1
+         Left            =   5040
+         TabIndex        =   22
+         Top             =   240
+         Width           =   4695
+         _Version        =   786432
+         _ExtentX        =   8281
+         _ExtentY        =   2778
+         _StockProps     =   79
+         Caption         =   "Fecha OP"
+         BackColor       =   16744576
+         Appearance      =   4
+         Begin XtremeSuiteControls.DateTimePicker dtpDesde 
+            Height          =   315
+            Index           =   1
+            Left            =   720
+            TabIndex        =   23
+            Top             =   720
+            Width           =   1470
+            _Version        =   786432
+            _ExtentX        =   2593
+            _ExtentY        =   556
+            _StockProps     =   68
+            CheckBox        =   -1  'True
+            Format          =   1
+         End
+         Begin XtremeSuiteControls.DateTimePicker dtpHasta 
+            Height          =   315
+            Index           =   1
+            Left            =   2925
+            TabIndex        =   24
+            Top             =   720
+            Width           =   1470
+            _Version        =   786432
+            _ExtentX        =   2593
+            _ExtentY        =   556
+            _StockProps     =   68
+            CheckBox        =   -1  'True
+            Format          =   1
+         End
+         Begin XtremeSuiteControls.ComboBox cboRangos 
+            Height          =   315
+            Left            =   720
+            TabIndex        =   25
+            Top             =   300
+            Width           =   3675
+            _Version        =   786432
+            _ExtentX        =   6482
+            _ExtentY        =   556
+            _StockProps     =   77
+            BackColor       =   -2147483643
+            Style           =   2
+            Text            =   "ComboBox1"
+         End
+         Begin XtremeSuiteControls.Label lblRango 
+            Height          =   195
+            Index           =   1
+            Left            =   120
+            TabIndex        =   28
+            Top             =   360
+            Width           =   480
+            _Version        =   786432
+            _ExtentX        =   847
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Rango"
+            BackColor       =   12632256
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label lblDesde 
+            Height          =   195
+            Index           =   1
+            Left            =   165
+            TabIndex        =   27
+            Top             =   780
+            Width           =   465
+            _Version        =   786432
+            _ExtentX        =   820
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Desde"
+            BackColor       =   12632256
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label lblHasta 
+            Height          =   195
+            Index           =   1
+            Left            =   2400
+            TabIndex        =   26
+            Top             =   780
+            Width           =   420
+            _Version        =   786432
+            _ExtentX        =   741
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Hasta"
+            BackColor       =   12632256
+            AutoSize        =   -1  'True
+         End
+      End
+      Begin XtremeSuiteControls.Label lblRango 
          Height          =   195
+         Index           =   0
          Left            =   360
-         TabIndex        =   18
+         TabIndex        =   16
          Top             =   1020
          Width           =   495
          _Version        =   786432
@@ -318,11 +418,12 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          BackColor       =   12632256
          AutoSize        =   -1  'True
       End
-      Begin XtremeSuiteControls.Label Label6 
+      Begin XtremeSuiteControls.Label lblHasta 
          Height          =   195
-         Left            =   7320
-         TabIndex        =   15
-         Top             =   855
+         Index           =   0
+         Left            =   2880
+         TabIndex        =   14
+         Top             =   2655
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -332,11 +433,12 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          BackColor       =   12632256
          AutoSize        =   -1  'True
       End
-      Begin XtremeSuiteControls.Label Label5 
+      Begin XtremeSuiteControls.Label lblDesde 
          Height          =   195
-         Left            =   7305
-         TabIndex        =   14
-         Top             =   345
+         Index           =   0
+         Left            =   2865
+         TabIndex        =   13
+         Top             =   2145
          Width           =   465
          _Version        =   786432
          _ExtentX        =   820
@@ -412,11 +514,12 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Implements ISuscriber
-
+Private desde
 Dim ids As String
 Private ordenes As New Collection
 Private Orden As OrdenPago
 Private fac As clsFacturaProveedor
+    Dim i As Integer
 
 Private Sub btnClearProveedor_Click()
     Me.cboProveedores.ListIndex = -1
@@ -480,9 +583,8 @@ Private Sub Form_Load()
     Me.cboProveedores.ListIndex = -1
     '    llenarLista
 
-    Me.dtpDesde.value = Year(Now) & "-01-01"
-
-    Me.dtpHasta.value = Now
+    Me.dtpHasta(1).value = Now
+    
     Me.gridOrdenes.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     ids = funciones.CreateGUID
@@ -496,9 +598,18 @@ Private Sub Form_Load()
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
 
+    Me.dtpDesde(1).value = Year(Now) & "-01-01"
 
+    desde = DateSerial(Year(Date), Month(Date), 1)   ' CDate(1 & "-" & Month(Now) & "-" & Year(Now))
+    funciones.FillComboBoxDateRanges Me.cboRangos
 
-
+    Me.cboRangos.ListIndex = i
+    
+    For i = 0 To Me.cboRangos.ListCount - 1
+        If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
+    Next i
+    Me.cboRangos.ListIndex = i
+    
 End Sub
 
 Private Sub llenarLista()
@@ -513,16 +624,14 @@ Private Sub llenarLista()
         filter = filter & " AND  ordenes_pago.id  = " & Val(Me.txtNro.text)
     End If
 
-
-
     Dim filtroor As String
 
-    If Not IsNull(Me.dtpDesde.value) Then
-        filter = filter & " AND ordenes_pago.fecha >= " & conectar.Escape(Me.dtpDesde.value)
+    If Not IsNull(Me.dtpDesde(1).value) Then
+        filter = filter & " AND ordenes_pago.fecha >= " & conectar.Escape(Me.dtpDesde(1).value)
     End If
 
-    If Not IsNull(Me.dtpHasta.value) Then
-        filter = filter & " AND ordenes_pago.fecha <= " & conectar.Escape(Me.dtpHasta.value)
+    If Not IsNull(Me.dtpHasta(1).value) Then
+        filter = filter & " AND ordenes_pago.fecha <= " & conectar.Escape(Me.dtpHasta(1).value)
     End If
 
 
@@ -550,21 +659,23 @@ Private Sub llenarLista()
     End If
 
     Me.gridOrdenes.ItemCount = 0
+    
     Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
     
     Me.gridOrdenes.ItemCount = ordenes.count
 
-    Me.caption = "Listado de Ordenes de Pago" & " [Cantidad: " & ordenes.count & "]"
+    Me.caption = "Listado de OP" & " [Cant: " & ordenes.count & "]"
 
 
 End Sub
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.gridOrdenes.Width = Me.ScaleWidth - 400
-    Me.gridOrdenes.Height = Me.ScaleHeight - 1800
+    Me.gridOrdenes.Width = Me.ScaleWidth - 300
+    Me.gridOrdenes.Height = (Me.ScaleHeight * 75) / 100
 
-    Me.GroupBox1.Width = Me.gridOrdenes.Width - 100
+    Me.GroupBox1.Width = Me.gridOrdenes.Width
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
+    
 End Sub
 
 Private Sub Form_Terminate()
@@ -736,6 +847,8 @@ Private Sub mnuImprimir_Click()
     SeleccionarOP
     
     If Not DAOOrdenPago.PrintOP(Orden, Me.pic) Then GoTo err1
+    
+    'If Not DAOOrdenPago.PrintOP(Orden) Then GoTo err1
 
     Exit Sub
 err1:
@@ -771,49 +884,7 @@ Private Sub mnuVerCertificado_Click()
 End Sub
 
 
-Private Sub PushButton2_Click()
-    conectar.BeginTransaction
-    Dim newcol As New Collection
-
-    Dim nop As OrdenPago
-
-    For Each nop In ordenes
-        If (nop.StaticTotalOrigenes + nop.StaticTotalRetenido) = 0 And nop.estado = EstadoOrdenPago_Aprobada Then
-            newcol.Add nop
-
-        End If
-    Next
-    Dim q As String
-    Dim opeCaja As operacion
-
-    For Each nop In newcol
-
-        If nop.FacturasProveedor.count = 1 Then    'se pago una sola fc
-            Set opeCaja = New operacion
-            opeCaja.Pertenencia = OrigenOperacion.caja
-            opeCaja.Monto = nop.StaticTotal
-            Set opeCaja.moneda = fac.moneda
-            opeCaja.FechaOperacion = nop.FEcha
-
-
-            opeCaja.FechaCarga = Now
-            Set opeCaja.caja = DAOCaja.FindById(1)
-            opeCaja.EntradaSalida = OPSalida
-
-            If Not DAOOperacion.Save(opeCaja) Then GoTo E
-            opeCaja.Id = conectar.UltimoId2
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
-            If Not conectar.execute(q) Then GoTo E
-            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
-            If Not conectar.execute(q) Then GoTo E
-
-        End If
-        Debug.Print nop.Id
-    Next
-
-    conectar.CommitTransaction
-    Exit Sub
-E:
-    conectar.RollBackTransaction
-
+Private Sub cboRangos_Click()
+    funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde(1), Me.dtpHasta(1)
 End Sub
+
