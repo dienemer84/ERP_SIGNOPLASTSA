@@ -238,7 +238,7 @@ Begin VB.Form frmAdminCobranzasLista
       End
    End
    Begin XtremeSuiteControls.ProgressBar progreso 
-      Height          =   135
+      Height          =   375
       Left            =   12000
       TabIndex        =   5
       Top             =   1080
@@ -246,7 +246,7 @@ Begin VB.Form frmAdminCobranzasLista
       Width           =   5535
       _Version        =   786432
       _ExtentX        =   9763
-      _ExtentY        =   238
+      _ExtentY        =   661
       _StockProps     =   93
       Appearance      =   6
    End
@@ -292,26 +292,26 @@ Begin VB.Form frmAdminCobranzasLista
       Column(5)       =   "frmAdminCobranzasLista.frx":0B8C
       Column(6)       =   "frmAdminCobranzasLista.frx":0CD4
       Column(7)       =   "frmAdminCobranzasLista.frx":0E44
-      Column(8)       =   "frmAdminCobranzasLista.frx":0F58
-      Column(9)       =   "frmAdminCobranzasLista.frx":1074
-      Column(10)      =   "frmAdminCobranzasLista.frx":11D0
-      Column(11)      =   "frmAdminCobranzasLista.frx":1328
-      Column(12)      =   "frmAdminCobranzasLista.frx":1470
+      Column(8)       =   "frmAdminCobranzasLista.frx":0FAC
+      Column(9)       =   "frmAdminCobranzasLista.frx":111C
+      Column(10)      =   "frmAdminCobranzasLista.frx":1278
+      Column(11)      =   "frmAdminCobranzasLista.frx":13D0
+      Column(12)      =   "frmAdminCobranzasLista.frx":1518
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":15F0
-      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":1728
-      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":17D8
-      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":188C
-      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1964
-      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":1A1C
-      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":1AFC
-      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1BA8
-      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1C58
-      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1D38
+      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":1698
+      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":17D0
+      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":1880
+      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":1934
+      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1A0C
+      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":1AC4
+      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":1BA4
+      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1C50
+      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1D00
+      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1DE0
       ImageCount      =   2
-      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1DE4
-      ImagePicture(2) =   "frmAdminCobranzasLista.frx":20FE
-      PrinterProperties=   "frmAdminCobranzasLista.frx":2418
+      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1E8C
+      ImagePicture(2) =   "frmAdminCobranzasLista.frx":21A6
+      PrinterProperties=   "frmAdminCobranzasLista.frx":24C0
    End
    Begin VB.Menu mnu 
       Caption         =   "mnu"

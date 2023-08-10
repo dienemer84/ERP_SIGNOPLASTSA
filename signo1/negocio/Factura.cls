@@ -34,7 +34,7 @@ Public TipoIVA As clsTipoIVA
 Public AnulacionAFIP As String
 Public MotivosAnulacionAFIP As String
 Public CaeSolicitarResponse As CAESolicitar
-'agregado 31052020
+'agregado 31-05-2020
 Public ConceptoIncluir As ConceptoIncluir
 'agregado 25-6-12
 Public IdMonedaAjuste As Long
@@ -46,7 +46,6 @@ Public observaciones As String
 Public observaciones_cancela As String
 Public EstaImpresa As Boolean
 Public EstaDiscriminada As Boolean
-'Public TipoDocumento As tipoDocumentoContable
 Public Saldado As TipoSaldadoFactura
 Public AlicuotaAplicada As Double    'iva
 Public AlicuotaPercepcionesIIBB As Double
@@ -57,7 +56,6 @@ Public OrdenCompra As String
 Public UsuarioAprobacion As clsUsuario
 Public Opcional27 As Integer
 Public TextoAdicional As String
-
 
 Public FechaVencimientoSQL As Date    'Fecha de vencimiento calculada por la base
 Public TotalEstatico As New FacturaTotalEstatico
@@ -81,6 +79,13 @@ Public MontoCobrado As Double
 
 Public TasaAjusteMensual As Double  'de aca se empieza
 
+'ESTO ESTA MAL ARMARLO ASI PERO BUENO AHORA LO VAMOS A DEJAR ASI 10/08/2023
+Public CbteAsociado As String
+Public CbteAsociadoID As String
+Public CbteAsociadoFecha As Date
+Public CbteAsociadoMonto As Double
+
+
 Public Function Modificable() As Boolean
 
     Modificable = Not (Tipo.PuntoVenta.EsElectronico And Me.AprobadaAFIP)
@@ -98,7 +103,7 @@ Public Property Get DescripcionCreditoAdicional() As String
     If TipoDocumento = tipoDocumentoContable.Factura Then
         dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
     End If
-    If TipoDocumento = tipoDocumentoContable.notaCredito Then
+    If TipoDocumento = tipoDocumentoContable.NotaCredito Then
         dsc = "NOTA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
     End If
     If TipoDocumento = tipoDocumentoContable.notaDebito Then
@@ -121,9 +126,6 @@ Public Property Get DetalleFacturaAnticipoOt(porcentajeAnticipo As Double) As Fa
 
     Set DetalleFacturaAnticipoOt = Nothing
 
-
-
-
     For Each deta In Me.Detalles
         'cabeceada #1 para saber si es del mismo porcentaje de anticipo
         If deta.DescuentoAnticipo And InStr(1, deta.detalle, porcentajeAnticipo & "%") > 0 Then
@@ -131,6 +133,7 @@ Public Property Get DetalleFacturaAnticipoOt(porcentajeAnticipo As Double) As Fa
             Exit Property
         End If
     Next deta
+    
 End Property
 
 Public Property Get OTsFacturadasAnticipo() As Collection
@@ -145,22 +148,17 @@ Public Property Get OTsFacturadasAnticipo() As Collection
     Set OTsFacturadasAnticipo = m_ots_facturadas_anticipo
 End Property
 
-'Public Property Set OTsFacturadasAnticipo(value As Collection)
-'    Set m_ots_facturadas_anticipo = value
-'End Property
-
-
 
 Public Function GetCodigoDocumentoAfip() As Integer
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
-    If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
+    If Tipo.TipoDoc = tipoDocumentoContable.NotaCredito Then GetCodigoDocumentoAfip = 3
     If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
 
 
 End Function
 Public Function GetDescripciopnDocumentoAfip() As String
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
-    If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
+    If Tipo.TipoDoc = tipoDocumentoContable.NotaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
     If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetDescripciopnDocumentoAfip = "FACTURA"
 
 
@@ -194,10 +192,10 @@ err1:
 End Function
 
 
-
 Public Property Get EsAnticipo() As Boolean
     EsAnticipo = Me.OTsFacturadasAnticipo.count > 0
 End Property
+
 
 Public Property Get Detalles() As Collection
 'lazy load simulation
@@ -250,12 +248,8 @@ Public Property Get StringDiasAtraso() As String
 End Property
 Public Property Get NumeroFormateado() As String
     If (IsSomething(Tipo.PuntoVenta)) Then
-        '   If Tipo.PuntoVenta.EsElectronico And Me.estado <> EstadoFacturaCliente.Aprobada Then
-        '     NumeroFormateado = Me.Tipo.PuntoVenta.PuntoVenta & "- 0000"
-        ' Else
         NumeroFormateado = Me.Tipo.PuntoVenta.PuntoVenta & "-" & Format(Me.numero, "0000")
 
-        ' End If
     Else
         NumeroFormateado = "Error"
     End If
@@ -297,7 +291,7 @@ Public Property Get TipoDocumentoDescription() As String
     Select Case Me.TipoDocumento
     Case tipoDocumentoContable.Factura
         retorno = "FACTURA"
-    Case tipoDocumentoContable.notaCredito
+    Case tipoDocumentoContable.NotaCredito
         retorno = "NOTA DE CREDITO"
     Case tipoDocumentoContable.notaDebito
         retorno = "NOTA DE DEBITO"
@@ -320,7 +314,7 @@ Public Property Get GetShortDescription(justTipo As Boolean, fullShortDescriptio
     Select Case Me.TipoDocumento
     Case tipoDocumentoContable.Factura
         retorno = "FC"
-    Case tipoDocumentoContable.notaCredito
+    Case tipoDocumentoContable.NotaCredito
         retorno = "NC"
     Case tipoDocumentoContable.notaDebito
         retorno = "ND"

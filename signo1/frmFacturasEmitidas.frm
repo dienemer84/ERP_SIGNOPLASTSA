@@ -8,30 +8,215 @@ Begin VB.Form frmAdminFacturasEmitidas
    ClientHeight    =   8985
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   17235
+   ClientWidth     =   24750
    Icon            =   "frmFacturasEmitidas.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8985
-   ScaleWidth      =   17235
+   ScaleWidth      =   24750
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox grp 
-      Height          =   2295
+      Height          =   2535
       Left            =   120
-      TabIndex        =   1
-      Top             =   0
+      TabIndex        =   0
+      Top             =   120
       Width           =   23775
       _Version        =   786432
       _ExtentX        =   41936
-      _ExtentY        =   4048
+      _ExtentY        =   4471
       _StockProps     =   79
       Caption         =   "Filtros"
       UseVisualStyle  =   -1  'True
+      Begin VB.Frame Frame 
+         Height          =   855
+         Index           =   1
+         Left            =   9720
+         TabIndex        =   47
+         Top             =   1560
+         Width           =   11895
+         Begin XtremeSuiteControls.PushButton cmdBuscar 
+            Default         =   -1  'True
+            Height          =   420
+            Left            =   120
+            TabIndex        =   48
+            Top             =   240
+            Width           =   1890
+            _Version        =   786432
+            _ExtentX        =   3334
+            _ExtentY        =   741
+            _StockProps     =   79
+            Caption         =   "Buscar"
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            UseVisualStyle  =   -1  'True
+         End
+         Begin XtremeSuiteControls.PushButton cmdImprimir 
+            Height          =   420
+            Left            =   4800
+            TabIndex        =   49
+            Top             =   240
+            Width           =   1890
+            _Version        =   786432
+            _ExtentX        =   3334
+            _ExtentY        =   741
+            _StockProps     =   79
+            Caption         =   "Imprimir"
+            UseVisualStyle  =   -1  'True
+         End
+         Begin XtremeSuiteControls.PushButton btnExportar 
+            Height          =   420
+            Left            =   2760
+            TabIndex        =   50
+            ToolTipText     =   "Exporta s?lo pendientes"
+            Top             =   240
+            Width           =   1890
+            _Version        =   786432
+            _ExtentX        =   3334
+            _ExtentY        =   741
+            _StockProps     =   79
+            Caption         =   "Exportar"
+            UseVisualStyle  =   -1  'True
+         End
+         Begin XtremeSuiteControls.ProgressBar progreso 
+            Height          =   420
+            Left            =   6960
+            TabIndex        =   51
+            Top             =   240
+            Visible         =   0   'False
+            Width           =   4695
+            _Version        =   786432
+            _ExtentX        =   8281
+            _ExtentY        =   741
+            _StockProps     =   93
+            Appearance      =   6
+            BarColor        =   65280
+         End
+      End
+      Begin VB.Frame Frame 
+         Height          =   1335
+         Index           =   0
+         Left            =   14520
+         TabIndex        =   37
+         Top             =   240
+         Width           =   7095
+         Begin VB.Label lblTotalNeto 
+            AutoSize        =   -1  'True
+            Caption         =   "Total NG: $ 00,00"
+            Height          =   195
+            Left            =   240
+            TabIndex        =   46
+            Top             =   240
+            Width           =   1275
+         End
+         Begin VB.Label lblTotalIVA 
+            AutoSize        =   -1  'True
+            Caption         =   "Total IVA: $ 00,00"
+            Height          =   195
+            Left            =   240
+            TabIndex        =   45
+            Top             =   480
+            Width           =   1290
+         End
+         Begin VB.Label lblTotalPercepciones 
+            AutoSize        =   -1  'True
+            Caption         =   "Total Percepciones: $ 00,00"
+            Height          =   195
+            Left            =   240
+            TabIndex        =   44
+            Top             =   720
+            Width           =   2010
+         End
+         Begin VB.Label lblTotal 
+            AutoSize        =   -1  'True
+            Caption         =   "Total: $ 00,00"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   195
+            Left            =   240
+            TabIndex        =   43
+            Top             =   960
+            Width           =   1215
+         End
+         Begin VB.Label lblTotalDolares 
+            AutoSize        =   -1  'True
+            Caption         =   "Total: U$S 00,00 "
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   195
+            Left            =   3840
+            TabIndex        =   41
+            Top             =   960
+            Width           =   1530
+         End
+         Begin XtremeSuiteControls.Label lblNG_Dolar 
+            Height          =   195
+            Left            =   3840
+            TabIndex        =   40
+            Top             =   240
+            Width           =   1500
+            _Version        =   786432
+            _ExtentX        =   2646
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Total NG: U$S 00,00"
+            BackColor       =   -2147483633
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label lblIVA_Dolar 
+            Height          =   195
+            Left            =   3840
+            TabIndex        =   39
+            Top             =   480
+            Width           =   1515
+            _Version        =   786432
+            _ExtentX        =   2672
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Total IVA: U$S 00,00"
+            BackColor       =   -2147483633
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label lblPercepciones_Dolar 
+            Height          =   195
+            Left            =   3840
+            TabIndex        =   38
+            Top             =   720
+            Width           =   2235
+            _Version        =   786432
+            _ExtentX        =   3942
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Total Percepciones: U$S 00,00"
+            BackColor       =   -2147483633
+            AutoSize        =   -1  'True
+         End
+      End
       Begin XtremeSuiteControls.PushButton PushButton2 
          Height          =   285
-         Left            =   9000
-         TabIndex        =   47
-         Top             =   1575
+         Left            =   9050
+         TabIndex        =   36
+         Top             =   1600
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -43,7 +228,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboOrdenImporte 
          Height          =   315
          Left            =   6600
-         TabIndex        =   45
+         TabIndex        =   34
          Top             =   1560
          Width           =   2355
          _Version        =   786432
@@ -64,9 +249,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.CheckBox chkboxVerIds 
          Height          =   255
-         Left            =   4440
-         TabIndex        =   42
-         Top             =   1920
+         Left            =   4320
+         TabIndex        =   32
+         Top             =   2040
          Width           =   1095
          _Version        =   786432
          _ExtentX        =   1931
@@ -75,25 +260,11 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Ver Id's"
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.ProgressBar progreso 
-         Height          =   420
-         Left            =   14760
-         TabIndex        =   40
-         Top             =   1500
-         Visible         =   0   'False
-         Width           =   4215
-         _Version        =   786432
-         _ExtentX        =   7435
-         _ExtentY        =   741
-         _StockProps     =   93
-         Appearance      =   6
-         BarColor        =   65280
-      End
       Begin XtremeSuiteControls.CheckBox chkCredito 
          Height          =   255
          Left            =   1920
-         TabIndex        =   29
-         Top             =   1920
+         TabIndex        =   25
+         Top             =   2040
          Width           =   2055
          _Version        =   786432
          _ExtentX        =   3625
@@ -105,15 +276,15 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin VB.TextBox txtReferencia 
          Height          =   300
          Left            =   1620
-         TabIndex        =   20
+         TabIndex        =   17
          Top             =   1530
          Width           =   3490
       End
       Begin XtremeSuiteControls.ComboBox cboClientes 
          Height          =   315
          Left            =   1620
-         TabIndex        =   19
-         Top             =   765
+         TabIndex        =   16
+         Top             =   760
          Width           =   3510
          _Version        =   786432
          _ExtentX        =   6191
@@ -126,29 +297,29 @@ Begin VB.Form frmAdminFacturasEmitidas
          Alignment       =   1  'Right Justify
          Height          =   300
          Left            =   1620
-         TabIndex        =   4
+         TabIndex        =   3
          Top             =   330
          Width           =   1290
       End
       Begin VB.TextBox txtOrdenCompra 
          Height          =   300
          Left            =   1620
-         TabIndex        =   3
-         Top             =   1110
+         TabIndex        =   2
+         Top             =   1150
          Width           =   1740
       End
       Begin VB.TextBox txtRemitoAplicado 
          Alignment       =   1  'Right Justify
          Height          =   300
          Left            =   3960
-         TabIndex        =   2
-         Top             =   1110
+         TabIndex        =   1
+         Top             =   1150
          Width           =   1170
       End
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   285
          Left            =   5190
-         TabIndex        =   5
+         TabIndex        =   4
          Top             =   780
          Width           =   375
          _Version        =   786432
@@ -158,29 +329,15 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.PushButton cmdBuscar 
-         Default         =   -1  'True
-         Height          =   420
-         Left            =   9840
-         TabIndex        =   6
-         Top             =   1500
-         Width           =   1965
-         _Version        =   786432
-         _ExtentX        =   3466
-         _ExtentY        =   741
-         _StockProps     =   79
-         Caption         =   "Buscar"
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
-         Height          =   1170
-         Left            =   9840
-         TabIndex        =   7
+         Height          =   1290
+         Left            =   9720
+         TabIndex        =   5
          Top             =   240
          Width           =   4695
          _Version        =   786432
          _ExtentX        =   8281
-         _ExtentY        =   2064
+         _ExtentY        =   2275
          _StockProps     =   79
          Caption         =   "Fecha Emision"
          BackColor       =   -2147483633
@@ -188,7 +345,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
             Left            =   960
-            TabIndex        =   8
+            TabIndex        =   6
             Top             =   615
             Width           =   1470
             _Version        =   786432
@@ -200,8 +357,8 @@ Begin VB.Form frmAdminFacturasEmitidas
          End
          Begin XtremeSuiteControls.DateTimePicker dtpHasta 
             Height          =   315
-            Left            =   3120
-            TabIndex        =   9
+            Left            =   3135
+            TabIndex        =   7
             Top             =   630
             Width           =   1470
             _Version        =   786432
@@ -214,7 +371,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.ComboBox cboRangos 
             Height          =   315
             Left            =   960
-            TabIndex        =   10
+            TabIndex        =   8
             Top             =   240
             Width           =   3645
             _Version        =   786432
@@ -227,8 +384,8 @@ Begin VB.Form frmAdminFacturasEmitidas
          End
          Begin XtremeSuiteControls.Label Label6 
             Height          =   195
-            Left            =   2520
-            TabIndex        =   13
+            Left            =   2640
+            TabIndex        =   11
             Top             =   675
             Width           =   420
             _Version        =   786432
@@ -241,7 +398,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.Label Label5 
             Height          =   195
             Left            =   360
-            TabIndex        =   12
+            TabIndex        =   10
             Top             =   660
             Width           =   465
             _Version        =   786432
@@ -254,7 +411,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.Label Label7 
             Height          =   195
             Left            =   360
-            TabIndex        =   11
+            TabIndex        =   9
             Top             =   285
             Width           =   480
             _Version        =   786432
@@ -265,37 +422,10 @@ Begin VB.Form frmAdminFacturasEmitidas
             AutoSize        =   -1  'True
          End
       End
-      Begin XtremeSuiteControls.PushButton cmdImprimir 
-         Height          =   420
-         Left            =   13440
-         TabIndex        =   18
-         Top             =   1500
-         Width           =   1050
-         _Version        =   786432
-         _ExtentX        =   1852
-         _ExtentY        =   741
-         _StockProps     =   79
-         Caption         =   "Imprimir"
-         UseVisualStyle  =   -1  'True
-      End
-      Begin XtremeSuiteControls.PushButton btnExportar 
-         Height          =   420
-         Left            =   12240
-         TabIndex        =   22
-         ToolTipText     =   "Exporta s?lo pendientes"
-         Top             =   1500
-         Width           =   1050
-         _Version        =   786432
-         _ExtentX        =   1852
-         _ExtentY        =   741
-         _StockProps     =   79
-         Caption         =   "Exportar"
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.ComboBox cboPuntosVenta 
          Height          =   360
          Left            =   3585
-         TabIndex        =   23
+         TabIndex        =   19
          Top             =   300
          Width           =   1530
          _Version        =   786432
@@ -320,7 +450,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton PushButton3 
          Height          =   285
          Left            =   5190
-         TabIndex        =   24
+         TabIndex        =   20
          Top             =   338
          Width           =   375
          _Version        =   786432
@@ -333,8 +463,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboEstados 
          Height          =   360
          Left            =   6600
-         TabIndex        =   26
-         Top             =   315
+         TabIndex        =   22
+         Top             =   300
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -357,8 +487,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.PushButton PushButton4 
          Height          =   285
-         Left            =   9000
-         TabIndex        =   28
+         Left            =   9050
+         TabIndex        =   24
          Top             =   360
          Width           =   375
          _Version        =   786432
@@ -371,8 +501,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboEstadosSaldada 
          Height          =   360
          Left            =   6600
-         TabIndex        =   34
-         Top             =   742
+         TabIndex        =   26
+         Top             =   740
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -395,8 +525,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.PushButton PushButton5 
          Height          =   285
-         Left            =   9000
-         TabIndex        =   35
+         Left            =   9050
+         TabIndex        =   27
          Top             =   780
          Width           =   375
          _Version        =   786432
@@ -409,7 +539,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboEstadoAfip 
          Height          =   360
          Left            =   6600
-         TabIndex        =   37
+         TabIndex        =   29
          Top             =   1155
          Width           =   2355
          _Version        =   786432
@@ -433,8 +563,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.PushButton cmdLimpiarCboEstadoAfip 
          Height          =   285
-         Left            =   9000
-         TabIndex        =   38
+         Left            =   9050
+         TabIndex        =   30
          Top             =   1193
          Width           =   375
          _Version        =   786432
@@ -447,8 +577,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.CheckBox chkVerObservaciones 
          Height          =   225
          Left            =   90
-         TabIndex        =   43
-         Top             =   1920
+         TabIndex        =   33
+         Top             =   2040
          Width           =   1695
          _Version        =   786432
          _ExtentX        =   2990
@@ -458,24 +588,10 @@ Begin VB.Form frmAdminFacturasEmitidas
          Appearance      =   6
          Value           =   1
       End
-      Begin XtremeSuiteControls.PushButton btnExportarAvanzado 
-         Height          =   495
-         Left            =   19200
-         TabIndex        =   48
-         Top             =   1440
-         Visible         =   0   'False
-         Width           =   1815
-         _Version        =   786432
-         _ExtentX        =   3201
-         _ExtentY        =   873
-         _StockProps     =   79
-         Caption         =   "Exportar Avanzar"
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.Label Label11 
          Height          =   375
-         Left            =   5340
-         TabIndex        =   46
+         Left            =   5295
+         TabIndex        =   35
          Top             =   1560
          Width           =   1215
          _Version        =   786432
@@ -486,42 +602,14 @@ Begin VB.Form frmAdminFacturasEmitidas
          Alignment       =   1
          RightToLeft     =   -1  'True
       End
-      Begin VB.Label lblTotalDolares 
-         Caption         =   "Total U$S: 00,00 "
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   18000
-         TabIndex        =   44
-         Top             =   960
-         Width           =   2655
-      End
-      Begin VB.Label lblExportando 
-         Alignment       =   1  'Right Justify
-         BackColor       =   &H8000000A&
-         Caption         =   "Exportando..."
-         Height          =   255
-         Left            =   17160
-         TabIndex        =   41
-         Top             =   1200
-         Visible         =   0   'False
-         Width           =   1815
-      End
       Begin XtremeSuiteControls.Label Label14 
          Height          =   285
-         Left            =   5520
-         TabIndex        =   39
+         Left            =   5355
+         TabIndex        =   31
          Top             =   1200
-         Width           =   1035
+         Width           =   1155
          _Version        =   786432
-         _ExtentX        =   1826
+         _ExtentX        =   2037
          _ExtentY        =   503
          _StockProps     =   79
          Caption         =   "Estado AFIP"
@@ -529,8 +617,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.Label Label12 
          Height          =   285
-         Left            =   5880
-         TabIndex        =   36
+         Left            =   5835
+         TabIndex        =   28
          Top             =   780
          Width           =   675
          _Version        =   786432
@@ -540,55 +628,10 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Saldada"
          Alignment       =   1
       End
-      Begin VB.Label lblTotalNeto 
-         AutoSize        =   -1  'True
-         Caption         =   "Total NG: $ 00,00"
-         Height          =   195
-         Left            =   14760
-         TabIndex        =   33
-         Top             =   240
-         Width           =   1275
-      End
-      Begin VB.Label lblTotalIVA 
-         AutoSize        =   -1  'True
-         Caption         =   "Total IVA: $ 0,00"
-         Height          =   195
-         Left            =   14760
-         TabIndex        =   32
-         Top             =   480
-         Width           =   1200
-      End
-      Begin VB.Label lblTotalPercepciones 
-         AutoSize        =   -1  'True
-         Caption         =   "Tota Percepciones: $ 00,00"
-         Height          =   195
-         Left            =   14760
-         TabIndex        =   31
-         Top             =   720
-         Width           =   1980
-      End
-      Begin VB.Label lblTotal 
-         AutoSize        =   -1  'True
-         Caption         =   "Total: $ 00,00"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   195
-         Left            =   14760
-         TabIndex        =   30
-         Top             =   960
-         Width           =   1215
-      End
       Begin XtremeSuiteControls.Label Label10 
          Height          =   285
-         Left            =   6000
-         TabIndex        =   27
+         Left            =   5955
+         TabIndex        =   23
          Top             =   360
          Width           =   555
          _Version        =   786432
@@ -601,11 +644,11 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.Label Label9 
          Height          =   285
          Left            =   3240
-         TabIndex        =   25
+         TabIndex        =   21
          Top             =   330
-         Width           =   585
+         Width           =   345
          _Version        =   786432
-         _ExtentX        =   1032
+         _ExtentX        =   609
          _ExtentY        =   503
          _StockProps     =   79
          Caption         =   "PV"
@@ -617,8 +660,8 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Referencia"
          Height          =   195
          Left            =   630
-         TabIndex        =   21
-         Top             =   1570
+         TabIndex        =   18
+         Top             =   1560
          Width           =   900
       End
       Begin VB.Label Label3 
@@ -627,7 +670,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Nro Comprobrante"
          Height          =   270
          Left            =   30
-         TabIndex        =   17
+         TabIndex        =   15
          Top             =   375
          Width           =   1500
       End
@@ -637,18 +680,18 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Orden Compra"
          Height          =   270
          Left            =   270
-         TabIndex        =   16
-         Top             =   1180
+         TabIndex        =   14
+         Top             =   1200
          Width           =   1260
       End
       Begin VB.Label Label1 
          Alignment       =   1  'Right Justify
          BackStyle       =   0  'Transparent
          Caption         =   "Cliente"
-         Height          =   270
+         Height          =   225
          Left            =   270
-         TabIndex        =   15
-         Top             =   790
+         TabIndex        =   13
+         Top             =   810
          Width           =   1260
       End
       Begin VB.Label Label4 
@@ -656,20 +699,28 @@ Begin VB.Form frmAdminFacturasEmitidas
          BackStyle       =   0  'Transparent
          Caption         =   "Rto"
          Height          =   270
-         Left            =   3495
-         TabIndex        =   14
-         Top             =   1125
+         Left            =   3450
+         TabIndex        =   12
+         Top             =   1200
          Width           =   420
       End
    End
+   Begin MSComDlg.CommonDialog cd 
+      Left            =   15630
+      Top             =   4500
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+      CancelError     =   -1  'True
+   End
    Begin GridEX20.GridEX GridEX1 
-      Height          =   4234
+      Height          =   6495
       Left            =   120
-      TabIndex        =   0
-      Top             =   2400
-      Width           =   19125
-      _ExtentX        =   33734
-      _ExtentY        =   7461
+      TabIndex        =   42
+      Top             =   2760
+      Width           =   23805
+      _ExtentX        =   41989
+      _ExtentY        =   11456
       Version         =   "2.0"
       PreviewRowIndent=   100
       AutomaticSort   =   -1  'True
@@ -737,14 +788,6 @@ Begin VB.Form frmAdminFacturasEmitidas
       ImageCount      =   1
       ImagePicture(1) =   "frmFacturasEmitidas.frx":30CA
       PrinterProperties=   "frmFacturasEmitidas.frx":33E4
-   End
-   Begin MSComDlg.CommonDialog cd 
-      Left            =   15630
-      Top             =   4500
-      _ExtentX        =   847
-      _ExtentY        =   847
-      _Version        =   393216
-      CancelError     =   -1  'True
    End
    Begin XtremeSuiteControls.TaskDialog taskDialog 
       Left            =   14955
@@ -1263,7 +1306,6 @@ Private Sub btnExportar_Click()
 
 'INICIA EL PROGRESSBAR Y LO MUESTRA
     Me.progreso.Visible = True
-    Me.lblExportando.Visible = True
 
     'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
     progreso.min = 0
@@ -1332,8 +1374,9 @@ Private Sub btnExportar_Click()
     xlWorksheet.Cells(2, 22).value = "Observaciones"
     xlWorksheet.Cells(2, 23).value = "Observaciones Cancela"
     xlWorksheet.Cells(2, 24).value = "Recibos Asociados"
-
-    xlWorksheet.Range("A2:S2").Font.Bold = True
+    xlWorksheet.Cells(2, 25).value = "ID"
+    
+    xlWorksheet.Range("A2:Y2").Font.Bold = True
 
     Dim idx As Integer
     idx = 3
@@ -1537,7 +1580,6 @@ Private Sub btnExportar_Click()
     'REINICIA EL PROGRESSBAR Y LO OCULTA
     progreso.value = 0
     Me.progreso.Visible = False
-    Me.lblExportando.Visible = False
 
 End Sub
 
@@ -1606,9 +1648,6 @@ Private Sub cmdLimpiarCboEstadoAfip_Click()
     Me.cboEstadoAfip.ListIndex = -1
 End Sub
 
-Private Sub Command1_Click()
-    DAODetalleOrdenTrabajo.arreglarCagada
-End Sub
 
 Private Sub editar_Click()
 
@@ -1683,7 +1722,6 @@ End Sub
 
 Private Sub llenarGrilla()
 
-'    Dim cliente As clsCliente
     Dim filtro As String
     Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
 
@@ -1750,7 +1788,6 @@ Private Sub llenarGrilla()
         ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron DESC"
     End If
 
-    'ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron ASC "
 
     Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
 
@@ -1760,27 +1797,36 @@ Private Sub llenarGrilla()
     For Each F In facturas
 
         Dim total As Double
-        Dim totalNG As Double
-        Dim TotalIVATodo As Double
-        Dim totalPercepcionesIIBB As Double
-        Dim totalDolares As Double
         Dim Percepcion As Double
-
-
+        Dim totalPercepcionesIIBB As Double
+        Dim TotalIVATodo As Double
+        Dim totalNG As Double
+        
+        Dim totalDolares As Double
+        Dim totalPercepcionesIIBBDolar As Double
+        Dim totalIVADolar As Double
+        Dim totalNGDolar As Double
+        
+        
         If F.TipoDocumento = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
 
         total = total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.total * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-
         TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-
         totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-
         Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
-
         totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-
+        
+        ' Moneda.id = 1 >> DOLAR
         If F.moneda.Id = 1 Then
-            totalDolares = totalDolares + F.TotalEstatico.total * c
+
+                
+                totalDolares = totalDolares + F.TotalEstatico.total * c
+                totalPercepcionesIIBBDolar = totalPercepcionesIIBBDolar + F.TotalEstatico.TotalPercepcionesIB * c
+                totalIVADolar = totalIVADolar + F.TotalEstatico.TotalIVADiscrimandoONo * c
+                totalNGDolar = totalNGDolar + F.TotalEstatico.TotalNetoGravado * c
+                
+        
+        
         End If
         
     Next
@@ -1791,8 +1837,11 @@ Private Sub llenarGrilla()
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(TotalIVATodo))
     Me.lblTotalNeto = "Total NG: " & FormatCurrency(funciones.FormatearDecimales(totalNG))
 
-
-    Me.lblTotalDolares = "Total U$S: " & Replace(FormatCurrency(totalDolares), "$", "")
+    Me.lblTotalDolares = "Total: U$S " & Replace(FormatCurrency(totalDolares), "$", "")
+    Me.lblPercepciones_Dolar.caption = "Total Percepciones: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalPercepcionesIIBBDolar)), "$", "")
+    Me.lblIVA_Dolar.caption = "Total IVA: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalIVADolar)), "$", "")
+    Me.lblNG_Dolar.caption = "Total NG: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalNGDolar)), "$", "")
+    
     
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = facturas.count
@@ -1816,6 +1865,7 @@ Private Sub Form_Resize()
     On Error Resume Next
     Me.GridEX1.Width = Me.ScaleWidth - 400
     Me.GridEX1.Height = Me.ScaleHeight - 2900
+    Me.grp.Width = Me.GridEX1.Width
 
 End Sub
 
@@ -2504,10 +2554,6 @@ Private Sub mnuEnviarAfip_Click()
     If Not Factura.Tipo.PuntoVenta.EsElectronico Then
         Err.Raise 300, "Informar AFIP", "No puede informar un comprobante de un PV no catalogado como electrónico."
     End If
-
-    '    If factura.Tipo.PuntoVenta.EsElectronico And factura.Tipo.PuntoVenta.CaeManual Then
-    '       Err.Raise 301, "Informar AFIP", "No puede informar un comprobante del PV indicado"
-    '   End If
 
     If Factura.Tipo.PuntoVenta.EsElectronico And Factura.AprobadaAFIP Then
         Err.Raise 302, "Informar AFIP", "No puede informar un comprobante que ya fue informado."
