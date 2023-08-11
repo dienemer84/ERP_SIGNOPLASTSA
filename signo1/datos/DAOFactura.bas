@@ -112,7 +112,7 @@ If includeDetalles Then
     BuildFieldsIndex rs, idx
 
     While Not rs.EOF
-        Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv")
+        Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv", "fnc")
 
         F.RecibosAplicadosId = rs!nro_recibo
 
@@ -234,10 +234,16 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         
         If LenB(tablaCliente) > 0 Then Set F.cliente = DAOCliente.Map(rs, indice, tablaCliente, tablaClienteIva, "Localidades", "", "Provincia")
         
-        F.CbteAsociadoID = GetValue(rs, indice, tablaNC_Asociada, "idNC")
-        F.CbteAsociado = GetValue(rs, indice, vbNullString, "NumeroComprobanteNC")
-        F.CbteAsociadoFecha = GetValue(rs, indice, vbNullString, "FechaEmisionComprobanteNC")
-        F.CbteAsociadoMonto = GetValue(rs, indice, vbNullString, "MontoTotalComprobanteNC")
+        If indice.Exists("idNC") Then F.CbteAsociadoID = GetValue(rs, indice, tablaNC_Asociada, "idNC")
+        If indice.Exists("NumeroComprobanteNC") Then F.CbteAsociado = GetValue(rs, indice, vbNullString, "NumeroComprobanteNC")
+        If indice.Exists("FechaEmisionComprobanteNC") Then F.CbteAsociadoFecha = GetValue(rs, indice, vbNullString, "FechaEmisionComprobanteNC")
+        If indice.Exists("MontoTotalComprobanteNC") Then F.CbteAsociadoMonto = GetValue(rs, indice, vbNullString, "MontoTotalComprobanteNC")
+        
+        
+'        F.CbteAsociadoID = GetValue(rs, indice, tablaNC_Asociada, "idNC")
+'        F.CbteAsociado = GetValue(rs, indice, vbNullString, "NumeroComprobanteNC")
+'        F.CbteAsociadoFecha = GetValue(rs, indice, vbNullString, "FechaEmisionComprobanteNC")
+'        F.CbteAsociadoMonto = GetValue(rs, indice, vbNullString, "MontoTotalComprobanteNC")
         
         'MAP DE USUARIOS PARA FACTURAS VENTAS
         Set F.usuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
@@ -2746,9 +2752,10 @@ If includeDetalles Then
     q = q & " CONVERT((SELECT IFNULL(GROUP_CONCAT(idRecibo),'-') FROM AdminRecibosDetalleFacturas INNER JOIN AdminRecibos ON AdminRecibosDetalleFacturas.idRecibo = AdminRecibos.id WHERE AdminRecibosDetalleFacturas.idFactura = AdminFacturas.id AND AdminRecibos.fecha <= " & FechaFIn & "),NCHAR) AS nro_recibo,"
 
 
-    q = q & "(SELECT NroFactura FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1) AS NumeroComprobanteNC," _
-             & " (SELECT FechaEmision FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1) AS FechaEmisionComprobanteNC," _
-             & " (SELECT (cambio_a_patron * total_estatico) FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1) AS MontoTotalComprobanteNC"
+    q = q & " (SELECT id_tipo_discriminado From AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.id_tipo_discriminado IN (2,5,8,16,11,22) AND AdminFacturas.FechaEmision <= " & FechaFIn & ") AS TipoComprobanteNC," _
+             & " (SELECT NroFactura FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFIn & ") AS NumeroComprobanteNC," _
+             & " (SELECT FechaEmision FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFIn & ") AS FechaEmisionComprobanteNC," _
+             & " (SELECT (cambio_a_patron * total_estatico) FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFIn & ") AS MontoTotalComprobanteNC"
     
     
     q = q & " From AdminFacturas" _
@@ -2832,18 +2839,18 @@ If includeDetalles Then
             End If
         End If
         
-'        If F.CbteAsociadoID <> "" Then
-'            F.CbteAsociado = rs!NumeroComprobanteNC
-'        Else
-'
-'        F.CbteAsociado = ""
-'        End If
-        
+       
         If rs!NumeroComprobanteNC <> "" Then
+            Dim TipoComprobanteNC As Variant
             Dim idNC As Variant
             Dim NumeroComprobanteNC As Variant
             Dim FechaEmisionComprobanteNC As Variant
             Dim MontoTotalComprobanteNC As Variant
+            
+            TipoComprobanteNC = rs!TipoComprobanteNC
+            If Not IsNull(TipoComprobanteNC) Then
+                F.CbteAsociadoTipo = TipoComprobanteNC
+            End If
             
             idNC = rs!idNC
             If Not IsNull(NumeroComprobanteNC) Then
@@ -2877,6 +2884,8 @@ err1:
     Set FindAllTotalizadores = Nothing
     Err.Raise Err.Number, Err.Source, Err.Description
 End Function
+
+
 Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFIn As String) As Boolean
     On Error GoTo err1
 
@@ -2895,13 +2904,16 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
-    xlWorksheet.Range("A1:K1").Merge
-    xlWorksheet.Range("A2:K2").Merge
-    xlWorksheet.Range("A1:K3").HorizontalAlignment = xlHAlignCenter
-    xlWorksheet.Range("A1:K2").Font.Bold = True
-    xlWorksheet.Range("A3:K2").Font.Bold = True
+    xlWorksheet.Range("A1:Q1").Merge
+    xlWorksheet.Range("A2:Q2").Merge
+    xlWorksheet.Range("A1:Q3").HorizontalAlignment = xlHAlignCenter
+    xlWorksheet.Range("A1:Q2").Font.Bold = True
+    xlWorksheet.Range("A3:Q2").Font.Bold = True
 
     Dim Fin As Date
+    Dim ValorCero As Double
+
+    ValorCero = 0
 
 
     Fin = FechaFIn
@@ -2922,10 +2934,16 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     xlWorksheet.Cells(offset, 9).value = "Total"
     xlWorksheet.Cells(offset, 10).value = "Pagado"
     xlWorksheet.Cells(offset, 11).value = "Saldo"
-    
+    xlWorksheet.Cells(offset, 12).value = "Observaciones"
+    xlWorksheet.Cells(offset, 13).value = "ID Cbte Asociado"
+    xlWorksheet.Cells(offset, 14).value = "Nro Cbte Asociado"
+    xlWorksheet.Cells(offset, 15).value = "Fecha Cbte Asociado"
+    xlWorksheet.Cells(offset, 16).value = "Monto Cbte Asociado"
+    xlWorksheet.Cells(offset, 17).value = "Nuevo Saldo"
 
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 11)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 11)).Interior.Color = &HC0C0C0
+
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Interior.Color = &HC0C0C0
 
 
     '.Borders.LineStyle = xlContinuous
@@ -2943,62 +2961,121 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     For Each Factura In col
 
         Dim i As Integer
-        
+
         Dim TotalComprobante As Double
         TotalComprobante = (Factura.TotalEstatico.total * Factura.CambioAPatron)
-    
+
         Dim TotalCobrado As Double
-        TotalCobrado = Factura.MontoCobrado
-    
+        TotalCobrado = Factura.MontoCobrado * Factura.CambioAPatron
+
         Dim saldoComprobante As Double
         saldoComprobante = FormatearDecimales(TotalComprobante - TotalCobrado)
         
-        If saldoComprobante <> 0 Then
-            
+'        Dim saldoComprobanteWithAsociado As Double
+'        saldoComprobanteWithAsociado = FormatearDecimales(TotalComprobante - (Factura.CbteAsociadoMonto * i))
+
+'        If saldoComprobante <> 0 Then
+        'If saldoComprobanteWithAsociado <> 0 Then
+        
             d = d + 1
             ProgressBar.value = d
 
             offset = offset + 1
-            
+
             If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
                 i = -1
             Else
-               i = 1
+                i = 1
             End If
 
             xlWorksheet.Cells(offset, 1).value = Factura.Id
             xlWorksheet.Cells(offset, 2).value = Factura.cliente.razon
             xlWorksheet.Cells(offset, 3).value = Factura.cliente.Cuit
-            
+
             If Factura.esCredito Then
                 xlWorksheet.Cells(offset, 4).value = Factura.GetShortDescription(True, False) & " " & "(FCE)"
             Else
                 xlWorksheet.Cells(offset, 4).value = Factura.GetShortDescription(True, False)
             End If
-            
-                If IsSomething(Factura.Tipo) Then
+
+            If IsSomething(Factura.Tipo) Then
                 xlWorksheet.Cells(offset, 5).value = Factura.Tipo.TipoFactura.Tipo
             End If
-        
+
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.AprobadaAFIP And Factura.estado <> EstadoFacturaCliente.EnProceso Then
                 xlWorksheet.Cells(offset, 6).value = "Nro. Pendiente"
             Else
                 xlWorksheet.Cells(offset, 6).NumberFormat = "@"
                 xlWorksheet.Cells(offset, 6).value = Factura.NumeroFormateado
             End If
-            
+
             xlWorksheet.Cells(offset, 7).value = Factura.FechaEmision
-            
-            xlWorksheet.Cells(offset, 8).value = "AR $"
-            
+
+            xlWorksheet.Cells(offset, 8).value = Factura.moneda.NombreCorto
+
             xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(TotalComprobante) * i
             xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(TotalCobrado) * i
             xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales(saldoComprobante) * i
-            
-            
-            xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 11)).Borders.LineStyle = xlContinuous
 
-        End If
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
+                xlWorksheet.Cells(offset, 17).value = ValorCero
+            Else
+                If Factura.CbteAsociadoTipo <> "2" And Factura.CbteAsociadoTipo <> "5" And Factura.CbteAsociadoTipo <> "8" And Factura.CbteAsociadoTipo <> "16" And Factura.CbteAsociadoTipo <> "11" And Factura.CbteAsociadoTipo <> "22" Then
+
+                    xlWorksheet.Cells(offset, 12).value = ""
+                    xlWorksheet.Cells(offset, 13).value = ""
+                    xlWorksheet.Cells(offset, 14).value = ""
+                    xlWorksheet.Cells(offset, 15).value = ""
+                    xlWorksheet.Cells(offset, 16).value = ""
+
+                    xlWorksheet.Cells(offset, 17).value = xlWorksheet.Cells(offset, 11).value
+                Else
+
+                    xlWorksheet.Cells(offset, 12).value = Factura.observaciones_cancela
+                    xlWorksheet.Cells(offset, 13).value = Factura.CbteAsociadoID
+                    xlWorksheet.Cells(offset, 14).value = Factura.CbteAsociado
+
+
+                    If Factura.CbteAsociadoFecha = "12:00:00 a.m." Then
+                        xlWorksheet.Cells(offset, 15).value = ""
+                    Else
+
+                        xlWorksheet.Cells(offset, 15).value = Factura.CbteAsociadoFecha
+                    End If
+
+                    If Factura.CbteAsociadoMonto = 0 Then
+                        xlWorksheet.Cells(offset, 16).value = ValorCero
+                    Else
+                        xlWorksheet.Cells(offset, 16).value = funciones.FormatearDecimales((Factura.CbteAsociadoMonto) * i)
+                    End If
+
+                    xlWorksheet.Cells(offset, 17).value = funciones.FormatearDecimales((TotalComprobante - Factura.CbteAsociadoMonto * i))
+
+                    If xlWorksheet.Cells(offset, 17).value <> ValorCero And TotalCobrado <> 0 Then
+                    
+                        xlWorksheet.Cells(offset, 17).value = xlWorksheet.Cells(offset, 11).value
+                    
+                    End If
+
+                End If
+            End If
+            
+            If (saldoComprobante * i) = 0 Then
+            xlWorksheet.Cells(offset, 17).value = ValorCero
+            End If
+
+
+
+
+
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+            xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 17)).Borders.LineStyle = xlContinuous
+
+'        End If
 
     Next
 

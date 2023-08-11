@@ -80,6 +80,7 @@ Public MontoCobrado As Double
 Public TasaAjusteMensual As Double  'de aca se empieza
 
 'ESTO ESTA MAL ARMARLO ASI PERO BUENO AHORA LO VAMOS A DEJAR ASI 10/08/2023
+Public CbteAsociadoTipo As String
 Public CbteAsociado As String
 Public CbteAsociadoID As String
 Public CbteAsociadoFecha As Date
