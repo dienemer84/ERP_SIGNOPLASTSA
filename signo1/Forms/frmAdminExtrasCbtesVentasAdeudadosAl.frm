@@ -250,7 +250,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          Index           =   1
          Left            =   3840
          TabIndex        =   17
-         Top             =   1560
+         Top             =   1620
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -456,7 +456,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          Index           =   1
          Left            =   1800
          TabIndex        =   18
-         Top             =   1560
+         Top             =   1680
          Width           =   2010
          _Version        =   786432
          _ExtentX        =   3545
