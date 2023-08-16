@@ -90,7 +90,7 @@ Public Property Get TotalFacturas() As Double
     Dim F As clsFacturaProveedor
     Dim SUM As Double
     For Each F In Me.FacturasProveedor
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
+        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
     Next F
     TotalFacturas = funciones.RedondearDecimales(SUM)
 End Property
@@ -99,7 +99,7 @@ Public Property Get TotalFacturasNG() As Double
     Dim F As clsFacturaProveedor
     Dim SUM As Double
     For Each F In Me.FacturasProveedor
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravado * -1, F.NetoGravado), F.moneda.Id, Me.moneda.Id)
+        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, F.NetoGravado * -1, F.NetoGravado), F.moneda.Id, Me.moneda.Id)
     Next F
     TotalFacturasNG = funciones.RedondearDecimales(SUM)
 End Property
@@ -255,7 +255,7 @@ Public Property Get IsValid() As Boolean
     End If
 
     If Me.FacturasProveedor.count = 0 Then
-    Debug.Print (FacturasProveedor.count)
+'    Debug.Print (FacturasProveedor.count)
         AddValidationMessage "La Liquidación de Caja debe contener Comprobantes."
     End If
 

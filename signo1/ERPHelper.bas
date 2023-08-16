@@ -48,7 +48,7 @@ Private Function ApiConnect(sUrl As String, verb As verbo, async As Boolean, Opt
     xmlhttp.send s    'objXMLSendDoc.XML
     Dim response As String
     response = xmlhttp.responseText
-    Debug.Print response
+'    Debug.Print response
 
     ApiConnect = response
     Exit Function
@@ -171,7 +171,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     req.CbteHasta = F.numero
 
     req.CbteFch = Format(F.FechaEmision, "yyyymmdd")
-    req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total, 2)
+    req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.total, 2)
     'req.MonCotiz = F.CambioAPatron
 
     'req.ImpTotal = funciones.FormatearDecimales(F.TotalEstatico.Total * F.CambioAPatron, 2)
@@ -236,7 +236,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     'NB: afip rechaza nc y nd que no sean mi pyme sin tener cbte asociado (err 10197 afip)
     'If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
 
-    If F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito Then
+    If F.TipoDocumento = tipoDocumentoContable.NotaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito Then
         Dim ftmp As Factura
         Set ftmp = DAOFactura.FindById(F.Cancelada)
         '23-8 NB: no puedo informar un comprobnte asociado que no esté previamente informado. (en caso que sea crédito o débido mipyme)

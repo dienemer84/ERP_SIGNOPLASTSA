@@ -232,7 +232,7 @@ Private Sub Form_Load()
     Me.GridEX1.Columns(5).Visible = MostrarAnticipo
     Me.GridEX1.ItemCount = 0
 
-    Me.caption = "Lista OT (" & Name & ")"
+    Me.caption = "Seleccionar OT"
 
     ' SE COMPLETA EL GRID AUTOMATICAMENTE AL CARGAR EL FORM
     Set Ot = Nothing
@@ -240,6 +240,8 @@ Private Sub Form_Load()
     llenarLista
 
 End Sub
+
+
 Private Sub llenarLista()
     q = "{pedido}.{activo}=1"
     If Me.cboClientes.ListIndex <> -1 Then
@@ -263,8 +265,6 @@ Private Sub llenarLista()
         Me.LabeSinResultados.caption = "No hay resultados para mostrar..."
 
     End If
-
-
 
 End Sub
 

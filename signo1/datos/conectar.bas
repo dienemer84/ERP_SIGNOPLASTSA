@@ -45,7 +45,7 @@ Public Function RSFactory(consulta) As ADODB.Recordset
     vcount = vcount + 1
     Exit Function
 err10:
-    Debug.Print (consulta)
+'    Debug.Print (consulta)
     Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & consulta
 
 End Function

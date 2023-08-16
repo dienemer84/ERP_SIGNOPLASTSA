@@ -466,7 +466,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   62980097
+      Format          =   67305473
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1145,7 +1145,7 @@ Private Sub Form_Load()
     Me.cboTipoDocContable.AddItem "Factura"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.Factura
     Me.cboTipoDocContable.AddItem "Nota de crédito"
-    Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.notaCredito
+    Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.NotaCredito
     Me.cboTipoDocContable.AddItem "Nota de débito"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.notaDebito
     Me.cboTipoDocContable.AddItem "Despacho de Aduana"
@@ -1227,7 +1227,7 @@ Private Sub FacturaRequiereNumeroFormateado()
 
     Set cx = DAOConfigFacturaProveedor.GetById(idtipo)
 
-    Debug.Print (Len(vFactura.numero))
+'    Debug.Print (Len(vFactura.numero))
 
     '    If IsSomething(cx) Then
     '        If (Len(vFactura.numero)) = 15 Then

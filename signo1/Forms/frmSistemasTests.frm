@@ -111,10 +111,10 @@ Public Sub TraerTransferencias()
     Set colTransferenciasB = DAOTransferenciaBcaria.FindAll(Banco)
     
     For Each transf In colTransferenciasB
-       Debug.Print (transf.Monto & " | " & transf.Comprobante)
+'       Debug.Print (transf.Monto & " | " & transf.Comprobante)
     Next
         
-    Debug.Print (colTransferenciasB.count)
+'    Debug.Print (colTransferenciasB.count)
     
 End Sub
 

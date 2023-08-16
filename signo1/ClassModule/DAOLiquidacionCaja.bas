@@ -909,15 +909,15 @@ Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Bool
     Dim q As String
 
     q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & liqid & ")"
-    Debug.Print (q)
+'    Debug.Print (q)
     If Not conectar.execute(q) Then GoTo E
 
     q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid & ")"
-    Debug.Print (q)
+'    Debug.Print (q)
     If Not conectar.execute(q) Then GoTo E
 
     q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid
-    Debug.Print (q)
+'    Debug.Print (q)
     If Not conectar.execute(q) Then GoTo E
 
 
