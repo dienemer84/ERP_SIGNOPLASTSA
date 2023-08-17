@@ -510,7 +510,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     Dim opeCaja As New operacion
     opeCaja.Pertenencia = OrigenOperacion.caja
     opeCaja.Monto = fac.total
-    If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+    If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then
         opeCaja.Monto = fac.total * -1
     End If
 
@@ -542,8 +542,8 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     '    totRet = totRet + d2.Item(CStr(ret.Id))
     'Next ret
 
-    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.total * -1, fac.total), fac.moneda.Id, op.moneda.Id))
-    op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.moneda.Id, op.moneda.Id))
+    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, fac.total * -1, fac.total), fac.moneda.Id, op.moneda.Id))
+    op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.moneda.Id, op.moneda.Id))
     op.StaticTotalOrigenes = op.TotalOrigenes
     op.StaticTotalRetenido = 0    'funciones.RedondearDecimales(totRet)
 
@@ -642,7 +642,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     d = 0
 
     For Each fac In col
-        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
         total = total + MonedaConverter.Convertir(fac.total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
         totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
         totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
@@ -655,7 +655,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 
 
 
-        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+        If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
 
         d = d + 1
         ProgressBar.value = d
@@ -997,7 +997,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     d = 0
 
     For Each fac In col
-        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
         
         TotalFactura = ((fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno + fac.Redondeo) * c
         total = total + TotalFactura
@@ -1024,7 +1024,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         If saldoComprobante <> 0 Then
         
 
-        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+        If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
 
         d = d + 1
         ProgressBar(0).value = d
@@ -1047,14 +1047,21 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         
     Next
     
-'    xlWorksheet.Cells(offset + 3, 2).value = "Total"
-'    xlWorksheet.Cells(offset + 4, 2).value = "Total Pagado"
-'    xlWorksheet.Cells(offset + 5, 2).value = "Total Saldo"
-'
-'    xlWorksheet.Cells(offset + 3, 3).value = total
-'    xlWorksheet.Cells(offset + 4, 3).value = pagado
-'    xlWorksheet.Cells(offset + 5, 3).value = total - pagado
-'
+    xlWorksheet.Range("I3:K" & offset + 1).HorizontalAlignment = xlRight
+    xlWorksheet.Range("I3:K" & offset + 1).NumberFormat = "#,##0.00"
+
+    xlWorksheet.Range(xlWorksheet.Cells(offset + 1, 1), xlWorksheet.Cells(offset + 1, 11)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset + 1, 1), xlWorksheet.Cells(offset + 1, 11)).Interior.Color = &HC0C0C0
+    
+    xlWorksheet.Cells(offset + 1, 8).value = "Totales"
+
+    xlWorksheet.Cells(offset + 1, 9).Formula = "=sum(I3:I" & offset & ")"
+    xlWorksheet.Cells(offset + 1, 10).Formula = "=sum(J3:J" & offset & ")"
+    xlWorksheet.Cells(offset + 1, 11).Formula = "=sum(K3:K" & offset & ")"
+
+    
+    
+    
     ProgressBar(0).value = col.count
     
     xlApplication.ScreenUpdating = False

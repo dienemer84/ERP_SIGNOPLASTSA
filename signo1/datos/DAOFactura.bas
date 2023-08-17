@@ -2932,7 +2932,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     xlWorksheet.Cells(offset, 7).value = "Fecha"
     xlWorksheet.Cells(offset, 8).value = "Moneda"
     xlWorksheet.Cells(offset, 9).value = "Total"
-    xlWorksheet.Cells(offset, 10).value = "Pagado"
+    xlWorksheet.Cells(offset, 10).value = "Cobrado"
     xlWorksheet.Cells(offset, 11).value = "Saldo"
     xlWorksheet.Cells(offset, 12).value = "Observaciones"
     xlWorksheet.Cells(offset, 13).value = "ID Cbte Asociado"
@@ -2944,8 +2944,10 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
 
     xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Font.Bold = True
     xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Interior.Color = &HC0C0C0
+    
 
-
+    
+    
     '.Borders.LineStyle = xlContinuous
 
     Dim Factura As Factura
@@ -2971,12 +2973,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         Dim saldoComprobante As Double
         saldoComprobante = FormatearDecimales(TotalComprobante - TotalCobrado)
         
-'        Dim saldoComprobanteWithAsociado As Double
-'        saldoComprobanteWithAsociado = FormatearDecimales(TotalComprobante - (Factura.CbteAsociadoMonto * i))
-
-'        If saldoComprobante <> 0 Then
-        'If saldoComprobanteWithAsociado <> 0 Then
-        
+       
             d = d + 1
             ProgressBar.value = d
 
@@ -3038,12 +3035,12 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
                     xlWorksheet.Cells(offset, 14).value = Factura.CbteAsociado
 
 
-                    If Factura.CbteAsociadoFecha = "12:00:00 a.m." Then
-                        xlWorksheet.Cells(offset, 15).value = ""
-                    Else
+'''                    If Factura.CbteAsociadoFecha = "12:00:00 a.m." Then
+'''                        xlWorksheet.Cells(offset, 15).value = ""
+'''                    Else
 
                         xlWorksheet.Cells(offset, 15).value = Factura.CbteAsociadoFecha
-                    End If
+'''                    End If
 
                     If Factura.CbteAsociadoMonto = 0 Then
                         xlWorksheet.Cells(offset, 16).value = ValorCero
@@ -3066,10 +3063,6 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
             xlWorksheet.Cells(offset, 17).value = ValorCero
             End If
 
-
-
-
-
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
@@ -3078,7 +3071,23 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
 '        End If
 
     Next
+    
+    xlWorksheet.Range("I3:K" & offset + 1).HorizontalAlignment = xlRight
+    xlWorksheet.Range("I3:K" & offset + 1).NumberFormat = "#,##0.00"
 
+    xlWorksheet.Range("P3:Q" & offset + 1).HorizontalAlignment = xlRight
+    xlWorksheet.Range("P3:Q" & offset + 1).NumberFormat = "#,##0.00"
+    xlWorksheet.Range(xlWorksheet.Cells(offset + 1, 1), xlWorksheet.Cells(offset + 1, 17)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset + 1, 1), xlWorksheet.Cells(offset + 1, 17)).Interior.Color = &HC0C0C0
+    
+    xlWorksheet.Cells(offset + 1, 8).value = "Totales"
+
+    xlWorksheet.Cells(offset + 1, 9).Formula = "=sum(I3:I" & offset & ")"
+    xlWorksheet.Cells(offset + 1, 10).Formula = "=sum(J3:J" & offset & ")"
+    xlWorksheet.Cells(offset + 1, 11).Formula = "=sum(K3:K" & offset & ")"
+    xlWorksheet.Cells(offset + 1, 17).Formula = "=sum(Q3:Q" & offset & ")"
+
+    
     ProgressBar.value = col.count
 
     xlApplication.ScreenUpdating = False

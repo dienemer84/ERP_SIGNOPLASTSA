@@ -1027,7 +1027,6 @@ Private Sub btnExportarAvanzado_Click()
 
 'INICIA EL PROGRESSBAR Y LO MUESTRA
     Me.progreso.Visible = True
-    Me.lblExportando.Visible = True
 
     'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
     progreso.min = 0
@@ -1296,7 +1295,7 @@ Private Sub btnExportarAvanzado_Click()
     'REINICIA EL PROGRESSBAR Y LO OCULTA
     progreso.value = 0
     Me.progreso.Visible = False
-    Me.lblExportando.Visible = False
+
 End Sub
 
 Private Sub btnExportar_Click()

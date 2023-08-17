@@ -62,7 +62,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.GroupBox GroupBox 
-         Height          =   1335
+         Height          =   1695
          Index           =   4
          Left            =   6120
          TabIndex        =   4
@@ -70,7 +70,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          Width           =   4695
          _Version        =   786432
          _ExtentX        =   8281
-         _ExtentY        =   2355
+         _ExtentY        =   2990
          _StockProps     =   79
          Caption         =   "Fecha Comprobante"
          BackColor       =   16744576
@@ -481,7 +481,7 @@ End Sub
 Private Sub btnExportar_Click()
     Me.progreso.Visible = True
     Dim FechaFIn As String
-    FechaFIn = Me.dtpHastaFIN(1).Value
+    FechaFIn = Me.dtpHastaFIN(1).value
     
     If IsSomething(facturas) Then
         If Not DAOFactura.ExportarColeccionTotalizadores(facturas, Me.progreso, FechaFIn) Then GoTo err1
@@ -502,7 +502,7 @@ End Sub
 
 
 Private Sub btnBuscar_Click()
-    If IsNull(dtpHastaFIN(1).Value) Then
+    If IsNull(dtpHastaFIN(1).value) Then
                 MsgBox ("Tiene que selecionar una fecha de fin de cobro!")
                     Else
                         Acumulador = 0
@@ -538,11 +538,11 @@ Private Sub Form_Load()
     Me.cboRangos.ListIndex = i
    
     Me.grilla.Refresh
-    
-    
-    Me.dtpDesde(0).Value = "01/04/2022"
-    Me.dtpHasta(0).Value = "31/03/2023"
-    Me.dtpHastaFIN(1).Value = "31/03/2023"
+
+'Se agrega estas lineas para pre-setear las fechas ejemplo...
+'    Me.dtpDesde(0).value = "01/04/2022"
+'    Me.dtpHasta(0).value = "31/03/2023"
+'    Me.dtpHastaFIN(1).value = "31/03/2023"
 
 End Sub
 
@@ -563,17 +563,17 @@ Public Sub llenarGrilla()
         filtro = filtro & " and AdminFacturas.nroFactura=" & Me.txtNroFactura
     End If
 
-    If Not IsNull(Me.dtpDesde(0).Value) Then
-        filtro = filtro & " AND AdminFacturas.FechaEmision >= " & conectar.Escape(Me.dtpDesde(0).Value)
+    If Not IsNull(Me.dtpDesde(0).value) Then
+        filtro = filtro & " AND AdminFacturas.FechaEmision >= " & conectar.Escape(Me.dtpDesde(0).value)
     End If
 
-    If Not IsNull(Me.dtpHasta(0).Value) Then
-        filtro = filtro & " AND AdminFacturas.FechaEmision <= " & conectar.Escape(Me.dtpHasta(0).Value)
+    If Not IsNull(Me.dtpHasta(0).value) Then
+        filtro = filtro & " AND AdminFacturas.FechaEmision <= " & conectar.Escape(Me.dtpHasta(0).value)
     End If
 
 
-    If Not IsNull(dtpHastaFIN(1).Value) Then
-        FechaFIn = conectar.Escape(dtpHastaFIN(1).Value)
+    If Not IsNull(dtpHastaFIN(1).value) Then
+        FechaFIn = conectar.Escape(dtpHastaFIN(1).value)
     End If
 
     
@@ -598,7 +598,7 @@ Public Sub llenarGrilla()
         TotalCobrado = F.MontoCobrado
         cobrado = cobrado + TotalCobrado
         
-        nuevoSaldo = nuevoSaldo + grilla.Value(17)
+        nuevoSaldo = nuevoSaldo + grilla.value(17)
         
 
         
@@ -635,51 +635,6 @@ End Sub
 
 
 
-
-Private Sub grilla_AfterColEdit(ByVal ColIndex As Integer)
-
-End Sub
-
-Private Sub grilla_AfterColMove()
-
-End Sub
-
-Private Sub grilla_AfterColUpdate(ByVal ColIndex As Integer)
-
-End Sub
-
-Private Sub grilla_AfterDelete()
-
-End Sub
-
-Private Sub grilla_AfterGroupChange()
-
-End Sub
-
-Private Sub grilla_AfterUpdate()
-MsgBox (Values(17))
-End Sub
-
-Private Sub grilla_BeforeColEdit(ByVal ColIndex As Integer, ByVal Cancel As GridEX20.JSRetBoolean)
-
-End Sub
-
-Private Sub grilla_BeforeColUpdate(ByVal Row As Long, ByVal ColIndex As Integer, ByVal OldValue As String, ByVal Cancel As GridEX20.JSRetBoolean)
-MsgBox (Values(17))
-End Sub
-
-Private Sub grilla_BeforeGroupChange(ByVal Group As GridEX20.JSGroup, ByVal ChangeOperation As GridEX20.jgexGroupChange, ByVal GroupPosition As Integer, ByVal Cancel As GridEX20.JSRetBoolean)
-MsgBox (Values(17))
-End Sub
-
-Private Sub grilla_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-
-End Sub
-
-Private Sub grilla_Change()
-MsgBox (Values(17))
-End Sub
-
 Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla, Column
 End Sub
@@ -690,27 +645,19 @@ Private Sub grilla_DblClick()
 End Sub
 
 
-Private Sub grilla_FetchData(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal Value As GridEX20.JSRetVariant)
-
-End Sub
-
-Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 
 End Sub
 
 
-Private Sub grilla_RowDrag(ByVal Button As Integer, ByVal Shift As Integer)
-
-End Sub
-
 Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
 MsgBox (Values(17))
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set Factura = facturas.item(RowIndex)
+    Set Factura = facturas.item(rowIndex)
 
     
     Dim i As Integer
@@ -800,31 +747,32 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             Values(13) = Factura.CbteAsociadoID
             Values(14) = Factura.CbteAsociado
 
-            If Factura.CbteAsociadoFecha = "12:00:00 a.m." Then
-                Values(15) = ""
-            Else
-                Values(15) = Format(Factura.CbteAsociadoFecha, ddmmyyy)
-            End If
+'''            If Factura.CbteAsociadoFecha = "12:00:00 a.m." Then
+'''                Values(15) = ""
+'''            Else
+''''''                Values(15) = Format(Factura.CbteAsociadoFecha, ddmmyyy)
+                Values(15) = Factura.CbteAsociadoFecha
+'''''            End If
 
             If Factura.CbteAsociadoMonto = 0 Then
                 Values(16) = ""
             Else
                 Values(16) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.CbteAsociadoMonto) * i), "$", "")
             End If
-            
+
             TotalSaldoDefinitivo = TotalComprobante - Factura.CbteAsociadoMonto
             Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(TotalSaldoDefinitivo) * i), "$", "")
-        
+
             Subtotal3 = (TotalSaldoDefinitivo * i)
 
             If Values(17) <> ValorCero And TotalCobrado <> 0 Then
-                    
+
                 Values(17) = Values(11)
-                
+
                 Subtotal4 = (TotalSaldoDefinitivo * i)
-                    
+
             End If
-    
+
 
 
         
@@ -847,11 +795,6 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 End Sub
 
 
-
-Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-MsgBox (Values(17))
-End Sub
-
 Private Sub txtNroFactura_GotFocus()
     foco Me.txtNroFactura
 End Sub
@@ -870,7 +813,7 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(grilla.RowIndex(grilla.Row))
+    Set Factura = facturas.item(grilla.rowIndex(grilla.row))
     
 
     
