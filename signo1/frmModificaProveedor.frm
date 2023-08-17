@@ -717,12 +717,24 @@ End Property
 
 
 Private Sub btnCrearNew_Click(Index As Integer)
-    If Trim(Text1(9)) = Empty Then Text1(9) = 0
-    If LenB(Text1(10)) = 0 Then Text1(10) = 0
+    ' Elimina espacios y guiones medios del campo Text1(10)
+    Dim cleanedText As String
+    cleanedText = Replace(Text1(10), " ", "")
+    cleanedText = Replace(cleanedText, "-", "")
+
+    ' Verifica si el campo Text1(9) está vacío y asigna 0 si es necesario
+    If Trim(Text1(9)) = "" Then Text1(9) = 0
+    
+    ' Verifica si el campo Text1(10) está vacío y asigna 0 si es necesario
+    If LenB(cleanedText) = 0 Then cleanedText = 0
+    
+    ' Verifica si los campos obligatorios están llenos
     If LenB(Text1(0)) = 0 Or LenB(Text1(12)) = 0 Then
-        MsgBox "Debe especificar una razon social y nombre fantasia.", vbExclamation
+        MsgBox "Debe especificar una razón social y nombre fantasia.", vbExclamation
         Exit Sub
     End If
+    
+    ' Resto del código (llamada a la función accion, etc.)
     accion
 End Sub
 
@@ -801,7 +813,7 @@ Private Function accion() As Boolean
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
     proveedor_.Cuit = Me.Text1(10)
     Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
-    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIVA.ItemData(Me.cboIVA.ListIndex)))
+    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIva.ItemData(Me.cboIva.ListIndex)))
 
     'busco rubros
 
@@ -850,7 +862,7 @@ Private Sub mostrarCampos()
     Text1(11) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
     cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.Id, cboMonedas)
-    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIVA)
+    cboIva.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIva)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
 End Sub
 Private Sub Form_Load()
@@ -949,7 +961,7 @@ Private Sub Text1_GotFocus(Index As Integer)
     foco Me.Text1(Index)
 End Sub
 Public Sub llenarIva()
-    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIVA
+    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIva
 End Sub
 
 Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)

@@ -843,17 +843,19 @@ Private Sub mnuHistorial_Click()
 End Sub
 
 Private Sub mnuImprimir_Click()
-
-    SeleccionarOP
+    Dim dlg As Object
+    Set dlg = CreateObject("MSComDlg.CommonDialog")
+    
+    dlg.ShowPrinter
     
     If Not DAOOrdenPago.PrintOP(Orden, Me.pic) Then GoTo err1
-    
-    'If Not DAOOrdenPago.PrintOP(Orden) Then GoTo err1
 
-    Exit Sub
+    ' Limpia el objeto dlg
+    Set dlg = Nothing
+    
+        Exit Sub
 err1:
 End Sub
-
 
 
 Private Sub mnuVer_Click()

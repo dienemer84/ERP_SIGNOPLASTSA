@@ -9,7 +9,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
    _ExtentX        =   18785
    _ExtentY        =   17489
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   7995
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Tahoma"
@@ -31,8 +31,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
    BeginProperty Section0 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "seccion"
-      Object.Height          =   8610
-      NumControls     =   22
+      Object.Height          =   9641
+      NumControls     =   24
       ItemType0       =   3
       BeginProperty Item0 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -112,7 +112,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "Etiqueta4"
          Object.Left            =   567
-         Object.Top             =   2835
+         Object.Top             =   3402
          Object.Width           =   1695
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -131,7 +131,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "Etiqueta5"
          Object.Left            =   567
-         Object.Top             =   3969
+         Object.Top             =   4535
          Object.Width           =   1695
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -150,7 +150,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "Etiqueta6"
          Object.Left            =   567
-         Object.Top             =   3402
+         Object.Top             =   3969
          Object.Width           =   1695
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -169,7 +169,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblCreditoFiscalIVA10"
          Object.Left            =   1701
-         Object.Top             =   2835
+         Object.Top             =   3402
          Object.Width           =   2835
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -189,7 +189,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblCreditoFiscalIVA27"
          Object.Left            =   1701
-         Object.Top             =   3969
+         Object.Top             =   4535
          Object.Width           =   2835
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -209,7 +209,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblCreditoFiscalIVA21"
          Object.Left            =   1701
-         Object.Top             =   3402
+         Object.Top             =   3969
          Object.Width           =   2835
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -229,7 +229,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblFiscalIVADif"
          Object.Left            =   5102
-         Object.Top             =   4535
+         Object.Top             =   5102
          Object.Width           =   2835
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -249,7 +249,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "Línea1"
          Object.Left            =   5102
-         Object.Top             =   4535
+         Object.Top             =   5102
          Object.Width           =   2835
       EndProperty
       ItemType12      =   3
@@ -257,7 +257,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblCreditoFiscalIVASUMA"
          Object.Left            =   5102
-         Object.Top             =   3969
+         Object.Top             =   4535
          Object.Width           =   2835
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -276,7 +276,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
       BeginProperty Item13 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta1"
-         Object.Top             =   5669
+         Object.Top             =   6236
          Object.Width           =   3405
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -295,7 +295,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblPercepcionesIVA"
          Object.Left            =   1701
-         Object.Top             =   6236
+         Object.Top             =   6803
          Object.Width           =   2835
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -314,7 +314,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
       BeginProperty Item15 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta8"
-         Object.Top             =   6803
+         Object.Top             =   7370
          Object.Width           =   3405
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -333,7 +333,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblRetencionesIVA"
          Object.Left            =   1701
-         Object.Top             =   7370
+         Object.Top             =   7937
          Object.Width           =   2835
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -353,7 +353,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "Línea2"
          Object.Left            =   1701
-         Object.Top             =   4535
+         Object.Top             =   5102
          Object.Width           =   2835
       EndProperty
       ItemType18      =   3
@@ -361,7 +361,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblIVASUM"
          Object.Left            =   5102
-         Object.Top             =   7370
+         Object.Top             =   7937
          Object.Width           =   2835
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -381,7 +381,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "Línea3"
          Object.Left            =   1701
-         Object.Top             =   7937
+         Object.Top             =   8504
          Object.Width           =   2835
       EndProperty
       ItemType20      =   5
@@ -389,7 +389,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "Línea4"
          Object.Left            =   5102
-         Object.Top             =   7937
+         Object.Top             =   8504
          Object.Width           =   2835
       EndProperty
       ItemType21      =   3
@@ -397,8 +397,47 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} drpPosicionIvaMensual
          _Version        =   393216
          Name            =   "lblTotal"
          Object.Left            =   5102
-         Object.Top             =   7937
+         Object.Top             =   8504
          Object.Width           =   2835
+         Object.Height          =   570
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   18
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "$999.999.999,99"
+         Alignment       =   1
+      EndProperty
+      ItemType22      =   3
+      BeginProperty Item22 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Etiqueta5P"
+         Object.Left            =   567
+         Object.Top             =   2835
+         Object.Width           =   1695
+         Object.Height          =   570
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   18
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "5,00%"
+      EndProperty
+      ItemType23      =   3
+      BeginProperty Item23 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblCreditoFiscalIVA5"
+         Object.Left            =   1701
+         Object.Top             =   2835
+         Object.Width           =   2834
          Object.Height          =   570
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"

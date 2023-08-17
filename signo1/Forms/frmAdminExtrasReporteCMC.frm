@@ -606,7 +606,7 @@ Public Function ExportarResultado() As Boolean
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
 
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
         '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
         sFilter = "Hoja de Calculo|*.xls"
@@ -619,7 +619,7 @@ Public Function ExportarResultado() As Boolean
         Dim archi As String
         archi = "COMPARACIÓN CTES COMPRAS " & Periodo & ".xlsx"
 
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
 
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave

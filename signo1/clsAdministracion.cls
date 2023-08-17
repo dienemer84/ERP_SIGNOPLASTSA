@@ -159,7 +159,7 @@ End Function
 
 
 Public Function realizaCambio(Origen As Double, idMonedaOrigen, idMonedaDestino) As Double
-    Dim Total As Double
+    Dim total As Double
     Me.ejecutarConsulta "select id,cambio from AdminConfigMonedas where patron=1"
     If Not rs.EOF And Not rs.BOF Then
         CambioPatron = rs!Cambio
@@ -186,7 +186,7 @@ Public Function realizaCambio(Origen As Double, idMonedaOrigen, idMonedaDestino)
     If idMonedaCambio = idMonedaDestino Then Cambio = 1
     If idMonedaPatron = idMonedaDestino Then Cambio = 1
     If idMonedaOrigen = idMonedaDestino Then Cambio = 1
-    Total = ((Origen / cambioOrigen) * CambioPatron * Cambio) / cambioDestino
+    total = ((Origen / cambioOrigen) * CambioPatron * Cambio) / cambioDestino
     total2 = ((Origen * cambioOrigen) / cambioDestino * Cambio) / CambioPatron
     realizaCambio = total2    'funciones.RedondearDecimales(total, 3)
 
@@ -485,7 +485,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -498,7 +498,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         archi = "SUB_COBRANZAS_" & Periodo & ".xlsx"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -812,7 +812,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -825,7 +825,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
         Periodo = Format(desde, "ddmmyyyy") & "-" & Format(hasta, "ddmmyyyy")
 
         archi = "SUB_RETENCIONES_" & Periodo & ".xlsx"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -880,6 +880,35 @@ Public Function escanearFactura(idFactura) As Boolean
 End Function
 
 
+'''Public Function ImportarComprobantesAFIP(ruta As String) As Boolean
+'''    On Error GoTo err4
+'''    ImportarComprobantesAFIP = True
+'''
+'''    'ProcesarArchivoCSV (ruta)
+'''
+'''    Dim rs As Recordset
+'''    Dim strsql As String
+'''    strsql = "TRUNCATE sp_temporal.ComprobantesRecibidosAFIP"
+'''    Set rs = conectar.RSFactory(strsql)
+'''
+'''    strsql = "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_temporal.ComprobantesRecibidosAFIP" _
+'''           & " FIELDS TERMINATED BY ','" _
+'''           & " ENCLOSED BY " & Chr(39) & """" & Chr(39) & " " _
+'''           & " LINES TERMINATED BY '\r\n'" _
+'''           & " IGNORE 1 LINES" _
+'''           & " SET" _
+'''           & " puntodeventa = CONCAT(REPEAT('0',4 - LENGTH(puntodeventa)), puntodeventa)," _
+'''           & " numerodesde = CONCAT(REPEAT('0',8 - LENGTH(numerodesde)), numerodesde)," _
+'''           & " clave = CONCAT(puntodeventa,'-',numerodesde,nrodocemisor)"
+'''
+'''    Set rs = conectar.RSFactory(strsql)
+'''
+'''    Exit Function
+'''err4:
+'''    ImportarComprobantesAFIP = False
+'''    cn.RollbackTrans
+'''End Function
+
 Public Function ImportarComprobantesAFIP(ruta As String) As Boolean
     On Error GoTo err4
     ImportarComprobantesAFIP = True
@@ -897,8 +926,8 @@ Public Function ImportarComprobantesAFIP(ruta As String) As Boolean
            & " LINES TERMINATED BY '\r\n'" _
            & " IGNORE 1 LINES" _
            & " SET" _
-           & " puntodeventa = CONCAT(REPEAT('0',4 - LENGTH(puntodeventa)), puntodeventa)," _
-           & " numerodesde = CONCAT(REPEAT('0',8 - LENGTH(numerodesde)), numerodesde)," _
+           & " puntodeventa = CAST(puntodeventa AS UNSIGNED)," _
+           & " numerodesde = CAST(numerodesde AS UNSIGNED)," _
            & " clave = CONCAT(puntodeventa,'-',numerodesde,nrodocemisor)"
 
     Set rs = conectar.RSFactory(strsql)
@@ -908,4 +937,3 @@ err4:
     ImportarComprobantesAFIP = False
     cn.RollbackTrans
 End Function
-

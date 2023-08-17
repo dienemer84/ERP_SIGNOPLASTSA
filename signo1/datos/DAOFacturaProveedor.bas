@@ -748,36 +748,72 @@ err1:
     ExportarColeccion = False
 End Function
 
+'''Public Function CrearTablaTempComprobantes(facturas) As Boolean
+'''
+'''
+'''    On Error GoTo err1
+'''
+'''    CrearTablaTempComprobantes = True
+'''
+'''    Dim fac As clsFacturaProveedor
+'''
+'''    Dim strsql As String
+'''
+'''    Set cn = conectar.obternerConexion
+'''
+'''    cn.BeginTrans
+'''
+'''    cn.execute "TRUNCATE sp_temporal.ComprobantesCargadosSP"
+'''
+'''    cn.CommitTrans
+'''
+'''    cn.BeginTrans
+'''
+'''    For Each fac In facturas
+'''
+'''        strsql = "INSERT INTO sp_temporal.ComprobantesCargadosSP (idcomprobante, numero, cuit, clave)" _
+'''                 & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & fac.numero + fac.Proveedor.Cuit & "')"
+'''
+'''        cn.execute strsql
+'''
+'''    Next fac
+'''
+'''
+'''    cn.CommitTrans
+'''    Exit Function
+'''err1:
+'''    CrearTablaTempComprobantes = False
+'''    cn.RollbackTrans
+'''End Function
+
 Public Function CrearTablaTempComprobantes(facturas) As Boolean
-
-
     On Error GoTo err1
 
     CrearTablaTempComprobantes = True
 
     Dim fac As clsFacturaProveedor
-
     Dim strsql As String
 
     Set cn = conectar.obternerConexion
-
     cn.BeginTrans
-
     cn.execute "TRUNCATE sp_temporal.ComprobantesCargadosSP"
-
     cn.CommitTrans
-
     cn.BeginTrans
 
     For Each fac In facturas
+        Dim partes() As String
+        partes = Split(fac.numero, "-") ' Dividir el valor en dos partes
 
-        strsql = "INSERT INTO sp_temporal.ComprobantesCargadosSP (idcomprobante, numero, cuit, clave)" _
-                 & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & fac.numero + fac.Proveedor.Cuit & "')"
+        Dim puntoDeVenta As String
+        Dim numeroDesde As String
+        puntoDeVenta = CStr(CLng(partes(0))) ' Convertir a número sin procesar
+        numeroDesde = CStr(CLng(partes(1))) ' Convertir a número sin procesar
+
+        strsql = "INSERT INTO sp_temporal.ComprobantesCargadosSP (idcomprobante, numero, cuit, clave, puntodeventa, numerodesde)" _
+                 & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & puntoDeVenta + "-" + numeroDesde + fac.Proveedor.Cuit & "', '" & puntoDeVenta & "', '" & numeroDesde & "')"
 
         cn.execute strsql
-
     Next fac
-
 
     cn.CommitTrans
     Exit Function
@@ -785,6 +821,8 @@ err1:
     CrearTablaTempComprobantes = False
     cn.RollbackTrans
 End Function
+
+
 
 Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, Optional FechaFIn As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
     On Error Resume Next

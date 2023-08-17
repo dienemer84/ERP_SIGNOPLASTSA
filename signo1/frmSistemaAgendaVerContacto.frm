@@ -17,18 +17,20 @@ Begin VB.Form frmSistemaAgendaVerContacto
    ScaleWidth      =   10635
    ShowInTaskbar   =   0   'False
    Begin MSDataGridLib.DataGrid DataGrid1 
-      Height          =   3135
-      Left            =   0
+      Height          =   5295
+      Left            =   240
       TabIndex        =   3
-      Top             =   2760
-      Width           =   10575
-      _ExtentX        =   18653
-      _ExtentY        =   5530
+      Top             =   480
+      Width           =   10095
+      _ExtentX        =   17806
+      _ExtentY        =   9340
       _Version        =   393216
+      AllowUpdate     =   -1  'True
       BackColor       =   16777215
       HeadLines       =   1
       RowHeight       =   15
       FormatLocked    =   -1  'True
+      AllowAddNew     =   -1  'True
       BeginProperty HeadFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -148,7 +150,7 @@ Begin VB.Form frmSistemaAgendaVerContacto
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2535
+      Height          =   375
       Left            =   0
       TabIndex        =   2
       Top             =   0
@@ -224,9 +226,6 @@ Public Property Let idContacto(nIdContacto As Long)
     vIdContacto = nIdContacto
 End Property
 
-
-
-
 Private Sub Command1_Click()
     Unload Me
 End Sub
@@ -247,6 +246,10 @@ Public Sub llenarDatosContactos()
     Set Me.DataGrid1.DataSource = rs
 End Sub
 
+
+Private Sub DataGrid1_Click()
+
+End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me

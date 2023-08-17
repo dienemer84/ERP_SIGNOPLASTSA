@@ -77,7 +77,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
 
 
-        If fc.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+        If fc.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then
             negativo = -1
         Else
             negativo = 1
@@ -154,7 +154,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
         'sv.Total = funciones.RedondearDecimales(fc.Total) * negativo * tipo_cambio
 
-        sv.Total = funciones.RedondearDecimales(sv.NetoGravado + sv.ImpuestoInterno + sv.Redondeo + sv.Iva + (sv.percepciones / tipo_cambio))    '* negativo * tipo_cambio
+        sv.total = funciones.RedondearDecimales(sv.NetoGravado + sv.ImpuestoInterno + sv.Redondeo + sv.Iva + (sv.percepciones / tipo_cambio))    '* negativo * tipo_cambio
 
 
 
@@ -208,7 +208,7 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
 
     Dim negativo As Integer
     For Each fc In col_facturas
-        If fc.Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then
+        If fc.Tipo.TipoDoc = tipoDocumentoContable.NotaCredito Then
             negativo = -1
         Else
             negativo = 1
@@ -238,7 +238,7 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
         ' If sv.Exento = 0 Then
         sv.NetoGravado = RedondearDecimales(fc.TotalEstatico.TotalNetoGravado * fc.CambioAPatron) * negativo
         'End If
-        sv.Total = funciones.RedondearDecimales(sv.percepciones + sv.NetoGravado + sv.Iva)  '* negativo '+ excento quitado 19-11-14
+        sv.total = funciones.RedondearDecimales(sv.percepciones + sv.NetoGravado + sv.Iva)  '* negativo '+ excento quitado 19-11-14
 
 
 
@@ -319,7 +319,7 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(Id As Long, Optional venta
             det.NetoGravado = GetValue(rs, fieldsIndex, "ld", "neto_gravado")
             det.percepciones = GetValue(rs, fieldsIndex, "ld", "percepciones_iibb")
             det.RazonSocial = GetValue(rs, fieldsIndex, "ld", "razon_social")
-            det.Total = GetValue(rs, fieldsIndex, "ld", "total")
+            det.total = GetValue(rs, fieldsIndex, "ld", "total")
             det.FacturaId = GetValue(rs, fieldsIndex, "ld", "id_factura")
             det.LiquidacionId = GetValue(rs, fieldsIndex, "ld", "id_liquidacion")
 
@@ -456,7 +456,6 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
         Next det
         'tengo los maximos y minimos por tipo comprobante, ahora tengo que ver si son correlativos
 
-        Dim value As Variant
         Dim min As Long
         Dim max As Long
         Dim letrasFacturas As Variant
@@ -547,7 +546,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
             q = Replace$(q, "'iva'", conectar.Escape(det.Iva))
             q = Replace$(q, "'percepciones_iibb'", conectar.Escape(det.percepciones))
             q = Replace$(q, "'exento'", conectar.Escape(det.Exento))
-            q = Replace$(q, "'total'", conectar.Escape(det.Total))
+            q = Replace$(q, "'total'", conectar.Escape(det.total))
             q = Replace$(q, "'estado_factura'", conectar.Escape(det.estado))
             q = Replace$(q, "'id_factura'", conectar.Escape(det.FacturaId))
 
@@ -619,7 +618,7 @@ Public Function UpdateDetalle(deta As SubdiarioVentasDetalle) As Boolean
     q = Replace$(q, "'iva'", conectar.Escape(deta.Iva))
     q = Replace$(q, "'percepciones_iibb'", conectar.Escape(deta.percepciones))
     q = Replace$(q, "'exento'", conectar.Escape(deta.Exento))
-    q = Replace$(q, "'total'", conectar.Escape(deta.Total))
+    q = Replace$(q, "'total'", conectar.Escape(deta.total))
     q = Replace$(q, "'id'", deta.Id)
     UpdateDetalle = conectar.execute(q)
 End Function
@@ -653,7 +652,7 @@ Public Sub PosicionIvaMensual()
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblDebitoFiscalIVA").caption = FormatCurrency(sumaDebitoFiscal)
 
 
-
+    Dim sumaCreditoFiscal5 As Double
     Dim sumaCreditoFiscal10 As Double
     Dim sumaCreditoFiscal21 As Double
     Dim sumaCreditoFiscal27 As Double
@@ -662,9 +661,9 @@ Public Sub PosicionIvaMensual()
     Set Items = DAOSubdiarios.SubDiarioCompras(DateSerial(anio, mes, 1), DateAdd("d", -1, DateSerial(anio, mes + 1, 1)))
 
     For Each itsub In Items
+        sumaCreditoFiscal5 = sumaCreditoFiscal5 + itsub.AlicuotasIva(CStr(5))
         sumaCreditoFiscal10 = sumaCreditoFiscal10 + itsub.AlicuotasIva(CStr(10.5))
         sumaCreditoFiscal21 = sumaCreditoFiscal21 + itsub.AlicuotasIva(CStr(21))
-
         sumaCreditoFiscal27 = sumaCreditoFiscal27 + itsub.AlicuotasIva(CStr(27))
         '''' ver aca!!!!! ver ver ver
 
@@ -675,14 +674,13 @@ Public Sub PosicionIvaMensual()
         Next
 
 
-
-
     Next itsub
+    drpPosicionIvaMensual.Sections("seccion").Controls.item("lblCreditoFiscalIVA5").caption = FormatCurrency(sumaCreditoFiscal5)
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblCreditoFiscalIVA10").caption = FormatCurrency(sumaCreditoFiscal10)
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblCreditoFiscalIVA21").caption = FormatCurrency(sumaCreditoFiscal21)
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblCreditoFiscalIVA27").caption = FormatCurrency(sumaCreditoFiscal27)
-    drpPosicionIvaMensual.Sections("seccion").Controls.item("lblCreditoFiscalIVASUMA").caption = "(" & FormatCurrency(sumaCreditoFiscal10 + sumaCreditoFiscal21 + sumaCreditoFiscal27) & ")"
-    drpPosicionIvaMensual.Sections("seccion").Controls.item("lblFiscalIVADif").caption = FormatCurrency(sumaDebitoFiscal - (sumaCreditoFiscal10 + sumaCreditoFiscal21 + sumaCreditoFiscal27))
+    drpPosicionIvaMensual.Sections("seccion").Controls.item("lblCreditoFiscalIVASUMA").caption = "(" & FormatCurrency(sumaCreditoFiscal5 + sumaCreditoFiscal10 + sumaCreditoFiscal21 + sumaCreditoFiscal27) & ")"
+    drpPosicionIvaMensual.Sections("seccion").Controls.item("lblFiscalIVADif").caption = FormatCurrency(sumaDebitoFiscal - (sumaCreditoFiscal5 + sumaCreditoFiscal10 + sumaCreditoFiscal21 + sumaCreditoFiscal27))
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblPercepcionesIVA").caption = FormatCurrency(sumaPercepcionesIva)
 
 
@@ -698,7 +696,7 @@ Public Sub PosicionIvaMensual()
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblRetencionesIVA").caption = FormatCurrency(sumRetIva)
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblIVASUM").caption = "(" & FormatCurrency(sumaPercepcionesIva + sumRetIva) & ")"
 
-    drpPosicionIvaMensual.Sections("seccion").Controls.item("lblTotal").caption = FormatCurrency((sumaDebitoFiscal - (sumaCreditoFiscal10 + sumaCreditoFiscal21 + sumaCreditoFiscal27) - (sumaPercepcionesIva + sumRetIva)))
+    drpPosicionIvaMensual.Sections("seccion").Controls.item("lblTotal").caption = FormatCurrency((sumaDebitoFiscal - (sumaCreditoFiscal5 + sumaCreditoFiscal10 + sumaCreditoFiscal21 + sumaCreditoFiscal27) - (sumaPercepcionesIva + sumRetIva)))
 
 
     Dim r As Recordset

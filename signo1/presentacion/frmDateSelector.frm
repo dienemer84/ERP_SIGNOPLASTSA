@@ -92,6 +92,7 @@ Private Sub btnSeleccionar_Click()
     Me.Hide
 End Sub
 
+
 Private Sub Form_Load()
     Customize Me
 

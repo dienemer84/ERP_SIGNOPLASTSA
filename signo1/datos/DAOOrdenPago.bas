@@ -150,14 +150,14 @@ End Function
 
 
 
-Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional OrderBy As String = "1") As Collection
+Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
     q = "SELECT * " _
       & " From ordenes_pago" _
       & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = ordenes_pago.id_moneda)"
 
     q = q & " WHERE " & filter
-    q = q & " ORDER BY " & OrderBy
+    q = q & " ORDER BY " & orderBy
     Dim col As New Collection
     Dim op As OrdenPago
     Dim idx As Dictionary
@@ -179,7 +179,7 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional Orde
     Set FindAllSoloOP = col
 
 End Function
-Public Function FindAll(Optional filter As String = "1 = 1", Optional OrderBy As String = "1") As Collection
+Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
     q = "SELECT *, (operaciones.pertenencia + 0) as pertenencia2" _
       & " From ordenes_pago" _
@@ -213,7 +213,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional OrderBy As
     q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = ordenes_pago.id " _
       & " LEFT JOIN retenciones r ON r.id = opr.id_retencion "
     q = q & " WHERE " & filter
-    q = q & " ORDER BY " & OrderBy
+    q = q & " ORDER BY " & orderBy
 
     Dim col As New Collection
     Dim op As OrdenPago
@@ -1204,7 +1204,6 @@ End Function
 
 
 Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
-'Public Function PrintOP(Orden As OrdenPago) As Boolean
     Dim TAB1 As Integer
     Dim TAB2 As Integer
     Dim maxw As Single
@@ -1212,14 +1211,11 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Dim mtxt As String
     Dim textw As Single
     Dim lmargin As Integer
-
-
-
+    
     pic.Picture = LoadResPicture(101, vbResBitmap)
 
     Dim A As Single
     lmargin = 720
-
 
     TAB1 = 300
     TAB2 = 300
@@ -1240,8 +1236,6 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.Print "Fecha: ";
     Printer.FontBold = False
     Printer.Print Orden.FEcha
-
-
 
     If Orden.FacturasProveedor.count > 0 Then
 
@@ -1276,12 +1270,8 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
         Printer.Print Orden.alicuota & "%"
     End If
 
-
-
-
     Dim cert As CertificadoRetencion
     Set cert = DAOCertificadoRetencion.FindByOrdenPago(Orden.Id)
-
 
     Dim allcert As Collection
     Set allcert = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.Id)
@@ -1325,10 +1315,6 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
         End If
     End If
 
-
-
-
-
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Moneda: ";
@@ -1359,9 +1345,12 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.FontBold = False
     Printer.FontSize = 8
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
+    
     Dim F As clsFacturaProveedor
     Dim facs As New Collection
+    
     c = 0
+    
     For Each F In Orden.FacturasProveedor
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -1479,7 +1468,8 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.EndDoc
-
+    
     DaoHistorico.Save "orden_pago_historial", "OP Impresa", Orden.Id
+    
 End Function
 
