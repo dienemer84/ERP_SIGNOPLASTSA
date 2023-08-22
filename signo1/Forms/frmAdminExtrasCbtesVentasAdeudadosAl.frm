@@ -75,6 +75,18 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          Caption         =   "Fecha Comprobante"
          BackColor       =   16744576
          Appearance      =   4
+         Begin XtremeSuiteControls.PushButton PushButton 
+            Height          =   255
+            Left            =   360
+            TabIndex        =   27
+            Top             =   1320
+            Width           =   495
+            _Version        =   786432
+            _ExtentX        =   873
+            _ExtentY        =   450
+            _StockProps     =   79
+            UseVisualStyle  =   -1  'True
+         End
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
             Index           =   0
@@ -116,6 +128,17 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
             BackColor       =   -2147483643
             Style           =   2
             Text            =   "ComboBox1"
+         End
+         Begin XtremeSuiteControls.Label Label 
+            Height          =   255
+            Left            =   1440
+            TabIndex        =   28
+            Top             =   1320
+            Width           =   2415
+            _Version        =   786432
+            _ExtentX        =   4260
+            _ExtentY        =   450
+            _StockProps     =   79
          End
          Begin XtremeSuiteControls.Label Label6 
             Height          =   195
@@ -403,7 +426,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
       HoldSortSettings=   -1  'True
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
-      GroupFooterStyle=   1
+      GroupFooterStyle=   2
       PreviewRowLines =   1
       OLEDropMode     =   1
       ColumnAutoResize=   -1  'True
@@ -414,7 +437,6 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
       GroupByBoxInfoText=   ""
       AllowEdit       =   0   'False
       BorderStyle     =   0
-      GroupByBoxVisible=   0   'False
       BackColorGBBox  =   16744576
       BackColorHeader =   16761024
       ImageCount      =   1
@@ -424,7 +446,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   17
+      ColumnsCount    =   18
       Column(1)       =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":031A
       Column(2)       =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":0476
       Column(3)       =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":05A6
@@ -434,28 +456,29 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
       Column(7)       =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":0AFE
       Column(8)       =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":0C3E
       Column(9)       =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":0D86
-      Column(10)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":0EC6
-      Column(11)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":100E
-      Column(12)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":114E
-      Column(13)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1296
-      Column(14)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1416
-      Column(15)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1596
-      Column(16)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1702
-      Column(17)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":186E
+      Column(10)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":0F6E
+      Column(11)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":115E
+      Column(12)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":129E
+      Column(13)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":13E6
+      Column(14)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1566
+      Column(15)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":16E6
+      Column(16)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1852
+      Column(17)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":19BE
+      Column(18)      =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1BD6
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":19CE
-      FormatStyle(2)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1B06
-      FormatStyle(3)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1BB6
-      FormatStyle(4)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1C6A
-      FormatStyle(5)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1D42
-      FormatStyle(6)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1DFA
-      FormatStyle(7)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1EDA
-      FormatStyle(8)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1F9A
-      FormatStyle(9)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":205E
-      FormatStyle(10) =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":211E
+      FormatStyle(1)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1CEA
+      FormatStyle(2)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1E22
+      FormatStyle(3)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1ED2
+      FormatStyle(4)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":1F86
+      FormatStyle(5)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":205E
+      FormatStyle(6)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":2116
+      FormatStyle(7)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":21F6
+      FormatStyle(8)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":22B6
+      FormatStyle(9)  =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":237A
+      FormatStyle(10) =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":243A
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":21A2
-      PrinterProperties=   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":24BC
+      ImagePicture(1) =   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":24BE
+      PrinterProperties=   "frmAdminExtrasCbtesVentasAdeudadosAl.frx":27D8
    End
 End
 Attribute VB_Name = "frmAdminExtrasCbtesVentasAdeudadosAl"
@@ -468,7 +491,6 @@ Private desde
 Private Factura As Factura
 Private facturas As Collection
 Dim m_Archivos As Dictionary
-Dim Acumulador As Double
 
 Private Sub btnCargarProveedores_Click()
 
@@ -481,7 +503,7 @@ End Sub
 Private Sub btnExportar_Click()
     Me.progreso.Visible = True
     Dim FechaFIn As String
-    FechaFIn = Me.dtpHastaFIN(1).value
+    FechaFIn = Me.dtpHastaFIN(1).Value
     
     If IsSomething(facturas) Then
         If Not DAOFactura.ExportarColeccionTotalizadores(facturas, Me.progreso, FechaFIn) Then GoTo err1
@@ -502,15 +524,12 @@ End Sub
 
 
 Private Sub btnBuscar_Click()
-    If IsNull(dtpHastaFIN(1).value) Then
+    If IsNull(dtpHastaFIN(1).Value) Then
                 MsgBox ("Tiene que selecionar una fecha de fin de cobro!")
                     Else
-                        Acumulador = 0
-                        
+                       
         llenarGrilla
-'        Dim value As String
-'value = grilla.GetCellValue(0, 0)
-'MsgBox (value)
+
     End If
 
 End Sub
@@ -520,12 +539,13 @@ Private Sub Form_Load()
     Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_FacturaProveedor)
     vId = funciones.CreateGUID
     
+      
     FormHelper.Customize Me
     
     GridEXHelper.CustomizeGrid Me.grilla, True
     
     Me.grilla.ItemCount = 0
-    
+        
     dtpHastaFIN(1) = Now()
     
     btnRemoveProveedor_Click
@@ -535,10 +555,11 @@ Private Sub Form_Load()
     For i = 0 To Me.cboRangos.ListCount - 1
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
     Next i
+    
     Me.cboRangos.ListIndex = i
    
     Me.grilla.Refresh
-
+    
 'Se agrega estas lineas para pre-setear las fechas ejemplo...
 '    Me.dtpDesde(0).value = "01/04/2022"
 '    Me.dtpHasta(0).value = "31/03/2023"
@@ -551,7 +572,7 @@ Public Sub llenarGrilla()
     
     Dim filtro As String
     Dim FechaFIn As String
-    
+
     Me.grilla.ItemCount = 0
     filtro = "1=1"
 
@@ -563,19 +584,17 @@ Public Sub llenarGrilla()
         filtro = filtro & " and AdminFacturas.nroFactura=" & Me.txtNroFactura
     End If
 
-    If Not IsNull(Me.dtpDesde(0).value) Then
-        filtro = filtro & " AND AdminFacturas.FechaEmision >= " & conectar.Escape(Me.dtpDesde(0).value)
+    If Not IsNull(Me.dtpDesde(0).Value) Then
+        filtro = filtro & " AND AdminFacturas.FechaEmision >= " & conectar.Escape(Me.dtpDesde(0).Value)
     End If
 
-    If Not IsNull(Me.dtpHasta(0).value) Then
-        filtro = filtro & " AND AdminFacturas.FechaEmision <= " & conectar.Escape(Me.dtpHasta(0).value)
+    If Not IsNull(Me.dtpHasta(0).Value) Then
+        filtro = filtro & " AND AdminFacturas.FechaEmision <= " & conectar.Escape(Me.dtpHasta(0).Value)
     End If
 
-
-    If Not IsNull(dtpHastaFIN(1).value) Then
-        FechaFIn = conectar.Escape(dtpHastaFIN(1).value)
+    If Not IsNull(dtpHastaFIN(1).Value) Then
+        FechaFIn = conectar.Escape(dtpHastaFIN(1).Value)
     End If
-
     
     Set facturas = DAOFactura.FindAllTotalizadores(filtro, , , FechaFIn)
     
@@ -583,40 +602,48 @@ Public Sub llenarGrilla()
     
     Dim F As Factura
     Dim c As Integer
-
+    Dim j As Integer
+    Dim total As Double
+    
+    total = 0
+     j = 0
+    
     For Each F In facturas
-
-        Dim total As Double
-        Dim TotalCobrado As Double
-        Dim cobrado As Double
-        Dim nuevoSaldo As Double
-
+        
         If F.TipoDocumento = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
 
         total = total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.total * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-
-        TotalCobrado = F.MontoCobrado
-        cobrado = cobrado + TotalCobrado
-        
-        nuevoSaldo = nuevoSaldo + grilla.value(17)
-        
-
         
     Next
-
-    Me.lbl(2).caption = FormatCurrency(funciones.FormatearDecimales(total))
-
-    Me.grilla.ItemCount = 0
     
+    Dim SaldinString As String
+    Dim NuevoSaldo As Double
+    Saldin = 0
+    NuevoSaldo = 0
+
     Me.grilla.ItemCount = facturas.count
-       
+    
+    For Each Factura In facturas
+             j = j + 1
+             
+            SaldinString = grilla.GetRowData(j).GetSubTotal(17, jgexSum)
+            SaldinString = Replace(SaldinString, ".", "")
+            SaldinString = Replace(SaldinString, ",", ".")
+            
+            Dim SaldinDouble As Double
+            SaldinDouble = CDbl(SaldinString)
+            
+            NuevoSaldo = NuevoSaldo + SaldinString
+    
+    Next
+
     GridEXHelper.AutoSizeColumns Me.grilla, True
     
     Me.caption = "Cbtes. filtrados [Cantidad: " & facturas.count & "]"
     
-    lblTotalNuevoSaldo(1) = FormatCurrency(funciones.FormatearDecimales(Acumulador))
-
-
+    Me.lbl(2).caption = FormatCurrency(funciones.FormatearDecimales(total))
+    lblTotalNuevoSaldo(1) = FormatCurrency(funciones.FormatearDecimales(NuevoSaldo))
+    
 End Sub
 
 
@@ -634,7 +661,6 @@ Private Sub Form_Resize()
 End Sub
 
 
-
 Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla, Column
 End Sub
@@ -645,32 +671,16 @@ Private Sub grilla_DblClick()
 End Sub
 
 
-Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
-
-End Sub
-
-
-Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
-MsgBox (Values(17))
-End Sub
-
 Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     Set Factura = facturas.item(rowIndex)
-
     
     Dim i As Integer
-    
+
     Dim ValorCero As Double
     Dim TotalSaldoDefinitivo As Double
-    Dim Subtotal1 As Double
-    Dim Subtotal2 As Double
-    Dim Subtotal3 As Double
-    Dim Subtotal4 As Double
-    Dim Subtotal5 As Double
-    
-    ValorCero = 0
+
+    ValorCero = "0"
 
     With Factura
 
@@ -719,84 +729,57 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         saldoComprobante = TotalComprobante - TotalCobrado
         Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
 
-        Subtotal1 = (saldoComprobante * i)
-        
-'    End With
 
-    If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
-        Values(17) = "0,00"
-        
-        Subtotal1 = 0
-        
-    Else
-        If Factura.CbteAsociadoTipo <> "2" And Factura.CbteAsociadoTipo <> "5" And Factura.CbteAsociadoTipo <> "8" And Factura.CbteAsociadoTipo <> "16" And Factura.CbteAsociadoTipo <> "11" And Factura.CbteAsociadoTipo <> "22" Then
+        If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
+            Values(17) = ValorCero
 
-            Values(12) = ""
-            Values(13) = ""
-            Values(14) = ""
-            Values(15) = ""
-            Values(16) = ""
-
-            Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
-            
-            Subtotal2 = (saldoComprobante * i)
 
         Else
+            If Factura.CbteAsociadoTipo <> "2" And Factura.CbteAsociadoTipo <> "5" And Factura.CbteAsociadoTipo <> "8" And Factura.CbteAsociadoTipo <> "16" And Factura.CbteAsociadoTipo <> "11" And Factura.CbteAsociadoTipo <> "22" Then
 
-            Values(12) = Factura.observaciones_cancela
-            Values(13) = Factura.CbteAsociadoID
-            Values(14) = Factura.CbteAsociado
-
-'''            If Factura.CbteAsociadoFecha = "12:00:00 a.m." Then
-'''                Values(15) = ""
-'''            Else
-''''''                Values(15) = Format(Factura.CbteAsociadoFecha, ddmmyyy)
-                Values(15) = Factura.CbteAsociadoFecha
-'''''            End If
-
-            If Factura.CbteAsociadoMonto = 0 Then
+                Values(12) = ""
+                Values(13) = ""
+                Values(14) = ""
+                Values(15) = ""
                 Values(16) = ""
+
+                Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
+                'Values(17) = funciones.FormatearDecimales(saldoComprobante) * i
+
             Else
-                Values(16) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.CbteAsociadoMonto) * i), "$", "")
+
+                Values(12) = Factura.observaciones_cancela
+                Values(13) = Factura.CbteAsociadoID
+                Values(14) = Factura.CbteAsociado
+
+                Values(15) = Factura.CbteAsociadoFecha
+
+
+                If Factura.CbteAsociadoMonto = 0 Then
+                    Values(16) = ""
+                Else
+                    Values(16) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.CbteAsociadoMonto) * i), "$", "")
+                End If
+
+                TotalSaldoDefinitivo = TotalComprobante - Factura.CbteAsociadoMonto
+                Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(TotalSaldoDefinitivo) * i), "$", "")
+                'Values(17) = funciones.FormatearDecimales(TotalSaldoDefinitivo) * i
+
+                If Values(17) <> ValorCero And TotalCobrado <> 0 Then
+
+                    Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
+
+                End If
             End If
-
-            TotalSaldoDefinitivo = TotalComprobante - Factura.CbteAsociadoMonto
-            Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(TotalSaldoDefinitivo) * i), "$", "")
-
-            Subtotal3 = (TotalSaldoDefinitivo * i)
-
-            If Values(17) <> ValorCero And TotalCobrado <> 0 Then
-
-                Values(17) = Values(11)
-
-                Subtotal4 = (TotalSaldoDefinitivo * i)
-
-            End If
-
-
-
-        
         End If
-        
-
-    
-    End If
-
-        If (saldoComprobante * i) = 0 Then
-        
-            Subtotal5 = 0
-        End If
-    
-        End With
-        Acumulador = Acumulador + ((Subtotal1 + Subtotal2 + Subtotal3 + Subtotal4 + Subtotal5)) / 2
-        
-
+    End With
 
 End Sub
 
 
 Private Sub txtNroFactura_GotFocus()
     foco Me.txtNroFactura
+    
 End Sub
 
 
@@ -815,8 +798,7 @@ Private Sub SeleccionarFactura()
     On Error Resume Next
     Set Factura = facturas.item(grilla.rowIndex(grilla.row))
     
-
-    
+   
 End Sub
 
 

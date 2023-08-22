@@ -247,10 +247,6 @@ Public Sub llenarDatosContactos()
 End Sub
 
 
-Private Sub DataGrid1_Click()
-
-End Sub
-
 Private Sub Form_Load()
     FormHelper.Customize Me
     llenarDatosContactos
