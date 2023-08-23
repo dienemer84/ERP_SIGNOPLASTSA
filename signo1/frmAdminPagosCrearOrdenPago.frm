@@ -4,10 +4,10 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   9990
+   ClientHeight    =   9960
    ClientLeft      =   2340
    ClientTop       =   3105
-   ClientWidth     =   16965
+   ClientWidth     =   16980
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -22,8 +22,8 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   9990
-   ScaleWidth      =   16965
+   ScaleHeight     =   9960
+   ScaleWidth      =   16980
    Begin XtremeSuiteControls.PushButton btnExportarDatos 
       Height          =   495
       Left            =   14880
@@ -218,7 +218,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
          ItemCount       =   5
-         SelectedItem    =   3
+         SelectedItem    =   2
          Item(0).Caption =   "Cheques Propios"
          Item(0).ControlCount=   1
          Item(0).Control(0)=   "gridChequesPropios"
@@ -276,9 +276,10 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          End
          Begin GridEX20.GridEX gridCajaOperaciones 
             Height          =   4710
-            Left            =   105
+            Left            =   -69895
             TabIndex        =   10
             Top             =   435
+            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   8308
@@ -356,10 +357,9 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          End
          Begin GridEX20.GridEX gridCheques 
             Height          =   4710
-            Left            =   -69895
+            Left            =   105
             TabIndex        =   8
             Top             =   435
-            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   8308
@@ -379,22 +379,23 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
             IntProp1        =   0
             IntProp2        =   0
             IntProp7        =   0
-            ColumnsCount    =   6
+            ColumnsCount    =   7
             Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":2710
             Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":2890
             Column(3)       =   "frmAdminPagosCrearOrdenPago.frx":2A30
-            Column(4)       =   "frmAdminPagosCrearOrdenPago.frx":2B6C
-            Column(5)       =   "frmAdminPagosCrearOrdenPago.frx":2C78
-            Column(6)       =   "frmAdminPagosCrearOrdenPago.frx":2D48
+            Column(4)       =   "frmAdminPagosCrearOrdenPago.frx":2B28
+            Column(5)       =   "frmAdminPagosCrearOrdenPago.frx":2C64
+            Column(6)       =   "frmAdminPagosCrearOrdenPago.frx":2D70
+            Column(7)       =   "frmAdminPagosCrearOrdenPago.frx":2E40
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":2E34
-            FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":2F6C
-            FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":301C
-            FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":30D0
-            FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":31A8
-            FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":3260
+            FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":2F2C
+            FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":3064
+            FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":3114
+            FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":31C8
+            FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":32A0
+            FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":3358
             ImageCount      =   0
-            PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":3340
+            PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":3438
          End
          Begin GridEX20.GridEX gridCompensatorios 
             Height          =   4710
@@ -423,28 +424,28 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
             IntProp2        =   0
             IntProp7        =   0
             ColumnsCount    =   5
-            Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":3518
-            Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":3660
-            Column(3)       =   "frmAdminPagosCrearOrdenPago.frx":376C
-            Column(4)       =   "frmAdminPagosCrearOrdenPago.frx":3858
-            Column(5)       =   "frmAdminPagosCrearOrdenPago.frx":395C
+            Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":3610
+            Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":3758
+            Column(3)       =   "frmAdminPagosCrearOrdenPago.frx":3864
+            Column(4)       =   "frmAdminPagosCrearOrdenPago.frx":3950
+            Column(5)       =   "frmAdminPagosCrearOrdenPago.frx":3A54
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":3A9C
-            FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":3BD4
-            FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":3C84
-            FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":3D38
-            FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":3E10
-            FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":3EC8
+            FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":3B94
+            FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":3CCC
+            FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":3D7C
+            FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":3E30
+            FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":3F08
+            FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":3FC0
             ImageCount      =   0
-            PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":3FA8
+            PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":40A0
          End
       End
    End
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
-      Left            =   2880
+      Left            =   2520
       TabIndex        =   3
-      Top             =   10680
+      Top             =   10080
       Visible         =   0   'False
       Width           =   3465
       _ExtentX        =   6112
@@ -467,23 +468,23 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":4180
-      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":4280
+      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":4278
+      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":4378
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":4370
-      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":44A8
-      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":4558
-      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":460C
-      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":46E4
-      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":479C
+      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":4468
+      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":45A0
+      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":4650
+      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":4704
+      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":47DC
+      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":4894
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":487C
+      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":4974
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   1695
-      Left            =   10920
+      Left            =   11400
       TabIndex        =   4
-      Top             =   10560
+      Top             =   10680
       Visible         =   0   'False
       Width           =   4185
       _ExtentX        =   7382
@@ -505,17 +506,17 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":4A54
-      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":4B78
+      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":4B4C
+      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":4C70
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":4C6C
-      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":4DA4
-      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":4E54
-      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":4F08
-      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":4FE0
-      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":5098
+      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":4D64
+      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":4E9C
+      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":4F4C
+      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":5000
+      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":50D8
+      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":5190
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":5178
+      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":5270
    End
    Begin GridEX20.GridEX gridMonedas 
       Height          =   1695
@@ -543,23 +544,23 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":5350
-      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":5474
+      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":5448
+      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":556C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":5568
-      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":56A0
-      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":5750
-      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":5804
-      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":58DC
-      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":5994
+      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":5660
+      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":5798
+      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":5848
+      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":58FC
+      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":59D4
+      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":5A8C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":5A74
+      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":5B6C
    End
    Begin GridEX20.GridEX gridCajas 
       Height          =   1695
-      Left            =   17160
+      Left            =   12960
       TabIndex        =   6
-      Top             =   10920
+      Top             =   10320
       Visible         =   0   'False
       Width           =   1500
       _ExtentX        =   2646
@@ -579,23 +580,23 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       DataMode        =   99
       ColumnHeaderHeight=   285
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":5C4C
-      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":5D4C
+      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":5D44
+      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":5E44
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":5E38
-      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":5F70
-      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":6020
-      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":60D4
-      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":61AC
-      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":6264
+      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":5F30
+      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":6068
+      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":6118
+      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":61CC
+      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":62A4
+      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":635C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":6344
+      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":643C
    End
    Begin GridEX20.GridEX gridChequesDisponibles 
       Height          =   2640
-      Left            =   5880
+      Left            =   6240
       TabIndex        =   7
-      Top             =   10680
+      Top             =   9960
       Visible         =   0   'False
       Width           =   9555
       _ExtentX        =   16854
@@ -616,23 +617,24 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   7
-      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":651C
-      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":669C
-      Column(3)       =   "frmAdminPagosCrearOrdenPago.frx":683C
-      Column(4)       =   "frmAdminPagosCrearOrdenPago.frx":6978
-      Column(5)       =   "frmAdminPagosCrearOrdenPago.frx":6A84
-      Column(6)       =   "frmAdminPagosCrearOrdenPago.frx":6BA4
-      Column(7)       =   "frmAdminPagosCrearOrdenPago.frx":6CB0
+      ColumnsCount    =   8
+      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":6614
+      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":6794
+      Column(3)       =   "frmAdminPagosCrearOrdenPago.frx":6934
+      Column(4)       =   "frmAdminPagosCrearOrdenPago.frx":6A2C
+      Column(5)       =   "frmAdminPagosCrearOrdenPago.frx":6B68
+      Column(6)       =   "frmAdminPagosCrearOrdenPago.frx":6C74
+      Column(7)       =   "frmAdminPagosCrearOrdenPago.frx":6D94
+      Column(8)       =   "frmAdminPagosCrearOrdenPago.frx":6EA0
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":6DA4
-      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":6EDC
-      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":6F8C
-      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":7040
-      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":7118
-      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":71D0
+      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":6F94
+      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":70CC
+      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":717C
+      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":7230
+      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":7308
+      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":73C0
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":72B0
+      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":74A0
    End
    Begin GridEX20.GridEX gridChequeras 
       Height          =   1815
@@ -660,23 +662,23 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":7488
-      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":75A8
+      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":7678
+      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":7798
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":76A8
-      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":77E0
-      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":7890
-      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":7944
-      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":7A1C
-      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":7AD4
+      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":7898
+      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":79D0
+      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":7A80
+      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":7B34
+      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":7C0C
+      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":7CC4
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":7BB4
+      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":7DA4
    End
    Begin GridEX20.GridEX gridChequesChequera 
       Height          =   1710
-      Left            =   15480
+      Left            =   12240
       TabIndex        =   12
-      Top             =   10560
+      Top             =   10200
       Width           =   1980
       _ExtentX        =   3493
       _ExtentY        =   3016
@@ -699,19 +701,19 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":7D8C
-      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":7EBC
+      Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":7F7C
+      Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":80AC
       SortKeysCount   =   1
-      SortKey(1)      =   "frmAdminPagosCrearOrdenPago.frx":7FBC
+      SortKey(1)      =   "frmAdminPagosCrearOrdenPago.frx":81AC
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":8024
-      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":815C
-      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":820C
-      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":82C0
-      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":8398
-      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":8450
+      FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":8214
+      FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":834C
+      FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":83FC
+      FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":84B0
+      FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":8588
+      FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":8640
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":8530
+      PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":8720
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
       Height          =   525
@@ -916,20 +918,20 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   3
-         Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":8708
-         Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":8844
-         Column(3)       =   "frmAdminPagosCrearOrdenPago.frx":8944
+         Column(1)       =   "frmAdminPagosCrearOrdenPago.frx":88F8
+         Column(2)       =   "frmAdminPagosCrearOrdenPago.frx":8A34
+         Column(3)       =   "frmAdminPagosCrearOrdenPago.frx":8B34
          FormatStylesCount=   8
-         FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":8A48
-         FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":8B70
-         FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":8C20
-         FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":8CD4
-         FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":8DAC
-         FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":8E64
-         FormatStyle(7)  =   "frmAdminPagosCrearOrdenPago.frx":8F44
-         FormatStyle(8)  =   "frmAdminPagosCrearOrdenPago.frx":8FE0
+         FormatStyle(1)  =   "frmAdminPagosCrearOrdenPago.frx":8C38
+         FormatStyle(2)  =   "frmAdminPagosCrearOrdenPago.frx":8D60
+         FormatStyle(3)  =   "frmAdminPagosCrearOrdenPago.frx":8E10
+         FormatStyle(4)  =   "frmAdminPagosCrearOrdenPago.frx":8EC4
+         FormatStyle(5)  =   "frmAdminPagosCrearOrdenPago.frx":8F9C
+         FormatStyle(6)  =   "frmAdminPagosCrearOrdenPago.frx":9054
+         FormatStyle(7)  =   "frmAdminPagosCrearOrdenPago.frx":9134
+         FormatStyle(8)  =   "frmAdminPagosCrearOrdenPago.frx":91D0
          ImageCount      =   0
-         PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":9080
+         PrinterProperties=   "frmAdminPagosCrearOrdenPago.frx":9270
       End
       Begin XtremeSuiteControls.PushButton btnCargar 
          Height          =   345
@@ -1335,6 +1337,8 @@ Public ReadOnly As Boolean
 
 Public Sub Cargar(op As OrdenPago)
 
+    Me.caption = "Orden de Pago Nro " & OrdenPago.Id
+
     If Not IsSomething(op) Then
         MsgBox "La OP que está intentando visualizar est? en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
         Unload Me
@@ -1344,6 +1348,8 @@ Public Sub Cargar(op As OrdenPago)
 
     Set OrdenPago = DAOOrdenPago.FindById(op.Id)
     Set OrdenPago.Compensatorios = DAOCompensatorios.FindByOP(OrdenPago.Id)
+    
+    Me.caption = "Orden de Pago Nro " & OrdenPago.Id
 
     Dim i As Long
     Dim j As Long
@@ -1438,7 +1444,7 @@ Public Sub Cargar(op As OrdenPago)
     End With
     mostrarCompensatorios
 
-    Me.caption = "Orden de Pago Nro " & OrdenPago.Id
+
 
     'Me.grpDestino.Enabled = Not ReadOnly
     Me.txtDifCambioNG1.Enabled = Not ReadOnly
@@ -2028,11 +2034,12 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal rowIndex As Long, ByVal
         Values(1) = cheque.numero
         'FORMATCURRENCY
         Values(2) = FormatCurrency(cheque.Monto)
-        If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
-        If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
-        Values(5) = cheque.Id
-        Values(6) = cheque.OrigenCheque
-        Values(7) = cheque.OrigenDestino
+        Values(3) = cheque.FechaVencimiento
+        If IsSomething(cheque.moneda) Then Values(4) = cheque.moneda.NombreCorto
+        If IsSomething(cheque.Banco) Then Values(5) = cheque.Banco.nombre
+        Values(6) = cheque.Id
+        Values(7) = cheque.OrigenCheque
+        Values(8) = cheque.OrigenDestino
 
     End If
 
@@ -2270,14 +2277,14 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
         'fix 004
-        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalAbonado * -1, F.TotalAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
+        totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, F.TotalAbonado * -1, F.TotalAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
 
-        totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
+        totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
 
-        TotNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonado * -1, F.NetoGravadoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
-        totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonadoDiaPago * -1, F.NetoGravadoAbonadoDiaPago), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
-        totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionTOTAL * -1, F.DiferenciaPorTipoDeCambionTOTAL), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
-        totCambiong = totCambiong + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionNG * -1, F.DiferenciaPorTipoDeCambionNG), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
+        TotNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, F.NetoGravadoAbonado * -1, F.NetoGravadoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
+        totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, F.NetoGravadoAbonadoDiaPago * -1, F.NetoGravadoAbonadoDiaPago), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
+        totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, F.DiferenciaPorTipoDeCambionTOTAL * -1, F.DiferenciaPorTipoDeCambionTOTAL), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
+        totCambiong = totCambiong + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, F.DiferenciaPorTipoDeCambionNG * -1, F.DiferenciaPorTipoDeCambionNG), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
 
     Next F
 
@@ -2908,10 +2915,11 @@ Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
 
         'FORMATCURRENCY
         Values(2) = FormatCurrency(cheque.Monto)
-        If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
-        If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
-        Values(5) = cheque.OrigenDestino
-        Values(6) = cheque.OrigenCheque
+        Values(3) = cheque.FechaVencimiento
+        If IsSomething(cheque.moneda) Then Values(4) = cheque.moneda.NombreCorto
+        If IsSomething(cheque.Banco) Then Values(5) = cheque.Banco.nombre
+        Values(6) = cheque.OrigenDestino
+        Values(7) = cheque.OrigenCheque
     
     End If
 End Sub

@@ -53,7 +53,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       End
    End
    Begin VB.Frame Frame1 
-      Height          =   855
+      Height          =   865
       Index           =   0
       Left            =   9960
       TabIndex        =   18
@@ -292,7 +292,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Height          =   255
          Left            =   4530
          TabIndex        =   17
-         Top             =   960
+         Top             =   990
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -512,16 +512,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Option Explicit
-
 Implements ISuscriber
 Private desde
 Dim ids As String
 Private ordenes As New Collection
 Private Orden As OrdenPago
 Private fac As clsFacturaProveedor
-Dim i As Integer
-Dim flagOPSeleccionada As Boolean
+    Dim i As Integer
 
 Private Sub btnClearProveedor_Click()
     Me.cboProveedores.ListIndex = -1
@@ -612,8 +609,6 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = i
     
-    
-    
 End Sub
 
 Private Sub llenarLista()
@@ -669,8 +664,7 @@ Private Sub llenarLista()
     Me.gridOrdenes.ItemCount = ordenes.count
 
     Me.caption = "Listado de OP" & " [Cant: " & ordenes.count & "]"
-    
-    flagOPSeleccionada = False
+
 
 End Sub
 Private Sub Form_Resize()
@@ -681,8 +675,6 @@ Private Sub Form_Resize()
     Me.GroupBox1.Width = Me.gridOrdenes.Width
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     
-    Me.WindowState = vbMaximized
-    
 End Sub
 
 Private Sub Form_Terminate()
@@ -691,15 +683,8 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
-End Sub
-
-
-Private Sub gridOrdenes_Click()
-    flagOPSeleccionada = True
-    gridOrdenes_SelectionChange
     
-    Me.Label1.caption = Orden.Id
-
+    
 End Sub
 
 
@@ -708,18 +693,32 @@ Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 
+'Private Sub gridOrdenes_Click()
+'    gridOrdenes_SelectionChange
+'End Sub
+
+
 Private Sub gridOrdenes_DblClick()
-    flagOPSeleccionada = True
-    gridOrdenes_SelectionChange
+'    gridOrdenes_SelectionChange
     mnuVer_Click
+End Sub
+
+
+Private Sub gridOrdenes_SelectionChange()
+    SeleccionarOP
+End Sub
+
+
+Private Sub SeleccionarOP()
+    On Error Resume Next
+    Set Orden = ordenes.item(gridOrdenes.rowIndex(gridOrdenes.row))
+
 End Sub
 
 
 Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If ordenes.count > 0 Then
-        flagOPSeleccionada = True
         gridOrdenes_SelectionChange
-        'SeleccionarOP
         If Button = 2 Then
             Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
             Me.mnuEditar.Enabled = (Orden.estado = EstadoOrdenPago_pendiente)
@@ -747,18 +746,6 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 End Sub
 
-Private Sub gridOrdenes_SelectionChange()
-    On Error Resume Next
-    
-    If flagOPSeleccionada = False Then
-        Set Orden = Nothing
-    Else
-        Set Orden = ordenes.item(gridOrdenes.rowIndex(gridOrdenes.row))
-    End If
-
-End Sub
-
-
 
 Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex > 0 And ordenes.count > 0 Then
@@ -785,8 +772,6 @@ Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
 
         Values(9) = enums.EnumEstadoOrdenPago(Orden.estado)
     End If
-    
-    flagOPSeleccionada = False
 End Sub
 
 Private Property Get ISuscriber_id() As String
@@ -847,15 +832,9 @@ End Sub
 Private Sub mnuEditar_Click()
     SeleccionarOP
     
-
-    
     Dim f22 As New frmAdminPagosCrearOrdenPago
-
     f22.Show
-
     f22.Cargar Orden
-
-
 End Sub
 
 Private Sub mnuHistorial_Click()
@@ -885,11 +864,16 @@ End Sub
 
 Private Sub mnuVer_Click()
 
+    
+
     Dim f22 As New frmAdminPagosCrearOrdenPago
     f22.Show
+    SeleccionarOP
+
     f22.ReadOnly = True
-    Set Orden = DAOOrdenPago.FindById(Me.Label1.caption)
+
     f22.Cargar Orden
+ 
     
 End Sub
 
@@ -912,4 +896,5 @@ End Sub
 Private Sub cboRangos_Click()
     funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde(1), Me.dtpHasta(1)
 End Sub
+
 
