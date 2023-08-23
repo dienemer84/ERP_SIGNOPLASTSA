@@ -45,11 +45,11 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
-         Text            =   "cboProveedores"
+         Text            =   "cboClientes"
       End
       Begin XtremeSuiteControls.PushButton btnRemoveProveedor 
          Height          =   255
-         Left            =   5520
+         Left            =   5400
          TabIndex        =   3
          Top             =   765
          Width           =   420
@@ -75,18 +75,6 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          Caption         =   "Fecha Comprobante"
          BackColor       =   16744576
          Appearance      =   4
-         Begin XtremeSuiteControls.PushButton PushButton 
-            Height          =   255
-            Left            =   360
-            TabIndex        =   27
-            Top             =   1320
-            Width           =   495
-            _Version        =   786432
-            _ExtentX        =   873
-            _ExtentY        =   450
-            _StockProps     =   79
-            UseVisualStyle  =   -1  'True
-         End
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
             Index           =   0
@@ -128,17 +116,6 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
             BackColor       =   -2147483643
             Style           =   2
             Text            =   "ComboBox1"
-         End
-         Begin XtremeSuiteControls.Label Label 
-            Height          =   255
-            Left            =   1440
-            TabIndex        =   28
-            Top             =   1320
-            Width           =   2415
-            _Version        =   786432
-            _ExtentX        =   4260
-            _ExtentY        =   450
-            _StockProps     =   79
          End
          Begin XtremeSuiteControls.Label Label6 
             Height          =   195
@@ -186,14 +163,14 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          End
       End
       Begin XtremeSuiteControls.GroupBox gbBotones 
-         Height          =   855
-         Left            =   11040
+         Height          =   735
+         Left            =   10920
          TabIndex        =   11
-         Top             =   1080
+         Top             =   1200
          Width           =   3255
          _Version        =   786432
          _ExtentX        =   5741
-         _ExtentY        =   1508
+         _ExtentY        =   1296
          _StockProps     =   79
          BackColor       =   16744576
          Appearance      =   4
@@ -202,7 +179,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
             Height          =   390
             Left            =   240
             TabIndex        =   12
-            Top             =   300
+            Top             =   240
             Width           =   1245
             _Version        =   786432
             _ExtentX        =   2196
@@ -216,7 +193,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
             Height          =   390
             Left            =   1800
             TabIndex        =   13
-            Top             =   300
+            Top             =   240
             Width           =   1245
             _Version        =   786432
             _ExtentX        =   2196
@@ -228,15 +205,15 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          End
       End
       Begin XtremeSuiteControls.GroupBox GroupBox 
-         Height          =   855
+         Height          =   735
          Index           =   1
-         Left            =   14400
+         Left            =   14280
          TabIndex        =   14
-         Top             =   1080
+         Top             =   1200
          Width           =   4095
          _Version        =   786432
          _ExtentX        =   7223
-         _ExtentY        =   1508
+         _ExtentY        =   1296
          _StockProps     =   79
          BackColor       =   16744576
          Appearance      =   4
@@ -244,8 +221,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
             Height          =   375
             Left            =   120
             TabIndex        =   15
-            Top             =   300
-            Visible         =   0   'False
+            Top             =   240
             Width           =   3855
             _Version        =   786432
             _ExtentX        =   6800
@@ -254,26 +230,12 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
             Appearance      =   6
          End
       End
-      Begin XtremeSuiteControls.PushButton btnCargarProveedores 
-         Height          =   375
-         Left            =   3240
-         TabIndex        =   16
-         Top             =   240
-         Width           =   2100
-         _Version        =   786432
-         _ExtentX        =   3704
-         _ExtentY        =   661
-         _StockProps     =   79
-         Caption         =   "Cargar Clientes"
-         BackColor       =   12632256
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.DateTimePicker dtpHastaFIN 
          Height          =   315
          Index           =   1
          Left            =   3840
-         TabIndex        =   17
-         Top             =   1620
+         TabIndex        =   16
+         Top             =   1560
          Width           =   1470
          _Version        =   786432
          _ExtentX        =   2593
@@ -286,8 +248,8 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
       Begin XtremeSuiteControls.GroupBox GroupBox 
          Height          =   855
          Index           =   0
-         Left            =   11040
-         TabIndex        =   22
+         Left            =   10920
+         TabIndex        =   21
          Top             =   240
          Width           =   7455
          _Version        =   786432
@@ -311,28 +273,28 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
             EndProperty
             Height          =   195
             Index           =   1
-            Left            =   4950
-            TabIndex        =   26
-            Top             =   480
+            Left            =   4320
+            TabIndex        =   25
+            Top             =   240
             Width           =   1740
          End
          Begin VB.Label lblTotalNuevoSaldo 
             AutoSize        =   -1  'True
             BackColor       =   &H00C0C0C0&
-            Caption         =   "Total Nuevo Saldo:"
+            Caption         =   "Nuevo Saldo:"
             Height          =   195
             Index           =   0
-            Left            =   3480
-            TabIndex        =   25
-            Top             =   480
-            Width           =   1380
+            Left            =   3360
+            TabIndex        =   24
+            Top             =   240
+            Width           =   975
          End
          Begin XtremeSuiteControls.Label lbl 
             Height          =   195
             Index           =   2
             Left            =   1080
-            TabIndex        =   24
-            Top             =   480
+            TabIndex        =   23
+            Top             =   240
             Width           =   1770
             _Version        =   786432
             _ExtentX        =   3122
@@ -355,8 +317,8 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
             Height          =   195
             Index           =   3
             Left            =   120
-            TabIndex        =   23
-            Top             =   480
+            TabIndex        =   22
+            Top             =   240
             Width           =   960
             _Version        =   786432
             _ExtentX        =   1693
@@ -371,7 +333,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          Height          =   195
          Index           =   0
          Left            =   165
-         TabIndex        =   20
+         TabIndex        =   19
          Top             =   1200
          Width           =   1170
          _Version        =   786432
@@ -385,7 +347,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
       Begin XtremeSuiteControls.Label Label1 
          Height          =   195
          Left            =   840
-         TabIndex        =   19
+         TabIndex        =   18
          Top             =   780
          Width           =   480
          _Version        =   786432
@@ -400,8 +362,8 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
          Height          =   195
          Index           =   1
          Left            =   1800
-         TabIndex        =   18
-         Top             =   1680
+         TabIndex        =   17
+         Top             =   1620
          Width           =   2010
          _Version        =   786432
          _ExtentX        =   3545
@@ -415,7 +377,7 @@ Begin VB.Form frmAdminExtrasCbtesVentasAdeudadosAl
    Begin GridEX20.GridEX grilla 
       Height          =   3975
       Left            =   120
-      TabIndex        =   21
+      TabIndex        =   20
       Top             =   2400
       Width           =   18570
       _ExtentX        =   32755
@@ -492,18 +454,10 @@ Private Factura As Factura
 Private facturas As Collection
 Dim m_Archivos As Dictionary
 
-Private Sub btnCargarProveedores_Click()
-
-    DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
-    Me.cboClientes.ListIndex = -1
-    
-End Sub
-
-
 Private Sub btnExportar_Click()
     Me.progreso.Visible = True
     Dim FechaFIn As String
-    FechaFIn = Me.dtpHastaFIN(1).Value
+    FechaFIn = Me.dtpHastaFIN(1).value
     
     If IsSomething(facturas) Then
         If Not DAOFactura.ExportarColeccionTotalizadores(facturas, Me.progreso, FechaFIn) Then GoTo err1
@@ -524,7 +478,7 @@ End Sub
 
 
 Private Sub btnBuscar_Click()
-    If IsNull(dtpHastaFIN(1).Value) Then
+    If IsNull(dtpHastaFIN(1).value) Then
                 MsgBox ("Tiene que selecionar una fecha de fin de cobro!")
                     Else
                        
@@ -547,6 +501,10 @@ Private Sub Form_Load()
     Me.grilla.ItemCount = 0
         
     dtpHastaFIN(1) = Now()
+    
+    DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
+    Me.cboClientes.ListIndex = -1
+    
     
     btnRemoveProveedor_Click
     desde = DateSerial(Year(Date), Month(Date), 1)
@@ -584,16 +542,16 @@ Public Sub llenarGrilla()
         filtro = filtro & " and AdminFacturas.nroFactura=" & Me.txtNroFactura
     End If
 
-    If Not IsNull(Me.dtpDesde(0).Value) Then
-        filtro = filtro & " AND AdminFacturas.FechaEmision >= " & conectar.Escape(Me.dtpDesde(0).Value)
+    If Not IsNull(Me.dtpDesde(0).value) Then
+        filtro = filtro & " AND AdminFacturas.FechaEmision >= " & conectar.Escape(Me.dtpDesde(0).value)
     End If
 
-    If Not IsNull(Me.dtpHasta(0).Value) Then
-        filtro = filtro & " AND AdminFacturas.FechaEmision <= " & conectar.Escape(Me.dtpHasta(0).Value)
+    If Not IsNull(Me.dtpHasta(0).value) Then
+        filtro = filtro & " AND AdminFacturas.FechaEmision <= " & conectar.Escape(Me.dtpHasta(0).value)
     End If
 
-    If Not IsNull(dtpHastaFIN(1).Value) Then
-        FechaFIn = conectar.Escape(dtpHastaFIN(1).Value)
+    If Not IsNull(dtpHastaFIN(1).value) Then
+        FechaFIn = conectar.Escape(dtpHastaFIN(1).value)
     End If
     
     Set facturas = DAOFactura.FindAllTotalizadores(filtro, , , FechaFIn)
@@ -731,7 +689,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
 
 
         If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
-            Values(17) = ValorCero
+            Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(ValorCero) * i), "$", "")
 
 
         Else

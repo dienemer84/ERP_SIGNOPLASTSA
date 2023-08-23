@@ -41,7 +41,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   255
             Left            =   120
             TabIndex        =   42
-            Top             =   2125
+            Top             =   2040
             Visible         =   0   'False
             Width           =   6975
             _Version        =   786432
@@ -65,7 +65,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Left            =   120
             TabIndex        =   52
-            Top             =   1890
+            Top             =   1770
             Width           =   1905
          End
          Begin VB.Label lblTotalNeto 
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Left            =   120
             TabIndex        =   51
-            Top             =   780
+            Top             =   660
             Width           =   1380
          End
          Begin VB.Label lblTotalIVA 
@@ -83,7 +83,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Left            =   120
             TabIndex        =   50
-            Top             =   1050
+            Top             =   930
             Width           =   1245
          End
          Begin VB.Label lblTotalNoGravadoFiltrado 
@@ -92,7 +92,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Left            =   120
             TabIndex        =   49
-            Top             =   510
+            Top             =   390
             Width           =   1905
          End
          Begin VB.Label lblNetoGravadoFiltrado 
@@ -101,7 +101,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Left            =   120
             TabIndex        =   48
-            Top             =   240
+            Top             =   130
             Width           =   2040
          End
          Begin VB.Label lblTotalPercepciones 
@@ -110,7 +110,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Left            =   120
             TabIndex        =   47
-            Top             =   1320
+            Top             =   1200
             Width           =   2010
          End
          Begin VB.Label lblTotalPendiente 
@@ -128,7 +128,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
             Height          =   195
             Left            =   120
             TabIndex        =   46
-            Top             =   1605
+            Top             =   1485
             Width           =   1755
          End
       End
@@ -221,9 +221,9 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Left            =   5520
          TabIndex        =   45
          Top             =   1920
-         Width           =   495
+         Width           =   420
          _Version        =   786432
-         _ExtentX        =   873
+         _ExtentX        =   741
          _ExtentY        =   450
          _StockProps     =   79
          Caption         =   "X"

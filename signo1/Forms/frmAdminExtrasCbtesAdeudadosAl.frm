@@ -4,14 +4,15 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminExtrasCbtesAdeudadosAl 
    Caption         =   "Comprobantes Compra adeudados al"
    ClientHeight    =   6930
-   ClientLeft      =   75
+   ClientLeft      =   60
    ClientTop       =   465
-   ClientWidth     =   19080
+   ClientWidth     =   14415
+   ClipControls    =   0   'False
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   555.511
+   ScaleHeight     =   6645
    ScaleMode       =   0  'User
-   ScaleWidth      =   2576.172
+   ScaleWidth      =   14415
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox 
       Height          =   2160
@@ -49,7 +50,7 @@ Begin VB.Form frmAdminExtrasCbtesAdeudadosAl
       End
       Begin XtremeSuiteControls.PushButton btnRemoveProveedor 
          Height          =   255
-         Left            =   5520
+         Left            =   5400
          TabIndex        =   3
          Top             =   765
          Width           =   420
@@ -279,7 +280,7 @@ Begin VB.Form frmAdminExtrasCbtesAdeudadosAl
          Begin XtremeSuiteControls.Label lblTotalSaldo 
             Height          =   195
             Index           =   4
-            Left            =   3480
+            Left            =   3360
             TabIndex        =   28
             Top             =   240
             Width           =   825
@@ -670,12 +671,6 @@ End Sub
 
 Private Sub grilla_DblClick()
     verDetalle_Click
-End Sub
-
-
-Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
-
 End Sub
 
 

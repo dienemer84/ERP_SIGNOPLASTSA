@@ -21,6 +21,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
    MDIChild        =   -1  'True
    ScaleHeight     =   9105
    ScaleWidth      =   12885
+   WindowState     =   2  'Maximized
    Begin VB.PictureBox pic 
       Height          =   495
       Left            =   240
@@ -28,12 +29,13 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       ScaleWidth      =   555
       TabIndex        =   31
       Top             =   8400
+      Visible         =   0   'False
       Width           =   615
    End
    Begin VB.Frame Frame1 
       Height          =   735
       Index           =   1
-      Left            =   9840
+      Left            =   9960
       TabIndex        =   29
       Top             =   360
       Width           =   5055
@@ -42,7 +44,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Left            =   120
          TabIndex        =   30
          Top             =   240
-         Visible         =   0   'False
          Width           =   4815
          _Version        =   786432
          _ExtentX        =   8493
@@ -54,7 +55,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
    Begin VB.Frame Frame1 
       Height          =   855
       Index           =   0
-      Left            =   9840
+      Left            =   9960
       TabIndex        =   18
       Top             =   1080
       Width           =   5055
@@ -236,9 +237,9 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Left            =   4530
          TabIndex        =   4
          Top             =   630
-         Width           =   300
+         Width           =   420
          _Version        =   786432
-         _ExtentX        =   529
+         _ExtentX        =   741
          _ExtentY        =   450
          _StockProps     =   79
          Caption         =   "X"
@@ -292,9 +293,9 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Left            =   4530
          TabIndex        =   17
          Top             =   960
-         Width           =   300
+         Width           =   420
          _Version        =   786432
-         _ExtentX        =   529
+         _ExtentX        =   741
          _ExtentY        =   450
          _StockProps     =   79
          Caption         =   "X"
@@ -304,7 +305,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
          Height          =   1575
          Index           =   1
-         Left            =   5040
+         Left            =   5160
          TabIndex        =   22
          Top             =   240
          Width           =   4695
@@ -519,7 +520,8 @@ Dim ids As String
 Private ordenes As New Collection
 Private Orden As OrdenPago
 Private fac As clsFacturaProveedor
-    Dim i As Integer
+Dim i As Integer
+Dim flagOPSeleccionada As Boolean
 
 Private Sub btnClearProveedor_Click()
     Me.cboProveedores.ListIndex = -1
@@ -610,6 +612,8 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = i
     
+    
+    
 End Sub
 
 Private Sub llenarLista()
@@ -665,7 +669,8 @@ Private Sub llenarLista()
     Me.gridOrdenes.ItemCount = ordenes.count
 
     Me.caption = "Listado de OP" & " [Cant: " & ordenes.count & "]"
-
+    
+    flagOPSeleccionada = False
 
 End Sub
 Private Sub Form_Resize()
@@ -675,6 +680,8 @@ Private Sub Form_Resize()
 
     Me.GroupBox1.Width = Me.gridOrdenes.Width
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
+    
+    Me.WindowState = vbMaximized
     
 End Sub
 
@@ -688,7 +695,11 @@ End Sub
 
 
 Private Sub gridOrdenes_Click()
+    flagOPSeleccionada = True
     gridOrdenes_SelectionChange
+    
+    Me.Label1.caption = Orden.Id
+
 End Sub
 
 
@@ -698,6 +709,7 @@ End Sub
 
 
 Private Sub gridOrdenes_DblClick()
+    flagOPSeleccionada = True
     gridOrdenes_SelectionChange
     mnuVer_Click
 End Sub
@@ -705,7 +717,9 @@ End Sub
 
 Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If ordenes.count > 0 Then
+        flagOPSeleccionada = True
         gridOrdenes_SelectionChange
+        'SeleccionarOP
         If Button = 2 Then
             Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
             Me.mnuEditar.Enabled = (Orden.estado = EstadoOrdenPago_pendiente)
@@ -734,14 +748,17 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 
 Private Sub gridOrdenes_SelectionChange()
-    SeleccionarOP
+    On Error Resume Next
+    
+    If flagOPSeleccionada = False Then
+        Set Orden = Nothing
+    Else
+        Set Orden = ordenes.item(gridOrdenes.rowIndex(gridOrdenes.row))
+    End If
+
 End Sub
 
-Private Sub SeleccionarOP()
-    On Error Resume Next
-    Set Orden = ordenes.item(gridOrdenes.rowIndex(gridOrdenes.row))
-'    MsgBox (Orden.Id)
-End Sub
+
 
 Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex > 0 And ordenes.count > 0 Then
@@ -768,6 +785,8 @@ Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
 
         Values(9) = enums.EnumEstadoOrdenPago(Orden.estado)
     End If
+    
+    flagOPSeleccionada = False
 End Sub
 
 Private Property Get ISuscriber_id() As String
@@ -828,9 +847,15 @@ End Sub
 Private Sub mnuEditar_Click()
     SeleccionarOP
     
+
+    
     Dim f22 As New frmAdminPagosCrearOrdenPago
+
     f22.Show
+
     f22.Cargar Orden
+
+
 End Sub
 
 Private Sub mnuHistorial_Click()
@@ -860,12 +885,10 @@ End Sub
 
 Private Sub mnuVer_Click()
 
-    SeleccionarOP
-
     Dim f22 As New frmAdminPagosCrearOrdenPago
     f22.Show
     f22.ReadOnly = True
-'    MsgBox (Orden.Id)
+    Set Orden = DAOOrdenPago.FindById(Me.Label1.caption)
     f22.Cargar Orden
     
 End Sub
