@@ -37,6 +37,7 @@ Begin VB.Form frmTip
       Version         =   "2.0"
       AllowRowSizing  =   -1  'True
       PreviewRowIndent=   2
+      RecordNavigator =   -1  'True
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
       ShowEmptyFields =   0   'False
@@ -45,7 +46,9 @@ Begin VB.Form frmTip
       PreviewRowLines =   5
       RowHeight       =   33
       TabKeyBehavior  =   1
+      ColumnAutoResize=   -1  'True
       HeaderStyle     =   2
+      UseEvenOddColor =   -1  'True
       ReadOnly        =   -1  'True
       MethodHoldFields=   -1  'True
       AllowCardSizing =   0   'False
@@ -135,11 +138,11 @@ Private Sub Form_Resize()
 
 End Sub
 
-Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    If RowIndex > 0 And actualizaciones.count > 0 Then
+    If rowIndex > 0 And actualizaciones.count > 0 Then
 
-        Set sin = actualizaciones(RowIndex)
+        Set sin = actualizaciones(rowIndex)
 
         Values(1) = sin.Id_
         Values(2) = sin.Fecha_

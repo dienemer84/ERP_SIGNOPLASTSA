@@ -302,7 +302,7 @@ Begin VB.Form frmActivarPedido
    End
    Begin MSComDlg.CommonDialog CommonDialog1 
       Left            =   6120
-      Top             =   6840
+      Top             =   2160
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
@@ -716,7 +716,7 @@ err4:
 End Sub
 Private Sub Command11_Click()
     On Error GoTo er1
-    frmPrincipal.cd.ShowPrinter
+    frmPrincipal.CD.ShowPrinter
     Dim rec As ReportRecord
     Dim tmpDetalle As DetalleOrdenTrabajo
     Dim l As Long

@@ -651,7 +651,6 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
 
         Dim es As EstadoFacturaProveedor
         Dim nopago As Double
-        Dim compe As Compensatorio
         Dim cp As Compensatorio
         Dim fac As clsFacturaProveedor
         For Each fac In op.FacturasProveedor
@@ -1347,7 +1346,6 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
     
     Dim F As clsFacturaProveedor
-    Dim facs As New Collection
     
     c = 0
     
@@ -1468,27 +1466,29 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     
-    ' Imprimir la fecha y hora al pie de la página
+'     Imprimir la fecha y hora al pie de la página
     Dim fechaHoraActual As String
     fechaHoraActual = Format(Now, "dd/MM/yyyy HH:mm:ss") ' Ajusta el formato según tus preferencias
+    fechaHoraActual = FormatDateTime(Now, vbShortDate) & " " & FormatDateTime(Now, vbLongTime)
 
-    ' Calcular la posición para imprimir la fecha y hora en el borde inferior derecho
+'     Calcular la posición para imprimir la fecha y hora en el borde inferior derecho
     Dim fechaHoraPosX As Single
     Dim fechaHoraPosY As Single
     fechaHoraPosX = Printer.ScaleWidth - Printer.TextWidth(fechaHoraActual) ' Posición en el borde derecho
     fechaHoraPosY = Printer.ScaleHeight - Printer.TextHeight("X") - Printer.TextHeight(fechaHoraActual) - Printer.TextHeight("X") ' Posición en el borde inferior y subida un poco
 
-    ' Cambiar el tamaño de fuente para la fecha y hora
+'     Cambiar el tamaño de fuente para la fecha y hora
     Printer.FontSize = 8
 
-    ' Imprimir línea horizontal
+'     Imprimir línea horizontal
     Printer.Line (0, fechaHoraPosY - 5)-(Printer.ScaleWidth, fechaHoraPosY - 5) ' Posición y ajuste de la línea
 
-    ' Imprimir la fecha y hora en la posición calculada
+'     Imprimir la fecha y hora en la posición calculada
     Printer.CurrentX = fechaHoraPosX
     Printer.CurrentY = fechaHoraPosY
     Printer.Print fechaHoraActual
-    
+            
+
     Printer.EndDoc
     
     DaoHistorico.Save "orden_pago_historial", "OP Impresa", Orden.Id

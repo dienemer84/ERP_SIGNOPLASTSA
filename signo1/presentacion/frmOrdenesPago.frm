@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosOrdenesPagoLista 
@@ -22,6 +23,14 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
    ScaleHeight     =   9105
    ScaleWidth      =   12885
    WindowState     =   2  'Maximized
+   Begin MSComDlg.CommonDialog CommonDialog 
+      Left            =   1080
+      Top             =   8400
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+      Flags           =   1
+   End
    Begin VB.PictureBox pic 
       Height          =   495
       Left            =   240
@@ -847,18 +856,22 @@ Private Sub mnuHistorial_Click()
 End Sub
 
 Private Sub mnuImprimir_Click()
-    Dim dlg As Object
-    Set dlg = CreateObject("MSComDlg.CommonDialog")
-    
-    dlg.ShowPrinter
-    
-    If Not DAOOrdenPago.PrintOP(Orden, Me.pic) Then GoTo err1
 
-    ' Limpia el objeto dlg
-    Set dlg = Nothing
+    On Error GoTo err4
+    Me.CommonDialog.ShowPrinter
     
-        Exit Sub
-err1:
+'    If Me.CommonDialog.CancelError = True Then
+'
+'    Else
+'
+'    End If
+    
+   If Not DAOOrdenPago.PrintOP(Orden, Me.pic) Then GoTo err4
+   Exit Sub
+err4:
+
+  
+
 End Sub
 
 

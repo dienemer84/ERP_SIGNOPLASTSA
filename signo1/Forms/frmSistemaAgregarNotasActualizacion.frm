@@ -128,6 +128,11 @@ Option Explicit
 Private Nota As clsNotas
 
 
+Private Sub Form_Load()
+    DateTimePicker1 = Now()
+
+End Sub
+
 Private Sub PushButtonCargar_Click(Index As Integer)
     CargarDetalleNuevo
 End Sub

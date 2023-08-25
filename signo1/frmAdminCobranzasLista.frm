@@ -8,18 +8,78 @@ Begin VB.Form frmAdminCobranzasLista
    ClientHeight    =   8445
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   17625
+   ClientWidth     =   17550
    Icon            =   "frmAdminCobranzasLista.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   8445
-   ScaleWidth      =   17625
+   ScaleWidth      =   17550
    ShowInTaskbar   =   0   'False
+   Begin XtremeSuiteControls.GroupBox GroupBox 
+      Height          =   1095
+      Left            =   12000
+      TabIndex        =   19
+      Top             =   120
+      Width           =   5415
+      _Version        =   786432
+      _ExtentX        =   9551
+      _ExtentY        =   1931
+      _StockProps     =   79
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ProgressBar progreso 
+         Height          =   375
+         Left            =   120
+         TabIndex        =   20
+         Top             =   600
+         Width           =   5175
+         _Version        =   786432
+         _ExtentX        =   9128
+         _ExtentY        =   661
+         _StockProps     =   93
+         Appearance      =   6
+      End
+      Begin XtremeSuiteControls.Label lblTotalRecibido 
+         Height          =   255
+         Index           =   1
+         Left            =   1320
+         TabIndex        =   22
+         Top             =   240
+         Width           =   1575
+         _Version        =   786432
+         _ExtentX        =   2778
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "$ 00,00"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Alignment       =   1
+      End
+      Begin XtremeSuiteControls.Label Label 
+         Height          =   255
+         Index           =   0
+         Left            =   120
+         TabIndex        =   21
+         Top             =   240
+         Width           =   1095
+         _Version        =   786432
+         _ExtentX        =   1931
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Total Recibido:"
+      End
+   End
    Begin VB.Frame Frame2 
       Caption         =   "Parámetros de Búsqueda"
-      Height          =   1455
+      Height          =   2055
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -27,7 +87,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.PushButton btnLimpiarCliente 
          Height          =   255
          Left            =   6240
-         TabIndex        =   19
+         TabIndex        =   18
          Top             =   385
          Width           =   420
          _Version        =   786432
@@ -40,7 +100,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin VB.TextBox txtNroRecibo 
          Height          =   285
          Left            =   1320
-         TabIndex        =   10
+         TabIndex        =   9
          Top             =   795
          Width           =   1500
       End
@@ -58,14 +118,14 @@ Begin VB.Form frmAdminCobranzasLista
          Text            =   "ComboBox1"
       End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
-         Height          =   1050
+         Height          =   1650
          Left            =   6960
-         TabIndex        =   12
+         TabIndex        =   11
          Top             =   240
          Width           =   4695
          _Version        =   786432
          _ExtentX        =   8281
-         _ExtentY        =   1852
+         _ExtentY        =   2910
          _StockProps     =   79
          Caption         =   "Fecha Emision"
          BackColor       =   -2147483633
@@ -73,7 +133,7 @@ Begin VB.Form frmAdminCobranzasLista
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
             Left            =   825
-            TabIndex        =   13
+            TabIndex        =   12
             Top             =   615
             Width           =   1470
             _Version        =   786432
@@ -86,7 +146,7 @@ Begin VB.Form frmAdminCobranzasLista
          Begin XtremeSuiteControls.DateTimePicker dtpHasta 
             Height          =   315
             Left            =   3000
-            TabIndex        =   14
+            TabIndex        =   13
             Top             =   615
             Width           =   1470
             _Version        =   786432
@@ -99,7 +159,7 @@ Begin VB.Form frmAdminCobranzasLista
          Begin XtremeSuiteControls.ComboBox cboRangos 
             Height          =   315
             Left            =   825
-            TabIndex        =   15
+            TabIndex        =   14
             Top             =   225
             Width           =   3645
             _Version        =   786432
@@ -113,7 +173,7 @@ Begin VB.Form frmAdminCobranzasLista
          Begin XtremeSuiteControls.Label Label6 
             Height          =   195
             Left            =   2430
-            TabIndex        =   18
+            TabIndex        =   17
             Top             =   675
             Width           =   420
             _Version        =   786432
@@ -126,7 +186,7 @@ Begin VB.Form frmAdminCobranzasLista
          Begin XtremeSuiteControls.Label Label5 
             Height          =   195
             Left            =   255
-            TabIndex        =   17
+            TabIndex        =   16
             Top             =   660
             Width           =   465
             _Version        =   786432
@@ -139,7 +199,7 @@ Begin VB.Form frmAdminCobranzasLista
          Begin XtremeSuiteControls.Label Label7 
             Height          =   195
             Left            =   240
-            TabIndex        =   16
+            TabIndex        =   15
             Top             =   285
             Width           =   480
             _Version        =   786432
@@ -166,7 +226,7 @@ Begin VB.Form frmAdminCobranzasLista
          EndProperty
          Height          =   195
          Left            =   240
-         TabIndex        =   11
+         TabIndex        =   10
          Top             =   825
          Width           =   975
       End
@@ -194,13 +254,13 @@ Begin VB.Form frmAdminCobranzasLista
    Begin VB.Frame Frame1 
       Height          =   855
       Left            =   12000
-      TabIndex        =   6
-      Top             =   120
-      Width           =   5535
+      TabIndex        =   5
+      Top             =   1320
+      Width           =   5415
       Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   465
          Left            =   1920
-         TabIndex        =   7
+         TabIndex        =   6
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -213,7 +273,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.PushButton cmdBuscar 
          Height          =   465
          Left            =   120
-         TabIndex        =   8
+         TabIndex        =   7
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -226,7 +286,7 @@ Begin VB.Form frmAdminCobranzasLista
       Begin XtremeSuiteControls.PushButton cmdImprimir 
          Height          =   465
          Left            =   3720
-         TabIndex        =   9
+         TabIndex        =   8
          Top             =   240
          Width           =   1515
          _Version        =   786432
@@ -237,36 +297,23 @@ Begin VB.Form frmAdminCobranzasLista
          UseVisualStyle  =   -1  'True
       End
    End
-   Begin XtremeSuiteControls.ProgressBar progreso 
-      Height          =   375
-      Left            =   12000
-      TabIndex        =   5
-      Top             =   1080
-      Visible         =   0   'False
-      Width           =   5535
-      _Version        =   786432
-      _ExtentX        =   9763
-      _ExtentY        =   661
-      _StockProps     =   93
-      Appearance      =   6
-   End
    Begin VB.CommandButton Command1 
       Caption         =   "Command1"
       Height          =   615
-      Left            =   17640
+      Left            =   19560
       TabIndex        =   4
-      Top             =   240
+      Top             =   6120
       Visible         =   0   'False
       Width           =   1140
    End
    Begin GridEX20.GridEX grilla_recibos 
-      Height          =   6120
+      Height          =   6000
       Left            =   120
       TabIndex        =   3
-      Top             =   1680
-      Width           =   17415
-      _ExtentX        =   30718
-      _ExtentY        =   10795
+      Top             =   2280
+      Width           =   17295
+      _ExtentX        =   30506
+      _ExtentY        =   10583
       Version         =   "2.0"
       HoldSortSettings=   -1  'True
       DefaultGroupMode=   1
@@ -483,6 +530,8 @@ Private Sub llenarLista()
     Set tmpIncidencias = DAOIncidencias.GetCantidadIncidenciasPorReferencia(OI_Recibos)
     Set tmpArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Recibos)
     Dim F As String
+    Dim TotalRecibido As Double
+    
     F = "1 = 1"
 
     If Me.cboCliente.ListIndex > 0 Then F = F & " and rec.idCliente = " & Me.cboCliente.ItemData(Me.cboCliente.ListIndex)
@@ -504,6 +553,16 @@ Private Sub llenarLista()
     
     Me.grilla_recibos.ItemCount = 0
     Me.grilla_recibos.ItemCount = recibos.count
+    
+    
+' TOTALIZADOR DE VALORES RECIBIDOS POR RECIBO
+    For Each recibo In recibos
+        
+        TotalRecibido = TotalRecibido + recibo.TotalEstatico.TotalRecibidoEstatico
+        
+    Next
+    
+    Me.lblTotalRecibido(1).caption = FormatCurrency(funciones.FormatearDecimales(TotalRecibido))
 
     Me.caption = "Recibos (" & recibos.count & " Recibos encontrados)"
 
@@ -537,7 +596,7 @@ End Sub
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         SeleccionarRecibo
-        Me.NRO.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
+        Me.nro.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
 
         If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True
