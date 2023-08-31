@@ -42,8 +42,8 @@ Dim vId As Long
 Dim col As Collection
 Private Sub cboPersonas_Click()
     On Error Resume Next
-    txtId = cboPersonas.ItemData(cboPersonas.ListIndex)
-    vId = Val(txtId)
+    txtID = cboPersonas.ItemData(cboPersonas.ListIndex)
+    vId = Val(txtID)
 End Sub
 
 Public Property Let Personas(vcol As Collection)
@@ -60,8 +60,8 @@ Public Property Let Personas(vcol As Collection)
     End If
 End Property
 Private Sub txtId_Change()
-    cboPersonas.ListIndex = funciones.PosIndexCbo(Val(txtId), cboPersonas)
-    vId = Val(txtId)
+    cboPersonas.ListIndex = funciones.PosIndexCbo(Val(txtID), cboPersonas)
+    vId = Val(txtID)
 End Sub
 
 

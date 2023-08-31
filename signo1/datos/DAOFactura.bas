@@ -2946,10 +2946,6 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 17)).Interior.Color = &HC0C0C0
     
 
-    
-    
-    '.Borders.LineStyle = xlContinuous
-
     Dim Factura As Factura
     Dim initoffset As Long
     initoffset = offset
@@ -3034,13 +3030,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
                     xlWorksheet.Cells(offset, 13).value = Factura.CbteAsociadoID
                     xlWorksheet.Cells(offset, 14).value = Factura.CbteAsociado
 
-
-'''                    If Factura.CbteAsociadoFecha = "12:00:00 a.m." Then
-'''                        xlWorksheet.Cells(offset, 15).value = ""
-'''                    Else
-
-                        xlWorksheet.Cells(offset, 15).value = Factura.CbteAsociadoFecha
-'''                    End If
+                    xlWorksheet.Cells(offset, 15).value = Factura.CbteAsociadoFecha
 
                     If Factura.CbteAsociadoMonto = 0 Then
                         xlWorksheet.Cells(offset, 16).value = ValorCero
@@ -3068,7 +3058,9 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
 
             xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 17)).Borders.LineStyle = xlContinuous
 
-'        End If
+        If Factura.Id = 14059 Or Factura.Id = 14262 Then
+            xlWorksheet.Cells(offset, 17).value = ValorCero
+        End If
 
     Next
     

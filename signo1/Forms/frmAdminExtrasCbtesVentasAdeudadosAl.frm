@@ -730,6 +730,11 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
                 End If
             End If
         End If
+        
+        If Factura.Id = 14059 Or Factura.Id = 14262 Then
+            Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(ValorCero) * i), "$", "")
+        End If
+        
     End With
 
 End Sub
