@@ -754,7 +754,8 @@ Private Sub llenarForm()
         Text1(5) = .Fax
         Text1(6) = .email
         Text1(7) = .Cuit
-
+        
+        Me.txtCP = .CodigoPostal
 
 
         'aca posiciono el combo

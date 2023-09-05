@@ -17,10 +17,10 @@ Dim meses(12) As String
 Dim estado_recibo(3)
 Dim estado_nnc(3)
 Dim tipo_doc_contable(3)
-Dim estado_doc_contable(5)
+Dim estado_doc_contable(6)
 Dim tipos_Doc(2)
 Dim tipo_complejidad(3)
-Dim estado_saldado(5)
+Dim estado_saldado(6)
 Dim estado_orden_pago(3)
 Dim estado_liquidacion_caja(3)
 Public tipoMateriales As New Dictionary
@@ -165,8 +165,10 @@ Public Enum TipoSaldadoFactura
     NoSaldada = 0
     saldadoTotal = 1
     SaldadoParcial = 2
-    notaCredito = 3
+    NotaCredito = 3
     notaCreditoParcial = 4
+    notaDebito = 5
+    notaDebitoParcial = 6
 End Enum
 
 Public Enum origenFacturado
@@ -197,7 +199,7 @@ End Enum
 
 Public Enum tipoDocumentoContable
     Factura = 0
-    notaCredito = 1
+    NotaCredito = 1
     notaDebito = 2
     DespachoAduana = 3
     LiquidacionBancaria = 4
@@ -376,6 +378,9 @@ Public Enum EstadoFacturaCliente
     Anulada = 3    'no se usa mas
     CanceladaNC = 4
     CanceladaNCParcial = 5
+    AplicadaND = 6
+
+    
 End Enum
 Public Enum EstadoCliente
     activo = 1
@@ -477,9 +482,11 @@ Public Function LlenarArrays()
     estado_doc_contable(EstadoFacturaCliente.CanceladaNC) = "Cancela NC"
     estado_doc_contable(EstadoFacturaCliente.CanceladaNCParcial) = "Cancela NC Parcial"
     estado_doc_contable(EstadoFacturaCliente.EnProceso) = "En Edición"
+    estado_doc_contable(EstadoFacturaCliente.AplicadaND) = "Aplicada de ND"
+    
 
     tipo_doc_contable(tipoDocumentoContable.Factura) = "Factura"
-    tipo_doc_contable(tipoDocumentoContable.notaCredito) = "N. Crédito"
+    tipo_doc_contable(tipoDocumentoContable.NotaCredito) = "N. Crédito"
     tipo_doc_contable(tipoDocumentoContable.notaDebito) = "N. Debito"
 
 
@@ -535,10 +542,10 @@ Public Function LlenarArrays()
     estado_orden_entrega(3) = "Finalizada"
 
     estado_saldado(TipoSaldadoFactura.NoSaldada) = "No Saldada"
-    estado_saldado(TipoSaldadoFactura.notaCredito) = "N. Crédito"
-    estado_saldado(TipoSaldadoFactura.notaCreditoParcial) = "N. Crédito Parcial"
-    estado_saldado(TipoSaldadoFactura.SaldadoParcial) = "Parcial"
     estado_saldado(TipoSaldadoFactura.saldadoTotal) = "Total"
+    estado_saldado(TipoSaldadoFactura.SaldadoParcial) = "Parcial"
+    estado_saldado(TipoSaldadoFactura.NotaCredito) = "N. Crédito"
+    estado_saldado(TipoSaldadoFactura.notaCreditoParcial) = "N. Crédito Parcial"
 
     estado_orden_pago(EstadoOrdenPago_pendiente) = "Pendiente"
     estado_orden_pago(EstadoOrdenPago.EstadoOrdenPago_Aprobada) = "Aprobada"

@@ -30,9 +30,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.PushButton btnClearTipo 
          Height          =   285
-         Left            =   5190
-         TabIndex        =   56
-         Top             =   1950
+         Left            =   3000
+         TabIndex        =   54
+         Top             =   270
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -43,12 +43,12 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.ComboBox cboTipo 
          Height          =   315
-         Left            =   3960
-         TabIndex        =   54
-         Top             =   1920
-         Width           =   1170
+         Left            =   1650
+         TabIndex        =   52
+         Top             =   260
+         Width           =   1290
          _Version        =   786432
-         _ExtentX        =   2064
+         _ExtentX        =   2275
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -60,7 +60,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Alignment       =   1  'Right Justify
          Height          =   315
          Left            =   1620
-         TabIndex        =   52
+         TabIndex        =   50
          Top             =   1920
          Width           =   1335
       End
@@ -68,14 +68,14 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   855
          Index           =   1
          Left            =   14520
-         TabIndex        =   47
+         TabIndex        =   45
          Top             =   1560
          Width           =   7095
          Begin XtremeSuiteControls.PushButton cmdBuscar 
             Default         =   -1  'True
             Height          =   420
             Left            =   120
-            TabIndex        =   48
+            TabIndex        =   46
             Top             =   240
             Width           =   1245
             _Version        =   786432
@@ -98,7 +98,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.PushButton cmdImprimir 
             Height          =   420
             Left            =   3000
-            TabIndex        =   49
+            TabIndex        =   47
             Top             =   240
             Width           =   1245
             _Version        =   786432
@@ -112,7 +112,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.PushButton btnExportar 
             Height          =   420
             Left            =   1560
-            TabIndex        =   50
+            TabIndex        =   48
             ToolTipText     =   "Exporta s?lo pendientes"
             Top             =   240
             Width           =   1245
@@ -127,12 +127,12 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.ProgressBar progreso 
             Height          =   420
             Left            =   4560
-            TabIndex        =   51
+            TabIndex        =   49
             Top             =   240
             Visible         =   0   'False
-            Width           =   2295
+            Width           =   2415
             _Version        =   786432
-            _ExtentX        =   4048
+            _ExtentX        =   4260
             _ExtentY        =   741
             _StockProps     =   93
             BackColor       =   12632256
@@ -141,10 +141,11 @@ Begin VB.Form frmAdminFacturasEmitidas
          End
       End
       Begin VB.Frame Frame 
+         Caption         =   "Totales"
          Height          =   1335
          Index           =   0
          Left            =   14520
-         TabIndex        =   37
+         TabIndex        =   35
          Top             =   240
          Width           =   7095
          Begin VB.Label lblTotalNeto 
@@ -152,7 +153,7 @@ Begin VB.Form frmAdminFacturasEmitidas
             Caption         =   "Total NG: $ 00,00"
             Height          =   195
             Left            =   240
-            TabIndex        =   46
+            TabIndex        =   44
             Top             =   240
             Width           =   1275
          End
@@ -161,7 +162,7 @@ Begin VB.Form frmAdminFacturasEmitidas
             Caption         =   "Total IVA: $ 00,00"
             Height          =   195
             Left            =   240
-            TabIndex        =   45
+            TabIndex        =   43
             Top             =   480
             Width           =   1290
          End
@@ -170,7 +171,7 @@ Begin VB.Form frmAdminFacturasEmitidas
             Caption         =   "Total Percepciones: $ 00,00"
             Height          =   195
             Left            =   240
-            TabIndex        =   44
+            TabIndex        =   42
             Top             =   720
             Width           =   2010
          End
@@ -188,7 +189,7 @@ Begin VB.Form frmAdminFacturasEmitidas
             EndProperty
             Height          =   195
             Left            =   240
-            TabIndex        =   43
+            TabIndex        =   41
             Top             =   960
             Width           =   1215
          End
@@ -206,14 +207,14 @@ Begin VB.Form frmAdminFacturasEmitidas
             EndProperty
             Height          =   195
             Left            =   3360
-            TabIndex        =   41
+            TabIndex        =   39
             Top             =   960
             Width           =   1530
          End
          Begin XtremeSuiteControls.Label lblNG_Dolar 
             Height          =   195
             Left            =   3360
-            TabIndex        =   40
+            TabIndex        =   38
             Top             =   240
             Width           =   1500
             _Version        =   786432
@@ -227,7 +228,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.Label lblIVA_Dolar 
             Height          =   195
             Left            =   3360
-            TabIndex        =   39
+            TabIndex        =   37
             Top             =   480
             Width           =   1515
             _Version        =   786432
@@ -241,7 +242,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Begin XtremeSuiteControls.Label lblPercepciones_Dolar 
             Height          =   195
             Left            =   3360
-            TabIndex        =   38
+            TabIndex        =   36
             Top             =   720
             Width           =   2235
             _Version        =   786432
@@ -255,9 +256,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.PushButton PushButton2 
          Height          =   285
-         Left            =   9050
-         TabIndex        =   36
-         Top             =   1600
+         Left            =   9165
+         TabIndex        =   34
+         Top             =   1965
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -269,9 +270,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.ComboBox cboOrdenImporte 
          Height          =   315
-         Left            =   6600
-         TabIndex        =   34
-         Top             =   1560
+         Left            =   6720
+         TabIndex        =   32
+         Top             =   1920
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -291,44 +292,44 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.CheckBox chkboxVerIds 
          Height          =   255
-         Left            =   6600
-         TabIndex        =   32
-         Top             =   1950
-         Width           =   1095
+         Left            =   13560
+         TabIndex        =   30
+         Top             =   2040
+         Width           =   735
          _Version        =   786432
-         _ExtentX        =   1931
+         _ExtentX        =   1296
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Ver Id's"
+         Caption         =   "Id's"
          BackColor       =   12632256
-         UseVisualStyle  =   -1  'True
+         Appearance      =   6
       End
       Begin XtremeSuiteControls.CheckBox chkCredito 
          Height          =   255
-         Left            =   11520
-         TabIndex        =   25
-         Top             =   1590
+         Left            =   11400
+         TabIndex        =   23
+         Top             =   2040
          Width           =   2055
          _Version        =   786432
          _ExtentX        =   3625
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "DE CRÉDITO (MI PYME)"
+         Caption         =   "de Crédito (MiPyme)"
          BackColor       =   12632256
-         UseVisualStyle  =   -1  'True
+         Appearance      =   6
       End
       Begin VB.TextBox txtReferencia 
-         Height          =   300
+         Height          =   315
          Left            =   1620
-         TabIndex        =   17
+         TabIndex        =   15
          Top             =   1530
          Width           =   3490
       End
       Begin XtremeSuiteControls.ComboBox cboClientes 
          Height          =   315
          Left            =   1620
-         TabIndex        =   16
-         Top             =   760
+         TabIndex        =   14
+         Top             =   1125
          Width           =   3510
          _Version        =   786432
          _ExtentX        =   6191
@@ -342,29 +343,22 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   315
          Left            =   1620
          TabIndex        =   1
-         Top             =   300
+         Top             =   680
          Width           =   1290
-      End
-      Begin VB.TextBox txtOrdenCompra 
-         Height          =   300
-         Left            =   1620
-         TabIndex        =   3
-         Top             =   1150
-         Width           =   1740
       End
       Begin VB.TextBox txtRemitoAplicado 
          Alignment       =   1  'Right Justify
-         Height          =   300
+         Height          =   315
          Left            =   3960
          TabIndex        =   2
-         Top             =   1150
+         Top             =   1920
          Width           =   1170
       End
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   285
          Left            =   5190
-         TabIndex        =   4
-         Top             =   780
+         TabIndex        =   3
+         Top             =   1140
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -375,23 +369,23 @@ Begin VB.Form frmAdminFacturasEmitidas
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
-         Height          =   1290
+         Height          =   1650
          Left            =   9720
-         TabIndex        =   5
+         TabIndex        =   4
          Top             =   240
          Width           =   4695
          _Version        =   786432
          _ExtentX        =   8281
-         _ExtentY        =   2275
+         _ExtentY        =   2910
          _StockProps     =   79
          Caption         =   "Fecha Emision"
          BackColor       =   -2147483633
          UseVisualStyle  =   -1  'True
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
-            Left            =   960
-            TabIndex        =   6
-            Top             =   615
+            Left            =   840
+            TabIndex        =   5
+            Top             =   735
             Width           =   1470
             _Version        =   786432
             _ExtentX        =   2593
@@ -402,9 +396,9 @@ Begin VB.Form frmAdminFacturasEmitidas
          End
          Begin XtremeSuiteControls.DateTimePicker dtpHasta 
             Height          =   315
-            Left            =   3135
-            TabIndex        =   7
-            Top             =   630
+            Left            =   3015
+            TabIndex        =   6
+            Top             =   750
             Width           =   1470
             _Version        =   786432
             _ExtentX        =   2593
@@ -415,9 +409,9 @@ Begin VB.Form frmAdminFacturasEmitidas
          End
          Begin XtremeSuiteControls.ComboBox cboRangos 
             Height          =   315
-            Left            =   960
-            TabIndex        =   8
-            Top             =   240
+            Left            =   840
+            TabIndex        =   7
+            Top             =   360
             Width           =   3645
             _Version        =   786432
             _ExtentX        =   6429
@@ -429,9 +423,9 @@ Begin VB.Form frmAdminFacturasEmitidas
          End
          Begin XtremeSuiteControls.Label Label6 
             Height          =   195
-            Left            =   2640
-            TabIndex        =   11
-            Top             =   675
+            Left            =   2520
+            TabIndex        =   10
+            Top             =   795
             Width           =   420
             _Version        =   786432
             _ExtentX        =   741
@@ -443,9 +437,9 @@ Begin VB.Form frmAdminFacturasEmitidas
          End
          Begin XtremeSuiteControls.Label Label5 
             Height          =   195
-            Left            =   360
-            TabIndex        =   10
-            Top             =   660
+            Left            =   240
+            TabIndex        =   9
+            Top             =   780
             Width           =   465
             _Version        =   786432
             _ExtentX        =   820
@@ -457,9 +451,9 @@ Begin VB.Form frmAdminFacturasEmitidas
          End
          Begin XtremeSuiteControls.Label Label7 
             Height          =   195
-            Left            =   360
-            TabIndex        =   9
-            Top             =   285
+            Left            =   240
+            TabIndex        =   8
+            Top             =   405
             Width           =   480
             _Version        =   786432
             _ExtentX        =   847
@@ -473,8 +467,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboPuntosVenta 
          Height          =   360
          Left            =   3585
-         TabIndex        =   19
-         Top             =   300
+         TabIndex        =   17
+         Top             =   660
          Width           =   1530
          _Version        =   786432
          _ExtentX        =   2699
@@ -498,8 +492,8 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton PushButton3 
          Height          =   285
          Left            =   5190
-         TabIndex        =   20
-         Top             =   338
+         TabIndex        =   18
+         Top             =   705
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -511,9 +505,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.ComboBox cboEstados 
          Height          =   360
-         Left            =   6600
-         TabIndex        =   22
-         Top             =   300
+         Left            =   6720
+         TabIndex        =   20
+         Top             =   660
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -536,9 +530,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.PushButton PushButton4 
          Height          =   285
-         Left            =   9050
-         TabIndex        =   24
-         Top             =   360
+         Left            =   9165
+         TabIndex        =   22
+         Top             =   700
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -550,9 +544,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.ComboBox cboEstadosSaldada 
          Height          =   360
-         Left            =   6600
-         TabIndex        =   26
-         Top             =   740
+         Left            =   6720
+         TabIndex        =   24
+         Top             =   1095
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -575,9 +569,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.PushButton PushButton5 
          Height          =   285
-         Left            =   9050
-         TabIndex        =   27
-         Top             =   780
+         Left            =   9165
+         TabIndex        =   25
+         Top             =   1140
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -589,9 +583,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.ComboBox cboEstadoAfip 
          Height          =   360
-         Left            =   6600
-         TabIndex        =   29
-         Top             =   1155
+         Left            =   6720
+         TabIndex        =   27
+         Top             =   1515
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -614,9 +608,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.PushButton cmdLimpiarCboEstadoAfip 
          Height          =   285
-         Left            =   9050
-         TabIndex        =   30
-         Top             =   1193
+         Left            =   9165
+         TabIndex        =   28
+         Top             =   1560
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -628,15 +622,15 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.CheckBox chkVerObservaciones 
          Height          =   225
-         Left            =   9690
-         TabIndex        =   33
-         Top             =   1605
+         Left            =   9720
+         TabIndex        =   31
+         Top             =   2040
          Width           =   1695
          _Version        =   786432
          _ExtentX        =   2990
          _ExtentY        =   397
          _StockProps     =   79
-         Caption         =   "Ver Observaciones"
+         Caption         =   "Observaciones"
          BackColor       =   12632256
          Appearance      =   6
          Value           =   1
@@ -644,29 +638,29 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.Label Label11 
          Height          =   255
          Index           =   2
-         Left            =   3375
-         TabIndex        =   55
-         Top             =   1950
-         Width           =   495
+         Left            =   570
+         TabIndex        =   53
+         Top             =   270
+         Width           =   960
          _Version        =   786432
-         _ExtentX        =   873
+         _ExtentX        =   1693
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Tipo"
+         Caption         =   "Tipo Cbte"
          BackColor       =   12632256
          Alignment       =   1
          RightToLeft     =   -1  'True
       End
       Begin XtremeSuiteControls.Label Label11 
-         Height          =   255
+         Height          =   375
          Index           =   1
          Left            =   915
-         TabIndex        =   53
-         Top             =   1943
+         TabIndex        =   51
+         Top             =   1890
          Width           =   615
          _Version        =   786432
          _ExtentX        =   1085
-         _ExtentY        =   450
+         _ExtentY        =   661
          _StockProps     =   79
          Caption         =   "ID CBte"
          BackColor       =   12632256
@@ -676,9 +670,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.Label Label11 
          Height          =   375
          Index           =   0
-         Left            =   5295
-         TabIndex        =   35
-         Top             =   1560
+         Left            =   5415
+         TabIndex        =   33
+         Top             =   1920
          Width           =   1215
          _Version        =   786432
          _ExtentX        =   2143
@@ -691,9 +685,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.Label Label14 
          Height          =   285
-         Left            =   5355
-         TabIndex        =   31
-         Top             =   1200
+         Left            =   5475
+         TabIndex        =   29
+         Top             =   1560
          Width           =   1155
          _Version        =   786432
          _ExtentX        =   2037
@@ -705,9 +699,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.Label Label12 
          Height          =   285
-         Left            =   5835
-         TabIndex        =   28
-         Top             =   780
+         Left            =   5955
+         TabIndex        =   26
+         Top             =   1140
          Width           =   675
          _Version        =   786432
          _ExtentX        =   1191
@@ -719,9 +713,9 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.Label Label10 
          Height          =   285
-         Left            =   5955
-         TabIndex        =   23
-         Top             =   360
+         Left            =   6075
+         TabIndex        =   21
+         Top             =   720
          Width           =   555
          _Version        =   786432
          _ExtentX        =   979
@@ -733,12 +727,12 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.Label Label9 
          Height          =   285
-         Left            =   3240
-         TabIndex        =   21
-         Top             =   330
-         Width           =   345
+         Left            =   3300
+         TabIndex        =   19
+         Top             =   720
+         Width           =   375
          _Version        =   786432
-         _ExtentX        =   609
+         _ExtentX        =   661
          _ExtentY        =   503
          _StockProps     =   79
          Caption         =   "PV"
@@ -748,32 +742,22 @@ Begin VB.Form frmAdminFacturasEmitidas
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "Referencia"
+         Caption         =   "OC / Referencia"
          Height          =   195
-         Left            =   630
-         TabIndex        =   18
+         Left            =   360
+         TabIndex        =   16
          Top             =   1560
-         Width           =   900
+         Width           =   1170
       End
       Begin VB.Label Label3 
          Alignment       =   1  'Right Justify
          BackStyle       =   0  'Transparent
-         Caption         =   "Nro Comprobrante"
+         Caption         =   "Nro Cbte"
          Height          =   270
          Left            =   30
-         TabIndex        =   15
-         Top             =   375
+         TabIndex        =   13
+         Top             =   735
          Width           =   1500
-      End
-      Begin VB.Label Label2 
-         Alignment       =   1  'Right Justify
-         BackStyle       =   0  'Transparent
-         Caption         =   "Orden Compra"
-         Height          =   270
-         Left            =   270
-         TabIndex        =   14
-         Top             =   1200
-         Width           =   1260
       End
       Begin VB.Label Label1 
          Alignment       =   1  'Right Justify
@@ -781,19 +765,19 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Cliente"
          Height          =   225
          Left            =   270
-         TabIndex        =   13
-         Top             =   810
+         TabIndex        =   12
+         Top             =   1170
          Width           =   1260
       End
       Begin VB.Label Label4 
          Alignment       =   1  'Right Justify
          BackStyle       =   0  'Transparent
          Caption         =   "Rto"
-         Height          =   270
-         Left            =   3450
-         TabIndex        =   12
-         Top             =   1200
-         Width           =   420
+         Height          =   255
+         Left            =   3240
+         TabIndex        =   11
+         Top             =   1980
+         Width           =   660
       End
    End
    Begin MSComDlg.CommonDialog cd 
@@ -807,7 +791,7 @@ Begin VB.Form frmAdminFacturasEmitidas
    Begin GridEX20.GridEX GridEX1 
       Height          =   6495
       Left            =   120
-      TabIndex        =   42
+      TabIndex        =   40
       Top             =   2640
       Width           =   23805
       _ExtentX        =   41989
@@ -1407,18 +1391,18 @@ End Sub
 ' 1451- AGREGO FUNCION DE MOSTRAR ID U OCULTAR
 
 Private Sub chkboxVerIds_Click()
-    If Me.chkboxVerIds.value = xtpUnchecked Then
-        Me.GridEX1.Columns(24).Visible = False
+    verIds
+    
+End Sub
 
-    ElseIf Me.chkboxVerIds.value = xtpChecked Then
+Private Sub verIds()
+    If Me.chkboxVerIds Then
         Me.GridEX1.Columns(24).Visible = True
         Me.GridEX1.Columns(24).Width = 800
-
-
-
+    Else
+        Me.GridEX1.Columns(24).Visible = False
     End If
-
-
+    
 End Sub
 
 Private Sub chkVerObservaciones_Click()
@@ -1501,10 +1485,8 @@ Private Sub Form_Load()
     cboEstados.ItemData(cboEstados.NewIndex) = 4
     cboEstados.AddItem "Cancela NC Parcial"
     cboEstados.ItemData(cboEstados.NewIndex) = 5
-    cboEstados.AddItem "Aplicada ND"
+    cboEstados.AddItem "Aplicada de ND"
     cboEstados.ItemData(cboEstados.NewIndex) = 6
-    cboEstados.AddItem "Aplicada ND Parcial"
-    cboEstados.ItemData(cboEstados.NewIndex) = 7
     
     Me.cboEstadosSaldada.Clear
     cboEstadosSaldada.AddItem "No Saldada"
@@ -1583,11 +1565,11 @@ Private Sub llenarGrilla()
     If Me.chkCredito.value > 0 Then
         filtro = filtro & " and AdminFacturas.EsCredito=" & Me.chkCredito.value
     End If
-    
-    If LenB(Me.txtOrdenCompra) > 0 Then
-        filtro = filtro & " and OrdenCompra like '%" & Trim(Me.txtOrdenCompra) & "%'"
-    End If
 
+    If LenB(Me.txtReferencia.text) > 0 Then
+        filtro = filtro & " and AdminFacturas.OrdenCompra like '%" & Trim(Me.txtReferencia.text) & "%'"
+    End If
+    
     If LenB(Me.txtNroFactura) > 0 And IsNumeric(Me.txtNroFactura) Then
         filtro = filtro & " and nroFactura=" & Me.txtNroFactura
     End If
@@ -1606,10 +1588,6 @@ Private Sub llenarGrilla()
 
     If LenB(Me.txtRemitoAplicado.text) > 0 Then
         filtro = filtro & " and AdminFacturas.id IN (SELECT fd.idFactura FROM AdminFacturasDetalleNueva fd INNER JOIN entregas e ON e.id = fd.idEntrega INNER JOIN remitos r ON r.id = e.Remito WHERE r.numero = " & Me.txtRemitoAplicado.text & ")"
-    End If
-
-    If LenB(Me.txtReferencia.text) > 0 Then
-        filtro = filtro & " and AdminFacturas.OrdenCompra like '%" & Trim(Me.txtReferencia.text) & "%'"
     End If
 
     If Me.cboEstadoAfip.ListIndex = 0 Then
@@ -1692,7 +1670,7 @@ Private Sub llenarGrilla()
     Me.lblIVA_Dolar.caption = "Total IVA: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalIVADolar)), "$", "")
     Me.lblNG_Dolar.caption = "Total NG: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalNGDolar)), "$", "")
     
-    
+   
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = facturas.count
 
@@ -2143,7 +2121,7 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
 
     Values(25) = Factura.RecibosAplicadosId
     
-    
+    verIds
 
     Exit Sub
 err1:
