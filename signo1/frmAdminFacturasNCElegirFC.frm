@@ -64,9 +64,9 @@ Begin VB.Form frmAdminFacturasNCElegirFC
    End
    Begin MSComctlLib.ListView lstFacturas 
       Height          =   3015
-      Left            =   45
+      Left            =   0
       TabIndex        =   0
-      Top             =   1770
+      Top             =   1800
       Width           =   6135
       _ExtentX        =   10821
       _ExtentY        =   5318
@@ -77,10 +77,10 @@ Begin VB.Form frmAdminFacturasNCElegirFC
       GridLines       =   -1  'True
       HotTracking     =   -1  'True
       _Version        =   393217
-      ForeColor       =   -2147483640
-      BackColor       =   -2147483643
+      ForeColor       =   0
+      BackColor       =   16777215
       BorderStyle     =   1
-      Appearance      =   1
+      Appearance      =   0
       NumItems        =   4
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "FC"

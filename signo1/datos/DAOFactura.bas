@@ -63,11 +63,11 @@ Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional incl
 If includeDetalles Then
 
         q = q & ",CAST((SELECT   GROUP_CONCAT(DISTINCT r.numero SEPARATOR ',') AS lista_remitos FROM AdminFacturasDetalleAplicacionRemitos a " _
-          & "INNER JOIN entregas e ON e.id=a.idRemitoDetalle INNER JOIN remitos r ON e.Remito = r.id  WHERE a.idFacturaDetalle= AdminFacturasDetalleNueva.id) AS CHAR) as lista_remitos_aplicados "
+            & "INNER JOIN entregas e ON e.id=a.idRemitoDetalle INNER JOIN remitos r ON e.Remito = r.id  WHERE a.idFacturaDetalle= AdminFacturasDetalleNueva.id) AS CHAR) as lista_remitos_aplicados "
 
 
         q = q & ",CAST((SELECT   COUNT(DISTINCT r.numero) AS cantidad_remitos FROM AdminFacturasDetalleAplicacionRemitos a " _
-          & "INNER JOIN entregas e ON e.id=a.idRemitoDetalle INNER JOIN remitos r ON e.Remito = r.id  WHERE a.idFacturaDetalle= AdminFacturasDetalleNueva.id) AS CHAR) as cantidad_remitos_aplicados "
+            & "INNER JOIN entregas e ON e.id=a.idRemitoDetalle INNER JOIN remitos r ON e.Remito = r.id  WHERE a.idFacturaDetalle= AdminFacturasDetalleNueva.id) AS CHAR) as cantidad_remitos_aplicados "
 
 
 
@@ -78,19 +78,23 @@ If includeDetalles Then
 
 
     q = q & " From AdminFacturas" _
-      & " LEFT JOIN AdminConfigFacturasTiposDiscriminado acftd      ON (       acftd.id = AdminFacturas.id_tipo_discriminado    ) " _
-      & " LEFT JOIN AdminConfigFacturasTipos acft     ON (acftd.id_tipo_factura = acft.id)  " _
-      & " LEFT JOIN AdminConfigFacturasTiposDiscriminadoIva acftdi      ON (       acftd.`id` = acftdi.`id_tipo_factura_discriminado`   ) " _
-      & " LEFT JOIN AdminConfigIVA ivaFac      ON (ivaFac.idIVA = acftdi.id_iva) " _
-      & " LEFT JOIN AdminConfigFacturaPuntoVenta pv      ON (acftd.id_punto_venta = pv.id) " _
-      & " LEFT JOIN clientes ON (AdminFacturas.idCliente = clientes.id)" _
-      & " LEFT JOIN Localidades ON (clientes.id_localidad = Localidades.ID)" _
-      & " LEFT JOIN Provincia ON (clientes.id_provincia = Provincia.ID)" _
-      & " LEFT JOIN AdminConfigIVA iva ON (iva.idIVA = clientes.iva)" _
-      & " LEFT JOIN AdminConfigMonedas ON (AdminFacturas.idMoneda = AdminConfigMonedas.id)" _
-      & " LEFT JOIN usuarios ON AdminFacturas.idUsuarioEmision=usuarios.id " _
-      & " LEFT JOIN usuarios as usuarios2 ON AdminFacturas.idUsuarioAprobacion=usuarios2.id "
-
+        & " LEFT JOIN AdminConfigFacturasTiposDiscriminado acftd      ON (       acftd.id = AdminFacturas.id_tipo_discriminado    ) " _
+        & " LEFT JOIN AdminConfigFacturasTipos acft     ON (acftd.id_tipo_factura = acft.id)  " _
+        & " LEFT JOIN AdminConfigFacturasTiposDiscriminadoIva acftdi      ON (       acftd.`id` = acftdi.`id_tipo_factura_discriminado`   ) " _
+        & " LEFT JOIN AdminConfigIVA ivaFac      ON (ivaFac.idIVA = acftdi.id_iva) " _
+        & " LEFT JOIN AdminConfigFacturaPuntoVenta pv      ON (acftd.id_punto_venta = pv.id) " _
+        & " LEFT JOIN clientes ON (AdminFacturas.idCliente = clientes.id)" _
+        & " LEFT JOIN Localidades ON (clientes.id_localidad = Localidades.ID)" _
+        & " LEFT JOIN Provincia ON (clientes.id_provincia = Provincia.ID)" _
+        & " LEFT JOIN AdminConfigIVA iva ON (iva.idIVA = clientes.iva)" _
+        & " LEFT JOIN AdminConfigMonedas ON (AdminFacturas.idMoneda = AdminConfigMonedas.id)" _
+        & " LEFT JOIN usuarios ON AdminFacturas.idUsuarioEmision=usuarios.id " _
+        & " LEFT JOIN usuarios as usuarios2 ON AdminFacturas.idUsuarioAprobacion=usuarios2.id " _
+        & " LEFT JOIN ( " _
+        & " SELECT idFactura, idNC, id FROM AdminFacturas_NC " _
+        & " Union All " _
+        & " SELECT idNC, idFactura, id FROM AdminFacturas_NC " _
+        & " ) AS fnc_combined ON fnc_combined.idFactura = AdminFacturas.id "
 
     If includeDetalles Then
         q = q & " LEFT JOIN  AdminFacturasDetalleNueva ON AdminFacturasDetalleNueva.idFactura = AdminFacturas.id "
@@ -100,7 +104,7 @@ If includeDetalles Then
     End If
 
     q = q & " WHERE " & filter
-    
+
     Dim col As New Collection
     Dim F As Factura
     Dim idx As Dictionary
@@ -115,6 +119,8 @@ If includeDetalles Then
         Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv", "fnc")
 
         F.RecibosAplicadosId = rs!nro_recibo
+        
+        
 
         If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
             Set F = col.item(CStr(F.Id))
@@ -125,8 +131,7 @@ If includeDetalles Then
 
         If includeDetalles Then
             Set deta = DAOFacturaDetalles.Map(rs, idx, "AdminFacturasDetalleNueva")
-
-
+            
             If IsSomething(deta) Then
                 If rs!cantidad_remitos_aplicados > 0 Then
                     deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
@@ -136,15 +141,54 @@ If includeDetalles Then
                     Set deta.Factura = F
                     F.Detalles.Add deta, CStr(deta.Id)
                 End If
-                
+
                 If includeEntregasWithDetalles Then
                     Set deta.detalleRemito = DAORemitoSDetalle.Map(rs, idx, "entregas")
                 End If
             End If
         End If
-
-        rs.MoveNext
         
+'        If rs!NumeroComprobanteNC <> "" Then
+            Dim TipoComprobanteNC As Variant
+            Dim idNC As Variant
+            Dim Id As Variant
+            Dim NumeroComprobanteNC As Variant
+            Dim FechaEmisionComprobanteNC As Variant
+            Dim MontoTotalComprobanteNC As Variant
+            
+'            TipoComprobanteNC = rs!TipoComprobanteNC
+'            If Not IsNull(TipoComprobanteNC) Then
+'                F.CbteAsociadoTipo = TipoComprobanteNC
+'            End If
+            
+            
+'            idNC = rs!idNC
+'            If Not IsNull(NumeroComprobanteNC) Then
+'                F.CbteAsociadoID = idNC
+'            End If
+            
+            Id = rs!Id
+            If Not IsNull(Id) Then
+                F.idAsociacion = Id
+            End If
+            
+'            NumeroComprobanteNC = rs!NumeroComprobanteNC
+'            If Not IsNull(NumeroComprobanteNC) Then
+'                F.CbteAsociado = NumeroComprobanteNC
+'            End If
+            
+'            FechaEmisionComprobanteNC = rs!FechaEmisionComprobanteNC
+'            If Not IsNull(NumeroComprobanteNC) Then
+'                F.CbteAsociadoFecha = FechaEmisionComprobanteNC
+'            End If
+'
+'            MontoTotalComprobanteNC = rs!MontoTotalComprobanteNC
+'            If Not IsNull(NumeroComprobanteNC) Then
+'                F.CbteAsociadoMonto = MontoTotalComprobanteNC
+'            End If
+'        End If
+        rs.MoveNext
+
     Wend
 
     Set FindAll = col
@@ -154,6 +198,7 @@ If includeDetalles Then
 err1:
     Set FindAll = Nothing
     Err.Raise Err.Number, Err.Source, Err.Description
+    
 End Function
 
 
@@ -235,15 +280,13 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         If LenB(tablaCliente) > 0 Then Set F.cliente = DAOCliente.Map(rs, indice, tablaCliente, tablaClienteIva, "Localidades", "", "Provincia")
         
         If indice.Exists("idNC") Then F.CbteAsociadoID = GetValue(rs, indice, tablaNC_Asociada, "idNC")
+        
+        If indice.Exists("idAsociacion") Then F.idAsociacion = GetValue(rs, indice, tablaNC_Asociada, "id")
+        
         If indice.Exists("NumeroComprobanteNC") Then F.CbteAsociado = GetValue(rs, indice, vbNullString, "NumeroComprobanteNC")
         If indice.Exists("FechaEmisionComprobanteNC") Then F.CbteAsociadoFecha = GetValue(rs, indice, vbNullString, "FechaEmisionComprobanteNC")
         If indice.Exists("MontoTotalComprobanteNC") Then F.CbteAsociadoMonto = GetValue(rs, indice, vbNullString, "MontoTotalComprobanteNC")
         
-        
-'        F.CbteAsociadoID = GetValue(rs, indice, tablaNC_Asociada, "idNC")
-'        F.CbteAsociado = GetValue(rs, indice, vbNullString, "NumeroComprobanteNC")
-'        F.CbteAsociadoFecha = GetValue(rs, indice, vbNullString, "FechaEmisionComprobanteNC")
-'        F.CbteAsociadoMonto = GetValue(rs, indice, vbNullString, "MontoTotalComprobanteNC")
         
         'MAP DE USUARIOS PARA FACTURAS VENTAS
         Set F.usuarioCreador = DAOUsuarios.Map(rs, indice, "usuarios")
@@ -355,7 +398,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     If F.Id > 0 Then
 
         '& " descuento = 'descuento' , "
-        q = "Update sp.AdminFacturas  SET " _
+        q = "UPDATE sp.AdminFacturas  SET " _
           & " NroFactura = 'NroFactura' , idCliente = 'idCliente' ,  tipoFactura_borrar = 'tipoFactura_borrar' ," _
           & " idMoneda = 'idMoneda' ,cae='cae',cae_vto='cae_vto',aprobacion_afip='aprobacion_afip', " _
           & " FechaEmision = 'FechaEmision' , EsCredito = 'EsCredito'," _
@@ -382,7 +425,12 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
           & " total_iva_discono_estatico = 'total_iva_discono_estatico', tasa_ajuste_mensual = 'tasa_ajuste_mensual'  Where id = 'id'"
 
         q = Replace$(q, "'id'", conectar.Escape(F.Id))
-        q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion))
+        If F.FechaAprobacion = "12:00:00 a.m." Then
+            q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
+        Else
+            q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion))
+        End If
+       
     Else
         esNueva = True
 
@@ -441,20 +489,6 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
     End If
 
-    '    '''''''''''''''''''''''''''''''''''''' HACK
-    '    Dim qTemp As String
-    '    Dim TipoFactura As Long: TipoFactura = -1
-    '    Dim tmpRS As Recordset
-    '    qTemp = "SELECT id FROM AdminConfigFacturas WHERE idIVA = " & F.TipoIVA.idIva & " AND TipoFactura = " & F.tipo.Id
-    '
-    '    Set tmpRS = conectar.RSFactory(qTemp)
-    '    If Not tmpRS.EOF Then TipoFactura = tmpRS!Id
-    '
-    '    'apunta a AdminConfigFacturas
-    '    q = Replace$(q, "'tipoFactura'", TipoFactura)
-    '    ''''''''''''''''''''''''''''''''''''''
-
-
     q = Replace$(q, "'NroFactura'", conectar.Escape(F.numero))
     q = Replace$(q, "'idCliente'", conectar.GetEntityId(F.cliente))
     q = Replace$(q, "'fecha_entrega'", conectar.Escape(F.FechaEntrega))
@@ -509,8 +543,8 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'fecha_vto_hasta'", conectar.Escape(F.FechaVtoHasta))
 
     'fce_nemer_02062020_#113
-    'q = Replace$(q, "'fecha_serv_desde'", conectar.Escape(F.FechaServDesde))
-    'q = Replace$(q, "'fecha_serv_hasta'", conectar.Escape(F.FechaServHasta))
+    q = Replace$(q, "'fecha_serv_desde'", conectar.Escape(F.FechaServDesde))
+    q = Replace$(q, "'fecha_serv_hasta'", conectar.Escape(F.FechaServHasta))
 
 
 
@@ -981,21 +1015,21 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
 
             If IsSomething(tmp) And Factura.Cancelada > 0 Then
                 Dim msg1 As String
-                Dim MSG2 As String
+                Dim msg2 As String
 
                 If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
                     msg1 = conectar.Escape("CANCELADA POR " & tmp.GetShortDescription(False, True))
-                    MSG2 = conectar.Escape("CANCELA A " & Factura.GetShortDescription(False, True))
+                    msg2 = conectar.Escape("CANCELA A " & Factura.GetShortDescription(False, True))
 
                 Else
                     msg1 = conectar.Escape("CANCELA A " & tmp.GetShortDescription(False, True))
-                    MSG2 = conectar.Escape("CANCELADA POR " & Factura.GetShortDescription(False, True))
+                    msg2 = conectar.Escape("CANCELADA POR " & Factura.GetShortDescription(False, True))
 
                 End If
 
                 If Not conectar.execute("update AdminFacturas set observaciones_cancela=" & msg1 & " where id=" & Factura.Id) Then GoTo err5
 
-                If Not conectar.execute("update AdminFacturas set  observaciones_cancela=" & MSG2 & " where id=" & tmp.Id) Then GoTo err5
+                If Not conectar.execute("update AdminFacturas set  observaciones_cancela=" & msg2 & " where id=" & tmp.Id) Then GoTo err5
 
             End If
 
@@ -1750,16 +1784,16 @@ Public Function aplicarANC(idOrigen As Long, idNCDestino As Long)
         ''If LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape(" / CANCELADA POR " & nc.GetShortDescription(False, True))
         msg1 = conectar.Escape("CANCELADA POR " & nc.GetShortDescription(False, True))
 
-        Dim MSG2 As String
+        Dim msg2 As String
         'MSG2 = conectar.Escape(nc.observaciones & " / CANCELA A " & fc.GetShortDescription(False, True))
         'If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
-        MSG2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
+        msg2 = conectar.Escape("CANCELA A " & fc.GetShortDescription(False, True))
 
 
         ' If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & msg1 & " where id=" & fc.id) Then GoTo er12
         '   If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.notaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones=" & MSG2 & " where id=" & nc.id) Then GoTo er12
         If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.NotaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones_cancela=" & msg1 & " where id=" & fc.Id) Then GoTo er12
-        If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.NotaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones_cancela=" & MSG2 & " where id=" & nc.Id) Then GoTo er12
+        If Not conectar.execute("update AdminFacturas set saldada=" & TipoSaldadoFactura.NotaCredito & ", estado=" & EstadoFacturaCliente.CanceladaNC & ", observaciones_cancela=" & msg2 & " where id=" & nc.Id) Then GoTo er12
 
 
 
@@ -1914,15 +1948,15 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
             msg1 = conectar.Escape("APLICADA DE " & nc.GetShortDescription(False, True))
             'msg1 = conectar.Escape("APLICADA DE COMPROB. ID (" & nc.Id & ")")
 
-            Dim MSG2 As String
+            Dim msg2 As String
             'MSG2 = conectar.Escape(nc.observaciones & " / CANCELA A " & fc.GetShortDescription(False, True))
             ' If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
 
-            MSG2 = conectar.Escape("APLICADA A " & fc.GetShortDescription(False, True))
+            msg2 = conectar.Escape("APLICADA A " & fc.GetShortDescription(False, True))
             'msg2 = conectar.Escape("APLICADA A COMPROB. ID (" & fc.Id & ")")
 
             If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & msg1 & " where id=" & fc.Id) Then GoTo er12
-            If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & MSG2 & " where id=" & nc.Id) Then GoTo er12
+            If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & msg2 & " where id=" & nc.Id) Then GoTo er12
 
         Next deta
 
@@ -1946,8 +1980,62 @@ er12:
     MsgBox ("Operación cancelada"), vbInformation, "Información"
 End Function
 
+Public Function aplicarNotaDebitoaFC(idFactura As Long, idND As Long) As Boolean
+
+    On Error GoTo er12
+
+    aplicarNotaDebitoaFC = True
+    conectar.BeginTransaction
+
+    Dim nd As Factura
+    Dim fc As Factura
+
+    Set nd = DAOFactura.FindById(idND)
+    nd.Detalles = DAOFacturaDetalles.FindByFactura(nd.Id)
+    
+    Set fc = DAOFactura.FindById(idFactura)
+    fc.Detalles = DAOFacturaDetalles.FindByFactura(fc.Id)
+
+'CAMBIAR EL ESTADO DE LA NOTA DE DEBITO A APLICADA A CBTE
+        nd.estado = AplicadaACbte
+    
+'CAMBIAR EL ESTADO DEL CBTE A APLICADA DE ND
+        fc.estado = AplicadaND
+        
+            
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idND & " where id=" & idFactura) Then GoTo er12
+
+        If Not conectar.execute("INSERT INTO AdminFacturas_NC (idFactura, idNC) VALUES (" & idFactura & "," & idND & ")") Then GoTo er12
+
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idFactura & " where id=" & idND) Then GoTo er12
+        If Not conectar.execute("update AdminFacturas set cancelada=" & idND & " where id=" & idFactura) Then GoTo er12
+
+      
+        Dim msg1 As String
+        Dim msg2 As String
+
+        msg1 = conectar.Escape("APLICADA A " & fc.GetShortDescription(False, False))
+        msg2 = conectar.Escape("APLICADA DE " & nd.GetShortDescription(False, False))
+        
+        If Not conectar.execute("update AdminFacturas set estado=" & nd.estado & ",observaciones=" & msg1 & " where id=" & nd.Id) Then GoTo er12
+        If Not conectar.execute("update AdminFacturas set estado=" & fc.estado & ",observaciones=" & msg2 & " where id=" & fc.Id) Then GoTo er12
+
+
+    conectar.CommitTransaction
+
+    Exit Function
+er12:
+    aplicarNotaDebitoaFC = False
+    conectar.RollBackTransaction
+
+    MsgBox ("Operación cancelada"), vbInformation, "Información"
+
+End Function
+
 Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As Factura
+
     Dim nuevaF As New Factura
+
     nuevaF.Cancelada = F.Cancelada
     nuevaF.origenFacturado = F.origenFacturado
 
@@ -1956,12 +2044,13 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
     nuevaF.CambioAPatron = F.CambioAPatron
     Set nuevaF.Tipo = DAOTipoFacturaDiscriminado.FindByTipoDocumentoAndPuntoVentaAndTipoFactura(F.Tipo.TipoFactura.Id, Tipo, F.Tipo.PuntoVenta.Id, F.TipoIVA.idIVA)
 
-
     If F.Tipo.PuntoVenta.EsElectronico Then
         nuevaF.numero = 0
     Else
         nuevaF.numero = CStr(DAOFactura.proximaFactura(nuevaF))   'Tipo, nuevaF.Tipo.TipoFactura.id))
+
     End If
+
     Set nuevaF.TipoIVA = F.TipoIVA
     nuevaF.FechaEmision = Date
     nuevaF.observaciones = F.observaciones
@@ -1980,13 +2069,15 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
     Set nuevaF.TotalEstatico = F.TotalEstatico
     nuevaF.TotalEstatico.TotalPercepcionesIB = F.TotalEstatico.TotalPercepcionesIB
 
+    Dim deta    As FacturaDetalle
 
-    Dim deta As FacturaDetalle
     Dim detaNew As FacturaDetalle
 
     F.Detalles = DAOFacturaDetalles.FindByFactura(F.Id)
     nuevaF.Detalles = New Collection
+
     For Each deta In F.Detalles
+
         Set detaNew = New FacturaDetalle
         Set detaNew.detalleRemito = Nothing
         detaNew.Bruto = deta.Bruto
@@ -2001,11 +2092,14 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
         nuevaF.Detalles.Add detaNew
 
     Next deta
+
     nuevaF.TotalEstatico.TotalPercepcionesIB = F.TotalEstatico.TotalPercepcionesIB
+
     If DAOFactura.Save(nuevaF, True) Then
         Set CrearCopiaFiel = nuevaF
     Else
         Set CrearCopiaFiel = Nothing
+
     End If
 
 End Function
@@ -2843,6 +2937,7 @@ If includeDetalles Then
         If rs!NumeroComprobanteNC <> "" Then
             Dim TipoComprobanteNC As Variant
             Dim idNC As Variant
+            Dim Id As Variant
             Dim NumeroComprobanteNC As Variant
             Dim FechaEmisionComprobanteNC As Variant
             Dim MontoTotalComprobanteNC As Variant
@@ -2855,6 +2950,11 @@ If includeDetalles Then
             idNC = rs!idNC
             If Not IsNull(NumeroComprobanteNC) Then
                 F.CbteAsociadoID = idNC
+            End If
+            
+            Id = rs!Id
+            If Not IsNull(Id) Then
+                F.idAsociacion = Id
             End If
             
             NumeroComprobanteNC = rs!NumeroComprobanteNC

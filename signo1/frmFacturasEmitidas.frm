@@ -28,11 +28,25 @@ Begin VB.Form frmAdminFacturasEmitidas
       Caption         =   "Filtros"
       BackColor       =   12632256
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.CheckBox chkAgruparCbtes 
+         Height          =   255
+         Left            =   12360
+         TabIndex        =   55
+         Top             =   2040
+         Width           =   2055
+         _Version        =   786432
+         _ExtentX        =   3625
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Agrupar cbtes asociados"
+         BackColor       =   12632256
+         Appearance      =   6
+      End
       Begin XtremeSuiteControls.PushButton btnClearTipo 
          Height          =   285
          Left            =   3000
          TabIndex        =   54
-         Top             =   270
+         Top             =   255
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -45,7 +59,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   315
          Left            =   1650
          TabIndex        =   52
-         Top             =   260
+         Top             =   240
          Width           =   1290
          _Version        =   786432
          _ExtentX        =   2275
@@ -292,26 +306,26 @@ Begin VB.Form frmAdminFacturasEmitidas
       End
       Begin XtremeSuiteControls.CheckBox chkboxVerIds 
          Height          =   255
-         Left            =   13560
+         Left            =   11160
          TabIndex        =   30
          Top             =   2040
-         Width           =   735
+         Width           =   1215
          _Version        =   786432
-         _ExtentX        =   1296
+         _ExtentX        =   2143
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Id's"
+         Caption         =   "Mostrar Id's"
          BackColor       =   12632256
          Appearance      =   6
       End
       Begin XtremeSuiteControls.CheckBox chkCredito 
          Height          =   255
-         Left            =   11400
+         Left            =   3600
          TabIndex        =   23
-         Top             =   2040
-         Width           =   2055
+         Top             =   270
+         Width           =   1695
          _Version        =   786432
-         _ExtentX        =   3625
+         _ExtentX        =   2990
          _ExtentY        =   450
          _StockProps     =   79
          Caption         =   "de Crédito (MiPyme)"
@@ -817,7 +831,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   25
+      ColumnsCount    =   26
       Column(1)       =   "frmFacturasEmitidas.frx":0326
       Column(2)       =   "frmFacturasEmitidas.frx":04C6
       Column(3)       =   "frmFacturasEmitidas.frx":05DA
@@ -843,26 +857,27 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(23)      =   "frmFacturasEmitidas.frx":2052
       Column(24)      =   "frmFacturasEmitidas.frx":21B2
       Column(25)      =   "frmFacturasEmitidas.frx":22EA
+      Column(26)      =   "frmFacturasEmitidas.frx":243E
       FormatStylesCount=   16
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":243E
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":2576
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":2626
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":26DA
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":27B2
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":286A
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":294A
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":29D6
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2AB6
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":2B66
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":2C1A
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":2CCA
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":2D7A
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":2E2E
-      FormatStyle(15) =   "frmFacturasEmitidas.frx":2F06
-      FormatStyle(16) =   "frmFacturasEmitidas.frx":2FEA
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":2562
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":269A
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":274A
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":27FE
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":28D6
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":298E
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":2A6E
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":2AFA
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2BDA
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":2C8A
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":2D3E
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":2DEE
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":2E9E
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":2F52
+      FormatStyle(15) =   "frmFacturasEmitidas.frx":302A
+      FormatStyle(16) =   "frmFacturasEmitidas.frx":310E
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":30CA
-      PrinterProperties=   "frmFacturasEmitidas.frx":33E4
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":31EE
+      PrinterProperties=   "frmFacturasEmitidas.frx":3508
    End
    Begin XtremeSuiteControls.TaskDialog taskDialog 
       Left            =   14955
@@ -925,10 +940,12 @@ Begin VB.Form frmAdminFacturasEmitidas
          Visible         =   0   'False
       End
       Begin VB.Menu aplicarNCaFC 
-         Caption         =   "Aplicar a Factura o ND..."
+         Caption         =   "Aplicar NC a Factura o ND..."
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
-      Begin VB.Menu mnuAplicarANCOLD 
-         Caption         =   "Aplicar a NC..."
+      Begin VB.Menu aplicarNDaFC 
+         Caption         =   "Aplicar ND a Factura o NC..."
          Enabled         =   0   'False
          Visible         =   0   'False
       End
@@ -1039,7 +1056,37 @@ err1:
 End Sub
 
 
+Private Sub aplicarNDaFC_Click()
+    On Error GoTo err1
+    If MsgBox("¿Seguro de aplicar la ND a un comprobante?", vbYesNo, "Confirmación") = vbYes Then
+        'seleccionar factura para aplicar
+        Set Selecciones.Factura = Nothing
+        Dim F As New frmAdminFacturasNCElegirFC
 
+        F.idCliente = Factura.cliente.Id
+        F.TiposDocs.Add tipoDocumentoContable.Factura
+        
+        If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
+            F.TiposDocs.Add tipoDocumentoContable.NotaCredito
+        End If
+
+        F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
+        F.Show 1
+
+        If IsSomething(Selecciones.Factura) Then
+            If DAOFactura.aplicarNotaDebitoaFC(Selecciones.Factura.Id, Factura.Id) Then
+                llenarGrilla
+
+                MsgBox "Comprobantes Vinculados: " & Factura.NumeroFormateado & " | " & Selecciones.Factura.NumeroFormateado & vbNewLine & "" _
+                     & "Aplicación exitosa!", vbInformation, "Información"
+
+            End If
+        End If
+    End If
+    Exit Sub
+err1:
+    MsgBox Err.Description, vbCritical, "Error"
+End Sub
 
 Private Sub aprobarFactura_Click()
     On Error GoTo err1
@@ -1176,6 +1223,7 @@ Private Sub btnExportar_Click()
     xlWorksheet.Cells(2, 23).value = "Observaciones Cancela"
     xlWorksheet.Cells(2, 24).value = "Recibos Asociados"
     xlWorksheet.Cells(2, 25).value = "ID"
+    xlWorksheet.Cells(2, 26).value = "ID_Asociacion"
     
     xlWorksheet.Range("A2:Y2").Font.Bold = True
 
@@ -1299,7 +1347,7 @@ Private Sub btnExportar_Click()
         xlWorksheet.Cells(idx, 24).value = fac.RecibosAplicadosId
         
         xlWorksheet.Cells(idx, 25).value = fac.Id
-
+        xlWorksheet.Cells(idx, 26).value = fac.idAsociacion
         idx = idx + 1
 
         'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
@@ -1388,8 +1436,21 @@ Private Sub cboRangos_Click()
     funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde, Me.dtpHasta
 End Sub
 
-' 1451- AGREGO FUNCION DE MOSTRAR ID U OCULTAR
+Private Sub chkAgruparCbtes_Click()
+    agruparAsociados
+End Sub
 
+Private Sub agruparAsociados()
+    If Me.chkAgruparCbtes Then
+        Me.GridEX1.Groups.Add 26, jgexSortDescending
+    Else
+        Me.GridEX1.Groups.Clear
+    End If
+
+End Sub
+
+
+' 1451- AGREGO FUNCION DE MOSTRAR ID U OCULTAR
 Private Sub chkboxVerIds_Click()
     verIds
     
@@ -1539,7 +1600,6 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub llenarGrilla()
-
     Dim filtro As String
     Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
 
@@ -1616,14 +1676,12 @@ Private Sub llenarGrilla()
         ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron DESC"
     End If
 
-
     Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
 
     Dim F As Factura
     Dim c As Integer
 
     For Each F In facturas
-
         Dim total As Double
         Dim Percepcion As Double
         Dim totalPercepcionesIIBB As Double
@@ -1646,19 +1704,13 @@ Private Sub llenarGrilla()
         
         ' Moneda.id = 1 >> DOLAR
         If F.moneda.Id = 1 Then
-
-                
                 totalDolares = totalDolares + F.TotalEstatico.total * c
                 totalPercepcionesIIBBDolar = totalPercepcionesIIBBDolar + F.TotalEstatico.TotalPercepcionesIB * c
                 totalIVADolar = totalIVADolar + F.TotalEstatico.TotalIVADiscrimandoONo * c
                 totalNGDolar = totalNGDolar + F.TotalEstatico.TotalNetoGravado * c
-                
-        
-        
         End If
         
     Next
-
 
     Me.lblTotal = "Total: " & FormatCurrency(funciones.FormatearDecimales(total))
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalPercepcionesIIBB))
@@ -1670,7 +1722,6 @@ Private Sub llenarGrilla()
     Me.lblIVA_Dolar.caption = "Total IVA: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalIVADolar)), "$", "")
     Me.lblNG_Dolar.caption = "Total NG: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalNGDolar)), "$", "")
     
-   
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = facturas.count
 
@@ -1679,15 +1730,8 @@ Private Sub llenarGrilla()
 
     Me.caption = "Cbtes. Venta [Cant: " & facturas.count & "]"
 
-    ' Desabilito la apertura directa de la Factura al encontrar exacto
-    'If facturas.count = 1 Then
-    '   Dim f_c3h3 As New frmAdminFacturasEdicion
-    '    f_c3h3.idFactura = facturas(1).id
-    '    f_c3h3.Show
-    'End If
-
-    'GridEXHelper.AutoSizeColumns Me.GridEX1
 End Sub
+
 
 Private Sub Form_Resize()
     On Error Resume Next
@@ -1696,6 +1740,7 @@ Private Sub Form_Resize()
     Me.grp.Width = Me.GridEX1.Width
 
 End Sub
+
 
 Private Sub Form_Terminate()
     Channel.RemoverSuscripcionTotal Me
@@ -1733,26 +1778,26 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.mnuEnviarAfip.caption = "Informar a AFIP"
             End If
 
-            'Me.mnuFechaPagoPropuesta.Enabled = False
-
-
-            'actualizo leyenda para aplicación
-
-            'Aplicar a Factura o ND...
-            If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
-                Me.aplicarNCaFC.caption = "Aplicar a Factura o ND..."
-            End If
-
-            If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
-                Me.aplicarNCaFC.caption = "Aplicar a Factura o NC..."
-            End If
-
+'''            'Aplicar a Factura o ND...
+'''            If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
+'''                Me.aplicarNCaFC.caption = "Aplicar NC a Factura o ND..."
+'''                Me.aplicarNCaFC.Enabled = True
+'''                Me.aplicarNCaFC.Enabled = False
+'''            End If
+'''
+'''            If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
+'''                Me.aplicarNDaFC.caption = "Aplicar ND a Factura o NC..."
+'''                Me.aplicarNCaFC.Enabled = False
+'''                Me.aplicarNCaFC.Enabled = True
+'''            End If
 
 
             ' Si el estado del comprobante es EN PROCESO
             If Factura.estado = EstadoFacturaCliente.EnProceso Then   'no se aprob? localmente
                 Me.aplicarNCaFC.Enabled = False
                 Me.aplicarNCaFC.Visible = False
+                Me.aplicarNDaFC.Visible = False
+                Me.aplicarNDaFC.Enabled = False
                 Me.editar.Enabled = True
                 Me.editar.Visible = True
                 Me.desAnular.Visible = False
@@ -1814,87 +1859,69 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.mnuEditarCampos.Visible = True
                 Me.mnuEditarCampos.Enabled = True
 
+                'Aplicar a Factura o ND...
+                If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
+                    Me.aplicarNCaFC.caption = "Aplicar NC a Factura o ND..."
+                    Me.aplicarNCaFC.Enabled = True
+                    Me.aplicarNCaFC.Visible = True
+                    Me.aplicarNDaFC.Enabled = False
+                End If
+
+                If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
+                    Me.aplicarNDaFC.caption = "Aplicar ND a Factura o NC..."
+                    Me.aplicarNCaFC.Enabled = False
+                    Me.aplicarNDaFC.Enabled = True
+                    Me.aplicarNDaFC.Visible = True
+                End If
+                
+                If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
+                    Me.aplicarNCaFC.Visible = False
+                    Me.aplicarNDaFC.Visible = False
+                End If
+                
+'                Me.aplicarNCaFC.Visible = True
+'                Me.aplicarNCaFC.Enabled = True
+'
+'                Me.aplicarNDaFC.Visible = True
+'                Me.aplicarNDaFC.Enabled = True
+
                 If Factura.Tipo.PuntoVenta.EsElectronico Then
                     Me.AnularFactura.Visible = False    'si es electronico no se puede anular comprobante
                     Me.AnularFactura.Enabled = False
 
                     If Factura.AprobadaAFIP Then
-
-                        'Me.mnuEditarCAE.Enabled = False
-                        'Me.mnuEditarCAE.Visible = False
-
                         Me.mnuEnviarAfip.Enabled = False
                         Me.mnuEnviarAfip.Visible = False
-
                         Me.aplicar.Visible = False
-                        Me.aplicar.Enabled = False    '(factura.Saldado = TipoSaldadoFactura.NoSaldada Or factura.Saldado = TipoSaldadoFactura.saldadoTotal)
-
-                        'Desde una NC
-                        'Si es Credito no muestra la posibilidad de aplicar NC a Factura
-                        Me.aplicarNCaFC.Visible = Not Factura.esCredito And Factura.TipoDocumento <> tipoDocumentoContable.Factura And Not Factura.Tipo.PuntoVenta.CaeManual
-                        Me.aplicarNCaFC.Enabled = Not Factura.esCredito And Factura.TipoDocumento <> tipoDocumentoContable.Factura And Not Factura.Tipo.PuntoVenta.CaeManual
-
-                        '----------------------------------------------------------------------------------------------------------------------------------------
-                        '21/01/2021 dnemer
-                        'Agrego estas dos lineas para que se habilite el menu aplicar sobre las NC cuando sean PV 6 o sea PV Cae Manual
-                        'Me.aplicarNCaFC.Visible = Factura.Tipo.PuntoVenta.CaeManual And Factura.TipoDocumento <> tipoDocumentoContable.Factura
-                        'Me.aplicarNCaFC.Enabled = Factura.Tipo.PuntoVenta.CaeManual And Factura.TipoDocumento <> tipoDocumentoContable.Factura
-
-
-
-                        'Desde una FC
-                        'Si es de Credito no muestra la posibilidad de aplicar Factura a una NC
-                        'Me.mnuAplicarANC.Visible = Not Factura.esCredito And Factura.TipoDocumento = tipoDocumentoContable.Factura
-                        'Me.mnuAplicarANC.Enabled = Not Factura.esCredito And Factura.TipoDocumento = tipoDocumentoContable.Factura
-
-                        'Me.mnuAplicarANC.Visible = False
-                        'Me.mnuAplicarANC.Enabled = False '(factura.TipoDocumento = tipoDocumentoContable.notaDebito Or factura.TipoDocumento = tipoDocumentoContable.factura) And (factura.estado = EstadoFacturaCliente.Aprobada)
+                        Me.aplicar.Enabled = False
 
                     Else
-
-                        'Me.mnuEditarCAE.Enabled = Permisos.AdminFacturasAprobaciones ' Not factura.EstaImpresa And factura.Tipo.PuntoVenta.CaeManual
-                        'Me.mnuEditarCAE.Visible = True
-                        'Me.mnuEnviarAfip.Enabled = Permisos.AdminFacturasAprobaciones
-
                         Me.mnuEnviarAfip.Visible = True
                         Me.mnuEnviarAfip.Enabled = True
-
-                        '                             Me.aplicar.Visible = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.SaldadoParcial)
-                        '                             Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
                         Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
                         Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                        'Me.mnuAplicarANC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                        'Me.mnuAplicarANC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
 
                     End If
 
                 Else
                     Me.mnuEnviarAfip.Enabled = False
                     Me.mnuEnviarAfip.Visible = False
-                    'Me.mnuEditarCAE.Enabled = False ' Not factura.EstaImpresa And factura.Tipo.PuntoVenta.CaeManual
-                    'Me.mnuEditarCAE.Visible = False '  Not factura.EstaImpresa And factura.Tipo.PuntoVenta.CaeManual
+
                     Me.AnularFactura.Visible = True
                     Me.AnularFactura.Enabled = True
                     Me.mnuDesaprobarFactura.Visible = False
-                    '                        Me.aplicar.Enabled = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
-                    '                        Me.aplicar.Visible = (Factura.Saldado = TipoSaldadoFactura.NoSaldada Or Factura.Saldado <> TipoSaldadoFactura.saldadoTotal)
 
-                    Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                    'Me.mnuAplicarANC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                    'Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                    'Me.mnuAplicarANC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaDebito Or Factura.TipoDocumento = tipoDocumentoContable.Factura) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+'                    Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
 
                 End If
 
                 Me.ImprimirFactura.Enabled = True
                 Me.ImprimirFactura.Visible = True
+
                 'si es FCE muestro el form para cambiar el estado de rechazo
                 Me.mnuRechazo.Visible = Factura.esCredito
 
-
             End If
-
-
 
             If Factura.estado = EstadoFacturaCliente.Anulada Then
                 Me.mnuFechaEntrega.Enabled = False
@@ -1904,29 +1931,64 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.ImprimirFactura.Enabled = False
                 Me.aplicar.Enabled = False
                 Me.aplicarNCaFC.Enabled = False
-                'Me.mnuAplicarANC = False
+                Me.aplicarNDaFC.Enabled = False
 
             End If
 
 
             If Factura.estado = EstadoFacturaCliente.CanceladaNC Then
                 Me.editar.Enabled = False
-                'Me.mnuFechaEntrega.Enabled = False
                 Me.AnularFactura.Enabled = False
                 Me.AnularFactura.Visible = False
                 Me.aprobarFactura.Enabled = False
                 Me.ImprimirFactura.Enabled = True
                 Me.aplicar.Enabled = False
                 Me.aplicarNCaFC.Enabled = False
-                'Me.mnuAplicarANC = False
+                Me.aplicarNDaFC.Enabled = False
+
+            End If
+            
+            If Factura.estado = EstadoFacturaCliente.CanceladaNCParcial Then
+                Me.editar.Enabled = False
+                Me.AnularFactura.Enabled = False
+                Me.AnularFactura.Visible = False
+                Me.aprobarFactura.Enabled = False
+                Me.ImprimirFactura.Enabled = True
+                Me.aplicar.Enabled = False
+                Me.aplicarNCaFC.Enabled = False
+                Me.aplicarNDaFC.Enabled = False
 
             End If
 
-            Me.archivos.Enabled = Permisos.SistemaArchivosVer
+            If Factura.estado = EstadoFacturaCliente.AplicadaND Then
+                Me.editar.Enabled = False
+                Me.AnularFactura.Enabled = False
+                Me.AnularFactura.Visible = False
+                Me.aprobarFactura.Enabled = False
+                Me.ImprimirFactura.Enabled = True
+                Me.aplicar.Enabled = False
+                Me.aplicarNCaFC.Enabled = False
+                Me.aplicarNDaFC.Enabled = False
 
+            End If
+
+            If Factura.estado = EstadoFacturaCliente.AplicadaACbte Then
+                Me.editar.Enabled = False
+                Me.AnularFactura.Enabled = False
+                Me.AnularFactura.Visible = False
+                Me.aprobarFactura.Enabled = False
+                Me.ImprimirFactura.Enabled = True
+                Me.aplicar.Enabled = False
+                Me.aplicarNCaFC.Enabled = False
+                Me.aplicarNDaFC.Enabled = False
+
+            End If
+
+
+
+            Me.archivos.Enabled = Permisos.SistemaArchivosVer
             Me.separador.Visible = Me.mnuEnviarAfip.Visible Or Me.aprobarFactura
             Me.sepa3.Visible = Me.mnuDesaprobarFactura.Visible Or Me.mnuAprobarEnviar.Visible
-
 
             If Factura.Saldado <> NoSaldada Then
                 Me.mnuFechaEntrega.Enabled = False
@@ -2120,6 +2182,8 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
     Values(24) = Factura.Id
 
     Values(25) = Factura.RecibosAplicadosId
+    
+    Values(26) = Factura.idAsociacion
     
     verIds
 
@@ -2504,6 +2568,7 @@ Private Sub mnuRechazo_Click()
     Set F.Factura = Factura
     F.Show
 End Sub
+
 
 Private Sub PushButton1_Click()
     Me.cboClientes.ListIndex = -1

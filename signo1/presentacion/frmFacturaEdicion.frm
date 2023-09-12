@@ -209,7 +209,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62980097
+         Format          =   62914561
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -231,7 +231,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62980097
+         Format          =   62914561
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -337,7 +337,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62980097
+         Format          =   62914561
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -359,7 +359,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62980097
+         Format          =   62914561
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -508,13 +508,13 @@ Begin VB.Form frmAdminFacturasEdicion
    End
    Begin VB.Frame frmTextoAdicional 
       Caption         =   "Texto Adicional (Limite de 300 caracteres)"
-      Height          =   5655
+      Height          =   2895
       Left            =   11640
       TabIndex        =   33
       Top             =   4440
       Width           =   6015
       Begin VB.TextBox txtTextoAdicional 
-         Height          =   4815
+         Height          =   2175
          Left            =   120
          MaxLength       =   300
          MultiLine       =   -1  'True
@@ -527,19 +527,19 @@ Begin VB.Form frmAdminFacturasEdicion
          Height          =   255
          Left            =   120
          TabIndex        =   91
-         Top             =   5280
+         Top             =   2520
          Width           =   3375
       End
    End
    Begin XtremeSuiteControls.GroupBox grpTotales 
-      Height          =   1575
-      Left            =   9000
+      Height          =   2655
+      Left            =   11760
       TabIndex        =   19
-      Top             =   10080
+      Top             =   7320
       Width           =   2580
       _Version        =   786432
       _ExtentX        =   4551
-      _ExtentY        =   2778
+      _ExtentY        =   4683
       _StockProps     =   79
       Caption         =   "Totales"
       UseVisualStyle  =   -1  'True
@@ -860,7 +860,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62980097
+         Format          =   62914561
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1115,16 +1115,25 @@ Begin VB.Form frmAdminFacturasEdicion
       End
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
-      Height          =   360
-      Left            =   6840
+      Height          =   600
+      Left            =   15480
       TabIndex        =   11
-      Top             =   11160
+      Top             =   7560
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
-      _ExtentY        =   635
+      _ExtentY        =   1058
       _StockProps     =   79
       Caption         =   "Guardar"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       UseVisualStyle  =   -1  'True
    End
    Begin XtremeSuiteControls.PushButton PushButton1 
@@ -1551,8 +1560,8 @@ Private Sub btnGuardar_Click()
 
         Factura.observaciones = Me.txtCondObs.text
         Factura.TextoAdicional = Me.txtTextoAdicional
-        'Factura.FechaServDesde = Me.dtFechaServDesde.value
-        'Factura.FechaServHasta = Me.dtFechaServHasta.value
+        Factura.FechaServDesde = Me.dtFechaServDesde1.value
+        Factura.FechaServHasta = Me.dtFechaServHasta1.value
         Factura.fechaPago = Me.dtFechaPagoCredito.value
         Factura.esCredito = Me.chkEsCredito.value
 
@@ -1569,6 +1578,7 @@ Private Sub btnGuardar_Click()
 
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
+            Unload Me
         Else
             Err.Raise "9999", "Guardando factura", Err.Description
         End If

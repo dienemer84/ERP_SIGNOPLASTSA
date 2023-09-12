@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Public esCredito As Boolean
-Public Id As Long
+Public id As Long
 Public Cancelada As Long
 Public FechaAprobacion As Date
 Public MotivoNC As Integer
@@ -86,20 +86,20 @@ Public CbteAsociadoID As String
 Public CbteAsociadoFecha As Date
 Public CbteAsociadoMonto As Double
 
+Public idAsociacion As String
 
 Public Function Modificable() As Boolean
-
     Modificable = Not (Tipo.PuntoVenta.EsElectronico And Me.AprobadaAFIP)
 
 End Function
 
 Public Sub SetToNothingOTsFacturadasAnticipo()
     Set m_ots_facturadas_anticipo = Nothing
+    
 End Sub
 
 Public Property Get DescripcionCreditoAdicional() As String
     Dim dsc As String
-
 
     If TipoDocumento = tipoDocumentoContable.Factura Then
         dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
@@ -113,12 +113,12 @@ Public Property Get DescripcionCreditoAdicional() As String
     DescripcionCreditoAdicional = dsc
 End Property
 
+
 Public Property Get CodigoBarrasAfip() As String
     Dim numero As String
     numero = "30657604972" & Format(Me.GetCodigoDocumentoAfip, "00") & Format(Me.Tipo.PuntoVenta.PuntoVenta, "0000") & Me.CAE & Format(Me.CAEVto, "yyyymmdd")
-
-
     CodigoBarrasAfip = numero & calcularDVFactura(numero)
+    
 End Property
 
 
@@ -137,10 +137,11 @@ Public Property Get DetalleFacturaAnticipoOt(porcentajeAnticipo As Double) As Fa
     
 End Property
 
+
 Public Property Get OTsFacturadasAnticipo() As Collection
     If Not IsSomething(m_ots_facturadas_anticipo) Then
-        If Me.Id <> 0 Then
-            Set m_ots_facturadas_anticipo = DAOOrdenTrabajo.FindAll("p.id_anticipo_factura = " & Me.Id)
+        If Me.id <> 0 Then
+            Set m_ots_facturadas_anticipo = DAOOrdenTrabajo.FindAll("p.id_anticipo_factura = " & Me.id)
         Else
             Set m_ots_facturadas_anticipo = New Collection
         End If
@@ -157,6 +158,8 @@ Public Function GetCodigoDocumentoAfip() As Integer
 
 
 End Function
+
+
 Public Function GetDescripciopnDocumentoAfip() As String
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
     If Tipo.TipoDoc = tipoDocumentoContable.NotaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
@@ -165,15 +168,15 @@ Public Function GetDescripciopnDocumentoAfip() As String
 
 End Function
 
-Public Function getDescripcionCondicion() As String
 
+Public Function getDescripcionCondicion() As String
+    
     Dim A As String
     If Me.CantDiasPago = 1 Then
         A = Me.CantDiasPago & " dia FF"
     Else
         A = Me.CantDiasPago & " dias FF"
     End If
-
 
     getDescripcionCondicion = A & Me.observaciones
 
@@ -200,8 +203,8 @@ End Property
 
 Public Property Get Detalles() As Collection
 'lazy load simulation
-    If m_detalles Is Nothing And Me.Id <> 0 Then
-        Set m_detalles = DAOFacturaDetalles.FindByFactura(Me.Id)
+    If m_detalles Is Nothing And Me.id <> 0 Then
+        Set m_detalles = DAOFacturaDetalles.FindByFactura(Me.id)
     End If
 
     Set Detalles = m_detalles
@@ -211,15 +214,17 @@ End Property
 Public Property Let Detalles(nvalue As Collection)
     Set m_detalles = nvalue
 End Property
+
+
 Public Property Get EstaAtrasada() As Boolean
     EstaAtrasada = (Me.Saldado = SaldadoParcial Or Me.Saldado = NoSaldada) And ((Now - Vencimiento) > 0)
 End Property
+
+
 Public Property Get StringDiasAtraso() As String
     Dim atraso As Long
 
-
     atraso = DateDiff("d", Vencimiento, Date)
-
 
     'atraso = Date - Vencimiento
 
@@ -234,7 +239,6 @@ Public Property Get StringDiasAtraso() As String
             If Me.Saldado = notaCreditoParcial Then
                 StringDiasAtraso = "Saldada NC parcial"
             Else
-
                 StringDiasAtraso = "Saldada"
             End If
         End If
@@ -245,12 +249,12 @@ Public Property Get StringDiasAtraso() As String
 
     End If
 
-
 End Property
+
+
 Public Property Get NumeroFormateado() As String
     If (IsSomething(Tipo.PuntoVenta)) Then
         NumeroFormateado = Me.Tipo.PuntoVenta.PuntoVenta & "-" & Format(Me.numero, "0000")
-
     Else
         NumeroFormateado = "Error"
     End If
@@ -263,11 +267,14 @@ Public Property Get Vencimiento() As Date
     Else
         Vencimiento = DateAdd("d", Me.CantDiasPago, Me.FechaEmision)
     End If
+    
 End Property
+
 
 Public Property Get EstaVencida() As Boolean
     EstaVencida = (Date > Vencimiento)
 End Property
+
 
 Public Property Get MostrarConcepto() As String
     If Me.ConceptoIncluir = 1 Then MostrarConcepto = "Productos"
@@ -275,6 +282,8 @@ Public Property Get MostrarConcepto() As String
     If Me.ConceptoIncluir = 3 Then MostrarConcepto = "Productos y Servicios"
 
 End Property
+
+
 Public Property Get total() As Double
     Dim totIva As Double
     Dim totPercepciones As Double
@@ -286,8 +295,8 @@ Public Property Get total() As Double
     total = funciones.RedondearDecimales(totIva + totPercepciones + totSub)
 End Property
 
-Public Property Get TipoDocumentoDescription() As String
 
+Public Property Get TipoDocumentoDescription() As String
     Dim retorno As String
     Select Case Me.TipoDocumento
     Case tipoDocumentoContable.Factura
@@ -299,7 +308,9 @@ Public Property Get TipoDocumentoDescription() As String
     End Select
 
     TipoDocumentoDescription = retorno
+    
 End Property
+
 
 Public Property Get TipoDocumento() As tipoDocumentoContable
 
@@ -356,13 +367,9 @@ Public Property Get TotalNetoGravado()
 End Property
 
 
-
 Public Property Get TotalSubTotal() As Double
-
     Dim det As FacturaDetalle
     Dim subT As Double
-
-
 
     For Each det In Me.Detalles
         subT = subT + det.total
@@ -373,10 +380,10 @@ Public Property Get TotalSubTotal() As Double
 End Property
 
 
-
 Public Property Get TotalIVA() As Double
     TotalIVA = CalcularIva
 End Property
+
 
 Public Property Get TotalExento() As Double
 '    TotalExento = CalcularIva(False)
@@ -387,6 +394,7 @@ Public Property Get TotalExento() As Double
     Next det
     TotalExento = subT
 End Property
+
 
 'muestra el iva, no importa si la fact esta discriminada o no, util para subdiario
 Public Property Get TotalIVADiscrimandoONo() As Double
@@ -420,6 +428,7 @@ Private Property Get CalcularIva(Optional conIva As Boolean = True) As Double
     End If
 
     CalcularIva = totIva
+    
 End Property
 
 Public Property Get totalPercepciones() As Double
@@ -436,7 +445,7 @@ Public Property Get totalPercepciones() As Double
                 If Me.AlicuotaPercepcionesIIBB > 1 Then
                     If Me.FechaEmision > #12/21/2010# Then    'desde el 21 de dic de 2010
                         ' bug #1 cambie > pór >= el 22-11-16 para poder hacer una factura solo de percepciones (ver FC grupo via del 22-11-16)
-                        If Me.TotalNetoGravado >= MonedaConverter.Convertir(0, 0, Me.moneda.Id) Then
+                        If Me.TotalNetoGravado >= MonedaConverter.Convertir(0, 0, Me.moneda.id) Then
                             If det.IvaAplicado Then
                                 totPercep = totPercep + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad * (Me.AlicuotaPercepcionesIIBB - 1))
                             Else
@@ -452,29 +461,30 @@ Public Property Get totalPercepciones() As Double
     End If
     totalPercepciones = totPercep
 End Property
+
+
 Public Property Get AlicuotaCorrespondiente() As Double
     AlicuotaCorrespondiente = 1 + (Me.AlicuotaAplicada / 100)
 End Property
 
+
 Public Function DetallesMismaOT() As Long
     Dim d As FacturaDetalle
-    Dim Id As Long
+    Dim id As Long
     For Each d In Detalles
         If Not d.OrigenEsConcepto Then
-            If Id = 0 Then Id = d.detalleRemito.idpedido
-            If Id <> d.Id Then GoTo no1
+            If id = 0 Then id = d.detalleRemito.idpedido
+            If id <> d.id Then GoTo no1
         End If
     Next
-    DetallesMismaOT = Id
+    DetallesMismaOT = id
     Exit Function
 no1:
     DetallesMismaOT = 0
 End Function
 
 
-
 Public Function AnticipoDescontado() As Boolean
-
     If IsSomething(Me.Detalles) Then
         Dim d As FacturaDetalle
         For Each d In Me.Detalles
@@ -501,6 +511,7 @@ Public Property Get DetalleAnticipoOT(OtId As Long) As FacturaDetalle
         End If
     Next
 End Property
+
 
 Public Sub RemoveDetallesAnticipoOT()
 'borro todos los anticipos
