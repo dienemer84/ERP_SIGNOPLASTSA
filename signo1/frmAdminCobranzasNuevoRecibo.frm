@@ -6,23 +6,23 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Recibo"
-   ClientHeight    =   8055
+   ClientHeight    =   8145
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   18105
+   ClientWidth     =   18150
    ClipControls    =   0   'False
    Icon            =   "frmAdminCobranzasNuevoRecibo.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8055
-   ScaleWidth      =   18105
+   ScaleHeight     =   8145
+   ScaleWidth      =   18150
    Begin XtremeSuiteControls.PushButton cmdCerrar 
       Height          =   405
       Left            =   10200
       TabIndex        =   37
-      Top             =   240
+      Top             =   360
       Width           =   1425
       _Version        =   786432
       _ExtentX        =   2514
@@ -34,9 +34,9 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
    End
    Begin XtremeSuiteControls.PushButton cmdActualizar 
       Height          =   405
-      Left            =   15960
+      Left            =   16080
       TabIndex        =   36
-      Top             =   240
+      Top             =   360
       Width           =   1425
       _Version        =   786432
       _ExtentX        =   2514
@@ -51,7 +51,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       Height          =   405
       Left            =   12960
       TabIndex        =   10
-      Top             =   240
+      Top             =   360
       Width           =   1425
       _Version        =   786432
       _ExtentX        =   2514
@@ -77,8 +77,8 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       Height          =   7095
       Left            =   120
       TabIndex        =   6
-      Top             =   840
-      Width           =   17805
+      Top             =   960
+      Width           =   17925
       Begin XtremeSuiteControls.TabControl TabFacturasRetenciones 
          Height          =   4335
          Left            =   120
@@ -250,15 +250,15 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          Left            =   7440
          TabIndex        =   7
          Top             =   240
-         Width           =   10560
+         Width           =   10320
          Begin XtremeSuiteControls.GroupBox grpCheques 
             Height          =   2625
-            Left            =   165
+            Left            =   120
             TabIndex        =   8
-            Top             =   3825
-            Width           =   10290
+            Top             =   3840
+            Width           =   10050
             _Version        =   786432
-            _ExtentX        =   18150
+            _ExtentX        =   17727
             _ExtentY        =   4630
             _StockProps     =   79
             Caption         =   "Cheques Recibidos"
@@ -268,8 +268,8 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                Left            =   75
                TabIndex        =   9
                Top             =   225
-               Width           =   10020
-               _ExtentX        =   17674
+               Width           =   9780
+               _ExtentX        =   17251
                _ExtentY        =   4022
                Version         =   "2.0"
                BoundColumnIndex=   ""
@@ -346,23 +346,23 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          End
          Begin XtremeSuiteControls.GroupBox grpBanco 
             Height          =   1920
-            Left            =   135
+            Left            =   120
             TabIndex        =   12
             Top             =   1860
-            Width           =   10290
+            Width           =   10050
             _Version        =   786432
-            _ExtentX        =   18150
+            _ExtentX        =   17727
             _ExtentY        =   3387
             _StockProps     =   79
             Caption         =   "Banco"
             UseVisualStyle  =   -1  'True
             Begin GridEX20.GridEX gridDepositosOperaciones 
                Height          =   1545
-               Left            =   90
+               Left            =   120
                TabIndex        =   13
                Top             =   225
-               Width           =   10065
-               _ExtentX        =   17754
+               Width           =   9795
+               _ExtentX        =   17277
                _ExtentY        =   2725
                Version         =   "2.0"
                BoundColumnIndex=   ""
@@ -398,12 +398,12 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          End
          Begin XtremeSuiteControls.GroupBox grpCaja 
             Height          =   1635
-            Left            =   135
+            Left            =   120
             TabIndex        =   14
-            Top             =   180
-            Width           =   10290
+            Top             =   240
+            Width           =   10050
             _Version        =   786432
-            _ExtentX        =   18150
+            _ExtentX        =   17727
             _ExtentY        =   2884
             _StockProps     =   79
             Caption         =   "Caja"
@@ -413,8 +413,8 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                Left            =   90
                TabIndex        =   15
                Top             =   225
-               Width           =   10050
-               _ExtentX        =   17727
+               Width           =   9810
+               _ExtentX        =   17304
                _ExtentY        =   2223
                Version         =   "2.0"
                BoundColumnIndex=   ""
@@ -692,7 +692,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       Height          =   750
       Left            =   120
       TabIndex        =   1
-      Top             =   0
+      Top             =   120
       Width           =   9735
       Begin VB.ComboBox cboClientes 
          Height          =   315
@@ -712,7 +712,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   67043329
+         Format          =   62455809
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -774,14 +774,13 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       End
    End
    Begin GridEX20.GridEX gridCajas 
-      Height          =   975
+      Height          =   2655
       Left            =   120
       TabIndex        =   33
-      Top             =   8640
-      Visible         =   0   'False
-      Width           =   6180
-      _ExtentX        =   10901
-      _ExtentY        =   1720
+      Top             =   8160
+      Width           =   3300
+      _ExtentX        =   5821
+      _ExtentY        =   4683
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "caja"
@@ -812,14 +811,13 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":5E10
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
-      Height          =   975
-      Left            =   6720
+      Height          =   2655
+      Left            =   3720
       TabIndex        =   34
-      Top             =   8760
-      Visible         =   0   'False
-      Width           =   6225
-      _ExtentX        =   10980
-      _ExtentY        =   1720
+      Top             =   8160
+      Width           =   3945
+      _ExtentX        =   6959
+      _ExtentY        =   4683
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "cuenta"
@@ -850,14 +848,13 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":670C
    End
    Begin GridEX20.GridEX gridMonedas 
-      Height          =   1215
-      Left            =   13080
+      Height          =   2655
+      Left            =   8040
       TabIndex        =   35
-      Top             =   8640
-      Visible         =   0   'False
-      Width           =   4020
-      _ExtentX        =   7091
-      _ExtentY        =   2143
+      Top             =   8160
+      Width           =   4980
+      _ExtentX        =   8784
+      _ExtentY        =   4683
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "moneda"
@@ -888,14 +885,13 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":7008
    End
    Begin GridEX20.GridEX gridFacturasCombo 
-      Height          =   3060
-      Left            =   120
+      Height          =   2700
+      Left            =   13440
       TabIndex        =   38
-      Top             =   9840
-      Visible         =   0   'False
+      Top             =   8160
       Width           =   5490
       _ExtentX        =   9684
-      _ExtentY        =   5398
+      _ExtentY        =   4763
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "factura"
@@ -1155,19 +1151,21 @@ End Sub
 
 Private Sub Totalizar()
 
-    Me.lblTotalFactura.caption = "Total Facturas: " & funciones.FormatearDecimales(recibo.TotalFacturas)
-    Me.lblTotalRetenciones.caption = "Total Retenciones: " & funciones.FormatearDecimales(recibo.TotalRetenciones)
-    Me.lblTotalCheques.caption = "Total Cheques: " & funciones.FormatearDecimales(recibo.TotalCheques)
-    Me.lblTotalBanco.caption = "Total Banco: " & funciones.FormatearDecimales(recibo.TotalOperacionesBanco)
-    Me.lblTotalCaja.caption = "Total Caja: " & funciones.FormatearDecimales(recibo.TotalOperacionesCaja)
+    Me.lblTotalFactura.caption = "Total Facturas: " & Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalFacturas)), "$", "")
+    Me.lblTotalRetenciones.caption = "Total Retenciones: " & Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalRetenciones)), "$", "")
+    Me.lblTotalCheques.caption = "Total Cheques: " & Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalCheques)), "$", "")
+    Me.lblTotalBanco.caption = "Total Banco: " & Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalOperacionesBanco)), "$", "")
+    Me.lblTotalCaja.caption = "Total Caja: " & Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalOperacionesCaja)), "$", "")
+    
+    'Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
 
     Dim totalRecibo As Double
     totalRecibo = funciones.FormatearDecimales(recibo.total)
     Dim totalCancelado As Double
     totalCancelado = funciones.FormatearDecimales(recibo.TotalRecibido)
 
-    Me.lblTotalRecibo.caption = funciones.FormatearDecimales(totalRecibo)
-    Me.lblTotalRecibido.caption = "Total Recibido: " & funciones.FormatearDecimales(totalCancelado)
+    Me.lblTotalRecibo.caption = Replace(FormatCurrency(funciones.FormatearDecimales(totalRecibo)), "$", "")
+    Me.lblTotalRecibido.caption = "Total Recibido: " & Replace(FormatCurrency(funciones.FormatearDecimales(totalCancelado)), "$", "")
 
     If totalCancelado < totalRecibo Then
         lblTotalRecibo.backColor = vbRed
@@ -1177,7 +1175,7 @@ Private Sub Totalizar()
         lblTotalRecibo.backColor = vbGreen
     End If
 
-    Me.lblDiferencia.caption = Me.lblDiferencia.Tag & funciones.FormatearDecimales(totalCancelado - MonedaConverter.Convertir(totalRecibo, recibo.moneda.Id, DAOMoneda.MONEDA_PESO_ID))
+    Me.lblDiferencia.caption = Me.lblDiferencia.Tag & Replace(FormatCurrency(funciones.FormatearDecimales(totalCancelado - MonedaConverter.Convertir(totalRecibo, recibo.moneda.Id, DAOMoneda.MONEDA_PESO_ID))), "$", "")
     'Debug.Print MonedaConverter.Convertir(totalRecibo, recibo.moneda.id, DAOMoneda.MONEDA_PESO_ID)
     recibo.ACuenta = (totalCancelado - totalRecibo)
 End Sub
@@ -1538,7 +1536,10 @@ Private Sub gridFacturas_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As
         If recibo.PagosDeFacturas.Exists(CStr(Factura.Id)) Then
             recibo.PagosDeFacturas.remove CStr(Factura.Id)
         End If
-        recibo.PagosDeFacturas.Add CStr(Factura.Id), Val(Values(4))
+        
+        'ANTERIORMENTE ESTABA EL VALOR 4, PERO CUANDO AGREGUÉ LA COLUMNA DE FECHA SE MODIFICÓ AL 5
+        'recibo.PagosDeFacturas.Add CStr(Factura.Id), Val(Values(4))
+        recibo.PagosDeFacturas.Add CStr(Factura.Id), Val(Values(5))
 
         Totalizar    ' no se si hay que totalizar
     End If

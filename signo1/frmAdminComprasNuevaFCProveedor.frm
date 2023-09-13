@@ -466,7 +466,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   67305473
+      Format          =   67371009
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -958,8 +958,6 @@ End Sub
 
 
 Private Sub btnDisponerProveedor_Click()
-
-
     If Proveedor.Id = 0 Then
         Proveedor.RazonSocial = Me.txtRazonSocial
         Proveedor.Cuit = Replace(Me.txtCuit, "-", vbNullString)
@@ -1009,20 +1007,20 @@ Private Sub btnGuardar_Click()
     End If
 
     'If MsgBox("¿Está seguro de guardar la factura?", vbYesNo, "Confirmación") = vbYes Then
+    
     armarFactura
-    If vFactura.NetoGravado <= 0 Then
-        If vFactura.tipoDocumentoContable <> notaDebito Then
-            Err.Raise 202
-        End If
-    End If
-
+    
+''''''    If vFactura.NetoGravado <= 0 Then
+''''''        If vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 202
+''''''        End If
+''''''    End If
 
     montonero = CDbl(Me.txtMontoNeto)
 
     If Me.txtNumeroMask.text <> "______-________" And Len(Me.txtNumeroMask.text) > 0 Then
         '    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
 
-        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
+''''''''        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
 
         If funciones.RedondearDecimales(vFactura.TotalAplicadoACuentas) <> funciones.RedondearDecimales(vFactura.NetoGravado) Then Err.Raise 200
 
@@ -1046,7 +1044,6 @@ Private Sub btnGuardar_Click()
             End If
 
         End If
-
 
         If DAOFacturaProveedor.existeFactura(vFactura) Then Err.Raise 101
 
@@ -1102,10 +1099,14 @@ err1:
         MsgBox Err.Description, vbCritical
     End If
 End Sub
+
+
 'Private Sub Command2_Click()
 '    grabado = False
 '    TotalFactura
 'End Sub
+
+
 Private Sub DTPicker1_Click()
     grabado = False
 End Sub
