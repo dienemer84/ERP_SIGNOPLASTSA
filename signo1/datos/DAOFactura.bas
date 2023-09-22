@@ -392,101 +392,111 @@ End Function
 
 Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Boolean
     Dim q As String
-    '    conectar.BeginTransaction
     Dim esNueva As Boolean
 
     If F.Id > 0 Then
-
-        '& " descuento = 'descuento' , "
         q = "UPDATE sp.AdminFacturas  SET " _
-          & " NroFactura = 'NroFactura' , idCliente = 'idCliente' ,  tipoFactura_borrar = 'tipoFactura_borrar' ," _
-          & " idMoneda = 'idMoneda' ,cae='cae',cae_vto='cae_vto',aprobacion_afip='aprobacion_afip', " _
-          & " FechaEmision = 'FechaEmision' , EsCredito = 'EsCredito'," _
-          & " idUsuarioEmision = 'idUsuarioEmision' ," _
-          & " FechaAprobacion = 'FechaAprobacion' , " _
-          & " idUsuarioAprobacion = 'idUsuarioAprobacion' ," _
-          & " OrdenCompra = 'OrdenCompra' , " _
-          & " origenFacturado = 'origenFacturado' , " _
-          & " estado = 'estado' ,id_concepto_incluir='id_concepto_incluir' , " _
-          & " alicuotaAplicada = 'alicuotaAplicada' , " _
-          & " discriminada = 'discriminada' , " _
-          & " impresa = 'impresa' , anulacion_afip='anulacion_afip'," _
-          & " tipo_borrar= 'tipo_borrar' , " _
-          & " saldada = 'saldada' , id_tipo_discriminado= 'id_tipo_discriminado', " _
-          & " observaciones = 'observaciones', observaciones_cancela = 'observaciones_cancela', texto_adicional = 'texto_adicional'," _
-          & " AliPercIB = 'AliPercIB', Opcional27='Opcional27', " _
-          & " cambio_a_patron = 'cambio_a_patron' ," _
-          & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega' , " _
-          & " propuesta = 'propuesta', fecha_serv_desde = 'fecha_serv_desde', fecha_serv_hasta = 'fecha_serv_hasta' , " _
-          & " cancelada = 'cancelada' , CBU = 'CBU' , fecha_pago = 'fecha_pago' , fecha_vto_desde = 'fecha_vto_desde' , fecha_vto_hasta = 'fecha_vto_hasta' , " _
-          & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste' ," _
-          & " total_estatico = 'total_estatico' ,  total_iva_estatico = 'total_iva_estatico' , total_perIB_estatico = 'total_perIB_estatico' ," _
-          & " total_neto_estatico = 'total_neto_estatico' , total_exento_estatico = 'total_exento_estatico' ," _
-          & " total_iva_discono_estatico = 'total_iva_discono_estatico', tasa_ajuste_mensual = 'tasa_ajuste_mensual'  Where id = 'id'"
+            & " NroFactura = 'NroFactura' , idCliente = 'idCliente' ,  tipoFactura_borrar = 'tipoFactura_borrar' ," _
+            & " idMoneda = 'idMoneda' ,cae='cae',cae_vto='cae_vto',aprobacion_afip='aprobacion_afip', " _
+            & " FechaEmision = 'FechaEmision' , EsCredito = 'EsCredito'," _
+            & " idUsuarioEmision = 'idUsuarioEmision' ," _
+            & " FechaAprobacion = 'FechaAprobacion' , " _
+            & " idUsuarioAprobacion = 'idUsuarioAprobacion' ," _
+            & " OrdenCompra = 'OrdenCompra' , " _
+            & " origenFacturado = 'origenFacturado' , " _
+            & " estado = 'estado' ,id_concepto_incluir='id_concepto_incluir' , " _
+            & " alicuotaAplicada = 'alicuotaAplicada' , " _
+            & " discriminada = 'discriminada' , " _
+            & " impresa = 'impresa' , anulacion_afip='anulacion_afip'," _
+            & " tipo_borrar= 'tipo_borrar' , " _
+            & " saldada = 'saldada' , id_tipo_discriminado= 'id_tipo_discriminado', " _
+            & " observaciones = 'observaciones', observaciones_cancela = 'observaciones_cancela', texto_adicional = 'texto_adicional'," _
+            & " AliPercIB = 'AliPercIB', Opcional27='Opcional27', " _
+            & " cambio_a_patron = 'cambio_a_patron' ," _
+            & " FormaPago = 'FormaPago' , fecha_entrega = 'fecha_entrega' , " _
+            & " propuesta = 'propuesta', fecha_serv_desde = 'fecha_serv_desde', fecha_serv_hasta = 'fecha_serv_hasta' , " _
+            & " cancelada = 'cancelada' , CBU = 'CBU' , fecha_pago = 'fecha_pago' , fecha_vto_desde = 'fecha_vto_desde' , fecha_vto_hasta = 'fecha_vto_hasta' , " _
+            & " nc_motivo = 'nc_motivo', id_moneda_ajuste='id_moneda_ajuste', tipo_cambio_ajuste='tipo_cambio_ajuste' ," _
+            & " total_estatico = 'total_estatico' ,  total_iva_estatico = 'total_iva_estatico' , total_perIB_estatico = 'total_perIB_estatico' ," _
+            & " total_neto_estatico = 'total_neto_estatico' , total_exento_estatico = 'total_exento_estatico' ," _
+            & " total_iva_discono_estatico = 'total_iva_discono_estatico', tasa_ajuste_mensual = 'tasa_ajuste_mensual'  Where id = 'id'"
 
         q = Replace$(q, "'id'", conectar.Escape(F.Id))
-        If F.FechaAprobacion = "12:00:00 a.m." Then
-            q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
-        Else
-            q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion))
-        End If
-       
+        
+        q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion))
+        
+
+'        If F.FechaAprobacion = "12:00:00 a.m." Then
+'            q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
+'        Else
+'            q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion))
+'        End If
+        
+'        If F.FechaAprobacion = "12:00:00 a.m." Then
+'            q = Replace$(q, "'FechaAprobacion'", "NULL")
+'        Else
+'            q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion) & "'")
+'        End If
+
     Else
+    
         esNueva = True
 
         q = "INSERT INTO sp.AdminFacturas " _
-          & " (NroFactura, " _
-          & " idCliente, " _
-          & " tipoFactura_borrar, " _
-          & " idMoneda, " _
-          & " FechaEmision, EsCredito," _
-          & " idUsuarioEmision, " _
-          & " FechaAprobacion, " _
-          & " idUsuarioAprobacion, " _
-          & " OrdenCompra, " _
-          & " origenFacturado, " _
-          & " estado, id_concepto_incluir, " _
-          & " alicuotaAplicada, " _
-          & " discriminada, " _
-          & " impresa, " _
-          & " tipo_borrar, " _
-          & " saldada, " _
-          & " observaciones, observaciones_cancela, texto_adicional," _
-          & " AliPercIB, " _
-          & " cambio_a_patron, " _
-          & " FormaPago, " _
-          & " fecha_entrega, Opcional27," _
-          & " propuesta, id_tipo_discriminado, fecha_serv_desde, fecha_serv_hasta, " _
-          & " cancelada, id_moneda_ajuste, tipo_cambio_ajuste, CBU, fecha_pago, fecha_vto_desde, fecha_vto_hasta, " _
-    & " nc_motivo, tasa_ajuste_mensual) Values "
+            & " (NroFactura, " _
+            & " idCliente, " _
+            & " tipoFactura_borrar, " _
+            & " idMoneda, " _
+            & " FechaEmision, EsCredito," _
+            & " idUsuarioEmision, " _
+            & " FechaAprobacion, " _
+            & " idUsuarioAprobacion, " _
+            & " OrdenCompra, " _
+            & " origenFacturado, " _
+            & " estado, id_concepto_incluir, " _
+            & " alicuotaAplicada, " _
+            & " discriminada, " _
+            & " impresa, " _
+            & " tipo_borrar, " _
+            & " saldada, " _
+            & " observaciones, observaciones_cancela, texto_adicional," _
+            & " AliPercIB, " _
+            & " cambio_a_patron, " _
+            & " FormaPago, " _
+            & " fecha_entrega, Opcional27," _
+            & " propuesta, id_tipo_discriminado, fecha_serv_desde, fecha_serv_hasta, " _
+            & " cancelada, id_moneda_ajuste, tipo_cambio_ajuste, CBU, fecha_pago, fecha_vto_desde, fecha_vto_hasta, " _
+          & " nc_motivo, tasa_ajuste_mensual) Values "
         q = q & "('NroFactura', " _
-          & " 'idCliente', " _
-          & " 'tipoFactura_borrar', " _
-          & " 'idMoneda', " _
-          & " 'FechaEmision', 'EsCredito'," _
-          & " 'idUsuarioEmision', " _
-          & " 'FechaAprobacion', " _
-          & " 'idUsuarioAprobacion', " _
-          & " 'OrdenCompra', " _
-          & " 'origenFacturado', " _
-          & " 'estado','id_concepto_incluir', " _
-          & " 'alicuotaAplicada', " _
-          & " 'discriminada', " _
-          & " 'impresa', " _
-          & " 'tipo_borrar', " _
-          & " 'saldada', " _
-          & " 'observaciones', 'observaciones_cancela', 'texto_adicional'," _
-          & " 'AliPercIB', " _
-          & " 'cambio_a_patron', " _
-          & " 'FormaPago', " _
-          & " 'fecha_entrega', 'Opcional27'," _
-          & " 'propuesta', 'id_tipo_discriminado', 'fecha_serv_desde', 'fecha_serv_hasta', " _
-          & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste', 'CBU', 'fecha_pago', 'fecha_vto_desde','fecha_vto_hasta', " _
-          & " 'nc_motivo','tasa_ajuste_mensual' " _
-          & ")"
+            & " 'idCliente', " _
+            & " 'tipoFactura_borrar', " _
+            & " 'idMoneda', " _
+            & " 'FechaEmision', 'EsCredito'," _
+            & " 'idUsuarioEmision', " _
+            & " 'FechaAprobacion', " _
+            & " 'idUsuarioAprobacion', " _
+            & " 'OrdenCompra', " _
+            & " 'origenFacturado', " _
+            & " 'estado','id_concepto_incluir', " _
+            & " 'alicuotaAplicada', " _
+            & " 'discriminada', " _
+            & " 'impresa', " _
+            & " 'tipo_borrar', " _
+            & " 'saldada', " _
+            & " 'observaciones', 'observaciones_cancela', 'texto_adicional'," _
+            & " 'AliPercIB', " _
+            & " 'cambio_a_patron', " _
+            & " 'FormaPago', " _
+            & " 'fecha_entrega', 'Opcional27'," _
+            & " 'propuesta', 'id_tipo_discriminado', 'fecha_serv_desde', 'fecha_serv_hasta', " _
+            & " 'cancelada', 'id_moneda_ajuste','tipo_cambio_ajuste', 'CBU', 'fecha_pago', 'fecha_vto_desde','fecha_vto_hasta', " _
+            & " 'nc_motivo','tasa_ajuste_mensual' " _
+            & ")"
 
         Set F.usuarioCreador = funciones.GetUserObj()
+        
         q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
+        
     End If
 
     q = Replace$(q, "'NroFactura'", conectar.Escape(F.numero))
@@ -515,7 +525,6 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'observaciones'", conectar.Escape(F.observaciones))
     q = Replace$(q, "'observaciones_cancela'", conectar.Escape(F.observaciones_cancela))
     q = Replace$(q, "'texto_adicional'", conectar.Escape(F.TextoAdicional))
-    'q = Replace$(q, "'AliPercIB'", conectar.Escape(1 + (f.AlicuotaPercepcionesIIBB / 100)))
     q = Replace$(q, "'AliPercIB'", conectar.Escape(F.AlicuotaPercepcionesIIBB))
     q = Replace$(q, "'cambio_a_patron'", conectar.Escape(F.CambioAPatron))
     q = Replace$(q, "'FormaPago'", conectar.Escape(F.CantDiasPago))
@@ -523,29 +532,21 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'cancelada'", conectar.Escape(F.Cancelada))
     q = Replace$(q, "'nc_motivo'", conectar.Escape(F.MotivoNC))
     q = Replace$(q, "'idUsuarioAprobacion'", conectar.GetEntityId(F.UsuarioAprobacion))
-
     q = Replace$(q, "'id_moneda_ajuste'", conectar.Escape(F.IdMonedaAjuste))
     q = Replace$(q, "'tipo_cambio_ajuste'", conectar.Escape(F.TipoCambioAjuste))
-
     q = Replace$(q, "'total_estatico'", conectar.Escape(F.TotalEstatico.total))
     q = Replace$(q, "'total_iva_estatico'", conectar.Escape(F.TotalEstatico.TotalIVA))
     q = Replace$(q, "'total_perIB_estatico'", conectar.Escape(F.TotalEstatico.TotalPercepcionesIB))
     q = Replace$(q, "'total_neto_estatico'", conectar.Escape(F.TotalEstatico.TotalNetoGravado))
     q = Replace$(q, "'total_exento_estatico'", conectar.Escape(F.TotalEstatico.TotalExento))
     q = Replace$(q, "'total_iva_discono_estatico'", conectar.Escape(F.TotalEstatico.TotalIVADiscrimandoONo))
-    'q = Replace$(q, "'id_ot_anticipo'", conectar.Escape(F.IdOTAnticipo))
     q = Replace$(q, "'tasa_ajuste_mensual'", conectar.Escape(F.TasaAjusteMensual))
     q = Replace$(q, "'CBU'", conectar.Escape(F.CBU))
     q = Replace$(q, "'fecha_pago'", conectar.Escape(F.fechaPago))
-
-    'fce_nemer_28052020
     q = Replace$(q, "'fecha_vto_desde'", conectar.Escape(F.FechaVtoDesde))
     q = Replace$(q, "'fecha_vto_hasta'", conectar.Escape(F.FechaVtoHasta))
-
-    'fce_nemer_02062020_#113
     q = Replace$(q, "'fecha_serv_desde'", conectar.Escape(F.FechaServDesde))
     q = Replace$(q, "'fecha_serv_hasta'", conectar.Escape(F.FechaServHasta))
-
 
 
     If conectar.execute(q) Then
@@ -555,22 +556,16 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         'me fijo que el nro y el tipo no se repita
         'solo en las q no son electronicas
 
-
-
         If DAOFactura.FindAll("AdminFacturas.id_tipo_discriminado=" & F.Tipo.Id & "  and  AdminFacturas.NroFactura = " & F.numero & " And AdminFacturas.Id <> " & F.Id).count > 0 Then
-
             If Not F.Tipo.PuntoVenta.EsElectronico And Not F.Tipo.PuntoVenta.CaeManual Then GoTo err1
-
 
             'el nro de factura y tipo se repite
             'valida tambien q no se repita el tipo de comprobante nc-nd-fc   29/7/13
-
         Else
             Dim A As New classAdministracion
 
             If Not F.Tipo.PuntoVenta.EsElectronico Then
-                If F.numero >= DAOFactura.proximaFactura(F) Then  'F.TipoDocumento, F.Tipo.TipoFactura.id) Then
-
+                If F.numero >= DAOFactura.proximaFactura(F) Then
 
                     If Not conectar.execute("UPDATE   AdminConfigFacturasTiposDiscriminado SET   numeracion = " & F.numero & " Where id_tipo_factura = " & F.Tipo.TipoFactura.Id & "   AND tipo_documento = " & F.TipoDocumento & " and id_punto_venta = " & F.Tipo.PuntoVenta.Id) Then
                         GoTo err1
@@ -578,14 +573,11 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
                 End If
 
             Else
-                If F.AprobadaAFIP Then  'F.TipoDocumento, F.Tipo.TipoFactura.id) Then
-
-
+                If F.AprobadaAFIP Then
                     If Not conectar.execute("UPDATE   AdminConfigFacturasTiposDiscriminado SET   numeracion = " & F.numero & " Where id_tipo_factura = " & F.Tipo.TipoFactura.Id & "   AND tipo_documento = " & F.TipoDocumento & " and id_punto_venta = " & F.Tipo.PuntoVenta.Id) Then
                         GoTo err1
                     End If
                 End If
-
             End If
         End If
 
@@ -593,9 +585,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         GoTo err1
     End If
 
-
     Dim Ot As OrdenTrabajo
-
 
     If F.Id <> 0 Then
         q = "UPDATE pedidos SET id_anticipo_factura = 0 WHERE id_anticipo_factura = " & F.Id
@@ -610,34 +600,24 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         If Not conectar.execute("UPDATE pedidos SET id_anticipo_factura = " & F.Id & " WHERE id = " & Ot.Id) Then GoTo err1
     Next Ot
 
-
     If Cascade Then
         Dim det As FacturaDetalle
-
-        'hacer delete de los detalles
-        'If Not DAOFacturaDetalles.Delete("idFactura = " & F.id) Then
-        '    GoTo err1
-        'End If
-
         DAOFacturaDetalles.Delete "idFactura=" & F.Id
 
         For Each det In F.Detalles
-            det.Id = 0    'asi hace insert
+            det.Id = 0
             det.idFactura = F.Id
             If Not DAOFacturaDetalles.Guardar(det) Then
                 Err.Raise 8773, "Guardando el historial", "Se produjo un error al guardar el historial"
             End If
         Next det
-
     End If
-
 
     Dim hist As Boolean
     hist = True
     If esNueva Then
         hist = DAOFacturaHistorial.agregar(F, "Factura Creada")
     Else
-
         If F.estado <> EstadoFacturaCliente.EnProceso Then
             hist = DAOFacturaHistorial.agregar(F, "Datos de Comprobantes Modificados")
         Else
@@ -646,10 +626,6 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
 
     End If
     If Not hist Then Err.Raise 8773, "Guardando el historial", "Se produjo un error al guardar el historial"
-
-
-    'conectar.CommitTransaction
-
 
     Dim EVENTO As New clsEventoObserver
     Set EVENTO.Elemento = F
@@ -660,40 +636,32 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         EVENTO.EVENTO = modificar_
     End If
 
-
     Set EVENTO.Originador = Nothing
     EVENTO.Tipo = FacturaCliente_
 
     Channel.Notificar EVENTO, FacturaCliente_
 
-
-
     Guardar = True
     Exit Function
+
 err1:
     If esNueva Then F.Id = 0
     Guardar = False
+    MsgBox "Error: " & Err.Description, vbOKOnly + vbExclamation, "Error"
     Err.Raise Err.Number, Err.Source, Err.Description
-    'conectar.RollBackTransaction
+
 End Function
 
 
-
-
 Public Function Anular(Factura As Factura) As Boolean
-
-
     On Error GoTo err5
     Factura.Detalles = DAOFacturaDetalles.FindByFactura(Factura.Id)
     Anular = True
-
-
 
     If Factura.Tipo.PuntoVenta.EsElectronico Then
         MsgBox "Imposible anular un comprobante electronico", vbOKOnly + vbExclamation
         Anular = False
         Exit Function
-
     End If
 
     If DAOFactura.EnLiquidacionSubdiarioVentas(Factura.Id) Then
@@ -734,7 +702,6 @@ Public Function Anular(Factura As Factura) As Boolean
     Factura.TotalEstatico.TotalIVADiscrimandoONo = 0
     Factura.TotalEstatico.TotalNetoGravado = 0
     Factura.TotalEstatico.TotalPercepcionesIB = 0
-
 
     For Each deta In Factura.Detalles
         'luego sacar
@@ -879,8 +846,6 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
         CambioAnterior = Factura.CambioAPatron
         estadoAnterior = Factura.estado
 
-
-
         Factura.Detalles = DAOFacturaDetalles.FindByFactura(Factura.Id)    'DAOFactura.FindById(Factura.id, True)
         Dim d As FacturaDetalle
         For Each d In Factura.Detalles
@@ -903,6 +868,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
 
         Dim T As Factura
         Set T = Factura
+        
         If Not DAOFactura.Guardar(Factura) Then GoTo err5
 
         idf = Factura.Id

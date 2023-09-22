@@ -973,6 +973,11 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin VB.Menu LineaUlt 
          Caption         =   "-"
       End
+      Begin VB.Menu MnuVerRecibo 
+         Caption         =   "Ver Recibos de Cobro"
+         Enabled         =   0   'False
+         Visible         =   0   'False
+      End
       Begin VB.Menu mnuEditarCampos 
          Caption         =   "Editar Datos..."
       End
@@ -1175,7 +1180,7 @@ Private Sub btnExportar_Click()
 
     Set xlWorkbook = xlApplication.Workbooks.Add
 
-    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+    Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
 
     xlWorksheet.Activate
 
@@ -1763,10 +1768,10 @@ Private Sub GridEX1_DblClick()
 End Sub
 
 Private Sub GridEX1_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
+    If ColIndex = 20 And m_Archivos.Item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
@@ -1995,6 +2000,11 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
                 Me.mnuFechaEntrega.Visible = False
                 Me.mnuFechaPagoPropuesta.Enabled = False
                 Me.mnuFechaPagoPropuesta.Visible = False
+                
+                Me.MnuVerRecibo.Enabled = True
+                Me.MnuVerRecibo.Visible = True
+                
+            
             End If
 
             Me.PopupMenu Me.mnuFacturas
@@ -2005,7 +2015,7 @@ End Sub
 
 Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(RowBuffer.rowIndex)
+    Set Factura = facturas.Item(RowBuffer.rowIndex)
 
     If Factura.estado = EstadoFacturaCliente.Anulada Then
         RowBuffer.RowStyle = "anulada"
@@ -2045,13 +2055,13 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
+    Set Factura = facturas.Item(Me.GridEX1.rowIndex(Me.GridEX1.row))
 
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(rowIndex)
+    Set Factura = facturas.Item(rowIndex)
 
 
     Values(1) = Factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
@@ -2177,7 +2187,7 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
 
     Values(22) = Factura.TasaAjusteMensual
 
-    Values(23) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
+    Values(23) = "(" & Val(m_Archivos.Item(Factura.Id)) & ")"
 
     Values(24) = Factura.Id
 
@@ -2213,22 +2223,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.Id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("'¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fue impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next i
             End If
@@ -2504,19 +2514,21 @@ Private Sub mnuFechaEntrega_Click()
     Dim nuevaFecha As Date
     Dim Update As Boolean
 
+    On Error GoTo ErrorHandler ' Etiqueta de manejo de errores
+
     If CDbl(Factura.FechaEntrega) > 0 Then fechaAnterior = Factura.FechaEntrega
 
     fechaPosterior = InputBox("Establezca fecha de entrega", "Fecha de Entrega", fechaAnterior)
 
     If LenB(fechaPosterior) = 0 Then
-        nuevaFecha = 1 / 1 / 2005
+        nuevaFecha = #1/1/2005#
         Update = True
     Else
         If IsDate(fechaPosterior) Then
             nuevaFecha = CDate(fechaPosterior)
             Update = True
         Else
-            MsgBox "La fecha no es válida.", vbOKOnly + vbExclamation, "Fecha"
+            Err.Raise vbObjectError + 9999, "mnuFechaEntrega_Click", "La fecha no es válida." ' Lanza un error personalizado
         End If
     End If
 
@@ -2525,11 +2537,16 @@ Private Sub mnuFechaEntrega_Click()
         If DAOFactura.Guardar(Factura) Then
             Me.GridEX1.RefreshRowIndex (Me.GridEX1.row)
         Else
-            MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
+            Err.Raise vbObjectError + 9998, "mnuFechaEntrega_Click", "Error al guardar la factura." ' Lanza un error personalizado
         End If
     End If
 
+    Exit Sub ' Salir del manejo de errores
+ErrorHandler:
+    MsgBox "Se ha producido un error: " & Err.Description, vbOKOnly + vbExclamation, "Error"
+    Err.Clear ' Limpia el objeto de error
 End Sub
+
 
 Private Sub mnuFechaPagoPropuesta_Click()
     Dim fechaAnterior As String
@@ -2567,6 +2584,13 @@ Private Sub mnuRechazo_Click()
     Dim F As New frmAdminFacturaRechazoAfip
     Set F.Factura = Factura
     F.Show
+End Sub
+
+
+Private Sub MnuVerRecibo_Click()
+    Dim Fa As New frmAdminVentasListaRECSegunCbte
+    Set Fa.vFactura = Factura
+    Fa.Show
 End Sub
 
 

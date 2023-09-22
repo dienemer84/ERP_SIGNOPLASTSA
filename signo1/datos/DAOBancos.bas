@@ -60,7 +60,8 @@ err1:
     Set GetAll = Nothing
 End Function
 
-Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
+
+Public Sub llenarComboXtremeSuite(cbo As XtremeSuiteControls.ComboBox)
     Dim col As New Collection
     Set col = DAOBancos.GetAll()
     Dim bco As Banco
@@ -73,6 +74,8 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
         cbo.ListIndex = 0
     End If
 End Sub
+
+
 Public Function Save(Banco As Banco) As Boolean
     On Error GoTo err1
     Dim q As String

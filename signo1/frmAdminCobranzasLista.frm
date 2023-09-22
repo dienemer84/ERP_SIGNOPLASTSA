@@ -408,7 +408,7 @@ Dim vId As String
 Dim rs As New Recordset
 'Dim clasea As New classAdministracion
 Dim recibos As Collection    'of recibo
-Dim recibo As recibo
+Dim Recibo As Recibo
 Private tmpIncidencias As New Dictionary
 Private tmpArchivos As New Dictionary
 
@@ -416,9 +416,9 @@ Private Sub aprobarRecibo_Click()
 '    Dim idRecibo As Long
     If MsgBox("¿Está seguro de aprobar este recibo?", vbYesNo, "Confirmación") = vbYes Then
 
-        Set recibo = DAORecibo.FindById(recibo.Id, True, True, True, True, True)
+        Set Recibo = DAORecibo.FindById(Recibo.Id, True, True, True, True, True)
 
-        If DAORecibo.aprobar(recibo) Then
+        If DAORecibo.aprobar(Recibo) Then
             MsgBox "Aprobación exitosa!", vbInformation, "Información"
             llenarLista
         Else
@@ -479,7 +479,7 @@ Private Sub Command1_Click()
 
     Set rs = DAORecibo.FindAll("tot_estatico_recibo = 0", , , , , True)
 
-    Dim rc As recibo
+    Dim rc As Recibo
 
 
     For Each rc In rs
@@ -502,7 +502,7 @@ Private Sub editarRecibo_Click()
     F.editar = True
     F.cmdActualizar.Enabled = False
     F.cmdGuardar.Enabled = True
-    F.reciboId = recibo.Id
+    F.reciboId = Recibo.Id
     F.Show
 
 End Sub
@@ -556,9 +556,9 @@ Private Sub llenarLista()
     
     
 ' TOTALIZADOR DE VALORES RECIBIDOS POR RECIBO
-    For Each recibo In recibos
+    For Each Recibo In recibos
         
-        TotalRecibido = TotalRecibido + recibo.TotalEstatico.TotalRecibidoEstatico
+        TotalRecibido = TotalRecibido + Recibo.TotalEstatico.TotalRecibidoEstatico
         
     Next
     
@@ -586,9 +586,9 @@ End Sub
 Private Sub grilla_recibos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
 
-    recibo = recibos.item(rowIndex)
+    Recibo = recibos.item(rowIndex)
 
-    If ColIndex = 6 And tmpArchivos.item(recibo.Id) > 0 Then
+    If ColIndex = 6 And tmpArchivos.item(Recibo.Id) > 0 Then
         IconIndex = 1
     End If
 End Sub
@@ -596,9 +596,9 @@ End Sub
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         SeleccionarRecibo
-        Me.nro.caption = "[ Nro. " & Format(recibo.Id, "0000") & " ]"
+        Me.NRO.caption = "[ Nro. " & Format(Recibo.Id, "0000") & " ]"
 
-        If recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
+        If Recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True
             Me.imprimirRecibo.Enabled = False
             Me.mnuAnular.Enabled = False
@@ -608,7 +608,7 @@ Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Sin
                 Me.aprobarRecibo.Enabled = False
             End If
 
-        ElseIf recibo.estado = EstadoRecibo.Aprobado Then      'aprobado
+        ElseIf Recibo.estado = EstadoRecibo.Aprobado Then      'aprobado
             Me.imprimirRecibo.Enabled = True
             Me.editarRecibo.Enabled = False
             Me.aprobarRecibo.Enabled = False
@@ -618,21 +618,21 @@ Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Sin
                 Me.mnuAnular.Enabled = False
             End If
 
-            If recibo.ACuentaDisponible > 0 Then
+            If Recibo.ACuentaDisponible > 0 Then
                 Me.mnuAplicarComprobante.Enabled = True
             End If
 
-            If recibo.ACuentaDisponible <= 0 Then
+            If Recibo.ACuentaDisponible <= 0 Then
                 Me.mnuAplicarComprobante.Enabled = False
             End If
 
-        ElseIf recibo.estado = EstadoRecibo.Pendiente Then    'pendiente
+        ElseIf Recibo.estado = EstadoRecibo.Pendiente Then    'pendiente
             Me.editarRecibo.Enabled = False
             Me.imprimirRecibo.Enabled = True
             Me.aprobarRecibo.Enabled = False
             Me.mnuAnular.Enabled = False
 
-        ElseIf recibo.estado = EstadoRecibo.Reciboanulado Then    'anulado
+        ElseIf Recibo.estado = EstadoRecibo.Reciboanulado Then    'anulado
             Me.editarRecibo.Enabled = False
             Me.imprimirRecibo.Enabled = True
             Me.aprobarRecibo.Enabled = False
@@ -675,21 +675,21 @@ End Sub
 
 Private Sub SeleccionarRecibo()
     On Error Resume Next
-    Set recibo = recibos.item(Me.grilla_recibos.rowIndex(Me.grilla_recibos.row))
+    Set Recibo = recibos.item(Me.grilla_recibos.rowIndex(Me.grilla_recibos.row))
 
 End Sub
 
 Private Sub grilla_recibos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set recibo = recibos.item(rowIndex)
+    Set Recibo = recibos.item(rowIndex)
     
-    Values(1) = recibo.Id
-    Values(2) = Format(recibo.FEcha, "yyyy/mm/dd", vbSunday)
+    Values(1) = Recibo.Id
+    Values(2) = Format(Recibo.FEcha, "yyyy/mm/dd", vbSunday)
 
-    Values(3) = recibo.cliente.razon
-    Values(4) = recibo.FechaCreacion
-    Values(5) = recibo.moneda.NombreCorto
+    Values(3) = Recibo.cliente.razon
+    Values(4) = Recibo.FechaCreacion
+    Values(5) = Recibo.moneda.NombreCorto
     
-    If recibo.estado = 1 Then
+    If Recibo.estado = 1 Then
     Values(6) = "-"
     Values(7) = "-"
     Values(8) = "-"
@@ -697,29 +697,29 @@ Private Sub grilla_recibos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmar
     Values(10) = "-"
     
     Else
-        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico + recibo.TotalRetenciones)), "$", "")
-        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalRetenciones)), "$", "")
+        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalEstatico.TotalReciboEstatico + Recibo.TotalRetenciones)), "$", "")
+        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalRetenciones)), "$", "")
         'VALORES POR PAGAR
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalReciboEstatico)), "$", "")
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalEstatico.TotalReciboEstatico)), "$", "")
 
         'IMPORTE TOTAL PAGADO
-        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.TotalEstatico.TotalRecibidoEstatico)), "$", "")
+        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalEstatico.TotalRecibidoEstatico)), "$", "")
 
         'IMPORTE SALDO TOTAL A CUENTA
-        Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(recibo.ACuentaDisponible)), "$", "")
+        Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.ACuentaDisponible)), "$", "")
 
 End If
     
-    Values(11) = enums.EnumEstadoRecibo(recibo.estado)
+    Values(11) = enums.EnumEstadoRecibo(Recibo.estado)
     
-    Values(12) = IIf(IsEmpty(tmpArchivos(recibo.Id)), 0, tmpArchivos(recibo.Id))
+    Values(12) = IIf(IsEmpty(tmpArchivos(Recibo.Id)), 0, tmpArchivos(Recibo.Id))
     
 End Sub
 
 
 Private Sub imprimirRecibo_Click()
     If MsgBox("¿Desea imprimir el recibo?", vbYesNo, "Confirmación") = vbYes Then
-        DAORecibo.Imprimir recibo.Id
+        DAORecibo.Imprimir Recibo.Id
 
     End If
 
@@ -730,7 +730,7 @@ Private Property Get ISuscriber_id() As String
 End Property
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
-    Dim tmp As recibo
+    Dim tmp As Recibo
     If EVENTO.EVENTO = agregar_ Then
         llenarLista
         Me.grilla_recibos.Refresh
@@ -772,9 +772,9 @@ End Function
 Private Sub mnuAdquirir_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_Recibos, recibo.Id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_Recibos, Recibo.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Recibos)
-        Me.grilla_recibos.RefreshRowIndex (recibo.Id)
+        Me.grilla_recibos.RefreshRowIndex (Recibo.Id)
     End If
 End Sub
 
@@ -782,8 +782,8 @@ Private Sub mnuAnular_Click()
     On Error GoTo err1
 
 
-    If MsgBox("¿Desera anular el recibo número " & recibo.Id & " ?" & Chr(10) & "Esta acción no tiene rollback", vbYesNo, "Confirmación") = vbYes Then
-        DAORecibo.Anular recibo
+    If MsgBox("¿Desera anular el recibo número " & Recibo.Id & " ?" & Chr(10) & "Esta acción no tiene rollback", vbYesNo, "Confirmación") = vbYes Then
+        DAORecibo.Anular Recibo
         MsgBox "Recibo anulado con éxito!", vbInformation, "Información"
     End If
 
@@ -798,7 +798,7 @@ Private Sub mnuAplicarComprobante_Click()
     F.editar = True
     F.cmdActualizar.Enabled = True
     F.cmdGuardar.Enabled = False
-    F.reciboId = recibo.Id
+    F.reciboId = Recibo.Id
     F.Show
 
 End Sub
@@ -806,8 +806,8 @@ End Sub
 Private Sub mnuArchivos_Click()
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OA_Recibos
-    frmarchi1.ObjetoId = recibo.Id
-    frmarchi1.caption = "Recibo Nº " & recibo.Id
+    frmarchi1.ObjetoId = Recibo.Id
+    frmarchi1.caption = "Recibo Nº " & Recibo.Id
     frmarchi1.Show
 End Sub
 
@@ -823,7 +823,7 @@ Private Sub verRecibo_Click()
     On Error GoTo err1
     Dim F As New frmAdminCobranzasNuevoRecibo
     F.editar = False
-    F.reciboId = recibo.Id
+    F.reciboId = Recibo.Id
     F.Show
     Exit Sub
 err1:

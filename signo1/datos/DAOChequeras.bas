@@ -11,7 +11,8 @@ Public Const CAMPO_DESDE As String = "numero_desde"
 Public Const CAMPO_HASTA As String = "numero_hasta"
 Public Const CAMPO_FECHA_CREACION As String = "fecha_creacion"
 
-Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
+
+Public Sub llenarComboXtremeSuite(cbo As XtremeSuiteControls.ComboBox)
     Dim col As New Collection
     Set col = DAOChequeras.GetAll
     Dim bco As chequera
@@ -78,7 +79,7 @@ Public Function GetById(Id As Long) As chequera
     If col.count = 0 Then
         Set GetById = Nothing
     Else
-        Set GetById = col.item(1)
+        Set GetById = col.Item(1)
     End If
 End Function
 

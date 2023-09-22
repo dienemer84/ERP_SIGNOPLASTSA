@@ -16,7 +16,7 @@ Public Const CAMPO_OBSERVACIONES As String = "observaciones"
 Public Const CAMPO_TERCEROS_PROPIO As String = "teceros_propio"
 Public Const TABLA_CHEQUE As String = "cheq"
 
-Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional ByRef filter2 As String, Optional OrderBy As String) As Collection
+Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional ByRef filter2 As String, Optional orderBy As String) As Collection
     On Error GoTo err1
 
     Dim rs As ADODB.Recordset
@@ -30,6 +30,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
       & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
       & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
       & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
+      & " LEFT JOIN ordenes_pago op ON op.id= cheq.orden_pago_origen" _
       & " WHERE 1 = 1 "
 
     If LenB(filter) > 0 Then
@@ -40,8 +41,8 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
         q = q & " AND " & filter2
     End If
 
-    If LenB(OrderBy) > 0 Then
-        q = q & " ORDER BY " & OrderBy
+    If LenB(orderBy) > 0 Then
+        q = q & " ORDER BY " & orderBy
     End If
 
 
@@ -55,7 +56,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
 
     While Not rs.EOF
-        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov")
+        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov", "op")
         Cheques.Add tmpCheque, CStr(tmpCheque.Id)
 
         rs.MoveNext
@@ -80,18 +81,18 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
     If col.count = 0 Then
         Set FindByChequeraAndId = Nothing
     Else
-        Set FindByChequeraAndId = col.item(1)
+        Set FindByChequeraAndId = col.Item(1)
     End If
 
 End Function
 
-Public Function FindByChequeraAndNro(chequeraId As Long, NRO As String) As cheque
+Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As cheque
     Dim col As Collection
-    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(NRO))
+    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(nro))
     If col.count = 0 Then
         Set FindByChequeraAndNro = Nothing
     Else
-        Set FindByChequeraAndNro = col.item(1)
+        Set FindByChequeraAndNro = col.Item(1)
     End If
 
 End Function
@@ -102,7 +103,7 @@ Public Function FindById(Id As Long) As cheque
     If col.count = 0 Then
         Set FindById = Nothing
     Else
-        Set FindById = col.item(1)
+        Set FindById = col.Item(1)
     End If
 
 End Function
@@ -110,6 +111,7 @@ End Function
 Public Function FindAllByChequeraId(chequeraId As Long) As Collection
     Set FindAllByChequeraId = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId)
 End Function
+
 
 Public Function Map(ByRef rs As Recordset, _
                     ByRef fieldsIndex As Dictionary, _
@@ -121,7 +123,8 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef bancoChequeraTableNameOrAlias As String = vbNullString, _
                     Optional ByRef OrdenesP As String = vbNullString, _
                     Optional ByRef FacturasP As String = vbNullString, _
-                    Optional ByRef proveedores As String = vbNullString _
+                    Optional ByRef proveedores As String = vbNullString, _
+                    Optional ByRef ordenes_pago As String = vbNullString _
                   ) As cheque
 
     Dim tmpCheque As cheque
@@ -146,6 +149,7 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.entro = GetValue(rs, fieldsIndex, tableNameOrAlias, "ingresado")
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
+        tmpCheque.OrdenPagoFecha = GetValue(rs, fieldsIndex, ordenes_pago, "fecha")
         If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
         If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
         If LenB(chequeraTableNameOrAlias) > 0 Then Set tmpCheque.chequera = DAOChequeras.Map(rs, fieldsIndex, chequeraTableNameOrAlias, monedaChequeraTableNameOrAlias, bancoChequeraTableNameOrAlias)
@@ -243,8 +247,8 @@ q = Replace(q, "'id'", cheque.Id)
 
 End Function
 
-Public Function FindAllEnCartera(Optional ByRef filter2 As String, Optional ByRef OrderBy As String) As Collection
-    Set FindAllEnCartera = FindAll(DAOCheques.CAMPO_EN_CARTERA & " = 1", filter2, OrderBy)
+Public Function FindAllEnCartera(Optional ByRef filter2 As String, Optional ByRef orderBy As String) As Collection
+    Set FindAllEnCartera = FindAll(DAOCheques.CAMPO_EN_CARTERA & " = 1", filter2, orderBy)
 End Function
 
 Public Function FindAllEnCarteraDeTerceros() As Collection

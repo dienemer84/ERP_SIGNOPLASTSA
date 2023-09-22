@@ -239,7 +239,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67043329
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -261,7 +261,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67043329
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -367,7 +367,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67043329
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -389,7 +389,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67043329
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -890,7 +890,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67043329
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1432,9 +1432,9 @@ Begin VB.Form frmAdminFacturasEdicion
          Strikethrough   =   0   'False
       EndProperty
       Height          =   210
-      Left            =   11880
+      Left            =   11760
       TabIndex        =   31
-      Top             =   10320
+      Top             =   10800
       Width           =   5385
    End
    Begin VB.Label lblAjuste 
