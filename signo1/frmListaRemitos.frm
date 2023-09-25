@@ -351,13 +351,13 @@ Begin VB.Form frmPlaneamientoRemitosLista
       End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   5655
+      Height          =   5295
       Left            =   120
       TabIndex        =   0
       Top             =   3120
       Width           =   16935
       _ExtentX        =   29871
-      _ExtentY        =   9975
+      _ExtentY        =   9340
       Version         =   "2.0"
       PreviewRowIndent=   200
       DefaultGroupMode=   1

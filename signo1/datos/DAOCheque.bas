@@ -56,7 +56,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
 
     While Not rs.EOF
-        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov", "op")
+        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov")
         Cheques.Add tmpCheque, CStr(tmpCheque.Id)
 
         rs.MoveNext
@@ -81,7 +81,7 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
     If col.count = 0 Then
         Set FindByChequeraAndId = Nothing
     Else
-        Set FindByChequeraAndId = col.Item(1)
+        Set FindByChequeraAndId = col.item(1)
     End If
 
 End Function
@@ -92,7 +92,7 @@ Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As chequ
     If col.count = 0 Then
         Set FindByChequeraAndNro = Nothing
     Else
-        Set FindByChequeraAndNro = col.Item(1)
+        Set FindByChequeraAndNro = col.item(1)
     End If
 
 End Function
@@ -103,7 +103,7 @@ Public Function FindById(Id As Long) As cheque
     If col.count = 0 Then
         Set FindById = Nothing
     Else
-        Set FindById = col.Item(1)
+        Set FindById = col.item(1)
     End If
 
 End Function
@@ -123,8 +123,7 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef bancoChequeraTableNameOrAlias As String = vbNullString, _
                     Optional ByRef OrdenesP As String = vbNullString, _
                     Optional ByRef FacturasP As String = vbNullString, _
-                    Optional ByRef proveedores As String = vbNullString, _
-                    Optional ByRef ordenes_pago As String = vbNullString _
+                    Optional ByRef proveedores As String = vbNullString _
                   ) As cheque
 
     Dim tmpCheque As cheque
@@ -149,7 +148,7 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.entro = GetValue(rs, fieldsIndex, tableNameOrAlias, "ingresado")
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
-        tmpCheque.OrdenPagoFecha = GetValue(rs, fieldsIndex, ordenes_pago, "fecha")
+'        tmpCheque.OrdenPagoFecha = GetValue(rs, fieldsIndex, ordenes_pago, "fecha")
         If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
         If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
         If LenB(chequeraTableNameOrAlias) > 0 Then Set tmpCheque.chequera = DAOChequeras.Map(rs, fieldsIndex, chequeraTableNameOrAlias, monedaChequeraTableNameOrAlias, bancoChequeraTableNameOrAlias)

@@ -179,6 +179,8 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orde
     Set FindAllSoloOP = col
 
 End Function
+
+
 Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
     q = "SELECT *, (operaciones.pertenencia + 0) as pertenencia2" _
@@ -244,6 +246,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
                 op.FacturasProveedor.Add fac, CStr(fac.Id)
             End If
         End If
+        
 
         Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco")
         If IsSomething(che) Then
@@ -298,6 +301,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
 
   Dim op As OrdenPago
 
+
+    
 'id_certificado_retencion
     Dim Id As Long
     Id = GetValue(rs, indice, tabla, "id")
@@ -324,6 +329,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
         If LenB(tablaCuentaContable) > 0 Then Set op.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
         If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
+        
+            Debug.Print (op.Id)
     End If
 
     Set Map = op

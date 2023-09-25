@@ -29,8 +29,9 @@ Public moneda As clsMoneda
 Public observaciones As String
 Public TercerosPropio As Boolean
 Public FechaEmision As Date
+
 Public IdOrdenPagoOrigen As Long
-Public OrdenPagoFecha As Date
+
 Public estado As EstadoCheque
 Public Depositado As Boolean
 
