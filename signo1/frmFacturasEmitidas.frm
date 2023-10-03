@@ -15,14 +15,220 @@ Begin VB.Form frmAdminFacturasEmitidas
    ScaleHeight     =   7470
    ScaleWidth      =   9420
    WindowState     =   2  'Maximized
-   Begin XtremeSuiteControls.GroupBox grp 
+   Begin VB.Frame grpTotalizadores 
+      Caption         =   "Totales"
+      Height          =   1335
+      Index           =   0
+      Left            =   14760
+      TabIndex        =   47
+      Top             =   120
+      Width           =   7095
+      Begin XtremeSuiteControls.Label lblPercepciones_Dolar 
+         Height          =   195
+         Left            =   3360
+         TabIndex        =   55
+         Top             =   720
+         Width           =   2235
+         _Version        =   786432
+         _ExtentX        =   3942
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Total Percepciones: U$S 00,00"
+         BackColor       =   -2147483633
+         AutoSize        =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label lblIVA_Dolar 
+         Height          =   195
+         Left            =   3360
+         TabIndex        =   54
+         Top             =   480
+         Width           =   1515
+         _Version        =   786432
+         _ExtentX        =   2672
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Total IVA: U$S 00,00"
+         BackColor       =   -2147483633
+         AutoSize        =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label lblNG_Dolar 
+         Height          =   195
+         Left            =   3360
+         TabIndex        =   53
+         Top             =   240
+         Width           =   1500
+         _Version        =   786432
+         _ExtentX        =   2646
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Total NG: U$S 00,00"
+         BackColor       =   -2147483633
+         AutoSize        =   -1  'True
+      End
+      Begin VB.Label lblTotalDolares 
+         AutoSize        =   -1  'True
+         Caption         =   "Total: U$S 00,00 "
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   195
+         Left            =   3360
+         TabIndex        =   52
+         Top             =   960
+         Width           =   1530
+      End
+      Begin VB.Label lblTotal 
+         AutoSize        =   -1  'True
+         Caption         =   "Total: $ 00,00"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   195
+         Left            =   240
+         TabIndex        =   51
+         Top             =   960
+         Width           =   1215
+      End
+      Begin VB.Label lblTotalPercepciones 
+         AutoSize        =   -1  'True
+         Caption         =   "Total Percepciones: $ 00,00"
+         Height          =   195
+         Left            =   240
+         TabIndex        =   50
+         Top             =   720
+         Width           =   2010
+      End
+      Begin VB.Label lblTotalIVA 
+         AutoSize        =   -1  'True
+         Caption         =   "Total IVA: $ 00,00"
+         Height          =   195
+         Left            =   240
+         TabIndex        =   49
+         Top             =   480
+         Width           =   1290
+      End
+      Begin VB.Label lblTotalNeto 
+         AutoSize        =   -1  'True
+         Caption         =   "Total NG: $ 00,00"
+         Height          =   195
+         Left            =   240
+         TabIndex        =   48
+         Top             =   240
+         Width           =   1275
+      End
+   End
+   Begin VB.Frame grpBotones 
+      Height          =   855
+      Index           =   1
+      Left            =   14760
+      TabIndex        =   41
+      Top             =   1680
+      Width           =   7095
+      Begin XtremeSuiteControls.PushButton btnBuscar 
+         Default         =   -1  'True
+         Height          =   420
+         Left            =   120
+         TabIndex        =   42
+         Top             =   240
+         Width           =   1245
+         _Version        =   786432
+         _ExtentX        =   2196
+         _ExtentY        =   741
+         _StockProps     =   79
+         Caption         =   "Buscar"
+         BackColor       =   12632256
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton btnImprimir 
+         Height          =   420
+         Left            =   2880
+         TabIndex        =   43
+         Top             =   240
+         Width           =   1245
+         _Version        =   786432
+         _ExtentX        =   2196
+         _ExtentY        =   741
+         _StockProps     =   79
+         Caption         =   "Imprimir"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton btnExportar 
+         Height          =   420
+         Left            =   1440
+         TabIndex        =   44
+         ToolTipText     =   "Exporta s?lo pendientes"
+         Top             =   240
+         Width           =   1245
+         _Version        =   786432
+         _ExtentX        =   2196
+         _ExtentY        =   741
+         _StockProps     =   79
+         Caption         =   "Exportar"
+         BackColor       =   12632256
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ProgressBar barProgreso 
+         Height          =   420
+         Left            =   5040
+         TabIndex        =   45
+         Top             =   240
+         Visible         =   0   'False
+         Width           =   1935
+         _Version        =   786432
+         _ExtentX        =   3413
+         _ExtentY        =   741
+         _StockProps     =   93
+         BackColor       =   12632256
+         Appearance      =   6
+         BarColor        =   65280
+      End
+      Begin XtremeSuiteControls.PushButton btnReducirVentana 
+         Height          =   420
+         HelpContextID   =   1
+         Left            =   4320
+         TabIndex        =   46
+         ToolTipText     =   "Amplia la grilla de comprobantes o Reestablece su tamaño."
+         Top             =   240
+         Width           =   495
+         _Version        =   786432
+         _ExtentX        =   873
+         _ExtentY        =   741
+         _StockProps     =   79
+         Caption         =   "R"
+         UseVisualStyle  =   -1  'True
+         BorderGap       =   10
+      End
+   End
+   Begin XtremeSuiteControls.GroupBox grpFiltrosPrincipal 
       Height          =   2535
       Left            =   120
       TabIndex        =   0
       Top             =   0
-      Width           =   23775
+      Width           =   14535
       _Version        =   786432
-      _ExtentX        =   41936
+      _ExtentX        =   25638
       _ExtentY        =   4471
       _StockProps     =   79
       Caption         =   "Filtros"
@@ -31,7 +237,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.CheckBox chkAgruparCbtes 
          Height          =   255
          Left            =   12360
-         TabIndex        =   55
+         TabIndex        =   40
          Top             =   2040
          Width           =   2055
          _Version        =   786432
@@ -45,7 +251,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.PushButton btnClearTipo 
          Height          =   285
          Left            =   3000
-         TabIndex        =   54
+         TabIndex        =   39
          Top             =   255
          Width           =   375
          _Version        =   786432
@@ -58,7 +264,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboTipo 
          Height          =   315
          Left            =   1650
-         TabIndex        =   52
+         TabIndex        =   37
          Top             =   240
          Width           =   1290
          _Version        =   786432
@@ -74,204 +280,14 @@ Begin VB.Form frmAdminFacturasEmitidas
          Alignment       =   1  'Right Justify
          Height          =   315
          Left            =   1620
-         TabIndex        =   50
+         TabIndex        =   35
          Top             =   1920
          Width           =   1335
-      End
-      Begin VB.Frame Frame 
-         Height          =   855
-         Index           =   1
-         Left            =   14520
-         TabIndex        =   45
-         Top             =   1560
-         Width           =   7095
-         Begin XtremeSuiteControls.PushButton cmdBuscar 
-            Default         =   -1  'True
-            Height          =   420
-            Left            =   120
-            TabIndex        =   46
-            Top             =   240
-            Width           =   1245
-            _Version        =   786432
-            _ExtentX        =   2196
-            _ExtentY        =   741
-            _StockProps     =   79
-            Caption         =   "Buscar"
-            BackColor       =   12632256
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            UseVisualStyle  =   -1  'True
-         End
-         Begin XtremeSuiteControls.PushButton cmdImprimir 
-            Height          =   420
-            Left            =   3000
-            TabIndex        =   47
-            Top             =   240
-            Width           =   1245
-            _Version        =   786432
-            _ExtentX        =   2196
-            _ExtentY        =   741
-            _StockProps     =   79
-            Caption         =   "Imprimir"
-            BackColor       =   12632256
-            UseVisualStyle  =   -1  'True
-         End
-         Begin XtremeSuiteControls.PushButton btnExportar 
-            Height          =   420
-            Left            =   1560
-            TabIndex        =   48
-            ToolTipText     =   "Exporta s?lo pendientes"
-            Top             =   240
-            Width           =   1245
-            _Version        =   786432
-            _ExtentX        =   2196
-            _ExtentY        =   741
-            _StockProps     =   79
-            Caption         =   "Exportar"
-            BackColor       =   12632256
-            UseVisualStyle  =   -1  'True
-         End
-         Begin XtremeSuiteControls.ProgressBar progreso 
-            Height          =   420
-            Left            =   4560
-            TabIndex        =   49
-            Top             =   240
-            Visible         =   0   'False
-            Width           =   2415
-            _Version        =   786432
-            _ExtentX        =   4260
-            _ExtentY        =   741
-            _StockProps     =   93
-            BackColor       =   12632256
-            Appearance      =   6
-            BarColor        =   65280
-         End
-      End
-      Begin VB.Frame Frame 
-         Caption         =   "Totales"
-         Height          =   1335
-         Index           =   0
-         Left            =   14520
-         TabIndex        =   35
-         Top             =   240
-         Width           =   7095
-         Begin VB.Label lblTotalNeto 
-            AutoSize        =   -1  'True
-            Caption         =   "Total NG: $ 00,00"
-            Height          =   195
-            Left            =   240
-            TabIndex        =   44
-            Top             =   240
-            Width           =   1275
-         End
-         Begin VB.Label lblTotalIVA 
-            AutoSize        =   -1  'True
-            Caption         =   "Total IVA: $ 00,00"
-            Height          =   195
-            Left            =   240
-            TabIndex        =   43
-            Top             =   480
-            Width           =   1290
-         End
-         Begin VB.Label lblTotalPercepciones 
-            AutoSize        =   -1  'True
-            Caption         =   "Total Percepciones: $ 00,00"
-            Height          =   195
-            Left            =   240
-            TabIndex        =   42
-            Top             =   720
-            Width           =   2010
-         End
-         Begin VB.Label lblTotal 
-            AutoSize        =   -1  'True
-            Caption         =   "Total: $ 00,00"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   195
-            Left            =   240
-            TabIndex        =   41
-            Top             =   960
-            Width           =   1215
-         End
-         Begin VB.Label lblTotalDolares 
-            AutoSize        =   -1  'True
-            Caption         =   "Total: U$S 00,00 "
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   195
-            Left            =   3360
-            TabIndex        =   39
-            Top             =   960
-            Width           =   1530
-         End
-         Begin XtremeSuiteControls.Label lblNG_Dolar 
-            Height          =   195
-            Left            =   3360
-            TabIndex        =   38
-            Top             =   240
-            Width           =   1500
-            _Version        =   786432
-            _ExtentX        =   2646
-            _ExtentY        =   344
-            _StockProps     =   79
-            Caption         =   "Total NG: U$S 00,00"
-            BackColor       =   -2147483633
-            AutoSize        =   -1  'True
-         End
-         Begin XtremeSuiteControls.Label lblIVA_Dolar 
-            Height          =   195
-            Left            =   3360
-            TabIndex        =   37
-            Top             =   480
-            Width           =   1515
-            _Version        =   786432
-            _ExtentX        =   2672
-            _ExtentY        =   344
-            _StockProps     =   79
-            Caption         =   "Total IVA: U$S 00,00"
-            BackColor       =   -2147483633
-            AutoSize        =   -1  'True
-         End
-         Begin XtremeSuiteControls.Label lblPercepciones_Dolar 
-            Height          =   195
-            Left            =   3360
-            TabIndex        =   36
-            Top             =   720
-            Width           =   2235
-            _Version        =   786432
-            _ExtentX        =   3942
-            _ExtentY        =   344
-            _StockProps     =   79
-            Caption         =   "Total Percepciones: U$S 00,00"
-            BackColor       =   -2147483633
-            AutoSize        =   -1  'True
-         End
       End
       Begin XtremeSuiteControls.PushButton PushButton2 
          Height          =   285
          Left            =   9165
-         TabIndex        =   34
+         TabIndex        =   33
          Top             =   1965
          Width           =   375
          _Version        =   786432
@@ -285,7 +301,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       Begin XtremeSuiteControls.ComboBox cboOrdenImporte 
          Height          =   315
          Left            =   6720
-         TabIndex        =   32
+         TabIndex        =   31
          Top             =   1920
          Width           =   2355
          _Version        =   786432
@@ -382,7 +398,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          BackColor       =   12632256
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.GroupBox GroupBox2 
+      Begin XtremeSuiteControls.GroupBox grpFechaEmision 
          Height          =   1650
          Left            =   9720
          TabIndex        =   4
@@ -634,10 +650,11 @@ Begin VB.Form frmAdminFacturasEmitidas
          BackColor       =   12632256
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.CheckBox chkVerObservaciones 
+      Begin XtremeSuiteControls.CheckBox chkObservaciones 
          Height          =   225
+         Index           =   1
          Left            =   9720
-         TabIndex        =   31
+         TabIndex        =   56
          Top             =   2040
          Width           =   1695
          _Version        =   786432
@@ -653,7 +670,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   255
          Index           =   2
          Left            =   570
-         TabIndex        =   53
+         TabIndex        =   38
          Top             =   270
          Width           =   960
          _Version        =   786432
@@ -669,7 +686,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   375
          Index           =   1
          Left            =   915
-         TabIndex        =   51
+         TabIndex        =   36
          Top             =   1890
          Width           =   615
          _Version        =   786432
@@ -685,7 +702,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   375
          Index           =   0
          Left            =   5415
-         TabIndex        =   33
+         TabIndex        =   32
          Top             =   1920
          Width           =   1215
          _Version        =   786432
@@ -802,10 +819,10 @@ Begin VB.Form frmAdminFacturasEmitidas
       _Version        =   393216
       CancelError     =   -1  'True
    End
-   Begin GridEX20.GridEX GridEX1 
+   Begin GridEX20.GridEX gridComprobantesEmitidos 
       Height          =   6495
       Left            =   120
-      TabIndex        =   40
+      TabIndex        =   34
       Top             =   2640
       Width           =   23805
       _ExtentX        =   41989
@@ -822,6 +839,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       MethodHoldFields=   -1  'True
       ContScroll      =   -1  'True
       AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
       ImageCount      =   1
       ImagePicture1   =   "frmFacturasEmitidas.frx":000C
       RowHeaders      =   -1  'True
@@ -1012,12 +1030,12 @@ Dim m_Archivos As Dictionary
 
 Private Sub AnularFactura_Click()
     Dim r As Long
-    r = Me.GridEX1.rowIndex(Me.GridEX1.row)
+    r = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
     If MsgBox("¿Desea anular el comprobante seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
 
         If DAOFactura.Anular(Factura) Then
             MsgBox "Comprobante anulado con éxito!", vbInformation, "Información"
-            Me.GridEX1.RefreshRowIndex r
+            Me.gridComprobantesEmitidos.RefreshRowIndex r
         Else
             MsgBox "Hubo un error. No se anulo el comprobante!", vbCritical, "Error"
         End If
@@ -1099,7 +1117,7 @@ Private Sub aprobarFactura_Click()
     Dim msgadicional As String
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.GridEX1.rowIndex(Me.GridEX1.row)
+        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.aprobarV2(Factura, True, False) Then
 
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
@@ -1124,7 +1142,7 @@ Private Sub aprobarFactura_Click()
             End If
             MsgBox msg, vbInformation, "Información"
 
-            Me.GridEX1.RefreshRowIndex g
+            Me.gridComprobantesEmitidos.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
 
         Else
@@ -1136,7 +1154,7 @@ err1:
     'MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
 
     MsgBox Err.Description, vbCritical, Err.Source
-    Me.GridEX1.RefreshRowIndex g
+    Me.gridComprobantesEmitidos.RefreshRowIndex g
 End Sub
 
 Private Sub archivos_Click()
@@ -1158,11 +1176,11 @@ Private Sub btnExportar_Click()
 
 
 'INICIA EL PROGRESSBAR Y LO MUESTRA
-    Me.progreso.Visible = True
+    Me.barProgreso.Visible = True
 
     'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
-    progreso.min = 0
-    progreso.max = facturas.count
+    barProgreso.min = 0
+    barProgreso.max = facturas.count
 
 
     'Dim xlApplication As New Excel.Application
@@ -1357,7 +1375,7 @@ Private Sub btnExportar_Click()
 
         'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
         d = d + 1
-        progreso.value = d
+        barProgreso.value = d
 
 
     Next
@@ -1432,9 +1450,49 @@ Private Sub btnExportar_Click()
     Set xlApplication = Nothing
 
     'REINICIA EL PROGRESSBAR Y LO OCULTA
-    progreso.value = 0
-    Me.progreso.Visible = False
+    barProgreso.value = 0
+    Me.barProgreso.Visible = False
 
+End Sub
+
+Private Sub btnReducirVentana_Click()
+'SE REDUCE
+    If btnReducirVentana.caption = "R" Then
+        Me.grpTotalizadores(0).Visible = False
+        Me.grpFiltrosPrincipal.Visible = False
+        
+        Me.btnBuscar.Visible = False
+        
+        Me.grpBotones(1).Top = 120
+        Me.gridComprobantesEmitidos.Top = Me.grpBotones(1).Top + 960
+        
+        Me.gridComprobantesEmitidos.Height = Me.ScaleHeight - 1300
+        
+        Me.gridComprobantesEmitidos.GroupByBoxVisible = False
+        
+        Me.gridComprobantesEmitidos.PreviewRowLines = 0
+                
+        Me.btnReducirVentana.caption = "A"
+
+        
+'SE REESTABLECE
+    ElseIf btnReducirVentana.caption = "A" Then
+        Me.grpTotalizadores(0).Visible = True
+        Me.grpFiltrosPrincipal.Visible = True
+
+        Me.btnBuscar.Visible = True
+
+        Me.grpBotones(1).Top = 1680
+        Me.gridComprobantesEmitidos.Top = Me.grpBotones(1).Top + 960
+
+        Me.gridComprobantesEmitidos.Height = Me.ScaleHeight - 2900
+        
+        Me.gridComprobantesEmitidos.PreviewRowLines = 1
+                
+        Me.btnReducirVentana.caption = "R"
+        
+    End If
+    
 End Sub
 
 Private Sub cboRangos_Click()
@@ -1447,9 +1505,9 @@ End Sub
 
 Private Sub agruparAsociados()
     If Me.chkAgruparCbtes Then
-        Me.GridEX1.Groups.Add 26, jgexSortDescending
+        Me.gridComprobantesEmitidos.Groups.Add 26, jgexSortDescending
     Else
-        Me.GridEX1.Groups.Clear
+        Me.gridComprobantesEmitidos.Groups.Clear
     End If
 
 End Sub
@@ -1463,13 +1521,14 @@ End Sub
 
 Private Sub verIds()
     If Me.chkboxVerIds Then
-        Me.GridEX1.Columns(24).Visible = True
-        Me.GridEX1.Columns(24).Width = 800
+        Me.gridComprobantesEmitidos.Columns(24).Visible = True
+        Me.gridComprobantesEmitidos.Columns(24).Width = 800
     Else
-        Me.GridEX1.Columns(24).Visible = False
+        Me.gridComprobantesEmitidos.Columns(24).Visible = False
     End If
     
 End Sub
+
 
 Private Sub chkVerObservaciones_Click()
     verObservaciones
@@ -1477,21 +1536,21 @@ End Sub
 
 
 Private Sub verObservaciones()
-    If Me.chkVerObservaciones Then
-        Me.GridEX1.PreviewRowLines = 1
+    If Me.chkObservaciones(1) Then
+        Me.gridComprobantesEmitidos.PreviewRowLines = 1
     Else
-        Me.GridEX1.PreviewRowLines = 0
+        Me.gridComprobantesEmitidos.PreviewRowLines = 0
     End If
 End Sub
 
 
-Private Sub cmdBuscar_Click()
+Private Sub btnBuscar_Click()
     llenarGrilla
 
 End Sub
 
-Private Sub cmdImprimir_Click()
-    With Me.GridEX1.PrinterProperties
+Private Sub btnImprimir_Click()
+    With Me.gridComprobantesEmitidos.PrinterProperties
         .FitColumns = True
         .RepeatHeaders = True
         .Orientation = jgexPPLandscape
@@ -1505,11 +1564,15 @@ Private Sub cmdImprimir_Click()
     End With
     Load frmPrintPreview
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
-    GridEX1.PrintPreview frmPrintPreview.GEXPreview1
+    gridComprobantesEmitidos.PrintPreview frmPrintPreview.GEXPreview1
     frmPrintPreview.Show 1
 End Sub
 
 
+
+Private Sub chkObservaciones_Click(Index As Integer)
+verObservaciones
+End Sub
 
 Private Sub cmdLimpiarCboEstadoAfip_Click()
     Me.cboEstadoAfip.ListIndex = -1
@@ -1527,9 +1590,11 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
 
-    Me.GridEX1.ItemCount = 0
-    GridEXHelper.CustomizeGrid Me.GridEX1, True    ', True
+    Me.gridComprobantesEmitidos.ItemCount = 0
+    GridEXHelper.CustomizeGrid Me.gridComprobantesEmitidos, True    ', True
 
+    Me.gridComprobantesEmitidos.GroupByBoxVisible = False
+        
     DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
     Me.cboClientes.ListIndex = -1
 
@@ -1608,7 +1673,7 @@ Private Sub llenarGrilla()
     Dim filtro As String
     Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
 
-    Me.GridEX1.ItemCount = 0
+    Me.gridComprobantesEmitidos.ItemCount = 0
     filtro = "1=1"
 
     If Me.cboClientes.ListIndex >= 0 Then
@@ -1727,11 +1792,11 @@ Private Sub llenarGrilla()
     Me.lblIVA_Dolar.caption = "Total IVA: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalIVADolar)), "$", "")
     Me.lblNG_Dolar.caption = "Total NG: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalNGDolar)), "$", "")
     
-    Me.GridEX1.ItemCount = 0
-    Me.GridEX1.ItemCount = facturas.count
+    Me.gridComprobantesEmitidos.ItemCount = 0
+    Me.gridComprobantesEmitidos.ItemCount = facturas.count
 
     ' 1451- AGREGO FUNCION DE MOSTRAR ID U OCULTAR
-    Me.GridEX1.Columns(24).Visible = False
+    Me.gridComprobantesEmitidos.Columns(24).Visible = False
 
     Me.caption = "Cbtes. Venta [Cant: " & facturas.count & "]"
 
@@ -1740,9 +1805,9 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.GridEX1.Width = Me.ScaleWidth - 400
-    Me.GridEX1.Height = Me.ScaleHeight - 3200
-    Me.grp.Width = Me.GridEX1.Width
+    Me.gridComprobantesEmitidos.Width = Me.ScaleWidth - 400
+    Me.gridComprobantesEmitidos.Height = Me.ScaleHeight - 3200
+    Me.grpFiltrosPrincipal.Width = Me.gridComprobantesEmitidos.Width
 
 End Sub
 
@@ -1755,23 +1820,23 @@ Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
 End Sub
 
-Private Sub GridEX1_BeforePrintPage(ByVal PageNumber As Long, ByVal nPages As Long)
-    GridEX1.PrinterProperties.FooterString(jgexHFRight) = "Página" & PageNumber & " de " & nPages
+Private Sub gridComprobantesEmitidos_BeforePrintPage(ByVal PageNumber As Long, ByVal nPages As Long)
+    gridComprobantesEmitidos.PrinterProperties.FooterString(jgexHFRight) = "Página" & PageNumber & " de " & nPages
 End Sub
 
-Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
-    GridEXHelper.ColumnHeaderClick Me.GridEX1, Column
+Private Sub gridComprobantesEmitidos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
+    GridEXHelper.ColumnHeaderClick Me.gridComprobantesEmitidos, Column
 End Sub
 
-Private Sub GridEX1_DblClick()
+Private Sub gridComprobantesEmitidos_DblClick()
     verFactura_Click
 End Sub
 
-Private Sub GridEX1_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub gridComprobantesEmitidos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
@@ -2013,7 +2078,7 @@ Private Sub GridEX1_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     End If
 End Sub
 
-Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
+Private Sub gridComprobantesEmitidos_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
     Set Factura = facturas.item(RowBuffer.rowIndex)
 
@@ -2049,17 +2114,17 @@ err1:
 
 End Sub
 
-Private Sub GridEX1_SelectionChange()
+Private Sub gridComprobantesEmitidos_SelectionChange()
     SeleccionarFactura
 End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
+    Set Factura = facturas.item(Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row))
 
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
     Set Factura = facturas.item(rowIndex)
 
@@ -2258,7 +2323,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim tmp As Factura
     If EVENTO.EVENTO = agregar_ Then
         llenarGrilla
-        Me.GridEX1.Refresh
+        Me.gridComprobantesEmitidos.Refresh
     ElseIf EVENTO.EVENTO = modificar_ Then
         Set tmp = EVENTO.Elemento
 
@@ -2292,7 +2357,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
                 'DAOFactura.FindById(tmp.Id, True)
 
-                Me.GridEX1.RefreshRowIndex i
+                Me.gridComprobantesEmitidos.RefreshRowIndex i
                 Exit For
 
             End If
@@ -2333,7 +2398,7 @@ Private Sub mnuAprobarEnviar_Click()
     Dim msgadicional As String
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.GridEX1.rowIndex(Me.GridEX1.row)
+        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.aprobarV2(Factura, True, True) Then
 
 
@@ -2360,7 +2425,7 @@ Private Sub mnuAprobarEnviar_Click()
             End If
             MsgBox msg, vbInformation, "Información"
 
-            Me.GridEX1.RefreshRowIndex g
+            Me.gridComprobantesEmitidos.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
         Else
             GoTo err1
@@ -2371,7 +2436,7 @@ err1:
     'MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
 
     MsgBox Err.Description, vbCritical, Err.Source
-    Me.GridEX1.RefreshRowIndex g
+    Me.gridComprobantesEmitidos.RefreshRowIndex g
 End Sub
 
 Private Sub mnuArchivos_Click()
@@ -2428,10 +2493,10 @@ Private Sub mnuDesaprobarFactura_Click()
     Dim g As Long
 
     If MsgBox("¿Desea desaprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.GridEX1.rowIndex(Me.GridEX1.row)
+        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.desaprobar(Factura) Then
             MsgBox "Comprobante desaprobado con éxito!", vbInformation, "Información"
-            Me.GridEX1.RefreshRowIndex g
+            Me.gridComprobantesEmitidos.RefreshRowIndex g
             Me.txtNroFactura.SetFocus
         Else
             GoTo err1
@@ -2466,17 +2531,17 @@ Private Sub mnuEnviarAfip_Click()
     If Factura.Tipo.PuntoVenta.CaeManual Then
 
         Dim gg As Long
-        gg = Me.GridEX1.rowIndex(Me.GridEX1.row)
+        gg = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
 
         Dim F As New frmAdminFacturasAprobarSinAfip
         Set F.Factura = Factura
         F.Show 1
 
-        Me.GridEX1.RefreshRowIndex gg
+        Me.gridComprobantesEmitidos.RefreshRowIndex gg
 
     Else
         If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-            g = Me.GridEX1.rowIndex(Me.GridEX1.row)
+            g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
             If DAOFactura.aprobarV2(Factura, False, True) Then
 
 
@@ -2491,7 +2556,7 @@ Private Sub mnuEnviarAfip_Click()
                 End If
                 MsgBox msg, vbInformation, "Información"
 
-                Me.GridEX1.RefreshRowIndex g
+                Me.gridComprobantesEmitidos.RefreshRowIndex g
                 Me.txtNroFactura.SetFocus
             Else
                 GoTo err1
@@ -2504,7 +2569,7 @@ Private Sub mnuEnviarAfip_Click()
 err1:
 
     MsgBox Err.Description, vbCritical, Err.Source
-    Me.GridEX1.RefreshRowIndex g
+    Me.gridComprobantesEmitidos.RefreshRowIndex g
 
 End Sub
 
@@ -2535,7 +2600,7 @@ Private Sub mnuFechaEntrega_Click()
     If Update Then
         Factura.FechaEntrega = nuevaFecha
         If DAOFactura.Guardar(Factura) Then
-            Me.GridEX1.RefreshRowIndex (Me.GridEX1.row)
+            Me.gridComprobantesEmitidos.RefreshRowIndex (Me.gridComprobantesEmitidos.row)
         Else
             Err.Raise vbObjectError + 9998, "mnuFechaEntrega_Click", "Error al guardar la factura." ' Lanza un error personalizado
         End If
@@ -2572,7 +2637,7 @@ Private Sub mnuFechaPagoPropuesta_Click()
     If Update Then
         Factura.FechaPropuestaPago = nuevaFecha
         If DAOFactura.Guardar(Factura) Then
-            Me.GridEX1.ReBind
+            Me.gridComprobantesEmitidos.ReBind
         Else
             MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
         End If
@@ -2623,7 +2688,7 @@ Private Sub scanear_Click()
     Dim archivos As New classArchivos
     If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
-        Me.GridEX1.RefreshRowIndex (Factura.Id)
+        Me.gridComprobantesEmitidos.RefreshRowIndex (Factura.Id)
     End If
 End Sub
 

@@ -239,7 +239,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16646145
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -261,7 +261,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16646145
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -367,7 +367,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16646145
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -389,7 +389,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16646145
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -890,7 +890,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16646145
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -2866,10 +2866,10 @@ Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark 
         Set detalle = Factura.Detalles.item(rowIndex)
         Values(1) = funciones.FormatearDecimales(detalle.Cantidad)
         Values(2) = detalle.detalle
-        Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(detalle.PorcentajeDescuento)), "$", "")
-        Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(detalle.Bruto)), "$", "")
-        Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(detalle.SubTotal)), "$", "")
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(detalle.total)), "$", "")
+        Values(3) = funciones.FormatearDecimales(detalle.PorcentajeDescuento)
+        Values(4) = funciones.FormatearDecimales(detalle.Bruto)
+        Values(5) = funciones.FormatearDecimales(detalle.SubTotal)
+        Values(6) = funciones.FormatearDecimales(detalle.total)
         Values(7) = detalle.IvaAplicado
         Values(8) = detalle.IBAplicado
         Values(9) = detalle.VerOrigen
