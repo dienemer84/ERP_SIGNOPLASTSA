@@ -239,7 +239,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -261,7 +261,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -367,7 +367,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -389,7 +389,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -890,7 +890,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1166,7 +1166,7 @@ Begin VB.Form frmAdminFacturasEdicion
       EndProperty
       UseVisualStyle  =   -1  'True
    End
-   Begin XtremeSuiteControls.PushButton PushButton1 
+   Begin XtremeSuiteControls.PushButton btnSeleccionarOT 
       Height          =   360
       Left            =   120
       TabIndex        =   7
@@ -1192,7 +1192,7 @@ Begin VB.Form frmAdminFacturasEdicion
       Caption         =   "Generar Items Anticipo OT"
       UseVisualStyle  =   -1  'True
    End
-   Begin XtremeSuiteControls.PushButton PushButton2 
+   Begin XtremeSuiteControls.PushButton btnCrearItemConcepto 
       Height          =   360
       Left            =   9120
       TabIndex        =   8
@@ -2412,8 +2412,8 @@ Private Sub Form_Load()
     End If
 
 
-    Me.PushButton1.Enabled = Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT
-    Me.PushButton2.Enabled = Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT
+    Me.btnSeleccionarOT.Enabled = Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT
+    Me.btnCrearItemConcepto.Enabled = Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT
     Me.btnGuardar.Enabled = Not ReadOnly Or EsAnticipo
     Me.btnItemRemito.Enabled = Not ReadOnly And Not EsAnticipo
 
@@ -2494,8 +2494,8 @@ Private Sub Form_Load()
 
     Me.Frame1.Enabled = Not ReadOnly
 
-    Me.PushButton1.Enabled = Not ReadOnly
-    Me.PushButton2.Enabled = Not ReadOnly
+    Me.btnSeleccionarOT.Enabled = Not ReadOnly
+    Me.btnCrearItemConcepto.Enabled = Not ReadOnly
 
     ValidarEsCredito
 
@@ -2864,12 +2864,18 @@ End Sub
 Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex <= Factura.Detalles.count Then
         Set detalle = Factura.Detalles.item(rowIndex)
-        Values(1) = funciones.FormatearDecimales(detalle.Cantidad)
+        Values(1) = detalle.Cantidad
         Values(2) = detalle.detalle
+'        Values(3) = detalle.PorcentajeDescuento
+'        Values(4) = detalle.Bruto
+'        Values(5) = detalle.SubTotal
+'        Values(6) = detalle.total
+        
         Values(3) = funciones.FormatearDecimales(detalle.PorcentajeDescuento)
         Values(4) = funciones.FormatearDecimales(detalle.Bruto)
         Values(5) = funciones.FormatearDecimales(detalle.SubTotal)
         Values(6) = funciones.FormatearDecimales(detalle.total)
+        
         Values(7) = detalle.IvaAplicado
         Values(8) = detalle.IBAplicado
         Values(9) = detalle.VerOrigen
@@ -3016,7 +3022,7 @@ Private Sub mnuAplicarDetalleRemito_Click()
 
 End Sub
 
-Private Sub PushButton1_Click()
+Private Sub btnSeleccionarOT_Click()
 
     If IsSomething(Factura.cliente) Then
         Set Selecciones.OrdenTrabajo = Nothing

@@ -1200,7 +1200,7 @@ End Sub
 
 Private Sub MostrarMensajePendientes()
     Dim msg As String
-    Dim MSG2 As String
+    Dim msg2 As String
     Dim haypend As Long
     Dim hayactiv As Long
 
@@ -1208,19 +1208,19 @@ Private Sub MostrarMensajePendientes()
     hayactiv = HayParaActivar
     
     msg = "hay " & haypend & " ordenes pendientes para aprobar"
-    MSG2 = "hay " & hayactiv & " ordenes aprobadas para activar"
+    msg2 = "hay " & hayactiv & " ordenes aprobadas para activar"
 
     If haypend > 0 And hayactiv < 1 Then
         Me.LBLMENSAJE.caption = msg
     End If
 
     If haypend < 1 And hayactiv > 0 Then
-        Me.LBLMENSAJE.caption = MSG2
+        Me.LBLMENSAJE.caption = msg2
     End If
 
     If haypend > 0 And hayactiv > 0 Then
         Me.LBLMENSAJE.caption = msg
-        Me.LBLMENSAJE2.caption = MSG2
+        Me.LBLMENSAJE2.caption = msg2
     End If
 
     Me.LBLMENSAJE.Visible = (haypend > 0 Or hayactiv > 0)

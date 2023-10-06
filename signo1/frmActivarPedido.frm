@@ -196,7 +196,7 @@ Begin VB.Form frmActivarPedido
          Top             =   1980
          Width           =   2655
       End
-      Begin VB.CommandButton Command1 
+      Begin VB.CommandButton btnImprimirPortada 
          BackColor       =   &H00E0E0E0&
          Caption         =   "Portada"
          Height          =   390
@@ -301,7 +301,7 @@ Begin VB.Form frmActivarPedido
       End
    End
    Begin MSComDlg.CommonDialog CommonDialog1 
-      Left            =   6120
+      Left            =   5400
       Top             =   2160
       _ExtentX        =   847
       _ExtentY        =   847
@@ -347,6 +347,14 @@ Begin VB.Form frmActivarPedido
       BackColor       =   -2147483643
       Style           =   2
       Text            =   "ComboBox1"
+   End
+   Begin XtremeSuiteControls.CommonDialog CuadroDialogoImprimir 
+      Left            =   2760
+      Top             =   5400
+      _Version        =   786432
+      _ExtentX        =   423
+      _ExtentY        =   423
+      _StockProps     =   4
    End
    Begin VB.Menu mnuMain 
       Caption         =   "Main"
@@ -699,21 +707,23 @@ Private Sub ExplorarSectorId(rec As ReportRecord, ByRef sectores_id As Dictionar
 End Sub
 
 
-Private Sub Command1_Click()
+Private Sub btnImprimirPortada_Click()
     On Error GoTo err4
     Dim cod As Integer
     cod = CInt(idpedido)
 
     Me.CommonDialog1.ShowPrinter
-    ImprimirPortadas
 
+    ImprimirPortadas
 
     Exit Sub
 
 err4:
     If Err.Source = "CommonDialog" And Err.Number = 32755 Then Exit Sub
     MsgBox Err.Description, vbCritical, "Error"
+    
 End Sub
+
 Private Sub Command11_Click()
     On Error GoTo er1
     frmPrincipal.CD.ShowPrinter
@@ -749,7 +759,7 @@ End Sub
 
 
 Private Sub Command3_Click()
-    Command1_Click
+    btnImprimirPortada_Click
     Command4_Click
     Command5_Click
 

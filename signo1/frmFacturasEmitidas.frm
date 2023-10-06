@@ -1704,8 +1704,8 @@ Private Sub llenarGrilla()
         filtro = filtro & " and nroFactura=" & Me.txtNroFactura
     End If
     
-    If LenB(Me.txtID) > 0 And IsNumeric(Me.txtID) Then
-        filtro = filtro & " and AdminFacturas.id=" & Me.txtID
+    If LenB(Me.txtId) > 0 And IsNumeric(Me.txtId) Then
+        filtro = filtro & " and AdminFacturas.id=" & Me.txtId
     End If
 
     If Not IsNull(Me.dtpDesde.value) Then
@@ -2288,22 +2288,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.Id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("'¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fue impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next i
             End If
@@ -2543,8 +2543,6 @@ Private Sub mnuEnviarAfip_Click()
         If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
             g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
             If DAOFactura.aprobarV2(Factura, False, True) Then
-
-
 
                 Dim msg As String
                 msg = "Comprobante informado con éxito!"
