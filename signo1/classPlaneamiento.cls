@@ -29,11 +29,11 @@ End Property
 Public Property Get FechaEntrega() As Date
     FechaEntrega = rs!FechaEntrega
 End Property
-Public Property Get FechaFin() As Date
+Public Property Get FechaFIn() As Date
     If IsNull(rs!FechaCerrado) Then
-        FechaFin = 0
+        FechaFIn = 0
     Else
-        FechaFin = rs!FechaCerrado
+        FechaFIn = rs!FechaCerrado
     End If
 End Property
 Public Property Get Fabricados() As Long
@@ -103,6 +103,7 @@ Public Function ExistePedido(idpedido As Long) As Integer
         ExistePedido = -1
     End If
 End Function
+
 Public Function informePedidoContaduria(Id As Integer, DIALOGO As Boolean, Optional t1 As OrdenTrabajo) As Boolean     '1- enviar 2-imprimir
 
     Dim T As OrdenTrabajo
@@ -665,6 +666,7 @@ errh24:
     AprobarOrdenEntrega = True
     If tra Then cn.RollbackTrans
 End Function
+
 Public Function informePieza2(idPiezaPedido, DIALOGO As Boolean, Optional conjunto = False, Optional idPiezaHija = -1, Optional pos = 1, Optional CantElemConj = 0, Optional PosConj = 0, Optional cantEnConj = 1, Optional detalle = Empty, Optional idPiezaPedidoConjunto = -1) As Boolean    '1- enviar 2-imprimir
     On Error GoTo err2
     informePieza2 = True
@@ -700,12 +702,12 @@ Public Function informePieza2(idPiezaPedido, DIALOGO As Boolean, Optional conjun
         razon = rs!razon
         item = rs!item
         If conjunto Then
-            Pieza = detalle
+            pieza = detalle
             Nota = emtpy
         Else
-            Pieza = rs!detalle
+            pieza = rs!detalle
             Nota = rs!Nota
-            Pieza = Trim(Pieza) & " " & Trim(Nota)
+            pieza = Trim(pieza) & " " & Trim(Nota)
 
         End If
         idPieza = rs!pizza
@@ -731,7 +733,7 @@ Public Function informePieza2(idPiezaPedido, DIALOGO As Boolean, Optional conjun
         pedido_pieza2.Sections("observar").Controls("lblNota").caption = IIf(IsNull(Nota), vbNullString, Nota)
         pedido_pieza2.Sections("cabeza").Controls("lblfechaentrega").caption = fecEnt
         pedido_pieza2.Sections("cabeza").Controls("entregait").caption = eni
-        pedido_pieza2.Sections("cabeza").Controls("lblDetalle").caption = Pieza
+        pedido_pieza2.Sections("cabeza").Controls("lblDetalle").caption = pieza
         pedido_pieza2.Sections("observar").Controls("copia").caption = copia
 
         If Cantidad = 0 Then
@@ -1058,7 +1060,7 @@ End Sub
 
 
 
-Public Function informePiezaMateriales(Id As Long, Origen As Integer, DIALOGO As Boolean) As Boolean   '1- enviar 2-imprimir
+Public Function informePiezaMaterialesPDF(Id As Long, Origen As Integer, DIALOGO As Boolean) As Boolean   '1- enviar 2-imprimir
     On Error GoTo err2
 
     Dim Obj As PageSet.PrinterControl
@@ -1080,8 +1082,6 @@ Public Function informePiezaMateriales(Id As Long, Origen As Integer, DIALOGO As
     End If
 
     Me.ejecutar_consulta strsql
-
-
 
 
     ref = rs!detalle
@@ -1164,12 +1164,12 @@ Public Function rs_materiales(Id As Long, Origen As Integer) As Recordset
     Set r_piezas = stock.ListaPiezas(Id, Ot, presu, otro)
     'r_piezas.MoveFirst
     While Not r_piezas.EOF
-        Pieza = CLng(r_piezas!idPieza)
+        pieza = CLng(r_piezas!idPieza)
         cantidad_p = CDbl(r_piezas!Cantidad)
         'strsql = "select m.codigo,id_material, largo,ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad from desarrollo_material dm inner join materiales m on dm.id_material=m.id  where id_pieza=" & pieza
         'strsql = " select m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,id_material, largo,ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m where dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and id_pieza=" & pieza
         'strsql = " select vm.valor_unitario,vm.fecha_actualizacion,m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,vm.id_material, largo,ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m, valores_MATERIALES vm where dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and vm.id_material=m.id and id_pieza=" & pieza
-        strsql = " select mo.nombre_corto,m.valor_unitario,m.fecha_valor as  fecha_actualizacion,m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,m.id as id_material, dm.largo,dm.ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m, AdminConfigMonedas mo where m.id_moneda=mo.id and dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and  id_pieza=" & Pieza
+        strsql = " select mo.nombre_corto,m.valor_unitario,m.fecha_valor as  fecha_actualizacion,m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,m.id as id_material, dm.largo,dm.ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m, AdminConfigMonedas mo where m.id_moneda=mo.id and dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and  id_pieza=" & pieza
         Set r_1 = conectar.RSFactory(strsql)
         While Not r_1.EOF
             IdMaterial = r_1!id_material

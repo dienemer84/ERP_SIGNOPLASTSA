@@ -74,7 +74,7 @@ Public Function calcular_valor_materiales(ByVal Id As Integer, ByRef kgs As Doub
         idmat = rs2!idmat
         Dim tmpKg As Double
 
-        tmpKg = Me.calcularM2MLKGMaterial(x1, y1, idmat, Scrap, x, y, ccantidad, Kg, m2ml, Pieza, costo, idMonedaDestino)
+        tmpKg = Me.calcularM2MLKGMaterial(x1, y1, idmat, Scrap, x, y, ccantidad, Kg, m2ml, pieza, costo, idMonedaDestino)
         pr = pr + costo
 
         kgs = kgs + tmpKg
@@ -361,7 +361,7 @@ Public Function TiemposPieza(idPieza As Integer, Cantidad As Long) As Double
 
 End Function
 
-Function calcularM2MLKGMaterial(ByVal x2, ByVal y2, ByVal IdMaterial, ByVal Scrap, ByVal x, ByVal y, ByVal Cant As Double, ByRef Kg, ByRef m2ml, ByRef Pieza, ByRef costo, ByVal idMonedaDestino As Long) As Double
+Function calcularM2MLKGMaterial(ByVal x2, ByVal y2, ByVal IdMaterial, ByVal Scrap, ByVal x, ByVal y, ByVal Cant As Double, ByRef Kg, ByRef m2ml, ByRef pieza, ByRef costo, ByVal idMonedaDestino As Long) As Double
 
     Dim Precio As Double
     Dim id_moneda_origen As Long
@@ -402,7 +402,7 @@ Function calcularM2MLKGMaterial(ByVal x2, ByVal y2, ByVal IdMaterial, ByVal Scra
             prec = ((Precio * largop * Scrap * 2) / 1000) * cantidad_h
             prec = prec / 2    'verificar!!!!!!!!!!!!!!!!!!!1
 
-            Pieza = cantidad_h & "x" & largoT
+            pieza = cantidad_h & "x" & largoT
             piezaTerm2 = cantidad_h & "x" & largop
         ElseIf unidad = 1 Then    'kg
             Kg = Math.Round(PesoXUnidad * cantidad_h, 3)
@@ -412,7 +412,7 @@ Function calcularM2MLKGMaterial(ByVal x2, ByVal y2, ByVal IdMaterial, ByVal Scra
             Precio = clasea.realizaCambio(Precio, id_moneda_origen, idMonedaDestino)
             prec = (Precio * cantidad_h)
 
-            Pieza = cantidad_h
+            pieza = cantidad_h
             piezaTerm2 = cantidad_h
         ElseIf unidad = 2 Then    'm2
             Kg = Math.Round(PesoXUnidad * ((anchoT * Largo) / 1000000) * cantidad_h, 3)
@@ -421,7 +421,7 @@ Function calcularM2MLKGMaterial(ByVal x2, ByVal y2, ByVal IdMaterial, ByVal Scra
             Precio = clasea.realizaCambio(Precio, id_moneda_origen, idMonedaDestino)
 
             prec = Precio * ((cantidad_h * x * y * Scrap) / 1000000)
-            Pieza = cantidad_h & "x" & largoT & "x" & anchoT
+            pieza = cantidad_h & "x" & largoT & "x" & anchoT
             piezaTerm2 = cantidad_h & "x" & largop & "x" & anchop
         ElseIf unidad = 4 Then    'uni
 
@@ -429,8 +429,8 @@ Function calcularM2MLKGMaterial(ByVal x2, ByVal y2, ByVal IdMaterial, ByVal Scra
             Precio = valorxunidad
             Precio = clasea.realizaCambio(Precio, id_moneda_origen, idMonedaDestino)
             prec = Precio * cantidad_h
-            Pieza = cantidad_h
-            Kg = Pieza
+            pieza = cantidad_h
+            Kg = pieza
             piezaTerm2 = cantidad_h
         End If
         cxh = funciones.cantxhoja(x2, y2, x, y)
@@ -549,7 +549,7 @@ End Function
 Public Function exporta(idPieza As Long, lst As ListView) As Boolean
     Me.ejecutar "select s.detalle, c.razon from stock s, clientes c where s.id=" & idPieza & " and s.id_cliente=c.id"
     cliente = rs!razon
-    Pieza = rs!detalle
+    pieza = rs!detalle
     On Error GoTo errEXCEL
     Dim xlb As New Excel.Workbook
     Dim xla As New Excel.Worksheet
@@ -581,7 +581,7 @@ Public Function exporta(idPieza As Long, lst As ListView) As Boolean
         .Range("C4:E4").HorizontalAlignment = xlHAlignCenter
         .Cells(1, 1).value = "Incidencia de materiales"
         .Cells(2, 1).value = "Pieza"
-        .Cells(2, 2).value = Pieza
+        .Cells(2, 2).value = pieza
 
         .Cells(3, 1).value = "Cliente"
         .Cells(3, 2).value = cliente
@@ -1178,10 +1178,10 @@ Public Function exportaMaterializacion(Id As Long, Optional vpresu As Boolean = 
                         id_material = rs_m!id_material
                         Cantidad = rs_m!Cantidad
 
-                        Me.calcularM2MLKGMaterial x2, y2, id_material, Scrap, x, y, Cantidad, Kg, m2, Pieza, costo, 0
+                        Me.calcularM2MLKGMaterial x2, y2, id_material, Scrap, x, y, Cantidad, Kg, m2, pieza, costo, 0
                         .Cells(offset, 7).value = m2
                         .Cells(offset, 8).value = Kg
-                        .Cells(offset, 9).value = Pieza
+                        .Cells(offset, 9).value = pieza
                         offset = offset + 1
                         rs_m.MoveNext
 
@@ -1215,10 +1215,10 @@ Public Function exportaMaterializacion(Id As Long, Optional vpresu As Boolean = 
                     id_material = rs_mm!id_material
                     Cantidad = rs_mm!Cantidad
 
-                    Me.calcularM2MLKGMaterial x2, y2, id_material, Scrap, x, y, Cantidad, Kg, m2, Pieza, costo, 0
+                    Me.calcularM2MLKGMaterial x2, y2, id_material, Scrap, x, y, Cantidad, Kg, m2, pieza, costo, 0
                     .Cells(offset, 7).value = m2
                     .Cells(offset, 8).value = Kg
-                    .Cells(offset, 9).value = Pieza
+                    .Cells(offset, 9).value = pieza
 
                     offset = offset + 1
                     A = "a" & offsetInicial
@@ -1304,12 +1304,293 @@ errEXCEL:
     Set xla = Nothing
     Set xlb = Nothing
 End Function
+
+
 Public Function crearHistoricoPieza2(idPieza, Nota)
     idUsuario = funciones.getUser
     fechas_ = Now    'Format(Now, "yyyy-mm-dd")
     fechas_ = funciones.datetimeFormateada(Now)
     cn.execute "insert into stockHistorico (idPieza,fecha,nota,autor) values (" & idPieza & ",'" & fechas_ & "','" & UCase(Nota) & "'," & idUsuario & ")"
 
+End Function
+
+Public Function exportaMaterializacionCompleta(Id As Long, Optional vpresu As Boolean = False, Optional vot As Boolean = False, Optional votro As Boolean = False) As Boolean
+    On Error GoTo errEXCEL
+    Dim claseP As New classPlaneamiento
+    Dim claseS As New classStock
+    Dim rs As Recordset
+    Dim rs_c As Recordset
+
+    Dim idPiezaC As Long
+    Dim strsql As String, strsql2 As String
+    Dim xlb As New Excel.Workbook
+    Dim xla As New Excel.Worksheet
+    Dim xls As New Excel.Application
+    Set xlb = xls.Workbooks.Add
+    Set xla = xlb.Worksheets.Add
+    xla.Activate
+    If vot Then    'desde ot
+        strsql = "select c.razon,p.descripcion, p.fechaEntrega as fecha from pedidos p inner join clientes c on p.idCliente=c.id where p.id=" & Id
+        strsql2 = "select dp.precio,dp.idPieza,dp.item,s.detalle,dp.cantidad  from detalles_pedidos dp inner join stock s on dp.idPieza=s.id where idPedido=" & Id
+        enc = "OT"
+    ElseIf vpresu Then    'desde presu
+        strsql = "select c.razon,p.detalle as descripcion, concat(p.fechaEntrega, ' días') as fecha from  presupuestos p inner join clientes c on p.idCliente=c.id where p.id=" & Id
+        strsql2 = "select dp.valorUnitarioManual,dp.idPieza,dp.item,s.detalle,dp.cantidad  from detalle_presupuesto dp inner join stock s on dp.idPieza=s.id where idPresupuesto=" & Id
+        enc = "PRES"
+    End If
+
+
+    Set rs = conectar.RSFactory(strsql)
+
+    With xla
+        .Columns("A").HorizontalAlignment = xlHAlignCenter
+        .Columns("B").HorizontalAlignment = xlHAlignCenter
+        .Columns("C").HorizontalAlignment = xlHAlignCenter
+        .Columns("D").HorizontalAlignment = xlHAlignCenter
+        .Columns("F").HorizontalAlignment = xlHAlignCenter
+        .Columns("G").HorizontalAlignment = xlHAlignCenter
+        .Columns("H").HorizontalAlignment = xlHAlignCenter
+        .Columns("I").HorizontalAlignment = xlHAlignCenter
+        .Columns("J").HorizontalAlignment = xlHAlignCenter
+        .Columns("K").HorizontalAlignment = xlHAlignCenter
+        .Columns("L").HorizontalAlignment = xlHAlignCenter
+        .Columns("M").HorizontalAlignment = xlHAlignCenter
+
+
+
+        .Range("A7", "M7").Font.Bold = True
+        .Range("A7", "M7").Font.Size = 12
+        .Range("A7:M7").Interior.Color = &HC0C0C0
+
+
+
+
+        '.Range("A1:A4").HorizontalAlignment = xlHAlignRight
+
+        .Columns("C").ColumnWidth = 40
+        .Columns("e").ColumnWidth = 30
+        .Columns("f").ColumnWidth = 55
+        .Columns("i").ColumnWidth = 25
+        .Columns("J").ColumnWidth = 25
+        .Columns("K").ColumnWidth = 25
+        .Columns("L").ColumnWidth = 25
+        .Columns("M").ColumnWidth = 25
+        
+        .Range("b1:C1").Merge
+        .Range("B2:C2").Merge
+        .Range("B3:C3").Merge
+        .Range("B4:C4").Merge
+
+        .Cells(1, 1).value = enc
+        .Cells(1, 2).value = str(Format(Id, "0000"))
+        .Cells(2, 1).value = "Fecha"
+        .Cells(2, 2).value = rs!FEcha
+        .Cells(3, 1).value = "Cliente"
+        .Cells(3, 2).value = rs!razon
+        .Cells(4, 1).value = "Referencia"
+        .Cells(4, 2).value = rs!descripcion
+
+
+'        .Cells(7, 1).value = "Codigo pieza"
+'        .Cells(7, 2).value = "Nombre"
+'        .Cells(7, 3).value = "Detalle"
+'        .Cells(7, 4).value = "precio"
+        
+        .Cells(7, 1).value = "CODIGO MATERIAL"
+        .Cells(7, 2).value = "NOMBRE MATERIAL"
+        .Cells(7, 3).value = "M2"
+        .Cells(7, 4).value = "KG"
+        .Cells(7, 5).value = "DIMENSIONES"
+        .Cells(7, 6).value = "ESPESOR"
+        .Cells(7, 7).value = "PRECIO MATERIAL"
+        .Cells(7, 8).value = "COSTO"
+        .Cells(7, 9).value = "RUBRO"
+        .Cells(7, 10).value = "GRUPO"
+
+
+
+
+
+        Set rs = conectar.RSFactory(strsql2)
+        c = 0
+        'encambezado
+
+        offset = 7
+        While Not rs.EOF
+
+            'precio = rs!valorUnitarioManual
+            offset = offset + 1
+            idPieza = rs!idPieza
+'            .Cells(offset, 1).value = rs!item
+'            .Cells(offset, 2).value = rs!Cantidad
+'            .Cells(offset, 3).value = rs!detalle
+'            .Cells(offset, 4).value = rs!valorUnitarioManual
+            
+            
+
+            If claseS.EsConjunto(idPieza) = 0 Then
+
+                Set rs_c = claseS.ArbolConjunto(idPieza)
+                offsetInicial = offset
+                
+                While Not rs_c.EOF
+                    offset = offset + 1
+                    idPiezaC = rs_c!idPieza
+                    .Cells(offset, 4).value = rs_c!Cantidad
+
+
+
+                    Set rs_m = Me.materializacion(idPiezaC)
+
+                    While Not rs_m.EOF
+                        .Cells(offset, 5).value = rs_m!codigo
+                        
+                        .Cells(offset, 6).value = rs_m!Espesor
+
+                        x2 = rs_m!LargoTerm
+                        y2 = rs_m!AnchoTerm
+                        x = rs_m!Largo
+                        y = rs_m!Ancho
+                        Scrap = rs_m!Scrap
+                        id_material = rs_m!id_material
+                        Cantidad = rs_m!Cantidad
+
+                        Me.calcularM2MLKGMaterial x2, y2, id_material, Scrap, x, y, Cantidad, Kg, m2, pieza, costo, 0
+                        .Cells(offset, 7).value = m2
+                        .Cells(offset, 8).value = Kg
+                        .Cells(offset, 9).value = pieza
+                        .Cells(offset, 10).value = pieza
+                        .Cells(offset, 11).value = costo
+                        .Cells(offset, 12).value = costo
+                        
+                        offset = offset + 1
+                        rs_m.MoveNext
+
+
+                    Wend
+                    offset = offset - 1
+
+                    rs_c.MoveNext
+                Wend
+                A = "A" & offsetInicial
+                B = "M" & offset
+                .Range(A, m).BorderAround , xlMedium
+                
+            Else
+                Set rs_mm = Me.materializacion(idPieza)
+
+                c = 0
+                While Not rs_mm.EOF
+                    c = c + 1
+                    rs_mm.MoveNext
+                Wend
+                If c > 0 Then rs_mm.MoveFirst
+
+                While Not rs_mm.EOF
+                    offsetInicial = offset
+                    .Cells(offset, 5).value = rs_mm!codigo
+                    .Cells(offset, 6).value = rs_mm!descripcion & " " & rs_mm!Espesor
+                    x2 = rs_mm!LargoTerm
+                    y2 = rs_mm!AnchoTerm
+                    x = rs_mm!Largo
+                    y = rs_mm!Ancho
+                    Scrap = rs_mm!Scrap
+                    id_material = rs_mm!id_material
+                    Cantidad = rs_mm!Cantidad
+                    .Cells(offset, 12).value = rs_mm!rubro
+                    .Cells(offset, 13).value = rs_mm!Grupo
+                    
+                    
+                    Me.calcularM2MLKGMaterial x2, y2, id_material, Scrap, x, y, Cantidad, Kg, m2, pieza, costo, 0
+                    .Cells(offset, 7).value = m2
+                    .Cells(offset, 8).value = Kg
+                    .Cells(offset, 9).value = pieza
+                    .Cells(offset, 10).value = pieza
+                    .Cells(offset, 11).value = costo
+                    
+
+                    
+                    offset = offset + 1
+                    A = "a" & offsetInicial
+                    B = "i" & offset
+                    .Range(A, B).BorderAround , xlMedium
+                    rs_mm.MoveNext
+                Wend
+                offset = offset - 1
+            End If
+
+           rs.MoveNext
+        Wend
+
+        
+        'xls.Visible = True NO MUESTRO LA HOJA XLS
+        strMsg = "Se han transportado los datos correctamente"
+        strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
+        strMsg = strMsg & vbCrLf & vbCrLf
+        strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
+        Set CDLGMAIN = frmPrincipal.CD
+
+
+        '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
+        sFilter = "Hoja de Calculo|*.xls"
+        CDLGMAIN.filter = sFilter
+        Dim refe As String
+        refe = ref
+
+        archi = enc & Format(Id, "00000") & ".xls"
+        '        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.filename = archi
+        frmPrincipal.CD.ShowSave
+
+        'CDLGMAIN.filename = archi
+        '    CDLGMAIN.ShowSave
+
+        If CDLGMAIN.filename <> Empty Then
+            xla.SaveAs (CDLGMAIN.filename)
+            strMsg = "Los datos del reporte se han guardado en un archivo: " & vbCrLf & vbCrLf
+            strMsg = strMsg & CDLGMAIN.filename
+            MsgBox strMsg, vbExclamation, "Hoja de calculo guardada"
+            archi = CDLGMAIN.filename
+        Else
+            exportaMaterializacionCompleta = False
+        End If
+        
+            'abrir archivo
+            Dim xlApp As New Excel.Application
+            xlApp.Visible = True
+            Dim xlBook As Excel.Workbook
+            xlBook = xlApp.Workbooks.Open(archi)
+            xlApp.Activate
+    
+        xlb.Saved = True
+        xlb.Close
+        xls.Quit
+        Set xls = Nothing
+        Set xla = Nothing
+        Set xlb = Nothing
+
+        '    End If
+        exportaMaterializacionCompleta = True
+
+
+
+    End With
+    Exit Function
+errEXCEL:
+
+
+    If Err.Number = -2147221080 Then
+        exportaMaterializacionCompleta = False
+    Else
+        MsgBox "Se produjo un error. No se graban los cambios", vbCritical, "Error"
+        exportaMaterializacionCompleta = False
+    End If
+    xlb.Saved = True
+    xlb.Close
+    xls.Quit
+    Set xls = Nothing
+    Set xla = Nothing
+    Set xlb = Nothing
 End Function
 
 

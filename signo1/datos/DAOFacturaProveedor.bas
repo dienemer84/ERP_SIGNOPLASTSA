@@ -805,20 +805,28 @@ Public Function CrearTablaTempComprobantes(facturas) As Boolean
         partes = Split(fac.numero, "-") ' Dividir el valor en dos partes
 
         Dim puntoDeVenta As String
-        Dim numeroDesde As String
+        Dim NumeroDesde As String
         puntoDeVenta = CStr(CLng(partes(0))) ' Convertir a número sin procesar
-        numeroDesde = CStr(CLng(partes(1))) ' Convertir a número sin procesar
+        NumeroDesde = CStr(CLng(partes(1))) ' Convertir a número sin procesar
+        
+        If (fac.Id = 83569) Then
+        Debug.Print ("aca")
+        End If
+        
 
         strsql = "INSERT INTO sp_temporal.ComprobantesCargadosSP (idcomprobante, numero, cuit, clave, puntodeventa, numerodesde)" _
-                 & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & puntoDeVenta + "-" + numeroDesde + fac.Proveedor.Cuit & "', '" & puntoDeVenta & "', '" & numeroDesde & "')"
+                 & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & puntoDeVenta + "-" + NumeroDesde + fac.Proveedor.Cuit & "', '" & puntoDeVenta & "', '" & NumeroDesde & "')"
 
         cn.execute strsql
+        
+        Debug.Print (fac.Id)
     Next fac
 
     cn.CommitTrans
     Exit Function
 err1:
     CrearTablaTempComprobantes = False
+    MsgBox ("Error en el cbte | ID: " & fac.Id & " | N°: " & fac.numero)
     cn.RollbackTrans
 End Function
 

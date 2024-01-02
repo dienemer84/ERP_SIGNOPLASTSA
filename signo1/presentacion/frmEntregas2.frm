@@ -21,7 +21,7 @@ Begin VB.Form frmEntregas2
       Height          =   375
       Left            =   8280
       TabIndex        =   20
-      Top             =   6960
+      Top             =   6840
       Visible         =   0   'False
       Width           =   1140
    End
@@ -385,16 +385,16 @@ Begin VB.Form frmEntregas2
    End
    Begin VB.Label lblCentroCostos 
       Height          =   240
-      Left            =   8160
+      Left            =   8280
       TabIndex        =   10
-      Top             =   7680
+      Top             =   7560
       Width           =   4140
    End
    Begin VB.Label lblCliente 
       Height          =   240
       Left            =   8280
       TabIndex        =   9
-      Top             =   7440
+      Top             =   7320
       Width           =   4140
    End
    Begin VB.Menu mnuEmergente 
@@ -593,7 +593,7 @@ Private Sub btnExportarExcel_Click()
     For Each detalle In m_ot.Detalles
         xlWorksheet.Cells(row, 1) = Format(detalle.item, "'000")
         xlWorksheet.Range(xlWorksheet.Cells(row, 1), xlWorksheet.Cells(row, 1)).HorizontalAlignment = xlLeft
-        xlWorksheet.Cells(row, 2) = detalle.Pieza.nombre
+        xlWorksheet.Cells(row, 2) = detalle.pieza.nombre
         xlWorksheet.Cells(row, 3) = detalle.CantidadPedida
         xlWorksheet.Cells(row, 4) = detalle.CantidadEntregada
 
@@ -682,7 +682,7 @@ Private Sub btnRemitar_Click()
         Set detaOT = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).rowIndex)
         Set fEntrega.deta = detaOT
         fEntrega.lblIdPieza = detaOT.Id    ' detaOT.pieza.Id
-        fEntrega.lblPieza = detaOT.Pieza.nombre
+        fEntrega.lblPieza = detaOT.pieza.nombre
         fEntrega.lblPedidos = detaOT.CantidadPedida
         fEntrega.Text1 = detaOT.CantidadPedida - detaOT.CantidadFabricados
         fEntrega.lblFabricados = detaOT.CantidadFabricados
@@ -716,7 +716,7 @@ Private Sub btnTomarDeStock_Click()
     End If
     'bug #3
     Dim res As String
-    res = InputBox("Ingrese la cantidad a tomar de stock (Máximo " & detalle.Pieza.CantidadStock & ")", "Reserva de Stock", "0")
+    res = InputBox("Ingrese la cantidad a tomar de stock (Máximo " & detalle.pieza.CantidadStock & ")", "Reserva de Stock", "0")
     If IsNumeric(res) Then
 
         Dim reserva As Double: reserva = Val(res)
@@ -823,7 +823,7 @@ Private Sub gridDetalles_MouseUp(Button As Integer, Shift As Integer, x As Singl
 
     If Button = 2 And idx > 0 Then
 
-        Me.mnuArchivoPieza.caption = "De la Pieza... " & CantArchivos.item(detalle.Pieza.Id)
+        Me.mnuArchivoPieza.caption = "De la Pieza... " & CantArchivos.item(detalle.pieza.Id)
 
         Me.mnuDelDetalle.caption = "Del Detalle... " & CantArchivosDetalle.item(detalle.Id)
 
@@ -875,12 +875,12 @@ Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark 
         Set detalle = m_ot.Detalles.item(rowIndex)
         Values(1) = detalle.item
         Values(2) = detalle.Nota
-        Values(3) = detalle.Pieza.nombre
+        Values(3) = detalle.pieza.nombre
 
         Values(4) = detalle.CantidadPedida
 
         If m_ot.TipoOrden = OT_STOCK Then
-            Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.Id) & ")"
+            Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.pieza.Id) & ")"
         End If
 
         Values(5) = detalle.FechaEntrega
@@ -889,8 +889,8 @@ Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark 
         Values(8) = detalle.CantidadPedida - detalle.CantidadEntregada
         Values(9) = detalle.CantidadFacturada
         Values(10) = detalle.ReservaStock
-        Values(11) = detalle.Pieza.UnidadMedida
-        Values(12) = detalle.Pieza.CantidadStock
+        Values(11) = detalle.pieza.UnidadMedida
+        Values(12) = detalle.pieza.CantidadStock
     End If
 End Sub
 
@@ -983,7 +983,7 @@ Private Sub ImprimirEntregas()
         Printer.Print Tab(1);
         Printer.Print Format(detalle.item, "000");
         Printer.Print Tab(12);
-        Printer.Print UCase(detalle.Pieza.nombre);
+        Printer.Print UCase(detalle.pieza.nombre);
         Printer.Print Tab(90);
         Printer.Print detalle.CantidadPedida;
         Printer.Print Tab(100);
@@ -1229,7 +1229,7 @@ Private Sub mnuArchivoPieza_Click()
     gridDetalles_SelectionChange
     Dim F As New frmArchivos2
     F.Origen = OrigenArchivos.OA_Piezas
-    F.ObjetoId = detalle.Pieza.Id
+    F.ObjetoId = detalle.pieza.Id
     F.caption = "OT Nº " & m_ot.IdFormateado & " - Item " & detalle.item
     F.Show
 End Sub
@@ -1276,7 +1276,7 @@ Private Sub mnuVerDesarrollo_Click()
     'If idx > 0 Then
     Dim F As New frmDesarrollo
     Load F
-    F.CargarPieza detalle.Pieza.Id     'm_ot.Detalles(idx).Pieza.Id
+    F.CargarPieza detalle.pieza.Id     'm_ot.Detalles(idx).Pieza.Id
     F.Show
 
     '    End If

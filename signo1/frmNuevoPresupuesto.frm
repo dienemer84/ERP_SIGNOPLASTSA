@@ -277,7 +277,7 @@ Begin VB.Form frmVentasPresupuestoEditar
          _ExtentX        =   2143
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   67305473
+         Format          =   16777217
          CurrentDate     =   38926
       End
       Begin XtremeSuiteControls.PushButton Command6 
@@ -1711,8 +1711,13 @@ Public Function ProximoItem() As String
 End Function
 
 Public Function MostrarPresupuesto(Optional BeforSave As Boolean = False)
+
     Set tmpPresupuesto = DAOPresupuestos.GetById(idpresu)
     Set tmpPresupuesto.DetallePresupuesto = DAOPresupuestosDetalle.GetAllByPresupuesto(tmpPresupuesto)
+    
+
+    
+
     Me.txtMOM = tmpPresupuesto.PorcentajeManoObraMuerta
     Me.txtDiasPagoAnticipo = tmpPresupuesto.DiasPagoAnticipo
     Me.txtDiasPagoSaldo = tmpPresupuesto.DiasPagoSaldo
@@ -1743,7 +1748,9 @@ Public Function llenarLista()
     Me.grilla.ItemCount = 0
     Me.grilla.ItemCount = tmpPresupuesto.DetallePresupuesto.count
     VerFabricados
+    
 End Function
+
 Private Function Guardar() As Boolean
     Dim tmpParaEstado As New clsPresupuesto
     Set tmpParaEstado = DAOPresupuestos.GetById(tmpPresupuesto.Id)
@@ -1804,7 +1811,7 @@ Private Sub btnRenumerarItems_Click()
             tmpDetalle.item = Format(count, "000")
         Next
 
-        Me.grilla.ReBind
+        Me.grilla.Rebind
         Me.grilla.Refetch
     End If
 End Sub
@@ -2008,11 +2015,36 @@ Private Sub imprimirPresu()
     grilla.PrintPreview frmPrintPreview.GEXPreview1
     frmPrintPreview.Show 1
 End Sub
+
 Private Sub Command8_Click()
+
+    ' Preguntar al usuario si desea mostrar en PDF o en Word
+    Dim respuesta As Integer
     Dim claseP As New classPlaneamiento
-    A = claseP.informePiezaMateriales(idpresu, 2, True)
+    
+    respuesta = MsgBox("¿Desea mostrar en PDF (Yes) o en Excel (No)?", vbQuestion + vbYesNo, "Seleccionar formato")
+           
+    ' Realizar acciones según la respuesta del usuario
+    If respuesta = vbYes Then
+        ' Código para mostrar en PDF
+        'MsgBox "Mostrar en PDF"
+        ' Aquí puedes agregar el código específico para mostrar en PDF
 
-
+           A = claseP.informePiezaMaterialesPDF(idpresu, 2, True)
+    Else
+        ' Código para mostrar en Excel
+        'MsgBox "Mostrar en Excel"
+        ' Aquí puedes agregar el código específico para mostrar en Excel
+        Dim MaterializacionCompleta As New frmMaterializacionCompleta
+  
+        MaterializacionCompleta.Id = idpresu
+        MaterializacionCompleta.Ot = False
+        MaterializacionCompleta.otro = False
+        MaterializacionCompleta.presu = True
+        MaterializacionCompleta.Show
+    
+    End If
+    
 End Sub
 
 Private Sub Command9_Click()
@@ -2691,3 +2723,14 @@ Private Sub ver_Click()
     End If
 End Sub
 
+
+Public Function materializacion(idPieza) As Recordset
+    On Error GoTo er1
+'    'Me.ejecutar "select m.codigo,m.descripcion,r.rubro,g.grupo,m.espesor from desarrollo_material dm inner join materiales m on dm.id_material=m.id inner join rubros r on m.id_rubro=r.id inner join grupos g on m.id_grupo=g.id where dm.id_pieza=" & idPieza
+'
+'    Me.ejecutar "select m.id_unidad,dm.scrap,dm.cantidad,dm.id_material,m.codigo,m.descripcion,r.rubro,g.grupo,m.espesor,dm.largo,dm.ancho,dm.largoTerm,dm.AnchoTerm from desarrollo_material dm inner join materiales m on dm.id_material=m.id inner join rubros r on m.id_rubro=r.id inner join grupos g on m.id_grupo=g.id where dm.id_pieza=" & idPieza
+'    Set materializacion = rs
+    Exit Function
+er1:
+
+End Function

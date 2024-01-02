@@ -15,6 +15,17 @@ Begin VB.Form frmPlaneamientoRemitosLista
    MDIChild        =   -1  'True
    ScaleHeight     =   8805
    ScaleWidth      =   12825
+   Begin XtremeSuiteControls.ProgressBar ProgressBar 
+      Height          =   495
+      Left            =   11760
+      TabIndex        =   27
+      Top             =   1800
+      Width           =   375
+      _Version        =   786432
+      _ExtentX        =   661
+      _ExtentY        =   873
+      _StockProps     =   93
+   End
    Begin MSComctlLib.StatusBar StatusBar1 
       Align           =   2  'Align Bottom
       Height          =   345
@@ -50,17 +61,25 @@ Begin VB.Form frmPlaneamientoRemitosLista
       EndProperty
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   2865
+      Height          =   3585
       Left            =   120
       TabIndex        =   1
       Top             =   120
-      Width           =   11325
+      Width           =   16965
       _Version        =   786432
-      _ExtentX        =   19976
-      _ExtentY        =   5054
+      _ExtentX        =   29924
+      _ExtentY        =   6324
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtFacturas 
+         Height          =   285
+         Left            =   1080
+         TabIndex        =   28
+         Text            =   "0287"
+         Top             =   2805
+         Width           =   1695
+      End
       Begin XtremeSuiteControls.PushButton btnClearEstado 
          Height          =   285
          Left            =   2880
@@ -87,26 +106,39 @@ Begin VB.Form frmPlaneamientoRemitosLista
          BackColor       =   -2147483643
       End
       Begin XtremeSuiteControls.GroupBox GroupBox 
-         Height          =   975
+         Height          =   855
          Index           =   1
-         Left            =   6360
+         Left            =   6240
          TabIndex        =   20
          Top             =   1680
-         Width           =   4695
+         Width           =   4815
          _Version        =   786432
-         _ExtentX        =   8281
-         _ExtentY        =   1720
+         _ExtentX        =   8493
+         _ExtentY        =   1508
          _StockProps     =   79
          UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.PushButton PusExportar 
+            Height          =   495
+            Left            =   3480
+            TabIndex        =   26
+            Top             =   240
+            Width           =   1215
+            _Version        =   786432
+            _ExtentX        =   2143
+            _ExtentY        =   873
+            _StockProps     =   79
+            Caption         =   "Exportar"
+            UseVisualStyle  =   -1  'True
+         End
          Begin XtremeSuiteControls.PushButton cmdBuscar 
             Default         =   -1  'True
             Height          =   495
-            Left            =   2160
+            Left            =   240
             TabIndex        =   21
-            Top             =   330
-            Width           =   2415
+            Top             =   240
+            Width           =   1575
             _Version        =   786432
-            _ExtentX        =   4260
+            _ExtentX        =   2778
             _ExtentY        =   873
             _StockProps     =   79
             Caption         =   "Buscar"
@@ -123,12 +155,12 @@ Begin VB.Form frmPlaneamientoRemitosLista
          End
          Begin XtremeSuiteControls.PushButton cmdImprimir 
             Height          =   495
-            Left            =   120
+            Left            =   2160
             TabIndex        =   22
-            Top             =   330
-            Width           =   1680
+            Top             =   240
+            Width           =   1200
             _Version        =   786432
-            _ExtentX        =   2963
+            _ExtentX        =   2117
             _ExtentY        =   873
             _StockProps     =   79
             Caption         =   "Imprimir"
@@ -294,6 +326,14 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
       End
+      Begin VB.Label lblFacturas 
+         Caption         =   "Facturas:"
+         Height          =   255
+         Left            =   360
+         TabIndex        =   29
+         Top             =   2820
+         Width           =   615
+      End
       Begin VB.Label lblEstado 
          Alignment       =   1  'Right Justify
          BackStyle       =   0  'Transparent
@@ -351,13 +391,13 @@ Begin VB.Form frmPlaneamientoRemitosLista
       End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   5295
+      Height          =   4575
       Left            =   120
       TabIndex        =   0
-      Top             =   3120
+      Top             =   3840
       Width           =   16935
       _ExtentX        =   29871
-      _ExtentY        =   9340
+      _ExtentY        =   8070
       Version         =   "2.0"
       PreviewRowIndent=   200
       DefaultGroupMode=   1
@@ -587,11 +627,11 @@ Private Sub endRto_Click()
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 5
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 5
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAORemitoS.ImprimirRemito rtoNro
                 Next i
             End If
@@ -635,18 +675,27 @@ Private Sub listaRemitos()
     If Me.cboEstado.ListIndex > -1 Then
         filtro = filtro & " and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_ESTADO & "=" & (Me.cboEstado.ItemData(Me.cboEstado.ListIndex))
     End If
+    
+
+    
 
     Set remitos = DAORemitoS.FindAll("and " & filtro)
 
     Dim remi As Remito
     Dim remitosId As New Collection
+    
     For Each remi In remitos
         remitosId.Add remi.Id
     Next
+    
     Set facturasRemitos = New Dictionary
 
+    If Not IsEmpty(Me.txtFacturas) And IsNumeric(txtFacturas) Then
+        filtro = filtro & "  and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_NUMERO & "=" & Me.txtFacturas
+    End If
+
     If remitosId.count > 0 Then
-        Set facturasRemitos = DAOFactura.FindAllByRemitos(remitosId)
+        Set facturasRemitos = DAOFactura.FindAllByRemitos(remitosId, Me.txtFacturas)
     End If
 
 
@@ -1133,18 +1182,18 @@ Private Sub printRto_Click()
     If Not rs.BOF And Not rs.EOF Then est = rs!impreso Else Exit Sub
     If est > 0 Then
         If MsgBox("Este remito ya fué impreso," & Chr(10) & "¿Desea volver a imprimir?", vbYesNo, "Confirmación") = vbYes Then
-            cd.Flags = cdlPDUseDevModeCopies
-            cd.Copies = 5
-            cd.ShowPrinter
-            For i = 1 To cd.Copies
+            CD.Flags = cdlPDUseDevModeCopies
+            CD.Copies = 5
+            CD.ShowPrinter
+            For i = 1 To CD.Copies
                 DAORemitoS.ImprimirRemito rto
             Next i
         End If
     Else
         If MsgBox("Este remito no fue impreso." & Chr(10) & "¿Desea imprimirlo?", vbYesNo) = vbYes Then
-            cd.Copies = 5
-            cd.ShowPrinter
-            For i = 1 To cd.Copies
+            CD.Copies = 5
+            CD.ShowPrinter
+            For i = 1 To CD.Copies
                 DAORemitoS.ImprimirRemito rto
             Next
         End If
@@ -1153,6 +1202,152 @@ Private Sub printRto_Click()
 err444:
 End Sub
 
+
+Private Sub PusExportar_Click()
+'FUNCIÓN PARA EXPORTAR A EXCEL
+
+
+If (remitos.count > 0) Then
+
+
+'INICIA EL PROGRESSBAR Y LO MUESTRA
+Me.ProgressBar.Visible = True
+'    Me.lblExportando.Visible = True
+
+
+'DEFINE EL VALOR MINIMO Y EL MAXIMO DEL PROGRESSBAR (CANTIDAD DE DATOS EN LA COLECCIÓN COL)
+Me.ProgressBar.min = 0
+Me.ProgressBar.max = remitos.count
+
+
+'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+
+
+    Set xlWorkbook = xlApplication.Workbooks.Add
+
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    xlWorksheet.Cells(1, 1).value = "Reporte de Remitos"
+
+    xlWorksheet.Columns(4).HorizontalAlignment = xlLeft
+    xlWorksheet.Columns(7).HorizontalAlignment = xlLeft
+
+    xlWorksheet.Cells(2, 1).value = "Número"
+    xlWorksheet.Cells(2, 2).value = "Cliente"
+    xlWorksheet.Cells(2, 3).value = "Detalle"
+    xlWorksheet.Cells(2, 4).value = "Fecha"
+    xlWorksheet.Cells(2, 5).value = "Creador"
+    xlWorksheet.Cells(2, 6).value = "Aprobador"
+    xlWorksheet.Cells(2, 7).value = "Facturado"
+    xlWorksheet.Cells(2, 8).value = "Facturas"
+    xlWorksheet.Cells(2, 9).value = "Archivos"
+    
+    Dim idx As Integer
+    idx = 3
+
+    Dim Remito As Remito
+
+    'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
+    Dim d As Long
+    d = 0
+
+
+    For Each Remito In remitos
+
+            xlWorksheet.Cells(idx, 1).value = Remito.numero
+            
+            xlWorksheet.Cells(idx, 2).value = Remito.cliente.razon
+            xlWorksheet.Cells(idx, 3).value = Remito.detalle
+            
+            xlWorksheet.Cells(idx, 4).value = Remito.FEcha
+
+            xlWorksheet.Cells(idx, 5).value = Remito.usuarioCreador.usuario
+            
+            If IsSomething(Remito.usuarioAprobador) Then
+                xlWorksheet.Cells(idx, 6).value = Remito.usuarioAprobador.usuario
+            Else
+                xlWorksheet.Cells(idx, 6).value = vbNullString
+            End If
+            
+
+            xlWorksheet.Cells(idx, 7).value = Remito.VerEstadoFacturado
+
+            If facturasRemitos.Exists(CStr(Remito.numero)) Then
+                If LenB(facturasRemitos.item(CStr(Remito.numero))) >= 0 Then
+                    xlWorksheet.Cells(idx, 8).value = Left$(facturasRemitos.item(CStr(Remito.numero)), Len(facturasRemitos.item(CStr(Remito.numero))) - 2)
+                End If
+            End If
+
+            xlWorksheet.Cells(idx, 9).value = "(" & Val(m_Archivos.item(Remito.Id)) & ")"
+
+        
+        idx = idx + 1
+
+        'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
+        d = d + 1
+        Me.ProgressBar.value = d
+
+
+    Next
+
+    'AUTOSIZE
+    xlApplication.ScreenUpdating = False
+
+    Dim wkSt As String
+
+    wkSt = xlWorksheet.Name
+
+    xlWorksheet.Cells.EntireColumn.AutoFit
+
+    xlWorkbook.Sheets(wkSt).Select
+
+    xlApplication.ScreenUpdating = True
+
+    xlWorksheet.PageSetup.Orientation = xlLandscape
+    xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
+    xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+
+    Dim filename As String
+    filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
+
+    If Dir(filename) <> vbNullString Then Kill filename
+
+    xlWorkbook.SaveAs filename
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    funciones.ShellExecute 0, "open", filename, "", "", 0
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    'REINICIA EL PROGRESSBAR Y LO OCULTA
+    Me.ProgressBar.value = 0
+    Me.ProgressBar.Visible = False
+    '    Me.lblExportando.Visible = False
+    
+    Else
+    MsgBox ("No hay resultados para exportar!")
+    
+    End If
+End Sub
 
 Private Sub PushButton1_Click()
     Me.cboClientes.ListIndex = -1

@@ -239,7 +239,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -261,7 +261,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -367,7 +367,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16777217
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -389,7 +389,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16777217
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -573,6 +573,23 @@ Begin VB.Form frmAdminFacturasEdicion
       _StockProps     =   79
       Caption         =   "Totales"
       UseVisualStyle  =   -1  'True
+      Begin VB.Label lblTC 
+         Caption         =   "Tipo Cambio:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   480
+         TabIndex        =   94
+         Top             =   1200
+         Width           =   2535
+      End
       Begin VB.Label lblIVATot 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
@@ -587,9 +604,9 @@ Begin VB.Form frmAdminFacturasEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   1380
+         Left            =   1620
          TabIndex        =   27
-         Top             =   945
+         Top             =   705
          Width           =   1080
       End
       Begin VB.Label lblPercepciones 
@@ -606,9 +623,9 @@ Begin VB.Form frmAdminFacturasEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   1380
+         Left            =   1620
          TabIndex        =   26
-         Top             =   690
+         Top             =   450
          Width           =   1080
       End
       Begin VB.Label Label10 
@@ -624,9 +641,9 @@ Begin VB.Form frmAdminFacturasEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   165
+         Left            =   405
          TabIndex        =   25
-         Top             =   690
+         Top             =   450
          Width           =   1020
       End
       Begin VB.Label lblSubTotal 
@@ -643,9 +660,9 @@ Begin VB.Form frmAdminFacturasEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   1380
+         Left            =   1620
          TabIndex        =   24
-         Top             =   435
+         Top             =   195
          Width           =   1080
       End
       Begin VB.Label Label9 
@@ -661,9 +678,9 @@ Begin VB.Form frmAdminFacturasEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   555
+         Left            =   795
          TabIndex        =   23
-         Top             =   435
+         Top             =   195
          Width           =   630
       End
       Begin VB.Label lblIva2 
@@ -680,9 +697,9 @@ Begin VB.Form frmAdminFacturasEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   900
+         Left            =   1140
          TabIndex        =   22
-         Top             =   945
+         Top             =   705
          Width           =   255
       End
       Begin VB.Label Label8 
@@ -698,9 +715,9 @@ Begin VB.Form frmAdminFacturasEdicion
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   780
+         Left            =   1020
          TabIndex        =   21
-         Top             =   1170
+         Top             =   930
          Width           =   405
       End
       Begin VB.Label lblTotal 
@@ -719,9 +736,9 @@ Begin VB.Form frmAdminFacturasEdicion
          EndProperty
          ForeColor       =   &H80000008&
          Height          =   195
-         Left            =   1380
+         Left            =   1620
          TabIndex        =   20
-         Top             =   1170
+         Top             =   930
          Width           =   1080
       End
    End
@@ -890,7 +907,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -2184,7 +2201,7 @@ Private Sub cboTiposFactura_Click()
 
         '        End If
     Else
-        If Factura.estado = EstadoFacturaCliente.Aprobada Then
+        If Factura.estado <> EstadoFacturaCliente.EnProceso Then
             Me.txtNumero.text = Format(Factura.numero, "00000000")   'Factura.NumeroFormateado
 
         Else
@@ -2554,8 +2571,15 @@ Private Sub CargarFactura()
     Else
         LimpiarCliente
     End If
+    
+    
+    If Factura.moneda.Id = 0 Then
+        Me.lblTC.caption = "Tipo Cambio: " & Factura.moneda.NombreCorto & " 1 "
+    Else
+        Me.lblTC.caption = "Tipo Cambio: " & Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
+    End If
 
-
+    
     Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.Id, Me.cboMoneda)
     Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(Factura.ConceptoIncluir, Me.cboConceptosAIncluir)
 

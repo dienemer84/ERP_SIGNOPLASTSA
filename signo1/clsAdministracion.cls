@@ -260,7 +260,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     tot_bco = 0
     tot_re = 0
     tot_fc = 0
-    Dim r As recibo
+    Dim r As Recibo
     Dim y As ListItem
 
 
@@ -920,16 +920,24 @@ Public Function ImportarComprobantesAFIP(ruta As String) As Boolean
     strsql = "TRUNCATE sp_temporal.ComprobantesRecibidosAFIP"
     Set rs = conectar.RSFactory(strsql)
 
+'    strsql = "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_temporal.ComprobantesRecibidosAFIP" _
+'           & " FIELDS TERMINATED BY ','" _
+'           & " ENCLOSED BY " & Chr(39) & """" & Chr(39) & " " _
+'           & " LINES TERMINATED BY '\r\n'" _
+'           & " IGNORE 1 LINES" _
+'           & " SET" _
+'           & " puntodeventa = CAST(puntodeventa AS UNSIGNED)," _
+'           & " numerodesde = CAST(numerodesde AS UNSIGNED)," _
+'           & " clave = CONCAT(puntodeventa,'-',numerodesde,nrodocemisor)"
+
     strsql = "LOAD DATA LOCAL INFILE '" & ruta & "' INTO TABLE sp_temporal.ComprobantesRecibidosAFIP" _
-           & " FIELDS TERMINATED BY ','" _
-           & " ENCLOSED BY " & Chr(39) & """" & Chr(39) & " " _
-           & " LINES TERMINATED BY '\r\n'" _
+           & " FIELDS TERMINATED BY ';'" _
+           & " LINES TERMINATED BY '\n'" _
            & " IGNORE 1 LINES" _
            & " SET" _
            & " puntodeventa = CAST(puntodeventa AS UNSIGNED)," _
            & " numerodesde = CAST(numerodesde AS UNSIGNED)," _
            & " clave = CONCAT(puntodeventa,'-',numerodesde,nrodocemisor)"
-
     Set rs = conectar.RSFactory(strsql)
 
     Exit Function

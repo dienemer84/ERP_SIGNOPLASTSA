@@ -10,6 +10,32 @@ Begin VB.Form frmSistemasTests
    MDIChild        =   -1  'True
    ScaleHeight     =   7530
    ScaleWidth      =   2415
+   Begin XtremeSuiteControls.PushButton btnImprimirNuevo 
+      Height          =   735
+      Left            =   240
+      TabIndex        =   6
+      Top             =   6480
+      Width           =   1935
+      _Version        =   786432
+      _ExtentX        =   3413
+      _ExtentY        =   1296
+      _StockProps     =   79
+      Caption         =   "Imprimir Sistema NUEVO"
+      UseVisualStyle  =   -1  'True
+   End
+   Begin XtremeSuiteControls.PushButton btnImprimir 
+      Height          =   735
+      Left            =   240
+      TabIndex        =   5
+      Top             =   5400
+      Width           =   1935
+      _Version        =   786432
+      _ExtentX        =   3413
+      _ExtentY        =   1296
+      _StockProps     =   79
+      Caption         =   "Imprimir Sistema ACTUAL"
+      UseVisualStyle  =   -1  'True
+   End
    Begin XtremeSuiteControls.PushButton PushButton 
       Height          =   615
       Left            =   240
@@ -87,6 +113,118 @@ Option Explicit
     Dim colTransferenciasB As New Collection
     
     
+Private Sub btnImprimir_Click()
+
+    ' Preguntar al usuario si desea mostrar en PDF o en Word
+    Dim respuesta As Integer
+    respuesta = MsgBox("¿Desea mostrar en PDF (Sí) o en Word (No)?", vbQuestion + vbYesNo, "Seleccionar formato")
+
+    ' Realizar acciones según la respuesta del usuario
+    If respuesta = vbYes Then
+        ' Código para mostrar en PDF (por ejemplo, en Word)
+        MsgBox "Mostrar en PDF"
+        ' Aquí puedes agregar el código específico para mostrar en PDF
+        
+    Else
+        ' Código para mostrar en Word
+        MsgBox "Mostrar en Word"
+        ' Aquí puedes agregar el código específico para mostrar en Word
+        
+    End If
+
+    On Error GoTo err2
+
+    Dim Obj As PageSet.PrinterControl
+    Set Obj = New PrinterControl
+    
+    Dim r As Recordset
+
+    Materiales.Sections("cabeza").Controls("lblOT").caption = ": "
+
+    Materiales.Sections("s3").Controls("lblbarcode").caption = "*"
+
+    Set Materiales.DataSource = r
+    Obj.ChngOrientationLandscape
+    Materiales.Show 1
+    Obj.ReSetOrientation    'This resets the printer to portrait.
+
+err2:
+    MsgBox Err.Description
+
+    Obj.ReSetOrientation
+
+End Sub
+
+'''''''''''''''Private Sub btnImprimirNuevo_Click()
+''''''''''''''''Variable de tipo Aplicación de Word
+'''''''''''''''Dim o_Word As New Word.Application
+''''''''''''''''Variable de tipo documento de Word
+'''''''''''''''Dim documento As Word.Document
+'''''''''''''''' variable para hacer referencia al párrafo
+'''''''''''''''Dim oSelection As Word.Selection
+'''''''''''''''Dim Parrafo As table
+''''''''''''''''F es para recorrer la Fila y C para la Columna
+'''''''''''''''
+'''''''''''''''Dim F, c As Double
+''''''''''''''''Nuevo instancia del objeto
+'''''''''''''''' Set o_Word = New Word.Application
+''''''''''''''''Agrega un Nuevo documento de word
+'''''''''''''''Set documento = o_Word.Documents.Add()
+'''''''''''''''Set oSelection = o_Word.Selection
+'''''''''''''''
+'''''''''''''''
+''''''''''''''''Creamos una tabla dentro del nuevo documento
+'''''''''''''''''Set Parrafo = Documento.Tables.Add(Documento.Range(0, 0), _
+'''''''''''''''''grid.rows, grid.Cols)
+'''''''''''''''
+'''''''''''''''documento.PageSetup.Orientation = wdOrientLandscape
+'''''''''''''''
+''''''''''''''''Recorremos el Flexgrid para agregar las columnas y filas a nuestra tabla
+''''''''''''''''For C = 0 To grid.Cols - 1
+''''''''''''''''Agregar columnas
+''''''''''''''''Parrafo.Cell(0, C + 1).Range.text = grid.TextMatrix(0, C)
+''''''''''''''''Agregar filas
+''''''''''''''''For F = 0 To grid.rows - 1
+''''''''''''''''Parrafo.Cell(F + 1, C + 1).Range.text = grid.TextMatrix(F, C)
+''''''''''''''''Next F
+''''''''''''''''Next C
+''''''''''''''''Parrafo.Columns.item(1).Width = o_Word.InchesToPoints(2)
+''''''''''''''''Parrafo.Columns.item(3).Width = o_Word.InchesToPoints(1.2)
+''''''''''''''''Parrafo.al
+''''''''''''''''Hacemos visible el word
+'''''''''''''''o_Word.Visible = True
+'''''''''''''''
+'''''''''''''''
+''''''''''''''''Documento.PrintPreview
+'''''''''''''''
+'''''''''''''''
+'''''''''''''''documento.SaveAs "c:\word.tmp"
+'''''''''''''''o_Word.Quit
+'''''''''''''''Set o_Word = Nothing
+'''''''''''''''Kill "c:\word.tmp"
+'''''''''''''''
+'''''''''''''''
+'''''''''''''''
+''''''''''''''''Eliminamos los objetos
+'''''''''''''''Set o_Word = Nothing
+'''''''''''''''Set documento = Nothing
+'''''''''''''''Set Parrafo = Nothing
+'''''''''''''''
+''''''''''''''''ps.ReSetOrientation
+'''''''''''''''Exit Sub
+'''''''''''''''
+''''''''''''''''error
+'''''''''''''''ErrSub:
+'''''''''''''''
+'''''''''''''''MsgBox Err.Description
+'''''''''''''''
+'''''''''''''''On Error Resume Next
+'''''''''''''''
+'''''''''''''''Set o_Word = Nothing
+'''''''''''''''Set documento = Nothing
+'''''''''''''''Set Parrafo = Nothing
+'''''''''''''''End Sub
+
 Private Sub btnPrueba_03_Click()
     Dim f125 As New frmAdminPagosTransferenciasBancarias
     f125.Show

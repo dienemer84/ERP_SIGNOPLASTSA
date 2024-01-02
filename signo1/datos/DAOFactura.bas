@@ -1595,17 +1595,19 @@ err91:
     MsgBox Err.Description
 End Function
 
-Public Function FindAllByRemitos(remitosNumeros As Collection) As Dictionary
+Public Function FindAllByRemitos(remitosNumeros As Collection, facturasNumero As Integer) As Dictionary
 
     Dim recordsetConItems As Boolean
     Dim recordsetConItems2 As Boolean
     Dim q As String
-    q = "SELECT DISTINCT r.numero, fd.idFactura " _
+    q = "SELECT DISTINCT r.numero, fd.idFactura, f.NroFactura" _
       & " FROM AdminFacturasDetalleNueva fd" _
       & " INNER JOIN entregas e" _
       & " ON e.id = fd.idEntrega" _
       & " INNER JOIN remitos r" _
       & " ON r.id = e.Remito" _
+      & " INNER JOIN AdminFacturas f" _
+      & " ON f.id = fc.idFactura" _
       & " WHERE r.id IN (" & funciones.JoinCollectionValues(remitosNumeros, ", ") & ")"
 
     Dim rs As Recordset
@@ -1633,17 +1635,15 @@ Public Function FindAllByRemitos(remitosNumeros As Collection) As Dictionary
         recordsetConItems2 = True
     Wend
 
-
-
-
     Dim remitosFacturas As New Dictionary
 
     Dim facturas As Collection
+    
     If facturas_id.count > 0 Then
         Set facturas = DAOFactura.FindAll("AdminFacturas.id IN (" & funciones.JoinCollectionValues(facturas_id, ", ") & ")")
     End If
+    
     Dim Factura As Factura
-
 
     If recordsetConItems Then rs.MoveFirst
     While Not rs.EOF

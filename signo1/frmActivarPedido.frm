@@ -617,7 +617,7 @@ Private Sub cmdRutasPorSector_Click()
     Dim sectores_id As New Dictionary
 
 
-    Me.CommonDialog1.ShowPrinter
+'    Me.CommonDialog1.ShowPrinter
 
 
     '1ro hay que capturar los sectores involucrados
@@ -712,7 +712,7 @@ Private Sub btnImprimirPortada_Click()
     Dim cod As Integer
     cod = CInt(idpedido)
 
-    Me.CommonDialog1.ShowPrinter
+'    Me.CommonDialog1.ShowPrinter
 
     ImprimirPortadas
 
@@ -726,7 +726,7 @@ End Sub
 
 Private Sub Command11_Click()
     On Error GoTo er1
-    frmPrincipal.CD.ShowPrinter
+    frmPrincipal.cd.ShowPrinter
     Dim rec As ReportRecord
     Dim tmpDetalle As DetalleOrdenTrabajo
     Dim l As Long

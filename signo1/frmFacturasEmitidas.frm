@@ -2635,7 +2635,7 @@ Private Sub mnuFechaPagoPropuesta_Click()
     If Update Then
         Factura.FechaPropuestaPago = nuevaFecha
         If DAOFactura.Guardar(Factura) Then
-            Me.gridComprobantesEmitidos.ReBind
+            Me.gridComprobantesEmitidos.Rebind
         Else
             MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
         End If
