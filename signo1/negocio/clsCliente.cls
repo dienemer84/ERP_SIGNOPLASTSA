@@ -85,8 +85,8 @@ End Property
 Public Property Get email() As String
     email = vEmail
 End Property
-Public Property Get Cuit() As String
-    Cuit = vCuit
+Public Property Get cuit() As String
+    cuit = vCuit
 End Property
 Public Property Get estado() As EstadoCliente
     estado = vEstado
@@ -123,7 +123,7 @@ End Property
 Public Property Let email(nvalue As String)
     vEmail = nvalue
 End Property
-Public Property Let Cuit(nvalue As String)
+Public Property Let cuit(nvalue As String)
     vCuit = nvalue
 End Property
 
@@ -140,7 +140,7 @@ End Property
 
 Public Function CUITValido() As Boolean
 
-    CUITValido = (IsNumeric(Me.Cuit) And Val(Me.Cuit) > 0)
+    CUITValido = (IsNumeric(Me.cuit) And Val(Me.cuit) > 0)
 
 End Function
 

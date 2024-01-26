@@ -30,7 +30,7 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
-      SelectedItem    =   3
+      SelectedItem    =   1
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   2
       Item(0).Control(0)=   "Frame3"
@@ -52,9 +52,10 @@ Begin VB.Form frmAdminCheques
          Caption         =   "Resultados"
          Height          =   5175
          Index           =   2
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   103
          Top             =   3480
+         Visible         =   0   'False
          Width           =   15135
          Begin GridEX20.GridEX grdCheques3eros 
             Height          =   4665
@@ -614,9 +615,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox3 
          Height          =   3015
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   28
          Top             =   360
+         Visible         =   0   'False
          Width           =   15135
          _Version        =   786432
          _ExtentX        =   26696
@@ -1453,10 +1455,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox1 
          Height          =   2220
-         Left            =   -69760
+         Left            =   240
          TabIndex        =   1
          Top             =   6240
-         Visible         =   0   'False
          Width           =   7365
          _Version        =   786432
          _ExtentX        =   12991
@@ -1592,10 +1593,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grid_cheques 
          Height          =   7830
-         Left            =   -62215
+         Left            =   7785
          TabIndex        =   14
          Top             =   615
-         Visible         =   0   'False
          Width           =   7485
          _ExtentX        =   13203
          _ExtentY        =   13811
@@ -1632,10 +1632,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grid_chequeras 
          Height          =   5490
-         Left            =   -69745
+         Left            =   255
          TabIndex        =   15
          Top             =   630
-         Visible         =   0   'False
          Width           =   7440
          _ExtentX        =   13123
          _ExtentY        =   9684

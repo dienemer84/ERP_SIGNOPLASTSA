@@ -413,7 +413,6 @@ Private tmpIncidencias As New Dictionary
 Private tmpArchivos As New Dictionary
 
 Private Sub aprobarRecibo_Click()
-'    Dim idRecibo As Long
     If MsgBox("¿Está seguro de aprobar este recibo?", vbYesNo, "Confirmación") = vbYes Then
 
         Set Recibo = DAORecibo.FindById(Recibo.Id, True, True, True, True, True)
@@ -425,10 +424,10 @@ Private Sub aprobarRecibo_Click()
             MsgBox "Error, no se aprobó el recibo!", vbCritical, "Error"
         End If
     End If
+
 End Sub
 
 Private Sub btnExportar_Click()
-
     Me.progreso.Visible = True
     'Me.lblExportando.Visible = True
 
@@ -443,17 +442,18 @@ Private Sub btnExportar_Click()
     Exit Sub
 err1:
     MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
+
 End Sub
 
 Private Sub btnLimpiarCliente_Click()
     Me.cboCliente.ListIndex = -1
+
 End Sub
 
 Private Sub cboRangos_Click()
     funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde, Me.dtpHasta
+
 End Sub
-
-
 
 Private Sub cmdImprimir_Click()
     With Me.grilla_recibos.PrinterProperties
@@ -467,27 +467,22 @@ Private Sub cmdImprimir_Click()
     frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
     grilla_recibos.PrintPreview frmPrintPreview.GEXPreview1
     frmPrintPreview.Show 1
+    
 End Sub
 
 Private Sub Command1_Click()
-
-
     Dim T As String
     T = "SELECT * FROM AdminRecibos WHERE tot_estatico_recibo = 0"
 
     Dim rs As Collection
-
     Set rs = DAORecibo.FindAll("tot_estatico_recibo = 0", , , , , True)
-
     Dim rc As Recibo
-
-
+    
     For Each rc In rs
         If rc.estado = EstadoRecibo.Aprobado Then
             rc.TotalEstatico.TotalReciboEstatico = rc.total
         End If
     Next
-
 
 End Sub
 
@@ -495,7 +490,6 @@ Public Sub cmdBuscar_Click()
     llenarLista
     
 End Sub
-
 
 Private Sub editarRecibo_Click()
     Dim F As New frmAdminCobranzasNuevoRecibo
@@ -526,7 +520,6 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub llenarLista()
-
     Set tmpIncidencias = DAOIncidencias.GetCantidadIncidenciasPorReferencia(OI_Recibos)
     Set tmpArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Recibos)
     Dim F As String
@@ -548,16 +541,13 @@ Private Sub llenarLista()
         F = F & " AND rec.Fecha <= " & conectar.Escape(Me.dtpHasta.value)
     End If
 
-
     Set recibos = DAORecibo.FindAll(F)
     
     Me.grilla_recibos.ItemCount = 0
     Me.grilla_recibos.ItemCount = recibos.count
-    
-    
+   
 ' TOTALIZADOR DE VALORES RECIBIDOS POR RECIBO
     For Each Recibo In recibos
-        
         TotalRecibido = TotalRecibido + Recibo.TotalEstatico.TotalRecibidoEstatico
         
     Next
@@ -572,15 +562,17 @@ Private Sub Form_Resize()
     If Me.ScaleHeight > 0 Then
         Me.grilla_recibos.Height = Me.ScaleHeight - 1800
     End If
-'    Me.grilla_recibos.Width = Me.ScaleWidth - 400
+
 End Sub
 
 Private Sub grilla_recibos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla_recibos, Column
+    
 End Sub
 
 Private Sub grilla_recibos_DblClick()
     verRecibo_Click
+    
 End Sub
 
 Private Sub grilla_recibos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
@@ -591,12 +583,13 @@ Private Sub grilla_recibos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As I
     If ColIndex = 6 And tmpArchivos.item(Recibo.Id) > 0 Then
         IconIndex = 1
     End If
+    
 End Sub
 
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         SeleccionarRecibo
-        Me.NRO.caption = "[ Nro. " & Format(Recibo.Id, "0000") & " ]"
+        Me.nro.caption = "[ Nro. " & Format(Recibo.Id, "0000") & " ]"
 
         If Recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True
@@ -637,9 +630,7 @@ Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Sin
             Me.imprimirRecibo.Enabled = True
             Me.aprobarRecibo.Enabled = False
             Me.mnuAnular.Enabled = False
-
-            'End If
-
+        
         End If
 
         Me.PopupMenu Me.mnu
@@ -663,13 +654,10 @@ Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
         RowBuffer.CellStyle(10) = "HayArchivosIncidencias"
     End If
 
-
-
 End Sub
 
 Private Sub grilla_recibos_SelectionChange()
-
-    SeleccionarRecibo
+   SeleccionarRecibo
 
 End Sub
 
@@ -727,6 +715,7 @@ End Sub
 
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = vId
+    
 End Property
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
@@ -760,11 +749,8 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 Me.grilla_recibos.RefreshRowIndex i
 
                 Exit For
-
             End If
-
         Next
-
     End If
 
 End Function
@@ -776,12 +762,12 @@ Private Sub mnuAdquirir_Click()
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Recibos)
         Me.grilla_recibos.RefreshRowIndex (Recibo.Id)
     End If
+    
 End Sub
 
 Private Sub mnuAnular_Click()
     On Error GoTo err1
-
-
+    
     If MsgBox("¿Desera anular el recibo número " & Recibo.Id & " ?" & Chr(10) & "Esta acción no tiene rollback", vbYesNo, "Confirmación") = vbYes Then
         DAORecibo.Anular Recibo
         MsgBox "Recibo anulado con éxito!", vbInformation, "Información"
@@ -790,10 +776,10 @@ Private Sub mnuAnular_Click()
     Exit Sub
 err1:
     MsgBox Err.Description
+    
 End Sub
 
 Private Sub mnuAplicarComprobante_Click()
-
     Dim F As New frmAdminCobranzasNuevoRecibo
     F.editar = True
     F.cmdActualizar.Enabled = True
@@ -809,12 +795,14 @@ Private Sub mnuArchivos_Click()
     frmarchi1.ObjetoId = Recibo.Id
     frmarchi1.caption = "Recibo Nº " & Recibo.Id
     frmarchi1.Show
+    
 End Sub
 
 Private Sub txtNroRecibo_KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then
         llenarLista
     End If
+    
 End Sub
 
 Private Sub verRecibo_Click()
@@ -828,6 +816,4 @@ Private Sub verRecibo_Click()
     Exit Sub
 err1:
 
-
 End Sub
-

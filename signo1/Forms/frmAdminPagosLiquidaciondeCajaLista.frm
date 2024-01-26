@@ -6,11 +6,11 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
    ClientHeight    =   10380
    ClientLeft      =   165
    ClientTop       =   555
-   ClientWidth     =   18105
+   ClientWidth     =   14415
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   10380
-   ScaleWidth      =   18105
+   ScaleWidth      =   14415
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1695
       Left            =   120
@@ -535,7 +535,7 @@ Private Sub PushButton2_Click()
             opeCaja.Pertenencia = OrigenOperacion.caja
             opeCaja.Monto = nop.StaticTotal
             Set opeCaja.moneda = fac.moneda
-            opeCaja.FechaOperacion = nop.FEcha
+            opeCaja.FechaOperacion = nop.fecha
 
 
             opeCaja.FechaCarga = Now
@@ -656,7 +656,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
         Set LiquidacionCaja = liquidaciones.item(rowIndex)
 
         Values(1) = LiquidacionCaja.NumeroLiq
-        Values(2) = LiquidacionCaja.FEcha
+        Values(2) = LiquidacionCaja.fecha
 
         Values(3) = LiquidacionCaja.moneda.NombreCorto
 
