@@ -558,7 +558,10 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
         frmAdminExtrasReporteCMC.Show
 
-    
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_IVAC:
+
+        frmAdminExtrasReporteIVACompras.Show
+        
     Case ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CAA:
     
         frmAdminExtrasCbtesAdeudadosAl.Show
@@ -753,12 +756,12 @@ Private Sub MDIForm_Unload(Cancel As Integer)
 
 End Sub
 
-Private Sub Popup_ItemClick(ByVal Item As XtremeSuiteControls.IPopupControlItem)
-    If Item.Id = 666 Then
+Private Sub Popup_ItemClick(ByVal item As Xtremesuitecontrols.IPopupControlItem)
+    If item.Id = 666 Then
         Me.Popup.Close
     Else
         If MsgBox("Se va a aplicar una actualización." & vbNewLine & "Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
-            classP.actualizarSistema CLng(Item.Id)
+            classP.actualizarSistema CLng(item.Id)
         End If
     End If
 End Sub
@@ -774,22 +777,22 @@ Private Sub PrepararPopUp()
     Me.Popup.ShowDelay = 0    'para que quede fijo
     Me.Popup.Transparency = 100
 
-    Dim Item As PopupControlItem
+    Dim item As PopupControlItem
 
 
-    Set Item = Popup.AddItem(135, 10, 170, 45, "Cerrar")
-    Item.Id = 666
+    Set item = Popup.AddItem(135, 10, 170, 45, "Cerrar")
+    item.Id = 666
 
-    Set Item = Popup.AddItem(10, 35, 160, 80, vbNullString)
-    Item.caption = "Actualización para el sistema."
-    Item.TextAlignment = DT_CENTER Or DT_VCENTER Or DT_SINGLELINE
-    Item.Hyperlink = False
+    Set item = Popup.AddItem(10, 35, 160, 80, vbNullString)
+    item.caption = "Actualización para el sistema."
+    item.TextAlignment = DT_CENTER Or DT_VCENTER Or DT_SINGLELINE
+    item.Hyperlink = False
 
-    Set Item = Popup.AddItem(10, 75, 160, 95, vbNullString)
-    Item.Button = True
-    Item.caption = "Haga click aquí para actualizar."
-    Item.TextAlignment = DT_CENTER Or DT_VCENTER Or DT_SINGLELINE
-    Item.Hyperlink = False
+    Set item = Popup.AddItem(10, 75, 160, 95, vbNullString)
+    item.Button = True
+    item.caption = "Haga click aquí para actualizar."
+    item.TextAlignment = DT_CENTER Or DT_VCENTER Or DT_SINGLELINE
+    item.Hyperlink = False
 End Sub
 
 
@@ -801,7 +804,7 @@ Private Sub Timer2_Timer()
         If classP.VerificarSiHayActualizacion(idNuevo) Then
             statusBar(5).text = "** ACTUALIZACION DISPONIBLE **"
             If Permisos.SistemaVerUpdate Then
-                Me.Popup.Item(2).Id = idNuevo
+                Me.Popup.item(2).Id = idNuevo
                 If Me.Popup.State = xtpPopupStateClosed Then
                     Me.Popup.Show
                 End If
@@ -1112,6 +1115,8 @@ Private Sub CreateRibbonBar()
     ' REPORTE DE COMPARAción DE COMPROBANTES SIGNO VS AFIP
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Extras", ID_GROUP.ID_GROUP_ADMINISTRACION__EXTRAS)
     AddButton ribbonGroup, "Comparación Compras", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC, Permisos.AdminSubdiariosControl
+    AddButton ribbonGroup, "IVA Compras", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_IVAC, Permisos.AdminSubdiariosControl
+    
     AddButton ribbonGroup, "Saldos Compras", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CAA, Permisos.AdminSubdiariosControl
     AddButton ribbonGroup, "Saldos Ventas", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_VAA, Permisos.AdminSubdiariosControl
     
@@ -1170,7 +1175,7 @@ Private Sub tmrEventos_Timer()
             If col.count = 1 Then
 
                 Dim E As EVENTO
-                Set E = col.Item(0)
+                Set E = col.item(0)
 
                 Me.TrayIcon.ShowBalloonTip 10, "Eventos en Signo Plast ERP", E.descripcion & vbNewLine & "Haga click aquí para leerlos.", 1
             Else

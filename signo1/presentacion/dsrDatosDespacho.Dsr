@@ -6,10 +6,10 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
    ClientTop       =   555
    ClientWidth     =   20280
    StartUpPosition =   3  'Windows Default
-   _ExtentX        =   37888
-   _ExtentY        =   22913
+   _ExtentX        =   35772
+   _ExtentY        =   19420
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   11700
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
@@ -150,7 +150,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
       _Version        =   393216
       Name            =   "Sección2"
       Object.Height          =   8055
-      NumControls     =   40
+      NumControls     =   50
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -166,7 +166,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
          Name            =   "Forma6"
          Object.Left            =   1650
          Object.Top             =   3510
-         Object.Width           =   5070
+         Object.Width           =   6585
          Object.Height          =   1575
       EndProperty
       ItemType2       =   3
@@ -296,7 +296,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
          _Version        =   393216
          Name            =   "Forma5"
          Object.Left            =   8520
-         Object.Top             =   3540
+         Object.Top             =   4710
          Object.Width           =   2835
          Object.Height          =   405
       EndProperty
@@ -332,8 +332,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
       BeginProperty Item13 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta7"
-         Object.Left            =   7155
-         Object.Top             =   3540
+         Object.Left            =   8505
+         Object.Top             =   4320
          Object.Width           =   1275
          Object.Height          =   360
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -620,8 +620,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
       BeginProperty Item35 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma23"
-         Object.Left            =   4110
-         Object.Top             =   3615
+         Object.Left            =   4005
+         Object.Top             =   3600
          Object.Width           =   210
          Object.Height          =   225
       EndProperty
@@ -629,8 +629,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
       BeginProperty Item36 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta25"
-         Object.Left            =   4380
-         Object.Top             =   3615
+         Object.Left            =   4275
+         Object.Top             =   3600
          Object.Width           =   1770
          Object.Height          =   210
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -648,8 +648,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
       BeginProperty Item37 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma25"
-         Object.Left            =   4110
-         Object.Top             =   4200
+         Object.Left            =   6225
+         Object.Top             =   4215
          Object.Width           =   210
          Object.Height          =   225
       EndProperty
@@ -657,8 +657,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
       BeginProperty Item38 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta27"
-         Object.Left            =   4380
-         Object.Top             =   4200
+         Object.Left            =   6510
+         Object.Top             =   4230
          Object.Width           =   1800
          Object.Height          =   210
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -676,10 +676,150 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrDatosDespacho
       BeginProperty Item39 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Forma26"
-         Object.Left            =   4110
-         Object.Top             =   4470
-         Object.Width           =   2550
+         Object.Left            =   6225
+         Object.Top             =   4485
+         Object.Width           =   1905
          Object.Height          =   555
+      EndProperty
+      ItemType40      =   6
+      BeginProperty Item40 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Shape1"
+         Object.Left            =   4005
+         Object.Top             =   3885
+         Object.Width           =   210
+         Object.Height          =   225
+      EndProperty
+      ItemType41      =   3
+      BeginProperty Item41 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label1"
+         Object.Left            =   4275
+         Object.Top             =   3885
+         Object.Width           =   1770
+         Object.Height          =   210
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "IVECO AD 328 GS"
+      EndProperty
+      ItemType42      =   6
+      BeginProperty Item42 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Shape2"
+         Object.Left            =   4005
+         Object.Top             =   4185
+         Object.Width           =   210
+         Object.Height          =   225
+      EndProperty
+      ItemType43      =   3
+      BeginProperty Item43 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label2"
+         Object.Left            =   4275
+         Object.Top             =   4185
+         Object.Width           =   1770
+         Object.Height          =   210
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "AGRALE OZM 034"
+      EndProperty
+      ItemType44      =   6
+      BeginProperty Item44 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Shape3"
+         Object.Left            =   4005
+         Object.Top             =   4485
+         Object.Width           =   210
+         Object.Height          =   225
+      EndProperty
+      ItemType45      =   3
+      BeginProperty Item45 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label3"
+         Object.Left            =   4290
+         Object.Top             =   4485
+         Object.Width           =   1770
+         Object.Height          =   210
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "MERCEDES B NTV 321"
+      EndProperty
+      ItemType46      =   6
+      BeginProperty Item46 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Shape4"
+         Object.Left            =   4005
+         Object.Top             =   4755
+         Object.Width           =   210
+         Object.Height          =   225
+      EndProperty
+      ItemType47      =   3
+      BeginProperty Item47 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label4"
+         Object.Left            =   4290
+         Object.Top             =   4755
+         Object.Width           =   1770
+         Object.Height          =   210
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "TECTOR AG 025 YQ"
+      EndProperty
+      ItemType48      =   6
+      BeginProperty Item48 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Shape5"
+         Object.Left            =   6210
+         Object.Top             =   3600
+         Object.Width           =   210
+         Object.Height          =   225
+      EndProperty
+      ItemType49      =   3
+      BeginProperty Item49 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label5"
+         Object.Left            =   6480
+         Object.Top             =   3600
+         Object.Width           =   1770
+         Object.Height          =   210
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "TECTOR AG 054 LF"
       EndProperty
    EndProperty
    SectionCode2    =   4
