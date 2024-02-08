@@ -627,11 +627,11 @@ Private Sub endRto_Click()
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
-                CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 5
-                CD.ShowPrinter
+                cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 5
+                cd.ShowPrinter
                 Dim i As Long
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAORemitoS.ImprimirRemito rtoNro
                 Next i
             End If
@@ -1182,18 +1182,18 @@ Private Sub printRto_Click()
     If Not rs.BOF And Not rs.EOF Then est = rs!impreso Else Exit Sub
     If est > 0 Then
         If MsgBox("Este remito ya fué impreso," & Chr(10) & "¿Desea volver a imprimir?", vbYesNo, "Confirmación") = vbYes Then
-            CD.Flags = cdlPDUseDevModeCopies
-            CD.Copies = 5
-            CD.ShowPrinter
-            For i = 1 To CD.Copies
+            cd.Flags = cdlPDUseDevModeCopies
+            cd.Copies = 5
+            cd.ShowPrinter
+            For i = 1 To cd.Copies
                 DAORemitoS.ImprimirRemito rto
             Next i
         End If
     Else
         If MsgBox("Este remito no fue impreso." & Chr(10) & "¿Desea imprimirlo?", vbYesNo) = vbYes Then
-            CD.Copies = 5
-            CD.ShowPrinter
-            For i = 1 To CD.Copies
+            cd.Copies = 5
+            cd.ShowPrinter
+            For i = 1 To cd.Copies
                 DAORemitoS.ImprimirRemito rto
             Next
         End If

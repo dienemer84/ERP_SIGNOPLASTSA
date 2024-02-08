@@ -1607,7 +1607,7 @@ Public Function FindAllByRemitos(remitosNumeros As Collection, facturasNumero As
       & " INNER JOIN remitos r" _
       & " ON r.id = e.Remito" _
       & " INNER JOIN AdminFacturas f" _
-      & " ON f.id = fc.idFactura" _
+      & " ON f.id = fd.idFactura" _
       & " WHERE r.id IN (" & funciones.JoinCollectionValues(remitosNumeros, ", ") & ")"
 
     Dim rs As Recordset
