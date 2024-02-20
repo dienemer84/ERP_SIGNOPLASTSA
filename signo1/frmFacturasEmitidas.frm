@@ -234,6 +234,41 @@ Begin VB.Form frmAdminFacturasEmitidas
       Caption         =   "Filtros"
       BackColor       =   12632256
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton btnClearMoneda 
+         Height          =   285
+         Left            =   8090
+         TabIndex        =   59
+         Top             =   360
+         Width           =   375
+         _Version        =   786432
+         _ExtentX        =   661
+         _ExtentY        =   503
+         _StockProps     =   79
+         Caption         =   "X"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboMoneda 
+         Height          =   360
+         Left            =   6720
+         TabIndex        =   57
+         Top             =   300
+         Width           =   1275
+         _Version        =   786432
+         _ExtentX        =   2249
+         _ExtentY        =   635
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   6
+      End
       Begin XtremeSuiteControls.CheckBox chkAgruparCbtes 
          Height          =   255
          Left            =   12360
@@ -537,7 +572,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   360
          Left            =   6720
          TabIndex        =   20
-         Top             =   660
+         Top             =   705
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -562,7 +597,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   285
          Left            =   9165
          TabIndex        =   22
-         Top             =   700
+         Top             =   740
          Width           =   375
          _Version        =   786432
          _ExtentX        =   661
@@ -576,7 +611,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   360
          Left            =   6720
          TabIndex        =   24
-         Top             =   1095
+         Top             =   1110
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -665,6 +700,19 @@ Begin VB.Form frmAdminFacturasEmitidas
          BackColor       =   12632256
          Appearance      =   6
          Value           =   1
+      End
+      Begin XtremeSuiteControls.Label Label 
+         Height          =   495
+         Left            =   5800
+         TabIndex        =   58
+         Top             =   240
+         Width           =   855
+         _Version        =   786432
+         _ExtentX        =   1508
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Moneda"
+         Alignment       =   1
       End
       Begin XtremeSuiteControls.Label Label11 
          Height          =   255
@@ -1166,6 +1214,10 @@ Private Sub archivos_Click()
 End Sub
 
 
+Private Sub btnClearMoneda_Click()
+    Me.cboMoneda.ListIndex = -1
+End Sub
+
 Private Sub btnClearTipo_Click()
     Me.cboTipo.ListIndex = 3
 End Sub
@@ -1597,7 +1649,10 @@ Private Sub Form_Load()
         
     DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
     Me.cboClientes.ListIndex = -1
-
+    
+    DAOMoneda.llenarComboXtremeSuite Me.cboMoneda
+    Me.cboMoneda.ListIndex = -1
+    
     vId = funciones.CreateGUID
 
     Channel.AgregarSuscriptor Me, FacturaCliente_
@@ -1704,8 +1759,8 @@ Private Sub llenarGrilla()
         filtro = filtro & " and nroFactura=" & Me.txtNroFactura
     End If
     
-    If LenB(Me.txtId) > 0 And IsNumeric(Me.txtId) Then
-        filtro = filtro & " and AdminFacturas.id=" & Me.txtId
+    If LenB(Me.txtID) > 0 And IsNumeric(Me.txtID) Then
+        filtro = filtro & " and AdminFacturas.id=" & Me.txtID
     End If
 
     If Not IsNull(Me.dtpDesde.value) Then
@@ -1738,6 +1793,19 @@ Private Sub llenarGrilla()
         filtro = filtro & " and AdminFacturas.id_tipo_discriminado IN (3, 6, 9, 12, 17)"
     End If
 
+    If Me.cboMoneda.ListIndex <> -1 Then
+        If Me.cboMoneda.ListIndex = 0 Then
+            filtro = filtro & " and AdminFacturas.idMoneda = 00000000000"
+        ElseIf Me.cboMoneda.ListIndex = 1 Then
+            filtro = filtro & " and AdminFacturas.idMoneda = 00000000002"
+        ElseIf Me.cboMoneda.ListIndex = 2 Then
+            filtro = filtro & " and AdminFacturas.idMoneda = 00000000003"
+        ElseIf Me.cboMoneda.ListIndex = 3 Then
+            filtro = filtro & " and AdminFacturas.idMoneda = 00000000001"
+        End If
+    End If
+
+
     Dim ordenImporte As String
 
     If Me.cboOrdenImporte.ListIndex = 0 Then
@@ -1745,6 +1813,7 @@ Private Sub llenarGrilla()
     ElseIf Me.cboOrdenImporte.ListIndex = 1 Then
         ordenImporte = "AdminFacturas.total_estatico * AdminFacturas.cambio_a_patron DESC"
     End If
+
 
     Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
 
@@ -1840,7 +1909,7 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
                 Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"
@@ -2635,7 +2704,7 @@ Private Sub mnuFechaPagoPropuesta_Click()
     If Update Then
         Factura.FechaPropuestaPago = nuevaFecha
         If DAOFactura.Guardar(Factura) Then
-            Me.gridComprobantesEmitidos.Rebind
+            Me.gridComprobantesEmitidos.ReBind
         Else
             MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
         End If

@@ -6,7 +6,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Comprobantes de Proveedores"
-   ClientHeight    =   7005
+   ClientHeight    =   7260
    ClientLeft      =   45
    ClientTop       =   480
    ClientWidth     =   10515
@@ -15,7 +15,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7005
+   ScaleHeight     =   7260
    ScaleWidth      =   10515
    Begin XtremeSuiteControls.PushButton btnFormatoNumeroLIbre 
       Height          =   255
@@ -150,7 +150,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1500
-      Left            =   75
+      Left            =   120
       TabIndex        =   40
       Top             =   975
       Width           =   6435
@@ -269,12 +269,12 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    End
    Begin XtremeSuiteControls.GroupBox frame2 
       Height          =   2070
-      Left            =   105
+      Left            =   120
       TabIndex        =   37
-      Top             =   4770
-      Width           =   3765
+      Top             =   5040
+      Width           =   3630
       _Version        =   786432
-      _ExtentX        =   6641
+      _ExtentX        =   6403
       _ExtentY        =   3651
       _StockProps     =   79
       Caption         =   "Percepciones"
@@ -284,8 +284,8 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          Left            =   120
          TabIndex        =   13
          Top             =   255
-         Width           =   3495
-         _ExtentX        =   6165
+         Width           =   3390
+         _ExtentX        =   5980
          _ExtentY        =   2910
          Version         =   "2.0"
          BoundColumnIndex=   ""
@@ -315,26 +315,26 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       End
    End
    Begin XtremeSuiteControls.GroupBox fraAlicuotas 
-      Height          =   2115
+      Height          =   2235
       Left            =   120
       TabIndex        =   36
       Tag             =   "Alicuotas IVA (Total: {VALUE})"
-      Top             =   2610
-      Width           =   2445
+      Top             =   2520
+      Width           =   3645
       _Version        =   786432
-      _ExtentX        =   4313
-      _ExtentY        =   3731
+      _ExtentX        =   6429
+      _ExtentY        =   3942
       _StockProps     =   79
       Caption         =   "Alicuotas IVA"
       UseVisualStyle  =   -1  'True
       Begin GridEX20.GridEX grilla_alicuotas 
-         Height          =   1680
+         Height          =   1890
          Left            =   105
          TabIndex        =   11
          Top             =   255
-         Width           =   2205
-         _ExtentX        =   3889
-         _ExtentY        =   2963
+         Width           =   3390
+         _ExtentX        =   5980
+         _ExtentY        =   3334
          Version         =   "2.0"
          BoundColumnIndex=   ""
          ReplaceColumnIndex=   ""
@@ -400,16 +400,25 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":19DC
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
-      Height          =   390
-      Left            =   8745
+      Height          =   495
+      Left            =   8760
       TabIndex        =   20
-      Top             =   6480
+      Top             =   6600
       Width           =   1635
       _Version        =   786432
       _ExtentX        =   2884
-      _ExtentY        =   688
+      _ExtentY        =   873
       _StockProps     =   79
       Caption         =   "Guardar"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       UseVisualStyle  =   -1  'True
    End
    Begin VB.TextBox txtCodigoProveedor 
@@ -466,29 +475,29 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   67371009
+      Format          =   63045633
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
-      Height          =   2115
-      Left            =   2655
+      Height          =   2235
+      Left            =   3840
       TabIndex        =   38
-      Top             =   2610
-      Width           =   3840
+      Top             =   2520
+      Width           =   3645
       _Version        =   786432
-      _ExtentX        =   6773
-      _ExtentY        =   3731
+      _ExtentX        =   6429
+      _ExtentY        =   3942
       _StockProps     =   79
       Caption         =   "Cuentas Contables"
       UseVisualStyle  =   -1  'True
       Begin GridEX20.GridEX grid_cuentascontables 
-         Height          =   1650
-         Left            =   135
+         Height          =   1890
+         Left            =   120
          TabIndex        =   12
-         Top             =   285
-         Width           =   3555
-         _ExtentX        =   6271
-         _ExtentY        =   2910
+         Top             =   240
+         Width           =   3390
+         _ExtentX        =   5980
+         _ExtentY        =   3334
          Version         =   "2.0"
          BoundColumnIndex=   ""
          ReplaceColumnIndex=   ""
@@ -518,9 +527,9 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    End
    Begin GridEX20.GridEX grid_cuenta 
       Height          =   1485
-      Left            =   3195
+      Left            =   4080
       TabIndex        =   39
-      Top             =   2970
+      Top             =   3000
       Visible         =   0   'False
       Width           =   3075
       _ExtentX        =   5424
@@ -559,9 +568,9 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    End
    Begin GridEX20.GridEX grilla_percepcion 
       Height          =   1485
-      Left            =   885
+      Left            =   720
       TabIndex        =   35
-      Top             =   5085
+      Top             =   5520
       Visible         =   0   'False
       Width           =   2340
       _ExtentX        =   4128
@@ -609,14 +618,14 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Text            =   "ComboBox1"
    End
    Begin XtremeSuiteControls.PushButton btnNuevoCbte 
-      Height          =   390
-      Left            =   7035
+      Height          =   510
+      Left            =   6840
       TabIndex        =   23
-      Top             =   6480
+      Top             =   6600
       Width           =   1635
       _Version        =   786432
       _ExtentX        =   2884
-      _ExtentY        =   688
+      _ExtentY        =   900
       _StockProps     =   79
       Caption         =   "Nueva Factura"
       UseVisualStyle  =   -1  'True
@@ -635,6 +644,16 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Alignment       =   1
       MaxLength       =   13
    End
+   Begin VB.Label Label14 
+      BackColor       =   &H00FF8080&
+      Caption         =   "Nota: Unificar las lineas de alicuotas segun su indice. No cargar misma alicuota por duplicado."
+      Height          =   495
+      Index           =   1
+      Left            =   240
+      TabIndex        =   56
+      Top             =   4800
+      Width           =   7335
+   End
    Begin VB.Label lblTipoCambioPago 
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FF8080&
@@ -650,17 +669,17 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Tipo de Cambio"
       Height          =   255
-      Left            =   6990
+      Left            =   7440
       TabIndex        =   52
       Top             =   3645
-      Width           =   1575
+      Width           =   1215
    End
    Begin VB.Label Label13 
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FF8080&
       Caption         =   "IVA"
       Height          =   255
-      Left            =   7035
+      Left            =   7080
       TabIndex        =   46
       Top             =   4350
       Width           =   1575
@@ -670,7 +689,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Letra"
       Height          =   255
-      Left            =   7320
+      Left            =   7455
       TabIndex        =   45
       Top             =   1080
       Width           =   1215
@@ -680,7 +699,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       AutoSize        =   -1  'True
       Caption         =   "Moneda"
       Height          =   195
-      Left            =   8010
+      Left            =   8040
       TabIndex        =   33
       Top             =   360
       Width           =   585
@@ -700,7 +719,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Validar Factura"
       Height          =   255
-      Left            =   7335
+      Left            =   7320
       TabIndex        =   31
       Top             =   6090
       Width           =   1335
@@ -710,7 +729,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Redondeo IVA"
       Height          =   255
-      Left            =   7260
+      Left            =   7335
       TabIndex        =   30
       Top             =   2880
       Width           =   1335
@@ -720,7 +739,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Neto Gravado"
       Height          =   255
-      Left            =   7020
+      Left            =   7080
       TabIndex        =   29
       Top             =   4005
       Width           =   1575
@@ -730,7 +749,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Impuestos"
       Height          =   255
-      Left            =   7080
+      Left            =   7215
       TabIndex        =   28
       Top             =   2505
       Width           =   1455
@@ -740,7 +759,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Número"
       Height          =   195
-      Left            =   7635
+      Left            =   7695
       TabIndex        =   26
       Top             =   1845
       Width           =   975
@@ -750,7 +769,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Fecha"
       Height          =   255
-      Left            =   7635
+      Left            =   7695
       TabIndex        =   25
       Top             =   1470
       Width           =   975
@@ -760,7 +779,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Total Factura"
       Height          =   255
-      Left            =   7275
+      Left            =   7320
       TabIndex        =   24
       Top             =   5715
       Width           =   1335
@@ -780,7 +799,8 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       BackColor       =   &H00FF8080&
       Caption         =   "Tipo Documento"
       Height          =   255
-      Left            =   7080
+      Index           =   0
+      Left            =   7095
       TabIndex        =   27
       Top             =   720
       Width           =   1575
@@ -902,10 +922,10 @@ Private Sub cboProveedores_Click()
 
 End Sub
 
+Private Sub cboTipoIva_KeyDown(KeyCode As Integer, Shift As Integer)
+MsgBox "gola"
 
-
-
-
+End Sub
 
 Private Sub cboTiposFactura_Click()
 
@@ -930,8 +950,7 @@ Private Sub cboTiposFactura_Click()
             End If
         End If
 
-
-    End If
+        End If
 End Sub
 Private Sub mostrar()
     If Me.cboProveedores.ListIndex <> -1 Then
@@ -995,6 +1014,8 @@ Private Sub btnGuardar_Click()
     End If
 
 
+
+
     conectar.BeginTransaction
     '    Dim A As Boolean
     Dim montonero As Double
@@ -1004,6 +1025,11 @@ Private Sub btnGuardar_Click()
 
     If Not validarFactura Then
         Err.Raise 203
+    End If
+    
+    ' Si se elije la letra B y hay cargado alicuotas
+    If Me.cboTiposFactura.ListIndex = 1 And Me.grilla_alicuotas.rowcount > 0 Then
+        Err.Raise 301
     End If
 
     'If MsgBox("¿Está seguro de guardar la factura?", vbYesNo, "Confirmación") = vbYes Then
@@ -1078,6 +1104,7 @@ Private Sub btnGuardar_Click()
 
 err1:
     conectar.RollBackTransaction
+    
     If Err.Number = 100 Then
         MsgBox "Se produjo algún error, no se guardarán los cambios!", vbCritical, "Error"
     ElseIf Err.Number = 101 Then
@@ -1092,6 +1119,8 @@ err1:
         MsgBox "Debe ingresar montos válidos!", vbCritical, "Error"
     ElseIf Err.Number = 203 Then
         MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.total, vbCritical, "Error"
+    ElseIf Err.Number = 301 Then
+        MsgBox "Si el comprobante es letra B no debe tener alicuotas discriminadas", vbCritical, "Error"
     ElseIf Err.Number = 300 Or nuevoproveedor Then
         vFactura.Proveedor = Nothing
         nuevoproveedor = False
@@ -1186,8 +1215,8 @@ Private Sub Form_Load()
         Me.btnGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.Frame2.Enabled = False
-        Me.Frame3.Enabled = False
+        Me.frame2.Enabled = False
+        Me.frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
         Me.txtImpuestos.Enabled = False

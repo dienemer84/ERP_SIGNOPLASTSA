@@ -7,7 +7,7 @@ Begin VB.Form frmActivarPedido
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Activar OT Nº"
-   ClientHeight    =   7410
+   ClientHeight    =   8250
    ClientLeft      =   6960
    ClientTop       =   750
    ClientWidth     =   13860
@@ -25,8 +25,30 @@ Begin VB.Form frmActivarPedido
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7410
+   ScaleHeight     =   8250
    ScaleWidth      =   13860
+   Begin XtremeSuiteControls.PushButton btnDestildarTodas 
+      Height          =   495
+      Left            =   2760
+      TabIndex        =   26
+      Top             =   7440
+      Width           =   2895
+      _Version        =   786432
+      _ExtentX        =   5106
+      _ExtentY        =   873
+      _StockProps     =   79
+      Caption         =   "Destildar todos los Sectores"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      UseVisualStyle  =   -1  'True
+   End
    Begin VB.CommandButton Command2 
       BackColor       =   &H00E0E0E0&
       Caption         =   "Contaduría: Faltantes de facturar"
@@ -39,7 +61,7 @@ Begin VB.Form frmActivarPedido
    End
    Begin XtremeSuiteControls.PushButton PushButton4 
       Height          =   480
-      Left            =   4155
+      Left            =   4180
       TabIndex        =   24
       Top             =   6360
       Width           =   1545
@@ -105,20 +127,20 @@ Begin VB.Form frmActivarPedido
    Begin VB.Frame fraDetalles 
       BackColor       =   &H00FFC0C0&
       Caption         =   "Detalles de la Orden de Trabajo"
-      Height          =   7335
+      Height          =   8025
       Left            =   5805
       TabIndex        =   13
       Top             =   30
       Width           =   7980
       Begin XtremeReportControl.ReportControl ReportControl 
-         Height          =   7065
-         Left            =   60
+         Height          =   7665
+         Left            =   120
          TabIndex        =   14
-         Top             =   150
-         Width           =   7845
+         Top             =   240
+         Width           =   7725
          _Version        =   786432
-         _ExtentX        =   13838
-         _ExtentY        =   12462
+         _ExtentX        =   13626
+         _ExtentY        =   13520
          _StockProps     =   64
          BorderStyle     =   3
          PreviewMode     =   -1  'True
@@ -230,19 +252,19 @@ Begin VB.Form frmActivarPedido
    Begin VB.Frame Frame3 
       BackColor       =   &H00FFC0C0&
       Caption         =   "Sectores"
-      Height          =   7320
+      Height          =   8025
       Left            =   75
       TabIndex        =   6
       Top             =   30
       Width           =   2595
       Begin MSComctlLib.ListView lstSectores 
-         Height          =   7080
+         Height          =   7680
          Left            =   45
          TabIndex        =   7
          Top             =   195
          Width           =   2505
          _ExtentX        =   4419
-         _ExtentY        =   12488
+         _ExtentY        =   13547
          View            =   3
          LabelEdit       =   1
          LabelWrap       =   -1  'True
@@ -387,12 +409,22 @@ Private porSector As Boolean
 Private parentRow2Check As ReportRow
 Private sectores As New Collection
 Private sectoresInvolucrados As New Collection
+
 Public Property Set Pedido(T As OrdenTrabajo)
     Set vpedido = T
     Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
     idpedido = T.Id
     Me.caption = "Activar OT Nº " & T.IdFormateado
 End Property
+
+Private Sub btnDestildarTodas_Click()
+    Dim i As Integer
+    
+    ' Recorre todos los elementos del ListView
+    For i = 1 To lstSectores.ListItems.count
+        lstSectores.ListItems(i).Checked = False ' Desmarca el elemento actual
+    Next i
+End Sub
 
 Private Sub btnTareasSector_Click()
     If cboSector.ListIndex = -1 Then
@@ -726,7 +758,7 @@ End Sub
 
 Private Sub Command11_Click()
     On Error GoTo er1
-    frmPrincipal.cd.ShowPrinter
+    frmPrincipal.CD.ShowPrinter
     Dim rec As ReportRecord
     Dim tmpDetalle As DetalleOrdenTrabajo
     Dim l As Long

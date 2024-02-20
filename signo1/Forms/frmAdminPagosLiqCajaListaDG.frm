@@ -939,7 +939,8 @@ Private Sub btnConfirmar_Click()
         facturaExistente = False
 
         For Each fac In facturasConfirmadas
-            If fac.numero = Factura.numero Then
+            If fac.Id = Factura.Id Then
+            'If fac.numero = Factura.numero Then
                 facturaExistente = True
                 Exit For
             End If
@@ -1037,7 +1038,7 @@ Public Function ExportToXslConfirmados()
         
         Dim c As Integer
         
-        If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
         
         xlWorksheet.Cells(idx, 6).value = facturaConfirmada.total * c
        
@@ -1135,7 +1136,7 @@ Public Function ExportToXslComprobantes()
         
         Dim c As Integer
         
-        If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
         
         xlWorksheet.Cells(idx, 6).value = Factura.total * c
         
@@ -1342,7 +1343,7 @@ Public Sub llenarGrilla()
 
     For Each F In facturas
 
-        If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        If F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
         total = total + MonedaConverter.Convertir(F.total * c, F.moneda.Id, MonedaConverter.Patron.Id)
         totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
         totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
@@ -1381,7 +1382,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
 
     Dim i As Integer
 
-    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+    If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
 
     With Factura
 
@@ -1411,7 +1412,7 @@ Private Sub grillaConfirmados_UnboundReadData(ByVal rowIndex As Long, ByVal Book
 
     Dim i As Integer
 
-    If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+    If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
 
     With facturaConfirmada
 
@@ -1499,7 +1500,7 @@ Public Sub TotalizarComprobantes()
     For i = 1 To facturasConfirmadas.count
         Set Factura = facturasConfirmadas.item(i)
 
-        If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+        If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then
             total = total - Factura.total    ' Resta el total de las facturas tipo nota de crédito
         Else
             total = total + Factura.total    ' Suma el total de las demás facturas
