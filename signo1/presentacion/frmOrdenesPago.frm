@@ -92,6 +92,15 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentY        =   794
          _StockProps     =   79
          Caption         =   "Buscar"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.PushButton cmdImprimir 

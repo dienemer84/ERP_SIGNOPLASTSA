@@ -9,17 +9,17 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
    ClientWidth     =   14415
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   10380
-   ScaleWidth      =   14415
+   ScaleHeight     =   13725
+   ScaleWidth      =   28680
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   1695
+      Height          =   1815
       Left            =   120
       TabIndex        =   0
       Top             =   120
-      Width           =   15765
+      Width           =   16245
       _Version        =   786432
-      _ExtentX        =   27808
-      _ExtentY        =   2990
+      _ExtentX        =   28654
+      _ExtentY        =   3201
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -32,28 +32,115 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.GroupBox GroupBox 
+         Height          =   735
+         Index           =   2
+         Left            =   11040
+         TabIndex        =   25
+         Top             =   0
+         Width           =   5055
+         _Version        =   786432
+         _ExtentX        =   8916
+         _ExtentY        =   1296
+         _StockProps     =   79
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.ProgressBar ProgressBar 
+            Height          =   375
+            Left            =   120
+            TabIndex        =   26
+            Top             =   240
+            Width           =   4815
+            _Version        =   786432
+            _ExtentX        =   8493
+            _ExtentY        =   661
+            _StockProps     =   93
+            Appearance      =   6
+         End
+      End
+      Begin VB.PictureBox pic 
+         Height          =   300
+         Left            =   4920
+         ScaleHeight     =   240
+         ScaleWidth      =   285
+         TabIndex        =   24
+         Top             =   240
+         Visible         =   0   'False
+         Width           =   345
+      End
+      Begin XtremeSuiteControls.GroupBox GroupBox 
+         Height          =   870
+         Index           =   1
+         Left            =   11040
+         TabIndex        =   20
+         Top             =   720
+         Width           =   5055
+         _Version        =   786432
+         _ExtentX        =   8916
+         _ExtentY        =   1526
+         _StockProps     =   79
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.PushButton btnExportar 
+            Height          =   450
+            Left            =   2040
+            TabIndex        =   23
+            Top             =   240
+            Width           =   1335
+            _Version        =   786432
+            _ExtentX        =   2355
+            _ExtentY        =   794
+            _StockProps     =   79
+            Caption         =   "Exportar"
+            UseVisualStyle  =   -1  'True
+         End
+         Begin XtremeSuiteControls.PushButton btnBuscar 
+            Default         =   -1  'True
+            Height          =   450
+            Left            =   120
+            TabIndex        =   21
+            Top             =   240
+            Width           =   1350
+            _Version        =   786432
+            _ExtentX        =   2381
+            _ExtentY        =   794
+            _StockProps     =   79
+            Caption         =   "Buscar"
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            UseVisualStyle  =   -1  'True
+         End
+         Begin XtremeSuiteControls.PushButton btnImprimir 
+            Height          =   450
+            Left            =   3600
+            TabIndex        =   22
+            Top             =   240
+            Width           =   1350
+            _Version        =   786432
+            _ExtentX        =   2381
+            _ExtentY        =   794
+            _StockProps     =   79
+            Caption         =   "Imprimir"
+            UseVisualStyle  =   -1  'True
+         End
+      End
       Begin VB.TextBox txtNro 
          Alignment       =   1  'Right Justify
          Height          =   285
          Left            =   1320
-         TabIndex        =   7
+         TabIndex        =   6
          Top             =   285
          Width           =   840
-      End
-      Begin VB.PictureBox pic 
-         Height          =   540
-         Left            =   15240
-         ScaleHeight     =   480
-         ScaleWidth      =   300
-         TabIndex        =   1
-         Top             =   195
-         Visible         =   0   'False
-         Width           =   360
       End
       Begin XtremeSuiteControls.PushButton PushButton2 
          Height          =   330
          Left            =   11340
-         TabIndex        =   2
+         TabIndex        =   1
          Top             =   2490
          Visible         =   0   'False
          Width           =   1245
@@ -67,8 +154,8 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Begin XtremeSuiteControls.GroupBox GroupBox2 
          Height          =   1335
          Left            =   5760
-         TabIndex        =   3
-         Top             =   240
+         TabIndex        =   2
+         Top             =   0
          Width           =   2355
          _Version        =   786432
          _ExtentX        =   4154
@@ -88,7 +175,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.CheckBox chkContado 
             Height          =   195
             Left            =   405
-            TabIndex        =   4
+            TabIndex        =   3
             Top             =   360
             Width           =   1635
             _Version        =   786432
@@ -102,7 +189,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.CheckBox chkCtaCte 
             Height          =   315
             Left            =   405
-            TabIndex        =   5
+            TabIndex        =   4
             Top             =   600
             Width           =   1800
             _Version        =   786432
@@ -116,7 +203,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.CheckBox chkEliminado 
             Height          =   315
             Left            =   405
-            TabIndex        =   6
+            TabIndex        =   5
             Top             =   900
             Width           =   1800
             _Version        =   786432
@@ -128,33 +215,10 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
             Value           =   1
          End
       End
-      Begin XtremeSuiteControls.PushButton btnBuscar 
-         Default         =   -1  'True
-         Height          =   450
-         Left            =   11280
-         TabIndex        =   8
-         Top             =   1080
-         Width           =   1830
-         _Version        =   786432
-         _ExtentX        =   3228
-         _ExtentY        =   794
-         _StockProps     =   79
-         Caption         =   "Buscar"
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.ComboBox cboProveedores 
          Height          =   315
          Left            =   1305
-         TabIndex        =   9
+         TabIndex        =   7
          Top             =   735
          Width           =   3525
          _Version        =   786432
@@ -168,7 +232,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Begin XtremeSuiteControls.PushButton btnClearProveedor 
          Height          =   375
          Left            =   4920
-         TabIndex        =   10
+         TabIndex        =   8
          Top             =   720
          Width           =   405
          _Version        =   786432
@@ -180,23 +244,10 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Enabled         =   0   'False
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.PushButton btnImprimir 
-         Height          =   450
-         Left            =   13920
-         TabIndex        =   11
-         Top             =   1080
-         Width           =   1710
-         _Version        =   786432
-         _ExtentX        =   3016
-         _ExtentY        =   794
-         _StockProps     =   79
-         Caption         =   "Imprimir"
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.ComboBox cboEstado 
          Height          =   315
          Left            =   1305
-         TabIndex        =   12
+         TabIndex        =   9
          Top             =   1200
          Width           =   3510
          _Version        =   786432
@@ -210,7 +261,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
          Height          =   375
          Left            =   4920
-         TabIndex        =   13
+         TabIndex        =   10
          Top             =   1170
          Width           =   405
          _Version        =   786432
@@ -225,8 +276,8 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Height          =   1335
          Index           =   0
          Left            =   8280
-         TabIndex        =   17
-         Top             =   240
+         TabIndex        =   14
+         Top             =   0
          Width           =   2655
          _Version        =   786432
          _ExtentX        =   4683
@@ -246,7 +297,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
             Left            =   900
-            TabIndex        =   18
+            TabIndex        =   15
             Top             =   360
             Width           =   1470
             _Version        =   786432
@@ -259,7 +310,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.DateTimePicker dtpHasta 
             Height          =   315
             Left            =   885
-            TabIndex        =   19
+            TabIndex        =   16
             Top             =   855
             Width           =   1470
             _Version        =   786432
@@ -272,7 +323,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.Label Label5 
             Height          =   195
             Left            =   360
-            TabIndex        =   21
+            TabIndex        =   18
             Top             =   405
             Width           =   465
             _Version        =   786432
@@ -286,7 +337,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.Label Label6 
             Height          =   195
             Left            =   375
-            TabIndex        =   20
+            TabIndex        =   17
             Top             =   915
             Width           =   420
             _Version        =   786432
@@ -301,7 +352,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Begin XtremeSuiteControls.Label Label1 
          Height          =   195
          Left            =   180
-         TabIndex        =   16
+         TabIndex        =   13
          Top             =   330
          Width           =   1080
          _Version        =   786432
@@ -315,7 +366,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Begin XtremeSuiteControls.Label lbl 
          Height          =   195
          Left            =   480
-         TabIndex        =   15
+         TabIndex        =   12
          Top             =   780
          Width           =   780
          _Version        =   786432
@@ -330,7 +381,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Begin XtremeSuiteControls.Label Label4 
          Height          =   195
          Left            =   720
-         TabIndex        =   14
+         TabIndex        =   11
          Top             =   1260
          Width           =   540
          _Version        =   786432
@@ -345,10 +396,10 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
    Begin GridEX20.GridEX gridOrdenes 
       Height          =   5505
       Left            =   120
-      TabIndex        =   22
-      Top             =   1920
-      Width           =   15735
-      _ExtentX        =   27755
+      TabIndex        =   19
+      Top             =   2040
+      Width           =   16215
+      _ExtentX        =   28601
       _ExtentY        =   9710
       Version         =   "2.0"
       BoundColumnIndex=   ""
@@ -424,6 +475,20 @@ Dim ids As String
 Private liquidaciones As New Collection
 Private LiquidacionCaja As clsLiquidacionCaja
 Private fac As clsFacturaProveedor
+
+Private Sub btnExportar_Click()
+    Me.ProgressBar.Visible = True
+
+    If IsSomething(liquidaciones) Then
+        If Not DAOLiquidacionCaja.ExportarColeccion(liquidaciones, Me.ProgressBar) Then GoTo err1
+    End If
+
+    Me.ProgressBar.Visible = False
+
+    Exit Sub
+err1:
+    MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
+End Sub
 
 Private Sub Form_Load()
     Customize Me
@@ -535,7 +600,7 @@ Private Sub PushButton2_Click()
             opeCaja.Pertenencia = OrigenOperacion.caja
             opeCaja.Monto = nop.StaticTotal
             Set opeCaja.moneda = fac.moneda
-            opeCaja.FechaOperacion = nop.fecha
+            opeCaja.FechaOperacion = nop.FEcha
 
 
             opeCaja.FechaCarga = Now
@@ -656,7 +721,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
         Set LiquidacionCaja = liquidaciones.item(rowIndex)
 
         Values(1) = LiquidacionCaja.NumeroLiq
-        Values(2) = LiquidacionCaja.fecha
+        Values(2) = LiquidacionCaja.FEcha
 
         Values(3) = LiquidacionCaja.moneda.NombreCorto
 

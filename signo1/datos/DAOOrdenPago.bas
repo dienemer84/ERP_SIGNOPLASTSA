@@ -1208,7 +1208,6 @@ err1:
 End Function
 
 
-
 Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
     Dim TAB1 As Integer
     Dim TAB2 As Integer

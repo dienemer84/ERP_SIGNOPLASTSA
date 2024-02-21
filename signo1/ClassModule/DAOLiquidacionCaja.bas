@@ -1217,5 +1217,124 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     DaoHistorico.Save "orden_pago_historial", "OP Impresa", LiquidacionCaja.Id
 End Function
 
+Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Object) As Boolean
+    On Error GoTo err1
 
+    ExportarColeccion = True
+
+    '    Dim detalle As DetalleOrdenTrabajo
+    '    Dim Entregas As Collection
+    '    Dim remitoDetalle As remitoDetalle
+
+    'Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorkbook As Object
+    Set xlWorkbook = CreateObject("Excel.Application")
+
+    'Dim xlWorksheet As New Excel.Worksheet
+    Dim xlWorksheet As Object
+    Set xlWorksheet = CreateObject("Excel.Application")
+
+    'Dim xlApplication As New Excel.Application
+    Dim xlApplication As Object
+    Set xlApplication = CreateObject("Excel.Application")
+
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    'fila, columna
+
+    Dim offset As Long
+    offset = 3
+    xlWorksheet.Cells(offset, 1).value = "Número Orden"
+    xlWorksheet.Cells(offset, 2).value = "Fecha"
+    xlWorksheet.Cells(offset, 3).value = "Moneda"
+    xlWorksheet.Cells(offset, 4).value = "Valores"
+    xlWorksheet.Cells(offset, 5).value = "Total"
+    xlWorksheet.Cells(offset, 6).value = "Tipo"
+    xlWorksheet.Cells(offset, 7).value = "Destino"
+    xlWorksheet.Cells(offset, 8).value = "Estado"
+
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 8)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 8)).Interior.Color = &HC0C0C0
+
+    Dim liq As clsLiquidacionCaja
+    Dim fac As clsFacturaProveedor
+
+    Dim initoffset As Long
+    initoffset = offset
+
+    ProgressBar.min = 0
+    ProgressBar.max = col.count
+
+
+    Dim d As Long
+    d = 0
+
+    For Each liq In col
+
+        Dim i As Integer
+
+        i = 1
+
+        d = d + 1
+        ProgressBar.value = d
+
+        offset = offset + 1
+
+        xlWorksheet.Cells(offset, 1).value = liq.NumeroLiq
+        xlWorksheet.Cells(offset, 2).value = liq.FEcha
+        xlWorksheet.Cells(offset, 3).value = liq.moneda.NombreCorto
+        xlWorksheet.Cells(offset, 4).value = liq.StaticTotalOrigenes
+        xlWorksheet.Cells(offset, 5).value = (liq.StaticTotalOrigenes + liq.StaticTotalRetenido)
+
+        xlWorksheet.Cells(offset, 6).value = "Liquidación"
+        xlWorksheet.Cells(offset, 7).value = "VARIOS"
+
+        If liq.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
+            xlWorksheet.Cells(offset, 8).value = "Aprobada"
+        ElseIf liq.estado = EstadoOrdenPago_Anulada Then
+            xlWorksheet.Cells(offset, 8).value = "Anulada"
+        ElseIf liq.estado = EstadoOrdenPago_pendiente Then
+            xlWorksheet.Cells(offset, 8).value = "Pendiene"
+        End If
+        
+    Next
+
+    xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 8)).Borders.LineStyle = xlContinuous
+
+    'autosize
+    xlApplication.ScreenUpdating = False
+    Dim wkSt As String
+    wkSt = xlWorksheet.Name
+    xlWorksheet.Cells.EntireColumn.AutoFit
+    xlWorkbook.Sheets(wkSt).Select
+    xlApplication.ScreenUpdating = True
+    ''
+
+    Dim ruta As String
+    ruta = Environ$("TEMP")
+    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
+    If LenB(ruta) = 0 Then ruta = App.path
+    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
+
+    xlWorkbook.SaveAs ruta
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    ProgressBar.value = 0
+
+    Exit Function
+err1:
+    ExportarColeccion = False
+End Function
 

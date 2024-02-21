@@ -16,6 +16,7 @@ Public Const CAMPO_OBSERVACIONES As String = "observaciones"
 Public Const CAMPO_TERCEROS_PROPIO As String = "teceros_propio"
 Public Const TABLA_CHEQUE As String = "cheq"
 
+
 Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional ByRef filter2 As String, Optional orderBy As String) As Collection
     On Error GoTo err1
 
@@ -31,6 +32,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
       & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
       & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
       & " LEFT JOIN ordenes_pago op ON op.id= cheq.orden_pago_origen" _
+      & " LEFT JOIN AdminRecibosCheques rec ON rec.idCheque= cheq.id" _
       & " WHERE 1 = 1 "
 
     If LenB(filter) > 0 Then
@@ -56,7 +58,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
 
     While Not rs.EOF
-        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov")
+        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov", "rec")
         Cheques.Add tmpCheque, CStr(tmpCheque.Id)
 
         rs.MoveNext
@@ -123,8 +125,9 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef bancoChequeraTableNameOrAlias As String = vbNullString, _
                     Optional ByRef OrdenesP As String = vbNullString, _
                     Optional ByRef FacturasP As String = vbNullString, _
-                    Optional ByRef proveedores As String = vbNullString _
-                  ) As cheque
+                    Optional ByRef proveedores As String = vbNullString, _
+                    Optional ByRef Recibos As String = vbNullString _
+                    ) As cheque
 
     Dim tmpCheque As cheque
     Dim Id As Variant
@@ -149,6 +152,9 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
 '        tmpCheque.OrdenPagoFecha = GetValue(rs, fieldsIndex, ordenes_pago, "fecha")
+        
+        tmpCheque.Recibo = GetValue(rs, fieldsIndex, Recibos, "idRecibo")
+        
         If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
         If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
         If LenB(chequeraTableNameOrAlias) > 0 Then Set tmpCheque.chequera = DAOChequeras.Map(rs, fieldsIndex, chequeraTableNameOrAlias, monedaChequeraTableNameOrAlias, bancoChequeraTableNameOrAlias)
