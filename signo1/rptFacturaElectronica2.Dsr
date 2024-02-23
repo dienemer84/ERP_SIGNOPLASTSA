@@ -4,13 +4,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    ClientHeight    =   10890
    ClientLeft      =   165
    ClientTop       =   555
-   ClientWidth     =   22920
+   ClientWidth     =   14415
    StartUpPosition =   3  'Windows Default
-   _ExtentX        =   50588
-   _ExtentY        =   25162
+   _ExtentX        =   40428
+   _ExtentY        =   19209
    _Version        =   393216
-   _DesignerVersion=   100688210
-   ReportWidth     =   11100
+   _DesignerVersion=   100684101
+   ReportWidth     =   11115
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -36,7 +36,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "marco1"
-         Object.Left            =   45
+         Object.Left            =   60
          Object.Top             =   30
          Object.Width           =   11055
          Object.Height          =   2940
@@ -372,7 +372,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "marco2"
          Object.Left            =   45
-         Object.Top             =   15
          Object.Width           =   11055
          Object.Height          =   2340
       EndProperty
@@ -777,46 +776,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       ItemType22      =   3
       BeginProperty Item22 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
-         Name            =   "lblFechaPagoFceDesde"
-         Object.Left            =   5325
-         Object.Top             =   1725
-         Object.Width           =   2310
-         Object.Height          =   240
-         Object.Visible         =   0   'False
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Arial"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Object.Caption         =   "Período Facturado Desde:"
-      EndProperty
-      ItemType23      =   3
-      BeginProperty Item23 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "lblFechaPagoFceHasta"
-         Object.Left            =   9015
-         Object.Top             =   1725
-         Object.Width           =   600
-         Object.Height          =   240
-         Object.Visible         =   0   'False
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Arial"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Object.Caption         =   "Hasta:"
-      EndProperty
-      ItemType24      =   3
-      BeginProperty Item24 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
          Name            =   "lblFechaServFceDesde"
          Object.Left            =   5325
          Object.Top             =   2025
@@ -832,8 +791,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
       EndProperty
-      ItemType25      =   3
-      BeginProperty Item25 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType23      =   3
+      BeginProperty Item23 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaServFceHasta"
          Object.Left            =   9015
@@ -850,8 +809,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
       EndProperty
-      ItemType26      =   3
-      BeginProperty Item26 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType24      =   3
+      BeginProperty Item24 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblConcepto1"
          Object.Left            =   210
@@ -869,8 +828,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Concepto:"
       EndProperty
-      ItemType27      =   3
-      BeginProperty Item27 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType25      =   3
+      BeginProperty Item25 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblConceptoTexto"
          Object.Left            =   1100
@@ -888,8 +847,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Productos y Servicios"
       EndProperty
-      ItemType28      =   3
-      BeginProperty Item28 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType26      =   3
+      BeginProperty Item26 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblDias"
          Object.Left            =   3700
@@ -908,8 +867,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "10 dias"
       EndProperty
-      ItemType29      =   3
-      BeginProperty Item29 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType27      =   3
+      BeginProperty Item27 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblFechaPagoFce"
          Object.Left            =   210
@@ -928,8 +887,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "Fecha de Vto. para el pago:"
       EndProperty
-      ItemType30      =   3
-      BeginProperty Item30 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType28      =   3
+      BeginProperty Item28 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "FechaPagoFceDesdeDato"
          Object.Left            =   7500
@@ -948,8 +907,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "00/00/0000"
       EndProperty
-      ItemType31      =   3
-      BeginProperty Item31 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType29      =   3
+      BeginProperty Item29 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "FechaPagoFceHastaDato"
          Object.Left            =   9590
@@ -968,8 +927,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "00/00/0000"
       EndProperty
-      ItemType32      =   3
-      BeginProperty Item32 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType30      =   3
+      BeginProperty Item30 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "FechaServFceDesdeDato"
          Object.Left            =   7500
@@ -986,8 +945,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
       EndProperty
-      ItemType33      =   3
-      BeginProperty Item33 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType31      =   3
+      BeginProperty Item31 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "FechaServFceHastaDato"
          Object.Left            =   9590
@@ -1004,8 +963,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
       EndProperty
-      ItemType34      =   6
-      BeginProperty Item34 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType32      =   6
+      BeginProperty Item32 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Shape2"
          Object.Left            =   200
@@ -1014,8 +973,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Height          =   1
          BorderColor     =   12632256
       EndProperty
-      ItemType35      =   6
-      BeginProperty Item35 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType33      =   6
+      BeginProperty Item33 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Shape1"
          Object.Left            =   200
@@ -1023,14 +982,52 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Width           =   10600
          Object.Height          =   1
       EndProperty
-      ItemType36      =   6
-      BeginProperty Item36 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType34      =   6
+      BeginProperty Item34 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Shape3"
          Object.Left            =   200
          Object.Top             =   2280
          Object.Width           =   10600
          Object.Height          =   1
+      EndProperty
+      ItemType35      =   3
+      BeginProperty Item35 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblFechaPagoFceDesde"
+         Object.Left            =   5460
+         Object.Top             =   1755
+         Object.Width           =   2340
+         Object.Height          =   270
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "Período Facturado Desde:"
+      EndProperty
+      ItemType36      =   3
+      BeginProperty Item36 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "lblFechaPagoFceHasta"
+         Object.Left            =   9015
+         Object.Top             =   1755
+         Object.Width           =   840
+         Object.Height          =   270
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "Hasta"
       EndProperty
    EndProperty
    SectionCode2    =   4
@@ -1345,7 +1342,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Height          =   840
          Object.Visible         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "3 of 9 Barcode"
+            Name            =   "Arial"
             Size            =   32.25
             Charset         =   0
             Weight          =   400

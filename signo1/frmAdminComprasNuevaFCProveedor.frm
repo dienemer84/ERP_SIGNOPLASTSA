@@ -475,7 +475,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   63045633
+      Format          =   63111169
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1027,10 +1027,10 @@ Private Sub btnGuardar_Click()
         Err.Raise 203
     End If
     
-    ' Si se elije la letra B y hay cargado alicuotas
-    If Me.cboTiposFactura.ListIndex = 1 And Me.grilla_alicuotas.rowcount > 0 Then
-        Err.Raise 301
-    End If
+'''    ' Si se elije la letra B y hay cargado alicuotas
+''''    If Me.cboTiposFactura.ListIndex = 1 Then
+''''        MsgBox "Recuerdo que si el comprobante es letra B no debe tener alicuotas discriminadas", vbCritical, "Error"
+''''    End If
 
     'If MsgBox("¿Está seguro de guardar la factura?", vbYesNo, "Confirmación") = vbYes Then
     
@@ -1119,8 +1119,6 @@ err1:
         MsgBox "Debe ingresar montos válidos!", vbCritical, "Error"
     ElseIf Err.Number = 203 Then
         MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.total, vbCritical, "Error"
-    ElseIf Err.Number = 301 Then
-        MsgBox "Si el comprobante es letra B no debe tener alicuotas discriminadas", vbCritical, "Error"
     ElseIf Err.Number = 300 Or nuevoproveedor Then
         vFactura.Proveedor = Nothing
         nuevoproveedor = False
@@ -1215,8 +1213,8 @@ Private Sub Form_Load()
         Me.btnGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.frame2.Enabled = False
-        Me.frame3.Enabled = False
+        Me.Frame2.Enabled = False
+        Me.Frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
         Me.txtImpuestos.Enabled = False

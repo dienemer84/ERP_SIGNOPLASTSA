@@ -318,6 +318,7 @@ err1:
     CambiarEstadoFacturado = False
 End Function
 
+
 Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
     Dim deta As remitoDetalle
     Dim cf As Long
@@ -346,8 +347,6 @@ Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
         Else
             ct = ct - cnf
 
-
-
             If cf = 0 And ct > 0 Then
                 AnalizarEstadoFacturado = RemitoNoFacturado
             ElseIf cf + cnf = ct + cnf Then
@@ -356,6 +355,8 @@ Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
                 AnalizarEstadoFacturado = RemitoFacturadoParcial
             End If
         End If
+        
+        MsgBox "Se ajustó el estado de los items de los remitos que estaban dentro del comprobante vinculado"
     End If
 End Function
 
@@ -389,7 +390,7 @@ Public Function Anular(Remito As Remito) As Boolean
     Set Remito.Detalles = DAORemitoSDetalle.FindAllByRemito(Remito.Id)
 
     For Each detalle In Remito.Detalles
-        canti = detalle.cantidad    'FIX 08-02-2010 | para que reste la cantidad entregada
+        canti = detalle.Cantidad    'FIX 08-02-2010 | para que reste la cantidad entregada
 
         'resto la cantidad entregada
         If detalle.Origen = 1 Then
@@ -465,12 +466,12 @@ Public Function aprobar(Remito As Remito) As Boolean
 
         Else
             Set deta.DetallePedido = DAODetalleOrdenTrabajo.FindById(deta.DetallePedido.Id, True, True, False)
-            If (deta.DetallePedido.Cantidad_Fabricada + deta.DetallePedido.ReservaStock) - deta.DetallePedido.Cantidad_Entregada >= deta.cantidad Then
+            If (deta.DetallePedido.Cantidad_Fabricada + deta.DetallePedido.ReservaStock) - deta.DetallePedido.Cantidad_Entregada >= deta.Cantidad Then
             Else
                 segui = False
             End If
 
-            If (deta.DetallePedido.CantidadPedida - deta.DetallePedido.CantidadConsumida) < deta.cantidad Then
+            If (deta.DetallePedido.CantidadPedida - deta.DetallePedido.CantidadConsumida) < deta.Cantidad Then
                 cantok = False
                 Items = Items & " " & deta.DetallePedido.item
             End If
@@ -516,13 +517,13 @@ Public Function aprobar(Remito As Remito) As Boolean
             'antes de aprobar tengo q volver a validar, por un tema de concurrencia.
 
 
-            If deta.DetallePedido.CantidadEntregada + deta.cantidad > deta.DetallePedido.CantidadPedida Then
+            If deta.DetallePedido.CantidadEntregada + deta.Cantidad > deta.DetallePedido.CantidadPedida Then
                 MsgBox "No puede entregar más de lo que tiene pedido!, por favor revea el remito!", vbInformation
                 Exit Function
 
             Else
-                conectar.execute "update detalles_pedidos set cantidad_entregada=cantidad_entregada+" & deta.cantidad & " Where idPedido=" & deta.idpedido & " and id=" & deta.idDetallePedido
-                DAODetalleOrdenTrabajo.SaveCantidad deta.idDetallePedido, deta.cantidad, CantidadEntregada_, 0, Remito.Id, 0, 0, 0
+                conectar.execute "update detalles_pedidos set cantidad_entregada=cantidad_entregada+" & deta.Cantidad & " Where idPedido=" & deta.idpedido & " and id=" & deta.idDetallePedido
+                DAODetalleOrdenTrabajo.SaveCantidad deta.idDetallePedido, deta.Cantidad, CantidadEntregada_, 0, Remito.Id, 0, 0, 0
                 If Ot.Anticipo > 0 And Ot.AnticipoFacturado Then
                     deta.Facturado = True
                     deta.facturable = True
@@ -532,7 +533,7 @@ Public Function aprobar(Remito As Remito) As Boolean
             End If
 
         ElseIf deta.Origen = OrigenRemitooe Then
-            conectar.execute "update detallesPedidosEntregas set entregados=entregados+" & deta.cantidad & " Where id=" & deta.idDetallePedido
+            conectar.execute "update detallesPedidosEntregas set entregados=entregados+" & deta.Cantidad & " Where id=" & deta.idDetallePedido
         End If
 
 
@@ -578,7 +579,7 @@ Public Function ImprimirControlCarga(rto As Remito) As Boolean
     Dim deta As remitoDetalle
     For Each deta In rto.Detalles
         r.AddNew
-        r!cantidad = IIf(deta.cantidad = 0, "", funciones.FormatearDecimales(deta.cantidad))
+        r!Cantidad = IIf(deta.Cantidad = 0, "", funciones.FormatearDecimales(deta.Cantidad))
         r!Origen = deta.VerOrigen
         r!observaciones = deta.observaciones
         If deta.Origen = OrigenRemitoConcepto Then
@@ -797,7 +798,7 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
     While Not rs.EOF
         ci = ci + 1
         Printer.Print Tab(6);
-        Printer.Print Format(Math.Round(rs!cantidad, 2), "0.00");
+        Printer.Print Format(Math.Round(rs!Cantidad, 2), "0.00");
         Printer.Print Tab(15);
         Dim it
         Dim ite

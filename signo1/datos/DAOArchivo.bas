@@ -79,6 +79,8 @@ Public Function FindAll(ByVal Origen As OrigenArchivos, Optional ByRef filter As
         q = q & " AND " & filter
 
     End If
+    
+    q = q & " ORDER BY arch.id DESC"
 
 
     Set rs = conectar.RSFactory(q)

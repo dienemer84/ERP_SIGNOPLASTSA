@@ -76,7 +76,6 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Height          =   285
          Left            =   1080
          TabIndex        =   28
-         Text            =   "0287"
          Top             =   2805
          Width           =   1695
       End
@@ -692,11 +691,14 @@ Private Sub listaRemitos()
 
     If Not IsEmpty(Me.txtFacturas) And IsNumeric(txtFacturas) Then
         filtro = filtro & "  and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_NUMERO & "=" & Me.txtFacturas
-    End If
-
-    If remitosId.count > 0 Then
+        
+       If remitosId.count > 0 Then
         Set facturasRemitos = DAOFactura.FindAllByRemitos(remitosId, Me.txtFacturas)
     End If
+    
+    End If
+
+
 
 
     Me.grilla.ItemCount = 0

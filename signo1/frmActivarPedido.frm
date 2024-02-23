@@ -47,6 +47,7 @@ Begin VB.Form frmActivarPedido
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      Enabled         =   0   'False
       UseVisualStyle  =   -1  'True
    End
    Begin VB.CommandButton Command2 
@@ -758,7 +759,7 @@ End Sub
 
 Private Sub Command11_Click()
     On Error GoTo er1
-    frmPrincipal.CD.ShowPrinter
+    frmPrincipal.cd.ShowPrinter
     Dim rec As ReportRecord
     Dim tmpDetalle As DetalleOrdenTrabajo
     Dim l As Long

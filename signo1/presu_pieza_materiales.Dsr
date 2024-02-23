@@ -6,7 +6,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} materiales
    ClientTop       =   540
    ClientWidth     =   19080
    _ExtentX        =   33655
-   _ExtentY        =   26194
+   _ExtentY        =   24739
    _Version        =   393216
    _DesignerVersion=   100684101
    ReportWidth     =   14205
@@ -443,8 +443,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} materiales
       BeginProperty Item3 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto1"
-         Object.Top             =   15
-         Object.Width           =   1005
+         Object.Left            =   150
+         Object.Top             =   30
+         Object.Width           =   1155
          Object.Height          =   330
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -497,8 +498,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} materiales
       BeginProperty Item5 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto7"
-         Object.Left            =   1035
-         Object.Width           =   825
+         Object.Left            =   1455
+         Object.Width           =   600
          Object.Height          =   330
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -524,8 +525,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} materiales
       BeginProperty Item6 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto8"
-         Object.Left            =   1875
-         Object.Width           =   705
+         Object.Left            =   2190
+         Object.Top             =   15
+         Object.Width           =   465
          Object.Height          =   330
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"

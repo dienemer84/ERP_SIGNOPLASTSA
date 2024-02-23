@@ -160,19 +160,20 @@ Begin VB.Form frmArchivos2
          IntProp1        =   0
          ColumnsCount    =   5
          Column(1)       =   "frmArchivos2.frx":000C
-         Column(2)       =   "frmArchivos2.frx":0130
-         Column(3)       =   "frmArchivos2.frx":0224
-         Column(4)       =   "frmArchivos2.frx":0348
-         Column(5)       =   "frmArchivos2.frx":0480
-         FormatStylesCount=   6
-         FormatStyle(1)  =   "frmArchivos2.frx":05BC
-         FormatStyle(2)  =   "frmArchivos2.frx":06E4
-         FormatStyle(3)  =   "frmArchivos2.frx":0794
-         FormatStyle(4)  =   "frmArchivos2.frx":0848
-         FormatStyle(5)  =   "frmArchivos2.frx":0920
-         FormatStyle(6)  =   "frmArchivos2.frx":09D8
+         Column(2)       =   "frmArchivos2.frx":015C
+         Column(3)       =   "frmArchivos2.frx":02A4
+         Column(4)       =   "frmArchivos2.frx":040C
+         Column(5)       =   "frmArchivos2.frx":0544
+         FormatStylesCount=   7
+         FormatStyle(1)  =   "frmArchivos2.frx":06D4
+         FormatStyle(2)  =   "frmArchivos2.frx":07FC
+         FormatStyle(3)  =   "frmArchivos2.frx":08AC
+         FormatStyle(4)  =   "frmArchivos2.frx":0960
+         FormatStyle(5)  =   "frmArchivos2.frx":0A38
+         FormatStyle(6)  =   "frmArchivos2.frx":0AF0
+         FormatStyle(7)  =   "frmArchivos2.frx":0BD0
          ImageCount      =   0
-         PrinterProperties=   "frmArchivos2.frx":0AB8
+         PrinterProperties=   "frmArchivos2.frx":0C64
       End
    End
    Begin VB.Image imgPreview 

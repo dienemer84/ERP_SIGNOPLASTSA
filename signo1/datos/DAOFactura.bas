@@ -21,8 +21,6 @@ End Function
 
 
 Public Function FindAllByEstadoSaldoAndCliente(estado As TipoSaldadoFactura, Estado1 As EstadoFacturaCliente, Optional cliente_id As Long = -1) As Collection
-
-
     Dim filtro As String
 
     filtro = "saldada=" & estado & " and AdminFacturas.estado =" & Estado1
@@ -31,9 +29,7 @@ Public Function FindAllByEstadoSaldoAndCliente(estado As TipoSaldadoFactura, Est
 
     Set FindAllByEstadoSaldoAndCliente = DAOFactura.FindAll(filtro)
 
-
 End Function
-
 
 
 Public Function FindAllNoSaldadasNiVencidas(desde As Date, hasta As Date, Optional cliente_id As Long = 0) As Collection
@@ -50,9 +46,11 @@ If cliente_id <> 0 Then
     Set FindAllNoSaldadasNiVencidas = FindAll(F)
 End Function
 
+
 Public Function FindAllNoSaldadasTotalByCliente(cliente_id As Long, Optional includeDetalles As Boolean = False, Optional includeEntregasWithDetalles As Boolean = False) As Collection
     Set FindAllNoSaldadasTotalByCliente = FindAll("AdminFacturas.idCliente = " & cliente_id & " AND AdminFacturas.estado <> " & EstadoFacturaCliente.Anulada & " AND AdminFacturas.saldada IN (" & TipoSaldadoFactura.NoSaldada & ", " & TipoSaldadoFactura.SaldadoParcial & "," & TipoSaldadoFactura.notaCreditoParcial & ")", includeDetalles, includeEntregasWithDetalles)
 End Function
+
 
 Public Function FindAll(Optional ByVal filter As String = "1 = 1", Optional includeDetalles As Boolean = False, Optional includeEntregasWithDetalles As Boolean = False, Optional Orden As String = vbNullString) As Collection
 
@@ -68,14 +66,9 @@ If includeDetalles Then
 
         q = q & ",CAST((SELECT   COUNT(DISTINCT r.numero) AS cantidad_remitos FROM AdminFacturasDetalleAplicacionRemitos a " _
             & "INNER JOIN entregas e ON e.id=a.idRemitoDetalle INNER JOIN remitos r ON e.Remito = r.id  WHERE a.idFacturaDetalle= AdminFacturasDetalleNueva.id) AS CHAR) as cantidad_remitos_aplicados "
-
-
-
     End If
 
     q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(idRecibo),'-') FROM AdminRecibosDetalleFacturas INNER JOIN AdminRecibos ON AdminRecibosDetalleFacturas.idRecibo = AdminRecibos.id WHERE AdminRecibosDetalleFacturas.idFactura = AdminFacturas.id),NCHAR) AS nro_recibo "
-
-
 
     q = q & " From AdminFacturas" _
         & " LEFT JOIN AdminConfigFacturasTiposDiscriminado acftd      ON (       acftd.id = AdminFacturas.id_tipo_discriminado    ) " _
@@ -119,8 +112,6 @@ If includeDetalles Then
         Set F = Map(rs, idx, "AdminFacturas", "clientes", "AdminConfigMonedas", "iva", "acftd", "ivaFac", "acft", "pv", "fnc")
 
         F.RecibosAplicadosId = rs!nro_recibo
-        
-        
 
         If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
             Set F = col.item(CStr(F.Id))
@@ -148,7 +139,6 @@ If includeDetalles Then
             End If
         End If
         
-'        If rs!NumeroComprobanteNC <> "" Then
             Dim TipoComprobanteNC As Variant
             Dim idNC As Variant
             Dim Id As Variant
@@ -156,37 +146,11 @@ If includeDetalles Then
             Dim FechaEmisionComprobanteNC As Variant
             Dim MontoTotalComprobanteNC As Variant
             
-'            TipoComprobanteNC = rs!TipoComprobanteNC
-'            If Not IsNull(TipoComprobanteNC) Then
-'                F.CbteAsociadoTipo = TipoComprobanteNC
-'            End If
-            
-            
-'            idNC = rs!idNC
-'            If Not IsNull(NumeroComprobanteNC) Then
-'                F.CbteAsociadoID = idNC
-'            End If
-            
             Id = rs!Id
             If Not IsNull(Id) Then
                 F.idAsociacion = Id
             End If
             
-'            NumeroComprobanteNC = rs!NumeroComprobanteNC
-'            If Not IsNull(NumeroComprobanteNC) Then
-'                F.CbteAsociado = NumeroComprobanteNC
-'            End If
-            
-'            FechaEmisionComprobanteNC = rs!FechaEmisionComprobanteNC
-'            If Not IsNull(NumeroComprobanteNC) Then
-'                F.CbteAsociadoFecha = FechaEmisionComprobanteNC
-'            End If
-'
-'            MontoTotalComprobanteNC = rs!MontoTotalComprobanteNC
-'            If Not IsNull(NumeroComprobanteNC) Then
-'                F.CbteAsociadoMonto = MontoTotalComprobanteNC
-'            End If
-'        End If
         rs.MoveNext
 
     Wend
@@ -303,13 +267,12 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.IdMonedaAjuste = GetValue(rs, indice, tabla, "id_moneda_ajuste")
         F.TipoCambioAjuste = GetValue(rs, indice, tabla, "tipo_cambio_ajuste")
         
-
-
-
     End If
 
     Set Map = F
 End Function
+
+
 Public Function Save(Factura As Factura, Optional Cascade As Boolean = False) As Boolean
     On Error GoTo err1
 
@@ -324,6 +287,7 @@ err1:
     conectar.RollBackTransaction
     Save = False
 End Function
+
 
 Public Function hacktipofactura(idIVA, Tipo) As Long
 '''''''''''''''''''''''''''''''''''''' HACK
@@ -345,8 +309,6 @@ Public Function RechazoAfip(F As Factura)
         Err.Raise 1235, "recha", "La anulación corresponde a facturas de crédito"
     End If
 
-
-
     Dim q As String
     q = "Update sp.AdminFacturas  SET motivo_anulacion_afip='motivo_anulacion_afip',anulacion_afip='anulacion_afip' where id='id'"
 
@@ -361,6 +323,7 @@ Public Function RechazoAfip(F As Factura)
 err1:
     Err.Raise Err.Number, Err.Description
 End Function
+
 
 Public Function ActualizarCAE(F As Factura)
     On Error GoTo err1
@@ -425,19 +388,6 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         
         q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion))
         
-
-'        If F.FechaAprobacion = "12:00:00 a.m." Then
-'            q = Replace$(q, "'FechaAprobacion'", "'0000-00-00 00:00:00'")
-'        Else
-'            q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion))
-'        End If
-        
-'        If F.FechaAprobacion = "12:00:00 a.m." Then
-'            q = Replace$(q, "'FechaAprobacion'", "NULL")
-'        Else
-'            q = Replace$(q, "'FechaAprobacion'", conectar.Escape(F.FechaAprobacion) & "'")
-'        End If
-
     Else
     
         esNueva = True
@@ -1777,6 +1727,7 @@ er12:
     conectar.RollBackTransaction
 End Function
 
+
 Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
     Dim esreto As EstadoRemitoFacturado
     Dim rs As Recordset
@@ -1812,21 +1763,11 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
     Dim saldadoTotal As Boolean
     saldadoTotal = False
 
-    '    MsgBox ("Importe total de la FC " & fc.numero & ": " & fc.moneda.NombreCorto & " " & MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.Id, nc.moneda.Id)) & vbNewLine & "" _
-         '             & "Importe total de la NC " & nc.numero & ": " & nc.moneda.NombreCorto & " " & (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura))
-    '
-
     If MonedaConverter.Convertir(fc.TotalEstatico.total, fc.moneda.Id, nc.moneda.Id) <> (nc.TotalEstatico.total + DAOFactura.MontoTotalAplicadoNCFC(idFactura)) Then
-
-        '        MsgBox ("Importe total de la FC " & fc.numero & ": " & fc.moneda.NombreCorto & " " & MonedaConverter.Convertir(fc.TotalEstatico.Total, fc.moneda.Id, nc.moneda.Id)) & vbNewLine & "" _
-                 '             & "Importe total de la NC " & nc.numero & ": " & nc.moneda.NombreCorto & " " & (nc.TotalEstatico.Total + DAOFactura.MontoTotalAplicadoNCFC(idFactura))
-        '
         If MsgBox(("Importe total de la FC " & fc.numero & ": " & fc.moneda.NombreCorto & " " & MonedaConverter.Convertir(fc.TotalEstatico.total, fc.moneda.Id, nc.moneda.Id)) & vbNewLine & "" _
                 & "Importe total de la NC " & nc.numero & ": " & nc.moneda.NombreCorto & " " & (nc.TotalEstatico.total + DAOFactura.MontoTotalAplicadoNCFC(idFactura)) & vbNewLine & "" _
                 & "El importe total de la NC a aplicar no es del mismo que el de la FC!" & vbNewLine & "" _
                 & "Se realizará una cancelación parcial de la FC." & vbNewLine & "¿Desea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
-
-
             saldadoTotal = False
             ok = True
 
@@ -1839,10 +1780,6 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
     End If
 
     If ok Then
-        ' If MsgBox("La NC a aplicar debe ser del mismo monto que la FC!" & vbNewLine & "¿Desea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbNo Then
-        '           GoTo er12
-        '    End If
-
         If saldadoTotal Then
             nc.estado = CanceladaNC
             nc.Saldado = TipoSaldadoFactura.NotaCredito
@@ -1851,13 +1788,12 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
             nc.estado = CanceladaNCParcial
         End If
 
-
-
         If Not conectar.execute("update AdminFacturas set cancelada=" & idNC & " where id=" & idFactura) Then GoTo er12
 
         If Not conectar.execute("INSERT INTO AdminFacturas_NC (idFactura, idNC) VALUES (" & idFactura & "," & idNC & ")") Then GoTo er12
 
         If Not conectar.execute("update AdminFacturas set cancelada=" & idFactura & " where id=" & idNC) Then GoTo er12
+        
         If Not conectar.execute("update AdminFacturas set cancelada=" & idNC & " where id=" & idFactura) Then GoTo er12
 
 
@@ -1881,11 +1817,9 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
 
             Dim ide As Long
             Dim reto As Long
+            
             While Not rs.EOF
                 ide = rs!idEntrega
-
-
-
                 If ide > 0 Then
                     Set rs_rto = conectar.RSFactory("select remito from entregas where id=" & ide)
 
@@ -1897,7 +1831,7 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
                         esreto = DAORemitoS.AnalizarEstadoFacturado(reto)
 
                         If Not conectar.execute("update remitos set estadoFacturado=" & esreto & " where id=" & reto) Then GoTo er12
-
+                        
                     Else
                         GoTo er12
                     End If
@@ -1908,18 +1842,11 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
             Wend
             '#197
             Dim msg1 As String
-            'msg1 = conectar.Escape(fc.observaciones & " / CANCELADA POR " & nc.GetShortDescription(False, True))
-            ' LenB(fc.observaciones) = 0 Then msg1 = conectar.Escape(" / CANCELADA POR " & nc.GetShortDescription(False, True))
 
             msg1 = conectar.Escape("APLICADA DE " & nc.GetShortDescription(False, True))
-            'msg1 = conectar.Escape("APLICADA DE COMPROB. ID (" & nc.Id & ")")
 
             Dim msg2 As String
-            'MSG2 = conectar.Escape(nc.observaciones & " / CANCELA A " & fc.GetShortDescription(False, True))
-            ' If LenB(fc.observaciones) = 0 Then MSG2 = conectar.Escape(" / CANCELA A " & fc.GetShortDescription(False, True))
-
             msg2 = conectar.Escape("APLICADA A " & fc.GetShortDescription(False, True))
-            'msg2 = conectar.Escape("APLICADA A COMPROB. ID (" & fc.Id & ")")
 
             If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & msg1 & " where id=" & fc.Id) Then GoTo er12
             If Not conectar.execute("update AdminFacturas set saldada=" & nc.Saldado & ", estado=" & nc.estado & ", observaciones=" & msg2 & " where id=" & nc.Id) Then GoTo er12
@@ -2163,30 +2090,40 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         Else
             c.caption = "/ " & F.CantDiasPago & " días"
         End If
+        
+        
+        If F.FechaVtoDesde = "12:00:00 a.m. " Then
+            Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
+                c.Visible = False
+                c.caption = ""
+            Set c = seccion.Controls.item("lblFechaPagoFceDesde")
+                c.Visible = False
+        Else
+            Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
+                c.Visible = F.esCredito
+                c.caption = Format(F.FechaVtoDesde, "dd/mm/yyyy")
+            Set c = seccion.Controls.item("lblFechaPagoFceDesde")
+                c.Visible = F.esCredito
+        End If
 
-
-        Set c = seccion.Controls.item("lblFechaPagoFceDesde")
-        c.Visible = F.esCredito
-
-        Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
-        c.Visible = F.esCredito
-        c.caption = Format(F.FechaVtoDesde, "dd/mm/yyyy")
-
-
-        Set c = seccion.Controls.item("lblFechaPagoFceHasta")
-        c.Visible = F.esCredito
-
-        Set c = seccion.Controls.item("FechaPagoFceHastaDato")
-        c.Visible = F.esCredito
-        c.caption = Format(F.FechaVtoHasta, "dd/mm/yyyy")
+        If F.FechaVtoHasta = "12:00:00 a.m. " Then
+            Set c = seccion.Controls.item("FechaPagoFceHastaDato")
+                c.Visible = False
+                c.caption = ""
+            Set c = seccion.Controls.item("lblFechaPagoFceHasta")
+                c.Visible = False
+        Else
+            Set c = seccion.Controls.item("FechaPagoFceHastaDato")
+                c.Visible = F.esCredito
+                c.caption = Format(F.FechaVtoHasta, "dd/mm/yyyy")
+            Set c = seccion.Controls.item("lblFechaPagoFceHasta")
+                c.Visible = F.esCredito
+        End If
 
 
         Set c = seccion.Controls.item("lblConceptoTexto")
         'fce_nemer_09062020
         c.caption = F.MostrarConcepto
-
-
-
 
         'fce_nemer_10062020_#113
         'Set c = seccion.Controls.item("lblFechaServFceDesde")
@@ -2309,8 +2246,8 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(F.totalPercepciones)
         seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.total)
 
-        QRHelper.generar F
-        Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.Id & ".bmp")
+''        QRHelper.generar F
+''        Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.Id & ".bmp")
 
 
         'rptFacturaElectronica.ReportWidth = Largo
