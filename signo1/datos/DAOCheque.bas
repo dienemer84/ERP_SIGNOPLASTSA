@@ -126,7 +126,7 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef OrdenesP As String = vbNullString, _
                     Optional ByRef FacturasP As String = vbNullString, _
                     Optional ByRef proveedores As String = vbNullString, _
-                    Optional ByRef Recibos As String = vbNullString _
+                    Optional ByRef rec As String = vbNullString _
                     ) As cheque
 
     Dim tmpCheque As cheque
@@ -153,7 +153,7 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
 '        tmpCheque.OrdenPagoFecha = GetValue(rs, fieldsIndex, ordenes_pago, "fecha")
         
-        tmpCheque.Recibo = GetValue(rs, fieldsIndex, Recibos, "idRecibo")
+'        tmpCheque.Recibo = GetValue(rs, fieldsIndex, "AdminRecibosCheques", "idRecibo")
         
         If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
         If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)

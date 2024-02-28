@@ -206,6 +206,9 @@ Public Enum tipoDocumentoContable
 
     'e5re52- SE AGREGA ESTE TIPO DE COMPROBANTE NUEVO
     CompraBienesUsados = 5
+    
+    '26.02.2024
+    Proforma = 6
 
 End Enum
 

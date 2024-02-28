@@ -7,9 +7,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
    ClientWidth     =   19080
    StartUpPosition =   3  'Windows Default
    _ExtentX        =   33655
-   _ExtentY        =   26194
+   _ExtentY        =   22913
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   11055
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
@@ -249,7 +249,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
          Object.Height          =   465
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
-            Size            =   18
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -257,7 +257,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} gruilla_tiempos
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "DETALLE"
-         Alignment       =   2
       EndProperty
       ItemType14      =   3
       BeginProperty Item14 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 

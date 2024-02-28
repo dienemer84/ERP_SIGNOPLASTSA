@@ -47,7 +47,6 @@ Begin VB.Form frmActivarPedido
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Enabled         =   0   'False
       UseVisualStyle  =   -1  'True
    End
    Begin VB.CommandButton Command2 
@@ -425,6 +424,9 @@ Private Sub btnDestildarTodas_Click()
     For i = 1 To lstSectores.ListItems.count
         lstSectores.ListItems(i).Checked = False ' Desmarca el elemento actual
     Next i
+    
+    Set sectoresInvolucrados = Nothing
+    
 End Sub
 
 Private Sub btnTareasSector_Click()

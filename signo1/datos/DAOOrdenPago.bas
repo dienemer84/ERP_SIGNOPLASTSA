@@ -205,12 +205,10 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
       & " LEFT JOIN AdminConfigMonedas moncuentabancaria ON (moncuentabancaria.id = AdminConfigCuentas.moneda_id)" _
       & " LEFT JOIN AdminConfigMonedas moncheque ON (moncheque.id = Cheques.id_moneda)" _
       & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id " _
+      & " LEFT JOIN AdminRecibosCheques rec ON rec.idCheque= Cheques.id" _
       & " LEFT JOIN AdminConfigBancos ON (AdminConfigBancos.id = AdminConfigCuentas.idBanco)"
     q = q & " LEFT JOIN AdminConfigBancos bancocheque  ON (bancocheque.id = Cheques.id_banco)" _
       & " LEFT JOIN proveedores ON (proveedores.id = AdminComprasFacturasProveedores.id_proveedor)" _
-       ' & " LEFT JOIN certificados_retencion ON (certificados_retencion.id_orden_pago = ordenes_pago.id)" _
-       ' & " LEFT JOIN retenciones ON (certificados_retencion.id_retencion = retenciones.id)"
-
 
     q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = ordenes_pago.id " _
       & " LEFT JOIN retenciones r ON r.id = opr.id_retencion "
@@ -248,8 +246,10 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
         End If
         
 
-        Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco")
-        If IsSomething(che) Then
+       Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco", "rec")
+        
+
+If IsSomething(che) Then
             If che.Propio Then
                 If Not funciones.BuscarEnColeccion(op.ChequesPropios, CStr(che.Id)) Then
                     op.ChequesPropios.Add che, CStr(che.Id)

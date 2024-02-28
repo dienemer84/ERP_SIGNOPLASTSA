@@ -6,9 +6,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
    ClientTop       =   450
    ClientWidth     =   28680
    _ExtentX        =   50588
-   _ExtentY        =   25162
+   _ExtentY        =   24686
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   10755
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
@@ -224,7 +224,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Object.Height          =   465
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
-            Size            =   18
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -232,7 +232,6 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "DETALLE"
-         Alignment       =   2
       EndProperty
    EndProperty
    SectionCode1    =   2
@@ -627,7 +626,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Object.Width           =   1800
          Object.Height          =   525
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "IDAutomationHC39M"
+            Name            =   "Arial"
             Size            =   8.25
             Charset         =   0
             Weight          =   400
@@ -712,7 +711,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} informeOT
          Object.Width           =   1245
          Object.Height          =   840
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "IDAutomationHC39M"
+            Name            =   "Arial"
             Size            =   12
             Charset         =   0
             Weight          =   400

@@ -352,6 +352,22 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frm6001.VerInfoAdministracion = True
         frm6001.Show
 
+
+
+      Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__CREAR_PROFORMA:
+
+        Dim f3245 As New frmAdminFacturasProformaEdicion
+'        f3245.NuevoTipoDocumento = tipoDocumentoContable.Factura
+        f3245.Show
+        
+        
+       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURAS_PROFORMA:
+
+        Dim f3246 As New frmAdminFacturasProformaEmitidas
+'        f3245.NuevoTipoDocumento = tipoDocumentoContable.Factura
+        f3246.Show
+        
+
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC:
 
         Dim f324 As New frmAdminFacturasEdicion
@@ -371,14 +387,12 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         f32412.Show
 
 
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ANTICIPO:
 
         Dim f324121 As New frmAdminFacturasEdicion
         f324121.NuevoTipoDocumento = tipoDocumentoContable.Factura
         f324121.EsAnticipo = True
         f324121.Show
-
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__FACTURAS:
 
@@ -582,7 +596,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
     Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO:
         Dim ff111 As New frmVentasClienteNuevo
-        ff111.cliente = Nothing
+        ff111.Cliente = Nothing
         ff111.Show
 
     Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO: frmVentasClientesLista.Show
@@ -1039,6 +1053,10 @@ Private Sub CreateRibbonBar()
 
     AddButton ribbonGroup, "Remitos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS, Permisos.PlanRemitosConsultas
 
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Proformas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_PROFORMA, Permisos.AdminFacturaControl, , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Crear Proforma", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__CREAR_PROFORMA, Permisos.AdminFacturaControl, , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Listado de Proformas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURAS_PROFORMA, Permisos.AdminFacturaControl, , , cmdBarCtrl
+    
     Set cmdBarCtrl = AddButton(ribbonGroup, "Nueva", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA, Permisos.AdminFacturaControl, , xtpControlButtonPopup)
     AddButton ribbonGroup, "Factura", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC, Permisos.AdminFacturaControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Nota de Débito", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ND, Permisos.AdminFacturaControl, , , cmdBarCtrl
