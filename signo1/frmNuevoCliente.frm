@@ -509,7 +509,7 @@ Attribute VB_Exposed = False
 Dim vCliente As clsCliente
 Dim strsql As String
 
-Public Property Let cliente(nvalue As clsCliente)
+Public Property Let Cliente(nvalue As clsCliente)
     Set vCliente = nvalue
 End Property
 
@@ -554,27 +554,27 @@ Private Sub Guardar()
                 MsgBox aa, vbCritical, "Error"
             Else
 
-                Dim cliente As New clsCliente
+                Dim Cliente As New clsCliente
 
                 '31.10.22- SE AGREGA ESTA LINEA PARA QUE TOME EL VALOR DEL IVA
-                Set cliente.TipoIVA = DAOTipoIva.GetById(ivan)
+                Set Cliente.TipoIVA = DAOTipoIva.GetById(ivan)
 
-                cliente.Cuit = Cuit
-                cliente.Domicilio = Domicilio
-                cliente.email = email
-                cliente.estado = EstadoCliente.activo
-                cliente.Fax = Fax
-                cliente.FP = FP
-                cliente.PasswordSistema = 0
-                cliente.razon = razon
-                cliente.FormaPago = FP_detalle
-                cliente.telefono = telefono
-                cliente.ValidoRemitoFactura = valido
-                cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
-                cliente.CodigoPostal = CodigoPOS
+                Cliente.Cuit = Cuit
+                Cliente.Domicilio = Domicilio
+                Cliente.email = email
+                Cliente.estado = EstadoCliente.activo
+                Cliente.Fax = Fax
+                Cliente.FP = FP
+                Cliente.PasswordSistema = 0
+                Cliente.razon = razon
+                Cliente.FormaPago = FP_detalle
+                Cliente.telefono = telefono
+                Cliente.ValidoRemitoFactura = valido
+                Cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
+                Cliente.CodigoPostal = CodigoPOS
 
-                Set cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-                Set cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+                Set Cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+                Set Cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
 
                 Dim F As String
                 F = "c.cuit = " & Escape(Text1(7))
@@ -587,11 +587,11 @@ Private Sub Guardar()
                     MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
                 Else
 
-                    If DAOCliente.crear(cliente) Then
+                    If DAOCliente.crear(Cliente) Then
                         MsgBox "Alta Exitosa!", vbInformation, "Información"
 
                         Set EVENTO = New clsEventoObserver
-                        Set EVENTO.Elemento = cliente
+                        Set EVENTO.Elemento = Cliente
                         EVENTO.EVENTO = agregar_
                         Set EVENTO.Originador = Me
                         Channel.Notificar EVENTO, Clientes_
@@ -632,7 +632,7 @@ Private Sub Guardar()
 
 
                 Set EVENTO = New clsEventoObserver
-                Set EVENTO.Elemento = cliente
+                Set EVENTO.Elemento = Cliente
                 EVENTO.EVENTO = modificar_
                 Set EVENTO.Originador = Me
                 Channel.Notificar EVENTO, Clientes_

@@ -32,7 +32,6 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
       & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
       & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
       & " LEFT JOIN ordenes_pago op ON op.id= cheq.orden_pago_origen" _
-      & " LEFT JOIN AdminRecibosCheques rec ON rec.idCheque= cheq.id" _
       & " WHERE 1 = 1 "
 
     If LenB(filter) > 0 Then

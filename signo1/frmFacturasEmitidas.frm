@@ -1098,7 +1098,7 @@ Private Sub aplicarNCaFC_Click()
         Set Selecciones.Factura = Nothing
         Dim F As New frmAdminFacturasNCElegirFC
 
-        F.idCliente = Factura.cliente.Id
+        F.idCliente = Factura.Cliente.Id
         F.TiposDocs.Add tipoDocumentoContable.Factura
 
         If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
@@ -1134,7 +1134,7 @@ Private Sub aplicarNDaFC_Click()
         Set Selecciones.Factura = Nothing
         Dim F As New frmAdminFacturasNCElegirFC
 
-        F.idCliente = Factura.cliente.Id
+        F.idCliente = Factura.Cliente.Id
         F.TiposDocs.Add tipoDocumentoContable.Factura
         
         If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
@@ -1415,8 +1415,8 @@ Private Sub btnExportar_Click()
             xlWorksheet.Cells(idx, 19).value = 0
         End If
 
-        xlWorksheet.Cells(idx, 20).value = fac.cliente.razon
-        xlWorksheet.Cells(idx, 21).value = fac.cliente.Cuit
+        xlWorksheet.Cells(idx, 20).value = fac.Cliente.razon
+        xlWorksheet.Cells(idx, 21).value = fac.Cliente.Cuit
         xlWorksheet.Cells(idx, 22).value = fac.observaciones
         xlWorksheet.Cells(idx, 23).value = fac.observaciones_cancela
         xlWorksheet.Cells(idx, 24).value = fac.RecibosAplicadosId
@@ -2238,7 +2238,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByV
     Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.total * Factura.CambioAPatron)), "$", "")
 
     Values(10) = Factura.OrdenCompra
-    Values(11) = Factura.cliente.razon
+    Values(11) = Factura.Cliente.razon
 
     Values(12) = enums.EnumEstadoDocumentoContable(Factura.estado)
 

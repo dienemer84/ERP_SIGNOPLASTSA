@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Public esCredito As Boolean
-Public id As Long
+Public Id As Long
 Public Cancelada As Long
 Public FechaAprobacion As Date
 Public MotivoNC As Integer
@@ -21,7 +21,7 @@ Public Historial As New Collection
 Public origenFacturado As origenFacturado
 Public FechaPropuestaPago As Date    'propuesta
 Public numero As String
-Public cliente As clsCliente
+Public Cliente As clsCliente
 Public moneda As clsMoneda
 Public CambioAPatron As Double
 Public AprobadaAFIP As Boolean
@@ -140,8 +140,8 @@ End Property
 
 Public Property Get OTsFacturadasAnticipo() As Collection
     If Not IsSomething(m_ots_facturadas_anticipo) Then
-        If Me.id <> 0 Then
-            Set m_ots_facturadas_anticipo = DAOOrdenTrabajo.FindAll("p.id_anticipo_factura = " & Me.id)
+        If Me.Id <> 0 Then
+            Set m_ots_facturadas_anticipo = DAOOrdenTrabajo.FindAll("p.id_anticipo_factura = " & Me.Id)
         Else
             Set m_ots_facturadas_anticipo = New Collection
         End If
@@ -203,8 +203,8 @@ End Property
 
 Public Property Get Detalles() As Collection
 'lazy load simulation
-    If m_detalles Is Nothing And Me.id <> 0 Then
-        Set m_detalles = DAOFacturaDetalles.FindByFactura(Me.id)
+    If m_detalles Is Nothing And Me.Id <> 0 Then
+        Set m_detalles = DAOFacturaDetalles.FindByFactura(Me.Id)
     End If
 
     Set Detalles = m_detalles
@@ -431,6 +431,7 @@ Private Property Get CalcularIva(Optional conIva As Boolean = True) As Double
     
 End Property
 
+
 Public Property Get totalPercepciones() As Double
     Dim det As FacturaDetalle
     Dim totPercep As Double
@@ -445,7 +446,7 @@ Public Property Get totalPercepciones() As Double
                 If Me.AlicuotaPercepcionesIIBB > 1 Then
                     If Me.FechaEmision > #12/21/2010# Then    'desde el 21 de dic de 2010
                         ' bug #1 cambie > pór >= el 22-11-16 para poder hacer una factura solo de percepciones (ver FC grupo via del 22-11-16)
-                        If Me.TotalNetoGravado >= MonedaConverter.Convertir(0, 0, Me.moneda.id) Then
+                        If Me.TotalNetoGravado >= MonedaConverter.Convertir(0, 0, Me.moneda.Id) Then
                             If det.IvaAplicado Then
                                 totPercep = totPercep + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad * (Me.AlicuotaPercepcionesIIBB - 1))
                             Else
@@ -470,14 +471,14 @@ End Property
 
 Public Function DetallesMismaOT() As Long
     Dim d As FacturaDetalle
-    Dim id As Long
+    Dim Id As Long
     For Each d In Detalles
         If Not d.OrigenEsConcepto Then
-            If id = 0 Then id = d.detalleRemito.idpedido
-            If id <> d.id Then GoTo no1
+            If Id = 0 Then Id = d.detalleRemito.idpedido
+            If Id <> d.Id Then GoTo no1
         End If
     Next
-    DetallesMismaOT = id
+    DetallesMismaOT = Id
     Exit Function
 no1:
     DetallesMismaOT = 0

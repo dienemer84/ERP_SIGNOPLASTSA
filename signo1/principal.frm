@@ -114,12 +114,9 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         f32423.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS:
-'        Dim f4333 As New frmListaEmpleados
         frmListaEmpleados.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__OS:
-
-        ' Dim f43334 As New frmObraSocial
         frmObraSocial.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SECTORIZAR:
@@ -128,12 +125,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__USUARIOS:
         frmUsuarios.Show
 
-        'Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__SINIESTROS:
-        '     Dim F939393 As New frmSiniestros
-        '      F939393.Show
-
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__LUGARES
-'        Dim faa1 As New frmUbicaciones
         frmUbicaciones.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__VER_ACTUALIZACIONES
@@ -158,7 +150,6 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frmAdminIVA.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__FACTURAS:
-
         frmAdminFacturasEmisibles.Show
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__CONFIGURAR__ADMINISTRACION__RETENCIONES:
@@ -168,12 +159,10 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frmAdminconfigPercepciones.Show
 
     Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS:
-
         frmAdminConfigBancos.Show
 
     Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS:
         frmAdminconfigCuentas.Show
-
 
     Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__NUEVA:
         Dim frm2001 As frmVentasPresupuestoNuevo
@@ -187,7 +176,6 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__INFORME_HISTORICO:
         frmVentasHistoricosVentas.Show
 
-
     Case ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__INFORME_DINAMICO:
         frmVentasEstadisticasCotizaciones.Show
 
@@ -196,19 +184,15 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Set frm2006 = New frmVentasPedidoNuevo
         frm2006.Show
 
-
-
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__NUEVA:
-
         Dim frmNuevaOT As New frmNuevaOrdenTrabajo
         frmNuevaOT.Show
-
 
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO:
         Dim frmpp As New frmPlaneamientoPedidosPendientes
         frmpp.Show
+        
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__HISTORICO
-
         frmPlaneamientoResumenProduccion.Show
 
 
@@ -217,30 +201,21 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         fofo.Show
 
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_ENTREGA__NUEVA:
-
         frmPlaneamientoOENueva.Show
-
 
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__PLANIFICAR:
         Dim frm_merla As New frmPlanificacionTemporal
         frm_merla.Show
 
-
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_ENTREGA__LISTADO:
-
         frmPlaneamientoOELista.Show
 
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__GLOBAL:
-
         frmPlaneamientoSeguimiento.Show
 
-
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__DE_RUTAS:
-
-
         Dim fff As New frmPlaneamientoSeguimientoRutas3
         fff.Show
-
 
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_PROCESOS:
         Dim frmT As New frmTiempoProcesoDetalle
@@ -250,22 +225,21 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim frmSep As New frmSeguimientoEspecialPorRuta
         frmSep.Show
 
-
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__VER_TIEMPOS
         frmPlaneamientoVerTiempos.Show
+        
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__OPER_PROCESO
         Dim f123433 As New frmPlaneamientoVerOperariosEnProceso
         f123433.Show
+        
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__VER_NNC
         Dim fzzz As New frmNotasNoConformidad
         fzzz.Show
 
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__REMITOS__NUEVO:
-
         frmPlaneamientoRemitosNuevo.Show
 
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__REMITOS__LISTADO:
-
         Dim frm3033 As New frmPlaneamientoRemitosLista
         frm3033.Show
 
@@ -280,8 +254,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_COMPRAS__PETICION_OFERTA__COMPRAR:
         Dim faaf As New frmComprasPOComprar
         faaf.Show
-
-        '        Case ID_BUTTON.ID_BUTTON_COMPRAS__ORDEN_COMPRA__NUEVA: frmComprasOrdenesNueva.Show
+    
     Case ID_BUTTON.ID_BUTTON_COMPRAS__ORDEN_COMPRA__LISTADO: frmComprasOrdenesLista.Show
     Case ID_BUTTON.ID_BUTTON_COMPRAS__PRECIOS__ADMINISTRAR: frmComprasPreciosPorRubro.Show
     Case ID_BUTTON.ID_BUTTON_COMPRAS__PRECIOS__HISTORICO: frmComprasPreciosHistorico.Show
@@ -293,21 +266,12 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frm5001.lblidStock = Empty
         frm5001.Show
 
-
-        'Dim frm9988 As New frmPieza
-        ' frm9988.Show
-
-
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_CONJUNTO:
-
         frmDefinirConjunto.accion = 0
         frmDefinirConjunto.Show
 
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__LISTADO:
-
         frmListarStock.Show
-
-
 
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__NUEVO_MATERIAL: frmMaterialesNuevo.Show
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__RUBROS:
@@ -331,12 +295,8 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
 
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__TAREAS:
-
         Dim ffff As New frmListaTareas
         ffff.Show
-
-
-
 
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__CATEGORIA_SUELDOS:
         Dim F As New frmCategoriasSueldo
@@ -355,18 +315,14 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
 
       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__CREAR_PROFORMA:
-
-        Dim f3245 As New frmAdminFacturasProformaEdicion
-'        f3245.NuevoTipoDocumento = tipoDocumentoContable.Factura
-        f3245.Show
+            Dim f3245 As New frmAdminFacturasProformaEdicion
+            f3245.Show
         
         
        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURAS_PROFORMA:
+            Dim f3246 As New frmAdminFacturasProformaEmitidas
+            f3246.Show
 
-        Dim f3246 As New frmAdminFacturasProformaEmitidas
-'        f3245.NuevoTipoDocumento = tipoDocumentoContable.Factura
-        f3246.Show
-        
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC:
 
@@ -435,9 +391,6 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
                     Dim f12324 As New frmAdminPagosLiquidaciondeCajaLista
                     f12324.Show
 
-
-
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO:
 
         Dim f12322 As New frmAdminPagosCrearOrdenPago
@@ -456,16 +409,13 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim hdp As New frmCompensatorios
         hdp.Show
 
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS
         Dim hdp1 As New frmResumenPagos
         hdp1.Show
 
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_COBROS
         Dim hdp2 As New frmResumenCobros
         hdp2.Show
-
 
     Case ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS:
         frmAdminConfigBancos.Show
@@ -474,31 +424,17 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frmAdminconfigCuentas.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_CLIENTE:
-
         Dim frm1111 As New frmAdminMasInfoCliente2
         frm1111.Show
 
-
-
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_ORDEN_TRABAJO:
-
         frmAdminResumenOT.Show
-
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_TOTAL:
         frmAdminResumenEstadoTotal.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_PERIODO:
         frmAdminResumenesFacturacion.Show
-
-        '    '"Crear Recibo de Anticipo"
-        '        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO:
-        '            frmAdminCobranzasReservarReciboAnticipo.Show
-        '
-        '   '"Ver Recibos de Anticipo"
-        '       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS:
-        '            frmAdminCobranzasListaAnticipo.Show
 
         '"Ver Detalle de Cta. Cte."
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS:
@@ -519,76 +455,53 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frm1144.caption = "Resúmen de saldos de Clientes"
         frm1144.Show
 
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_VENTAS:
         Dim f3242 As New frmAdminSubdiariosVentasv2
         f3242.Show
 
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_COBRANZAS:
-
         Dim f4444 As New frmAdminSubdiarioCobranzas
         f4444.Show
 
-
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_RETENCIONES:
-
         Dim f4445 As New frmAdminSubdiarioRetenciones
         f4445.Show
 
-
-
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_IVACOMPRAS
-
         Dim f4446 As New frmAdminSubdiarioCompras
         f4446.Show
-
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA:
         Dim frm1 As frmAdminComprasNuevaFCProveedor
         Set frm1 = New frmAdminComprasNuevaFCProveedor
-
         frm1.Factura = Nothing
         frm1.Show
+        
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO: frmAdminComprasListaFCProveedor.Show
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_VER: frmAdminComprasPlanCuentasAdmin.Show
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_DEFINIR: frmAdminComprasCuentasDefinir.Show
 
-
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__PADRON_IIBB:
-
         frmAdminIIBB.Show
 
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__CENTRO_CAMBIO:
-
         frmAdminConfigCambio.Show
 
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC:
-
         frmAdminExtrasReporteCMC.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_IVAC:
-
         frmAdminExtrasReporteIVACompras.Show
         
     Case ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CAA:
-    
         frmAdminExtrasCbtesAdeudadosAl.Show
         
     Case ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_VAA:
-    
-        frmAdminExtrasCbtesVentasAdeudadosAl.Show
-        
+       frmAdminExtrasCbtesVentasAdeudadosAl.Show
     
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES:
         Dim cccfff As New frmAdminCheques
         cccfff.Show
-
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR:
         Dim dep As New frmDepositarCheque
@@ -649,11 +562,9 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         MsgBox ("No desarrollado.")
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__TESTS
-'        MsgBox ("Iniciando pruebas.")
         Dim f234 As New frmSistemasTests
         f234.Show
-        
-        
+                
     Case ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__ASOCRUBROS
         Dim f233 As New frmRubroProveedor
         f233.Show
@@ -681,7 +592,6 @@ Private Sub MDIForm_Load()
     Set Me.TrayIcon.Icon = Nothing
 
     RegOCX.RegistrarOCXs
-
 
     Dim IdU As Long
 

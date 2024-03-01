@@ -241,7 +241,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
 
         If LenB(tablaMoneda) > 0 Then Set F.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         
-        If LenB(tablaCliente) > 0 Then Set F.cliente = DAOCliente.Map(rs, indice, tablaCliente, tablaClienteIva, "Localidades", "", "Provincia")
+        If LenB(tablaCliente) > 0 Then Set F.Cliente = DAOCliente.Map(rs, indice, tablaCliente, tablaClienteIva, "Localidades", "", "Provincia")
         
         If indice.Exists("idNC") Then F.CbteAsociadoID = GetValue(rs, indice, tablaNC_Asociada, "idNC")
         
@@ -450,7 +450,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     End If
 
     q = Replace$(q, "'NroFactura'", conectar.Escape(F.numero))
-    q = Replace$(q, "'idCliente'", conectar.GetEntityId(F.cliente))
+    q = Replace$(q, "'idCliente'", conectar.GetEntityId(F.Cliente))
     q = Replace$(q, "'fecha_entrega'", conectar.Escape(F.FechaEntrega))
     q = Replace$(q, "'cae'", conectar.Escape(F.CAE))
     q = Replace$(q, "'cae_vto'", conectar.Escape(F.CAEVto))
@@ -1200,7 +1200,6 @@ err1:
 End Function
 
 
-
 Public Function Imprimir(idFactura As Long) As Boolean
     On Error GoTo err91
 
@@ -1252,25 +1251,25 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.FontBold = True
     Printer.Font.Size = 9
     'Printer.Print truncar(Cliente, 64)
-    Printer.Print truncar(Format(objFac.cliente.Id, "0000") & " - " & objFac.cliente.razon, 100)
+    Printer.Print truncar(Format(objFac.Cliente.Id, "0000") & " - " & objFac.Cliente.razon, 100)
     Printer.Font.Size = 9
     Printer.Print Tab(4);
     Printer.FontBold = False
     Printer.Print "I.V.A.: ";
     Printer.FontBold = True
     'Printer.Print truncar(Ivva, 50);
-    Printer.Print truncar(objFac.cliente.TipoIVA.detalle, 50);
+    Printer.Print truncar(objFac.Cliente.TipoIVA.detalle, 50);
     Printer.Print Tab(65);
     Printer.FontBold = False
     Printer.Print "C.U.I.T.: ";
     Printer.FontBold = True
     'Printer.Print truncar(Cuit, 50)
-    Printer.Print truncar(objFac.cliente.Cuit, 50)
+    Printer.Print truncar(objFac.Cliente.Cuit, 50)
     Printer.Print Tab(4);
     Printer.FontBold = False
     Printer.Print "Domicilio: ";
     Printer.FontBold = True
-    Printer.Print truncar(UCase(objFac.cliente.Domicilio), 90);
+    Printer.Print truncar(UCase(objFac.Cliente.Domicilio), 90);
     Printer.Print Tab(4);
     Printer.FontBold = False
     Printer.Print "Ref: ";
@@ -1282,7 +1281,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.FontBold = False
     Printer.Print "Localidad: ";
     Printer.FontBold = True
-    Printer.Print truncar(UCase(objFac.cliente.localidad.nombre), 30);
+    Printer.Print truncar(UCase(objFac.Cliente.localidad.nombre), 30);
     Printer.FontBold = False
 
     Printer.Print Tab(70);
@@ -1290,7 +1289,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.Print "Provincia: ";
     Printer.FontBold = True
 
-    Printer.Print truncar(UCase(objFac.cliente.provincia.nombre), 30)
+    Printer.Print truncar(UCase(objFac.Cliente.provincia.nombre), 30)
     Printer.FontBold = False
     Printer.Print Tab(4);
     Printer.Print "Condición: ";
@@ -1932,7 +1931,7 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
     nuevaF.Cancelada = F.Cancelada
     nuevaF.origenFacturado = F.origenFacturado
 
-    Set nuevaF.cliente = F.cliente
+    Set nuevaF.Cliente = F.Cliente
     Set nuevaF.moneda = F.moneda
     nuevaF.CambioAPatron = F.CambioAPatron
     Set nuevaF.Tipo = DAOTipoFacturaDiscriminado.FindByTipoDocumentoAndPuntoVentaAndTipoFactura(F.Tipo.TipoFactura.Id, Tipo, F.Tipo.PuntoVenta.Id, F.TipoIVA.idIVA)
@@ -2092,7 +2091,8 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         End If
         
         
-        If F.FechaVtoDesde = "12:00:00 a.m. " Then
+'        If F.FechaVtoDesde = "12:00:00 a.m. " Then
+        If Format(F.FechaVtoDesde, "dd/mm/yyyy") = "30/12/1899" Then
             Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
                 c.Visible = False
                 c.caption = ""
@@ -2106,7 +2106,8 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
                 c.Visible = F.esCredito
         End If
 
-        If F.FechaVtoHasta = "12:00:00 a.m. " Then
+'        If F.FechaVtoHasta = "12:00:00 a.m. " Then
+        If Format(F.FechaVtoHasta, "dd/mm/yyyy") = "30/12/1899" Then
             Set c = seccion.Controls.item("FechaPagoFceHastaDato")
                 c.Visible = False
                 c.caption = ""
@@ -2160,14 +2161,14 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
 
 
-        seccion.Controls.item("lblCliente").caption = Format(F.cliente.Id, "0000") & " - " & F.cliente.razon
-        seccion.Controls.item("lblCuit").caption = F.cliente.Cuit
-        seccion.Controls.item("lblIva").caption = F.cliente.TipoIVA.detalle
+        seccion.Controls.item("lblCliente").caption = Format(F.Cliente.Id, "0000") & " - " & F.Cliente.razon
+        seccion.Controls.item("lblCuit").caption = F.Cliente.Cuit
+        seccion.Controls.item("lblIva").caption = F.Cliente.TipoIVA.detalle
 
         'fce_nemer_29052020
         seccion.Controls.item("lblCondicionPagoFCE").caption = F.observaciones
 
-        seccion.Controls.item("lblDireccion").caption = F.cliente.Domicilio & ", " & F.cliente.localidad.nombre & ", " & F.cliente.provincia.nombre
+        seccion.Controls.item("lblDireccion").caption = F.Cliente.Domicilio & ", " & F.Cliente.localidad.nombre & ", " & F.Cliente.provincia.nombre
         seccion.Controls.item("lblReferencia").caption = F.OrdenCompra
 
 
@@ -2303,7 +2304,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
         Next deta
 
-        rptFacturaElectronica.Title = F.GetShortDescription(True, False) & F.Tipo.TipoFactura.Tipo & "-" & Format(F.Tipo.PuntoVenta.PuntoVenta, "000") & "-" & Format(F.numero, "00000000") & " - " & F.cliente.razonFixed
+        rptFacturaElectronica.Title = F.GetShortDescription(True, False) & F.Tipo.TipoFactura.Tipo & "-" & Format(F.Tipo.PuntoVenta.PuntoVenta, "000") & "-" & Format(F.numero, "00000000") & " - " & F.Cliente.razonFixed
         rptFacturaElectronica.caption = rptFacturaElectronica.Title
 
         Set rptFacturaElectronica.DataSource = r_tmp
@@ -2985,8 +2986,8 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
             End If
 
             xlWorksheet.Cells(offset, 1).value = Factura.Id
-            xlWorksheet.Cells(offset, 2).value = Factura.cliente.razon
-            xlWorksheet.Cells(offset, 3).value = Factura.cliente.Cuit
+            xlWorksheet.Cells(offset, 2).value = Factura.Cliente.razon
+            xlWorksheet.Cells(offset, 3).value = Factura.Cliente.Cuit
 
             If Factura.esCredito Then
                 xlWorksheet.Cells(offset, 4).value = Factura.GetShortDescription(True, False) & " " & "(FCE)"

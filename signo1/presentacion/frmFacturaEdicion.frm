@@ -239,7 +239,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -261,7 +261,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -367,7 +367,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -389,7 +389,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -907,7 +907,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1981,24 +1981,13 @@ Private Sub cboCliente_Click()
 
         End If
 
-        'esto hay que ponerlo en onclick del cbotipos 26-12-12
-        '     Set Factura.Tipo = DAOTipoFactura.FindFirstByFilter("id IN (select TipoFactura FROM AdminConfigFacturas where idIVA = " & Factura.TipoIVA.idIVA & ")")
-
         Factura.AlicuotaAplicada = Factura.TipoIVA.alicuota
+        
         Set Factura.Cliente = DAOCliente.BuscarPorID(Factura.Cliente.Id)
-        '        Dim classA As New classAdministracion
-        'Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(id_Default)
+
         If IsSomething(Factura.Tipo.TipoFactura) Then
             Factura.EstaDiscriminada = Factura.Tipo.TipoFactura.Discrimina
             Me.lblTipoFactura.caption = Factura.Tipo.TipoFactura.Tipo
-
-
-            'paso esto al evento click del cboTipos 26-12-12
-            '        If Factura.Id = 0 Then 'agregado para q no cambie el nro de factura cuando estoy en edicion yu eliko otro cliente
-            '            Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura.tipo.Id), "0000")
-            '        End If
-
-
         Else
             Me.lblTipoFactura.caption = vbNullString
             Me.txtNumero.text = 0
@@ -2035,12 +2024,14 @@ Private Sub MostrarPercepcionIIBB()
         'Me.lblBuscandoPercepcion.Visible = True
         DoEvents
         Dim rs As Recordset
-        Set rs = conectar.RSFactory("select * from sp_permisos." & tabla & " where cuit='" & Factura.Cliente.Cuit & "'")
+        Set rs = conectar.RSFactory("SELECT * FROM sp_permisos." & tabla & " WHERE cuit='" & Factura.Cliente.Cuit & "'")
         'Me.lblBuscandoPercepcion.Visible = False
         DoEvents
         If IsSomething(rs) Then
             If Not rs.EOF And Not rs.BOF Then
-                Me.lblVencido.Visible = (Now() > CDate(ConvertirAFechaAfip(rs!FechaHasta)))
+                'Me.lblVencido.Visible = (Now() > CDate(ConvertirAFechaAfip(rs!FechaHasta)))
+                Me.lblVencido.Visible = Format(Now, "dd/mm/yyyy") > CDate(ConvertirAFechaAfip(rs!FechaHasta))
+                'Me.lblVencido.Visible = False
                 Me.txtPercepcion.text = rs!alicuota
                 Factura.AlicuotaPercepcionesIIBB = (rs!alicuota / 100) + 1
             End If
@@ -2048,11 +2039,13 @@ Private Sub MostrarPercepcionIIBB()
     End If
 End Sub
 
+
 Private Sub ASociarConcepto()
     If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
         Factura.ConceptoIncluir = Me.cboConceptosAIncluir.ItemData(Me.cboConceptosAIncluir.ListIndex)
     End If
 End Sub
+
 
 Private Sub ConceptosIncuir()
     If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
@@ -2101,12 +2094,15 @@ Private Sub cboMonedaAjuste_Click()
     End If
 End Sub
 
+
 Private Sub cboPadron_Click()
 
     If IsSomething(Factura.Cliente) And Not dataLoading Then
         MostrarPercepcionIIBB
     End If
 End Sub
+
+
 Private Sub LimpiarTotales()
     Me.lblSubTotal.caption = funciones.FormatearDecimales(0)
     Me.lblPercepciones.caption = funciones.FormatearDecimales(0)
@@ -2269,15 +2265,10 @@ Private Sub dtpFecha_Change()
         Me.txtDiasVenc = DateDiff("d", Me.dtpFecha, Me.dtFechaPagoCredito)
 
     End If
-
-
 End Sub
 
 
-
-
 Private Sub Form_Load()
-
     Customize Me
     dataLoading = True
     
