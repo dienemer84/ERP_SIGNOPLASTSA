@@ -80,10 +80,14 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withF
     Dim F As FacturaDetalle
     Dim indice As Dictionary
     q = "SELECT * From sp.AdminFacturasDetalleNueva " _
-      & "LEFT JOIN sp.entregas ON (AdminFacturasDetalleNueva.idEntrega = entregas.id) WHERE 1=1"
-
+      & "LEFT JOIN sp.entregas ON (AdminFacturasDetalleNueva.idEntrega = entregas.id) " _
+      & " LEFT JOIN sp.AdminFacturas fc ON (fc.id = AdminFacturasDetalleNueva.idFactura) WHERE 1=1 "
+      
     If LenB(filtro) > 0 Then
-        q = q & " and " & filtro
+        q = q & " AND " & filtro
+        
+'        q = q & " AND fc.estado = 2 AND " & filtro
+        
     End If
 
     Set rs = conectar.RSFactory(q)

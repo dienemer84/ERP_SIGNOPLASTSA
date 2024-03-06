@@ -97,6 +97,7 @@ Public Function FindAllByPieza(piezasId As Collection) As Collection
     Set FindAllByPieza = DAODetalleOrdenTrabajo.FindAll(filter)
 End Function
 
+
 Public Function FindAllByOrdenTrabajo(orden_trabajo_id As Long, Optional withEntregados As Boolean = False, Optional withFabricados As Boolean = False, Optional withFacturados As Boolean = False, Optional WithTareasFinalizadas As Boolean = False) As Collection
     Dim filter As String
     filter = "{detalle_ot}.{ot_id} = {ot_id_value}"
@@ -105,6 +106,7 @@ Public Function FindAllByOrdenTrabajo(orden_trabajo_id As Long, Optional withEnt
     filter = Replace$(filter, "{ot_id_value}", orden_trabajo_id)
     Set FindAllByOrdenTrabajo = DAODetalleOrdenTrabajo.FindAll(filter, withEntregados, withFabricados, withFacturados, , , , WithTareasFinalizadas)
 End Function
+
 
 Public Function FindConjuntoById(Id As Long) As DetalleOTConjuntoDTO
     Dim col As Collection
@@ -202,16 +204,11 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, _
 
     q = "SELECT * " _
 
-If Facturados Then
-
-        q = q & ",IFNULL((SELECT SUM(cantidad) FROM detalles_pedidos_cantidad WHERE tipo_cantidad=" & TipoCantidadOT.CantidadFacturada_ & " AND id_detalle_pedido=dp.id),0) AS FacturadosCantidad"
-        q = q & ",IFNULL((SELECT SUM(((monto * cantidad)/1)*tipo_cambio) FROM detalles_pedidos_cantidad WHERE tipo_cantidad=" & TipoCantidadOT.CantidadFacturada_ & " AND id_detalle_pedido=dp.id),0) AS FacturadosMonto"
-
-
+    If Facturados Then
+    
+            q = q & ",IFNULL((SELECT SUM(cantidad) FROM detalles_pedidos_cantidad WHERE tipo_cantidad=" & TipoCantidadOT.CantidadFacturada_ & " AND id_detalle_pedido=dp.id),0) AS FacturadosCantidad"
+            q = q & ",IFNULL((SELECT SUM(((monto * cantidad)/1)*tipo_cambio) FROM detalles_pedidos_cantidad WHERE tipo_cantidad=" & TipoCantidadOT.CantidadFacturada_ & " AND id_detalle_pedido=dp.id),0) AS FacturadosMonto"
     End If
-
-
-
 
     If Entregados Then
         q = q & ",IFNULL((SELECT SUM(cantidad) FROM detalles_pedidos_cantidad WHERE tipo_cantidad=" & TipoCantidadOT.CantidadEntregada_ & " AND id_detalle_pedido=dp.id),0) AS EntregadosCantidad"
@@ -226,7 +223,6 @@ If Facturados Then
         q = q & ", COUNT(ptp.id) AS CantidadTareas,  SUM(ptp.fechaFin>0) AS CantidadTareasFinalizadas "
     End If
     q = q & " FROM detalles_pedidos dp"
-
 
     q = q & " LEFT JOIN stock s ON s.id = dp.idPieza"
 
@@ -243,8 +239,8 @@ If Facturados Then
     End If
 
     If WithTareasFinalizadas Then
-
         q = q & " group by dp.id "
+        
     End If
 
     q = q & " ORDER BY dp.item ASC"
@@ -277,14 +273,6 @@ If Facturados Then
         detaOrdenesTrabajo.Add tmpDeta, CStr(tmpDeta.Id)
         rs.MoveNext
     Wend
-
-
-
-
-    '  tickEnd = GetTickCount
-
-
-    '  Debug.Print tickEnd - tickStart, "ms elapsed"
 
     Set FindAll = detaOrdenesTrabajo
     Exit Function
@@ -362,6 +350,8 @@ Public Function Map(ByRef rs As Recordset, _
         tmpDetaOrdenTrabajo.EtiquetasImpresas = GetValue(rs, fieldsIndex, tableNameOrAlias, "etiquetas_impresas")
         tmpDetaOrdenTrabajo.idPresupuestoOrigen = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID_PRESU)
         tmpDetaOrdenTrabajo.CantidadEnviadasAStock = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_a_stock")
+        
+        
         'pseudo proxy
         Set tmpDetaOrdenTrabajo.OrdenTrabajo = New OrdenTrabajo
         tmpDetaOrdenTrabajo.OrdenTrabajo.Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PEDIDO_ID)

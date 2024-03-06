@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Id As Long
-Public cliente As clsCliente
+Public Cliente As clsCliente
 Public FechaCreacion As Date
 Public FechaModificacion As Date
 Public FechaAprobacion As Date
@@ -27,7 +27,7 @@ Public moneda As clsMoneda
 
 Public FEcha As Date
 
-Public Facturas As New Collection
+Public facturas As New Collection
 
 'valores
 Public Cheques As New Collection
@@ -49,7 +49,12 @@ Public PagosDeFacturas As New Dictionary    'tiene id factura y el monto pagado 
 Public TotalEstatico As New TotalEstaticoRecibo
 
 Public Property Get ACuentaDisponible()
-    ACuentaDisponible = ACuenta - ACuentaUsado
+    If Me.estado = ReciboAnulado Then
+    ACuentaDisponible = 0
+    Else
+        ACuentaDisponible = ACuenta - ACuentaUsado
+    End If
+
 End Property
 
 Public Property Get TotalFacturas() As Double
@@ -57,8 +62,8 @@ Public Property Get TotalFacturas() As Double
     Dim tot As Double
     Dim negativo As Integer
 
-    For Each F In Me.Facturas
-        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then
+    For Each F In Me.facturas
+        If F.TipoDocumento = tipoDocumentoContable.NotaCredito Then
             negativo = -1
         Else
             negativo = 1
@@ -69,7 +74,7 @@ Public Property Get TotalFacturas() As Double
             'tot = tot + MonedaConverter.Convertir(Me.PagosDeFacturas.Item(CStr(F.Id)) * negativo, F.Moneda.Id, Me.Moneda.Id)
             tot = tot + (Me.PagosDeFacturas.item(CStr(F.Id)) * negativo * F.CambioAPatron)
         Else
-            tot = tot + F.Total * negativo * F.CambioAPatron
+            tot = tot + F.total * negativo * F.CambioAPatron
         End If
 
 
@@ -116,8 +121,8 @@ Public Property Get TotalOperacionesBanco() As Double
     Next op
     TotalOperacionesBanco = tot
 End Property
-Public Property Get Total() As Double
-    Total = funciones.RedondearDecimales(Me.TotalFacturas - Me.TotalRetenciones, 2)
+Public Property Get total() As Double
+    total = funciones.RedondearDecimales(Me.TotalFacturas - Me.TotalRetenciones, 2)
 End Property
 Public Property Get TotalRecibido() As Double
     TotalRecibido = funciones.RedondearDecimales(MonedaConverter.Convertir(Me.TotalCheques + Me.TotalOperacionesBanco + Me.TotalOperacionesCaja, Me.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(Me.Redondeo, DAOMoneda.MONEDA_PESO_ID, Me.moneda.Id), 2)
@@ -130,7 +135,7 @@ Public Property Get IsValid() As Boolean
     m_validationMessages = vbNullString
     Dim F As Factura
     Dim facturas_id As New Dictionary
-    For Each F In Me.Facturas
+    For Each F In Me.facturas
         If facturas_id.Exists(CStr(F.GetShortDescription(False, True))) Then
             AddValidationMessage "Alguna de las facturas aparece mas de 1 vez en el recibo."
             Exit For
@@ -138,7 +143,7 @@ Public Property Get IsValid() As Boolean
         facturas_id.Add CStr(F.GetShortDescription(False, True)), F.GetShortDescription(False, True)
     Next F
 
-    If Me.TotalRecibido < Me.Total Then    ' And Not Me.PagoACuenta Then
+    If Me.TotalRecibido < Me.total Then    ' And Not Me.PagoACuenta Then
         AddValidationMessage "Los valores recibidos no igualan o superan al total del recibo."
     End If
 

@@ -17,8 +17,6 @@ Public Const TABLA_USUARIO_APROBADOR As String = "u2"
 Public Const TABLA_CONTACTO As String = "cont"
 
 
-
-
 Public Function ImprimirBultos(T As Remito) As Boolean
     On Error GoTo err1
     Dim x As Integer
@@ -55,6 +53,8 @@ err1:
     Save = False
     conectar.RollBackTransaction
 End Function
+
+
 Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Optional NotificarObserver As Boolean = True) As Boolean
     Dim q As String
     Guardar = True
@@ -80,7 +80,7 @@ Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Option
           & conectar.Escape(T.observaciones) & ", " _
           & conectar.Escape(T.lugarEntrega) & ", " _
           & conectar.Escape(T.detalle) & ", " _
-          & conectar.GetEntityId(T.cliente) & ", " _
+          & conectar.GetEntityId(T.Cliente) & ", " _
           & conectar.Escape(T.FEcha) & ", " _
           & conectar.Escape(T.estado) & "," _
           & "0," _
@@ -97,7 +97,7 @@ Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Option
           & "observaciones_cabecera = " & conectar.Escape(T.observaciones) & " ," _
           & "datos_entrega_footer = " & conectar.Escape(T.lugarEntrega) & " ," _
           & "detalle = " & conectar.Escape(T.detalle) & " ," _
-          & "idCliente =" & conectar.GetEntityId(T.cliente) & " ," _
+          & "idCliente =" & conectar.GetEntityId(T.Cliente) & " ," _
           & "fecha = " & conectar.Escape(T.FEcha) & " ," _
           & "estado =" & conectar.Escape(T.estado) & "," _
           & "estadoFacturado =" & conectar.Escape(T.EstadoFacturado) & "," _
@@ -157,11 +157,13 @@ err1:
     Guardar = False
 End Function
 
+
 Public Function ProximoRemito() As Long
     Dim rs As Recordset
     Set rs = conectar.RSFactory("select max(numero)+1 as proximo from remitos")
     If Not rs.EOF And Not rs.BOF Then ProximoRemito = rs!proximo
 End Function
+
 
 Public Function CambiarEstadoFacturable(T As Remito) As Boolean
     On Error GoTo err1
@@ -250,8 +252,6 @@ Public Function FindAll(Optional filter As String = vbNullString) As Collection
 End Function
 
 
-
-
 Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tabla As String, Optional ByRef tablaCliente As String, Optional ByRef tablaUsuCreador As String, Optional ByRef TablaUsuAprobador As String, Optional ByRef tablaContacto As String) As Remito
 
     Dim Remito As Remito
@@ -270,7 +270,7 @@ Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tab
         Remito.FEcha = GetValue(rs, indice, tabla, CAMPO_FECHA)
         Remito.CantidadBultos = GetValue(rs, indice, tabla, "cantidad_bultos")
         Remito.ControlCargaImpresiones = GetValue(rs, indice, tabla, "control_carga")
-        If LenB(tablaCliente) > 0 Then Set Remito.cliente = DAOCliente.Map(rs, indice, tablaCliente, , "Localidades", "", "Provincia")
+        If LenB(tablaCliente) > 0 Then Set Remito.Cliente = DAOCliente.Map(rs, indice, tablaCliente, , "Localidades", "", "Provincia")
         If LenB(tablaUsuCreador) > 0 Then Set Remito.usuarioCreador = DAOUsuarios.Map(rs, indice, tablaUsuCreador)
         If LenB(TablaUsuAprobador) > 0 Then Set Remito.usuarioAprobador = DAOUsuarios.Map(rs, indice, TablaUsuAprobador)
         If LenB(tablaContacto) > 0 Then Set Remito.contacto = DAOContacto.Map(rs, indice, tablaContacto)
@@ -278,6 +278,8 @@ Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tab
 
     Set Map = Remito
 End Function
+
+
 Public Function CambiarEstadoFacturado(T As Long, estadoNuevo As EstadoRemitoFacturado) As Boolean
     CambiarEstadoFacturado = True
     On Error GoTo err1
@@ -308,10 +310,7 @@ Public Function CambiarEstadoFacturado(T As Long, estadoNuevo As EstadoRemitoFac
 
     Channel.Notificar EVENTO, Remitos_
 
-
     Exit Function
-
-
 
 err1:
 
@@ -359,6 +358,7 @@ Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
         MsgBox "Se ajustó el estado de los items de los remitos que estaban dentro del comprobante vinculado"
     End If
 End Function
+
 
 Public Function Anular(Remito As Remito) As Boolean
     On Error GoTo erranu
@@ -440,6 +440,7 @@ erranu:
     If Err.Number = 1911 Then MsgBox Err.Description
 End Function
 
+
 Public Function aprobar(Remito As Remito) As Boolean
     On Error GoTo errh44
 
@@ -459,11 +460,7 @@ Public Function aprobar(Remito As Remito) As Boolean
     segui = True
     Dim Items As String
     For Each deta In Remito.Detalles
-
-
-
         If deta.Origen = OrigenRemitoConcepto Then
-
         Else
             Set deta.DetallePedido = DAODetalleOrdenTrabajo.FindById(deta.DetallePedido.Id, True, True, False)
             If (deta.DetallePedido.Cantidad_Fabricada + deta.DetallePedido.ReservaStock) - deta.DetallePedido.Cantidad_Entregada >= deta.Cantidad Then
@@ -488,23 +485,14 @@ Public Function aprobar(Remito As Remito) As Boolean
         Exit Function
     End If
 
-
-
-
-
     Dim est_ant As EstadoRemito
     aprobar = True
     est_ant = Remito.estado
     Remito.estado = RemitoAprobado
     Set Remito.usuarioAprobador = funciones.GetUserObj
 
-
-
-
     Dim Ot As OrdenTrabajo
     For Each deta In Remito.Detalles
-
-
 
         If deta.Origen = OrigenRemitoOt Then
             Set Ot = DAOOrdenTrabajo.FindById(deta.idpedido)
@@ -512,15 +500,11 @@ Public Function aprobar(Remito As Remito) As Boolean
                 'si se facturo todo x adelantado, se marcad como facturado.
                 Remito.EstadoFacturado = RemitoFacturadoTotal
             End If
-
-
             'antes de aprobar tengo q volver a validar, por un tema de concurrencia.
-
 
             If deta.DetallePedido.CantidadEntregada + deta.Cantidad > deta.DetallePedido.CantidadPedida Then
                 MsgBox "No puede entregar más de lo que tiene pedido!, por favor revea el remito!", vbInformation
                 Exit Function
-
             Else
                 conectar.execute "update detalles_pedidos set cantidad_entregada=cantidad_entregada+" & deta.Cantidad & " Where idPedido=" & deta.idpedido & " and id=" & deta.idDetallePedido
                 DAODetalleOrdenTrabajo.SaveCantidad deta.idDetallePedido, deta.Cantidad, CantidadEntregada_, 0, Remito.Id, 0, 0, 0
@@ -529,15 +513,11 @@ Public Function aprobar(Remito As Remito) As Boolean
                     deta.facturable = True
                 End If
 
-
             End If
 
         ElseIf deta.Origen = OrigenRemitooe Then
             conectar.execute "update detallesPedidosEntregas set entregados=entregados+" & deta.Cantidad & " Where id=" & deta.idDetallePedido
         End If
-
-
-
 
     Next deta
 
@@ -554,11 +534,10 @@ errh44:
 End Function
 
 
-
 Public Function ImprimirControlCarga(rto As Remito) As Boolean
     On Error GoTo err1
     dsrControlCarga.Sections("section4").Controls.item("lblRemitoNumero").caption = "Remito Nº: " & rto.numero
-    dsrControlCarga.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & rto.cliente.razon
+    dsrControlCarga.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & rto.Cliente.razon
     dsrControlCarga.Sections("section4").Controls.item("lblDetalleRemito").caption = "Observaciones: " & rto.detalle
 
     Dim r As New Recordset
@@ -572,7 +551,6 @@ Public Function ImprimirControlCarga(rto As Remito) As Boolean
 
     End With
     r.Open
-
 
     Set rto.Detalles = DAORemitoSDetalle.FindAllByRemito(rto.Id, , True)
 
@@ -608,7 +586,7 @@ Public Function ImprimirControlCarga(rto As Remito) As Boolean
 
 
     dsrDatosDespacho.Sections("section4").Controls.item("lblRemitoNumero").caption = "Remito Nº: " & rto.numero
-    dsrDatosDespacho.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & rto.cliente.razon
+    dsrDatosDespacho.Sections("section4").Controls.item("lblCliente").caption = "Cliente: " & rto.Cliente.razon
     dsrDatosDespacho.Sections("section4").Controls.item("lblDetalleRemito").caption = "Observaciones: " & rto.detalle
     Set dsrDatosDespacho.DataSource = conectar.RSFactory("select 1")
     dsrDatosDespacho.PrintReport False
@@ -896,4 +874,5 @@ Public Function ImprimirRemito(IdRemito As Long) As Boolean
 err91:
     If tra Then ImprimirRemitoNuevo = False
     MsgBox Err.Description
+    
 End Function

@@ -5,7 +5,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmEntregas2 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Entregas de OT"
-   ClientHeight    =   7935
+   ClientHeight    =   9420
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   12495
@@ -14,7 +14,7 @@ Begin VB.Form frmEntregas2
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7935
+   ScaleHeight     =   9420
    ScaleWidth      =   12495
    Begin VB.CommandButton Command1 
       Caption         =   "Command1"
@@ -26,14 +26,14 @@ Begin VB.Form frmEntregas2
       Width           =   1140
    End
    Begin XtremeSuiteControls.TabControl TabControl1 
-      Height          =   3855
+      Height          =   5295
       Left            =   105
       TabIndex        =   13
       Top             =   4005
       Width           =   8040
       _Version        =   786432
       _ExtentX        =   14182
-      _ExtentY        =   6800
+      _ExtentY        =   9340
       _StockProps     =   68
       AllowReorder    =   -1  'True
       Appearance      =   10
@@ -47,7 +47,7 @@ Begin VB.Form frmEntregas2
       Item(1).ControlCount=   1
       Item(1).Control(0)=   "GroupBox1"
       Begin XtremeSuiteControls.GroupBox grpEntregasDetalle 
-         Height          =   3390
+         Height          =   4710
          Left            =   -69910
          TabIndex        =   14
          Top             =   375
@@ -55,18 +55,18 @@ Begin VB.Form frmEntregas2
          Width           =   7815
          _Version        =   786432
          _ExtentX        =   13785
-         _ExtentY        =   5980
+         _ExtentY        =   8308
          _StockProps     =   79
          Caption         =   "Entregas del detalle seleccionado de la OT"
          UseVisualStyle  =   -1  'True
          Begin GridEX20.GridEX gridEntregas 
-            Height          =   3060
+            Height          =   4020
             Left            =   90
             TabIndex        =   15
-            Top             =   255
-            Width           =   6135
-            _ExtentX        =   10821
-            _ExtentY        =   5398
+            Top             =   240
+            Width           =   6225
+            _ExtentX        =   10980
+            _ExtentY        =   7091
             Version         =   "2.0"
             HoldSortSettings=   -1  'True
             BoundColumnIndex=   ""
@@ -106,36 +106,45 @@ Begin VB.Form frmEntregas2
             Height          =   465
             Left            =   6480
             TabIndex        =   16
-            Top             =   2835
+            Top             =   3840
             Width           =   1140
             _Version        =   786432
             _ExtentX        =   2011
             _ExtentY        =   820
             _StockProps     =   79
             Caption         =   "Exportar"
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
             UseVisualStyle  =   -1  'True
          End
       End
       Begin XtremeSuiteControls.GroupBox GroupBox1 
-         Height          =   3390
+         Height          =   4815
          Left            =   90
          TabIndex        =   17
          Top             =   375
          Width           =   7815
          _Version        =   786432
          _ExtentX        =   13785
-         _ExtentY        =   5980
+         _ExtentY        =   8493
          _StockProps     =   79
          Caption         =   "Facturas del detalle seleccionado de la OT"
          UseVisualStyle  =   -1  'True
          Begin GridEX20.GridEX gridFacturas 
-            Height          =   3060
+            Height          =   4020
             Left            =   90
             TabIndex        =   18
-            Top             =   255
-            Width           =   6105
-            _ExtentX        =   10769
-            _ExtentY        =   5398
+            Top             =   240
+            Width           =   6225
+            _ExtentX        =   10980
+            _ExtentY        =   7091
             Version         =   "2.0"
             HoldSortSettings=   -1  'True
             BoundColumnIndex=   ""
@@ -174,14 +183,44 @@ Begin VB.Form frmEntregas2
             Height          =   465
             Left            =   6480
             TabIndex        =   19
-            Top             =   2835
+            Top             =   3840
             Width           =   1140
             _Version        =   786432
             _ExtentX        =   2011
             _ExtentY        =   820
             _StockProps     =   79
             Caption         =   "Exportar"
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
             UseVisualStyle  =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label lblTotalFacturado 
+            Height          =   255
+            Left            =   120
+            TabIndex        =   22
+            Top             =   4440
+            Width           =   7695
+            _Version        =   786432
+            _ExtentX        =   13573
+            _ExtentY        =   450
+            _StockProps     =   79
+            Caption         =   "Facturado del item: "
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
          End
       End
    End
@@ -206,14 +245,14 @@ Begin VB.Form frmEntregas2
       _Version        =   393216
    End
    Begin XtremeSuiteControls.GroupBox grpE 
-      Height          =   1395
+      Height          =   2595
       Left            =   8280
       TabIndex        =   5
       Top             =   5880
       Width           =   4110
       _Version        =   786432
       _ExtentX        =   7250
-      _ExtentY        =   2461
+      _ExtentY        =   4577
       _StockProps     =   79
       Caption         =   "Valores"
       UseVisualStyle  =   -1  'True
@@ -314,21 +353,21 @@ Begin VB.Form frmEntregas2
          Column(7)       =   "frmEntregas2.frx":256C
          Column(8)       =   "frmEntregas2.frx":26A8
          Column(9)       =   "frmEntregas2.frx":27E4
-         Column(10)      =   "frmEntregas2.frx":2910
-         Column(11)      =   "frmEntregas2.frx":2A2C
-         Column(12)      =   "frmEntregas2.frx":2B2C
+         Column(10)      =   "frmEntregas2.frx":292C
+         Column(11)      =   "frmEntregas2.frx":2A48
+         Column(12)      =   "frmEntregas2.frx":2B48
          FmtConditionsCount=   1
-         FmtCondition(1) =   "frmEntregas2.frx":2C8C
+         FmtCondition(1) =   "frmEntregas2.frx":2CA8
          FormatStylesCount=   7
-         FormatStyle(1)  =   "frmEntregas2.frx":2D50
-         FormatStyle(2)  =   "frmEntregas2.frx":2E88
-         FormatStyle(3)  =   "frmEntregas2.frx":2F38
-         FormatStyle(4)  =   "frmEntregas2.frx":2FEC
-         FormatStyle(5)  =   "frmEntregas2.frx":30C4
-         FormatStyle(6)  =   "frmEntregas2.frx":317C
-         FormatStyle(7)  =   "frmEntregas2.frx":325C
+         FormatStyle(1)  =   "frmEntregas2.frx":2D6C
+         FormatStyle(2)  =   "frmEntregas2.frx":2EA4
+         FormatStyle(3)  =   "frmEntregas2.frx":2F54
+         FormatStyle(4)  =   "frmEntregas2.frx":3008
+         FormatStyle(5)  =   "frmEntregas2.frx":30E0
+         FormatStyle(6)  =   "frmEntregas2.frx":3198
+         FormatStyle(7)  =   "frmEntregas2.frx":3278
          ImageCount      =   0
-         PrinterProperties=   "frmEntregas2.frx":32F0
+         PrinterProperties=   "frmEntregas2.frx":330C
       End
    End
    Begin XtremeSuiteControls.PushButton btnRemitar 
@@ -387,14 +426,14 @@ Begin VB.Form frmEntregas2
       Height          =   240
       Left            =   8280
       TabIndex        =   10
-      Top             =   7560
+      Top             =   8640
       Width           =   4140
    End
    Begin VB.Label lblCliente 
       Height          =   240
       Left            =   8280
       TabIndex        =   9
-      Top             =   7320
+      Top             =   9000
       Width           =   4140
    End
    Begin VB.Menu mnuEmergente 
@@ -437,27 +476,26 @@ Private CantArchivos As New Dictionary
 Private CantArchivosDetalle As New Dictionary
 
 
-
-
-
 Public Sub SetOrdenTrabajo(Ot As OrdenTrabajo)
     Set m_ot = Ot
     Me.caption = "Entregas de la OT Nº " & m_ot.IdFormateado
     CargaDetalles
 End Sub
 
+
 Private Sub CargaDetalles()
     Me.gridDetalles.ItemCount = 0
     Me.gridEntregas.ItemCount = 0
 
     Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.Id, True, True, True)
+    
     Me.gridDetalles.ItemCount = m_ot.Detalles.count
 
     Me.lblPorcentajeAvance.caption = "% Avance: " & m_ot.PorcentajeAvance
     Me.lblPorcentajeEntregas.caption = "% Entregas: " & m_ot.PorcentajeEntregas
     Me.lblPorcentajeFabricacion.caption = "% Fabricación: " & m_ot.PorcentajeFabricacion
 
-    Me.lblCentroCostos = "Centro de costos: " & m_ot.cliente.razon
+    Me.lblCentroCostos = "Centro de costos: " & m_ot.Cliente.razon
     If IsSomething(m_ot.ClienteFacturar) Then
         Me.lblCliente = "Cliente: " & m_ot.ClienteFacturar.razon
     End If
@@ -489,8 +527,6 @@ Private Sub btnAplicarRemito_Click()
             Else
                 Exit Sub
             End If
-
-
         Else
             MsgBox "No hay elementos disponibles para entregar.", vbInformation
         End If
@@ -498,9 +534,6 @@ Private Sub btnAplicarRemito_Click()
     Else
         MsgBox "Debe seleccionar un item.", vbExclamation
     End If
-
-
-
 
 
 End Sub
@@ -577,7 +610,7 @@ Private Sub btnExportarExcel_Click()
     xlWorksheet.Cells(4, 1).value = "Fecha Entrega:"
 
     xlWorksheet.Cells(1, 2).value = "OT Nº " & m_ot.IdFormateado & " al dia " & Date
-    xlWorksheet.Cells(2, 2).value = m_ot.cliente.razon & " Cliente: " & m_ot.ClienteFacturar.razon
+    xlWorksheet.Cells(2, 2).value = m_ot.Cliente.razon & " Cliente: " & m_ot.ClienteFacturar.razon
     xlWorksheet.Cells(3, 2).value = m_ot.descripcion
     xlWorksheet.Range(xlWorksheet.Cells(3, 2), xlWorksheet.Cells(3, 2)).HorizontalAlignment = xlLeft
     xlWorksheet.Cells(4, 2).value = m_ot.FechaEntrega
@@ -593,7 +626,7 @@ Private Sub btnExportarExcel_Click()
     For Each detalle In m_ot.Detalles
         xlWorksheet.Cells(row, 1) = Format(detalle.item, "'000")
         xlWorksheet.Range(xlWorksheet.Cells(row, 1), xlWorksheet.Cells(row, 1)).HorizontalAlignment = xlLeft
-        xlWorksheet.Cells(row, 2) = detalle.pieza.nombre
+        xlWorksheet.Cells(row, 2) = detalle.Pieza.nombre
         xlWorksheet.Cells(row, 3) = detalle.CantidadPedida
         xlWorksheet.Cells(row, 4) = detalle.CantidadEntregada
 
@@ -682,7 +715,7 @@ Private Sub btnRemitar_Click()
         Set detaOT = m_ot.Detalles.item(Me.gridDetalles.SelectedItems(1).rowIndex)
         Set fEntrega.deta = detaOT
         fEntrega.lblIdPieza = detaOT.Id    ' detaOT.pieza.Id
-        fEntrega.lblPieza = detaOT.pieza.nombre
+        fEntrega.lblPieza = detaOT.Pieza.nombre
         fEntrega.lblPedidos = detaOT.CantidadPedida
         fEntrega.Text1 = detaOT.CantidadPedida - detaOT.CantidadFabricados
         fEntrega.lblFabricados = detaOT.CantidadFabricados
@@ -716,7 +749,7 @@ Private Sub btnTomarDeStock_Click()
     End If
     'bug #3
     Dim res As String
-    res = InputBox("Ingrese la cantidad a tomar de stock (Máximo " & detalle.pieza.CantidadStock & ")", "Reserva de Stock", "0")
+    res = InputBox("Ingrese la cantidad a tomar de stock (Máximo " & detalle.Pieza.CantidadStock & ")", "Reserva de Stock", "0")
     If IsNumeric(res) Then
 
         Dim reserva As Double: reserva = Val(res)
@@ -823,7 +856,7 @@ Private Sub gridDetalles_MouseUp(Button As Integer, Shift As Integer, x As Singl
 
     If Button = 2 And idx > 0 Then
 
-        Me.mnuArchivoPieza.caption = "De la Pieza... " & CantArchivos.item(detalle.pieza.Id)
+        Me.mnuArchivoPieza.caption = "De la Pieza... " & CantArchivos.item(detalle.Pieza.Id)
 
         Me.mnuDelDetalle.caption = "Del Detalle... " & CantArchivosDetalle.item(detalle.Id)
 
@@ -849,6 +882,7 @@ Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
 
 End Sub
 
+
 Private Sub gridDetalles_SelectionChange()
     Me.gridEntregas.ItemCount = 0
 
@@ -858,41 +892,54 @@ Private Sub gridDetalles_SelectionChange()
 
         If Permisos.AdminFacturaConsultas Then
             Me.gridFacturas.ItemCount = 0
-            Set facturas = DAOFacturaDetalles.FindAll("entregas.idDetallePedido =" & detalle.Id, True)
-
+            Dim filtro As String
+            filtro = " AND fc.estado = 2 "
+            Set facturas = DAOFacturaDetalles.FindAll("entregas.idDetallePedido =" & detalle.Id & filtro, True)
+            
             Me.gridFacturas.ItemCount = facturas.count
+            
+            Dim TotalFacturado As Integer
+            
+             For Each detalleFactura In facturas
+                TotalFacturado = TotalFacturado + detalleFactura.Cantidad
+             Next
+            
+            Me.lblTotalFacturado.caption = "Facturado del item " & detalle.item & ": " & TotalFacturado
+            
         End If
         Me.gridEntregas.ItemCount = Entregas.count
-
-
     End If
-
-
 End Sub
+
 
 Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex > 0 And m_ot.Detalles.count > 0 Then
         Set detalle = m_ot.Detalles.item(rowIndex)
         Values(1) = detalle.item
         Values(2) = detalle.Nota
-        Values(3) = detalle.pieza.nombre
+        Values(3) = detalle.Pieza.nombre
 
         Values(4) = detalle.CantidadPedida
 
         If m_ot.TipoOrden = OT_STOCK Then
-            Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.pieza.Id) & ")"
+            Values(4) = Values(4) & " (" & DAODetalleOrdenTrabajo.PendientesEntregaPorPieza(detalle.Pieza.Id) & ")"
         End If
 
         Values(5) = detalle.FechaEntrega
         Values(6) = detalle.CantidadFabricados
         Values(7) = detalle.CantidadEntregada
         Values(8) = detalle.CantidadPedida - detalle.CantidadEntregada
+        
+        
         Values(9) = detalle.CantidadFacturada
+        
+       
         Values(10) = detalle.ReservaStock
-        Values(11) = detalle.pieza.UnidadMedida
-        Values(12) = detalle.pieza.CantidadStock
+        Values(11) = detalle.Pieza.UnidadMedida
+        Values(12) = detalle.Pieza.CantidadStock
     End If
 End Sub
+
 
 Private Sub gridEntregas_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
@@ -941,17 +988,7 @@ Private Sub ImprimirEntregas()
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.Print
 
-    '    Set rs = conectar.RSFactory("select p.*,c.razon from pedidos p inner join clientes c on p.idcliente=c.id where p.id=" & idOt)
-    '    If Not rs.EOF And Not rs.BOF Then
-    '        cli = rs!idCliente
-    '        clie = rs!Razon
-    '        referencia = rs!Descripcion
-    '        entrega = rs!FechaEntrega
-    '    Else
-    '        Exit Sub
-    '    End If
-
-    Printer.Print "C.Costos: " & m_ot.cliente.Id & " - " & m_ot.cliente.razon,
+    Printer.Print "C.Costos: " & m_ot.Cliente.Id & " - " & m_ot.Cliente.razon,
     Printer.Print "Referencia: " & UCase(m_ot.descripcion)
     Printer.Print "Entrega: " & Format(m_ot.FechaEntrega, "dd-mm-yyyy")
     Printer.Print
@@ -983,7 +1020,7 @@ Private Sub ImprimirEntregas()
         Printer.Print Tab(1);
         Printer.Print Format(detalle.item, "000");
         Printer.Print Tab(12);
-        Printer.Print UCase(detalle.pieza.nombre);
+        Printer.Print UCase(detalle.Pieza.nombre);
         Printer.Print Tab(90);
         Printer.Print detalle.CantidadPedida;
         Printer.Print Tab(100);
@@ -1111,11 +1148,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 End If
 
             End If
-
-
-
         End If
     End If
+    
     Exit Function
 err1:
     MsgBox Err.Description, vbExclamation + vbOKOnly
@@ -1136,7 +1171,7 @@ Private Function QuickRemito(itemsDisponibles As Long) As Boolean
     Set Remito = New Remito
     Remito.FEcha = Now
     Remito.detalle = m_ot.descripcion
-    Set Remito.cliente = m_ot.ClienteFacturar
+    Set Remito.Cliente = m_ot.ClienteFacturar
 
     Remito.estado = RemitoPendiente
     Remito.EstadoFacturado = RemitoNoFacturado
@@ -1229,10 +1264,11 @@ Private Sub mnuArchivoPieza_Click()
     gridDetalles_SelectionChange
     Dim F As New frmArchivos2
     F.Origen = OrigenArchivos.OA_Piezas
-    F.ObjetoId = detalle.pieza.Id
+    F.ObjetoId = detalle.Pieza.Id
     F.caption = "OT Nº " & m_ot.IdFormateado & " - Item " & detalle.item
     F.Show
 End Sub
+
 
 Private Sub mnuAtajo_Click()
     If Not Permisos.PlanRemitosControl Then
@@ -1267,17 +1303,126 @@ Private Sub mnuDelDetalle_Click()
     F.ObjetoId = detalle.Id
     F.caption = "OT Nº " & m_ot.IdFormateado & " - Item " & detalle.item
     F.Show
+    
 End Sub
+
 
 Private Sub mnuVerDesarrollo_Click()
     gridDetalles_SelectionChange
-    'Dim idx As Long
-    'idx = Me.grid.RowIndex(Me.grid.row)
-    'If idx > 0 Then
     Dim F As New frmDesarrollo
     Load F
-    F.CargarPieza detalle.pieza.Id     'm_ot.Detalles(idx).Pieza.Id
+    F.CargarPieza detalle.Pieza.Id     'm_ot.Detalles(idx).Pieza.Id
     F.Show
 
-    '    End If
+End Sub
+
+Private Sub PushButton1_Click()
+    Dim detalleFactura As FacturaDetalle
+    Dim facturas As Collection
+  
+    Dim xlWorkbook As New Excel.Workbook
+    Dim xlWorksheet As New Excel.Worksheet
+    Dim xlApplication As New Excel.Application
+
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+
+    'fila, columna
+
+    xlWorksheet.Cells(1, 1).value = "Detalles de Facturación"
+    xlWorksheet.Cells(2, 1).value = "C.Costos:"
+    xlWorksheet.Cells(3, 1).value = "Referencia:"
+    xlWorksheet.Cells(4, 1).value = "Item:"
+    
+    xlWorksheet.Cells(1, 2).value = "OT Nº " & m_ot.IdFormateado & " al dia " & Date
+    xlWorksheet.Cells(2, 2).value = m_ot.Cliente.razon & " Cliente: " & m_ot.ClienteFacturar.razon
+    xlWorksheet.Cells(3, 2).value = m_ot.descripcion
+    xlWorksheet.Range(xlWorksheet.Cells(3, 2), xlWorksheet.Cells(3, 2)).HorizontalAlignment = xlLeft
+    xlWorksheet.Cells(4, 2).value = detalle.item & "- " & detalle.Pieza.nombre
+    
+    
+
+
+    xlWorksheet.Cells(6, 1) = "Factura"
+    xlWorksheet.Cells(6, 2) = "Cantidad Facturada"
+    xlWorksheet.Cells(6, 3) = "Fecha"
+
+    Dim row As Long: row = 7
+    
+    Set facturas = DAOFacturaDetalles.FindAll("entregas.idDetallePedido =" & detalle.Id, True)
+            
+
+    For Each detalleFactura In facturas
+            xlWorksheet.Cells(row, 1) = detalleFactura.Factura.numero
+            xlWorksheet.Cells(row, 2) = detalleFactura.Cantidad
+            xlWorksheet.Cells(row, 3) = detalleFactura.Factura.FechaEmision
+            
+            row = row + 1
+    Next
+
+'    For Each detalle In m_ot.Detalles
+'        xlWorksheet.Cells(row, 1) = Format(detalle.item, "'000")
+'        xlWorksheet.Range(xlWorksheet.Cells(row, 1), xlWorksheet.Cells(row, 1)).HorizontalAlignment = xlLeft
+'        xlWorksheet.Cells(row, 2) = detalle.Pieza.nombre
+'        xlWorksheet.Cells(row, 3) = detalle.CantidadPedida
+'        xlWorksheet.Cells(row, 4) = detalle.CantidadEntregada
+'
+'        Set Entregas = DAORemitoSDetalle.FindAllByDetallePedido(detalle.Id)
+'        If Entregas.count > 0 Then
+'            row = row + 1
+'            xlWorksheet.Cells(row, 2) = "Cant Entreg"
+'            xlWorksheet.Range(xlWorksheet.Cells(row, 2), xlWorksheet.Cells(row, 2)).HorizontalAlignment = xlRight
+'            xlWorksheet.Cells(row, 3) = "Remito"
+'            xlWorksheet.Range(xlWorksheet.Cells(row, 3), xlWorksheet.Cells(row, 3)).HorizontalAlignment = xlRight
+'            xlWorksheet.Cells(row, 4) = "Fecha"
+'            xlWorksheet.Range(xlWorksheet.Cells(row, 4), xlWorksheet.Cells(row, 4)).HorizontalAlignment = xlRight
+'            Dim rto As Remito
+'
+'            For Each remitoDetalle In Entregas
+'
+'
+'                Set rto = DAORemitoS.FindById(remitoDetalle.Remito)
+'                If rto.estado = RemitoAprobado Then
+'                    row = row + 1
+'                    xlWorksheet.Cells(row, 2) = remitoDetalle.Cantidad
+'                    xlWorksheet.Cells(row, 3) = remitoDetalle.RemitoAlQuePertenece.numero
+'                    xlWorksheet.Cells(row, 4) = CDate(CLng(remitoDetalle.FEcha))
+'                End If
+'            Next
+'
+'        End If
+
+'        row = row + 2
+'    Next detalle
+
+
+    'autosize
+    xlApplication.ScreenUpdating = False
+    Dim wkSt As String
+    wkSt = xlWorksheet.Name
+    xlWorksheet.Cells.EntireColumn.AutoFit
+    xlWorkbook.Sheets(wkSt).Select
+    xlApplication.ScreenUpdating = True
+    ''
+
+    Dim ruta As String
+    ruta = Environ$("TEMP")
+    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
+    If LenB(ruta) = 0 Then ruta = App.path
+    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
+
+    xlWorkbook.SaveAs ruta
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
 End Sub

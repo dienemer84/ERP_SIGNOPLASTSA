@@ -77,6 +77,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Left            =   1080
          TabIndex        =   28
          Top             =   2805
+         Visible         =   0   'False
          Width           =   1695
       End
       Begin XtremeSuiteControls.PushButton btnClearEstado 
@@ -331,6 +332,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Left            =   360
          TabIndex        =   29
          Top             =   2820
+         Visible         =   0   'False
          Width           =   615
       End
       Begin VB.Label lblEstado 
@@ -555,8 +557,6 @@ Private Sub archivos_Click()
 
     frmarchi1.Show
 
-
-
 End Sub
 
 Private Sub cboRangos_Click()
@@ -565,6 +565,7 @@ End Sub
 
 Private Sub cmdBuscar_Click()
     listaRemitos
+    
 End Sub
 
 Private Sub cmdImprimir_Click()
@@ -689,13 +690,13 @@ Private Sub listaRemitos()
     
     Set facturasRemitos = New Dictionary
 
-    If Not IsEmpty(Me.txtFacturas) And IsNumeric(txtFacturas) Then
-        filtro = filtro & "  and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_NUMERO & "=" & Me.txtFacturas
-        
-       If remitosId.count > 0 Then
-        Set facturasRemitos = DAOFactura.FindAllByRemitos(remitosId, Me.txtFacturas)
-    End If
-    
+'    If Not IsEmpty(Me.txtFacturas) And IsNumeric(txtFacturas) Then
+'        filtro = filtro & "  and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_NUMERO & "=" & Me.txtFacturas
+'   End If
+   
+   If remitosId.count > 0 Then
+       Set facturasRemitos = DAOFactura.FindAllByRemitos(remitosId)
+
     End If
 
 
@@ -1040,7 +1041,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
         .value(4) = enums.EnumEstadoRemito(tmpRto.estado)
         .value(5) = tmpRto.usuarioCreador.usuario
 
-        If IsSomething(tmpRto.cliente) Then .value(2) = tmpRto.cliente.razon
+        If IsSomething(tmpRto.Cliente) Then .value(2) = tmpRto.Cliente.razon
         If IsSomething(tmpRto.usuarioAprobador) Then
             .value(7) = tmpRto.usuarioAprobador.usuario
         Else
@@ -1083,7 +1084,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 tmpRto.detalle = tmp.detalle
                 tmpRto.estado = tmp.estado
                 tmpRto.EstadoFacturado = tmp.EstadoFacturado
-                Set tmpRto.cliente = tmp.cliente
+                Set tmpRto.Cliente = tmp.Cliente
                 Set tmpRto.usuarioCreador = tmp.usuarioCreador
                 grilla.RefreshRowIndex i
                 Exit For
@@ -1270,7 +1271,7 @@ Me.ProgressBar.max = remitos.count
 
             xlWorksheet.Cells(idx, 1).value = Remito.numero
             
-            xlWorksheet.Cells(idx, 2).value = Remito.cliente.razon
+            xlWorksheet.Cells(idx, 2).value = Remito.Cliente.razon
             xlWorksheet.Cells(idx, 3).value = Remito.detalle
             
             xlWorksheet.Cells(idx, 4).value = Remito.FEcha

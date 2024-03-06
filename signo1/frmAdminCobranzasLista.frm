@@ -549,7 +549,10 @@ Private Sub llenarLista()
 ' TOTALIZADOR DE VALORES RECIBIDOS POR RECIBO
     For Each Recibo In recibos
         TotalRecibido = TotalRecibido + Recibo.TotalEstatico.TotalRecibidoEstatico
-        
+    If Recibo.estado = Reciboanulado Then
+    TotalRecibido = TotalRecibido - Recibo.TotalEstatico.TotalRecibidoEstatico
+    End If
+    
     Next
     
     Me.lblTotalRecibido(1).caption = FormatCurrency(funciones.FormatearDecimales(TotalRecibido))
@@ -673,14 +676,15 @@ Private Sub grilla_recibos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmar
     Values(1) = Recibo.Id
     Values(2) = Format(Recibo.FEcha, "yyyy/mm/dd", vbSunday)
 
-    Values(3) = Recibo.cliente.razon
+    Values(3) = Recibo.Cliente.razon
     Values(4) = Recibo.FechaCreacion
     Values(5) = Recibo.moneda.NombreCorto
     
-    If Recibo.estado = 1 Then
+    If Recibo.estado = 1 Or Recibo.estado = Reciboanulado Then
     Values(6) = "-"
     Values(7) = "-"
     Values(8) = "-"
+        
     Values(9) = "-"
     Values(10) = "-"
     

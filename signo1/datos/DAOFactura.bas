@@ -1544,7 +1544,7 @@ err91:
     MsgBox Err.Description
 End Function
 
-Public Function FindAllByRemitos(remitosNumeros As Collection, facturasNumero As Integer) As Dictionary
+Public Function FindAllByRemitos(remitosNumeros As Collection) As Dictionary
 
     Dim recordsetConItems As Boolean
     Dim recordsetConItems2 As Boolean
@@ -2247,8 +2247,8 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(F.totalPercepciones)
         seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.total)
 
-''        QRHelper.generar F
-''        Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.Id & ".bmp")
+        QRHelper.generar F
+        Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.Id & ".bmp")
 
 
         'rptFacturaElectronica.ReportWidth = Largo

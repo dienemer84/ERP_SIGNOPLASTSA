@@ -31,6 +31,9 @@ Public EtiquetasImpresas As Double
 
 Public CantidadEntregada As Double
 Public CantidadFacturada As Double
+
+Public CantidadFacturadaReal As Double
+
 Public CantidadFabricados As Double
 Public CantidadEnviadasAStock As Double
 
@@ -70,14 +73,14 @@ Public Descuento As Double
 Public Property Get DescuentoFormateado() As Double
     DescuentoFormateado = 1 - (Me.Descuento / 100)
 End Property
+
+
 Public Property Get SubTotalConDescuento() As Double
     SubTotalConDescuento = Me.Precio * Me.DescuentoFormateado
 End Property
 
 
 Public Property Get TotalConDescuento() As Double
-
-
     Dim saldo_piezas As Double
     Dim tot As Double
     tot = 0
@@ -90,9 +93,13 @@ Public Property Get TotalConDescuento() As Double
     TotalConDescuento = funciones.RedondearDecimales(Me.Monto_Facturado + tot)
 
 End Property
+
+
 Public Property Get TotalAFacturar() As Double
     TotalAFacturar = Me.TotalConDescuento - Me.Monto_Facturado
 End Property
+
+
 Public Property Get TotalSinDescuento() As Double
 '    TotalSinDescuento = Me.Precio * Me.CantidadPedida
     Dim saldo_piezas As Double
@@ -133,6 +140,8 @@ Public Property Get Cantidad_Fabricada() As Double
     ' End If
     Cantidad_Fabricada = c
 End Property
+
+
 Public Property Get Cantidad_Entregada() As Double
     Dim c As Double
     c = 0
@@ -158,14 +167,14 @@ Public Property Get Cantidad_Entregada() As Double
 
     Cantidad_Entregada = c
 End Property
+
+
 Public Property Get Monto_Facturado() As Double
     Dim c As Double
     c = 0
     Dim deta2 As DetalleOrdenTrabajo
 
-
-
-    '   If Me.idDetalleOtPadre = -1 Then
+   '   If Me.idDetalleOtPadre = -1 Then
 
     If IsSomething(Me.DetallesHijasMarcoPadre) Then
         If Me.DetallesHijasMarcoPadre.count > 0 Then
@@ -182,6 +191,8 @@ Public Property Get Monto_Facturado() As Double
     End If
     Monto_Facturado = c
 End Property
+
+
 Public Property Get Cantidad_Facturada() As Double
     Dim c As Double
     c = 0
@@ -202,8 +213,6 @@ Public Property Get Cantidad_Facturada() As Double
         c = c + Me.CantidadFacturada
     End If
     Cantidad_Facturada = c
-
-
 
 End Property
 
@@ -241,7 +250,6 @@ Public Property Get CantidadConsumida() As Double
     Next
     CantidadConsumida = T
 End Property
-
 
 
 Public Function MarcoCantidadDisponibles() As Double
