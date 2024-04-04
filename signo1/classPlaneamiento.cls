@@ -57,8 +57,8 @@ End Property
 Public Property Get cantidadItems() As Long
     cantidadItems = rs!cantidadItems
 End Property
-Public Property Get cliente() As String
-    cliente = rs!cliente
+Public Property Get Cliente() As String
+    Cliente = rs!Cliente
 End Property
 Public Property Get count() As Long
     count = rs!count
@@ -266,6 +266,8 @@ err2:
     Resume Next
     informePedidoContaduria = False
 End Function
+
+
 Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As Double, Optional idDetallePedido As Long, Optional idpedido As Long, Optional otoe = 1, Optional vector, Optional valor2, Optional deta As DetalleOrdenTrabajo, Optional mostrar_obs As Boolean = False, Optional ot_header As String = vbNullString) As Boolean
     Dim rto As Remito
     Set rto = DAORemitoS.FindById(CLng(Remito))
@@ -702,12 +704,12 @@ Public Function informePieza2(idPiezaPedido, DIALOGO As Boolean, Optional conjun
         razon = rs!razon
         item = rs!item
         If conjunto Then
-            pieza = detalle
+            Pieza = detalle
             Nota = emtpy
         Else
-            pieza = rs!detalle
+            Pieza = rs!detalle
             Nota = rs!Nota
-            pieza = Trim(pieza) & " " & Trim(Nota)
+            Pieza = Trim(Pieza) & " " & Trim(Nota)
 
         End If
         idPieza = rs!pizza
@@ -733,7 +735,7 @@ Public Function informePieza2(idPiezaPedido, DIALOGO As Boolean, Optional conjun
         pedido_pieza2.Sections("observar").Controls("lblNota").caption = IIf(IsNull(Nota), vbNullString, Nota)
         pedido_pieza2.Sections("cabeza").Controls("lblfechaentrega").caption = fecEnt
         pedido_pieza2.Sections("cabeza").Controls("entregait").caption = eni
-        pedido_pieza2.Sections("cabeza").Controls("lblDetalle").caption = pieza
+        pedido_pieza2.Sections("cabeza").Controls("lblDetalle").caption = Pieza
         pedido_pieza2.Sections("observar").Controls("copia").caption = copia
 
         If Cantidad = 0 Then
@@ -1164,12 +1166,12 @@ Public Function rs_materiales(Id As Long, Origen As Integer) As Recordset
     Set r_piezas = stock.ListaPiezas(Id, Ot, presu, otro)
     'r_piezas.MoveFirst
     While Not r_piezas.EOF
-        pieza = CLng(r_piezas!idPieza)
+        Pieza = CLng(r_piezas!idPieza)
         cantidad_p = CDbl(r_piezas!Cantidad)
         'strsql = "select m.codigo,id_material, largo,ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad from desarrollo_material dm inner join materiales m on dm.id_material=m.id  where id_pieza=" & pieza
         'strsql = " select m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,id_material, largo,ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m where dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and id_pieza=" & pieza
         'strsql = " select vm.valor_unitario,vm.fecha_actualizacion,m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,vm.id_material, largo,ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m, valores_MATERIALES vm where dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and vm.id_material=m.id and id_pieza=" & pieza
-        strsql = " select mo.nombre_corto,m.valor_unitario,m.fecha_valor as  fecha_actualizacion,m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,m.id as id_material, dm.largo,dm.ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m, AdminConfigMonedas mo where m.id_moneda=mo.id and dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and  id_pieza=" & pieza
+        strsql = " select mo.nombre_corto,m.valor_unitario,m.fecha_valor as  fecha_actualizacion,m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,m.id as id_material, dm.largo,dm.ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m, AdminConfigMonedas mo where m.id_moneda=mo.id and dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and  id_pieza=" & Pieza
         Set r_1 = conectar.RSFactory(strsql)
         While Not r_1.EOF
             IdMaterial = r_1!id_material

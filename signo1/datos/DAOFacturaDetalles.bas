@@ -1,5 +1,5 @@
 Attribute VB_Name = "DAOFacturaDetalles"
-Option Explicit
+     Option Explicit
 
 Public Function Guardar(detalle As FacturaDetalle) As Boolean
     On Error GoTo err1
@@ -57,6 +57,7 @@ err1:
     Guardar = False
 End Function
 
+
 Public Function Save(deta As FacturaDetalle) As Boolean
     Save = True
     conectar.BeginTransaction
@@ -67,10 +68,11 @@ err1:
     conectar.RollBackTransaction
     Save = False
 End Function
+
+
 Public Function FindByFactura(idFactura As Long) As Collection
     Set FindByFactura = FindAll("idFactura= " & idFactura)
 End Function
-
 
 
 Public Function FindAll(Optional filtro As String = vbNullString, Optional withFacturaNoLazy As Boolean = False) As Collection
@@ -137,6 +139,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tablaFacturaDetalle A
     End If
     Set Map = F
 End Function
+
 
 Public Function Delete(filter As String) As Boolean
     Delete = conectar.execute("DELETE FROM AdminFacturasDetalleNueva WHERE " & filter)

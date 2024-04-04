@@ -825,6 +825,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
         ' Set Factura = DAOFactura.FindById(i)
 
         If Not DAOFacturaHistorial.agregar(Factura, "FACTURA APROBADA!") Then GoTo err5
+        
         Dim col As New Collection
         Dim deta As FacturaDetalle
         Dim q As String

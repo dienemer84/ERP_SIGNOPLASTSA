@@ -62,7 +62,7 @@ Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Option
     Dim Nueva As Boolean
     If T.Id = 0 Then
         Nueva = True
-        '        q = "INSERT INTO remitos (detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
+'                 q = "INSERT INTO remitos (detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
                  '          & "idUsuario, numero,idUsuarioAprobador) Values (" _
                  '          & conectar.Escape(T.detalle) & ", " _
                  '          & conectar.GetEntityId(T.cliente) & ", " _
@@ -355,7 +355,8 @@ Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
             End If
         End If
         
-        MsgBox "Se ajustó el estado de los items de los remitos que estaban dentro del comprobante vinculado"
+        'SE QUITA ESTE MENSAJE DE ERROR POR SER REITERATIVO LA CANTIDAD DE ITEMS QUE TIENE CADA REMITO
+        'MsgBox "Se ajustó el estado de los items de los remitos que estaban dentro del comprobante vinculado"
     End If
 End Function
 

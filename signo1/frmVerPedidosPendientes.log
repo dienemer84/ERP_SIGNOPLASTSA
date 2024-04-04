@@ -1,19 +1,2 @@
-Line 26: Class XtremeSuiteControls.PushButton of control Command1 was not a loaded control class.
-Line 122: Class XtremeSuiteControls.PushButton of control cmdImprimir was not a loaded control class.
-Line 145: Class XtremeSuiteControls.PushButton of control cmdConsultas was not a loaded control class.
-Line 168: Class XtremeSuiteControls.PushButton of control btnTareasOrdenes was not a loaded control class.
-Line 191: Class XtremeSuiteControls.GroupBox of control GroupBox1 was not a loaded control class.
-Line 282: Class XtremeSuiteControls.GroupBox of control grpFecha was not a loaded control class.
-Line 304: Class XtremeSuiteControls.DateTimePicker of control dtpDesde was not a loaded control class.
-Line 326: Class XtremeSuiteControls.ComboBox of control cboRangos was not a loaded control class.
-Line 349: Class XtremeSuiteControls.DateTimePicker of control dtpHasta was not a loaded control class.
-Line 372: Class XtremeSuiteControls.Label of control Label4 was not a loaded control class.
-Line 395: Class XtremeSuiteControls.Label of control Label5 was not a loaded control class.
-Line 418: Class XtremeSuiteControls.Label of control Label6 was not a loaded control class.
-Line 442: Class XtremeSuiteControls.PushButton of control cmdBuscar was not a loaded control class.
-Line 466: Class XtremeSuiteControls.ComboBox of control cboClientes was not a loaded control class.
-Line 491: Class XtremeSuiteControls.PushButton of control cmdSinCliente was not a loaded control class.
-Line 514: Class XtremeSuiteControls.ComboBox of control cboCCostos was not a loaded control class.
-Line 539: Class XtremeSuiteControls.PushButton of control cmdSinCCosto was not a loaded control class.
-Line 562: Class XtremeSuiteControls.Label of control LBLMENSAJE2 was not a loaded control class.
-Line 585: Class XtremeSuiteControls.Label of control LBLMENSAJE was not a loaded control class.
+'0' could not be loaded
+Line 0: The file C:\Documents and Settings\nicolasba\Desktop\repo\signo1\frmVerPedidosPendientes.frm could not be loaded.

@@ -20,6 +20,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
       Left            =   11760
       TabIndex        =   27
       Top             =   1800
+      Visible         =   0   'False
       Width           =   375
       _Version        =   786432
       _ExtentX        =   661
@@ -76,7 +77,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Height          =   285
          Left            =   1080
          TabIndex        =   28
-         Top             =   2805
+         Top             =   2640
          Visible         =   0   'False
          Width           =   1695
       End
@@ -108,7 +109,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
       Begin XtremeSuiteControls.GroupBox GroupBox 
          Height          =   855
          Index           =   1
-         Left            =   6240
+         Left            =   6360
          TabIndex        =   20
          Top             =   1680
          Width           =   4815
@@ -173,9 +174,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Left            =   6360
          TabIndex        =   12
          Top             =   240
-         Width           =   4695
+         Width           =   4815
          _Version        =   786432
-         _ExtentX        =   8281
+         _ExtentX        =   8493
          _ExtentY        =   2355
          _StockProps     =   79
          Caption         =   "Fecha"
@@ -331,7 +332,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Height          =   255
          Left            =   360
          TabIndex        =   29
-         Top             =   2820
+         Top             =   2640
          Visible         =   0   'False
          Width           =   615
       End
@@ -651,6 +652,7 @@ Private Sub listaRemitos()
     If LenB(Me.txtDescripcion.text) > 0 Then
         filtro = filtro & " and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_DETALLE & " like '%" & Trim(Me.txtDescripcion) & "%'"
     End If
+    
     If Me.cboClientes.ListIndex > -1 Then
         filtro = filtro & " and " & DAORemitoS.TABLA_CLIENTE & ".id=" & (Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
     End If
@@ -979,7 +981,16 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.AnularRto = (tmpRto.estado = EstadoRemito.RemitoAprobado)
             Me.printRto.Enabled = (tmpRto.estado = EstadoRemito.RemitoAprobado Or tmpRto.estado = RemitoAnulado)
             Me.endRto.Enabled = (Permisos.planRemitosAprobaciones And tmpRto.estado = RemitoPendiente)
-            Me.mnuEditar.Enabled = (tmpRto.estado = RemitoPendiente)
+            
+            If tmpRto.estado = RemitoPendiente Then
+                Me.mnuEditar.Enabled = True
+                Me.mnuEditar.caption = "Editar..."
+            ElseIf tmpRto.estado = RemitoAprobado Then
+                Me.mnuEditar.caption = "Editar detalles..."
+                Me.mnuEditar.Enabled = True
+            End If
+            
+            
             Me.mnuFacturarRemito.Enabled = (tmpRto.estado = EstadoRemito.RemitoAprobado)
 
             Me.PopupMenu Me.mnuRtos

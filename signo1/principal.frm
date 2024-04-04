@@ -188,9 +188,9 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim frmNuevaOT As New frmNuevaOrdenTrabajo
         frmNuevaOT.Show
 
-    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO:
-        Dim frmpp As New frmPlaneamientoPedidosPendientes
-        frmpp.Show
+'    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO:
+'        Dim frmpp As New frmVerPlaneamientoPedidosPendientes
+'        frmpp.Show
         
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__HISTORICO
         frmPlaneamientoResumenProduccion.Show
@@ -498,7 +498,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         
     Case ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_VAA:
        frmAdminExtrasCbtesVentasAdeudadosAl.Show
-    
+
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES:
         Dim cccfff As New frmAdminCheques
         cccfff.Show

@@ -1,11 +1,3 @@
-Line 17: Class XtremeSuiteControls.GroupBox of control GroupBox1 was not a loaded control class.
-Line 54: Class XtremeSuiteControls.Label of control Label2 was not a loaded control class.
-Line 68: Class XtremeSuiteControls.TabControl of control TabControl1 was not a loaded control class.
-Line 90: Class XtremeSuiteControls.GroupBox of control GroupBox2 was not a loaded control class.
-Line 102: Class XtremeSuiteControls.PushButton of control PushButton1 was not a loaded control class.
-Line 115: Class XtremeSuiteControls.PushButton of control Command1 was not a loaded control class.
-Line 172: Class XtremeSuiteControls.GroupBox of control GroupBox3 was not a loaded control class.
-Line 232: Class XtremeSuiteControls.PushButton of control Command6 was not a loaded control class.
-Line 246: Class XtremeSuiteControls.GroupBox of control GroupBox4 was not a loaded control class.
-Line 291: Class XtremeSuiteControls.ComboBox of control cboMateriales was not a loaded control class.
-Line 306: Class XtremeSuiteControls.GroupBox of control GroupBox5 was not a loaded control class.
+Line 29: Class nucleo.ctrlCboIDPersona of control ctrlCboIDPersona1 was not a loaded control class.
+Line 35: The property name _ExtentX in ctrlCboIDPersona1 is invalid.
+Line 36: The property name _ExtentY in ctrlCboIDPersona1 is invalid.
