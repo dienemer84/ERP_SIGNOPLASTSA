@@ -167,10 +167,11 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Public cliente As clsCliente
+Public Cliente As clsCliente
 Private rcbos As New Collection
+Private ots As New Collection
 Private Ot As OrdenTrabajo
-Private ReciboA As recibo
+Private ReciboA As Recibo
 Public MostrarAnticipo As Boolean
 Dim q As String
 
@@ -194,9 +195,9 @@ Private Sub Form_Load()
     
     'CMDsINCliente_Click
 
-    If IsSomething(cliente) Then
+    If IsSomething(Cliente) Then
         'Me.GroupBox1.Enabled = False
-        Me.cboClientes.ListIndex = funciones.PosIndexCbo(cliente.id, Me.cboClientes)
+        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Cliente.Id, Me.cboClientes)
         Me.cboClientes.Enabled = False
         'Me.CMDsINCliente.Enabled = False
     End If
@@ -253,13 +254,13 @@ Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     
-    Set ReciboA = rcbos.item(RowIndex)
+    Set ReciboA = rcbos.item(rowIndex)
     
-    Values(1) = ReciboA.id
+    Values(1) = ReciboA.Id
     Values(2) = Format(ReciboA.FEcha, "yyyy/mm/dd", vbSunday)
-    Values(3) = Format(ReciboA.fechaCreacion, "yyyy/mm/dd", vbSunday)
+    Values(3) = Format(ReciboA.FechaCreacion, "yyyy/mm/dd", vbSunday)
     Values(6) = ReciboA.moneda.NombreCorto
     Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(ReciboA.ACuentaDisponible)), "$", "")
     Values(5) = enums.EnumEstadoRecibo(ReciboA.estado)
@@ -268,7 +269,7 @@ End Sub
 
 Private Sub PushButtonAceptar_Click()
     If IsSomething(Ot) Then
-        Set Ot = ots.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
+        Set Ot = ots.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
         Set Selecciones.OrdenTrabajo = Ot
     Else
         Set Selecciones.OrdenTrabajo = Nothing

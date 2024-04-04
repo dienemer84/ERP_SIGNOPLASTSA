@@ -188,9 +188,9 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim frmNuevaOT As New frmNuevaOrdenTrabajo
         frmNuevaOT.Show
 
-'    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO:
-'        Dim frmpp As New frmVerPlaneamientoPedidosPendientes
-'        frmpp.Show
+    Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO:
+        Dim frmpp As New frmPlaneamientoPedidosPendientes
+        frmpp.Show
         
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__HISTORICO
         frmPlaneamientoResumenProduccion.Show

@@ -194,6 +194,8 @@ Option Explicit
 
 Public Remito As Remito
 'Dim tmp As remitoDetalle
+Private remitos As New Collection
+Private col As New Collection
 Dim tmp As remitoDetalle
 Public colremitosdetalles As New Collection
 Dim filtro As String
@@ -277,13 +279,13 @@ End Sub
 '
 'End Sub
 
-Private Sub gridRemitosCompletos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridRemitosCompletos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
    
     '<--- Datos del detalle del Remito --->
-        If RowIndex > 0 And col.count > 0 Then
-        Set tmp = colremitosdetalles(RowIndex)
+        If rowIndex > 0 And col.count > 0 Then
+        Set tmp = colremitosdetalles(rowIndex)
 '            Values(7) = tmp.RemitoAlQuePertenece.EstadoFacturado
-            Values(8) = RowIndex
+            Values(8) = rowIndex
             Values(9) = tmp.FEcha
             Values(10) = ""
             Values(11) = ""
