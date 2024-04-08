@@ -1,31 +1,45 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmRemitosEntregados 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Remitos aplicados..."
-   ClientHeight    =   4365
+   ClientHeight    =   5415
    ClientLeft      =   7680
    ClientTop       =   8310
-   ClientWidth     =   5085
+   ClientWidth     =   6045
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   4365
-   ScaleWidth      =   5085
+   ScaleHeight     =   5415
+   ScaleWidth      =   6045
+   Begin XtremeSuiteControls.PushButton btnFormato 
+      Height          =   375
+      Left            =   120
+      TabIndex        =   3
+      Top             =   4920
+      Width           =   5775
+      _Version        =   786432
+      _ExtentX        =   10186
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Ver Listado"
+      UseVisualStyle  =   -1  'True
+   End
    Begin VB.CommandButton Command1 
       Cancel          =   -1  'True
       Caption         =   "Command1"
       Height          =   375
-      Left            =   4320
+      Left            =   4440
       TabIndex        =   1
-      Top             =   5160
+      Top             =   7920
       Width           =   615
    End
    Begin MSComctlLib.ImageList ImageList1 
-      Left            =   0
-      Top             =   4920
+      Left            =   120
+      Top             =   7680
       _ExtentX        =   1005
       _ExtentY        =   1005
       BackColor       =   -2147483643
@@ -46,12 +60,13 @@ Begin VB.Form frmRemitosEntregados
       Left            =   0
       TabIndex        =   2
       Top             =   0
-      Width           =   5055
-      _ExtentX        =   8916
+      Width           =   6015
+      _ExtentX        =   10610
       _ExtentY        =   7646
       Arrange         =   2
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
+      AllowReorder    =   -1  'True
       _Version        =   393217
       Icons           =   "ImageList1"
       SmallIcons      =   "ImageList1"
@@ -62,12 +77,25 @@ Begin VB.Form frmRemitosEntregados
       Appearance      =   1
       NumItems        =   0
    End
+   Begin XtremeSuiteControls.Label lblContador 
+      Height          =   375
+      Left            =   3240
+      TabIndex        =   4
+      Top             =   4440
+      Width           =   2535
+      _Version        =   786432
+      _ExtentX        =   4471
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Cantidad Remitos: 0"
+      Alignment       =   1
+   End
    Begin VB.Label idPedidoEntrega 
       Caption         =   "Label1"
       Height          =   255
-      Left            =   1920
+      Left            =   2040
       TabIndex        =   0
-      Top             =   5160
+      Top             =   7920
       Width           =   1095
    End
 End
@@ -82,12 +110,25 @@ Public Property Let Origen(Origen)
     vorigen = Origen
 End Property
 
+Private Sub btnFormato_Click()
+    If Me.lstRemitos.View = lvwIcon Then
+        Me.lstRemitos.View = lvwSmallIcon
+
+        Me.btnFormato.caption = "Ver Iconos"
+    ElseIf Me.lstRemitos.View = lvwSmallIcon Then
+        Me.lstRemitos.View = lvwIcon
+        Me.btnFormato.caption = "Ver Listado"
+    End If
+    
+End Sub
+
 Private Sub Command1_Click()
     Unload Me
 End Sub
 
 Private Sub Form_Activate()
     llenarLstRemitos
+    Me.lblContador.caption = "Cantidad Remitos : " & Me.lstRemitos.ListItems.count
 End Sub
 Private Sub llenarLstRemitos()
     Me.lstRemitos.ListItems.Clear
