@@ -1402,7 +1402,7 @@ Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Varia
                 Values(12) = EnumTipoOT(.TipoOrden - 1)
             End If
 
-            Values(13) = .cliente.razon
+            Values(13) = .Cliente.razon
 
             'cambio entre values2 y values13 por pedido de karin hecho el 7-4
         End With
@@ -1427,7 +1427,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 m_ordenesTrabajo(x).FormaDePagoAnticipo = EVENTO.Elemento.FormaDePagoAnticipo
                 m_ordenesTrabajo(x).FormaDePagoSaldo = EVENTO.Elemento.FormaDePagoSaldo
                 m_ordenesTrabajo(x).Anticipo = EVENTO.Elemento.Anticipo
-                Set m_ordenesTrabajo(x).cliente = EVENTO.Elemento.cliente
+                Set m_ordenesTrabajo(x).Cliente = EVENTO.Elemento.Cliente
                 Set m_ordenesTrabajo(x).ClienteFacturar = EVENTO.Elemento.ClienteFacturar
                 Me.grid.RefreshRowIndex x
                 Exit For
@@ -1449,8 +1449,9 @@ Private Sub mnuAsociarFacturaAnticipo_Click()
     Dim selItem As JSSelectedItem
 
     If Me.grid.SelectedItems.count = 0 Then Exit Sub
-
+   
     Dim selecFac As New frmAdminFacturasNCElegirFC
+    selecFac.idCliente = aux_ordenTrabajo.Cliente.Id
     selecFac.EstadosDocs.Add EstadoFacturaCliente.Aprobada
     selecFac.TiposDocs.Add tipoDocumentoContable.Factura
 
