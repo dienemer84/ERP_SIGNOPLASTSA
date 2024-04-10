@@ -294,9 +294,9 @@ Public Function CambiarEstadoFacturado(T As Long, estadoNuevo As EstadoRemitoFac
         msg = "remito no facturado"
     ElseIf estadoNuevo = RemitoFacturadoParcial Then
         msg = "remito facturado parcial"
-
+                      
     End If
-
+    MsgBox ("Remito Actualizado!")
 
     Dim rto As Remito
     Set rto = DAORemitoS.FindById(T)
@@ -316,6 +316,7 @@ err1:
 
     CambiarEstadoFacturado = False
 End Function
+
 
 
 Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
@@ -358,8 +359,52 @@ Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
         'SE QUITA ESTE MENSAJE DE ERROR POR SER REITERATIVO LA CANTIDAD DE ITEMS QUE TIENE CADA REMITO
         'MsgBox "Se ajustó el estado de los items de los remitos que estaban dentro del comprobante vinculado"
     End If
+    
+
+    
 End Function
 
+Public Function InformarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
+    Dim deta As remitoDetalle
+    Dim cf As Long
+    Dim cnf As Long
+    Dim ct As Long
+    Dim c As Long
+    c = 0
+    ct = 0
+    cf = 0
+    cnf = 0
+    Dim rto As Remito
+    Set rto = DAORemitoS.FindAll("and " & DAORemitoS.TABLA_REMITO & ".id=" & idRto)(1)
+    If Not IsNull(rto) Then Set rto.Detalles = DAORemitoSDetalle.FindAllByRemito(rto.Id)
+
+    If Not IsNull(rto.Detalles) Then
+        For Each deta In rto.Detalles
+            ct = ct + 1
+            If deta.facturable Then c = c + 1
+            If Not deta.facturable Then cnf = cnf + 1
+            If deta.Facturado And deta.facturable Then cf = cf + 1
+        Next deta
+
+
+        If ct = cnf Then
+            AnalizarEstadoFacturado = RemitoNoFacturable
+        Else
+            ct = ct - cnf
+
+            If cf = 0 And ct > 0 Then
+                AnalizarEstadoFacturado = RemitoNoFacturado
+            ElseIf cf + cnf = ct + cnf Then
+                AnalizarEstadoFacturado = RemitoFacturadoTotal
+            ElseIf ct + cnf > cf + cnf Then
+                AnalizarEstadoFacturado = RemitoFacturadoParcial
+            End If
+        End If
+        
+        'SE QUITA ESTE MENSAJE DE ERROR POR SER REITERATIVO LA CANTIDAD DE ITEMS QUE TIENE CADA REMITO
+        'MsgBox "Se ajustó el estado de los items de los remitos que estaban dentro del comprobante vinculado"
+    End If
+End Function
 
 Public Function Anular(Remito As Remito) As Boolean
     On Error GoTo erranu

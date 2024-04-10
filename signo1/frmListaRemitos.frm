@@ -62,14 +62,14 @@ Begin VB.Form frmPlaneamientoRemitosLista
       EndProperty
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   3585
+      Height          =   3105
       Left            =   120
       TabIndex        =   1
       Top             =   120
       Width           =   16965
       _Version        =   786432
       _ExtentX        =   29924
-      _ExtentY        =   6324
+      _ExtentY        =   5477
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
@@ -396,7 +396,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
       Height          =   4575
       Left            =   120
       TabIndex        =   0
-      Top             =   3840
+      Top             =   3360
       Width           =   16935
       _ExtentX        =   29871
       _ExtentY        =   8070
@@ -920,7 +920,7 @@ End Function
 Private Sub Form_Resize()
     On Error Resume Next
     Me.grilla.Width = Me.ScaleWidth - 180
-    Me.grilla.Height = Me.ScaleHeight - 3200
+    Me.grilla.Height = Me.ScaleHeight - 4000
     Me.GroupBox1.Width = Me.ScaleWidth - 180
 
 End Sub

@@ -617,7 +617,7 @@ Private Sub ImprimirHojaTarea(ptpId As Long, P As Pieza, d As DetalleOrdenTrabaj
     informe_tareas.Sections("Sección4").Controls("lblReferencia").caption = P.nombre
     informe_tareas.Sections("Sección4").Controls("lblfechaEntrega").caption = d.FechaEntrega
     informe_tareas.Sections("Sección4").Controls("barCode").caption = "*" & Format(ptp.Id, "00000000") & "*"
-    informe_tareas.Sections("Sección4").Controls("lblCliente").caption = vpedido.cliente.razon
+    informe_tareas.Sections("Sección4").Controls("lblCliente").caption = vpedido.Cliente.razon
 
     informe_tareas.Sections("Sección2").Controls("Etiqueta4").caption = "Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea & " (Sector: " & ptp.Tarea.Sector.Sector & ")"
 

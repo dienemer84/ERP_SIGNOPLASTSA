@@ -247,6 +247,7 @@ Public Sub LlenarGrid()
 
 End Sub
 
+
 Public Sub LlenarGridDetalles()
     Dim col As New Collection
     

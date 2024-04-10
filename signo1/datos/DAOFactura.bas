@@ -876,14 +876,18 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
                     rto = col.item(x)
                     Set Remito = DAORemitoS.FindById(rto)
                     Remito.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(Remito.Id)
+                    'MsgBox "ACA TÁ!"
                     If Remito.estado = RemitoPendiente Then Err.Raise 206, "Remito " & Remito.numero, "El Remito no esta aprobado"
                     If Remito.estado = RemitoAnulado Then Err.Raise 205, "Remito " & Remito.numero, "El Remito fue anulado en otra sesion"
                     If Not DAORemitoS.Guardar(Remito) Then Err.Raise 201, "Remito", "Imposible guardar el remito " & Remito.numero
                 Next
-
+           
             End If
         Next
+        
 
+        
+        
         If Factura.OTsFacturadasAnticipo.count > 0 And Factura.origenFacturado = OrigenFacturadoAnticipoOT Then   'si la factura es de Anticipo
             If Not EnlazarFacturaAnticipoConOT(Factura) Then GoTo err5
         End If
@@ -1831,6 +1835,7 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
                         esreto = DAORemitoS.AnalizarEstadoFacturado(reto)
 
                         If Not conectar.execute("update remitos set estadoFacturado=" & esreto & " where id=" & reto) Then GoTo er12
+                        MsgBox ("Remito Actualizado!")
                         
                     Else
                         GoTo er12
