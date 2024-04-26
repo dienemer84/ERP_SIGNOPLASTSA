@@ -1345,9 +1345,6 @@ Public Function Imprimir(idFactura As Long) As Boolean
         Printer.CurrentX = xval
         Printer.Print ss;
 
-
-
-
         Printer.Print Tab(14);
         'Printer.Print Trim(remito);
         If IsSomething(objDeta.detalleRemito) Then
@@ -1835,7 +1832,7 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
                         esreto = DAORemitoS.AnalizarEstadoFacturado(reto)
 
                         If Not conectar.execute("update remitos set estadoFacturado=" & esreto & " where id=" & reto) Then GoTo er12
-                        MsgBox ("Remito Actualizado!")
+'                        MsgBox ("Remito Actualizado!")
                         
                     Else
                         GoTo er12
@@ -2170,14 +2167,24 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         seccion.Controls.item("lblCliente").caption = Format(F.Cliente.Id, "0000") & " - " & F.Cliente.razon
         seccion.Controls.item("lblCuit").caption = F.Cliente.Cuit
         seccion.Controls.item("lblIva").caption = F.Cliente.TipoIVA.detalle
+        
 
         'fce_nemer_29052020
         seccion.Controls.item("lblCondicionPagoFCE").caption = F.observaciones
 
         seccion.Controls.item("lblDireccion").caption = F.Cliente.Domicilio & ", " & F.Cliente.localidad.nombre & ", " & F.Cliente.provincia.nombre
         seccion.Controls.item("lblReferencia").caption = F.OrdenCompra
-
-
+        
+        If F.Cliente.CuitPais <> "" Then
+            seccion.Controls.item("txtCuitPais").caption = "Cuit Pais: " & F.Cliente.CuitPais
+            seccion.Controls.item("txtIdImpositivo").caption = "Id Impositivo: " & F.Cliente.IDImpositivo
+        Else
+            seccion.Controls.item("txtCuitPais").caption = ""
+            seccion.Controls.item("txtIdImpositivo").caption = ""
+        End If
+        
+        
+        
         Set seccion = rptFacturaElectronica.Sections("footer")
 
         Set c = seccion.Controls.item("lblBarcode")

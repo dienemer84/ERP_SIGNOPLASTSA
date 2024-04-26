@@ -184,7 +184,7 @@ Private Sub llenarLST()
     For Each fac In facs
 
         Set x = Me.lstFacturas.ListItems.Add(, , fac.GetShortDescription(False, True))
-        x.SubItems(1) = fac.cliente.razon
+        x.SubItems(1) = fac.Cliente.razon
         x.SubItems(2) = fac.FechaEmision
         x.SubItems(3) = enums.EnumEstadoDocumentoContable(fac.estado)
 

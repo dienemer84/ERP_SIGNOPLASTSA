@@ -26,7 +26,7 @@ Public Iva As Double
 Public percepciones As Double
 ' Public PercepcionesIVA As Double
 Public Exento As Double
-Public Total As Double
+Public total As Double
 Public estado As EstadoFacturaCliente
 Public FacturaId As Long
 Public LiquidacionId As Long
@@ -40,7 +40,7 @@ Public Redondeo As Double
 
 Public Function TienePercepcionesIVA() As Boolean
     Dim P As clsPercepcionesAplicadas
-
+   
     For Each P In ListaPercepciones
 
         If P.Percepcion.Id = Configurar.IdPercepcionIVA Then
@@ -52,6 +52,8 @@ Public Function TienePercepcionesIVA() As Boolean
     Next P
     TienePercepcionesIVA = False
 
+
+    Exit Function
 End Function
 
 Public Function TienePercepcionesIIBB() As Boolean
@@ -60,19 +62,12 @@ Public Function TienePercepcionesIIBB() As Boolean
     Dim IIBB As Integer
     For Each P In ListaPercepciones
         Dim esta As Boolean
-
-
         For Each tp In Configurar.idPercepcionesIIBB
             If tp.Id = P.Percepcion.Id Then
                 TienePercepcionesIIBB = True
                 Exit Function
             End If
         Next
-
-
-
-
-
 
     Next P
     TienePercepcionesIIBB = False

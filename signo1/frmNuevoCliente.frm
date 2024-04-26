@@ -4,17 +4,31 @@ Begin VB.Form frmVentasClienteNuevo
    BackColor       =   &H00FF8080&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Nuevo Cliente..."
-   ClientHeight    =   7020
+   ClientHeight    =   7965
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7830
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7020
+   ScaleHeight     =   7965
    ScaleWidth      =   7830
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.TextBox txtIDImpositivo 
+      Height          =   285
+      Left            =   1560
+      TabIndex        =   34
+      Top             =   2760
+      Width           =   3735
+   End
+   Begin VB.TextBox txtCuitPais 
+      Height          =   285
+      Left            =   1560
+      TabIndex        =   33
+      Top             =   2400
+      Width           =   3735
+   End
    Begin VB.TextBox txtCP 
       Height          =   285
       Left            =   1560
@@ -26,7 +40,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   855
       Left            =   120
       TabIndex        =   31
-      Top             =   6000
+      Top             =   6960
       Width           =   7575
       Begin XtremeSuiteControls.PushButton btnGuardar 
          Height          =   495
@@ -82,7 +96,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   225
       Left            =   4200
       TabIndex        =   14
-      Top             =   5640
+      Top             =   6600
       Value           =   1  'Checked
       Width           =   3495
    End
@@ -91,7 +105,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   285
       Left            =   1560
       TabIndex        =   13
-      Top             =   5160
+      Top             =   5880
       Width           =   5535
    End
    Begin VB.TextBox Text1 
@@ -121,7 +135,7 @@ Begin VB.Form frmVentasClienteNuevo
       Left            =   1560
       TabIndex        =   6
       Text            =   "Text1"
-      Top             =   2535
+      Top             =   3255
       Width           =   4935
    End
    Begin VB.TextBox Text1 
@@ -131,7 +145,7 @@ Begin VB.Form frmVentasClienteNuevo
       Left            =   1560
       TabIndex        =   7
       Text            =   "Text1"
-      Top             =   2880
+      Top             =   3600
       Width           =   4935
    End
    Begin VB.TextBox Text1 
@@ -141,7 +155,7 @@ Begin VB.Form frmVentasClienteNuevo
       Left            =   1560
       TabIndex        =   8
       Text            =   "Text1"
-      Top             =   3255
+      Top             =   3975
       Width           =   4935
    End
    Begin VB.TextBox Text1 
@@ -152,7 +166,7 @@ Begin VB.Form frmVentasClienteNuevo
       Left            =   1560
       TabIndex        =   9
       Text            =   "Text1"
-      Top             =   3615
+      Top             =   4335
       Width           =   4935
    End
    Begin VB.ComboBox CboIVA 
@@ -161,7 +175,7 @@ Begin VB.Form frmVentasClienteNuevo
       Left            =   1560
       Style           =   2  'Dropdown List
       TabIndex        =   10
-      Top             =   3975
+      Top             =   4695
       Width           =   4935
    End
    Begin VB.TextBox txtFP 
@@ -169,14 +183,14 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   285
       Left            =   1560
       TabIndex        =   11
-      Top             =   4365
+      Top             =   5085
       Width           =   1380
    End
    Begin XtremeSuiteControls.ComboBox cboMonedas 
       Height          =   315
       Left            =   1560
       TabIndex        =   12
-      Top             =   4710
+      Top             =   5430
       Width           =   1380
       _Version        =   786432
       _ExtentX        =   2434
@@ -215,6 +229,42 @@ Begin VB.Form frmVentasClienteNuevo
       Sorted          =   -1  'True
       Text            =   "ComboBox1"
       AutoComplete    =   -1  'True
+   End
+   Begin VB.Label lblIDImpositivo 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ID Impositivo"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   0
+      TabIndex        =   36
+      Top             =   2760
+      Width           =   1335
+   End
+   Begin VB.Label lblCuitPais 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Cuit Pais"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   120
+      TabIndex        =   35
+      Top             =   2400
+      Width           =   1215
    End
    Begin VB.Label Label3 
       Alignment       =   1  'Right Justify
@@ -308,7 +358,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   255
       Left            =   480
       TabIndex        =   27
-      Top             =   4740
+      Top             =   5460
       Width           =   855
    End
    Begin VB.Label Label17 
@@ -327,7 +377,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   255
       Left            =   600
       TabIndex        =   26
-      Top             =   5175
+      Top             =   5895
       Width           =   735
    End
    Begin VB.Label Label15 
@@ -402,7 +452,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   255
       Left            =   360
       TabIndex        =   22
-      Top             =   2565
+      Top             =   3285
       Width           =   975
    End
    Begin VB.Label Label6 
@@ -421,7 +471,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   255
       Left            =   360
       TabIndex        =   21
-      Top             =   2910
+      Top             =   3630
       Width           =   975
    End
    Begin VB.Label Label7 
@@ -440,7 +490,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   255
       Left            =   360
       TabIndex        =   20
-      Top             =   3270
+      Top             =   3990
       Width           =   975
    End
    Begin VB.Label Label8 
@@ -459,7 +509,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   255
       Left            =   360
       TabIndex        =   19
-      Top             =   3630
+      Top             =   4350
       Width           =   975
    End
    Begin VB.Label Label9 
@@ -478,7 +528,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   255
       Left            =   360
       TabIndex        =   18
-      Top             =   4005
+      Top             =   4725
       Width           =   975
    End
    Begin VB.Label Label13 
@@ -497,7 +547,7 @@ Begin VB.Form frmVentasClienteNuevo
       Height          =   255
       Left            =   480
       TabIndex        =   17
-      Top             =   4380
+      Top             =   5100
       Width           =   855
    End
 End
@@ -524,11 +574,13 @@ Private Sub Guardar()
     telefono = UCase(Text1(4))
     Fax = UCase(Text1(5))
     email = UCase(Text1(6))
-    ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
+    ivan = Me.CboIVA.ItemData(Me.CboIVA.ListIndex)
     Cuit = Trim(Text1(7))
     FP = UCase(Me.txtFP)
     FP_detalle = UCase(Me.txtDetalleFP)
     valido = Val(Me.chkValido.value)
+    IDImpositivo = UCase(Me.txtIDImpositivo)
+    CuitPais = UCase(Me.txtCuitPais)
 
     CodigoPOS = UCase(txtCP)
     
@@ -572,7 +624,10 @@ Private Sub Guardar()
                 Cliente.ValidoRemitoFactura = valido
                 Cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
                 Cliente.CodigoPostal = CodigoPOS
-
+                
+                Cliente.IDImpositivo = IDImpositivo
+                Cliente.CuitPais = CuitPais
+                
                 Set Cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
                 Set Cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
 
@@ -620,7 +675,10 @@ Private Sub Guardar()
             vCliente.FormaPago = FP_detalle
             vCliente.ValidoRemitoFactura = valido
             vCliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
-
+            
+            vCliente.CuitPais = CuitPais
+            vCliente.IDImpositivo = IDImpositivo
+            
             vCliente.CodigoPostal = CodigoPOS
 
             Set vCliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
@@ -706,7 +764,7 @@ Private Sub Form_Load()
     For x = 0 To 10
         Text1(x) = Empty
     Next x
-    DAOTipoIva.LlenarCombo Me.cboIVA
+    DAOTipoIva.LlenarCombo Me.CboIVA
     Command1.caption = "Agregar"
     Me.caption = "Agregar Cliente..."
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
@@ -754,6 +812,9 @@ Private Sub llenarForm()
         Text1(6) = .email
         Text1(7) = .Cuit
         
+        Me.txtCuitPais = .CuitPais
+        Me.txtIDImpositivo = .IDImpositivo
+        
         Me.txtCP = .CodigoPostal
 
         'aca posiciono el combo
@@ -765,7 +826,7 @@ Private Sub llenarForm()
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
         txtFP = .FP
         Me.txtDetalleFP = .FormaPago
-        cboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIVA)
+        CboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, CboIVA)
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vCliente.idMonedaDefault, Me.cboMonedas)
 
     End With

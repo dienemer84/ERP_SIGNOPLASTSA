@@ -6,11 +6,11 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    ClientTop       =   555
    ClientWidth     =   14415
    StartUpPosition =   3  'Windows Default
-   _ExtentX        =   40428
+   _ExtentX        =   25426
    _ExtentY        =   19209
    _Version        =   393216
    _DesignerVersion=   100684101
-   ReportWidth     =   11115
+   ReportWidth     =   11160
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -30,14 +30,14 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    BeginProperty Section0 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "header"
-      Object.Height          =   2970
+      Object.Height          =   2985
       NumControls     =   18
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "marco1"
-         Object.Left            =   60
-         Object.Top             =   30
+         Object.Left            =   45
+         Object.Top             =   45
          Object.Width           =   11055
          Object.Height          =   2940
       EndProperty
@@ -366,12 +366,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       _Version        =   393216
       Name            =   "detailsHead"
       Object.Height          =   2715
-      NumControls     =   37
+      NumControls     =   39
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "marco2"
          Object.Left            =   45
+         Object.Top             =   30
          Object.Width           =   11055
          Object.Height          =   2340
       EndProperty
@@ -703,7 +704,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Name            =   "lblIva"
          Object.Left            =   2900
          Object.Top             =   370
-         Object.Width           =   3300
+         Object.Width           =   2185
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -1028,6 +1029,44 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "Hasta"
+      EndProperty
+      ItemType37      =   3
+      BeginProperty Item37 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "TxtCuitPais"
+         Object.Left            =   5460
+         Object.Top             =   405
+         Object.Width           =   2175
+         Object.Height          =   240
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "-"
+      EndProperty
+      ItemType38      =   3
+      BeginProperty Item38 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "TxtIdImpositivo"
+         Object.Left            =   7950
+         Object.Top             =   405
+         Object.Width           =   2910
+         Object.Height          =   270
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "-"
       EndProperty
    EndProperty
    SectionCode2    =   4

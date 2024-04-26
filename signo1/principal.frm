@@ -312,16 +312,26 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frm6001.VerInfoAdministracion = True
         frm6001.Show
 
+        '"Ver Detalle de Cta. Cte."
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS:
+        Dim frmcta As New frmCtaCte
+        frmcta.Show
 
+        '"Resúmen Saldos"
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS:
+        Dim frm1144 As New frmResumenSaldosProv
+        frm1144.TipoPersonaCta = TipoPersona.proveedor_
+        frm1144.caption = "Resúmen de saldos de Proveedores"
+        frm1144.Show
 
       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__CREAR_PROFORMA:
-            Dim f3245 As New frmAdminFacturasProformaEdicion
-            f3245.Show
-        
+        Dim f32456 As New frmAdminFacturasProformaEdicion
+        f32456.Show
+
         
        Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURAS_PROFORMA:
-            Dim f3246 As New frmAdminFacturasProformaEmitidas
-            f3246.Show
+        Dim f32466 As New frmAdminFacturasProformaEmitidas
+        f32466.Show
 
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_FC:
@@ -436,17 +446,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_PERIODO:
         frmAdminResumenesFacturacion.Show
 
-        '"Ver Detalle de Cta. Cte."
-    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS:
-        Dim frmcta As New frmCtaCte
-        frmcta.Show
 
-        '"Resúmen Saldos"
-    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS:
-        Dim frm1144 As New frmResumenSaldosProv
-        frm1144.TipoPersonaCta = TipoPersona.proveedor_
-        frm1144.caption = "Resúmen de saldos de Proveedores"
-        frm1144.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS:
         '            frmAdminCCResumenSaldos.Show
@@ -974,7 +974,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Factura Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__NUEVA_ANTICIPO, Permisos.AdminFacturaControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Comprobantes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__FACTURAS, Permisos.AdminFacturaConsultas
 
-    'Set ribbonGroup = ribbonTab.Groups.AddGroup("Ctas. Ctes. Clientes", ID_GROUP.ID_GROUP_ADMINISTRACION__CUENTAS_CORRIENTES)
+    Set ribbonGroup = ribbonTab.Groups.AddGroup("Ctas. Ctes. Clientes", ID_GROUP.ID_GROUP_ADMINISTRACION__CUENTAS_CORRIENTES)
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Cta. Cte. Clientes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES, , , xtpControlButtonPopup)
     'AddButton ribbonGroup, "Crear Recibo de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO, Permisos.AdminCtaCteControl, , , cmdBarCtrl

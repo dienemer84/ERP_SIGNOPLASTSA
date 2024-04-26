@@ -296,7 +296,7 @@ Public Function CambiarEstadoFacturado(T As Long, estadoNuevo As EstadoRemitoFac
         msg = "remito facturado parcial"
                       
     End If
-    MsgBox ("Remito Actualizado!")
+'    MsgBox ("Remito Actualizado!")
 
     Dim rto As Remito
     Set rto = DAORemitoS.FindById(T)
@@ -388,16 +388,16 @@ Public Function InformarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
 
 
         If ct = cnf Then
-            AnalizarEstadoFacturado = RemitoNoFacturable
+            InformarEstadoFacturado = RemitoNoFacturable
         Else
             ct = ct - cnf
 
             If cf = 0 And ct > 0 Then
-                AnalizarEstadoFacturado = RemitoNoFacturado
+                InformarEstadoFacturado = RemitoNoFacturado
             ElseIf cf + cnf = ct + cnf Then
-                AnalizarEstadoFacturado = RemitoFacturadoTotal
+                InformarEstadoFacturado = RemitoFacturadoTotal
             ElseIf ct + cnf > cf + cnf Then
-                AnalizarEstadoFacturado = RemitoFacturadoParcial
+                InformarEstadoFacturado = RemitoFacturadoParcial
             End If
         End If
         

@@ -319,7 +319,7 @@ End Function
 Private Sub masContacto_Click()
     If grilla.rowcount > 0 Then
         Set rectemp = clientes(grilla.rowIndex(grilla.row))
-        frmVentasClientesNuevoContacto.cliente = rectemp
+        frmVentasClientesNuevoContacto.Cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
     End If
@@ -328,7 +328,7 @@ End Sub
 Private Sub masContactos_Click()
     If grilla.rowcount > 0 Then
         Set rectemp = clientes(grilla.rowIndex(grilla.row))
-        frmVentasClientesNuevoContacto.cliente = rectemp
+        frmVentasClientesNuevoContacto.Cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
     End If
@@ -378,7 +378,7 @@ End Sub
 Private Sub verDeta()
     If grilla.rowcount Then
         Set rectemp = clientes(grilla.rowIndex(grilla.row))
-        frmVentasClienteNuevo.cliente = rectemp
+        frmVentasClienteNuevo.Cliente = rectemp
         frmVentasClienteNuevo.Show
     End If
 End Sub

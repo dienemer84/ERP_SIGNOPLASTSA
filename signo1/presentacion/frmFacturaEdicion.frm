@@ -32,67 +32,104 @@ Begin VB.Form frmAdminFacturasEdicion
       TabIndex        =   81
       Top             =   1680
       Width           =   5535
+      Begin VB.Label lblIdImpositivo 
+         Caption         =   "22222222222"
+         Height          =   255
+         Left            =   1320
+         TabIndex        =   98
+         Top             =   1920
+         Width           =   1695
+      End
+      Begin VB.Label lblCuitPais 
+         Caption         =   "11111111"
+         Height          =   255
+         Left            =   1320
+         TabIndex        =   97
+         Top             =   1680
+         Width           =   3255
+      End
+      Begin VB.Label Label2 
+         Alignment       =   2  'Center
+         Caption         =   "ID Impositivo:"
+         Enabled         =   0   'False
+         Height          =   255
+         Index           =   2
+         Left            =   120
+         TabIndex        =   96
+         Top             =   1920
+         Width           =   1095
+      End
+      Begin VB.Label Label2 
+         Caption         =   "Cuit Pais:"
+         Enabled         =   0   'False
+         Height          =   255
+         Index           =   1
+         Left            =   480
+         TabIndex        =   95
+         Top             =   1680
+         Width           =   855
+      End
       Begin VB.Label Label12 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          Caption         =   "Provincia:"
          Height          =   195
-         Left            =   360
+         Left            =   480
          TabIndex        =   93
-         Top             =   1710
+         Top             =   1200
          Width           =   705
       End
       Begin VB.Label lblProvincia 
          AutoSize        =   -1  'True
          Caption         =   "2343242"
          Height          =   195
-         Left            =   1245
+         Left            =   1365
          TabIndex        =   92
-         Top             =   1710
+         Top             =   1200
          Width           =   630
       End
       Begin VB.Label lblCodPostal 
          AutoSize        =   -1  'True
          Caption         =   "2343242"
          Height          =   195
-         Left            =   1245
+         Left            =   1365
          TabIndex        =   91
-         Top             =   2010
+         Top             =   1440
          Width           =   630
       End
       Begin VB.Label lblLocalidad 
          AutoSize        =   -1  'True
          Caption         =   "HHHHHH"
          Height          =   195
-         Left            =   1245
+         Left            =   1365
          TabIndex        =   90
-         Top             =   1395
+         Top             =   960
          Width           =   630
       End
       Begin VB.Label lblDireccion 
          Caption         =   "RIVAD 3242"
          Height          =   195
-         Left            =   1245
+         Left            =   1365
          TabIndex        =   89
-         Top             =   1080
+         Top             =   720
          Width           =   4095
       End
       Begin VB.Label lblIVA 
          AutoSize        =   -1  'True
          Caption         =   "23"
          Height          =   195
-         Left            =   1245
+         Left            =   1365
          TabIndex        =   88
-         Top             =   795
+         Top             =   480
          Width           =   180
       End
       Begin VB.Label lblCuit 
          AutoSize        =   -1  'True
          Caption         =   "23-30279550-9"
          Height          =   195
-         Left            =   1245
+         Left            =   1365
          TabIndex        =   87
-         Top             =   480
+         Top             =   240
          Width           =   1110
       End
       Begin VB.Label Label7 
@@ -100,9 +137,9 @@ Begin VB.Form frmAdminFacturasEdicion
          AutoSize        =   -1  'True
          Caption         =   "Cod Postal:"
          Height          =   195
-         Left            =   240
+         Left            =   360
          TabIndex        =   86
-         Top             =   2010
+         Top             =   1440
          Width           =   825
       End
       Begin VB.Label Label5 
@@ -110,9 +147,9 @@ Begin VB.Form frmAdminFacturasEdicion
          AutoSize        =   -1  'True
          Caption         =   "Localidad:"
          Height          =   195
-         Left            =   345
+         Left            =   480
          TabIndex        =   85
-         Top             =   1395
+         Top             =   960
          Width           =   720
       End
       Begin VB.Label Label3 
@@ -120,9 +157,9 @@ Begin VB.Form frmAdminFacturasEdicion
          AutoSize        =   -1  'True
          Caption         =   "CUIT:"
          Height          =   195
-         Left            =   645
+         Left            =   765
          TabIndex        =   84
-         Top             =   495
+         Top             =   255
          Width           =   420
       End
       Begin VB.Label Label4 
@@ -130,9 +167,9 @@ Begin VB.Form frmAdminFacturasEdicion
          AutoSize        =   -1  'True
          Caption         =   "Direccion:"
          Height          =   195
-         Left            =   360
+         Left            =   480
          TabIndex        =   83
-         Top             =   1080
+         Top             =   720
          Width           =   705
       End
       Begin VB.Label Label2 
@@ -140,9 +177,10 @@ Begin VB.Form frmAdminFacturasEdicion
          AutoSize        =   -1  'True
          Caption         =   "IVA:"
          Height          =   195
-         Left            =   750
+         Index           =   0
+         Left            =   870
          TabIndex        =   82
-         Top             =   795
+         Top             =   480
          Width           =   315
       End
    End
@@ -239,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62783489
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -261,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62783489
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -367,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62783489
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -389,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62783489
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -907,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62783489
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -2115,8 +2153,7 @@ End Sub
 Private Sub cboTiposFactura_Click()
 
     If Me.cboTiposFactura.ListIndex = -1 Then Exit Sub
-
-
+ 
     Dim Id As Long
 
     Id = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
@@ -2446,7 +2483,7 @@ Private Sub Form_Load()
     Me.lblTipoFactura.Enabled = Not ReadOnly
     Me.Label1.Enabled = Not ReadOnly
     Me.Label3.Enabled = Not ReadOnly
-    Me.Label2.Enabled = Not ReadOnly
+    Me.Label2(0).Enabled = Not ReadOnly
     Me.Label4.Enabled = Not ReadOnly
     Me.Label5.Enabled = Not ReadOnly
     Me.Label12.Enabled = Not ReadOnly
@@ -2714,6 +2751,8 @@ Private Sub MostrarCliente()
     Me.lblDireccion.caption = Factura.Cliente.Domicilio
     Me.lblLocalidad.caption = Factura.Cliente.localidad.nombre
     Me.lblCodPostal.caption = Factura.Cliente.CodigoPostal
+    Me.lblCuitPais = Factura.Cliente.CuitPais
+    Me.lblIdImpositivo = Factura.Cliente.IDImpositivo
 
     Me.lblProvincia = Factura.Cliente.provincia.nombre
 
@@ -3031,7 +3070,7 @@ Private Sub btnSeleccionarOT_Click()
                               & "La Moneda del Comprobante es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
                               & "No se realiza conversión:" & vbCrLf & "" _
                               & "Cálculo:" & vbCrLf & " Total de OT: " & Ot.total & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                        deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.total * Ot.Anticipo) / 100)
+                        deta.Bruto = deta.Bruto + funciones.RedondearDecimales(((Ot.total * Ot.Anticipo) / 100) / Factura.moneda.Cambio)
 
                     End If
 
