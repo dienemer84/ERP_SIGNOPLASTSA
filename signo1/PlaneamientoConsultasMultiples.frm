@@ -5,7 +5,7 @@ Begin VB.Form frmPlaneamientoConsultasMultiples
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Consultas Multiples"
-   ClientHeight    =   7155
+   ClientHeight    =   7230
    ClientLeft      =   1230
    ClientTop       =   1215
    ClientWidth     =   7770
@@ -14,7 +14,7 @@ Begin VB.Form frmPlaneamientoConsultasMultiples
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7155
+   ScaleHeight     =   7230
    ScaleWidth      =   7770
    ShowInTaskbar   =   0   'False
    Begin VB.CommandButton Command3 
@@ -33,7 +33,7 @@ Begin VB.Form frmPlaneamientoConsultasMultiples
       Left            =   6480
       Style           =   1  'Graphical
       TabIndex        =   4
-      Top             =   1440
+      Top             =   1475
       Width           =   1215
    End
    Begin VB.CommandButton Command1 
@@ -43,17 +43,17 @@ Begin VB.Form frmPlaneamientoConsultasMultiples
       Left            =   5160
       Style           =   1  'Graphical
       TabIndex        =   3
-      Top             =   1455
+      Top             =   1475
       Width           =   1215
    End
    Begin VB.ComboBox cboConsultas 
       Height          =   315
       ItemData        =   "PlaneamientoConsultasMultiples.frx":0000
       Left            =   120
-      List            =   "PlaneamientoConsultasMultiples.frx":000D
+      List            =   "PlaneamientoConsultasMultiples.frx":0010
       Style           =   2  'Dropdown List
       TabIndex        =   2
-      Top             =   1440
+      Top             =   1470
       Width           =   4935
    End
    Begin VB.Frame Frame2 
@@ -62,7 +62,7 @@ Begin VB.Form frmPlaneamientoConsultasMultiples
       Height          =   5295
       Left            =   0
       TabIndex        =   1
-      Top             =   1800
+      Top             =   1920
       Width           =   7695
       Begin MSComctlLib.ListView lstResult 
          Height          =   4935
@@ -138,6 +138,7 @@ Private Sub Command1_Click()
     Select Case Me.cboConsultas.ListIndex
     Case 0: piezasEnComun
     Case 1: MaterialesEnComun
+    Case 3: DetallepiezasEnComun
 
 
     End Select
@@ -173,7 +174,37 @@ Private Sub piezasEnComun()
         rs.MoveNext
     Wend
 
+End Sub
 
+Private Sub DetallepiezasEnComun()
+'armo el encabezado
+    Me.lstResult.ColumnHeaders.Clear
+    Me.lstResult.ListItems.Clear
+    Me.lstResult.ColumnHeaders.Add = "Cantidad"
+    Me.lstResult.ColumnHeaders(1).Width = 1100
+    Me.lstResult.ColumnHeaders(1).Alignment = lvwColumnLeft
+    Me.lstResult.ColumnHeaders.Add = "Pieza"
+    Me.lstResult.ColumnHeaders(2).Width = 6000
+    Me.lstResult.ColumnHeaders(2).Alignment = lvwColumnLeft
+
+    strsql = "select ss.detalle, sum(d.cantidad) * sum(sc.cantidad) as cantTotal from stockConjuntos sc INNER JOIN stock s ON sc.idPiezaPadre = s.id INNER JOIN stock ss ON sc.idPiezaHija = ss.id INNER JOIN detalles_pedidos d ON sc.idPiezaPadre = d.idPieza where "
+    
+    For x = 1 To Me.lstOTSelected.ListItems.count
+        If x = Me.lstOTSelected.ListItems.count Then
+            strsql = strsql & " d.idpedido=" & Me.lstOTSelected.ListItems(x)
+        Else
+            strsql = strsql & " d.idpedido=" & Me.lstOTSelected.ListItems(x) & " or "
+        End If
+    Next x
+    strsql = strsql & " group by ss.detalle order by ss.detalle"
+    Set rs = conectar.RSFactory(strsql)
+
+    Dim y As ListItem
+    While Not rs.EOF
+        Set y = Me.lstResult.ListItems.Add(, , rs!cantTotal)
+        y.SubItems(1) = rs!detalle
+        rs.MoveNext
+    Wend
 
 End Sub
 
@@ -189,14 +220,19 @@ Private Sub Command3_Click()
 End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
+    
     Me.lstOTSelected.ListItems.Clear
+    
     Dim tmpOrden As OrdenTrabajo
     For x = 1 To Me.OTElegidas.count
         Set tmpOrden = Me.OTElegidas(x)
         Me.lstOTSelected.ListItems.Add , , tmpOrden.Id    'col(X)
     Next x
+    
     Me.lstOTSelected.Refresh
+    
 End Sub
+
 Private Sub imprimirResu()
     Printer.Orientation = 1
     Printer.FontBold = True
