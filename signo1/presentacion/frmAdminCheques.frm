@@ -4,17 +4,17 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminCheques 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Administración de cheques"
-   ClientHeight    =   8850
+   ClientHeight    =   10935
    ClientLeft      =   8250
    ClientTop       =   2265
-   ClientWidth     =   15390
+   ClientWidth     =   15360
    Icon            =   "frmAdminCheques.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8850
-   ScaleWidth      =   15390
+   ScaleHeight     =   10935
+   ScaleWidth      =   15360
    Begin XtremeSuiteControls.TabControl TabControl1 
       Height          =   8835
       Left            =   0
@@ -30,7 +30,7 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
-      SelectedItem    =   3
+      SelectedItem    =   1
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   2
       Item(0).Control(0)=   "Frame3"
@@ -52,9 +52,10 @@ Begin VB.Form frmAdminCheques
          Caption         =   "Resultados"
          Height          =   5175
          Index           =   2
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   103
          Top             =   3480
+         Visible         =   0   'False
          Width           =   15135
          Begin GridEX20.GridEX grdCheques3eros 
             Height          =   4665
@@ -615,9 +616,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox3 
          Height          =   3015
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   28
          Top             =   360
+         Visible         =   0   'False
          Width           =   15135
          _Version        =   786432
          _ExtentX        =   26696
@@ -1454,10 +1456,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox1 
          Height          =   2220
-         Left            =   -69760
+         Left            =   240
          TabIndex        =   1
          Top             =   6240
-         Visible         =   0   'False
          Width           =   7365
          _Version        =   786432
          _ExtentX        =   12991
@@ -1593,10 +1594,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grid_cheques 
          Height          =   7830
-         Left            =   -62215
+         Left            =   7800
          TabIndex        =   14
          Top             =   615
-         Visible         =   0   'False
          Width           =   7485
          _ExtentX        =   13203
          _ExtentY        =   13811
@@ -1633,10 +1633,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grid_chequeras 
          Height          =   5490
-         Left            =   -69745
+         Left            =   255
          TabIndex        =   15
          Top             =   630
-         Visible         =   0   'False
          Width           =   7440
          _ExtentX        =   13123
          _ExtentY        =   9684
@@ -1674,9 +1673,9 @@ Begin VB.Form frmAdminCheques
    End
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
-      Left            =   0
+      Left            =   480
       TabIndex        =   35
-      Top             =   0
+      Top             =   9000
       Width           =   3465
       _ExtentX        =   6112
       _ExtentY        =   3254
@@ -2434,7 +2433,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.grid_chequeras, True, False
     GridEXHelper.CustomizeGrid Me.grid_cartera_cheques, True, True
     GridEXHelper.CustomizeGrid Me.grid_cheques, False, False
-    GridEXHelper.CustomizeGrid Me.gridBancos, False, False
+    GridEXHelper.CustomizeGrid Me.gridBancos, False, True
     GridEXHelper.CustomizeGrid Me.gridChequesEmitidos, False, False
     GridEXHelper.CustomizeGrid Me.grdCheques3eros, True, True
 
@@ -2446,6 +2445,9 @@ Private Sub Form_Load()
     DAOBancos.llenarComboXtremeSuite Me.cboBancoCartera
     Me.cboBancoCartera.ListIndex = -1
     
+    DAOBancos.llenarComboXtremeSuite Me.cboBancos
+    Me.cboBancos.ListIndex = -1
+      
     Me.cboClasificacion.Clear
     Me.cboClasificacion.AddItem "Propios"
     Me.cboClasificacion.ItemData(cboClasificacion.NewIndex) = 1

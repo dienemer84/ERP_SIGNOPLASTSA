@@ -1,4 +1,11 @@
 Attribute VB_Name = "AfipHelper"
+'---------------------------------------------------------------------------------------
+' Module    : AfipHelper
+' Author    : nicolasba
+' Date      : 24/05/2024
+' Purpose   :
+'---------------------------------------------------------------------------------------
+
 Option Explicit
 
 Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String

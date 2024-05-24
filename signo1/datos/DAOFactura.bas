@@ -2060,11 +2060,17 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
         Set c = seccion.Controls.item("lblFecha")
         c.caption = "Fecha de Emisión: " & Format(F.FechaEmision, "dd/mm/yyyy")
-
-        'fce_nemer_2905/2020
+        
+        
         Set c = seccion.Controls.item("lblNumeroDocumento")
-        c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000")
-
+        'fce_nemer_2905/2020
+        If F.Cliente.CuitPais <> "" Then
+                c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "00000")
+        Else
+                c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000")
+        End If
+        
+        
         Set c = seccion.Controls.item("lblNumeroDocumentoComp")
         c.caption = "Compr. Nro: " & Format(F.numero, "00000000")
 
@@ -2126,41 +2132,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
 
         Set c = seccion.Controls.item("lblConceptoTexto")
-        'fce_nemer_09062020
         c.caption = F.MostrarConcepto
-
-        'fce_nemer_10062020_#113
-        'Set c = seccion.Controls.item("lblFechaServFceDesde")
-        'If F.MostrarConcepto = "Productos" Then
-        '    c.caption = ""
-        '   Else
-        '    c.caption = "Fecha del Servicio Desde:"
-        'End If
-
-        'fce_nemer_10062020_#113
-        'Set c = seccion.Controls.item("FechaServFceDesdeDato")
-        'If F.MostrarConcepto = "Productos" Then
-        '    c.caption = ""
-        '    Else
-        '    c.caption = Format(F.FechaServDesde, "dd/mm/yyyy")
-        'End If
-
-
-        'fce_nemer_10062020_#113
-        'Set c = seccion.Controls.item("lblFechaServFceHasta")
-        'If F.MostrarConcepto = "Productos" Then
-        '    c.caption = ""
-        '   Else
-        '    c.caption = "Hasta:"
-        ' End If
-
-        'fce_nemer_10062020_#113
-        'Set c = seccion.Controls.item("FechaServFceHastaDato")
-        ' If F.MostrarConcepto = "Productos" Then
-        '    c.caption = ""
-        '    Else
-        '    c.caption = Format(F.FechaServHasta, "dd/mm/yyyy")
-        'End If
 
 
 
@@ -2178,9 +2150,11 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         If F.Cliente.CuitPais <> "" Then
             seccion.Controls.item("txtCuitPais").caption = "Cuit Pais: " & F.Cliente.CuitPais
             seccion.Controls.item("txtIdImpositivo").caption = "Id Impositivo: " & F.Cliente.IDImpositivo
+            seccion.Controls.item("txtTextoIncoterms").caption = "INCOTERMS: CIP"
         Else
             seccion.Controls.item("txtCuitPais").caption = ""
             seccion.Controls.item("txtIdImpositivo").caption = ""
+            seccion.Controls.item("txtTextoIncoterms").caption = ""
         End If
         
         

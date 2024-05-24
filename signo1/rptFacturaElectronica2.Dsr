@@ -10,7 +10,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
    _ExtentY        =   19209
    _Version        =   393216
    _DesignerVersion=   100684101
-   ReportWidth     =   11160
+   ReportWidth     =   11190
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -37,7 +37,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "marco1"
          Object.Left            =   45
-         Object.Top             =   45
+         Object.Top             =   30
          Object.Width           =   11055
          Object.Height          =   2940
       EndProperty
@@ -366,7 +366,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       _Version        =   393216
       Name            =   "detailsHead"
       Object.Height          =   2715
-      NumControls     =   39
+      NumControls     =   40
       ItemType0       =   6
       BeginProperty Item0 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
@@ -1068,12 +1068,31 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          EndProperty
          Object.Caption         =   "-"
       EndProperty
+      ItemType39      =   3
+      BeginProperty Item39 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "txtTextoIncoterms"
+         Object.Left            =   8325
+         Object.Top             =   1440
+         Object.Width           =   2715
+         Object.Height          =   225
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "-"
+      EndProperty
    EndProperty
    SectionCode2    =   4
    BeginProperty Section2 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "details"
-      Object.Height          =   255
+      Object.Height          =   285
       NumControls     =   7
       ItemType0       =   4
       BeginProperty Item0 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -1166,10 +1185,10 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item3 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Texto4"
-         Object.Left            =   1605
-         Object.Top             =   30
+         Object.Left            =   1560
+         Object.Top             =   45
          Object.Width           =   7020
-         Object.Height          =   220
+         Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   6.75
