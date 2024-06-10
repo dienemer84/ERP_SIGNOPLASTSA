@@ -24,6 +24,88 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       _ExtentY        =   3201
       _StockProps     =   79
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.GroupBox GroupBox 
+         Height          =   1335
+         Index           =   2
+         Left            =   5760
+         TabIndex        =   25
+         Top             =   240
+         Width           =   3855
+         _Version        =   786432
+         _ExtentX        =   6800
+         _ExtentY        =   2355
+         _StockProps     =   79
+         Caption         =   "Importes"
+         UseVisualStyle  =   -1  'True
+         Begin VB.TextBox textbMayor 
+            Height          =   315
+            Left            =   120
+            TabIndex        =   27
+            Top             =   720
+            Width           =   1215
+         End
+         Begin VB.TextBox textbMenor 
+            Height          =   315
+            Left            =   2040
+            TabIndex        =   26
+            Top             =   720
+            Width           =   1215
+         End
+         Begin XtremeSuiteControls.PushButton PushButton1 
+            Height          =   255
+            Index           =   0
+            Left            =   1440
+            TabIndex        =   28
+            Top             =   750
+            Width           =   420
+            _Version        =   786432
+            _ExtentX        =   741
+            _ExtentY        =   450
+            _StockProps     =   79
+            Caption         =   "X"
+            UseVisualStyle  =   -1  'True
+         End
+         Begin XtremeSuiteControls.PushButton PushButton2 
+            Height          =   255
+            Index           =   1
+            Left            =   3360
+            TabIndex        =   29
+            Top             =   750
+            Width           =   420
+            _Version        =   786432
+            _ExtentX        =   741
+            _ExtentY        =   450
+            _StockProps     =   79
+            Caption         =   "X"
+            UseVisualStyle  =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label Label 
+            Height          =   255
+            Index           =   5
+            Left            =   2040
+            TabIndex        =   31
+            Top             =   480
+            Width           =   1695
+            _Version        =   786432
+            _ExtentX        =   2990
+            _ExtentY        =   450
+            _StockProps     =   79
+            Caption         =   "Menor que:"
+         End
+         Begin XtremeSuiteControls.Label Label 
+            Height          =   255
+            Index           =   4
+            Left            =   120
+            TabIndex        =   30
+            Top             =   480
+            Width           =   1215
+            _Version        =   786432
+            _ExtentX        =   2143
+            _ExtentY        =   450
+            _StockProps     =   79
+            Caption         =   "Mayor que:"
+         End
+      End
       Begin VB.ComboBox cboCuentaBancaria 
          Height          =   315
          Left            =   1155
@@ -86,7 +168,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Begin XtremeSuiteControls.GroupBox GroupBox 
          Height          =   1335
          Index           =   1
-         Left            =   5880
+         Left            =   9720
          TabIndex        =   3
          Top             =   240
          Width           =   4695
@@ -437,6 +519,8 @@ Private Sub CompletarGridEx()
     If Not IsNull(Me.dtpHasta.value) Then
         condition = condition & " AND op.fecha_operacion <= " & conectar.Escape(Me.dtpHasta.value)
     End If
+    
+    
 
     If cboProveedores.ListIndex > -1 Then
         condition = condition & " AND prov.id = " & cboProveedores.ItemData(Me.cboProveedores.ListIndex)
@@ -452,6 +536,14 @@ Private Sub CompletarGridEx()
 
     If LenB(Me.txtComprobante) > 0 Then
         condition = condition & " AND op.comprobante like '%" & Trim(Me.txtComprobante.text) & "%'"
+    End If
+    
+    If LenB(Me.textbMayor) > 0 Then
+        condition = condition & " AND op.monto >= " & Me.textbMayor.text
+    End If
+    
+    If LenB(Me.textbMenor) > 0 Then
+        condition = condition & " AND op.monto <= " & Me.textbMenor.text
     End If
     
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -625,3 +717,10 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 End Sub
 
 
+Private Sub PushButton2_Click(Index As Integer)
+    Me.textbMenor.text = ""
+End Sub
+
+Private Sub PushButton1_Click(Index As Integer)
+    Me.textbMayor.text = ""
+End Sub
