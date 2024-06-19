@@ -1814,9 +1814,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
     GridEXHelper.CustomizeGrid Me.gridChequesChequera
     GridEXHelper.CustomizeGrid Me.gridRetenciones, False, True
-
-
-
+      
     Set Cajas = DAOCaja.FindAll()
     Me.gridCajas.ItemCount = Cajas.count
 

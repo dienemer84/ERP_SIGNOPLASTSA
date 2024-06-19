@@ -17,7 +17,7 @@ Dim meses(12) As String
 Dim estado_recibo(3)
 Dim estado_nnc(3)
 Dim tipo_doc_contable(3)
-Dim estado_doc_contable(7)
+Dim estado_doc_contable(8)
 Dim tipos_Doc(2)
 Dim tipo_complejidad(3)
 Dim estado_saldado(6)
@@ -383,6 +383,7 @@ Public Enum EstadoFacturaCliente
     CanceladaNCParcial = 5
     AplicadaND = 6
     AplicadaACbte = 7
+    Generada = 8
 
     
 End Enum
@@ -488,6 +489,7 @@ Public Function LlenarArrays()
     estado_doc_contable(EstadoFacturaCliente.EnProceso) = "En Edición"
     estado_doc_contable(EstadoFacturaCliente.AplicadaND) = "Aplicada de ND"
     estado_doc_contable(EstadoFacturaCliente.AplicadaACbte) = "Aplicada a CBTE"
+    estado_doc_contable(EstadoFacturaCliente.Generada) = "Generada"
     
 
     tipo_doc_contable(tipoDocumentoContable.Factura) = "Factura"

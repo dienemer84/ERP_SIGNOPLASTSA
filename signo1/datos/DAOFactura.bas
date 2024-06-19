@@ -793,6 +793,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
 
         Dim CambioAnterior As Double
         Dim estadoAnterior
+        
         CambioAnterior = Factura.CambioAPatron
         estadoAnterior = Factura.estado
 

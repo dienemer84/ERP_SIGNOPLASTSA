@@ -41,7 +41,7 @@ Public Function crear(Cliente As clsCliente) As Boolean
     crear = True
     With Cliente
         strsql = "INSERT INTO clientes (cuit_pais, id_impositivo, id_localidad,CP, id_moneda_default, razon,domicilio,telefono,Fax,email,cuit,iva,id_provincia,FP,FP_detalle,valido_remito_factura) VALUES " _
-               & "(" & .CuitPais & ", " & .IDImpositivo & "," & .localidad.Id & ", " & .CodigoPostal & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
+               & "('" & .CuitPais & "', '" & .IDImpositivo & "'," & .localidad.Id & ", " & .CodigoPostal & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
         cn.execute strsql
     End With
     Exit Function
