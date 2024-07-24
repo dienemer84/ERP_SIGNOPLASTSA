@@ -680,7 +680,7 @@ End Function
 Function busca_en_lista(lst As ListView, Id As Integer, Optional tem As Integer) As Boolean
     On Error Resume Next
     Dim esta As Boolean
-    Dim X As ListItems
+    Dim x As ListItems
     esta = False
 
     For nn = 1 To lst.ListItems.count
@@ -852,7 +852,7 @@ End Function
 
 Function busca_en_lista2(lst As ListView, Id As Integer, Optional tem As Integer) As Long
     Dim esta As Boolean
-    Dim X As ListItems
+    Dim x As ListItems
     esta = False
 
     For nn = 1 To lst.ListItems.count
@@ -1003,7 +1003,7 @@ Public Sub ValidarPermisoss(idUsuario)
 End Sub
 Public Sub Imprimir_ListView(ListView As ListView, enca As String)
 
-    Dim i As Integer, AnchoCol As Single, Espacio As Integer, X As Integer
+    Dim i As Integer, AnchoCol As Single, Espacio As Integer, x As Integer
 
     AnchoCol = 0
     'Recorremos desde la primer columna hasta la última para almacenar el ancho total
@@ -1045,11 +1045,11 @@ Public Sub Imprimir_ListView(ListView As ListView, enca As String)
             Set lItem = .ListItems(i)
             Printer.Print lItem.text;
             'Recorremos las columnas
-            For X = 1 To .ColumnHeaders.count - 1
-                Espacio = Espacio + CInt(.ColumnHeaders(X).Width * Printer.ScaleWidth / AnchoCol)
+            For x = 1 To .ColumnHeaders.count - 1
+                Espacio = Espacio + CInt(.ColumnHeaders(x).Width * Printer.ScaleWidth / AnchoCol)
                 Printer.CurrentX = Espacio
-                If ListView.ColumnHeaders(X + 1).Width > 1 Then
-                    Printer.Print lItem.SubItems(X);
+                If ListView.ColumnHeaders(x + 1).Width > 1 Then
+                    Printer.Print lItem.SubItems(x);
                 End If
             Next
 
@@ -1089,20 +1089,20 @@ Public Function ConvertirAFechaAfip(entrada As String) As String
 End Function
 
 
-Public Function FormatearDecimales(Numero As Double, Optional ByVal cantDecimales As Long = 2) As String
-    FormatearDecimales = Format(Numero, "0." & String$(cantDecimales, "0"))
+Public Function FormatearDecimales(numero As Double, Optional ByVal cantDecimales As Long = 2) As String
+    FormatearDecimales = Format(numero, "0." & String$(cantDecimales, "0"))
 End Function
 
-Public Function FormatearMiles(Numero As Double, Optional ByVal cantDecimales As Long = 2) As String
-    FormatearMiles = Format(Numero, ".00" & String$(cantDecimales, "0"))
+Public Function FormatearMiles(numero As Double, Optional ByVal cantDecimales As Long = 2) As String
+    FormatearMiles = Format(numero, ".00" & String$(cantDecimales, "0"))
 End Function
 
-Public Function FormatearMilesDavid(Numero As Double, Optional ByVal cantDecimales As Long = 2) As String
-    FormatearMilesDavid = Format(Numero, "#,##0." & String$(cantDecimales, "0"))
+Public Function FormatearMilesDavid(numero As Double, Optional ByVal cantDecimales As Long = 2) As String
+    FormatearMilesDavid = Format(numero, "#,##0." & String$(cantDecimales, "0"))
 End Function
 
-Public Function RedondearDecimales(Numero As Double, Optional Decimales As Long = 2) As Double
-    RedondearDecimales = Format(Math.Round(Numero, Decimales), "0.00")
+Public Function RedondearDecimales(numero As Double, Optional Decimales As Long = 2) As Double
+    RedondearDecimales = Format(Math.Round(numero, Decimales), "0.00")
 End Function
 Public Function cuantasHoras(Inicio As Date, Fin As Date)
     segundos = DateDiff("s", Inicio, Fin)
@@ -1176,12 +1176,12 @@ Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optio
             Set lItem = .ListItems(i)
             Printer.Print lItem.text;
             'Recorremos las columnas
-            For X = 1 To .ColumnHeaders.count - 1
-                Espacio = Espacio + CInt(.ColumnHeaders(X).Width * Printer.ScaleWidth / AnchoCol)
+            For x = 1 To .ColumnHeaders.count - 1
+                Espacio = Espacio + CInt(.ColumnHeaders(x).Width * Printer.ScaleWidth / AnchoCol)
                 Printer.CurrentX = Espacio
-                If lst.ColumnHeaders(X + 1).Width > 1 Then
+                If lst.ColumnHeaders(x + 1).Width > 1 Then
 
-                    Printer.Print lItem.SubItems(X);
+                    Printer.Print lItem.SubItems(x);
 
 
 
@@ -1244,6 +1244,8 @@ Public Sub FillComboBox(ByRef combo As ComboBox, ByRef col As Collection, ByRef 
     Next item
     If (selectFirst And combo.ListCount > 0) Then combo.ListIndex = 0
 End Sub
+
+
 Public Function BuscarEnColeccion(col As Collection, indice As String) As Boolean
     On Error GoTo er1
     BuscarEnColeccion = True
@@ -1252,6 +1254,7 @@ Public Function BuscarEnColeccion(col As Collection, indice As String) As Boolea
 er1:
     BuscarEnColeccion = False
 End Function
+
 
 Public Function VerificarCUIT(Cuit) As Boolean
 'Verifica si el tamaño es el correcto.
@@ -1273,10 +1276,10 @@ Public Function VerificarCUIT(Cuit) As Boolean
 
 
         'Suma los resultantes.
-        X = xa + XB + XC + XD + XE + XF + XG + XH + XI + XJ + xj2
+        x = xa + XB + XC + XD + XE + XF + XG + XH + XI + XJ + xj2
 
         'Calcula el dígito de control.
-        Control = (11 - (X Mod 11)) Mod 11
+        Control = (11 - (x Mod 11)) Mod 11
 
         'Verifica si el dígito de control ingresado difiere con el calculado.
         If Control <> Val(Mid$(Cuit, 11, 1)) Then
@@ -1304,12 +1307,12 @@ Public Function str2Array(txt1 As String) As String()
     str2Array = chararray
 End Function
 
-Public Function calcularDVFactura(Numero As String) As String
+Public Function calcularDVFactura(numero As String) As String
     On Error GoTo err1
 
-    ReDim pos(Len(Numero)) As String
+    ReDim pos(Len(numero)) As String
 
-    pos = str2Array(Numero)
+    pos = str2Array(numero)
 
 
 
@@ -1333,13 +1336,13 @@ Public Function calcularDVFactura(Numero As String) As String
     Next i
     Dim dv As Integer
     xa = (sumaimpar * 3) + sumapar
-    Dim X As Integer
-    For X = 0 To 9
-        If (xa + X) Mod 10 = 0 Then
-            dv = X
+    Dim x As Integer
+    For x = 0 To 9
+        If (xa + x) Mod 10 = 0 Then
+            dv = x
 
         End If
-    Next X
+    Next x
 
     calcularDVFactura = dv
     Exit Function
@@ -1517,36 +1520,36 @@ Public Function IsSomething(Obj As Object) As Boolean
 End Function
 
 Public Function JoinCollectionValues(col As Collection, delimiter As String, Optional objectProperty As String = vbNullString) As String
-    Dim Value As Variant
+    Dim value As Variant
     Dim ret As String
     Dim cont As Long
-    For Each Value In col
+    For Each value In col
         cont = cont + 1
 
         If LenB(objectProperty) = 0 Then
-            ret = ret & Value
+            ret = ret & value
         Else
-            ret = ret & CallByName(Value, objectProperty, VbGet)
+            ret = ret & CallByName(value, objectProperty, VbGet)
         End If
 
         If cont <> col.count Then
             ret = ret & delimiter
         End If
-    Next Value
+    Next value
     JoinCollectionValues = ret
 End Function
 
 Public Function JoinDictionaryKeyValues(dic As Dictionary, delimiter As String) As String
-    Dim Value As Variant
+    Dim value As Variant
     Dim ret As String
     Dim cont As Long
-    For Each Value In dic.Keys
+    For Each value In dic.Keys
         cont = cont + 1
-        ret = ret & Value
+        ret = ret & value
         If cont <> dic.count Then
             ret = ret & delimiter
         End If
-    Next Value
+    Next value
     JoinDictionaryKeyValues = ret
 End Function
 
@@ -1640,8 +1643,8 @@ Public Sub CalculateDateRange(ByRef combo As Xtremesuitecontrols.ComboBox, ByRef
 
     End If
 
-    dtpDesde.Value = desde
-    dtpHasta.Value = hasta
+    dtpDesde.value = desde
+    dtpHasta.value = hasta
 
 End Sub
 

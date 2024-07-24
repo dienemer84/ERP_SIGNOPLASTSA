@@ -51,8 +51,8 @@ Public Property Set detalleRemito(value As remitoDetalle)
 End Property
 
 'neto gravado con iva por cantidad
-Public Property Get Total() As Double
-    Total = funciones.RedondearDecimales(Me.SubTotal * Me.Cantidad)    'CAMBIADO X NICO 5-3
+Public Property Get total() As Double
+    total = funciones.RedondearDecimales(Me.SubTotal * Me.Cantidad)    'CAMBIADO X NICO 5-3
 End Property
 
 'neto gravado con iva

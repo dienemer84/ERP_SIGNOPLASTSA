@@ -10,7 +10,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} presu1
    _ExtentY        =   16484
    _Version        =   393216
    _DesignerVersion=   100684101
-   ReportWidth     =   10017
+   ReportWidth     =   10080
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -514,9 +514,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} presu1
       BeginProperty Item1 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta8"
-         Object.Left            =   975
          Object.Top             =   75
-         Object.Width           =   8535
+         Object.Width           =   10005
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -527,15 +526,15 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} presu1
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "Administración: Arieta 4720 - Planta: Almafuerte 4670 - Tablada (1766) - Buenos Aires - Argentina"
+         Object.Caption         =   "Administración y Planta Arieta 4720 - (CP1766) - Tablada - Buenos Aires"
+         Alignment       =   2
       EndProperty
       ItemType2       =   3
       BeginProperty Item2 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta15"
-         Object.Left            =   2670
-         Object.Top             =   360
-         Object.Width           =   5145
+         Object.Top             =   390
+         Object.Width           =   10050
          Object.Height          =   270
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -546,15 +545,15 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} presu1
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "Tel: (54) 11-4651-0051 (rotativas) - Fax: (54) 11-4651-0050"
+         Object.Caption         =   "Tel: (54) 11-4651-0051"
+         Alignment       =   2
       EndProperty
       ItemType3       =   3
       BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta17"
-         Object.Left            =   3945
-         Object.Top             =   630
-         Object.Width           =   2595
+         Object.Top             =   615
+         Object.Width           =   10080
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -565,7 +564,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} presu1
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "ventas@signoplast.com.ar"
+         Object.Caption         =   "mail: ventas@signoplast.com.ar - web: www.signoplast.com.ar"
+         Alignment       =   2
       EndProperty
       ItemType4       =   3
       BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 

@@ -81,9 +81,9 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withF
     Dim col As New Collection
     Dim F As FacturaDetalle
     Dim indice As Dictionary
-    q = "SELECT * From sp.AdminFacturasProformaDetalleNueva " _
-      & "LEFT JOIN sp.entregas ON (AdminFacturasProformaDetalleNueva.idEntrega = entregas.id) " _
-      & " LEFT JOIN sp.AdminFacturasProformas fc ON (fc.id = AdminFacturasProformaDetalleNueva.idFactura) WHERE 1=1 "
+    q = "SELECT * From sp.AdminFacturasDetalleNueva " _
+      & "LEFT JOIN sp.entregas ON (AdminFacturasDetalleNueva.idEntrega = entregas.id) " _
+      & " LEFT JOIN sp.AdminFacturas fc ON (fc.id = AdminFacturasDetalleNueva.idFactura) WHERE 1=1 "
       
     If LenB(filtro) > 0 Then
         q = q & " AND " & filtro
@@ -97,9 +97,9 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withF
 
     While Not rs.EOF
 
-        Set F = DAOFacturaProformaDetalles.Map(rs, indice, "AdminFacturasProformaDetalleNueva", "entregas")
+        Set F = DAOFacturaDetalles.Map(rs, indice, "AdminFacturasDetalleNueva", "entregas")
         If withFacturaNoLazy Then
-            Set F.Factura = DAOFacturaProforma.FindById(F.idFactura)
+            Set F.Factura = DAOFactura.FindById(F.idFactura)
         End If
         col.Add F, CStr(F.Id)
         rs.MoveNext

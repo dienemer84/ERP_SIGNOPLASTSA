@@ -6,11 +6,11 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrControlCarga
    ClientTop       =   555
    ClientWidth     =   20280
    StartUpPosition =   3  'Windows Default
-   _ExtentX        =   37888
-   _ExtentY        =   22913
+   _ExtentX        =   35772
+   _ExtentY        =   19420
    _Version        =   393216
-   _DesignerVersion=   100688210
-   ReportWidth     =   11220
+   _DesignerVersion=   100684101
+   ReportWidth     =   11250
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -480,9 +480,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrControlCarga
       BeginProperty Item0 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta15"
-         Object.Left            =   3105
          Object.Top             =   900
-         Object.Width           =   5145
+         Object.Width           =   11250
          Object.Height          =   270
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -493,15 +492,15 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrControlCarga
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "Tel: (54) 11-4651-0051 (rotativas) - Fax: (54) 11-4651-0050"
+         Object.Caption         =   "Tel: (54) 11-4651-0051"
+         Alignment       =   2
       EndProperty
       ItemType1       =   3
       BeginProperty Item1 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta14"
-         Object.Left            =   4380
          Object.Top             =   1170
-         Object.Width           =   2595
+         Object.Width           =   11235
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -512,7 +511,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrControlCarga
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "ventas@signoplast.com.ar"
+         Object.Caption         =   "mail: ventas@signoplast.com.ar - web: www.signoplast.com.ar"
+         Alignment       =   2
       EndProperty
       ItemType2       =   3
       BeginProperty Item2 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -557,9 +557,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrControlCarga
       BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Etiqueta20"
-         Object.Left            =   1410
          Object.Top             =   585
-         Object.Width           =   8535
+         Object.Width           =   11250
          Object.Height          =   360
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -570,7 +569,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrControlCarga
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "Administración: Arieta 4720 - Planta: Almafuerte 4670 - Tablada (1766) - Buenos Aires - Argentina"
+         Object.Caption         =   "Administración y Planta: Arieta 4720 - (CP1766) - Tablada - Buenos Aires"
+         Alignment       =   2
       EndProperty
       ItemType5       =   3
       BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 

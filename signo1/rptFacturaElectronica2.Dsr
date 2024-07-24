@@ -69,7 +69,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "Administracion: Arieta 4720 - Planta: Almafuerte 4670"
+         Object.Caption         =   "Administracion y Planta: Arieta 4720"
          Alignment       =   2
       EndProperty
       ItemType3       =   3
@@ -109,7 +109,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Object.Caption         =   "Tel: (5411) 4651-0051. Fax: 4651-0050"
+         Object.Caption         =   "Tel: (5411) 4651-0051"
          Alignment       =   2
       EndProperty
       ItemType5       =   3
