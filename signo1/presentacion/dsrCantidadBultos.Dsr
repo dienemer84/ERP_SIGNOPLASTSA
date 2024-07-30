@@ -8,7 +8,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrCantidadBultos
    _ExtentX        =   37888
    _ExtentY        =   22913
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   15420
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
@@ -43,10 +43,10 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrCantidadBultos
       BeginProperty Item1 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "descripcion"
-         Object.Left            =   390
-         Object.Top             =   5640
+         Object.Left            =   375
+         Object.Top             =   4635
          Object.Width           =   14595
-         Object.Height          =   1170
+         Object.Height          =   3180
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   27.75
@@ -94,8 +94,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} dsrCantidadBultos
       BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "remito"
-         Object.Left            =   390
-         Object.Top             =   4470
+         Object.Left            =   375
+         Object.Top             =   3330
          Object.Width           =   14595
          Object.Height          =   1170
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
