@@ -20,3 +20,5 @@ Public alicuotaRetencion As Double
 Public importe As Double
 Public dePadron As Boolean
 
+Public certificados As String
+

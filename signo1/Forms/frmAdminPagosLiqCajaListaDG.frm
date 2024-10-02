@@ -4,10 +4,10 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosLiqCajaListaDG 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Form1"
-   ClientHeight    =   10575
+   ClientHeight    =   10695
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   15870
+   ClientWidth     =   15780
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -21,8 +21,8 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10575
-   ScaleWidth      =   15870
+   ScaleHeight     =   10695
+   ScaleWidth      =   15780
    ShowInTaskbar   =   0   'False
    Begin XtremeSuiteControls.PushButton btnConfirmar 
       Height          =   495
@@ -127,9 +127,9 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
    Begin VB.TextBox txtOtrosDescuentos 
       Alignment       =   1  'Right Justify
       Height          =   285
-      Left            =   17880
+      Left            =   17760
       TabIndex        =   5
-      Top             =   11760
+      Top             =   12000
       Visible         =   0   'False
       Width           =   960
    End
@@ -181,7 +181,7 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   7
+      ColumnsCount    =   8
       Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":0000
       Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":0188
       Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":02EC
@@ -189,15 +189,16 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":0574
       Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":06BC
       Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":07FC
+      Column(8)       =   "frmAdminPagosLiqCajaListaDG.frx":093C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":0900
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":0A28
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":0AD8
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":0B8C
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":0C64
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":0D1C
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":0A40
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":0B68
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":0C18
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":0CCC
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":0DA4
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":0E5C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":0DFC
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":0F3C
    End
    Begin GridEX20.GridEX grilla 
       Height          =   4455
@@ -218,22 +219,22 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   7
-      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":0FCC
-      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":110C
-      Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":1244
-      Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":138C
-      Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":14CC
-      Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":1614
-      Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":1754
+      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":110C
+      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":124C
+      Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":1384
+      Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":14CC
+      Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":160C
+      Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":1754
+      Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":1894
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":1850
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":1978
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":1A28
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":1ADC
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":1BB4
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":1C6C
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":1990
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":1AB8
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":1B68
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":1C1C
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":1CF4
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":1DAC
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":1D4C
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":1E8C
    End
    Begin XtremeSuiteControls.PushButton btnCargarCbtes 
       Height          =   495
@@ -258,14 +259,14 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       UseVisualStyle  =   -1  'True
    End
    Begin GridEX20.GridEX gridBancos 
-      Height          =   1845
-      Left            =   360
+      Height          =   1245
+      Left            =   10080
       TabIndex        =   6
-      Top             =   10800
+      Top             =   10560
       Visible         =   0   'False
       Width           =   6705
       _ExtentX        =   11827
-      _ExtentY        =   3254
+      _ExtentY        =   2196
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "nombre"
@@ -284,27 +285,27 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":1F1C
-      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":201C
+      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":205C
+      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":215C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":210C
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":2244
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":22F4
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":23A8
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":2480
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":2538
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":224C
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":2384
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":2434
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":24E8
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":25C0
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":2678
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":2618
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":2758
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
-      Height          =   1935
-      Left            =   6720
+      Height          =   1335
+      Left            =   10680
       TabIndex        =   7
-      Top             =   10800
+      Top             =   11520
       Visible         =   0   'False
       Width           =   6225
       _ExtentX        =   10980
-      _ExtentY        =   3413
+      _ExtentY        =   2355
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "cuenta"
@@ -322,27 +323,27 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":27F0
-      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":2914
+      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":2930
+      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":2A54
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":2A08
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":2B40
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":2BF0
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":2CA4
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":2D7C
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":2E34
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":2B48
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":2C80
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":2D30
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":2DE4
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":2EBC
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":2F74
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":2F14
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":3054
    End
    Begin GridEX20.GridEX gridMonedas 
-      Height          =   1815
-      Left            =   240
+      Height          =   1215
+      Left            =   15120
       TabIndex        =   8
-      Top             =   11040
+      Top             =   10920
       Visible         =   0   'False
       Width           =   1380
       _ExtentX        =   2434
-      _ExtentY        =   3201
+      _ExtentY        =   2143
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "moneda"
@@ -360,23 +361,23 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":30EC
-      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":3210
+      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":322C
+      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":3350
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":3304
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":343C
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":34EC
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":35A0
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":3678
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":3730
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":3444
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":357C
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":362C
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":36E0
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":37B8
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":3870
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":3810
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":3950
    End
    Begin GridEX20.GridEX gridCajas 
       Height          =   1935
-      Left            =   16200
+      Left            =   17880
       TabIndex        =   9
-      Top             =   9240
+      Top             =   8280
       Visible         =   0   'False
       Width           =   1500
       _ExtentX        =   2646
@@ -396,27 +397,27 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       DataMode        =   99
       ColumnHeaderHeight=   285
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":39E8
-      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":3AE8
+      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":3B28
+      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":3C28
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":3BD4
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":3D0C
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":3DBC
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":3E70
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":3F48
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":4000
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":3D14
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":3E4C
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":3EFC
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":3FB0
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":4088
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":4140
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":40E0
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":4220
    End
    Begin GridEX20.GridEX gridChequesDisponibles 
-      Height          =   1920
-      Left            =   5040
+      Height          =   1320
+      Left            =   8880
       TabIndex        =   10
-      Top             =   11040
+      Top             =   10800
       Visible         =   0   'False
-      Width           =   3675
-      _ExtentX        =   6482
-      _ExtentY        =   3387
+      Width           =   6675
+      _ExtentX        =   11774
+      _ExtentY        =   2328
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "numero"
@@ -434,31 +435,31 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   7
-      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":42B8
-      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":4438
-      Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":45D8
-      Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":4714
-      Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":4820
-      Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":4940
-      Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":4A4C
+      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":43F8
+      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":4578
+      Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":4718
+      Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":4854
+      Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":4960
+      Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":4A80
+      Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":4B8C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":4B40
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":4C78
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":4D28
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":4DDC
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":4EB4
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":4F6C
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":4C80
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":4DB8
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":4E68
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":4F1C
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":4FF4
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":50AC
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":504C
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":518C
    End
    Begin GridEX20.GridEX gridChequeras 
-      Height          =   1935
-      Left            =   8760
+      Height          =   1095
+      Left            =   6720
       TabIndex        =   11
-      Top             =   10920
-      Width           =   1395
-      _ExtentX        =   2461
-      _ExtentY        =   3413
+      Top             =   12480
+      Width           =   5955
+      _ExtentX        =   10504
+      _ExtentY        =   1931
       Version         =   "2.0"
       BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "chequera"
@@ -477,26 +478,26 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":5224
-      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":5344
+      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":5364
+      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":5484
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":5444
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":557C
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":562C
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":56E0
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":57B8
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":5870
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":5584
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":56BC
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":576C
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":5820
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":58F8
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":59B0
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":5950
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":5A90
    End
    Begin GridEX20.GridEX gridChequesChequera 
-      Height          =   1935
-      Left            =   14160
+      Height          =   1335
+      Left            =   11880
       TabIndex        =   12
-      Top             =   11160
-      Width           =   1980
-      _ExtentX        =   3493
-      _ExtentY        =   3413
+      Top             =   12480
+      Width           =   6225
+      _ExtentX        =   10980
+      _ExtentY        =   2355
       Version         =   "2.0"
       HoldSortSettings=   -1  'True
       BoundColumnIndex=   "id"
@@ -516,25 +517,25 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":5B28
-      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":5C58
+      Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":5C68
+      Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":5D98
       SortKeysCount   =   1
-      SortKey(1)      =   "frmAdminPagosLiqCajaListaDG.frx":5D58
+      SortKey(1)      =   "frmAdminPagosLiqCajaListaDG.frx":5E98
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":5DC0
-      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":5EF8
-      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":5FA8
-      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":605C
-      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":6134
-      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":61EC
+      FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":5F00
+      FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":6038
+      FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":60E8
+      FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":619C
+      FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":6274
+      FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":632C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":62CC
+      PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":640C
    End
    Begin XtremeSuiteControls.RadioButton RadSeleccioneProveedor 
       Height          =   210
-      Left            =   17880
+      Left            =   15720
       TabIndex        =   13
-      Top             =   9600
+      Top             =   10320
       Visible         =   0   'False
       Width           =   2760
       _Version        =   786432
@@ -566,31 +567,41 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       EndProperty
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.TabControl TabControl 
-         Height          =   2820
+         Height          =   2940
          Left            =   120
          TabIndex        =   16
          Top             =   240
          Width           =   15180
          _Version        =   786432
          _ExtentX        =   26776
-         _ExtentY        =   4974
+         _ExtentY        =   5186
          _StockProps     =   68
          Appearance      =   10
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
-         ItemCount       =   2
-         Item(0).Caption =   "Banco"
-         Item(0).ControlCount=   2
-         Item(0).Control(0)=   "gridCompensatorios"
-         Item(0).Control(1)=   "gridDepositosOperaciones"
-         Item(1).Caption =   "Caja"
-         Item(1).ControlCount=   1
-         Item(1).Control(0)=   "gridCajaOperaciones"
+         ItemCount       =   4
+         SelectedItem    =   1
+         Item(0).Caption =   "Cheques Propios"
+         Item(0).ControlCount=   1
+         Item(0).Control(0)=   "gridChequesPropios"
+         Item(1).Caption =   "Cheques 3ros"
+         Item(1).ControlCount=   2
+         Item(1).Control(0)=   "gridNadaCheques(0)"
+         Item(1).Control(1)=   "gridCheques"
+         Item(2).Caption =   "Caja"
+         Item(2).ControlCount=   2
+         Item(2).Control(0)=   "gridCajaOperaciones"
+         Item(2).Control(1)=   "gridNadaCajaOperaciones"
+         Item(3).Caption =   "Banco"
+         Item(3).ControlCount=   2
+         Item(3).Control(0)=   "gridCompensatorios"
+         Item(3).Control(1)=   "gridDepositosOperaciones"
          Begin GridEX20.GridEX gridCompensatorios 
             Height          =   4710
-            Left            =   -69895
+            Left            =   -1.39895e5
             TabIndex        =   17
             Top             =   435
+            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   8308
@@ -612,29 +623,30 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
             IntProp2        =   0
             IntProp7        =   0
             ColumnsCount    =   5
-            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":64A4
-            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":65EC
-            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":66F8
-            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":67E4
-            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":68E8
+            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":65E4
+            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":672C
+            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":6838
+            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":6924
+            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":6A28
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":6A28
-            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":6B60
-            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":6C10
-            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":6CC4
-            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":6D9C
-            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":6E54
+            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":6B68
+            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":6CA0
+            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":6D50
+            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":6E04
+            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":6EDC
+            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":6F94
             ImageCount      =   0
-            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":6F34
+            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":7074
          End
          Begin GridEX20.GridEX gridDepositosOperaciones 
-            Height          =   2055
-            Left            =   120
+            Height          =   2295
+            Left            =   -69880
             TabIndex        =   18
             Top             =   480
-            Width           =   9930
-            _ExtentX        =   17515
-            _ExtentY        =   3625
+            Visible         =   0   'False
+            Width           =   14850
+            _ExtentX        =   26194
+            _ExtentY        =   4048
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -651,30 +663,30 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
             IntProp2        =   0
             IntProp7        =   0
             ColumnsCount    =   5
-            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":710C
-            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":726C
-            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":73A8
-            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":74DC
-            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":7620
+            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":724C
+            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":73AC
+            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":74CC
+            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":75E4
+            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":770C
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":7724
-            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":785C
-            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":790C
-            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":79C0
-            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":7A98
-            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":7B50
+            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":7810
+            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":7948
+            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":79F8
+            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":7AAC
+            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":7B84
+            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":7C3C
             ImageCount      =   0
-            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":7C30
+            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":7D1C
          End
-         Begin GridEX20.GridEX gridCajaOperaciones 
-            Height          =   2055
-            Left            =   -69880
+         Begin GridEX20.GridEX gridNadaCajaOperaciones 
+            Height          =   2295
+            Left            =   -2.09880e5
             TabIndex        =   19
             Top             =   480
             Visible         =   0   'False
             Width           =   9930
             _ExtentX        =   17515
-            _ExtentY        =   3625
+            _ExtentY        =   4048
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
@@ -691,20 +703,187 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
             IntProp2        =   0
             IntProp7        =   0
             ColumnsCount    =   5
-            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":7E08
-            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":7F68
-            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":80A4
-            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":81D8
-            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":830C
+            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":7EF4
+            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":8054
+            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":8190
+            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":82C4
+            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":83F8
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":8410
-            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":8548
-            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":85F8
-            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":86AC
-            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":8784
-            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":883C
+            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":84FC
+            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":8634
+            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":86E4
+            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":8798
+            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":8870
+            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":8928
             ImageCount      =   0
-            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":891C
+            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":8A08
+         End
+         Begin GridEX20.GridEX gridNadaCheques 
+            Height          =   2295
+            Index           =   0
+            Left            =   -1.39880e5
+            TabIndex        =   35
+            Top             =   480
+            Visible         =   0   'False
+            Width           =   9330
+            _ExtentX        =   16457
+            _ExtentY        =   4048
+            Version         =   "2.0"
+            BoundColumnIndex=   ""
+            ReplaceColumnIndex=   ""
+            ColumnAutoResize=   -1  'True
+            MethodHoldFields=   -1  'True
+            ContScroll      =   -1  'True
+            AllowColumnDrag =   0   'False
+            AllowDelete     =   -1  'True
+            GroupByBoxVisible=   0   'False
+            RowHeaders      =   -1  'True
+            DataMode        =   99
+            AllowAddNew     =   -1  'True
+            ColumnHeaderHeight=   285
+            IntProp1        =   0
+            IntProp2        =   0
+            IntProp7        =   0
+            ColumnsCount    =   7
+            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":8BE0
+            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":8D60
+            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":8F00
+            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":8FF8
+            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":9134
+            Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":9240
+            Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":9310
+            FormatStylesCount=   6
+            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":93FC
+            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":9534
+            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":95E4
+            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":9698
+            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":9770
+            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":9828
+            ImageCount      =   0
+            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":9908
+         End
+         Begin GridEX20.GridEX gridChequesPropios 
+            Height          =   2295
+            Left            =   -69880
+            TabIndex        =   36
+            Top             =   480
+            Visible         =   0   'False
+            Width           =   14850
+            _ExtentX        =   26194
+            _ExtentY        =   4048
+            Version         =   "2.0"
+            BoundColumnIndex=   ""
+            ReplaceColumnIndex=   ""
+            ColumnAutoResize=   -1  'True
+            MethodHoldFields=   -1  'True
+            ContScroll      =   -1  'True
+            AllowColumnDrag =   0   'False
+            AllowDelete     =   -1  'True
+            GroupByBoxVisible=   0   'False
+            RowHeaders      =   -1  'True
+            DataMode        =   99
+            AllowAddNew     =   -1  'True
+            ColumnHeaderHeight=   285
+            IntProp1        =   0
+            IntProp2        =   0
+            IntProp7        =   0
+            ColumnsCount    =   5
+            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":9AE0
+            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":9C48
+            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":9D7C
+            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":9EB8
+            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":A020
+            FormatStylesCount=   6
+            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":A118
+            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":A250
+            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":A300
+            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":A3B4
+            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":A48C
+            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":A544
+            ImageCount      =   0
+            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":A624
+         End
+         Begin GridEX20.GridEX gridCajaOperaciones 
+            Height          =   2295
+            Left            =   -69880
+            TabIndex        =   38
+            Top             =   480
+            Visible         =   0   'False
+            Width           =   14850
+            _ExtentX        =   26194
+            _ExtentY        =   4048
+            Version         =   "2.0"
+            BoundColumnIndex=   ""
+            ReplaceColumnIndex=   ""
+            ColumnAutoResize=   -1  'True
+            MethodHoldFields=   -1  'True
+            ContScroll      =   -1  'True
+            AllowDelete     =   -1  'True
+            GroupByBoxVisible=   0   'False
+            RowHeaders      =   -1  'True
+            DataMode        =   99
+            AllowAddNew     =   -1  'True
+            ColumnHeaderHeight=   285
+            IntProp1        =   0
+            IntProp2        =   0
+            IntProp7        =   0
+            ColumnsCount    =   5
+            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":A7FC
+            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":A95C
+            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":AA7C
+            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":AB94
+            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":ACAC
+            FormatStylesCount=   6
+            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":ADB0
+            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":AEE8
+            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":AF98
+            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":B04C
+            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":B124
+            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":B1DC
+            ImageCount      =   0
+            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":B2BC
+         End
+         Begin GridEX20.GridEX gridCheques 
+            Height          =   2295
+            Left            =   120
+            TabIndex        =   39
+            Top             =   480
+            Width           =   14850
+            _ExtentX        =   26194
+            _ExtentY        =   4048
+            Version         =   "2.0"
+            BoundColumnIndex=   ""
+            ReplaceColumnIndex=   ""
+            ColumnAutoResize=   -1  'True
+            MethodHoldFields=   -1  'True
+            ContScroll      =   -1  'True
+            AllowColumnDrag =   0   'False
+            AllowDelete     =   -1  'True
+            GroupByBoxVisible=   0   'False
+            RowHeaders      =   -1  'True
+            DataMode        =   99
+            AllowAddNew     =   -1  'True
+            ColumnHeaderHeight=   285
+            IntProp1        =   0
+            IntProp2        =   0
+            IntProp7        =   0
+            ColumnsCount    =   7
+            Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":B494
+            Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":B614
+            Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":B7B4
+            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":B8AC
+            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":B9E8
+            Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":BAF4
+            Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":BBC4
+            FormatStylesCount=   6
+            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":BCB0
+            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":BDE8
+            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":BE98
+            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":BF4C
+            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":C024
+            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":C0DC
+            ImageCount      =   0
+            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":C1BC
          End
       End
    End
@@ -752,6 +931,20 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
+   End
+   Begin XtremeSuiteControls.ComboBox cboMonedas 
+      Height          =   315
+      Left            =   16320
+      TabIndex        =   37
+      Top             =   9120
+      Width           =   1245
+      _Version        =   786432
+      _ExtentX        =   2196
+      _ExtentY        =   556
+      _StockProps     =   77
+      BackColor       =   -2147483643
+      Style           =   2
+      Text            =   "cboMonedas"
    End
    Begin VB.Line Line 
       BorderColor     =   &H8000000B&
@@ -869,10 +1062,10 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       BackStyle       =   0  'Transparent
       Caption         =   "Moneda"
       Height          =   195
-      Left            =   17880
+      Left            =   16320
       TabIndex        =   14
       Tag             =   "Total: "
-      Top             =   10020
+      Top             =   8880
       Visible         =   0   'False
       Width           =   570
    End
@@ -939,7 +1132,7 @@ Private Sub btnConfirmar_Click()
         facturaExistente = False
 
         For Each fac In facturasConfirmadas
-            If fac.Id = Factura.Id Then
+            If fac.id = Factura.id Then
             'If fac.numero = Factura.numero Then
                 facturaExistente = True
                 Exit For
@@ -1038,7 +1231,7 @@ Public Function ExportToXslConfirmados()
         
         Dim c As Integer
         
-        If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
+        If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
         
         xlWorksheet.Cells(idx, 6).value = facturaConfirmada.total * c
        
@@ -1047,8 +1240,6 @@ Public Function ExportToXslConfirmados()
         idx = idx + 1
 
     Next
-    
-
 
     xlApplication.ScreenUpdating = False
 
@@ -1136,7 +1327,7 @@ Public Function ExportToXslComprobantes()
         
         Dim c As Integer
         
-        If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
+        If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
         
         xlWorksheet.Cells(idx, 6).value = Factura.total * c
         
@@ -1216,13 +1407,13 @@ Private Sub btnQuitarSeleccionado_Click()
     
         ' Buscar la factura correspondiente en la colección
         For i = facturasConfirmadas.count To 1 Step -1
-            If facturasConfirmadas(i).Id = facturaConfirmada.Id Then
+            If facturasConfirmadas(i).id = facturaConfirmada.id Then
                 ' Encontrar la factura a eliminar
                 Set facturaAEliminar = facturasConfirmadas(i)
                 
                 Dim q As String
                 If facturaConfirmada.estado = Saldada Then
-                    q = "UPDATE AdminComprasFacturasProveedores SET estado = 2 WHERE id = " & facturaConfirmada.Id
+                    q = "UPDATE AdminComprasFacturasProveedores SET estado = 2 WHERE id = " & facturaConfirmada.id
                     If Not conectar.execute(q) Then GoTo err1
                  End If
                 
@@ -1252,18 +1443,15 @@ End Sub
 
 
 
-
-
-
 Private Sub Form_Load()
-    Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_FacturaProveedor)
-    vId = funciones.CreateGUID
+
+    formLoading = True
+    
     FormHelper.Customize Me
 
     GridEXHelper.CustomizeGrid Me.grilla, False
     GridEXHelper.CustomizeGrid Me.grillaConfirmados, False
     
-
     Me.grilla.ItemCount = 0
     Me.grillaConfirmados.ItemCount = 0
 
@@ -1272,17 +1460,17 @@ Private Sub Form_Load()
 
     GridEXHelper.CustomizeGrid Me.gridCajaOperaciones, False, True
     GridEXHelper.CustomizeGrid Me.gridDepositosOperaciones, False, True
-    '    GridEXHelper.CustomizeGrid Me.gridCheques, False, True
+    GridEXHelper.CustomizeGrid Me.gridCheques, False, True
     GridEXHelper.CustomizeGrid Me.gridChequesDisponibles, False, False
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
     GridEXHelper.CustomizeGrid Me.gridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
-    '    GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
+    GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
     GridEXHelper.CustomizeGrid Me.gridChequesChequera
-    '    GridEXHelper.CustomizeGrid Me.gridRetenciones, False, True
+    'GridEXHelper.CustomizeGrid Me.gridRetenciones, False, True
 
     Set Cajas = DAOCaja.FindAll()
     Me.gridCajas.ItemCount = Cajas.count
@@ -1299,23 +1487,63 @@ Private Sub Form_Load()
     Set chequeras = DAOChequeras.FindAllWithChequesDisponibles()
     Me.gridChequeras.ItemCount = chequeras.count
 
-    Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.OperacionesCaja.count
+    
+    CargarChequesDisponibles
+    
+    
+''    Set colProveedores = DAOProveedor.FindAllProveedoresWithFacturasImpagas
+''    For Each prov In colProveedores
+''        cboProveedores.AddItem prov.RazonSocial
+''        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.id
+''    Next
 
-    Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.OperacionesBanco.count
+    Dim cuentasContables As Collection
+    Set cuentasContables = DAOCuentaContable.GetAll()
+    Dim cc As clsCuentaContable
+    
+''    Me.cboCuentas.Clear
+''    For Each cc In cuentasContables
+''        cboCuentas.AddItem cc.nombre & " - " & cc.codigo
+''        cboCuentas.ItemData(cboCuentas.NewIndex) = cc.id
+''    Next cc
+
+    Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.operacionesCaja.count
+    Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.operacionesBanco.count
+    Me.gridCheques.ItemCount = LiquidacionCaja.ChequesTerceros.count
+    Me.gridChequesPropios.ItemCount = LiquidacionCaja.ChequesPropios.count
+
+    Set Me.gridCheques.Columns("numero").DropDownControl = Me.gridChequesDisponibles
 
     Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
     Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
-
+    
+    Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
+    Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
     gridChequesChequera.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridChequeras
-    
-    llenarGrilla
+
+
+   DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
+   
+   Me.cboMonedas.ListIndex = 0
+
+    If Me.cboMonedas.ListIndex = -1 Then
+        Set LiquidacionCaja.moneda = Nothing
+    Else
+        Set LiquidacionCaja.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+    End If
+    Totalizar
+        
+'''    llenarGrilla
     
     Me.caption = "Creación de Liquidación de Caja"
 
+    formLoaded = True
+    formLoading = False
+    
 End Sub
 
 
@@ -1325,7 +1553,10 @@ Public Sub llenarGrilla()
 
     Dim condition As String
 
-    condition = " AdminComprasFacturasProveedores.estado = 2 "
+    condition = " AdminComprasFacturasProveedores.estado = 2 OR AdminComprasFacturasProveedores.estado = 4 "
+
+    'condition = " AdminComprasFacturasProveedores.estado = 2 "
+
 
     Set facturas = DAOFacturaProveedor.FindAll(condition, , , Permisos.AdminFaPVerSoloPropias)
 
@@ -1343,11 +1574,11 @@ Public Sub llenarGrilla()
 
     For Each F In facturas
 
-        If F.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
-        total = total + MonedaConverter.Convertir(F.total * c, F.moneda.Id, MonedaConverter.Patron.Id)
-        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
-        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
-        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.moneda.Id, MonedaConverter.Patron.Id)
+        If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        total = total + MonedaConverter.Convertir(F.total * c, F.moneda.id, MonedaConverter.Patron.id)
+        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
+        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.id, MonedaConverter.Patron.id)
+        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.moneda.id, MonedaConverter.Patron.id)
         totalpercep = totalpercep + F.totalPercepciones * c
         totalsaldo = totalsaldo + ((F.total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * c)
 
@@ -1362,6 +1593,203 @@ Public Sub llenarGrilla()
 End Sub
 
 
+Private Sub gridCajaOperaciones0_BeforeUpdate(Index As Integer, ByVal Cancel As GridEX20.JSRetBoolean)
+If Index = 1 Then
+        ' Acciones específicas para el control con índice 1
+         MsgBox "Este es el control con índice 1 de caja operaciones."
+        
+            Dim cond1 As Boolean
+            Dim cond2 As Boolean
+            Dim cond3 As Boolean
+            Dim cond4 As Boolean
+        
+        
+            cond1 = Not IsNumeric(Me.gridCajaOperaciones.value(1))
+            cond2 = Not IsNumeric(Me.gridCajaOperaciones.value(2)) And LenB(Me.gridCajaOperaciones.value(2)) = 0
+            cond3 = Not IsDate(Me.gridCajaOperaciones.value(3))
+            cond4 = LenB(Me.gridCajaOperaciones.value(4)) = 0 Or IsEmpty(Me.gridCajaOperaciones.value(4))    'or Not IsNumeric(Me.gridCajaOperaciones.value(4))
+        
+            Cancel = cond1 Or cond2 Or cond3 Or cond4
+    End If
+End Sub
+
+Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+    ' Verificamos si el índice es 1
+        ' Acciones específicas para el control con índice 1
+        ' MsgBox "Este es el control con índice 1."
+        
+        Dim msg As New Collection
+    
+        ' REVISA QUE EN LA COLECCION DE CHEQUES DE TERCEROS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
+        If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesTerceros, CStr(Me.gridCheques.value(1))) Then
+            msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
+        End If
+    
+        Cancel = (msg.count > 0)
+        If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
+End Sub
+
+Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
+    ' Verificamos si el índice es 1
+    Set cheque = Nothing
+    If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
+    If IsSomething(cheque) Then
+        LiquidacionCaja.ChequesTerceros.Add cheque, CStr(cheque.id)
+
+    End If
+    Totalizar
+End Sub
+
+Private Sub gridCheques_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    ' Verificamos si el índice es 1
+    If rowIndex > 0 Then
+        LiquidacionCaja.ChequesTerceros.remove rowIndex
+        Totalizar
+    End If
+End Sub
+
+
+Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    ' Verificamos si el índice es 1
+        ' Acciones específicas para el control con índice 1
+    If rowIndex <= LiquidacionCaja.ChequesTerceros.count Then
+        Set cheque = LiquidacionCaja.ChequesTerceros.item(rowIndex)
+
+        Values(1) = cheque.numero & " "
+
+        'FORMATCURRENCY
+        Values(2) = FormatCurrency(cheque.Monto)
+        Values(3) = cheque.FechaVencimiento
+        If IsSomething(cheque.moneda) Then Values(4) = cheque.moneda.NombreCorto
+        If IsSomething(cheque.Banco) Then Values(5) = cheque.Banco.nombre
+        Values(6) = cheque.OrigenDestino
+        Values(7) = cheque.OrigenCheque
+    
+    End If
+
+End Sub
+
+
+Private Sub gridCheques_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    ' Verificamos si el índice es 1
+    If rowIndex > 0 And LiquidacionCaja.ChequesTerceros.count >= rowIndex Then
+        Set cheque = Nothing
+        If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
+        If IsSomething(cheque) Then
+            LiquidacionCaja.ChequesTerceros.Add cheque, , , rowIndex
+            LiquidacionCaja.ChequesTerceros.remove rowIndex
+        End If
+        Totalizar
+    End If
+End Sub
+
+
+Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+    Dim msg As New Collection
+
+    If LenB(Me.gridChequesPropios.value(1)) = 0 Then
+        msg.Add "Debe especificar una chequera."
+    End If
+
+    If LenB(Me.gridChequesPropios.value(2)) = 0 Then
+        msg.Add "Debe especificar un cheque."
+    End If
+
+    ' REVISA QUE EN LA COLECCION DE CHEQUES PROPIOS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
+    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
+        msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
+    End If
+
+    If Not IsNumeric(Me.gridChequesPropios.value(3)) Then
+        msg.Add "Debe especificar un monto válido."
+    End If
+    ' REVISA QUE SE HAYA CARGADO UN MONTO DEL CHEQUE INGRESADO, SI NO SE CARGA GENERA MSG DE ERROR
+
+    If LenB(Me.gridChequesPropios.value(3)) = 0 Then
+        msg.Add "Debe especificar un monto mayor a 0."
+    End If
+
+    If Not IsDate(Me.gridChequesPropios.value(4)) Then
+        msg.Add "Debe especificar una fecha valida."
+    End If
+
+    Cancel = (msg.count > 0)
+    If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
+
+End Sub
+
+
+Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal value As Variant)
+    If ColIndex = 1 Then
+        'If Not IsNumeric(Me.gridChequesPropios.Value(1)) Or LenB(Me.gridChequesPropios.Value(1)) = 0 Then
+        If Not IsNumeric(value) Or LenB(value) = 0 Then
+            Set chequesChequeraSeleccionada = New Collection
+        Else
+            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(Val(value))  ' Me.gridChequesPropios.Value(1))
+        End If
+
+        Me.gridChequesChequera.ItemCount = chequesChequeraSeleccionada.count
+    End If
+End Sub
+
+Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
+    Set cheque = Nothing
+    If IsNumeric(Values(2)) Then Set cheque = DAOCheques.FindById(Values(2))
+    If IsSomething(cheque) Then
+        cheque.Monto = Values(3)
+        cheque.FechaVencimiento = Values(4)
+
+        LiquidacionCaja.ChequesPropios.Add cheque, CStr(cheque.id)
+
+
+    End If
+    Totalizar
+End Sub
+
+Private Sub gridChequesPropios_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 Then
+        LiquidacionCaja.ChequesPropios.remove rowIndex
+        Totalizar
+    End If
+End Sub
+
+Private Sub gridChequesPropios_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If LiquidacionCaja.ChequesPropios.count >= rowIndex Then
+        Set cheque = LiquidacionCaja.ChequesPropios.item(rowIndex)
+        Values(1) = cheque.chequera.Description
+        Values(2) = vbNullString
+        'FORMATCURRENCY
+        Values(3) = FormatCurrency(cheque.Monto)
+        Values(4) = cheque.FechaVencimiento
+        Values(5) = cheque.numero
+
+
+        Totalizar
+    End If
+End Sub
+
+Private Sub gridChequesPropios_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If LiquidacionCaja.ChequesPropios.count >= rowIndex Then
+        Set cheque = OrdenPago.ChequesPropios.item(rowIndex)
+
+        '        If Values(2) <> Cheque.Id Then
+        '            ordenPago.ChequesPropios.remove CStr(Cheque.Id)
+        '            Set Cheque = DAOCheques.FindById(Values(2))
+        '            ordenPago.ChequesPropios.Add Cheque, CStr(Cheque.Id)
+        '        End If
+
+        cheque.Monto = Values(3)
+        cheque.FechaVencimiento = Values(4)
+    End If
+
+    Totalizar
+End Sub
+
+
+Private Sub gridCompensatorios_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    OrdenPago.Compensatorios.remove (rowIndex)
+End Sub
+
 Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla, Column
 
@@ -1370,7 +1798,7 @@ End Sub
 
 
 Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
+    If ColIndex = 15 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
 
 End Sub
 
@@ -1382,7 +1810,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
 
     Dim i As Integer
 
-    If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
+    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
     With Factura
 
@@ -1391,7 +1819,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(3) = Factura.numero
         Values(4) = Factura.FEcha
         Values(5) = Factura.moneda.NombreCorto
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.ImporteTotalSaldo) * i), "$", "")
         Values(7) = UCase(funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial))
 
     End With
@@ -1412,7 +1840,7 @@ Private Sub grillaConfirmados_UnboundReadData(ByVal rowIndex As Long, ByVal Book
 
     Dim i As Integer
 
-    If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
+    If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
     With facturaConfirmada
 
@@ -1422,7 +1850,8 @@ Private Sub grillaConfirmados_UnboundReadData(ByVal rowIndex As Long, ByVal Book
         Values(4) = facturaConfirmada.FEcha
         Values(5) = facturaConfirmada.moneda.NombreCorto
         Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(facturaConfirmada.total) * i), "$", "")
-        Values(7) = UCase(funciones.RazonSocialFormateada(facturaConfirmada.Proveedor.RazonSocial))
+        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales((facturaConfirmada.ImporteTotalSaldo)) * i), "$", "")
+        Values(8) = UCase(funciones.RazonSocialFormateada(facturaConfirmada.Proveedor.RazonSocial))
 
     End With
     ' La variable facturasConfirmadas no ha sido inicializada correctamente
@@ -1464,7 +1893,7 @@ Private Sub PusGuardar_Click()
 
     If LiquidacionCaja.IsValid Then
 
-        Dim n As Boolean: n = (LiquidacionCaja.Id = 0)
+        Dim n As Boolean: n = (LiquidacionCaja.id = 0)
 
         If DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
 
@@ -1500,10 +1929,10 @@ Public Sub TotalizarComprobantes()
     For i = 1 To facturasConfirmadas.count
         Set Factura = facturasConfirmadas.item(i)
 
-        If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then
-            total = total - Factura.total    ' Resta el total de las facturas tipo nota de crédito
+        If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+            total = total - Factura.ImporteTotalSaldo    ' Resta el total de las facturas tipo nota de crédito
         Else
-            total = total + Factura.total    ' Suma el total de las demás facturas
+            total = total + Factura.ImporteTotalSaldo    ' Suma el total de las demás facturas
         End If
     Next i
 
@@ -1517,40 +1946,26 @@ End Sub
 
 
 'TODAS LAS FUNCIONES QUE VIENEN DE LA LIQUIDACION DE CAJA ANTERIOR
-'Private Sub CargarChequesDisponibles()
-'    Set chequesDisponibles = DAOCheques.FindAllEnCarteraDeTerceros
-'    Me.gridChequesDisponibles.ItemCount = chequesDisponibles.count
-'End Sub
+Private Sub CargarChequesDisponibles()
+    Set chequesDisponibles = DAOCheques.FindAllEnCarteraDeTerceros
+    Me.gridChequesDisponibles.ItemCount = chequesDisponibles.count
+End Sub
 
 
 Private Sub gridBancos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex <= bancos.count Then
         Set Banco = bancos.item(rowIndex)
-        Values(1) = Banco.Id
+        Values(1) = Banco.id
         Values(2) = Banco.nombre
     End If
 
 End Sub
 
-Private Sub gridCajaOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Dim cond1 As Boolean
-    Dim cond2 As Boolean
-    Dim cond3 As Boolean
-    Dim cond4 As Boolean
-
-    cond1 = Not IsNumeric(Me.gridCajaOperaciones.value(1))
-    cond2 = Not IsNumeric(Me.gridCajaOperaciones.value(2)) And LenB(Me.gridCajaOperaciones.value(2)) = 0
-    cond3 = Not IsDate(Me.gridCajaOperaciones.value(3))
-    cond4 = LenB(Me.gridCajaOperaciones.value(4)) = 0 Or IsEmpty(Me.gridCajaOperaciones.value(4))    'or Not IsNumeric(Me.gridCajaOperaciones.value(4))
-
-    Cancel = cond1 Or cond2 Or cond3 Or cond4
-
-End Sub
 
 Private Sub gridCajas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex > 0 And Cajas.count > 0 Then
         Set caja = Cajas.item(rowIndex)
-        Values(1) = caja.Id
+        Values(1) = caja.id
         Values(2) = caja.nombre
     End If
 End Sub
@@ -1560,7 +1975,7 @@ Private Sub gridChequeras_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark
     If rowIndex <= chequeras.count Then
         Set tmpChequera = chequeras.item(rowIndex)
         Values(1) = tmpChequera.Description
-        Values(2) = tmpChequera.Id
+        Values(2) = tmpChequera.id
     End If
 End Sub
 
@@ -1568,7 +1983,7 @@ End Sub
 Private Sub gridChequesChequera_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex > 0 And chequesChequeraSeleccionada.count > 0 Then
         Values(1) = chequesChequeraSeleccionada(rowIndex).numero
-        Values(2) = chequesChequeraSeleccionada(rowIndex).Id
+        Values(2) = chequesChequeraSeleccionada(rowIndex).id
     End If
 End Sub
 
@@ -1584,7 +1999,7 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal rowIndex As Long, ByVal
         Values(2) = FormatCurrency(cheque.Monto)
         If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
-        Values(5) = cheque.Id
+        Values(5) = cheque.id
         Values(6) = cheque.OrigenCheque
         Values(7) = cheque.OrigenDestino
 
@@ -1596,7 +2011,7 @@ End Sub
 Private Sub gridCuentasBancarias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If cuentasBancarias.count >= rowIndex Then
         Set CuentaBancaria = cuentasBancarias.item(rowIndex)
-        Values(1) = CuentaBancaria.Id
+        Values(1) = CuentaBancaria.id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
 End Sub
@@ -1604,7 +2019,7 @@ End Sub
 Private Sub gridMonedas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex > 0 And Monedas.count > 0 Then
         Set moneda = Monedas.item(rowIndex)
-        Values(1) = moneda.Id
+        Values(1) = moneda.id
         Values(2) = moneda.NombreCorto
     End If
 End Sub
@@ -1625,15 +2040,15 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
         Set operacion.caja = DAOCaja.FindById(Values(4))
     End If
     operacion.EntradaSalida = OPSalida
-    LiquidacionCaja.OperacionesCaja.Add operacion
+    LiquidacionCaja.operacionesCaja.Add operacion
 
     Totalizar
 
 End Sub
 
 Private Sub gridCajaOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    If rowIndex > 0 And LiquidacionCaja.OperacionesCaja.count >= rowIndex Then
-        LiquidacionCaja.OperacionesCaja.remove rowIndex
+    If rowIndex > 0 And LiquidacionCaja.operacionesCaja.count >= rowIndex Then
+        LiquidacionCaja.operacionesCaja.remove rowIndex
 
         Totalizar
 
@@ -1641,8 +2056,8 @@ Private Sub gridCajaOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Book
 End Sub
 
 Private Sub gridCajaOperaciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex <= LiquidacionCaja.OperacionesCaja.count Then
-        Set operacion = LiquidacionCaja.OperacionesCaja.item(rowIndex)
+    If rowIndex <= LiquidacionCaja.operacionesCaja.count Then
+        Set operacion = LiquidacionCaja.operacionesCaja.item(rowIndex)
         'FORMATCURRENCY
         Values(1) = FormatCurrency(funciones.FormatearDecimales(operacion.Monto))
         If IsSomething(operacion.moneda) Then
@@ -1660,8 +2075,8 @@ End Sub
 
 
 Private Sub gridCajaOperaciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And LiquidacionCaja.OperacionesCaja.count > 0 Then
-        Set operacion = LiquidacionCaja.OperacionesCaja.item(rowIndex)
+    If rowIndex > 0 And LiquidacionCaja.operacionesCaja.count > 0 Then
+        Set operacion = LiquidacionCaja.operacionesCaja.item(rowIndex)
         'operacion.IdPertenencia = recibo.id
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
@@ -1710,15 +2125,15 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
         Set operacion.CuentaBancaria = DAOCuentaBancaria.FindById(Values(4))
     End If
     operacion.EntradaSalida = OPSalida
-    LiquidacionCaja.OperacionesBanco.Add operacion
+    LiquidacionCaja.operacionesBanco.Add operacion
 
     Totalizar
 
 End Sub
 
 Private Sub gridDepositosOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    If rowIndex > 0 And LiquidacionCaja.OperacionesBanco.count >= rowIndex Then
-        LiquidacionCaja.OperacionesBanco.remove rowIndex
+    If rowIndex > 0 And LiquidacionCaja.operacionesBanco.count >= rowIndex Then
+        LiquidacionCaja.operacionesBanco.remove rowIndex
 
         Totalizar
 
@@ -1726,8 +2141,8 @@ Private Sub gridDepositosOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal
 End Sub
 
 Private Sub gridDepositosOperaciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex <= LiquidacionCaja.OperacionesBanco.count Then
-        Set operacion = LiquidacionCaja.OperacionesBanco.item(rowIndex)
+    If rowIndex <= LiquidacionCaja.operacionesBanco.count Then
+        Set operacion = LiquidacionCaja.operacionesBanco.item(rowIndex)
         'FORMATCURRENCY
         Values(1) = FormatCurrency(funciones.FormatearDecimales(operacion.Monto))
         If IsSomething(operacion.moneda) Then
@@ -1744,8 +2159,8 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal rowIndex As Long, ByV
 End Sub
 
 Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And LiquidacionCaja.OperacionesBanco.count > 0 Then
-        Set operacion = LiquidacionCaja.OperacionesBanco.item(rowIndex)
+    If rowIndex > 0 And LiquidacionCaja.operacionesBanco.count > 0 Then
+        Set operacion = LiquidacionCaja.operacionesBanco.item(rowIndex)
         'operacion.IdPertenencia = recibo.id
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
@@ -1773,8 +2188,12 @@ Private Sub TabControl_SelectedChanged(ByVal item As Xtremesuitecontrols.ITabCon
 End Sub
 
 
+
+
 Private Sub Totalizar()
+
     LiquidacionCaja.StaticTotalOrigenes = LiquidacionCaja.TotalOrigenes
+    
     Me.lblLabel2.caption = "Total Valores Cargados: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
@@ -1807,9 +2226,35 @@ Private Sub txtFiltroNumero_Change()
 End Sub
 
 
-'''''''''''''''''''''''''''''''''''
 
 Public Sub Cargar(liq As clsLiquidacionCaja)
+
+    Me.caption = "Liquidación Nº " & LiquidacionCaja.NumeroLiq
+
+    If Not IsSomething(liq) Then
+        MsgBox "La Liquidación que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
+        Unload Me
+        Exit Sub
+    End If
+
+    Set LiquidacionCaja = DAOLiquidacionCaja.FindById(liq.id)
+
+    Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.id)
+
+    Me.grillaConfirmados.ItemCount = 0
+  
+    Me.grillaConfirmados.ItemCount = facturasConfirmadas.count
+    
+    Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.operacionesCaja.count
+    Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.operacionesBanco.count
+    Me.gridCheques.ItemCount = LiquidacionCaja.ChequesTerceros.count
+    Me.gridChequesPropios.ItemCount = LiquidacionCaja.ChequesPropios.count
+    
+    Me.dtpFecha.value = LiquidacionCaja.FEcha
+    Me.txtOtrosDescuentos.text = LiquidacionCaja.OtrosDescuentos
+
+    Me.txtNumerodeLiquidacion = LiquidacionCaja.NumeroLiq
+
 
     Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
     Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
@@ -1817,10 +2262,13 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
     Me.gridCajas.AllowEdit = Not ReadOnly
+    Me.gridCheques.AllowEdit = Not ReadOnly
+    Me.gridCheques.AllowDelete = Not ReadOnly
     Me.gridChequeras.AllowEdit = Not ReadOnly
     Me.gridChequesChequera.AllowEdit = Not ReadOnly
     Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
-
+    Me.gridChequesPropios.AllowEdit = Not ReadOnly
+    Me.gridChequesPropios.AllowDelete = Not ReadOnly
     Me.PusGuardar.Enabled = Not ReadOnly
     Me.btnQuitarSeleccionado.Enabled = Not ReadOnly
     Me.btnCargarCbtes.Enabled = Not ReadOny
@@ -1831,41 +2279,8 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     Me.btnExportarComprobantes.Enabled = Not ReadOnly
     Me.btnConfirmar.Enabled = Not ReadOnly
     Me.btnCargarCbtes.Enabled = Not ReadOnly
-    
-
-    If Not IsSomething(liq) Then
-        MsgBox "La Liquidación que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
-        Unload Me
-        Exit Sub
-    End If
-
-    Set LiquidacionCaja = DAOLiquidacionCaja.FindById(liq.Id)
-
-    Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.Id)
-
-    Me.grillaConfirmados.ItemCount = 0
-'    Me.grillaConfirmados.ItemCount = liq.FacturasProveedor.count
-    
-    Me.grillaConfirmados.ItemCount = facturasConfirmadas.count
-    
-    Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.OperacionesCaja.count
-    Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.OperacionesBanco.count
-
-    Me.dtpFecha.value = LiquidacionCaja.FEcha
-    Me.txtOtrosDescuentos.text = LiquidacionCaja.OtrosDescuentos
-
-    Me.caption = "Liquidación Nº " & LiquidacionCaja.NumeroLiq
-
-    Me.txtNumerodeLiquidacion = LiquidacionCaja.NumeroLiq
 
     Totalizar
     TotalizarComprobantes
 
-    esNueva = False
-
 End Sub
-
-
-
-
-

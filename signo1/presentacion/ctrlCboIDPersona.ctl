@@ -52,7 +52,7 @@ Public Property Let Personas(vcol As Collection)
     If IsSomething(col) Then
         For Each cli In col
             cboPersonas.AddItem cli.razon
-            cboPersonas.ItemData(cboPersonas.NewIndex) = cli.Id
+            cboPersonas.ItemData(cboPersonas.NewIndex) = cli.id
         Next
         If cboPersonas.ListCount > 0 Then
             cboPersonas.ListIndex = 0
@@ -66,8 +66,8 @@ End Sub
 
 
 
-Public Property Get Id() As Long
-    Id = vId
+Public Property Get id() As Long
+    id = vId
 End Property
 
 

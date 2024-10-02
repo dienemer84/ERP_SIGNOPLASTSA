@@ -31,20 +31,20 @@ Public Function FindByTipoDocumentoAndPuntoVentaAndTipoFactura(idTipoFActura As 
     Set FindByTipoDocumentoAndPuntoVentaAndTipoFactura = FindAllByFilter("acftd.id_tipo_factura=" & idTipoFActura & " and acftd.tipo_documento=" & tipoDocumentoContable & " and acftd.id_punto_venta=" & IdPuntoVenta & " and acftdi.id_iva=" & IdTipoIva)(1)
 End Function
 
-Public Function FindById(Id As Long) As clsTipoFacturaDiscriminado
-    Set FindById = FindAllByFilter("acftd.id=" & Id)(1)
+Public Function FindById(id As Long) As clsTipoFacturaDiscriminado
+    Set FindById = FindAllByFilter("acftd.id=" & id)(1)
 End Function
 
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String, ByRef tablaTipoFactura As String, ByRef tablaPuntoVenta As String) As clsTipoFacturaDiscriminado
     Dim tfact As clsTipoFacturaDiscriminado
-    Dim Id As Variant
+    Dim id As Variant
 
-    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, "id")
+    id = GetValue(rs, fieldsIndex, tableNameOrAlias, "id")
 
-    If Id > 0 Then
+    If id > 0 Then
         Set tfact = New clsTipoFacturaDiscriminado
-        tfact.Id = Id
+        tfact.id = id
         tfact.Numeracion = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_NUMERACION)
         tfact.TipoDoc = GetValue(rs, fieldsIndex, tableNameOrAlias, "tipo_documento")
         Set tfact.TipoFactura = DAOTipoFactura.Map(rs, fieldsIndex, tablaTipoFactura)

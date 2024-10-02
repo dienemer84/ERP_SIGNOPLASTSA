@@ -22,13 +22,9 @@ Private Function ApiConnect(sUrl As String, verb As verbo, async As Boolean, Opt
     sUrl = srv & sUrl
     xmlhttp.Open verbo, sUrl, async
 
-
-
     Dim c As New XmlSerializer
 
-
     Dim s As String
-
 
     If LenB(data) > 0 Then
         s = data
@@ -39,10 +35,8 @@ Private Function ApiConnect(sUrl As String, verb As verbo, async As Boolean, Opt
     End If
 
 
-
     Dim objXMLSendDoc As MSXML2.DOMDocument
     Set objXMLSendDoc = New MSXML2.DOMDocument
-
 
     xmlhttp.setRequestHeader "Content-Type", "text/plain"
     xmlhttp.send s    'objXMLSendDoc.XML
@@ -58,6 +52,7 @@ err1:
 
 End Function
 
+
 Public Function RecuperarCae(idPtoVta As String, tipoCbte As String, nroCbte As String) As String
     On Error GoTo err1
     Dim resp As String
@@ -70,6 +65,7 @@ Public Function RecuperarCae(idPtoVta As String, tipoCbte As String, nroCbte As 
 err1:
     Err.Raise Err.Number, Err.Source, Err.Description
 End Function
+
 
 'Desactivada el 17.07.20 -dnemer
 Public Function GetUltimoAutorizado(idPtoVta As String, tipoComprobante As String, esCredito As Boolean) As String
@@ -101,8 +97,8 @@ err1:
     GetUltimoAutorizado = "-1"
     Err.Raise Err.Number, Err.Source, Err.Description
 
-
 End Function
+
 
 Public Function CheckDummyAfip() As Boolean
     On Error GoTo err1
@@ -120,6 +116,7 @@ err1:
     CheckDummyAfip = False
 End Function
 
+
 Public Function HasErrorMessage(resp As String) As Boolean
     Dim Text1 As String
     HasErrorMessage = False
@@ -135,38 +132,36 @@ ERR_404:
 End Function
 
 
-
-
 Public Function ObtenerUltimoActual(F As Factura) As Integer
-    Dim Id
+    Dim id
 
-    Id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.Id, F.esCredito))
+    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
 
-    ObtenerUltimoActual = Id
+    ObtenerUltimoActual = id
 End Function
+
 
 Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     On Error GoTo err1
 
     Dim body As String
 
-
     'Set f = DAOFactura.FindById(idFactura)
-    Dim Id
+    Dim id
 
     'Desactivada el 17.07.20 -dnemer
-    Id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.Id, F.esCredito))
+    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
 
     'Reestablecida esta linea de codigo el 17.07.20 -dnemer
     'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
 
 
-    F.numero = Id + 1
+    F.numero = id + 1
 
     Dim req As New FECAEDetRequest
     req.Concepto = F.ConceptoIncluir
-    req.DocTipo = F.cliente.TipoDocumento
-    req.DocNro = F.cliente.Cuit
+    req.DocTipo = F.Cliente.TipoDocumento
+    req.DocNro = F.Cliente.Cuit
     req.CbteDesde = F.numero
     req.CbteHasta = F.numero
 
@@ -198,7 +193,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
 
-    req.MonId = F.moneda.Id
+    req.MonId = F.moneda.id
     'req.MonCotiz = F.Moneda.Cambio
     req.MonCotiz = F.CambioAPatron
 
@@ -236,7 +231,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     'NB: afip rechaza nc y nd que no sean mi pyme sin tener cbte asociado (err 10197 afip)
     'If F.esCredito And (F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito) Then
 
-    If F.TipoDocumento = tipoDocumentoContable.NotaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito Then
+    If F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito Then
         Dim ftmp As Factura
         Set ftmp = DAOFactura.FindById(F.Cancelada)
         '23-8 NB: no puedo informar un comprobnte asociado que no esté previamente informado. (en caso que sea crédito o débido mipyme)
@@ -259,16 +254,12 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
                 cbt.esCredito = "false"
             End If
             cbt.PtoVta = ftmp.Tipo.PuntoVenta.PuntoVenta
-            cbt.Tipo = ftmp.Tipo.Id
+            cbt.Tipo = ftmp.Tipo.id
             cbt.CbteFch = Format(ftmp.FechaEmision, "yyyymmdd")
             cbt.Cuit = "30657604972"
             req.CbtesAsoc.Add cbt
         End If
-
-
     End If
-
-
 
     'Dim cbt As CbteAsoc
     'Set cbt = New CbteAsoc
@@ -288,10 +279,8 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     '
 
 
-
     Dim trib As Tributo
     Set trib = New Tributo
-
 
     Dim P As New clsPercepciones
     Set P = DAOPercepciones.GetById(5)
@@ -333,10 +322,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     End If
 
 
-
     If F.esCredito Then
-
-
         '4-4-21 #218
         'Si el tipo de comprobante que está autorizando es Factura del tipo MiPyMEs (201, 206, 211), es
         'obligatorio informar <Opcionales> con id = 27. Los valores posiblesson SCA o ADC
@@ -346,7 +332,6 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
         '2101, 22.
 
         If F.TipoDocumento = tipoDocumentoContable.Factura Then
-
 
             '4-4-21 #218
             'Si el tipo de comprobante que está autorizando es Factura del tipo MiPyMEs (201, 206, 211), es
@@ -381,6 +366,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
             op.Valor = F.CBU
             req.Opcionales.Add op
         End If
+        
         If F.TipoDocumento <> tipoDocumentoContable.Factura Then
             ' Si el tipo de comprobante que está autorizando es MiPyMEs (FCE), informa opcionales, el valor correcto para el código 22
             ' es “S” o “N”: S = Es de Anulación N = No es de Anulación
@@ -413,9 +399,8 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     Set FeDetReq.FECAEDetRequest = req
     Dim FeCabReq As New FeCabReq
     FeCabReq.CantReg = "1"
-    FeCabReq.CbteTipo = F.Tipo.Id
-
-
+    FeCabReq.CbteTipo = F.Tipo.id
+    
     If F.esCredito Then
         FeCabReq.esCredito = "true"
     Else
@@ -425,7 +410,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
 
 
 
-    FeCabReq.PtoVta = F.Tipo.PuntoVenta.Id
+    FeCabReq.PtoVta = F.Tipo.PuntoVenta.id
     Dim FeCAEReq As New FeCAEReq
 
     Set FeCAEReq.FeCabReq = FeCabReq
@@ -483,18 +468,6 @@ err1:
 End Function
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 Public Function SendMail(asunto As String, mensaje As String, destino As String, Optional file As String, Optional Class As Object) As String
     On Error Resume Next
     Dim sUrl As String
@@ -516,11 +489,6 @@ Public Function SendMail(asunto As String, mensaje As String, destino As String,
     If verb = GET_ Then verbo = "GET"
 
     If LenB(file) > 3 Then withfile = True Else withfile = False
-
-
-
-
-
 
     If Not Class Is Nothing Then
         Dim body As String
@@ -584,6 +552,8 @@ Public Function SendMail(asunto As String, mensaje As String, destino As String,
 
 
 End Function
+
+
 Private Function pvToByteArray(sText As String) As Byte()
     pvToByteArray = StrConv(sText, vbFromUnicode)
 End Function

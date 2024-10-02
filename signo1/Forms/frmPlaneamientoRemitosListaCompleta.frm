@@ -232,7 +232,7 @@ Public Sub LlenarGrid()
     Dim remitosId As New Collection
     
     For Each remi In remitos
-        remitosId.Add remi.Id
+        remitosId.Add remi.id
     Next
     
     Set facturasRemitos = New Dictionary

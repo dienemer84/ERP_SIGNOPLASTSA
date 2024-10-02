@@ -9,8 +9,8 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
    ClientWidth     =   14415
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   13725
-   ScaleWidth      =   28680
+   ScaleHeight     =   10380
+   ScaleWidth      =   14415
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1815
       Left            =   120
@@ -608,10 +608,10 @@ Private Sub PushButton2_Click()
             opeCaja.EntradaSalida = OPSalida
 
             If Not DAOOperacion.Save(opeCaja) Then GoTo E
-            opeCaja.Id = conectar.UltimoId2
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
+            opeCaja.id = conectar.UltimoId2
+            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.id & ", " & opeCaja.id & ")"
             If Not conectar.execute(q) Then GoTo E
-            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
+            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.id
             If Not conectar.execute(q) Then GoTo E
 
 
@@ -746,10 +746,10 @@ End Sub
 
 Private Sub mnuAnular_Click()
     If MsgBox("¿Desea anular la Liquidación?", vbQuestion + vbYesNo) = vbYes Then
-        If DAOLiquidacionCaja.Delete(LiquidacionCaja.Id, True) Then
+        If DAOLiquidacionCaja.Delete(LiquidacionCaja.id, True) Then
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            liquidaciones.remove CStr(LiquidacionCaja.Id)
+            liquidaciones.remove CStr(LiquidacionCaja.id)
             Me.gridOrdenes.ItemCount = liquidaciones.count
             btnBuscar_Click
         Else

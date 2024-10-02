@@ -49,6 +49,8 @@ err10:
     Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & consulta
 
 End Function
+
+
 Public Function RSFactoryCliente(consulta) As ADODB.Recordset
     Dim rstmp As New ADODB.Recordset
     On Error GoTo err10
@@ -86,20 +88,20 @@ End Sub
 Public Sub RollBackTransaction()
     cn.RollbackTrans
 End Sub
-Public Function UltimoId(tableName As String, ByRef Id As Long) As Boolean
+Public Function UltimoId(tableName As String, ByRef id As Long) As Boolean
     On Error GoTo er1
     UltimoId = True
     Dim rs As Recordset
     Set rs = RSFactory("select last_insert_id() as ultimo from " & tableName)
     If Not rs.EOF And Not rs.BOF Then
-        Id = rs!ultimo
+        id = rs!ultimo
     Else
         GoTo er1
     End If
     Exit Function
 er1:
     UltimoId = False
-    Id = 0
+    id = 0
 End Function
 
 Public Function UltimoId2() As Long
@@ -151,7 +153,7 @@ Public Function ProximoId(tableName As String) As Long
     Exit Function
 er1:
     ProximoId = False
-    Id = 0
+    id = 0
 End Function
 Public Function Escape(value As Variant) As Variant
     Dim retorno As Variant
@@ -199,7 +201,7 @@ Public Function GetEntityId(entity As Object) As Variant
     If entity Is Nothing Then
         GetEntityId = 0    '"NULL"
     Else
-        GetEntityId = entity.Id
+        GetEntityId = entity.id
     End If
 End Function
 

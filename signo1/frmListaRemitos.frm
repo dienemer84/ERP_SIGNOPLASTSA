@@ -15,6 +15,7 @@ Begin VB.Form frmPlaneamientoRemitosLista
    MDIChild        =   -1  'True
    ScaleHeight     =   8805
    ScaleWidth      =   12825
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.ProgressBar ProgressBar 
       Height          =   495
       Left            =   11760
@@ -551,7 +552,7 @@ Private Sub archivos_Click()
 
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OA_Remitos
-    frmarchi1.ObjetoId = tmpRto.Id
+    frmarchi1.ObjetoId = tmpRto.id
     frmarchi1.caption = "Remito " & tmpRto.numero
     frmarchi1.Show
 
@@ -623,7 +624,7 @@ Private Sub endRto_Click()
     On Error GoTo err454
     Dim A As Long
     Dim rtoNro As Long
-    rtoNro = tmpRto.Id
+    rtoNro = tmpRto.id
     A = Me.grilla.rowIndex(Me.grilla.row)
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
@@ -687,7 +688,7 @@ Private Sub listaRemitos()
     Dim remitosId As New Collection
     
     For Each remi In remitos
-        remitosId.Add remi.Id
+        remitosId.Add remi.id
     Next
     
     Set facturasRemitos = New Dictionary
@@ -940,7 +941,7 @@ End Sub
 
 Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
-    If ColIndex = 10 And m_Archivos.item(tmpRto.Id) > 0 Then
+    If ColIndex = 10 And m_Archivos.item(tmpRto.id) > 0 Then
         IconIndex = 1
     End If
 End Sub
@@ -1070,7 +1071,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
 
         End If
 
-        .value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
+        .value(10) = "(" & Val(m_Archivos.item(tmpRto.id)) & ")"
 
     End With
 
@@ -1089,9 +1090,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         Set tmp = EVENTO.Elemento
         For i = remitos.count To 1 Step -1
-            If remitos(i).Id = tmp.Id Then
+            If remitos(i).id = tmp.id Then
                 Set tmpRto = remitos(i)
-                tmpRto.Id = tmp.Id
+                tmpRto.id = tmp.id
                 tmpRto.detalle = tmp.detalle
                 tmpRto.estado = tmp.estado
                 tmpRto.EstadoFacturado = tmp.EstadoFacturado
@@ -1150,7 +1151,7 @@ End Sub
 
 Private Sub mnuHistorico_Click()
     Dim frm As New frmHistoriales
-    frm.lista = DAORemitoHistorico.getAllByIdRemito(tmpRto.Id)
+    frm.lista = DAORemitoHistorico.getAllByIdRemito(tmpRto.id)
     frm.Show
 
 End Sub
@@ -1189,7 +1190,7 @@ Private Sub printRto_Click()
     On Error GoTo err444:
     Dim rs As Recordset
     Dim rto As Long
-    rto = tmpRto.Id
+    rto = tmpRto.id
     Set rs = conectar.RSFactory("select impreso from remitos where id=" & rto)
     Dim est As Long
     Dim i As Long
@@ -1304,7 +1305,7 @@ Me.ProgressBar.max = remitos.count
                 End If
             End If
 
-            xlWorksheet.Cells(idx, 9).value = "(" & Val(m_Archivos.item(Remito.Id)) & ")"
+            xlWorksheet.Cells(idx, 9).value = "(" & Val(m_Archivos.item(Remito.id)) & ")"
 
         
         idx = idx + 1
@@ -1372,9 +1373,9 @@ Private Sub scanear_Click()
     On Error Resume Next
     grilla_SelectionChange
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OA_Remitos, tmpRto.Id) Then
+    If archivos.escanearDocumento(OA_Remitos, tmpRto.id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Remitos)
-        Me.grilla.RefreshRowIndex (tmpRto.Id)
+        Me.grilla.RefreshRowIndex (tmpRto.id)
     End If
 End Sub
 
@@ -1382,16 +1383,27 @@ End Sub
 Private Sub txtDescripcion_GotFocus()
     foco Me.txtDescripcion
 End Sub
+
+
 Private Sub txtNroRemito_GotFocus()
     foco Me.txtNroRemito
 End Sub
+
+
 Private Sub txtNroRemito_Validate(Cancel As Boolean)
 '    funciones.ValidarTextBox Me.txtNroRemito, Cancel
 End Sub
+
+
 Private Sub verRto_Click()
+
+    Me.WindowState = vbMaximized
+    
     Dim frm As frmPlaneamientoRemitoVer
     Set frm = New frmPlaneamientoRemitoVer
     Set frm.Remito = tmpRto
     frm.MostrarInfoAdministracion = VerInfoAdministracion
     frm.Show
+    
+
 End Sub

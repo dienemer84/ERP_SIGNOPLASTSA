@@ -59,7 +59,9 @@ Public OtrosAbonado As Double
 
 Public UsuarioCarga As clsUsuario
 
+
 Public TotalCompensado As Double
+
 
 Public Property Get TotalAbonadoGlobal() As Double    'dto para saber cuanto se pago de la factura en todsa las OP
     TotalAbonadoGlobal = funciones.FormatearDecimales(Me.OtrosAbonadoGlobal + Me.NetoGravadoAbonadoGlobal + Me.NetoGravadoAbonadoGlobalPendiente + Me.OtrosAbonadoGlobalPendiente)
@@ -67,19 +69,22 @@ End Property
 
 
 Public Property Get ImporteTotalSaldo()
-    ImporteTotalSaldo = funciones.FormatearDecimales(Total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente)
+    ImporteTotalSaldo = funciones.FormatearDecimales(total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente)
 End Property
+
 
 Public Property Get ImporteNetoGravadoSaldo()
     ImporteNetoGravadoSaldo = funciones.FormatearDecimales(Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente)    'Me.NetoGravado - Me.NetoGravadoAbonadoGlobal - Me.NetoGravadoAbonadoGlobalPendiente)
 End Property
 
+
 Public Property Get ImporteOtrosSaldo()
     ImporteOtrosSaldo = funciones.FormatearDecimales(Me.TotalOtros - Me.OtrosAbonadoGlobal - Me.OtrosAbonadoGlobalPendiente)
 End Property
 
+
 Public Property Get TotalOtros()
-    TotalOtros = Me.Total - Me.NetoGravado
+    TotalOtros = Me.total - Me.NetoGravado
 End Property
 
 Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
@@ -95,6 +100,8 @@ Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
     Next
     CalcularIvaTotalAbonadoParcial = tot_iva
 End Function
+
+
 Public Function CalcularTotalAbonadoParcial(ng As Double)
     Dim Iva As Double
 
@@ -114,7 +121,7 @@ End Property
 
 Public Property Get DiferenciaPorTipoDeCambionTOTAL() As Double
     If TipoCambio > 0 Then
-        DiferenciaPorTipoDeCambionTOTAL = funciones.RedondearDecimales(Me.Total - Me.TotalDiaPago)
+        DiferenciaPorTipoDeCambionTOTAL = funciones.RedondearDecimales(Me.total - Me.TotalDiaPago)
     Else
         DiferenciaPorTipoDeCambionTOTAL = 0
     End If
@@ -167,17 +174,17 @@ End Property
 Public Property Get estado() As EstadoFacturaProveedor
     estado = vEstado
 End Property
-Public Property Let Redondeo(nRedondeo As Double)
+Public Property Let redondeo(nRedondeo As Double)
     vRedondeo = nRedondeo
 End Property
-Public Property Get Redondeo() As Double
-    Redondeo = vRedondeo
+Public Property Get redondeo() As Double
+    redondeo = vRedondeo
 End Property
-Public Property Let Id(nId As Long)
+Public Property Let id(nId As Long)
     vId = nId
 End Property
-Public Property Get Id() As Long
-    Id = vId
+Public Property Get id() As Long
+    id = vId
 End Property
 Public Property Let Proveedor(nProveedor As clsProveedor)
     Set vProveedor = nProveedor
@@ -240,7 +247,7 @@ Public Property Get TotalPercepcionesDiscriminado(percepcionId As Long) As Doubl
     tot_per = 0
     Dim P As Long
     For P = 1 To vPercep.count
-        If percepcionId = vPercep(P).Percepcion.Id Then
+        If percepcionId = vPercep(P).Percepcion.id Then
             tot_per = tot_per + vPercep(P).Monto
         End If
     Next
@@ -305,7 +312,7 @@ Public Property Get ObtenerTotalCompensado() As Double
 
 End Property
 
-Public Property Get Total() As Double
+Public Property Get total() As Double
     Dim tipo_cambio As Double
     Dim negativo As Integer
     Dim CalculoPercepciones As Double
@@ -319,7 +326,7 @@ Public Property Get Total() As Double
     End If
 
 
-    If Me.moneda.Id = DAOMoneda.FindFirstByPatronOrDefault.Id Then
+    If Me.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
         tipo_cambio = 1
     Else
         tipo_cambio = Me.TipoCambio
@@ -328,14 +335,14 @@ Public Property Get Total() As Double
     'cambie la division de tipo de cambio por la operacion de arriba el 31-7-13
     'Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / Me.TipoCambio)) '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
 
-    Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / tipo_cambio))     '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
+    total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / tipo_cambio))     '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
     'MsgBox (Total)
     Exit Property
 err1:
-    Total = 0
+    total = 0
 End Property
 Public Property Get TotalDiaPago() As Double
-    TotalDiaPago = funciones.RedondearDecimales(((Total / Me.TipoCambio) * Me.TipoCambioPago))
+    TotalDiaPago = funciones.RedondearDecimales(((total / Me.TipoCambio) * Me.TipoCambioPago))
 End Property
 
 Public Property Get TotalDiaPagoAbonado() As Double
@@ -405,11 +412,11 @@ End Property
 
 
 Public Property Get TotalPendiente() As Double
-    TotalPendiente = Me.Total - Me.TotalAbonado + Me.TotalPago
+    TotalPendiente = Me.total - Me.TotalAbonado + Me.TotalPago
 End Property
 
 
 Public Function AnalizarEstado() As EstadoFacturaProveedor
-    If Me.Total = Me.TotalAbonado Then AnalizarEstado = Saldada
-    If Me.TotalAbonado > 0 And Me.TotalAbonado < Me.Total Then AnalizarEstado = pagoParcial
+    If Me.total = Me.TotalAbonado Then AnalizarEstado = Saldada
+    If Me.TotalAbonado > 0 And Me.TotalAbonado < Me.total Then AnalizarEstado = pagoParcial
 End Function

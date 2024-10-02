@@ -515,7 +515,8 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Caption         =   "Imprimir"
       End
       Begin VB.Menu mnuVerCertificado 
-         Caption         =   "Ver Certificado IIBB"
+         Caption         =   "Editar Certificados de Retenciones"
+         Visible         =   0   'False
       End
       Begin VB.Menu nada 
          Caption         =   "-"
@@ -608,8 +609,8 @@ Private Sub Form_Load()
     Channel.AgregarSuscriptor Me, OrdenesPago_
 
     Me.cboEstado.Clear
-    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_pendiente)
-    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_pendiente
+    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Pendiente)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Pendiente
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Aprobada)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Aprobada
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
@@ -738,9 +739,9 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
     If ordenes.count > 0 Then
         gridOrdenes_SelectionChange
         If Button = 2 Then
-            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor And (Orden.estado = EstadoOrdenPago_Aprobada)
-            Me.mnuEditar.Enabled = (Orden.estado = EstadoOrdenPago_pendiente)
-            Me.mnuAprobar.Enabled = (Orden.estado = EstadoOrdenPago_pendiente)
+            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor Or (Orden.estado = EstadoOrdenPago_Aprobada) Or (Orden.estado = EstadoOrdenPago_Pendiente)
+            Me.mnuEditar.Enabled = (Orden.estado = EstadoOrdenPago_Pendiente)
+            Me.mnuAprobar.Enabled = (Orden.estado = EstadoOrdenPago_Pendiente)
             Me.mnuAnular.Enabled = Not (Orden.estado = EstadoOrdenPago_Anulada)
             Me.mnuVer.Enabled = Not (Orden.estado = EstadoOrdenPago_Anulada)
 
@@ -758,7 +759,7 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
             RowBuffer.RowStyle = "anulada2"
 
             RowBuffer.CellStyle(9) = "anulada"
-        ElseIf Orden.estado = EstadoOrdenPago_pendiente Then
+        ElseIf Orden.estado = EstadoOrdenPago_Pendiente Then
             RowBuffer.CellStyle(9) = "pendiente"
         End If
     End If
@@ -768,7 +769,7 @@ End Sub
 Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex > 0 And ordenes.count > 0 Then
         Set Orden = ordenes.item(rowIndex)
-        Values(1) = Orden.Id
+        Values(1) = Orden.id
         Values(2) = Orden.FEcha
 
         Values(3) = Orden.moneda.NombreCorto
@@ -806,9 +807,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         For i = ordenes.count To 1 Step -1
             Set tmp = EVENTO.Elemento
-            If ordenes(i).Id = tmp.Id Then
+            If ordenes(i).id = tmp.id Then
                 Set Orden = ordenes(i)
-                Orden.Id = tmp.Id
+                Orden.id = tmp.id
                 Orden.estado = tmp.estado
                 Me.gridOrdenes.RefreshRowIndex i
                 Exit For
@@ -821,10 +822,10 @@ Private Sub mnuAnular_Click()
     SeleccionarOP
     
     If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
-        If DAOOrdenPago.Delete(Orden.Id, True) Then
+        If DAOOrdenPago.Delete(Orden.id, True) Then
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            ordenes.remove CStr(Orden.Id)
+            ordenes.remove CStr(Orden.id)
             Me.gridOrdenes.ItemCount = ordenes.count
             cmdBuscar_Click
         Else
@@ -859,7 +860,7 @@ Private Sub mnuHistorial_Click()
     SeleccionarOP
     
     Dim F As New frmHistorico
-    F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
+    F.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
     F.Show
     
 End Sub
@@ -900,18 +901,28 @@ Private Sub mnuVer_Click()
 End Sub
 
 Private Sub mnuVerCertificado_Click()
-    Dim cr As Collection
-    Set cr = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.Id)
 
-    If IsSomething(cr) Then
+'''    Dim cr As Collection
+'''    Set cr = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.id)
+'''
+'''    If IsSomething(cr) Then
+'''
+'''        Dim c As CertificadoRetencion
+'''        For Each c In cr
+'''            DAOCertificadoRetencion.VerCertificado c
+'''        Next
+'''    Else
+'''        MsgBox "La orden de pago no tiene certificado.", vbInformation
+'''    End If
 
-        Dim c As CertificadoRetencion
-        For Each c In cr
-            DAOCertificadoRetencion.VerCertificado c
-        Next
-    Else
-        MsgBox "La orden de pago no tiene certificado.", vbInformation
-    End If
+    Dim f22 As New frmAdminPagosCrearOrdenPago
+    f22.Show
+    SeleccionarOP
+
+    f22.ReadOnly = False
+
+    f22.Cargar Orden
+    
 End Sub
 
 

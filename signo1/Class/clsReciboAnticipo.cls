@@ -14,17 +14,17 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public id As Long
-Public cliente As clsCliente
+Public Cliente As clsCliente
 Public fechaCreacion As Date
 Public fechaModificacion As Date
-Public fechaAprobacion As Date
+Public FechaAprobacion As Date
 Public usuarioCreador As clsUsuario
 Public usuarioAprobador As clsUsuario
 Public estado As EstadoRecibo
 Public redondeo As Double
 'Public PagoACuenta As Boolean NO VA MAS
 Public moneda As clsMoneda
-Public fecha As Date
+Public FEcha As Date
 Public facturas As New Collection
 
 'valores
@@ -37,45 +37,45 @@ Public aCuentaUsado As Double
 Private m_validationMessages As String
 Public pagosDeFacturas As New Dictionary    'tiene id factura y el monto pagado de la misma
 
-Public totalEstatico As New TotalEstaticoRecibo
+Public TotalEstatico As New TotalEstaticoRecibo
 
 Public Property Get ACuentaDisponible()
     ACuentaDisponible = aCuenta - aCuentaUsado
 End Property
 
-'Public Property Get TotalFacturas() As Double
-'    Dim F As Factura
-'    Dim tot As Double
-'    Dim negativo As Integer
-'
-'    For Each F In Me.facturas
-'        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then
-'            negativo = -1
-'        Else
-'            negativo = 1
-'        End If
-'
-'        If Me.pagosDeFacturas.Exists(CStr(F.id)) Then
-'
-'            'tot = tot + MonedaConverter.Convertir(Me.PagosDeFacturas.Item(CStr(F.Id)) * negativo, F.Moneda.Id, Me.Moneda.Id)
-'            tot = tot + (Me.pagosDeFacturas.item(CStr(F.id)) * negativo * F.CambioAPatron)
-'        Else
-'            tot = tot + F.Total * negativo * F.CambioAPatron
-'        End If
-'
-'
-'    Next F
-'    TotalFacturas = tot
-'End Property
+Public Property Get TotalFacturas() As Double
+    Dim F As Factura
+    Dim tot As Double
+    Dim negativo As Integer
 
-'Public Property Get TotalRetenciones() As Double
-'    Dim r As retencionRecibo
-'    Dim tot As Double
-'    For Each r In Me.retenciones
-'        tot = tot + MonedaConverter.Convertir(r.Valor, 0, Me.moneda.id)
-'    Next r
-'    TotalRetenciones = tot
-'End Property
+    For Each F In Me.facturas
+        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then
+            negativo = -1
+        Else
+            negativo = 1
+        End If
+
+        If Me.pagosDeFacturas.Exists(CStr(F.id)) Then
+
+            'tot = tot + MonedaConverter.Convertir(Me.PagosDeFacturas.Item(CStr(F.Id)) * negativo, F.Moneda.Id, Me.Moneda.Id)
+            tot = tot + (Me.pagosDeFacturas.item(CStr(F.id)) * negativo * F.CambioAPatron)
+        Else
+            tot = tot + F.total * negativo * F.CambioAPatron
+        End If
+
+
+    Next F
+    TotalFacturas = tot
+End Property
+
+Public Property Get TotalRetenciones() As Double
+    Dim r As retencionRecibo
+    Dim tot As Double
+    For Each r In Me.retenciones
+        tot = tot + MonedaConverter.Convertir(r.Valor, 0, Me.moneda.id)
+    Next r
+    TotalRetenciones = tot
+End Property
 
 Public Property Get TotalCheques() As Double
     Dim che As cheque
@@ -110,8 +110,10 @@ Public Property Get TotalOperacionesBanco() As Double
     TotalOperacionesBanco = tot
 End Property
 
-Public Property Get Total() As Double
-    Total = funciones.RedondearDecimales(Me.TotalFacturas - Me.TotalRetenciones, 2)
+Public Property Get total() As Double
+
+    total = funciones.RedondearDecimales(Me.TotalFacturas - Me.TotalRetenciones, 2)
+
 End Property
 
 Public Property Get TotalRecibido() As Double
