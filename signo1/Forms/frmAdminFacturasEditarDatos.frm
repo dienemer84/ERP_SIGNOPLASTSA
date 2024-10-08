@@ -267,17 +267,11 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
-Private Factura As Factura
-
-
-
-
-
+Private FacturaProforma As clsFacturaProforma
 
 
 Public Property Let idFactura(value As Long)
-    Set Factura = DAOFactura.FindById(value, True, True)
+    Set FacturaProforma = DAOFacturaProforma.FindById(value, True, True)
 
 End Property
 
@@ -285,12 +279,12 @@ Private Sub Form_Load()
 
     Customize Me
 
-    Me.lblNumeroCbte.caption = "N° de Cbte: " & Factura.NumeroFormateado & "- " & Factura.cliente.razon
+    Me.lblNumeroCbte.caption = "N° de Cbte: " & FacturaProforma.NumeroFormateado & "- " & FacturaProforma.Cliente.razon
 
-    Me.Text1.text = Factura.observaciones
-    Me.Text2.text = Factura.observaciones_cancela
-    Me.Text3.text = Factura.OrdenCompra
-    Me.Text6.text = Factura.TextoAdicional
+    Me.Text1.text = FacturaProforma.observaciones
+    Me.Text2.text = FacturaProforma.observaciones_cancela
+    Me.Text3.text = FacturaProforma.OrdenCompra
+    Me.Text6.text = FacturaProforma.TextoAdicional
 
 
 End Sub

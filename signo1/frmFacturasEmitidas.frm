@@ -1911,7 +1911,7 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
-            Me.nro.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
                 Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"

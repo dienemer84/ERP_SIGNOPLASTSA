@@ -30,9 +30,12 @@ End Function
 Public Function obternerConexion() As ADODB.Connection
     Set obternerConexion = cn
 End Function
+
+
 Public Property Get count() As Long
     count = vcount
 End Property
+
 
 Public Function RSFactory(consulta) As ADODB.Recordset
     Dim rstmp As New ADODB.Recordset
@@ -63,6 +66,8 @@ Public Function RSFactoryCliente(consulta) As ADODB.Recordset
 err10:
     MsgBox "Se produjo un error: " & Err.Description
 End Function
+
+
 Public Function SetServidorBBDD(nServidorBBDD As String)
     serverBBDD = nServidorBBDD
 End Function
@@ -70,6 +75,8 @@ End Function
 Public Function GetServidorBBDD() As String
     GetServidorBBDD = serverBBDD
 End Function
+
+
 Public Function execute(cmdText As String) As Boolean
     On Error GoTo e12
     cn.execute cmdText
@@ -79,15 +86,23 @@ e12:
     Err.Raise 1, "Motor de bases de datos", "Imposible ejecutar el comando " & Chr(10) & cmdText
     execute = False
 End Function
+
+
 Public Sub BeginTransaction()
     cn.BeginTrans
 End Sub
+
+
 Public Sub CommitTransaction()
     cn.CommitTrans
 End Sub
+
+
 Public Sub RollBackTransaction()
     cn.RollbackTrans
 End Sub
+
+
 Public Function UltimoId(tableName As String, ByRef id As Long) As Boolean
     On Error GoTo er1
     UltimoId = True
@@ -103,6 +118,7 @@ er1:
     UltimoId = False
     id = 0
 End Function
+
 
 Public Function UltimoId2() As Long
     On Error GoTo er1
@@ -155,6 +171,8 @@ er1:
     ProximoId = False
     id = 0
 End Function
+
+
 Public Function Escape(value As Variant) As Variant
     Dim retorno As Variant
     retorno = value
@@ -191,11 +209,13 @@ Public Function Escape(value As Variant) As Variant
 
 End Function
 
+
 Public Function GetValue(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableName As String, ByRef fieldName As String)
-'    ''debug.print (tableName & "." & fieldName)
+    'Debug.Print (tableName & "." & fieldName)
     GetValue = rs.Fields.item(fieldsIndex(tableName & "." & fieldName)).value
     If IsNull(GetValue) Then GetValue = Empty
 End Function
+
 
 Public Function GetEntityId(entity As Object) As Variant
     If entity Is Nothing Then
