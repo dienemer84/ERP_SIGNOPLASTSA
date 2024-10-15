@@ -520,7 +520,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66977793
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Label Label2 
@@ -1448,7 +1448,7 @@ Private Sub Form_Load()
         Set FacturaProforma.Tipo = New clsTipoFacturaDiscriminado
 
         FacturaProforma.Tipo.TipoDoc = NuevoTipoDocumento
-        Me.caption = "Nueva " & StrConv(FacturaProforma.TipoDocumentoDescription, vbProperCase)
+        Me.caption = "Nueva PROFORMA"
         Me.dtpFecha.value = Now
 
         Me.dtFechaPagoCredito.value = Now

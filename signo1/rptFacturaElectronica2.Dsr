@@ -1,13 +1,13 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica 
    Caption         =   "COMPROBANTE ELECTRONICO"
-   ClientHeight    =   10890
+   ClientHeight    =   14025
    ClientLeft      =   165
    ClientTop       =   555
-   ClientWidth     =   14415
+   ClientWidth     =   28680
    StartUpPosition =   3  'Windows Default
-   _ExtentX        =   25426
-   _ExtentY        =   19209
+   _ExtentX        =   50588
+   _ExtentY        =   24739
    _Version        =   393216
    _DesignerVersion=   100684101
    ReportWidth     =   11190
@@ -570,7 +570,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          _Version        =   393216
          Name            =   "lblCondicionPagoFCE"
          Object.Left            =   3580
-         Object.Top             =   1410
+         Object.Top             =   1400
          Object.Width           =   4530
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -1337,9 +1337,9 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblTotalLetras"
-         Object.Left            =   2175
+         Object.Left            =   2100
          Object.Top             =   1590
-         Object.Width           =   8865
+         Object.Width           =   8910
          Object.Height          =   225
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"

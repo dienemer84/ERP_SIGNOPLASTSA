@@ -110,13 +110,16 @@ Public Property Get DescripcionCreditoAdicional() As String
     If TipoDocumento = tipoDocumentoContable.notaDebito Then
         dsc = "NOTA DE DÉBITO ELECTRÓNICA MiPyMEs  (FCE)"
     End If
+    If TipoDocumento = tipoDocumentoContable.Proforma Then
+        dsc = "PROFORMA"
+    End If
     DescripcionCreditoAdicional = dsc
 End Property
 
 
 Public Property Get CodigoBarrasAfip() As String
     Dim numero As String
-    numero = "30657604972" & Format(Me.GetCodigoDocumentoAfip, "00") & Format(Me.Tipo.PuntoVenta.PuntoVenta, "0000") & Me.CAE & Format(Me.CAEVto, "yyyymmdd")
+    numero = "30657604972" & Format(Me.GetCodigoDocumentoAfip, "00") & Format("0000", "0000") & Me.CAE & Format(Me.CAEVto, "yyyymmdd")
     CodigoBarrasAfip = numero & calcularDVFactura(numero)
     
 End Property
@@ -152,9 +155,9 @@ End Property
 
 
 Public Function GetCodigoDocumentoAfip() As Integer
-    If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
-    If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
-    If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
+'''    If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
+'''    If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
+'''    If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
 
 
 End Function
@@ -253,11 +256,9 @@ End Property
 
 
 Public Property Get NumeroFormateado() As String
-    If (IsSomething(Tipo.PuntoVenta)) Then
-        NumeroFormateado = Me.Tipo.PuntoVenta.PuntoVenta & "-" & Format(Me.numero, "0000")
-    Else
-        NumeroFormateado = "Error"
-    End If
+
+        NumeroFormateado = Format(Me.numero, "0000")
+
 End Property
 
 
@@ -296,20 +297,22 @@ Public Property Get total() As Double
 End Property
 
 
-Public Property Get TipoDocumentoDescription() As String
-    Dim retorno As String
-    Select Case Me.TipoDocumento
-    Case tipoDocumentoContable.Factura
-        retorno = "FACTURA"
-    Case tipoDocumentoContable.notaCredito
-        retorno = "NOTA DE CREDITO"
-    Case tipoDocumentoContable.notaDebito
-        retorno = "NOTA DE DEBITO"
-    End Select
-
-    TipoDocumentoDescription = retorno
-    
-End Property
+'Public Property Get TipoDocumentoDescription() As String
+'    Dim retorno As String
+'    Select Case Me.TipoDocumento
+'    Case tipoDocumentoContable.Factura
+'        retorno = "FACTURA"
+'    Case tipoDocumentoContable.notaCredito
+'        retorno = "NOTA DE CREDITO"
+'    Case tipoDocumentoContable.notaDebito
+'        retorno = "NOTA DE DEBITO"
+'            Case tipoDocumentoContable.Proforma
+'        retorno = "NOTA DE DEBITO"
+'    End Select
+'
+'    TipoDocumentoDescription = retorno
+'
+'End Property
 
 
 '''Public Property Get TipoDocumento() As tipoDocumentoContable

@@ -963,34 +963,13 @@ Begin VB.Form frmAdminFacturasProformaEmitidas
          Caption         =   "-"
       End
       Begin VB.Menu aprobarFactura 
-         Caption         =   "Aprobar localmente..."
-      End
-      Begin VB.Menu mnuEnviarAfip 
-         Caption         =   "Enviar a AFIP..."
+         Caption         =   "Aprobar..."
       End
       Begin VB.Menu separador 
          Caption         =   "-"
       End
-      Begin VB.Menu mnuAprobarEnviar 
-         Caption         =   "Aprobar localmente y Enviar a AFIP..."
-      End
-      Begin VB.Menu mnuDesaprobarFactura 
-         Caption         =   "Desaprobar..."
-      End
-      Begin VB.Menu sepa3 
-         Caption         =   "-"
-      End
-      Begin VB.Menu mnuRechazo 
-         Caption         =   "Rechazo de comprobantes (FCE)"
-      End
       Begin VB.Menu ImprimirFactura 
          Caption         =   "Imprimir..."
-      End
-      Begin VB.Menu AnularFactura 
-         Caption         =   "Anular"
-      End
-      Begin VB.Menu mnuCrearCopiaFactura 
-         Caption         =   "Crear copia a partir de comprobante"
       End
       Begin VB.Menu mnuEditarCampos 
          Caption         =   "Editar Datos..."
@@ -1006,7 +985,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Implements ISuscriber
 
 Dim vId As String
 Dim facturasproformas As Collection
@@ -1014,89 +992,20 @@ Dim Factura As clsFacturaProforma
 Dim m_Archivos As Dictionary
 
 
-Private Sub AnularFactura_Click()
-    Dim r As Long
-    r = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
-    If MsgBox("¿Desea anular el comprobante seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
-
-        If DAOFacturaProforma.Anular(Factura) Then
-            MsgBox "Comprobante anulado con éxito!", vbInformation, "Información"
-            Me.gridComprobantesEmitidos.RefreshRowIndex r
-        Else
-            MsgBox "Hubo un error. No se anulo el comprobante!", vbCritical, "Error"
-        End If
-
-    End If
-End Sub
-
-
-Private Sub aplicarNCaFC_Click()
-    On Error GoTo err1
-    If MsgBox("¿Seguro de aplicar comprobante?", vbYesNo, "Confirmación") = vbYes Then
-        'seleccionar factura para aplicar
-        Set Selecciones.Factura = Nothing
-        Dim F As New frmAdminFacturasNCElegirFC
-
-        F.idCliente = Factura.Cliente.id
-        F.TiposDocs.Add tipoDocumentoContable.Factura
-
-        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
-            F.TiposDocs.Add tipoDocumentoContable.notaDebito
-        End If
-        If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
-            F.TiposDocs.Add tipoDocumentoContable.notaCredito
-        End If
-
-        F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
-        F.Show 1
-
-        If IsSomething(Selecciones.Factura) Then
-            If DAOFactura.aplicarNCaFC(Selecciones.Factura.id, Factura.id) Then
-                llenarGrilla
-
-                MsgBox "Comprobantes Vinculados: " & Factura.NumeroFormateado & " | " & Selecciones.Factura.NumeroFormateado & vbNewLine & "" _
-                     & "Aplicación exitosa!", vbInformation, "Información"
-
-            End If
-        End If
-    End If
-    Exit Sub
-err1:
-    MsgBox Err.Description, vbCritical, "Error"
-End Sub
-
-
-Private Sub aplicarNDaFC_Click()
-    On Error GoTo err1
-    If MsgBox("¿Seguro de aplicar la ND a un comprobante?", vbYesNo, "Confirmación") = vbYes Then
-        'seleccionar factura para aplicar
-        Set Selecciones.Factura = Nothing
-        Dim F As New frmAdminFacturasNCElegirFC
-
-        F.idCliente = Factura.Cliente.id
-        F.TiposDocs.Add tipoDocumentoContable.Factura
-        
-        If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
-            F.TiposDocs.Add tipoDocumentoContable.notaCredito
-        End If
-
-        F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
-        F.Show 1
-
-        If IsSomething(Selecciones.Factura) Then
-            If DAOFactura.aplicarNotaDebitoaFC(Selecciones.Factura.id, Factura.id) Then
-                llenarGrilla
-
-                MsgBox "Comprobantes Vinculados: " & Factura.NumeroFormateado & " | " & Selecciones.Factura.NumeroFormateado & vbNewLine & "" _
-                     & "Aplicación exitosa!", vbInformation, "Información"
-
-            End If
-        End If
-    End If
-    Exit Sub
-err1:
-    MsgBox Err.Description, vbCritical, "Error"
-End Sub
+'''Private Sub AnularFactura_Click()
+'''    Dim r As Long
+'''    r = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
+'''    If MsgBox("¿Desea anular el comprobante seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
+'''
+'''        If DAOFacturaProforma.Anular(Factura) Then
+'''            MsgBox "Comprobante anulado con éxito!", vbInformation, "Información"
+'''            Me.gridComprobantesEmitidos.RefreshRowIndex r
+'''        Else
+'''            MsgBox "Hubo un error. No se anulo el comprobante!", vbCritical, "Error"
+'''        End If
+'''
+'''    End If
+'''End Sub
 
 
 Private Sub aprobarFactura_Click()
@@ -1145,6 +1054,7 @@ err1:
     Me.gridComprobantesEmitidos.RefreshRowIndex g
 End Sub
 
+
 Private Sub archivos_Click()
     Dim F As New frmArchivos2
     F.Origen = 101
@@ -1158,9 +1068,11 @@ Private Sub btnClearMoneda_Click()
     Me.cboMoneda.ListIndex = -1
 End Sub
 
+
 Private Sub btnClearTipo_Click()
     Me.cboTipo.ListIndex = 3
 End Sub
+
 
 Private Sub btnExportar_Click()
 
@@ -1447,6 +1359,7 @@ Private Sub btnExportar_Click()
 
 End Sub
 
+
 Private Sub btnReducirVentana_Click()
 'SE REDUCE
     If btnReducirVentana.caption = "R" Then
@@ -1487,9 +1400,11 @@ Private Sub btnReducirVentana_Click()
     
 End Sub
 
+
 Private Sub cboRangos_Click()
     funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde, Me.dtpHasta
 End Sub
+
 
 Private Sub chkAgruparCbtes_Click()
     agruparAsociados
@@ -1512,6 +1427,7 @@ Private Sub chkboxVerIds_Click()
     
 End Sub
 
+
 Private Sub verIds()
     If Me.chkboxVerIds Then
         Me.gridComprobantesEmitidos.Columns(24).Visible = True
@@ -1525,6 +1441,7 @@ End Sub
 
 Private Sub chkVerObservaciones_Click()
     verObservaciones
+    
 End Sub
 
 
@@ -1596,8 +1513,6 @@ Private Sub Form_Load()
     Me.cboMoneda.ListIndex = -1
     
     vId = funciones.CreateGUID
-
-    Channel.AgregarSuscriptor Me, FacturaCliente_
 
     'Modificaci?n 15/05/20 (Se muestran todos los comprobanes sin filtrar por punto de venta)
     DAOPuntoVenta.llenarComboXtremeSuite Me.cboPuntosVenta, False
@@ -1828,21 +1743,26 @@ Private Sub Form_Terminate()
     Channel.RemoverSuscripcionTotal Me
 End Sub
 
+
 Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
 End Sub
+
 
 Private Sub gridComprobantesEmitidos_BeforePrintPage(ByVal PageNumber As Long, ByVal nPages As Long)
     gridComprobantesEmitidos.PrinterProperties.FooterString(jgexHFRight) = "Página" & PageNumber & " de " & nPages
 End Sub
 
+
 Private Sub gridComprobantesEmitidos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.gridComprobantesEmitidos, Column
 End Sub
 
+
 Private Sub gridComprobantesEmitidos_DblClick()
     verFactura_Click
 End Sub
+
 
 'Private Sub gridComprobantesEmitidos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
 '    If ColIndex = 20 And m_Archivos.item(FacturaProforma.id) > 0 Then IconIndex = 1
@@ -1854,7 +1774,11 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
         If Button = 2 Then
             Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
-
+'            If Factura.Tipo.PuntoVenta.CaeManual Then
+'                Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"
+'            Else
+'                Me.mnuEnviarAfip.caption = "Informar a AFIP"
+'            End If
 
 '''            'Aplicar a Factura o ND...
 '''            If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
@@ -1876,10 +1800,10 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
                 Me.editar.Visible = True
                 Me.aprobarFactura.Enabled = Permisos.AdminFacturasAprobaciones
                 Me.aprobarFactura.Visible = True
-                Me.mnuEnviarAfip.Visible = False
+
                 Me.ImprimirFactura.Enabled = False
                 Me.ImprimirFactura.Visible = False
-                Me.mnuDesaprobarFactura.Visible = False
+'''                Me.mnuDesaprobarFactura.Visible = False
 
 
                 Me.mnuEditarCampos.Visible = False
@@ -1899,7 +1823,7 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
 '''                Else
 '                    Me.mnuAprobarEnviar.Visible = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual
 '                    Me.mnuAprobarEnviar.Enabled = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual
-                End If
+''                End If
 
             End If
 
@@ -1914,8 +1838,8 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
 
                 'opci?n combinada solo v?lida para comprobantes electr?nicos no aprobados localmente
                 '23-08-2020
-                Me.mnuAprobarEnviar.Visible = False
-                Me.mnuAprobarEnviar.Enabled = False
+'''                Me.mnuAprobarEnviar.Visible = False
+'''                Me.mnuAprobarEnviar.Enabled = False
 
                 Me.mnuEditarCampos.Visible = True
                 Me.mnuEditarCampos.Enabled = True
@@ -1939,13 +1863,11 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
 '                Me.aplicarNDaFC.Visible = True
 '                Me.aplicarNDaFC.Enabled = True
 
-
-
                 Me.ImprimirFactura.Enabled = True
                 Me.ImprimirFactura.Visible = True
 
                 'si es FCE muestro el form para cambiar el estado de rechazo
-                Me.mnuRechazo.Visible = Factura.esCredito
+'''                Me.mnuRechazo.Visible = Factura.esCredito
 
             End If
 
@@ -1962,8 +1884,8 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
 
             If Factura.estado = EstadoFacturaCliente.CanceladaNC Then
                 Me.editar.Enabled = False
-                Me.AnularFactura.Enabled = False
-                Me.AnularFactura.Visible = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.AnularFactura.Visible = False
                 Me.aprobarFactura.Enabled = False
                 Me.ImprimirFactura.Enabled = True
 
@@ -1972,8 +1894,8 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
             
             If Factura.estado = EstadoFacturaCliente.CanceladaNCParcial Then
                 Me.editar.Enabled = False
-                Me.AnularFactura.Enabled = False
-                Me.AnularFactura.Visible = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.AnularFactura.Visible = False
                 Me.aprobarFactura.Enabled = False
                 Me.ImprimirFactura.Enabled = True
 
@@ -1982,8 +1904,8 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
 
             If Factura.estado = EstadoFacturaCliente.AplicadaND Then
                 Me.editar.Enabled = False
-                Me.AnularFactura.Enabled = False
-                Me.AnularFactura.Visible = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.AnularFactura.Visible = False
                 Me.aprobarFactura.Enabled = False
                 Me.ImprimirFactura.Enabled = True
 
@@ -1992,16 +1914,16 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
 
             If Factura.estado = EstadoFacturaCliente.AplicadaACbte Then
                 Me.editar.Enabled = False
-                Me.AnularFactura.Enabled = False
-                Me.AnularFactura.Visible = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.AnularFactura.Visible = False
                 Me.aprobarFactura.Enabled = False
                 Me.ImprimirFactura.Enabled = True
 
             End If
 
             
-            Me.separador.Visible = Me.mnuEnviarAfip.Visible Or Me.aprobarFactura
-            Me.sepa3.Visible = Me.mnuDesaprobarFactura.Visible Or Me.mnuAprobarEnviar.Visible
+''''''            Me.separador.Visible = Me.mnuEnviarAfip.Visible Or Me.aprobarFactura
+'''            Me.sepa3.Visible = Me.mnuDesaprobarFactura.Visible Or Me.mnuAprobarEnviar.Visible
 
             If Factura.Saldado <> NoSaldada Then
                 
@@ -2011,8 +1933,9 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
             Me.PopupMenu Me.mnuFacturas
 
         End If
-'''    End If
+    End If
 End Sub
+
 
 Private Sub gridComprobantesEmitidos_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
@@ -2050,15 +1973,18 @@ err1:
 
 End Sub
 
+
 Private Sub gridComprobantesEmitidos_SelectionChange()
     SeleccionarFactura
 End Sub
+
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
     Set Factura = facturasproformas.item(Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row))
 
 End Sub
+
 
 Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
@@ -2202,6 +2128,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByV
 err1:
 End Sub
 
+
 Private Sub ImprimirFactura_Click()
 
     On Error GoTo err451:
@@ -2209,17 +2136,9 @@ Private Sub ImprimirFactura_Click()
     Dim veces As Long
 
 
-'    If Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual Then
-'        veces = clasea.facturaImpresa(Factura.id)
-'        If veces > 0 Then
-'            If MsgBox("Este comprobante ya fue generarlo" & Chr(10) & "¿Desea volver a generarlo?", vbYesNo, "Confirmación") = vbYes Then
-'                'DAOFactura.GenerarPdf (Factura.id)
-'                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
-'            End If
-'        Else
-'            DAOFactura.VerFacturaElectronicaParaImpresion (Factura.id)
-'        End If
-'    Else
+                DAOFacturaProforma.VerFacturaElectronicaParaImpresion (Factura.id)
+
+
 
         veces = clasea.facturaImpresa(Factura.id)
         If veces = 0 Or veces = -1 Then
@@ -2245,65 +2164,12 @@ Private Sub ImprimirFactura_Click()
             End If
 
         End If
-'    End If
+
     Exit Sub
 err451:
 
 End Sub
 
-Private Property Get ISuscriber_id() As String
-    ISuscriber_id = vId
-End Property
-
-Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
-    Dim tmp As Factura
-    If EVENTO.EVENTO = agregar_ Then
-        llenarGrilla
-        Me.gridComprobantesEmitidos.Refresh
-    ElseIf EVENTO.EVENTO = modificar_ Then
-        Set tmp = EVENTO.Elemento
-
-        Dim i As Long
-        For i = facturas.count To 1 Step -1
-
-            If facturas(i).id = tmp.id Then
-
-                '                Set Factura = facturas(i)
-                '                Factura.Id = tmp.Id
-                '                Factura.Detalles = tmp.Detalles
-                '                Factura.estado = tmp.estado
-                '                Factura.OrdenCompra = tmp.OrdenCompra
-                '                Factura.estado = tmp.estado
-                '                Factura.Observaciones = tmp.Observaciones
-                '                Factura.TasaAjusteMensual = tmp.TasaAjusteMensual
-                '                Set Factura.Cliente = tmp.Cliente
-
-                facturas.remove i
-                If facturas.count > 0 Then
-                    If i = 1 Then    'ver esto cuand oes un solo item
-                        facturas.Add tmp, CStr(tmp.id), 1
-                    ElseIf (i - 1) = facturas.count Then
-                        facturas.Add tmp, CStr(tmp.id), , i - 1
-                    Else
-                        facturas.Add tmp, CStr(tmp.id), i
-                    End If
-                Else
-                    facturas.Add tmp, CStr(tmp.id)
-                End If
-
-                'DAOFactura.FindById(tmp.Id, True)
-
-                Me.gridComprobantesEmitidos.RefreshRowIndex i
-                Exit For
-
-            End If
-
-        Next
-
-    End If
-
-
-End Function
 
 'Private Sub mnuAplicarANC_Click()
 '  If MsgBox("?Seguro de aplicar a FC a NC?", vbYesNo, "Confirmaci?n") = vbYes Then
@@ -2327,54 +2193,6 @@ End Function
 'End Sub
 
 
-
-Private Sub mnuAprobarEnviar_Click()
-    On Error GoTo err1
-    Dim g As Long
-    Dim msgadicional As String
-    msgadicional = ""
-    If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
-        If DAOFactura.aprobarV2(Factura, True, True) Then
-
-
-
-            If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
-                msgadicional = "Esta factura deberá enviarse a la afip"
-            End If
-            If Factura.Tipo.PuntoVenta.EsElectronico And Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
-                msgadicional = "Recuerde agregar al comprobante: CAE y fecha de vencimiento del CAE "
-            End If
-
-            Dim msg As String
-            msg = "Comprobante aprobado con exito!"
-            If IsSomething(Factura.CaeSolicitarResponse) Then
-                If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
-
-                    msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
-                End If
-
-                If LenB(msgadicional) > 0 Then
-                    msg = msg & Chr(10) & msgadicional
-                End If
-
-            End If
-            MsgBox msg, vbInformation, "Información"
-
-            Me.gridComprobantesEmitidos.RefreshRowIndex g
-            Me.txtNroFactura.SetFocus
-        Else
-            GoTo err1
-        End If
-    End If
-    Exit Sub
-err1:
-    'MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
-
-    MsgBox Err.Description, vbCritical, Err.Source
-    Me.gridComprobantesEmitidos.RefreshRowIndex g
-End Sub
-
 Private Sub mnuArchivos_Click()
     Dim archi As New frmArchivos2
 
@@ -2385,64 +2203,62 @@ Private Sub mnuArchivos_Click()
 
 End Sub
 
-Private Sub mnuCrearCopiaFactura_Click()
-    Me.taskDialog.Reset
-    Me.taskDialog.MessageBoxStyle = True
-    Me.taskDialog.WindowTitle = "Copia fiel de Comprobante"
-    Me.taskDialog.MainInstructionText = "¿De que tipo es el nuevo comprobante?"
-    Me.taskDialog.ContentText = "Elija el tipo de comprobante para el nuevo comprobante."
-    taskDialog.RelativePosition = False
+'''Private Sub mnuCrearCopiaFactura_Click()
+'''    Me.taskDialog.Reset
+'''    Me.taskDialog.MessageBoxStyle = True
+'''    Me.taskDialog.WindowTitle = "Copia fiel de Comprobante"
+'''    Me.taskDialog.MainInstructionText = "¿De que tipo es el nuevo comprobante?"
+'''    Me.taskDialog.ContentText = "Elija el tipo de comprobante para el nuevo comprobante."
+'''    taskDialog.RelativePosition = False
+'''
+'''    Me.taskDialog.CommonButtons = 0
+'''    taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonOk
+'''    taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonCancel
+'''
+'''    taskDialog.DefaultRadioButton = -1
+'''
+'''    taskDialog.AddRadioButton "Proforma", tipoDocumentoContable.Proforma
+'''
+'''
+'''    taskDialog.MainIcon = xtpTaskIconInformation
+'''
+'''    If taskDialog.ShowDialog = xtpTaskButtonOk Then
+'''        If Me.taskDialog.DefaultRadioButton = -1 Then
+'''            MsgBox "Debe seleccionar un tipo para el nuevo comprobante.", vbExclamation + vbOKOnly
+'''        Else
+'''            Dim newFact As Factura
+'''            Set newFact = DAOFacturaProforma.CrearCopiaFiel(Factura, Me.taskDialog.DefaultRadioButton)
+'''            If IsSomething(newFact) Then
+'''                MsgBox "Se creó un nuevo comprobante (" & newFact.GetShortDescription(False, True) & ")", vbInformation + vbOKOnly
+'''            Else
+'''                MsgBox "Hubo un error al copiar la factura.", vbCritical + vbOKOnly
+'''            End If
+'''        End If
+'''    End If
+'''
+'''
+'''
+'''End Sub
 
-    Me.taskDialog.CommonButtons = 0
-    taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonOk
-    taskDialog.CommonButtons = taskDialog.CommonButtons Or xtpTaskButtonCancel
-
-    taskDialog.DefaultRadioButton = -1
-    taskDialog.AddRadioButton "Factura", tipoDocumentoContable.Factura
-    taskDialog.AddRadioButton "Nota de Débito", tipoDocumentoContable.notaDebito
-    taskDialog.AddRadioButton "Nota de Crédito", tipoDocumentoContable.notaCredito
-
-
-    taskDialog.MainIcon = xtpTaskIconInformation
-
-    If taskDialog.ShowDialog = xtpTaskButtonOk Then
-        If Me.taskDialog.DefaultRadioButton = -1 Then
-            MsgBox "Debe seleccionar un tipo para el nuevo comprobante.", vbExclamation + vbOKOnly
-        Else
-            Dim newFact As Factura
-            Set newFact = DAOFactura.CrearCopiaFiel(Factura, Me.taskDialog.DefaultRadioButton)
-            If IsSomething(newFact) Then
-                MsgBox "Se creó un nuevo comprobante (" & newFact.GetShortDescription(False, True) & ")", vbInformation + vbOKOnly
-            Else
-                MsgBox "Hubo un error al copiar la factura.", vbCritical + vbOKOnly
-            End If
-        End If
-    End If
-
-
-
-End Sub
-
-Private Sub mnuDesaprobarFactura_Click()
-
-    On Error GoTo err1
-    Dim g As Long
-
-    If MsgBox("¿Desea desaprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
-        If DAOFactura.desaprobar(Factura) Then
-            MsgBox "Comprobante desaprobado con éxito!", vbInformation, "Información"
-            Me.gridComprobantesEmitidos.RefreshRowIndex g
-            Me.txtNroFactura.SetFocus
-        Else
-            GoTo err1
-        End If
-    End If
-    Exit Sub
-err1:
-    MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
-End Sub
-
+'''Private Sub mnuDesaprobarFactura_Click()
+'''
+'''    On Error GoTo err1
+'''    Dim g As Long
+'''
+'''    If MsgBox("¿Desea desaprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+'''        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
+'''        If DAOFactura.desaprobar(Factura) Then
+'''            MsgBox "Comprobante desaprobado con éxito!", vbInformation, "Información"
+'''            Me.gridComprobantesEmitidos.RefreshRowIndex g
+'''            Me.txtNroFactura.SetFocus
+'''        Else
+'''            GoTo err1
+'''        End If
+'''    End If
+'''    Exit Sub
+'''err1:
+'''    MsgBox "Factura no aprobada, compruebe:" & vbNewLine & "Si la factura es de anticipo, compruebe que el valor de la misma sea el mismo que el anticipo de la OT." & vbNewLine & "Que el detalle del remito no este ya facturado." & vbNewLine & Err.Description, vbCritical
+'''End Sub
 
 
 Private Sub mnuEditarCampos_Click()
@@ -2452,151 +2268,10 @@ Private Sub mnuEditarCampos_Click()
 
 End Sub
 
-Private Sub mnuEnviarAfip_Click()
-    On Error GoTo err1
-    Dim g As Long
-
-    If Not Factura.Tipo.PuntoVenta.EsElectronico Then
-        Err.Raise 300, "Informar AFIP", "No puede informar un comprobante de un PV no catalogado como electrónico."
-    End If
-
-    If Factura.Tipo.PuntoVenta.EsElectronico And Factura.AprobadaAFIP Then
-        Err.Raise 302, "Informar AFIP", "No puede informar un comprobante que ya fue informado."
-    End If
-
-    If Factura.Tipo.PuntoVenta.CaeManual Then
-
-        Dim gg As Long
-        gg = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
-
-        Dim F As New frmAdminFacturasAprobarSinAfip
-        Set F.Factura = Factura
-        F.Show 1
-
-        Me.gridComprobantesEmitidos.RefreshRowIndex gg
-
-    Else
-        If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-            g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
-            If DAOFactura.aprobarV2(Factura, False, True) Then
-
-                Dim msg As String
-                msg = "Comprobante informado con éxito!"
-                If IsSomething(Factura.CaeSolicitarResponse) Then
-                    If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
-
-                        msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
-                    End If
-                End If
-                MsgBox msg, vbInformation, "Información"
-
-                Me.gridComprobantesEmitidos.RefreshRowIndex g
-                Me.txtNroFactura.SetFocus
-            Else
-                GoTo err1
-            End If
-        End If
-    End If
-
-
-    Exit Sub
-err1:
-
-    MsgBox Err.Description, vbCritical, Err.Source
-    Me.gridComprobantesEmitidos.RefreshRowIndex g
-
-End Sub
-
-Private Sub mnuFechaEntrega_Click()
-    Dim fechaAnterior As String
-    Dim fechaPosterior As String
-    Dim nuevaFecha As Date
-    Dim Update As Boolean
-
-    On Error GoTo ErrorHandler ' Etiqueta de manejo de errores
-
-    If CDbl(Factura.FechaEntrega) > 0 Then fechaAnterior = Factura.FechaEntrega
-
-    fechaPosterior = InputBox("Establezca fecha de entrega", "Fecha de Entrega", fechaAnterior)
-
-    If LenB(fechaPosterior) = 0 Then
-        nuevaFecha = #1/1/2005#
-        Update = True
-    Else
-        If IsDate(fechaPosterior) Then
-            nuevaFecha = CDate(fechaPosterior)
-            Update = True
-        Else
-            Err.Raise vbObjectError + 9999, "mnuFechaEntrega_Click", "La fecha no es válida." ' Lanza un error personalizado
-        End If
-    End If
-
-    If Update Then
-        Factura.FechaEntrega = nuevaFecha
-        If DAOFactura.Guardar(Factura) Then
-            Me.gridComprobantesEmitidos.RefreshRowIndex (Me.gridComprobantesEmitidos.row)
-        Else
-            Err.Raise vbObjectError + 9998, "mnuFechaEntrega_Click", "Error al guardar la factura." ' Lanza un error personalizado
-        End If
-    End If
-
-    Exit Sub ' Salir del manejo de errores
-ErrorHandler:
-    MsgBox "Se ha producido un error: " & Err.Description, vbOKOnly + vbExclamation, "Error"
-    Err.Clear ' Limpia el objeto de error
-End Sub
-
-
-Private Sub mnuFechaPagoPropuesta_Click()
-    Dim fechaAnterior As String
-    Dim fechaPosterior As String
-    Dim nuevaFecha As Date
-    Dim Update As Boolean
-
-    If CDbl(Factura.FechaPropuestaPago) > 0 Then fechaAnterior = Factura.FechaPropuestaPago
-
-    fechaPosterior = InputBox("Establezca fecha de pago propuesta", "Fecha de Pago", fechaAnterior)
-
-    If LenB(fechaPosterior) = 0 Then
-        Update = (MsgBox("¿Desea dejar en blanco la fecha de pago propuesta?", vbYesNo + vbQuestion) = vbYes)
-    Else
-        If IsDate(fechaPosterior) Then
-            nuevaFecha = CDate(fechaPosterior)
-            Update = True
-        Else
-            MsgBox "La fecha no es válida.", vbOKOnly + vbExclamation, "Fecha"
-        End If
-    End If
-
-    If Update Then
-        Factura.FechaPropuestaPago = nuevaFecha
-        If DAOFactura.Guardar(Factura) Then
-            Me.gridComprobantesEmitidos.ReBind
-        Else
-            MsgBox "Error al guardar la factura.", vbOKOnly + vbCritical, "Error"
-        End If
-    End If
-
-End Sub
-
-Private Sub mnuRechazo_Click()
-    Dim F As New frmAdminFacturaRechazoAfip
-    Set F.Factura = Factura
-    F.Show
-End Sub
-
-
-Private Sub MnuVerRecibo_Click()
-    Dim Fa As New frmAdminVentasListaRECSegunCbte
-    Set Fa.vFactura = Factura
-    Fa.Show
-End Sub
-
 
 Private Sub PushButton1_Click()
     Me.cboClientes.ListIndex = -1
 End Sub
-
 
 
 Private Sub PushButton2_Click()
@@ -2607,10 +2282,10 @@ Private Sub PushButton3_Click()
     Me.cboPuntosVenta.ListIndex = -1
 End Sub
 
+
 Private Sub PushButton4_Click()
     Me.cboEstados.ListIndex = -1
 End Sub
-
 
 
 Private Sub PushButton5_Click()

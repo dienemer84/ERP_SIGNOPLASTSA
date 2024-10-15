@@ -321,7 +321,6 @@ Public Function Guardar(F As clsFacturaProforma, Optional Cascade As Boolean = F
             & " alicuotaAplicada = 'alicuotaAplicada' , " _
             & " discriminada = 'discriminada' , " _
             & " impresa = 'impresa' , anulacion_afip='anulacion_afip'," _
-            & " tipo_borrar= 'tipo_borrar' , " _
             & " saldada = 'saldada', " _
             & " observaciones = 'observaciones', observaciones_cancela = 'observaciones_cancela', texto_adicional = 'texto_adicional'," _
             & " AliPercIB = 'AliPercIB', Opcional27='Opcional27', " _
@@ -726,7 +725,7 @@ Public Function aprobarV2(Factura As clsFacturaProforma, aprobarLocal As Boolean
 '        If Not DAOFacturaHistorial.agregar(Factura, "FACTURA APROBADA!") Then GoTo err5
         
         Dim col As New Collection
-        Dim deta As FacturaDetalle
+        Dim deta As clsFacturaProformaDetalle
         Dim q As String
         Set Factura = T
         For Each deta In Factura.Detalles
@@ -1117,7 +1116,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.CurrentY = 300
     Printer.CurrentX = 6800
     Printer.Font.Size = 12
-    Printer.Print objFac.TipoDocumentoDescription    'comp
+    Printer.Print "PROFORMA"
 
     Printer.CurrentY = 1150
     Printer.CurrentX = 6800
@@ -1926,8 +1925,8 @@ End Function
 Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
     On Error GoTo err1
     'Printer.PaperSize = 9
-    Dim F As Factura
-    Set F = DAOFactura.FindById(idFactura, True, False)
+    Dim F As clsFacturaProforma
+    Set F = DAOFacturaProforma.FindById(idFactura, True, False)
     Dim seccion As Section
     Dim c As Object
 
@@ -1942,33 +1941,35 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
 
         Set c = seccion.Controls.item("lblTipoDocumento")
-        c.caption = F.Tipo.TipoFactura.Tipo
+        c.caption = "X"
 
         Set c = seccion.Controls.item("lblFce")
-        c.Visible = F.esCredito
-        c.caption = F.DescripcionCreditoAdicional
+        c.Visible = True
+        c.caption = "COMPROBANTE NO VÁLIDO COMO FACTURA"
 
-        Set c = seccion.Controls.item("lblCbuEmisorFce")
-        c.Visible = F.esCredito And F.TipoDocumento = tipoDocumentoContable.Factura
-        c.caption = "CBU del Emisor: " & F.CBU
+'        Set c = seccion.Controls.item("lblCbuEmisorFce")
+'        c.Visible = F.esCredito And F.TipoDocumento = tipoDocumentoContable.Factura
+'        c.caption = "CBU del Emisor: " & F.CBU
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
-        c.caption = "Código Nº" & Format(F.GetCodigoDocumentoAfip, "00")
+        c.caption = "Código Nº 01"
 
         Set c = seccion.Controls.item("LBLDescripcionCodigoDocumento")
-        c.caption = F.GetDescripciopnDocumentoAfip
+        c.caption = "PROFORMA"
 
         Set c = seccion.Controls.item("lblFecha")
         c.caption = "Fecha de Emisión: " & Format(F.FechaEmision, "dd/mm/yyyy")
         
         
         Set c = seccion.Controls.item("lblNumeroDocumento")
+        c.Visible = False
+        
         'fce_nemer_2905/2020
-        If F.Cliente.CuitPais <> "" Then
-                c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "00000")
-        Else
-                c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000")
-        End If
+''        If F.Cliente.CuitPais <> "" Then
+''                c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "00000")
+''        Else
+''                c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000")
+''        End If
         
         
         Set c = seccion.Controls.item("lblNumeroDocumentoComp")
@@ -1980,14 +1981,15 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
 
         Set c = seccion.Controls.item("lblFechaPagoFce")
-        c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+''        c.Visible = "PROFORMA"
 
         Set c = seccion.Controls.item("lblFechaPagoFceDato")
         If F.fechaPago = "30/12/1899" Then
-            c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+'''            c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
             c.caption = "S/D"
+            c.Visible = False
         Else
-            c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+'''            c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
             c.caption = Format(F.fechaPago, "dd/mm/yyyy")
         End If
 
@@ -2069,12 +2071,14 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         Set c = seccion.Controls.item("lblTextoAdicional")
         c.caption = F.TextoAdicional
 
-        Set c = seccion.Controls.item("lblCae")
-        c.caption = "CAE: " & F.CAE
-        Set c = seccion.Controls.item("lblCaeVencimiento")
-
-        c.caption = "VTO CAE: " & F.CAEVto
-
+          Set c = seccion.Controls.item("lblCae")
+          c.caption = "CAE: " & F.CAE
+          c.Visible = False
+          
+          Set c = seccion.Controls.item("lblCaeVencimiento")
+          c.caption = "VTO CAE: " & F.CAEVto
+          c.Visible = False
+          
         Dim tip As String
         tip = vbNullString
         If F.TasaAjusteMensual > 0 Then
@@ -2134,8 +2138,8 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(F.totalPercepciones)
         seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.total)
 
-        QRHelper.generar F
-        Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.id & ".bmp")
+'        QRHelper.generar F
+'        Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.id & ".bmp")
 
 
         'rptFacturaElectronica.ReportWidth = Largo
@@ -2152,7 +2156,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         End With
 
 
-        Dim deta As FacturaDetalle
+        Dim deta As clsFacturaProformaDetalle
         r_tmp.Open
         For Each deta In F.Detalles
             r_tmp.AddNew
@@ -2191,7 +2195,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
         Next deta
 
-        rptFacturaElectronica.Title = F.GetShortDescription(True, False) & F.Tipo.TipoFactura.Tipo & "-" & Format(F.Tipo.PuntoVenta.PuntoVenta, "000") & "-" & Format(F.numero, "00000000") & " - " & F.Cliente.razonFixed
+        rptFacturaElectronica.Title = F.GetShortDescription(True, False) & "" & "-" & Format("0000", "000") & "-" & Format(F.numero, "00000000") & " - " & F.Cliente.razonFixed
         rptFacturaElectronica.caption = rptFacturaElectronica.Title
 
         Set rptFacturaElectronica.DataSource = r_tmp
