@@ -1753,8 +1753,8 @@ Private Sub llenarGrilla()
         filtro = filtro & " and AdminFacturas.EsCredito=" & Me.chkCredito.value
     End If
 
-    If LenB(Me.txtReferencia.text) > 0 Then
-        filtro = filtro & " and AdminFacturas.OrdenCompra like '%" & Trim(Me.txtReferencia.text) & "%'"
+    If LenB(Me.txtReferencia.Text) > 0 Then
+        filtro = filtro & " and AdminFacturas.OrdenCompra like '%" & Trim(Me.txtReferencia.Text) & "%'"
     End If
     
     If LenB(Me.txtNroFactura) > 0 And IsNumeric(Me.txtNroFactura) Then
@@ -1773,8 +1773,8 @@ Private Sub llenarGrilla()
         filtro = filtro & " AND AdminFacturas.FechaEmision <= " & conectar.Escape(Me.dtpHasta.value)
     End If
 
-    If LenB(Me.txtRemitoAplicado.text) > 0 Then
-        filtro = filtro & " and AdminFacturas.id IN (SELECT fd.idFactura FROM AdminFacturasDetalleNueva fd INNER JOIN entregas e ON e.id = fd.idEntrega INNER JOIN remitos r ON r.id = e.Remito WHERE r.numero = " & Me.txtRemitoAplicado.text & ")"
+    If LenB(Me.txtRemitoAplicado.Text) > 0 Then
+        filtro = filtro & " and AdminFacturas.id IN (SELECT fd.idFactura FROM AdminFacturasDetalleNueva fd INNER JOIN entregas e ON e.id = fd.idEntrega INNER JOIN remitos r ON r.id = e.Remito WHERE r.numero = " & Me.txtRemitoAplicado.Text & ")"
     End If
 
     If Me.cboEstadoAfip.ListIndex = 0 Then
@@ -2148,6 +2148,7 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
         End If
     End If
 End Sub
+
 
 Private Sub gridComprobantesEmitidos_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
@@ -2609,11 +2610,12 @@ Private Sub mnuEnviarAfip_Click()
         F.Show 1
 
         Me.gridComprobantesEmitidos.RefreshRowIndex gg
+        
 
     Else
         If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
             g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
-            If DAOFactura.aprobarV2(Factura, False, True) Then
+            If DAOFactura.aprobarV2(Factura, False, True, Factura.esExportacion) Then
 
                 Dim msg As String
                 msg = "Comprobante informado con éxito!"

@@ -99,21 +99,21 @@ Public Sub SetToNothingOTsFacturadasAnticipo()
 End Sub
 
 Public Property Get DescripcionCreditoAdicional() As String
-    Dim dsc As String
-
-    If TipoDocumento = tipoDocumentoContable.Factura Then
-        dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
-    End If
-    If TipoDocumento = tipoDocumentoContable.notaCredito Then
-        dsc = "NOTA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
-    End If
-    If TipoDocumento = tipoDocumentoContable.notaDebito Then
-        dsc = "NOTA DE DÉBITO ELECTRÓNICA MiPyMEs  (FCE)"
-    End If
-    If TipoDocumento = tipoDocumentoContable.Proforma Then
-        dsc = "PROFORMA"
-    End If
-    DescripcionCreditoAdicional = dsc
+'''    Dim dsc As String
+'''
+'''    If TipoDocumento = tipoDocumentoContable.Factura Then
+'''        dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
+'''    End If
+'''    If TipoDocumento = tipoDocumentoContable.notaCredito Then
+'''        dsc = "NOTA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
+'''    End If
+'''    If TipoDocumento = tipoDocumentoContable.notaDebito Then
+'''        dsc = "NOTA DE DÉBITO ELECTRÓNICA MiPyMEs  (FCE)"
+'''    End If
+'''    If TipoDocumento = tipoDocumentoContable.Proforma Then
+'''        dsc = "PROFORMA"
+'''    End If
+'''    DescripcionCreditoAdicional = dsc
 End Property
 
 

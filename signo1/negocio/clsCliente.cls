@@ -60,8 +60,8 @@ End Property
 Public Property Let contacto(nvalue As Collection)
     Set mContacto = nvalue
 End Property
-Public Property Get Id() As Long
-    Id = vId
+Public Property Get id() As Long
+    id = vId
 End Property
 Public Property Get razon() As String
     razon = vRazon
@@ -96,9 +96,10 @@ Public Property Get PasswordSistema() As String
     PasswordSistema = vPasswordSistema
 End Property
 Public Property Get FP() As Long
-    FP = vFP
+    'FP = vFP
+        FP = nvalue
 End Property
-Public Property Let Id(nvalue As Long)
+Public Property Let id(nvalue As Long)
     vId = nvalue
 End Property
 Public Property Let razon(nvalue As String)
@@ -128,12 +129,17 @@ Public Property Let Cuit(nvalue As String)
     vCuit = nvalue
 End Property
 
+
 Public Property Let estado(nvalue As EstadoCliente)
     vEstado = nvalue
 End Property
+
+
 Public Property Let PasswordSistema(nvalue As String)
     vPasswordSistema = nvalue
 End Property
+
+
 Public Property Let FP(nvalue As Long)
     vFP = nvalue
 End Property

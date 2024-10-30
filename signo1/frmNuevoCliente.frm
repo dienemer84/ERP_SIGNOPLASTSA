@@ -563,6 +563,7 @@ Public Property Let Cliente(nvalue As clsCliente)
     Set vCliente = nvalue
 End Property
 
+
 Private Sub Guardar()
     Dim Cuit
     Dim EVENTO As clsEventoObserver
@@ -585,10 +586,21 @@ Private Sub Guardar()
 
     CodigoPOS = UCase(txtCP)
     
+    If razon = "" Then
+        MsgBox "Debe introducir Razón Social.", vbCritical, "Error"
+        Exit Sub
+    End If
+    
+    If Domicilio = "" Then
+        MsgBox "Debe introducir Domicilio.", vbCritical, "Error"
+        Exit Sub
+    End If
+    
     If CodigoPOS = "" Then
         MsgBox "Debe introducir el código postal.", vbCritical, "Error"
         Exit Sub
     End If
+
     
     If MsgBox("¿Está conforme con los datos?", vbYesNo, "Confirmación") = vbYes Then
         If vCliente Is Nothing Then
@@ -617,7 +629,7 @@ Private Sub Guardar()
                 Cliente.email = email
                 Cliente.estado = EstadoCliente.activo
                 Cliente.Fax = Fax
-                Cliente.FP = FP
+
                 Cliente.PasswordSistema = 0
                 Cliente.razon = razon
                 Cliente.FormaPago = FP_detalle
@@ -626,6 +638,8 @@ Private Sub Guardar()
                 Cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
                 Cliente.CodigoPostal = CodigoPOS
                 
+                                Cliente.FP = FP
+                                
                 Cliente.IDImpositivo = IDImpositivo
                 Cliente.CuitPais = CuitPais
                 
@@ -636,7 +650,7 @@ Private Sub Guardar()
                 F = "c.cuit = " & Escape(Text1(7))
 
                 If IsSomething(vCliente) Then
-                    F = F & " AND c.id <> " & vCliente.Id
+                    F = F & " AND c.id <> " & vCliente.id
                 End If
 
                 If DAOCliente.FindAll(F).count > 0 Then
@@ -725,10 +739,10 @@ Private Sub cboPaises_Click()
     'cboLocalidades.Clear
     'cboPartidos.Clear
 
-    Dim Id As Long
+    Dim id As Long
     If cboPaises.ListIndex >= 0 Then
-        Id = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
-        DAOProvincias.LlenarCombo Me.cboProvincias, Id
+        id = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
+        DAOProvincias.LlenarCombo Me.cboProvincias, id
     End If
 
     cboProvincias_Click
@@ -738,10 +752,10 @@ End Sub
 
 
 Private Sub cboProvincias_Click()
-    Dim Id As Long
+    Dim id As Long
     If cboProvincias.ListIndex >= 0 Then
-        Id = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
-        DAOLocalidades.LlenarCombo Me.cboLocalidades, Id
+        id = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+        DAOLocalidades.LlenarCombo Me.cboLocalidades, id
     End If
 
 End Sub
@@ -775,7 +789,15 @@ Private Sub Form_Load()
         Command1.caption = "Modificar"
         Me.caption = "Modificar Cliente..."
     End If
-
+    
+    Me.txtCuitPais.Text = "-"
+    Me.txtIDImpositivo = "-"
+    
+    Me.Text1(4) = "-"
+    Me.Text1(5) = "-"
+    Me.Text1(6) = "-"
+    Me.txtFP = "0"
+    Me.txtDetalleFP = "-"
 
     ''Me.caption = caption & "(" & Name & ")"
 
@@ -820,9 +842,9 @@ Private Sub llenarForm()
 
         'aca posiciono el combo
 
-        Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.Id, Me.cboPaises)
-        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.Id, Me.cboProvincias)
-        Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.Id, Me.cboLocalidades)
+        Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.id, Me.cboPaises)
+        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.id, Me.cboProvincias)
+        Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.id, Me.cboLocalidades)
 
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
         txtFP = .FP

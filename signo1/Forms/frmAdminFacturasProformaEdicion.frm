@@ -1,11 +1,10 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminFacturasProformaEdicion 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Factura"
-   ClientHeight    =   11205
+   ClientHeight    =   10545
    ClientLeft      =   3945
    ClientTop       =   2385
    ClientWidth     =   17775
@@ -23,37 +22,35 @@ Begin VB.Form frmAdminFacturasProformaEdicion
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   11205
+   ScaleHeight     =   10545
    ScaleWidth      =   17775
+   Begin XtremeSuiteControls.PushButton PushButton 
+      Height          =   615
+      Left            =   11760
+      TabIndex        =   60
+      Top             =   9600
+      Width           =   2055
+      _Version        =   786432
+      _ExtentX        =   3625
+      _ExtentY        =   1085
+      _StockProps     =   79
+      Caption         =   "Cargar Items desde PPTO"
+      UseVisualStyle  =   -1  'True
+   End
    Begin VB.Frame Frame 
       Caption         =   "Datos del cliente seleccionado"
-      Height          =   2655
+      Height          =   2175
       Left            =   120
-      TabIndex        =   47
+      TabIndex        =   43
       Top             =   1680
       Width           =   5535
-      Begin VB.Label lblIdImpositivo 
-         Height          =   255
-         Left            =   2880
-         TabIndex        =   62
-         Top             =   2040
-         Width           =   2415
-      End
-      Begin VB.Label lblCuitPais 
-         Caption         =   "Label24"
-         Height          =   255
-         Left            =   1200
-         TabIndex        =   61
-         Top             =   2040
-         Width           =   1695
-      End
       Begin VB.Label Label12 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          Caption         =   "Provincia:"
          Height          =   195
          Left            =   360
-         TabIndex        =   59
+         TabIndex        =   55
          Top             =   1470
          Width           =   705
       End
@@ -62,7 +59,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "2343242"
          Height          =   195
          Left            =   1245
-         TabIndex        =   58
+         TabIndex        =   54
          Top             =   1470
          Width           =   630
       End
@@ -71,7 +68,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "2343242"
          Height          =   195
          Left            =   1245
-         TabIndex        =   57
+         TabIndex        =   53
          Top             =   1770
          Width           =   630
       End
@@ -80,7 +77,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "HHHHHH"
          Height          =   195
          Left            =   1245
-         TabIndex        =   56
+         TabIndex        =   52
          Top             =   1155
          Width           =   630
       End
@@ -88,7 +85,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "RIVAD 3242"
          Height          =   195
          Left            =   1245
-         TabIndex        =   55
+         TabIndex        =   51
          Top             =   840
          Width           =   4095
       End
@@ -97,7 +94,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "23"
          Height          =   195
          Left            =   1245
-         TabIndex        =   54
+         TabIndex        =   50
          Top             =   555
          Width           =   180
       End
@@ -106,7 +103,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "23-30279550-9"
          Height          =   195
          Left            =   1245
-         TabIndex        =   53
+         TabIndex        =   49
          Top             =   240
          Width           =   1110
       End
@@ -116,7 +113,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "Cod Postal:"
          Height          =   195
          Left            =   240
-         TabIndex        =   52
+         TabIndex        =   48
          Top             =   1770
          Width           =   825
       End
@@ -126,7 +123,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "Localidad:"
          Height          =   195
          Left            =   345
-         TabIndex        =   51
+         TabIndex        =   47
          Top             =   1155
          Width           =   720
       End
@@ -136,7 +133,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "CUIT:"
          Height          =   195
          Left            =   645
-         TabIndex        =   50
+         TabIndex        =   46
          Top             =   255
          Width           =   420
       End
@@ -146,7 +143,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "Direccion:"
          Height          =   195
          Left            =   360
-         TabIndex        =   49
+         TabIndex        =   45
          Top             =   840
          Width           =   705
       End
@@ -157,19 +154,19 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Height          =   195
          Index           =   0
          Left            =   750
-         TabIndex        =   48
+         TabIndex        =   44
          Top             =   555
          Width           =   315
       End
    End
    Begin XtremeSuiteControls.PushButton btnExportarContenido 
       Height          =   615
-      Left            =   15480
-      TabIndex        =   46
-      Top             =   6360
-      Width           =   2055
+      Left            =   14640
+      TabIndex        =   42
+      Top             =   5760
+      Width           =   2775
       _Version        =   786432
-      _ExtentX        =   3625
+      _ExtentX        =   4895
       _ExtentY        =   1085
       _StockProps     =   79
       Caption         =   "Exportar Detalle de Cbte a Excel"
@@ -179,13 +176,13 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       Caption         =   "Cliente"
       Height          =   1575
       Left            =   120
-      TabIndex        =   41
+      TabIndex        =   37
       Top             =   120
       Width           =   5535
       Begin XtremeSuiteControls.PushButton btnCrearCliente 
          Height          =   375
          Left            =   240
-         TabIndex        =   44
+         TabIndex        =   40
          Top             =   960
          Width           =   1935
          _Version        =   786432
@@ -198,7 +195,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       Begin XtremeSuiteControls.ComboBox cboCliente 
          Height          =   315
          Left            =   240
-         TabIndex        =   42
+         TabIndex        =   38
          Top             =   480
          Width           =   4995
          _Version        =   786432
@@ -214,7 +211,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "Seleccionar Cliente:"
          Height          =   195
          Left            =   240
-         TabIndex        =   43
+         TabIndex        =   39
          Top             =   240
          Width           =   1410
       End
@@ -223,7 +220,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       Caption         =   "Texto Adicional (Limite de 300 caracteres)"
       Height          =   2895
       Left            =   11640
-      TabIndex        =   22
+      TabIndex        =   21
       Top             =   120
       Width           =   6015
       Begin VB.TextBox txtTextoAdicional 
@@ -231,7 +228,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Left            =   120
          MaxLength       =   300
          MultiLine       =   -1  'True
-         TabIndex        =   23
+         TabIndex        =   22
          Top             =   240
          Width           =   5775
       End
@@ -239,20 +236,20 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "Caracteres restantes: "
          Height          =   255
          Left            =   120
-         TabIndex        =   45
+         TabIndex        =   41
          Top             =   2520
          Width           =   3375
       End
    End
    Begin XtremeSuiteControls.GroupBox grpTotales 
-      Height          =   1575
+      Height          =   2535
       Left            =   11640
-      TabIndex        =   11
+      TabIndex        =   10
       Top             =   3000
-      Width           =   3780
+      Width           =   5985
       _Version        =   786432
-      _ExtentX        =   6667
-      _ExtentY        =   2778
+      _ExtentX        =   10557
+      _ExtentY        =   4471
       _StockProps     =   79
       Caption         =   "Totales"
       UseVisualStyle  =   -1  'True
@@ -269,7 +266,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   375
          Left            =   480
-         TabIndex        =   60
+         TabIndex        =   56
          Top             =   1200
          Width           =   2535
       End
@@ -288,7 +285,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   195
          Left            =   1620
-         TabIndex        =   19
+         TabIndex        =   18
          Top             =   705
          Width           =   1080
       End
@@ -307,7 +304,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   195
          Left            =   1620
-         TabIndex        =   18
+         TabIndex        =   17
          Top             =   450
          Width           =   1080
       End
@@ -325,7 +322,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   195
          Left            =   405
-         TabIndex        =   17
+         TabIndex        =   16
          Top             =   450
          Width           =   1020
       End
@@ -344,7 +341,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   195
          Left            =   1620
-         TabIndex        =   16
+         TabIndex        =   15
          Top             =   195
          Width           =   1080
       End
@@ -362,7 +359,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   195
          Left            =   795
-         TabIndex        =   15
+         TabIndex        =   14
          Top             =   195
          Width           =   630
       End
@@ -381,7 +378,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   195
          Left            =   1140
-         TabIndex        =   14
+         TabIndex        =   13
          Top             =   705
          Width           =   255
       End
@@ -399,7 +396,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   195
          Left            =   1020
-         TabIndex        =   13
+         TabIndex        =   12
          Top             =   930
          Width           =   405
       End
@@ -420,20 +417,20 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          ForeColor       =   &H80000008&
          Height          =   195
          Left            =   1620
-         TabIndex        =   12
+         TabIndex        =   11
          Top             =   930
          Width           =   1080
       End
    End
    Begin XtremeSuiteControls.GroupBox grpDatos 
-      Height          =   4335
+      Height          =   3735
       Left            =   5760
       TabIndex        =   4
       Top             =   120
       Width           =   5835
       _Version        =   786432
       _ExtentX        =   10292
-      _ExtentY        =   7646
+      _ExtentY        =   6588
       _StockProps     =   79
       Caption         =   "Datos del Comprobante"
       Appearance      =   4
@@ -452,14 +449,14 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Left            =   2520
          TabIndex        =   0
          Text            =   "999999"
-         Top             =   1800
+         Top             =   360
          Width           =   3090
       End
       Begin XtremeSuiteControls.DateTimePicker dtpFecha 
          Height          =   405
          Left            =   2520
          TabIndex        =   1
-         Top             =   2400
+         Top             =   960
          Width           =   3090
          _Version        =   786432
          _ExtentX        =   5450
@@ -481,7 +478,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Height          =   405
          Left            =   2520
          TabIndex        =   2
-         Top             =   3000
+         Top             =   1560
          Width           =   3090
          _Version        =   786432
          _ExtentX        =   5450
@@ -502,52 +499,14 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          DropDownItemCount=   3
          EnableMarkup    =   -1  'True
       End
-      Begin MSComCtl2.DTPicker dtFechaPagoCredito 
-         Height          =   405
-         Left            =   3915
-         TabIndex        =   31
-         Top             =   3645
-         Width           =   1695
-         _ExtentX        =   2990
-         _ExtentY        =   714
-         _Version        =   393216
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   12
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Format          =   62390273
-         CurrentDate     =   43967
-      End
       Begin VB.Label Label2 
          Caption         =   "PROFORMA"
-         Height          =   2295
+         Height          =   255
          Index           =   1
          Left            =   120
-         TabIndex        =   63
-         Top             =   1560
+         TabIndex        =   57
+         Top             =   960
          Width           =   855
-      End
-      Begin VB.Label lblFechaPagoCredito 
-         Caption         =   "Fecha de Vto. para el Pago:"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   1320
-         TabIndex        =   30
-         Top             =   3720
-         Width           =   2535
       End
       Begin VB.Line Line3 
          BorderColor     =   &H00FFDBBF&
@@ -572,8 +531,8 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   285
          Left            =   1530
-         TabIndex        =   9
-         Top             =   3060
+         TabIndex        =   8
+         Top             =   1620
          Width           =   915
       End
       Begin VB.Label Label15 
@@ -591,8 +550,8 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   285
          Left            =   1755
-         TabIndex        =   8
-         Top             =   2460
+         TabIndex        =   7
+         Top             =   1020
          Width           =   690
       End
       Begin VB.Label Label14 
@@ -610,19 +569,9 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          EndProperty
          Height          =   285
          Left            =   1500
-         TabIndex        =   7
-         Top             =   1860
-         Width           =   945
-      End
-      Begin VB.Label lblNCND 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         Caption         =   "N/D"
-         Height          =   195
-         Left            =   240
          TabIndex        =   6
-         Top             =   960
-         Width           =   615
+         Top             =   420
+         Width           =   945
       End
       Begin VB.Line Line1 
          BorderColor     =   &H00FFDBBF&
@@ -630,12 +579,12 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          X1              =   1080
          X2              =   1080
          Y1              =   240
-         Y2              =   3960
+         Y2              =   3600
       End
       Begin VB.Label lblTipoFactura 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Caption         =   "A"
+         Caption         =   "X"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   24.75
@@ -653,25 +602,25 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       End
    End
    Begin XtremeSuiteControls.GroupBox grpDetalles 
-      Height          =   3795
+      Height          =   4635
       Left            =   120
-      TabIndex        =   10
-      Top             =   6240
+      TabIndex        =   9
+      Top             =   5640
       Width           =   11475
       _Version        =   786432
       _ExtentX        =   20241
-      _ExtentY        =   6694
+      _ExtentY        =   8176
       _StockProps     =   79
       Caption         =   "Detalles (Cant: 0)"
       Appearance      =   2
       Begin GridEX20.GridEX gridDetalles 
-         Height          =   3315
+         Height          =   4035
          Left            =   120
-         TabIndex        =   64
+         TabIndex        =   58
          Top             =   360
          Width           =   11250
          _ExtentX        =   19844
-         _ExtentY        =   5847
+         _ExtentY        =   7117
          Version         =   "2.0"
          PreviewRowIndent=   300
          BoundColumnIndex=   ""
@@ -715,9 +664,9 @@ Begin VB.Form frmAdminFacturasProformaEdicion
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
       Height          =   600
-      Left            =   11880
+      Left            =   11760
       TabIndex        =   3
-      Top             =   6360
+      Top             =   5760
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -738,8 +687,8 @@ Begin VB.Form frmAdminFacturasProformaEdicion
    Begin XtremeSuiteControls.GroupBox grpPercep 
       Height          =   1695
       Left            =   6720
-      TabIndex        =   24
-      Top             =   4440
+      TabIndex        =   23
+      Top             =   3840
       Width           =   4875
       _Version        =   786432
       _ExtentX        =   8599
@@ -750,14 +699,14 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       Begin VB.TextBox txtPercepcion 
          Height          =   300
          Left            =   1560
-         TabIndex        =   25
+         TabIndex        =   24
          Top             =   840
          Width           =   2715
       End
       Begin XtremeSuiteControls.ComboBox cboPadron 
          Height          =   315
          Left            =   1560
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   360
          Width           =   2715
          _Version        =   786432
@@ -786,7 +735,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   1440
-         TabIndex        =   29
+         TabIndex        =   28
          Top             =   1320
          Visible         =   0   'False
          Width           =   2670
@@ -794,7 +743,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       Begin XtremeSuiteControls.Label lblPadron 
          Height          =   195
          Left            =   240
-         TabIndex        =   28
+         TabIndex        =   27
          Top             =   420
          Width           =   1215
          _Version        =   786432
@@ -807,7 +756,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       Begin XtremeSuiteControls.Label Label17 
          Height          =   195
          Left            =   480
-         TabIndex        =   27
+         TabIndex        =   26
          Top             =   900
          Width           =   840
          _Version        =   786432
@@ -821,8 +770,8 @@ Begin VB.Form frmAdminFacturasProformaEdicion
    Begin XtremeSuiteControls.GroupBox grpInfo 
       Height          =   1695
       Left            =   120
-      TabIndex        =   32
-      Top             =   4440
+      TabIndex        =   29
+      Top             =   3840
       Width           =   6495
       _Version        =   786432
       _ExtentX        =   11456
@@ -830,31 +779,31 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       _StockProps     =   79
       Caption         =   "Detalles"
       UseVisualStyle  =   -1  'True
-      Begin VB.ComboBox txtCondObs 
-         Height          =   315
-         Left            =   1035
-         TabIndex        =   36
+      Begin VB.TextBox txtCondObs 
+         Height          =   300
+         Left            =   960
+         TabIndex        =   59
          Top             =   1200
-         Width           =   5295
+         Width           =   5415
       End
       Begin VB.TextBox txtTasaAjuste 
          Height          =   300
          Left            =   5160
-         TabIndex        =   35
+         TabIndex        =   32
          Top             =   720
          Width           =   1200
       End
       Begin VB.TextBox txtDiasVenc 
          Height          =   300
-         Left            =   2160
-         TabIndex        =   34
+         Left            =   2040
+         TabIndex        =   31
          Top             =   720
          Width           =   1080
       End
       Begin VB.TextBox txtReferencia 
          Height          =   300
          Left            =   1395
-         TabIndex        =   33
+         TabIndex        =   30
          Top             =   240
          Width           =   4935
       End
@@ -864,7 +813,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "% Tasa ajuste mensual:"
          Height          =   195
          Left            =   3350
-         TabIndex        =   40
+         TabIndex        =   36
          Top             =   780
          Width           =   1740
       End
@@ -873,8 +822,8 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          AutoSize        =   -1  'True
          Caption         =   "Condicion:"
          Height          =   195
-         Left            =   240
-         TabIndex        =   39
+         Left            =   120
+         TabIndex        =   35
          Top             =   1260
          Width           =   750
       End
@@ -883,8 +832,8 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          AutoSize        =   -1  'True
          Caption         =   "Cant Días Vencimiento FF:"
          Height          =   195
-         Left            =   240
-         TabIndex        =   38
+         Left            =   120
+         TabIndex        =   34
          Top             =   780
          Width           =   1875
       End
@@ -894,7 +843,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
          Caption         =   "OC / Referencia:"
          Height          =   195
          Left            =   120
-         TabIndex        =   37
+         TabIndex        =   33
          Top             =   300
          Width           =   1215
       End
@@ -904,7 +853,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       Caption         =   "23-30279550-9"
       Height          =   195
       Left            =   480
-      TabIndex        =   21
+      TabIndex        =   20
       Top             =   0
       Visible         =   0   'False
       Width           =   1575
@@ -921,7 +870,7 @@ Begin VB.Form frmAdminFacturasProformaEdicion
       EndProperty
       Height          =   210
       Left            =   11760
-      TabIndex        =   20
+      TabIndex        =   19
       Top             =   10800
       Width           =   5385
    End
@@ -1125,7 +1074,7 @@ Private Sub btnGuardar_Click()
         Exit Sub
     End If
 
-    FacturaProforma.observaciones = Me.txtCondObs.text
+    FacturaProforma.observaciones = Me.txtCondObs.Text
 
     If LenB(FacturaProforma.numero) = 0 Or _
        LenB(FacturaProforma.OrdenCompra) = 0 Or _
@@ -1148,10 +1097,10 @@ Private Sub btnGuardar_Click()
             FacturaProforma.CBU = c.CBU
         End If
 
-        FacturaProforma.observaciones = Me.txtCondObs.text
+        FacturaProforma.observaciones = Me.txtCondObs.Text
         FacturaProforma.TextoAdicional = Me.txtTextoAdicional
 
-        FacturaProforma.fechaPago = Me.dtFechaPagoCredito.value
+        FacturaProforma.fechaPago = Now()
 
         If DAOFacturaProforma.Save(FacturaProforma, True) Then
             MsgBox "La Proforma ha sido guardada.", vbOKOnly + vbInformation
@@ -1238,7 +1187,7 @@ Private Sub MostrarPercepcionIIBB()
         tabla = "IIBB2_PercepcionAnt"
     End If
 
-    Me.txtPercepcion.text = 0
+    Me.txtPercepcion.Text = 0
     Me.lblVencido.Visible = False
 
     If FacturaProforma.Cliente.CUITValido Then
@@ -1253,7 +1202,7 @@ Private Sub MostrarPercepcionIIBB()
                 'Me.lblVencido.Visible = (Now() > CDate(ConvertirAFechaAfip(rs!FechaHasta)))
                 Me.lblVencido.Visible = Format(Now, "dd/mm/yyyy") > CDate(ConvertirAFechaAfip(rs!FechaHasta))
                 'Me.lblVencido.Visible = False
-                Me.txtPercepcion.text = rs!alicuota
+                Me.txtPercepcion.Text = rs!alicuota
                 FacturaProforma.AlicuotaPercepcionesIIBB = (rs!alicuota / 100) + 1
             End If
         End If
@@ -1284,90 +1233,90 @@ Private Sub LimpiarTotales()
 End Sub
 
 
-Private Sub cboTiposFactura_Click()
-
-    If Me.cboTiposFacturaProforma.ListIndex = -1 Then Exit Sub
- 
-    Dim id As Long
-
-    id = Me.cboTiposFacturaProforma.ItemData(Me.cboTiposFacturaProforma.ListIndex)
-
-    Set FacturaProforma.Tipo = DAOTipoFacturaDiscriminado.FindById(id)
-
-
-    '1 11 19
-    '    Me.lblCbuCredito.Visible = FacturaProforma.Tipo.PuntoVenta.EsCredito
-    Me.Frame1.Enabled = FacturaProforma.esCredito
-    Me.frmFC.Enabled = FacturaProforma.esCredito
-    Me.Label22.Enabled = FacturaProforma.esCredito
-
-    'Me.dtFechaPagoCredito.Enabled = FacturaProforma.EsCredito Or FacturaProforma.Tipo.PuntoVenta.CaeManual
-
-    Me.dtFechaPagoCreditoDesde.Enabled = FacturaProforma.esCredito
-    Me.dtFechaPagoCreditoHasta.Enabled = FacturaProforma.esCredito
-
-    Me.cboCuentasCBU.Enabled = FacturaProforma.esCredito
-
-    'Me.lblFechaPagoCredito.Enabled = FacturaProforma.EsCredito Or (FacturaProforma.ConceptoIncluir = ConceptoProductoServicio Or FacturaProforma.ConceptoIncluir = ConceptoServicio)
-    'Me.dtFechaPagoCredito.Enabled = FacturaProforma.EsCredito Or (FacturaProforma.ConceptoIncluir = ConceptoProductoServicio Or FacturaProforma.ConceptoIncluir = ConceptoServicio)
-
-    Me.LblCBU.Enabled = FacturaProforma.esCredito
-
-    'fce_nemer_02062020_#113
-    Me.lblPeriodoFacturadoT.Enabled = FacturaProforma.esCredito
-    Me.lblPeriodoFacturadoD.Enabled = FacturaProforma.esCredito
-    Me.lblPeriodoFacturadoH.Enabled = FacturaProforma.esCredito
-
-    'fce_nemer_03062020_#133
-    'Me.lblFechaPagoCredito.Enabled = FacturaProforma.Tipo.PuntoVenta.EsElectronico
-    'Me.dtFechaPagoCredito.Enabled = FacturaProforma.Tipo.PuntoVenta.EsElectronico
-
-
-    Me.lblEsCredito.caption = FacturaProforma.DescripcionCreditoAdicional
-
-    Me.lblVerCbu.Visible = True
-    If Not FacturaProforma.esCredito Then
-        Me.lblVerCbu = "NO INFORMADO"
-    End If
-
-
-    If FacturaProforma.id = 0 Then    'agregado para q no cambie el nro de factura cuando estoy en edicion yu elijo otro cliente
-        '       Me.txtNumero.Enabled = Not FacturaProforma.Tipo.PuntoVenta.EsElectronico
-        '       If FacturaProforma.Tipo.PuntoVenta.EsElectronico Then
-
-
-        '           Dim Ult As String
-        '          Me.txtNumero.text = "0000"    'ERPHelper.GetUltimoAutorizado(FacturaProforma.Tipo.PuntoVenta.PuntoVenta, FacturaProforma.Tipo.id)
-        'Else
-
-
-        Me.txtNumero.text = Format(DAOFacturaProforma.proximaFactura(Factura), "00000000")    'NuevoTipoDocumento, FacturaProforma.Tipo.TipoFacturaProforma.id), "0000")
-        Me.txtNumero.Enabled = Not FacturaProforma.Tipo.PuntoVenta.EsElectronico Or FacturaProforma.Tipo.PuntoVenta.CaeManual
-
-
-        '        End If
-    Else
-        If FacturaProforma.estado <> EstadoFacturaCliente.EnProceso Then
-            Me.txtNumero.text = Format(FacturaProforma.numero, "00000000")   'FacturaProforma.NumeroFormateado
-
-        Else
-            If FacturaProforma.Tipo.PuntoVenta.CaeManual Then
-                Me.txtNumero.text = Format(FacturaProforma.numero, "00000000")
-            Else
-                Me.txtNumero.text = Format(DAOFacturaProforma.proximaFactura(Factura), "00000000")
-            End If
-        End If
-        '        If FacturaProforma.Tipo.PuntoVenta.EsElectronico Then
-        '           Me.txtNumero.text = "0000"
-        '        Else
-        'Me.txtNumero.text = Format(DAOFacturaProforma.proximaFactura(factura.Tipo.id), "00000000") 'NuevoTipoDocumento, FacturaProforma.Tipo.TipoFacturaProforma.id), "0000")
-        '        End If
-    End If
-
-    Me.txtNumero.Enabled = Not FacturaProforma.Tipo.PuntoVenta.EsElectronico Or FacturaProforma.Tipo.PuntoVenta.CaeManual
-
-    ValidarEsCredito
-End Sub
+'''Private Sub cboTiposFactura_Click()
+'''
+'''    If Me.cboTiposFacturaProforma.ListIndex = -1 Then Exit Sub
+'''
+'''    Dim id As Long
+'''
+'''    id = Me.cboTiposFacturaProforma.ItemData(Me.cboTiposFacturaProforma.ListIndex)
+'''
+'''    Set FacturaProforma.Tipo = DAOTipoFacturaDiscriminado.FindById(id)
+'''
+'''
+'''    '1 11 19
+'''    '    Me.lblCbuCredito.Visible = FacturaProforma.Tipo.PuntoVenta.EsCredito
+'''    Me.Frame1.Enabled = FacturaProforma.esCredito
+'''    Me.frmFC.Enabled = FacturaProforma.esCredito
+'''    Me.Label22.Enabled = FacturaProforma.esCredito
+'''
+'''    'Me.dtFechaPagoCredito.Enabled = FacturaProforma.EsCredito Or FacturaProforma.Tipo.PuntoVenta.CaeManual
+'''
+'''    Me.dtFechaPagoCreditoDesde.Enabled = FacturaProforma.esCredito
+'''    Me.dtFechaPagoCreditoHasta.Enabled = FacturaProforma.esCredito
+'''
+'''    Me.cboCuentasCBU.Enabled = FacturaProforma.esCredito
+'''
+'''    'Me.lblFechaPagoCredito.Enabled = FacturaProforma.EsCredito Or (FacturaProforma.ConceptoIncluir = ConceptoProductoServicio Or FacturaProforma.ConceptoIncluir = ConceptoServicio)
+'''    'Me.dtFechaPagoCredito.Enabled = FacturaProforma.EsCredito Or (FacturaProforma.ConceptoIncluir = ConceptoProductoServicio Or FacturaProforma.ConceptoIncluir = ConceptoServicio)
+'''
+'''    Me.LblCBU.Enabled = FacturaProforma.esCredito
+'''
+'''    'fce_nemer_02062020_#113
+'''    Me.lblPeriodoFacturadoT.Enabled = FacturaProforma.esCredito
+'''    Me.lblPeriodoFacturadoD.Enabled = FacturaProforma.esCredito
+'''    Me.lblPeriodoFacturadoH.Enabled = FacturaProforma.esCredito
+'''
+'''    'fce_nemer_03062020_#133
+'''    'Me.lblFechaPagoCredito.Enabled = FacturaProforma.Tipo.PuntoVenta.EsElectronico
+'''    'Me.dtFechaPagoCredito.Enabled = FacturaProforma.Tipo.PuntoVenta.EsElectronico
+'''
+'''
+'''    Me.lblEsCredito.caption = FacturaProforma.DescripcionCreditoAdicional
+'''
+'''    Me.lblVerCbu.Visible = True
+'''    If Not FacturaProforma.esCredito Then
+'''        Me.lblVerCbu = "NO INFORMADO"
+'''    End If
+'''
+'''
+'''    If FacturaProforma.id = 0 Then    'agregado para q no cambie el nro de factura cuando estoy en edicion yu elijo otro cliente
+'''        '       Me.txtNumero.Enabled = Not FacturaProforma.Tipo.PuntoVenta.EsElectronico
+'''        '       If FacturaProforma.Tipo.PuntoVenta.EsElectronico Then
+'''
+'''
+'''        '           Dim Ult As String
+'''        '          Me.txtNumero.text = "0000"    'ERPHelper.GetUltimoAutorizado(FacturaProforma.Tipo.PuntoVenta.PuntoVenta, FacturaProforma.Tipo.id)
+'''        'Else
+'''
+'''
+'''        Me.txtNumero.Text = Format(DAOFacturaProforma.proximaFactura(Factura), "00000000")    'NuevoTipoDocumento, FacturaProforma.Tipo.TipoFacturaProforma.id), "0000")
+'''        Me.txtNumero.Enabled = Not FacturaProforma.Tipo.PuntoVenta.EsElectronico Or FacturaProforma.Tipo.PuntoVenta.CaeManual
+'''
+'''
+'''        '        End If
+'''    Else
+'''        If FacturaProforma.estado <> EstadoFacturaCliente.EnProceso Then
+'''            Me.txtNumero.Text = Format(FacturaProforma.numero, "00000000")   'FacturaProforma.NumeroFormateado
+'''
+'''        Else
+'''            If FacturaProforma.Tipo.PuntoVenta.CaeManual Then
+'''                Me.txtNumero.Text = Format(FacturaProforma.numero, "00000000")
+'''            Else
+'''                Me.txtNumero.Text = Format(DAOFacturaProforma.proximaFactura(Factura), "00000000")
+'''            End If
+'''        End If
+'''        '        If FacturaProforma.Tipo.PuntoVenta.EsElectronico Then
+'''        '           Me.txtNumero.text = "0000"
+'''        '        Else
+'''        'Me.txtNumero.text = Format(DAOFacturaProforma.proximaFactura(factura.Tipo.id), "00000000") 'NuevoTipoDocumento, FacturaProforma.Tipo.TipoFacturaProforma.id), "0000")
+'''        '        End If
+'''    End If
+'''
+'''    Me.txtNumero.Enabled = Not FacturaProforma.Tipo.PuntoVenta.EsElectronico Or FacturaProforma.Tipo.PuntoVenta.CaeManual
+'''
+'''    ValidarEsCredito
+'''End Sub
 
 
 Private Sub cmdNueva_Click()
@@ -1375,63 +1324,6 @@ Private Sub cmdNueva_Click()
     frm2.Show
 End Sub
 
-
-Private Sub dtFechaPagoCredito_Change()
-    If Not dataLoading Then
-        FacturaProforma.fechaPago = Me.dtFechaPagoCredito.value
-    End If
-
-    Me.txtDiasVenc = DateDiff("d", Me.dtpFecha, Me.dtFechaPagoCredito)
-
-End Sub
-
-
-'fce_nemer_28052020
-Private Sub dtFechaPagoCreditoDesde_Change()
-    If Not dataLoading Then
-        FacturaProforma.FechaVtoDesde = Me.dtFechaPagoCreditoDesde.value
-    End If
-End Sub
-
-
-'fce_nemer_28052020
-Private Sub dtFechaPagoCreditoHasta_Change()
-    If Not dataLoading Then
-        FacturaProforma.FechaVtoHasta = Me.dtFechaPagoCreditoHasta.value
-    End If
-End Sub
-
-'fce_nemer_02062020_#113
-'Private Sub dtFechaServDesde_Change()
-'   If Not dataLoading Then
-'        FacturaProforma.FechaServDesde = Me.dtFechaServDesde.value
-'    End If
-'End Sub
-
-'fce_nemer_02062020_#113
-'Private Sub dtFechaServHasta_Change()
-'   If Not dataLoading Then
-'        FacturaProforma.FechaServHasta = Me.dtFechaServHasta.value
-'    End If
-'End Sub
-
-
-Private Sub dtpFecha_Change()
-    If Not dataLoading Then
-
-        FacturaProforma.FechaEmision = Me.dtpFecha.value
-
-        'fce_nemer_02062020_#113
-        'Me.dtFechaServDesde.value = Me.dtpFecha.value
-        'Me.dtFechaServHasta.value = Me.dtpFecha.value
-
-        'fce_nemer_09062020
-        txtDiasVenc_LostFocus
-
-        Me.txtDiasVenc = DateDiff("d", Me.dtpFecha, Me.dtFechaPagoCredito)
-
-    End If
-End Sub
 
 
 Private Sub Form_Load()
@@ -1450,8 +1342,6 @@ Private Sub Form_Load()
         FacturaProforma.Tipo.TipoDoc = NuevoTipoDocumento
         Me.caption = "Nueva PROFORMA"
         Me.dtpFecha.value = Now
-
-        Me.dtFechaPagoCredito.value = Now
 
         If Me.cboMoneda.ListIndex <> -1 Then
             Set FacturaProforma.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
@@ -1525,8 +1415,7 @@ Private Sub Form_Load()
     'fce_nemer_16062020
     Me.frmTextoAdicional.Enabled = Not ReadOnly
     Me.txtTextoAdicional.Enabled = Not ReadOnly
-    Me.lblFechaPagoCredito.Enabled = Not ReadOnly
-    Me.dtFechaPagoCredito.Enabled = Not ReadOnly
+
     Me.grpPercep.Enabled = Not ReadOnly
     'Me.frmFCE.Enabled = Not ReadOnly
 
@@ -1572,7 +1461,6 @@ Private Sub Form_Load()
     Me.lblLocalidad.Enabled = Not ReadOnly
     Me.lblProvincia.Enabled = Not ReadOnly
     Me.lblCodPostal.Enabled = Not ReadOnly
-    Me.lblNCND.Enabled = Not ReadOnly
 
     Me.grpTotales.Enabled = Not ReadOnly
 
@@ -1599,13 +1487,13 @@ End Sub
 
 
 Private Sub LimpiarFactura()
-    Me.txtNumero.text = vbNullString
-    Me.lblTipoFactura.caption = vbNullString
+    Me.txtNumero.Text = vbNullString
+    Me.lblTipoFactura.caption = "X"
     'Me.lblNCND.caption = vbNullString
-    Me.txtReferencia.text = vbNullString
-    Me.txtDiasVenc.text = vbNullString
+    Me.txtReferencia.Text = vbNullString
+    Me.txtDiasVenc.Text = vbNullString
 
-    Me.txtCondObs.text = vbNullString
+    Me.txtCondObs.Text = vbNullString
 
 End Sub
 
@@ -1662,7 +1550,7 @@ Private Sub CargarFactura()
     If FacturaProforma.id = 0 Then
         'creo que aaca no entra nunca
         '        Dim classA As New classAdministracion
-        Me.txtNumero.text = Format(DAOFacturaProforma.proximaFactura(FacturaProforma))    'NuevoTipoDocumento, FacturaProforma.Tipo.TipoFacturaProforma.id), "0000")
+        Me.txtNumero.Text = Format(DAOFacturaProforma.proximaFactura(FacturaProforma))    'NuevoTipoDocumento, FacturaProforma.Tipo.TipoFacturaProforma.id), "0000")
     Else
 
 
@@ -1675,25 +1563,23 @@ Private Sub CargarFactura()
 
 '        Me.cboTiposFacturaProforma.ListIndex = funciones.PosIndexCbo(FacturaProforma.Tipo.id, Me.cboTiposFactura)
 
-        Me.txtNumero.text = FacturaProforma.numero
+        Me.txtNumero.Text = FacturaProforma.numero
     End If
 
     Me.dtpFecha.value = FacturaProforma.FechaEmision
-    Me.txtPercepcion.text = Round((FacturaProforma.AlicuotaPercepcionesIIBB - 1) * 100, 2)
-    Me.txtDiasVenc.text = FacturaProforma.CantDiasPago
-    Me.txtReferencia.text = FacturaProforma.OrdenCompra
-    Me.txtCondObs.text = FacturaProforma.observaciones
-    Me.txtTextoAdicional.text = FacturaProforma.TextoAdicional
-'    Me.lblTipoFacturaProforma.caption = FacturaProforma.Tipo.TipoFacturaProforma.Tipo
+    Me.txtPercepcion.Text = Round((FacturaProforma.AlicuotaPercepcionesIIBB - 1) * 100, 2)
+    Me.txtDiasVenc.Text = FacturaProforma.CantDiasPago
+    Me.txtReferencia.Text = FacturaProforma.OrdenCompra
+    Me.txtCondObs.Text = FacturaProforma.observaciones
+    Me.txtTextoAdicional.Text = FacturaProforma.TextoAdicional
 
-    Me.dtFechaPagoCredito = FacturaProforma.fechaPago
 
     'fce_nemer_02062020_#113
     'Me.dtFechaServDesde = FacturaProforma.FechaServDesde
     'Me.dtFechaServHasta = FacturaProforma.FechaServHasta
 
 
-    Me.txtTasaAjuste.text = FacturaProforma.TasaAjusteMensual
+    Me.txtTasaAjuste.Text = FacturaProforma.TasaAjusteMensual
     ' Me.txtCbuCredito = FacturaProforma.CBU
 
     Dim c As CuentaBancaria
@@ -1748,8 +1634,8 @@ Private Sub MostrarCliente()
     Me.lblDireccion.caption = FacturaProforma.Cliente.Domicilio
     Me.lblLocalidad.caption = FacturaProforma.Cliente.localidad.nombre
     Me.lblCodPostal.caption = FacturaProforma.Cliente.CodigoPostal
-    Me.lblCuitPais = FacturaProforma.Cliente.CuitPais
-    Me.lblIdImpositivo = FacturaProforma.Cliente.IDImpositivo
+
+
 
     Me.lblProvincia = FacturaProforma.Cliente.provincia.nombre
 
@@ -1956,7 +1842,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
             End If
 
         Else
-            AgregarEntregas EVENTO.Elemento
+''''            AgregarEntregas EVENTO.Elemento
         End If
 
     End If
@@ -1966,20 +1852,23 @@ err1:
 End Function
 
 
+Private Sub PushButton_Click()
+    MsgBox ("En Desarollo")
+End Sub
+
+
 'fce_nemer_09062020
 Public Sub txtDiasVenc_LostFocus()
     If Me.txtDiasVenc = vbNullString Then
         Me.txtDiasVenc = 0
     End If
 
-    Me.dtFechaPagoCredito.value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
-
 End Sub
 
 
 Private Sub txtDiasVenc_Change()
     If Not dataLoading Then
-        FacturaProforma.CantDiasPago = Val(Me.txtDiasVenc.text)
+        FacturaProforma.CantDiasPago = Val(Me.txtDiasVenc.Text)
     End If
 End Sub
 
@@ -1994,10 +1883,10 @@ End Sub
 Private Sub txtPercepcion_Change()
     On Error GoTo E
     If Not dataLoading Then
-        If LenB(Me.txtPercepcion.text) = 0 Then
+        If LenB(Me.txtPercepcion.Text) = 0 Then
             FacturaProforma.AlicuotaPercepcionesIIBB = 0
         Else
-            FacturaProforma.AlicuotaPercepcionesIIBB = 1 + (CDbl(Me.txtPercepcion.text) / 100)
+            FacturaProforma.AlicuotaPercepcionesIIBB = 1 + (CDbl(Me.txtPercepcion.Text) / 100)
         End If
         Totalizar
     End If
@@ -2005,20 +1894,20 @@ Private Sub txtPercepcion_Change()
     Exit Sub
 E:
     FacturaProforma.AlicuotaPercepcionesIIBB = 0
-    Me.txtPercepcion.text = 0
+    Me.txtPercepcion.Text = 0
 End Sub
 
 
 Private Sub txtReferencia_Change()
     If Not dataLoading Then
-        FacturaProforma.OrdenCompra = Me.txtReferencia.text
+        FacturaProforma.OrdenCompra = Me.txtReferencia.Text
     End If
 End Sub
 
 
 Private Sub txtTasaAjuste_Change()
     If Not dataLoading Then
-        FacturaProforma.TasaAjusteMensual = Val(Me.txtTasaAjuste.text)
+        FacturaProforma.TasaAjusteMensual = Val(Me.txtTasaAjuste.Text)
     End If
 End Sub
 
@@ -2028,7 +1917,7 @@ Private Sub txtTextoAdicional_Change()
     Dim caracteresRestantes As Integer
     
     ' Obtén el texto actual del TextBox
-    texto = Me.txtTextoAdicional.text
+    texto = Me.txtTextoAdicional.Text
     
     ' Calcula la cantidad de caracteres restantes
     caracteresRestantes = 300 - Len(texto)

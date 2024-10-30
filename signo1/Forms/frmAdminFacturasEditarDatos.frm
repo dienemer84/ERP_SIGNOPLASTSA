@@ -267,11 +267,11 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private FacturaProforma As clsFacturaProforma
+Private Factura As Factura
 
 
 Public Property Let idFactura(value As Long)
-    Set FacturaProforma = DAOFacturaProforma.FindById(value, True, True)
+    Set Factura = DAOFactura.FindById(value, True, True)
 
 End Property
 
@@ -279,12 +279,12 @@ Private Sub Form_Load()
 
     Customize Me
 
-    Me.lblNumeroCbte.caption = "N° de Cbte: " & FacturaProforma.NumeroFormateado & "- " & FacturaProforma.Cliente.razon
+    Me.lblNumeroCbte.caption = "N° de Cbte: " & Factura.NumeroFormateado & "- " & Factura.Cliente.razon
 
-    Me.Text1.text = FacturaProforma.observaciones
-    Me.Text2.text = FacturaProforma.observaciones_cancela
-    Me.Text3.text = FacturaProforma.OrdenCompra
-    Me.Text6.text = FacturaProforma.TextoAdicional
+    Me.Text1.Text = Factura.observaciones
+    Me.Text2.Text = Factura.observaciones_cancela
+    Me.Text3.Text = Factura.OrdenCompra
+    Me.Text6.Text = Factura.TextoAdicional
 
 
 End Sub
@@ -297,10 +297,10 @@ End Sub
 
 'BOTÓN REESTABLECER
 Private Sub PushButton2_Click()
-    Me.Text1.text = Factura.observaciones
-    Me.Text2.text = Factura.observaciones_cancela
-    Me.Text3.text = Factura.OrdenCompra
-    Me.Text6.text = Factura.TextoAdicional
+    Me.Text1.Text = Factura.observaciones
+    Me.Text2.Text = Factura.observaciones_cancela
+    Me.Text3.Text = Factura.OrdenCompra
+    Me.Text6.Text = Factura.TextoAdicional
 
 End Sub
 
@@ -308,10 +308,10 @@ End Sub
 Private Sub PushButton3_Click()
     If MsgBox("Está segur@ de los cambios realizados?", vbYesNo, "Confirmación") = vbYes Then
 
-        Factura.observaciones = Me.Text1.text
-        Factura.observaciones_cancela = Me.Text2.text
-        Factura.OrdenCompra = Me.Text3.text
-        Factura.TextoAdicional = Me.Text6.text
+        Factura.observaciones = Me.Text1.Text
+        Factura.observaciones_cancela = Me.Text2.Text
+        Factura.OrdenCompra = Me.Text3.Text
+        Factura.TextoAdicional = Me.Text6.Text
 
         If DAOFactura.Save(Factura, True) Then
             MsgBox "Los datos del comprobante han sido actualizados.", vbOKOnly + vbInformation
@@ -325,17 +325,17 @@ End Sub
 
 
 Private Sub PushButton4_Click()
-    Me.Text2.text = ""
+    Me.Text2.Text = ""
 End Sub
 
 Private Sub PushButton5_Click()
-    Me.Text1.text = ""
+    Me.Text1.Text = ""
 End Sub
 
 Private Sub PushButton6_Click()
-    Me.Text3.text = ""
+    Me.Text3.Text = ""
 End Sub
 
 Private Sub PushButton7_Click()
-    Me.Text6.text = ""
+    Me.Text6.Text = ""
 End Sub

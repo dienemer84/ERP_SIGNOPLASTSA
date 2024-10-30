@@ -818,7 +818,7 @@ Private Sub CargarLiquidaciones()
     Set liquidaciones = DAOSubdiarios.FindAllLiquidacionesVenta()
     For Each liqui In liquidaciones
         Me.cboLiquidaciones.AddItem liqui.nombre & " (" & liqui.desde & " a " & liqui.hasta & ")"
-        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.Id
+        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.id
     Next liqui
 
 End Sub
@@ -999,7 +999,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
         .Range("f" & x + 3, B).Font.Bold = True
 
-        .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
+        .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot) + totales.item(PosicionTotales.TotExento)
         .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
         .Cells(offset, 8).value = totales.item(PosicionTotales.totPercep)
         .Cells(offset, 7).value = totales.item(PosicionTotales.totIva)

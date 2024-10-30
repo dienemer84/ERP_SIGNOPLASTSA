@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67371009
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67371009
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67371009
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67371009
+         Format          =   62390273
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   67371009
+         Format          =   62390273
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1540,9 +1540,11 @@ Public ReadOnly As Boolean
 
 Private detaFactRemito As FacturaDetalle
 
+
 Public Property Let idFactura(value As Long)
     Set Factura = DAOFactura.FindById(value, True, True)
 End Property
+
 
 Private Sub btnCrearCliente_Click()
 
@@ -1710,7 +1712,7 @@ Private Sub btnGuardar_Click()
         Exit Sub
     End If
 
-    Factura.observaciones = Me.txtCondObs.text
+    Factura.observaciones = Me.txtCondObs.Text
 
     If LenB(Factura.numero) = 0 Or _
        LenB(Factura.OrdenCompra) = 0 Or _
@@ -1780,7 +1782,7 @@ Private Sub btnGuardar_Click()
         Next deta
 
 
-        Factura.CBU = Me.cboCuentasCBU.text
+        Factura.CBU = Me.cboCuentasCBU.Text
 
         Dim c As CuentaBancaria
 
@@ -1790,12 +1792,20 @@ Private Sub btnGuardar_Click()
             Factura.CBU = c.CBU
         End If
 
-        Factura.observaciones = Me.txtCondObs.text
+        Factura.observaciones = Me.txtCondObs.Text
         Factura.TextoAdicional = Me.txtTextoAdicional
         Factura.FechaServDesde = Me.dtFechaServDesde1.value
         Factura.FechaServHasta = Me.dtFechaServHasta1.value
         Factura.fechaPago = Me.dtFechaPagoCredito.value
         Factura.esCredito = Me.chkEsCredito.value
+        
+        
+        If Me.cboTiposFactura.Text = "004-MANUAL EXP" Then
+            Factura.esExportacion = 1
+        Else
+            Factura.esExportacion = 0
+        End If
+        
 
         If Factura.esCredito Then
 
@@ -2029,7 +2039,7 @@ Private Sub cboCliente_Click()
             Me.lblTipoFactura.caption = Factura.Tipo.TipoFactura.Tipo
         Else
             Me.lblTipoFactura.caption = vbNullString
-            Me.txtNumero.text = 0
+            Me.txtNumero.Text = 0
         End If
 
 
@@ -2056,7 +2066,7 @@ Private Sub MostrarPercepcionIIBB()
         tabla = "IIBB2_PercepcionAnt"
     End If
 
-    Me.txtPercepcion.text = 0
+    Me.txtPercepcion.Text = 0
     Me.lblVencido.Visible = False
 
     If Factura.Cliente.CUITValido Then
@@ -2071,7 +2081,7 @@ Private Sub MostrarPercepcionIIBB()
                 'Me.lblVencido.Visible = (Now() > CDate(ConvertirAFechaAfip(rs!FechaHasta)))
                 Me.lblVencido.Visible = Format(Now, "dd/mm/yyyy") > CDate(ConvertirAFechaAfip(rs!FechaHasta))
                 'Me.lblVencido.Visible = False
-                Me.txtPercepcion.text = rs!alicuota
+                Me.txtPercepcion.Text = rs!alicuota
                 Factura.AlicuotaPercepcionesIIBB = (rs!alicuota / 100) + 1
             End If
         End If
@@ -2147,8 +2157,8 @@ Private Sub LimpiarTotales()
     Me.lblPercepciones.caption = funciones.FormatearDecimales(0)
     Me.lblIVATot.caption = funciones.FormatearDecimales(0)
     Me.lblTotal.caption = funciones.FormatearDecimales(0)
+    
 End Sub
-
 
 
 Private Sub cboTiposFactura_Click()
@@ -2158,6 +2168,10 @@ Private Sub cboTiposFactura_Click()
     Dim id As Long
 
     id = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+    
+    If cboTiposFactura.Text = "004-MANUAL EXP" Then
+        MsgBox ("ES COMPROBANTE DE EXPORTACION")
+    End If
 
     Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(id)
 
@@ -2208,20 +2222,20 @@ Private Sub cboTiposFactura_Click()
         'Else
 
 
-        Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura), "00000000")    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
+        Me.txtNumero.Text = Format(DAOFactura.proximaFactura(Factura), "00000000")    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
         Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
 
 
         '        End If
     Else
         If Factura.estado <> EstadoFacturaCliente.EnProceso Then
-            Me.txtNumero.text = Format(Factura.numero, "00000000")   'Factura.NumeroFormateado
+            Me.txtNumero.Text = Format(Factura.numero, "00000000")   'Factura.NumeroFormateado
 
         Else
             If Factura.Tipo.PuntoVenta.CaeManual Then
-                Me.txtNumero.text = Format(Factura.numero, "00000000")
+                Me.txtNumero.Text = Format(Factura.numero, "00000000")
             Else
-                Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura), "00000000")
+                Me.txtNumero.Text = Format(DAOFactura.proximaFactura(Factura), "00000000")
             End If
         End If
         '        If Factura.Tipo.PuntoVenta.EsElectronico Then
@@ -2527,13 +2541,13 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub LimpiarFactura()
-    Me.txtNumero.text = vbNullString
+    Me.txtNumero.Text = vbNullString
     Me.lblTipoFactura.caption = vbNullString
     'Me.lblNCND.caption = vbNullString
-    Me.txtReferencia.text = vbNullString
-    Me.txtDiasVenc.text = vbNullString
+    Me.txtReferencia.Text = vbNullString
+    Me.txtDiasVenc.Text = vbNullString
 
-    Me.txtCondObs.text = vbNullString
+    Me.txtCondObs.Text = vbNullString
 
 End Sub
 
@@ -2592,19 +2606,19 @@ Private Sub CargarFactura()
     If Factura.id = 0 Then
         'creo que aaca no entra nunca
         '        Dim classA As New classAdministracion
-        Me.txtNumero.text = Format(DAOFactura.proximaFactura(Factura))    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
+        Me.txtNumero.Text = Format(DAOFactura.proximaFactura(Factura))    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
     Else
 
         If Factura.estado = EstadoFacturaCliente.EnProceso Then
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
-                Me.txtNumero.text = Format(Factura.numero)
+                Me.txtNumero.Text = Format(Factura.numero)
             Else
 
                 Dim prox As Long
                 prox = DAOFactura.proximaFactura(Factura)
                 Factura.numero = prox
-                Me.txtNumero.text = Format(prox)
+                Me.txtNumero.Text = Format(prox)
             End If
         End If
 
@@ -2623,15 +2637,15 @@ Private Sub CargarFactura()
 
         Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(Factura.Tipo.id, Me.cboTiposFactura)
 
-        Me.txtNumero.text = Factura.numero
+        Me.txtNumero.Text = Factura.numero
     End If
 
     Me.dtpFecha.value = Factura.FechaEmision
-    Me.txtPercepcion.text = Round((Factura.AlicuotaPercepcionesIIBB - 1) * 100, 2)
-    Me.txtDiasVenc.text = Factura.CantDiasPago
-    Me.txtReferencia.text = Factura.OrdenCompra
-    Me.txtCondObs.text = Factura.observaciones
-    Me.txtTextoAdicional.text = Factura.TextoAdicional
+    Me.txtPercepcion.Text = Round((Factura.AlicuotaPercepcionesIIBB - 1) * 100, 2)
+    Me.txtDiasVenc.Text = Factura.CantDiasPago
+    Me.txtReferencia.Text = Factura.OrdenCompra
+    Me.txtCondObs.Text = Factura.observaciones
+    Me.txtTextoAdicional.Text = Factura.TextoAdicional
     Me.lblTipoFactura.caption = Factura.Tipo.TipoFactura.Tipo
 
     Me.dtFechaPagoCredito = Factura.fechaPago
@@ -2645,7 +2659,7 @@ Private Sub CargarFactura()
     'Me.dtFechaServHasta = Factura.FechaServHasta
 
 
-    Me.txtTasaAjuste.text = Factura.TasaAjusteMensual
+    Me.txtTasaAjuste.Text = Factura.TasaAjusteMensual
     ' Me.txtCbuCredito = Factura.CBU
 
     Dim c As CuentaBancaria
@@ -2820,6 +2834,7 @@ Private Sub gridDetalles_SelectionChange()
     End If
 
 End Sub
+
 
 Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set detalle = New FacturaDetalle
@@ -3025,7 +3040,7 @@ Private Sub btnSeleccionarOT_Click()
                 Dim deta As FacturaDetalle
 
                 For Each Ot In Factura.OTsFacturadasAnticipo
-                    Me.txtReferencia.text = Me.txtReferencia.text & " " & Ot.IdFormateado
+                    Me.txtReferencia.Text = Me.txtReferencia.Text & " " & Ot.IdFormateado
 
                     Set deta = Factura.DetalleFacturaAnticipoOt(funciones.RedondearDecimales(Ot.Anticipo))
                     If Not IsSomething(deta) Then
@@ -3102,7 +3117,7 @@ End Sub
 
 Private Sub txtDiasVenc_Change()
     If Not dataLoading Then
-        Factura.CantDiasPago = Val(Me.txtDiasVenc.text)
+        Factura.CantDiasPago = Val(Me.txtDiasVenc.Text)
     End If
 End Sub
 
@@ -3117,10 +3132,10 @@ End Sub
 Private Sub txtPercepcion_Change()
     On Error GoTo E
     If Not dataLoading Then
-        If LenB(Me.txtPercepcion.text) = 0 Then
+        If LenB(Me.txtPercepcion.Text) = 0 Then
             Factura.AlicuotaPercepcionesIIBB = 0
         Else
-            Factura.AlicuotaPercepcionesIIBB = 1 + (CDbl(Me.txtPercepcion.text) / 100)
+            Factura.AlicuotaPercepcionesIIBB = 1 + (CDbl(Me.txtPercepcion.Text) / 100)
         End If
         Totalizar
     End If
@@ -3128,20 +3143,20 @@ Private Sub txtPercepcion_Change()
     Exit Sub
 E:
     Factura.AlicuotaPercepcionesIIBB = 0
-    Me.txtPercepcion.text = 0
+    Me.txtPercepcion.Text = 0
 End Sub
 
 
 Private Sub txtReferencia_Change()
     If Not dataLoading Then
-        Factura.OrdenCompra = Me.txtReferencia.text
+        Factura.OrdenCompra = Me.txtReferencia.Text
     End If
 End Sub
 
 
 Private Sub txtTasaAjuste_Change()
     If Not dataLoading Then
-        Factura.TasaAjusteMensual = Val(Me.txtTasaAjuste.text)
+        Factura.TasaAjusteMensual = Val(Me.txtTasaAjuste.Text)
     End If
 End Sub
 
@@ -3151,7 +3166,7 @@ Private Sub txtTextoAdicional_Change()
     Dim caracteresRestantes As Integer
     
     ' Obtén el texto actual del TextBox
-    texto = Me.txtTextoAdicional.text
+    texto = Me.txtTextoAdicional.Text
     
     ' Calcula la cantidad de caracteres restantes
     caracteresRestantes = 300 - Len(texto)

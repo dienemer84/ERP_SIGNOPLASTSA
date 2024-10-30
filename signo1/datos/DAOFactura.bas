@@ -205,6 +205,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.MotivosAnulacionAFIP = GetValue(rs, indice, tabla, "motivo_anulacion_afip")
         F.fechaPago = GetValue(rs, indice, tabla, "fecha_pago")
         F.esCredito = GetValue(rs, indice, tabla, "EsCredito")
+        F.esExportacion = GetValue(rs, indice, tabla, "esExportacion")
         F.AprobadaAFIP = GetValue(rs, indice, tabla, "aprobacion_afip")
         'fce_nemer_29052020
         F.FechaVtoDesde = GetValue(rs, indice, tabla, "fecha_vto_desde")
@@ -362,7 +363,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " NroFactura = 'NroFactura' , idCliente = 'idCliente' ,  tipoFactura_borrar = 'tipoFactura_borrar' ," _
             & " idMoneda = 'idMoneda' ,cae='cae',cae_vto='cae_vto',aprobacion_afip='aprobacion_afip', " _
             & " FechaEmision = 'FechaEmision' , EsCredito = 'EsCredito'," _
-            & " idUsuarioEmision = 'idUsuarioEmision' ," _
+            & " idUsuarioEmision = 'idUsuarioEmision' , EsExportacion = 'EsExportacion'," _
             & " FechaAprobacion = 'FechaAprobacion' , " _
             & " idUsuarioAprobacion = 'idUsuarioAprobacion' ," _
             & " OrdenCompra = 'OrdenCompra' , " _
@@ -398,7 +399,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " tipoFactura_borrar, " _
             & " idMoneda, " _
             & " FechaEmision, EsCredito," _
-            & " idUsuarioEmision, " _
+            & " idUsuarioEmision, EsExportacion," _
             & " FechaAprobacion, " _
             & " idUsuarioAprobacion, " _
             & " OrdenCompra, " _
@@ -422,7 +423,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
             & " 'tipoFactura_borrar', " _
             & " 'idMoneda', " _
             & " 'FechaEmision', 'EsCredito'," _
-            & " 'idUsuarioEmision', " _
+            & " 'idUsuarioEmision', 'EsExportacion'," _
             & " 'FechaAprobacion', " _
             & " 'idUsuarioAprobacion', " _
             & " 'OrdenCompra', " _
@@ -463,6 +464,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'idMoneda'", conectar.GetEntityId(F.moneda))
     q = Replace$(q, "'FechaEmision'", conectar.Escape(F.FechaEmision))
     q = Replace$(q, "'EsCredito'", conectar.Escape(F.esCredito))
+    q = Replace$(q, "'EsExportacion'", conectar.Escape(F.esExportacion))
     q = Replace$(q, "'idUsuarioEmision'", conectar.GetEntityId(F.usuarioCreador))
     q = Replace$(q, "'OrdenCompra'", conectar.Escape(F.OrdenCompra))
     q = Replace$(q, "'origenFacturado'", conectar.Escape(F.origenFacturado))
@@ -771,7 +773,7 @@ err5:
 End Function
 
 
-Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfip As Boolean) As Boolean
+Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfip As Boolean, esExportacion As Boolean) As Boolean
     On Error GoTo err5
 
     Set Factura = DAOFactura.FindById(Factura.id)
@@ -911,7 +913,13 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
 
         Dim response As New CAESolicitar
         'validar la aprobacion o desplegar los errores
-        Set response = ERPHelper.CreateFECaeSolicitarRequest(Factura)
+                
+        If Not Factura.esExportacion Then
+            Set response = ERPHelper.CreateFECaeSolicitarRequest(Factura)
+        Else
+            Set response = ERPHelper.CreateFECaeSolicitarRequestEXP(Factura)
+        End If
+
 
         'vlidar  cae y poner nro de factura, cae y fecha de vencimiento y volver a guarar
 
@@ -1157,7 +1165,14 @@ Public Function proximaFactura(F As Factura) As Long    'TipoDocumento As tipoDo
 
             If F.Tipo.PuntoVenta.EsElectronico Then
                 Dim ultimoautorizado As Integer
-                ultimoautorizado = ERPHelper.ObtenerUltimoActual(F)
+                
+                If Not F.Cliente.TipoIVA.detalle = "Exterior" Then
+                    ultimoautorizado = ERPHelper.ObtenerUltimoActual(F)
+                Else
+                    ultimoautorizado = ERPHelper.ObtenerUltimoActualEXP(F)
+                End If
+
+
                 proximaFactura = ultimoautorizado + 1
 
 
@@ -2235,7 +2250,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(F.totalPercepciones)
         seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.total)
 
-'        QRHelper.generar F
+        QRHelper.generar F
         
         Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.id & ".bmp")
 

@@ -13,7 +13,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Public esCredito As Boolean
-Public Id As Long
+Public esExportacion As Boolean
+Public id As Long
 Public Cancelada As Long
 Public FechaAprobacion As Date
 Public MotivoNC As Integer
@@ -104,7 +105,7 @@ Public Property Get DescripcionCreditoAdicional() As String
     If TipoDocumento = tipoDocumentoContable.Factura Then
         dsc = "FACTURA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
     End If
-    If TipoDocumento = tipoDocumentoContable.NotaCredito Then
+    If TipoDocumento = tipoDocumentoContable.notaCredito Then
         dsc = "NOTA DE CRÉDITO ELECTRÓNICA MiPyMEs (FCE)"
     End If
     If TipoDocumento = tipoDocumentoContable.notaDebito Then
@@ -140,8 +141,8 @@ End Property
 
 Public Property Get OTsFacturadasAnticipo() As Collection
     If Not IsSomething(m_ots_facturadas_anticipo) Then
-        If Me.Id <> 0 Then
-            Set m_ots_facturadas_anticipo = DAOOrdenTrabajo.FindAll("p.id_anticipo_factura = " & Me.Id)
+        If Me.id <> 0 Then
+            Set m_ots_facturadas_anticipo = DAOOrdenTrabajo.FindAll("p.id_anticipo_factura = " & Me.id)
         Else
             Set m_ots_facturadas_anticipo = New Collection
         End If
@@ -153,7 +154,7 @@ End Property
 
 Public Function GetCodigoDocumentoAfip() As Integer
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
-    If Tipo.TipoDoc = tipoDocumentoContable.NotaCredito Then GetCodigoDocumentoAfip = 3
+    If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
     If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
 
 
@@ -162,7 +163,7 @@ End Function
 
 Public Function GetDescripciopnDocumentoAfip() As String
     If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetDescripciopnDocumentoAfip = "NOTA DE DEBITO"
-    If Tipo.TipoDoc = tipoDocumentoContable.NotaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
+    If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetDescripciopnDocumentoAfip = "NOTA DE CREDITO"
     If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetDescripciopnDocumentoAfip = "FACTURA"
 
 
@@ -203,8 +204,8 @@ End Property
 
 Public Property Get Detalles() As Collection
 'lazy load simulation
-    If m_detalles Is Nothing And Me.Id <> 0 Then
-        Set m_detalles = DAOFacturaDetalles.FindByFactura(Me.Id)
+    If m_detalles Is Nothing And Me.id <> 0 Then
+        Set m_detalles = DAOFacturaDetalles.FindByFactura(Me.id)
     End If
 
     Set Detalles = m_detalles
@@ -301,7 +302,7 @@ Public Property Get TipoDocumentoDescription() As String
     Select Case Me.TipoDocumento
     Case tipoDocumentoContable.Factura
         retorno = "FACTURA"
-    Case tipoDocumentoContable.NotaCredito
+    Case tipoDocumentoContable.notaCredito
         retorno = "NOTA DE CREDITO"
     Case tipoDocumentoContable.notaDebito
         retorno = "NOTA DE DEBITO"
@@ -326,7 +327,7 @@ Public Property Get GetShortDescription(justTipo As Boolean, fullShortDescriptio
     Select Case Me.TipoDocumento
     Case tipoDocumentoContable.Factura
         retorno = "FC"
-    Case tipoDocumentoContable.NotaCredito
+    Case tipoDocumentoContable.notaCredito
         retorno = "NC"
     Case tipoDocumentoContable.notaDebito
         retorno = "ND"
@@ -446,7 +447,7 @@ Public Property Get totalPercepciones() As Double
                 If Me.AlicuotaPercepcionesIIBB > 1 Then
                     If Me.FechaEmision > #12/21/2010# Then    'desde el 21 de dic de 2010
                         ' bug #1 cambie > pór >= el 22-11-16 para poder hacer una factura solo de percepciones (ver FC grupo via del 22-11-16)
-                        If Me.TotalNetoGravado >= MonedaConverter.Convertir(0, 0, Me.moneda.Id) Then
+                        If Me.TotalNetoGravado >= MonedaConverter.Convertir(0, 0, Me.moneda.id) Then
                             If det.IvaAplicado Then
                                 totPercep = totPercep + funciones.RedondearDecimales(det.NetoGravado * det.Cantidad * (Me.AlicuotaPercepcionesIIBB - 1))
                             Else
@@ -471,14 +472,14 @@ End Property
 
 Public Function DetallesMismaOT() As Long
     Dim d As FacturaDetalle
-    Dim Id As Long
+    Dim id As Long
     For Each d In Detalles
         If Not d.OrigenEsConcepto Then
-            If Id = 0 Then Id = d.detalleRemito.idpedido
-            If Id <> d.Id Then GoTo no1
+            If id = 0 Then id = d.detalleRemito.idpedido
+            If id <> d.id Then GoTo no1
         End If
     Next
-    DetallesMismaOT = Id
+    DetallesMismaOT = id
     Exit Function
 no1:
     DetallesMismaOT = 0
