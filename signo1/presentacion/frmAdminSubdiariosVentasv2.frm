@@ -23,9 +23,9 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    ScaleWidth      =   14655
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1680
-      Left            =   10545
+      Left            =   10560
       TabIndex        =   17
-      Top             =   6765
+      Top             =   6840
       Width           =   3090
       _Version        =   786432
       _ExtentX        =   5450
@@ -535,6 +535,8 @@ Private Sub Totalizar()
         End If
     Next i
 
+    sumTot = sumTot + sumExento
+    
     totales.Add PosicionTotales.TotNetoGravado, sumNeto
     totales.Add PosicionTotales.totIva, sumIVA
     totales.Add PosicionTotales.totPercep, sumPercep
@@ -896,11 +898,11 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
 
         Dim Column As JSColumn
-        Dim x As Integer
+        Dim X As Integer
 
         For Each Column In Me.GridEX1.Columns
-            x = x + 1
-            .Cells(3, x).value = Column.caption
+            X = X + 1
+            .Cells(3, X).value = Column.caption
         Next Column
 
         .Columns("f").HorizontalAlignment = xlHAlignRight
@@ -939,7 +941,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         totperi = 0
         totexen = 0
 
-        x = 1
+        X = 1
 
         'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
         Dim d As Long
@@ -947,40 +949,40 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         For Each item In col
             If item.estado = Anulada Then
-                .Cells(x + 3, 1).value = item.FEcha
-                .Cells(x + 3, 2).value = item.Comprobante
-                .Cells(x + 3, 3).value = "ANULADO"
-                .Cells(x + 3, 4).value = "ANULADO"
-                .Cells(x + 3, 5).value = "ANULADO"
+                .Cells(X + 3, 1).value = item.FEcha
+                .Cells(X + 3, 2).value = item.Comprobante
+                .Cells(X + 3, 3).value = "ANULADO"
+                .Cells(X + 3, 4).value = "ANULADO"
+                .Cells(X + 3, 5).value = "ANULADO"
 
 
-                .Cells(x + 3, 6).value = 0
-                .Cells(x + 3, 7).value = 0
-                .Cells(x + 3, 8).value = 0
-                .Cells(x + 3, 9).value = 0
-                .Cells(x + 3, 10).value = 0
-                .Range(.Cells(x + 3, 1), .Cells(x + 3, 10)).Font.Strikethrough = True
-                .Range(.Cells(x + 3, 1), .Cells(x + 3, 10)).Font.Italic = True
+                .Cells(X + 3, 6).value = 0
+                .Cells(X + 3, 7).value = 0
+                .Cells(X + 3, 8).value = 0
+                .Cells(X + 3, 9).value = 0
+                .Cells(X + 3, 10).value = 0
+                .Range(.Cells(X + 3, 1), .Cells(X + 3, 10)).Font.Strikethrough = True
+                .Range(.Cells(X + 3, 1), .Cells(X + 3, 10)).Font.Italic = True
             Else
 
 
                 '.Cells(x + 3, 1).value = item.FEcha
 
-                .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
-                .Cells(x + 3, 2).value = item.Comprobante
-                .Cells(x + 3, 3).value = item.RazonSocial
-                .Cells(x + 3, 4).value = item.Cuit
-                .Cells(x + 3, 5).value = item.CondicionIva
+                .Cells(X + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
+                .Cells(X + 3, 2).value = item.Comprobante
+                .Cells(X + 3, 3).value = item.RazonSocial
+                .Cells(X + 3, 4).value = item.Cuit
+                .Cells(X + 3, 5).value = item.CondicionIva
 
 
-                .Cells(x + 3, 6).value = item.NetoGravado
-                .Cells(x + 3, 7).value = item.Iva
-                .Cells(x + 3, 8).value = item.percepciones
-                .Cells(x + 3, 9).value = item.Exento
-                .Cells(x + 3, 10).value = item.total + item.Exento
+                .Cells(X + 3, 6).value = item.NetoGravado
+                .Cells(X + 3, 7).value = item.Iva
+                .Cells(X + 3, 8).value = item.percepciones
+                .Cells(X + 3, 9).value = item.Exento
+                .Cells(X + 3, 10).value = item.total + item.Exento
             End If
 
-            x = x + 1
+            X = X + 1
 
             'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
             d = d + 1
@@ -989,15 +991,15 @@ Public Function ExportaSubDiarioVentas() As Boolean
         Next item
 
 
-        A = "j" & x + 2
-        offset = x + 3
+        A = "j" & X + 2
+        offset = X + 3
         B = "j" & offset
         .Range("f1", B).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
-        .Range("f" & x + 3, B).Interior.Color = &HC0C0C0
-        .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
-        .Range("f" & x + 3, B).Font.Bold = True
+        .Range("f" & X + 3, B).Interior.Color = &HC0C0C0
+        .Range("f" & X + 3, B).Borders.LineStyle = xlContinuous
+        .Range("f" & X + 3, B).Font.Bold = True
 
         .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot) + totales.item(PosicionTotales.TotExento)
         .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)

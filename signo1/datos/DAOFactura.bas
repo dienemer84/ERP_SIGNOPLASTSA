@@ -914,11 +914,15 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
         Dim response As New CAESolicitar
         'validar la aprobacion o desplegar los errores
                 
+                
+                
         If Not Factura.esExportacion Then
             Set response = ERPHelper.CreateFECaeSolicitarRequest(Factura)
         Else
             Set response = ERPHelper.CreateFECaeSolicitarRequestEXP(Factura)
         End If
+
+
 
 
         'vlidar  cae y poner nro de factura, cae y fecha de vencimiento y volver a guarar

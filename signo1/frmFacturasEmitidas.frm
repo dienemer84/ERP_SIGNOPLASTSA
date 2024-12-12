@@ -17,12 +17,28 @@ Begin VB.Form frmAdminFacturasEmitidas
    WindowState     =   2  'Maximized
    Begin VB.Frame grpTotalizadores 
       Caption         =   "Totales"
-      Height          =   1335
+      Height          =   1575
       Index           =   0
       Left            =   14760
       TabIndex        =   47
       Top             =   120
       Width           =   7095
+      Begin VB.Label lblTotalExento 
+         Caption         =   "Total Exento: $ 00,00"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   61
+         Top             =   960
+         Width           =   3015
+      End
+      Begin VB.Label lblTotalExento_Dolar 
+         Caption         =   "Total Exento: U$S 00,00"
+         Height          =   255
+         Left            =   3360
+         TabIndex        =   60
+         Top             =   960
+         Width           =   3615
+      End
       Begin XtremeSuiteControls.Label lblPercepciones_Dolar 
          Height          =   195
          Left            =   3360
@@ -80,7 +96,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   195
          Left            =   3360
          TabIndex        =   52
-         Top             =   960
+         Top             =   1200
          Width           =   1530
       End
       Begin VB.Label lblTotal 
@@ -98,7 +114,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          Height          =   195
          Left            =   240
          TabIndex        =   51
-         Top             =   960
+         Top             =   1200
          Width           =   1215
       End
       Begin VB.Label lblTotalPercepciones 
@@ -1168,7 +1184,7 @@ Private Sub aprobarFactura_Click()
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
-        If DAOFactura.aprobarV2(Factura, True, False) Then
+        If DAOFactura.aprobarV2(Factura, True, False, Factura.esExportacion) Then
 
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
                 msgadicional = "Esta factura deberá enviarse a la afip"
@@ -1329,7 +1345,7 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA) * -1
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
-                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.totalExento * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.total * fac.CambioAPatron * -1
                 'dolares
                 xlWorksheet.Cells(idx, 7).value = "0"
@@ -1347,7 +1363,7 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA)
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
-                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.totalExento * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.total * fac.CambioAPatron
                 'dolares
                 xlWorksheet.Cells(idx, 7).value = "0"
@@ -1367,7 +1383,7 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
-                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.totalExento * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.total * fac.CambioAPatron * -1
                 'dolares
                 xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado * -1
@@ -1376,7 +1392,7 @@ Private Sub btnExportar_Click()
                 'dolares
                 xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA * -1
                 'dolares
-                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento * -1
+                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.totalExento * -1
                 'dolares
                 xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.total * -1
 
@@ -1385,7 +1401,7 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
-                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.totalExento * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.total * fac.CambioAPatron
                 'dolares
                 xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado
@@ -1394,7 +1410,7 @@ Private Sub btnExportar_Click()
                 'dolares
                 xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA
                 'dolares
-                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento
+                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.totalExento
                 'dolares
                 xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.total
             End If
@@ -1828,11 +1844,13 @@ Private Sub llenarGrilla()
         Dim totalPercepcionesIIBB As Double
         Dim TotalIVATodo As Double
         Dim totalNG As Double
+        Dim totalExento As Double
         
         Dim totalDolares As Double
         Dim totalPercepcionesIIBBDolar As Double
         Dim totalIVADolar As Double
         Dim totalNGDolar As Double
+        Dim totalExentoDolar As Double
         
         
         If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
@@ -1842,6 +1860,8 @@ Private Sub llenarGrilla()
         totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
         totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        totalExento = totalExento + MonedaConverter.ConvertirForzado2(F.TotalEstatico.totalExento * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        
         
         ' Moneda.id = 1 >> DOLAR
         If F.moneda.id = 1 Then
@@ -1849,19 +1869,26 @@ Private Sub llenarGrilla()
                 totalPercepcionesIIBBDolar = totalPercepcionesIIBBDolar + F.TotalEstatico.TotalPercepcionesIB * c
                 totalIVADolar = totalIVADolar + F.TotalEstatico.TotalIVADiscrimandoONo * c
                 totalNGDolar = totalNGDolar + F.TotalEstatico.TotalNetoGravado * c
+                totalExentoDolar = totalExentoDolar + F.TotalEstatico.totalExento * c
         End If
         
     Next
+
+' TOTALIZADORES PESOS ARG
 
     Me.lblTotal = "Total: " & FormatCurrency(funciones.FormatearDecimales(total))
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalPercepcionesIIBB))
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(TotalIVATodo))
     Me.lblTotalNeto = "Total NG: " & FormatCurrency(funciones.FormatearDecimales(totalNG))
+    Me.lblTotalExento = "Total Exento: " & FormatCurrency(funciones.FormatearDecimales(totalExento))
+
+' TOTALIZADORES DOLARES
 
     Me.lblTotalDolares = "Total: U$S " & Replace(FormatCurrency(totalDolares), "$", "")
     Me.lblPercepciones_Dolar.caption = "Total Percepciones: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalPercepcionesIIBBDolar)), "$", "")
     Me.lblIVA_Dolar.caption = "Total IVA: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalIVADolar)), "$", "")
     Me.lblNG_Dolar.caption = "Total NG: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalNGDolar)), "$", "")
+    Me.lblTotalExento_Dolar.caption = "Total Exento: U$S " & Replace(FormatCurrency(funciones.FormatearDecimales(totalExentoDolar)), "$", "")
     
     Me.gridComprobantesEmitidos.ItemCount = 0
     Me.gridComprobantesEmitidos.ItemCount = facturas.count
@@ -1907,7 +1934,7 @@ Private Sub gridComprobantesEmitidos_FetchIcon(ByVal rowIndex As Long, ByVal Col
     If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then
@@ -2471,7 +2498,7 @@ Private Sub mnuAprobarEnviar_Click()
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
-        If DAOFactura.aprobarV2(Factura, True, True) Then
+        If DAOFactura.aprobarV2(Factura, True, True, Factura.esExportacion) Then
 
 
 
