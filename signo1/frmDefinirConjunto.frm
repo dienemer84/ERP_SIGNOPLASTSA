@@ -17,7 +17,7 @@ Begin VB.Form frmDefinirConjunto
    ScaleHeight     =   5685
    ScaleWidth      =   7155
    ShowInTaskbar   =   0   'False
-   Begin XtremeSuiteControls.ComboBox cboClientes 
+   Begin XtremeSuiteControls.ComboBox cccccccccccccc 
       Height          =   315
       Left            =   960
       TabIndex        =   15
@@ -293,7 +293,7 @@ Private Sub Command1_Click()
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
                 Dim idcli As Long
-                idcli = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
+                idcli = Me.cccccccccccccc.ItemData(Me.cccccccccccccc.ListIndex)
                 If claseS.definirConjunto2(UCase(Me.lblDetalle), idcli, Me.lstDetalleConj) Then
                     MsgBox "Conjunto creado satisfactoriamente", vbInformation, "Información"
                 End If
@@ -316,7 +316,7 @@ Private Sub Command3_Click()
         h = MsgBox("¿Está seguro de modificar el conjunto?", vbYesNo, "Confirmación")
         If h = 6 Then
             Dim idcli As Long
-            idcli = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
+            idcli = Me.cccccccccccccc.ItemData(Me.cccccccccccccc.ListIndex)
             If claseS.modificarConjunto(UCase(Me.lblDetalle), idcli, Me.lstDetalleConj, vIdPieza) Then
                 MsgBox "Conjunto modificador satisfactoriamente", vbInformation, "Información"
                 Unload Me
@@ -348,7 +348,7 @@ Private Sub Form_Load()
     lblDetalle_Change    'valido txt en bco al principio
 
 
-    DAOCliente.llenarComboXtremeSuite Me.cboClientes
+    DAOCliente.llenarComboXtremeSuite Me.cccccccccccccc
 
     Dim idCliente As Long
     On Error Resume Next
@@ -366,7 +366,7 @@ Private Sub Form_Load()
         detalle = rs!detalle
         idCliente = rs!id_cliente
         Me.lblDetalle = detalle
-        Me.cboClientes.ListIndex = funciones.PosIndexCbo(idCliente, Me.cboClientes)
+        Me.cccccccccccccc.ListIndex = funciones.PosIndexCbo(idCliente, Me.cccccccccccccc)
         strsql = "select s.detalle,sc.cantidad,sc.idPiezaHija from stockConjuntos sc inner join stock s on s.id=sc.idPiezaHija where sc.idPiezaPadre=" & vIdPieza
         Set rs = conectar.RSFactory(strsql)
         Me.lstDetalleConj.ListItems.Clear

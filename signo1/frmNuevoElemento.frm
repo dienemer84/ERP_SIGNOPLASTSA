@@ -35,20 +35,20 @@ Begin VB.Form frmNuevoElemento
       Width           =   13095
       Begin VB.TextBox txtNombreElemento 
          Height          =   285
-         Left            =   960
+         Left            =   1080
          TabIndex        =   0
          Text            =   "Text1"
          Top             =   240
-         Width           =   8895
+         Width           =   8655
       End
       Begin XtremeSuiteControls.ComboBox cboClientes 
          Height          =   315
-         Left            =   2880
+         Left            =   3120
          TabIndex        =   2
          Top             =   600
-         Width           =   10080
+         Width           =   9840
          _Version        =   786432
-         _ExtentX        =   17780
+         _ExtentX        =   17357
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -549,11 +549,11 @@ Begin VB.Form frmNuevoElemento
       End
       Begin VB.TextBox txtIdCliente 
          Height          =   285
-         Left            =   960
+         Left            =   1080
          TabIndex        =   1
          Text            =   "Text2"
-         Top             =   600
-         Width           =   1815
+         Top             =   615
+         Width           =   1095
       End
       Begin VB.Frame Frame2 
          BackColor       =   &H00C0C0C0&
@@ -640,7 +640,7 @@ Begin VB.Form frmNuevoElemento
             List            =   "frmNuevoElemento.frx":0010
             Style           =   2  'Dropdown List
             TabIndex        =   65
-            Top             =   4560
+            Top             =   4530
             Width           =   1455
          End
          Begin MSComctlLib.ListView ListView1 
@@ -1093,6 +1093,7 @@ Begin VB.Form frmNuevoElemento
             BackColor       =   &H00C0C0C0&
             Caption         =   "Código"
             Height          =   255
+            Index           =   0
             Left            =   120
             TabIndex        =   13
             Top             =   360
@@ -1113,6 +1114,16 @@ Begin VB.Form frmNuevoElemento
          Style           =   2
          Text            =   "ComboBox1"
       End
+      Begin VB.Label Label1 
+         Alignment       =   1  'Right Justify
+         Caption         =   "Cliente"
+         Height          =   255
+         Index           =   1
+         Left            =   2280
+         TabIndex        =   85
+         Top             =   630
+         Width           =   735
+      End
       Begin VB.Label lblComplejidad 
          Caption         =   "Complejidad"
          Height          =   225
@@ -1122,22 +1133,24 @@ Begin VB.Form frmNuevoElemento
          Width           =   1110
       End
       Begin VB.Label Label3 
+         Alignment       =   2  'Center
          BackColor       =   &H00C0C0C0&
-         Caption         =   "Cliente"
+         Caption         =   "Cód. Cliente"
          Height          =   255
-         Left            =   240
+         Left            =   120
          TabIndex        =   15
-         Top             =   600
-         Width           =   855
+         Top             =   630
+         Width           =   975
       End
       Begin VB.Label Label2 
+         Alignment       =   2  'Center
          BackColor       =   &H00C0C0C0&
          Caption         =   "Nombre"
          Height          =   255
-         Left            =   240
+         Left            =   0
          TabIndex        =   14
          Top             =   240
-         Width           =   1455
+         Width           =   1095
       End
    End
 End
@@ -1170,7 +1183,7 @@ Public Sub calcularTotalMateriales(ByVal lst As ListView, ByRef Kg, ByRef m2, By
     Kg = K
     m2 = m
     costo = c
-    Me.lblTotalKG = Kg
+    Me.lblTotalKg = Kg
     Me.lblTotalM2 = m2
     Me.lblCosto = costo
 End Sub
@@ -1188,10 +1201,10 @@ Public Sub calcular_totales_mdo()
     Next i
     Me.lblfijos = Math.Round(totalFIJO, 2)
     Me.lblmdo = Math.Round(TotalMDO, 2)
-    Me.lblCambio = Math.Round(totalCAMBIO, 2)
+    Me.lblcambio = Math.Round(totalCAMBIO, 2)
     Me.lblCtoMDO = Math.Round(cto, 2)
 End Sub
-Private Function verDetalleMateriales(Id)
+Private Function verDetalleMateriales(id)
     Dim Kg As Double, m2ml As Double
     Dim descripcion As String
     Dim costo As Double
@@ -1207,10 +1220,10 @@ Private Function verDetalleMateriales(Id)
 
     Cant = CDbl(Me.txtCantidad)
 
-    baseS.calcularM2MLKGMaterial x1, y1, Id, Scrap, x, y, Cant, Kg, m2ml, Pieza, costo, 0
+    baseS.calcularM2MLKGMaterial x1, y1, id, Scrap, x, y, Cant, Kg, m2ml, Pieza, costo, 0
     cxh = funciones.cantxhoja(x, y, x1, y1)
 
-    baseS.ejecutar "select m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g, rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & Id
+    baseS.ejecutar "select m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g, rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & id
     descripcion = baseS.descripcion
     Espesor = baseS.Espesor
     Grupo = baseS.Grupo
@@ -1224,7 +1237,7 @@ Private Sub btnAgregarMDO_Click()
         MsgBox "Ingrese datos válidos por favor", vbCritical, "Error"
     Else
 
-        Set x = Me.ListView2.ListItems.Add(, , Id)
+        Set x = Me.ListView2.ListItems.Add(, , id)
         x.SubItems(1) = Me.lblidMDO
         x.SubItems(2) = Me.txtCantOp
         x.SubItems(3) = Me.txtTiempo
@@ -1301,7 +1314,7 @@ Private Sub Command1_Click()
     Dim descripcion As String
     If Trim(Me.txtCodigoMaterial) <> Empty Then
         codigo = UCase(Me.txtCodigoMaterial)
-        Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+        id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
         x = Me.txtAnchoPieza
         y = Me.txtLargoPieza
         x1 = Me.txtAnchoTerm
@@ -1314,14 +1327,14 @@ Private Sub Command1_Click()
 
         Cant = CDbl(Me.txtCantidad)
         'si existe el código
-        If Id <> -1 Then
+        If id <> -1 Then
             cxh = funciones.cantxhoja(x, y, x1, y1)
             'si cxh = 0 then exit
             If cxh <= 0 Then
                 MsgBox "No puede procesar con estas dimensiones!", vbInformation, "Error"
                 Exit Sub
             End If
-            baseS.ejecutar "select m.id_unidad,m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g,rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & Id
+            baseS.ejecutar "select m.id_unidad,m.espesor,m.descripcion, g.grupo, r.rubro from materiales m,grupos g,rubros r where m.id_grupo=g.id and m.id_rubro=r.id and  m.id=" & id
             descripcion = baseS.descripcion
             Espesor = baseS.Espesor
             Grupo = baseS.Grupo
@@ -1344,11 +1357,11 @@ Private Sub Command1_Click()
             End If
             Dim costo As Double
 
-            baseS.calcularM2MLKGMaterial x, y, Id, Scrap, x1, y1, Cant, Kg, m2ml, Pieza, costo, 0
+            baseS.calcularM2MLKGMaterial x, y, id, Scrap, x1, y1, Cant, Kg, m2ml, Pieza, costo, 0
             'agrego datos a la lista
             Dim h As ListItem
             Set h = Me.ListView1.ListItems.Add(, , codigo)
-            h.SubItems(1) = Id
+            h.SubItems(1) = id
             h.SubItems(2) = rubro & " " & Grupo & " " & descripcion
             h.SubItems(3) = Espesor
             h.SubItems(4) = Pieza
@@ -1522,7 +1535,7 @@ Private Sub Command9_Click()
 
     Dim x As ListItem
     For i = 1 To Me.ListView1.ListItems.count
-        If Me.ListView1.ListItems(i).ListSubItems(11).text = "X1" Then
+        If Me.ListView1.ListItems(i).ListSubItems(11).Text = "X1" Then
             codigo = Me.ListView1.ListItems(i).ListSubItems(1)
             descripcion = Me.ListView1.ListItems(i).ListSubItems(2)
             Kg = Me.ListView1.ListItems(i).ListSubItems(7)
@@ -1575,7 +1588,7 @@ Private Sub Form_Load()
     Me.calcular_totales_mdo
     'Me.calcularTotalMateriales Me.ListView1, kg, m2, costo
     Me.lblCosto = costo
-    Me.lblTotalKG = Kg
+    Me.lblTotalKg = Kg
     Me.lblTotalM2 = m2
     grabado = False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes
@@ -1698,9 +1711,9 @@ End Sub
 
 Private Sub txtAnchoPieza_LostFocus()
     Me.Command1.SetFocus
-    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
-    If Id <> -1 Then
-        verDetalleMateriales (Id)
+    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    If id <> -1 Then
+        verDetalleMateriales (id)
     End If
 End Sub
 
@@ -1717,9 +1730,9 @@ Private Sub txtAnchoTerm_GotFocus()
 End Sub
 
 Private Sub txtAnchoTerm_LostFocus()
-    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
-    If Id <> -1 Then
-        verDetalleMateriales (Id)
+    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    If id <> -1 Then
+        verDetalleMateriales (id)
     End If
 End Sub
 
@@ -1769,18 +1782,18 @@ Private Sub txtCodigoMaterial_Change()
     If Trim(Me.txtCodigoMaterial) = Empty Then Exit Sub
 
 
-    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
 
-    Set rss = conectar.RSFactory("select valor_unitario from materiales where id=" & Id)
-    If Id <> -1 Then
+    Set rss = conectar.RSFactory("select valor_unitario from materiales where id=" & id)
+    If id <> -1 Then
         estado = rss!valor_unitario
         If estado > 0 Then
-            If Id <> -1 Then
+            If id <> -1 Then
                 Me.Command1.Enabled = True
                 Me.Frame3.Enabled = True
                 Me.Frame4.Enabled = True
-                verDetalleMateriales (Id)
-                Set r = RSFactory("select largo,ancho, id_unidad from materiales where id=" & Id)
+                verDetalleMateriales (id)
+                Set r = RSFactory("select largo,ancho, id_unidad from materiales where id=" & id)
                 If Not r.EOF And Not r.BOF Then
                     idUnidad = r!id_Unidad
                     Largo = r!Largo
@@ -1918,9 +1931,9 @@ Private Sub txtLargoPieza_GotFocus()
 End Sub
 
 Private Sub txtLargoPieza_LostFocus()
-    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
-    If Id <> -1 Then
-        verDetalleMateriales (Id)
+    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    If id <> -1 Then
+        verDetalleMateriales (id)
     End If
 End Sub
 
@@ -1936,9 +1949,9 @@ Private Sub txtLargoTerm_GotFocus()
 End Sub
 
 Private Sub txtLargoTerm_LostFocus()
-    Id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
-    If Id <> -1 Then
-        verDetalleMateriales (Id)
+    id = baseM.QueIdMaterial(Trim(Me.txtCodigoMaterial))
+    If id <> -1 Then
+        verDetalleMateriales (id)
     End If
 End Sub
 

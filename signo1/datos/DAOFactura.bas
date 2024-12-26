@@ -2167,7 +2167,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         seccion.Controls.item("lblDireccion").caption = F.Cliente.Domicilio & ", " & F.Cliente.localidad.nombre & ", " & F.Cliente.provincia.nombre
         seccion.Controls.item("lblReferencia").caption = F.OrdenCompra
         
-        If F.Cliente.CuitPais <> "" Then
+        If F.Cliente.CuitPais <> "" Or F.Cliente.CuitPais <> "-" Or F.Cliente.IDImpositivo <> "" Or F.Cliente.IDImpositivo <> "-" Then
             seccion.Controls.item("txtCuitPais").caption = "Cuit Pais: " & F.Cliente.CuitPais
             seccion.Controls.item("txtIdImpositivo").caption = "Id Impositivo: " & F.Cliente.IDImpositivo
             seccion.Controls.item("txtTextoIncoterms").caption = "INCOTERMS: CIP"

@@ -1345,7 +1345,7 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA) * -1
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
-                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.totalExento * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.total * fac.CambioAPatron * -1
                 'dolares
                 xlWorksheet.Cells(idx, 7).value = "0"
@@ -1363,7 +1363,7 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 6).value = (((fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron) + fac.TotalEstatico.TotalIVADiscrimandoONo) - fac.TotalEstatico.TotalIVA)
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
-                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.totalExento * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.total * fac.CambioAPatron
                 'dolares
                 xlWorksheet.Cells(idx, 7).value = "0"
@@ -1383,7 +1383,7 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron * -1
-                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.totalExento * fac.CambioAPatron * -1
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron * -1
                 xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.total * fac.CambioAPatron * -1
                 'dolares
                 xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado * -1
@@ -1392,7 +1392,7 @@ Private Sub btnExportar_Click()
                 'dolares
                 xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA * -1
                 'dolares
-                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.totalExento * -1
+                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento * -1
                 'dolares
                 xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.total * -1
 
@@ -1401,7 +1401,7 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 6).value = fac.TotalEstatico.TotalNetoGravado * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 8).value = fac.TotalEstatico.TotalPercepcionesIB * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 10).value = fac.TotalEstatico.TotalIVA * fac.CambioAPatron
-                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.totalExento * fac.CambioAPatron
+                xlWorksheet.Cells(idx, 12).value = fac.TotalEstatico.TotalExento * fac.CambioAPatron
                 xlWorksheet.Cells(idx, 14).value = fac.TotalEstatico.total * fac.CambioAPatron
                 'dolares
                 xlWorksheet.Cells(idx, 7).value = fac.TotalEstatico.TotalNetoGravado
@@ -1410,7 +1410,7 @@ Private Sub btnExportar_Click()
                 'dolares
                 xlWorksheet.Cells(idx, 11).value = fac.TotalEstatico.TotalIVA
                 'dolares
-                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.totalExento
+                xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento
                 'dolares
                 xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.total
             End If
@@ -1844,7 +1844,7 @@ Private Sub llenarGrilla()
         Dim totalPercepcionesIIBB As Double
         Dim TotalIVATodo As Double
         Dim totalNG As Double
-        Dim totalExento As Double
+        Dim TotalExento As Double
         
         Dim totalDolares As Double
         Dim totalPercepcionesIIBBDolar As Double
@@ -1860,7 +1860,7 @@ Private Sub llenarGrilla()
         totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
         totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
-        totalExento = totalExento + MonedaConverter.ConvertirForzado2(F.TotalEstatico.totalExento * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
+        TotalExento = TotalExento + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalExento * c, MonedaConverter.Patron.id, F.moneda.id, F.CambioAPatron)
         
         
         ' Moneda.id = 1 >> DOLAR
@@ -1869,7 +1869,7 @@ Private Sub llenarGrilla()
                 totalPercepcionesIIBBDolar = totalPercepcionesIIBBDolar + F.TotalEstatico.TotalPercepcionesIB * c
                 totalIVADolar = totalIVADolar + F.TotalEstatico.TotalIVADiscrimandoONo * c
                 totalNGDolar = totalNGDolar + F.TotalEstatico.TotalNetoGravado * c
-                totalExentoDolar = totalExentoDolar + F.TotalEstatico.totalExento * c
+                totalExentoDolar = totalExentoDolar + F.TotalEstatico.TotalExento * c
         End If
         
     Next
@@ -1880,7 +1880,7 @@ Private Sub llenarGrilla()
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalPercepcionesIIBB))
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(TotalIVATodo))
     Me.lblTotalNeto = "Total NG: " & FormatCurrency(funciones.FormatearDecimales(totalNG))
-    Me.lblTotalExento = "Total Exento: " & FormatCurrency(funciones.FormatearDecimales(totalExento))
+    Me.lblTotalExento = "Total Exento: " & FormatCurrency(funciones.FormatearDecimales(TotalExento))
 
 ' TOTALIZADORES DOLARES
 
@@ -1934,7 +1934,7 @@ Private Sub gridComprobantesEmitidos_FetchIcon(ByVal rowIndex As Long, ByVal Col
     If ColIndex = 20 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facturas.count > 0 Then
         SeleccionarFactura
         If Button = 2 Then

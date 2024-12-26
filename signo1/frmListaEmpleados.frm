@@ -219,9 +219,9 @@ Private Sub llenarLista()
     Dim filter As String
     filter = " 1 = 1"
 
-    If LenB(Me.txtNroDoc.text) > 0 And IsNumeric(Me.txtNroDoc) Then filter = filter & " AND documento = " & Me.txtNroDoc.text
-    If LenB(Me.txtApellido.text) > 0 Then filter = filter & " AND apellido like '%" & Me.txtApellido.text & "%'"
-    If LenB(Me.txtNroLeg.text) > 0 And IsNumeric(Me.txtNroLeg) Then filter = filter & " AND legajo = " & Me.txtNroLeg.text
+    If LenB(Me.txtNroDoc.Text) > 0 And IsNumeric(Me.txtNroDoc) Then filter = filter & " AND documento = " & Me.txtNroDoc.Text
+    If LenB(Me.txtApellido.Text) > 0 Then filter = filter & " AND apellido like '%" & Me.txtApellido.Text & "%'"
+    If LenB(Me.txtNroLeg.Text) > 0 And IsNumeric(Me.txtNroLeg) Then filter = filter & " AND legajo = " & Me.txtNroLeg.Text
 
 
     Set empleados = DAOEmpleados.GetAll(filter)
@@ -278,9 +278,9 @@ End Sub
 Private Sub ShowImage()
     On Error GoTo err1
     If IsSomething(emple) Then
-        Set Foto = DAOArchivo.FindAll(OA_FotoEmpleado, "idPieza=" & emple.Id)(1)
+        Set Foto = DAOArchivo.FindAll(OA_FotoEmpleado, "idPieza=" & emple.id)(1)
         If IsSomething(Foto) Then
-            tmppath = clasea.exportarArchivo(Foto.Id)
+            tmppath = clasea.exportarArchivo(Foto.id)
             If LenB(tmppath) > 0 Then
                 Set Me.imgFoto.Picture = LoadPicture(tmppath)
                 Kill tmppath
@@ -306,8 +306,8 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         .value(4) = emple2.FechaNacimiento
         .value(5) = emple2.FechaIngreso
         .value(6) = emple2.GrupoSanguineo
-        .value(7) = Val(CantArchivos(emple2.Id))
-        .value(8) = Val(CantSiniestros(emple2.Id))
+        .value(7) = Val(CantArchivos(emple2.id))
+        .value(8) = Val(CantSiniestros(emple2.id))
         If LenB(emple2.DireccionCompleta) > 0 Then
             .value(9) = "Dirección: " & emple2.DireccionCompleta
         End If
@@ -323,7 +323,7 @@ Private Sub mnuArchivosEmpleado_Click()
     If Not emple Is Nothing Then
         Dim frmArchi As New frmArchivos2
         frmArchi.Origen = OrigenArchivos.OA_Empleados
-        frmArchi.ObjetoId = emple.Id
+        frmArchi.ObjetoId = emple.id
         frmArchi.caption = "Empleado - " & emple.NombreCompleto
         frmArchi.Show
     End If
@@ -345,7 +345,7 @@ Private Sub mnuNuevoSiniestro_Click()
     If Not emple Is Nothing Then
         Dim ffff As New frmSiniestro
         ffff.Show
-        ffff.cboAsegurado.ListIndex = funciones.PosIndexCbo(emple.Id, ffff.cboAsegurado)
+        ffff.cboAsegurado.ListIndex = funciones.PosIndexCbo(emple.id, ffff.cboAsegurado)
     End If
 End Sub
 
@@ -353,7 +353,7 @@ Private Sub mnuSectorizar_Click()
     If Not emple Is Nothing Then
         Dim F As New frmSectorizar
         Load F
-        F.Text1.text = emple.legajo
+        F.Text1.Text = emple.legajo
         F.Command1_Click
         F.Show
     End If
@@ -363,7 +363,7 @@ Private Sub mnuTareas_Click()
     If Not emple Is Nothing Then
         Dim F As New frmEmpleadosTareas
         Load F
-        F.personalId = emple.Id
+        F.personalId = emple.id
         F.Show
     End If
 End Sub

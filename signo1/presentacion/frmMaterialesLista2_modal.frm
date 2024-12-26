@@ -176,10 +176,12 @@ Dim Materiales As New Collection
 Dim rectemp As clsMaterial
 Private buscando As Boolean
 Public Usable As Boolean
+
+
 Private Sub cmdFiltrar_Click()
     filtro = " 1=1 "
-    If LenB(Me.txtFiltro.text) > 0 Then
-        filtro = filtro & " AND (" & DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_DESCRIPCION & " LIKE '%" & Trim(Me.txtFiltro.text) & "%' or " & DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_CODIGO & " LIKE '%" & Trim(Me.txtFiltro) & "%')"
+    If LenB(Me.txtFiltro.Text) > 0 Then
+        filtro = filtro & " AND (" & DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_DESCRIPCION & " LIKE '%" & Trim(Me.txtFiltro.Text) & "%' or " & DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_CODIGO & " LIKE '%" & Trim(Me.txtFiltro) & "%')"
     End If
 
     If Me.cboRubros.ListIndex > -1 Then
@@ -204,7 +206,6 @@ Private Sub CMDsINCliente_Click()
 End Sub
 
 
-
 Private Sub Command2_Click()
     Dim elegidos As Boolean
     If grilla.SelectedItems.count > 1 Then
@@ -225,16 +226,25 @@ Private Sub Command2_Click()
     grilla.PrintPreview frmPrintPreview.GEXPreview1, elegidos
     frmPrintPreview.Show 1
 End Sub
+
+
 Private Sub Command3_Click()
     Unload Me
 End Sub
+
+
 Private Sub editar_Click()
     editamos
 End Sub
-Private Sub Form_Activate()
 
+
+Private Sub Form_Activate()
     Me.grilla.ReBind
+    Me.txtFiltro = ""
+    
 End Sub
+
+
 Private Sub Form_Load()
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.grilla, True
@@ -249,7 +259,12 @@ Private Sub Form_Load()
     Me.cboRubros.ListIndex = funciones.PosIndexCbo(Filtros.vFiltroBusquedaMaterial.rubro, Me.cboRubros)
     Channel.AgregarSuscriptor Me, Materiales_
     cmdFiltrar_Click
+    
+    llenar_Grilla
+    
 End Sub
+
+
 Private Sub Form_Resize()
     On Error Resume Next
     Me.grilla.Height = Me.ScaleHeight - 1800
@@ -259,10 +274,13 @@ Private Sub Form_Resize()
 
     Me.grilla.ReBind
 End Sub
+
+
 Private Sub Form_Terminate()
     Set Selecciones.Material = Nothing
     Channel.RemoverSuscripcionTotal Me
 End Sub
+
 
 Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
@@ -273,12 +291,17 @@ Private Sub grilla_BeforeGroupChange(ByVal Group As GridEX20.JSGroup, ByVal Chan
     Me.grilla.CollapseAll
 End Sub
 
+
 Private Sub grilla_BeforePrintPage(ByVal PageNumber As Long, ByVal nPages As Long)
     grilla.PrinterProperties.FooterString(jgexHFRight) = "Página " & PageNumber & " de " & nPages
 End Sub
+
+
 Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla, Column
 End Sub
+
+
 Private Sub grilla_DblClick()
     grilla_SelectionChange
     If Usable Then
@@ -288,6 +311,7 @@ Private Sub grilla_DblClick()
 
 End Sub
 
+
 Private Sub grilla_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = 67 And Shift = 2 Then    'CTRL + C
         GridEXHelper.Grid2Clipboard Me.grilla
@@ -296,11 +320,14 @@ Private Sub grilla_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
+
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.value(8) = 0 Then
         RowBuffer.RowStyle = "Valor0"
     End If
 End Sub
+
+
 Private Sub grilla_SelectionChange()
     On Error GoTo err1
     rows = grilla.rowIndex(grilla.row)
@@ -308,6 +335,8 @@ Private Sub grilla_SelectionChange()
     Exit Sub
 err1:
 End Sub
+
+
 Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set rectemp = Materiales.item(rowIndex)
     With rectemp
@@ -326,11 +355,15 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(13) = enums.enumEstadoMaterial(.estado)
     End With
 End Sub
+
+
 Private Sub llenar_Grilla()
     Set Materiales = DAOMateriales.FindAll
     grilla.ItemCount = Materiales.count
     'grilla.ReBind
 End Sub
+
+
 Private Sub editamos()
     If grilla.rowcount > 0 Then
         A = grilla.rowIndex(grilla.row)
@@ -342,9 +375,11 @@ Private Sub editamos()
     End If
 End Sub
 
+
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = vId
 End Property
+
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim tmp As clsMaterial
@@ -355,9 +390,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = Materiales.count To 1 Step -1
-            If Materiales(i).Id = tmp.Id Then
+            If Materiales(i).id = tmp.id Then
                 Set rectemp = Materiales(i)
-                rectemp.Id = tmp.Id
+                rectemp.id = tmp.id
                 rectemp.Valor = tmp.Valor
                 rectemp.descripcion = tmp.descripcion
                 rectemp.Grupo = tmp.Grupo
@@ -374,5 +409,3 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     End If
 
 End Function
-
-
