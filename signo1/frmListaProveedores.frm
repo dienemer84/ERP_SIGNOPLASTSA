@@ -194,7 +194,7 @@ Begin VB.Form frmComprasProveedoresLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   9
+      ColumnsCount    =   12
       Column(1)       =   "frmListaProveedores.frx":000C
       Column(2)       =   "frmListaProveedores.frx":0114
       Column(3)       =   "frmListaProveedores.frx":020C
@@ -204,16 +204,19 @@ Begin VB.Form frmComprasProveedoresLista
       Column(7)       =   "frmListaProveedores.frx":05C8
       Column(8)       =   "frmListaProveedores.frx":06AC
       Column(9)       =   "frmListaProveedores.frx":07A8
+      Column(10)      =   "frmListaProveedores.frx":0898
+      Column(11)      =   "frmListaProveedores.frx":097C
+      Column(12)      =   "frmListaProveedores.frx":0A68
       FormatStylesCount=   7
-      FormatStyle(1)  =   "frmListaProveedores.frx":0898
-      FormatStyle(2)  =   "frmListaProveedores.frx":09C0
-      FormatStyle(3)  =   "frmListaProveedores.frx":0A70
-      FormatStyle(4)  =   "frmListaProveedores.frx":0B24
-      FormatStyle(5)  =   "frmListaProveedores.frx":0BFC
-      FormatStyle(6)  =   "frmListaProveedores.frx":0CB4
-      FormatStyle(7)  =   "frmListaProveedores.frx":0D94
+      FormatStyle(1)  =   "frmListaProveedores.frx":0B74
+      FormatStyle(2)  =   "frmListaProveedores.frx":0C9C
+      FormatStyle(3)  =   "frmListaProveedores.frx":0D4C
+      FormatStyle(4)  =   "frmListaProveedores.frx":0E00
+      FormatStyle(5)  =   "frmListaProveedores.frx":0ED8
+      FormatStyle(6)  =   "frmListaProveedores.frx":0F90
+      FormatStyle(7)  =   "frmListaProveedores.frx":1070
       ImageCount      =   0
-      PrinterProperties=   "frmListaProveedores.frx":0DB4
+      PrinterProperties=   "frmListaProveedores.frx":1090
    End
    Begin VB.Menu m2 
       Caption         =   "m2"
@@ -240,6 +243,8 @@ Dim rectemp As clsProveedor
 'Dim id_rubro As Long
 Dim proveedores As Collection
 Dim Proveedor As clsProveedor
+
+
 Public Property Let seleccionar(nvalue As Boolean)
     vSeleccionar = nvalue
 End Property
@@ -265,16 +270,16 @@ Private Sub Buscar()
     Dim filtro As String
     filtro = "1 = 1 "
 
-    If LenB(Me.Text1.text) > 0 Then
-        filtro = filtro & " and razon like '%" & Trim(Me.Text1.text) & "%'"
+    If LenB(Me.Text1.Text) > 0 Then
+        filtro = filtro & " and razon like '%" & Trim(Me.Text1.Text) & "%'"
     End If
 
     If Me.cboRubros.ListIndex > -1 Then
         filtro = filtro & " And  asignacion.id_rubro =  " & Me.cboRubros.ItemData(Me.cboRubros.ListIndex)
     End If
 
-    If LenB(Me.TextFantasia.text) > 0 Then
-        filtro = filtro & " and razon_fantasia like '%" & Trim(Me.TextFantasia.text) & "%'"
+    If LenB(Me.TextFantasia.Text) > 0 Then
+        filtro = filtro & " and razon_fantasia like '%" & Trim(Me.TextFantasia.Text) & "%'"
     End If
 
     If LenB(Me.txtCuit) > 0 Then
@@ -397,7 +402,11 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(6) = .tel
         Values(7) = .Fax
         Values(8) = .direccion
-        Values(9) = .email
+        Values(9) = .Email
+        Values(10) = .CBU
+        Values(11) = .ALIAS
+        Values(12) = .TitularCta
+
     End With
 End Sub
 '

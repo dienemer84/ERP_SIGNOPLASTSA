@@ -36,130 +36,244 @@ Private vBonificacion As Double
 Private vCuentasContables As New Collection
 Private vIibb As String
 Private vRazonFantasia As String
+
+Public vCBU As String
+Public vAlias As String
+Public vTitularCta As String
+
+
+Public Property Let CBU(nvalue As String)
+    vCBU = nvalue
+End Property
+
+Public Property Get CBU() As String
+    CBU = vCBU
+End Property
+
+
+Public Property Let ALIAS(nvalue As String)
+    vAlias = nvalue
+End Property
+
+Public Property Get ALIAS() As String
+    ALIAS = vAlias
+End Property
+
+
+Public Property Let TitularCta(nvalue As String)
+    vTitularCta = nvalue
+End Property
+
+Public Property Get TitularCta() As String
+    TitularCta = vTitularCta
+End Property
+
+
 Public Property Let contactos(nvalue As Collection)
     Set mContactos = nvalue
 End Property
+
+
 Public Property Get contactos() As Collection
     Set contactos = mContactos
 End Property
+
+
 Public Property Let rubros(nvalue As Collection)
     Set vRubros = nvalue
 End Property
+
+
 Public Property Get rubros() As Collection
     Set rubros = vRubros
 End Property
+
+
 Public Property Let IIBB(nvalue As String)
     vIibb = nvalue
 End Property
+
+
 Public Property Get IIBB() As String
     IIBB = vIibb
 End Property
+
+
 Public Property Let razonFantasia(nvalue As String)
     vRazonFantasia = UCase(nvalue)
 End Property
+
+
 Public Property Get razonFantasia() As String
     razonFantasia = UCase(vRazonFantasia)
 End Property
+
+
 Public Property Let cuentasContables(nvalue As Collection)
     Set vCuentasContables = nvalue
 End Property
+
+
 Public Property Get cuentasContables() As Collection
     Set cuentasContables = vCuentasContables
 End Property
+
+
 Public Property Let RazonSocial(nvalue As String)
     vRazonSocial = nvalue
 End Property
+
 Public Property Get RazonSocial() As String
     RazonSocial = vRazonSocial
 End Property
+
+
 Public Property Let Cuit(nvalue As String)
     vCuit = nvalue
 End Property
+
+
 Public Property Get Cuit() As String
     Cuit = vCuit
 End Property
+
+
 Public Property Let bonificacion(nvalue As Double)
     vBonificacion = nvalue
 End Property
+
+
 Public Property Get bonificacion() As Double
     bonifacion = vBonificacion
 End Property
+
+
 Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
+
+
 Public Property Get Id() As Long
     Id = vId
 End Property
+
+
 Public Property Let direccion(nvalue As String)
     vDireccion = nvalue
 End Property
+
+
 Public Property Get direccion() As String
     direccion = vDireccion
 End Property
+
+
 Public Property Let Ciudad(nvalue As String)
     vCiudad = nvalue
 End Property
+
+
 Public Property Get Ciudad() As String
     Ciudad = vCiudad
 End Property
+
+
 Public Property Let cp(nvalue As String)
     vCP = nvalue
 End Property
+
+
 Public Property Get cp() As String
     cp = vCP
 End Property
+
+
 Public Property Let tel(nvalue As String)
     vTel = nvalue
 End Property
+
+
 Public Property Get tel() As String
     tel = vTel
 End Property
+
+
 Public Property Let Fax(nvalue As String)
     vFax = nvalue
 End Property
+
+
 Public Property Get Fax() As String
     Fax = vFax
 End Property
-Public Property Let email(nvalue As String)
+
+
+Public Property Let Email(nvalue As String)
     vEmail = nvalue
 End Property
-Public Property Get email() As String
-    email = vEmail
+
+
+Public Property Get Email() As String
+    Email = vEmail
 End Property
+
+
 Public Property Let contacto(nvalue As String)
     vContacto = nvalue
 End Property
+
+
 Public Property Get contacto() As String
     contacto = vContacto
 End Property
+
+
 Public Property Let FormaPago(nvalue As String)
     vForma_pago = nvalue
 End Property
+
+
 Public Property Get FormaPago() As String
     FormaPago = vForma_pago
 End Property
+
+
 Public Property Let pagocontraEntrega(nvalue As Boolean)
     vPago_contra_entrega = nvalue
 End Property
+
+
 Public Property Get pagocontraEntrega() As Boolean
     pagocontraEntrega = vPago_contra_entrega
 End Property
+
+
 Public Property Let pagoDolares(nvalue As Boolean)
     vPago_dolares = nvalue
 End Property
+
+
 Public Property Get pagoDolares() As Boolean
     pagoDolares = vPago_dolares
 End Property
+
+
 Public Property Let estado(nvalue As EstadoProveedor)
     vEstado = nvalue
 
 End Property
+
+
 Public Property Get estado() As EstadoProveedor
     estado = vEstado
 End Property
+
+
 Public Property Set TipoIVA(nTipoIva As clsTipoIvaProveedor)
     Set mTipoIva = nTipoIva
 End Property
+
+
 Public Property Get TipoIVA() As clsTipoIvaProveedor
     Set TipoIVA = mTipoIva
 End Property

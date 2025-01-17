@@ -46,6 +46,7 @@ End Function
 Public Function Save(T As Remito, Optional Cascade As Boolean = False, Optional NotificarObserver As Boolean = True) As Boolean
     conectar.BeginTransaction
     Save = Guardar(T, Cascade, NotificarObserver)
+    
     If Not Save Then GoTo err1
     conectar.CommitTransaction
     Exit Function
@@ -62,19 +63,7 @@ Public Function Guardar(T As Remito, Optional Cascade As Boolean = False, Option
     Dim Nueva As Boolean
     If T.Id = 0 Then
         Nueva = True
-'                 q = "INSERT INTO remitos (detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
-                 '          & "idUsuario, numero,idUsuarioAprobador) Values (" _
-                 '          & conectar.Escape(T.detalle) & ", " _
-                 '          & conectar.GetEntityId(T.cliente) & ", " _
-                 '          & conectar.Escape(T.FEcha) & ", " _
-                 '          & conectar.Escape(T.estado) & "," _
-                 '          & "0," _
-                 '          & conectar.Escape(T.EstadoFacturado) & ", " _
-                 '          & conectar.GetEntityId(T.contacto) & "," _
-                 '          & conectar.GetEntityId(T.usuarioCreador) & ", " _
-                 '          & conectar.Escape(T.numero) & ", " _
-                 '          & conectar.GetEntityId(T.usuarioAprobador) & ")"
-
+        
         q = "INSERT INTO remitos (observaciones_cabecera, datos_entrega_footer, detalle, idCliente,  fecha,  estado,  estadoFacturado,  impreso,  idContacto," _
           & "idUsuario, numero,idUsuarioAprobador) Values (" _
           & conectar.Escape(T.observaciones) & ", " _
@@ -324,8 +313,8 @@ Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
     Dim cf As Long
     Dim cnf As Long
     Dim ct As Long
-    Dim c As Long
-    c = 0
+    Dim C As Long
+    C = 0
     ct = 0
     cf = 0
     cnf = 0
@@ -336,7 +325,7 @@ Public Function AnalizarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
     If Not IsNull(rto.Detalles) Then
         For Each deta In rto.Detalles
             ct = ct + 1
-            If deta.facturable Then c = c + 1
+            If deta.facturable Then C = C + 1
             If Not deta.facturable Then cnf = cnf + 1
             If deta.Facturado And deta.facturable Then cf = cf + 1
         Next deta
@@ -369,8 +358,8 @@ Public Function InformarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
     Dim cf As Long
     Dim cnf As Long
     Dim ct As Long
-    Dim c As Long
-    c = 0
+    Dim C As Long
+    C = 0
     ct = 0
     cf = 0
     cnf = 0
@@ -381,7 +370,7 @@ Public Function InformarEstadoFacturado(idRto As Long) As EstadoRemitoFacturado
     If Not IsNull(rto.Detalles) Then
         For Each deta In rto.Detalles
             ct = ct + 1
-            If deta.facturable Then c = c + 1
+            If deta.facturable Then C = C + 1
             If Not deta.facturable Then cnf = cnf + 1
             If deta.Facturado And deta.facturable Then cf = cf + 1
         Next deta

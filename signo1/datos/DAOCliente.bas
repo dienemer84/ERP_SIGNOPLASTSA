@@ -35,13 +35,15 @@ Public Function BuscarPorID(Id As Long) As clsCliente
     End If
 
 End Function
+
+
 Public Function crear(Cliente As clsCliente) As Boolean
     Set cn = conectar.obternerConexion
     On Error GoTo err1
     crear = True
     With Cliente
         strsql = "INSERT INTO clientes (cuit_pais, id_impositivo, id_localidad,CP, id_moneda_default, razon,domicilio,telefono,Fax,email,cuit,iva,id_provincia,FP,FP_detalle,valido_remito_factura) VALUES " _
-               & "('" & .CuitPais & "', '" & .IDImpositivo & "'," & .localidad.Id & ", " & .CodigoPostal & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
+               & "('" & .CuitPais & "', '" & .IDImpositivo & "'," & .localidad.Id & ", " & .CodigoPostal & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .Email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
         cn.execute strsql
     End With
     Exit Function
@@ -50,12 +52,13 @@ err1:
 
 End Function
 
+
 Public Function modificar(Cliente As clsCliente) As Boolean
     Set cn = conectar.obternerConexion
     On Error GoTo err11
     modificar = True
     With Cliente
-        strsql = "UPDATE clientes SET  cuit_pais=" & .CuitPais & ", id_impositivo=" & .IDImpositivo & ", id_localidad=" & .localidad.Id & ", CP=" & .CodigoPostal & ",id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .Id
+        strsql = "UPDATE clientes SET  cuit_pais=" & .CuitPais & ", id_impositivo=" & .IDImpositivo & ", id_localidad=" & .localidad.Id & ", CP=" & .CodigoPostal & ",id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .Email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .Id
         cn.execute strsql
     End With
     Exit Function
@@ -70,43 +73,43 @@ Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, _
                     Optional ByRef tablaLocalidad As String = vbNullString, _
                     Optional ByRef tablaPais As String = vbNullString, _
                     Optional ByRef tablaProvincia As String = vbNullString) As clsCliente
-    Dim c As clsCliente
+    Dim C As clsCliente
     Dim Id As Variant
 
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
 
     If Id > 0 Then
-        Set c = New clsCliente
-        c.Id = Id
-        c.razon = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_RAZON_SOCIAL)
-        c.Domicilio = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_DOMICILIO)
-        c.exLocalidad = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_LOCALIDAD)
-        c.CodigoPostal = GetValue(rs, fieldsIndex, tableNameOrAlias, "CP")
-        c.telefono = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_TELEFONO)
-        c.Fax = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_FAX)
-        c.TipoDocumento = GetValue(rs, fieldsIndex, tableNameOrAlias, "tipo_doc")
+        Set C = New clsCliente
+        C.Id = Id
+        C.razon = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_RAZON_SOCIAL)
+        C.Domicilio = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_DOMICILIO)
+        C.exLocalidad = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_LOCALIDAD)
+        C.CodigoPostal = GetValue(rs, fieldsIndex, tableNameOrAlias, "CP")
+        C.telefono = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_TELEFONO)
+        C.Fax = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_FAX)
+        C.TipoDocumento = GetValue(rs, fieldsIndex, tableNameOrAlias, "tipo_doc")
 
-        c.email = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_EMAIL)
-        c.Cuit = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CUIT)
-        If LenB(ivaTableNameOrAlias) > 0 Then Set c.TipoIVA = DAOTipoIva.Map(rs, fieldsIndex, ivaTableNameOrAlias)
+        C.Email = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_EMAIL)
+        C.Cuit = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CUIT)
+        If LenB(ivaTableNameOrAlias) > 0 Then Set C.TipoIVA = DAOTipoIva.Map(rs, fieldsIndex, ivaTableNameOrAlias)
 
-        If LenB(tablaProvincia) > 0 Then Set c.provincia = DAOProvincias.Map(rs, fieldsIndex, tablaProvincia, tablaPais)
-        If LenB(tablaLocalidad) > 0 Then Set c.localidad = DAOLocalidades.Map(rs, fieldsIndex, tablaLocalidad, tablaProvincia, tablaPais)
+        If LenB(tablaProvincia) > 0 Then Set C.provincia = DAOProvincias.Map(rs, fieldsIndex, tablaProvincia, tablaPais)
+        If LenB(tablaLocalidad) > 0 Then Set C.localidad = DAOLocalidades.Map(rs, fieldsIndex, tablaLocalidad, tablaProvincia, tablaPais)
 
-        c.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ESTADO)
-        c.PasswordSistema = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PASSWORD_SISTEMA)
-        c.FP = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_FP)
-        c.FormaPago = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_FORMA_PAGO)
-        c.TipoIvaID = GetValue(rs, fieldsIndex, tableNameOrAlias, "iva")
-        c.ValidoRemitoFactura = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_VALIDO_REMITO_FACTURA)
-        c.idMonedaDefault = GetValue(rs, fieldsIndex, tableNameOrAlias, "id_moneda_default")
+        C.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ESTADO)
+        C.PasswordSistema = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PASSWORD_SISTEMA)
+        C.FP = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_FP)
+        C.FormaPago = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_FORMA_PAGO)
+        C.TipoIvaID = GetValue(rs, fieldsIndex, tableNameOrAlias, "iva")
+        C.ValidoRemitoFactura = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_VALIDO_REMITO_FACTURA)
+        C.idMonedaDefault = GetValue(rs, fieldsIndex, tableNameOrAlias, "id_moneda_default")
         
-        c.CuitPais = GetValue(rs, fieldsIndex, tableNameOrAlias, "cuit_pais")
-        c.IDImpositivo = GetValue(rs, fieldsIndex, tableNameOrAlias, "id_impositivo")
+        C.CuitPais = GetValue(rs, fieldsIndex, tableNameOrAlias, "cuit_pais")
+        C.IDImpositivo = GetValue(rs, fieldsIndex, tableNameOrAlias, "id_impositivo")
     End If
 
-    Set Map = c
+    Set Map = C
 End Function
 
 

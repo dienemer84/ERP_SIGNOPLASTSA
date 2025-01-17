@@ -103,7 +103,7 @@ Begin VB.Form frmSistemaAgendaGlobal
       Height          =   255
       Left            =   120
       TabIndex        =   4
-      Top             =   4320
+      Top             =   4335
       Width           =   975
    End
    Begin VB.Menu m3 
@@ -139,15 +139,18 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim base As New classSignoplast
-Dim c As New classPlaneamiento
+Dim C As New classPlaneamiento
+
 
 Private Sub Command1_Click()
     Me.LlenarListaAgenda Trim(Me.txtFiltro)
 End Sub
 
+
 Private Sub Command2_Click()
     Unload Me
 End Sub
+
 
 Private Sub Form_Load()
     FormHelper.Customize Me
@@ -155,20 +158,20 @@ Private Sub Form_Load()
 
     ''Me.caption = caption & " (" & Name & ")"
 
-
 End Sub
+
 
 Private Sub lstAgenda_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
     funciones.LstOrdenar Me.lstAgenda, CInt(ColumnHeader.Index)
+    
 End Sub
+
 
 Private Sub lstAgenda_DblClick()
     If Me.lstAgenda.ListItems.count > 0 Then
         idcon = CLng(Me.lstAgenda.selectedItem)
         frmSistemaAgendaVerContacto.idContacto = idcon
         frmSistemaAgendaVerContacto.Show
-
-
     End If
 
 End Sub
@@ -179,17 +182,12 @@ Private Sub txtFiltro_GotFocus()
 End Sub
 
 
-
 Public Function LlenarListaAgenda(Optional filtro As String = Empty)
     Dim rs As New Recordset
     Me.lstAgenda.ListItems.Clear
     strsql = Empty
 
     strsql = "select * from agenda"
-
-
-
-
 
     If Len(Trim(filtro)) > 0 Then
         'strsql = strsql & " where empresa like '%" & filtro & "%'"
@@ -200,15 +198,13 @@ Public Function LlenarListaAgenda(Optional filtro As String = Empty)
 
     While Not rs.EOF
         Set x = Me.lstAgenda.ListItems.Add(, , Format(rs!Id, "0000"))
-        x.SubItems(1) = rs!empresa
-        x.SubItems(2) = rs!direccion
-        x.SubItems(3) = rs!localidad
-        x.SubItems(4) = rs!email
+'        x.SubItems(1) = rs!Empresa
+'        x.SubItems(2) = rs!direccion
+'        x.SubItems(3) = rs!localidad
+'        x.SubItems(4) = rs!Email
 
         x.Tag = rs!Id
         rs.MoveNext
     Wend
 
-
 End Function
-

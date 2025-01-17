@@ -9,7 +9,6 @@ Begin VB.Form frmAdminIVA
    ClientTop       =   690
    ClientWidth     =   5220
    ClipControls    =   0   'False
-   ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True

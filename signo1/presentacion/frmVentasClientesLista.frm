@@ -247,7 +247,7 @@ End Sub
 
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        Set rectemp = clientes(grilla.rowIndex(Me.grilla.row))
+        Set rectemp = clientes(grilla.RowIndex(Me.grilla.row))
         Me.numero.caption = "Nro." & Format(rectemp.Id, "0000")
         If rectemp.estado = 0 Then
             Me.CambiarEstado.caption = "Activar..."
@@ -259,13 +259,13 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 
 Private Sub grilla_SelectionChange()
-    rows = grilla.rowIndex(grilla.row)
+    rows = grilla.RowIndex(grilla.row)
 
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set rectemp = clientes.item(rowIndex)
+    Set rectemp = clientes.item(RowIndex)
     With rectemp
         Values(1) = Format(.Id, "0000")
         Values(2) = .Cuit
@@ -277,7 +277,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(8) = .provincia.pais.nombre
         Values(9) = .telefono
         Values(10) = .Fax
-        Values(11) = .email
+        Values(11) = .Email
 
         If .TipoIVA Is Nothing Then
             Values(12) = Empty
@@ -318,7 +318,7 @@ End Function
 
 Private Sub masContacto_Click()
     If grilla.rowcount > 0 Then
-        Set rectemp = clientes(grilla.rowIndex(grilla.row))
+        Set rectemp = clientes(grilla.RowIndex(grilla.row))
         frmVentasClientesNuevoContacto.Cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
@@ -327,7 +327,7 @@ End Sub
 
 Private Sub masContactos_Click()
     If grilla.rowcount > 0 Then
-        Set rectemp = clientes(grilla.rowIndex(grilla.row))
+        Set rectemp = clientes(grilla.RowIndex(grilla.row))
         frmVentasClientesNuevoContacto.Cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
@@ -352,17 +352,17 @@ Public Sub llenar_Grilla()
 
     filter = "{cliente}.{estado} = " & est
 
-    If LenB(Trim(Me.txtFiltro.text)) > 0 Then
+    If LenB(Trim(Me.txtFiltro.Text)) > 0 Then
         filter = filter & " AND {cliente}.{razon} LIKE '%{value}%'"
         filter = Replace$(filter, "{razon}", DAOCliente.CAMPO_RAZON_SOCIAL)
-        filter = Replace$(filter, "{value}", Me.txtFiltro.text)
+        filter = Replace$(filter, "{value}", Me.txtFiltro.Text)
     End If
 
     ' AGREGO ESTE FILTRO PARA CUIT
-    If LenB(Me.txtFiltroCUIT.text) > 0 Then
+    If LenB(Me.txtFiltroCUIT.Text) > 0 Then
         filter = filter & " AND {cliente}.{cuit} LIKE '%{value}%'"
         filter = Replace$(filter, "{cuit}", DAOCliente.CAMPO_CUIT)
-        filter = Replace$(filter, "{value}", Me.txtFiltroCUIT.text)
+        filter = Replace$(filter, "{value}", Me.txtFiltroCUIT.Text)
     End If
 
 
@@ -377,7 +377,7 @@ End Sub
 
 Private Sub verDeta()
     If grilla.rowcount Then
-        Set rectemp = clientes(grilla.rowIndex(grilla.row))
+        Set rectemp = clientes(grilla.RowIndex(grilla.row))
         frmVentasClienteNuevo.Cliente = rectemp
         frmVentasClienteNuevo.Show
     End If

@@ -5,7 +5,7 @@ Begin VB.Form frmComprasProveedoresModifica
    BackColor       =   &H00FF8080&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Modificar proveedor"
-   ClientHeight    =   9150
+   ClientHeight    =   10635
    ClientLeft      =   210
    ClientTop       =   195
    ClientWidth     =   8595
@@ -15,9 +15,101 @@ Begin VB.Form frmComprasProveedoresModifica
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   9150
+   ScaleHeight     =   10635
    ScaleWidth      =   8595
    ShowInTaskbar   =   0   'False
+   Begin XtremeSuiteControls.GroupBox GroupBox 
+      Height          =   1455
+      Left            =   120
+      TabIndex        =   43
+      Top             =   5640
+      Width           =   8055
+      _Version        =   786432
+      _ExtentX        =   14208
+      _ExtentY        =   2566
+      _StockProps     =   79
+      Caption         =   "Datos Bancarios"
+      UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtCBU 
+         Height          =   285
+         Left            =   1560
+         TabIndex        =   46
+         Top             =   240
+         Width           =   6375
+      End
+      Begin VB.TextBox txtTitularCta 
+         Height          =   285
+         Left            =   1560
+         TabIndex        =   45
+         Top             =   960
+         Width           =   6375
+      End
+      Begin VB.TextBox txtAlias 
+         Height          =   285
+         Left            =   1560
+         TabIndex        =   44
+         Top             =   600
+         Width           =   6375
+      End
+      Begin VB.Label LabelTitular 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00FF8080&
+         Caption         =   "Titular"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   120
+         TabIndex        =   49
+         Top             =   975
+         Width           =   1335
+      End
+      Begin VB.Label ALIAS 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00FF8080&
+         Caption         =   "Alias"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   48
+         Top             =   615
+         Width           =   1215
+      End
+      Begin VB.Label Label1 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00FF8080&
+         Caption         =   "CBU"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Index           =   1
+         Left            =   480
+         TabIndex        =   47
+         Top             =   255
+         Width           =   975
+      End
+   End
    Begin XtremeSuiteControls.PushButton btnVerificarCUIT 
       Height          =   375
       Left            =   6240
@@ -47,17 +139,17 @@ Begin VB.Form frmComprasProveedoresModifica
    Begin VB.ComboBox cboEstadoProveedor 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   1680
+      Left            =   1800
       Style           =   2  'Dropdown List
       TabIndex        =   14
-      Top             =   5760
+      Top             =   7320
       Width           =   2775
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1830
-      Left            =   480
+      Left            =   600
       TabIndex        =   35
-      Top             =   6600
+      Top             =   8160
       Width           =   7935
       _Version        =   786432
       _ExtentX        =   13996
@@ -160,18 +252,18 @@ Begin VB.Form frmComprasProveedoresModifica
       BackColor       =   &H00FF8080&
       Caption         =   "Dólares"
       Height          =   300
-      Left            =   5085
+      Left            =   5205
       TabIndex        =   15
-      Top             =   5790
+      Top             =   7350
       Width           =   1095
    End
    Begin VB.CheckBox Check1 
       BackColor       =   &H00FF8080&
       Caption         =   "Pago contra entrega"
       Height          =   300
-      Left            =   6405
+      Left            =   6525
       TabIndex        =   16
-      Top             =   5790
+      Top             =   7350
       Width           =   1935
    End
    Begin VB.TextBox Text1 
@@ -308,9 +400,9 @@ Begin VB.Form frmComprasProveedoresModifica
    End
    Begin XtremeSuiteControls.PushButton cmdPlanCuentas 
       Height          =   375
-      Left            =   495
+      Left            =   615
       TabIndex        =   37
-      Top             =   8550
+      Top             =   10110
       Width           =   2055
       _Version        =   786432
       _ExtentX        =   3625
@@ -322,9 +414,9 @@ Begin VB.Form frmComprasProveedoresModifica
    Begin XtremeSuiteControls.PushButton btnCrearNew 
       Height          =   375
       Index           =   0
-      Left            =   7080
+      Left            =   7200
       TabIndex        =   38
-      Top             =   8520
+      Top             =   10080
       Width           =   1335
       _Version        =   786432
       _ExtentX        =   2355
@@ -335,9 +427,9 @@ Begin VB.Form frmComprasProveedoresModifica
    End
    Begin XtremeSuiteControls.ComboBox cboMonedas 
       Height          =   315
-      Left            =   1680
+      Left            =   1800
       TabIndex        =   39
-      Top             =   6150
+      Top             =   7710
       Width           =   2760
       _Version        =   786432
       _ExtentX        =   4868
@@ -385,9 +477,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   765
+      Left            =   885
       TabIndex        =   40
-      Top             =   6180
+      Top             =   7740
       Width           =   855
    End
    Begin VB.Label Label9 
@@ -405,9 +497,9 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   975
+      Left            =   1095
       TabIndex        =   36
-      Top             =   5850
+      Top             =   7410
       Width           =   600
    End
    Begin VB.Label Label1 
@@ -425,6 +517,7 @@ Begin VB.Form frmComprasProveedoresModifica
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
+      Index           =   0
       Left            =   480
       TabIndex        =   34
       Top             =   1725
@@ -783,6 +876,8 @@ Private Sub Buscar()
         End If
     Next x
 End Sub
+
+
 Private Function accion() As Boolean
     On Error GoTo err123
     accion = True
@@ -798,10 +893,16 @@ Private Function accion() As Boolean
     proveedor_.cp = Me.Text1(3)
     proveedor_.tel = Me.Text1(4)
     proveedor_.Fax = Me.Text1(5)
-    proveedor_.email = Me.Text1(6)
+    proveedor_.Email = Me.Text1(6)
     proveedor_.contacto = Me.Text1(7)
     proveedor_.FormaPago = Me.Text1(8)
     proveedor_.bonificacion = CDbl(Me.Text1(9))
+    
+    proveedor_.CBU = Me.txtCBU.Text
+    proveedor_.ALIAS = Me.txtAlias.Text
+    proveedor_.TitularCta = Me.txtTitularCta.Text
+    
+    
     proveedor_.estado = Me.cboEstadoProveedor.ListIndex
     If Not IsNumeric(Me.Text1(1)) Then
         proveedor_.IIBB = 0
@@ -813,7 +914,7 @@ Private Function accion() As Boolean
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
     proveedor_.Cuit = Me.Text1(10)
     Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
-    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIva.ItemData(Me.cboIva.ListIndex)))
+    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIVA.ItemData(Me.cboIVA.ListIndex)))
 
     'busco rubros
 
@@ -854,7 +955,7 @@ Private Sub mostrarCampos()
     Text1(3) = proveedor_.cp
     Text1(4) = proveedor_.tel
     Text1(5) = proveedor_.Fax
-    Text1(6) = proveedor_.email
+    Text1(6) = proveedor_.Email
     Text1(7) = proveedor_.contacto
     Text1(8) = proveedor_.FormaPago
     Text1(9) = proveedor_.bonificacion
@@ -862,8 +963,13 @@ Private Sub mostrarCampos()
     Text1(11) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
     cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.Id, cboMonedas)
-    cboIva.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIva)
+    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIVA)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
+    
+    Me.txtCBU.Text = proveedor_.CBU
+    Me.txtAlias.Text = proveedor_.ALIAS
+    Me.txtTitularCta.Text = proveedor_.TitularCta
+    
 End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
@@ -961,7 +1067,7 @@ Private Sub Text1_GotFocus(Index As Integer)
     foco Me.Text1(Index)
 End Sub
 Public Sub llenarIva()
-    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIva
+    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIVA
 End Sub
 
 Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)

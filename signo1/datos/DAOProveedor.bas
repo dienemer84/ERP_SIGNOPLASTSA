@@ -1,9 +1,13 @@
 Attribute VB_Name = "DAOProveedor"
 Option Explicit
 Dim Proveedor As clsProveedor
+
+
 Public Function FindAllProveedoresWithFacturasImpagas() As Collection    'of proveedor
     Set FindAllProveedoresWithFacturasImpagas = FindAll("proveedores.id IN (SELECT DISTINCT id_proveedor from AdminComprasFacturasProveedores WHERE estado = " & EstadoFacturaProveedor.pagoParcial & " or estado = " & EstadoFacturaProveedor.Aprobada & ")")
 End Function
+
+
 Public Function Map2(ByRef rs As Recordset, Index As Dictionary, ByRef tableNameOrAlias As String, _
                      Optional ByRef AdminConfigIVAProveedor As String = vbNullString, _
                      Optional ByRef AdminConfigFacturasProveedor As String = vbNullString) As clsProveedor
@@ -19,8 +23,8 @@ Public Function Map2(ByRef rs As Recordset, Index As Dictionary, ByRef tableName
         P.contacto = GetValue(rs, Index, tableNameOrAlias, "contacto")
         P.cp = GetValue(rs, Index, tableNameOrAlias, "cp")
         P.direccion = GetValue(rs, Index, tableNameOrAlias, "direccion")
-        P.email = GetValue(rs, Index, tableNameOrAlias, "email")
-        P.Estado = GetValue(rs, Index, tableNameOrAlias, "estado")
+        P.Email = GetValue(rs, Index, tableNameOrAlias, "email")
+        P.estado = GetValue(rs, Index, tableNameOrAlias, "estado")
         P.Fax = GetValue(rs, Index, tableNameOrAlias, "fax")
         P.FormaPago = GetValue(rs, Index, tableNameOrAlias, "FP")
         P.Cuit = GetValue(rs, Index, tableNameOrAlias, "cuit")
@@ -30,6 +34,10 @@ Public Function Map2(ByRef rs As Recordset, Index As Dictionary, ByRef tableName
         P.RazonSocial = GetValue(rs, Index, tableNameOrAlias, "razon")
         P.tel = GetValue(rs, Index, tableNameOrAlias, "tel")
 
+        P.CBU = GetValue(rs, Index, tableNameOrAlias, "cbu")
+        P.ALIAS = GetValue(rs, Index, tableNameOrAlias, "alias")
+        P.TitularCta = GetValue(rs, Index, tableNameOrAlias, "titularcta")
+        
         '    Set P.Moneda = DAOMoneda.GetById(GetValue(rs, Index, tableNameOrAlias, "id_moneda"))
 
         Set P.moneda = DAOMoneda.Map(rs, Index, "AdminConfigMonedas")
@@ -79,11 +87,11 @@ If WithCuentasContables Then
     End If
     If WithAlicuotas Then
         alicuotas = "AdminConfigIvaAlicuotas"
-        q = q & " LEFT JOIN sp.AdminConfigIvaAlicuotas        ON (AdminConfigIvaAlicuotas.id_config_factura = AdminConfigFacturasProveedor.id) "
+        q = q & " LEFT JOIN sp.AdminConfigIvaAlicuotas ON (AdminConfigIvaAlicuotas.id_config_factura = AdminConfigFacturasProveedor.id) "
     End If
 
     'moneda
-    q = q & " LEFT JOIN sp.AdminConfigMonedas        ON (proveedores.id_moneda= AdminConfigMonedas.id) "
+    q = q & " LEFT JOIN sp.AdminConfigMonedas ON (proveedores.id_moneda= AdminConfigMonedas.id) "
 
 
     q = q & " WHERE 1=1"
@@ -226,13 +234,13 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
     Dim n As Boolean
     If Proveedor.Id = 0 Then
         n = True
-        strsql = "insert into proveedores (id_moneda,razon,direccion,ciudad,cp,tel,fax,email,contacto,FP,PCE,dolar,bonificacion,id_iva,razon_fantasia,iibb,cuit,estado) VALUES "
+        strsql = "insert into proveedores (id_moneda,razon,direccion,ciudad,cp,tel,fax,email,contacto,FP,PCE,dolar,bonificacion,id_iva,razon_fantasia,iibb,cuit,estado,cbu,alias,titularcta) VALUES "
         If Not IsSomething(Proveedor.moneda) Then
 
             Set Proveedor.moneda = DAOMoneda.GetById(0)
         End If
 
-        strsql = strsql & " ( " & Proveedor.moneda.Id & "," & conectar.Escape(Proveedor.RazonSocial) & "," & conectar.Escape(Proveedor.direccion) & "," & conectar.Escape(Proveedor.Ciudad) & "," & conectar.Escape(Proveedor.cp) & "," & conectar.Escape(Proveedor.tel) & "," & conectar.Escape(Proveedor.Fax) & "," & conectar.Escape(Proveedor.email) & "," & conectar.Escape(Proveedor.contacto) & "," & conectar.Escape(Proveedor.FormaPago) & "," & conectar.Escape(Proveedor.pagocontraEntrega) & "," & conectar.Escape(Proveedor.pagoDolares) & "," & conectar.Escape(Proveedor.bonificacion) & "," & conectar.Escape(Proveedor.TipoIVA.Id) & "," & conectar.Escape(Proveedor.razonFantasia) & "," & conectar.Escape(Proveedor.IIBB) & "," & conectar.Escape(Proveedor.Cuit) & "," & conectar.Escape(Proveedor.Estado) & ")"
+        strsql = strsql & " ( " & Proveedor.moneda.Id & "," & conectar.Escape(Proveedor.RazonSocial) & "," & conectar.Escape(Proveedor.direccion) & "," & conectar.Escape(Proveedor.Ciudad) & "," & conectar.Escape(Proveedor.cp) & "," & conectar.Escape(Proveedor.tel) & "," & conectar.Escape(Proveedor.Fax) & "," & conectar.Escape(Proveedor.Email) & "," & conectar.Escape(Proveedor.contacto) & "," & conectar.Escape(Proveedor.FormaPago) & "," & conectar.Escape(Proveedor.pagocontraEntrega) & "," & conectar.Escape(Proveedor.pagoDolares) & "," & conectar.Escape(Proveedor.bonificacion) & "," & conectar.Escape(Proveedor.TipoIVA.Id) & "," & conectar.Escape(Proveedor.razonFantasia) & "," & conectar.Escape(Proveedor.IIBB) & "," & conectar.Escape(Proveedor.Cuit) & "," & conectar.Escape(Proveedor.estado) & "," & conectar.Escape(Proveedor.CBU) & "," & conectar.Escape(Proveedor.ALIAS) & "," & conectar.Escape(Proveedor.TitularCta) & ")"
         If Not conectar.execute(strsql) Then GoTo E
 
         Set rs = conectar.RSFactory("select last_insert_id() as idd from proveedores")
@@ -249,7 +257,31 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
         Proveedor.Id = ultid
     Else
         n = False
-        strsql = "update proveedores set id_moneda=" & Proveedor.moneda.Id & " ,  id_iva=" & conectar.Escape(Proveedor.TipoIVA.Id) & ", cuit=" & conectar.Escape(Proveedor.Cuit) & ", razon=" & conectar.Escape(Proveedor.RazonSocial) & ", direccion=" & conectar.Escape(Proveedor.direccion) & ", ciudad = " & conectar.Escape(Proveedor.Ciudad) & ", cp=" & conectar.Escape(Proveedor.cp) & ", tel= " & conectar.Escape(Proveedor.tel) & ", fax=" & conectar.Escape(Proveedor.Fax) & ", contacto=" & conectar.Escape(Proveedor.contacto) & ",FP=" & conectar.Escape(Proveedor.FormaPago) & ", PCE=" & conectar.Escape(Proveedor.pagocontraEntrega) & ", dolar=" & conectar.Escape(Proveedor.pagoDolares) & ", bonificacion=" & conectar.Escape(Proveedor.bonificacion) & ",razon_fantasia=" & conectar.Escape(Proveedor.razonFantasia) & ",iibb=" & conectar.Escape(Proveedor.IIBB) & ",estado=" & conectar.Escape(Proveedor.Estado) & ",email=" & conectar.Escape(Proveedor.email) & "  where id =" & conectar.Escape(Proveedor.Id)
+        strsql = "update proveedores set " & _
+         "id_moneda = " & Proveedor.moneda.Id & ", " & _
+         "id_iva = " & conectar.Escape(Proveedor.TipoIVA.Id) & ", " & _
+         "cuit = " & conectar.Escape(Proveedor.Cuit) & ", " & _
+         "razon = " & conectar.Escape(Proveedor.RazonSocial) & ", " & _
+         "direccion = " & conectar.Escape(Proveedor.direccion) & ", " & _
+         "ciudad = " & conectar.Escape(Proveedor.Ciudad) & ", " & _
+         "cp = " & conectar.Escape(Proveedor.cp) & ", " & _
+         "tel = " & conectar.Escape(Proveedor.tel) & ", " & _
+         "fax = " & conectar.Escape(Proveedor.Fax) & ", " & _
+         "contacto = " & conectar.Escape(Proveedor.contacto) & ", " & _
+         "FP = " & conectar.Escape(Proveedor.FormaPago) & ", " & _
+         "PCE = " & conectar.Escape(Proveedor.pagocontraEntrega) & ", " & _
+         "dolar = " & conectar.Escape(Proveedor.pagoDolares) & ", " & _
+         "bonificacion = " & conectar.Escape(Proveedor.bonificacion) & ", " & _
+         "razon_fantasia = " & conectar.Escape(Proveedor.razonFantasia) & ", " & _
+         "iibb = " & conectar.Escape(Proveedor.IIBB) & ", " & _
+         "estado = " & conectar.Escape(Proveedor.estado) & ", " & _
+         "email = " & conectar.Escape(Proveedor.Email) & ", " & _
+         "cbu = " & conectar.Escape(Proveedor.CBU) & ", " & _
+         "alias = " & conectar.Escape(Proveedor.ALIAS) & ", " & _
+         "titularcta = " & conectar.Escape(Proveedor.TitularCta) & " " & _
+         "where id = " & conectar.Escape(Proveedor.Id)
+        
+                
         If Not conectar.execute(strsql) Then GoTo E
         If Not conectar.execute("delete from asignacion where id_proveedor=" & Proveedor.Id) Then GoTo E
         'cargo todos los rubros nuevos
@@ -284,9 +316,9 @@ End Function
 Public Function CambiarEstado(Proveedor As clsProveedor) As Boolean
     On Error GoTo err1
     CambiarEstado = True
-    If Proveedor.Estado = 1 Then
+    If Proveedor.estado = 1 Then
         conectar.execute "update proveedores set estado=0 where id=" & Proveedor.Id
-    ElseIf Proveedor.Estado = 0 Then
+    ElseIf Proveedor.estado = 0 Then
         conectar.execute "update proveedores set estado=1 where id=" & Proveedor.Id
     End If
     Exit Function

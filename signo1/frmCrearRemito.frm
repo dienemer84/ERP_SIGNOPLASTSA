@@ -247,7 +247,7 @@ Attribute VB_Exposed = False
 Dim claseP As New classPlaneamiento
 Dim claseS As New classStock
 Dim Remito As Remito
-Dim cliente As clsCliente
+Dim Cliente As clsCliente
 Private Sub cboClientes_Click()
     Me.cboContactos.Clear
     llenarContactos
@@ -259,12 +259,14 @@ Private Sub Check1_Click()
         Me.cboContactos.Enabled = False
     End If
 End Sub
+
+
 Private Sub Command1_Click()
     If DAORemitoS.FindByNumero(CLng(Me.txtRtoNro)) Is Nothing Then
         If MsgBox("¿Desea crear el Remito Nro. " & Format(CLng(Me.txtRtoNro), "0000") & "?", vbYesNo, "Confirmación") = vbYes Then
 
             Set Remito = New Remito
-            Set Remito.cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(cboClientes.ListIndex))
+            Set Remito.Cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(cboClientes.ListIndex))
             Remito.detalle = UCase(Me.txtDetalles)
             Remito.FEcha = Now
             Remito.estado = RemitoPendiente
@@ -276,7 +278,7 @@ Private Sub Command1_Click()
 
 
 
-            If Not Remito.cliente.CUITValido Or Not Remito.cliente.ValidoRemitoFactura Then
+            If Not Remito.Cliente.CUITValido Or Not Remito.Cliente.ValidoRemitoFactura Then
                 MsgBox "El cliente no es válido para generar un remito!", vbCritical, "Error"
                 Exit Sub
             End If
@@ -325,11 +327,11 @@ Private Sub llenarContactos()
     Dim contacto As clsContacto
 
     idcli = CInt(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
-    Dim c As New Collection
-    Set c = DAOContacto.FindAll(cliente_, "nombre like '%" & Me.Text1 & "%' and idCliente=" & idcli)
+    Dim C As New Collection
+    Set C = DAOContacto.FindAll(cliente_, "nombre like '%" & Me.Text1 & "%' and idCliente=" & idcli)
     cboContactos.Clear
 
-    For Each contacto In c
+    For Each contacto In C
         If IsSomething(contacto) Then
             Me.cboContactos.AddItem contacto.nombre
             Me.cboContactos.ItemData(Me.cboContactos.NewIndex) = contacto.Id

@@ -107,7 +107,7 @@ Private contMinutosInformesAccidente As Long
 Dim statusBar As XtremeCommandBars.statusBar
 
 Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarControl)
-    Select Case Control.id
+    Select Case Control.Id
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO:
         Dim f32423 As New frmAltaEmpleados
         f32423.Show
@@ -523,7 +523,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frmComprasProveedoresLista.Show
 
 
-    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER: frmSistemaAgendaGlobal.Show
+    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER: frmAgendaNueva.Show
     Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO: frmSistemaTablero.Show
     Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA:
         frmCambiarPassword.Frame1 = "[ " & funciones.GetUserObj.usuario & " ]"
@@ -626,7 +626,7 @@ Private Sub MDIForm_Load()
 
             frmPrincipal.Show
 
-            Me.TrayIcon.text = "Signo Plast Event Handler"
+            Me.TrayIcon.Text = "Signo Plast Event Handler"
 
             Set Me.TrayIcon.Icon = pic
 
@@ -677,11 +677,11 @@ Private Sub MDIForm_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Popup_ItemClick(ByVal item As Xtremesuitecontrols.IPopupControlItem)
-    If item.id = 666 Then
+    If item.Id = 666 Then
         Me.Popup.Close
     Else
         If MsgBox("Se va a aplicar una actualización." & vbNewLine & "Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
-            classP.actualizarSistema CLng(item.id)
+            classP.actualizarSistema CLng(item.Id)
         End If
     End If
 End Sub
@@ -701,7 +701,7 @@ Private Sub PrepararPopUp()
 
 
     Set item = Popup.AddItem(135, 10, 170, 45, "Cerrar")
-    item.id = 666
+    item.Id = 666
 
     Set item = Popup.AddItem(10, 35, 160, 80, vbNullString)
     item.caption = "Actualización para el sistema."
@@ -722,30 +722,30 @@ Private Sub Timer2_Timer()
     Dim idNuevo As Long
     If Not funciones.InIDE Then
         If classP.VerificarSiHayActualizacion(idNuevo) Then
-            statusBar(5).text = "** ACTUALIZACION DISPONIBLE **"
+            statusBar(5).Text = "** ACTUALIZACION DISPONIBLE **"
             If Permisos.SistemaVerUpdate Then
-                Me.Popup.item(2).id = idNuevo
+                Me.Popup.item(2).Id = idNuevo
                 If Me.Popup.State = xtpPopupStateClosed Then
                     Me.Popup.Show
                 End If
             End If
         Else
-            statusBar(5).text = vbNullString
+            statusBar(5).Text = vbNullString
         End If
     End If
 End Sub
 
-Private Function AddButton(ribbonGroup As ribbonGroup, caption As String, id As Long, Optional enabledCondition As Boolean = True, Optional iconId As Long = -1, Optional controlType As XTPControlType = xtpControlButton, Optional cmdBarCtrlParent As CommandBarControl = Nothing) As CommandBarControl
+Private Function AddButton(ribbonGroup As ribbonGroup, caption As String, Id As Long, Optional enabledCondition As Boolean = True, Optional iconId As Long = -1, Optional controlType As XTPControlType = xtpControlButton, Optional cmdBarCtrlParent As CommandBarControl = Nothing) As CommandBarControl
     Dim cmdControl As CommandBarControl
 
     If IsSomething(cmdBarCtrlParent) Then
-        Set cmdControl = cmdBarCtrlParent.CommandBar.Controls.Add(controlType, id, caption)
+        Set cmdControl = cmdBarCtrlParent.CommandBar.Controls.Add(controlType, Id, caption)
     Else
-        Set cmdControl = ribbonGroup.Add(controlType, id, caption)
+        Set cmdControl = ribbonGroup.Add(controlType, Id, caption)
     End If
 
     If iconId = -1 Then
-        cmdControl.iconId = cmdControl.id
+        cmdControl.iconId = cmdControl.Id
     Else
         cmdControl.iconId = iconId
     End If
@@ -763,29 +763,29 @@ Private Sub CreateRibbonBar()
     statusBar.RibbonDividerIndex = 3    'para que me pinte todos azules
 
     Set statusbarpane = statusBar.AddPane(1)
-    statusbarpane.text = " Usuario: " & GetUserObj.usuario
+    statusbarpane.Text = " Usuario: " & GetUserObj.usuario
     statusbarpane.Style = SBPS_NOBORDERS
     statusbarpane.BeginGroup = True
 
     Set statusbarpane = statusBar.AddPane(2)    'vacio para que no se cague
-    statusbarpane.text = vbNullString
+    statusbarpane.Text = vbNullString
     statusbarpane.Width = 0
 
     Set statusbarpane = statusBar.AddPane(3)
-    statusbarpane.text = "Servidor: " & Me.servidorActual & " "
+    statusbarpane.Text = "Servidor: " & Me.servidorActual & " "
     'statusbarpane.BeginGroup = True
 
     Set statusbarpane = statusBar.AddPane(4)
-    statusbarpane.text = "Versión: " & funciones.Version & " "
+    statusbarpane.Text = "Versión: " & funciones.Version & " "
     'statusbarpane.BeginGroup = True
 
     Set statusbarpane = statusBar.AddPane(5)
-    statusbarpane.text = vbNullString
+    statusbarpane.Text = vbNullString
     'statusbarpane.BeginGroup = True
 
 
     Set statusbarpane = statusBar.AddPane(6)    'vacio para que no se cague
-    statusbarpane.text = vbNullString
+    statusbarpane.Text = vbNullString
     statusbarpane.Width = 0
 
 '    Dim cmdControl As CommandBarControl
@@ -805,7 +805,7 @@ Private Sub CreateRibbonBar()
     'PANEL DE CONTROL--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(0, "Panel de Control")
-    ribbonTab.id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
+    ribbonTab.Id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
     'Set ribbonGroup = ribbonTab.Groups.AddGroup("Usuarios y Empleados", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS)
     'AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
 
@@ -837,7 +837,7 @@ Private Sub CreateRibbonBar()
     'RECURSOS HUMANOS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(1, "Recursos Humanos")
-    ribbonTab.id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
+    ribbonTab.Id = ID_TAB.ID_TAB_PANEL_DE_CONTROL
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Usuarios y Empleados", ID_GROUP.ID_GROUP_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS)
     AddButton ribbonGroup, "Nuevo empleado", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO, Permisos.sistemaPanelControlGeneral
     AddButton ribbonGroup, "Empleados", ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__EMPLEADOS, Permisos.sistemaPanelControlGeneral
@@ -848,7 +848,7 @@ Private Sub CreateRibbonBar()
     'VENTAS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(2, "Ventas")
-    ribbonTab.id = ID_TAB.ID_TAB_VENTAS
+    ribbonTab.Id = ID_TAB.ID_TAB_VENTAS
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Cotizaciones", ID_GROUP.ID_GROUP_VENTAS__COTIZACIONES)
     AddButton ribbonGroup, "Nueva", ID_BUTTON.ID_BUTTON_VENTAS__COTIZACIONES__NUEVA, Permisos.VentasCotizControl, ID_BUTTON.ID_BUTTON_ADD
@@ -867,7 +867,7 @@ Private Sub CreateRibbonBar()
     'COMPRAS--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(3, "Compras")
-    ribbonTab.id = ID_TAB.ID_TAB_COMPRAS
+    ribbonTab.Id = ID_TAB.ID_TAB_COMPRAS
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Requerimientos", ID_GROUP.ID_GROUP_COMPRAS__REQUERIMIENTOS)
     AddButton ribbonGroup, "Nuevo", ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__NUEVO, Permisos.ComprasRequesControl
     AddButton ribbonGroup, "Listado", ID_BUTTON.ID_BUTTON_COMPRAS__REQUERIMIENTOS__LISTADO, Permisos.ComprasRequesConsultas, ID_BUTTON.ID_BUTTON_LISTADO
@@ -888,7 +888,7 @@ Private Sub CreateRibbonBar()
     'PLANEAMIENTO--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(4, "Planeamiento")
-    ribbonTab.id = ID_TAB.ID_TAB_PLANEAMIENTO
+    ribbonTab.Id = ID_TAB.ID_TAB_PLANEAMIENTO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Orden de Trabajo", ID_GROUP.ID_GROUP_PLANEAMIENTO__ORDEN_TRABAJO)
     AddButton ribbonGroup, "Nueva", ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__NUEVA, Permisos.PlanOTcontrol
     AddButton ribbonGroup, "Listado", ID_BUTTON.ID_BUTTON_PLANEAMIENTO__ORDEN_TRABAJO__LISTADO, Permisos.PlanOTconsultas, ID_BUTTON.ID_BUTTON_SEARCH
@@ -922,7 +922,7 @@ Private Sub CreateRibbonBar()
     'DESARROLLO--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(5, "Desarrollo")
-    ribbonTab.id = ID_TAB.ID_TAB_DESARROLLO
+    ribbonTab.Id = ID_TAB.ID_TAB_DESARROLLO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Piezas", ID_GROUP.ID_GROUP_DESARROLLO__CENTRO_DE_COSTOS)
     AddButton ribbonGroup, "Nuevo elemento", ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_ELEMENTO, Permisos.DesaControl
     AddButton ribbonGroup, "Nuevo conjunto", ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_CONJUNTO, Permisos.DesaControl
@@ -954,7 +954,7 @@ Private Sub CreateRibbonBar()
     'ADMINISTRAción--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(6, "Administración")
-    ribbonTab.id = ID_TAB.ID_TAB_ADMINISTRACION
+    ribbonTab.Id = ID_TAB.ID_TAB_ADMINISTRACION
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Ventas", ID_GROUP.ID_GROUP_ADMINISTRACION__FACTURACION)
 
     AddButton ribbonGroup, "Remitos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__REMITOS, Permisos.PlanRemitosConsultas
@@ -1054,7 +1054,7 @@ Private Sub CreateRibbonBar()
     'CLIENTES PROVEEDORES--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(7, "Clientes / Proveedores")
-    ribbonTab.id = ID_TAB.ID_TAB_CLIENTES_PROVEEDORES
+    ribbonTab.Id = ID_TAB.ID_TAB_CLIENTES_PROVEEDORES
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Clientes", ID_GROUP.ID_GROUP_CLIENTES_PROVEEDORES__CLIENTES)
     AddButton ribbonGroup, "Nuevo", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO, Permisos.VentasClientesControl, ID_BUTTON.ID_BUTTON_NUEVA_PERSONA
     AddButton ribbonGroup, "Listado", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO, Permisos.VentasClientesConsultas
@@ -1073,7 +1073,7 @@ Private Sub CreateRibbonBar()
     'USUARIO--------------------------------------------------------------------------------------------------------------------
 
     Set ribbonTab = RibbonBar.InsertTab(8, "Usuario")
-    ribbonTab.id = ID_TAB.ID_TAB_USUARIO
+    ribbonTab.Id = ID_TAB.ID_TAB_USUARIO
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Herramientas", ID_GROUP.ID_GROUP_USUARIO__HERRAMIENTAS)
     AddButton ribbonGroup, "Tablero", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO
     AddButton ribbonGroup, "Agenda", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA
@@ -1093,7 +1093,7 @@ Private Sub tmrEventos_Timer()
     On Error GoTo err1
     If Me.TrayIcon.Tag = 0 Then
         Dim col As New Collection
-        Set col = DAOEvento.FindAllByUser(funciones.GetUserObj.id, True)
+        Set col = DAOEvento.FindAllByUser(funciones.GetUserObj.Id, True)
         If col.count > 0 Then
             Me.TrayIcon.Tag = 1
             If col.count = 1 Then
@@ -1125,7 +1125,7 @@ Private Sub tmrInformeAccidentes_Timer()
         If Me.WindowState <> vbMinimized Then
             If IsSomething(funciones.GetUserObj.Empleado) Then
                 Dim sin As Collection
-                Set sin = DAOSiniestroPersonal.FindAll("sp.id_accidente IS null AND sp.id_empleado_supervisor = " & funciones.GetUserObj.Empleado.id)
+                Set sin = DAOSiniestroPersonal.FindAll("sp.id_accidente IS null AND sp.id_empleado_supervisor = " & funciones.GetUserObj.Empleado.Id)
                 If sin.count > 0 Then
                     Dim nrosSiniestro As String
                     nrosSiniestro = funciones.JoinCollectionValues(sin, ", ", "NroSiniestro")

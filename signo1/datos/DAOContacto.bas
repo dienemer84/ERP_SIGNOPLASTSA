@@ -15,7 +15,6 @@ Public Const CAMPO_PROVINCIA As String = "Provincia"
 Public Const CAMPO_PAIS As String = "País"
 Public Const CAMPO_EMAIL As String = "email"
 Public Const CAMPO_TIPO As String = "tipo"
-
 Public Const CAMPO_ID_PERSONA As String = "idCliente"
 
 
@@ -32,7 +31,7 @@ Public Function GetAllByPersona(Id As Long, Tipo As TipoPersona) As Collection
         contacto.celular = rs!celular
         contacto.detalle = rs!detalle
         contacto.Domicilio = rs!direccion
-        contacto.email = rs!email
+        contacto.Email = rs!Email
         contacto.Id = rs!Id
         contacto.localidad = rs!localidad
         contacto.nombre = rs!nombre
@@ -48,6 +47,7 @@ Public Function GetAllByPersona(Id As Long, Tipo As TipoPersona) As Collection
 err34:
     Set GetAllByPersona = Nothing
 End Function
+
 
 Public Function LlenarComboByPersona(cbo As Xtremesuitecontrols.ComboBox, Id As Long, Tipo As TipoPersona)
 
@@ -68,13 +68,14 @@ Public Function LlenarComboByPersona(cbo As Xtremesuitecontrols.ComboBox, Id As 
 
 End Function
 
+
 Public Function agregar(contacto As clsContacto) As Boolean
     On Error GoTo err1
     Set cn = conectar.obternerConexion
     cn.BeginTrans
     agregar = True
     With contacto
-        strsql = "insert into contactos (idCliente, Nombre, Tel, Direccion, Localidad, Provincia, País, Detalle,cargo,celular,email,tipo) values( " & .idPersona & ",'" & .nombre & "','" & .telefono & "','" & .Domicilio & "','" & .localidad & "','" & .provincia & "','" & .pais & "','" & .detalle & "','" & .Cargo & "','" & .celular & "','" & .email & "',1)"
+        strsql = "insert into contactos (idCliente, Nombre, Tel, Direccion, Localidad, Provincia, País, Detalle,cargo,celular,email,tipo) values( " & .idPersona & ",'" & .nombre & "','" & .telefono & "','" & .Domicilio & "','" & .localidad & "','" & .provincia & "','" & .pais & "','" & .detalle & "','" & .Cargo & "','" & .celular & "','" & .Email & "',1)"
         cn.execute strsql
 
         Set rs = conectar.RSFactory("select last_insert_id() AS Ultimo from contactos")
@@ -92,12 +93,13 @@ err1:
     agregar = False
 End Function
 
+
 Public Function modificar(contacto As clsContacto) As Boolean
     On Error GoTo err1
     Set cn = conectar.obternerConexion
     modificar = True
     With contacto
-        strsql = "update contactos set idCliente= " & .idPersona & ",nombre='" & .nombre & "',tel='" & .telefono & "',direccion='" & .Domicilio & "',localidad='" & .localidad & "',provincia='" & .provincia & "', país='" & .pais & "',detalle='" & .detalle & "',cargo='" & .Cargo & "',celular='" & .celular & "',email='" & .email & "',tipo=" & .Tipo & " where id=" & .Id
+        strsql = "update contactos set idCliente= " & .idPersona & ",nombre='" & .nombre & "',tel='" & .telefono & "',direccion='" & .Domicilio & "',localidad='" & .localidad & "',provincia='" & .provincia & "', país='" & .pais & "',detalle='" & .detalle & "',cargo='" & .Cargo & "',celular='" & .celular & "',email='" & .Email & "',tipo=" & .Tipo & " where id=" & .Id
         cn.execute strsql
     End With
     Exit Function
@@ -105,9 +107,12 @@ err1:
     modificar = False
 
 End Function
+
+
 Public Function FindById(Tipo As TipoPersona, Id As Long) As clsContacto
     Set FindById = FindAll(Tipo, "id=" & Id)(1)
 End Function
+
 
 Public Function FindAll(ByRef Tipo As TipoPersona, Optional ByRef filter As String = vbNullString) As Collection
     Dim tickStart As Double
@@ -148,28 +153,28 @@ End Function
 
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String) As clsContacto
-    Dim c As clsContacto
+    Dim C As clsContacto
     Dim Id As Variant
 
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID)
 
     If Id > 0 Then
-        Set c = New clsContacto
-        c.Id = Id
-        c.Cargo = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CARGO)
-        c.celular = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CELULAR)
+        Set C = New clsContacto
+        C.Id = Id
+        C.Cargo = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CARGO)
+        C.celular = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CELULAR)
         'c.detalle = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOContacto.CAMPO_DETALLE)
-        c.Domicilio = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_DIRECCION)
-        c.email = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_EMAIL)
-        c.localidad = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_LOCALIDAD)
-        c.nombre = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_NOMBRE)
-        c.pais = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PAIS)
-        c.provincia = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PROVINCIA)
-        c.telefono = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_TELEFONO)
-        c.Tipo = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_TIPO)
+        C.Domicilio = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_DIRECCION)
+        C.Email = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_EMAIL)
+        C.localidad = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_LOCALIDAD)
+        C.nombre = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_NOMBRE)
+        C.pais = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PAIS)
+        C.provincia = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_PROVINCIA)
+        C.telefono = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_TELEFONO)
+        C.Tipo = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_TIPO)
 
-        c.idPersona = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID_PERSONA)
+        C.idPersona = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_ID_PERSONA)
     End If
 
-    Set Map = c
+    Set Map = C
 End Function

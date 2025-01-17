@@ -574,7 +574,7 @@ Private Sub Guardar()
     Domicilio = UCase(Text1(1))
     telefono = UCase(Text1(4))
     Fax = UCase(Text1(5))
-    email = UCase(Text1(6))
+    Email = UCase(Text1(6))
     ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
     Cuit = Trim(Text1(7))
     FP = UCase(Me.txtFP)
@@ -626,7 +626,7 @@ Private Sub Guardar()
 
                 Cliente.Cuit = Cuit
                 Cliente.Domicilio = Domicilio
-                Cliente.email = email
+                Cliente.Email = Email
                 Cliente.estado = EstadoCliente.activo
                 Cliente.Fax = Fax
 
@@ -650,7 +650,7 @@ Private Sub Guardar()
                 F = "c.cuit = " & Escape(Text1(7))
 
                 If IsSomething(vCliente) Then
-                    F = F & " AND c.id <> " & vCliente.id
+                    F = F & " AND c.id <> " & vCliente.Id
                 End If
 
                 If DAOCliente.FindAll(F).count > 0 Then
@@ -680,7 +680,7 @@ Private Sub Guardar()
 
             vCliente.Cuit = Cuit
             vCliente.Domicilio = Domicilio
-            vCliente.email = email
+            vCliente.Email = Email
             vCliente.estado = EstadoCliente.activo
             vCliente.Fax = Fax
             vCliente.FP = FP
@@ -739,10 +739,10 @@ Private Sub cboPaises_Click()
     'cboLocalidades.Clear
     'cboPartidos.Clear
 
-    Dim id As Long
+    Dim Id As Long
     If cboPaises.ListIndex >= 0 Then
-        id = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
-        DAOProvincias.LlenarCombo Me.cboProvincias, id
+        Id = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
+        DAOProvincias.LlenarCombo Me.cboProvincias, Id
     End If
 
     cboProvincias_Click
@@ -752,10 +752,10 @@ End Sub
 
 
 Private Sub cboProvincias_Click()
-    Dim id As Long
+    Dim Id As Long
     If cboProvincias.ListIndex >= 0 Then
-        id = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
-        DAOLocalidades.LlenarCombo Me.cboLocalidades, id
+        Id = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+        DAOLocalidades.LlenarCombo Me.cboLocalidades, Id
     End If
 
 End Sub
@@ -824,27 +824,26 @@ Private Sub txtFP_Validate(Cancel As Boolean)
     ValidarTextBox Me.txtFP, Cancel
 End Sub
 
-
 Private Sub llenarForm()
     On Error GoTo err1
     With vCliente
         Text1(0) = .razon
         Text1(1) = .Domicilio
+
+
         Text1(4) = .telefono
         Text1(5) = .Fax
-        Text1(6) = .email
+        Text1(6) = .Email
         Text1(7) = .Cuit
-        
-        Me.txtCuitPais = .CuitPais
-        Me.txtIDImpositivo = .IDImpositivo
-        
-        Me.txtCP = .CodigoPostal
+
+
 
         'aca posiciono el combo
 
-        Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.id, Me.cboPaises)
-        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.id, Me.cboProvincias)
-        Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.id, Me.cboLocalidades)
+        Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.Id, Me.cboPaises)
+        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.Id, Me.cboProvincias)
+        Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.Id, Me.cboLocalidades)
+
 
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
         txtFP = .FP

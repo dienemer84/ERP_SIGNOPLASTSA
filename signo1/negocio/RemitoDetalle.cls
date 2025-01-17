@@ -38,9 +38,12 @@ Public Property Let Concepto(Valor As String)
     End If
 End Property
 
+
 Public Property Get Concepto() As String
     Concepto = m_concepto
 End Property
+
+
 Public Property Get VerOrigen(Optional withOTItem As Boolean = False) As String
     Dim ori As String
     If Origen = OrigenRemitoConcepto Then
@@ -62,6 +65,7 @@ Public Property Get VerOrigen(Optional withOTItem As Boolean = False) As String
     VerOrigen = ori
 End Property
 
+
 Public Property Get VerFacturado() As String
 
     If Not facturable Then
@@ -74,6 +78,7 @@ Public Property Get VerFacturado() As String
         End If
     End If
 End Property
+
 
 Public Property Get VerElemento() As String
     If Origen = OrigenRemitoConcepto Then

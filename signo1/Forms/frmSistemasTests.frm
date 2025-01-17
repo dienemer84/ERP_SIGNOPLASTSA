@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmSistemasTests 
    Caption         =   "Tests"
    ClientHeight    =   6675
@@ -9,6 +10,19 @@ Begin VB.Form frmSistemasTests
    MDIChild        =   -1  'True
    ScaleHeight     =   6675
    ScaleWidth      =   11025
+   Begin XtremeSuiteControls.PushButton PushButton 
+      Height          =   735
+      Left            =   240
+      TabIndex        =   2
+      Top             =   2280
+      Width           =   4935
+      _Version        =   786432
+      _ExtentX        =   8705
+      _ExtentY        =   1296
+      _StockProps     =   79
+      Caption         =   "Agenda nueva"
+      Appearance      =   6
+   End
    Begin VB.CommandButton Command 
       Caption         =   "frmAdminExtrasReporteIVACompras"
       BeginProperty Font 
@@ -21,6 +35,7 @@ Begin VB.Form frmSistemasTests
          Strikethrough   =   0   'False
       EndProperty
       Height          =   615
+      Index           =   0
       Left            =   240
       TabIndex        =   1
       Top             =   240
@@ -45,7 +60,12 @@ Private Sub btnPrueba_04_Click_Click()
     f226.Show
 End Sub
 
-Private Sub Command_Click()
-    Dim f125 As New frmAdminExtrasReporteIVACompras
-    f125.Show
+
+Private Sub Form_Load()
+    FormHelper.Customize Me
+End Sub
+
+Private Sub PushButton_Click()
+    Dim f227 As New frmAgendaNueva
+    f227.Show
 End Sub
