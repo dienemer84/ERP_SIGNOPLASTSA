@@ -537,11 +537,13 @@ Dim ids As String
 Private ordenes As New Collection
 Private Orden As OrdenPago
 Private fac As clsFacturaProveedor
-    Dim i As Integer
+Dim i As Integer
+
 
 Private Sub btnClearProveedor_Click()
     Me.cboProveedores.ListIndex = -1
 End Sub
+
 
 Private Sub btnExportar_Click()
 
@@ -559,16 +561,18 @@ err1:
 
 End Sub
 
+
 Private Sub cmdBuscar_Click()
     If (Me.chkContado.value = xtpChecked Or Me.chkCtaCte.value = xtpChecked Or Me.chkEliminado.value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
 
 End Sub
 
+
 Private Sub cmdImprimir_Click()
 
     Dim pro As String
     If Me.cboProveedores.ListIndex > -1 Then
-        pro = " Proveedor: " & Me.cboProveedores.text
+        pro = " Proveedor: " & Me.cboProveedores.Text
     End If
 
     With Me.gridOrdenes.PrinterProperties
@@ -590,9 +594,11 @@ Private Sub cmdImprimir_Click()
 
 End Sub
 
+
 Private Sub cmdLimpiaEstado_Click()
     Me.cboEstado.ListIndex = -1
 End Sub
+
 
 Private Sub Form_Load()
     Customize Me
@@ -609,8 +615,8 @@ Private Sub Form_Load()
     Channel.AgregarSuscriptor Me, OrdenesPago_
 
     Me.cboEstado.Clear
-    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Pendiente)
-    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Pendiente
+    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_pendiente)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_pendiente
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Aprobada)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Aprobada
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
@@ -630,6 +636,7 @@ Private Sub Form_Load()
     
 End Sub
 
+
 Private Sub llenarLista()
     Dim filter As String
     filter = "1 = 1"
@@ -638,8 +645,8 @@ Private Sub llenarLista()
         filter = filter & " AND AdminComprasFacturasProveedores.id_proveedor = " & Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
     End If
 
-    If LenB(Me.txtNro.text) > 0 Then
-        filter = filter & " AND  ordenes_pago.id  = " & Val(Me.txtNro.text)
+    If LenB(Me.txtNro.Text) > 0 Then
+        filter = filter & " AND  ordenes_pago.id  = " & Val(Me.txtNro.Text)
     End If
 
     Dim filtroor As String
@@ -686,6 +693,8 @@ Private Sub llenarLista()
 
 
 End Sub
+
+
 Private Sub Form_Resize()
     On Error Resume Next
     Me.gridOrdenes.Width = Me.ScaleWidth - 300
@@ -696,9 +705,11 @@ Private Sub Form_Resize()
     
 End Sub
 
+
 Private Sub Form_Terminate()
     Channel.RemoverSuscripcionTotal Me
 End Sub
+
 
 Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
@@ -730,7 +741,7 @@ End Sub
 
 Private Sub SeleccionarOP()
     On Error Resume Next
-    Set Orden = ordenes.item(gridOrdenes.rowIndex(gridOrdenes.row))
+    Set Orden = ordenes.item(gridOrdenes.RowIndex(gridOrdenes.row))
 
 End Sub
 
@@ -739,9 +750,9 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
     If ordenes.count > 0 Then
         gridOrdenes_SelectionChange
         If Button = 2 Then
-            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor Or (Orden.estado = EstadoOrdenPago_Aprobada) Or (Orden.estado = EstadoOrdenPago_Pendiente)
-            Me.mnuEditar.Enabled = (Orden.estado = EstadoOrdenPago_Pendiente)
-            Me.mnuAprobar.Enabled = (Orden.estado = EstadoOrdenPago_Pendiente)
+            Me.mnuVerCertificado.Enabled = Orden.EsParaFacturaProveedor Or (Orden.estado = EstadoOrdenPago_Aprobada) Or (Orden.estado = EstadoOrdenPago_pendiente)
+            Me.mnuEditar.Enabled = (Orden.estado = EstadoOrdenPago_pendiente)
+            Me.mnuAprobar.Enabled = (Orden.estado = EstadoOrdenPago_pendiente)
             Me.mnuAnular.Enabled = Not (Orden.estado = EstadoOrdenPago_Anulada)
             Me.mnuVer.Enabled = Not (Orden.estado = EstadoOrdenPago_Anulada)
 
@@ -750,26 +761,27 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
     End If
 End Sub
 
+
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.rowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.item(RowBuffer.RowIndex)
         If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
             RowBuffer.CellStyle(9) = "aprobada"
         ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
             RowBuffer.RowStyle = "anulada2"
 
             RowBuffer.CellStyle(9) = "anulada"
-        ElseIf Orden.estado = EstadoOrdenPago_Pendiente Then
+        ElseIf Orden.estado = EstadoOrdenPago_pendiente Then
             RowBuffer.CellStyle(9) = "pendiente"
         End If
     End If
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(rowIndex)
-        Values(1) = Orden.id
+Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.item(RowIndex)
+        Values(1) = Orden.Id
         Values(2) = Orden.FEcha
 
         Values(3) = Orden.moneda.NombreCorto
@@ -793,6 +805,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
     End If
 End Sub
 
+
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = ids
 End Property
@@ -807,9 +820,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         For i = ordenes.count To 1 Step -1
             Set tmp = EVENTO.Elemento
-            If ordenes(i).id = tmp.id Then
+            If ordenes(i).Id = tmp.Id Then
                 Set Orden = ordenes(i)
-                Orden.id = tmp.id
+                Orden.Id = tmp.Id
                 Orden.estado = tmp.estado
                 Me.gridOrdenes.RefreshRowIndex i
                 Exit For
@@ -822,10 +835,10 @@ Private Sub mnuAnular_Click()
     SeleccionarOP
     
     If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
-        If DAOOrdenPago.Delete(Orden.id, True) Then
+        If DAOOrdenPago.Delete(Orden.Id, True) Then
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            ordenes.remove CStr(Orden.id)
+            ordenes.remove CStr(Orden.Id)
             Me.gridOrdenes.ItemCount = ordenes.count
             cmdBuscar_Click
         Else
@@ -840,7 +853,7 @@ Private Sub mnuAprobar_Click()
     
     If DAOOrdenPago.aprobar(Orden, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
     Else
         MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
@@ -860,7 +873,7 @@ Private Sub mnuHistorial_Click()
     SeleccionarOP
     
     Dim F As New frmHistorico
-    F.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
+    F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
     F.Show
     
 End Sub

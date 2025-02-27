@@ -93,7 +93,6 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
             UseVisualStyle  =   -1  'True
          End
          Begin XtremeSuiteControls.PushButton btnBuscar 
-            Default         =   -1  'True
             Height          =   450
             Left            =   120
             TabIndex        =   21
@@ -546,7 +545,7 @@ Private Sub btnImprimir_Click()
 
     Dim pro As String
     If Me.cboProveedores.ListIndex > -1 Then
-        pro = " Proveedor: " & Me.cboProveedores.text
+        pro = " Proveedor: " & Me.cboProveedores.Text
     End If
 
     With Me.gridOrdenes.PrinterProperties
@@ -608,10 +607,10 @@ Private Sub PushButton2_Click()
             opeCaja.EntradaSalida = OPSalida
 
             If Not DAOOperacion.Save(opeCaja) Then GoTo E
-            opeCaja.id = conectar.UltimoId2
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.id & ", " & opeCaja.id & ")"
+            opeCaja.Id = conectar.UltimoId2
+            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & nop.Id & ", " & opeCaja.Id & ")"
             If Not conectar.execute(q) Then GoTo E
-            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.id
+            q = "update ordenes_pago set static_total_origen=" & opeCaja.Monto & " where id=" & nop.Id
             If Not conectar.execute(q) Then GoTo E
 
 
@@ -639,8 +638,8 @@ Private Sub llenarLista()
         filter = filter & " AND AdminComprasFacturasProveedores.id_proveedor = " & Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
     End If
 
-    If LenB(Me.txtNro.text) > 0 Then
-        filter = filter & " AND  liquidaciones_caja.numero_liq  = " & Val(Me.txtNro.text)
+    If LenB(Me.txtNro.Text) > 0 Then
+        filter = filter & " AND  liquidaciones_caja.numero_liq  = " & Val(Me.txtNro.Text)
     End If
 
     Dim filtroor As String
@@ -694,8 +693,8 @@ End Sub
 
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.rowIndex > 0 And liquidaciones.count > 0 Then
-        Set LiquidacionCaja = liquidaciones.item(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
+        Set LiquidacionCaja = liquidaciones.item(RowBuffer.RowIndex)
         If LiquidacionCaja.estado = EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada Then
             RowBuffer.CellStyle(9) = "aprobada"
         ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada Then
@@ -711,14 +710,14 @@ End Sub
 
 Private Sub gridOrdenes_SelectionChange()
     On Error Resume Next
-    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.rowIndex(gridOrdenes.row))
+    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And liquidaciones.count > 0 Then
+Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And liquidaciones.count > 0 Then
 
-        Set LiquidacionCaja = liquidaciones.item(rowIndex)
+        Set LiquidacionCaja = liquidaciones.item(RowIndex)
 
         Values(1) = LiquidacionCaja.NumeroLiq
         Values(2) = LiquidacionCaja.FEcha
@@ -746,10 +745,10 @@ End Sub
 
 Private Sub mnuAnular_Click()
     If MsgBox("¿Desea anular la Liquidación?", vbQuestion + vbYesNo) = vbYes Then
-        If DAOLiquidacionCaja.Delete(LiquidacionCaja.id, True) Then
+        If DAOLiquidacionCaja.Delete(LiquidacionCaja.Id, True) Then
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            liquidaciones.remove CStr(LiquidacionCaja.id)
+            liquidaciones.remove CStr(LiquidacionCaja.Id)
             Me.gridOrdenes.ItemCount = liquidaciones.count
             btnBuscar_Click
         Else
@@ -761,7 +760,7 @@ End Sub
 Private Sub mnuAprobar_Click()
     If DAOLiquidacionCaja.aprobar(LiquidacionCaja, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
         btnBuscar_Click
     Else
         MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly

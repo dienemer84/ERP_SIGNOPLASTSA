@@ -405,7 +405,19 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA:
         Dim fffffffffff As New frmAdminPagosOrdenesPagoLista
         fffffffffff.Show
+        
+        
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_PAGO_A_CTA:
+        Dim f12329 As New frmAdminPagosCrearPagoACta
+        f12329.Show
+        
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__PAGO_A_CTA_LISTA:
+        Dim f12369 As New frmAdminPagosPagoACtaLista
+        f12369.Show
+        
+       
+        
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__TRANSFERENCIAS:
         Dim f12325 As New frmAdminPagosTransferenciasBancarias
         f12325.Show
@@ -1004,13 +1016,16 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Pagos", ID_GROUP.ID_GROUP_ADMINISTRACION__VARIOS)
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
-'    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA, , , , cmdBarCtrl
     AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA_DG, , , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
     AddButton ribbonGroup, "Crear Orden Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO, Permisos.AdminOPControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Listado de Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas, , , cmdBarCtrl
+
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Pagos a Cuenta", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Crear Pago a Cuenta", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_PAGO_A_CTA, Permisos.AdminOPControl, , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Listado de Pagos a Cuenta", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__PAGO_A_CTA_LISTA, Permisos.AdminOPConsultas, , , cmdBarCtrl
 
     AddButton ribbonGroup, "Transferencias", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__TRANSFERENCIAS, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Resúmen de pagos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS, Permisos.AdminOPConsultas

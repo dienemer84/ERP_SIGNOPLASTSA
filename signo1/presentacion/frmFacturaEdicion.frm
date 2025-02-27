@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   63176705
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   63176705
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   63176705
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   63176705
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   62390273
+         Format          =   63176705
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1541,8 +1541,8 @@ Public ReadOnly As Boolean
 Private detaFactRemito As FacturaDetalle
 
 
-Public Property Let idFactura(value As Long)
-    Set Factura = DAOFactura.FindById(value, True, True)
+Public Property Let idFactura(Value As Long)
+    Set Factura = DAOFactura.FindById(Value, True, True)
 End Property
 
 
@@ -1572,16 +1572,16 @@ Private Sub btnExportarContenido_Click()
 
     xlWorksheet.Activate
 
-    xlWorksheet.Cells(1, 1).value = "Detalle de Cbte " + Factura.GetShortDescription(False, False)
+    xlWorksheet.Cells(1, 1).Value = "Detalle de Cbte " + Factura.GetShortDescription(False, False)
 
-    xlWorksheet.Cells(2, 1).value = "Cantidad"
-    xlWorksheet.Cells(2, 2).value = "Detalle"
-    xlWorksheet.Cells(2, 3).value = "% Descuento"
-    xlWorksheet.Cells(2, 4).value = "U Bruto"
-    xlWorksheet.Cells(2, 5).value = "U Neto"
-    xlWorksheet.Cells(2, 6).value = "Total"
-    xlWorksheet.Cells(2, 7).value = "IVA"
-    xlWorksheet.Cells(2, 8).value = "IIBB"
+    xlWorksheet.Cells(2, 1).Value = "Cantidad"
+    xlWorksheet.Cells(2, 2).Value = "Detalle"
+    xlWorksheet.Cells(2, 3).Value = "% Descuento"
+    xlWorksheet.Cells(2, 4).Value = "U Bruto"
+    xlWorksheet.Cells(2, 5).Value = "U Neto"
+    xlWorksheet.Cells(2, 6).Value = "Total"
+    xlWorksheet.Cells(2, 7).Value = "IVA"
+    xlWorksheet.Cells(2, 8).Value = "IIBB"
 
     xlWorksheet.Range("A2:I2").Font.Bold = True
 
@@ -1595,24 +1595,24 @@ Private Sub btnExportarContenido_Click()
     d = 0
 
     For Each deta In Factura.Detalles
-        xlWorksheet.Cells(idx, 1).value = deta.Cantidad
-        xlWorksheet.Cells(idx, 2).value = deta.detalle
-        xlWorksheet.Cells(idx, 3).value = deta.PorcentajeDescuento
-        xlWorksheet.Cells(idx, 4).value = deta.Bruto
+        xlWorksheet.Cells(idx, 1).Value = deta.Cantidad
+        xlWorksheet.Cells(idx, 2).Value = deta.detalle
+        xlWorksheet.Cells(idx, 3).Value = deta.PorcentajeDescuento
+        xlWorksheet.Cells(idx, 4).Value = deta.Bruto
 
-        xlWorksheet.Cells(idx, 5).value = deta.NetoGravado
-        xlWorksheet.Cells(idx, 6).value = deta.total
+        xlWorksheet.Cells(idx, 5).Value = deta.NetoGravado
+        xlWorksheet.Cells(idx, 6).Value = deta.total
 
         If deta.IvaAplicado Then
-            xlWorksheet.Cells(idx, 7).value = "SI"
+            xlWorksheet.Cells(idx, 7).Value = "SI"
         Else
-            xlWorksheet.Cells(idx, 7).value = "NO"
+            xlWorksheet.Cells(idx, 7).Value = "NO"
         End If
 
         If deta.IBAplicado Then
-            xlWorksheet.Cells(idx, 8).value = "SI"
+            xlWorksheet.Cells(idx, 8).Value = "SI"
         Else
-            xlWorksheet.Cells(idx, 8).value = "NO"
+            xlWorksheet.Cells(idx, 8).Value = "NO"
         End If
 
         idx = idx + 1
@@ -1623,7 +1623,7 @@ Private Sub btnExportarContenido_Click()
     Next
     
     xlWorksheet.Columns(1).ColumnWidth = 8 ' Puedes ajustar el valor según tus necesidades
-    xlWorksheet.Cells(idx + 1, 3).value = "Totales: "
+    xlWorksheet.Cells(idx + 1, 3).Value = "Totales: "
     xlWorksheet.Cells(idx + 1, 3).HorizontalAlignment = xlRight
 
     xlWorksheet.Cells(idx + 1, 4).Formula = "=SUM(D3:D" & idx - 1 & ")"
@@ -1642,17 +1642,17 @@ Private Sub btnExportarContenido_Click()
     xlWorksheet.Range("A" & idx + 3 & ":A" & idx + 6).HorizontalAlignment = xlRight
     xlWorksheet.Range("A" & idx + 3 & ":A" & idx + 6).Font.Bold = True
     
-    xlWorksheet.Cells(idx + 3, 1).value = "Subtotal"
-    xlWorksheet.Cells(idx + 3, 2).value = Me.lblSubTotal.caption
+    xlWorksheet.Cells(idx + 3, 1).Value = "Subtotal"
+    xlWorksheet.Cells(idx + 3, 2).Value = Me.lblSubTotal.caption
     
-    xlWorksheet.Cells(idx + 4, 1).value = "Percepciones"
-    xlWorksheet.Cells(idx + 4, 2).value = Me.lblPercepciones.caption
+    xlWorksheet.Cells(idx + 4, 1).Value = "Percepciones"
+    xlWorksheet.Cells(idx + 4, 2).Value = Me.lblPercepciones.caption
     
-    xlWorksheet.Cells(idx + 5, 1).value = "IVA"
-    xlWorksheet.Cells(idx + 5, 2).value = Me.lblIVATot.caption
+    xlWorksheet.Cells(idx + 5, 1).Value = "IVA"
+    xlWorksheet.Cells(idx + 5, 2).Value = Me.lblIVATot.caption
     
-    xlWorksheet.Cells(idx + 6, 1).value = "Total"
-    xlWorksheet.Cells(idx + 6, 2).value = Me.lblTotal.caption
+    xlWorksheet.Cells(idx + 6, 1).Value = "Total"
+    xlWorksheet.Cells(idx + 6, 2).Value = Me.lblTotal.caption
     
     'AUTOSIZE
     xlApplication.ScreenUpdating = False
@@ -1733,7 +1733,7 @@ Private Sub btnGuardar_Click()
         Else
             Dim mon As clsMoneda
             Set mon = DAOMoneda.GetById(Me.cboMonedaAjuste.ItemData(Me.cboMonedaAjuste.ListIndex))
-            Factura.IdMonedaAjuste = mon.id
+            Factura.IdMonedaAjuste = mon.Id
             Factura.TipoCambioAjuste = mon.Cambio
         End If
 
@@ -1769,7 +1769,7 @@ Private Sub btnGuardar_Click()
                             End If
                             If IsSomething(Ot) Then
                                 If Ot.Anticipo > 0 Then
-                                    If Not IsSomething(Factura.DetalleAnticipoOT(Ot.id)) Then
+                                    If Not IsSomething(Factura.DetalleAnticipoOT(Ot.Id)) Then
                                         MsgBox "No existe en la factura un detalle que certifique el descuento por anticipo de OT Nº " & Ot.IdFormateado & vbNewLine & "Haga click en el boton ""Generar Items Anticipo OT"" para generar el detalle de anticipo para la factura actual.", vbExclamation
                                         Exit Sub
                                     End If
@@ -1784,20 +1784,20 @@ Private Sub btnGuardar_Click()
 
         Factura.CBU = Me.cboCuentasCBU.Text
 
-        Dim c As CuentaBancaria
+        Dim C As CuentaBancaria
 
-        Set c = DAOCuentaBancaria.FindById(Me.cboCuentasCBU.ItemData(Me.cboCuentasCBU.ListIndex))
+        Set C = DAOCuentaBancaria.FindById(Me.cboCuentasCBU.ItemData(Me.cboCuentasCBU.ListIndex))
 
-        If IsSomething(c) Then
-            Factura.CBU = c.CBU
+        If IsSomething(C) Then
+            Factura.CBU = C.CBU
         End If
 
         Factura.observaciones = Me.txtCondObs.Text
         Factura.TextoAdicional = Me.txtTextoAdicional
-        Factura.FechaServDesde = Me.dtFechaServDesde1.value
-        Factura.FechaServHasta = Me.dtFechaServHasta1.value
-        Factura.fechaPago = Me.dtFechaPagoCredito.value
-        Factura.esCredito = Me.chkEsCredito.value
+        Factura.FechaServDesde = Me.dtFechaServDesde1.Value
+        Factura.FechaServHasta = Me.dtFechaServHasta1.Value
+        Factura.fechaPago = Me.dtFechaPagoCredito.Value
+        Factura.esCredito = Me.chkEsCredito.Value
         
         
         If Me.cboTiposFactura.Text = "004-MANUAL EXP" Then
@@ -1837,7 +1837,7 @@ Private Sub btnItemRemito_Click()
     If IsSomething(Factura.Cliente) Then
         '        Dim idEntrega As Long
         Dim f11 As New frmPlaneamientoRemitosListaProceso
-        f11.idCliMostrar = Factura.Cliente.id
+        f11.idCliMostrar = Factura.Cliente.Id
         f11.mostrar = 2
 
         Set Selecciones.RemitoElegido = Nothing
@@ -1868,23 +1868,23 @@ Private Sub AgregarEntregas(col As Collection)
         'Set redeta = DAORemitoSDetalle.FindById(CLng(tmp))
         If IsSomething(redeta) Then
             For Each detalle In Factura.Detalles
-                If detalle.DetalleRemitoId = redeta.id Then
+                If detalle.DetalleRemitoId = redeta.Id Then
                     GoTo prox    'ya existe en la factura esa entrega aplicada, pasamos a la proxima
                 End If
             Next
 
             Set detalle = New FacturaDetalle
             Set detalle.Factura = Factura
-            detalle.idFactura = Factura.id
+            detalle.idFactura = Factura.Id
             detalle.Cantidad = redeta.Cantidad
             detalle.detalle = redeta.VerElemento
             detalle.PorcentajeDescuento = 0
             detalle.Bruto = redeta.Valor
             Set Ot = DAOOrdenTrabajo.FindById(redeta.idpedido)
             If IsSomething(Ot) Then
-                detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.moneda.id, Factura.moneda.id)
+                detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.moneda.Id, Factura.moneda.Id)
 
-                If Ot.moneda.id <> Factura.moneda.id Then
+                If Ot.moneda.Id <> Factura.moneda.Id Then
                     'MsgBox ("Tenemos monedas distintas")
                     MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
                           & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
@@ -1902,7 +1902,7 @@ Private Sub AgregarEntregas(col As Collection)
 
             detalle.AplicadoARemito = True
             Set detalle.detalleRemito = redeta
-            detalle.DetalleRemitoId = redeta.id
+            detalle.DetalleRemitoId = redeta.Id
 
             'detalle.detalleRemito = redeta.VerOrigen
 
@@ -1942,10 +1942,10 @@ Private Sub btnItemsDescuentoAnticipo_Click()
                     If IsSomething(Ot) Then
                         If Ot.Anticipo > 0 Then
                             Set detalleAnticipo = Nothing
-                            Set detalleAnticipo = Factura.DetalleAnticipoOT(Ot.id)
+                            Set detalleAnticipo = Factura.DetalleAnticipoOT(Ot.Id)
                             If Not IsSomething(detalleAnticipo) Then
                                 Set detalleAnticipo = New FacturaDetalle
-                                detalleAnticipo.OtIdAnticipo = Ot.id
+                                detalleAnticipo.OtIdAnticipo = Ot.Id
                                 Factura.Detalles.Add detalleAnticipo
                                 detalleAnticipo.PorcentajeDescuento = Ot.Anticipo
 
@@ -2017,7 +2017,7 @@ Private Sub cboCliente_Click()
         For Each Tipo In tipos
             cboTiposFactura.AddItem Tipo.descripcion
             nidx = cboTiposFactura.NewIndex
-            cboTiposFactura.ItemData(nidx) = Tipo.id
+            cboTiposFactura.ItemData(nidx) = Tipo.Id
             If Tipo.PuntoVenta.default Then id_Default = nidx
 
         Next Tipo
@@ -2032,7 +2032,7 @@ Private Sub cboCliente_Click()
 
         Factura.AlicuotaAplicada = Factura.TipoIVA.alicuota
         
-        Set Factura.Cliente = DAOCliente.BuscarPorID(Factura.Cliente.id)
+        Set Factura.Cliente = DAOCliente.BuscarPorID(Factura.Cliente.Id)
 
         If IsSomething(Factura.Tipo.TipoFactura) Then
             Factura.EstaDiscriminada = Factura.Tipo.TipoFactura.Discrimina
@@ -2165,15 +2165,15 @@ Private Sub cboTiposFactura_Click()
 
     If Me.cboTiposFactura.ListIndex = -1 Then Exit Sub
  
-    Dim id As Long
+    Dim Id As Long
 
-    id = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+    Id = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
     
     If cboTiposFactura.Text = "004-MANUAL EXP" Then
         MsgBox ("ES COMPROBANTE DE EXPORTACION")
     End If
 
-    Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(id)
+    Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(Id)
 
 
     '1 11 19
@@ -2212,7 +2212,7 @@ Private Sub cboTiposFactura_Click()
     End If
 
 
-    If Factura.id = 0 Then    'agregado para q no cambie el nro de factura cuando estoy en edicion yu elijo otro cliente
+    If Factura.Id = 0 Then    'agregado para q no cambie el nro de factura cuando estoy en edicion yu elijo otro cliente
         '       Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico
         '       If Factura.Tipo.PuntoVenta.EsElectronico Then
 
@@ -2252,7 +2252,7 @@ End Sub
 
 Private Sub chkEsCredito_Click()
 
-    Factura.esCredito = Me.chkEsCredito.value
+    Factura.esCredito = Me.chkEsCredito.Value
 
     ValidarEsCredito
     cboTiposFactura_Click
@@ -2266,7 +2266,7 @@ End Sub
 
 Private Sub dtFechaPagoCredito_Change()
     If Not dataLoading Then
-        Factura.fechaPago = Me.dtFechaPagoCredito.value
+        Factura.fechaPago = Me.dtFechaPagoCredito.Value
     End If
 
     Me.txtDiasVenc = DateDiff("d", Me.dtpFecha, Me.dtFechaPagoCredito)
@@ -2276,14 +2276,14 @@ End Sub
 'fce_nemer_28052020
 Private Sub dtFechaPagoCreditoDesde_Change()
     If Not dataLoading Then
-        Factura.FechaVtoDesde = Me.dtFechaPagoCreditoDesde.value
+        Factura.FechaVtoDesde = Me.dtFechaPagoCreditoDesde.Value
     End If
 End Sub
 
 'fce_nemer_28052020
 Private Sub dtFechaPagoCreditoHasta_Change()
     If Not dataLoading Then
-        Factura.FechaVtoHasta = Me.dtFechaPagoCreditoHasta.value
+        Factura.FechaVtoHasta = Me.dtFechaPagoCreditoHasta.Value
     End If
 End Sub
 
@@ -2305,7 +2305,7 @@ End Sub
 Private Sub dtpFecha_Change()
     If Not dataLoading Then
 
-        Factura.FechaEmision = Me.dtpFecha.value
+        Factura.FechaEmision = Me.dtpFecha.Value
 
         'fce_nemer_02062020_#113
         'Me.dtFechaServDesde.value = Me.dtpFecha.value
@@ -2349,13 +2349,13 @@ Private Sub Form_Load()
 
         Factura.Tipo.TipoDoc = NuevoTipoDocumento
         Me.caption = "Nueva " & StrConv(Factura.TipoDocumentoDescription, vbProperCase)
-        Me.dtpFecha.value = Now
+        Me.dtpFecha.Value = Now
 
-        Me.dtFechaPagoCredito.value = Now
+        Me.dtFechaPagoCredito.Value = Now
 
         'fce_nemer_28052020
-        Me.dtFechaPagoCreditoDesde.value = Now
-        Me.dtFechaPagoCreditoHasta.value = Now
+        Me.dtFechaPagoCreditoDesde.Value = Now
+        Me.dtFechaPagoCreditoHasta.Value = Now
 
         'fce_nemer_02062020_#113
         'Me.dtFechaServDesde.value = Factura.FechaEmision
@@ -2390,7 +2390,7 @@ Private Sub Form_Load()
     Me.lblNCND.Visible = (Factura.TipoDocumento <> tipoDocumentoContable.Factura)
     Me.lblNCND.caption = Factura.GetShortDescription(True, True)
 
-    If Factura.id = 0 Then
+    If Factura.Id = 0 Then
         Factura.FechaEmision = Now
 
         Factura.fechaPago = Now
@@ -2584,26 +2584,26 @@ Private Sub CargarFactura()
 
 
     If IsSomething(Factura.Cliente) Then
-        Me.cboCliente.ListIndex = funciones.PosIndexCbo(Factura.Cliente.id, Me.cboCliente)
+        Me.cboCliente.ListIndex = funciones.PosIndexCbo(Factura.Cliente.Id, Me.cboCliente)
         MostrarCliente
     Else
         LimpiarCliente
     End If
     
     
-    If Factura.moneda.id = 0 Then
+    If Factura.moneda.Id = 0 Then
         Me.lblTC.caption = "Tipo Cambio: " & Factura.moneda.NombreCorto & " 1 "
     Else
         Me.lblTC.caption = "Tipo Cambio: " & Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
     End If
 
     
-    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.id, Me.cboMoneda)
+    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.Id, Me.cboMoneda)
     Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(Factura.ConceptoIncluir, Me.cboConceptosAIncluir)
 
     Me.cboMonedaAjuste.ListIndex = funciones.PosIndexCbo(Factura.IdMonedaAjuste, Me.cboMonedaAjuste)
 
-    If Factura.id = 0 Then
+    If Factura.Id = 0 Then
         'creo que aaca no entra nunca
         '        Dim classA As New classAdministracion
         Me.txtNumero.Text = Format(DAOFactura.proximaFactura(Factura))    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
@@ -2632,15 +2632,15 @@ Private Sub CargarFactura()
 
         For Each T In tipos
             cboTiposFactura.AddItem T.PuntoVenta.descripcion
-            cboTiposFactura.ItemData(cboTiposFactura.NewIndex) = T.id
+            cboTiposFactura.ItemData(cboTiposFactura.NewIndex) = T.Id
         Next T
 
-        Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(Factura.Tipo.id, Me.cboTiposFactura)
+        Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(Factura.Tipo.Id, Me.cboTiposFactura)
 
         Me.txtNumero.Text = Factura.numero
     End If
 
-    Me.dtpFecha.value = Factura.FechaEmision
+    Me.dtpFecha.Value = Factura.FechaEmision
     Me.txtPercepcion.Text = Round((Factura.AlicuotaPercepcionesIIBB - 1) * 100, 2)
     Me.txtDiasVenc.Text = Factura.CantDiasPago
     Me.txtReferencia.Text = Factura.OrdenCompra
@@ -2662,32 +2662,32 @@ Private Sub CargarFactura()
     Me.txtTasaAjuste.Text = Factura.TasaAjusteMensual
     ' Me.txtCbuCredito = Factura.CBU
 
-    Dim c As CuentaBancaria
+    Dim C As CuentaBancaria
 
     If Factura.esCredito And LenB(Factura.CBU) > 0 Then
 
-        Set c = DAOCuentaBancaria.FindByCBU(Factura.CBU)
+        Set C = DAOCuentaBancaria.FindByCBU(Factura.CBU)
 
-        Me.chkEsCredito.value = Factura.esCredito
+        Me.chkEsCredito.Value = Factura.esCredito
 
 
         If ReadOnly Then
 
-            Me.cboCuentasCBU.Visible = IsSomething(c)
+            Me.cboCuentasCBU.Visible = IsSomething(C)
 
-            Me.lblVerCbu.Visible = Not IsSomething(c)
+            Me.lblVerCbu.Visible = Not IsSomething(C)
             Me.chkEsCredito.Enabled = False
             Me.cboOpcional27.Enabled = False
 
-            If IsSomething(c) Then
-                Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
+            If IsSomething(C) Then
+                Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(C.Id, Me.cboCuentasCBU)
             Else
                 Me.lblVerCbu = Factura.CBU
             End If
         Else
             Me.lblVerCbu.Visible = False
-            If IsSomething(c) Then
-                Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(c.id, Me.cboCuentasCBU)
+            If IsSomething(C) Then
+                Me.cboCuentasCBU.ListIndex = funciones.PosIndexCbo(C.Id, Me.cboCuentasCBU)
             End If
             
         End If
@@ -2787,18 +2787,18 @@ End Sub
 
 Private Sub gridDetalles_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     If Me.gridDetalles.row = -1 Then    'es nuevoF
-        Me.gridDetalles.value(7) = True
-        Me.gridDetalles.value(8) = True
+        Me.gridDetalles.Value(7) = True
+        Me.gridDetalles.Value(8) = True
     End If
 
-    Cancel = Not IsNumeric(Me.gridDetalles.value(1)) Or Not IsNumeric(Me.gridDetalles.value(3)) Or Not IsNumeric(Me.gridDetalles.value(4))
+    Cancel = Not IsNumeric(Me.gridDetalles.Value(1)) Or Not IsNumeric(Me.gridDetalles.Value(3)) Or Not IsNumeric(Me.gridDetalles.Value(4))
 End Sub
 
 Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
         Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
         If row > 0 Then
-            Set detalle = Factura.Detalles.item(Me.gridDetalles.rowIndex(row))
+            Set detalle = Factura.Detalles.item(Me.gridDetalles.RowIndex(row))
             If IsSomething(detalle) Then
                 If (Not detalle.OrigenEsConcepto And detalle.AplicadoARemito) Or detalle.OrigenEsConcepto Then
                     Me.PopupMenu Me.mnuDetalles
@@ -2820,7 +2820,7 @@ Private Sub gridDetalles_SelectionChange()
 
 
     Dim it As Long
-    it = Me.gridDetalles.rowIndex(gridDetalles.row)
+    it = Me.gridDetalles.RowIndex(gridDetalles.row)
     If it > 0 Then
         Set detalle = Factura.Detalles.item(it)
 
@@ -2839,7 +2839,7 @@ End Sub
 Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set detalle = New FacturaDetalle
     Set detalle.Factura = Factura
-    detalle.idFactura = Factura.id
+    detalle.idFactura = Factura.Id
     detalle.Cantidad = Values(1)
     detalle.detalle = Values(2)
     detalle.PorcentajeDescuento = Values(3)
@@ -2852,16 +2852,16 @@ Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
     Totalizar
 End Sub
 
-Private Sub gridDetalles_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    If rowIndex > 0 And Factura.Detalles.count > 0 Then
-        Factura.Detalles.remove rowIndex
+Private Sub gridDetalles_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    If RowIndex > 0 And Factura.Detalles.count > 0 Then
+        Factura.Detalles.remove RowIndex
         Totalizar
     End If
 End Sub
 
-Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex <= Factura.Detalles.count Then
-        Set detalle = Factura.Detalles.item(rowIndex)
+Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= Factura.Detalles.count Then
+        Set detalle = Factura.Detalles.item(RowIndex)
         Values(1) = detalle.Cantidad
         Values(2) = detalle.detalle
         Values(3) = funciones.FormatearDecimales(detalle.PorcentajeDescuento)
@@ -2876,9 +2876,9 @@ Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark 
     End If
 End Sub
 
-Private Sub gridDetalles_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And Factura.Detalles.count > 0 Then
-        Set detalle = Factura.Detalles.item(rowIndex)
+Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And Factura.Detalles.count > 0 Then
+        Set detalle = Factura.Detalles.item(RowIndex)
 
         detalle.Cantidad = Values(1)
         detalle.detalle = Values(2)
@@ -2920,29 +2920,29 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                     If redeta.facturable Then
 
                         If IsSomething(detaFactRemito) Then
-                            detaFactRemito.DetalleRemitoId = redeta.id
+                            detaFactRemito.DetalleRemitoId = redeta.Id
                             detaFactRemito.AplicadoARemito = True
                             redeta.Facturado = True
                             Dim transactionResult As Boolean: transactionResult = True
                             Dim q As String
                             conectar.BeginTransaction
 
-                            q = "INSERT INTO AdminFacturasDetalleAplicacionRemitos (idFacturaDetalle, idRemitoDetalle, cantidadAplicada) VALUES (" & detaFactRemito.id & ", " & redeta.id & "  ,  " & redeta.Cantidad & ")"
+                            q = "INSERT INTO AdminFacturasDetalleAplicacionRemitos (idFacturaDetalle, idRemitoDetalle, cantidadAplicada) VALUES (" & detaFactRemito.Id & ", " & redeta.Id & "  ,  " & redeta.Cantidad & ")"
                             transactionResult = transactionResult And conectar.execute(q)
 
                             Dim remi As Remito
                             Set remi = DAORemitoS.FindById(detaFactRemito.detalleRemito.Remito)
-                            remi.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(remi.id)
+                            remi.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(remi.Id)
 
                             transactionResult = transactionResult And DAORemitoS.Guardar(remi, False, False)
                             transactionResult = transactionResult And DAOFacturaDetalles.Guardar(detaFactRemito)
                             transactionResult = transactionResult And DAORemitoSDetalle.Guardar(redeta)
-                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, Factura.id, Factura.moneda.id, Factura.CambioAPatron, Factura.TipoCambioAjuste)
+                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, Factura.Id, Factura.moneda.Id, Factura.CambioAPatron, Factura.TipoCambioAjuste)
 
                             If transactionResult Then
 
                                 conectar.CommitTransaction
-                                remi.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(remi.id)
+                                remi.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(remi.Id)
                                 DAORemitoS.Guardar remi, False, False
                                 CargarDetalles
                                 Totalizar
@@ -2985,7 +2985,7 @@ Private Sub mnuAplicarDetalleRemito_Click()
 
     On Error Resume Next
     Dim f11 As New frmPlaneamientoRemitosListaProceso
-    f11.idCliMostrar = Factura.Cliente.id
+    f11.idCliMostrar = Factura.Cliente.Id
     f11.mostrar = 2
     Set Selecciones.RemitoElegido = Nothing
     f11.Show 1
@@ -3002,7 +3002,7 @@ Private Sub mnuAplicarDetalleRemito_Click()
         frm.grilla.MultiSelect = False
         frm.MostrarInfoAdministracion = True
 
-        Set detaFactRemito = Factura.Detalles(Me.gridDetalles.rowIndex(Me.gridDetalles.row))
+        Set detaFactRemito = Factura.Detalles(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
 
         frm.Show
     End If
@@ -3025,11 +3025,11 @@ Private Sub btnSeleccionarOT_Click()
 
         If IsSomething(Selecciones.OrdenTrabajo) Then
 
-            If Not funciones.BuscarEnColeccion(Factura.OTsFacturadasAnticipo, CStr(Selecciones.OrdenTrabajo.id)) Then
-                Set Ot = DAOOrdenTrabajo.FindById(Selecciones.OrdenTrabajo.id)
-                Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.id, True, True, True)
+            If Not funciones.BuscarEnColeccion(Factura.OTsFacturadasAnticipo, CStr(Selecciones.OrdenTrabajo.Id)) Then
+                Set Ot = DAOOrdenTrabajo.FindById(Selecciones.OrdenTrabajo.Id)
+                Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id, True, True, True)
 
-                Factura.OTsFacturadasAnticipo.Add Ot, CStr(Ot.id)
+                Factura.OTsFacturadasAnticipo.Add Ot, CStr(Ot.Id)
 
                 Factura.Detalles = New Collection
                 Factura.OrdenCompra = vbNullString
@@ -3058,7 +3058,7 @@ Private Sub btnSeleccionarOT_Click()
 
                     'bug #2 INICIO
 
-                    If Ot.moneda.id <> Factura.moneda.id Then
+                    If Ot.moneda.Id <> Factura.moneda.Id Then
 
                         If Factura.moneda.Patron Then
 
@@ -3110,7 +3110,7 @@ Public Sub txtDiasVenc_LostFocus()
         Me.txtDiasVenc = 0
     End If
 
-    Me.dtFechaPagoCredito.value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
+    Me.dtFechaPagoCredito.Value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
 
 End Sub
 

@@ -148,7 +148,13 @@ Attribute VB_Exposed = False
 Dim base As classStock
 
 Private Sub Command1_Click()
+    If Me.cboCliente.ListIndex = -1 And Text1 = "" Then
+        MsgBox ("Seleccione un cliente")
+        Exit Sub
+    End If
+
     base.llenar_lista_stock Me.lstStock, Me.cboCliente.ItemData(Me.cboCliente.ListIndex), Trim(Text1), marcado, , True
+
 End Sub
 
 
@@ -171,13 +177,13 @@ Private Sub Form_Load()
     marcado = -1
 
     'DAOCliente.LlenarCombo Me.cboCliente, True,
-    
-   
+
+
     DAOCliente.llenarComboXtremeSuite Me.cboCliente, False, True, False
     Me.cboCliente.ListIndex = -1
 
-    
-    'base.llenar_lista_stock Me.lstStock, -1, ""
+
+    base.llenar_lista_stock Me.lstStock, -1, ""
 
     ''Me.caption = caption & " (" & Name & ")"
 
