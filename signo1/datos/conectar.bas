@@ -103,20 +103,20 @@ Public Sub RollBackTransaction()
 End Sub
 
 
-Public Function UltimoId(tableName As String, ByRef id As Long) As Boolean
+Public Function UltimoId(tableName As String, ByRef Id As Long) As Boolean
     On Error GoTo er1
     UltimoId = True
     Dim rs As Recordset
     Set rs = RSFactory("select last_insert_id() as ultimo from " & tableName)
     If Not rs.EOF And Not rs.BOF Then
-        id = rs!ultimo
+        Id = rs!ultimo
     Else
         GoTo er1
     End If
     Exit Function
 er1:
     UltimoId = False
-    id = 0
+    Id = 0
 End Function
 
 
@@ -169,7 +169,7 @@ Public Function ProximoId(tableName As String) As Long
     Exit Function
 er1:
     ProximoId = False
-    id = 0
+    Id = 0
 End Function
 
 
@@ -221,7 +221,7 @@ Public Function GetEntityId(entity As Object) As Variant
     If entity Is Nothing Then
         GetEntityId = 0    '"NULL"
     Else
-        GetEntityId = entity.id
+        GetEntityId = entity.Id
     End If
 End Function
 

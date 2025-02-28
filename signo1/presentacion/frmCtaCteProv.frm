@@ -436,7 +436,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub gridDetalles_DblClick()
-    Set deta = Detalles.item(gridDetalles.rowIndex(gridDetalles.row))
+    Set deta = Detalles.item(gridDetalles.RowIndex(gridDetalles.row))
 
 
     If (deta.tipoComprobante = TipoComprobanteUsado.FacturaProveedor_) Then
@@ -469,8 +469,8 @@ End Sub
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
     If Detalles.count = 0 Then Exit Sub
 
-    If RowBuffer.rowIndex > 0 Then
-        Set deta = Detalles.item(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 Then
+        Set deta = Detalles.item(RowBuffer.RowIndex)
         If Not deta.AtributoExtra And deta.Debe > 0 And deta.Haber = 0 Then    'no esta en ninguna orden
             RowBuffer.RowStyle = "Impaga"
         End If
@@ -480,9 +480,9 @@ Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
 
 End Sub
 
-Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And Detalles.count > 0 Then
-        Set deta = Detalles.item(rowIndex)
+Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And Detalles.count > 0 Then
+        Set deta = Detalles.item(RowIndex)
         Values(1) = deta.FEcha
         Values(2) = deta.Comprobante
         Values(3) = deta.Debe
@@ -507,7 +507,7 @@ Private Sub PushButton1_Click()
         .FitColumns = True
         .RepeatHeaders = True
         .Orientation = jgexPPPortrait
-        .HeaderString(jgexHFCenter) = "Cuenta Corriente de " & Me.cboClientes.text
+        .HeaderString(jgexHFCenter) = "Cuenta Corriente de " & Me.cboClientes.Text
         If Not IsNull(dtpHasta.value) Then
             .HeaderString(jgexHFLeft) = "Hasta  " & Format(Me.dtpHasta, "dd-mm-yyyy")
         End If
@@ -526,7 +526,7 @@ Private Sub PushButton2_Click()
         MsgBox "Debe definir una fecha tope para cerrar!", vbCritical, "Advertencia"
     Else
 
-        If MsgBox("¿Desea cerrar el periodo hasta " & Format(Me.dtpHasta, "dd-mm-yyyy") & " del cliente " & Me.cboClientes.text & " ?", vbYesNo, "Consulta") = vbYes Then
+        If MsgBox("¿Desea cerrar el periodo hasta " & Format(Me.dtpHasta, "dd-mm-yyyy") & " del cliente " & Me.cboClientes.Text & " ?", vbYesNo, "Consulta") = vbYes Then
             Id = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
             If Not DAOCuentaCorriente.CerrarPeriodoCtaCteProveedor(Id, Me.dtpHasta) Then
                 MsgBox "No puede cerrar el periodo seleccionado!", vbCritical
@@ -567,7 +567,7 @@ Public Function ExportToXlsProv() As Boolean
     xlWorksheet.Range("A2:E2").Merge
     xlWorksheet.Range("A1:E3").Font.Bold = True
     xlWorksheet.Cells(1, 1).value = "Resumen de Cuenta Corriente"
-    xlWorksheet.Cells(2, 1).value = "Proveedor: " & Me.cboClientes.text
+    xlWorksheet.Cells(2, 1).value = "Proveedor: " & Me.cboClientes.Text
     xlWorksheet.Cells(3, 1).value = "Fecha"
     xlWorksheet.Cells(3, 2).value = "Comprobante"
     xlWorksheet.Cells(3, 3).value = "Debe"

@@ -741,7 +741,7 @@ End Sub
 
 Private Sub SeleccionarOP()
     On Error Resume Next
-    Set Orden = ordenes.item(gridOrdenes.RowIndex(gridOrdenes.row))
+    Set Orden = ordenes.Item(gridOrdenes.RowIndex(gridOrdenes.row))
 
 End Sub
 
@@ -764,7 +764,7 @@ End Sub
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowBuffer.RowIndex)
+        Set Orden = ordenes.Item(RowBuffer.RowIndex)
         If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
             RowBuffer.CellStyle(9) = "aprobada"
         ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
@@ -780,7 +780,7 @@ End Sub
 
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowIndex)
+        Set Orden = ordenes.Item(RowIndex)
         Values(1) = Orden.Id
         Values(2) = Orden.FEcha
 
@@ -791,7 +791,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)), "$", "")
 
         If Orden.EsParaFacturaProveedor Then
-            Set fac = Orden.FacturasProveedor.item(1)
+            Set fac = Orden.FacturasProveedor.Item(1)
             Values(7) = "Factura Proveedor"
             Values(8) = fac.Proveedor.RazonSocial
         Else

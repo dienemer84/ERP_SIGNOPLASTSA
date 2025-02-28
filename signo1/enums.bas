@@ -7,6 +7,7 @@ Dim unidad(5)
 Dim estados_material(2)
 Dim estado_orden_entrega(3)
 Dim estado_factura_proveedor(4)
+Dim estado_pago_a_cuenta(2)
 Dim forma_de_pago_cta_cte(2)
 Public estado_po(2)
 Dim estado_presupuesto(8)
@@ -165,7 +166,7 @@ Public Enum TipoSaldadoFactura
     NoSaldada = 0
     saldadoTotal = 1
     SaldadoParcial = 2
-    NotaCredito = 3
+    notaCredito = 3
     notaCreditoParcial = 4
     notaDebito = 5
     notaDebitoParcial = 6
@@ -199,7 +200,7 @@ End Enum
 
 Public Enum tipoDocumentoContable
     Factura = 0
-    NotaCredito = 1
+    notaCredito = 1
     notaDebito = 2
     DespachoAduana = 3
     LiquidacionBancaria = 4
@@ -370,6 +371,11 @@ Public Enum EstadoFacturaProveedor
     pagoParcial = 4
 End Enum
 
+Public Enum EstadoPagoACuenta
+    Procesada = 1
+    Disponible = 0
+End Enum
+
 Public Enum FormadePagoFacturaProveedor
     PagoCuentaCorriente = 1
     PagoContado = 0
@@ -440,7 +446,7 @@ Public Function EnumTiposDoc(indice) As String
     enumtioposdoc = tipos_Doc(indice)
 End Function
 Public Function EnumTipoMaterial(indice As TipoMaterial) As String
-    EnumTipoMaterial = tipoMateriales.item(CStr(indice))
+    EnumTipoMaterial = tipoMateriales.Item(CStr(indice))
 End Function
 
 Public Function EnumTipoDocumentoContable(indice) As String
@@ -448,6 +454,10 @@ Public Function EnumTipoDocumentoContable(indice) As String
 End Function
 Public Function enumEstadoFacturaProveedor(indice) As String
     enumEstadoFacturaProveedor = estado_factura_proveedor(indice)
+End Function
+
+Public Function enumEstadoPagoACuenta(indice) As String
+    enumEstadoPagoACuenta = estado_pago_a_cuenta(indice)
 End Function
 
 Public Function enumFormaDePagoFacturaProveedor(indice) As String
@@ -493,7 +503,7 @@ Public Function LlenarArrays()
     
 
     tipo_doc_contable(tipoDocumentoContable.Factura) = "Factura"
-    tipo_doc_contable(tipoDocumentoContable.NotaCredito) = "N. Crédito"
+    tipo_doc_contable(tipoDocumentoContable.notaCredito) = "N. Crédito"
     tipo_doc_contable(tipoDocumentoContable.notaDebito) = "N. Debito"
 
 
@@ -543,6 +553,8 @@ Public Function LlenarArrays()
     estado_factura_proveedor(3) = "Saldada"    'EstadoFacturaProveedor.Saldada
     estado_factura_proveedor(4) = "Pago Parcial"
 
+    estado_pago_a_cuenta(0) = "Disponible"
+    estado_pago_a_cuenta(1) = "Procesado"
 
     estado_orden_entrega(1) = "Pendiente"
     estado_orden_entrega(2) = "Aprobada"
@@ -551,7 +563,7 @@ Public Function LlenarArrays()
     estado_saldado(TipoSaldadoFactura.NoSaldada) = "No Saldada"
     estado_saldado(TipoSaldadoFactura.saldadoTotal) = "Total"
     estado_saldado(TipoSaldadoFactura.SaldadoParcial) = "Parcial"
-    estado_saldado(TipoSaldadoFactura.NotaCredito) = "N. Crédito"
+    estado_saldado(TipoSaldadoFactura.notaCredito) = "N. Crédito"
     estado_saldado(TipoSaldadoFactura.notaCreditoParcial) = "N. Crédito Parcial"
 
     estado_orden_pago(EstadoOrdenPago_pendiente) = "Pendiente"

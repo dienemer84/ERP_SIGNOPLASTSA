@@ -42,16 +42,9 @@ Public StaticTotalRetenido As Double
 Public StaticTotalOrigenes As Double
 Public DiferenciaCambioEnNG As Double
 Public DiferenciaCambioEnTOTAL As Double
-
 Public staticTotalDeudaCompensatorios As Double
 
-
-
-
-
-
-
-
+Public PagosACuenta As New Collection
 
 Public Property Get TotalNGCompensatorios() As Double
     Dim T As Double
@@ -204,14 +197,6 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
             colRetorno.Add itemRetorno
         End If
     Next op
-
-
-    '    If Me.DiferenciaCambio > 0 Then
-    '        Set itemRetorno = New Collection
-    '        itemRetorno.Add Me.FEcha
-    '        itemRetorno.Add Me.DiferenciaCambio
-    '        colRetorno.Add itemRetorno
-    '    End If
 
     Set TotalOrigenesDiscriminado = colRetorno
 End Property
