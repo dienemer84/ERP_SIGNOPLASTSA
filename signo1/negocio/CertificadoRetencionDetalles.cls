@@ -21,6 +21,7 @@ Public FacturaProveedor As clsFacturaProveedor
 Public IdMoneda As Long
 Public IdCertificado As Long
 Public TotalFactura As Double
+Public NCertificado As Long
 
 Public Property Get TotalRetenido(cr As CertificadoRetencion)
     TotalRetenido = funciones.RedondearDecimales(IIf(Me.NetoGravado > cr.Retencion.MinimoImponible, Me.NetoGravado * (Me.alicuota / 100), 0))

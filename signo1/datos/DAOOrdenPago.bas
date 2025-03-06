@@ -160,7 +160,7 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orde
     While Not rs.EOF
         Set op = Map(rs, idx, "ordenes_pago", "AdminConfigMonedas")    ', "certificados_retencion")
         If funciones.BuscarEnColeccion(col, CStr(op.Id)) Then
-            Set op = col.Item(CStr(op.Id))
+            Set op = col.item(CStr(op.Id))
         Else
             col.Add op, CStr(op.Id)
         End If
@@ -223,7 +223,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
         Set op = Map(rs, idx, "ordenes_pago", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones")    ', "certificados_retencion")
 
         If funciones.BuscarEnColeccion(col, CStr(op.Id)) Then
-            Set op = col.Item(CStr(op.Id))
+            Set op = col.item(CStr(op.Id))
         Else
             col.Add op, CStr(op.Id)
         End If
@@ -632,7 +632,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         Dim pacta As clsPagoACta
         
         For Each pacta In op.PagosACuenta
-            q = "UPDATE pagos_a_cuenta SET estado= " & EstadoPagoACuenta.Procesado & " WHERE id = " & pacta.Id
+            q = "UPDATE pagos_a_cuenta SET estado= " & EstadoPagoACuenta.Procesada & " WHERE id = " & pacta.Id
             If Not conectar.execute(q) Then GoTo E
         Next
 
@@ -1071,7 +1071,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Set xlApplication = CreateObject("Excel.Application")
 
     Set xlWorkbook = xlApplication.Workbooks.Add
-    Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
 
@@ -1124,7 +1124,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         xlWorksheet.Cells(offset, 6).value = (ord.StaticTotalOrigenes + ord.StaticTotalRetenido)
 
         If ord.EsParaFacturaProveedor Then
-            Set fac = ord.FacturasProveedor.Item(1)
+            Set fac = ord.FacturasProveedor.item(1)
             xlWorksheet.Cells(offset, 7).value = "Factura Proveedor"
             xlWorksheet.Cells(offset, 8).value = UCase(fac.Proveedor.RazonSocial)
         Else
@@ -1238,9 +1238,15 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
         Printer.CurrentX = lmargin
         Printer.Print "Alícuota " & ra.Retencion.nombre & ": ";
         Printer.FontBold = False
-        Printer.Print ra.alicuotaRetencion & "%"
-
+        
+            If ra.importe = 0 Then
+                Printer.Print ra.alicuotaRetencion & "%"
+            Else
+                Printer.Print ra.alicuotaRetencion & "% | Valor: " & Orden.moneda.NombreCorto & " " & ra.importe & " | Cert N°: " & ra.certificados
+            End If
+        
         If ra.Retencion.Id = 5 Then existeIIBB = True
+    
 
     Next
 
@@ -1266,36 +1272,37 @@ Public Function PrintOP(Orden As OrdenPago, pic As PictureBox) As Boolean
         Set allcert = New Collection
     End If
 
-    If allcert Is Nothing Or Not IsSomething(allcert) Or allcert.count = 0 Then
-        Printer.FontBold = True
-        Printer.CurrentX = lmargin
-        Printer.Print "Certificado IIBB Nº: ";
-        Printer.FontBold = False
-        Printer.Print " NO POSEE"
-    Else
-        If allcert.count = 1 Then
-            Printer.FontBold = True
-            Printer.CurrentX = lmargin
-            Printer.Print "Certificado IIBB Nº: ";
-            Printer.FontBold = False
-            Printer.Print allcert(1).Id
-        Else
-
-            Printer.FontBold = True
-            Printer.CurrentX = lmargin
-            Printer.Print "Certificados IIBB Nº: ";
-            Printer.FontBold = False
-
-            Dim c1 As CertificadoRetencion
-            Dim t1 As String
-            For Each c1 In allcert
-                t1 = t1 & c1.Id & " "
-            Next
-
-            Printer.Print t1
-
-        End If
-    End If
+'''    If allcert Is Nothing Or Not IsSomething(allcert) Or allcert.count = 0 Then
+'''        Printer.FontBold = True
+'''        Printer.CurrentX = lmargin
+'''        Printer.Print "Certificado IIBB Nº: ";
+'''        Printer.FontBold = False
+'''        Printer.Print " NO POSEE"
+'''    Else
+'''        If allcert.count = 1 Then
+'''            Printer.FontBold = True
+'''            Printer.CurrentX = lmargin
+'''            Printer.Print "Certificado IIBB Nº: ";
+'''            Printer.FontBold = False
+'''            Printer.Print allcert(1).Id
+'''        Else
+'''
+'''            Printer.FontBold = True
+'''            Printer.CurrentX = lmargin
+'''            Printer.Print "Certificados IIBB Nº: ";
+'''            Printer.FontBold = False
+'''
+'''            Dim c1 As CertificadoRetencion
+'''            Dim t1 As String
+'''
+'''            For Each c1 In allcert
+'''                t1 = t1 & c1.Id & " "
+'''            Next
+'''
+'''            Printer.Print t1
+'''
+'''        End If
+'''    End If
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin

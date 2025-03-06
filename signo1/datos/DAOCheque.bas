@@ -32,6 +32,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
       & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
       & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
       & " LEFT JOIN ordenes_pago op ON op.id= cheq.orden_pago_origen" _
+      & " LEFT JOIN liquidaciones_caja liq ON liq.id= cheq.orden_pago_origen" _
       & " WHERE 1 = 1 "
 
     If LenB(filter) > 0 Then
@@ -51,20 +52,20 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
     Dim fieldsIndex As Dictionary
     BuildFieldsIndex rs, fieldsIndex
-    Dim Cheques As New Collection
+    Dim cheques As New Collection
 
     Dim tmpCheque As cheque
 
 
     While Not rs.EOF
         Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov", "rec")
-        Cheques.Add tmpCheque, CStr(tmpCheque.Id)
+        cheques.Add tmpCheque, CStr(tmpCheque.Id)
 
         rs.MoveNext
 
     Wend
 
-    Set FindAll = Cheques
+    Set FindAll = cheques
     Exit Function
 
 err1:
@@ -87,9 +88,9 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
 
 End Function
 
-Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As cheque
+Public Function FindByChequeraAndNro(chequeraId As Long, NRO As String) As cheque
     Dim col As Collection
-    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(nro))
+    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(NRO))
     If col.count = 0 Then
         Set FindByChequeraAndNro = Nothing
     Else
@@ -109,8 +110,8 @@ Public Function FindById(Id As Long) As cheque
 
 End Function
 
-Public Function FindAllByChequeraId(chequeraId As Long) As Collection
-    Set FindAllByChequeraId = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId)
+Public Function FindAllByChequeraId(chequeraId As Long, Optional filter2 As String) As Collection
+    Set FindAllByChequeraId = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId, filter2)
 End Function
 
 

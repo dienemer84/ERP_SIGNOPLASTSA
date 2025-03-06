@@ -21,22 +21,22 @@ Public Function FindAllWithAlicuotas(Cuit As String) As Collection
     Set retenciones = FindAllEsAgente
 
     Dim rx As Retencion
-    Dim c As clsDTOPadronIIBB
+    Dim C As clsDTOPadronIIBB
     Set alicuotas = New Collection
     Dim x As DTORetencionAlicuota
-    For Each c In col2
+    For Each C In col2
 
         For Each rx In retenciones
 
-            If rx.IdPadron = c.IdPadron Then
+            If rx.IdPadron = C.IdPadron Then
 
                 Set x = New DTORetencionAlicuota
-                x.alicuotaRetencion = c.alicuotaRetencion
-                x.alicuotaPercepcion = c.alicuotaPercepcion
+                x.alicuotaRetencion = C.alicuotaRetencion
+                x.alicuotaPercepcion = C.alicuotaPercepcion
                 x.importe = 0
                 x.dePadron = True
                 Set x.Retencion = rx
-                ali.Add x, CStr(c.IdPadron)
+                ali.Add x, CStr(C.IdPadron)
 
             End If
 
@@ -73,11 +73,11 @@ Public Function FindAllWithAlicuotas(Cuit As String) As Collection
     Set FindAllWithAlicuotas = ali
 
 End Function
-Private Function Contains(r As Retencion, c As Collection)
+Private Function Contains(r As Retencion, C As Collection)
     Dim c1 As Boolean
     c1 = False
     Dim i As DTORetencionAlicuota
-    For Each i In c
+    For Each i In C
         If i.Retencion.Id = r.Id Then
             c1 = True
         End If
@@ -98,20 +98,20 @@ Public Function FindAllWithAlicuotasAnt(Cuit As String) As Collection
     Set retenciones = FindAllEsAgente
 
     Dim rx As Retencion
-    Dim c As clsDTOPadronIIBB
+    Dim C As clsDTOPadronIIBB
     Set alicuotas = New Collection
     Dim x As DTORetencionAlicuota
-    For Each c In col2
+    For Each C In col2
 
         For Each rx In retenciones
 
-            If rx.IdPadron = c.IdPadron Then
+            If rx.IdPadron = C.IdPadron Then
 
                 Set x = New DTORetencionAlicuota
-                x.alicuotaRetencion = c.alicuotaRetencion
-                x.alicuotaPercepcion = c.alicuotaPercepcion
+                x.alicuotaRetencion = C.alicuotaRetencion
+                x.alicuotaPercepcion = C.alicuotaPercepcion
                 Set x.Retencion = rx
-                ali.Add x, CStr(c.IdPadron)
+                ali.Add x, CStr(C.IdPadron)
 
             End If
 
@@ -179,6 +179,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As R
 
     Set Map = T
 End Function
+
 
 Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     Dim col As Collection

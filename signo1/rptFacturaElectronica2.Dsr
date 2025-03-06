@@ -1038,6 +1038,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Top             =   405
          Object.Width           =   2175
          Object.Height          =   240
+         Object.Visible         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   8.25
@@ -1057,6 +1058,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Top             =   405
          Object.Width           =   2910
          Object.Height          =   270
+         Object.Visible         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   8.25
@@ -1076,6 +1078,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Object.Top             =   1440
          Object.Width           =   2715
          Object.Height          =   225
+         Object.Visible         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   8.25

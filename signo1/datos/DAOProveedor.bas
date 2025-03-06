@@ -196,6 +196,7 @@ If WithCuentasContables Then
     Set FindAll = col
 End Function
 
+
 Public Function FindAllByRubro(rubroId As Long) As Collection
     Set FindAllByRubro = FindAll("proveedores.id IN (SELECT DISTINCT id_proveedor FROM asignacion WHERE asignacion.id_rubro = " & rubroId & ")", , , , True)
 End Function
@@ -325,6 +326,8 @@ Public Function CambiarEstado(Proveedor As clsProveedor) As Boolean
 err1:
     CambiarEstado = False
 End Function
+
+
 Public Sub LlenarCombo(cbo As ComboBox, _
                        Optional EstadoCtaCte As Boolean = False, _
                        Optional EstadoContado As Boolean = True, _
@@ -349,6 +352,7 @@ Public Sub LlenarCombo(cbo As ComboBox, _
         cbo.ListIndex = 0
     End If
 End Sub
+
 Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, _
                                   Optional EstadoCtaCte As Boolean = False, _
                                   Optional EstadoContado As Boolean = True, _
@@ -367,6 +371,7 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, _
         cbo.ListIndex = 0
     End If
 End Sub
+
 
 Public Function ValidarCuit(Proveedor As clsProveedor) As Boolean
     Dim q As String
