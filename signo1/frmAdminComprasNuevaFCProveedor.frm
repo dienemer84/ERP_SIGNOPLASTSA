@@ -475,7 +475,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   66453505
+      Format          =   66256897
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1081,7 +1081,7 @@ Private Sub btnGuardar_Click()
                 EVENTO.EVENTO = modificar_
             End If
             Set EVENTO.Originador = Me
-            EVENTO.tipo = TipoSuscripcion.FacturaProveedor_
+            EVENTO.Tipo = TipoSuscripcion.FacturaProveedor_
 
             ' Desactivo este evento Notificar porque aparentemente da Error (dienemer 11.09.20)
             'Channel.Notificar EVENTO, TipoSuscripcion.FacturaProveedor_
@@ -1223,7 +1223,7 @@ Private Sub Form_Load()
         Me.Label17.Visible = False
         Me.txtMontoManual.Visible = False
         Me.btnNuevoCbte.Visible = False
-        Me.txtTipoCambio = vFactura.tipoCambio
+        Me.txtTipoCambio = vFactura.TipoCambio
         Me.lblTipoCambioPago = "Tipo de cambio Pago: " & vFactura.TipoCambioPago
 
         grabado = True
@@ -1326,7 +1326,7 @@ End Sub
 
 Private Sub grid_cuentascontables_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set ctaAplicada = New clsCuentaFactura
-    ctaAplicada.monto = funciones.FormatearDecimales(Values(2))
+    ctaAplicada.Monto = funciones.FormatearDecimales(Values(2))
     ctaAplicada.cuentas = DAOCuentaContable.GetById(Values(1))
     vFactura.cuentasContables.Add ctaAplicada
     TotalFactura
@@ -1346,7 +1346,7 @@ Private Sub grid_cuentascontables_UnboundReadData(ByVal RowIndex As Long, ByVal 
 
     If Len(ctaAplicada.cuentas.codigo) > 0 Then
         Values(1) = ctaAplicada.cuentas.codigo & " - " & ctaAplicada.cuentas.nombre
-        Values(2) = funciones.FormatearDecimales(ctaAplicada.monto)
+        Values(2) = funciones.FormatearDecimales(ctaAplicada.Monto)
     End If
 
     Exit Sub
@@ -1360,7 +1360,7 @@ Private Sub grid_cuentascontables_UnboundUpdate(ByVal RowIndex As Long, ByVal Bo
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
         vFactura.cuentasContables(RowIndex).cuentas = DAOCuentaContable.GetById(Values(1))
     End If
-    vFactura.cuentasContables(RowIndex).monto = Values(2)
+    vFactura.cuentasContables(RowIndex).Monto = Values(2)
     TotalFactura
     grabado = False
 End Sub
@@ -1378,7 +1378,7 @@ End Sub
 
 Private Sub AddDefaultAlicuota(id_alicuota As Long)
     Set aliaplicada = New clsAlicuotaAplicada
-    aliaplicada.monto = 0
+    aliaplicada.Monto = 0
     aliaplicada.alicuota = DAOAlicuotas.GetById(id_alicuota)
     vFactura.IvaAplicado.Add aliaplicada
     mostrarALicuotas
@@ -1397,7 +1397,7 @@ End Sub
 Private Sub grilla_alicuotas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set aliaplicada = New clsAlicuotaAplicada
 
-    aliaplicada.monto = funciones.FormatearDecimales(Values(2))
+    aliaplicada.Monto = funciones.FormatearDecimales(Values(2))
     aliaplicada.alicuota = DAOAlicuotas.GetById(Values(1))
     vFactura.IvaAplicado.Add aliaplicada
     TotalFactura
@@ -1415,7 +1415,7 @@ Private Sub grilla_alicuotas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookm
     On Error Resume Next
     Set aliaplicada = vFactura.IvaAplicado.item(RowIndex)
     Values(1) = funciones.FormatearDecimales(aliaplicada.alicuota.alicuota)
-    Values(2) = funciones.FormatearDecimales(aliaplicada.monto)
+    Values(2) = funciones.FormatearDecimales(aliaplicada.Monto)
 End Sub
 
 Private Sub grilla_alicuotas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -1423,7 +1423,7 @@ Private Sub grilla_alicuotas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmar
         vFactura.IvaAplicado(RowIndex).alicuota = DAOAlicuotas.GetById(Values(1))
 
     End If
-    vFactura.IvaAplicado(RowIndex).monto = Values(2)
+    vFactura.IvaAplicado(RowIndex).Monto = Values(2)
     TotalFactura
     grabado = False
 End Sub
@@ -1444,7 +1444,7 @@ End Sub
 
 Private Sub grilla_percepciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set perAplicada = New clsPercepcionesAplicadas
-    perAplicada.monto = Values(2)
+    perAplicada.Monto = Values(2)
     perAplicada.Percepcion = DAOPercepciones.GetById(Values(1))
     vFactura.percepciones.Add perAplicada
     TotalFactura
@@ -1463,7 +1463,7 @@ Private Sub grilla_percepciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
 
     Set perAplicada = vFactura.percepciones.item(RowIndex)
     Values(1) = perAplicada.Percepcion.Percepcion
-    Values(2) = funciones.FormatearDecimales(perAplicada.monto)
+    Values(2) = funciones.FormatearDecimales(perAplicada.Monto)
 
     Exit Sub
 
@@ -1475,7 +1475,7 @@ Private Sub grilla_percepciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Book
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
         vFactura.percepciones(RowIndex).Percepcion = DAOPercepciones.GetById(Values(1))
     End If
-    vFactura.percepciones(RowIndex).monto = Values(2)
+    vFactura.percepciones(RowIndex).Monto = Values(2)
     TotalFactura
     grabado = False
 End Sub
@@ -1500,6 +1500,7 @@ End Sub
 Private Sub btnNuevoCbte_Click()
     Dim frm1 As New frmAdminComprasNuevaFCProveedor
     frm1.Factura = Nothing
+    frm1.cboProveedores.ListIndex = Me.cboProveedores.ListIndex
     frm1.Show
 
     frm1.Top = 100
@@ -1622,7 +1623,7 @@ Private Sub LlenarFactura()
 
     Me.cboTipoDocContable.ListIndex = funciones.PosIndexCbo(vFactura.tipoDocumentoContable, Me.cboTipoDocContable)
     Me.txtImpuestos = funciones.FormatearDecimales(vFactura.ImpuestoInterno)
-    Me.DTPicker1 = vFactura.fecha
+    Me.DTPicker1 = vFactura.FEcha
 
     '    Me.Label12.Visible = False
     Me.txtNumeroMask.Visible = False
@@ -1672,7 +1673,7 @@ Private Sub mostrarALicuotas()
 End Sub
 
 Private Sub armarFactura()
-    vFactura.fecha = (CDate(Format(Me.DTPicker1, "yyyy-mm-dd")))
+    vFactura.FEcha = (CDate(Format(Me.DTPicker1, "yyyy-mm-dd")))
 
     If Me.txtNumeroCargado.Text = "txtNumeroCargado" Then
         vFactura.numero = Me.txtNumeroMask.Text
@@ -1682,7 +1683,7 @@ Private Sub armarFactura()
 
     vFactura.Proveedor = Proveedor
     vFactura.ImpuestoInterno = CDbl(Me.txtImpuestos)
-    vFactura.monto = CDbl(Me.txtMontoNeto)
+    vFactura.Monto = CDbl(Me.txtMontoNeto)
     vFactura.estado = EstadoFacturaProveedor.EnProceso
 
     idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
@@ -1696,7 +1697,7 @@ End Sub
 
 Private Sub txtTipoCambio_Change()
     On Error Resume Next
-    vFactura.tipoCambio = Val(Me.txtTipoCambio)
+    vFactura.TipoCambio = Val(Me.txtTipoCambio)
     TotalFactura
     grabado = False
 End Sub

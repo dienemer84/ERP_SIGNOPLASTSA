@@ -80,15 +80,38 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          EndProperty
          UseVisualStyle  =   -1  'True
       End
+      Begin XtremeSuiteControls.Label lblFacturasTotal 
+         Height          =   375
+         Left            =   120
+         TabIndex        =   80
+         Top             =   3720
+         Visible         =   0   'False
+         Width           =   2535
+         _Version        =   786432
+         _ExtentX        =   4471
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Label13"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Alignment       =   1
+      End
       Begin XtremeSuiteControls.Label lblTotalPagoACuenta 
-         Height          =   495
+         Height          =   255
          Left            =   120
          TabIndex        =   78
          Top             =   2760
          Width           =   3375
          _Version        =   786432
          _ExtentX        =   5953
-         _ExtentY        =   873
+         _ExtentY        =   450
          _StockProps     =   79
          Caption         =   "Label13"
       End
@@ -133,21 +156,39 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       Begin VB.Label lblTotalFacturas 
          AutoSize        =   -1  'True
          Caption         =   "Total facturas: "
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   195
          Left            =   120
          TabIndex        =   70
          Top             =   1080
-         Width           =   1110
+         Width           =   1275
       End
       Begin VB.Label lblTotalOrdenPago 
          AutoSize        =   -1  'True
          Caption         =   "Total a pagar:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   195
          Left            =   120
          TabIndex        =   69
          Tag             =   "tot fac - tot ret"
          Top             =   840
-         Width           =   1020
+         Width           =   1170
       End
       Begin VB.Label lblTotalFacturasNG 
          AutoSize        =   -1  'True
@@ -1421,8 +1462,8 @@ Private cheque As cheque
 Private tmpChequera As chequera
 Private chequesChequeraSeleccionada As New Collection
 Public ReadOnly As Boolean
-
 Dim pagoacta As clsPagoACta
+
 
 
 Public Sub Cargar(op As OrdenPago)
@@ -1600,8 +1641,8 @@ Private Sub btnBorrar_Click()
     Me.lstFacturas.Clear
     Set prov = Nothing
 
-
 End Sub
+
 
 Private Sub ActualizarAlicuotas()
 
@@ -1617,7 +1658,6 @@ Private Sub ActualizarAlicuotas()
             End If
         Next
     Next
-
 End Sub
 
 
@@ -1646,6 +1686,7 @@ Private Sub btnCargar_Click()
 
 End Sub
 
+
 Private Sub btnClearProveedor_Click()
     cboProveedores.ListIndex = -1
     Me.gridRetenciones.ItemCount = 0
@@ -1657,141 +1698,108 @@ End Sub
 
 
 Private Sub btnExportarCbtes_Click()
-    On Error GoTo ErrorHandler
+    ExportarListBoxAExcel
 
-    ' Verificar si el ListBox tiene datos
-    If Me.lstFacturas.ListCount = 0 Then
-        MsgBox "El ListBox está vacío. No hay datos para exportar.", vbExclamation
-        Exit Sub
-    End If
+End Sub
 
-    ' Crear una instancia de Excel
-    Dim excelApp As Object
-    Set excelApp = CreateObject("Excel.Application")
 
-    ' Crear un nuevo libro de trabajo
-    Dim excelWorkbook As Object
-    Set excelWorkbook = excelApp.Workbooks.Add
-
-    ' Seleccionar la primera hoja
-    Dim excelWorksheet As Object
-    Set excelWorksheet = excelWorkbook.Sheets(1)
-
-    ' Encabezados de las columnas (en negrita)
-    excelWorksheet.Cells(1, 1).value = "Tipo"
-    excelWorksheet.Cells(1, 2).value = "Número"
-    excelWorksheet.Cells(1, 3).value = "Moneda"
-    excelWorksheet.Cells(1, 4).value = "Monto"
-    excelWorksheet.Cells(1, 5).value = "Abonado"
-    excelWorksheet.Cells(1, 6).value = "Fecha"
-    excelWorksheet.Cells(1, 7).value = "Tipo de Cambio"
-
-    ' Aplicar formato de negrita a los encabezados
-    excelWorksheet.rows(1).Font.Bold = True
-
-    ' Variables para los totales
-    Dim totalMonto As Double
+Private Sub ExportarListBoxAExcel()
+    Dim xlApp As Object
+    Dim xlWorkbook As Object
+    Dim xlWorksheet As Object
+    Dim i As Integer
+    Dim datos() As String
+    Dim item As String
     Dim totalAbonado As Double
-    totalMonto = 0
+    Dim totalTotal As Double
+    Dim lastRow As Integer
+    Dim tipoComprobante As String
+    Dim valorTotal As Double
+    Dim valorAbonado As Double
+    
+    ' Crear una nueva instancia de Excel
+    Set xlApp = CreateObject("Excel.Application")
+    Set xlWorkbook = xlApp.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Sheets(1)
+    
+    ' Escribir los encabezados de las columnas en negrita
+    With xlWorksheet
+        .Cells(1, 1).value = "Tipo"
+        .Cells(1, 2).value = "Numero"
+        .Cells(1, 3).value = "Total"
+        .Cells(1, 4).value = "Abonado"
+        .Cells(1, 5).value = "Fecha"
+        .Cells(1, 6).value = "TC"
+        
+        ' Poner los encabezados en negrita
+        .rows(1).Font.Bold = True
+    End With
+    
+    ' Inicializar totales
     totalAbonado = 0
-
-    ' Exportar los datos del ListBox a Excel
-    Dim i As Long
-    For i = 0 To lstFacturas.ListCount - 1
-        ' Obtener la fila actual del ListBox
-        Dim fila As String
-        fila = lstFacturas.list(i)
-
-        ' Parsear la fila en partes usando "|" como separador
-        Dim partes() As String
-        partes = Split(fila, "|")
-
-        ' Limpiar y extraer cada parte
-        Dim Tipo As String
-        Dim numero As String
-        Dim moneda As String
-        Dim Monto As String
-        Dim abonado As String
-        Dim FEcha As String
-        Dim TipoCambio As String
-
-        ' Asignar cada parte a su variable correspondiente
-        Tipo = Trim(partes(0))          ' Tipo (FC-A)
-        numero = Trim(partes(1))        ' Número (0700-02179113)
-        moneda = Trim(partes(2))        ' Moneda (AR$)
-        Monto = Trim(partes(3))         ' Monto (16.304.166,00)
-        abonado = Trim(partes(4))       ' Abonado (163.041,66)
-        FEcha = Trim(partes(5))         ' Fecha (26/12/2024)
-        TipoCambio = Trim(partes(6))    ' Tipo de Cambio (TC: 1)
-
-        ' Limpiar la columna "Abonado" (eliminar "Abonado:")
-        If InStr(abonado, "Abonado:") > 0 Then
-            abonado = Trim(Replace(abonado, "Abonado:", ""))
+    totalTotal = 0
+    
+    ' Recorrer los elementos del ListBox (Me.lstFacturas)
+    For i = 0 To Me.lstFacturas.ListCount - 1
+        ' Obtener el elemento del ListBox
+        item = Me.lstFacturas.list(i)
+        
+        ' Eliminar los textos "Abonado :" y "TC:"
+        item = Replace(item, "Abonado: ", "")
+        item = Replace(item, "TC: ", "")
+        
+        ' Dividir el texto por el carácter "|"
+        datos = Split(item, "|")
+        
+        ' Escribir los datos en Excel
+        If UBound(datos) >= 5 Then ' Asegurarse de que hay suficientes datos
+            tipoComprobante = Trim(datos(0)) ' Tipo de comprobante (primera columna)
+            valorTotal = CDbl(Trim(datos(2))) ' Valor de la columna Total
+            valorAbonado = CDbl(Trim(datos(3))) ' Valor de la columna Abonado
+            
+            ' Si el comprobante comienza con "NC", convertir los valores a negativos
+            If Left(tipoComprobante, 2) = "NC" Then
+                valorTotal = valorTotal * -1
+                valorAbonado = valorAbonado * -1
+            End If
+            
+            ' Escribir los datos en Excel
+            xlWorksheet.Cells(i + 2, 1).value = tipoComprobante ' Tipo
+            xlWorksheet.Cells(i + 2, 2).value = Trim(datos(1)) ' Numero
+            xlWorksheet.Cells(i + 2, 3).value = valorTotal ' Total (puede ser negativo si es NC)
+            xlWorksheet.Cells(i + 2, 4).value = valorAbonado ' Abonado (puede ser negativo si es NC)
+            xlWorksheet.Cells(i + 2, 5).value = Trim(datos(4)) ' Fecha
+            xlWorksheet.Cells(i + 2, 6).value = Trim(datos(5)) ' TC
+            
+            ' Sumar las columnas 3 (Total) y 4 (Abonado)
+            totalTotal = totalTotal + valorTotal
+            totalAbonado = totalAbonado + valorAbonado
         End If
-
-        ' Limpiar la columna "Monto" (eliminar separadores de miles y convertir a formato numérico)
-        Monto = Replace(Monto, ".", "") ' Eliminar puntos (separadores de miles)
-        Monto = Replace(Monto, ",", ".") ' Reemplazar coma por punto para formato numérico
-
-        ' Limpiar la columna "Abonado" (eliminar separadores de miles y convertir a formato numérico)
-        abonado = Replace(abonado, ".", "") ' Eliminar puntos (separadores de miles)
-        abonado = Replace(abonado, ",", ".") ' Reemplazar coma por punto para formato numérico
-
-        ' Convertir a números para sumar los totales
-        Dim montoNum As Double
-        Dim abonadoNum As Double
-        montoNum = CDbl(Monto)
-        abonadoNum = CDbl(abonado)
-
-        ' Sumar a los totales
-        totalMonto = totalMonto + montoNum
-        totalAbonado = totalAbonado + abonadoNum
-
-        ' Escribir los datos en las columnas correspondientes
-        excelWorksheet.Cells(i + 2, 1).value = Tipo
-        excelWorksheet.Cells(i + 2, 2).value = numero
-        excelWorksheet.Cells(i + 2, 3).value = moneda
-        excelWorksheet.Cells(i + 2, 4).value = montoNum
-        excelWorksheet.Cells(i + 2, 5).value = abonadoNum
-        excelWorksheet.Cells(i + 2, 6).value = FEcha
-        excelWorksheet.Cells(i + 2, 7).value = TipoCambio
     Next i
-
-    ' Escribir los totales una fila más abajo del final de los datos (en negrita)
-    Dim totalRow As Long
-    totalRow = lstFacturas.ListCount + 3 ' Fila después de los datos + 1 fila de separación
-
-    excelWorksheet.Cells(totalRow, 4).value = totalMonto
-    excelWorksheet.Cells(totalRow, 5).value = totalAbonado
-
-    ' Aplicar formato de negrita a los totalizadores
-    excelWorksheet.Cells(totalRow, 4).Font.Bold = True
-    excelWorksheet.Cells(totalRow, 5).Font.Bold = True
-
-    ' Aplicar formato de moneda a las columnas 4 y 5
-    excelWorksheet.Columns("D:D").NumberFormat = "$#,##0.00" ' Formato de moneda para Monto
-    excelWorksheet.Columns("E:E").NumberFormat = "$#,##0.00" ' Formato de moneda para Abonado
-
-    ' Ajustar el ancho de las columnas
-    excelWorksheet.Columns("A:G").AutoFit
-
+    
+    ' Calcular la última fila con datos
+    lastRow = Me.lstFacturas.ListCount + 2
+    
+    ' Escribir los totales en la última fila
+    With xlWorksheet
+        .Cells(lastRow, 1).value = "Totales"
+        .Cells(lastRow, 3).value = totalTotal
+        .Cells(lastRow, 4).value = totalAbonado
+        
+        ' Poner los totales en negrita
+        .rows(lastRow).Font.Bold = True
+    End With
+    
+    ' Ajustar el ancho de las columnas en Excel
+    xlWorksheet.Columns("A:F").AutoFit
+    
     ' Mostrar Excel
-    excelApp.Visible = True
-
+    xlApp.Visible = True
+    
     ' Liberar objetos
-    Set excelWorksheet = Nothing
-    Set excelWorkbook = Nothing
-    Set excelApp = Nothing
-
-    Exit Sub
-
-ErrorHandler:
-    ' Manejo de errores
-    MsgBox "Error al exportar a Excel: " & Err.Description, vbCritical
-    If Not excelApp Is Nothing Then
-        excelApp.Quit
-        Set excelApp = Nothing
-    End If
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApp = Nothing
 End Sub
 
 
@@ -1896,7 +1904,6 @@ End Sub
 
 
 Private Sub btnPadronAnt_Click()
-
     If Me.cboProveedores.ListIndex <> -1 Then
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
 
@@ -1930,9 +1937,7 @@ Private Sub cboMonedas_Click()
 End Sub
 
 
-
 Private Sub cboProveedores_Click()
-
     Me.gridRetenciones.ItemCount = 0
 
     Me.txtBuscarFactura = ""
@@ -1947,7 +1952,6 @@ End Sub
 
 
 Private Sub cmdMostrarDatosProveedor_Click()
-    
     If Me.cboProveedores.ListIndex <> -1 Then
         Set prov = colProveedores.item(CStr(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)))
 
@@ -1998,12 +2002,13 @@ Private Sub Command1_Click()
 
 End Sub
 
+
 Private Sub dtpFecha_Change()
     OrdenPago.FEcha = Me.dtpFecha.value
 End Sub
 
+
 Private Sub Form_Load()
-    
     formLoading = True
     
     Me.Left = frmPrincipal.ScaleWidth / 6
@@ -2100,6 +2105,7 @@ Private Sub Form_Load()
     formLoading = False
 End Sub
 
+
 Private Sub CargarChequesDisponibles()
     Set chequesDisponibles = DAOCheques.FindAllEnCarteraDeTerceros
     Me.gridChequesDisponibles.ItemCount = chequesDisponibles.count
@@ -2125,7 +2131,6 @@ End Sub
 
 
 Private Sub MostrarFacturas()
-
     Me.lstFacturas.Clear
 
     If IsSomething(prov) Then
@@ -2153,11 +2158,13 @@ Private Sub MostrarFacturas()
             Factura.NetoGravadoAbonadoGlobalPendiente = 0    ' c(2)
             Factura.OtrosAbonadoGlobalPendiente = 0    'c(3)
 
-            T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.total & ")" & " (" & Factura.FEcha & ")"    'TipoCambio: (" & Factura.TipoCambioPago & ")"
-            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
-                T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
+'''                T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.total & ")" & " (" & Factura.FEcha & ")"    'TipoCambio: (" & Factura.TipoCambioPago & ")"
+'''            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
+'''                T = Factura.NumeroFormateado & " (" & Factura.moneda.NombreCorto & " " & Factura.total & " - Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & ")" & " (" & Factura.FEcha & ")"
 
-                'MsgBox (c.count)
+                T = Factura.NumeroFormateadoCorto & " | " & Factura.numero & " | " & Factura.total & " | Abonado: 0  " & " | " & Factura.FEcha & " | TC: " & Factura.TipoCambioPago & " | "
+            If Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente > 0 Then
+                T = Factura.NumeroFormateadoCorto & " | " & Factura.numero & " | " & Factura.total & " | Abonado: " & Factura.TotalAbonadoGlobal + Factura.TotalAbonadoGlobalPendiente & " | " & Factura.FEcha & " | TC: " & Factura.TipoCambioPago & " | "
 
             End If
 
@@ -2184,7 +2191,6 @@ End Sub
 
 
 Private Sub MostrarPagosACuenta()
-
     Me.ListPagosACuenta.Clear
 
     If IsSomething(prov) Then
@@ -2224,6 +2230,7 @@ Private Sub Form_Unload(Cancel As Integer)
     
 End Sub
 
+
 Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= bancos.count Then
         Set Banco = bancos.item(RowIndex)
@@ -2248,6 +2255,7 @@ Private Sub gridCajaOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoole
     Cancel = cond1 Or cond2 Or cond3 Or cond4
 End Sub
 
+
 Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Cajas.count > 0 Then
         Set caja = Cajas.item(RowIndex)
@@ -2255,6 +2263,7 @@ Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As 
         Values(2) = caja.nombre
     End If
 End Sub
+
 
 Private Sub gridChequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= chequeras.count Then
@@ -2272,9 +2281,11 @@ Private Sub gridChequesChequera_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
     End If
 End Sub
 
+
 Private Sub gridChequesDisponibles_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.gridChequesDisponibles, Column
 End Sub
+
 
 Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= chequesDisponibles.count Then
@@ -2288,11 +2299,8 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal
         Values(6) = cheque.Id
         Values(7) = cheque.OrigenCheque
         Values(8) = cheque.OrigenDestino
-
     End If
-
 End Sub
-
 
 
 Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
@@ -2330,9 +2338,6 @@ Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolea
 End Sub
 
 
-
-
-
 Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal value As Variant)
     If ColIndex = 1 Then
         'If Not IsNumeric(Me.gridChequesPropios.Value(1)) Or LenB(Me.gridChequesPropios.Value(1)) = 0 Then
@@ -2346,6 +2351,7 @@ Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal Val
     End If
 End Sub
 
+
 Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set cheque = Nothing
     If IsNumeric(Values(2)) Then Set cheque = DAOCheques.FindById(Values(2))
@@ -2355,10 +2361,10 @@ Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JS
 
         OrdenPago.ChequesPropios.Add cheque, CStr(cheque.Id)
 
-
     End If
     Totalizar
 End Sub
+
 
 Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 Then
@@ -2366,6 +2372,7 @@ Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookm
         Totalizar
     End If
 End Sub
+
 
 Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If OrdenPago.ChequesPropios.count >= RowIndex Then
@@ -2382,6 +2389,7 @@ Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Boo
     End If
 End Sub
 
+
 Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If OrdenPago.ChequesPropios.count >= RowIndex Then
         Set cheque = OrdenPago.ChequesPropios.item(RowIndex)
@@ -2397,6 +2405,7 @@ Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookm
     End If
 
     Totalizar
+    
 End Sub
 
 
@@ -2404,8 +2413,8 @@ Private Sub gridCompensatorios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookm
     OrdenPago.Compensatorios.remove (RowIndex)
 End Sub
 
-Private Sub gridCompensatorios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
+Private Sub gridCompensatorios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
     Set compe = OrdenPago.Compensatorios.item(RowIndex)
     Values(1) = compe.Comprobante.NumeroFormateado
@@ -2417,6 +2426,7 @@ Private Sub gridCompensatorios_UnboundReadData(ByVal RowIndex As Long, ByVal Boo
 
 End Sub
 
+
 Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If cuentasBancarias.count >= RowIndex Then
         Set CuentaBancaria = cuentasBancarias.item(RowIndex)
@@ -2424,6 +2434,7 @@ Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal B
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
 End Sub
+
 
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Monedas.count > 0 Then
@@ -2453,6 +2464,7 @@ err1:
 
 End Sub
 
+
 Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If alicuotas.count >= RowIndex Then
         Set alicuotaRetencion = alicuotas.item(RowIndex)
@@ -2462,6 +2474,7 @@ Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
         Values(4) = alicuotaRetencion.certificados
     End If
 End Sub
+
 
 Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If alicuotas.count >= RowIndex Then
@@ -2480,10 +2493,10 @@ Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark
 End Sub
 
 
-
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = id_susc
 End Property
+
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     CargarChequesDisponibles
@@ -2520,10 +2533,27 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     Dim totNGHoy As Double
     Dim totDeudaCompe As Double
     Dim totPagoACuenta As Double
+    Dim totFactNuevo As Double
     
     totDeudaCompe = 0
+    totFactNuevo = 0
     
     For Each F In col
+        
+    ' Inicializar la variable
+    
+
+    
+    ' Recorrer la lista de facturas
+
+        ' Verificar si es Nota de Crédito
+        If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+            ' Restar el total (convertir a negativo)
+            totFactNuevo = totFactNuevo - F.total
+        Else
+            ' Sumar el total normalmente
+            totFactNuevo = totFactNuevo + F.total
+        End If
 
 
         'totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravadoDiaPago * -1, f.NetoGravadoDiaPago), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
@@ -2532,6 +2562,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
         'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
         'fix 004
+        
         totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.totalAbonado * -1, F.totalAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
 
         totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
@@ -2563,43 +2594,37 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         Next
     End If
 
-    'FORMATCURRENCY
     Me.lblNgAbonar = "Total NG a Abonar en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnNG + totNGHoy))
 
-    'FORMATCURRENCY
-    'MsgBox ("Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact)))
-    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact))
-
-    'FORMATCURRENCY
+'''    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact))
+    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFactNuevo))
+    
     Me.lblDeudaCompensatorios = "Total deuda compensatorios en " & FormatCurrency(funciones.FormatearDecimales(totDeudaCompe))
 
     OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
+    
     OrdenPago.staticTotalDeudaCompensatorios = funciones.RedondearDecimales(totDeudaCompe)
 
-    'FORMATCURRENCY
     Me.lblTotalFacturasNG = "Total NG Facturas en " & FormatCurrency(funciones.FormatearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG))
 
     OrdenPago.StaticTotalFacturasNG = funciones.RedondearDecimales(TotNG + OrdenPago.DiferenciaCambioEnNG)
 
-    'FORMATCURRENCY
     Me.lblDiferenciaCambio = "Diferencia Cambio en " & FormatCurrency(totCambiong)
-    'Me.lblDiferenciaCambio = "Diferencia Cambio en " & OrdenPago.moneda.NombreCorto & " " & totCambiong
 
     OrdenPago.DiferenciaCambio = totCambio
 
     verCompensatorios
 
-    'FORMATCURRENCY
     Me.lblTotalARetener = "Total a retener en " & FormatCurrency(funciones.FormatearDecimales(totRet))
-    'Me.lblTotalARetener = "Total a retener en " & OrdenPago.moneda.NombreCorto & " " & funciones.FormatearDecimales(totRet)
 
     OrdenPago.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
-    'FORMATCURRENCY
-    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales((OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - (totRet - OrdenPago.OtrosDescuentos) + OrdenPago.TotalCompensatorios + totDeudaCompe)) - totPagoACuenta)
-    'Me.lblTotalOP = "Total OP: " & OrdenPago.moneda.NombreCorto & " " & OrdenPago.StaticTotal
-    
+'''    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales((OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - (totRet - OrdenPago.OtrosDescuentos) + OrdenPago.TotalCompensatorios + totDeudaCompe)) - totPagoACuenta)
+    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales(totFactNuevo - totRet))
+        
     Me.lblTotalPagoACuenta.caption = "Total Pago a Cuenta en " & FormatCurrency(funciones.FormatearDecimales(totPagoACuenta))
+    
+    Me.lblFacturasTotal.caption = FormatCurrency(funciones.FormatearDecimales(totFactNuevo))
     
 End Sub
 
@@ -2712,8 +2737,6 @@ Private Sub lstFacturas_DblClick()
     Totalizar
     Exit Sub
 
-
-
 err1:
     Totalizar
     change = 1
@@ -2792,6 +2815,7 @@ Sub limpiarParciales()
     Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
 End Sub
 
+
 Private Sub lstFacturas_ItemCheck(ByVal item As Long)
 
     If item < -1 Then
@@ -2814,12 +2838,9 @@ Private Sub lstFacturas_ItemCheck(ByVal item As Long)
         Me.txtOtrosParcialAbonar.Enabled = lstFacturas.Checked(item)
         Me.txtTotalParcialAbonado.Enabled = lstFacturas.Checked(item)
         Me.txtTotalParcialAbonar.Enabled = lstFacturas.Checked(item)
-
-
-
     End If
-
 End Sub
+
 
 Private Sub lstFacturas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim i As Integer
@@ -2832,14 +2853,11 @@ Private Sub lstFacturas_MouseDown(Button As Integer, Shift As Integer, x As Sing
                 PopupMenu Me.emergente
             End If
         Next
-
-
     End If
-
 End Sub
 
-Private Sub mnuCrearCompensatorio_Click()
 
+Private Sub mnuCrearCompensatorio_Click()
     Dim d As New frmCrearCompensatorio
     Dim i As Long
     Dim ivamax As Boolean
@@ -2849,7 +2867,6 @@ Private Sub mnuCrearCompensatorio_Click()
             Set Factura = colFacturas(CStr(Me.lstFacturas.ItemData(i)))
 
             If Factura.IvaAplicado.count > 1 Then ivamax = True
-
 
             'chequeo que no exista un compensatorio para esa factura.
 
@@ -2890,7 +2907,6 @@ Private Sub mostrarCompensatorios()
 End Sub
 
 
-
 Private Sub PushButton1_Click()
 
     If Me.cboProveedores.ListIndex <> -1 Then
@@ -2899,8 +2915,7 @@ Private Sub PushButton1_Click()
         If IsSomething(prov) Then
             Dim Nueva As New Collection
             Set Nueva = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)    '
-
-
+            
             Set alicuotas = DAORetenciones.FindAllWithAlicuotas(prov.Cuit)    '
             ActualizarAlicuotas
         End If
@@ -2911,6 +2926,7 @@ Private Sub PushButton1_Click()
 
     MostrarFacturas
 End Sub
+
 
 Private Sub radioConcepto_Click()
     If formLoaded Then
@@ -2941,7 +2957,6 @@ Private Sub ActivarControles()
 
     If Not Me.cboCuentas.Enabled Then Me.cboCuentas.ListIndex = -1
     If Not Me.txtDetalle.Enabled Then Me.txtDetalle.Text = vbNullString
-
 
 End Sub
 
@@ -2982,8 +2997,8 @@ Private Sub gridCajaOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Book
     End If
 End Sub
 
-Private Sub Totalizar()
 
+Private Sub Totalizar()
     OrdenPago.StaticTotalOrigenes = OrdenPago.TotalOrigenes
 
     Me.lblTotal.caption = "Total orden de pago en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.StaticTotalOrigenes + OrdenPago.StaticTotalRetenido))
@@ -3015,8 +3030,6 @@ Private Function TotalizarDiferenciasCambio()
         End If
     Next
 
-
-
     For Each F In col
         T = T + F.DiferenciaPorTipoDeCambionNG
         TIVA = TIVA + F.DiferenciaPorTipoDeCambionIVA
@@ -3026,7 +3039,6 @@ Private Function TotalizarDiferenciasCambio()
     Me.txtDiferenciaCambioPago.Text = T
     Me.txtDifTipoCambioIVA.Text = TIVA
     Me.txtDifCambio = TTOTAL
-
 
     If ReadOnly Then
         Dim s As String
@@ -3061,8 +3073,6 @@ End Sub
 Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And OrdenPago.operacionesCaja.count > 0 Then
         Set operacion = OrdenPago.operacionesCaja.item(RowIndex)
-        'operacion.IdPertenencia = recibo.id
-        'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
         operacion.Comprobante = Values(5)
         If IsNumeric(Values(2)) Then
@@ -3079,12 +3089,10 @@ End Sub
 
 
 Private Sub gridDepositosOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-
     Dim cond1 As Boolean
     Dim cond2 As Boolean
     Dim cond3 As Boolean
     Dim cond4 As Boolean
-
 
     cond1 = Not IsNumeric(Me.gridDepositosOperaciones.value(1))
     cond2 = Not IsNumeric(Me.gridDepositosOperaciones.value(2)) And LenB(Me.gridDepositosOperaciones.value(2)) = 0
@@ -3110,6 +3118,7 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
     End If
     operacion.EntradaSalida = OPSalida
     OrdenPago.operacionesBanco.Add operacion
+    
     Totalizar
 End Sub
 
@@ -3118,6 +3127,7 @@ Private Sub gridDepositosOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal
     If RowIndex > 0 And OrdenPago.operacionesBanco.count >= RowIndex Then
         OrdenPago.operacionesBanco.remove RowIndex
         Totalizar
+        
     End If
 End Sub
 
@@ -3140,11 +3150,10 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByV
     End If
 End Sub
 
+
 Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And OrdenPago.operacionesBanco.count > 0 Then
         Set operacion = OrdenPago.operacionesBanco.item(RowIndex)
-        'operacion.IdPertenencia = recibo.id
-        'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
         operacion.Comprobante = Values(5)
         If IsNumeric(Values(2)) Then
@@ -3174,14 +3183,13 @@ Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
 End Sub
 
 
-
 Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set cheque = Nothing
     If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
     If IsSomething(cheque) Then
         OrdenPago.ChequesTerceros.Add cheque, CStr(cheque.Id)
-
     End If
+    
     Totalizar
 
 End Sub
@@ -3225,10 +3233,12 @@ Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As 
     End If
 End Sub
 
+
 Private Sub txtBuscarFactura_GotFocus()
     Me.txtBuscarFactura.SelStart = 0
     Me.txtBuscarFactura.SelLength = Len(Me.txtBuscarFactura.Text)
 End Sub
+
 
 Private Sub txtBuscarFactura_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = 13 Then
@@ -3264,6 +3274,7 @@ Private Sub txtBuscarFactura_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
+
 Private Sub txtDifCambio_GotFocus()
     foco Me.txtDifCambio
 End Sub
@@ -3291,6 +3302,7 @@ Private Sub txtnetogravadoabonado_Change()
     Totalizar
 End Sub
 
+
 Private Sub txtOtrosDescuentos_LostFocus()
     OrdenPago.OtrosDescuentos = Val(Me.txtOtrosDescuentos.Text)
     Totalizar
@@ -3302,8 +3314,6 @@ Public Sub RecalcularOtrosFacturaelegida()
 
         vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
         RecalcularTotalFacturaElegida
-
-
     End If
 
 End Sub
@@ -3374,10 +3384,9 @@ End Sub
 Private Sub txtParcialAbonar_KeyUp(KeyCode As Integer, Shift As Integer)
     RecalcularNetoGravadoFacturaElegida
 
-    '
-
     Totalizar
 End Sub
+
 
 Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
     If Not IsNumeric(Me.txtParcialAbonar) Then
@@ -3394,9 +3403,11 @@ Private Sub txtParcialAbonar_Validate(Cancel As Boolean)
     End If
 End Sub
 
+
 Private Sub txtRetenciones_GotFocus()
     foco Me.txtRetenciones
 End Sub
+
 
 Private Sub txtRetenciones_LostFocus()
     Totalizar
