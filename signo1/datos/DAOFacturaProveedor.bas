@@ -35,13 +35,13 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     Dim strsql As String
     If fc.Id = 0 Then
         'guardo la factura
-        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte,ultima_actualizacion) values (" & funciones.GetUserObj.Id & " , " & fc.TipoCambio & ", " & fc.configFactura.Id & "," & fc.estado & "," & fc.Proveedor.Id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.Redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & "," & Escape(Now) & ")"
+        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte,ultima_actualizacion) values (" & funciones.GetUserObj.Id & " , " & fc.TipoCambio & ", " & fc.configFactura.Id & "," & fc.estado & "," & fc.Proveedor.Id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & "," & Escape(Now) & ")"
         conectar.execute strsql
         fc.Id = conectar.UltimoId2
         A = DAOPercepcionesAplicadas.Save(fc)
         B = DAOIvaAplicado.Save(fc)
-        c = DAOCuentasFacturas.Save(fc)
-        If Not A Or Not B Or Not c Then
+        C = DAOCuentasFacturas.Save(fc)
+        If Not A Or Not B Or Not C Then
             Err.Raise 100
         End If
 
@@ -60,15 +60,15 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
 
 
 
-        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.Id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.Id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.Redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.Id
+        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.Id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.Id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.Id
         If Not conectar.execute(strsql) Then GoTo err1
         B = DAOPercepcionesAplicadas.Save(fc)
         A = DAOIvaAplicado.Save(fc)
-        c = DAOCuentasFacturas.Save(fc)
+        C = DAOCuentasFacturas.Save(fc)
 
 
 
-        If Not A Or Not B Or Not c Then
+        If Not A Or Not B Or Not C Then
             Err.Raise 100
         End If
 
@@ -250,7 +250,6 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
         q = q & " ORDER BY " & orderBy
     End If
 
-
     Set rs = conectar.RSFactory(q)
 
     BuildFieldsIndex rs, indice
@@ -353,7 +352,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         fc.ImpuestoInterno = GetValue(rs, indice, tabla, "impuesto_interno")
         fc.Monto = GetValue(rs, indice, tabla, "monto_neto")
         fc.numero = GetValue(rs, indice, tabla, "numero_factura")
-        fc.Redondeo = GetValue(rs, indice, tabla, "redondeo_iva")
+        fc.redondeo = GetValue(rs, indice, tabla, "redondeo_iva")
         'fc.ConceptoNoGravado = GetValue(rs, indice, tabla, "no_gravado")
         fc.FormaPagoCuentaCorriente = GetValue(rs, indice, tabla, "forma_de_pago_cta_cte")
         fc.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
@@ -510,7 +509,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     Dim opeCaja As New operacion
     opeCaja.Pertenencia = OrigenOperacion.caja
     opeCaja.Monto = fac.total
-    If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then
+    If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
         opeCaja.Monto = fac.total * -1
     End If
 
@@ -521,7 +520,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     opeCaja.FechaCarga = Now
     Set opeCaja.caja = DAOCaja.FindById(1)
     opeCaja.EntradaSalida = OPSalida
-    op.OperacionesCaja.Add opeCaja
+    op.operacionesCaja.Add opeCaja
 
 
 
@@ -542,8 +541,8 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     '    totRet = totRet + d2.Item(CStr(ret.Id))
     'Next ret
 
-    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, fac.total * -1, fac.total), fac.moneda.Id, op.moneda.Id))
-    op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.moneda.Id, op.moneda.Id))
+    op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.total * -1, fac.total), fac.moneda.Id, op.moneda.Id))
+    op.StaticTotalFacturasNG = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.NetoGravado * -1, fac.NetoGravado), fac.moneda.Id, op.moneda.Id))
     op.StaticTotalOrigenes = op.TotalOrigenes
     op.StaticTotalRetenido = 0    'funciones.RedondearDecimales(totRet)
 
@@ -625,7 +624,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Dim initoffset As Long
     initoffset = offset
 
-    Dim c As Integer
+    Dim C As Integer
     Dim total As Double
     Dim totalneto As Double
     Dim totalno As Double
@@ -642,20 +641,20 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     d = 0
 
     For Each fac In col
-        If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
-        total = total + MonedaConverter.Convertir(fac.total * c, fac.moneda.Id, MonedaConverter.Patron.Id)
-        totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * c - fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
-        totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * c, fac.moneda.Id, MonedaConverter.Patron.Id)
-        totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * c, fac.moneda.Id, MonedaConverter.Patron.Id)
+        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
+        total = total + MonedaConverter.Convertir(fac.total * C, fac.moneda.Id, MonedaConverter.Patron.Id)
+        totalneto = totalneto + MonedaConverter.Convertir(fac.Monto * C - fac.TotalNetoGravadoDiscriminado(0) * C, fac.moneda.Id, MonedaConverter.Patron.Id)
+        totalno = totalno + MonedaConverter.Convertir(fac.TotalNetoGravadoDiscriminado(0) * C, fac.moneda.Id, MonedaConverter.Patron.Id)
+        totIva = totIva + MonedaConverter.Convertir(fac.TotalIVA * C, fac.moneda.Id, MonedaConverter.Patron.Id)
 
         'Agrega DNEMER 03/02/2021
-        totalpercep = totalpercep + fac.totalPercepciones * c
+        totalpercep = totalpercep + fac.totalPercepciones * C
         'Agrega DNEMER 24/04/2023
-        TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
+        TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * C)
 
 
 
-        If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
+        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
         d = d + 1
         ProgressBar.value = d
@@ -964,6 +963,7 @@ err1:
     MsgBox Err.Description
 End Function
 
+
 Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFIn As String) As Boolean
     On Error GoTo err1
 
@@ -1021,7 +1021,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     Dim initoffset As Long
     initoffset = offset
 
-    Dim c As Integer
+    Dim C As Integer
     Dim total As Double
     Dim totalneto As Double
     Dim totalno As Double
@@ -1043,12 +1043,12 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     d = 0
 
     For Each fac In col
-        If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
+        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
         
-        TotalFactura = ((fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno + fac.Redondeo) * c
+        TotalFactura = ((fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno + fac.redondeo) * C
         total = total + TotalFactura
               
-        TotalPagado = (fac.TotalAbonadoGlobal) * c
+        TotalPagado = (fac.TotalAbonadoGlobal) * C
         pagado = pagado + TotalPagado
         
         
@@ -1056,21 +1056,21 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         saldo = saldo + TotalSaldado
 
         'Agrega DNEMER 03/02/2021
-        totalpercep = totalpercep + fac.totalPercepciones * c
+        totalpercep = totalpercep + fac.totalPercepciones * C
         'Agrega DNEMER 24/04/2023
-        TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
+        TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * C)
         
 
         TotalFactura = (fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno
         
         Dim saldoComprobante As Double
         
-        saldoComprobante = FormatearDecimales((TotalFactura + fac.Redondeo) - fac.TotalAbonadoGlobal)
+        saldoComprobante = FormatearDecimales((TotalFactura + fac.redondeo) - fac.TotalAbonadoGlobal)
         
         If saldoComprobante <> 0 Then
         
 
-        If fac.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
+        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
         d = d + 1
         ProgressBar(0).value = d
@@ -1084,9 +1084,9 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         xlWorksheet.Cells(offset, 6).value = fac.numero
         xlWorksheet.Cells(offset, 7).value = fac.FEcha
         xlWorksheet.Cells(offset, 8).value = fac.moneda.NombreCorto
-        xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(TotalFactura + fac.Redondeo) * i
+        xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(TotalFactura + fac.redondeo) * i
         xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(fac.TotalAbonadoGlobal) * i
-        xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales((TotalFactura + fac.Redondeo) - fac.TotalAbonadoGlobal) * i
+        xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales((TotalFactura + fac.redondeo) - fac.TotalAbonadoGlobal) * i
         xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 11)).Borders.LineStyle = xlContinuous
 
         End If

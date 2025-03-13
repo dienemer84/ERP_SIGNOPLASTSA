@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   66453505
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   66453505
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   66453505
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   66453505
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   66453505
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1568,7 +1568,7 @@ Private Sub btnExportarContenido_Click()
 
     Set xlWorkbook = xlApplication.Workbooks.Add
 
-    Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
 
@@ -2560,6 +2560,7 @@ Private Sub LimpiarCliente()
     Me.lblCodPostal.caption = vbNullString
 End Sub
 
+
 Private Sub CargarFactura()
 
     If Not IsSomething(Factura) Then Exit Sub
@@ -2638,6 +2639,7 @@ Private Sub CargarFactura()
         Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(Factura.Tipo.Id, Me.cboTiposFactura)
 
         Me.txtNumero.Text = Factura.numero
+        
     End If
 
     Me.dtpFecha.value = Factura.FechaEmision
@@ -2704,6 +2706,7 @@ Private Sub CargarFactura()
     CargarDetalles
 
     Totalizar
+    
     ValidarEsCredito
 
     Me.cboOpcional27.ListIndex = funciones.PosIndexCbo(Factura.Opcional27, Me.cboOpcional27)
@@ -2798,7 +2801,7 @@ Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Sin
     If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
         Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
         If row > 0 Then
-            Set detalle = Factura.Detalles.Item(Me.gridDetalles.RowIndex(row))
+            Set detalle = Factura.Detalles.item(Me.gridDetalles.RowIndex(row))
             If IsSomething(detalle) Then
                 If (Not detalle.OrigenEsConcepto And detalle.AplicadoARemito) Or detalle.OrigenEsConcepto Then
                     Me.PopupMenu Me.mnuDetalles
@@ -2822,7 +2825,7 @@ Private Sub gridDetalles_SelectionChange()
     Dim it As Long
     it = Me.gridDetalles.RowIndex(gridDetalles.row)
     If it > 0 Then
-        Set detalle = Factura.Detalles.Item(it)
+        Set detalle = Factura.Detalles.item(it)
 
         If detalle.OrigenEsConcepto Then
             gridDetalles.Columns(1).EditType = jgexEditTextBox
@@ -2861,7 +2864,7 @@ End Sub
 
 Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= Factura.Detalles.count Then
-        Set detalle = Factura.Detalles.Item(RowIndex)
+        Set detalle = Factura.Detalles.item(RowIndex)
         Values(1) = detalle.Cantidad
         Values(2) = detalle.detalle
         Values(3) = funciones.FormatearDecimales(detalle.PorcentajeDescuento)
@@ -2878,7 +2881,7 @@ End Sub
 
 Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Factura.Detalles.count > 0 Then
-        Set detalle = Factura.Detalles.Item(RowIndex)
+        Set detalle = Factura.Detalles.item(RowIndex)
 
         detalle.Cantidad = Values(1)
         detalle.detalle = Values(2)

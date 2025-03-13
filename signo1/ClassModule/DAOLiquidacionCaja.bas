@@ -20,11 +20,11 @@ Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Col
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoPendienteEnEstaOP = c
+    Dim C As New Collection
+    C.Add tot
+    C.Add ng
+    C.Add Otros
+    Set FindAbonadoPendienteEnEstaOP = C
 
 End Function
 
@@ -48,11 +48,11 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoPendiente = c
+    Dim C As New Collection
+    C.Add tot
+    C.Add ng
+    C.Add Otros
+    Set FindAbonadoPendiente = C
 End Function
 
 
@@ -75,11 +75,11 @@ Public Function FindAbonadoFactura(facid As Long, ocid As Long) As Collection
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoFactura = c
+    Dim C As New Collection
+    C.Add tot
+    C.Add ng
+    C.Add Otros
+    Set FindAbonadoFactura = C
 
 End Function
 
@@ -120,9 +120,9 @@ Public Function FindAllByProveedor(provid As Long, Optional cond As String, Opti
 End Function
 
 
-Public Function FindById(id As Long) As clsLiquidacionCaja
+Public Function FindById(Id As Long) As clsLiquidacionCaja
     Dim col As Collection
-    Set col = FindAll("liquidaciones_caja.id=" & id)
+    Set col = FindAll("liquidaciones_caja.id=" & Id)
     If col.count = 0 Then
         Set FindById = Nothing
     Else
@@ -160,10 +160,10 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orde
     BuildFieldsIndex rs, idx
     While Not rs.EOF
         Set op = Map(rs, idx, "ordenes_pago", "AdminConfigMonedas")    ', "certificados_retencion")
-        If funciones.BuscarEnColeccion(col, CStr(op.id)) Then
-            Set op = col.item(CStr(op.id))
+        If funciones.BuscarEnColeccion(col, CStr(op.Id)) Then
+            Set op = col.item(CStr(op.Id))
         Else
-            col.Add op, CStr(op.id)
+            col.Add op, CStr(op.Id)
         End If
         rs.MoveNext
     Wend
@@ -223,17 +223,17 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     While Not rs.EOF
         Set liq = Map(rs, idx, "liquidaciones_caja", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones")    ', "certificados_retencion")
 
-        If funciones.BuscarEnColeccion(col, CStr(liq.id)) Then
-            Set liq = col.item(CStr(liq.id))
+        If funciones.BuscarEnColeccion(col, CStr(liq.Id)) Then
+            Set liq = col.item(CStr(liq.Id))
         Else
-            col.Add liq, CStr(liq.id)
+            col.Add liq, CStr(liq.Id)
         End If
 
         Set fac = DAOFacturaProveedor.Map(rs, idx, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", , "monFacProv")
 
         If IsSomething(fac) Then
-            If Not funciones.BuscarEnColeccion(liq.FacturasProveedor, CStr(fac.id)) Then
-                liq.FacturasProveedor.Add fac, CStr(fac.id)
+            If Not funciones.BuscarEnColeccion(liq.FacturasProveedor, CStr(fac.Id)) Then
+                liq.FacturasProveedor.Add fac, CStr(fac.Id)
             End If
 
         End If
@@ -242,12 +242,12 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
 
 If IsSomething(che) Then
             If che.Propio Then
-                If Not funciones.BuscarEnColeccion(liq.ChequesPropios, CStr(che.id)) Then
-                    liq.ChequesPropios.Add che, CStr(che.id)
+                If Not funciones.BuscarEnColeccion(liq.ChequesPropios, CStr(che.Id)) Then
+                    liq.ChequesPropios.Add che, CStr(che.Id)
                 End If
             Else
-                If Not funciones.BuscarEnColeccion(liq.ChequesTerceros, CStr(che.id)) Then
-                    liq.ChequesTerceros.Add che, CStr(che.id)
+                If Not funciones.BuscarEnColeccion(liq.ChequesTerceros, CStr(che.Id)) Then
+                    liq.ChequesTerceros.Add che, CStr(che.Id)
                 End If
             End If
         End If
@@ -255,21 +255,21 @@ If IsSomething(che) Then
         Set oper = DAOOperacion.Map(rs, idx, "operaciones", "AdminComprasCuentasContables", "monedaoperacion", "AdminConfigCuentas", "cajas")
         If IsSomething(oper) Then
             If oper.Pertenencia = Banco Then
-                If Not funciones.BuscarEnColeccion(liq.operacionesBanco, CStr(oper.id)) Then
+                If Not funciones.BuscarEnColeccion(liq.operacionesBanco, CStr(oper.Id)) Then
 
-                    liq.operacionesBanco.Add oper, CStr(oper.id)
+                    liq.operacionesBanco.Add oper, CStr(oper.Id)
                 End If
             ElseIf oper.Pertenencia = caja Then
-                If Not funciones.BuscarEnColeccion(liq.operacionesCaja, CStr(oper.id)) Then
-                    liq.operacionesCaja.Add oper, CStr(oper.id)
+                If Not funciones.BuscarEnColeccion(liq.operacionesCaja, CStr(oper.Id)) Then
+                    liq.operacionesCaja.Add oper, CStr(oper.Id)
                 End If
             End If
         End If
 
         Set ra = MapAlicuotaRetencion(rs, idx, "opr", "r")
         If IsSomething(ra) Then
-            If Not funciones.BuscarEnColeccion(liq.RetencionesAlicuota, CStr(ra.Retencion.id)) Then
-                liq.RetencionesAlicuota.Add ra, CStr(ra.Retencion.id)
+            If Not funciones.BuscarEnColeccion(liq.RetencionesAlicuota, CStr(ra.Retencion.Id)) Then
+                liq.RetencionesAlicuota.Add ra, CStr(ra.Retencion.Id)
             End If
         End If
 
@@ -292,12 +292,12 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
     Dim liq As clsLiquidacionCaja
 
     'id_certificado_retencion
-    Dim id As Long
-    id = GetValue(rs, indice, tabla, "id")
+    Dim Id As Long
+    Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set liq = New clsLiquidacionCaja
-        liq.id = id
+        liq.Id = Id
 
         liq.FEcha = GetValue(rs, indice, tabla, "fecha")
         liq.CuentaContableDescripcion = GetValue(rs, indice, tabla, "cuenta_contable_desc")
@@ -332,10 +332,10 @@ Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
     Dim ra As DTORetencionAlicuota
 
     'id_certificado_retencion
-    Dim id As Long
-    id = GetValue(rs, indice, tabla, "id_retencion")
+    Dim Id As Long
+    Id = GetValue(rs, indice, tabla, "id_retencion")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set ra = New DTORetencionAlicuota
         ra.alicuotaRetencion = GetValue(rs, indice, tabla, "alicuota")
         Set ra.Retencion = DAORetenciones.Map(rs, indice, TablaRetenciones)
@@ -370,7 +370,7 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
 
     Dim liq As clsLiquidacionCaja
 
-    Set liq = DAOLiquidacionCaja.FindById(liq_mem.id)
+    Set liq = DAOLiquidacionCaja.FindById(liq_mem.Id)
 
     If Not IsSomething(liq) Then
         GoTo err1
@@ -431,7 +431,7 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
         '            esf = EstadoFacturaProveedor.Saldada
         '        End If
 
-        conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & F.id
+        conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & F.Id
 
     Next F
 
@@ -500,7 +500,7 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
     End If
 
 
-    DaoHistorico.Save "orden_pago_historial", "LC Aprobada", liq.id
+    DaoHistorico.Save "orden_pago_historial", "LC Aprobada", liq.Id
     aprobar = True
     If insideTransaction Then conectar.CommitTransaction
     Exit Function
@@ -522,7 +522,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     On Error GoTo E
     Dim Nueva As Boolean: Nueva = False
 
-    If op.id = 0 Then
+    If op.Id = 0 Then
 
         If IsSomething(DAOLiquidacionCaja.FindByNumeroLiq(CLng(op.NumeroLiq))) Then
             MsgBox "Ya existe una Liquidación con ese número!", vbCritical, "Error"
@@ -580,15 +580,15 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
     If Not conectar.execute(q) Then GoTo E
 
-    If Nueva Then op.id = conectar.UltimoId2()
-    If op.id = 0 Then GoTo E
+    If Nueva Then op.Id = conectar.UltimoId2()
+    If op.Id = 0 Then GoTo E
 
     '------------------------------------------------------
     '------------------------------------------------------
     
         If cascada Then
 
-        q = "SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.id
+        q = "SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
         q = q & " AND id_cheque NOT IN (-1"
         If op.ChequesTerceros.count > 0 Then
             q = q & ", " & funciones.JoinCollectionValues(op.ChequesTerceros, ", ", "id")
@@ -605,45 +605,48 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         Wend
 
 
-        q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.id
+        q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
         If Not conectar.execute(q) Then GoTo E
 
         Dim che As cheque
         For Each che In op.ChequesTerceros
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = op.id
+            che.IdOrdenPagoOrigen = op.Id
             che.FechaEmision = op.FEcha
             'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
             If Not DAOCheques.Guardar(che) Then GoTo E
 
-            q = "INSERT INTO liquidaciones_caja_cheques VALUES (" & op.id & ", " & che.id & ")"
+            q = "INSERT INTO liquidaciones_caja_cheques VALUES (" & op.Id & ", " & che.Id & ")"
             If Not conectar.execute(q) Then GoTo E
         Next che
 
         For Each che In op.ChequesPropios
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = op.id
+            che.IdOrdenPagoOrigen = op.Id
             che.FechaEmision = op.FEcha
             'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
             If op.EsParaFacturaProveedor And op.FacturasProveedor.count > 0 Then che.OrigenDestino = op.FacturasProveedor(1).Proveedor.RazonSocial
             If Not DAOCheques.Guardar(che) Then GoTo E
 
-            q = "INSERT INTO liquidaciones_caja_cheques VALUES (" & op.id & ", " & che.id & ")"
+            q = "INSERT INTO liquidaciones_caja_cheques VALUES (" & op.Id & ", " & che.Id & ")"
             If Not conectar.execute(q) Then GoTo E
         Next che
-        '------------------------------------------------------
-
+        
         '------------------------------------------------------
 
     Dim fcp As clsFacturaProveedor
 
     For Each fcp In op.FacturasProveedor
-        q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.id
+        q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
         If Not conectar.execute(q) Then GoTo E
+        
+        q = "UPDATE AdminComprasFacturasProveedores SET total_abonado=" & fcp.TotalPendiente
+        If Not conectar.execute(q) Then GoTo E
+        
     Next
 
 
-    q = "DELETE FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & op.id
+    q = "DELETE FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & op.Id
     If Not conectar.execute(q) Then GoTo E
 
 
@@ -659,7 +662,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         
 '        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.id & ", " & fac.id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravado & "," & fac.TotalOtros & ")"
 
-        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.id & ", " & fac.id & "," & fac.ImporteTotalAbonado & "," & fac.ImporteNetoGravadoSaldo & "," & fac.ImporteOtrosSaldo & ")"
+        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.ImporteNetoGravadoSaldo & "," & fac.ImporteOtrosSaldo & ")"
 
 '        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & 0 & "," & 0 & "," & 0 & ")"
 
@@ -676,7 +679,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         
         es = EstadoFacturaProveedor.Saldada
 
-        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.id
+        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
 
         If Not conectar.execute(q) Then GoTo E
     
@@ -686,9 +689,9 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     '------------------------------------------------------
 
 
-    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.id & ")"
+    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
     If Not conectar.execute(q) Then GoTo E
-    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.id
+    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
     If Not conectar.execute(q) Then GoTo E
 
     Dim oper As operacion
@@ -696,9 +699,9 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         'oper.IdPertenencia = op.Id no se usa creo
         oper.FechaCarga = Now
         If DAOOperacion.Save(oper) Then
-            oper.id = conectar.UltimoId2
-            If oper.id = 0 Then GoTo E
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.id & ", " & oper.id & ")"
+            oper.Id = conectar.UltimoId2
+            If oper.Id = 0 Then GoTo E
+            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
             If Not conectar.execute(q) Then GoTo E
         Else
             GoTo E
@@ -709,9 +712,9 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         'oper.IdPertenencia = op.Id no se usa creo
         oper.FechaCarga = Now
         If DAOOperacion.Save(oper) Then
-            oper.id = conectar.UltimoId2
-            If oper.id = 0 Then GoTo E
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.id & ", " & oper.id & ")"
+            oper.Id = conectar.UltimoId2
+            If oper.Id = 0 Then GoTo E
+            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
             If Not conectar.execute(q) Then GoTo E
         Else
             GoTo E
@@ -724,14 +727,14 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     msg = "LIQ Creada"
 
     If Not Nueva Then msg = "LIQ Actualizada"
-    DaoHistorico.Save "orden_pago_historial", msg, op.id
+    DaoHistorico.Save "orden_pago_historial", msg, op.Id
 
     Guardar = True
 
     Exit Function
 E:
     Guardar = False
-    If Nueva Then op.id = 0
+    If Nueva Then op.Id = 0
 
 End Function
 
@@ -744,7 +747,7 @@ Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Bo
     On Error GoTo E
     Dim Nueva As Boolean: Nueva = False
 
-    If op.id = 0 Then
+    If op.Id = 0 Then
 
         If IsSomething(DAOLiquidacionCaja.FindByNumeroLiq(CLng(op.NumeroLiq))) Then
             MsgBox "Ya existe una Liquidación con ese número!", vbCritical, "Error"
@@ -802,8 +805,8 @@ Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Bo
 
     If Not conectar.execute(q) Then GoTo E
 
-    If Nueva Then op.id = conectar.UltimoId2()
-    If op.id = 0 Then GoTo E
+    If Nueva Then op.Id = conectar.UltimoId2()
+    If op.Id = 0 Then GoTo E
 
     '------------------------------------------------------
     '------------------------------------------------------
@@ -832,7 +835,7 @@ Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Bo
 
         es = EstadoFacturaProveedor.Saldada
 
-        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.id
+        q = "UPDATE AdminComprasFacturasProveedores SET estado = " & es & " WHERE id = " & fac.Id
 
         If Not conectar.execute(q) Then GoTo E
     
@@ -939,7 +942,7 @@ Public Function GuardarAprobada(op As clsLiquidacionCaja, Optional cascada As Bo
     Exit Function
 E:
     GuardarAprobada = False
-    If Nueva Then op.id = 0
+    If Nueva Then op.Id = 0
 
 End Function
 
@@ -1161,7 +1164,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Dim TAB2 As Integer
     Dim TAB3 As Integer
     Dim maxw As Single
-    Dim c As Long
+    Dim C As Long
     Dim mtxt As String
     Dim textw As Single
     Dim lmargin As Integer
@@ -1209,15 +1212,15 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.Print "Comprobantes: "
     Printer.FontBold = False
     Printer.FontSize = 8
-    Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.id)
+    Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
     Dim F As clsFacturaProveedor
-    c = 0
+    C = 0
     For Each F In LiquidacionCaja.FacturasProveedor
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
         Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
     Next F
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
         Printer.Print "NO POSEE FACTURAS ASOCIADAS"
     End If
@@ -1240,13 +1243,13 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
 
     Dim op As operacion
     Set tmpCol = New Collection
-    c = 0
+    C = 0
     For Each op In LiquidacionCaja.operacionesBanco
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto & " | Cta.Bancaria: " & op.CuentaBancaria.DescripcionFormateada & " | Nro. Cbte: " & op.Comprobante
     Next op
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE TRANSFERENCIAS"
     End If
@@ -1258,13 +1261,13 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
 
 
     Set tmpCol = New Collection
-    c = 0
+    C = 0
     For Each op In LiquidacionCaja.operacionesCaja
-        c = c + 1
+        C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
     Next op
-    If c = 0 Then
+    If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE OPERACIONES EN EFECTIVO"
     End If
@@ -1289,7 +1292,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.EndDoc
 
-    DaoHistorico.Save "orden_pago_historial", "OP Impresa", LiquidacionCaja.id
+    DaoHistorico.Save "orden_pago_historial", "OP Impresa", LiquidacionCaja.Id
 End Function
 
 Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Object) As Boolean

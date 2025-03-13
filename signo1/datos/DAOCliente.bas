@@ -58,7 +58,7 @@ Public Function modificar(Cliente As clsCliente) As Boolean
     On Error GoTo err11
     modificar = True
     With Cliente
-        strsql = "UPDATE clientes SET  cuit_pais=" & .CuitPais & ", id_impositivo=" & .IDImpositivo & ", id_localidad=" & .localidad.Id & ", CP=" & .CodigoPostal & ",id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .Email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .Id
+        strsql = "UPDATE clientes SET id_localidad=" & .localidad.Id & ", CP=" & .CodigoPostal & ",id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .Email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .Id
         cn.execute strsql
     End With
     Exit Function

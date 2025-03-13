@@ -15,6 +15,7 @@ Public Const CAMPO_ID_MONEDA As String = "id_moneda"
 Public Const CAMPO_OBSERVACIONES As String = "observaciones"
 Public Const CAMPO_TERCEROS_PROPIO As String = "teceros_propio"
 Public Const TABLA_CHEQUE As String = "cheq"
+Public Const TABLA_RECIBO_CHEQUE As String = "admincheq"
 
 
 Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional ByRef filter2 As String, Optional orderBy As String) As Collection
@@ -71,6 +72,86 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 err1:
     Set FindAll = Nothing
 End Function
+
+
+
+Public Function FindAllTercerosUti(Optional ByRef filter As String = vbNullString, _
+                                   Optional ByRef filter2 As String = vbNullString, _
+                                   Optional orderBy As String = vbNullString) As Collection
+    On Error GoTo ErrorHandler
+
+    Dim rs As ADODB.Recordset
+    Dim q As String
+    Dim fieldsIndex As Dictionary
+    Dim cheques As New Collection
+    Dim tmpCheque As cheque
+
+    ' Construir la consulta SQL
+    q = "SELECT *" _
+      & " FROM Cheques cheq" _
+      & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
+      & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
+      & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
+      & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
+      & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
+      & " LEFT JOIN ordenes_pago op ON op.id = cheq.orden_pago_origen" _
+      & " LEFT JOIN liquidaciones_caja liq ON liq.id = cheq.orden_pago_origen" _
+      & " LEFT JOIN ordenes_pago_facturas opf ON op.id = opf.id_orden_pago" _
+      & " LEFT JOIN AdminComprasFacturasProveedores acfp ON acfp.id = opf.id_factura_proveedor" _
+      & " LEFT JOIN proveedores prov ON prov.id = acfp.id_proveedor" _
+      & " LEFT JOIN AdminRecibosCheques admincheq ON admincheq.idCheque = cheq.id" _
+      & " WHERE 1 = 1 "
+
+    If LenB(filter) > 0 Then
+        q = q & " AND " & filter
+    End If
+
+    If LenB(filter2) > 0 Then
+        q = q & " AND " & filter2
+    End If
+
+    If LenB(orderBy) > 0 Then
+        q = q & " ORDER BY " & orderBy
+    End If
+
+    ' Ejecutar la consulta
+    Set rs = conectar.RSFactory(q)
+
+    ' Construir el índice de campos
+    BuildFieldsIndex rs, fieldsIndex
+
+    ' Procesar los registros
+    While Not rs.EOF
+        Set tmpCheque = DAOCheques.Map2(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov", "admincheq")
+        
+        ' Verificar si la clave ya existe en la colección
+        If Not funciones.BuscarEnColeccion(cheques, CStr(tmpCheque.Id)) Then
+            cheques.Add tmpCheque, CStr(tmpCheque.Id)
+        End If
+    
+        rs.MoveNext
+    Wend
+
+    ' Devolver la colección de cheques
+    Set FindAllTercerosUti = cheques
+    Exit Function
+
+ErrorHandler:
+    ' Manejo de errores
+    Dim errMsg As String
+    errMsg = "Error en FindAllTercerosUti: " & vbCrLf & _
+             "Número de error: " & Err.Number & vbCrLf & _
+             "Descripción: " & Err.Description & vbCrLf
+
+    ' Mostrar el error en un mensaje (opcional)
+    MsgBox errMsg, vbCritical, "Error"
+
+    ' Devolver Nothing en caso de error
+    Set FindAllTercerosUti = Nothing
+End Function
+
+
+
 
 Public Function FindAllDisponiblesByChequera(chequeraId As Long) As Collection
     Set FindAllDisponiblesByChequera = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_FECHA_VENCIMIENTO & " IS NULL AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_EN_CARTERA & " = 0")
@@ -151,9 +232,6 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.entro = GetValue(rs, fieldsIndex, tableNameOrAlias, "ingresado")
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
-'        tmpCheque.OrdenPagoFecha = GetValue(rs, fieldsIndex, ordenes_pago, "fecha")
-        
-'        tmpCheque.Recibo = GetValue(rs, fieldsIndex, "AdminRecibosCheques", "idRecibo")
         
         If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
         If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
@@ -161,6 +239,55 @@ Public Function Map(ByRef rs As Recordset, _
     End If
 
     Set Map = tmpCheque
+
+End Function
+
+
+Public Function Map2(ByRef rs As Recordset, _
+                    ByRef fieldsIndex As Dictionary, _
+                    ByRef tableNameOrAlias As String, _
+                    Optional ByRef bancoTableNameOrAlias As String = vbNullString, _
+                    Optional ByRef monedaTableNameOrAlias As String = vbNullString, _
+                    Optional ByRef chequeraTableNameOrAlias As String = vbNullString, _
+                    Optional ByRef monedaChequeraTableNameOrAlias As String = vbNullString, _
+                    Optional ByRef bancoChequeraTableNameOrAlias As String = vbNullString, _
+                    Optional ByRef OrdenesP As String = vbNullString, _
+                    Optional ByRef FacturasP As String = vbNullString, _
+                    Optional ByRef proveedores As String = vbNullString, _
+                    Optional ByRef recibosChequesTableNameOrAlias As String = vbNullString _
+                    ) As cheque
+
+    Dim tmpCheque As cheque
+    Dim Id As Variant
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
+
+    If Id > 0 Then
+        Set tmpCheque = New cheque
+        tmpCheque.observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
+        tmpCheque.Id = Id
+        tmpCheque.EnCartera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_EN_CARTERA)
+        tmpCheque.FechaRecibido = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_FECHA_RECIBIDO)
+        tmpCheque.FechaVencimiento = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_FECHA_VENCIMIENTO)
+        tmpCheque.Monto = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_MONTO)
+        tmpCheque.numero = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_NUMERO)
+        tmpCheque.OrigenDestino = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ORIGEN)
+        tmpCheque.Propio = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_PROPIO)
+        tmpCheque.IdChequera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID_CHEQUERA)
+        tmpCheque.TercerosPropio = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_TERCEROS_PROPIO)
+        tmpCheque.FechaEmision = GetValue(rs, fieldsIndex, tableNameOrAlias, "fecha_emision")
+        tmpCheque.IdOrdenPagoOrigen = GetValue(rs, fieldsIndex, tableNameOrAlias, "orden_pago_origen")
+        tmpCheque.entro = GetValue(rs, fieldsIndex, tableNameOrAlias, "ingresado")
+        tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
+        tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
+        tmpCheque.destino = GetValue(rs, fieldsIndex, proveedores, "razon")
+        tmpCheque.recibo = GetValue(rs, fieldsIndex, recibosChequesTableNameOrAlias, "idRecibo")
+        
+        If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
+        If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
+        If LenB(chequeraTableNameOrAlias) > 0 Then Set tmpCheque.chequera = DAOChequeras.Map(rs, fieldsIndex, chequeraTableNameOrAlias, monedaChequeraTableNameOrAlias, bancoChequeraTableNameOrAlias)
+    End If
+
+    Set Map2 = tmpCheque
 
 End Function
 

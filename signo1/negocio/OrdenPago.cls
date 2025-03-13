@@ -210,6 +210,7 @@ Private Sub AddValidationMessage(msg As String)
     m_validationMessages = m_validationMessages & msg
 End Sub
 
+
 Public Property Get IsValid() As Boolean
     m_validationMessages = vbNullString
 
@@ -238,20 +239,21 @@ Public Property Get IsValid() As Boolean
         AddValidationMessage "El total de la orden debe ser mayor a cero."
     End If
 
-'''    If Me.CuentaContable Is Nothing And Me.FacturasProveedor.count = 0 Then
-'''        AddValidationMessage "La orden de pago debe contener facturas o cuenta contable."
-'''    End If
+    If Me.CuentaContable Is Nothing And Me.FacturasProveedor.count = 0 Then
+        AddValidationMessage "La orden de pago debe contener facturas o cuenta contable."
+    End If
 
-'''    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
-'''
-'''        AddValidationMessage "El total supuesto a pagar (" & Me.moneda.NombreCorto & " " & (Me.StaticTotal) & ") debe ser igual a lo que se va a pagar con valores (" & Me.moneda.NombreCorto & " " & Me.TotalOrigenes & ")."
-'''    End If
+    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
+
+        AddValidationMessage "El total supuesto a pagar (" & Me.moneda.NombreCorto & " " & (Me.StaticTotal) & ") debe ser igual a lo que se va a pagar con valores (" & Me.moneda.NombreCorto & " " & Me.TotalOrigenes & ")."
+    End If
 
 
     'validar si los compensatorios creados tienen su comprobante correlativo
     IsValid = (LenB(m_validationMessages) = 0)
 
 End Property
+
 
 Property Get StaticTotal() As Double
     StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.DiferenciaCambio - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
@@ -261,6 +263,7 @@ End Property
 Public Property Get ValidationMessages() As String
     ValidationMessages = m_validationMessages
 End Property
+
 
 Public Property Get EsParaFacturaProveedor() As Boolean
     EsParaFacturaProveedor = False
@@ -275,7 +278,6 @@ End Property
 
 Public Property Get TotalOrdenPago() As Double
 'If Id = 7180 Then Stop
-
 
 
 'Debug.Print "totales", Me.TotalOrigenes + Me.StaticTotalRetenido, "totales staticos", Me.StaticTotalOrigenes + Me.StaticTotalRetenido

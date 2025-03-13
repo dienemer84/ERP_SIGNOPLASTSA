@@ -55,7 +55,7 @@ Begin VB.Form frmAdminCheques
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   375
          Left            =   -57040
-         TabIndex        =   120
+         TabIndex        =   119
          Top             =   600
          Visible         =   0   'False
          Width           =   375
@@ -69,7 +69,7 @@ Begin VB.Form frmAdminCheques
       Begin XtremeSuiteControls.PushButton btnFiltrar 
          Height          =   375
          Left            =   -56320
-         TabIndex        =   118
+         TabIndex        =   117
          Top             =   600
          Visible         =   0   'False
          Width           =   1575
@@ -83,7 +83,7 @@ Begin VB.Form frmAdminCheques
       Begin XtremeSuiteControls.ComboBox cboProveedores 
          Height          =   315
          Left            =   -60880
-         TabIndex        =   117
+         TabIndex        =   116
          Top             =   630
          Visible         =   0   'False
          Width           =   3735
@@ -136,14 +136,14 @@ Begin VB.Form frmAdminCheques
             Column(10)      =   "frmAdminCheques.frx":0BBC
             Column(11)      =   "frmAdminCheques.frx":0D14
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminCheques.frx":0E58
-            FormatStyle(2)  =   "frmAdminCheques.frx":0F90
-            FormatStyle(3)  =   "frmAdminCheques.frx":1040
-            FormatStyle(4)  =   "frmAdminCheques.frx":10F4
-            FormatStyle(5)  =   "frmAdminCheques.frx":11CC
-            FormatStyle(6)  =   "frmAdminCheques.frx":1284
+            FormatStyle(1)  =   "frmAdminCheques.frx":0E3C
+            FormatStyle(2)  =   "frmAdminCheques.frx":0F74
+            FormatStyle(3)  =   "frmAdminCheques.frx":1024
+            FormatStyle(4)  =   "frmAdminCheques.frx":10D8
+            FormatStyle(5)  =   "frmAdminCheques.frx":11B0
+            FormatStyle(6)  =   "frmAdminCheques.frx":1268
             ImageCount      =   0
-            PrinterProperties=   "frmAdminCheques.frx":1364
+            PrinterProperties=   "frmAdminCheques.frx":1348
          End
       End
       Begin VB.Frame grpResultadosPropios 
@@ -176,25 +176,25 @@ Begin VB.Form frmAdminCheques
             IntProp2        =   0
             IntProp7        =   0
             ColumnsCount    =   10
-            Column(1)       =   "frmAdminCheques.frx":153C
-            Column(2)       =   "frmAdminCheques.frx":16EC
-            Column(3)       =   "frmAdminCheques.frx":1804
-            Column(4)       =   "frmAdminCheques.frx":193C
-            Column(5)       =   "frmAdminCheques.frx":1A9C
-            Column(6)       =   "frmAdminCheques.frx":1BF4
-            Column(7)       =   "frmAdminCheques.frx":1D5C
-            Column(8)       =   "frmAdminCheques.frx":1EC4
-            Column(9)       =   "frmAdminCheques.frx":1FE4
-            Column(10)      =   "frmAdminCheques.frx":2114
+            Column(1)       =   "frmAdminCheques.frx":1520
+            Column(2)       =   "frmAdminCheques.frx":16D0
+            Column(3)       =   "frmAdminCheques.frx":17E8
+            Column(4)       =   "frmAdminCheques.frx":1920
+            Column(5)       =   "frmAdminCheques.frx":1A80
+            Column(6)       =   "frmAdminCheques.frx":1BD8
+            Column(7)       =   "frmAdminCheques.frx":1D40
+            Column(8)       =   "frmAdminCheques.frx":1EA8
+            Column(9)       =   "frmAdminCheques.frx":1FC8
+            Column(10)      =   "frmAdminCheques.frx":20F8
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminCheques.frx":226C
-            FormatStyle(2)  =   "frmAdminCheques.frx":23A4
-            FormatStyle(3)  =   "frmAdminCheques.frx":2454
-            FormatStyle(4)  =   "frmAdminCheques.frx":2508
-            FormatStyle(5)  =   "frmAdminCheques.frx":25E0
-            FormatStyle(6)  =   "frmAdminCheques.frx":2698
+            FormatStyle(1)  =   "frmAdminCheques.frx":2250
+            FormatStyle(2)  =   "frmAdminCheques.frx":2388
+            FormatStyle(3)  =   "frmAdminCheques.frx":2438
+            FormatStyle(4)  =   "frmAdminCheques.frx":24EC
+            FormatStyle(5)  =   "frmAdminCheques.frx":25C4
+            FormatStyle(6)  =   "frmAdminCheques.frx":267C
             ImageCount      =   0
-            PrinterProperties=   "frmAdminCheques.frx":2778
+            PrinterProperties=   "frmAdminCheques.frx":275C
          End
       End
       Begin VB.Frame grpResultados 
@@ -233,24 +233,24 @@ Begin VB.Form frmAdminCheques
             IntProp2        =   0
             IntProp7        =   0
             ColumnsCount    =   9
-            Column(1)       =   "frmAdminCheques.frx":2950
-            Column(2)       =   "frmAdminCheques.frx":2AF0
-            Column(3)       =   "frmAdminCheques.frx":2C5C
-            Column(4)       =   "frmAdminCheques.frx":2DE4
-            Column(5)       =   "frmAdminCheques.frx":2FB8
-            Column(6)       =   "frmAdminCheques.frx":3118
-            Column(7)       =   "frmAdminCheques.frx":3274
-            Column(8)       =   "frmAdminCheques.frx":33E4
-            Column(9)       =   "frmAdminCheques.frx":35B0
+            Column(1)       =   "frmAdminCheques.frx":2934
+            Column(2)       =   "frmAdminCheques.frx":2AD4
+            Column(3)       =   "frmAdminCheques.frx":2C40
+            Column(4)       =   "frmAdminCheques.frx":2DC8
+            Column(5)       =   "frmAdminCheques.frx":2F9C
+            Column(6)       =   "frmAdminCheques.frx":30FC
+            Column(7)       =   "frmAdminCheques.frx":3258
+            Column(8)       =   "frmAdminCheques.frx":33C8
+            Column(9)       =   "frmAdminCheques.frx":3594
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminCheques.frx":3750
-            FormatStyle(2)  =   "frmAdminCheques.frx":3888
-            FormatStyle(3)  =   "frmAdminCheques.frx":3938
-            FormatStyle(4)  =   "frmAdminCheques.frx":39EC
-            FormatStyle(5)  =   "frmAdminCheques.frx":3AC4
-            FormatStyle(6)  =   "frmAdminCheques.frx":3B7C
+            FormatStyle(1)  =   "frmAdminCheques.frx":3734
+            FormatStyle(2)  =   "frmAdminCheques.frx":386C
+            FormatStyle(3)  =   "frmAdminCheques.frx":391C
+            FormatStyle(4)  =   "frmAdminCheques.frx":39D0
+            FormatStyle(5)  =   "frmAdminCheques.frx":3AA8
+            FormatStyle(6)  =   "frmAdminCheques.frx":3B60
             ImageCount      =   0
-            PrinterProperties=   "frmAdminCheques.frx":3C5C
+            PrinterProperties=   "frmAdminCheques.frx":3C40
          End
       End
       Begin VB.Frame Frame3 
@@ -264,7 +264,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.PushButton btnBorrarNumeroCartera 
             Height          =   315
             Left            =   2880
-            TabIndex        =   116
+            TabIndex        =   115
             Top             =   480
             Width           =   375
             _Version        =   786432
@@ -671,10 +671,23 @@ Begin VB.Form frmAdminCheques
          _StockProps     =   79
          Caption         =   "Parámetros de búsqueda"
          UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.ComboBox cboClientes3erosUti 
+            Height          =   315
+            Left            =   240
+            TabIndex        =   126
+            Top             =   1680
+            Width           =   3735
+            _Version        =   786432
+            _ExtentX        =   6588
+            _ExtentY        =   556
+            _StockProps     =   77
+            BackColor       =   -2147483643
+            Text            =   "ComboBox1"
+         End
          Begin XtremeSuiteControls.PushButton PushButton4 
             Height          =   315
             Left            =   5040
-            TabIndex        =   125
+            TabIndex        =   124
             Top             =   2280
             Width           =   375
             _Version        =   786432
@@ -687,7 +700,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.ComboBox cboProveedores3eros 
             Height          =   315
             Left            =   2040
-            TabIndex        =   124
+            TabIndex        =   123
             Top             =   2280
             Width           =   3015
             _Version        =   786432
@@ -700,7 +713,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.PushButton btnBorrarOPTerceros 
             Height          =   315
             Left            =   1440
-            TabIndex        =   113
+            TabIndex        =   112
             Top             =   2280
             Width           =   375
             _Version        =   786432
@@ -712,8 +725,8 @@ Begin VB.Form frmAdminCheques
          End
          Begin XtremeSuiteControls.PushButton btnBorrarOrigenTerceros 
             Height          =   315
-            Left            =   2760
-            TabIndex        =   112
+            Left            =   3960
+            TabIndex        =   111
             Top             =   1680
             Width           =   375
             _Version        =   786432
@@ -726,7 +739,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.PushButton btnBorrarBancosTerceros 
             Height          =   315
             Left            =   2760
-            TabIndex        =   111
+            TabIndex        =   110
             Top             =   1080
             Width           =   375
             _Version        =   786432
@@ -739,7 +752,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.PushButton btnBorrarNumeroTerceros 
             Height          =   315
             Left            =   2760
-            TabIndex        =   110
+            TabIndex        =   109
             Top             =   480
             Width           =   375
             _Version        =   786432
@@ -752,7 +765,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.ComboBox cboBancos3ero 
             Height          =   315
             Left            =   240
-            TabIndex        =   109
+            TabIndex        =   108
             Top             =   1080
             Width           =   2535
             _Version        =   786432
@@ -761,13 +774,6 @@ Begin VB.Form frmAdminCheques
             _StockProps     =   77
             BackColor       =   -2147483643
             Text            =   "cboBancos3eros"
-         End
-         Begin VB.TextBox textOrigen3eros 
-            Height          =   315
-            Left            =   240
-            TabIndex        =   107
-            Top             =   1680
-            Width           =   2535
          End
          Begin VB.Frame Frame 
             Height          =   2775
@@ -1055,20 +1061,20 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.Label Label7 
             Height          =   180
             Left            =   2040
-            TabIndex        =   126
+            TabIndex        =   125
             Top             =   2040
             Width           =   2175
             _Version        =   786432
             _ExtentX        =   3836
             _ExtentY        =   317
             _StockProps     =   79
-            Caption         =   "Proveedor:"
+            Caption         =   "Destino:"
          End
          Begin VB.Label Label 
-            Caption         =   "Origen:"
+            Caption         =   "Origen/Cliente:"
             Height          =   255
             Left            =   240
-            TabIndex        =   108
+            TabIndex        =   107
             Top             =   1440
             Width           =   2535
          End
@@ -1127,7 +1133,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.PushButton PushButton2 
             Height          =   315
             Left            =   5060
-            TabIndex        =   123
+            TabIndex        =   122
             Top             =   2280
             Width           =   375
             _Version        =   786432
@@ -1140,7 +1146,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.ComboBox cboProveedoresPropios 
             Height          =   315
             Left            =   2040
-            TabIndex        =   121
+            TabIndex        =   120
             Top             =   2280
             Width           =   3015
             _Version        =   786432
@@ -1153,7 +1159,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.PushButton btnBorrarNumeroPropios 
             Height          =   315
             Left            =   2760
-            TabIndex        =   115
+            TabIndex        =   114
             Top             =   480
             Width           =   375
             _Version        =   786432
@@ -1166,7 +1172,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.PushButton btnBorrarOPPropios 
             Height          =   315
             Left            =   1440
-            TabIndex        =   114
+            TabIndex        =   113
             Top             =   2280
             Width           =   375
             _Version        =   786432
@@ -1532,7 +1538,7 @@ Begin VB.Form frmAdminCheques
             Height          =   180
             Index           =   1
             Left            =   2040
-            TabIndex        =   122
+            TabIndex        =   121
             Top             =   2040
             Width           =   1905
          End
@@ -1737,21 +1743,21 @@ Begin VB.Form frmAdminCheques
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   5
-         Column(1)       =   "frmAdminCheques.frx":3E34
-         Column(2)       =   "frmAdminCheques.frx":3F4C
-         Column(3)       =   "frmAdminCheques.frx":4060
-         Column(4)       =   "frmAdminCheques.frx":4198
-         Column(5)       =   "frmAdminCheques.frx":42A8
+         Column(1)       =   "frmAdminCheques.frx":3E18
+         Column(2)       =   "frmAdminCheques.frx":3F30
+         Column(3)       =   "frmAdminCheques.frx":4044
+         Column(4)       =   "frmAdminCheques.frx":417C
+         Column(5)       =   "frmAdminCheques.frx":428C
          FormatStylesCount=   7
-         FormatStyle(1)  =   "frmAdminCheques.frx":4368
-         FormatStyle(2)  =   "frmAdminCheques.frx":44A0
-         FormatStyle(3)  =   "frmAdminCheques.frx":4550
-         FormatStyle(4)  =   "frmAdminCheques.frx":4604
-         FormatStyle(5)  =   "frmAdminCheques.frx":46DC
-         FormatStyle(6)  =   "frmAdminCheques.frx":4794
-         FormatStyle(7)  =   "frmAdminCheques.frx":4874
+         FormatStyle(1)  =   "frmAdminCheques.frx":434C
+         FormatStyle(2)  =   "frmAdminCheques.frx":4484
+         FormatStyle(3)  =   "frmAdminCheques.frx":4534
+         FormatStyle(4)  =   "frmAdminCheques.frx":45E8
+         FormatStyle(5)  =   "frmAdminCheques.frx":46C0
+         FormatStyle(6)  =   "frmAdminCheques.frx":4778
+         FormatStyle(7)  =   "frmAdminCheques.frx":4858
          ImageCount      =   0
-         PrinterProperties=   "frmAdminCheques.frx":4930
+         PrinterProperties=   "frmAdminCheques.frx":4914
       End
       Begin GridEX20.GridEX grid_chequeras 
          Height          =   5490
@@ -1778,26 +1784,26 @@ Begin VB.Form frmAdminCheques
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   6
-         Column(1)       =   "frmAdminCheques.frx":4B08
-         Column(2)       =   "frmAdminCheques.frx":4C20
-         Column(3)       =   "frmAdminCheques.frx":4D1C
-         Column(4)       =   "frmAdminCheques.frx":4E08
-         Column(5)       =   "frmAdminCheques.frx":4F04
-         Column(6)       =   "frmAdminCheques.frx":5000
+         Column(1)       =   "frmAdminCheques.frx":4AEC
+         Column(2)       =   "frmAdminCheques.frx":4C04
+         Column(3)       =   "frmAdminCheques.frx":4D00
+         Column(4)       =   "frmAdminCheques.frx":4DEC
+         Column(5)       =   "frmAdminCheques.frx":4EE8
+         Column(6)       =   "frmAdminCheques.frx":4FE4
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmAdminCheques.frx":5128
-         FormatStyle(2)  =   "frmAdminCheques.frx":5260
-         FormatStyle(3)  =   "frmAdminCheques.frx":5310
-         FormatStyle(4)  =   "frmAdminCheques.frx":53C4
-         FormatStyle(5)  =   "frmAdminCheques.frx":549C
-         FormatStyle(6)  =   "frmAdminCheques.frx":5554
+         FormatStyle(1)  =   "frmAdminCheques.frx":510C
+         FormatStyle(2)  =   "frmAdminCheques.frx":5244
+         FormatStyle(3)  =   "frmAdminCheques.frx":52F4
+         FormatStyle(4)  =   "frmAdminCheques.frx":53A8
+         FormatStyle(5)  =   "frmAdminCheques.frx":5480
+         FormatStyle(6)  =   "frmAdminCheques.frx":5538
          ImageCount      =   0
-         PrinterProperties=   "frmAdminCheques.frx":5634
+         PrinterProperties=   "frmAdminCheques.frx":5618
       End
       Begin XtremeSuiteControls.Label Label6 
          Height          =   255
          Left            =   -62200
-         TabIndex        =   119
+         TabIndex        =   118
          Top             =   660
          Visible         =   0   'False
          Width           =   1215
@@ -1835,17 +1841,17 @@ Begin VB.Form frmAdminCheques
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCheques.frx":580C
-      Column(2)       =   "frmAdminCheques.frx":590C
+      Column(1)       =   "frmAdminCheques.frx":57F0
+      Column(2)       =   "frmAdminCheques.frx":58F0
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCheques.frx":59FC
-      FormatStyle(2)  =   "frmAdminCheques.frx":5B34
-      FormatStyle(3)  =   "frmAdminCheques.frx":5BE4
-      FormatStyle(4)  =   "frmAdminCheques.frx":5C98
-      FormatStyle(5)  =   "frmAdminCheques.frx":5D70
-      FormatStyle(6)  =   "frmAdminCheques.frx":5E28
+      FormatStyle(1)  =   "frmAdminCheques.frx":59E0
+      FormatStyle(2)  =   "frmAdminCheques.frx":5B18
+      FormatStyle(3)  =   "frmAdminCheques.frx":5BC8
+      FormatStyle(4)  =   "frmAdminCheques.frx":5C7C
+      FormatStyle(5)  =   "frmAdminCheques.frx":5D54
+      FormatStyle(6)  =   "frmAdminCheques.frx":5E0C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCheques.frx":5F08
+      PrinterProperties=   "frmAdminCheques.frx":5EEC
    End
    Begin VB.Menu veOP 
       Caption         =   "Ver OP"
@@ -1953,8 +1959,9 @@ End Sub
 
 
 Private Sub btnBorrarOrigenTerceros_Click()
-textOrigen3eros = ""
+    Me.cboClientes3erosUti.ListIndex = -1
 End Sub
+
 
 Private Sub btnBuscar_Click(Index As Integer)
 
@@ -1993,12 +2000,12 @@ Private Sub btnBuscar_Click(Index As Integer)
         q = q & " and cheq.orden_pago_origen=" & Val(Me.txtNumeroOP)
     End If
     
-        If LenB(Me.textOrigen3eros.Text) > 0 Then
-        q = q & " and cheq.origen like '%" & Trim(Me.textOrigen3eros.Text) & "%'"
+        If Me.cboClientes3erosUti.ListIndex <> -1 Then
+        q = q & " and cheq.origen = '" & Me.cboClientes3erosUti.Text & "'"
     End If
 
     If Me.cboProveedores3eros.ListIndex <> -1 Then
-        q = q & " AND cheq.origen = '" & Me.cboProveedores3eros.Text & "'"
+        q = q & " AND prov.razon = '" & Me.cboProveedores3eros.Text & "'"
     End If
     
 
@@ -2006,7 +2013,7 @@ Private Sub btnBuscar_Click(Index As Integer)
 
     Set cheques3 = New Collection
 
-    Set cheques3 = DAOCheques.FindAll(q)
+    Set cheques3 = DAOCheques.FindAllTercerosUti(q)
 
     Me.grdCheques3eros.ItemCount = cheques3.count
 
@@ -2015,6 +2022,7 @@ Private Sub btnBuscar_Click(Index As Integer)
     GridEXHelper.AutoSizeColumns Me.grdCheques3eros
     
 End Sub
+
 
 Private Sub btnBuscarChePropios_Click(Index As Integer)
     
@@ -2137,9 +2145,9 @@ Private Sub btnExportar_Click(Index As Integer)
         xlWorksheet.Cells(2, 6).value = "Banco"
         xlWorksheet.Cells(2, 7).value = "Origen"
         xlWorksheet.Cells(2, 8).value = "Recibo Origen"
-        xlWorksheet.Cells(2, 9).value = "N OP"
-
-
+        xlWorksheet.Cells(2, 9).value = "OP / LIQ / PCTA"
+        xlWorksheet.Cells(2, 10).value = "Destino"
+   
         Dim idx As Integer
         idx = 3
 
@@ -2163,6 +2171,7 @@ Private Sub btnExportar_Click(Index As Integer)
             xlWorksheet.Cells(idx, 7).value = che.OrigenDestino
             xlWorksheet.Cells(idx, 8).value = che.recibo
             xlWorksheet.Cells(idx, 9).value = che.IdOrdenPagoOrigen
+            xlWorksheet.Cells(idx, 10).value = che.destino
 
             idx = idx + 1
 
@@ -2583,8 +2592,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.grid_cheques, True, False
     GridEXHelper.CustomizeGrid Me.gridBancos, False, True
     GridEXHelper.CustomizeGrid Me.gridChequesEmitidos, False, False
-    GridEXHelper.CustomizeGrid Me.grdCheques3eros, True, True
-
+    GridEXHelper.CustomizeGrid Me.grdCheques3eros, False, False
     Dim i As Integer
     
     i = 1
@@ -2679,6 +2687,8 @@ Private Sub Form_Load()
     DAOProveedor.llenarComboXtremeSuite Me.cboProveedores3eros, True, True, True
     Me.cboProveedores3eros.ListIndex = -1
     
+    DAOCliente.llenarComboXtremeSuite Me.cboClientes3erosUti, True, True, True
+    Me.cboClientes3erosUti.ListIndex = -1
     
     '''''''''''''''''''''''''''''''''''''''''''''''
     'region FECHAS EN CARTERA
@@ -2814,16 +2824,6 @@ Private Sub grdCheques3eros_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
 
     Set tmpCheque3eros = cheques3.item(RowIndex)
 
-'''    Values(1) = tmpCheque3eros.OrigenDestino
-'''    Values(2) = tmpCheque3eros.Banco.nombre
-'''    Values(3) = tmpCheque3eros.FechaEmision
-'''    Values(4) = tmpCheque3eros.numero
-'''    Values(5) = funciones.FormatearDecimales(tmpCheque3eros.Monto)
-'''    Values(6) = tmpCheque3eros.FechaVencimiento
-'''    Values(7) = tmpCheque3eros.IdOrdenPagoOrigen
-'''    Values(8) = "De Quien es LA OP"
-
-
     Values(1) = tmpCheque3eros.OrigenDestino
     Values(2) = tmpCheque3eros.Id
     Values(3) = tmpCheque3eros.Banco.nombre
@@ -2834,7 +2834,7 @@ Private Sub grdCheques3eros_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
     Values(8) = tmpCheque3eros.FechaVencimiento
     Values(9) = tmpCheque3eros.recibo
     Values(10) = tmpCheque3eros.IdOrdenPagoOrigen
-    'Values(10) = "10"
+    Values(11) = tmpCheque3eros.destino
     
 End Sub
 

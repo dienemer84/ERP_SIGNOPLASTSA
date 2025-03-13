@@ -475,6 +475,7 @@ Private liquidaciones As New Collection
 Private LiquidacionCaja As clsLiquidacionCaja
 Private fac As clsFacturaProveedor
 
+
 Private Sub btnExportar_Click()
     Me.ProgressBar.Visible = True
 
@@ -488,6 +489,7 @@ Private Sub btnExportar_Click()
 err1:
     MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
 End Sub
+
 
 Private Sub Form_Load()
     Customize Me
@@ -617,15 +619,10 @@ Private Sub PushButton2_Click()
         End If
 
     Next
-
-
-
     conectar.CommitTransaction
     Exit Sub
 E:
     conectar.RollBackTransaction
-
-
 
 End Sub
 
@@ -757,6 +754,7 @@ Private Sub mnuAnular_Click()
     End If
 End Sub
 
+
 Private Sub mnuAprobar_Click()
     If DAOLiquidacionCaja.aprobar(LiquidacionCaja, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
@@ -775,6 +773,7 @@ Private Sub mnuEditar_Click()
 '        Dim LiquidacionCaja As clsLiquidacionCaja
         f22.Cargar LiquidacionCaja
 End Sub
+
 
 'Private Sub mnuHistorial_Click()
 '    Dim F As New frmHistorico
@@ -805,27 +804,6 @@ Private Sub mnuVer_Click()
 
 End Sub
 
-
-'Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
-'    Dim tmp As OrdenPago
-'    Dim i As Long
-'
-'    If EVENTO.EVENTO = agregar_ Then
-'        ordenes.Add EVENTO.Elemento
-'        llenarLista
-'    ElseIf EVENTO.EVENTO = modificar_ Then
-'        For i = ordenes.count To 1 Step -1
-'            Set tmp = EVENTO.Elemento
-'            If ordenes(i).Id = tmp.Id Then
-'                Set Orden = ordenes(i)
-'                Orden.Id = tmp.Id
-'                Orden.estado = tmp.estado
-'                Me.gridOrdenes.RefreshRowIndex i
-'                Exit For
-'            End If
-'        Next
-'    End If
-'End Function
 
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = ids

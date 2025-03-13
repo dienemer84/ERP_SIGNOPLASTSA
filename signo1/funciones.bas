@@ -631,6 +631,8 @@ Function FEcha(d As Date) As String
     dia(7) = "Sábado"
     FEcha = dia(Weekday(d)) & ", " & Day(d) & " de " & mes(Month(d)) & " de " & Year(d)
 End Function
+
+
 Function PosIndexCbo(Valor As Long, cbo As Object) As Integer
 'devuelve el indice de un combo... para poder posicionar cuando
 'se hace una modificacion
@@ -643,6 +645,8 @@ Function PosIndexCbo(Valor As Long, cbo As Object) As Integer
     Next i
     PosIndexCbo = -1
 End Function
+
+
 Function PosIndexLST(Valor As Long, lst As Object) As Integer
 'devuelve el indice de un combo... para poder posicionar cuando
 'se hace una modificacion
@@ -919,13 +923,13 @@ Public Function crearUsuario(nombre, Apellido) As String
     usu = LCase(nombre & Mid(Apellido, 1, 1) & Right(Apellido, 1))
     Set r = conectar.RSFactory("Select count(id) as c from usuarios where usuario='" & usu & "'")
 
-    If r!c > 0 Then
+    If r!C > 0 Then
         i = 1
         esta = True
         While esta
             usu = usu & i
             Set r = conectar.RSFactory("Select count(id) as c from usuarios where usuario='" & usu & "'")
-            If r!c > 0 Then
+            If r!C > 0 Then
                 i = i + 1
             Else
                 esta = False
@@ -942,12 +946,12 @@ End Function
 Public Sub ValidarPermisoss(idUsuario)
     Dim r As Recordset
     Set r = conectar.RSFactory("select * from usuariosPermisos where idUsuario=" & idUsuario)
-    c = 0
+    C = 0
     While Not r.EOF
-        c = c + 1
+        C = C + 1
         r.MoveNext
     Wend
-    If c = 1 Then
+    If C = 1 Then
         r.MoveFirst
         cp = r!panel
         ventas = r!ventas
@@ -1025,7 +1029,7 @@ Public Sub Imprimir_ListView(ListView As ListView, enca As String)
         For i = 1 To .ColumnHeaders.count
             Espacio = Espacio + CInt(.ColumnHeaders(i).Width * Printer.ScaleWidth / AnchoCol)
             If ListView.ColumnHeaders(i).Width > 1 Then
-                Printer.Print ListView.ColumnHeaders(i).text;
+                Printer.Print ListView.ColumnHeaders(i).Text;
             End If
             Printer.CurrentX = Espacio
         Next
@@ -1043,7 +1047,7 @@ Public Sub Imprimir_ListView(ListView As ListView, enca As String)
             Espacio = 0
 
             Set lItem = .ListItems(i)
-            Printer.Print lItem.text;
+            Printer.Print lItem.Text;
             'Recorremos las columnas
             For x = 1 To .ColumnHeaders.count - 1
                 Espacio = Espacio + CInt(.ColumnHeaders(x).Width * Printer.ScaleWidth / AnchoCol)
@@ -1074,7 +1078,7 @@ Public Sub vaciarControles(frm As Form)
     Dim ctl As Control
     For Each ctl In frm.Controls
         If TypeOf ctl Is TextBox Then
-            ctl.text = ""
+            ctl.Text = ""
         End If
     Next
 End Sub
@@ -1131,9 +1135,9 @@ Public Function Redondear(dblntor As Double, Optional cntdecas As Integer) As Do
 End Function
 
 
-Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
+Public Function ImprimirLista(titulo, lst As ListView, CD As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
     On Error GoTo err91
-    cd.ShowPrinter
+    CD.ShowPrinter
 
     AnchoCol = 0
 
@@ -1158,7 +1162,7 @@ Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optio
             Espacio = Espacio + CInt(.ColumnHeaders(i).Width * Printer.ScaleWidth / AnchoCol)
             If lst.ColumnHeaders(i).Width > 1 Then
                 'Printer.Print i
-                Printer.Print lst.ColumnHeaders(i).text;
+                Printer.Print lst.ColumnHeaders(i).Text;
             End If
             Printer.CurrentX = Espacio
         Next
@@ -1174,7 +1178,7 @@ Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optio
             Espacio = 0
 
             Set lItem = .ListItems(i)
-            Printer.Print lItem.text;
+            Printer.Print lItem.Text;
             'Recorremos las columnas
             For x = 1 To .ColumnHeaders.count - 1
                 Espacio = Espacio + CInt(.ColumnHeaders(x).Width * Printer.ScaleWidth / AnchoCol)
@@ -1391,9 +1395,9 @@ Public Function ListBoxHasCheckedItems(ByRef lst As ListBox) As Boolean
         End If
     Next i
 End Function
-Public Function ValidarTextBox(text As TextBox, ByRef Cancel)
-    Cancel = Not IsNumeric(text)
-    text.backColor = IIf(Cancel, vbRed, &H80000005)
+Public Function ValidarTextBox(Text As TextBox, ByRef Cancel)
+    Cancel = Not IsNumeric(Text)
+    Text.backColor = IIf(Cancel, vbRed, &H80000005)
 End Function
 
 

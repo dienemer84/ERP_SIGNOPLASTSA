@@ -472,7 +472,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          Caption         =   "Ver Documento de Pago"
       End
       Begin VB.Menu mnuModificar 
-         Caption         =   "Modificar Nro. Transferencia"
+         Caption         =   "Modificar detalles"
       End
    End
 End
@@ -531,19 +531,19 @@ Private Sub CompletarGridEx()
     End If
     
     If LenB(Me.txtOP) > 0 Then
-        condition = condition & " AND opope.id_orden_pago like '%" & Trim(Me.txtOP.text) & "%'"
+        condition = condition & " AND opope.id_orden_pago like '%" & Trim(Me.txtOP.Text) & "%'"
     End If
 
     If LenB(Me.txtComprobante) > 0 Then
-        condition = condition & " AND op.comprobante like '%" & Trim(Me.txtComprobante.text) & "%'"
+        condition = condition & " AND op.comprobante like '%" & Trim(Me.txtComprobante.Text) & "%'"
     End If
     
     If LenB(Me.textbMayor) > 0 Then
-        condition = condition & " AND op.monto >= " & Me.textbMayor.text
+        condition = condition & " AND op.monto >= " & Me.textbMayor.Text
     End If
     
     If LenB(Me.textbMenor) > 0 Then
-        condition = condition & " AND op.monto <= " & Me.textbMenor.text
+        condition = condition & " AND op.monto <= " & Me.textbMenor.Text
     End If
     
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -622,7 +622,7 @@ End Sub
 
 Private Sub gridTransferencias_SelectionChange()
     On Error Resume Next
-    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
+    Set TransfBancaria = transferencias.item(gridTransferencias.RowIndex(gridTransferencias.row))
 End Sub
 
 
@@ -645,9 +645,9 @@ Private Sub gridTransferencias_MouseUp(Button As Integer, Shift As Integer, x As
 End Sub
 
 
-Private Sub gridTransferencias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-If rowIndex > 0 And transferencias.count > 0 Then
-    Set TransfBancaria = transferencias.item(rowIndex)
+Private Sub gridTransferencias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+If RowIndex > 0 And transferencias.count > 0 Then
+    Set TransfBancaria = transferencias.item(RowIndex)
         Values(1) = TransfBancaria.Id
         
 
@@ -718,9 +718,9 @@ End Sub
 
 
 Private Sub PushButton2_Click(Index As Integer)
-    Me.textbMenor.text = ""
+    Me.textbMenor.Text = ""
 End Sub
 
 Private Sub PushButton1_Click(Index As Integer)
-    Me.textbMayor.text = ""
+    Me.textbMayor.Text = ""
 End Sub

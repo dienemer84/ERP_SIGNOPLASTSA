@@ -88,9 +88,9 @@ Begin VB.Form frmCtaCteProv
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.CheckBox chkContado 
          Height          =   195
-         Left            =   405
+         Left            =   285
          TabIndex        =   2
-         Top             =   225
+         Top             =   345
          Width           =   1635
          _Version        =   786432
          _ExtentX        =   2884
@@ -101,9 +101,9 @@ Begin VB.Form frmCtaCteProv
       End
       Begin XtremeSuiteControls.CheckBox chkCtaCte 
          Height          =   315
-         Left            =   405
+         Left            =   285
          TabIndex        =   3
-         Top             =   465
+         Top             =   585
          Width           =   1605
          _Version        =   786432
          _ExtentX        =   2831
@@ -115,9 +115,9 @@ Begin VB.Form frmCtaCteProv
       End
       Begin XtremeSuiteControls.CheckBox chkEliminado 
          Height          =   315
-         Left            =   405
+         Left            =   285
          TabIndex        =   4
-         Top             =   750
+         Top             =   870
          Width           =   1410
          _Version        =   786432
          _ExtentX        =   2487
@@ -294,11 +294,20 @@ Begin VB.Form frmCtaCteProv
    Begin VB.Label lblSaldo 
       Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   330
-      Left            =   150
+      Left            =   720
       TabIndex        =   5
       Top             =   7005
-      Width           =   8625
+      Width           =   8505
    End
 End
 Attribute VB_Name = "frmCtaCteProv"
@@ -313,9 +322,7 @@ Private saldo As Double
 Private saldos As New Dictionary
 
 
-
 Private Sub LlenarLiquidaciones(Id As Long)
-
     Dim liq As CuentaCorrienteHistoric
     Dim col As Collection
     Dim i As Long
@@ -351,7 +358,7 @@ Private Sub ver()
 
 
         If IsSomething(Detalles) Then
-            Me.lblSaldo = "Saldo: " & funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))
+            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))), "$", "")
         End If
 
         saldo = 0
@@ -367,6 +374,7 @@ Private Sub ver()
     End If
 End Sub
 
+
 Private Sub ver2()
 
     Dim Id As Long
@@ -376,7 +384,7 @@ Private Sub ver2()
 
         Set Detalles = DAOCuentaCorrienteHistoric.GetById(proveedor_, Id).Detalles
         If IsSomething(Detalles) Then
-            Me.lblSaldo = "Saldo: " & funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))
+            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))), "$", "")
         End If
 
         saldo = 0

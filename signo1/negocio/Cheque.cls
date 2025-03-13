@@ -34,8 +34,8 @@ Public IdOrdenPagoOrigen As Long
 
 Public estado As EstadoCheque
 Public Depositado As Boolean
-
-Public Recibo As String
+Public Destino As String
+Public recibo As String
 
 Public Property Get OrigenCheque()
     If Propio Then

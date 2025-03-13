@@ -400,6 +400,7 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         ' End If
     Next Orden
 
+
     Dim facturas As Collection
     Dim fac As clsFacturaProveedor
 
@@ -455,6 +456,69 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
 
         Detalles.Add detalle
     Next fac
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    Dim pagosacta As New Collection
+    Dim PagoACta As clsPagoACta
+    
+    'Set pagosacta = DAOOrdenPago.FindAllByProveedor(id_proveedor, cond1 & "  and pagos_a_cuenta.fecha> " & max_desde, soloOp)
+    Set pagosacta = DAOPagoACta.FindAllByProveedor(id_proveedor, cond1 & "  and pagos_a_cuenta.fecha> " & max_desde, soloOp)
+    For Each PagoACta In pagosacta
+        'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
+
+        ' If Orden.estado <> EstadoOrdenPago_Anulada Then
+        Set detalle = New DTODetalleCuentaCorriente
+        detalle.Comprobante = "PAGO A CUENTA-" & PagoACta.Id
+
+        '#178
+        If (PagoACta.estado = EstadoOrdenPago_pendiente) Then
+            detalle.Comprobante = detalle.Comprobante & " (Disponible)"
+        End If
+
+        If (PagoACta.estado = EstadoOrdenPago_Anulada) Then
+            detalle.Comprobante = detalle.Comprobante & " (Anulada)"
+        End If
+
+        detalle.tipoComprobante = OrdenPago_
+        detalle.IdComprobante = PagoACta.Id
+
+        If (PagoACta.estado = EstadoOrdenPago_Anulada) Then
+
+            detalle.Haber = 0
+        Else
+            detalle.Haber = funciones.RedondearDecimales(PagoACta.TotalOrdenPago)          '.StaticTotalFacturas + Orden.TotalCompensatorios)
+        End If
+        
+        detalle.FEcha = PagoACta.FEcha
+
+        Detalles.Add detalle
+        ' End If
+    Next PagoACta
+
+
+
+
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     If sortCollection And Detalles.count > 0 Then

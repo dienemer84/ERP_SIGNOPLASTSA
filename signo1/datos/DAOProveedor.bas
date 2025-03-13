@@ -87,11 +87,11 @@ If WithCuentasContables Then
     End If
     If WithAlicuotas Then
         alicuotas = "AdminConfigIvaAlicuotas"
-        q = q & " LEFT JOIN sp.AdminConfigIvaAlicuotas ON (AdminConfigIvaAlicuotas.id_config_factura = AdminConfigFacturasProveedor.id) "
+        q = q & " LEFT JOIN sp.AdminConfigIvaAlicuotas        ON (AdminConfigIvaAlicuotas.id_config_factura = AdminConfigFacturasProveedor.id) "
     End If
 
     'moneda
-    q = q & " LEFT JOIN sp.AdminConfigMonedas ON (proveedores.id_moneda= AdminConfigMonedas.id) "
+    q = q & " LEFT JOIN sp.AdminConfigMonedas        ON (proveedores.id_moneda= AdminConfigMonedas.id) "
 
 
     q = q & " WHERE 1=1"
@@ -302,7 +302,7 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
     Else
         EVENTO.EVENTO = modificar_
     End If
-    EVENTO.Tipo = Proveedores_
+    EVENTO.tipo = Proveedores_
     Channel.Notificar EVENTO, Proveedores_
     Exit Function
 
@@ -352,6 +352,7 @@ Public Sub LlenarCombo(cbo As ComboBox, _
         cbo.ListIndex = 0
     End If
 End Sub
+
 
 Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, _
                                   Optional EstadoCtaCte As Boolean = False, _

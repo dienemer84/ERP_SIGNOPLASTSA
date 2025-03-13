@@ -79,6 +79,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
      
         If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
      
+        op.IdCtaBancaria = GetValue(rs, indice, tablaCuentaBanc, "id")
         op.CuentaBancaria = GetValue(rs, indice, tablaCuentaBanc, "cuenta")
         op.NombreBanco = GetValue(rs, indice, tablaConfigBancos, "Nombre")
 
@@ -228,10 +229,11 @@ Public Function ActualizarNroComprobante(T As clsTransferenciaBcaria) As Boolean
     On Error GoTo err1
 
     Dim q As String
-    q = "UPDATE sp.operaciones SET comprobante='comprobante' where id='id'"
+    q = "UPDATE sp.operaciones SET comprobante='comprobante', cuentabanc_o_caja_id='cuentabanc_o_caja_id' where id='id'"
 
     q = Replace$(q, "'id'", conectar.Escape(T.Id))
     q = Replace$(q, "'comprobante'", conectar.Escape(T.Comprobante))
+    q = Replace$(q, "'cuentabanc_o_caja_id'", conectar.Escape(T.IdCtaBancaria))
 
     If Not conectar.execute(q) Then
         Err.Raise 112233, "No se pudieron actualizar los datos de la transferencia."
@@ -240,6 +242,7 @@ Public Function ActualizarNroComprobante(T As clsTransferenciaBcaria) As Boolean
     Exit Function
 err1:
     Err.Raise Err.Number, Err.Description
+    
 End Function
 
 

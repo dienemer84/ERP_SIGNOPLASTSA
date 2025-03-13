@@ -1160,6 +1160,8 @@ Private Sub btnConfirmar_Click()
 End Sub
 
 
+
+
 Private Sub btnExportarComprobantes_Click()
 
     If Me.grilla.ItemCount = 0 Then
@@ -1206,14 +1208,14 @@ Public Function ExportToXslConfirmados()
     xlWorksheet.Range("A1:G1").Merge
     xlWorksheet.Range("A2:G2").Merge
     xlWorksheet.Range("A1:G3").Font.Bold = True
-    xlWorksheet.Cells(1, 1).Value = "Detalle de Comprobante de Liquidación"
-    xlWorksheet.Cells(3, 1).Value = "Tipo"
-    xlWorksheet.Cells(3, 2).Value = "Letra"
-    xlWorksheet.Cells(3, 3).Value = "Nro Cbte"
-    xlWorksheet.Cells(3, 4).Value = "Fecha"
-    xlWorksheet.Cells(3, 5).Value = "Moneda"
-    xlWorksheet.Cells(3, 6).Value = "Monto"
-    xlWorksheet.Cells(3, 7).Value = "Proveedor"
+    xlWorksheet.Cells(1, 1).value = "Detalle de Comprobante de Liquidación"
+    xlWorksheet.Cells(3, 1).value = "Tipo"
+    xlWorksheet.Cells(3, 2).value = "Letra"
+    xlWorksheet.Cells(3, 3).value = "Nro Cbte"
+    xlWorksheet.Cells(3, 4).value = "Fecha"
+    xlWorksheet.Cells(3, 5).value = "Moneda"
+    xlWorksheet.Cells(3, 6).value = "Monto"
+    xlWorksheet.Cells(3, 7).value = "Proveedor"
 
 
     Dim idx As Integer
@@ -1223,19 +1225,19 @@ Public Function ExportToXslConfirmados()
     For Each facturaConfirmada In facturasConfirmadas
 
 
-        xlWorksheet.Cells(idx, 1).Value = enums.EnumTipoDocumentoContableShort(facturaConfirmada.tipoDocumentoContable)
-        xlWorksheet.Cells(idx, 2).Value = facturaConfirmada.configFactura.TipoFactura
-        xlWorksheet.Cells(idx, 3).Value = facturaConfirmada.numero
-        xlWorksheet.Cells(idx, 4).Value = facturaConfirmada.FEcha
-        xlWorksheet.Cells(idx, 5).Value = facturaConfirmada.moneda.NombreCorto
+        xlWorksheet.Cells(idx, 1).value = enums.EnumTipoDocumentoContableShort(facturaConfirmada.tipoDocumentoContable)
+        xlWorksheet.Cells(idx, 2).value = facturaConfirmada.configFactura.TipoFactura
+        xlWorksheet.Cells(idx, 3).value = facturaConfirmada.numero
+        xlWorksheet.Cells(idx, 4).value = facturaConfirmada.FEcha
+        xlWorksheet.Cells(idx, 5).value = facturaConfirmada.moneda.NombreCorto
         
         Dim C As Integer
         
         If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
         
-        xlWorksheet.Cells(idx, 6).Value = facturaConfirmada.total * C
+        xlWorksheet.Cells(idx, 6).value = facturaConfirmada.total * C
        
-        xlWorksheet.Cells(idx, 7).Value = UCase(funciones.RazonSocialFormateada(facturaConfirmada.Proveedor.RazonSocial))
+        xlWorksheet.Cells(idx, 7).value = UCase(funciones.RazonSocialFormateada(facturaConfirmada.Proveedor.RazonSocial))
         
         idx = idx + 1
 
@@ -1303,14 +1305,14 @@ Public Function ExportToXslComprobantes()
     xlWorksheet.Range("A1:G1").Merge
     xlWorksheet.Range("A2:G2").Merge
     xlWorksheet.Range("A1:G3").Font.Bold = True
-    xlWorksheet.Cells(1, 1).Value = "Detalle de Comprobante de Liquidación"
-    xlWorksheet.Cells(3, 1).Value = "Tipo"
-    xlWorksheet.Cells(3, 2).Value = "Letra"
-    xlWorksheet.Cells(3, 3).Value = "Nro Cbte"
-    xlWorksheet.Cells(3, 4).Value = "Fecha"
-    xlWorksheet.Cells(3, 5).Value = "Moneda"
-    xlWorksheet.Cells(3, 6).Value = "Monto"
-    xlWorksheet.Cells(3, 7).Value = "Proveedor"
+    xlWorksheet.Cells(1, 1).value = "Detalle de Comprobante de Liquidación"
+    xlWorksheet.Cells(3, 1).value = "Tipo"
+    xlWorksheet.Cells(3, 2).value = "Letra"
+    xlWorksheet.Cells(3, 3).value = "Nro Cbte"
+    xlWorksheet.Cells(3, 4).value = "Fecha"
+    xlWorksheet.Cells(3, 5).value = "Moneda"
+    xlWorksheet.Cells(3, 6).value = "Monto"
+    xlWorksheet.Cells(3, 7).value = "Proveedor"
 
 
     Dim idx As Integer
@@ -1319,19 +1321,19 @@ Public Function ExportToXslComprobantes()
     For Each Factura In facturas
 
 
-        xlWorksheet.Cells(idx, 1).Value = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
-        xlWorksheet.Cells(idx, 2).Value = Factura.configFactura.TipoFactura
-        xlWorksheet.Cells(idx, 3).Value = Factura.numero
-        xlWorksheet.Cells(idx, 4).Value = Factura.FEcha
-        xlWorksheet.Cells(idx, 5).Value = Factura.moneda.NombreCorto
+        xlWorksheet.Cells(idx, 1).value = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
+        xlWorksheet.Cells(idx, 2).value = Factura.configFactura.TipoFactura
+        xlWorksheet.Cells(idx, 3).value = Factura.numero
+        xlWorksheet.Cells(idx, 4).value = Factura.FEcha
+        xlWorksheet.Cells(idx, 5).value = Factura.moneda.NombreCorto
         
         Dim C As Integer
         
         If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
         
-        xlWorksheet.Cells(idx, 6).Value = Factura.total * C
+        xlWorksheet.Cells(idx, 6).value = Factura.total * C
         
-        xlWorksheet.Cells(idx, 7).Value = UCase(funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial))
+        xlWorksheet.Cells(idx, 7).value = UCase(funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial))
         
         idx = idx + 1
 
@@ -1525,6 +1527,7 @@ Private Sub Form_Load()
     gridChequesChequera.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridChequeras
 
+   Me.dtpFecha.value = Now
 
    DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
    
@@ -1604,10 +1607,10 @@ If Index = 1 Then
             Dim cond4 As Boolean
         
         
-            cond1 = Not IsNumeric(Me.gridCajaOperaciones.Value(1))
-            cond2 = Not IsNumeric(Me.gridCajaOperaciones.Value(2)) And LenB(Me.gridCajaOperaciones.Value(2)) = 0
-            cond3 = Not IsDate(Me.gridCajaOperaciones.Value(3))
-            cond4 = LenB(Me.gridCajaOperaciones.Value(4)) = 0 Or IsEmpty(Me.gridCajaOperaciones.Value(4))    'or Not IsNumeric(Me.gridCajaOperaciones.value(4))
+            cond1 = Not IsNumeric(Me.gridCajaOperaciones.value(1))
+            cond2 = Not IsNumeric(Me.gridCajaOperaciones.value(2)) And LenB(Me.gridCajaOperaciones.value(2)) = 0
+            cond3 = Not IsDate(Me.gridCajaOperaciones.value(3))
+            cond4 = LenB(Me.gridCajaOperaciones.value(4)) = 0 Or IsEmpty(Me.gridCajaOperaciones.value(4))    'or Not IsNumeric(Me.gridCajaOperaciones.value(4))
         
             Cancel = cond1 Or cond2 Or cond3 Or cond4
     End If
@@ -1621,7 +1624,7 @@ Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
         Dim msg As New Collection
     
         ' REVISA QUE EN LA COLECCION DE CHEQUES DE TERCEROS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-        If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesTerceros, CStr(Me.gridCheques.Value(1))) Then
+        If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesTerceros, CStr(Me.gridCheques.value(1))) Then
             msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
         End If
     
@@ -1687,29 +1690,29 @@ End Sub
 Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Dim msg As New Collection
 
-    If LenB(Me.gridChequesPropios.Value(1)) = 0 Then
+    If LenB(Me.gridChequesPropios.value(1)) = 0 Then
         msg.Add "Debe especificar una chequera."
     End If
 
-    If LenB(Me.gridChequesPropios.Value(2)) = 0 Then
+    If LenB(Me.gridChequesPropios.value(2)) = 0 Then
         msg.Add "Debe especificar un cheque."
     End If
 
     ' REVISA QUE EN LA COLECCION DE CHEQUES PROPIOS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesPropios, CStr(Me.gridChequesPropios.Value(2))) Then
+    If funciones.BuscarEnColeccion(LiquidacionCaja.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
         msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
     End If
 
-    If Not IsNumeric(Me.gridChequesPropios.Value(3)) Then
+    If Not IsNumeric(Me.gridChequesPropios.value(3)) Then
         msg.Add "Debe especificar un monto válido."
     End If
     ' REVISA QUE SE HAYA CARGADO UN MONTO DEL CHEQUE INGRESADO, SI NO SE CARGA GENERA MSG DE ERROR
 
-    If LenB(Me.gridChequesPropios.Value(3)) = 0 Then
+    If LenB(Me.gridChequesPropios.value(3)) = 0 Then
         msg.Add "Debe especificar un monto mayor a 0."
     End If
 
-    If Not IsDate(Me.gridChequesPropios.Value(4)) Then
+    If Not IsDate(Me.gridChequesPropios.value(4)) Then
         msg.Add "Debe especificar una fecha valida."
     End If
 
@@ -1719,13 +1722,13 @@ Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolea
 End Sub
 
 
-Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal Value As Variant)
+Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal value As Variant)
     If ColIndex = 1 Then
         'If Not IsNumeric(Me.gridChequesPropios.Value(1)) Or LenB(Me.gridChequesPropios.Value(1)) = 0 Then
-        If Not IsNumeric(Value) Or LenB(Value) = 0 Then
+        If Not IsNumeric(value) Or LenB(value) = 0 Then
             Set chequesChequeraSeleccionada = New Collection
         Else
-            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(Val(Value))  ' Me.gridChequesPropios.Value(1))
+            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(Val(value))  ' Me.gridChequesPropios.Value(1))
         End If
 
         Me.gridChequesChequera.ItemCount = chequesChequeraSeleccionada.count
@@ -1796,12 +1799,57 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 
-
 Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 
 End Sub
 
+
+Private Sub grilla_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Resume Next
+    SeleccionarFactura
+    
+    ' ME PIDE KARIN QUE CUANDO SE SELECCIONA SE AGREGUE AUTOMATICAMENTE AL OTRO LISTADO
+    
+        ' Verificar si se asignó correctamente la factura
+    If Not Factura Is Nothing Then
+        ' Verificar si la colección facturasConfirmadas ya ha sido inicializada
+        If facturasConfirmadas Is Nothing Then
+            Set facturasConfirmadas = New Collection
+        End If
+
+        ' Verificar si la factura ya está en la colección facturasConfirmadas
+        Dim facturaExistente As Boolean
+        facturaExistente = False
+
+        For Each fac In facturasConfirmadas
+            If fac.Id = Factura.Id Then
+            'If fac.numero = Factura.numero Then
+                facturaExistente = True
+                Exit For
+            End If
+        Next fac
+
+        If facturaExistente Then
+            MsgBox ("El comprobante " & Factura.NumeroFormateado & " ya existe en el listado de Cbtes. Confirmados")
+        Else
+            ' Agregar la factura seleccionada a la colección facturasConfirmadas
+            facturasConfirmadas.Add Factura
+
+            Me.txtFiltroNumero.SetFocus
+            Me.txtFiltroNumero = ""
+
+            grillaConfirmados.ItemCount = facturasConfirmadas.count
+
+            llenarGrilla
+
+            TotalizarComprobantes
+        End If
+    Else
+        MsgBox "No se pudo seleccionar la factura."
+    End If
+    
+End Sub
 
 ' LLENADO DE GRILLA DE COMPROBANTES APROBADOS PARA PAGAR
 Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -1823,6 +1871,10 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(7) = UCase(funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial))
 
     End With
+    
+    ' Desactivar la selección inicial en el GridEx
+    grilla.row = -1
+    grilla.col = -1
 
 End Sub
 
@@ -1859,6 +1911,7 @@ Private Sub grillaConfirmados_UnboundReadData(ByVal RowIndex As Long, ByVal Book
 
 End Sub
 
+
 'ESTA FUNCION SE ENCARGA DE GUARDAR LA LIQUIDACIÓN QUE SE ESTÁ CREANDO
 
 Private Sub PusGuardar_Click()
@@ -1873,7 +1926,7 @@ Private Sub PusGuardar_Click()
         Exit Sub
     End If
 
-    LiquidacionCaja.FEcha = Me.dtpFecha.Value
+    LiquidacionCaja.FEcha = Me.dtpFecha.value
 
     If Me.txtNumerodeLiquidacion.Text = "" Then
         MsgBox ("El número de Liquidación no puede estar vacío.")
@@ -1930,9 +1983,9 @@ Public Sub TotalizarComprobantes()
         Set Factura = facturasConfirmadas.item(i)
 
         If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
-            total = total - Factura.ImporteTotalSaldo    ' Resta el total de las facturas tipo nota de crédito
+            total = total - Factura.ImporteTotalSaldo       ' Resta el total de las facturas tipo nota de crédito
         Else
-            total = total + Factura.ImporteTotalSaldo    ' Suma el total de las demás facturas
+            total = total + Factura.ImporteTotalSaldo        ' Suma el total de las demás facturas
         End If
     Next i
 
@@ -2075,24 +2128,55 @@ End Sub
 
 
 Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    ' Activar el manejo de errores
+    On Error GoTo ManejarError
+
     If RowIndex > 0 And LiquidacionCaja.operacionesCaja.count > 0 Then
         Set operacion = LiquidacionCaja.operacionesCaja.item(RowIndex)
-        'operacion.IdPertenencia = recibo.id
-        'operacion.Pertenencia = Banco
-        operacion.Monto = Values(1)
+
+        ' Asignar Monto
+        If IsNumeric(Values(1)) Then
+            operacion.Monto = CDbl(Values(1)) ' Convierte a Double si es necesario
+        Else
+            operacion.Monto = 0 ' Valor por defecto
+        End If
+
+        ' Asignar Comprobante
         operacion.Comprobante = Values(5)
+
+        ' Asignar Moneda
         If IsNumeric(Values(2)) Then
             Set operacion.moneda = DAOMoneda.GetById(Values(2))
         End If
+
+        ' Asignar FechaOperacion
         operacion.FechaOperacion = Values(3)
+
+        ' Asignar Caja
         If IsNumeric(Values(4)) Then
             Set operacion.caja = DAOCaja.FindById(Values(4))
         End If
+
         operacion.EntradaSalida = OPSalida
 
+        ' Llamar a la función Totalizar
         Totalizar
-
     End If
+
+    ' Salir del procedimiento sin ejecutar el manejo de errores
+    Exit Sub
+
+ManejarError:
+    ' Mostrar un mensaje de error al usuario
+    MsgBox "Se produjo un error en la actualización de la cuadrícula." & vbCrLf & _
+           "Error: " & Err.Description & vbCrLf & _
+           "Número de error: " & Err.Number, vbCritical, "Error"
+
+    ' Opcional: Registrar el error en un archivo de log
+    ' Call RegistrarError(Err.Number, Err.Description)
+
+    ' Limpiar el objeto Err
+    Err.Clear
 End Sub
 
 Private Sub gridDepositosOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
@@ -2103,10 +2187,10 @@ Private Sub gridDepositosOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRet
     Dim cond4 As Boolean
 
 
-    cond1 = Not IsNumeric(Me.gridDepositosOperaciones.Value(1))
-    cond2 = Not IsNumeric(Me.gridDepositosOperaciones.Value(2)) And LenB(Me.gridDepositosOperaciones.Value(2)) = 0
-    cond3 = Not IsDate(Me.gridDepositosOperaciones.Value(3))
-    cond4 = Not IsNumeric(Me.gridDepositosOperaciones.Value(4)) And LenB(Me.gridDepositosOperaciones.Value(4)) = 0
+    cond1 = Not IsNumeric(Me.gridDepositosOperaciones.value(1))
+    cond2 = Not IsNumeric(Me.gridDepositosOperaciones.value(2)) And LenB(Me.gridDepositosOperaciones.value(2)) = 0
+    cond3 = Not IsDate(Me.gridDepositosOperaciones.value(3))
+    cond4 = Not IsNumeric(Me.gridDepositosOperaciones.value(4)) And LenB(Me.gridDepositosOperaciones.value(4)) = 0
 
     Cancel = cond1 Or cond2 Or cond3 Or cond4
 End Sub
@@ -2229,8 +2313,6 @@ End Sub
 
 Public Sub Cargar(liq As clsLiquidacionCaja)
 
-    Me.caption = "Liquidación Nº " & LiquidacionCaja.NumeroLiq
-
     If Not IsSomething(liq) Then
         MsgBox "La Liquidación que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
         Unload Me
@@ -2238,7 +2320,9 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     End If
 
     Set LiquidacionCaja = DAOLiquidacionCaja.FindById(liq.Id)
-
+    
+    Me.caption = "Liquidación Nº " & LiquidacionCaja.NumeroLiq
+    
     Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.Id)
 
     Me.grillaConfirmados.ItemCount = 0
@@ -2250,10 +2334,16 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     Me.gridCheques.ItemCount = LiquidacionCaja.ChequesTerceros.count
     Me.gridChequesPropios.ItemCount = LiquidacionCaja.ChequesPropios.count
     
-    Me.dtpFecha.Value = LiquidacionCaja.FEcha
+    Me.dtpFecha.value = LiquidacionCaja.FEcha
     Me.txtOtrosDescuentos.Text = LiquidacionCaja.OtrosDescuentos
 
     Me.txtNumerodeLiquidacion = LiquidacionCaja.NumeroLiq
+    
+'''    If Not ReadOnly Then
+'''    MsgBox ("Esto es Editar")
+'''    Else
+'''    MsgBox ("Esto es Ver")
+'''    End If
 
 
     Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
@@ -2281,6 +2371,7 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     Me.btnCargarCbtes.Enabled = Not ReadOnly
 
     Totalizar
+    
     TotalizarComprobantes
 
 End Sub

@@ -36,6 +36,7 @@ Public Proveedor As clsProveedor
 
 Public NombreBanco As String
 Public CuentaBancaria As String
+Public IdCtaBancaria As Long
 
 
 Private Sub Class_Initialize()

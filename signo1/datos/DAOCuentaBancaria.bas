@@ -4,25 +4,26 @@ Option Explicit
 Public Sub LlenarCombo(cbo As ComboBox)
     Dim col As Collection
     Set col = FindAll()
-    Dim c As CuentaBancaria
+    Dim C As CuentaBancaria
 
-    For Each c In col
-        cbo.AddItem c.DescripcionFormateada
-        cbo.ItemData(cbo.NewIndex) = c.Id
+    For Each C In col
+        cbo.AddItem C.DescripcionFormateada
+        cbo.ItemData(cbo.NewIndex) = C.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
     End If
 End Sub
 
+
 Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     Dim col As Collection
     Set col = FindAll()
-    Dim c As CuentaBancaria
+    Dim C As CuentaBancaria
 
-    For Each c In col
-        cbo.AddItem c.DescripcionFormateada
-        cbo.ItemData(cbo.NewIndex) = c.Id
+    For Each C In col
+        cbo.AddItem C.DescripcionFormateada
+        cbo.ItemData(cbo.NewIndex) = C.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -33,11 +34,11 @@ End Sub
 Public Sub llenarComboCBU(cbo As ComboBox)
     Dim col As Collection
     Set col = FindAllWithCBU()
-    Dim c As CuentaBancaria
+    Dim C As CuentaBancaria
 
-    For Each c In col
-        cbo.AddItem c.DescripcionCBUFormateada
-        cbo.ItemData(cbo.NewIndex) = c.Id
+    For Each C In col
+        cbo.AddItem C.DescripcionCBUFormateada
+        cbo.ItemData(cbo.NewIndex) = C.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -101,21 +102,21 @@ End Function
 
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Optional tablaBanco As String = vbNullString, Optional tablaMoneda As String = vbNullString) As CuentaBancaria
-    Dim c As CuentaBancaria
+    Dim C As CuentaBancaria
     Dim Id As Long
 
     Id = GetValue(rs, indice, tabla, "id")
     If Id > 0 Then
-        Set c = New CuentaBancaria
-        c.Id = Id
-        c.numero = GetValue(rs, indice, tabla, "cuenta")
-        c.TipoCuenta = GetValue(rs, indice, tabla, "tipo")
-        c.CBU = GetValue(rs, indice, tabla, "cbu")
-        If LenB(tablaBanco) > 0 Then Set c.Banco = DAOBancos.Map(rs, indice, tablaBanco)
-        If LenB(tablaMoneda) > 0 Then Set c.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        Set C = New CuentaBancaria
+        C.Id = Id
+        C.numero = GetValue(rs, indice, tabla, "cuenta")
+        C.TipoCuenta = GetValue(rs, indice, tabla, "tipo")
+        C.CBU = GetValue(rs, indice, tabla, "cbu")
+        If LenB(tablaBanco) > 0 Then Set C.Banco = DAOBancos.Map(rs, indice, tablaBanco)
+        If LenB(tablaMoneda) > 0 Then Set C.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
     End If
 
-    Set Map = c
+    Set Map = C
 End Function
 
 Public Function Save(cuenta As CuentaBancaria) As Boolean
