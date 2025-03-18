@@ -3,6 +3,7 @@ Line 63: Class XtremeReportControl.ReportControl of control reportPorPieza was n
 Line 76: Class XtremeSuiteControls.TabControl of control TabControl2 was not a loaded control class.
 Line 95: Class XtremeReportControl.ReportControl of control reportControl was not a loaded control class.
 Line 131: Class XtremeSuiteControls.PushButton of control Command1 was not a loaded control class.
+Line 145: Class GridEX20.GridEX of control grilla_por_legajo was not a loaded control class.
 Line 181: Class XtremeSuiteControls.GroupBox of control GroupBox1 was not a loaded control class.
 Line 194: Class XtremeSuiteControls.RadioButton of control rbFecha was not a loaded control class.
 Line 208: Class XtremeSuiteControls.DateTimePicker of control DateTimeFecha was not a loaded control class.
@@ -18,5 +19,6 @@ Line 331: Class XtremeSuiteControls.RadioButton of control rbMes2 was not a load
 Line 344: Class XtremeSuiteControls.RadioButton of control rbAño2 was not a loaded control class.
 Line 357: Class XtremeSuiteControls.ComboBox of control cboAño2 was not a loaded control class.
 Line 371: Class XtremeSuiteControls.ComboBox of control cboMeses2 was not a loaded control class.
+Line 386: Class GridEX20.GridEX of control grilla_por_periodo was not a loaded control class.
 Line 418: Class XtremeSuiteControls.PushButton of control cmdBuscarPorPeriodo was not a loaded control class.
 Line 433: Class XtremeSuiteControls.PushButton of control Command2 was not a loaded control class.

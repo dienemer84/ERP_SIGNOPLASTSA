@@ -21,7 +21,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       _ExtentX        =   28654
       _ExtentY        =   3201
       _StockProps     =   79
-      Caption         =   "Par·metros de b˙squeda"
+      Caption         =   "Par√°metros de b√∫squeda"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -282,7 +282,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          _ExtentX        =   4683
          _ExtentY        =   2355
          _StockProps     =   79
-         Caption         =   "Fecha de CreaciÛn"
+         Caption         =   "Fecha de Creaci√≥n"
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -358,7 +358,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          _ExtentX        =   1905
          _ExtentY        =   344
          _StockProps     =   79
-         Caption         =   "N∫ LiquidaciÛn:"
+         Caption         =   "N¬∫ Liquidaci√≥n:"
          Alignment       =   1
          AutoSize        =   -1  'True
       End
@@ -413,27 +413,24 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       IntProp7        =   0
       ColumnsCount    =   9
       Column(1)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0000
-      Column(2)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":01A4
-      Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0304
-      Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":044C
-      Column(5)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":05B0
-      Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0800
-      Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0960
-      Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0AA0
-      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0BE8
-      FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0D30
-      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0E58
-      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0F08
-      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0FBC
-      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1094
-      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":114C
-      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":122C
-      FormatStyle(8)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":12E0
-      FormatStyle(9)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1394
-      FormatStyle(10) =   "frmAdminPagosLiquidaciondeCajaLista.frx":1474
+      Column(2)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":00C8
+      Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":016C
+      Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0210
+      Column(5)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":02B4
+      Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0358
+      Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":03FC
+      Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":04A0
+      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0544
+      FormatStylesCount=   7
+      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":05E8
+      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0720
+      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":07D0
+      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0884
+      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":095C
+      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0A14
+      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0AF4
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":152C
+      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":0B14
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -679,7 +676,7 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
             Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
             Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
             
-            'OCULTO LA OPCION DE ANULAR QUE NO EST¡ DESARROLLADA (DNEMER 30.05.2023)
+            'OCULTO LA OPCION DE ANULAR QUE NO EST√Å DESARROLLADA (DNEMER 30.05.2023)
             'Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
 
             Me.PopupMenu menu
@@ -741,15 +738,15 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
 End Sub
 
 Private Sub mnuAnular_Click()
-    If MsgBox("øDesea anular la LiquidaciÛn?", vbQuestion + vbYesNo) = vbYes Then
+    If MsgBox("¬øDesea anular la Liquidaci√≥n?", vbQuestion + vbYesNo) = vbYes Then
         If DAOLiquidacionCaja.Delete(LiquidacionCaja.Id, True) Then
-            MsgBox "AnulaciÛn Exitosa.", vbInformation + vbOKOnly
+            MsgBox "Anulaci√≥n Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
             liquidaciones.remove CStr(LiquidacionCaja.Id)
             Me.gridOrdenes.ItemCount = liquidaciones.count
             btnBuscar_Click
         Else
-            MsgBox "No se pudo anular la LiquidaciÛn.", vbCritical + vbOKOnly
+            MsgBox "No se pudo anular la Liquidaci√≥n.", vbCritical + vbOKOnly
         End If
     End If
 End Sub
@@ -757,11 +754,11 @@ End Sub
 
 Private Sub mnuAprobar_Click()
     If DAOLiquidacionCaja.aprobar(LiquidacionCaja, True) Then
-        MsgBox "AprobaciÛn Exitosa!", vbInformation + vbOKOnly
+        MsgBox "Aprobaci√≥n Exitosa!", vbInformation + vbOKOnly
         Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
         btnBuscar_Click
     Else
-        MsgBox "Error, no se aprobÛ la OP!", vbCritical + vbOKOnly
+        MsgBox "Error, no se aprob√≥ la OP!", vbCritical + vbOKOnly
     End If
 
 End Sub

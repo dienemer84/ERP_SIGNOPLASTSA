@@ -4,10 +4,10 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosCrearOrdenPago 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orden de Pago"
-   ClientHeight    =   10290
+   ClientHeight    =   14055
    ClientLeft      =   2340
    ClientTop       =   3105
-   ClientWidth     =   17535
+   ClientWidth     =   17580
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -22,8 +22,8 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10290
-   ScaleWidth      =   17535
+   ScaleHeight     =   14055
+   ScaleWidth      =   17580
    Begin XtremeSuiteControls.GroupBox GroupBox7 
       Height          =   6375
       Left            =   13800
@@ -91,7 +91,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          _ExtentX        =   4471
          _ExtentY        =   661
          _StockProps     =   79
-         Caption         =   "Label13"
+         Caption         =   "lblFacturasTotal"
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
             Size            =   9.75
@@ -101,7 +101,6 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Alignment       =   1
       End
       Begin XtremeSuiteControls.Label lblTotalPagoACuenta 
          Height          =   255
@@ -658,12 +657,12 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    End
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
-      Left            =   4560
+      Left            =   1920
       TabIndex        =   3
-      Top             =   10080
+      Top             =   9960
       Visible         =   0   'False
-      Width           =   3465
-      _ExtentX        =   6112
+      Width           =   5745
+      _ExtentX        =   10134
       _ExtentY        =   3254
       Version         =   "2.0"
       BoundColumnIndex=   "id"
@@ -697,12 +696,12 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   1695
-      Left            =   8160
+      Left            =   7920
       TabIndex        =   4
       Top             =   10080
       Visible         =   0   'False
-      Width           =   4185
-      _ExtentX        =   7382
+      Width           =   4785
+      _ExtentX        =   8440
       _ExtentY        =   2990
       Version         =   "2.0"
       BoundColumnIndex=   "id"
@@ -739,8 +738,8 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       TabIndex        =   5
       Top             =   10080
       Visible         =   0   'False
-      Width           =   4260
-      _ExtentX        =   7514
+      Width           =   1380
+      _ExtentX        =   2434
       _ExtentY        =   3201
       Version         =   "2.0"
       BoundColumnIndex=   "id"
@@ -777,8 +776,8 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       TabIndex        =   6
       Top             =   12000
       Visible         =   0   'False
-      Width           =   3420
-      _ExtentX        =   6033
+      Width           =   1500
+      _ExtentX        =   2646
       _ExtentY        =   2990
       Version         =   "2.0"
       BoundColumnIndex=   "id"
@@ -809,12 +808,12 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequesDisponibles 
       Height          =   1905
-      Left            =   4560
+      Left            =   2040
       TabIndex        =   7
       Top             =   12000
       Visible         =   0   'False
-      Width           =   5955
-      _ExtentX        =   10504
+      Width           =   8355
+      _ExtentX        =   14737
       _ExtentY        =   3360
       Version         =   "2.0"
       BoundColumnIndex=   "id"
@@ -856,8 +855,8 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       Left            =   10560
       TabIndex        =   11
       Top             =   12000
-      Width           =   4035
-      _ExtentX        =   7117
+      Width           =   6795
+      _ExtentX        =   11986
       _ExtentY        =   3201
       Version         =   "2.0"
       BoundColumnIndex=   "id"
@@ -891,11 +890,11 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    End
    Begin GridEX20.GridEX gridChequesChequera 
       Height          =   1710
-      Left            =   12480
+      Left            =   13440
       TabIndex        =   12
-      Top             =   10080
-      Width           =   1980
-      _ExtentX        =   3493
+      Top             =   10200
+      Width           =   3420
+      _ExtentX        =   6033
       _ExtentY        =   3016
       Version         =   "2.0"
       HoldSortSettings=   -1  'True
@@ -1379,9 +1378,9 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    End
    Begin XtremeSuiteControls.GroupBox GroupBox4 
       Height          =   1095
-      Left            =   15600
+      Left            =   5040
       TabIndex        =   50
-      Top             =   10080
+      Top             =   10320
       Width           =   4125
       _Version        =   786432
       _ExtentX        =   7276
@@ -2079,20 +2078,25 @@ Private Sub Form_Load()
     Me.gridChequesPropios.ItemCount = OrdenPago.ChequesPropios.count
 
 
-
     Set Me.gridCheques.Columns("numero").DropDownControl = Me.gridChequesDisponibles
 
     Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
+   
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
+    
+    Me.gridCajaOperaciones.Columns("moneda") = moneda.NombreCorto
+    
     Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
+    
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
+    
     gridChequesChequera.ItemCount = 0
+    
     GridEXHelper.AutoSizeColumns Me.gridChequeras
-
 
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
 
@@ -2434,6 +2438,8 @@ Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal B
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
 End Sub
+
+
 
 
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)

@@ -48,7 +48,6 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
         q = q & " ORDER BY " & orderBy
     End If
 
-
     Set rs = conectar.RSFactory(q)
 
     Dim fieldsIndex As Dictionary
@@ -59,7 +58,7 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
 
 
     While Not rs.EOF
-        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "facturasp", "prov", "rec")
+        Set tmpCheque = DAOCheques.Map(rs, fieldsIndex, TABLA_CHEQUE, "banc", "mon", "cheqs", "mon2", "banc2", "ordenesp", "liq", "facturasp", "prov", "rec")
         cheques.Add tmpCheque, CStr(tmpCheque.Id)
 
         rs.MoveNext
@@ -205,6 +204,7 @@ Public Function Map(ByRef rs As Recordset, _
                     Optional ByRef monedaChequeraTableNameOrAlias As String = vbNullString, _
                     Optional ByRef bancoChequeraTableNameOrAlias As String = vbNullString, _
                     Optional ByRef OrdenesP As String = vbNullString, _
+                    Optional ByRef LiquidacionesC As String = vbNullString, _
                     Optional ByRef FacturasP As String = vbNullString, _
                     Optional ByRef proveedores As String = vbNullString, _
                     Optional ByRef rec As String = vbNullString _
@@ -233,6 +233,16 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
         
+        ' Verificar si la tabla existe y obtener el valor de "numero_liq"
+        On Error Resume Next ' Ignorar errores temporalmente
+        tmpCheque.NumeroLiquidacionCaja = GetValue(rs, fieldsIndex, LiquidacionesC, "numero_liq")
+        If Err.Number <> 0 Then
+            ' Si hay un error, el campo no existe
+            tmpCheque.NumeroLiquidacionCaja = "" ' O un valor por defecto
+            Err.Clear ' Limpiar el error
+        End If
+        On Error GoTo 0 ' Restaurar el manejo de errores
+                
         If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
         If LenB(monedaTableNameOrAlias) > 0 Then Set tmpCheque.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
         If LenB(chequeraTableNameOrAlias) > 0 Then Set tmpCheque.chequera = DAOChequeras.Map(rs, fieldsIndex, chequeraTableNameOrAlias, monedaChequeraTableNameOrAlias, bancoChequeraTableNameOrAlias)

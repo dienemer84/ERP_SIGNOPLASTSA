@@ -1,7 +1,5 @@
 Attribute VB_Name = "DAORegistrosCompras"
-Dim cn As ADODB.Connection
-Dim rs As ADODB.Recordset
-
+Option Explicit
 
 Public Function FindAllComprobantes(Optional ByRef filter As String = vbNullString, Optional ByRef order As String = vbNullString) As Collection
     
@@ -285,4 +283,6 @@ Public Function MapAlicuotas(ByRef rs As Recordset, ByRef fieldsIndex As Diction
     Set MapAlicuotas = ric
 
 End Function
+
+
 

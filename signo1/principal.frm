@@ -6,10 +6,10 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.MDIForm frmPrincipal 
    BackColor       =   &H00FFC0C0&
    Caption         =   "Signo Plast ERP"
-   ClientHeight    =   6810
+   ClientHeight    =   9930
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   10800
+   ClientWidth     =   5415
    Icon            =   "principal.frx":0000
    LinkTopic       =   "MDIForm1"
    LockControls    =   -1  'True
@@ -18,32 +18,32 @@ Begin VB.MDIForm frmPrincipal
    Begin VB.Timer tmrInformeAccidentes 
       Enabled         =   0   'False
       Interval        =   60000
-      Left            =   6030
-      Top             =   2430
+      Left            =   4000
+      Top             =   150
    End
    Begin VB.Timer tmrEventos 
       Enabled         =   0   'False
       Interval        =   30000
-      Left            =   3945
-      Top             =   840
+      Left            =   4500
+      Top             =   150
    End
    Begin VB.Timer Timer2 
       Enabled         =   0   'False
       Interval        =   60000
-      Left            =   2190
-      Top             =   1935
+      Left            =   2500
+      Top             =   150
    End
    Begin MSComDlg.CommonDialog CD 
-      Left            =   2190
-      Top             =   1335
+      Left            =   2000
+      Top             =   150
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
       CancelError     =   -1  'True
    End
    Begin MSComctlLib.ImageList ImageList1 
-      Left            =   2190
-      Top             =   3495
+      Left            =   3000
+      Top             =   150
       _ExtentX        =   1005
       _ExtentY        =   1005
       BackColor       =   -2147483643
@@ -60,24 +60,24 @@ Begin VB.MDIForm frmPrincipal
       EndProperty
    End
    Begin XtremeSuiteControls.PopupControl Popup 
-      Left            =   990
-      Top             =   2505
+      Left            =   1000
+      Top             =   150
       _Version        =   786432
       _ExtentX        =   635
       _ExtentY        =   635
       _StockProps     =   4
    End
    Begin XtremeCommandBars.CommandBars CommandBars 
-      Left            =   1020
-      Top             =   1830
+      Left            =   500
+      Top             =   150
       _Version        =   786432
       _ExtentX        =   635
       _ExtentY        =   635
       _StockProps     =   0
    End
    Begin XtremeSuiteControls.TrayIcon TrayIcon 
-      Left            =   4020
-      Top             =   5415
+      Left            =   3700
+      Top             =   150
       _Version        =   786432
       _ExtentX        =   423
       _ExtentY        =   423
@@ -85,8 +85,8 @@ Begin VB.MDIForm frmPrincipal
       Text            =   "balblablbalba"
    End
    Begin XtremeCommandBars.ImageManager ImageManager 
-      Left            =   1320
-      Top             =   3465
+      Left            =   1500
+      Top             =   150
       _Version        =   786432
       _ExtentX        =   635
       _ExtentY        =   635
@@ -311,12 +311,10 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frm6001.VerInfoAdministracion = True
         frm6001.Show
 
-        '"Ver Detalle de Cta. Cte."
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS:
         Dim frmcta As New frmCtaCte
         frmcta.Show
 
-        '"Resúmen Saldos"
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS:
         Dim frm1144 As New frmResumenSaldosProv
         frm1144.TipoPersonaCta = TipoPersona.proveedor_
@@ -371,19 +369,16 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__NUEVO_RECIBO:
-
         frmAdminCobranzasReservarRecibo.Show
 
 
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__DEUDORES:
-
         Dim frm1122 As New frmAdminFacturasAdeudadas2
         frm1122.Show
 
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS:
-
         Dim frmMover As New frmMovimientoDeFondos
         frmMover.Show
 
@@ -397,8 +392,8 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
                     Dim f12324 As New frmAdminPagosLiquidaciondeCajaLista
                     f12324.Show
 
-    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO:
 
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO:
         Dim f12322 As New frmAdminPagosCrearOrdenPago
         f12322.Show
 
@@ -416,8 +411,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim f12369 As New frmAdminPagosPagoACtaLista
         f12369.Show
         
-       
-        
+               
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__TRANSFERENCIAS:
         Dim f12325 As New frmAdminPagosTransferenciasBancarias
         f12325.Show
@@ -457,7 +451,6 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS:
-        '            frmAdminCCResumenSaldos.Show
         Dim frm11441 As New frmResumenSaldosProv
         frm11441.TipoPersonaCta = TipoPersona.cliente_
         frm1144.caption = "Resúmen de saldos de Clientes"
@@ -517,7 +510,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
     Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO:
         Dim ff111 As New frmVentasClienteNuevo
-        ff111.Cliente = Nothing
+        ff111.cliente = Nothing
         ff111.Show
 
     Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO: frmVentasClientesLista.Show
@@ -530,14 +523,17 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
 
     Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__LISTADO:
-
-
         frmComprasProveedoresLista.Show
 
 
-    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER: frmAgendaNueva.Show
+    Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER:
+            Dim ff222 As New frmAgendaNueva
+            ff222.Show
+
     Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO: frmSistemaTablero.Show
+    
     Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA:
+    
         frmCambiarPassword.Frame1 = "[ " & funciones.GetUserObj.usuario & " ]"
         frmCambiarPassword.Show
 
@@ -655,9 +651,7 @@ Private Sub MDIForm_Load()
 
     CreateRibbonBar
 
-'         frmAdminPagosLiquidaciondeCajaCrear.Show
-'         frmAdminPagosLiquidaciondeCajaLista.Show
-            
+           
 End Sub
 
 Private Sub MDIForm_QueryUnload(Cancel As Integer, UnloadMode As Integer)
@@ -1136,7 +1130,6 @@ Private Sub tmrInformeAccidentes_Timer()
 
     If contMinutosInformesAccidente >= 15 Then
 
-        'If Permisos.RRHHInformeAccidente Then
         If Me.WindowState <> vbMinimized Then
             If IsSomething(funciones.GetUserObj.Empleado) Then
                 Dim sin As Collection
@@ -1148,7 +1141,7 @@ Private Sub tmrInformeAccidentes_Timer()
                 End If
             End If
         End If
-        'End If
+
 
         contMinutosInformesAccidente = 0
 

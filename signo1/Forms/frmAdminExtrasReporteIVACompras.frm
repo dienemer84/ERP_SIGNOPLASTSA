@@ -1,5 +1,4 @@
 VERSION 5.00
-Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminExtrasReporteIVACompras 
    AutoRedraw      =   -1  'True
    BorderStyle     =   1  'Fixed Single
@@ -113,7 +112,7 @@ Begin VB.Form frmAdminExtrasReporteIVACompras
          _ExtentX        =   1931
          _ExtentY        =   661
          _StockProps     =   79
-         Caption         =   "AlÌcuotas"
+         Caption         =   "Al√≠cuotas"
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
@@ -253,17 +252,17 @@ Private Sub btnExportarTXT_Click()
         Exit Sub
     End If
 
-    ' Asigna el nombre de archivo personalizado al cuadro de di·logo
+    ' Asigna el nombre de archivo personalizado al cuadro de di√°logo
     CommonDialog1.filename = nombreArchivo
 
-    ' Abre el cuadro de di·logo para seleccionar la ubicaciÛn y el nombre del archivo
+    ' Abre el cuadro de di√°logo para seleccionar la ubicaci√≥n y el nombre del archivo
     CommonDialog1.filter = "Archivos de texto (*.txt)|*.txt|Todos los archivos (*.*)|*.*"
     CommonDialog1.ShowSave
 
-    ' Verifica si el usuario seleccionÛ un archivo o cancelÛ
+    ' Verifica si el usuario seleccion√≥ un archivo o cancel√≥
     If CommonDialog1.filename = "" Then
-        MsgBox "No se ha seleccionado ning˙n archivo para guardar.", vbExclamation
-        Exit Sub ' Salir si el usuario cancelÛ
+        MsgBox "No se ha seleccionado ning√∫n archivo para guardar.", vbExclamation
+        Exit Sub ' Salir si el usuario cancel√≥
     End If
 
     ' Abre el archivo para escritura
@@ -271,7 +270,7 @@ Private Sub btnExportarTXT_Click()
 
     Dim i As Integer
 
-    ' Recorre los elementos del ListBox y escribe cada elemento en una nueva lÌnea
+    ' Recorre los elementos del ListBox y escribe cada elemento en una nueva l√≠nea
     For i = 0 To Me.lstBoxRegistros.ListCount - 1
         Print #1, Me.lstBoxRegistros.list(i)
     Next i
@@ -333,69 +332,69 @@ Private Sub ReportarComprobantes()
     
     If registro.tipodoccontable = 0 Then
         If registro.idconfigfactura = 1 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=1
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=1
             tipodecomprobante_02 = "001"
         ElseIf registro.idconfigfactura = 2 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=2
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=2
             tipodecomprobante_02 = "006"
         ElseIf registro.idconfigfactura = 3 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=3
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=3
             tipodecomprobante_02 = "011"
         ElseIf registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=6
             tipodecomprobante_02 = "001"
         ElseIf registro.idconfigfactura = 7 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=7
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=7
             tipodecomprobante_02 = "006"
         ElseIf registro.idconfigfactura = 9 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=9
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=9
             tipodecomprobante_02 = "019"
         ElseIf registro.idconfigfactura = 10 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=10
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=10
             tipodecomprobante_02 = "011"
         ElseIf registro.idconfigfactura = 12 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=12
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=12
             tipodecomprobante_02 = "051"
         End If
     ElseIf registro.tipodoccontable = 1 Then
         If registro.idconfigfactura = 1 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=1
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=1
             tipodecomprobante_02 = "003"
         ElseIf registro.idconfigfactura = 3 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=3
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=3
             tipodecomprobante_02 = "013"
         ElseIf registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=6
             tipodecomprobante_02 = "003"
         ElseIf registro.idconfigfactura = 7 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=7
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=7
             tipodecomprobante_02 = "008"
         ElseIf registro.idconfigfactura = 10 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=10
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=10
             tipodecomprobante_02 = "013"
         ElseIf registro.idconfigfactura = 12 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=12
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=12
             tipodecomprobante_02 = "053"
         End If
     ElseIf registro.tipodoccontable = 2 Then
         If registro.idconfigfactura = 3 Then
-            ' CÛdigo para cuando tipo_doc_contable=2 y id_config_factura=3
+            ' C√≥digo para cuando tipo_doc_contable=2 y id_config_factura=3
             tipodecomprobante_02 = "012"
         ElseIf registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=2 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=2 y id_config_factura=6
             tipodecomprobante_02 = "002"
         ElseIf registro.idconfigfactura = 10 Then
-            ' CÛdigo para cuando tipo_doc_contable=2 y id_config_factura=10
+            ' C√≥digo para cuando tipo_doc_contable=2 y id_config_factura=10
             tipodecomprobante_02 = "013"
         End If
     ElseIf registro.tipodoccontable = 4 Then
         If registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=4 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=4 y id_config_factura=6
             tipodecomprobante_02 = "039"
         End If
     ElseIf registro.tipodoccontable = 5 Then
         If registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=5 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=5 y id_config_factura=6
             tipodecomprobante_02 = "030"
         End If
     End If
@@ -411,7 +410,7 @@ Private Sub ReportarComprobantes()
     ' Extrae la parte izquierda hasta el guion del medio
     puntodeventa_03 = Mid(puntoDeVenta, 1, InStr(puntoDeVenta, "-") - 1)
     
-    ' Aseg˙rate de que tenga 5 caracteres complet·ndose con ceros a la izquierda
+    ' Aseg√∫rate de que tenga 5 caracteres complet√°ndose con ceros a la izquierda
     puntodeventa_03 = String(5 - Len(puntodeventa_03), "0") & puntodeventa_03
     
     ' Muestra el resultado
@@ -424,10 +423,10 @@ Private Sub ReportarComprobantes()
     ' Asigna el valor a la variable
     numerodecomprobante = registro.numerodecomprobante
     
-    ' Extrae la parte derecha despuÈs del guion del medio
+    ' Extrae la parte derecha despu√©s del guion del medio
     numerodecomprobante_04 = Mid(numerodecomprobante, InStr(numerodecomprobante, "-") + 1)
     
-    ' Aseg˙rate de que tenga 20 caracteres complet·ndose con ceros a la izquierda
+    ' Aseg√∫rate de que tenga 20 caracteres complet√°ndose con ceros a la izquierda
     numerodecomprobante_04 = String(20 - Len(numerodecomprobante_04), "0") & numerodecomprobante_04
     
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -453,17 +452,17 @@ Private Sub ReportarComprobantes()
     denominacionvendedor_07 = registro.denominacionvendedor
     
     ' Realiza las sustituciones necesarias
-    denominacionvendedor_07 = Replace(denominacionvendedor_07, "—", "N")
-    denominacionvendedor_07 = Replace(denominacionvendedor_07, "¡", "A")
-    denominacionvendedor_07 = Replace(denominacionvendedor_07, "…", "E")
-    denominacionvendedor_07 = Replace(denominacionvendedor_07, "Õ", "I")
-    denominacionvendedor_07 = Replace(denominacionvendedor_07, "”", "O")
-    denominacionvendedor_07 = Replace(denominacionvendedor_07, "⁄", "U")
+    denominacionvendedor_07 = Replace(denominacionvendedor_07, "√ë", "N")
+    denominacionvendedor_07 = Replace(denominacionvendedor_07, "√Å", "A")
+    denominacionvendedor_07 = Replace(denominacionvendedor_07, "√â", "E")
+    denominacionvendedor_07 = Replace(denominacionvendedor_07, "√ç", "I")
+    denominacionvendedor_07 = Replace(denominacionvendedor_07, "√ì", "O")
+    denominacionvendedor_07 = Replace(denominacionvendedor_07, "√ö", "U")
     
-    ' Recorta a 30 caracteres si es m·s largo
+    ' Recorta a 30 caracteres si es m√°s largo
     denominacionvendedor_07 = Left(denominacionvendedor_07 & Space(30), 30)
     
-    ' Convierte la cadena a may˙sculas
+    ' Convierte la cadena a may√∫sculas
     denominacionvendedor_07 = UCase(denominacionvendedor_07)
         
     
@@ -689,7 +688,7 @@ Private Sub ReportarComprobantes()
 
     Me.btnExportarTXT.Enabled = True
     
-            MsgBox "Los datos se cargaron Èxitosamente!", vbOKOnly, "ConfirmaciÛn"
+            MsgBox "Los datos se cargaron √©xitosamente!", vbOKOnly, "Confirmaci√≥n"
     
 End Sub
 
@@ -726,69 +725,69 @@ Private Sub ReportarAlicuotas()
     
     If registro.tipodoccontable = 0 Then
         If registro.idconfigfactura = 1 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=1
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=1
             tipodecomprobante_02 = "001"
         ElseIf registro.idconfigfactura = 2 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=2
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=2
             tipodecomprobante_02 = "006"
         ElseIf registro.idconfigfactura = 3 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=3
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=3
             tipodecomprobante_02 = "011"
         ElseIf registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=6
             tipodecomprobante_02 = "001"
         ElseIf registro.idconfigfactura = 7 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=7
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=7
             tipodecomprobante_02 = "006"
         ElseIf registro.idconfigfactura = 9 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=9
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=9
             tipodecomprobante_02 = "019"
         ElseIf registro.idconfigfactura = 10 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=10
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=10
             tipodecomprobante_02 = "011"
         ElseIf registro.idconfigfactura = 12 Then
-            ' CÛdigo para cuando tipo_doc_contable=0 y id_config_factura=12
+            ' C√≥digo para cuando tipo_doc_contable=0 y id_config_factura=12
             tipodecomprobante_02 = "051"
         End If
     ElseIf registro.tipodoccontable = 1 Then
         If registro.idconfigfactura = 1 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=1
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=1
             tipodecomprobante_02 = "003"
         ElseIf registro.idconfigfactura = 3 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=3
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=3
             tipodecomprobante_02 = "013"
         ElseIf registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=6
             tipodecomprobante_02 = "003"
         ElseIf registro.idconfigfactura = 7 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=7
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=7
             tipodecomprobante_02 = "008"
         ElseIf registro.idconfigfactura = 10 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=10
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=10
             tipodecomprobante_02 = "013"
         ElseIf registro.idconfigfactura = 12 Then
-            ' CÛdigo para cuando tipo_doc_contable=1 y id_config_factura=12
+            ' C√≥digo para cuando tipo_doc_contable=1 y id_config_factura=12
             tipodecomprobante_02 = "053"
         End If
     ElseIf registro.tipodoccontable = 2 Then
         If registro.idconfigfactura = 3 Then
-            ' CÛdigo para cuando tipo_doc_contable=2 y id_config_factura=3
+            ' C√≥digo para cuando tipo_doc_contable=2 y id_config_factura=3
             tipodecomprobante_02 = "012"
         ElseIf registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=2 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=2 y id_config_factura=6
             tipodecomprobante_02 = "002"
         ElseIf registro.idconfigfactura = 10 Then
-            ' CÛdigo para cuando tipo_doc_contable=2 y id_config_factura=10
+            ' C√≥digo para cuando tipo_doc_contable=2 y id_config_factura=10
             tipodecomprobante_02 = "013"
         End If
     ElseIf registro.tipodoccontable = 4 Then
         If registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=4 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=4 y id_config_factura=6
             tipodecomprobante_02 = "039"
         End If
     ElseIf registro.tipodoccontable = 5 Then
         If registro.idconfigfactura = 6 Then
-            ' CÛdigo para cuando tipo_doc_contable=5 y id_config_factura=6
+            ' C√≥digo para cuando tipo_doc_contable=5 y id_config_factura=6
             tipodecomprobante_02 = "030"
         End If
     End If
@@ -804,7 +803,7 @@ Private Sub ReportarAlicuotas()
     ' Extrae la parte izquierda hasta el guion del medio
     puntodeventa_03 = Mid(puntoDeVenta, 1, InStr(puntoDeVenta, "-") - 1)
     
-    ' Aseg˙rate de que tenga 5 caracteres complet·ndose con ceros a la izquierda
+    ' Aseg√∫rate de que tenga 5 caracteres complet√°ndose con ceros a la izquierda
     puntodeventa_03 = String(5 - Len(puntodeventa_03), "0") & puntodeventa_03
     
     ' Muestra el resultado
@@ -817,10 +816,10 @@ Private Sub ReportarAlicuotas()
     ' Asigna el valor a la variable
     numerodecomprobante = registro.numerodecomprobante
     
-    ' Extrae la parte derecha despuÈs del guion del medio
+    ' Extrae la parte derecha despu√©s del guion del medio
     numerodecomprobante_04 = Mid(numerodecomprobante, InStr(numerodecomprobante, "-") + 1)
     
-    ' Aseg˙rate de que tenga 20 caracteres complet·ndose con ceros a la izquierda
+    ' Aseg√∫rate de que tenga 20 caracteres complet√°ndose con ceros a la izquierda
     numerodecomprobante_04 = String(20 - Len(numerodecomprobante_04), "0") & numerodecomprobante_04
     
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -947,7 +946,7 @@ Private Sub ReportarAlicuotas()
     
         Me.btnExportarTXT.Enabled = True
         
-        MsgBox "Los datos se cargaron Èxitosamente!", vbOKOnly, "ConfirmaciÛn"
+        MsgBox "Los datos se cargaron √©xitosamente!", vbOKOnly, "Confirmaci√≥n"
     
 End Sub
 
