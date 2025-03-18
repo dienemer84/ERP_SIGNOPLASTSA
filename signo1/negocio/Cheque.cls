@@ -31,10 +31,11 @@ Public TercerosPropio As Boolean
 Public FechaEmision As Date
 
 Public IdOrdenPagoOrigen As Long
+Public NumeroLiquidacionCaja As Long
 
 Public estado As EstadoCheque
 Public Depositado As Boolean
-Public Destino As String
+Public destino As String
 Public recibo As String
 
 Public Property Get OrigenCheque()

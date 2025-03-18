@@ -1415,4 +1415,3 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 err1:
     ExportarColeccion = False
 End Function
-

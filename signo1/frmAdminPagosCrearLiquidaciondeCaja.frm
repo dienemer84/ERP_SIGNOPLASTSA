@@ -1161,8 +1161,8 @@ Private Sub Form_Load()
     'lstFacturas_Click
     Totalizar
 
-    Me.txtInstruccion.text = "Se muestran los Comprobantes Impagos." & vbCrLf & "Para realizar el pago, debe seleccionar el Comprobante clickeando en el Check correspondiente." & vbCrLf & "Puede ir confirmando el Comprobante para que se guarde en la lista de Comprobantes Confirmados clickeando en el Botón: Confirmar Comprobantes."
-    Me.txtInstruccionDos.text = "Se muestran los Comprobantes Confirmados." & vbCrLf & "La sumatoria de los importes se verá reflejado en el totalizado superior Total Comprobantes" & vbCrLf & "Puede borrar alguno o todos los Comprobantes que se fueron agregando."
+    Me.txtInstruccion.Text = "Se muestran los Comprobantes Impagos." & vbCrLf & "Para realizar el pago, debe seleccionar el Comprobante clickeando en el Check correspondiente." & vbCrLf & "Puede ir confirmando el Comprobante para que se guarde en la lista de Comprobantes Confirmados clickeando en el Botón: Confirmar Comprobantes."
+    Me.txtInstruccionDos.Text = "Se muestran los Comprobantes Confirmados." & vbCrLf & "La sumatoria de los importes se verá reflejado en el totalizado superior Total Comprobantes" & vbCrLf & "Puede borrar alguno o todos los Comprobantes que se fueron agregando."
 
     esNueva = True
 
@@ -1285,7 +1285,7 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
 
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.id, Me.cboMonedas)
         Me.dtpFecha.value = .FEcha
-        Me.txtOtrosDescuentos.text = .OtrosDescuentos
+        Me.txtOtrosDescuentos.Text = .OtrosDescuentos
 
     End With
     mostrarCompensatorios
@@ -1334,11 +1334,11 @@ Private Sub btnGuardar_Click()
 
     LiquidacionCaja.FEcha = Me.dtpFecha.value
 
-    If Me.txtNumerodeLiquidacion.text = "" Then
+    If Me.txtNumerodeLiquidacion.Text = "" Then
         MsgBox ("El número de Liquidación no puede estar vacío.")
         Exit Sub
     Else
-        LiquidacionCaja.NumeroLiq = Me.txtNumerodeLiquidacion.text
+        LiquidacionCaja.NumeroLiq = Me.txtNumerodeLiquidacion.Text
 
     End If
 
@@ -1522,8 +1522,8 @@ Private Sub MostrarFacturas()
 
     For Each Factura In colFacturas    'en ese for traigo los pendientes a abonar que estan asociados a ops sin aprobar
 
-        Dim c As Collection
-        Set c = DAOOrdenPago.FindAbonadoPendiente(Factura.id, LiquidacionCaja.id)
+        Dim C As Collection
+        Set C = DAOOrdenPago.FindAbonadoPendiente(Factura.id, LiquidacionCaja.id)
 
         Factura.TotalAbonadoGlobalPendiente = 0    ' c(1) 'que esta en ops sin aprobar
         Factura.NetoGravadoAbonadoGlobalPendiente = 0    ' c(2)
@@ -1683,7 +1683,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
 
 
     totRet = funciones.RedondearDecimales(totRet)
-    Dim c As Compensatorio
+    Dim C As Compensatorio
     Dim F As clsFacturaProveedor
     Dim totFact As Double
     Dim TotNG As Double
@@ -1709,12 +1709,12 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
 
 
     If IsSomething(colc) Then
-        For Each c In colc
+        For Each C In colc
 
             Dim ff As clsFacturaProveedor
 
-            Set ff = DAOFacturaProveedor.FindById(c.Comprobante.id)
-            totDeudaCompe = totDeudaCompe + MonedaConverter.ConvertirForzado2(IIf(c.Tipo = TC_Credito, c.Monto * -1, c.Monto), ff.moneda.id, LiquidacionCaja.moneda.id, ff.TipoCambioPago)
+            Set ff = DAOFacturaProveedor.FindById(C.Comprobante.id)
+            totDeudaCompe = totDeudaCompe + MonedaConverter.ConvertirForzado2(IIf(C.Tipo = TC_Credito, C.Monto * -1, C.Monto), ff.moneda.id, LiquidacionCaja.moneda.id, ff.TipoCambioPago)
 
         Next
 
@@ -1784,17 +1784,17 @@ Private Sub lstFacturas_Click()
 
     If IsSomething(vFactElegida) Then
 
-        Dim c As Collection
+        Dim C As Collection
 
         'Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: " & c.count
 
 
         If LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente And vFactElegida.NetoGravadoAbonado = 0 And vFactElegida.OtrosAbonado = 0 Then
-            Set c = DAOLiquidacionCaja.FindAbonadoFactura(vFactElegida.id, LiquidacionCaja.id)
+            Set C = DAOLiquidacionCaja.FindAbonadoFactura(vFactElegida.id, LiquidacionCaja.id)
 
             'vFactElegida.TotalAbonadoGlobalPendiente = c(1)
-            vFactElegida.NetoGravadoAbonado = c(2)
-            vFactElegida.OtrosAbonado = c(3)
+            vFactElegida.NetoGravadoAbonado = C(2)
+            vFactElegida.OtrosAbonado = C(3)
         End If
 
 
@@ -1933,7 +1933,7 @@ Private Sub btnConfirmarSeleccion_Click()
     Me.lblCantidadCbtesSeleccionados.caption = "Cbtes. Seleccionados: 0"
 
 
-    Me.txtFiltroNumero.text = ""
+    Me.txtFiltroNumero.Text = ""
     
     If Me.txtFiltroNumero.Enabled = True Then
         Me.txtFiltroNumero.SetFocus
@@ -2352,7 +2352,7 @@ End Sub
 
 Private Sub txtFiltroNumero_Change()
     Dim filterText As String
-    filterText = Trim(Me.txtFiltroNumero.text)
+    filterText = Trim(Me.txtFiltroNumero.Text)
 
     Me.lstFacturas.Clear
 
@@ -2422,7 +2422,7 @@ End Sub
 '''End Sub
 
 Private Sub txtOtrosDescuentos_LostFocus()
-    LiquidacionCaja.OtrosDescuentos = Val(Me.txtOtrosDescuentos.text)
+    LiquidacionCaja.OtrosDescuentos = Val(Me.txtOtrosDescuentos.Text)
     Totalizar
 End Sub
 

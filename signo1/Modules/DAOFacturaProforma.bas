@@ -509,13 +509,13 @@ Public Function aprobarV2(Factura As clsFacturaProforma, aprobarLocal As Boolean
     If aprobarLocal Then
         If (Factura.estado = EstadoFacturaCliente.Aprobada) Then
 
-            Err.Raise 110011, "Factura", "Factura aprobada en otra sesiÛn"
+            Err.Raise 110011, "Factura", "Factura aprobada en otra sesi√≥n"
         End If
 
         Dim idf As Long
 
         If Factura.moneda.Cambio > 1 Then
-            If MsgBox("øDesea asumir el valor para  " & Factura.moneda.NombreCorto & " cÛmo " & Factura.moneda.Cambio & "?", vbYesNo, "ConfirmaciÛn") = vbNo Then GoTo err5
+            If MsgBox("¬øDesea asumir el valor para  " & Factura.moneda.NombreCorto & " c√≥mo " & Factura.moneda.Cambio & "?", vbYesNo, "Confirmaci√≥n") = vbNo Then GoTo err5
         End If
 
         Dim CambioAnterior As Double
@@ -604,7 +604,7 @@ Public Function aprobarV2(Factura As clsFacturaProforma, aprobarLocal As Boolean
                     rto = col.item(x)
                     Set Remito = DAORemitoS.FindById(rto)
                     Remito.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(Remito.id)
-                    'MsgBox "ACA T¡!"
+                    'MsgBox "ACA T√Å!"
                     If Remito.estado = RemitoPendiente Then Err.Raise 206, "Remito " & Remito.numero, "El Remito no esta aprobado"
                     If Remito.estado = RemitoAnulado Then Err.Raise 205, "Remito " & Remito.numero, "El Remito fue anulado en otra sesion"
                     If Not DAORemitoS.Guardar(Remito) Then Err.Raise 201, "Remito", "Imposible guardar el remito " & Remito.numero
@@ -629,11 +629,11 @@ Public Function aprobarV2(Factura As clsFacturaProforma, aprobarLocal As Boolean
         End If
 
         If Factura.AprobadaAFIP Then
-            Err.Raise 110011, "Factura", "Factura ya aprobada en otra sesiÛn"
+            Err.Raise 110011, "Factura", "Factura ya aprobada en otra sesi√≥n"
         End If
 
         If Not Factura.Tipo.PuntoVenta.EsElectronico Then
-            Err.Raise 110012, "Factura", "La factura a aprobar debe ser electrÛnica"
+            Err.Raise 110012, "Factura", "La factura a aprobar debe ser electr√≥nica"
         End If
 
         Dim response As New CAESolicitar
@@ -827,7 +827,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.CurrentY = 3700
     Printer.Font.Size = 9
     Printer.Print Tab(4);
-    Printer.Print "SeÒor/es: ";
+    Printer.Print "Se√±or/es: ";
     Printer.FontBold = True
     Printer.Font.Size = 9
     'Printer.Print truncar(Cliente, 64)
@@ -872,10 +872,10 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.Print truncar(UCase(objFac.Cliente.provincia.nombre), 30)
     Printer.FontBold = False
     Printer.Print Tab(4);
-    Printer.Print "CondiciÛn: ";
+    Printer.Print "Condici√≥n: ";
     Printer.FontBold = True
-    'Printer.Print truncar(condicion, 40) & " dÌas FF";
-    Printer.Print truncar(objFac.CantDiasPago, 40) & " dÌas FF";
+    'Printer.Print truncar(condicion, 40) & " d√≠as FF";
+    Printer.Print truncar(objFac.CantDiasPago, 40) & " d√≠as FF";
     Printer.Print Tab(65);
     Printer.FontBold = False
     '    Printer.Print "C.P. ";
@@ -1073,11 +1073,11 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Dim Largo As String
 
     If objFac.TasaAjusteMensual > 0 Then
-        Printer.Print "Esta factura devengar· un interÈs mensual de " & objFac.TasaAjusteMensual & "%"
+        Printer.Print "Esta factura devengar√° un inter√©s mensual de " & objFac.TasaAjusteMensual & "%"
     End If
 
-    A = "     La cancelaciÛn del monto indicado en la presente factura, se efectuar· convirtiendo este importe a " & UCase(MonedaConverter.Patron.NombreLargo)    'UCase(nombre_largo_patron)
-    B = "     De acuerdo  con la cotizaciÛn de la moneda extranjera Vigente al dÌa anterior del efectivo pago"
+    A = "     La cancelaci√≥n del monto indicado en la presente factura, se efectuar√° convirtiendo este importe a " & UCase(MonedaConverter.Patron.NombreLargo)    'UCase(nombre_largo_patron)
+    B = "     De acuerdo  con la cotizaci√≥n de la moneda extranjera Vigente al d√≠a anterior del efectivo pago"
     d = "     Tipo de cambio de referencia en la presente factura :" & MonedaConverter.Patron.NombreCorto & " " & objFac.CambioAPatron & " " & MonedaConverter.Patron.NombreLargo
 
     If MonedaConverter.Patron.id <> objFac.moneda.id Then
@@ -1225,23 +1225,23 @@ Public Function aplicarANC(idOrigen As Long, idNCDestino As Long)
 
     '    '23-8  Si quiero aplicar una FC a una NC, ambas deben estar aprobadas localmente y no informadas a la afip?
     '    If Not fc.Modificable Then
-    '             Err.Raise 821, "bb", "La FC ya fuÈ enviada a la AFIP, no se puede realizar la asociaciÛn"
+    '             Err.Raise 821, "bb", "La FC ya fu√© enviada a la AFIP, no se puede realizar la asociaci√≥n"
     '    End If
     '  If Not nc.Modificable Then
-    '             Err.Raise 822, "bb", "La NC ya fuÈ enviada a la AFIP, no se puede realizar la asociaciÛn"
+    '             Err.Raise 822, "bb", "La NC ya fu√© enviada a la AFIP, no se puede realizar la asociaci√≥n"
     '    End If
 
-    ' 23-8 si quiero asociar una FC a una NC, laNC no debe estar informada y deber· controlar que este aprobada
+    ' 23-8 si quiero asociar una FC a una NC, laNC no debe estar informada y deber√° controlar que este aprobada
     'localmente antes de informar NC a afip
     If Not nc.Modificable Then
-        Err.Raise 821, "bb", "La NC no debe estar informada para poder hacer la asociaciÛn"
+        Err.Raise 821, "bb", "La NC no debe estar informada para poder hacer la asociaci√≥n"
     End If
 
     Dim ok As Boolean
     Dim saldadoTotal As Boolean
     saldadoTotal = False
     If MonedaConverter.Convertir(fc.TotalEstatico.total, fc.moneda.id, nc.moneda.id) <> (nc.TotalEstatico.total + DAOFactura.MontoTotalAplicadoNCFC(idFactura)) Then
-        If MsgBox("La NC a aplicar debe ser del mismo monto que la FC!" & vbNewLine & "øDesea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
+        If MsgBox("La NC a aplicar debe ser del mismo monto que la FC!" & vbNewLine & "¬øDesea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
 
             saldadoTotal = False
             ok = True
@@ -1322,15 +1322,15 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
     fc.Detalles = DAOFacturaDetalles.FindByFactura(fc.id)
 
 
-    ' 23-8 si quiero asociar una FC a una NC, laNC no debe estar informada y deber· controlar que este aprobada
+    ' 23-8 si quiero asociar una FC a una NC, laNC no debe estar informada y deber√° controlar que este aprobada
     'localmente antes de informar NC a afip
 
     '02.09.20 DNEMER
-    'Desactivo este mensaje de ERROR porque finalmente las aplicaciones se hacen para los comprobantes electronicos si est·n informados tambien.
-    ' En el caso de que sean Mi Pymes no van a llegar hasta esta comprobaciÛn porque no va a estar disponible la aplicacion en el menu
+    'Desactivo este mensaje de ERROR porque finalmente las aplicaciones se hacen para los comprobantes electronicos si est√°n informados tambien.
+    ' En el caso de que sean Mi Pymes no van a llegar hasta esta comprobaci√≥n porque no va a estar disponible la aplicacion en el menu
 
     '  If Not nc.Modificable Then
-    '         Err.Raise 821, "bb", "La NC no debe estar informada para poder hacer la asociaciÛn"
+    '         Err.Raise 821, "bb", "La NC no debe estar informada para poder hacer la asociaci√≥n"
     '   End If
 
     ' FIN
@@ -1343,7 +1343,7 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
         If MsgBox(("Importe total de la FC " & fc.numero & ": " & fc.moneda.NombreCorto & " " & MonedaConverter.Convertir(fc.TotalEstatico.total, fc.moneda.id, nc.moneda.id)) & vbNewLine & "" _
                 & "Importe total de la NC " & nc.numero & ": " & nc.moneda.NombreCorto & " " & (nc.TotalEstatico.total + DAOFactura.MontoTotalAplicadoNCFC(idFactura)) & vbNewLine & "" _
                 & "El importe total de la NC a aplicar no es del mismo que el de la FC!" & vbNewLine & "" _
-                & "Se realizar· una cancelaciÛn parcial de la FC." & vbNewLine & "øDesea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
+                & "Se realizar√° una cancelaci√≥n parcial de la FC." & vbNewLine & "¬øDesea aplicar de todas maneras?", vbQuestion + vbYesNo) = vbYes Then
             saldadoTotal = False
             ok = True
 
@@ -1447,7 +1447,7 @@ er12:
 
     ' MsgBox Err.Description, vbCritical, "Error"
 
-    MsgBox ("OperaciÛn cancelada"), vbInformation, "InformaciÛn"
+    MsgBox ("Operaci√≥n cancelada"), vbInformation, "Informaci√≥n"
 End Function
 
 Public Function aplicarNotaDebitoaFC(idFactura As Long, idND As Long) As Boolean
@@ -1498,7 +1498,7 @@ er12:
     aplicarNotaDebitoaFC = False
     conectar.RollBackTransaction
 
-    MsgBox ("OperaciÛn cancelada"), vbInformation, "InformaciÛn"
+    MsgBox ("Operaci√≥n cancelada"), vbInformation, "Informaci√≥n"
 
 End Function
 
@@ -1622,7 +1622,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
         Set c = seccion.Controls.item("lblFce")
         c.Visible = True
-        c.caption = "COMPROBANTE NO V¡LIDO COMO FACTURA"
+        c.caption = "COMPROBANTE NO V√ÅLIDO COMO FACTURA"
 
 
 '        Set c = seccion.Controls.item("lblCbuEmisorFce")
@@ -1630,13 +1630,13 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 '        c.caption = "CBU del Emisor: " & F.CBU
 
         Set c = seccion.Controls.item("lblCodigoDocumento")
-        c.caption = "CÛdigo N∫ 01"
+        c.caption = "C√≥digo N¬∫ 01"
 
         Set c = seccion.Controls.item("LBLDescripcionCodigoDocumento")
         c.caption = "PROFORMA"
 
         Set c = seccion.Controls.item("lblFecha")
-        c.caption = "Fecha de EmisiÛn: " & Format(F.FechaEmision, "dd/mm/yyyy")
+        c.caption = "Fecha de Emisi√≥n: " & Format(F.FechaEmision, "dd/mm/yyyy")
         
         
         Set c = seccion.Controls.item("lblNumeroDocumento")
@@ -1677,10 +1677,10 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         Set c = seccion.Controls.item("lblDias")
         c.Visible = False
         If F.CantDiasPago = 1 Then
-            c.caption = "/ " & F.CantDiasPago & " dÌa"
+            c.caption = "/ " & F.CantDiasPago & " d√≠a"
                     c.Visible = False
         Else
-            c.caption = "/ " & F.CantDiasPago & " dÌas"
+            c.caption = "/ " & F.CantDiasPago & " d√≠as"
                     c.Visible = False
         End If
         
@@ -1738,7 +1738,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
                 c.Font.Size = 8
                 c.caption = F.observaciones
 
-' Cambia el tamaÒo de la fuente aquÌ
+' Cambia el tama√±o de la fuente aqu√≠
             c.Width = 6980
 
         seccion.Controls.item("lblDireccion").caption = F.Cliente.Domicilio & ", " & F.Cliente.localidad.nombre & ", " & F.Cliente.provincia.nombre
@@ -1778,7 +1778,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         tip = vbNullString
         If F.TasaAjusteMensual > 0 Then
 
-            tip = "Esta factura devengar· un interÈs mensual de " & F.TasaAjusteMensual & "%"
+            tip = "Esta factura devengar√° un inter√©s mensual de " & F.TasaAjusteMensual & "%"
 
         End If
         seccion.Controls.item("lblIntereses").caption = tip
@@ -1792,18 +1792,18 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
             If F.moneda.id = DAOMoneda.FindFirstByPatronOrDefault.id Then
                 'si esta factura en moneda patron
                 Set mon = DAOMoneda.GetById(F.IdMonedaAjuste)
-                tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.total / F.TipoCambioAjuste) & " al tipo de cambio " & mon.NombreCorto & " " & F.TipoCambioAjuste & ".  La presente deber· ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
+                tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.total / F.TipoCambioAjuste) & " al tipo de cambio " & mon.NombreCorto & " " & F.TipoCambioAjuste & ".  La presente deber√° ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
             Else
                 'si esta facturada en otra moneda
                 Set mon = DAOMoneda.FindFirstByPatronOrDefault    '  DAOMoneda.GetById(F.IdMonedaAjuste)
-                'tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deber· ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
+                'tip = "***  El total de la presente factura, equvale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.Total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deber√° ser abonada al tipo de cambio BNA tipo comprador del dia anterior al efectivo pago.  ***"
                 'FIX 001 - MT
 
                 Dim idPatron As Long
                 idPatron = DAOMoneda.FindFirstByPatronOrDefault.id
                 If F.IdMonedaAjuste <> idPatron And F.moneda.id = idPatron Then
                     'factura en pesos, pero  convertida de dolares
-                    tip = "***  El total de la presente factura, equivale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deber· ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
+                    tip = "***  El total de la presente factura, equivale a " & mon.NombreCorto & " " & funciones.RedondearDecimales(F.total * F.CambioAPatron) & " al tipo de cambio " & mon.NombreCorto & " " & F.CambioAPatron & ".  La presente deber√° ser abonada al tipo de cambio BNA tipo vendedor del dia anterior al efectivo pago.  ***"
                 Else
                     'fix 000
                     'factura en dolares
@@ -2030,7 +2030,7 @@ End Function
 '    tip = F.GetDescripciopnDocumentoAfip
 '    o.PDFTextOut tip, 360, 50
 '    o.PDFSetFont FONT_ARIAL, 18, FONT_NORMAL
-'    tip = "N∫ " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000") & "-" & Format(F.numero, "00000000")
+'    tip = "N¬∫ " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000") & "-" & Format(F.numero, "00000000")
 '    o.PDFTextOut tip, 360, 65
 '
 '    o.PDFSetFont FONT_ARIAL, 18, FONT_BOLD
@@ -2258,7 +2258,7 @@ End Function
 '
 '    o.PDFSetFont FONT_ARIAL, 7, FONT_NORMAL
 '    If F.TasaAjusteMensual > 0 Then
-'        tip = "Esta factura devengar· un interÈs mensual de " & F.TasaAjusteMensual & "%"
+'        tip = "Esta factura devengar√° un inter√©s mensual de " & F.TasaAjusteMensual & "%"
 '        o.PDFTextOut tip, margen + 10, footery + 10
 '
 '    End If
@@ -2514,7 +2514,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     xlWorksheet.Cells(offset, 3).value = "CUIT"
     xlWorksheet.Cells(offset, 4).value = "Documento"
     xlWorksheet.Cells(offset, 5).value = "Letra"
-    xlWorksheet.Cells(offset, 6).value = "N˙mero"
+    xlWorksheet.Cells(offset, 6).value = "N√∫mero"
     xlWorksheet.Cells(offset, 7).value = "Fecha"
     xlWorksheet.Cells(offset, 8).value = "Moneda"
     xlWorksheet.Cells(offset, 9).value = "Total"

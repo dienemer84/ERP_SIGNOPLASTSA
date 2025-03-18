@@ -88,6 +88,27 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
       End
+      Begin XtremeSuiteControls.Label Label1 
+         Height          =   255
+         Left            =   240
+         TabIndex        =   10
+         Top             =   1560
+         Width           =   3375
+         _Version        =   786432
+         _ExtentX        =   5953
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Cuenta Bancaria"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      End
       Begin XtremeSuiteControls.Label lblNumeroCbte 
          Height          =   375
          Left            =   240
