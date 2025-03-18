@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminExtrasReporteIVACompras 
    AutoRedraw      =   -1  'True
    BorderStyle     =   1  'Fixed Single
@@ -112,7 +113,7 @@ Begin VB.Form frmAdminExtrasReporteIVACompras
          _ExtentX        =   1931
          _ExtentY        =   661
          _StockProps     =   79
-         Caption         =   "Al铆cuotas"
+         Caption         =   "Alicuotas"
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
@@ -261,7 +262,7 @@ Private Sub btnExportarTXT_Click()
 
     ' Verifica si el usuario seleccion贸 un archivo o cancel贸
     If CommonDialog1.filename = "" Then
-        MsgBox "No se ha seleccionado ning煤n archivo para guardar.", vbExclamation
+        MsgBox "No se ha seleccionado ning鷑 archivo para guardar.", vbExclamation
         Exit Sub ' Salir si el usuario cancel贸
     End If
 
@@ -688,7 +689,7 @@ Private Sub ReportarComprobantes()
 
     Me.btnExportarTXT.Enabled = True
     
-            MsgBox "Los datos se cargaron 茅xitosamente!", vbOKOnly, "Confirmaci贸n"
+            MsgBox "Los datos se cargaron 閤itosamente!", vbOKOnly, "Confirmaci髇"
     
 End Sub
 
@@ -946,7 +947,7 @@ Private Sub ReportarAlicuotas()
     
         Me.btnExportarTXT.Enabled = True
         
-        MsgBox "Los datos se cargaron 茅xitosamente!", vbOKOnly, "Confirmaci贸n"
+        MsgBox "Los datos se cargaron 閤itosamente!", vbOKOnly, "Confirmaci髇"
     
 End Sub
 

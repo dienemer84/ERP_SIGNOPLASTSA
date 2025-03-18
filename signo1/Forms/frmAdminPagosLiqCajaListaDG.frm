@@ -988,7 +988,7 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       Width           =   1935
    End
    Begin VB.Label Label 
-      Caption         =   "Fecha de LiquidaciÃ³n"
+      Caption         =   "Fecha de Liquidación"
       Height          =   255
       Index           =   2
       Left            =   10440
@@ -997,7 +997,7 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       Width           =   2055
    End
    Begin VB.Label Label 
-      Caption         =   "Nro LiquidaciÃ³n"
+      Caption         =   "Nro Liquidación"
       Height          =   255
       Index           =   1
       Left            =   8160
@@ -1132,7 +1132,7 @@ Private Sub btnConfirmar_Click()
         facturaExistente = False
 
         For Each fac In facturasConfirmadas
-            If fac.id = Factura.id Then
+            If fac.Id = Factura.Id Then
             'If fac.numero = Factura.numero Then
                 facturaExistente = True
                 Exit For
@@ -1409,13 +1409,13 @@ Private Sub btnQuitarSeleccionado_Click()
     
         ' Buscar la factura correspondiente en la colecciÃ³n
         For i = facturasConfirmadas.count To 1 Step -1
-            If facturasConfirmadas(i).id = facturaConfirmada.id Then
+            If facturasConfirmadas(i).Id = facturaConfirmada.Id Then
                 ' Encontrar la factura a eliminar
                 Set facturaAEliminar = facturasConfirmadas(i)
                 
                 Dim q As String
                 If facturaConfirmada.estado = Saldada Then
-                    q = "UPDATE AdminComprasFacturasProveedores SET estado = 2 WHERE id = " & facturaConfirmada.id
+                    q = "UPDATE AdminComprasFacturasProveedores SET estado = 2 WHERE id = " & facturaConfirmada.Id
                     If Not conectar.execute(q) Then GoTo err1
                  End If
                 
@@ -1578,10 +1578,10 @@ Public Sub llenarGrilla()
     For Each F In facturas
 
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
-        total = total + MonedaConverter.Convertir(F.total * C, F.moneda.id, MonedaConverter.Patron.id)
-        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * C - F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.id, MonedaConverter.Patron.id)
-        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.id, MonedaConverter.Patron.id)
-        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * C, F.moneda.id, MonedaConverter.Patron.id)
+        total = total + MonedaConverter.Convertir(F.total * C, F.moneda.Id, MonedaConverter.Patron.Id)
+        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * C - F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.Id, MonedaConverter.Patron.Id)
+        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.Id, MonedaConverter.Patron.Id)
+        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * C, F.moneda.Id, MonedaConverter.Patron.Id)
         totalpercep = totalpercep + F.totalPercepciones * C
         totalsaldo = totalsaldo + ((F.total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * C)
 
@@ -1637,7 +1637,7 @@ Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVari
     Set cheque = Nothing
     If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
     If IsSomething(cheque) Then
-        LiquidacionCaja.ChequesTerceros.Add cheque, CStr(cheque.id)
+        LiquidacionCaja.ChequesTerceros.Add cheque, CStr(cheque.Id)
 
     End If
     Totalizar
@@ -1742,7 +1742,7 @@ Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JS
         cheque.Monto = Values(3)
         cheque.FechaVencimiento = Values(4)
 
-        LiquidacionCaja.ChequesPropios.Add cheque, CStr(cheque.id)
+        LiquidacionCaja.ChequesPropios.Add cheque, CStr(cheque.Id)
 
 
     End If
@@ -1800,7 +1800,7 @@ End Sub
 
 
 Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 15 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
+    If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 
 End Sub
 
@@ -1823,7 +1823,7 @@ Private Sub grilla_MouseDown(Button As Integer, Shift As Integer, x As Single, y
         facturaExistente = False
 
         For Each fac In facturasConfirmadas
-            If fac.id = Factura.id Then
+            If fac.Id = Factura.Id Then
             'If fac.numero = Factura.numero Then
                 facturaExistente = True
                 Exit For
@@ -1929,7 +1929,7 @@ Private Sub PusGuardar_Click()
     LiquidacionCaja.FEcha = Me.dtpFecha.value
 
     If Me.txtNumerodeLiquidacion.Text = "" Then
-        MsgBox ("El nÃºmero de LiquidaciÃ³n no puede estar vacÃ­o.")
+        MsgBox ("El número de Liquidación no puede estar vacío.")
         Exit Sub
     Else
         LiquidacionCaja.NumeroLiq = Me.txtNumerodeLiquidacion.Text
@@ -1946,18 +1946,18 @@ Private Sub PusGuardar_Click()
 
     If LiquidacionCaja.IsValid Then
 
-        Dim n As Boolean: n = (LiquidacionCaja.id = 0)
+        Dim n As Boolean: n = (LiquidacionCaja.Id = 0)
 
         If DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
 
             If n Then
-                MsgBox "LiquidaciÃ³n de Caja NÂº " & Me.txtNumerodeLiquidacion & " creada con exito.", vbInformation
+                MsgBox "Liquidación de Caja Nº " & Me.txtNumerodeLiquidacion & " creada con exito.", vbInformation
             Else
-                MsgBox "LiquidaciÃ³n de Caja modificada con exito.", vbInformation
+                MsgBox "Liquidación de Caja modificada con éxito.", vbInformation
             End If
 
             If n Then
-                If MsgBox("Â¿Desea crear una LiquidaciÃ³n de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
+                If MsgBox("Desea crear una Liquidación de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
                     Dim f12 As New frmAdminPagosLiqCajaListaDG
                     f12.Show
                 End If
@@ -1965,7 +1965,7 @@ Private Sub PusGuardar_Click()
 
             Unload Me
         Else
-            MsgBox "Hubo un problema al guardar la LiquidaciÃ³n.", vbCritical
+            MsgBox "Hubo un problema al guardar la Liquidación.", vbCritical
         End If
     Else
         MsgBox LiquidacionCaja.ValidationMessages, vbCritical, "Error"
@@ -2008,7 +2008,7 @@ End Sub
 Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= bancos.count Then
         Set Banco = bancos.item(RowIndex)
-        Values(1) = Banco.id
+        Values(1) = Banco.Id
         Values(2) = Banco.nombre
     End If
 
@@ -2018,7 +2018,7 @@ End Sub
 Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Cajas.count > 0 Then
         Set caja = Cajas.item(RowIndex)
-        Values(1) = caja.id
+        Values(1) = caja.Id
         Values(2) = caja.nombre
     End If
 End Sub
@@ -2028,7 +2028,7 @@ Private Sub gridChequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark
     If RowIndex <= chequeras.count Then
         Set tmpChequera = chequeras.item(RowIndex)
         Values(1) = tmpChequera.Description
-        Values(2) = tmpChequera.id
+        Values(2) = tmpChequera.Id
     End If
 End Sub
 
@@ -2036,7 +2036,7 @@ End Sub
 Private Sub gridChequesChequera_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And chequesChequeraSeleccionada.count > 0 Then
         Values(1) = chequesChequeraSeleccionada(RowIndex).numero
-        Values(2) = chequesChequeraSeleccionada(RowIndex).id
+        Values(2) = chequesChequeraSeleccionada(RowIndex).Id
     End If
 End Sub
 
@@ -2052,7 +2052,7 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal
         Values(2) = FormatCurrency(cheque.Monto)
         If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
-        Values(5) = cheque.id
+        Values(5) = cheque.Id
         Values(6) = cheque.OrigenCheque
         Values(7) = cheque.OrigenDestino
 
@@ -2064,7 +2064,7 @@ End Sub
 Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If cuentasBancarias.count >= RowIndex Then
         Set CuentaBancaria = cuentasBancarias.item(RowIndex)
-        Values(1) = CuentaBancaria.id
+        Values(1) = CuentaBancaria.Id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
 End Sub
@@ -2072,7 +2072,7 @@ End Sub
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And Monedas.count > 0 Then
         Set moneda = Monedas.item(RowIndex)
-        Values(1) = moneda.id
+        Values(1) = moneda.Id
         Values(2) = moneda.NombreCorto
     End If
 End Sub
@@ -2314,16 +2314,16 @@ End Sub
 Public Sub Cargar(liq As clsLiquidacionCaja)
 
     If Not IsSomething(liq) Then
-        MsgBox "La LiquidaciÃ³n que estÃ¡ intentando visualizar estÃ¡ en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
+        MsgBox "La Liquidación que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
         Unload Me
         Exit Sub
     End If
 
-    Set LiquidacionCaja = DAOLiquidacionCaja.FindById(liq.id)
+    Set LiquidacionCaja = DAOLiquidacionCaja.FindById(liq.Id)
     
-    Me.caption = "LiquidaciÃ³n NÂº " & LiquidacionCaja.NumeroLiq
+    Me.caption = "Liquidación Nº " & LiquidacionCaja.NumeroLiq
     
-    Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.id)
+    Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.Id)
 
     Me.grillaConfirmados.ItemCount = 0
   

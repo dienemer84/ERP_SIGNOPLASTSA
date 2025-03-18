@@ -81,6 +81,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.PushButton cmdBuscar 
+         Default         =   -1  'True
          Height          =   450
          Left            =   120
          TabIndex        =   20
@@ -135,26 +136,16 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   9
-      Column(1)       =   "frmOrdenesPago.frx":0000
-      Column(2)       =   "frmOrdenesPago.frx":00C8
-      Column(3)       =   "frmOrdenesPago.frx":016C
-      Column(4)       =   "frmOrdenesPago.frx":0210
-      Column(5)       =   "frmOrdenesPago.frx":02B4
-      Column(6)       =   "frmOrdenesPago.frx":0358
-      Column(7)       =   "frmOrdenesPago.frx":03FC
-      Column(8)       =   "frmOrdenesPago.frx":04A0
-      Column(9)       =   "frmOrdenesPago.frx":0544
       FormatStylesCount=   7
-      FormatStyle(1)  =   "frmOrdenesPago.frx":05E8
-      FormatStyle(2)  =   "frmOrdenesPago.frx":0710
-      FormatStyle(3)  =   "frmOrdenesPago.frx":07C0
-      FormatStyle(4)  =   "frmOrdenesPago.frx":0874
-      FormatStyle(5)  =   "frmOrdenesPago.frx":094C
-      FormatStyle(6)  =   "frmOrdenesPago.frx":0A04
-      FormatStyle(7)  =   "frmOrdenesPago.frx":0AE4
+      FormatStyle(1)  =   "frmOrdenesPago.frx":0000
+      FormatStyle(2)  =   "frmOrdenesPago.frx":0128
+      FormatStyle(3)  =   "frmOrdenesPago.frx":01D8
+      FormatStyle(4)  =   "frmOrdenesPago.frx":028C
+      FormatStyle(5)  =   "frmOrdenesPago.frx":0364
+      FormatStyle(6)  =   "frmOrdenesPago.frx":041C
+      FormatStyle(7)  =   "frmOrdenesPago.frx":04FC
       ImageCount      =   0
-      PrinterProperties=   "frmOrdenesPago.frx":0B04
+      PrinterProperties=   "frmOrdenesPago.frx":051C
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1935
@@ -487,7 +478,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentX        =   1191
          _ExtentY        =   344
          _StockProps     =   79
-         Caption         =   "Nº Orden"
+         Caption         =   "N� Orden"
          Alignment       =   1
          AutoSize        =   -1  'True
       End
@@ -778,7 +769,7 @@ End Sub
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And ordenes.count > 0 Then
         Set Orden = ordenes.item(RowIndex)
-        Values(1) = Orden.id
+        Values(1) = Orden.Id
         Values(2) = Orden.FEcha
 
         Values(3) = Orden.moneda.NombreCorto
@@ -817,9 +808,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         For i = ordenes.count To 1 Step -1
             Set tmp = EVENTO.Elemento
-            If ordenes(i).id = tmp.id Then
+            If ordenes(i).Id = tmp.Id Then
                 Set Orden = ordenes(i)
-                Orden.id = tmp.id
+                Orden.Id = tmp.Id
                 Orden.estado = tmp.estado
                 Me.gridOrdenes.RefreshRowIndex i
                 Exit For
@@ -832,10 +823,10 @@ Private Sub mnuAnular_Click()
     SeleccionarOP
     
     If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
-        If DAOOrdenPago.Delete(Orden.id, True) Then
+        If DAOOrdenPago.Delete(Orden.Id, True) Then
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            ordenes.remove CStr(Orden.id)
+            ordenes.remove CStr(Orden.Id)
             Me.gridOrdenes.ItemCount = ordenes.count
             cmdBuscar_Click
         Else
@@ -870,7 +861,7 @@ Private Sub mnuHistorial_Click()
     SeleccionarOP
     
     Dim F As New frmHistorico
-    F.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
+    F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
     F.Show
     
 End Sub

@@ -1,0 +1,16 @@
+5nFS4U6pBAU46HP87xBF
+
+
+https://signoplast_dnemer@bitbucket.org/cuervoeste/signosofterp.git
+
+
+GITHUB
+
+
+git remote add origin https://github.com/dienemer84/ERP_SIGNOPLASTSA.git
+git branch -M main
+git push -u origin main
+
+
+CLAVE GITHUB
+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
