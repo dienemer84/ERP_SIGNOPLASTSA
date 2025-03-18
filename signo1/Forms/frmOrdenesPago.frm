@@ -136,16 +136,26 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
+      ColumnsCount    =   9
+      Column(1)       =   "frmOrdenesPago.frx":0000
+      Column(2)       =   "frmOrdenesPago.frx":0178
+      Column(3)       =   "frmOrdenesPago.frx":02B8
+      Column(4)       =   "frmOrdenesPago.frx":0400
+      Column(5)       =   "frmOrdenesPago.frx":0548
+      Column(6)       =   "frmOrdenesPago.frx":06A0
+      Column(7)       =   "frmOrdenesPago.frx":07E0
+      Column(8)       =   "frmOrdenesPago.frx":0920
+      Column(9)       =   "frmOrdenesPago.frx":0A40
       FormatStylesCount=   7
-      FormatStyle(1)  =   "frmOrdenesPago.frx":0000
-      FormatStyle(2)  =   "frmOrdenesPago.frx":0128
-      FormatStyle(3)  =   "frmOrdenesPago.frx":01D8
-      FormatStyle(4)  =   "frmOrdenesPago.frx":028C
-      FormatStyle(5)  =   "frmOrdenesPago.frx":0364
-      FormatStyle(6)  =   "frmOrdenesPago.frx":041C
-      FormatStyle(7)  =   "frmOrdenesPago.frx":04FC
+      FormatStyle(1)  =   "frmOrdenesPago.frx":0B88
+      FormatStyle(2)  =   "frmOrdenesPago.frx":0CB0
+      FormatStyle(3)  =   "frmOrdenesPago.frx":0D60
+      FormatStyle(4)  =   "frmOrdenesPago.frx":0E14
+      FormatStyle(5)  =   "frmOrdenesPago.frx":0EEC
+      FormatStyle(6)  =   "frmOrdenesPago.frx":0FA4
+      FormatStyle(7)  =   "frmOrdenesPago.frx":1084
       ImageCount      =   0
-      PrinterProperties=   "frmOrdenesPago.frx":051C
+      PrinterProperties=   "frmOrdenesPago.frx":10A4
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1935

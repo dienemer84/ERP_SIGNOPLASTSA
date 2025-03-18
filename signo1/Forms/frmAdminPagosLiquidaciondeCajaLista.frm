@@ -415,23 +415,26 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       ColumnsCount    =   9
       Column(1)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0000
       Column(2)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":01A4
-      Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0290
-      Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0384
-      Column(5)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0478
-      Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0580
-      Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0668
-      Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0754
-      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0848
-      FormatStylesCount=   7
-      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":093C
-      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0A74
-      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0B24
-      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0BD8
-      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0CB0
-      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0D68
-      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0E48
+      Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":02E4
+      Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":042C
+      Column(5)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0574
+      Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0688
+      Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":07C8
+      Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0908
+      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0A50
+      FormatStylesCount=   10
+      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0B98
+      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0CD0
+      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0D80
+      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0E34
+      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0F0C
+      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0FC4
+      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":10A4
+      FormatStyle(8)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":10C4
+      FormatStyle(9)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":1178
+      FormatStyle(10) =   "frmAdminPagosLiquidaciondeCajaLista.frx":1230
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":0E68
+      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":12E4
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -691,13 +694,13 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
         Set LiquidacionCaja = liquidaciones.item(RowBuffer.RowIndex)
         If LiquidacionCaja.estado = EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada Then
-            RowBuffer.CellStyle(9) = "aprobada"
+            RowBuffer.CellStyle(9) = "Aprobada"
         ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada Then
-            RowBuffer.RowStyle = "anulada2"
+            RowBuffer.RowStyle = "Anulada"
 
-            RowBuffer.CellStyle(9) = "anulada"
+            RowBuffer.CellStyle(9) = "Anulada"
         ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente Then
-            RowBuffer.CellStyle(9) = "pendiente"
+            RowBuffer.CellStyle(9) = "Pendiente"
         End If
     End If
 End Sub
