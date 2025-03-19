@@ -59,7 +59,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16777217
+      Format          =   66584577
       CurrentDate     =   40119
    End
    Begin VB.TextBox txtGrupoSanguineo 
@@ -207,7 +207,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16777217
+      Format          =   66584577
       CurrentDate     =   40119
    End
    Begin VB.Label lblDatoActualizacion 
@@ -576,8 +576,6 @@ Private m_empleado As clsEmpleado
 Public Property Set Empleado(value As clsEmpleado)
     On Error GoTo err1
 
-
-
     Set m_empleado = DAOEmpleados.GetById(value.Id)
 
     txtDireccion = m_empleado.direccion
@@ -593,7 +591,7 @@ Public Property Set Empleado(value As clsEmpleado)
     Me.Option1.value = Not m_empleado.estado
     'Me.txtUsuario = m_empleado.
     Me.txtEmail = m_empleado.email
-    Me.txtGrupoSanguineo.text = m_empleado.GrupoSanguineo
+    Me.txtGrupoSanguineo.Text = m_empleado.GrupoSanguineo
     Me.dtpFechaIng.value = m_empleado.FechaIngreso
     Me.dtpFechaNac.value = m_empleado.FechaNacimiento
 
@@ -683,7 +681,7 @@ Private Sub cmdGuardar_Click()
     m_empleado.Telefono1 = Me.txtTel1
     m_empleado.Telefono2 = Me.txtTel2
     m_empleado.Nombres = Me.txtNombres
-    m_empleado.GrupoSanguineo = Me.txtGrupoSanguineo.text
+    m_empleado.GrupoSanguineo = Me.txtGrupoSanguineo.Text
     m_empleado.FechaIngreso = Me.dtpFechaIng.value
     m_empleado.FechaNacimiento = Me.dtpFechaNac.value
     m_empleado.estado = EstadoUsuario.activo
@@ -734,7 +732,7 @@ Private Sub limpiar()
     Me.Option2.value = True
     Me.txtUsuario = Empty
     Me.txtEmail = Empty
-    Me.txtGrupoSanguineo.text = vbNullString
+    Me.txtGrupoSanguineo.Text = vbNullString
     Me.dtpFechaIng.value = Now
     Me.dtpFechaNac.value = Now
 

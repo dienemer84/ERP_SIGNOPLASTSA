@@ -279,6 +279,7 @@ Begin VB.Form frmAgendaNueva
          EndProperty
       End
       Begin XtremeSuiteControls.PushButton btnBuscar 
+         Default         =   -1  'True
          Height          =   495
          Left            =   10680
          TabIndex        =   7
@@ -400,7 +401,7 @@ End Sub
 Private Sub verDeta()
     If Me.dgDatos.rowcount Then
         Set rectemp = contactos(Me.dgDatos.RowIndex(Me.dgDatos.row))
-            frmAgendaNuevaDetalles.contacto = rectemp
+            frmAgendaNuevaDetalles.Contacto = rectemp
             frmAgendaNuevaDetalles.Show
     End If
 End Sub
@@ -410,7 +411,7 @@ Private Sub dgDatos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     On Error Resume Next
     Set rectemp = contactos.item(RowIndex)
     With rectemp
-        Values(1) = .id
+        Values(1) = .Id
         Values(2) = .Empresa
         Values(3) = .direccion
         Values(4) = .localidad

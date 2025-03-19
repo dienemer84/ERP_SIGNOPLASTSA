@@ -30,7 +30,6 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
-      SelectedItem    =   2
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   2
       Item(0).Control(0)=   "Frame3"
@@ -151,9 +150,10 @@ Begin VB.Form frmAdminCheques
          Caption         =   "Resultados"
          Height          =   5175
          Index           =   1
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   102
          Top             =   3480
+         Visible         =   0   'False
          Width           =   15135
          Begin GridEX20.GridEX gridChequesEmitidos 
             Height          =   4665
@@ -202,10 +202,9 @@ Begin VB.Form frmAdminCheques
          Caption         =   "Resultados"
          Height          =   5175
          Index           =   0
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   63
          Top             =   3480
-         Visible         =   0   'False
          Width           =   15135
          Begin GridEX20.GridEX grid_cartera_cheques 
             Height          =   4665
@@ -257,10 +256,9 @@ Begin VB.Form frmAdminCheques
       Begin VB.Frame Frame3 
          Caption         =   "Búsqueda"
          Height          =   3015
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   33
          Top             =   360
-         Visible         =   0   'False
          Width           =   15135
          Begin XtremeSuiteControls.PushButton btnBorrarNumeroCartera 
             Height          =   315
@@ -355,6 +353,7 @@ Begin VB.Form frmAdminCheques
             Top             =   120
             Width           =   3855
             Begin XtremeSuiteControls.PushButton btnBuscarEnCartera 
+               Default         =   -1  'True
                Height          =   495
                Index           =   0
                Left            =   120
@@ -1121,9 +1120,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
          Height          =   3015
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   16
          Top             =   360
+         Visible         =   0   'False
          Width           =   15135
          _Version        =   786432
          _ExtentX        =   26696
@@ -2170,7 +2170,7 @@ Private Sub btnExportar_Click(Index As Integer)
             xlWorksheet.Cells(idx, 5).value = che.FechaVencimiento
             xlWorksheet.Cells(idx, 6).value = che.Banco.nombre
             xlWorksheet.Cells(idx, 7).value = che.OrigenDestino
-            xlWorksheet.Cells(idx, 8).value = che.recibo
+            xlWorksheet.Cells(idx, 8).value = che.Recibo
             xlWorksheet.Cells(idx, 9).value = che.IdOrdenPagoOrigen
             xlWorksheet.Cells(idx, 10).value = che.destino
 
@@ -2553,7 +2553,7 @@ Private Sub cmdCrear_Click()
         End If
 
         Set chequera.Banco = DAOBancos.GetById(id_banco)
-        chequera.fechaCreacion = Now
+        chequera.FechaCreacion = Now
         Set chequera.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
         chequera.numero = CLng(Me.txtNumero)
         chequera.NumeroDesde = CLng(Me.txtDesde)
@@ -2833,7 +2833,7 @@ Private Sub grdCheques3eros_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
     Values(6) = tmpCheque3eros.numero
     Values(7) = funciones.FormatearDecimales(tmpCheque3eros.Monto)
     Values(8) = tmpCheque3eros.FechaVencimiento
-    Values(9) = tmpCheque3eros.recibo
+    Values(9) = tmpCheque3eros.Recibo
     Values(10) = tmpCheque3eros.IdOrdenPagoOrigen
     Values(11) = tmpCheque3eros.destino
     
@@ -2932,7 +2932,7 @@ Private Sub grid_chequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmar
     Set tmpChequera = chequeras.item(RowIndex)
     With Values
         .value(1) = tmpChequera.numero
-        .value(2) = tmpChequera.fechaCreacion
+        .value(2) = tmpChequera.FechaCreacion
         .value(3) = tmpChequera.Banco.nombre
         .value(4) = tmpChequera.NumeroDesde
         .value(5) = tmpChequera.NumeroHasta
