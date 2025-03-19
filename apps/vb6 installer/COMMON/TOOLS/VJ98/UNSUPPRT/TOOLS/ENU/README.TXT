@@ -1,1 +1,0 @@
-The content of this directory is unsupported by Microsoft Technical Support.

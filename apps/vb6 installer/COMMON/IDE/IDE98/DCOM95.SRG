@@ -1,4 +1,0 @@
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\OLE]
-"EnableDCOM"="Y"
-"EnableRemoteConnect"="Y"
-
