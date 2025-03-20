@@ -563,8 +563,6 @@ Form=Forms\frmAgendaNueva.frm
 Class=clsContactoPpal; Class\clsContactoPpal.cls
 Module=DAOContactoPpal; ClassModule\DAOContactoPpal.bas
 Module=DAOContactoPpalDetalles; ClassModule\DAOContactoPpalDetalles.bas
-<<<<<<< HEAD
-Class=clsContactoPpalDetalle; Class\clsContactoPpalDetalle.cls
 Form=Forms\frmAdminPagosPagoACtaLista.frm
 Form=Forms\frmAdminExtrasReporteIVACompras.frm
 Class=clsRegistroIVACompras; Class\clsRegistroIVACompras.cls
@@ -574,9 +572,6 @@ Form=Forms\frmAgendaNuevaDetalles.frm
 Form=Forms\frmMaterializacionCompleta.frm
 Form=Forms\frmAdminVentasListaRECSegunCbte.frm
 Form=Forms\frmAdminFacturasProformasEditarDatos.frm
-=======
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
-ResFile32="Themes.res"
 Class=clsContactoPpalDetalle; Class\clsContactoPpalDetalle.cls
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
@@ -588,16 +583,10 @@ Command32=""
 Name="nucleo"
 HelpContextID="0"
 CompatibleMode="0"
-<<<<<<< HEAD
-MajorVer=12
-MinorVer=0
-RevisionVer=4
-=======
 MajorVer=9
 MinorVer=2
 RevisionVer=58
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
-AutoIncrementVer=1
+AutoIncrementVer=0
 ServerSupportFiles=0
 VersionComments="Signo Plast SA"
 VersionCompanyName="SignoSoft"

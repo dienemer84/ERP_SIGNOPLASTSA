@@ -13,16 +13,9 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-<<<<<<< HEAD
 Public Id As Long
-=======
-Public id As Long
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
 Public Empresa As String
 Public direccion As String
 Public localidad As String
 Public email As String
-<<<<<<< HEAD
 Public detalles As clsContactoPpalDetalle
-=======
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
