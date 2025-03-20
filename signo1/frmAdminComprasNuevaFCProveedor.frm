@@ -475,7 +475,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   66256897
+      Format          =   16711681
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1232,7 +1232,8 @@ Private Sub Form_Load()
 
 
     Me.lblTipoCambioPago.Visible = VVer
-
+    
+    
     '    Me.txtNumeroMask.text = "ACCA!"
 
     TotalFactura
@@ -1298,9 +1299,9 @@ End Sub
 
 Private Sub TotalFactura()
     On Error GoTo er1
-    Me.txtMontoNeto = funciones.FormatearDecimales(vFactura.NetoGravado)
-    Me.lblTotal = funciones.FormatearDecimales(vFactura.total)
-    Me.txtIVA.Text = funciones.FormatearDecimales(vFactura.TotalIVA)
+    Me.txtMontoNeto = Replace(FormatCurrency(funciones.FormatearDecimales(vFactura.NetoGravado)), "$", "")
+    Me.lblTotal = Replace(FormatCurrency(funciones.FormatearDecimales(vFactura.total)), "$", "")
+    Me.txtIVA.Text = Replace(FormatCurrency(funciones.FormatearDecimales(vFactura.TotalIVA)), "$", "")
 
     Me.fraAlicuotas.caption = Replace$(Me.fraAlicuotas.Tag, "{VALUE}", funciones.FormatearDecimales(vFactura.TotalIVA))
     Exit Sub
@@ -1346,7 +1347,7 @@ Private Sub grid_cuentascontables_UnboundReadData(ByVal RowIndex As Long, ByVal 
 
     If Len(ctaAplicada.cuentas.codigo) > 0 Then
         Values(1) = ctaAplicada.cuentas.codigo & " - " & ctaAplicada.cuentas.nombre
-        Values(2) = funciones.FormatearDecimales(ctaAplicada.Monto)
+        Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(ctaAplicada.Monto)), "$", "")
     End If
 
     Exit Sub
@@ -1365,9 +1366,10 @@ Private Sub grid_cuentascontables_UnboundUpdate(ByVal RowIndex As Long, ByVal Bo
     grabado = False
 End Sub
 
+
 Private Sub grilla_alicuota_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Set alicuota = colAlicuotas.item(RowIndex)
-    Values(1) = funciones.FormatearDecimales(alicuota.alicuota)
+    Values(1) = Replace(FormatCurrency(funciones.FormatearDecimales(alicuota.alicuota)), "$", "")
     Values(2) = alicuota.Id
 End Sub
 
@@ -1415,7 +1417,7 @@ Private Sub grilla_alicuotas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookm
     On Error Resume Next
     Set aliaplicada = vFactura.IvaAplicado.item(RowIndex)
     Values(1) = funciones.FormatearDecimales(aliaplicada.alicuota.alicuota)
-    Values(2) = funciones.FormatearDecimales(aliaplicada.Monto)
+    Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(aliaplicada.Monto)), "$", "")
 End Sub
 
 Private Sub grilla_alicuotas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -1463,7 +1465,7 @@ Private Sub grilla_percepciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
 
     Set perAplicada = vFactura.percepciones.item(RowIndex)
     Values(1) = perAplicada.Percepcion.Percepcion
-    Values(2) = funciones.FormatearDecimales(perAplicada.Monto)
+    Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(perAplicada.Monto)), "$", "")
 
     Exit Sub
 
@@ -1610,7 +1612,7 @@ End Sub
 
 Private Sub txtRedondeo_Change()
     On Error Resume Next
-    vFactura.redondeo = CDbl(Me.txtRedondeo)
+    vFactura.Redondeo = CDbl(Me.txtRedondeo)
     TotalFactura
     grabado = False
 End Sub
@@ -1622,7 +1624,7 @@ End Sub
 Private Sub LlenarFactura()
 
     Me.cboTipoDocContable.ListIndex = funciones.PosIndexCbo(vFactura.tipoDocumentoContable, Me.cboTipoDocContable)
-    Me.txtImpuestos = funciones.FormatearDecimales(vFactura.ImpuestoInterno)
+    Me.txtImpuestos = Replace(FormatCurrency(funciones.FormatearDecimales(vFactura.ImpuestoInterno)), "$", "")
     Me.DTPicker1 = vFactura.FEcha
 
     '    Me.Label12.Visible = False
@@ -1644,7 +1646,7 @@ Private Sub LlenarFactura()
     '''        Me.txtNumeroMask.text = vFactura.numero
     '''    End If
 
-    Me.txtRedondeo = vFactura.redondeo
+    Me.txtRedondeo = vFactura.Redondeo
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.Id, Me.cboProveedores)
     Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(vFactura.configFactura.Id, Me.cboTiposFactura)

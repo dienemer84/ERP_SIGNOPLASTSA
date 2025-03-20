@@ -22,7 +22,6 @@ Public CBU As String
 Public BancoNombre As String
 
 
-
 Public Property Get DescripcionCBUFormateada() As String
     Dim col As New Collection
 
@@ -58,6 +57,8 @@ Public Property Get DescripcionCBUFormateada() As String
 
     DescripcionCBUFormateada = Join(arr, " | ")
 End Property
+
+
 Public Property Get DescripcionFormateada() As String
     Dim col As New Collection
 
@@ -89,4 +90,38 @@ Public Property Get DescripcionFormateada() As String
     Next
 
     DescripcionFormateada = Join(arr, " | ")
+End Property
+
+
+Public Property Get DescripcionFormateadaCompleta() As String
+    Dim col As New Collection
+
+    If IsSomething(Me.Banco) Then
+        If LenB(Me.Banco.nombre) > 0 Then
+            col.Add Me.Banco.nombre
+        End If
+    End If
+
+    If LenB(Me.numero) > 0 Then
+        col.Add "Nº " & Me.numero
+    End If
+
+    If TipoCuenta = TipoCuentaBancaria.CajaAhorro Then
+        col.Add "Caja de ahorro"
+    ElseIf TipoCuenta = TipoCuentaBancaria.CuentaCorriente Then
+        col.Add "Cuenta Corriente"
+    End If
+
+    If IsSomething(Me.moneda) Then
+        col.Add Me.moneda.NombreCorto
+    End If
+
+    Dim i As Long
+    Dim arr() As String
+    If col.count > 0 Then ReDim arr(col.count - 1) As String
+    For i = 1 To col.count
+        arr(i - 1) = col.item(i)
+    Next
+
+    DescripcionFormateadaCompleta = Join(arr, " | ")
 End Property

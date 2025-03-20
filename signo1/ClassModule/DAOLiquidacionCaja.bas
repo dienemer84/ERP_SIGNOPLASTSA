@@ -627,6 +627,10 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
             'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
             If op.EsParaFacturaProveedor And op.FacturasProveedor.count > 0 Then che.OrigenDestino = op.FacturasProveedor(1).Proveedor.RazonSocial
             If Not DAOCheques.Guardar(che) Then GoTo E
+            
+
+            q = "DELETE FROM liquidaciones_caja_cheques WHERE id_liquidacion_caja = " & op.Id & " AND id_cheque= " & che.Id
+            If Not conectar.execute(q) Then GoTo E
 
             q = "INSERT INTO liquidaciones_caja_cheques VALUES (" & op.Id & ", " & che.Id & ")"
             If Not conectar.execute(q) Then GoTo E

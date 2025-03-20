@@ -751,7 +751,7 @@ End Sub
 
 Private Sub SeleccionarOP()
     On Error Resume Next
-    Set PagoACuenta = pagosacuenta.item(gridOrdenes.RowIndex(gridOrdenes.row))
+    Set PagoACuenta = pagosacuenta.item(gridOrdenes.rowIndex(gridOrdenes.row))
 
 End Sub
 
@@ -773,8 +773,8 @@ End Sub
 
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And pagosacuenta.count > 0 Then
-        Set PagoACuenta = pagosacuenta.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 And pagosacuenta.count > 0 Then
+        Set PagoACuenta = pagosacuenta.item(RowBuffer.rowIndex)
         If PagoACuenta.estado = EstadoPagoACuenta.Disponible Then
             RowBuffer.CellStyle(6) = "pendiente"
         ElseIf PagoACuenta.estado = EstadoPagoACuenta.Disponible Then
@@ -788,9 +788,9 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And pagosacuenta.count > 0 Then
-        Set PagoACuenta = pagosacuenta.item(RowIndex)
+Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And pagosacuenta.count > 0 Then
+        Set PagoACuenta = pagosacuenta.item(rowIndex)
         Values(1) = PagoACuenta.Id
         Values(2) = PagoACuenta.Proveedor.RazonSocial
         Values(3) = PagoACuenta.FEcha
@@ -831,7 +831,7 @@ Private Sub mnuAprobar_Click()
     
     If DAOPagoACta.aprobar(PagoACuenta, True) Then
         MsgBox "Aprobación éxitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
     Else
         MsgBox "Error, no se aprobó el Pago a cuenta!", vbCritical + vbOKOnly
@@ -861,36 +861,36 @@ End Sub
 Private Sub mnuImprimir_Click()
 
     On Error GoTo err4
-    Me.CommonDialog.ShowPrinter
-
-   If Not DAOPagoACta.PrintOP(PagoACuenta, Me.pic) Then GoTo err4
-   Exit Sub
-   
+'''    Me.CommonDialog.ShowPrinter
+'''
+'''   If Not DAOPagoACta.PrintOP(PagoACuenta, Me.pic) Then GoTo err4
+'''   Exit Sub
+'''
 err4:
  
 End Sub
 
 
 Private Sub mnuVer_Click()
-    Dim f22 As New frmAdminPagosCrearPagoACta
-    f22.Show
-    SeleccionarOP
-
-    f22.ReadOnly = True
-
-    f22.Cargar PagoACuenta
- 
+'''    Dim f22 As New frmAdminPagosCrearPagoACta
+'''    f22.Show
+'''    SeleccionarOP
+'''
+'''    f22.ReadOnly = True
+'''
+'''    f22.Cargar PagoACuenta
+'''
     
 End Sub
 
 Private Sub mnuVerCertificado_Click()
-    Dim f22 As New frmAdminPagosCrearOrdenPago
-    f22.Show
-    SeleccionarOP
-
-    f22.ReadOnly = False
-
-    f22.Cargar PagoACuenta
+'''    Dim f22 As New frmAdminPagosCrearOrdenPago
+'''    f22.Show
+'''    SeleccionarOP
+'''
+'''    f22.ReadOnly = False
+'''
+'''    f22.Cargar PagoACuenta
     
 End Sub
 

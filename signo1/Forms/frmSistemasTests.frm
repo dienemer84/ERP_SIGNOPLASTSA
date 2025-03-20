@@ -55,11 +55,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Private Sub btnPrueba_04_Click_Click()
-    Dim f226 As New frmAdminPagosCrearOrdenPagoNew
-    f226.Show
-End Sub
-
 
 Private Sub Form_Load()
     FormHelper.Customize Me

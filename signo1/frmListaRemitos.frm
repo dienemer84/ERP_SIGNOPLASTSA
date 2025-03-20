@@ -533,7 +533,7 @@ Dim m_Archivos As Dictionary
 
 Private Sub AnularRto_Click()
     Dim A As Long
-    A = Me.grilla.rowIndex(Me.grilla.row)
+    A = Me.grilla.RowIndex(Me.grilla.row)
     If MsgBox("¿Está seguro de anular el remito?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.Anular(tmpRto) Then
             MsgBox "Remito anulado con éxito!", vbExclamation, "Información"
@@ -552,7 +552,7 @@ Private Sub archivos_Click()
 
     Dim frmarchi1 As New frmArchivos2
     frmarchi1.Origen = OA_Remitos
-    frmarchi1.ObjetoId = tmpRto.id
+    frmarchi1.ObjetoId = tmpRto.Id
     frmarchi1.caption = "Remito " & tmpRto.numero
     frmarchi1.Show
 
@@ -574,7 +574,7 @@ Private Sub cmdImprimir_Click()
     Dim pro As String
     Dim q As String
     If Me.cboClientes.ListIndex > -1 Then
-        pro = " Cliente: " & Me.cboClientes.text
+        pro = " Cliente: " & Me.cboClientes.Text
     End If
 
     With Me.grilla.PrinterProperties
@@ -624,16 +624,16 @@ Private Sub endRto_Click()
     On Error GoTo err454
     Dim A As Long
     Dim rtoNro As Long
-    rtoNro = tmpRto.id
-    A = Me.grilla.rowIndex(Me.grilla.row)
+    rtoNro = tmpRto.Id
+    A = Me.grilla.RowIndex(Me.grilla.row)
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 5
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 5
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAORemitoS.ImprimirRemito rtoNro
                 Next i
             End If
@@ -650,7 +650,7 @@ Private Sub listaRemitos()
     Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Remitos)
 
     filtro = "1 = 1"
-    If LenB(Me.txtDescripcion.text) > 0 Then
+    If LenB(Me.txtDescripcion.Text) > 0 Then
         filtro = filtro & " and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_DETALLE & " like '%" & Trim(Me.txtDescripcion) & "%'"
     End If
     
@@ -688,7 +688,7 @@ Private Sub listaRemitos()
     Dim remitosId As New Collection
     
     For Each remi In remitos
-        remitosId.Add remi.id
+        remitosId.Add remi.Id
     Next
     
     Set facturasRemitos = New Dictionary
@@ -798,45 +798,45 @@ End Sub
 Private Sub MostrarCantidadPendientes()
     Dim Cantidad As Integer
     Cantidad = ContarPendientes()
-    StatusBar1.Panels(1).text = "Pendientes Total: " & Cantidad
+    StatusBar1.Panels(1).Text = "Pendientes Total: " & Cantidad
 End Sub
 
 
 Private Sub MostrarCantidadAnulados()
     Dim Cantidad As Integer
     Cantidad = ContarAnulados()
-    StatusBar1.Panels(2).text = "Anulados Total: " & Cantidad
+    StatusBar1.Panels(2).Text = "Anulados Total: " & Cantidad
 End Sub
 
 
 Private Sub MostrarCantidadAprobados()
     Dim Cantidad As Integer
     Cantidad = ContarAprobados()
-    StatusBar1.Panels(3).text = "Aprobados Total: " & Cantidad
+    StatusBar1.Panels(3).Text = "Aprobados Total: " & Cantidad
 End Sub
 
 
 Private Sub MostrarFacturadosTotal()
     Dim Cantidad As Integer
     Cantidad = ContarFacturadosTotal()
-    StatusBar1.Panels(4).text = "Facturados Total: " & Cantidad
+    StatusBar1.Panels(4).Text = "Facturados Total: " & Cantidad
 End Sub
 
 
 Private Sub MostrarNoFacturados()
     Dim Cantidad As Integer
     Cantidad = ContarNoFacturados()
-    StatusBar1.Panels(5).text = "No Facturados: " & Cantidad
+    StatusBar1.Panels(5).Text = "No Facturados: " & Cantidad
 End Sub
 Private Sub MostrarNoFacturables()
     Dim Cantidad As Integer
     Cantidad = ContarNoFacturables()
-    StatusBar1.Panels(6).text = "No Facturables: " & Cantidad
+    StatusBar1.Panels(6).Text = "No Facturables: " & Cantidad
 End Sub
 Private Sub MostrarFacturadosParcial()
     Dim Cantidad As Integer
     Cantidad = ContarFacturadosParcial()
-    StatusBar1.Panels(7).text = "Facturados Parcial: " & Cantidad
+    StatusBar1.Panels(7).Text = "Facturados Parcial: " & Cantidad
 End Sub
 
 Private Function ContarAprobados() As Integer
@@ -939,15 +939,15 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick grilla, Column
 End Sub
 
-Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
-    If ColIndex = 10 And m_Archivos.item(tmpRto.id) > 0 Then
+    If ColIndex = 10 And m_Archivos.item(tmpRto.Id) > 0 Then
         IconIndex = 1
     End If
 End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim row As Long
-    row = grilla.rowIndex(grilla.row)
+    row = grilla.RowIndex(grilla.row)
     If row > 0 Then
         If Button = 2 Then
             grilla_SelectionChange
@@ -998,9 +998,11 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         End If
     End If
 End Sub
+
+
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.rowIndex > 0 Then
-        Set tmpRto = remitos(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 Then
+        Set tmpRto = remitos(RowBuffer.RowIndex)
 
         If tmpRto.estado = RemitoAnulado Then
             RowBuffer.RowStyle = "Anulado"
@@ -1029,8 +1031,9 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     End If
 End Sub
 
+
 Private Sub grilla_SelectionChange()
-    Dim it As Long: it = grilla.rowIndex(grilla.row)
+    Dim it As Long: it = grilla.RowIndex(grilla.row)
     If it > 0 Then
         Set tmpRto = remitos.item(it)
     Else
@@ -1038,13 +1041,14 @@ Private Sub grilla_SelectionChange()
     End If
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
+
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, _
                                    ByVal Bookmark As Variant, _
                                    ByVal Values As GridEX20.JSRowData)
 
     On Error Resume Next
 
-    Set tmpRto = remitos.item(rowIndex)
+    Set tmpRto = remitos.item(RowIndex)
 
     With Values
         .value(1) = tmpRto.numero
@@ -1053,7 +1057,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
         .value(4) = enums.EnumEstadoRemito(tmpRto.estado)
         .value(5) = tmpRto.usuarioCreador.usuario
 
-        If IsSomething(tmpRto.Cliente) Then .value(2) = tmpRto.Cliente.razon
+        If IsSomething(tmpRto.cliente) Then .value(2) = tmpRto.cliente.razon
         If IsSomething(tmpRto.usuarioAprobador) Then
             .value(7) = tmpRto.usuarioAprobador.usuario
         Else
@@ -1071,7 +1075,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
 
         End If
 
-        .value(10) = "(" & Val(m_Archivos.item(tmpRto.id)) & ")"
+        .value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
 
     End With
 
@@ -1081,6 +1085,8 @@ End Sub
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = id_suscriber
 End Property
+
+
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Dim i As Long
     Dim tmp As Remito
@@ -1090,13 +1096,13 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         Set tmp = EVENTO.Elemento
         For i = remitos.count To 1 Step -1
-            If remitos(i).id = tmp.id Then
+            If remitos(i).Id = tmp.Id Then
                 Set tmpRto = remitos(i)
-                tmpRto.id = tmp.id
+                tmpRto.Id = tmp.Id
                 tmpRto.detalle = tmp.detalle
                 tmpRto.estado = tmp.estado
                 tmpRto.EstadoFacturado = tmp.EstadoFacturado
-                Set tmpRto.Cliente = tmp.Cliente
+                Set tmpRto.cliente = tmp.cliente
                 Set tmpRto.usuarioCreador = tmp.usuarioCreador
                 grilla.RefreshRowIndex i
                 Exit For
@@ -1151,14 +1157,14 @@ End Sub
 
 Private Sub mnuHistorico_Click()
     Dim frm As New frmHistoriales
-    frm.lista = DAORemitoHistorico.getAllByIdRemito(tmpRto.id)
+    frm.lista = DAORemitoHistorico.getAllByIdRemito(tmpRto.Id)
     frm.Show
 
 End Sub
 
 Private Sub mnuNoFacturable_Click()
     Dim A As Long
-    A = grilla.rowIndex(grilla.row)
+    A = grilla.RowIndex(grilla.row)
     DAORemitoS.CambiarEstadoFacturable tmpRto
 
     grilla.RefreshRowIndex A
@@ -1186,29 +1192,31 @@ Private Sub mnuValorizar_Click()
     frm2.MostrarInfoAdministracion = True And VerInfoAdministracion
     frm2.Show
 End Sub
+
+
 Private Sub printRto_Click()
     On Error GoTo err444:
     Dim rs As Recordset
     Dim rto As Long
-    rto = tmpRto.id
+    rto = tmpRto.Id
     Set rs = conectar.RSFactory("select impreso from remitos where id=" & rto)
     Dim est As Long
     Dim i As Long
     If Not rs.BOF And Not rs.EOF Then est = rs!impreso Else Exit Sub
     If est > 0 Then
         If MsgBox("Este remito ya fué impreso," & Chr(10) & "¿Desea volver a imprimir?", vbYesNo, "Confirmación") = vbYes Then
-            cd.Flags = cdlPDUseDevModeCopies
-            cd.Copies = 5
-            cd.ShowPrinter
-            For i = 1 To cd.Copies
+            CD.Flags = cdlPDUseDevModeCopies
+            CD.Copies = 5
+            CD.ShowPrinter
+            For i = 1 To CD.Copies
                 DAORemitoS.ImprimirRemito rto
             Next i
         End If
     Else
         If MsgBox("Este remito no fue impreso." & Chr(10) & "¿Desea imprimirlo?", vbYesNo) = vbYes Then
-            cd.Copies = 5
-            cd.ShowPrinter
-            For i = 1 To cd.Copies
+            CD.Copies = 5
+            CD.ShowPrinter
+            For i = 1 To CD.Copies
                 DAORemitoS.ImprimirRemito rto
             Next
         End If
@@ -1283,7 +1291,7 @@ Me.ProgressBar.max = remitos.count
 
             xlWorksheet.Cells(idx, 1).value = Remito.numero
             
-            xlWorksheet.Cells(idx, 2).value = Remito.Cliente.razon
+            xlWorksheet.Cells(idx, 2).value = Remito.cliente.razon
             xlWorksheet.Cells(idx, 3).value = Remito.detalle
             
             xlWorksheet.Cells(idx, 4).value = Remito.FEcha
@@ -1305,7 +1313,7 @@ Me.ProgressBar.max = remitos.count
                 End If
             End If
 
-            xlWorksheet.Cells(idx, 9).value = "(" & Val(m_Archivos.item(Remito.id)) & ")"
+            xlWorksheet.Cells(idx, 9).value = "(" & Val(m_Archivos.item(Remito.Id)) & ")"
 
         
         idx = idx + 1
@@ -1373,9 +1381,9 @@ Private Sub scanear_Click()
     On Error Resume Next
     grilla_SelectionChange
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OA_Remitos, tmpRto.id) Then
+    If archivos.escanearDocumento(OA_Remitos, tmpRto.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Remitos)
-        Me.grilla.RefreshRowIndex (tmpRto.id)
+        Me.grilla.RefreshRowIndex (tmpRto.Id)
     End If
 End Sub
 

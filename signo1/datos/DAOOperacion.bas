@@ -9,6 +9,8 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
       & " LEFT JOIN AdminConfigMonedas mon ON op.moneda_id = mon.id" _
       & " LEFT JOIN cajas caj ON caj.id = op.cuentabanc_o_caja_id" _
       & " LEFT JOIN AdminConfigCuentas cu ON cu.id = op.cuentabanc_o_caja_id" _
+      & " LEFT JOIN AdminConfigBancos banc ON banc.id = cu.idBanco" _
+      & " LEFT JOIN AdminConfigMonedas moned ON moned.id = cu.moneda_id" _
       & " WHERE op.pertenencia = " & Origen & " AND " & extraFilter
 
     Dim col As New Collection
@@ -18,10 +20,11 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
     Dim rs As Recordset
 
     Set rs = conectar.RSFactory(q)
+    
     BuildFieldsIndex rs, idx
 
     While Not rs.EOF
-        Set op = Map(rs, idx, "op", "cc", "mon", "cu", "caj")
+        Set op = Map(rs, idx, "op", "cc", "mon", "cu", "caj", "banc", "moned")
 
         col.Add op, CStr(op.Id)
         rs.MoveNext
@@ -40,7 +43,9 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaCuentaContable As String = vbNullString, _
                     Optional tablaMoneda As String = vbNullString, _
                     Optional tablaCuentaBanc As String = vbNullString, _
-                    Optional tablaCaja As String = vbNullString _
+                    Optional tablaCaja As String = vbNullString, _
+                    Optional tablaBanco As String = vbNullString, _
+                    Optional tablaMonedas As String = vbNullString _
                   ) As operacion
 
     Dim op As operacion
@@ -68,7 +73,10 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         ElseIf op.Pertenencia = caja Then    'cargo la caja
             Set op.caja = DAOCaja.Map(rs, indice, tablaCaja)
         End If
-
+        
+        If LenB(tablaBanco) > 0 Then Set op.CuentaBancaria.Banco = DAOBancos.Map(rs, indice, tablaBanco)
+        If LenB(tablaMonedas) > 0 Then Set op.CuentaBancaria.moneda = DAOMoneda.Map(rs, indice, tablaMonedas)
+        
     End If
 
     Set Map = op

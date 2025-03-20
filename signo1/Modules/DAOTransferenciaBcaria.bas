@@ -31,6 +31,7 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
     Dim rs As Recordset
 
     Set rs = conectar.RSFactory(q)
+    
     BuildFieldsIndex rs, idx
 
     While Not rs.EOF

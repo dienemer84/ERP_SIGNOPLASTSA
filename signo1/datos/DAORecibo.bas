@@ -252,15 +252,15 @@ Dim col As New Collection
 
 
         If includeCheques Then
-            Set rec.Cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id & ")")
+            Set rec.cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id & ")")
         End If
 
         If includeBanco Then
-            Set rec.OperacionesBanco = DAOOperacion.FindAll(Banco, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
+            Set rec.operacionesBanco = DAOOperacion.FindAll(Banco, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
         End If
 
         If includeCaja Then
-            Set rec.OperacionesCaja = DAOOperacion.FindAll(caja, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
+            Set rec.operacionesCaja = DAOOperacion.FindAll(caja, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
         End If
 
         If includeFacturas Then
@@ -290,6 +290,7 @@ Dim col As New Collection
 
     Set FindAll = col
 End Function
+
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaCliente As String = vbNullString, _
@@ -469,7 +470,7 @@ Public Function Guardar(rec As Recibo) As Boolean
         q = "DELETE FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id
         If Not conectar.execute(q) Then GoTo E
         Dim cheq As cheque
-        For Each cheq In rec.Cheques
+        For Each cheq In rec.cheques
 
             If cheq.Id = 0 Then
                 cheq.EnCartera = True
@@ -513,7 +514,7 @@ Public Function Guardar(rec As Recibo) As Boolean
         '''''''''''''''''''''''''''''CAJA
         Dim op As operacion
         Dim recId As Long
-        For Each op In rec.OperacionesCaja
+        For Each op In rec.operacionesCaja
             If Not DAOOperacion.Save(op) Then GoTo E
             conectar.UltimoId "operaciones", recId
             If recId = 0 Then GoTo E
@@ -521,7 +522,7 @@ Public Function Guardar(rec As Recibo) As Boolean
         Next op
 
         '''''''''''''''''''''''''''''BANCO
-        For Each op In rec.OperacionesBanco
+        For Each op In rec.operacionesBanco
             If Not DAOOperacion.Save(op) Then GoTo E
             conectar.UltimoId "operaciones", recId
             If recId = 0 Then GoTo E
@@ -613,7 +614,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.FontBold = True
         Printer.Print "Valores recibidos "
         Printer.FontBold = False
-        If Recibo.OperacionesBanco.count > 0 Then
+        If Recibo.operacionesBanco.count > 0 Then
             Printer.FontBold = True
             Printer.Print "Banco"
             Printer.FontBold = False
@@ -622,18 +623,18 @@ Public Sub Imprimir(idRecibo As Long)
         End If
 
         Dim o As operacion
-        For Each o In Recibo.OperacionesBanco
+        For Each o In Recibo.operacionesBanco
             Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto
         Next o
 
-        If Recibo.OperacionesBanco.count > 0 Then
+        If Recibo.operacionesBanco.count > 0 Then
             Printer.FontBold = True
             Printer.Print "Total Banco: " & Recibo.TotalOperacionesBanco
         End If
 
         Printer.Print Chr(10)
 
-        If Recibo.OperacionesCaja.count > 0 Then
+        If Recibo.operacionesCaja.count > 0 Then
             Printer.FontBold = True
             Printer.Print "Caja"
             Printer.FontBold = False
@@ -645,19 +646,19 @@ Public Sub Imprimir(idRecibo As Long)
 
 
 
-        For Each o In Recibo.OperacionesCaja
+        For Each o In Recibo.operacionesCaja
             'Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto
             Printer.Print o.FechaOperacion, o.Monto
         Next o
 
         Printer.FontBold = True
-        If Recibo.OperacionesCaja.count > 0 Then
+        If Recibo.operacionesCaja.count > 0 Then
             Printer.Print "Total Caja: " & Recibo.TotalOperacionesCaja
         End If
 
         Printer.Print Chr(10)
 
-        If Recibo.Cheques.count > 0 Then
+        If Recibo.cheques.count > 0 Then
             Printer.FontBold = True
             Printer.Print "Cheques Recibidos"
             Printer.FontBold = False
@@ -670,7 +671,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.Print "Numero,"; vbTab; "Monto"; vbTab; vbTab; "Fecha Vto."; vbTab; "Banco"
 
         Dim che As cheque
-        For Each che In Recibo.Cheques
+        For Each che In Recibo.cheques
 
             'Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto
 
@@ -678,7 +679,7 @@ Public Sub Imprimir(idRecibo As Long)
         Next che
 
         Printer.FontBold = True
-        If Recibo.Cheques.count > 0 Then
+        If Recibo.cheques.count > 0 Then
             Printer.Print "Total Cheques Recibidos: " & Recibo.TotalCheques
         End If
         Printer.Print Chr(10)
@@ -826,7 +827,7 @@ err1:
     ExportarColeccion = False
 End Function
 
-Public Function ResumenPagos(ByRef Cheques As Collection, ByRef caja As Collection, ByRef bancos As Collection, ByRef comp As Collection, ByRef retenciones As Collection, ByRef cheques3 As Collection, Optional filtro As String, Optional idProveedor As Long = -1) As Boolean
+Public Function ResumenPagos(ByRef cheques As Collection, ByRef caja As Collection, ByRef bancos As Collection, ByRef comp As Collection, ByRef retenciones As Collection, ByRef cheques3 As Collection, Optional filtro As String, Optional idProveedor As Long = -1) As Boolean
     On Error GoTo err1
     ResumenPagos = True
     Dim q As String
@@ -851,7 +852,7 @@ If LenB(filtro) > 0 Then
         Set d = New DTONombreMonto
         d.Monto = rs!Monto
         d.nombre = rs!nombre
-        Cheques.Add d
+        cheques.Add d
         rs.MoveNext
     Wend
 
@@ -1038,15 +1039,15 @@ Dim col As New Collection
 
 
         If includeCheques Then
-            Set rec.Cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id & ")")
+            Set rec.cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id & ")")
         End If
 
         If includeBanco Then
-            Set rec.OperacionesBanco = DAOOperacion.FindAll(Banco, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
+            Set rec.operacionesBanco = DAOOperacion.FindAll(Banco, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
         End If
 
         If includeCaja Then
-            Set rec.OperacionesCaja = DAOOperacion.FindAll(caja, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
+            Set rec.operacionesCaja = DAOOperacion.FindAll(caja, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
         End If
 
         If includeFacturas Then

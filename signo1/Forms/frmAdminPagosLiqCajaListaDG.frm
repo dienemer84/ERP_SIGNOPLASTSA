@@ -1019,9 +1019,9 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       Left            =   8160
       TabIndex        =   24
       Top             =   840
-      Width           =   3735
+      Width           =   7455
       _Version        =   786432
-      _ExtentX        =   6588
+      _ExtentX        =   13150
       _ExtentY        =   661
       _StockProps     =   79
       Caption         =   "Total Valores Cargados: $ 0"
@@ -1040,9 +1040,9 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       Left            =   8160
       TabIndex        =   23
       Top             =   1200
-      Width           =   3615
+      Width           =   7455
       _Version        =   786432
-      _ExtentX        =   6376
+      _ExtentX        =   13150
       _ExtentY        =   661
       _StockProps     =   79
       Caption         =   "Total Comprobantes: $ 0"
@@ -1542,7 +1542,7 @@ Private Sub Form_Load()
         
 '''    llenarGrilla
     
-    Me.caption = "CreaciÃ³n de LiquidaciÃ³n de Caja"
+    Me.caption = "Creación de Liquidación de Caja"
 
     formLoaded = True
     formLoading = False
@@ -1989,9 +1989,9 @@ Public Sub TotalizarComprobantes()
         End If
     Next i
 
-    LiquidacionCaja.StaticTotalFacturas = funciones.RedondearDecimales(total)
+'''    LiquidacionCaja.StaticTotalFacturas = funciones.RedondearDecimales(total)
 
-    lblLabel1.caption = "Total Comprobantes: " & FormatCurrency(funciones.FormatearDecimales(total))
+    lblLabel1.caption = "Total Comprobantes en proceso: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotal))
     
     lblCbtesConfirmados.caption = "Comprobantes: " & facturasConfirmadas.count
 
@@ -2264,22 +2264,21 @@ Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal
 End Sub
 
 
-
-
 Private Sub TabControl_SelectedChanged(ByVal item As Xtremesuitecontrols.ITabControlItem)
     Me.TabControl.TabIndex = 0
     
 End Sub
 
 
-
-
 Private Sub Totalizar()
-
     LiquidacionCaja.StaticTotalOrigenes = LiquidacionCaja.TotalOrigenes
     
+    Me.lblLabel1.caption = "Total Comprobantes: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotal))
+    
     Me.lblLabel2.caption = "Total Valores Cargados: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido))
+    
     GridEXHelper.AutoSizeColumns Me.gridCajaOperaciones
+    
     GridEXHelper.AutoSizeColumns Me.gridDepositosOperaciones
 
 End Sub

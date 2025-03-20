@@ -520,8 +520,6 @@ Private Sub CompletarGridEx()
         condition = condition & " AND op.fecha_operacion <= " & conectar.Escape(Me.dtpHasta.value)
     End If
     
-    
-
     If cboProveedores.ListIndex > -1 Then
         condition = condition & " AND prov.id = " & cboProveedores.ItemData(Me.cboProveedores.ListIndex)
     End If
