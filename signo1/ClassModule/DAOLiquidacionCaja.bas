@@ -1418,4 +1418,8 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Exit Function
 err1:
     ExportarColeccion = False
+<<<<<<< HEAD
 End Function
+=======
+End Function
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc

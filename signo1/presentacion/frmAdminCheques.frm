@@ -30,6 +30,10 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
+<<<<<<< HEAD
+=======
+      SelectedItem    =   2
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   2
       Item(0).Control(0)=   "Frame3"
@@ -150,10 +154,9 @@ Begin VB.Form frmAdminCheques
          Caption         =   "Resultados"
          Height          =   5175
          Index           =   1
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   102
          Top             =   3480
-         Visible         =   0   'False
          Width           =   15135
          Begin GridEX20.GridEX gridChequesEmitidos 
             Height          =   4665
@@ -1120,10 +1123,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
          Height          =   3015
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   16
          Top             =   360
-         Visible         =   0   'False
          Width           =   15135
          _Version        =   786432
          _ExtentX        =   26696

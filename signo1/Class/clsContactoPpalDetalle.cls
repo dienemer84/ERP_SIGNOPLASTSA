@@ -13,6 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+<<<<<<< HEAD
 Public IdAgenda As Long
 Public detalle As String
 Public Telefono1 As String
@@ -20,3 +21,5 @@ Public Telefono2 As String
 Public mail As String
 Public Mas As String
 Public Id As Long
+=======
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc

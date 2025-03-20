@@ -31,7 +31,11 @@ Public Function Guardar(deta As clsContactoPpalDetalle) As Boolean
           & conectar.Escape(deta.detalle) & "," _
           & conectar.Escape(deta.Telefono1) & "," _
           & conectar.Escape(deta.Telefono2) & "," _
+<<<<<<< HEAD
           & conectar.Escape(deta.mail) & "," _
+=======
+          & conectar.Escape(deta.Mail) & "," _
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
           & conectar.Escape(deta.Mas) & ")"
 
     Else
@@ -50,7 +54,11 @@ Public Function Guardar(deta As clsContactoPpalDetalle) As Boolean
         q = Replace$(q, "'detalle'", conectar.Escape(deta.detalle))
         q = Replace$(q, "'tel1'", conectar.Escape(deta.Telefono1))
         q = Replace$(q, "'tel2'", conectar.Escape(deta.Telefono2))
+<<<<<<< HEAD
         q = Replace$(q, "'mail'", conectar.Escape(deta.mail))
+=======
+        q = Replace$(q, "'mail'", conectar.Escape(deta.Mail))
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
         q = Replace$(q, "'mas'", conectar.Escape(deta.Mas))
 
     End If
@@ -116,7 +124,11 @@ Public Function Map(rs As Recordset, indice As Dictionary) As clsContactoPpalDet
         dr.detalle = GetValue(rs, indice, TABLA_DETALLE_AGENDA, CAMPO_DETALLE)
         dr.Telefono1 = GetValue(rs, indice, TABLA_DETALLE_AGENDA, CAMPO_TELEFONO1)
         dr.Telefono2 = GetValue(rs, indice, TABLA_DETALLE_AGENDA, CAMPO_TELEFONO2)
+<<<<<<< HEAD
         dr.mail = GetValue(rs, indice, TABLA_DETALLE_AGENDA, CAMPO_MAIL)
+=======
+        dr.Mail = GetValue(rs, indice, TABLA_DETALLE_AGENDA, CAMPO_MAIL)
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
         dr.Mas = GetValue(rs, indice, TABLA_DETALLE_AGENDA, CAMPO_MAS)
         'dr.Id = GetValue(rs, indice, TABLA_DETALLE_AGENDA, CAMPO_ID)
         dr.Id = Id

@@ -21,7 +21,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       _ExtentX        =   28654
       _ExtentY        =   3201
       _StockProps     =   79
-      Caption         =   "Parámetros de búsqueda"
+      Caption         =   "ParÃ¡metros de bÃºsqueda"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -283,7 +283,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          _ExtentX        =   4683
          _ExtentY        =   2355
          _StockProps     =   79
-         Caption         =   "Fecha de Creación"
+         Caption         =   "Fecha de CreaciÃ³n"
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -359,7 +359,11 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          _ExtentX        =   1826
          _ExtentY        =   344
          _StockProps     =   79
+<<<<<<< HEAD
          Caption         =   "N° Liquidación"
+=======
+         Caption         =   "NÂº LiquidaciÃ³n:"
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
          Alignment       =   1
          AutoSize        =   -1  'True
       End
@@ -414,6 +418,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       IntProp7        =   0
       ColumnsCount    =   9
       Column(1)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0000
+<<<<<<< HEAD
       Column(2)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":01A4
       Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":02E4
       Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":042C
@@ -435,6 +440,26 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       FormatStyle(10) =   "frmAdminPagosLiquidaciondeCajaLista.frx":1230
       ImageCount      =   0
       PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":12E4
+=======
+      Column(2)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":00C8
+      Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":016C
+      Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0210
+      Column(5)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":02B4
+      Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0358
+      Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":03FC
+      Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":04A0
+      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0544
+      FormatStylesCount=   7
+      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":05E8
+      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0720
+      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":07D0
+      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0884
+      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":095C
+      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0A14
+      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0AF4
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":0B14
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
    End
    Begin VB.Menu menu 
       Caption         =   "menu"

@@ -279,7 +279,10 @@ Begin VB.Form frmAgendaNueva
          EndProperty
       End
       Begin XtremeSuiteControls.PushButton btnBuscar 
+<<<<<<< HEAD
          Default         =   -1  'True
+=======
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
          Height          =   495
          Left            =   10680
          TabIndex        =   7
@@ -401,7 +404,11 @@ End Sub
 Private Sub verDeta()
     If Me.dgDatos.rowcount Then
         Set rectemp = contactos(Me.dgDatos.RowIndex(Me.dgDatos.row))
+<<<<<<< HEAD
             frmAgendaNuevaDetalles.Contacto = rectemp
+=======
+            frmAgendaNuevaDetalles.contacto = rectemp
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
             frmAgendaNuevaDetalles.Show
     End If
 End Sub
@@ -411,7 +418,11 @@ Private Sub dgDatos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     On Error Resume Next
     Set rectemp = contactos.item(RowIndex)
     With rectemp
+<<<<<<< HEAD
         Values(1) = .Id
+=======
+        Values(1) = .id
+>>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
         Values(2) = .Empresa
         Values(3) = .direccion
         Values(4) = .localidad
