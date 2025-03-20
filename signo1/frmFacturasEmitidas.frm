@@ -1094,7 +1094,7 @@ Dim m_Archivos As Dictionary
 
 Private Sub AnularFactura_Click()
     Dim r As Long
-    r = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
+    r = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
     If MsgBox("¿Desea anular el comprobante seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
 
         If DAOFactura.Anular(Factura) Then
@@ -1183,7 +1183,7 @@ Private Sub aprobarFactura_Click()
     Dim msgadicional As String
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
+        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.aprobarV2(Factura, True, False, Factura.esExportacion) Then
 
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
@@ -1930,7 +1930,7 @@ Private Sub gridComprobantesEmitidos_DblClick()
     verFactura_Click
 End Sub
 
-Private Sub gridComprobantesEmitidos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub gridComprobantesEmitidos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
@@ -2179,7 +2179,7 @@ End Sub
 
 Private Sub gridComprobantesEmitidos_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(RowBuffer.RowIndex)
+    Set Factura = facturas.item(RowBuffer.rowIndex)
 
     If Factura.estado = EstadoFacturaCliente.Anulada Then
         RowBuffer.RowStyle = "anulada"
@@ -2219,13 +2219,13 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row))
+    Set Factura = facturas.item(Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row))
 
 End Sub
 
-Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(RowIndex)
+    Set Factura = facturas.item(rowIndex)
 
 
     Values(1) = Factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
@@ -2497,7 +2497,7 @@ Private Sub mnuAprobarEnviar_Click()
     Dim msgadicional As String
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
+        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.aprobarV2(Factura, True, True, Factura.esExportacion) Then
 
 
@@ -2592,7 +2592,7 @@ Private Sub mnuDesaprobarFactura_Click()
     Dim g As Long
 
     If MsgBox("¿Desea desaprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
+        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.desaprobar(Factura) Then
             MsgBox "Comprobante desaprobado con éxito!", vbInformation, "Información"
             Me.gridComprobantesEmitidos.RefreshRowIndex g
@@ -2630,7 +2630,7 @@ Private Sub mnuEnviarAfip_Click()
     If Factura.Tipo.PuntoVenta.CaeManual Then
 
         Dim gg As Long
-        gg = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
+        gg = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
 
         Dim F As New frmAdminFacturasAprobarSinAfip
         Set F.Factura = Factura
@@ -2641,7 +2641,7 @@ Private Sub mnuEnviarAfip_Click()
 
     Else
         If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-            g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
+            g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
             If DAOFactura.aprobarV2(Factura, False, True, Factura.esExportacion) Then
 
                 Dim msg As String

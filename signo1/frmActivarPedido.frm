@@ -412,7 +412,7 @@ Private sectoresInvolucrados As New Collection
 
 Public Property Set Pedido(T As OrdenTrabajo)
     Set vpedido = T
-    Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
+    Set vpedido.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
     idpedido = T.Id
     Me.caption = "Activar OT Nº " & T.IdFormateado
 End Property
@@ -505,7 +505,7 @@ Private Sub cmdRutas2_Click()
     Dim tmpCol As Collection
 
     For Each rec In Me.ReportControl.Records
-        Set tmpDetalle = vpedido.Detalles(CStr(rec.Tag))
+        Set tmpDetalle = vpedido.detalles(CStr(rec.Tag))
 
         If rec.item(1).Checked Then
             If tmpDetalle.Pieza.EsConjunto Then
@@ -617,7 +617,7 @@ Private Sub ImprimirHojaTarea(ptpId As Long, P As Pieza, d As DetalleOrdenTrabaj
     informe_tareas.Sections("Sección4").Controls("lblReferencia").caption = P.nombre
     informe_tareas.Sections("Sección4").Controls("lblfechaEntrega").caption = d.FechaEntrega
     informe_tareas.Sections("Sección4").Controls("barCode").caption = "*" & Format(ptp.Id, "00000000") & "*"
-    informe_tareas.Sections("Sección4").Controls("lblCliente").caption = vpedido.Cliente.razon
+    informe_tareas.Sections("Sección4").Controls("lblCliente").caption = vpedido.cliente.razon
 
     informe_tareas.Sections("Sección2").Controls("Etiqueta4").caption = "Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea & " (Sector: " & ptp.Tarea.Sector.Sector & ")"
 
@@ -761,7 +761,7 @@ End Sub
 
 Private Sub Command11_Click()
     On Error GoTo er1
-    frmPrincipal.cd.ShowPrinter
+    frmPrincipal.CD.ShowPrinter
     Dim rec As ReportRecord
     Dim tmpDetalle As DetalleOrdenTrabajo
     Dim l As Long
@@ -769,7 +769,7 @@ Private Sub Command11_Click()
     Dim linea1, linea2, linea3, linea4, linea5
 
     For Each rec In Me.ReportControl.Records
-        Set tmpDetalle = vpedido.Detalles(CStr(rec.Tag))
+        Set tmpDetalle = vpedido.detalles(CStr(rec.Tag))
 
         If rec.item(1).Checked Then
             For l = 1 To tmpDetalle.CantidadPedida
@@ -867,7 +867,7 @@ End Sub
 
 
 Private Sub Form_Activate()
-    Dim c As Long
+    Dim C As Long
 
     cod = CLng(idpedido)
     Dim tmpSector As clsSector
@@ -881,7 +881,7 @@ Private Sub Form_Activate()
     Dim rs As Recordset
 
     Set sectoresInvolucrados = DAOTiemposProceso.GetSectoresByIdPedido(vpedido.Id)
-    c = 0
+    C = 0
 
     Dim x As Long
     Dim i As Long
@@ -921,7 +921,7 @@ Private Sub Form_Activate()
     Dim pos4 As Integer
     Dim item As ReportRecordItem
 
-    For Each deta In vpedido.Detalles
+    For Each deta In vpedido.detalles
         Set record = Me.ReportControl.Records.Add
         record.Tag = deta.Id
         record.AddItem deta.item
@@ -1133,7 +1133,7 @@ Private Sub PushButton4_Click()
 
 
 
-    Dim c As Long
+    Dim C As Long
     Dim rec As ReportRecord
     Dim rec1 As ReportRecord
     Dim rec2 As ReportRecord
@@ -1154,18 +1154,18 @@ Private Sub PushButton4_Click()
     Dim cant3 As Double
     Dim cant4 As Double
     Dim it As ReportRecordItem
-    c = 0
+    C = 0
 
     If Not LabelHelper.PrintEtiquetaPedido(vpedido) Then GoTo E
 
     For Each rec In Me.ReportControl.Records
-        Set tmpDetalle = vpedido.Detalles(CStr(rec.Tag))
+        Set tmpDetalle = vpedido.detalles(CStr(rec.Tag))
 
         If rec.item(1).Checked Then
 
             Cant = rec.item(4).value
             If Not LabelHelper.PrintEtiquetaDetallePedido(vpedido, tmpDetalle, Cant) Then GoTo E
-            c = c + 1
+            C = C + 1
         End If
 
         For Each rec1 In rec.Childs
@@ -1183,7 +1183,7 @@ Private Sub PushButton4_Click()
                 If rec1.Tag > 0 Then
                     cant1 = rec1.item(5).value
                     If Not LabelHelper.PrintEtiquetaDetallePedido(vpedido, tmpDetalle, cant1, tmpDetalleConj1) Then GoTo E
-                    c = c + 1
+                    C = C + 1
                 End If
             End If
 
@@ -1203,7 +1203,7 @@ Private Sub PushButton4_Click()
                     If rec2.Tag > 0 Then    'no es tarea
                         cant2 = rec2.item(4).value
                         If Not LabelHelper.PrintEtiquetaDetallePedido(vpedido, tmpDetalle, cant2, tmpDetalleConj2) Then GoTo E
-                        c = c + 1
+                        C = C + 1
                     End If
                 End If
 
@@ -1222,7 +1222,7 @@ Private Sub PushButton4_Click()
                         If rec3.Tag > 0 Then
                             cant3 = rec3.item(4).value
                             If Not LabelHelper.PrintEtiquetaDetallePedido(vpedido, tmpDetalle, cant3, tmpDetalleConj3) Then GoTo E
-                            c = c + 1
+                            C = C + 1
                         End If
                     End If
 
@@ -1241,7 +1241,7 @@ Private Sub PushButton4_Click()
                             If rec4.Tag > 0 Then
                                 cant4 = rec4.item(4).value
                                 If Not LabelHelper.PrintEtiquetaDetallePedido(vpedido, tmpDetalle, cant4, tmpDetalleConj4) Then GoTo E
-                                c = c + 1
+                                C = C + 1
                             End If
                         End If
                     Next
@@ -1253,7 +1253,7 @@ Private Sub PushButton4_Click()
     Next
 
 
-    If c >= 3 Then If Not LabelHelper.PrintEtiquetaPedido(vpedido) Then GoTo E
+    If C >= 3 Then If Not LabelHelper.PrintEtiquetaPedido(vpedido) Then GoTo E
 
 
     Exit Sub

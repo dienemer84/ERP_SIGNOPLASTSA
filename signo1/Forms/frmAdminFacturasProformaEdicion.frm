@@ -955,7 +955,7 @@ Private Sub btnExportarContenido_Click()
     Dim d As Long
     d = 0
 
-    For Each deta In FacturaProforma.Detalles
+    For Each deta In FacturaProforma.detalles
         xlWorksheet.Cells(idx, 1).value = deta.Cantidad
         xlWorksheet.Cells(idx, 2).value = deta.detalle
         xlWorksheet.Cells(idx, 3).value = deta.PorcentajeDescuento
@@ -1069,7 +1069,7 @@ Private Sub btnGuardar_Click()
 
 
 
-    If Not FacturaProforma.Cliente.CUITValido Or Not FacturaProforma.Cliente.ValidoRemitoFactura Then
+    If Not FacturaProforma.cliente.CUITValido Or Not FacturaProforma.cliente.ValidoRemitoFactura Then
         MsgBox "El cliente no es valido para poder facturar.", vbExclamation + vbOKOnly
         Exit Sub
     End If
@@ -1087,14 +1087,14 @@ Private Sub btnGuardar_Click()
 
         Dim deta As clsFacturaProformaDetalle
         'Dim ot As OrdenTrabajo
-        For Each deta In FacturaProforma.Detalles
+        For Each deta In FacturaProforma.detalles
 
         Next deta
 
-        Dim c As CuentaBancaria
+        Dim C As CuentaBancaria
 
-        If IsSomething(c) Then
-            FacturaProforma.CBU = c.CBU
+        If IsSomething(C) Then
+            FacturaProforma.CBU = C.CBU
         End If
 
         FacturaProforma.observaciones = Me.txtCondObs.Text
@@ -1118,10 +1118,10 @@ End Sub
 Private Sub cboCliente_Click()
     If IsSomething(FacturaProforma) And Me.cboCliente.ListIndex <> -1 And Not dataLoading Then
 
-        Set FacturaProforma.Cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
-        FacturaProforma.Detalles = New Collection
+        Set FacturaProforma.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
+        FacturaProforma.detalles = New Collection
 
-        Set FacturaProforma.TipoIVA = FacturaProforma.Cliente.TipoIVA
+        Set FacturaProforma.TipoIVA = FacturaProforma.cliente.TipoIVA
 
         Dim tipos As New Collection
 
@@ -1153,7 +1153,7 @@ Private Sub cboCliente_Click()
 
         FacturaProforma.AlicuotaAplicada = FacturaProforma.TipoIVA.alicuota
         
-        Set FacturaProforma.Cliente = DAOCliente.BuscarPorID(FacturaProforma.Cliente.id)
+        Set FacturaProforma.cliente = DAOCliente.BuscarPorID(FacturaProforma.cliente.Id)
 
 ''        If IsSomething(FacturaProforma.Tipo.TipoFactura) Then
 ''            FacturaProforma.EstaDiscriminada = FacturaProforma.Tipo.TipoFactura.Discrimina
@@ -1190,11 +1190,11 @@ Private Sub MostrarPercepcionIIBB()
     Me.txtPercepcion.Text = 0
     Me.lblVencido.Visible = False
 
-    If FacturaProforma.Cliente.CUITValido Then
+    If FacturaProforma.cliente.CUITValido Then
         'Me.lblBuscandoPercepcion.Visible = True
         DoEvents
         Dim rs As Recordset
-        Set rs = conectar.RSFactory("SELECT * FROM sp_permisos." & tabla & " WHERE cuit='" & FacturaProforma.Cliente.Cuit & "'")
+        Set rs = conectar.RSFactory("SELECT * FROM sp_permisos." & tabla & " WHERE cuit='" & FacturaProforma.cliente.Cuit & "'")
         'Me.lblBuscandoPercepcion.Visible = False
         DoEvents
         If IsSomething(rs) Then
@@ -1219,7 +1219,7 @@ End Sub
 
 Private Sub cboPadron_Click()
 
-    If IsSomething(FacturaProforma.Cliente) And Not dataLoading Then
+    If IsSomething(FacturaProforma.cliente) And Not dataLoading Then
         MostrarPercepcionIIBB
     End If
 End Sub
@@ -1336,7 +1336,7 @@ Private Sub Form_Load()
     
     If Not IsSomething(FacturaProforma) Then
         Set FacturaProforma = New clsFacturaProforma
-        FacturaProforma.Detalles = New Collection
+        FacturaProforma.detalles = New Collection
         Set FacturaProforma.Tipo = New clsTipoFacturaDiscriminado
 
         FacturaProforma.Tipo.TipoDoc = NuevoTipoDocumento
@@ -1364,7 +1364,7 @@ Private Sub Form_Load()
 
     Me.gridDetalles.ItemCount = 0
 
-    If FacturaProforma.id = 0 Then
+    If FacturaProforma.Id = 0 Then
         FacturaProforma.FechaEmision = Now
 
         FacturaProforma.fechaPago = Now
@@ -1530,24 +1530,24 @@ Private Sub CargarFactura()
     End If
 
 
-    If IsSomething(FacturaProforma.Cliente) Then
-        Me.cboCliente.ListIndex = funciones.PosIndexCbo(FacturaProforma.Cliente.id, Me.cboCliente)
+    If IsSomething(FacturaProforma.cliente) Then
+        Me.cboCliente.ListIndex = funciones.PosIndexCbo(FacturaProforma.cliente.Id, Me.cboCliente)
         MostrarCliente
     Else
         LimpiarCliente
     End If
     
     
-    If FacturaProforma.moneda.id = 0 Then
+    If FacturaProforma.moneda.Id = 0 Then
         Me.lblTC.caption = "Tipo Cambio: " & FacturaProforma.moneda.NombreCorto & " 1 "
     Else
         Me.lblTC.caption = "Tipo Cambio: " & FacturaProforma.moneda.NombreCorto & " " & FacturaProforma.CambioAPatron
     End If
 
     
-    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(FacturaProforma.moneda.id, Me.cboMoneda)
+    Me.cboMoneda.ListIndex = funciones.PosIndexCbo(FacturaProforma.moneda.Id, Me.cboMoneda)
 
-    If FacturaProforma.id = 0 Then
+    If FacturaProforma.Id = 0 Then
         'creo que aaca no entra nunca
         '        Dim classA As New classAdministracion
         Me.txtNumero.Text = Format(DAOFacturaProforma.proximaFactura(FacturaProforma))    'NuevoTipoDocumento, FacturaProforma.Tipo.TipoFacturaProforma.id), "0000")
@@ -1582,11 +1582,11 @@ Private Sub CargarFactura()
     Me.txtTasaAjuste.Text = FacturaProforma.TasaAjusteMensual
     ' Me.txtCbuCredito = FacturaProforma.CBU
 
-    Dim c As CuentaBancaria
+    Dim C As CuentaBancaria
 
     If FacturaProforma.esCredito And LenB(FacturaProforma.CBU) > 0 Then
 
-        Set c = DAOCuentaBancaria.FindByCBU(FacturaProforma.CBU)
+        Set C = DAOCuentaBancaria.FindByCBU(FacturaProforma.CBU)
 
 
     Else
@@ -1614,7 +1614,7 @@ End Sub
 
 Private Sub CargarDetalles()
     Me.gridDetalles.ItemCount = 0
-    Me.gridDetalles.ItemCount = FacturaProforma.Detalles.count
+    Me.gridDetalles.ItemCount = FacturaProforma.detalles.count
     ActualizarCantDetalles
 
 End Sub
@@ -1628,16 +1628,16 @@ End Sub
 Private Sub MostrarCliente()
     On Error Resume Next
     If FacturaProforma Is Nothing Then Exit Sub
-    If FacturaProforma.Cliente Is Nothing Then Exit Sub
-    Me.lblCuit.caption = FacturaProforma.Cliente.Cuit
-    Me.lblIVA.caption = FacturaProforma.Cliente.TipoIVA.detalle
-    Me.lblDireccion.caption = FacturaProforma.Cliente.Domicilio
-    Me.lblLocalidad.caption = FacturaProforma.Cliente.localidad.nombre
-    Me.lblCodPostal.caption = FacturaProforma.Cliente.CodigoPostal
+    If FacturaProforma.cliente Is Nothing Then Exit Sub
+    Me.lblCuit.caption = FacturaProforma.cliente.Cuit
+    Me.lblIVA.caption = FacturaProforma.cliente.TipoIVA.detalle
+    Me.lblDireccion.caption = FacturaProforma.cliente.Domicilio
+    Me.lblLocalidad.caption = FacturaProforma.cliente.localidad.nombre
+    Me.lblCodPostal.caption = FacturaProforma.cliente.CodigoPostal
 
 
 
-    Me.lblProvincia = FacturaProforma.Cliente.provincia.nombre
+    Me.lblProvincia = FacturaProforma.cliente.provincia.nombre
 
 End Sub
 
@@ -1671,7 +1671,7 @@ Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Sin
     If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
         Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
         If row > 0 Then
-            Set detalle = FacturaProforma.Detalles.item(Me.gridDetalles.rowIndex(row))
+            Set detalle = FacturaProforma.detalles.item(Me.gridDetalles.rowIndex(row))
             If IsSomething(detalle) Then
                 If (Not detalle.OrigenEsConcepto And detalle.AplicadoARemito) Or detalle.OrigenEsConcepto Then
                     Me.PopupMenu Me.mnuDetalles
@@ -1696,7 +1696,7 @@ Private Sub gridDetalles_SelectionChange()
     Dim it As Long
     it = Me.gridDetalles.rowIndex(gridDetalles.row)
     If it > 0 Then
-        Set detalle = FacturaProforma.Detalles.item(it)
+        Set detalle = FacturaProforma.detalles.item(it)
 
         If detalle.OrigenEsConcepto Then
             gridDetalles.Columns(1).EditType = jgexEditTextBox
@@ -1715,7 +1715,7 @@ End Sub
 Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set detalle = New clsFacturaProformaDetalle
     Set detalle.Factura = FacturaProforma
-    detalle.idFactura = FacturaProforma.id
+    detalle.idFactura = FacturaProforma.Id
     detalle.Cantidad = Values(1)
     detalle.detalle = Values(2)
     detalle.PorcentajeDescuento = Values(3)
@@ -1723,23 +1723,23 @@ Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
     detalle.IvaAplicado = Values(7)
     detalle.IBAplicado = Values(8)
 
-    FacturaProforma.Detalles.Add detalle
+    FacturaProforma.detalles.Add detalle
 
     Totalizar
 End Sub
 
 
 Private Sub gridDetalles_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    If rowIndex > 0 And FacturaProforma.Detalles.count > 0 Then
-        FacturaProforma.Detalles.remove rowIndex
+    If rowIndex > 0 And FacturaProforma.detalles.count > 0 Then
+        FacturaProforma.detalles.remove rowIndex
         Totalizar
     End If
 End Sub
 
 
 Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex <= FacturaProforma.Detalles.count Then
-        Set detalle = FacturaProforma.Detalles.item(rowIndex)
+    If rowIndex <= FacturaProforma.detalles.count Then
+        Set detalle = FacturaProforma.detalles.item(rowIndex)
         Values(1) = detalle.Cantidad
         Values(2) = detalle.detalle
         Values(3) = funciones.FormatearDecimales(detalle.PorcentajeDescuento)
@@ -1756,8 +1756,8 @@ End Sub
 
 
 Private Sub gridDetalles_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And FacturaProforma.Detalles.count > 0 Then
-        Set detalle = FacturaProforma.Detalles.item(rowIndex)
+    If rowIndex > 0 And FacturaProforma.detalles.count > 0 Then
+        Set detalle = FacturaProforma.detalles.item(rowIndex)
 
         detalle.Cantidad = Values(1)
         detalle.detalle = Values(2)
@@ -1797,29 +1797,29 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                     If redeta.facturable Then
 
                         If IsSomething(detaFactRemito) Then
-                            detaFactRemito.DetalleRemitoId = redeta.id
+                            detaFactRemito.DetalleRemitoId = redeta.Id
                             detaFactRemito.AplicadoARemito = True
                             redeta.Facturado = True
                             Dim transactionResult As Boolean: transactionResult = True
                             Dim q As String
                             conectar.BeginTransaction
 
-                            q = "INSERT INTO AdminFacturasDetalleAplicacionRemitos (idFacturaDetalle, idRemitoDetalle, cantidadAplicada) VALUES (" & detaFactRemito.id & ", " & redeta.id & "  ,  " & redeta.Cantidad & ")"
+                            q = "INSERT INTO AdminFacturasDetalleAplicacionRemitos (idFacturaDetalle, idRemitoDetalle, cantidadAplicada) VALUES (" & detaFactRemito.Id & ", " & redeta.Id & "  ,  " & redeta.Cantidad & ")"
                             transactionResult = transactionResult And conectar.execute(q)
 
                             Dim remi As Remito
                             Set remi = DAORemitoS.FindById(detaFactRemito.detalleRemito.Remito)
-                            remi.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(remi.id)
+                            remi.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(remi.Id)
 
                             transactionResult = transactionResult And DAORemitoS.Guardar(remi, False, False)
                             transactionResult = transactionResult And DAOFacturaDetalles.Guardar(detaFactRemito)
                             transactionResult = transactionResult And DAORemitoSDetalle.Guardar(redeta)
-                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, FacturaProforma.id, FacturaProforma.moneda.id, FacturaProforma.CambioAPatron, FacturaProforma.TipoCambioAjuste)
+                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, FacturaProforma.Id, FacturaProforma.moneda.Id, FacturaProforma.CambioAPatron, FacturaProforma.TipoCambioAjuste)
 
                             If transactionResult Then
 
                                 conectar.CommitTransaction
-                                remi.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(remi.id)
+                                remi.EstadoFacturado = DAORemitoS.AnalizarEstadoFacturado(remi.Id)
                                 DAORemitoS.Guardar remi, False, False
                                 CargarDetalles
                                 Totalizar

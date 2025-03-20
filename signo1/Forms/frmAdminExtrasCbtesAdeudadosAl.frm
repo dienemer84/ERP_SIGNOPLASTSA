@@ -599,7 +599,7 @@ Public Sub llenarGrilla()
     End If
 
     If LenB(Me.txtComprobante) > 0 Then
-        condition = condition & " AND AdminComprasFacturasProveedores.numero_factura like '%" & Trim(Me.txtComprobante.text) & "%'"
+        condition = condition & " AND AdminComprasFacturasProveedores.numero_factura like '%" & Trim(Me.txtComprobante.Text) & "%'"
     End If
 
     If Not IsNull(dtpHastaFIN(1).value) Then
@@ -615,18 +615,18 @@ Public Sub llenarGrilla()
     Dim saldo As Double
     Dim TotalFactura As Double
     Dim TotalPagado As Double
-    Dim c As Integer
+    Dim C As Integer
 
     total = 0
 
     For Each Factura In facturas
 
-        If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
+        If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
         
-        TotalFactura = ((Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) + Factura.TotalIVA + Factura.TotalNetoGravadoDiscriminado(0) + Factura.totalPercepciones + Factura.ImpuestoInterno + Factura.Redondeo) * c
+        TotalFactura = ((Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) + Factura.TotalIVA + Factura.TotalNetoGravadoDiscriminado(0) + Factura.totalPercepciones + Factura.ImpuestoInterno + Factura.Redondeo) * C
         total = total + TotalFactura
               
-        TotalPagado = (Factura.TotalAbonadoGlobal) * c
+        TotalPagado = (Factura.TotalAbonadoGlobal) * C
         pagado = pagado + TotalPagado
         
         
@@ -696,7 +696,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
 
     Dim i As Integer
 
-    If Factura.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then i = -1 Else i = 1
+    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
     With Factura
 

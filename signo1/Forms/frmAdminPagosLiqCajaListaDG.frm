@@ -988,7 +988,7 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       Width           =   1935
    End
    Begin VB.Label Label 
-      Caption         =   "Fecha de Liquidación"
+      Caption         =   "Fecha de Liquidaci�n"
       Height          =   255
       Index           =   2
       Left            =   10440
@@ -997,7 +997,7 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
       Width           =   2055
    End
    Begin VB.Label Label 
-      Caption         =   "Nro Liquidación"
+      Caption         =   "Nro Liquidaci�n"
       Height          =   255
       Index           =   1
       Left            =   8160
@@ -1081,9 +1081,6 @@ Private facturaConfirmada As clsFacturaProveedor
 Private facturas As Collection
 Private facturasConfirmadas As Collection
 Dim m_Archivos As Dictionary
-
-'Dim compe As Compensatorio
-
 Private Banco As Banco
 Private caja As caja
 Private CuentaBancaria As CuentaBancaria
@@ -1094,16 +1091,14 @@ Private Cajas As New Collection
 Private bancos As New Collection
 Private chequesDisponibles As New Collection
 Private chequeras As New Collection
-
 Private LiquidacionCaja As New clsLiquidacionCaja
 Private operacion As operacion
 Private cheque As cheque
 Private tmpChequera As chequera
-
 Private chequesChequeraSeleccionada As New Collection
-
 Public ReadOnly As Boolean
 Public esNueva As Boolean
+
 
 Private Sub btnCargarCbtes_Click()
     llenarGrilla
@@ -1132,7 +1127,7 @@ Private Sub btnConfirmar_Click()
         facturaExistente = False
 
         For Each fac In facturasConfirmadas
-            If fac.id = Factura.id Then
+            If fac.Id = Factura.Id Then
             'If fac.numero = Factura.numero Then
                 facturaExistente = True
                 Exit For
@@ -1180,9 +1175,7 @@ Private Sub btnExportarConfirmados_Click()
        
     ExportToXslConfirmados
     End If
-    
-
-    
+        
 End Sub
 
 Public Function ExportToXslConfirmados()
@@ -1208,7 +1201,7 @@ Public Function ExportToXslConfirmados()
     xlWorksheet.Range("A1:G1").Merge
     xlWorksheet.Range("A2:G2").Merge
     xlWorksheet.Range("A1:G3").Font.Bold = True
-    xlWorksheet.Cells(1, 1).value = "Detalle de Comprobante de Liquidación"
+    xlWorksheet.Cells(1, 1).value = "Detalle de Comprobante de Liquidaci�n"
     xlWorksheet.Cells(3, 1).value = "Tipo"
     xlWorksheet.Cells(3, 2).value = "Letra"
     xlWorksheet.Cells(3, 3).value = "Nro Cbte"
@@ -1305,7 +1298,7 @@ Public Function ExportToXslComprobantes()
     xlWorksheet.Range("A1:G1").Merge
     xlWorksheet.Range("A2:G2").Merge
     xlWorksheet.Range("A1:G3").Font.Bold = True
-    xlWorksheet.Cells(1, 1).value = "Detalle de Comprobante de Liquidación"
+    xlWorksheet.Cells(1, 1).value = "Detalle de Comprobante de Liquidaci�n"
     xlWorksheet.Cells(3, 1).value = "Tipo"
     xlWorksheet.Cells(3, 2).value = "Letra"
     xlWorksheet.Cells(3, 3).value = "Nro Cbte"
@@ -1314,13 +1307,10 @@ Public Function ExportToXslComprobantes()
     xlWorksheet.Cells(3, 6).value = "Monto"
     xlWorksheet.Cells(3, 7).value = "Proveedor"
 
-
     Dim idx As Integer
     idx = 4
 
     For Each Factura In facturas
-
-
         xlWorksheet.Cells(idx, 1).value = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
         xlWorksheet.Cells(idx, 2).value = Factura.configFactura.TipoFactura
         xlWorksheet.Cells(idx, 3).value = Factura.numero
@@ -1374,7 +1364,6 @@ Public Function ExportToXslComprobantes()
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
-
 End Function
 
 Private Sub btnLimpiarNúmero_Click()
@@ -1383,11 +1372,12 @@ Private Sub btnLimpiarNúmero_Click()
     llenarGrilla
     
 End Sub
+
+
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(grilla.RowIndex(grilla.row))
+    Set Factura = facturas.item(grilla.rowIndex(grilla.row))
 End Sub
-
 
 
 Private Sub btnQuitarSeleccionado_Click()
@@ -1396,11 +1386,10 @@ Private Sub btnQuitarSeleccionado_Click()
         MsgBox "No se ha seleccionado ninguna factura."
         Exit Sub
     End If
-    
-                    
+                        
     ' Preguntar al usuario para confirmar la eliminación
     Dim respuesta As Integer
-    respuesta = MsgBox("¿Estás seguro de que deseas eliminar la factura " & facturaConfirmada.NumeroFormateado & "?", vbQuestion + vbYesNo, "Confirmar eliminación")
+    respuesta = MsgBox("Est� seguro de que deseas eliminar la factura " & facturaConfirmada.NumeroFormateado & "?", vbQuestion + vbYesNo, "Confirmar eliminación")
     
     If respuesta = vbYes Then
     
@@ -1409,13 +1398,13 @@ Private Sub btnQuitarSeleccionado_Click()
     
         ' Buscar la factura correspondiente en la colección
         For i = facturasConfirmadas.count To 1 Step -1
-            If facturasConfirmadas(i).id = facturaConfirmada.id Then
+            If facturasConfirmadas(i).Id = facturaConfirmada.Id Then
                 ' Encontrar la factura a eliminar
                 Set facturaAEliminar = facturasConfirmadas(i)
                 
                 Dim q As String
                 If facturaConfirmada.estado = Saldada Then
-                    q = "UPDATE AdminComprasFacturasProveedores SET estado = 2 WHERE id = " & facturaConfirmada.id
+                    q = "UPDATE AdminComprasFacturasProveedores SET estado = 2 WHERE id = " & facturaConfirmada.Id
                     If Not conectar.execute(q) Then GoTo err1
                  End If
                 
@@ -1434,7 +1423,7 @@ Private Sub btnQuitarSeleccionado_Click()
             TotalizarComprobantes
             
         Else
-            MsgBox "No se encontró la factura a eliminar."
+            MsgBox "No se encontr� la factura a eliminar."
             grillaConfirmados.ItemCount = 0
             grillaConfirmados.ItemCount = facturasConfirmadas.count
         End If
@@ -1444,9 +1433,7 @@ err1:
 End Sub
 
 
-
 Private Sub Form_Load()
-
     formLoading = True
     
     FormHelper.Customize Me
@@ -1489,10 +1476,8 @@ Private Sub Form_Load()
     Set chequeras = DAOChequeras.FindAllWithChequesDisponibles()
     Me.gridChequeras.ItemCount = chequeras.count
 
-    
     CargarChequesDisponibles
-    
-    
+        
 ''    Set colProveedores = DAOProveedor.FindAllProveedoresWithFacturasImpagas
 ''    For Each prov In colProveedores
 ''        cboProveedores.AddItem prov.RazonSocial
@@ -1558,9 +1543,6 @@ Public Sub llenarGrilla()
 
     condition = " AdminComprasFacturasProveedores.estado = 2 OR AdminComprasFacturasProveedores.estado = 4 "
 
-    'condition = " AdminComprasFacturasProveedores.estado = 2 "
-
-
     Set facturas = DAOFacturaProveedor.FindAll(condition, , , Permisos.AdminFaPVerSoloPropias)
 
     Dim F As clsFacturaProveedor
@@ -1576,15 +1558,13 @@ Public Sub llenarGrilla()
     total = 0
 
     For Each F In facturas
-
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
-        total = total + MonedaConverter.Convertir(F.total * C, F.moneda.id, MonedaConverter.Patron.id)
-        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * C - F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.id, MonedaConverter.Patron.id)
-        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.id, MonedaConverter.Patron.id)
-        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * C, F.moneda.id, MonedaConverter.Patron.id)
+        total = total + MonedaConverter.Convertir(F.total * C, F.moneda.Id, MonedaConverter.Patron.Id)
+        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * C - F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.Id, MonedaConverter.Patron.Id)
+        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.Id, MonedaConverter.Patron.Id)
+        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * C, F.moneda.Id, MonedaConverter.Patron.Id)
         totalpercep = totalpercep + F.totalPercepciones * C
         totalsaldo = totalsaldo + ((F.total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * C)
-
     Next
 
     grilla.ItemCount = facturas.count
@@ -1605,8 +1585,7 @@ If Index = 1 Then
             Dim cond2 As Boolean
             Dim cond3 As Boolean
             Dim cond4 As Boolean
-        
-        
+
             cond1 = Not IsNumeric(Me.gridCajaOperaciones.value(1))
             cond2 = Not IsNumeric(Me.gridCajaOperaciones.value(2)) And LenB(Me.gridCajaOperaciones.value(2)) = 0
             cond3 = Not IsDate(Me.gridCajaOperaciones.value(3))
@@ -1615,6 +1594,7 @@ If Index = 1 Then
             Cancel = cond1 Or cond2 Or cond3 Or cond4
     End If
 End Sub
+
 
 Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     ' Verificamos si el índice es 1
@@ -1632,31 +1612,33 @@ Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
         If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
 End Sub
 
+
 Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     ' Verificamos si el índice es 1
     Set cheque = Nothing
     If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
     If IsSomething(cheque) Then
-        LiquidacionCaja.ChequesTerceros.Add cheque, CStr(cheque.id)
+        LiquidacionCaja.ChequesTerceros.Add cheque, CStr(cheque.Id)
 
     End If
     Totalizar
 End Sub
 
-Private Sub gridCheques_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+
+Private Sub gridCheques_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
     ' Verificamos si el índice es 1
-    If RowIndex > 0 Then
-        LiquidacionCaja.ChequesTerceros.remove RowIndex
+    If rowIndex > 0 Then
+        LiquidacionCaja.ChequesTerceros.remove rowIndex
         Totalizar
     End If
 End Sub
 
 
-Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     ' Verificamos si el índice es 1
         ' Acciones específicas para el control con índice 1
-    If RowIndex <= LiquidacionCaja.ChequesTerceros.count Then
-        Set cheque = LiquidacionCaja.ChequesTerceros.item(RowIndex)
+    If rowIndex <= LiquidacionCaja.ChequesTerceros.count Then
+        Set cheque = LiquidacionCaja.ChequesTerceros.item(rowIndex)
 
         Values(1) = cheque.numero & " "
 
@@ -1673,14 +1655,14 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
 End Sub
 
 
-Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridCheques_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     ' Verificamos si el índice es 1
-    If RowIndex > 0 And LiquidacionCaja.ChequesTerceros.count >= RowIndex Then
+    If rowIndex > 0 And LiquidacionCaja.ChequesTerceros.count >= rowIndex Then
         Set cheque = Nothing
         If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
         If IsSomething(cheque) Then
-            LiquidacionCaja.ChequesTerceros.Add cheque, , , RowIndex
-            LiquidacionCaja.ChequesTerceros.remove RowIndex
+            LiquidacionCaja.ChequesTerceros.Add cheque, , , rowIndex
+            LiquidacionCaja.ChequesTerceros.remove rowIndex
         End If
         Totalizar
     End If
@@ -1742,23 +1724,23 @@ Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JS
         cheque.Monto = Values(3)
         cheque.FechaVencimiento = Values(4)
 
-        LiquidacionCaja.ChequesPropios.Add cheque, CStr(cheque.id)
-
-
+        LiquidacionCaja.ChequesPropios.Add cheque, CStr(cheque.Id)
     End If
+    
     Totalizar
+    
 End Sub
 
-Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 Then
-        LiquidacionCaja.ChequesPropios.remove RowIndex
+Private Sub gridChequesPropios_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 Then
+        LiquidacionCaja.ChequesPropios.remove rowIndex
         Totalizar
     End If
 End Sub
 
-Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If LiquidacionCaja.ChequesPropios.count >= RowIndex Then
-        Set cheque = LiquidacionCaja.ChequesPropios.item(RowIndex)
+Private Sub gridChequesPropios_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If LiquidacionCaja.ChequesPropios.count >= rowIndex Then
+        Set cheque = LiquidacionCaja.ChequesPropios.item(rowIndex)
         Values(1) = cheque.chequera.Description
         Values(2) = vbNullString
         'FORMATCURRENCY
@@ -1766,21 +1748,13 @@ Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Boo
         Values(4) = cheque.FechaVencimiento
         Values(5) = cheque.numero
 
-
         Totalizar
     End If
 End Sub
 
-Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If LiquidacionCaja.ChequesPropios.count >= RowIndex Then
-        Set cheque = OrdenPago.ChequesPropios.item(RowIndex)
-
-        '        If Values(2) <> Cheque.Id Then
-        '            ordenPago.ChequesPropios.remove CStr(Cheque.Id)
-        '            Set Cheque = DAOCheques.FindById(Values(2))
-        '            ordenPago.ChequesPropios.Add Cheque, CStr(Cheque.Id)
-        '        End If
-
+Private Sub gridChequesPropios_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If LiquidacionCaja.ChequesPropios.count >= rowIndex Then
+        Set cheque = OrdenPago.ChequesPropios.item(rowIndex)
         cheque.Monto = Values(3)
         cheque.FechaVencimiento = Values(4)
     End If
@@ -1789,9 +1763,10 @@ Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookm
 End Sub
 
 
-Private Sub gridCompensatorios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    OrdenPago.Compensatorios.remove (RowIndex)
+Private Sub gridCompensatorios_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    OrdenPago.Compensatorios.remove (rowIndex)
 End Sub
+
 
 Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grilla, Column
@@ -1799,8 +1774,8 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 
-Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 15 And m_Archivos.item(Factura.id) > 0 Then IconIndex = 1
+Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+    If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 
 End Sub
 
@@ -1823,7 +1798,7 @@ Private Sub grilla_MouseDown(Button As Integer, Shift As Integer, x As Single, y
         facturaExistente = False
 
         For Each fac In facturasConfirmadas
-            If fac.id = Factura.id Then
+            If fac.Id = Factura.Id Then
             'If fac.numero = Factura.numero Then
                 facturaExistente = True
                 Exit For
@@ -1852,9 +1827,9 @@ Private Sub grilla_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 ' LLENADO DE GRILLA DE COMPROBANTES APROBADOS PARA PAGAR
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set Factura = facturas.item(RowIndex)
+    Set Factura = facturas.item(rowIndex)
 
     Dim i As Integer
 
@@ -1886,9 +1861,9 @@ Private Sub grillaConfirmados_MouseDown(Button As Integer, Shift As Integer, x A
 End Sub
 
 ' LLENADO DE GRILLA DE COMPROBANTES CONFIRMADOS
-Private Sub grillaConfirmados_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grillaConfirmados_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set facturaConfirmada = facturasConfirmadas.item(RowIndex)
+    Set facturaConfirmada = facturasConfirmadas.item(rowIndex)
 
     Dim i As Integer
 
@@ -1914,6 +1889,7 @@ End Sub
 
 'ESTA FUNCION SE ENCARGA DE GUARDAR LA LIQUIDACIÓN QUE SE ESTÁ CREANDO
 
+
 Private Sub PusGuardar_Click()
 
     If Me.gridCajaOperaciones.EditMode = jgexEditModeOn Then
@@ -1929,7 +1905,7 @@ Private Sub PusGuardar_Click()
     LiquidacionCaja.FEcha = Me.dtpFecha.value
 
     If Me.txtNumerodeLiquidacion.Text = "" Then
-        MsgBox ("El número de Liquidación no puede estar vacío.")
+        MsgBox ("El n�mero de Liquidaci�n no puede estar vacío.")
         Exit Sub
     Else
         LiquidacionCaja.NumeroLiq = Me.txtNumerodeLiquidacion.Text
@@ -1943,29 +1919,26 @@ Private Sub PusGuardar_Click()
         LiquidacionCaja.FacturasProveedor.Add Factura
     Next
 
-
     If LiquidacionCaja.IsValid Then
-
-        Dim n As Boolean: n = (LiquidacionCaja.id = 0)
+        Dim n As Boolean: n = (LiquidacionCaja.Id = 0)
 
         If DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
 
             If n Then
-                MsgBox "Liquidación de Caja Nº " & Me.txtNumerodeLiquidacion & " creada con exito.", vbInformation
+                MsgBox "Liquidaci�n de Caja N� " & Me.txtNumerodeLiquidacion & " creada con exito.", vbInformation
             Else
-<<<<<<< HEAD
+
                 MsgBox "Liquidaci�n de Caja modificada con �xito.", vbInformation
             End If
 
             If n Then
                 If MsgBox("Desea crear una Liquidaci�n de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
-=======
-                MsgBox "Liquidación de Caja modificada con exito.", vbInformation
+
+                MsgBox "Liquidaci�n de Caja modificada con exito.", vbInformation
             End If
 
             If n Then
-                If MsgBox("¿Desea crear una Liquidación de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
+                If MsgBox("�Desea crear una Liquidaci�n de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
                     Dim f12 As New frmAdminPagosLiqCajaListaDG
                     f12.Show
                 End If
@@ -1973,10 +1946,11 @@ Private Sub PusGuardar_Click()
 
             Unload Me
         Else
-            MsgBox "Hubo un problema al guardar la Liquidación.", vbCritical
+            MsgBox "Hubo un problema al guardar la Liquidaci�n.", vbCritical
         End If
     Else
         MsgBox LiquidacionCaja.ValidationMessages, vbCritical, "Error"
+    End If
     End If
 End Sub
 
@@ -2013,38 +1987,38 @@ Private Sub CargarChequesDisponibles()
 End Sub
 
 
-Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= bancos.count Then
-        Set Banco = bancos.item(RowIndex)
-        Values(1) = Banco.id
+Private Sub gridBancos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= bancos.count Then
+        Set Banco = bancos.item(rowIndex)
+        Values(1) = Banco.Id
         Values(2) = Banco.nombre
     End If
 
 End Sub
 
 
-Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Cajas.count > 0 Then
-        Set caja = Cajas.item(RowIndex)
-        Values(1) = caja.id
+Private Sub gridCajas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Cajas.count > 0 Then
+        Set caja = Cajas.item(rowIndex)
+        Values(1) = caja.Id
         Values(2) = caja.nombre
     End If
 End Sub
 
 
-Private Sub gridChequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= chequeras.count Then
-        Set tmpChequera = chequeras.item(RowIndex)
+Private Sub gridChequeras_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= chequeras.count Then
+        Set tmpChequera = chequeras.item(rowIndex)
         Values(1) = tmpChequera.Description
-        Values(2) = tmpChequera.id
+        Values(2) = tmpChequera.Id
     End If
 End Sub
 
 
-Private Sub gridChequesChequera_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And chequesChequeraSeleccionada.count > 0 Then
-        Values(1) = chequesChequeraSeleccionada(RowIndex).numero
-        Values(2) = chequesChequeraSeleccionada(RowIndex).id
+Private Sub gridChequesChequera_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And chequesChequeraSeleccionada.count > 0 Then
+        Values(1) = chequesChequeraSeleccionada(rowIndex).numero
+        Values(2) = chequesChequeraSeleccionada(rowIndex).Id
     End If
 End Sub
 
@@ -2052,15 +2026,15 @@ End Sub
 '    GridEXHelper.ColumnHeaderClick Me.gridChequesDisponibles, Column
 'End Sub
 
-Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= chequesDisponibles.count Then
-        Set cheque = chequesDisponibles.item(RowIndex)
+Private Sub gridChequesDisponibles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= chequesDisponibles.count Then
+        Set cheque = chequesDisponibles.item(rowIndex)
         Values(1) = cheque.numero
         'FORMATCURRENCY
         Values(2) = FormatCurrency(cheque.Monto)
         If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(4) = cheque.Banco.nombre
-        Values(5) = cheque.id
+        Values(5) = cheque.Id
         Values(6) = cheque.OrigenCheque
         Values(7) = cheque.OrigenDestino
 
@@ -2069,18 +2043,18 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal
 End Sub
 
 
-Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If cuentasBancarias.count >= RowIndex Then
-        Set CuentaBancaria = cuentasBancarias.item(RowIndex)
-        Values(1) = CuentaBancaria.id
+Private Sub gridCuentasBancarias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If cuentasBancarias.count >= rowIndex Then
+        Set CuentaBancaria = cuentasBancarias.item(rowIndex)
+        Values(1) = CuentaBancaria.Id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
 End Sub
 
-Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Monedas.count > 0 Then
-        Set moneda = Monedas.item(RowIndex)
-        Values(1) = moneda.id
+Private Sub gridMonedas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Monedas.count > 0 Then
+        Set moneda = Monedas.item(rowIndex)
+        Values(1) = moneda.Id
         Values(2) = moneda.NombreCorto
     End If
 End Sub
@@ -2107,18 +2081,18 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
 
 End Sub
 
-Private Sub gridCajaOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And LiquidacionCaja.operacionesCaja.count >= RowIndex Then
-        LiquidacionCaja.operacionesCaja.remove RowIndex
+Private Sub gridCajaOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And LiquidacionCaja.operacionesCaja.count >= rowIndex Then
+        LiquidacionCaja.operacionesCaja.remove rowIndex
 
         Totalizar
 
     End If
 End Sub
 
-Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= LiquidacionCaja.operacionesCaja.count Then
-        Set operacion = LiquidacionCaja.operacionesCaja.item(RowIndex)
+Private Sub gridCajaOperaciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= LiquidacionCaja.operacionesCaja.count Then
+        Set operacion = LiquidacionCaja.operacionesCaja.item(rowIndex)
         'FORMATCURRENCY
         Values(1) = FormatCurrency(funciones.FormatearDecimales(operacion.Monto))
         If IsSomething(operacion.moneda) Then
@@ -2135,12 +2109,12 @@ Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
 End Sub
 
 
-Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridCajaOperaciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     ' Activar el manejo de errores
     On Error GoTo ManejarError
 
-    If RowIndex > 0 And LiquidacionCaja.operacionesCaja.count > 0 Then
-        Set operacion = LiquidacionCaja.operacionesCaja.item(RowIndex)
+    If rowIndex > 0 And LiquidacionCaja.operacionesCaja.count > 0 Then
+        Set operacion = LiquidacionCaja.operacionesCaja.item(rowIndex)
 
         ' Asignar Monto
         If IsNumeric(Values(1)) Then
@@ -2203,9 +2177,9 @@ Private Sub gridDepositosOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRet
     Cancel = cond1 Or cond2 Or cond3 Or cond4
 End Sub
 
+
 Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set operacion = New operacion
-    'operacion.IdPertenencia = recibo.Id
     operacion.Pertenencia = OrigenOperacion.Banco
     operacion.Monto = Values(1)
     operacion.Comprobante = Values(5)
@@ -2223,18 +2197,20 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
 
 End Sub
 
-Private Sub gridDepositosOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And LiquidacionCaja.operacionesBanco.count >= RowIndex Then
-        LiquidacionCaja.operacionesBanco.remove RowIndex
+
+Private Sub gridDepositosOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And LiquidacionCaja.operacionesBanco.count >= rowIndex Then
+        LiquidacionCaja.operacionesBanco.remove rowIndex
 
         Totalizar
 
     End If
 End Sub
 
-Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= LiquidacionCaja.operacionesBanco.count Then
-        Set operacion = LiquidacionCaja.operacionesBanco.item(RowIndex)
+
+Private Sub gridDepositosOperaciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= LiquidacionCaja.operacionesBanco.count Then
+        Set operacion = LiquidacionCaja.operacionesBanco.item(rowIndex)
         'FORMATCURRENCY
         Values(1) = FormatCurrency(funciones.FormatearDecimales(operacion.Monto))
         If IsSomething(operacion.moneda) Then
@@ -2250,11 +2226,11 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByV
     End If
 End Sub
 
-Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And LiquidacionCaja.operacionesBanco.count > 0 Then
-        Set operacion = LiquidacionCaja.operacionesBanco.item(RowIndex)
-        'operacion.IdPertenencia = recibo.id
-        'operacion.Pertenencia = Banco
+
+Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And LiquidacionCaja.operacionesBanco.count > 0 Then
+        Set operacion = LiquidacionCaja.operacionesBanco.item(rowIndex)
+        
         operacion.Monto = Values(1)
         operacion.Comprobante = Values(5)
         If IsNumeric(Values(2)) Then
@@ -2317,20 +2293,18 @@ Private Sub txtFiltroNumero_Change()
 End Sub
 
 
-
 Public Sub Cargar(liq As clsLiquidacionCaja)
-
     If Not IsSomething(liq) Then
         MsgBox "La Liquidación que está intentando visualizar está en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
         Unload Me
         Exit Sub
     End If
 
-    Set LiquidacionCaja = DAOLiquidacionCaja.FindById(liq.id)
+    Set LiquidacionCaja = DAOLiquidacionCaja.FindById(liq.Id)
     
     Me.caption = "Liquidación Nº " & LiquidacionCaja.NumeroLiq
     
-    Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.id)
+    Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.Id)
 
     Me.grillaConfirmados.ItemCount = 0
   
@@ -2346,13 +2320,6 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
 
     Me.txtNumerodeLiquidacion = LiquidacionCaja.NumeroLiq
     
-'''    If Not ReadOnly Then
-'''    MsgBox ("Esto es Editar")
-'''    Else
-'''    MsgBox ("Esto es Ver")
-'''    End If
-
-
     Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
     Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
     Me.gridBancos.AllowEdit = Not ReadOnly

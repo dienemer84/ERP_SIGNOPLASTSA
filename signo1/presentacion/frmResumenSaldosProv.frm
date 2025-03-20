@@ -201,10 +201,10 @@ Private Sub Obtener_Click()
     Me.lblproceso.Visible = True
     Me.ProgressBar1.Visible = True
     Me.GridEX1.ItemCount = 0
-    Dim Detalles As Collection
-    Set Detalles = New Collection
+    Dim detalles As Collection
+    Set detalles = New Collection
     Set col2 = New Collection
-    Dim c As Long
+    Dim C As Long
     Dim rs As Recordset
 
     If TipoPersonaCta = TipoPersona.proveedor_ Then
@@ -212,19 +212,19 @@ Private Sub Obtener_Click()
     Else
         Set rs = conectar.RSFactory("SELECT * FROM clientes  order by razon asc ")
     End If
-    c = 0
+    C = 0
     While Not rs.EOF And Not rs.BOF
-        c = c + 1
+        C = C + 1
         rs.MoveNext
     Wend
 
 
     Dim dto As DTONombreMonto
 
-    If c >= 1 Then rs.MoveFirst
+    If C >= 1 Then rs.MoveFirst
 
 
-    Me.ProgressBar1.max = c
+    Me.ProgressBar1.max = C
     Dim d As Long
     d = 0
     While Not rs.EOF And Not rs.BOF
@@ -238,25 +238,25 @@ Private Sub Obtener_Click()
 
         If TipoPersonaCta = TipoPersona.proveedor_ Then
 
-            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor(rs!Id, , condition, True, False)
+            Set detalles = DAOCuentaCorriente.FindAllDetallesProveedor(rs!Id, , condition, True, False)
 
         Else
             If Not IsNull(Me.dtpHasta.value) Then
                 condition = Format(Me.dtpHasta.value, "yyyy-mm-dd")
             End If
-            Set Detalles = DAOCuentaCorriente.FindAllDetalles(rs!Id, , condition)
+            Set detalles = DAOCuentaCorriente.FindAllDetalles(rs!Id, , condition)
         End If
 
 
 
 
         Set dto = New DTONombreMonto
-        dto.Monto = DAOCuentaCorriente.GetSaldo(Detalles)
+        dto.Monto = DAOCuentaCorriente.GetSaldo(detalles)
         dto.nombre = rs!razon
         If (dto.Monto >= 0.01 Or dto.Monto < -0.01) Then
             col2.Add dto
         End If
-        Me.lblCant = CStr(d) & "/" & CStr(c)
+        Me.lblCant = CStr(d) & "/" & CStr(C)
         Me.lblproceso = "Procesando " & rs!razon
         Me.ProgressBar1.value = d
         DoEvents

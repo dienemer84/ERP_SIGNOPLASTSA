@@ -127,7 +127,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Detalles As Collection
+Private detalles As Collection
 Private det As clsRequeMateriales
 Private potenciales() As PotencialPetOf
 Dim pot As PotencialPetOf
@@ -215,7 +215,7 @@ Private Sub FillGrid()
 
     Set proveedores = New Collection
 
-    Set Detalles = DAORequeMateriales.FindListosParaPetOf()
+    Set detalles = DAORequeMateriales.FindListosParaPetOf()
     Erase potenciales
 
     Dim prov As clsProveedor
@@ -224,7 +224,7 @@ Private Sub FillGrid()
 
     'recorrer con indce de atras para adlenate
     Dim i As Long
-    For Each det In Detalles
+    For Each det In detalles
         For i = det.ListaProveedores.count To 1 Step -1
             If DAOPeticionOfertaDetalle.FindAll(, "pod.id_detalle_reque = " & det.Id & " and po.id_proveedor = " & det.ListaProveedores(i).Id).count > 0 Then
                 det.ListaProveedores.remove i
@@ -233,14 +233,14 @@ Private Sub FillGrid()
     Next det
 
 
-    For Each det In Detalles
+    For Each det In detalles
         dimension = dimension + det.ListaProveedores.count
     Next
     If dimension = 0 Then Exit Sub
     ReDim potenciales(1 To dimension)
 
     dimension = 0
-    For Each det In Detalles
+    For Each det In detalles
         For Each prov In det.ListaProveedores
             dimension = dimension + 1
 

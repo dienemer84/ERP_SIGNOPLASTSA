@@ -213,7 +213,7 @@ Private Sub Command3_Click()
     Dim j As JSSelectedItem
 
     For Each j In grilla.SelectedItems
-        Set rectmp = Ot.Detalles(j.rowIndex)
+        Set rectmp = Ot.detalles(j.rowIndex)
         rectmp.EstadoProceso = EstProcDetOT_ProcesoNoDefinido
         grilla.RefreshRowIndex j.rowIndex
     Next
@@ -235,8 +235,8 @@ Private Sub Form_Load()
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.grilla, False, True
     Me.caption = "O/T " & Format(Id, "0000")
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
-    Set deta = Ot.Detalles
+    Set Ot.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
+    Set deta = Ot.detalles
     llenarLista
     id_suscriber = funciones.CreateGUID
 

@@ -121,7 +121,7 @@ Begin VB.Form frmNuevoContratoMarco
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   16777217
+      Format          =   65667073
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdCerrar 
@@ -146,7 +146,7 @@ Begin VB.Form frmNuevoContratoMarco
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   16777217
+      Format          =   65667073
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.ComboBox cboCliente 
@@ -335,13 +335,13 @@ Private Sub cmdGuardar_Click()
 
     Ot.FechaInicioMarco = Me.dtpFechaInicio.value
     Ot.FechaFinMarco = Me.dtpFin.value
-    Ot.descripcion = Me.txtReferencia.text
+    Ot.descripcion = Me.txtReferencia.Text
     Set Ot.moneda = Monedas.item(CStr(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))
 
     Ot.FechaEntrega = Me.dtpFin.value
     Ot.OTMarcoIdPadre = -1
 
-    Ot.MontoTopeMarco = Val(Me.txtMontoTotal.text)
+    Ot.MontoTopeMarco = Val(Me.txtMontoTotal.Text)
 
     If DAOOrdenTrabajo.Save(Ot) Then
         MsgBox "La orden de trabajo se guardo con el número " & Ot.Id, vbInformation + vbOKOnly

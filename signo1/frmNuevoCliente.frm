@@ -559,7 +559,7 @@ Attribute VB_Exposed = False
 Dim vCliente As clsCliente
 Dim strsql As String
 
-Public Property Let Cliente(nvalue As clsCliente)
+Public Property Let cliente(nvalue As clsCliente)
     Set vCliente = nvalue
 End Property
 
@@ -574,7 +574,7 @@ Private Sub Guardar()
     Domicilio = UCase(Text1(1))
     telefono = UCase(Text1(4))
     Fax = UCase(Text1(5))
-    Email = UCase(Text1(6))
+    email = UCase(Text1(6))
     ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
     Cuit = Trim(Text1(7))
     FP = UCase(Me.txtFP)
@@ -619,32 +619,32 @@ Private Sub Guardar()
                 MsgBox aa, vbCritical, "Error"
             Else
 
-                Dim Cliente As New clsCliente
+                Dim cliente As New clsCliente
 
                 '31.10.22- SE AGREGA ESTA LINEA PARA QUE TOME EL VALOR DEL IVA
-                Set Cliente.TipoIVA = DAOTipoIva.GetById(ivan)
+                Set cliente.TipoIVA = DAOTipoIva.GetById(ivan)
 
-                Cliente.Cuit = Cuit
-                Cliente.Domicilio = Domicilio
-                Cliente.Email = Email
-                Cliente.estado = EstadoCliente.activo
-                Cliente.Fax = Fax
+                cliente.Cuit = Cuit
+                cliente.Domicilio = Domicilio
+                cliente.email = email
+                cliente.estado = EstadoCliente.activo
+                cliente.Fax = Fax
 
-                Cliente.PasswordSistema = 0
-                Cliente.razon = razon
-                Cliente.FormaPago = FP_detalle
-                Cliente.telefono = telefono
-                Cliente.ValidoRemitoFactura = valido
-                Cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
-                Cliente.CodigoPostal = CodigoPOS
+                cliente.PasswordSistema = 0
+                cliente.razon = razon
+                cliente.FormaPago = FP_detalle
+                cliente.telefono = telefono
+                cliente.ValidoRemitoFactura = valido
+                cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
+                cliente.CodigoPostal = CodigoPOS
                 
-                                Cliente.FP = FP
+                                cliente.FP = FP
                                 
-                Cliente.IDImpositivo = IDImpositivo
-                Cliente.CuitPais = CuitPais
+                cliente.IDImpositivo = IDImpositivo
+                cliente.CuitPais = CuitPais
                 
-                Set Cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-                Set Cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+                Set cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+                Set cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
 
                 Dim F As String
                 F = "c.cuit = " & Escape(Text1(7))
@@ -657,11 +657,11 @@ Private Sub Guardar()
                     MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
                 Else
 
-                    If DAOCliente.crear(Cliente) Then
+                    If DAOCliente.crear(cliente) Then
                         MsgBox "Alta Exitosa!", vbInformation, "Información"
 
                         Set EVENTO = New clsEventoObserver
-                        Set EVENTO.Elemento = Cliente
+                        Set EVENTO.Elemento = cliente
                         EVENTO.EVENTO = agregar_
                         Set EVENTO.Originador = Me
                         Channel.Notificar EVENTO, Clientes_
@@ -680,7 +680,7 @@ Private Sub Guardar()
 
             vCliente.Cuit = Cuit
             vCliente.Domicilio = Domicilio
-            vCliente.Email = Email
+            vCliente.email = email
             vCliente.estado = EstadoCliente.activo
             vCliente.Fax = Fax
             vCliente.FP = FP
@@ -705,7 +705,7 @@ Private Sub Guardar()
 
 
                 Set EVENTO = New clsEventoObserver
-                Set EVENTO.Elemento = Cliente
+                Set EVENTO.Elemento = cliente
                 EVENTO.EVENTO = modificar_
                 Set EVENTO.Originador = Me
                 Channel.Notificar EVENTO, Clientes_
@@ -833,7 +833,7 @@ Private Sub llenarForm()
 
         Text1(4) = .telefono
         Text1(5) = .Fax
-        Text1(6) = .Email
+        Text1(6) = .email
         Text1(7) = .Cuit
 
 

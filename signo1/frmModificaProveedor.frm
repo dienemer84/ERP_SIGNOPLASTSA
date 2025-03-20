@@ -893,8 +893,8 @@ Private Function accion() As Boolean
     proveedor_.cp = Me.Text1(3)
     proveedor_.tel = Me.Text1(4)
     proveedor_.Fax = Me.Text1(5)
-    proveedor_.Email = Me.Text1(6)
-    proveedor_.contacto = Me.Text1(7)
+    proveedor_.email = Me.Text1(6)
+    proveedor_.Contacto = Me.Text1(7)
     proveedor_.FormaPago = Me.Text1(8)
     proveedor_.bonificacion = CDbl(Me.Text1(9))
     
@@ -955,8 +955,8 @@ Private Sub mostrarCampos()
     Text1(3) = proveedor_.cp
     Text1(4) = proveedor_.tel
     Text1(5) = proveedor_.Fax
-    Text1(6) = proveedor_.Email
-    Text1(7) = proveedor_.contacto
+    Text1(6) = proveedor_.email
+    Text1(7) = proveedor_.Contacto
     Text1(8) = proveedor_.FormaPago
     Text1(9) = proveedor_.bonificacion
     Text1(10) = proveedor_.Cuit

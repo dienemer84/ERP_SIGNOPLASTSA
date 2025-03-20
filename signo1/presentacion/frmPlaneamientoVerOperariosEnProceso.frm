@@ -123,7 +123,7 @@ Private Sub grilla_DblClick()
             Dim ptp As PlaneamientoTiempoProcesoDetalle
             Set ptp = operarios.item(Me.grilla.rowIndex(Me.grilla.row))
             Dim F As New frmPlaneamientoSeguimientoRutas3
-            F.txtOTNro.text = ptp.PlaneamientoTiempoProceso.idpedido
+            F.txtOTNro.Text = ptp.PlaneamientoTiempoProceso.idpedido
             F.cmdBuscar_Click
             F.Show
             Dim found As Boolean

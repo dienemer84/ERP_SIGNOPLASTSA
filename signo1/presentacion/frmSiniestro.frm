@@ -98,7 +98,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm"
-      Format          =   62455811
+      Format          =   16777219
       CurrentDate     =   40414.6993055556
    End
    Begin VB.TextBox txtNroSiniestro 
@@ -221,7 +221,7 @@ Begin VB.Form frmSiniestro
       _ExtentY        =   556
       _Version        =   393216
       CheckBox        =   -1  'True
-      Format          =   62455809
+      Format          =   16777217
       CurrentDate     =   40414
    End
    Begin XtremeSuiteControls.ComboBox cboART 
@@ -608,7 +608,7 @@ Public sin As SiniestroPersonal
 Public Sub Cargar()
     Me.caption = "Siniestro " & sin.NroSiniestro
 
-    Me.txtNroSiniestro.text = sin.NroSiniestro
+    Me.txtNroSiniestro.Text = sin.NroSiniestro
     Me.dtpFechaOcurrido.value = sin.FechaHoraOcurrido
     If IsSomething(sin.ART) Then
         Me.cboART.ListIndex = funciones.PosIndexCbo(sin.ART.Id, Me.cboART)
@@ -617,13 +617,13 @@ Public Sub Cargar()
     End If
     Me.cboAsegurado.ListIndex = funciones.PosIndexCbo(sin.Asegurado.Id, Me.cboAsegurado)
     Me.cboSupervisor.ListIndex = funciones.PosIndexCbo(sin.Supervisor.Id, Me.cboSupervisor)
-    Me.txtDiagnostico.text = sin.Diagnostico
-    Me.txtPrestadorMedico.text = sin.PrestadorMedico
+    Me.txtDiagnostico.Text = sin.Diagnostico
+    Me.txtPrestadorMedico.Text = sin.PrestadorMedico
     Me.cboTipoAccidente.ListIndex = funciones.PosIndexCbo(sin.TipoAccidente, Me.cboTipoAccidente)
     Me.cboGravedad.ListIndex = funciones.PosIndexCbo(sin.TipoGravedad, Me.cboGravedad)
     Me.cboTratamiento.ListIndex = funciones.PosIndexCbo(sin.TipoTratamiento, Me.cboTratamiento)
 
-    Me.txtGestor.text = sin.Gestor
+    Me.txtGestor.Text = sin.Gestor
     If IsSomething(sin.Sector) Then
         Me.cboSector.ListIndex = funciones.PosIndexCbo(sin.Sector.Id, Me.cboSector)
     Else
@@ -645,7 +645,7 @@ Private Sub btnGuardar_Click()
 
     If Me.cboAsegurado.ListIndex = -1 Or _
        Me.cboSupervisor.ListIndex = -1 Or _
-       LenB(Me.txtNroSiniestro.text) = 0 Or _
+       LenB(Me.txtNroSiniestro.Text) = 0 Or _
        Me.cboART.ListIndex = -1 _
        Then
         MsgBox "Falta completar datos obligatorios (asegurado, supervisor, nº siniestro, art).", vbExclamation + vbOKOnly
@@ -657,11 +657,11 @@ Private Sub btnGuardar_Click()
     Set sin.Asegurado = DAOEmpleados.GetById(Me.cboAsegurado.ItemData(Me.cboAsegurado.ListIndex))
     Set sin.Supervisor = DAOEmpleados.GetById(Me.cboAsegurado.ItemData(Me.cboSupervisor.ListIndex))
     Set sin.ART = DAOART.FindAll("id = " & Me.cboART.ItemData(Me.cboART.ListIndex))(1)
-    sin.Diagnostico = Me.txtDiagnostico.text
+    sin.Diagnostico = Me.txtDiagnostico.Text
     sin.FechaHoraOcurrido = Me.dtpFechaOcurrido.value
-    sin.Gestor = Me.txtGestor.text
-    sin.NroSiniestro = Me.txtNroSiniestro.text
-    sin.PrestadorMedico = Me.txtPrestadorMedico.text
+    sin.Gestor = Me.txtGestor.Text
+    sin.NroSiniestro = Me.txtNroSiniestro.Text
+    sin.PrestadorMedico = Me.txtPrestadorMedico.Text
 
     If IsNull(Me.dtpRenaudaTareas) Then
         sin.RenaudaTareas = 0

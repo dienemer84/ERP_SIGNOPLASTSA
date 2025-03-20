@@ -132,8 +132,8 @@ Private Sub btnBuscar_Click()
 
     Dim filter As String
 
-    If LenB(Me.txtPrograma.text) > 0 Then
-        filter = " arch.nombre LIKE '%" & Me.txtPrograma.text & "%.drg'"
+    If LenB(Me.txtPrograma.Text) > 0 Then
+        filter = " arch.nombre LIKE '%" & Me.txtPrograma.Text & "%.drg'"
     Else
         filter = " arch.nombre LIKE '%.drg'"
     End If
@@ -150,7 +150,7 @@ Private Sub btnBuscar_Click()
     Else
         Set piezas = DAOPieza.FindAll(FL_0, "s.id IN (" & funciones.JoinCollectionValues(archivos, ", ", "IdReferencia") & ")")
     End If
-    Dim Detalles As Collection
+    Dim detalles As Collection
     Dim detalle As DetalleOrdenTrabajo
     Dim detallesConjunto As Collection
     Dim detalleConjunto As DetalleOTConjuntoDTO
@@ -160,10 +160,10 @@ Private Sub btnBuscar_Click()
         piezasId.Add Pieza.Id
     Next Pieza
     If piezasId.count = 0 Then
-        Set Detalles = New Collection
+        Set detalles = New Collection
         Set detallesConjunto = New Collection
     Else
-        Set Detalles = DAODetalleOrdenTrabajo.FindAllByPieza(piezasId)
+        Set detalles = DAODetalleOrdenTrabajo.FindAllByPieza(piezasId)
         Set detallesConjunto = DAODetalleOrdenTrabajo.FindConjuntoByPiezas(piezasId)
     End If
 
@@ -178,7 +178,7 @@ Private Sub btnBuscar_Click()
 
         Set Pieza = piezas.item(CStr(archivo.IdReferencia))
 
-        For Each detalle In Detalles
+        For Each detalle In detalles
             If detalle.Pieza.Id = Pieza.Id Then
                 found = True
                 Set dtoArchivo = New DTOArchivoOT
@@ -240,11 +240,11 @@ Private Sub btnBuscar_Click()
     'busco por detalleot
     Set archivos = DAOArchivo.FindAll(OA_OrdenesTrabajoDetalle, filter)
     If archivos.count > 0 Then
-        Set Detalles = DAODetalleOrdenTrabajo.FindAll("dp.id IN (" & funciones.JoinCollectionValues(archivos, ", ", "IdReferencia") & ")")
+        Set detalles = DAODetalleOrdenTrabajo.FindAll("dp.id IN (" & funciones.JoinCollectionValues(archivos, ", ", "IdReferencia") & ")")
         'Set detallesConjunto = DAODetalleOrdenTrabajo.FindConjuntoByPiezas(piezasId)
     End If
     For Each archivo In archivos
-        Set detalle = Detalles.item(CStr(archivo.IdReferencia))
+        Set detalle = detalles.item(CStr(archivo.IdReferencia))
 
         Set dtoArchivo = New DTOArchivoOT
         dtoArchivo.Comentario = archivo.Comentario

@@ -614,12 +614,12 @@ Private Sub LlenarListaPorOT()
     On Error GoTo err1
     Dim deta As DetalleOrdenTrabajo
     Dim filtro As String
-    If LenB(Me.txtNroOt.text) > 0 And IsNumeric(Me.txtNroOt.text) Then
-        OtId = CLng(Me.txtNroOt.text)
+    If LenB(Me.txtNroOt.Text) > 0 And IsNumeric(Me.txtNroOt.Text) Then
+        OtId = CLng(Me.txtNroOt.Text)
         filtro = " ptp.idPedido=" & OtId
         ReportControl.Records.DeleteAll
         Set Ot = DAOOrdenTrabajo.FindById(OtId)
-        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
+        Set Ot.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
         CargarDetallesOT
     End If
 
@@ -638,7 +638,7 @@ Private Sub AddTareas(ByRef rec As ReportRecord, ByRef idDetallePedido As Long, 
         rechijo.Tag = (ptp.Id * -1)
         rechijo.AddItem vbNullString
         SUM = 0
-        For Each deta In ptp.Detalles
+        For Each deta In ptp.detalles
             SUM = SUM + deta.DiferenciaTiempos
         Next
         Set item = rechijo.AddItem("Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea)
@@ -662,7 +662,7 @@ Private Sub CargarDetallesOT()
     Dim Record3 As ReportRecord
     Dim Record4 As ReportRecord
     Dim item As ReportRecordItem
-    For Each deta2 In Ot.Detalles
+    For Each deta2 In Ot.detalles
         Set record = Me.ReportControl.Records.Add
         record.Tag = deta2.Id
         record.AddItem deta2.item
@@ -818,20 +818,20 @@ Private Sub LlenarListaPorPeriodo()
     Me.grilla_por_periodo.ItemCount = 0
     Me.grilla_por_periodo.ItemCount = detalles_per.count
 
-    Dim c As Double
-    c = 0
+    Dim C As Double
+    C = 0
     For Each deta In detalles_per
-        c = c + deta.PlaneamientoTiempoProceso.TiempoTotalReal
+        C = C + deta.PlaneamientoTiempoProceso.TiempoTotalReal
     Next
 
 
-    lblTotalPorPeriodo = "Total: " & funciones.FormatearDecimales(c) & " horas"
+    lblTotalPorPeriodo = "Total: " & funciones.FormatearDecimales(C) & " horas"
 End Sub
 Private Sub LlenarListaPorLegajo()
     Dim fecha_elegida
     Dim filtro As String
-    If LenB(Me.txtLegajo.text) > 0 And IsNumeric(Me.txtLegajo.text) Then
-        Set emple = DAOEmpleados.GetByLegajo(CLng(Me.txtLegajo.text))
+    If LenB(Me.txtLegajo.Text) > 0 And IsNumeric(Me.txtLegajo.Text) Then
+        Set emple = DAOEmpleados.GetByLegajo(CLng(Me.txtLegajo.Text))
         If emple Is Nothing Then
             LimpiarPorLegajo
             Exit Sub
@@ -840,7 +840,7 @@ Private Sub LlenarListaPorLegajo()
         fecha_elegida = funciones.dateFormateada(CDate(DateTimeFecha.value))
 
         If Me.rbFecha Then
-            filtro = "per.legajo=" & CLng(Me.txtLegajo.text) & " AND DATE(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & fecha_elegida & "' AND DATE(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & fecha_elegida & "'"
+            filtro = "per.legajo=" & CLng(Me.txtLegajo.Text) & " AND DATE(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & fecha_elegida & "' AND DATE(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & fecha_elegida & "'"
         ElseIf Me.rbMes Then
             Dim mes_ As Integer
             Dim anio_ As Long
@@ -851,11 +851,11 @@ Private Sub LlenarListaPorLegajo()
 
 
 
-            filtro = "per.legajo=" & CLng(Me.txtLegajo.text) _
+            filtro = "per.legajo=" & CLng(Me.txtLegajo.Text) _
                    & " AND MONTH(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & mes_ & "' AND MONTH(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & mes_ & "'" _
                    & " AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & anio_ & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & anio_ & "'"
         ElseIf Me.rbAno Then
-            filtro = "per.legajo=" & CLng(Me.txtLegajo.text) & " AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & fecha_elegida & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & fecha_elegida & "'"
+            filtro = "per.legajo=" & CLng(Me.txtLegajo.Text) & " AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_INICIO & " )='" & fecha_elegida & "' AND YEAR(" & DAOTiemposProcesosDetalles.CAMPO_FIN & ")='" & fecha_elegida & "'"
         End If
 
 

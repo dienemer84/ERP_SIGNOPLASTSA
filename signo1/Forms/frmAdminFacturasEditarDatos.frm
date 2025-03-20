@@ -279,7 +279,7 @@ Private Sub Form_Load()
 
     Customize Me
 
-    Me.lblNumeroCbte.caption = "N° de Cbte: " & Factura.NumeroFormateado & "- " & Factura.Cliente.razon
+    Me.lblNumeroCbte.caption = "N° de Cbte: " & Factura.NumeroFormateado & "- " & Factura.cliente.razon
 
     Me.Text1.Text = Factura.observaciones
     Me.Text2.Text = Factura.observaciones_cancela

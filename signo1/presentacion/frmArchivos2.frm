@@ -222,7 +222,7 @@ End Function
 Private Sub LimpiarLista()
     Set m_archivosASubir = New Collection
     Me.lstArchivos.Clear
-    Me.txtComentario.text = vbNullString
+    Me.txtComentario.Text = vbNullString
     Me.chkArchivosCompra.value = False
     Me.lblRuta.caption = "Ruta: "
 End Sub
@@ -236,7 +236,7 @@ Private Sub btnSubir_Click()
         For Each arch In m_archivosASubir
             ' If clasea.grabarArchivo(Me.ObjetoId, funciones.GetFileName(arch), CStr(arch), Me.txtComentario.text, CInt(Me.Origen), Me.chkArchivosCompra.value) Then
 
-            If DAOArchivo.grabarArchivo(Me.ObjetoId, funciones.GetFileName(arch), CStr(arch), Me.txtComentario.text, CInt(Me.Origen), Me.chkArchivosCompra.value, Me) Then
+            If DAOArchivo.grabarArchivo(Me.ObjetoId, funciones.GetFileName(arch), CStr(arch), Me.txtComentario.Text, CInt(Me.Origen), Me.chkArchivosCompra.value, Me) Then
                 m_archivosASubir.remove CStr(arch)
             End If
         Next arch
@@ -443,9 +443,9 @@ Private Sub GuardarArchivo()
         Else
             Dim ruta As String
 
-            frmPrincipal.cd.filename = archivoActual.nombre
-            frmPrincipal.cd.ShowSave
-            ruta = frmPrincipal.cd.filename
+            frmPrincipal.CD.filename = archivoActual.nombre
+            frmPrincipal.CD.ShowSave
+            ruta = frmPrincipal.CD.filename
 
             If LenB(ruta) > 0 Then
                 ruta = clasea.exportarArchivo(archivoActual.Id, ruta, False)

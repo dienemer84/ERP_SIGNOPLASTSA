@@ -402,7 +402,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(6) = .tel
         Values(7) = .Fax
         Values(8) = .direccion
-        Values(9) = .Email
+        Values(9) = .email
         Values(10) = .CBU
         Values(11) = .ALIAS
         Values(12) = .TitularCta

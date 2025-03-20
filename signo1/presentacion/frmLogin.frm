@@ -232,7 +232,7 @@ Private Sub Command1_Click()
 
 
     Dim fullserver() As String
-    fullserver = Split(Me.cboServidor.text, ":")
+    fullserver = Split(Me.cboServidor.Text, ":")
 
     Dim port As String
     port = "3306"
@@ -248,7 +248,7 @@ Private Sub Command1_Click()
     End If
 
 
-    frmPrincipal.servidorActual = Me.cboServidor.text
+    frmPrincipal.servidorActual = Me.cboServidor.Text
     conectar.port = port
     conectar.SetServidorBBDD ip
 
@@ -260,9 +260,9 @@ Private Sub Command1_Click()
     Dim usu As String
     usu = Trim(LCase(Me.Text1))
     Set r = conectar.RSFactory("select password,id from usuarios where usuario='" & usu & "'")
-    c = 0
+    C = 0
     While Not r.EOF
-        c = c + 1
+        C = C + 1
         r.MoveNext
     Wend
 
@@ -275,7 +275,7 @@ Private Sub Command1_Click()
         'funciones.ValidarPermisos (idU)
         Unload Me
     Else
-        If c = 1 Then
+        If C = 1 Then
             r.MoveFirst
 
             idUsu = r!Id
@@ -439,7 +439,7 @@ End Sub
 
 Private Sub Command6_Click()
 
-    frmPrincipal.servidorActual = Me.cboServidor.text
+    frmPrincipal.servidorActual = Me.cboServidor.Text
     conectar.SetServidorBBDD frmPrincipal.servidorActual
     conectar.conectar
 
@@ -469,13 +469,13 @@ Private Sub Commandsa_Click()
 End Sub
 
 Private Sub Form_Activate()
-    If Len(Me.Text1.text) > 0 Then Me.Text2.SetFocus
+    If Len(Me.Text1.Text) > 0 Then Me.Text2.SetFocus
 End Sub
 
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-    Me.Text1.text = GetSetting(App.ProductName, "config", "user", vbNullString)
+    Me.Text1.Text = GetSetting(App.ProductName, "config", "user", vbNullString)
 
 
     Me.cboServidor.Clear
@@ -486,16 +486,16 @@ Private Sub Form_Load()
     If Me.cboServidor.ListCount > 0 Then Me.cboServidor.ListIndex = 0
 
     If funciones.InIDE Then
-        Me.Text1.text = "nicolasba"
-        Me.Text2.text = "022916"
+        Me.Text1.Text = "nicolasba"
+        Me.Text2.Text = "022916"
         'Command1_Click
 
     Else
         Dim Puesto As String
         Puesto = LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)
         If LenB(Puesto) > 0 Then
-            Me.Text1.text = Puesto
-            Me.Text2.text = "puesto"
+            Me.Text1.Text = Puesto
+            Me.Text2.Text = "puesto"
             Me.Timer.Enabled = True
         End If
 

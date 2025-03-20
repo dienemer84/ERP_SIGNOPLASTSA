@@ -412,7 +412,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   62455808
+         Format          =   67174400
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -425,7 +425,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   62455809
+         Format          =   67174401
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -438,7 +438,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   62455809
+         Format          =   67174401
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -853,7 +853,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim c As New classAdministracion
+Dim C As New classAdministracion
 Dim rs As Recordset
 
 
@@ -1033,11 +1033,11 @@ Private Sub Command3ss_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
-        If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
+        If C.ActualizarPadronIB(filename, TipoPadronRetencion) Then
             MsgBox "Actualización exitosa!", vbInformation, "Información"
         Else
             MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"
@@ -1094,7 +1094,7 @@ Private Sub btnProcesar_Click()
     On Error GoTo err4
 
     If MsgBox("¿Está seguro de continuar con el procesamiento?", vbYesNo, "Confirmación") = vbYes Then
-        If c.ProcesarPadronIB() Then
+        If C.ProcesarPadronIB() Then
             MsgBox "Procesamiento de Padrones éxitosa!", vbInformation, "Información"
         Else
             MsgBox "Error, el procesamiento no se efectuó!", vbInformation, "Información"
@@ -1112,11 +1112,11 @@ Private Sub btnRetenciones_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
-        If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
+        If C.ActualizarPadronIB(filename, TipoPadronRetencion) Then
             MsgBox "Actualización exitosa!", vbInformation, "Información"
         Else
             MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"
@@ -1156,11 +1156,11 @@ Private Sub Command3_Click(Index As Integer)
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
-        If c.ActualizarPadronIB(filename, TipoPadronRetencion) Then
+        If C.ActualizarPadronIB(filename, TipoPadronRetencion) Then
             MsgBox "Actualización exitosa!", vbInformation, "Información"
         Else
             MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"
@@ -1179,11 +1179,11 @@ Private Sub Command5_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
-        If c.ActualizarPadronIB(filename, TipoPadronPercepcion) Then
+        If C.ActualizarPadronIB(filename, TipoPadronPercepcion) Then
             MsgBox "Actualización exitosa!", vbInformation, "Información"
         Else
             MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"
@@ -1212,11 +1212,11 @@ Private Sub Command7_Click()
     On Error GoTo err4
     Dim strsql As String
     Dim filename As String
-    Me.cd.ShowOpen
-    filename = cd.filename
+    Me.CD.ShowOpen
+    filename = CD.filename
     filename = Replace(filename, "\", "/")
     If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
-        If c.ActualizarPadronIB(filename, TipoPadronUnificadoCABA) Then
+        If C.ActualizarPadronIB(filename, TipoPadronUnificadoCABA) Then
             MsgBox "Actualización exitosa del padrón CABA!", vbInformation, "Información"
         Else
             MsgBox "Error, la actualización no se efectuó!", vbInformation, "Información"

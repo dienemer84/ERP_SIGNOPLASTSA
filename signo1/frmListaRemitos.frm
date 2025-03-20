@@ -533,7 +533,7 @@ Dim m_Archivos As Dictionary
 
 Private Sub AnularRto_Click()
     Dim A As Long
-    A = Me.grilla.RowIndex(Me.grilla.row)
+    A = Me.grilla.rowIndex(Me.grilla.row)
     If MsgBox("¿Está seguro de anular el remito?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.Anular(tmpRto) Then
             MsgBox "Remito anulado con éxito!", vbExclamation, "Información"
@@ -625,7 +625,7 @@ Private Sub endRto_Click()
     Dim A As Long
     Dim rtoNro As Long
     rtoNro = tmpRto.Id
-    A = Me.grilla.RowIndex(Me.grilla.row)
+    A = Me.grilla.rowIndex(Me.grilla.row)
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
@@ -939,7 +939,7 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick grilla, Column
 End Sub
 
-Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
     If ColIndex = 10 And m_Archivos.item(tmpRto.Id) > 0 Then
         IconIndex = 1
@@ -947,7 +947,7 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
 End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim row As Long
-    row = grilla.RowIndex(grilla.row)
+    row = grilla.rowIndex(grilla.row)
     If row > 0 Then
         If Button = 2 Then
             grilla_SelectionChange
@@ -1001,8 +1001,8 @@ End Sub
 
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 Then
-        Set tmpRto = remitos(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 Then
+        Set tmpRto = remitos(RowBuffer.rowIndex)
 
         If tmpRto.estado = RemitoAnulado Then
             RowBuffer.RowStyle = "Anulado"
@@ -1033,7 +1033,7 @@ End Sub
 
 
 Private Sub grilla_SelectionChange()
-    Dim it As Long: it = grilla.RowIndex(grilla.row)
+    Dim it As Long: it = grilla.rowIndex(grilla.row)
     If it > 0 Then
         Set tmpRto = remitos.item(it)
     Else
@@ -1042,13 +1042,13 @@ Private Sub grilla_SelectionChange()
 End Sub
 
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, _
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
                                    ByVal Bookmark As Variant, _
                                    ByVal Values As GridEX20.JSRowData)
 
     On Error Resume Next
 
-    Set tmpRto = remitos.item(RowIndex)
+    Set tmpRto = remitos.item(rowIndex)
 
     With Values
         .value(1) = tmpRto.numero
@@ -1164,7 +1164,7 @@ End Sub
 
 Private Sub mnuNoFacturable_Click()
     Dim A As Long
-    A = grilla.RowIndex(grilla.row)
+    A = grilla.rowIndex(grilla.row)
     DAORemitoS.CambiarEstadoFacturable tmpRto
 
     grilla.RefreshRowIndex A

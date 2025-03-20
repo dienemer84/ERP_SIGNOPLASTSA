@@ -315,7 +315,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim c As New classAdministracion
+Dim C As New classAdministracion
 Dim comprobantes As Collection
 Dim tmpComprobantes As ComprobantesRecibidos
 
@@ -364,7 +364,7 @@ Private Sub PushButtonImportarArchivoAFIP_Click()
     'filename = "\\192.168.0.1\temporal\TEXTOS\1.csv"
     filename = Replace(filename, "\", "/")
 
-    If c.ImportarComprobantesAFIP(filename) Then
+    If C.ImportarComprobantesAFIP(filename) Then
         MsgBox "Importación del archivo realizada!", vbInformation, "Información"
 
         Me.FramePaso2.Enabled = True
@@ -606,7 +606,7 @@ Public Function ExportarResultado() As Boolean
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
 
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
         '    If MsgBox(strMsg, vbQuestion + vbYesNo) = vbYes Then
         sFilter = "Hoja de Calculo|*.xls"
@@ -619,7 +619,7 @@ Public Function ExportarResultado() As Boolean
         Dim archi As String
         archi = "COMPARACIÓN CTES COMPRAS " & Periodo & ".xlsx"
 
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
 
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave

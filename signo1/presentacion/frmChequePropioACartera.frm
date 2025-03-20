@@ -166,15 +166,15 @@ End Sub
 
 Private Sub btnPasar_Click()
 
-    If Val(Me.txtMonto.text) <= 0 Then
+    If Val(Me.txtMonto.Text) <= 0 Then
         MsgBox "El monto no es valido.", vbCritical
         Exit Sub
     End If
 
-    If MsgBox("¿Confirma el pasaje del cheque propio a cartera con los sgtes datos?" & vbNewLine & "Monto: " & Me.cheque.moneda.NombreCorto & " " & funciones.FormatearDecimales(Val(Me.txtMonto.text)) & vbNewLine & "Fecha Vencimiento: " & Me.dtpFechaVenc.value, vbQuestion + vbYesNo, "Pasaje") = vbYes Then
+    If MsgBox("¿Confirma el pasaje del cheque propio a cartera con los sgtes datos?" & vbNewLine & "Monto: " & Me.cheque.moneda.NombreCorto & " " & funciones.FormatearDecimales(Val(Me.txtMonto.Text)) & vbNewLine & "Fecha Vencimiento: " & Me.dtpFechaVenc.value, vbQuestion + vbYesNo, "Pasaje") = vbYes Then
         Me.cheque.FechaVencimiento = Me.dtpFechaVenc.value
-        Me.cheque.Monto = Val(Me.txtMonto.text)
-        Me.cheque.observaciones = Me.txtOrigenDestino.text
+        Me.cheque.Monto = Val(Me.txtMonto.Text)
+        Me.cheque.observaciones = Me.txtOrigenDestino.Text
         Me.cheque.EnCartera = True
 
         If DAOCheques.Guardar(Me.cheque) Then

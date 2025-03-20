@@ -884,12 +884,12 @@ Private Sub lblOt_Click()
 End Sub
 Private Sub lblOt_Validate(Cancel As Boolean)
     If IsNumeric(Me.lblOT) Then
-        Cancel = (DAOOrdenTrabajo.FindById(Me.lblOT.text) Is Nothing)
+        Cancel = (DAOOrdenTrabajo.FindById(Me.lblOT.Text) Is Nothing)
         If Cancel Then
             MsgBox "La OT no existe", vbExclamation
         End If
     Else
-        Cancel = (LenB(Trim(Me.lblOT.text)) <> 0)
+        Cancel = (LenB(Trim(Me.lblOT.Text)) <> 0)
     End If
 End Sub
 
@@ -999,7 +999,7 @@ Private Sub mnuProcesarProveedores_Click()
 End Sub
 
 Private Sub OpStock_Click()
-    lblOT.text = vbNullString
+    lblOT.Text = vbNullString
 End Sub
 
 Private Sub PushButton1_Click()

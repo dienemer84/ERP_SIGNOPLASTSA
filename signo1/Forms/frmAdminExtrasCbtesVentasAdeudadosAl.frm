@@ -559,7 +559,7 @@ Public Sub llenarGrilla()
     ''''''''''''''''    ''''''''''''''''    ''''''''''''''''
     
     Dim F As Factura
-    Dim c As Integer
+    Dim C As Integer
     Dim j As Integer
     Dim total As Double
     
@@ -568,9 +568,9 @@ Public Sub llenarGrilla()
     
     For Each F In facturas
         
-        If F.TipoDocumento = tipoDocumentoContable.NotaCredito Then c = -1 Else c = 1
+        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
 
-        total = total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.total * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
+        total = total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.total * C, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
         
     Next
     
@@ -666,7 +666,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
 
         Values(8) = Factura.moneda.NombreCorto
 
-        If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
+        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
             i = -1
         Else
             i = 1
@@ -688,7 +688,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
 
 
-        If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
+        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
             Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(ValorCero) * i), "$", "")
 
 

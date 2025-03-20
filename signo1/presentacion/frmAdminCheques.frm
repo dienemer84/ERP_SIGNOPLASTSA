@@ -30,10 +30,7 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
-<<<<<<< HEAD
-=======
       SelectedItem    =   2
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   2
       Item(0).Control(0)=   "Frame3"
@@ -2741,7 +2738,7 @@ Private Sub Form_Load()
     Me.grid_cartera_cheques.ItemCount = 0
 
     Dim idc As Long
-    idc = chequeras.item(Me.grid_chequeras.RowIndex(Me.grid_chequeras.row)).Id
+    idc = chequeras.item(Me.grid_chequeras.rowIndex(Me.grid_chequeras.row)).Id
 
     Set tmpChequera = DAOChequeras.GetById(idc)
     Set tmpChequera.cheques = DAOCheques.FindAllByChequeraId(idc)
@@ -2823,9 +2820,9 @@ Private Sub grdCheques3eros_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grdCheques3eros, Column
 End Sub
 
-Private Sub grdCheques3eros_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grdCheques3eros_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set tmpCheque3eros = cheques3.item(RowIndex)
+    Set tmpCheque3eros = cheques3.item(rowIndex)
 
     Values(1) = tmpCheque3eros.OrigenDestino
     Values(2) = tmpCheque3eros.Id
@@ -2882,9 +2879,9 @@ err1:
 
 End Sub
 
-Private Sub grid_cartera_cheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_cartera_cheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set tmpCheque = cartera.item(RowIndex)
+    Set tmpCheque = cartera.item(rowIndex)
     With Values
         .value(1) = tmpCheque.Id
         .value(2) = tmpCheque.numero
@@ -2907,13 +2904,13 @@ err1:
 
 End Sub
 
-Private Sub grid_cartera_cheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_cartera_cheques_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
     Dim ant As String
 
     ant = tmpCheque.OrigenDestino
 
-    Set tmpCheque = cartera.item(RowIndex)
+    Set tmpCheque = cartera.item(rowIndex)
     tmpCheque.OrigenDestino = Values(4)
     If Not DAOCheques.Guardar(tmpCheque) Then GoTo err1
     Exit Sub
@@ -2930,8 +2927,8 @@ Private Sub mostrarCheques()
     Me.grid_cheques.ItemCount = 0
     Me.grid_cheques.ItemCount = tmpChequera.cheques.count
 End Sub
-Private Sub grid_chequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmpChequera = chequeras.item(RowIndex)
+Private Sub grid_chequeras_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmpChequera = chequeras.item(rowIndex)
     With Values
         .value(1) = tmpChequera.numero
         .value(2) = tmpChequera.FechaCreacion
@@ -2945,8 +2942,8 @@ End Sub
 
 
 Private Sub grid_cheques_DblClick()
-    If Me.grid_cheques.RowIndex(Me.grid_cheques.row) > 0 Then
-        Set tmpCheque = tmpChequera.cheques(Me.grid_cheques.RowIndex(Me.grid_cheques.row))
+    If Me.grid_cheques.rowIndex(Me.grid_cheques.row) > 0 Then
+        Set tmpCheque = tmpChequera.cheques(Me.grid_cheques.rowIndex(Me.grid_cheques.row))
         PasarACartera tmpCheque
     End If
 End Sub
@@ -2969,7 +2966,7 @@ End Sub
 
 Private Sub grid_cheques_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        Set tmpCheque = tmpChequera.cheques(Me.grid_cheques.RowIndex(Me.grid_cheques.row))
+        Set tmpCheque = tmpChequera.cheques(Me.grid_cheques.rowIndex(Me.grid_cheques.row))
         Me.mnuAnularCheque.Enabled = (tmpCheque.IdOrdenPagoOrigen <= 0) Or tmpCheque.estado = ChequeAnulado
         Me.PopupMenu Me.mnuOpcionesChequeChequera
     End If
@@ -2985,10 +2982,10 @@ err1:
 
 End Sub
 
-Private Sub grid_cheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_cheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
     If Not IsSomething(tmpChequera.cheques) Or tmpChequera.cheques.count = 0 Then Set tmpChequera.cheques = DAOCheques.FindAllByChequeraId(tmpChequera.Id)
-    Set tmpCheque = tmpChequera.cheques(RowIndex)
+    Set tmpCheque = tmpChequera.cheques(rowIndex)
     With Values
         .value(1) = tmpCheque.numero
         .value(2) = IIf(tmpCheque.Utilizado, funciones.FormatearDecimales(tmpCheque.Monto), Empty)
@@ -3001,9 +2998,9 @@ Private Sub grid_cheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
 err1:
 End Sub
 
-Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= bancos.count Then
-        Set Banco = bancos.item(RowIndex)
+Private Sub gridBancos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= bancos.count Then
+        Set Banco = bancos.item(rowIndex)
         Values(1) = Banco.Id
         Values(2) = Banco.nombre
     End If
@@ -3021,8 +3018,8 @@ Private Function buscarOP(chequeid As Long) As String
     End If
 End Function
 
-Private Sub gridChequesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmpCheque = cheques1.item(RowIndex)
+Private Sub gridChequesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmpCheque = cheques1.item(rowIndex)
     
     Values(1) = ""
     Values(2) = tmpCheque.Banco.nombre

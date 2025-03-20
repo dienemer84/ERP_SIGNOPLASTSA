@@ -276,7 +276,7 @@ Private Sub Form_Load()
 
     Customize Me
 
-    Me.lblNumeroCbte.caption = "N° de PROFORMA: " & FacturaProforma.NumeroFormateado & "- " & FacturaProforma.Cliente.razon
+    Me.lblNumeroCbte.caption = "N° de PROFORMA: " & FacturaProforma.NumeroFormateado & "- " & FacturaProforma.cliente.razon
 
     Me.Text(1).Text = FacturaProforma.observaciones
     Me.Text(2).Text = FacturaProforma.observaciones_cancela

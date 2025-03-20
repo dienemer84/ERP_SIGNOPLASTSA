@@ -551,7 +551,7 @@ Private Sub cmdGuardar_Click()
 prox:
     Next
 
-    Set Doc.Detalles = col
+    Set Doc.detalles = col
 
     If Not DAODocumentos.SaveDocumento(Doc, True) Then GoTo err1 Else MsgBox "Guardado correctamente!"
 
@@ -581,7 +581,7 @@ Private Sub cmdPrintDemo_Click()
 
     Printer.Line (Printer.Width, 0)-(0, Printer.Height)
 
-    For Each deta In Doc.Detalles
+    For Each deta In Doc.detalles
         '    Printer.CurrentX = deta.PosX
         '    Printer.CurrentY = 0
         '
@@ -606,7 +606,7 @@ Private Sub RetrieveFields()
     ResizePicContainter
     Dim deta As DocumentoDetalle
 
-    For Each deta In Doc.Detalles
+    For Each deta In Doc.detalles
         Dim objid As String
         objid = funciones.CreateGUID
         Set txt = Controls.Add("vb.textbox", "txt" & objid)
@@ -618,7 +618,7 @@ Private Sub RetrieveFields()
         txt.BorderStyle = 1
         txt.Appearance = 0
         txt.Visible = True
-        txt.text = deta.Tag
+        txt.Text = deta.Tag
         txt.Tag = deta.Tag
         txt.FontBold = deta.Negrita
         txt.FontItalic = deta.Cursiva
@@ -627,7 +627,7 @@ Private Sub RetrieveFields()
         txt.FontStrikethru = deta.Tachado
         txt.FontUnderline = deta.Subrayado
         txt.Alignment = deta.Alineacion
-        txt.text = deta.Tag
+        txt.Text = deta.Tag
 
         ReiniciarContainer
         ultimoHwnd = txt.hWnd
@@ -654,8 +654,8 @@ End Sub
 Private Sub Command2_Click()
     On Error GoTo err1
     Dim archivo As String
-    frmPrincipal.cd.ShowOpen
-    archivo = frmPrincipal.cd.filename
+    frmPrincipal.CD.ShowOpen
+    archivo = frmPrincipal.CD.filename
     Me.PicContainer.Picture = LoadPicture(archivo)
     ShowContainerSize
     Exit Sub
@@ -687,7 +687,7 @@ Private Sub Command3_Click()
     txt.BorderStyle = 1
     txt.Appearance = 0
     txt.Visible = True
-    txt.text = Me.ListView1.selectedItem.Tag
+    txt.Text = Me.ListView1.selectedItem.Tag
     'txt.MultiLine = True
 
     ReiniciarContainer
@@ -766,26 +766,26 @@ Private Sub PushButton2_Click()
     On Error GoTo err1
     Set ctrl = LocateLastControlInContainer
 
-    frmPrincipal.cd.Flags = cdlCFPrinterFonts
+    frmPrincipal.CD.Flags = cdlCFPrinterFonts
 
     If IsSomething(ctrl) Then
-        frmPrincipal.cd.FontBold = ctrl.FontBold
-        frmPrincipal.cd.FontItalic = ctrl.FontItalic
-        frmPrincipal.cd.FontName = ctrl.FontName
-        frmPrincipal.cd.FontStrikethru = ctrl.FontStrikethru
+        frmPrincipal.CD.FontBold = ctrl.FontBold
+        frmPrincipal.CD.FontItalic = ctrl.FontItalic
+        frmPrincipal.CD.FontName = ctrl.FontName
+        frmPrincipal.CD.FontStrikethru = ctrl.FontStrikethru
 
-        frmPrincipal.cd.FontUnderline = ctrl.FontUnderline
-        frmPrincipal.cd.FontSize = ctrl.FontSize
+        frmPrincipal.CD.FontUnderline = ctrl.FontUnderline
+        frmPrincipal.CD.FontSize = ctrl.FontSize
 
-        frmPrincipal.cd.ShowFont
+        frmPrincipal.CD.ShowFont
 
 
-        stdfont.Bold = frmPrincipal.cd.FontBold
-        stdfont.Italic = frmPrincipal.cd.FontItalic
-        stdfont.Underline = frmPrincipal.cd.FontUnderline
-        stdfont.Strikethrough = frmPrincipal.cd.FontStrikethru
-        stdfont.Size = frmPrincipal.cd.FontSize
-        stdfont.Name = frmPrincipal.cd.FontName
+        stdfont.Bold = frmPrincipal.CD.FontBold
+        stdfont.Italic = frmPrincipal.CD.FontItalic
+        stdfont.Underline = frmPrincipal.CD.FontUnderline
+        stdfont.Strikethrough = frmPrincipal.CD.FontStrikethru
+        stdfont.Size = frmPrincipal.CD.FontSize
+        stdfont.Name = frmPrincipal.CD.FontName
 
         SetearFormato stdfont
         Set ctrl.Font = stdfont

@@ -466,7 +466,7 @@ Begin VB.Form frmAdminFacturasProformaEmitidas
       AllowEdit       =   0   'False
       GroupByBoxVisible=   0   'False
       ImageCount      =   1
-      ImagePicture1   =   "frmAdminFacturasProformaEmitidas.frx":0000
+      ImagePicture1   =   "frmadminfacturasproformaemitidas.frx":0000
       RowHeaders      =   -1  'True
       DataMode        =   99
       CardSpacing     =   16
@@ -475,52 +475,52 @@ Begin VB.Form frmAdminFacturasProformaEmitidas
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   26
-      Column(1)       =   "frmAdminFacturasProformaEmitidas.frx":031A
-      Column(2)       =   "frmAdminFacturasProformaEmitidas.frx":04AE
-      Column(3)       =   "frmAdminFacturasProformaEmitidas.frx":05DE
-      Column(4)       =   "frmAdminFacturasProformaEmitidas.frx":0736
-      Column(5)       =   "frmAdminFacturasProformaEmitidas.frx":0892
-      Column(6)       =   "frmAdminFacturasProformaEmitidas.frx":09E6
-      Column(7)       =   "frmAdminFacturasProformaEmitidas.frx":0B4A
-      Column(8)       =   "frmAdminFacturasProformaEmitidas.frx":0D8A
-      Column(9)       =   "frmAdminFacturasProformaEmitidas.frx":0ED2
-      Column(10)      =   "frmAdminFacturasProformaEmitidas.frx":1052
-      Column(11)      =   "frmAdminFacturasProformaEmitidas.frx":114E
-      Column(12)      =   "frmAdminFacturasProformaEmitidas.frx":124E
-      Column(13)      =   "frmAdminFacturasProformaEmitidas.frx":13AE
-      Column(14)      =   "frmAdminFacturasProformaEmitidas.frx":151E
-      Column(15)      =   "frmAdminFacturasProformaEmitidas.frx":1682
-      Column(16)      =   "frmAdminFacturasProformaEmitidas.frx":17F6
-      Column(17)      =   "frmAdminFacturasProformaEmitidas.frx":195A
-      Column(18)      =   "frmAdminFacturasProformaEmitidas.frx":1AA2
-      Column(19)      =   "frmAdminFacturasProformaEmitidas.frx":1B86
-      Column(20)      =   "frmAdminFacturasProformaEmitidas.frx":1CD6
-      Column(21)      =   "frmAdminFacturasProformaEmitidas.frx":1E16
-      Column(22)      =   "frmAdminFacturasProformaEmitidas.frx":1FAA
-      Column(23)      =   "frmAdminFacturasProformaEmitidas.frx":2136
-      Column(24)      =   "frmAdminFacturasProformaEmitidas.frx":22B2
-      Column(25)      =   "frmAdminFacturasProformaEmitidas.frx":2406
-      Column(26)      =   "frmAdminFacturasProformaEmitidas.frx":2576
+      Column(1)       =   "frmadminfacturasproformaemitidas.frx":031A
+      Column(2)       =   "frmadminfacturasproformaemitidas.frx":04AE
+      Column(3)       =   "frmadminfacturasproformaemitidas.frx":05DE
+      Column(4)       =   "frmadminfacturasproformaemitidas.frx":0736
+      Column(5)       =   "frmadminfacturasproformaemitidas.frx":0892
+      Column(6)       =   "frmadminfacturasproformaemitidas.frx":09E6
+      Column(7)       =   "frmadminfacturasproformaemitidas.frx":0B4A
+      Column(8)       =   "frmadminfacturasproformaemitidas.frx":0D8A
+      Column(9)       =   "frmadminfacturasproformaemitidas.frx":0ED2
+      Column(10)      =   "frmadminfacturasproformaemitidas.frx":1052
+      Column(11)      =   "frmadminfacturasproformaemitidas.frx":114E
+      Column(12)      =   "frmadminfacturasproformaemitidas.frx":124E
+      Column(13)      =   "frmadminfacturasproformaemitidas.frx":13AE
+      Column(14)      =   "frmadminfacturasproformaemitidas.frx":151E
+      Column(15)      =   "frmadminfacturasproformaemitidas.frx":1682
+      Column(16)      =   "frmadminfacturasproformaemitidas.frx":17F6
+      Column(17)      =   "frmadminfacturasproformaemitidas.frx":195A
+      Column(18)      =   "frmadminfacturasproformaemitidas.frx":1AA2
+      Column(19)      =   "frmadminfacturasproformaemitidas.frx":1B86
+      Column(20)      =   "frmadminfacturasproformaemitidas.frx":1CD6
+      Column(21)      =   "frmadminfacturasproformaemitidas.frx":1E16
+      Column(22)      =   "frmadminfacturasproformaemitidas.frx":1FAA
+      Column(23)      =   "frmadminfacturasproformaemitidas.frx":2136
+      Column(24)      =   "frmadminfacturasproformaemitidas.frx":22B2
+      Column(25)      =   "frmadminfacturasproformaemitidas.frx":2406
+      Column(26)      =   "frmadminfacturasproformaemitidas.frx":2576
       FormatStylesCount=   16
-      FormatStyle(1)  =   "frmAdminFacturasProformaEmitidas.frx":269A
-      FormatStyle(2)  =   "frmAdminFacturasProformaEmitidas.frx":27D2
-      FormatStyle(3)  =   "frmAdminFacturasProformaEmitidas.frx":2882
-      FormatStyle(4)  =   "frmAdminFacturasProformaEmitidas.frx":2936
-      FormatStyle(5)  =   "frmAdminFacturasProformaEmitidas.frx":2A0E
-      FormatStyle(6)  =   "frmAdminFacturasProformaEmitidas.frx":2AC6
-      FormatStyle(7)  =   "frmAdminFacturasProformaEmitidas.frx":2BA6
-      FormatStyle(8)  =   "frmAdminFacturasProformaEmitidas.frx":2C32
-      FormatStyle(9)  =   "frmAdminFacturasProformaEmitidas.frx":2D12
-      FormatStyle(10) =   "frmAdminFacturasProformaEmitidas.frx":2DC2
-      FormatStyle(11) =   "frmAdminFacturasProformaEmitidas.frx":2E76
-      FormatStyle(12) =   "frmAdminFacturasProformaEmitidas.frx":2F26
-      FormatStyle(13) =   "frmAdminFacturasProformaEmitidas.frx":2FD6
-      FormatStyle(14) =   "frmAdminFacturasProformaEmitidas.frx":308A
-      FormatStyle(15) =   "frmAdminFacturasProformaEmitidas.frx":3162
-      FormatStyle(16) =   "frmAdminFacturasProformaEmitidas.frx":3246
+      FormatStyle(1)  =   "frmadminfacturasproformaemitidas.frx":269A
+      FormatStyle(2)  =   "frmadminfacturasproformaemitidas.frx":27D2
+      FormatStyle(3)  =   "frmadminfacturasproformaemitidas.frx":2882
+      FormatStyle(4)  =   "frmadminfacturasproformaemitidas.frx":2936
+      FormatStyle(5)  =   "frmadminfacturasproformaemitidas.frx":2A0E
+      FormatStyle(6)  =   "frmadminfacturasproformaemitidas.frx":2AC6
+      FormatStyle(7)  =   "frmadminfacturasproformaemitidas.frx":2BA6
+      FormatStyle(8)  =   "frmadminfacturasproformaemitidas.frx":2C32
+      FormatStyle(9)  =   "frmadminfacturasproformaemitidas.frx":2D12
+      FormatStyle(10) =   "frmadminfacturasproformaemitidas.frx":2DC2
+      FormatStyle(11) =   "frmadminfacturasproformaemitidas.frx":2E76
+      FormatStyle(12) =   "frmadminfacturasproformaemitidas.frx":2F26
+      FormatStyle(13) =   "frmadminfacturasproformaemitidas.frx":2FD6
+      FormatStyle(14) =   "frmadminfacturasproformaemitidas.frx":308A
+      FormatStyle(15) =   "frmadminfacturasproformaemitidas.frx":3162
+      FormatStyle(16) =   "frmadminfacturasproformaemitidas.frx":3246
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminFacturasProformaEmitidas.frx":3326
-      PrinterProperties=   "frmAdminFacturasProformaEmitidas.frx":3640
+      ImagePicture(1) =   "frmadminfacturasproformaemitidas.frx":3326
+      PrinterProperties=   "frmadminfacturasproformaemitidas.frx":3640
    End
    Begin XtremeSuiteControls.TaskDialog taskDialog 
       Left            =   14835
@@ -638,7 +638,7 @@ End Sub
 Private Sub archivos_Click()
     Dim F As New frmArchivos2
     F.Origen = 101
-    F.ObjetoId = Factura.id
+    F.ObjetoId = Factura.Id
     F.caption = "Comprobante " & Factura.GetShortDescription(False, True)
     F.Show
 End Sub
@@ -842,13 +842,13 @@ Private Sub btnExportar_Click()
             xlWorksheet.Cells(idx, 19).value = 0
         End If
 
-        xlWorksheet.Cells(idx, 20).value = fac.Cliente.razon
-        xlWorksheet.Cells(idx, 21).value = fac.Cliente.Cuit
+        xlWorksheet.Cells(idx, 20).value = fac.cliente.razon
+        xlWorksheet.Cells(idx, 21).value = fac.cliente.Cuit
         xlWorksheet.Cells(idx, 22).value = fac.observaciones
         xlWorksheet.Cells(idx, 23).value = fac.observaciones_cancela
         xlWorksheet.Cells(idx, 24).value = fac.RecibosAplicadosId
         
-        xlWorksheet.Cells(idx, 25).value = fac.id
+        xlWorksheet.Cells(idx, 25).value = fac.Id
         xlWorksheet.Cells(idx, 26).value = fac.idAsociacion
         idx = idx + 1
 
@@ -1046,7 +1046,7 @@ End Sub
 
 Private Sub editar_Click()
     Dim f_c3h3 As New frmAdminFacturasProformaEdicion
-    f_c3h3.idFactura = Factura.id
+    f_c3h3.idFactura = Factura.Id
     f_c3h3.Show
 
 End Sub
@@ -1158,7 +1158,7 @@ Private Sub llenarGrilla()
     Set facturasproformas = DAOFacturaProforma.FindAll(filtro, , , ordenImporte)
 
     Dim F As clsFacturaProforma
-    Dim c As Integer
+    Dim C As Integer
 
     For Each F In facturasproformas
         Dim total As Double
@@ -1473,7 +1473,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByV
     Set Factura = facturasproformas.item(rowIndex)
 
 
-    Values(1) = Factura.id    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
+    Values(1) = Factura.Id    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
 
 '''    If IsSomething(Factura.Tipo) Then
 '''        Values(2) = Factura.Tipo.TipoFactura.Tipo
@@ -1503,7 +1503,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByV
     'MONTO BASE
     Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.total)), "$", "")
 
-    If Factura.moneda.id = 0 Then
+    If Factura.moneda.Id = 0 Then
         Values(8) = Factura.moneda.NombreCorto
     Else
         Values(8) = Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
@@ -1513,7 +1513,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByV
     Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.total * Factura.CambioAPatron)), "$", "")
 
     Values(10) = Factura.OrdenCompra
-    Values(11) = Factura.Cliente.razon
+    Values(11) = Factura.cliente.razon
 
     Values(12) = enums.EnumEstadoDocumentoContable(Factura.estado)
 
@@ -1596,9 +1596,9 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByV
 
     Values(22) = Factura.TasaAjusteMensual
 
-    Values(23) = "(" & Val(m_Archivos.item(Factura.id)) & ")"
+    Values(23) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
 
-    Values(24) = Factura.id
+    Values(24) = Factura.Id
 
     Values(25) = Factura.RecibosAplicadosId
     
@@ -1618,30 +1618,30 @@ Private Sub ImprimirFactura_Click()
     Dim veces As Long
 
 
-                DAOFacturaProforma.VerFacturaElectronicaParaImpresion (Factura.id)
+                DAOFacturaProforma.VerFacturaElectronicaParaImpresion (Factura.Id)
 
 
 
-        veces = clasea.facturaImpresa(Factura.id)
+        veces = clasea.facturaImpresa(Factura.Id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 1
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 1
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
-                    DAOFacturaProforma.Imprimir Factura.id
+                For i = 1 To CD.Copies
+                    DAOFacturaProforma.Imprimir Factura.Id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fue impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 1
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 1
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
-                    DAOFacturaProforma.Imprimir Factura.id
+                For i = 1 To CD.Copies
+                    DAOFacturaProforma.Imprimir Factura.Id
                 Next i
             End If
 
@@ -1679,7 +1679,7 @@ Private Sub mnuArchivos_Click()
     Dim archi As New frmArchivos2
 
     archi.Origen = OrigenArchivos.OA_factura
-    archi.ObjetoId = Factura.id
+    archi.ObjetoId = Factura.Id
     archi.caption = Factura.GetShortDescription(False, True)
     archi.Show
 
@@ -1745,7 +1745,7 @@ End Sub
 
 Private Sub mnuEditarCampos_Click()
     Dim f_ADFE As New frmAdminFacturasProformasEditarDatos
-    f_ADFE.idFactura = Factura.id
+    f_ADFE.idFactura = Factura.Id
     f_ADFE.Show
 
 End Sub
@@ -1763,9 +1763,9 @@ End Sub
 Private Sub scanear_Click()
     On Error Resume Next
     Dim archivos As New classArchivos
-    If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.id) Then
+    If archivos.escanearDocumento(OrigenArchivos.OA_factura, Factura.Id) Then
         Set m_Archivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_factura)
-        Me.gridComprobantesEmitidos.RefreshRowIndex (Factura.id)
+        Me.gridComprobantesEmitidos.RefreshRowIndex (Factura.Id)
     End If
 End Sub
 
@@ -1785,14 +1785,14 @@ End Sub
 Private Sub verFactura_Click()
     Dim f_c3h3 As New frmAdminFacturasProformaEdicion
     f_c3h3.ReadOnly = True
-    f_c3h3.idFactura = Factura.id
+    f_c3h3.idFactura = Factura.Id
     f_c3h3.Show
 
 End Sub
 
 
 Private Sub verHistorialFactura_Click()
-    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.id)
+    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.Id)
     frmHistoriales.lista = Factura.Historial
     frmHistoriales.Show
 End Sub

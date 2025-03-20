@@ -213,7 +213,7 @@ Begin VB.Form frmVentasPedidoNuevo
       _ExtentX        =   2355
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   67567617
+      Format          =   66191361
       CurrentDate     =   38861
    End
    Begin GridEX20.GridEX grilla 
@@ -413,7 +413,7 @@ Private Sub btnGenerar_Click()
         presu = Me.TxtNroPresupuesto
         If MsgBox("¿Está seguro de generar el pedido?", vbYesNo, "Confirmación") = vbYes Then
             idpedido = Me.cboListaOt.ItemData(Me.cboListaOt.ListIndex)
-            Set Ot = DAOPresupuestos.CrearOT(presupuesto, idpedido, txtDescripcion.text)
+            Set Ot = DAOPresupuestos.CrearOT(presupuesto, idpedido, txtDescripcion.Text)
             If IsSomething(Ot) Then
                 MsgBox "OT creada con exito. Número " & Ot.IdFormateado
                 Unload Me
@@ -518,7 +518,7 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
     With detalle
         Values(1) = .item
         Values(2) = .Cantidad
-        Values(3) = .Detalles
+        Values(3) = .detalles
         Values(4) = funciones.FormatearDecimales(.ValorManual)
         Values(5) = funciones.FormatearDecimales(.ValorManual * .Cantidad)
         Values(6) = .entrega
@@ -534,7 +534,7 @@ End Function
 Private Sub grilla_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     presupuesto.DetallePresupuesto(rowIndex).Cantidad = Values(2)
     presupuesto.DetallePresupuesto(rowIndex).ValorManual = Values(4)
-    presupuesto.DetallePresupuesto(rowIndex).Detalles = Values(3)
+    presupuesto.DetallePresupuesto(rowIndex).detalles = Values(3)
     presupuesto.DetallePresupuesto(rowIndex).entrega = Values(6)
     verTotal
 End Sub

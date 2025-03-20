@@ -367,7 +367,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   68812801
+         Format          =   66715649
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -379,7 +379,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   68812801
+         Format          =   66715649
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -824,7 +824,7 @@ Private Monedas As New Collection
 
 Public Property Let OrdenTrabajoId(value As Long)
     Set m_ot = DAOOrdenTrabajo.FindById(value)       'me la recargo por las dudas
-    Set m_ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.Id)
+    Set m_ot.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.Id)
 
     Me.fraCondiciones.Enabled = m_ot.NoEsMarcoNiHija
     Me.cboCliente.Enabled = m_ot.NoEsMarcoNiHija
@@ -858,17 +858,17 @@ Private Sub CargarOrdenTrabajo()
 
 
     Me.cboCliente.ListIndex = funciones.PosIndexCbo(m_ot.cliente.Id, cboCliente)
-    Me.txtReferencia.text = m_ot.descripcion
+    Me.txtReferencia.Text = m_ot.descripcion
     Me.DTVencimiento.value = m_ot.FechaEntrega
     Me.chkMismaFecha.value = CInt(m_ot.MismaFechaEntregaParaDetalles) * -1
     Me.cboMoneda.ListIndex = funciones.PosIndexCbo(m_ot.moneda.Id, cboMoneda)
-    Me.txtDto.text = m_ot.Descuento
-    Me.txtAnticipo.text = m_ot.Anticipo
-    Me.txtCantDiasAnticipo.text = m_ot.CantDiasAnticipo
-    Me.txtFormaPagoAnticipo.text = m_ot.FormaDePagoAnticipo
-    Me.txtFormaPagoSaldo.text = m_ot.FormaDePagoSaldo
-    Me.txtCantDiasSaldo.text = m_ot.CantDiasSaldo
-    Me.txtFormaPagoAnticipo.text = m_ot.FormaDePagoAnticipo
+    Me.txtDto.Text = m_ot.Descuento
+    Me.txtAnticipo.Text = m_ot.Anticipo
+    Me.txtCantDiasAnticipo.Text = m_ot.CantDiasAnticipo
+    Me.txtFormaPagoAnticipo.Text = m_ot.FormaDePagoAnticipo
+    Me.txtFormaPagoSaldo.Text = m_ot.FormaDePagoSaldo
+    Me.txtCantDiasSaldo.Text = m_ot.CantDiasSaldo
+    Me.txtFormaPagoAnticipo.Text = m_ot.FormaDePagoAnticipo
 
     Me.dtpInicio.value = m_ot.FechaInicioMarco
     If m_ot.EsMarco Then Me.DTVencimiento.value = m_ot.FechaFinMarco
@@ -896,7 +896,7 @@ Private Sub CargarOrdenTrabajo()
 End Sub
 Private Sub RecargarDetalles()
     Me.grid.ItemCount = 0
-    Me.grid.ItemCount = m_ot.Detalles.count
+    Me.grid.ItemCount = m_ot.detalles.count
 End Sub
 
 
@@ -904,7 +904,7 @@ Private Sub cboCliente_Click()
     If Me.cboCliente.ListIndex <> -1 And Not m_ot Is Nothing Then
         If formLoaded Then
             Set m_ot.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
-            Set m_ot.Detalles = New Collection
+            Set m_ot.detalles = New Collection
             RecargarDetalles
         End If
     End If
@@ -941,7 +941,7 @@ Private Sub ConfigurarMismaFecha()
     If Me.chkMismaFecha.value Then
         grid.Columns("entrega").EditType = jgexEditNone
 
-        For Each tmpDetalle In m_ot.Detalles
+        For Each tmpDetalle In m_ot.detalles
             tmpDetalle.FechaEntrega = m_ot.FechaEntrega
         Next tmpDetalle
     Else
@@ -978,8 +978,8 @@ Private Sub cmdDefinirPrecios_Click()
         Dim va As Boolean
         Dim si As GridEX20.JSSelectedItem
         For Each si In Me.grid.SelectedItems
-            If si.rowIndex > 0 And si.rowIndex <= m_ot.Detalles.count Then
-                Set tmpDetalle = m_ot.Detalles.item(si.rowIndex)
+            If si.rowIndex > 0 And si.rowIndex <= m_ot.detalles.count Then
+                Set tmpDetalle = m_ot.detalles.item(si.rowIndex)
                 va = baseP.definirPrecios(tmpDetalle.Pieza.Id, tmpDetalle.Precio, m_ot.moneda.Id)
             End If
         Next si
@@ -998,7 +998,7 @@ Private Sub Command2_Click()
     RecargarDetalles
 End Sub
 Private Sub CommandGuardar_Click()
-    If LenB(Trim$(Me.txtReferencia.text)) = 0 Then
+    If LenB(Trim$(Me.txtReferencia.Text)) = 0 Then
         MsgBox "Falta la referencia", vbInformation + vbOKOnly
         Exit Sub
     End If
@@ -1017,7 +1017,7 @@ Private Sub CommandGuardar_Click()
             Dim detaOT As DetalleOrdenTrabajo
             Dim result As Boolean
             conectar.BeginTransaction
-            For Each detaOT In m_ot.Detalles
+            For Each detaOT In m_ot.detalles
                 result = DAODetalleOrdenTrabajo.Save(detaOT)
                 If Not result Then Exit For
             Next detaOT
@@ -1072,8 +1072,8 @@ End Sub
 Private Sub RenumerarDetalles()
     Dim x As Long
 
-    For x = 1 To m_ot.Detalles.count
-        Set tmpDetalle = m_ot.Detalles(x)
+    For x = 1 To m_ot.detalles.count
+        Set tmpDetalle = m_ot.detalles(x)
         tmpDetalle.item = Format(x, "000")
     Next x
 End Sub
@@ -1087,7 +1087,7 @@ Private Sub Command9_Click()
     Dim dto As DTOPiezaCantidad
     Dim deta As DetalleOrdenTrabajo
     Dim listadtopiezacantidad As New Collection
-    For Each deta In m_ot.Detalles
+    For Each deta In m_ot.detalles
         Set dto = New DTOPiezaCantidad
         Set dto.Pieza = deta.Pieza
         dto.Cantidad = deta.CantidadPedida
@@ -1192,7 +1192,7 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
     idx = Me.grid.rowIndex(Me.grid.row)
 
     If Button = 2 And idx > 0 Then
-        If m_ot.Detalles(idx).Pieza.EsConjunto Then
+        If m_ot.detalles(idx).Pieza.EsConjunto Then
             Me.ver.caption = "Ver Conjunto..."
             Me.ver.Tag = 0
         Else
@@ -1206,12 +1206,12 @@ Private Sub grid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
 End Sub
 
 Private Sub grid_SelectionChange()
-    Set tmpDetalle = m_ot.Detalles.item(grid.rowIndex(grid.row))
+    Set tmpDetalle = m_ot.detalles.item(grid.rowIndex(grid.row))
 End Sub
 
 Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And rowIndex <= m_ot.Detalles.count Then
-        Set tmpDetalle = m_ot.Detalles.item(rowIndex)
+    If rowIndex > 0 And rowIndex <= m_ot.detalles.count Then
+        Set tmpDetalle = m_ot.detalles.item(rowIndex)
         Values(1) = tmpDetalle.item
         Values(2) = tmpDetalle.CantidadPedida
         Values(3) = tmpDetalle.Pieza.nombre
@@ -1232,8 +1232,8 @@ Private Sub grid_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant
 
     Set tmpDetalle = Nothing
 
-    If rowIndex > 0 And rowIndex <= m_ot.Detalles.count Then
-        Set tmpDetalle = m_ot.Detalles.item(rowIndex)
+    If rowIndex > 0 And rowIndex <= m_ot.detalles.count Then
+        Set tmpDetalle = m_ot.detalles.item(rowIndex)
         tmpDetalle.item = Values(1)
         tmpDetalle.CantidadPedida = Values(2)
         tmpDetalle.Precio = Values(4)
@@ -1294,13 +1294,13 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
             End If
 
             Dim d As DetalleOrdenTrabajo
-            Dim c As Long: c = 0
-            For Each d In m_ot.Detalles
-                c = Val(d.item)
+            Dim C As Long: C = 0
+            For Each d In m_ot.detalles
+                C = Val(d.item)
             Next d
-            tmpDetalle.item = Format(c + 1, "000")
+            tmpDetalle.item = Format(C + 1, "000")
 
-            m_ot.Detalles.Add tmpDetalle
+            m_ot.detalles.Add tmpDetalle
 
         Next dto
 
@@ -1367,8 +1367,8 @@ Private Sub PushButton1_Click()
         Dim va As Boolean
         Dim si As GridEX20.JSSelectedItem
         For Each si In Me.grid.SelectedItems
-            If si.rowIndex > 0 And si.rowIndex <= m_ot.Detalles.count Then
-                Set tmpDetalle = m_ot.Detalles.item(si.rowIndex)
+            If si.rowIndex > 0 And si.rowIndex <= m_ot.detalles.count Then
+                Set tmpDetalle = m_ot.detalles.item(si.rowIndex)
                 tmpDetalle.Precio = DAODetalleOrdenTrabajo.FindBestPriceByPiezaId(tmpDetalle.Pieza.Id)
             End If
         Next si
@@ -1382,10 +1382,10 @@ Private Sub Qui_Click()
     Dim si As GridEX20.JSSelectedItem
     Dim i As Long
 
-    For i = m_ot.Detalles.count To 1 Step -1
+    For i = m_ot.detalles.count To 1 Step -1
         For Each si In Me.grid.SelectedItems
             If si.rowIndex = i Then
-                m_ot.Detalles.remove i
+                m_ot.detalles.remove i
                 Exit For
             End If
         Next si
@@ -1402,7 +1402,7 @@ Private Sub CalcularValorOt()
 
     Dim tmpPieza As Pieza
 
-    For Each tmpDetalle In m_ot.Detalles
+    For Each tmpDetalle In m_ot.detalles
 
         Set tmpPieza = DAOPieza.FindById(tmpDetalle.Pieza.Id, FL_0)
 
@@ -1467,7 +1467,7 @@ End Sub
 
 Private Sub txtAnticipo_Validate(Cancel As Boolean)
     funciones.ValidarTextBox Me.txtAnticipo, Cancel
-    If Not Cancel And IsNumeric(Me.txtAnticipo.text) Then m_ot.Anticipo = CDbl(Me.txtAnticipo.text)
+    If Not Cancel And IsNumeric(Me.txtAnticipo.Text) Then m_ot.Anticipo = CDbl(Me.txtAnticipo.Text)
 End Sub
 
 Private Sub txtCantDiasAnticipo_GotFocus()
@@ -1476,7 +1476,7 @@ End Sub
 
 Private Sub txtCantDiasAnticipo_Validate(Cancel As Boolean)
     funciones.ValidarTextBox Me.txtCantDiasAnticipo, Cancel
-    If Not Cancel And IsNumeric(Me.txtCantDiasAnticipo.text) Then m_ot.CantDiasAnticipo = CInt(Me.txtCantDiasAnticipo.text)
+    If Not Cancel And IsNumeric(Me.txtCantDiasAnticipo.Text) Then m_ot.CantDiasAnticipo = CInt(Me.txtCantDiasAnticipo.Text)
 End Sub
 
 Private Sub txtCantDiasSaldo_GotFocus()
@@ -1485,14 +1485,14 @@ End Sub
 
 Private Sub txtCantDiasSaldo_LostFocus()
     If Not m_ot Is Nothing Then
-        m_ot.CantDiasSaldo = Me.txtCantDiasSaldo.text
+        m_ot.CantDiasSaldo = Me.txtCantDiasSaldo.Text
     End If
 
 End Sub
 
 Private Sub txtCantDiasSaldo_Validate(Cancel As Boolean)
     funciones.ValidarTextBox Me.txtCantDiasSaldo, Cancel
-    If Not Cancel And IsNumeric(Me.txtCantDiasSaldo.text) Then m_ot.CantDiasSaldo = CInt(Me.txtCantDiasSaldo.text)
+    If Not Cancel And IsNumeric(Me.txtCantDiasSaldo.Text) Then m_ot.CantDiasSaldo = CInt(Me.txtCantDiasSaldo.Text)
 End Sub
 
 Private Sub txtDto_GotFocus()
@@ -1501,17 +1501,17 @@ End Sub
 
 Private Sub txtDto_Validate(Cancel As Boolean)
     funciones.ValidarTextBox Me.txtDto, Cancel
-    If Not Cancel And IsNumeric(Me.txtDto.text) Then m_ot.Descuento = CDbl(Me.txtDto.text)
+    If Not Cancel And IsNumeric(Me.txtDto.Text) Then m_ot.Descuento = CDbl(Me.txtDto.Text)
 End Sub
 
 Private Sub txtFormaPagoAnticipo_LostFocus()
     If Not m_ot Is Nothing Then
-        m_ot.FormaDePagoAnticipo = Me.txtFormaPagoAnticipo.text
+        m_ot.FormaDePagoAnticipo = Me.txtFormaPagoAnticipo.Text
     End If
 End Sub
 Private Sub txtFormaPagoSaldo_LostFocus()
     If Not m_ot Is Nothing Then
-        m_ot.FormaDePagoSaldo = Me.txtFormaPagoSaldo.text
+        m_ot.FormaDePagoSaldo = Me.txtFormaPagoSaldo.Text
     End If
 End Sub
 

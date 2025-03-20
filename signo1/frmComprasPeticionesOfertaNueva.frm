@@ -364,9 +364,9 @@ Public Property Let peticion(nvalue As clsPeticionOferta)
         Me.cboMoneda.ListIndex = funciones.PosIndexCbo(vPeticion.moneda.Id, Me.cboMoneda)
     End If
 
-    Me.txtCantDiasPago.text = vPeticion.CantidadDiasPago
-    Me.txtFormaPago.text = vPeticion.FormaDePago
-    Me.txtPorcentajeDescuento.text = vPeticion.PorcentajeDescuento
+    Me.txtCantDiasPago.Text = vPeticion.CantidadDiasPago
+    Me.txtFormaPago.Text = vPeticion.FormaDePago
+    Me.txtPorcentajeDescuento.Text = vPeticion.PorcentajeDescuento
     Me.radRetiramos.value = vPeticion.EntregaRetiramos
     Me.radEntregan.value = Not vPeticion.EntregaRetiramos
 
@@ -384,9 +384,9 @@ Private Sub cmdGuardar_Click()
     conectar.BeginTransaction
 
     Set vPeticion.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
-    vPeticion.CantidadDiasPago = Val(Me.txtCantDiasPago.text)
-    vPeticion.PorcentajeDescuento = Val(Me.txtPorcentajeDescuento.text)
-    vPeticion.FormaDePago = Me.txtFormaPago.text
+    vPeticion.CantidadDiasPago = Val(Me.txtCantDiasPago.Text)
+    vPeticion.PorcentajeDescuento = Val(Me.txtPorcentajeDescuento.Text)
+    vPeticion.FormaDePago = Me.txtFormaPago.Text
     vPeticion.EntregaRetiramos = Me.radRetiramos.value
     If Not DAOPeticionOferta.Update(vPeticion) Then
         conectar.RollBackTransaction

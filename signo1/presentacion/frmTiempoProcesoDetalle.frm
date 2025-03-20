@@ -736,7 +736,7 @@ Private Sub cmdTeclado_Click()
 End Sub
 
 Private Sub EnfocarTextBox()
-    Me.txtBackend.text = vbNullString
+    Me.txtBackend.Text = vbNullString
     Me.txtBackend.SetFocus
 End Sub
 
@@ -1074,5 +1074,5 @@ Private Sub GetEmpleado()
 End Sub
 
 Private Sub txtBackend_Change()
-    Me.txtBackend.text = vbNullString
+    Me.txtBackend.Text = vbNullString
 End Sub

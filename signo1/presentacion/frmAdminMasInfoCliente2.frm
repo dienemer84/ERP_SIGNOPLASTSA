@@ -448,7 +448,7 @@ End Sub
 
 Private Sub btnClearFacturado_Click()
     Me.cboMayorMenor.ListIndex = -1
-    Me.txtPorcentajeFacturado.text = vbNullString
+    Me.txtPorcentajeFacturado.Text = vbNullString
 End Sub
 
 Private Sub btnListar_Click()
@@ -469,7 +469,7 @@ Private Sub cmdImprimir_Click()
 
 
     If Me.cboClientes.ListIndex <> -1 Then
-        headercenter = headercenter & Chr(10) & " Cliente: " & Me.cboClientes.text
+        headercenter = headercenter & Chr(10) & " Cliente: " & Me.cboClientes.Text
     End If
 
     If Not IsNull(Me.dtpDesde.value) Then
@@ -485,7 +485,7 @@ Private Sub cmdImprimir_Click()
     End If
 
     If Me.cboMayorMenor.ListIndex <> -1 Then
-        headercenter = headercenter & Chr(10) & " Facturado:   " & Me.cboMayorMenor.text & " " & Me.txtPorcentajeFacturado & " %"
+        headercenter = headercenter & Chr(10) & " Facturado:   " & Me.cboMayorMenor.Text & " " & Me.txtPorcentajeFacturado & " %"
     End If
 
     footerright = "Total A Facturar: " & MonedaConverter.Patron.NombreCorto & " " & tot & Chr(10) _
@@ -610,7 +610,7 @@ Private Sub llenarLista()
     Dim value2Compare As Double
     Dim remove As Boolean
     If Me.cboMayorMenor.ListIndex <> -1 Then
-        value2Compare = Val(Me.txtPorcentajeFacturado.text)
+        value2Compare = Val(Me.txtPorcentajeFacturado.Text)
 
         For i = ordenes.count To 1 Step -1
             remove = False

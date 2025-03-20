@@ -398,7 +398,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Dim col As New Collection
 Public cheque As cheque
-Dim Cheques As New Collection
+Dim cheques As New Collection
 Dim Cajas As New Collection
 Dim OpCaja As operacion
 
@@ -415,13 +415,13 @@ Private Sub cmdAgregarCheque_Click()
     Set cheque = DAOCheques.FindById(Me.cboCheques.ItemData(Me.cboCheques.ListIndex))
     If IsSomething(cheque) Then
 
-        If Not BuscarEnColeccion(Cheques, cheque.Id) Then
-            Cheques.Add cheque, CStr(cheque.Id)
+        If Not BuscarEnColeccion(cheques, cheque.Id) Then
+            cheques.Add cheque, CStr(cheque.Id)
         End If
 
     End If
 
-    Me.gridCheques.ItemCount = Cheques.count
+    Me.gridCheques.ItemCount = cheques.count
     GridEXHelper.AutoSizeColumns Me.gridCheques, True
 End Sub
 
@@ -440,7 +440,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set cheque = Cheques(rowIndex)
+    Set cheque = cheques(rowIndex)
     Values(1) = cheque.numero
     Values(2) = cheque.FechaVencimiento
     Values(3) = cheque.moneda.NombreCorto & " " & cheque.Monto

@@ -1163,17 +1163,18 @@ err1:
 End Function
 
 
-Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBox) As Boolean
+Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja) As Boolean
     Dim TAB1 As Integer
     Dim TAB2 As Integer
     Dim TAB3 As Integer
     Dim maxw As Single
     Dim C As Long
     Dim mtxt As String
+    Dim tttxt As String
     Dim textw As Single
     Dim lmargin As Integer
 
-    pic.Picture = LoadResPicture(101, vbResBitmap)
+'''    pic.Picture = LoadResPicture(101, vbResBitmap)
 
     Dim A As Single
     lmargin = 720
@@ -1186,13 +1187,23 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.CurrentY = lmargin
     maxw = Printer.Width - lmargin * 2
     A = lmargin + (maxw - 3200) / 2
-    Printer.PaintPicture pic.Picture, A, 100, 3200, 600
+'''    Printer.PaintPicture pic.Picture, A, 100, 3200, 600
 
+
+    ' --- Agregar el título "SIGNO PLAST" ---
+    Printer.FontBold = True
+    Printer.FontSize = 24
+    tttxt = "SIGNO PLAST"
+    textw = Printer.TextWidth(tttxt)  ' Calcular el ancho del texto
+    Printer.CurrentX = lmargin + (maxw - textw) / 2  ' Centrar horizontalmente
+    Printer.CurrentY = lmargin  ' Posición vertical
+    Printer.Print tttxt  ' Imprimir el título
+    
     Printer.FontBold = True
     Printer.FontSize = 12
     mtxt = "Liquidación de Caja Nº " & LiquidacionCaja.NumeroLiq
     textw = Printer.TextWidth(mtxt)
-
+    
     Printer.CurrentX = lmargin + (maxw - textw) / 2
     Printer.Print mtxt
     Printer.FontSize = 10
@@ -1216,30 +1227,138 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.Print "Comprobantes: "
     Printer.FontBold = False
     Printer.FontSize = 8
+
     Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
     Dim F As clsFacturaProveedor
+    
+'''    C = 0
+'''    For Each F In LiquidacionCaja.FacturasProveedor
+'''        C = C + 1
+'''        Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
+'''        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
+'''    Next F
+    
+    Printer.FontSize = 10
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin
+    Printer.Print "Comprobantes: "
+    Printer.FontBold = False
+    Printer.FontSize = 8
+    
+    ' Definir el ancho de las columnas
+    Dim colWidth(1 To 6) As Single
+    colWidth(1) = 2000  ' Ancho columna 1 (Número)
+    colWidth(2) = 800  ' Ancho columna 2 (Fecha)
+    colWidth(3) = 800  ' Ancho columna 3 (Moneda)
+    colWidth(4) = 2000  ' Ancho columna 4 (Valor)
+    colWidth(5) = 500
+    colWidth(6) = 3000  ' Ancho columna 5 (Proveedor)
+    
+    ' Dibujar encabezados de la tabla
+    Printer.CurrentX = lmargin
+    Printer.FontBold = True
+    Printer.Print "Número";
+    Printer.CurrentX = lmargin + colWidth(1)
+    Printer.Print "Fecha";
+    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + 500
+    Printer.Print "Moneda";
+    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + 1500
+    Printer.Print "Monto";
+    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4)
+    
+    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) + colWidth(5)
+    Printer.Print "Proveedor";
+    Printer.FontBold = False
+    
+    ' Dibujar línea debajo de los encabezados
+    Printer.Line (lmargin, Printer.CurrentY + 200)-(lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) + colWidth(5) + colWidth(6), Printer.CurrentY + 200)
+    
+    ' Imprimir los datos de los comprobantes
+    Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
+    
     C = 0
+    
     For Each F In LiquidacionCaja.FacturasProveedor
-        C = C + 1
-        Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
-        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
-    Next F
+    
+    C = C + 1
+    ' Columna 1: Número
+    Printer.CurrentX = lmargin
+    Printer.Print F.NumeroFormateado;
+    
+    ' Columna 2: Fecha
+    Printer.CurrentX = lmargin + colWidth(1)
+    Printer.Print F.FEcha;
+    
+    ' Columna 3: Moneda
+    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) - Printer.TextWidth(F.moneda.NombreCorto)
+    Printer.Print F.moneda.NombreCorto;
+    
+    ' Columna 4: Total (alineado a la derecha)
+    Dim totalStr As String
+    totalStr = Replace(FormatCurrency(funciones.FormatearDecimales(F.total)), "$", "") ' Formatear el número con 2 decimales
+    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) - Printer.TextWidth(totalStr)
+    Printer.Print totalStr;
+        
+    ' Columna 5: Proveedor
+    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4)
+    
+    
+    ' Columna 6: Proveedor
+    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) + colWidth(5)
+    Printer.Print UCase(F.Proveedor.RazonSocial)
+    
+Next F
+    
     If C = 0 Then
-        Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
-        Printer.Print "NO POSEE FACTURAS ASOCIADAS"
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE COMPROBANTES ASOCIADAS"
     End If
+    
+    
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.FontSize = 10
     Printer.CurrentX = lmargin
     Printer.FontBold = True
     Printer.Print "Valores: "
-
-
+    
     Dim tmpCol As New Collection
-
     Set tmpCol = New Collection
-
+    
+    Printer.FontSize = 8
+    Printer.CurrentX = lmargin + TAB1
+    Printer.Print "Cheques Propios: "
+    Printer.FontBold = False
+    Dim cheq As cheque
+    C = 0
+    
+    For Each cheq In LiquidacionCaja.ChequesPropios
+        C = C + 1
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
+    Next cheq
+    
+    If C = 0 Then
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE CHEQUES PROPIOS"
+    End If
+    Printer.Print
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin + TAB1
+    Printer.Print "Cheques de Terceros: "
+    Printer.FontBold = False
+    Set tmpCol = New Collection
+    C = 0
+    For Each cheq In LiquidacionCaja.ChequesTerceros
+        C = C + 1
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
+    Next cheq
+    If C = 0 Then
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE CHEQUES DE TERCEROS"
+    End If
+    Printer.Print
     Printer.FontBold = True
     Printer.CurrentX = lmargin + TAB1
     Printer.Print "Transferencias: "
@@ -1251,7 +1370,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     For Each op In LiquidacionCaja.operacionesBanco
         C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto & " | Cta.Bancaria: " & op.CuentaBancaria.DescripcionFormateada & " | Nro. Cbte: " & op.Comprobante
+        Printer.Print op.FechaOperacion & String$(2, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | Cta.Bancaria: " & op.CuentaBancaria.DescripcionFormateada & " | Nro. Cbte: " & op.Comprobante
     Next op
     If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -1269,7 +1388,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     For Each op In LiquidacionCaja.operacionesCaja
         C = C + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & op.moneda.NombreCorto & " " & op.Monto
+        Printer.Print op.FechaOperacion & String$(2, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
     Next op
     If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -1285,19 +1404,20 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja, pic As PictureBo
     Printer.CurrentX = lmargin
     Printer.Print "Total Facturas: ";
     Printer.FontBold = False
-    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.StaticTotalFacturas
+    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalFacturas)), "$", "")
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Total Abonado: ";
     Printer.FontBold = False
-    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & LiquidacionCaja.StaticTotalOrigenes
+    Printer.Print LiquidacionCaja.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes)), "$", "")
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     Printer.EndDoc
 
     DaoHistorico.Save "orden_pago_historial", "OP Impresa", LiquidacionCaja.Id
 End Function
+
 
 Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Object) As Boolean
     On Error GoTo err1
@@ -1418,8 +1538,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Exit Function
 err1:
     ExportarColeccion = False
-<<<<<<< HEAD
+
 End Function
-=======
-End Function
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
+
+

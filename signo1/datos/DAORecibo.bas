@@ -558,141 +558,174 @@ End Function
 
 
 Public Sub Imprimir(idRecibo As Long)
-
     Dim Recibo As Recibo
     Set Recibo = DAORecibo.FindById(idRecibo, True, True, True, True, True)
 
     If IsSomething(Recibo) Then
-        
         Dim origin As Integer
-
-        Printer.FontBold = True
+        Dim maxWidth As Single
+        Dim lmargin As Integer
+        Dim cx As Single
+        Dim TAB1 As String
+        
+        TAB1 = 1000
+        ' Configuración inicial
+        lmargin = 720 ' Márgen izquierdo
+        maxWidth = Printer.Width - lmargin * 2
         origin = Printer.FontSize
-        Printer.FontSize = origin + 5
-
-        Dim cx As Integer
+        
+        ' --- Título principal ---
+        Printer.FontBold = True
+        Printer.FontSize = 16
+        cx = lmargin + (maxWidth - Printer.TextWidth("SIGNO PLAST S.A.")) / 2
+        Printer.CurrentX = cx
         Printer.Print "SIGNO PLAST S.A."
         Printer.FontSize = origin + 3
+        
+        ' --- Información del recibo ---
+        Printer.CurrentX = lmargin
         Printer.Print "Número: " & Recibo.Id
+        Printer.CurrentX = lmargin
         Printer.Print "Estado: " & enums.EnumEstadoRecibo(Recibo.estado)
-        Printer.Print "Fecha: " & Format(Day(Recibo.FEcha), "00") & "/" & Format(Month(Recibo.FEcha), "00") & "/" & Format(Year(Recibo.FEcha), "0000")
+        Printer.CurrentX = lmargin
+        Printer.Print "Fecha: " & Format(Recibo.FEcha, "dd/mm/yyyy")
+        Printer.CurrentX = lmargin
         Printer.Print "Cliente: " & Recibo.cliente.razon
+        Printer.CurrentX = lmargin
         Printer.FontSize = origin
         Printer.FontBold = False
-        Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.Width, Printer.CurrentY)
-        Printer.Print Chr(10)
-
-
+        
+        ' Línea divisoria
+        Printer.Line (lmargin, Printer.CurrentY + 50)-(Printer.Width - lmargin, Printer.CurrentY + 50)
+        Printer.Print vbCrLf ' Salto de línea
+        
+        ' --- Facturas ---
         Printer.FontBold = True
-        Printer.Print "Facturas "
+        Printer.CurrentX = lmargin
+        Printer.Print "Facturas:"
         Printer.FontBold = False
         Dim F As Factura
         For Each F In Recibo.facturas
-            Printer.Print F.FechaEmision, F.GetShortDescription(False, True), F.moneda.NombreCorto & " " & Recibo.PagosDeFacturas(CStr(F.Id))
+        Printer.CurrentX = lmargin
+        Printer.Print F.FechaEmision, F.GetShortDescription(False, True), F.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.PagosDeFacturas(CStr(F.Id)))), "$", "")
         Next F
-
+        
         If Recibo.facturas.count > 0 Then
-            Printer.Print "Total Facturas: " & Recibo.TotalFacturas
+            Printer.FontBold = True
+            Printer.CurrentX = lmargin
+            Printer.Print "Total Facturas: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalFacturas)), "$", "")
+            Printer.FontBold = False
         End If
-        Printer.Print Chr(10)
-
+        Printer.Print vbCrLf ' Salto de línea
+        
+        ' --- Retenciones ---
         Printer.FontBold = True
-
-        Printer.Print "Retenciones "
+        Printer.CurrentX = lmargin
+        Printer.Print "Retenciones:"
         Printer.FontBold = False
         Dim r As retencionRecibo
         For Each r In Recibo.retenciones
-            Printer.Print r.FEcha, r.Retencion.nombre, r.NroRetencion, r.Valor
+            Printer.CurrentX = lmargin
+            Printer.Print r.FEcha, r.Retencion.nombre, r.NroRetencion, Replace(FormatCurrency(funciones.FormatearDecimales(r.Valor)), "$", "")
         Next r
+        
         If Recibo.retenciones.count > 0 Then
-            Printer.Print "Total Retenciones: " & Recibo.TotalRetenciones
+            Printer.FontBold = True
+            Printer.CurrentX = lmargin
+            Printer.Print "Total Retenciones: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalRetenciones)), "$", "")
+            Printer.FontBold = False
         End If
-        Printer.Print Chr(10)
-        Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.Width, Printer.CurrentY)
-        Printer.Print Chr(10)
-
+        Printer.Print vbCrLf ' Salto de línea
+        
+        ' Línea divisoria
+        Printer.Line (lmargin, Printer.CurrentY + 50)-(Printer.Width - lmargin, Printer.CurrentY + 50)
+        Printer.Print vbCrLf ' Salto de línea
+        
+        ' --- Valores recibidos ---
         Printer.FontBold = True
-        Printer.Print "Valores recibidos "
+        Printer.CurrentX = lmargin
+        Printer.Print "Valores Recibidos:"
         Printer.FontBold = False
+        
+        ' Banco
         If Recibo.operacionesBanco.count > 0 Then
             Printer.FontBold = True
-            Printer.Print "Banco"
+            Printer.CurrentX = lmargin
+            Printer.Print "Banco:"
+            Printer.FontBold = False
+            Dim o As operacion
+            For Each o In Recibo.operacionesBanco
+                Printer.CurrentX = lmargin
+                Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, Replace(FormatCurrency(funciones.FormatearDecimales(o.Monto)), "$", "")
+            Next o
+            Printer.FontBold = True
+            Printer.CurrentX = lmargin
+            Printer.Print "Total Banco: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalOperacionesBanco)), "$", "")
             Printer.FontBold = False
         Else
-            Printer.Print "Sin operaciones de banco"
+            Printer.CurrentX = lmargin
+            Printer.Print "Sin operaciones de banco."
         End If
-
-        Dim o As operacion
-        For Each o In Recibo.operacionesBanco
-            Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto
-        Next o
-
-        If Recibo.operacionesBanco.count > 0 Then
-            Printer.FontBold = True
-            Printer.Print "Total Banco: " & Recibo.TotalOperacionesBanco
-        End If
-
-        Printer.Print Chr(10)
-
+        Printer.Print vbCrLf ' Salto de línea
+        
+        ' Caja
         If Recibo.operacionesCaja.count > 0 Then
             Printer.FontBold = True
-            Printer.Print "Caja"
+            Printer.CurrentX = lmargin
+            Printer.Print "Caja:"
+            Printer.FontBold = False
+            For Each o In Recibo.operacionesCaja
+                Printer.Print o.FechaOperacion, Replace(FormatCurrency(funciones.FormatearDecimales(o.Monto)), "$", "")
+            Next o
+            Printer.FontBold = True
+            Printer.Print "Total Caja: " & Format(Recibo.TotalOperacionesCaja, "0.00")
             Printer.FontBold = False
         Else
-
-            Printer.Print "Sin operaciones de caja"
-
+            Printer.CurrentX = lmargin
+            Printer.Print "Sin operaciones de caja."
         End If
-
-
-
-        For Each o In Recibo.operacionesCaja
-            'Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto
-            Printer.Print o.FechaOperacion, o.Monto
-        Next o
-
-        Printer.FontBold = True
-        If Recibo.operacionesCaja.count > 0 Then
-            Printer.Print "Total Caja: " & Recibo.TotalOperacionesCaja
-        End If
-
-        Printer.Print Chr(10)
-
+        Printer.Print vbCrLf ' Salto de línea
+        
+        ' Cheques
         If Recibo.cheques.count > 0 Then
             Printer.FontBold = True
-            Printer.Print "Cheques Recibidos"
+            Printer.CurrentX = lmargin
+            Printer.Print "Cheques Recibidos:"
+            Printer.FontBold = False
+            Printer.CurrentX = lmargin
+            Printer.FontBold = True
+            Printer.Print "Número", "Monto", "Fecha Vto.", "Banco"
+            Dim che As cheque
+            For Each che In Recibo.cheques
+               Printer.CurrentX = lmargin
+               Printer.FontBold = False
+               Printer.Print che.numero, Replace(FormatCurrency(funciones.FormatearDecimales(che.Monto)), "$", ""), che.FechaVencimiento, che.Banco.nombre
+            Next che
+            Printer.FontBold = True
+            Printer.CurrentX = lmargin
+            Printer.Print "Total Cheques Recibidos: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalCheques)), "$", "")
             Printer.FontBold = False
         Else
-
+            Printer.CurrentX = lmargin
             Printer.Print "Sin cheques recibidos."
-
         End If
-
-        Printer.Print "Numero,"; vbTab; "Monto"; vbTab; vbTab; "Fecha Vto."; vbTab; "Banco"
-
-        Dim che As cheque
-        For Each che In Recibo.cheques
-
-            'Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto
-
-            Printer.Print che.numero, che.Monto, che.FechaVencimiento, che.Banco.nombre
-        Next che
-
+        Printer.Print vbCrLf ' Salto de línea
+        
+        ' Línea divisoria
+        Printer.Line (lmargin, Printer.CurrentY + 50)-(Printer.Width - lmargin, Printer.CurrentY + 50)
+        Printer.Print vbCrLf ' Salto de línea
+        
+        ' --- Totales finales ---
         Printer.FontBold = True
-        If Recibo.cheques.count > 0 Then
-            Printer.Print "Total Cheques Recibidos: " & Recibo.TotalCheques
-        End If
-        Printer.Print Chr(10)
-        Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.Width, Printer.CurrentY)
-
-
-
-        Printer.Print " Total Recibo:  " & Recibo.total
-        Printer.Print " Total Recibido:  " & Recibo.TotalRecibido
+        Printer.CurrentX = lmargin
+        Printer.Print "Total Recibo: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.total)), "$", "")
+        Printer.CurrentX = lmargin
+        Printer.Print "Total Recibido: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalRecibido)), "$", "")
         Printer.FontBold = False
+        
+        ' Finalizar impresión
         Printer.EndDoc
     End If
-
 End Sub
 
 Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Object) As Boolean

@@ -316,7 +316,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Private Detalles As Collection
+Private detalles As Collection
 Private deta As DTODetalleCuentaCorriente
 Private saldo As Double
 Private saldos As New Dictionary
@@ -349,16 +349,16 @@ Private Sub ver()
         LlenarLiquidaciones (Id)
         If Not IsNull(Me.dtpHasta.value) Then
             condition = conectar.Escape(Format(Me.dtpHasta.value, "yyyy-mm-dd"))
-            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , condition, True)
+            Set detalles = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , condition, True)
             saldo = 0
         Else
-            Set Detalles = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , , True)
+            Set detalles = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , , True)
             saldo = 0
         End If
 
 
-        If IsSomething(Detalles) Then
-            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))), "$", "")
+        If IsSomething(detalles) Then
+            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(detalles))), "$", "")
         End If
 
         saldo = 0
@@ -367,8 +367,8 @@ Private Sub ver()
         Me.gridDetalles.Refetch
 
         Me.gridDetalles.ItemCount = 0
-        If Detalles.count > 0 Then
-            Me.gridDetalles.ItemCount = Detalles.count
+        If detalles.count > 0 Then
+            Me.gridDetalles.ItemCount = detalles.count
             GridEXHelper.AutoSizeColumns Me.gridDetalles
         End If
     End If
@@ -382,15 +382,15 @@ Private Sub ver2()
     If Me.cboLiquidaciones.ListIndex <> -1 Then
         Id = Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)
 
-        Set Detalles = DAOCuentaCorrienteHistoric.GetById(proveedor_, Id).Detalles
-        If IsSomething(Detalles) Then
-            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))), "$", "")
+        Set detalles = DAOCuentaCorrienteHistoric.GetById(proveedor_, Id).detalles
+        If IsSomething(detalles) Then
+            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(detalles))), "$", "")
         End If
 
         saldo = 0
         Set saldos = New Dictionary
         Me.gridDetalles.ItemCount = 0
-        Me.gridDetalles.ItemCount = Detalles.count
+        Me.gridDetalles.ItemCount = detalles.count
         GridEXHelper.AutoSizeColumns Me.gridDetalles
     End If
 End Sub
@@ -444,7 +444,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub gridDetalles_DblClick()
-    Set deta = Detalles.item(gridDetalles.RowIndex(gridDetalles.row))
+    Set deta = detalles.item(gridDetalles.rowIndex(gridDetalles.row))
 
 
     If (deta.tipoComprobante = TipoComprobanteUsado.FacturaProveedor_) Then
@@ -475,10 +475,10 @@ Private Sub gridDetalles_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If Detalles.count = 0 Then Exit Sub
+    If detalles.count = 0 Then Exit Sub
 
-    If RowBuffer.RowIndex > 0 Then
-        Set deta = Detalles.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 Then
+        Set deta = detalles.item(RowBuffer.rowIndex)
         If Not deta.AtributoExtra And deta.Debe > 0 And deta.Haber = 0 Then    'no esta en ninguna orden
             RowBuffer.RowStyle = "Impaga"
         End If
@@ -488,9 +488,9 @@ Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
 
 End Sub
 
-Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Detalles.count > 0 Then
-        Set deta = Detalles.item(RowIndex)
+Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And detalles.count > 0 Then
+        Set deta = detalles.item(rowIndex)
         Values(1) = deta.FEcha
         Values(2) = deta.Comprobante
         Values(3) = deta.Debe
@@ -585,7 +585,7 @@ Public Function ExportToXlsProv() As Boolean
     Dim idx As Integer
     idx = 4
 
-    For Each deta In Detalles
+    For Each deta In detalles
 
 
         xlWorksheet.Cells(idx, 1).value = deta.FEcha

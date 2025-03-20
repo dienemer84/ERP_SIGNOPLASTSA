@@ -113,7 +113,7 @@ Begin VB.Form frmNuevaOrdenTrabajo
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   67633153
+      Format          =   65732609
       CurrentDate     =   40077
    End
    Begin XtremeSuiteControls.PushButton cmdGuardar 
@@ -342,7 +342,7 @@ Private Sub chkMarco_Click()
     'Me.cboClienteFacturar.Enabled = Not (Me.chkMarco.value * -1)
 
     'Me.cboCliente.ListIndex = -1
-    Me.txtReferencia.text = vbNullString
+    Me.txtReferencia.Text = vbNullString
     Me.cboMoneda.Enabled = Not (Me.chkMarco.value * -1)
     Me.cboMoneda.ListIndex = -1
 
@@ -379,7 +379,7 @@ Private Sub cmdGuardar_Click()
     Set Ot.ClienteFacturar = DAOCliente.BuscarPorID(Me.cboClienteFacturar.ItemData(Me.cboClienteFacturar.ListIndex))
 
     Ot.FechaEntrega = Me.dtpFechaEntrega.value
-    Ot.descripcion = Me.txtReferencia.text
+    Ot.descripcion = Me.txtReferencia.Text
 
 
     Set Ot.moneda = Monedas.item(CStr(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex)))

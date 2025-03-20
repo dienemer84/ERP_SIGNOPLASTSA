@@ -375,20 +375,20 @@ Public Sub Cargar(sin As SiniestroPersonal)
 
     If IsSomething(m_sin.InformeAccidente) Then
         With m_sin.InformeAccidente
-            Me.txtPuesto.text = .Puesto
+            Me.txtPuesto.Text = .Puesto
             Me.chkHorasExtras.value = CInt(.HsExtras) * -1
-            Me.txtTestigos.text = .NombreTestigos
-            Me.txtDescripcion.text = .DescripcionHecho
-            Me.txtFallaMaquinas.text = .FallaMaquinasEquipos
-            Me.txtFaltaElementos.text = .FaltaElementosProteccionPersonal
-            Me.txtActoInseguro.text = .ActoInseguro
-            Me.txtOtros.text = .Otros
+            Me.txtTestigos.Text = .NombreTestigos
+            Me.txtDescripcion.Text = .DescripcionHecho
+            Me.txtFallaMaquinas.Text = .FallaMaquinasEquipos
+            Me.txtFaltaElementos.Text = .FaltaElementosProteccionPersonal
+            Me.txtActoInseguro.Text = .ActoInseguro
+            Me.txtOtros.Text = .Otros
 
-            Me.txtNaturalezaLesion.text = .NaturalezaLesion
-            Me.txtUbicacionLesion.text = .UbicacionLesion
-            Me.txtFormaAccidente.text = .FormaAccidente
-            Me.txtAgenteMaterial.text = .AgenteMaterial
-            Me.txtRecomendaciones.text = .RecomendacionParaEvitarRepeticion
+            Me.txtNaturalezaLesion.Text = .NaturalezaLesion
+            Me.txtUbicacionLesion.Text = .UbicacionLesion
+            Me.txtFormaAccidente.Text = .FormaAccidente
+            Me.txtAgenteMaterial.Text = .AgenteMaterial
+            Me.txtRecomendaciones.Text = .RecomendacionParaEvitarRepeticion
         End With
     End If
 
@@ -409,20 +409,20 @@ Private Sub btnGuardar_Click()
         ev.EVENTO = agregar_
     End If
 
-    acc.Puesto = Me.txtPuesto.text
+    acc.Puesto = Me.txtPuesto.Text
     acc.HsExtras = Me.chkHorasExtras.value
-    acc.NombreTestigos = Me.txtTestigos.text
-    acc.DescripcionHecho = Me.txtDescripcion.text
-    acc.FallaMaquinasEquipos = Me.txtFallaMaquinas.text
-    acc.FaltaElementosProteccionPersonal = Me.txtFaltaElementos.text
-    acc.ActoInseguro = Me.txtActoInseguro.text
-    acc.Otros = Me.txtOtros.text
+    acc.NombreTestigos = Me.txtTestigos.Text
+    acc.DescripcionHecho = Me.txtDescripcion.Text
+    acc.FallaMaquinasEquipos = Me.txtFallaMaquinas.Text
+    acc.FaltaElementosProteccionPersonal = Me.txtFaltaElementos.Text
+    acc.ActoInseguro = Me.txtActoInseguro.Text
+    acc.Otros = Me.txtOtros.Text
 
-    acc.NaturalezaLesion = Me.txtNaturalezaLesion.text
-    acc.UbicacionLesion = Me.txtUbicacionLesion.text
-    acc.FormaAccidente = Me.txtFormaAccidente.text
-    acc.AgenteMaterial = Me.txtAgenteMaterial.text
-    acc.RecomendacionParaEvitarRepeticion = Me.txtRecomendaciones.text
+    acc.NaturalezaLesion = Me.txtNaturalezaLesion.Text
+    acc.UbicacionLesion = Me.txtUbicacionLesion.Text
+    acc.FormaAccidente = Me.txtFormaAccidente.Text
+    acc.AgenteMaterial = Me.txtAgenteMaterial.Text
+    acc.RecomendacionParaEvitarRepeticion = Me.txtRecomendaciones.Text
 
     Set m_sin.InformeAccidente = acc
 

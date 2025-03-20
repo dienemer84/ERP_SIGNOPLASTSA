@@ -15,23 +15,6 @@ Begin VB.Form frmPlanificacionTemporal
    ScaleHeight     =   8190
    ScaleWidth      =   17040
    WindowState     =   2  'Maximized
-   Begin XtremeReportControl.ReportControl ReportControl 
-      Height          =   6435
-      Left            =   15
-      TabIndex        =   0
-      Top             =   1470
-      Width           =   5700
-      _Version        =   786432
-      _ExtentX        =   10054
-      _ExtentY        =   11351
-      _StockProps     =   64
-      BorderStyle     =   3
-      PreviewMode     =   -1  'True
-      AllowColumnRemove=   0   'False
-      AllowColumnReorder=   0   'False
-      AllowColumnSort =   0   'False
-      ShowHeaderRows  =   -1  'True
-   End
    Begin phGantXControl.phGantX phGantX1 
       Height          =   7935
       Left            =   5805
@@ -193,6 +176,23 @@ Begin VB.Form frmPlanificacionTemporal
       InplaceDateTimeClearStatesBetweenEdits=   0   'False
       SupressOnUserDrawExceptions=   0   'False
    End
+   Begin XtremeReportControl.ReportControl ReportControl 
+      Height          =   6435
+      Left            =   15
+      TabIndex        =   0
+      Top             =   1470
+      Width           =   5700
+      _Version        =   786432
+      _ExtentX        =   10054
+      _ExtentY        =   11351
+      _StockProps     =   64
+      BorderStyle     =   3
+      PreviewMode     =   -1  'True
+      AllowColumnRemove=   0   'False
+      AllowColumnReorder=   0   'False
+      AllowColumnSort =   0   'False
+      ShowHeaderRows  =   -1  'True
+   End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1365
       Left            =   60
@@ -298,10 +298,10 @@ Private Sub AgregarTareas(row As ReportRow)
         Set lista_ptp = DAOTiemposProceso.FindAllByDetallePedidoId(row.ParentRow.record.Tag, idDetalle, , True)
     End If
 
-    Dim c As Long
-    c = 0
+    Dim C As Long
+    C = 0
     For Each ptp In lista_ptp
-        c = c + 1
+        C = C + 1
         Dim newactivity As IphDataEntity_Tree
         If (phGantX1.CurrentDataEntityTree Is Nothing) Then
             Set newactivity = phGantX1.AddRootDataEntityTree
@@ -310,7 +310,7 @@ Private Sub AgregarTareas(row As ReportRow)
             Set newactivity = phGantX1.AddDataEntityTree(phGantX1.CurrentDataEntityTree)
         End If
         newactivity.CanEdit = True
-        newactivity.text = ptp.Planificacion.Prioridad
+        newactivity.Text = ptp.Planificacion.Prioridad
         newactivity.UserVariantReference = ptp
 
         Dim time As IphDataEntity_GantTime
@@ -323,7 +323,7 @@ Private Sub AgregarTareas(row As ReportRow)
                 ptp.Planificacion.Fin = DateAdd("d", 1, Date)
                 ptp.Planificacion.idTiempoProceso = ptp.Id
                 ptp.Planificacion.Color = ColorConstants.vbBlue
-                ptp.Planificacion.Prioridad = c
+                ptp.Planificacion.Prioridad = C
             End If
             time.Start = ptp.Planificacion.Inicio
             time.Stop = ptp.Planificacion.Fin
@@ -344,7 +344,7 @@ Private Sub cmdBuscar_Click()
     If LenB(Me.txtOt) > 0 And IsNumeric(Me.txtOt) Then
         Set vpedido = DAOOrdenTrabajo.FindById(Val(Me.txtOt))
         If IsSomething(vpedido) Then
-            Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
+            Set vpedido.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
             MostrarGantt
         End If
     End If
@@ -373,7 +373,7 @@ End Sub
 
 Private Sub BuscarPedido()
     Set vpedido = DAOOrdenTrabajo.FindById(vpedido.Id)
-    Set vpedido.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
+    Set vpedido.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
 End Sub
 
 Private Sub ArmarColGantt()
@@ -471,7 +471,7 @@ Private Sub ArmarGantt()
     Dim Record3 As ReportRecord
     Dim Record4 As ReportRecord
     Dim item As ReportRecordItem
-    For Each deta In vpedido.Detalles
+    For Each deta In vpedido.detalles
         Set record = Me.ReportControl.Records.Add
         record.Tag = deta.Id
         record.AddItem deta.item

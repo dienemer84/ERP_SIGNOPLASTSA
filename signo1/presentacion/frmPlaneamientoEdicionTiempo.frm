@@ -43,7 +43,7 @@ Begin VB.Form frmPlaneamientoEdicionTiempo
       _ExtentY        =   582
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm:ss"
-      Format          =   63242243
+      Format          =   65994755
       CurrentDate     =   40140
    End
    Begin VB.ComboBox cboEmpleado 
@@ -64,7 +64,7 @@ Begin VB.Form frmPlaneamientoEdicionTiempo
       _ExtentY        =   582
       _Version        =   393216
       CustomFormat    =   "dd/MM/yyyy HH:mm:ss"
-      Format          =   63242243
+      Format          =   65994755
       CurrentDate     =   40140
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
@@ -199,7 +199,7 @@ Public Property Set detalleEditar(value As PlaneamientoTiempoProcesoDetalle)
     Me.cboEmpleado.ListIndex = 0
     Me.cboEmpleado.Enabled = False
 
-    Me.txtCant.text = value.CantidadProcesada
+    Me.txtCant.Text = value.CantidadProcesada
 
     Me.dtpInicio.value = value.FechaInicioTarea
     Me.dtpFin.value = value.FechaFinTarea
@@ -248,7 +248,7 @@ Private Sub btnGuardar_Click()
             Set dett = DAOTiemposProcesosDetalles.FindFirstWithoutFinishByEmpleadoId(Me.cboEmpleado.ItemData(Me.cboEmpleado.ListIndex))
             If Not dett Is Nothing Then
                 If dett.PlaneamientoTiempoProceso.Tarea.Id <> DAOTiemposProceso.FindById(planeamiento_tiempo_proceso_id).Tarea.Id Then
-                    MsgBox "El empleado [" & Me.cboEmpleado.text & "] tiene una tarea iniciada sin finalizar desde el " & dett.FechaInicioTarea, vbInformation + vbOKOnly
+                    MsgBox "El empleado [" & Me.cboEmpleado.Text & "] tiene una tarea iniciada sin finalizar desde el " & dett.FechaInicioTarea, vbInformation + vbOKOnly
                     Exit Sub
                 End If
             End If
@@ -291,7 +291,7 @@ Private Sub btnGuardar_Click()
     End If
 
     Set deta.Empleado = DAOEmpleados.GetById(Me.cboEmpleado.ItemData(Me.cboEmpleado.ListIndex))
-    deta.CantidadProcesada = Val(Me.txtCant.text)
+    deta.CantidadProcesada = Val(Me.txtCant.Text)
     deta.IdPlaneamientoTiempoProceso = planeamiento_tiempo_proceso_id
 
     If DAOTiemposProcesosDetalles.Save(deta) Then
@@ -314,5 +314,5 @@ End Sub
 
 
 Private Sub txtCant_Validate(Cancel As Boolean)
-    Cancel = (Not IsNumeric(Me.txtCant.text) And LenB(Me.txtCant.text) <> 0)
+    Cancel = (Not IsNumeric(Me.txtCant.Text) And LenB(Me.txtCant.Text) <> 0)
 End Sub

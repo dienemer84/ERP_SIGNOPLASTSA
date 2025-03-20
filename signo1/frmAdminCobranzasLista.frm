@@ -529,7 +529,7 @@ Private Sub llenarLista()
 
     If Me.cboCliente.ListIndex > 0 Then F = F & " and rec.idCliente = " & Me.cboCliente.ItemData(Me.cboCliente.ListIndex)
 
-    If LenB(Me.txtNroRecibo.text) > 0 Then F = F & " AND rec.id = " & Me.txtNroRecibo.text
+    If LenB(Me.txtNroRecibo.Text) > 0 Then F = F & " AND rec.id = " & Me.txtNroRecibo.Text
 
 
 
@@ -592,7 +592,7 @@ End Sub
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         SeleccionarRecibo
-        Me.nro.caption = "[ Nro. " & Format(Recibo.Id, "0000") & " ]"
+        Me.NRO.caption = "[ Nro. " & Format(Recibo.Id, "0000") & " ]"
 
         If Recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True
@@ -676,7 +676,7 @@ Private Sub grilla_recibos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmar
     Values(1) = Recibo.Id
     Values(2) = Format(Recibo.FEcha, "yyyy/mm/dd", vbSunday)
 
-    Values(3) = Recibo.Cliente.razon
+    Values(3) = Recibo.cliente.razon
     Values(4) = Recibo.FechaCreacion
     Values(5) = Recibo.moneda.NombreCorto
     

@@ -251,7 +251,7 @@ Private Sub btnGuardar_Click()
 
     q = Replace$(q, "{codigoTarea}", Me.cboTareas.ItemData(Me.cboTareas.ListIndex))
     q = Replace$(q, "{conjunto}", CInt(Pieza.EsConjunto) * -1)
-    q = Replace$(q, "{observacion_agregado}", conectar.Escape(Me.txtObservaciones.text))
+    q = Replace$(q, "{observacion_agregado}", conectar.Escape(Me.txtObservaciones.Text))
 
     TareaAgregada = conectar.execute(q)
     If TareaAgregada Then

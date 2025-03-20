@@ -620,7 +620,7 @@ End Sub
 
 Private Sub gridTransferencias_SelectionChange()
     On Error Resume Next
-    Set TransfBancaria = transferencias.item(gridTransferencias.RowIndex(gridTransferencias.row))
+    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
 End Sub
 
 
@@ -643,9 +643,9 @@ Private Sub gridTransferencias_MouseUp(Button As Integer, Shift As Integer, x As
 End Sub
 
 
-Private Sub gridTransferencias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-If RowIndex > 0 And transferencias.count > 0 Then
-    Set TransfBancaria = transferencias.item(RowIndex)
+Private Sub gridTransferencias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+If rowIndex > 0 And transferencias.count > 0 Then
+    Set TransfBancaria = transferencias.item(rowIndex)
         Values(1) = TransfBancaria.Id
         
 

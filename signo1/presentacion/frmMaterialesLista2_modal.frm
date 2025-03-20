@@ -390,9 +390,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
         Set tmp = EVENTO.Elemento
 
         For i = Materiales.count To 1 Step -1
-            If Materiales(i).id = tmp.id Then
+            If Materiales(i).Id = tmp.Id Then
                 Set rectemp = Materiales(i)
-                rectemp.id = tmp.id
+                rectemp.Id = tmp.Id
                 rectemp.Valor = tmp.Valor
                 rectemp.descripcion = tmp.descripcion
                 rectemp.Grupo = tmp.Grupo

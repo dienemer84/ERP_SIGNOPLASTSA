@@ -421,7 +421,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Dim dto As DTONombreMonto
 Dim condition As String
-Dim Cheques As New Collection
+Dim cheques As New Collection
 Dim Cajas As New Collection
 Dim compe As New Collection
 Dim retenciones As New Collection
@@ -435,7 +435,7 @@ Private Sub cmdBuscar_Click()
     Me.gridBancos.ItemCount = 0
     Me.gridCompensatorios.ItemCount = 0
 
-    Set Cheques = New Collection
+    Set cheques = New Collection
     Set Cajas = New Collection
     Set compe = New Collection
     Set bancos = New Collection
@@ -453,7 +453,7 @@ Private Sub cmdBuscar_Click()
 
 
 
-    DAOOrdenPago.ResumenPagos Cheques, Cajas, bancos, compe, retenciones, cheques3, condition
+    DAOOrdenPago.ResumenPagos cheques, Cajas, bancos, compe, retenciones, cheques3, condition
 
     Me.gridCheques.ItemCount = 0
     Me.gridCajas.ItemCount = 0
@@ -462,7 +462,7 @@ Private Sub cmdBuscar_Click()
     Me.gridRetenciones.ItemCount = 0
     Me.gridChequesTerceros.ItemCount = 0
 
-    Me.gridCheques.ItemCount = Cheques.count
+    Me.gridCheques.ItemCount = cheques.count
     Me.gridCajas.ItemCount = Cajas.count
     Me.gridBancos.ItemCount = bancos.count
     Me.gridCompensatorios.ItemCount = compe.count
@@ -480,7 +480,7 @@ Private Sub cmdBuscar_Click()
     Dim tt As Double
     T = 0
     tt = 0
-    For Each dto In Cheques
+    For Each dto In cheques
         T = T + funciones.FormatearDecimales(dto.Monto)
     Next
     tt = tt + T
@@ -549,7 +549,7 @@ Private Sub cmdImprimir_Click()
     Printer.Print
     Printer.Print
 
-    dtoHeader Cheques, "CHEQUES PROPIOS", Me.lblTotalCheques.caption
+    dtoHeader cheques, "CHEQUES PROPIOS", Me.lblTotalCheques.caption
     dtoHeader cheques3, "CHEQUES DE TERCEROS", Me.lblTotalChequesTerceros.caption
     dtoHeader Cajas, "CAJAS", Me.lblTotalCaja.caption
     dtoHeader bancos, "BANCOS", Me.lblTotalBancos.caption
@@ -571,7 +571,7 @@ Private Sub cmdImprimir_Click()
 End Sub
 
 Private Function dtoHeader(col As Collection, titulo As String, total_titulo As String)
-    Dim c As DTONombreMonto
+    Dim C As DTONombreMonto
     Printer.FontBold = True
 
     Printer.Print Tab(2);
@@ -580,23 +580,23 @@ Private Function dtoHeader(col As Collection, titulo As String, total_titulo As 
     Printer.Print total_titulo
 
     Printer.FontBold = False
-    For Each c In col
-        printDto c
-    Next c
+    For Each C In col
+        printDto C
+    Next C
     Printer.Print
     Printer.Print
 End Function
-Private Function printDto(c As DTONombreMonto)
+Private Function printDto(C As DTONombreMonto)
     Dim x As Long
     Dim xval As Long
     Printer.Print Tab(5);
-    Printer.Print c.nombre;
+    Printer.Print C.nombre;
     Printer.Print Tab(50);
 
     x = Printer.CurrentX
-    xval = x - Printer.TextWidth(funciones.FormatearDecimales(c.Monto))
+    xval = x - Printer.TextWidth(funciones.FormatearDecimales(C.Monto))
     Printer.CurrentX = xval
-    Printer.Print funciones.FormatearDecimales(c.Monto);
+    Printer.Print funciones.FormatearDecimales(C.Monto);
 
 
 
@@ -635,7 +635,7 @@ Private Sub gridCajas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As 
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub
 Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = Cheques(rowIndex)
+    Set dto = cheques(rowIndex)
     Values(1) = dto.nombre
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub

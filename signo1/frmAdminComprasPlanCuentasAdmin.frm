@@ -250,9 +250,9 @@ Private Sub llenarPlan()
     Set cuentas = DAOCuentaContable.GetAll(True, filtro)
     DAOCuentaContable.PutSaldos cuentas, rango
     Dim T As Double
-    Dim c As clsCuentaContable
-    For Each c In cuentas
-        T = T + c.TotalAcumulado
+    Dim C As clsCuentaContable
+    For Each C In cuentas
+        T = T + C.TotalAcumulado
     Next
     Me.lblTotal.caption = "Total AR$ " & funciones.FormatearDecimales(T)
 

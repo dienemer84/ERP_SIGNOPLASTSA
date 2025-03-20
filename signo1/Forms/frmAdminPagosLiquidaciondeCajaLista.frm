@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosLiquidaciondeCajaLista 
@@ -21,7 +22,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       _ExtentX        =   28654
       _ExtentY        =   3201
       _StockProps     =   79
-      Caption         =   "ParÃ¡metros de bÃºsqueda"
+      Caption         =   "Parámetros de búsqueda"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -36,7 +37,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Height          =   735
          Index           =   2
          Left            =   11040
-         TabIndex        =   25
+         TabIndex        =   13
          Top             =   0
          Width           =   5055
          _Version        =   786432
@@ -47,7 +48,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.ProgressBar ProgressBar 
             Height          =   375
             Left            =   120
-            TabIndex        =   26
+            TabIndex        =   14
             Top             =   240
             Width           =   4815
             _Version        =   786432
@@ -59,10 +60,11 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       End
       Begin VB.PictureBox pic 
          Height          =   300
-         Left            =   4920
+         Index           =   0
+         Left            =   5040
          ScaleHeight     =   240
          ScaleWidth      =   285
-         TabIndex        =   24
+         TabIndex        =   12
          Top             =   240
          Visible         =   0   'False
          Width           =   345
@@ -71,7 +73,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Height          =   870
          Index           =   1
          Left            =   11040
-         TabIndex        =   20
+         TabIndex        =   8
          Top             =   720
          Width           =   5055
          _Version        =   786432
@@ -82,7 +84,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.PushButton btnExportar 
             Height          =   450
             Left            =   2040
-            TabIndex        =   23
+            TabIndex        =   11
             Top             =   240
             Width           =   1335
             _Version        =   786432
@@ -96,7 +98,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
             Default         =   -1  'True
             Height          =   450
             Left            =   120
-            TabIndex        =   21
+            TabIndex        =   9
             Top             =   240
             Width           =   1350
             _Version        =   786432
@@ -118,7 +120,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Begin XtremeSuiteControls.PushButton btnImprimir 
             Height          =   450
             Left            =   3600
-            TabIndex        =   22
+            TabIndex        =   10
             Top             =   240
             Width           =   1350
             _Version        =   786432
@@ -133,7 +135,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Alignment       =   1  'Right Justify
          Height          =   285
          Left            =   1320
-         TabIndex        =   6
+         TabIndex        =   2
          Top             =   285
          Width           =   840
       End
@@ -151,104 +153,11 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          Caption         =   "PushButton2"
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.GroupBox GroupBox2 
-         Height          =   1335
-         Left            =   5760
-         TabIndex        =   2
-         Top             =   0
-         Width           =   2355
-         _Version        =   786432
-         _ExtentX        =   4154
-         _ExtentY        =   2355
-         _StockProps     =   79
-         Caption         =   "Estado Proveedor"
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         UseVisualStyle  =   -1  'True
-         Begin XtremeSuiteControls.CheckBox chkContado 
-            Height          =   195
-            Left            =   405
-            TabIndex        =   3
-            Top             =   360
-            Width           =   1635
-            _Version        =   786432
-            _ExtentX        =   2884
-            _ExtentY        =   344
-            _StockProps     =   79
-            Caption         =   "Contado"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-         Begin XtremeSuiteControls.CheckBox chkCtaCte 
-            Height          =   315
-            Left            =   405
-            TabIndex        =   4
-            Top             =   600
-            Width           =   1800
-            _Version        =   786432
-            _ExtentX        =   3175
-            _ExtentY        =   556
-            _StockProps     =   79
-            Caption         =   "Cuenta Corriente"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-         Begin XtremeSuiteControls.CheckBox chkEliminado 
-            Height          =   315
-            Left            =   405
-            TabIndex        =   5
-            Top             =   900
-            Width           =   1800
-            _Version        =   786432
-            _ExtentX        =   3175
-            _ExtentY        =   556
-            _StockProps     =   79
-            Caption         =   "Inactivos"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-      End
-      Begin XtremeSuiteControls.ComboBox cboProveedores 
-         Height          =   315
-         Left            =   1305
-         TabIndex        =   7
-         Top             =   735
-         Width           =   3525
-         _Version        =   786432
-         _ExtentX        =   6218
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Enabled         =   0   'False
-         Text            =   "cboProveedores"
-      End
-      Begin XtremeSuiteControls.PushButton btnClearProveedor 
-         Height          =   375
-         Left            =   4920
-         TabIndex        =   8
-         Top             =   720
-         Width           =   405
-         _Version        =   786432
-         _ExtentX        =   714
-         _ExtentY        =   661
-         _StockProps     =   79
-         Caption         =   "X"
-         BackColor       =   12632256
-         Enabled         =   0   'False
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.ComboBox cboEstado 
          Height          =   315
          Left            =   1305
-         TabIndex        =   9
-         Top             =   1200
+         TabIndex        =   3
+         Top             =   720
          Width           =   3510
          _Version        =   786432
          _ExtentX        =   6191
@@ -261,8 +170,8 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
          Height          =   375
          Left            =   4920
-         TabIndex        =   10
-         Top             =   1170
+         TabIndex        =   4
+         Top             =   690
          Width           =   405
          _Version        =   786432
          _ExtentX        =   714
@@ -272,20 +181,21 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          BackColor       =   12632256
          UseVisualStyle  =   -1  'True
       End
-      Begin XtremeSuiteControls.GroupBox GroupBox 
+      Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
          Height          =   1335
-         Index           =   0
-         Left            =   8280
-         TabIndex        =   14
-         Top             =   0
-         Width           =   2655
+         Index           =   1
+         Left            =   5880
+         TabIndex        =   15
+         Top             =   240
+         Width           =   4695
          _Version        =   786432
-         _ExtentX        =   4683
+         _ExtentX        =   8281
          _ExtentY        =   2355
          _StockProps     =   79
-         Caption         =   "Fecha de CreaciÃ³n"
+         Caption         =   "Fecha Liquidación"
+         BackColor       =   16744576
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
@@ -293,12 +203,13 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         UseVisualStyle  =   -1  'True
+         Appearance      =   4
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
-            Left            =   900
-            TabIndex        =   15
-            Top             =   360
+            Index           =   1
+            Left            =   720
+            TabIndex        =   16
+            Top             =   720
             Width           =   1470
             _Version        =   786432
             _ExtentX        =   2593
@@ -309,9 +220,10 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
          End
          Begin XtremeSuiteControls.DateTimePicker dtpHasta 
             Height          =   315
-            Left            =   885
-            TabIndex        =   16
-            Top             =   855
+            Index           =   1
+            Left            =   2925
+            TabIndex        =   17
+            Top             =   720
             Width           =   1470
             _Version        =   786432
             _ExtentX        =   2593
@@ -320,25 +232,26 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
             CheckBox        =   -1  'True
             Format          =   1
          End
-         Begin XtremeSuiteControls.Label Label5 
-            Height          =   195
-            Left            =   360
+         Begin XtremeSuiteControls.ComboBox cboRangos 
+            Height          =   315
+            Left            =   720
             TabIndex        =   18
-            Top             =   405
-            Width           =   465
+            Top             =   300
+            Width           =   3675
             _Version        =   786432
-            _ExtentX        =   820
-            _ExtentY        =   344
-            _StockProps     =   79
-            Caption         =   "Desde"
-            BackColor       =   12632256
-            AutoSize        =   -1  'True
+            _ExtentX        =   6482
+            _ExtentY        =   556
+            _StockProps     =   77
+            BackColor       =   -2147483643
+            Style           =   2
+            Text            =   "ComboBox1"
          End
-         Begin XtremeSuiteControls.Label Label6 
+         Begin XtremeSuiteControls.Label lblHasta 
             Height          =   195
-            Left            =   375
-            TabIndex        =   17
-            Top             =   915
+            Index           =   1
+            Left            =   2400
+            TabIndex        =   21
+            Top             =   780
             Width           =   420
             _Version        =   786432
             _ExtentX        =   741
@@ -348,45 +261,56 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
             BackColor       =   12632256
             AutoSize        =   -1  'True
          End
+         Begin XtremeSuiteControls.Label lblDesde 
+            Height          =   195
+            Index           =   1
+            Left            =   165
+            TabIndex        =   20
+            Top             =   780
+            Width           =   465
+            _Version        =   786432
+            _ExtentX        =   820
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Desde"
+            BackColor       =   12632256
+            AutoSize        =   -1  'True
+         End
+         Begin XtremeSuiteControls.Label lblRango 
+            Height          =   195
+            Index           =   1
+            Left            =   120
+            TabIndex        =   19
+            Top             =   360
+            Width           =   480
+            _Version        =   786432
+            _ExtentX        =   847
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Rango"
+            BackColor       =   12632256
+            AutoSize        =   -1  'True
+         End
       End
       Begin XtremeSuiteControls.Label Label1 
          Height          =   195
          Left            =   180
-         TabIndex        =   13
+         TabIndex        =   6
          Top             =   330
          Width           =   1035
          _Version        =   786432
          _ExtentX        =   1826
          _ExtentY        =   344
          _StockProps     =   79
-<<<<<<< HEAD
          Caption         =   "N° Liquidación"
-=======
-         Caption         =   "NÂº LiquidaciÃ³n:"
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
-         Alignment       =   1
-         AutoSize        =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label lbl 
-         Height          =   195
-         Left            =   480
-         TabIndex        =   12
-         Top             =   780
-         Width           =   735
-         _Version        =   786432
-         _ExtentX        =   1296
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Proveedor"
-         Enabled         =   0   'False
          Alignment       =   1
          AutoSize        =   -1  'True
       End
       Begin XtremeSuiteControls.Label Label4 
          Height          =   195
          Left            =   720
-         TabIndex        =   11
-         Top             =   1260
+         TabIndex        =   5
+         Top             =   780
          Width           =   495
          _Version        =   786432
          _ExtentX        =   873
@@ -400,7 +324,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
    Begin GridEX20.GridEX gridOrdenes 
       Height          =   5505
       Left            =   120
-      TabIndex        =   19
+      TabIndex        =   7
       Top             =   2040
       Width           =   16215
       _ExtentX        =   28601
@@ -418,7 +342,6 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       IntProp7        =   0
       ColumnsCount    =   9
       Column(1)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0000
-<<<<<<< HEAD
       Column(2)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":01A4
       Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":02E4
       Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":042C
@@ -440,26 +363,14 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       FormatStyle(10) =   "frmAdminPagosLiquidaciondeCajaLista.frx":1230
       ImageCount      =   0
       PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":12E4
-=======
-      Column(2)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":00C8
-      Column(3)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":016C
-      Column(4)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0210
-      Column(5)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":02B4
-      Column(6)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0358
-      Column(7)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":03FC
-      Column(8)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":04A0
-      Column(9)       =   "frmAdminPagosLiquidaciondeCajaLista.frx":0544
-      FormatStylesCount=   7
-      FormatStyle(1)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":05E8
-      FormatStyle(2)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0720
-      FormatStyle(3)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":07D0
-      FormatStyle(4)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0884
-      FormatStyle(5)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":095C
-      FormatStyle(6)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0A14
-      FormatStyle(7)  =   "frmAdminPagosLiquidaciondeCajaLista.frx":0AF4
-      ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosLiquidaciondeCajaLista.frx":0B14
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc
+   End
+   Begin MSComDlg.CommonDialog CommonDialog 
+      Left            =   840
+      Top             =   7920
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+      Flags           =   1
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -517,16 +428,24 @@ err1:
 End Sub
 
 
+Private Sub cboRangos_Click()
+    funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde(1), Me.dtpHasta(1)
+End Sub
+
+
 Private Sub Form_Load()
     Customize Me
     GridEXHelper.CustomizeGrid Me.gridOrdenes, True
-    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
-    Me.cboProveedores.ListIndex = -1
-    Me.dtpDesde.value = Year(Now) & "-01-01"
-    Me.dtpHasta.value = Now
+    
+
+    Me.dtpDesde(1).value = Year(Now) & "-01-01"
+    Me.dtpHasta(1).value = Now
     Me.gridOrdenes.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     ids = funciones.CreateGUID
+    
+   funciones.FillComboBoxDateRanges Me.cboRangos
+    
     '    Channel.AgregarSuscriptor Me, OrdenesPago_
 
     Me.cboEstado.Clear
@@ -552,29 +471,12 @@ Private Sub Form_Resize()
 End Sub
 
 
-'Private Sub Form_Terminate()
-'    Channel.RemoverSuscripcionTotal Me
-'End Sub
-
-'Private Sub Form_Unload(Cancel As Integer)
-'    Channel.RemoverSuscripcionTotal Me
-'End Sub
-
-Private Sub btnClearProveedor_Click()
-    Me.cboProveedores.ListIndex = -1
-End Sub
-
 Private Sub btnBuscar_Click()
-    If (Me.chkContado.value = xtpChecked Or Me.chkCtaCte.value = xtpChecked Or Me.chkEliminado.value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
+    llenarLista
 
 End Sub
 
 Private Sub btnImprimir_Click()
-
-    Dim pro As String
-    If Me.cboProveedores.ListIndex > -1 Then
-        pro = " Proveedor: " & Me.cboProveedores.Text
-    End If
 
     With Me.gridOrdenes.PrinterProperties
 
@@ -582,9 +484,6 @@ Private Sub btnImprimir_Click()
         .RepeatHeaders = True
         .Orientation = jgexPPLandscape
         .HeaderString(jgexHFCenter) = "Listado de Liquidaciones de Caja "
-        If LenB(pro) > 1 Then
-            .HeaderString(jgexHFLeft) = pro
-        End If
         .FooterString(jgexHFCenter) = Now
 
     End With
@@ -657,22 +556,18 @@ Private Sub llenarLista()
     Dim filter As String
     filter = "1 = 1"
 
-    If Me.cboProveedores.ListIndex > -1 Then
-        filter = filter & " AND AdminComprasFacturasProveedores.id_proveedor = " & Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
-    End If
-
     If LenB(Me.txtNro.Text) > 0 Then
         filter = filter & " AND  liquidaciones_caja.numero_liq  = " & Val(Me.txtNro.Text)
     End If
 
     Dim filtroor As String
 
-    If Not IsNull(Me.dtpDesde.value) Then
-        filter = filter & " AND liquidaciones_caja.fecha >= " & conectar.Escape(Me.dtpDesde.value)
+    If Not IsNull(Me.dtpDesde(1).value) Then
+        filter = filter & " AND liquidaciones_caja.fecha >= " & conectar.Escape(Me.dtpDesde(1).value)
     End If
 
-    If Not IsNull(Me.dtpHasta.value) Then
-        filter = filter & " AND liquidaciones_caja.fecha <= " & conectar.Escape(Me.dtpHasta.value)
+    If Not IsNull(Me.dtpHasta(1).value) Then
+        filter = filter & " AND liquidaciones_caja.fecha <= " & conectar.Escape(Me.dtpHasta(1).value)
     End If
 
     If Me.cboEstado.ListIndex > -1 Then
@@ -716,8 +611,8 @@ End Sub
 
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
-        Set LiquidacionCaja = liquidaciones.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 And liquidaciones.count > 0 Then
+        Set LiquidacionCaja = liquidaciones.item(RowBuffer.rowIndex)
         If LiquidacionCaja.estado = EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada Then
             RowBuffer.CellStyle(9) = "Aprobada"
         ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada Then
@@ -733,14 +628,14 @@ End Sub
 
 Private Sub gridOrdenes_SelectionChange()
     On Error Resume Next
-    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
+    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.rowIndex(gridOrdenes.row))
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And liquidaciones.count > 0 Then
+Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And liquidaciones.count > 0 Then
 
-        Set LiquidacionCaja = liquidaciones.item(RowIndex)
+        Set LiquidacionCaja = liquidaciones.item(rowIndex)
 
         Values(1) = LiquidacionCaja.NumeroLiq
         Values(2) = LiquidacionCaja.FEcha
@@ -767,15 +662,15 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
 End Sub
 
 Private Sub mnuAnular_Click()
-    If MsgBox("Â¿Desea anular la LiquidaciÃ³n?", vbQuestion + vbYesNo) = vbYes Then
+    If MsgBox("¿Desea anular la Liquidación?", vbQuestion + vbYesNo) = vbYes Then
         If DAOLiquidacionCaja.Delete(LiquidacionCaja.Id, True) Then
-            MsgBox "AnulaciÃ³n Exitosa.", vbInformation + vbOKOnly
+            MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
             liquidaciones.remove CStr(LiquidacionCaja.Id)
             Me.gridOrdenes.ItemCount = liquidaciones.count
             btnBuscar_Click
         Else
-            MsgBox "No se pudo anular la LiquidaciÃ³n.", vbCritical + vbOKOnly
+            MsgBox "No se pudo anular la Liquidación.", vbCritical + vbOKOnly
         End If
     End If
 End Sub
@@ -783,46 +678,36 @@ End Sub
 
 Private Sub mnuAprobar_Click()
     If DAOLiquidacionCaja.aprobar(LiquidacionCaja, True) Then
-        MsgBox "AprobaciÃ³n Exitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+        MsgBox "Aprobación éxitosa!", vbInformation + vbOKOnly
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
         btnBuscar_Click
     Else
-        MsgBox "Error, no se aprobÃ³ la OP!", vbCritical + vbOKOnly
+        MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
     End If
 
 End Sub
 
 Private Sub mnuEditar_Click()
-'    MsgBox ("Funcion en desarrollo")
         Dim f22 As New frmAdminPagosLiqCajaListaDG
         f22.Show
-'        Dim LiquidacionCaja As clsLiquidacionCaja
         f22.Cargar LiquidacionCaja
 End Sub
 
 
-'Private Sub mnuHistorial_Click()
-'    Dim F As New frmHistorico
-'    F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
-'    F.Show
-'End Sub
-
 Private Sub mnuImprimir_Click()
+    On Error GoTo err4
+    '''gridOrdenes_SelectionChange
+    
+    Me.CommonDialog.ShowPrinter
+    
+    If Not DAOLiquidacionCaja.PrintLiq(LiquidacionCaja) Then GoTo err4
+        Exit Sub
+        
+err4:
 
-    gridOrdenes_SelectionChange
-
-    If Not DAOLiquidacionCaja.PrintLiq(LiquidacionCaja, Me.pic) Then GoTo err1
-
-    Exit Sub
-err1:
 End Sub
 
 Private Sub mnuVer_Click()
-'    Dim f22 As New frmAdminPagosLiquidaciondeCajaCrear
-'    f22.Show
-'    f22.ReadOnly = True
-'    f22.Cargar LiquidacionCaja
-
     Dim f22 As New frmAdminPagosLiqCajaListaDG
     f22.Show
     f22.ReadOnly = True

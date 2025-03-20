@@ -135,12 +135,12 @@ Public Function GetTiemposPorCategoria() As Dictionary
     For Each dto In col
         For Each dto1 In dto.ListaDtoTareaTiempo
 
-            If col1.Exists(dto1.Tarea.CategoriaSueldo.id) Then
+            If col1.Exists(dto1.Tarea.CategoriaSueldo.Id) Then
 
-                col1.item(dto1.Tarea.CategoriaSueldo.id) = col1.item(dto1.Tarea.CategoriaSueldo.id) + dto1.Tiempo
+                col1.item(dto1.Tarea.CategoriaSueldo.Id) = col1.item(dto1.Tarea.CategoriaSueldo.Id) + dto1.Tiempo
             Else
 
-                col1.Add dto1.Tarea.CategoriaSueldo.id, dto1.Tiempo
+                col1.Add dto1.Tarea.CategoriaSueldo.Id, dto1.Tiempo
 
             End If
 
@@ -154,7 +154,7 @@ End Function
 
 Public Property Set listadtopiezacantidad(nvalue As Collection)
     Set mlistadtopiezacantidad = nvalue
-    LlenarGrid
+    llenarGrid
 
     If mlistadtopiezacantidad.count > 0 Then
         grafica.Visible = True
@@ -186,7 +186,7 @@ Public Sub LlenarGridDesdeOT()
 
 End Sub
 
-Private Sub LlenarGrid()
+Private Sub llenarGrid()
     Set col = DAOPieza.ListaDTOTiempoPorSector(mlistadtopiezacantidad)
 
     Me.GridEX1.ItemCount = 0
@@ -259,8 +259,8 @@ Public Sub GraficoTorta()
         If avancesOT.count > 0 Then
             If funciones.BuscarEnColeccion(avancesOT, CStr(dto1.Tarea.SectorID)) Then
                 Set tmpSectorTiempo = avancesOT.item(CStr(dto1.Tarea.SectorID))
-                If funciones.BuscarEnColeccion(tmpSectorTiempo.ListaDtoTareaTiempo, CStr(dto1.Tarea.id)) Then
-                    Set tmpTareaTiempo = tmpSectorTiempo.ListaDtoTareaTiempo.item(CStr(dto1.Tarea.id))
+                If funciones.BuscarEnColeccion(tmpSectorTiempo.ListaDtoTareaTiempo, CStr(dto1.Tarea.Id)) Then
+                    Set tmpTareaTiempo = tmpSectorTiempo.ListaDtoTareaTiempo.item(CStr(dto1.Tarea.Id))
                     arrTareas(i, 3) = tmpTareaTiempo.Tiempo
                     arrTareas(i, 4) = tmpTareaTiempo.Tiempo
                     arrTareas(i, 5) = tmpTareaTiempo.Tiempo
@@ -302,7 +302,7 @@ Public Sub grafico()
     ReDim ARRSECTORES(1 To col.count, 1 To 5)
     Dim i As Integer
     Dim dto As DTOSectoresTiempo
-    Dim c As Double
+    Dim C As Double
     Dim tmpSectorTiempo As DTOSectoresTiempo
     i = 0
     For Each dto In col
@@ -310,8 +310,8 @@ Public Sub grafico()
         ARRSECTORES(i, 1) = dto.Sector.Sector
         ARRSECTORES(i, 2) = dto.Tiempo
         If avancesOT.count > 0 Then
-            If funciones.BuscarEnColeccion(avancesOT, CStr(dto.Sector.id)) Then
-                Set tmpSectorTiempo = avancesOT.item(CStr(dto.Sector.id))
+            If funciones.BuscarEnColeccion(avancesOT, CStr(dto.Sector.Id)) Then
+                Set tmpSectorTiempo = avancesOT.item(CStr(dto.Sector.Id))
                 ARRSECTORES(i, 4) = tmpSectorTiempo.Tiempo
 
 
@@ -328,7 +328,7 @@ Public Sub grafico()
         Else
             ARRSECTORES(i, 5) = dto.Tiempo
         End If
-        c = c + dto.Tiempo
+        C = C + dto.Tiempo
     Next dto
 
     grafica.ChartData = ARRSECTORES
@@ -344,7 +344,7 @@ Public Sub grafico()
     grafica.ColumnLabel = "asdsad"
     grafica.Refresh
 
-    Me.lbltotal = "Carga Total: " & funciones.FormatearDecimales(c) & " horas"
+    Me.lblTotal = "Carga Total: " & funciones.FormatearDecimales(C) & " horas"
 
 End Sub
 
@@ -371,8 +371,8 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
     Values(2) = funciones.FormatearDecimales(dto.Tiempo) & " hs."
 
     If avancesOT.count > 0 Then
-        If funciones.BuscarEnColeccion(avancesOT, CStr(dto.Sector.id)) Then
-            Set tmpSectorTiempo = avancesOT.item(CStr(dto.Sector.id))
+        If funciones.BuscarEnColeccion(avancesOT, CStr(dto.Sector.Id)) Then
+            Set tmpSectorTiempo = avancesOT.item(CStr(dto.Sector.Id))
         End If
     End If
 

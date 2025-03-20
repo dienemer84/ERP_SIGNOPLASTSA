@@ -574,7 +574,7 @@ Private Sub btnGuardarLiquidacion_Click()
         l.desde = Me.dtpDesde.value
         l.hasta = Me.dtpHasta.value
         l.EsDeVenta = True
-        Set l.Detalles = col
+        Set l.detalles = col
         If DAOSubdiarios.Guardar(l) Then
             SetearMaxDesde
             MsgBox "La liquidacion se guardó con éxito", vbInformation + vbOKOnly
@@ -665,7 +665,7 @@ Private Sub llenarLista()
     Else
         If Me.cboLiquidaciones.ListIndex <> -1 Then
             Set liqui = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
-            Set col = liqui.Detalles
+            Set col = liqui.detalles
         Else
             Set col = New Collection
         End If
@@ -820,7 +820,7 @@ Private Sub CargarLiquidaciones()
     Set liquidaciones = DAOSubdiarios.FindAllLiquidacionesVenta()
     For Each liqui In liquidaciones
         Me.cboLiquidaciones.AddItem liqui.nombre & " (" & liqui.desde & " a " & liqui.hasta & ")"
-        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.id
+        Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.NewIndex) = liqui.Id
     Next liqui
 
 End Sub
@@ -898,11 +898,11 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
 
         Dim Column As JSColumn
-        Dim X As Integer
+        Dim x As Integer
 
         For Each Column In Me.GridEX1.Columns
-            X = X + 1
-            .Cells(3, X).value = Column.caption
+            x = x + 1
+            .Cells(3, x).value = Column.caption
         Next Column
 
         .Columns("f").HorizontalAlignment = xlHAlignRight
@@ -941,7 +941,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         totperi = 0
         totexen = 0
 
-        X = 1
+        x = 1
 
         'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
         Dim d As Long
@@ -949,40 +949,40 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         For Each item In col
             If item.estado = Anulada Then
-                .Cells(X + 3, 1).value = item.FEcha
-                .Cells(X + 3, 2).value = item.Comprobante
-                .Cells(X + 3, 3).value = "ANULADO"
-                .Cells(X + 3, 4).value = "ANULADO"
-                .Cells(X + 3, 5).value = "ANULADO"
+                .Cells(x + 3, 1).value = item.FEcha
+                .Cells(x + 3, 2).value = item.Comprobante
+                .Cells(x + 3, 3).value = "ANULADO"
+                .Cells(x + 3, 4).value = "ANULADO"
+                .Cells(x + 3, 5).value = "ANULADO"
 
 
-                .Cells(X + 3, 6).value = 0
-                .Cells(X + 3, 7).value = 0
-                .Cells(X + 3, 8).value = 0
-                .Cells(X + 3, 9).value = 0
-                .Cells(X + 3, 10).value = 0
-                .Range(.Cells(X + 3, 1), .Cells(X + 3, 10)).Font.Strikethrough = True
-                .Range(.Cells(X + 3, 1), .Cells(X + 3, 10)).Font.Italic = True
+                .Cells(x + 3, 6).value = 0
+                .Cells(x + 3, 7).value = 0
+                .Cells(x + 3, 8).value = 0
+                .Cells(x + 3, 9).value = 0
+                .Cells(x + 3, 10).value = 0
+                .Range(.Cells(x + 3, 1), .Cells(x + 3, 10)).Font.Strikethrough = True
+                .Range(.Cells(x + 3, 1), .Cells(x + 3, 10)).Font.Italic = True
             Else
 
 
                 '.Cells(x + 3, 1).value = item.FEcha
 
-                .Cells(X + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
-                .Cells(X + 3, 2).value = item.Comprobante
-                .Cells(X + 3, 3).value = item.RazonSocial
-                .Cells(X + 3, 4).value = item.Cuit
-                .Cells(X + 3, 5).value = item.CondicionIva
+                .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
+                .Cells(x + 3, 2).value = item.Comprobante
+                .Cells(x + 3, 3).value = item.RazonSocial
+                .Cells(x + 3, 4).value = item.Cuit
+                .Cells(x + 3, 5).value = item.CondicionIva
 
 
-                .Cells(X + 3, 6).value = item.NetoGravado
-                .Cells(X + 3, 7).value = item.Iva
-                .Cells(X + 3, 8).value = item.percepciones
-                .Cells(X + 3, 9).value = item.Exento
-                .Cells(X + 3, 10).value = item.total + item.Exento
+                .Cells(x + 3, 6).value = item.NetoGravado
+                .Cells(x + 3, 7).value = item.Iva
+                .Cells(x + 3, 8).value = item.percepciones
+                .Cells(x + 3, 9).value = item.Exento
+                .Cells(x + 3, 10).value = item.total + item.Exento
             End If
 
-            X = X + 1
+            x = x + 1
 
             'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
             d = d + 1
@@ -991,15 +991,15 @@ Public Function ExportaSubDiarioVentas() As Boolean
         Next item
 
 
-        A = "j" & X + 2
-        offset = X + 3
+        A = "j" & x + 2
+        offset = x + 3
         B = "j" & offset
         .Range("f1", B).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
-        .Range("f" & X + 3, B).Interior.Color = &HC0C0C0
-        .Range("f" & X + 3, B).Borders.LineStyle = xlContinuous
-        .Range("f" & X + 3, B).Font.Bold = True
+        .Range("f" & x + 3, B).Interior.Color = &HC0C0C0
+        .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
+        .Range("f" & x + 3, B).Font.Bold = True
 
         .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot) + totales.item(PosicionTotales.TotExento)
         .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
@@ -1017,7 +1017,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -1031,7 +1031,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_VENTAS_" & Periodo & ".xlsx"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

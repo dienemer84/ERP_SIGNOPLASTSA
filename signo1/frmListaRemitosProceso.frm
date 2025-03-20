@@ -323,7 +323,7 @@ End Property
 
 
 Private Sub btnLlenarGrid_Click()
-    LlenarGrid
+    llenarGrid
     
         If Me.GridEX1.ItemCount = 0 Then
         MsgBox "No hay remitos en proceso.", vbInformation
@@ -370,7 +370,7 @@ Private Sub Form_Terminate()
 End Sub
 
 
-Private Sub LlenarGrid()
+Private Sub llenarGrid()
     filtro = ""
     If vmostrar = 0 Then    'en proceso
 
@@ -404,7 +404,7 @@ Private Sub LlenarGrid()
         filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " <= " & conectar.Escape(Format(Me.dtpHasta.value, "yyyy-mm-dd 23:59:59"))
     End If
     
-        If LenB(Me.txtDetalle.text) > 0 Then
+        If LenB(Me.txtDetalle.Text) > 0 Then
         filtro = filtro & " and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_DETALLE & " like '%" & Trim(Me.txtDetalle) & "%'"
     End If
         
@@ -483,7 +483,7 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
         Set Remito = col.item(rowIndex)
         Values(1) = Remito.numero
         Values(2) = Remito.FEcha
-        Values(3) = Remito.Cliente.razon
+        Values(3) = Remito.cliente.razon
         Values(4) = Remito.detalle
         Values(5) = Remito.VerEstadoFacturado
 

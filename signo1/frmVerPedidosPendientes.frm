@@ -851,9 +851,9 @@ Private Sub AprobarOT_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         If MsgBox("¿Está seguro de aprobar la OT " & aux_ordenTrabajo.Id & "?", vbYesNo, "Confirmación") = vbNo Then Exit Sub
         A = grid.rowIndex(grid.row)
-        Set aux_ordenTrabajo.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(aux_ordenTrabajo.Id)
+        Set aux_ordenTrabajo.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(aux_ordenTrabajo.Id)
 
-        If Not aux_ordenTrabajo.Detalles Is Nothing Then
+        If Not aux_ordenTrabajo.detalles Is Nothing Then
 
             Dim aaa As New frmReservaStock
             Set aaa.Ot = aux_ordenTrabajo
@@ -958,8 +958,8 @@ Private Sub Command1_Click()
         Set ped = m_ordenesTrabajo.item(selectedItem.rowIndex)
 
         If ped.estado = EstadoOT_Pendiente Then
-            Set ped.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(ped.Id)
-            For Each dp In ped.Detalles
+            Set ped.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(ped.Id)
+            For Each dp In ped.detalles
                 Set dto = New DTOPiezaCantidad
                 Set dto.Pieza = dp.Pieza
                 dto.Cantidad = dp.CantidadPedida
@@ -1033,9 +1033,9 @@ Private Sub Command2_Click()
     On Error GoTo err1
     conectar.BeginTransaction
     Set rs = conectar.RSFactory("SELECT id,idDetalleOtPadre FROM detalles_pedidos dp WHERE dp.idDetalleOtPadre>0")
-    Dim c As Long
+    Dim C As Long
     While Not rs.EOF And Not rs.BOF
-        c = c + 1
+        C = C + 1
         conectar.execute "update detalles_pedidos set idDetalleOtPadre=-1 where id=" & rs!idDetalleOtPadre
 
 
@@ -1101,13 +1101,13 @@ Private Sub LlenarNuevaLista()
 
     End If
 
-    If LenB(Me.txtNroOrden.text) > 0 And IsNumeric(Me.txtNroOrden.text) Then
+    If LenB(Me.txtNroOrden.Text) > 0 And IsNumeric(Me.txtNroOrden.Text) Then
         condition = condition & " AND {pedido}.{pedido_id} = " & CLng(Me.txtNroOrden)
         condition = Replace$(condition, "{pedido_id}", DAOOrdenTrabajo.CAMPO_ID)
     End If
 
-    If LenB(Me.txtDescripcion.text) > 0 Then
-        condition = condition & " AND {pedido}.{descripcion} LIKE '%" & Me.txtDescripcion.text & "%'"
+    If LenB(Me.txtDescripcion.Text) > 0 Then
+        condition = condition & " AND {pedido}.{descripcion} LIKE '%" & Me.txtDescripcion.Text & "%'"
         condition = Replace$(condition, "{descripcion}", DAOOrdenTrabajo.CAMPO_DESCRIPCION)
     End If
 
@@ -1402,7 +1402,7 @@ Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Varia
                 Values(12) = EnumTipoOT(.TipoOrden - 1)
             End If
 
-            Values(13) = .Cliente.razon
+            Values(13) = .cliente.razon
 
             'cambio entre values2 y values13 por pedido de karin hecho el 7-4
         End With
@@ -1427,7 +1427,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 m_ordenesTrabajo(x).FormaDePagoAnticipo = EVENTO.Elemento.FormaDePagoAnticipo
                 m_ordenesTrabajo(x).FormaDePagoSaldo = EVENTO.Elemento.FormaDePagoSaldo
                 m_ordenesTrabajo(x).Anticipo = EVENTO.Elemento.Anticipo
-                Set m_ordenesTrabajo(x).Cliente = EVENTO.Elemento.Cliente
+                Set m_ordenesTrabajo(x).cliente = EVENTO.Elemento.cliente
                 Set m_ordenesTrabajo(x).ClienteFacturar = EVENTO.Elemento.ClienteFacturar
                 Me.grid.RefreshRowIndex x
                 Exit For
@@ -1451,7 +1451,7 @@ Private Sub mnuAsociarFacturaAnticipo_Click()
     If Me.grid.SelectedItems.count = 0 Then Exit Sub
    
     Dim selecFac As New frmAdminFacturasNCElegirFC
-    selecFac.idCliente = aux_ordenTrabajo.Cliente.Id
+    selecFac.idCliente = aux_ordenTrabajo.cliente.Id
     selecFac.EstadosDocs.Add EstadoFacturaCliente.Aprobada
     selecFac.TiposDocs.Add tipoDocumentoContable.Factura
 

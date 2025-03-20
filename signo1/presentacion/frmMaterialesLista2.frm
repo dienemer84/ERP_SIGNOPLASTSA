@@ -234,8 +234,8 @@ End Sub
 
 Private Sub cmdFiltrar_Click()
     filtro = " 1=1 "
-    If LenB(Me.txtFiltro.text) > 0 Then
-        filtro = filtro & " AND (" & DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_DESCRIPCION & " LIKE '%" & Trim(Me.txtFiltro.text) & "%' or " & DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_CODIGO & " LIKE '%" & Trim(Me.txtFiltro) & "%')"
+    If LenB(Me.txtFiltro.Text) > 0 Then
+        filtro = filtro & " AND (" & DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_DESCRIPCION & " LIKE '%" & Trim(Me.txtFiltro.Text) & "%' or " & DAOMateriales.TABLA_MATERIALES & "." & DAOMateriales.CAMPO_CODIGO & " LIKE '%" & Trim(Me.txtFiltro) & "%')"
     End If
 
     If Me.cboRubros.ListIndex > -1 Then

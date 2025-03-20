@@ -733,7 +733,7 @@ Private Sub btnGuardarLiquidacion_Click()
         l.desde = Me.dtpDesde.value
         l.hasta = Me.dtpHasta.value
         l.EsDeVenta = False
-        Set l.Detalles = col
+        Set l.detalles = col
         If DAOSubdiarios.Guardar(l) Then
             SetearMaxDesde
             MsgBox "La liquidacion se guard? con ?xito", vbInformation + vbOKOnly
@@ -903,7 +903,7 @@ Private Sub llenarLista()
     Else
         If Me.cboLiquidaciones.ListIndex <> -1 Then
             Set liqui = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
-            Set col = liqui.Detalles
+            Set col = liqui.detalles
         Else
             Set col = New Collection
         End If
@@ -1115,7 +1115,7 @@ Private Sub PushButton2_Click()
         If Me.rdoRangoFechas.value Then
             header = Me.dtpDesde.value & " a " & Me.dtpHasta.value
         Else
-            header = "Liquidaci?n " & Me.cboLiquidaciones.text
+            header = "Liquidaci?n " & Me.cboLiquidaciones.Text
         End If
 
 
@@ -1545,7 +1545,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -1559,7 +1559,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -1935,7 +1935,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.cd
+        Set CDLGMAIN = frmPrincipal.CD
 
 
 
@@ -1949,7 +1949,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.cd.CancelError = True
+        frmPrincipal.CD.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

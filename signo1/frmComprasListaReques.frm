@@ -676,16 +676,16 @@ Private Function GetFilter() As String
         filtro = filtro & ")"
     End If
 
-    If LenB(Me.txtNumero.text) > 0 Then
-        filtro = filtro & " AND id = " & Val(Me.txtNumero.text)
+    If LenB(Me.txtNumero.Text) > 0 Then
+        filtro = filtro & " AND id = " & Val(Me.txtNumero.Text)
     End If
 
     If Me.cboSectores.ListIndex <> -1 Then
         filtro = filtro & " AND idSector = " & Me.cboSectores.ItemData(Me.cboSectores.ListIndex)
     End If
 
-    If LenB(Me.txtOTDestino.text) > 0 Then
-        filtro = filtro & " AND idPedido = " & Val(Me.txtOTDestino.text)
+    If LenB(Me.txtOTDestino.Text) > 0 Then
+        filtro = filtro & " AND idPedido = " & Val(Me.txtOTDestino.Text)
     End If
 
     If Not IsNull(Me.dtpDesde.value) Then

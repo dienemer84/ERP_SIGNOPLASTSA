@@ -633,7 +633,7 @@ Private Function accion() As Boolean
 
     If cboMonedas.ListIndex = -1 Then ErrorCode = 3
 
-    If Not IsNumeric(Me.txtLargo.text) Or Not IsNumeric(Me.txtEspesor.text) Or Not IsNumeric(Me.txtAltura.text) Or Not IsNumeric(Me.txtAncho.text) Or Not IsNumeric(txtValor) Then
+    If Not IsNumeric(Me.txtLargo.Text) Or Not IsNumeric(Me.txtEspesor.Text) Or Not IsNumeric(Me.txtAltura.Text) Or Not IsNumeric(Me.txtAncho.Text) Or Not IsNumeric(txtValor) Then
         ErrorCode = 2
     End If
     'If DAOMateriales.existeCodigo(Trim(UCase(Me.txtCodigo.text))) = 1 And Me.txtCodigo.text <> codigoViejo Then     '1=codigo existente.
@@ -709,8 +709,8 @@ Private Sub armarObjeto()
             End If
         End If
     End If
-    vmaterial.StockMinimo = Val(Me.txtStockMinimo.text)
-    vmaterial.PuntoReposicion = Val(Me.txtPtoReposicion.text)
+    vmaterial.StockMinimo = Val(Me.txtStockMinimo.Text)
+    vmaterial.PuntoReposicion = Val(Me.txtPtoReposicion.Text)
     vmaterial.descripcion = UCase(Me.txtDescripcion)
     vmaterial.Espesor = Val(Me.txtEspesor)
     vmaterial.PesoXUnidad = Val(Me.txtKgXM2Ml)
@@ -721,7 +721,7 @@ Private Sub armarObjeto()
     vmaterial.Cantidad = Val(Me.txtCantidad)
     vmaterial.FechaValor = Date
 
-    vmaterial.Altura = Val(Me.txtAltura.text)
+    vmaterial.Altura = Val(Me.txtAltura.Text)
     vmaterial.Tipo = Me.cboTipoMaterial.ItemData(Me.cboTipoMaterial.ListIndex)
 End Sub
 Private Sub Command1_Click()
@@ -859,8 +859,8 @@ Private Sub mostrarForm()
     Me.txtValor = vmaterial.Valor
     valorViejo = vmaterial.Valor
     Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vmaterial.moneda.Id, Me.cboMonedas)
-    Me.txtStockMinimo.text = vmaterial.StockMinimo
-    Me.txtPtoReposicion.text = vmaterial.PuntoReposicion
+    Me.txtStockMinimo.Text = vmaterial.StockMinimo
+    Me.txtPtoReposicion.Text = vmaterial.PuntoReposicion
 
 
     Me.txtLargo = vmaterial.Largo
@@ -874,7 +874,7 @@ Private Sub limpiar()
 'Me.txtCodigo.text = vbNullString
     Me.lblCodigoAnterior.caption = vbNullString
     Me.lblCodigoNuevo.caption = vbNullString
-    Me.txtDescripcion.text = vbNullString
+    Me.txtDescripcion.Text = vbNullString
     txtValor = Empty
     txtFecha = Date
 End Sub
@@ -898,9 +898,9 @@ Private Sub ValidarUnidades()
 End Sub
 
 Private Sub LimpiarDimensiones()
-    Me.txtAncho.text = 0
-    Me.txtLargo.text = 0
-    Me.txtEspesor.text = 0
-    Me.txtAltura.text = 0
-    Me.txtKgXM2Ml.text = 0
+    Me.txtAncho.Text = 0
+    Me.txtLargo.Text = 0
+    Me.txtEspesor.Text = 0
+    Me.txtAltura.Text = 0
+    Me.txtKgXM2Ml.Text = 0
 End Sub

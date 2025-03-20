@@ -208,10 +208,10 @@ Public Function llenarGrid()
 End Function
 
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
     
-    Set contacto_detalles = detalles.item(RowIndex)
+    Set contacto_detalles = detalles.item(rowIndex)
 
     Values(1) = contacto_detalles.detalle
     Values(2) = contacto_detalles.Telefono1

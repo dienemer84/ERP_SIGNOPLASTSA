@@ -247,7 +247,7 @@ Attribute VB_Exposed = False
 Dim claseP As New classPlaneamiento
 Dim claseS As New classStock
 Dim Remito As Remito
-Dim Cliente As clsCliente
+Dim cliente As clsCliente
 Private Sub cboClientes_Click()
     Me.cboContactos.Clear
     llenarContactos
@@ -266,7 +266,7 @@ Private Sub Command1_Click()
         If MsgBox("¿Desea crear el Remito Nro. " & Format(CLng(Me.txtRtoNro), "0000") & "?", vbYesNo, "Confirmación") = vbYes Then
 
             Set Remito = New Remito
-            Set Remito.Cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(cboClientes.ListIndex))
+            Set Remito.cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(cboClientes.ListIndex))
             Remito.detalle = UCase(Me.txtDetalles)
             Remito.FEcha = Now
             Remito.estado = RemitoPendiente
@@ -278,15 +278,15 @@ Private Sub Command1_Click()
 
 
 
-            If Not Remito.Cliente.CUITValido Or Not Remito.Cliente.ValidoRemitoFactura Then
+            If Not Remito.cliente.CUITValido Or Not Remito.cliente.ValidoRemitoFactura Then
                 MsgBox "El cliente no es válido para generar un remito!", vbCritical, "Error"
                 Exit Sub
             End If
 
             If Me.Check1.value Then
-                Set Remito.contacto = DAOContacto.FindById(TipoPersona.cliente_, (Me.cboContactos.ItemData(Me.cboContactos.ListIndex)))
+                Set Remito.Contacto = DAOContacto.FindById(TipoPersona.cliente_, (Me.cboContactos.ItemData(Me.cboContactos.ListIndex)))
             Else
-                Set Remito.contacto = Nothing
+                Set Remito.Contacto = Nothing
             End If
             If Not DAORemitoS.Save(Remito) Then
                 MsgBox "Se produjo un error!", vbCritical, "Error"
@@ -324,17 +324,17 @@ Private Sub Form_Load()
 End Sub
 Private Sub llenarContactos()
     Dim idcli As Long
-    Dim contacto As clsContacto
+    Dim Contacto As clsContacto
 
     idcli = CInt(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
     Dim C As New Collection
     Set C = DAOContacto.FindAll(cliente_, "nombre like '%" & Me.Text1 & "%' and idCliente=" & idcli)
     cboContactos.Clear
 
-    For Each contacto In C
-        If IsSomething(contacto) Then
-            Me.cboContactos.AddItem contacto.nombre
-            Me.cboContactos.ItemData(Me.cboContactos.NewIndex) = contacto.Id
+    For Each Contacto In C
+        If IsSomething(Contacto) Then
+            Me.cboContactos.AddItem Contacto.nombre
+            Me.cboContactos.ItemData(Me.cboContactos.NewIndex) = Contacto.Id
         End If
     Next
 

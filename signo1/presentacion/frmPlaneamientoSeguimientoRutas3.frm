@@ -284,7 +284,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Private Ot As OrdenTrabajo
-Private Detalles As Collection  'of PlaneamientoTiempoProcesoDetalle
+Private detalles As Collection  'of PlaneamientoTiempoProcesoDetalle
 Private tareaId As Long
 
 Private Sub btnClearTarea_Click()
@@ -302,10 +302,10 @@ Private Sub cboTarea_Click()
 End Sub
 
 Public Sub cmdBuscar_Click()
-    If Not IsNumeric(Me.txtOTNro.text) Then Exit Sub
-    Set Ot = DAOOrdenTrabajo.FindById(Me.txtOTNro.text)
+    If Not IsNumeric(Me.txtOTNro.Text) Then Exit Sub
+    Set Ot = DAOOrdenTrabajo.FindById(Me.txtOTNro.Text)
     If Ot Is Nothing Then
-        MsgBox "La Orden de Trabajo Nº " & Me.txtOTNro.text & " no existe.", vbInformation + vbOKOnly
+        MsgBox "La Orden de Trabajo Nº " & Me.txtOTNro.Text & " no existe.", vbInformation + vbOKOnly
     Else
 
         Me.fraDatosOT.caption = Me.fraDatosOT.Tag & Ot.Id
@@ -331,7 +331,7 @@ Public Sub cmdBuscar_Click()
 End Sub
 
 Private Sub LlenarData()
-    Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
+    Set Ot.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
     CargarDetallesOT
 End Sub
 
@@ -349,7 +349,7 @@ Private Sub CargarDetallesOT()
     Me.ReportControlDetalles.Records.DeleteAll
     Me.ReportControlDetalles.Populate
 
-    Set Detalles = New Collection
+    Set detalles = New Collection
 
     Dim record As ReportRecord
     Dim Record2 As ReportRecord
@@ -358,7 +358,7 @@ Private Sub CargarDetallesOT()
 
     Dim item As ReportRecordItem
 
-    For Each deta In Ot.Detalles
+    For Each deta In Ot.detalles
         Set record = Me.ReportControl.Records.Add
         record.Tag = deta.Id
         record.AddItem deta.item
@@ -585,9 +585,9 @@ Private Sub mnuAgregarRemito_Click()
 
         If Not IsSomething(rto) Then Exit Sub
 
-        Set rto.Detalles = DAORemitoSDetalle.FindAllByRemito(rto.Id)
+        Set rto.detalles = DAORemitoSDetalle.FindAllByRemito(rto.Id)
 
-        If rto.Detalles.count = funciones.itemsPorRemito Then
+        If rto.detalles.count = funciones.itemsPorRemito Then
             MsgBox "El remito llego al limite de items, cree otro remito.", vbCritical
             Exit Sub
         End If
@@ -631,7 +631,7 @@ Private Sub mnuAgregarRemito_Click()
 
                 rtoDetalle.Cantidad = Cant
 
-                rto.Detalles.Add rtoDetalle
+                rto.detalles.Add rtoDetalle
 
                 If Not DAORemitoS.Save(rto, True) Then
                     MsgBox "Se produjo algun error al guardar!", vbCritical, "Error"
@@ -911,9 +911,9 @@ Public Sub ReportControl_SelectionChanged()
         Set row = Me.ReportControl.SelectedRows(0)
 
         If CLng(row.record.Tag) < 0 Then    ' es tarea
-            Set Detalles = DAOTiemposProcesosDetalles.FindAllByTiempoProceso(-1 * CLng(row.record.Tag))
+            Set detalles = DAOTiemposProcesosDetalles.FindAllByTiempoProceso(-1 * CLng(row.record.Tag))
         Else    'es pieza
-            Set Detalles = New Collection
+            Set detalles = New Collection
         End If
 
         LlenarDetalles
@@ -928,7 +928,7 @@ Private Sub LlenarDetalles()
     Dim det As PlaneamientoTiempoProcesoDetalle
     Dim record As ReportRecord
 
-    For Each det In Detalles
+    For Each det In detalles
         Set record = Me.ReportControlDetalles.Records.Add
         record.Tag = det.Id
 
@@ -979,7 +979,7 @@ Private Sub ReportControlDetalles_MouseDown(Button As Integer, Shift As Integer,
                         Me.ReportControlDetalles.FocusedRow = hitinfo.row
 
                         Dim de As PlaneamientoTiempoProcesoDetalle
-                        Set de = Detalles.item(CStr(Me.ReportControlDetalles.FocusedRow.record.Tag))
+                        Set de = detalles.item(CStr(Me.ReportControlDetalles.FocusedRow.record.Tag))
                         Me.mnuFinalizarTiempo.Enabled = (CDbl(de.FechaFinTarea) = 0)
                         Me.mnuEditarTiempo.Enabled = True    'poner permiso
                     End If

@@ -6,18 +6,18 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Recibo"
-   ClientHeight    =   10485
+   ClientHeight    =   8145
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   18735
+   ClientWidth     =   18135
    ClipControls    =   0   'False
    Icon            =   "frmAdminCobranzasNuevoRecibo.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10485
-   ScaleWidth      =   18735
+   ScaleHeight     =   8145
+   ScaleWidth      =   18135
    Begin XtremeSuiteControls.PushButton cmdCerrar 
       Height          =   405
       Left            =   10200
@@ -712,7 +712,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   66519041
+         Format          =   250937345
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -1237,9 +1237,9 @@ End Sub
 ''
 'End Sub
 
-Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= bancos.count Then
-        Set Banco = bancos.item(RowIndex)
+Private Sub gridBancos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= bancos.count Then
+        Set Banco = bancos.item(rowIndex)
         Values(1) = Banco.Id
         Values(2) = Banco.nombre
     End If
@@ -1272,17 +1272,17 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
     Totalizar
 End Sub
 
-Private Sub gridCajaOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And Recibo.operacionesCaja.count >= RowIndex Then
-        Recibo.operacionesCaja.remove RowIndex
+Private Sub gridCajaOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And Recibo.operacionesCaja.count >= rowIndex Then
+        Recibo.operacionesCaja.remove rowIndex
         Totalizar
     End If
 End Sub
 
-Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= Recibo.operacionesCaja.count Then
-        Set operacion = Recibo.operacionesCaja.item(RowIndex)
-        Values(1) = funciones.FormatearDecimales(operacion.Monto)
+Private Sub gridCajaOperaciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= Recibo.operacionesCaja.count Then
+        Set operacion = Recibo.operacionesCaja.item(rowIndex)
+        Values(1) = Replace(FormatCurrency(funciones.FormatearDecimales(operacion.Monto)), "$", "")
         If IsSomething(operacion.moneda) Then
             Values(2) = operacion.moneda.NombreCorto
         End If
@@ -1294,9 +1294,9 @@ Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
     End If
 End Sub
 
-Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Recibo.operacionesCaja.count > 0 Then
-        Set operacion = Recibo.operacionesCaja.item(RowIndex)
+Private Sub gridCajaOperaciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Recibo.operacionesCaja.count > 0 Then
+        Set operacion = Recibo.operacionesCaja.item(rowIndex)
         'operacion.IdPertenencia = recibo.id
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
@@ -1312,9 +1312,9 @@ Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Book
     End If
 End Sub
 
-Private Sub gridCajas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Cajas.count > 0 Then
-        Set caja = Cajas.item(RowIndex)
+Private Sub gridCajas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Cajas.count > 0 Then
+        Set caja = Cajas.item(rowIndex)
         Values(1) = caja.Id
         Values(2) = caja.nombre
     End If
@@ -1358,19 +1358,19 @@ Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVari
     Totalizar
 End Sub
 
-Private Sub gridCheques_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 Then
-        Recibo.cheques.remove RowIndex
+Private Sub gridCheques_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 Then
+        Recibo.cheques.remove rowIndex
         Totalizar
     End If
 End Sub
 
 
-Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= Recibo.cheques.count Then
-        Set cheque = Recibo.cheques.item(RowIndex)
+Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= Recibo.cheques.count Then
+        Set cheque = Recibo.cheques.item(rowIndex)
         Values(1) = cheque.numero
-        Values(2) = funciones.FormatearDecimales(cheque.Monto)
+        Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(cheque.Monto)), "$", "")
         Values(6) = cheque.TercerosPropio
         Values(7) = cheque.OrigenDestino
         If IsSomething(cheque.moneda) Then Values(3) = cheque.moneda.NombreCorto
@@ -1381,9 +1381,9 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
 End Sub
 
 
-Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Recibo.cheques.count >= RowIndex Then
-        Set cheque = Recibo.cheques.item(RowIndex)
+Private Sub gridCheques_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Recibo.cheques.count >= rowIndex Then
+        Set cheque = Recibo.cheques.item(rowIndex)
         If IsNumeric(Values(4)) Then Set cheque.Banco = DAOBancos.GetById(Values(4))
         cheque.EnCartera = True
         cheque.FechaRecibido = Recibo.FEcha
@@ -1403,9 +1403,9 @@ Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As 
 End Sub
 
 
-Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If cuentasBancarias.count >= RowIndex Then
-        Set CuentaBancaria = cuentasBancarias.item(RowIndex)
+Private Sub gridCuentasBancarias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If cuentasBancarias.count >= rowIndex Then
+        Set CuentaBancaria = cuentasBancarias.item(rowIndex)
         Values(1) = CuentaBancaria.Id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
@@ -1441,18 +1441,18 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
 End Sub
 
 
-Private Sub gridDepositosOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And Recibo.operacionesBanco.count >= RowIndex Then
-        Recibo.operacionesBanco.remove RowIndex
+Private Sub gridDepositosOperaciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And Recibo.operacionesBanco.count >= rowIndex Then
+        Recibo.operacionesBanco.remove rowIndex
         Totalizar
     End If
 End Sub
 
 
-Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= Recibo.operacionesBanco.count Then
-        Set operacion = Recibo.operacionesBanco.item(RowIndex)
-        Values(1) = funciones.FormatearDecimales(operacion.Monto)
+Private Sub gridDepositosOperaciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= Recibo.operacionesBanco.count Then
+        Set operacion = Recibo.operacionesBanco.item(rowIndex)
+        Values(1) = Replace(FormatCurrency(funciones.FormatearDecimales(operacion.Monto)), "$", "")
         If IsSomething(operacion.moneda) Then
             Values(2) = operacion.moneda.NombreCorto
         End If
@@ -1466,9 +1466,9 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByV
 End Sub
 
 
-Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Recibo.operacionesBanco.count > 0 Then
-        Set operacion = Recibo.operacionesBanco.item(RowIndex)
+Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Recibo.operacionesBanco.count > 0 Then
+        Set operacion = Recibo.operacionesBanco.item(rowIndex)
         'operacion.IdPertenencia = recibo.id
         'operacion.Pertenencia = Banco
         operacion.Monto = Values(1)
@@ -1508,9 +1508,9 @@ Private Sub gridFacturas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
 End Sub
 
 
-Private Sub gridFacturas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And Recibo.facturas.count >= RowIndex Then
-        Recibo.facturas.remove RowIndex
+Private Sub gridFacturas_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And Recibo.facturas.count >= rowIndex Then
+        Recibo.facturas.remove rowIndex
         If Recibo.PagosDeFacturas.Exists(CStr(Factura.Id)) Then
             Recibo.PagosDeFacturas.remove CStr(Factura.Id)
         End If
@@ -1519,14 +1519,14 @@ Private Sub gridFacturas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As
 End Sub
 
 
-Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Recibo.facturas.count >= RowIndex Then
-        Set Factura = Recibo.facturas.item(RowIndex)
+Private Sub gridFacturas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Recibo.facturas.count >= rowIndex Then
+        Set Factura = Recibo.facturas.item(rowIndex)
         Values(1) = Factura.GetShortDescription(False, True)
         
         Values(2) = Factura.FechaEmision
         
-        Values(3) = funciones.FormatearDecimales(Factura.total)
+        Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total)), "$", "")
         
         Values(4) = funciones.FormatearDecimales(Factura.total - DAOFactura.PagosRealizados(Factura.Id))
 
@@ -1540,9 +1540,9 @@ Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
 End Sub
 
 
-Private Sub gridFacturas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Recibo.facturas.count >= RowIndex Then
-        Set Factura = Recibo.facturas.item(RowIndex)
+Private Sub gridFacturas_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Recibo.facturas.count >= rowIndex Then
+        Set Factura = Recibo.facturas.item(rowIndex)
         'Set Factura = DAOFactura.FindById(Values(1), True)
         'recibo.facturas.Add Factura, , , RowIndex
         'recibo.facturas.Remove RowIndex
@@ -1560,19 +1560,19 @@ Private Sub gridFacturas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As
 End Sub
 
 
-Private Sub gridFacturasCombo_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And facturasCliente.count >= RowIndex Then
-        Set Factura = facturasCliente.item(RowIndex)
+Private Sub gridFacturasCombo_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And facturasCliente.count >= rowIndex Then
+        Set Factura = facturasCliente.item(rowIndex)
         Values(1) = Factura.Id
         Values(2) = Factura.GetShortDescription(False, True)
-        Values(3) = funciones.FormatearDecimales(Factura.total)
+        Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total)), "$", "")
     End If
 End Sub
 
 
-Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Monedas.count > 0 Then
-        Set moneda = Monedas.item(RowIndex)
+Private Sub gridMonedas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Monedas.count > 0 Then
+        Set moneda = Monedas.item(rowIndex)
         Values(1) = moneda.Id
         Values(2) = moneda.NombreCorto
     End If
@@ -1586,23 +1586,23 @@ Private Sub gridRetenciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
 End Sub
 
 
-Private Sub gridRetenciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 Then
-        Recibo.retenciones.remove RowIndex
+Private Sub gridRetenciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 Then
+        Recibo.retenciones.remove rowIndex
         Totalizar
     End If
 End Sub
 
 
-Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And RowIndex <= Recibo.retenciones.count Then
+Private Sub gridRetenciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And rowIndex <= Recibo.retenciones.count Then
 
-        Set retencionRecibo = Recibo.retenciones.item(RowIndex)
+        Set retencionRecibo = Recibo.retenciones.item(rowIndex)
         Values(1) = retencionRecibo.NroRetencion
         If IsSomething(retencionRecibo.Retencion) Then
             Values(2) = retencionRecibo.Retencion.nombre
         End If
-        Values(3) = funciones.FormatearDecimales(retencionRecibo.Valor)
+        Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(retencionRecibo.Valor)), "$", "")
         Values(4) = Format(retencionRecibo.FEcha, "dd-mm-yyyy")
 
     End If
@@ -1634,18 +1634,18 @@ Private Sub gridRetenciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRet
     Totalizar
 End Sub
 
-Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 Then
-        Set retencionRecibo = Recibo.retenciones(RowIndex)
+Private Sub gridRetenciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 Then
+        Set retencionRecibo = Recibo.retenciones(rowIndex)
         UpdateAddRetencion retencionRecibo, Values
         Totalizar
     End If
 End Sub
 
 
-Private Sub gridTipoRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If retenciones.count >= RowIndex Then
-        Set Retencion = retenciones.item(RowIndex)
+Private Sub gridTipoRetenciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If retenciones.count >= rowIndex Then
+        Set Retencion = retenciones.item(rowIndex)
         Values(1) = Retencion.nombre
         Values(2) = Retencion.Id
         Values(3) = Retencion.codigo

@@ -379,7 +379,7 @@ End Sub
 
 Private Sub Copiar_Click()
     On Error GoTo err1
-    frmPrincipal.cd.ShowPrinter
+    frmPrincipal.CD.ShowPrinter
 
     Printer.Orientation = 2
     Me.grafico.EditCopy
@@ -608,7 +608,7 @@ Private Sub Graficar()
 
         Set ordenes = DAOOrdenTrabajo.FindAll(DAOOrdenTrabajo.TABLA_PEDIDO & "." & DAOOrdenTrabajo.CAMPO_CLIENTE_ID & " = " & cliente_id & " AND " & DAOOrdenTrabajo.TABLA_PEDIDO & ".id_ot_padre <> -1", , , , True)
         For Each Ot In ordenes
-            For Each deta In Ot.Detalles
+            For Each deta In Ot.detalles
                 If deta.FechaEntrega >= Me.dtpDesde.value And deta.FechaEntrega <= Me.dtpHasta.value Then
                     Select Case tr
                     Case TipoResumen.TR_Diario

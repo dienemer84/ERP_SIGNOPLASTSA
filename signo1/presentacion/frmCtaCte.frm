@@ -199,7 +199,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Private Detalles As Collection
+Private detalles As Collection
 Private deta As DTODetalleCuentaCorriente
 Private saldo As Double
 Private saldos As New Dictionary
@@ -221,18 +221,18 @@ Private Sub cmdVerCtaCte_Click()
 
 
 
-        Set Detalles = DAOCuentaCorriente.FindAllDetalles(Me.cboClientes.ItemData(Me.cboClientes.ListIndex), , fecha_hasta)
+        Set detalles = DAOCuentaCorriente.FindAllDetalles(Me.cboClientes.ItemData(Me.cboClientes.ListIndex), , fecha_hasta)
         saldo = 0
 
 
 
-        If IsSomething(Detalles) Then
-            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(Detalles))), "$", "")
+        If IsSomething(detalles) Then
+            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(detalles))), "$", "")
         End If
         Set saldos = New Dictionary
         saldo = 0
         Me.gridDetalles.ItemCount = 0
-        Me.gridDetalles.ItemCount = Detalles.count
+        Me.gridDetalles.ItemCount = detalles.count
     End If
 
 
@@ -256,7 +256,7 @@ Private Sub gridDetalles_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 Private Sub gridDetalles_DblClick()
-    Set deta = Detalles.item(Me.gridDetalles.rowIndex(Me.gridDetalles.row))
+    Set deta = detalles.item(Me.gridDetalles.rowIndex(Me.gridDetalles.row))
 
     If (deta.tipoComprobante = TipoComprobanteUsado.Factura_) Then
         Dim frm As New frmAdminFacturasEdicion
@@ -286,15 +286,15 @@ End Sub
 
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
 
-    Set deta = Detalles.item(RowBuffer.rowIndex)
+    Set deta = detalles.item(RowBuffer.rowIndex)
     If deta.AtributoExtra Then
         RowBuffer.RowStyle = "saldado"
     End If
 End Sub
 
 Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And Detalles.count > 0 Then
-        Set deta = Detalles.item(rowIndex)
+    If rowIndex > 0 And detalles.count > 0 Then
+        Set deta = detalles.item(rowIndex)
         Values(1) = deta.FEcha
         Values(2) = deta.Comprobante
         'Values(3) = deta.Debe
@@ -323,7 +323,7 @@ Private Sub PushButton1_Click()
         .FitColumns = True
         .RepeatHeaders = True
         .Orientation = jgexPPPortrait
-        .HeaderString(jgexHFCenter) = "Cuenta Corriente de " & Me.cboClientes.text
+        .HeaderString(jgexHFCenter) = "Cuenta Corriente de " & Me.cboClientes.Text
         If Not IsNull(dtpHasta.value) Then
             .HeaderString(jgexHFLeft) = "Hasta  " & Format(Me.dtpHasta, "dd-mm-yyyy")
         End If
@@ -361,7 +361,7 @@ Public Function ExportToXls() As Boolean
     xlWorksheet.Range("A2:E2").Merge
     xlWorksheet.Range("A1:E3").Font.Bold = True
     xlWorksheet.Cells(1, 1).value = "Resumen de Cuenta Corriente"
-    xlWorksheet.Cells(2, 1).value = "Cliente: " & Me.cboClientes.text
+    xlWorksheet.Cells(2, 1).value = "Cliente: " & Me.cboClientes.Text
     xlWorksheet.Cells(3, 1).value = "Fecha"
     xlWorksheet.Cells(3, 2).value = "Comprobante"
     xlWorksheet.Cells(3, 3).value = "Debe"
@@ -371,7 +371,7 @@ Public Function ExportToXls() As Boolean
     Dim idx As Integer
     idx = 4
 
-    For Each deta In Detalles
+    For Each deta In detalles
 
 
         xlWorksheet.Cells(idx, 1).value = deta.FEcha

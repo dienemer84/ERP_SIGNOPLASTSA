@@ -255,8 +255,8 @@ End Sub
 Private Sub CargarPeticiones()
     Dim F As String
 
-    If IsNumeric(Me.txtReque.text) Then
-        F = F & " AND id_reque = " & Me.txtReque.text
+    If IsNumeric(Me.txtReque.Text) Then
+        F = F & " AND id_reque = " & Me.txtReque.Text
     End If
 
     If Me.cboProveedor.ListIndex <> -1 Then

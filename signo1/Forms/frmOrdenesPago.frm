@@ -4,12 +4,10 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosOrdenesPagoLista 
    Caption         =   "Ordenes de Pago"
-   ClientHeight    =   9105
+   ClientHeight    =   8835
    ClientLeft      =   8445
    ClientTop       =   3465
-   ClientWidth     =   12885
-<<<<<<< HEAD:signo1/Forms/frmOrdenesPago.frm
-=======
+   ClientWidth     =   13770
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -19,11 +17,10 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc:signo1/Forms/frmOrdenesPago.frm
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   9105
-   ScaleWidth      =   12885
+   ScaleHeight     =   8835
+   ScaleWidth      =   13770
    WindowState     =   2  'Maximized
    Begin MSComDlg.CommonDialog CommonDialog 
       Left            =   1080
@@ -33,35 +30,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       _Version        =   393216
       Flags           =   1
    End
-   Begin VB.PictureBox pic 
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   240
-      ScaleHeight     =   435
-      ScaleWidth      =   555
-      TabIndex        =   31
-      Top             =   8400
-      Visible         =   0   'False
-      Width           =   615
-   End
    Begin VB.Frame Frame1 
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   735
       Index           =   1
       Left            =   9960
@@ -78,28 +47,10 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentX        =   8493
          _ExtentY        =   661
          _StockProps     =   93
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Appearance      =   6
       End
    End
    Begin VB.Frame Frame1 
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   865
       Index           =   0
       Left            =   9960
@@ -117,15 +68,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentY        =   794
          _StockProps     =   79
          Caption         =   "Exportar"
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.PushButton cmdBuscar 
@@ -162,15 +104,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentY        =   794
          _StockProps     =   79
          Caption         =   "Imprimir"
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          UseVisualStyle  =   -1  'True
       End
    End
@@ -189,15 +122,12 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
       DataMode        =   99
-      HeaderFontName  =   "Tahoma"
-      FontName        =   "Tahoma"
       ColumnHeaderHeight=   285
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   9
       Column(1)       =   "frmOrdenesPago.frx":0000
-<<<<<<< HEAD:signo1/Forms/frmOrdenesPago.frm
       Column(2)       =   "frmOrdenesPago.frx":0178
       Column(3)       =   "frmOrdenesPago.frx":02B8
       Column(4)       =   "frmOrdenesPago.frx":0400
@@ -220,26 +150,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       FormatStyle(11) =   "frmOrdenesPago.frx":12C4
       ImageCount      =   0
       PrinterProperties=   "frmOrdenesPago.frx":1380
-=======
-      Column(2)       =   "frmOrdenesPago.frx":00C8
-      Column(3)       =   "frmOrdenesPago.frx":016C
-      Column(4)       =   "frmOrdenesPago.frx":0210
-      Column(5)       =   "frmOrdenesPago.frx":02B4
-      Column(6)       =   "frmOrdenesPago.frx":0358
-      Column(7)       =   "frmOrdenesPago.frx":03FC
-      Column(8)       =   "frmOrdenesPago.frx":04A0
-      Column(9)       =   "frmOrdenesPago.frx":0544
-      FormatStylesCount=   7
-      FormatStyle(1)  =   "frmOrdenesPago.frx":05E8
-      FormatStyle(2)  =   "frmOrdenesPago.frx":0710
-      FormatStyle(3)  =   "frmOrdenesPago.frx":07C0
-      FormatStyle(4)  =   "frmOrdenesPago.frx":0874
-      FormatStyle(5)  =   "frmOrdenesPago.frx":094C
-      FormatStyle(6)  =   "frmOrdenesPago.frx":0A04
-      FormatStyle(7)  =   "frmOrdenesPago.frx":0AE4
-      ImageCount      =   0
-      PrinterProperties=   "frmOrdenesPago.frx":0B04
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc:signo1/Forms/frmOrdenesPago.frm
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1935
@@ -251,7 +161,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       _ExtentX        =   26749
       _ExtentY        =   3413
       _StockProps     =   79
-<<<<<<< HEAD:signo1/Forms/frmOrdenesPago.frm
       Caption         =   "Par�metros de b�squeda"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
@@ -262,9 +171,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-=======
-      Caption         =   "Parámetros de búsqueda"
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc:signo1/Forms/frmOrdenesPago.frm
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
          Height          =   1215
@@ -279,15 +185,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentY        =   2143
          _StockProps     =   79
          Caption         =   "Estado Proveedor"
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          UseVisualStyle  =   -1  'True
          Begin XtremeSuiteControls.CheckBox chkContado 
             Height          =   195
@@ -300,15 +197,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _ExtentY        =   344
             _StockProps     =   79
             Caption         =   "Contado"
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             UseVisualStyle  =   -1  'True
             Value           =   1
          End
@@ -323,15 +211,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _ExtentY        =   556
             _StockProps     =   79
             Caption         =   "Cuenta Corriente"
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             UseVisualStyle  =   -1  'True
             Value           =   1
          End
@@ -346,30 +225,12 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _ExtentY        =   556
             _StockProps     =   79
             Caption         =   "Inactivos"
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             UseVisualStyle  =   -1  'True
             Value           =   1
          End
       End
       Begin VB.TextBox txtNro 
          Alignment       =   1  'Right Justify
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   285
          Left            =   945
          TabIndex        =   2
@@ -387,15 +248,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Text            =   "cboProveedores"
       End
       Begin XtremeSuiteControls.PushButton btnClearProveedor 
@@ -410,15 +262,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _StockProps     =   79
          Caption         =   "X"
          BackColor       =   12632256
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
@@ -432,15 +275,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentX        =   2593
          _ExtentY        =   556
          _StockProps     =   68
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          CheckBox        =   -1  'True
          Format          =   1
       End
@@ -455,15 +289,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentX        =   2593
          _ExtentY        =   556
          _StockProps     =   68
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          CheckBox        =   -1  'True
          Format          =   1
       End
@@ -478,15 +303,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Style           =   2
          Text            =   "ComboBox1"
       End
@@ -502,19 +318,10 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _StockProps     =   79
          Caption         =   "X"
          BackColor       =   12632256
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
-         Height          =   1575
+         Height          =   1335
          Index           =   1
          Left            =   5160
          TabIndex        =   22
@@ -522,7 +329,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Width           =   4695
          _Version        =   786432
          _ExtentX        =   8281
-         _ExtentY        =   2778
+         _ExtentY        =   2355
          _StockProps     =   79
          Caption         =   "Fecha OP"
          BackColor       =   16744576
@@ -547,15 +354,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _ExtentX        =   2593
             _ExtentY        =   556
             _StockProps     =   68
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             CheckBox        =   -1  'True
             Format          =   1
          End
@@ -570,15 +368,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _ExtentX        =   2593
             _ExtentY        =   556
             _StockProps     =   68
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             CheckBox        =   -1  'True
             Format          =   1
          End
@@ -593,15 +382,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _ExtentY        =   556
             _StockProps     =   77
             BackColor       =   -2147483643
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             Style           =   2
             Text            =   "ComboBox1"
          End
@@ -618,15 +398,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _StockProps     =   79
             Caption         =   "Rango"
             BackColor       =   12632256
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             AutoSize        =   -1  'True
          End
          Begin XtremeSuiteControls.Label lblDesde 
@@ -642,15 +413,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _StockProps     =   79
             Caption         =   "Desde"
             BackColor       =   12632256
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             AutoSize        =   -1  'True
          End
          Begin XtremeSuiteControls.Label lblHasta 
@@ -666,15 +428,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
             _StockProps     =   79
             Caption         =   "Hasta"
             BackColor       =   12632256
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             AutoSize        =   -1  'True
          End
       End
@@ -691,15 +444,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _StockProps     =   79
          Caption         =   "Estado"
          BackColor       =   12632256
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          AutoSize        =   -1  'True
       End
       Begin XtremeSuiteControls.Label lblHasta 
@@ -761,15 +505,6 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   "Proveedor"
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Alignment       =   1
          AutoSize        =   -1  'True
       End
@@ -783,20 +518,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          _ExtentX        =   1191
          _ExtentY        =   344
          _StockProps     =   79
-<<<<<<< HEAD:signo1/Forms/frmOrdenesPago.frm
          Caption         =   "N� Orden"
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-=======
-         Caption         =   "Nº Orden"
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc:signo1/Forms/frmOrdenesPago.frm
          Alignment       =   1
          AutoSize        =   -1  'True
       End
@@ -1041,7 +763,7 @@ End Sub
 
 Private Sub SeleccionarOP()
     On Error Resume Next
-    Set Orden = ordenes.item(gridOrdenes.RowIndex(gridOrdenes.row))
+    Set Orden = ordenes.item(gridOrdenes.rowIndex(gridOrdenes.row))
 
 End Sub
 
@@ -1063,8 +785,8 @@ End Sub
 
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.item(RowBuffer.rowIndex)
         If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
             RowBuffer.CellStyle(9) = "aprobada"
         ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
@@ -1078,10 +800,10 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowIndex)
-        Values(1) = Orden.id
+Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And ordenes.count > 0 Then
+        Set Orden = ordenes.item(rowIndex)
+        Values(1) = Orden.Id
         Values(2) = Orden.FEcha
 
         Values(3) = Orden.moneda.NombreCorto
@@ -1120,9 +842,9 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     ElseIf EVENTO.EVENTO = modificar_ Then
         For i = ordenes.count To 1 Step -1
             Set tmp = EVENTO.Elemento
-            If ordenes(i).id = tmp.id Then
+            If ordenes(i).Id = tmp.Id Then
                 Set Orden = ordenes(i)
-                Orden.id = tmp.id
+                Orden.Id = tmp.Id
                 Orden.estado = tmp.estado
                 Me.gridOrdenes.RefreshRowIndex i
                 Exit For
@@ -1136,14 +858,12 @@ Private Sub mnuAnular_Click()
     SeleccionarOP
     
     If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
-<<<<<<< HEAD:signo1/Forms/frmOrdenesPago.frm
+
         If DAOOrdenPago.Delete(Orden.Id, True) Then
-=======
-        If DAOOrdenPago.Delete(Orden.id, True) Then
->>>>>>> 809a13d9c3e48791cf5eeb0815c282ed35cca3bc:signo1/Forms/frmOrdenesPago.frm
+
             MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
-            ordenes.remove CStr(Orden.id)
+            ordenes.remove CStr(Orden.Id)
             Me.gridOrdenes.ItemCount = ordenes.count
             cmdBuscar_Click
         Else
@@ -1158,7 +878,7 @@ Private Sub mnuAprobar_Click()
     
     If DAOOrdenPago.aprobar(Orden, True) Then
         MsgBox "Aprobación Exitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
     Else
         MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
@@ -1180,7 +900,7 @@ Private Sub mnuHistorial_Click()
     SeleccionarOP
     
     Dim F As New frmHistorico
-    F.Configurar "orden_pago_historial", Orden.id, "orden de pago Nro " & Orden.id
+    F.Configurar "orden_pago_historial", Orden.Id, "orden de pago Nro " & Orden.Id
     F.Show
     
 End Sub
@@ -1190,7 +910,7 @@ Private Sub mnuImprimir_Click()
     On Error GoTo err4
     Me.CommonDialog.ShowPrinter
 
-   If Not DAOOrdenPago.PrintOP(Orden, Me.pic) Then GoTo err4
+   If Not DAOOrdenPago.PrintOP(Orden) Then GoTo err4
    Exit Sub
    
 err4:
