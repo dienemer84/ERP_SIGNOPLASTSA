@@ -17,12 +17,22 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Index           =   0
       Left            =   120
       TabIndex        =   1
-      Top             =   120
+      Top             =   0
       Width           =   17175
       _Version        =   786432
       _ExtentX        =   30295
       _ExtentY        =   3201
       _StockProps     =   79
+      Caption         =   "Parámetros de búsqueda"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.GroupBox GroupBox 
          Height          =   1335
@@ -36,6 +46,15 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          _ExtentY        =   2355
          _StockProps     =   79
          Caption         =   "Importes"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          UseVisualStyle  =   -1  'True
          Begin VB.TextBox textbMayor 
             Height          =   315
@@ -178,6 +197,15 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          _StockProps     =   79
          Caption         =   "Fecha de Operación"
          BackColor       =   16744576
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Appearance      =   4
          Begin XtremeSuiteControls.DateTimePicker dtpDesde 
             Height          =   315
@@ -367,13 +395,13 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       End
    End
    Begin GridEX20.GridEX gridTransferencias 
-      Height          =   6615
+      Height          =   6495
       Left            =   120
       TabIndex        =   0
       Top             =   3120
       Width           =   17175
       _ExtentX        =   30295
-      _ExtentY        =   11668
+      _ExtentY        =   11456
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
@@ -391,19 +419,19 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Column(2)       =   "frmAdminPagosTransferenciasBancarias.frx":0180
       Column(3)       =   "frmAdminPagosTransferenciasBancarias.frx":02D8
       Column(4)       =   "frmAdminPagosTransferenciasBancarias.frx":0434
-      Column(5)       =   "frmAdminPagosTransferenciasBancarias.frx":0598
-      Column(6)       =   "frmAdminPagosTransferenciasBancarias.frx":06E8
-      Column(7)       =   "frmAdminPagosTransferenciasBancarias.frx":0838
-      Column(8)       =   "frmAdminPagosTransferenciasBancarias.frx":0998
+      Column(5)       =   "frmAdminPagosTransferenciasBancarias.frx":0610
+      Column(6)       =   "frmAdminPagosTransferenciasBancarias.frx":0760
+      Column(7)       =   "frmAdminPagosTransferenciasBancarias.frx":0908
+      Column(8)       =   "frmAdminPagosTransferenciasBancarias.frx":0A68
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0AE0
-      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":0C18
-      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":0CC8
-      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":0D7C
-      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":0E54
-      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":0F0C
+      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0BB0
+      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":0CE8
+      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":0D98
+      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":0E4C
+      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":0F24
+      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":0FDC
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":0FEC
+      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":10BC
    End
    Begin XtremeSuiteControls.Label Label 
       Height          =   255
@@ -620,7 +648,7 @@ End Sub
 
 Private Sub gridTransferencias_SelectionChange()
     On Error Resume Next
-    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
+    Set TransfBancaria = transferencias.Item(gridTransferencias.rowIndex(gridTransferencias.row))
 End Sub
 
 
@@ -645,7 +673,7 @@ End Sub
 
 Private Sub gridTransferencias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 If rowIndex > 0 And transferencias.count > 0 Then
-    Set TransfBancaria = transferencias.item(rowIndex)
+    Set TransfBancaria = transferencias.Item(rowIndex)
         Values(1) = TransfBancaria.Id
         
 

@@ -1,6 +1,842 @@
-Line 33: Syntax error: property <<<<<<< in TabControl1 was missing an '='.
-Line 36: Syntax error: property >>>>>>> in TabControl1 was missing an '='.
-Line 33: Syntax error: property <<<<<<< in TabControl1 was missing an '='.
-Line 36: Syntax error: property >>>>>>> in TabControl1 was missing an '='.
-Line 33: Syntax error: property <<<<<<< in TabControl1 was missing an '='.
-Line 36: Syntax error: property >>>>>>> in TabControl1 was missing an '='.
+Line 18: Class XtremeSuiteControls.TabControl of control TabControl1 was not a loaded control class.
+Line 55: Class XtremeSuiteControls.PushButton of control PushButton1 was not a loaded control class.
+Line 69: Class XtremeSuiteControls.PushButton of control btnFiltrar was not a loaded control class.
+Line 83: Class XtremeSuiteControls.ComboBox of control cboProveedores was not a loaded control class.
+Line 106: Class GridEX20.GridEX of control grdCheques3eros was not a loaded control class.
+Line 158: Class GridEX20.GridEX of control gridChequesEmitidos was not a loaded control class.
+Line 209: Class GridEX20.GridEX of control grid_cartera_cheques was not a loaded control class.
+Line 263: Class XtremeSuiteControls.PushButton of control btnBorrarNumeroCartera was not a loaded control class.
+Line 283: Class XtremeSuiteControls.PushButton of control btnBorrarOrigen was not a loaded control class.
+Line 296: Class XtremeSuiteControls.PushButton of control btnBorrarClasificacion was not a loaded control class.
+Line 309: Class XtremeSuiteControls.PushButton of control btnBorrarBanco was not a loaded control class.
+Line 322: Class XtremeSuiteControls.ComboBox of control cboClasificacion was not a loaded control class.
+Line 335: Class XtremeSuiteControls.ComboBox of control cboBancoCartera was not a loaded control class.
+Line 355: Class XtremeSuiteControls.PushButton of control btnBuscarEnCartera was not a loaded control class.
+Line 379: Class XtremeSuiteControls.PushButton of control btnExportarCartera was not a loaded control class.
+Line 393: Class XtremeSuiteControls.ProgressBar of control ProgressBar was not a loaded control class.
+Line 415: Class XtremeSuiteControls.GroupBox of control GroFechaComprobante was not a loaded control class.
+Line 429: Class XtremeSuiteControls.ComboBox of control cboRangosVtoCartera was not a loaded control class.
+Line 444: Class XtremeSuiteControls.DateTimePicker of control dtpDesdeVtoCartera was not a loaded control class.
+Line 459: Class XtremeSuiteControls.DateTimePicker of control dtpHastaVtoCartera was not a loaded control class.
+Line 474: Class XtremeSuiteControls.Label of control lblHasta was not a loaded control class.
+Line 489: Class XtremeSuiteControls.Label of control lblDesde was not a loaded control class.
+Line 504: Class XtremeSuiteControls.Label of control lblRango was not a loaded control class.
+Line 520: Class XtremeSuiteControls.GroupBox of control GroFechaComprobante was not a loaded control class.
+Line 534: Class XtremeSuiteControls.ComboBox of control cboRangosRboCartera was not a loaded control class.
+Line 549: Class XtremeSuiteControls.DateTimePicker of control dtpHastaRboCartera was not a loaded control class.
+Line 564: Class XtremeSuiteControls.DateTimePicker of control dtpDesdeRboCartera was not a loaded control class.
+Line 579: Class XtremeSuiteControls.Label of control lblHasta was not a loaded control class.
+Line 594: Class XtremeSuiteControls.Label of control lblDesde was not a loaded control class.
+Line 609: Class XtremeSuiteControls.Label of control lblRango was not a loaded control class.
+Line 662: Class XtremeSuiteControls.GroupBox of control GroupBox3 was not a loaded control class.
+Line 675: Class XtremeSuiteControls.ComboBox of control cboClientes3erosUti was not a loaded control class.
+Line 688: Class XtremeSuiteControls.PushButton of control PushButton4 was not a loaded control class.
+Line 701: Class XtremeSuiteControls.ComboBox of control cboProveedores3eros was not a loaded control class.
+Line 714: Class XtremeSuiteControls.PushButton of control btnBorrarOPTerceros was not a loaded control class.
+Line 727: Class XtremeSuiteControls.PushButton of control btnBorrarOrigenTerceros was not a loaded control class.
+Line 740: Class XtremeSuiteControls.PushButton of control btnBorrarBancosTerceros was not a loaded control class.
+Line 753: Class XtremeSuiteControls.PushButton of control btnBorrarNumeroTerceros was not a loaded control class.
+Line 766: Class XtremeSuiteControls.ComboBox of control cboBancos3ero was not a loaded control class.
+Line 786: Class XtremeSuiteControls.PushButton of control btnBuscar was not a loaded control class.
+Line 809: Class XtremeSuiteControls.PushButton of control btnExportar was not a loaded control class.
+Line 823: Class XtremeSuiteControls.ProgressBar of control ProgressBar was not a loaded control class.
+Line 852: Class XtremeSuiteControls.GroupBox of control GroFechaComprobante was not a loaded control class.
+Line 866: Class XtremeSuiteControls.ComboBox of control cboRangosVtoTerceros was not a loaded control class.
+Line 881: Class XtremeSuiteControls.DateTimePicker of control dtpDesdeVtoTerceros was not a loaded control class.
+Line 896: Class XtremeSuiteControls.DateTimePicker of control dtpHastaVtoTerceros was not a loaded control class.
+Line 911: Class XtremeSuiteControls.Label of control lblRango was not a loaded control class.
+Line 926: Class XtremeSuiteControls.Label of control lblDesde was not a loaded control class.
+Line 941: Class XtremeSuiteControls.Label of control lblHasta was not a loaded control class.
+Line 957: Class XtremeSuiteControls.GroupBox of control GroFechaComprobante was not a loaded control class.
+Line 971: Class XtremeSuiteControls.ComboBox of control cboRangosRboEmitido was not a loaded control class.
+Line 986: Class XtremeSuiteControls.DateTimePicker of control dtpHastaRboEmitido was not a loaded control class.
+Line 1001: Class XtremeSuiteControls.DateTimePicker of control dtpDesdeRboEmitido was not a loaded control class.
+Line 1016: Class XtremeSuiteControls.Label of control lblRango was not a loaded control class.
+Line 1031: Class XtremeSuiteControls.Label of control lblDesde was not a loaded control class.
+Line 1046: Class XtremeSuiteControls.Label of control lblHasta was not a loaded control class.
+Line 1062: Class XtremeSuiteControls.Label of control Label7 was not a loaded control class.
+Line 1082: Class XtremeSuiteControls.Label of control lblOP was not a loaded control class.
+Line 1095: Class XtremeSuiteControls.Label of control lblOP was not a loaded control class.
+Line 1108: Class XtremeSuiteControls.Label of control lblNumero was not a loaded control class.
+Line 1121: Class XtremeSuiteControls.GroupBox of control GroupBox2 was not a loaded control class.
+Line 1133: Class XtremeSuiteControls.PushButton of control PushButton2 was not a loaded control class.
+Line 1146: Class XtremeSuiteControls.ComboBox of control cboProveedoresPropios was not a loaded control class.
+Line 1159: Class XtremeSuiteControls.PushButton of control btnBorrarNumeroPropios was not a loaded control class.
+Line 1172: Class XtremeSuiteControls.PushButton of control btnBorrarOPPropios was not a loaded control class.
+Line 1192: Class XtremeSuiteControls.PushButton of control btnBuscarChePropios was not a loaded control class.
+Line 1215: Class XtremeSuiteControls.PushButton of control btnExportarChePropios was not a loaded control class.
+Line 1229: Class XtremeSuiteControls.ProgressBar of control ProgressBar was not a loaded control class.
+Line 1258: Class XtremeSuiteControls.CheckBox of control chkIngresados was not a loaded control class.
+Line 1271: Class XtremeSuiteControls.ComboBox of control cboBancos1 was not a loaded control class.
+Line 1284: Class XtremeSuiteControls.PushButton of control CMDsINCliente was not a loaded control class.
+Line 1298: Class XtremeSuiteControls.ComboBox of control cboChequera2 was not a loaded control class.
+Line 1311: Class XtremeSuiteControls.PushButton of control PushButton3 was not a loaded control class.
+Line 1325: Class XtremeSuiteControls.GroupBox of control GroFechaComprobante was not a loaded control class.
+Line 1339: Class XtremeSuiteControls.ComboBox of control cboRangosVtoPropios was not a loaded control class.
+Line 1354: Class XtremeSuiteControls.DateTimePicker of control dtpDesdeVtoPropios was not a loaded control class.
+Line 1369: Class XtremeSuiteControls.DateTimePicker of control dtpHastaVtoPropios was not a loaded control class.
+Line 1384: Class XtremeSuiteControls.Label of control lblRango was not a loaded control class.
+Line 1399: Class XtremeSuiteControls.Label of control lblDesde was not a loaded control class.
+Line 1414: Class XtremeSuiteControls.Label of control lblHasta was not a loaded control class.
+Line 1430: Class XtremeSuiteControls.GroupBox of control GroFechaComprobante was not a loaded control class.
+Line 1444: Class XtremeSuiteControls.ComboBox of control cboRangosRboPropios was not a loaded control class.
+Line 1459: Class XtremeSuiteControls.DateTimePicker of control dtpHastaRboPropios was not a loaded control class.
+Line 1474: Class XtremeSuiteControls.DateTimePicker of control dtpDesdeRboPropios was not a loaded control class.
+Line 1489: Class XtremeSuiteControls.Label of control lblRango was not a loaded control class.
+Line 1504: Class XtremeSuiteControls.Label of control lblDesde was not a loaded control class.
+Line 1519: Class XtremeSuiteControls.Label of control lblHasta was not a loaded control class.
+Line 1582: Class XtremeSuiteControls.GroupBox of control GroupBox1 was not a loaded control class.
+Line 1627: Class XtremeSuiteControls.ComboBox of control cboMonedas was not a loaded control class.
+Line 1642: Class XtremeSuiteControls.PushButton of control cmdCrear was not a loaded control class.
+Line 1655: Class XtremeSuiteControls.ComboBox of control cboBancos was not a loaded control class.
+Line 1721: Class GridEX20.GridEX of control grid_cheques was not a loaded control class.
+Line 1762: Class GridEX20.GridEX of control grid_chequeras was not a loaded control class.
+Line 1803: Class XtremeSuiteControls.Label of control Label6 was not a loaded control class.
+Line 1818: Class GridEX20.GridEX of control gridBancos was not a loaded control class.
+Line 24: The property name _Version in TabControl1 is invalid.
+Line 25: The property name _ExtentX in TabControl1 is invalid.
+Line 26: The property name _ExtentY in TabControl1 is invalid.
+Line 27: The property name _StockProps in TabControl1 is invalid.
+Line 29: The property name Color in TabControl1 is invalid.
+Line 30: The property name PaintManager.BoldSelected in TabControl1 is invalid.
+Line 31: The property name PaintManager.ShowIcons in TabControl1 is invalid.
+Line 32: The property name ItemCount in TabControl1 is invalid.
+Line 33: The property name SelectedItem in TabControl1 is invalid.
+Line 34: The property name Item(0).Caption in TabControl1 is invalid.
+Line 35: The property name Item(0).ControlCount in TabControl1 is invalid.
+Line 36: The property name Item(0).Control(0) in TabControl1 is invalid.
+Line 37: The property name Item(0).Control(1) in TabControl1 is invalid.
+Line 38: The property name Item(1).Caption in TabControl1 is invalid.
+Line 39: The property name Item(1).ControlCount in TabControl1 is invalid.
+Line 40: The property name Item(1).Control(0) in TabControl1 is invalid.
+Line 41: The property name Item(1).Control(1) in TabControl1 is invalid.
+Line 42: The property name Item(1).Control(2) in TabControl1 is invalid.
+Line 43: The property name Item(1).Control(3) in TabControl1 is invalid.
+Line 44: The property name Item(1).Control(4) in TabControl1 is invalid.
+Line 45: The property name Item(1).Control(5) in TabControl1 is invalid.
+Line 46: The property name Item(1).Control(6) in TabControl1 is invalid.
+Line 47: The property name Item(2).Caption in TabControl1 is invalid.
+Line 48: The property name Item(2).ControlCount in TabControl1 is invalid.
+Line 49: The property name Item(2).Control(0) in TabControl1 is invalid.
+Line 50: The property name Item(2).Control(1) in TabControl1 is invalid.
+Line 51: The property name Item(3).Caption in TabControl1 is invalid.
+Line 52: The property name Item(3).ControlCount in TabControl1 is invalid.
+Line 53: The property name Item(3).Control(0) in TabControl1 is invalid.
+Line 54: The property name Item(3).Control(1) in TabControl1 is invalid.
+Line 18: Property Appearance in TabControl1 could not be set.
+Line 62: The property name _Version in PushButton1 is invalid.
+Line 63: The property name _ExtentX in PushButton1 is invalid.
+Line 64: The property name _ExtentY in PushButton1 is invalid.
+Line 65: The property name _StockProps in PushButton1 is invalid.
+Line 66: The property name Caption in PushButton1 is invalid.
+Line 67: The property name UseVisualStyle in PushButton1 is invalid.
+Line 76: The property name _Version in btnFiltrar is invalid.
+Line 77: The property name _ExtentX in btnFiltrar is invalid.
+Line 78: The property name _ExtentY in btnFiltrar is invalid.
+Line 79: The property name _StockProps in btnFiltrar is invalid.
+Line 80: The property name Caption in btnFiltrar is invalid.
+Line 81: The property name UseVisualStyle in btnFiltrar is invalid.
+Line 90: The property name _Version in cboProveedores is invalid.
+Line 91: The property name _ExtentX in cboProveedores is invalid.
+Line 92: The property name _ExtentY in cboProveedores is invalid.
+Line 93: The property name _StockProps in cboProveedores is invalid.
+Line 95: The property name Text in cboProveedores is invalid.
+Line 112: The property name _ExtentX in grdCheques3eros is invalid.
+Line 113: The property name _ExtentY in grdCheques3eros is invalid.
+Line 114: The property name Version in grdCheques3eros is invalid.
+Line 115: The property name BoundColumnIndex in grdCheques3eros is invalid.
+Line 116: The property name ReplaceColumnIndex in grdCheques3eros is invalid.
+Line 117: The property name ColumnAutoResize in grdCheques3eros is invalid.
+Line 118: The property name MethodHoldFields in grdCheques3eros is invalid.
+Line 119: The property name AllowColumnDrag in grdCheques3eros is invalid.
+Line 120: The property name AllowEdit in grdCheques3eros is invalid.
+Line 121: The property name GroupByBoxVisible in grdCheques3eros is invalid.
+Line 122: The property name DataMode in grdCheques3eros is invalid.
+Line 123: The property name ColumnHeaderHeight in grdCheques3eros is invalid.
+Line 124: The property name IntProp1 in grdCheques3eros is invalid.
+Line 125: The property name IntProp2 in grdCheques3eros is invalid.
+Line 126: The property name IntProp7 in grdCheques3eros is invalid.
+Line 127: The property name ColumnsCount in grdCheques3eros is invalid.
+Line 128: The property name Column(1) in grdCheques3eros is invalid.
+Line 129: The property name Column(2) in grdCheques3eros is invalid.
+Line 130: The property name Column(3) in grdCheques3eros is invalid.
+Line 131: The property name Column(4) in grdCheques3eros is invalid.
+Line 132: The property name Column(5) in grdCheques3eros is invalid.
+Line 133: The property name Column(6) in grdCheques3eros is invalid.
+Line 134: The property name Column(7) in grdCheques3eros is invalid.
+Line 135: The property name Column(8) in grdCheques3eros is invalid.
+Line 136: The property name Column(9) in grdCheques3eros is invalid.
+Line 137: The property name Column(10) in grdCheques3eros is invalid.
+Line 138: The property name Column(11) in grdCheques3eros is invalid.
+Line 139: The property name FormatStylesCount in grdCheques3eros is invalid.
+Line 140: The property name FormatStyle(1) in grdCheques3eros is invalid.
+Line 141: The property name FormatStyle(2) in grdCheques3eros is invalid.
+Line 142: The property name FormatStyle(3) in grdCheques3eros is invalid.
+Line 143: The property name FormatStyle(4) in grdCheques3eros is invalid.
+Line 144: The property name FormatStyle(5) in grdCheques3eros is invalid.
+Line 145: The property name FormatStyle(6) in grdCheques3eros is invalid.
+Line 146: The property name ImageCount in grdCheques3eros is invalid.
+Line 147: The property name PrinterProperties in grdCheques3eros is invalid.
+Line 164: The property name _ExtentX in gridChequesEmitidos is invalid.
+Line 165: The property name _ExtentY in gridChequesEmitidos is invalid.
+Line 166: The property name Version in gridChequesEmitidos is invalid.
+Line 167: The property name BoundColumnIndex in gridChequesEmitidos is invalid.
+Line 168: The property name ReplaceColumnIndex in gridChequesEmitidos is invalid.
+Line 169: The property name ColumnAutoResize in gridChequesEmitidos is invalid.
+Line 170: The property name MethodHoldFields in gridChequesEmitidos is invalid.
+Line 171: The property name AllowColumnDrag in gridChequesEmitidos is invalid.
+Line 172: The property name GroupByBoxVisible in gridChequesEmitidos is invalid.
+Line 173: The property name DataMode in gridChequesEmitidos is invalid.
+Line 174: The property name ColumnHeaderHeight in gridChequesEmitidos is invalid.
+Line 175: The property name IntProp1 in gridChequesEmitidos is invalid.
+Line 176: The property name IntProp2 in gridChequesEmitidos is invalid.
+Line 177: The property name IntProp7 in gridChequesEmitidos is invalid.
+Line 178: The property name ColumnsCount in gridChequesEmitidos is invalid.
+Line 179: The property name Column(1) in gridChequesEmitidos is invalid.
+Line 180: The property name Column(2) in gridChequesEmitidos is invalid.
+Line 181: The property name Column(3) in gridChequesEmitidos is invalid.
+Line 182: The property name Column(4) in gridChequesEmitidos is invalid.
+Line 183: The property name Column(5) in gridChequesEmitidos is invalid.
+Line 184: The property name Column(6) in gridChequesEmitidos is invalid.
+Line 185: The property name Column(7) in gridChequesEmitidos is invalid.
+Line 186: The property name Column(8) in gridChequesEmitidos is invalid.
+Line 187: The property name Column(9) in gridChequesEmitidos is invalid.
+Line 188: The property name Column(10) in gridChequesEmitidos is invalid.
+Line 189: The property name Column(11) in gridChequesEmitidos is invalid.
+Line 190: The property name FormatStylesCount in gridChequesEmitidos is invalid.
+Line 191: The property name FormatStyle(1) in gridChequesEmitidos is invalid.
+Line 192: The property name FormatStyle(2) in gridChequesEmitidos is invalid.
+Line 193: The property name FormatStyle(3) in gridChequesEmitidos is invalid.
+Line 194: The property name FormatStyle(4) in gridChequesEmitidos is invalid.
+Line 195: The property name FormatStyle(5) in gridChequesEmitidos is invalid.
+Line 196: The property name FormatStyle(6) in gridChequesEmitidos is invalid.
+Line 197: The property name ImageCount in gridChequesEmitidos is invalid.
+Line 198: The property name PrinterProperties in gridChequesEmitidos is invalid.
+Line 215: The property name _ExtentX in grid_cartera_cheques is invalid.
+Line 216: The property name _ExtentY in grid_cartera_cheques is invalid.
+Line 217: The property name Version in grid_cartera_cheques is invalid.
+Line 218: The property name DefaultGroupMode in grid_cartera_cheques is invalid.
+Line 219: The property name BoundColumnIndex in grid_cartera_cheques is invalid.
+Line 220: The property name ReplaceColumnIndex in grid_cartera_cheques is invalid.
+Line 221: The property name PreviewColumn in grid_cartera_cheques is invalid.
+Line 222: The property name PreviewRowLines in grid_cartera_cheques is invalid.
+Line 223: The property name ColumnAutoResize in grid_cartera_cheques is invalid.
+Line 224: The property name ReadOnly in grid_cartera_cheques is invalid.
+Line 225: The property name MethodHoldFields in grid_cartera_cheques is invalid.
+Line 226: The property name ContScroll in grid_cartera_cheques is invalid.
+Line 227: The property name AllowCardSizing in grid_cartera_cheques is invalid.
+Line 228: The property name AllowEdit in grid_cartera_cheques is invalid.
+Line 229: The property name GroupByBoxVisible in grid_cartera_cheques is invalid.
+Line 230: The property name DataMode in grid_cartera_cheques is invalid.
+Line 231: The property name ColumnHeaderHeight in grid_cartera_cheques is invalid.
+Line 232: The property name IntProp1 in grid_cartera_cheques is invalid.
+Line 233: The property name IntProp2 in grid_cartera_cheques is invalid.
+Line 234: The property name IntProp7 in grid_cartera_cheques is invalid.
+Line 235: The property name ColumnsCount in grid_cartera_cheques is invalid.
+Line 236: The property name Column(1) in grid_cartera_cheques is invalid.
+Line 237: The property name Column(2) in grid_cartera_cheques is invalid.
+Line 238: The property name Column(3) in grid_cartera_cheques is invalid.
+Line 239: The property name Column(4) in grid_cartera_cheques is invalid.
+Line 240: The property name Column(5) in grid_cartera_cheques is invalid.
+Line 241: The property name Column(6) in grid_cartera_cheques is invalid.
+Line 242: The property name Column(7) in grid_cartera_cheques is invalid.
+Line 243: The property name Column(8) in grid_cartera_cheques is invalid.
+Line 244: The property name Column(9) in grid_cartera_cheques is invalid.
+Line 245: The property name FormatStylesCount in grid_cartera_cheques is invalid.
+Line 246: The property name FormatStyle(1) in grid_cartera_cheques is invalid.
+Line 247: The property name FormatStyle(2) in grid_cartera_cheques is invalid.
+Line 248: The property name FormatStyle(3) in grid_cartera_cheques is invalid.
+Line 249: The property name FormatStyle(4) in grid_cartera_cheques is invalid.
+Line 250: The property name FormatStyle(5) in grid_cartera_cheques is invalid.
+Line 251: The property name FormatStyle(6) in grid_cartera_cheques is invalid.
+Line 252: The property name ImageCount in grid_cartera_cheques is invalid.
+Line 253: The property name PrinterProperties in grid_cartera_cheques is invalid.
+Line 269: The property name _Version in btnBorrarNumeroCartera is invalid.
+Line 270: The property name _ExtentX in btnBorrarNumeroCartera is invalid.
+Line 271: The property name _ExtentY in btnBorrarNumeroCartera is invalid.
+Line 272: The property name _StockProps in btnBorrarNumeroCartera is invalid.
+Line 273: The property name Caption in btnBorrarNumeroCartera is invalid.
+Line 274: The property name UseVisualStyle in btnBorrarNumeroCartera is invalid.
+Line 289: The property name _Version in btnBorrarOrigen is invalid.
+Line 290: The property name _ExtentX in btnBorrarOrigen is invalid.
+Line 291: The property name _ExtentY in btnBorrarOrigen is invalid.
+Line 292: The property name _StockProps in btnBorrarOrigen is invalid.
+Line 293: The property name Caption in btnBorrarOrigen is invalid.
+Line 294: The property name UseVisualStyle in btnBorrarOrigen is invalid.
+Line 302: The property name _Version in btnBorrarClasificacion is invalid.
+Line 303: The property name _ExtentX in btnBorrarClasificacion is invalid.
+Line 304: The property name _ExtentY in btnBorrarClasificacion is invalid.
+Line 305: The property name _StockProps in btnBorrarClasificacion is invalid.
+Line 306: The property name Caption in btnBorrarClasificacion is invalid.
+Line 307: The property name UseVisualStyle in btnBorrarClasificacion is invalid.
+Line 315: The property name _Version in btnBorrarBanco is invalid.
+Line 316: The property name _ExtentX in btnBorrarBanco is invalid.
+Line 317: The property name _ExtentY in btnBorrarBanco is invalid.
+Line 318: The property name _StockProps in btnBorrarBanco is invalid.
+Line 319: The property name Caption in btnBorrarBanco is invalid.
+Line 320: The property name UseVisualStyle in btnBorrarBanco is invalid.
+Line 328: The property name _Version in cboClasificacion is invalid.
+Line 329: The property name _ExtentX in cboClasificacion is invalid.
+Line 330: The property name _ExtentY in cboClasificacion is invalid.
+Line 331: The property name _StockProps in cboClasificacion is invalid.
+Line 333: The property name Text in cboClasificacion is invalid.
+Line 341: The property name _Version in cboBancoCartera is invalid.
+Line 342: The property name _ExtentX in cboBancoCartera is invalid.
+Line 343: The property name _ExtentY in cboBancoCartera is invalid.
+Line 344: The property name _StockProps in cboBancoCartera is invalid.
+Line 346: The property name Text in cboBancoCartera is invalid.
+Line 356: The property name Default in btnBuscarEnCartera is invalid.
+Line 363: The property name _Version in btnBuscarEnCartera is invalid.
+Line 364: The property name _ExtentX in btnBuscarEnCartera is invalid.
+Line 365: The property name _ExtentY in btnBuscarEnCartera is invalid.
+Line 366: The property name _StockProps in btnBuscarEnCartera is invalid.
+Line 367: The property name Caption in btnBuscarEnCartera is invalid.
+Line 377: The property name UseVisualStyle in btnBuscarEnCartera is invalid.
+Line 386: The property name _Version in btnExportarCartera is invalid.
+Line 387: The property name _ExtentX in btnExportarCartera is invalid.
+Line 388: The property name _ExtentY in btnExportarCartera is invalid.
+Line 389: The property name _StockProps in btnExportarCartera is invalid.
+Line 390: The property name Caption in btnExportarCartera is invalid.
+Line 391: The property name UseVisualStyle in btnExportarCartera is invalid.
+Line 400: The property name _Version in ProgressBar is invalid.
+Line 401: The property name _ExtentX in ProgressBar is invalid.
+Line 402: The property name _ExtentY in ProgressBar is invalid.
+Line 403: The property name _StockProps in ProgressBar is invalid.
+Line 393: Property Appearance in ProgressBar could not be set.
+Line 422: The property name _Version in GroFechaComprobante is invalid.
+Line 423: The property name _ExtentX in GroFechaComprobante is invalid.
+Line 424: The property name _ExtentY in GroFechaComprobante is invalid.
+Line 425: The property name _StockProps in GroFechaComprobante is invalid.
+Line 426: The property name Caption in GroFechaComprobante is invalid.
+Line 415: Property Appearance in GroFechaComprobante could not be set.
+Line 436: The property name _Version in cboRangosVtoCartera is invalid.
+Line 437: The property name _ExtentX in cboRangosVtoCartera is invalid.
+Line 438: The property name _ExtentY in cboRangosVtoCartera is invalid.
+Line 439: The property name _StockProps in cboRangosVtoCartera is invalid.
+Line 441: The property name Style in cboRangosVtoCartera is invalid.
+Line 442: The property name Text in cboRangosVtoCartera is invalid.
+Line 451: The property name _Version in dtpDesdeVtoCartera is invalid.
+Line 452: The property name _ExtentX in dtpDesdeVtoCartera is invalid.
+Line 453: The property name _ExtentY in dtpDesdeVtoCartera is invalid.
+Line 454: The property name _StockProps in dtpDesdeVtoCartera is invalid.
+Line 455: The property name CheckBox in dtpDesdeVtoCartera is invalid.
+Line 456: The property name Format in dtpDesdeVtoCartera is invalid.
+Line 457: The property name CurrentDate in dtpDesdeVtoCartera is invalid.
+Line 466: The property name _Version in dtpHastaVtoCartera is invalid.
+Line 467: The property name _ExtentX in dtpHastaVtoCartera is invalid.
+Line 468: The property name _ExtentY in dtpHastaVtoCartera is invalid.
+Line 469: The property name _StockProps in dtpHastaVtoCartera is invalid.
+Line 470: The property name CheckBox in dtpHastaVtoCartera is invalid.
+Line 471: The property name Format in dtpHastaVtoCartera is invalid.
+Line 472: The property name CurrentDate in dtpHastaVtoCartera is invalid.
+Line 481: The property name _Version in lblHasta is invalid.
+Line 482: The property name _ExtentX in lblHasta is invalid.
+Line 483: The property name _ExtentY in lblHasta is invalid.
+Line 484: The property name _StockProps in lblHasta is invalid.
+Line 485: The property name Caption in lblHasta is invalid.
+Line 496: The property name _Version in lblDesde is invalid.
+Line 497: The property name _ExtentX in lblDesde is invalid.
+Line 498: The property name _ExtentY in lblDesde is invalid.
+Line 499: The property name _StockProps in lblDesde is invalid.
+Line 500: The property name Caption in lblDesde is invalid.
+Line 511: The property name _Version in lblRango is invalid.
+Line 512: The property name _ExtentX in lblRango is invalid.
+Line 513: The property name _ExtentY in lblRango is invalid.
+Line 514: The property name _StockProps in lblRango is invalid.
+Line 515: The property name Caption in lblRango is invalid.
+Line 527: The property name _Version in GroFechaComprobante is invalid.
+Line 528: The property name _ExtentX in GroFechaComprobante is invalid.
+Line 529: The property name _ExtentY in GroFechaComprobante is invalid.
+Line 530: The property name _StockProps in GroFechaComprobante is invalid.
+Line 531: The property name Caption in GroFechaComprobante is invalid.
+Line 520: Property Appearance in GroFechaComprobante could not be set.
+Line 541: The property name _Version in cboRangosRboCartera is invalid.
+Line 542: The property name _ExtentX in cboRangosRboCartera is invalid.
+Line 543: The property name _ExtentY in cboRangosRboCartera is invalid.
+Line 544: The property name _StockProps in cboRangosRboCartera is invalid.
+Line 546: The property name Style in cboRangosRboCartera is invalid.
+Line 547: The property name Text in cboRangosRboCartera is invalid.
+Line 556: The property name _Version in dtpHastaRboCartera is invalid.
+Line 557: The property name _ExtentX in dtpHastaRboCartera is invalid.
+Line 558: The property name _ExtentY in dtpHastaRboCartera is invalid.
+Line 559: The property name _StockProps in dtpHastaRboCartera is invalid.
+Line 560: The property name CheckBox in dtpHastaRboCartera is invalid.
+Line 561: The property name Format in dtpHastaRboCartera is invalid.
+Line 562: The property name CurrentDate in dtpHastaRboCartera is invalid.
+Line 571: The property name _Version in dtpDesdeRboCartera is invalid.
+Line 572: The property name _ExtentX in dtpDesdeRboCartera is invalid.
+Line 573: The property name _ExtentY in dtpDesdeRboCartera is invalid.
+Line 574: The property name _StockProps in dtpDesdeRboCartera is invalid.
+Line 575: The property name CheckBox in dtpDesdeRboCartera is invalid.
+Line 576: The property name Format in dtpDesdeRboCartera is invalid.
+Line 577: The property name CurrentDate in dtpDesdeRboCartera is invalid.
+Line 586: The property name _Version in lblHasta is invalid.
+Line 587: The property name _ExtentX in lblHasta is invalid.
+Line 588: The property name _ExtentY in lblHasta is invalid.
+Line 589: The property name _StockProps in lblHasta is invalid.
+Line 590: The property name Caption in lblHasta is invalid.
+Line 601: The property name _Version in lblDesde is invalid.
+Line 602: The property name _ExtentX in lblDesde is invalid.
+Line 603: The property name _ExtentY in lblDesde is invalid.
+Line 604: The property name _StockProps in lblDesde is invalid.
+Line 605: The property name Caption in lblDesde is invalid.
+Line 616: The property name _Version in lblRango is invalid.
+Line 617: The property name _ExtentX in lblRango is invalid.
+Line 618: The property name _ExtentY in lblRango is invalid.
+Line 619: The property name _StockProps in lblRango is invalid.
+Line 620: The property name Caption in lblRango is invalid.
+Line 669: The property name _Version in GroupBox3 is invalid.
+Line 670: The property name _ExtentX in GroupBox3 is invalid.
+Line 671: The property name _ExtentY in GroupBox3 is invalid.
+Line 672: The property name _StockProps in GroupBox3 is invalid.
+Line 673: The property name Caption in GroupBox3 is invalid.
+Line 674: The property name UseVisualStyle in GroupBox3 is invalid.
+Line 681: The property name _Version in cboClientes3erosUti is invalid.
+Line 682: The property name _ExtentX in cboClientes3erosUti is invalid.
+Line 683: The property name _ExtentY in cboClientes3erosUti is invalid.
+Line 684: The property name _StockProps in cboClientes3erosUti is invalid.
+Line 686: The property name Text in cboClientes3erosUti is invalid.
+Line 694: The property name _Version in PushButton4 is invalid.
+Line 695: The property name _ExtentX in PushButton4 is invalid.
+Line 696: The property name _ExtentY in PushButton4 is invalid.
+Line 697: The property name _StockProps in PushButton4 is invalid.
+Line 698: The property name Caption in PushButton4 is invalid.
+Line 699: The property name UseVisualStyle in PushButton4 is invalid.
+Line 707: The property name _Version in cboProveedores3eros is invalid.
+Line 708: The property name _ExtentX in cboProveedores3eros is invalid.
+Line 709: The property name _ExtentY in cboProveedores3eros is invalid.
+Line 710: The property name _StockProps in cboProveedores3eros is invalid.
+Line 712: The property name Text in cboProveedores3eros is invalid.
+Line 720: The property name _Version in btnBorrarOPTerceros is invalid.
+Line 721: The property name _ExtentX in btnBorrarOPTerceros is invalid.
+Line 722: The property name _ExtentY in btnBorrarOPTerceros is invalid.
+Line 723: The property name _StockProps in btnBorrarOPTerceros is invalid.
+Line 724: The property name Caption in btnBorrarOPTerceros is invalid.
+Line 725: The property name UseVisualStyle in btnBorrarOPTerceros is invalid.
+Line 733: The property name _Version in btnBorrarOrigenTerceros is invalid.
+Line 734: The property name _ExtentX in btnBorrarOrigenTerceros is invalid.
+Line 735: The property name _ExtentY in btnBorrarOrigenTerceros is invalid.
+Line 736: The property name _StockProps in btnBorrarOrigenTerceros is invalid.
+Line 737: The property name Caption in btnBorrarOrigenTerceros is invalid.
+Line 738: The property name UseVisualStyle in btnBorrarOrigenTerceros is invalid.
+Line 746: The property name _Version in btnBorrarBancosTerceros is invalid.
+Line 747: The property name _ExtentX in btnBorrarBancosTerceros is invalid.
+Line 748: The property name _ExtentY in btnBorrarBancosTerceros is invalid.
+Line 749: The property name _StockProps in btnBorrarBancosTerceros is invalid.
+Line 750: The property name Caption in btnBorrarBancosTerceros is invalid.
+Line 751: The property name UseVisualStyle in btnBorrarBancosTerceros is invalid.
+Line 759: The property name _Version in btnBorrarNumeroTerceros is invalid.
+Line 760: The property name _ExtentX in btnBorrarNumeroTerceros is invalid.
+Line 761: The property name _ExtentY in btnBorrarNumeroTerceros is invalid.
+Line 762: The property name _StockProps in btnBorrarNumeroTerceros is invalid.
+Line 763: The property name Caption in btnBorrarNumeroTerceros is invalid.
+Line 764: The property name UseVisualStyle in btnBorrarNumeroTerceros is invalid.
+Line 772: The property name _Version in cboBancos3ero is invalid.
+Line 773: The property name _ExtentX in cboBancos3ero is invalid.
+Line 774: The property name _ExtentY in cboBancos3ero is invalid.
+Line 775: The property name _StockProps in cboBancos3ero is invalid.
+Line 777: The property name Text in cboBancos3ero is invalid.
+Line 793: The property name _Version in btnBuscar is invalid.
+Line 794: The property name _ExtentX in btnBuscar is invalid.
+Line 795: The property name _ExtentY in btnBuscar is invalid.
+Line 796: The property name _StockProps in btnBuscar is invalid.
+Line 797: The property name Caption in btnBuscar is invalid.
+Line 807: The property name UseVisualStyle in btnBuscar is invalid.
+Line 816: The property name _Version in btnExportar is invalid.
+Line 817: The property name _ExtentX in btnExportar is invalid.
+Line 818: The property name _ExtentY in btnExportar is invalid.
+Line 819: The property name _StockProps in btnExportar is invalid.
+Line 820: The property name Caption in btnExportar is invalid.
+Line 821: The property name UseVisualStyle in btnExportar is invalid.
+Line 830: The property name _Version in ProgressBar is invalid.
+Line 831: The property name _ExtentX in ProgressBar is invalid.
+Line 832: The property name _ExtentY in ProgressBar is invalid.
+Line 833: The property name _StockProps in ProgressBar is invalid.
+Line 823: Property Appearance in ProgressBar could not be set.
+Line 859: The property name _Version in GroFechaComprobante is invalid.
+Line 860: The property name _ExtentX in GroFechaComprobante is invalid.
+Line 861: The property name _ExtentY in GroFechaComprobante is invalid.
+Line 862: The property name _StockProps in GroFechaComprobante is invalid.
+Line 863: The property name Caption in GroFechaComprobante is invalid.
+Line 852: Property Appearance in GroFechaComprobante could not be set.
+Line 873: The property name _Version in cboRangosVtoTerceros is invalid.
+Line 874: The property name _ExtentX in cboRangosVtoTerceros is invalid.
+Line 875: The property name _ExtentY in cboRangosVtoTerceros is invalid.
+Line 876: The property name _StockProps in cboRangosVtoTerceros is invalid.
+Line 878: The property name Style in cboRangosVtoTerceros is invalid.
+Line 879: The property name Text in cboRangosVtoTerceros is invalid.
+Line 888: The property name _Version in dtpDesdeVtoTerceros is invalid.
+Line 889: The property name _ExtentX in dtpDesdeVtoTerceros is invalid.
+Line 890: The property name _ExtentY in dtpDesdeVtoTerceros is invalid.
+Line 891: The property name _StockProps in dtpDesdeVtoTerceros is invalid.
+Line 892: The property name CheckBox in dtpDesdeVtoTerceros is invalid.
+Line 893: The property name Format in dtpDesdeVtoTerceros is invalid.
+Line 894: The property name CurrentDate in dtpDesdeVtoTerceros is invalid.
+Line 903: The property name _Version in dtpHastaVtoTerceros is invalid.
+Line 904: The property name _ExtentX in dtpHastaVtoTerceros is invalid.
+Line 905: The property name _ExtentY in dtpHastaVtoTerceros is invalid.
+Line 906: The property name _StockProps in dtpHastaVtoTerceros is invalid.
+Line 907: The property name CheckBox in dtpHastaVtoTerceros is invalid.
+Line 908: The property name Format in dtpHastaVtoTerceros is invalid.
+Line 909: The property name CurrentDate in dtpHastaVtoTerceros is invalid.
+Line 918: The property name _Version in lblRango is invalid.
+Line 919: The property name _ExtentX in lblRango is invalid.
+Line 920: The property name _ExtentY in lblRango is invalid.
+Line 921: The property name _StockProps in lblRango is invalid.
+Line 922: The property name Caption in lblRango is invalid.
+Line 933: The property name _Version in lblDesde is invalid.
+Line 934: The property name _ExtentX in lblDesde is invalid.
+Line 935: The property name _ExtentY in lblDesde is invalid.
+Line 936: The property name _StockProps in lblDesde is invalid.
+Line 937: The property name Caption in lblDesde is invalid.
+Line 948: The property name _Version in lblHasta is invalid.
+Line 949: The property name _ExtentX in lblHasta is invalid.
+Line 950: The property name _ExtentY in lblHasta is invalid.
+Line 951: The property name _StockProps in lblHasta is invalid.
+Line 952: The property name Caption in lblHasta is invalid.
+Line 964: The property name _Version in GroFechaComprobante is invalid.
+Line 965: The property name _ExtentX in GroFechaComprobante is invalid.
+Line 966: The property name _ExtentY in GroFechaComprobante is invalid.
+Line 967: The property name _StockProps in GroFechaComprobante is invalid.
+Line 968: The property name Caption in GroFechaComprobante is invalid.
+Line 957: Property Appearance in GroFechaComprobante could not be set.
+Line 978: The property name _Version in cboRangosRboEmitido is invalid.
+Line 979: The property name _ExtentX in cboRangosRboEmitido is invalid.
+Line 980: The property name _ExtentY in cboRangosRboEmitido is invalid.
+Line 981: The property name _StockProps in cboRangosRboEmitido is invalid.
+Line 983: The property name Style in cboRangosRboEmitido is invalid.
+Line 984: The property name Text in cboRangosRboEmitido is invalid.
+Line 993: The property name _Version in dtpHastaRboEmitido is invalid.
+Line 994: The property name _ExtentX in dtpHastaRboEmitido is invalid.
+Line 995: The property name _ExtentY in dtpHastaRboEmitido is invalid.
+Line 996: The property name _StockProps in dtpHastaRboEmitido is invalid.
+Line 997: The property name CheckBox in dtpHastaRboEmitido is invalid.
+Line 998: The property name Format in dtpHastaRboEmitido is invalid.
+Line 999: The property name CurrentDate in dtpHastaRboEmitido is invalid.
+Line 1008: The property name _Version in dtpDesdeRboEmitido is invalid.
+Line 1009: The property name _ExtentX in dtpDesdeRboEmitido is invalid.
+Line 1010: The property name _ExtentY in dtpDesdeRboEmitido is invalid.
+Line 1011: The property name _StockProps in dtpDesdeRboEmitido is invalid.
+Line 1012: The property name CheckBox in dtpDesdeRboEmitido is invalid.
+Line 1013: The property name Format in dtpDesdeRboEmitido is invalid.
+Line 1014: The property name CurrentDate in dtpDesdeRboEmitido is invalid.
+Line 1023: The property name _Version in lblRango is invalid.
+Line 1024: The property name _ExtentX in lblRango is invalid.
+Line 1025: The property name _ExtentY in lblRango is invalid.
+Line 1026: The property name _StockProps in lblRango is invalid.
+Line 1027: The property name Caption in lblRango is invalid.
+Line 1038: The property name _Version in lblDesde is invalid.
+Line 1039: The property name _ExtentX in lblDesde is invalid.
+Line 1040: The property name _ExtentY in lblDesde is invalid.
+Line 1041: The property name _StockProps in lblDesde is invalid.
+Line 1042: The property name Caption in lblDesde is invalid.
+Line 1053: The property name _Version in lblHasta is invalid.
+Line 1054: The property name _ExtentX in lblHasta is invalid.
+Line 1055: The property name _ExtentY in lblHasta is invalid.
+Line 1056: The property name _StockProps in lblHasta is invalid.
+Line 1057: The property name Caption in lblHasta is invalid.
+Line 1068: The property name _Version in Label7 is invalid.
+Line 1069: The property name _ExtentX in Label7 is invalid.
+Line 1070: The property name _ExtentY in Label7 is invalid.
+Line 1071: The property name _StockProps in Label7 is invalid.
+Line 1072: The property name Caption in Label7 is invalid.
+Line 1089: The property name _Version in lblOP is invalid.
+Line 1090: The property name _ExtentX in lblOP is invalid.
+Line 1091: The property name _ExtentY in lblOP is invalid.
+Line 1092: The property name _StockProps in lblOP is invalid.
+Line 1093: The property name Caption in lblOP is invalid.
+Line 1102: The property name _Version in lblOP is invalid.
+Line 1103: The property name _ExtentX in lblOP is invalid.
+Line 1104: The property name _ExtentY in lblOP is invalid.
+Line 1105: The property name _StockProps in lblOP is invalid.
+Line 1106: The property name Caption in lblOP is invalid.
+Line 1114: The property name _Version in lblNumero is invalid.
+Line 1115: The property name _ExtentX in lblNumero is invalid.
+Line 1116: The property name _ExtentY in lblNumero is invalid.
+Line 1117: The property name _StockProps in lblNumero is invalid.
+Line 1118: The property name Caption in lblNumero is invalid.
+Line 1127: The property name _Version in GroupBox2 is invalid.
+Line 1128: The property name _ExtentX in GroupBox2 is invalid.
+Line 1129: The property name _ExtentY in GroupBox2 is invalid.
+Line 1130: The property name _StockProps in GroupBox2 is invalid.
+Line 1131: The property name Caption in GroupBox2 is invalid.
+Line 1132: The property name UseVisualStyle in GroupBox2 is invalid.
+Line 1139: The property name _Version in PushButton2 is invalid.
+Line 1140: The property name _ExtentX in PushButton2 is invalid.
+Line 1141: The property name _ExtentY in PushButton2 is invalid.
+Line 1142: The property name _StockProps in PushButton2 is invalid.
+Line 1143: The property name Caption in PushButton2 is invalid.
+Line 1144: The property name UseVisualStyle in PushButton2 is invalid.
+Line 1152: The property name _Version in cboProveedoresPropios is invalid.
+Line 1153: The property name _ExtentX in cboProveedoresPropios is invalid.
+Line 1154: The property name _ExtentY in cboProveedoresPropios is invalid.
+Line 1155: The property name _StockProps in cboProveedoresPropios is invalid.
+Line 1157: The property name Text in cboProveedoresPropios is invalid.
+Line 1165: The property name _Version in btnBorrarNumeroPropios is invalid.
+Line 1166: The property name _ExtentX in btnBorrarNumeroPropios is invalid.
+Line 1167: The property name _ExtentY in btnBorrarNumeroPropios is invalid.
+Line 1168: The property name _StockProps in btnBorrarNumeroPropios is invalid.
+Line 1169: The property name Caption in btnBorrarNumeroPropios is invalid.
+Line 1170: The property name UseVisualStyle in btnBorrarNumeroPropios is invalid.
+Line 1178: The property name _Version in btnBorrarOPPropios is invalid.
+Line 1179: The property name _ExtentX in btnBorrarOPPropios is invalid.
+Line 1180: The property name _ExtentY in btnBorrarOPPropios is invalid.
+Line 1181: The property name _StockProps in btnBorrarOPPropios is invalid.
+Line 1182: The property name Caption in btnBorrarOPPropios is invalid.
+Line 1183: The property name UseVisualStyle in btnBorrarOPPropios is invalid.
+Line 1199: The property name _Version in btnBuscarChePropios is invalid.
+Line 1200: The property name _ExtentX in btnBuscarChePropios is invalid.
+Line 1201: The property name _ExtentY in btnBuscarChePropios is invalid.
+Line 1202: The property name _StockProps in btnBuscarChePropios is invalid.
+Line 1203: The property name Caption in btnBuscarChePropios is invalid.
+Line 1213: The property name UseVisualStyle in btnBuscarChePropios is invalid.
+Line 1222: The property name _Version in btnExportarChePropios is invalid.
+Line 1223: The property name _ExtentX in btnExportarChePropios is invalid.
+Line 1224: The property name _ExtentY in btnExportarChePropios is invalid.
+Line 1225: The property name _StockProps in btnExportarChePropios is invalid.
+Line 1226: The property name Caption in btnExportarChePropios is invalid.
+Line 1227: The property name UseVisualStyle in btnExportarChePropios is invalid.
+Line 1236: The property name _Version in ProgressBar is invalid.
+Line 1237: The property name _ExtentX in ProgressBar is invalid.
+Line 1238: The property name _ExtentY in ProgressBar is invalid.
+Line 1239: The property name _StockProps in ProgressBar is invalid.
+Line 1229: Property Appearance in ProgressBar could not be set.
+Line 1264: The property name _Version in chkIngresados is invalid.
+Line 1265: The property name _ExtentX in chkIngresados is invalid.
+Line 1266: The property name _ExtentY in chkIngresados is invalid.
+Line 1267: The property name _StockProps in chkIngresados is invalid.
+Line 1268: The property name Caption in chkIngresados is invalid.
+Line 1269: The property name UseVisualStyle in chkIngresados is invalid.
+Line 1277: The property name _Version in cboBancos1 is invalid.
+Line 1278: The property name _ExtentX in cboBancos1 is invalid.
+Line 1279: The property name _ExtentY in cboBancos1 is invalid.
+Line 1280: The property name _StockProps in cboBancos1 is invalid.
+Line 1282: The property name Text in cboBancos1 is invalid.
+Line 1290: The property name _Version in CMDsINCliente is invalid.
+Line 1291: The property name _ExtentX in CMDsINCliente is invalid.
+Line 1292: The property name _ExtentY in CMDsINCliente is invalid.
+Line 1293: The property name _StockProps in CMDsINCliente is invalid.
+Line 1294: The property name Caption in CMDsINCliente is invalid.
+Line 1296: The property name UseVisualStyle in CMDsINCliente is invalid.
+Line 1304: The property name _Version in cboChequera2 is invalid.
+Line 1305: The property name _ExtentX in cboChequera2 is invalid.
+Line 1306: The property name _ExtentY in cboChequera2 is invalid.
+Line 1307: The property name _StockProps in cboChequera2 is invalid.
+Line 1309: The property name Text in cboChequera2 is invalid.
+Line 1317: The property name _Version in PushButton3 is invalid.
+Line 1318: The property name _ExtentX in PushButton3 is invalid.
+Line 1319: The property name _ExtentY in PushButton3 is invalid.
+Line 1320: The property name _StockProps in PushButton3 is invalid.
+Line 1321: The property name Caption in PushButton3 is invalid.
+Line 1323: The property name UseVisualStyle in PushButton3 is invalid.
+Line 1332: The property name _Version in GroFechaComprobante is invalid.
+Line 1333: The property name _ExtentX in GroFechaComprobante is invalid.
+Line 1334: The property name _ExtentY in GroFechaComprobante is invalid.
+Line 1335: The property name _StockProps in GroFechaComprobante is invalid.
+Line 1336: The property name Caption in GroFechaComprobante is invalid.
+Line 1325: Property Appearance in GroFechaComprobante could not be set.
+Line 1346: The property name _Version in cboRangosVtoPropios is invalid.
+Line 1347: The property name _ExtentX in cboRangosVtoPropios is invalid.
+Line 1348: The property name _ExtentY in cboRangosVtoPropios is invalid.
+Line 1349: The property name _StockProps in cboRangosVtoPropios is invalid.
+Line 1351: The property name Style in cboRangosVtoPropios is invalid.
+Line 1352: The property name Text in cboRangosVtoPropios is invalid.
+Line 1361: The property name _Version in dtpDesdeVtoPropios is invalid.
+Line 1362: The property name _ExtentX in dtpDesdeVtoPropios is invalid.
+Line 1363: The property name _ExtentY in dtpDesdeVtoPropios is invalid.
+Line 1364: The property name _StockProps in dtpDesdeVtoPropios is invalid.
+Line 1365: The property name CheckBox in dtpDesdeVtoPropios is invalid.
+Line 1366: The property name Format in dtpDesdeVtoPropios is invalid.
+Line 1367: The property name CurrentDate in dtpDesdeVtoPropios is invalid.
+Line 1376: The property name _Version in dtpHastaVtoPropios is invalid.
+Line 1377: The property name _ExtentX in dtpHastaVtoPropios is invalid.
+Line 1378: The property name _ExtentY in dtpHastaVtoPropios is invalid.
+Line 1379: The property name _StockProps in dtpHastaVtoPropios is invalid.
+Line 1380: The property name CheckBox in dtpHastaVtoPropios is invalid.
+Line 1381: The property name Format in dtpHastaVtoPropios is invalid.
+Line 1382: The property name CurrentDate in dtpHastaVtoPropios is invalid.
+Line 1391: The property name _Version in lblRango is invalid.
+Line 1392: The property name _ExtentX in lblRango is invalid.
+Line 1393: The property name _ExtentY in lblRango is invalid.
+Line 1394: The property name _StockProps in lblRango is invalid.
+Line 1395: The property name Caption in lblRango is invalid.
+Line 1406: The property name _Version in lblDesde is invalid.
+Line 1407: The property name _ExtentX in lblDesde is invalid.
+Line 1408: The property name _ExtentY in lblDesde is invalid.
+Line 1409: The property name _StockProps in lblDesde is invalid.
+Line 1410: The property name Caption in lblDesde is invalid.
+Line 1421: The property name _Version in lblHasta is invalid.
+Line 1422: The property name _ExtentX in lblHasta is invalid.
+Line 1423: The property name _ExtentY in lblHasta is invalid.
+Line 1424: The property name _StockProps in lblHasta is invalid.
+Line 1425: The property name Caption in lblHasta is invalid.
+Line 1437: The property name _Version in GroFechaComprobante is invalid.
+Line 1438: The property name _ExtentX in GroFechaComprobante is invalid.
+Line 1439: The property name _ExtentY in GroFechaComprobante is invalid.
+Line 1440: The property name _StockProps in GroFechaComprobante is invalid.
+Line 1441: The property name Caption in GroFechaComprobante is invalid.
+Line 1430: Property Appearance in GroFechaComprobante could not be set.
+Line 1451: The property name _Version in cboRangosRboPropios is invalid.
+Line 1452: The property name _ExtentX in cboRangosRboPropios is invalid.
+Line 1453: The property name _ExtentY in cboRangosRboPropios is invalid.
+Line 1454: The property name _StockProps in cboRangosRboPropios is invalid.
+Line 1456: The property name Style in cboRangosRboPropios is invalid.
+Line 1457: The property name Text in cboRangosRboPropios is invalid.
+Line 1466: The property name _Version in dtpHastaRboPropios is invalid.
+Line 1467: The property name _ExtentX in dtpHastaRboPropios is invalid.
+Line 1468: The property name _ExtentY in dtpHastaRboPropios is invalid.
+Line 1469: The property name _StockProps in dtpHastaRboPropios is invalid.
+Line 1470: The property name CheckBox in dtpHastaRboPropios is invalid.
+Line 1471: The property name Format in dtpHastaRboPropios is invalid.
+Line 1472: The property name CurrentDate in dtpHastaRboPropios is invalid.
+Line 1481: The property name _Version in dtpDesdeRboPropios is invalid.
+Line 1482: The property name _ExtentX in dtpDesdeRboPropios is invalid.
+Line 1483: The property name _ExtentY in dtpDesdeRboPropios is invalid.
+Line 1484: The property name _StockProps in dtpDesdeRboPropios is invalid.
+Line 1485: The property name CheckBox in dtpDesdeRboPropios is invalid.
+Line 1486: The property name Format in dtpDesdeRboPropios is invalid.
+Line 1487: The property name CurrentDate in dtpDesdeRboPropios is invalid.
+Line 1496: The property name _Version in lblRango is invalid.
+Line 1497: The property name _ExtentX in lblRango is invalid.
+Line 1498: The property name _ExtentY in lblRango is invalid.
+Line 1499: The property name _StockProps in lblRango is invalid.
+Line 1500: The property name Caption in lblRango is invalid.
+Line 1511: The property name _Version in lblDesde is invalid.
+Line 1512: The property name _ExtentX in lblDesde is invalid.
+Line 1513: The property name _ExtentY in lblDesde is invalid.
+Line 1514: The property name _StockProps in lblDesde is invalid.
+Line 1515: The property name Caption in lblDesde is invalid.
+Line 1526: The property name _Version in lblHasta is invalid.
+Line 1527: The property name _ExtentX in lblHasta is invalid.
+Line 1528: The property name _ExtentY in lblHasta is invalid.
+Line 1529: The property name _StockProps in lblHasta is invalid.
+Line 1530: The property name Caption in lblHasta is invalid.
+Line 1589: The property name _Version in GroupBox1 is invalid.
+Line 1590: The property name _ExtentX in GroupBox1 is invalid.
+Line 1591: The property name _ExtentY in GroupBox1 is invalid.
+Line 1592: The property name _StockProps in GroupBox1 is invalid.
+Line 1593: The property name Caption in GroupBox1 is invalid.
+Line 1594: The property name UseVisualStyle in GroupBox1 is invalid.
+Line 1633: The property name _Version in cboMonedas is invalid.
+Line 1634: The property name _ExtentX in cboMonedas is invalid.
+Line 1635: The property name _ExtentY in cboMonedas is invalid.
+Line 1636: The property name _StockProps in cboMonedas is invalid.
+Line 1639: The property name Text in cboMonedas is invalid.
+Line 1640: The property name AutoComplete in cboMonedas is invalid.
+Line 1627: Property Appearance in cboMonedas could not be set.
+Line 1648: The property name _Version in cmdCrear is invalid.
+Line 1649: The property name _ExtentX in cmdCrear is invalid.
+Line 1650: The property name _ExtentY in cmdCrear is invalid.
+Line 1651: The property name _StockProps in cmdCrear is invalid.
+Line 1652: The property name Caption in cmdCrear is invalid.
+Line 1653: The property name UseVisualStyle in cmdCrear is invalid.
+Line 1661: The property name _Version in cboBancos is invalid.
+Line 1662: The property name _ExtentX in cboBancos is invalid.
+Line 1663: The property name _ExtentY in cboBancos is invalid.
+Line 1664: The property name _StockProps in cboBancos is invalid.
+Line 1667: The property name Text in cboBancos is invalid.
+Line 1668: The property name AutoComplete in cboBancos is invalid.
+Line 1655: Property Appearance in cboBancos could not be set.
+Line 1728: The property name _ExtentX in grid_cheques is invalid.
+Line 1729: The property name _ExtentY in grid_cheques is invalid.
+Line 1730: The property name Version in grid_cheques is invalid.
+Line 1731: The property name PreviewRowIndent in grid_cheques is invalid.
+Line 1732: The property name BoundColumnIndex in grid_cheques is invalid.
+Line 1733: The property name ReplaceColumnIndex in grid_cheques is invalid.
+Line 1734: The property name EmptyRows in grid_cheques is invalid.
+Line 1735: The property name PreviewColumn in grid_cheques is invalid.
+Line 1736: The property name PreviewRowLines in grid_cheques is invalid.
+Line 1737: The property name ColumnAutoResize in grid_cheques is invalid.
+Line 1738: The property name MethodHoldFields in grid_cheques is invalid.
+Line 1739: The property name RowHeaders in grid_cheques is invalid.
+Line 1740: The property name DataMode in grid_cheques is invalid.
+Line 1741: The property name ColumnHeaderHeight in grid_cheques is invalid.
+Line 1742: The property name IntProp1 in grid_cheques is invalid.
+Line 1743: The property name IntProp2 in grid_cheques is invalid.
+Line 1744: The property name IntProp7 in grid_cheques is invalid.
+Line 1745: The property name ColumnsCount in grid_cheques is invalid.
+Line 1746: The property name Column(1) in grid_cheques is invalid.
+Line 1747: The property name Column(2) in grid_cheques is invalid.
+Line 1748: The property name Column(3) in grid_cheques is invalid.
+Line 1749: The property name Column(4) in grid_cheques is invalid.
+Line 1750: The property name Column(5) in grid_cheques is invalid.
+Line 1751: The property name FormatStylesCount in grid_cheques is invalid.
+Line 1752: The property name FormatStyle(1) in grid_cheques is invalid.
+Line 1753: The property name FormatStyle(2) in grid_cheques is invalid.
+Line 1754: The property name FormatStyle(3) in grid_cheques is invalid.
+Line 1755: The property name FormatStyle(4) in grid_cheques is invalid.
+Line 1756: The property name FormatStyle(5) in grid_cheques is invalid.
+Line 1757: The property name FormatStyle(6) in grid_cheques is invalid.
+Line 1758: The property name FormatStyle(7) in grid_cheques is invalid.
+Line 1759: The property name ImageCount in grid_cheques is invalid.
+Line 1760: The property name PrinterProperties in grid_cheques is invalid.
+Line 1769: The property name _ExtentX in grid_chequeras is invalid.
+Line 1770: The property name _ExtentY in grid_chequeras is invalid.
+Line 1771: The property name Version in grid_chequeras is invalid.
+Line 1772: The property name HoldSortSettings in grid_chequeras is invalid.
+Line 1773: The property name DefaultGroupMode in grid_chequeras is invalid.
+Line 1774: The property name BoundColumnIndex in grid_chequeras is invalid.
+Line 1775: The property name ReplaceColumnIndex in grid_chequeras is invalid.
+Line 1776: The property name PreviewColumn in grid_chequeras is invalid.
+Line 1777: The property name PreviewRowLines in grid_chequeras is invalid.
+Line 1778: The property name ColumnAutoResize in grid_chequeras is invalid.
+Line 1779: The property name MethodHoldFields in grid_chequeras is invalid.
+Line 1780: The property name RowHeaders in grid_chequeras is invalid.
+Line 1781: The property name DataMode in grid_chequeras is invalid.
+Line 1782: The property name ColumnHeaderHeight in grid_chequeras is invalid.
+Line 1783: The property name IntProp1 in grid_chequeras is invalid.
+Line 1784: The property name IntProp2 in grid_chequeras is invalid.
+Line 1785: The property name IntProp7 in grid_chequeras is invalid.
+Line 1786: The property name ColumnsCount in grid_chequeras is invalid.
+Line 1787: The property name Column(1) in grid_chequeras is invalid.
+Line 1788: The property name Column(2) in grid_chequeras is invalid.
+Line 1789: The property name Column(3) in grid_chequeras is invalid.
+Line 1790: The property name Column(4) in grid_chequeras is invalid.
+Line 1791: The property name Column(5) in grid_chequeras is invalid.
+Line 1792: The property name Column(6) in grid_chequeras is invalid.
+Line 1793: The property name FormatStylesCount in grid_chequeras is invalid.
+Line 1794: The property name FormatStyle(1) in grid_chequeras is invalid.
+Line 1795: The property name FormatStyle(2) in grid_chequeras is invalid.
+Line 1796: The property name FormatStyle(3) in grid_chequeras is invalid.
+Line 1797: The property name FormatStyle(4) in grid_chequeras is invalid.
+Line 1798: The property name FormatStyle(5) in grid_chequeras is invalid.
+Line 1799: The property name FormatStyle(6) in grid_chequeras is invalid.
+Line 1800: The property name ImageCount in grid_chequeras is invalid.
+Line 1801: The property name PrinterProperties in grid_chequeras is invalid.
+Line 1810: The property name _Version in Label6 is invalid.
+Line 1811: The property name _ExtentX in Label6 is invalid.
+Line 1812: The property name _ExtentY in Label6 is invalid.
+Line 1813: The property name _StockProps in Label6 is invalid.
+Line 1814: The property name Caption in Label6 is invalid.
+Line 1815: The property name Alignment in Label6 is invalid.
+Line 1824: The property name _ExtentX in gridBancos is invalid.
+Line 1825: The property name _ExtentY in gridBancos is invalid.
+Line 1826: The property name Version in gridBancos is invalid.
+Line 1827: The property name BoundColumnIndex in gridBancos is invalid.
+Line 1828: The property name ReplaceColumnIndex in gridBancos is invalid.
+Line 1829: The property name ActAsDropDown in gridBancos is invalid.
+Line 1830: The property name ColumnAutoResize in gridBancos is invalid.
+Line 1831: The property name HideSelection in gridBancos is invalid.
+Line 1832: The property name MethodHoldFields in gridBancos is invalid.
+Line 1833: The property name ContScroll in gridBancos is invalid.
+Line 1834: The property name AllowEdit in gridBancos is invalid.
+Line 1835: The property name GroupByBoxVisible in gridBancos is invalid.
+Line 1836: The property name NewRowPos in gridBancos is invalid.
+Line 1837: The property name RowHeaders in gridBancos is invalid.
+Line 1838: The property name DataMode in gridBancos is invalid.
+Line 1839: The property name ColumnHeaderHeight in gridBancos is invalid.
+Line 1840: The property name IntProp1 in gridBancos is invalid.
+Line 1841: The property name IntProp2 in gridBancos is invalid.
+Line 1842: The property name IntProp7 in gridBancos is invalid.
+Line 1843: The property name ColumnsCount in gridBancos is invalid.
+Line 1844: The property name Column(1) in gridBancos is invalid.
+Line 1845: The property name Column(2) in gridBancos is invalid.
+Line 1846: The property name FormatStylesCount in gridBancos is invalid.
+Line 1847: The property name FormatStyle(1) in gridBancos is invalid.
+Line 1848: The property name FormatStyle(2) in gridBancos is invalid.
+Line 1849: The property name FormatStyle(3) in gridBancos is invalid.
+Line 1850: The property name FormatStyle(4) in gridBancos is invalid.
+Line 1851: The property name FormatStyle(5) in gridBancos is invalid.
+Line 1852: The property name FormatStyle(6) in gridBancos is invalid.
+Line 1853: The property name ImageCount in gridBancos is invalid.
+Line 1854: The property name PrinterProperties in gridBancos is invalid.
