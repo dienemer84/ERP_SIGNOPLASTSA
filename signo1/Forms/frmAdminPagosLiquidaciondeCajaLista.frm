@@ -598,6 +598,7 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
         gridOrdenes_SelectionChange
         If Button = 2 Then
             Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+            Me.mnuImprimir.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_Aprobada)
             Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
             
             'OCULTO LA OPCION DE ANULAR QUE NO ESTÁ DESARROLLADA (DNEMER 30.05.2023)

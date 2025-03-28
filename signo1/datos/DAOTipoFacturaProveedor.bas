@@ -54,6 +54,7 @@ Public Function getByTipoFactura(id_config_factura As Long) As Collection
     Set col = Nothing
 End Function
 
+
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As clsAlicuotas
 
     Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")

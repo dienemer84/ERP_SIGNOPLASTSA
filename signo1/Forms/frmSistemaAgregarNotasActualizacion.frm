@@ -17,7 +17,7 @@ Begin VB.Form frmSistemaAgregarNotasActualizacion
    Begin XtremeSuiteControls.PushButton PushButtonCerrar 
       Height          =   375
       Left            =   120
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   4320
       Width           =   1815
       _Version        =   786432
@@ -42,7 +42,7 @@ Begin VB.Form frmSistemaAgregarNotasActualizacion
       Begin VB.TextBox Text2 
          Height          =   375
          Left            =   1080
-         TabIndex        =   7
+         TabIndex        =   2
          Text            =   "Text2"
          Top             =   1020
          Width           =   3495
@@ -57,7 +57,7 @@ Begin VB.Form frmSistemaAgregarNotasActualizacion
       Begin XtremeSuiteControls.DateTimePicker DateTimePicker1 
          Height          =   375
          Left            =   1080
-         TabIndex        =   2
+         TabIndex        =   1
          Top             =   480
          Width           =   1335
          _Version        =   786432
@@ -89,7 +89,7 @@ Begin VB.Form frmSistemaAgregarNotasActualizacion
          Height          =   375
          Index           =   1
          Left            =   360
-         TabIndex        =   5
+         TabIndex        =   7
          Top             =   2220
          Width           =   615
       End
@@ -99,7 +99,7 @@ Begin VB.Form frmSistemaAgregarNotasActualizacion
          Height          =   255
          Index           =   0
          Left            =   12600
-         TabIndex        =   4
+         TabIndex        =   6
          Top             =   7080
          Width           =   615
       End
@@ -108,7 +108,7 @@ Begin VB.Form frmSistemaAgregarNotasActualizacion
       Height          =   375
       Index           =   0
       Left            =   8640
-      TabIndex        =   1
+      TabIndex        =   4
       Top             =   4320
       Width           =   1815
       _Version        =   786432

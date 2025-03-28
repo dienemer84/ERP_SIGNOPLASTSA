@@ -1201,7 +1201,7 @@ Public Function ExportToXslConfirmados()
     xlWorksheet.Range("A1:G1").Merge
     xlWorksheet.Range("A2:G2").Merge
     xlWorksheet.Range("A1:G3").Font.Bold = True
-    xlWorksheet.Cells(1, 1).value = "Detalle de Comprobante de LiquidaciÛn"
+    xlWorksheet.Cells(1, 1).value = "Detalle de Comprobante de LiquidaciÛn: " & LiquidacionCaja.NumeroLiq
     xlWorksheet.Cells(3, 1).value = "Tipo"
     xlWorksheet.Cells(3, 2).value = "Letra"
     xlWorksheet.Cells(3, 3).value = "Nro Cbte"
@@ -1478,22 +1478,10 @@ Private Sub Form_Load()
 
     CargarChequesDisponibles
         
-''    Set colProveedores = DAOProveedor.FindAllProveedoresWithFacturasImpagas
-''    For Each prov In colProveedores
-''        cboProveedores.AddItem prov.RazonSocial
-''        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.id
-''    Next
-
     Dim cuentasContables As Collection
     Set cuentasContables = DAOCuentaContable.GetAll()
     Dim cc As clsCuentaContable
     
-''    Me.cboCuentas.Clear
-''    For Each cc In cuentasContables
-''        cboCuentas.AddItem cc.nombre & " - " & cc.codigo
-''        cboCuentas.ItemData(cboCuentas.NewIndex) = cc.id
-''    Next cc
-
     Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.operacionesCaja.count
     Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.operacionesBanco.count
     Me.gridCheques.ItemCount = LiquidacionCaja.ChequesTerceros.count
@@ -1527,7 +1515,7 @@ Private Sub Form_Load()
         
 '''    llenarGrilla
     
-    Me.caption = "Creaci√≥n de Liquidaci√≥n de Caja"
+    Me.caption = "CreaciÛn de LiquidaciÛn de Caja"
 
     formLoaded = True
     formLoading = False
@@ -1888,69 +1876,92 @@ End Sub
 
 
 'ESTA FUNCION SE ENCARGA DE GUARDAR LA LIQUIDACI√ìN QUE SE EST√Å CREANDO
-
-
 Private Sub PusGuardar_Click()
-
+    On Error GoTo ErrorHandler
+    
+    ' Validar estado de ediciÛn de las grillas
     If Me.gridCajaOperaciones.EditMode = jgexEditModeOn Then
-        MsgBox "Todavia esta editando la grilla de caja.", vbExclamation
+        MsgBox "No se puede guardar mientras estÈ editando la grilla de caja. Finalice la ediciÛn primero.", vbExclamation, "EdiciÛn en curso"
         Exit Sub
     End If
-
+    
     If Me.gridDepositosOperaciones.EditMode = jgexEditModeOn Then
-        MsgBox "Todavia esta editando la grilla de banco.", vbExclamation
+        MsgBox "No se puede guardar mientras estÈ editando la grilla de banco. Finalice la ediciÛn primero.", vbExclamation, "EdiciÛn en curso"
         Exit Sub
     End If
-
+    
+    ' Validar campos obligatorios
+    If Trim(Me.txtNumerodeLiquidacion.Text) = "" Then
+        MsgBox "El n˙mero de LiquidaciÛn es un campo obligatorio.", vbExclamation, "Datos incompletos"
+        Me.txtNumerodeLiquidacion.SetFocus
+        Exit Sub
+    End If
+    
+    ' Asignar valores al objeto LiquidacionCaja
+    On Error Resume Next
     LiquidacionCaja.FEcha = Me.dtpFecha.value
-
-    If Me.txtNumerodeLiquidacion.Text = "" Then
-        MsgBox ("El n˙mero de LiquidaciÛn no puede estar vac√≠o.")
+    LiquidacionCaja.NumeroLiq = Me.txtNumerodeLiquidacion.Text
+    On Error GoTo ErrorHandler
+    
+    ' Validar asignaciÛn de fecha
+    If LiquidacionCaja.FEcha = 0 Then
+        MsgBox "La fecha de liquidaciÛn no es v·lida.", vbExclamation, "Error en datos"
         Exit Sub
-    Else
-        LiquidacionCaja.NumeroLiq = Me.txtNumerodeLiquidacion.Text
-
     End If
-
+    
+    ' Configurar colecciÛn de facturas
     Set LiquidacionCaja.FacturasProveedor = New Collection
-
-
     For Each Factura In facturasConfirmadas
-        LiquidacionCaja.FacturasProveedor.Add Factura
+        If Not Factura Is Nothing Then
+            LiquidacionCaja.FacturasProveedor.Add Factura
+        End If
     Next
-
-    If LiquidacionCaja.IsValid Then
-        Dim n As Boolean: n = (LiquidacionCaja.Id = 0)
-
-        If DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
-
-            If n Then
-                MsgBox "LiquidaciÛn de Caja N∫ " & Me.txtNumerodeLiquidacion & " creada con exito.", vbInformation
-            Else
-
-                MsgBox "LiquidaciÛn de Caja modificada con Èxito.", vbInformation
-            End If
-
-            If n Then
-                If MsgBox("Desea crear una LiquidaciÛn de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
-
-                MsgBox "LiquidaciÛn de Caja modificada con exito.", vbInformation
-            End If
-
-            If n Then
-                If MsgBox("øDesea crear una LiquidaciÛn de Caja nueva", vbQuestion + vbYesNo) = vbYes Then
-                    Dim f12 As New frmAdminPagosLiqCajaListaDG
-                    f12.Show
-                End If
-            End If
-
-            Unload Me
-        Else
-            MsgBox "Hubo un problema al guardar la LiquidaciÛn.", vbCritical
+    
+    ' Validar objeto antes de guardar
+    If Not LiquidacionCaja.IsValid Then
+        MsgBox "Datos de liquidaciÛn no v·lidos:" & vbCrLf & vbCrLf & LiquidacionCaja.ValidationMessages, _
+               vbCritical, "Error de validaciÛn"
+        Exit Sub
+    End If
+    
+    ' Intentar guardar en la base de datos
+    Dim esNuevoRegistro As Boolean
+    esNuevoRegistro = (LiquidacionCaja.Id = 0)
+    
+    If Not DAOLiquidacionCaja.Save(LiquidacionCaja, True) Then
+        MsgBox "No se pudo guardar la liquidaciÛn en la base de datos.", vbCritical, "Error al guardar"
+        Exit Sub
+    End If
+    
+    ' Mostrar mensaje de Èxito
+    If esNuevoRegistro Then
+        MsgBox "LiquidaciÛn de Caja N∫ " & Me.txtNumerodeLiquidacion.Text & " creada con Èxito.", vbInformation, "OperaciÛn exitosa"
+        
+        ' Preguntar por nueva liquidaciÛn
+        If MsgBox("øDesea crear una nueva LiquidaciÛn de Caja?", vbQuestion + vbYesNo, "Nueva liquidaciÛn") = vbYes Then
+            Dim f12 As New frmAdminPagosLiqCajaListaDG
+            f12.Show
         End If
     Else
-        MsgBox LiquidacionCaja.ValidationMessages, vbCritical, "Error"
+        MsgBox "LiquidaciÛn de Caja modificada con Èxito.", vbInformation, "OperaciÛn exitosa"
     End If
+    
+    ' Cerrar el formulario actual
+    Unload Me
+    Exit Sub
+    
+ErrorHandler:
+    ' Mostrar mensaje al usuario
+    MsgBox "Se produjo un error inesperado:" & vbCrLf & vbCrLf & _
+           "CÛdigo: " & Err.Number & vbCrLf & _
+           "DescripciÛn: " & Err.Description & vbCrLf & vbCrLf & _
+           "Por favor contacte al administrador del sistema.", _
+           vbCritical, "Error inesperado"
+    
+    ' Intentar recuperar el estado
+    On Error Resume Next
+    If Not LiquidacionCaja Is Nothing Then
+        Set LiquidacionCaja = Nothing
     End If
 End Sub
 
@@ -1973,7 +1984,35 @@ Public Sub TotalizarComprobantes()
 
 '''    LiquidacionCaja.StaticTotalFacturas = funciones.RedondearDecimales(total)
 
-    lblLabel1.caption = "Total Comprobantes en proceso: " & FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotal))
+    lblLabel1.caption = "Total Comprobantes en proceso: " & FormatCurrency(funciones.FormatearDecimales(total))
+    
+    LiquidacionCaja.StaticTotalFacturas = total
+    
+    lblCbtesConfirmados.caption = "Comprobantes: " & facturasConfirmadas.count
+
+End Sub
+
+
+Public Sub TotalizarComprobantesEdicion()
+    Dim total As Double
+    Dim i As Integer
+    Dim Factura As clsFacturaProveedor
+
+    For i = 1 To facturasConfirmadas.count
+        Set Factura = facturasConfirmadas.item(i)
+
+        If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+            total = total - Factura.total      ' Resta el total de las facturas tipo nota de cr√©dito
+        Else
+            total = total + Factura.total        ' Suma el total de las dem√°s facturas
+        End If
+    Next i
+
+'''    LiquidacionCaja.StaticTotalFacturas = funciones.RedondearDecimales(total)
+
+    lblLabel1.caption = "Total Comprobantes: " & FormatCurrency(funciones.FormatearDecimales(total))
+    
+    LiquidacionCaja.StaticTotalFacturas = total
     
     lblCbtesConfirmados.caption = "Comprobantes: " & facturasConfirmadas.count
 
@@ -2294,22 +2333,20 @@ End Sub
 
 
 Public Sub Cargar(liq As clsLiquidacionCaja)
+
     If Not IsSomething(liq) Then
-        MsgBox "La Liquidaci√≥n que est√° intentando visualizar est√° en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
+        MsgBox "La LiquidaciÛn que est· intentando visualizar est· en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
         Unload Me
         Exit Sub
     End If
 
     Set LiquidacionCaja = DAOLiquidacionCaja.FindById(liq.Id)
     
-    Me.caption = "Liquidaci√≥n N¬∫ " & LiquidacionCaja.NumeroLiq
+    Me.caption = "LiquidaciÛn N∫ " & LiquidacionCaja.NumeroLiq
     
     Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.Id)
-
-    Me.grillaConfirmados.ItemCount = 0
-  
-    Me.grillaConfirmados.ItemCount = facturasConfirmadas.count
     
+  
     Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.operacionesCaja.count
     Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.operacionesBanco.count
     Me.gridCheques.ItemCount = LiquidacionCaja.ChequesTerceros.count
@@ -2344,8 +2381,32 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     Me.btnConfirmar.Enabled = Not ReadOnly
     Me.btnCargarCbtes.Enabled = Not ReadOnly
 
+
+'ESTO ES PARA EDITAR LA LIQUIDACION QUE YA ESTA CARGADA ANTERIORMENTE
+    If liq.estado = EstadoLiquidacionCaja_pendiente Then
+        
+        '''MsgBox ("Esto es Cargar en Edicion!")
+        
+        If IsSomething(facturasConfirmadas) Then
+            If Not DAOFacturaProveedor.ColeccionAEditable(facturasConfirmadas) Then GoTo err1
+            
+            Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.Id)
+                
+            TotalizarComprobantesEdicion
+            
+    End If
+
+        
+    End If
+
     Totalizar
     
-    TotalizarComprobantes
-
+    Me.grillaConfirmados.ItemCount = 0
+  
+    Me.grillaConfirmados.ItemCount = facturasConfirmadas.count
+    
+    
+    Exit Sub
+err1:
+    MsgBox "Se produjo un error al cargar!", vbCritical, "Error"
 End Sub

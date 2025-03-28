@@ -1368,9 +1368,29 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
             Values(16) = "Contado"
         End If
 
+'''        If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
+'''            Values(17) = Factura.OrdenesPagoId & " (" & Factura.OrdenesPagoEstado & ")"
+'''            Values(18) = Factura.LiquidacionesCajaId & " (" & Factura.LiquidacionesCajaEstado & ")"
+'''        End If
+
         If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
-            Values(17) = Factura.OrdenesPagoId
-            Values(18) = Factura.LiquidacionesCajaId
+            Select Case Factura.OrdenesPagoEstado
+                Case 1
+                    Values(17) = Factura.OrdenesPagoId
+                Case "-"
+                    Values(17) = Factura.OrdenesPagoId
+                Case "0"
+                    Values(17) = Factura.OrdenesPagoId & " (P)" 'PENDIENTE
+            End Select
+            
+            Select Case Factura.LiquidacionesCajaEstado
+                Case 1
+                    Values(18) = Factura.LiquidacionesCajaId
+                Case "-"
+                    Values(18) = Factura.LiquidacionesCajaId
+                Case "0"
+                    Values(18) = Factura.LiquidacionesCajaId & " (P)" ' PENDIENTE
+            End Select
         End If
 
         Values(19) = Factura.UsuarioCarga.usuario

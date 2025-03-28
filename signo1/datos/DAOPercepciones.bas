@@ -7,7 +7,7 @@ Public Function GetAll() As Collection
     Dim col As New Collection
     Dim A As clsPercepciones
 
-    Set rs = conectar.RSFactory("select * from AdminConfigPercepciones")
+    Set rs = conectar.RSFactory("SELECT * FROM AdminConfigPercepciones ORDER BY orden ASC")
 
     While Not rs.EOF
 
@@ -25,6 +25,8 @@ Public Function GetAll() As Collection
     Set A = Nothing
     Set GetAll = col
 End Function
+
+
 Public Function GetById(id_percepcion As Long) As clsPercepciones
     Dim A As clsPercepciones
     Set rs = conectar.RSFactory("select * from AdminConfigPercepciones where id=" & id_percepcion)
@@ -40,8 +42,6 @@ Public Function GetById(id_percepcion As Long) As clsPercepciones
     Set GetById = A
 
 End Function
-
-
 
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As clsPercepciones

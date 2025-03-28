@@ -36,6 +36,7 @@ Public Function GetAll(Optional filtro As String = vbNullString) As Collection
     If LenB(filtro) > 0 Then
         q = q & " and " & filtro
     End If
+    
     Set rs = conectar.RSFactory(q)
 
     BuildFieldsIndex rs, idx

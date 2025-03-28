@@ -1221,22 +1221,8 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja) As Boolean
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
 
-    Printer.FontSize = 10
-    Printer.FontBold = True
-    Printer.CurrentX = lmargin + TAB1
-    Printer.Print "Comprobantes: "
-    Printer.FontBold = False
-    Printer.FontSize = 8
-
     Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
     Dim F As clsFacturaProveedor
-    
-'''    C = 0
-'''    For Each F In LiquidacionCaja.FacturasProveedor
-'''        C = C + 1
-'''        Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
-'''        Printer.Print F.NumeroFormateado & String$(8, " del ") & F.FEcha & String$(8, " por ") & F.moneda.NombreCorto & " " & F.total & String$(20, " de "); UCase(F.Proveedor.RazonSocial)
-'''    Next F
     
     Printer.FontSize = 10
     Printer.FontBold = True
@@ -1449,7 +1435,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 
     Dim offset As Long
     offset = 3
-    xlWorksheet.Cells(offset, 1).value = "Número Orden"
+    xlWorksheet.Cells(offset, 1).value = "Número Liquidación"
     xlWorksheet.Cells(offset, 2).value = "Fecha"
     xlWorksheet.Cells(offset, 3).value = "Moneda"
     xlWorksheet.Cells(offset, 4).value = "Valores"

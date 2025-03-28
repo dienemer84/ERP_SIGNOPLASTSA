@@ -567,7 +567,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         MsgBox ("No desarrollado.")
 
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__TESTS
-        Dim f234 As New frmSistemasTests
+        Dim f234 As New frmSistemaTests
         f234.Show
                 
     Case ID_BUTTON_CLIENTES_PROVEEDORES__PROVEEDORES__ASOCRUBROS
