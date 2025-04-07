@@ -3,14 +3,14 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosTransferenciasBancarias 
    Caption         =   "Modificar"
-   ClientHeight    =   10005
+   ClientHeight    =   9045
    ClientLeft      =   60
-   ClientTop       =   750
+   ClientTop       =   -210
    ClientWidth     =   17475
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   10005
+   ScaleHeight     =   9045
    ScaleWidth      =   17475
    Begin XtremeSuiteControls.GroupBox GroupBox 
       Height          =   1815
@@ -424,14 +424,14 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Column(7)       =   "frmAdminPagosTransferenciasBancarias.frx":0908
       Column(8)       =   "frmAdminPagosTransferenciasBancarias.frx":0A68
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0BB0
-      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":0CE8
-      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":0D98
-      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":0E4C
-      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":0F24
-      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":0FDC
+      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0BBC
+      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":0CF4
+      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":0DA4
+      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":0E58
+      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":0F30
+      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":0FE8
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":10BC
+      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":10C8
    End
    Begin XtremeSuiteControls.Label Label 
       Height          =   255
@@ -648,7 +648,7 @@ End Sub
 
 Private Sub gridTransferencias_SelectionChange()
     On Error Resume Next
-    Set TransfBancaria = transferencias.Item(gridTransferencias.rowIndex(gridTransferencias.row))
+    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
 End Sub
 
 
@@ -673,7 +673,7 @@ End Sub
 
 Private Sub gridTransferencias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 If rowIndex > 0 And transferencias.count > 0 Then
-    Set TransfBancaria = transferencias.Item(rowIndex)
+    Set TransfBancaria = transferencias.item(rowIndex)
         Values(1) = TransfBancaria.Id
         
 
@@ -684,12 +684,18 @@ If rowIndex > 0 And transferencias.count > 0 Then
         Values(7) = TransfBancaria.Comprobante
         
         If TransfBancaria.LiquidacionCaja Is Nothing Then
-                Values(8) = "OP: " & TransfBancaria.OrdenPago.Id
-                Values(2) = UCase(TransfBancaria.ProveedorRazon)
+            If TransfBancaria.OrdenPago Is Nothing Then
+                    Values(8) = "PCTA: " & TransfBancaria.PagoACuentaID
+                    Values(2) = UCase(TransfBancaria.PagoACuentaProveedor)
+            Else
+                    Values(8) = "OP: " & TransfBancaria.OrdenPago.Id
+                    Values(2) = UCase(TransfBancaria.ProveedorRazon)
+            End If
         Else
                 Values(8) = "LIQ: " & TransfBancaria.LiquidacionCaja.NumeroLiq
                 Values(2) = "VARIOS"
         End If
+
 
 
 End If

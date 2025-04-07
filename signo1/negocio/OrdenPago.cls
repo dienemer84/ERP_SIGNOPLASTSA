@@ -44,7 +44,7 @@ Public DiferenciaCambioEnNG As Double
 Public DiferenciaCambioEnTOTAL As Double
 Public staticTotalDeudaCompensatorios As Double
 
-Public PagosACuenta As New Collection
+Public pagosacuenta As New Collection
 
 Public Property Get TotalNGCompensatorios() As Double
     Dim T As Double
@@ -78,14 +78,26 @@ Public Property Get TotalDeudaCompensatorios() As Double
     TotalDeudaCompensatorios = T
 End Property
 
+
 Public Property Get TotalFacturas() As Double
     Dim F As clsFacturaProveedor
     Dim SUM As Double
     For Each F In Me.FacturasProveedor
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
+'''        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
+        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente)) * -1, (F.total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))), F.moneda.Id, Me.moneda.Id)
     Next F
     TotalFacturas = funciones.RedondearDecimales(SUM)
 End Property
+
+
+'''Public Property Get TotalFacturasNuevo() As Double
+'''    Dim F As clsFacturaProveedor
+'''    Dim SUM As Double
+'''    For Each F In Me.FacturasProveedor
+'''        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
+'''    Next F
+'''    TotalFacturas = funciones.RedondearDecimales(SUM)
+'''End Property
 
 Public Property Get TotalFacturasNG() As Double
     Dim F As clsFacturaProveedor
@@ -242,7 +254,8 @@ Public Property Get IsValid() As Boolean
     If Me.CuentaContable Is Nothing And Me.FacturasProveedor.count = 0 Then
         AddValidationMessage "La orden de pago debe contener facturas o cuenta contable."
     End If
-
+    
+'''    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
     If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
 
     AddValidationMessage _
@@ -260,9 +273,12 @@ End Property
 
 
 Property Get StaticTotal() As Double
-    StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.DiferenciaCambio - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
+    StaticTotal = Me.TotalFacturas - Me.StaticTotalRetenido - Me.DiferenciaCambio - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
 End Property
 
+'''Property Get StaticTotalNuevo() As Double
+'''    StaticTotalNuevo = (Me.TotalFacturas - (Me.total + Me.TotalAbonadoGlobalPendiente))
+'''End Property
 
 Public Property Get ValidationMessages() As String
     ValidationMessages = m_validationMessages

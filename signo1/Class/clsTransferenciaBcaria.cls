@@ -31,6 +31,9 @@ Public OrdenPagoID As String
 Public OrdenPago As OrdenPago
 Public LiquidacionCaja As clsLiquidacionCaja
 
+Public PagoACuentaID As Long
+Public PagoACuentaProveedor As String
+
 Public ProveedorRazon As String
 Public Proveedor As clsProveedor
 

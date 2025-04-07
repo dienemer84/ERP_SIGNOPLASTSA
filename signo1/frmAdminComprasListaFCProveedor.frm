@@ -858,7 +858,6 @@ Private Sub checkVerIds_Click()
 End Sub
 
 Private Sub btnExportar_Click()
-
     Me.progreso.Visible = True
 
 
@@ -872,6 +871,7 @@ Private Sub btnExportar_Click()
 err1:
     MsgBox "Se produjo un error al exportar!", vbCritical, "Error"
 End Sub
+
 
 Private Sub btnImprimir_Click()
     Dim elegidos As Boolean

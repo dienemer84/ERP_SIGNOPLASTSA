@@ -712,7 +712,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   250937345
+         Format          =   65273857
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -1526,7 +1526,7 @@ Private Sub gridFacturas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark 
         
         Values(2) = Factura.FechaEmision
         
-        Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total)), "$", "")
+        Values(3) = funciones.FormatearDecimales(Factura.total)
         
         Values(4) = funciones.FormatearDecimales(Factura.total - DAOFactura.PagosRealizados(Factura.Id))
 

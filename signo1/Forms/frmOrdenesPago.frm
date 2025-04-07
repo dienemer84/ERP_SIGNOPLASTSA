@@ -763,7 +763,7 @@ End Sub
 
 Private Sub SeleccionarOP()
     On Error Resume Next
-    Set Orden = ordenes.Item(gridOrdenes.rowIndex(gridOrdenes.row))
+    Set Orden = ordenes.item(gridOrdenes.rowIndex(gridOrdenes.row))
 
 End Sub
 
@@ -786,7 +786,7 @@ End Sub
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.rowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.Item(RowBuffer.rowIndex)
+        Set Orden = ordenes.item(RowBuffer.rowIndex)
         If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
             RowBuffer.CellStyle(9) = "aprobada"
         ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
@@ -802,7 +802,7 @@ End Sub
 
 Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If rowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.Item(rowIndex)
+        Set Orden = ordenes.item(rowIndex)
         Values(1) = Orden.Id
         Values(2) = Orden.FEcha
 
@@ -813,7 +813,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
         Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)), "$", "")
 
         If Orden.EsParaFacturaProveedor Then
-            Set fac = Orden.FacturasProveedor.Item(1)
+            Set fac = Orden.FacturasProveedor.item(1)
             Values(7) = "Factura Proveedor"
             Values(8) = fac.Proveedor.RazonSocial
         Else
@@ -877,11 +877,11 @@ Private Sub mnuAprobar_Click()
     SeleccionarOP
     
     If DAOOrdenPago.aprobar(Orden, True) Then
-        MsgBox "AprobaciÃ³n Exitosa!", vbInformation + vbOKOnly
+        MsgBox "Aprobación éxitosa!", vbInformation + vbOKOnly
         Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
     Else
-        MsgBox "Error, no se aprobÃ³ la OP!", vbCritical + vbOKOnly
+        MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
     End If
 
 End Sub

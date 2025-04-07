@@ -9,14 +9,14 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    ClientHeight    =   7380
    ClientLeft      =   45
    ClientTop       =   480
-   ClientWidth     =   10500
+   ClientWidth     =   10455
    Icon            =   "frmAdminComprasNuevaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   7380
-   ScaleWidth      =   10500
+   ScaleWidth      =   10455
    Begin XtremeSuiteControls.PushButton btnFormatoNumeroLIbre 
       Height          =   255
       Left            =   8700
@@ -473,7 +473,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   65863681
+      Format          =   65273857
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1369,6 +1369,7 @@ Private Sub grilla_alicuota_UnboundReadData(ByVal rowIndex As Long, ByVal Bookma
     Values(1) = funciones.FormatearDecimales(alicuota.alicuota)
     Values(2) = alicuota.Id
 End Sub
+
 
 Private Sub grilla_alicuotas_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not (MsgBox("¿Está seguro de eliminar la alícuota seleccionada?", vbYesNo, "Confirmación") = vbYes)

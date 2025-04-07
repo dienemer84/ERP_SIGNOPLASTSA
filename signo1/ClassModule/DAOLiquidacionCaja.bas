@@ -644,7 +644,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         q = "UPDATE AdminComprasFacturasProveedores SET tipo_cambio_pago= " & fcp.TipoCambioPago & ", estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & fcp.Id
         If Not conectar.execute(q) Then GoTo E
         
-        q = "UPDATE AdminComprasFacturasProveedores SET total_abonado=" & fcp.TotalPendiente
+        q = "UPDATE AdminComprasFacturasProveedores SET total_abonado=" & fcp.TotalPendiente & " WHERE id = " & fcp.Id
         If Not conectar.execute(q) Then GoTo E
         
     Next

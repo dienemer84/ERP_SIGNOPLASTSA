@@ -20,10 +20,10 @@ Public Function Map2(ByRef rs As Recordset, Index As Dictionary, ByRef tableName
         P.razonFantasia = GetValue(rs, Index, tableNameOrAlias, "razon_fantasia")
         P.IIBB = GetValue(rs, Index, tableNameOrAlias, "iibb")
         P.Ciudad = GetValue(rs, Index, tableNameOrAlias, "ciudad")
-        P.contacto = GetValue(rs, Index, tableNameOrAlias, "contacto")
+        P.Contacto = GetValue(rs, Index, tableNameOrAlias, "contacto")
         P.cp = GetValue(rs, Index, tableNameOrAlias, "cp")
         P.direccion = GetValue(rs, Index, tableNameOrAlias, "direccion")
-        P.Email = GetValue(rs, Index, tableNameOrAlias, "email")
+        P.email = GetValue(rs, Index, tableNameOrAlias, "email")
         P.estado = GetValue(rs, Index, tableNameOrAlias, "estado")
         P.Fax = GetValue(rs, Index, tableNameOrAlias, "fax")
         P.FormaPago = GetValue(rs, Index, tableNameOrAlias, "FP")
@@ -45,6 +45,7 @@ Public Function Map2(ByRef rs As Recordset, Index As Dictionary, ByRef tableName
     Set Map2 = P
 End Function
 
+
 Public Function FindAll(Optional filtro As String = vbNullString, _
                         Optional WithContactos As Boolean = False, _
                         Optional WithCuentasContables As Boolean = False, _
@@ -61,7 +62,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, _
     Dim cuentas As String: cuentas = vbNullString
     Dim asignacion As String: asignacion = vbNullString
     Dim cuentaProv As String: cuentaProv = vbNullString
-    Dim contacto As String: contacto = vbNullString
+    Dim Contacto As String: Contacto = vbNullString
     Dim alicuotas As String: alicuotas = vbNullString
     Dim tipIva As clsTipoIvaProveedor
     Dim q As String
@@ -82,7 +83,7 @@ If WithCuentasContables Then
           & " LEFT JOIN sp.rubros  ON (asignacion.id_rubro = rubros.id) "
     End If
     If WithContactos Then
-        contacto = "contactos"
+        Contacto = "contactos"
         q = q & " LEFT JOIN sp.contactos    ON (contactos.idCliente = proveedores.id) "
     End If
     If WithAlicuotas Then
@@ -120,7 +121,7 @@ If WithCuentasContables Then
     End If
 
     Set rs = conectar.RSFactory(q)
-    
+
     Dim indice As New Dictionary
     Dim prov As clsProveedor
     BuildFieldsIndex rs, indice
@@ -140,7 +141,7 @@ If WithCuentasContables Then
         End If
 
         If WithContactos Then
-            Set cont = DAOContacto.Map(rs, indice, contacto)
+            Set cont = DAOContacto.Map(rs, indice, Contacto)
             If IsSomething(cont) Then
                 If Not funciones.BuscarEnColeccion(prov.contactos, CStr(cont.Id)) Then
                     prov.contactos.Add cont, CStr(cont.Id)
@@ -241,7 +242,7 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
             Set Proveedor.moneda = DAOMoneda.GetById(0)
         End If
 
-        strsql = strsql & " ( " & Proveedor.moneda.Id & "," & conectar.Escape(Proveedor.RazonSocial) & "," & conectar.Escape(Proveedor.direccion) & "," & conectar.Escape(Proveedor.Ciudad) & "," & conectar.Escape(Proveedor.cp) & "," & conectar.Escape(Proveedor.tel) & "," & conectar.Escape(Proveedor.Fax) & "," & conectar.Escape(Proveedor.Email) & "," & conectar.Escape(Proveedor.contacto) & "," & conectar.Escape(Proveedor.FormaPago) & "," & conectar.Escape(Proveedor.pagocontraEntrega) & "," & conectar.Escape(Proveedor.pagoDolares) & "," & conectar.Escape(Proveedor.bonificacion) & "," & conectar.Escape(Proveedor.TipoIVA.Id) & "," & conectar.Escape(Proveedor.razonFantasia) & "," & conectar.Escape(Proveedor.IIBB) & "," & conectar.Escape(Proveedor.Cuit) & "," & conectar.Escape(Proveedor.estado) & "," & conectar.Escape(Proveedor.CBU) & "," & conectar.Escape(Proveedor.ALIAS) & "," & conectar.Escape(Proveedor.TitularCta) & ")"
+        strsql = strsql & " ( " & Proveedor.moneda.Id & "," & conectar.Escape(Proveedor.RazonSocial) & "," & conectar.Escape(Proveedor.direccion) & "," & conectar.Escape(Proveedor.Ciudad) & "," & conectar.Escape(Proveedor.cp) & "," & conectar.Escape(Proveedor.tel) & "," & conectar.Escape(Proveedor.Fax) & "," & conectar.Escape(Proveedor.email) & "," & conectar.Escape(Proveedor.Contacto) & "," & conectar.Escape(Proveedor.FormaPago) & "," & conectar.Escape(Proveedor.pagocontraEntrega) & "," & conectar.Escape(Proveedor.pagoDolares) & "," & conectar.Escape(Proveedor.bonificacion) & "," & conectar.Escape(Proveedor.TipoIVA.Id) & "," & conectar.Escape(Proveedor.razonFantasia) & "," & conectar.Escape(Proveedor.IIBB) & "," & conectar.Escape(Proveedor.Cuit) & "," & conectar.Escape(Proveedor.estado) & "," & conectar.Escape(Proveedor.CBU) & "," & conectar.Escape(Proveedor.ALIAS) & "," & conectar.Escape(Proveedor.TitularCta) & ")"
         If Not conectar.execute(strsql) Then GoTo E
 
         Set rs = conectar.RSFactory("select last_insert_id() as idd from proveedores")
@@ -268,7 +269,7 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
          "cp = " & conectar.Escape(Proveedor.cp) & ", " & _
          "tel = " & conectar.Escape(Proveedor.tel) & ", " & _
          "fax = " & conectar.Escape(Proveedor.Fax) & ", " & _
-         "contacto = " & conectar.Escape(Proveedor.contacto) & ", " & _
+         "contacto = " & conectar.Escape(Proveedor.Contacto) & ", " & _
          "FP = " & conectar.Escape(Proveedor.FormaPago) & ", " & _
          "PCE = " & conectar.Escape(Proveedor.pagocontraEntrega) & ", " & _
          "dolar = " & conectar.Escape(Proveedor.pagoDolares) & ", " & _
@@ -276,7 +277,7 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
          "razon_fantasia = " & conectar.Escape(Proveedor.razonFantasia) & ", " & _
          "iibb = " & conectar.Escape(Proveedor.IIBB) & ", " & _
          "estado = " & conectar.Escape(Proveedor.estado) & ", " & _
-         "email = " & conectar.Escape(Proveedor.Email) & ", " & _
+         "email = " & conectar.Escape(Proveedor.email) & ", " & _
          "cbu = " & conectar.Escape(Proveedor.CBU) & ", " & _
          "alias = " & conectar.Escape(Proveedor.ALIAS) & ", " & _
          "titularcta = " & conectar.Escape(Proveedor.TitularCta) & " " & _
@@ -302,7 +303,7 @@ Public Function Guardar(Proveedor As clsProveedor) As Boolean
     Else
         EVENTO.EVENTO = modificar_
     End If
-    EVENTO.tipo = Proveedores_
+    EVENTO.Tipo = Proveedores_
     Channel.Notificar EVENTO, Proveedores_
     Exit Function
 
