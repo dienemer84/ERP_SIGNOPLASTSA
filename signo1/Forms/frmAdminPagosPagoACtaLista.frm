@@ -520,24 +520,17 @@ Begin VB.Form frmAdminPagosPagoACtaLista
       End
       Begin VB.Menu mnuAprobar 
          Caption         =   "Aprobar"
+         Visible         =   0   'False
       End
       Begin VB.Menu mnuAnular 
          Caption         =   "Anular"
+         Visible         =   0   'False
       End
       Begin VB.Menu mnuVer 
          Caption         =   "Ver"
       End
       Begin VB.Menu mnuImprimir 
          Caption         =   "Imprimir"
-      End
-      Begin VB.Menu mnuVerCertificado 
-         Caption         =   "Editar Certificados de Retenciones"
-      End
-      Begin VB.Menu nada 
-         Caption         =   "-"
-      End
-      Begin VB.Menu mnuHistorial 
-         Caption         =   "Ver Historial"
       End
    End
 End
@@ -579,7 +572,7 @@ End Sub
 
 
 Private Sub cmdBuscar_Click()
-    If (Me.chkContado.value = xtpChecked Or Me.chkCtaCte.value = xtpChecked Or Me.chkEliminado.value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
+    If (Me.chkContado.Value = xtpChecked Or Me.chkCtaCte.Value = xtpChecked Or Me.chkEliminado.Value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
 
 End Sub
 
@@ -624,7 +617,7 @@ Private Sub Form_Load()
     Me.cboProveedores.ListIndex = -1
     '    llenarLista
 
-    Me.dtpHasta(1).value = Now
+    Me.dtpHasta(1).Value = Now
     
     Me.gridOrdenes.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
@@ -638,7 +631,7 @@ Private Sub Form_Load()
 '''    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
 '''    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
 
-    Me.dtpDesde(1).value = Year(Now) & "-01-01"
+    Me.dtpDesde(1).Value = Year(Now) & "-01-01"
 
     desde = DateSerial(Year(Date), Month(Date), 1)   ' CDate(1 & "-" & Month(Now) & "-" & Year(Now))
     funciones.FillComboBoxDateRanges Me.cboRangos
@@ -667,24 +660,24 @@ Private Sub llenarLista()
 
     Dim filtroor As String
 
-    If Not IsNull(Me.dtpDesde(1).value) Then
-        filter = filter & " AND pagos_a_cuenta.fecha >= " & conectar.Escape(Me.dtpDesde(1).value)
+    If Not IsNull(Me.dtpDesde(1).Value) Then
+        filter = filter & " AND pagos_a_cuenta.fecha >= " & conectar.Escape(Me.dtpDesde(1).Value)
     End If
 
-    If Not IsNull(Me.dtpHasta(1).value) Then
-        filter = filter & " AND pagos_a_cuenta.fecha <= " & conectar.Escape(Me.dtpHasta(1).value)
+    If Not IsNull(Me.dtpHasta(1).Value) Then
+        filter = filter & " AND pagos_a_cuenta.fecha <= " & conectar.Escape(Me.dtpHasta(1).Value)
     End If
 
 
-    If Me.chkContado.value = xtpChecked Then
+    If Me.chkContado.Value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorContado
     End If
 
-    If Me.chkCtaCte.value = xtpChecked Then
+    If Me.chkCtaCte.Value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorCuentaCorriente
     End If
 
-    If Me.chkEliminado.value = xtpChecked Then
+    If Me.chkEliminado.Value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorEliminado
     End If
 
@@ -843,7 +836,7 @@ End Sub
 Private Sub mnuEditar_Click()
     SeleccionarOP
     
-    Dim f22 As New frmAdminPagosCrearOrdenPago
+    Dim f22 As New frmAdminPagosCrearPagoACta
     f22.Show
     f22.Cargar PagoACuenta
 End Sub
@@ -861,38 +854,28 @@ End Sub
 Private Sub mnuImprimir_Click()
 
     On Error GoTo err4
-'''    Me.CommonDialog.ShowPrinter
-'''
-'''   If Not DAOPagoACta.PrintOP(PagoACuenta, Me.pic) Then GoTo err4
-'''   Exit Sub
-'''
+    Me.CommonDialog.ShowPrinter
+
+   If Not DAOPagoACta.PrintPCTA(PagoACuenta) Then GoTo err4
+   Exit Sub
+
 err4:
  
 End Sub
 
 
 Private Sub mnuVer_Click()
-'''    Dim f22 As New frmAdminPagosCrearPagoACta
-'''    f22.Show
-'''    SeleccionarOP
-'''
-'''    f22.ReadOnly = True
-'''
-'''    f22.Cargar PagoACuenta
-'''
+    Dim f22 As New frmAdminPagosCrearPagoACta
+    f22.Show
+    SeleccionarOP
+
+    f22.ReadOnly = True
+
+    f22.Cargar PagoACuenta
+
     
 End Sub
 
-Private Sub mnuVerCertificado_Click()
-'''    Dim f22 As New frmAdminPagosCrearOrdenPago
-'''    f22.Show
-'''    SeleccionarOP
-'''
-'''    f22.ReadOnly = False
-'''
-'''    f22.Cargar PagoACuenta
-    
-End Sub
 
 
 Private Sub cboRangos_Click()

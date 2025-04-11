@@ -371,7 +371,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
 
         Set x = DAOOrdenPago.FindAbonadoPendienteEnEstaOP(fac.Id, op.Id)
 
-        nopago1 = fac.total - fac.TotalAbonadoGlobal    '- (funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3)))))
+        nopago1 = fac.Total - fac.TotalAbonadoGlobal    '- (funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3)))))
 
         'nopago = fac.Total - fac.TotalAbonadoGlobal - funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
 
@@ -867,13 +867,13 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     offset = 3
 
     ' Escribir encabezados
-    xlWorksheet.Cells(offset, 1).value = "Número Pago a Cuenta"
-    xlWorksheet.Cells(offset, 2).value = "Proveedor"
-    xlWorksheet.Cells(offset, 3).value = "Fecha"
-    xlWorksheet.Cells(offset, 4).value = "Moneda"
-    xlWorksheet.Cells(offset, 5).value = "Valor"
-    xlWorksheet.Cells(offset, 6).value = "Estado"
-    xlWorksheet.Cells(offset, 7).value = "Creada"
+    xlWorksheet.Cells(offset, 1).Value = "Número Pago a Cuenta"
+    xlWorksheet.Cells(offset, 2).Value = "Proveedor"
+    xlWorksheet.Cells(offset, 3).Value = "Fecha"
+    xlWorksheet.Cells(offset, 4).Value = "Moneda"
+    xlWorksheet.Cells(offset, 5).Value = "Valor"
+    xlWorksheet.Cells(offset, 6).Value = "Estado"
+    xlWorksheet.Cells(offset, 7).Value = "Creada"
 
     ' Formatear encabezados
     With xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 7))
@@ -896,17 +896,17 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 
     For Each PagoACta In col
         d = d + 1
-        If Not ProgressBar Is Nothing Then ProgressBar.value = d
+        If Not ProgressBar Is Nothing Then ProgressBar.Value = d
 
         offset = offset + 1
 
-        xlWorksheet.Cells(offset, 1).value = PagoACta.Id
-        xlWorksheet.Cells(offset, 2).value = PagoACta.Proveedor.RazonSocial
-        xlWorksheet.Cells(offset, 3).value = PagoACta.FEcha
-        xlWorksheet.Cells(offset, 4).value = PagoACta.moneda.NombreCorto
-        xlWorksheet.Cells(offset, 5).value = PagoACta.StaticTotalOrigenes
-        xlWorksheet.Cells(offset, 6).value = enums.enumEstadoPagoACuenta(PagoACta.estado)
-        xlWorksheet.Cells(offset, 7).value = PagoACta.Creada
+        xlWorksheet.Cells(offset, 1).Value = PagoACta.Id
+        xlWorksheet.Cells(offset, 2).Value = PagoACta.Proveedor.RazonSocial
+        xlWorksheet.Cells(offset, 3).Value = PagoACta.FEcha
+        xlWorksheet.Cells(offset, 4).Value = PagoACta.moneda.NombreCorto
+        xlWorksheet.Cells(offset, 5).Value = PagoACta.StaticTotalOrigenes
+        xlWorksheet.Cells(offset, 6).Value = enums.enumEstadoPagoACuenta(PagoACta.estado)
+        xlWorksheet.Cells(offset, 7).Value = PagoACta.Creada
     Next
 
     ' Centrar los datos de la primera columna
@@ -942,12 +942,556 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
-    If Not ProgressBar Is Nothing Then ProgressBar.value = 0
+    If Not ProgressBar Is Nothing Then ProgressBar.Value = 0
 
     Exit Function
 
 err1:
     ExportarColeccion = False
     If Not xlApplication Is Nothing Then xlApplication.Quit
-    If Not ProgressBar Is Nothing Then ProgressBar.value = 0
+    If Not ProgressBar Is Nothing Then ProgressBar.Value = 0
 End Function
+
+Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
+    Dim TAB1 As Integer
+    Dim TAB2 As Integer
+    Dim maxw As Single
+    Dim C As Long
+    Dim mtxt As String
+    Dim tttxt As String
+    Dim textw As Single
+    Dim lmargin As Integer
+
+    Dim A As Single
+    lmargin = 720
+
+    TAB1 = 300
+    TAB2 = 300
+    Printer.CurrentY = lmargin
+    maxw = Printer.Width - lmargin * 2
+    A = lmargin + (maxw - 3200) / 2
+    
+    
+    ' --- Agregar el título "SIGNO PLAST" ---
+    Printer.FontBold = True
+    Printer.FontSize = 24
+    tttxt = "SIGNO PLAST"
+    textw = Printer.TextWidth(tttxt)  ' Calcular el ancho del texto
+    Printer.CurrentX = lmargin + (maxw - textw) / 2  ' Centrar horizontalmente
+    Printer.CurrentY = lmargin  ' Posición vertical
+    Printer.Print tttxt  ' Imprimir el título
+     
+    Printer.FontBold = True
+    Printer.FontSize = 12
+    mtxt = "Pago a Cuenta Nº " & pcta.Id
+    textw = Printer.TextWidth(mtxt)
+    
+    Printer.CurrentX = lmargin + (maxw - textw) / 2
+    Printer.Print mtxt
+    Printer.FontSize = 10
+    Printer.CurrentX = lmargin
+    Printer.Print "Fecha: ";
+    Printer.FontBold = False
+    Printer.Print pcta.FEcha
+
+
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin
+    Printer.Print "Moneda: ";
+    Printer.FontBold = False
+    Printer.Print pcta.moneda.NombreCorto & " " & pcta.moneda.NombreLargo
+
+
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin
+    Printer.Print "Proveedor: ";
+    Printer.FontBold = False
+    Printer.Print pcta.Proveedor.RazonSocial
+
+
+    Printer.Print
+    Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
+    Printer.FontSize = 10
+    Printer.CurrentX = lmargin
+    Printer.FontBold = True
+    Printer.Print "Valores: "
+    
+    Printer.FontSize = 8
+    Printer.CurrentX = lmargin
+    Printer.Print "Cheques Propios: "
+    Printer.FontBold = False
+    
+    Dim cheq As cheque
+    Dim tmpCol As New Collection
+    C = 0
+    
+    For Each cheq In pcta.ChequesPropios
+        C = C + 1
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
+    Next cheq
+    
+    If C = 0 Then
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE CHEQUES PROPIOS"
+    End If
+    Printer.Print
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin + TAB1
+    Printer.Print "Cheques de Terceros: "
+    Printer.FontBold = False
+    Set tmpCol = New Collection
+    C = 0
+    For Each cheq In pcta.ChequesTerceros
+        C = C + 1
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
+    Next cheq
+    If C = 0 Then
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE CHEQUES DE TERCEROS"
+    End If
+    Printer.Print
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin + TAB1
+    Printer.Print "Transferencias: "
+    Printer.FontBold = False
+
+    Dim op As operacion
+    Set tmpCol = New Collection
+    C = 0
+    For Each op In pcta.operacionesBanco
+        C = C + 1
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        
+        Dim ctabancaria As CuentaBancaria
+        
+        Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
+        
+        Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
+    
+    Next op
+    
+    If C = 0 Then
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE TRANSFERENCIAS"
+    End If
+    Printer.Print
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin + TAB1
+    Printer.Print "Efectivo: "
+    Printer.FontBold = False
+
+'Replace(FormatCurrency(funciones.FormatearDecimales(factura.TotalIVA) * i), "$", "")
+    Set tmpCol = New Collection
+    C = 0
+    For Each op In pcta.operacionesCaja
+        C = C + 1
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
+    Next op
+    If C = 0 Then
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE OPERACIONES EN EFECTIVO"
+    End If
+
+    Printer.FontSize = 11
+    Printer.Print
+    Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
+    Printer.Print
+
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin
+    Printer.Print "Total Pagado: ";
+    Printer.FontBold = False
+    Printer.Print pcta.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(pcta.StaticTotalOrigenes)), "$", "")
+    Printer.Print
+    Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
+    
+'     Imprimir la fecha y hora al pie de la página
+    Dim fechaHoraActual As String
+    fechaHoraActual = Format(Now, "dd/MM/yyyy HH:mm:ss") ' Ajusta el formato según tus preferencias
+    fechaHoraActual = FormatDateTime(Now, vbShortDate) & " " & FormatDateTime(Now, vbLongTime)
+
+'     Calcular la posición para imprimir la fecha y hora en el borde inferior derecho
+    Dim fechaHoraPosX As Single
+    Dim fechaHoraPosY As Single
+    fechaHoraPosX = Printer.ScaleWidth - Printer.TextWidth(fechaHoraActual) ' Posición en el borde derecho
+    fechaHoraPosY = Printer.ScaleHeight - Printer.TextHeight("X") - Printer.TextHeight(fechaHoraActual) - Printer.TextHeight("X") ' Posición en el borde inferior y subida un poco
+
+'     Cambiar el tamaño de fuente para la fecha y hora
+    Printer.FontSize = 8
+
+'     Imprimir línea horizontal
+    Printer.Line (0, fechaHoraPosY - 5)-(Printer.ScaleWidth, fechaHoraPosY - 5) ' Posición y ajuste de la línea
+
+'     Imprimir la fecha y hora en la posición calculada
+    Printer.CurrentX = fechaHoraPosX
+    Printer.CurrentY = fechaHoraPosY
+    Printer.Print fechaHoraActual
+            
+
+    Printer.EndDoc
+    
+    DaoHistorico.Save "orden_pago_historial", "OP Impresa", pcta.Id
+    
+End Function
+
+
+Public Function ExportarOrdenPago(OrdenPago As OrdenPago) As Boolean
+    
+    Dim xlApplication As Object
+    Dim xlWorkbook As Object
+    Dim xlWorksheet As Object
+    Dim ruta As String
+    Dim offset As Long, initoffset As Long
+    Dim cheq As cheque
+    Dim op As operacion
+    Dim ctabancaria As CuentaBancaria
+    Dim C As Long
+    
+    Dim totalGeneral As Double ' Variable para acumular los totales
+    Dim totalTransferencias As Double
+    Dim totalCaja As Double
+    Dim totalChequesTerceros As Double
+    Dim totalChequesPropios As Double
+    
+    Dim F As clsFacturaProveedor
+    
+    totalGeneral = 0
+    totalTransferencias = 0
+    totalCaja = 0
+    totalChequesTerceros = 0
+    totalChequesPropios = 0
+    
+    
+    ' Inicializar Excel
+    Set xlApplication = CreateObject("Excel.Application")
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+    
+    xlApplication.Visible = False
+    xlApplication.ScreenUpdating = False
+    
+    ' Configurar hoja
+    offset = 1
+    initoffset = offset
+    
+    ' Encabezado principal
+    With xlWorksheet
+        ' Datos de la orden
+        .Cells(offset, 1).Font.Bold = True
+        .Cells(offset, 1).Value = "Número Orden"
+        .Cells(offset, 2).Value = OrdenPago.Id ' Asumiendo propiedad Numero
+        offset = offset + 1
+        
+        .Cells(offset, 1).Font.Bold = True
+        .Cells(offset, 1).Value = "Proveedor"
+        
+'''        Set OrdenPago.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(OrdenPago.Id)
+
+        For Each F In OrdenPago.FacturasProveedor
+         .Cells(offset, 2).Value = F.Proveedor.RazonSocial
+        Next F
+
+        offset = offset + 1
+        
+        
+        .Cells(offset, 1).Font.Bold = True
+        .Cells(offset, 1).Value = "Fecha"
+        .Cells(offset, 2).Value = OrdenPago.FEcha ' Asumiendo propiedad Fecha
+        offset = offset + 3
+        
+'''        .Cells(offset, 1).Value = "Moneda"
+'''        .Cells(offset, 2).Value = OrdenPago.moneda.NombreCorto
+'''        offset = offset + 3
+        
+    
+        ' Cheques Propios
+        .Cells(offset, 1).Value = "COMPROBANTES"
+        .Range(.Cells(offset, 1), .Cells(offset, 7)).Merge
+        .Cells(offset, 1).Font.Bold = True
+        offset = offset + 1
+        
+        If OrdenPago.FacturasProveedor.count > 0 Then
+            ' Encabezados cheques
+            .Cells(offset, 1).Value = "Tipo"
+            .Cells(offset, 2).Value = "Numero"
+            .Cells(offset, 3).Value = "Total"
+            .Cells(offset, 4).Value = "Ya abonado"
+            .Cells(offset, 5).Value = "Abonandose..."
+            .Cells(offset, 6).Value = "Fecha"
+            .Cells(offset, 7).Value = "TC"
+            
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Font.Bold = True
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Interior.Color = &HC0C0C0
+            offset = offset + 1
+      
+    
+    ' Aplicar formato de moneda a la columna 3 (Total)
+    .Columns(3).NumberFormat = "#,##0.00 $"
+    .Columns(5).NumberFormat = "#,##0.00 $"
+    
+            For Each F In OrdenPago.FacturasProveedor
+                .Cells(offset, 1).Value = F.NumeroFormateadoCorto
+                .Cells(offset, 2).Value = F.numero
+                .Cells(offset, 3).Value = F.Total
+                .Cells(offset, 4).Value = F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente
+                .Cells(offset, 5).Value = F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente)
+                .Cells(offset, 6).Value = F.FEcha
+                .Cells(offset, 7).Value = F.TipoCambio
+                
+                ' Acumular el total
+                totalGeneral = totalGeneral + (F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+                        
+                offset = offset + 1
+                
+            Next F
+            
+                ' Agregar fila con el totalizador
+                .Cells(offset, 2).Value = "Total"
+                .Cells(offset, 2).Font.Bold = True
+                .Cells(offset, 5).Value = totalGeneral
+                .Cells(offset, 5).Font.Bold = True
+                .Cells(offset, 5).Interior.Color = &HC0C0C0     ' Fondo amarillo para destacar
+       Else
+       .Cells(offset, 1).Value = "NO POSEE COMPROBANTES"
+        offset = offset + 1
+        End If
+        
+        offset = offset + 2 ' Espacio entre secciones
+        
+        
+        ' Cheques Propios
+        .Cells(offset, 1).Value = "CHEQUES PROPIOS"
+        .Range(.Cells(offset, 1), .Cells(offset, 7)).Merge
+        .Cells(offset, 1).Font.Bold = True
+        offset = offset + 1
+        
+        If OrdenPago.ChequesPropios.count > 0 Then
+            ' Encabezados cheques
+            .Cells(offset, 1).Value = "Cheque Numero"
+            .Cells(offset, 2).Value = "Banco Nombre"
+            .Cells(offset, 3).Value = "Monto"
+            .Cells(offset, 4).Value = "Moneda"
+            .Cells(offset, 5).Value = ""
+            .Cells(offset, 6).Value = "Fecha Vencimiento"
+            
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Font.Bold = True
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Interior.Color = &HC0C0C0
+            offset = offset + 1
+            
+            For Each cheq In OrdenPago.ChequesPropios
+                .Cells(offset, 1).Value = cheq.numero
+                .Cells(offset, 2).Value = cheq.Banco.nombre
+                .Cells(offset, 3).Value = cheq.Monto
+                .Cells(offset, 4).Value = cheq.moneda.NombreCorto
+                .Cells(offset, 5).Value = ""
+                .Cells(offset, 6).Value = cheq.FechaVencimiento
+                offset = offset + 1
+                
+                totalChequesPropios = totalChequesPropios + cheq.Monto
+                
+            Next cheq
+                 ' Agregar fila con el totalizador
+                .Cells(offset, 2).Value = "Subtotal"
+                .Cells(offset, 2).Font.Bold = True
+                .Cells(offset, 3).Value = totalChequesPropios
+                .Cells(offset, 3).Font.Bold = True
+                .Cells(offset, 3).Interior.Color = &HC0C0C0
+        Else
+            .Cells(offset, 1).Value = "NO POSEE CHEQUES PROPIOS"
+            offset = offset + 1
+        End If
+        
+        offset = offset + 2 ' Espacio entre secciones
+        
+        ' Cheques de Terceros
+        .Cells(offset, 1).Value = "CHEQUES DE TERCEROS"
+        .Range(.Cells(offset, 1), .Cells(offset, 7)).Merge
+        .Cells(offset, 1).Font.Bold = True
+        offset = offset + 1
+        
+        If OrdenPago.ChequesTerceros.count > 0 Then
+            ' Encabezados cheques terceros
+            .Cells(offset, 1).Value = "Cheque Numero"
+            .Cells(offset, 2).Value = "Banco Nombre"
+            .Cells(offset, 3).Value = "Monto"
+            .Cells(offset, 4).Value = "Moneda"
+            .Cells(offset, 5).Value = "Fecha Vencimiento"
+            
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Font.Bold = True
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Interior.Color = &HC0C0C0
+            offset = offset + 1
+            
+            For Each cheq In OrdenPago.ChequesTerceros
+                .Cells(offset, 1).Value = cheq.numero
+                .Cells(offset, 2).Value = cheq.Banco.nombre
+                .Cells(offset, 3).Value = cheq.Monto
+                .Cells(offset, 4).Value = cheq.FechaVencimiento
+                .Cells(offset, 5).Value = cheq.moneda.NombreCorto
+
+                offset = offset + 1
+                
+                totalChequesTerceros = totalChequesTerceros + cheq.Monto
+            Next cheq
+            
+            ' Agregar fila con el totalizador
+                .Cells(offset, 2).Value = "Subtotal"
+                .Cells(offset, 2).Font.Bold = True
+                .Cells(offset, 3).Value = totalChequesTerceros
+                .Cells(offset, 3).Font.Bold = True
+                .Cells(offset, 3).Interior.Color = &HC0C0C0
+        Else
+            .Cells(offset, 1).Value = "NO POSEE CHEQUES DE TERCEROS"
+            offset = offset + 1
+        End If
+        
+        offset = offset + 2 ' Espacio entre secciones
+        
+        ' Transferencias
+        .Cells(offset, 1).Value = "TRANSFERENCIAS"
+        .Range(.Cells(offset, 1), .Cells(offset, 7)).Merge
+        .Cells(offset, 1).Font.Bold = True
+        offset = offset + 1
+        
+        If OrdenPago.operacionesBanco.count > 0 Then
+            ' Encabezados transferencias
+            .Cells(offset, 1).Value = "Comprobante"
+            .Cells(offset, 2).Value = "Fecha"
+            .Cells(offset, 3).Value = "Monto"
+            .Cells(offset, 4).Value = "Moneda"
+            .Cells(offset, 5).Value = "Banco/Cuenta"
+            
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Font.Bold = True
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Interior.Color = &HC0C0C0
+            offset = offset + 1
+            
+            For Each op In OrdenPago.operacionesBanco
+                Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
+                
+                .Cells(offset, 1).Value = op.Comprobante
+                .Cells(offset, 2).Value = op.FechaOperacion
+                .Cells(offset, 3).Value = op.Monto
+                .Cells(offset, 4).Value = op.moneda.NombreCorto
+                .Cells(offset, 5).Value = ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
+                
+                totalTransferencias = totalTransferencias + op.Monto
+                
+                offset = offset + 1
+            Next op
+            ' Agregar fila con el totalizador
+                .Cells(offset, 2).Value = "Subtotal"
+                .Cells(offset, 2).Font.Bold = True
+                .Cells(offset, 3).Value = totalTransferencias
+                .Cells(offset, 3).Font.Bold = True
+                .Cells(offset, 3).Interior.Color = &HC0C0C0
+        Else
+            .Cells(offset, 1).Value = "NO POSEE TRANSFERENCIAS"
+            offset = offset + 1
+        End If
+        
+        offset = offset + 1 ' Espacio entre secciones
+        
+        ' Efectivo
+        .Cells(offset, 1).Value = "CAJA"
+        .Range(.Cells(offset, 1), .Cells(offset, 7)).Merge
+        .Cells(offset, 1).Font.Bold = True
+        offset = offset + 1
+        
+        If OrdenPago.operacionesCaja.count > 0 Then
+            ' Encabezados efectivo
+            .Cells(offset, 1).Value = "Fecha"
+            .Cells(offset, 2).Value = "Moneda"
+            .Cells(offset, 3).Value = "Monto"
+            
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Font.Bold = True
+            .Range(.Cells(offset, 1), .Cells(offset, 7)).Interior.Color = &HC0C0C0
+            offset = offset + 1
+            
+            For Each op In OrdenPago.operacionesCaja
+                .Cells(offset, 1).Value = op.FechaOperacion
+                .Cells(offset, 2).Value = op.moneda.NombreCorto
+                .Cells(offset, 3).Value = op.Monto
+                offset = offset + 1
+                
+                totalCaja = totalCaja + op.Monto
+                
+            Next op
+            
+                                        ' Agregar fila con el totalizador
+                .Cells(offset, 2).Value = "Subtotal"
+                .Cells(offset, 2).Font.Bold = True
+                .Cells(offset, 3).Value = totalCaja
+                .Cells(offset, 3).Font.Bold = True
+                .Cells(offset, 3).Interior.Color = &HC0C0C0
+        Else
+            .Cells(offset, 1).Value = "NO POSEE OPERACIONES EN EFECTIVO"
+            offset = offset + 1
+        End If
+        
+        offset = offset + 3 ' Espacio entre secciones
+                
+        ' Ajustar columnas
+        .Cells.EntireColumn.AutoFit
+        
+        .Cells(offset, 2).Font.Bold = True
+        .Cells(offset, 2).Value = "Valores cargados"
+        .Cells(offset, 3).Value = funciones.FormatearDecimales(totalTransferencias + totalCaja + totalChequesTerceros + totalChequesPropios)
+        offset = offset + 2
+        
+        .Cells(offset, 2).Font.Bold = True
+        .Cells(offset, 2).Value = "Comprobantes"
+        .Cells(offset, 3).Value = funciones.FormatearDecimales(totalGeneral)
+        offset = offset + 1 ' Espacio antes de detalles
+        
+        .Cells(offset, 2).Font.Bold = True
+        .Cells(offset, 2).Value = "Retenciones"
+        .Cells(offset, 3).Value = funciones.FormatearDecimales(OrdenPago.StaticTotalRetenido)
+        offset = offset + 2
+        
+        .Cells(offset, 2).Font.Bold = True
+        .Cells(offset, 2).Value = "Comprobantes - Retenciones (A PAGAR)"
+        .Cells(offset, 3).Value = funciones.FormatearDecimales(totalGeneral - OrdenPago.StaticTotalRetenido)
+        offset = offset + 2 ' Espacio antes de detalles
+        
+        .Cells(offset, 2).Font.Bold = True
+        .Cells(offset, 2).Value = "Diferencia entre Valores Cargados y A Pagar"
+        .Cells(offset, 3).Value = funciones.FormatearDecimales((totalGeneral - OrdenPago.StaticTotalRetenido) - (totalTransferencias + totalCaja + totalChequesTerceros + totalChequesPropios))
+        offset = offset + 1 ' Espacio antes de detalles
+    End With
+    
+    
+    
+    xlApplication.ScreenUpdating = False
+    Dim wkSt As String
+    wkSt = xlWorksheet.Name
+    xlWorksheet.Cells.EntireColumn.AutoFit
+    xlWorkbook.Sheets(wkSt).Select
+    xlApplication.ScreenUpdating = True
+
+
+     ruta = Environ$("TEMP")
+    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
+    If LenB(ruta) = 0 Then ruta = App.path
+    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
+
+    xlWorkbook.SaveAs ruta
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    ExportarOrdenPago = True
+    
+    Exit Function
+err1:
+    ExportarOrdenPago = False
+End Function
+

@@ -763,7 +763,7 @@ Private Sub cmdCrear_Click()
         Exit Sub
     End If
 
-    Me.dtpFecha.value = PagoACta.FEcha
+    Me.dtpFecha.Value = PagoACta.FEcha
     
     PagoACta.StaticTotalOrigenes = PagoACta.TotalOrigenes
     
@@ -777,10 +777,10 @@ Private Sub cmdCrear_Click()
             'Me.btnGuardar.Enabled = False
 
             If n Then
-                MsgBox "Pago a cuenta Nro " & PagoACta.Id & " creado con √©xito.", vbInformation
+                MsgBox "Pago a cuenta Nro " & PagoACta.Id & " creado con Èxito.", vbInformation
             Else
 
-                MsgBox "Pago a cuenta modificado con √©xito.", vbInformation
+                MsgBox "Pago a cuenta modificado con Èxito.", vbInformation
             End If
 
             If n Then
@@ -870,7 +870,7 @@ Private Sub Form_Load()
 
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
 
-    Me.dtpFecha.value = PagoACta.FEcha
+    Me.dtpFecha.Value = PagoACta.FEcha
     
     'lstFacturas_Click
 '    Totalizar
@@ -904,10 +904,10 @@ Private Sub gridCajaOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoole
     Dim cond4 As Boolean
 
 
-    cond1 = Not IsNumeric(Me.gridCajaOperaciones.value(1))
-    cond2 = Not IsNumeric(Me.gridCajaOperaciones.value(2)) And LenB(Me.gridCajaOperaciones.value(2)) = 0
-    cond3 = Not IsDate(Me.gridCajaOperaciones.value(3))
-    cond4 = LenB(Me.gridCajaOperaciones.value(4)) = 0 Or IsEmpty(Me.gridCajaOperaciones.value(4))    'or Not IsNumeric(Me.gridCajaOperaciones.value(4))
+    cond1 = Not IsNumeric(Me.gridCajaOperaciones.Value(1))
+    cond2 = Not IsNumeric(Me.gridCajaOperaciones.Value(2)) And LenB(Me.gridCajaOperaciones.Value(2)) = 0
+    cond3 = Not IsDate(Me.gridCajaOperaciones.Value(3))
+    cond4 = LenB(Me.gridCajaOperaciones.Value(4)) = 0 Or IsEmpty(Me.gridCajaOperaciones.Value(4))    'or Not IsNumeric(Me.gridCajaOperaciones.value(4))
 
     Cancel = cond1 Or cond2 Or cond3 Or cond4
     
@@ -999,7 +999,7 @@ Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Dim msg As New Collection
 
     ' REVISA QUE EN LA COLECCION DE CHEQUES DE TERCEROS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-    If funciones.BuscarEnColeccion(PagoACta.ChequesTerceros, CStr(Me.gridCheques.value(1))) Then
+    If funciones.BuscarEnColeccion(PagoACta.ChequesTerceros, CStr(Me.gridCheques.Value(1))) Then
         msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
     End If
 
@@ -1088,29 +1088,29 @@ End Sub
 Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Dim msg As New Collection
 
-    If LenB(Me.gridChequesPropios.value(1)) = 0 Then
+    If LenB(Me.gridChequesPropios.Value(1)) = 0 Then
         msg.Add "Debe especificar una chequera."
     End If
 
-    If LenB(Me.gridChequesPropios.value(2)) = 0 Then
+    If LenB(Me.gridChequesPropios.Value(2)) = 0 Then
         msg.Add "Debe especificar un cheque."
     End If
 
     ' REVISA QUE EN LA COLECCION DE CHEQUES PROPIOS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-    If funciones.BuscarEnColeccion(PagoACta.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
+    If funciones.BuscarEnColeccion(PagoACta.ChequesPropios, CStr(Me.gridChequesPropios.Value(2))) Then
         msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
     End If
 
-    If Not IsNumeric(Me.gridChequesPropios.value(3)) Then
+    If Not IsNumeric(Me.gridChequesPropios.Value(3)) Then
         msg.Add "Debe especificar un monto v√°lido."
     End If
     ' REVISA QUE SE HAYA CARGADO UN MONTO DEL CHEQUE INGRESADO, SI NO SE CARGA GENERA MSG DE ERROR
 
-    If LenB(Me.gridChequesPropios.value(3)) = 0 Then
+    If LenB(Me.gridChequesPropios.Value(3)) = 0 Then
         msg.Add "Debe especificar un monto mayor a 0."
     End If
 
-    If Not IsDate(Me.gridChequesPropios.value(4)) Then
+    If Not IsDate(Me.gridChequesPropios.Value(4)) Then
         msg.Add "Debe especificar una fecha valida."
     End If
 
@@ -1121,13 +1121,13 @@ End Sub
 
 
 
-Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal value As Variant)
+Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal Value As Variant)
     If ColIndex = 1 Then
         'If Not IsNumeric(Me.gridChequesPropios.Value(1)) Or LenB(Me.gridChequesPropios.Value(1)) = 0 Then
-        If Not IsNumeric(value) Or LenB(value) = 0 Then
+        If Not IsNumeric(Value) Or LenB(Value) = 0 Then
             Set chequesChequeraSeleccionada = New Collection
         Else
-            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(Val(value))  ' Me.gridChequesPropios.Value(1))
+            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(Val(Value))  ' Me.gridChequesPropios.Value(1))
         End If
 
         Me.gridChequesChequera.ItemCount = chequesChequeraSeleccionada.count
@@ -1204,10 +1204,10 @@ Private Sub gridDepositosOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRet
     Dim cond4 As Boolean
 
 
-    cond1 = Not IsNumeric(Me.gridDepositosOperaciones.value(1))
-    cond2 = Not IsNumeric(Me.gridDepositosOperaciones.value(2)) And LenB(Me.gridDepositosOperaciones.value(2)) = 0
-    cond3 = Not IsDate(Me.gridDepositosOperaciones.value(3))
-    cond4 = Not IsNumeric(Me.gridDepositosOperaciones.value(4)) And LenB(Me.gridDepositosOperaciones.value(4)) = 0
+    cond1 = Not IsNumeric(Me.gridDepositosOperaciones.Value(1))
+    cond2 = Not IsNumeric(Me.gridDepositosOperaciones.Value(2)) And LenB(Me.gridDepositosOperaciones.Value(2)) = 0
+    cond3 = Not IsDate(Me.gridDepositosOperaciones.Value(3))
+    cond4 = Not IsNumeric(Me.gridDepositosOperaciones.Value(4)) And LenB(Me.gridDepositosOperaciones.Value(4)) = 0
 
     Cancel = cond1 Or cond2 Or cond3 Or cond4
     
@@ -1288,5 +1288,58 @@ Private Sub gridMonedas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
         Values(1) = moneda.Id
         Values(2) = moneda.NombreCorto
     End If
+End Sub
+
+
+Public Sub Cargar(pcta As clsPagoACta)
+
+    Me.caption = "Pago a Cuenta Nro " & pcta.Id
+
+    If Not IsSomething(pcta) Then
+        MsgBox "La OP que est· intentando visualizar est? en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
+        Unload Me
+        Exit Sub
+
+    End If
+
+    Set PagoACta = DAOPagoACta.FindById(pcta.Id)
+    
+    Me.caption = "Pago a Cuenta Nro " & pcta.Id
+   
+    With PagoACta
+    
+'        Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
+        
+        Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.Proveedor.Id, Me.cboProveedores)
+        
+        Me.gridCajaOperaciones.ItemCount = .operacionesCaja.count
+        Me.gridDepositosOperaciones.ItemCount = .operacionesBanco.count
+        Me.gridCheques.ItemCount = .ChequesTerceros.count
+        Me.gridChequesPropios.ItemCount = .ChequesPropios.count
+
+        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.Id, Me.cboMonedas)
+        Me.dtpFecha.Value = .FEcha
+
+
+    End With
+
+    Me.cboProveedores.Enabled = Not ReadOnly
+    Me.btnClearProveedor.Enabled = Not ReadOnly
+    Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
+    Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
+    Me.gridBancos.AllowEdit = Not ReadOnly
+    Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
+    Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
+    Me.gridCajas.AllowEdit = Not ReadOnly
+    Me.gridChequeras.AllowEdit = Not ReadOnly
+    Me.gridCheques.AllowEdit = Not ReadOnly
+    Me.gridCheques.AllowDelete = Not ReadOnly
+    Me.gridChequesChequera.AllowEdit = Not ReadOnly
+    Me.gridChequesDisponibles.AllowEdit = Not ReadOnly
+    Me.gridChequesPropios.AllowEdit = Not ReadOnly
+    Me.gridChequesPropios.AllowDelete = Not ReadOnly
+    Me.cboMonedas.Enabled = Not ReadOnly
+    Me.dtpFecha.Enabled = Not ReadOnly
+
 End Sub
 
