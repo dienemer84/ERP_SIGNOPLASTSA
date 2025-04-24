@@ -473,7 +473,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   65273857
+      Format          =   65142785
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -912,6 +912,7 @@ Private Sub cboProveedores_Click()
 End Sub
 
 
+
 Private Sub cboTiposFactura_Click()
 
     grabado = False
@@ -994,7 +995,7 @@ Private Sub btnGuardar_Click()
     End If
 
 
-    If Not Me.optContado.value And Not Me.optCtaCte.value Then
+    If Not Me.optContado.Value And Not Me.optCtaCte.Value Then
         MsgBox "Debe seleccionar la forma de pago.", vbExclamation
         Exit Sub
     End If
@@ -1078,6 +1079,9 @@ Private Sub btnGuardar_Click()
 
             MsgBox "Factura almacenada con éxito!", vbInformation, "Información"
             grabado = True
+            
+            Me.cboProveedores.SetFocus
+            
         Else
             Err.Raise 100
         End If
@@ -1104,7 +1108,7 @@ err1:
     ElseIf Err.Number = 202 Then
         MsgBox "Debe ingresar montos válidos!", vbCritical, "Error"
     ElseIf Err.Number = 203 Then
-        MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.total, vbCritical, "Error"
+        MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.Total, vbCritical, "Error"
     ElseIf Err.Number = 300 Or nuevoproveedor Then
         vFactura.Proveedor = Nothing
         nuevoproveedor = False
@@ -1124,6 +1128,15 @@ Private Sub DTPicker1_Click()
     grabado = False
 End Sub
 
+Private Sub Form_Activate()
+
+    Me.cboProveedores.Enabled = True
+    Me.cboProveedores.Visible = True
+
+    Me.cboProveedores.SetFocus
+    
+End Sub
+
 Private Sub Form_Load()
     loading = True
 
@@ -1139,11 +1152,8 @@ Private Sub Form_Load()
     Me.txtNumeroCargado.Visible = False
 
     FormHelper.Customize Me
-    
-
 
     '    Set vFactura = DAOFacturaProveedor.FindById(vFactura.id)
-
 
     If Not IsSomething(vFactura) Then Set vFactura = New clsFacturaProveedor
     
@@ -1230,9 +1240,14 @@ Private Sub Form_Load()
     loading = False
     
     'ESTA OPCION ES PARA ACTIVAR COMO CUENTA CORRIENTE SIEMPRE QUE SE ACTIVA EL FORM
-    Me.optCtaCte.value = True
-    Me.optContado.value = False
+    Me.optCtaCte.Value = True
+    Me.optContado.Value = False
+    
+    Me.cboProveedores.Visible = True
+    
 
+
+    
 End Sub
 
 Private Sub FacturaRequiereNumeroFormateado()
@@ -1295,7 +1310,7 @@ End Sub
 Private Sub TotalFactura()
     On Error GoTo er1
     Me.txtMontoNeto = funciones.FormatearDecimales(vFactura.NetoGravado)
-    Me.lblTotal = funciones.FormatearDecimales(vFactura.total)
+    Me.lblTotal = funciones.FormatearDecimales(vFactura.Total)
     Me.txtIVA.Text = funciones.FormatearDecimales(vFactura.TotalIVA)
     Me.fraAlicuotas.caption = Replace$(Me.fraAlicuotas.Tag, "{VALUE}", funciones.FormatearDecimales(vFactura.TotalIVA))
     Exit Sub
@@ -1316,7 +1331,7 @@ Private Sub grid_cuentascontables_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoo
     Cancel = Not (MsgBox("¿Está seguro de eliminar la cuenta contable seleccionada?", vbYesNo, "Confirmación") = vbYes)
 End Sub
 Private Sub grid_cuentascontables_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Cancel = (Not IsNumeric(Me.grid_cuentascontables.value(2))) Or (IsEmpty(Me.grid_cuentascontables.value(2)))
+    Cancel = (Not IsNumeric(Me.grid_cuentascontables.Value(2))) Or (IsEmpty(Me.grid_cuentascontables.Value(2)))
 End Sub
 
 
@@ -1387,7 +1402,7 @@ End Sub
 
 
 Private Sub grilla_alicuotas_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Cancel = (Not IsNumeric(Me.grilla_alicuotas.value(2))) Or (Not IsNumeric(Me.grilla_alicuotas.value(1))) Or IsEmpty(Me.grilla_alicuotas.value(1))
+    Cancel = (Not IsNumeric(Me.grilla_alicuotas.Value(2))) Or (Not IsNumeric(Me.grilla_alicuotas.Value(1))) Or IsEmpty(Me.grilla_alicuotas.Value(1))
 End Sub
 
 Private Sub grilla_alicuotas_GotFocus()
@@ -1444,7 +1459,7 @@ End Sub
 
 
 Private Sub grilla_percepciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Cancel = (Not IsNumeric(Me.grilla_percepciones.value(2))) Or (IsEmpty(Me.grilla_percepciones.value(2)))
+    Cancel = (Not IsNumeric(Me.grilla_percepciones.Value(2))) Or (IsEmpty(Me.grilla_percepciones.Value(2)))
 End Sub
 
 
@@ -1554,7 +1569,7 @@ End Sub
 
 
 Private Function validarFactura() As Boolean
-    validarFactura = (vFactura.total = funciones.RedondearDecimales(CDbl(Me.txtMontoManual)))
+    validarFactura = (vFactura.Total = funciones.RedondearDecimales(CDbl(Me.txtMontoManual)))
 End Function
 
 
@@ -1673,8 +1688,8 @@ Private Sub LlenarFactura()
     Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.moneda.Id, Me.cboMonedas)
     Me.txtMontoNeto = vFactura.NetoGravado
 
-    Me.optContado.value = Not vFactura.FormaPagoCuentaCorriente
-    Me.optCtaCte.value = vFactura.FormaPagoCuentaCorriente
+    Me.optContado.Value = Not vFactura.FormaPagoCuentaCorriente
+    Me.optCtaCte.Value = vFactura.FormaPagoCuentaCorriente
 
     Me.grid_cuentascontables.ItemCount = 0
     Me.grid_cuentascontables.ItemCount = vFactura.cuentasContables.count

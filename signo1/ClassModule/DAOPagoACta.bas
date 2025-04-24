@@ -245,6 +245,7 @@ If IsSomething(che) Then
     
 End Function
 
+
 Public Function Map(rs As Recordset, indice As Dictionary, _
                     tabla As String, _
                     Optional ByVal tablaMoneda As String = vbNullString, _
@@ -257,40 +258,38 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
 
 'Optional ByVal tablaCertRetencion As String = vbNullString _
 
-  Dim op As clsPagoACta
-
-
+  Dim pcta As clsPagoACta
     
-'id_certificado_retencion
-    Dim Id As Long
-    Id = GetValue(rs, indice, tabla, "id")
+''''id_certificado_retencion
+   Dim Id As Long
+   Id = GetValue(rs, indice, tabla, "id")
 
     If Id > 0 Then
-        Set op = New clsPagoACta
-        op.Id = Id
+        Set pcta = New clsPagoACta
+        pcta.Id = Id
 
-        op.FEcha = GetValue(rs, indice, tabla, "fecha")
-        op.estado = GetValue(rs, indice, tabla, "estado")
-        op.StaticTotalFacturas = GetValue(rs, indice, tabla, "static_total_facturas")
-        op.StaticTotalFacturasNG = GetValue(rs, indice, tabla, "static_total_factura_ng")
-        op.StaticTotalRetenido = GetValue(rs, indice, tabla, "static_total_a_retener")
-        op.StaticTotalOrigenes = GetValue(rs, indice, tabla, "static_total_origen")
+        pcta.FEcha = GetValue(rs, indice, tabla, "fecha")
+        pcta.estado = GetValue(rs, indice, tabla, "estado")
+        pcta.StaticTotalFacturas = GetValue(rs, indice, tabla, "static_total_facturas")
+        pcta.StaticTotalFacturasNG = GetValue(rs, indice, tabla, "static_total_factura_ng")
+        pcta.StaticTotalRetenido = GetValue(rs, indice, tabla, "static_total_a_retener")
+        pcta.StaticTotalOrigenes = GetValue(rs, indice, tabla, "static_total_origen")
 
-        If LenB(tablaProveedor) > 0 Then Set op.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
+        If LenB(tablaProveedor) > 0 Then Set pcta.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
 
-        op.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
-        op.DiferenciaCambioEnNG = GetValue(rs, indice, tabla, "dif_cambio_ng")
-        op.DiferenciaCambioEnTOTAL = GetValue(rs, indice, tabla, "dif_cambio_total")
+        pcta.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
+        pcta.DiferenciaCambioEnNG = GetValue(rs, indice, tabla, "dif_cambio_ng")
+        pcta.DiferenciaCambioEnTOTAL = GetValue(rs, indice, tabla, "dif_cambio_total")
         
-        op.Creada = GetValue(rs, indice, tabla, "creada")
+        pcta.Creada = GetValue(rs, indice, tabla, "creada")
         
-        If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
-        'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
+        If LenB(tablaMoneda) > 0 Then Set pcta.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
         
-            Debug.Print (op.Id)
+        Debug.Print (pcta.Id)
+        
     End If
 
-    Set Map = op
+    Set Map = pcta
 End Function
 
 

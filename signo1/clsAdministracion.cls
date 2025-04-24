@@ -159,7 +159,7 @@ End Function
 
 
 Public Function realizaCambio(Origen As Double, idMonedaOrigen, idMonedaDestino) As Double
-    Dim total As Double
+    Dim Total As Double
     Me.ejecutarConsulta "select id,cambio from AdminConfigMonedas where patron=1"
     If Not rs.EOF And Not rs.BOF Then
         CambioPatron = rs!Cambio
@@ -186,7 +186,7 @@ Public Function realizaCambio(Origen As Double, idMonedaOrigen, idMonedaDestino)
     If idMonedaCambio = idMonedaDestino Then Cambio = 1
     If idMonedaPatron = idMonedaDestino Then Cambio = 1
     If idMonedaOrigen = idMonedaDestino Then Cambio = 1
-    total = ((Origen / cambioOrigen) * CambioPatron * Cambio) / cambioDestino
+    Total = ((Origen / cambioOrigen) * CambioPatron * Cambio) / cambioDestino
     total2 = ((Origen * cambioOrigen) / cambioDestino * Cambio) / CambioPatron
     realizaCambio = total2    'funciones.RedondearDecimales(total, 3)
 
@@ -203,24 +203,24 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     Dim rs_p As Recordset
     'ARMO EL ENCABEZADO
     lst.ColumnHeaders.Clear
-    lst.ColumnHeaders.Add(1).text = "Fecha"
-    lst.ColumnHeaders.Add(2).text = "Recibo"
-    lst.ColumnHeaders.Add(3).text = "Razón Social"
+    lst.ColumnHeaders.Add(1).Text = "Fecha"
+    lst.ColumnHeaders.Add(2).Text = "Recibo"
+    lst.ColumnHeaders.Add(3).Text = "Razón Social"
     lst.ColumnHeaders(3).Width = 2200
-    lst.ColumnHeaders.Add(4).text = "CUIT"
-    lst.ColumnHeaders.Add(5).text = "Total facturas"
+    lst.ColumnHeaders.Add(4).Text = "CUIT"
+    lst.ColumnHeaders.Add(5).Text = "Total facturas"
 
 
-    lst.ColumnHeaders.Add(6).text = "Efectivo"
+    lst.ColumnHeaders.Add(6).Text = "Efectivo"
     lst.ColumnHeaders(6).Alignment = lvwColumnRight
     lst.ColumnHeaders(6).Width = 1000
-    lst.ColumnHeaders.Add(7).text = "Cheques"
+    lst.ColumnHeaders.Add(7).Text = "Cheques"
     lst.ColumnHeaders(7).Alignment = lvwColumnRight
     lst.ColumnHeaders(7).Width = 1440
-    lst.ColumnHeaders.Add(8).text = "Banco"
+    lst.ColumnHeaders.Add(8).Text = "Banco"
     lst.ColumnHeaders(8).Alignment = lvwColumnRight
     lst.ColumnHeaders(8).Width = 1440
-    lst.ColumnHeaders.Add(9).text = "Redondeo"
+    lst.ColumnHeaders.Add(9).Text = "Redondeo"
     lst.ColumnHeaders(9).Alignment = lvwColumnRight
     lst.ColumnHeaders(9).Width = 1440
 
@@ -235,7 +235,7 @@ Public Function subdiario_cobros(lst As ListView, desde, hasta) As Recordset
     Set rs_p = conectar.RSFactory("select * from retenciones order by id asc")
 
     While Not rs_p.EOF
-        lst.ColumnHeaders.Add(i).text = rs_p!codigo
+        lst.ColumnHeaders.Add(i).Text = rs_p!codigo
         lst.ColumnHeaders(i).Tag = rs_p!Id
         lst.ColumnHeaders(i).Width = 1000
 
@@ -385,8 +385,8 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
 
         .Range(.Cells(1, 1), .Cells(1, canti_col)).Merge
         .Range(.Cells(2, 1), .Cells(2, canti_col)).Merge
-        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario cobranzas"
-        .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+        .Cells(1, 1).Value = "SIGNOPLAST S.A. Subdiario cobranzas"
+        .Cells(2, 1).Value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
         .Range(.Cells(1, 1), .Cells(3, canti_col)).Font.Bold = True
 
         .Range(.Cells(3, 1), .Cells(3, canti_col)).Interior.Color = &HC0C0C0
@@ -402,7 +402,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
 
 
         For x = 1 To canti_col
-            .Cells(3, x).value = lst.ColumnHeaders(x).text
+            .Cells(3, x).Value = lst.ColumnHeaders(x).Text
 
         Next
         For i = 1 To canti_col
@@ -430,21 +430,21 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
 
         For x = 1 To lst.ListItems.count - 1
 
-            .Cells(x + 3, 1).value = lst.ListItems(x)
-            .Cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
-            .Cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
-            .Cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
+            .Cells(x + 3, 1).Value = lst.ListItems(x)
+            .Cells(x + 3, 2).Value = lst.ListItems(x).ListSubItems(1)
+            .Cells(x + 3, 3).Value = lst.ListItems(x).ListSubItems(2)
+            .Cells(x + 3, 4).Value = lst.ListItems(x).ListSubItems(3)
 
 
 
             'campos numericos
             For y = 4 To canti_col - 1
-                .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
+                .Cells(x + 3, y + 1).Value = CDbl(lst.ListItems(x).ListSubItems(y))
                 vec(y - 4) = vec(y - 4) + CDbl(lst.ListItems(x).ListSubItems(y))
 
                 'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
                 d = d + 1
-                progreso.value = d
+                progreso.Value = d
 
 
             Next y
@@ -510,7 +510,7 @@ Public Function exportaSubDiarioCobros(lst As ListView, desde, hasta, progreso) 
             archi = CDLGMAIN.filename
 
             'REINICIA EL PROGRESSBAR Y LO OCULTA
-            progreso.value = 0
+            progreso.Value = 0
             progreso.Visible = False
 
 
@@ -551,15 +551,15 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
     Dim rs_p As Recordset
     'ARMO EL ENCABEZADO
     lst.ColumnHeaders.Clear
-    lst.ColumnHeaders.Add(1).text = "Fecha Recibo"
-    lst.ColumnHeaders.Add(2).text = "Razón Social"
+    lst.ColumnHeaders.Add(1).Text = "Fecha Recibo"
+    lst.ColumnHeaders.Add(2).Text = "Razón Social"
     lst.ColumnHeaders(2).Width = 3460
 
-    lst.ColumnHeaders.Add(3).text = "CUIT"
-    lst.ColumnHeaders.Add(4).text = "Recibo"
+    lst.ColumnHeaders.Add(3).Text = "CUIT"
+    lst.ColumnHeaders.Add(4).Text = "Recibo"
 
 
-    lst.ColumnHeaders.Add(5).text = "Nro.Retencion"
+    lst.ColumnHeaders.Add(5).Text = "Nro.Retencion"
     lst.ColumnHeaders(5).Width = 2500
 
 
@@ -572,7 +572,7 @@ Public Function subdiario_retenciones(lst As ListView, desde, hasta) As Recordse
 
     While Not rs_p.EOF
         i = i + 1
-        lst.ColumnHeaders.Add(i).text = rs_p!codigo
+        lst.ColumnHeaders.Add(i).Text = rs_p!codigo
         lst.ColumnHeaders(i).Tag = rs_p!Id
         lst.ColumnHeaders(i).Width = 1000
         lst.ColumnHeaders(i).Tag = rs_p!Id
@@ -720,8 +720,8 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
 
         .Range(.Cells(1, 1), .Cells(1, canti_col)).Merge
         .Range(.Cells(2, 1), .Cells(2, canti_col)).Merge
-        .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario retenciones"
-        .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
+        .Cells(1, 1).Value = "SIGNOPLAST S.A. Subdiario retenciones"
+        .Cells(2, 1).Value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
 
         .Range(.Cells(1, 1), .Cells(3, canti_col)).Font.Bold = True
 
@@ -740,7 +740,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
         d = 0
 
         For x = 1 To canti_col
-            .Cells(3, x).value = lst.ColumnHeaders(x).text
+            .Cells(3, x).Value = lst.ColumnHeaders(x).Text
 
         Next
         For i = 1 To canti_col
@@ -769,20 +769,20 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
         '
         For x = 1 To lst.ListItems.count - 1
             '
-            .Cells(x + 3, 1).value = lst.ListItems(x)
-            .Cells(x + 3, 2).value = lst.ListItems(x).ListSubItems(1)
-            .Cells(x + 3, 3).value = lst.ListItems(x).ListSubItems(2)
-            .Cells(x + 3, 4).value = lst.ListItems(x).ListSubItems(3)
-            .Cells(x + 3, 5).value = lst.ListItems(x).ListSubItems(4)
+            .Cells(x + 3, 1).Value = lst.ListItems(x)
+            .Cells(x + 3, 2).Value = lst.ListItems(x).ListSubItems(1)
+            .Cells(x + 3, 3).Value = lst.ListItems(x).ListSubItems(2)
+            .Cells(x + 3, 4).Value = lst.ListItems(x).ListSubItems(3)
+            .Cells(x + 3, 5).Value = lst.ListItems(x).ListSubItems(4)
             '
             '    'campos numericos
             For y = 5 To canti_col - 1
-                .Cells(x + 3, y + 1).value = CDbl(lst.ListItems(x).ListSubItems(y))
+                .Cells(x + 3, y + 1).Value = CDbl(lst.ListItems(x).ListSubItems(y))
                 vec(y - 5) = vec(y - 5) + CDbl(lst.ListItems(x).ListSubItems(y))
 
                 'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
                 d = d + 1
-                progreso.value = d
+                progreso.Value = d
 
 
             Next y
@@ -837,7 +837,7 @@ Public Function exportaSubDiarioRetenciones(lst As ListView, desde, hasta, progr
             archi = CDLGMAIN.filename
 
             'REINICIA EL PROGRESSBAR Y LO OCULTA
-            progreso.value = 0
+            progreso.Value = 0
             progreso.Visible = False
 
         Else
@@ -937,7 +937,7 @@ Public Function ImportarComprobantesAFIP(ruta As String) As Boolean
            & " SET" _
            & " puntodeventa = CAST(puntodeventa AS UNSIGNED)," _
            & " numerodesde = CAST(numerodesde AS UNSIGNED)," _
-           & " clave = CONCAT(puntodeventa,'-',numerodesde,nrodocemisor)"
+           & " clave = CONCAT(puntodeventa, '-', numerodesde, nrodocemisor)"
     Set rs = conectar.RSFactory(strsql)
 
     Exit Function

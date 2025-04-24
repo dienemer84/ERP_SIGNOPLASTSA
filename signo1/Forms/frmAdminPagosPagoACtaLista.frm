@@ -541,11 +541,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private desde
 Dim ids As String
-'''Private ordenes As New Collection
 Private pagosacuenta As New Collection
-'''Private Orden As OrdenPago
 Private PagoACuenta As clsPagoACta
-'''Private fac As clsFacturaProveedor
 Dim i As Integer
 
 
@@ -713,18 +710,6 @@ Private Sub Form_Resize()
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     
 End Sub
-
-
-'''Private Sub Form_Terminate()
-'''    Channel.RemoverSuscripcionTotal Me
-'''End Sub
-'''
-'''
-'''Private Sub Form_Unload(Cancel As Integer)
-'''    Channel.RemoverSuscripcionTotal Me
-'''
-'''
-'''End Sub
 
 
 Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)

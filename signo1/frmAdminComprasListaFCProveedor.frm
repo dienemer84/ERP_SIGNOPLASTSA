@@ -847,10 +847,10 @@ Private Sub cboRangosCarga_Click()
 End Sub
 
 Private Sub checkVerIds_Click()
-    If Me.checkVerIds.value = xtpUnchecked Then
+    If Me.checkVerIds.Value = xtpUnchecked Then
         Me.grilla.Columns(22).Visible = False
 
-    ElseIf Me.checkVerIds.value = xtpChecked Then
+    ElseIf Me.checkVerIds.Value = xtpChecked Then
         Me.grilla.Columns(22).Visible = True
         Me.grilla.Columns(22).Width = 800
     End If
@@ -928,6 +928,11 @@ End Sub
 
 Private Sub btnBuscar_Click()
     llenarGrilla
+    
+    Me.txtComprobante.Text = ""
+    
+    Me.txtComprobante.SetFocus
+    
 End Sub
 
 Private Sub editar_Click()
@@ -1015,8 +1020,8 @@ Private Sub Form_Load()
 
     funciones.FillComboBoxDateRanges Me.cboRangosCarga
 
-    Me.dtpDesdeCarga.value = Null
-    Me.dtpHastaCarga.value = Null
+    Me.dtpDesdeCarga.Value = Null
+    Me.dtpHastaCarga.Value = Null
 
     Me.grilla.Refresh
 
@@ -1060,20 +1065,20 @@ Public Sub llenarGrilla()
     Dim condition As String
     condition = " 1 = 1 "
 
-    If Not IsNull(Me.dtpDesde.value) Then
-        condition = condition & " AND AdminComprasFacturasProveedores.fecha >= " & conectar.Escape(Me.dtpDesde.value)
+    If Not IsNull(Me.dtpDesde.Value) Then
+        condition = condition & " AND AdminComprasFacturasProveedores.fecha >= " & conectar.Escape(Me.dtpDesde.Value)
     End If
 
-    If Not IsNull(Me.dtpHasta.value) Then
-        condition = condition & " AND AdminComprasFacturasProveedores.fecha <= " & conectar.Escape(Me.dtpHasta.value)
+    If Not IsNull(Me.dtpHasta.Value) Then
+        condition = condition & " AND AdminComprasFacturasProveedores.fecha <= " & conectar.Escape(Me.dtpHasta.Value)
     End If
 
-    If Not IsNull(Me.dtpDesdeCarga.value) Then
-        condition = condition & " AND AdminComprasFacturasProveedores.fecha_carga >= " & conectar.Escape(CDate(Int(CDbl(Me.dtpDesdeCarga.value))))
+    If Not IsNull(Me.dtpDesdeCarga.Value) Then
+        condition = condition & " AND AdminComprasFacturasProveedores.fecha_carga >= " & conectar.Escape(CDate(Int(CDbl(Me.dtpDesdeCarga.Value))))
     End If
 
-    If Not IsNull(Me.dtpHastaCarga.value) Then
-        condition = condition & " AND AdminComprasFacturasProveedores.fecha_carga <= " & conectar.Escape(CDate(Int(CDbl(Me.dtpHastaCarga.value))) + TimeSerial(23, 59, 59))
+    If Not IsNull(Me.dtpHastaCarga.Value) Then
+        condition = condition & " AND AdminComprasFacturasProveedores.fecha_carga <= " & conectar.Escape(CDate(Int(CDbl(Me.dtpHastaCarga.Value))) + TimeSerial(23, 59, 59))
     End If
 
     If cboProveedores.ListIndex > -1 Then
@@ -1185,7 +1190,7 @@ Public Sub llenarGrilla()
     Set facturas = DAOFacturaProveedor.FindAll(condition, , ordenImporte, Permisos.AdminFaPVerSoloPropias)
 
     Dim F As clsFacturaProveedor
-    Dim total As Double
+    Dim Total As Double
     Dim totalneto As Double
     Dim totIva As Double
     Dim totalno As Double
@@ -1194,12 +1199,12 @@ Public Sub llenarGrilla()
 
     Dim C As Integer
 
-    total = 0
+    Total = 0
 
     For Each F In facturas
 
         If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
-        total = total + MonedaConverter.Convertir(F.total * C, F.moneda.Id, MonedaConverter.Patron.Id)
+        Total = Total + MonedaConverter.Convertir(F.Total * C, F.moneda.Id, MonedaConverter.Patron.Id)
         totalneto = totalneto + MonedaConverter.Convertir(F.Monto * C - F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.Id, MonedaConverter.Patron.Id)
         totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.Id, MonedaConverter.Patron.Id)
         totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * C, F.moneda.Id, MonedaConverter.Patron.Id)
@@ -1208,11 +1213,11 @@ Public Sub llenarGrilla()
         totalpercep = totalpercep + F.totalPercepciones * C
 
         '(Factura.Total - (Factura.NetoGravadoAbonadoGlobal + Factura.OtrosAbonadoGlobal)) * i)
-        totalsaldo = totalsaldo + ((F.total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * C)
+        totalsaldo = totalsaldo + ((F.Total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * C)
 
     Next
 
-    Me.lblTotal = "Total Filtrado: " & FormatCurrency(funciones.FormatearDecimales(total))
+    Me.lblTotal = "Total Filtrado: " & FormatCurrency(funciones.FormatearDecimales(Total))
     Me.lblTotalNoGravadoFiltrado = "Total No Gravado: " & FormatCurrency(funciones.FormatearDecimales(totalno))
     Me.lblNetoGravadoFiltrado = "Total Neto Gravado: " & FormatCurrency(funciones.FormatearDecimales(totalneto))
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(totIva))
@@ -1343,18 +1348,18 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
         Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalPercepciones) * i), "$", "")
         Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.ImpuestoInterno) * i), "$", "")
-        Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
+        Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total) * i), "$", "")
 
         'ESTO MUESTRA TRUE O FALSE
         'Values(12) = (funciones.FormatearDecimales(Factura.Total) * i) > 2000000
 
         'ESTO MUESTRA SOLO LOS VALORES MAYORES A DOS MILLONES, LOS DEMAS LOS DEJA VACIOS
 
-        If (funciones.FormatearDecimales(Factura.total) * i) > 2000000 Then
-            Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
+        If (funciones.FormatearDecimales(Factura.Total) * i) > 2000000 Then
+            Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total) * i), "$", "")
         End If
 
-        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total - Factura.TotalAbonadoGlobal) * i), "$", "")
+        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total - Factura.TotalAbonadoGlobal) * i), "$", "")
 
         If Factura.cuentasContables.count > 0 Then
             Values(13) = Factura.cuentasContables.item(1).cuentas.codigo
@@ -1464,7 +1469,7 @@ End Sub
 
 
 Private Sub mnuPagarEnEfectivo_Click()
-    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.total & "?", vbInformation + vbYesNo) = vbYes Then
+    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
 
         MsgBox "Se creará una OP con fecha " + CStr(Factura.FEcha)
         If IsDate(Factura.FEcha) Then

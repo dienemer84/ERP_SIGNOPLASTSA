@@ -1542,6 +1542,7 @@ Dim monedaDefault As clsMoneda
 Public DetalleComprobante As clsDetalleComprobante
 Dim colDetalles As New Collection
 
+
 Public Sub Cargar(op As OrdenPago)
 
     Me.caption = "Orden de Pago Nro " & OrdenPago.Id
@@ -1561,6 +1562,11 @@ Public Sub Cargar(op As OrdenPago)
 
     Dim i As Long
     Dim j As Long
+    
+    Dim h As Long
+    Dim K As Long
+    
+    
     With OrdenPago
 
         If .EsParaFacturaProveedor Then
@@ -1603,7 +1609,27 @@ Public Sub Cargar(op As OrdenPago)
                     'Me.lblCantidadComprobantes.caption = Me.lblCantidadCbtesSeleccionados.caption
 
                 End If
-
+                
+                idx = -1
+                For i = 1 To .pagosacuenta.count
+                    For j = 0 To Me.ListPagosACuenta.ListCount - 1
+                        If Me.ListPagosACuenta.ItemData(j) = .pagosacuenta.item(i).Id Then
+                            Me.ListPagosACuenta.Checked(j) = True
+                            idx = i
+                            Exit For  ' Salir del bucle j si ya se encontró la coincidencia
+                        End If
+                    Next j
+                Next i
+                
+                ' Eliminar elementos no marcados si es solo lectura
+                If ReadOnly Then
+                    For j = Me.ListPagosACuenta.ListCount - 1 To 0 Step -1
+                        If Not Me.ListPagosACuenta.Checked(j) Then
+                            Me.ListPagosACuenta.RemoveItem j
+                        End If
+                    Next j
+                End If
+            
             End If
             Me.txtRetenciones.Text = .alicuota
 
@@ -1623,7 +1649,6 @@ Public Sub Cargar(op As OrdenPago)
 
         If idx >= 0 Then
             lstFacturas.ListIndex = lstFacturas.ListCount - 1
-
         End If
 
         Me.gridCajaOperaciones.ItemCount = .operacionesCaja.count
@@ -1639,7 +1664,10 @@ Public Sub Cargar(op As OrdenPago)
         Me.dtpFecha.Value = .FEcha
         Me.txtDifCambio.Text = .DiferenciaCambio
         Me.txtOtrosDescuentos.Text = .OtrosDescuentos
+        
 
+        
+        
     End With
     mostrarCompensatorios
 
@@ -1965,6 +1993,8 @@ Private Sub btnGuardar_Click()
         End If
     Next i
 
+    Set OrdenPago.pagosacuenta = New Collection
+    
     For i = 0 To Me.ListPagosACuenta.ListCount - 1
         If Me.ListPagosACuenta.Checked(i) Then
             OrdenPago.pagosacuenta.Add colPagosACuenta.item(CStr(Me.ListPagosACuenta.ItemData(i)))
@@ -2047,7 +2077,6 @@ Private Sub btnPadronAnt_Click()
         If IsSomething(prov) Then
             Set alicuotas = DAORetenciones.FindAllWithAlicuotasAnt(prov.Cuit)
             ActualizarAlicuotas
-
         End If
     Else
         Set prov = Nothing
@@ -2323,7 +2352,6 @@ Private Sub MostrarFacturas()
             If prov.Id = OrdenPago.FacturasProveedor.item(1).Proveedor.Id Then
                 For Each Factura In OrdenPago.FacturasProveedor
                     If Not funciones.BuscarEnColeccion(colFacturas, CStr(Factura.Id)) Then
-
                         colFacturas.Add DAOFacturaProveedor.FindById(Factura.Id), CStr(Factura.Id)
                     End If
                 Next
@@ -2354,7 +2382,6 @@ Private Sub MostrarFacturas()
             Me.lstFacturas.AddItem T
             Me.lstFacturas.ItemData(Me.lstFacturas.NewIndex) = Factura.Id
 
-
         Next
 
         ' 22/08/2022
@@ -2379,7 +2406,11 @@ Private Sub MostrarPagosACuenta()
     If IsSomething(prov) Then
         Dim filtro As String
         
-        filtro = "pagos_a_cuenta.estado = 0 AND pagos_a_cuenta.id_proveedor=" & prov.Id
+        If OrdenPago.Id <> 0 Then
+            filtro = "pagos_a_cuenta.id_proveedor=" & prov.Id
+        Else
+            filtro = "pagos_a_cuenta.estado = 0 AND pagos_a_cuenta.id_proveedor=" & prov.Id
+        End If
         
         Set colPagosACuenta = DAOPagoACta.FindAll(filtro)
 
@@ -2743,10 +2774,10 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     If OrdenPago.estado = EstadoOrdenPago_pendiente Then
             If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
                 ' Restar el total (convertir a negativo)
-                totFactNuevo = totFactNuevo - (F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+                totFactNuevo = totFactNuevo - (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
             Else
                 ' Sumar el total normalmente
-                totFactNuevo = totFactNuevo + (F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+                totFactNuevo = totFactNuevo + (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
             End If
     Else
             If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
@@ -2758,18 +2789,8 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         End If
     End If
     
-
-        'totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravadoDiaPago * -1, f.NetoGravadoDiaPago), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
-        ' totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.total * -1, f.total), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago) cambiado el 22-9-14 por tema de pagos parciales
-        'totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.TotalDiaPago * -1, f.TotalDiaPago), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
-        'totNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(f.tipoDocumentoContable = tipoDocumentoContable.notaCredito, f.NetoGravado * -1, f.NetoGravado), f.Moneda.Id, OrdenPago.Moneda.Id, f.TipoCambioPago)
-        'totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.ImporteTotalAbonado * -1, F.ImporteTotalAbonado), F.moneda.id, OrdenPago.moneda.id, F.TipoCambioPago)
-        'fix 004
-        
         totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.totalAbonado * -1, F.totalAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
-
         totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
-
         TotNG = TotNG + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonado * -1, F.NetoGravadoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
         totNGHoy = totNGHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravadoAbonadoDiaPago * -1, F.NetoGravadoAbonadoDiaPago), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
         totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionTOTAL * -1, F.DiferenciaPorTipoDeCambionTOTAL), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
@@ -2792,21 +2813,18 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     
    If IsSomething(colpcta) Then
         For Each P In colpcta
-
             totPagoACuenta = totPagoACuenta + P.StaticTotalOrigenes
-
         Next
     End If
 
     Me.lblNgAbonar = "Total NG a Abonar en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnNG + totNGHoy))
 
-'''    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFact))
-
     Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFactNuevo))
     
     Me.lblDeudaCompensatorios = "Total deuda compensatorios en " & FormatCurrency(funciones.FormatearDecimales(totDeudaCompe))
-
-    OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
+    
+'    OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
+    OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFactNuevo)
     
     OrdenPago.staticTotalDeudaCompensatorios = funciones.RedondearDecimales(totDeudaCompe)
 
@@ -2825,7 +2843,7 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     OrdenPago.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
 '''    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales((OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - (totRet - OrdenPago.OtrosDescuentos) + OrdenPago.TotalCompensatorios + totDeudaCompe)) - totPagoACuenta)
-    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales(totFactNuevo - totRet))
+    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales(totFactNuevo - (totRet + totPagoACuenta)))
         
     Me.lblTotalPagoACuenta.caption = "Total Pago a Cuenta en " & FormatCurrency(funciones.FormatearDecimales(totPagoACuenta))
     
@@ -2905,9 +2923,11 @@ Private Sub lstDeudaCompensatorios_Click()
 
 End Sub
 
+
 Private Sub lstDeudaCompensatorios_ItemCheck(ByVal item As Long)
     calcularOrigenes
 End Sub
+
 
 Private Sub lstFacturas_Click()
 
@@ -2968,6 +2988,7 @@ err1:
     change = 1
 End Sub
 
+
 Sub calcularOrigenes()
     Dim i As Long
     Dim col As New Collection
@@ -2999,15 +3020,11 @@ Sub calcularOrigenes()
         End If
     Next i
     
- 
     For i = 0 To Me.lstDeudaCompensatorios.ListCount - 1
         If Me.lstDeudaCompensatorios.Checked(i) Then
-
             If funciones.BuscarEnColeccion(colDeudaCompensatorios, CStr(Me.lstDeudaCompensatorios.ItemData(i))) Then
-                colc.Add colDeudaCompensatorios.item(CStr(Me.lstDeudaCompensatorios.ItemData(i)))
-
+               colc.Add colDeudaCompensatorios.item(CStr(Me.lstDeudaCompensatorios.ItemData(i)))
             End If
-
         End If
     Next i
 
@@ -3247,6 +3264,7 @@ Private Function TotalizarDiferenciasCambio()
     Dim T As Double
     Dim TIVA As Double
     Dim TTOTAL As Double
+    
     For i = 0 To Me.lstFacturas.ListCount - 1
         If Me.lstFacturas.Checked(i) Then
 
@@ -3565,7 +3583,7 @@ Private Sub txtOtrosParcialAbonar_LostFocus()
 '  If LenB(Me.txtOtrosParcialAbonar) > 0 Then
 '
 '        vFactElegida.OtrosAbonado = CDbl(Me.txtOtrosParcialAbonar)
-'        recalcularTotalFacturaelegida
+'        RecalcularTotalFacturaElegida
 '
 '
 '    End If
@@ -3601,8 +3619,7 @@ End Sub
 Private Sub RecalcularNetoGravadoFacturaElegida()
     If LenB(txtParcialAbonar) > 0 And IsNumeric(txtParcialAbonar) Then
 
-
-        vFactElegida.NetoGravadoAbonado = CDbl(txtParcialAbonar)
+        vFactElegida.NetoGravadoAbonado = CDbl(Me.txtParcialAbonar)
         RecalcularTotalFacturaElegida
     End If
 End Sub

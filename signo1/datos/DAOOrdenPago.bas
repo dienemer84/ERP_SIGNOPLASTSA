@@ -251,6 +251,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     q = "SELECT *, (operaciones.pertenencia + 0) as pertenencia2" _
       & " From ordenes_pago" _
       & " LEFT JOIN ordenes_pago_cheques ON (ordenes_pago.id = ordenes_pago_cheques.id_orden_pago)" _
+      & " LEFT JOIN ordenes_pago_pagos_a_cuenta ON (ordenes_pago.id = ordenes_pago_pagos_a_cuenta.id_orden_pago) LEFT JOIN pagos_a_cuenta ON (ordenes_pago_pagos_a_cuenta.id_pago_a_cuenta = pagos_a_cuenta.id)" _
       & " LEFT JOIN ordenes_pago_operaciones ON (ordenes_pago.id = ordenes_pago_operaciones.id_orden_pago)" _
       & " LEFT JOIN ordenes_pago_facturas ON (ordenes_pago.id = ordenes_pago_facturas.id_orden_pago)" _
       & " LEFT JOIN AdminComprasCuentasContables cuentacontableordenpago ON (ordenes_pago.id_cuenta_contable = cuentacontableordenpago.id)" _
@@ -272,12 +273,15 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
       & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id " _
       & " LEFT JOIN AdminRecibosCheques rec ON rec.idCheque= Cheques.id" _
       & " LEFT JOIN AdminConfigBancos ON (AdminConfigBancos.id = AdminConfigCuentas.idBanco)"
+      
     q = q & " LEFT JOIN AdminConfigBancos bancocheque  ON (bancocheque.id = Cheques.id_banco)" _
       & " LEFT JOIN proveedores ON (proveedores.id = AdminComprasFacturasProveedores.id_proveedor)" _
 
     q = q & " LEFT JOIN ordenes_pago_retenciones opr ON opr.id_pago = ordenes_pago.id " _
       & " LEFT JOIN retenciones r ON r.id = opr.id_retencion "
+      
     q = q & " WHERE " & filter
+    
     q = q & " ORDER BY " & orderBy
 
     Dim col As New Collection
@@ -285,10 +289,12 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     Dim fac As clsFacturaProveedor
     Dim che As cheque
     Dim oper As operacion
+    Dim pcta As clsPagoACta
 
     Dim idx As Dictionary
     Dim rs As Recordset
     Dim ra As DTORetencionAlicuota
+    
     Set rs = conectar.RSFactory(q)
 
     BuildFieldsIndex rs, idx
@@ -303,18 +309,23 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
         End If
 
         Set fac = DAOFacturaProveedor.Map(rs, idx, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", , "monFacProv")
-
         If IsSomething(fac) Then
             If Not funciones.BuscarEnColeccion(op.FacturasProveedor, CStr(fac.Id)) Then
                 op.FacturasProveedor.Add fac, CStr(fac.Id)
             End If
         End If
         
-
-       Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco", "rec")
         
-
-If IsSomething(che) Then
+        Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
+        If IsSomething(pcta) Then
+            If Not funciones.BuscarEnColeccion(op.pagosacuenta, CStr(pcta.Id)) Then
+                op.pagosacuenta.Add pcta, CStr(pcta.Id)
+            End If
+        End If
+        
+        
+       Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco", "rec")
+       If IsSomething(che) Then
             If che.Propio Then
                 If Not funciones.BuscarEnColeccion(op.ChequesPropios, CStr(che.Id)) Then
                     op.ChequesPropios.Add che, CStr(che.Id)
@@ -330,7 +341,6 @@ If IsSomething(che) Then
         If IsSomething(oper) Then
             If oper.Pertenencia = Banco Then
                 If Not funciones.BuscarEnColeccion(op.operacionesBanco, CStr(oper.Id)) Then
-
                     op.operacionesBanco.Add oper, CStr(oper.Id)
                 End If
             ElseIf oper.Pertenencia = caja Then

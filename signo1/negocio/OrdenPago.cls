@@ -24,6 +24,7 @@ Public ChequesTerceros As New Collection
 Public ChequesPropios As New Collection
 Public operacionesCaja As New Collection
 Public operacionesBanco As New Collection
+Public pagosacuenta As New Collection
 Public Compensatorios As New Collection
 Public estado As EstadoOrdenPago
 Public CertificadoRetencion As New CertificadoRetencion
@@ -44,7 +45,7 @@ Public DiferenciaCambioEnNG As Double
 Public DiferenciaCambioEnTOTAL As Double
 Public staticTotalDeudaCompensatorios As Double
 
-Public pagosacuenta As New Collection
+
 
 Public Property Get TotalNGCompensatorios() As Double
     Dim T As Double
@@ -84,7 +85,7 @@ Public Property Get TotalFacturas() As Double
     Dim SUM As Double
     For Each F In Me.FacturasProveedor
 '''        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente)) * -1, (F.total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))), F.moneda.Id, Me.moneda.Id)
+        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente)) * -1, (F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))), F.moneda.Id, Me.moneda.Id)
     Next F
     TotalFacturas = funciones.RedondearDecimales(SUM)
 End Property
@@ -108,6 +109,7 @@ Public Property Get TotalFacturasNG() As Double
     TotalFacturasNG = funciones.RedondearDecimales(SUM)
 End Property
 
+
 Public Property Get TotalOrigenes() As Double
 
     If Me.moneda Is Nothing Then
@@ -115,41 +117,56 @@ Public Property Get TotalOrigenes() As Double
         Exit Property
     End If
 
-    Dim total As Double
+    Dim Total As Double
+    
+    Total = 0
+    
     Dim cheq As cheque
     For Each cheq In Me.ChequesTerceros
         If IsSomething(cheq.moneda) Then
-            total = total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            Total = Total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
         End If
     Next cheq
+
 
     For Each cheq In Me.ChequesPropios
         If IsSomething(cheq.moneda) Then
             '  Debug.Print cheq.numero, cheq.Monto
-
-
-            total = total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            Total = Total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
         End If
     Next cheq
+
 
     Dim op As operacion
     For Each op In Me.operacionesBanco
         If IsSomething(op.moneda) Then
-            total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
+            Total = Total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
         End If
     Next op
 
+
     For Each op In Me.operacionesCaja
         If IsSomething(op.moneda) Then
-            total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
+            Total = Total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
         End If
     Next op
+    
+
+    Dim pcta As clsPagoACta
+    For Each pcta In Me.pagosacuenta
+        If IsSomething(Me.pagosacuenta) Then
+            Total = Total + MonedaConverter.Convertir(pcta.StaticTotalOrigenes, pcta.moneda.Id, Me.moneda.Id)
+        End If
+    Next pcta
+    
+        
     '13/08/12 corregi con sabrina esta funcion para que cierre bien la Op. A pedido de karin. chequear.
 
     ' TotalOrigenes = funciones.RedondearDecimales(Total + Me.OtrosDescuentos + Me.DiferenciaCambio)
 
     '15/10/12 corregi con sabrina esta funcion para que cierre bien la Op.  reemplazo funcion anterior
-    TotalOrigenes = funciones.RedondearDecimales(total + Me.OtrosDescuentos + 0)
+    TotalOrigenes = funciones.RedondearDecimales(Total + Me.OtrosDescuentos + 0)
+    
 End Property
 
 
@@ -171,7 +188,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
     Dim colRetorno As New Collection
     Dim itemRetorno As Collection
 
-    Dim total As Double
+    Dim Total As Double
     Dim cheq As cheque
     For Each cheq In Me.ChequesTerceros
         If IsSomething(cheq.moneda) Then
@@ -246,7 +263,6 @@ Public Property Get IsValid() As Boolean
         cheques_id.Add CStr(C.Id), C.Id
     Next C
 
-
     If Me.TotalOrigenes = 0 Then
         AddValidationMessage "El total de la orden debe ser mayor a cero."
     End If
@@ -255,14 +271,13 @@ Public Property Get IsValid() As Boolean
         AddValidationMessage "La orden de pago debe contener facturas o cuenta contable."
     End If
     
-'''    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
+        
     If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
-
-    AddValidationMessage _
-    "El total supuesto a pagar (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotal)) & ") " & vbCrLf & _
-    "debe ser igual a lo que se va a pagar con valores (" & FormatCurrency(funciones.FormatearDecimales(Me.TotalOrigenes)) & ")." & vbCrLf & _
-    "La diferencia a completar es de (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotal - Me.StaticTotalOrigenes)) & ")."
-    
+        AddValidationMessage _
+        "El total supuesto a pagar (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotal)) & ") " & vbCrLf & _
+        "debe ser igual a lo que se va a pagar con valores y/o pagos a cuenta (" & FormatCurrency(funciones.FormatearDecimales(Me.TotalOrigenes)) & ")." & vbCrLf & _
+        "La diferencia a completar es de (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotal - Me.TotalOrigenes)) & ")."
+        
     End If
 
 
