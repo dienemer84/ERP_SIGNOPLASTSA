@@ -738,11 +738,10 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
     If pagosacuenta.count > 0 Then
         gridOrdenes_SelectionChange
         If Button = 2 Then
-'''            Me.mnuVerCertificado.Enabled = PagoACuenta.EsParaFacturaProveedor Or (PagoACuenta.estado = EstadoOrdenPago_Aprobada) Or (Orden.estado = EstadoOrdenPago_pendiente)
             Me.mnuEditar.Enabled = (PagoACuenta.estado = EstadoPagoACuenta.Disponible)
             Me.mnuAprobar.Enabled = (PagoACuenta.estado = EstadoPagoACuenta.Procesada)
             Me.mnuAnular.Enabled = Not (PagoACuenta.estado = Disponible)
-            Me.mnuVer.Enabled = Not (PagoACuenta.estado = Procesada)
+            Me.mnuVer.Enabled = PagoACuenta.estado = Disponible Or PagoACuenta.estado = Procesada
 
             Me.PopupMenu menu
         End If

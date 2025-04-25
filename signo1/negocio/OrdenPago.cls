@@ -271,12 +271,13 @@ Public Property Get IsValid() As Boolean
         AddValidationMessage "La orden de pago debe contener facturas o cuenta contable."
     End If
     
-        
-    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
+    'DONDE TOTAL ORIGINES ES LA SUMA DE LOS PAGOS QUE TIENE LA ORDEN: CAJA, BANCOS, CHEQUES, ETC
+'   If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
+    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotalFacturas) Then
         AddValidationMessage _
-        "El total supuesto a pagar (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotal)) & ") " & vbCrLf & _
+        "El total supuesto a pagar (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotalFacturas)) & ") " & vbCrLf & _
         "debe ser igual a lo que se va a pagar con valores y/o pagos a cuenta (" & FormatCurrency(funciones.FormatearDecimales(Me.TotalOrigenes)) & ")." & vbCrLf & _
-        "La diferencia a completar es de (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotal - Me.TotalOrigenes)) & ")."
+        "La diferencia a completar es de (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotalFacturas - Me.TotalOrigenes)) & ")."
         
     End If
 

@@ -36,7 +36,7 @@ End Function
 
 Public Function Anular(Recibo As Recibo) As Boolean
 
-    Err.Raise 9999, , "Funcionalidad en desarrollo"
+'''    Err.Raise 9999, , "Funcionalidad en desarrollo"
 
     conectar.BeginTransaction
 
@@ -158,7 +158,7 @@ Public Function aprobar(Recibo As Recibo) As Boolean
         totEst.TotalChequesEstatico = Recibo.TotalCheques
         totEst.TotalDepositosEstatico = Recibo.TotalOperacionesBanco
         totEst.TotalEfectivoEstatico = Recibo.TotalOperacionesCaja
-        totEst.TotalReciboEstatico = Recibo.total
+        totEst.TotalReciboEstatico = Recibo.Total
         Set Recibo.TotalEstatico = totEst
 
         If Not DAORecibo.Guardar(Recibo) Then GoTo err5
@@ -173,7 +173,7 @@ Public Function aprobar(Recibo As Recibo) As Boolean
 
             If montoSaldado = 0 Then
                 newEstadoSaldadoFactura = NoSaldada
-            ElseIf montoSaldado >= Factura.total Then
+            ElseIf montoSaldado >= Factura.Total Then
                 newEstadoSaldadoFactura = saldadoTotal
             Else
                 newEstadoSaldadoFactura = SaldadoParcial
@@ -718,7 +718,7 @@ Public Sub Imprimir(idRecibo As Long)
         ' --- Totales finales ---
         Printer.FontBold = True
         Printer.CurrentX = lmargin
-        Printer.Print "Total Recibo: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.total)), "$", "")
+        Printer.Print "Total Recibo: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.Total)), "$", "")
         Printer.CurrentX = lmargin
         Printer.Print "Total Recibido: " & Replace(FormatCurrency(funciones.FormatearDecimales(Recibo.TotalRecibido)), "$", "")
         Printer.FontBold = False
@@ -758,15 +758,15 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 
     Dim offset As Long
     offset = 3
-    xlWorksheet.Cells(offset, 1).value = "Número"
-    xlWorksheet.Cells(offset, 2).value = "Fecha Emisión"
-    xlWorksheet.Cells(offset, 3).value = "Cliente"
-    xlWorksheet.Cells(offset, 4).value = "Fecha Creación"
-    xlWorksheet.Cells(offset, 5).value = "Moneda"
-    xlWorksheet.Cells(offset, 6).value = "Total Recibo"
-    xlWorksheet.Cells(offset, 7).value = "Total Recibido"
-    xlWorksheet.Cells(offset, 8).value = "Saldo a Cuenta"
-    xlWorksheet.Cells(offset, 9).value = "Estado"
+    xlWorksheet.Cells(offset, 1).Value = "Número"
+    xlWorksheet.Cells(offset, 2).Value = "Fecha Emisión"
+    xlWorksheet.Cells(offset, 3).Value = "Cliente"
+    xlWorksheet.Cells(offset, 4).Value = "Fecha Creación"
+    xlWorksheet.Cells(offset, 5).Value = "Moneda"
+    xlWorksheet.Cells(offset, 6).Value = "Total Recibo"
+    xlWorksheet.Cells(offset, 7).Value = "Total Recibido"
+    xlWorksheet.Cells(offset, 8).Value = "Saldo a Cuenta"
+    xlWorksheet.Cells(offset, 9).Value = "Estado"
 
 
     xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 9)).Font.Bold = True
@@ -792,26 +792,26 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         i = 1
 
         d = d + 1
-        ProgressBar.value = d
+        ProgressBar.Value = d
 
         offset = offset + 1
 
-        xlWorksheet.Cells(offset, 1).value = rec.Id
-        xlWorksheet.Cells(offset, 2).value = Format(rec.FEcha, "yyyy/mm/dd", vbSunday)
-        xlWorksheet.Cells(offset, 3).value = rec.cliente.razon
-        xlWorksheet.Cells(offset, 4).value = rec.FechaCreacion
-        xlWorksheet.Cells(offset, 5).value = rec.moneda.NombreCorto
-        xlWorksheet.Cells(offset, 6).value = rec.TotalEstatico.TotalReciboEstatico
-        xlWorksheet.Cells(offset, 7).value = rec.TotalEstatico.TotalRecibidoEstatico
-        xlWorksheet.Cells(offset, 8).value = rec.ACuentaDisponible
+        xlWorksheet.Cells(offset, 1).Value = rec.Id
+        xlWorksheet.Cells(offset, 2).Value = Format(rec.FEcha, "yyyy/mm/dd", vbSunday)
+        xlWorksheet.Cells(offset, 3).Value = rec.cliente.razon
+        xlWorksheet.Cells(offset, 4).Value = rec.FechaCreacion
+        xlWorksheet.Cells(offset, 5).Value = rec.moneda.NombreCorto
+        xlWorksheet.Cells(offset, 6).Value = rec.TotalEstatico.TotalReciboEstatico
+        xlWorksheet.Cells(offset, 7).Value = rec.TotalEstatico.TotalRecibidoEstatico
+        xlWorksheet.Cells(offset, 8).Value = rec.ACuentaDisponible
 
         Select Case rec.estado
         Case 1
-            xlWorksheet.Cells(offset, 9).value = "Pendiente"
+            xlWorksheet.Cells(offset, 9).Value = "Pendiente"
         Case 2
-            xlWorksheet.Cells(offset, 9).value = "Aprobado"
+            xlWorksheet.Cells(offset, 9).Value = "Aprobado"
         Case 3
-            xlWorksheet.Cells(offset, 9).value = "Anulado"
+            xlWorksheet.Cells(offset, 9).Value = "Anulado"
         End Select
 
 
@@ -853,7 +853,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
-    ProgressBar.value = 0
+    ProgressBar.Value = 0
 
     Exit Function
 err1:
