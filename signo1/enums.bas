@@ -46,14 +46,12 @@ Public Enum TipoComplejidad
     ComplejidadBaja = 1
 End Enum
 
+
 Public Enum TipoPadron
     TipoPadronRetencion = 0
     TipoPadronPercepcion = 1
     'Agrega Nemer para poder cargar el Padron CABA
     TipoPadronUnificadoCABA = 2
-
-
-
 End Enum
 
 Public Enum TipoDocumento
@@ -276,16 +274,19 @@ Public Enum AdminNC_Motivo
     nc_Normal = 0
     nc_AjusteIIBB = 1
 End Enum
+
 Public Enum tipoEvento
     modificar_ = 1
     agregar_ = 2
     agregarColeccion_ = 3
 End Enum
+
 Public Enum EstadoProcesoDetalleOrdenTrabajo
     EstProcDetOT_AunNoDefinido = 0
     EstProcDetOT_ProcesoDefinido = 1
     EstProcDetOT_ProcesoNoDefinido = 2
 End Enum
+
 Public Enum EstadoOrdenTrabajo
     EstadoOT_Pendiente = 1
     EstadoOT_EnProceso = 2
@@ -294,6 +295,7 @@ Public Enum EstadoOrdenTrabajo
     EstadoOT_EnEspera = 5
     EstadoOT_Desactivado = 6
 End Enum
+
 Public Enum EstadoPresupuesto
     Pendiente_ = 1
     Enviado_ = 2
@@ -302,6 +304,7 @@ Public Enum EstadoPresupuesto
     NoCotizado = 7
     Desactivado = 8
 End Enum
+
 Public Enum FormaCotizar
     automatica_ = 0
     Cantidad_ = 1
@@ -446,7 +449,7 @@ Public Function EnumTiposDoc(indice) As String
     enumtioposdoc = tipos_Doc(indice)
 End Function
 Public Function EnumTipoMaterial(indice As TipoMaterial) As String
-    EnumTipoMaterial = tipoMateriales.Item(CStr(indice))
+    EnumTipoMaterial = tipoMateriales.item(CStr(indice))
 End Function
 
 Public Function EnumTipoDocumentoContable(indice) As String

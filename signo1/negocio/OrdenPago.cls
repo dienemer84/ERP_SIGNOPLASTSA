@@ -230,9 +230,11 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
     Set TotalOrigenesDiscriminado = colRetorno
 End Property
 
+
 Private Sub Class_Initialize()
     Me.FEcha = Now
 End Sub
+
 
 Private Sub AddValidationMessage(msg As String)
     If LenB(m_validationMessages) > 0 Then m_validationMessages = m_validationMessages & vbNewLine
@@ -273,11 +275,11 @@ Public Property Get IsValid() As Boolean
     
     'DONDE TOTAL ORIGINES ES LA SUMA DE LOS PAGOS QUE TIENE LA ORDEN: CAJA, BANCOS, CHEQUES, ETC
 '   If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
-    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotalFacturas) Then
+    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotalFacturas - Me.StaticTotalRetenido) Then
         AddValidationMessage _
-        "El total supuesto a pagar (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotalFacturas)) & ") " & vbCrLf & _
+        "El total supuesto a pagar (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotalFacturas - Me.StaticTotalRetenido)) & ") " & vbCrLf & _
         "debe ser igual a lo que se va a pagar con valores y/o pagos a cuenta (" & FormatCurrency(funciones.FormatearDecimales(Me.TotalOrigenes)) & ")." & vbCrLf & _
-        "La diferencia a completar es de (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotalFacturas - Me.TotalOrigenes)) & ")."
+        "La diferencia a completar es de (" & FormatCurrency(funciones.FormatearDecimales((Me.StaticTotalFacturas - Me.StaticTotalRetenido) - Me.TotalOrigenes)) & ")."
         
     End If
 

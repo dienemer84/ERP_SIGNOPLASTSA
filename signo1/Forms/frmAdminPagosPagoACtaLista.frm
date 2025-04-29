@@ -268,7 +268,7 @@ Begin VB.Form frmAdminPagosPagoACtaLista
          Height          =   255
          Left            =   4530
          TabIndex        =   11
-         Top             =   990
+         Top             =   995
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -620,13 +620,11 @@ Private Sub Form_Load()
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     ids = funciones.CreateGUID
 
-'''    Me.cboEstado.Clear
-'''    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_pendiente)
-'''    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_pendiente
-'''    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Aprobada)
-'''    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Aprobada
-'''    Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
-'''    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
+    Me.cboEstado.Clear
+    Me.cboEstado.AddItem enums.enumEstadoPagoACuenta(EstadoPagoACuenta.Disponible)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoPagoACuenta.Disponible
+    Me.cboEstado.AddItem enums.enumEstadoPagoACuenta(EstadoPagoACuenta.Procesada)
+    Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoPagoACuenta.Procesada
 
     Me.dtpDesde(1).Value = Year(Now) & "-01-01"
 
@@ -647,9 +645,9 @@ Private Sub llenarLista()
     Dim filter As String
     filter = "1 = 1"
 
-'''    If Me.cboProveedores.ListIndex > -1 Then
-'''        filter = filter & " AND AdminComprasFacturasProveedores.id_proveedor = " & Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
-'''    End If
+    If Me.cboProveedores.ListIndex > -1 Then
+        filter = filter & " AND proveedores.id = " & Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
+    End If
 
     If LenB(Me.txtNro.Text) > 0 Then
         filter = filter & " AND  pagos_a_cuenta.id LIKE '%" & Val(Me.txtNro.Text) & "%'"

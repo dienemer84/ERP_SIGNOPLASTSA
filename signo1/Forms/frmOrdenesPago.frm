@@ -590,7 +590,7 @@ End Sub
 
 
 Private Sub cmdBuscar_Click()
-    If (Me.chkContado.value = xtpChecked Or Me.chkCtaCte.value = xtpChecked Or Me.chkEliminado.value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
+    If (Me.chkContado.Value = xtpChecked Or Me.chkCtaCte.Value = xtpChecked Or Me.chkEliminado.Value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
 
 End Sub
 
@@ -635,7 +635,7 @@ Private Sub Form_Load()
     Me.cboProveedores.ListIndex = -1
     '    llenarLista
 
-    Me.dtpHasta(1).value = Now
+    Me.dtpHasta(1).Value = Now
     
     Me.gridOrdenes.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
@@ -650,7 +650,7 @@ Private Sub Form_Load()
     Me.cboEstado.AddItem enums.EnumEstadoOrdenPago(EstadoOrdenPago.EstadoOrdenPago_Anulada)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
 
-    Me.dtpDesde(1).value = Year(Now) & "-01-01"
+    Me.dtpDesde(1).Value = Year(Now) & "-01-01"
 
     desde = DateSerial(Year(Date), Month(Date), 1)   ' CDate(1 & "-" & Month(Now) & "-" & Year(Now))
     funciones.FillComboBoxDateRanges Me.cboRangos
@@ -679,24 +679,24 @@ Private Sub llenarLista()
 
     Dim filtroor As String
 
-    If Not IsNull(Me.dtpDesde(1).value) Then
-        filter = filter & " AND ordenes_pago.fecha >= " & conectar.Escape(Me.dtpDesde(1).value)
+    If Not IsNull(Me.dtpDesde(1).Value) Then
+        filter = filter & " AND ordenes_pago.fecha >= " & conectar.Escape(Me.dtpDesde(1).Value)
     End If
 
-    If Not IsNull(Me.dtpHasta(1).value) Then
-        filter = filter & " AND ordenes_pago.fecha <= " & conectar.Escape(Me.dtpHasta(1).value)
+    If Not IsNull(Me.dtpHasta(1).Value) Then
+        filter = filter & " AND ordenes_pago.fecha <= " & conectar.Escape(Me.dtpHasta(1).Value)
     End If
 
 
-    If Me.chkContado.value = xtpChecked Then
+    If Me.chkContado.Value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorContado
     End If
 
-    If Me.chkCtaCte.value = xtpChecked Then
+    If Me.chkCtaCte.Value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorCuentaCorriente
     End If
 
-    If Me.chkEliminado.value = xtpChecked Then
+    If Me.chkEliminado.Value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorEliminado
     End If
 
