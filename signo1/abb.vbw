@@ -1,4 +1,4 @@
-frmPrincipal = 22, 29, 1035, 513, C, 132, 174, 1020, 658, C
+frmPrincipal = 22, 29, 1035, 513, , 132, 174, 1020, 658, C
 funciones = 848, 0, 1272, 669, C
 frmRubrosGrupos = 0, 0, 0, 0, C, 88, 116, 1145, 530, C
 frmMaterialesNuevo = 0, 0, 0, 0, C, 110, 145, 1167, 559, C
@@ -290,7 +290,7 @@ frmPlaneamientoEdicionTiempo = 0, 0, 0, 0, C, 22, 29, 674, 443, C
 RemitoProveedor = 0, 0, 0, 0, C
 RemitoProveedorDetalle = 0, 0, 0, 0, C
 DAORemitoProveedorDetalle = 0, 0, 0, 0, C
-etiquetas = 0, 0, 0, 0, C, 22, 29, 1942, 998, CZ
+etiquetas = 0, 0, 0, 0, C, 22, 29, 1942, 998, C
 frmAdminCheques = 572, 0, 1310, 588, C, 0, 0, 578, 492, C
 Chequera = 154, 203, 1366, 621, C
 Banco = 22, 29, 1234, 447, C

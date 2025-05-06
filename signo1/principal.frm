@@ -492,8 +492,8 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CMC:
         frmAdminExtrasReporteCMC.Show
 
-'''    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_IVAC:
-'''        frmAdminExtrasReporteIVACompras.Show
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_IVAC:
+        frmAdminExtrasReporteIVACompras.Show
         
     Case ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CAA:
         frmAdminExtrasCbtesAdeudadosAl.Show
