@@ -629,11 +629,11 @@ Private Sub endRto_Click()
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
-                CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 5
-                CD.ShowPrinter
+                cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 5
+                cd.ShowPrinter
                 Dim i As Long
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAORemitoS.ImprimirRemito rtoNro
                 Next i
             End If
@@ -662,12 +662,12 @@ Private Sub listaRemitos()
         filtro = filtro & "  and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_NUMERO & "=" & Me.txtNroRemito
     End If
 
-    If Not IsNull(Me.dtpDesde.value) Then
-        filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " >= " & conectar.Escape(Format(Me.dtpDesde.value, "yyyy-mm-dd 00:00:00"))
+    If Not IsNull(Me.dtpDesde.Value) Then
+        filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " >= " & conectar.Escape(Format(Me.dtpDesde.Value, "yyyy-mm-dd 00:00:00"))
     End If
 
-    If Not IsNull(Me.dtpHasta.value) Then
-        filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " <= " & conectar.Escape(Format(Me.dtpHasta.value, "yyyy-mm-dd 23:59:59"))
+    If Not IsNull(Me.dtpHasta.Value) Then
+        filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " <= " & conectar.Escape(Format(Me.dtpHasta.Value, "yyyy-mm-dd 23:59:59"))
     End If
 
 
@@ -1051,31 +1051,31 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
     Set tmpRto = remitos.item(rowIndex)
 
     With Values
-        .value(1) = tmpRto.numero
-        .value(6) = tmpRto.detalle
-        .value(3) = tmpRto.FEcha
-        .value(4) = enums.EnumEstadoRemito(tmpRto.estado)
-        .value(5) = tmpRto.usuarioCreador.usuario
+        .Value(1) = tmpRto.numero
+        .Value(6) = tmpRto.detalle
+        .Value(3) = tmpRto.FEcha
+        .Value(4) = enums.EnumEstadoRemito(tmpRto.estado)
+        .Value(5) = tmpRto.usuarioCreador.usuario
 
-        If IsSomething(tmpRto.cliente) Then .value(2) = tmpRto.cliente.razon
+        If IsSomething(tmpRto.cliente) Then .Value(2) = tmpRto.cliente.razon
         If IsSomething(tmpRto.usuarioAprobador) Then
-            .value(7) = tmpRto.usuarioAprobador.usuario
+            .Value(7) = tmpRto.usuarioAprobador.usuario
         Else
-            .value(7) = vbNullString
+            .Value(7) = vbNullString
 
         End If
 
-        .value(8) = tmpRto.VerEstadoFacturado
+        .Value(8) = tmpRto.VerEstadoFacturado
 
         If facturasRemitos.Exists(CStr(tmpRto.numero)) Then
             If LenB(facturasRemitos.item(CStr(tmpRto.numero))) >= 0 Then
-                .value(9) = Left$(facturasRemitos.item(CStr(tmpRto.numero)), Len(facturasRemitos.item(CStr(tmpRto.numero))) - 2)
+                .Value(9) = Left$(facturasRemitos.item(CStr(tmpRto.numero)), Len(facturasRemitos.item(CStr(tmpRto.numero))) - 2)
 
             End If
 
         End If
 
-        .value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
+        .Value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
 
     End With
 
@@ -1205,18 +1205,18 @@ Private Sub printRto_Click()
     If Not rs.BOF And Not rs.EOF Then est = rs!impreso Else Exit Sub
     If est > 0 Then
         If MsgBox("Este remito ya fué impreso," & Chr(10) & "¿Desea volver a imprimir?", vbYesNo, "Confirmación") = vbYes Then
-            CD.Flags = cdlPDUseDevModeCopies
-            CD.Copies = 5
-            CD.ShowPrinter
-            For i = 1 To CD.Copies
+            cd.Flags = cdlPDUseDevModeCopies
+            cd.Copies = 5
+            cd.ShowPrinter
+            For i = 1 To cd.Copies
                 DAORemitoS.ImprimirRemito rto
             Next i
         End If
     Else
         If MsgBox("Este remito no fue impreso." & Chr(10) & "¿Desea imprimirlo?", vbYesNo) = vbYes Then
-            CD.Copies = 5
-            CD.ShowPrinter
-            For i = 1 To CD.Copies
+            cd.Copies = 5
+            cd.ShowPrinter
+            For i = 1 To cd.Copies
                 DAORemitoS.ImprimirRemito rto
             Next
         End If
@@ -1262,20 +1262,20 @@ Me.ProgressBar.max = remitos.count
 
     xlWorksheet.Activate
 
-    xlWorksheet.Cells(1, 1).value = "Reporte de Remitos"
+    xlWorksheet.Cells(1, 1).Value = "Reporte de Remitos"
 
     xlWorksheet.Columns(4).HorizontalAlignment = xlLeft
     xlWorksheet.Columns(7).HorizontalAlignment = xlLeft
 
-    xlWorksheet.Cells(2, 1).value = "Número"
-    xlWorksheet.Cells(2, 2).value = "Cliente"
-    xlWorksheet.Cells(2, 3).value = "Detalle"
-    xlWorksheet.Cells(2, 4).value = "Fecha"
-    xlWorksheet.Cells(2, 5).value = "Creador"
-    xlWorksheet.Cells(2, 6).value = "Aprobador"
-    xlWorksheet.Cells(2, 7).value = "Facturado"
-    xlWorksheet.Cells(2, 8).value = "Facturas"
-    xlWorksheet.Cells(2, 9).value = "Archivos"
+    xlWorksheet.Cells(2, 1).Value = "Número"
+    xlWorksheet.Cells(2, 2).Value = "Cliente"
+    xlWorksheet.Cells(2, 3).Value = "Detalle"
+    xlWorksheet.Cells(2, 4).Value = "Fecha"
+    xlWorksheet.Cells(2, 5).Value = "Creador"
+    xlWorksheet.Cells(2, 6).Value = "Aprobador"
+    xlWorksheet.Cells(2, 7).Value = "Facturado"
+    xlWorksheet.Cells(2, 8).Value = "Facturas"
+    xlWorksheet.Cells(2, 9).Value = "Archivos"
     
     Dim idx As Integer
     idx = 3
@@ -1289,38 +1289,38 @@ Me.ProgressBar.max = remitos.count
 
     For Each Remito In remitos
 
-            xlWorksheet.Cells(idx, 1).value = Remito.numero
+            xlWorksheet.Cells(idx, 1).Value = Remito.numero
             
-            xlWorksheet.Cells(idx, 2).value = Remito.cliente.razon
-            xlWorksheet.Cells(idx, 3).value = Remito.detalle
+            xlWorksheet.Cells(idx, 2).Value = Remito.cliente.razon
+            xlWorksheet.Cells(idx, 3).Value = Remito.detalle
             
-            xlWorksheet.Cells(idx, 4).value = Remito.FEcha
+            xlWorksheet.Cells(idx, 4).Value = Remito.FEcha
 
-            xlWorksheet.Cells(idx, 5).value = Remito.usuarioCreador.usuario
+            xlWorksheet.Cells(idx, 5).Value = Remito.usuarioCreador.usuario
             
             If IsSomething(Remito.usuarioAprobador) Then
-                xlWorksheet.Cells(idx, 6).value = Remito.usuarioAprobador.usuario
+                xlWorksheet.Cells(idx, 6).Value = Remito.usuarioAprobador.usuario
             Else
-                xlWorksheet.Cells(idx, 6).value = vbNullString
+                xlWorksheet.Cells(idx, 6).Value = vbNullString
             End If
             
 
-            xlWorksheet.Cells(idx, 7).value = Remito.VerEstadoFacturado
+            xlWorksheet.Cells(idx, 7).Value = Remito.VerEstadoFacturado
 
             If facturasRemitos.Exists(CStr(Remito.numero)) Then
                 If LenB(facturasRemitos.item(CStr(Remito.numero))) >= 0 Then
-                    xlWorksheet.Cells(idx, 8).value = Left$(facturasRemitos.item(CStr(Remito.numero)), Len(facturasRemitos.item(CStr(Remito.numero))) - 2)
+                    xlWorksheet.Cells(idx, 8).Value = Left$(facturasRemitos.item(CStr(Remito.numero)), Len(facturasRemitos.item(CStr(Remito.numero))) - 2)
                 End If
             End If
 
-            xlWorksheet.Cells(idx, 9).value = "(" & Val(m_Archivos.item(Remito.Id)) & ")"
+            xlWorksheet.Cells(idx, 9).Value = "(" & Val(m_Archivos.item(Remito.Id)) & ")"
 
         
         idx = idx + 1
 
         'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
         d = d + 1
-        Me.ProgressBar.value = d
+        Me.ProgressBar.Value = d
 
 
     Next
@@ -1362,7 +1362,7 @@ Me.ProgressBar.max = remitos.count
     Set xlApplication = Nothing
 
     'REINICIA EL PROGRESSBAR Y LO OCULTA
-    Me.ProgressBar.value = 0
+    Me.ProgressBar.Value = 0
     Me.ProgressBar.Visible = False
     '    Me.lblExportando.Visible = False
     

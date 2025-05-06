@@ -511,6 +511,7 @@ Public Function aprobar(Remito As Remito) As Boolean
         End If
     Next
 
+
     If Not segui Then
         MsgBox "No hay piezas fabricadas disponibles para poder entregar.", vbCritical, "Error"
         Exit Function

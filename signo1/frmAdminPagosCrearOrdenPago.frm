@@ -246,6 +246,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       End
       Begin VB.Label lblTotalOrdenPago 
          AutoSize        =   -1  'True
+         BorderStyle     =   1  'Fixed Single
          Caption         =   "Total a pagar:"
          BeginProperty Font 
             Name            =   "Tahoma"
@@ -256,12 +257,12 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   195
+         Height          =   255
          Left            =   120
          TabIndex        =   69
          Tag             =   "tot fac - tot ret"
          Top             =   840
-         Width           =   1170
+         Width           =   1230
       End
       Begin VB.Label lblTotalFacturasNG 
          AutoSize        =   -1  'True
@@ -2774,10 +2775,14 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     If OrdenPago.estado = EstadoOrdenPago_pendiente Then
             If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
                 ' Restar el total (convertir a negativo)
-                totFactNuevo = totFactNuevo - (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+                '06/05/2025
+                'totFactNuevo = totFactNuevo - (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+                totFactNuevo = totFactNuevo - (F.totalAbonado)
             Else
                 ' Sumar el total normalmente
-                totFactNuevo = totFactNuevo + (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+                '06/05/2025
+                'totFactNuevo = totFactNuevo + (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+                totFactNuevo = totFactNuevo + (F.totalAbonado)
             End If
     Else
             If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
