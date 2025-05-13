@@ -26,6 +26,19 @@ Begin VB.Form frmAdminExtrasReporteIVACompras
       _ExtentY        =   3836
       _StockProps     =   79
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton btnExportarTXT 
+         Height          =   495
+         Left            =   6240
+         TabIndex        =   13
+         Top             =   1560
+         Width           =   2535
+         _Version        =   786432
+         _ExtentX        =   4471
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Exportar a TXT"
+         UseVisualStyle  =   -1  'True
+      End
       Begin XtremeSuiteControls.CommonDialog CommonDialog1 
          Left            =   240
          Top             =   240
@@ -63,19 +76,6 @@ Begin VB.Form frmAdminExtrasReporteIVACompras
          FlatStyle       =   -1  'True
          UseVisualStyle  =   -1  'True
          EnableMarkup    =   -1  'True
-      End
-      Begin XtremeSuiteControls.PushButton btnExportarTXT 
-         Height          =   495
-         Left            =   11040
-         TabIndex        =   13
-         Top             =   5520
-         Width           =   2535
-         _Version        =   786432
-         _ExtentX        =   4471
-         _ExtentY        =   873
-         _StockProps     =   79
-         Caption         =   "Exportar a TXT"
-         UseVisualStyle  =   -1  'True
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox 
@@ -233,7 +233,7 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = 6
     
-    Me.radioBtnComprobantes.value = True
+    Me.radioBtnComprobantes.Value = True
     
     Me.btnExportarTXT.Enabled = False
     
@@ -244,9 +244,9 @@ Private Sub btnExportarTXT_Click()
     ' Construye el nombre del archivo con el formato deseado
     Dim nombreArchivo As String
     
-    If Me.radioBtnComprobantes.value = True Then
+    If Me.radioBtnComprobantes.Value = True Then
         nombreArchivo = "COMPROBANTES_" & Format(Now, "hhmmss") & ".TXT"
-    ElseIf Me.radioBtnAlicuotas.value = True Then
+    ElseIf Me.radioBtnAlicuotas.Value = True Then
         nombreArchivo = "ALICUOTAS_" & Format(Now, "hhmmss") & ".TXT"
     Else
         MsgBox ("Debe seleccionar un tipo de reporte primero")
@@ -289,10 +289,10 @@ Private Sub btnReportar_Click()
 
     Me.lstBoxRegistros.Clear
   
-    If Me.radioBtnComprobantes.value = True Then
+    If Me.radioBtnComprobantes.Value = True Then
         ReportarComprobantes
    
-    ElseIf Me.radioBtnAlicuotas.value = True Then
+    ElseIf Me.radioBtnAlicuotas.Value = True Then
         ReportarAlicuotas
    
     End If
@@ -306,12 +306,12 @@ Private Sub ReportarComprobantes()
     Dim filter As String
     filter = "1 = 1"
     
-    If Not IsNull(Me.dtpDesde.value) Then
-        filter = filter & " AND cp.fecha >= " & conectar.Escape(Me.dtpDesde.value)
+    If Not IsNull(Me.dtpDesde.Value) Then
+        filter = filter & " AND cp.fecha >= " & conectar.Escape(Me.dtpDesde.Value)
     End If
 
-    If Not IsNull(Me.dtpHasta.value) Then
-        filter = filter & " AND cp.fecha <= " & conectar.Escape(Me.dtpHasta.value)
+    If Not IsNull(Me.dtpHasta.Value) Then
+        filter = filter & " AND cp.fecha <= " & conectar.Escape(Me.dtpHasta.Value)
     End If
         
     Set registros = DAORegistrosCompras.FindAllComprobantes(filter)
@@ -699,12 +699,12 @@ Private Sub ReportarAlicuotas()
     Dim filter As String
     filter = "1 = 1"
     
-    If Not IsNull(Me.dtpDesde.value) Then
-        filter = filter & " AND cp.fecha >= " & conectar.Escape(Me.dtpDesde.value)
+    If Not IsNull(Me.dtpDesde.Value) Then
+        filter = filter & " AND cp.fecha >= " & conectar.Escape(Me.dtpDesde.Value)
     End If
 
-    If Not IsNull(Me.dtpHasta.value) Then
-        filter = filter & " AND cp.fecha <= " & conectar.Escape(Me.dtpHasta.value)
+    If Not IsNull(Me.dtpHasta.Value) Then
+        filter = filter & " AND cp.fecha <= " & conectar.Escape(Me.dtpHasta.Value)
     End If
         
     Set registros = DAORegistrosCompras.FindAllAlicuotas(filter)

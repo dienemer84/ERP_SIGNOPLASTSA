@@ -308,6 +308,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
             col.Add op, CStr(op.Id)
         End If
 
+
         Set fac = DAOFacturaProveedor.Map(rs, idx, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", , "monFacProv")
         If IsSomething(fac) Then
             If Not funciones.BuscarEnColeccion(op.FacturasProveedor, CStr(fac.Id)) Then
@@ -316,8 +317,18 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
         End If
         
         
+'''        Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
+'''        If IsSomething(pcta) Then
+'''            If Not funciones.BuscarEnColeccion(op.pagosacuenta, CStr(pcta.Id)) Then
+'''                op.pagosacuenta.Add pcta, CStr(pcta.Id)
+'''            End If
+'''        End If
+        
+        
         Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
         If IsSomething(pcta) Then
+        
+        Set pcta = DAOPagoACta.FindById(pcta.Id)
             If Not funciones.BuscarEnColeccion(op.pagosacuenta, CStr(pcta.Id)) Then
                 op.pagosacuenta.Add pcta, CStr(pcta.Id)
             End If
@@ -436,8 +447,6 @@ Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
 End Function
 
 
-
-
 Public Function Save(op As OrdenPago, Optional cascada As Boolean = False) As Boolean
     On Error GoTo err1
     conectar.BeginTransaction
@@ -519,13 +528,13 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
 
             If op.FacturasProveedor.count > 0 Then
                 If op.FacturasProveedor(1).Proveedor.estado <> 2 Then
-                    Dim d As New clsDTOPadronIIBB
+                    Dim D As New clsDTOPadronIIBB
                     'todo: cambiar validacion
-                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
+                    Set D = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
                     Dim ret As Double
 
-                    If IsSomething(d) Then
-                        ret = d.alicuota
+                    If IsSomething(D) Then
+                        ret = D.alicuota
 
                         If ret <> op.alicuota Then
                             If MsgBox("La alicuota de retención actual del proveedor en el padrón difiere de la especificada en la orden de pago." & vbNewLine & "¿Quiere editar la orden de pago con la nueva alicuota de retención? o ¿Usar la especificada de todas maneras?" & vbNewLine & "[SI] - Continuar usando la especificada." & "[NO] - Cancelar y editar la orden de pago.", vbQuestion + vbYesNo) = vbNo Then
@@ -852,8 +861,7 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
         Dim ra As DTORetencionAlicuota
 
         For Each ra In op.RetencionesAlicuota
-
-
+            
             q = " INSERT INTO ordenes_pago_retenciones (id_pago,id_retencion,fecha,alicuota,total,certificados) values('id_pago','id_retencion','fecha','alicuota','total','certificados')"
 
             q = Replace(q, "'id_pago'", GetEntityId(op))
@@ -865,6 +873,18 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             
             If Not conectar.execute(q) Then GoTo E
         Next ra
+        
+        
+        'GUARDO LOS PAGOS A CUENTA
+        Dim pcta As clsPagoACta
+        
+        For Each pcta In op.pagosacuenta
+        
+            q = "INSERT INTO ordenes_pago_pagos_a_cuenta (id_orden_pago, id_pago_a_cuenta) VALUES (" & op.Id & ", " & pcta.Id & " )"
+            
+            If Not conectar.execute(q) Then GoTo E
+            
+        Next pcta
 
     End If
 
@@ -994,14 +1014,14 @@ If LenB(filtro) > 0 Then
     End If
     q = q & " GROUP BY b.id "
 
-    Dim d As DTONombreMonto
+    Dim D As DTONombreMonto
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
-        Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        d.nombre = rs!nombre
-        cheques.Add d
+        Set D = New DTONombreMonto
+        D.Monto = rs!Monto
+        D.nombre = rs!nombre
+        cheques.Add D
         rs.MoveNext
     Wend
     
@@ -1020,10 +1040,10 @@ If LenB(filtro) > 0 Then
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
-        Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        d.nombre = rs!nombre
-        caja.Add d
+        Set D = New DTONombreMonto
+        D.Monto = rs!Monto
+        D.nombre = rs!nombre
+        caja.Add D
         rs.MoveNext
     Wend
 
@@ -1043,12 +1063,12 @@ If LenB(filtro) > 0 Then
     q = q & "GROUP BY o.cuentabanc_o_caja_id"
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
-        Set d = New DTONombreMonto
-        d.Monto = rs!Monto
+        Set D = New DTONombreMonto
+        D.Monto = rs!Monto
 
-        If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
+        If Not IsNull(rs!nombre) Then D.nombre = rs!nombre Else D.nombre = vbNullString
 
-        bancos.Add d
+        bancos.Add D
         rs.MoveNext
     Wend
 
@@ -1066,11 +1086,11 @@ If LenB(filtro) > 0 Then
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
-        Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        If Not IsNull(rs!numero_factura) Then d.nombre = rs!numero_factura Else d.nombre = vbNullString
+        Set D = New DTONombreMonto
+        D.Monto = rs!Monto
+        If Not IsNull(rs!numero_factura) Then D.nombre = rs!numero_factura Else D.nombre = vbNullString
 
-        comp.Add d
+        comp.Add D
         rs.MoveNext
     Wend
 
@@ -1084,10 +1104,10 @@ If LenB(filtro) > 0 Then
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
-        Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        d.nombre = rs!nombre
-        retenciones.Add d
+        Set D = New DTONombreMonto
+        D.Monto = rs!Monto
+        D.nombre = rs!nombre
+        retenciones.Add D
         rs.MoveNext
     Wend
 
@@ -1109,10 +1129,10 @@ If LenB(filtro) > 0 Then
 
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
-        Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
-        cheques3.Add d
+        Set D = New DTONombreMonto
+        D.Monto = rs!Monto
+        If Not IsNull(rs!nombre) Then D.nombre = rs!nombre Else D.nombre = vbNullString
+        cheques3.Add D
         rs.MoveNext
     Wend
 
@@ -1174,8 +1194,8 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     ProgressBar.max = col.count
 
 
-    Dim d As Long
-    d = 0
+    Dim D As Long
+    D = 0
 
     For Each ord In col
 
@@ -1183,8 +1203,8 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 
         i = 1
 
-        d = d + 1
-        ProgressBar.Value = d
+        D = D + 1
+        ProgressBar.Value = D
 
         offset = offset + 1
 
@@ -1259,6 +1279,8 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Dim TAB2 As Integer
     Dim maxw As Single
     Dim C As Long
+    Dim D As Long
+    
     Dim mtxt As String
     Dim tttxt As String
     Dim textw As Single
@@ -1321,7 +1343,7 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
             If ra.importe = 0 Then
                 Printer.Print ra.alicuotaRetencion & "%"
             Else
-                Printer.Print ra.alicuotaRetencion & "% | Valor: " & Orden.moneda.NombreCorto & " " & ra.importe & " | Cert N°: " & ra.certificados
+                Printer.Print ra.alicuotaRetencion & "% | Valor: " & Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(ra.importe)), "$", "") & " | Cert N°: " & ra.certificados
             End If
         
         If ra.Retencion.Id = 5 Then existeIIBB = True
@@ -1412,7 +1434,7 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     
     ' Dibujar línea debajo de los encabezados
     Printer.Line (lmargin, Printer.CurrentY + 200)-(lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) + colWidth(5) + colWidth(6), Printer.CurrentY + 200)
-    
+
     ' Imprimir los datos de los comprobantes
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
     
@@ -1435,7 +1457,7 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         
         ' Columna 4: Total (alineado a la derecha)
         Dim totalStr As String
-        totalStr = Replace(FormatCurrency(funciones.FormatearDecimales(F.Total)), "$", "") ' Formatear el número con 2 decimales
+        totalStr = Replace(FormatCurrency(funciones.FormatearDecimales(F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)), "$", "") ' Formatear el número con 2 decimales
         Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) - Printer.TextWidth(totalStr)
         Printer.Print totalStr;
             
@@ -1448,15 +1470,7 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         Printer.Print UCase(F.Proveedor.RazonSocial)
     
     Next F
-
-'''    C = 0
-'''    For Each F In Orden.FacturasProveedor
-'''        C = C + 1
-'''        Printer.CurrentX = lmargin + TAB1 + TAB2
-'''        Printer.Print F.NumeroFormateado & String$(8, " | del ") & " | " & F.FEcha & String$(8, " | por ") & " | " & F.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(F.total)), "$", "")
-'''
-'''    Next F
-    
+  
     If C = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE COMPROBANTES ASOCIADOS"
@@ -1511,6 +1525,7 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.FontBold = False
 
     Dim op As operacion
+    
     Set tmpCol = New Collection
     C = 0
     For Each op In Orden.operacionesBanco
@@ -1529,13 +1544,13 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE TRANSFERENCIAS"
     End If
+    
     Printer.Print
     Printer.FontBold = True
     Printer.CurrentX = lmargin + TAB1
     Printer.Print "Efectivo: "
     Printer.FontBold = False
 
-'Replace(FormatCurrency(funciones.FormatearDecimales(factura.TotalIVA) * i), "$", "")
     Set tmpCol = New Collection
     C = 0
     For Each op In Orden.operacionesCaja
@@ -1548,6 +1563,64 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         Printer.Print "NO POSEE OPERACIONES EN EFECTIVO"
     End If
 
+    Printer.Print
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin + TAB1
+    Printer.Print "PAGOS A CUENTA UTILIZADOS: "
+    Printer.FontBold = False
+
+   Set tmpCol = New Collection
+   
+   Dim pcta As clsPagoACta
+   
+    C = 0
+    For Each pcta In Orden.pagosacuenta
+        C = C + 1
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "N°: " & pcta.Id & " | " & pcta.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(pcta.StaticTotalOrigenes)), "$", "")
+    
+    Printer.CurrentX = lmargin + TAB1
+    
+                D = 0
+                For Each cheq In pcta.ChequesPropios
+                D = D + 1
+                Printer.CurrentX = lmargin + TAB1 + TAB2
+                Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
+                Next cheq
+  
+                D = 0
+                For Each cheq In pcta.ChequesTerceros
+                D = D + 1
+                Printer.CurrentX = lmargin + TAB1 + TAB2
+                Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
+                Next cheq
+
+                D = 0
+                For Each op In pcta.operacionesBanco
+                D = D + 1
+                Printer.CurrentX = lmargin + TAB1 + TAB2
+                Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
+                Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
+                Next op
+ 
+                D = 0
+                For Each op In pcta.operacionesCaja
+                D = D + 1
+                Printer.CurrentX = lmargin + TAB1 + TAB2
+                Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
+                Next op
+                
+
+
+
+    Next pcta
+    
+    If C = 0 Then
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE PAGOS A CUENTA"
+    End If
+    
+    
     Printer.FontSize = 11
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)

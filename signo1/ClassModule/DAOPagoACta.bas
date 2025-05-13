@@ -157,6 +157,7 @@ Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orde
 
 End Function
 
+
 Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
     q = "SELECT *, (operaciones.pertenencia + 0) as pertenencia2" _
@@ -208,9 +209,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
 
  
        Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco", "rec")
-        
-
-If IsSomething(che) Then
+       If IsSomething(che) Then
             If che.Propio Then
                 If Not funciones.BuscarEnColeccion(op.ChequesPropios, CStr(che.Id)) Then
                     op.ChequesPropios.Add che, CStr(che.Id)
