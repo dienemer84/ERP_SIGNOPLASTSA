@@ -177,7 +177,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          _ExtentX        =   5953
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Label13"
+         Caption         =   "lblTotalPagoACuenta"
       End
       Begin VB.Label lblTotal 
          AutoSize        =   -1  'True
@@ -1541,8 +1541,8 @@ Dim PagoACta As clsPagoACta
 Public monedaplicada As clsMonedaAplicada
 Dim monedaDefault As clsMoneda
 Public DetalleComprobante As clsDetalleComprobante
-Dim colDetalles As New Collection
-
+Public colDetalles As New Collection
+Public colDetallesOP As New Collection
 
 Public Sub Cargar(op As OrdenPago)
 
@@ -2763,7 +2763,9 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     
     totDeudaCompe = 0
     totFactNuevo = 0
-    
+    Dim totalComprobantes As Double
+    totalComprobantes = 0
+         
     For Each F In col
         
     ' Inicializar la variable
@@ -2771,28 +2773,53 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     ' Recorrer la lista de facturas
 
         ' Verificar si es Nota de Crédito
-        
+       
     If OrdenPago.estado = EstadoOrdenPago_pendiente Then
             If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
                 ' Restar el total (convertir a negativo)
                 '06/05/2025
-                'totFactNuevo = totFactNuevo - (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
-                totFactNuevo = totFactNuevo - (F.totalAbonado)
+                totalComprobantes = totalComprobantes - (F.totalAbonado)
+                '''totFactNuevo = totFactNuevo - (F.totalAbonado)
             Else
                 ' Sumar el total normalmente
                 '06/05/2025
-                'totFactNuevo = totFactNuevo + (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
-                totFactNuevo = totFactNuevo + (F.totalAbonado)
+'''              totalComprobantes = totalComprobantes + (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+'''                If F.TotalPago <> 0 Then
+'''                'CASO CON PAGOS PARCIALES YA HECHOS
+'''                    totalComprobantes = totalComprobantes + (F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+'''                Else
+'''                'CASO CON PAGO PARCIAL QUE SE HACE EN EL MOMENTO
+'''                    totalComprobantes = totalComprobantes + (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))
+'''                End If
+                totalComprobantes = totalComprobantes + (F.totalAbonado)
+                '''totFactNuevo = totFactNuevo + (F.totalAbonado)
+
             End If
     Else
+    
+        If OrdenPago.estado = EstadoOrdenPago_Aprobada Then
             If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
-            ' Restar el total (convertir a negativo)
-            totFactNuevo = totFactNuevo - (F.Total)
-        Else
-            ' Sumar el total normalmente
-            totFactNuevo = totFactNuevo + (F.Total)
-        End If
+                totalComprobantes = totalComprobantes - (F.TotalAbonadoGlobal)
+            Else
+                totalComprobantes = totalComprobantes + (F.TotalAbonadoGlobal)
+            End If
+            
+            Debug.Print (totalComprobantes)
+    Else
+    
     End If
+    
+    
+    'ESTE ES EL ULTIMO CAMBIO QUE HICE PARA QUE NO DE ERROR LA SUMATORIA DE LOS PAGOS PARCIALES
+     Set colDetallesOP = DAOOrdenPago.FindAllDetallesAbonadoOP(F.Id, OrdenPago.Id)
+       For Each DetalleComprobante In colDetallesOP
+            totalComprobantes = totalComprobantes + DetalleComprobante.Otros + DetalleComprobante.NetoGravado
+            
+        Next DetalleComprobante
+  
+    End If
+    
+    Me.lblTotalFacturas.caption = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totalComprobantes))
     
         totFact = totFact + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.totalAbonado * -1, F.totalAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
         totFactHoy = totFactHoy + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.TotalDiaPagoAbonado * -1, F.TotalDiaPagoAbonado), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
@@ -2801,6 +2828,9 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         totCambio = totCambio + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionTOTAL * -1, F.DiferenciaPorTipoDeCambionTOTAL), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
         totCambiong = totCambiong + MonedaConverter.ConvertirForzado2(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.DiferenciaPorTipoDeCambionNG * -1, F.DiferenciaPorTipoDeCambionNG), F.moneda.Id, OrdenPago.moneda.Id, F.TipoCambioPago)
     
+    
+
+        
     Next F
 
 
@@ -2822,14 +2852,18 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
         Next
     End If
 
+
+
+        
+
     Me.lblNgAbonar = "Total NG a Abonar en " & FormatCurrency(funciones.FormatearDecimales(OrdenPago.DiferenciaCambioEnNG + totNGHoy))
 
-    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFactNuevo))
+'''    Me.lblTotalFacturas = "Total Facturas en " & FormatCurrency(funciones.FormatearDecimales(totFactNuevo))
     
     Me.lblDeudaCompensatorios = "Total deuda compensatorios en " & FormatCurrency(funciones.FormatearDecimales(totDeudaCompe))
     
 '    OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFact)
-    OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totFactNuevo)
+    OrdenPago.StaticTotalFacturas = funciones.RedondearDecimales(totalComprobantes)
     
     OrdenPago.staticTotalDeudaCompensatorios = funciones.RedondearDecimales(totDeudaCompe)
 
@@ -2848,11 +2882,11 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     OrdenPago.StaticTotalRetenido = funciones.RedondearDecimales(totRet)
 
 '''    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales((OrdenPago.DiferenciaCambioEnTOTAL + totFactHoy - (totRet - OrdenPago.OtrosDescuentos) + OrdenPago.TotalCompensatorios + totDeudaCompe)) - totPagoACuenta)
-    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales(totFactNuevo - (totRet + totPagoACuenta)))
+    Me.lblTotalOrdenPago = "Total a abonar en " & FormatCurrency(funciones.FormatearDecimales(totalComprobantes - (totRet + totPagoACuenta)))
         
     Me.lblTotalPagoACuenta.caption = "Total Pago a Cuenta en " & FormatCurrency(funciones.FormatearDecimales(totPagoACuenta))
     
-    Me.lblFacturasTotal.caption = FormatCurrency(funciones.FormatearDecimales(totFactNuevo))
+
     
 End Sub
 

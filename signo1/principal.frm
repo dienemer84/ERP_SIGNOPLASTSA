@@ -277,7 +277,6 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
         frmComprasProveedoresRubros.Show
 
-
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__GRUPOS: frmRubrosGrupos.Show
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__ALMACENES: frmMaterialesAlmacenes.Show
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MATERIA_PRIMA__LISTADO:
@@ -289,7 +288,6 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frmNuevaMDO.Show
 
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SECTORES:
-
         frmSectores.Show
 
 
@@ -297,9 +295,12 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim ffff As New frmListaTareas
         ffff.Show
 
+
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__CATEGORIA_SUELDOS:
         Dim F As New frmCategoriasSueldo
         F.Show
+        
+        
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__MANO_DE_OBRA__SUELDO:
         Dim cs As New CategoriaSueldo
         cs.EspecificarSueldo
@@ -319,6 +320,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim frm1144 As New frmResumenSaldosProv
         frm1144.TipoPersonaCta = TipoPersona.proveedor_
         frm1144.caption = "Resúmen de saldos de Proveedores"
+        frm1144.GridEX1.Columns(1).caption = "Proveedor"
         frm1144.Show
 
       Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__FACTURACION__CREAR_PROFORMA:
@@ -372,10 +374,18 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frmAdminCobranzasReservarRecibo.Show
 
 
-
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__DEUDORES:
         Dim frm1122 As New frmAdminFacturasAdeudadas2
         frm1122.Show
+        
+        
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ASIENTO_BANCARIO:
+        Dim f0001 As New frmAdminCajaBancosCrearAsientoBancario
+        f0001.Show
+    
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_ASIENTO_BANCARIO:
+        Dim f0002 As New frmAdminCajaBancosListaAsientoBancario
+        f0002.Show
 
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS:
@@ -454,8 +464,9 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS:
         Dim frm11441 As New frmResumenSaldosProv
         frm11441.TipoPersonaCta = TipoPersona.cliente_
-        frm1144.caption = "Resúmen de saldos de Clientes"
-        frm1144.Show
+        frm11441.caption = "Resúmen de saldos de Clientes"
+        frm11441.GridEX1.Columns(1).caption = "Cliente"
+        frm11441.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_VENTAS:
         Dim f3242 As New frmAdminSubdiariosVentasv2
@@ -511,7 +522,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
     Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO:
         Dim ff111 As New frmVentasClienteNuevo
-        ff111.cliente = Nothing
+        ff111.Cliente = Nothing
         ff111.Show
 
     Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__LISTADO: frmVentasClientesLista.Show
@@ -1001,12 +1012,14 @@ Private Sub CreateRibbonBar()
 
     AddButton ribbonGroup, "Compensatorios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS, Permisos.AdminOPControl
     
-    
-
-'    AddButton ribbonGroup, "Movimiento de Fondos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__MOVIMIENTO__FONDOS, Permisos.AdminOPConsultas
-
     AddButton ribbonGroup, "Bancos", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__BANCOS, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Cuentas", ID_BUTTON.ID_BUTTON_CAJAYBANCOS__CONFIGURAR__ADMINISTRACION__CUENTAS, Permisos.AdminCajayBancos
+
+
+    '''' MOVIMIENTOS DE CAJA Y BANCOS
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Movimientos de Caja y Bancos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS, , , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Cargar nuevo Movimiento", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ASIENTO_BANCARIO, , , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Listado de Movimientos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_ASIENTO_BANCARIO, , , , cmdBarCtrl
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Pagos", ID_GROUP.ID_GROUP_ADMINISTRACION__VARIOS)
 

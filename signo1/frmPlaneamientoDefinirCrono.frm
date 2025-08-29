@@ -88,7 +88,7 @@ Begin VB.Form frmPlaneamientoDefinirCrono
       _ExtentX        =   2355
       _ExtentY        =   450
       _Version        =   393216
-      Format          =   63242241
+      Format          =   16842753
       CurrentDate     =   39847
    End
    Begin VB.TextBox txtCantidad 
@@ -229,7 +229,7 @@ Private Sub llenarDetallePedido()
 
         x.SubItems(4) = rs_pedido!FechaEntrega
 
-        x.Tag = rs_pedido!Id
+        x.Tag = rs_pedido!id
 
         rs_pedido.MoveNext
     Wend
@@ -252,7 +252,7 @@ Private Sub llenarLstCrono()
     While Not rs.EOF And Not rs.BOF
         Set x = Me.lstCronograma.ListItems.Add(, , rs!Cantidad)
         x.SubItems(1) = Format(rs!FEcha, "dd-mm-yyyy")
-        x.Tag = rs!Id
+        x.Tag = rs!id
         rs.MoveNext
     Wend
 

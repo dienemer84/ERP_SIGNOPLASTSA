@@ -652,7 +652,7 @@ Private Function accion() As Boolean
 
             If DAOMateriales.modificar(vmaterial, True) Then
                 MsgBox "El material se ha modificado.", vbInformation
-                DaoHistorico.Save "materiales_historial", "Material desaprobado", vmaterial.Id
+'''                DaoHistorico.Save "materiales_historial", "Material desaprobado", vmaterial.Id
                 If CDbl(valorViejo <> vmaterial.Valor) Then
                     MsgBox "Hubo una variacion. Se almacena en históricos", vbInformation, "Información"
                     DAOMaterialHistorico.crear vmaterial

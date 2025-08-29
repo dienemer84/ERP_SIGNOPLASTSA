@@ -30,7 +30,6 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
-      SelectedItem    =   2
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   2
       Item(0).Control(0)=   "Frame3"
@@ -56,10 +55,9 @@ Begin VB.Form frmAdminCheques
          Caption         =   "Resultados"
          Height          =   5175
          Index           =   0
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   125
          Top             =   3480
-         Visible         =   0   'False
          Width           =   15135
          Begin GridEX20.GridEX grid_cartera_cheques 
             Height          =   4665
@@ -120,10 +118,9 @@ Begin VB.Form frmAdminCheques
             Strikethrough   =   0   'False
          EndProperty
          Height          =   3015
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   94
          Top             =   360
-         Visible         =   0   'False
          Width           =   15135
          Begin VB.TextBox txtNumeroChequeCartera 
             Alignment       =   1  'Right Justify
@@ -641,9 +638,10 @@ Begin VB.Form frmAdminCheques
          Caption         =   "Resultados"
          Height          =   5175
          Index           =   1
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   70
          Top             =   3480
+         Visible         =   0   'False
          Width           =   15135
          Begin GridEX20.GridEX gridChequesEmitidos 
             Height          =   4665
@@ -665,7 +663,7 @@ Begin VB.Form frmAdminCheques
             IntProp1        =   0
             IntProp2        =   0
             IntProp7        =   0
-            ColumnsCount    =   11
+            ColumnsCount    =   12
             Column(1)       =   "frmAdminCheques.frx":2A64
             Column(2)       =   "frmAdminCheques.frx":2C14
             Column(3)       =   "frmAdminCheques.frx":2D2C
@@ -677,15 +675,16 @@ Begin VB.Form frmAdminCheques
             Column(9)       =   "frmAdminCheques.frx":350C
             Column(10)      =   "frmAdminCheques.frx":363C
             Column(11)      =   "frmAdminCheques.frx":3774
+            Column(12)      =   "frmAdminCheques.frx":38D0
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminCheques.frx":38CC
-            FormatStyle(2)  =   "frmAdminCheques.frx":3A04
-            FormatStyle(3)  =   "frmAdminCheques.frx":3AB4
-            FormatStyle(4)  =   "frmAdminCheques.frx":3B68
-            FormatStyle(5)  =   "frmAdminCheques.frx":3C40
-            FormatStyle(6)  =   "frmAdminCheques.frx":3CF8
+            FormatStyle(1)  =   "frmAdminCheques.frx":3A28
+            FormatStyle(2)  =   "frmAdminCheques.frx":3B60
+            FormatStyle(3)  =   "frmAdminCheques.frx":3C10
+            FormatStyle(4)  =   "frmAdminCheques.frx":3CC4
+            FormatStyle(5)  =   "frmAdminCheques.frx":3D9C
+            FormatStyle(6)  =   "frmAdminCheques.frx":3E54
             ImageCount      =   0
-            PrinterProperties=   "frmAdminCheques.frx":3DD8
+            PrinterProperties=   "frmAdminCheques.frx":3F34
          End
       End
       Begin XtremeSuiteControls.GroupBox GroupBox3 
@@ -1176,9 +1175,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
          Height          =   3015
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   16
          Top             =   360
+         Visible         =   0   'False
          Width           =   15135
          _Version        =   786432
          _ExtentX        =   26696
@@ -1835,21 +1835,21 @@ Begin VB.Form frmAdminCheques
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   5
-         Column(1)       =   "frmAdminCheques.frx":3FB0
-         Column(2)       =   "frmAdminCheques.frx":40C8
-         Column(3)       =   "frmAdminCheques.frx":41DC
-         Column(4)       =   "frmAdminCheques.frx":4314
-         Column(5)       =   "frmAdminCheques.frx":4424
+         Column(1)       =   "frmAdminCheques.frx":410C
+         Column(2)       =   "frmAdminCheques.frx":4224
+         Column(3)       =   "frmAdminCheques.frx":4338
+         Column(4)       =   "frmAdminCheques.frx":4470
+         Column(5)       =   "frmAdminCheques.frx":4580
          FormatStylesCount=   7
-         FormatStyle(1)  =   "frmAdminCheques.frx":44E4
-         FormatStyle(2)  =   "frmAdminCheques.frx":461C
-         FormatStyle(3)  =   "frmAdminCheques.frx":46CC
-         FormatStyle(4)  =   "frmAdminCheques.frx":4780
-         FormatStyle(5)  =   "frmAdminCheques.frx":4858
-         FormatStyle(6)  =   "frmAdminCheques.frx":4910
-         FormatStyle(7)  =   "frmAdminCheques.frx":49F0
+         FormatStyle(1)  =   "frmAdminCheques.frx":4640
+         FormatStyle(2)  =   "frmAdminCheques.frx":4778
+         FormatStyle(3)  =   "frmAdminCheques.frx":4828
+         FormatStyle(4)  =   "frmAdminCheques.frx":48DC
+         FormatStyle(5)  =   "frmAdminCheques.frx":49B4
+         FormatStyle(6)  =   "frmAdminCheques.frx":4A6C
+         FormatStyle(7)  =   "frmAdminCheques.frx":4B4C
          ImageCount      =   0
-         PrinterProperties=   "frmAdminCheques.frx":4AAC
+         PrinterProperties=   "frmAdminCheques.frx":4C08
       End
       Begin GridEX20.GridEX grid_chequeras 
          Height          =   5490
@@ -1876,21 +1876,21 @@ Begin VB.Form frmAdminCheques
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   6
-         Column(1)       =   "frmAdminCheques.frx":4C84
-         Column(2)       =   "frmAdminCheques.frx":4D9C
-         Column(3)       =   "frmAdminCheques.frx":4E98
-         Column(4)       =   "frmAdminCheques.frx":4F84
-         Column(5)       =   "frmAdminCheques.frx":5080
-         Column(6)       =   "frmAdminCheques.frx":517C
+         Column(1)       =   "frmAdminCheques.frx":4DE0
+         Column(2)       =   "frmAdminCheques.frx":4EF8
+         Column(3)       =   "frmAdminCheques.frx":4FF4
+         Column(4)       =   "frmAdminCheques.frx":50E0
+         Column(5)       =   "frmAdminCheques.frx":51DC
+         Column(6)       =   "frmAdminCheques.frx":52D8
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmAdminCheques.frx":52A4
-         FormatStyle(2)  =   "frmAdminCheques.frx":53DC
-         FormatStyle(3)  =   "frmAdminCheques.frx":548C
-         FormatStyle(4)  =   "frmAdminCheques.frx":5540
-         FormatStyle(5)  =   "frmAdminCheques.frx":5618
-         FormatStyle(6)  =   "frmAdminCheques.frx":56D0
+         FormatStyle(1)  =   "frmAdminCheques.frx":5400
+         FormatStyle(2)  =   "frmAdminCheques.frx":5538
+         FormatStyle(3)  =   "frmAdminCheques.frx":55E8
+         FormatStyle(4)  =   "frmAdminCheques.frx":569C
+         FormatStyle(5)  =   "frmAdminCheques.frx":5774
+         FormatStyle(6)  =   "frmAdminCheques.frx":582C
          ImageCount      =   0
-         PrinterProperties=   "frmAdminCheques.frx":57B0
+         PrinterProperties=   "frmAdminCheques.frx":590C
       End
       Begin XtremeSuiteControls.Label Label6 
          Height          =   255
@@ -1933,17 +1933,17 @@ Begin VB.Form frmAdminCheques
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCheques.frx":5988
-      Column(2)       =   "frmAdminCheques.frx":5A88
+      Column(1)       =   "frmAdminCheques.frx":5AE4
+      Column(2)       =   "frmAdminCheques.frx":5BE4
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCheques.frx":5B78
-      FormatStyle(2)  =   "frmAdminCheques.frx":5CB0
-      FormatStyle(3)  =   "frmAdminCheques.frx":5D60
-      FormatStyle(4)  =   "frmAdminCheques.frx":5E14
-      FormatStyle(5)  =   "frmAdminCheques.frx":5EEC
-      FormatStyle(6)  =   "frmAdminCheques.frx":5FA4
+      FormatStyle(1)  =   "frmAdminCheques.frx":5CD4
+      FormatStyle(2)  =   "frmAdminCheques.frx":5E0C
+      FormatStyle(3)  =   "frmAdminCheques.frx":5EBC
+      FormatStyle(4)  =   "frmAdminCheques.frx":5F70
+      FormatStyle(5)  =   "frmAdminCheques.frx":6048
+      FormatStyle(6)  =   "frmAdminCheques.frx":6100
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCheques.frx":6084
+      PrinterProperties=   "frmAdminCheques.frx":61E0
    End
    Begin VB.Menu veOP 
       Caption         =   "Ver OP"
@@ -2220,7 +2220,7 @@ Private Sub btnExportar_Click(Index As Integer)
 
         Set xlWorkbook = xlApplication.Workbooks.Add
 
-        Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+        Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
         xlWorksheet.Activate
 
@@ -2339,7 +2339,7 @@ Private Sub btnExportarCartera_Click(Index As Integer)
 
         Set xlWorkbook = xlApplication.Workbooks.Add
 
-        Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+        Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
         xlWorksheet.Activate
 
@@ -2377,7 +2377,7 @@ Private Sub btnExportarCartera_Click(Index As Integer)
             xlWorksheet.Cells(idx, 5).value = che.OrigenDestino
             xlWorksheet.Cells(idx, 6).value = che.Banco.nombre
             xlWorksheet.Cells(idx, 7).value = che.OrigenCheque
-            xlWorksheet.Cells(idx, 8).value = che.FechaRecibido
+            xlWorksheet.Cells(idx, 8).value = che.FechaRecibo
 
             idx = idx + 1
 
@@ -2474,7 +2474,7 @@ Me.ProgressBar(1).max = cheques1.count
 
     Set xlWorkbook = xlApplication.Workbooks.Add
 
-    Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
 
@@ -2576,7 +2576,7 @@ Private Sub btnFiltrar_Click()
     On Error Resume Next
     Dim filter2 As String
     filter2 = "cheq.origen = """ & Me.cboProveedores.Text & """"
-    Set tmpChequera.cheques = DAOCheques.FindAllByChequeraId(tmpChequera.Id, filter2)
+    Set tmpChequera.Cheques = DAOCheques.FindAllByChequeraId(tmpChequera.Id, filter2)
     mostrarCheques
 End Sub
 
@@ -2638,7 +2638,7 @@ Private Sub cmdCrear_Click()
         End If
 
         Set chequera.Banco = DAOBancos.GetById(id_banco)
-        chequera.FechaCreacion = Now
+        chequera.fechaCreacion = Now
         Set chequera.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
         chequera.numero = CLng(Me.txtNumero)
         chequera.NumeroDesde = CLng(Me.txtDesde)
@@ -2653,7 +2653,7 @@ Private Sub cmdCrear_Click()
             cheque.Id = 0
             Set cheque.Banco = chequera.Banco
             Set cheque.moneda = chequera.moneda
-            chequera.cheques.Add cheque
+            chequera.Cheques.Add cheque
 
         Next
         If DAOChequeras.Guardar(chequera) Then
@@ -2876,10 +2876,10 @@ Private Sub Form_Load()
     Me.grid_cartera_cheques.ItemCount = 0
 
     Dim idc As Long
-    idc = chequeras.Item(Me.grid_chequeras.rowIndex(Me.grid_chequeras.row)).Id
+    idc = chequeras.item(Me.grid_chequeras.RowIndex(Me.grid_chequeras.row)).Id
 
     Set tmpChequera = DAOChequeras.GetById(idc)
-    Set tmpChequera.cheques = DAOCheques.FindAllByChequeraId(idc)
+    Set tmpChequera.Cheques = DAOCheques.FindAllByChequeraId(idc)
 
 End Sub
 
@@ -2915,11 +2915,11 @@ Private Sub MostrarCartera()
     End If
 
     If Not IsNull(Me.dtpDesdeRboCartera(2).value) Then
-        filter2 = filter2 & " AND cheq.fecha_recibido >= " & conectar.Escape(Me.dtpDesdeRboCartera(2).value)
+        filter2 = filter2 & " AND rec.fecha >= " & conectar.Escape(Me.dtpDesdeRboCartera(2).value)
     End If
 
     If Not IsNull(Me.dtpHastaRboCartera(2).value) Then
-        filter2 = filter2 & " AND cheq.fecha_recibido <= " & conectar.Escape(Me.dtpHastaRboCartera(2).value)
+        filter2 = filter2 & " AND rec.fecha <= " & conectar.Escape(Me.dtpHastaRboCartera(2).value)
     End If
 
     If Me.cboBancoCartera.ListIndex > -1 Then
@@ -2958,9 +2958,9 @@ Private Sub grdCheques3eros_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick Me.grdCheques3eros, Column
 End Sub
 
-Private Sub grdCheques3eros_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grdCheques3eros_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set tmpCheque3eros = cheques3.Item(rowIndex)
+    Set tmpCheque3eros = cheques3.item(RowIndex)
 
     Values(1) = tmpCheque3eros.OrigenDestino
     Values(2) = tmpCheque3eros.Id
@@ -3017,9 +3017,9 @@ err1:
 
 End Sub
 
-Private Sub grid_cartera_cheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_cartera_cheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set tmpCheque = cartera.Item(rowIndex)
+    Set tmpCheque = cartera.item(RowIndex)
     With Values
         .value(1) = tmpCheque.Id
         .value(2) = tmpCheque.numero
@@ -3028,27 +3028,22 @@ Private Sub grid_cartera_cheques_UnboundReadData(ByVal rowIndex As Long, ByVal B
         .value(5) = tmpCheque.OrigenDestino
         .value(6) = tmpCheque.Banco.nombre
         .value(7) = tmpCheque.OrigenCheque
-        .value(8) = tmpCheque.FechaRecibido
+        .value(8) = tmpCheque.FechaRecibo
         .value(9) = tmpCheque.observaciones
 
     End With
-
-
-
-
     Exit Sub
 err1:
 
-
 End Sub
 
-Private Sub grid_cartera_cheques_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_cartera_cheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
     Dim ant As String
 
     ant = tmpCheque.OrigenDestino
 
-    Set tmpCheque = cartera.Item(rowIndex)
+    Set tmpCheque = cartera.item(RowIndex)
     tmpCheque.OrigenDestino = Values(4)
     If Not DAOCheques.Guardar(tmpCheque) Then GoTo err1
     Exit Sub
@@ -3058,18 +3053,18 @@ End Sub
 
 Private Sub grid_chequeras_SelectionChange()
     On Error Resume Next
-    Set tmpChequera.cheques = DAOCheques.FindAllByChequeraId(tmpChequera.Id)
+    Set tmpChequera.Cheques = DAOCheques.FindAllByChequeraId(tmpChequera.Id)
     mostrarCheques
 End Sub
 Private Sub mostrarCheques()
     Me.grid_cheques.ItemCount = 0
-    Me.grid_cheques.ItemCount = tmpChequera.cheques.count
+    Me.grid_cheques.ItemCount = tmpChequera.Cheques.count
 End Sub
-Private Sub grid_chequeras_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmpChequera = chequeras.Item(rowIndex)
+Private Sub grid_chequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmpChequera = chequeras.item(RowIndex)
     With Values
         .value(1) = tmpChequera.numero
-        .value(2) = tmpChequera.FechaCreacion
+        .value(2) = tmpChequera.fechaCreacion
         .value(3) = tmpChequera.Banco.nombre
         .value(4) = tmpChequera.NumeroDesde
         .value(5) = tmpChequera.NumeroHasta
@@ -3080,8 +3075,8 @@ End Sub
 
 
 Private Sub grid_cheques_DblClick()
-    If Me.grid_cheques.rowIndex(Me.grid_cheques.row) > 0 Then
-        Set tmpCheque = tmpChequera.cheques(Me.grid_cheques.rowIndex(Me.grid_cheques.row))
+    If Me.grid_cheques.RowIndex(Me.grid_cheques.row) > 0 Then
+        Set tmpCheque = tmpChequera.Cheques(Me.grid_cheques.RowIndex(Me.grid_cheques.row))
         PasarACartera tmpCheque
     End If
 End Sub
@@ -3104,7 +3099,7 @@ End Sub
 
 Private Sub grid_cheques_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        Set tmpCheque = tmpChequera.cheques(Me.grid_cheques.rowIndex(Me.grid_cheques.row))
+        Set tmpCheque = tmpChequera.Cheques(Me.grid_cheques.RowIndex(Me.grid_cheques.row))
         Me.mnuAnularCheque.Enabled = (tmpCheque.IdOrdenPagoOrigen <= 0) Or tmpCheque.estado = ChequeAnulado
         Me.PopupMenu Me.mnuOpcionesChequeChequera
     End If
@@ -3120,10 +3115,10 @@ err1:
 
 End Sub
 
-Private Sub grid_cheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_cheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    If Not IsSomething(tmpChequera.cheques) Or tmpChequera.cheques.count = 0 Then Set tmpChequera.cheques = DAOCheques.FindAllByChequeraId(tmpChequera.Id)
-    Set tmpCheque = tmpChequera.cheques(rowIndex)
+    If Not IsSomething(tmpChequera.Cheques) Or tmpChequera.Cheques.count = 0 Then Set tmpChequera.Cheques = DAOCheques.FindAllByChequeraId(tmpChequera.Id)
+    Set tmpCheque = tmpChequera.Cheques(RowIndex)
     With Values
         .value(1) = tmpCheque.numero
         .value(2) = IIf(tmpCheque.Utilizado, funciones.FormatearDecimales(tmpCheque.Monto), Empty)
@@ -3136,9 +3131,9 @@ Private Sub grid_cheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark 
 err1:
 End Sub
 
-Private Sub gridBancos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex <= bancos.count Then
-        Set Banco = bancos.Item(rowIndex)
+Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= bancos.count Then
+        Set Banco = bancos.item(RowIndex)
         Values(1) = Banco.Id
         Values(2) = Banco.nombre
     End If
@@ -3156,8 +3151,8 @@ Private Function buscarOP(chequeid As Long) As String
     End If
 End Function
 
-Private Sub gridChequesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmpCheque = cheques1.Item(rowIndex)
+Private Sub gridChequesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set tmpCheque = cheques1.item(RowIndex)
     
     Values(1) = ""
     Values(2) = tmpCheque.Banco.nombre
@@ -3166,18 +3161,28 @@ Private Sub gridChequesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByVal Bo
     Values(5) = tmpCheque.FechaVencimiento
     Values(6) = tmpCheque.numero
     Values(7) = funciones.FormatearDecimales(tmpCheque.Monto)
-    Values(8) = tmpCheque.OrigenDestino
-    Values(9) = ""
-    Values(10) = tmpCheque.IdOrdenPagoOrigen
     
-    If tmpCheque.NumeroLiquidacionCaja = 0 Then
-        Values(11) = ""
-    Else
-        Values(10) = ""
+    If tmpCheque.NumeroLiquidacionCaja <> 0 Then
         Values(8) = "VARIOS PROVEEDORES"
         Values(11) = tmpCheque.NumeroLiquidacionCaja
+        Values(10) = ""
+        Values(12) = ""
+    ElseIf tmpCheque.NumeroPagoACuenta <> 0 Then
+        Values(8) = "PAGO A CUENTA"
+        Values(12) = tmpCheque.NumeroPagoACuenta
+        Values(10) = ""
+        Values(11) = ""
+    ElseIf tmpCheque.IdOrdenPagoOrigen <> 0 Then
+        Values(8) = "ORDEN DE PAGO"
+        Values(10) = tmpCheque.IdOrdenPagoOrigen
+        Values(11) = ""
+        Values(12) = ""
+    Else
+        Values(8) = ""
+        Values(10) = ""
+        Values(11) = ""
+        Values(12) = ""
     End If
-
 
 End Sub
 

@@ -334,31 +334,31 @@ Begin VB.Form frmAdminCobranzasLista
       ColumnsCount    =   12
       Column(1)       =   "frmAdminCobranzasLista.frx":0640
       Column(2)       =   "frmAdminCobranzasLista.frx":07CC
-      Column(3)       =   "frmAdminCobranzasLista.frx":0920
-      Column(4)       =   "frmAdminCobranzasLista.frx":0A40
-      Column(5)       =   "frmAdminCobranzasLista.frx":0B8C
-      Column(6)       =   "frmAdminCobranzasLista.frx":0CD4
-      Column(7)       =   "frmAdminCobranzasLista.frx":0E44
-      Column(8)       =   "frmAdminCobranzasLista.frx":0FAC
-      Column(9)       =   "frmAdminCobranzasLista.frx":111C
-      Column(10)      =   "frmAdminCobranzasLista.frx":1278
-      Column(11)      =   "frmAdminCobranzasLista.frx":13D0
-      Column(12)      =   "frmAdminCobranzasLista.frx":1518
+      Column(3)       =   "frmAdminCobranzasLista.frx":0940
+      Column(4)       =   "frmAdminCobranzasLista.frx":0A60
+      Column(5)       =   "frmAdminCobranzasLista.frx":0BAC
+      Column(6)       =   "frmAdminCobranzasLista.frx":0CF4
+      Column(7)       =   "frmAdminCobranzasLista.frx":0E64
+      Column(8)       =   "frmAdminCobranzasLista.frx":0FCC
+      Column(9)       =   "frmAdminCobranzasLista.frx":113C
+      Column(10)      =   "frmAdminCobranzasLista.frx":1298
+      Column(11)      =   "frmAdminCobranzasLista.frx":13F0
+      Column(12)      =   "frmAdminCobranzasLista.frx":1538
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":1698
-      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":17D0
-      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":1880
-      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":1934
-      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1A0C
-      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":1AC4
-      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":1BA4
-      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1C50
-      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1D00
-      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1DE0
+      FormatStyle(1)  =   "frmAdminCobranzasLista.frx":16B8
+      FormatStyle(2)  =   "frmAdminCobranzasLista.frx":17F0
+      FormatStyle(3)  =   "frmAdminCobranzasLista.frx":18A0
+      FormatStyle(4)  =   "frmAdminCobranzasLista.frx":1954
+      FormatStyle(5)  =   "frmAdminCobranzasLista.frx":1A2C
+      FormatStyle(6)  =   "frmAdminCobranzasLista.frx":1AE4
+      FormatStyle(7)  =   "frmAdminCobranzasLista.frx":1BC4
+      FormatStyle(8)  =   "frmAdminCobranzasLista.frx":1C70
+      FormatStyle(9)  =   "frmAdminCobranzasLista.frx":1D20
+      FormatStyle(10) =   "frmAdminCobranzasLista.frx":1E00
       ImageCount      =   2
-      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1E8C
-      ImagePicture(2) =   "frmAdminCobranzasLista.frx":21A6
-      PrinterProperties=   "frmAdminCobranzasLista.frx":24C0
+      ImagePicture(1) =   "frmAdminCobranzasLista.frx":1EAC
+      ImagePicture(2) =   "frmAdminCobranzasLista.frx":21C6
+      PrinterProperties=   "frmAdminCobranzasLista.frx":24E0
    End
    Begin VB.Menu mnu 
       Caption         =   "mnu"
@@ -578,10 +578,10 @@ Private Sub grilla_recibos_DblClick()
     
 End Sub
 
-Private Sub grilla_recibos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_recibos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
 
-    Recibo = recibos.item(rowIndex)
+    Recibo = recibos.item(RowIndex)
 
     If ColIndex = 6 And tmpArchivos.item(Recibo.Id) > 0 Then
         IconIndex = 1
@@ -643,7 +643,7 @@ Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Sin
 End Sub
 
 Private Sub grilla_recibos_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.rowIndex = 0 Then Exit Sub
+    If RowBuffer.RowIndex = 0 Then Exit Sub
     If RowBuffer.value(11) = "Aprobado" Then
         RowBuffer.CellStyle(11) = "Verde"
     ElseIf RowBuffer.value(11) = "Anulado" Then
@@ -666,18 +666,18 @@ End Sub
 
 Private Sub SeleccionarRecibo()
     On Error Resume Next
-    Set Recibo = recibos.item(Me.grilla_recibos.rowIndex(Me.grilla_recibos.row))
+    Set Recibo = recibos.item(Me.grilla_recibos.RowIndex(Me.grilla_recibos.row))
 
 End Sub
 
-Private Sub grilla_recibos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set Recibo = recibos.item(rowIndex)
+Private Sub grilla_recibos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set Recibo = recibos.item(RowIndex)
     
     Values(1) = Recibo.Id
-    Values(2) = Format(Recibo.FEcha, "yyyy/mm/dd", vbSunday)
+    Values(2) = Format(Recibo.FEcha, "dd/mm/yyyy", vbSunday)
 
-    Values(3) = Recibo.cliente.razon
-    Values(4) = Recibo.FechaCreacion
+    Values(3) = Recibo.Cliente.razon
+    Values(4) = Recibo.fechaCreacion
     Values(5) = Recibo.moneda.NombreCorto
     
     If Recibo.estado = 1 Or Recibo.estado = Reciboanulado Then

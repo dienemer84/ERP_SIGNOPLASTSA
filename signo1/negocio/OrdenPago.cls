@@ -45,6 +45,14 @@ Public DiferenciaCambioEnNG As Double
 Public DiferenciaCambioEnTOTAL As Double
 Public staticTotalDeudaCompensatorios As Double
 
+Public Property Get StaticTotalPagosACta() As Double
+    Dim pago As clsPagoACta
+    Dim total As Double
+    For Each pago In Me.pagosacuenta
+        total = total + pago.TotalOrigenes
+    Next pago
+    StaticTotalPagosACta = total
+End Property
 
 
 Public Property Get TotalNGCompensatorios() As Double
@@ -85,7 +93,7 @@ Public Property Get TotalFacturas() As Double
     Dim SUM As Double
     For Each F In Me.FacturasProveedor
 '''        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente)) * -1, (F.Total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))), F.moneda.Id, Me.moneda.Id)
+        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente)) * -1, (F.total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))), F.moneda.Id, Me.moneda.Id)
     Next F
     TotalFacturas = funciones.RedondearDecimales(SUM)
 End Property
@@ -117,14 +125,14 @@ Public Property Get TotalOrigenes() As Double
         Exit Property
     End If
 
-    Dim Total As Double
+    Dim total As Double
     
-    Total = 0
+    total = 0
     
     Dim cheq As cheque
     For Each cheq In Me.ChequesTerceros
         If IsSomething(cheq.moneda) Then
-            Total = Total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
         End If
     Next cheq
 
@@ -132,7 +140,7 @@ Public Property Get TotalOrigenes() As Double
     For Each cheq In Me.ChequesPropios
         If IsSomething(cheq.moneda) Then
             '  Debug.Print cheq.numero, cheq.Monto
-            Total = Total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
         End If
     Next cheq
 
@@ -140,14 +148,14 @@ Public Property Get TotalOrigenes() As Double
     Dim op As operacion
     For Each op In Me.operacionesBanco
         If IsSomething(op.moneda) Then
-            Total = Total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
         End If
     Next op
 
 
     For Each op In Me.operacionesCaja
         If IsSomething(op.moneda) Then
-            Total = Total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
         End If
     Next op
     
@@ -155,7 +163,7 @@ Public Property Get TotalOrigenes() As Double
     Dim pcta As clsPagoACta
     For Each pcta In Me.pagosacuenta
         If IsSomething(Me.pagosacuenta) Then
-            Total = Total + MonedaConverter.Convertir(pcta.StaticTotalOrigenes, pcta.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(pcta.StaticTotalOrigenes, pcta.moneda.Id, Me.moneda.Id)
         End If
     Next pcta
     
@@ -165,7 +173,7 @@ Public Property Get TotalOrigenes() As Double
     ' TotalOrigenes = funciones.RedondearDecimales(Total + Me.OtrosDescuentos + Me.DiferenciaCambio)
 
     '15/10/12 corregi con sabrina esta funcion para que cierre bien la Op.  reemplazo funcion anterior
-    TotalOrigenes = funciones.RedondearDecimales(Total + Me.OtrosDescuentos + 0)
+    TotalOrigenes = funciones.RedondearDecimales(total + Me.OtrosDescuentos + 0)
     
 End Property
 
@@ -188,7 +196,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
     Dim colRetorno As New Collection
     Dim itemRetorno As Collection
 
-    Dim Total As Double
+    Dim total As Double
     Dim cheq As cheque
     For Each cheq In Me.ChequesTerceros
         If IsSomething(cheq.moneda) Then
@@ -323,3 +331,7 @@ Public Property Get TotalOrdenPago() As Double
     TotalOrdenPago = Me.TotalOrigenes + Me.StaticTotalRetenido    '+ Me.TotalCompensatorios
 
 End Property
+
+
+
+

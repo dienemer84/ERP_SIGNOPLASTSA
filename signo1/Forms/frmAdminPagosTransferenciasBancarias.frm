@@ -540,16 +540,16 @@ Private Sub CompletarGridEx()
     Dim condition As String
     condition = " 1 = 1 "
 
-    If Not IsNull(Me.dtpDesde.value) Then
-        condition = condition & " AND op.fecha_operacion >= " & conectar.Escape(Me.dtpDesde.value)
+    If Not IsNull(Me.dtpDesde.Value) Then
+        condition = condition & " AND op.fecha_operacion >= " & conectar.Escape(Me.dtpDesde.Value)
     End If
 
-    If Not IsNull(Me.dtpHasta.value) Then
-        condition = condition & " AND op.fecha_operacion <= " & conectar.Escape(Me.dtpHasta.value)
+    If Not IsNull(Me.dtpHasta.Value) Then
+        condition = condition & " AND op.fecha_operacion <= " & conectar.Escape(Me.dtpHasta.Value)
     End If
     
     If cboProveedores.ListIndex > -1 Then
-        condition = condition & " AND prov.id = " & cboProveedores.ItemData(Me.cboProveedores.ListIndex)
+        condition = condition & " AND (prov.id = " & cboProveedores.ItemData(Me.cboProveedores.ListIndex) & " OR prov1.Id = " & cboProveedores.ItemData(Me.cboProveedores.ListIndex) & ")"
     End If
     
     If Me.cboCuentaBancaria.ListIndex > -1 Then

@@ -699,8 +699,8 @@ End Sub
 
 
 Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.rowIndex > 0 And col.count > 0 Then
-        Set item = col.item(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 And col.count > 0 Then
+        Set item = col.item(RowBuffer.RowIndex)
         If item.estado = Anulada Then
             RowBuffer.RowStyle = "anulada"
         End If
@@ -709,12 +709,12 @@ End Sub
 
 Private Sub GridEX1_SelectionChange()
     If Me.GridEX1.row <> -1 Then
-        Set item = col.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
+        Set item = col.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
     End If
 End Sub
-Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set item = col.item(rowIndex)
+    Set item = col.item(RowIndex)
     Values(1) = IIf(item.estado = Anulada, "ANULADO", item.FEcha)
     Values(2) = item.Comprobante
     Values(3) = IIf(item.estado = Anulada, "ANULADO", item.RazonSocial)
@@ -732,11 +732,11 @@ Private Sub btnMostrar_Click()
     llenarLista
 End Sub
 
-Private Sub GridEX1_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 Then
+Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 Then
         If item.estado <> Anulada Then
             If MsgBox("¿Desea realmente actualizar los valores del item?", vbYesNo + vbQuestion) = vbYes Then
-                Set item = col.item(rowIndex)
+                Set item = col.item(RowIndex)
                 item.NetoGravado = Values(6)
                 item.Iva = Values(7)
                 item.percepciones = Values(8)
@@ -1001,7 +1001,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
         .Range("f" & x + 3, B).Font.Bold = True
 
-        .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot) + totales.item(PosicionTotales.TotExento)
+        .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
         .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
         .Cells(offset, 8).value = totales.item(PosicionTotales.totPercep)
         .Cells(offset, 7).value = totales.item(PosicionTotales.totIva)
@@ -1017,7 +1017,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1031,7 +1031,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_VENTAS_" & Periodo & ".xlsx"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 

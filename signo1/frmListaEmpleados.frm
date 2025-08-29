@@ -261,7 +261,7 @@ End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     On Error Resume Next
-    Set emple = empleados.item(Me.grilla.rowIndex(Me.grilla.row))
+    Set emple = empleados.item(Me.grilla.RowIndex(Me.grilla.row))
     ShowImage
     If Button = 2 And Not emple Is Nothing Then
         Me.mnuNuevoSiniestro.Enabled = Permisos.RRHHSiniestros
@@ -272,7 +272,7 @@ End Sub
 
 Private Sub grilla_SelectionChange()
     On Error Resume Next
-    Set emple = empleados.item(Me.grilla.rowIndex(Me.grilla.row))
+    Set emple = empleados.item(Me.grilla.RowIndex(Me.grilla.row))
     ShowImage
 End Sub
 Private Sub ShowImage()
@@ -295,9 +295,9 @@ Private Sub ShowImage()
 err1:
     Set imgFoto.Picture = Nothing
 End Sub
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Dim emple2 As clsEmpleado
-    Set emple2 = empleados.item(rowIndex)
+    Set emple2 = empleados.item(RowIndex)
 
     With Values
         .value(1) = emple2.Apellido & " " & emple2.nombre & " " & emple2.Nombres
@@ -369,5 +369,5 @@ Private Sub mnuTareas_Click()
 End Sub
 
 Private Sub PushButton1_Click()
-    If MsgBox("Esta seguro?", vbYesNo) = vbYes Then LabelHelper.PrintEtiquetaLegajos
+'''    If MsgBox("Esta seguro?", vbYesNo) = vbYes Then LabelHelper.PrintEtiquetaLegajos
 End Sub

@@ -277,7 +277,7 @@ Begin VB.Form frmVentasPresupuestoEditar
          _ExtentX        =   2143
          _ExtentY        =   450
          _Version        =   393216
-         Format          =   249495553
+         Format          =   66387969
          CurrentDate     =   38926
       End
       Begin XtremeSuiteControls.PushButton Command6 
@@ -1736,7 +1736,7 @@ Public Function MostrarPresupuesto(Optional BeforSave As Boolean = False)
     Me.txtReferencia = tmpPresupuesto.detalle
     Me.txtDias = tmpPresupuesto.FechaEntrega
     Me.txtDescuento = tmpPresupuesto.Descuento
-    Me.cboCliente.ListIndex = PosIndexCbo(tmpPresupuesto.cliente.Id, Me.cboCliente)
+    Me.cboCliente.ListIndex = PosIndexCbo(tmpPresupuesto.Cliente.Id, Me.cboCliente)
     Me.DTVencimiento = tmpPresupuesto.VencimientoPresupuesto
 
     If Not BeforSave Then llenarLista
@@ -1766,7 +1766,7 @@ Private Function Guardar() As Boolean
     End If
     g = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
     If g = 6 Then
-        Set tmpPresupuesto.cliente = DAOCliente.BuscarPorID(CLng(Me.cboCliente.ItemData(Me.cboCliente.ListIndex)))
+        Set tmpPresupuesto.Cliente = DAOCliente.BuscarPorID(CLng(Me.cboCliente.ItemData(Me.cboCliente.ListIndex)))
         tmpPresupuesto.Anticipo = CDbl(Me.txtAnticipo)
         tmpPresupuesto.Descuento = CDbl(Me.txtDescuento)
         tmpPresupuesto.detalle = UCase(Me.txtReferencia)
@@ -1821,13 +1821,13 @@ Private Sub cboCliente_Click()
     On Error GoTo err1
     If Not tmpPresupuesto Is Nothing Then
         Dim h As VbMsgBoxResult
-        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> CInt(tmpPresupuesto.cliente.Id) Then
+        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> CInt(tmpPresupuesto.Cliente.Id) Then
             h = MsgBox("¿Desea cambiar el cliente seleccionado?", vbYesNo, "Confirmación")
             If h = 6 Then
                 Me.grilla.ItemCount = 0
-                Set tmpPresupuesto.cliente = DAOCliente.BuscarPorID(Me.cboCliente.ListIndex)
+                Set tmpPresupuesto.Cliente = DAOCliente.BuscarPorID(Me.cboCliente.ListIndex)
             Else
-                Me.cboCliente.ItemData(Me.cboCliente.ListIndex) = tmpPresupuesto.cliente.Id
+                Me.cboCliente.ItemData(Me.cboCliente.ListIndex) = tmpPresupuesto.Cliente.Id
             End If
 
         End If
@@ -1856,7 +1856,7 @@ Private Sub Command1_Click()
     Dim Id As Long
     Dim f222 As New frmElegirPieza
     f222.Origen = 1    'desde un presupuesto
-    f222.cliente = tmpPresupuesto.cliente
+    f222.Cliente = tmpPresupuesto.Cliente
     f222.Show 1
 End Sub
 
@@ -1866,9 +1866,9 @@ Private Sub Command10_Click()
         Dim d As clsPresupuestoDetalle
 
         For Each A In grilla.SelectedItems
-            Set d = tmpPresupuesto.DetallePresupuesto(A.rowIndex)
+            Set d = tmpPresupuesto.DetallePresupuesto(A.RowIndex)
             d.Amortizacion = d.Cantidad
-            grilla.RefreshRowIndex A.rowIndex
+            grilla.RefreshRowIndex A.RowIndex
         Next
 
         grabado = False
@@ -1885,9 +1885,9 @@ Private Sub Command11_Click()
         Dim d As clsPresupuestoDetalle
 
         For Each A In grilla.SelectedItems
-            Set d = tmpPresupuesto.DetallePresupuesto(A.rowIndex)
+            Set d = tmpPresupuesto.DetallePresupuesto(A.RowIndex)
             d.Amortizacion = claseP.cantidadFabricada(d.Pieza.Id, d.Cantidad)
-            grilla.RefreshRowIndex A.rowIndex
+            grilla.RefreshRowIndex A.RowIndex
         Next
 
         grabado = False
@@ -1903,10 +1903,10 @@ Private Sub Command13_Click()
     Dim A As JSSelectedItem
     Dim B As clsPresupuestoDetalle
     For Each A In Me.grilla.SelectedItems
-        Set B = tmpPresupuesto.DetallePresupuesto(A.rowIndex)
+        Set B = tmpPresupuesto.DetallePresupuesto(A.RowIndex)
         B.ValorManual = funciones.FormatearDecimales(Math.Round(B.ValorManual, 0), 2)
 
-        grilla.RefreshRowIndex A.rowIndex
+        grilla.RefreshRowIndex A.RowIndex
     Next
 End Sub
 
@@ -1954,9 +1954,9 @@ Private Sub Command6_Click()
     Dim Fila As JSSelectedItem
     Dim dato As clsPresupuestoDetalle
     For Each Fila In grilla.SelectedItems
-        Set dato = tmpPresupuesto.DetallePresupuesto(Fila.rowIndex)
+        Set dato = tmpPresupuesto.DetallePresupuesto(Fila.RowIndex)
         dato.ValorManual = dato.ValorSistema
-        grilla.RefreshRowIndex Fila.rowIndex
+        grilla.RefreshRowIndex Fila.RowIndex
     Next
 End Sub
 
@@ -1968,7 +1968,7 @@ Private Sub imprimirPresu()
     Dim header As String
 
     headercenter = "PRESUPUESTO NUMERO " & tmpPresupuesto.Id & Chr(10) _
-                 & "Cliente: " & tmpPresupuesto.cliente.Id & " " & tmpPresupuesto.cliente.razon & Chr(10) _
+                 & "Cliente: " & tmpPresupuesto.Cliente.Id & " " & tmpPresupuesto.Cliente.razon & Chr(10) _
                  & "Referencia: " & tmpPresupuesto.detalle & Chr(10) _
                  & "Entrega: " & tmpPresupuesto.FechaEntrega & " días" & Chr(10)
 
@@ -2036,7 +2036,7 @@ Private Sub Command8_Click()
         ' Código para mostrar en Excel
         'MsgBox "Mostrar en Excel"
         ' Aquí puedes agregar el código específico para mostrar en Excel
-        Dim MaterializacionCompleta As New frmMaterializacionCompleta
+'''        Dim MaterializacionCompleta As New frmMaterializacionCompleta
   
         MaterializacionCompleta.Id = idpresu
         MaterializacionCompleta.Ot = False
@@ -2132,21 +2132,21 @@ Private Sub gg2_Click()
 
 End Sub
 
-Private Sub GridHistCot_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridHistCot_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
 
-    Values(1) = historico(rowIndex).Origen
-    Values(2) = historico(rowIndex).Cantidad
-    Values(3) = historico(rowIndex).Monto
-    Values(4) = historico(rowIndex).FEcha
+    Values(1) = historico(RowIndex).Origen
+    Values(2) = historico(RowIndex).Cantidad
+    Values(3) = historico(RowIndex).Monto
+    Values(4) = historico(RowIndex).FEcha
 End Sub
 
-Private Sub gridHistFab_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridHistFab_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Values(1) = historico(rowIndex).Origen
-    Values(2) = historico(rowIndex).Cantidad
-    Values(3) = historico(rowIndex).Monto
-    Values(4) = historico(rowIndex).FEcha
+    Values(1) = historico(RowIndex).Origen
+    Values(2) = historico(RowIndex).Cantidad
+    Values(3) = historico(RowIndex).Monto
+    Values(4) = historico(RowIndex).FEcha
 End Sub
 
 Private Sub grilla_BeforePrintPage(ByVal PageNumber As Long, ByVal nPages As Long)
@@ -2156,9 +2156,9 @@ Private Sub grilla_Click()
     verModoEdicion
 End Sub
 
-Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
-    Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(grilla.rowIndex(rowIndex))
+    Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(grilla.RowIndex(RowIndex))
 
     If CantArchivos.item(tmpDetalle.Pieza.Id) > 0 Then
         If ColIndex = 12 Then
@@ -2186,7 +2186,7 @@ End Sub
 
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If tmpPresupuesto.DetallePresupuesto.count > 0 Then
-        Set tmpDetalle = tmpPresupuesto.DetallePresupuesto(grilla.rowIndex(grilla.row))
+        Set tmpDetalle = tmpPresupuesto.DetallePresupuesto(grilla.RowIndex(grilla.row))
         If Button = 2 Then
             If tmpDetalle.Pieza.EsConjunto Then
                 Me.ver.caption = "Ver Conjunto..."
@@ -2201,7 +2201,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
-    Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(RowBuffer.rowIndex)
+    Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(RowBuffer.RowIndex)
     If tmpDetalle.FormaCotizar = FormaCotizar.automatica_ Then
         RowBuffer.CellStyle(3) = "auto"
     ElseIf tmpDetalle.FormaCotizar = Cantidad_ Then
@@ -2247,8 +2247,8 @@ Private Sub grilla_SelectionChange()
     On Error Resume Next
 
 
-    MostrarFormaCotizar tmpPresupuesto.DetallePresupuesto(grilla.rowIndex(grilla.row)).FormaCotizar
-    rows = grilla.rowIndex(grilla.row)
+    MostrarFormaCotizar tmpPresupuesto.DetallePresupuesto(grilla.RowIndex(grilla.row)).FormaCotizar
+    rows = grilla.RowIndex(grilla.row)
 
 
     If Me.TabControl1(2).Selected Then
@@ -2305,9 +2305,9 @@ Private Sub MostrarHistorico(Tipo As Integer)
     End If
 
 End Sub
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > tmpPresupuesto.DetallePresupuesto.count Then Exit Sub
-    Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(rowIndex)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > tmpPresupuesto.DetallePresupuesto.count Then Exit Sub
+    Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(RowIndex)
     With tmpDetalle
         Values(1) = .item
         Values(2) = .Cantidad
@@ -2325,9 +2325,9 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
     End With
 End Sub
 
-Private Sub grilla_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(rowIndex)
+    Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(RowIndex)
     tmpDetalle.item = Values(1)
     tmpDetalle.Cantidad = Values(2)
     tmpDetalle.entrega = Values(8)
@@ -2379,16 +2379,16 @@ End Function
 
 Private Sub VerFabricados()
     Dim deta As clsPresupuestoDetalle
-    Dim C As Long: C = 0
+    Dim c As Long: c = 0
     Dim fabri As Long: fabri = 0
     Dim tota As Long: tota = 0
     For Each deta In tmpPresupuesto.DetallePresupuesto
-        C = C + 1
+        c = c + 1
         If deta.Pieza.YaFabricada Then fabri = fabri + 1
     Next deta
 
     If tmpPresupuesto.DetallePresupuesto.count > 0 Then
-        tota = 100 - funciones.FormatearDecimales((fabri / C) * 100, 1)
+        tota = 100 - funciones.FormatearDecimales((fabri / c) * 100, 1)
         If tota = 0 Then
             Me.lblAFabricar = "** El pedido fue fabricado en algún momento **"
         Else
@@ -2478,9 +2478,9 @@ Private Sub cambiar(A As FormaCotizar)
     Dim row_data As JSRowData
     Dim deta As clsPresupuestoDetalle
     For Each Fila In grilla.SelectedItems
-        Set deta = tmpPresupuesto.DetallePresupuesto(Fila.rowIndex)
+        Set deta = tmpPresupuesto.DetallePresupuesto(Fila.RowIndex)
         deta.FormaCotizar = A
-        grilla.RefreshRowIndex Fila.rowIndex
+        grilla.RefreshRowIndex Fila.RowIndex
     Next
 End Sub
 Private Sub mnuArchiPedido_Click()
@@ -2540,7 +2540,7 @@ Private Sub Qui_Click()
 
     For i = tmpPresupuesto.DetallePresupuesto.count To 1 Step -1
         For Each si In Me.grilla.SelectedItems
-            If si.rowIndex = i Then
+            If si.RowIndex = i Then
                 tmpPresupuesto.DetallePresupuesto.remove i
                 Exit For
             End If
@@ -2655,14 +2655,14 @@ Public Sub recalcule()
     Me.progreso.Visible = True
     Me.lblRecalculando.Visible = True
 
-    C = 0
+    c = 0
 
 
 
     For Each deta In tmpPresupuesto.DetallePresupuesto
-        C = C + 1
+        c = c + 1
         Set tmpDetalle = tmpPresupuesto.DetallePresupuesto(nn)
-        Me.progreso.value = C
+        Me.progreso.value = c
         Dim fl As FetchLevel
         If deta.Pieza.EsConjunto = False Then    'si no es conjunto no hago el fetch es al pedo y gano reindimiento
             fl = FL_0
@@ -2714,7 +2714,7 @@ Private Sub txtReferencia_LostFocus()
 End Sub
 Private Sub ver_Click()
     If tmpPresupuesto.DetallePresupuesto.count > 0 Then
-        Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(grilla.rowIndex(grilla.row))
+        Set tmpDetalle = tmpPresupuesto.DetallePresupuesto.item(grilla.RowIndex(grilla.row))
 
         Dim F As New frmDesarrollo
         Load F

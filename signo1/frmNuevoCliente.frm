@@ -559,7 +559,7 @@ Attribute VB_Exposed = False
 Dim vCliente As clsCliente
 Dim strsql As String
 
-Public Property Let cliente(nvalue As clsCliente)
+Public Property Let Cliente(nvalue As clsCliente)
     Set vCliente = nvalue
 End Property
 
@@ -575,11 +575,13 @@ Private Sub Guardar()
     telefono = UCase(Text1(4))
     Fax = UCase(Text1(5))
     email = UCase(Text1(6))
-    ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
+    ivan = Me.CboIVA.ItemData(Me.CboIVA.ListIndex)
     Cuit = Trim(Text1(7))
     FP = UCase(Me.txtFP)
     FP_detalle = UCase(Me.txtDetalleFP)
     valido = Val(Me.chkValido.value)
+    
+    pais = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
     
     IDImpositivo = UCase(Me.txtIDImpositivo)
     CuitPais = UCase(Me.txtCuitPais)
@@ -619,32 +621,34 @@ Private Sub Guardar()
                 MsgBox aa, vbCritical, "Error"
             Else
 
-                Dim cliente As New clsCliente
+                Dim Cliente As New clsCliente
 
                 '31.10.22- SE AGREGA ESTA LINEA PARA QUE TOME EL VALOR DEL IVA
-                Set cliente.TipoIVA = DAOTipoIva.GetById(ivan)
+                Set Cliente.TipoIVA = DAOTipoIva.GetById(ivan)
 
-                cliente.Cuit = Cuit
-                cliente.Domicilio = Domicilio
-                cliente.email = email
-                cliente.estado = EstadoCliente.activo
-                cliente.Fax = Fax
+                Cliente.Cuit = Cuit
+                Cliente.Domicilio = Domicilio
+                Cliente.email = email
+                Cliente.estado = EstadoCliente.activo
+                Cliente.Fax = Fax
 
-                cliente.PasswordSistema = 0
-                cliente.razon = razon
-                cliente.FormaPago = FP_detalle
-                cliente.telefono = telefono
-                cliente.ValidoRemitoFactura = valido
-                cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
-                cliente.CodigoPostal = CodigoPOS
+                Cliente.PasswordSistema = 0
+                Cliente.razon = razon
+                Cliente.FormaPago = FP_detalle
+                Cliente.telefono = telefono
+                Cliente.ValidoRemitoFactura = valido
+                Cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
+                Cliente.CodigoPostal = CodigoPOS
                 
-                                cliente.FP = FP
+                                Cliente.FP = FP
                                 
-                cliente.IDImpositivo = IDImpositivo
-                cliente.CuitPais = CuitPais
+                Cliente.IDImpositivo = IDImpositivo
+                Cliente.CuitPais = CuitPais
                 
-                Set cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-                Set cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+                Set Cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+                Set Cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+                Set Cliente.pais = DAOPais.FindById(Me.cboPaises.ItemData(Me.cboPaises.ListIndex))
+                
 
                 Dim F As String
                 F = "c.cuit = " & Escape(Text1(7))
@@ -652,16 +656,20 @@ Private Sub Guardar()
                 If IsSomething(vCliente) Then
                     F = F & " AND c.id <> " & vCliente.Id
                 End If
+                
+                If Cliente.pais.Id = 1 Then ' Argentina
+                    If DAOCliente.FindAll(F).count > 0 Then
+                        MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
+                        Exit Sub
+                    End If
+                End If
+        
 
-                If DAOCliente.FindAll(F).count > 0 Then
-                    MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
-                Else
-
-                    If DAOCliente.crear(cliente) Then
+                    If DAOCliente.crear(Cliente) Then
                         MsgBox "Alta Exitosa!", vbInformation, "Información"
 
                         Set EVENTO = New clsEventoObserver
-                        Set EVENTO.Elemento = cliente
+                        Set EVENTO.Elemento = Cliente
                         EVENTO.EVENTO = agregar_
                         Set EVENTO.Originador = Me
                         Channel.Notificar EVENTO, Clientes_
@@ -705,7 +713,7 @@ Private Sub Guardar()
 
 
                 Set EVENTO = New clsEventoObserver
-                Set EVENTO.Elemento = cliente
+                Set EVENTO.Elemento = Cliente
                 EVENTO.EVENTO = modificar_
                 Set EVENTO.Originador = Me
                 Channel.Notificar EVENTO, Clientes_
@@ -717,7 +725,7 @@ Private Sub Guardar()
             End If
 
         End If
-    End If
+    'End If
     Exit Sub
 err2:
 
@@ -779,7 +787,7 @@ Private Sub Form_Load()
     For x = 0 To 10
         Text1(x) = Empty
     Next x
-    DAOTipoIva.LlenarCombo Me.cboIVA
+    DAOTipoIva.LlenarCombo Me.CboIVA
     Command1.caption = "Agregar"
     Me.caption = "Agregar Cliente..."
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
@@ -848,7 +856,7 @@ Private Sub llenarForm()
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
         txtFP = .FP
         Me.txtDetalleFP = .FormaPago
-        cboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIVA)
+        CboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, CboIVA)
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vCliente.idMonedaDefault, Me.cboMonedas)
 
     End With

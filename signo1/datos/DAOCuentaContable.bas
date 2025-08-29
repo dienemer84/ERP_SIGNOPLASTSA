@@ -433,3 +433,24 @@ Public Function ExportarColeccion(col As Collection, rango As String) As Boolean
 err1:
     ExportarColeccion = False
 End Function
+
+
+Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, _
+                                  Optional EstadoCtaCte As Boolean = False, _
+                                  Optional EstadoContado As Boolean = True, _
+                                  Optional EstadoEliminado As Boolean = False)
+    Dim col As Collection
+    Set col = DAOCuentaContable.GetAll(False, "")
+    Dim ctacontable As clsCuentaContable
+    cbo.Clear
+    Dim i As Integer
+    For i = 1 To col.count
+        Set ctacontable = col(i)
+        cbo.AddItem ctacontable.nombre
+        cbo.ItemData(cbo.NewIndex) = ctacontable.Id
+    Next i
+    If cbo.ListCount > 0 Then
+        cbo.ListIndex = 0
+    End If
+End Sub
+

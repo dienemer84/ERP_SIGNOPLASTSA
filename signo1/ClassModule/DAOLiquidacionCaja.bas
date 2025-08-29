@@ -20,11 +20,11 @@ Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Col
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim C As New Collection
-    C.Add tot
-    C.Add ng
-    C.Add Otros
-    Set FindAbonadoPendienteEnEstaOP = C
+    Dim c As New Collection
+    c.Add tot
+    c.Add ng
+    c.Add Otros
+    Set FindAbonadoPendienteEnEstaOP = c
 
 End Function
 
@@ -48,11 +48,11 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim C As New Collection
-    C.Add tot
-    C.Add ng
-    C.Add Otros
-    Set FindAbonadoPendiente = C
+    Dim c As New Collection
+    c.Add tot
+    c.Add ng
+    c.Add Otros
+    Set FindAbonadoPendiente = c
 End Function
 
 
@@ -75,11 +75,11 @@ Public Function FindAbonadoFactura(facid As Long, ocid As Long) As Collection
     ng = rs!netogravado_pendiente
     Otros = rs!otros_pendiente
 
-    Dim C As New Collection
-    C.Add tot
-    C.Add ng
-    C.Add Otros
-    Set FindAbonadoFactura = C
+    Dim c As New Collection
+    c.Add tot
+    c.Add ng
+    c.Add Otros
+    Set FindAbonadoFactura = c
 
 End Function
 
@@ -237,7 +237,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
             End If
 
         End If
-       Set che = DAOCheques.Map(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco", "rec")
+       Set che = DAOCheques.Map3(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco", "rec")
         
 
 If IsSomething(che) Then
@@ -260,8 +260,8 @@ If IsSomething(che) Then
                     liq.operacionesBanco.Add oper, CStr(oper.Id)
                 End If
             ElseIf oper.Pertenencia = caja Then
-                If Not funciones.BuscarEnColeccion(liq.operacionesCaja, CStr(oper.Id)) Then
-                    liq.operacionesCaja.Add oper, CStr(oper.Id)
+                If Not funciones.BuscarEnColeccion(liq.OperacionesCaja, CStr(oper.Id)) Then
+                    liq.OperacionesCaja.Add oper, CStr(oper.Id)
                 End If
             End If
         End If
@@ -339,7 +339,7 @@ Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
         Set ra = New DTORetencionAlicuota
         ra.alicuotaRetencion = GetValue(rs, indice, tabla, "alicuota")
         Set ra.Retencion = DAORetenciones.Map(rs, indice, TablaRetenciones)
-        ra.importe = GetValue(rs, indice, tabla, "total")
+        ra.Importe = GetValue(rs, indice, tabla, "total")
 
         'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
     End If
@@ -379,9 +379,7 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
     'VALIDAR BIEN LOS TOTALES ANTES DE PODER APROBAR
     'verificar que las facturas esten todas aprobadsa...
     Dim F As clsFacturaProveedor
-    Dim nopago As Double
-    Dim nopago1 As Double
-
+    
     Dim otrosvalores As Double
 
     Dim esf As EstadoFacturaProveedor
@@ -389,13 +387,18 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
     Dim q As String
     
     For Each F In liq.FacturasProveedor
-'        '        fac.ImporteTotalAbonado = fac.NetoGravado + fac.OtrosAbonado
-'        F.ImporteTotalAbonado = F.TotalAplicadoACuentas + F.TotalOtros
-'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & liq.Id & ", " & F.Id & "," & F.ImporteTotalAbonado & "," & F.TotalAplicadoACuentas & "," & F.TotalOtros & ")"
-'
-''        q = "UPDATE liquidaciones_caja_facturas SET total_liquidado = " & F.ImporteTotalAbonado & ", neto_gravado_liquidado = " & F.TotalAplicadoACuentas & ", otros_liquidado = " & F.TotalOtros & " WHERE id_liquidacion_caja =" & liq.Id & " AND id_factura_proveedor =" & F.Id
-'
-'        If Not conectar.execute(q) Then GoTo err1
+    
+       Set F = DAOFacturaProveedor.FindById(F.Id)
+    
+       F.ImporteTotalAbonado = F.NetoGravado + F.OtrosAbonado
+       
+       F.ImporteTotalAbonado = F.TotalAplicadoACuentas + F.TotalOtros
+       
+       'q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & liq.Id & ", " & F.Id & "," & F.ImporteTotalAbonado & "," & F.TotalAplicadoACuentas & "," & F.TotalOtros & ")"
+
+        q = "UPDATE liquidaciones_caja_facturas SET total_liquidado = " & F.ImporteTotalAbonado & ", neto_gravado_liquidado = " & F.TotalAplicadoACuentas & ", otros_liquidado = " & F.TotalOtros & " WHERE id_liquidacion_caja =" & liq.Id & " AND id_factura_proveedor =" & F.Id
+
+      If Not conectar.execute(q) Then GoTo err1
     
 
         '        Dim fac As clsFacturaProveedor
@@ -480,21 +483,6 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
             End If
         Next
 
-
-        '        If liq.StaticTotalRetenido > 0 Then
-        '
-        '            Dim ra As DTORetencionAlicuota
-        '            For Each ra In liq.RetencionesAlicuota
-        '
-        '
-        '                If IsSomething(DAOCertificadoRetencion.Create(liq, ra.Retencion, ra.alicuotaRetencion, True)) Then
-        '                    MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
-        '                Else
-        '                    GoTo err1
-        '                End If
-        '            Next
-        '
-        '        End If
     Else
         GoTo err1
     End If
@@ -712,7 +700,7 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         End If
     Next oper
 
-    For Each oper In op.operacionesCaja
+    For Each oper In op.OperacionesCaja
         'oper.IdPertenencia = op.Id no se usa creo
         oper.FechaCarga = Now
         If DAOOperacion.Save(oper) Then
@@ -1023,7 +1011,7 @@ E:
 End Function
 
 
-Public Function ResumenPagos(ByRef cheques As Collection, ByRef caja As Collection, ByRef bancos As Collection, ByRef comp As Collection, ByRef retenciones As Collection, ByRef cheques3 As Collection, Optional filtro As String, Optional idProveedor As Long = -1) As Boolean
+Public Function ResumenPagos(ByRef Cheques As Collection, ByRef caja As Collection, ByRef bancos As Collection, ByRef comp As Collection, ByRef retenciones As Collection, ByRef cheques3 As Collection, Optional filtro As String, Optional idProveedor As Long = -1) As Boolean
     On Error GoTo err1
     ResumenPagos = True
     Dim q As String
@@ -1048,7 +1036,7 @@ If LenB(filtro) > 0 Then
         Set d = New DTONombreMonto
         d.Monto = rs!Monto
         d.nombre = rs!nombre
-        cheques.Add d
+        Cheques.Add d
         rs.MoveNext
     Wend
 
@@ -1168,7 +1156,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja) As Boolean
     Dim TAB2 As Integer
     Dim TAB3 As Integer
     Dim maxw As Single
-    Dim C As Long
+    Dim c As Long
     Dim mtxt As String
     Dim tttxt As String
     Dim textw As Single
@@ -1262,11 +1250,11 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja) As Boolean
     ' Imprimir los datos de los comprobantes
     Set LiquidacionCaja.FacturasProveedor = DAOFacturaProveedor.FindAllByLiquidacionCaja(LiquidacionCaja.Id)
     
-    C = 0
+    c = 0
     
     For Each F In LiquidacionCaja.FacturasProveedor
     
-    C = C + 1
+    c = c + 1
     ' Columna 1: Número
     Printer.CurrentX = lmargin
     Printer.Print F.NumeroFormateado;
@@ -1295,7 +1283,7 @@ Public Function PrintLiq(LiquidacionCaja As clsLiquidacionCaja) As Boolean
     
 Next F
     
-    If C = 0 Then
+    If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE COMPROBANTES ASOCIADAS"
     End If
@@ -1316,15 +1304,15 @@ Next F
     Printer.Print "Cheques Propios: "
     Printer.FontBold = False
     Dim cheq As cheque
-    C = 0
+    c = 0
     
     For Each cheq In LiquidacionCaja.ChequesPropios
-        C = C + 1
+        c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
     Next cheq
     
-    If C = 0 Then
+    If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE CHEQUES PROPIOS"
     End If
@@ -1334,13 +1322,13 @@ Next F
     Printer.Print "Cheques de Terceros: "
     Printer.FontBold = False
     Set tmpCol = New Collection
-    C = 0
+    c = 0
     For Each cheq In LiquidacionCaja.ChequesTerceros
-        C = C + 1
+        c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
     Next cheq
-    If C = 0 Then
+    If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE CHEQUES DE TERCEROS"
     End If
@@ -1352,13 +1340,13 @@ Next F
 
     Dim op As operacion
     Set tmpCol = New Collection
-    C = 0
+    c = 0
     For Each op In LiquidacionCaja.operacionesBanco
-        C = C + 1
+        c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(2, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | Cta.Bancaria: " & op.CuentaBancaria.DescripcionFormateada & " | Nro. Cbte: " & op.Comprobante
     Next op
-    If C = 0 Then
+    If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE TRANSFERENCIAS"
     End If
@@ -1370,13 +1358,13 @@ Next F
 
 
     Set tmpCol = New Collection
-    C = 0
-    For Each op In LiquidacionCaja.operacionesCaja
-        C = C + 1
+    c = 0
+    For Each op In LiquidacionCaja.OperacionesCaja
+        c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(2, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
     Next op
-    If C = 0 Then
+    If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE OPERACIONES EN EFECTIVO"
     End If

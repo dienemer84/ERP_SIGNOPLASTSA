@@ -126,30 +126,31 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   9
+      ColumnsCount    =   10
       Column(1)       =   "frmOrdenesPago.frx":0000
       Column(2)       =   "frmOrdenesPago.frx":0178
       Column(3)       =   "frmOrdenesPago.frx":02B8
       Column(4)       =   "frmOrdenesPago.frx":0400
       Column(5)       =   "frmOrdenesPago.frx":0548
       Column(6)       =   "frmOrdenesPago.frx":06A0
-      Column(7)       =   "frmOrdenesPago.frx":07E0
-      Column(8)       =   "frmOrdenesPago.frx":0920
-      Column(9)       =   "frmOrdenesPago.frx":0A40
+      Column(7)       =   "frmOrdenesPago.frx":07EC
+      Column(8)       =   "frmOrdenesPago.frx":092C
+      Column(9)       =   "frmOrdenesPago.frx":0A6C
+      Column(10)      =   "frmOrdenesPago.frx":0B8C
       FormatStylesCount=   11
-      FormatStyle(1)  =   "frmOrdenesPago.frx":0B88
-      FormatStyle(2)  =   "frmOrdenesPago.frx":0CB0
-      FormatStyle(3)  =   "frmOrdenesPago.frx":0D60
-      FormatStyle(4)  =   "frmOrdenesPago.frx":0E14
-      FormatStyle(5)  =   "frmOrdenesPago.frx":0EEC
-      FormatStyle(6)  =   "frmOrdenesPago.frx":0FA4
-      FormatStyle(7)  =   "frmOrdenesPago.frx":1084
-      FormatStyle(8)  =   "frmOrdenesPago.frx":10A4
-      FormatStyle(9)  =   "frmOrdenesPago.frx":1158
-      FormatStyle(10) =   "frmOrdenesPago.frx":1210
-      FormatStyle(11) =   "frmOrdenesPago.frx":12C4
+      FormatStyle(1)  =   "frmOrdenesPago.frx":0CD4
+      FormatStyle(2)  =   "frmOrdenesPago.frx":0DFC
+      FormatStyle(3)  =   "frmOrdenesPago.frx":0EAC
+      FormatStyle(4)  =   "frmOrdenesPago.frx":0F60
+      FormatStyle(5)  =   "frmOrdenesPago.frx":1038
+      FormatStyle(6)  =   "frmOrdenesPago.frx":10F0
+      FormatStyle(7)  =   "frmOrdenesPago.frx":11D0
+      FormatStyle(8)  =   "frmOrdenesPago.frx":11F0
+      FormatStyle(9)  =   "frmOrdenesPago.frx":12A4
+      FormatStyle(10) =   "frmOrdenesPago.frx":135C
+      FormatStyle(11) =   "frmOrdenesPago.frx":1410
       ImageCount      =   0
-      PrinterProperties=   "frmOrdenesPago.frx":1380
+      PrinterProperties=   "frmOrdenesPago.frx":14CC
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1935
@@ -713,7 +714,10 @@ Private Sub llenarLista()
 
     Me.gridOrdenes.ItemCount = 0
     
+    
     Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
+    
+
     
     Me.gridOrdenes.ItemCount = ordenes.count
 
@@ -810,20 +814,22 @@ Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
 
         Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
         Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalRetenido)), "$", "")
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)), "$", "")
+  
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalPagosACta)), "$", "")
+        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)), "$", "")
 
         If Orden.EsParaFacturaProveedor Then
             Set fac = Orden.FacturasProveedor.item(1)
-            Values(7) = "Factura Proveedor"
-            Values(8) = fac.Proveedor.RazonSocial
+            Values(8) = "Factura Proveedor"
+            Values(9) = fac.Proveedor.RazonSocial
         Else
-            Values(7) = "Cuenta Contable"
+            Values(8) = "Cuenta Contable"
             If IsSomething(Orden.CuentaContable) Then
-                Values(8) = Orden.CuentaContable.nombre & " (" & Orden.CuentaContable.codigo & ")"
+                Values(9) = Orden.CuentaContable.nombre & " (" & Orden.CuentaContable.codigo & ")"
             End If
         End If
 
-        Values(9) = enums.EnumEstadoOrdenPago(Orden.estado)
+        Values(10) = enums.EnumEstadoOrdenPago(Orden.estado)
     End If
 End Sub
 

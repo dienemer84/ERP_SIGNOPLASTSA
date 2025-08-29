@@ -654,7 +654,7 @@ Attribute Deserialize.VB_HelpID = 2006
     Set m_oSaxReader = New SAXXMLReader
     With m_oSaxReader
         Set .contentHandler = Me
-        Set .errorhandler = Me
+        Set .ErrorHandler = Me
         .Parse sXML    'when this is called, the IVBSAXContentHandler events will fire
     End With
 

@@ -74,9 +74,12 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
             Set op.caja = DAOCaja.Map(rs, indice, tablaCaja)
         End If
         
+        On Error Resume Next ' Ignorar errores de referencia nula
+        
         If LenB(tablaBanco) > 0 Then Set op.CuentaBancaria.Banco = DAOBancos.Map(rs, indice, tablaBanco)
         If LenB(tablaMonedas) > 0 Then Set op.CuentaBancaria.moneda = DAOMoneda.Map(rs, indice, tablaMonedas)
         
+        On Error GoTo 0 ' Restaurar el manejo normal de errores
     End If
 
     Set Map = op

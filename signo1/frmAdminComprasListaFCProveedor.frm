@@ -14,14 +14,14 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ScaleMode       =   0  'User
    ScaleWidth      =   20089.83
    Begin XtremeSuiteControls.GroupBox GroupBox5 
-      Height          =   3360
+      Height          =   3840
       Left            =   11160
       TabIndex        =   35
       Top             =   0
       Width           =   7575
       _Version        =   786432
       _ExtentX        =   13361
-      _ExtentY        =   5927
+      _ExtentY        =   6773
       _StockProps     =   79
       BackColor       =   16744576
       UseVisualStyle  =   -1  'True
@@ -204,23 +204,73 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   3360
+      Height          =   3840
       Left            =   0
       TabIndex        =   1
       Top             =   0
       Width           =   11130
       _Version        =   786432
       _ExtentX        =   19632
-      _ExtentY        =   5927
+      _ExtentY        =   6773
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       BackColor       =   16744576
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton PushButton2 
+         Height          =   255
+         Left            =   5400
+         TabIndex        =   58
+         Top             =   750
+         Width           =   420
+         _Version        =   786432
+         _ExtentX        =   741
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboTipoLetra 
+         Height          =   315
+         Left            =   4470
+         TabIndex        =   57
+         Top             =   720
+         Width           =   855
+         _Version        =   786432
+         _ExtentX        =   1508
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+      End
+      Begin XtremeSuiteControls.PushButton PushButton1 
+         Height          =   255
+         Left            =   3480
+         TabIndex        =   55
+         Top             =   740
+         Width           =   420
+         _Version        =   786432
+         _ExtentX        =   741
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "X"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.ComboBox cboTipoCbte 
+         Height          =   315
+         Left            =   1440
+         TabIndex        =   53
+         Top             =   705
+         Width           =   1965
+         _Version        =   786432
+         _ExtentX        =   3466
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+      End
       Begin XtremeSuiteControls.PushButton btnClearCtaCble_Click 
          Height          =   255
-         Left            =   5520
+         Left            =   5400
          TabIndex        =   45
-         Top             =   1920
+         Top             =   2445
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -234,7 +284,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   315
          Left            =   1440
          TabIndex        =   19
-         Top             =   2835
+         Top             =   3315
          Width           =   3885
          _Version        =   786432
          _ExtentX        =   6853
@@ -246,21 +296,21 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   315
          Left            =   3720
          TabIndex        =   16
-         Top             =   2445
+         Top             =   2925
          Width           =   1600
       End
       Begin VB.TextBox txtMontoDesde1 
          Height          =   315
          Left            =   1440
          TabIndex        =   15
-         Top             =   2445
+         Top             =   2925
          Width           =   1600
       End
       Begin XtremeSuiteControls.PushButton btnClearFormaDePago 
          Height          =   255
-         Left            =   5520
+         Left            =   5400
          TabIndex        =   11
-         Top             =   1485
+         Top             =   1965
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -274,7 +324,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   315
          Left            =   1440
          TabIndex        =   6
-         Top             =   645
+         Top             =   1125
          Width           =   3885
       End
       Begin XtremeSuiteControls.ComboBox cboProveedores 
@@ -288,11 +338,10 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
-         Text            =   "cboProveedores"
       End
       Begin XtremeSuiteControls.PushButton btnRemoveProveedor 
          Height          =   255
-         Left            =   5520
+         Left            =   5400
          TabIndex        =   4
          Top             =   285
          Width           =   420
@@ -306,9 +355,9 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
       Begin XtremeSuiteControls.PushButton btnRemoveEstado 
          Height          =   255
-         Left            =   5520
+         Left            =   5400
          TabIndex        =   8
-         Top             =   1080
+         Top             =   1560
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -322,7 +371,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   315
          Left            =   1440
          TabIndex        =   7
-         Top             =   1050
+         Top             =   1530
          Width           =   3885
          _Version        =   786432
          _ExtentX        =   6853
@@ -337,7 +386,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   315
          Left            =   1440
          TabIndex        =   10
-         Top             =   1440
+         Top             =   1920
          Width           =   3885
          _Version        =   786432
          _ExtentX        =   6853
@@ -546,7 +595,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   315
          Left            =   1425
          TabIndex        =   43
-         Top             =   1920
+         Top             =   2400
          Width           =   3885
          _Version        =   786432
          _ExtentX        =   6853
@@ -555,11 +604,43 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          BackColor       =   -2147483643
          Sorted          =   -1  'True
       End
+      Begin XtremeSuiteControls.Label Label2 
+         Height          =   195
+         Index           =   2
+         Left            =   4050
+         TabIndex        =   56
+         Top             =   765
+         Width           =   360
+         _Version        =   786432
+         _ExtentX        =   635
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Letra"
+         BackColor       =   12632256
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label Label2 
+         Height          =   195
+         Index           =   1
+         Left            =   600
+         TabIndex        =   54
+         Top             =   765
+         Width           =   735
+         _Version        =   786432
+         _ExtentX        =   1296
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Tipo Cbte."
+         BackColor       =   12632256
+         Alignment       =   1
+         AutoSize        =   -1  'True
+      End
       Begin XtremeSuiteControls.Label Label12 
          Height          =   195
          Left            =   360
          TabIndex        =   44
-         Top             =   1950
+         Top             =   2430
          Width           =   960
          _Version        =   786432
          _ExtentX        =   1693
@@ -577,7 +658,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   195
          Left            =   720
          TabIndex        =   20
-         Top             =   2895
+         Top             =   3375
          Width           =   615
       End
       Begin XtremeSuiteControls.Label Label8 
@@ -585,7 +666,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Index           =   1
          Left            =   300
          TabIndex        =   18
-         Top             =   2520
+         Top             =   3000
          Width           =   1035
          _Version        =   786432
          _ExtentX        =   1826
@@ -600,7 +681,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Index           =   1
          Left            =   3240
          TabIndex        =   17
-         Top             =   2520
+         Top             =   3000
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -614,7 +695,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   195
          Left            =   240
          TabIndex        =   12
-         Top             =   1480
+         Top             =   1965
          Width           =   1095
          _Version        =   786432
          _ExtentX        =   1931
@@ -628,7 +709,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
          Height          =   195
          Left            =   840
          TabIndex        =   9
-         Top             =   1120
+         Top             =   1605
          Width           =   495
          _Version        =   786432
          _ExtentX        =   873
@@ -641,9 +722,10 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
       Begin XtremeSuiteControls.Label Label2 
          Height          =   195
+         Index           =   0
          Left            =   165
          TabIndex        =   5
-         Top             =   720
+         Top             =   1200
          Width           =   1170
          _Version        =   786432
          _ExtentX        =   2064
@@ -669,13 +751,13 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   5175
+      Height          =   4455
       Left            =   0
       TabIndex        =   0
-      Top             =   3480
+      Top             =   3960
       Width           =   18690
       _ExtentX        =   32967
-      _ExtentY        =   9128
+      _ExtentY        =   7858
       Version         =   "2.0"
       PreviewRowIndent=   100
       AutomaticSort   =   -1  'True
@@ -847,10 +929,10 @@ Private Sub cboRangosCarga_Click()
 End Sub
 
 Private Sub checkVerIds_Click()
-    If Me.checkVerIds.Value = xtpUnchecked Then
+    If Me.checkVerIds.value = xtpUnchecked Then
         Me.grilla.Columns(22).Visible = False
 
-    ElseIf Me.checkVerIds.Value = xtpChecked Then
+    ElseIf Me.checkVerIds.value = xtpChecked Then
         Me.grilla.Columns(22).Visible = True
         Me.grilla.Columns(22).Width = 800
     End If
@@ -936,7 +1018,7 @@ Private Sub btnBuscar_Click()
 End Sub
 
 Private Sub editar_Click()
-    Set Factura = facturas.item(grilla.rowIndex(grilla.row))
+    Set Factura = facturas.item(grilla.RowIndex(grilla.row))
     Dim frm As frmAdminComprasNuevaFCProveedor
     Set frm = New frmAdminComprasNuevaFCProveedor
 
@@ -948,7 +1030,7 @@ Private Sub finalizar_Click()
     If Me.grilla.ItemCount > 0 Then
         SeleccionarFactura
         Dim l As Long
-        l = grilla.rowIndex(grilla.row)
+        l = grilla.RowIndex(grilla.row)
         If MsgBox("¿Desea aprobar la factura?", vbQuestion + vbYesNo) = vbYes Then
             If DAOFacturaProveedor.aprobar(Factura) Then
                 MsgBox "Factura aprobada con éxito!", vbInformation, "Información"
@@ -959,7 +1041,7 @@ Private Sub finalizar_Click()
                 If Not Factura.FormaPagoCuentaCorriente Then MsgBox "El pago de la factura ha sido registrado con la orden de pago Nº " & DAOOrdenPago.FindLast().Id & ".", vbInformation
 
                 '                Dim tmp As clsFacturaProveedor
-                facturas.item(grilla.rowIndex(grilla.row)).estado = Factura.estado
+                facturas.item(grilla.RowIndex(grilla.row)).estado = Factura.estado
 
 
                 grilla.RefreshRowIndex l
@@ -982,6 +1064,10 @@ Private Sub Form_Load()
         cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
     Next
 
+    llenarComboTipo
+    
+    llenarLetraTipo
+    
     llenarComboEstado
 
     llenarComboFormaPago
@@ -1020,11 +1106,44 @@ Private Sub Form_Load()
 
     funciones.FillComboBoxDateRanges Me.cboRangosCarga
 
-    Me.dtpDesdeCarga.Value = Null
-    Me.dtpHastaCarga.Value = Null
+    Me.dtpDesdeCarga.value = Null
+    Me.dtpHastaCarga.value = Null
 
     Me.grilla.Refresh
 
+End Sub
+
+Private Sub llenarComboTipo()
+    Me.cboTipoCbte.Clear
+    
+    Me.cboTipoCbte.AddItem enums.EnumTipoDocumentoContable(0)
+    Me.cboTipoCbte.ItemData(Me.cboTipoCbte.NewIndex) = tipoDocumentoContable.Factura
+    Me.cboTipoCbte.AddItem enums.EnumTipoDocumentoContable(1)
+    Me.cboTipoCbte.ItemData(Me.cboTipoCbte.NewIndex) = tipoDocumentoContable.notaCredito
+    Me.cboTipoCbte.AddItem enums.EnumTipoDocumentoContable(2)
+    Me.cboTipoCbte.ItemData(Me.cboTipoCbte.NewIndex) = tipoDocumentoContable.notaDebito
+    Me.cboTipoCbte.AddItem enums.EnumTipoDocumentoContable(3)
+    Me.cboTipoCbte.ItemData(Me.cboTipoCbte.NewIndex) = tipoDocumentoContable.DespachoAduana
+    Me.cboTipoCbte.AddItem enums.EnumTipoDocumentoContable(4)
+    Me.cboTipoCbte.ItemData(Me.cboTipoCbte.NewIndex) = tipoDocumentoContable.LiquidacionBancaria
+    Me.cboTipoCbte.AddItem enums.EnumTipoDocumentoContable(5)
+    Me.cboTipoCbte.ItemData(Me.cboTipoCbte.NewIndex) = tipoDocumentoContable.CompraBienesUsados
+    
+End Sub
+
+
+Private Sub llenarLetraTipo()
+    Me.cboTipoLetra.Clear
+    
+    ' Agrego letra visible y asigno su valor (según tu tabla)
+    Me.cboTipoLetra.AddItem "A": Me.cboTipoLetra.ItemData(Me.cboTipoLetra.NewIndex) = 5
+    Me.cboTipoLetra.AddItem "B": Me.cboTipoLetra.ItemData(Me.cboTipoLetra.NewIndex) = 3
+    Me.cboTipoLetra.AddItem "C": Me.cboTipoLetra.ItemData(Me.cboTipoLetra.NewIndex) = 0
+    Me.cboTipoLetra.AddItem "E": Me.cboTipoLetra.ItemData(Me.cboTipoLetra.NewIndex) = 4
+    Me.cboTipoLetra.AddItem "X": Me.cboTipoLetra.ItemData(Me.cboTipoLetra.NewIndex) = 1
+    Me.cboTipoLetra.AddItem "M": Me.cboTipoLetra.ItemData(Me.cboTipoLetra.NewIndex) = 2
+
+    
 End Sub
 
 Private Sub llenarComboEstado()
@@ -1065,20 +1184,20 @@ Public Sub llenarGrilla()
     Dim condition As String
     condition = " 1 = 1 "
 
-    If Not IsNull(Me.dtpDesde.Value) Then
-        condition = condition & " AND AdminComprasFacturasProveedores.fecha >= " & conectar.Escape(Me.dtpDesde.Value)
+    If Not IsNull(Me.dtpDesde.value) Then
+        condition = condition & " AND AdminComprasFacturasProveedores.fecha >= " & conectar.Escape(Me.dtpDesde.value)
     End If
 
-    If Not IsNull(Me.dtpHasta.Value) Then
-        condition = condition & " AND AdminComprasFacturasProveedores.fecha <= " & conectar.Escape(Me.dtpHasta.Value)
+    If Not IsNull(Me.dtpHasta.value) Then
+        condition = condition & " AND AdminComprasFacturasProveedores.fecha <= " & conectar.Escape(Me.dtpHasta.value)
     End If
 
-    If Not IsNull(Me.dtpDesdeCarga.Value) Then
-        condition = condition & " AND AdminComprasFacturasProveedores.fecha_carga >= " & conectar.Escape(CDate(Int(CDbl(Me.dtpDesdeCarga.Value))))
+    If Not IsNull(Me.dtpDesdeCarga.value) Then
+        condition = condition & " AND AdminComprasFacturasProveedores.fecha_carga >= " & conectar.Escape(CDate(Int(CDbl(Me.dtpDesdeCarga.value))))
     End If
 
-    If Not IsNull(Me.dtpHastaCarga.Value) Then
-        condition = condition & " AND AdminComprasFacturasProveedores.fecha_carga <= " & conectar.Escape(CDate(Int(CDbl(Me.dtpHastaCarga.Value))) + TimeSerial(23, 59, 59))
+    If Not IsNull(Me.dtpHastaCarga.value) Then
+        condition = condition & " AND AdminComprasFacturasProveedores.fecha_carga <= " & conectar.Escape(CDate(Int(CDbl(Me.dtpHastaCarga.value))) + TimeSerial(23, 59, 59))
     End If
 
     If cboProveedores.ListIndex > -1 Then
@@ -1105,7 +1224,33 @@ Public Sub llenarGrilla()
     If Me.cboCuentasContables.ListIndex > -1 Then
         condition = condition & " AND AdminComprasCuentasContables.id = '" & Me.cboCuentasContables.ItemData(Me.cboCuentasContables.ListIndex) & " '"
     End If
-
+    
+    If Me.cboTipoCbte.ListIndex > -1 Then
+        condition = condition & " AND AdminComprasFacturasProveedores.tipo_doc_contable = '" & Me.cboTipoCbte.ItemData(Me.cboTipoCbte.ListIndex) & " '"
+    End If
+    
+    If Me.cboTipoLetra.ListIndex > -1 Then
+        
+       Select Case Me.cboTipoLetra.ListIndex
+        Case "0"
+            condition = condition & " AND (AdminComprasFacturasProveedores.id_config_factura = 1 OR AdminComprasFacturasProveedores.id_config_factura = 6)"
+        Case "1"
+            condition = condition & " AND (AdminComprasFacturasProveedores.id_config_factura = 2 OR AdminComprasFacturasProveedores.id_config_factura = 7)"
+        Case "2"
+            condition = condition & " AND (AdminComprasFacturasProveedores.id_config_factura = 3 OR AdminComprasFacturasProveedores.id_config_factura = 10)"
+        Case "3"
+            condition = condition & " AND (AdminComprasFacturasProveedores.id_config_factura = 9)"
+        Case "4"
+            condition = condition & " AND (AdminComprasFacturasProveedores.id_config_factura = 12)"
+        Case "5"
+            condition = condition & " AND (AdminComprasFacturasProveedores.id_config_factura = 11)"
+        End Select
+  
+    
+    End If
+    
+    
+    
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     ' AGREGAR REGLA DE QUE SEA NUMERICO
@@ -1189,35 +1334,37 @@ Public Sub llenarGrilla()
 
     Set facturas = DAOFacturaProveedor.FindAll(condition, , ordenImporte, Permisos.AdminFaPVerSoloPropias)
 
+
+    
     Dim F As clsFacturaProveedor
-    Dim Total As Double
+    Dim total As Double
     Dim totalneto As Double
     Dim totIva As Double
     Dim totalno As Double
     Dim totalpercep As Double
     Dim totalsaldo As Double
 
-    Dim C As Integer
+    Dim c As Integer
 
-    Total = 0
+    total = 0
 
     For Each F In facturas
 
-        If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
-        Total = Total + MonedaConverter.Convertir(F.Total * C, F.moneda.Id, MonedaConverter.Patron.Id)
-        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * C - F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.Id, MonedaConverter.Patron.Id)
-        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * C, F.moneda.Id, MonedaConverter.Patron.Id)
-        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * C, F.moneda.Id, MonedaConverter.Patron.Id)
+        If F.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
+        total = total + MonedaConverter.Convertir(F.total * c, F.moneda.Id, MonedaConverter.Patron.Id)
+        totalneto = totalneto + MonedaConverter.Convertir(F.Monto * c - F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
+        totalno = totalno + MonedaConverter.Convertir(F.TotalNetoGravadoDiscriminado(0) * c, F.moneda.Id, MonedaConverter.Patron.Id)
+        totIva = totIva + MonedaConverter.Convertir(F.TotalIVA * c, F.moneda.Id, MonedaConverter.Patron.Id)
 
         'Agrega DNEMER 03/02/2021
-        totalpercep = totalpercep + F.totalPercepciones * C
+        totalpercep = totalpercep + F.totalPercepciones * c
 
         '(Factura.Total - (Factura.NetoGravadoAbonadoGlobal + Factura.OtrosAbonadoGlobal)) * i)
-        totalsaldo = totalsaldo + ((F.Total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * C)
+        totalsaldo = totalsaldo + ((F.total - (F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)) * c)
 
     Next
 
-    Me.lblTotal = "Total Filtrado: " & FormatCurrency(funciones.FormatearDecimales(Total))
+    Me.lblTotal = "Total Filtrado: " & FormatCurrency(funciones.FormatearDecimales(total))
     Me.lblTotalNoGravadoFiltrado = "Total No Gravado: " & FormatCurrency(funciones.FormatearDecimales(totalno))
     Me.lblNetoGravadoFiltrado = "Total Neto Gravado: " & FormatCurrency(funciones.FormatearDecimales(totalneto))
     Me.lblTotalIVA = "Total IVA: " & FormatCurrency(funciones.FormatearDecimales(totIva))
@@ -1228,7 +1375,8 @@ Public Sub llenarGrilla()
 
     'Agregar totalizador de Percepciones
     Me.lblTotalPercepciones = "Total Percepciones: " & FormatCurrency(funciones.FormatearDecimales(totalpercep))
-
+    
+   
     grilla.ItemCount = facturas.count
 
     GridEXHelper.AutoSizeColumns Me.grilla, True
@@ -1263,7 +1411,7 @@ Private Sub grilla_DblClick()
     verDetalle_Click
 End Sub
 
-Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 
 End Sub
@@ -1311,7 +1459,7 @@ End Sub
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas(RowBuffer.rowIndex)
+    Set Factura = facturas(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaProveedor.Aprobada Then
         RowBuffer.CellStyle(15) = "EstadoAprobado"
@@ -1324,9 +1472,9 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
 err1:
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set Factura = facturas.item(rowIndex)
+    Set Factura = facturas.item(RowIndex)
 
     Dim i As Integer
 
@@ -1348,18 +1496,18 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
         Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalPercepciones) * i), "$", "")
         Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.ImpuestoInterno) * i), "$", "")
-        Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total) * i), "$", "")
+        Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
 
         'ESTO MUESTRA TRUE O FALSE
         'Values(12) = (funciones.FormatearDecimales(Factura.Total) * i) > 2000000
 
         'ESTO MUESTRA SOLO LOS VALORES MAYORES A DOS MILLONES, LOS DEMAS LOS DEJA VACIOS
 
-        If (funciones.FormatearDecimales(Factura.Total) * i) > 2000000 Then
-            Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total) * i), "$", "")
+        If (funciones.FormatearDecimales(Factura.total) * i) > 2000000 Then
+            Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
         End If
 
-        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Total - Factura.TotalAbonadoGlobal) * i), "$", "")
+        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total - Factura.TotalAbonadoGlobal) * i), "$", "")
 
         If Factura.cuentasContables.count > 0 Then
             Values(13) = Factura.cuentasContables.item(1).cuentas.codigo
@@ -1384,8 +1532,22 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
                     Values(17) = Factura.OrdenesPagoId
                 Case "-"
                     Values(17) = Factura.OrdenesPagoId
+                Case 4
+                    Values(17) = Factura.OrdenesPagoId
+                Case 3
+                    Values(17) = Factura.OrdenesPagoId
+                Case "1,1"
+                    Values(17) = Factura.OrdenesPagoId
+                Case "1,1,1"
+                    Values(17) = Factura.OrdenesPagoId
+                Case "1,1,1,1"
+                    Values(17) = Factura.OrdenesPagoId
+                Case "1,1,1,1.1"
+                    Values(17) = Factura.OrdenesPagoId
                 Case "0"
                     Values(17) = Factura.OrdenesPagoId & " (P)" 'PENDIENTE
+                    
+                    
             End Select
             
             Select Case Factura.LiquidacionesCajaEstado
@@ -1433,7 +1595,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 rectmp.cuentasContables = tmp.cuentasContables
                 rectmp.IvaAplicado = tmp.IvaAplicado
                 rectmp.percepciones = tmp.percepciones
-                rectmp.Redondeo = tmp.Redondeo
+                rectmp.redondeo = tmp.redondeo
                 rectmp.Monto = tmp.Monto
                 rectmp.numero = tmp.numero
                 rectmp.FormaPagoCuentaCorriente = tmp.FormaPagoCuentaCorriente
@@ -1469,7 +1631,7 @@ End Sub
 
 
 Private Sub mnuPagarEnEfectivo_Click()
-    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.Total & "?", vbInformation + vbYesNo) = vbYes Then
+    If MsgBox("¿Está seguro de abonar en efectivo el comprobante " & Factura.NumeroFormateado & " de " & Factura.moneda.NombreCorto & " " & Factura.total & "?", vbInformation + vbYesNo) = vbYes Then
 
         MsgBox "Se creará una OP con fecha " + CStr(Factura.FEcha)
         If IsDate(Factura.FEcha) Then
@@ -1513,6 +1675,14 @@ Private Sub MnuVerOP_Click()
 End Sub
 
 
+Private Sub PushButton1_Click()
+    Me.cboTipoCbte.ListIndex = -1
+End Sub
+
+Private Sub PushButton2_Click()
+    Me.cboTipoLetra.ListIndex = -1
+End Sub
+
 Private Sub txtComprobante_GotFocus()
     foco Me.txtComprobante
 End Sub
@@ -1540,5 +1710,5 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(grilla.rowIndex(grilla.row))
+    Set Factura = facturas.item(grilla.RowIndex(grilla.row))
 End Sub

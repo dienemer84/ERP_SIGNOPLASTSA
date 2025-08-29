@@ -26,14 +26,14 @@ Begin VB.Form frmPieza
       _StockProps     =   79
       Caption         =   "Datos Principales"
       UseVisualStyle  =   -1  'True
-      Begin nucleo.ctrlCboIDPersona ctrlCboIDPersona1 
+      Begin VB.PictureBox ctrlCboIDPersona1 
          Height          =   330
          Left            =   1455
+         ScaleHeight     =   270
+         ScaleWidth      =   10500
          TabIndex        =   25
          Top             =   630
          Width           =   10560
-         _ExtentX        =   18627
-         _ExtentY        =   582
       End
       Begin VB.TextBox txtNuevoElemento 
          Height          =   285
@@ -536,7 +536,7 @@ End Sub
 
 Private Sub MostrarMaterial(vmat As clsMaterial)
     Me.lblDescripcion = vmat.descripcion
-    Me.lblRubro = vmat.Grupo.rubros.rubro
+    Me.lblRubro = vmat.Grupo.rubros.Rubro
     Me.lblEspesor = vmat.Espesor
     Me.lblGrupo = vmat.Grupo.Grupo
     Me.lblKgM2 = vmat.PesoXUnidad
@@ -661,7 +661,7 @@ End Sub
 
 Private Sub Form_Load()
     Customize Me
-    Me.ctrlCboIDPersona1.Personas = DAOCliente.FindAll(DAOCliente.TABLA_CLIENTE & "." & DAOCliente.CAMPO_ESTADO & "=" & EstadoCliente.activo & " ORDER BY " & DAOCliente.CAMPO_RAZON_SOCIAL)
+'''    Me.ctrlCboIDPersona1.Personas = DAOCliente.FindAll(DAOCliente.TABLA_CLIENTE & "." & DAOCliente.CAMPO_ESTADO & "=" & EstadoCliente.activo & " ORDER BY " & DAOCliente.CAMPO_RAZON_SOCIAL)
     GridEXHelper.CustomizeGrid Me.GridEX1, False, True
     LlenarComboMateriales
     limpiar
@@ -680,7 +680,7 @@ Private Sub GridEX1_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
 End Sub
 
 Private Sub GridEX1_SelectionChange()
-    Dim it As Long: it = Me.GridEX1.rowIndex(Me.GridEX1.row)
+    Dim it As Long: it = Me.GridEX1.RowIndex(Me.GridEX1.row)
     If it > 0 Then
         Set desamat = colmat.item(it)
         GridEX1.Columns(5).EditType = jgexEditTextBox
@@ -715,13 +715,13 @@ Private Sub GridEX1_SelectionChange()
 
 End Sub
 
-Private Sub GridEx1_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    colmat.remove (rowIndex)
+Private Sub GridEx1_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    colmat.remove (RowIndex)
     LlenarListaMateriales
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set desamat = colmat.item(rowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set desamat = colmat.item(RowIndex)
     Values(1) = desamat.Material.codigo & " | " & desamat.Material.descripcion
     Values(2) = desamat.Cantidad
     Values(3) = desamat.detalle
@@ -737,8 +737,8 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
     Values(12) = desamat.Material.moneda.NombreCorto & "  " & desamat.CalcularDatosMaterial(desamat.Material.moneda.Id).costo
 End Sub
 
-Private Sub GridEX1_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set desamat = colmat.item(rowIndex)
+Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set desamat = colmat.item(RowIndex)
     desamat.Cantidad = Values(2)
     desamat.Largo = Values(5)
     desamat.Ancho = Values(6)

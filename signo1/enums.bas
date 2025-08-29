@@ -17,7 +17,7 @@ Dim estado_remito_facturado(4)
 Dim meses(12) As String
 Dim estado_recibo(3)
 Dim estado_nnc(3)
-Dim tipo_doc_contable(3)
+Dim tipo_doc_contable(6)
 Dim estado_doc_contable(8)
 Dim tipos_Doc(2)
 Dim tipo_complejidad(3)
@@ -387,7 +387,7 @@ End Enum
 Public Enum EstadoFacturaCliente
     EnProceso = 1
     Aprobada = 2
-    Anulada = 3    'no se usa mas
+    Anulada = 3
     CanceladaNC = 4
     CanceladaNCParcial = 5
     AplicadaND = 6
@@ -445,9 +445,11 @@ End Function
 Public Function EnumTipoOT(indice) As String
     EnumTipoOT = tipo_ot(indice)
 End Function
+
 Public Function EnumTiposDoc(indice) As String
     enumtioposdoc = tipos_Doc(indice)
 End Function
+
 Public Function EnumTipoMaterial(indice As TipoMaterial) As String
     EnumTipoMaterial = tipoMateriales.item(CStr(indice))
 End Function
@@ -455,6 +457,7 @@ End Function
 Public Function EnumTipoDocumentoContable(indice) As String
     EnumTipoDocumentoContable = tipo_doc_contable(indice)
 End Function
+
 Public Function enumEstadoFacturaProveedor(indice) As String
     enumEstadoFacturaProveedor = estado_factura_proveedor(indice)
 End Function
@@ -470,7 +473,6 @@ End Function
 Public Function enumEstadoOrdenEntrega(indice) As String
     enumEstadoOrdenEntrega = estado_orden_entrega(indice)
 End Function
-
 
 Public Function enumEstadoProcesoDetalleOrdenTrabajo(indice) As String
     enumEstadoProcesoDetalleOrdenTrabajo = estado_proceso_ot(indice)
@@ -508,8 +510,10 @@ Public Function LlenarArrays()
     tipo_doc_contable(tipoDocumentoContable.Factura) = "Factura"
     tipo_doc_contable(tipoDocumentoContable.notaCredito) = "N. Crédito"
     tipo_doc_contable(tipoDocumentoContable.notaDebito) = "N. Debito"
-
-
+    tipo_doc_contable(tipoDocumentoContable.DespachoAduana) = "Despacho de Aduana"
+    tipo_doc_contable(tipoDocumentoContable.LiquidacionBancaria) = "Liquidacion Bancaria"
+    tipo_doc_contable(tipoDocumentoContable.CompraBienesUsados) = "Compra de Bienes Usados"
+    
     tipos_Doc(TipoDocumento.TipoDocumentoCuit) = "CUIT"
 
     tipos_Doc(TipoDocumento.TipoDocumentoCuil) = "CUIL"

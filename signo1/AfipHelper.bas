@@ -10,53 +10,53 @@ Option Explicit
 
 
 
-Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
+Public Function CrearXMLFromCaeSolicitar(C As FeCAEReq) As String
     Dim r As String
     r = "<FeCAEReq>"
     r = r & "<FeCabReq>"
 
     'Desactivado el 17.07.20 - dnemer
-    r = r & "<EsCredito>" & c.FeCabReq.esCredito & "</EsCredito>"
+    r = r & "<EsCredito>" & C.FeCabReq.esCredito & "</EsCredito>"
 
-    r = r & "<CantReg>" & c.FeCabReq.CantReg & "</CantReg>"
-    r = r & "<PtoVta>" & c.FeCabReq.PtoVta & "</PtoVta>"
-    r = r & "<CbteTipo>" & c.FeCabReq.CbteTipo & "</CbteTipo>"
-    Debug.Print ("Comprobante Tipo ND : " & c.FeCabReq.CbteTipo)
+    r = r & "<CantReg>" & C.FeCabReq.CantReg & "</CantReg>"
+    r = r & "<PtoVta>" & C.FeCabReq.PtoVta & "</PtoVta>"
+    r = r & "<CbteTipo>" & C.FeCabReq.CbteTipo & "</CbteTipo>"
+
     
     r = r & "</FeCabReq>"
     r = r & "<FeDetReq>"
     r = r & "<FECAEDetRequest>"
-    r = r & "<Concepto>" & c.FeDetReq.FECAEDetRequest.Concepto & "</Concepto>"
-    r = r & "<DocTipo>" & c.FeDetReq.FECAEDetRequest.DocTipo & "</DocTipo>"
-    r = r & "<DocNro>" & c.FeDetReq.FECAEDetRequest.DocNro & "</DocNro>"
-    r = r & "<CbteDesde>" & c.FeDetReq.FECAEDetRequest.CbteDesde & "</CbteDesde>"
-    r = r & "<CbteHasta>" & c.FeDetReq.FECAEDetRequest.CbteHasta & "</CbteHasta>"
-    r = r & "<CbteFch>" & c.FeDetReq.FECAEDetRequest.CbteFch & "</CbteFch>"
-    r = r & "<ImpTotal>" & c.FeDetReq.FECAEDetRequest.ImpTotal & "</ImpTotal>"
-    r = r & "<ImpTotConc>" & c.FeDetReq.FECAEDetRequest.ImpTotConc & "</ImpTotConc>"
-    r = r & "<ImpNeto>" & c.FeDetReq.FECAEDetRequest.ImpNeto & "</ImpNeto>"
-    r = r & "<ImpTrib>" & c.FeDetReq.FECAEDetRequest.ImpTrib & "</ImpTrib>"
-    r = r & "<ImpOpEx>" & c.FeDetReq.FECAEDetRequest.ImpOpEx & "</ImpOpEx>"
-    r = r & "<ImpIVA>" & c.FeDetReq.FECAEDetRequest.ImpIVA & "</ImpIVA>"
-    If LenB(c.FeDetReq.FECAEDetRequest.FchServDesde) > 0 Then
-        r = r & "<FchServDesde>" & c.FeDetReq.FECAEDetRequest.FchServDesde & "</FchServDesde>"
+    r = r & "<Concepto>" & C.FeDetReq.FECAEDetRequest.Concepto & "</Concepto>"
+    r = r & "<DocTipo>" & C.FeDetReq.FECAEDetRequest.DocTipo & "</DocTipo>"
+    r = r & "<DocNro>" & C.FeDetReq.FECAEDetRequest.DocNro & "</DocNro>"
+    r = r & "<CbteDesde>" & C.FeDetReq.FECAEDetRequest.CbteDesde & "</CbteDesde>"
+    r = r & "<CbteHasta>" & C.FeDetReq.FECAEDetRequest.CbteHasta & "</CbteHasta>"
+    r = r & "<CbteFch>" & C.FeDetReq.FECAEDetRequest.CbteFch & "</CbteFch>"
+    r = r & "<ImpTotal>" & C.FeDetReq.FECAEDetRequest.ImpTotal & "</ImpTotal>"
+    r = r & "<ImpTotConc>" & C.FeDetReq.FECAEDetRequest.ImpTotConc & "</ImpTotConc>"
+    r = r & "<ImpNeto>" & C.FeDetReq.FECAEDetRequest.ImpNeto & "</ImpNeto>"
+    r = r & "<ImpTrib>" & C.FeDetReq.FECAEDetRequest.ImpTrib & "</ImpTrib>"
+    r = r & "<ImpOpEx>" & C.FeDetReq.FECAEDetRequest.ImpOpEx & "</ImpOpEx>"
+    r = r & "<ImpIVA>" & C.FeDetReq.FECAEDetRequest.ImpIVA & "</ImpIVA>"
+    If LenB(C.FeDetReq.FECAEDetRequest.FchServDesde) > 0 Then
+        r = r & "<FchServDesde>" & C.FeDetReq.FECAEDetRequest.FchServDesde & "</FchServDesde>"
     End If
-    If LenB(c.FeDetReq.FECAEDetRequest.FchServHasta) > 0 Then
-        r = r & "<FchServHasta>" & c.FeDetReq.FECAEDetRequest.FchServHasta & "</FchServHasta>"
+    If LenB(C.FeDetReq.FECAEDetRequest.FchServHasta) > 0 Then
+        r = r & "<FchServHasta>" & C.FeDetReq.FECAEDetRequest.FchServHasta & "</FchServHasta>"
     End If
 
-    If LenB(c.FeDetReq.FECAEDetRequest.FchVtoPago) > 0 Then
+    If LenB(C.FeDetReq.FECAEDetRequest.FchVtoPago) > 0 Then
 
-        r = r & "<FchVtoPago>" & c.FeDetReq.FECAEDetRequest.FchVtoPago & "</FchVtoPago>"
+        r = r & "<FchVtoPago>" & C.FeDetReq.FECAEDetRequest.FchVtoPago & "</FchVtoPago>"
 
     End If
-    r = r & "<MonId>" & c.FeDetReq.FECAEDetRequest.MonId & "</MonId>"
-    r = r & "<MonCotiz>" & c.FeDetReq.FECAEDetRequest.MonCotiz & "</MonCotiz>"
+    r = r & "<MonId>" & C.FeDetReq.FECAEDetRequest.MonId & "</MonId>"
+    r = r & "<MonCotiz>" & C.FeDetReq.FECAEDetRequest.MonCotiz & "</MonCotiz>"
 
-    If c.FeDetReq.FECAEDetRequest.CbtesAsoc.count > 0 Then
+    If C.FeDetReq.FECAEDetRequest.CbtesAsoc.count > 0 Then
         Dim ca As CbteAsoc
         r = r & "<CbtesAsoc>"
-        For Each ca In c.FeDetReq.FECAEDetRequest.CbtesAsoc
+        For Each ca In C.FeDetReq.FECAEDetRequest.CbtesAsoc
             r = r & "<CbteAsoc>"
             Debug.Print ("Comprobante Asociado Tipo FC : " & ca.Tipo)
             'Desactivado el 17.07.20 - dnemer
@@ -74,11 +74,11 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
         r = r & "</CbtesAsoc>"
     End If
 
-    If c.FeDetReq.FECAEDetRequest.Tributos.count > 0 Then
+    If C.FeDetReq.FECAEDetRequest.Tributos.count > 0 Then
         Dim T As Tributo
         r = r & "<Tributos>"
 
-        For Each T In c.FeDetReq.FECAEDetRequest.Tributos
+        For Each T In C.FeDetReq.FECAEDetRequest.Tributos
 
             r = r & "<Tributo>"
             r = r & "<Id>" & T.idTributoCambiar & "</Id>"
@@ -91,10 +91,10 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
         r = r & "</Tributos>"
     End If
 
-    If c.FeDetReq.FECAEDetRequest.Iva.count > 0 Then
+    If C.FeDetReq.FECAEDetRequest.Iva.count > 0 Then
         Dim i As AlicIva
         r = r & "<Iva>"
-        For Each i In c.FeDetReq.FECAEDetRequest.Iva
+        For Each i In C.FeDetReq.FECAEDetRequest.Iva
             r = r & "<AlicIva>"
             r = r & "<Id>" & i.idAlicIvaCambiar & "</Id>"
             r = r & "<BaseImp>" & i.BaseImp & "</BaseImp>"
@@ -103,12 +103,12 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
         Next
         r = r & "</Iva>"
     End If
-    If c.FeDetReq.FECAEDetRequest.Opcionales.count > 0 Then
+    If C.FeDetReq.FECAEDetRequest.Opcionales.count > 0 Then
         Dim o As Opcional
         r = r & "<Opcionales>"
 
         Dim ox As Opcional
-        For Each ox In c.FeDetReq.FECAEDetRequest.Opcionales
+        For Each ox In C.FeDetReq.FECAEDetRequest.Opcionales
             r = r & "<Opcional>"
             r = r & "<Id>" & ox.idOpcionalCambiar & "</Id>"
             r = r & "<Valor>" & ox.Valor & "</Valor>"
@@ -133,55 +133,55 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
 End Function
 
 
-Public Function CrearXMLFromCaeSolicitarEXP(c As FeCAEReq) As String
+Public Function CrearXMLFromCaeSolicitarEXP(C As FeCAEReq) As String
     Dim r As String
     r = "<FeCAEReq>"
     r = r & "<FeCabReq>"
 
     'Desactivado el 17.07.20 - dnemer
-    r = r & "<EsCredito>" & c.FeCabReq.esCredito & "</EsCredito>"
+    r = r & "<EsCredito>" & C.FeCabReq.esCredito & "</EsCredito>"
 
-    r = r & "<CantReg>" & c.FeCabReq.CantReg & "</CantReg>"
-    r = r & "<PtoVta>" & c.FeCabReq.PtoVta & "</PtoVta>"
-    r = r & "<CbteTipo>" & c.FeCabReq.CbteTipo & "</CbteTipo>"
-    Debug.Print ("Comprobante Tipo ND : " & c.FeCabReq.CbteTipo)
+    r = r & "<CantReg>" & C.FeCabReq.CantReg & "</CantReg>"
+    r = r & "<PtoVta>" & C.FeCabReq.PtoVta & "</PtoVta>"
+    r = r & "<CbteTipo>" & C.FeCabReq.CbteTipo & "</CbteTipo>"
+    'Debug.Print ("Comprobante Tipo ND : " & C.FeCabReq.CbteTipo)
     
     r = r & "</FeCabReq>"
     r = r & "<FeDetReq>"
     r = r & "<FECAEDetRequest>"
-    r = r & "<Concepto>" & c.FeDetReq.FECAEDetRequest.Concepto & "</Concepto>"
-    r = r & "<DocTipo>" & c.FeDetReq.FECAEDetRequest.DocTipo & "</DocTipo>"
-    r = r & "<DocNro>" & c.FeDetReq.FECAEDetRequest.DocNro & "</DocNro>"
-    r = r & "<CbteDesde>" & c.FeDetReq.FECAEDetRequest.CbteDesde & "</CbteDesde>"
-    r = r & "<CbteHasta>" & c.FeDetReq.FECAEDetRequest.CbteHasta & "</CbteHasta>"
-    r = r & "<CbteFch>" & c.FeDetReq.FECAEDetRequest.CbteFch & "</CbteFch>"
-    r = r & "<ImpTotal>" & c.FeDetReq.FECAEDetRequest.ImpTotal & "</ImpTotal>"
-    r = r & "<ImpTotConc>" & c.FeDetReq.FECAEDetRequest.ImpTotConc & "</ImpTotConc>"
-    r = r & "<ImpNeto>" & c.FeDetReq.FECAEDetRequest.ImpNeto & "</ImpNeto>"
-    r = r & "<ImpTrib>" & c.FeDetReq.FECAEDetRequest.ImpTrib & "</ImpTrib>"
-    r = r & "<ImpOpEx>" & c.FeDetReq.FECAEDetRequest.ImpOpEx & "</ImpOpEx>"
-    r = r & "<ImpIVA>" & c.FeDetReq.FECAEDetRequest.ImpIVA & "</ImpIVA>"
-    If LenB(c.FeDetReq.FECAEDetRequest.FchServDesde) > 0 Then
-        r = r & "<FchServDesde>" & c.FeDetReq.FECAEDetRequest.FchServDesde & "</FchServDesde>"
+    r = r & "<Concepto>" & C.FeDetReq.FECAEDetRequest.Concepto & "</Concepto>"
+    r = r & "<DocTipo>" & C.FeDetReq.FECAEDetRequest.DocTipo & "</DocTipo>"
+    r = r & "<DocNro>" & C.FeDetReq.FECAEDetRequest.DocNro & "</DocNro>"
+    r = r & "<CbteDesde>" & C.FeDetReq.FECAEDetRequest.CbteDesde & "</CbteDesde>"
+    r = r & "<CbteHasta>" & C.FeDetReq.FECAEDetRequest.CbteHasta & "</CbteHasta>"
+    r = r & "<CbteFch>" & C.FeDetReq.FECAEDetRequest.CbteFch & "</CbteFch>"
+    r = r & "<ImpTotal>" & C.FeDetReq.FECAEDetRequest.ImpTotal & "</ImpTotal>"
+    r = r & "<ImpTotConc>" & C.FeDetReq.FECAEDetRequest.ImpTotConc & "</ImpTotConc>"
+    r = r & "<ImpNeto>" & C.FeDetReq.FECAEDetRequest.ImpNeto & "</ImpNeto>"
+    r = r & "<ImpTrib>" & C.FeDetReq.FECAEDetRequest.ImpTrib & "</ImpTrib>"
+    r = r & "<ImpOpEx>" & C.FeDetReq.FECAEDetRequest.ImpOpEx & "</ImpOpEx>"
+    r = r & "<ImpIVA>" & C.FeDetReq.FECAEDetRequest.ImpIVA & "</ImpIVA>"
+    If LenB(C.FeDetReq.FECAEDetRequest.FchServDesde) > 0 Then
+        r = r & "<FchServDesde>" & C.FeDetReq.FECAEDetRequest.FchServDesde & "</FchServDesde>"
     End If
-    If LenB(c.FeDetReq.FECAEDetRequest.FchServHasta) > 0 Then
-        r = r & "<FchServHasta>" & c.FeDetReq.FECAEDetRequest.FchServHasta & "</FchServHasta>"
+    If LenB(C.FeDetReq.FECAEDetRequest.FchServHasta) > 0 Then
+        r = r & "<FchServHasta>" & C.FeDetReq.FECAEDetRequest.FchServHasta & "</FchServHasta>"
     End If
 
-    If LenB(c.FeDetReq.FECAEDetRequest.FchVtoPago) > 0 Then
+    If LenB(C.FeDetReq.FECAEDetRequest.FchVtoPago) > 0 Then
 
-        r = r & "<FchVtoPago>" & c.FeDetReq.FECAEDetRequest.FchVtoPago & "</FchVtoPago>"
+        r = r & "<FchVtoPago>" & C.FeDetReq.FECAEDetRequest.FchVtoPago & "</FchVtoPago>"
 
     End If
-    r = r & "<MonId>" & c.FeDetReq.FECAEDetRequest.MonId & "</MonId>"
-    r = r & "<MonCotiz>" & c.FeDetReq.FECAEDetRequest.MonCotiz & "</MonCotiz>"
+    r = r & "<MonId>" & C.FeDetReq.FECAEDetRequest.MonId & "</MonId>"
+    r = r & "<MonCotiz>" & C.FeDetReq.FECAEDetRequest.MonCotiz & "</MonCotiz>"
 
-    If c.FeDetReq.FECAEDetRequest.CbtesAsoc.count > 0 Then
+    If C.FeDetReq.FECAEDetRequest.CbtesAsoc.count > 0 Then
         Dim ca As CbteAsoc
         r = r & "<CbtesAsoc>"
-        For Each ca In c.FeDetReq.FECAEDetRequest.CbtesAsoc
+        For Each ca In C.FeDetReq.FECAEDetRequest.CbtesAsoc
             r = r & "<CbteAsoc>"
-            Debug.Print ("Comprobante Asociado Tipo FC : " & ca.Tipo)
+            'Debug.Print ("Comprobante Asociado Tipo FC : " & ca.Tipo)
             'Desactivado el 17.07.20 - dnemer
             r = r & "<EsCredito>" & ca.esCredito & "</EsCredito>"
             r = r & "<CbteFch>" & ca.CbteFch & "</CbteFch>"
@@ -197,11 +197,11 @@ Public Function CrearXMLFromCaeSolicitarEXP(c As FeCAEReq) As String
         r = r & "</CbtesAsoc>"
     End If
 
-    If c.FeDetReq.FECAEDetRequest.Tributos.count > 0 Then
+    If C.FeDetReq.FECAEDetRequest.Tributos.count > 0 Then
         Dim T As Tributo
         r = r & "<Tributos>"
 
-        For Each T In c.FeDetReq.FECAEDetRequest.Tributos
+        For Each T In C.FeDetReq.FECAEDetRequest.Tributos
 
             r = r & "<Tributo>"
             r = r & "<Id>" & T.idTributoCambiar & "</Id>"
@@ -214,10 +214,10 @@ Public Function CrearXMLFromCaeSolicitarEXP(c As FeCAEReq) As String
         r = r & "</Tributos>"
     End If
 
-    If c.FeDetReq.FECAEDetRequest.Iva.count > 0 Then
+    If C.FeDetReq.FECAEDetRequest.Iva.count > 0 Then
         Dim i As AlicIva
         r = r & "<Iva>"
-        For Each i In c.FeDetReq.FECAEDetRequest.Iva
+        For Each i In C.FeDetReq.FECAEDetRequest.Iva
             r = r & "<AlicIva>"
             r = r & "<Id>" & i.idAlicIvaCambiar & "</Id>"
             r = r & "<BaseImp>" & i.BaseImp & "</BaseImp>"
@@ -226,12 +226,12 @@ Public Function CrearXMLFromCaeSolicitarEXP(c As FeCAEReq) As String
         Next
         r = r & "</Iva>"
     End If
-    If c.FeDetReq.FECAEDetRequest.Opcionales.count > 0 Then
+    If C.FeDetReq.FECAEDetRequest.Opcionales.count > 0 Then
         Dim o As Opcional
         r = r & "<Opcionales>"
 
         Dim ox As Opcional
-        For Each ox In c.FeDetReq.FECAEDetRequest.Opcionales
+        For Each ox In C.FeDetReq.FECAEDetRequest.Opcionales
             r = r & "<Opcional>"
             r = r & "<Id>" & ox.idOpcionalCambiar & "</Id>"
             r = r & "<Valor>" & ox.Valor & "</Valor>"

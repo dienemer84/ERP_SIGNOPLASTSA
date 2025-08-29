@@ -37,6 +37,7 @@ Public ValidoRemitoFactura As Boolean
 Public idMonedaDefault As Long
 Public CuitPais As String
 Public IDImpositivo As String
+Public pais As pais
 Public localidad As localidad
 Public provincia As provincia
 
@@ -53,15 +54,15 @@ Public Property Get razonFixed()
 End Property
 
 
-Public Property Get contacto() As Collection
-    Set contacto = mContacto
+Public Property Get Contacto() As Collection
+    Set Contacto = mContacto
 
 End Property
-Public Property Let contacto(nvalue As Collection)
+Public Property Let Contacto(nvalue As Collection)
     Set mContacto = nvalue
 End Property
-Public Property Get id() As Long
-    id = vId
+Public Property Get Id() As Long
+    Id = vId
 End Property
 Public Property Get razon() As String
     razon = vRazon
@@ -99,7 +100,7 @@ Public Property Get FP() As Long
     'FP = vFP
         FP = nvalue
 End Property
-Public Property Let id(nvalue As Long)
+Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
 Public Property Let razon(nvalue As String)

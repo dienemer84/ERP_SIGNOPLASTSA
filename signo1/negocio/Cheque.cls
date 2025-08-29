@@ -17,6 +17,7 @@ Public Id As Long
 Public numero As String
 Public FechaRecibido As Date
 Public FechaVencimiento As Date
+Public FechaRecibo As Date
 Public Monto As Double
 Public entro As Boolean
 Public IdChequera As Long
@@ -32,11 +33,12 @@ Public FechaEmision As Date
 
 Public IdOrdenPagoOrigen As Long
 Public NumeroLiquidacionCaja As Long
+Public NumeroPagoACuenta As Long
 
 Public estado As EstadoCheque
 Public Depositado As Boolean
 Public destino As String
-Public recibo As String
+Public Recibo As String
 
 Public Property Get OrigenCheque()
     If Propio Then

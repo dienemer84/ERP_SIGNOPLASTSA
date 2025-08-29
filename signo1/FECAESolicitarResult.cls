@@ -13,6 +13,6 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public FeCabResp As FeCabResp
-Public FeDetResp As FeDetResp
+''''Public FeCabResp As FeCabResp
+''''Public FeDetResp As FeDetResp
 

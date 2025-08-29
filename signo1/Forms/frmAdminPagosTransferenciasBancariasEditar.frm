@@ -3,7 +3,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosTransferenciasBancariasEditar 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Modificar Datos de Transferencia"
-   ClientHeight    =   3660
+   ClientHeight    =   4515
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   6600
@@ -11,11 +11,11 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   3660
+   ScaleHeight     =   4515
    ScaleWidth      =   6600
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame1 
-      Height          =   2655
+      Height          =   3615
       Left            =   120
       TabIndex        =   3
       Top             =   0
@@ -24,7 +24,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
          Height          =   375
          Left            =   5280
          TabIndex        =   9
-         Top             =   1800
+         Top             =   2760
          Width           =   495
          _Version        =   786432
          _ExtentX        =   873
@@ -37,7 +37,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
          Height          =   315
          Left            =   240
          TabIndex        =   8
-         Top             =   1800
+         Top             =   2760
          Width           =   4935
          _Version        =   786432
          _ExtentX        =   8705
@@ -88,11 +88,28 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
       End
+      Begin VB.Label Label2 
+         Caption         =   "Fecha:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   240
+         TabIndex        =   11
+         Top             =   1680
+         Width           =   5535
+      End
       Begin XtremeSuiteControls.Label Label1 
          Height          =   255
          Left            =   240
          TabIndex        =   10
-         Top             =   1560
+         Top             =   2520
          Width           =   3375
          _Version        =   786432
          _ExtentX        =   5953
@@ -159,7 +176,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
       Height          =   855
       Left            =   120
       TabIndex        =   0
-      Top             =   2640
+      Top             =   3600
       Width           =   6375
       Begin XtremeSuiteControls.PushButton btnGuardar 
          Height          =   495

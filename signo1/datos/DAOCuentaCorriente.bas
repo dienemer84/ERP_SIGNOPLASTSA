@@ -593,7 +593,12 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
     Dim fac As Factura
 
     '12:03 AGREGO QUE TAMBIEN TENGA EN CUENTA LOS COMPROBANTES QUE ESTAN CANCELADOS PARCIALMENTE (AdminFacturas.estado = 5)
-    q = "AdminFacturas.idCliente = " & id_cliente & "  and (AdminFacturas.estado = " & EstadoFacturaCliente.Aprobada & " or AdminFacturas.estado = " & EstadoFacturaCliente.CanceladaNC & " or AdminFacturas.estado = " & EstadoFacturaCliente.CanceladaNCParcial & ")"
+    q = "AdminFacturas.idCliente = " & id_cliente & _
+        " AND (AdminFacturas.estado = " & EstadoFacturaCliente.Aprobada & _
+        " OR AdminFacturas.estado = " & EstadoFacturaCliente.CanceladaNC & _
+        " OR AdminFacturas.estado = " & EstadoFacturaCliente.CanceladaNCParcial & _
+        " OR AdminFacturas.estado = " & EstadoFacturaCliente.AplicadaND & _
+        " OR AdminFacturas.estado = " & EstadoFacturaCliente.AplicadaACbte & ")"
 
 
     If LenB(fecha_hasta) > 0 Then
@@ -607,6 +612,8 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
     For Each fac In facturas
         Set detalle = New DTODetalleCuentaCorriente
         detalle.Comprobante = fac.GetShortDescription(False, True)
+
+        Debug.Print (fac.NumeroFormateado & "-  Estado: " & fac.estado)
 
         If fac.Saldado Then
             recs = vbNullString
@@ -665,12 +672,12 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
         'detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalEstatico.TotalReciboEstatico, rec.Moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.Moneda.Id), 2)
         If rec.TotalEstatico.TotalRecibidoEstatico > 0 Then
-            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalEstatico.TotalReciboEstatico, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2) + funciones.RedondearDecimales(MonedaConverter.Convertir(rec.ACuenta, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2)
+            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalEstatico.TotalReciboEstatico, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2) + funciones.RedondearDecimales(MonedaConverter.Convertir(rec.aCuenta, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2)
         Else
             'Set rec.facturas = DAOFactura.FindAll("AdminFacturas.id IN (SELECT idFactura FROM AdminRecibosDetalleFacturas WHERE idRecibo = " & rec.Id & ")")
 
-            Set rec.cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id & ")")
-            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalRecibido, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.Redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2)
+            Set rec.Cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id & ")")
+            detalle.Haber = funciones.RedondearDecimales(MonedaConverter.Convertir(rec.TotalRecibido, rec.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(rec.redondeo, DAOMoneda.MONEDA_PESO_ID, rec.moneda.Id), 2)
 
             'comentado el 3-7-13
             'detalle.Haber = detalle.Haber - rec.TotalRetenciones
@@ -697,7 +704,7 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
 
     If sortCollection And detalles.count > 0 Then
-        
+
         Dim saldo As Double
         saldo = 0
         q = "CREATE TEMPORARY TABLE IF NOT EXISTS tmp_cta_cte_sort ( fecha DATE, comprobante VARCHAR(50), debe DOUBLE, haber DOUBLE, extra INT, idComprobante INT, tipoComprobante INT) "    'TYPE=HEAP"
@@ -755,6 +762,9 @@ Public Function FindAllDetalles(id_cliente As Long, Optional sortCollection As B
 
     Set FindAllDetalles = detalles
 End Function
+
+
+
 
 Public Function ResumenSaldo() As Double
 'pide los detalles los recorre y calcula el saldo, traer todos o por cliente?
