@@ -15,9 +15,24 @@ Option Explicit
 
 Public item As String
 Public nombre As String
-Public Cantidad As Double
+
 Public Nivel As Integer
 Public Id As Integer
 Public UnidadMedida As String
+
+Public CantPedida As Double
+Public CantRecibida As Double
+Public CantFabricada As Double
+
+Public CantScrap As Double
+    
+Public FechaInicio As Date
+Public FechaFin As Date
+    
+Public UsuarioRecibio As Long
+    
+Public ProcesoSiguiente As String
+    
+Public FechaMod As Date
 
 Public EsConjunto As Boolean
