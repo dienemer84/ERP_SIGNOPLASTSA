@@ -1,0 +1,6 @@
+Línea 29: la clase XtremeSuiteControls.TabControl del control tab1 no era una clase de control cargada.
+Línea 51: la clase GridEX20.GridEX del control grilla_entregas no era una clase de control cargada.
+Línea 90: la clase GridEX20.GridEX del control gridFacturas no era una clase de control cargada.
+Línea 131: la clase GridEX20.GridEX del control gridFabricados no era una clase de control cargada.
+Línea 312: la clase MSComDlg.CommonDialog del control CommonDialog1 no era una clase de control cargada.
+Línea 320: la clase GridEX20.GridEX del control grilla no era una clase de control cargada.

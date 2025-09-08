@@ -1,0 +1,2 @@
+UPDATE AdminFacturasDetalleNueva fd INNER JOIN AdminFacturas f ON  f.id = fd.idFactura
+SET fd.porcentaje_descuento = f.descuento
