@@ -239,6 +239,8 @@ Private m_ot As OrdenTrabajo
 Dim col As Collection
 Private detallesPlanos As Collection
 
+Private m_rows As New Collection    'colección de clsFilaPlanoRow
+
 Public Enum Cols
   cId = 1
   cItem = 2
@@ -254,6 +256,8 @@ Public Enum Cols
   cProcesoSig = 12
   cEsConjunto = 13  '<< OCULTA
 End Enum
+
+
 
 
 Private Sub cmdBuscar_Click()
@@ -481,7 +485,7 @@ End Sub
 Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, _
                                          ByVal Bookmark As Variant, _
                                          ByVal Values As GridEX20.JSRowData)
-    If RowIndex < 1 Or RowIndex > detallesPlanos.count Then Exit Sub
+                                         
     Dim r As clsFilaPlanoRow
     Set r = detallesPlanos.item(RowIndex)
     
@@ -571,5 +575,44 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
 
         MsgBox msg, vbInformation, "Datos ingresados"
       On Error GoTo 0
+    
 End Sub
 
+
+Private Sub btnGuardar_Click()
+    On Error GoTo err1
+
+    If gridDetalles.EditMode = jgexEditModeOn Then
+        gridDetalles.Update
+        If gridDetalles.EditMode = jgexEditModeOn Then
+            MsgBox "Termine de editar la celda.", vbExclamation
+            Exit Sub
+        End If
+    End If
+
+    If DAOProduccion.SaveMany(m_rows) Then
+        MsgBox "Registros guardados.", vbInformation
+    Else
+        Err.Raise 9001, "btnGuardar_Click", DAOProduccion.LastError
+    End If
+    Exit Sub
+err1:
+    MsgBox "Error al guardar (" & Err.Number & "): " & Err.Description, vbCritical
+End Sub
+
+' Helpers
+Private Function NzLng(v As Variant) As Long
+    If IsNull(v) Or v = "" Then NzLng = 0 Else NzLng = CLng(v)
+End Function
+
+Private Function NzDbl(v As Variant) As Double
+    If IsNull(v) Or v = "" Then NzDbl = 0 Else NzDbl = CDbl(v)
+End Function
+
+Private Function NzStr(v As Variant) As String
+    If IsNull(v) Then NzStr = "" Else NzStr = CStr(v)
+End Function
+
+Private Function NzDate(v As Variant) As Variant
+    If IsDate(v) Then NzDate = CDate(v) Else NzDate = Null
+    

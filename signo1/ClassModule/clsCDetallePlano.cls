@@ -17,22 +17,20 @@ Public item As String
 Public nombre As String
 
 Public Nivel As Integer
-Public Id As Integer
-Public UnidadMedida As String
+Public Id As Long
 
-Public CantPedida As Double
-Public CantRecibida As Double
-Public CantFabricada As Double
-
-Public CantScrap As Double
+Public IdPedido As Long
+Public IdPiezaPedido As Long
+Public CantPedida As Long
+Public CantRecibida As Long
+Public CantFabricada As Long
+Public CantScrap As Long
     
-Public FechaInicio As Date
-Public FechaFin As Date
-    
+Public FechaInicio As Variant
+Public FechaFin As Variant
 Public UsuarioRecibio As Long
-    
 Public ProcesoSiguiente As String
-    
-Public FechaMod As Date
 
+
+Public UnidadMedida As String
 Public EsConjunto As Boolean

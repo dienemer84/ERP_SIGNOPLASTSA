@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   65208321
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   65208321
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   65208321
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   65208321
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16646145
+         Format          =   65208321
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1750,11 +1750,11 @@ Private Sub btnGuardar_Click()
         'Dim ot As OrdenTrabajo
         For Each deta In Factura.detalles
             If IsSomething(deta.detalleRemito) Then
-                If deta.detalleRemito.idpedido <> 0 Then
+                If deta.detalleRemito.IdPedido <> 0 Then
                     If deta.OtIdAnticipo = 0 Then
                         If IsSomething(deta.detalleRemito) Then
 
-                            Set Ot = DAOOrdenTrabajo.FindById(deta.detalleRemito.idpedido)
+                            Set Ot = DAOOrdenTrabajo.FindById(deta.detalleRemito.IdPedido)
 
                             If Ot.EsHija Then
                                 Dim id_marco As Long
@@ -1874,7 +1874,7 @@ Private Sub AgregarEntregas(col As Collection)
             detalle.detalle = redeta.VerElemento
             detalle.PorcentajeDescuento = 0
             detalle.Bruto = redeta.Valor
-            Set Ot = DAOOrdenTrabajo.FindById(redeta.idpedido)
+            Set Ot = DAOOrdenTrabajo.FindById(redeta.IdPedido)
             If IsSomething(Ot) Then
                 detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.moneda.Id, Factura.moneda.Id)
 
@@ -1928,7 +1928,7 @@ Private Sub btnItemsDescuentoAnticipo_Click()
             If Not detalle.OrigenEsConcepto Then
                 If IsSomething(detalle.detalleRemito) Then
 
-                    Set Ot = DAOOrdenTrabajo.FindById(detalle.detalleRemito.idpedido)
+                    Set Ot = DAOOrdenTrabajo.FindById(detalle.detalleRemito.IdPedido)
                     If Ot.EsHija Then
                         Set Ot = DAOOrdenTrabajo.FindById(Ot.OTMarcoIdPadre)
                     End If
