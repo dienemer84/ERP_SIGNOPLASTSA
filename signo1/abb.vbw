@@ -535,4 +535,4 @@ frmAdminCajaBancosListaAsientoBancario = 0, 0, 1059, 375, C, 500, 0, 1000, 670, 
 clsAsientoContable = 723, 218, 1446, 436, C
 DAOAsientoContable = 0, 0, 668, 654, C
 frmPlaneamientoSeguimientoAvanzado = 418, 348, 836, 696, Z, 418, 0, 836, 348, C
-clsFilaPlanoRow = 455, 0, 1135, 430, 
+clsFilaPlanoRow = 455, 0, 1135, 430, C

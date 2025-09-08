@@ -13,10 +13,11 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public Item As String
+Public item As String
 Public nombre As String
 Public Cantidad As Double
 Public Nivel As Integer
 Public Id As Integer
+Public UnidadMedida As String
 
 Public EsConjunto As Boolean

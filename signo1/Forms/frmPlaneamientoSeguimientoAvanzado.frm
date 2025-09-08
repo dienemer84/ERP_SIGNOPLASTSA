@@ -200,28 +200,29 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          IntProp1        =   0
          IntProp2        =   0
          IntProp7        =   0
-         ColumnsCount    =   12
+         ColumnsCount    =   13
          Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0000
          Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":014C
          Column(3)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0258
-         Column(4)       =   "frmPlaneamientoSeguimientoAvanzado.frx":036C
-         Column(5)       =   "frmPlaneamientoSeguimientoAvanzado.frx":04C4
-         Column(6)       =   "frmPlaneamientoSeguimientoAvanzado.frx":05CC
-         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":06D4
-         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":07C0
-         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0930
-         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0A40
-         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0B34
-         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0C40
+         Column(4)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0348
+         Column(5)       =   "frmPlaneamientoSeguimientoAvanzado.frx":045C
+         Column(6)       =   "frmPlaneamientoSeguimientoAvanzado.frx":05B4
+         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":06BC
+         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":07C4
+         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":08B0
+         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0A20
+         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0B30
+         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0C24
+         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0D30
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0D60
-         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0E98
-         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0F48
-         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0FFC
-         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":10D4
-         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":118C
+         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0E50
+         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0F88
+         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1038
+         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":10EC
+         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":11C4
+         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":127C
          ImageCount      =   0
-         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":126C
+         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":135C
       End
    End
 End
@@ -284,7 +285,7 @@ End Sub
 Private Sub EnsureConjuntoStyle()
     Dim fs As GridEX20.JSFormatStyle
     On Error Resume Next
-    Set fs = gridDetalles.FormatStyles.Item("ConjuntoBold")
+    Set fs = gridDetalles.FormatStyles.item("ConjuntoBold")
     On Error GoTo 0
     If fs Is Nothing Then
         Set fs = gridDetalles.FormatStyles.Add("ConjuntoBold")
@@ -332,9 +333,10 @@ End Sub
 Private Sub AgregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As Integer)
     Dim r As clsFilaPlanoRow
     Set r = New clsFilaPlanoRow
-    r.Item = CStr(d.Item)
+    r.item = CStr(d.item)
     If Not d.Pieza Is Nothing Then r.Id = d.Pieza.Id
     r.nombre = d.Pieza.nombre
+    r.UnidadMedida = d.Pieza.UnidadMedida
     r.Cantidad = d.CantidadPedida
     r.Nivel = Nivel
     r.EsConjunto = (Not d.Pieza Is Nothing And d.Pieza.EsConjunto)
@@ -351,9 +353,10 @@ Private Sub AgregarFilaDTO(ByVal dto As DetalleOTConjuntoDTO, _
                            ByVal factor As Long)
     Dim r As clsFilaPlanoRow
     Set r = New clsFilaPlanoRow
-    r.Item = CStr(dto.IdentificadorPosicion)
+    r.item = CStr(dto.IdentificadorPosicion)
     If Not dto.Pieza Is Nothing Then r.Id = dto.Pieza.Id
     r.nombre = dto.Pieza.nombre
+    r.UnidadMedida = dto.Pieza.UnidadMedida
     r.Cantidad = CLng(dto.Cantidad) * CLng(factor)   'multiplicado por el padre
     r.Nivel = Nivel
     
@@ -445,12 +448,13 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, _
                                          ByVal Values As GridEX20.JSRowData)
     If RowIndex < 1 Or RowIndex > detallesPlanos.count Then Exit Sub
     Dim r As clsFilaPlanoRow
-    Set r = detallesPlanos.Item(RowIndex)
+    Set r = detallesPlanos.item(RowIndex)
     
     Values(1) = r.Id
-    Values(2) = r.Item
-    Values(3) = String$(r.Nivel * 3, " ") & r.nombre
-    Values(4) = r.Cantidad
+    Values(2) = r.item
+    Values(3) = r.UnidadMedida
+    Values(4) = String$(r.Nivel * 3, " ") & r.nombre
+    Values(5) = r.Cantidad
     Values(12) = IIf(r.EsConjunto, 1, 0)   '<< columna oculta
 
 End Sub
