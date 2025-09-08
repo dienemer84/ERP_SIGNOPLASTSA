@@ -258,8 +258,6 @@ Public Enum Cols
 End Enum
 
 
-
-
 Private Sub cmdBuscar_Click()
     If Not IsNumeric(Me.txtOTNro.Text) Then Exit Sub
     
@@ -267,13 +265,12 @@ Private Sub cmdBuscar_Click()
     
     Set m_ot.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(m_ot.Id)
 
-   
     If m_ot Is Nothing Then
         MsgBox "La Orden de Trabajo Nº " & Me.txtOTNro.Text & " no existe.", vbInformation + vbOKOnly
     Else
-    
-        CargarDetallesOT
         
+        CargarDetallesOT
+      
         llenarDataGrid
         
     End If
@@ -300,6 +297,54 @@ Private Sub Form_Load()
     
     cmdBuscar_Click
     
+End Sub
+
+
+Private Sub Form_Resize()
+   On Error Resume Next
+    If Me.WindowState = vbMinimized Then Exit Sub
+    
+    With fraDatosOT
+        .Left = 5500
+        .Top = 100
+        .Width = 7500
+    End With
+    
+    ' GroupBox ocupa todo el ancho, arriba
+    With GroupBox1
+        .Left = 100
+        .Top = 100
+        .Width = Me.ScaleWidth - 200
+        .Height = 1000
+    End With
+    
+    ' TabControl debajo del GroupBox
+    With TabControl1
+        .Left = 100
+        .Top = GroupBox1.Top + GroupBox1.Height + 100
+        .Width = Me.ScaleWidth - 200
+        .Height = Me.ScaleHeight - 1200
+    End With
+    
+    ' Grid ajustado al resto de la ventana
+    With gridDetalles
+        Top = TabControl1.Top + TabControl1.Height + 100
+        .Width = TabControl1.Width - 400
+        .Height = TabControl1.Height - 1600
+    End With
+    
+    With Me.btnExportar
+        .Left = gridDetalles.Width - 3800
+        .Top = gridDetalles.Height + 500
+
+    End With
+    
+    With Me.btnGuardar
+        .Left = gridDetalles.Width - 1800
+        .Top = gridDetalles.Height + 500
+
+    End With
+
 End Sub
 
 
@@ -365,16 +410,14 @@ Private Sub AgregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As In
     r.EsConjunto = (Not d.Pieza Is Nothing And d.Pieza.EsConjunto)
     
     detallesPlanos.Add r
-    
-
-    
+        
 End Sub
 
 
 Private Sub AgregarFilaDTO(ByVal dto As DetalleOTConjuntoDTO, _
                            ByVal Nivel As Integer, _
                            ByVal factor As Long)
-                           
+                          
     Dim r As clsFilaPlanoRow
     Set r = New clsFilaPlanoRow
     
@@ -389,11 +432,8 @@ Private Sub AgregarFilaDTO(ByVal dto As DetalleOTConjuntoDTO, _
     
     r.EsConjunto = (Not dto.Pieza Is Nothing And dto.Pieza.EsConjunto)
     
-    Debug.Print ("Pieza Hijo: " & dto.Pieza.Id)
-     
     detallesPlanos.Add r
   
-
 End Sub
 
 
@@ -401,7 +441,6 @@ Private Sub AgregarHijos(ByVal idDetallePedido As Long, _
                          ByVal idPiezaPadre As Long, _
                          ByVal Nivel As Integer, _
                          ByVal factor As Long)
-    
     Dim hijos As Collection
     Dim dto As DetalleOTConjuntoDTO
 
@@ -414,64 +453,13 @@ Private Sub AgregarHijos(ByVal idDetallePedido As Long, _
         If Not dto.Pieza Is Nothing Then
             If dto.Pieza.EsConjunto Then
                 AgregarHijos idDetallePedido, dto.Pieza.Id, Nivel + 1, CLng(factor) * CLng(dto.Cantidad)
-                
-
             End If
         End If
     Next
 End Sub
 
 
-Private Sub Form_Resize()
-   On Error Resume Next
-    If Me.WindowState = vbMinimized Then Exit Sub
-    
-    With fraDatosOT
-        .Left = 5500
-        .Top = 100
-        .Width = 7500
-    End With
-    
-    ' GroupBox ocupa todo el ancho, arriba
-    With GroupBox1
-        .Left = 100
-        .Top = 100
-        .Width = Me.ScaleWidth - 200
-        .Height = 1000
-    End With
-    
-    ' TabControl debajo del GroupBox
-    With TabControl1
-        .Left = 100
-        .Top = GroupBox1.Top + GroupBox1.Height + 100
-        .Width = Me.ScaleWidth - 200
-        .Height = Me.ScaleHeight - 1200
-    End With
-    
-    ' Grid ajustado al resto de la ventana
-    With gridDetalles
-        Top = TabControl1.Top + TabControl1.Height + 100
-        .Width = TabControl1.Width - 400
-        .Height = TabControl1.Height - 1600
-    End With
-    
-    With Me.btnExportar
-        .Left = gridDetalles.Width - 3800
-        .Top = gridDetalles.Height + 500
-
-    End With
-    
-    With Me.btnGuardar
-        .Left = gridDetalles.Width - 1800
-        .Top = gridDetalles.Height + 500
-
-    End With
-
-End Sub
-
-
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
-
     If RowBuffer.DisplayValue(cEsConjunto) = 1 Then
         RowBuffer.RowStyle = "ConjuntoBold"   'aplica negrita a toda la fila
     Else
@@ -480,13 +468,10 @@ Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
 
 End Sub
 
-
-
 Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, _
                                          ByVal Bookmark As Variant, _
                                          ByVal Values As GridEX20.JSRowData)
-                                         
-    Dim r As clsFilaPlanoRow
+     Dim r As clsFilaPlanoRow
     Set r = detallesPlanos.item(RowIndex)
     
     Values(cId) = r.Id
@@ -522,59 +507,25 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
                                        ByVal Values As GridEX20.JSRowData)
                                        
       If RowIndex < 1 Or RowIndex > detallesPlanos.count Then Exit Sub
+      
       Dim r As clsFilaPlanoRow: Set r = detallesPlanos.item(RowIndex)
     
-'''      'bloquear conjuntos
-'''      If Values(cEsConjunto) = 1 Then
-'''        Values(cCantFabricada) = r.CantFabricada
-'''        Values(cCantRecibida) = r.CantRecibida
-'''        Values(cCantScrap) = r.CantScrap
-'''        Exit Sub
-'''      End If
-    
-      'helpers
-      Dim v As Variant
-      v = Values(cCantFabricada): If IsNull(v) Or v = "" Then v = 0
-      If Not IsNumeric(v) Or v < 0 Then Values(cCantFabricada) = r.CantFabricada Else r.CantFabricada = CCur(v)
-    
-      v = Values(cCantRecibida): If IsNull(v) Or v = "" Then v = 0
-      If Not IsNumeric(v) Or v < 0 Then Values(cCantRecibida) = r.CantRecibida Else r.CantRecibida = CCur(v)
-    
-      v = Values(cCantScrap): If IsNull(v) Or v = "" Then v = 0
-      If Not IsNumeric(v) Or v < 0 Then Values(cCantScrap) = r.CantScrap Else r.CantScrap = CCur(v)
-    
-      If IsDate(Values(cFechaInicio)) Then r.FechaInicio = CDate(Values(cFechaInicio))
-      If IsDate(Values(cFechaFin)) Then r.FechaFin = CDate(Values(cFechaFin))
-    
-      r.UsuarioRecibio = CStr(Values(cUsuarioRecibio))
-      r.ProcesoSiguiente = CStr(Values(cProcesoSig))
-    
-'''      'reflejar normalizado
-'''      Values(cCantFabricada) = r.CantFabricada
-'''      Values(cCantRecibida) = r.CantRecibida
-'''      Values(cCantScrap) = r.CantScrap
-'''      Values(cFechaInicio) = r.FechaInicio
-'''      Values(cFechaFin) = r.FechaFin
-'''
-'''      'persistencia (ajusta firma DAO)
-      
-      On Error Resume Next
-      
-        Dim msg As String
-        msg = "Fila: " & RowIndex & vbCrLf & _
-              "ID pieza: " & r.Id & "   Item: " & r.item & vbCrLf & _
-              "Nombre: " & r.nombre & vbCrLf & _
-              "Cant. pedida: " & Format(r.CantPedida, "0.##") & vbCrLf & _
-              "Cant. recibida: " & Format(r.CantRecibida, "0.##") & vbCrLf & _
-              "Cant. fabricada: " & Format(r.CantFabricada, "0.##") & vbCrLf & _
-              "Scrap: " & Format(r.CantScrap, "0.##") & vbCrLf & _
-              "Inicio: " & IIf(r.FechaInicio = 0, "-", Format(r.FechaInicio, "dd/mm/yyyy hh:nn")) & vbCrLf & _
-              "Fin: " & IIf(r.FechaFin = 0, "-", Format(r.FechaFin, "dd/mm/yyyy hh:nn")) & vbCrLf & _
-              "Recibió: " & r.UsuarioRecibio & vbCrLf & _
-              "Siguiente proceso: " & r.ProcesoSiguiente
+    With r
+        .Id = m_ot.Id
+        .IdPiezaPedido = Values(1)
 
-        MsgBox msg, vbInformation, "Datos ingresados"
-      On Error GoTo 0
+
+        .CantRecibida = NzDbl(Values(6))
+        .CantFabricada = NzDbl(Values(7))
+        .CantScrap = NzDbl(Values(8))
+        .FechaInicio = NzDate(Values(9))
+        .FechaFin = NzDate(Values(10))
+        .UsuarioRecibio = NzLng(Values(11))
+        .ProcesoSiguiente = NzStr(Values(12))
+
+    End With
+     
+      If Not DAOProduccion.Save(r) Then MsgBox "Hubo un error al guardar"
     
 End Sub
 
@@ -615,4 +566,4 @@ End Function
 
 Private Function NzDate(v As Variant) As Variant
     If IsDate(v) Then NzDate = CDate(v) Else NzDate = Null
-    
+End Function

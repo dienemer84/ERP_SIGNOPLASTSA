@@ -141,3 +141,29 @@ Private Sub CustomizeControl(ctrl As Control)
     Next ctrl2
 End Sub
 
+
+Public Function EscapeNum(v As Variant) As String
+    If IsNull(v) Or v = "" Then
+        EscapeNum = "NULL"
+    Else
+        EscapeNum = CStr(v)
+    End If
+End Function
+
+Public Function EscapeStr(v As Variant) As String
+    If IsNull(v) Or v = "" Then
+        EscapeStr = "NULL"
+    Else
+        'doble comillas simples para evitar SQL injection básico
+        EscapeStr = "'" & Replace(CStr(v), "'", "''") & "'"
+    End If
+End Function
+
+Public Function EscapeDate(v As Variant) As String
+    If IsNull(v) Or v = "" Then
+        EscapeDate = "NULL"
+    Else
+        'formato estándar MySQL
+        EscapeDate = "'" & Format$(CDate(v), "yyyy-mm-dd hh:nn:ss") & "'"
+    End If
+End Function
