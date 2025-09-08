@@ -806,7 +806,7 @@ Private Sub Form_Load()
 
     FormHelper.Customize Me
     
-    llenarComboProveedores
+    LlenarComboProveedores
     
     
     formLoading = True
@@ -881,9 +881,11 @@ Private Sub Form_Load()
 End Sub
 
 
-Private Sub llenarComboProveedores()
+Private Sub LlenarComboProveedores()
     
-    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
+'''    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
+
+    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
     Me.cboProveedores.ListIndex = -1
     
 End Sub
@@ -1308,9 +1310,7 @@ Public Sub Cargar(pcta As clsPagoACta)
     Me.caption = "Pago a Cuenta Nro " & pcta.Id
    
     With PagoACta
-    
-'        Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
-        
+
         Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.Proveedor.Id, Me.cboProveedores)
         
         Me.gridCajaOperaciones.ItemCount = .OperacionesCaja.count
@@ -1320,7 +1320,6 @@ Public Sub Cargar(pcta As clsPagoACta)
 
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.Id, Me.cboMonedas)
         Me.dtpFecha.value = .FEcha
-
 
     End With
 

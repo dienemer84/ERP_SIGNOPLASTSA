@@ -242,20 +242,21 @@ Public Function FindById(Id As Long) As clsTransferenciaBcaria
     
 End Function
 
-Public Function ActualizarNroComprobante(T As clsTransferenciaBcaria) As Boolean
+Public Function ActualizarDetallesComprobante(T As clsTransferenciaBcaria) As Boolean
     On Error GoTo err1
 
     Dim q As String
-    q = "UPDATE sp.operaciones SET comprobante='comprobante', cuentabanc_o_caja_id='cuentabanc_o_caja_id' where id='id'"
+    q = "UPDATE sp.operaciones SET comprobante='comprobante', fecha_operacion = 'fecha_operacion', cuentabanc_o_caja_id='cuentabanc_o_caja_id' where id='id'"
 
     q = Replace$(q, "'id'", conectar.Escape(T.Id))
     q = Replace$(q, "'comprobante'", conectar.Escape(T.Comprobante))
+    q = Replace$(q, "'fecha_operacion'", conectar.Escape(T.FechaOperacion))
     q = Replace$(q, "'cuentabanc_o_caja_id'", conectar.Escape(T.IdCtaBancaria))
 
     If Not conectar.execute(q) Then
         Err.Raise 112233, "No se pudieron actualizar los datos de la transferencia."
     End If
-    ActualizarNroComprobante = True
+    ActualizarDetallesComprobante = True
     Exit Function
 err1:
     Err.Raise Err.Number, Err.Description

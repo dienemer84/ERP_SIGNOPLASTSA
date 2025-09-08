@@ -473,7 +473,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   65142785
+      Format          =   65732609
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -823,7 +823,7 @@ Dim perAplicada As clsPercepcionesAplicadas
 Dim colCuentas As Collection
 
 Dim ctaAplicada As clsCuentaFactura
-Dim ctaContable As clsCuentaContable
+Dim ctacontable As clsCuentaContable
 Dim Percepcion As New clsPercepciones
 Dim alicuota As clsAlicuotas
 Dim idtipo As Long
@@ -995,7 +995,7 @@ Private Sub btnGuardar_Click()
     End If
 
 
-    If Not Me.optContado.Value And Not Me.optCtaCte.Value Then
+    If Not Me.optContado.value And Not Me.optCtaCte.value Then
         MsgBox "Debe seleccionar la forma de pago.", vbExclamation
         Exit Sub
     End If
@@ -1108,7 +1108,7 @@ err1:
     ElseIf Err.Number = 202 Then
         MsgBox "Debe ingresar montos válidos!", vbCritical, "Error"
     ElseIf Err.Number = 203 Then
-        MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.Total, vbCritical, "Error"
+        MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.total, vbCritical, "Error"
     ElseIf Err.Number = 300 Or nuevoproveedor Then
         vFactura.Proveedor = Nothing
         nuevoproveedor = False
@@ -1166,7 +1166,7 @@ Private Sub Form_Load()
 
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
     DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboTipoIva
-    llenarComboProveedores
+    LlenarComboProveedores
 
     Me.cboTipoDocContable.AddItem "Factura"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.Factura
@@ -1240,8 +1240,8 @@ Private Sub Form_Load()
     loading = False
     
     'ESTA OPCION ES PARA ACTIVAR COMO CUENTA CORRIENTE SIEMPRE QUE SE ACTIVA EL FORM
-    Me.optCtaCte.Value = True
-    Me.optContado.Value = False
+    Me.optCtaCte.value = True
+    Me.optContado.value = False
     
     Me.cboProveedores.Visible = True
     
@@ -1310,7 +1310,7 @@ End Sub
 Private Sub TotalFactura()
     On Error GoTo er1
     Me.txtMontoNeto = funciones.FormatearDecimales(vFactura.NetoGravado)
-    Me.lblTotal = funciones.FormatearDecimales(vFactura.Total)
+    Me.lblTotal = funciones.FormatearDecimales(vFactura.total)
     Me.txtIVA.Text = funciones.FormatearDecimales(vFactura.TotalIVA)
     Me.fraAlicuotas.caption = Replace$(Me.fraAlicuotas.Tag, "{VALUE}", funciones.FormatearDecimales(vFactura.TotalIVA))
     Exit Sub
@@ -1322,16 +1322,16 @@ Private Sub Form_Terminate()
     Set colPercepciones = colPercepcionesTMP
 End Sub
 
-Private Sub grid_cuenta_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set ctaContable = colCuentas.item(rowIndex)
-    Values(1) = ctaContable.codigo & " - " & ctaContable.nombre
-    Values(2) = ctaContable.Id
+Private Sub grid_cuenta_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set ctacontable = colCuentas.item(RowIndex)
+    Values(1) = ctacontable.codigo & " - " & ctacontable.nombre
+    Values(2) = ctacontable.Id
 End Sub
 Private Sub grid_cuentascontables_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not (MsgBox("¿Está seguro de eliminar la cuenta contable seleccionada?", vbYesNo, "Confirmación") = vbYes)
 End Sub
 Private Sub grid_cuentascontables_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Cancel = (Not IsNumeric(Me.grid_cuentascontables.Value(2))) Or (IsEmpty(Me.grid_cuentascontables.Value(2)))
+    Cancel = (Not IsNumeric(Me.grid_cuentascontables.value(2))) Or (IsEmpty(Me.grid_cuentascontables.value(2)))
 End Sub
 
 
@@ -1345,17 +1345,17 @@ Private Sub grid_cuentascontables_UnboundAddNew(ByVal NewRowBookmark As GridEX20
 End Sub
 
 
-Private Sub grid_cuentascontables_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    vFactura.cuentasContables.remove rowIndex
+Private Sub grid_cuentascontables_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    vFactura.cuentasContables.remove RowIndex
     TotalFactura
     grabado = False
 End Sub
 
 
-Private Sub grid_cuentascontables_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_cuentascontables_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo ErrorHandler
 
-    Set ctaAplicada = vFactura.cuentasContables.item(rowIndex)
+    Set ctaAplicada = vFactura.cuentasContables.item(RowIndex)
 
     If Len(ctaAplicada.cuentas.codigo) > 0 Then
         Values(1) = ctaAplicada.cuentas.codigo & " - " & ctaAplicada.cuentas.nombre
@@ -1369,18 +1369,18 @@ ErrorHandler:
 End Sub
 
 
-Private Sub grid_cuentascontables_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_cuentascontables_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
-        vFactura.cuentasContables(rowIndex).cuentas = DAOCuentaContable.GetById(Values(1))
+        vFactura.cuentasContables(RowIndex).cuentas = DAOCuentaContable.GetById(Values(1))
     End If
-    vFactura.cuentasContables(rowIndex).Monto = Values(2)
+    vFactura.cuentasContables(RowIndex).Monto = Values(2)
     TotalFactura
     grabado = False
 End Sub
 
 
-Private Sub grilla_alicuota_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set alicuota = colAlicuotas.item(rowIndex)
+Private Sub grilla_alicuota_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set alicuota = colAlicuotas.item(RowIndex)
     Values(1) = funciones.FormatearDecimales(alicuota.alicuota)
     Values(2) = alicuota.Id
 End Sub
@@ -1402,7 +1402,7 @@ End Sub
 
 
 Private Sub grilla_alicuotas_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Cancel = (Not IsNumeric(Me.grilla_alicuotas.Value(2))) Or (Not IsNumeric(Me.grilla_alicuotas.Value(1))) Or IsEmpty(Me.grilla_alicuotas.Value(1))
+    Cancel = (Not IsNumeric(Me.grilla_alicuotas.value(2))) Or (Not IsNumeric(Me.grilla_alicuotas.value(1))) Or IsEmpty(Me.grilla_alicuotas.value(1))
 End Sub
 
 Private Sub grilla_alicuotas_GotFocus()
@@ -1421,33 +1421,33 @@ Private Sub grilla_alicuotas_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRe
 
 End Sub
 
-Private Sub grilla_alicuotas_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    vFactura.IvaAplicado.remove rowIndex
+Private Sub grilla_alicuotas_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    vFactura.IvaAplicado.remove RowIndex
     TotalFactura
     grabado = False
 End Sub
 
-Private Sub grilla_alicuotas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_alicuotas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set aliaplicada = vFactura.IvaAplicado.item(rowIndex)
+    Set aliaplicada = vFactura.IvaAplicado.item(RowIndex)
     Values(1) = funciones.FormatearDecimales(aliaplicada.alicuota.alicuota)
     Values(2) = funciones.FormatearDecimales(aliaplicada.Monto)
 End Sub
 
 
-Private Sub grilla_alicuotas_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_alicuotas_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
-        vFactura.IvaAplicado(rowIndex).alicuota = DAOAlicuotas.GetById(Values(1))
+        vFactura.IvaAplicado(RowIndex).alicuota = DAOAlicuotas.GetById(Values(1))
 
     End If
-    vFactura.IvaAplicado(rowIndex).Monto = Values(2)
+    vFactura.IvaAplicado(RowIndex).Monto = Values(2)
     TotalFactura
     grabado = False
 End Sub
 
 
-Private Sub grilla_percepcion_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set Percepcion = colPercepciones.item(rowIndex)
+Private Sub grilla_percepcion_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set Percepcion = colPercepciones.item(RowIndex)
     Values(1) = Percepcion.Percepcion
     Values(2) = Percepcion.Id
 End Sub
@@ -1459,7 +1459,7 @@ End Sub
 
 
 Private Sub grilla_percepciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
-    Cancel = (Not IsNumeric(Me.grilla_percepciones.Value(2))) Or (IsEmpty(Me.grilla_percepciones.Value(2)))
+    Cancel = (Not IsNumeric(Me.grilla_percepciones.value(2))) Or (IsEmpty(Me.grilla_percepciones.value(2)))
 End Sub
 
 
@@ -1473,17 +1473,17 @@ Private Sub grilla_percepciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
 End Sub
 
 
-Private Sub grilla_percepciones_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    vFactura.percepciones.remove rowIndex
+Private Sub grilla_percepciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    vFactura.percepciones.remove RowIndex
     TotalFactura
     grabado = False
 End Sub
 
 
-Private Sub grilla_percepciones_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_percepciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo ErrorHandler
 
-    Set perAplicada = vFactura.percepciones.item(rowIndex)
+    Set perAplicada = vFactura.percepciones.item(RowIndex)
     Values(1) = perAplicada.Percepcion.Percepcion
     Values(2) = funciones.FormatearDecimales(perAplicada.Monto)
 
@@ -1495,11 +1495,11 @@ ErrorHandler:
 End Sub
 
 
-Private Sub grilla_percepciones_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_percepciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If IsNumeric(Values(1)) And InStr(Values(1), ".") = 0 Then
-        vFactura.percepciones(rowIndex).Percepcion = DAOPercepciones.GetById(Values(1))
+        vFactura.percepciones(RowIndex).Percepcion = DAOPercepciones.GetById(Values(1))
     End If
-    vFactura.percepciones(rowIndex).Monto = Values(2)
+    vFactura.percepciones(RowIndex).Monto = Values(2)
     TotalFactura
     grabado = False
 End Sub
@@ -1569,7 +1569,7 @@ End Sub
 
 
 Private Function validarFactura() As Boolean
-    validarFactura = (vFactura.Total = funciones.RedondearDecimales(CDbl(Me.txtMontoManual)))
+    validarFactura = (vFactura.total = funciones.RedondearDecimales(CDbl(Me.txtMontoManual)))
 End Function
 
 
@@ -1645,7 +1645,7 @@ End Sub
 
 Private Sub txtRedondeo_Change()
     On Error Resume Next
-    vFactura.Redondeo = CDbl(Me.txtRedondeo)
+    vFactura.redondeo = CDbl(Me.txtRedondeo)
     TotalFactura
     grabado = False
 End Sub
@@ -1681,15 +1681,15 @@ Private Sub LlenarFactura()
     '''        Me.txtNumeroMask.text = vFactura.numero
     '''    End If
 
-    Me.txtRedondeo = vFactura.Redondeo
+    Me.txtRedondeo = vFactura.redondeo
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.Id, Me.cboProveedores)
     Me.cboTiposFactura.ListIndex = funciones.PosIndexCbo(vFactura.configFactura.Id, Me.cboTiposFactura)
     Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vFactura.moneda.Id, Me.cboMonedas)
     Me.txtMontoNeto = vFactura.NetoGravado
 
-    Me.optContado.Value = Not vFactura.FormaPagoCuentaCorriente
-    Me.optCtaCte.Value = vFactura.FormaPagoCuentaCorriente
+    Me.optContado.value = Not vFactura.FormaPagoCuentaCorriente
+    Me.optCtaCte.value = vFactura.FormaPagoCuentaCorriente
 
     Me.grid_cuentascontables.ItemCount = 0
     Me.grid_cuentascontables.ItemCount = vFactura.cuentasContables.count
@@ -1733,14 +1733,19 @@ Private Sub armarFactura()
 End Sub
 
 
-Private Sub llenarComboProveedores()
-    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, False
+Private Sub LlenarComboProveedores()
+
+'''    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, False
+
+    DAOProveedor.LlenarComboProveedores Me.cboProveedores
+
+    
 End Sub
 
 
 Private Sub txtTipoCambio_Change()
     On Error Resume Next
-    vFactura.TipoCambio = Val(Me.txtTipoCambio)
+    vFactura.TipoCambio = val(Me.txtTipoCambio)
     TotalFactura
     grabado = False
 End Sub

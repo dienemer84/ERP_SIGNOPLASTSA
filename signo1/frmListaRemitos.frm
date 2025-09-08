@@ -17,16 +17,18 @@ Begin VB.Form frmPlaneamientoRemitosLista
    ScaleWidth      =   12825
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.ProgressBar ProgressBar 
-      Height          =   495
-      Left            =   11760
+      Height          =   375
+      Left            =   11400
       TabIndex        =   27
-      Top             =   1800
+      Top             =   2100
       Visible         =   0   'False
-      Width           =   375
+      Width           =   4815
       _Version        =   786432
-      _ExtentX        =   661
-      _ExtentY        =   873
+      _ExtentX        =   8493
+      _ExtentY        =   661
       _StockProps     =   93
+      Appearance      =   6
+      BarColor        =   65535
    End
    Begin MSComctlLib.StatusBar StatusBar1 
       Align           =   2  'Align Bottom
@@ -63,25 +65,17 @@ Begin VB.Form frmPlaneamientoRemitosLista
       EndProperty
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   3105
+      Height          =   2745
       Left            =   120
       TabIndex        =   1
       Top             =   120
       Width           =   16965
       _Version        =   786432
       _ExtentX        =   29924
-      _ExtentY        =   5477
+      _ExtentY        =   4842
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
-      Begin VB.TextBox txtFacturas 
-         Height          =   285
-         Left            =   1080
-         TabIndex        =   28
-         Top             =   2640
-         Visible         =   0   'False
-         Width           =   1695
-      End
       Begin XtremeSuiteControls.PushButton btnClearEstado 
          Height          =   285
          Left            =   2880
@@ -213,9 +207,9 @@ Begin VB.Form frmPlaneamientoRemitosLista
             Left            =   825
             TabIndex        =   15
             Top             =   240
-            Width           =   2190
+            Width           =   3630
             _Version        =   786432
-            _ExtentX        =   3863
+            _ExtentX        =   6403
             _ExtentY        =   556
             _StockProps     =   77
             BackColor       =   -2147483643
@@ -328,15 +322,6 @@ Begin VB.Form frmPlaneamientoRemitosLista
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
       End
-      Begin VB.Label lblFacturas 
-         Caption         =   "Facturas:"
-         Height          =   255
-         Left            =   360
-         TabIndex        =   29
-         Top             =   2640
-         Visible         =   0   'False
-         Width           =   615
-      End
       Begin VB.Label lblEstado 
          Alignment       =   1  'Right Justify
          BackStyle       =   0  'Transparent
@@ -394,13 +379,13 @@ Begin VB.Form frmPlaneamientoRemitosLista
       End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   4575
+      Height          =   10335
       Left            =   120
       TabIndex        =   0
-      Top             =   3360
+      Top             =   2880
       Width           =   16935
       _ExtentX        =   29871
-      _ExtentY        =   8070
+      _ExtentY        =   18230
       Version         =   "2.0"
       PreviewRowIndent=   200
       DefaultGroupMode=   1
@@ -533,7 +518,7 @@ Dim m_Archivos As Dictionary
 
 Private Sub AnularRto_Click()
     Dim A As Long
-    A = Me.grilla.rowIndex(Me.grilla.row)
+    A = Me.grilla.RowIndex(Me.grilla.row)
     If MsgBox("¿Está seguro de anular el remito?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.Anular(tmpRto) Then
             MsgBox "Remito anulado con éxito!", vbExclamation, "Información"
@@ -625,7 +610,7 @@ Private Sub endRto_Click()
     Dim A As Long
     Dim rtoNro As Long
     rtoNro = tmpRto.Id
-    A = Me.grilla.rowIndex(Me.grilla.row)
+    A = Me.grilla.RowIndex(Me.grilla.row)
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
@@ -662,12 +647,12 @@ Private Sub listaRemitos()
         filtro = filtro & "  and " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_NUMERO & "=" & Me.txtNroRemito
     End If
 
-    If Not IsNull(Me.dtpDesde.Value) Then
-        filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " >= " & conectar.Escape(Format(Me.dtpDesde.Value, "yyyy-mm-dd 00:00:00"))
+    If Not IsNull(Me.dtpDesde.value) Then
+        filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " >= " & conectar.Escape(Format(Me.dtpDesde.value, "yyyy-mm-dd 00:00:00"))
     End If
 
-    If Not IsNull(Me.dtpHasta.Value) Then
-        filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " <= " & conectar.Escape(Format(Me.dtpHasta.Value, "yyyy-mm-dd 23:59:59"))
+    If Not IsNull(Me.dtpHasta.value) Then
+        filtro = filtro & " and  " & DAORemitoS.TABLA_REMITO & "." & DAORemitoS.CAMPO_FECHA & " <= " & conectar.Escape(Format(Me.dtpHasta.value, "yyyy-mm-dd 23:59:59"))
     End If
 
 
@@ -939,7 +924,7 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick grilla, Column
 End Sub
 
-Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
     If ColIndex = 10 And m_Archivos.item(tmpRto.Id) > 0 Then
         IconIndex = 1
@@ -947,7 +932,7 @@ Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, 
 End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim row As Long
-    row = grilla.rowIndex(grilla.row)
+    row = grilla.RowIndex(grilla.row)
     If row > 0 Then
         If Button = 2 Then
             grilla_SelectionChange
@@ -1001,8 +986,8 @@ End Sub
 
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.rowIndex > 0 Then
-        Set tmpRto = remitos(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 Then
+        Set tmpRto = remitos(RowBuffer.RowIndex)
 
         If tmpRto.estado = RemitoAnulado Then
             RowBuffer.RowStyle = "Anulado"
@@ -1033,7 +1018,7 @@ End Sub
 
 
 Private Sub grilla_SelectionChange()
-    Dim it As Long: it = grilla.rowIndex(grilla.row)
+    Dim it As Long: it = grilla.RowIndex(grilla.row)
     If it > 0 Then
         Set tmpRto = remitos.item(it)
     Else
@@ -1042,40 +1027,40 @@ Private Sub grilla_SelectionChange()
 End Sub
 
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, _
                                    ByVal Bookmark As Variant, _
                                    ByVal Values As GridEX20.JSRowData)
 
     On Error Resume Next
 
-    Set tmpRto = remitos.item(rowIndex)
+    Set tmpRto = remitos.item(RowIndex)
 
     With Values
-        .Value(1) = tmpRto.numero
-        .Value(6) = tmpRto.detalle
-        .Value(3) = tmpRto.FEcha
-        .Value(4) = enums.EnumEstadoRemito(tmpRto.estado)
-        .Value(5) = tmpRto.usuarioCreador.usuario
+        .value(1) = tmpRto.numero
+        .value(6) = tmpRto.detalle
+        .value(3) = tmpRto.FEcha
+        .value(4) = enums.EnumEstadoRemito(tmpRto.estado)
+        .value(5) = tmpRto.usuarioCreador.usuario
 
-        If IsSomething(tmpRto.cliente) Then .Value(2) = tmpRto.cliente.razon
+        If IsSomething(tmpRto.Cliente) Then .value(2) = tmpRto.Cliente.razon
         If IsSomething(tmpRto.usuarioAprobador) Then
-            .Value(7) = tmpRto.usuarioAprobador.usuario
+            .value(7) = tmpRto.usuarioAprobador.usuario
         Else
-            .Value(7) = vbNullString
+            .value(7) = vbNullString
 
         End If
 
-        .Value(8) = tmpRto.VerEstadoFacturado
+        .value(8) = tmpRto.VerEstadoFacturado
 
         If facturasRemitos.Exists(CStr(tmpRto.numero)) Then
             If LenB(facturasRemitos.item(CStr(tmpRto.numero))) >= 0 Then
-                .Value(9) = Left$(facturasRemitos.item(CStr(tmpRto.numero)), Len(facturasRemitos.item(CStr(tmpRto.numero))) - 2)
+                .value(9) = Left$(facturasRemitos.item(CStr(tmpRto.numero)), Len(facturasRemitos.item(CStr(tmpRto.numero))) - 2)
 
             End If
 
         End If
 
-        .Value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
+        .value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
 
     End With
 
@@ -1102,7 +1087,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 tmpRto.detalle = tmp.detalle
                 tmpRto.estado = tmp.estado
                 tmpRto.EstadoFacturado = tmp.EstadoFacturado
-                Set tmpRto.cliente = tmp.cliente
+                Set tmpRto.Cliente = tmp.Cliente
                 Set tmpRto.usuarioCreador = tmp.usuarioCreador
                 grilla.RefreshRowIndex i
                 Exit For
@@ -1164,7 +1149,7 @@ End Sub
 
 Private Sub mnuNoFacturable_Click()
     Dim A As Long
-    A = grilla.rowIndex(grilla.row)
+    A = grilla.RowIndex(grilla.row)
     DAORemitoS.CambiarEstadoFacturable tmpRto
 
     grilla.RefreshRowIndex A
@@ -1261,24 +1246,38 @@ Me.ProgressBar.max = remitos.count
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
+    
+    Dim titulo As String
+        titulo = "Reporte de Remitos"
 
-    xlWorksheet.Cells(1, 1).Value = "Reporte de Remitos"
+    With xlWorksheet.Range("A1:I1")
+        .Merge
+        .value = titulo
+        .Font.Bold = True
+        .HorizontalAlignment = -4108 ' xlCenter
+    End With
 
     xlWorksheet.Columns(4).HorizontalAlignment = xlLeft
     xlWorksheet.Columns(7).HorizontalAlignment = xlLeft
-
-    xlWorksheet.Cells(2, 1).Value = "Número"
-    xlWorksheet.Cells(2, 2).Value = "Cliente"
-    xlWorksheet.Cells(2, 3).Value = "Detalle"
-    xlWorksheet.Cells(2, 4).Value = "Fecha"
-    xlWorksheet.Cells(2, 5).Value = "Creador"
-    xlWorksheet.Cells(2, 6).Value = "Aprobador"
-    xlWorksheet.Cells(2, 7).Value = "Facturado"
-    xlWorksheet.Cells(2, 8).Value = "Facturas"
-    xlWorksheet.Cells(2, 9).Value = "Archivos"
+    
+    Dim offset As Long
+    offset = 3
+    
+    xlWorksheet.Cells(offset, 1).value = "Número"
+    xlWorksheet.Cells(offset, 2).value = "Cliente"
+    xlWorksheet.Cells(offset, 3).value = "Detalle"
+    xlWorksheet.Cells(offset, 4).value = "Fecha"
+    xlWorksheet.Cells(offset, 5).value = "Creador"
+    xlWorksheet.Cells(offset, 6).value = "Aprobador"
+    xlWorksheet.Cells(offset, 7).value = "Facturado"
+    xlWorksheet.Cells(offset, 8).value = "Facturas"
+    xlWorksheet.Cells(offset, 9).value = "Archivos"
+    
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 9)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 9)).Interior.Color = &HC0C0C0
     
     Dim idx As Integer
-    idx = 3
+    idx = 4
 
     Dim Remito As Remito
 
@@ -1289,38 +1288,38 @@ Me.ProgressBar.max = remitos.count
 
     For Each Remito In remitos
 
-            xlWorksheet.Cells(idx, 1).Value = Remito.numero
+            xlWorksheet.Cells(idx, 1).value = Remito.numero
             
-            xlWorksheet.Cells(idx, 2).Value = Remito.cliente.razon
-            xlWorksheet.Cells(idx, 3).Value = Remito.detalle
+            xlWorksheet.Cells(idx, 2).value = Remito.Cliente.razon
+            xlWorksheet.Cells(idx, 3).value = Remito.detalle
             
-            xlWorksheet.Cells(idx, 4).Value = Remito.FEcha
+            xlWorksheet.Cells(idx, 4).value = Remito.FEcha
 
-            xlWorksheet.Cells(idx, 5).Value = Remito.usuarioCreador.usuario
+            xlWorksheet.Cells(idx, 5).value = Remito.usuarioCreador.usuario
             
             If IsSomething(Remito.usuarioAprobador) Then
-                xlWorksheet.Cells(idx, 6).Value = Remito.usuarioAprobador.usuario
+                xlWorksheet.Cells(idx, 6).value = Remito.usuarioAprobador.usuario
             Else
-                xlWorksheet.Cells(idx, 6).Value = vbNullString
+                xlWorksheet.Cells(idx, 6).value = vbNullString
             End If
             
 
-            xlWorksheet.Cells(idx, 7).Value = Remito.VerEstadoFacturado
+            xlWorksheet.Cells(idx, 7).value = Remito.VerEstadoFacturado
 
             If facturasRemitos.Exists(CStr(Remito.numero)) Then
                 If LenB(facturasRemitos.item(CStr(Remito.numero))) >= 0 Then
-                    xlWorksheet.Cells(idx, 8).Value = Left$(facturasRemitos.item(CStr(Remito.numero)), Len(facturasRemitos.item(CStr(Remito.numero))) - 2)
+                    xlWorksheet.Cells(idx, 8).value = Left$(facturasRemitos.item(CStr(Remito.numero)), Len(facturasRemitos.item(CStr(Remito.numero))) - 2)
                 End If
             End If
 
-            xlWorksheet.Cells(idx, 9).Value = "(" & Val(m_Archivos.item(Remito.Id)) & ")"
+            xlWorksheet.Cells(idx, 9).value = "(" & Val(m_Archivos.item(Remito.Id)) & ")"
 
         
         idx = idx + 1
 
         'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
         d = d + 1
-        Me.ProgressBar.Value = d
+        Me.ProgressBar.value = d
 
 
     Next
@@ -1362,7 +1361,7 @@ Me.ProgressBar.max = remitos.count
     Set xlApplication = Nothing
 
     'REINICIA EL PROGRESSBAR Y LO OCULTA
-    Me.ProgressBar.Value = 0
+    Me.ProgressBar.value = 0
     Me.ProgressBar.Visible = False
     '    Me.lblExportando.Visible = False
     

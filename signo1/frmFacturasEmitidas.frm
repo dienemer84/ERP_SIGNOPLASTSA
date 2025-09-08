@@ -1094,7 +1094,7 @@ Dim m_Archivos As Dictionary
 
 Private Sub AnularFactura_Click()
     Dim r As Long
-    r = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
+    r = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
     If MsgBox("¿Desea anular el comprobante seleccionado?", vbYesNo, "Confirmacion") = vbYes Then
 
         If DAOFactura.Anular(Factura) Then
@@ -1115,7 +1115,7 @@ Private Sub aplicarNCaFC_Click()
         Set Selecciones.Factura = Nothing
         Dim F As New frmAdminFacturasNCElegirFC
 
-        F.idCliente = Factura.cliente.Id
+        F.idCliente = Factura.Cliente.Id
         F.TiposDocs.Add tipoDocumentoContable.Factura
 
         If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
@@ -1151,7 +1151,7 @@ Private Sub aplicarNDaFC_Click()
         Set Selecciones.Factura = Nothing
         Dim F As New frmAdminFacturasNCElegirFC
 
-        F.idCliente = Factura.cliente.Id
+        F.idCliente = Factura.Cliente.Id
         F.TiposDocs.Add tipoDocumentoContable.Factura
         
         If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
@@ -1183,7 +1183,7 @@ Private Sub aprobarFactura_Click()
     Dim msgadicional As String
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
+        g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.aprobarV2(Factura, True, False, Factura.esExportacion) Then
 
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
@@ -1268,60 +1268,59 @@ Private Sub btnExportar_Click()
 
     Set xlWorkbook = xlApplication.Workbooks.Add
 
-    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+    Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
 
     xlWorksheet.Activate
+    
+    Dim titulo As String
+        titulo = "Reporte de Comprobantes emitidos"
+        
+    With xlWorksheet.Range("A1:T1")
+        .Merge
+        .value = titulo
+        .Font.Bold = True
+        .HorizontalAlignment = -4108 ' xlCenter
+    End With
 
-    xlWorksheet.Cells(1, 1).value = "Reporte de comprobantes emitidos"
-
-    '    If (id > 0) Then
-    '        xlWorksheet.Cells(1, 2).value = DAOCliente.BuscarPorID(id).razon
-    '    Else
-    '        xlWorksheet.Cells(1, 2).value = "Todos"
-    '    End If
 
     xlWorksheet.Columns(4).HorizontalAlignment = xlLeft
     xlWorksheet.Columns(12).HorizontalAlignment = xlLeft
 
-    xlWorksheet.Cells(2, 1).value = "Comprobante"
-    xlWorksheet.Cells(2, 2).value = "Emision"
+    Dim offset As Long
+    offset = 3
 
-    xlWorksheet.Cells(2, 3).value = "Moneda"
-    xlWorksheet.Cells(2, 4).value = "Cotización"
-
-    xlWorksheet.Cells(2, 5).value = "Detalle"
-
-    xlWorksheet.Cells(2, 6).value = "Neto Gravado $ ARS"
-    xlWorksheet.Cells(2, 7).value = "Neto Gravado U$S"
-
-    xlWorksheet.Cells(2, 8).value = "Percepciones $ ARS"
-    xlWorksheet.Cells(2, 9).value = "Percepciones U$S"
-
-    xlWorksheet.Cells(2, 10).value = "IVA $ ARS"
-    xlWorksheet.Cells(2, 11).value = "IVA U$S"
-
-    xlWorksheet.Cells(2, 12).value = "Exento $ ARS"
-    xlWorksheet.Cells(2, 13).value = "Exento U$S"
-
-    xlWorksheet.Cells(2, 14).value = "Importe en $ ARS"
-    xlWorksheet.Cells(2, 15).value = "Importe en U$S"
-
-    xlWorksheet.Cells(2, 16).value = "Vencimiento"
-    xlWorksheet.Cells(2, 17).value = "Atraso / Estado"
-    xlWorksheet.Cells(2, 18).value = "Entrega"
-    xlWorksheet.Cells(2, 19).value = "Atraso / Dias"
-    xlWorksheet.Cells(2, 20).value = "Cliente"
-    xlWorksheet.Cells(2, 21).value = "Cuit"
-    xlWorksheet.Cells(2, 22).value = "Observaciones"
-    xlWorksheet.Cells(2, 23).value = "Observaciones Cancela"
-    xlWorksheet.Cells(2, 24).value = "Recibos Asociados"
-    xlWorksheet.Cells(2, 25).value = "ID"
-    xlWorksheet.Cells(2, 26).value = "ID_Asociacion"
+    xlWorksheet.Cells(offset, 1).value = "Comprobante"
+    xlWorksheet.Cells(offset, 2).value = "Emision"
+    xlWorksheet.Cells(offset, 3).value = "Moneda"
+    xlWorksheet.Cells(offset, 4).value = "Cotización"
+    xlWorksheet.Cells(offset, 5).value = "Detalle"
+    xlWorksheet.Cells(offset, 6).value = "Neto Gravado $ ARS"
+    xlWorksheet.Cells(offset, 7).value = "Neto Gravado U$S"
+    xlWorksheet.Cells(offset, 8).value = "Percepciones $ ARS"
+    xlWorksheet.Cells(offset, 9).value = "Percepciones U$S"
+    xlWorksheet.Cells(offset, 10).value = "IVA $ ARS"
+    xlWorksheet.Cells(offset, 11).value = "IVA U$S"
+    xlWorksheet.Cells(offset, 12).value = "Exento $ ARS"
+    xlWorksheet.Cells(offset, 13).value = "Exento U$S"
+    xlWorksheet.Cells(offset, 14).value = "Importe en $ ARS"
+    xlWorksheet.Cells(offset, 15).value = "Importe en U$S"
+    xlWorksheet.Cells(offset, 16).value = "Vencimiento"
+    xlWorksheet.Cells(offset, 17).value = "Atraso / Estado"
+    xlWorksheet.Cells(offset, 18).value = "Entrega"
+    xlWorksheet.Cells(offset, 19).value = "Atraso / Dias"
+    xlWorksheet.Cells(offset, 20).value = "Cliente"
+    xlWorksheet.Cells(offset, 21).value = "Cuit"
+    xlWorksheet.Cells(offset, 22).value = "Observaciones"
+    xlWorksheet.Cells(offset, 23).value = "Observaciones Cancela"
+    xlWorksheet.Cells(offset, 24).value = "Recibos Asociados"
+    xlWorksheet.Cells(offset, 25).value = "ID"
+    xlWorksheet.Cells(offset, 26).value = "ID_Asociacion"
     
-    xlWorksheet.Range("A2:Y2").Font.Bold = True
-
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 26)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 26)).Interior.Color = &HC0C0C0
+    
     Dim idx As Integer
-    idx = 3
+    idx = 4
 
     Dim fac As Factura
 
@@ -1433,8 +1432,8 @@ Private Sub btnExportar_Click()
             xlWorksheet.Cells(idx, 19).value = 0
         End If
 
-        xlWorksheet.Cells(idx, 20).value = fac.cliente.razon
-        xlWorksheet.Cells(idx, 21).value = fac.cliente.Cuit
+        xlWorksheet.Cells(idx, 20).value = fac.Cliente.razon
+        xlWorksheet.Cells(idx, 21).value = fac.Cliente.Cuit
         xlWorksheet.Cells(idx, 22).value = fac.observaciones
         xlWorksheet.Cells(idx, 23).value = fac.observaciones_cancela
         xlWorksheet.Cells(idx, 24).value = fac.RecibosAplicadosId
@@ -1499,7 +1498,7 @@ Private Sub btnExportar_Click()
     xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
 
     xlWorksheet.Activate
-    xlWorksheet.Range("A3").Select
+    xlWorksheet.Range("A4").Select
     xlWorksheet.Application.ActiveWindow.FreezePanes = True
 
     Dim filename As String
@@ -1836,7 +1835,7 @@ Private Sub llenarGrilla()
     Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
 
     Dim F As Factura
-    Dim C As Integer
+    Dim c As Integer
 
     For Each F In facturas
         Dim total As Double
@@ -1853,23 +1852,23 @@ Private Sub llenarGrilla()
         Dim totalExentoDolar As Double
         
         
-        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
+        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
 
-        total = total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.total * C, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-        TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * C, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * C, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-        Percepcion = F.TotalEstatico.TotalPercepcionesIB * C
-        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * C, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-        TotalExento = TotalExento + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalExento * C, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
+        total = total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.total * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
+        TotalIVATodo = TotalIVATodo + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalIVADiscrimandoONo * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
+        totalNG = totalNG + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalNetoGravado * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
+        Percepcion = F.TotalEstatico.TotalPercepcionesIB * c
+        totalPercepcionesIIBB = totalPercepcionesIIBB + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalPercepcionesIB * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
+        TotalExento = TotalExento + MonedaConverter.ConvertirForzado2(F.TotalEstatico.TotalExento * c, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
         
         
         ' Moneda.id = 1 >> DOLAR
         If F.moneda.Id = 1 Then
-                totalDolares = totalDolares + F.TotalEstatico.total * C
-                totalPercepcionesIIBBDolar = totalPercepcionesIIBBDolar + F.TotalEstatico.TotalPercepcionesIB * C
-                totalIVADolar = totalIVADolar + F.TotalEstatico.TotalIVADiscrimandoONo * C
-                totalNGDolar = totalNGDolar + F.TotalEstatico.TotalNetoGravado * C
-                totalExentoDolar = totalExentoDolar + F.TotalEstatico.TotalExento * C
+                totalDolares = totalDolares + F.TotalEstatico.total * c
+                totalPercepcionesIIBBDolar = totalPercepcionesIIBBDolar + F.TotalEstatico.TotalPercepcionesIB * c
+                totalIVADolar = totalIVADolar + F.TotalEstatico.TotalIVADiscrimandoONo * c
+                totalNGDolar = totalNGDolar + F.TotalEstatico.TotalNetoGravado * c
+                totalExentoDolar = totalExentoDolar + F.TotalEstatico.TotalExento * c
         End If
         
     Next
@@ -1930,8 +1929,8 @@ Private Sub gridComprobantesEmitidos_DblClick()
     verFactura_Click
 End Sub
 
-Private Sub gridComprobantesEmitidos_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
+Private Sub gridComprobantesEmitidos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+    If ColIndex = 20 And m_Archivos.Item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
 Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2179,7 +2178,7 @@ End Sub
 
 Private Sub gridComprobantesEmitidos_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(RowBuffer.rowIndex)
+    Set Factura = facturas.Item(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaCliente.Anulada Then
         RowBuffer.RowStyle = "anulada"
@@ -2219,13 +2218,13 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row))
+    Set Factura = facturas.Item(Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row))
 
 End Sub
 
-Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.item(rowIndex)
+    Set Factura = facturas.Item(RowIndex)
 
 
     Values(1) = Factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
@@ -2268,7 +2267,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByV
     Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.total * Factura.CambioAPatron)), "$", "")
 
     Values(10) = Factura.OrdenCompra
-    Values(11) = Factura.cliente.razon
+    Values(11) = Factura.Cliente.razon
 
     Values(12) = enums.EnumEstadoDocumentoContable(Factura.estado)
 
@@ -2351,7 +2350,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal rowIndex As Long, ByV
 
     Values(22) = Factura.TasaAjusteMensual
 
-    Values(23) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
+    Values(23) = "(" & val(m_Archivos.Item(Factura.Id)) & ")"
 
     Values(24) = Factura.Id
 
@@ -2497,7 +2496,7 @@ Private Sub mnuAprobarEnviar_Click()
     Dim msgadicional As String
     msgadicional = ""
     If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
+        g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.aprobarV2(Factura, True, True, Factura.esExportacion) Then
 
 
@@ -2592,7 +2591,7 @@ Private Sub mnuDesaprobarFactura_Click()
     Dim g As Long
 
     If MsgBox("¿Desea desaprobar localmente el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-        g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
+        g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.desaprobar(Factura) Then
             MsgBox "Comprobante desaprobado con éxito!", vbInformation, "Información"
             Me.gridComprobantesEmitidos.RefreshRowIndex g
@@ -2630,7 +2629,7 @@ Private Sub mnuEnviarAfip_Click()
     If Factura.Tipo.PuntoVenta.CaeManual Then
 
         Dim gg As Long
-        gg = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
+        gg = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
 
         Dim F As New frmAdminFacturasAprobarSinAfip
         Set F.Factura = Factura
@@ -2641,7 +2640,7 @@ Private Sub mnuEnviarAfip_Click()
 
     Else
         If MsgBox("¿Desea informar  el comprobante?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
-            g = Me.gridComprobantesEmitidos.rowIndex(Me.gridComprobantesEmitidos.row)
+            g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
             If DAOFactura.aprobarV2(Factura, False, True, Factura.esExportacion) Then
 
                 Dim msg As String

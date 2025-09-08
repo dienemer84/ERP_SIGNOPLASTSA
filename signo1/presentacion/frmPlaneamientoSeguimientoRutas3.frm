@@ -309,7 +309,7 @@ Public Sub cmdBuscar_Click()
     Else
 
         Me.fraDatosOT.caption = Me.fraDatosOT.Tag & Ot.Id
-        Me.lblCliente.caption = "Cliente: " & Ot.cliente.razon
+        Me.lblCliente.caption = "Cliente: " & Ot.Cliente.razon
         Me.lblFechaCreado.caption = "Fecha Creada: " & Ot.fechaCreado
         Me.lblFechaEntrega.caption = "Fecha Entrega: " & Ot.FechaEntrega
         Me.lblEstado.caption = "Estado: " & funciones.estado_pedido(Ot.estado)
@@ -356,13 +356,13 @@ Private Sub CargarDetallesOT()
     Dim Record3 As ReportRecord
     Dim Record4 As ReportRecord
 
-    Dim item As ReportRecordItem
+    Dim Item As ReportRecordItem
 
     For Each deta In Ot.detalles
         Set record = Me.ReportControl.Records.Add
         record.Tag = deta.Id
-        record.AddItem deta.item
-        Set item = record.AddItem(deta.Pieza.nombre)
+        record.AddItem deta.Item
+        Set Item = record.AddItem(deta.Pieza.nombre)
         'Item.HasCheckbox = True
 
         record.PreviewText = deta.Nota
@@ -380,10 +380,10 @@ Private Sub CargarDetallesOT()
                 Set Record2 = record.Childs.Add()
                 Record2.Tag = tmpdeta2.Id
                 Record2.AddItem vbNullString
-                Set item = Record2.AddItem(tmpdeta2.Pieza.nombre)
+                Set Item = Record2.AddItem(tmpdeta2.Pieza.nombre)
 
                 'Item.HasCheckbox = True
-                Record2.AddItem tmpdeta2.Cantidad * record.item(2).value
+                Record2.AddItem tmpdeta2.Cantidad * record.Item(2).value
                 Record2.AddItem vbNullString
 
                 'AddTareas Record2, tmpdeta2.Id, tmpdeta2.pieza
@@ -396,10 +396,10 @@ Private Sub CargarDetallesOT()
                         Set Record3 = Record2.Childs.Add
                         Record3.Tag = tmpdeta3.Id
                         Record3.AddItem vbNullString
-                        Set item = Record3.AddItem(tmpdeta3.Pieza.nombre)
+                        Set Item = Record3.AddItem(tmpdeta3.Pieza.nombre)
 
                         'Item.HasCheckbox = True
-                        Record3.AddItem tmpdeta3.Cantidad * Record2.item(2).value
+                        Record3.AddItem tmpdeta3.Cantidad * Record2.Item(2).value
                         Record3.AddItem vbNullString
 
                         'AddTareas Record3, tmpdeta3.Id, tmpdeta3.pieza
@@ -413,10 +413,10 @@ Private Sub CargarDetallesOT()
                                 Set Record4 = Record3.Childs.Add
                                 Record4.Tag = tmpdeta4.Id
                                 Record4.AddItem vbNullString
-                                Set item = Record4.AddItem(tmpdeta4.Pieza.nombre)
+                                Set Item = Record4.AddItem(tmpdeta4.Pieza.nombre)
 
                                 'Item.HasCheckbox = True
-                                Record4.AddItem tmpdeta4.Cantidad * Record3.item(2).value
+                                Record4.AddItem tmpdeta4.Cantidad * Record3.Item(2).value
                                 Record4.AddItem vbNullString
 
                                 'AddTareas Record4, tmpdeta4.Id, tmpdeta4.pieza
@@ -542,7 +542,7 @@ End Sub
 
 Private Sub AddTareas(ByRef rec As ReportRecord, ByRef idDetallePedido As Long, Optional ByRef idDetallePedidoConj As Long = 0)    'ByRef P As pieza)
     Dim rechijo As ReportRecord
-    Dim item As ReportRecordItem
+    Dim Item As ReportRecordItem
 
     Dim ptp As PlaneamientoTiempoProceso
     Dim finalizada As String
@@ -555,7 +555,7 @@ Private Sub AddTareas(ByRef rec As ReportRecord, ByRef idDetallePedido As Long, 
         rechijo.AddItem vbNullString
 
 
-        Set item = rechijo.AddItem("Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea & finalizada & " (" & ptp.Id & ")")
+        Set Item = rechijo.AddItem("Tarea: " & ptp.Tarea.Id & " - " & ptp.Tarea.Tarea & finalizada & " (" & ptp.Id & ")")
         rechijo.PreviewText = ptp.Tarea.descripcion
 
         'Item.HasCheckbox = True
@@ -581,7 +581,7 @@ Private Sub mnuAgregarRemito_Click()
         MsgBox "Ingrese un nro de remito válido.", vbExclamation
     Else
         Dim rto As Remito
-        Set rto = DAORemitoS.FindByNumero(Val(nroremito))
+        Set rto = DAORemitoS.FindByNumero(val(nroremito))
 
         If Not IsSomething(rto) Then Exit Sub
 
@@ -699,7 +699,7 @@ Private Sub mnuArchivoDetalleOT_Click()
         If deta Is Nothing Then Exit Sub
 
         frmar2.ObjetoId = deta.Id
-        frmar2.caption = "OT Nº " & Ot.IdFormateado & " - Item " & deta.item & " [" & deta.Pieza.nombre & "]"
+        frmar2.caption = "OT Nº " & Ot.IdFormateado & " - Item " & deta.Item & " [" & deta.Pieza.nombre & "]"
 
     Else        'es el detalle de algun detalle
         frmar2.Origen = OrigenArchivos.OA_OrdenesTrabajoDetalleConjunto
@@ -709,7 +709,7 @@ Private Sub mnuArchivoDetalleOT_Click()
         Set deta = DAODetalleOrdenTrabajo.FindById(detadto.idDetallePedido)
 
         frmar2.ObjetoId = detadto.Id
-        frmar2.caption = "OT Nº " & Ot.IdFormateado & " - Item " & deta.item & " - Subitem " & detadto.Id & " [" & deta.Pieza.nombre & "]"
+        frmar2.caption = "OT Nº " & Ot.IdFormateado & " - Item " & deta.Item & " - Subitem " & detadto.Id & " [" & deta.Pieza.nombre & "]"
     End If
 
     frmar2.Show
@@ -761,7 +761,7 @@ Private Sub mnuFinalizarTarea_Click()
     If ret = 1 Then
         If MsgBox("¿Desea finalizar la tarea?", vbQuestion + vbYesNo) = vbYes Then
             If DAOTiemposProceso.Finalize(CLng(Me.ReportControl.SelectedRows(0).record.Tag * -1)) Then
-                Me.ReportControl.SelectedRows(0).record.item(3).caption = "FINALIZADA"
+                Me.ReportControl.SelectedRows(0).record.Item(3).caption = "FINALIZADA"
                 MsgBox "Tarea Finalizada", vbInformation
 
 
@@ -900,7 +900,7 @@ Private Sub ReportControl_MouseDown(Button As Integer, Shift As Integer, x As Lo
     End If
 End Sub
 
-Private Sub ReportControl_RowDblClick(ByVal row As XtremeReportControl.IReportRow, ByVal item As XtremeReportControl.IReportRecordItem)
+Private Sub ReportControl_RowDblClick(ByVal row As XtremeReportControl.IReportRow, ByVal Item As XtremeReportControl.IReportRecordItem)
     row.Expanded = Not row.Expanded
 End Sub
 
@@ -979,7 +979,7 @@ Private Sub ReportControlDetalles_MouseDown(Button As Integer, Shift As Integer,
                         Me.ReportControlDetalles.FocusedRow = hitinfo.row
 
                         Dim de As PlaneamientoTiempoProcesoDetalle
-                        Set de = detalles.item(CStr(Me.ReportControlDetalles.FocusedRow.record.Tag))
+                        Set de = detalles.Item(CStr(Me.ReportControlDetalles.FocusedRow.record.Tag))
                         Me.mnuFinalizarTiempo.Enabled = (CDbl(de.FechaFinTarea) = 0)
                         Me.mnuEditarTiempo.Enabled = True    'poner permiso
                     End If

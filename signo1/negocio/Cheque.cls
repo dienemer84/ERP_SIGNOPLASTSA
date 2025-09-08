@@ -34,6 +34,7 @@ Public FechaEmision As Date
 Public IdOrdenPagoOrigen As Long
 Public NumeroLiquidacionCaja As Long
 Public NumeroPagoACuenta As Long
+Public NumeroMovimiento As Long
 
 Public estado As EstadoCheque
 Public Depositado As Boolean

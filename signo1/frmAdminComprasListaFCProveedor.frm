@@ -13,6 +13,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ScaleHeight     =   5081.851
    ScaleMode       =   0  'User
    ScaleWidth      =   20089.83
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox5 
       Height          =   3840
       Left            =   11160
@@ -751,13 +752,13 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
    End
    Begin GridEX20.GridEX grilla 
-      Height          =   4455
+      Height          =   10123
       Left            =   0
       TabIndex        =   0
       Top             =   3960
-      Width           =   18690
-      _ExtentX        =   32967
-      _ExtentY        =   7858
+      Width           =   11296
+      _ExtentX        =   19923
+      _ExtentY        =   17859
       Version         =   "2.0"
       PreviewRowIndent=   100
       AutomaticSort   =   -1  'True
@@ -767,13 +768,10 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       PreviewRowLines =   1
       OLEDropMode     =   1
       ColumnAutoResize=   -1  'True
-      HeaderStyle     =   2
+      HeaderStyle     =   3
       MethodHoldFields=   -1  'True
-      ContScroll      =   -1  'True
       LockType        =   4
-      GroupByBoxInfoText=   ""
       AllowEdit       =   0   'False
-      BorderStyle     =   0
       BackColorGBBox  =   16744576
       BackColorHeader =   16761024
       ImageCount      =   1
@@ -1058,11 +1056,13 @@ Private Sub Form_Load()
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.grilla, True
 
-    Set colProveedores = DAOProveedor.FindAll
-    For Each prov In colProveedores
-        cboProveedores.AddItem prov.RazonSocial
-        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
-    Next
+'''    Set colProveedores = DAOProveedor.FindAll
+'''    For Each prov In colProveedores
+'''        cboProveedores.AddItem prov.RazonSocial
+'''        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
+'''    Next
+
+    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
 
     llenarComboTipo
     
@@ -1074,14 +1074,14 @@ Private Sub Form_Load()
 
     llenarComboOrdenImporte
 
-    Dim P As clsProveedor
-    For Each P In DAOProveedor.FindAll()
-        If LenB(Trim$(P.razonFantasia)) > 0 Then
-            Me.cboFantasia.AddItem P.razonFantasia
-            Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.Id
-        End If
-    Next P
-    Me.cboFantasia.ListIndex = -1
+'''    Dim P As clsProveedor
+'''    For Each P In DAOProveedor.FindAll()
+'''        If LenB(Trim$(P.razonFantasia)) > 0 Then
+'''            Me.cboFantasia.AddItem P.razonFantasia
+'''            Me.cboFantasia.ItemData(Me.cboFantasia.NewIndex) = P.Id
+'''        End If
+'''    Next P
+'''    Me.cboFantasia.ListIndex = -1
 
 
     Dim cc As clsCuentaContable
@@ -1389,9 +1389,23 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.grilla.Width = Me.ScaleWidth - 50
-    Me.grilla.Height = Me.ScaleHeight - 1800
 
+    Dim margen As Single
+    margen = 120 ' Espacio extra (en twips) para no pegar al borde
+
+    ' Ajustar ancho de la grilla
+    Me.grilla.Width = Me.ScaleWidth - margen
+
+    ' Ajustar posición y altura considerando el GroupBox
+    Me.grilla.Top = Me.GroupBox1.Top + Me.GroupBox1.Height + margen
+    Me.grilla.Height = Me.ScaleHeight - Me.grilla.Top - margen
+
+    ' Ajustar ancho del GroupBox
+    Me.GroupBox1.Width = Me.grilla.Width
+
+    ' Ajustar columnas
+    GridEXHelper.AutoSizeColumns Me.grilla
+    
 End Sub
 
 Private Sub Form_Terminate()

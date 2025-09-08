@@ -396,7 +396,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
 Dim idpedido As Long
 Dim cod As Long
 Dim procDef As Boolean

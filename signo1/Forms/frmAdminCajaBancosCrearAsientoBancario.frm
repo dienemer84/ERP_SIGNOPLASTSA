@@ -350,7 +350,6 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
             Left            =   -69895
             TabIndex        =   14
             Top             =   435
-            Visible         =   0   'False
             Width           =   9330
             _ExtentX        =   16457
             _ExtentY        =   5133
@@ -692,7 +691,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Dim colCuentas As New Collection
-Dim cuentacontable As clsCuentaContable
+Dim CuentaContable As clsCuentaContable
 Dim formLoading As Boolean
 Dim formLoaded As Boolean
 
@@ -733,13 +732,11 @@ Private Sub cboMonedas_Click()
 End Sub
 
 
-Private Sub cboProveedores_Click()
-    If IsSomething(PagoACta) And Me.cboProveedores.ListIndex <> -1 Then
-
-        Set PagoACta.Proveedor = DAOProveedor.FindById(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex))
-    
+Private Sub cboCuentas_Click()
+    If IsSomething(AsientoContable) And Me.cboCuentas.ListIndex <> -1 Then
+        Set AsientoContable.CuentaContable = DAOCuentaContable.GetById(Me.cboCuentas.ItemData(Me.cboCuentas.ListIndex))
     End If
-        
+
 End Sub
 
 
@@ -763,11 +760,10 @@ Private Sub cmdCrear_Click()
         MsgBox "Todavia esta editando la grilla de banco.", vbExclamation
         Exit Sub
     End If
-
+    
     AsientoContable.FEcha = Me.dtpFecha.value
     
     AsientoContable.StaticTotalOrigenes = AsientoContable.TotalOrigenes
-    
     
     If AsientoContable.IsValid Then
 
@@ -783,15 +779,15 @@ Private Sub cmdCrear_Click()
             End If
 
             If n Then
-                If MsgBox("Desea registrar un nuevo Movimiento?", vbQuestion + vbYesNo) = vbYes Then
-                    Dim f12 As New frmAdminPagosCrearPagoACta
+                If MsgBox("Desea registrar un nuevo movimiento?", vbQuestion + vbYesNo) = vbYes Then
+                    Dim f12 As New frmAdminCajaBancosCrearAsientoBancario
                     f12.Show
                 End If
             End If
 
             Unload Me
         Else
-            MsgBox "Hubo un problema al guardar el Movimiento.", vbCritical
+            MsgBox "Hubo un problema al guardar el movimiento.", vbCritical
         End If
     Else
         MsgBox AsientoContable.ValidationMessages, vbCritical, "Error"
@@ -850,8 +846,6 @@ Private Sub Form_Load()
     Me.gridCheques.ItemCount = AsientoContable.ChequesTerceros.count
     Me.gridChequesPropios.ItemCount = AsientoContable.ChequesPropios.count
 
-
-
     Set Me.gridCheques.Columns("numero").DropDownControl = Me.gridChequesDisponibles
 
     Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
@@ -862,9 +856,10 @@ Private Sub Form_Load()
 
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
+    
     gridChequesChequera.ItemCount = 0
+    
     GridEXHelper.AutoSizeColumns Me.gridChequeras
-
 
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
 
@@ -900,7 +895,6 @@ Private Sub gridCajaOperaciones_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoole
     Dim cond3 As Boolean
     Dim cond4 As Boolean
 
-
     cond1 = Not IsNumeric(Me.gridCajaOperaciones.value(1))
     cond2 = Not IsNumeric(Me.gridCajaOperaciones.value(2)) And LenB(Me.gridCajaOperaciones.value(2)) = 0
     cond3 = Not IsDate(Me.gridCajaOperaciones.value(3))
@@ -926,14 +920,14 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
     End If
     operacion.EntradaSalida = OPSalida
     AsientoContable.OperacionesCaja.Add operacion
-'    Totalizar
+
 End Sub
 
 
 Private Sub gridCajaOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And PagoACta.OperacionesCaja.count >= RowIndex Then
-        PagoACta.OperacionesCaja.remove RowIndex
-'        Totalizar
+    If RowIndex > 0 And AsientoContable.OperacionesCaja.count >= RowIndex Then
+        AsientoContable.OperacionesCaja.remove RowIndex
+
     End If
 End Sub
 
@@ -956,11 +950,10 @@ Private Sub gridCajaOperaciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
     End If
 End Sub
 
+
 Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And PagoACta.OperacionesCaja.count > 0 Then
-        Set operacion = PagoACta.OperacionesCaja.item(RowIndex)
-        'operacion.IdPertenencia = recibo.id
-        'operacion.Pertenencia = Banco
+    If RowIndex > 0 And AsientoContable.OperacionesCaja.count > 0 Then
+        Set operacion = AsientoContable.OperacionesCaja.item(RowIndex)
         operacion.Monto = Values(1)
         operacion.Comprobante = Values(5)
         If IsNumeric(Values(2)) Then
@@ -971,7 +964,7 @@ Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Book
             Set operacion.caja = DAOCaja.FindById(Values(4))
         End If
         operacion.EntradaSalida = OPSalida
-'        Totalizar
+
     End If
 End Sub
 
@@ -992,11 +985,12 @@ Private Sub gridChequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark
     End If
 End Sub
 
+
 Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Dim msg As New Collection
 
     ' REVISA QUE EN LA COLECCION DE CHEQUES DE TERCEROS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-    If funciones.BuscarEnColeccion(PagoACta.ChequesTerceros, CStr(Me.gridCheques.value(1))) Then
+    If funciones.BuscarEnColeccion(AsientoContable.ChequesTerceros, CStr(Me.gridCheques.value(1))) Then
         msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
     End If
 
@@ -1005,27 +999,28 @@ Private Sub gridCheques_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
 
 End Sub
 
+
 Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
     Set cheque = Nothing
     If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
     If IsSomething(cheque) Then
-        PagoACta.ChequesTerceros.Add cheque, CStr(cheque.Id)
+        AsientoContable.ChequesTerceros.Add cheque, CStr(cheque.Id)
 
     End If
-'    Totalizar
+
 
 End Sub
 
 Private Sub gridCheques_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 Then
-        PagoACta.ChequesTerceros.remove RowIndex
-'        Totalizar
+        AsientoContable.ChequesTerceros.remove RowIndex
+
     End If
 End Sub
 
 Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= PagoACta.ChequesTerceros.count Then
-        Set cheque = PagoACta.ChequesTerceros.item(RowIndex)
+    If RowIndex <= AsientoContable.ChequesTerceros.count Then
+        Set cheque = AsientoContable.ChequesTerceros.item(RowIndex)
 
         Values(1) = cheque.numero & " "
 
@@ -1041,12 +1036,12 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
 End Sub
 
 Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And PagoACta.ChequesTerceros.count >= RowIndex Then
+    If RowIndex > 0 And AsientoContable.ChequesTerceros.count >= RowIndex Then
         Set cheque = Nothing
         If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
         If IsSomething(cheque) Then
-            PagoACta.ChequesTerceros.Add cheque, , , RowIndex
-            PagoACta.ChequesTerceros.remove RowIndex
+            AsientoContable.ChequesTerceros.Add cheque, , , RowIndex
+            AsientoContable.ChequesTerceros.remove RowIndex
         End If
 '        Totalizar
     End If
@@ -1094,7 +1089,7 @@ Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolea
     End If
 
     ' REVISA QUE EN LA COLECCION DE CHEQUES PROPIOS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-    If funciones.BuscarEnColeccion(PagoACta.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
+    If funciones.BuscarEnColeccion(AsientoContable.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
         msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
     End If
 
@@ -1120,7 +1115,6 @@ End Sub
 
 Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal value As Variant)
     If ColIndex = 1 Then
-        'If Not IsNumeric(Me.gridChequesPropios.Value(1)) Or LenB(Me.gridChequesPropios.Value(1)) = 0 Then
         If Not IsNumeric(value) Or LenB(value) = 0 Then
             Set chequesChequeraSeleccionada = New Collection
         Else
@@ -1139,23 +1133,22 @@ Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JS
         cheque.Monto = Values(3)
         cheque.FechaVencimiento = Values(4)
 
-        PagoACta.ChequesPropios.Add cheque, CStr(cheque.Id)
-
+        AsientoContable.ChequesPropios.Add cheque, CStr(cheque.Id)
 
     End If
-'    Totalizar
+
 End Sub
 
 Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 Then
-        PagoACta.ChequesPropios.remove RowIndex
-'        Totalizar
+        AsientoContable.ChequesPropios.remove RowIndex
     End If
+    
 End Sub
 
 Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If PagoACta.ChequesPropios.count >= RowIndex Then
-        Set cheque = PagoACta.ChequesPropios.item(RowIndex)
+    If AsientoContable.ChequesPropios.count >= RowIndex Then
+        Set cheque = AsientoContable.ChequesPropios.item(RowIndex)
         Values(1) = cheque.chequera.Description
         Values(2) = vbNullString
         'FORMATCURRENCY
@@ -1163,26 +1156,16 @@ Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Boo
         Values(4) = cheque.FechaVencimiento
         Values(5) = cheque.numero
 
-
-'        Totalizar
     End If
 End Sub
 
 Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If PagoACta.ChequesPropios.count >= RowIndex Then
-        Set cheque = PagoACta.ChequesPropios.item(RowIndex)
-
-        '        If Values(2) <> Cheque.Id Then
-        '            ordenPago.ChequesPropios.remove CStr(Cheque.Id)
-        '            Set Cheque = DAOCheques.FindById(Values(2))
-        '            ordenPago.ChequesPropios.Add Cheque, CStr(Cheque.Id)
-        '        End If
-
+    If AsientoContable.ChequesPropios.count >= RowIndex Then
+        Set cheque = AsientoContable.ChequesPropios.item(RowIndex)
         cheque.Monto = Values(3)
         cheque.FechaVencimiento = Values(4)
     End If
 
-'    Totalizar
 End Sub
 
 Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
@@ -1227,14 +1210,13 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
     operacion.EntradaSalida = OPSalida
     
     AsientoContable.operacionesBanco.Add operacion
-    
-''    Totalizar
+
 End Sub
 
 Private Sub gridDepositosOperaciones_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And PagoACta.operacionesBanco.count >= RowIndex Then
-        PagoACta.operacionesBanco.remove RowIndex
-'        Totalizar
+    If RowIndex > 0 And AsientoContable.operacionesBanco.count >= RowIndex Then
+        AsientoContable.operacionesBanco.remove RowIndex
+
     End If
 End Sub
 
@@ -1256,6 +1238,7 @@ Private Sub gridDepositosOperaciones_UnboundReadData(ByVal RowIndex As Long, ByV
     End If
 End Sub
 
+
 Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And AsientoContable.operacionesBanco.count > 0 Then
         Set operacion = AsientoContable.operacionesBanco.item(RowIndex)
@@ -1270,7 +1253,7 @@ Private Sub gridDepositosOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal
             Set operacion.CuentaBancaria = DAOCuentaBancaria.FindById(Values(4))
         End If
         operacion.EntradaSalida = OPSalida
-'        Totalizar
+
     End If
 End Sub
 
@@ -1290,39 +1273,27 @@ Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
 End Sub
 
 
-Public Sub Cargar(pcta As clsPagoACta)
+Public Sub Cargar(aContable As clsAsientoContable)
 
-    Me.caption = "Pago a Cuenta Nro " & pcta.Id
-
-    If Not IsSomething(pcta) Then
-        MsgBox "La OP que está intentando visualizar est? en estado PENDIENTE. " & vbNewLine & "Por lo tanto no puede ser mostrada porque puede estar siendo editada." & vbNewLine & "Verifiquelo por favor.", vbCritical, "OP Pendiente"
-        Unload Me
-        Exit Sub
-
-    End If
-
-    Set PagoACta = DAOPagoACta.FindById(pcta.Id)
+    Set AsientoContable = DAOAsientoContable.FindById(aContable.Id)
     
-    Me.caption = "Pago a Cuenta Nro " & pcta.Id
-   
-    With PagoACta
+    Me.caption = "Movimiento de Caja y Bancos Nro " & AsientoContable.Id
     
-'        Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.FacturasProveedor.item(1).Proveedor.Id, Me.cboProveedores)
-        
-        Me.cboProveedores.ListIndex = funciones.PosIndexCbo(.Proveedor.Id, Me.cboProveedores)
-        
+    With AsientoContable
+    
+        Me.cboCuentas.ListIndex = funciones.PosIndexCbo(.CuentaContable.Id, Me.cboCuentas)
+        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.Id, Me.cboMonedas)
+        Me.dtpFecha.value = .FEcha
+                
         Me.gridCajaOperaciones.ItemCount = .OperacionesCaja.count
+        
         Me.gridDepositosOperaciones.ItemCount = .operacionesBanco.count
         Me.gridCheques.ItemCount = .ChequesTerceros.count
         Me.gridChequesPropios.ItemCount = .ChequesPropios.count
 
-        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(.moneda.Id, Me.cboMonedas)
-        Me.dtpFecha.value = .FEcha
-
-
     End With
 
-    Me.cboProveedores.Enabled = Not ReadOnly
+    Me.cboCuentas.Enabled = Not ReadOnly
     Me.btnClearProveedor.Enabled = Not ReadOnly
     Me.gridDepositosOperaciones.AllowEdit = Not ReadOnly
     Me.gridDepositosOperaciones.AllowDelete = Not ReadOnly
@@ -1341,5 +1312,3 @@ Public Sub Cargar(pcta As clsPagoACta)
     Me.dtpFecha.Enabled = Not ReadOnly
 
 End Sub
-
-

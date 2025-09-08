@@ -98,6 +98,8 @@ Public Function FindAllTercerosUti(Optional ByRef filter As String = vbNullStrin
       & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
       & " LEFT JOIN ordenes_pago op ON op.id = cheq.orden_pago_origen" _
       & " LEFT JOIN liquidaciones_caja liq ON liq.id = cheq.orden_pago_origen" _
+      & " LEFT JOIN pagos_a_cuenta pcta ON pcta.id = cheq.pago_a_cuenta_origen" _
+      & " LEFT JOIN movimientos_caja_bancos mov ON mov.id = cheq.movimiento_origen" _
       & " LEFT JOIN ordenes_pago_facturas opf ON op.id = opf.id_orden_pago" _
       & " LEFT JOIN AdminComprasFacturasProveedores acfp ON acfp.id = opf.id_factura_proveedor" _
       & " LEFT JOIN proveedores prov ON prov.id = acfp.id_proveedor" _
@@ -232,9 +234,12 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.IdChequera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID_CHEQUERA)
         tmpCheque.TercerosPropio = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_TERCEROS_PROPIO)
         tmpCheque.FechaEmision = GetValue(rs, fieldsIndex, tableNameOrAlias, "fecha_emision")
+        
         tmpCheque.IdOrdenPagoOrigen = GetValue(rs, fieldsIndex, tableNameOrAlias, "orden_pago_origen")
         tmpCheque.NumeroLiquidacionCaja = GetValue(rs, fieldsIndex, tableNameOrAlias, "liquidacion_caja_origen")
         tmpCheque.NumeroPagoACuenta = GetValue(rs, fieldsIndex, tableNameOrAlias, "pago_a_cuenta_origen")
+        tmpCheque.NumeroMovimiento = GetValue(rs, fieldsIndex, tableNameOrAlias, "movimiento_origen")
+        
         tmpCheque.entro = GetValue(rs, fieldsIndex, tableNameOrAlias, "ingresado")
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
@@ -296,7 +301,12 @@ Public Function Map2(ByRef rs As Recordset, _
         tmpCheque.IdChequera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID_CHEQUERA)
         tmpCheque.TercerosPropio = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_TERCEROS_PROPIO)
         tmpCheque.FechaEmision = GetValue(rs, fieldsIndex, tableNameOrAlias, "fecha_emision")
+        
         tmpCheque.IdOrdenPagoOrigen = GetValue(rs, fieldsIndex, tableNameOrAlias, "orden_pago_origen")
+        tmpCheque.NumeroLiquidacionCaja = GetValue(rs, fieldsIndex, tableNameOrAlias, "liquidacion_caja_origen")
+        tmpCheque.NumeroPagoACuenta = GetValue(rs, fieldsIndex, tableNameOrAlias, "pago_a_cuenta_origen")
+        tmpCheque.NumeroMovimiento = GetValue(rs, fieldsIndex, tableNameOrAlias, "movimiento_origen")
+        
         tmpCheque.entro = GetValue(rs, fieldsIndex, tableNameOrAlias, "ingresado")
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
@@ -346,9 +356,12 @@ Public Function Map3(ByRef rs As Recordset, _
         tmpCheque.IdChequera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID_CHEQUERA)
         tmpCheque.TercerosPropio = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_TERCEROS_PROPIO)
         tmpCheque.FechaEmision = GetValue(rs, fieldsIndex, tableNameOrAlias, "fecha_emision")
+        
         tmpCheque.IdOrdenPagoOrigen = GetValue(rs, fieldsIndex, tableNameOrAlias, "orden_pago_origen")
         tmpCheque.NumeroLiquidacionCaja = GetValue(rs, fieldsIndex, tableNameOrAlias, "liquidacion_caja_origen")
         tmpCheque.NumeroPagoACuenta = GetValue(rs, fieldsIndex, tableNameOrAlias, "pago_a_cuenta_origen")
+        tmpCheque.NumeroMovimiento = GetValue(rs, fieldsIndex, tableNameOrAlias, "movimiento_origen")
+        
         tmpCheque.entro = GetValue(rs, fieldsIndex, tableNameOrAlias, "ingresado")
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")

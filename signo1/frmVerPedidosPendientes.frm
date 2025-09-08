@@ -808,7 +808,7 @@ Private Sub activarPedido_Click()
     If Not aux_ordenTrabajo Is Nothing Then
 
         If Me.grid.SelectedItems.count = 1 Then
-            A = grid.rowIndex(grid.row)
+            A = grid.RowIndex(grid.row)
             grid_SelectionChange
 
 
@@ -825,13 +825,13 @@ Private Sub activarPedido_Click()
             algunos_errores = False
             Dim it As JSSelectedItem
             For Each it In Me.grid.SelectedItems
-                Set ped = m_ordenesTrabajo.item(Me.grid.rowIndex(it.rowIndex))
+                Set ped = m_ordenesTrabajo.item(Me.grid.RowIndex(it.RowIndex))
                 If ped.estado = EstadoOT_EnEspera Then
                     If Not DAOOrdenTrabajo.PonerEnProduccion(ped) Then
                         algunos_errores = True
                     End If
                 End If
-                grid.RefreshRowIndex it.rowIndex
+                grid.RefreshRowIndex it.RowIndex
             Next
 
             If algunos_errores Then
@@ -850,7 +850,7 @@ Private Sub AprobarOT_Click()
     Dim A As Long
     If Not aux_ordenTrabajo Is Nothing Then
         If MsgBox("¿Está seguro de aprobar la OT " & aux_ordenTrabajo.Id & "?", vbYesNo, "Confirmación") = vbNo Then Exit Sub
-        A = grid.rowIndex(grid.row)
+        A = grid.RowIndex(grid.row)
         Set aux_ordenTrabajo.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(aux_ordenTrabajo.Id)
 
         If Not aux_ordenTrabajo.detalles Is Nothing Then
@@ -881,7 +881,7 @@ Private Sub btnTareasOrdenes_Click()
         Dim tmpOrden As OrdenTrabajo
         Dim item As JSSelectedItem
         For Each item In Me.grid.SelectedItems
-            Set tmpOrden = m_ordenesTrabajo.item(item.rowIndex)
+            Set tmpOrden = m_ordenesTrabajo.item(item.RowIndex)
             ExcelListadoTareas path & "\Tareas de OT " & tmpOrden.IdFormateado & ".xls", tmpOrden
         Next item
         MsgBox "Proceso finalizado.", vbInformation
@@ -916,7 +916,7 @@ Private Sub cmdConsultas_Click()
     Dim si As JSSelectedItem
     Dim col As New Collection
     For Each si In Me.grid.SelectedItems
-        col.Add m_ordenesTrabajo(si.rowIndex)
+        col.Add m_ordenesTrabajo(si.RowIndex)
     Next si
     If col.count > 0 Then
         Dim F As New frmPlaneamientoConsultasMultiples
@@ -955,7 +955,7 @@ Private Sub Command1_Click()
     Dim ots_id As New Collection
 
     For Each selectedItem In Me.grid.SelectedItems
-        Set ped = m_ordenesTrabajo.item(selectedItem.rowIndex)
+        Set ped = m_ordenesTrabajo.item(selectedItem.RowIndex)
 
         If ped.estado = EstadoOT_Pendiente Then
             Set ped.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(ped.Id)
@@ -1033,9 +1033,9 @@ Private Sub Command2_Click()
     On Error GoTo err1
     conectar.BeginTransaction
     Set rs = conectar.RSFactory("SELECT id,idDetalleOtPadre FROM detalles_pedidos dp WHERE dp.idDetalleOtPadre>0")
-    Dim C As Long
+    Dim c As Long
     While Not rs.EOF And Not rs.BOF
-        C = C + 1
+        c = c + 1
         conectar.execute "update detalles_pedidos set idDetalleOtPadre=-1 where id=" & rs!idDetalleOtPadre
 
 
@@ -1050,7 +1050,7 @@ End Sub
 
 Private Sub desactivar_Click()
     Dim A As Long
-    A = grid.rowIndex(grid.row)
+    A = grid.RowIndex(grid.row)
     If MsgBox("¿Está seguro de desactivar el pedido?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
         If Not aux_ordenTrabajo Is Nothing Then
 
@@ -1131,7 +1131,7 @@ Private Sub LlenarNuevaLista()
     Set m_ordenesTrabajo = DAOOrdenTrabajo.FindAll(condition)
     Me.grid.ItemCount = 0
     Me.grid.ItemCount = m_ordenesTrabajo.count
-    Me.grid.rowIndex backIndex
+    Me.grid.RowIndex backIndex
     Me.grid.Refresh
     Me.caption = Me.Tag & " [ Cantidad: " & m_ordenesTrabajo.count & " ]"
     '    GridEXHelper.AutoSizeColumns Me.grid, True
@@ -1142,9 +1142,9 @@ End Sub
 Private Sub SeleccionarOrden()
     Dim RowPosition As Long
     RowPosition = grid.row
-    srow = Me.grid.rowIndex(Me.grid.row)
-    If grid.rowIndex(RowPosition) > 0 Then
-        Set aux_ordenTrabajo = m_ordenesTrabajo(grid.rowIndex(RowPosition))
+    srow = Me.grid.RowIndex(Me.grid.row)
+    If grid.RowIndex(RowPosition) > 0 Then
+        Set aux_ordenTrabajo = m_ordenesTrabajo(grid.RowIndex(RowPosition))
     Else
         Set aux_ordenTrabajo = Nothing
     End If
@@ -1289,7 +1289,7 @@ Private Sub grid_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     ColumnHeaderClick Me.grid, Column
 End Sub
 Private Sub grid_DblClick()
-    If grid.rowIndex(grid.row) = 0 Then Exit Sub
+    If grid.RowIndex(grid.row) = 0 Then Exit Sub
     If Not aux_ordenTrabajo Is Nothing Then
         frmPlaneamientoPedidosDetalle.Pedido = aux_ordenTrabajo
         frmPlaneamientoPedidosDetalle.caption = "Pedido Nro. " & Format(aux_ordenTrabajo.Id, "0000")
@@ -1297,10 +1297,10 @@ Private Sub grid_DblClick()
     End If
 End Sub
 
-Private Sub grid_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grid_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
 
     On Error Resume Next
-    aux_ordenTrabajo = m_ordenesTrabajo.item(rowIndex)
+    aux_ordenTrabajo = m_ordenesTrabajo.item(RowIndex)
 
     If ColIndex = 11 And m_Archivos.item(aux_ordenTrabajo.Id) > 0 Then
         IconIndex = 1
@@ -1353,7 +1353,7 @@ Private Sub grid_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
 
 
-    Set aux_ordenTrabajo = m_ordenesTrabajo.item(RowBuffer.rowIndex)
+    Set aux_ordenTrabajo = m_ordenesTrabajo.item(RowBuffer.RowIndex)
 
     If aux_ordenTrabajo.estado = EstadoOT_Desactivado Then
         RowBuffer.RowStyle = "Desactivado"
@@ -1373,10 +1373,10 @@ End Sub
 Private Sub grid_SelectionChange()
     SeleccionarOrden
 End Sub
-Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
     If m_ordenesTrabajo.count > 0 Then
-        Set aux_ordenTrabajo = m_ordenesTrabajo.item(rowIndex)
+        Set aux_ordenTrabajo = m_ordenesTrabajo.item(RowIndex)
         With aux_ordenTrabajo
             Values(1) = Format(.Id, "0000")
             Values(2) = .ClienteFacturar.razon
@@ -1402,7 +1402,7 @@ Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Varia
                 Values(12) = EnumTipoOT(.TipoOrden - 1)
             End If
 
-            Values(13) = .cliente.razon
+            Values(13) = .Cliente.razon
 
             'cambio entre values2 y values13 por pedido de karin hecho el 7-4
         End With
@@ -1427,7 +1427,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 m_ordenesTrabajo(x).FormaDePagoAnticipo = EVENTO.Elemento.FormaDePagoAnticipo
                 m_ordenesTrabajo(x).FormaDePagoSaldo = EVENTO.Elemento.FormaDePagoSaldo
                 m_ordenesTrabajo(x).Anticipo = EVENTO.Elemento.Anticipo
-                Set m_ordenesTrabajo(x).cliente = EVENTO.Elemento.cliente
+                Set m_ordenesTrabajo(x).Cliente = EVENTO.Elemento.Cliente
                 Set m_ordenesTrabajo(x).ClienteFacturar = EVENTO.Elemento.ClienteFacturar
                 Me.grid.RefreshRowIndex x
                 Exit For
@@ -1451,7 +1451,7 @@ Private Sub mnuAsociarFacturaAnticipo_Click()
     If Me.grid.SelectedItems.count = 0 Then Exit Sub
    
     Dim selecFac As New frmAdminFacturasNCElegirFC
-    selecFac.idCliente = aux_ordenTrabajo.cliente.Id
+    selecFac.idCliente = aux_ordenTrabajo.Cliente.Id
     selecFac.EstadosDocs.Add EstadoFacturaCliente.Aprobada
     selecFac.TiposDocs.Add tipoDocumentoContable.Factura
 
@@ -1467,7 +1467,7 @@ Private Sub mnuAsociarFacturaAnticipo_Click()
         Set fac = Selecciones.Factura
 
         For Each selItem In Me.grid.SelectedItems
-            Set otTMP = m_ordenesTrabajo.item(selItem.rowIndex)
+            Set otTMP = m_ordenesTrabajo.item(selItem.RowIndex)
 
             If otTMP.Anticipo = 0 Or otTMP.AnticipoFacturado Or otTMP.AnticipoFacturadoIdFactura <> 0 Then
                 MsgBox "La OT Nº " & otTMP.IdFormateado & " no se puede asociar porque no tiene anticipo o porque ya esta facturada por otra factura de anticipo.", vbExclamation + vbOKOnly
@@ -1613,7 +1613,7 @@ End Sub
 Private Sub modificarPedido_Click()
     Dim A As Long
     If Not aux_ordenTrabajo Is Nothing Then
-        A = grid.rowIndex(grid.row)
+        A = grid.RowIndex(grid.row)
         If MsgBox("¿Está seguro de hacer editable este pedido?", vbYesNo, "Confirmación") = vbNo Then Exit Sub
         If DAOOrdenTrabajo.HacerEditable(aux_ordenTrabajo) Then
             MsgBox "Pedido disponible para editar!", vbInformation, "Información"

@@ -521,12 +521,15 @@ End Sub
 
 Private Sub btnCargarProveedores_Click()
 
-    Set colProveedores = DAOProveedor.FindAll
-    For Each prov In colProveedores
-        cboProveedores.AddItem prov.RazonSocial
-        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
-    Next
+'''    Set colProveedores = DAOProveedor.FindAll
+'''
+'''    For Each prov In colProveedores
+'''        cboProveedores.AddItem prov.RazonSocial
+'''        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
+'''    Next
 
+    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
+    
 End Sub
 
 Private Sub btnExportar_Click(Index As Integer)
@@ -615,18 +618,18 @@ Public Sub llenarGrilla()
     Dim saldo As Double
     Dim TotalFactura As Double
     Dim TotalPagado As Double
-    Dim C As Integer
+    Dim c As Integer
 
     total = 0
 
     For Each Factura In facturas
 
-        If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
+        If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
         
-        TotalFactura = ((Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) + Factura.TotalIVA + Factura.TotalNetoGravadoDiscriminado(0) + Factura.totalPercepciones + Factura.ImpuestoInterno + Factura.Redondeo) * C
+        TotalFactura = ((Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) + Factura.TotalIVA + Factura.TotalNetoGravadoDiscriminado(0) + Factura.totalPercepciones + Factura.ImpuestoInterno + Factura.redondeo) * c
         total = total + TotalFactura
               
-        TotalPagado = (Factura.TotalAbonadoGlobal) * C
+        TotalPagado = (Factura.TotalAbonadoGlobal) * c
         pagado = pagado + TotalPagado
         
         
@@ -676,7 +679,7 @@ End Sub
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas(RowBuffer.rowIndex)
+    Set Factura = facturas(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaProveedor.Aprobada Then
         RowBuffer.CellStyle(15) = "EstadoAprobado"
@@ -690,9 +693,9 @@ err1:
 End Sub
 
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set Factura = facturas.item(rowIndex)
+    Set Factura = facturas.item(RowIndex)
 
     Dim i As Integer
 
@@ -715,9 +718,9 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
 
         TotalFactura = (Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) + Factura.TotalIVA + Factura.TotalNetoGravadoDiscriminado(0) + Factura.totalPercepciones + Factura.ImpuestoInterno
  
-        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(TotalFactura + Factura.Redondeo) * i), "$", "")
+        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(TotalFactura + Factura.redondeo) * i), "$", "")
         Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalAbonadoGlobal) * i), "$", "")
-        Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales((TotalFactura + Factura.Redondeo) - Factura.TotalAbonadoGlobal) * i), "$", "")
+        Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales((TotalFactura + Factura.redondeo) - Factura.TotalAbonadoGlobal) * i), "$", "")
 
     End With
 
@@ -743,7 +746,7 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.item(grilla.rowIndex(grilla.row))
+    Set Factura = facturas.item(grilla.RowIndex(grilla.row))
     
 End Sub
 

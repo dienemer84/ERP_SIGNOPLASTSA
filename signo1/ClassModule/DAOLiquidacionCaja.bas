@@ -1419,6 +1419,15 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
 
     xlWorksheet.Activate
 
+    Dim titulo As String
+    titulo = "Reporte de Liquidaciones de Caja"
+    
+    With xlWorksheet.Range("A1:H1")
+        .Merge
+        .Font.Bold = True
+        .value = titulo
+        .HorizontalAlignment = -4108 ' xlCenter
+    End With
     'fila, columna
 
     Dim offset As Long

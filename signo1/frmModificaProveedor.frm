@@ -950,7 +950,7 @@ Private Sub mostrarCampos()
     Check1.value = Abs(proveedor_.pagocontraEntrega)
     Check2.value = Abs(proveedor_.pagoDolares)
     Text1(0) = proveedor_.RazonSocial
-    Text1(1) = proveedor_.direccion
+    Text1(11) = proveedor_.direccion
     Text1(2) = proveedor_.Ciudad
     Text1(3) = proveedor_.cp
     Text1(4) = proveedor_.tel
@@ -960,7 +960,7 @@ Private Sub mostrarCampos()
     Text1(8) = proveedor_.FormaPago
     Text1(9) = proveedor_.bonificacion
     Text1(10) = proveedor_.Cuit
-    Text1(11) = proveedor_.IIBB
+    Text1(1) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
     cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.Id, cboMonedas)
     cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIVA)

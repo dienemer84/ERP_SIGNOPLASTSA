@@ -923,13 +923,13 @@ Public Function crearUsuario(nombre, Apellido) As String
     usu = LCase(nombre & Mid(Apellido, 1, 1) & Right(Apellido, 1))
     Set r = conectar.RSFactory("Select count(id) as c from usuarios where usuario='" & usu & "'")
 
-    If r!C > 0 Then
+    If r!c > 0 Then
         i = 1
         esta = True
         While esta
             usu = usu & i
             Set r = conectar.RSFactory("Select count(id) as c from usuarios where usuario='" & usu & "'")
-            If r!C > 0 Then
+            If r!c > 0 Then
                 i = i + 1
             Else
                 esta = False
@@ -946,12 +946,12 @@ End Function
 Public Sub ValidarPermisoss(idUsuario)
     Dim r As Recordset
     Set r = conectar.RSFactory("select * from usuariosPermisos where idUsuario=" & idUsuario)
-    C = 0
+    c = 0
     While Not r.EOF
-        C = C + 1
+        c = c + 1
         r.MoveNext
     Wend
-    If C = 1 Then
+    If c = 1 Then
         r.MoveFirst
         cp = r!panel
         ventas = r!ventas
@@ -1241,11 +1241,11 @@ Public Sub ordenar_grilla(ByVal Column As GridEX20.JSColumn, GridEX1 As GridEX)
 End Sub
 Public Sub FillComboBox(ByRef combo As ComboBox, ByRef col As Collection, ByRef propertyForShow As String, ByRef propertyForId As String, ByRef selectFirst As Boolean)
     combo.Clear
-    Dim item As Object
-    For Each item In col
-        combo.AddItem CallByName(item, propertyForShow, VbGet)
-        combo.ItemData(combo.NewIndex) = CallByName(item, propertyForId, VbGet)
-    Next item
+    Dim Item As Object
+    For Each Item In col
+        combo.AddItem CallByName(Item, propertyForShow, VbGet)
+        combo.ItemData(combo.NewIndex) = CallByName(Item, propertyForId, VbGet)
+    Next Item
     If (selectFirst And combo.ListCount > 0) Then combo.ListIndex = 0
 End Sub
 
@@ -1266,16 +1266,16 @@ Public Function VerificarCUIT(Cuit) As Boolean
 
     If Len(Cuit) = 11 Then
         'Individualiza y multiplica los dígitos.
-        xa = Val(Mid$(Cuit, 1, 1)) * 5
-        XB = Val(Mid$(Cuit, 2, 1)) * 4
-        XC = Val(Mid$(Cuit, 3, 1)) * 3
-        XD = Val(Mid$(Cuit, 4, 1)) * 2
-        XE = Val(Mid$(Cuit, 5, 1)) * 7
-        XF = Val(Mid$(Cuit, 6, 1)) * 6
-        XG = Val(Mid$(Cuit, 7, 1)) * 5
-        XH = Val(Mid$(Cuit, 8, 1)) * 4
-        XI = Val(Mid$(Cuit, 9, 1)) * 3
-        XJ = Val(Mid$(Cuit, 10, 1)) * 2
+        xa = val(Mid$(Cuit, 1, 1)) * 5
+        XB = val(Mid$(Cuit, 2, 1)) * 4
+        XC = val(Mid$(Cuit, 3, 1)) * 3
+        XD = val(Mid$(Cuit, 4, 1)) * 2
+        XE = val(Mid$(Cuit, 5, 1)) * 7
+        XF = val(Mid$(Cuit, 6, 1)) * 6
+        XG = val(Mid$(Cuit, 7, 1)) * 5
+        XH = val(Mid$(Cuit, 8, 1)) * 4
+        XI = val(Mid$(Cuit, 9, 1)) * 3
+        XJ = val(Mid$(Cuit, 10, 1)) * 2
         'xj2 = Val(Mid$(Cuit, 11, 1)) * 1
 
 
@@ -1286,7 +1286,7 @@ Public Function VerificarCUIT(Cuit) As Boolean
         Control = (11 - (x Mod 11)) Mod 11
 
         'Verifica si el dígito de control ingresado difiere con el calculado.
-        If Control <> Val(Mid$(Cuit, 11, 1)) Then
+        If Control <> val(Mid$(Cuit, 11, 1)) Then
 
             'Presenta la ventana de aviso.
             '        MsgBox "El CUIT ingresado es incorrecto. Verifíquelo e intente nuevamente." + Chr$(13) + Chr$(13) + "CUIT Ingresado: " + CUIT + Chr$(13) + "CUIT Estimativo: " + Left(CUIT, 12) + Trim$(str$(Control)), 48, "CUIT ERRONEO"
@@ -1494,7 +1494,7 @@ End Sub
 ' the user cancels.
 Public Function BrowseForDirectory(ByVal caption As String) As String
     Dim browse_info As BrowseInfo
-    Dim item As Long
+    Dim Item As Long
     Dim dir_name As String
 
     browse_info.hwndOwner = hWnd
@@ -1506,10 +1506,10 @@ Public Function BrowseForDirectory(ByVal caption As String) As String
     browse_info.lParam = 0
     browse_info.iImage = 0
 
-    item = SHBrowseForFolder(browse_info)
-    If item Then
+    Item = SHBrowseForFolder(browse_info)
+    If Item Then
         dir_name = Space$(260)
-        If SHGetPathFromIDList(item, dir_name) Then
+        If SHGetPathFromIDList(Item, dir_name) Then
             BrowseForDirectory = Left(dir_name, InStr(dir_name, Chr$(0)) - 1)
         Else
             BrowseForDirectory = vbNullString
@@ -1524,41 +1524,41 @@ Public Function IsSomething(Obj As Object) As Boolean
 End Function
 
 Public Function JoinCollectionValues(col As Collection, delimiter As String, Optional objectProperty As String = vbNullString) As String
-    Dim value As Variant
+    Dim Value As Variant
     Dim ret As String
     Dim cont As Long
-    For Each value In col
+    For Each Value In col
         cont = cont + 1
 
         If LenB(objectProperty) = 0 Then
-            ret = ret & value
+            ret = ret & Value
         Else
-            ret = ret & CallByName(value, objectProperty, VbGet)
+            ret = ret & CallByName(Value, objectProperty, VbGet)
         End If
 
         If cont <> col.count Then
             ret = ret & delimiter
         End If
-    Next value
+    Next Value
     JoinCollectionValues = ret
 End Function
 
 Public Function JoinDictionaryKeyValues(dic As Dictionary, delimiter As String) As String
-    Dim value As Variant
+    Dim Value As Variant
     Dim ret As String
     Dim cont As Long
-    For Each value In dic.Keys
+    For Each Value In dic.Keys
         cont = cont + 1
-        ret = ret & value
+        ret = ret & Value
         If cont <> dic.count Then
             ret = ret & delimiter
         End If
-    Next value
+    Next Value
     JoinDictionaryKeyValues = ret
 End Function
 
 
-Public Sub FillComboBoxDateRanges(ByRef combo As Xtremesuitecontrols.ComboBox)
+Public Sub FillComboBoxDateRanges(ByRef combo As XtremeSuiteControls.ComboBox)
     combo.Clear
     combo.AddItem "Hoy"
     combo.ItemData(combo.NewIndex) = DateRangeValue.DRV_Today
@@ -1583,7 +1583,7 @@ Public Sub FillComboBoxDateRanges(ByRef combo As Xtremesuitecontrols.ComboBox)
     combo.ListIndex = -1
 End Sub
 
-Public Sub CalculateDateRange(ByRef combo As Xtremesuitecontrols.ComboBox, ByRef dtpDesde As Xtremesuitecontrols.DateTimePicker, ByRef dtpHasta As Xtremesuitecontrols.DateTimePicker)
+Public Sub CalculateDateRange(ByRef combo As XtremeSuiteControls.ComboBox, ByRef dtpDesde As XtremeSuiteControls.DateTimePicker, ByRef dtpHasta As XtremeSuiteControls.DateTimePicker)
 
     Dim desde As Date
     Dim hasta As Date
@@ -1647,8 +1647,8 @@ Public Sub CalculateDateRange(ByRef combo As Xtremesuitecontrols.ComboBox, ByRef
 
     End If
 
-    dtpDesde.value = desde
-    dtpHasta.value = hasta
+    dtpDesde.Value = desde
+    dtpHasta.Value = hasta
 
 End Sub
 
@@ -1750,5 +1750,16 @@ Function InstrCount(StringToSearch As String, _
         InstrCount = UBound(Split(StringToSearch, StringToFind))
     End If
 End Function
+
+
+Public Function NullOrZeroToEmpty(val As Variant) As Variant
+    If IsNull(val) Or val = 0 Then
+        NullOrZeroToEmpty = ""
+    Else
+        NullOrZeroToEmpty = val
+    End If
+End Function
+
+
 
 

@@ -614,6 +614,16 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
+    
+    Dim titulo As String
+        titulo = "Reporte de Comprobantes de compra"
+
+    With xlWorksheet.Range("A1:T1")
+        .Merge
+        .value = titulo
+        .Font.Bold = True
+        .HorizontalAlignment = -4108 ' xlCenter
+    End With
 
     'fila, columna
 

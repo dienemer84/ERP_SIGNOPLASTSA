@@ -17,7 +17,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Index           =   0
       Left            =   120
       TabIndex        =   1
-      Top             =   0
+      Top             =   120
       Width           =   17175
       _Version        =   786432
       _ExtentX        =   30295
@@ -540,12 +540,12 @@ Private Sub CompletarGridEx()
     Dim condition As String
     condition = " 1 = 1 "
 
-    If Not IsNull(Me.dtpDesde.Value) Then
-        condition = condition & " AND op.fecha_operacion >= " & conectar.Escape(Me.dtpDesde.Value)
+    If Not IsNull(Me.dtpDesde.value) Then
+        condition = condition & " AND op.fecha_operacion >= " & conectar.Escape(Me.dtpDesde.value)
     End If
 
-    If Not IsNull(Me.dtpHasta.Value) Then
-        condition = condition & " AND op.fecha_operacion <= " & conectar.Escape(Me.dtpHasta.Value)
+    If Not IsNull(Me.dtpHasta.value) Then
+        condition = condition & " AND op.fecha_operacion <= " & conectar.Escape(Me.dtpHasta.value)
     End If
     
     If cboProveedores.ListIndex > -1 Then
@@ -626,11 +626,16 @@ Private Sub Form_Load()
     'FIN- GroupBox de Fecha de Operación
     
     'INICIO- Llenado de Combo Proveedores
-    Set colProveedores = DAOProveedor.FindAll
-    For Each prov In colProveedores
-        cboProveedores.AddItem UCase(prov.RazonSocial)
-        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
-    Next
+    
+'''    Set colProveedores = DAOProveedor.FindAll
+'''    For Each prov In colProveedores
+'''        cboProveedores.AddItem UCase(prov.RazonSocial)
+'''        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
+'''    Next
+
+    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
+    Me.cboProveedores.ListIndex = -1
+
     'FIN- Llenado de Combo Proveedores
     
     'INICIO- Llenado de Combo Proveedores
@@ -648,7 +653,7 @@ End Sub
 
 Private Sub gridTransferencias_SelectionChange()
     On Error Resume Next
-    Set TransfBancaria = transferencias.item(gridTransferencias.rowIndex(gridTransferencias.row))
+    Set TransfBancaria = transferencias.item(gridTransferencias.RowIndex(gridTransferencias.row))
 End Sub
 
 
@@ -671,9 +676,9 @@ Private Sub gridTransferencias_MouseUp(Button As Integer, Shift As Integer, x As
 End Sub
 
 
-Private Sub gridTransferencias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-If rowIndex > 0 And transferencias.count > 0 Then
-    Set TransfBancaria = transferencias.item(rowIndex)
+Private Sub gridTransferencias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+If RowIndex > 0 And transferencias.count > 0 Then
+    Set TransfBancaria = transferencias.item(RowIndex)
         Values(1) = TransfBancaria.Id
         
 

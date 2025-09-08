@@ -6,17 +6,30 @@ Begin VB.Form frmSistemaTests
    ClientHeight    =   6060
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   18705
+   ClientWidth     =   14985
    Icon            =   "frmSistemasTests.frx":0000
    MDIChild        =   -1  'True
    ScaleHeight     =   6060
-   ScaleWidth      =   18705
+   ScaleWidth      =   14985
+   Begin XtremeSuiteControls.PushButton btnSeguimientoAvanzado 
+      Height          =   735
+      Left            =   240
+      TabIndex        =   6
+      Top             =   3120
+      Width           =   4935
+      _Version        =   786432
+      _ExtentX        =   8705
+      _ExtentY        =   1296
+      _StockProps     =   79
+      Caption         =   "PushButton1"
+      UseVisualStyle  =   -1  'True
+   End
    Begin VB.CommandButton Command1 
       Caption         =   "Command1"
       Height          =   375
       Left            =   5280
       TabIndex        =   5
-      Top             =   4200
+      Top             =   4080
       Width           =   1935
    End
    Begin GridEX20.GridEX grilla_monedas 
@@ -58,7 +71,7 @@ Begin VB.Form frmSistemaTests
    End
    Begin GridEX20.GridEX grilla_moneda 
       Height          =   3495
-      Left            =   16800
+      Left            =   13200
       TabIndex        =   3
       Top             =   360
       Visible         =   0   'False
@@ -100,7 +113,7 @@ Begin VB.Form frmSistemaTests
       Height          =   735
       Left            =   240
       TabIndex        =   2
-      Top             =   2280
+      Top             =   2160
       Width           =   4935
       _Version        =   786432
       _ExtentX        =   8705
@@ -148,6 +161,11 @@ Dim monedaplicada As clsMonedaAplicada
 Private operacion As operacion
 
 
+Private Sub btnSeguimientoAvanzado_Click()
+    Dim f228 As New frmPlaneamientoSeguimientoAvanzado
+    f228.Show
+End Sub
+
 Private Sub Command1_Click()
     
     Set monedaplicada = New clsMonedaAplicada
@@ -180,8 +198,8 @@ Private Sub Form_Load()
 End Sub
 
 
-Private Sub grilla_moneda_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set moneda = colMonedas.item(rowIndex)
+Private Sub grilla_moneda_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set moneda = colMonedas.item(RowIndex)
         Values(1) = moneda.Id
         Values(2) = moneda.NombreCorto
 End Sub
@@ -193,9 +211,9 @@ Private Sub grilla_monedas_GotFocus()
 End Sub
 
 
-Private Sub grilla_monedas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_monedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set monedaplicada = vFactura.IvaAplicado.item(rowIndex)
+    Set monedaplicada = vFactura.IvaAplicado.item(RowIndex)
     Values(1) = ""
     Values(2) = monedaplicada.moneda.NombreCorto
     Values(3) = ""

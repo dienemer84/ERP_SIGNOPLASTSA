@@ -186,7 +186,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
 
     Dim col As New Collection
     Dim op As clsPagoACta
-    Dim fac As clsFacturaProveedor
+
     Dim che As cheque
     Dim oper As operacion
 
@@ -857,6 +857,16 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
+    
+    Dim titulo As String
+    titulo = "Reporte de Pagos a Cuenta"
+    
+    With xlWorksheet.Range("A1:G1")
+        .Merge
+        .Font.Bold = True
+        .value = titulo
+        .HorizontalAlignment = -4108 ' xlCenter
+    End With
 
     ' Fila inicial
     Dim offset As Long

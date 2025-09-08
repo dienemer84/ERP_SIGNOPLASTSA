@@ -375,6 +375,37 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, _
 End Sub
 
 
+Public Sub LlenarComboProveedores(cbo As Xtremesuitecontrols.ComboBox, _
+                                  Optional EstadoCtaCte As Boolean = True, _
+                                  Optional EstadoContado As Boolean = True, _
+                                  Optional EstadoEliminado As Boolean = False)
+    Dim q As String
+    q = "SELECT id, razon FROM sp.proveedores WHERE 1=1"
+    
+    If EstadoCtaCte Or EstadoContado Or EstadoEliminado Then
+        q = q & " AND estado IN (-1"
+        If EstadoCtaCte Then q = q & "," & EstadoProveedor.EstadoProveedorCuentaCorriente
+        If EstadoContado Then q = q & "," & EstadoProveedor.EstadoProveedorContado
+        If EstadoEliminado Then q = q & "," & EstadoProveedor.EstadoProveedorEliminado
+        q = q & ")"
+    End If
+    
+    q = q & " ORDER BY razon"
+
+    Dim rs As Recordset
+    Set rs = conectar.RSFactory(q)
+
+    cbo.Clear
+    While Not rs.EOF
+        cbo.AddItem rs!razon
+        cbo.ItemData(cbo.NewIndex) = rs!Id
+        rs.MoveNext
+    Wend
+    
+    If cbo.ListCount > 0 Then cbo.ListIndex = 0
+End Sub
+
+
 Public Function ValidarCuit(Proveedor As clsProveedor) As Boolean
     Dim q As String
     Dim rs As Recordset

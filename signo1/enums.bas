@@ -8,6 +8,7 @@ Dim estados_material(2)
 Dim estado_orden_entrega(3)
 Dim estado_factura_proveedor(4)
 Dim estado_pago_a_cuenta(2)
+Dim estado_movimiento_caja_bancos(2)
 Dim forma_de_pago_cta_cte(2)
 Public estado_po(2)
 Dim estado_presupuesto(8)
@@ -379,6 +380,11 @@ Public Enum EstadoPagoACuenta
     Disponible = 0
 End Enum
 
+Public Enum EstadoMovimientoCajaYBancos
+    Aprobado = 1
+    EnEdicion = 0
+End Enum
+
 Public Enum FormadePagoFacturaProveedor
     PagoCuentaCorriente = 1
     PagoContado = 0
@@ -466,6 +472,10 @@ Public Function enumEstadoPagoACuenta(indice) As String
     enumEstadoPagoACuenta = estado_pago_a_cuenta(indice)
 End Function
 
+Public Function enumEstadoMovimientosCajaYBancos(indice) As String
+    enumEstadoMovimientosCajaYBancos = estado_movimiento_caja_bancos(indice)
+End Function
+
 Public Function enumFormaDePagoFacturaProveedor(indice) As String
     enumFormaDePagoFacturaProveedor = forma_de_pago_cta_cte(indice)
 End Function
@@ -483,15 +493,19 @@ End Function
 Public Function enumEstadoMaterial(indice) As String
     enumEstadoMaterial = estados_material(indice)
 End Function
+
 Public Function enumDestino(indice) As String
     enumDestino = Destinos(indice)
 End Function
+
 Public Function enumEstadoRequeCompra(indice) As String
     enumEstadoRequeCompra = estados_Reques(indice)
 End Function
+
 Public Function enumUnidades(indice) As String
     enumUnidades = unidad(indice)
 End Function
+
 Public Function LlenarArrays()
     tipo_complejidad(ComplejidadBaja) = "Baja"
     tipo_complejidad(ComplejidadMedia) = "Media"
@@ -562,7 +576,10 @@ Public Function LlenarArrays()
 
     estado_pago_a_cuenta(0) = "Disponible"
     estado_pago_a_cuenta(1) = "Procesado"
-
+    
+    estado_movimiento_caja_bancos(0) = "En Edición"
+    estado_movimiento_caja_bancos(1) = "Aprobado"
+    
     estado_orden_entrega(1) = "Pendiente"
     estado_orden_entrega(2) = "Aprobada"
     estado_orden_entrega(3) = "Finalizada"
@@ -614,7 +631,6 @@ Public Function LlenarArrays()
     estado_remito_facturado(EstadoRemitoFacturado.RemitoNoFacturable) = "No Facturable"
     estado_remito_facturado(EstadoRemitoFacturado.RemitoNoFacturado) = "No Facturado"
 
-
     meses(1) = "Enero"
     meses(2) = "Febrero"
     meses(3) = "Marzo"
@@ -627,8 +643,6 @@ Public Function LlenarArrays()
     meses(10) = "Octubre"
     meses(11) = "Noviembre"
     meses(12) = "Diciembre"
-
-
 
 
     Set tipoMateriales = New Dictionary

@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Private deta As clsDetalleOrdenTrabajoCantidades
 Public Id As Long
-Public item As String
+Public Item As String
 Public OrdenTrabajo As OrdenTrabajo
 Public Pieza As Pieza
 Public CantidadPedida As Double
@@ -68,6 +68,9 @@ Public idPresupuestoOrigen As Long
 
 '25-2-2010
 Public Descuento As Double
+
+'04-09-2025
+Public FechaCargaDato As Date
 
 
 Public Property Get DescuentoFormateado() As Double

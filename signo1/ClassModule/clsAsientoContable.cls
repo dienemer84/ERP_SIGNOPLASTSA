@@ -17,88 +17,28 @@ Public Id As Long
 Public NumeroLiq As Long
 Public moneda As clsMoneda
 Public FEcha As Date
-Public FacturasProveedor As New Collection
-Public DeudaCompensatorios As New Collection
-Public cuentacontable As clsCuentaContable
-Public CuentaContableDescripcion As String
+
+Public CuentaContable As clsCuentaContable
+
 Public ChequesTerceros As New Collection
 Public ChequesPropios As New Collection
 Public OperacionesCaja As New Collection
 Public operacionesBanco As New Collection
-Public Compensatorios As New Collection
-Public estado As EstadoLiquidacionCaja
-Public CertificadoRetencion As New CertificadoRetencion
-Public alicuota As Double
+
+Public estado As EstadoMovimientoCajaYBancos
+
 Private m_validationMessages As String
-Public staticTipoCambioHoy As Double
-Public DiferenciaCambio As Double
-Public OtrosDescuentos As Double
-Public RetencionesAlicuota As New Collection
 
 Public IdMonedaPago As Long
 Public TipoCambio As Double
-Public StaticTotalFacturas As Double
-Public StaticTotalFacturasNG As Double
-Public StaticTotalRetenido As Double
+
 Public StaticTotalOrigenes As Double
-Public DiferenciaCambioEnNG As Double
-Public DiferenciaCambioEnTOTAL As Double
 
-Public staticTotalDeudaCompensatorios As Double
+Public Creada As Date
 
 
-Public Property Get TotalNGCompensatorios() As Double
-    Dim T As Double
-    Dim c As New Compensatorio
-
-    For Each c In Compensatorios
-        T = T + c.NetoGravadoCompensado
-    Next c
-    TotalNGCompensatorios = T
-End Property
-
-Public Property Get TotalCompensatorios() As Double
-    Dim c As New Compensatorio
-    Dim T As Double
-    Dim i As Integer
-    For Each c In Compensatorios
-        If c.Tipo = TC_Credito Then i = -1 Else i = 1
-        T = T + (c.Monto * i)
-    Next c
-    TotalCompensatorios = T
-End Property
-
-Public Property Get TotalDeudaCompensatorios() As Double
-    Dim c As New Compensatorio
-    Dim T As Double
-    Dim i As Integer
-    For Each c In DeudaCompensatorios
-        If c.Tipo = TC_Credito Then i = -1 Else i = 1
-        T = T + (c.Monto * i)
-    Next c
-    TotalDeudaCompensatorios = T
-End Property
-
-Public Property Get TotalFacturas() As Double
-    Dim F As clsFacturaProveedor
-    Dim SUM As Double
-    For Each F In Me.FacturasProveedor
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
-    Next F
-    TotalFacturas = funciones.RedondearDecimales(SUM)
-End Property
-
-Public Property Get TotalFacturasNG() As Double
-    Dim F As clsFacturaProveedor
-    Dim SUM As Double
-    For Each F In Me.FacturasProveedor
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.NetoGravado * -1, F.NetoGravado), F.moneda.Id, Me.moneda.Id)
-    Next F
-    TotalFacturasNG = funciones.RedondearDecimales(SUM)
-End Property
 
 Public Property Get TotalOrigenes() As Double
-
     Dim total As Double
     Dim cheq As cheque
     For Each cheq In Me.ChequesTerceros
@@ -133,17 +73,9 @@ Public Property Get TotalOrigenes() As Double
     ' TotalOrigenes = funciones.RedondearDecimales(Total + Me.OtrosDescuentos + Me.DiferenciaCambio)
 
     '15/10/12 corregi con sabrina esta funcion para que cierre bien la Op.  reemplazo funcion anterior
-    TotalOrigenes = funciones.RedondearDecimales(total + Me.OtrosDescuentos + 0)
+    TotalOrigenes = funciones.RedondearDecimales(total)
 End Property
 
-
-'Public Property Get TotalOrdenPago() As Double
-''totFact - totRet - OrdenPago.DiferenciaCambio - OrdenPago.OtrosDescuentos
-'
-'TotalOrdenPago = TotalFacturas - Me.StaticTotalRetenido - DiferenciaCambio - OtrosDescuentos + TotalCompensatorios
-'
-'
-'End Property
 
 Public Property Get TotalOrigenesDiscriminado() As Collection
 
@@ -239,16 +171,10 @@ Public Property Get IsValid() As Boolean
     Next c
 
     If Me.TotalOrigenes = 0 Then
-        AddValidationMessage "El total del Asiento Contable debe ser mayor a cero."
+        AddValidationMessage "El total del movimiento debe ser mayor a cero."
     End If
 
     IsValid = (LenB(m_validationMessages) = 0)
-
-End Property
-
-Property Get StaticTotal() As Double
-    'StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.DiferenciaCambio - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
-    StaticTotal = Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.OtrosDescuentos + Me.DiferenciaCambioEnTOTAL
 
 End Property
 
@@ -257,25 +183,9 @@ Public Property Get ValidationMessages() As String
     ValidationMessages = m_validationMessages
 End Property
 
-Public Property Get EsParaFacturaProveedor() As Boolean
-    EsParaFacturaProveedor = False
-    If IsSomething(Me.FacturasProveedor) Then
-        EsParaFacturaProveedor = Me.FacturasProveedor.count > 0
-    Else
-        If IsSomething(Me.cuentacontable) Then
-            EsParaFacturaProveedor = (Me.cuentacontable.Id = 0)
-        End If
-    End If
-End Property
 
 Public Property Get TotalOrdenPago() As Double
-'If Id = 7180 Then Stop
-
-
-
-'Debug.Print "totales", Me.TotalOrigenes + Me.StaticTotalRetenido, "totales staticos", Me.StaticTotalOrigenes + Me.StaticTotalRetenido
-
-    TotalOrdenPago = Me.TotalOrigenes + Me.StaticTotalRetenido    '+ Me.TotalCompensatorios
+    TotalOrdenPago = Me.TotalOrigenes
 
 End Property
 

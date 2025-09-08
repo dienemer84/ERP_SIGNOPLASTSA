@@ -88,6 +88,28 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
       End
+      Begin XtremeSuiteControls.DateTimePicker DateTimePicker1 
+         Height          =   375
+         Left            =   240
+         TabIndex        =   12
+         Top             =   1920
+         Width           =   1455
+         _Version        =   786432
+         _ExtentX        =   2566
+         _ExtentY        =   661
+         _StockProps     =   68
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Format          =   1
+         CurrentDate     =   45902.375474537
+      End
       Begin VB.Label Label2 
          Caption         =   "Fecha:"
          BeginProperty Font 
@@ -154,7 +176,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
          Y2              =   720
       End
       Begin VB.Label lblTextoAdicional 
-         Caption         =   "Número de Transferencia"
+         Caption         =   "Número de Transferencia / Comprobante"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -169,7 +191,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasEditar
          Left            =   240
          TabIndex        =   6
          Top             =   840
-         Width           =   2775
+         Width           =   5655
       End
    End
    Begin VB.Frame Frame2 
@@ -244,6 +266,7 @@ Private Sub btnGuardar_Click(Index As Integer)
     If MsgBox("Está segur@ de los cambios realizados?", vbYesNo, "Confirmación") = vbYes Then
         ' Asignar el valor del comprobante
         TransfBancaria.Comprobante = Me.txtNumeroTransferencia(1)
+        TransfBancaria.FechaOperacion = Me.DateTimePicker1.value
 
         ' Obtener la cuenta bancaria seleccionada
         Dim CtaBcaria As CuentaBancaria
@@ -259,8 +282,9 @@ Private Sub btnGuardar_Click(Index As Integer)
         TransfBancaria.IdCtaBancaria = CtaBcaria.Id
 
         ' Intentar actualizar el comprobante
-        If DAOTransferenciaBcaria.ActualizarNroComprobante(TransfBancaria) Then
+        If DAOTransferenciaBcaria.ActualizarDetallesComprobante(TransfBancaria) Then
             MsgBox "Los datos del comprobante han sido actualizados.", vbOKOnly + vbInformation
+                        
         Else
             ' Lanzar un error personalizado si la actualización falla
             Err.Raise 9999, "btnGuardar_Click", "No se pudo actualizar el comprobante."
@@ -282,7 +306,7 @@ End Sub
 
 Private Sub btnRestablecer_Click(Index As Integer)
     Me.txtNumeroTransferencia(1) = TransfBancaria.Comprobante
-    
+    Me.DateTimePicker1.value = TransfBancaria.FechaOperacion
     Me.cboCtaBcaria.ListIndex = funciones.PosIndexCbo(TransfBancaria.IdCtaBancaria, Me.cboCtaBcaria)
 End Sub
 
@@ -297,6 +321,8 @@ Private Sub Form_Load()
     Me.lblNumeroCbte.caption = TransfBancaria.FechaOperacion & "- " & FormatCurrency(funciones.FormatearDecimales(TransfBancaria.Monto))
 
     Me.txtNumeroTransferencia(1) = TransfBancaria.Comprobante
+    
+    Me.DateTimePicker1.value = TransfBancaria.FechaOperacion
 
     DAOCuentaBancaria.llenarComboXtremeSuite Me.cboCtaBcaria
 

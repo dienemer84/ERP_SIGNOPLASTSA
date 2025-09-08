@@ -1,205 +1,56 @@
 Attribute VB_Name = "DAOAsientoContable"
 Option Explicit
 
-
-Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Collection
-
-    Dim q As String
-
-    q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & "),0 ) AS total_pendiente, " _
-      & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & "),0 ) AS netogravado_pendiente, " _
-      & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & "),0 ) AS otros_pendiente "
-
-    Dim rs As Recordset
-    Set rs = conectar.RSFactory(q)
-
-    Dim tot As Double, ng As Double, Otros As Double
-    tot = rs!total_pendiente
-    ng = rs!netogravado_pendiente
-    Otros = rs!otros_pendiente
-
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoPendienteEnEstaOP = c
-End Function
+'''Public Function FindLast() As OrdenPago
+'''    Set FindLast = FindAll("ordenes_pago.id = (SELECT MAX(id) FROM ordenes_pago)")(1)
+'''End Function
 
 
-
-
-Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
-
-    Dim q As String
-
-    q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago <> " & ocid & "),0 ) AS total_pendiente, " _
-      & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago <> " & ocid & "),0 ) AS netogravado_pendiente, " _
-      & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago <> " & ocid & "),0 ) AS otros_pendiente "
-    
-    Dim rs As Recordset
-    Set rs = conectar.RSFactory(q)
-
-    Dim tot As Double, ng As Double, Otros As Double
-    tot = rs!total_pendiente
-    ng = rs!netogravado_pendiente
-    Otros = rs!otros_pendiente
-
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoPendiente = c
-    
-End Function
-
-
-Public Function FindAbonadoFactura(facid As Long, ocid As Long) As Collection
-
-    Dim q As String
-
-    q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & " and op1.estado=1),0 ) AS total_pendiente, " _
-      & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & " and op1.estado=1),0 ) AS netogravado_pendiente, " _
-      & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-      & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & " and op1.estado=1),0 ) AS otros_pendiente "
-
-    Dim rs As Recordset
-    Set rs = conectar.RSFactory(q)
-
-    Dim tot As Double, ng As Double, Otros As Double
-    tot = rs!total_pendiente
-    ng = rs!netogravado_pendiente
-    Otros = rs!otros_pendiente
-
-    Dim c As New Collection
-    c.Add tot
-    c.Add ng
-    c.Add Otros
-    Set FindAbonadoFactura = c
-End Function
-
-
-Public Function FindLast() As OrdenPago
-    Set FindLast = FindAll("ordenes_pago.id = (SELECT MAX(id) FROM ordenes_pago)")(1)
-End Function
-
-
-Public Function FindByFacturaId(facid As Long) As OrdenPago
-    Dim col As Collection
-    Set col = FindAll("ordenes_pago.id = (SELECT DISTINCT id_orden_pago from ordenes_pago_facturas opf inner join ordenes_pago op on opf.id_orden_pago=op.id WHERE id_factura_proveedor = " & facid & " AND op.estado=1)")
-    If col.count > 0 Then
-        Set FindByFacturaId = col(1)
-    Else
-        Set FindByFacturaId = Nothing
-    End If
-End Function
-
-
-Public Function FindById(Id As Long) As clsPagoACta
-    Set FindById = FindAll("pagos_a_cuenta.id=" & Id)(1)
-End Function
-
-
-Public Function FindAllByProveedor(provid As Long, Optional cond As String, Optional soloOp As Boolean = False) As Collection
-    Dim q As String
-    q = "pagos_a_cuenta.id IN (SELECT DISTINCT opf.id from pagos_a_cuenta opf WHERE opf.id_proveedor = " & provid & " )"
-
-    If LenB(cond) > 0 Then
-        q = q & "  " & cond
-        'ver aca
-    End If
-
-    If soloOp Then
-        Set FindAllByProveedor = FindAllSoloOP(q)
-        '  Debug.Print FindAllByProveedor.count
-
-    Else
-        Set FindAllByProveedor = FindAll(q)
-        '  Debug.Print FindAllByProveedor.count
-    End If
-End Function
-
-
-Public Function FindAllSoloOP(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
-    Dim q As String
-    q = "SELECT * " _
-      & " From pagos_a_cuenta" _
-      & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = pagos_a_cuenta.id_moneda)"
-
-    q = q & " WHERE " & filter
-    q = q & " ORDER BY " & orderBy
-    Dim col As New Collection
-    Dim op As OrdenPago
-    Dim idx As Dictionary
-    Dim rs As Recordset
-
-    Set rs = conectar.RSFactory(q)
-
-    BuildFieldsIndex rs, idx
-    While Not rs.EOF
-        Set op = Map(rs, idx, "pagos_a_cuenta", "AdminConfigMonedas")    ', "certificados_retencion")
-        If funciones.BuscarEnColeccion(col, CStr(op.Id)) Then
-            Set op = col.item(CStr(op.Id))
-        Else
-            col.Add op, CStr(op.Id)
-        End If
-        rs.MoveNext
-    Wend
-
-    Set FindAllSoloOP = col
-
+Public Function FindById(Id As Long) As clsAsientoContable
+    Set FindById = FindAll("movimientos_caja_bancos.id = " & Id)(1)
 End Function
 
 
 Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
     q = "SELECT *, (operaciones.pertenencia + 0) as pertenencia2" _
-      & " From pagos_a_cuenta" _
-      & " LEFT JOIN pagos_a_cuenta_cheques ON (pagos_a_cuenta.id = pagos_a_cuenta_cheques.id_pago_a_cuenta)" _
-      & " LEFT JOIN pagos_a_cuenta_operaciones ON (pagos_a_cuenta.id = pagos_a_cuenta_operaciones.id_pago_a_cuenta)" _
-      & " LEFT JOIN operaciones ON (operaciones.id = pagos_a_cuenta_operaciones.id_operacion)" _
-      & " LEFT JOIN Cheques ON (Cheques.id = pagos_a_cuenta_cheques.id_cheque)" _
+      & " From movimientos_caja_bancos" _
+      & " LEFT JOIN movimientos_caja_bancos_cheques ON (movimientos_caja_bancos.id = movimientos_caja_bancos_cheques.id_movimiento_caja_bancos)" _
+      & " LEFT JOIN movimientos_caja_bancos_operaciones ON (movimientos_caja_bancos.id = movimientos_caja_bancos_operaciones.id_movimiento_caja_bancos)" _
+      & " LEFT JOIN operaciones ON (operaciones.id = movimientos_caja_bancos_operaciones.id_operacion)" _
+      & " LEFT JOIN Cheques ON (Cheques.id = movimientos_caja_bancos_cheques.id_cheque)" _
       & " LEFT JOIN Chequeras ON (Chequeras.id = Cheques.id_chequera)" _
       & " LEFT JOIN AdminConfigBancos monbanco ON (monbanco.id = Chequeras.id_banco)" _
       & " LEFT JOIN AdminConfigMonedas monchequera ON (monchequera.id = Chequeras.id_moneda)" _
-      & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = pagos_a_cuenta.id_moneda)" _
+      & " LEFT JOIN AdminConfigMonedas ON (AdminConfigMonedas.id = movimientos_caja_bancos.id_moneda)" _
       & " LEFT JOIN AdminConfigMonedas monedaoperacion ON (monedaoperacion.id = operaciones.moneda_id)" _
-      & " LEFT JOIN AdminComprasCuentasContables ON (AdminComprasCuentasContables.id = operaciones.cuenta_contable_id)" _
+      & " LEFT JOIN AdminComprasCuentasContables ON (movimientos_caja_bancos.id_cuentacontable = AdminComprasCuentasContables.id)" _
       & " LEFT JOIN cajas ON (cajas.id = operaciones.cuentabanc_o_caja_id)" _
       & " LEFT JOIN AdminConfigCuentas ON (AdminConfigCuentas.id = operaciones.cuentabanc_o_caja_id)" _
       & " LEFT JOIN AdminConfigMonedas moncuentabancaria ON (moncuentabancaria.id = AdminConfigCuentas.moneda_id)" _
       & " LEFT JOIN AdminConfigMonedas moncheque ON (moncheque.id = Cheques.id_moneda)" _
       & " LEFT JOIN AdminRecibosCheques rec ON rec.idCheque= Cheques.id" _
       & " LEFT JOIN AdminConfigBancos ON (AdminConfigBancos.id = AdminConfigCuentas.idBanco)" _
-      & " LEFT JOIN AdminConfigBancos bancocheque ON (bancocheque.id = Cheques.id_banco)" _
-      & " LEFT JOIN proveedores proveedores ON (pagos_a_cuenta.id_proveedor = proveedores.id)"
+      & " LEFT JOIN AdminConfigBancos bancocheque ON (bancocheque.id = Cheques.id_banco)"
 
     q = q & " WHERE " & filter
     q = q & " ORDER BY " & orderBy
 
     Dim col As New Collection
-    Dim op As clsPagoACta
-    Dim fac As clsFacturaProveedor
+    Dim op As clsAsientoContable
+
     Dim che As cheque
     Dim oper As operacion
 
     Dim idx As Dictionary
     Dim rs As Recordset
-    Dim ra As DTORetencionAlicuota
     
     Set rs = conectar.RSFactory(q)
 
     BuildFieldsIndex rs, idx
 
     While Not rs.EOF
-        Set op = Map(rs, idx, "pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")   ', "certificados_retencion")
+        Set op = Map(rs, idx, "movimientos_caja_bancos", "AdminConfigMonedas", "AdminComprasCuentasContables")
 
         If funciones.BuscarEnColeccion(col, CStr(op.Id)) Then
             Set op = col.item(CStr(op.Id))
@@ -248,80 +99,39 @@ End Function
 Public Function Map(rs As Recordset, indice As Dictionary, _
                     tabla As String, _
                     Optional ByVal tablaMoneda As String = vbNullString, _
-                    Optional ByVal tablaCuentaContable As String = vbNullString, _
-                    Optional ByVal TablaRetenciones As String = vbNullString, _
-                    Optional ByVal tablaProveedor As String = vbNullString, _
-                    Optional tablaAdminConfigFacturasProveedor As String = vbNullString, _
-                    Optional tablaAdminConfigIVAProveedor As String = vbNullString _
-                  ) As clsPagoACta
+                    Optional tablaCuentaContable As String = vbNullString _
+                  ) As clsAsientoContable
 
-'Optional ByVal tablaCertRetencion As String = vbNullString _
-
-  Dim pcta As clsPagoACta
-    
-''''id_certificado_retencion
+  Dim aContable As clsAsientoContable
    Dim Id As Long
    Id = GetValue(rs, indice, tabla, "id")
 
     If Id > 0 Then
-        Set pcta = New clsPagoACta
-        pcta.Id = Id
+        Set aContable = New clsAsientoContable
+        aContable.Id = Id
 
-        pcta.FEcha = GetValue(rs, indice, tabla, "fecha")
-        pcta.estado = GetValue(rs, indice, tabla, "estado")
-        pcta.StaticTotalFacturas = GetValue(rs, indice, tabla, "static_total_facturas")
-        pcta.StaticTotalFacturasNG = GetValue(rs, indice, tabla, "static_total_factura_ng")
-        pcta.StaticTotalRetenido = GetValue(rs, indice, tabla, "static_total_a_retener")
-        pcta.StaticTotalOrigenes = GetValue(rs, indice, tabla, "static_total_origen")
-
-        If LenB(tablaProveedor) > 0 Then Set pcta.Proveedor = DAOProveedor.Map2(rs, indice, tablaProveedor)
-
-        pcta.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
-        pcta.DiferenciaCambioEnNG = GetValue(rs, indice, tabla, "dif_cambio_ng")
-        pcta.DiferenciaCambioEnTOTAL = GetValue(rs, indice, tabla, "dif_cambio_total")
+        aContable.FEcha = GetValue(rs, indice, tabla, "fecha")
+        aContable.estado = GetValue(rs, indice, tabla, "estado")
+        aContable.StaticTotalOrigenes = GetValue(rs, indice, tabla, "static_total_origen")
+        aContable.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
+        aContable.Creada = GetValue(rs, indice, tabla, "creada")
         
-        pcta.Creada = GetValue(rs, indice, tabla, "creada")
-        
-        If LenB(tablaMoneda) > 0 Then Set pcta.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        If LenB(tablaMoneda) > 0 Then Set aContable.CuentaContable = DAOCuentaContable.Map(rs, indice, tablaCuentaContable)
+      
+       
+        If LenB(tablaMoneda) > 0 Then Set aContable.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
          
     End If
 
-    Set Map = pcta
-End Function
-
-
-
-Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
-                                     tabla As String, _
-                                     ByVal TablaRetenciones As String) As DTORetencionAlicuota
-
-'Optional ByVal tablaCertRetencion As String = vbNullString _
-
-  Dim ra As DTORetencionAlicuota
-
-'id_certificado_retencion
-    Dim Id As Long
-    Id = GetValue(rs, indice, tabla, "id_retencion")
-
-    If Id > 0 Then
-        Set ra = New DTORetencionAlicuota
-        ra.alicuotaRetencion = GetValue(rs, indice, tabla, "alicuota")
-        Set ra.Retencion = DAORetenciones.Map(rs, indice, TablaRetenciones)
-        ra.Importe = GetValue(rs, indice, tabla, "total")
-        ra.certificados = GetValue(rs, indice, tabla, "certificados")
-
-        'If LenB(tablaCertRetencion) > 0 Then Set op.CertificadoRetencion = DAOCertificadoRetencion.Map(rs, indice, tablaCertRetencion)
-    End If
-
-    Set MapAlicuotaRetencion = ra
+    Set Map = aContable
 End Function
 
 
 Public Function Save(AsientoContable As clsAsientoContable, Optional cascada As Boolean = False) As Boolean
     On Error GoTo err1
-    conectar.BeginTransaction
-    Save = Guardar(AsientoContable, cascada)
-    conectar.CommitTransaction
+        conectar.BeginTransaction
+        Save = Guardar(AsientoContable, cascada)
+        conectar.CommitTransaction
     Exit Function
 err1:
     Save = False
@@ -329,212 +139,53 @@ err1:
 End Function
 
 
-Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Boolean
-
-    On Error GoTo err1
-    If insideTransaction Then conectar.BeginTransaction
-
-    '3-10-2020 recargo la OP para que se actualicen los estados de las facturas y se validen bien
-    
-    Dim op As OrdenPago
-    
-    Set op = DAOOrdenPago.FindById(op_mem.Id)
-
-    If Not IsSomething(op) Then
-        GoTo err1
-    End If
-
-    'VALIDAR BIEN LOS TOTALES ANTES DE PODER APROBAR
-    'verificar que las facturas esten todas aprobadsa...
-    Dim F As clsFacturaProveedor
-    Dim nopago As Double
-    Dim nopago1 As Double
-
-    Dim otrosvalores As Double
-
-    Dim esf As EstadoFacturaProveedor
-    For Each F In op.FacturasProveedor
-
-        Dim fac As clsFacturaProveedor
-        Set fac = DAOFacturaProveedor.FindById(F.Id)
-        '            'debug.print (F.Id & "- " & F.NumeroFormateado)
-
-        If fac.estado = EstadoFacturaProveedor.EnProceso Then
-            Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " no está aprobada. No se pudo aprobar la OP"
-        End If
-
-        Dim x
-
-        Set x = DAOOrdenPago.FindAbonadoPendienteEnEstaOP(fac.Id, op.Id)
-
-        nopago1 = fac.total - fac.TotalAbonadoGlobal    '- (funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3)))))
-
-        'nopago = fac.Total - fac.TotalAbonadoGlobal - funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
-
-        otrosvalores = funciones.RedondearDecimales(funciones.RedondearDecimales(CDbl(x(1))) + funciones.RedondearDecimales(CDbl(x(2))) + funciones.RedondearDecimales(CDbl(x(3))))
-
-        nopago = funciones.RedondearDecimales(nopago1) - otrosvalores
-
-        esf = EstadoFacturaProveedor.Aprobada
-
-        If nopago < 0 Then
-            Err.Raise 44, "aprobar op", "La factura " & fac.NumeroFormateado & " tiene un error y no se pudo aprobar la OP"
-        End If
-        If nopago > 0 Then
-            esf = EstadoFacturaProveedor.pagoParcial
-        Else
-            esf = EstadoFacturaProveedor.Saldada
-        End If
-        conectar.execute "UPDATE AdminComprasFacturasProveedores SET estado = " & esf & " WHERE id = " & fac.Id
-    Next F
-
-
-    If op.estado = EstadoOrdenPago_pendiente Then
-        Dim es As EstadoOrdenPago
-        es = op.estado
-        op.estado = EstadoOrdenPago_Aprobada
-
-        If op.EsParaFacturaProveedor Then
-           
-           If op.FacturasProveedor.count > 0 Then
-                If op.FacturasProveedor(1).Proveedor.estado <> 2 Then
-                    Dim d As New clsDTOPadronIIBB
-                    'todo: cambiar validacion
-                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
-                    Dim ret As Double
-
-                    If IsSomething(d) Then
-                        ret = d.alicuota
-
-                        If ret <> op.alicuota Then
-                            If MsgBox("La alicuota de retención actual del proveedor en el padrón difiere de la especificada en la orden de pago." & vbNewLine & "¿Quiere editar la orden de pago con la nueva alicuota de retención? o ¿Usar la especificada de todas maneras?" & vbNewLine & "[SI] - Continuar usando la especificada." & "[NO] - Cancelar y editar la orden de pago.", vbQuestion + vbYesNo) = vbNo Then
-                                GoTo err1
-                            End If
-                        End If
-
-                    End If
-                Else
-                    MsgBox "El proveedor es de tipo contado! " & vbNewLine & "No se le realizará ninguna retención!", vbInformation, "Información"
-                End If
-            End If
-        End If
-
-        'analizo las facturas de proveedores
-
-        'TODO: debo verificar que los deudas por compensatorio no esten utilizadas en otra OP aprobada ni que esten ya canceladas en otro proceso
-
-        If Guardar(op) Then
-
-            Dim fac1 As clsFacturaProveedor
-            For Each fac1 In op.FacturasProveedor
-                If fac1.estado = EstadoFacturaProveedor.Saldada Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "SALDADA") Then GoTo err1
-                End If
-                If fac1.estado = EstadoFacturaProveedor.pagoParcial Then
-                    If Not DaoFacturaProveedorHistorial.agregar(fac1, "PAGO PARCIAL") Then GoTo err1
-                End If
-            Next
-
-            If op.StaticTotalRetenido > 0 Then
-                Dim ra As DTORetencionAlicuota
-                For Each ra In op.RetencionesAlicuota
-
-                    If IsSomething(DAOCertificadoRetencion.Create(op, ra.Retencion, ra.alicuotaRetencion, True)) Then
-                        MsgBox "Se creo un certificado de Retenciones para la Orden de Pago. ", vbInformation
-                    Else
-                        GoTo err1
-                    End If
-                Next
-
-            End If
-        Else
-            GoTo err1
-        End If
-        
-    End If
-    
-'        MsgBox (op.Id)
-        
-    DaoHistorico.Save "orden_pago_historial", "OP Aprobada", op.Id
-    aprobar = True
-    
-'        MsgBox (op.Id)
-
-    If insideTransaction Then conectar.CommitTransaction
-    Exit Function
-err1:
-
-'        MsgBox (op.Id)
-
-    op.estado = es
-    If insideTransaction Then conectar.RollBackTransaction
-    aprobar = False
-End Function
-
-
-Public Function Guardar(pcta As clsPagoACta, Optional cascada As Boolean = False) As Boolean
-
-'TODO: tengo que revisar que las facturas no esten en otra op aprobada antes de continuar
-
+Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boolean = False) As Boolean
     Dim q As String
     Dim rs As Recordset
     On Error GoTo E
     Dim Nueva As Boolean: Nueva = False
-    If pcta.Id = 0 Then
+    If aContable.Id = 0 Then
         Nueva = True
-        q = "INSERT INTO pagos_a_cuenta (id_moneda, fecha, id_proveedor, estado, static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen, dif_cambio_ng,dif_cambio_total)" _
-          & " VALUES ('id_moneda', 'fecha', 'id_proveedor', '0', 'static_total_facturas', 'static_total_factura_ng', 'static_total_a_retener', 'static_total_origen', 'dif_cambio_ng','dif_cambio_total')"
+        q = "INSERT INTO movimientos_caja_bancos (id_moneda, fecha, id_cuentacontable, estado, static_total_origen)" _
+          & " VALUES ('id_moneda', 'fecha', 'id_cuentacontable', '0', 'static_total_origen')"
     Else
-        q = "UPDATE pagos_a_cuenta" _
+        q = "UPDATE movimientos_caja_bancos" _
           & " SET id_moneda = 'id_moneda'," _
           & " fecha = 'fecha'," _
-          & " id_proveedor = 'id_proveedor'," _
+          & " id_cuentacontable = 'id_cuentacontable'," _
           & " estado = 'estado'," _
-          & " static_total_facturas = 'static_total_facturas'," _
-          & " static_total_factura_ng = 'static_total_factura_ng'," _
-          & " static_total_a_retener = 'static_total_a_retener'," _
-          & " static_total_origen = 'static_total_origen'," _
-          & " tipo_cambio = 'tipo_cambio'," _
-          & " dif_cambio_ng = 'dif_cambio_ng'," _
-          & " dif_cambio_total = 'dif_cambio_total'" _
+          & " static_total_origen = 'static_total_origen'" _
           & " WHERE id = 'id'"
-        q = Replace(q, "'id'", GetEntityId(pcta))
+        q = Replace(q, "'id'", GetEntityId(aContable))
     End If
 
-    q = Replace(q, "'id_moneda'", GetEntityId(pcta.moneda))
-    q = Replace(q, "'id_proveedor'", Escape(pcta.Proveedor.Id))
-    q = Replace(q, "'fecha'", Escape(pcta.FEcha))
-    q = Replace(q, "'estado'", Escape(pcta.estado))
-    q = Replace(q, "'static_total_facturas'", Escape(pcta.StaticTotalFacturas))
-    q = Replace(q, "'static_total_factura_ng'", Escape(pcta.StaticTotalFacturasNG))
-    q = Replace(q, "'static_total_a_retener'", Escape(pcta.StaticTotalRetenido))
-    q = Replace(q, "'static_total_origen'", Escape(pcta.StaticTotalOrigenes))
-    q = Replace(q, "'dif_cambio'", Escape(pcta.DiferenciaCambio))
-    q = Replace(q, "'id_moneda_pago'", Escape(pcta.IdMonedaPago))
-    q = Replace(q, "'tipo_cambio'", Escape(pcta.TipoCambio))
-    q = Replace(q, "'dif_cambio_ng'", Escape(pcta.DiferenciaCambioEnNG))
-    q = Replace(q, "'dif_cambio_total'", Escape(pcta.DiferenciaCambioEnTOTAL))
-
+    q = Replace(q, "'id_moneda'", GetEntityId(aContable.moneda))
+    q = Replace(q, "'id_cuentacontable'", Escape(aContable.CuentaContable.Id))
+    q = Replace(q, "'fecha'", Escape(aContable.FEcha))
+    q = Replace(q, "'estado'", Escape(aContable.estado))
+    q = Replace(q, "'static_total_origen'", Escape(aContable.StaticTotalOrigenes))
 
     If Not conectar.execute(q) Then GoTo E
 
-    If Nueva Then pcta.Id = conectar.UltimoId2()
-    If pcta.Id = 0 Then GoTo E
+    If Nueva Then aContable.Id = conectar.UltimoId2()
+    If aContable.Id = 0 Then GoTo E
 
     '------------------------------------------------------
     
     If cascada Then
 
-        q = "SELECT id_cheque FROM pagos_a_cuenta_cheques WHERE id_pago_a_cuenta = " & pcta.Id
+        q = "SELECT id_cheque FROM movimientos_caja_bancos_cheques WHERE id_movimiento_caja_bancos = " & aContable.Id
         q = q & " AND id_cheque NOT IN (-1"
-        If pcta.ChequesTerceros.count > 0 Then
-            q = q & ", " & funciones.JoinCollectionValues(pcta.ChequesTerceros, ", ", "id")
+        
+        If aContable.ChequesTerceros.count > 0 Then
+            q = q & ", " & funciones.JoinCollectionValues(aContable.ChequesTerceros, ", ", "id")
         End If
-        If pcta.ChequesPropios.count > 0 Then
-            q = q & ", " & funciones.JoinCollectionValues(pcta.ChequesPropios, ", ", "id")
+        If aContable.ChequesPropios.count > 0 Then
+            q = q & ", " & funciones.JoinCollectionValues(aContable.ChequesPropios, ", ", "id")
         End If
         q = q & ")"
         Set rs = conectar.RSFactory(q)
+        
         While Not rs.EOF
             q = "UPDATE Cheques SET en_cartera = 1, observaciones = NULL, origen= NULL WHERE id = " & rs!id_cheque
             If Not conectar.execute(q) Then GoTo E
@@ -542,59 +193,59 @@ Public Function Guardar(pcta As clsPagoACta, Optional cascada As Boolean = False
         Wend
 
 
-        q = "DELETE FROM pagos_a_cuenta_cheques WHERE id_pago_a_cuenta = " & pcta.Id
+        q = "DELETE FROM movimientos_caja_bancos_cheques WHERE id_movimiento_caja_bancos = " & aContable.Id
         If Not conectar.execute(q) Then GoTo E
 
         Dim che As cheque
-        For Each che In pcta.ChequesTerceros
+        For Each che In aContable.ChequesTerceros
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = pcta.Id
-            che.FechaEmision = pcta.FEcha
+            che.IdOrdenPagoOrigen = aContable.Id
+            che.FechaEmision = aContable.FEcha
             
             If Not DAOCheques.Guardar(che) Then GoTo E
 
-            q = "INSERT INTO pagos_a_cuenta_cheques VALUES (" & pcta.Id & ", " & che.Id & ")"
+            q = "INSERT INTO movimientos_caja_bancos_cheques VALUES (" & aContable.Id & ", " & che.Id & ")"
             If Not conectar.execute(q) Then GoTo E
             
         Next che
 
-        For Each che In pcta.ChequesPropios
+        For Each che In aContable.ChequesPropios
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = pcta.Id
-            che.FechaEmision = pcta.FEcha
+            che.IdOrdenPagoOrigen = aContable.Id
+            che.FechaEmision = aContable.FEcha
         
         
         If Not DAOCheques.Guardar(che) Then GoTo E
-            q = "INSERT INTO pagos_a_cuenta_cheques VALUES (" & pcta.Id & ", " & che.Id & ")"
+            q = "INSERT INTO movimientos_caja_bancos_cheques VALUES (" & aContable.Id & ", " & che.Id & ")"
             If Not conectar.execute(q) Then GoTo E
         Next che
  
         '------------------------------------------------------
 
-        q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM pagos_a_cuenta_operaciones WHERE id_pago_a_cuenta = " & pcta.Id & ")"
+        q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM movimientos_caja_bancos_operaciones WHERE id_movimiento_caja_bancos = " & aContable.Id & ")"
         If Not conectar.execute(q) Then GoTo E
-        q = "DELETE FROM pagos_a_cuenta_operaciones WHERE id_pago_a_cuenta = " & pcta.Id
+        q = "DELETE FROM movimientos_caja_bancos_operaciones WHERE id_movimiento_caja_bancos = " & aContable.Id
         If Not conectar.execute(q) Then GoTo E
 
         Dim oper As operacion
-        For Each oper In pcta.operacionesBanco
+        For Each oper In aContable.operacionesBanco
             oper.FechaCarga = Now
             If DAOOperacion.Save(oper) Then
                 oper.Id = conectar.UltimoId2
                 If oper.Id = 0 Then GoTo E
-                q = "INSERT INTO pagos_a_cuenta_operaciones VALUES (" & pcta.Id & ", " & oper.Id & ")"
+                q = "INSERT INTO movimientos_caja_bancos_operaciones VALUES (" & aContable.Id & ", " & oper.Id & ")"
                 If Not conectar.execute(q) Then GoTo E
             Else
                 GoTo E
             End If
         Next oper
 
-        For Each oper In pcta.OperacionesCaja
+        For Each oper In aContable.OperacionesCaja
             oper.FechaCarga = Now
             If DAOOperacion.Save(oper) Then
                 oper.Id = conectar.UltimoId2
                 If oper.Id = 0 Then GoTo E
-                q = "INSERT INTO pagos_a_cuenta_operaciones VALUES (" & pcta.Id & ", " & oper.Id & ")"
+                q = "INSERT INTO movimientos_caja_bancos_operaciones VALUES (" & aContable.Id & ", " & oper.Id & ")"
                 If Not conectar.execute(q) Then GoTo E
             Else
                 GoTo E
@@ -608,94 +259,8 @@ Public Function Guardar(pcta As clsPagoACta, Optional cascada As Boolean = False
     Exit Function
 E:
     Guardar = False
-    If Nueva Then pcta.Id = 0
+    If Nueva Then aContable.Id = 0
 
-End Function
-
-
-Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
-    RemoveFactura = False
-
-    Dim op As OrdenPago
-    Set op = DAOOrdenPago.FindById(opid)
-    If IsSomething(op) Then
-        If op.estado = EstadoOrdenPago_pendiente Then    'si esta aprobada no se puede eliminar una factura
-            Dim q As String
-
-            q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id = " & opid
-            RemoveFactura = conectar.execute(q)
-
-            If RemoveFactura Then
-                q = "DELETE FROM ordenes_pago_facturas WHERE id_factura_proveedor = " & facid
-                RemoveFactura = conectar.execute(q)
-            Else
-                'vuelvo la factura al estado anterior, para no hacer una transaccion
-                q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Saldada & " WHERE id = " & opid
-                RemoveFactura = conectar.execute(q)
-            End If
-            'DaoHistorico.Save "orden_pago_historial", "Factura Id " & facid & " removida, opid"
-
-        End If
-    End If
-
-End Function
-
-
-Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boolean
-    On Error GoTo E
-
-    Dim op As OrdenPago
-    Set op = DAOOrdenPago.FindById(opid)
-
-    If useInternalTransaction Then conectar.BeginTransaction
-
-    Dim q As String
-
-    q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM ordenes_pago_facturas WHERE id_orden_pago = " & opid & ")"
-    If Not conectar.execute(q) Then GoTo E
-    ' q = "DELETE FROM ordenes_pago_facturas WHERE id_orden_pago = " & opid
-    '     If Not conectar.execute(q) Then GoTo E
-
-    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & opid & ")"
-    If Not conectar.execute(q) Then GoTo E
-    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & opid
-    If Not conectar.execute(q) Then GoTo E
-
-
-    'se deben borrar los cheques creados para esta orden de pago (solo los propios)
-    'fix 14-10-2020
-    'q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ")"
-    q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=1"
-    If Not conectar.execute(q) Then GoTo E
-
-    q = "UPDATE Cheques SET orden_pago_origen=0,en_cartera = 1  WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=0"
-
-    If Not conectar.execute(q) Then GoTo E
-
-    q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid
-    If Not conectar.execute(q) Then GoTo E
-
-    q = "DELETE FROM ordenes_pago_compensatorios WHERE id_orden_pago = " & opid
-    If Not conectar.execute(q) Then GoTo E
-
-    '    q = "DELETE FROM ordenes_pago WHERE id = " & opid
-    If Not conectar.execute(q) Then GoTo E
-    Dim estado_anterior As EstadoOrdenPago
-    estado_anterior = op.estado
-    op.estado = EstadoOrdenPago_Anulada
-    If Not DAOOrdenPago.Guardar(op, False) Then GoTo E
-
-
-    DaoHistorico.Save "orden_pago_historial", "OP Anulada", op.Id
-
-    If useInternalTransaction Then conectar.CommitTransaction
-
-    Delete = True
-    Exit Function
-E:
-    op.estado = estado_anterior
-    If useInternalTransaction Then conectar.RollBackTransaction
-    Delete = False
 End Function
 
 
@@ -857,14 +422,24 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
+    
+    Dim titulo As String
+    titulo = "Reporte de Movimientos de Caja y Bancos"
+    
+    With xlWorksheet.Range("A1:G1")
+        .Merge
+        .Font.Bold = True
+        .value = titulo
+        .HorizontalAlignment = -4108 ' xlCenter
+    End With
 
     ' Fila inicial
     Dim offset As Long
     offset = 3
 
     ' Escribir encabezados
-    xlWorksheet.Cells(offset, 1).value = "Número Pago a Cuenta"
-    xlWorksheet.Cells(offset, 2).value = "Proveedor"
+    xlWorksheet.Cells(offset, 1).value = "Número Movimiento de Caja y Bancos"
+    xlWorksheet.Cells(offset, 2).value = "Cuenta Contable"
     xlWorksheet.Cells(offset, 3).value = "Fecha"
     xlWorksheet.Cells(offset, 4).value = "Moneda"
     xlWorksheet.Cells(offset, 5).value = "Valor"
@@ -878,8 +453,10 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     End With
 
     ' Escribir datos
-    Dim PagoACta As clsPagoACta
+    Dim AsientoContable As clsAsientoContable
+    
     Dim initoffset As Long
+    
     initoffset = offset
 
     If Not ProgressBar Is Nothing Then
@@ -890,19 +467,19 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Dim d As Long
     d = 0
 
-    For Each PagoACta In col
+    For Each AsientoContable In col
         d = d + 1
         If Not ProgressBar Is Nothing Then ProgressBar.value = d
 
         offset = offset + 1
 
-        xlWorksheet.Cells(offset, 1).value = PagoACta.Id
-        xlWorksheet.Cells(offset, 2).value = PagoACta.Proveedor.RazonSocial
-        xlWorksheet.Cells(offset, 3).value = PagoACta.FEcha
-        xlWorksheet.Cells(offset, 4).value = PagoACta.moneda.NombreCorto
-        xlWorksheet.Cells(offset, 5).value = PagoACta.StaticTotalOrigenes
-        xlWorksheet.Cells(offset, 6).value = enums.enumEstadoPagoACuenta(PagoACta.estado)
-        xlWorksheet.Cells(offset, 7).value = PagoACta.Creada
+        xlWorksheet.Cells(offset, 1).value = AsientoContable.Id
+        xlWorksheet.Cells(offset, 2).value = AsientoContable.CuentaContable.nombre
+        xlWorksheet.Cells(offset, 3).value = AsientoContable.FEcha
+        xlWorksheet.Cells(offset, 4).value = AsientoContable.moneda.NombreCorto
+        xlWorksheet.Cells(offset, 5).value = AsientoContable.StaticTotalOrigenes
+        xlWorksheet.Cells(offset, 6).value = enums.enumEstadoMovimientosCajaYBancos(AsientoContable.estado)
+        xlWorksheet.Cells(offset, 7).value = AsientoContable.Creada
     Next
 
     ' Centrar los datos de la primera columna
@@ -948,7 +525,8 @@ err1:
     If Not ProgressBar Is Nothing Then ProgressBar.value = 0
 End Function
 
-Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
+
+Public Function PrintMovimiento(aContable As clsAsientoContable) As Boolean
     Dim TAB1 As Integer
     Dim TAB2 As Integer
     Dim maxw As Single
@@ -979,7 +557,7 @@ Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
      
     Printer.FontBold = True
     Printer.FontSize = 12
-    mtxt = "Movimiento Nº " & pcta.Id
+    mtxt = "Movimiento Nº " & aContable.Id
     textw = Printer.TextWidth(mtxt)
     
     Printer.CurrentX = lmargin + (maxw - textw) / 2
@@ -988,21 +566,21 @@ Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Fecha: ";
     Printer.FontBold = False
-    Printer.Print pcta.FEcha
+    Printer.Print aContable.FEcha
 
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
     Printer.Print "Moneda: ";
     Printer.FontBold = False
-    Printer.Print pcta.moneda.NombreCorto & " " & pcta.moneda.NombreLargo
+    Printer.Print aContable.moneda.NombreCorto & " " & aContable.moneda.NombreLargo
 
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
-    Printer.Print "Proveedor: ";
+    Printer.Print "Cuenta Contable: ";
     Printer.FontBold = False
-    Printer.Print pcta.Proveedor.RazonSocial
+    Printer.Print aContable.CuentaContable.nombre
 
 
     Printer.Print
@@ -1021,7 +599,7 @@ Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
     Dim tmpCol As New Collection
     c = 0
     
-    For Each cheq In pcta.ChequesPropios
+    For Each cheq In aContable.ChequesPropios
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
@@ -1038,7 +616,7 @@ Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
     Printer.FontBold = False
     Set tmpCol = New Collection
     c = 0
-    For Each cheq In pcta.ChequesTerceros
+    For Each cheq In aContable.ChequesTerceros
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
@@ -1056,7 +634,7 @@ Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
     Dim op As operacion
     Set tmpCol = New Collection
     c = 0
-    For Each op In pcta.operacionesBanco
+    For Each op In aContable.operacionesBanco
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         
@@ -1078,10 +656,9 @@ Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
     Printer.Print "Efectivo: "
     Printer.FontBold = False
 
-'Replace(FormatCurrency(funciones.FormatearDecimales(factura.TotalIVA) * i), "$", "")
     Set tmpCol = New Collection
     c = 0
-    For Each op In pcta.OperacionesCaja
+    For Each op In aContable.OperacionesCaja
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
@@ -1100,7 +677,7 @@ Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Total Pagado: ";
     Printer.FontBold = False
-    Printer.Print pcta.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(pcta.StaticTotalOrigenes)), "$", "")
+    Printer.Print aContable.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(aContable.StaticTotalOrigenes)), "$", "")
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     
@@ -1129,7 +706,7 @@ Public Function PrintPCTA(pcta As clsPagoACta) As Boolean
 
     Printer.EndDoc
     
-    DaoHistorico.Save "orden_pago_historial", "OP Impresa", pcta.Id
+    DaoHistorico.Save "orden_pago_historial", "OP Impresa", aContable.Id
     
 End Function
 
@@ -1492,4 +1069,33 @@ err1:
 End Function
 
 
+Public Function aprobar(aContable As clsAsientoContable, insideTransaction As Boolean) As Boolean
+    On Error GoTo err1
+    aprobar = False
+
+    Dim startedTransaction As Boolean
+    If Not insideTransaction Then
+        conectar.BeginTransaction
+        startedTransaction = True
+    End If
+
+    ' Validar objeto
+    If Not IsSomething(aContable) Then GoTo err1
+
+    ' Actualizar estado del movimiento
+    Dim q As String
+    q = "UPDATE movimientos_caja_bancos SET estado = 1 WHERE id = " & aContable.Id
+    If Not conectar.execute(q) Then GoTo err1
+
+    ' Guardar historial
+    DaoHistorico.Save "orden_pago_historial", "Movimiento de Caja y Bancos Aprobado", aContable.Id
+
+    aprobar = True
+    If startedTransaction Then conectar.CommitTransaction
+    Exit Function
+
+err1:
+    If startedTransaction Then conectar.RollBackTransaction
+    aprobar = False
+End Function
 

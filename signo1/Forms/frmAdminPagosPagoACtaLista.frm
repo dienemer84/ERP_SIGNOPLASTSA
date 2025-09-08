@@ -289,7 +289,7 @@ Begin VB.Form frmAdminPagosPagoACtaLista
          _ExtentX        =   8281
          _ExtentY        =   2778
          _StockProps     =   79
-         Caption         =   "Fecha Pago"
+         Caption         =   "Fecha"
          BackColor       =   16744576
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
@@ -477,6 +477,7 @@ Begin VB.Form frmAdminPagosPagoACtaLista
       GroupFooterStyle=   2
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
+      AllowEdit       =   0   'False
       DataMode        =   99
       ColumnHeaderHeight=   285
       IntProp1        =   0
@@ -569,7 +570,7 @@ End Sub
 
 
 Private Sub cmdBuscar_Click()
-    If (Me.chkContado.Value = xtpChecked Or Me.chkCtaCte.Value = xtpChecked Or Me.chkEliminado.Value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
+    If (Me.chkContado.value = xtpChecked Or Me.chkCtaCte.value = xtpChecked Or Me.chkEliminado.value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
 
 End Sub
 
@@ -604,17 +605,19 @@ End Sub
 Private Sub cmdLimpiaEstado_Click()
     Me.cboEstado.ListIndex = -1
 End Sub
-
-
 Private Sub Form_Load()
     Customize Me
+    
     GridEXHelper.CustomizeGrid Me.gridOrdenes, True
-    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
+    
+'''    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
+    
+    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
     
     Me.cboProveedores.ListIndex = -1
     '    llenarLista
 
-    Me.dtpHasta(1).Value = Now
+    Me.dtpHasta(1).value = Now
     
     Me.gridOrdenes.ItemCount = 0
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
@@ -626,7 +629,7 @@ Private Sub Form_Load()
     Me.cboEstado.AddItem enums.enumEstadoPagoACuenta(EstadoPagoACuenta.Procesada)
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoPagoACuenta.Procesada
 
-    Me.dtpDesde(1).Value = Year(Now) & "-01-01"
+    Me.dtpDesde(1).value = Year(Now) & "-01-01"
 
     desde = DateSerial(Year(Date), Month(Date), 1)   ' CDate(1 & "-" & Month(Now) & "-" & Year(Now))
     funciones.FillComboBoxDateRanges Me.cboRangos
@@ -655,32 +658,30 @@ Private Sub llenarLista()
 
     Dim filtroor As String
 
-    If Not IsNull(Me.dtpDesde(1).Value) Then
-        filter = filter & " AND pagos_a_cuenta.fecha >= " & conectar.Escape(Me.dtpDesde(1).Value)
+    If Not IsNull(Me.dtpDesde(1).value) Then
+        filter = filter & " AND pagos_a_cuenta.fecha >= " & conectar.Escape(Me.dtpDesde(1).value)
     End If
 
-    If Not IsNull(Me.dtpHasta(1).Value) Then
-        filter = filter & " AND pagos_a_cuenta.fecha <= " & conectar.Escape(Me.dtpHasta(1).Value)
+    If Not IsNull(Me.dtpHasta(1).value) Then
+        filter = filter & " AND pagos_a_cuenta.fecha <= " & conectar.Escape(Me.dtpHasta(1).value)
     End If
 
 
-    If Me.chkContado.Value = xtpChecked Then
+    If Me.chkContado.value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorContado
     End If
 
-    If Me.chkCtaCte.Value = xtpChecked Then
+    If Me.chkCtaCte.value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorCuentaCorriente
     End If
 
-    If Me.chkEliminado.Value = xtpChecked Then
+    If Me.chkEliminado.value = xtpChecked Then
         filtroor = filtroor & " OR proveedores.estado = " & EstadoProveedor.EstadoProveedorEliminado
     End If
-
 
     If Me.cboEstado.ListIndex > -1 Then
         filter = filter & " AND pagos_a_cuenta.estado = " & Me.cboEstado.ItemData(Me.cboEstado.ListIndex)
     End If
-
 
     If LenB(filtroor) > 0 Then
         filtroor = " AND (" & Right(filtroor, Len(filtroor) - 3) & " )"
@@ -727,7 +728,7 @@ End Sub
 
 Private Sub SeleccionarOP()
     On Error Resume Next
-    Set PagoACuenta = pagosacuenta.item(gridOrdenes.rowIndex(gridOrdenes.row))
+    Set PagoACuenta = pagosacuenta.item(gridOrdenes.RowIndex(gridOrdenes.row))
 
 End Sub
 
@@ -748,8 +749,8 @@ End Sub
 
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.rowIndex > 0 And pagosacuenta.count > 0 Then
-        Set PagoACuenta = pagosacuenta.item(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 And pagosacuenta.count > 0 Then
+        Set PagoACuenta = pagosacuenta.item(RowBuffer.RowIndex)
         If PagoACuenta.estado = EstadoPagoACuenta.Disponible Then
             RowBuffer.CellStyle(6) = "pendiente"
         ElseIf PagoACuenta.estado = EstadoPagoACuenta.Disponible Then
@@ -763,9 +764,9 @@ Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And pagosacuenta.count > 0 Then
-        Set PagoACuenta = pagosacuenta.item(rowIndex)
+Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And pagosacuenta.count > 0 Then
+        Set PagoACuenta = pagosacuenta.item(RowIndex)
         Values(1) = PagoACuenta.Id
         Values(2) = PagoACuenta.Proveedor.RazonSocial
         Values(3) = PagoACuenta.FEcha
@@ -806,7 +807,7 @@ Private Sub mnuAprobar_Click()
     
     If DAOPagoACta.aprobar(PagoACuenta, True) Then
         MsgBox "Aprobación éxitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
     Else
         MsgBox "Error, no se aprobó el Pago a cuenta!", vbCritical + vbOKOnly
