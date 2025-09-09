@@ -52,9 +52,9 @@ err1:
     CountPrintedLabels = False
 End Function
 
-Public Function FindById(idpedido As Long, Optional withEntregados As Boolean = False, Optional withFabricados As Boolean = False, Optional withFacturados As Boolean = False) As DetalleOrdenTrabajo
+Public Function FindById(IdPedido As Long, Optional withEntregados As Boolean = False, Optional withFabricados As Boolean = False, Optional withFacturados As Boolean = False) As DetalleOrdenTrabajo
     Dim col As Collection
-    Set col = FindAll(TABLA_DETALLE_PEDIDO & "." & CAMPO_ID & "=" & idpedido, withEntregados, withFabricados, withFacturados)
+    Set col = FindAll(TABLA_DETALLE_PEDIDO & "." & CAMPO_ID & "=" & IdPedido, withEntregados, withFabricados, withFacturados)
 
     If col.count > 0 Then
         Set FindById = col.item(1)
@@ -153,7 +153,6 @@ Public Function FindAllConjunto(Optional ByVal idDetallePedido As Long = 0, Opti
     If idPiezaPadre > 0 Then
         q = q & " And dpc.idPiezaPadre = " & idPiezaPadre
     End If
-
 
     If LenB(filter) > 0 Then
         q = q & " AND " & filter
@@ -297,12 +296,24 @@ Public Function MapConjunto(ByRef rs As Recordset, _
         Set tmpDeta = New DetalleOTConjuntoDTO
 
         tmpDeta.Id = Id
+
         tmpDeta.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
         tmpDeta.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "procesos_definidos")
         tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
-        tmpDeta.idpedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
+        tmpDeta.IdPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
         tmpDeta.IdentificadorPosicion = GetValue(rs, fieldsIndex, tableNameOrAlias, "identificador_posicion")
+        
         tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
+        
+'''        tmpDeta.CantidadRecibida = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_cant_recibida")
+'''        tmpDeta.CantidadFabricada = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_cant_fabricada")
+'''        tmpDeta.CantidadScrap = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_cant_scrap")
+'''
+'''        tmpDeta.FechaInicio = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_fecha_inicio")
+'''        tmpDeta.FechaFin = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_fecha_fin")
+'''
+'''        tmpDeta.Recibio = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_recibio")
+'''        tmpDeta.SiguienteProceso = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_siguiente_proceso")
 
         If LenB(piezaTableNameOrAlias) > 0 Then Set tmpDeta.Pieza = DAOPieza.Map(rs, fieldsIndex, piezaTableNameOrAlias)
         If LenB(detallePedidoTableNameOrAlias) > 0 Then Set tmpDeta.DetalleRaiz = DAODetalleOrdenTrabajo.Map(rs, fieldsIndex, detallePedidoTableNameOrAlias)
@@ -557,7 +568,7 @@ Public Function arreglarCagada()
 
     For Each Ot In col
 
-        For Each det In Ot.Detalles
+        For Each det In Ot.detalles
 
             det.IdMoneda = Ot.moneda.Id
             ''If ot.Moneda.Id = 1 Then Stop

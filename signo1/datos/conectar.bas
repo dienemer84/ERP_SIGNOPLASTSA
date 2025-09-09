@@ -88,6 +88,16 @@ e12:
 End Function
 
 
+Public Function ExecuteRa(ByVal sql As String, ByRef ra As Long) As Boolean
+  On Error GoTo err1
+  cn.execute sql, ra, adExecuteNoRecords
+  ExecuteRa = True
+  Exit Function
+err1:
+  ra = -1
+  ExecuteRa = False
+End Function
+
 Public Sub BeginTransaction()
     cn.BeginTrans
 End Sub

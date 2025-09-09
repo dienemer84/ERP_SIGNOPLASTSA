@@ -246,10 +246,12 @@ Public Enum Cols
   cItem = 2
   cUM = 3
   cNombre = 4
+  
   cCantPedida = 5
-  cCantRecibida = 6
-  cCantFabricada = 7
+  cCantRecibida = 7
+  cCantFabricada = 6
   cCantScrap = 8
+  
   cFechaInicio = 9
   cFechaFin = 10
   cUsuarioRecibio = 11
@@ -328,21 +330,25 @@ Private Sub Form_Resize()
     
     ' Grid ajustado al resto de la ventana
     With gridDetalles
-        Top = TabControl1.Top + TabControl1.Height + 100
+'''        .Top = TabControl1.Top + TabControl1.Height + 100
         .Width = TabControl1.Width - 400
         .Height = TabControl1.Height - 1600
+        
+        .Columns(cCantPedida).Width = 800
+        .Columns(cCantFabricada).Width = 800
+        .Columns(cCantRecibida).Width = 800
+        .Columns(cCantScrap).Width = 800
+
     End With
     
     With Me.btnExportar
         .Left = gridDetalles.Width - 3800
         .Top = gridDetalles.Height + 500
-
     End With
     
     With Me.btnGuardar
         .Left = gridDetalles.Width - 1800
         .Top = gridDetalles.Height + 500
-
     End With
 
 End Sub
@@ -362,7 +368,6 @@ Private Sub EnsureConjuntoStyle()
             Err.Clear
          End If
         On Error GoTo 0
-
     End If
 End Sub
 
@@ -402,7 +407,8 @@ Private Sub AgregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As In
     
     r.item = CStr(d.item)
     
-    If Not d.Pieza Is Nothing Then r.Id = d.Pieza.Id
+    If Not d.Pieza Is Nothing Then r.IdTabla = d.Pieza.Id
+    r.IdTabla = d.Id
     r.nombre = d.Pieza.nombre
     r.UnidadMedida = d.Pieza.UnidadMedida
     r.CantPedida = d.CantidadPedida
@@ -423,12 +429,25 @@ Private Sub AgregarFilaDTO(ByVal dto As DetalleOTConjuntoDTO, _
     
     r.item = CStr(dto.IdentificadorPosicion)
     
-    If Not dto.Pieza Is Nothing Then r.Id = dto.Pieza.Id
-    r.Id = dto.Pieza.Id
+    If Not dto.Pieza Is Nothing Then r.IdTabla = dto.Pieza.Id
+    
+    r.IdTabla = dto.Id
+    
+    r.IdPiezaPedido = dto.Pieza.Id
     r.nombre = dto.Pieza.nombre
     r.UnidadMedida = dto.Pieza.UnidadMedida
-    r.CantPedida = CLng(dto.Cantidad) * CLng(factor)   'multiplicado por el padre
+    r.CantPedida = dto.CantidadTotalStatic   'multiplicado por el padre
     r.Nivel = Nivel
+    
+    r.CantRecibida = dto.CantidadRecibida
+    r.CantFabricada = dto.CantidadFabricada
+    r.CantScrap = dto.CantidadScrap
+    
+    r.FechaInicio = dto.FechaInicio
+    r.FechaFin = dto.FechaFin
+    
+    r.UsuarioRecibio = dto.Recibio
+    r.ProcesoSiguiente = dto.SiguienteProceso
     
     r.EsConjunto = (Not dto.Pieza Is Nothing And dto.Pieza.EsConjunto)
     
@@ -452,7 +471,7 @@ Private Sub AgregarHijos(ByVal idDetallePedido As Long, _
         AgregarFilaDTO dto, Nivel, factor
         If Not dto.Pieza Is Nothing Then
             If dto.Pieza.EsConjunto Then
-                AgregarHijos idDetallePedido, dto.Pieza.Id, Nivel + 1, CLng(factor) * CLng(dto.Cantidad)
+                AgregarHijos idDetallePedido, dto.Pieza.Id, Nivel + 1, dto.CantidadTotalStatic
             End If
         End If
     Next
@@ -471,14 +490,20 @@ End Sub
 Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, _
                                          ByVal Bookmark As Variant, _
                                          ByVal Values As GridEX20.JSRowData)
-     Dim r As clsFilaPlanoRow
+    Dim r As clsFilaPlanoRow
     Set r = detallesPlanos.item(RowIndex)
     
-    Values(cId) = r.Id
+    Values(cId) = r.IdTabla
     Values(cItem) = r.item
     Values(cUM) = r.UnidadMedida
     Values(cNombre) = String$(r.Nivel * 3, " ") & r.nombre
+   
     Values(cCantPedida) = r.CantPedida
+    Values(cCantRecibida) = r.CantRecibida
+    Values(cCantFabricada) = r.CantFabricada
+    Values(cCantScrap) = r.CantScrap
+
+    
     Values(cEsConjunto) = IIf(r.EsConjunto, 1, 0)
     
     If r.EsConjunto Then
@@ -508,48 +533,34 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
                                        
       If RowIndex < 1 Or RowIndex > detallesPlanos.count Then Exit Sub
       
-      Dim r As clsFilaPlanoRow: Set r = detallesPlanos.item(RowIndex)
+      Dim r As clsFilaPlanoRow
+      Set r = detallesPlanos.item(RowIndex)
     
-    With r
-        .Id = m_ot.Id
-        .IdPiezaPedido = Values(1)
-
-
-        .CantRecibida = NzDbl(Values(6))
-        .CantFabricada = NzDbl(Values(7))
-        .CantScrap = NzDbl(Values(8))
-        .FechaInicio = NzDate(Values(9))
-        .FechaFin = NzDate(Values(10))
-        .UsuarioRecibio = NzLng(Values(11))
-        .ProcesoSiguiente = NzStr(Values(12))
-
-    End With
+        With r
+        
+        .IdPedido = m_ot.Id
+        
+        .idSector = 1
+        
+        .IdTabla = Values(cId)
+        
+        
+        .CantRecibida = NzDbl(Values(cCantRecibida))
+        .CantFabricada = NzDbl(Values(cCantFabricada))
+        .CantScrap = NzDbl(Values(cCantScrap))
+        
+        .FechaInicio = NzDate(Values(cFechaInicio))
+        .FechaFin = NzDate(Values(cFechaFin))
+        
+        .UsuarioRecibio = NzLng(Values(cUsuarioRecibio))
+        .ProcesoSiguiente = NzStr(Values(cProcesoSig))
+        
+        End With
      
       If Not DAOProduccion.Save(r) Then MsgBox "Hubo un error al guardar"
     
 End Sub
 
-
-Private Sub btnGuardar_Click()
-    On Error GoTo err1
-
-    If gridDetalles.EditMode = jgexEditModeOn Then
-        gridDetalles.Update
-        If gridDetalles.EditMode = jgexEditModeOn Then
-            MsgBox "Termine de editar la celda.", vbExclamation
-            Exit Sub
-        End If
-    End If
-
-    If DAOProduccion.SaveMany(m_rows) Then
-        MsgBox "Registros guardados.", vbInformation
-    Else
-        Err.Raise 9001, "btnGuardar_Click", DAOProduccion.LastError
-    End If
-    Exit Sub
-err1:
-    MsgBox "Error al guardar (" & Err.Number & "): " & Err.Description, vbCritical
-End Sub
 
 ' Helpers
 Private Function NzLng(v As Variant) As Long
@@ -567,3 +578,4 @@ End Function
 Private Function NzDate(v As Variant) As Variant
     If IsDate(v) Then NzDate = CDate(v) Else NzDate = Null
 End Function
+

@@ -17,7 +17,8 @@ Public item As String
 Public nombre As String
 
 Public Nivel As Integer
-Public Id As Long
+
+Public IdTabla As Long 'id de tabla
 
 Public IdPedido As Long
 Public IdPiezaPedido As Long
@@ -31,6 +32,7 @@ Public FechaFin As Variant
 Public UsuarioRecibio As Long
 Public ProcesoSiguiente As String
 
-
 Public UnidadMedida As String
 Public EsConjunto As Boolean
+
+Public idSector As Long

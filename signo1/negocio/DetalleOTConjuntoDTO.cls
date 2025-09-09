@@ -15,11 +15,21 @@ Option Explicit
 
 Public Id As Long
 Public idDetallePedido As Long
-Public idpedido As Long
+Public IdPedido As Long
 Public Pieza As Pieza
 Public Cantidad As Double
 Public estado As EstadoProcesoDetalleOrdenTrabajo
 Public DetalleRaiz As DetalleOrdenTrabajo
 Public CantidadTotalSegunConjunto As Double
-Public CantidadTotalStatic As Double
+Public CantidadTotalStatic As Double 'Cantidad Pedida
 Public IdentificadorPosicion As String
+
+Public CantidadRecibida As Double
+Public CantidadFabricada As Double
+Public CantidadScrap As Double
+
+Public FechaInicio As Date
+Public FechaFin As Date
+
+Public Recibio As Long
+Public SiguienteProceso As String
