@@ -578,6 +578,7 @@ Module=DAOAsientoContable; ClassModule\DAOAsientoContable.bas
 Form=Forms\frmPlaneamientoSeguimientoAvanzado.frm
 Class=clsFilaPlanoRow; ClassModule\clsCDetallePlano.cls
 Module=DAOProduccion; Modules\DAOProduccion.bas
+Form=Forms\frmAviso.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""

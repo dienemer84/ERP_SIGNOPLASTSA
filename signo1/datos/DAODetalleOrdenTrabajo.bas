@@ -52,9 +52,9 @@ err1:
     CountPrintedLabels = False
 End Function
 
-Public Function FindById(IdPedido As Long, Optional withEntregados As Boolean = False, Optional withFabricados As Boolean = False, Optional withFacturados As Boolean = False) As DetalleOrdenTrabajo
+Public Function FindById(idpedido As Long, Optional withEntregados As Boolean = False, Optional withFabricados As Boolean = False, Optional withFacturados As Boolean = False) As DetalleOrdenTrabajo
     Dim col As Collection
-    Set col = FindAll(TABLA_DETALLE_PEDIDO & "." & CAMPO_ID & "=" & IdPedido, withEntregados, withFabricados, withFacturados)
+    Set col = FindAll(TABLA_DETALLE_PEDIDO & "." & CAMPO_ID & "=" & idpedido, withEntregados, withFabricados, withFacturados)
 
     If col.count > 0 Then
         Set FindById = col.item(1)
@@ -123,6 +123,7 @@ Public Function FindConjuntoByPiezas(piezasId As Collection) As Collection
     Set FindConjuntoByPiezas = FindAllConjunto(, , "dpc.idPieza IN (" & funciones.JoinCollectionValues(piezasId, ", ") & ")")
 End Function
 
+
 'si se llama solo especificando idDetallePedido (detalle_pedido.id) viene todo el conjunto en plano
 'para que venga por partes se debe filtrar por idPiezaPadre tambien
 Public Function FindAllConjunto(Optional ByVal idDetallePedido As Long = 0, Optional ByVal idPiezaPadre As Long = 0, Optional ByRef filter As String = vbNullString, Optional withDesarrolloManoObra As Boolean = False, Optional idDetalleConjunto As Long = 0) As Collection
@@ -181,6 +182,69 @@ Public Function FindAllConjunto(Optional ByVal idDetallePedido As Long = 0, Opti
     Set FindAllConjunto = detaOrdenesTrabajo
 
 End Function
+
+
+Public Function FindAllConjuntoProduccion(Optional ByVal idDetallePedido As Long = 0, Optional ByVal idPiezaPadre As Long = 0, Optional ByRef filter As String = vbNullString, Optional withDesarrolloManoObra As Boolean = False, Optional idDetalleConjunto As Long = 0) As Collection
+
+    Dim rs As ADODB.Recordset
+    Dim q As String
+
+    Dim detaOrdenesTrabajo As New Collection
+
+    q = "SELECT" _
+      & " dpc.*," _
+      & " s.*," _
+      & " dp.*," _
+      & " dpca.*" _
+      & " FROM detalles_pedidos_conjuntos dpc" _
+      & " LEFT JOIN stock s" _
+      & " ON s.id = dpc.idPieza" _
+      & " LEFT JOIN detalles_pedidos dp" _
+      & " ON dp.id = dpc.idDetalle_pedido" _
+      & " LEFT JOIN detalles_pedidos_conjuntos_avance dpca" _
+      & " ON dpca.id_detalle_pedido = dpc.id" _
+      & " WHERE 1 = 1"
+
+    If idDetallePedido > 0 Then
+        q = q & " AND dpc.idDetalle_Pedido = " & idDetallePedido
+    End If
+
+    If idDetalleConjunto > 0 Then
+        q = q & " And dpc.id = " & idDetalleConjunto
+    End If
+    If idPiezaPadre > 0 Then
+        q = q & " And dpc.idPiezaPadre = " & idPiezaPadre
+    End If
+
+    If LenB(filter) > 0 Then
+        q = q & " AND " & filter
+    End If
+
+    Set rs = conectar.RSFactory(q)
+
+    Dim fieldsIndex As Dictionary
+    BuildFieldsIndex rs, fieldsIndex
+    'Set FindAll = New Collection
+
+    Const piezaTabla As String = "s"
+    Dim tmpDeta As DetalleOTConjuntoDTO
+
+    While Not rs.EOF
+        Set tmpDeta = DAODetalleOrdenTrabajo.MapConjuntoProduccion(rs, fieldsIndex, "dpc", piezaTabla, "dp", "dpca")
+
+        If withDesarrolloManoObra Then
+            Set tmpDeta.Pieza.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpDeta.Pieza.Id)
+        End If
+
+        detaOrdenesTrabajo.Add tmpDeta, CStr(tmpDeta.Id)
+        rs.MoveNext
+    Wend
+
+    Set FindAllConjuntoProduccion = detaOrdenesTrabajo
+
+End Function
+
+
 
 Public Function FindAll(Optional ByRef filter As String = vbNullString, _
                         Optional Entregados As Boolean = False, _
@@ -296,24 +360,12 @@ Public Function MapConjunto(ByRef rs As Recordset, _
         Set tmpDeta = New DetalleOTConjuntoDTO
 
         tmpDeta.Id = Id
-
         tmpDeta.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
         tmpDeta.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "procesos_definidos")
         tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
-        tmpDeta.IdPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
+        tmpDeta.idpedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
         tmpDeta.IdentificadorPosicion = GetValue(rs, fieldsIndex, tableNameOrAlias, "identificador_posicion")
-        
         tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
-        
-'''        tmpDeta.CantidadRecibida = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_cant_recibida")
-'''        tmpDeta.CantidadFabricada = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_cant_fabricada")
-'''        tmpDeta.CantidadScrap = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_cant_scrap")
-'''
-'''        tmpDeta.FechaInicio = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_fecha_inicio")
-'''        tmpDeta.FechaFin = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_fecha_fin")
-'''
-'''        tmpDeta.Recibio = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_recibio")
-'''        tmpDeta.SiguienteProceso = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_siguiente_proceso")
 
         If LenB(piezaTableNameOrAlias) > 0 Then Set tmpDeta.Pieza = DAOPieza.Map(rs, fieldsIndex, piezaTableNameOrAlias)
         If LenB(detallePedidoTableNameOrAlias) > 0 Then Set tmpDeta.DetalleRaiz = DAODetalleOrdenTrabajo.Map(rs, fieldsIndex, detallePedidoTableNameOrAlias)
@@ -321,6 +373,49 @@ Public Function MapConjunto(ByRef rs As Recordset, _
     End If
 
     Set MapConjunto = tmpDeta
+
+End Function
+
+
+Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
+                            ByRef fieldsIndex As Dictionary, _
+                            ByRef tableNameOrAlias As String, _
+                            Optional ByRef piezaTableNameOrAlias As String = vbNullString, _
+                            Optional ByRef detallePedidoTableNameOrAlias As String = vbNullString, _
+                            Optional ByRef ProduccionAlias As String = vbNullString _
+                          ) As DetalleOTConjuntoDTO
+
+    Dim tmpDeta As DetalleOTConjuntoDTO
+    Dim Id As Variant
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, "id")
+
+    If Id > 0 Then
+        Set tmpDeta = New DetalleOTConjuntoDTO
+
+        tmpDeta.Id = Id
+        tmpDeta.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
+        tmpDeta.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "procesos_definidos")
+        tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
+        tmpDeta.idpedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
+        tmpDeta.IdentificadorPosicion = GetValue(rs, fieldsIndex, tableNameOrAlias, "identificador_posicion")
+        tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
+        
+        tmpDeta.CantidadRecibida = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_recibida")
+        tmpDeta.CantidadFabricada = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_fabricada")
+        tmpDeta.CantidadScrap = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_scrap")
+        tmpDeta.FechaInicio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_inicio")
+        tmpDeta.FechaFIn = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_fin")
+        tmpDeta.Recibio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_recibio")
+        tmpDeta.SiguienteProceso = GetValue(rs, fieldsIndex, ProduccionAlias, "a_siguiente_proceso")
+        
+        
+
+        If LenB(piezaTableNameOrAlias) > 0 Then Set tmpDeta.Pieza = DAOPieza.Map(rs, fieldsIndex, piezaTableNameOrAlias)
+        If LenB(detallePedidoTableNameOrAlias) > 0 Then Set tmpDeta.DetalleRaiz = DAODetalleOrdenTrabajo.Map(rs, fieldsIndex, detallePedidoTableNameOrAlias)
+
+    End If
+
+    Set MapConjuntoProduccion = tmpDeta
 
 End Function
 
@@ -628,6 +723,7 @@ Public Function SaveCantidad(id_detalle As Long, Cantidad As Double, Tipo As Tip
 err1:
     SaveCantidad = False
 End Function
+
 Public Function GetCantidad(id_detalle As Long, Tipo As TipoCantidadOT) As Double
     Dim strsql As String
     Dim rs As Recordset
@@ -639,6 +735,7 @@ Public Function GetCantidad(id_detalle As Long, Tipo As TipoCantidadOT) As Doubl
         GetCantidad = -1
     End If
 End Function
+
 Public Sub CalcularPorcentajeAvanceYPromedioFabricado(idDetallePedido As Long, ByRef Porcentaje As Double, ByRef promedio As Double)
     Dim tmpRS As Recordset
     Dim porcentajeAvanceTareas As Double

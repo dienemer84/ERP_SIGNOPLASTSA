@@ -1268,7 +1268,7 @@ Private Sub btnExportar_Click()
 
     Set xlWorkbook = xlApplication.Workbooks.Add
 
-    Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
     
@@ -1930,7 +1930,7 @@ Private Sub gridComprobantesEmitidos_DblClick()
 End Sub
 
 Private Sub gridComprobantesEmitidos_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 20 And m_Archivos.Item(Factura.Id) > 0 Then IconIndex = 1
+    If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
 Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2178,7 +2178,7 @@ End Sub
 
 Private Sub gridComprobantesEmitidos_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.Item(RowBuffer.RowIndex)
+    Set Factura = facturas.item(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaCliente.Anulada Then
         RowBuffer.RowStyle = "anulada"
@@ -2218,13 +2218,13 @@ End Sub
 
 Private Sub SeleccionarFactura()
     On Error Resume Next
-    Set Factura = facturas.Item(Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row))
+    Set Factura = facturas.item(Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row))
 
 End Sub
 
 Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set Factura = facturas.Item(RowIndex)
+    Set Factura = facturas.item(RowIndex)
 
 
     Values(1) = Factura.GetShortDescription(True, False)    'enums.EnumTipoDocumentoContable(Factura.TipoDocumento)
@@ -2350,7 +2350,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByV
 
     Values(22) = Factura.TasaAjusteMensual
 
-    Values(23) = "(" & val(m_Archivos.Item(Factura.Id)) & ")"
+    Values(23) = "(" & val(m_Archivos.item(Factura.Id)) & ")"
 
     Values(24) = Factura.Id
 
