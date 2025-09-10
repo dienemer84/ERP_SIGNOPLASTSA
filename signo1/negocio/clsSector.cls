@@ -13,16 +13,43 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Private vSector As String
 Private vId As Long
+Private vSectorizacion As Long
+Private vModulo As String
+
 Public Property Let Sector(nvalue As String)
     vSector = nvalue
 End Property
+
 Public Property Get Sector() As String
     Sector = vSector
 End Property
+
+
 Public Property Let Id(nvalue As Long)
     vId = nvalue
 End Property
+
 Public Property Get Id() As Long
     Id = vId
 End Property
+
+
+Public Property Let Sectorizacion(nvalue As Long)
+    vSectorizacion = nvalue
+End Property
+
+Public Property Get Sectorizacion() As Long
+    Sectorizacion = vSectorizacion
+End Property
+
+
+Public Property Let Modulo(nvalue As String)
+    vModulo = nvalue
+End Property
+
+Public Property Get Modulo() As String
+    Modulo = vModulo
+End Property
+
+
 

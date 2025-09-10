@@ -1,6 +1,8 @@
 Attribute VB_Name = "DAOSectores"
 Public Const CAMPO_ID As String = "id"
 Public Const CAMPO_NOMBRE As String = "sector"
+Public Const CAMPO_SECTORIZACION As String = "sectorizacion"
+Public Const CAMPO_MODULO As String = "modulo"
 Public Const TABLA_SECTOR As String = "sec"
 
 Dim rs As ADODB.Recordset
@@ -39,6 +41,23 @@ Public Function GetAll() As Collection
     Set A = Nothing
     Set GetAll = col
 End Function
+
+
+Public Function GetAllModulos() As Collection
+    Dim col As New Collection
+    Dim A As clsSector
+    Dim fieldsIndex As Dictionary
+    Set rs = conectar.RSFactory("select DISTINCT sec.sectorizacion, sec.modulo from sectores sec WHERE sec.sectorizacion IS NOT NULL order by sec.sectorizacion asc")
+    conectar.BuildFieldsIndex rs, fieldsIndex
+    While Not rs.EOF
+        col.Add MapModulos(rs, fieldsIndex, TABLA_SECTOR), CStr(rs.Fields(fieldsIndex("sec.sectorizacion")).value)
+        rs.MoveNext
+    Wend
+    Set A = Nothing
+    Set GetAllModulos = col
+End Function
+
+
 Public Function GetByIdEmpleado(Id As Long) As Collection
     Dim col As New Collection
     Dim A As clsSector
@@ -91,6 +110,23 @@ Public Sub LlenarComboXtreme(cbo As Xtremesuitecontrols.ComboBox, Optional secto
 End Sub
 
 
+Public Sub LlenarComboXtremeModulos(cbo As Xtremesuitecontrols.ComboBox, Optional sectores As Collection = Nothing)
+    Dim col As Collection
+    Dim sec As clsSector
+    cbo.Clear
+    If sectores Is Nothing Then
+        Set col = DAOSectores.GetAllModulos
+    Else
+        Set col = sectores
+    End If
+
+    For i = 1 To col.count
+        Set sec = col(i)
+        cbo.AddItem sec.Modulo
+        cbo.ItemData(cbo.NewIndex) = sec.Sectorizacion
+    Next i
+End Sub
+
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef table As String) As clsSector
     Dim s As clsSector
     Id = GetValue(rs, fieldsIndex, table, CAMPO_ID)
@@ -99,11 +135,22 @@ Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRe
         s.Id = Id
         s.Sector = GetValue(rs, fieldsIndex, table, CAMPO_NOMBRE)
         Set Map = s
-
     End If
-
 End Function
 
+
+Public Function MapModulos(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef table As String) As clsSector
+    Dim s As clsSector
+    Id = GetValue(rs, fieldsIndex, table, CAMPO_SECTORIZACION)
+    If Id > 0 Then
+        Set s = New clsSector
+        
+        s.Sectorizacion = Id
+        s.Modulo = GetValue(rs, fieldsIndex, table, CAMPO_MODULO)
+        
+        Set MapModulos = s
+    End If
+End Function
 
 
 
