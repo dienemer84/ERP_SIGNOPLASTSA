@@ -57,15 +57,20 @@ Public Function FindAllConjuntoProduccion( _
 
     Dim detaOrdenesTrabajo As New Collection
 
-q = "SELECT dpc.*, s.*, dp.*, dpca.* " & _
-        "FROM detalles_pedidos_conjuntos dpc " & _
-        "LEFT JOIN stock s ON s.id = dpc.idPieza " & _
-        "LEFT JOIN detalles_pedidos dp ON dp.id = dpc.idDetalle_pedido " & _
-        "LEFT JOIN detalles_pedidos_conjuntos_avance dpca " & _
-        "  ON dpca.id_detalle_pedido = dpc.id " & _
-        IIf(idSector > 0, " AND dpca.id_sector = " & idSector, "") & _
-        " WHERE 1=1"
-
+    q = ""
+    q = q & "SELECT dpc.*, s.*, dp.*, dpca.* " & _
+            "FROM detalles_pedidos_conjuntos dpc " & _
+            "LEFT JOIN stock s ON s.id = dpc.idPieza " & _
+            "LEFT JOIN detalles_pedidos dp ON dp.id = dpc.idDetalle_pedido " & _
+            "LEFT JOIN ( " & _
+            "   SELECT id_detalle_pedido, id_sector, MAX(id) AS max_id " & _
+            "   FROM detalles_pedidos_conjuntos_avance " & _
+            IIf(idSector > 0, "   WHERE id_sector = " & idSector & " ", "") & _
+            "   GROUP BY id_detalle_pedido, id_sector " & _
+            ") last ON last.id_detalle_pedido = dpc.id " & _
+            "LEFT JOIN detalles_pedidos_conjuntos_avance dpca ON dpca.id = last.max_id " & _
+            "WHERE 1=1 "
+    
     If idDetallePedido > 0 Then q = q & " AND dpc.idDetalle_Pedido = " & idDetallePedido
     If idDetalleConjunto > 0 Then q = q & " AND dpc.id = " & idDetalleConjunto
     If idPiezaPadre > 0 Then q = q & " AND dpc.idPiezaPadre = " & idPiezaPadre
@@ -110,7 +115,7 @@ Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
         tmpDeta.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
         tmpDeta.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "procesos_definidos")
         tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
-        tmpDeta.IdPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
+        tmpDeta.idPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
         tmpDeta.IdentificadorPosicion = GetValue(rs, fieldsIndex, tableNameOrAlias, "identificador_posicion")
         tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
         
@@ -129,5 +134,59 @@ Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
 
     Set MapConjuntoProduccion = tmpDeta
 
+End Function
+
+
+Public Function FindAvanceSimple(ByVal idPedido As Long, _
+                                 ByVal idPieza As Long, _
+                                 ByVal idSector As Long, _
+                                 Optional ByVal FallbackCualquierSector As Boolean = False) As AvanceSimpleDTO
+    Dim q As String, rs As ADODB.Recordset
+    Dim a As AvanceSimpleDTO
+
+    ' 1) intenta por sector
+    q = "SELECT * FROM detalles_pedidos_conjuntos_avance dpca " & _
+        "WHERE dpca.id_detalle_pedido=" & idPedido & _
+        " AND id_sector=" & idSector & " ORDER BY id DESC LIMIT 1"
+    Set rs = conectar.RSFactory(q)
+
+    ' 2) si no hay y querés fallback, busca sin sector
+    If (rs Is Nothing Or rs.EOF) And FallbackCualquierSector Then
+        q = "SELECT * FROM detalles_pedidos_conjuntos_avance dpca " & _
+            "WHERE dpca.id_detalle_pedido=" & idPedido & _
+            " ORDER BY id DESC LIMIT 1"
+        Set rs = conectar.RSFactory(q)
+    End If
+
+    If Not (rs Is Nothing) Then
+        If Not rs.EOF Then
+            a.CantRecibida = NzDbl(rs!cant_recibida)
+            a.CantFabricada = NzDbl(rs!cant_fabricada)
+            a.CantScrap = NzDbl(rs!cant_scrap)
+            a.FechaInicio = IIf(IsNull(rs!fecha_inicio), Null, rs!fecha_inicio)
+            a.FechaFin = IIf(IsNull(rs!fecha_fin), Null, rs!fecha_fin)
+            a.Recibio = NzLng(rs!Recibio)
+            a.SiguienteProceso = NzStr(rs!siguiente_proceso)
+        End If
+    End If
+
+    FindAvanceSimple = a
+End Function
+
+' Helpers
+Private Function NzLng(v As Variant) As Long
+    If IsNull(v) Or v = "" Then NzLng = 0 Else NzLng = CLng(v)
+End Function
+
+Private Function NzDbl(v As Variant) As Double
+    If IsNull(v) Or v = "" Then NzDbl = 0 Else NzDbl = CDbl(v)
+End Function
+
+Private Function NzStr(v As Variant) As String
+    If IsNull(v) Then NzStr = "" Else NzStr = CStr(v)
+End Function
+
+Private Function NzDate(v As Variant) As Variant
+    If IsDate(v) Then NzDate = CDate(v) Else NzDate = Null
 End Function
 

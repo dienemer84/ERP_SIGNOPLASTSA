@@ -248,11 +248,8 @@ Public Enum Cols
 End Enum
 
 
-Private Sub btnCargarSector_Click()
-
-    llenarDataGrid
-            
-End Sub
+Private Sub btnCargarSector_Click(): llenarDataGrid: End Sub
+Private Sub cboSectores_Click():      llenarDataGrid: End Sub
 
 Private Sub cmdBuscar_Click()
 
@@ -266,7 +263,7 @@ Private Sub cmdBuscar_Click()
     
     CargarDetallesOT
     
-    llenarDataGrid           ' << agrega esto
+    llenarDataGrid              ' <<< volver a cargar
     
 End Sub
 
@@ -293,7 +290,7 @@ Private Sub Form_Load()
     
     Set detallesPlanos = New Collection
     
-    cmdBuscar_Click
+'''    cmdBuscar_Click
     
 End Sub
 
@@ -374,16 +371,22 @@ Private Sub EnsureConjuntoStyle()
 End Sub
 
 Private Sub llenarDataGrid()
-    If m_ot Is Nothing Or m_ot.detalles Is Nothing Then
+    If m_ot Is Nothing Then
+        gridDetalles1.ItemCount = 0
+        Exit Sub
+    End If
+    If m_ot.detalles Is Nothing Or m_ot.detalles.count = 0 Then
         gridDetalles1.ItemCount = 0
         Exit Sub
     End If
 
-'''    Set detallesPlanos = New Collection
+    Set detallesPlanos = New Collection
     ConstruirPlano
-
     gridDetalles1.ItemCount = detallesPlanos.count
-    On Error Resume Next: gridDetalles1.ReBind: On Error GoTo 0
+    On Error Resume Next
+    gridDetalles1.ReBind
+    gridDetalles1.Refresh
+    On Error GoTo 0
     
 End Sub
 
@@ -405,24 +408,44 @@ End Sub
 
 
 Private Sub AgregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As Integer)
-    Dim r As clsFilaPlanoRow
-    Set r = New clsFilaPlanoRow
+    
+    Dim r As clsFilaPlanoRow: Set r = New clsFilaPlanoRow
     
     r.item = CStr(d.item)
-    
-    ' id del detalle pedido
     r.IdTabla = d.Id
-    
+    r.CantPedida = d.CantidadPedida
+    r.Nivel = Nivel
+
     If Not d.Pieza Is Nothing Then
         r.IdPiezaPedido = d.Pieza.Id
         r.nombre = d.Pieza.nombre
         r.UnidadMedida = d.Pieza.UnidadMedida
         r.EsConjunto = d.Pieza.EsConjunto
+    Else
+        On Error Resume Next
+        r.IdPiezaPedido = NzLng(d.Id) ' si no existe la prop, quedará 0
+        On Error GoTo 0
+        r.nombre = IIf(LenB(NzStr(d.NombrePiezaHistorico)) > 0, d.NombrePiezaHistorico, "Pieza sin catálogo")
+        r.UnidadMedida = "-"
+        r.EsConjunto = False
     End If
-    
-    r.CantPedida = d.CantidadPedida
-    r.Nivel = Nivel
-    
+
+    ' <<< NUEVO: si NO es conjunto, traer último avance simple
+    If Not r.EsConjunto And r.IdPiezaPedido > 0 Then
+        Dim sid As Long: sid = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
+        
+    Dim av As AvanceSimpleDTO
+    av = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, sid, False) ' True para fallback
+
+        r.CantRecibida = av.CantRecibida
+        r.CantFabricada = av.CantFabricada
+        r.CantScrap = av.CantScrap
+        r.FechaInicio = av.FechaInicio
+        r.FechaFin = av.FechaFin
+        r.UsuarioRecibio = av.Recibio
+        r.ProcesoSiguiente = av.SiguienteProceso
+    End If
+
     detallesPlanos.Add r
         
 End Sub
@@ -473,8 +496,9 @@ Private Sub AgregarHijos(ByVal idDetallePedido As Long, _
     Dim hijos As Collection
     Dim dto As DetalleOTConjuntoDTO
     
-    Dim sectorId As Long: sectorId = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
-    Set hijos = DAOProduccion.FindAllConjuntoProduccion(idDetallePedido, idPiezaPadre, vbNullString, False, 0, sectorId)
+    Dim SectorID As Long: SectorID = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
+    
+    Set hijos = DAOProduccion.FindAllConjuntoProduccion(idDetallePedido, idPiezaPadre, vbNullString, False, 0, SectorID)
     
     If hijos Is Nothing Then Exit Sub
 
@@ -509,21 +533,20 @@ Private Sub gridDetalles1_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 
 Private Sub gridDetalles1_UnboundReadData(ByVal RowIndex As Long, _
-                                         ByVal Bookmark As Variant, _
-                                         ByVal Values As GridEX20.JSRowData)
+    ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     If detallesPlanos Is Nothing Then Exit Sub
-    If RowIndex < 0 Or RowIndex >= detallesPlanos.count Then Exit Sub
+    Dim i As Long: i = ToCollIndex(RowIndex, detallesPlanos.count)
+    If i < 1 Then Exit Sub
 
     Dim r As clsFilaPlanoRow
-    Set r = detallesPlanos.item(RowIndex)   '<<< sin +1
-    If r Is Nothing Then Exit Sub
+    Set r = detallesPlanos.item(i)
 
     Values(cID) = r.IdTabla
     Values(cItem) = r.item
     Values(cTipo) = IIf(r.EsConjunto, "Conjunto", "Pieza")
-    Values(cUM) = r.UnidadMedida
-    Values(cNombre) = String$(r.Nivel * 3, " ") & r.nombre
+    Values(cUM) = NzStr(r.UnidadMedida)
+    Values(cNombre) = NzStr(String$(r.Nivel * 3, " ") & NzStr(r.nombre))
     Values(cCantPedida) = r.CantPedida
     Values(cEsConjunto) = IIf(r.EsConjunto, 1, 0)
 
@@ -542,23 +565,25 @@ Private Sub gridDetalles1_UnboundReadData(ByVal RowIndex As Long, _
         Values(cFechaInicio) = IIf(r.FechaInicio = 0, Null, r.FechaInicio)
         Values(cFechaFin) = IIf(r.FechaFin = 0, Null, r.FechaFin)
         Values(cUsuarioRecibio) = r.UsuarioRecibio
-        Values(cProcesoSig) = r.ProcesoSiguiente
+        Values(cProcesoSig) = NzStr(r.ProcesoSiguiente)
     End If
 End Sub
 
+
 Private Sub gridDetalles1_UnboundUpdate(ByVal RowIndex As Long, _
-                                       ByVal Bookmark As Variant, _
-                                       ByVal Values As GridEX20.JSRowData)
-                                       
+    ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+
     If detallesPlanos Is Nothing Then Exit Sub
-    If RowIndex < 0 Or RowIndex >= detallesPlanos.count Then Exit Sub
+    Dim i As Long: i = ToCollIndex(RowIndex, detallesPlanos.count)
+    If i < 1 Then Exit Sub
 
     Dim r As clsFilaPlanoRow
-    Set r = detallesPlanos.item(RowIndex)   '<<< sin +1
-    If r Is Nothing Then Exit Sub
+    Set r = detallesPlanos.item(i)
+
+    If r.EsConjunto Then Exit Sub  ' opcional: no guardar conjuntos
 
     With r
-        .IdPedido = m_ot.Id
+        .idPedido = m_ot.Id
         .idSector = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
         .IdTabla = Values(cID)
         .CantRecibida = NzDbl(Values(cCantRecibida))
@@ -575,8 +600,8 @@ Private Sub gridDetalles1_UnboundUpdate(ByVal RowIndex As Long, _
     Else
         frmAviso.mostrar "Guardando..."
     End If
-    
 End Sub
+
 
 
 ' Helpers
@@ -594,6 +619,18 @@ End Function
 
 Private Function NzDate(v As Variant) As Variant
     If IsDate(v) Then NzDate = CDate(v) Else NzDate = Null
+End Function
+
+Private Function ToCollIndex(ByVal rowIdx As Long, ByVal n As Long) As Long
+    ' Convierte 0/1-based de Janus a 1-based de Collection
+    If n <= 0 Then ToCollIndex = 0: Exit Function
+    If rowIdx <= 0 Then
+        ToCollIndex = 1
+    ElseIf rowIdx > n Then
+        ToCollIndex = n
+    Else
+        ToCollIndex = rowIdx
+    End If
 End Function
 
 
