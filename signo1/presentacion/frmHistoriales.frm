@@ -68,8 +68,8 @@ Attribute VB_Exposed = False
 Dim tmp As clsHistorial
 Dim vLista As Collection
 
-Public Property Let lista(nvalue As Collection)
-    Set vLista = nvalue
+Public Property Let lista(nValue As Collection)
+    Set vLista = nValue
 End Property
 
 Private Sub Command1_Click()
@@ -79,6 +79,7 @@ End Sub
 Private Sub llenarGrilla()
     Me.GridEX1.ItemCount = vLista.count
 End Sub
+
 Private Sub Form_Load()
     FormHelper.Customize Me
     llenarGrilla
@@ -95,6 +96,6 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     On Error Resume Next
     Set tmp = vLista.item(RowIndex)
     Values(1) = tmp.FEcha
-    Values(2) = tmp.usuario.usuario
+    Values(2) = tmp.Usuario.Usuario
     Values(3) = tmp.mensaje
 End Sub

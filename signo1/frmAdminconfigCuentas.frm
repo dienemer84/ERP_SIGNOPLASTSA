@@ -4,23 +4,23 @@ Begin VB.Form frmAdminconfigCuentas
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Cuentas Bancarias"
-   ClientHeight    =   4290
+   ClientHeight    =   4155
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   11235
+   ClientWidth     =   11340
    Icon            =   "frmAdminconfigCuentas.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   4290
-   ScaleWidth      =   11235
+   ScaleHeight     =   4155
+   ScaleWidth      =   11340
    ShowInTaskbar   =   0   'False
    Begin GridEX20.GridEX grid 
       Height          =   3915
-      Left            =   15
+      Left            =   0
       TabIndex        =   0
-      Top             =   15
+      Top             =   120
       Width           =   11190
       _ExtentX        =   19738
       _ExtentY        =   6906
@@ -152,12 +152,15 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Private cuentas As New Collection
 Private cuenta As CuentaBancaria
-Private bancos As New Collection
+Private cuentas As New Collection
+
 Private Banco As Banco
-Private Monedas As New Collection
+Private bancos As New Collection
+
 Private moneda As clsMoneda
+Private Monedas As New Collection
+
 
 Private Sub Form_Load()
     FormHelper.Customize Me
@@ -182,10 +185,10 @@ Private Sub CargarCuentas()
     Me.grid.ItemCount = cuentas.count
 End Sub
 
+
 Private Sub grid_BeforeDelete(ByVal Cancel As GridEX20.JSRetBoolean)
 'Cancel = (MsgBox("¿Desea eliminar la cuenta?", vbYesNo + vbQuestion) = vbNo)
 End Sub
-
 
 
 Private Sub grid_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
@@ -217,6 +220,7 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
     End With
 End Sub
 
+
 Private Sub grid_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > cuentas.count Then Exit Sub
     Set cuenta = cuentas.item(RowIndex)
@@ -230,6 +234,7 @@ Private Sub grid_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant
     If Not DAOCuentaBancaria.Save(cuenta) Then MsgBox "Hubo un error al guardar los valores"
 End Sub
 
+
 Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > bancos.count Then Exit Sub
     Set Banco = bancos.item(RowIndex)
@@ -239,7 +244,6 @@ Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As
 
     End With
 End Sub
-
 
 
 Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)

@@ -3,15 +3,54 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoSeguimientoAvanzado 
    Caption         =   "Seguimiento de Producción"
-   ClientHeight    =   13845
+   ClientHeight    =   13725
    ClientLeft      =   60
-   ClientTop       =   450
+   ClientTop       =   750
    ClientWidth     =   16245
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   13845
+   ScaleHeight     =   13725
    ScaleWidth      =   16245
    WindowState     =   2  'Maximized
+   Begin GridEX20.GridEX gridSectores 
+      Height          =   3495
+      Left            =   3720
+      TabIndex        =   15
+      Top             =   9240
+      Visible         =   0   'False
+      Width           =   2895
+      _ExtentX        =   5106
+      _ExtentY        =   6165
+      Version         =   "2.0"
+      BoundColumnIndex=   "id"
+      ReplaceColumnIndex=   "sector"
+      ActAsDropDown   =   -1  'True
+      ColumnAutoResize=   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      ColumnHeaders   =   0   'False
+      RowHeaders      =   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   2
+      Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0000
+      Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0124
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0218
+      FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0350
+      FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0400
+      FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":04B4
+      FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":058C
+      FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0644
+      ImageCount      =   0
+      PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":0724
+   End
    Begin GridEX20.GridEX gridUsuarios 
       Height          =   3495
       Left            =   240
@@ -22,6 +61,7 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
       _ExtentX        =   5318
       _ExtentY        =   6165
       Version         =   "2.0"
+      BoundColumnIndex=   "id"
       ReplaceColumnIndex=   "usuario"
       ActAsDropDown   =   -1  'True
       ColumnAutoResize=   -1  'True
@@ -39,17 +79,17 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0000
-      Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0100
+      Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":08FC
+      Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":09FC
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":01F4
-      FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":032C
-      FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":03DC
-      FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0490
-      FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0568
-      FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0620
+      FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0AF0
+      FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0C28
+      FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0CD8
+      FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0D8C
+      FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0E64
+      FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0F1C
       ImageCount      =   0
-      PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":0700
+      PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":0FFC
    End
    Begin XtremeSuiteControls.GroupBox GroupBox2 
       Height          =   6975
@@ -90,29 +130,29 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   14
-         Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":08D8
-         Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0A4C
-         Column(3)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0BAC
-         Column(4)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0D0C
-         Column(5)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0E78
-         Column(6)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0FB8
-         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1120
-         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":12C4
-         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1420
-         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":156C
-         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":16E0
-         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":1844
-         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":19E4
-         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":1B54
+         Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":11D4
+         Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1348
+         Column(3)       =   "frmPlaneamientoSeguimientoAvanzado.frx":14A8
+         Column(4)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1608
+         Column(5)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1790
+         Column(6)       =   "frmPlaneamientoSeguimientoAvanzado.frx":18D0
+         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1A58
+         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1BB4
+         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1D10
+         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":1E5C
+         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":1FD0
+         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2134
+         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":22AC
+         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":243C
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1C78
-         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1DB0
-         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1E60
-         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1F14
-         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1FEC
-         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":20A4
+         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":2560
+         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":2698
+         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":2748
+         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":27FC
+         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":28D4
+         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":298C
          ImageCount      =   0
-         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":2184
+         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":2A6C
       End
       Begin XtremeSuiteControls.Label lblSectorGrande 
          Height          =   495
@@ -262,6 +302,18 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          Width           =   1290
       End
    End
+   Begin VB.Menu menu 
+      Caption         =   "menuSeguimiento"
+      Begin VB.Menu menu_historial 
+         Caption         =   "Ver Historial"
+      End
+      Begin VB.Menu menu_desarrollo 
+         Caption         =   "Ver Desarollo"
+      End
+      Begin VB.Menu menu_archivos_asociados 
+         Caption         =   "Ver Archivos Asociados"
+      End
+   End
 End
 Attribute VB_Name = "frmPlaneamientoSeguimientoAvanzado"
 Attribute VB_GlobalNameSpace = False
@@ -272,13 +324,13 @@ Option Explicit
 Dim idPieza As Long
 Private tmpDetalle As DetalleOrdenTrabajo
 Private m_ot As OrdenTrabajo
-
-Private usuario As clsUsuario
+Private Usuario As clsUsuario
 Private usuarios As New Collection
-
+Private Sector As clsSector
+Private sectores As New Collection
 Dim col As Collection
 Private detallesPlanos As Collection
-
+Dim dto As clsFilaPlanoRow
 Private m_rows As New Collection    'colección de clsFilaPlanoRow
 
 Public Enum Cols
@@ -340,42 +392,28 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.gridDetalles, , True
+    GridEXHelper.CustomizeGrid Me.gridSectores, False, False
+    GridEXHelper.CustomizeGrid Me.gridUsuarios, False, False
 
     EnsureConjuntoStyle          '<< agrega el estilo
     
     Me.txtOTNro = "6002"
     
-    llenarCboSectores
-    
-    llenarGridUsuarios
-    
-'''    llenarGridSectores
-    
-    Set detallesPlanos = New Collection
-    
-        
-'''    cmdBuscar_Click
-    
-End Sub
-
-Private Sub llenarCboSectores()
-
-   DAOSectores.LlenarComboXtremeModulos Me.cboSectores
-   Me.cboSectores.ListIndex = 0
-
-
-End Sub
-
-Private Sub llenarGridUsuarios()
+    Set sectores = DAOSectores.GetAllModulos()
+    Me.gridSectores.ItemCount = sectores.count
+    Set Me.gridDetalles.Columns("procesosiguiente").DropDownControl = Me.gridSectores
 
     Set usuarios = DAOUsuarios.GetAll()
     Me.gridUsuarios.ItemCount = usuarios.count
-    
-'''    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
-    
     Set Me.gridDetalles.Columns("recibio").DropDownControl = Me.gridUsuarios
 
+   DAOSectores.LlenarComboXtremeModulos Me.cboSectores
+   Me.cboSectores.ListIndex = 0
+    
+    Set detallesPlanos = New Collection
+    
 End Sub
+
 
 Private Sub Form_Resize()
    On Error Resume Next
@@ -402,7 +440,6 @@ Private Sub Form_Resize()
         .Height = Me.Height - 2500
     End With
     
-
     ' Grid ajustado al resto de la ventana
     With gridDetalles
         .Top = gridDetalles.Top
@@ -429,11 +466,7 @@ Private Sub Form_Resize()
         With Me.lblSectorGrande
         .Left = 100
         .Top = gridDetalles.Top + Me.gridDetalles.Height
-
-        
     End With
-    
-
 End Sub
 
 
@@ -602,6 +635,28 @@ Private Sub AgregarHijos(ByVal idDetallePedido As Long, _
 End Sub
 
 
+Private Sub gridDetalles_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+
+    If detallesPlanos.count > 0 Then
+    
+        SeleccionarDetalle
+        
+        If Button = 2 Then
+   
+            Me.PopupMenu Me.menu
+
+        End If
+    End If
+End Sub
+
+
+Private Sub SeleccionarDetalle()
+    On Error Resume Next
+    Set dto = detallesPlanos.item(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
+
+End Sub
+
+
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
     
@@ -680,16 +735,21 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
         .CantScrap = NzDbl(Values(cCantScrap))
         .FechaInicio = NzDate(Values(cFechaInicio))
         .FechaFin = NzDate(Values(cFechaFin))
-'''        .UsuarioRecibio = NzLng(Values(cUsuarioRecibio))
-        .UsuarioRecibio = .UsuarioRecibio = DAOUsuarios.GetById(Values(cUsuarioRecibio))
+        .UsuarioRecibio = NzLng(Values(cUsuarioRecibio))   ' <-- FIX
         .ProcesoSiguiente = NzStr(Values(cProcesoSig))
+
     End With
+    
+    Dim prev As AvanceSimpleDTO
+    prev = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, r.idSector, True) ' True=fallback
 
     If Not DAOProduccion.Save(r) Then
         MsgBox "Hubo un error al guardar"
     Else
         frmAviso.mostrar "Guardando..."
+        Call DAOProduccionHistorial.Agregar(r, "UPDATE", "DATO DE PRODUCCIÓN CARGADO", prev)
     End If
+    
 End Sub
 
 
@@ -724,10 +784,41 @@ Private Function ToCollIndex(ByVal rowIdx As Long, ByVal n As Long) As Long
 End Function
 
 
+Private Sub gridSectores_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= sectores.count Then
+        Set Sector = sectores.item(RowIndex)
+        Values(1) = Sector.Sectorizacion
+        Values(2) = Sector.Modulo
+    End If
+End Sub
+
+
 Private Sub gridUsuarios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= usuarios.count Then
-        Set usuario = usuarios.item(RowIndex)
-        Values(1) = usuario.Id
-        Values(2) = usuario.usuario
+        Set Usuario = usuarios.item(RowIndex)
+        Values(1) = Usuario.Id
+        Values(2) = Usuario.Usuario
     End If
+End Sub
+
+
+Private Sub menu_historial_Click()
+    If dto Is Nothing Then Exit Sub
+
+    Dim SectorID As Long
+    SectorID = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
+
+    Dim hist As Collection
+    ' Ajustá la firma según tu DAO: conviene filtrar por pedido, detalle, pieza y sector
+    Set hist = DAOProduccionHistorial.GetAllByPieza(dto.IdTabla)
+
+    If hist Is Nothing Or hist.count = 0 Then
+        MsgBox "Sin historial para este ítem.", vbInformation
+        Exit Sub
+    End If
+
+    ' Si la propiedad es objeto, usá Set
+    Set frmHistorialesProduccion.lista = hist
+    frmHistorialesProduccion.Show
+    
 End Sub

@@ -36,3 +36,5 @@ Public UnidadMedida As String
 Public EsConjunto As Boolean
 
 Public idSector As Long
+
+Public historial As New Collection

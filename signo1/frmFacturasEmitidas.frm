@@ -1933,10 +1933,13 @@ Private Sub gridComprobantesEmitidos_FetchIcon(ByVal RowIndex As Long, ByVal Col
     If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If facturas.count > 0 Then
+    
         SeleccionarFactura
+        
         If Button = 2 Then
+        
             Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
 
             If Factura.Tipo.PuntoVenta.CaeManual Then
@@ -1944,20 +1947,6 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
             Else
                 Me.mnuEnviarAfip.caption = "Informar a AFIP"
             End If
-
-'''            'Aplicar a Factura o ND...
-'''            If Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Then
-'''                Me.aplicarNCaFC.caption = "Aplicar NC a Factura o ND..."
-'''                Me.aplicarNCaFC.Enabled = True
-'''                Me.aplicarNCaFC.Enabled = False
-'''            End If
-'''
-'''            If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
-'''                Me.aplicarNDaFC.caption = "Aplicar ND a Factura o NC..."
-'''                Me.aplicarNCaFC.Enabled = False
-'''                Me.aplicarNCaFC.Enabled = True
-'''            End If
-
 
             ' Si el estado del comprobante es EN PROCESO
             If Factura.estado = EstadoFacturaCliente.EnProceso Then   'no se aprob? localmente
@@ -2045,12 +2034,6 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
                     Me.aplicarNCaFC.Visible = False
                     Me.aplicarNDaFC.Visible = False
                 End If
-                
-'                Me.aplicarNCaFC.Visible = True
-'                Me.aplicarNCaFC.Enabled = True
-'
-'                Me.aplicarNDaFC.Visible = True
-'                Me.aplicarNDaFC.Enabled = True
 
                 If Factura.Tipo.PuntoVenta.EsElectronico Then
                     Me.AnularFactura.Visible = False    'si es electronico no se puede anular comprobante
@@ -2077,9 +2060,6 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
                     Me.AnularFactura.Visible = True
                     Me.AnularFactura.Enabled = True
                     Me.mnuDesaprobarFactura.Visible = False
-
-'                    Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.NotaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-
                 End If
 
                 Me.ImprimirFactura.Enabled = True
@@ -2289,7 +2269,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByV
     Values(16) = Factura.StringDiasAtraso
 
 
-    Values(17) = Factura.usuarioCreador.usuario
+    Values(17) = Factura.usuarioCreador.Usuario
 
 
     'Values(18) = Factura.observaciones
@@ -2314,7 +2294,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByV
     End If
 
     If IsSomething(Factura.UsuarioAprobacion) Then
-        Values(19) = Factura.UsuarioAprobacion.usuario
+        Values(19) = Factura.UsuarioAprobacion.Usuario
     Else
         Values(19) = vbNullString
     End If
@@ -2386,22 +2366,22 @@ Private Sub ImprimirFactura_Click()
         veces = clasea.facturaImpresa(Factura.Id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("'¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-                CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 3
-                CD.ShowPrinter
+                cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 3
+                cd.ShowPrinter
                 Dim i As Long
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fue impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                CD.Flags = cdlPDUseDevModeCopies
-                CD.Copies = 3
-                CD.ShowPrinter
+                cd.Flags = cdlPDUseDevModeCopies
+                cd.Copies = 3
+                cd.ShowPrinter
 
-                For i = 1 To CD.Copies
+                For i = 1 To cd.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next i
             End If
@@ -2467,28 +2447,6 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 
 End Function
 
-'Private Sub mnuAplicarANC_Click()
-'  If MsgBox("?Seguro de aplicar a FC a NC?", vbYesNo, "Confirmaci?n") = vbYes Then
-'        'seleccionar factura para aplicar
-'        Set Selecciones.Factura = Nothing
-'          Dim F As New frmAdminFacturasNCElegirFC
-'
-'        F.idCliente = Factura.cliente.id
-'            F.TiposDocs.Add tipoDocumentoContable.notaCredito
-'            F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
-'            F.Show 1
-'
-'        If IsSomething(Selecciones.Factura) Then
-'            If DAOFactura.aplicarNCaFC(Factura.id, Selecciones.Factura.id) Then
-'                MsgBox "Aplicaci?n existosa!", vbInformation, "Informaci?n"
-'            Else
-'                MsgBox "Se produjo un error, se abortan los cambios!", vbCritical, "Error"
-'            End If
-'        End If
-'    End If
-'End Sub
-
-
 
 Private Sub mnuAprobarEnviar_Click()
     On Error GoTo err1
@@ -2498,8 +2456,6 @@ Private Sub mnuAprobarEnviar_Click()
     If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.aprobarV2(Factura, True, True, Factura.esExportacion) Then
-
-
 
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
                 msgadicional = "Esta factura deberá enviarse a la afip"
@@ -2804,7 +2760,7 @@ Private Sub verFactura_Click()
 End Sub
 
 Private Sub verHistorialFactura_Click()
-    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.Id)
-    frmHistoriales.lista = Factura.Historial
+    Set Factura.historial = DAOFacturaHistorial.getAllByIdFactura(Factura.Id)
+    frmHistoriales.lista = Factura.historial
     frmHistoriales.Show
 End Sub

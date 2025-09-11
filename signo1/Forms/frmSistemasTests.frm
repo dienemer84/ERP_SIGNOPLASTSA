@@ -12,14 +12,14 @@ Begin VB.Form frmSistemaTests
    ScaleHeight     =   6060
    ScaleWidth      =   14985
    Begin XtremeSuiteControls.PushButton btnSeguimientoAvanzado 
-      Height          =   735
+      Height          =   2655
       Left            =   240
       TabIndex        =   6
       Top             =   3120
       Width           =   4935
       _Version        =   786432
       _ExtentX        =   8705
-      _ExtentY        =   1296
+      _ExtentY        =   4683
       _StockProps     =   79
       Caption         =   "PushButton1"
       UseVisualStyle  =   -1  'True

@@ -116,7 +116,7 @@ If includeDetalles Then
         If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
             Set F = col.item(CStr(F.Id))
         Else
-            F.Detalles = New Collection
+            F.detalles = New Collection
             col.Add F, CStr(F.Id)
         End If
 
@@ -128,9 +128,9 @@ If includeDetalles Then
                     deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
                 End If
                 deta.CantidadRemitosAplicados = rs!cantidad_remitos_aplicados
-                If Not funciones.BuscarEnColeccion(F.Detalles, CStr(deta.Id)) Then
+                If Not funciones.BuscarEnColeccion(F.detalles, CStr(deta.Id)) Then
                     Set deta.Factura = F
-                    F.Detalles.Add deta, CStr(deta.Id)
+                    F.detalles.Add deta, CStr(deta.Id)
                 End If
 
                 If includeEntregasWithDetalles Then
@@ -556,7 +556,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
         Dim det As FacturaDetalle
         DAOFacturaDetalles.Delete "idFactura=" & F.Id
 
-        For Each det In F.Detalles
+        For Each det In F.detalles
             det.Id = 0
             det.idFactura = F.Id
             If Not DAOFacturaDetalles.Guardar(det) Then
@@ -607,7 +607,7 @@ End Function
 
 Public Function Anular(Factura As Factura) As Boolean
     On Error GoTo err5
-    Factura.Detalles = DAOFacturaDetalles.FindByFactura(Factura.Id)
+    Factura.detalles = DAOFacturaDetalles.FindByFactura(Factura.Id)
     Anular = True
 
     If Factura.Tipo.PuntoVenta.EsElectronico Then
@@ -655,7 +655,7 @@ Public Function Anular(Factura As Factura) As Boolean
     Factura.TotalEstatico.TotalNetoGravado = 0
     Factura.TotalEstatico.TotalPercepcionesIB = 0
 
-    For Each deta In Factura.Detalles
+    For Each deta In Factura.detalles
         'luego sacar
         If IsSomething(deta.detalleRemito) Then
             conectar.execute "update detalles_pedidos set cantidad_facturada=cantidad_facturada-" & deta.detalleRemito.Cantidad & "  where id=" & deta.detalleRemito.idDetallePedido
@@ -799,9 +799,9 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
         CambioAnterior = Factura.CambioAPatron
         estadoAnterior = Factura.estado
 
-        Factura.Detalles = DAOFacturaDetalles.FindByFactura(Factura.Id)    'DAOFactura.FindById(Factura.id, True)
+        Factura.detalles = DAOFacturaDetalles.FindByFactura(Factura.Id)    'DAOFactura.FindById(Factura.id, True)
         Dim d As FacturaDetalle
-        For Each d In Factura.Detalles
+        For Each d In Factura.detalles
             Set d.Factura = Factura
 
         Next
@@ -833,7 +833,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
         Dim deta As FacturaDetalle
         Dim q As String
         Set Factura = T
-        For Each deta In Factura.Detalles
+        For Each deta In Factura.detalles
 
 
             If IsSomething(deta.detalleRemito) Then    'si tiene detalleremito es porq se facturo un remito, sino se facturo one concept
@@ -862,12 +862,9 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
 
                 If Factura.EsAnticipo And Factura.DetallesMismaOT Then
                     Dim Ot As OrdenTrabajo
-                    Set Ot = DAOOrdenTrabajo.FindById(deta.detalleRemito.idpedido)
+                    Set Ot = DAOOrdenTrabajo.FindById(deta.detalleRemito.IdPedido)
                     If Ot.Anticipo = 100 Then DAODetalleOrdenTrabajo.SaveCantidad deta.detalleRemito.idDetallePedido, deta.detalleRemito.DetallePedido.CantidadPedida, CantidadFacturada_, deta.detalleRemito.Valor, Factura.Id, Factura.moneda.Id, Factura.CambioAPatron, Factura.TipoCambioAjuste
                 End If
-
-
-
 
                 If Not BuscarEnColeccion(col, CStr(deta.detalleRemito.Remito)) Then
                     col.Add deta.detalleRemito.Remito, CStr(deta.detalleRemito.Remito)
@@ -887,10 +884,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
            
             End If
         Next
-        
-
-        
-        
+                
         If Factura.OTsFacturadasAnticipo.count > 0 And Factura.origenFacturado = OrigenFacturadoAnticipoOT Then   'si la factura es de Anticipo
             If Not EnlazarFacturaAnticipoConOT(Factura) Then GoTo err5
         End If
@@ -1001,9 +995,9 @@ Public Function desaprobar(Factura As Factura) As Boolean
 
 
     conectar.BeginTransaction
-    Factura.Detalles = DAOFacturaDetalles.FindByFactura(Factura.Id)    'DAOFactura.FindById(Factura.id, True)
+    Factura.detalles = DAOFacturaDetalles.FindByFactura(Factura.Id)    'DAOFactura.FindById(Factura.id, True)
     Dim d As FacturaDetalle
-    For Each d In Factura.Detalles
+    For Each d In Factura.detalles
         Set d.Factura = Factura
     Next
 
@@ -1033,7 +1027,7 @@ Public Function desaprobar(Factura As Factura) As Boolean
     Dim col As New Collection
     Dim deta As FacturaDetalle
     Dim q As String
-    For Each deta In Factura.Detalles
+    For Each deta In Factura.detalles
 
 
         If IsSomething(deta.detalleRemito) Then    'si tiene detalleremito es porq se facturo un remito, sino se facturo one concept
@@ -1052,7 +1046,7 @@ Public Function desaprobar(Factura As Factura) As Boolean
 
             If Factura.EsAnticipo And Factura.DetallesMismaOT Then
                 Dim Ot As OrdenTrabajo
-                Set Ot = DAOOrdenTrabajo.FindById(deta.detalleRemito.idpedido)
+                Set Ot = DAOOrdenTrabajo.FindById(deta.detalleRemito.IdPedido)
                 If Ot.Anticipo = 100 Then DAODetalleOrdenTrabajo.SaveCantidad deta.detalleRemito.idDetallePedido, deta.detalleRemito.DetallePedido.CantidadPedida, CantidadFacturada_, deta.detalleRemito.Valor, Factura.Id, Factura.moneda.Id, Factura.CambioAPatron, Factura.TipoCambioAjuste
             End If
 
@@ -1108,7 +1102,7 @@ Public Function EnlazarFacturaAnticipoConOT(Factura As Factura, Optional implici
     Cambio = Factura.CambioAPatron
 
     For Each Ot In Factura.OTsFacturadasAnticipo
-        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
+        Set Ot.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
         Ot.AnticipoFacturado = True
         Ot.AnticipoFacturadoIdFactura = Factura.Id
         EnlazarFacturaAnticipoConOT = DAOOrdenTrabajo.Guardar(Ot, False)
@@ -1355,7 +1349,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.CurrentY = 7000
 
     'While Not rs.EOF
-    For Each objDeta In objFac.Detalles
+    For Each objDeta In objFac.detalles
 
         Printer.Print Tab(12);
         'ss = funciones.formatearDecimales(rs!Cantidad, 2)
@@ -1511,7 +1505,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     'imprimo el total en letras
     Printer.CurrentY = 12900
     Printer.Print Tab(3);
-    Dim C As New classNumericas
+    Dim c As New classNumericas
     Printer.FontBold = False
     Printer.Font.Size = 8
     Dim queMon As String
@@ -1546,7 +1540,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     End If
 
     Printer.Print "    SON: " & objFac.moneda.NombreLargo & " " & objFac.moneda.NombreCorto  ' & strnum;
-    Printer.Print vbTab & C.ValorEnLetras(objFac.total, objFac.moneda.NombreLargo);
+    Printer.Print vbTab & c.ValorEnLetras(objFac.total, objFac.moneda.NombreLargo);
 
 
     Printer.EndDoc
@@ -1663,9 +1657,9 @@ Public Function aplicarANC(idOrigen As Long, idNCDestino As Long)
     Dim fc As Factura
 
     Set nc = DAOFactura.FindById(idNCDestino)
-    nc.Detalles = DAOFacturaDetalles.FindByFactura(nc.Id)
+    nc.detalles = DAOFacturaDetalles.FindByFactura(nc.Id)
     Set fc = DAOFactura.FindById(idOrigen)
-    fc.Detalles = DAOFacturaDetalles.FindByFactura(fc.Id)
+    fc.detalles = DAOFacturaDetalles.FindByFactura(fc.Id)
 
 
     '    '23-8  Si quiero aplicar una FC a una NC, ambas deben estar aprobadas localmente y no informadas a la afip?
@@ -1762,9 +1756,9 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
     Dim fc As Factura
 
     Set nc = DAOFactura.FindById(idNC)
-    nc.Detalles = DAOFacturaDetalles.FindByFactura(nc.Id)
+    nc.detalles = DAOFacturaDetalles.FindByFactura(nc.Id)
     Set fc = DAOFactura.FindById(idFactura)
-    fc.Detalles = DAOFacturaDetalles.FindByFactura(fc.Id)
+    fc.detalles = DAOFacturaDetalles.FindByFactura(fc.Id)
 
 
     ' 23-8 si quiero asociar una FC a una NC, laNC no debe estar informada y deberá controlar que este aprobada
@@ -1820,7 +1814,7 @@ Public Function aplicarNCaFC(idFactura As Long, idNC As Long) As Boolean
 
         Dim deta As FacturaDetalle
 
-        For Each deta In fc.Detalles
+        For Each deta In fc.detalles
             If IsSomething(deta.detalleRemito) Then
                 Set deta.detalleRemito.DetallePedido = DAODetalleOrdenTrabajo.FindById(deta.detalleRemito.idDetallePedido)
                 If IsSomething(deta.detalleRemito.DetallePedido) Then
@@ -1906,10 +1900,10 @@ Public Function aplicarNotaDebitoaFC(idFactura As Long, idND As Long) As Boolean
     Dim fc As Factura
 
     Set nd = DAOFactura.FindById(idND)
-    nd.Detalles = DAOFacturaDetalles.FindByFactura(nd.Id)
+    nd.detalles = DAOFacturaDetalles.FindByFactura(nd.Id)
     
     Set fc = DAOFactura.FindById(idFactura)
-    fc.Detalles = DAOFacturaDetalles.FindByFactura(fc.Id)
+    fc.detalles = DAOFacturaDetalles.FindByFactura(fc.Id)
 
 'CAMBIAR EL ESTADO DE LA NOTA DE DEBITO A APLICADA A CBTE
         nd.estado = AplicadaACbte
@@ -1989,10 +1983,10 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
 
     Dim detaNew As FacturaDetalle
 
-    F.Detalles = DAOFacturaDetalles.FindByFactura(F.Id)
-    nuevaF.Detalles = New Collection
+    F.detalles = DAOFacturaDetalles.FindByFactura(F.Id)
+    nuevaF.detalles = New Collection
 
-    For Each deta In F.Detalles
+    For Each deta In F.detalles
 
         Set detaNew = New FacturaDetalle
         Set detaNew.detalleRemito = Nothing
@@ -2005,7 +1999,7 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
         detaNew.Observacion = deta.Observacion
         Set detaNew.Factura = nuevaF
 
-        nuevaF.Detalles.Add detaNew
+        nuevaF.detalles.Add detaNew
 
     Next deta
 
@@ -2050,7 +2044,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
     Dim F As Factura
     Set F = DAOFactura.FindById(idFactura, True, False)
     Dim seccion As Section
-    Dim C As Object
+    Dim c As Object
 
     rptFacturaElectronica.LeftMargin = 250
 
@@ -2062,98 +2056,98 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         Set seccion = rptFacturaElectronica.Sections("header")
 
 
-        Set C = seccion.Controls.item("lblTipoDocumento")
-        C.caption = F.Tipo.TipoFactura.Tipo
+        Set c = seccion.Controls.item("lblTipoDocumento")
+        c.caption = F.Tipo.TipoFactura.Tipo
 
-        Set C = seccion.Controls.item("lblFce")
-        C.Visible = F.esCredito
-        C.caption = F.DescripcionCreditoAdicional
+        Set c = seccion.Controls.item("lblFce")
+        c.Visible = F.esCredito
+        c.caption = F.DescripcionCreditoAdicional
 
-        Set C = seccion.Controls.item("lblCbuEmisorFce")
-        C.Visible = F.esCredito And F.TipoDocumento = tipoDocumentoContable.Factura
-        C.caption = "CBU del Emisor: " & F.CBU
+        Set c = seccion.Controls.item("lblCbuEmisorFce")
+        c.Visible = F.esCredito And F.TipoDocumento = tipoDocumentoContable.Factura
+        c.caption = "CBU del Emisor: " & F.CBU
 
-        Set C = seccion.Controls.item("lblCodigoDocumento")
-        C.caption = "Código Nº" & Format(F.GetCodigoDocumentoAfip, "00")
+        Set c = seccion.Controls.item("lblCodigoDocumento")
+        c.caption = "Código Nº" & Format(F.GetCodigoDocumentoAfip, "00")
 
-        Set C = seccion.Controls.item("LBLDescripcionCodigoDocumento")
-        C.caption = F.GetDescripciopnDocumentoAfip
+        Set c = seccion.Controls.item("LBLDescripcionCodigoDocumento")
+        c.caption = F.GetDescripciopnDocumentoAfip
 
-        Set C = seccion.Controls.item("lblFecha")
-        C.caption = "Fecha de Emisión: " & Format(F.FechaEmision, "dd/mm/yyyy")
+        Set c = seccion.Controls.item("lblFecha")
+        c.caption = "Fecha de Emisión: " & Format(F.FechaEmision, "dd/mm/yyyy")
         
         
-        Set C = seccion.Controls.item("lblNumeroDocumento")
+        Set c = seccion.Controls.item("lblNumeroDocumento")
         'fce_nemer_2905/2020
         If F.Cliente.CuitPais <> "" Then
-                C.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "00000")
+                c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "00000")
         Else
-                C.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000")
+                c.caption = "Punto de Venta: " & Format(F.Tipo.PuntoVenta.PuntoVenta, "0000")
         End If
         
         
-        Set C = seccion.Controls.item("lblNumeroDocumentoComp")
-        C.caption = "Compr. Nro: " & Format(F.numero, "00000000")
+        Set c = seccion.Controls.item("lblNumeroDocumentoComp")
+        c.caption = "Compr. Nro: " & Format(F.numero, "00000000")
 
         Set seccion = rptFacturaElectronica.Sections("detailsHead")
 
         'fce_nemer_10062020
 
 
-        Set C = seccion.Controls.item("lblFechaPagoFce")
-        C.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+        Set c = seccion.Controls.item("lblFechaPagoFce")
+        c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
 
-        Set C = seccion.Controls.item("lblFechaPagoFceDato")
+        Set c = seccion.Controls.item("lblFechaPagoFceDato")
         If F.fechaPago = "30/12/1899" Then
-            C.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
-            C.caption = "S/D"
+            c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+            c.caption = "S/D"
         Else
-            C.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
-            C.caption = Format(F.fechaPago, "dd/mm/yyyy")
+            c.Visible = F.TipoDocumento = tipoDocumentoContable.Factura
+            c.caption = Format(F.fechaPago, "dd/mm/yyyy")
         End If
 
         'fce_nemer_09062020
-        Set C = seccion.Controls.item("lblDias")
+        Set c = seccion.Controls.item("lblDias")
         If F.CantDiasPago = 1 Then
-            C.caption = "/ " & F.CantDiasPago & " día"
+            c.caption = "/ " & F.CantDiasPago & " día"
         Else
-            C.caption = "/ " & F.CantDiasPago & " días"
+            c.caption = "/ " & F.CantDiasPago & " días"
         End If
         
         
 '        If F.FechaVtoDesde = "12:00:00 a.m. " Then
         If Format(F.FechaVtoDesde, "dd/mm/yyyy") = "30/12/1899" Then
-            Set C = seccion.Controls.item("FechaPagoFceDesdeDato")
-                C.Visible = False
-                C.caption = ""
-            Set C = seccion.Controls.item("lblFechaPagoFceDesde")
-                C.Visible = False
+            Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
+                c.Visible = False
+                c.caption = ""
+            Set c = seccion.Controls.item("lblFechaPagoFceDesde")
+                c.Visible = False
         Else
-            Set C = seccion.Controls.item("FechaPagoFceDesdeDato")
-                C.Visible = F.esCredito
-                C.caption = Format(F.FechaVtoDesde, "dd/mm/yyyy")
-            Set C = seccion.Controls.item("lblFechaPagoFceDesde")
-                C.Visible = F.esCredito
+            Set c = seccion.Controls.item("FechaPagoFceDesdeDato")
+                c.Visible = F.esCredito
+                c.caption = Format(F.FechaVtoDesde, "dd/mm/yyyy")
+            Set c = seccion.Controls.item("lblFechaPagoFceDesde")
+                c.Visible = F.esCredito
         End If
 
 '        If F.FechaVtoHasta = "12:00:00 a.m. " Then
         If Format(F.FechaVtoHasta, "dd/mm/yyyy") = "30/12/1899" Then
-            Set C = seccion.Controls.item("FechaPagoFceHastaDato")
-                C.Visible = False
-                C.caption = ""
-            Set C = seccion.Controls.item("lblFechaPagoFceHasta")
-                C.Visible = False
+            Set c = seccion.Controls.item("FechaPagoFceHastaDato")
+                c.Visible = False
+                c.caption = ""
+            Set c = seccion.Controls.item("lblFechaPagoFceHasta")
+                c.Visible = False
         Else
-            Set C = seccion.Controls.item("FechaPagoFceHastaDato")
-                C.Visible = F.esCredito
-                C.caption = Format(F.FechaVtoHasta, "dd/mm/yyyy")
-            Set C = seccion.Controls.item("lblFechaPagoFceHasta")
-                C.Visible = F.esCredito
+            Set c = seccion.Controls.item("FechaPagoFceHastaDato")
+                c.Visible = F.esCredito
+                c.caption = Format(F.FechaVtoHasta, "dd/mm/yyyy")
+            Set c = seccion.Controls.item("lblFechaPagoFceHasta")
+                c.Visible = F.esCredito
         End If
 
 
-        Set C = seccion.Controls.item("lblConceptoTexto")
-        C.caption = F.MostrarConcepto
+        Set c = seccion.Controls.item("lblConceptoTexto")
+        c.caption = F.MostrarConcepto
 
 
 
@@ -2182,19 +2176,19 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         
         Set seccion = rptFacturaElectronica.Sections("footer")
 
-        Set C = seccion.Controls.item("lblBarcode")
-        C.caption = F.CodigoBarrasAfip
-        Set C = seccion.Controls.item("lblBarcodeCode")
-        C.caption = F.CodigoBarrasAfip
+        Set c = seccion.Controls.item("lblBarcode")
+        c.caption = F.CodigoBarrasAfip
+        Set c = seccion.Controls.item("lblBarcodeCode")
+        c.caption = F.CodigoBarrasAfip
 
-        Set C = seccion.Controls.item("lblTextoAdicional")
-        C.caption = F.TextoAdicional
+        Set c = seccion.Controls.item("lblTextoAdicional")
+        c.caption = F.TextoAdicional
 
-        Set C = seccion.Controls.item("lblCae")
-        C.caption = "CAE: " & F.CAE
-        Set C = seccion.Controls.item("lblCaeVencimiento")
+        Set c = seccion.Controls.item("lblCae")
+        c.caption = "CAE: " & F.CAE
+        Set c = seccion.Controls.item("lblCaeVencimiento")
 
-        C.caption = "VTO CAE: " & F.CAEVto
+        c.caption = "VTO CAE: " & F.CAEVto
 
         Dim tip As String
         tip = vbNullString
@@ -2276,7 +2270,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
 
         Dim deta As FacturaDetalle
         r_tmp.Open
-        For Each deta In F.Detalles
+        For Each deta In F.detalles
             r_tmp.AddNew
             r_tmp!Cantidad = deta.Cantidad
 
@@ -2307,7 +2301,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
             End If
             r_tmp!unitario = funciones.FormatearDecimales(deta.SubTotal)
             r_tmp!Descuento = deta.PorcentajeDescuento
-            r_tmp!importe = funciones.FormatearDecimales(deta.total)
+            r_tmp!Importe = funciones.FormatearDecimales(deta.total)
 
             r_tmp.Update
 
@@ -2736,7 +2730,7 @@ Private Function Mm2Twips(valueInMm As Double) As Double
     '1 pt = (INCHES * 72)
 End Function
 
-Public Function FindAllTotalizadores(Optional ByVal filter As String = "1 = 1", Optional includeDetalles As Boolean = False, Optional includeEntregasWithDetalles As Boolean = False, Optional FechaFIn As String = vbNullString) As Collection
+Public Function FindAllTotalizadores(Optional ByVal filter As String = "1 = 1", Optional includeDetalles As Boolean = False, Optional includeEntregasWithDetalles As Boolean = False, Optional FechaFin As String = vbNullString) As Collection
 
     On Error GoTo err1
     Dim q As String
@@ -2754,15 +2748,15 @@ If includeDetalles Then
     q = q & ", IFNULL((SELECT SUM(monto_pagado)" _
         & " FROM AdminRecibosDetalleFacturas ardf " _
         & " JOIN AdminRecibos rec ON rec.id = ardf.idRecibo " _
-        & " WHERE rec.estado=2 AND rec.fecha <= " & FechaFIn & " AND ardf.idFactura=AdminFacturas.id),0) AS total_abonado, "
+        & " WHERE rec.estado=2 AND rec.fecha <= " & FechaFin & " AND ardf.idFactura=AdminFacturas.id),0) AS total_abonado, "
 
-    q = q & " CONVERT((SELECT IFNULL(GROUP_CONCAT(idRecibo),'-') FROM AdminRecibosDetalleFacturas INNER JOIN AdminRecibos ON AdminRecibosDetalleFacturas.idRecibo = AdminRecibos.id WHERE AdminRecibosDetalleFacturas.idFactura = AdminFacturas.id AND AdminRecibos.fecha <= " & FechaFIn & "),NCHAR) AS nro_recibo,"
+    q = q & " CONVERT((SELECT IFNULL(GROUP_CONCAT(idRecibo),'-') FROM AdminRecibosDetalleFacturas INNER JOIN AdminRecibos ON AdminRecibosDetalleFacturas.idRecibo = AdminRecibos.id WHERE AdminRecibosDetalleFacturas.idFactura = AdminFacturas.id AND AdminRecibos.fecha <= " & FechaFin & "),NCHAR) AS nro_recibo,"
 
 
-    q = q & " (SELECT id_tipo_discriminado From AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.id_tipo_discriminado IN (2,5,8,16,11,22) AND AdminFacturas.FechaEmision <= " & FechaFIn & ") AS TipoComprobanteNC," _
-             & " (SELECT NroFactura FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFIn & ") AS NumeroComprobanteNC," _
-             & " (SELECT FechaEmision FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFIn & ") AS FechaEmisionComprobanteNC," _
-             & " (SELECT (cambio_a_patron * total_estatico) FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFIn & ") AS MontoTotalComprobanteNC"
+    q = q & " (SELECT id_tipo_discriminado From AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.id_tipo_discriminado IN (2,5,8,16,11,22) AND AdminFacturas.FechaEmision <= " & FechaFin & ") AS TipoComprobanteNC," _
+             & " (SELECT NroFactura FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFin & ") AS NumeroComprobanteNC," _
+             & " (SELECT FechaEmision FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFin & ") AS FechaEmisionComprobanteNC," _
+             & " (SELECT (cambio_a_patron * total_estatico) FROM AdminFacturas WHERE id = fnc.idNC AND AdminFacturas.aprobacion_afip = 1 AND AdminFacturas.FechaEmision <= " & FechaFin & ") AS MontoTotalComprobanteNC"
     
     
     q = q & " From AdminFacturas" _
@@ -2823,7 +2817,7 @@ If includeDetalles Then
         If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
             Set F = col.item(CStr(F.Id))
         Else
-            F.Detalles = New Collection
+            F.detalles = New Collection
             col.Add F, CStr(F.Id)
         End If
 
@@ -2835,9 +2829,9 @@ If includeDetalles Then
                     deta.ListaRemitosAplicados = rs!lista_remitos_aplicados
                 End If
                 deta.CantidadRemitosAplicados = rs!cantidad_remitos_aplicados
-                If Not funciones.BuscarEnColeccion(F.Detalles, CStr(deta.Id)) Then
+                If Not funciones.BuscarEnColeccion(F.detalles, CStr(deta.Id)) Then
                     Set deta.Factura = F
-                    F.Detalles.Add deta, CStr(deta.Id)
+                    F.detalles.Add deta, CStr(deta.Id)
                 End If
 
                 If includeEntregasWithDetalles Then
@@ -2899,7 +2893,7 @@ err1:
 End Function
 
 
-Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFIn As String) As Boolean
+Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFin As String) As Boolean
     On Error GoTo err1
 
     ExportarColeccionTotalizadores = True
@@ -2929,7 +2923,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
     ValorCero = 0
 
 
-    Fin = FechaFIn
+    Fin = FechaFin
 
     'fila, columna
     xlWorksheet.Cells(1, 1).value = "REPORTE DE COMPROBANTES DE VENTAS ADEUDADOS AL " & Format(Fin, "dd/mm/yyyy")
