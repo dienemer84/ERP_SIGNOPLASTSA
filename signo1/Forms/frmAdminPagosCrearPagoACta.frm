@@ -4,16 +4,16 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosCrearPagoACta 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Crear Pago a Cuenta"
-   ClientHeight    =   6960
+   ClientHeight    =   10890
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   9960
+   ClientWidth     =   16395
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   6960
-   ScaleWidth      =   9960
+   ScaleHeight     =   10890
+   ScaleWidth      =   16395
    ShowInTaskbar   =   0   'False
    Begin XtremeSuiteControls.GroupBox GroupBox 
       Height          =   855
@@ -495,6 +495,7 @@ Begin VB.Form frmAdminPagosCrearPagoACta
       Left            =   120
       TabIndex        =   12
       Top             =   7560
+      Visible         =   0   'False
       Width           =   4260
       _ExtentX        =   7514
       _ExtentY        =   3201
@@ -532,6 +533,7 @@ Begin VB.Form frmAdminPagosCrearPagoACta
       Left            =   120
       TabIndex        =   13
       Top             =   9480
+      Visible         =   0   'False
       Width           =   3420
       _ExtentX        =   6033
       _ExtentY        =   2990
@@ -806,7 +808,7 @@ Private Sub Form_Load()
 
     FormHelper.Customize Me
     
-    LlenarComboProveedores
+    llenarComboProveedores
     
     
     formLoading = True
@@ -881,11 +883,11 @@ Private Sub Form_Load()
 End Sub
 
 
-Private Sub LlenarComboProveedores()
+Private Sub llenarComboProveedores()
     
 '''    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
 
-    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
+    Call DAOProveedor.llenarComboProveedores(cboProveedores)
     Me.cboProveedores.ListIndex = -1
     
 End Sub
@@ -1130,7 +1132,7 @@ Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal Val
         If Not IsNumeric(value) Or LenB(value) = 0 Then
             Set chequesChequeraSeleccionada = New Collection
         Else
-            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(Val(value))  ' Me.gridChequesPropios.Value(1))
+            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(val(value))  ' Me.gridChequesPropios.Value(1))
         End If
 
         Me.gridChequesChequera.ItemCount = chequesChequeraSeleccionada.count

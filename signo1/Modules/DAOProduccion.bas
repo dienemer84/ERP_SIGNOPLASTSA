@@ -116,12 +116,12 @@ Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
         tmpDeta.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
         tmpDeta.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "procesos_definidos")
         tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
-        tmpDeta.idPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
+        tmpDeta.IdPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
         tmpDeta.IdentificadorPosicion = GetValue(rs, fieldsIndex, tableNameOrAlias, "identificador_posicion")
         tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
         
         tmpDeta.CantidadRecibida = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_recibida")
-        tmpDeta.CantidadFabricada = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_fabricada")
+        tmpDeta.cantidadFabricada = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_fabricada")
         tmpDeta.CantidadScrap = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_scrap")
         tmpDeta.FechaInicio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_inicio")
         tmpDeta.FechaFin = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_fin")
@@ -138,7 +138,7 @@ Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
 End Function
 
 
-Public Function FindAvanceSimple(ByVal idPedido As Long, _
+Public Function FindAvanceSimple(ByVal IdPedido As Long, _
                                  ByVal idPieza As Long, _
                                  ByVal idSector As Long, _
                                  Optional ByVal FallbackCualquierSector As Boolean = False) As AvanceSimpleDTO
@@ -154,7 +154,7 @@ Public Function FindAvanceSimple(ByVal idPedido As Long, _
     ' 2) si no hay y querés fallback, busca sin sector
     If (rs Is Nothing Or rs.EOF) And FallbackCualquierSector Then
         q = "SELECT * FROM detalles_pedidos_conjuntos_avance dpca " & _
-            "WHERE dpca.id_detalle_pedido=" & idPedido & _
+            "WHERE dpca.id_detalle_pedido=" & IdPedido & _
             " ORDER BY id DESC LIMIT 1"
         Set rs = conectar.RSFactory(q)
     End If
@@ -190,100 +190,4 @@ End Function
 Private Function NzDate(v As Variant) As Variant
     If IsDate(v) Then NzDate = CDate(v) Else NzDate = Null
 End Function
-
-
-'''Public Function FindAllPiezaProduccion( _
-'''                    Optional ByVal idDetallePedido As Long = 0, _
-'''                    Optional ByVal idPiezaPadre As Long = 0, _
-'''                    Optional ByRef filter As String = vbNullString, _
-'''                    Optional ByVal withDesarrolloManoObra As Boolean = False, _
-'''                    Optional ByVal idDetalleConjunto As Long = 0, _
-'''                    Optional ByVal idSector As Long = 0 _
-'''                ) As Collection
-'''
-'''    Dim rs As ADODB.Recordset
-'''    Dim q As String
-'''
-'''    Dim detaOrdenesTrabajo As New Collection
-'''
-'''    q = ""
-'''    q = q & "SELECT dpc.*, s.*, dp.*, dpca.* " & _
-'''            "FROM detalles_pedidos_conjuntos dpc " & _
-'''            "LEFT JOIN stock s ON s.id = dpc.idPieza " & _
-'''            "LEFT JOIN detalles_pedidos dp ON dp.id = dpc.idDetalle_pedido " & _
-'''            "LEFT JOIN ( " & _
-'''            "   SELECT id_detalle_pedido, id_sector, MAX(id) AS max_id " & _
-'''            "   FROM detalles_pedidos_conjuntos_avance " & _
-'''            IIf(idSector > 0, "   WHERE id_sector = " & idSector & " ", "") & _
-'''            "   GROUP BY id_detalle_pedido, id_sector " & _
-'''            ") last ON last.id_detalle_pedido = dpc.id " & _
-'''            "LEFT JOIN detalles_pedidos_conjuntos_avance dpca ON dpca.id = last.max_id " & _
-'''            "WHERE 1=1 "
-'''
-'''    If idDetallePedido > 0 Then q = q & " AND dpc.idDetalle_Pedido = " & idDetallePedido
-'''    If idDetalleConjunto > 0 Then q = q & " AND dpc.id = " & idDetalleConjunto
-'''    If idPiezaPadre > 0 Then q = q & " AND dpc.idPiezaPadre = " & idPiezaPadre
-'''    If LenB(filter) > 0 Then q = q & " AND " & filter
-'''
-'''    Set rs = conectar.RSFactory(q)
-'''
-'''    Dim fieldsIndex As Dictionary
-'''    BuildFieldsIndex rs, fieldsIndex
-'''    Set FindAllPiezaProduccion = New Collection
-'''
-'''    Const piezaTabla As String = "s"
-'''    Dim tmpDeta As DetalleOTConjuntoDTO
-'''
-'''    While Not rs.EOF
-'''        Set tmpDeta = DAOProduccion.MapConjuntoProduccion(rs, fieldsIndex, "dpc", piezaTabla, "dp", "dpca")
-'''
-'''        detaOrdenesTrabajo.Add tmpDeta, CStr(tmpDeta.Id)
-'''        rs.MoveNext
-'''    Wend
-'''
-'''    Set FindAllPiezaProduccion = detaOrdenesTrabajo
-'''
-'''End Function
-'''
-'''
-'''Public Function MapPiezaProduccion(ByRef rs As Recordset, _
-'''                            ByRef fieldsIndex As Dictionary, _
-'''                            ByRef tableNameOrAlias As String, _
-'''                            Optional ByRef piezaTableNameOrAlias As String = vbNullString, _
-'''                            Optional ByRef detallePedidoTableNameOrAlias As String = vbNullString, _
-'''                            Optional ByRef ProduccionAlias As String = vbNullString _
-'''                          ) As DetalleOTConjuntoDTO
-'''
-'''    Dim tmpDeta As DetalleOTConjuntoDTO
-'''    Dim Id As Variant
-'''    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, "id")
-'''
-'''    If Id > 0 Then
-'''        Set tmpDeta = New DetalleOTConjuntoDTO
-'''
-'''        tmpDeta.Id = Id
-'''        tmpDeta.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, "CantidadPieza")
-'''        tmpDeta.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "procesos_definidos")
-'''        tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
-'''        tmpDeta.idPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
-'''        tmpDeta.IdentificadorPosicion = GetValue(rs, fieldsIndex, tableNameOrAlias, "identificador_posicion")
-'''        tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
-'''
-'''        tmpDeta.CantidadRecibida = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_recibida")
-'''        tmpDeta.CantidadFabricada = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_fabricada")
-'''        tmpDeta.CantidadScrap = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_scrap")
-'''        tmpDeta.FechaInicio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_inicio")
-'''        tmpDeta.FechaFin = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_fin")
-'''        tmpDeta.Recibio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_recibio")
-'''        tmpDeta.SiguienteProceso = GetValue(rs, fieldsIndex, ProduccionAlias, "a_siguiente_proceso")
-'''
-'''        If LenB(piezaTableNameOrAlias) > 0 Then Set tmpDeta.Pieza = DAOPieza.Map(rs, fieldsIndex, piezaTableNameOrAlias)
-'''        If LenB(detallePedidoTableNameOrAlias) > 0 Then Set tmpDeta.DetalleRaiz = DAODetalleOrdenTrabajo.Map(rs, fieldsIndex, detallePedidoTableNameOrAlias)
-'''
-'''    End If
-'''
-'''    Set MapPiezaProduccion = tmpDeta
-'''
-'''End Function
-
 

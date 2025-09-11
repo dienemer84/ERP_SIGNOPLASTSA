@@ -3,15 +3,15 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAviso 
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   1410
+   ClientHeight    =   1050
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   4680
+   ClientWidth     =   4200
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1410
-   ScaleWidth      =   4680
+   ScaleHeight     =   1050
+   ScaleWidth      =   4200
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Timer Timer1 
@@ -21,14 +21,14 @@ Begin VB.Form frmAviso
       Top             =   240
    End
    Begin XtremeSuiteControls.Label lblMsg 
-      Height          =   1095
+      Height          =   735
       Left            =   120
       TabIndex        =   0
       Top             =   120
-      Width           =   4335
+      Width           =   3855
       _Version        =   786432
-      _ExtentX        =   7646
-      _ExtentY        =   1931
+      _ExtentX        =   6800
+      _ExtentY        =   1296
       _StockProps     =   79
       Caption         =   "Label1"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 

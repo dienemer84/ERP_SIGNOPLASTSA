@@ -3,28 +3,67 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoSeguimientoAvanzado 
    Caption         =   "Seguimiento de Producción"
-   ClientHeight    =   9105
+   ClientHeight    =   13845
    ClientLeft      =   60
    ClientTop       =   450
    ClientWidth     =   16245
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   9105
+   ScaleHeight     =   13845
    ScaleWidth      =   16245
    WindowState     =   2  'Maximized
+   Begin GridEX20.GridEX gridUsuarios 
+      Height          =   3495
+      Left            =   240
+      TabIndex        =   14
+      Top             =   9240
+      Visible         =   0   'False
+      Width           =   3015
+      _ExtentX        =   5318
+      _ExtentY        =   6165
+      Version         =   "2.0"
+      ReplaceColumnIndex=   "usuario"
+      ActAsDropDown   =   -1  'True
+      ColumnAutoResize=   -1  'True
+      HideSelection   =   2
+      MethodHoldFields=   -1  'True
+      ContScroll      =   -1  'True
+      AllowEdit       =   0   'False
+      GroupByBoxVisible=   0   'False
+      ColumnHeaders   =   0   'False
+      NewRowPos       =   1
+      RowHeaders      =   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   2
+      Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0000
+      Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0100
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":01F4
+      FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":032C
+      FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":03DC
+      FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0490
+      FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0568
+      FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":0620
+      ImageCount      =   0
+      PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":0700
+   End
    Begin XtremeSuiteControls.GroupBox GroupBox2 
-      Height          =   7095
+      Height          =   6975
       Left            =   120
       TabIndex        =   11
       Top             =   1920
       Width           =   15975
       _Version        =   786432
       _ExtentX        =   28178
-      _ExtentY        =   12515
+      _ExtentY        =   12303
       _StockProps     =   79
       Caption         =   "GroupBox2"
       UseVisualStyle  =   -1  'True
-      Begin GridEX20.GridEX gridDetalles1 
+      Begin GridEX20.GridEX gridDetalles 
          Height          =   5895
          Left            =   120
          TabIndex        =   12
@@ -51,56 +90,64 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   14
-         Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0000
-         Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0158
-         Column(3)       =   "frmPlaneamientoSeguimientoAvanzado.frx":02B8
-         Column(4)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0418
-         Column(5)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0584
-         Column(6)       =   "frmPlaneamientoSeguimientoAvanzado.frx":06C4
-         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0818
-         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0974
-         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0AD0
-         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0C1C
-         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0D90
-         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":0EF4
-         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":104C
-         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":11BC
+         Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":08D8
+         Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0A4C
+         Column(3)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0BAC
+         Column(4)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0D0C
+         Column(5)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0E78
+         Column(6)       =   "frmPlaneamientoSeguimientoAvanzado.frx":0FB8
+         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1120
+         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":12C4
+         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1420
+         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":156C
+         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":16E0
+         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":1844
+         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":19E4
+         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":1B54
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":12C4
-         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":13FC
-         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":14AC
-         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1560
-         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1638
-         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":16F0
+         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1C78
+         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1DB0
+         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1E60
+         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1F14
+         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":1FEC
+         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":20A4
          ImageCount      =   0
-         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":17D0
+         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":2184
+      End
+      Begin XtremeSuiteControls.Label lblSectorGrande 
+         Height          =   495
+         Left            =   120
+         TabIndex        =   13
+         Top             =   6360
+         Width           =   5415
+         _Version        =   786432
+         _ExtentX        =   9551
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "..."
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "@Arial Unicode MS"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
       End
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   1695
+      Height          =   1215
       Left            =   120
       TabIndex        =   0
       Top             =   120
       Width           =   16455
       _Version        =   786432
       _ExtentX        =   29025
-      _ExtentY        =   2990
+      _ExtentY        =   2143
       _StockProps     =   79
       Caption         =   "Párametros de búsqueda"
       UseVisualStyle  =   -1  'True
-      Begin XtremeSuiteControls.PushButton btnCargarSector 
-         Height          =   375
-         Left            =   1560
-         TabIndex        =   13
-         Top             =   1200
-         Width           =   3375
-         _Version        =   786432
-         _ExtentX        =   5953
-         _ExtentY        =   661
-         _StockProps     =   79
-         Caption         =   "Cargar registros"
-         Appearance      =   6
-      End
       Begin XtremeSuiteControls.ComboBox cboSectores 
          Height          =   315
          Left            =   1560
@@ -225,6 +272,10 @@ Option Explicit
 Dim idPieza As Long
 Private tmpDetalle As DetalleOrdenTrabajo
 Private m_ot As OrdenTrabajo
+
+Private usuario As clsUsuario
+Private usuarios As New Collection
+
 Dim col As Collection
 Private detallesPlanos As Collection
 
@@ -237,8 +288,8 @@ Public Enum Cols
   cUM = 4
   cNombre = 5
   cCantPedida = 6
-  cCantFabricada = 7
-  cCantRecibida = 8
+  cCantRecibida = 7
+  cCantFabricada = 8
   cCantScrap = 9
   cFechaInicio = 10
   cFechaFin = 11
@@ -249,7 +300,15 @@ End Enum
 
 
 Private Sub btnCargarSector_Click(): llenarDataGrid: End Sub
-Private Sub cboSectores_Click():      llenarDataGrid: End Sub
+
+Private Sub cboSectores_Click()
+
+    llenarDataGrid
+    
+    Me.lblSectorGrande.caption = "SECTOR: " & Me.cboSectores.Text
+
+End Sub
+
 
 Private Sub cmdBuscar_Click()
 
@@ -280,7 +339,7 @@ End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
-    GridEXHelper.CustomizeGrid Me.gridDetalles1, , True
+    GridEXHelper.CustomizeGrid Me.gridDetalles, , True
 
     EnsureConjuntoStyle          '<< agrega el estilo
     
@@ -288,8 +347,13 @@ Private Sub Form_Load()
     
     llenarCboSectores
     
+    llenarGridUsuarios
+    
+'''    llenarGridSectores
+    
     Set detallesPlanos = New Collection
     
+        
 '''    cmdBuscar_Click
     
 End Sub
@@ -302,7 +366,16 @@ Private Sub llenarCboSectores()
 
 End Sub
 
+Private Sub llenarGridUsuarios()
 
+    Set usuarios = DAOUsuarios.GetAll()
+    Me.gridUsuarios.ItemCount = usuarios.count
+    
+'''    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
+    
+    Set Me.gridDetalles.Columns("recibio").DropDownControl = Me.gridUsuarios
+
+End Sub
 
 Private Sub Form_Resize()
    On Error Resume Next
@@ -319,36 +392,47 @@ Private Sub Form_Resize()
         .Left = 100
         .Top = 100
         .Width = Me.ScaleWidth - 200
-        .Height = 1800
+        .Height = 1215
     End With
 
     With GroupBox2
         .Left = 100
-        .Top = 2000
+        .Top = 1315
         .Width = Me.ScaleWidth - 200
-        .Height = Me.ScaleHeight - 1500
+        .Height = Me.Height - 2500
     End With
     
-    
+
     ' Grid ajustado al resto de la ventana
-    With gridDetalles1
+    With gridDetalles
+        .Top = gridDetalles.Top
+        
         .Height = Me.GroupBox2.Height - 800
         .Width = Me.GroupBox2.Width - 800
+
         
         On Error Resume Next
-        If gridDetalles1.Columns.count >= cCantScrap Then
-            gridDetalles1.Columns(cID).Width = 500
-            gridDetalles1.Columns(cItem).Width = 500
-            gridDetalles1.Columns(cUM).Width = 500
-            gridDetalles1.Columns(cNombre).Width = 4000
-            gridDetalles1.Columns(cCantPedida).Width = 800
-            gridDetalles1.Columns(cCantFabricada).Width = 800
-            gridDetalles1.Columns(cCantRecibida).Width = 800
-            gridDetalles1.Columns(cCantScrap).Width = 800
+        If gridDetalles.Columns.count >= cCantScrap Then
+            gridDetalles.Columns(cID).Width = 500
+            gridDetalles.Columns(cItem).Width = 500
+            gridDetalles.Columns(cUM).Width = 500
+            gridDetalles.Columns(cNombre).Width = 4000
+            gridDetalles.Columns(cCantPedida).Width = 800
+            gridDetalles.Columns(cCantFabricada).Width = 800
+            gridDetalles.Columns(cCantRecibida).Width = 800
+            gridDetalles.Columns(cCantScrap).Width = 800
         End If
         On Error GoTo 0
 
     End With
+    
+        With Me.lblSectorGrande
+        .Left = 100
+        .Top = gridDetalles.Top + Me.gridDetalles.Height
+
+        
+    End With
+    
 
 End Sub
 
@@ -356,10 +440,10 @@ End Sub
 Private Sub EnsureConjuntoStyle()
     Dim fs As GridEX20.JSFormatStyle
     On Error Resume Next
-    Set fs = gridDetalles1.FormatStyles.item("ConjuntoBold")
+    Set fs = gridDetalles.FormatStyles.item("ConjuntoBold")
     On Error GoTo 0
     If fs Is Nothing Then
-        Set fs = gridDetalles1.FormatStyles.Add("ConjuntoBold")
+        Set fs = gridDetalles.FormatStyles.Add("ConjuntoBold")
         ' Según versión, uno de estos compila:
         On Error Resume Next
         fs.FontBold = True
@@ -372,20 +456,25 @@ End Sub
 
 Private Sub llenarDataGrid()
     If m_ot Is Nothing Then
-        gridDetalles1.ItemCount = 0
+        gridDetalles.ItemCount = 0
         Exit Sub
     End If
     If m_ot.detalles Is Nothing Or m_ot.detalles.count = 0 Then
-        gridDetalles1.ItemCount = 0
+        gridDetalles.ItemCount = 0
         Exit Sub
     End If
 
     Set detallesPlanos = New Collection
+    
+    frmAviso.mostrar "Cargando datos..."
+    
     ConstruirPlano
-    gridDetalles1.ItemCount = detallesPlanos.count
+       
+    gridDetalles.ItemCount = detallesPlanos.count
+
     On Error Resume Next
-    gridDetalles1.ReBind
-    gridDetalles1.Refresh
+    gridDetalles.ReBind
+    gridDetalles.Refresh
     On Error GoTo 0
     
 End Sub
@@ -513,7 +602,7 @@ Private Sub AgregarHijos(ByVal idDetallePedido As Long, _
 End Sub
 
 
-Private Sub gridDetalles1_RowFormat(RowBuffer As GridEX20.JSRowData)
+Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
     
     Dim v As Variant
@@ -532,7 +621,7 @@ Private Sub gridDetalles1_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo 0
 End Sub
 
-Private Sub gridDetalles1_UnboundReadData(ByVal RowIndex As Long, _
+Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, _
     ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     If detallesPlanos Is Nothing Then Exit Sub
@@ -570,7 +659,7 @@ Private Sub gridDetalles1_UnboundReadData(ByVal RowIndex As Long, _
 End Sub
 
 
-Private Sub gridDetalles1_UnboundUpdate(ByVal RowIndex As Long, _
+Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
     ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     If detallesPlanos Is Nothing Then Exit Sub
@@ -583,7 +672,7 @@ Private Sub gridDetalles1_UnboundUpdate(ByVal RowIndex As Long, _
     If r.EsConjunto Then Exit Sub  ' opcional: no guardar conjuntos
 
     With r
-        .idPedido = m_ot.Id
+        .IdPedido = m_ot.Id
         .idSector = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
         .IdTabla = Values(cID)
         .CantRecibida = NzDbl(Values(cCantRecibida))
@@ -591,7 +680,8 @@ Private Sub gridDetalles1_UnboundUpdate(ByVal RowIndex As Long, _
         .CantScrap = NzDbl(Values(cCantScrap))
         .FechaInicio = NzDate(Values(cFechaInicio))
         .FechaFin = NzDate(Values(cFechaFin))
-        .UsuarioRecibio = NzLng(Values(cUsuarioRecibio))
+'''        .UsuarioRecibio = NzLng(Values(cUsuarioRecibio))
+        .UsuarioRecibio = .UsuarioRecibio = DAOUsuarios.GetById(Values(cUsuarioRecibio))
         .ProcesoSiguiente = NzStr(Values(cProcesoSig))
     End With
 
@@ -634,3 +724,10 @@ Private Function ToCollIndex(ByVal rowIdx As Long, ByVal n As Long) As Long
 End Function
 
 
+Private Sub gridUsuarios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex <= usuarios.count Then
+        Set usuario = usuarios.item(RowIndex)
+        Values(1) = usuario.Id
+        Values(2) = usuario.usuario
+    End If
+End Sub
