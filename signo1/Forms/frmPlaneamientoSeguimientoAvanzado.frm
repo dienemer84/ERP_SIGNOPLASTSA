@@ -284,7 +284,7 @@ Private Sub Form_Load()
 
     EnsureConjuntoStyle          '<< agrega el estilo
     
-    Me.txtOTNro = "5964"
+    Me.txtOTNro = "6002"
     
     llenarCboSectores
     
@@ -434,8 +434,8 @@ Private Sub AgregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As In
     If Not r.EsConjunto And r.IdPiezaPedido > 0 Then
         Dim sid As Long: sid = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
         
-    Dim av As AvanceSimpleDTO
-    av = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, sid, False) ' True para fallback
+        Dim av As AvanceSimpleDTO
+        av = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, sid, False) ' True para fallback
 
         r.CantRecibida = av.CantRecibida
         r.CantFabricada = av.CantFabricada

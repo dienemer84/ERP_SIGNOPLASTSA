@@ -15,7 +15,7 @@ Option Explicit
 
 Public Id As Long
 Public idDetallePedido As Long
-Public IdPedido As Long
+Public idPedido As Long
 Public Pieza As Pieza
 Public Cantidad As Double
 Public estado As EstadoProcesoDetalleOrdenTrabajo
