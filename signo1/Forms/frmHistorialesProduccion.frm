@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmHistorialesProduccion 
-   Caption         =   "Form1"
+   Caption         =   "Historial de producción"
    ClientHeight    =   3780
    ClientLeft      =   60
    ClientTop       =   450
@@ -11,6 +11,7 @@ Begin VB.Form frmHistorialesProduccion
    MDIChild        =   -1  'True
    ScaleHeight     =   3780
    ScaleWidth      =   13065
+   WindowState     =   2  'Maximized
    Begin VB.CommandButton Command1 
       BackColor       =   &H00E0E0E0&
       Cancel          =   -1  'True
@@ -34,7 +35,6 @@ Begin VB.Form frmHistorialesProduccion
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
-      PreviewColumn   =   "Mensaje"
       PreviewRowLines =   1
       ColumnAutoResize=   -1  'True
       MethodHoldFields=   -1  'True
@@ -44,28 +44,42 @@ Begin VB.Form frmHistorialesProduccion
       DataMode        =   99
       ColumnHeaderHeight=   285
       IntProp1        =   0
-      ColumnsCount    =   3
+      ColumnsCount    =   17
       Column(1)       =   "frmHistorialesProduccion.frx":0000
-      Column(2)       =   "frmHistorialesProduccion.frx":0164
-      Column(3)       =   "frmHistorialesProduccion.frx":0258
+      Column(2)       =   "frmHistorialesProduccion.frx":0194
+      Column(3)       =   "frmHistorialesProduccion.frx":02F4
+      Column(4)       =   "frmHistorialesProduccion.frx":0478
+      Column(5)       =   "frmHistorialesProduccion.frx":05F8
+      Column(6)       =   "frmHistorialesProduccion.frx":0784
+      Column(7)       =   "frmHistorialesProduccion.frx":090C
+      Column(8)       =   "frmHistorialesProduccion.frx":0A88
+      Column(9)       =   "frmHistorialesProduccion.frx":0C00
+      Column(10)      =   "frmHistorialesProduccion.frx":0D74
+      Column(11)      =   "frmHistorialesProduccion.frx":0EE4
+      Column(12)      =   "frmHistorialesProduccion.frx":1048
+      Column(13)      =   "frmHistorialesProduccion.frx":11A8
+      Column(14)      =   "frmHistorialesProduccion.frx":130C
+      Column(15)      =   "frmHistorialesProduccion.frx":146C
+      Column(16)      =   "frmHistorialesProduccion.frx":15B4
+      Column(17)      =   "frmHistorialesProduccion.frx":16F4
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmHistorialesProduccion.frx":033C
-      FormatStyle(2)  =   "frmHistorialesProduccion.frx":0474
-      FormatStyle(3)  =   "frmHistorialesProduccion.frx":0524
-      FormatStyle(4)  =   "frmHistorialesProduccion.frx":05D8
-      FormatStyle(5)  =   "frmHistorialesProduccion.frx":06B0
-      FormatStyle(6)  =   "frmHistorialesProduccion.frx":0804
+      FormatStyle(1)  =   "frmHistorialesProduccion.frx":1848
+      FormatStyle(2)  =   "frmHistorialesProduccion.frx":1980
+      FormatStyle(3)  =   "frmHistorialesProduccion.frx":1A30
+      FormatStyle(4)  =   "frmHistorialesProduccion.frx":1AE4
+      FormatStyle(5)  =   "frmHistorialesProduccion.frx":1BBC
+      FormatStyle(6)  =   "frmHistorialesProduccion.frx":1D10
       ImageCount      =   0
-      PrinterProperties=   "frmHistorialesProduccion.frx":08E4
+      PrinterProperties=   "frmHistorialesProduccion.frx":1DF0
    End
-   Begin XtremeSuiteControls.Label lblPieza 
+   Begin XtremeSuiteControls.Label Label1 
       Height          =   375
-      Left            =   1560
+      Left            =   1440
       TabIndex        =   2
       Top             =   3240
-      Width           =   3015
+      Width           =   3375
       _Version        =   786432
-      _ExtentX        =   5318
+      _ExtentX        =   5953
       _ExtentY        =   661
       _StockProps     =   79
       Caption         =   "Label1"
@@ -80,6 +94,26 @@ Option Explicit
 
 Dim tmp As clsHistorialProduccion
 Private vLista As Collection
+
+Public Enum ColsHistorial
+    cUsuarioOperacion = 1
+    cUsuarioRecibio
+    cCantRecibidaOld
+    cCantRecibidaNew
+    cCantFabricadaOld
+    cCantFabricadaNew
+    cCantScrapOld
+    cCantScrapNew
+    cFechaInicioOld
+    cFechaInicioNew
+    cFechaFinOld
+    cFechaFinNew
+    cProcesoOld
+    cProcesoNew
+    cAccion
+    cNota
+    cFecha
+End Enum
 
 ' === Propiedad lista (objeto)
 Public Property Set lista(ByVal nValue As Collection)
@@ -106,9 +140,9 @@ Private Sub Form_Load()
     FormHelper.Customize Me
     
     If vLista Is Nothing Or vLista.count = 0 Then
-        Me.lblPieza.caption = "Sin historial"
+        Me.Label1.caption = "Sin historial"
     Else
-        Me.lblPieza.caption = CStr(vLista.count) & " eventos"
+        Me.Label1.caption = CStr(vLista.count) & " eventos"
     End If
     
     llenarGrilla
@@ -122,16 +156,50 @@ Private Sub Form_Resize()
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, _
-    ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+                                    ByVal Bookmark As Variant, _
+                                    ByVal Values As GridEX20.JSRowData)
 
     If vLista Is Nothing Then Exit Sub
     If RowIndex < 1 Or RowIndex > vLista.count Then Exit Sub  ' Janus 1-based
 
     Set tmp = vLista.item(RowIndex)
 
-    ' OJO: usa los nombres reales de tu clase (Fecha/mensaje/Usuario)
-    Values(1) = tmp.FEcha          ' si tu clase la expuso como FEcha, mantené FEcha
-    Values(2) = tmp.CantFabricada
-    Values(3) = tmp.Accion
+
+    '--- Usuarios
+    If Not tmp.UsuarioOperacion Is Nothing Then
+        Values(cUsuarioOperacion) = tmp.UsuarioOperacion.Usuario
+    End If
+    If Not tmp.UsuarioRecibio Is Nothing Then
+        Values(cUsuarioRecibio) = tmp.UsuarioRecibio.Usuario
+    End If
+    
+    '--- Cantidades
+    Values(cCantRecibidaOld) = tmp.CantRecibidaOld
+    Values(cCantRecibidaNew) = tmp.CantRecibidaNew
+    Values(cCantFabricadaOld) = tmp.CantFabricadaOld
+    Values(cCantFabricadaNew) = tmp.CantFabricadaNew
+    Values(cCantScrapOld) = tmp.CantScrapOld
+    Values(cCantScrapNew) = tmp.CantScrapNew
+
+    '--- Fechas
+    Values(cFechaInicioOld) = tmp.FechaInicioOld
+    Values(cFechaInicioNew) = tmp.FechaInicioNew
+    Values(cFechaFinOld) = tmp.FechaFinOld
+    Values(cFechaFinNew) = tmp.FechaFinNew
+
+    '--- Procesos
+    If Not tmp.ProcesoOld Is Nothing Then
+        Values(cProcesoOld) = tmp.ProcesoOld.Modulo  ' o .Id si querés el numérico
+    End If
+    
+    If Not tmp.ProcesoNew Is Nothing Then
+        Values(cProcesoNew) = tmp.ProcesoNew.Modulo   ' o .Id
+    End If
+    
+    '--- Acción / Nota / Fecha
+    Values(cAccion) = tmp.Accion
+    Values(cNota) = tmp.Nota
+    Values(cFecha) = tmp.FEcha
 End Sub
+
 

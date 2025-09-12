@@ -14,7 +14,9 @@ Public Function FindAllByFilter(filter As String) As Collection
       & "WHERE " & filter    'acftdi.`id_iva`=3 AND tipo_documento=0"
 
     Set rs = conectar.RSFactory(q)
+    
     Dim idx As New Dictionary
+    
     conectar.BuildFieldsIndex rs, idx
     While Not rs.EOF
         Set TipoFactura = New clsTipoFacturaDiscriminado
@@ -31,20 +33,20 @@ Public Function FindByTipoDocumentoAndPuntoVentaAndTipoFactura(idTipoFActura As 
     Set FindByTipoDocumentoAndPuntoVentaAndTipoFactura = FindAllByFilter("acftd.id_tipo_factura=" & idTipoFActura & " and acftd.tipo_documento=" & tipoDocumentoContable & " and acftd.id_punto_venta=" & IdPuntoVenta & " and acftdi.id_iva=" & IdTipoIva)(1)
 End Function
 
-Public Function FindById(id As Long) As clsTipoFacturaDiscriminado
-    Set FindById = FindAllByFilter("acftd.id=" & id)(1)
+Public Function FindById(Id As Long) As clsTipoFacturaDiscriminado
+    Set FindById = FindAllByFilter("acftd.id=" & Id)(1)
 End Function
 
 
 Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRef tableNameOrAlias As String, ByRef tablaTipoFactura As String, ByRef tablaPuntoVenta As String) As clsTipoFacturaDiscriminado
     Dim tfact As clsTipoFacturaDiscriminado
-    Dim id As Variant
+    Dim Id As Variant
 
-    id = GetValue(rs, fieldsIndex, tableNameOrAlias, "id")
+    Id = GetValue(rs, fieldsIndex, tableNameOrAlias, "id")
 
-    If id > 0 Then
+    If Id > 0 Then
         Set tfact = New clsTipoFacturaDiscriminado
-        tfact.id = id
+        tfact.Id = Id
         tfact.Numeracion = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_NUMERACION)
         tfact.TipoDoc = GetValue(rs, fieldsIndex, tableNameOrAlias, "tipo_documento")
         Set tfact.TipoFactura = DAOTipoFactura.Map(rs, fieldsIndex, tablaTipoFactura)

@@ -6,11 +6,11 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
    ClientHeight    =   13725
    ClientLeft      =   60
    ClientTop       =   750
-   ClientWidth     =   16245
+   ClientWidth     =   14415
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   13725
-   ScaleWidth      =   16245
+   ScaleWidth      =   14415
    WindowState     =   2  'Maximized
    Begin GridEX20.GridEX gridSectores 
       Height          =   3495
@@ -308,10 +308,25 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          Caption         =   "Ver Historial"
       End
       Begin VB.Menu menu_desarrollo 
-         Caption         =   "Ver Desarollo"
+         Caption         =   "Ver Desarrollo"
       End
       Begin VB.Menu menu_archivos_asociados 
          Caption         =   "Ver Archivos Asociados"
+         Begin VB.Menu AADLPieza 
+            Caption         =   "De la pieza..."
+         End
+         Begin VB.Menu AADelDetalle 
+            Caption         =   "Del Detalle..."
+         End
+      End
+      Begin VB.Menu verIncidencias 
+         Caption         =   "Ver Incidencias"
+         Begin VB.Menu IdePieza 
+            Caption         =   "Incidencias de Pieza"
+         End
+         Begin VB.Menu IdelDetalle 
+            Caption         =   "Incidencias del Detalle"
+         End
       End
    End
 End
@@ -352,6 +367,8 @@ End Enum
 
 
 Private Sub btnCargarSector_Click(): llenarDataGrid: End Sub
+
+
 
 Private Sub cboSectores_Click()
 
@@ -728,7 +745,7 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
 
     With r
         .IdPedido = m_ot.Id
-        .idSector = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
+        .IdSector = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
         .IdTabla = Values(cID)
         .CantRecibida = NzDbl(Values(cCantRecibida))
         .CantFabricada = NzDbl(Values(cCantFabricada))
@@ -741,7 +758,7 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
     End With
     
     Dim prev As AvanceSimpleDTO
-    prev = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, r.idSector, True) ' True=fallback
+    prev = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, r.IdSector, True) ' True=fallback
 
     If Not DAOProduccion.Save(r) Then
         MsgBox "Hubo un error al guardar"
@@ -801,6 +818,56 @@ Private Sub gridUsuarios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
     End If
 End Sub
 
+
+Private Sub AADelDetalle_Click()
+    SeleccionarDetalle
+    Dim F As New frmArchivos2
+    F.Origen = OrigenArchivos.OA_OrdenesTrabajoDetalle
+    F.ObjetoId = dto.IdTabla
+    F.caption = "OT Nº " & m_ot.IdFormateado & " - Item " & dto.item
+    F.Show
+End Sub
+
+
+Private Sub AADLPieza_Click()
+    SeleccionarDetalle
+    Dim F As New frmArchivos2
+    F.Origen = OrigenArchivos.OA_Piezas
+    F.ObjetoId = dto.IdPiezaPedido
+    F.caption = "Pieza " & dto.nombre
+    F.Show
+End Sub
+
+
+Private Sub IDePieza_Click()
+    frmVerIncidencias.referencia = dto.IdTabla
+    frmVerIncidencias.Origen = OI_Piezas
+    frmVerIncidencias.Show
+End Sub
+
+
+Private Sub IdelDetalle_Click()
+    frmVerIncidencias.referencia = dto.IdPiezaPedido
+    frmVerIncidencias.Origen = OI_OrdenesTrabajoDetalles
+    frmVerIncidencias.Show
+End Sub
+
+
+
+
+Private Sub menu_desarrollo_Click()
+    SeleccionarDetalle
+    Dim idx As Long
+    idx = Me.gridDetalles.RowIndex(Me.gridDetalles.row)
+    If idx > 0 Then
+        Dim F As New frmDesarrollo
+        Load F
+        F.CargarPieza dto.IdPiezaPedido   'm_ot.Detalles(idx).Pieza.Id
+
+        F.Show
+    End If
+
+End Sub
 
 Private Sub menu_historial_Click()
     If dto Is Nothing Then Exit Sub

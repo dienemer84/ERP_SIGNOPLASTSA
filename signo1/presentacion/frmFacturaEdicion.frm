@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65208321
+         Format          =   16842753
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65208321
+         Format          =   16842753
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65208321
+         Format          =   16842753
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65208321
+         Format          =   16842753
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65208321
+         Format          =   16842753
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1972,6 +1972,7 @@ Private Sub btnItemsDescuentoAnticipo_Click()
 End Sub
 
 Private Sub cboCliente_Click()
+    
     If IsSomething(Factura) And Me.cboCliente.ListIndex <> -1 And Not dataLoading Then
 
         Set Factura.Cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
@@ -2002,7 +2003,6 @@ Private Sub cboCliente_Click()
         Me.cboConceptosAIncluir.Enabled = True
 
         Me.cboTiposFactura.Clear
-
 
         Dim id_Default As Long
         id_Default = 0
@@ -2040,10 +2040,12 @@ Private Sub cboCliente_Click()
         Me.lblNCND.Visible = (Factura.TipoDocumento <> tipoDocumentoContable.Factura)
         Me.lblNCND.caption = Factura.GetShortDescription(True, True)
 
-
         CargarDetalles
+        
         MostrarCliente
+        
         MostrarPercepcionIIBB
+        
         LimpiarTotales
 
         Set Selecciones.OrdenTrabajo = Nothing
@@ -2315,18 +2317,25 @@ End Sub
 
 
 Private Sub Form_Load()
+    
+    
+'''    Set Factura.Cliente = DAOCliente.BuscarPorID(Me.cboCliente.ItemData(Me.cboCliente.ListIndex))
+
+    
     Customize Me
     dataLoading = True
     
     CargarClientesEnCbo
     
+    Me.cboCliente.ListIndex = 345
+    
+    cboCliente_Click
+    
     DAOMoneda.llenarComboXtremeSuite Me.cboMoneda
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedaAjuste, True
     DAOCuentaBancaria.llenarComboCBU Me.cboCuentasCBU
-    'Me.cboCuentasCBU.Visible = False
 
     'opcional 27
-
     Me.cboOpcional27.Clear
     Me.cboOpcional27.AddItem "TRANSFERENCIA AL SISTEMA DE CIRCULACION ABIERTA"
     Me.cboOpcional27.ItemData(Me.cboOpcional27.NewIndex) = 1
@@ -2347,18 +2356,10 @@ Private Sub Form_Load()
 
         Me.dtFechaPagoCredito.value = Now
 
-        'fce_nemer_28052020
         Me.dtFechaPagoCreditoDesde.value = Now
         Me.dtFechaPagoCreditoHasta.value = Now
 
-        'fce_nemer_02062020_#113
-        'Me.dtFechaServDesde.value = Factura.FechaEmision
-        'Me.dtFechaServHasta.value = Factura.FechaEmision
-
-
-        '#218 consultar con karin cual quiere dejar por default
         Me.cboOpcional27.ListIndex = -1
-
 
         If Me.cboMoneda.ListIndex <> -1 Then
             Set Factura.moneda = DAOMoneda.GetById(Me.cboMoneda.ItemData(Me.cboMoneda.ListIndex))
@@ -2405,12 +2406,8 @@ Private Sub Form_Load()
         CargarFactura
     End If
 
-
-
     dataLoading = False
-
-
-
+    
     Me.grpDatos.Enabled = Not ReadOnly
     Me.cboMonedaAjuste.Enabled = Not ReadOnly
     'Me.grpDetalles.Enabled = Not ReadOnly
@@ -2487,8 +2484,6 @@ Private Sub Form_Load()
     Me.cboPadron.Enabled = Not ReadOnly
     Me.txtPercepcion.Enabled = Not ReadOnly
     Me.cboCliente.Enabled = Not ReadOnly
-    'Me.grpDetalles.Enabled = Not ReadOnly
-    'Me.gridDetalles.Enabled = Not ReadOnly
     Me.lblTipoFactura.Enabled = Not ReadOnly
     Me.Label1.Enabled = Not ReadOnly
     Me.Label3.Enabled = Not ReadOnly

@@ -60,7 +60,6 @@ End Function
 
 Public Function GetById(Optional Id As Long) As clsUsuario
 
-
     On Error GoTo err1
     Dim Usuario As clsUsuario
     Set rs = conectar.RSFactory("select * from usuarios where id=" & Id)

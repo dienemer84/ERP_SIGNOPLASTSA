@@ -3,25 +3,6 @@ Option Explicit
 
 Dim rs As ADODB.Recordset
 
-'''Public Function getAllByIdPIeza(id_pieza As Long) As Collection
-'''    Dim col As New Collection
-'''    Dim A As clsHistorial
-'''    Set rs = conectar.RSFactory("select * from detalles_pedidos_conjuntos_avance_historial where idPieza=" & id_pieza)
-'''    While Not rs.EOF
-'''        Set A = New clsHistorial
-'''        A.FEcha = rs!FEcha
-'''        A.mensaje = rs!nota
-'''        A.usuario = DAOUsuarios.GetById(rs!idUsuario)
-'''        col.Add A
-'''
-'''        rs.MoveNext
-'''    Wend
-'''    Set A = Nothing
-'''    Set getAllByIdFactura = col
-'''End Function
-
-
-
 Public Function Agregar(ByVal r As clsFilaPlanoRow, _
                         ByVal Accion As String, _
                         ByVal Nota As String, _
@@ -39,7 +20,7 @@ Public Function Agregar(ByVal r As clsFilaPlanoRow, _
         EscapeNum(r.IdPedido) & "," & _
         EscapeNum(r.IdTabla) & "," & _
         EscapeNum(r.IdPiezaPedido) & "," & _
-        EscapeNum(r.idSector) & "," & _
+        EscapeNum(r.IdSector) & "," & _
         EscapeNum(uid) & "," & _
         EscapeNum(r.UsuarioRecibio) & "," & _
         EscapeNum(prev.CantRecibida) & "," & EscapeNum(r.CantRecibida) & "," & _
@@ -91,37 +72,40 @@ Public Function GetAllByPieza(ByVal id_pieza As Long, _
         h.IdPedido = NzLngF(rs, "id_pedido")
         h.IdDetalle = NzLngF(rs, "id_detalle")
         h.idPieza = NzLngF(rs, "id_pieza")
-        h.Sector = NzLngF(rs, "id_sector")
+        h.IdSector = NzLngF(rs, "id_sector")
         h.FEcha = NzDateF(rs, "fecha")
         h.Nota = NzStrF(rs, "nota")
         h.Accion = NzStrF(rs, "accion")
 
-        ' Usuarios (objetos o IDs, según tu clase)
-'''        h.Usuario = DAOUsuarios.GetById(NzLngF(rs, "usuario_operacion"))
-'''        h.UsuarioRecibio = DAOUsuarios.GetById(NzLngF(rs, "usuario_recibio"))
+        ' Usuarios como objetos
+        Set h.UsuarioOperacion = DAOUsuarios.GetById(NzLngF(rs, "usuario_operacion"))
+        Set h.UsuarioRecibio = DAOUsuarios.GetById(NzLngF(rs, "usuario_recibio"))
 
-'''        ' Viejos y nuevos
-'''        h.CantRecibidaOld = NzDblF(rs, "cant_recibida_old")
-'''        h.CantRecibidaNew = NzDblF(rs, "cant_recibida_new")
-'''        h.CantFabricadaOld = NzDblF(rs, "cant_fabricada_old")
-'''        h.CantFabricadaNew = NzDblF(rs, "cant_fabricada_new")
-'''        h.CantScrapOld = NzDblF(rs, "cant_scrap_old")
-'''        h.CantScrapNew = NzDblF(rs, "cant_scrap_new")
-'''
-'''        h.FechaInicioOld = NzDateF(rs, "fecha_inicio_old")
-'''        h.FechaInicioNew = NzDateF(rs, "fecha_inicio_new")
-'''        h.FechaFinOld = NzDateF(rs, "fecha_fin_old")
-'''        h.FechaFinNew = NzDateF(rs, "fecha_fin_new")
-'''
-'''        h.ProcesoOld = NzStrF(rs, "proceso_old")
-'''        h.ProcesoNew = NzStrF(rs, "proceso_new")
+        ' Viejos y nuevos
+        h.CantRecibidaOld = NzDblF(rs, "cant_recibida_old")
+        h.CantRecibidaNew = NzDblF(rs, "cant_recibida_new")
+        h.CantFabricadaOld = NzDblF(rs, "cant_fabricada_old")
+        h.CantFabricadaNew = NzDblF(rs, "cant_fabricada_new")
+        h.CantScrapOld = NzDblF(rs, "cant_scrap_old")
+        h.CantScrapNew = NzDblF(rs, "cant_scrap_new")
 
+        h.FechaInicioOld = NzDateF(rs, "fecha_inicio_old")
+        h.FechaInicioNew = NzDateF(rs, "fecha_inicio_new")
+        h.FechaFinOld = NzDateF(rs, "fecha_fin_old")
+        h.FechaFinNew = NzDateF(rs, "fecha_fin_new")
+
+        Set h.ProcesoOld = DAOSectores.GetByIdModulo(NzLngF(rs, "proceso_old"))
+        Set h.ProcesoNew = DAOSectores.GetByIdModulo(NzLngF(rs, "proceso_new"))
+        
         col.Add h
+        
         rs.MoveNext
+        
     Loop
 
     Set GetAllByPieza = col
     Exit Function
+
 err1:
     Set GetAllByPieza = Nothing
 End Function
@@ -140,5 +124,10 @@ Private Function NzStrF(ByVal rs As Object, ByVal fld As String) As String
 End Function
 
 Private Function NzDateF(ByVal rs As Object, ByVal fld As String) As Variant
-    If Not IsNull(rs.Fields(fld).value) Then NzDateF = CDate(rs.Fields(fld).value) Else NzDateF = Null
+    On Error Resume Next
+    If IsNull(rs.Fields(fld).value) Or Trim(rs.Fields(fld).value & "") = "" Then
+        NzDateF = 0          ' equivale a 30/12/1899
+    Else
+        NzDateF = CDate(rs.Fields(fld).value)
+    End If
 End Function

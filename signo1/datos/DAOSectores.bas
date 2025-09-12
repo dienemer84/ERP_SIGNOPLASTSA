@@ -23,6 +23,22 @@ er1:
 End Function
 
 
+Public Function GetByIdModulo(Id) As clsSector
+    On Error GoTo er1
+    Dim A As clsSector
+    Set rs = conectar.RSFactory("select * from sectores where sectorizacion=" & Id)
+    If Not rs.EOF And Not rs.BOF Then
+        Set A = New clsSector
+        A.Modulo = rs!Modulo
+        A.Sectorizacion = rs!Id
+    End If
+    Set GetByIdModulo = A
+    Exit Function
+er1:
+    Set GetByIdModulo = Nothing
+End Function
+
+
 Public Function GetAll() As Collection
     Dim col As New Collection
     Dim A As clsSector
@@ -72,6 +88,8 @@ Public Function GetByIdEmpleado(Id As Long) As Collection
     Set A = Nothing
     Set GetByIdEmpleado = col
 End Function
+
+
 Public Sub LlenarCombo(cbo As ComboBox, Optional sectores As Collection = Nothing)
     Dim col As Collection
     Dim sec As clsSector

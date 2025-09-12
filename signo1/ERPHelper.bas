@@ -150,19 +150,17 @@ End Function
 Public Function GetUltimoAutorizadoEXP(idPtoVta As String, tipoComprobante As String, esCredito As Boolean) As String
     On Error GoTo err1
     Dim resp As String
-    If CheckDummyAfip Then
-
-        'Reestablecida esta linea de codigo el 17.07.20 -dnemer
-        'resp = ApiConnect("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
-
-    resp = ApiConnectEXP("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
-
+    
+    If CheckDummyAfipEXP Then
+        resp = ApiConnectEXP("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
     Else
         Err.Raise 1002, "Afip", "Imposible obtener ultimo comprobante autorizado"
     End If
+    
     '    If resp = "0" Then
     'Err.Raise 1005, "Afip", "Error al obtener ultimo autorizado"
     '    End If
+    
     GetUltimoAutorizadoEXP = resp
 
     Exit Function
@@ -191,37 +189,66 @@ err1:
 End Function
 
 
-Public Function HasErrorMessage(resp As String) As Boolean
-    Dim Text1 As String
-    HasErrorMessage = False
-    Text1 = "ERROR 404"
-    If InStr(Text1, resp) > 0 Then
-        GoTo ERR_404
+Public Function CheckDummyAfipEXP() As Boolean
+    On Error GoTo err1
+    Dim resp As String
+    resp = ApiConnectEXP("wsfe/FEDummy", POST_, False)
+    If Not HasErrorMessage(resp) And resp = "1" Then
+        CheckDummyAfipEXP = True
+    Else
+        CheckDummyAfipEXP = False
+        Err.Raise 1001, "ARCA", "Infraestructura EXP no disponible"
     End If
-
     Exit Function
-ERR_404:
-    Err.Raise 100404, "Response", "Se produjo error HTTP 404"
-    HasErrorMessage = True
+err1:
+    Err.Raise Err.Number, Err.Source, Err.Description
+    CheckDummyAfipEXP = False
+End Function
+
+'''Public Function HasErrorMessage(resp As String) As Boolean
+'''    Dim Text1 As String
+'''    HasErrorMessage = False
+'''    Text1 = "ERROR 404"
+'''    If InStr(Text1, resp) > 0 Then
+'''        GoTo ERR_404
+'''    End If
+'''
+'''    Exit Function
+'''ERR_404:
+'''    Err.Raise 100404, "Response", "Se produjo error HTTP 404"
+'''    HasErrorMessage = True
+'''End Function
+
+
+Public Function HasErrorMessage(resp As String) As Boolean
+    HasErrorMessage = False
+    If InStr(resp, "ERROR 404") > 0 Then
+        Err.Raise 100404, "Response", "Se produjo error HTTP 404"
+        HasErrorMessage = True
+    End If
 End Function
 
 
 Public Function ObtenerUltimoActual(F As Factura) As Integer
-    Dim id
+    Dim Id
 
-    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    Id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.Id, F.esCredito))
 
-    ObtenerUltimoActual = id
+    ObtenerUltimoActual = Id
 End Function
 
 
 Public Function ObtenerUltimoActualEXP(F As Factura) As Integer
-    Dim id
+    Dim Id
+    
+    F.Tipo.PuntoVenta.PuntoVenta = 8
+    F.Tipo.Id = 19
 
-    id = CLng(ERPHelper.GetUltimoAutorizadoEXP(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    Id = CLng(ERPHelper.GetUltimoAutorizadoEXP(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.Id, F.esCredito))
 
-    ObtenerUltimoActualEXP = id
+    ObtenerUltimoActualEXP = Id
 End Function
+
 
 Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     On Error GoTo err1
@@ -229,16 +256,16 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     Dim body As String
 
     'Set f = DAOFactura.FindById(idFactura)
-    Dim id
+    Dim Id
 
     'Desactivada el 17.07.20 -dnemer
-    id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    Id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.Id, F.esCredito))
 
     'Reestablecida esta linea de codigo el 17.07.20 -dnemer
     'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
 
 
-    F.numero = id + 1
+    F.numero = Id + 1
 
     Dim req As New FECAEDetRequest
     
@@ -276,7 +303,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
 
-    req.MonId = F.moneda.id
+    req.MonId = F.moneda.Id
     'req.MonCotiz = F.Moneda.Cambio
     req.MonCotiz = F.CambioAPatron
 
@@ -337,7 +364,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
                 cbt.esCredito = "false"
             End If
             cbt.PtoVta = ftmp.Tipo.PuntoVenta.PuntoVenta
-            cbt.Tipo = ftmp.Tipo.id
+            cbt.Tipo = ftmp.Tipo.Id
             cbt.CbteFch = Format(ftmp.FechaEmision, "yyyymmdd")
             cbt.Cuit = "30657604972"
             req.CbtesAsoc.Add cbt
@@ -380,7 +407,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     'trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
     'bug #4
-    trib.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
+    trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     If F.TotalEstatico.TotalPercepcionesIB > 0 Then
         req.Tributos.Add trib
     Else
@@ -394,7 +421,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     'Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
     Iva.idAlicIvaCambiar = F.AlicuotaAplicada
 
-    Iva.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
+    Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
 
     If F.TotalEstatico.TotalIVADiscrimandoONo > 0 Then
@@ -482,7 +509,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     Set FeDetReq.FECAEDetRequest = req
     Dim FeCabReq As New FeCabReq
     FeCabReq.CantReg = "1"
-    FeCabReq.CbteTipo = F.Tipo.id
+    FeCabReq.CbteTipo = F.Tipo.Id
     
     If F.esCredito Then
         FeCabReq.esCredito = "true"
@@ -493,7 +520,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
 
 
 
-    FeCabReq.PtoVta = F.Tipo.PuntoVenta.id
+    FeCabReq.PtoVta = F.Tipo.PuntoVenta.Id
     Dim FeCAEReq As New FeCAEReq
 
     Set FeCAEReq.FeCabReq = FeCabReq
@@ -557,16 +584,16 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
     Dim body As String
 
     'Set f = DAOFactura.FindById(idFactura)
-    Dim id
+    Dim Id
 
     'Desactivada el 17.07.20 -dnemer
-    id = CLng(ERPHelper.GetUltimoAutorizadoEXP(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id, F.esCredito))
+    Id = CLng(ERPHelper.GetUltimoAutorizadoEXP(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.Id, F.esCredito))
 
     'Reestablecida esta linea de codigo el 17.07.20 -dnemer
     'id = CLng(ERPHelper.GetUltimoAutorizado(F.Tipo.PuntoVenta.PuntoVenta, F.Tipo.id))
 
 
-    F.numero = id + 1
+    F.numero = Id + 1
 
     Dim req As New FECAEDetRequest
     
@@ -604,7 +631,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
     req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'req.ImpIVA = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)
 
-    req.MonId = F.moneda.id
+    req.MonId = F.moneda.Id
     'req.MonCotiz = F.Moneda.Cambio
     req.MonCotiz = F.CambioAPatron
 
@@ -665,7 +692,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
                 cbt.esCredito = "false"
             End If
             cbt.PtoVta = ftmp.Tipo.PuntoVenta.PuntoVenta
-            cbt.Tipo = ftmp.Tipo.id
+            cbt.Tipo = ftmp.Tipo.Id
             cbt.CbteFch = Format(ftmp.FechaEmision, "yyyymmdd")
             cbt.Cuit = "30657604972"
             req.CbtesAsoc.Add cbt
@@ -708,7 +735,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
     'trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB * F.CambioAPatron, 2)
 
     'bug #4
-    trib.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
+    trib.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalPercepcionesIB, 2)
     If F.TotalEstatico.TotalPercepcionesIB > 0 Then
         req.Tributos.Add trib
     Else
@@ -722,7 +749,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
     'Iva.BaseImp = funciones.FormatearDecimales(F.TotalEstatico.TotalNetoGravado * F.CambioAPatron, 2)
     Iva.idAlicIvaCambiar = F.AlicuotaAplicada
 
-    Iva.importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
+    Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo, 2)
     'Iva.Importe = funciones.FormatearDecimales(F.TotalEstatico.TotalIVADiscrimandoONo * F.CambioAPatron, 2)    'mapear en erphelper por F.TipoIVA.idIVA,2)
 
     If F.TotalEstatico.TotalIVADiscrimandoONo > 0 Then
@@ -810,7 +837,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
     Set FeDetReq.FECAEDetRequest = req
     Dim FeCabReq As New FeCabReq
     FeCabReq.CantReg = "1"
-    FeCabReq.CbteTipo = F.Tipo.id
+    FeCabReq.CbteTipo = F.Tipo.Id
     
     If F.esCredito Then
         FeCabReq.esCredito = "true"
@@ -821,7 +848,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
 
 
 
-    FeCabReq.PtoVta = F.Tipo.PuntoVenta.id
+    FeCabReq.PtoVta = F.Tipo.PuntoVenta.Id
     Dim FeCAEReq As New FeCAEReq
 
     Set FeCAEReq.FeCabReq = FeCabReq
