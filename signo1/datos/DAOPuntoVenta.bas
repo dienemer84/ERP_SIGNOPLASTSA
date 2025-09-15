@@ -27,12 +27,11 @@ err1:
 End Function
 
 Public Function FindById(Id As Long) As PuntoVenta
-
     Set FindById = FindAll(" And pv.id=" & Id)(1)
 End Function
 
-Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As PuntoVenta
 
+Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As PuntoVenta
     Dim pv As PuntoVenta
     Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
 
@@ -57,7 +56,6 @@ Public Function GetDefaultOrFirst() As PuntoVenta
 End Function
 
 
-
 Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, Optional marcarDefault As Boolean = False)
     Dim col As Collection
     Dim pv As PuntoVenta
@@ -67,8 +65,6 @@ Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, Opti
 
     Dim nidx As Long
     Dim idDefault As Long
-
-
 
     For Each pv In col
         cbo.AddItem Format(pv.PuntoVenta, "000") & " - " & pv.descripcion
@@ -80,7 +76,5 @@ Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox, Opti
     If marcarDefault Then
         cbo.ListIndex = idDefault
     End If
-
-
 
 End Function

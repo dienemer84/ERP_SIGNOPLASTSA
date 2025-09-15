@@ -186,7 +186,7 @@ Private Sub Command1_Click()
     Else
 
         If MsgBox("¿Está seguro de continuar?", vbYesNo, "Confirmación") = vbYes Then
-            A = grilla.rowIndex(grilla.row)
+            A = grilla.RowIndex(grilla.row)
             If Not Ot.ValidarProcesos Then
                 MsgBox "Por favor, defina todos los procesos para continuar!", vbCritical, "Error"
             Else
@@ -213,9 +213,9 @@ Private Sub Command3_Click()
     Dim j As JSSelectedItem
 
     For Each j In grilla.SelectedItems
-        Set rectmp = Ot.detalles(j.rowIndex)
+        Set rectmp = Ot.detalles(j.RowIndex)
         rectmp.EstadoProceso = EstProcDetOT_ProcesoNoDefinido
-        grilla.RefreshRowIndex j.rowIndex
+        grilla.RefreshRowIndex j.RowIndex
     Next
     Exit Sub
 err1:
@@ -283,10 +283,10 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
 End Sub
 Private Sub grilla_SelectionChange()
     On Error Resume Next
-    Set rectmp = deta.item(grilla.rowIndex(grilla.row))
+    Set rectmp = deta.item(grilla.RowIndex(grilla.row))
 End Sub
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set rectmp = deta.item(rowIndex)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set rectmp = deta.item(RowIndex)
     With rectmp
         Values(1) = rectmp.item
         Values(2) = rectmp.Nota
@@ -297,9 +297,9 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
         Values(7) = rectmp.Pieza.nombre
     End With
 End Sub
-Private Sub grilla_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set rectmp = deta.item(rowIndex)
+    Set rectmp = deta.item(RowIndex)
     If rectmp.Pieza.CantidadStock >= CLng(Values(5)) Then
         rectmp.ReservaStock = CLng(Values(5))
     End If

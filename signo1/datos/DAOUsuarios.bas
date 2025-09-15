@@ -29,7 +29,6 @@ End Function
 
 
 Public Function GetAll(Optional filtro As String = Empty) As Collection
-
     On Error GoTo err1
     Dim col As New Collection
     Dim Usuario As clsUsuario
@@ -106,3 +105,4 @@ Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRe
 
     Set Map = u
 End Function
+

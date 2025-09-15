@@ -1196,9 +1196,9 @@ Private Sub aprobarFactura_Click()
             Dim msg As String
             msg = "Comprobante aprobado con éxito!"
             If IsSomething(Factura.CaeSolicitarResponse) Then
-                If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
+                If LenB(Factura.CaeSolicitarResponse.Observaciones) > 5 Then
 
-                    msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
+                    msg = msg & Chr(10) & Factura.CaeSolicitarResponse.Observaciones
                 End If
 
                 If LenB(msgadicional) > 0 Then
@@ -1434,7 +1434,7 @@ Private Sub btnExportar_Click()
 
         xlWorksheet.Cells(idx, 20).value = fac.Cliente.razon
         xlWorksheet.Cells(idx, 21).value = fac.Cliente.Cuit
-        xlWorksheet.Cells(idx, 22).value = fac.observaciones
+        xlWorksheet.Cells(idx, 22).value = fac.Observaciones
         xlWorksheet.Cells(idx, 23).value = fac.observaciones_cancela
         xlWorksheet.Cells(idx, 24).value = fac.RecibosAplicadosId
         
@@ -1933,227 +1933,374 @@ Private Sub gridComprobantesEmitidos_FetchIcon(ByVal RowIndex As Long, ByVal Col
     If ColIndex = 20 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 End Sub
 
-Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If facturas.count > 0 Then
-    
-        SeleccionarFactura
-        
-        If Button = 2 Then
-        
-            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If facturas.count = 0 Then Exit Sub
+    SeleccionarFactura
+    If Button <> 2 Then Exit Sub   'solo botón derecho
 
-            If Factura.Tipo.PuntoVenta.CaeManual Then
-                Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"
-            Else
-                Me.mnuEnviarAfip.caption = "Informar a AFIP"
-            End If
-
-            ' Si el estado del comprobante es EN PROCESO
-            If Factura.estado = EstadoFacturaCliente.EnProceso Then   'no se aprob? localmente
-                Me.aplicarNCaFC.Enabled = False
-                Me.aplicarNCaFC.Visible = False
-                Me.aplicarNDaFC.Visible = False
-                Me.aplicarNDaFC.Enabled = False
-                Me.editar.Enabled = True
-                Me.editar.Visible = True
-                Me.desAnular.Visible = False
-                Me.AnularFactura.Visible = False
-                Me.AnularFactura.Enabled = False
-                Me.aprobarFactura.Enabled = Permisos.AdminFacturasAprobaciones
-                Me.aprobarFactura.Visible = True
-                Me.mnuEnviarAfip.Visible = False
-                Me.ImprimirFactura.Enabled = False
-                Me.ImprimirFactura.Visible = False
-                Me.mnuDesaprobarFactura.Visible = False
-                Me.aplicar.Enabled = False
-                Me.aplicar.Visible = False
-                Me.mnuFechaPagoPropuesta.Enabled = True
-                Me.mnuFechaPagoPropuesta.Visible = True
-                Me.mnuFechaEntrega.Enabled = True
-                Me.mnuFechaEntrega.Visible = True
-
-                Me.mnuEditarCampos.Visible = False
-                Me.mnuEditarCampos.Enabled = False
-
-
-                'opci?n combinada solo v?lida para comprobantes electr?nicos no aprobados localmente
-                '23-08-2020
-                If Factura.esCredito Then
-                    If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
-                        Me.mnuAprobarEnviar.Visible = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones
-                        Me.mnuAprobarEnviar.Enabled = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones
-                    Else
-                        Me.mnuAprobarEnviar.Visible = False
-                        Me.mnuAprobarEnviar.Enabled = False
-                    End If
-                Else
-                    Me.mnuAprobarEnviar.Visible = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual
-                    Me.mnuAprobarEnviar.Enabled = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual
-                End If
-
-            End If
-
-
-            ' Si el comprobante NO EST? EN PROCESO
-            If Factura.estado <> EstadoFacturaCliente.EnProceso And Factura.estado <> EstadoFacturaCliente.Anulada Then     'se aprobo localmente y no est? anulada
-                Me.editar.Enabled = False
-                Me.editar.Visible = False
-                Me.desAnular.Visible = False
-                Me.aprobarFactura.Enabled = False
-                Me.aprobarFactura.Visible = False
-
-                Me.mnuFechaEntrega.Enabled = True
-                Me.mnuFechaEntrega.Visible = True
-                Me.mnuFechaPagoPropuesta.Enabled = True
-                Me.mnuFechaPagoPropuesta.Visible = True
-
-                'opci?n combinada solo v?lida para comprobantes electr?nicos no aprobados localmente
-                '23-08-2020
-                Me.mnuAprobarEnviar.Visible = False
-                Me.mnuAprobarEnviar.Enabled = False
-
-                Me.mnuEditarCampos.Visible = True
-                Me.mnuEditarCampos.Enabled = True
-
-                'Aplicar a Factura o ND...
-                If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
-                    Me.aplicarNCaFC.caption = "Aplicar NC a Factura o ND..."
-                    Me.aplicarNCaFC.Enabled = True
-                    Me.aplicarNCaFC.Visible = True
-                    Me.aplicarNDaFC.Enabled = False
-                End If
-
-                If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
-                    Me.aplicarNDaFC.caption = "Aplicar ND a Factura o NC..."
-                    Me.aplicarNCaFC.Enabled = False
-                    Me.aplicarNDaFC.Enabled = True
-                    Me.aplicarNDaFC.Visible = True
-                End If
-                
-                If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
-                    Me.aplicarNCaFC.Visible = False
-                    Me.aplicarNDaFC.Visible = False
-                End If
-
-                If Factura.Tipo.PuntoVenta.EsElectronico Then
-                    Me.AnularFactura.Visible = False    'si es electronico no se puede anular comprobante
-                    Me.AnularFactura.Enabled = False
-
-                    If Factura.AprobadaAFIP Then
-                        Me.mnuEnviarAfip.Enabled = False
-                        Me.mnuEnviarAfip.Visible = False
-                        Me.aplicar.Visible = False
-                        Me.aplicar.Enabled = False
-
-                    Else
-                        Me.mnuEnviarAfip.Visible = True
-                        Me.mnuEnviarAfip.Enabled = True
-                        Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-                        Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
-
-                    End If
-
-                Else
-                    Me.mnuEnviarAfip.Enabled = False
-                    Me.mnuEnviarAfip.Visible = False
-
-                    Me.AnularFactura.Visible = True
-                    Me.AnularFactura.Enabled = True
-                    Me.mnuDesaprobarFactura.Visible = False
-                End If
-
-                Me.ImprimirFactura.Enabled = True
-                Me.ImprimirFactura.Visible = True
-
-                'si es FCE muestro el form para cambiar el estado de rechazo
-                Me.mnuRechazo.Visible = Factura.esCredito
-
-            End If
-
-            If Factura.estado = EstadoFacturaCliente.Anulada Then
-                Me.mnuFechaEntrega.Enabled = False
-                Me.editar.Enabled = False
-                Me.AnularFactura.Visible = False
-                Me.aprobarFactura.Enabled = False
-                Me.ImprimirFactura.Enabled = False
-                Me.aplicar.Enabled = False
-                Me.aplicarNCaFC.Enabled = False
-                Me.aplicarNDaFC.Enabled = False
-
-            End If
-
-
-            If Factura.estado = EstadoFacturaCliente.CanceladaNC Then
-                Me.editar.Enabled = False
-                Me.AnularFactura.Enabled = False
-                Me.AnularFactura.Visible = False
-                Me.aprobarFactura.Enabled = False
-                Me.ImprimirFactura.Enabled = True
-                Me.aplicar.Enabled = False
-                Me.aplicarNCaFC.Enabled = False
-                Me.aplicarNDaFC.Enabled = False
-
-            End If
-            
-            If Factura.estado = EstadoFacturaCliente.CanceladaNCParcial Then
-                Me.editar.Enabled = False
-                Me.AnularFactura.Enabled = False
-                Me.AnularFactura.Visible = False
-                Me.aprobarFactura.Enabled = False
-                Me.ImprimirFactura.Enabled = True
-                Me.aplicar.Enabled = False
-                Me.aplicarNCaFC.Enabled = False
-                Me.aplicarNDaFC.Enabled = False
-
-            End If
-
-            If Factura.estado = EstadoFacturaCliente.AplicadaND Then
-                Me.editar.Enabled = False
-                Me.AnularFactura.Enabled = False
-                Me.AnularFactura.Visible = False
-                Me.aprobarFactura.Enabled = False
-                Me.ImprimirFactura.Enabled = True
-                Me.aplicar.Enabled = False
-                Me.aplicarNCaFC.Enabled = False
-                Me.aplicarNDaFC.Enabled = False
-
-            End If
-
-            If Factura.estado = EstadoFacturaCliente.AplicadaACbte Then
-                Me.editar.Enabled = False
-                Me.AnularFactura.Enabled = False
-                Me.AnularFactura.Visible = False
-                Me.aprobarFactura.Enabled = False
-                Me.ImprimirFactura.Enabled = True
-                Me.aplicar.Enabled = False
-                Me.aplicarNCaFC.Enabled = False
-                Me.aplicarNDaFC.Enabled = False
-
-            End If
-
-
-
-            Me.archivos.Enabled = Permisos.SistemaArchivosVer
-            Me.separador.Visible = Me.mnuEnviarAfip.Visible Or Me.aprobarFactura
-            Me.sepa3.Visible = Me.mnuDesaprobarFactura.Visible Or Me.mnuAprobarEnviar.Visible
-
-            If Factura.Saldado <> NoSaldada Then
-                Me.mnuFechaEntrega.Enabled = False
-                Me.mnuFechaEntrega.Visible = False
-                Me.mnuFechaPagoPropuesta.Enabled = False
-                Me.mnuFechaPagoPropuesta.Visible = False
-                
-                Me.MnuVerRecibo.Enabled = True
-                Me.MnuVerRecibo.Visible = True
-                
-            
-            End If
-
-            Me.PopupMenu Me.mnuFacturas
-
+    With Me
+        ' Header y acción principal (ARCA/CAE manual)
+        .NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+        If Factura.Tipo.PuntoVenta.CaeManual Then
+            .mnuEnviarAfip.caption = "Cargar CAE manualmente"
+        Else
+            .mnuEnviarAfip.caption = "Informar a ARCA"
         End If
-    End If
+
+        '===== ESTADO: EN PROCESO =====
+        If Factura.estado = EstadoFacturaCliente.EnProceso Then
+            ' Edición habilitada, resto oculto/deshabilitado
+            .aplicarNCaFC.Enabled = False: .aplicarNCaFC.Visible = False
+            .aplicarNDaFC.Enabled = False: .aplicarNDaFC.Visible = False
+            .editar.Enabled = True:        .editar.Visible = True
+            .desAnular.Visible = False
+            .AnularFactura.Enabled = False: .AnularFactura.Visible = False
+            .aprobarFactura.Enabled = Permisos.AdminFacturasAprobaciones
+            .aprobarFactura.Visible = True
+            .mnuEnviarAfip.Visible = False
+            .ImprimirFactura.Enabled = False: .ImprimirFactura.Visible = False
+            .mnuDesaprobarFactura.Visible = False
+            .aplicar.Enabled = False: .aplicar.Visible = False
+
+            .mnuFechaPagoPropuesta.Enabled = True: .mnuFechaPagoPropuesta.Visible = True
+            .mnuFechaEntrega.Enabled = True:       .mnuFechaEntrega.Visible = True
+
+            .mnuEditarCampos.Enabled = False: .mnuEditarCampos.Visible = False
+
+            ' Opción combinada Aprobar+Enviar (solo electrónica)
+            If Factura.esCredito Then
+                If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
+                    .mnuAprobarEnviar.Visible = (Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones)
+                    .mnuAprobarEnviar.Enabled = (Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones)
+                Else
+                    .mnuAprobarEnviar.Visible = False
+                    .mnuAprobarEnviar.Enabled = False
+                End If
+            Else
+                .mnuAprobarEnviar.Visible = (Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual)
+                .mnuAprobarEnviar.Enabled = (Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual)
+            End If
+
+        '===== ESTADO: APROBADA/NO EN PROCESO/NO ANULADA =====
+        ElseIf (Factura.estado <> EstadoFacturaCliente.EnProceso) And (Factura.estado <> EstadoFacturaCliente.Anulada) Then
+            .editar.Enabled = False: .editar.Visible = False
+            .desAnular.Visible = False
+            .aprobarFactura.Enabled = False: .aprobarFactura.Visible = False
+
+            .mnuFechaEntrega.Enabled = True:       .mnuFechaEntrega.Visible = True
+            .mnuFechaPagoPropuesta.Enabled = True: .mnuFechaPagoPropuesta.Visible = True
+
+            .mnuAprobarEnviar.Visible = False: .mnuAprobarEnviar.Enabled = False
+            .mnuEditarCampos.Enabled = True:   .mnuEditarCampos.Visible = True
+
+            ' Acciones según Tipo de Documento
+            Select Case Factura.TipoDocumento
+                Case tipoDocumentoContable.notaCredito
+                    .aplicarNCaFC.caption = "Aplicar NC a Factura o ND..."
+                    .aplicarNCaFC.Enabled = True:  .aplicarNCaFC.Visible = True
+                    .aplicarNDaFC.Enabled = False: .aplicarNDaFC.Visible = False
+
+                Case tipoDocumentoContable.notaDebito
+                    .aplicarNDaFC.caption = "Aplicar ND a Factura o NC..."
+                    .aplicarNCaFC.Enabled = False: .aplicarNCaFC.Visible = False
+                    .aplicarNDaFC.Enabled = True:  .aplicarNDaFC.Visible = True
+
+                Case tipoDocumentoContable.Factura
+                    .aplicarNCaFC.Visible = False
+                    .aplicarNDaFC.Visible = False
+            End Select
+
+            ' Electrónico vs No-electrónico
+            If Factura.Tipo.PuntoVenta.EsElectronico Then
+                .AnularFactura.Enabled = False: .AnularFactura.Visible = False 'no se anula
+                If Factura.AprobadaAFIP Then
+                    .mnuEnviarAfip.Enabled = False: .mnuEnviarAfip.Visible = False
+                    .aplicar.Enabled = False:       .aplicar.Visible = False
+                Else
+                    .mnuEnviarAfip.Enabled = True:  .mnuEnviarAfip.Visible = True
+                    ' Nota: en tu código original estas dos líneas apuntan a aplicarNCaFC (aunque mencionan NC/ND).
+                    .aplicarNCaFC.Visible = ((Factura.TipoDocumento = tipoDocumentoContable.notaCredito) Or (Factura.TipoDocumento = tipoDocumentoContable.notaDebito)) _
+                                            And (Factura.estado = EstadoFacturaCliente.Aprobada)
+                    .aplicarNCaFC.Enabled = .aplicarNCaFC.Visible
+                End If
+            Else
+                .mnuEnviarAfip.Enabled = False: .mnuEnviarAfip.Visible = False
+                .AnularFactura.Enabled = True:  .AnularFactura.Visible = True
+                .mnuDesaprobarFactura.Visible = False
+            End If
+
+            .ImprimirFactura.Enabled = True: .ImprimirFactura.Visible = True
+
+            ' FCE: menú rechazo visible si es crédito
+            .mnuRechazo.Visible = Factura.esCredito
+
+        End If ' fin bloque principal por estado
+
+        '===== ESTADOS ESPECIALES (anulan acciones) =====
+        Select Case Factura.estado
+            Case EstadoFacturaCliente.Anulada
+                .mnuFechaEntrega.Enabled = False
+                .editar.Enabled = False
+                .AnularFactura.Visible = False
+                .aprobarFactura.Enabled = False
+                .ImprimirFactura.Enabled = False
+                .aplicar.Enabled = False
+                .aplicarNCaFC.Enabled = False
+                .aplicarNDaFC.Enabled = False
+
+            Case EstadoFacturaCliente.CanceladaNC, _
+                 EstadoFacturaCliente.CanceladaNCParcial, _
+                 EstadoFacturaCliente.AplicadaND, _
+                 EstadoFacturaCliente.AplicadaACbte
+                .editar.Enabled = False
+                .AnularFactura.Enabled = False: .AnularFactura.Visible = False
+                .aprobarFactura.Enabled = False
+                .ImprimirFactura.Enabled = True
+                .aplicar.Enabled = False
+                .aplicarNCaFC.Enabled = False
+                .aplicarNDaFC.Enabled = False
+        End Select
+
+        ' Archivos y separadores
+        .archivos.Enabled = Permisos.SistemaArchivosVer
+        .separador.Visible = (.mnuEnviarAfip.Visible Or .aprobarFactura.Visible)
+        .sepa3.Visible = (.mnuDesaprobarFactura.Visible Or .mnuAprobarEnviar.Visible)
+
+        ' Si está saldado, ocultar fechas y mostrar recibo
+        If Factura.Saldado <> NoSaldada Then
+            .mnuFechaEntrega.Enabled = False:       .mnuFechaEntrega.Visible = False
+            .mnuFechaPagoPropuesta.Enabled = False: .mnuFechaPagoPropuesta.Visible = False
+            .MnuVerRecibo.Enabled = True:           .MnuVerRecibo.Visible = True
+        End If
+
+        ' Mostrar menú contextual
+        .PopupMenu .mnuFacturas
+    End With
 End Sub
+
+
+
+'''Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+'''    If facturas.count > 0 Then
+'''
+'''        SeleccionarFactura
+'''
+'''        If Button = 2 Then
+'''
+'''            Me.NRO.caption = "[ Nro. " & Format(Factura.numero, "0000") & " ]"
+'''
+'''            If Factura.Tipo.PuntoVenta.CaeManual Then
+'''                Me.mnuEnviarAfip.caption = "Cargar CAE manualmente"
+'''            Else
+'''                Me.mnuEnviarAfip.caption = "Informar a ARCA"
+'''            End If
+'''
+'''            ' Si el estado del comprobante es EN PROCESO
+'''            If Factura.estado = EstadoFacturaCliente.EnProceso Then   'no se aprob? localmente
+'''                Me.aplicarNCaFC.Enabled = False
+'''                Me.aplicarNCaFC.Visible = False
+'''                Me.aplicarNDaFC.Visible = False
+'''                Me.aplicarNDaFC.Enabled = False
+'''                Me.editar.Enabled = True
+'''                Me.editar.Visible = True
+'''                Me.desAnular.Visible = False
+'''                Me.AnularFactura.Visible = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.aprobarFactura.Enabled = Permisos.AdminFacturasAprobaciones
+'''                Me.aprobarFactura.Visible = True
+'''                Me.mnuEnviarAfip.Visible = False
+'''                Me.ImprimirFactura.Enabled = False
+'''                Me.ImprimirFactura.Visible = False
+'''                Me.mnuDesaprobarFactura.Visible = False
+'''                Me.aplicar.Enabled = False
+'''                Me.aplicar.Visible = False
+'''                Me.mnuFechaPagoPropuesta.Enabled = True
+'''                Me.mnuFechaPagoPropuesta.Visible = True
+'''                Me.mnuFechaEntrega.Enabled = True
+'''                Me.mnuFechaEntrega.Visible = True
+'''
+'''                Me.mnuEditarCampos.Visible = False
+'''                Me.mnuEditarCampos.Enabled = False
+'''
+'''
+'''                'opci?n combinada solo v?lida para comprobantes electr?nicos no aprobados localmente
+'''                '23-08-2020
+'''                If Factura.esCredito Then
+'''                    If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
+'''                        Me.mnuAprobarEnviar.Visible = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones
+'''                        Me.mnuAprobarEnviar.Enabled = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones
+'''                    Else
+'''                        Me.mnuAprobarEnviar.Visible = False
+'''                        Me.mnuAprobarEnviar.Enabled = False
+'''                    End If
+'''                Else
+'''                    Me.mnuAprobarEnviar.Visible = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual
+'''                    Me.mnuAprobarEnviar.Enabled = Factura.Tipo.PuntoVenta.EsElectronico And Permisos.AdminFacturasAprobaciones And Not Factura.Tipo.PuntoVenta.CaeManual
+'''                End If
+'''
+'''            End If
+'''
+'''
+'''            ' Si el comprobante NO EST? EN PROCESO
+'''            If Factura.estado <> EstadoFacturaCliente.EnProceso And Factura.estado <> EstadoFacturaCliente.Anulada Then     'se aprobo localmente y no est? anulada
+'''                Me.editar.Enabled = False
+'''                Me.editar.Visible = False
+'''                Me.desAnular.Visible = False
+'''                Me.aprobarFactura.Enabled = False
+'''                Me.aprobarFactura.Visible = False
+'''
+'''                Me.mnuFechaEntrega.Enabled = True
+'''                Me.mnuFechaEntrega.Visible = True
+'''                Me.mnuFechaPagoPropuesta.Enabled = True
+'''                Me.mnuFechaPagoPropuesta.Visible = True
+'''
+'''                'opci?n combinada solo v?lida para comprobantes electr?nicos no aprobados localmente
+'''                '23-08-2020
+'''                Me.mnuAprobarEnviar.Visible = False
+'''                Me.mnuAprobarEnviar.Enabled = False
+'''
+'''                Me.mnuEditarCampos.Visible = True
+'''                Me.mnuEditarCampos.Enabled = True
+'''
+'''                'Aplicar a Factura o ND...
+'''                If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
+'''                    Me.aplicarNCaFC.caption = "Aplicar NC a Factura o ND..."
+'''                    Me.aplicarNCaFC.Enabled = True
+'''                    Me.aplicarNCaFC.Visible = True
+'''                    Me.aplicarNDaFC.Enabled = False
+'''                End If
+'''
+'''                If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
+'''                    Me.aplicarNDaFC.caption = "Aplicar ND a Factura o NC..."
+'''                    Me.aplicarNCaFC.Enabled = False
+'''                    Me.aplicarNDaFC.Enabled = True
+'''                    Me.aplicarNDaFC.Visible = True
+'''                End If
+'''
+'''                If Factura.TipoDocumento = tipoDocumentoContable.Factura Then
+'''                    Me.aplicarNCaFC.Visible = False
+'''                    Me.aplicarNDaFC.Visible = False
+'''                End If
+'''
+'''                If Factura.Tipo.PuntoVenta.EsElectronico Then
+'''                    Me.AnularFactura.Visible = False    'si es electronico no se puede anular comprobante
+'''                    Me.AnularFactura.Enabled = False
+'''
+'''                    If Factura.AprobadaAFIP Then
+'''                        Me.mnuEnviarAfip.Enabled = False
+'''                        Me.mnuEnviarAfip.Visible = False
+'''                        Me.aplicar.Visible = False
+'''                        Me.aplicar.Enabled = False
+'''
+'''                    Else
+'''                        Me.mnuEnviarAfip.Visible = True
+'''                        Me.mnuEnviarAfip.Enabled = True
+'''                        Me.aplicarNCaFC.Visible = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+'''                        Me.aplicarNCaFC.Enabled = (Factura.TipoDocumento = tipoDocumentoContable.notaCredito Or Factura.TipoDocumento = tipoDocumentoContable.notaDebito) And (Factura.estado = EstadoFacturaCliente.Aprobada)
+'''
+'''                    End If
+'''
+'''                Else
+'''                    Me.mnuEnviarAfip.Enabled = False
+'''                    Me.mnuEnviarAfip.Visible = False
+'''
+'''                    Me.AnularFactura.Visible = True
+'''                    Me.AnularFactura.Enabled = True
+'''                    Me.mnuDesaprobarFactura.Visible = False
+'''                End If
+'''
+'''                Me.ImprimirFactura.Enabled = True
+'''                Me.ImprimirFactura.Visible = True
+'''
+'''                'si es FCE muestro el form para cambiar el estado de rechazo
+'''                Me.mnuRechazo.Visible = Factura.esCredito
+'''
+'''            End If
+'''
+'''            If Factura.estado = EstadoFacturaCliente.Anulada Then
+'''                Me.mnuFechaEntrega.Enabled = False
+'''                Me.editar.Enabled = False
+'''                Me.AnularFactura.Visible = False
+'''                Me.aprobarFactura.Enabled = False
+'''                Me.ImprimirFactura.Enabled = False
+'''                Me.aplicar.Enabled = False
+'''                Me.aplicarNCaFC.Enabled = False
+'''                Me.aplicarNDaFC.Enabled = False
+'''
+'''            End If
+'''
+'''
+'''            If Factura.estado = EstadoFacturaCliente.CanceladaNC Then
+'''                Me.editar.Enabled = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.AnularFactura.Visible = False
+'''                Me.aprobarFactura.Enabled = False
+'''                Me.ImprimirFactura.Enabled = True
+'''                Me.aplicar.Enabled = False
+'''                Me.aplicarNCaFC.Enabled = False
+'''                Me.aplicarNDaFC.Enabled = False
+'''
+'''            End If
+'''
+'''            If Factura.estado = EstadoFacturaCliente.CanceladaNCParcial Then
+'''                Me.editar.Enabled = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.AnularFactura.Visible = False
+'''                Me.aprobarFactura.Enabled = False
+'''                Me.ImprimirFactura.Enabled = True
+'''                Me.aplicar.Enabled = False
+'''                Me.aplicarNCaFC.Enabled = False
+'''                Me.aplicarNDaFC.Enabled = False
+'''
+'''            End If
+'''
+'''            If Factura.estado = EstadoFacturaCliente.AplicadaND Then
+'''                Me.editar.Enabled = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.AnularFactura.Visible = False
+'''                Me.aprobarFactura.Enabled = False
+'''                Me.ImprimirFactura.Enabled = True
+'''                Me.aplicar.Enabled = False
+'''                Me.aplicarNCaFC.Enabled = False
+'''                Me.aplicarNDaFC.Enabled = False
+'''
+'''            End If
+'''
+'''            If Factura.estado = EstadoFacturaCliente.AplicadaACbte Then
+'''                Me.editar.Enabled = False
+'''                Me.AnularFactura.Enabled = False
+'''                Me.AnularFactura.Visible = False
+'''                Me.aprobarFactura.Enabled = False
+'''                Me.ImprimirFactura.Enabled = True
+'''                Me.aplicar.Enabled = False
+'''                Me.aplicarNCaFC.Enabled = False
+'''                Me.aplicarNDaFC.Enabled = False
+'''
+'''            End If
+'''
+'''
+'''
+'''            Me.archivos.Enabled = Permisos.SistemaArchivosVer
+'''            Me.separador.Visible = Me.mnuEnviarAfip.Visible Or Me.aprobarFactura
+'''            Me.sepa3.Visible = Me.mnuDesaprobarFactura.Visible Or Me.mnuAprobarEnviar.Visible
+'''
+'''            If Factura.Saldado <> NoSaldada Then
+'''                Me.mnuFechaEntrega.Enabled = False
+'''                Me.mnuFechaEntrega.Visible = False
+'''                Me.mnuFechaPagoPropuesta.Enabled = False
+'''                Me.mnuFechaPagoPropuesta.Visible = False
+'''
+'''                Me.MnuVerRecibo.Enabled = True
+'''                Me.MnuVerRecibo.Visible = True
+'''
+'''
+'''            End If
+'''
+'''            Me.PopupMenu Me.mnuFacturas
+'''
+'''        End If
+'''    End If
+'''End Sub
 
 
 Private Sub gridComprobantesEmitidos_RowFormat(RowBuffer As GridEX20.JSRowData)
@@ -2269,7 +2416,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByV
     Values(16) = Factura.StringDiasAtraso
 
 
-    Values(17) = Factura.usuarioCreador.Usuario
+    Values(17) = Factura.usuarioCreador.usuario
 
 
     'Values(18) = Factura.observaciones
@@ -2284,17 +2431,17 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByV
 
                 'Values(18) = "/ CAE no definido"
 
-                Values(18) = "/ CAE no definido" & " / " & Factura.observaciones & " / " & Factura.observaciones_cancela
+                Values(18) = "/ CAE no definido" & " / " & Factura.Observaciones & " / " & Factura.observaciones_cancela
 
             Else
 
-                Values(18) = "CAE: " & Factura.CAE & " / " & Factura.observaciones & " / " & Factura.observaciones_cancela
+                Values(18) = "CAE: " & Factura.CAE & " / " & Factura.Observaciones & " / " & Factura.observaciones_cancela
             End If
         End If
     End If
 
     If IsSomething(Factura.UsuarioAprobacion) Then
-        Values(19) = Factura.UsuarioAprobacion.Usuario
+        Values(19) = Factura.UsuarioAprobacion.usuario
     Else
         Values(19) = vbNullString
     End If
@@ -2467,9 +2614,9 @@ Private Sub mnuAprobarEnviar_Click()
             Dim msg As String
             msg = "Comprobante aprobado con exito!"
             If IsSomething(Factura.CaeSolicitarResponse) Then
-                If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
+                If LenB(Factura.CaeSolicitarResponse.Observaciones) > 5 Then
 
-                    msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
+                    msg = msg & Chr(10) & Factura.CaeSolicitarResponse.Observaciones
                 End If
 
                 If LenB(msgadicional) > 0 Then
@@ -2602,9 +2749,9 @@ Private Sub mnuEnviarAfip_Click()
                 Dim msg As String
                 msg = "Comprobante informado con éxito!"
                 If IsSomething(Factura.CaeSolicitarResponse) Then
-                    If LenB(Factura.CaeSolicitarResponse.observaciones) > 5 Then
+                    If LenB(Factura.CaeSolicitarResponse.Observaciones) > 5 Then
 
-                        msg = msg & Chr(10) & Factura.CaeSolicitarResponse.observaciones
+                        msg = msg & Chr(10) & Factura.CaeSolicitarResponse.Observaciones
                     End If
                 End If
                 MsgBox msg, vbInformation, "Información"
@@ -2760,7 +2907,7 @@ Private Sub verFactura_Click()
 End Sub
 
 Private Sub verHistorialFactura_Click()
-    Set Factura.historial = DAOFacturaHistorial.getAllByIdFactura(Factura.Id)
-    frmHistoriales.lista = Factura.historial
+    Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.Id)
+    frmHistoriales.lista = Factura.Historial
     frmHistoriales.Show
 End Sub

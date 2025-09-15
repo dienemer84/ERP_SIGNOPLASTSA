@@ -15,7 +15,7 @@ Option Explicit
 
 Public Id As Long
 Public idDetallePedido As Long
-Public idPedido As Long
+Public IdPedido As Long
 Public Pieza As Pieza
 Public Cantidad As Double
 Public estado As EstadoProcesoDetalleOrdenTrabajo
@@ -29,7 +29,13 @@ Public CantidadFabricada As Double
 Public CantidadScrap As Double
 
 Public FechaInicio As Date
+Public HoraInicio As Date
+
 Public FechaFin As Date
+Public HoraFin As Date
+
 
 Public Recibio As Long
+Public Almacen As Long
 Public SiguienteProceso As String
+Public Observaciones As String

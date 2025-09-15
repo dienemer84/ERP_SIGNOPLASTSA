@@ -3,9 +3,8 @@ Option Explicit
 
 Dim rs As ADODB.Recordset
 
-Public Function Agregar(ByVal r As clsFilaPlanoRow, _
+Public Function agregar(ByVal r As clsFilaPlanoRow, _
                         ByVal Accion As String, _
-                        ByVal Nota As String, _
                         ByRef prev As AvanceSimpleDTO) As Boolean
     On Error GoTo err1
 
@@ -16,7 +15,7 @@ Public Function Agregar(ByVal r As clsFilaPlanoRow, _
         "id_pedido,id_detalle,id_pieza,id_sector,usuario_operacion,usuario_recibio," & _
         "cant_recibida_old,cant_recibida_new,cant_fabricada_old,cant_fabricada_new," & _
         "cant_scrap_old,cant_scrap_new,fecha_inicio_old,fecha_inicio_new,fecha_fin_old,fecha_fin_new," & _
-        "proceso_old,proceso_new,accion,nota,fecha) VALUES (" & _
+        "proceso_old,proceso_new,accion,observacion,fecha) VALUES (" & _
         EscapeNum(r.IdPedido) & "," & _
         EscapeNum(r.IdTabla) & "," & _
         EscapeNum(r.IdPiezaPedido) & "," & _
@@ -30,15 +29,15 @@ Public Function Agregar(ByVal r As clsFilaPlanoRow, _
         EscapeDate(prev.FechaFin) & "," & EscapeDate(r.FechaFin) & "," & _
         EscapeStr(prev.SiguienteProceso) & "," & EscapeStr(r.ProcesoSiguiente) & "," & _
         EscapeStr(UCase$(Accion)) & "," & _
-        EscapeStr(Nota) & "," & _
+        EscapeStr(UCase$(r.Observaciones)) & "," & _
         "CURRENT_TIMESTAMP" & _
         ")"
 
     conectar.execute q
-    Agregar = (ra > 0)
+    agregar = (ra > 0)
     Exit Function
 err1:
-    Agregar = False
+    agregar = False
     MsgBox (Err.Number & " - " & Err.Description)
 End Function
 
@@ -74,7 +73,7 @@ Public Function GetAllByPieza(ByVal id_pieza As Long, _
         h.idPieza = NzLngF(rs, "id_pieza")
         h.IdSector = NzLngF(rs, "id_sector")
         h.FEcha = NzDateF(rs, "fecha")
-        h.Nota = NzStrF(rs, "nota")
+        h.Observacion = NzStrF(rs, "observacion")
         h.Accion = NzStrF(rs, "accion")
 
         ' Usuarios como objetos

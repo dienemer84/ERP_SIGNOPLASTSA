@@ -1,8 +1,6 @@
 Attribute VB_Name = "DAOEmpleados"
 Dim rs As ADODB.Recordset
 
-
-
 Public Function GetAllByTareaId(tareaId As Long) As Collection
     Dim col As New Collection
     Dim A As clsEmpleado
@@ -25,12 +23,13 @@ Public Function GetAll(Optional filter As String = vbNullString) As Collection
         Dim fieldsIndex As Dictionary
         BuildFieldsIndex rs, fieldsIndex
 
-
         col.Add Map2(rs, fieldsIndex, "personal", False)
         rs.MoveNext
     Wend
     Set GetAll = col
 End Function
+
+
 Public Function GetByLegajo(legajo As String) As clsEmpleado
     On Error Resume Next
     Set GetByLegajo = GetAll(" and legajo=" & legajo)(1)
@@ -107,6 +106,8 @@ Public Function GetEmpleadosByTareaId(tarea_id) As Collection
 
     Set GetEmpleadosByTareaId = col
 End Function
+
+
 Public Function GetTareasIdAsignadasByPersonalId(personalId As Long) As Dictionary
     Dim q As String: q = "SELECT et.tarea_id FROM empleado_tarea et  WHERE et.personal_id = " & personalId
     Dim r As Recordset
@@ -118,6 +119,7 @@ Public Function GetTareasIdAsignadasByPersonalId(personalId As Long) As Dictiona
     Wend
     Set GetTareasIdAsignadasByPersonalId = col
 End Function
+
 
 Public Function SetTareaAsignada(personal_id As Long, tarea_id As Long, Delete As Boolean) As Boolean
     Dim q As String
@@ -170,6 +172,8 @@ Public Function Map2(rs As Recordset, indice As Dictionary, tabla As String, Opt
 
     Set Map2 = E
 End Function
+
+
 
 Public Function Save(Empleado As clsEmpleado) As Boolean
     On Error GoTo err1
@@ -277,11 +281,11 @@ Public Function Save(Empleado As clsEmpleado) As Boolean
         Dim md As New classMD5
         usu.Empleado = Empleado
         'usu.estado = Empleado.estado
-        usu.usuario = Trim(LCase(crearUsuario(Empleado.nombre, Empleado.Apellido)))
-        usu.PassWord = md.DigestStrToHexStr(usu.usuario)
+        usu.Usuario = Trim(LCase(crearUsuario(Empleado.nombre, Empleado.Apellido)))
+        usu.PassWord = md.DigestStrToHexStr(usu.Usuario)
 
 
-        conectar.execute " INSERT INTO sp.usuarios  (usuario,  PASSWORD,  idEmpleado,  estado    )   Values    ('" & usu.usuario & "',  '" & usu.PassWord & "', '" & usu.Empleado.Id & "','" & usu.Empleado.estado & "')"
+        conectar.execute " INSERT INTO sp.usuarios  (usuario,  PASSWORD,  idEmpleado,  estado    )   Values    ('" & usu.Usuario & "',  '" & usu.PassWord & "', '" & usu.Empleado.Id & "','" & usu.Empleado.estado & "')"
         usu.Id = conectar.UltimoId2
 
 

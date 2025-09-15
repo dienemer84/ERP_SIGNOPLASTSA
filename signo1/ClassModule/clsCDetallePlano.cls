@@ -21,20 +21,28 @@ Public Nivel As Integer
 Public IdTabla As Long 'id de tabla
 
 Public IdPedido As Long
-Public IdPiezaPedido As Long
-Public CantPedida As Long
+Public idPiezaPedido As Long
+Public cantpedida As Long
 Public CantRecibida As Long
 Public CantFabricada As Long
 Public CantScrap As Long
     
 Public FechaInicio As Variant
+Public HoraInicio As Variant
 Public FechaFin As Variant
+Public HoraFin As Variant
+
 Public UsuarioRecibio As Long
+
+Public Almacen As Long
+
 Public ProcesoSiguiente As String
+
+Public Observaciones As String
 
 Public UnidadMedida As String
 Public EsConjunto As Boolean
 
-Public idSector As Long
+Public IdSector As Long
 
-Public historial As New Collection
+Public Historial As New Collection

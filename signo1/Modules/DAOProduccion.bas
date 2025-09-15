@@ -13,24 +13,31 @@ Public Function Save(r As clsFilaPlanoRow) As Boolean
         "a_cant_fabricada=" & EscapeNum(r.CantFabricada) & "," & _
         "a_cant_scrap=" & EscapeNum(r.CantScrap) & "," & _
         "a_fecha_inicio=" & EscapeDate(r.FechaInicio) & "," & _
+                "a_hora_inicio=" & EscapeDate(r.HoraInicio) & "," & _
         "a_fecha_fin=" & EscapeDate(r.FechaFin) & "," & _
+                "a_hora_fin=" & EscapeDate(r.HoraFin) & "," & _
         "a_recibio=" & EscapeNum(r.UsuarioRecibio) & "," & _
-        "a_siguiente_proceso=" & EscapeStr(r.ProcesoSiguiente) & _
+        "a_siguiente_proceso=" & EscapeStr(r.ProcesoSiguiente) & "," & _
+        "a_almacen=" & EscapeStr(r.Almacen) & "," & _
+        "a_observaciones=" & EscapeStr(r.Observaciones) & _
         " WHERE id_detalle_pedido=" & EscapeNum(r.IdTabla) & _
-        " AND id_sector=" & EscapeNum(r.idSector)
+        " AND id_sector=" & EscapeNum(r.IdSector) & " AND id_pieza = " & EscapeNum(r.idPiezaPedido) & " AND id_pedido = " & EscapeNum(r.IdPedido)
 
     conectar.ExecuteRa q, ra
 
     ' Si no existía registro, insertar
     If ra = 0 Then
         q = "INSERT INTO sp.detalles_pedidos_conjuntos_avance " & _
-            "(id_detalle_pedido,id_sector,a_cant_recibida,a_cant_fabricada,a_cant_scrap," & _
-            "a_fecha_inicio,a_fecha_fin,a_recibio,a_siguiente_proceso) VALUES (" & _
-            EscapeNum(r.IdTabla) & "," & EscapeNum(r.idSector) & "," & _
+            "(id_pedido, id_pieza, id_detalle_pedido, id_sector, a_cant_recibida, a_cant_fabricada, a_cant_scrap," & _
+            "a_fecha_inicio, a_hora_inicio, a_fecha_fin, a_hora_fin, a_recibio, a_almacen, a_siguiente_proceso, a_observaciones) VALUES (" & _
+            EscapeNum(r.IdPedido) & "," & EscapeNum(r.idPiezaPedido) & "," & _
+            EscapeNum(r.IdTabla) & "," & EscapeNum(r.IdSector) & "," & _
             EscapeNum(r.CantRecibida) & "," & EscapeNum(r.CantFabricada) & "," & _
             EscapeNum(r.CantScrap) & "," & EscapeDate(r.FechaInicio) & "," & _
-            EscapeDate(r.FechaFin) & "," & EscapeNum(r.UsuarioRecibio) & "," & _
-            EscapeStr(r.ProcesoSiguiente) & ")"
+            EscapeDate(r.HoraInicio) & "," & EscapeDate(r.FechaFin) & "," & _
+            EscapeDate(r.HoraFin) & "," & EscapeNum(r.UsuarioRecibio) & "," & EscapeNum(r.Almacen) & "," & _
+            EscapeStr(r.ProcesoSiguiente) & "," & EscapeStr(r.Observaciones) & ")"
+            
         conectar.execute q
     End If
 
@@ -49,7 +56,7 @@ Public Function FindAllConjuntoProduccion( _
                     Optional ByRef filter As String = vbNullString, _
                     Optional ByVal withDesarrolloManoObra As Boolean = False, _
                     Optional ByVal idDetalleConjunto As Long = 0, _
-                    Optional ByVal idSector As Long = 0 _
+                    Optional ByVal IdSector As Long = 0 _
                 ) As Collection
 
     Dim rs As ADODB.Recordset
@@ -65,7 +72,7 @@ Public Function FindAllConjuntoProduccion( _
             "LEFT JOIN ( " & _
             "   SELECT id_detalle_pedido, id_sector, MAX(id) AS max_id " & _
             "   FROM detalles_pedidos_conjuntos_avance " & _
-            IIf(idSector > 0, "   WHERE id_sector = " & idSector & " ", "") & _
+            IIf(IdSector > 0, "   WHERE id_sector = " & IdSector & " ", "") & _
             "   GROUP BY id_detalle_pedido, id_sector " & _
             ") last ON last.id_detalle_pedido = dpc.id " & _
             "LEFT JOIN detalles_pedidos_conjuntos_avance dpca ON dpca.id = last.max_id " & _
@@ -121,12 +128,21 @@ Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
         tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
         
         tmpDeta.CantidadRecibida = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_recibida")
-        tmpDeta.cantidadFabricada = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_fabricada")
+        tmpDeta.CantidadFabricada = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_fabricada")
         tmpDeta.CantidadScrap = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_scrap")
+        
         tmpDeta.FechaInicio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_inicio")
+        tmpDeta.HoraInicio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_horaa_inicio")
         tmpDeta.FechaFin = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_fin")
+        tmpDeta.HoraFin = GetValue(rs, fieldsIndex, ProduccionAlias, "a_hora_fin")
+        
         tmpDeta.Recibio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_recibio")
+        
+        tmpDeta.Almacen = GetValue(rs, fieldsIndex, ProduccionAlias, "a_almacen")
+        
         tmpDeta.SiguienteProceso = GetValue(rs, fieldsIndex, ProduccionAlias, "a_siguiente_proceso")
+        
+        tmpDeta.Observaciones = GetValue(rs, fieldsIndex, ProduccionAlias, "a_observaciones")
         
         If LenB(piezaTableNameOrAlias) > 0 Then Set tmpDeta.Pieza = DAOPieza.Map(rs, fieldsIndex, piezaTableNameOrAlias)
         If LenB(detallePedidoTableNameOrAlias) > 0 Then Set tmpDeta.DetalleRaiz = DAODetalleOrdenTrabajo.Map(rs, fieldsIndex, detallePedidoTableNameOrAlias)
@@ -140,7 +156,7 @@ End Function
 
 Public Function FindAvanceSimple(ByVal IdPedido As Long, _
                                  ByVal idPieza As Long, _
-                                 ByVal idSector As Long, _
+                                 ByVal IdSector As Long, _
                                  Optional ByVal FallbackCualquierSector As Boolean = False) As AvanceSimpleDTO
     Dim q As String, rs As ADODB.Recordset
     Dim A As AvanceSimpleDTO
@@ -148,7 +164,7 @@ Public Function FindAvanceSimple(ByVal IdPedido As Long, _
     ' 1) intenta por sector
     q = "SELECT * FROM detalles_pedidos_conjuntos_avance dpca " & _
         "WHERE dpca.id_detalle_pedido=" & idPieza & _
-        " AND id_sector=" & idSector & " ORDER BY id DESC LIMIT 1"
+        " AND id_sector=" & IdSector & " ORDER BY id DESC LIMIT 1"
     Set rs = conectar.RSFactory(q)
 
     ' 2) si no hay y querés fallback, busca sin sector
@@ -165,13 +181,18 @@ Public Function FindAvanceSimple(ByVal IdPedido As Long, _
             A.CantFabricada = NzDbl(rs!a_cant_fabricada)
             A.CantScrap = NzDbl(rs!a_cant_scrap)
             A.FechaInicio = IIf(IsNull(rs!a_fecha_inicio), Null, rs!a_fecha_inicio)
+            A.HoraInicio = IIf(IsNull(rs!a_hora_inicio), Null, rs!a_hora_inicio)
             A.FechaFin = IIf(IsNull(rs!a_fecha_fin), Null, rs!a_fecha_fin)
+            A.HoraFin = IIf(IsNull(rs!a_hora_fin), Null, rs!a_hora_fin)
+            A.Almacen = NzLng(rs!a_almacen)
             A.Recibio = NzLng(rs!a_recibio)
             A.SiguienteProceso = NzStr(rs!a_siguiente_proceso)
+            A.Observaciones = NzStr(rs!a_observaciones)
         End If
     End If
 
     FindAvanceSimple = A
+    
 End Function
 
 ' Helpers

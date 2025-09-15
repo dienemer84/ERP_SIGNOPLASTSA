@@ -396,7 +396,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim idpedido As Long
+Dim IdPedido As Long
 Dim cod As Long
 Dim procDef As Boolean
 Dim baseP As New classPlaneamiento
@@ -412,7 +412,7 @@ Private sectoresInvolucrados As New Collection
 Public Property Set Pedido(T As OrdenTrabajo)
     Set vpedido = T
     Set vpedido.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
-    idpedido = T.Id
+    IdPedido = T.Id
     Me.caption = "Activar OT Nº " & T.IdFormateado
 End Property
 
@@ -486,6 +486,7 @@ Private Sub cmdChekAll_Click()
     Next repRow
     Me.ReportControl.Redraw
 End Sub
+
 
 Private Sub cmdRutas2_Click()
     On Error GoTo E
@@ -744,7 +745,7 @@ End Sub
 Private Sub btnImprimirPortada_Click()
     On Error GoTo err4
     Dim cod As Integer
-    cod = CInt(idpedido)
+    cod = CInt(IdPedido)
 
 '    Me.CommonDialog1.ShowPrinter
 
@@ -805,7 +806,7 @@ End Sub
 Private Sub Command2_Click()
     If Permisos.sistemaVerPrecios Then
         Dim cod As Integer
-        cod = CInt(idpedido)
+        cod = CInt(IdPedido)
         DAOOrdenTrabajo.ImprimirFaltantesFacturacion vpedido
 
 
@@ -819,7 +820,7 @@ End Sub
 Private Sub Command4_Click()
     If Permisos.sistemaVerPrecios Then
         Dim cod As Integer
-        cod = CInt(idpedido)
+        cod = CInt(IdPedido)
         baseP.informePedidoContaduria cod, True, vpedido
 
     Else
@@ -830,9 +831,9 @@ End Sub
 
 Private Sub Command5_Click()
 
-    DAOOrdenTrabajo.informePedidoPlaneamiento CInt(idpedido), False, DAOTiemposProceso.SectorColl2RS(sectoresInvolucrados)
-    DAOOrdenTrabajo.informePiezaMateriales CDbl(idpedido), 1, True
-    DAOOrdenTrabajo.imprimirEtiquetas CLng(idpedido)
+    DAOOrdenTrabajo.informePedidoPlaneamiento CInt(IdPedido), False, DAOTiemposProceso.SectorColl2RS(sectoresInvolucrados)
+    DAOOrdenTrabajo.informePiezaMateriales CDbl(IdPedido), 1, True
+    DAOOrdenTrabajo.imprimirEtiquetas CLng(IdPedido)
 
     If MsgBox("¿Imprimir las portadas para cada nave?", vbYesNo, "Confirmación") = vbYes Then
         DAOOrdenTrabajo.informePedido vpedido, False, "NAVE 1"   'imprimo la portada
@@ -868,7 +869,7 @@ End Sub
 Private Sub Form_Activate()
     Dim c As Long
 
-    cod = CLng(idpedido)
+    cod = CLng(IdPedido)
     Dim tmpSector As clsSector
     Set sectores = DAOSectores.GetAll()
     Me.lstSectores.ListItems.Clear

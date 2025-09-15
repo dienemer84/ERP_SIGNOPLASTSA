@@ -797,9 +797,65 @@ Public Function FindBestPriceByPiezaId(idPieza As Long) As Double
     If MAXIMO > ultimo Then FindBestPriceByPiezaId = MAXIMO
     If ultimo <= MAXIMO Then FindBestPriceByPiezaId = ultimo
 
+End Function
+
+'si se llama solo especificando idDetallePedido (detalle_pedido.id) viene todo el conjunto en plano
+'para que venga por partes se debe filtrar por idPiezaPadre tambien
+Public Function FindAllConjunto(Optional ByVal idDetallePedido As Long = 0, Optional ByVal idPiezaPadre As Long = 0, Optional ByRef filter As String = vbNullString, Optional withDesarrolloManoObra As Boolean = False, Optional idDetalleConjunto As Long = 0) As Collection
+
+    Dim rs As ADODB.Recordset
+    Dim q As String
+
+    Dim detaOrdenesTrabajo As New Collection
+
+    q = "SELECT" _
+      & " dpc.*," _
+      & " s.*," _
+      & " dp.*" _
+      & " FROM detalles_pedidos_conjuntos dpc" _
+      & " LEFT JOIN stock s" _
+      & " ON s.id = dpc.idPieza" _
+      & " LEFT JOIN detalles_pedidos dp" _
+      & " ON dp.id = dpc.idDetalle_pedido" _
+      & " WHERE 1 = 1"
+
+    If idDetallePedido > 0 Then
+        q = q & " AND dpc.idDetalle_Pedido = " & idDetallePedido
+    End If
+
+    If idDetalleConjunto > 0 Then
+        q = q & " And dpc.id = " & idDetalleConjunto
+    End If
+    If idPiezaPadre > 0 Then
+        q = q & " And dpc.idPiezaPadre = " & idPiezaPadre
+    End If
 
 
+    If LenB(filter) > 0 Then
+        q = q & " AND " & filter
+    End If
 
+    Set rs = conectar.RSFactory(q)
+
+    Dim fieldsIndex As Dictionary
+    BuildFieldsIndex rs, fieldsIndex
+    'Set FindAll = New Collection
+
+    Const piezaTabla As String = "s"
+    Dim tmpDeta As DetalleOTConjuntoDTO
+
+    While Not rs.EOF
+        Set tmpDeta = DAODetalleOrdenTrabajo.MapConjunto(rs, fieldsIndex, "dpc", piezaTabla, "dp")
+
+        If withDesarrolloManoObra Then
+            Set tmpDeta.Pieza.desarrollosManoObra = DAODesarrolloManoObra.FindAllByPiezaId(tmpDeta.Pieza.Id)
+        End If
+
+        detaOrdenesTrabajo.Add tmpDeta, CStr(tmpDeta.Id)
+        rs.MoveNext
+    Wend
+
+    Set FindAllConjunto = detaOrdenesTrabajo
 
 End Function
 

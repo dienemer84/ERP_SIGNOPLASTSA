@@ -42,7 +42,7 @@ Private vProcesoNew As clsSector
 
 ' Datos generales
 Private vAccion As String
-Private vNota As String
+Private vObservacion As String
 Private vFecha As Date
 
 '--- Ids de referencia
@@ -122,8 +122,8 @@ Public Property Let Accion(nValue As String): vAccion = nValue: End Property
 Public Property Get Accion() As String: Accion = vAccion: End Property
 
 '--- Nota
-Public Property Let Nota(nValue As String): vNota = nValue: End Property
-Public Property Get Nota() As String: Nota = vNota: End Property
+Public Property Let Observacion(nValue As String): vObservacion = nValue: End Property
+Public Property Get Observacion() As String: Observacion = vObservacion: End Property
 
 '--- Fecha registro
 Public Property Let FEcha(nValue As Date): vFecha = nValue: End Property

@@ -61,16 +61,16 @@ Begin VB.Form frmHistorialesProduccion
       Column(14)      =   "frmHistorialesProduccion.frx":130C
       Column(15)      =   "frmHistorialesProduccion.frx":146C
       Column(16)      =   "frmHistorialesProduccion.frx":15B4
-      Column(17)      =   "frmHistorialesProduccion.frx":16F4
+      Column(17)      =   "frmHistorialesProduccion.frx":170C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmHistorialesProduccion.frx":1848
-      FormatStyle(2)  =   "frmHistorialesProduccion.frx":1980
-      FormatStyle(3)  =   "frmHistorialesProduccion.frx":1A30
-      FormatStyle(4)  =   "frmHistorialesProduccion.frx":1AE4
-      FormatStyle(5)  =   "frmHistorialesProduccion.frx":1BBC
-      FormatStyle(6)  =   "frmHistorialesProduccion.frx":1D10
+      FormatStyle(1)  =   "frmHistorialesProduccion.frx":1860
+      FormatStyle(2)  =   "frmHistorialesProduccion.frx":1998
+      FormatStyle(3)  =   "frmHistorialesProduccion.frx":1A48
+      FormatStyle(4)  =   "frmHistorialesProduccion.frx":1AFC
+      FormatStyle(5)  =   "frmHistorialesProduccion.frx":1BD4
+      FormatStyle(6)  =   "frmHistorialesProduccion.frx":1D28
       ImageCount      =   0
-      PrinterProperties=   "frmHistorialesProduccion.frx":1DF0
+      PrinterProperties=   "frmHistorialesProduccion.frx":1E08
    End
    Begin XtremeSuiteControls.Label Label1 
       Height          =   375
@@ -111,7 +111,7 @@ Public Enum ColsHistorial
     cProcesoOld
     cProcesoNew
     cAccion
-    cNota
+    cObservacion
     cFecha
 End Enum
 
@@ -167,10 +167,10 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, _
 
     '--- Usuarios
     If Not tmp.UsuarioOperacion Is Nothing Then
-        Values(cUsuarioOperacion) = tmp.UsuarioOperacion.Usuario
+        Values(cUsuarioOperacion) = tmp.UsuarioOperacion.usuario
     End If
     If Not tmp.UsuarioRecibio Is Nothing Then
-        Values(cUsuarioRecibio) = tmp.UsuarioRecibio.Usuario
+        Values(cUsuarioRecibio) = tmp.UsuarioRecibio.usuario
     End If
     
     '--- Cantidades
@@ -198,7 +198,7 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, _
     
     '--- Acción / Nota / Fecha
     Values(cAccion) = tmp.Accion
-    Values(cNota) = tmp.Nota
+    Values(cObservacion) = tmp.Observacion
     Values(cFecha) = tmp.FEcha
 End Sub
 
