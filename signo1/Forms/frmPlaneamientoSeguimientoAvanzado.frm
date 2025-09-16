@@ -141,7 +141,7 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
       _ExtentX        =   28178
       _ExtentY        =   12303
       _StockProps     =   79
-      Caption         =   "GroupBox2"
+      Caption         =   "Detalle de OT"
       UseVisualStyle  =   -1  'True
       Begin GridEX20.GridEX gridDetalles 
          Height          =   5895
@@ -156,7 +156,6 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          AutomaticSort   =   -1  'True
          BoundColumnIndex=   ""
          ReplaceColumnIndex=   ""
-         PreviewColumn   =   "id"
          PreviewRowLines =   1
          ColumnAutoResize=   -1  'True
          MethodHoldFields=   -1  'True
@@ -180,31 +179,55 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":25F4
          Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2760
          Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":28B4
-         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2A28
-         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2BD0
-         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2D54
-         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2EA4
-         Column(15)      =   "frmPlaneamientoSeguimientoAvanzado.frx":301C
-         Column(16)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3184
-         Column(17)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3314
-         Column(18)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3438
+         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2A34
+         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2BAC
+         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2D3C
+         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2EAC
+         Column(15)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3024
+         Column(16)      =   "frmPlaneamientoSeguimientoAvanzado.frx":318C
+         Column(17)      =   "frmPlaneamientoSeguimientoAvanzado.frx":331C
+         Column(18)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3440
          FormatStylesCount=   10
-         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3570
-         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":36A8
-         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3758
-         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":380C
-         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":38E4
-         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":399C
-         FormatStyle(7)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3A7C
-         FormatStyle(8)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3B30
-         FormatStyle(9)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3BC4
-         FormatStyle(10) =   "frmPlaneamientoSeguimientoAvanzado.frx":3C50
+         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3578
+         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":36B0
+         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3760
+         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3814
+         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":38EC
+         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":39A4
+         FormatStyle(7)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3A84
+         FormatStyle(8)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3B38
+         FormatStyle(9)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3BCC
+         FormatStyle(10) =   "frmPlaneamientoSeguimientoAvanzado.frx":3C58
          ImageCount      =   0
-         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":3D00
+         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":3D08
+      End
+      Begin XtremeSuiteControls.ProgressBar pgbAvanceOT 
+         Height          =   255
+         Left            =   1320
+         TabIndex        =   23
+         Top             =   0
+         Width           =   6735
+         _Version        =   786432
+         _ExtentX        =   11880
+         _ExtentY        =   450
+         _StockProps     =   93
+         Appearance      =   6
+      End
+      Begin XtremeSuiteControls.Label lblAvancePct 
+         Height          =   195
+         Left            =   8280
+         TabIndex        =   22
+         Top             =   50
+         Width           =   855
+         _Version        =   786432
+         _ExtentX        =   1508
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Label1"
       End
       Begin XtremeSuiteControls.Label lblSectorGrande 
          Height          =   495
-         Left            =   120
+         Left            =   1320
          TabIndex        =   13
          Top             =   6360
          Width           =   5415
@@ -236,6 +259,67 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
       _StockProps     =   79
       Caption         =   "Párametros de búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.GroupBox grpAvanceOT 
+         Height          =   855
+         Left            =   11160
+         TabIndex        =   17
+         Top             =   240
+         Width           =   5175
+         _Version        =   786432
+         _ExtentX        =   9128
+         _ExtentY        =   1508
+         _StockProps     =   79
+         Caption         =   "Totalizador"
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.Label lblCantScrap 
+            Height          =   195
+            Left            =   2640
+            TabIndex        =   21
+            Top             =   525
+            Width           =   2415
+            _Version        =   786432
+            _ExtentX        =   4260
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Cant. Scrap Total:"
+         End
+         Begin XtremeSuiteControls.Label lblCantFabricada 
+            Height          =   195
+            Left            =   2640
+            TabIndex        =   20
+            Top             =   240
+            Width           =   2415
+            _Version        =   786432
+            _ExtentX        =   4260
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Cant. Fabricada Total:"
+         End
+         Begin XtremeSuiteControls.Label lblCantRecibida 
+            Height          =   195
+            Left            =   240
+            TabIndex        =   19
+            Top             =   525
+            Width           =   2055
+            _Version        =   786432
+            _ExtentX        =   3625
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Cant. Recibida Total:"
+         End
+         Begin XtremeSuiteControls.Label lblCantPedida 
+            Height          =   195
+            Left            =   240
+            TabIndex        =   18
+            Top             =   240
+            Width           =   2175
+            _Version        =   786432
+            _ExtentX        =   3836
+            _ExtentY        =   344
+            _StockProps     =   79
+            Caption         =   "Cant. Pedida Total:"
+         End
+      End
       Begin XtremeSuiteControls.ComboBox cboSectores 
          Height          =   315
          Left            =   1560
@@ -251,13 +335,13 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
       End
       Begin XtremeSuiteControls.GroupBox fraDatosOT 
          Height          =   855
-         Left            =   6720
+         Left            =   5160
          TabIndex        =   1
          Tag             =   "Datos de la Orden de Trabajo Nº "
          Top             =   240
-         Width           =   9075
+         Width           =   5955
          _Version        =   786432
-         _ExtentX        =   16007
+         _ExtentX        =   10504
          _ExtentY        =   1508
          _StockProps     =   79
          Caption         =   "Datos de la Orden de Trabajo Nº "
@@ -266,7 +350,7 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
             AutoSize        =   -1  'True
             Caption         =   "Estado:"
             Height          =   195
-            Left            =   4830
+            Left            =   3960
             TabIndex        =   5
             Top             =   240
             Width           =   540
@@ -275,7 +359,7 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
             AutoSize        =   -1  'True
             Caption         =   "Fecha Entrega:"
             Height          =   195
-            Left            =   4305
+            Left            =   3360
             TabIndex        =   4
             Top             =   525
             Width           =   1095
@@ -402,7 +486,7 @@ Private detallesPlanos As Collection
 Dim dto As clsFilaPlanoRow
 Private m_rows As New Collection    'colección de clsFilaPlanoRow
 
-Public Enum Cols
+Public Enum cols
   cID = 1
   cItem = 2
   cTipo = 3
@@ -423,8 +507,34 @@ Public Enum Cols
   cObservaciones = 18
 End Enum
 
+Private Enum CampoSumaPlano
+   csCantPedida = 1
+   csCantRecibida
+   csCantFabricada
+   csCantScrap
+End Enum
+
+
+Private Function SumarPlano(ByVal campo As CampoSumaPlano, Optional ByVal soloPiezas As Boolean = True) As Double
+    Dim r As clsFilaPlanoRow
+    Dim acc As Double
+    If detallesPlanos Is Nothing Then Exit Function
+    For Each r In detallesPlanos
+        If (Not soloPiezas) Or (soloPiezas And Not r.EsConjunto) Then
+            Select Case campo
+                Case csCantPedida:    acc = acc + NzDbl(r.cantpedida)
+                Case csCantRecibida:  acc = acc + NzDbl(r.CantRecibida)
+                Case csCantFabricada:  acc = acc + NzDbl(r.CantFabricada)
+                Case csCantScrap:      acc = acc + NzDbl(r.CantScrap)
+            End Select
+        End If
+    Next
+    SumarPlano = acc
+End Function
+
 
 Private Sub btnCargarSector_Click(): llenarDataGrid: End Sub
+
 
 
 Private Sub cboSectores_Click()
@@ -432,6 +542,9 @@ Private Sub cboSectores_Click()
     llenarDataGrid
     
     Me.lblSectorGrande.caption = "SECTOR: " & Me.cboSectores.Text
+    
+    refrescarAvanceOT
+    
 
 End Sub
 
@@ -448,14 +561,34 @@ Private Sub cmdBuscar_Click()
     
 '''    Me.lblSectorGrande.caption = "SECTOR: CORTE"
     
-    CargarDetallesOT
+    cargarDetallesOT
     
     llenarDataGrid              ' <<< volver a cargar
     
+    refrescarAvanceOT
+    
+        
 End Sub
 
 
-Private Sub CargarDetallesOT()
+Private Sub totalizarAvance()
+
+    Dim totPedida As Double
+    totPedida = SumarPlano(csCantPedida, True)  ' solo piezas
+
+    Me.lblCantPedida.caption = "Cant. Pedida Total: " & Format(totPedida, "0.##")
+    
+    ' Si querés mostrar más totales (opcional):
+    Me.lblCantRecibida.caption = "Cant. Recibida Total: " & Format(SumarPlano(csCantRecibida, True), "0.##")
+    Me.lblCantFabricada.caption = "Cant. Fabricada Total: " & Format(SumarPlano(csCantFabricada, True), "0.##")
+    Me.lblCantScrap.caption = "Cant. Scrap Total: " & Format(SumarPlano(csCantScrap, True), "0.##")
+
+
+End Sub
+
+
+
+Private Sub cargarDetallesOT()
         Me.fraDatosOT.caption = Me.fraDatosOT.Tag & m_ot.Id
         Me.lblCliente.caption = "Cliente: " & m_ot.Cliente.razon
         Me.lblFechaCreado.caption = "Fecha Creada: " & m_ot.fechaCreado
@@ -492,6 +625,8 @@ Private Sub Form_Load()
     
     Set detallesPlanos = New Collection
     
+    refrescarAvanceOT
+    
 End Sub
 
 
@@ -500,9 +635,15 @@ Private Sub Form_Resize()
     If Me.WindowState = vbMinimized Then Exit Sub
     
     With fraDatosOT
-        .Left = 5500
-        .Top = 100
-        .Width = 7500
+        .Left = 5160
+        .Top = 240
+        .Width = 5955
+    End With
+    
+    With Me.grpAvanceOT
+        .Left = 11160
+        .Top = 240
+        .Width = Me.GroupBox2.Width
     End With
     
     ' GroupBox ocupa todo el ancho, arriba
@@ -538,10 +679,16 @@ Private Sub Form_Resize()
             .Columns(cCantRecibida).Width = 800
             .Columns(cCantScrap).Width = 800
             
+            .Columns(cFechaIni).Width = 800
+            .Columns(cHoraIni).Width = 800
+            .Columns(cFechaFin).Width = 800
+            .Columns(cHoraFin).Width = 800
+
             .Columns(cFechaIni).Format = "dd/MM/yyyy"
             .Columns(cHoraIni).Format = "HH:mm"
             .Columns(cFechaFin).Format = "dd/MM/yyyy"
             .Columns(cHoraFin).Format = "HH:mm"
+
 
        End If
         
@@ -588,35 +735,42 @@ Private Sub llenarDataGrid()
     
     frmAviso.mostrar "Cargando datos..."
     
-    ConstruirPlano
+    construirPlano
        
     gridDetalles.ItemCount = detallesPlanos.count
 
     On Error Resume Next
+    
     gridDetalles.ReBind
+    
     gridDetalles.Refresh
+    
     On Error GoTo 0
+    
+    totalizarAvance   ' <-- refresca los totales luego de bind
+    
+    refrescarAvanceOT
     
 End Sub
 
 
-Private Sub ConstruirPlano()
+Private Sub construirPlano()
     Dim d As DetalleOrdenTrabajo
     
    Set detallesPlanos = New Collection
 
     For Each d In m_ot.detalles
-        AgregarFilaDetalle d, 0
+        agregarFilaDetalle d, 0
         If Not d.Pieza Is Nothing Then
             If d.Pieza.EsConjunto Then
-                AgregarHijos d.Id, d.Pieza.Id, 1, CLng(d.CantidadPedida) 'factor raíz
+                agregarHijos d.Id, d.Pieza.Id, 1, CLng(d.CantidadPedida) 'factor raíz
             End If
         End If
     Next
 End Sub
 
 
-Private Sub AgregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As Integer)
+Private Sub agregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As Integer)
     
     Dim r As clsFilaPlanoRow: Set r = New clsFilaPlanoRow
     
@@ -650,7 +804,9 @@ Private Sub AgregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As In
         r.CantFabricada = av.CantFabricada
         r.CantScrap = av.CantScrap
         r.FechaInicio = av.FechaInicio
+        r.HoraInicio = av.HoraInicio
         r.FechaFin = av.FechaFin
+        r.HoraFin = av.HoraFin
         r.UsuarioRecibio = av.Recibio
         r.Almacen = av.Almacen
         r.ProcesoSiguiente = av.SiguienteProceso
@@ -663,7 +819,7 @@ Private Sub AgregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As In
 End Sub
 
 
-Private Sub AgregarFilaDTO(ByVal dto As DetalleOTConjuntoDTO, _
+Private Sub agregarFilaDTO(ByVal dto As DetalleOTConjuntoDTO, _
                            ByVal Nivel As Integer, _
                            ByVal factor As Long)
                           
@@ -705,7 +861,7 @@ Private Sub AgregarFilaDTO(ByVal dto As DetalleOTConjuntoDTO, _
 End Sub
 
 
-Private Sub AgregarHijos(ByVal idDetallePedido As Long, _
+Private Sub agregarHijos(ByVal idDetallePedido As Long, _
                          ByVal idPiezaPadre As Long, _
                          ByVal Nivel As Integer, _
                          ByVal factor As Long)
@@ -720,10 +876,10 @@ Private Sub AgregarHijos(ByVal idDetallePedido As Long, _
     If hijos Is Nothing Then Exit Sub
 
     For Each dto In hijos
-        AgregarFilaDTO dto, Nivel, factor
+        agregarFilaDTO dto, Nivel, factor
         If Not dto.Pieza Is Nothing Then
             If dto.Pieza.EsConjunto Then
-                AgregarHijos idDetallePedido, dto.Pieza.Id, Nivel + 1, dto.CantidadTotalStatic
+                agregarHijos idDetallePedido, dto.Pieza.Id, Nivel + 1, dto.CantidadTotalStatic
             End If
         End If
     Next
@@ -734,7 +890,7 @@ Private Sub gridDetalles_MouseUp(Button As Integer, Shift As Integer, x As Singl
 
     If detallesPlanos.count > 0 Then
     
-        SeleccionarDetalle
+        seleccionarDetalle
         
         If Button = 2 Then
    
@@ -745,7 +901,7 @@ Private Sub gridDetalles_MouseUp(Button As Integer, Shift As Integer, x As Singl
 End Sub
 
 
-Private Sub SeleccionarDetalle()
+Private Sub seleccionarDetalle()
     On Error Resume Next
     Set dto = detallesPlanos.item(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
 
@@ -855,6 +1011,11 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
     Else
         frmAviso.mostrar "Guardando..."
         Call DAOProduccionHistorial.agregar(r, "CARGA DE DATOS", prev)
+        
+        totalizarAvance   ' <-- vuelve a calcular
+        
+        refrescarAvanceOT
+            
     End If
     
 End Sub
@@ -920,7 +1081,7 @@ End Sub
 
 
 Private Sub AADelDetalle_Click()
-    SeleccionarDetalle
+    seleccionarDetalle
     Dim F As New frmArchivos2
     F.Origen = OrigenArchivos.OA_OrdenesTrabajoDetalle
     F.ObjetoId = dto.IdTabla
@@ -930,7 +1091,7 @@ End Sub
 
 
 Private Sub AADLPieza_Click()
-    SeleccionarDetalle
+    seleccionarDetalle
     Dim F As New frmArchivos2
     F.Origen = OrigenArchivos.OA_Piezas
     F.ObjetoId = dto.idPiezaPedido
@@ -954,7 +1115,7 @@ End Sub
 
 
 Private Sub menu_desarrollo_Click()
-    SeleccionarDetalle
+    seleccionarDetalle
     Dim idx As Long
     idx = Me.gridDetalles.RowIndex(Me.gridDetalles.row)
     If idx > 0 Then
@@ -990,7 +1151,7 @@ End Sub
 
 Private Sub menu_Observaciones_Click()
 
-    SeleccionarDetalle
+    seleccionarDetalle
     Dim idx As Long
     
     idx = Me.gridDetalles.RowIndex(Me.gridDetalles.row)
@@ -1003,3 +1164,43 @@ Private Sub menu_Observaciones_Click()
         F.Show
     End If
 End Sub
+
+
+Private Function PorcentajeAvanceOT(Optional ByRef totPed As Double, Optional ByRef totFab As Double) As Double
+    totPed = SumarPlano(csCantPedida, True)       ' solo piezas
+    totFab = SumarPlano(csCantFabricada, True)    ' solo piezas
+
+    Dim pct As Double
+    If totPed <= 0 Then
+        pct = 0
+    Else
+        pct = (totFab / totPed) * 100#
+    End If
+
+    ' Clamp para evitar pasar de 0..100 visualmente
+    If pct < 0 Then pct = 0
+    If pct > 100 Then pct = 100
+
+    PorcentajeAvanceOT = pct
+End Function
+
+Private Sub refrescarAvanceOT()
+    Dim totPed As Double, totFab As Double
+    Dim pct As Double: pct = PorcentajeAvanceOT(totPed, totFab)
+
+    ' Mejor resolución en la barra: 0..1000 (0.1%)
+    With pgbAvanceOT
+        .min = 0
+        .max = 1000
+        .value = CLng(pct * 10)   ' 57.3% -> 573
+    End With
+
+    Me.lblAvancePct.caption = Format(pct, "0.0") & " %"
+
+    ' Si ya mostrás estos totales en otras etiquetas, podés comentar estas líneas:
+    Me.lblCantPedida.caption = "Cant. Pedida Total: " & Format(totPed, "0.##")
+    ' (Opcional) si querés un label de fabricada total, crea lblCantFabricadaTotal:
+    'Me.lblCantFabricadaTotal.Caption = "Cant. Fabricada Total: " & Format(totFab, "0.##")
+End Sub
+
+

@@ -3,44 +3,6 @@ Option Explicit
 
 Dim rs As ADODB.Recordset
 
-Public Function agregar(ByVal r As clsFilaPlanoRow, _
-                        ByVal Accion As String, _
-                        ByRef prev As AvanceSimpleDTO) As Boolean
-    On Error GoTo err1
-
-    Dim q As String, ra As Long, uid As Long
-    uid = conectar.GetEntityId(funciones.GetUserObj)
-
-    q = "INSERT INTO detalles_pedidos_conjuntos_avance_historial (" & _
-        "id_pedido,id_detalle,id_pieza,id_sector,usuario_operacion,usuario_recibio," & _
-        "cant_recibida_old,cant_recibida_new,cant_fabricada_old,cant_fabricada_new," & _
-        "cant_scrap_old,cant_scrap_new,fecha_inicio_old,fecha_inicio_new,fecha_fin_old,fecha_fin_new," & _
-        "proceso_old,proceso_new,accion,observacion,fecha) VALUES (" & _
-        EscapeNum(r.IdPedido) & "," & _
-        EscapeNum(r.IdTabla) & "," & _
-        EscapeNum(r.IdPiezaPedido) & "," & _
-        EscapeNum(r.IdSector) & "," & _
-        EscapeNum(uid) & "," & _
-        EscapeNum(r.UsuarioRecibio) & "," & _
-        EscapeNum(prev.CantRecibida) & "," & EscapeNum(r.CantRecibida) & "," & _
-        EscapeNum(prev.CantFabricada) & "," & EscapeNum(r.CantFabricada) & "," & _
-        EscapeNum(prev.CantScrap) & "," & EscapeNum(r.CantScrap) & "," & _
-        EscapeDate(prev.FechaInicio) & "," & EscapeDate(r.FechaInicio) & "," & _
-        EscapeDate(prev.FechaFin) & "," & EscapeDate(r.FechaFin) & "," & _
-        EscapeStr(prev.SiguienteProceso) & "," & EscapeStr(r.ProcesoSiguiente) & "," & _
-        EscapeStr(UCase$(Accion)) & "," & _
-        EscapeStr(UCase$(r.Observaciones)) & "," & _
-        "CURRENT_TIMESTAMP" & _
-        ")"
-
-    conectar.execute q
-    agregar = (ra > 0)
-    Exit Function
-err1:
-    agregar = False
-    MsgBox (Err.Number & " - " & Err.Description)
-End Function
-
 
 Public Function GetAllByPieza(ByVal id_pieza As Long, _
                               Optional ByVal id_pedido As Long = 0, _
@@ -73,7 +35,8 @@ Public Function GetAllByPieza(ByVal id_pieza As Long, _
         h.idPieza = NzLngF(rs, "id_pieza")
         h.IdSector = NzLngF(rs, "id_sector")
         h.FEcha = NzDateF(rs, "fecha")
-        h.Observacion = NzStrF(rs, "observacion")
+        h.ObservacionOld = NzStrF(rs, "observacion_old")
+        h.ObservacionNew = NzStrF(rs, "observacion_new")
         h.Accion = NzStrF(rs, "accion")
 
         ' Usuarios como objetos
@@ -92,7 +55,12 @@ Public Function GetAllByPieza(ByVal id_pieza As Long, _
         h.FechaInicioNew = NzDateF(rs, "fecha_inicio_new")
         h.FechaFinOld = NzDateF(rs, "fecha_fin_old")
         h.FechaFinNew = NzDateF(rs, "fecha_fin_new")
-
+        
+        h.HoraInicioOld = NzDateF(rs, "hora_inicio_old")
+        h.HoraInicioNew = NzDateF(rs, "hora_inicio_new")
+        h.HoraFinOld = NzDateF(rs, "hora_fin_old")
+        h.HoraFinNew = NzDateF(rs, "hora_fin_new")
+        
         Set h.ProcesoOld = DAOSectores.GetByIdModulo(NzLngF(rs, "proceso_old"))
         Set h.ProcesoNew = DAOSectores.GetByIdModulo(NzLngF(rs, "proceso_new"))
         
@@ -108,6 +76,57 @@ Public Function GetAllByPieza(ByVal id_pieza As Long, _
 err1:
     Set GetAllByPieza = Nothing
 End Function
+
+
+Public Function agregar(ByVal r As clsFilaPlanoRow, _
+                        ByVal Accion As String, _
+                        ByRef prev As AvanceSimpleDTO) As Boolean
+    On Error GoTo err1
+
+    Dim uid As Long
+    Dim ra As Long
+    Dim cols As String
+    Dim vals As String
+    Dim q As String
+
+    uid = conectar.GetEntityId(funciones.GetUserObj)
+
+    '--- Columnas (sin _)
+    cols = "id_pedido,id_detalle,id_pieza,id_sector,usuario_operacion,usuario_recibio,"
+    cols = cols & "cant_recibida_old,cant_recibida_new,cant_fabricada_old,cant_fabricada_new,"
+    cols = cols & "cant_scrap_old,cant_scrap_new,fecha_inicio_old,fecha_inicio_new,fecha_fin_old,fecha_fin_new,"
+    cols = cols & "hora_inicio_old,hora_inicio_new,hora_fin_old,hora_fin_new,"
+    cols = cols & "proceso_old,proceso_new,almacen_old,almacen_new,"
+    cols = cols & "observacion_old,observacion_new,accion,fecha"
+
+    '--- Valores (sin _)
+    vals = EscapeNum(r.IdPedido) & "," & EscapeNum(r.IdTabla) & "," & EscapeNum(r.idPiezaPedido) & "," & EscapeNum(r.IdSector) & ","
+    vals = vals & EscapeNum(uid) & "," & EscapeNum(r.UsuarioRecibio) & ","
+    vals = vals & EscapeNum(prev.CantRecibida) & "," & EscapeNum(r.CantRecibida) & ","
+    vals = vals & EscapeNum(prev.CantFabricada) & "," & EscapeNum(r.CantFabricada) & ","
+    vals = vals & EscapeNum(prev.CantScrap) & "," & EscapeNum(r.CantScrap) & ","
+    vals = vals & EscapeDate(prev.FechaInicio) & "," & EscapeDate(r.FechaInicio) & ","
+    vals = vals & EscapeDate(prev.FechaFin) & "," & EscapeDate(r.FechaFin) & ","
+    vals = vals & EscapeTime(prev.HoraInicio) & "," & EscapeTime(r.HoraInicio) & ","
+    vals = vals & EscapeTime(prev.HoraFin) & "," & EscapeTime(r.HoraFin) & ","
+    vals = vals & EscapeStr(prev.SiguienteProceso) & "," & EscapeStr(r.ProcesoSiguiente) & ","
+    vals = vals & EscapeStr(prev.Almacen) & "," & EscapeStr(r.Almacen) & ","
+    vals = vals & EscapeStr(prev.Observaciones) & "," & EscapeStr(r.Observaciones) & ","
+    vals = vals & EscapeStr(UCase$(Accion)) & "," & "CURRENT_TIMESTAMP"
+
+    '--- SQL final (sin _)
+    q = "INSERT INTO detalles_pedidos_conjuntos_avance_historial (" & cols & ") VALUES (" & vals & ")"
+
+    conectar.execute q
+    agregar = (ra > 0)
+    Exit Function
+
+err1:
+    agregar = False
+    MsgBox "agregar(): " & Err.Number & " - " & Err.Description, vbExclamation, "Historial de Avance"
+End Function
+
+
 
 ' Helpers de lectura segura desde Recordset
 Private Function NzLngF(ByVal rs As Object, ByVal fld As String) As Long
@@ -128,5 +147,16 @@ Private Function NzDateF(ByVal rs As Object, ByVal fld As String) As Variant
         NzDateF = 0          ' equivale a 30/12/1899
     Else
         NzDateF = CDate(rs.Fields(fld).value)
+    End If
+End Function
+
+Private Function EscapeTime(ByVal d As Variant) As String
+    If IsNull(d) Or d = 0 Or (VarType(d) = vbString And Trim$(d) = "") Then
+        EscapeTime = "NULL"
+    Else
+        ' ? MySQL / SQL Server (TIME o VARCHAR):
+        EscapeTime = "'" & Format$(CDate(d), "hh:nn:ss") & "'"
+        ' ? Si fuera Access/Jet, cambiá por:
+        ' EscapeTime = "#" & Format$(CDate(d), "hh:nn:ss") & "#"
     End If
 End Function

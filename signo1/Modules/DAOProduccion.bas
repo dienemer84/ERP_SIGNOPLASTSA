@@ -132,7 +132,7 @@ Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
         tmpDeta.CantidadScrap = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_scrap")
         
         tmpDeta.FechaInicio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_inicio")
-        tmpDeta.HoraInicio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_horaa_inicio")
+        tmpDeta.HoraInicio = GetValue(rs, fieldsIndex, ProduccionAlias, "a_hora_inicio")
         tmpDeta.FechaFin = GetValue(rs, fieldsIndex, ProduccionAlias, "a_fecha_fin")
         tmpDeta.HoraFin = GetValue(rs, fieldsIndex, ProduccionAlias, "a_hora_fin")
         

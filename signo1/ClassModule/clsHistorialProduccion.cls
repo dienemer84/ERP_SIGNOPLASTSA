@@ -36,13 +36,24 @@ Private vFechaInicioNew As Date
 Private vFechaFinOld As Date
 Private vFechaFinNew As Date
 
+' Horas old / new
+Private vHoraInicioOld As Date
+Private vHoraInicioNew As Date
+Private vHoraFinOld As Date
+Private vHoraFinNew As Date
+
 ' Procesos
 Private vProcesoOld As clsSector
 Private vProcesoNew As clsSector
 
+' Procesos
+Private vAlmacenOld As clsAlmacen
+Private vAlmacenNew As clsAlmacen
+
 ' Datos generales
 Private vAccion As String
-Private vObservacion As String
+Private vObservacionOld As String
+Private vObservacionNew As String
 Private vFecha As Date
 
 '--- Ids de referencia
@@ -100,6 +111,19 @@ Public Property Get FechaFinOld() As Date: FechaFinOld = vFechaFinOld: End Prope
 Public Property Let FechaFinNew(nValue As Date): vFechaFinNew = nValue: End Property
 Public Property Get FechaFinNew() As Date: FechaFinNew = vFechaFinNew: End Property
 
+'--- Horas
+Public Property Let HoraInicioOld(nValue As Date): vHoraInicioOld = nValue: End Property
+Public Property Get HoraInicioOld() As Date: HoraInicioOld = vHoraInicioOld: End Property
+
+Public Property Let HoraInicioNew(nValue As Date): vHoraInicioNew = nValue: End Property
+Public Property Get HoraInicioNew() As Date: HoraInicioNew = vHoraInicioNew: End Property
+
+Public Property Let HoraFinOld(nValue As Date): vHoraFinOld = nValue: End Property
+Public Property Get HoraFinOld() As Date: HoraFinOld = vHoraFinOld: End Property
+
+Public Property Let HoraFinNew(nValue As Date): vHoraFinNew = nValue: End Property
+Public Property Get HoraFinNew() As Date: HoraFinNew = vHoraFinNew: End Property
+
 
 '--- Procesos
 
@@ -117,13 +141,33 @@ Public Property Get ProcesoNew() As clsSector
     Set ProcesoNew = vProcesoNew
 End Property
 
+
+'--- Almacen
+
+Public Property Set AlmacenOld(nValue As clsAlmacen)
+    Set vAlmacenOld = nValue
+End Property
+Public Property Get AlmacenOld() As clsAlmacen
+    Set AlmacenOld = vAlmacenOld
+End Property
+
+Public Property Set AlmacenNew(nValue As clsAlmacen)
+    Set vAlmacenNew = nValue
+End Property
+Public Property Get AlmacenNew() As clsAlmacen
+    Set AlmacenNew = vAlmacenNew
+End Property
+
 '--- Accion
 Public Property Let Accion(nValue As String): vAccion = nValue: End Property
 Public Property Get Accion() As String: Accion = vAccion: End Property
 
 '--- Nota
-Public Property Let Observacion(nValue As String): vObservacion = nValue: End Property
-Public Property Get Observacion() As String: Observacion = vObservacion: End Property
+Public Property Let ObservacionOld(nValue As String): vObservacionOld = nValue: End Property
+Public Property Get ObservacionOld() As String: ObservacionOld = vObservacionOld: End Property
+
+Public Property Let ObservacionNew(nValue As String): vObservacionNew = nValue: End Property
+Public Property Get ObservacionNew() As String: ObservacionNew = vObservacionNew: End Property
 
 '--- Fecha registro
 Public Property Let FEcha(nValue As Date): vFecha = nValue: End Property
