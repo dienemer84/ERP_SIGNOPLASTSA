@@ -1,6 +1,7 @@
 Attribute VB_Name = "DAOTipoFacturaDiscriminado"
 Option Explicit
 
+
 Public Function FindAllByFilter(filter As String) As Collection
     Dim c As New Collection
     Dim TipoFactura As New clsTipoFacturaDiscriminado

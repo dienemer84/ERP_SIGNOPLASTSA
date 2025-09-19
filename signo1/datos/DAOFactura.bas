@@ -217,10 +217,10 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         F.ConceptoIncluir = GetValue(rs, indice, tabla, "id_concepto_incluir")
         F.OrdenCompra = GetValue(rs, indice, tabla, "OrdenCompra")
         F.Saldado = GetValue(rs, indice, tabla, "saldada")
-        F.observaciones = GetValue(rs, indice, tabla, "observaciones")
+        F.Observaciones = GetValue(rs, indice, tabla, "observaciones")
         F.Opcional27 = GetValue(rs, indice, tabla, "opcional27")
         F.observaciones_cancela = GetValue(rs, indice, tabla, "observaciones_cancela")
-        If Trim(F.observaciones) = "-" Or (F.observaciones) = "." Then F.observaciones = vbNullString
+        If Trim(F.Observaciones) = "-" Or (F.Observaciones) = "." Then F.Observaciones = vbNullString
         'If F.id = 6415 Then Stop
         If LenB(tablaFactTipoFacturaDiscriminado) Then Set F.Tipo = DAOTipoFacturaDiscriminado.Map(rs, indice, tablaFactTipoFacturaDiscriminado, tablaTipoFactura, tablaPuntoVenta)
         If LenB(tablaIVATipo) Then Set F.TipoIVA = DAOTipoIva.Map(rs, indice, tablaIVATipo)
@@ -474,7 +474,7 @@ Public Function Guardar(F As Factura, Optional Cascade As Boolean = False) As Bo
     q = Replace$(q, "'impresa'", conectar.Escape(F.EstaImpresa))
     q = Replace$(q, "'tipo_borrar'", conectar.Escape(F.TipoDocumento))
     q = Replace$(q, "'saldada'", conectar.Escape(F.Saldado))
-    q = Replace$(q, "'observaciones'", conectar.Escape(F.observaciones))
+    q = Replace$(q, "'observaciones'", conectar.Escape(F.Observaciones))
     q = Replace$(q, "'observaciones_cancela'", conectar.Escape(F.observaciones_cancela))
     q = Replace$(q, "'texto_adicional'", conectar.Escape(F.TextoAdicional))
     q = Replace$(q, "'AliPercIB'", conectar.Escape(F.AlicuotaPercepcionesIIBB))
@@ -807,7 +807,6 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
         Next
         Factura.CambioAPatron = Factura.moneda.Cambio
         Factura.FechaAprobacion = Now
-        'Factura.FechaEntrega = Date
         Factura.TotalEstatico.total = Factura.total
         Factura.TotalEstatico.TotalExento = Factura.TotalExento
         Factura.TotalEstatico.TotalIVA = Factura.TotalIVA
@@ -931,7 +930,7 @@ Public Function aprobarV2(Factura As Factura, aprobarLocal As Boolean, enviarAfi
                 Factura.CAEVto = response.getFechaFromString(response.CAEVencimiento)
                 Factura.CAEFechaProceso = response.FechaProceso
             Else
-                Err.Raise 1000, "Afip", "Comprobante no autorizado " & response.Errores
+                Err.Raise 1000, "ARCA", "Comprobante no autorizado " & response.Errores
 
             End If
 
@@ -1160,7 +1159,6 @@ Public Function proximaFactura(F As Factura) As Long    'TipoDocumento As tipoDo
 
         If IsSomething(F) And IsSomething(F.Tipo) And IsSomething(F.Tipo.PuntoVenta) Then
 
-
             If F.Tipo.PuntoVenta.EsElectronico Then
                 Dim ultimoautorizado As Integer
                 
@@ -1169,43 +1167,28 @@ Public Function proximaFactura(F As Factura) As Long    'TipoDocumento As tipoDo
                 Else
                     ultimoautorizado = ERPHelper.ObtenerUltimoActualEXP(F)
                 End If
-
-
+                
                 proximaFactura = ultimoautorizado + 1
-
 
             End If
         End If
 
-
     Else
-
-
         Dim idTipoFacturaDiscriminado As Long
+        
         idTipoFacturaDiscriminado = F.Tipo.Id
+        
         Dim rs As Recordset
-        ' 'If TipoFactura = -1 And idFactura = -1 Then Exit Function
-
-        'If TipoFactura > 0 Then
-        ' Set rs = conectar.RSFactory("select ft.TipoFactura,ft.numeracion+1 as ult from AdminConfigFacturas f inner join AdminConfigFacturasTipos ft on f.TipoFactura=ft.id where f.TipoFactura=" & TipoFactura)
-
-
-        '   Set rs = conectar.RSFactory("SELECT DISTINCT  ftd.tipo_documento,   ftd.numeracion +1 AS ult From " _
-            & "  AdminConfigFacturas f  INNER JOIN AdminConfigFacturasTipos ft  ON f.TipoFactura = ft.id  " _
-            & "  LEFT JOIN AdminConfigFacturasTiposDiscriminado ftd " _
-            & " ON ftd.id_tipo_factura=ft.id WHERE ftd.id_tipo_factura = " & TipoFactura & " AND ftd.tipo_documento=" & TipoDocumento)
 
         Dim q As String
         q = "SELECT DISTINCT    acftd.tipo_documento,   acftd.numeracion + 1 AS ult From    AdminConfigFacturasTiposDiscriminado acftd " _
           & "  LEFT JOIN AdminConfigFacturasTipos acft   ON acftd.id_tipo_factura= acft.id " _
           & "  LEFT JOIN AdminConfigFacturaPuntoVenta pv ON acftd.id_punto_venta=pv.id " _
           & " Where acftd.id=" & idTipoFacturaDiscriminado
-        ' & " Where acftd.id_tipo_factura = " & TipoFactura & "   AND acftd.tipo_documento = " & TipoDocumento
 
 
         Set rs = conectar.RSFactory(q)
 
-        'Me.ejecutarConsulta ("select numeracion+1 as ult from AdminConfigFacturas where id=" & tipoFactura)
         If Not rs.EOF And Not rs.BOF Then
             proximaFactura = Format(rs!Ult, "0000")
         End If
@@ -1328,7 +1311,7 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.Print Tab(4);
     'Printer.Font.Size = 8
     'Printer.Print Observaciones
-    Printer.Print objFac.observaciones
+    Printer.Print objFac.Observaciones
 
     Printer.Font.Size = 7
     'detalle y encabezado de detalle de la factura
@@ -1962,7 +1945,7 @@ Public Function CrearCopiaFiel(F As Factura, Tipo As tipoDocumentoContable) As F
 
     Set nuevaF.TipoIVA = F.TipoIVA
     nuevaF.FechaEmision = Date
-    nuevaF.observaciones = F.observaciones
+    nuevaF.Observaciones = F.Observaciones
     nuevaF.EstaDiscriminada = F.EstaDiscriminada
     nuevaF.OrdenCompra = F.OrdenCompra
     nuevaF.ConceptoIncluir = F.ConceptoIncluir
@@ -2157,7 +2140,7 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         
 
         'fce_nemer_29052020
-        seccion.Controls.item("lblCondicionPagoFCE").caption = F.observaciones
+        seccion.Controls.item("lblCondicionPagoFCE").caption = F.Observaciones
 
         seccion.Controls.item("lblDireccion").caption = F.Cliente.Domicilio & ", " & F.Cliente.localidad.nombre & ", " & F.Cliente.provincia.nombre
         seccion.Controls.item("lblReferencia").caption = F.OrdenCompra

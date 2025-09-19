@@ -266,7 +266,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         frm5001.Show
 
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__NUEVO_CONJUNTO:
-        frmDefinirConjunto.accion = 0
+        frmDefinirConjunto.Accion = 0
         frmDefinirConjunto.Show
 
     Case ID_BUTTON.ID_BUTTON_DESARROLLO__CENTRO_DE_COSTOS__LISTADO:

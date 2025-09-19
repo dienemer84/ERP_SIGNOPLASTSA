@@ -245,8 +245,8 @@ Dim proveedores As Collection
 Dim Proveedor As clsProveedor
 
 
-Public Property Let seleccionar(nvalue As Boolean)
-    vSeleccionar = nvalue
+Public Property Let seleccionar(nValue As Boolean)
+    vSeleccionar = nValue
 End Property
 
 'Private Sub cboRubro_Change()
@@ -367,7 +367,7 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 Private Sub grilla_DblClick()
-    A = grilla.rowIndex(grilla.row)
+    A = grilla.RowIndex(grilla.row)
     If vSeleccionar And A > 0 Then
         Selecciones.proveedorElegido = proveedores(A)
     Else
@@ -382,17 +382,17 @@ End Sub
 
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        Set rectemp = proveedores(grilla.rowIndex(grilla.row))
+        Set rectemp = proveedores(grilla.RowIndex(grilla.row))
         Me.PopupMenu m2
     End If
 End Sub
 
 Private Sub grilla_SelectionChange()
-    rows = grilla.rowIndex(grilla.row)
+    rows = grilla.RowIndex(grilla.row)
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set rectemp = proveedores.item(rowIndex)  ' mcData.Item(RowIndex)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set rectemp = proveedores.item(RowIndex)  ' mcData.Item(RowIndex)
     With rectemp
         Values(1) = Format(.Id, "0000")
         Values(2) = .RazonSocial

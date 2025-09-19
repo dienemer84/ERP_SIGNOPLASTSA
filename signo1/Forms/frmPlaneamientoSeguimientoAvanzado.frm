@@ -561,7 +561,7 @@ Private Sub cmdBuscar_Click()
     
 '''    Me.lblSectorGrande.caption = "SECTOR: CORTE"
     
-    cargarDetallesOT
+    CargarDetallesOT
     
     llenarDataGrid              ' <<< volver a cargar
     
@@ -588,7 +588,7 @@ End Sub
 
 
 
-Private Sub cargarDetallesOT()
+Private Sub CargarDetallesOT()
         Me.fraDatosOT.caption = Me.fraDatosOT.Tag & m_ot.Id
         Me.lblCliente.caption = "Cliente: " & m_ot.Cliente.razon
         Me.lblFechaCreado.caption = "Fecha Creada: " & m_ot.fechaCreado
@@ -927,6 +927,7 @@ Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo 0
 End Sub
 
+
 Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, _
     ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
@@ -964,7 +965,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, _
         Values(cFechaIni) = IIf(r.FechaInicio = 0, Null, r.FechaInicio)
         Values(cHoraIni) = IIf(r.HoraInicio = 0, Null, r.HoraInicio)
         Values(cFechaFin) = IIf(r.FechaFin = 0, Null, r.FechaFin)
-        Values(cHoraFin) = IIf(r.FechaFin = 0, Null, r.HoraFin)
+        Values(cHoraFin) = IIf(r.HoraFin = 0, Null, r.HoraFin)
         Values(cUsuarioRecibio) = r.UsuarioRecibio
         Values(cAlmacen) = NzStr(r.Almacen)
         Values(cProcesoSig) = NzStr(r.ProcesoSiguiente)
@@ -1017,9 +1018,7 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
         refrescarAvanceOT
             
     End If
-    
 End Sub
-
 
 
 ' Helpers
@@ -1166,15 +1165,15 @@ Private Sub menu_Observaciones_Click()
 End Sub
 
 
-Private Function PorcentajeAvanceOT(Optional ByRef totPed As Double, Optional ByRef totFab As Double) As Double
+Private Function PorcentajeAvanceOT(Optional ByRef totPed As Double, Optional ByRef TotFab As Double) As Double
     totPed = SumarPlano(csCantPedida, True)       ' solo piezas
-    totFab = SumarPlano(csCantFabricada, True)    ' solo piezas
+    TotFab = SumarPlano(csCantFabricada, True)    ' solo piezas
 
     Dim pct As Double
     If totPed <= 0 Then
         pct = 0
     Else
-        pct = (totFab / totPed) * 100#
+        pct = (TotFab / totPed) * 100#
     End If
 
     ' Clamp para evitar pasar de 0..100 visualmente
@@ -1185,8 +1184,8 @@ Private Function PorcentajeAvanceOT(Optional ByRef totPed As Double, Optional By
 End Function
 
 Private Sub refrescarAvanceOT()
-    Dim totPed As Double, totFab As Double
-    Dim pct As Double: pct = PorcentajeAvanceOT(totPed, totFab)
+    Dim totPed As Double, TotFab As Double
+    Dim pct As Double: pct = PorcentajeAvanceOT(totPed, TotFab)
 
     ' Mejor resolución en la barra: 0..1000 (0.1%)
     With pgbAvanceOT

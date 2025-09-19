@@ -724,16 +724,25 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.Label Label2 
          Height          =   195
          Index           =   0
-         Left            =   165
+         Left            =   0
          TabIndex        =   5
          Top             =   1200
-         Width           =   1170
+         Width           =   1395
          _Version        =   786432
-         _ExtentX        =   2064
+         _ExtentX        =   2461
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   "Nº Comprobante"
          BackColor       =   12632256
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          AutoSize        =   -1  'True
       End
       Begin XtremeSuiteControls.Label Label1 
@@ -1062,7 +1071,7 @@ Private Sub Form_Load()
 '''        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
 '''    Next
 
-    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
+    Call DAOProveedor.llenarComboProveedores(cboProveedores)
 
     llenarComboTipo
     
@@ -1576,7 +1585,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 
         Values(19) = Factura.UsuarioCarga.usuario
         Values(20) = Factura.TipoCambio
-        Values(21) = "(" & Val(m_Archivos.item(Factura.Id)) & ")"
+        Values(21) = "(" & val(m_Archivos.item(Factura.Id)) & ")"
         Values(22) = Factura.Id
 
     End With

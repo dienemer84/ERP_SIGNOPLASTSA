@@ -797,8 +797,8 @@ Dim vTipo As TipoOperacionProveedor
 Dim proveedor_ As clsProveedor
 'Dim baseP As New classCompras
 
-Public Property Let Proveedor(nvalue As clsProveedor)
-    Set proveedor_ = DAOProveedor.FindById(nvalue.Id)
+Public Property Let Proveedor(nValue As clsProveedor)
+    Set proveedor_ = DAOProveedor.FindById(nValue.Id)
 End Property
 
 Public Property Let tipoOperacion(Tipo As TipoOperacionProveedor)
@@ -828,7 +828,7 @@ Private Sub btnCrearNew_Click(Index As Integer)
     End If
     
     ' Resto del código (llamada a la función accion, etc.)
-    accion
+    Accion
 End Sub
 
 
@@ -878,9 +878,9 @@ Private Sub Buscar()
 End Sub
 
 
-Private Function accion() As Boolean
+Private Function Accion() As Boolean
     On Error GoTo err123
-    accion = True
+    Accion = True
     Dim a1 As clsRubros
     Dim colRubros As New Collection
 

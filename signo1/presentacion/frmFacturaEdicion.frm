@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16842753
+         Format          =   66584577
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16842753
+         Format          =   66584577
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16842753
+         Format          =   66584577
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16842753
+         Format          =   66584577
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16842753
+         Format          =   66584577
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1532,7 +1532,6 @@ Private Factura As Factura
 Private dataLoading As Boolean
 Private detalle As FacturaDetalle
 Private suscId As String
-'Private ErrorAfip As Boolean
 Public NuevoTipoDocumento As tipoDocumentoContable
 Public EsAnticipo As Boolean
 
@@ -1696,6 +1695,7 @@ Private Sub btnExportarContenido_Click()
 
 End Sub
 
+
 Private Sub btnGuardar_Click()
     On Error GoTo err1
 
@@ -1709,11 +1709,11 @@ Private Sub btnGuardar_Click()
         Exit Sub
     End If
 
-    Factura.observaciones = Me.txtCondObs.Text
+    Factura.Observaciones = Me.txtCondObs.Text
 
     If LenB(Factura.numero) = 0 Or _
        LenB(Factura.OrdenCompra) = 0 Or _
-       Factura.observaciones = "" Or _
+       Factura.Observaciones = "" Or _
        Factura.CantDiasPago = 0 Then
         MsgBox "El Comprobante debe poseer Nº, referencia, cantidad dias de vto. de FF y condición cargada.", vbExclamation + vbOKOnly
     Else
@@ -1786,21 +1786,23 @@ Private Sub btnGuardar_Click()
             Factura.CBU = c.CBU
         End If
 
-        Factura.observaciones = Me.txtCondObs.Text
+        Factura.Observaciones = Me.txtCondObs.Text
         Factura.TextoAdicional = Me.txtTextoAdicional
         Factura.FechaServDesde = Me.dtFechaServDesde1.value
         Factura.FechaServHasta = Me.dtFechaServHasta1.value
         Factura.fechaPago = Me.dtFechaPagoCredito.value
         Factura.esCredito = Me.chkEsCredito.value
         
+        Dim Id As Long
         
-        If Me.cboTiposFactura.Text = "004-MANUAL EXP" Then
+
+        If Factura.Cliente.TipoIVA.detalle = "Exterior" Then
             Factura.esExportacion = 1
         Else
             Factura.esExportacion = 0
         End If
         
-
+        
         If Factura.esCredito Then
 
             If Me.cboOpcional27.ListIndex < 0 Then Err.Raise "Para FCE es obligatorio informar opcional 27 con valor SCA ó ADC"
@@ -1810,7 +1812,7 @@ Private Sub btnGuardar_Click()
 
         End If
 
-        ASociarConcepto
+        asociarConcepto
 
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
@@ -1971,6 +1973,7 @@ Private Sub btnItemsDescuentoAnticipo_Click()
 
 End Sub
 
+
 Private Sub cboCliente_Click()
     
     If IsSomething(Factura) And Me.cboCliente.ListIndex <> -1 And Not dataLoading Then
@@ -2085,7 +2088,7 @@ Private Sub MostrarPercepcionIIBB()
 End Sub
 
 
-Private Sub ASociarConcepto()
+Private Sub asociarConcepto()
     If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
         Factura.ConceptoIncluir = Me.cboConceptosAIncluir.ItemData(Me.cboConceptosAIncluir.ListIndex)
     End If
@@ -2095,7 +2098,7 @@ End Sub
 Private Sub ConceptosIncuir()
     If IsSomething(Factura) And Me.cboConceptosAIncluir.ListIndex <> -1 And Not dataLoading Then
 
-        ASociarConcepto
+        asociarConcepto
 
         'Me.lblFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
         'Me.dtFechaPagoCredito.Enabled = Factura.EsCredito Or (Factura.ConceptoIncluir = ConceptoProductoServicio Or Factura.ConceptoIncluir = ConceptoServicio)
@@ -2165,12 +2168,11 @@ Private Sub cboTiposFactura_Click()
 
     Id = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
     
-    If cboTiposFactura.Text = "004-MANUAL EXP" Then
-        MsgBox ("ES COMPROBANTE DE EXPORTACION")
-    End If
+'''    If cboTiposFactura.Text = "004-MANUAL EXP" Then
+'''        MsgBox ("ES COMPROBANTE DE EXPORTACION")
+'''    End If
 
     Set Factura.Tipo = DAOTipoFacturaDiscriminado.FindById(Id)
-
 
     '1 11 19
     '    Me.lblCbuCredito.Visible = Factura.Tipo.PuntoVenta.EsCredito
@@ -2218,7 +2220,8 @@ Private Sub cboTiposFactura_Click()
         'Else
 
 
-        Me.txtNumero.Text = Format(DAOFactura.proximaFactura(Factura), "00000000")    'NuevoTipoDocumento, Factura.Tipo.TipoFactura.id), "0000")
+        Me.txtNumero.Text = Format(DAOFactura.proximaFactura(Factura), "00000000")
+        
         Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
 
 
@@ -2244,6 +2247,7 @@ Private Sub cboTiposFactura_Click()
     Me.txtNumero.Enabled = Not Factura.Tipo.PuntoVenta.EsElectronico Or Factura.Tipo.PuntoVenta.CaeManual
 
     ValidarEsCredito
+    
 End Sub
 
 Private Sub chkEsCredito_Click()
@@ -2632,7 +2636,7 @@ Private Sub CargarFactura()
     Me.txtPercepcion.Text = Round((Factura.AlicuotaPercepcionesIIBB - 1) * 100, 2)
     Me.txtDiasVenc.Text = Factura.CantDiasPago
     Me.txtReferencia.Text = Factura.OrdenCompra
-    Me.txtCondObs.Text = Factura.observaciones
+    Me.txtCondObs.Text = Factura.Observaciones
     Me.txtTextoAdicional.Text = Factura.TextoAdicional
     Me.lblTipoFactura.caption = Factura.Tipo.TipoFactura.Tipo
 
@@ -2966,6 +2970,8 @@ Private Sub Label23_Click()
     cboTiposFactura_Click
 
 End Sub
+
+
 
 Private Sub mnuAplicarDetalleRemito_Click()
 

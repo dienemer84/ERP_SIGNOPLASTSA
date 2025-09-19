@@ -788,7 +788,7 @@ Begin VB.Form frmAdminFacturasEmitidas
          _ExtentX        =   2037
          _ExtentY        =   503
          _StockProps     =   79
-         Caption         =   "Estado AFIP"
+         Caption         =   "Estado ARCA"
          BackColor       =   12632256
          Alignment       =   1
       End
@@ -848,6 +848,15 @@ Begin VB.Form frmAdminFacturasEmitidas
          Alignment       =   1  'Right Justify
          BackStyle       =   0  'Transparent
          Caption         =   "Nro Cbte"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   270
          Left            =   30
          TabIndex        =   13
@@ -987,13 +996,13 @@ Begin VB.Form frmAdminFacturasEmitidas
          Caption         =   "Aprobar localmente..."
       End
       Begin VB.Menu mnuEnviarAfip 
-         Caption         =   "Enviar a AFIP..."
+         Caption         =   "Enviar a ARCA..."
       End
       Begin VB.Menu separador 
          Caption         =   "-"
       End
       Begin VB.Menu mnuAprobarEnviar 
-         Caption         =   "Aprobar localmente y Enviar a AFIP..."
+         Caption         =   "Aprobar localmente y Enviar a ARCA..."
       End
       Begin VB.Menu mnuDesaprobarFactura 
          Caption         =   "Desaprobar..."
@@ -2600,12 +2609,12 @@ Private Sub mnuAprobarEnviar_Click()
     Dim g As Long
     Dim msgadicional As String
     msgadicional = ""
-    If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a AFIP?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
+    If MsgBox("¿Desea aprobar localmente el comprobante e informarlo a ARCA?", vbYesNo + vbQuestion, "Confirmacion") = vbYes Then
         g = Me.gridComprobantesEmitidos.RowIndex(Me.gridComprobantesEmitidos.row)
         If DAOFactura.aprobarV2(Factura, True, True, Factura.esExportacion) Then
 
             If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
-                msgadicional = "Esta factura deberá enviarse a la afip"
+                msgadicional = "Esta factura deberá enviarse a ARCA"
             End If
             If Factura.Tipo.PuntoVenta.EsElectronico And Factura.Tipo.PuntoVenta.CaeManual And Not Factura.AprobadaAFIP Then
                 msgadicional = "Recuerde agregar al comprobante: CAE y fecha de vencimiento del CAE "
