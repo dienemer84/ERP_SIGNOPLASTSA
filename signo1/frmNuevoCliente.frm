@@ -559,177 +559,205 @@ Attribute VB_Exposed = False
 Dim vCliente As clsCliente
 Dim strsql As String
 
-Public Property Let Cliente(nvalue As clsCliente)
-    Set vCliente = nvalue
+Public Property Let Cliente(nValue As clsCliente)
+    Set vCliente = nValue
 End Property
 
 
 Private Sub Guardar()
-    Dim Cuit
+
+    Dim Cuit As String
     Dim EVENTO As clsEventoObserver
+    Dim razon As String, Domicilio As String, telefono As String, Fax As String, email As String
+    Dim FP As String, FP_detalle As String
+    Dim ivan As Long
+    Dim valido As Long
+    Dim pais As Long
+    Dim IDImpositivo As String, CuitPais As String, CodigoPOS As String
+    Dim ErrorCode As Long, errorCode2 As Long
+    Dim aa As String
+    Dim F As String
 
     On Error GoTo err2
 
-    razon = UCase(Text1(0))
-    Domicilio = UCase(Text1(1))
-    telefono = UCase(Text1(4))
-    Fax = UCase(Text1(5))
-    email = UCase(Text1(6))
-    ivan = Me.CboIVA.ItemData(Me.CboIVA.ListIndex)
-    Cuit = Trim(Text1(7))
-    FP = UCase(Me.txtFP)
-    FP_detalle = UCase(Me.txtDetalleFP)
-    valido = Val(Me.chkValido.value)
-    
-    pais = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
-    
-    IDImpositivo = UCase(Me.txtIDImpositivo)
-    CuitPais = UCase(Me.txtCuitPais)
+    '=========================
+    ' Toma datos de pantalla
+    '=========================
+    razon = UCase$(Trim$(Text1(0)))
+    Domicilio = UCase$(Trim$(Text1(1)))
+    telefono = UCase$(Trim$(Text1(4)))
+    Fax = UCase$(Trim$(Text1(5)))
+    email = UCase$(Trim$(Text1(6)))
 
-    CodigoPOS = UCase(txtCP)
-    
+    ivan = Me.CboIVA.ItemData(Me.CboIVA.ListIndex)
+    Cuit = Trim$(Text1(7))
+
+    FP = UCase$(Trim$(Me.txtFP))
+    FP_detalle = UCase$(Trim$(Me.txtDetalleFP))
+    valido = val(Me.chkValido.value)
+
+    pais = Me.cboPaises.ItemData(Me.cboPaises.ListIndex)
+
+    IDImpositivo = UCase$(Trim$(Me.txtIDImpositivo))
+    CuitPais = UCase$(Trim$(Me.txtCuitPais))
+    CodigoPOS = UCase$(Trim$(txtCP))
+
+    '=========================
+    ' Validaciones básicas
+    '=========================
     If razon = "" Then
         MsgBox "Debe introducir Razón Social.", vbCritical, "Error"
         Exit Sub
     End If
-    
+
     If Domicilio = "" Then
         MsgBox "Debe introducir Domicilio.", vbCritical, "Error"
         Exit Sub
     End If
-    
+
     If CodigoPOS = "" Then
         MsgBox "Debe introducir el código postal.", vbCritical, "Error"
         Exit Sub
     End If
 
-    
-    If MsgBox("¿Está conforme con los datos?", vbYesNo, "Confirmación") = vbYes Then
-        If vCliente Is Nothing Then
-            ErrorCode = 0
+    'Confirmación
+    If MsgBox("¿Está conforme con los datos?", vbYesNo + vbQuestion, "Confirmación") <> vbYes Then
+        Exit Sub
+    End If
 
-            If Not IsNumeric(Text1(7)) Then
-                ErrorCode = 1
-                errorCode2 = 1
-            End If
+    '=========================
+    ' Validaciones (CUIT)
+    '=========================
+    ErrorCode = 0
+    errorCode2 = 0
 
-            If ErrorCode > 0 Then
-                aa = "Debe introducir datos correctos para: "
-                If errorCode2 = 1 Then
-                    aa = aa & Chr(10) & "CUIT"
-                End If
-                MsgBox aa, vbCritical, "Error"
-            Else
+    'tu lógica original: CUIT numérico (si tu UI permite guiones, cambiá esto por Replace(Cuit,"-",""))
+    If Not IsNumeric(Cuit) Then
+        ErrorCode = 1
+        errorCode2 = 1
+    End If
 
-                Dim Cliente As New clsCliente
+    If ErrorCode > 0 Then
+        aa = "Debe introducir datos correctos para: "
+        If errorCode2 = 1 Then aa = aa & vbCrLf & "CUIT"
+        MsgBox aa, vbCritical, "Error"
+        Exit Sub
+    End If
 
-                '31.10.22- SE AGREGA ESTA LINEA PARA QUE TOME EL VALOR DEL IVA
-                Set Cliente.TipoIVA = DAOTipoIva.GetById(ivan)
+    '=========================
+    ' ALTA
+    '=========================
+    If vCliente Is Nothing Then
 
-                Cliente.Cuit = Cuit
-                Cliente.Domicilio = Domicilio
-                Cliente.email = email
-                Cliente.estado = EstadoCliente.activo
-                Cliente.Fax = Fax
+        Dim Cliente As clsCliente
+        Set Cliente = New clsCliente
 
-                Cliente.PasswordSistema = 0
-                Cliente.razon = razon
-                Cliente.FormaPago = FP_detalle
-                Cliente.telefono = telefono
-                Cliente.ValidoRemitoFactura = valido
-                Cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
-                Cliente.CodigoPostal = CodigoPOS
-                
-                                Cliente.FP = FP
-                                
-                Cliente.IDImpositivo = IDImpositivo
-                Cliente.CuitPais = CuitPais
-                
-                Set Cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-                Set Cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
-                Set Cliente.pais = DAOPais.FindById(Me.cboPaises.ItemData(Me.cboPaises.ListIndex))
-                
+        '31.10.22- SE AGREGA ESTA LINEA PARA QUE TOME EL VALOR DEL IVA
+        Set Cliente.TipoIVA = DAOTipoIva.GetById(ivan)
 
-                Dim F As String
-                F = "c.cuit = " & Escape(Text1(7))
+        Cliente.Cuit = Cuit
+        Cliente.Domicilio = Domicilio
+        Cliente.email = email
+        Cliente.estado = EstadoCliente.activo
+        Cliente.Fax = Fax
 
-                If IsSomething(vCliente) Then
-                    F = F & " AND c.id <> " & vCliente.Id
-                End If
-                
-                If Cliente.pais.Id = 1 Then ' Argentina
-                    If DAOCliente.FindAll(F).count > 0 Then
-                        MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
-                        Exit Sub
-                    End If
-                End If
-        
+        Cliente.PasswordSistema = 0
+        Cliente.razon = razon
+        Cliente.FormaPago = FP_detalle
+        Cliente.telefono = telefono
+        Cliente.ValidoRemitoFactura = valido
+        Cliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
+        Cliente.CodigoPostal = CodigoPOS
 
-                    If DAOCliente.crear(Cliente) Then
-                        MsgBox "Alta Exitosa!", vbInformation, "Información"
+        Cliente.FP = FP
 
-                        Set EVENTO = New clsEventoObserver
-                        Set EVENTO.Elemento = Cliente
-                        EVENTO.EVENTO = agregar_
-                        Set EVENTO.Originador = Me
-                        Channel.Notificar EVENTO, Clientes_
+        Cliente.IDImpositivo = IDImpositivo
+        Cliente.CuitPais = CuitPais
 
-                        Unload Me
-                        
-                    Else
-                        MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
-                    End If
-                End If
-            End If
-        Else
-            'se modifica
+        Set Cliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+        Set Cliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+        Set Cliente.pais = DAOPais.FindById(Me.cboPaises.ItemData(Me.cboPaises.ListIndex))
 
-            Set vCliente.TipoIVA = DAOTipoIva.GetById(ivan)
-
-            vCliente.Cuit = Cuit
-            vCliente.Domicilio = Domicilio
-            vCliente.email = email
-            vCliente.estado = EstadoCliente.activo
-            vCliente.Fax = Fax
-            vCliente.FP = FP
-            vCliente.PasswordSistema = 0
-            vCliente.razon = razon
-            vCliente.telefono = telefono
-            vCliente.FormaPago = FP_detalle
-            vCliente.ValidoRemitoFactura = valido
-            vCliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
-            
-            vCliente.CuitPais = CuitPais
-            vCliente.IDImpositivo = IDImpositivo
-            
-            vCliente.CodigoPostal = CodigoPOS
-
-            Set vCliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
-            Set vCliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
-
-
-            If DAOCliente.modificar(vCliente) Then
-                MsgBox "Modificación Exitosa!", vbInformation, "Información"
-
-
-                Set EVENTO = New clsEventoObserver
-                Set EVENTO.Elemento = Cliente
-                EVENTO.EVENTO = modificar_
-                Set EVENTO.Originador = Me
-                Channel.Notificar EVENTO, Clientes_
-
-                Unload Me
-
-            Else
-                MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
-            End If
-
+        'Duplicado de CUIT (Argentina)
+        F = "c.cuit = " & Escape(Text1(7))
+        'NOTA: esta condición era innecesaria en ALTA, pero la dejo por compatibilidad si tu vCliente existe a veces
+        If IsSomething(vCliente) Then
+            F = F & " AND c.id <> " & vCliente.Id
         End If
-    'End If
-    Exit Sub
-err2:
 
+        If Cliente.pais.Id = 1 Then ' Argentina
+            If DAOCliente.FindAll(F).count > 0 Then
+                MsgBox "Ya existe un cliente con ese Nº de CUIT.", vbCritical, "Error"
+                Exit Sub
+            End If
+        End If
+
+        If DAOCliente.crear(Cliente) Then
+            MsgBox "Alta Exitosa!", vbInformation, "Información"
+
+            Set EVENTO = New clsEventoObserver
+            Set EVENTO.Elemento = Cliente
+            EVENTO.EVENTO = agregar_
+            Set EVENTO.Originador = Me
+            Channel.Notificar EVENTO, Clientes_
+
+            Unload Me
+        Else
+            MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
+        End If
+
+    Else
+        '=========================
+        ' MODIFICAR
+        '=========================
+
+        Set vCliente.TipoIVA = DAOTipoIva.GetById(ivan)
+
+        vCliente.Cuit = Cuit
+        vCliente.Domicilio = Domicilio
+        vCliente.email = email
+        vCliente.estado = EstadoCliente.activo
+        vCliente.Fax = Fax
+        vCliente.FP = FP
+        vCliente.PasswordSistema = 0
+        vCliente.razon = razon
+        vCliente.telefono = telefono
+        vCliente.FormaPago = FP_detalle
+        vCliente.ValidoRemitoFactura = valido
+        vCliente.idMonedaDefault = Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)
+
+        vCliente.CuitPais = CuitPais
+        vCliente.IDImpositivo = IDImpositivo
+
+        vCliente.CodigoPostal = CodigoPOS
+
+        Set vCliente.provincia = DAOProvincias.FindById(Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex))
+        Set vCliente.localidad = DAOLocalidades.FindById(Me.cboLocalidades.ItemData(Me.cboLocalidades.ListIndex))
+        'ojo: en tu código original NO seteabas país al modificar; lo respeto.
+        'Set vCliente.pais = DAOPais.FindById(Me.cboPaises.ItemData(Me.cboPaises.ListIndex))
+
+        If DAOCliente.modificar(vCliente) Then
+            MsgBox "Modificación Exitosa!", vbInformation, "Información"
+
+            Set EVENTO = New clsEventoObserver
+            Set EVENTO.Elemento = vCliente   '<<< CORREGIDO (antes decía Cliente)
+            EVENTO.EVENTO = modificar_
+            Set EVENTO.Originador = Me
+            Channel.Notificar EVENTO, Clientes_
+
+            Unload Me
+        Else
+            MsgBox "Se produjo algún error, no se realizan cambios!", vbCritical, "Error"
+        End If
+
+    End If
+
+    Exit Sub
+
+err2:
+    MsgBox "Error al guardar: " & Err.Number & " - " & Err.Description, vbCritical, "Error"
 End Sub
+
 
 Private Sub btnGuardar_Click()
     Guardar
@@ -741,6 +769,10 @@ Private Sub btnSalir_Click()
     End If
 
 End Sub
+
+
+
+
 
 Private Sub cboPaises_Click()
     cboProvincias.Clear

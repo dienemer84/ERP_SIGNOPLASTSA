@@ -162,6 +162,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     Dim q As String
     q = "SELECT *, (operaciones.pertenencia + 0) as pertenencia2" _
       & " From pagos_a_cuenta" _
+      & " LEFT JOIN ordenes_pago_pagos_a_cuenta ON (ordenes_pago_pagos_a_cuenta.id_pago_a_cuenta = pagos_a_cuenta.id)" _
       & " LEFT JOIN pagos_a_cuenta_cheques ON (pagos_a_cuenta.id = pagos_a_cuenta_cheques.id_pago_a_cuenta)" _
       & " LEFT JOIN pagos_a_cuenta_operaciones ON (pagos_a_cuenta.id = pagos_a_cuenta_operaciones.id_pago_a_cuenta)" _
       & " LEFT JOIN operaciones ON (operaciones.id = pagos_a_cuenta_operaciones.id_operacion)" _
@@ -199,7 +200,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     BuildFieldsIndex rs, idx
 
     While Not rs.EOF
-        Set op = Map(rs, idx, "pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")   ', "certificados_retencion")
+        Set op = Map(rs, idx, "pagos_a_cuenta", "ordenes_pago_pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")   ', "certificados_retencion")
 
         If funciones.BuscarEnColeccion(col, CStr(op.Id)) Then
             Set op = col.item(CStr(op.Id))
@@ -247,6 +248,7 @@ End Function
 
 Public Function Map(rs As Recordset, indice As Dictionary, _
                     tabla As String, _
+                    Optional ByVal tablaOP As String = vbNullString, _
                     Optional ByVal tablaMoneda As String = vbNullString, _
                     Optional ByVal tablaCuentaContable As String = vbNullString, _
                     Optional ByVal TablaRetenciones As String = vbNullString, _
@@ -281,6 +283,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
         pcta.DiferenciaCambioEnTOTAL = GetValue(rs, indice, tabla, "dif_cambio_total")
         
         pcta.Creada = GetValue(rs, indice, tabla, "creada")
+        
+        pcta.OPAplicada = GetValue(rs, indice, tablaOP, "id_orden_pago")
         
         If LenB(tablaMoneda) > 0 Then Set pcta.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
          
@@ -861,7 +865,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Dim titulo As String
     titulo = "Reporte de Pagos a Cuenta"
     
-    With xlWorksheet.Range("A1:G1")
+    With xlWorksheet.Range("A1:H1")
         .Merge
         .Font.Bold = True
         .value = titulo
@@ -879,10 +883,11 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     xlWorksheet.Cells(offset, 4).value = "Moneda"
     xlWorksheet.Cells(offset, 5).value = "Valor"
     xlWorksheet.Cells(offset, 6).value = "Estado"
-    xlWorksheet.Cells(offset, 7).value = "Creada"
+    xlWorksheet.Cells(offset, 7).value = "OP Aplicada"
+    xlWorksheet.Cells(offset, 8).value = "Creada"
 
     ' Formatear encabezados
-    With xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 7))
+    With xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 8))
         .Font.Bold = True
         .Interior.Color = &HC0C0C0
     End With
@@ -912,7 +917,8 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         xlWorksheet.Cells(offset, 4).value = PagoACta.moneda.NombreCorto
         xlWorksheet.Cells(offset, 5).value = PagoACta.StaticTotalOrigenes
         xlWorksheet.Cells(offset, 6).value = enums.enumEstadoPagoACuenta(PagoACta.estado)
-        xlWorksheet.Cells(offset, 7).value = PagoACta.Creada
+        xlWorksheet.Cells(offset, 7).value = PagoACta.OPAplicada
+        xlWorksheet.Cells(offset, 8).value = PagoACta.Creada
     Next
 
     ' Centrar los datos de la primera columna
@@ -921,7 +927,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     End With
 
     ' Aplicar bordes a los datos
-    xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 7)).Borders.LineStyle = 1 ' xlContinuous
+    xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 8)).Borders.LineStyle = 1 ' xlContinuous
 
     ' Ajustar el ancho de las columnas
     xlApplication.ScreenUpdating = False

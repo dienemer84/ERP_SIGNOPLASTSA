@@ -64,7 +64,6 @@ Private Function ApiConnectEXP(sUrl As String, verb As verbo, async As Boolean, 
     
     Dim xmlhttp As New MSXML2.xmlhttp
 
-
     If verb = GET_ Then verbo = "GET"
     sUrl = srv & sUrl
     xmlhttp.Open verbo, sUrl, async
@@ -81,7 +80,6 @@ Private Function ApiConnectEXP(sUrl As String, verb As verbo, async As Boolean, 
         End If
     End If
 
-
     Dim objXMLSendDoc As MSXML2.DOMDocument
     Set objXMLSendDoc = New MSXML2.DOMDocument
 
@@ -91,11 +89,7 @@ Private Function ApiConnectEXP(sUrl As String, verb As verbo, async As Boolean, 
     response = xmlhttp.responseText
     Debug.Print response
     
-
-    
     ApiConnectEXP = response
-    
-
     
     Exit Function
 err1:
@@ -195,15 +189,22 @@ End Function
 Public Function GetUltimoAutorizadoEXP(idPtoVta As String, tipoComprobante As String, esCredito As Boolean) As String
     On Error GoTo err1
     Dim resp As String
+    Dim resp2 As String
+    Dim resp3 As String
     
     If CheckDummyAfipEXP Then
-        resp = ApiConnectEXP("wsfe/FECompUltimoAutorizado/" & idPtoVta & "/" & tipoComprobante, POST_, False)
+        resp = ApiConnectEXP("wsfex/FEXGetLastCMP/" & idPtoVta & "/" & tipoComprobante, POST_, False)
+
     Else
         Err.Raise 1002, "Afip", "Imposible obtener ultimo comprobante autorizado"
     End If
     
     GetUltimoAutorizadoEXP = resp
-
+    
+    Debug.Print (resp)
+    Debug.Print (resp2)
+    Debug.Print (resp3)
+    
     Exit Function
 err1:
 
@@ -233,18 +234,70 @@ End Function
 Public Function CheckDummyAfipEXP() As Boolean
     On Error GoTo err1
     Dim resp As String
-    resp = ApiConnectEXP("wsfe/FEDummy", POST_, False)
+    
+    resp = ApiConnectEXP("wsfex/FEXDummy", POST_, False)
+    
+    GetPtosVentaEXP
+    
+    GetTipoCbtesEXP
+
     If Not HasErrorMessage(resp) And resp = "1" Then
         CheckDummyAfipEXP = True
     Else
         CheckDummyAfipEXP = False
         Err.Raise 1001, "ARCA", "Infraestructura EXP no disponible"
     End If
+    
+    Debug.Print "RESP (FEXDummy): [" & resp & "]"
+    
     Exit Function
 err1:
+
+    Debug.Print "RESP (FEXDummy): [" & resp & "]"
     Err.Raise Err.Number, Err.Source, Err.Description
     CheckDummyAfipEXP = False
 End Function
+
+
+Public Function GetPtosVentaEXP() As String
+    On Error GoTo err1
+    Dim resp As String
+
+    resp = ApiConnectEXP("wsfex/FEXGetParam/PtoVenta", POST_, False)
+
+    ' Acá resp te trae el XML crudo con los puntos de venta habilitados
+    Debug.Print "RESP (PtosVenta): [" & resp & "]"
+
+    GetPtosVentaEXP = resp
+    Exit Function
+
+err1:
+    Debug.Print "RESP (PtosVenta) ERROR: [" & resp & "]"
+    Err.Raise Err.Number, Err.Source, Err.Description
+    GetPtosVentaEXP = ""
+End Function
+
+
+
+Public Function GetTipoCbtesEXP() As String
+    On Error GoTo err1
+    Dim resp As String
+
+    resp = ApiConnectEXP("wsfex/FEXGetParam/TipoCbte", POST_, False)
+
+
+    ' Acá resp te trae el XML crudo con los puntos de venta habilitados
+    Debug.Print "RESP (TipoCbte): [" & resp & "]"
+
+    GetTipoCbtesEXP = resp
+    Exit Function
+
+err1:
+    Debug.Print "RESP (TipoCbte) ERROR: [" & resp & "]"
+    Err.Raise Err.Number, Err.Source, Err.Description
+    GetTipoCbtesEXP = ""
+End Function
+
 
 '''Public Function HasErrorMessage(resp As String) As Boolean
 '''    Dim Text1 As String

@@ -41,6 +41,8 @@ Public NombreBanco As String
 Public CuentaBancaria As String
 Public IdCtaBancaria As Long
 
+Public OPAplicada As Long
+
 
 Private Sub Class_Initialize()
     Me.EntradaSalida = OPEntrada

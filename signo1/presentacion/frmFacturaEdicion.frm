@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66584577
+         Format          =   66060289
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66584577
+         Format          =   66060289
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66584577
+         Format          =   66060289
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66584577
+         Format          =   66060289
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66584577
+         Format          =   66060289
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1884,8 +1884,10 @@ Private Sub AgregarEntregas(col As Collection)
                     'MsgBox ("Tenemos monedas distintas")
                     MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
                           & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                          & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
-                          & "El importe de la Moneda del comprobante es de: " & Factura.moneda.MonedaCambio.Cambio)
+                          & "Se procede a realizar la conversión correspondiente." & vbCrLf)
+                          
+''' RETIRO LA ULTIMA LINEA PORQUE DABA ERROR AL MOSTRARSE 03/03/2026
+'''                          & "El importe de la Moneda del comprobante es de: " & Factura.moneda.MonedaCambio.Cambio)
 
                 Else
                     'MsgBox ("Tenemos las mismas monedas")
@@ -2889,8 +2891,6 @@ End Property
 
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     On Error GoTo err1
-
-
 
     Dim A As frmPlaneamientoRemitoVer
 

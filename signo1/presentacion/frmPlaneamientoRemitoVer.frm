@@ -285,7 +285,7 @@ Private Sub btnFacturar_Click()
 
     If Me.grilla.MultiSelect Then
         For Each js In Me.grilla.SelectedItems
-            Set tmp = Remito.detalles.item(js.rowIndex)
+            Set tmp = Remito.detalles.item(js.RowIndex)
             If tmp.Facturado Then
                 MsgBox "No puede facturar un item que ya fue facturado.", vbExclamation
                 Exit Sub
@@ -293,7 +293,7 @@ Private Sub btnFacturar_Click()
             returnCol.Add tmp, CStr(tmp.Id)
         Next js
     Else
-        Set tmp = Remito.detalles.item(Me.grilla.rowIndex(Me.grilla.row))
+        Set tmp = Remito.detalles.item(Me.grilla.RowIndex(Me.grilla.row))
 
 
         'cuando elremito esta facturado (de concepto) no deja aplicarlo a la OT
@@ -316,12 +316,12 @@ Private Sub btnFacturar_Click()
     Set ev.Originador = Me
     Set ev.Elemento = returnCol
 
-    ''If ParaFacturar Then
+    If ParaFacturar Then
     Channel.Notificar ev, FacturarRemitosDetalle_
-    ''  Else
-    ' Channel.Notificar ev, RemitosDetalle_
+    Else
+    Channel.Notificar ev, RemitosDetalle_
 
-    ' End If
+    End If
     Unload Me
 End Sub
 
@@ -330,17 +330,17 @@ Private Sub cmdValorizar_Click()
     On Error GoTo err1
     If MsgBox("¿Seguro de guardar los cambios?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
 
-        Set cli_viejo = Remito.cliente
+        Set cli_viejo = Remito.Cliente
 
         Remito.detalle = UCase(Me.lblDetalle)
-        Remito.observaciones = UCase(Me.txtObservaciones)
+        Remito.Observaciones = UCase(Me.txtObservaciones)
         Remito.lugarEntrega = UCase(Me.txtLugarEntrega)
         
-        Set Remito.cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
+        Set Remito.Cliente = DAOCliente.BuscarPorID(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
         
         If Not DAORemitoS.Save(Remito, True, False) Then
             MsgBox "Se produjo algun error al guardar!", vbCritical, "Error"
-            Set Remito.cliente = cli_viejo
+            Set Remito.Cliente = cli_viejo
         Else
 
             MsgBox "Guardado correctamente!", vbInformation, "Información"
@@ -352,7 +352,7 @@ Private Sub cmdValorizar_Click()
     End If
     Exit Sub
 err1:
-    Set Remito.cliente = cli_viejo
+    Set Remito.Cliente = cli_viejo
 
 End Sub
 
@@ -361,7 +361,7 @@ Private Function CrearDetalleDeOT() As Boolean
     Set detaEntrega = New remitoDetalle
     Dim detapedido As DetalleOrdenTrabajo
     Dim idDetallePedido As Long
-    idDetallePedido = Val(Right(scannedbuffer, Len(scannedbuffer) - 1))
+    idDetallePedido = val(Right(scannedbuffer, Len(scannedbuffer) - 1))
     Set detapedido = DAODetalleOrdenTrabajo.FindById(idDetallePedido)
 
     If IsSomething(detapedido) Then
@@ -370,7 +370,7 @@ Private Function CrearDetalleDeOT() As Boolean
         detaEntrega.Facturado = False
         detaEntrega.FEcha = Now
         detaEntrega.idDetallePedido = detapedido.Id
-        detaEntrega.idpedido = detapedido.OrdenTrabajo.Id
+        detaEntrega.IdPedido = detapedido.OrdenTrabajo.Id
         detaEntrega.Origen = OrigenRemitoOt
         detaEntrega.Remito = Me.Remito.Id
         detaEntrega.Valor = detapedido.Precio
@@ -426,8 +426,8 @@ Private Sub mostrarRemito()
 
         Me.lblFecha.caption = Remito.FEcha
         Me.lblDetalle = Remito.detalle
-        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.cliente.Id, Me.cboClientes)
-        Me.txtObservaciones = Remito.observaciones
+        Me.cboClientes.ListIndex = funciones.PosIndexCbo(Remito.Cliente.Id, Me.cboClientes)
+        Me.txtObservaciones = Remito.Observaciones
         Me.txtLugarEntrega = Remito.lugarEntrega
 
         grilla.Columns(6).Visible = MostrarInfoAdministracion
@@ -488,13 +488,13 @@ Private Sub grilla_DblClick()
     End If
 
     If editar Then
-        pos = grilla.rowIndex(grilla.row)
+        pos = grilla.RowIndex(grilla.row)
         If Remito.CantidadDeLineasActuales > funciones.itemsPorRemito Then
             MsgBox "La cantidad de líneas superan a lo permitido"
 
-            tmp.observaciones = vbNullString
+            tmp.Observaciones = vbNullString
         Else
-            tmp.observaciones = UCase(InputBox("Observación", "Observacion", tmp.observaciones))
+            tmp.Observaciones = UCase(InputBox("Observación", "Observacion", tmp.Observaciones))
         End If
 
     End If
@@ -522,8 +522,8 @@ End Sub
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error Resume Next
     'xxxx
-    If RowBuffer.rowIndex > 0 And Remito.detalles.count > 0 Then
-        Set tmp = Remito.detalles(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 And Remito.detalles.count > 0 Then
+        Set tmp = Remito.detalles(RowBuffer.RowIndex)
         If tmp.facturable Then
             If Not tmp.Facturado Then
                 RowBuffer.CellStyle(6) = "NoFacturado"
@@ -539,7 +539,7 @@ End Sub
 
 Private Sub grilla_SelectionChange()
     Dim it As Long
-    it = grilla.rowIndex(grilla.row)
+    it = grilla.RowIndex(grilla.row)
     If it > 0 And Remito.detalles.count > 0 Then
         Set tmp = Remito.detalles.item(it)
 
@@ -597,42 +597,42 @@ Private Sub grilla_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, 
 End Sub
 
 
-Private Sub grilla_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
-    If rowIndex > 0 And Remito.detalles.count > 0 Then
+Private Sub grilla_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
+    If RowIndex > 0 And Remito.detalles.count > 0 Then
 
         'eliminar de la entrega....!!!
 
-        Set tmp = Remito.detalles(rowIndex)
+        Set tmp = Remito.detalles(RowIndex)
         If tmp.Origen = OrigenRemitoOt Or tmp.Origen = OrigenRemitoAplicado Then
 
             If DAORemitoSDetalle.Delete(tmp) Then
-                Remito.detalles.remove rowIndex
+                Remito.detalles.remove RowIndex
             Else
                 MsgBox "Se produjo algún error!", vbCritical
             End If
 
         Else
-            Remito.detalles.remove rowIndex
+            Remito.detalles.remove RowIndex
         End If
 
     End If
 End Sub
 
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    If rowIndex > 0 And Remito.detalles.count > 0 Then
+    If RowIndex > 0 And Remito.detalles.count > 0 Then
     Debug.Print (Remito.detalles.count)
-        Set tmp = Remito.detalles(rowIndex)
+        Set tmp = Remito.detalles(RowIndex)
 
         With Values
-            .value(1) = rowIndex
+            .value(1) = RowIndex
             .value(2) = tmp.VerElemento
 
             If Not IsSomething(tmp.DetallePedido) Then
-                .value(7) = tmp.VerOrigen & Chr(10) & tmp.observaciones
+                .value(7) = tmp.VerOrigen & Chr(10) & tmp.Observaciones
             Else
-                .value(7) = tmp.VerOrigen & " | " & tmp.DetallePedido.item & Chr(10) & tmp.observaciones
+                .value(7) = tmp.VerOrigen & " | " & tmp.DetallePedido.item & Chr(10) & tmp.Observaciones
             End If
             .value(4) = funciones.FormatearDecimales(tmp.Cantidad, 2)
             .value(5) = funciones.FormatearDecimales(tmp.Valor, 2)
@@ -643,9 +643,9 @@ Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Var
 End Sub
 
 
-Private Sub grilla_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And Remito.detalles.count > 0 Then
-        Set tmp = Remito.detalles.item(rowIndex)
+Private Sub grilla_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And Remito.detalles.count > 0 Then
+        Set tmp = Remito.detalles.item(RowIndex)
         tmp.Concepto = UCase(Values(2))
         tmp.Cantidad = CDbl(Values(4))
 
@@ -667,7 +667,7 @@ End Function
 
 Private Sub mnuNoFacturable_Click()
     Dim A As Long
-    A = grilla.rowIndex(grilla.row)
+    A = grilla.RowIndex(grilla.row)
     If A > 0 Then
         If DAORemitoSDetalle.CambiarEstadoFacturable(Not tmp.facturable, tmp) Then
             MsgBox "Cambio exitoso!", vbInformation, "Información"

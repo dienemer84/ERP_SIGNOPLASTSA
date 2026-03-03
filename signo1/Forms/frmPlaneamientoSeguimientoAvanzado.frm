@@ -175,31 +175,31 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          Column(4)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2040
          Column(5)       =   "frmPlaneamientoSeguimientoAvanzado.frx":21C8
          Column(6)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2308
-         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2488
-         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":25F4
-         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2760
-         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":28B4
-         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2A34
-         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2BAC
-         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2D3C
-         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2EAC
-         Column(15)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3024
-         Column(16)      =   "frmPlaneamientoSeguimientoAvanzado.frx":318C
-         Column(17)      =   "frmPlaneamientoSeguimientoAvanzado.frx":331C
-         Column(18)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3440
+         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2480
+         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":25E4
+         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":274C
+         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":289C
+         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2A1C
+         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2B94
+         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2D24
+         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2E94
+         Column(15)      =   "frmPlaneamientoSeguimientoAvanzado.frx":300C
+         Column(16)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3174
+         Column(17)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3304
+         Column(18)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3428
          FormatStylesCount=   10
-         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3578
-         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":36B0
-         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3760
-         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3814
-         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":38EC
-         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":39A4
-         FormatStyle(7)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3A84
-         FormatStyle(8)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3B38
-         FormatStyle(9)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3BCC
-         FormatStyle(10) =   "frmPlaneamientoSeguimientoAvanzado.frx":3C58
+         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3560
+         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3698
+         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3748
+         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":37FC
+         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":38D4
+         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":398C
+         FormatStyle(7)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3A6C
+         FormatStyle(8)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3B20
+         FormatStyle(9)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3BB4
+         FormatStyle(10) =   "frmPlaneamientoSeguimientoAvanzado.frx":3C40
          ImageCount      =   0
-         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":3D08
+         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":3CF0
       End
       Begin XtremeSuiteControls.ProgressBar pgbAvanceOT 
          Height          =   255
@@ -605,9 +605,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridUsuarios, False, False
 
     EnsureConjuntoStyle          '<< agrega el estilo
-    
-    Me.txtOTNro = "6002"
-    
+  
     Set sectores = DAOSectores.GetAllModulos()
     Me.gridSectores.ItemCount = sectores.count
     Set Me.gridDetalles.Columns("procesosiguiente").DropDownControl = Me.gridSectores

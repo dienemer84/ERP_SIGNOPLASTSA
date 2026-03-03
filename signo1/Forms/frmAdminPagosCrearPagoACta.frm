@@ -4,16 +4,16 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosCrearPagoACta 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Crear Pago a Cuenta"
-   ClientHeight    =   10890
+   ClientHeight    =   7155
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   16395
+   ClientWidth     =   10020
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   10890
-   ScaleWidth      =   16395
+   ScaleHeight     =   7155
+   ScaleWidth      =   10020
    ShowInTaskbar   =   0   'False
    Begin XtremeSuiteControls.GroupBox GroupBox 
       Height          =   855

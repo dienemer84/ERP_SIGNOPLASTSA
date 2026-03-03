@@ -635,7 +635,7 @@ Private Sub Form_Load()
     
 '''    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
     
-    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
+    Call DAOProveedor.llenarComboProveedores(cboProveedores)
     
     Me.cboProveedores.ListIndex = -1
     '    llenarLista
@@ -679,7 +679,7 @@ Private Sub llenarLista()
     End If
 
     If LenB(Me.txtNro.Text) > 0 Then
-        filter = filter & " AND  ordenes_pago.id  = " & Val(Me.txtNro.Text)
+        filter = filter & " AND  ordenes_pago.id  = " & val(Me.txtNro.Text)
     End If
 
     Dim filtroor As String

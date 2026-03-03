@@ -483,7 +483,7 @@ Begin VB.Form frmAdminPagosPagoACtaLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   7
+      ColumnsCount    =   8
       Column(1)       =   "frmAdminPagosPagoACtaLista.frx":0000
       Column(2)       =   "frmAdminPagosPagoACtaLista.frx":0188
       Column(3)       =   "frmAdminPagosPagoACtaLista.frx":02B0
@@ -491,20 +491,21 @@ Begin VB.Form frmAdminPagosPagoACtaLista
       Column(5)       =   "frmAdminPagosPagoACtaLista.frx":0538
       Column(6)       =   "frmAdminPagosPagoACtaLista.frx":0678
       Column(7)       =   "frmAdminPagosPagoACtaLista.frx":07C0
+      Column(8)       =   "frmAdminPagosPagoACtaLista.frx":0918
       FormatStylesCount=   11
-      FormatStyle(1)  =   "frmAdminPagosPagoACtaLista.frx":0908
-      FormatStyle(2)  =   "frmAdminPagosPagoACtaLista.frx":0A30
-      FormatStyle(3)  =   "frmAdminPagosPagoACtaLista.frx":0AE0
-      FormatStyle(4)  =   "frmAdminPagosPagoACtaLista.frx":0B94
-      FormatStyle(5)  =   "frmAdminPagosPagoACtaLista.frx":0C6C
-      FormatStyle(6)  =   "frmAdminPagosPagoACtaLista.frx":0D24
-      FormatStyle(7)  =   "frmAdminPagosPagoACtaLista.frx":0E04
-      FormatStyle(8)  =   "frmAdminPagosPagoACtaLista.frx":0E24
-      FormatStyle(9)  =   "frmAdminPagosPagoACtaLista.frx":0ED8
-      FormatStyle(10) =   "frmAdminPagosPagoACtaLista.frx":0F90
-      FormatStyle(11) =   "frmAdminPagosPagoACtaLista.frx":1044
+      FormatStyle(1)  =   "frmAdminPagosPagoACtaLista.frx":0A60
+      FormatStyle(2)  =   "frmAdminPagosPagoACtaLista.frx":0B88
+      FormatStyle(3)  =   "frmAdminPagosPagoACtaLista.frx":0C38
+      FormatStyle(4)  =   "frmAdminPagosPagoACtaLista.frx":0CEC
+      FormatStyle(5)  =   "frmAdminPagosPagoACtaLista.frx":0DC4
+      FormatStyle(6)  =   "frmAdminPagosPagoACtaLista.frx":0E7C
+      FormatStyle(7)  =   "frmAdminPagosPagoACtaLista.frx":0F5C
+      FormatStyle(8)  =   "frmAdminPagosPagoACtaLista.frx":0F7C
+      FormatStyle(9)  =   "frmAdminPagosPagoACtaLista.frx":1030
+      FormatStyle(10) =   "frmAdminPagosPagoACtaLista.frx":10E8
+      FormatStyle(11) =   "frmAdminPagosPagoACtaLista.frx":119C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosPagoACtaLista.frx":1100
+      PrinterProperties=   "frmAdminPagosPagoACtaLista.frx":1258
    End
    Begin MSComDlg.CommonDialog CommonDialog 
       Left            =   840
@@ -612,7 +613,7 @@ Private Sub Form_Load()
     
 '''    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, True
     
-    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
+    Call DAOProveedor.llenarComboProveedores(cboProveedores)
     
     Me.cboProveedores.ListIndex = -1
     '    llenarLista
@@ -653,7 +654,7 @@ Private Sub llenarLista()
     End If
 
     If LenB(Me.txtNro.Text) > 0 Then
-        filter = filter & " AND  pagos_a_cuenta.id LIKE '%" & Val(Me.txtNro.Text) & "%'"
+        filter = filter & " AND  pagos_a_cuenta.id LIKE '%" & val(Me.txtNro.Text) & "%'"
     End If
 
     Dim filtroor As String
@@ -773,7 +774,14 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Values(4) = PagoACuenta.moneda.NombreCorto
         Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(PagoACuenta.StaticTotalOrigenes)), "$", "")
         Values(6) = enums.enumEstadoPagoACuenta(PagoACuenta.estado)
-        Values(7) = PagoACuenta.Creada
+        
+        If val(PagoACuenta.OPAplicada) = 0 Then
+             Values(7) = Null   ' o "" si tu columna es texto
+        Else
+            Values(7) = PagoACuenta.OPAplicada
+        End If
+        
+        Values(8) = PagoACuenta.Creada
         
     End If
 End Sub

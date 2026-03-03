@@ -6,7 +6,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
    ClientHeight    =   9345
    ClientLeft      =   1440
    ClientTop       =   4725
-   ClientWidth     =   15360
+   ClientWidth     =   14415
    Icon            =   "frmAdminComprasListaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
@@ -1231,7 +1231,7 @@ Public Sub llenarGrilla()
 
     '#181
     If Me.cboCuentasContables.ListIndex > -1 Then
-        condition = condition & " AND AdminComprasCuentasContables.id = '" & Me.cboCuentasContables.ItemData(Me.cboCuentasContables.ListIndex) & " '"
+        condition = condition & " AND AdminComprasCuentasContables.id = '" & Me.cboCuentasContables.ItemData(Me.cboCuentasContables.ListIndex) & "'"
     End If
     
     If Me.cboTipoCbte.ListIndex > -1 Then
@@ -1343,8 +1343,6 @@ Public Sub llenarGrilla()
 
     Set facturas = DAOFacturaProveedor.FindAll(condition, , ordenImporte, Permisos.AdminFaPVerSoloPropias)
 
-
-    
     Dim F As clsFacturaProveedor
     Dim total As Double
     Dim totalneto As Double

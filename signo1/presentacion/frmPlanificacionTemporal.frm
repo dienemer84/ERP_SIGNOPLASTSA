@@ -15,6 +15,23 @@ Begin VB.Form frmPlanificacionTemporal
    ScaleHeight     =   8190
    ScaleWidth      =   17040
    WindowState     =   2  'Maximized
+   Begin XtremeReportControl.ReportControl ReportControl 
+      Height          =   6435
+      Left            =   15
+      TabIndex        =   0
+      Top             =   1470
+      Width           =   5700
+      _Version        =   786432
+      _ExtentX        =   10054
+      _ExtentY        =   11351
+      _StockProps     =   64
+      BorderStyle     =   3
+      PreviewMode     =   -1  'True
+      AllowColumnRemove=   0   'False
+      AllowColumnReorder=   0   'False
+      AllowColumnSort =   0   'False
+      ShowHeaderRows  =   -1  'True
+   End
    Begin phGantXControl.phGantX phGantX1 
       Height          =   7935
       Left            =   5805
@@ -176,23 +193,6 @@ Begin VB.Form frmPlanificacionTemporal
       InplaceDateTimeClearStatesBetweenEdits=   0   'False
       SupressOnUserDrawExceptions=   0   'False
    End
-   Begin XtremeReportControl.ReportControl ReportControl 
-      Height          =   6435
-      Left            =   15
-      TabIndex        =   0
-      Top             =   1470
-      Width           =   5700
-      _Version        =   786432
-      _ExtentX        =   10054
-      _ExtentY        =   11351
-      _StockProps     =   64
-      BorderStyle     =   3
-      PreviewMode     =   -1  'True
-      AllowColumnRemove=   0   'False
-      AllowColumnReorder=   0   'False
-      AllowColumnSort =   0   'False
-      ShowHeaderRows  =   -1  'True
-   End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1365
       Left            =   60
@@ -274,34 +274,34 @@ Dim detadto As DetalleOTConjuntoDTO
 Private vpedido As OrdenTrabajo
 
 
-Public Property Let Pedido(nvalue As OrdenTrabajo)
-    Set vpedido = nvalue
+Public Property Let Pedido(nValue As OrdenTrabajo)
+    Set vpedido = nValue
     BuscarPedido
 End Property
 Private Sub AgregarTareas(row As ReportRow)
     Dim tn As IphDataEntity_Tree2
     Me.phGantX1.ClearTree
-    Dim idDetalle As Long
-    idDetalle = row.record.Tag
+    Dim IdDetalle As Long
+    IdDetalle = row.record.Tag
 
     Dim lista_ptp As Collection
     Dim ptp As PlaneamientoTiempoProceso
     If row.ParentRow Is Nothing Then    'es el detalle de la ot
         Dim detalle As DetalleOrdenTrabajo
-        Set detalle = DAODetalleOrdenTrabajo.FindById(idDetalle)
+        Set detalle = DAODetalleOrdenTrabajo.FindById(IdDetalle)
         'Set lista_ptp = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId( idDetalle, detalle.pieza.Id, , True)
-        Set lista_ptp = DAOTiemposProceso.FindAllByDetallePedidoId(idDetalle, , , True)
+        Set lista_ptp = DAOTiemposProceso.FindAllByDetallePedidoId(IdDetalle, , , True)
     Else
-        Set detadto = DAODetalleOrdenTrabajo.FindConjuntoById(idDetalle)
+        Set detadto = DAODetalleOrdenTrabajo.FindConjuntoById(IdDetalle)
         If detadto Is Nothing Then Exit Sub
         'Set lista_ptp = DAOTiemposProceso.FindAllByDetallePedidoIdAndPiezaId(idDetalle, detadto.pieza.Id, , True)
-        Set lista_ptp = DAOTiemposProceso.FindAllByDetallePedidoId(row.ParentRow.record.Tag, idDetalle, , True)
+        Set lista_ptp = DAOTiemposProceso.FindAllByDetallePedidoId(row.ParentRow.record.Tag, IdDetalle, , True)
     End If
 
-    Dim C As Long
-    C = 0
+    Dim c As Long
+    c = 0
     For Each ptp In lista_ptp
-        C = C + 1
+        c = c + 1
         Dim newactivity As IphDataEntity_Tree
         If (phGantX1.CurrentDataEntityTree Is Nothing) Then
             Set newactivity = phGantX1.AddRootDataEntityTree
@@ -323,7 +323,7 @@ Private Sub AgregarTareas(row As ReportRow)
                 ptp.Planificacion.Fin = DateAdd("d", 1, Date)
                 ptp.Planificacion.idTiempoProceso = ptp.Id
                 ptp.Planificacion.Color = ColorConstants.vbBlue
-                ptp.Planificacion.Prioridad = C
+                ptp.Planificacion.Prioridad = c
             End If
             time.Start = ptp.Planificacion.Inicio
             time.Stop = ptp.Planificacion.Fin
@@ -342,7 +342,7 @@ Private Sub AgregarTareas(row As ReportRow)
 End Sub
 Private Sub cmdBuscar_Click()
     If LenB(Me.txtOt) > 0 And IsNumeric(Me.txtOt) Then
-        Set vpedido = DAOOrdenTrabajo.FindById(Val(Me.txtOt))
+        Set vpedido = DAOOrdenTrabajo.FindById(val(Me.txtOt))
         If IsSomething(vpedido) Then
             Set vpedido.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(vpedido.Id)
             MostrarGantt
@@ -365,7 +365,7 @@ Private Sub Form_Load()
 End Sub
 Private Sub MostrarGantt()
     Me.txtOt = vpedido.Id
-    Me.lblCliente = "Cliente: " & vpedido.cliente.razon
+    Me.lblCliente = "Cliente: " & vpedido.Cliente.razon
     Me.lblDescripcion = "Descripcion: " & vpedido.descripcion & "  | Fecha entrega: " & vpedido.FechaEntrega
     ArmarGantt
     Me.phGantX1.Start = Date - 5
@@ -643,7 +643,7 @@ Private Sub phGantX1_OnValueChangedGrid(ByVal theGant As phGantXControl.IphGantX
     End If
 
     If x = 0 And newValue <> "" And IsNumeric(newValue) Then
-        ptpp.Prioridad = Val(newValue)
+        ptpp.Prioridad = val(newValue)
     End If
 
 
@@ -663,7 +663,7 @@ Private Sub phGantX1_OnValueChangedGrid(ByVal theGant As phGantXControl.IphGantX
 
 
     If x = 5 Then
-        gt.Stop = DateAdd("d", Val(newValue), gt.Start)
+        gt.Stop = DateAdd("d", val(newValue), gt.Start)
         phGantX1.GridCellValueSet 4, tn.GridRowIndex, gt.Stop, -1
     End If
 

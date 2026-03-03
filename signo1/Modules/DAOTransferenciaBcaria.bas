@@ -14,6 +14,7 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
       & " LEFT JOIN pagos_a_cuenta pagoscta ON pagoscta.id = pagosctaope.id_pago_a_cuenta" _
       & " LEFT JOIN ordenes_pago opp ON opp.id = opope.id_orden_pago" _
       & " LEFT JOIN ordenes_pago_facturas opfac ON opfac.id_orden_pago = opp.id" _
+      & " LEFT JOIN ordenes_pago_pagos_a_cuenta ON ordenes_pago_pagos_a_cuenta.id_pago_a_cuenta = pagoscta.id" _
       & " LEFT JOIN liquidaciones_caja liqc ON liqc.id = opope.id_orden_pago" _
       & " LEFT JOIN liquidaciones_caja_facturas liqf ON liqf.id_liquidacion_caja = liqc.id" _
       & " LEFT JOIN AdminComprasFacturasProveedores facprov ON facprov.id = opfac.id_factura_proveedor" _
@@ -39,7 +40,7 @@ Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As
 
     While Not rs.EOF
 
-        Set op = Map(rs, idx, "op", "cu", "mon", "ban", "opope", "pagosctaope", "pagoscta", "opp", "opfac", "liqc", "liqf", "facprov", "prov", "prov1")
+        Set op = Map(rs, idx, "op", "cu", "mon", "ban", "opope", "pagosctaope", "pagoscta", "opp", "opfac", "liqc", "liqf", "facprov", "prov", "prov1", "ordenes_pago_pagos_a_cuenta")
         
         If Not funciones.BuscarEnColeccion(col, CStr(op.Id)) Then col.Add op, CStr(op.Id)
         rs.MoveNext
@@ -63,7 +64,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaLiquidacionesCajaFacturas As String = vbNullString, _
                     Optional tablaFacturasProveedores As String = vbNullString, _
                     Optional tablaProveedores As String = vbNullString, _
-                    Optional tablaProveedores1 As String = vbNullString _
+                    Optional tablaProveedores1 As String = vbNullString, _
+                    Optional tablaOrdenesPagoACuenta As String = vbNullString _
                   ) As clsTransferenciaBcaria
    
     Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
@@ -95,6 +97,8 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         op.PagoACuentaID = GetValue(rs, indice, tablaPagosACuenta, "id")
         
         op.PagoACuentaProveedor = GetValue(rs, indice, tablaProveedores1, "razon")
+        
+        op.OPAplicada = GetValue(rs, indice, tablaOrdenesPagoACuenta, "id_orden_pago")
 
         
     End If
@@ -123,6 +127,17 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
+    
+    Dim titulo As String
+    titulo = "Reporte de Transferencias Bancarias"
+    
+    With xlWorksheet.Range("A1:J1")
+        .Merge
+        .Font.Bold = True
+        .value = titulo
+        .HorizontalAlignment = -4108 ' xlCenter
+    End With
+
 
     'fila, columna
 
@@ -136,9 +151,12 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     xlWorksheet.Cells(offset, 6).value = "Monto"
     xlWorksheet.Cells(offset, 7).value = "Comprobante"
     xlWorksheet.Cells(offset, 8).value = "OP/LIQ"
+    xlWorksheet.Cells(offset, 9).value = "Estado PCTA"
+    xlWorksheet.Cells(offset, 10).value = "OP Aplicado el PCTA"
+    
         
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 8)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 8)).Interior.Color = &HC0C0C0
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 10)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 10)).Interior.Color = &HC0C0C0
 
     Dim transf As clsTransferenciaBcaria
 
@@ -177,6 +195,8 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
                 If transf.OrdenPago Is Nothing Then
                     xlWorksheet.Cells(offset, 8).value = "PCTA: " & transf.PagoACuentaID
                     xlWorksheet.Cells(offset, 2).value = UCase(transf.PagoACuentaProveedor)
+                    If transf.OPAplicada = "0" Then xlWorksheet.Cells(offset, 9).value = "Disponible" Else xlWorksheet.Cells(offset, 9).value = "Procesada"
+                    xlWorksheet.Cells(offset, 10).value = transf.OPAplicada
                 Else
                      xlWorksheet.Cells(offset, 8).value = "OP: " & transf.OrdenPago.Id
                 End If
@@ -184,11 +204,15 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
             xlWorksheet.Cells(offset, 8).value = "LIQ: " & transf.LiquidacionCaja.NumeroLiq
         End If
         
+        
+       
+        
+        
         frmLoading.ProgressBar.value = i
         
     Next
 
-        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 8)).Borders.LineStyle = xlContinuous
+        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 10)).Borders.LineStyle = xlContinuous
 
     'autosize
     xlApplication.ScreenUpdating = False

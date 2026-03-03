@@ -20,7 +20,7 @@ Public Proveedor As clsProveedor
 
 Public ChequesTerceros As New Collection
 Public ChequesPropios As New Collection
-Public operacionesCaja As New Collection
+Public OperacionesCaja As New Collection
 Public operacionesBanco As New Collection
 
 Public estado As EstadoOrdenPago
@@ -41,6 +41,8 @@ Public DiferenciaCambioEnNG As Double
 Public DiferenciaCambioEnTOTAL As Double
 
 Public Creada As Date
+
+Public OPAplicada As Long
 
 Public staticTotalDeudaCompensatorios As Double
 
@@ -75,7 +77,7 @@ Public Property Get TotalOrigenes() As Double
         End If
     Next op
 
-    For Each op In Me.operacionesCaja
+    For Each op In Me.OperacionesCaja
         If IsSomething(op.moneda) Then
             total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
         End If
@@ -137,7 +139,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
         End If
     Next op
 
-    For Each op In Me.operacionesCaja
+    For Each op In Me.OperacionesCaja
         If IsSomething(op.moneda) Then
             Set itemRetorno = New Collection
             itemRetorno.Add op.FechaOperacion
@@ -169,25 +171,25 @@ End Sub
 Public Property Get IsValid() As Boolean
     m_validationMessages = vbNullString
 
-    Dim C As cheque
+    Dim c As cheque
     Dim cheques_id As New Dictionary
     'busco cheques duplicadas
-    For Each C In Me.ChequesTerceros
-        If cheques_id.Exists(CStr(C.Id)) Then
+    For Each c In Me.ChequesTerceros
+        If cheques_id.Exists(CStr(c.Id)) Then
             AddValidationMessage "Alguno de los cheques de 3ros aparece mas de 1 vez."
             Exit For
         End If
-        cheques_id.Add CStr(C.Id), C.Id
-    Next C
+        cheques_id.Add CStr(c.Id), c.Id
+    Next c
 
     Set cheques_id = New Dictionary
-    For Each C In Me.ChequesPropios
-        If cheques_id.Exists(CStr(C.Id)) Then
+    For Each c In Me.ChequesPropios
+        If cheques_id.Exists(CStr(c.Id)) Then
             AddValidationMessage "Alguno de los cheques propios aparece mas de 1 vez."
             Exit For
         End If
-        cheques_id.Add CStr(C.Id), C.Id
-    Next C
+        cheques_id.Add CStr(c.Id), c.Id
+    Next c
 
 
     If Me.TotalOrigenes = 0 Then

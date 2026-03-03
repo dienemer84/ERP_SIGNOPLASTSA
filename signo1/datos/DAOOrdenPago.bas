@@ -393,6 +393,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
         Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
         If IsSomething(pcta) Then
         
+        
         Set pcta = DAOPagoACta.FindById(pcta.Id)
             If Not funciones.BuscarEnColeccion(op.pagosacuenta, CStr(pcta.Id)) Then
                 op.pagosacuenta.Add pcta, CStr(pcta.Id)
@@ -1424,10 +1425,10 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         Printer.Print "Alícuota " & ra.Retencion.nombre & ": ";
         Printer.FontBold = False
         
-            If ra.Importe = 0 Then
+            If ra.certificados = "" Then
                 Printer.Print ra.alicuotaRetencion & "%"
             Else
-                Printer.Print ra.alicuotaRetencion & "% | Valor: " & Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(ra.Importe)), "$", "") & " | Cert N°: " & ra.certificados
+                Printer.Print ra.alicuotaRetencion & "% | Cert N°: " & ra.certificados
             End If
         
         If ra.Retencion.Id = 5 Then existeIIBB = True
@@ -1515,9 +1516,13 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.Print "Proveedor";
     Printer.FontBold = False
     
-    ' Dibujar línea debajo de los encabezados
-    Printer.Line (lmargin, Printer.CurrentY + 200)-(lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) + colWidth(5) + colWidth(6), Printer.CurrentY + 200)
-
+    Dim totalWidth As Single, i As Integer
+    totalWidth = 0
+    For i = 1 To 6
+        totalWidth = totalWidth + colWidth(i)
+    Next
+    
+    Printer.Line (lmargin, Printer.CurrentY + 200)-(lmargin + totalWidth, Printer.CurrentY + 200)
     ' Imprimir los datos de los comprobantes
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
     
@@ -1743,15 +1748,18 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.Print "Total Abonado: ";
     Printer.FontBold = False
     
-    If Orden.pagosacuenta.count = 0 Then
+'''    If Orden.pagosacuenta.count = 0 Then
     
     Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
     
-    Else
-        For Each pcta In Orden.pagosacuenta
-            Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + pcta.StaticTotalOrigenes)), "$", "")
-        Next pcta
-    End If
+'''    Else
+'''        For Each pcta In Orden.pagosacuenta
+''''''            Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + pcta.StaticTotalOrigenes)), "$", "")
+'''
+'''            Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
+'''
+'''        Next pcta
+'''    End If
 
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)

@@ -208,7 +208,10 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
     
     ' 1. Primero contar registros
     Dim qCount As String
-    qCount = "SELECT COUNT(*) AS total FROM AdminComprasFacturasProveedores WHERE 1=1 "
+    qCount = "SELECT COUNT(*) AS total FROM AdminComprasFacturasProveedores " _
+        & " LEFT JOIN AdminComprasCuentasFacturas  ON (AdminComprasFacturasProveedores.id = AdminComprasCuentasFacturas.id_factura) " _
+        & " LEFT JOIN AdminComprasCuentasContables  ON (AdminComprasCuentasFacturas.id_cuenta = AdminComprasCuentasContables.id) " _
+        & "WHERE 1=1 "
     
     If LenB(filtro) > 0 Then
         qCount = qCount & " AND " & filtro
@@ -219,7 +222,9 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
     End If
     
     Set rs = conectar.RSFactory(qCount)
+    
     totalRegistros = rs!total
+    
     rs.Close
     
     ' 2. Verificar si supera el límite
@@ -830,7 +835,7 @@ End Function
 
 
 
-Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, Optional FechaFIn As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
+Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, Optional FechaFin As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
     On Error Resume Next
     On Error GoTo err1
     Dim indice As New Dictionary
@@ -851,11 +856,11 @@ Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, O
         q = q & ",0 as total_compensado "
     End If
 
-    q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFIn & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
-    q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFIn & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
-    q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <=" & FechaFIn & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
-    q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  AND ordenes_pago.fecha <=" & FechaFIn & "),NCHAR) AS ordenes_pago "
-    q = q & ",   CONVERT((SELECT IFNULL(GROUP_CONCAT(numero_liq),'-') From liquidaciones_caja_facturas INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja=liquidaciones_caja.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND liquidaciones_caja.estado<>2  AND liquidaciones_caja.fecha <=" & FechaFIn & "),NCHAR) AS num_liquidaciones_caja "
+    q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFin & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
+    q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFin & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
+    q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <=" & FechaFin & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
+    q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  AND ordenes_pago.fecha <=" & FechaFin & "),NCHAR) AS ordenes_pago "
+    q = q & ",   CONVERT((SELECT IFNULL(GROUP_CONCAT(numero_liq),'-') From liquidaciones_caja_facturas INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja=liquidaciones_caja.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND liquidaciones_caja.estado<>2  AND liquidaciones_caja.fecha <=" & FechaFin & "),NCHAR) AS num_liquidaciones_caja "
     q = q & " From" _
         & " AdminComprasFacturasProveedores" _
         & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
@@ -963,7 +968,7 @@ err1:
 End Function
 
 
-Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFIn As String) As Boolean
+Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFin As String) As Boolean
     On Error GoTo err1
 
     ExportarColeccionTotalizadores = True
@@ -990,7 +995,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
                 Dim Fin As Date
 
 
-        Fin = FechaFIn
+        Fin = FechaFin
 
     'fila, columna
     xlWorksheet.Cells(1, 1).value = "REPORTE DE COMPROBANTES DE COMPRA ADEUDADOS AL " & Format(Fin, "dd/mm/yyyy")

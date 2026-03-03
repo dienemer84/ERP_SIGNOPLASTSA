@@ -2,16 +2,17 @@ VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosTransferenciasBancarias 
-   Caption         =   "Modificar"
+   Caption         =   "Transferencias"
    ClientHeight    =   9045
    ClientLeft      =   60
    ClientTop       =   -210
-   ClientWidth     =   17475
+   ClientWidth     =   14145
    LinkTopic       =   "Form1"
-   MaxButton       =   0   'False
    MDIChild        =   -1  'True
    ScaleHeight     =   9045
-   ScaleWidth      =   17475
+   ScaleMode       =   0  'User
+   ScaleWidth      =   18082.37
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox 
       Height          =   1815
       Index           =   0
@@ -414,24 +415,26 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   8
+      ColumnsCount    =   10
       Column(1)       =   "frmAdminPagosTransferenciasBancarias.frx":0000
       Column(2)       =   "frmAdminPagosTransferenciasBancarias.frx":0180
       Column(3)       =   "frmAdminPagosTransferenciasBancarias.frx":02D8
       Column(4)       =   "frmAdminPagosTransferenciasBancarias.frx":0434
       Column(5)       =   "frmAdminPagosTransferenciasBancarias.frx":0610
-      Column(6)       =   "frmAdminPagosTransferenciasBancarias.frx":0760
-      Column(7)       =   "frmAdminPagosTransferenciasBancarias.frx":0908
-      Column(8)       =   "frmAdminPagosTransferenciasBancarias.frx":0A68
+      Column(6)       =   "frmAdminPagosTransferenciasBancarias.frx":077C
+      Column(7)       =   "frmAdminPagosTransferenciasBancarias.frx":0940
+      Column(8)       =   "frmAdminPagosTransferenciasBancarias.frx":0ABC
+      Column(9)       =   "frmAdminPagosTransferenciasBancarias.frx":0C2C
+      Column(10)      =   "frmAdminPagosTransferenciasBancarias.frx":0DA0
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0BBC
-      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":0CF4
-      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":0DA4
-      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":0E58
-      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":0F30
-      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":0FE8
+      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0F1C
+      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":1054
+      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":1104
+      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":11B8
+      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":1290
+      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":1348
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":10C8
+      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":1428
    End
    Begin XtremeSuiteControls.Label Label 
       Height          =   255
@@ -633,7 +636,7 @@ Private Sub Form_Load()
 '''        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
 '''    Next
 
-    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
+    Call DAOProveedor.llenarComboProveedores(cboProveedores)
     Me.cboProveedores.ListIndex = -1
 
     'FIN- Llenado de Combo Proveedores
@@ -649,6 +652,15 @@ Private Sub Form_Load()
     Me.gridTransferencias.ItemCount = 0
     
     
+End Sub
+
+Private Sub Form_Resize()
+    On Error Resume Next
+    Me.gridTransferencias.Width = Me.ScaleWidth - 150
+    Me.gridTransferencias.Height = Me.ScaleHeight - 2000
+    
+
+    GridEXHelper.AutoSizeColumns Me.gridTransferencias
 End Sub
 
 Private Sub gridTransferencias_SelectionChange()
@@ -692,13 +704,19 @@ If RowIndex > 0 And transferencias.count > 0 Then
             If TransfBancaria.OrdenPago Is Nothing Then
                     Values(8) = "PCTA: " & TransfBancaria.PagoACuentaID
                     Values(2) = UCase(TransfBancaria.PagoACuentaProveedor)
+                    If TransfBancaria.OPAplicada = "0" Then Values(9) = "Disponible" Else Values(9) = "Procesada"
+                    Values(10) = TransfBancaria.OPAplicada
             Else
                     Values(8) = "OP: " & TransfBancaria.OrdenPago.Id
                     Values(2) = UCase(TransfBancaria.ProveedorRazon)
+                    Values(9) = ""
+                    Values(10) = ""
             End If
         Else
-                Values(8) = "LIQ: " & TransfBancaria.LiquidacionCaja.NumeroLiq
-                Values(2) = "VARIOS"
+                    Values(8) = "LIQ: " & TransfBancaria.LiquidacionCaja.NumeroLiq
+                    Values(2) = "VARIOS"
+                    Values(9) = ""
+                    Values(10) = ""
         End If
 
 
@@ -761,3 +779,4 @@ End Sub
 Private Sub PushButton1_Click(Index As Integer)
     Me.textbMayor.Text = ""
 End Sub
+
