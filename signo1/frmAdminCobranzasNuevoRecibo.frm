@@ -6,18 +6,18 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Recibo"
-   ClientHeight    =   8145
+   ClientHeight    =   8205
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   18135
+   ClientWidth     =   19530
    ClipControls    =   0   'False
    Icon            =   "frmAdminCobranzasNuevoRecibo.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8145
-   ScaleWidth      =   18135
+   ScaleHeight     =   8205
+   ScaleWidth      =   19530
    Begin XtremeSuiteControls.PushButton cmdCerrar 
       Height          =   405
       Left            =   10200
@@ -78,15 +78,15 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       Left            =   120
       TabIndex        =   6
       Top             =   960
-      Width           =   17925
+      Width           =   19245
       Begin XtremeSuiteControls.TabControl TabFacturasRetenciones 
          Height          =   4335
          Left            =   120
          TabIndex        =   28
          Top             =   300
-         Width           =   7065
+         Width           =   8505
          _Version        =   786432
-         _ExtentX        =   12462
+         _ExtentX        =   15002
          _ExtentY        =   7646
          _StockProps     =   68
          Appearance      =   10
@@ -140,11 +140,11 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          End
          Begin GridEX20.GridEX gridFacturas 
             Height          =   3870
-            Left            =   135
+            Left            =   120
             TabIndex        =   29
-            Top             =   345
-            Width           =   6840
-            _ExtentX        =   12065
+            Top             =   360
+            Width           =   8250
+            _ExtentX        =   14552
             _ExtentY        =   6826
             Version         =   "2.0"
             BoundColumnIndex=   ""
@@ -161,30 +161,32 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             IntProp1        =   0
             IntProp2        =   0
             IntProp7        =   0
-            ColumnsCount    =   5
+            ColumnsCount    =   7
             Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":0B08
             Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":0C7C
             Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":0DBC
-            Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":0F30
-            Column(5)       =   "frmAdminCobranzasNuevoRecibo.frx":10B4
+            Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":0EB0
+            Column(5)       =   "frmAdminCobranzasNuevoRecibo.frx":0FA4
+            Column(6)       =   "frmAdminCobranzasNuevoRecibo.frx":1118
+            Column(7)       =   "frmAdminCobranzasNuevoRecibo.frx":129C
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":1210
-            FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":1348
-            FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":13F8
-            FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":14AC
-            FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":1584
-            FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":163C
+            FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":13F8
+            FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":1530
+            FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":15E0
+            FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":1694
+            FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":176C
+            FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":1824
             ImageCount      =   0
-            PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":171C
+            PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":1904
          End
          Begin GridEX20.GridEX gridRetenciones 
             Height          =   3870
-            Left            =   -69865
+            Left            =   -69880
             TabIndex        =   30
-            Top             =   345
+            Top             =   360
             Visible         =   0   'False
-            Width           =   6870
-            _ExtentX        =   12118
+            Width           =   8250
+            _ExtentX        =   14552
             _ExtentY        =   6826
             Version         =   "2.0"
             BoundColumnIndex=   ""
@@ -202,19 +204,19 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             IntProp2        =   0
             IntProp7        =   0
             ColumnsCount    =   4
-            Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":18F4
-            Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":1A10
-            Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":1B44
-            Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":1C80
+            Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":1ADC
+            Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":1C14
+            Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":1D48
+            Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":1E84
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":1D8C
-            FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":1EC4
-            FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":1F74
-            FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":2028
-            FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":2100
-            FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":21B8
+            FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":1F90
+            FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":20C8
+            FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":2178
+            FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":222C
+            FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":2304
+            FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":23BC
             ImageCount      =   0
-            PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":2298
+            PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":249C
          End
       End
       Begin VB.TextBox txtRedondeo 
@@ -247,7 +249,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   6705
-         Left            =   7440
+         Left            =   8760
          TabIndex        =   7
          Top             =   240
          Width           =   10320
@@ -287,22 +289,22 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                IntProp2        =   0
                IntProp7        =   0
                ColumnsCount    =   7
-               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":2470
-               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":25FC
-               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":2764
-               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":28CC
-               Column(5)       =   "frmAdminCobranzasNuevoRecibo.frx":2A04
-               Column(6)       =   "frmAdminCobranzasNuevoRecibo.frx":2B48
-               Column(7)       =   "frmAdminCobranzasNuevoRecibo.frx":2CB0
+               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":2674
+               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":2800
+               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":2968
+               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":2AD0
+               Column(5)       =   "frmAdminCobranzasNuevoRecibo.frx":2C08
+               Column(6)       =   "frmAdminCobranzasNuevoRecibo.frx":2D4C
+               Column(7)       =   "frmAdminCobranzasNuevoRecibo.frx":2EB4
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":2DAC
-               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":2EE4
-               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":2F94
-               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":3048
-               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":3120
-               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":31D8
+               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":2FB0
+               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":30E8
+               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":3198
+               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":324C
+               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":3324
+               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":33DC
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":32B8
+               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":34BC
             End
             Begin GridEX20.GridEX gridBancos 
                Height          =   1845
@@ -331,17 +333,17 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                IntProp2        =   0
                IntProp7        =   0
                ColumnsCount    =   2
-               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":3490
-               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":3590
+               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":3694
+               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":3794
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":3684
-               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":37BC
-               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":386C
-               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":3920
-               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":39F8
-               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":3AB0
+               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":3888
+               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":39C0
+               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":3A70
+               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":3B24
+               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":3BFC
+               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":3CB4
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":3B90
+               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":3D94
             End
          End
          Begin XtremeSuiteControls.GroupBox grpBanco 
@@ -381,19 +383,19 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                IntProp2        =   0
                IntProp7        =   0
                ColumnsCount    =   4
-               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":3D68
-               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":3EF4
-               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":4084
-               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":420C
+               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":3F6C
+               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":40F8
+               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":4288
+               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":4410
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":437C
-               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":44B4
-               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":4564
-               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":4618
-               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":46F0
-               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":47A8
+               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":4580
+               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":46B8
+               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":4768
+               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":481C
+               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":48F4
+               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":49AC
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":4888
+               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":4A8C
             End
          End
          Begin XtremeSuiteControls.GroupBox grpCaja 
@@ -432,19 +434,19 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
                IntProp2        =   0
                IntProp7        =   0
                ColumnsCount    =   4
-               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":4A60
-               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":4BEC
-               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":4D54
-               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":4EDC
+               Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":4C64
+               Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":4DF0
+               Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":4F58
+               Column(4)       =   "frmAdminCobranzasNuevoRecibo.frx":50E0
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":5010
-               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":5148
-               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":51F8
-               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":52AC
-               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":5384
-               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":543C
+               FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":5214
+               FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":534C
+               FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":53FC
+               FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":54B0
+               FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":5588
+               FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":5640
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":551C
+               PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":5720
             End
          End
       End
@@ -712,7 +714,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   65339393
+         Format          =   65994753
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -798,17 +800,17 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":56F4
-      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":5818
+      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":58F8
+      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":5A1C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":5904
-      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":5A3C
-      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":5AEC
-      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":5BA0
-      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":5C78
-      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":5D30
+      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":5B08
+      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":5C40
+      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":5CF0
+      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":5DA4
+      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":5E7C
+      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":5F34
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":5E10
+      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":6014
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   4215
@@ -837,17 +839,17 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":5FE8
-      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":610C
+      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":61EC
+      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":6310
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":6200
-      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":6338
-      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":63E8
-      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":649C
-      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":6574
-      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":662C
+      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":6404
+      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":653C
+      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":65EC
+      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":66A0
+      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":6778
+      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":6830
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":670C
+      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":6910
    End
    Begin GridEX20.GridEX gridMonedas 
       Height          =   2655
@@ -874,17 +876,17 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":68E4
-      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":6A08
+      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":6AE8
+      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":6C0C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":6AFC
-      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":6C34
-      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":6CE4
-      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":6D98
-      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":6E70
-      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":6F28
+      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":6D00
+      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":6E38
+      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":6EE8
+      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":6F9C
+      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":7074
+      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":712C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":7008
+      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":720C
    End
    Begin GridEX20.GridEX gridFacturasCombo 
       Height          =   2700
@@ -911,18 +913,18 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   3
-      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":71E0
-      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":7304
-      Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":73F8
+      Column(1)       =   "frmAdminCobranzasNuevoRecibo.frx":73E4
+      Column(2)       =   "frmAdminCobranzasNuevoRecibo.frx":7508
+      Column(3)       =   "frmAdminCobranzasNuevoRecibo.frx":75FC
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":750C
-      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":7644
-      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":76F4
-      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":77A8
-      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":7880
-      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":7938
+      FormatStyle(1)  =   "frmAdminCobranzasNuevoRecibo.frx":7710
+      FormatStyle(2)  =   "frmAdminCobranzasNuevoRecibo.frx":7848
+      FormatStyle(3)  =   "frmAdminCobranzasNuevoRecibo.frx":78F8
+      FormatStyle(4)  =   "frmAdminCobranzasNuevoRecibo.frx":79AC
+      FormatStyle(5)  =   "frmAdminCobranzasNuevoRecibo.frx":7A84
+      FormatStyle(6)  =   "frmAdminCobranzasNuevoRecibo.frx":7B3C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":7A18
+      PrinterProperties=   "frmAdminCobranzasNuevoRecibo.frx":7C1C
    End
 End
 Attribute VB_Name = "frmAdminCobranzasNuevoRecibo"
@@ -954,8 +956,8 @@ Private caja As caja
 
 Private Editar_ As Boolean
 
-Public Property Let editar(nvalue As Boolean)
-    Editar_ = nvalue
+Public Property Let editar(nValue As Boolean)
+    Editar_ = nValue
 End Property
 
 
@@ -1526,14 +1528,18 @@ Private Sub gridFacturas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         
         Values(2) = Factura.FechaEmision
         
-        Values(3) = funciones.FormatearDecimales(Factura.total)
+        Values(3) = Factura.moneda.NombreCorto
         
-        Values(4) = funciones.FormatearDecimales(Factura.total - DAOFactura.PagosRealizados(Factura.Id))
+        Values(4) = Factura.CambioAPatron
+        
+        Values(5) = funciones.FormatearDecimales(Factura.total)
+        
+        Values(6) = funciones.FormatearDecimales(Factura.total - DAOFactura.PagosRealizados(Factura.Id))
 
         If Recibo.pagosDeFacturas.Exists(CStr(Factura.Id)) Then
-            Values(5) = funciones.FormatearDecimales(Recibo.pagosDeFacturas.item(CStr(Factura.Id)))
+            Values(7) = funciones.FormatearDecimales(Recibo.pagosDeFacturas.item(CStr(Factura.Id)))
         Else
-            Values(5) = funciones.FormatearDecimales(0)
+            Values(7) = funciones.FormatearDecimales(0)
         End If
 
     End If

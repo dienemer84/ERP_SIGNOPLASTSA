@@ -1241,11 +1241,11 @@ Public Sub ordenar_grilla(ByVal Column As GridEX20.JSColumn, GridEX1 As GridEX)
 End Sub
 Public Sub FillComboBox(ByRef combo As ComboBox, ByRef col As Collection, ByRef propertyForShow As String, ByRef propertyForId As String, ByRef selectFirst As Boolean)
     combo.Clear
-    Dim Item As Object
-    For Each Item In col
-        combo.AddItem CallByName(Item, propertyForShow, VbGet)
-        combo.ItemData(combo.NewIndex) = CallByName(Item, propertyForId, VbGet)
-    Next Item
+    Dim item As Object
+    For Each item In col
+        combo.AddItem CallByName(item, propertyForShow, VbGet)
+        combo.ItemData(combo.NewIndex) = CallByName(item, propertyForId, VbGet)
+    Next item
     If (selectFirst And combo.ListCount > 0) Then combo.ListIndex = 0
 End Sub
 
@@ -1494,7 +1494,7 @@ End Sub
 ' the user cancels.
 Public Function BrowseForDirectory(ByVal caption As String) As String
     Dim browse_info As BrowseInfo
-    Dim Item As Long
+    Dim item As Long
     Dim dir_name As String
 
     browse_info.hwndOwner = hWnd
@@ -1506,10 +1506,10 @@ Public Function BrowseForDirectory(ByVal caption As String) As String
     browse_info.lParam = 0
     browse_info.iImage = 0
 
-    Item = SHBrowseForFolder(browse_info)
-    If Item Then
+    item = SHBrowseForFolder(browse_info)
+    If item Then
         dir_name = Space$(260)
-        If SHGetPathFromIDList(Item, dir_name) Then
+        If SHGetPathFromIDList(item, dir_name) Then
             BrowseForDirectory = Left(dir_name, InStr(dir_name, Chr$(0)) - 1)
         Else
             BrowseForDirectory = vbNullString
@@ -1524,41 +1524,41 @@ Public Function IsSomething(Obj As Object) As Boolean
 End Function
 
 Public Function JoinCollectionValues(col As Collection, delimiter As String, Optional objectProperty As String = vbNullString) As String
-    Dim Value As Variant
+    Dim value As Variant
     Dim ret As String
     Dim cont As Long
-    For Each Value In col
+    For Each value In col
         cont = cont + 1
 
         If LenB(objectProperty) = 0 Then
-            ret = ret & Value
+            ret = ret & value
         Else
-            ret = ret & CallByName(Value, objectProperty, VbGet)
+            ret = ret & CallByName(value, objectProperty, VbGet)
         End If
 
         If cont <> col.count Then
             ret = ret & delimiter
         End If
-    Next Value
+    Next value
     JoinCollectionValues = ret
 End Function
 
 Public Function JoinDictionaryKeyValues(dic As Dictionary, delimiter As String) As String
-    Dim Value As Variant
+    Dim value As Variant
     Dim ret As String
     Dim cont As Long
-    For Each Value In dic.Keys
+    For Each value In dic.Keys
         cont = cont + 1
-        ret = ret & Value
+        ret = ret & value
         If cont <> dic.count Then
             ret = ret & delimiter
         End If
-    Next Value
+    Next value
     JoinDictionaryKeyValues = ret
 End Function
 
 
-Public Sub FillComboBoxDateRanges(ByRef combo As XtremeSuiteControls.ComboBox)
+Public Sub FillComboBoxDateRanges(ByRef combo As Xtremesuitecontrols.ComboBox)
     combo.Clear
     combo.AddItem "Hoy"
     combo.ItemData(combo.NewIndex) = DateRangeValue.DRV_Today
@@ -1583,7 +1583,7 @@ Public Sub FillComboBoxDateRanges(ByRef combo As XtremeSuiteControls.ComboBox)
     combo.ListIndex = -1
 End Sub
 
-Public Sub CalculateDateRange(ByRef combo As XtremeSuiteControls.ComboBox, ByRef dtpDesde As XtremeSuiteControls.DateTimePicker, ByRef dtpHasta As XtremeSuiteControls.DateTimePicker)
+Public Sub CalculateDateRange(ByRef combo As Xtremesuitecontrols.ComboBox, ByRef dtpDesde As Xtremesuitecontrols.DateTimePicker, ByRef dtpHasta As Xtremesuitecontrols.DateTimePicker)
 
     Dim desde As Date
     Dim hasta As Date
@@ -1647,8 +1647,8 @@ Public Sub CalculateDateRange(ByRef combo As XtremeSuiteControls.ComboBox, ByRef
 
     End If
 
-    dtpDesde.Value = desde
-    dtpHasta.Value = hasta
+    dtpDesde.value = desde
+    dtpHasta.value = hasta
 
 End Sub
 
@@ -1761,5 +1761,20 @@ Public Function NullOrZeroToEmpty(val As Variant) As Variant
 End Function
 
 
+Public Function NormalizarCuit(ByVal s As String) As String
+    s = Trim$(s)
+    s = Replace$(s, "-", "")
+    s = Replace$(s, " ", "")
+    s = Replace$(s, ".", "")
+    s = Replace$(s, vbTab, "")
+    NormalizarCuit = s
+End Function
 
+
+Public Function CuitTieneFormatoBasico(ByVal s As String) As Boolean
+    's debe venir normalizado (sin guiones/espacios)
+    If Len(s) <> 11 Then Exit Function
+    If Not IsNumeric(s) Then Exit Function
+    CuitTieneFormatoBasico = True
+End Function
 

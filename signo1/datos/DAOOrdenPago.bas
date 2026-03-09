@@ -390,7 +390,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
         End If
         
         
-        Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
+        Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "ordenes_pago_pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
         If IsSomething(pcta) Then
         
         

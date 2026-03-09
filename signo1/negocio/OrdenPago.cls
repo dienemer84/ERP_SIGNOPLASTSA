@@ -22,7 +22,10 @@ Public CuentaContable As clsCuentaContable
 Public CuentaContableDescripcion As String
 Public ChequesTerceros As New Collection
 Public ChequesPropios As New Collection
-Public operacionesCaja As New Collection
+Public OperacionesCaja As New Collection
+
+Public Percepciones As New Collection
+
 Public operacionesBanco As New Collection
 Public pagosacuenta As New Collection
 Public Compensatorios As New Collection
@@ -57,33 +60,33 @@ End Property
 
 Public Property Get TotalNGCompensatorios() As Double
     Dim T As Double
-    Dim C As New Compensatorio
+    Dim c As New Compensatorio
 
-    For Each C In Compensatorios
-        T = T + C.NetoGravadoCompensado
-    Next C
+    For Each c In Compensatorios
+        T = T + c.NetoGravadoCompensado
+    Next c
     TotalNGCompensatorios = T
 End Property
 
 Public Property Get TotalCompensatorios() As Double
-    Dim C As New Compensatorio
+    Dim c As New Compensatorio
     Dim T As Double
     Dim i As Integer
-    For Each C In Compensatorios
-        If C.Tipo = TC_Credito Then i = -1 Else i = 1
-        T = T + (C.Monto * i)
-    Next C
+    For Each c In Compensatorios
+        If c.Tipo = TC_Credito Then i = -1 Else i = 1
+        T = T + (c.Monto * i)
+    Next c
     TotalCompensatorios = T
 End Property
 
 Public Property Get TotalDeudaCompensatorios() As Double
-    Dim C As New Compensatorio
+    Dim c As New Compensatorio
     Dim T As Double
     Dim i As Integer
-    For Each C In DeudaCompensatorios
-        If C.Tipo = TC_Credito Then i = -1 Else i = 1
-        T = T + (C.Monto * i)
-    Next C
+    For Each c In DeudaCompensatorios
+        If c.Tipo = TC_Credito Then i = -1 Else i = 1
+        T = T + (c.Monto * i)
+    Next c
     TotalDeudaCompensatorios = T
 End Property
 
@@ -153,7 +156,7 @@ Public Property Get TotalOrigenes() As Double
     Next op
 
 
-    For Each op In Me.operacionesCaja
+    For Each op In Me.OperacionesCaja
         If IsSomething(op.moneda) Then
             total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
         End If
@@ -226,7 +229,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
         End If
     Next op
 
-    For Each op In Me.operacionesCaja
+    For Each op In Me.OperacionesCaja
         If IsSomething(op.moneda) Then
             Set itemRetorno = New Collection
             itemRetorno.Add op.FechaOperacion
@@ -253,25 +256,25 @@ End Sub
 Public Property Get IsValid() As Boolean
     m_validationMessages = vbNullString
 
-    Dim C As cheque
+    Dim c As cheque
     Dim cheques_id As New Dictionary
     'busco cheques duplicadas
-    For Each C In Me.ChequesTerceros
-        If cheques_id.Exists(CStr(C.Id)) Then
+    For Each c In Me.ChequesTerceros
+        If cheques_id.Exists(CStr(c.Id)) Then
             AddValidationMessage "Alguno de los cheques de 3ros aparece mas de 1 vez."
             Exit For
         End If
-        cheques_id.Add CStr(C.Id), C.Id
-    Next C
+        cheques_id.Add CStr(c.Id), c.Id
+    Next c
 
     Set cheques_id = New Dictionary
-    For Each C In Me.ChequesPropios
-        If cheques_id.Exists(CStr(C.Id)) Then
+    For Each c In Me.ChequesPropios
+        If cheques_id.Exists(CStr(c.Id)) Then
             AddValidationMessage "Alguno de los cheques propios aparece mas de 1 vez."
             Exit For
         End If
-        cheques_id.Add CStr(C.Id), C.Id
-    Next C
+        cheques_id.Add CStr(c.Id), c.Id
+    Next c
 
     If Me.TotalOrigenes = 0 Then
         AddValidationMessage "El total de la orden debe ser mayor a cero."
