@@ -39,6 +39,7 @@ Public Function Delete(filter As String) As Boolean
     Delete = conectar.execute("DELETE FROM operaciones  WHERE " & filter)
 End Function
 
+
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaCuentaContable As String = vbNullString, _
                     Optional tablaMoneda As String = vbNullString, _

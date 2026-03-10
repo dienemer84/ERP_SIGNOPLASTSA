@@ -327,10 +327,11 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
       & " LEFT JOIN ordenes_pago_pagos_a_cuenta ON (ordenes_pago.id = ordenes_pago_pagos_a_cuenta.id_orden_pago) LEFT JOIN pagos_a_cuenta ON (ordenes_pago_pagos_a_cuenta.id_pago_a_cuenta = pagos_a_cuenta.id)" _
       & " LEFT JOIN ordenes_pago_operaciones ON (ordenes_pago.id = ordenes_pago_operaciones.id_orden_pago)" _
       & " LEFT JOIN ordenes_pago_facturas ON (ordenes_pago.id = ordenes_pago_facturas.id_orden_pago)" _
+      & " LEFT JOIN AdminPercepcionesOP ON (AdminPercepcionesOP.id_orden_pago = ordenes_pago.id)" _
+      & " LEFT JOIN AdminPercepcionOPDetalle ON (AdminPercepcionOPDetalle.id = AdminPercepcionesOP.id_percepcion)" _
       & " LEFT JOIN AdminComprasCuentasContables cuentacontableordenpago ON (ordenes_pago.id_cuenta_contable = cuentacontableordenpago.id)" _
       & " LEFT JOIN operaciones ON (operaciones.id = ordenes_pago_operaciones.id_operacion)" _
-      & " LEFT JOIN Cheques ON (Cheques.id = ordenes_pago_cheques.id_cheque)" _
-      & " LEFT JOIN Chequeras ON (Chequeras.id = Cheques.id_chequera)" _
+      & " LEFT JOIN Cheques ON (Cheques.id = ordenes_pago_cheques.id_cheque) LEFT JOIN Chequeras ON (Chequeras.id = Cheques.id_chequera)" _
       & " LEFT JOIN AdminConfigBancos monbanco ON (monbanco.id = Chequeras.id_banco)" _
       & " LEFT JOIN AdminConfigMonedas monchequera ON (monchequera.id = Chequeras.id_moneda)" _
       & " LEFT JOIN AdminComprasFacturasProveedores ON (AdminComprasFacturasProveedores.id = ordenes_pago_facturas.id_factura_proveedor)" _
@@ -339,13 +340,11 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
       & " LEFT JOIN AdminConfigFacturasProveedor ON (AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id)" _
       & " LEFT JOIN AdminConfigMonedas monedaoperacion ON (monedaoperacion.id = operaciones.moneda_id)" _
       & " LEFT JOIN AdminComprasCuentasContables ON (AdminComprasCuentasContables.id = operaciones.cuenta_contable_id)" _
-      & " LEFT JOIN cajas ON (cajas.id = operaciones.cuentabanc_o_caja_id)" _
-      & " LEFT JOIN AdminConfigCuentas ON (AdminConfigCuentas.id = operaciones.cuentabanc_o_caja_id)" _
+      & " LEFT JOIN cajas ON (cajas.id = operaciones.cuentabanc_o_caja_id) LEFT JOIN AdminConfigCuentas ON (AdminConfigCuentas.id = operaciones.cuentabanc_o_caja_id)" _
       & " LEFT JOIN AdminConfigMonedas moncuentabancaria ON (moncuentabancaria.id = AdminConfigCuentas.moneda_id)" _
       & " LEFT JOIN AdminConfigMonedas moncheque ON (moncheque.id = Cheques.id_moneda)" _
       & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id " _
-      & " LEFT JOIN AdminRecibosCheques rec ON rec.idCheque= Cheques.id" _
-      & " LEFT JOIN AdminConfigBancos ON (AdminConfigBancos.id = AdminConfigCuentas.idBanco)"
+      & " LEFT JOIN AdminRecibosCheques rec ON rec.idCheque= Cheques.id LEFT JOIN AdminConfigBancos ON (AdminConfigBancos.id = AdminConfigCuentas.idBanco)"
       
     q = q & " LEFT JOIN AdminConfigBancos bancocheque  ON (bancocheque.id = Cheques.id_banco)" _
       & " LEFT JOIN proveedores ON (proveedores.id = AdminComprasFacturasProveedores.id_proveedor)" _
@@ -363,6 +362,8 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     Dim che As cheque
     Dim oper As operacion
     Dim pcta As clsPagoACta
+    
+    Dim per As clsPercepcionesOrdenPago
 
     Dim idx As Dictionary
     Dim rs As Recordset
@@ -427,6 +428,16 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
             End If
         End If
 
+
+        Set per = DAOPercepcionesOP.Map(rs, idx, "AdminPercepcionOPDetalle", "AdminConfigMonedas")
+            If IsSomething(per) Then
+                       If Not funciones.BuscarEnColeccion(op.percepciones, CStr(per.Id)) Then
+                    op.percepciones.Add per, CStr(per.Id)
+            End If
+        End If
+
+        
+        
         Set ra = MapAlicuotaRetencion(rs, idx, "opr", "r")
         If IsSomething(ra) Then
             If Not funciones.BuscarEnColeccion(op.RetencionesAlicuota, CStr(ra.Retencion.Id)) Then
@@ -790,6 +801,8 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             q = "UPDATE pagos_a_cuenta SET estado= " & EstadoPagoACuenta.Procesada & " WHERE id = " & pacta.Id
             If Not conectar.execute(q) Then GoTo E
         Next
+        
+        
 
 
         Dim es As EstadoFacturaProveedor
@@ -891,23 +904,24 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
                 GoTo E
             End If
         Next oper
+        
+        
+        'guardo las percepciones
+        Dim per As clsPercepcionesOrdenPago
+        
+        For Each per In op.percepciones
+            If DAOPercepcionesOP.Save(per) Then
+                per.Id = conectar.UltimoId2
+                If per.Id = 0 Then GoTo E
+                q = "INSERT INTO AdminPercepcionesOP VALUES (" & op.Id & ", " & per.Id & ")"
+                If Not conectar.execute(q) Then GoTo E
+            Else
+                GoTo E
+            End If
+        Next per
 
 
-        'guardo las retenciones aplicadas
-        '   q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.id
-        '        If Not conectar.execute(q) Then GoTo E
-        '
-        '        Dim r As DTORetencionAlicuota
-        '        For Each r In op.RetencionesAlicuota
-        '
-        '
-        '
-        '          ' q = "INSERT INTO retenciones_alicuotas VALUES (" & op.id & ", " & che.id & ")"
-        '          '  If Not conectar.execute(q) Then GoTo E
-        '        Next r
-
-
-        'guardo los compensatorios
+       'guardo los compensatorios
         q = "DELETE FROM ordenes_pago_compensatorios WHERE id_orden_pago = " & op.Id
         If Not conectar.execute(q) Then GoTo E
 
@@ -1003,21 +1017,20 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
     Dim op As OrdenPago
     Set op = DAOOrdenPago.FindById(opid)
 
-
-
-
     If useInternalTransaction Then conectar.BeginTransaction
 
     Dim q As String
 
     q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM ordenes_pago_facturas WHERE id_orden_pago = " & opid & ")"
     If Not conectar.execute(q) Then GoTo E
-    ' q = "DELETE FROM ordenes_pago_facturas WHERE id_orden_pago = " & opid
-    '     If Not conectar.execute(q) Then GoTo E
 
     q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & opid & ")"
     If Not conectar.execute(q) Then GoTo E
+    
     q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & opid
+    If Not conectar.execute(q) Then GoTo E
+    
+    q = "DELETE FROM WHERE AdminPercepcionesOP WHERE id_orden_pago = " & opid
     If Not conectar.execute(q) Then GoTo E
 
 
@@ -1028,8 +1041,6 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
     If Not conectar.execute(q) Then GoTo E
 
     q = "UPDATE Cheques SET orden_pago_origen=0,en_cartera = 1  WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=0"
-
-
 
 
     If Not conectar.execute(q) Then GoTo E

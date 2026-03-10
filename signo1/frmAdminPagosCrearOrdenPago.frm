@@ -2766,7 +2766,7 @@ Private Sub gridPercepciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRe
         Set Percepcion.moneda = DAOMoneda.GetById(Values(2))
     End If
     
-    Percepcion.FechaCarga = Values(3)
+    Percepcion.FEcha = Values(3)
 
     Percepcion.Comprobante = Values(4)
     
@@ -2798,7 +2798,7 @@ Private Sub gridPercepciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookm
         If IsSomething(Percepcion.moneda) Then
             Values(2) = Percepcion.moneda.NombreCorto
         End If
-        Values(3) = Percepcion.FechaCarga
+        Values(3) = Percepcion.FEcha
         
         If IsSomething(Percepcion) Then
             Values(4) = Percepcion.Comprobante
@@ -2820,7 +2820,7 @@ Private Sub gridPercepciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmar
             Set Percepcion.moneda = DAOMoneda.GetById(Values(2))
         End If
         
-        Percepcion.FechaCarga = Values(3)
+        Percepcion.FEcha = Values(3)
         Percepcion.Comprobante = Values(4)
         Percepcion.Tipo = Values(5)
         
@@ -2886,7 +2886,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
 End Function
 
 
-Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Collection = Nothing, Optional colpcta As Collection = Nothing, Optional colpercepciones As Collection = Nothing)
+Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Collection = Nothing, Optional colpcta As Collection = Nothing, Optional colPercepciones As Collection = Nothing)
     Dim d As New Dictionary
     
     Dim ret As Retencion
@@ -3013,14 +3013,14 @@ Private Sub MostrarPosiblesRetenciones(col As Collection, Optional colc As Colle
     End If
 
 
-   Dim Per As clsPercepcionesOrdenPago
+   Dim per As clsPercepcionesOrdenPago
 
-    For Each Per In OrdenPago.percepciones
-        If IsSomething(Per) Then
-            If IsSomething(Per.moneda) And IsSomething(OrdenPago.moneda) Then
-                totPercepciones = totPercepciones + MonedaConverter.ConvertirForzado2(Per.Monto, Per.moneda.Id, OrdenPago.moneda.Id, 1)
+    For Each per In OrdenPago.percepciones
+        If IsSomething(per) Then
+            If IsSomething(per.moneda) And IsSomething(OrdenPago.moneda) Then
+                totPercepciones = totPercepciones + MonedaConverter.ConvertirForzado2(per.Monto, per.moneda.Id, OrdenPago.moneda.Id, 1)
             Else
-                totPercepciones = totPercepciones + Per.Monto
+                totPercepciones = totPercepciones + per.Monto
             End If
         End If
     Next
@@ -3212,7 +3212,7 @@ Sub calcularOrigenes()
     Dim col As New Collection
     Dim colc As New Collection
     Dim colpcta As New Collection
-    Dim colpercepciones As New Collection
+    Dim colPercepciones As New Collection
 
     For i = 0 To Me.lstFacturas.ListCount - 1
         If Me.lstFacturas.Checked(i) Then
@@ -3261,7 +3261,7 @@ Sub calcularOrigenes()
 
 
     TotalizarDiferenciasCambio
-    MostrarPosiblesRetenciones col, colc, colpcta, colpercepciones
+    MostrarPosiblesRetenciones col, colc, colpcta, colPercepciones
     
 End Sub
 
