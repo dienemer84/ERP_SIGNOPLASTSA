@@ -2,6 +2,7 @@ Attribute VB_Name = "DAOProduccionAvanceSimpleDTO"
 Option Explicit
 
 Public Type AvanceSimpleDTO
+    NoProcesa As Boolean
     CantRecibida As Double
     CantFabricada As Double
     CantScrap As Double

@@ -871,19 +871,19 @@ Begin VB.Form frmAdminPagosLiqCajaListaDG
             Column(1)       =   "frmAdminPagosLiqCajaListaDG.frx":B494
             Column(2)       =   "frmAdminPagosLiqCajaListaDG.frx":B614
             Column(3)       =   "frmAdminPagosLiqCajaListaDG.frx":B7B4
-            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":B8AC
-            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":B9E8
-            Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":BAF4
-            Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":BBC4
+            Column(4)       =   "frmAdminPagosLiqCajaListaDG.frx":B8CC
+            Column(5)       =   "frmAdminPagosLiqCajaListaDG.frx":BA08
+            Column(6)       =   "frmAdminPagosLiqCajaListaDG.frx":BB14
+            Column(7)       =   "frmAdminPagosLiqCajaListaDG.frx":BBE4
             FormatStylesCount=   6
-            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":BCB0
-            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":BDE8
-            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":BE98
-            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":BF4C
-            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":C024
-            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":C0DC
+            FormatStyle(1)  =   "frmAdminPagosLiqCajaListaDG.frx":BCD0
+            FormatStyle(2)  =   "frmAdminPagosLiqCajaListaDG.frx":BE08
+            FormatStyle(3)  =   "frmAdminPagosLiqCajaListaDG.frx":BEB8
+            FormatStyle(4)  =   "frmAdminPagosLiqCajaListaDG.frx":BF6C
+            FormatStyle(5)  =   "frmAdminPagosLiqCajaListaDG.frx":C044
+            FormatStyle(6)  =   "frmAdminPagosLiqCajaListaDG.frx":C0FC
             ImageCount      =   0
-            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":C1BC
+            PrinterProperties=   "frmAdminPagosLiqCajaListaDG.frx":C1DC
          End
       End
    End
@@ -1698,7 +1698,7 @@ Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal Val
         If Not IsNumeric(value) Or LenB(value) = 0 Then
             Set chequesChequeraSeleccionada = New Collection
         Else
-            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(Val(value))  ' Me.gridChequesPropios.Value(1))
+            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(val(value))  ' Me.gridChequesPropios.Value(1))
         End If
 
         Me.gridChequesChequera.ItemCount = chequesChequeraSeleccionada.count

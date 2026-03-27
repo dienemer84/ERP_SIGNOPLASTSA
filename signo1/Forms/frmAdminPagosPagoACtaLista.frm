@@ -703,8 +703,8 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.gridOrdenes.Width = Me.ScaleWidth - 300
-    Me.gridOrdenes.Height = (Me.ScaleHeight * 75) / 100
+    Me.gridOrdenes.Width = Me.ScaleWidth - 400
+    Me.gridOrdenes.Height = Me.ScaleHeight - 3200
 
     Me.GroupBox1.Width = Me.gridOrdenes.Width
     GridEXHelper.AutoSizeColumns Me.gridOrdenes

@@ -33,69 +33,115 @@ Public LiquidacionId As Long
 Public AlicuotasIva As New Collection
 Public NetosGravado As New Collection
 Public ImpuestoInterno As Double
-Public Redondeo As Double
-
-
-
+Public redondeo As Double
 
 Public Function TienePercepcionesIVA() As Boolean
     Dim P As clsPercepcionesAplicadas
    
     For Each P In ListaPercepciones
-
         If P.Percepcion.Id = Configurar.IdPercepcionIVA Then
             TienePercepcionesIVA = True
             Exit Function
         End If
-
-
     Next P
+
     TienePercepcionesIVA = False
-
-
-    Exit Function
 End Function
 
 Public Function TienePercepcionesIIBB() As Boolean
     Dim P As clsPercepcionesAplicadas
     Dim tp As clsPercepciones
-    Dim IIBB As Integer
+
     For Each P In ListaPercepciones
-        Dim esta As Boolean
         For Each tp In Configurar.idPercepcionesIIBB
             If tp.Id = P.Percepcion.Id Then
                 TienePercepcionesIIBB = True
                 Exit Function
             End If
         Next
-
     Next P
-    TienePercepcionesIIBB = False
 
+    TienePercepcionesIIBB = False
 End Function
 
-
-
 Public Property Get ComprobanteTipoLetra() As String
+    Dim s As String
     Dim pos As Long
-    Dim tipoLetra As String
-    pos = InStr(1, Me.Comprobante, "-")
-    If pos > 0 Then
-        tipoLetra = Mid$(Me.Comprobante, pos + 1, 1)
-    End If
 
-    ComprobanteTipoLetra = tipoLetra
+    s = Trim$(Me.Comprobante)
+    pos = InStr(1, s, "-")
+
+    If pos > 0 Then
+        ComprobanteTipoLetra = Mid$(s, pos + 1, 1)
+    Else
+        ComprobanteTipoLetra = ""
+    End If
+End Property
+
+Public Property Get ComprobanteUltimoBloque() As String
+    Dim s As String
+    Dim pos As Long
+
+    s = Trim$(Me.Comprobante)
+
+    pos = InStrRev(s, "|")
+    If pos > 0 Then
+        ComprobanteUltimoBloque = Trim$(Mid$(s, pos + 1))
+    Else
+        ComprobanteUltimoBloque = s
+    End If
+End Property
+
+Public Property Get ComprobantePuntoVenta() As String
+    Dim s As String
+    Dim pos As Long
+
+    s = Trim$(Me.ComprobanteUltimoBloque)
+    pos = InStr(1, s, "-")
+
+    If pos > 0 Then
+        ComprobantePuntoVenta = Trim$(Left$(s, pos - 1))
+    Else
+        ComprobantePuntoVenta = ""
+    End If
+End Property
+
+Public Property Get ComprobantePuntoVenta5() As String
+    Dim pv As String
+
+    pv = Trim$(Me.ComprobantePuntoVenta)
+
+    If Len(pv) > 0 Then
+        ComprobantePuntoVenta5 = Right$("00000" & pv, 5)
+    Else
+        ComprobantePuntoVenta5 = "00000"
+    End If
 End Property
 
 Public Property Get ComprobanteNro() As String
+    Dim s As String
     Dim pos As Long
-    Dim nro As String
-    pos = InStrRev(Me.Comprobante, "-")
-    If pos > 0 Then
-        nro = Mid$(Me.Comprobante, pos + 1)
-    End If
 
-    ComprobanteNro = nro
+    s = Trim$(Me.ComprobanteUltimoBloque)
+    pos = InStr(1, s, "-")
+
+    If pos > 0 Then
+        ComprobanteNro = Trim$(Mid$(s, pos + 1))
+    Else
+        ComprobanteNro = ""
+    End If
+End Property
+
+Public Property Get ComprobanteNro8() As String
+    Dim NRO As String
+
+    NRO = Trim$(Me.ComprobanteNro)
+
+    If Len(NRO) > 0 Then
+        ComprobanteNro8 = Right$("00000000" & NRO, 8)
+    Else
+        ComprobanteNro8 = "00000000"
+    End If
 End Property
 
 Public Property Get EstadoForCompras() As EstadoFacturaProveedor
@@ -109,6 +155,3 @@ Public Property Get EstadoForCompras() As EstadoFacturaProveedor
         End If
     End If
 End Property
-
-
-

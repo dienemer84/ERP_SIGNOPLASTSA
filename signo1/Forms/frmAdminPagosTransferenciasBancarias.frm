@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosTransferenciasBancarias 
-   Caption         =   "Transferencias"
+   Caption         =   "Transferencias de pagos"
    ClientHeight    =   9045
    ClientLeft      =   60
    ClientTop       =   -210
@@ -452,7 +452,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
    Begin XtremeSuiteControls.Label Label 
       Height          =   255
       Index           =   2
-      Left            =   240
+      Left            =   360
       TabIndex        =   23
       Top             =   2520
       Width           =   13575
@@ -460,7 +460,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       _ExtentX        =   23945
       _ExtentY        =   450
       _StockProps     =   79
-      Caption         =   "* Ver los Documentos de Pago (OP/LIQ)."
+      Caption         =   "* Ver los Documentos de Pago (OP/LIQ/PCTA)."
    End
    Begin XtremeSuiteControls.Label Label 
       Height          =   255
@@ -486,7 +486,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       _ExtentX        =   30295
       _ExtentY        =   450
       _StockProps     =   79
-      Caption         =   "Se muestran las transferencias que están aplicadas a cada OP o Liquidación."
+      Caption         =   "Se muestran las transferencias que están aplicadas a cada OP/Liquidación o Pago a cuenta"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -656,71 +656,69 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.gridTransferencias.Width = Me.ScaleWidth - 150
-    Me.gridTransferencias.Height = Me.ScaleHeight - 2000
-    
+    Me.gridTransferencias.Width = Me.ScaleWidth - 400
+    Me.gridTransferencias.Height = Me.ScaleHeight - 3200
 
     GridEXHelper.AutoSizeColumns Me.gridTransferencias
 End Sub
 
 Private Sub gridTransferencias_SelectionChange()
     On Error Resume Next
-    Set TransfBancaria = transferencias.item(gridTransferencias.RowIndex(gridTransferencias.row))
+    Set TransfBancaria = BuscarTransferenciaSeleccionada()
 End Sub
 
 
 Private Sub gridTransferencias_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    If transferencias.count > 0 Then
+    If transferencias.count = 0 Then Exit Sub
+
+    If Button = 2 Then
+        ' Acá idealmente seleccionar la fila bajo el mouse
+        ' según el método que soporte tu GridEX
+        
         gridTransferencias_SelectionChange
-        If Button = 2 Then
-'            Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
-'            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
-            Me.mnuVer.Enabled = True
-            Me.mnuModificar.Enabled = True
-            'OCULTO LA OPCION DE ANULAR QUE NO ESTÁ DESARROLLADA (DNEMER 30.05.2023)
-            'Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
-
-            Me.PopupMenu menu
-
-        End If
+        
+        Me.mnuVer.Enabled = Not (TransfBancaria Is Nothing)
+        Me.mnuModificar.Enabled = Not (TransfBancaria Is Nothing)
+        
+        Me.PopupMenu menu
     End If
 End Sub
 
 
 Private Sub gridTransferencias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 If RowIndex > 0 And transferencias.count > 0 Then
-    Set TransfBancaria = transferencias.item(RowIndex)
-        Values(1) = TransfBancaria.Id
+    Dim T As clsTransferenciaBcaria
+    
+    If RowIndex > 0 And transferencias.count > 0 Then
+        Set T = transferencias.Item(RowIndex)
+        Values(1) = T.Id
+        Values(3) = "N° " & T.CuentaBancaria & " | " & T.NombreBanco
+        Values(4) = T.FechaOperacion
+        Values(5) = T.moneda.NombreCorto
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(T.Monto)), "$", "")
+        Values(7) = T.Comprobante
         
-
-        Values(3) = "N° " & TransfBancaria.CuentaBancaria & " | " & TransfBancaria.NombreBanco
-        Values(4) = TransfBancaria.FechaOperacion
-        Values(5) = TransfBancaria.moneda.NombreCorto
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(TransfBancaria.Monto)), "$", "")
-        Values(7) = TransfBancaria.Comprobante
-        
-        If TransfBancaria.LiquidacionCaja Is Nothing Then
-            If TransfBancaria.OrdenPago Is Nothing Then
+        If T.LiquidacionCaja Is Nothing Then
+            If T.OrdenPago Is Nothing Then
                     Values(8) = "PCTA: " & TransfBancaria.PagoACuentaID
                     Values(2) = UCase(TransfBancaria.PagoACuentaProveedor)
                     If TransfBancaria.OPAplicada = "0" Then Values(9) = "Disponible" Else Values(9) = "Procesada"
                     Values(10) = TransfBancaria.OPAplicada
             Else
-                    Values(8) = "OP: " & TransfBancaria.OrdenPago.Id
-                    Values(2) = UCase(TransfBancaria.ProveedorRazon)
+                    Values(8) = "OP: " & T.OrdenPago.Id
+                    Values(2) = UCase(T.ProveedorRazon)
                     Values(9) = ""
                     Values(10) = ""
             End If
         Else
-                    Values(8) = "LIQ: " & TransfBancaria.LiquidacionCaja.NumeroLiq
+                    Values(8) = "LIQ: " & T.LiquidacionCaja.NumeroLiq
                     Values(2) = "VARIOS"
                     Values(9) = ""
                     Values(10) = ""
         End If
 
 
-
+End If
 End If
  
 End Sub
@@ -736,10 +734,6 @@ Private Sub gridTransferencias_ColumnHeaderClick(ByVal Column As GridEX20.JSColu
     GridEXHelper.ColumnHeaderClick Me.gridTransferencias, Column
 End Sub
 
-Private Sub gridTransferencias_DblClick()
-    gridTransferencias_SelectionChange
-    mnuVer_Click
-End Sub
 
 Private Sub mnuModificar_Click()
     Dim f_ADFE As New frmAdminPagosTransferenciasBancariasEditar
@@ -749,19 +743,41 @@ Private Sub mnuModificar_Click()
 End Sub
 
 Private Sub mnuVer_Click()
-    
-    If TransfBancaria.LiquidacionCaja Is Nothing Then
-        Dim f22 As New frmAdminPagosCrearOrdenPago
-        f22.Show
-        f22.ReadOnly = True
-        f22.Cargar TransfBancaria.OrdenPago
-    Else
+
+    If TransfBancaria Is Nothing Then Exit Sub
+
+    If Not TransfBancaria.LiquidacionCaja Is Nothing Then
         Dim f25 As New frmAdminPagosLiqCajaListaDG
-        f25.Show
+        
+        MsgBox "Abriendo Liquidación de Caja: " & TransfBancaria.LiquidacionCaja.NumeroLiq
+        
+        Load f25
         f25.ReadOnly = True
         f25.Cargar TransfBancaria.LiquidacionCaja
+        f25.Show
+        Exit Sub
     End If
+
+    If Not TransfBancaria.OrdenPago Is Nothing Then
+        Dim f22 As New frmAdminPagosCrearOrdenPago
+        
+        MsgBox "Abriendo OP: " & TransfBancaria.OrdenPago.Id
+        
+        Load f22
+        f22.ReadOnly = True
+        f22.Cargar TransfBancaria.OrdenPago
+        f22.Show
+        Exit Sub
+    End If
+
+    If TransfBancaria.PagoACuentaID > 0 Then
+        MsgBox "La transferencia seleccionada corresponde a un Pago a Cuenta.", vbInformation
+        Exit Sub
+    End If
+
 End Sub
+    
+
 
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
@@ -780,3 +796,42 @@ Private Sub PushButton1_Click(Index As Integer)
     Me.textbMayor.Text = ""
 End Sub
 
+
+Private Function BuscarTransferenciaSeleccionada() As clsTransferenciaBcaria
+    Dim idTransf As Long
+    Dim T As clsTransferenciaBcaria
+    
+    On Error GoTo err1
+    
+    Set BuscarTransferenciaSeleccionada = Nothing
+    
+    If Me.gridTransferencias.row <= 0 Then Exit Function
+    
+    idTransf = CLng(Me.gridTransferencias.value(1))
+    
+    For Each T In transferencias
+        If T.Id = idTransf Then
+            Set BuscarTransferenciaSeleccionada = T
+            Exit Function
+        End If
+    Next
+    
+    Exit Function
+err1:
+    Set BuscarTransferenciaSeleccionada = Nothing
+    
+End Function
+
+
+Private Sub gridTransferencias_DblClick()
+'''    On Error Resume Next
+'''
+'''    MsgBox "Row: " & Me.gridTransferencias.row & vbCrLf & _
+'''           "RowIndex: " & Me.gridTransferencias.RowIndex(Me.gridTransferencias.row) & vbCrLf & _
+'''           "Col1 value: " & Me.gridTransferencias.value(Me.gridTransferencias.Columns(1).Index)
+'''
+'''    gridTransferencias_SelectionChange
+'''
+'''    mnuVer_Click
+    
+End Sub

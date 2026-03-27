@@ -407,6 +407,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
               
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__TRANSFERENCIAS:
         Dim f12325 As New frmAdminPagosTransferenciasBancarias
+        f12325.WindowState = vbMaximized
         f12325.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS

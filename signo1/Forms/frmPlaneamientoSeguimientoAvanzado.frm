@@ -3,14 +3,14 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoSeguimientoAvanzado 
    Caption         =   "Seguimiento de Producción"
-   ClientHeight    =   13725
+   ClientHeight    =   13680
    ClientLeft      =   60
-   ClientTop       =   750
-   ClientWidth     =   14415
+   ClientTop       =   705
+   ClientWidth     =   14370
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   13725
-   ScaleWidth      =   14415
+   ScaleHeight     =   13680
+   ScaleWidth      =   14370
    WindowState     =   2  'Maximized
    Begin GridEX20.GridEX gridAlmacenes 
       Height          =   3495
@@ -18,8 +18,8 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
       TabIndex        =   16
       Top             =   9240
       Visible         =   0   'False
-      Width           =   3015
-      _ExtentX        =   5318
+      Width           =   5055
+      _ExtentX        =   8916
       _ExtentY        =   6165
       Version         =   "2.0"
       BoundColumnIndex=   "id"
@@ -168,38 +168,39 @@ Begin VB.Form frmPlaneamientoSeguimientoAvanzado
          IntProp1        =   0
          IntProp2        =   0
          IntProp7        =   0
-         ColumnsCount    =   18
+         ColumnsCount    =   19
          Column(1)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1BFC
          Column(2)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1D80
          Column(3)       =   "frmPlaneamientoSeguimientoAvanzado.frx":1EE0
          Column(4)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2040
          Column(5)       =   "frmPlaneamientoSeguimientoAvanzado.frx":21C8
          Column(6)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2308
-         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2480
-         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":25E4
-         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":274C
-         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":289C
-         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2A1C
-         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2B94
-         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2D24
-         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2E94
-         Column(15)      =   "frmPlaneamientoSeguimientoAvanzado.frx":300C
-         Column(16)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3174
-         Column(17)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3304
-         Column(18)      =   "frmPlaneamientoSeguimientoAvanzado.frx":3428
+         Column(7)       =   "frmPlaneamientoSeguimientoAvanzado.frx":24D0
+         Column(8)       =   "frmPlaneamientoSeguimientoAvanzado.frx":2648
+         Column(9)       =   "frmPlaneamientoSeguimientoAvanzado.frx":27AC
+         Column(10)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2914
+         Column(11)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2A64
+         Column(12)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2BE4
+         Column(13)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2D5C
+         Column(14)      =   "frmPlaneamientoSeguimientoAvanzado.frx":2EEC
+         Column(15)      =   "frmPlaneamientoSeguimientoAvanzado.frx":305C
+         Column(16)      =   "frmPlaneamientoSeguimientoAvanzado.frx":31D4
+         Column(17)      =   "frmPlaneamientoSeguimientoAvanzado.frx":333C
+         Column(18)      =   "frmPlaneamientoSeguimientoAvanzado.frx":34CC
+         Column(19)      =   "frmPlaneamientoSeguimientoAvanzado.frx":35F0
          FormatStylesCount=   10
-         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3560
-         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3698
-         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3748
-         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":37FC
-         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":38D4
-         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":398C
-         FormatStyle(7)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3A6C
-         FormatStyle(8)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3B20
-         FormatStyle(9)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3BB4
-         FormatStyle(10) =   "frmPlaneamientoSeguimientoAvanzado.frx":3C40
+         FormatStyle(1)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3728
+         FormatStyle(2)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3860
+         FormatStyle(3)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3910
+         FormatStyle(4)  =   "frmPlaneamientoSeguimientoAvanzado.frx":39C4
+         FormatStyle(5)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3A9C
+         FormatStyle(6)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3B54
+         FormatStyle(7)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3C34
+         FormatStyle(8)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3CE8
+         FormatStyle(9)  =   "frmPlaneamientoSeguimientoAvanzado.frx":3D7C
+         FormatStyle(10) =   "frmPlaneamientoSeguimientoAvanzado.frx":3E08
          ImageCount      =   0
-         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":3CF0
+         PrinterProperties=   "frmPlaneamientoSeguimientoAvanzado.frx":3EB8
       End
       Begin XtremeSuiteControls.ProgressBar pgbAvanceOT 
          Height          =   255
@@ -492,19 +493,20 @@ Public Enum cols
   cTipo = 3
   cUM = 4
   cNombre = 5
-  cCantPedida = 6
-  cCantRecibida = 7
-  cCantFabricada = 8
-  cCantScrap = 9
-  cFechaIni = 10
-  cHoraIni = 11
-  cFechaFin = 12
-  cHoraFin = 13
-  cUsuarioRecibio = 14
-  cAlmacen = 15
-  cProcesoSig = 16
-  cEsConjunto = 17  ' oculto
-  cObservaciones = 18
+  cNoProcesa = 6
+  cCantPedida = 7
+  cCantRecibida = 8
+  cCantFabricada = 9
+  cCantScrap = 10
+  cFechaIni = 11
+  cHoraIni = 12
+  cFechaFin = 13
+  cHoraFin = 14
+  cUsuarioRecibio = 15
+  cAlmacen = 16
+  cProcesoSig = 17
+  cEsConjunto = 18  ' oculto
+  cObservaciones = 19
 End Enum
 
 Private Enum CampoSumaPlano
@@ -782,6 +784,7 @@ Private Sub agregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As In
         r.nombre = d.Pieza.nombre
         r.UnidadMedida = d.Pieza.UnidadMedida
         r.EsConjunto = d.Pieza.EsConjunto
+        r.NoProcesa = d.NoProcesa
     Else
         On Error Resume Next
         r.idPiezaPedido = NzLng(d.Id) ' si no existe la prop, quedará 0
@@ -798,6 +801,7 @@ Private Sub agregarFilaDetalle(ByVal d As DetalleOrdenTrabajo, ByVal Nivel As In
         Dim av As AvanceSimpleDTO
         av = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, sid, False) ' True para fallback
 
+        r.NoProcesa = av.NoProcesa
         r.CantRecibida = av.CantRecibida
         r.CantFabricada = av.CantFabricada
         r.CantScrap = av.CantScrap
@@ -834,6 +838,9 @@ Private Sub agregarFilaDTO(ByVal dto As DetalleOTConjuntoDTO, _
         r.nombre = dto.Pieza.nombre
         r.UnidadMedida = dto.Pieza.UnidadMedida
         r.EsConjunto = dto.Pieza.EsConjunto
+        
+        r.NoProcesa = dto.NoProcesa
+        
     End If
     
     r.cantpedida = dto.CantidadTotalStatic
@@ -941,6 +948,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, _
     Values(cTipo) = IIf(r.EsConjunto, "Conjunto", "Pieza")
     Values(cUM) = NzStr(r.UnidadMedida)
     Values(cNombre) = NzStr(String$(r.Nivel * 3, " ") & NzStr(r.nombre))
+    Values(cNoProcesa) = r.NoProcesa
     Values(cCantPedida) = r.cantpedida
     Values(cEsConjunto) = IIf(r.EsConjunto, 1, 0)
 
@@ -982,12 +990,13 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
     Dim r As clsFilaPlanoRow
     Set r = detallesPlanos.item(i)
 
-    If r.EsConjunto Then Exit Sub  ' opcional: no guardar conjuntos
+    If r.EsConjunto Then Exit Sub
 
     With r
         .IdPedido = m_ot.Id
         .IdSector = NzLng(Me.cboSectores.ItemData(Me.cboSectores.ListIndex))
         .IdTabla = Values(cID)
+        .NoProcesa = NzBool(Values(cNoProcesa))
         .CantRecibida = NzDbl(Values(cCantRecibida))
         .CantFabricada = NzDbl(Values(cCantFabricada))
         .CantScrap = NzDbl(Values(cCantScrap))
@@ -995,26 +1004,22 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, _
         .HoraInicio = NzDate(Values(cHoraIni))
         .FechaFin = NzDate(Values(cFechaFin))
         .HoraFin = NzDate(Values(cHoraFin))
-        .UsuarioRecibio = NzLng(Values(cUsuarioRecibio))   ' <-- FIX
+        .UsuarioRecibio = NzLng(Values(cUsuarioRecibio))
         .Almacen = NzLng(Values(cAlmacen))
         .ProcesoSiguiente = NzStr(Values(cProcesoSig))
         .Observaciones = NzStr(Values(cObservaciones))
-
     End With
     
     Dim prev As AvanceSimpleDTO
-    prev = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, r.IdSector, True) ' True=fallback
+    prev = DAOProduccion.FindAvanceSimple(m_ot.Id, r.IdTabla, r.IdSector, True)
 
     If Not DAOProduccion.Save(r) Then
         MsgBox "Hubo un error al guardar"
     Else
         frmAviso.mostrar "Guardando..."
         Call DAOProduccionHistorial.agregar(r, "CARGA DE DATOS", prev)
-        
-        totalizarAvance   ' <-- vuelve a calcular
-        
+        totalizarAvance
         refrescarAvanceOT
-            
     End If
 End Sub
 
@@ -1034,6 +1039,14 @@ End Function
 
 Private Function NzDate(v As Variant) As Variant
     If IsDate(v) Then NzDate = CDate(v) Else NzDate = Null
+End Function
+
+Private Function NzBool(v As Variant) As Boolean
+    If IsNull(v) Or v = "" Then
+        NzBool = False
+    Else
+        NzBool = CBool(v)
+    End If
 End Function
 
 Private Function ToCollIndex(ByVal rowIdx As Long, ByVal n As Long) As Long

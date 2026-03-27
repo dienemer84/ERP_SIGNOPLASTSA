@@ -4,39 +4,55 @@ Public LastError As String
 
 Public Function Save(r As clsFilaPlanoRow) As Boolean
     On Error GoTo err1
+    
     Dim q As String
     Dim ra As Long
 
     ' Intentar actualizar primero
     q = "UPDATE sp.detalles_pedidos_conjuntos_avance SET " & _
+        "a_no_procesa=" & EscapeNum(Abs(r.NoProcesa)) & "," & _
         "a_cant_recibida=" & EscapeNum(r.CantRecibida) & "," & _
         "a_cant_fabricada=" & EscapeNum(r.CantFabricada) & "," & _
         "a_cant_scrap=" & EscapeNum(r.CantScrap) & "," & _
         "a_fecha_inicio=" & EscapeDate(r.FechaInicio) & "," & _
-                "a_hora_inicio=" & EscapeDate(r.HoraInicio) & "," & _
+        "a_hora_inicio=" & EscapeDate(r.HoraInicio) & "," & _
         "a_fecha_fin=" & EscapeDate(r.FechaFin) & "," & _
-                "a_hora_fin=" & EscapeDate(r.HoraFin) & "," & _
+        "a_hora_fin=" & EscapeDate(r.HoraFin) & "," & _
         "a_recibio=" & EscapeNum(r.UsuarioRecibio) & "," & _
         "a_siguiente_proceso=" & EscapeStr(r.ProcesoSiguiente) & "," & _
-        "a_almacen=" & EscapeStr(r.Almacen) & "," & _
+        "a_almacen=" & EscapeNum(r.Almacen) & "," & _
         "a_observaciones=" & EscapeStr(r.Observaciones) & _
         " WHERE id_detalle_pedido=" & EscapeNum(r.IdTabla) & _
-        " AND id_sector=" & EscapeNum(r.IdSector) & " AND id_pieza = " & EscapeNum(r.idPiezaPedido) & " AND id_pedido = " & EscapeNum(r.IdPedido)
+        " AND id_sector=" & EscapeNum(r.IdSector) & _
+        " AND id_pieza=" & EscapeNum(r.idPiezaPedido) & _
+        " AND id_pedido=" & EscapeNum(r.IdPedido)
 
     conectar.ExecuteRa q, ra
 
     ' Si no existía registro, insertar
     If ra = 0 Then
-        q = "INSERT INTO sp.detalles_pedidos_conjuntos_avance " & _
-            "(id_pedido, id_pieza, id_detalle_pedido, id_sector, a_cant_recibida, a_cant_fabricada, a_cant_scrap," & _
-            "a_fecha_inicio, a_hora_inicio, a_fecha_fin, a_hora_fin, a_recibio, a_almacen, a_siguiente_proceso, a_observaciones) VALUES (" & _
-            EscapeNum(r.IdPedido) & "," & EscapeNum(r.idPiezaPedido) & "," & _
-            EscapeNum(r.IdTabla) & "," & EscapeNum(r.IdSector) & "," & _
-            EscapeNum(r.CantRecibida) & "," & EscapeNum(r.CantFabricada) & "," & _
-            EscapeNum(r.CantScrap) & "," & EscapeDate(r.FechaInicio) & "," & _
-            EscapeDate(r.HoraInicio) & "," & EscapeDate(r.FechaFin) & "," & _
-            EscapeDate(r.HoraFin) & "," & EscapeNum(r.UsuarioRecibio) & "," & EscapeNum(r.Almacen) & "," & _
-            EscapeStr(r.ProcesoSiguiente) & "," & EscapeStr(r.Observaciones) & ")"
+        q = "INSERT INTO sp.detalles_pedidos_conjuntos_avance (" & _
+            "id_pedido, id_pieza, id_detalle_pedido, id_sector, " & _
+            "a_no_procesa, a_cant_recibida, a_cant_fabricada, a_cant_scrap, " & _
+            "a_fecha_inicio, a_hora_inicio, a_fecha_fin, a_hora_fin, " & _
+            "a_recibio, a_almacen, a_siguiente_proceso, a_observaciones" & _
+            ") VALUES (" & _
+            EscapeNum(r.IdPedido) & "," & _
+            EscapeNum(r.idPiezaPedido) & "," & _
+            EscapeNum(r.IdTabla) & "," & _
+            EscapeNum(r.IdSector) & "," & _
+            EscapeNum(Abs(r.NoProcesa)) & "," & _
+            EscapeNum(r.CantRecibida) & "," & _
+            EscapeNum(r.CantFabricada) & "," & _
+            EscapeNum(r.CantScrap) & "," & _
+            EscapeDate(r.FechaInicio) & "," & _
+            EscapeDate(r.HoraInicio) & "," & _
+            EscapeDate(r.FechaFin) & "," & _
+            EscapeDate(r.HoraFin) & "," & _
+            EscapeNum(r.UsuarioRecibio) & "," & _
+            EscapeNum(r.Almacen) & "," & _
+            EscapeStr(r.ProcesoSiguiente) & "," & _
+            EscapeStr(r.Observaciones) & ")"
             
         conectar.execute q
     End If
@@ -125,6 +141,9 @@ Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
         tmpDeta.idDetallePedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idDetalle_pedido")
         tmpDeta.IdPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
         tmpDeta.IdentificadorPosicion = GetValue(rs, fieldsIndex, tableNameOrAlias, "identificador_posicion")
+        
+        tmpDeta.NoProcesa = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_no_procesa")
+        
         tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
         
         tmpDeta.CantidadRecibida = GetValue(rs, fieldsIndex, ProduccionAlias, "a_cant_recibida")
@@ -177,6 +196,7 @@ Public Function FindAvanceSimple(ByVal IdPedido As Long, _
 
     If Not (rs Is Nothing) Then
         If Not rs.EOF Then
+            A.NoProcesa = NzStr(rs!a_no_procesa)
             A.CantRecibida = NzDbl(rs!a_cant_recibida)
             A.CantFabricada = NzDbl(rs!a_cant_fabricada)
             A.CantScrap = NzDbl(rs!a_cant_scrap)

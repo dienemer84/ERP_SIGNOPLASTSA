@@ -24,7 +24,7 @@ Public ChequesTerceros As New Collection
 Public ChequesPropios As New Collection
 Public OperacionesCaja As New Collection
 
-Public Percepciones As New Collection
+Public percepciones As New Collection
 
 Public operacionesBanco As New Collection
 Public pagosacuenta As New Collection
@@ -47,6 +47,7 @@ Public StaticTotalOrigenes As Double
 Public DiferenciaCambioEnNG As Double
 Public DiferenciaCambioEnTOTAL As Double
 Public staticTotalDeudaCompensatorios As Double
+Public StaticTotalPercepciones As Double
 
 Public Property Get StaticTotalPagosACta() As Double
     Dim pago As clsPagoACta
@@ -286,11 +287,11 @@ Public Property Get IsValid() As Boolean
     
     'DONDE TOTAL ORIGINES ES LA SUMA DE LOS PAGOS QUE TIENE LA ORDEN: CAJA, BANCOS, CHEQUES, ETC
 '   If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotal) Then
-    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotalFacturas - Me.StaticTotalRetenido) Then
+    If Me.TotalOrigenes <> funciones.RedondearDecimales(Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.StaticTotalPercepciones) Then
         AddValidationMessage _
-        "El total supuesto a pagar (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotalFacturas - Me.StaticTotalRetenido)) & ") " & vbCrLf & _
+        "El total supuesto a pagar (" & FormatCurrency(funciones.FormatearDecimales(Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.StaticTotalPercepciones)) & ") " & vbCrLf & _
         "debe ser igual a lo que se va a pagar con valores y/o pagos a cuenta (" & FormatCurrency(funciones.FormatearDecimales(Me.TotalOrigenes)) & ")." & vbCrLf & _
-        "La diferencia a completar es de (" & FormatCurrency(funciones.FormatearDecimales((Me.StaticTotalFacturas - Me.StaticTotalRetenido) - Me.TotalOrigenes)) & ")."
+        "La diferencia a completar es de (" & FormatCurrency(funciones.FormatearDecimales((Me.StaticTotalFacturas - Me.StaticTotalRetenido - Me.StaticTotalPercepciones) - Me.TotalOrigenes)) & ")."
         
     End If
 

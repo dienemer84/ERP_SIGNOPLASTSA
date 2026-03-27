@@ -24,6 +24,9 @@ Public CantidadTotalSegunConjunto As Double
 Public CantidadTotalStatic As Double 'Cantidad Pedida
 Public IdentificadorPosicion As String
 
+Public NoProcesa As Boolean
+
+
 Public CantidadRecibida As Double
 Public CantidadFabricada As Double
 Public CantidadScrap As Double

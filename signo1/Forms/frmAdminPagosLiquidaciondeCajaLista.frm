@@ -464,8 +464,8 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.gridOrdenes.Width = Me.ScaleWidth - 150
-    Me.gridOrdenes.Height = Me.ScaleHeight - 2000
+    Me.gridOrdenes.Width = Me.ScaleWidth - 400
+    Me.gridOrdenes.Height = Me.ScaleHeight - 3200
     Me.GroupBox1.Width = Me.gridOrdenes.Width - 100
 
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
@@ -558,7 +558,7 @@ Private Sub llenarLista()
     filter = "1 = 1"
 
     If LenB(Me.txtNro.Text) > 0 Then
-        filter = filter & " AND  liquidaciones_caja.numero_liq  = " & Val(Me.txtNro.Text)
+        filter = filter & " AND  liquidaciones_caja.numero_liq  = " & val(Me.txtNro.Text)
     End If
 
     Dim filtroor As String
@@ -614,7 +614,7 @@ End Sub
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
-        Set LiquidacionCaja = liquidaciones.item(RowBuffer.RowIndex)
+        Set LiquidacionCaja = liquidaciones.Item(RowBuffer.RowIndex)
         If LiquidacionCaja.estado = EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada Then
             RowBuffer.CellStyle(9) = "Aprobada"
         ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada Then
@@ -630,14 +630,14 @@ End Sub
 
 Private Sub gridOrdenes_SelectionChange()
     On Error Resume Next
-    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
+    Set LiquidacionCaja = liquidaciones.Item(gridOrdenes.RowIndex(gridOrdenes.row))
 End Sub
 
 
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And liquidaciones.count > 0 Then
 
-        Set LiquidacionCaja = liquidaciones.item(RowIndex)
+        Set LiquidacionCaja = liquidaciones.Item(RowIndex)
 
         Values(1) = LiquidacionCaja.NumeroLiq
         Values(2) = LiquidacionCaja.FEcha
@@ -649,7 +649,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido)), "$", "")
 
         If LiquidacionCaja.EsParaFacturaProveedor Then
-            Set fac = LiquidacionCaja.FacturasProveedor.item(1)
+            Set fac = LiquidacionCaja.FacturasProveedor.Item(1)
             Values(7) = "Factura Proveedor"
             Values(8) = "VARIOS"
         Else

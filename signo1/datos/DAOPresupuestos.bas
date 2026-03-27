@@ -383,9 +383,13 @@ Public Function ExisteDetalle(detalle As String) As Boolean
         buscarDetalle = False
     End If
 End Function
+
+
 Public Function ProximoPresupuesto() As Long
     ProximoPresupuesto = conectar.ProximoId("presupuestos")
 End Function
+
+
 Public Function ImprimirPresupuesto(T As clsPresupuesto) As Boolean    '1- enviar 2-imprimir
     On Error GoTo err2
     Dim total As Double
@@ -395,7 +399,7 @@ Public Function ImprimirPresupuesto(T As clsPresupuesto) As Boolean    '1- envia
     total = SubTotal * 1
     presu1.Sections("header").Controls("lblCliente").caption = T.Cliente.razon
     presu1.Sections("header").Controls("lblRef").caption = T.detalle
-    presu1.Sections("header").Controls("lblfechaPresu").caption = T.fechaCreado
+    presu1.Sections("header").Controls("lblfechaPresu").caption = FEcha(T.fechaCreado)
     presu1.Sections("header").Controls("lblnroPresu").caption = T.IdFormateada
     presu1.Sections("fondo").Controls("lbldto").caption = funciones.FormatearDecimales(T.Descuento)
     presu1.Sections("fondo").Controls("lblsubtotal").caption = funciones.FormatearDecimales(T.SubTotal(Manual))
@@ -491,7 +495,9 @@ Public Function exporta(T As clsPresupuesto, Optional enviar As Boolean = False)
         .Cells(1, 1).value = "Presupuesto Nro."
         .Cells(1, 3).value = str(Format(T.Id, "0000"))
         .Cells(2, 1).value = "Fecha presupuesto"
-        .Cells(2, 3).value = str(T.fechaCreado)
+        
+        .Cells(2, 3).value = FEcha(T.fechaCreado)
+        
         .Cells(3, 1).value = "Cliente"
         .Cells(3, 3).value = T.Cliente.razon
         .Cells(4, 1).value = "Referencia"
@@ -516,17 +522,17 @@ Public Function exporta(T As clsPresupuesto, Optional enviar As Boolean = False)
             .Cells(P + 7, 1).value = d.item
             .Cells(P + 7, 2).value = d.Cantidad
             .Cells(P + 7, 3).value = d.Pieza.nombre
-            If max_NOMBRE_pieza < Len(.Cells(P + 7, 3).text) Then
-                max_NOMBRE_pieza = Len(.Cells(P + 7, 3).text)
+            If max_NOMBRE_pieza < Len(.Cells(P + 7, 3).Text) Then
+                max_NOMBRE_pieza = Len(.Cells(P + 7, 3).Text)
             End If
             .Cells(P + 7, 4).value = CStr(funciones.RedondearDecimales(d.ValorManual, 2))
             .Cells(P + 7, 4).NumberFormat = "0.00"
             .Cells(P + 7, 5).value = CStr(funciones.RedondearDecimales(d.ValorManual * d.Cantidad, 2))
             .Cells(P + 7, 5).NumberFormat = "0.00"
             .Cells(P + 7, 6).value = d.entrega & " días"
-            .Cells(P + 7, 7).value = d.Detalles
-            If max_DETALLES < Len(.Cells(P + 7, 7).text) Then
-                max_DETALLES = Len(.Cells(P + 7, 7).text)
+            .Cells(P + 7, 7).value = d.detalles
+            If max_DETALLES < Len(.Cells(P + 7, 7).Text) Then
+                max_DETALLES = Len(.Cells(P + 7, 7).Text)
             End If
         Next P
         .Columns("C").ColumnWidth = max_NOMBRE_pieza + 5
@@ -650,16 +656,16 @@ errEXCEL:
 End Function
 
 
-Public Function CrearOT(T As clsPresupuesto, idpedido As Long, DetalleOt As String) As OrdenTrabajo
+Public Function CrearOT(T As clsPresupuesto, IdPedido As Long, DetalleOt As String) As OrdenTrabajo
     On Error GoTo err1
     Dim Ot As New OrdenTrabajo
     Dim detalle_ot As DetalleOrdenTrabajo
 
-    If idpedido <= 0 Then
-        Set Ot.Detalles = New Collection
+    If IdPedido <= 0 Then
+        Set Ot.detalles = New Collection
     Else
-        Set Ot = DAOOrdenTrabajo.FindById(idpedido)
-        Set Ot.Detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
+        Set Ot = DAOOrdenTrabajo.FindById(IdPedido)
+        Set Ot.detalles = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(Ot.Id)
     End If
 
 
@@ -695,7 +701,7 @@ Public Function CrearOT(T As clsPresupuesto, idpedido As Long, DetalleOt As Stri
         detalle_ot.FechaEntrega = DateAdd("d", detalle.entrega, Now)
         detalle_ot.item = detalle.item
         detalle_ot.NombrePiezaHistorico = detalle.Pieza.nombre
-        detalle_ot.Nota = detalle.Detalles
+        detalle_ot.Nota = detalle.detalles
         detalle_ot.NotaProduccion = vbEmpty
         Set detalle_ot.OrdenTrabajo = Ot
         Set detalle_ot.Pieza = detalle.Pieza
@@ -704,7 +710,7 @@ Public Function CrearOT(T As clsPresupuesto, idpedido As Long, DetalleOt As Stri
         detalle_ot.ReservaStock = 0
         detalle_ot.Retirado = False
         detalle_ot.idPresupuestoOrigen = T.Id
-        Ot.Detalles.Add detalle_ot
+        Ot.detalles.Add detalle_ot
     Next detalle
     Dim ptmp As New clsPresupuesto
 
@@ -740,7 +746,7 @@ Public Function ReCotizar(PresupuestoOriginal As clsPresupuesto) As Boolean
                 Set d = New clsPresupuestoDetalle
                 d.Amortizacion = .Amortizacion
                 d.Cantidad = .Cantidad
-                d.Detalles = .Detalles
+                d.detalles = .detalles
                 d.entrega = 0
                 d.FormaCotizar = .FormaCotizar
                 d.item = .item

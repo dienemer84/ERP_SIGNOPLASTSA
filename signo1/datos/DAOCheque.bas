@@ -89,7 +89,7 @@ Public Function FindAllTercerosUti(Optional ByRef filter As String = vbNullStrin
     Dim tmpCheque As cheque
 
     ' Construir la consulta SQL
-    q = "SELECT *" _
+    q = "SELECT *, COALESCE(prov.razon, prov_pcta.razon) AS razon_proveedor " _
       & " FROM Cheques cheq" _
       & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
       & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
@@ -99,6 +99,7 @@ Public Function FindAllTercerosUti(Optional ByRef filter As String = vbNullStrin
       & " LEFT JOIN ordenes_pago op ON op.id = cheq.orden_pago_origen" _
       & " LEFT JOIN liquidaciones_caja liq ON liq.id = cheq.orden_pago_origen" _
       & " LEFT JOIN pagos_a_cuenta pcta ON pcta.id = cheq.pago_a_cuenta_origen" _
+      & " LEFT JOIN proveedores prov_pcta ON prov_pcta.id = pcta.id_proveedor" _
       & " LEFT JOIN movimientos_caja_bancos mov ON mov.id = cheq.movimiento_origen" _
       & " LEFT JOIN ordenes_pago_facturas opf ON op.id = opf.id_orden_pago" _
       & " LEFT JOIN AdminComprasFacturasProveedores acfp ON acfp.id = opf.id_factura_proveedor" _
@@ -168,7 +169,7 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
     If col.count = 0 Then
         Set FindByChequeraAndId = Nothing
     Else
-        Set FindByChequeraAndId = col.item(1)
+        Set FindByChequeraAndId = col.Item(1)
     End If
 
 End Function
@@ -179,7 +180,7 @@ Public Function FindByChequeraAndNro(chequeraId As Long, NRO As String) As chequ
     If col.count = 0 Then
         Set FindByChequeraAndNro = Nothing
     Else
-        Set FindByChequeraAndNro = col.item(1)
+        Set FindByChequeraAndNro = col.Item(1)
     End If
 
 End Function
@@ -190,7 +191,7 @@ Public Function FindById(Id As Long) As cheque
     If col.count = 0 Then
         Set FindById = Nothing
     Else
-        Set FindById = col.item(1)
+        Set FindById = col.Item(1)
     End If
 
 End Function
@@ -222,7 +223,7 @@ Public Function Map(ByRef rs As Recordset, _
 
     If Id > 0 Then
         Set tmpCheque = New cheque
-        tmpCheque.observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
+        tmpCheque.Observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
         tmpCheque.Id = Id
         tmpCheque.EnCartera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_EN_CARTERA)
         tmpCheque.FechaRecibido = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_FECHA_RECIBIDO)
@@ -285,11 +286,13 @@ Public Function Map2(ByRef rs As Recordset, _
 
     Dim tmpCheque As cheque
     Dim Id As Variant
+    
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
 
     If Id > 0 Then
         Set tmpCheque = New cheque
-        tmpCheque.observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
+        
+        tmpCheque.Observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
         tmpCheque.Id = Id
         tmpCheque.EnCartera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_EN_CARTERA)
         tmpCheque.FechaRecibido = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_FECHA_RECIBIDO)
@@ -310,7 +313,14 @@ Public Function Map2(ByRef rs As Recordset, _
         tmpCheque.entro = GetValue(rs, fieldsIndex, tableNameOrAlias, "ingresado")
         tmpCheque.Depositado = GetValue(rs, fieldsIndex, tableNameOrAlias, "depositado")
         tmpCheque.estado = GetValue(rs, fieldsIndex, tableNameOrAlias, "estado")
-        tmpCheque.destino = GetValue(rs, fieldsIndex, proveedores, "razon")
+        
+        ' Campo calculado del SELECT
+        If Not IsNull(rs.Fields("razon_proveedor").value) Then
+            tmpCheque.destino = rs.Fields("razon_proveedor").value
+        Else
+            tmpCheque.destino = vbNullString
+        End If
+        
         tmpCheque.Recibo = GetValue(rs, fieldsIndex, recibosChequesTableNameOrAlias, "idRecibo")
         
         If LenB(bancoTableNameOrAlias) > 0 Then Set tmpCheque.Banco = DAOBancos.Map(rs, fieldsIndex, bancoTableNameOrAlias)
@@ -344,7 +354,7 @@ Public Function Map3(ByRef rs As Recordset, _
 
     If Id > 0 Then
         Set tmpCheque = New cheque
-        tmpCheque.observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
+        tmpCheque.Observaciones = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_OBSERVACIONES)
         tmpCheque.Id = Id
         tmpCheque.EnCartera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_EN_CARTERA)
         tmpCheque.FechaRecibido = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_FECHA_RECIBIDO)
@@ -456,7 +466,7 @@ q = Replace(q, "'id'", cheque.Id)
     q = Replace(q, "'en_cartera'", conectar.Escape(cheque.EnCartera))
     q = Replace(q, "'propio'", conectar.Escape(cheque.Propio))
     q = Replace(q, "'id_moneda'", conectar.Escape(cheque.moneda.Id))
-    q = Replace(q, "'observaciones'", conectar.Escape(cheque.observaciones))
+    q = Replace(q, "'observaciones'", conectar.Escape(cheque.Observaciones))
     q = Replace(q, "'teceros_propio'", conectar.Escape(cheque.TercerosPropio))
     q = Replace(q, "'ingresado'", conectar.Escape(Abs(cheque.entro)))
     q = Replace(q, "'orden_pago_origen'", conectar.Escape(cheque.IdOrdenPagoOrigen))

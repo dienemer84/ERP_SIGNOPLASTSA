@@ -1030,7 +1030,7 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
     q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & opid
     If Not conectar.execute(q) Then GoTo E
     
-    q = "DELETE FROM WHERE AdminPercepcionesOP WHERE id_orden_pago = " & opid
+    q = "DELETE FROM AdminPercepcionesOP WHERE id_orden_pago = " & opid
     If Not conectar.execute(q) Then GoTo E
 
 

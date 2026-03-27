@@ -3,6 +3,7 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosOrdenesPagoLista 
+   AutoRedraw      =   -1  'True
    Caption         =   "Ordenes de Pago"
    ClientHeight    =   8835
    ClientLeft      =   8445
@@ -17,10 +18,13 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
+   KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8835
    ScaleWidth      =   13770
+   WhatsThisButton =   -1  'True
+   WhatsThisHelp   =   -1  'True
    WindowState     =   2  'Maximized
    Begin MSComDlg.CommonDialog CommonDialog 
       Left            =   1080
@@ -733,8 +737,8 @@ End Sub
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.gridOrdenes.Width = Me.ScaleWidth - 300
-    Me.gridOrdenes.Height = (Me.ScaleHeight * 75) / 100
+    Me.gridOrdenes.Width = Me.ScaleWidth - 400
+    Me.gridOrdenes.Height = Me.ScaleHeight - 3200
 
     Me.GroupBox1.Width = Me.gridOrdenes.Width
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
@@ -867,11 +871,11 @@ End Function
 Private Sub mnuAnular_Click()
     SeleccionarOP
     
-    If MsgBox("¿Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
+    If MsgBox("Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
 
         If DAOOrdenPago.Delete(Orden.Id, True) Then
 
-            MsgBox "Anulación Exitosa.", vbInformation + vbOKOnly
+            MsgBox "Anulacion Exitosa.", vbInformation + vbOKOnly
             Me.gridOrdenes.ItemCount = 0
             ordenes.remove CStr(Orden.Id)
             Me.gridOrdenes.ItemCount = ordenes.count

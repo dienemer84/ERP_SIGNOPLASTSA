@@ -20,6 +20,8 @@ Public Nivel As Integer
 
 Public IdTabla As Long 'id de tabla
 
+Public NoProcesa As Boolean
+
 Public IdPedido As Long
 Public idPiezaPedido As Long
 Public cantpedida As Long

@@ -91,7 +91,6 @@ Public Function agregar(ByVal r As clsFilaPlanoRow, _
 
     uid = conectar.GetEntityId(funciones.GetUserObj)
 
-    '--- Columnas (sin _)
     cols = "id_pedido,id_detalle,id_pieza,id_sector,usuario_operacion,usuario_recibio,"
     cols = cols & "cant_recibida_old,cant_recibida_new,cant_fabricada_old,cant_fabricada_new,"
     cols = cols & "cant_scrap_old,cant_scrap_new,fecha_inicio_old,fecha_inicio_new,fecha_fin_old,fecha_fin_new,"
@@ -99,25 +98,32 @@ Public Function agregar(ByVal r As clsFilaPlanoRow, _
     cols = cols & "proceso_old,proceso_new,almacen_old,almacen_new,"
     cols = cols & "observacion_old,observacion_new,accion,fecha"
 
-    '--- Valores (sin _)
-    vals = EscapeNum(r.IdPedido) & "," & EscapeNum(r.IdTabla) & "," & EscapeNum(r.idPiezaPedido) & "," & EscapeNum(r.IdSector) & ","
-    vals = vals & EscapeNum(uid) & "," & EscapeNum(r.UsuarioRecibio) & ","
-    vals = vals & EscapeNum(prev.CantRecibida) & "," & EscapeNum(r.CantRecibida) & ","
-    vals = vals & EscapeNum(prev.CantFabricada) & "," & EscapeNum(r.CantFabricada) & ","
-    vals = vals & EscapeNum(prev.CantScrap) & "," & EscapeNum(r.CantScrap) & ","
-    vals = vals & EscapeDate(prev.FechaInicio) & "," & EscapeDate(r.FechaInicio) & ","
-    vals = vals & EscapeDate(prev.FechaFin) & "," & EscapeDate(r.FechaFin) & ","
-    vals = vals & EscapeTime(prev.HoraInicio) & "," & EscapeTime(r.HoraInicio) & ","
-    vals = vals & EscapeTime(prev.HoraFin) & "," & EscapeTime(r.HoraFin) & ","
-    vals = vals & EscapeStr(prev.SiguienteProceso) & "," & EscapeStr(r.ProcesoSiguiente) & ","
-    vals = vals & EscapeStr(prev.Almacen) & "," & EscapeStr(r.Almacen) & ","
-    vals = vals & EscapeStr(prev.Observaciones) & "," & EscapeStr(r.Observaciones) & ","
-    vals = vals & EscapeStr(UCase$(Accion)) & "," & "CURRENT_TIMESTAMP"
+    vals = EscapeNum(r.IdPedido) & "," & _
+           EscapeNum(r.IdTabla) & "," & _
+           EscapeNum(r.idPiezaPedido) & "," & _
+           EscapeNum(r.IdSector) & "," & _
+           EscapeNum(uid) & "," & _
+           EscapeNum(NzLng(r.UsuarioRecibio)) & ","
 
-    '--- SQL final (sin _)
+    vals = vals & EscapeNum(NzDbl(prev.CantRecibida)) & "," & EscapeNum(NzDbl(r.CantRecibida)) & ","
+    vals = vals & EscapeNum(NzDbl(prev.CantFabricada)) & "," & EscapeNum(NzDbl(r.CantFabricada)) & ","
+    vals = vals & EscapeNum(NzDbl(prev.CantScrap)) & "," & EscapeNum(NzDbl(r.CantScrap)) & ","
+
+    vals = vals & EscapeDate(NzDateVar(prev.FechaInicio)) & "," & EscapeDate(NzDateVar(r.FechaInicio)) & ","
+    vals = vals & EscapeDate(NzDateVar(prev.FechaFin)) & "," & EscapeDate(NzDateVar(r.FechaFin)) & ","
+
+    vals = vals & EscapeTime(NzDateVar(prev.HoraInicio)) & "," & EscapeTime(NzDateVar(r.HoraInicio)) & ","
+    vals = vals & EscapeTime(NzDateVar(prev.HoraFin)) & "," & EscapeTime(NzDateVar(r.HoraFin)) & ","
+
+    vals = vals & EscapeStr(NzStr(prev.SiguienteProceso)) & "," & EscapeStr(NzStr(r.ProcesoSiguiente)) & ","
+    vals = vals & EscapeNum(NzLng(prev.Almacen)) & "," & EscapeNum(NzLng(r.Almacen)) & ","
+    vals = vals & EscapeStr(NzStr(prev.Observaciones)) & "," & EscapeStr(NzStr(r.Observaciones)) & ","
+
+    vals = vals & EscapeStr(UCase$(Accion)) & ",CURRENT_TIMESTAMP"
+
     q = "INSERT INTO detalles_pedidos_conjuntos_avance_historial (" & cols & ") VALUES (" & vals & ")"
 
-    conectar.execute q
+    conectar.ExecuteRa q, ra
     agregar = (ra > 0)
     Exit Function
 
@@ -125,7 +131,6 @@ err1:
     agregar = False
     MsgBox "agregar(): " & Err.Number & " - " & Err.Description, vbExclamation, "Historial de Avance"
 End Function
-
 
 
 ' Helpers de lectura segura desde Recordset
@@ -147,6 +152,38 @@ Private Function NzDateF(ByVal rs As Object, ByVal fld As String) As Variant
         NzDateF = 0          ' equivale a 30/12/1899
     Else
         NzDateF = CDate(rs.Fields(fld).value)
+    End If
+End Function
+
+Private Function NzLng(v As Variant) As Long
+    If IsNull(v) Or v = "" Then
+        NzLng = 0
+    Else
+        NzLng = CLng(v)
+    End If
+End Function
+
+Private Function NzDbl(v As Variant) As Double
+    If IsNull(v) Or v = "" Then
+        NzDbl = 0
+    Else
+        NzDbl = CDbl(v)
+    End If
+End Function
+
+Private Function NzStr(v As Variant) As String
+    If IsNull(v) Then
+        NzStr = ""
+    Else
+        NzStr = CStr(v)
+    End If
+End Function
+
+Private Function NzDateVar(v As Variant) As Variant
+    If IsDate(v) Then
+        NzDateVar = CDate(v)
+    Else
+        NzDateVar = Null
     End If
 End Function
 

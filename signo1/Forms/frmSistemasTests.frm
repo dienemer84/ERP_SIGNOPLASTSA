@@ -11,6 +11,14 @@ Begin VB.Form frmSistemaTests
    MDIChild        =   -1  'True
    ScaleHeight     =   6060
    ScaleWidth      =   14985
+   Begin VB.CommandButton Command2 
+      Caption         =   "Command2"
+      Height          =   495
+      Left            =   5280
+      TabIndex        =   7
+      Top             =   5280
+      Width           =   1935
+   End
    Begin XtremeSuiteControls.PushButton btnSeguimientoAvanzado 
       Height          =   2655
       Left            =   240

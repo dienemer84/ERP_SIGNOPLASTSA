@@ -471,8 +471,8 @@ Private Sub cmdImprimir_Click()
 End Sub
 
 Private Sub Command1_Click()
-    Dim T As String
-    T = "SELECT * FROM AdminRecibos WHERE tot_estatico_recibo = 0"
+    Dim t As String
+    t = "SELECT * FROM AdminRecibos WHERE tot_estatico_recibo = 0"
 
     Dim rs As Collection
     Set rs = DAORecibo.FindAll("tot_estatico_recibo = 0", , , , , True)
@@ -562,10 +562,10 @@ Private Sub llenarLista()
 End Sub
 
 Private Sub Form_Resize()
-    If Me.ScaleHeight > 0 Then
-        Me.grilla_recibos.Height = Me.ScaleHeight - 1800
-    End If
-
+    On Error Resume Next
+    Me.grilla_recibos.Width = Me.ScaleWidth - 400
+    Me.grilla_recibos.Height = Me.ScaleHeight - 3200
+    
 End Sub
 
 Private Sub grilla_recibos_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)

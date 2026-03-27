@@ -66,13 +66,11 @@ Begin VB.Form frmListarStock_seleccion
          Object.Width           =   0
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Alignment       =   2
          SubItemIndex    =   1
          Text            =   "Cliente"
          Object.Width           =   4410
       EndProperty
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Alignment       =   2
          SubItemIndex    =   2
          Text            =   "Detalle"
          Object.Width           =   11024
@@ -148,13 +146,22 @@ Attribute VB_Exposed = False
 Dim base As classStock
 
 Private Sub Command1_Click()
-    If Me.cboCliente.ListIndex = -1 And Text1 = "" Then
-        MsgBox ("Seleccione un cliente")
+    Dim idCliente As Long
+    Dim textoBusqueda As String
+
+    textoBusqueda = Trim$(Me.Text1.Text)
+
+    If Me.cboCliente.ListIndex = -1 And textoBusqueda = "" Then
+        MsgBox "Seleccione un cliente o ingrese un detalle a buscar"
         Exit Sub
     End If
 
-    base.llenar_lista_stock Me.lstStock, Me.cboCliente.ItemData(Me.cboCliente.ListIndex), Trim(Text1), marcado, , True
+    idCliente = -1
+    If Me.cboCliente.ListIndex > -1 Then
+        idCliente = Me.cboCliente.ItemData(Me.cboCliente.ListIndex)
+    End If
 
+    base.llenar_lista_stock Me.lstStock, idCliente, textoBusqueda, marcado, , True
 End Sub
 
 

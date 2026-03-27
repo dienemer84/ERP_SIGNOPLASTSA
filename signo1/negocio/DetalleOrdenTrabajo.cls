@@ -14,20 +14,21 @@ Attribute VB_Exposed = False
 Option Explicit
 Private deta As clsDetalleOrdenTrabajoCantidades
 Public Id As Long
-Public Item As String
+Public item As String
 Public OrdenTrabajo As OrdenTrabajo
 Public Pieza As Pieza
 Public CantidadPedida As Double
 Public NombrePiezaHistorico As String
 Public Nota As String
 Public ReservaStock As Long
-Public idpedido As Long
+Public IdPedido As Long
 Public IdMoneda As Long
 Public Retirado As Boolean
 Public Precio As Double
 Public FechaEntrega As Date
 Public EtiquetasImpresas As Double
 
+Public NoProcesa As Boolean
 
 Public CantidadEntregada As Double
 Public CantidadFacturada As Double

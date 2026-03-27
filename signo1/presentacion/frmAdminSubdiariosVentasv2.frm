@@ -6,7 +6,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    ClientHeight    =   8625
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   14655
+   ClientWidth     =   14370
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -20,7 +20,7 @@ Begin VB.Form frmAdminSubdiariosVentasv2
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   8625
-   ScaleWidth      =   14655
+   ScaleWidth      =   14370
    Begin XtremeSuiteControls.GroupBox grpTotales 
       Height          =   1680
       Left            =   10560
@@ -870,11 +870,11 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
     With xla
 
-        .Range("A1:j1").Merge
-        .Range("A2:j2").Merge
-        .Range("A1:j3").HorizontalAlignment = xlHAlignCenter
-        .Range("A1:j2").Font.Bold = True
-        .Range("A3:j2").Font.Bold = True
+        .Range("A1:l1").Merge
+        .Range("A2:l2").Merge
+        .Range("A1:l3").HorizontalAlignment = xlHAlignCenter
+        .Range("A1:l2").Font.Bold = True
+        .Range("A3:l2").Font.Bold = True
 
 
         .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario ventas" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
@@ -894,41 +894,51 @@ Public Function ExportaSubDiarioVentas() As Boolean
         End If
 
         .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
-        .Range("A3:j3").Interior.Color = &HC0C0C0
+        .Range("A3:l3").Interior.Color = &HC0C0C0
 
 
-        Dim Column As JSColumn
-        Dim x As Integer
+        offset = 3
+        .Cells(offset, 1).value = "Fecha"
+        .Cells(offset, 2).value = "Comprobante"
+        .Cells(offset, 3).value = "Punto de Venta"
+        .Cells(offset, 4).value = "Número"
+        .Cells(offset, 5).value = "Razon Social"
+        .Cells(offset, 6).value = "CUIT"
+        .Cells(offset, 7).value = "Cond. IVA"
+        .Cells(offset, 8).value = "Neto Gravado"
+        .Cells(offset, 9).value = "IVA"
+        .Cells(offset, 10).value = "Percep IIBB"
+        .Cells(offset, 11).value = "Exento"
+        .Cells(offset, 12).value = "Total"
+    
+        .Range(.Cells(offset, 1), .Cells(offset, 10)).Font.Bold = True
+        .Range(.Cells(offset, 1), .Cells(offset, 10)).Interior.Color = &HC0C0C0
+        
 
-        For Each Column In Me.GridEX1.Columns
-            x = x + 1
-            .Cells(3, x).value = Column.caption
-        Next Column
-
-        .Columns("f").HorizontalAlignment = xlHAlignRight
-        .Columns("g").HorizontalAlignment = xlHAlignRight
+        .Columns("f").HorizontalAlignment = xlHAlignCenter
+        .Columns("g").HorizontalAlignment = xlHAlignCenter
         .Columns("h").HorizontalAlignment = xlHAlignRight
         .Columns("i").HorizontalAlignment = xlHAlignRight
 
         .Columns("a").HorizontalAlignment = xlHAlignCenter
         .Columns("b").HorizontalAlignment = xlHAlignCenter
+        .Columns("c").HorizontalAlignment = xlHAlignCenter
         .Columns("d").HorizontalAlignment = xlHAlignCenter
-        .Columns("e").HorizontalAlignment = xlHAlignCenter
 
         .Columns("j").HorizontalAlignment = xlHAlignRight
 
         .Columns("a").ColumnWidth = 10
-        .Columns("b").ColumnWidth = 8
-        .Columns("c").ColumnWidth = 35
-        .Columns("d").ColumnWidth = 13
-        .Columns("e").ColumnWidth = 15
-        .Columns("f").ColumnWidth = 13
-        .Columns("g").ColumnWidth = 13
-        .Columns("h").ColumnWidth = 13
-        .Columns("i").ColumnWidth = 13
+        .Columns("b").ColumnWidth = 20
+        .Columns("c").ColumnWidth = 10
+        .Columns("d").ColumnWidth = 10
+        .Columns("e").ColumnWidth = 35
+        .Columns("f").ColumnWidth = 15
+        .Columns("g").ColumnWidth = 15
+        .Columns("h").ColumnWidth = 15
+        .Columns("i").ColumnWidth = 15
         .Columns("j").ColumnWidth = 15
-
-
+        .Columns("k").ColumnWidth = 15
+        .Columns("l").ColumnWidth = 15
 
         Dim total As Double
         Dim totnetog As Double
@@ -940,7 +950,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         totIV = 0
         totperi = 0
         totexen = 0
-
+Dim x As Integer
         x = 1
 
         'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
@@ -970,16 +980,18 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
                 .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
                 .Cells(x + 3, 2).value = item.Comprobante
-                .Cells(x + 3, 3).value = item.RazonSocial
-                .Cells(x + 3, 4).value = item.Cuit
-                .Cells(x + 3, 5).value = item.CondicionIva
+                .Cells(x + 3, 3).value = item.ComprobantePuntoVenta5
+                .Cells(x + 3, 4).value = item.ComprobanteNro8
+                .Cells(x + 3, 5).value = item.RazonSocial
+                .Cells(x + 3, 6).value = item.Cuit
+                .Cells(x + 3, 7).value = item.CondicionIva
 
 
-                .Cells(x + 3, 6).value = item.NetoGravado
-                .Cells(x + 3, 7).value = item.Iva
-                .Cells(x + 3, 8).value = item.percepciones
-                .Cells(x + 3, 9).value = item.Exento
-                .Cells(x + 3, 10).value = item.total + item.Exento
+                .Cells(x + 3, 8).value = item.NetoGravado
+                .Cells(x + 3, 9).value = item.Iva
+                .Cells(x + 3, 10).value = item.percepciones
+                .Cells(x + 3, 11).value = item.Exento
+                .Cells(x + 3, 12).value = item.total + item.Exento
             End If
 
             x = x + 1
@@ -991,22 +1003,22 @@ Public Function ExportaSubDiarioVentas() As Boolean
         Next item
 
 
-        A = "j" & x + 2
+        A = "l" & x + 2
         offset = x + 3
-        B = "j" & offset
-        .Range("f1", B).NumberFormat = "0.00"
+        B = "l" & offset
+        .Range("h1", B).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
-        .Range("f" & x + 3, B).Interior.Color = &HC0C0C0
-        .Range("f" & x + 3, B).Borders.LineStyle = xlContinuous
-        .Range("f" & x + 3, B).Font.Bold = True
+        .Range("h" & x + 3, B).Interior.Color = &HC0C0C0
+        .Range("h" & x + 3, B).Borders.LineStyle = xlContinuous
+        .Range("h" & x + 3, B).Font.Bold = True
 
-        .Cells(offset, 10).value = totales.item(PosicionTotales.TotTot)
-        .Cells(offset, 9).value = totales.item(PosicionTotales.TotExento)
-        .Cells(offset, 8).value = totales.item(PosicionTotales.totPercep)
-        .Cells(offset, 7).value = totales.item(PosicionTotales.totIva)
-        .Cells(offset, 6).value = totales.item(PosicionTotales.TotNetoGravado)
-        .Cells(offset, 5).value = "Totales"
+        .Cells(offset, 12).value = totales.item(PosicionTotales.TotTot)
+        .Cells(offset, 11).value = totales.item(PosicionTotales.TotExento)
+        .Cells(offset, 10).value = totales.item(PosicionTotales.totPercep)
+        .Cells(offset, 9).value = totales.item(PosicionTotales.totIva)
+        .Cells(offset, 8).value = totales.item(PosicionTotales.TotNetoGravado)
+        .Cells(offset, 7).value = "Totales"
 
 
 
