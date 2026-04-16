@@ -42,7 +42,7 @@ Public Function Anular(Recibo As Recibo) As Boolean
 
     If Recibo.estado = EstadoRecibo.Aprobado Then
         'cambio el estado del recibo
-        Recibo.estado = EstadoRecibo.Reciboanulado
+        Recibo.estado = EstadoRecibo.ReciboAnulado
 
 
 
@@ -227,7 +227,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", _
 
 
 
-Dim col As New Collection
+    Dim col As New Collection
     Dim rec As Recibo
 
     Dim idx As Dictionary
@@ -236,6 +236,7 @@ Dim col As New Collection
     Dim ret As retencionRecibo
 
     Set rs = conectar.RSFactory(q)
+    
     BuildFieldsIndex rs, idx
 
     While Not rs.EOF

@@ -142,7 +142,7 @@ Public Function MapConjuntoProduccion(ByRef rs As Recordset, _
         tmpDeta.IdPedido = GetValue(rs, fieldsIndex, tableNameOrAlias, "idPedido")
         tmpDeta.IdentificadorPosicion = GetValue(rs, fieldsIndex, tableNameOrAlias, "identificador_posicion")
         
-        tmpDeta.NoProcesa = GetValue(rs, fieldsIndex, tableNameOrAlias, "a_no_procesa")
+        tmpDeta.NoProcesa = GetValue(rs, fieldsIndex, ProduccionAlias, "a_no_procesa")
         
         tmpDeta.CantidadTotalStatic = GetValue(rs, fieldsIndex, tableNameOrAlias, "cantidad_total_static")
         

@@ -191,3 +191,20 @@ err22:
     grabarArchivo = False
 
 End Function
+
+
+Public Function BorrarArchivo(ByVal idArchivo As Long) As Boolean
+    On Error GoTo err1
+
+    Dim q As String
+    q = "DELETE FROM sp_archivos.archivos WHERE id = " & idArchivo
+
+    conectar.execute q
+
+    BorrarArchivo = True
+    Exit Function
+
+err1:
+    MsgBox "Error al borrar archivo: " & Err.Description, vbCritical
+    BorrarArchivo = False
+End Function

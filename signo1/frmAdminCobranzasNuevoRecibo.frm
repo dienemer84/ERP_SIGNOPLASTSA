@@ -149,7 +149,6 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Version         =   "2.0"
             BoundColumnIndex=   ""
             ReplaceColumnIndex=   ""
-            ColumnAutoResize=   -1  'True
             MethodHoldFields=   -1  'True
             ContScroll      =   -1  'True
             AllowDelete     =   -1  'True
@@ -714,7 +713,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   65142785
+         Format          =   16842753
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -1228,6 +1227,18 @@ Private Sub Form_Load()
 
     GridEXHelper.CustomizeGrid Me.gridDepositosOperaciones, False, True
     GridEXHelper.CustomizeGrid Me.gridCajaOperaciones, False, True
+    
+    With Me.gridFacturas
+
+    .Columns(1).Width = 1800
+    .Columns(2).Width = 1200
+    .Columns(3).Width = 700
+    .Columns(4).Width = 900
+    .Columns(5).Width = 1800
+    .Columns(6).Width = 1800
+    .Columns(7).Width = 1800
+
+End With
 
 End Sub
 

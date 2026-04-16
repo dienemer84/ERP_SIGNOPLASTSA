@@ -84,6 +84,19 @@ Begin VB.Form frmAdminCobranzasLista
       TabIndex        =   0
       Top             =   120
       Width           =   11775
+      Begin XtremeSuiteControls.ComboBox cboEstado 
+         Height          =   315
+         Left            =   1320
+         TabIndex        =   24
+         Top             =   1280
+         Width           =   2295
+         _Version        =   786432
+         _ExtentX        =   4048
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Text            =   "ComboBox1"
+      End
       Begin XtremeSuiteControls.PushButton btnLimpiarCliente 
          Height          =   255
          Left            =   6240
@@ -209,6 +222,24 @@ Begin VB.Form frmAdminCobranzasLista
             Caption         =   "Rango"
             AutoSize        =   -1  'True
          End
+      End
+      Begin VB.Label Label2 
+         Alignment       =   1  'Right Justify
+         Caption         =   "Estado"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   480
+         TabIndex        =   23
+         Top             =   1320
+         Width           =   735
       End
       Begin VB.Label Label1 
          AutoSize        =   -1  'True
@@ -471,8 +502,8 @@ Private Sub cmdImprimir_Click()
 End Sub
 
 Private Sub Command1_Click()
-    Dim t As String
-    t = "SELECT * FROM AdminRecibos WHERE tot_estatico_recibo = 0"
+    Dim T As String
+    T = "SELECT * FROM AdminRecibos WHERE tot_estatico_recibo = 0"
 
     Dim rs As Collection
     Set rs = DAORecibo.FindAll("tot_estatico_recibo = 0", , , , , True)
@@ -506,6 +537,11 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.grilla_recibos, True, False
     vId = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, Recibos_
+    
+    CargarEstadosCombo cboEstado
+    
+    cboEstado.ListIndex = 3
+    
     DAOCliente.llenarComboXtremeSuite Me.cboCliente, True, True
     Dim i As Integer
     funciones.FillComboBoxDateRanges Me.cboRangos
@@ -524,6 +560,8 @@ Private Sub llenarLista()
     Set tmpArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Recibos)
     Dim F As String
     Dim TotalRecibido As Double
+    Dim estadoSeleccionado As Long
+    
     
     F = "1 = 1"
 
@@ -531,8 +569,15 @@ Private Sub llenarLista()
 
     If LenB(Me.txtNroRecibo.Text) > 0 Then F = F & " AND rec.id = " & Me.txtNroRecibo.Text
 
-
-
+    If Me.cboEstado.ListIndex >= 0 Then
+        estadoSeleccionado = Me.cboEstado.ItemData(Me.cboEstado.ListIndex)
+        
+        If estadoSeleccionado <> 0 Then
+            F = F & " AND rec.estado = " & estadoSeleccionado
+        End If
+    End If
+   
+    
     If Not IsNull(Me.dtpDesde.value) Then
         F = F & " AND rec.Fecha >= " & conectar.Escape(Me.dtpDesde.value)
     End If
@@ -592,7 +637,7 @@ End Sub
 Private Sub grilla_recibos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         SeleccionarRecibo
-        Me.NRO.caption = "[ Nro. " & Format(Recibo.Id, "0000") & " ]"
+        Me.nro.caption = "[ Nro. " & Format(Recibo.Id, "0000") & " ]"
 
         If Recibo.estado = EstadoRecibo.Pendiente Then   'pendiente
             Me.editarRecibo.Enabled = True
@@ -820,4 +865,25 @@ Private Sub verRecibo_Click()
     Exit Sub
 err1:
 
+End Sub
+
+
+Private Sub CargarEstadosCombo(cbo As Xtremesuitecontrols.ComboBox)
+    With cbo
+        .Clear
+
+        .AddItem "Todos"
+        .ItemData(.NewIndex) = 0
+
+        .AddItem "Pendiente"
+        .ItemData(.NewIndex) = EstadoRecibo.Pendiente
+
+        .AddItem "Aprobado"
+        .ItemData(.NewIndex) = EstadoRecibo.Aprobado
+
+        .AddItem "Anulado"
+        .ItemData(.NewIndex) = EstadoRecibo.Reciboanulado
+
+        .ListIndex = 0
+    End With
 End Sub

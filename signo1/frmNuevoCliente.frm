@@ -589,7 +589,7 @@ Private Sub Guardar()
     Fax = UCase$(Trim$(Text1(5)))
     email = UCase$(Trim$(Text1(6)))
 
-    ivan = Me.cboIVA.ItemData(Me.cboIVA.ListIndex)
+    ivan = Me.CboIVA.ItemData(Me.CboIVA.ListIndex)
     
     Cuit = NormalizarCuit(Text1(7))
 
@@ -825,7 +825,7 @@ Private Sub Form_Load()
     For x = 0 To 10
         Text1(x) = Empty
     Next x
-    DAOTipoIva.LlenarCombo Me.cboIVA
+    DAOTipoIva.LlenarCombo Me.CboIVA
     Command1.caption = "Agregar"
     Me.caption = "Agregar Cliente..."
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
@@ -876,33 +876,28 @@ Private Sub llenarForm()
         Text1(0) = .razon
         Text1(1) = .Domicilio
 
-
         Text1(4) = .telefono
         Text1(5) = .Fax
         Text1(6) = .email
         Text1(7) = .Cuit
-
-
+        Me.txtCP = .CodigoPostal
+        Me.txtCuitPais.Text = .CuitPais
+        Me.txtIDImpositivo.Text = .IDImpositivo
 
         'aca posiciono el combo
-
         Me.cboPaises.ListIndex = funciones.PosIndexCbo(.provincia.pais.Id, Me.cboPaises)
         Me.cboProvincias.ListIndex = funciones.PosIndexCbo(.provincia.Id, Me.cboProvincias)
         Me.cboLocalidades.ListIndex = funciones.PosIndexCbo(.localidad.Id, Me.cboLocalidades)
 
-
         Me.chkValido.value = Escape(.ValidoRemitoFactura)
-        txtFP = .FP
+        Me.txtFP = .FP
         Me.txtDetalleFP = .FormaPago
-        cboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, cboIVA)
+        Me.CboIVA.ListIndex = funciones.PosIndexCbo(.TipoIVA.idIVA, CboIVA)
         Me.cboMonedas.ListIndex = funciones.PosIndexCbo(vCliente.idMonedaDefault, Me.cboMonedas)
-
     End With
 
     Exit Sub
 err1:
     Debug.Print Err.Description
-
 End Sub
-
 

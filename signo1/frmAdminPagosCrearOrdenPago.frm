@@ -519,7 +519,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          Color           =   32
          PaintManager.ShowIcons=   -1  'True
          ItemCount       =   6
-         SelectedItem    =   4
+         SelectedItem    =   1
          Item(0).Caption =   "Cheques Propios"
          Item(0).ControlCount=   1
          Item(0).Control(0)=   "gridChequesPropios"
@@ -540,9 +540,10 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          Item(5).Control(0)=   "gridCompensatorios"
          Begin GridEX20.GridEX gridPercepciones 
             Height          =   4575
-            Left            =   120
+            Left            =   -69880
             TabIndex        =   84
             Top             =   435
+            Visible         =   0   'False
             Width           =   9810
             _ExtentX        =   17304
             _ExtentY        =   8070
@@ -579,10 +580,9 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          End
          Begin GridEX20.GridEX gridDepositosOperaciones 
             Height          =   4575
-            Left            =   -69880
+            Left            =   120
             TabIndex        =   2
             Top             =   435
-            Visible         =   0   'False
             Width           =   9810
             _ExtentX        =   17304
             _ExtentY        =   8070
@@ -3594,7 +3594,15 @@ Private Sub gridCajaOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridEX20.J
     If IsNumeric(Values(2)) Then
         Set operacion.moneda = DAOMoneda.GetById(Values(2))
     End If
-    operacion.FechaOperacion = Values(3)
+    
+    
+    If Not EsFechaValida(Values(3)) Then
+        MsgBox "Fecha inválida. Use formato dd/mm/yyyy", vbExclamation
+        Exit Sub
+    End If
+    
+    operacion.FechaOperacion = CDate(Values(3))
+    
     If IsNumeric(Values(4)) Then
         Set operacion.caja = DAOCaja.FindById(Values(4))
     End If
@@ -3695,7 +3703,14 @@ Private Sub gridCajaOperaciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Book
         If IsNumeric(Values(2)) Then
             Set operacion.moneda = DAOMoneda.GetById(Values(2))
         End If
-        operacion.FechaOperacion = Values(3)
+        
+        If Not EsFechaValida(Values(3)) Then
+            MsgBox "Fecha inválida. Use formato dd/mm/yyyy", vbExclamation
+            Exit Sub
+        End If
+        
+        operacion.FechaOperacion = CDate(Values(3))
+        
         If IsNumeric(Values(4)) Then
             Set operacion.caja = DAOCaja.FindById(Values(4))
         End If
@@ -3729,7 +3744,14 @@ Private Sub gridDepositosOperaciones_UnboundAddNew(ByVal NewRowBookmark As GridE
     If IsNumeric(Values(2)) Then
         Set operacion.moneda = DAOMoneda.GetById(Values(2))
     End If
-    operacion.FechaOperacion = Values(3)
+    
+    If Not EsFechaValida(Values(3)) Then
+        MsgBox "Fecha inválida. Use formato dd/mm/aaaa", vbExclamation
+        Exit Sub
+    End If
+    
+    operacion.FechaOperacion = CDate(Values(3))
+    
     If IsNumeric(Values(4)) Then
         Set operacion.CuentaBancaria = DAOCuentaBancaria.FindById(Values(4))
     End If
@@ -4052,3 +4074,47 @@ Private Sub txtTotalParcialAbonar_Change()
     End If
 End Sub
 
+
+Private Function EsFechaValida(ByVal txt As String) As Boolean
+    Dim partes() As String
+    Dim d As Integer, m As Integer, y As Integer
+    
+    EsFechaValida = False
+    
+    'Debe tener formato con /
+    If InStr(txt, "/") = 0 Then Exit Function
+    
+    partes = Split(txt, "/")
+    
+    'Debe tener 3 partes
+    If UBound(partes) <> 2 Then Exit Function
+    
+    'Día, mes y año numéricos
+    If Not IsNumeric(partes(0)) Or Not IsNumeric(partes(1)) Or Not IsNumeric(partes(2)) Then Exit Function
+    
+    d = CInt(partes(0))
+    m = CInt(partes(1))
+    y = CInt(partes(2))
+    
+    'Validar largo del año (clave)
+    If Len(partes(2)) <> 4 Then Exit Function
+    
+    'Validaciones básicas
+    If d < 1 Or d > 31 Then Exit Function
+    If m < 1 Or m > 12 Then Exit Function
+    If y < 1900 Or y > 2100 Then Exit Function
+    
+    'Validar fecha real (ej: 31/02 no pasa)
+    On Error GoTo invalida
+    Dim fechaTest As Date
+    fechaTest = DateSerial(y, m, d)
+    
+    'Chequeo cruzado
+    If Day(fechaTest) <> d Or Month(fechaTest) <> m Or Year(fechaTest) <> y Then Exit Function
+    
+    EsFechaValida = True
+    Exit Function
+    
+invalida:
+    EsFechaValida = False
+End Function

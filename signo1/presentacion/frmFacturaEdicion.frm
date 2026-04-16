@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66060289
+         Format          =   65994753
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66060289
+         Format          =   65994753
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66060289
+         Format          =   65994753
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66060289
+         Format          =   65994753
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66060289
+         Format          =   65994753
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -3010,9 +3010,7 @@ Private Sub btnSeleccionarOT_Click()
         Set Selecciones.OrdenTrabajo = Nothing
 
         Set frmPlaneamientoPedidosSeleccion.Cliente = Factura.Cliente
-
         frmPlaneamientoPedidosSeleccion.MostrarAnticipo = True
-
         frmPlaneamientoPedidosSeleccion.Show 1
 
         Dim Ot As OrdenTrabajo
@@ -3032,6 +3030,7 @@ Private Sub btnSeleccionarOT_Click()
                 Me.txtDiasVenc = vbNullString
 
                 Dim deta As FacturaDetalle
+                Dim importeAnticipo As Double
 
                 For Each Ot In Factura.OTsFacturadasAnticipo
                     Me.txtReferencia.Text = Me.txtReferencia.Text & " " & Ot.IdFormateado
@@ -3046,48 +3045,57 @@ Private Sub btnSeleccionarOT_Click()
                         deta.PorcentajeDescuento = 0
                         Set deta.Factura = Factura
                         deta.detalle = "ANTICIPO " & funciones.RedondearDecimales(Ot.Anticipo) & "% | OT"
+                        deta.Bruto = 0
                         Factura.detalles.Add deta
                     End If
+
                     deta.detalle = deta.detalle & " " & Ot.IdFormateado
 
-                    'bug #2 INICIO
+                    '-----------------------------------------
+                    ' Calcular importe de anticipo correctamente
+                    '-----------------------------------------
+                    If Ot.moneda.Id = Factura.moneda.Id Then
+                        ' Misma moneda: NO convertir
+                        MsgBox ("La Moneda de la OT es: " & Ot.moneda.NombreCorto & vbCrLf & _
+                              "La Moneda del Comprobante es: " & Factura.moneda.NombreCorto & vbCrLf & _
+                              "No se realiza conversión." & vbCrLf & vbCrLf & _
+                              "Cálculo:" & vbCrLf & _
+                              "Total de OT: " & Ot.total & vbCrLf & _
+                              "% Anticipo: " & Ot.Anticipo & vbCrLf & _
+                              "/ 100")
 
-                    If Ot.moneda.Id <> Factura.moneda.Id Then
-
-                        If Factura.moneda.Patron Then
-
-                            '                                        Set Monedas.MonedaConvertibles = Nothing
-                            '                                        Set frmAdminComprobantesEmitidosCambioMoneda.Ot = Ot
-                            '                                        Set frmAdminComprobantesEmitidosCambioMoneda.Factura = Factura
-                            '                                        frmAdminComprobantesEmitidosCambioMoneda.Show 1
-
-                            MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                  & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                                  & "Se procede a realizar la conversión correspondiente." & vbCrLf & "" _
-                                  & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.total & vbCrLf & " * Valor de Moneda de OT: " & Ot.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                            deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
-
-                        Else
-                            MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                                  & "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                                  & "Se procede a realizar la conversión correspondiente:" & vbCrLf & "" _
-                                  & "Cálculo:" & vbCrLf & "Total de OT: " & Ot.total & vbCrLf & " * Valor de Moneda de Comprobante: " & Factura.moneda.Cambio & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                            deta.Bruto = deta.Bruto + funciones.RedondearDecimales((Ot.total * Factura.moneda.Cambio * Ot.Anticipo) / 100)
-                        End If
+                        importeAnticipo = funciones.RedondearDecimales((Ot.total * Ot.Anticipo) / 100)
 
                     Else
-                        MsgBox ("La Moneda de la OT es: " & Ot.moneda.NombreCorto & vbCrLf & "" _
-                              & "La Moneda del Comprobante es: " & Factura.moneda.NombreCorto & vbCrLf & "" _
-                              & "No se realiza conversión:" & vbCrLf & "" _
-                              & "Cálculo:" & vbCrLf & " Total de OT: " & Ot.total & vbCrLf & " * % Anticipo: " & Ot.Anticipo & vbCrLf & "/ 100")
-                        deta.Bruto = deta.Bruto + funciones.RedondearDecimales(((Ot.total * Ot.Anticipo) / 100) / Factura.moneda.Cambio)
+                        If Factura.moneda.Patron Then
+                            MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & _
+                                  "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & _
+                                  "Se procede a realizar la conversión correspondiente." & vbCrLf & vbCrLf & _
+                                  "Cálculo:" & vbCrLf & _
+                                  "Total de OT: " & Ot.total & vbCrLf & _
+                                  " * Valor de Moneda de OT: " & Ot.moneda.Cambio & vbCrLf & _
+                                  " * % Anticipo: " & Ot.Anticipo & vbCrLf & _
+                                  "/ 100")
 
+                            importeAnticipo = funciones.RedondearDecimales((Ot.total * Ot.moneda.Cambio * Ot.Anticipo) / 100)
+                        Else
+                            MsgBox ("La Moneda de la OT incluída es: " & Ot.moneda.NombreCorto & vbCrLf & _
+                                  "La Moneda del Comprobante que se está cargando es: " & Factura.moneda.NombreCorto & vbCrLf & _
+                                  "Se procede a realizar la conversión correspondiente." & vbCrLf & vbCrLf & _
+                                  "Cálculo:" & vbCrLf & _
+                                  "Total de OT: " & Ot.total & vbCrLf & _
+                                  " * Valor de Moneda de Comprobante: " & Factura.moneda.Cambio & vbCrLf & _
+                                  " * % Anticipo: " & Ot.Anticipo & vbCrLf & _
+                                  "/ 100")
+
+                            importeAnticipo = funciones.RedondearDecimales((Ot.total / Factura.moneda.Cambio) * Ot.Anticipo / 100)
+                        End If
                     End If
 
+                    deta.Bruto = deta.Bruto + importeAnticipo
                 Next Ot
 
                 CargarDetalles
-
                 Totalizar
 
             End If

@@ -686,11 +686,11 @@ End Sub
 
 
 Private Sub gridTransferencias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-If RowIndex > 0 And transferencias.count > 0 Then
-    Dim T As clsTransferenciaBcaria
-    
     If RowIndex > 0 And transferencias.count > 0 Then
-        Set T = transferencias.Item(RowIndex)
+        Dim T As clsTransferenciaBcaria
+    
+        Set T = transferencias.item(RowIndex)
+        
         Values(1) = T.Id
         Values(3) = "N° " & T.CuentaBancaria & " | " & T.NombreBanco
         Values(4) = T.FechaOperacion
@@ -700,27 +700,29 @@ If RowIndex > 0 And transferencias.count > 0 Then
         
         If T.LiquidacionCaja Is Nothing Then
             If T.OrdenPago Is Nothing Then
-                    Values(8) = "PCTA: " & TransfBancaria.PagoACuentaID
-                    Values(2) = UCase(TransfBancaria.PagoACuentaProveedor)
-                    If TransfBancaria.OPAplicada = "0" Then Values(9) = "Disponible" Else Values(9) = "Procesada"
-                    Values(10) = TransfBancaria.OPAplicada
+                Values(8) = "PCTA: " & T.PagoACuentaID
+                Values(2) = UCase(T.PagoACuentaProveedor)
+                
+                If T.OPAplicada = "0" Then
+                    Values(9) = "Disponible"
+                Else
+                    Values(9) = "Procesada"
+                End If
+                
+                Values(10) = T.OPAplicada
             Else
-                    Values(8) = "OP: " & T.OrdenPago.Id
-                    Values(2) = UCase(T.ProveedorRazon)
-                    Values(9) = ""
-                    Values(10) = ""
+                Values(8) = "OP: " & T.OrdenPago.Id
+                Values(2) = UCase(T.ProveedorRazon)
+                Values(9) = ""
+                Values(10) = ""
             End If
         Else
-                    Values(8) = "LIQ: " & T.LiquidacionCaja.NumeroLiq
-                    Values(2) = "VARIOS"
-                    Values(9) = ""
-                    Values(10) = ""
+            Values(8) = "LIQ: " & T.LiquidacionCaja.NumeroLiq
+            Values(2) = "VARIOS"
+            Values(9) = ""
+            Values(10) = ""
         End If
-
-
-End If
-End If
- 
+    End If
 End Sub
 
 'Private Sub gridTransferencias_SelectionChange()

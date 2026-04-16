@@ -5,7 +5,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmArchivos2 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Archivos"
-   ClientHeight    =   7335
+   ClientHeight    =   7785
    ClientLeft      =   45
    ClientTop       =   735
    ClientWidth     =   11265
@@ -24,8 +24,21 @@ Begin VB.Form frmArchivos2
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7335
+   ScaleHeight     =   7785
    ScaleWidth      =   11265
+   Begin XtremeSuiteControls.PushButton btnBorrar 
+      Height          =   450
+      Left            =   240
+      TabIndex        =   11
+      Top             =   7200
+      Width           =   2500
+      _Version        =   786432
+      _ExtentX        =   4410
+      _ExtentY        =   794
+      _StockProps     =   79
+      Caption         =   "Borrar archivo de la lista"
+      UseVisualStyle  =   -1  'True
+   End
    Begin MSComDlg.CommonDialog CommonDialog 
       Left            =   10020
       Top             =   4440
@@ -177,7 +190,7 @@ Begin VB.Form frmArchivos2
       End
    End
    Begin VB.Image imgPreview 
-      Height          =   3585
+      Height          =   4000
       Left            =   6570
       Stretch         =   -1  'True
       Top             =   3615
@@ -211,6 +224,10 @@ Public ObjetoId As Long
 Private archivoActual As archivo
 Dim clasea As New classArchivos
 Dim id_suscriber As String
+
+Private Sub btnBorrar_Click()
+    BorrarArchivoSeleccionado
+End Sub
 
 Private Property Get ISuscriber_id() As String
     ISuscriber_id = id_suscriber
@@ -310,7 +327,7 @@ End Sub
 Private Sub gridArchivos_SelectionChange()
     On Error Resume Next
 
-    Dim idx As Long: idx = Me.gridArchivos.rowIndex(Me.gridArchivos.row)
+    Dim idx As Long: idx = Me.gridArchivos.RowIndex(Me.gridArchivos.row)
 
     If idx > 0 Then
         Dim ext As String
@@ -337,10 +354,10 @@ Private Sub gridArchivos_SelectionChange()
     End If
 End Sub
 
-Private Sub gridArchivos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And rowIndex <= m_Archivos.count Then
+Private Sub gridArchivos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And RowIndex <= m_Archivos.count Then
 
-        Set archivoActual = m_Archivos(rowIndex)
+        Set archivoActual = m_Archivos(RowIndex)
         With archivoActual
             Values(1) = .nombre
             Values(1) = .FileSizeInKB
@@ -489,3 +506,42 @@ End Sub
 Private Sub mnuExportar_Click()
     GuardarArchivo
 End Sub
+
+
+Private Sub BorrarArchivoSeleccionado()
+    On Error GoTo err1
+
+    gridArchivos_SelectionChange
+
+    If archivoActual Is Nothing Then
+        MsgBox "Seleccione un archivo del listado.", vbExclamation
+        Exit Sub
+    End If
+
+    If archivoActual.DeCompra And Not Permisos.ArchivosDeCompras Then
+        MsgBox "No tiene permisos para borrar archivos de compras.", vbExclamation + vbOKOnly
+        Exit Sub
+    End If
+
+    If MsgBox("¿Desea borrar el archivo seleccionado?" & vbCrLf & vbCrLf & _
+              archivoActual.nombre, _
+              vbQuestion + vbYesNo + vbDefaultButton2, _
+              "Borrar archivo") = vbNo Then
+        Exit Sub
+    End If
+
+    ' CAMBIAR esta línea por el método real que tengas en tu DAO
+    If DAOArchivo.BorrarArchivo(archivoActual.Id) Then
+        Set archivoActual = Nothing
+        LlenarListaArchivosSubidos
+        MsgBox "Archivo borrado correctamente.", vbInformation
+    Else
+        MsgBox "No se pudo borrar el archivo.", vbExclamation
+    End If
+
+    Exit Sub
+
+err1:
+    MsgBox Err.Description, vbCritical, "Error al borrar archivo"
+End Sub
+

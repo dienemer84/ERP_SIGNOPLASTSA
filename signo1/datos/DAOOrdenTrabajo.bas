@@ -306,14 +306,26 @@ err1:
 End Sub
 
 
-
 Public Sub ImprimirRuta(Ot As OrdenTrabajo, detOT As DetalleOrdenTrabajo, Optional detOTConj As DetalleOTConjuntoDTO = Nothing, Optional posOnConj As String = vbNullString)
-    pedido_pieza2.Sections("cabeza").Controls("lblOT").caption = Format("0000", Ot.Id) & " | " & detOT.item  ' "." & 1 & "/" & Ot.detalles.count     '1 = pos
+    On Error GoTo err1
+
+    Dim idPieza As Long
+    Dim Cant As Long
+    Dim texto As String
+    Dim tmpId As Long
+    
+    Dim dicArchivos As Dictionary
+    Dim dicIncidenciasOT As Dictionary
+    Dim cantIncOT As Long
+
+    pedido_pieza2.Sections("cabeza").Controls("lblOT").caption = Format("0000", Ot.Id) & " | " & detOT.item
+
     If IsSomething(detOTConj) Then
         pedido_pieza2.Sections("cabeza").Controls("barcode").caption = "*R" & Format(detOTConj.Id, "00000000") & "*"
     Else
         pedido_pieza2.Sections("cabeza").Controls("barcode").caption = "*R" & Format(detOT.Id, "00000000") & "*"
     End If
+
     pedido_pieza2.Sections("cabeza").Controls("lblCliente").caption = Ot.Cliente.razon
     pedido_pieza2.Sections("cabeza").Controls("lblReferencia").caption = Ot.descripcion
     pedido_pieza2.Sections("observar").Controls("lblNota").caption = detOT.Nota
@@ -325,66 +337,93 @@ Public Sub ImprimirRuta(Ot As OrdenTrabajo, detOT As DetalleOrdenTrabajo, Option
     pedido_pieza2.Sections("cabeza").Controls("lblItem").caption = "Item " & detOT.item
 
     If Not detOTConj Is Nothing Then
-        pedido_pieza2.Sections("cabeza").Controls("lblMasDetalle").caption = detOTConj.IdentificadorPosicion & " - " & detOTConj.Pieza.nombre     '"Elemento: " & PosConj & "/" & CantElemConj & " " & detOTConj.Pieza.nombre
+        pedido_pieza2.Sections("cabeza").Controls("lblMasDetalle").caption = detOTConj.IdentificadorPosicion & " - " & detOTConj.Pieza.nombre
     Else
         pedido_pieza2.Sections("cabeza").Controls("lblMasDetalle").caption = vbNullString
     End If
 
     If detOTConj Is Nothing Then
         pedido_pieza2.Sections("cabeza").Controls("lblCantidad").caption = detOT.CantidadPedida
-    Else
-        pedido_pieza2.Sections("cabeza").Controls("lblCantidad").caption = (detOTConj.CantidadTotalStatic)
-    End If
-    pedido_pieza2.Sections("observar").Controls("lblnota").caption = detOT.Nota
-    Dim idPieza As Long
-    If detOTConj Is Nothing Then
         idPieza = detOT.Pieza.Id
+        tmpId = detOT.Id
     Else
+        pedido_pieza2.Sections("cabeza").Controls("lblCantidad").caption = detOTConj.CantidadTotalStatic
         idPieza = detOTConj.Pieza.Id
+        tmpId = detOTConj.Id
     End If
 
-    Dim Cant As Long
-    Dim texto As String
+    pedido_pieza2.Sections("observar").Controls("lblnota").caption = detOT.Nota
 
-    '''''''''archivos
-    Cant = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas, Array(idPieza)).item(idPieza)
+    '---------------------------------------------------
+    ' ARCHIVOS ASOCIADOS (por pieza)
+    '---------------------------------------------------
+    Set dicArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas, Array(idPieza))
+
+    Cant = 0
+    If Not dicArchivos Is Nothing Then
+        If dicArchivos.Exists(idPieza) Then
+            Cant = CLng(dicArchivos.item(idPieza))
+        End If
+    End If
+
     If Cant = 0 Then
         texto = "No existen archivos asociados. Controlar periodicamente"
     Else
         texto = "Existe/n " & Cant & " archivo/s asociado/s. Por favor Verificar"
     End If
+
     pedido_pieza2.Sections("pie").Controls("archivos_asociados").caption = texto
 
-    '''''''''incidencias
-    Cant = DAOIncidencias.GetCantidadIncidenciasPorReferencia(OA_Piezas, Array(idPieza)).item(idPieza)
-    If Cant = 0 Then
+    '---------------------------------------------------
+    ' INCIDENCIAS ASOCIADAS (solo por OT)
+    '---------------------------------------------------
+    cantIncOT = 0
+    Set dicIncidenciasOT = DAOIncidencias.GetCantidadIncidenciasPorReferencia(OI_OrdenesTrabajo, Array(Ot.Id))
+
+    If Not dicIncidenciasOT Is Nothing Then
+        If dicIncidenciasOT.Exists(Ot.Id) Then
+            cantIncOT = CLng(dicIncidenciasOT.item(Ot.Id))
+        End If
+    End If
+
+    If cantIncOT = 0 Then
         texto = "No existen incidencias asociadas. Controlar periodicamente"
     Else
-        texto = "Existe/n " & Cant & " incidencia/s asociada/s. Por favor Verificar"
+        texto = "Existe/n " & cantIncOT & " incidencia/s asociada/s a la OT. Por favor Verificar"
     End If
+
     pedido_pieza2.Sections("pie").Controls("incidencias").caption = texto
 
     If IsSomething(detOT) And Not IsSomething(detOTConj) Then
         conectar.execute "UPDATE detalles_pedidos SET impresiones_ruta = " & (detOT.CantidadImpresionesDeRuta + 1) & " WHERE id = " & detOT.Id
     End If
 
-    Dim tmpId As Long
-    If detOTConj Is Nothing Then
-        tmpId = detOT.Id
-    Else
-        tmpId = detOTConj.Id
-    End If
-
     If IsSomething(detOTConj) Then
-        Set pedido_pieza2.DataSource = conectar.RSFactory("SELECT concat('*', dm.id,'*') as codigo, t.cantxproc,t.tarea,s.sector from tareas t,sectores s,PlaneamientoTiemposProcesos dm where dm.codigoTarea=t.id and s.id=t.id_sector and dm.idDetallePedidoConj=" & tmpId)
+        Set pedido_pieza2.DataSource = conectar.RSFactory( _
+            "SELECT concat('*', dm.id,'*') as codigo, t.cantxproc, t.tarea, s.sector " & _
+            "FROM tareas t, sectores s, PlaneamientoTiemposProcesos dm " & _
+            "WHERE dm.codigoTarea = t.id " & _
+            "AND s.id = t.id_sector " & _
+            "AND dm.idDetallePedidoConj = " & tmpId)
     Else
-        Set pedido_pieza2.DataSource = conectar.RSFactory("SELECT concat('*', dm.id,'*') as codigo, t.cantxproc,t.tarea,s.sector from tareas t,sectores s,PlaneamientoTiemposProcesos dm where dm.codigoTarea=t.id and s.id=t.id_sector and dm.idDetallePedidoConj = 0 and dm.idDetallePedido=" & tmpId)
+        Set pedido_pieza2.DataSource = conectar.RSFactory( _
+            "SELECT concat('*', dm.id,'*') as codigo, t.cantxproc, t.tarea, s.sector " & _
+            "FROM tareas t, sectores s, PlaneamientoTiemposProcesos dm " & _
+            "WHERE dm.codigoTarea = t.id " & _
+            "AND s.id = t.id_sector " & _
+            "AND dm.idDetallePedidoConj = 0 " & _
+            "AND dm.idDetallePedido = " & tmpId)
     End If
 
     DAOOrdenTrabajoHistorial.agregar detOT.OrdenTrabajo, "RUTA " & detOT.Id & " IMPRESA"
 
     pedido_pieza2.PrintReport False
+    Exit Sub
+
+err1:
+    MsgBox Err.Description, vbCritical, "Error"
 End Sub
+
 
 Public Function PonerEnProduccion(T As OrdenTrabajo) As Boolean    'activar viejo
     Dim estado_ant As EstadoOrdenTrabajo
@@ -660,7 +699,7 @@ If withDetalles Then
         'If Ot.Id = 1836 Then Stop
         If withDetalles Then
             Set deta = DAODetalleOrdenTrabajo.Map(rs, fieldsIndex, "dp", "stock", withEntregados, withFabricados, withFacturados, withPorcentajeTareasFinalizadas)
-            deta.idpedido = Ot.Id
+            deta.IdPedido = Ot.Id
             deta.IdMoneda = Ot.moneda.Id
             If IsSomething(deta) Then Ot.detalles.Add deta, CStr(deta.Id)
         End If
@@ -1388,7 +1427,7 @@ err2:
     InformePiezasFabricadas = False
 End Function
 
-Public Function imprimirEtiquetas(idpedido As Long) As Boolean
+Public Function imprimirEtiquetas(IdPedido As Long) As Boolean
     On Error GoTo err44
     imprimirEtiquetas = True
     Dim rs_temp As Recordset
@@ -1417,7 +1456,7 @@ Public Function imprimirEtiquetas(idpedido As Long) As Boolean
 
     Dim P As Long
 
-    Set r = conectar.RSFactory("select p.id,p.descripcion,c.razon,dp.item,s.detalle,dp.cantidad,dp.cantidad_fabricados,dp.cantidad_entregada from pedidos p inner join detalles_pedidos dp on dp.idPedido=p.id inner join clientes c on p.idCliente=c.id inner join stock s on dp.idPieza=s.id where idPedido=" & idpedido)
+    Set r = conectar.RSFactory("select p.id,p.descripcion,c.razon,dp.item,s.detalle,dp.cantidad,dp.cantidad_fabricados,dp.cantidad_entregada from pedidos p inner join detalles_pedidos dp on dp.idPedido=p.id inner join clientes c on p.idCliente=c.id inner join stock s on dp.idPieza=s.id where idPedido=" & IdPedido)
     While Not r.EOF
         Cant = r!Cantidad
         oc = r!descripcion
@@ -1438,7 +1477,7 @@ Public Function imprimirEtiquetas(idpedido As Long) As Boolean
             With rs_temp
                 .AddNew
                 !Cliente = razon
-                !idpedido = idpedido
+                !IdPedido = IdPedido
                 !oc = oc
                 !detalle = detalle
                 !item = it
@@ -1609,7 +1648,7 @@ Public Function GetDTOSectoresTiempo(ordenes_trabajo_ids As Collection) As Colle
 
 End Function
 
-Private Sub ProcesarDetalleOT(sectoresTiempo As Collection, deta As DetalleOTConjuntoDTO, detaPadreId As Long, cantPadre As Double, cantidadFabricada As Double)
+Private Sub ProcesarDetalleOT(sectoresTiempo As Collection, deta As DetalleOTConjuntoDTO, detaPadreId As Long, cantPadre As Double, CantidadFabricada As Double)
     Dim proceso As PlaneamientoTiempoProceso
     Dim procesos As Collection
 
@@ -1618,7 +1657,7 @@ Private Sub ProcesarDetalleOT(sectoresTiempo As Collection, deta As DetalleOTCon
     Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(detaPadreId, deta.Id)
 
     For Each proceso In procesos
-        AddTarea sectoresTiempo, proceso.Tarea, deta.Cantidad * cantPadre, proceso.OperariosCotizado, proceso.TiempoCotizado, cantidadFabricada, proceso
+        AddTarea sectoresTiempo, proceso.Tarea, deta.Cantidad * cantPadre, proceso.OperariosCotizado, proceso.TiempoCotizado, CantidadFabricada, proceso
 
     Next proceso
 
@@ -1628,14 +1667,14 @@ Private Sub ProcesarDetalleOT(sectoresTiempo As Collection, deta As DetalleOTCon
         Set detalles = DAODetalleOrdenTrabajo.FindAllConjunto(detaPadreId, deta.Pieza.Id)
 
         For Each tmpDeta In detalles
-            ProcesarDetalleOT sectoresTiempo, tmpDeta, detaPadreId, cantPadre, cantidadFabricada
+            ProcesarDetalleOT sectoresTiempo, tmpDeta, detaPadreId, cantPadre, CantidadFabricada
         Next tmpDeta
     End If
 
 
 End Sub
 
-Private Sub AddTarea(sectoresTiempo As Collection, Tarea As clsTarea, CantidadPedida As Double, OperariosCotizado As Long, TiempoCotizado As Double, Optional cantidadFabricada As Double, Optional proceso As PlaneamientoTiempoProceso)
+Private Sub AddTarea(sectoresTiempo As Collection, Tarea As clsTarea, CantidadPedida As Double, OperariosCotizado As Long, TiempoCotizado As Double, Optional CantidadFabricada As Double, Optional proceso As PlaneamientoTiempoProceso)
     Dim tiempoSectorDTO As DTOSectoresTiempo
     Dim tareaTiempoDTO As DTOTareaTiempo
     Dim Tiempo As Double
@@ -1645,12 +1684,12 @@ Private Sub AddTarea(sectoresTiempo As Collection, Tarea As clsTarea, CantidadPe
     If Tarea.CantPorProc = 1 Then
         Tiempo = (OperariosCotizado * TiempoCotizado * CantidadPedida) / 60
 
-        cantRestante = CantidadPedida - cantidadFabricada
+        cantRestante = CantidadPedida - CantidadFabricada
         If cantRestante < 0 Then cantRestante = 0
         TiempoPendiente = (OperariosCotizado * TiempoCotizado * cantRestante) / 60
     Else
         Tiempo = (OperariosCotizado * TiempoCotizado) / 60
-        If cantidadFabricada > 0 Then
+        If CantidadFabricada > 0 Then
             TiempoPendiente = 0
         Else
             TiempoPendiente = (OperariosCotizado * TiempoCotizado) / 60

@@ -1228,7 +1228,7 @@ Public Function ExportToXslConfirmados()
         
         If facturaConfirmada.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
         
-        xlWorksheet.Cells(idx, 6).value = facturaConfirmada.total * c
+        xlWorksheet.Cells(idx, 6).value = facturaConfirmada.TotalLiquidado * c
        
         xlWorksheet.Cells(idx, 7).value = UCase(funciones.RazonSocialFormateada(facturaConfirmada.Proveedor.RazonSocial))
         
@@ -1864,7 +1864,8 @@ Private Sub grillaConfirmados_UnboundReadData(ByVal RowIndex As Long, ByVal Book
         Values(3) = facturaConfirmada.numero
         Values(4) = facturaConfirmada.FEcha
         Values(5) = facturaConfirmada.moneda.NombreCorto
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(facturaConfirmada.total) * i), "$", "")
+'''        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(facturaConfirmada.total) * i), "$", "")
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(facturaConfirmada.TotalLiquidado) * i), "$", "")
         Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales((facturaConfirmada.ImporteTotalSaldo)) * i), "$", "")
         Values(8) = UCase(funciones.RazonSocialFormateada(facturaConfirmada.Proveedor.RazonSocial))
 
@@ -2345,7 +2346,7 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     Me.caption = "Liquidación Nº " & LiquidacionCaja.NumeroLiq
     
     Set facturasConfirmadas = DAOFacturaProveedor.FindAllByLiquidacionCaja(liq.Id)
-    
+        
   
     Me.gridCajaOperaciones.ItemCount = LiquidacionCaja.OperacionesCaja.count
     Me.gridDepositosOperaciones.ItemCount = LiquidacionCaja.operacionesBanco.count

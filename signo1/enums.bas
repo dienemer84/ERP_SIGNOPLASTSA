@@ -242,8 +242,9 @@ End Enum
 Public Enum EstadoRecibo
     Pendiente = 1
     Aprobado = 2
-    Reciboanulado = 3
+    ReciboAnulado = 3
 End Enum
+
 
 Public Enum OrigenRemito
     OrigenRemitoOt = 1
@@ -601,7 +602,7 @@ Public Function LlenarArrays()
 
     estado_recibo(EstadoRecibo.Aprobado) = "Aprobado"
     estado_recibo(EstadoRecibo.Pendiente) = "Pendiente"
-    estado_recibo(EstadoRecibo.Reciboanulado) = "Anulado"
+    estado_recibo(EstadoRecibo.ReciboAnulado) = "Anulado"
 
     unidad(1) = "Kg"
     unidad(2) = "M2"
@@ -726,5 +727,4 @@ End Function
 Public Function EnumEstadoProveedor(indice) As String
     EnumEstadoProveedor = estado_proveedor(indice)
 End Function
-
 

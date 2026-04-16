@@ -62,6 +62,8 @@ Public OtrosAbonado As Double
 
 Public TotalParcialPagado As Double
 
+Public TotalLiquidado As Double
+
 Public UsuarioCarga As clsUsuario
 
 
@@ -74,7 +76,7 @@ End Property
 
 
 Public Property Get ImporteTotalSaldo()
-    ImporteTotalSaldo = funciones.FormatearDecimales(Total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente)
+    ImporteTotalSaldo = funciones.FormatearDecimales(total - Me.TotalAbonadoGlobal - Me.TotalAbonadoGlobalPendiente)
 End Property
 
 
@@ -89,7 +91,7 @@ End Property
 
 
 Public Property Get TotalOtros()
-    TotalOtros = Me.Total - Me.NetoGravado
+    TotalOtros = Me.total - Me.NetoGravado
 End Property
 
 Public Function CalcularIvaTotalAbonadoParcial(ng As Double) As Double
@@ -126,7 +128,7 @@ End Property
 
 Public Property Get DiferenciaPorTipoDeCambionTOTAL() As Double
     If TipoCambio > 0 Then
-        DiferenciaPorTipoDeCambionTOTAL = funciones.RedondearDecimales(Me.Total - Me.TotalDiaPago)
+        DiferenciaPorTipoDeCambionTOTAL = funciones.RedondearDecimales(Me.total - Me.TotalDiaPago)
     Else
         DiferenciaPorTipoDeCambionTOTAL = 0
     End If
@@ -149,16 +151,16 @@ Public Property Get NumeroFormateadoCorto() As String
 End Property
 
 
-Public Property Let Historial(nvalue As Collection)
-    Set vHistorial = nvalue
+Public Property Let Historial(nValue As Collection)
+    Set vHistorial = nValue
 End Property
 
 Public Property Get Historial() As Collection
     Set Historial = vHistorial
 End Property
 
-Public Property Let cuentasContables(nvalue As Collection)
-    Set vCuentasContables = nvalue
+Public Property Let cuentasContables(nValue As Collection)
+    Set vCuentasContables = nValue
 End Property
 Public Property Get cuentasContables() As Collection
     If vCuentasContables Is Nothing Then
@@ -167,8 +169,8 @@ Public Property Get cuentasContables() As Collection
 
     Set cuentasContables = vCuentasContables
 End Property
-Public Property Let configFactura(nvalue As clsConfigFacturaProveedor)
-    Set vConfigFactura = nvalue
+Public Property Let configFactura(nValue As clsConfigFacturaProveedor)
+    Set vConfigFactura = nValue
 End Property
 Public Property Get configFactura() As clsConfigFacturaProveedor
     Set configFactura = vConfigFactura
@@ -179,11 +181,11 @@ End Property
 Public Property Get estado() As EstadoFacturaProveedor
     estado = vEstado
 End Property
-Public Property Let Redondeo(nRedondeo As Double)
+Public Property Let redondeo(nRedondeo As Double)
     vRedondeo = nRedondeo
 End Property
-Public Property Get Redondeo() As Double
-    Redondeo = vRedondeo
+Public Property Get redondeo() As Double
+    redondeo = vRedondeo
 End Property
 Public Property Let Id(nId As Long)
     vId = nId
@@ -317,7 +319,7 @@ Public Property Get ObtenerTotalCompensado() As Double
 
 End Property
 
-Public Property Get Total() As Double
+Public Property Get total() As Double
     Dim tipo_cambio As Double
     Dim negativo As Integer
     Dim CalculoPercepciones As Double
@@ -340,14 +342,14 @@ Public Property Get Total() As Double
     'cambie la division de tipo de cambio por la operacion de arriba el 31-7-13
     'Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / Me.TipoCambio)) '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
 
-    Total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / tipo_cambio))     '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
+    total = funciones.RedondearDecimales(NetoGravado + vImpuestoInterno + vRedondeo + TotalIVA + (totalPercepciones / tipo_cambio))     '+ Me.ConceptoNoGravado) ' + Me.TotalIVADiscriminado(0))
     'MsgBox (Total)
     Exit Property
 err1:
-    Total = 0
+    total = 0
 End Property
 Public Property Get TotalDiaPago() As Double
-    TotalDiaPago = funciones.RedondearDecimales(((Total / Me.TipoCambio) * Me.TipoCambioPago))
+    TotalDiaPago = funciones.RedondearDecimales(((total / Me.TipoCambio) * Me.TipoCambioPago))
 End Property
 
 Public Property Get TotalDiaPagoAbonado() As Double
@@ -408,20 +410,20 @@ End Property
 
 Public Property Get TotalAplicadoACuentas() As Double
     Dim vcta As clsCuentaFactura
-    Dim C As Double
+    Dim c As Double
     For Each vcta In vCuentasContables
-        C = C + vcta.Monto
+        c = c + vcta.Monto
     Next
-    TotalAplicadoACuentas = C
+    TotalAplicadoACuentas = c
 End Property
 
 
 Public Property Get TotalPendiente() As Double
-    TotalPendiente = Me.Total - Me.totalAbonado + Me.TotalPago
+    TotalPendiente = Me.total - Me.totalAbonado + Me.TotalPago
 End Property
 
 
 Public Function AnalizarEstado() As EstadoFacturaProveedor
-    If Me.Total = Me.totalAbonado Then AnalizarEstado = Saldada
-    If Me.totalAbonado > 0 And Me.totalAbonado < Me.Total Then AnalizarEstado = pagoParcial
+    If Me.total = Me.totalAbonado Then AnalizarEstado = Saldada
+    If Me.totalAbonado > 0 And Me.totalAbonado < Me.total Then AnalizarEstado = pagoParcial
 End Function

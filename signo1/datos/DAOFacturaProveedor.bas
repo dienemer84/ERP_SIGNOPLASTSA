@@ -246,7 +246,7 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
 
         q = q & ",0 as total_compensado "
     End If
-
+    
     q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
     q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
     q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
@@ -399,10 +399,14 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         fc.totalAbonado = GetValue(rs, indice, tabla, "total_abonado")
         fc.TipoCambio = GetValue(rs, indice, tabla, "tipo_cambio")
 
-        If indice.Exists(".total_liquidado") Then fc.totalAbonado = fc.totalAbonado + GetValue(rs, indice, vbNullString, "total_liquidado")
         If indice.Exists(".neto_gravado_liquidado") Then fc.NetoGravadoAbonadoGlobal = fc.NetoGravadoAbonadoGlobal + GetValue(rs, indice, vbNullString, "neto_gravado_liquidado")
         If indice.Exists(".otros_liquidado") Then fc.OtrosAbonadoGlobal = fc.OtrosAbonadoGlobal + GetValue(rs, indice, vbNullString, "otros_liquidado")
-
+        
+        If indice.Exists(".total_liquidado") Then
+            fc.TotalLiquidado = GetValue(rs, indice, vbNullString, "total_liquidado")
+        Else
+            fc.TotalLiquidado = 0
+        End If
 
         fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
         
@@ -527,8 +531,178 @@ Public Function FindAllByOrdenPago(ByVal opid As Long) As Collection
 End Function
 
 
+'''Public Function FindAllByLiquidacionCaja(ByVal lcid As Long) As Collection
+'''    Set FindAllByLiquidacionCaja = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & lcid & ")")
+'''End Function
+
+
 Public Function FindAllByLiquidacionCaja(ByVal lcid As Long) As Collection
-    Set FindAllByLiquidacionCaja = DAOFacturaProveedor.FindAll("AdminComprasFacturasProveedores.id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & lcid & ")")
+    On Error GoTo err1
+    
+    Dim indice As New Dictionary
+    Dim q As String
+    Dim rs As ADODB.Recordset
+    Dim col As New Collection
+    
+    Dim F As clsFacturaProveedor
+    Dim per As clsPercepcionesAplicadas
+    Dim Iva As clsAlicuotaAplicada
+    Dim cta As clsCuentaFactura
+'''    Dim alic As clsAlicuota
+    
+    q = ""
+    
+    q = q & "SELECT "
+    q = q & " AdminComprasFacturasProveedores.*, "
+    q = q & " AdminConfigFacturasProveedor.*, "
+    q = q & " proveedores.*, "
+    q = q & " AdminConfigMonedas.*, "
+    q = q & " AdminConfigIVAProveedor.*, "
+    q = q & " AdminConfigIvaAlicuotas.*, "
+    q = q & " AdminComprasFacturasProveedoresIva.*, "
+    q = q & " AdminComprasFacturasProveedoresPercepciones.*, "
+    q = q & " AdminConfigPercepciones.*, "
+    q = q & " a1.*, "
+    q = q & " AdminComprasCuentasFacturas.*, "
+    q = q & " AdminComprasCuentasContables.*, "
+    q = q & " usuarios.*, "
+    q = q & " IFNULL(lcf.total_liquidado,0) AS total_liquidado, "
+    q = q & " IFNULL(lcf.neto_gravado_liquidado,0) AS neto_gravado_liquidado, "
+    q = q & " IFNULL(lcf.otros_liquidado,0) AS otros_liquidado, "
+    q = q & " (SELECT MAX(id_orden_pago) "
+    q = q & "    FROM ordenes_pago_facturas "
+    q = q & "    INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago = ordenes_pago.id "
+    q = q & "   WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id "
+    q = q & "     AND ordenes_pago.estado <> 2 "
+    q = q & "   LIMIT 1) AS nro_orden, "
+    q = q & " 0 AS total_compensado, "
+    q = q & " IFNULL((SELECT SUM(total_abonado) "
+    q = q & "           FROM ordenes_pago_facturas opf "
+    q = q & "           JOIN ordenes_pago op1 ON opf.id_orden_pago = op1.id "
+    q = q & "          WHERE op1.estado = 1 "
+    q = q & "            AND opf.id_factura_proveedor = AdminComprasFacturasProveedores.id),0) AS total_abonado, "
+    q = q & " IFNULL((SELECT SUM(neto_gravado_abonado) "
+    q = q & "           FROM ordenes_pago_facturas opf "
+    q = q & "           JOIN ordenes_pago op1 ON opf.id_orden_pago = op1.id "
+    q = q & "          WHERE op1.estado = 1 "
+    q = q & "            AND opf.id_factura_proveedor = AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado, "
+    q = q & " IFNULL((SELECT SUM(otros_abonado) "
+    q = q & "           FROM ordenes_pago_facturas opf "
+    q = q & "           JOIN ordenes_pago op1 ON opf.id_orden_pago = op1.id "
+    q = q & "          WHERE op1.estado = 1 "
+    q = q & "            AND opf.id_factura_proveedor = AdminComprasFacturasProveedores.id),0) AS otros_abonado, "
+    q = q & " CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') "
+    q = q & "            FROM ordenes_pago_facturas "
+    q = q & "            INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago = ordenes_pago.id "
+    q = q & "           WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id "
+    q = q & "             AND ordenes_pago.estado <> 2), NCHAR) AS ordenes_pago, "
+    q = q & " CONVERT((SELECT IFNULL(GROUP_CONCAT(numero_liq),'-') "
+    q = q & "            FROM liquidaciones_caja_facturas "
+    q = q & "            INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja = liquidaciones_caja.id "
+    q = q & "           WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id "
+    q = q & "             AND liquidaciones_caja.estado <> 2), NCHAR) AS num_liquidaciones_caja, "
+    q = q & " CONVERT((SELECT IFNULL(GROUP_CONCAT(estado),'-') "
+    q = q & "            FROM ordenes_pago_facturas "
+    q = q & "            INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago = ordenes_pago.id "
+    q = q & "           WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id "
+    q = q & "             AND ordenes_pago.estado <> 2), NCHAR) AS ordenes_pago_estado, "
+    q = q & " CONVERT((SELECT IFNULL(GROUP_CONCAT(estado),'-') "
+    q = q & "            FROM liquidaciones_caja_facturas "
+    q = q & "            INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja = liquidaciones_caja.id "
+    q = q & "           WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id "
+    q = q & "             AND liquidaciones_caja.estado <> 2), NCHAR) AS liquidaciones_caja_estado "
+    
+    q = q & " FROM AdminComprasFacturasProveedores "
+    q = q & " LEFT JOIN AdminConfigFacturasProveedor "
+    q = q & "   ON AdminComprasFacturasProveedores.id_config_factura = AdminConfigFacturasProveedor.id "
+    q = q & " LEFT JOIN proveedores "
+    q = q & "   ON AdminComprasFacturasProveedores.id_proveedor = proveedores.id "
+    q = q & " LEFT JOIN AdminConfigMonedas "
+    q = q & "   ON AdminComprasFacturasProveedores.id_moneda = AdminConfigMonedas.id "
+    q = q & " LEFT JOIN AdminConfigIVAProveedor "
+    q = q & "   ON AdminConfigFacturasProveedor.id_iva = AdminConfigIVAProveedor.id "
+    q = q & " LEFT JOIN AdminConfigIvaAlicuotas "
+    q = q & "   ON AdminConfigFacturasProveedor.id = AdminConfigIvaAlicuotas.id_config_factura "
+    q = q & " LEFT JOIN AdminComprasFacturasProveedoresIva "
+    q = q & "   ON AdminComprasFacturasProveedoresIva.id_factura_proveedor = AdminComprasFacturasProveedores.id "
+    q = q & " LEFT JOIN AdminComprasFacturasProveedoresPercepciones "
+    q = q & "   ON AdminComprasFacturasProveedoresPercepciones.id_factura_proveedor = AdminComprasFacturasProveedores.id "
+    q = q & " LEFT JOIN AdminConfigPercepciones "
+    q = q & "   ON AdminComprasFacturasProveedoresPercepciones.id_percepcion = AdminConfigPercepciones.id "
+    q = q & " LEFT JOIN AdminConfigIvaAlicuotas AS a1 "
+    q = q & "   ON AdminComprasFacturasProveedoresIva.id_iva = a1.id "
+    q = q & " LEFT JOIN AdminComprasCuentasFacturas "
+    q = q & "   ON AdminComprasFacturasProveedores.id = AdminComprasCuentasFacturas.id_factura "
+    q = q & " LEFT JOIN AdminComprasCuentasContables "
+    q = q & "   ON AdminComprasCuentasFacturas.id_cuenta = AdminComprasCuentasContables.id "
+    q = q & " LEFT JOIN usuarios "
+    q = q & "   ON AdminComprasFacturasProveedores.id_usuario_creador = usuarios.id "
+    q = q & " INNER JOIN liquidaciones_caja_facturas lcf "
+    q = q & "   ON AdminComprasFacturasProveedores.id = lcf.id_factura_proveedor "
+    q = q & " WHERE lcf.id_liquidacion_caja = " & lcid
+    
+    Set rs = conectar.RSFactory(q)
+    BuildFieldsIndex rs, indice
+    
+    While Not rs.EOF
+        Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
+        
+        If Not F Is Nothing Then
+            
+            If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
+                Set F = col.item(CStr(F.Id))
+            Else
+                F.TotalLiquidado = GetValue(rs, indice, vbNullString, "total_liquidado")
+                F.NetoGravadoAbonadoGlobal = GetValue(rs, indice, vbNullString, "neto_gravado_abonado") + GetValue(rs, indice, vbNullString, "neto_gravado_liquidado")
+                F.OtrosAbonadoGlobal = GetValue(rs, indice, vbNullString, "otros_abonado") + GetValue(rs, indice, vbNullString, "otros_liquidado")
+                F.OrdenesPagoId = GetValue(rs, indice, vbNullString, "ordenes_pago")
+                F.LiquidacionesCajaId = GetValue(rs, indice, vbNullString, "num_liquidaciones_caja")
+                F.OrdenesPagoEstado = GetValue(rs, indice, vbNullString, "ordenes_pago_estado")
+                F.LiquidacionesCajaEstado = GetValue(rs, indice, vbNullString, "liquidaciones_caja_estado")
+                
+                col.Add F, CStr(F.Id)
+            End If
+            
+'''            If IsSomething(F.configFactura) Then
+'''                Set alic = DAOAlicuotas.Map(rs, indice, "AdminConfigIvaAlicuotas")
+'''                If IsSomething(alic) Then
+'''                    If Not funciones.BuscarEnColeccion(F.configFactura.alicuotas, CStr(alic.Id)) Then
+'''                        F.configFactura.alicuotas.Add alic, CStr(alic.Id)
+'''                    End If
+'''                End If
+'''            End If
+            
+            Set per = DAOPercepcionesAplicadas.Map(rs, indice, "AdminComprasFacturasProveedoresPercepciones", "AdminConfigPercepciones")
+            If IsSomething(per) Then
+                If Not funciones.BuscarEnColeccion(F.percepciones, CStr(per.Id)) Then
+                    If per.Id <> 0 Then F.percepciones.Add per, CStr(per.Id)
+                End If
+            End If
+            
+            Set cta = DAOCuentasFacturas.Map(rs, indice, "AdminComprasCuentasFacturas", "AdminComprasCuentasContables")
+            If IsSomething(cta) Then
+                If Not funciones.BuscarEnColeccion(F.cuentasContables, CStr(cta.Id)) Then
+                    F.cuentasContables.Add cta, CStr(cta.Id)
+                End If
+            End If
+            
+            Set Iva = DAOIvaAplicado.Map(rs, indice, "AdminComprasFacturasProveedoresIva", "a1")
+            If IsSomething(Iva) Then
+                If Not funciones.BuscarEnColeccion(F.IvaAplicado, CStr(Iva.Id)) Then
+                    F.IvaAplicado.Add Iva, CStr(Iva.Id)
+                End If
+            End If
+        End If
+        
+        rs.MoveNext
+    Wend
+    
+    Set FindAllByLiquidacionCaja = col
+    Exit Function
+
+err1:
+    Set FindAllByLiquidacionCaja = New Collection
+    MsgBox "Error en FindAllByLiquidacionCaja: " & Err.Description, vbExclamation
 End Function
 
 
