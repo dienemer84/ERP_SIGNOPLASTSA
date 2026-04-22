@@ -198,7 +198,13 @@ err1:
 End Function
 
 
-Public Function FindAll(Optional filtro As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
+Public Function FindAll(Optional filtro As String = vbNullString, _
+                        Optional withHistorial As Boolean = False, _
+                        Optional orderBy As String = vbNullString, _
+                        Optional soloPropias As Boolean = False, _
+                        Optional widhCompensatorios As Boolean = False, _
+                        Optional preguntarSiSuperaLimite As Boolean = False) As Collection
+                        
     On Error Resume Next
     On Error GoTo err1
     Dim indice As New Dictionary
@@ -206,35 +212,39 @@ Public Function FindAll(Optional filtro As String = vbNullString, Optional withH
     Dim rs As Recordset
     Dim col As New Collection
     
-    ' 1. Primero contar registros
-    Dim qCount As String
-    qCount = "SELECT COUNT(*) AS total FROM AdminComprasFacturasProveedores " _
-        & " LEFT JOIN AdminComprasCuentasFacturas  ON (AdminComprasFacturasProveedores.id = AdminComprasCuentasFacturas.id_factura) " _
-        & " LEFT JOIN AdminComprasCuentasContables  ON (AdminComprasCuentasFacturas.id_cuenta = AdminComprasCuentasContables.id) " _
-        & "WHERE 1=1 "
+    If preguntarSiSuperaLimite Then
     
-    If LenB(filtro) > 0 Then
-        qCount = qCount & " AND " & filtro
-    End If
+        ' 1. Primero contar registros
+        Dim qCount As String
+        qCount = "SELECT COUNT(*) AS total FROM AdminComprasFacturasProveedores " _
+            & " LEFT JOIN AdminComprasCuentasFacturas  ON (AdminComprasFacturasProveedores.id = AdminComprasCuentasFacturas.id_factura) " _
+            & " LEFT JOIN AdminComprasCuentasContables  ON (AdminComprasCuentasFacturas.id_cuenta = AdminComprasCuentasContables.id) " _
+            & "WHERE 1=1 "
     
-    If soloPropias Then
-        qCount = qCount & " AND AdminComprasFacturasProveedores.id_usuario_creador=" & funciones.GetUserObj.Id
-    End If
-    
-    Set rs = conectar.RSFactory(qCount)
-    
-    totalRegistros = rs!total
-    
-    rs.Close
-    
-    ' 2. Verificar si supera el límite
-    If totalRegistros > 1000 Then
-        Dim resp As VbMsgBoxResult
-        resp = MsgBox("Se encontraron " & totalRegistros & " registros. ¿Desea continuar?", vbYesNo + vbQuestion, "Confirmación")
-        If resp = vbNo Then
-            Set FindAll = New Collection
-            Exit Function
+        If LenB(filtro) > 0 Then
+            qCount = qCount & " AND " & filtro
         End If
+    
+        If soloPropias Then
+            qCount = qCount & " AND AdminComprasFacturasProveedores.id_usuario_creador=" & funciones.GetUserObj.Id
+        End If
+    
+        Set rs = conectar.RSFactory(qCount)
+    
+        totalRegistros = rs!total
+    
+        rs.Close
+    
+        ' 2. Verificar si supera el límite
+        If totalRegistros > 1000 Then
+            Dim resp As VbMsgBoxResult
+            resp = MsgBox("Se encontraron " & totalRegistros & " registros. ¿Desea continuar?", vbYesNo + vbQuestion, "Confirmación")
+            If resp = vbNo Then
+                Set FindAll = New Collection
+                Exit Function
+            End If
+        End If
+    
     End If
     
     q = "SELECT *, (SELECT max(id_orden_pago) FROM ordenes_pago_facturas inner join ordenes_pago on ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  limit 1) as nro_orden"

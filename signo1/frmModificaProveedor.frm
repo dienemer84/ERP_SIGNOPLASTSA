@@ -791,7 +791,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
 Dim Id As Long
 Dim vTipo As TipoOperacionProveedor
 Dim proveedor_ As clsProveedor
@@ -804,34 +803,27 @@ End Property
 Public Property Let tipoOperacion(Tipo As TipoOperacionProveedor)
     vTipo = Tipo
 End Property
+
 Public Property Let idProveedor(nId As Long)
     Id = nId
 End Property
 
-
 Private Sub btnCrearNew_Click(Index As Integer)
-    ' Elimina espacios y guiones medios del campo Text1(10)
     Dim cleanedText As String
-    cleanedText = Replace(Text1(10), " ", "")
-    cleanedText = Replace(cleanedText, "-", "")
 
-    ' Verifica si el campo Text1(9) está vacío y asigna 0 si es necesario
-    If Trim(Text1(9)) = "" Then Text1(9) = 0
-    
-    ' Verifica si el campo Text1(10) está vacío y asigna 0 si es necesario
-    If LenB(cleanedText) = 0 Then cleanedText = 0
-    
-    ' Verifica si los campos obligatorios están llenos
-    If LenB(Text1(0)) = 0 Or LenB(Text1(12)) = 0 Then
+    cleanedText = Replace(Trim$(Me.Text1(10).Text), " ", "")
+    cleanedText = Replace(cleanedText, "-", "")
+    Me.Text1(10).Text = cleanedText
+
+    If Trim$(Me.Text1(9).Text) = "" Then Me.Text1(9).Text = "0"
+
+    If LenB(Trim$(Me.Text1(0).Text)) = 0 Or LenB(Trim$(Me.Text1(12).Text)) = 0 Then
         MsgBox "Debe especificar una razón social y nombre fantasia.", vbExclamation
         Exit Sub
     End If
-    
-    ' Resto del código (llamada a la función accion, etc.)
-    Accion
+
+    Call Accion
 End Sub
-
-
 
 Private Sub btnVerificarCUIT_Click()
     Dim Ie As New InternetExplorer
@@ -849,6 +841,7 @@ End Sub
 Private Sub Command2_Click()
     Buscar
 End Sub
+
 Private Sub Command3_Click()
     Dim i As Long
     For i = Me.ListView1.ListItems.count To 1 Step -1
@@ -857,14 +850,17 @@ Private Sub Command3_Click()
         End If
     Next i
 End Sub
+
 Private Sub Buscar()
     Dim x As Long
     Dim esta As Boolean
     Dim i As Long
     Dim h As ListItem
+
     For x = 1 To Me.lstRubros.ListItems.count
         If Me.lstRubros.ListItems(x).Checked = True Then
             esta = False
+
             For i = 1 To Me.ListView1.ListItems.count
                 If Me.ListView1.ListItems(i) = Me.lstRubros.ListItems(x) Then esta = True
             Next i
@@ -877,76 +873,100 @@ Private Sub Buscar()
     Next x
 End Sub
 
-
 Private Function Accion() As Boolean
     On Error GoTo err123
-    Accion = True
+
     Dim a1 As clsRubros
     Dim colRubros As New Collection
+    Dim l As Long
+    Dim esNuevo As Boolean
 
+    Accion = False
 
-    If Not IsSomething(proveedor_) Then Set proveedor_ = New clsProveedor
+    esNuevo = Not IsSomething(proveedor_)
+    If esNuevo Then Set proveedor_ = New clsProveedor
 
-    proveedor_.RazonSocial = UCase(Me.Text1(0))
-    proveedor_.direccion = Me.Text1(11)
-    proveedor_.Ciudad = Me.Text1(2)
-    proveedor_.cp = Me.Text1(3)
-    proveedor_.tel = Me.Text1(4)
-    proveedor_.Fax = Me.Text1(5)
-    proveedor_.email = Me.Text1(6)
-    proveedor_.Contacto = Me.Text1(7)
-    proveedor_.FormaPago = Me.Text1(8)
-    proveedor_.bonificacion = CDbl(Me.Text1(9))
-    
-    proveedor_.CBU = Me.txtCBU.Text
-    proveedor_.ALIAS = Me.txtAlias.Text
-    proveedor_.TitularCta = Me.txtTitularCta.Text
-    
-    
+    proveedor_.RazonSocial = UCase$(Trim$(Me.Text1(0).Text))
+    proveedor_.direccion = Trim$(Me.Text1(11).Text)
+    proveedor_.Ciudad = Trim$(Me.Text1(2).Text)
+    proveedor_.cp = Trim$(Me.Text1(3).Text)
+    proveedor_.tel = Trim$(Me.Text1(4).Text)
+    proveedor_.Fax = Trim$(Me.Text1(5).Text)
+    proveedor_.email = Trim$(Me.Text1(6).Text)
+    proveedor_.Contacto = Trim$(Me.Text1(7).Text)
+    proveedor_.FormaPago = Trim$(Me.Text1(8).Text)
+    proveedor_.bonificacion = CDbl(val(Me.Text1(9).Text))
+
+    proveedor_.CBU = Trim$(Me.txtCBU.Text)
+    proveedor_.ALIAS = Trim$(Me.txtAlias.Text)
+    proveedor_.TitularCta = Trim$(Me.txtTitularCta.Text)
+
     proveedor_.estado = Me.cboEstadoProveedor.ListIndex
-    If Not IsNumeric(Me.Text1(1)) Then
+
+    If Not IsNumeric(Me.Text1(1).Text) Then
         proveedor_.IIBB = 0
     Else
-        proveedor_.IIBB = Me.Text1(1)
+        proveedor_.IIBB = Me.Text1(1).Text
     End If
-    proveedor_.razonFantasia = UCase(Me.Text1(12))
+
+    proveedor_.razonFantasia = UCase$(Trim$(Me.Text1(12).Text))
     proveedor_.pagoDolares = Abs(Me.Check2.value)
     proveedor_.pagocontraEntrega = Abs(Me.Check1.value)
-    proveedor_.Cuit = Me.Text1(10)
-    Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
-    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIVA.ItemData(Me.cboIVA.ListIndex)))
+    proveedor_.Cuit = Replace(Replace(Trim$(Me.Text1(10).Text), " ", ""), "-", "")
 
-    'busco rubros
+    Set proveedor_.moneda = DAOMoneda.GetById(CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)))
+    Set proveedor_.TipoIVA = DAOTipoIvaProveedor.GetById(CLng(Me.cboIva.ItemData(Me.cboIva.ListIndex)))
 
     Set colRubros = Nothing
-    Dim l As Long
     For l = 1 To Me.ListView1.ListItems.count
         Set a1 = New clsRubros
         Set a1 = Me.ListView1.ListItems(l).Tag
         colRubros.Add a1
     Next l
 
-
     proveedor_.rubros = colRubros
+
     If proveedor_.estado <> EstadoProveedorEliminado Then
-        If Not DAOProveedor.ValidarCuit(proveedor_) Then
-            Err.Raise 400, "Proveedor", "El CUIT ya se encuentra asignado o no tiene el formato correcto."
+        If LenB(proveedor_.Cuit) > 0 And Not IsNumeric(proveedor_.Cuit) Then
+            Err.Raise 400, "Proveedor", "El CUIT debe ser numérico."
+        End If
+
+        If Not EsProveedorExterior Then
+            Dim F As String
+
+            F = "proveedores.cuit = " & Escape(proveedor_.Cuit)
+
+            If proveedor_.Id > 0 Then
+                F = F & " AND proveedores.id <> " & proveedor_.Id
+            End If
+
+            If DAOProveedor.FindAll(F).count > 0 Then
+                Err.Raise 400, "Proveedor", "El CUIT ya se encuentra asignado a otro proveedor."
+            End If
         End If
     End If
 
     If Not DAOProveedor.Save(proveedor_) Then
-        MsgBox "Se produjo un error, no se guardarán los cambios!", vbCritical
+        MsgBox "Se produjo un error, no se guardarán los cambios.", vbCritical
+        Exit Function
+    End If
+
+    Accion = True
+
+    If esNuevo Then
+        MsgBox "Proveedor guardado correctamente.", vbInformation
     Else
-        MsgBox "Actualización exitosa!", vbInformation
+        MsgBox "Proveedor actualizado correctamente.", vbInformation
     End If
 
     Exit Function
+
 err123:
     MsgBox Err.Description, vbCritical, "·Error·"
-
 End Function
+
 Private Sub mostrarCampos()
-'Set vProveedor = DAOProveedor.BuscarPorID(id)
+    'Set vProveedor = DAOProveedor.BuscarPorID(id)
     Check1.value = Abs(proveedor_.pagocontraEntrega)
     Check2.value = Abs(proveedor_.pagoDolares)
     Text1(0) = proveedor_.RazonSocial
@@ -963,31 +983,33 @@ Private Sub mostrarCampos()
     Text1(1) = proveedor_.IIBB
     Text1(12) = proveedor_.razonFantasia
     cboMonedas.ListIndex = funciones.PosIndexCbo(proveedor_.moneda.Id, cboMonedas)
-    cboIVA.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIVA)
+    cboIva.ListIndex = funciones.PosIndexCbo(proveedor_.TipoIVA.Id, cboIva)
     Me.cboEstadoProveedor.ListIndex = funciones.PosIndexCbo(proveedor_.estado, Me.cboEstadoProveedor)
-    
+
     Me.txtCBU.Text = proveedor_.CBU
     Me.txtAlias.Text = proveedor_.ALIAS
     Me.txtTitularCta.Text = proveedor_.TitularCta
-    
 End Sub
+
 Private Sub Form_Load()
     FormHelper.Customize Me
 
     If proveedor_ Is Nothing Then
-
         Me.caption = "Crear Proveedor..."
         Me.limpiar
     Else
         Me.caption = "Crear Modificar Proveedor..."
     End If
+
     If vTipo = ver Then
         Me.caption = "Consultar Proveedor..."
     End If
+
     LlenarEstadosProveedor
     llenarIva
     llenarListarubros
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
+
     If Not proveedor_ Is Nothing Then
         mostrarCampos
         llenarListaRubrosProveedor
@@ -996,28 +1018,28 @@ Private Sub Form_Load()
     End If
 
     ''Me.caption = caption & " (" & Name & ")"
-
-
 End Sub
 
 Private Sub LlenarEstadosProveedor()
     Dim i As Long
+
     For i = 0 To 2
         Me.cboEstadoProveedor.AddItem EnumEstadoProveedor(i)
         Me.cboEstadoProveedor.ItemData(Me.cboEstadoProveedor.NewIndex) = i
     Next i
 
     Me.cboEstadoProveedor.ListIndex = 1
-
-
 End Sub
+
 Private Sub llenarListarubros()
     Dim ListaRubros As Collection
-    Set ListaRubros = DAORubros.FindAll
     Dim rubro As clsRubros
-    lstRubros.ListItems.Clear
     Dim u As Long
     Dim x As ListItem
+
+    Set ListaRubros = DAORubros.FindAll
+    lstRubros.ListItems.Clear
+
     For u = 1 To ListaRubros.count
         Set rubro = ListaRubros(u)
         Set x = Me.lstRubros.ListItems.Add(, , rubro.rubro)
@@ -1027,28 +1049,29 @@ End Sub
 
 Private Sub llenarListaRubrosProveedor()
     Dim ListaRubros As New Collection
-    Set ListaRubros = DAORubros.FindAllByProveedor(proveedor_.Id)
     Dim rubro As clsRubros
-    Me.ListView1.ListItems.Clear
     Dim x As ListItem
     Dim u As Long
+
+    Set ListaRubros = DAORubros.FindAllByProveedor(proveedor_.Id)
+    Me.ListView1.ListItems.Clear
+
     For u = 1 To ListaRubros.count
         Set rubro = ListaRubros(u)
         Set x = Me.ListView1.ListItems.Add(, , rubro.rubro)
         Set x.Tag = rubro
     Next
-
 End Sub
-
 
 Function limpiar()
     Dim x As Integer
+
     For x = 0 To 12
         Text1(x) = Empty
     Next x
+
     Text1(9) = 0
     Me.ListView1.ListItems.Clear
-
 End Function
 
 'Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
@@ -1066,24 +1089,16 @@ End Sub
 Private Sub Text1_GotFocus(Index As Integer)
     foco Me.Text1(Index)
 End Sub
+
 Public Sub llenarIva()
-    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIVA
+    DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboIva
 End Sub
 
-Private Sub Text1_Validate(Index As Integer, Cancel As Boolean)
-    If Index = 10 Then    '10=cuit
-        Cancel = Not IsNumeric(Me.Text1(10)) And LenB(Me.Text1(10)) > 0
-
-        If Not Cancel Then
-            Dim F As String
-            F = "proveedores.cuit = " & Escape(Me.Text1(10))
-            If IsSomething(proveedor_) Then
-                F = F & " AND proveedores.id <> " & proveedor_.Id
-            End If
-
-            Cancel = DAOProveedor.FindAll(F).count > 0
-            If Cancel Then MsgBox "Ya existe un proveedor con ese Nº de CUIT.", vbExclamation
-        End If
-
+Private Function EsProveedorExterior() As Boolean
+    If Me.cboIva.ListIndex < 0 Then
+        EsProveedorExterior = False
+        Exit Function
     End If
-End Sub
+
+    EsProveedorExterior = (UCase$(Trim$(Me.cboIva.Text)) = "EXTERIOR")
+End Function

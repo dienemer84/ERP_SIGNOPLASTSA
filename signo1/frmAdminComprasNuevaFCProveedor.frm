@@ -473,7 +473,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   65732609
+      Format          =   16646145
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -913,30 +913,63 @@ End Sub
 
 
 
-Private Sub cboTiposFactura_Click()
+'''Private Sub cboTiposFactura_Click()
+'''
+'''    grabado = False
+'''    'vFactura.IvaAplicado = Nothing
+'''    FacturaRequiereNumeroFormateado
+'''
+'''    If Me.cboTiposFactura.ListCount > 0 Then
+'''        Dim idtipo As Long
+'''        idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+'''
+'''        llenarAlicuotas idtipo
+'''
+'''            If Not loading Then
+'''                 If colAlicuotas.count > 0 Then
+'''                    vFactura.IvaAplicado = Nothing
+'''                    Me.grilla_alicuotas.ItemCount = 0
+'''                    Me.grilla_alicuotas.Refresh
+'''                    AddDefaultAlicuota colAlicuotas(1).Id
+'''                End If
+'''            End If
+'''        End If
+'''End Sub
 
+
+Private Sub cboTiposFactura_Click()
+    On Error GoTo ErrHandler
+    
+    Dim idx As Long
+    Dim idtipoLocal As Long
+    
     grabado = False
-    'vFactura.IvaAplicado = Nothing
+    
+    If Me.cboTiposFactura.ListCount <= 0 Then Exit Sub
+    
+    idx = Me.cboTiposFactura.ListIndex
+    If idx < 0 Then Exit Sub
+    
+    idtipoLocal = Me.cboTiposFactura.ItemData(idx)
+    
     FacturaRequiereNumeroFormateado
     
-    If Me.cboTiposFactura.ListCount > 0 Then
-        Dim idtipo As Long
-        idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
-        
-        llenarAlicuotas idtipo
-        
-            If Not loading Then
-                 If colAlicuotas.count > 0 Then
-                    vFactura.IvaAplicado = Nothing
-                    Me.grilla_alicuotas.ItemCount = 0
-                    Me.grilla_alicuotas.Refresh
-                    AddDefaultAlicuota colAlicuotas(1).Id
-                End If
-            End If
+    llenarAlicuotas idtipoLocal
+    
+    If Not loading Then
+        If colAlicuotas.count > 0 Then
+            vFactura.IvaAplicado = Nothing
+            Me.grilla_alicuotas.ItemCount = 0
+            Me.grilla_alicuotas.Refresh
+            AddDefaultAlicuota colAlicuotas(1).Id
         End If
+    End If
+    
+    Exit Sub
+
+ErrHandler:
+    MsgBox "Error al seleccionar el tipo de factura: " & Err.Description, vbExclamation, "Error"
 End Sub
-
-
 Private Sub mostrar()
     If Me.cboProveedores.ListIndex <> -1 Then
         idProveedor = CLng(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex))
@@ -1166,7 +1199,7 @@ Private Sub Form_Load()
 
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
     DAOTipoIvaProveedor.llenarComboXtremeSuite Me.cboTipoIva
-    LlenarComboProveedores
+    llenarComboProveedores
 
     Me.cboTipoDocContable.AddItem "Factura"
     Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.NewIndex) = tipoDocumentoContable.Factura
@@ -1212,8 +1245,8 @@ Private Sub Form_Load()
         Me.btnGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.Frame2.Enabled = False
-        Me.Frame3.Enabled = False
+        Me.frame2.Enabled = False
+        Me.frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
         Me.txtImpuestos.Enabled = False
@@ -1251,44 +1284,77 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub FacturaRequiereNumeroFormateado()
-'dnemer
-    Dim idtipo As Integer
-    idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+    On Error GoTo ErrHandler
+    
+    Dim idx As Long
+    Dim idtipoLocal As Long
     Dim cx As clsConfigFacturaProveedor
+    
+    If Me.cboTiposFactura.ListCount <= 0 Then Exit Sub
+    
+    idx = Me.cboTiposFactura.ListIndex
+    If idx < 0 Then Exit Sub
+    
+    idtipoLocal = Me.cboTiposFactura.ItemData(idx)
+    
+    Set cx = DAOConfigFacturaProveedor.GetById(idtipoLocal)
+    
+    If Not IsSomething(cx) Then Exit Sub
+    
+    If cx.FormateaNumero Then
+        Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+        Me.txtNumeroMask.MaxLength = 13
+    Else
+        Me.txtNumeroMask.SetMask "", ""
+        Me.txtNumeroMask.MaxLength = 16
+    End If
+    
+    Exit Sub
 
-    Set cx = DAOConfigFacturaProveedor.GetById(idtipo)
-
-'    Debug.Print (Len(vFactura.numero))
-
-    '    If IsSomething(cx) Then
-    '        If (Len(vFactura.numero)) = 15 Then
-    '            If cx.FormateaNumero Then
-    '
-    '                Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
-    '                Me.txtNumeroMask.MaxLength = 15
-    '            End If
-    '        ElseIf (Len(vFactura.numero)) = 13 Then
-    '            If cx.FormateaNumero Then
-    '
-    '                Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
-    '                Me.txtNumeroMask.MaxLength = 13
-    '            End If
-    '        Else
-    '            Me.txtNumeroMask.SetMask "", ""
-    '            Me.txtNumeroMask.MaxLength = 0
-    '        End If
-    'End If
-    '    If IsSomething(cx) Then
-    '        If cx.FormateaNumero Then
-    '        Debug.Print (Me.txtNumeroMask)
-    '            Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
-    '            Me.txtNumeroMask.MaxLength = 15
-    '        Else
-    '            Me.txtNumeroMask.SetMask "", ""
-    '            Me.txtNumeroMask.MaxLength = 0
-    '        End If
-    '    End If
+ErrHandler:
+    MsgBox "Error al configurar el formato del número: " & Err.Description, vbExclamation, "Error"
 End Sub
+
+
+'''Private Sub FacturaRequiereNumeroFormateado()
+''''dnemer
+'''    Dim idtipo As Integer
+'''    idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
+'''    Dim cx As clsConfigFacturaProveedor
+'''
+'''    Set cx = DAOConfigFacturaProveedor.GetById(idtipo)
+'''
+''''    Debug.Print (Len(vFactura.numero))
+'''
+'''    '    If IsSomething(cx) Then
+'''    '        If (Len(vFactura.numero)) = 15 Then
+'''    '            If cx.FormateaNumero Then
+'''    '
+'''    '                Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
+'''    '                Me.txtNumeroMask.MaxLength = 15
+'''    '            End If
+'''    '        ElseIf (Len(vFactura.numero)) = 13 Then
+'''    '            If cx.FormateaNumero Then
+'''    '
+'''    '                Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
+'''    '                Me.txtNumeroMask.MaxLength = 13
+'''    '            End If
+'''    '        Else
+'''    '            Me.txtNumeroMask.SetMask "", ""
+'''    '            Me.txtNumeroMask.MaxLength = 0
+'''    '        End If
+'''    'End If
+'''    '    If IsSomething(cx) Then
+'''    '        If cx.FormateaNumero Then
+'''    '        Debug.Print (Me.txtNumeroMask)
+'''    '            Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
+'''    '            Me.txtNumeroMask.MaxLength = 15
+'''    '        Else
+'''    '            Me.txtNumeroMask.SetMask "", ""
+'''    '            Me.txtNumeroMask.MaxLength = 0
+'''    '        End If
+'''    '    End If
+'''End Sub
 
 
 Private Sub llenarGrillaPercepciones()
@@ -1733,11 +1799,11 @@ Private Sub armarFactura()
 End Sub
 
 
-Private Sub LlenarComboProveedores()
+Private Sub llenarComboProveedores()
 
 '''    DAOProveedor.llenarComboXtremeSuite Me.cboProveedores, True, True, False
 
-    DAOProveedor.LlenarComboProveedores Me.cboProveedores
+    DAOProveedor.llenarComboProveedores Me.cboProveedores
 
     
 End Sub

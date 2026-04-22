@@ -219,7 +219,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-    Dim cliente As clsCliente
+    Dim Cliente As clsCliente
     Dim registro As clsRegistroIVACompras
     
     
@@ -233,7 +233,7 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = 6
     
-    Me.radioBtnComprobantes.Value = True
+    Me.radioBtnComprobantes.value = True
     
     Me.btnExportarTXT.Enabled = False
     
@@ -244,9 +244,9 @@ Private Sub btnExportarTXT_Click()
     ' Construye el nombre del archivo con el formato deseado
     Dim nombreArchivo As String
     
-    If Me.radioBtnComprobantes.Value = True Then
+    If Me.radioBtnComprobantes.value = True Then
         nombreArchivo = "COMPROBANTES_" & Format(Now, "hhmmss") & ".TXT"
-    ElseIf Me.radioBtnAlicuotas.Value = True Then
+    ElseIf Me.radioBtnAlicuotas.value = True Then
         nombreArchivo = "ALICUOTAS_" & Format(Now, "hhmmss") & ".TXT"
     Else
         MsgBox ("Debe seleccionar un tipo de reporte primero")
@@ -289,10 +289,10 @@ Private Sub btnReportar_Click()
 
     Me.lstBoxRegistros.Clear
   
-    If Me.radioBtnComprobantes.Value = True Then
+    If Me.radioBtnComprobantes.value = True Then
         ReportarComprobantes
    
-    ElseIf Me.radioBtnAlicuotas.Value = True Then
+    ElseIf Me.radioBtnAlicuotas.value = True Then
         ReportarAlicuotas
    
     End If
@@ -306,12 +306,12 @@ Private Sub ReportarComprobantes()
     Dim filter As String
     filter = "1 = 1"
     
-    If Not IsNull(Me.dtpDesde.Value) Then
-        filter = filter & " AND cp.fecha >= " & conectar.Escape(Me.dtpDesde.Value)
+    If Not IsNull(Me.dtpDesde.value) Then
+        filter = filter & " AND cp.fecha >= " & conectar.Escape(Me.dtpDesde.value)
     End If
 
-    If Not IsNull(Me.dtpHasta.Value) Then
-        filter = filter & " AND cp.fecha <= " & conectar.Escape(Me.dtpHasta.Value)
+    If Not IsNull(Me.dtpHasta.value) Then
+        filter = filter & " AND cp.fecha <= " & conectar.Escape(Me.dtpHasta.value)
     End If
         
     Set registros = DAORegistrosCompras.FindAllComprobantes(filter)
@@ -567,7 +567,7 @@ Private Sub ReportarComprobantes()
             cantidaddealicuotas_18 = "0"
         Case registro.tipodoccontable = 0 And registro.idconfigfactura = 12 And registro.cantidaddealicuotas = 1
             cantidaddealicuotas_18 = "1"
-                        
+
         Case registro.tipodoccontable = 1 And registro.idconfigfactura = 1 And registro.cantidaddealicuotas = 1
             cantidaddealicuotas_18 = "1"
         Case registro.tipodoccontable = 1 And registro.idconfigfactura = 2 And registro.cantidaddealicuotas = 1
@@ -582,17 +582,21 @@ Private Sub ReportarComprobantes()
             cantidaddealicuotas_18 = "0"
         Case registro.tipodoccontable = 1 And registro.idconfigfactura = 12 And registro.cantidaddealicuotas = 1
             cantidaddealicuotas_18 = "1"
-         
+
         Case registro.tipodoccontable = 2 And registro.idconfigfactura = 3 And registro.cantidaddealicuotas = 1
             cantidaddealicuotas_18 = "0"
         Case registro.tipodoccontable = 2 And registro.idconfigfactura = 6 And registro.cantidaddealicuotas = 1
             cantidaddealicuotas_18 = "1"
         Case registro.tipodoccontable = 2 And registro.idconfigfactura = 10 And registro.cantidaddealicuotas = 1
             cantidaddealicuotas_18 = "0"
-            
+
         Case registro.tipodoccontable = 4 And registro.idconfigfactura = 6 And registro.cantidaddealicuotas = 1
             cantidaddealicuotas_18 = "1"
-            
+
+        Case registro.idIVA = 8
+            cantidaddealicuotas_18 = registro.cantidadidIVADistintas
+        Case registro.idIVA = 1
+            cantidaddealicuotas_18 = registro.cantidadidIVADistintas
         Case registro.idIVA = 5
             cantidaddealicuotas_18 = registro.cantidadidIVADistintas
         Case registro.idIVA = 2
@@ -684,7 +688,8 @@ Private Sub ReportarComprobantes()
         
         
         Me.lstBoxRegistros.AddItem T
-                
+        
+                   
     Next
 
     Me.btnExportarTXT.Enabled = True
@@ -699,12 +704,12 @@ Private Sub ReportarAlicuotas()
     Dim filter As String
     filter = "1 = 1"
     
-    If Not IsNull(Me.dtpDesde.Value) Then
-        filter = filter & " AND cp.fecha >= " & conectar.Escape(Me.dtpDesde.Value)
+    If Not IsNull(Me.dtpDesde.value) Then
+        filter = filter & " AND cp.fecha >= " & conectar.Escape(Me.dtpDesde.value)
     End If
 
-    If Not IsNull(Me.dtpHasta.Value) Then
-        filter = filter & " AND cp.fecha <= " & conectar.Escape(Me.dtpHasta.Value)
+    If Not IsNull(Me.dtpHasta.value) Then
+        filter = filter & " AND cp.fecha <= " & conectar.Escape(Me.dtpHasta.value)
     End If
         
     Set registros = DAORegistrosCompras.FindAllAlicuotas(filter)

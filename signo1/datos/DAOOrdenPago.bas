@@ -390,18 +390,23 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
             End If
         End If
         
+'''        Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "ordenes_pago_pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
+'''        If IsSomething(pcta) Then
+'''
+'''        Set pcta = DAOPagoACta.FindById(pcta.Id)
+'''            If Not funciones.BuscarEnColeccion(op.pagosacuenta, CStr(pcta.Id)) Then
+'''                op.pagosacuenta.Add pcta, CStr(pcta.Id)
+'''            End If
+'''        End If
         
-        Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "ordenes_pago_pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
-        If IsSomething(pcta) Then
-        
-        
-        Set pcta = DAOPagoACta.FindById(pcta.Id)
-            If Not funciones.BuscarEnColeccion(op.pagosacuenta, CStr(pcta.Id)) Then
-                op.pagosacuenta.Add pcta, CStr(pcta.Id)
+       Set pcta = DAOPagoACta.Map(rs, idx, "pagos_a_cuenta", "ordenes_pago_pagos_a_cuenta", "AdminConfigMonedas", "cuentacontableordenpago", "retenciones", "proveedores")
+            If IsSomething(pcta) Then
+                If Not funciones.BuscarEnColeccion(op.pagosacuenta, CStr(pcta.Id)) Then
+                    op.pagosacuenta.Add pcta, CStr(pcta.Id)
+                End If
             End If
-        End If
-        
-        
+
+
        Set che = DAOCheques.Map3(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco", "rec")
        If IsSomething(che) Then
             If che.Propio Then
@@ -1379,7 +1384,7 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Dim tttxt As String
     Dim textw As Single
     Dim lmargin As Integer
-    
+
 '''   pic.Picture = LoadResPicture(101, vbResBitmap)
 
     Dim A As Single
@@ -1398,10 +1403,10 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.FontBold = True
     Printer.FontSize = 24
     tttxt = "SIGNO PLAST"
-    textw = Printer.TextWidth(tttxt)  ' Calcular el ancho del texto
-    Printer.CurrentX = lmargin + (maxw - textw) / 2  ' Centrar horizontalmente
-    Printer.CurrentY = lmargin  ' Posición vertical
-    Printer.Print tttxt  ' Imprimir el título
+    textw = Printer.TextWidth(tttxt)
+    Printer.CurrentX = lmargin + (maxw - textw) / 2
+    Printer.CurrentY = lmargin
+    Printer.Print tttxt
      
     Printer.FontBold = True
     Printer.FontSize = 12
@@ -1417,7 +1422,6 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.Print Orden.FEcha
 
     If Orden.FacturasProveedor.count > 0 Then
-
         Printer.FontBold = True
         Printer.CurrentX = lmargin
         Printer.Print "Proveedor: ";
@@ -1436,15 +1440,13 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         Printer.Print "Alícuota " & ra.Retencion.nombre & ": ";
         Printer.FontBold = False
         
-            If ra.certificados = "" Then
-                Printer.Print ra.alicuotaRetencion & "%"
-            Else
-                Printer.Print ra.alicuotaRetencion & "% | Cert N°: " & ra.certificados
-            End If
+        If ra.certificados = "" Then
+            Printer.Print ra.alicuotaRetencion & "%"
+        Else
+            Printer.Print ra.alicuotaRetencion & "% | Cert N°: " & ra.certificados
+        End If
         
         If ra.Retencion.Id = 5 Then existeIIBB = True
-    
-
     Next
 
     If Not existeIIBB Then
@@ -1461,14 +1463,9 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Dim allcert As Collection
     Set allcert = DAOCertificadoRetencion.FindAllByOrdenPago(Orden.Id)
 
-    ' For Each cert In cert.CertificadoRetencion
-    ' Printer.Print cert.id & "%"
-    ' Next
-
     If allcert Is Nothing Then
         Set allcert = New Collection
     End If
-
 
     Printer.FontBold = True
     Printer.CurrentX = lmargin
@@ -1491,7 +1488,6 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
 
-
     Printer.FontSize = 10
     Printer.FontBold = True
     Printer.CurrentX = lmargin
@@ -1501,15 +1497,15 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
     Dim F As clsFacturaProveedor
-    
-        ' Definir el ancho de las columnas
+        
+    ' Definir el ancho de las columnas
     Dim colWidth(1 To 6) As Single
-    colWidth(1) = 2000  ' Ancho columna 1 (Número)
-    colWidth(2) = 800  ' Ancho columna 2 (Fecha)
-    colWidth(3) = 800  ' Ancho columna 3 (Moneda)
-    colWidth(4) = 2000  ' Ancho columna 4 (Valor)
+    colWidth(1) = 2000
+    colWidth(2) = 800
+    colWidth(3) = 800
+    colWidth(4) = 2000
     colWidth(5) = 500
-    colWidth(6) = 3000  ' Ancho columna 5 (Proveedor)
+    colWidth(6) = 3000
     
     ' Dibujar encabezados de la tabla
     Printer.CurrentX = lmargin
@@ -1534,31 +1530,24 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Next
     
     Printer.Line (lmargin, Printer.CurrentY + 200)-(lmargin + totalWidth, Printer.CurrentY + 200)
-    ' Imprimir los datos de los comprobantes
+
     Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
     
     c = 0
     
     For Each F In Orden.FacturasProveedor
-    
         c = c + 1
-        ' Columna 1: Número
+        
         Printer.CurrentX = lmargin
         Printer.Print F.NumeroFormateado;
         
-        ' Columna 2: Fecha
         Printer.CurrentX = lmargin + colWidth(1)
         Printer.Print F.FEcha;
         
-        ' Columna 3: Moneda
         Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) - Printer.TextWidth(F.moneda.NombreCorto)
         Printer.Print F.moneda.NombreCorto;
         
-        ' Columna 4: Total (alineado a la derecha)
         Dim totalStr As String
-        
-        
-'''      totalStr = Replace(FormatCurrency(funciones.FormatearDecimales(F.NetoGravadoAbonadoGlobal + F.OtrosAbonadoGlobal)), "$", "") ' Formatear el número con 2 decimales
         Dim totalComprobantes As Double
         Dim DetalleComprobante As clsDetalleComprobante
         Dim colDetallesOP As New Collection
@@ -1573,18 +1562,11 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         
         totalStr = Replace(FormatCurrency(funciones.FormatearDecimales(totalComprobantes)), "$", "")
 
-
         Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) - Printer.TextWidth(totalStr)
         Printer.Print totalStr;
             
-        ' Columna 5: Proveedor
-        Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4)
-        
-        
-        ' Columna 6: Proveedor
         Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) + colWidth(5)
         Printer.Print UCase(F.Proveedor.RazonSocial)
-    
     Next F
   
     If c = 0 Then
@@ -1618,6 +1600,7 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE CHEQUES PROPIOS"
     End If
+
     Printer.Print
     Printer.FontBold = True
     Printer.CurrentX = lmargin + TAB1
@@ -1625,15 +1608,18 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.FontBold = False
     Set tmpCol = New Collection
     c = 0
+
     For Each cheq In Orden.ChequesTerceros
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
     Next cheq
+
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE CHEQUES DE TERCEROS"
     End If
+
     Printer.Print
     Printer.FontBold = True
     Printer.CurrentX = lmargin + TAB1
@@ -1641,19 +1627,18 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.FontBold = False
 
     Dim op As operacion
+    Dim ctabancaria As CuentaBancaria
     
     Set tmpCol = New Collection
     c = 0
+
     For Each op In Orden.operacionesBanco
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         
-        Dim ctabancaria As CuentaBancaria
-        
         Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
         
         Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
-    
     Next op
     
     If c = 0 Then
@@ -1669,11 +1654,13 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
 
     Set tmpCol = New Collection
     c = 0
+
     For Each op In Orden.OperacionesCaja
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
     Next op
+
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE OPERACIONES EN EFECTIVO"
@@ -1685,9 +1672,9 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.Print "PAGOS A CUENTA UTILIZADOS: "
     Printer.FontBold = False
 
-   Set tmpCol = New Collection
+    Set tmpCol = New Collection
    
-   Dim pcta As clsPagoACta
+    Dim pcta As clsPagoACta
    
     c = 0
     For Each pcta In Orden.pagosacuenta
@@ -1695,47 +1682,75 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "N°: " & pcta.Id & " | " & pcta.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(pcta.StaticTotalOrigenes)), "$", "")
     
-    Printer.CurrentX = lmargin + TAB1
+        Printer.CurrentX = lmargin + TAB1
     
-                d = 0
-                For Each cheq In pcta.ChequesPropios
-                d = d + 1
-                Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
-                Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
-                Next cheq
+        d = 0
+        For Each cheq In pcta.ChequesPropios
+            d = d + 1
+            Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
+            Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
+        Next cheq
   
-                d = 0
-                For Each cheq In pcta.ChequesTerceros
-                d = d + 1
-                Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
-                Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
-                Next cheq
+        d = 0
+        For Each cheq In pcta.ChequesTerceros
+            d = d + 1
+            Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
+            Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
+        Next cheq
 
-                d = 0
-                For Each op In pcta.operacionesBanco
-                d = d + 1
-                Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
-                Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
-                Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
-                Next op
+        d = 0
+        For Each op In pcta.operacionesBanco
+            d = d + 1
+            Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
+            Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
+            Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
+        Next op
  
-                d = 0
-                For Each op In pcta.OperacionesCaja
-                d = d + 1
-                Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
-                Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
-                Next op
-                
-
-
-
+        d = 0
+        For Each op In pcta.OperacionesCaja
+            d = d + 1
+            Printer.CurrentX = lmargin + TAB1 + TAB2 + TAB3
+            Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
+        Next op
     Next pcta
     
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
         Printer.Print "NO POSEE PAGOS A CUENTA"
     End If
+
+    '========================
+    ' PERCEPCIONES
+    '========================
+    Printer.Print
+    Printer.FontBold = True
+    Printer.CurrentX = lmargin + TAB1
+    Printer.Print "PERCEPCIONES: "
+    Printer.FontBold = False
+
+    Dim percepcion As clsPercepcionesOrdenPago
+    Dim monedaPercepcion As String
+    c = 0
+
+    For Each percepcion In Orden.percepciones
+        c = c + 1
+        
+        monedaPercepcion = ""
+        If Not percepcion.moneda Is Nothing Then
+            monedaPercepcion = percepcion.moneda.NombreCorto & " "
+        End If
+        
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "Fecha: " & percepcion.FEcha & _
+                      " | Comprobante: " & percepcion.Comprobante & _
+                      " | Tipo: " & percepcion.Tipo & _
+                      " | " & monedaPercepcion & Replace(FormatCurrency(funciones.FormatearDecimales(percepcion.Monto)), "$", "")
+    Next percepcion
     
+    If c = 0 Then
+        Printer.CurrentX = lmargin + TAB1 + TAB2
+        Printer.Print "NO POSEE PERCEPCIONES"
+    End If
     
     Printer.FontSize = 11
     Printer.Print
@@ -1758,52 +1773,32 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.CurrentX = lmargin
     Printer.Print "Total Abonado: ";
     Printer.FontBold = False
-    
-'''    If Orden.pagosacuenta.count = 0 Then
-    
     Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
-    
-'''    Else
-'''        For Each pcta In Orden.pagosacuenta
-''''''            Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + pcta.StaticTotalOrigenes)), "$", "")
-'''
-'''            Printer.Print Orden.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
-'''
-'''        Next pcta
-'''    End If
 
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
     
-'     Imprimir la fecha y hora al pie de la página
     Dim fechaHoraActual As String
-    fechaHoraActual = Format(Now, "dd/MM/yyyy HH:mm:ss") ' Ajusta el formato según tus preferencias
     fechaHoraActual = FormatDateTime(Now, vbShortDate) & " " & FormatDateTime(Now, vbLongTime)
 
-'     Calcular la posición para imprimir la fecha y hora en el borde inferior derecho
     Dim fechaHoraPosX As Single
     Dim fechaHoraPosY As Single
-    fechaHoraPosX = Printer.ScaleWidth - Printer.TextWidth(fechaHoraActual) ' Posición en el borde derecho
-    fechaHoraPosY = Printer.ScaleHeight - Printer.TextHeight("X") - Printer.TextHeight(fechaHoraActual) - Printer.TextHeight("X") ' Posición en el borde inferior y subida un poco
+    fechaHoraPosX = Printer.ScaleWidth - Printer.TextWidth(fechaHoraActual)
+    fechaHoraPosY = Printer.ScaleHeight - Printer.TextHeight("X") - Printer.TextHeight(fechaHoraActual) - Printer.TextHeight("X")
 
-'     Cambiar el tamaño de fuente para la fecha y hora
     Printer.FontSize = 8
 
-'     Imprimir línea horizontal
-    Printer.Line (0, fechaHoraPosY - 5)-(Printer.ScaleWidth, fechaHoraPosY - 5) ' Posición y ajuste de la línea
+    Printer.Line (0, fechaHoraPosY - 5)-(Printer.ScaleWidth, fechaHoraPosY - 5)
 
-'     Imprimir la fecha y hora en la posición calculada
     Printer.CurrentX = fechaHoraPosX
     Printer.CurrentY = fechaHoraPosY
     Printer.Print fechaHoraActual
             
-
     Printer.EndDoc
     
     '''DaoHistorico.Save "orden_pago_historial", "OP Impresa", Orden.Id
     
 End Function
-
 
 Public Function ExportarOrdenPago(OrdenPago As OrdenPago) As Boolean
     

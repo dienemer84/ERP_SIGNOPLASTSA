@@ -367,7 +367,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   66387969
+         Format          =   65142785
          CurrentDate     =   38926
       End
       Begin MSComCtl2.DTPicker dtpInicio 
@@ -379,7 +379,7 @@ Begin VB.Form frmPlaneamientoOTNueva
          _ExtentX        =   2275
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   66387969
+         Format          =   65142785
          CurrentDate     =   38926
       End
       Begin VB.Label Re 
@@ -649,19 +649,19 @@ Begin VB.Form frmPlaneamientoOTNueva
       Column(9)       =   "frmNuevaOtManual.frx":0DD6
       Column(10)      =   "frmNuevaOtManual.frx":0F4A
       Column(11)      =   "frmNuevaOtManual.frx":104E
-      Column(12)      =   "frmNuevaOtManual.frx":1112
+      Column(12)      =   "frmNuevaOtManual.frx":117A
       FormatStylesCount=   8
-      FormatStyle(1)  =   "frmNuevaOtManual.frx":11D6
-      FormatStyle(2)  =   "frmNuevaOtManual.frx":130E
-      FormatStyle(3)  =   "frmNuevaOtManual.frx":13BE
-      FormatStyle(4)  =   "frmNuevaOtManual.frx":1472
-      FormatStyle(5)  =   "frmNuevaOtManual.frx":154A
-      FormatStyle(6)  =   "frmNuevaOtManual.frx":1602
-      FormatStyle(7)  =   "frmNuevaOtManual.frx":16E2
-      FormatStyle(8)  =   "frmNuevaOtManual.frx":172E
+      FormatStyle(1)  =   "frmNuevaOtManual.frx":12AE
+      FormatStyle(2)  =   "frmNuevaOtManual.frx":13E6
+      FormatStyle(3)  =   "frmNuevaOtManual.frx":1496
+      FormatStyle(4)  =   "frmNuevaOtManual.frx":154A
+      FormatStyle(5)  =   "frmNuevaOtManual.frx":1622
+      FormatStyle(6)  =   "frmNuevaOtManual.frx":16DA
+      FormatStyle(7)  =   "frmNuevaOtManual.frx":17BA
+      FormatStyle(8)  =   "frmNuevaOtManual.frx":1806
       ImageCount      =   1
-      ImagePicture(1) =   "frmNuevaOtManual.frx":17BA
-      PrinterProperties=   "frmNuevaOtManual.frx":1AD4
+      ImagePicture(1) =   "frmNuevaOtManual.frx":1892
+      PrinterProperties=   "frmNuevaOtManual.frx":1BAC
    End
    Begin MSComDlg.CommonDialog CommonDialog1 
       Left            =   9165
@@ -894,6 +894,7 @@ Private Sub CargarOrdenTrabajo()
     CalcularValorOt
     RecargarDetalles
 End Sub
+
 Private Sub RecargarDetalles()
     Me.grid.ItemCount = 0
     Me.grid.ItemCount = m_ot.detalles.count
@@ -908,9 +909,7 @@ Private Sub cboCliente_Click()
             RecargarDetalles
         End If
     End If
-
 End Sub
-
 
 Private Sub cboCliente2_Click()
     If Me.cboCliente2.ListIndex <> -1 And Not m_ot Is Nothing Then
@@ -921,7 +920,6 @@ Private Sub cboCliente2_Click()
     End If
 
 End Sub
-
 
 Private Sub cboMoneda_Click()
     If Me.cboMoneda.ListIndex <> -1 And Not m_ot Is Nothing Then
@@ -949,6 +947,7 @@ Private Sub ConfigurarMismaFecha()
     End If
 
 End Sub
+
 Private Sub cmdAgregarPieza_Click()
     If m_ot Is Nothing Then Exit Sub
     If m_ot.Cliente Is Nothing Then Exit Sub
@@ -993,10 +992,12 @@ Private Sub cmdDefinirPrecios_Click()
     End If
 
 End Sub
+
 Private Sub Command2_Click()
     CalcularValorOt
     RecargarDetalles
 End Sub
+
 Private Sub CommandGuardar_Click()
     If LenB(Trim$(Me.txtReferencia.Text)) = 0 Then
         MsgBox "Falta la referencia", vbInformation + vbOKOnly
@@ -1047,9 +1048,6 @@ Private Sub CommandGuardar_Click()
                 MsgBox "Se produjo un error al editar la orden", vbCritical, "Error"
             End If
         End If
-
-
-
     End If
 End Sub
 
@@ -1077,11 +1075,13 @@ Private Sub RenumerarDetalles()
         tmpDetalle.item = Format(x, "000")
     Next x
 End Sub
+
 Private Sub Command8_Click()
     Dim A As Boolean
     'a = baseP.informePiezaMateriales(m_ot.Id, 1, True)
     DAOOrdenTrabajo.informePiezaMateriales m_ot.Id, 1, True
 End Sub
+
 Private Sub Command9_Click()
 
     Dim dto As DTOPiezaCantidad
@@ -1153,8 +1153,6 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
 End Sub
-
-
 
 Private Sub grid_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     verModoEdicion
@@ -1310,10 +1308,6 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     End If
 End Function
 
-
-
-
-
 Private Sub mnuAdquirirDetalle_Click()
     Dim archi As classArchivos
     Set archi = New classArchivos
@@ -1373,8 +1367,6 @@ Private Sub PushButton1_Click()
             End If
         Next si
         RecargarDetalles
-
-
     End If
 End Sub
 
@@ -1425,7 +1417,6 @@ End Sub
 Private Sub imprimirOT()
     Dim headercenter As String
     Dim headerLeft As String
-
 
     headercenter = "OT NUMERO " & m_ot.Id & Chr(10) _
                  & "Cliente: (" & m_ot.Cliente.Id & ") " & m_ot.Cliente.razon & Chr(10) _
@@ -1509,6 +1500,7 @@ Private Sub txtFormaPagoAnticipo_LostFocus()
         m_ot.FormaDePagoAnticipo = Me.txtFormaPagoAnticipo.Text
     End If
 End Sub
+
 Private Sub txtFormaPagoSaldo_LostFocus()
     If Not m_ot Is Nothing Then
         m_ot.FormaDePagoSaldo = Me.txtFormaPagoSaldo.Text

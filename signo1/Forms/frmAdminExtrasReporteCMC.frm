@@ -315,7 +315,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim C As New classAdministracion
+Dim c As New classAdministracion
 Dim comprobantes As Collection
 Dim tmpComprobantes As ComprobantesRecibidos
 
@@ -364,7 +364,7 @@ Private Sub PushButtonImportarArchivoAFIP_Click()
     'filename = "\\192.168.0.1\temporal\TEXTOS\1.csv"
     filename = Replace(filename, "\", "/")
 
-    If C.ImportarComprobantesAFIP(filename) Then
+    If c.ImportarComprobantesAFIP(filename) Then
         MsgBox "Importación del archivo realizada!", vbInformation, "Información"
 
         Me.FramePaso2.Enabled = True
@@ -462,13 +462,13 @@ err4:
 End Sub
 
 
-Private Sub GridEXComprobantes_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEXComprobantes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
     If comprobantes.count < 0 Then
         MsgBox "No hay comprobantes que mostrar.", vbCritical, "Error"
 
     Else
-        Set tmpComprobantes = comprobantes.item(rowIndex)
+        Set tmpComprobantes = comprobantes.item(RowIndex)
 
         Values(1) = tmpComprobantes.Fecha_
         Values(2) = tmpComprobantes.Tipo_
