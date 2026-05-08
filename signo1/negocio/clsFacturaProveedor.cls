@@ -66,8 +66,9 @@ Public TotalLiquidado As Double
 
 Public UsuarioCarga As clsUsuario
 
-
 Public TotalCompensado As Double
+
+Public EsArca As Boolean
 
 
 Public Property Get TotalAbonadoGlobal() As Double    'dto para saber cuanto se pago de la factura en todsa las OP

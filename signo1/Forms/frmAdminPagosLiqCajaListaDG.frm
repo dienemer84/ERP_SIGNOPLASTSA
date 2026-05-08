@@ -1441,6 +1441,14 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.grilla, False
     GridEXHelper.CustomizeGrid Me.grillaConfirmados, False
     
+    Me.dtpFecha.value = Now
+
+    If LiquidacionCaja.Id = 0 Then
+        Me.txtNumerodeLiquidacion.Text = CStr(DAOLiquidacionCaja.GetProximoNumeroLiquidacion())
+        LiquidacionCaja.NumeroLiq = Me.txtNumerodeLiquidacion.Text
+    End If
+    
+    
     Me.grilla.ItemCount = 0
     Me.grillaConfirmados.ItemCount = 0
 

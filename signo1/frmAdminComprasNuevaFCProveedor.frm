@@ -17,6 +17,24 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    MinButton       =   0   'False
    ScaleHeight     =   7380
    ScaleWidth      =   10455
+   Begin VB.CheckBox chkButton 
+      BackColor       =   &H0080FFFF&
+      Caption         =   "Cargada desde ARCA"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   4080
+      TabIndex        =   57
+      Top             =   6600
+      Width           =   2535
+   End
    Begin XtremeSuiteControls.PushButton btnFormatoNumeroLIbre 
       Height          =   255
       Left            =   8700
@@ -473,7 +491,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16646145
+      Format          =   66322433
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1008,126 +1026,263 @@ Private Sub btnDisponerProveedor_Click()
 End Sub
 
 
+'''Private Sub btnGuardar_Click()
+'''    On Error GoTo err1
+'''
+'''    If Me.grilla_alicuotas.EditMode = jgexEditModeOn Then
+'''        MsgBox "Todavia esta editando la grilla de Alicuotas de IVA." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
+'''        Exit Sub
+'''    End If
+'''
+'''
+'''    If Me.grilla_percepciones.EditMode = jgexEditModeOn Then
+'''        MsgBox "Todavia esta editando la grilla de Percepciones." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
+'''        Exit Sub
+'''    End If
+'''
+'''    If Me.grid_cuentascontables.EditMode = jgexEditModeOn Then
+'''        MsgBox "Todavia esta editando la grilla de Cuentas Contables." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
+'''        Exit Sub
+'''    End If
+'''
+'''
+'''    If Not Me.optContado.value And Not Me.optCtaCte.value Then
+'''        MsgBox "Debe seleccionar la forma de pago.", vbExclamation
+'''        Exit Sub
+'''    End If
+'''
+'''    conectar.BeginTransaction
+'''    '    Dim A As Boolean
+'''    Dim montonero As Double
+'''    '    Dim nroNuevo As Long
+'''    Dim EVENTO As clsEventoObserver
+'''    Dim nuevoproveedor As Boolean
+'''
+'''    If Not validarFactura Then
+'''        Err.Raise 203
+'''    End If
+'''
+''''''    ' Si se elije la letra B y hay cargado alicuotas
+'''''''    If Me.cboTiposFactura.ListIndex = 1 Then
+'''''''        MsgBox "Recuerdo que si el comprobante es letra B no debe tener alicuotas discriminadas", vbCritical, "Error"
+'''''''    End If
+'''
+'''    'If MsgBox("¿Está seguro de guardar la factura?", vbYesNo, "Confirmación") = vbYes Then
+'''
+'''    armarFactura
+'''
+''''''    If vFactura.NetoGravado <= 0 Then
+''''''        If vFactura.tipoDocumentoContable <> vFactura.tipoDocumentoContable.notaDebito Then Err.Raise 202
+''''''        End If
+''''''    End If
+'''
+'''
+'''
+'''    montonero = CDbl(Me.txtMontoNeto)
+'''
+'''
+'''    If Me.txtNumeroMask.Text <> "______-________" And Len(Me.txtNumeroMask.Text) > 0 Then
+'''        '    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
+'''
+''''''        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
+'''
+'''        If funciones.RedondearDecimales(vFactura.TotalAplicadoACuentas) <> funciones.RedondearDecimales(vFactura.NetoGravado) Then Err.Raise 200
+'''
+'''        If Me.cboMonedas.ListIndex <> -1 Then
+'''            Set vFactura.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+'''        Else
+'''            Set vFactura.moneda = Nothing
+'''        End If
+'''
+'''        'creo el proveedor si es contado
+'''
+'''        If vFactura.Proveedor.Id = 0 Then
+'''            If Trim(Me.txtRazonSocial) = vbNullString Or Not IsNumeric(Replace(Me.txtCuit, "-", vbNullString)) Then
+'''                If Not funciones.VerificarCUIT(Replace(Me.txtCuit, "-", vbNullString)) Then
+'''                    Err.Raise 1000
+'''                End If
+'''            Else
+'''                nuevoproveedor = True
+'''                Set colPercepcionesTMP = colPercepciones
+'''                If Not DAOProveedor.Guardar(vFactura.Proveedor) Then Err.Raise 300
+'''            End If
+'''
+'''        End If
+'''
+'''        If DAOFacturaProveedor.existeFactura(vFactura) Then Err.Raise 101
+'''
+'''        Dim Nueva As Boolean
+'''        Nueva = (vFactura.Id = 0)
+'''
+'''        If DAOFacturaProveedor.Guardar(vFactura) Then
+'''            Set EVENTO = New clsEventoObserver
+'''            Set EVENTO.Elemento = vFactura
+'''            If Nueva Then
+'''                EVENTO.EVENTO = agregar_
+'''            Else
+'''                EVENTO.EVENTO = modificar_
+'''            End If
+'''            Set EVENTO.Originador = Me
+'''            EVENTO.Tipo = TipoSuscripcion.FacturaProveedor_
+'''
+'''            ' Desactivo este evento Notificar porque aparentemente da Error (dienemer 11.09.20)
+'''            'Channel.Notificar EVENTO, TipoSuscripcion.FacturaProveedor_
+'''
+'''            MsgBox "Factura almacenada con éxito!", vbInformation, "Información"
+'''            grabado = True
+'''
+'''            Me.cboProveedores.SetFocus
+'''
+'''        Else
+'''            Err.Raise 100
+'''        End If
+'''    Else
+'''        Err.Raise 101
+'''    End If
+'''    'End If
+'''    conectar.CommitTransaction
+'''    Exit Sub
+'''
+'''err1:
+'''    conectar.RollBackTransaction
+'''
+'''    If Err.Number = 100 Then
+'''        MsgBox "Se produjo algún error, no se guardarán los cambios!", vbCritical, "Error"
+'''    ElseIf Err.Number = 101 Then
+'''        MsgBox "La factura que intenta guardar ya existe!", vbCritical, "Error"
+'''    ElseIf Err.Number = 200 Then
+'''        MsgBox "Debe tener todo neto gravado aplicado a cuenta(s) contable(s)!", vbCritical, "Error"
+'''    ElseIf Err.Number = 1000 Then
+'''        MsgBox "Debe definir datos correctos para el proveedor que está creando!", vbCritical, "Error"
+'''    ElseIf Err.Number = 201 Then
+'''        MsgBox "Debe ingresar al menos una cuenta contable!", vbCritical, "Error"
+'''    ElseIf Err.Number = 202 Then
+'''        MsgBox "Debe ingresar montos válidos!", vbCritical, "Error"
+'''    ElseIf Err.Number = 203 Then
+'''        MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.total, vbCritical, "Error"
+'''    ElseIf Err.Number = 300 Or nuevoproveedor Then
+'''        vFactura.Proveedor = Nothing
+'''        nuevoproveedor = False
+'''    Else
+'''        MsgBox Err.Description, vbCritical
+'''    End If
+'''End Sub
+
+
 Private Sub btnGuardar_Click()
     On Error GoTo err1
 
+    Dim EVENTO As clsEventoObserver
+    Dim nuevoproveedor As Boolean
+    Dim Nueva As Boolean
+    Dim totalManual As Double
+    Dim transIniciada As Boolean
+    Dim nroComprobante As String
+
     If Me.grilla_alicuotas.EditMode = jgexEditModeOn Then
-        MsgBox "Todavia esta editando la grilla de Alicuotas de IVA." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
+        MsgBox "Todavia esta editando la grilla de Alicuotas de IVA." & vbNewLine & _
+               "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
         Exit Sub
     End If
 
-
     If Me.grilla_percepciones.EditMode = jgexEditModeOn Then
-        MsgBox "Todavia esta editando la grilla de Percepciones." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
+        MsgBox "Todavia esta editando la grilla de Percepciones." & vbNewLine & _
+               "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
         Exit Sub
     End If
 
     If Me.grid_cuentascontables.EditMode = jgexEditModeOn Then
-        MsgBox "Todavia esta editando la grilla de Cuentas Contables." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
+        MsgBox "Todavia esta editando la grilla de Cuentas Contables." & vbNewLine & _
+               "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
         Exit Sub
     End If
-
 
     If Not Me.optContado.value And Not Me.optCtaCte.value Then
         MsgBox "Debe seleccionar la forma de pago.", vbExclamation
         Exit Sub
     End If
 
-    conectar.BeginTransaction
-    '    Dim A As Boolean
-    Dim montonero As Double
-    '    Dim nroNuevo As Long
-    Dim EVENTO As clsEventoObserver
-    Dim nuevoproveedor As Boolean
+    If Not TryGetDouble(Me.txtMontoManual.Text, totalManual) Then
+        MsgBox "Debe ingresar un total válido en el campo Validar Factura.", vbExclamation, "Validación"
+        Me.txtMontoManual.SetFocus
+        Exit Sub
+    End If
 
-    If Not validarFactura Then
+    armarFactura
+
+    If funciones.RedondearDecimales(vFactura.total) <> funciones.RedondearDecimales(totalManual) Then
         Err.Raise 203
     End If
-    
-'''    ' Si se elije la letra B y hay cargado alicuotas
-''''    If Me.cboTiposFactura.ListIndex = 1 Then
-''''        MsgBox "Recuerdo que si el comprobante es letra B no debe tener alicuotas discriminadas", vbCritical, "Error"
-''''    End If
 
-    'If MsgBox("¿Está seguro de guardar la factura?", vbYesNo, "Confirmación") = vbYes Then
-    
-    armarFactura
-    
-'''    If vFactura.NetoGravado <= 0 Then
-'''        If vFactura.tipoDocumentoContable <> vFactura.tipoDocumentoContable.notaDebito Then Err.Raise 202
-'''        End If
-'''    End If
-
-
-
-    montonero = CDbl(Me.txtMontoNeto)
-    
-
-    If Me.txtNumeroMask.Text <> "______-________" And Len(Me.txtNumeroMask.Text) > 0 Then
-        '    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
-
-'''        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
-
-        If funciones.RedondearDecimales(vFactura.TotalAplicadoACuentas) <> funciones.RedondearDecimales(vFactura.NetoGravado) Then Err.Raise 200
-
-        If Me.cboMonedas.ListIndex <> -1 Then
-            Set vFactura.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
-        Else
-            Set vFactura.moneda = Nothing
-        End If
-
-        'creo el proveedor si es contado
-
-        If vFactura.Proveedor.Id = 0 Then
-            If Trim(Me.txtRazonSocial) = vbNullString Or Not IsNumeric(Replace(Me.txtCuit, "-", vbNullString)) Then
-                If Not funciones.VerificarCUIT(Replace(Me.txtCuit, "-", vbNullString)) Then
-                    Err.Raise 1000
-                End If
-            Else
-                nuevoproveedor = True
-                Set colPercepcionesTMP = colPercepciones
-                If Not DAOProveedor.Guardar(vFactura.Proveedor) Then Err.Raise 300
-            End If
-
-        End If
-
-        If DAOFacturaProveedor.existeFactura(vFactura) Then Err.Raise 101
-
-        Dim Nueva As Boolean
-        Nueva = (vFactura.Id = 0)
-
-        If DAOFacturaProveedor.Guardar(vFactura) Then
-            Set EVENTO = New clsEventoObserver
-            Set EVENTO.Elemento = vFactura
-            If Nueva Then
-                EVENTO.EVENTO = agregar_
-            Else
-                EVENTO.EVENTO = modificar_
-            End If
-            Set EVENTO.Originador = Me
-            EVENTO.Tipo = TipoSuscripcion.FacturaProveedor_
-
-            ' Desactivo este evento Notificar porque aparentemente da Error (dienemer 11.09.20)
-            'Channel.Notificar EVENTO, TipoSuscripcion.FacturaProveedor_
-
-            MsgBox "Factura almacenada con éxito!", vbInformation, "Información"
-            grabado = True
-            
-            Me.cboProveedores.SetFocus
-            
-        Else
-            Err.Raise 100
-        End If
+    If Me.txtNumeroCargado.Visible Then
+        nroComprobante = Trim$(Me.txtNumeroCargado.Text)
     Else
-        Err.Raise 101
+        nroComprobante = Trim$(Me.txtNumeroMask.Text)
     End If
-    'End If
-    conectar.CommitTransaction
+
+    If nroComprobante = vbNullString Or nroComprobante = "____-________" Or nroComprobante = "______-________" Then
+        MsgBox "Debe ingresar el número de comprobante.", vbExclamation, "Validación"
+        Exit Sub
+    End If
+
+    If funciones.RedondearDecimales(vFactura.TotalAplicadoACuentas) <> funciones.RedondearDecimales(vFactura.NetoGravado) Then
+        Err.Raise 200
+    End If
+
+    If Me.cboMonedas.ListIndex <> -1 Then
+        Set vFactura.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+    Else
+        Set vFactura.moneda = Nothing
+    End If
+
+    conectar.BeginTransaction
+    transIniciada = True
+
+    If vFactura.Proveedor.Id = 0 Then
+        If Trim$(Me.txtRazonSocial.Text) = vbNullString Or Not IsNumeric(Replace(Me.txtCuit.Text, "-", vbNullString)) Then
+            If Not funciones.VerificarCUIT(Replace(Me.txtCuit.Text, "-", vbNullString)) Then
+                Err.Raise 1000
+            End If
+        Else
+            nuevoproveedor = True
+            Set colPercepcionesTMP = colPercepciones
+            If Not DAOProveedor.Guardar(vFactura.Proveedor) Then Err.Raise 300
+        End If
+    End If
+
+    If DAOFacturaProveedor.existeFactura(vFactura) Then Err.Raise 101
+
+    Nueva = (vFactura.Id = 0)
+
+    If DAOFacturaProveedor.Guardar(vFactura) Then
+        Set EVENTO = New clsEventoObserver
+        Set EVENTO.Elemento = vFactura
+
+        If Nueva Then
+            EVENTO.EVENTO = agregar_
+        Else
+            EVENTO.EVENTO = modificar_
+        End If
+
+        Set EVENTO.Originador = Me
+        EVENTO.Tipo = TipoSuscripcion.FacturaProveedor_
+
+        MsgBox "Factura almacenada con éxito!", vbInformation, "Información"
+        grabado = True
+
+        conectar.CommitTransaction
+        transIniciada = False
+
+        Me.cboProveedores.SetFocus
+    Else
+        Err.Raise 100
+    End If
+
     Exit Sub
 
 err1:
-    conectar.RollBackTransaction
-    
+    If transIniciada Then conectar.RollBackTransaction
+
     If Err.Number = 100 Then
         MsgBox "Se produjo algún error, no se guardarán los cambios!", vbCritical, "Error"
     ElseIf Err.Number = 101 Then
@@ -1141,20 +1296,35 @@ err1:
     ElseIf Err.Number = 202 Then
         MsgBox "Debe ingresar montos válidos!", vbCritical, "Error"
     ElseIf Err.Number = 203 Then
-        MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.total, vbCritical, "Error"
+        MsgBox "Los totales de la factura no coinciden." & vbNewLine & _
+               "Total esperado: " & funciones.RedondearDecimales(totalManual) & vbNewLine & _
+               "Total ingresado: " & funciones.RedondearDecimales(vFactura.total), vbCritical, "Error"
     ElseIf Err.Number = 300 Or nuevoproveedor Then
-        vFactura.Proveedor = Nothing
+        Set vFactura.Proveedor = Nothing
         nuevoproveedor = False
     Else
-        MsgBox Err.Description, vbCritical
+        MsgBox "Error " & Err.Number & ": " & Err.Description, vbCritical
     End If
 End Sub
 
 
-'Private Sub Command2_Click()
-'    grabado = False
-'    TotalFactura
-'End Sub
+Private Function TryGetDouble(ByVal valor As String, ByRef resultado As Double) As Boolean
+    On Error GoTo err1
+
+    valor = Trim$(valor)
+    valor = Replace(valor, "$", "")
+    valor = Replace(valor, " ", "")
+
+    If valor = vbNullString Then Exit Function
+    If Not IsNumeric(valor) Then Exit Function
+
+    resultado = CDbl(valor)
+    TryGetDouble = True
+    Exit Function
+
+err1:
+    TryGetDouble = False
+End Function
 
 
 Private Sub DTPicker1_Click()
@@ -1634,8 +1804,19 @@ Private Sub txtImpuestos_GotFocus()
 End Sub
 
 
+'''Private Function validarFactura() As Boolean
+'''    validarFactura = (vFactura.total = funciones.RedondearDecimales(CDbl(Me.txtMontoManual)))
+'''End Function
+
 Private Function validarFactura() As Boolean
-    validarFactura = (vFactura.total = funciones.RedondearDecimales(CDbl(Me.txtMontoManual)))
+    Dim totalManual As Double
+
+    If Not TryGetDouble(Me.txtMontoManual.Text, totalManual) Then
+        validarFactura = False
+        Exit Function
+    End If
+
+    validarFactura = funciones.RedondearDecimales(vFactura.total) = funciones.RedondearDecimales(totalManual)
 End Function
 
 
@@ -1734,19 +1915,6 @@ Private Sub LlenarFactura()
     Me.txtNumeroCargado.Visible = True
     Me.txtNumeroCargado.Text = vFactura.numero
 
-    '''    vFactura.total = 0
-    '''    If vFactura.configFactura.FormateaNumero Then
-    '''        If InStr(1, vFactura.numero, "-") = 0 Then
-    '''            Me.txtNumeroMask.text = vFactura.numero
-    '''            'Me.txtNumeroMask.text = Mid(vFactura.numero, 1, 4) & "-" & String(8 - Len(Mid(vFactura.numero, 5)), "0") & Mid(vFactura.numero, 5)
-    '''        Else
-    '''            Me.txtNumeroMask.text = vFactura.numero
-    '''            Me.txtNumeroCargado.text = vFactura.numero
-    '''        End If
-    '''    Else
-    '''        Me.txtNumeroMask.text = vFactura.numero
-    '''    End If
-
     Me.txtRedondeo = vFactura.redondeo
     'Me.txtNoGravado = vFactura.ConceptoNoGravado
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(vFactura.Proveedor.Id, Me.cboProveedores)
@@ -1760,12 +1928,17 @@ Private Sub LlenarFactura()
     Me.grid_cuentascontables.ItemCount = 0
     Me.grid_cuentascontables.ItemCount = vFactura.cuentasContables.count
 
-    '    Me.txtNumeroCargado.text = vFactura.NumeroFormateado
-
     mostrarALicuotas
 
     Me.grilla_percepciones.ItemCount = 0
     Me.grilla_percepciones.ItemCount = vFactura.percepciones.count
+    
+    If vFactura.EsArca Then
+        Me.chkButton.value = xtpChecked
+    Else
+        Me.chkButton.value = xtpUnchecked
+    End If
+
     grabado = True
 End Sub
 
@@ -1795,6 +1968,8 @@ Private Sub armarFactura()
     idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
     vFactura.tipoDocumentoContable = Me.cboTipoDocContable.ItemData(Me.cboTipoDocContable.ListIndex)
     vFactura.configFactura = DAOConfigFacturaProveedor.GetById(idtipo)
+    
+    vFactura.EsArca = (Me.chkButton.value = xtpChecked)
 
 End Sub
 

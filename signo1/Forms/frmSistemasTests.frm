@@ -170,7 +170,7 @@ Private operacion As operacion
 
 
 Private Sub btnSeguimientoAvanzado_Click()
-    Dim f228 As New frmPlaneamientoSeguimientoAvanzado
+    Dim f228 As New frmAdminPagosTransferenciasBancariasCobro
     f228.Show
 End Sub
 

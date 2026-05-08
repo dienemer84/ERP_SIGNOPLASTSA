@@ -37,7 +37,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
     Dim strsql As String
     If fc.Id = 0 Then
         'guardo la factura
-        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte,ultima_actualizacion) values (" & funciones.GetUserObj.Id & " , " & fc.TipoCambio & ", " & fc.configFactura.Id & "," & fc.estado & "," & fc.Proveedor.Id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & "," & Escape(Now) & ")"
+        strsql = "insert into AdminComprasFacturasProveedores  (id_usuario_creador,tipo_cambio,id_config_factura,estado,id_proveedor, fecha, impuesto_interno,  monto_neto, numero_factura, redondeo_iva, id_moneda,tipo_doc_contable, forma_de_pago_cta_cte,ultima_actualizacion, ARCA) values (" & funciones.GetUserObj.Id & " , " & fc.TipoCambio & ", " & fc.configFactura.Id & "," & fc.estado & "," & fc.Proveedor.Id & ", " & Escape(fc.FEcha) & "," & Escape(fc.ImpuestoInterno) & "," & Escape(fc.Monto) & "," & Escape(fc.numero) & "," & Escape(fc.redondeo) & ", " & GetEntityId(fc.moneda) & "," & fc.tipoDocumentoContable & ", " & Escape(fc.FormaPagoCuentaCorriente) & "," & Escape(Now) & ", " & IIf(fc.EsArca, 1, 0) & ")"
         conectar.execute strsql
         fc.Id = conectar.UltimoId2
         A = DAOPercepcionesAplicadas.Save(fc)
@@ -59,7 +59,7 @@ Public Function Guardar(fc As clsFacturaProveedor) As Boolean
         Set fca = DAOFacturaProveedor.FindById(fc.Id)
         If fca.UltimaActualizacion > Now Then Err.Raise 104, "fc", "La factura fué guardada en otra sesión, por favor actualice y vuelva a realizar la operación"
 
-        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.Id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.Id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & " where id=" & fc.Id
+        strsql = "update AdminComprasFacturasProveedores set ultima_actualizacion=" & Escape(Now) & ", tipo_cambio_pago=" & fc.TipoCambioPago & ", tipo_cambio=" & fc.TipoCambio & ", id_config_factura=" & fc.configFactura.Id & ",estado=" & fc.estado & ",id_proveedor=" & fc.Proveedor.Id & ",fecha=" & Escape(fc.FEcha) & ",impuesto_interno=" & Escape(fc.ImpuestoInterno) & ",monto_neto=" & Escape(fc.Monto) & ",numero_factura=" & Escape(fc.numero) & ",redondeo_iva=" & Escape(fc.redondeo) & ", id_moneda =" & GetEntityId(fc.moneda) & ", tipo_doc_contable=" & fc.tipoDocumentoContable & ", forma_de_pago_cta_cte = " & Escape(fc.FormaPagoCuentaCorriente) & ", ARCA=" & IIf(fc.EsArca, 1, 0) & " where id=" & fc.Id
         If Not conectar.execute(strsql) Then GoTo err1
         B = DAOPercepcionesAplicadas.Save(fc)
         A = DAOIvaAplicado.Save(fc)
@@ -81,6 +81,8 @@ err1:
     If Err.Number = 100 Then MsgBox "Se produjo algun error, no se  guadarán los cambios!"
     If Err.Number = 104 Then MsgBox Err.Description
 End Function
+
+
 Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
     On Error GoTo err4
     Dim q As String
@@ -419,6 +421,12 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         End If
 
         fc.UltimaActualizacion = GetValue(rs, indice, tabla, "ultima_actualizacion")
+        
+        If indice.Exists(tabla & ".ARCA") Then
+            fc.EsArca = CBool(GetValue(rs, indice, tabla, "ARCA"))
+        Else
+            fc.EsArca = False
+        End If
         
         Set fc.UsuarioCarga = DAOUsuarios.Map(rs, indice, "usuarios")
 
@@ -1349,4 +1357,22 @@ Public Function ColeccionAEditable(col As Collection) As Boolean
 err1:
     ColeccionAEditable = False
     
+End Function
+
+
+Public Function MarcarFacturaFisicaRecibida(ByVal idFactura As Long) As Boolean
+    On Error GoTo err1
+
+    Dim q As String
+
+    q = "UPDATE AdminComprasFacturasProveedores " & _
+        "SET ARCA = 0, ultima_actualizacion = " & Escape(Now) & " " & _
+        "WHERE id = " & idFactura
+
+    MarcarFacturaFisicaRecibida = conectar.execute(q)
+
+    Exit Function
+
+err1:
+    MarcarFacturaFisicaRecibida = False
 End Function

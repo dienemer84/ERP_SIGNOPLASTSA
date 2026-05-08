@@ -1525,3 +1525,21 @@ err1:
 End Function
 
 
+Public Function GetProximoNumeroLiquidacion() As Long
+    Dim rs As ADODB.Recordset
+    Dim q As String
+
+    q = "SELECT IFNULL(MAX(CAST(numero_liq AS UNSIGNED)), 0) + 1 AS ProximoNumero " & _
+        "FROM liquidaciones_caja"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+        GetProximoNumeroLiquidacion = CLng(rs!ProximoNumero)
+    Else
+        GetProximoNumeroLiquidacion = 1
+    End If
+
+    rs.Close
+    Set rs = Nothing
+End Function

@@ -364,7 +364,10 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__NUEVO_RECIBO:
         frmAdminCobranzasReservarRecibo.Show
-
+        
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__TRANSfERENCIAS:
+        frmAdminPagosTransferenciasBancariasCobro.Show
+        
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__DEUDORES:
         Dim frm1122 As New frmAdminFacturasAdeudadas2
         frm1122.Show
@@ -982,8 +985,6 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Ctas. Ctes. Clientes", ID_GROUP.ID_GROUP_ADMINISTRACION__CUENTAS_CORRIENTES)
 
     Set cmdBarCtrl = AddButton(ribbonGroup, "Cta. Cte. Clientes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES, , , xtpControlButtonPopup)
-    'AddButton ribbonGroup, "Crear Recibo de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__CREAR_RECIBO, Permisos.AdminCtaCteControl, , , cmdBarCtrl
-    'AddButton ribbonGroup, "Ver Recibos de Anticipo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__VER_RECIBOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Detalle de Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
 
@@ -996,7 +997,8 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Recibos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__RECIBOS, Permisos.AdminCobroConsulta
     AddButton ribbonGroup, "Nuevo recibo", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__NUEVO_RECIBO, Permisos.AdminCobroControl
     AddButton ribbonGroup, "Resúmen de cobros", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_COBROS, Permisos.AdminOPConsultas
-
+    AddButton ribbonGroup, "Transferencias", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__TRANSfERENCIAS, Permisos.AdminCobroControl
+    
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Caja y Bancos", ID_GROUP.ID_GROUP_ADMINISTRACION__CAJAYBANCOS)
     AddButton ribbonGroup, "Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Depositos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR, Permisos.AdminCajayBancos

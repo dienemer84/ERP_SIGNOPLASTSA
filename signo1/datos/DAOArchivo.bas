@@ -155,21 +155,10 @@ Public Function grabarArchivo(idPieza As Long, nombre As String, ruta As String,
     rss!Origen = Origen
     rss!de_compra = DeCompra
 
-
-    '  Dim q As String
-    'q = "insert into sp_archivos.archivos    (idPieza,    nombre,    tamano,    archivo,    comentario,    usuario,    origen,    de_compra    )    Values " _
-     '& "( '" & idPieza & "','" & UCase(nombre) & "',    '" & My.Size & "',  '" & My.Read & "',    '" & UCase(Comentario) & "',    '" & funciones.getUser & "' ,' " & Origen & "','" & DeCompra & "'  );"
-
-
-
     My.Close
 
     rss.Update
     rss.Close
-
-
-
-
 
     Dim tipoEvento As TipoEventoBroadcast: tipoEvento = -1
     Select Case Origen

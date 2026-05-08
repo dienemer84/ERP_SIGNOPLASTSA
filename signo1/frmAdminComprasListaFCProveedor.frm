@@ -790,42 +790,43 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   22
+      ColumnsCount    =   23
       Column(1)       =   "frmAdminComprasListaFCProveedor.frx":0326
       Column(2)       =   "frmAdminComprasListaFCProveedor.frx":048A
-      Column(3)       =   "frmAdminComprasListaFCProveedor.frx":05B2
-      Column(4)       =   "frmAdminComprasListaFCProveedor.frx":06D2
-      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":0816
-      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":0996
-      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0ADA
-      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0D46
-      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":0F42
-      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":1172
-      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":1362
-      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":156E
-      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":176E
-      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":18DE
-      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1A1E
-      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B86
-      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CDE
-      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E36
-      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1F6E
-      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":20C6
-      Column(21)      =   "frmAdminComprasListaFCProveedor.frx":226A
-      Column(22)      =   "frmAdminComprasListaFCProveedor.frx":23C2
+      Column(3)       =   "frmAdminComprasListaFCProveedor.frx":05C6
+      Column(4)       =   "frmAdminComprasListaFCProveedor.frx":06EE
+      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":080E
+      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":0952
+      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0AD2
+      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0C16
+      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":0E82
+      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":107E
+      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":12AE
+      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":149E
+      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":16AA
+      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":18AA
+      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1A1A
+      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B5A
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CC2
+      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E1A
+      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1F72
+      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":20AA
+      Column(21)      =   "frmAdminComprasListaFCProveedor.frx":2202
+      Column(22)      =   "frmAdminComprasListaFCProveedor.frx":23A6
+      Column(23)      =   "frmAdminComprasListaFCProveedor.frx":24FE
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":24D2
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":260A
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":26BA
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":276E
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":2846
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":28FE
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":29DE
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2A9E
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2B62
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":260E
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":2746
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":27F6
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":28AA
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":2982
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":2A3A
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":2B1A
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2BDA
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2C9E
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2C22
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":2F3C
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2D5E
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":3078
    End
    Begin XtremeSuiteControls.ComboBox cboFantasia 
       Height          =   315
@@ -900,6 +901,12 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       End
       Begin VB.Menu Imprimir 
          Caption         =   "Imprimir"
+      End
+      Begin VB.Menu n3 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuFacturaFisicaRecibida 
+         Caption         =   "Factura física recibida"
       End
    End
 End
@@ -1433,7 +1440,7 @@ Private Sub grilla_DblClick()
 End Sub
 
 Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
-    If ColIndex = 15 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
+    If ColIndex = 16 And m_Archivos.item(Factura.Id) > 0 Then IconIndex = 1
 
 End Sub
 
@@ -1445,7 +1452,8 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.editar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
             Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "diegonr" Or funciones.GetUserObj.usuario = "natalilo")
-
+            Me.mnuFacturaFisicaRecibida.Enabled = Factura.EsArca
+            
             If (Factura.estado = Saldada Or Factura.estado = pagoParcial) Then
                  
                 If Factura.LiquidacionesCajaId = "-" Then
@@ -1483,11 +1491,11 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     Set Factura = facturas(RowBuffer.RowIndex)
 
     If Factura.estado = EstadoFacturaProveedor.Aprobada Then
-        RowBuffer.CellStyle(15) = "EstadoAprobado"
+        RowBuffer.CellStyle(16) = "EstadoAprobado"
     ElseIf Factura.estado = EstadoFacturaProveedor.EnProceso Then
-        RowBuffer.CellStyle(15) = " EstadoEnProceso"
+        RowBuffer.CellStyle(16) = " EstadoEnProceso"
     ElseIf Factura.estado = EstadoFacturaProveedor.Saldada Then
-        RowBuffer.CellStyle(15) = "EstadoSaldado"
+        RowBuffer.CellStyle(16) = "EstadoSaldado"
     End If
     Exit Sub
 err1:
@@ -1502,22 +1510,23 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
     If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
 
     With Factura
-
+   
         If IsSomething(Factura.Proveedor) Then
             Values(1) = funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial)
         End If
-
-        Values(2) = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
-        Values(3) = Factura.configFactura.TipoFactura
-        Values(4) = Factura.numero
-        Values(5) = Factura.FEcha
-        Values(6) = Factura.moneda.NombreCorto
-        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
-        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalIVA) * i), "$", "")
-        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
-        Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalPercepciones) * i), "$", "")
-        Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.ImpuestoInterno) * i), "$", "")
-        Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
+        
+        Values(2) = Factura.EsArca
+        Values(3) = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
+        Values(4) = Factura.configFactura.TipoFactura
+        Values(5) = Factura.numero
+        Values(6) = Factura.FEcha
+        Values(7) = Factura.moneda.NombreCorto
+        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.Monto - Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
+        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalIVA) * i), "$", "")
+        Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalNetoGravadoDiscriminado(0)) * i), "$", "")
+        Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.totalPercepciones) * i), "$", "")
+        Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.ImpuestoInterno) * i), "$", "")
+        Values(13) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
 
         'ESTO MUESTRA TRUE O FALSE
         'Values(12) = (funciones.FormatearDecimales(Factura.Total) * i) > 2000000
@@ -1525,21 +1534,21 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         'ESTO MUESTRA SOLO LOS VALORES MAYORES A DOS MILLONES, LOS DEMAS LOS DEJA VACIOS
 
         If (funciones.FormatearDecimales(Factura.total) * i) > 2000000 Then
-            Values(12) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
+            Values(13) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total) * i), "$", "")
         End If
 
-        Values(14) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total - Factura.TotalAbonadoGlobal) * i), "$", "")
+        Values(15) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.total - Factura.TotalAbonadoGlobal) * i), "$", "")
 
         If Factura.cuentasContables.count > 0 Then
-            Values(13) = Factura.cuentasContables.item(1).cuentas.codigo
+            Values(14) = Factura.cuentasContables.item(1).cuentas.codigo
         End If
 
-        Values(15) = enums.enumEstadoFacturaProveedor(Factura.estado)
+        Values(16) = enums.enumEstadoFacturaProveedor(Factura.estado)
 
         If Factura.FormaPagoCuentaCorriente Then
-            Values(16) = "Cta. Cte."
+            Values(17) = "Cta. Cte."
         Else
-            Values(16) = "Contado"
+            Values(17) = "Contado"
         End If
 
 '''        If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
@@ -1550,41 +1559,42 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
             Select Case Factura.OrdenesPagoEstado
                 Case 1
-                    Values(17) = Factura.OrdenesPagoId
+                    Values(18) = Factura.OrdenesPagoId
                 Case "-"
-                    Values(17) = Factura.OrdenesPagoId
+                    Values(18) = Factura.OrdenesPagoId
                 Case 4
-                    Values(17) = Factura.OrdenesPagoId
+                    Values(18) = Factura.OrdenesPagoId
                 Case 3
-                    Values(17) = Factura.OrdenesPagoId
+                    Values(18) = Factura.OrdenesPagoId
                 Case "1,1"
-                    Values(17) = Factura.OrdenesPagoId
+                    Values(18) = Factura.OrdenesPagoId
                 Case "1,1,1"
-                    Values(17) = Factura.OrdenesPagoId
+                    Values(18) = Factura.OrdenesPagoId
                 Case "1,1,1,1"
-                    Values(17) = Factura.OrdenesPagoId
+                    Values(18) = Factura.OrdenesPagoId
                 Case "1,1,1,1.1"
-                    Values(17) = Factura.OrdenesPagoId
+                    Values(18) = Factura.OrdenesPagoId
                 Case "0"
-                    Values(17) = Factura.OrdenesPagoId & " (P)" 'PENDIENTE
+                    Values(18) = Factura.OrdenesPagoId & " (P)" 'PENDIENTE
                     
                     
             End Select
             
             Select Case Factura.LiquidacionesCajaEstado
                 Case 1
-                    Values(18) = Factura.LiquidacionesCajaId
+                    Values(19) = Factura.LiquidacionesCajaId
                 Case "-"
-                    Values(18) = Factura.LiquidacionesCajaId
+                    Values(19) = Factura.LiquidacionesCajaId
                 Case "0"
-                    Values(18) = Factura.LiquidacionesCajaId & " (P)" ' PENDIENTE
+                    Values(19) = Factura.LiquidacionesCajaId & " (P)" ' PENDIENTE
             End Select
         End If
 
-        Values(19) = Factura.UsuarioCarga.usuario
-        Values(20) = Factura.TipoCambio
-        Values(21) = "(" & val(m_Archivos.item(Factura.Id)) & ")"
-        Values(22) = Factura.Id
+        Values(20) = Factura.UsuarioCarga.usuario
+        Values(21) = Factura.TipoCambio
+        Values(22) = "(" & val(m_Archivos.item(Factura.Id)) & ")"
+        Values(23) = Factura.Id
+
 
     End With
 
@@ -1733,3 +1743,31 @@ Private Sub SeleccionarFactura()
     On Error Resume Next
     Set Factura = facturas.item(grilla.RowIndex(grilla.row))
 End Sub
+
+Private Sub mnuFacturaFisicaRecibida_Click()
+    On Error GoTo err1
+
+    If Me.grilla.ItemCount = 0 Then Exit Sub
+
+    SeleccionarFactura
+
+    If Factura Is Nothing Then Exit Sub
+
+    If MsgBox("¿Confirma marcar este comprobante como Factura física recibida?" & vbCrLf & _
+              Factura.NumeroFormateado & " - " & Factura.Proveedor.RazonSocial, _
+              vbQuestion + vbYesNo, "Confirmar") = vbNo Then Exit Sub
+
+    If DAOFacturaProveedor.MarcarFacturaFisicaRecibida(Factura.Id) Then
+        Factura.EsArca = False
+        Me.grilla.RefreshRowIndex Me.grilla.RowIndex(Me.grilla.row)
+        MsgBox "Comprobante actualizado correctamente.", vbInformation
+    Else
+        MsgBox "No se pudo actualizar el comprobante.", vbCritical
+    End If
+
+    Exit Sub
+
+err1:
+    MsgBox "Error al actualizar factura física recibida: " & Err.Description, vbCritical
+End Sub
+
