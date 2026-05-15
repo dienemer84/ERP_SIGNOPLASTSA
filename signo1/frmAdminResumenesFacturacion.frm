@@ -573,7 +573,7 @@ Private Const SIN_GRAFICO As Long = 6825
 Private Const CON_GRAFICO As Long = 15945
 Dim idCliente As Long
 Dim idContrato As Long
-Dim idprovincia As Long
+Dim IdProvincia As Long
 Dim otsMarco As Collection
 Dim OTMarco As OrdenTrabajo
 
@@ -634,17 +634,21 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = i
 
-    DAOProvincias.LlenarCombo Me.cboProvincias, 1
+    DAOProvincias.LlenarComboNoDefinido Me.cboProvincias, 1, True
     Me.cboProvincias.ListIndex = -1
 End Sub
+
+
 Private Sub llenarLista()
     Me.GridEX1.ItemCount = 0
     Me.GridEX1.ItemCount = newcol.count
     Totalizar
 End Sub
-Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+
+
+Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set sv = newcol.item(rowIndex)
+    Set sv = newcol.item(RowIndex)
     Values(1) = sv.FEcha
     Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.NetoGravado)), "$", "")
     Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(sv.Iva)), "$", "")
@@ -653,6 +657,7 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
     Exit Sub
 err1:
 End Sub
+
 
 Private Sub LlenarComboContratos()
     If Me.cboClientes.ListIndex <> -1 Then
@@ -686,19 +691,18 @@ Private Sub PushButton1_Click()
         idContrato = -1
     End If
 
-
-
     If Me.cboProvincias.ListIndex <> -1 Then
-        idprovincia = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+        IdProvincia = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
     Else
-        idprovincia = -1
+        IdProvincia = -1
     End If
 
-    Set col = DAOSubdiarios.SubDiarioVentas(Me.dtpDesde.value, Me.dtpHasta.value, "AdminFacturas.FechaEmision  asc", idCliente, idContrato, idprovincia)
+    Set col = DAOSubdiarios.SubDiarioVentas(Me.dtpDesde.value, Me.dtpHasta.value, "AdminFacturas.FechaEmision  asc", idCliente, idContrato, IdProvincia)
     PushButton3_Click
     llenarLista
 
 End Sub
+
 
 Private Sub Totalizar()
     Dim sv As SubdiarioVentasDetalle
@@ -740,6 +744,8 @@ Private Sub Totalizar()
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 End Sub
+
+
 Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGroupMethod) As Collection
     Dim newcol2 As New Collection
     Dim sv2 As SubdiarioVentasDetalle
@@ -812,12 +818,18 @@ Private Function AgruparColeccion(ByVal col As Collection, groupmethod As FcGrou
     End If
     Set AgruparColeccion = newcol2
 End Function
+
+
 Private Function ArmarSTR_YYYY_MM(FEcha As Date) As String
     ArmarSTR_YYYY_MM = CStr(Year(FEcha)) & "-" & CStr(Month(FEcha))
 End Function
+
+
 Private Function ArmarSTR_YYYY(FEcha As Date) As String
     ArmarSTR_YYYY = CStr(Year(FEcha))
 End Function
+
+
 Private Sub PushButton3_Click()
     Dim groupmethod As FcGroupMethod
     If Me.RadioButton1.value Then
@@ -853,6 +865,7 @@ Private Sub PushButton3_Click()
     grafica.Visible = True
     grafica.Refresh
 End Sub
+
 
 Private Sub PushButton4_Click()
     Me.cboProvincias.ListIndex = -1

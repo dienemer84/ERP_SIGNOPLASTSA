@@ -922,7 +922,7 @@ Begin VB.Form frmAdminFacturasEmitidas
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   26
+      ColumnsCount    =   27
       Column(1)       =   "frmFacturasEmitidas.frx":0326
       Column(2)       =   "frmFacturasEmitidas.frx":04C6
       Column(3)       =   "frmFacturasEmitidas.frx":05DA
@@ -949,26 +949,27 @@ Begin VB.Form frmAdminFacturasEmitidas
       Column(24)      =   "frmFacturasEmitidas.frx":21B2
       Column(25)      =   "frmFacturasEmitidas.frx":22EA
       Column(26)      =   "frmFacturasEmitidas.frx":243E
+      Column(27)      =   "frmFacturasEmitidas.frx":2562
       FormatStylesCount=   16
-      FormatStyle(1)  =   "frmFacturasEmitidas.frx":2562
-      FormatStyle(2)  =   "frmFacturasEmitidas.frx":269A
-      FormatStyle(3)  =   "frmFacturasEmitidas.frx":274A
-      FormatStyle(4)  =   "frmFacturasEmitidas.frx":27FE
-      FormatStyle(5)  =   "frmFacturasEmitidas.frx":28D6
-      FormatStyle(6)  =   "frmFacturasEmitidas.frx":298E
-      FormatStyle(7)  =   "frmFacturasEmitidas.frx":2A6E
-      FormatStyle(8)  =   "frmFacturasEmitidas.frx":2AFA
-      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2BDA
-      FormatStyle(10) =   "frmFacturasEmitidas.frx":2C8A
-      FormatStyle(11) =   "frmFacturasEmitidas.frx":2D3E
-      FormatStyle(12) =   "frmFacturasEmitidas.frx":2DEE
-      FormatStyle(13) =   "frmFacturasEmitidas.frx":2E9E
-      FormatStyle(14) =   "frmFacturasEmitidas.frx":2F52
-      FormatStyle(15) =   "frmFacturasEmitidas.frx":302A
-      FormatStyle(16) =   "frmFacturasEmitidas.frx":310E
+      FormatStyle(1)  =   "frmFacturasEmitidas.frx":26BA
+      FormatStyle(2)  =   "frmFacturasEmitidas.frx":27F2
+      FormatStyle(3)  =   "frmFacturasEmitidas.frx":28A2
+      FormatStyle(4)  =   "frmFacturasEmitidas.frx":2956
+      FormatStyle(5)  =   "frmFacturasEmitidas.frx":2A2E
+      FormatStyle(6)  =   "frmFacturasEmitidas.frx":2AE6
+      FormatStyle(7)  =   "frmFacturasEmitidas.frx":2BC6
+      FormatStyle(8)  =   "frmFacturasEmitidas.frx":2C52
+      FormatStyle(9)  =   "frmFacturasEmitidas.frx":2D32
+      FormatStyle(10) =   "frmFacturasEmitidas.frx":2DE2
+      FormatStyle(11) =   "frmFacturasEmitidas.frx":2E96
+      FormatStyle(12) =   "frmFacturasEmitidas.frx":2F46
+      FormatStyle(13) =   "frmFacturasEmitidas.frx":2FF6
+      FormatStyle(14) =   "frmFacturasEmitidas.frx":30AA
+      FormatStyle(15) =   "frmFacturasEmitidas.frx":3182
+      FormatStyle(16) =   "frmFacturasEmitidas.frx":3266
       ImageCount      =   1
-      ImagePicture(1) =   "frmFacturasEmitidas.frx":31EE
-      PrinterProperties=   "frmFacturasEmitidas.frx":3508
+      ImagePicture(1) =   "frmFacturasEmitidas.frx":3346
+      PrinterProperties=   "frmFacturasEmitidas.frx":3660
    End
    Begin XtremeSuiteControls.TaskDialog taskDialog 
       Left            =   14955
@@ -1102,6 +1103,7 @@ Dim vId As String
 Dim facturas As Collection
 Dim Factura As Factura
 Dim m_Archivos As Dictionary
+Dim m_ProvinciasFactura As Dictionary
 
 
 Private Sub AnularFactura_Click()
@@ -1122,20 +1124,17 @@ End Sub
 
 Private Sub aplicarNCaFC_Click()
     On Error GoTo err1
+
     If MsgBox("¿Seguro de aplicar comprobante?", vbYesNo, "Confirmación") = vbYes Then
-        'seleccionar factura para aplicar
+
         Set Selecciones.Factura = Nothing
+
         Dim F As New frmAdminFacturasNCElegirFC
 
         F.idCliente = Factura.Cliente.Id
-        F.TiposDocs.Add tipoDocumentoContable.Factura
 
-        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
-            F.TiposDocs.Add tipoDocumentoContable.notaDebito
-        End If
-        If Factura.TipoDocumento = tipoDocumentoContable.notaDebito Then
-            F.TiposDocs.Add tipoDocumentoContable.notaCredito
-        End If
+        ' Para aplicar NC, solo se permite elegir Factura
+        F.TiposDocs.Add tipoDocumentoContable.Factura
 
         F.EstadosDocs.Add EstadoFacturaCliente.Aprobada
         F.Show 1
@@ -1144,13 +1143,14 @@ Private Sub aplicarNCaFC_Click()
             If DAOFactura.aplicarNCaFC(Selecciones.Factura.Id, Factura.Id) Then
                 llenarGrilla
 
-                MsgBox "Comprobantes Vinculados: " & Factura.NumeroFormateado & " | " & Selecciones.Factura.NumeroFormateado & vbNewLine & "" _
-                     & "Aplicación exitosa!", vbInformation, "Información"
-
+                MsgBox "Comprobantes Vinculados: " & Factura.NumeroFormateado & " | " & Selecciones.Factura.NumeroFormateado & vbNewLine & _
+                       "Aplicación exitosa!", vbInformation, "Información"
             End If
         End If
     End If
+
     Exit Sub
+
 err1:
     MsgBox Err.Description, vbCritical, "Error"
 End Sub
@@ -1846,6 +1846,25 @@ Private Sub llenarGrilla()
 
     Set facturas = DAOFactura.FindAll(filtro, , , ordenImporte)
 
+    Set m_ProvinciasFactura = New Dictionary
+    
+    Dim P As provincia
+    Dim facProv As Factura
+    
+    For Each facProv In facturas
+        If facProv.IdProvincia > 0 Then
+            If Not m_ProvinciasFactura.Exists(CStr(facProv.IdProvincia)) Then
+                Set P = DAOProvincias.FindById(facProv.IdProvincia)
+    
+                If IsSomething(P) Then
+                    m_ProvinciasFactura.Add CStr(facProv.IdProvincia), P.nombre
+                Else
+                    m_ProvinciasFactura.Add CStr(facProv.IdProvincia), vbNullString
+                End If
+            End If
+        End If
+    Next facProv
+
     Dim F As Factura
     Dim c As Integer
 
@@ -2270,6 +2289,28 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByV
     Values(25) = Factura.RecibosAplicadosId
     
     Values(26) = Factura.idAsociacion
+    
+    If Factura.IdProvincia = 0 Then
+    
+        Values(27) = "SIN DEFINIR"
+    
+    ElseIf Factura.IdProvincia > 0 Then
+    
+        If Not m_ProvinciasFactura Is Nothing Then
+            If m_ProvinciasFactura.Exists(CStr(Factura.IdProvincia)) Then
+                Values(27) = m_ProvinciasFactura.item(CStr(Factura.IdProvincia))
+            Else
+                Values(27) = vbNullString
+            End If
+        Else
+            Values(27) = vbNullString
+        End If
+    
+    Else
+    
+        Values(27) = "SIN DEFINIR"
+    
+    End If
     
     verIds
 

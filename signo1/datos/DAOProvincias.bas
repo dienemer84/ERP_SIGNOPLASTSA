@@ -26,14 +26,17 @@ err1:
     Set FindAll = Nothing
 
 End Function
+
+
 Public Function FindAllByPais(idpais As Long) As Collection
     Set FindAllByPais = FindAll("and pa.id=" & idpais)
 End Function
 
-Public Function FindById(idprovincia As Long) As provincia
+
+Public Function FindById(IdProvincia As Long) As provincia
 
     Dim col As New Collection
-    Set col = FindAll("and p.id=" & idprovincia)
+    Set col = FindAll("and p.id=" & IdProvincia)
 
 
     Set FindById = col(1)
@@ -66,6 +69,33 @@ Public Function LlenarCombo(cbo As Xtremesuitecontrols.ComboBox, Id As Long)
             cbo.ItemData(cbo.NewIndex) = P.Id
         End If
     Next
+    If cbo.ListCount > 0 Then
+        cbo.ListIndex = 0
+    End If
+End Function
+
+
+Public Function LlenarComboNoDefinido(cbo As Xtremesuitecontrols.ComboBox, Id As Long, Optional incluirSinDefinir As Boolean = True)
+    Dim P As provincia
+    Dim col As Collection
+
+    cbo.Clear
+    cbo.Sorted = False
+    
+    If incluirSinDefinir Then
+        cbo.AddItem "SIN DEFINIR"
+        cbo.ItemData(cbo.NewIndex) = 0
+    End If
+
+    Set col = FindAllByPais(Id)
+
+    For Each P In col
+        If IsSomething(P) Then
+            cbo.AddItem P.nombre
+            cbo.ItemData(cbo.NewIndex) = P.Id
+        End If
+    Next
+
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
     End If

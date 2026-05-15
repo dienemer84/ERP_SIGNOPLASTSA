@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   16777217
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   16777217
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   16777217
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1139,25 +1139,25 @@ Begin VB.Form frmAdminFacturasEdicion
       End
    End
    Begin XtremeSuiteControls.GroupBox grpDetalles 
-      Height          =   3795
+      Height          =   3315
       Left            =   120
       TabIndex        =   18
-      Top             =   6240
+      Top             =   6720
       Width           =   11475
       _Version        =   786432
       _ExtentX        =   20241
-      _ExtentY        =   6694
+      _ExtentY        =   5847
       _StockProps     =   79
       Caption         =   "Detalles (Cant: 0)"
       Appearance      =   2
       Begin GridEX20.GridEX gridDetalles 
-         Height          =   3315
+         Height          =   2955
          Left            =   120
          TabIndex        =   4
-         Top             =   360
+         Top             =   240
          Width           =   11250
          _ExtentX        =   19844
-         _ExtentY        =   5847
+         _ExtentY        =   5212
          Version         =   "2.0"
          PreviewRowIndent=   300
          BoundColumnIndex=   ""
@@ -1189,14 +1189,14 @@ Begin VB.Form frmAdminFacturasEdicion
          Column(9)       =   "frmFacturaEdicion.frx":0982
          Column(10)      =   "frmFacturaEdicion.frx":0A92
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmFacturaEdicion.frx":0B8A
-         FormatStyle(2)  =   "frmFacturaEdicion.frx":0CB2
-         FormatStyle(3)  =   "frmFacturaEdicion.frx":0D62
-         FormatStyle(4)  =   "frmFacturaEdicion.frx":0E16
-         FormatStyle(5)  =   "frmFacturaEdicion.frx":0EEE
-         FormatStyle(6)  =   "frmFacturaEdicion.frx":0FA6
+         FormatStyle(1)  =   "frmFacturaEdicion.frx":0BA6
+         FormatStyle(2)  =   "frmFacturaEdicion.frx":0CCE
+         FormatStyle(3)  =   "frmFacturaEdicion.frx":0D7E
+         FormatStyle(4)  =   "frmFacturaEdicion.frx":0E32
+         FormatStyle(5)  =   "frmFacturaEdicion.frx":0F0A
+         FormatStyle(6)  =   "frmFacturaEdicion.frx":0FC2
          ImageCount      =   0
-         PrinterProperties=   "frmFacturaEdicion.frx":1086
+         PrinterProperties=   "frmFacturaEdicion.frx":10A2
       End
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
@@ -1301,14 +1301,14 @@ Begin VB.Form frmAdminFacturasEdicion
       DropDownItemCount=   3
    End
    Begin XtremeSuiteControls.GroupBox grpPercep 
-      Height          =   1695
+      Height          =   2175
       Left            =   6720
       TabIndex        =   40
       Top             =   4440
       Width           =   4875
       _Version        =   786432
       _ExtentX        =   8599
-      _ExtentY        =   2990
+      _ExtentY        =   3836
       _StockProps     =   79
       Caption         =   "Percepciones IIBB"
       Appearance      =   4
@@ -1384,22 +1384,35 @@ Begin VB.Form frmAdminFacturasEdicion
       End
    End
    Begin XtremeSuiteControls.GroupBox grpInfo 
-      Height          =   1695
+      Height          =   2175
       Left            =   120
       TabIndex        =   66
       Top             =   4440
       Width           =   6495
       _Version        =   786432
       _ExtentX        =   11456
-      _ExtentY        =   2990
+      _ExtentY        =   3836
       _StockProps     =   79
       Caption         =   "Detalles"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.ComboBox cboProvincias 
+         Height          =   315
+         Left            =   1080
+         TabIndex        =   100
+         Top             =   1680
+         Width           =   5175
+         _Version        =   786432
+         _ExtentX        =   9128
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Text            =   "ComboBox1"
+      End
       Begin VB.ComboBox txtCondObs 
          Height          =   315
-         ItemData        =   "frmFacturaEdicion.frx":1256
+         ItemData        =   "frmFacturaEdicion.frx":1272
          Left            =   1035
-         List            =   "frmFacturaEdicion.frx":1266
+         List            =   "frmFacturaEdicion.frx":1282
          TabIndex        =   70
          Top             =   1200
          Width           =   5295
@@ -1424,6 +1437,24 @@ Begin VB.Form frmAdminFacturasEdicion
          TabIndex        =   67
          Top             =   240
          Width           =   4935
+      End
+      Begin VB.Label Label24 
+         Alignment       =   1  'Right Justify
+         Caption         =   "Provincia:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   120
+         TabIndex        =   99
+         Top             =   1720
+         Width           =   855
       End
       Begin VB.Label Label11 
          Alignment       =   1  'Right Justify
@@ -1814,9 +1845,20 @@ Private Sub btnGuardar_Click()
 
         asociarConcepto
 
+        If Me.cboProvincias.ListIndex < 0 Then
+            MsgBox "Debe seleccionar una provincia para el comprobante.", vbExclamation + vbOKOnly
+            Exit Sub
+        End If
+
+        If Me.cboProvincias.ListIndex < 0 Then
+            MsgBox "Debe seleccionar una opción de provincia.", vbExclamation + vbOKOnly
+            Exit Sub
+        End If
+              
+        Factura.IdProvincia = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+ 
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
-'            Unload Me
         Else
             Err.Raise "9999", "Guardando factura", Err.Description
         End If
@@ -2048,6 +2090,10 @@ Private Sub cboCliente_Click()
         CargarDetalles
         
         MostrarCliente
+        
+        DAOProvincias.LlenarComboNoDefinido Me.cboProvincias, 1, True
+        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(0, Me.cboProvincias)
+        Factura.IdProvincia = 0
         
         MostrarPercepcionIIBB
         
@@ -2340,6 +2386,9 @@ Private Sub Form_Load()
     DAOMoneda.llenarComboXtremeSuite Me.cboMoneda
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedaAjuste, True
     DAOCuentaBancaria.llenarComboCBU Me.cboCuentasCBU
+    
+
+    DAOProvincias.LlenarComboNoDefinido Me.cboProvincias, 1, True
 
     'opcional 27
     Me.cboOpcional27.Clear
@@ -2593,6 +2642,10 @@ Private Sub CargarFactura()
     
     Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.Id, Me.cboMoneda)
     Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(Factura.ConceptoIncluir, Me.cboConceptosAIncluir)
+    
+    DAOProvincias.LlenarCombo Me.cboProvincias, 1, True
+    Me.cboProvincias.ListIndex = funciones.PosIndexCbo(0, Me.cboProvincias)
+    Factura.IdProvincia = 0
 
     Me.cboMonedaAjuste.ListIndex = funciones.PosIndexCbo(Factura.IdMonedaAjuste, Me.cboMonedaAjuste)
 
@@ -2840,7 +2893,13 @@ Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
     detalle.Bruto = Values(4)
     detalle.IvaAplicado = Values(7)
     detalle.IBAplicado = Values(8)
-
+    
+    If Not IsNull(Values(10)) Then
+        If IsNumeric(Values(10)) Then
+            detalle.IdProvincia = CLng(Values(10))
+        End If
+    End If
+    
     Factura.detalles.Add detalle
 
     Totalizar
@@ -2866,7 +2925,8 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(8) = detalle.IBAplicado
         Values(9) = detalle.VerOrigen
 
-        Values(10) = detalle.idprovincia
+        Values(10) = detalle.IdProvincia
+        
     End If
 End Sub
 
@@ -2880,6 +2940,13 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As
         detalle.Bruto = Values(4)
         detalle.IvaAplicado = Values(7)
         detalle.IBAplicado = Values(8)
+        
+        If Not IsNull(Values(10)) Then
+            If IsNumeric(Values(10)) Then
+                detalle.IdProvincia = CLng(Values(10))
+            End If
+        End If
+
         Totalizar
     End If
 End Sub
@@ -3108,16 +3175,19 @@ End Sub
 
 'fce_nemer_09062020
 Public Sub txtDiasVenc_LostFocus()
+    On Error GoTo err1
     If Me.txtDiasVenc = vbNullString Then
         Me.txtDiasVenc = 0
     End If
 
     Me.dtFechaPagoCredito.value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
-
+err1:
+    MsgBox "La cantidad de días de vencimiento no es válida.", vbExclamation
 End Sub
 
 
 Private Sub txtDiasVenc_Change()
+
     If Not dataLoading Then
         Factura.CantDiasPago = val(Me.txtDiasVenc.Text)
     End If
@@ -3184,7 +3254,20 @@ Private Sub txtTextoAdicional_Change()
     Me.lblCaracteresRestantes.caption = "Caracteres restantes: " & caracteresRestantes
 End Sub
 
+
 Private Sub CargarClientesEnCbo()
     DAOCliente.llenarComboXtremeSuite Me.cboCliente
     cboCliente.ListIndex = -1
+End Sub
+
+
+Private Sub cboProvincias_Click()
+    If dataLoading Then Exit Sub
+    If Not IsSomething(Factura) Then Exit Sub
+
+    If Me.cboProvincias.ListIndex >= 0 Then
+        Factura.IdProvincia = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+    Else
+        Factura.IdProvincia = 0
+    End If
 End Sub

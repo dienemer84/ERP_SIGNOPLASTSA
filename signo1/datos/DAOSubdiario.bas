@@ -77,7 +77,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
 
 
 
-        If fc.tipoDocumentoContable = tipoDocumentoContable.NotaCredito Then
+        If fc.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
             negativo = -1
         Else
             negativo = 1
@@ -148,13 +148,13 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
         sv.Exento = RedondearDecimales(fc.TotalIVADiscriminado(0)) * negativo * tipo_cambio
         sv.NetoGravado = RedondearDecimales(fc.NetoGravado) * negativo * tipo_cambio
         sv.ImpuestoInterno = RedondearDecimales(fc.ImpuestoInterno) * negativo * tipo_cambio
-        sv.Redondeo = fc.Redondeo * negativo * tipo_cambio
+        sv.redondeo = fc.redondeo * negativo * tipo_cambio
 
         ' If fc.Id = 16325 Then Stop
 
         'sv.Total = funciones.RedondearDecimales(fc.Total) * negativo * tipo_cambio
 
-        sv.total = funciones.RedondearDecimales(sv.NetoGravado + sv.ImpuestoInterno + sv.Redondeo + sv.Iva + (sv.percepciones / tipo_cambio))    '* negativo * tipo_cambio
+        sv.total = funciones.RedondearDecimales(sv.NetoGravado + sv.ImpuestoInterno + sv.redondeo + sv.Iva + (sv.percepciones / tipo_cambio))    '* negativo * tipo_cambio
 
 
 
@@ -173,7 +173,7 @@ Public Function SubDiarioCompras(FechaDesde As Date, FechaHasta As Date, Optiona
     Set SubDiarioCompras = newcol
 End Function
 
-Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional Orden As String = vbNullString, Optional idCliente As Long = -1, Optional idContratoMarco As Long = -1, Optional idprovincia As Long = -1) As Collection
+Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional Orden As String = vbNullString, Optional idCliente As Long = -1, Optional idContratoMarco As Long = -1, Optional IdProvincia As Long = -1) As Collection
     Dim col_facturas As New Collection
     Dim fc As Factura
     Dim sv As SubdiarioVentasDetalle
@@ -199,16 +199,15 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
     End If
 
 
-    If idprovincia > -1 Then
-        q = q & " and Provincia.ID  = " & idprovincia
+    If IdProvincia > -1 Then
+        q = q & " and IFNULL(AdminFacturas.id_provincia, 0) = " & IdProvincia
     End If
-
 
     Set col_facturas = DAOFactura.FindAll(q, True, True, Orden)
 
     Dim negativo As Integer
     For Each fc In col_facturas
-        If fc.Tipo.TipoDoc = tipoDocumentoContable.NotaCredito Then
+        If fc.Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then
             negativo = -1
         Else
             negativo = 1
@@ -217,8 +216,8 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
 
         Set sv = New SubdiarioVentasDetalle
         sv.Comprobante = fc.GetShortDescription(False, False)
-        sv.CondicionIva = fc.cliente.TipoIVA.detalle
-        sv.Cuit = fc.cliente.Cuit
+        sv.CondicionIva = fc.Cliente.TipoIVA.detalle
+        sv.Cuit = fc.Cliente.Cuit
         'sv.Exento = fc.TotalEstatico.TotalExento
         sv.FEcha = fc.FechaEmision
 
@@ -242,7 +241,7 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
 
 
 
-        sv.RazonSocial = fc.cliente.razon
+        sv.RazonSocial = fc.Cliente.razon
         sv.estado = fc.estado
         sv.FacturaId = fc.Id
 
@@ -292,7 +291,7 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(Id As Long, Optional venta
     End If
 
     Dim rs As Recordset
-    Dim Detalles As New Collection
+    Dim detalles As New Collection
     Set rs = conectar.RSFactory(q)
     Dim fieldsIndex As Dictionary
     BuildFieldsIndex rs, fieldsIndex
@@ -304,7 +303,7 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(Id As Long, Optional venta
     Dim tmpAli As Variant
 
     While Not rs.EOF
-        If Not funciones.BuscarEnColeccion(Detalles, CStr(GetValue(rs, fieldsIndex, "ld", "id"))) Then
+        If Not funciones.BuscarEnColeccion(detalles, CStr(GetValue(rs, fieldsIndex, "ld", "id"))) Then
 
             Set det = New SubdiarioVentasDetalle
 
@@ -325,7 +324,7 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(Id As Long, Optional venta
 
             If Not venta Then
                 det.ImpuestoInterno = GetValue(rs, fieldsIndex, "ld", "impuesto_interno")
-                det.Redondeo = GetValue(rs, fieldsIndex, "ld", "redondeo")
+                det.redondeo = GetValue(rs, fieldsIndex, "ld", "redondeo")
                 'det.PercepcionesIVA = GetValue(rs, fieldsIndex, "ld", "percepciones_iva")
                 'falta percepciones iva
 
@@ -333,9 +332,9 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(Id As Long, Optional venta
 
             End If
 
-            Detalles.Add det, CStr(det.Id)
+            detalles.Add det, CStr(det.Id)
         Else
-            Set det = Detalles.item(CStr(GetValue(rs, fieldsIndex, "ld", "id")))
+            Set det = detalles.item(CStr(GetValue(rs, fieldsIndex, "ld", "id")))
         End If
         Dim aa As String
         'agergar alicuotaiva
@@ -368,7 +367,7 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(Id As Long, Optional venta
     Wend
 
 
-    For Each det In Detalles
+    For Each det In detalles
         For Each tmpAli In colAlicuotas
 
             If tmpAli = 10.5 Then tmpAli = 11
@@ -383,7 +382,7 @@ Public Function FindAllDetallesLiquiVentaByLiquiVenta(Id As Long, Optional venta
     Next det
 
 
-    Set FindAllDetallesLiquiVentaByLiquiVenta = Detalles
+    Set FindAllDetallesLiquiVentaByLiquiVenta = detalles
 
 End Function
 
@@ -433,7 +432,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
         Dim maxTipoLetraComprobante As New Collection
         Dim Valor As Long
 
-        For Each det In liq.Detalles
+        For Each det In liq.detalles
             If funciones.BuscarEnColeccion(minTipoLetraComprobante, det.ComprobanteTipoLetra) Then
                 Valor = minTipoLetraComprobante.item(det.ComprobanteTipoLetra)
                 If CLng(det.ComprobanteNro) < Valor Then
@@ -479,7 +478,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
                 For i = min To max
                     existeNumero = False
-                    For Each det In liq.Detalles
+                    For Each det In liq.detalles
                         If det.ComprobanteTipoLetra = CStr(letra) And CLng(det.ComprobanteNro) = i Then
                             existeNumero = True
                             Exit For
@@ -520,7 +519,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
 
         Dim iddet As Long
 
-        For Each det In liq.Detalles
+        For Each det In liq.detalles
 
             '        If det.estado = EstadoFacturaCliente.EnProceso Then
             '            facturasEnProceso.Add det.Comprobante
@@ -553,7 +552,7 @@ Public Function Guardar(liq As LiquidacionSubdiarioVenta) As Boolean
             If Not liq.EsDeVenta Then
                 q = Replace$(q, "'percepciones_iva'", conectar.Escape(det.percepciones))
                 q = Replace$(q, "'impuesto_interno'", conectar.Escape(det.ImpuestoInterno))
-                q = Replace$(q, "'redondeo'", conectar.Escape(det.Redondeo))
+                q = Replace$(q, "'redondeo'", conectar.Escape(det.redondeo))
             End If
 
             If conectar.execute(q) Then
@@ -632,8 +631,8 @@ Public Sub PosicionIvaMensual()
     d.Show 1
     If d.DateSelected Then
         mes = d.cboMes.ListIndex + 1
-        MesNombre = d.cboMes.text
-        anio = d.cboAnio.text
+        MesNombre = d.cboMes.Text
+        anio = d.cboAnio.Text
         Unload d
     Else
         Unload d
@@ -691,7 +690,7 @@ Public Sub PosicionIvaMensual()
     F.DTDesde.value = DateSerial(anio, mes, 1)
     F.DTHasta.value = DateAdd("d", -1, DateSerial(anio, mes + 1, 1))
     F.Command2_Click
-    sumRetIva = Val(F.lstSubdiarioRetenciones.ListItems.item(F.lstSubdiarioRetenciones.ListItems.count).SubItems(5))
+    sumRetIva = val(F.lstSubdiarioRetenciones.ListItems.item(F.lstSubdiarioRetenciones.ListItems.count).SubItems(5))
     Unload F
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblRetencionesIVA").caption = FormatCurrency(sumRetIva)
     drpPosicionIvaMensual.Sections("seccion").Controls.item("lblIVASUM").caption = "(" & FormatCurrency(sumaPercepcionesIva + sumRetIva) & ")"
