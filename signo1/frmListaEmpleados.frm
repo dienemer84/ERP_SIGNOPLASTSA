@@ -15,17 +15,56 @@ Begin VB.Form frmListaEmpleados
    ScaleHeight     =   6330
    ScaleWidth      =   14865
    Begin XtremeSuiteControls.GroupBox GroupBox1 
-      Height          =   1020
+      Height          =   2340
       Left            =   90
       TabIndex        =   2
       Top             =   45
       Width           =   6000
       _Version        =   786432
       _ExtentX        =   10583
-      _ExtentY        =   1799
+      _ExtentY        =   4128
       _StockProps     =   79
       Caption         =   "Filtro"
       UseVisualStyle  =   -1  'True
+      Begin VB.Frame Frame1 
+         Caption         =   "Estado"
+         Height          =   735
+         Left            =   120
+         TabIndex        =   13
+         Top             =   1440
+         Width           =   3735
+         Begin VB.OptionButton Option3 
+            Caption         =   "Todos"
+            Height          =   255
+            Left            =   2520
+            TabIndex        =   16
+            Top             =   360
+            Width           =   1935
+         End
+         Begin VB.OptionButton Option2 
+            Caption         =   "Inactivos"
+            Height          =   255
+            Left            =   1200
+            TabIndex        =   15
+            Top             =   360
+            Width           =   1695
+         End
+         Begin VB.OptionButton Option1 
+            Caption         =   "Activos"
+            Height          =   255
+            Left            =   120
+            TabIndex        =   14
+            Top             =   360
+            Width           =   1455
+         End
+      End
+      Begin VB.TextBox txtNombre 
+         Height          =   285
+         Left            =   870
+         TabIndex        =   11
+         Top             =   960
+         Width           =   3015
+      End
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   330
          Left            =   4725
@@ -78,8 +117,19 @@ Begin VB.Form frmListaEmpleados
       End
       Begin VB.Label Label1 
          BackColor       =   &H00C0C0C0&
+         Caption         =   "Nombre"
+         Height          =   195
+         Index           =   1
+         Left            =   210
+         TabIndex        =   12
+         Top             =   960
+         Width           =   615
+      End
+      Begin VB.Label Label1 
+         BackColor       =   &H00C0C0C0&
          Caption         =   "Apellido"
          Height          =   195
+         Index           =   0
          Left            =   210
          TabIndex        =   9
          Top             =   615
@@ -106,9 +156,9 @@ Begin VB.Form frmListaEmpleados
    End
    Begin GridEX20.GridEX grilla 
       Height          =   5130
-      Left            =   15
+      Left            =   120
       TabIndex        =   1
-      Top             =   1170
+      Top             =   2520
       Width           =   13350
       _ExtentX        =   23548
       _ExtentY        =   9049
@@ -165,11 +215,11 @@ Begin VB.Form frmListaEmpleados
       Width           =   975
    End
    Begin VB.Image imgFoto 
-      Height          =   975
+      Height          =   2295
       Left            =   6240
       Stretch         =   -1  'True
       Top             =   120
-      Width           =   975
+      Width           =   2295
    End
    Begin VB.Menu mnuMain 
       Caption         =   "Main"
@@ -219,10 +269,35 @@ Private Sub llenarLista()
     Dim filter As String
     filter = " 1 = 1"
 
-    If LenB(Me.txtNroDoc.Text) > 0 And IsNumeric(Me.txtNroDoc) Then filter = filter & " AND documento = " & Me.txtNroDoc.Text
-    If LenB(Me.txtApellido.Text) > 0 Then filter = filter & " AND apellido like '%" & Me.txtApellido.Text & "%'"
-    If LenB(Me.txtNroLeg.Text) > 0 And IsNumeric(Me.txtNroLeg) Then filter = filter & " AND legajo = " & Me.txtNroLeg.Text
+    If LenB(Me.txtNroDoc.Text) > 0 And IsNumeric(Me.txtNroDoc) Then
+        filter = filter & " AND personal.documento = " & Me.txtNroDoc.Text
+    End If
 
+    If LenB(Me.txtApellido.Text) > 0 Then
+        filter = filter & " AND personal.apellido LIKE '%" & Replace(Me.txtApellido.Text, "'", "''") & "%'"
+    End If
+
+    If LenB(Me.TxtNombre.Text) > 0 Then
+        filter = filter & " AND (personal.nombre LIKE '%" & Replace(Me.TxtNombre.Text, "'", "''") & "%' " & _
+                          " OR personal.nombres LIKE '%" & Replace(Me.TxtNombre.Text, "'", "''") & "%')"
+    End If
+
+    If LenB(Me.txtNroLeg.Text) > 0 And IsNumeric(Me.txtNroLeg) Then
+        filter = filter & " AND personal.legajo = " & Me.txtNroLeg.Text
+    End If
+
+    'ESTADO
+    'Option1 = Activos
+    'Option2 = Inactivos
+    'Option3 = Todos
+
+    If Me.Option1.value = True Then
+        filter = filter & " AND IFNULL(personal.estado, 0) <> 0"
+    ElseIf Me.Option2.value = True Then
+        filter = filter & " AND IFNULL(personal.estado, 0) = 0"
+    ElseIf Me.Option3.value = True Then
+        'Todos: no agrega filtro
+    End If
 
     Set empleados = DAOEmpleados.GetAll(filter)
 
@@ -231,25 +306,29 @@ Private Sub llenarLista()
 
     Me.grilla.ItemCount = 0
     Me.grilla.ItemCount = empleados.count
+    
+    Me.caption = "Empleados [Cant: " & empleados.count & "]"
 
     Me.grilla.Refresh
     grilla_SelectionChange
 End Sub
 
+
 Private Sub Form_Activate()
     GridEXHelper.AutoSizeColumns Me.grilla
 End Sub
 
-Private Sub Form_Initialize()
-    llenarLista
-End Sub
 
 Private Sub Form_Load()
     FormHelper.Customize Me
     GridEXHelper.CustomizeGrid Me.grilla, False
     Me.grilla.ItemCount = 0
 
+    Me.Option1.value = True   'Activos por defecto
+
+    llenarLista
 End Sub
+
 
 Private Sub Form_Resize()
     On Error Resume Next
@@ -306,8 +385,8 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         .value(4) = emple2.FechaNacimiento
         .value(5) = emple2.FechaIngreso
         .value(6) = emple2.GrupoSanguineo
-        .value(7) = Val(CantArchivos(emple2.Id))
-        .value(8) = Val(CantSiniestros(emple2.Id))
+        .value(7) = val(CantArchivos(emple2.Id))
+        .value(8) = val(CantSiniestros(emple2.Id))
         If LenB(emple2.DireccionCompleta) > 0 Then
             .value(9) = "Dirección: " & emple2.DireccionCompleta
         End If
@@ -366,6 +445,18 @@ Private Sub mnuTareas_Click()
         F.personalId = emple.Id
         F.Show
     End If
+End Sub
+
+Private Sub Option1_Click()
+    llenarLista
+End Sub
+
+Private Sub Option2_Click()
+    llenarLista
+End Sub
+
+Private Sub Option3_Click()
+    llenarLista
 End Sub
 
 Private Sub PushButton1_Click()

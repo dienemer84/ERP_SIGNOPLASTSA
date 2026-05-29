@@ -2622,39 +2622,59 @@ End Sub
 
 Private Sub MostrarPagosACuenta()
     Me.ListPagosACuenta.Clear
+    Set colPagosACuenta = New Collection
 
-    If IsSomething(prov) Then
-        Dim filtro As String
-        
-        If OrdenPago.Id <> 0 Then
-            filtro = "pagos_a_cuenta.id_proveedor=" & prov.Id
-        Else
-            filtro = "pagos_a_cuenta.estado = 0 AND pagos_a_cuenta.id_proveedor=" & prov.Id
-        End If
-        
-        Set colPagosACuenta = DAOPagoACta.FindAll(filtro)
+    If Not IsSomething(prov) Then Exit Sub
 
+    Dim filtro As String
 
-        Dim T As String
+    If OrdenPago.Id <> 0 And (ReadOnly Or OrdenPago.estado <> EstadoOrdenPago_pendiente) Then
 
-        For Each PagoACta In colPagosACuenta
-            Dim c As Collection
+        ' OP aprobada / cerrada / solo lectura:
+        ' mostrar solamente los pagos a cuenta usados en esta OP
+        filtro = "pagos_a_cuenta.id_proveedor = " & prov.Id & _
+                 " AND pagos_a_cuenta.id IN (" & _
+                 " SELECT opac.id_pago_a_cuenta " & _
+                 " FROM ordenes_pago_pagos_a_cuenta opac " & _
+                 " WHERE opac.id_orden_pago = " & OrdenPago.Id & _
+                 " )"
 
-            T = "N°: " & PagoACta.Id & " ( " & PagoACta.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(PagoACta.StaticTotalOrigenes)), "$", "") & ")"
-            
-            Me.ListPagosACuenta.AddItem T
-            Me.ListPagosACuenta.ItemData(Me.ListPagosACuenta.NewIndex) = PagoACta.Id
+    ElseIf OrdenPago.Id <> 0 Then
 
-
-        Next
+        ' OP pendiente existente:
+        ' mostrar los disponibles + los que ya estaban usados en esta misma OP
+        filtro = "pagos_a_cuenta.id_proveedor = " & prov.Id & _
+                 " AND (" & _
+                 " pagos_a_cuenta.estado = 0 " & _
+                 " OR pagos_a_cuenta.id IN (" & _
+                 "     SELECT opac.id_pago_a_cuenta " & _
+                 "     FROM ordenes_pago_pagos_a_cuenta opac " & _
+                 "     WHERE opac.id_orden_pago = " & OrdenPago.Id & _
+                 " )" & _
+                 " )"
 
     Else
 
-        Set colPagosACuenta = New Collection
-
-        'MsgBox (colFacturas.count)
+        ' OP nueva:
+        ' mostrar solamente pagos a cuenta disponibles
+        filtro = "pagos_a_cuenta.estado = 0 AND pagos_a_cuenta.id_proveedor = " & prov.Id
 
     End If
+
+    Set colPagosACuenta = DAOPagoACta.FindAll(filtro)
+
+    Dim T As String
+
+    For Each PagoACta In colPagosACuenta
+
+        T = "N°: " & PagoACta.Id & _
+            " ( " & PagoACta.moneda.NombreCorto & " " & _
+            Replace(FormatCurrency(funciones.FormatearDecimales(PagoACta.StaticTotalOrigenes)), "$", "") & ")"
+
+        Me.ListPagosACuenta.AddItem T
+        Me.ListPagosACuenta.ItemData(Me.ListPagosACuenta.NewIndex) = PagoACta.Id
+
+    Next
 
 End Sub
 

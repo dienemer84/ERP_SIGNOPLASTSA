@@ -1320,16 +1320,17 @@ Private Sub btnExportar_Click()
     xlWorksheet.Cells(offset, 17).value = "Atraso / Estado"
     xlWorksheet.Cells(offset, 18).value = "Entrega"
     xlWorksheet.Cells(offset, 19).value = "Atraso / Dias"
-    xlWorksheet.Cells(offset, 20).value = "Cliente"
-    xlWorksheet.Cells(offset, 21).value = "Cuit"
-    xlWorksheet.Cells(offset, 22).value = "Observaciones"
-    xlWorksheet.Cells(offset, 23).value = "Observaciones Cancela"
-    xlWorksheet.Cells(offset, 24).value = "Recibos Asociados"
-    xlWorksheet.Cells(offset, 25).value = "ID"
-    xlWorksheet.Cells(offset, 26).value = "ID_Asociacion"
+    xlWorksheet.Cells(offset, 20).value = "Provincia"
+    xlWorksheet.Cells(offset, 21).value = "Cliente"
+    xlWorksheet.Cells(offset, 22).value = "Cuit"
+    xlWorksheet.Cells(offset, 23).value = "Observaciones"
+    xlWorksheet.Cells(offset, 24).value = "Observaciones Cancela"
+    xlWorksheet.Cells(offset, 25).value = "Recibos Asociados"
+    xlWorksheet.Cells(offset, 26).value = "ID"
+    xlWorksheet.Cells(offset, 27).value = "ID_Asociacion"
     
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 26)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 26)).Interior.Color = &HC0C0C0
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 27)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 27)).Interior.Color = &HC0C0C0
     
     Dim idx As Integer
     idx = 4
@@ -1424,6 +1425,8 @@ Private Sub btnExportar_Click()
                 xlWorksheet.Cells(idx, 13).value = fac.TotalEstatico.TotalExento
                 'dolares
                 xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.total
+                
+                xlWorksheet.Cells(idx, 15).value = fac.TotalEstatico.total
             End If
 
         End If
@@ -1443,15 +1446,33 @@ Private Sub btnExportar_Click()
             xlWorksheet.Cells(idx, 18).value = "no definida"
             xlWorksheet.Cells(idx, 19).value = 0
         End If
-
-        xlWorksheet.Cells(idx, 20).value = fac.Cliente.razon
-        xlWorksheet.Cells(idx, 21).value = fac.Cliente.Cuit
-        xlWorksheet.Cells(idx, 22).value = fac.Observaciones
-        xlWorksheet.Cells(idx, 23).value = fac.observaciones_cancela
-        xlWorksheet.Cells(idx, 24).value = fac.RecibosAplicadosId
         
-        xlWorksheet.Cells(idx, 25).value = fac.Id
-        xlWorksheet.Cells(idx, 26).value = fac.idAsociacion
+        If fac.IdProvincia <= 0 Then
+        
+            xlWorksheet.Cells(idx, 20).value = "SIN DEFINIR"
+        
+        Else
+        
+            If Not m_ProvinciasFactura Is Nothing Then
+                If m_ProvinciasFactura.Exists(CStr(fac.IdProvincia)) Then
+                    xlWorksheet.Cells(idx, 20).value = m_ProvinciasFactura.item(CStr(fac.IdProvincia))
+                Else
+                    xlWorksheet.Cells(idx, 20).value = "SIN DEFINIR"
+                End If
+            Else
+                xlWorksheet.Cells(idx, 20).value = "SIN DEFINIR"
+            End If
+        
+        End If
+                
+        xlWorksheet.Cells(idx, 21).value = fac.Cliente.razon
+        xlWorksheet.Cells(idx, 22).value = fac.Cliente.Cuit
+        xlWorksheet.Cells(idx, 23).value = fac.Observaciones
+        xlWorksheet.Cells(idx, 24).value = fac.observaciones_cancela
+        xlWorksheet.Cells(idx, 25).value = fac.RecibosAplicadosId
+        
+        xlWorksheet.Cells(idx, 26).value = fac.Id
+        xlWorksheet.Cells(idx, 27).value = fac.idAsociacion
         idx = idx + 1
 
         'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
@@ -1675,7 +1696,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridComprobantesEmitidos, True    ', True
 
     Me.gridComprobantesEmitidos.GroupByBoxVisible = False
-        
+    
     DAOCliente.llenarComboXtremeSuite Me.cboClientes, False, True, False
     Me.cboClientes.ListIndex = -1
     
@@ -2094,9 +2115,8 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
                 .mnuCambiarAMiPyme.Visible = False
 
             Case EstadoFacturaCliente.CanceladaNC, _
-                 EstadoFacturaCliente.CanceladaNCParcial, _
-                 EstadoFacturaCliente.AplicadaND, _
-                 EstadoFacturaCliente.AplicadaACbte
+                 EstadoFacturaCliente.Anulada
+           
                 .editar.Enabled = False
                 .AnularFactura.Enabled = False: .AnularFactura.Visible = False
                 .aprobarFactura.Enabled = False
@@ -2119,6 +2139,25 @@ Private Sub gridComprobantesEmitidos_MouseUp(Button As Integer, Shift As Integer
             .mnuFechaPagoPropuesta.Enabled = False: .mnuFechaPagoPropuesta.Visible = False
             .MnuVerRecibo.Enabled = True:           .MnuVerRecibo.Visible = True
         End If
+        
+        If Factura.TipoDocumento = tipoDocumentoContable.Factura _
+       And Factura.Tipo.PuntoVenta.EsElectronico _
+       And Factura.AprobadaAFIP = False _
+       And Factura.estado <> EstadoFacturaCliente.Anulada Then
+    
+        .mnuCambiarAMiPyme.Enabled = True
+        .mnuCambiarAMiPyme.Visible = True
+    
+        If Factura.esCredito Then
+            .mnuCambiarAMiPyme.caption = "Quitar Factura de Crédito MiPyme"
+        Else
+            .mnuCambiarAMiPyme.caption = "Marcar como Factura de Crédito MiPyme"
+        End If
+
+Else
+    .mnuCambiarAMiPyme.Enabled = False
+    .mnuCambiarAMiPyme.Visible = False
+End If
 
         ' Mostrar menú contextual
         .PopupMenu .mnuFacturas
@@ -2196,7 +2235,8 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByV
 
     'MONTO BASE
     Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.total)), "$", "")
-
+    
+    
     If Factura.moneda.Id = 0 Then
         Values(8) = Factura.moneda.NombreCorto
     Else
@@ -2205,7 +2245,7 @@ Private Sub gridComprobantesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByV
 
     'MONTO TOTAL
     Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalEstatico.total * Factura.CambioAPatron)), "$", "")
-
+    
     Values(10) = Factura.OrdenCompra
     Values(11) = Factura.Cliente.razon
 
@@ -2500,9 +2540,6 @@ Private Sub mnuCrearCopiaFactura_Click()
             End If
         End If
     End If
-
-
-
 End Sub
 
 Private Sub mnuDesaprobarFactura_Click()
@@ -2580,7 +2617,6 @@ Private Sub mnuEnviarAfip_Click()
             End If
         End If
     End If
-
 
     Exit Sub
 err1:
@@ -2676,30 +2712,30 @@ Private Sub MnuVerRecibo_Click()
 End Sub
 
 
-
 Private Sub PushButton1_Click()
     Me.cboClientes.ListIndex = -1
 End Sub
-
 
 
 Private Sub PushButton2_Click()
     Me.cboOrdenImporte.ListIndex = -1
 End Sub
 
+
 Private Sub PushButton3_Click()
     Me.cboPuntosVenta.ListIndex = -1
 End Sub
+
 
 Private Sub PushButton4_Click()
     Me.cboEstados.ListIndex = -1
 End Sub
 
 
-
 Private Sub PushButton5_Click()
     Me.cboEstadosSaldada.ListIndex = -1
 End Sub
+
 
 Private Sub scanear_Click()
     On Error Resume Next
@@ -2719,34 +2755,62 @@ Private Sub verFactura_Click()
 
 End Sub
 
+
 Private Sub verHistorialFactura_Click()
     Set Factura.Historial = DAOFacturaHistorial.getAllByIdFactura(Factura.Id)
     frmHistoriales.lista = Factura.Historial
     frmHistoriales.Show
 End Sub
 
+
 Private Sub mnuCambiarAMiPyme_Click()
     On Error GoTo err1
-    
-    If MsgBox("¿Desea marcar este comprobante como MiPyme (EsCredito = 1)?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
-        
-        Dim q As String
-        
-        q = "UPDATE AdminFacturas SET EsCredito = 1 WHERE id = " & Factura.Id
-        
-        If conectar.execute(q) Then
-            MsgBox "Comprobante actualizado a MiPyme correctamente!", vbInformation
-            
-            ' refrescar grilla
-            Me.gridComprobantesEmitidos.RefreshRowIndex Me.gridComprobantesEmitidos.row
-            
-        Else
-            MsgBox "Error al actualizar el comprobante", vbCritical
-        End If
-        
+
+    If Not IsSomething(Factura) Then Exit Sub
+
+    If Factura.TipoDocumento <> tipoDocumentoContable.Factura Then
+        MsgBox "Solo se puede modificar MiPyme en Facturas.", vbExclamation, "MiPyme"
+        Exit Sub
     End If
-    
+
+    If Factura.AprobadaAFIP Then
+        MsgBox "No se puede modificar MiPyme porque el comprobante ya fue informado a ARCA.", vbExclamation, "MiPyme"
+        Exit Sub
+    End If
+
+    Dim nuevoValor As Integer
+    Dim mensaje As String
+
+    If Factura.esCredito Then
+        nuevoValor = 0
+        mensaje = "¿Desea quitar la marca de Factura de Crédito MiPyme?"
+    Else
+        nuevoValor = 1
+        mensaje = "¿Desea marcar este comprobante como Factura de Crédito MiPyme?"
+    End If
+
+    If MsgBox(mensaje, vbYesNo + vbQuestion, "Confirmación") = vbNo Then Exit Sub
+
+    Dim q As String
+    q = "UPDATE AdminFacturas SET EsCredito = " & nuevoValor & _
+        " WHERE id = " & Factura.Id & _
+        " AND aprobacion_afip = 0"
+
+    If conectar.execute(q) Then
+        Factura.esCredito = CBool(nuevoValor)
+
+        MsgBox "Comprobante actualizado correctamente.", vbInformation, "MiPyme"
+
+        llenarGrilla
+    Else
+        MsgBox "Error al actualizar el comprobante.", vbCritical, "Error"
+    End If
+
     Exit Sub
+
 err1:
     MsgBox Err.Description, vbCritical, "Error"
+End Sub
+Private Sub cboOrdenImporte_Click()
+    llenarGrilla
 End Sub

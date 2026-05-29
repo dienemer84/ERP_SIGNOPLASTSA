@@ -1381,55 +1381,56 @@ End Sub
 
 
 Private Sub btnQuitarSeleccionado_Click()
-    ' Verificar si se ha seleccionado una factura confirmada
+
+    SeleccionarFacturaConfirmada
+
     If facturaConfirmada Is Nothing Then
-        MsgBox "No se ha seleccionado ninguna factura."
+        MsgBox "No se ha seleccionado ninguna factura.", vbExclamation
         Exit Sub
     End If
                         
-    ' Preguntar al usuario para confirmar la eliminaci√≥n
     Dim respuesta As Integer
-    respuesta = MsgBox("Est· seguro de que deseas eliminar la factura " & facturaConfirmada.NumeroFormateado & "?", vbQuestion + vbYesNo, "Confirmar eliminaci√≥n")
+    respuesta = MsgBox("Est· seguro de que deseas eliminar la factura " & facturaConfirmada.NumeroFormateado & "?", vbQuestion + vbYesNo, "Confirmar eliminaciÛn")
     
     If respuesta = vbYes Then
     
         Dim facturaAEliminar As clsFacturaProveedor
-        Dim i As Integer
+        Dim i As Long
     
-        ' Buscar la factura correspondiente en la colecci√≥n
         For i = facturasConfirmadas.count To 1 Step -1
             If facturasConfirmadas(i).Id = facturaConfirmada.Id Then
-                ' Encontrar la factura a eliminar
                 Set facturaAEliminar = facturasConfirmadas(i)
                 
                 Dim q As String
                 If facturaConfirmada.estado = Saldada Then
                     q = "UPDATE AdminComprasFacturasProveedores SET estado = 2 WHERE id = " & facturaConfirmada.Id
                     If Not conectar.execute(q) Then GoTo err1
-                 End If
+                End If
                 
                 Exit For
             End If
         Next i
     
-        ' Verificar si se encontr√≥ la factura a eliminar
         If Not facturaAEliminar Is Nothing Then
-            ' Eliminar la factura de la colecci√≥n facturasConfirmadas
             facturasConfirmadas.remove i
+
+            Set facturaConfirmada = Nothing
 
             grillaConfirmados.ItemCount = 0
             grillaConfirmados.ItemCount = facturasConfirmadas.count
+            grillaConfirmados.Refresh
             
             TotalizarComprobantes
-            
         Else
-            MsgBox "No se encontrÛ la factura a eliminar."
-            grillaConfirmados.ItemCount = 0
-            grillaConfirmados.ItemCount = facturasConfirmadas.count
+            MsgBox "No se encontrÛ la factura a eliminar.", vbExclamation
         End If
-    Else
-err1:
     End If
+
+    Exit Sub
+
+err1:
+    MsgBox "Error al quitar el comprobante: " & Err.Description, vbCritical
+
 End Sub
 
 
@@ -1776,7 +1777,7 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
 End Sub
 
 
-Private Sub grilla_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub grilla_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     On Error Resume Next
     SeleccionarFactura
     
@@ -1851,8 +1852,8 @@ End Sub
 
 
 
-Private Sub grillaConfirmados_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    SeleccionarFactura
+Private Sub grillaConfirmados_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    SeleccionarFacturaConfirmada
 
 End Sub
 
@@ -2418,4 +2419,28 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     Exit Sub
 err1:
     MsgBox "Se produjo un error al cargar!", vbCritical, "Error"
+End Sub
+
+
+Private Sub SeleccionarFacturaConfirmada()
+    On Error GoTo err1
+
+    Set facturaConfirmada = Nothing
+
+    If facturasConfirmadas Is Nothing Then Exit Sub
+    If facturasConfirmadas.count = 0 Then Exit Sub
+    If Me.grillaConfirmados.row < 0 Then Exit Sub
+
+    Dim idx As Long
+    idx = Me.grillaConfirmados.RowIndex(Me.grillaConfirmados.row)
+
+    If idx <= 0 Then Exit Sub
+    If idx > facturasConfirmadas.count Then Exit Sub
+
+    Set facturaConfirmada = facturasConfirmadas.item(idx)
+
+    Exit Sub
+
+err1:
+    Set facturaConfirmada = Nothing
 End Sub

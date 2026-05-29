@@ -17,6 +17,23 @@ Begin VB.Form frmAltaEmpleados
    MinButton       =   0   'False
    ScaleHeight     =   7170
    ScaleWidth      =   8235
+   Begin VB.CheckBox Check1 
+      Caption         =   "Activo"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   195
+      Left            =   4200
+      TabIndex        =   40
+      Top             =   6420
+      Width           =   1215
+   End
    Begin XtremeSuiteControls.ComboBox cboOS 
       Height          =   315
       Left            =   1560
@@ -59,7 +76,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   67174401
+      Format          =   66519041
       CurrentDate     =   40119
    End
    Begin VB.TextBox txtGrupoSanguineo 
@@ -130,11 +147,20 @@ Begin VB.Form frmAltaEmpleados
       BackColor       =   &H00E0E0E0&
       Caption         =   "Guardar"
       Default         =   -1  'True
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   375
       Left            =   5655
       Style           =   1  'Graphical
       TabIndex        =   17
-      Top             =   6285
+      Top             =   6300
       Width           =   1095
    End
    Begin VB.TextBox txtNroDocumento 
@@ -195,7 +221,7 @@ Begin VB.Form frmAltaEmpleados
       Left            =   6855
       Style           =   1  'Graphical
       TabIndex        =   18
-      Top             =   6285
+      Top             =   6300
       Width           =   1095
    End
    Begin MSComCtl2.DTPicker dtpFechaIng 
@@ -207,7 +233,7 @@ Begin VB.Form frmAltaEmpleados
       _ExtentX        =   2302
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   67174401
+      Format          =   66519041
       CurrentDate     =   40119
    End
    Begin VB.Label lblDatoActualizacion 
@@ -578,10 +604,10 @@ Public Property Set Empleado(value As clsEmpleado)
 
     Set m_empleado = DAOEmpleados.GetById(value.Id)
 
-    txtDireccion = m_empleado.direccion
+    TxtDireccion = m_empleado.direccion
     txtApellido = m_empleado.Apellido
-    txtNombre = m_empleado.nombre
-    txtLocalidad = m_empleado.localidad
+    TxtNombre = m_empleado.nombre
+    TxtLocalidad = m_empleado.localidad
     txtTel1 = m_empleado.Telefono1
     txtNroDocumento = m_empleado.documento
     txtTel2 = m_empleado.Telefono2
@@ -597,7 +623,8 @@ Public Property Set Empleado(value As clsEmpleado)
 
     Me.txtCuil = m_empleado.Cuil
     Me.lblDatoActualizacion = m_empleado.UltimaActualizacion
-
+    
+    Me.Check1.value = IIf(m_empleado.estado = 1, 1, 0)
 
     If IsSomething(m_empleado.ObraSocial) Then
 
@@ -675,27 +702,29 @@ Private Sub cmdGuardar_Click()
     m_empleado.legajo = CLng(Me.txtNroLegajo)
     m_empleado.documento = CLng(Me.txtNroDocumento)
     m_empleado.Apellido = Me.txtApellido
-    m_empleado.nombre = Me.txtNombre
-    m_empleado.direccion = Me.txtDireccion
-    m_empleado.localidad = Me.txtLocalidad
+    m_empleado.nombre = Me.TxtNombre
+    m_empleado.direccion = Me.TxtDireccion
+    m_empleado.localidad = Me.TxtLocalidad
     m_empleado.Telefono1 = Me.txtTel1
     m_empleado.Telefono2 = Me.txtTel2
     m_empleado.Nombres = Me.txtNombres
     m_empleado.GrupoSanguineo = Me.txtGrupoSanguineo.Text
     m_empleado.FechaIngreso = Me.dtpFechaIng.value
     m_empleado.FechaNacimiento = Me.dtpFechaNac.value
-    m_empleado.estado = EstadoUsuario.activo
+   
+    If Me.Check1.value = 1 Then
+        m_empleado.estado = 1
+    Else
+        m_empleado.estado = 0
+    End If
 
     m_empleado.Cuil = Me.txtCuil
 
     Set m_empleado.ObraSocial = DAOObraSocial.GetById(Me.cboOS.ItemData(Me.cboOS.ListIndex))
 
-
     m_empleado.UltimaActualizacion = Me.lblDatoActualizacion
 
-
-
-
+    
     If DAOEmpleados.Save(m_empleado) Then
         MsgBox "Empleado guardado.", vbInformation
 
@@ -720,10 +749,10 @@ err44:
 
 End Sub
 Private Sub limpiar()
-    txtDireccion = Empty
+    TxtDireccion = Empty
     txtApellido = Empty
-    txtNombre = Empty
-    txtLocalidad = Empty
+    TxtNombre = Empty
+    TxtLocalidad = Empty
     txtTel1 = Empty
     txtNroDocumento = Empty
     txtTel2 = Empty
@@ -736,7 +765,7 @@ Private Sub limpiar()
     Me.dtpFechaIng.value = Now
     Me.dtpFechaNac.value = Now
 
-
+    Me.Check1.value = 1
     Me.txtCuil = Empty
     Me.cboOS = Empty
     Me.lblDatoActualizacion = Now
@@ -781,8 +810,8 @@ End Sub
 Private Sub PushButton1_Click()
 
     On Error GoTo err1
-    frmPrincipal.CD.ShowOpen
-    Me.Image1.Tag = frmPrincipal.CD.filename
+    frmPrincipal.cd.ShowOpen
+    Me.Image1.Tag = frmPrincipal.cd.filename
     Set Me.Image1.Picture = LoadPicture(Me.Image1.Tag)
     Exit Sub
 err1:
@@ -792,9 +821,9 @@ End Sub
 
 Private Sub txtApellido_Change()
     verificar
-    If Trim(Me.txtApellido) <> Empty And Trim(Me.txtNombre) <> Empty Then
+    If Trim(Me.txtApellido) <> Empty And Trim(Me.TxtNombre) <> Empty Then
         If m_empleado Is Nothing Then
-            Me.txtUsuario = crearUsuario(Trim(Me.txtNombre), Trim(Me.txtApellido))
+            Me.txtUsuario = crearUsuario(Trim(Me.TxtNombre), Trim(Me.txtApellido))
         End If
     Else
         Me.txtUsuario = Empty
@@ -807,19 +836,19 @@ Private Sub TxtDireccion_Change()
     verificar
 End Sub
 Private Sub TxtDireccion_GotFocus()
-    foco txtDireccion
+    foco TxtDireccion
 End Sub
 Private Sub TxtLocalidad_Change()
     verificar
 End Sub
 Private Sub TxtLocalidad_GotFocus()
-    foco txtLocalidad
+    foco TxtLocalidad
 End Sub
 Private Sub TxtNombre_Change()
     verificar
-    If Trim(Me.txtApellido) <> Empty And Trim(Me.txtNombre) <> Empty Then
+    If Trim(Me.txtApellido) <> Empty And Trim(Me.TxtNombre) <> Empty Then
         If m_empleado Is Nothing Then
-            Me.txtUsuario = crearUsuario(Trim(Me.txtNombre), Trim(Me.txtApellido))
+            Me.txtUsuario = crearUsuario(Trim(Me.TxtNombre), Trim(Me.txtApellido))
         End If
     Else
         Me.txtUsuario = Empty
@@ -827,7 +856,7 @@ Private Sub TxtNombre_Change()
 
 End Sub
 Private Sub TxtNombre_GotFocus()
-    foco txtNombre
+    foco TxtNombre
 End Sub
 
 Private Sub txtNombres_GotFocus()
@@ -878,7 +907,7 @@ Private Sub txtTel2_GotFocus()
     foco txtTel2
 End Sub
 Public Sub verificar()
-    If Trim(Me.txtNroDocumento) = Empty Or Trim(Me.txtApellido) = Empty Or Trim(Me.txtDireccion) = Empty Or Trim(Me.txtLocalidad) = Empty Or Trim(Me.txtLocalidad) = Empty Or Trim(Me.txtNombre) = Empty Or Trim(Me.txtNroLegajo) = Empty Or Trim(Me.txtTel1) = Empty Or Trim(Me.txtTel2) = Empty Then
+    If Trim(Me.txtNroDocumento) = Empty Or Trim(Me.txtApellido) = Empty Or Trim(Me.TxtDireccion) = Empty Or Trim(Me.TxtLocalidad) = Empty Or Trim(Me.TxtLocalidad) = Empty Or Trim(Me.TxtNombre) = Empty Or Trim(Me.txtNroLegajo) = Empty Or Trim(Me.txtTel1) = Empty Or Trim(Me.txtTel2) = Empty Then
         cmdGuardar.Enabled = False
     Else
         cmdGuardar.Enabled = True

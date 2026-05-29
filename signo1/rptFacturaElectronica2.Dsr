@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica 
    Caption         =   "COMPROBANTE ELECTRONICO"
-   ClientHeight    =   14025
+   ClientHeight    =   13980
    ClientLeft      =   165
    ClientTop       =   555
    ClientWidth     =   28680
@@ -1588,7 +1588,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
          Name            =   "Etiqueta26"
          Object.Left            =   105
          Object.Top             =   795
-         Object.Width           =   1440
+         Object.Width           =   1845
          Object.Height          =   300
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
@@ -1703,10 +1703,10 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
       BeginProperty Item23 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblCambio"
-         Object.Left            =   75
-         Object.Top             =   495
-         Object.Width           =   10935
-         Object.Height          =   225
+         Object.Left            =   1590
+         Object.Top             =   825
+         Object.Width           =   9405
+         Object.Height          =   240
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   6.75
@@ -1717,16 +1717,15 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} rptFacturaElectronica
             Strikethrough   =   0   'False
          EndProperty
          Object.Caption         =   "El Total de la presente factura, equivale a USS 16999,99 al tipo de cambio ARS 9,11."
-         Alignment       =   2
+         Alignment       =   1
       EndProperty
       ItemType24      =   3
       BeginProperty Item24 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "lblTextoAdicional"
          Object.Left            =   90
-         Object.Top             =   15
-         Object.Width           =   10920
-         Object.Height          =   405
+         Object.Width           =   10980
+         Object.Height          =   720
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   8.25

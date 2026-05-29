@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   66322433
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   66322433
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   66322433
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   66322433
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   16777217
+         Format          =   66322433
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1397,12 +1397,12 @@ Begin VB.Form frmAdminFacturasEdicion
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.ComboBox cboProvincias 
          Height          =   315
-         Left            =   1080
+         Left            =   1035
          TabIndex        =   100
          Top             =   1680
-         Width           =   5175
+         Width           =   5295
          _Version        =   786432
-         _ExtentX        =   9128
+         _ExtentX        =   9340
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -1441,15 +1441,6 @@ Begin VB.Form frmAdminFacturasEdicion
       Begin VB.Label Label24 
          Alignment       =   1  'Right Justify
          Caption         =   "Provincia:"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   99
@@ -1565,25 +1556,21 @@ Private detalle As FacturaDetalle
 Private suscId As String
 Public NuevoTipoDocumento As tipoDocumentoContable
 Public EsAnticipo As Boolean
-
 Public ReadOnly As Boolean
-
 Private detaFactRemito As FacturaDetalle
-
 
 Public Property Let idFactura(value As Long)
     Set Factura = DAOFactura.FindById(value, True, True)
 End Property
-
 
 Private Sub btnCrearCliente_Click()
 
         frmVentasClienteNuevo.Show 1
         
         CargarClientesEnCbo
-        
 
 End Sub
+
 
 Private Sub btnExportarContenido_Click()
 
@@ -1752,7 +1739,6 @@ Private Sub btnGuardar_Click()
             MsgBox "Se produjo un error en la asociación del anticipo.", vbExclamation + vbOKOnly
             Exit Sub
         End If
-
 
         If Me.cboMonedaAjuste.ListIndex = -1 Then
             Factura.IdMonedaAjuste = 0
@@ -1966,51 +1952,64 @@ Private Sub btnItemsDescuentoAnticipo_Click()
     Dim detalleAnticipo As FacturaDetalle
     Dim Ot As OrdenTrabajo
     Dim facturaAnticipo As Factura
+    Dim importeAnticipo As Double
 
     Factura.RemoveDetallesAnticipoOT
 
     For Each detalle In Factura.detalles
-        If detalle.OtIdAnticipo = 0 Then    'no es de descuento de anticipo de ot
+
+        If detalle.OtIdAnticipo = 0 Then
             If Not detalle.OrigenEsConcepto Then
                 If IsSomething(detalle.detalleRemito) Then
 
                     Set Ot = DAOOrdenTrabajo.FindById(detalle.detalleRemito.IdPedido)
+
                     If Ot.EsHija Then
                         Set Ot = DAOOrdenTrabajo.FindById(Ot.OTMarcoIdPadre)
                     End If
 
                     If IsSomething(Ot) Then
                         If Ot.Anticipo > 0 Then
-                            Set detalleAnticipo = Nothing
+
                             Set detalleAnticipo = Factura.DetalleAnticipoOT(Ot.Id)
+
                             If Not IsSomething(detalleAnticipo) Then
                                 Set detalleAnticipo = New FacturaDetalle
-                                detalleAnticipo.OtIdAnticipo = Ot.Id
-                                Factura.detalles.Add detalleAnticipo
-                                detalleAnticipo.PorcentajeDescuento = Ot.Anticipo
 
-                                detalleAnticipo.IvaAplicado = Factura.EstaDiscriminada      'True
+                                detalleAnticipo.OtIdAnticipo = Ot.Id
+                                detalleAnticipo.PorcentajeDescuento = Ot.Anticipo
+                                detalleAnticipo.IvaAplicado = Factura.EstaDiscriminada
                                 detalleAnticipo.IBAplicado = True
                                 detalleAnticipo.Cantidad = -1
-
                                 Set detalleAnticipo.Factura = Factura
+
                                 Set facturaAnticipo = DAOFactura.FindById(Ot.AnticipoFacturadoIdFactura)
 
                                 If IsSomething(facturaAnticipo) Then
                                     detalleAnticipo.detalle = "ANTICIPO SEGÚN " & facturaAnticipo.GetShortDescription(False, True) & " de OT Nº " & Ot.IdFormateado
                                 Else
-                                    'no hay factura asociada, habria que seleccionar una factura, asociarla y volver a realizar el proceso
-                                    MsgBox "No hay factura de anticipo asociada a la OT Nº " & Ot.IdFormateado & "." & vbNewLine & "Realice la asociacion desde el listado de OT (click derecho).", vbExclamation
+                                    MsgBox "No hay factura de anticipo asociada a la OT Nº " & Ot.IdFormateado & "." & vbNewLine & _
+                                           "Realice la asociacion desde el listado de OT (click derecho).", vbExclamation
                                     Exit Sub
                                 End If
+
+                                Factura.detalles.Add detalleAnticipo
                             End If
-                            detalleAnticipo.Bruto = detalleAnticipo.Bruto + funciones.RedondearDecimales(detalle.total * Factura.moneda.Cambio)
+
+                            'IMPORTANTE:
+                            'detalle.total ya está en la moneda de la factura.
+                            'No hay que multiplicar por Factura.moneda.Cambio porque eso lo pasa a pesos.
+                            importeAnticipo = funciones.RedondearDecimales(detalle.total)
+
+                            detalleAnticipo.Bruto = detalleAnticipo.Bruto + importeAnticipo
+
                         End If
                     End If
                 End If
             End If
         End If
-    Next
+
+    Next detalle
 
     CargarDetalles
     Totalizar
@@ -2485,13 +2484,16 @@ Private Sub Form_Load()
     End If
 
     If EsAnticipo Or Factura.EsAnticipo Then
-
+    
         Me.caption = "Anticipo " & Me.caption
+    
+        'No dejo editar la cantidad del anticipo, pero sí permito eliminar el renglón.
         Me.gridDetalles.Columns(1).EditType = jgexEditNone
-        Me.gridDetalles.AllowDelete = False
+        Me.gridDetalles.AllowDelete = True
+    
         Factura.origenFacturado = OrigenFacturadoAnticipoOT
+    
     End If
-
 
     Me.btnSeleccionarOT.Enabled = Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT
     Me.btnCrearItemConcepto.Enabled = Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT
@@ -2566,6 +2568,9 @@ Private Sub Form_Load()
     Me.Label10.Enabled = Not ReadOnly
     Me.lblIva2.Enabled = Not ReadOnly
     Me.Label8.Enabled = Not ReadOnly
+    
+    Me.cboProvincias.Enabled = Not ReadOnly
+    Me.Label24.Enabled = Not ReadOnly
 
     Me.Label13.Enabled = Not ReadOnly
     Me.chkEsCredito.Enabled = Not ReadOnly
@@ -2573,8 +2578,11 @@ Private Sub Form_Load()
 
     Me.Frame1.Enabled = Not ReadOnly
 
-    Me.btnSeleccionarOT.Enabled = Not ReadOnly
-    Me.btnCrearItemConcepto.Enabled = Not ReadOnly
+    Me.btnSeleccionarOT.Enabled = (Not ReadOnly) And _
+        (Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT)
+    
+    Me.btnCrearItemConcepto.Enabled = (Not ReadOnly) And _
+        (Factura.EsAnticipo Or EsAnticipo Or Factura.origenFacturado = OrigenFacturadoAnticipoOT)
 
     ValidarEsCredito
 
@@ -2638,14 +2646,22 @@ Private Sub CargarFactura()
     Else
         Me.lblTC.caption = "Tipo Cambio: " & Factura.moneda.NombreCorto & " " & Factura.CambioAPatron
     End If
-
-    
+   
     Me.cboMoneda.ListIndex = funciones.PosIndexCbo(Factura.moneda.Id, Me.cboMoneda)
-    Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(Factura.ConceptoIncluir, Me.cboConceptosAIncluir)
     
-    DAOProvincias.LlenarCombo Me.cboProvincias, 1, True
+    Me.cboConceptosAIncluir.ListIndex = funciones.PosIndexCbo(Factura.ConceptoIncluir, Me.cboConceptosAIncluir)
+  
+  
+    DAOProvincias.LlenarComboNoDefinido Me.cboProvincias, 1, True
+    
     Me.cboProvincias.ListIndex = funciones.PosIndexCbo(0, Me.cboProvincias)
-    Factura.IdProvincia = 0
+    
+    If Factura.IdProvincia > 0 Then
+    Me.cboProvincias.ListIndex = funciones.PosIndexCbo(Factura.IdProvincia, Me.cboProvincias)
+    Else
+        Me.cboProvincias.ListIndex = funciones.PosIndexCbo(0, Me.cboProvincias)
+    End If
+
 
     Me.cboMonedaAjuste.ListIndex = funciones.PosIndexCbo(Factura.IdMonedaAjuste, Me.cboMonedaAjuste)
 
@@ -2660,7 +2676,6 @@ Private Sub CargarFactura()
             If Factura.Tipo.PuntoVenta.CaeManual Then
                 Me.txtNumero.Text = Format(Factura.numero)
             Else
-
                 Dim prox As Long
                 prox = DAOFactura.proximaFactura(Factura)
                 Factura.numero = prox
@@ -2767,7 +2782,13 @@ Private Sub ValidarEsCredito()
     Me.cboCuentasCBU.Enabled = Factura.esCredito
     Me.cboOpcional27.Enabled = Factura.esCredito
     Me.cboCuentasCBU.Visible = Factura.esCredito
-    Me.txtCondObs.ListIndex = 1
+    
+    If Factura.Id = 0 Then
+        If Me.txtCondObs.ListIndex = -1 And Me.txtCondObs.ListCount > 1 Then
+            Me.txtCondObs.ListIndex = 1
+        End If
+    End If
+    
     Me.Label22.Enabled = Factura.esCredito
 
 
@@ -2906,9 +2927,13 @@ Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
 End Sub
 
 Private Sub gridDetalles_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And Factura.detalles.count > 0 Then
+    If RowIndex > 0 And Factura.detalles.count >= RowIndex Then
         Factura.detalles.remove RowIndex
+
+        Me.gridDetalles.ItemCount = Factura.detalles.count
+        ActualizarCantDetalles
         Totalizar
+        Me.gridDetalles.Refresh
     End If
 End Sub
 
@@ -3173,31 +3198,37 @@ Private Sub btnSeleccionarOT_Click()
 End Sub
 
 
-'fce_nemer_09062020
-Public Sub txtDiasVenc_LostFocus()
-    On Error GoTo err1
-    If Me.txtDiasVenc = vbNullString Then
-        Me.txtDiasVenc = 0
-    End If
+Private Sub txtDiasVenc_Change()
+    If dataLoading Then Exit Sub
 
-    Me.dtFechaPagoCredito.value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
-err1:
-    MsgBox "La cantidad de días de vencimiento no es válida.", vbExclamation
+    If IsNumeric(Me.txtDiasVenc.Text) Then
+        Factura.CantDiasPago = CLng(Me.txtDiasVenc.Text)
+    End If
 End Sub
 
 
-Private Sub txtDiasVenc_Change()
+Private Sub txtDiasVenc_LostFocus()
+    On Error GoTo err1
 
-    If Not dataLoading Then
-        Factura.CantDiasPago = val(Me.txtDiasVenc.Text)
-    End If
-    
-    If Me.txtDiasVenc = vbNullString Then
-        Me.txtDiasVenc = 0
+    If Trim$(Me.txtDiasVenc.Text) = vbNullString Then
+        Me.txtDiasVenc.Text = "0"
     End If
 
-    Me.dtFechaPagoCredito.value = DateAdd("d", Me.txtDiasVenc, Me.dtpFecha)
+    If Not IsNumeric(Me.txtDiasVenc.Text) Then
+        MsgBox "La cantidad de días de vencimiento no es válida.", vbExclamation
+        Me.txtDiasVenc.Text = "0"
+        Me.txtDiasVenc.SetFocus
+        Exit Sub
+    End If
 
+    Factura.CantDiasPago = CLng(Me.txtDiasVenc.Text)
+
+    Me.dtFechaPagoCredito.value = DateAdd("d", Factura.CantDiasPago, Me.dtpFecha.value)
+
+    Exit Sub
+
+err1:
+    MsgBox "La cantidad de días de vencimiento no es válida.", vbExclamation
 End Sub
 
 
