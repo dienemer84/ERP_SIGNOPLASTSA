@@ -1080,6 +1080,7 @@ Private Factura As clsFacturaProveedor
 Private facturaConfirmada As clsFacturaProveedor
 Private facturas As Collection
 Private facturasConfirmadas As Collection
+Private facturasOriginales As Collection
 Dim m_Archivos As Dictionary
 Private Banco As Banco
 Private caja As caja
@@ -1539,8 +1540,9 @@ Public Sub llenarGrilla()
     Dim condition As String
 
     condition = " AdminComprasFacturasProveedores.estado = 2 OR AdminComprasFacturasProveedores.estado = 4 "
-
-    Set facturas = DAOFacturaProveedor.FindAll(condition, , , Permisos.AdminFaPVerSoloPropias)
+    
+    Set facturasOriginales = DAOFacturaProveedor.FindAll(condition, , , Permisos.AdminFaPVerSoloPropias)
+    Set facturas = facturasOriginales
 
     Dim F As clsFacturaProveedor
     Dim total As Double
@@ -1777,7 +1779,7 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
 End Sub
 
 
-Private Sub grilla_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grilla_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error Resume Next
     SeleccionarFactura
     
@@ -1830,29 +1832,27 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 
     Dim i As Integer
 
-    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then
+        i = -1
+    Else
+        i = 1
+    End If
 
     With Factura
-
-        Values(1) = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
-        Values(2) = Factura.configFactura.TipoFactura
-        Values(3) = Factura.numero
-        Values(4) = Factura.FEcha
-        Values(5) = Factura.moneda.NombreCorto
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.ImporteTotalSaldo) * i), "$", "")
-        Values(7) = UCase(funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial))
-
+        Values(1) = enums.EnumTipoDocumentoContableShort(.tipoDocumentoContable)
+        Values(2) = .configFactura.TipoFactura
+        Values(3) = .numero
+        Values(4) = .FEcha
+        Values(5) = .moneda.NombreCorto
+        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(.ImporteTotalSaldo) * i), "$", "")
+        Values(7) = UCase(funciones.RazonSocialFormateada(.Proveedor.RazonSocial))
     End With
-    
-    ' Desactivar la selección inicial en el GridEx
-    grilla.row = -1
-    grilla.col = -1
 
 End Sub
 
 
 
-Private Sub grillaConfirmados_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub grillaConfirmados_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     SeleccionarFacturaConfirmada
 
 End Sub
@@ -2316,29 +2316,47 @@ Private Sub Totalizar()
 
 End Sub
 
+
 Private Sub txtFiltroNumero_Change()
+    On Error GoTo err1
+
     Dim filterText As String
     filterText = Trim(Me.txtFiltroNumero.Text)
-    
-        ' Limpiar la grilla
+
     grilla.ItemCount = 0
-    
-    ' Filtrar las facturas en base al texto ingresado
+
+    If facturasOriginales Is Nothing Then
+        Exit Sub
+    End If
+
+    If facturasOriginales.count = 0 Then
+        Exit Sub
+    End If
+
+    If Len(filterText) = 0 Then
+        Set facturas = facturasOriginales
+        grilla.ItemCount = facturas.count
+        lblComprobantesMostrados.caption = "Comprobantes: " & facturas.count
+        Exit Sub
+    End If
+
     Dim facturasFiltradas As New Collection
     Dim Factura As clsFacturaProveedor
-    
-    For Each Factura In facturas
+
+    For Each Factura In facturasOriginales
         If InStr(1, Factura.NumeroFormateado, filterText, vbTextCompare) > 0 Then
             facturasFiltradas.Add Factura
         End If
     Next
-    
-    grilla.ItemCount = 0
-    
+
     Set facturas = facturasFiltradas
-        
-    grilla.ItemCount = facturasFiltradas.count
-    
+    grilla.ItemCount = facturas.count
+    lblComprobantesMostrados.caption = "Comprobantes: " & facturas.count
+
+    Exit Sub
+
+err1:
+    MsgBox "Error al filtrar comprobantes: " & Err.Number & " - " & Err.Description, vbCritical
 End Sub
 
 

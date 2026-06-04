@@ -6,19 +6,112 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Comprobantes de Proveedores"
-   ClientHeight    =   7380
+   ClientHeight    =   8130
    ClientLeft      =   45
    ClientTop       =   480
-   ClientWidth     =   10455
+   ClientWidth     =   10515
    Icon            =   "frmAdminComprasNuevaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7380
-   ScaleWidth      =   10455
+   ScaleHeight     =   8130
+   ScaleWidth      =   10515
+   Begin XtremeSuiteControls.GroupBox GroupBox2 
+      Height          =   855
+      Left            =   120
+      TabIndex        =   60
+      Top             =   7200
+      Width           =   10305
+      _Version        =   786432
+      _ExtentX        =   18177
+      _ExtentY        =   1508
+      _StockProps     =   79
+      Caption         =   "Ver detalle de Cta. Cte."
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton btnCtaCte 
+         Height          =   495
+         Left            =   3960
+         TabIndex        =   62
+         Top             =   240
+         Width           =   2535
+         _Version        =   786432
+         _ExtentX        =   4471
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Ver Cta. Cte."
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label lblSaldoCtaCteProveedor 
+         Height          =   495
+         Left            =   240
+         TabIndex        =   61
+         Top             =   240
+         Width           =   3135
+         _Version        =   786432
+         _ExtentX        =   5530
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "lblSaldoCtaCte"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      End
+   End
+   Begin XtremeSuiteControls.GroupBox fraDetalleCtaCte 
+      Height          =   7935
+      Left            =   10560
+      TabIndex        =   58
+      Top             =   120
+      Width           =   9615
+      _Version        =   786432
+      _ExtentX        =   16960
+      _ExtentY        =   13996
+      _StockProps     =   79
+      Caption         =   "Cuenta Corriente"
+      UseVisualStyle  =   -1  'True
+      Begin GridEX20.GridEX gridDetalleCtaCte 
+         Height          =   7455
+         Left            =   240
+         TabIndex        =   59
+         Top             =   360
+         Width           =   9225
+         _ExtentX        =   16272
+         _ExtentY        =   13150
+         Version         =   "2.0"
+         BoundColumnIndex=   ""
+         ReplaceColumnIndex=   ""
+         MethodHoldFields=   -1  'True
+         GroupByBoxVisible=   0   'False
+         DataMode        =   99
+         ColumnHeaderHeight=   285
+         IntProp1        =   0
+         ColumnsCount    =   5
+         Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":000C
+         Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":011C
+         Column(3)       =   "frmAdminComprasNuevaFCProveedor.frx":0220
+         Column(4)       =   "frmAdminComprasNuevaFCProveedor.frx":030C
+         Column(5)       =   "frmAdminComprasNuevaFCProveedor.frx":03F8
+         FormatStylesCount=   6
+         FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":04E4
+         FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":061C
+         FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":06CC
+         FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":0780
+         FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":0858
+         FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":0910
+         ImageCount      =   0
+         PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":09F0
+      End
+   End
    Begin VB.CheckBox chkButton 
-      BackColor       =   &H0080FFFF&
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000005&
       Caption         =   "Cargada desde ARCA"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -29,6 +122,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H80000008&
       Height          =   495
       Left            =   4080
       TabIndex        =   57
@@ -319,17 +413,17 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   2
-         Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":000C
-         Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":0154
+         Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":0BC8
+         Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":0D10
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":0268
-         FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":03A0
-         FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":0450
-         FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":0504
-         FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":05DC
-         FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":0694
+         FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":0E24
+         FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":0F5C
+         FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":100C
+         FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":10C0
+         FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":1198
+         FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":1250
          ImageCount      =   0
-         PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":0774
+         PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":1330
       End
    End
    Begin XtremeSuiteControls.GroupBox fraAlicuotas 
@@ -367,24 +461,24 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   2
-         Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":094C
-         Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":0AB8
+         Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":1508
+         Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":1674
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":0BCC
-         FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":0D04
-         FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":0DB4
-         FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":0E68
-         FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":0F40
-         FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":0FF8
+         FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":1788
+         FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":18C0
+         FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":1970
+         FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":1A24
+         FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":1AFC
+         FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":1BB4
          ImageCount      =   0
-         PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":10D8
+         PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":1C94
       End
    End
    Begin GridEX20.GridEX grilla_alicuota 
       Height          =   2325
-      Left            =   10680
+      Left            =   240
       TabIndex        =   34
-      Top             =   240
+      Top             =   8160
       Width           =   1305
       _ExtentX        =   2302
       _ExtentY        =   4101
@@ -404,17 +498,17 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":12B0
-      Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":13D0
+      Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":1E6C
+      Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":1F8C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":14D0
-      FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":1608
-      FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":16B8
-      FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":176C
-      FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":1844
-      FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":18FC
+      FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":208C
+      FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":21C4
+      FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":2274
+      FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":2328
+      FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":2400
+      FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":24B8
       ImageCount      =   0
-      PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":19DC
+      PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":2598
    End
    Begin XtremeSuiteControls.PushButton btnGuardar 
       Height          =   495
@@ -491,7 +585,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   66322433
+      Format          =   65470465
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -528,24 +622,24 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          IntProp2        =   0
          IntProp7        =   0
          ColumnsCount    =   2
-         Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":1BB4
-         Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":1CF0
+         Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":2770
+         Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":28AC
          FormatStylesCount=   6
-         FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":1E04
-         FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":1F3C
-         FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":1FEC
-         FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":20A0
-         FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":2178
-         FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":2230
+         FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":29C0
+         FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":2AF8
+         FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":2BA8
+         FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":2C5C
+         FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":2D34
+         FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":2DEC
          ImageCount      =   0
-         PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":2310
+         PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":2ECC
       End
    End
    Begin GridEX20.GridEX grid_cuenta 
       Height          =   4725
-      Left            =   12600
+      Left            =   2040
       TabIndex        =   39
-      Top             =   240
+      Top             =   8160
       Width           =   3435
       _ExtentX        =   6059
       _ExtentY        =   8334
@@ -567,25 +661,25 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":24E8
-      Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":2600
+      Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":30A4
+      Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":31BC
       SortKeysCount   =   1
-      SortKey(1)      =   "frmAdminComprasNuevaFCProveedor.frx":2700
+      SortKey(1)      =   "frmAdminComprasNuevaFCProveedor.frx":32BC
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":2768
-      FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":28A0
-      FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":2950
-      FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":2A04
-      FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":2ADC
-      FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":2B94
+      FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":3324
+      FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":345C
+      FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":350C
+      FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":35C0
+      FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":3698
+      FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":3750
       ImageCount      =   0
-      PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":2C74
+      PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":3830
    End
    Begin GridEX20.GridEX grilla_percepcion 
       Height          =   4725
-      Left            =   16080
+      Left            =   5640
       TabIndex        =   35
-      Top             =   240
+      Top             =   8160
       Width           =   2940
       _ExtentX        =   5186
       _ExtentY        =   8334
@@ -605,17 +699,17 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":2E4C
-      Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":2F74
+      Column(1)       =   "frmAdminComprasNuevaFCProveedor.frx":3A08
+      Column(2)       =   "frmAdminComprasNuevaFCProveedor.frx":3B30
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":3074
-      FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":31AC
-      FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":325C
-      FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":3310
-      FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":33E8
-      FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":34A0
+      FormatStyle(1)  =   "frmAdminComprasNuevaFCProveedor.frx":3C30
+      FormatStyle(2)  =   "frmAdminComprasNuevaFCProveedor.frx":3D68
+      FormatStyle(3)  =   "frmAdminComprasNuevaFCProveedor.frx":3E18
+      FormatStyle(4)  =   "frmAdminComprasNuevaFCProveedor.frx":3ECC
+      FormatStyle(5)  =   "frmAdminComprasNuevaFCProveedor.frx":3FA4
+      FormatStyle(6)  =   "frmAdminComprasNuevaFCProveedor.frx":405C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":3580
+      PrinterProperties=   "frmAdminComprasNuevaFCProveedor.frx":413C
    End
    Begin XtremeSuiteControls.ComboBox cboTipoDocContable 
       Height          =   315
@@ -852,6 +946,14 @@ Dim idProveedor As Long
 Dim vFactura As clsFacturaProveedor
 Dim VVer As Boolean
 
+Private detallesCtaCte As Collection
+Private detaCtaCte As DTODetalleCuentaCorriente
+
+Private detalleCtaCteVisible As Boolean
+Private anchoNormal As Long
+Private anchoConDetalle As Long
+
+
 Public Property Let ver(nVer As Boolean)
     VVer = nVer
 End Property
@@ -889,6 +991,36 @@ Private Sub llenarTiposFacturas()
     End If
 End Sub
 
+Private Sub btnCtaCte_Click()
+    On Error GoTo err1
+
+    If detalleCtaCteVisible Then
+        
+        OcultarDetalleCtaCte
+        
+    Else
+        
+        If Me.cboProveedores.ListIndex = -1 Then
+            MsgBox "Debe seleccionar un proveedor.", vbExclamation, "Cuenta corriente"
+            Exit Sub
+        End If
+
+        CargarDetalleCtaCteProveedor
+
+        Me.Width = anchoConDetalle
+        Me.fraDetalleCtaCte.Visible = True
+        Me.btnCtaCte.caption = "Ocultar Cta. Cte."
+        detalleCtaCteVisible = True
+        
+    End If
+
+    Exit Sub
+
+err1:
+    MsgBox "Error al mostrar/ocultar cuenta corriente: " & Err.Description, vbCritical, "Error"
+
+End Sub
+
 Private Sub btnFormatoNumeroLIbre_Click()
     If quitarFormato = True Then
         Me.txtNumeroMask.SetMask "", ""
@@ -922,11 +1054,15 @@ End Sub
 
 Private Sub cboProveedores_Click()
     mostrar
+
     If Me.cboProveedores.ListIndex <> -1 Then
         Me.txtCodigoProveedor = Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex)
     End If
 
-
+    If Not loading Then
+        OcultarDetalleCtaCte
+        MostrarSaldoCtaCteProveedor
+    End If
 End Sub
 
 
@@ -1308,17 +1444,17 @@ err1:
 End Sub
 
 
-Private Function TryGetDouble(ByVal valor As String, ByRef resultado As Double) As Boolean
+Private Function TryGetDouble(ByVal Valor As String, ByRef Resultado As Double) As Boolean
     On Error GoTo err1
 
-    valor = Trim$(valor)
-    valor = Replace(valor, "$", "")
-    valor = Replace(valor, " ", "")
+    Valor = Trim$(Valor)
+    Valor = Replace(Valor, "$", "")
+    Valor = Replace(Valor, " ", "")
 
-    If valor = vbNullString Then Exit Function
-    If Not IsNumeric(valor) Then Exit Function
+    If Valor = vbNullString Then Exit Function
+    If Not IsNumeric(Valor) Then Exit Function
 
-    resultado = CDbl(valor)
+    Resultado = CDbl(Valor)
     TryGetDouble = True
     Exit Function
 
@@ -1335,13 +1471,17 @@ Private Sub Form_Activate()
 
     Me.cboProveedores.Enabled = True
     Me.cboProveedores.Visible = True
-
     Me.cboProveedores.SetFocus
     
 End Sub
 
 Private Sub Form_Load()
     loading = True
+
+    anchoNormal = Me.Width
+    anchoConDetalle = 20400
+
+    detalleCtaCteVisible = False
 
 
     Me.txtCuit.SetMask "00-00000000-0", "__-________-_"
@@ -1415,8 +1555,8 @@ Private Sub Form_Load()
         Me.btnGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.frame2.Enabled = False
-        Me.frame3.Enabled = False
+        Me.Frame2.Enabled = False
+        Me.Frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
         Me.txtImpuestos.Enabled = False
@@ -1439,6 +1579,14 @@ Private Sub Form_Load()
     Me.lblTipoCambioPago.Visible = VVer
     
     TotalFactura
+    
+    Me.fraDetalleCtaCte.Visible = False
+    Me.btnCtaCte.caption = "Ver Cta. Cte."
+    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: 0.00"
+
+    GridEXHelper.CustomizeGrid Me.gridDetalleCtaCte
+    Me.gridDetalleCtaCte.ItemCount = 0
+    
 
     loading = False
     
@@ -1612,6 +1760,31 @@ Private Sub grid_cuentascontables_UnboundUpdate(ByVal RowIndex As Long, ByVal Bo
     vFactura.cuentasContables(RowIndex).Monto = Values(2)
     TotalFactura
     grabado = False
+End Sub
+
+
+Private Sub gridDetalleCtaCte_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    On Error GoTo err1
+
+    If detallesCtaCte Is Nothing Then Exit Sub
+    If detallesCtaCte.count = 0 Then Exit Sub
+
+    If RowIndex > 0 Then
+        
+        Set detaCtaCte = detallesCtaCte.item(RowIndex)
+
+        Values(1) = detaCtaCte.FEcha
+        Values(2) = detaCtaCte.Comprobante
+        Values(3) = funciones.FormatearDecimales(detaCtaCte.Debe)
+        Values(4) = funciones.FormatearDecimales(detaCtaCte.Haber)
+        Values(5) = funciones.FormatearDecimales(detaCtaCte.saldo)
+        
+    End If
+
+    Exit Sub
+
+err1:
+    MsgBox "Error al leer detalle de cuenta corriente: " & Err.Description, vbExclamation, "Error"
 End Sub
 
 
@@ -1989,4 +2162,83 @@ Private Sub txtTipoCambio_Change()
     vFactura.TipoCambio = val(Me.txtTipoCambio)
     TotalFactura
     grabado = False
+End Sub
+
+
+Private Sub CargarDetalleCtaCteProveedor()
+    On Error GoTo err1
+
+    Dim Id As Long
+    Dim condition As String
+
+    Id = CLng(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex))
+
+    condition = conectar.Escape(Format(Me.DTPicker1.value, "yyyy-mm-dd"))
+
+    Set detallesCtaCte = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , condition, True)
+
+    Me.gridDetalleCtaCte.ItemCount = 0
+
+    If IsSomething(detallesCtaCte) Then
+        
+        If detallesCtaCte.count > 0 Then
+            Me.gridDetalleCtaCte.ItemCount = detallesCtaCte.count
+            GridEXHelper.AutoSizeColumns Me.gridDetalleCtaCte
+        End If
+
+    End If
+
+    Me.gridDetalleCtaCte.Refresh
+
+    Exit Sub
+
+err1:
+    MsgBox "Error al cargar el detalle de cuenta corriente: " & Err.Description, vbCritical, "Error"
+End Sub
+
+
+Private Sub OcultarDetalleCtaCte()
+    On Error Resume Next
+
+    If anchoNormal <= 0 Then anchoNormal = Me.Width
+
+    Me.fraDetalleCtaCte.Visible = False
+    Me.Width = anchoNormal
+    Me.btnCtaCte.caption = "Ver Cta. Cte."
+    detalleCtaCteVisible = False
+
+    Me.gridDetalleCtaCte.ItemCount = 0
+    Set detallesCtaCte = Nothing
+End Sub
+
+Private Sub MostrarSaldoCtaCteProveedor()
+    On Error GoTo err1
+
+    Dim Id As Long
+    Dim condition As String
+    Dim detallesSaldo As Collection
+    Dim saldoProv As Double
+
+    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: 0.00"
+
+    If Me.cboProveedores.ListIndex = -1 Then Exit Sub
+
+    Id = CLng(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex))
+    If Id <= 0 Then Exit Sub
+
+    condition = conectar.Escape(Format(Me.DTPicker1.value, "yyyy-mm-dd"))
+
+    Set detallesSaldo = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , condition, True)
+
+    If IsSomething(detallesSaldo) Then
+        saldoProv = DAOCuentaCorriente.GetSaldo(detallesSaldo)
+
+        Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: " & _
+            Replace(FormatCurrency(funciones.FormatearDecimales(saldoProv)), "$", "")
+    End If
+
+    Exit Sub
+
+err1:
+    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: -"
 End Sub
