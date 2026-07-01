@@ -27,7 +27,7 @@ Public OrigenDestino As String
 Public EnCartera As Boolean
 Public Propio As Boolean
 Public moneda As clsMoneda
-Public observaciones As String
+Public Observaciones As String
 Public TercerosPropio As Boolean
 Public FechaEmision As Date
 
@@ -41,18 +41,34 @@ Public Depositado As Boolean
 Public destino As String
 Public Recibo As String
 
-Public Property Get OrigenCheque()
+Private mIdLiquidacionCajaOrigen As Long
+
+Public Property Get IdLiquidacionCajaOrigen() As Long
+    IdLiquidacionCajaOrigen = mIdLiquidacionCajaOrigen
+End Property
+
+Public Property Let IdLiquidacionCajaOrigen(ByVal value As Long)
+    mIdLiquidacionCajaOrigen = value
+End Property
+
+Public Property Get OrigenCheque() As String
+
     If Propio Then
-        OrigenCheque = "Propio"
+        OrigenCheque = "PROPIO"
+    ElseIf TercerosPropio Then
+        OrigenCheque = "TERCERO PROPIO"
     Else
-        If TercerosPropio Then
-            OrigenCheque = "Terceros propio"
-        Else
-            OrigenCheque = "Terceros"
-        End If
+        OrigenCheque = "TERCERO"
     End If
+
 End Property
 
 Public Property Get Utilizado() As Boolean
-    Utilizado = (CDbl(FechaVencimiento) <> 0 And Not Me.EnCartera)
+
+    Utilizado = _
+        (IdOrdenPagoOrigen > 0) Or _
+        (IdLiquidacionCajaOrigen > 0) Or _
+        (NumeroPagoACuenta > 0) Or _
+        (NumeroMovimiento > 0)
+
 End Property

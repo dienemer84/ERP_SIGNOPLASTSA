@@ -2370,32 +2370,43 @@ Private Sub ImprimirFactura_Click()
         If veces > 0 Then
             If MsgBox("Este comprobante ya fue generarlo" & Chr(10) & "¿Desea volver a generarlo?", vbYesNo, "Confirmación") = vbYes Then
                 'DAOFactura.GenerarPdf (Factura.id)
-                DAOFactura.VerFacturaElectronicaParaImpresion (Factura.Id)
+                DAOFactura.VerFacturaElectronicaParaImpresion Factura.Id
+
+                Me.WindowState = vbNormal
+                Me.Show
+                Me.ZOrder 0
+                Me.SetFocus
             End If
+            
         Else
-            DAOFactura.VerFacturaElectronicaParaImpresion (Factura.Id)
+            DAOFactura.VerFacturaElectronicaParaImpresion Factura.Id
+
+            Me.WindowState = vbNormal
+            Me.Show
+            Me.ZOrder 0
+            Me.SetFocus
         End If
     Else
 
         veces = clasea.facturaImpresa(Factura.Id)
         If veces = 0 Or veces = -1 Then
             If MsgBox("'¿Desea imprimir este comprobante?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
                 Dim i As Long
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next
             End If
 
         ElseIf veces > 0 Then
             If MsgBox("Este comprobante ya fue impreso." & Chr(10) & "¿Desea volver a imprimirlo?", vbYesNo, "Confirmación") = vbYes Then
-                cd.Flags = cdlPDUseDevModeCopies
-                cd.Copies = 3
-                cd.ShowPrinter
+                CD.Flags = cdlPDUseDevModeCopies
+                CD.Copies = 3
+                CD.ShowPrinter
 
-                For i = 1 To cd.Copies
+                For i = 1 To CD.Copies
                     DAOFactura.Imprimir Factura.Id
                 Next i
             End If

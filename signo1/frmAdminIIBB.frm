@@ -412,7 +412,7 @@ Begin VB.Form frmAdminIIBB
          Enabled         =   0   'False
          CalendarTitleBackColor=   -2147483639
          CalendarTrailingForeColor=   -2147483639
-         Format          =   65208320
+         Format          =   66125824
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fdesde 
@@ -425,7 +425,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   65208321
+         Format          =   66125825
          CurrentDate     =   39421
       End
       Begin MSComCtl2.DTPicker Fhasta 
@@ -438,7 +438,7 @@ Begin VB.Form frmAdminIIBB
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   65208321
+         Format          =   66125825
          CurrentDate     =   39421
       End
       Begin VB.Label lblVencida 
@@ -861,60 +861,51 @@ Dim rs As Recordset
 
 Private Sub MostrarResultado(tabla As String, Cuit As String)
 
-    If IsNumeric(Cuit) Then
-        Set rs = conectar.RSFactory("select * from sp_permisos.Padron_Detalles where Cuit=" & CDbl(Me.txtCuit))
-
-        If Not rs.EOF And Not rs.BOF Then
-
-            If rs!Discriminador = "R" Then
-                Me.Frame2.caption = "[ Resultado RETENCIONES Padrón Buenos Aires]"
-            ElseIf rs!Discriminador = "P" Then
-                Me.Frame2.caption = "[ Resultado PERCEPCIONES Padrón Buenos Aires]"
-            Else
-                Me.Frame2.caption = "[ Sin resultado ]"
-            End If
-            Me.lblAltaBaja = rs!AltaBaja
-            Me.lblCambio = rs!Cambio
-            Me.lblGrupo = rs!Grupo
-            Me.lblAlicuota = rs!alicuota
-            Me.lblTipo = rs!Tipo
-
-            FechaDesde = rs!FechaDesde
-            f_desde_anio = Right(FechaDesde, 4)
-            f_desde_mes = Mid(FechaDesde, 3, 2)
-            f_desde_dia = Mid(FechaDesde, 1, 2)
-            Me.Fdesde = f_desde_dia & "/" & f_desde_mes & "/" & f_desde_anio
-
-            FechaHasta = rs!FechaHasta
-            f_hasta_anio = Right(FechaHasta, 4)
-            f_hasta_mes = Mid(FechaHasta, 3, 2)
-            f_hasta_dia = Mid(FechaHasta, 1, 2)
-            Me.Fhasta = f_hasta_dia & "/" & f_hasta_mes & "/" & f_hasta_anio
-
-
-            fechapub = rs!FechaPublicacion
-            f_pub_anio = Right(fechapub, 4)
-            f_pub_mes = Mid(fechapub, 3, 2)
-            f_pub_dia = Mid(fechapub, 1, 2)
-            Me.Fpublicacion = f_pub_dia & "/" & f_pub_mes & "/" & f_pub_anio
-
-
-            If Now() > Fhasta Then
-                Me.lblVencida.Visible = True
-            Else
-                Me.lblVencida.Visible = False
-            End If
-
-
-
-        Else
-            MsgBox "sin coincidencias!"
-        End If
+    If Not IsNumeric(Cuit) Then
+        MsgBox "Debe ingresar un CUIT válido.", vbExclamation
+        Exit Sub
     End If
 
+    Set rs = conectar.RSFactory( _
+        "SELECT * FROM sp_permisos." & tabla & _
+        " WHERE Cuit = " & CDbl(Cuit))
 
+    If Not rs.EOF And Not rs.BOF Then
 
+        Me.Frame2.caption = "[ Resultado Padrón Buenos Aires ]"
 
+        If ExisteCampo(rs, "AltaBaja") Then Me.lblAltaBaja.caption = NzCampo(rs!AltaBaja)
+        If ExisteCampo(rs, "Cambio") Then Me.lblCambio.caption = NzCampo(rs!Cambio)
+        If ExisteCampo(rs, "Grupo") Then Me.lblGrupo.caption = NzCampo(rs!Grupo)
+        If ExisteCampo(rs, "Alicuota") Then Me.lblAlicuota.caption = NzCampo(rs!alicuota)
+        If ExisteCampo(rs, "Tipo") Then Me.lblTipo.caption = NzCampo(rs!Tipo)
+
+        If ExisteCampo(rs, "FechaDesde") Then
+            If Not IsNull(rs!FechaDesde) Then
+                Me.Fdesde = ConvertirAFecha(CStr(rs!FechaDesde))
+            End If
+        End If
+        
+        If ExisteCampo(rs, "FechaHasta") Then
+            If Not IsNull(rs!FechaHasta) Then
+                Me.Fhasta = ConvertirAFecha(CStr(rs!FechaHasta))
+        
+                If IsDate(Me.Fhasta) Then
+                    Me.lblVencida.Visible = Date > CDate(Me.Fhasta)
+                End If
+            End If
+        End If
+        
+        If ExisteCampo(rs, "FechaPublicacion") Then
+            If Not IsNull(rs!FechaPublicacion) Then
+                Me.Fpublicacion = ConvertirAFecha(CStr(rs!FechaPublicacion))
+            End If
+        End If
+
+    Else
+        Me.Frame2.caption = "[ Sin resultado ]"
+        MsgBox "Sin coincidencias!", vbInformation
+    End If
 
 End Sub
 
@@ -932,7 +923,7 @@ Private Sub MostrarResultado2(Cuit As String, IdPadron As String, tabla As Strin
 
 
             '   Me.lblGrupo = rs!GrupoPercepcion
-            Me.lblAlicuotaP = rs!alicuotaPercepcion
+            Me.lblAlicuotaP = rs!AlicuotaPercepcion
 
 
 
@@ -1276,7 +1267,24 @@ Private Sub Form_Load()
 
 End Sub
 
-Private Sub TaskDialog1_ButtonClicked(ByVal Id As Long, CloseDialog As Variant)
+Private Function ExisteCampo(rs As Recordset, nombreCampo As String) As Boolean
+    Dim F As Field
 
-End Sub
+    On Error GoTo ErrHandler
 
+    Set F = rs.Fields(nombreCampo)
+    ExisteCampo = True
+    Exit Function
+
+ErrHandler:
+    ExisteCampo = False
+End Function
+
+
+Private Function NzCampo(valor As Variant) As String
+    If IsNull(valor) Then
+        NzCampo = ""
+    Else
+        NzCampo = CStr(valor)
+    End If
+End Function

@@ -8,7 +8,7 @@ Public Function FindAll(Optional filtro As String) As Collection
     Dim idx As Dictionary
     Dim rs As Recordset
     Dim strsql As String
-    strsql = "Select * from Provincia p inner join Pais pa on p.idPais=pa.id where 1=1 "
+    strsql = "SELECT * FROM Provincia p INNER JOIN Pais pa ON p.idPais = pa.id WHERE 1=1 "
     If LenB(filtro) > 0 Then strsql = strsql & filtro
     Dim col As New Collection
     Set rs = conectar.RSFactory(strsql)
@@ -27,9 +27,14 @@ err1:
 
 End Function
 
+'''Public Function FindAllByPais(idpais As Long) As Collection
+'''    Set FindAllByPais = FindAll("and pa.id=" & idpais)
+'''End Function
 
 Public Function FindAllByPais(idpais As Long) As Collection
-    Set FindAllByPais = FindAll("and pa.id=" & idpais)
+    Set FindAllByPais = FindAll( _
+        " AND pa.id=" & idpais & _
+        " ORDER BY CASE WHEN UCASE(p.Nombre) = 'EXTERIOR' THEN 1 ELSE 0 END, p.Nombre")
 End Function
 
 

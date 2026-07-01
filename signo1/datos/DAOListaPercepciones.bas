@@ -10,10 +10,8 @@ Public Function listByIdFactura(id_factura As Long) As Collection
     Set rs = conectar.RSFactory("select * from AdminComprasFacturasProveedoresPercepciones where id_factura_proveedor=" & id_factura)
 
     While Not rs.EOF
-
-
         Set A = New clsPercepcionesAplicadas
-        A.Monto = rs!Valor
+        A.Monto = rs!valor
         A.Percepcion = DAOPercepciones.GetById(rs!id_percepcion)
         col.Add A
 
@@ -22,6 +20,7 @@ Public Function listByIdFactura(id_factura As Long) As Collection
 
     Set listByIdFactura = col
 End Function
+
 
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, tablaPercepcion As String) As clsPercepcionesAplicadas
 
@@ -36,6 +35,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, tabl
     End If
     Set Map = P
 End Function
+
 
 Public Function Save(fc As clsFacturaProveedor) As Boolean
     Set cn = conectar.obternerConexion

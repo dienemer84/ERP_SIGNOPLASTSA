@@ -920,8 +920,25 @@ Private Sub Form_Activate()
     Dim pos3 As Integer
     Dim pos4 As Integer
     Dim item As ReportRecordItem
+    
+    Dim colGuardada As Collection
+    Dim rsArbolActual As Recordset
+    
+    Dim cantidadInsertada As Long
 
     For Each deta In vpedido.detalles
+    
+    
+        If deta.Pieza.EsConjunto Then
+
+            cantidadInsertada = _
+                DAODetalleOrdenTrabajo.SincronizarComponentesFaltantes(deta)
+    
+            MsgBox "Componentes agregados: " & cantidadInsertada, _
+                   vbInformation
+
+        End If
+           
         Set record = Me.ReportControl.Records.Add
         record.Tag = deta.Id
         record.AddItem deta.item
@@ -1124,14 +1141,8 @@ Private Sub PushButton3_Click()
 End Sub
 
 
-
-
-
 Private Sub PushButton4_Click()
     On Error GoTo E
-
-
-
 
     Dim c As Long
     Dim rec As ReportRecord
@@ -1139,9 +1150,7 @@ Private Sub PushButton4_Click()
     Dim rec2 As ReportRecord
     Dim rec3 As ReportRecord
     Dim rec4 As ReportRecord
-
-
-
+    
     Dim tmpDetalle As DetalleOrdenTrabajo
     Dim tmpDetalleConj1 As DetalleOTConjuntoDTO
     Dim tmpDetalleConj2 As DetalleOTConjuntoDTO

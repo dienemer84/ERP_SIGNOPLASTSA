@@ -222,9 +222,9 @@ Begin VB.Form frmAdminSubdiariosVentasv2
       Left            =   120
       TabIndex        =   0
       Top             =   60
-      Width           =   13560
+      Width           =   17160
       _Version        =   786432
-      _ExtentX        =   23918
+      _ExtentX        =   30268
       _ExtentY        =   2963
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
@@ -238,6 +238,32 @@ Begin VB.Form frmAdminSubdiariosVentasv2
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.GroupBox GroupBox2 
+         Height          =   1215
+         Left            =   13560
+         TabIndex        =   28
+         Top             =   240
+         Width           =   3495
+         _Version        =   786432
+         _ExtentX        =   6165
+         _ExtentY        =   2143
+         _StockProps     =   79
+         Caption         =   "Opciones"
+         UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.CheckBox chkVerAlicuotas 
+            Height          =   375
+            Left            =   240
+            TabIndex        =   29
+            Top             =   240
+            Width           =   1575
+            _Version        =   786432
+            _ExtentX        =   2778
+            _ExtentY        =   661
+            _StockProps     =   79
+            Caption         =   "Mostrar Alicuotas"
+            UseVisualStyle  =   -1  'True
+         End
+      End
       Begin XtremeSuiteControls.ProgressBar progreso 
          Height          =   180
          Left            =   8880
@@ -870,11 +896,11 @@ Public Function ExportaSubDiarioVentas() As Boolean
 
     With xla
 
-        .Range("A1:l1").Merge
-        .Range("A2:l2").Merge
-        .Range("A1:l3").HorizontalAlignment = xlHAlignCenter
-        .Range("A1:l2").Font.Bold = True
-        .Range("A3:l2").Font.Bold = True
+        .Range("A1:m1").Merge
+        .Range("A2:m2").Merge
+        .Range("A1:m3").HorizontalAlignment = xlHAlignCenter
+        .Range("A1:m2").Font.Bold = True
+        .Range("A3:m2").Font.Bold = True
 
 
         .Cells(1, 1).value = "SIGNOPLAST S.A. Subdiario ventas" & IIf(Me.rdoRangoFechas.value, " (NO LIQUIDADO)", vbNullString)
@@ -894,7 +920,7 @@ Public Function ExportaSubDiarioVentas() As Boolean
         End If
 
         .Cells(2, 1).value = "Periodo " & Format(desde, "dd/mm/yyyy") & " - " & Format(hasta, "dd/mm/yyyy")
-        .Range("A3:l3").Interior.Color = &HC0C0C0
+        .Range("A3:m3").Interior.Color = &HC0C0C0
 
 
         offset = 3
@@ -907,12 +933,13 @@ Public Function ExportaSubDiarioVentas() As Boolean
         .Cells(offset, 7).value = "Cond. IVA"
         .Cells(offset, 8).value = "Neto Gravado"
         .Cells(offset, 9).value = "IVA"
-        .Cells(offset, 10).value = "Percep IIBB"
-        .Cells(offset, 11).value = "Exento"
-        .Cells(offset, 12).value = "Total"
+        .Cells(offset, 10).value = "Alicuota de Percepción"
+        .Cells(offset, 11).value = "Percep IIBB"
+        .Cells(offset, 12).value = "Exento"
+        .Cells(offset, 13).value = "Total"
     
-        .Range(.Cells(offset, 1), .Cells(offset, 10)).Font.Bold = True
-        .Range(.Cells(offset, 1), .Cells(offset, 10)).Interior.Color = &HC0C0C0
+        .Range(.Cells(offset, 1), .Cells(offset, 13)).Font.Bold = True
+        .Range(.Cells(offset, 1), .Cells(offset, 13)).Interior.Color = &HC0C0C0
         
 
         .Columns("f").HorizontalAlignment = xlHAlignCenter
@@ -950,8 +977,9 @@ Public Function ExportaSubDiarioVentas() As Boolean
         totIV = 0
         totperi = 0
         totexen = 0
-Dim x As Integer
-        x = 1
+        
+Dim X As Integer
+        X = 1
 
         'DEFINE EL CONTADOR DEL PROGRESSBAR Y LO INICIA EN 0
         Dim d As Long
@@ -959,42 +987,47 @@ Dim x As Integer
 
         For Each item In col
             If item.estado = Anulada Then
-                .Cells(x + 3, 1).value = item.FEcha
-                .Cells(x + 3, 2).value = item.Comprobante
-                .Cells(x + 3, 3).value = "ANULADO"
-                .Cells(x + 3, 4).value = "ANULADO"
-                .Cells(x + 3, 5).value = "ANULADO"
-
-
-                .Cells(x + 3, 6).value = 0
-                .Cells(x + 3, 7).value = 0
-                .Cells(x + 3, 8).value = 0
-                .Cells(x + 3, 9).value = 0
-                .Cells(x + 3, 10).value = 0
-                .Range(.Cells(x + 3, 1), .Cells(x + 3, 10)).Font.Strikethrough = True
-                .Range(.Cells(x + 3, 1), .Cells(x + 3, 10)).Font.Italic = True
+                .Cells(X + 3, 1).value = item.FEcha
+                .Cells(X + 3, 2).value = item.Comprobante
+                .Cells(X + 3, 3).value = "ANULADO"
+                .Cells(X + 3, 4).value = "ANULADO"
+                .Cells(X + 3, 5).value = "ANULADO"
+                .Cells(X + 3, 6).value = "ANULADO"
+                .Cells(X + 3, 7).value = "ANULADO"
+                .Cells(X + 3, 8).value = 0
+                .Cells(X + 3, 9).value = 0
+                .Cells(X + 3, 10).value = 0
+                .Cells(X + 3, 11).value = 0
+                .Cells(X + 3, 12).value = 0
+                .Cells(X + 3, 13).value = 0
+            
+                .Range(.Cells(X + 3, 1), .Cells(X + 3, 13)).Font.Strikethrough = True
+                .Range(.Cells(X + 3, 1), .Cells(X + 3, 13)).Font.Italic = True
             Else
 
 
                 '.Cells(x + 3, 1).value = item.FEcha
 
-                .Cells(x + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
-                .Cells(x + 3, 2).value = item.Comprobante
-                .Cells(x + 3, 3).value = item.ComprobantePuntoVenta5
-                .Cells(x + 3, 4).value = item.ComprobanteNro8
-                .Cells(x + 3, 5).value = item.RazonSocial
-                .Cells(x + 3, 6).value = item.Cuit
-                .Cells(x + 3, 7).value = item.CondicionIva
+                .Cells(X + 3, 1).value = Format(item.FEcha, "mm/dd/yyyy")
+                .Cells(X + 3, 2).value = item.Comprobante
+                .Cells(X + 3, 3).value = item.ComprobantePuntoVenta5
+                .Cells(X + 3, 4).value = item.ComprobanteNro8
+                .Cells(X + 3, 5).value = item.RazonSocial
+                .Cells(X + 3, 6).value = item.Cuit
+                .Cells(X + 3, 7).value = item.CondicionIva
 
-
-                .Cells(x + 3, 8).value = item.NetoGravado
-                .Cells(x + 3, 9).value = item.Iva
-                .Cells(x + 3, 10).value = item.percepciones
-                .Cells(x + 3, 11).value = item.Exento
-                .Cells(x + 3, 12).value = item.total + item.Exento
+                .Cells(X + 3, 8).value = item.NetoGravado
+                .Cells(X + 3, 9).value = item.Iva
+                
+                .Cells(X + 3, 10).value = AlicuotaPercepcionParaMostrar(item.AlicuotaPercepcion)
+                .Cells(X + 3, 10).NumberFormat = "0.00"
+                
+                .Cells(X + 3, 11).value = item.percepciones
+                .Cells(X + 3, 12).value = item.Exento
+                .Cells(X + 3, 13).value = item.total + item.Exento
             End If
 
-            x = x + 1
+            X = X + 1
 
             'POR CADA ITERACION SUMA UN VALOR A LA VARIABLE D DEL PROGRESSBAR
             d = d + 1
@@ -1003,19 +1036,19 @@ Dim x As Integer
         Next item
 
 
-        A = "l" & x + 2
-        offset = x + 3
-        B = "l" & offset
+        A = "m" & X + 2
+        offset = X + 3
+        B = "m" & offset
         .Range("h1", B).NumberFormat = "0.00"
         .Range("a1", A).Borders.LineStyle = xlContinuous
 
-        .Range("h" & x + 3, B).Interior.Color = &HC0C0C0
-        .Range("h" & x + 3, B).Borders.LineStyle = xlContinuous
-        .Range("h" & x + 3, B).Font.Bold = True
+        .Range("h" & X + 3, B).Interior.Color = &HC0C0C0
+        .Range("h" & X + 3, B).Borders.LineStyle = xlContinuous
+        .Range("h" & X + 3, B).Font.Bold = True
 
-        .Cells(offset, 12).value = totales.item(PosicionTotales.TotTot)
-        .Cells(offset, 11).value = totales.item(PosicionTotales.TotExento)
-        .Cells(offset, 10).value = totales.item(PosicionTotales.totPercep)
+        .Cells(offset, 13).value = totales.item(PosicionTotales.TotTot)
+        .Cells(offset, 12).value = totales.item(PosicionTotales.TotExento)
+        .Cells(offset, 11).value = totales.item(PosicionTotales.totPercep)
         .Cells(offset, 9).value = totales.item(PosicionTotales.totIva)
         .Cells(offset, 8).value = totales.item(PosicionTotales.TotNetoGravado)
         .Cells(offset, 7).value = "Totales"
@@ -1094,3 +1127,10 @@ errEXCEL:
 End Function
 
 
+Private Function AlicuotaPercepcionParaMostrar(ByVal valor As Double) As Double
+    If valor >= 1 Then
+        AlicuotaPercepcionParaMostrar = funciones.RedondearDecimales((valor - 1) * 100, 2)
+    Else
+        AlicuotaPercepcionParaMostrar = 0
+    End If
+End Function

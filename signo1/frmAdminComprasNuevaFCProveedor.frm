@@ -27,12 +27,11 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   18177
       _ExtentY        =   1508
       _StockProps     =   79
-      Caption         =   "Ver detalle de Cta. Cte."
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.PushButton btnCtaCte 
          Height          =   495
-         Left            =   3960
-         TabIndex        =   62
+         Left            =   120
+         TabIndex        =   61
          Top             =   240
          Width           =   2535
          _Version        =   786432
@@ -41,27 +40,6 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          _StockProps     =   79
          Caption         =   "Ver Cta. Cte."
          UseVisualStyle  =   -1  'True
-      End
-      Begin XtremeSuiteControls.Label lblSaldoCtaCteProveedor 
-         Height          =   495
-         Left            =   240
-         TabIndex        =   61
-         Top             =   240
-         Width           =   3135
-         _Version        =   786432
-         _ExtentX        =   5530
-         _ExtentY        =   873
-         _StockProps     =   79
-         Caption         =   "lblSaldoCtaCte"
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
       End
    End
    Begin XtremeSuiteControls.GroupBox fraDetalleCtaCte 
@@ -585,7 +563,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   65470465
+      Format          =   16842753
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1005,6 +983,8 @@ Private Sub btnCtaCte_Click()
             Exit Sub
         End If
 
+        MostrarSaldoCtaCteProveedor
+        
         CargarDetalleCtaCteProveedor
 
         Me.Width = anchoConDetalle
@@ -1061,7 +1041,7 @@ Private Sub cboProveedores_Click()
 
     If Not loading Then
         OcultarDetalleCtaCte
-        MostrarSaldoCtaCteProveedor
+'''        MostrarSaldoCtaCteProveedor
     End If
 End Sub
 
@@ -1582,7 +1562,7 @@ Private Sub Form_Load()
     
     Me.fraDetalleCtaCte.Visible = False
     Me.btnCtaCte.caption = "Ver Cta. Cte."
-    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: 0.00"
+'''    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: 0.00"
 
     GridEXHelper.CustomizeGrid Me.gridDetalleCtaCte
     Me.gridDetalleCtaCte.ItemCount = 0
@@ -1632,47 +1612,6 @@ Private Sub FacturaRequiereNumeroFormateado()
 ErrHandler:
     MsgBox "Error al configurar el formato del número: " & Err.Description, vbExclamation, "Error"
 End Sub
-
-
-'''Private Sub FacturaRequiereNumeroFormateado()
-''''dnemer
-'''    Dim idtipo As Integer
-'''    idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
-'''    Dim cx As clsConfigFacturaProveedor
-'''
-'''    Set cx = DAOConfigFacturaProveedor.GetById(idtipo)
-'''
-''''    Debug.Print (Len(vFactura.numero))
-'''
-'''    '    If IsSomething(cx) Then
-'''    '        If (Len(vFactura.numero)) = 15 Then
-'''    '            If cx.FormateaNumero Then
-'''    '
-'''    '                Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
-'''    '                Me.txtNumeroMask.MaxLength = 15
-'''    '            End If
-'''    '        ElseIf (Len(vFactura.numero)) = 13 Then
-'''    '            If cx.FormateaNumero Then
-'''    '
-'''    '                Me.txtNumeroMask.SetMask "0000-00000000", "____-________"
-'''    '                Me.txtNumeroMask.MaxLength = 13
-'''    '            End If
-'''    '        Else
-'''    '            Me.txtNumeroMask.SetMask "", ""
-'''    '            Me.txtNumeroMask.MaxLength = 0
-'''    '        End If
-'''    'End If
-'''    '    If IsSomething(cx) Then
-'''    '        If cx.FormateaNumero Then
-'''    '        Debug.Print (Me.txtNumeroMask)
-'''    '            Me.txtNumeroMask.SetMask "000000-00000000", "______-________"
-'''    '            Me.txtNumeroMask.MaxLength = 15
-'''    '        Else
-'''    '            Me.txtNumeroMask.SetMask "", ""
-'''    '            Me.txtNumeroMask.MaxLength = 0
-'''    '        End If
-'''    '    End If
-'''End Sub
 
 
 Private Sub llenarGrillaPercepciones()
@@ -1957,10 +1896,43 @@ End Sub
 
 
 Private Sub txtCuit_Validate(Cancel As Boolean)
+    On Error GoTo err1
+
+    Dim cuitLimpio As String
     Dim F As String
-    F = "proveedores.cuit = " & Escape(Replace(Me.txtCuit.Text, "-", vbNullString))
-    Cancel = DAOProveedor.FindAll(F).count > 0
-    If Cancel Then MsgBox "Ya existe un proveedor con ese CUIT.", vbExclamation
+    Dim duplicados As Collection
+
+    cuitLimpio = Replace(Trim$(Me.txtCuit.Text), "-", vbNullString)
+
+    If cuitLimpio = vbNullString Then Exit Sub
+
+    'Si está editando un proveedor existente, excluyo el mismo proveedor
+    F = "proveedores.cuit = " & Escape(cuitLimpio)
+
+    If IsSomething(Proveedor) Then
+        If Proveedor.Id > 0 Then
+            F = F & " AND proveedores.id <> " & Proveedor.Id
+        End If
+    End If
+
+    Set duplicados = DAOProveedor.FindAll(F)
+
+    If duplicados.count > 0 Then
+
+        'Solo permito CUIT duplicado si el proveedor que estoy cargando es del exterior
+        If Not EsProveedorExteriorSeleccionado() Then
+            Cancel = True
+            MsgBox "Ya existe un proveedor con ese CUIT. Solo se permite CUIT duplicado para proveedores del exterior.", vbExclamation
+            Exit Sub
+        End If
+
+    End If
+
+    Exit Sub
+
+err1:
+    Cancel = True
+    MsgBox "Error al validar CUIT del proveedor: " & Err.Description, vbCritical, "Error"
 End Sub
 
 
@@ -2211,6 +2183,7 @@ Private Sub OcultarDetalleCtaCte()
     Set detallesCtaCte = Nothing
 End Sub
 
+
 Private Sub MostrarSaldoCtaCteProveedor()
     On Error GoTo err1
 
@@ -2219,7 +2192,7 @@ Private Sub MostrarSaldoCtaCteProveedor()
     Dim detallesSaldo As Collection
     Dim saldoProv As Double
 
-    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: 0.00"
+'''    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: 0.00"
 
     If Me.cboProveedores.ListIndex = -1 Then Exit Sub
 
@@ -2230,15 +2203,35 @@ Private Sub MostrarSaldoCtaCteProveedor()
 
     Set detallesSaldo = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , condition, True)
 
-    If IsSomething(detallesSaldo) Then
-        saldoProv = DAOCuentaCorriente.GetSaldo(detallesSaldo)
-
-        Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: " & _
-            Replace(FormatCurrency(funciones.FormatearDecimales(saldoProv)), "$", "")
-    End If
+'''    If IsSomething(detallesSaldo) Then
+'''        saldoProv = DAOCuentaCorriente.GetSaldo(detallesSaldo)
+'''
+'''        Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: " & _
+'''            Replace(FormatCurrency(funciones.FormatearDecimales(saldoProv)), "$", "")
+'''    End If
 
     Exit Sub
 
 err1:
-    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: -"
+'''    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: -"
 End Sub
+
+
+Private Function EsProveedorExteriorSeleccionado() As Boolean
+    On Error GoTo err1
+
+    Dim textoTipoIva As String
+
+    If Me.cboTipoIva.ListIndex = -1 Then Exit Function
+
+    textoTipoIva = UCase$(Trim$(Me.cboTipoIva.list(Me.cboTipoIva.ListIndex)))
+
+    EsProveedorExteriorSeleccionado = _
+        (InStr(1, textoTipoIva, "EXTERIOR", vbTextCompare) > 0) Or _
+        (InStr(1, textoTipoIva, "EXTRANJERO", vbTextCompare) > 0)
+
+    Exit Function
+
+err1:
+    EsProveedorExteriorSeleccionado = False
+End Function

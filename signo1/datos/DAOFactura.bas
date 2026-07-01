@@ -1907,6 +1907,9 @@ Public Function VerFacturaElectronicaParaImpresion(idFactura As Long)
         seccion.Controls.item("lblTotalTributos").caption = funciones.FormatearDecimales(F.totalPercepciones)
         seccion.Controls.item("lblTotal").caption = funciones.FormatearDecimales(F.total)
 
+        ChDrive App.path
+        ChDir App.path
+        
         QRHelper.generar F
         
         Set seccion.Controls.item("qrcode").Picture = LoadPicture(App.path & "\" & F.Id & ".bmp")
@@ -2008,8 +2011,6 @@ Public Function Imprimir(idFactura As Long) As Boolean
     Printer.CurrentX = 6800
     Printer.Font.Size = 6
     Printer.Print "Control " & objFac.numero  'rs!nroFactura
-
-
 
     Dim x
     Dim xval

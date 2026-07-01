@@ -34,6 +34,7 @@ Public AlicuotasIva As New Collection
 Public NetosGravado As New Collection
 Public ImpuestoInterno As Double
 Public redondeo As Double
+Public m_AlicuotaPercepcion As Double
 
 Public Function TienePercepcionesIVA() As Boolean
     Dim P As clsPercepcionesAplicadas
@@ -154,4 +155,14 @@ Public Property Get EstadoForCompras() As EstadoFacturaProveedor
             EstadoForCompras = EstadoFacturaProveedor.EnProceso
         End If
     End If
+End Property
+
+
+
+Public Property Get AlicuotaPercepcion() As Double
+    AlicuotaPercepcion = m_AlicuotaPercepcion
+End Property
+
+Public Property Let AlicuotaPercepcion(ByVal value As Double)
+    m_AlicuotaPercepcion = value
 End Property

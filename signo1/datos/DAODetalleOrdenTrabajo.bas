@@ -860,4 +860,88 @@ Public Function FindAllConjunto(Optional ByVal idDetallePedido As Long = 0, Opti
 End Function
 
 
+Public Function SincronizarComponentesFaltantes( _
+        ByVal detalle As DetalleOrdenTrabajo) As Long
 
+    On Error GoTo ManejarError
+
+    Dim st As New classStock
+    Dim rsArbol As Recordset
+    Dim rsExiste As Recordset
+    Dim q As String
+    Dim insertados As Long
+
+    SincronizarComponentesFaltantes = 0
+
+    If detalle Is Nothing Then Exit Function
+    If detalle.Id <= 0 Then Exit Function
+    If detalle.Pieza Is Nothing Then Exit Function
+    If Not detalle.Pieza.EsConjunto Then Exit Function
+
+    Set rsArbol = st.ArbolConjunto(detalle.Pieza.Id)
+
+    conectar.BeginTransaction
+
+    Do While Not rsArbol.EOF
+
+        q = "SELECT id " & _
+            "FROM detalles_pedidos_conjuntos " & _
+            "WHERE idDetalle_pedido = " & detalle.Id & _
+            " AND idPiezaPadre = " & rsArbol!idPiezaPadre & _
+            " AND idPieza = " & rsArbol!idPieza & _
+            " AND identificador_posicion = " & _
+                conectar.Escape(rsArbol!id_pos) & _
+            " LIMIT 1"
+
+        Set rsExiste = conectar.RSFactory(q)
+
+        If rsExiste.EOF Then
+
+            q = "INSERT INTO detalles_pedidos_conjuntos (" & _
+                "idPedido, " & _
+                "idDetalle_pedido, " & _
+                "IdPiezaPadre, " & _
+                "idPieza, " & _
+                "esConjunto, " & _
+                "cantidad, " & _
+                "reserva_stock, " & _
+                "cantidadPieza, " & _
+                "cantidad_total_static, " & _
+                "identificador_posicion" & _
+                ") VALUES (" & _
+                detalle.OrdenTrabajo.Id & ", " & _
+                detalle.Id & ", " & _
+                rsArbol!idPiezaPadre & ", " & _
+                rsArbol!idPieza & ", " & _
+                rsArbol!conjunto & ", " & _
+                conectar.Escape(rsArbol!Cantidad) & ", " & _
+                "0, " & _
+                conectar.Escape(rsArbol!Cantidad) & ", " & _
+                conectar.Escape(rsArbol!Cantt * detalle.CantidadPedida) & ", " & _
+                conectar.Escape(rsArbol!id_pos) & ")"
+
+            If Not conectar.execute(q) Then
+                Err.Raise vbObjectError + 1001, _
+                          "SincronizarComponentesFaltantes", _
+                          "No se pudo insertar el componente " & _
+                          rsArbol!id_pos
+            End If
+
+            insertados = insertados + 1
+        End If
+
+        rsArbol.MoveNext
+    Loop
+
+    conectar.CommitTransaction
+
+    SincronizarComponentesFaltantes = insertados
+    Exit Function
+
+ManejarError:
+    conectar.RollBackTransaction
+
+    MsgBox Err.Description, _
+           vbCritical, _
+           "Sincronización del conjunto"
+End Function

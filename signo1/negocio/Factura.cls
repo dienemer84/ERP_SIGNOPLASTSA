@@ -157,10 +157,36 @@ End Property
 
 
 Public Function GetCodigoDocumentoAfip() As Integer
-    If Tipo.TipoDoc = tipoDocumentoContable.notaDebito Then GetCodigoDocumentoAfip = 2
-    If Tipo.TipoDoc = tipoDocumentoContable.notaCredito Then GetCodigoDocumentoAfip = 3
-    If Tipo.TipoDoc = tipoDocumentoContable.Factura Then GetCodigoDocumentoAfip = 1
 
+    If esCredito Then
+        Select Case Tipo.TipoDoc
+            Case tipoDocumentoContable.Factura
+                GetCodigoDocumentoAfip = 201
+
+            Case tipoDocumentoContable.notaDebito
+                GetCodigoDocumentoAfip = 202
+
+            Case tipoDocumentoContable.notaCredito
+                GetCodigoDocumentoAfip = 203
+
+            Case Else
+                Err.Raise vbObjectError + 1000, , "Tipo de documento no contemplado para comprobante de crédito."
+        End Select
+    Else
+        Select Case Tipo.TipoDoc
+            Case tipoDocumentoContable.Factura
+                GetCodigoDocumentoAfip = 1
+
+            Case tipoDocumentoContable.notaDebito
+                GetCodigoDocumentoAfip = 2
+
+            Case tipoDocumentoContable.notaCredito
+                GetCodigoDocumentoAfip = 3
+
+            Case Else
+                Err.Raise vbObjectError + 1001, , "Tipo de documento no contemplado para comprobante común."
+        End Select
+    End If
 
 End Function
 

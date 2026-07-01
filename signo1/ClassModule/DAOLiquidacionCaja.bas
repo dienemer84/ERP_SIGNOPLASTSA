@@ -576,8 +576,12 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     
         If cascada Then
 
-        q = "SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
+        q = "SELECT id_cheque " _
+            & "FROM liquidaciones_caja_cheques " _
+            & "WHERE id_liquidacion_caja = " & op.Id
+            
         q = q & " AND id_cheque NOT IN (-1"
+        
         If op.ChequesTerceros.count > 0 Then
             q = q & ", " & funciones.JoinCollectionValues(op.ChequesTerceros, ", ", "id")
         End If
@@ -593,13 +597,15 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         Wend
 
 
-        q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
+        q = "DELETE FROM liquidaciones_caja_cheques " _
+            & "WHERE id_liquidacion_caja = " & op.Id
         If Not conectar.execute(q) Then GoTo E
 
         Dim che As cheque
         For Each che In op.ChequesTerceros
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = op.Id
+            che.IdOrdenPagoOrigen = 0
+            che.IdLiquidacionCajaOrigen = op.Id
             che.FechaEmision = op.FEcha
             'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
             If Not DAOCheques.Guardar(che) Then GoTo E
@@ -610,7 +616,8 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
 
         For Each che In op.ChequesPropios
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = op.Id
+            che.IdOrdenPagoOrigen = 0
+            che.IdLiquidacionCajaOrigen = op.Id
             che.FechaEmision = op.FEcha
             'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
             If op.EsParaFacturaProveedor And op.FacturasProveedor.count > 0 Then che.OrigenDestino = op.FacturasProveedor(1).Proveedor.RazonSocial

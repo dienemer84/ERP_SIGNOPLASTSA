@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66322433
+         Format          =   65994753
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66322433
+         Format          =   65994753
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66322433
+         Format          =   65994753
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66322433
+         Format          =   65994753
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   66322433
+         Format          =   65994753
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1903,10 +1903,10 @@ Private Sub AgregarEntregas(col As Collection)
             detalle.Cantidad = redeta.Cantidad
             detalle.detalle = redeta.VerElemento
             detalle.PorcentajeDescuento = 0
-            detalle.Bruto = redeta.Valor
+            detalle.Bruto = redeta.valor
             Set Ot = DAOOrdenTrabajo.FindById(redeta.IdPedido)
             If IsSomething(Ot) Then
-                detalle.Bruto = MonedaConverter.Convertir(redeta.Valor, Ot.moneda.Id, Factura.moneda.Id)
+                detalle.Bruto = MonedaConverter.Convertir(redeta.valor, Ot.moneda.Id, Factura.moneda.Id)
 
                 If Ot.moneda.Id <> Factura.moneda.Id Then
                     'MsgBox ("Tenemos monedas distintas")
@@ -2862,9 +2862,9 @@ Private Sub gridDetalles_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not IsNumeric(Me.gridDetalles.value(1)) Or Not IsNumeric(Me.gridDetalles.value(3)) Or Not IsNumeric(Me.gridDetalles.value(4))
 End Sub
 
-Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
-        Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
+Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(X, Y) = jgexHitTestConstants.jgexHTCell Then
+        Dim row As Long: row = Me.gridDetalles.RowFromPoint(X, Y)
         If row > 0 Then
             Set detalle = Factura.detalles.item(Me.gridDetalles.RowIndex(row))
             If IsSomething(detalle) Then
@@ -3021,7 +3021,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                             transactionResult = transactionResult And DAORemitoS.Guardar(remi, False, False)
                             transactionResult = transactionResult And DAOFacturaDetalles.Guardar(detaFactRemito)
                             transactionResult = transactionResult And DAORemitoSDetalle.Guardar(redeta)
-                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.Valor, Factura.Id, Factura.moneda.Id, Factura.CambioAPatron, Factura.TipoCambioAjuste)
+                            transactionResult = transactionResult And DAODetalleOrdenTrabajo.SaveCantidad(redeta.idDetallePedido, redeta.Cantidad, CantidadFacturada_, redeta.valor, Factura.Id, Factura.moneda.Id, Factura.CambioAPatron, Factura.TipoCambioAjuste)
 
                             If transactionResult Then
 

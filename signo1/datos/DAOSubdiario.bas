@@ -198,31 +198,39 @@ Public Function SubDiarioVentas(FechaDesde As Date, FechaHasta As Date, Optional
         End If
 
         Set sv = New SubdiarioVentasDetalle
+        
         sv.Comprobante = fc.GetShortDescription(False, False)
+        
         sv.CondicionIva = fc.Cliente.TipoIVA.detalle
+        
         sv.Cuit = fc.Cliente.Cuit
-        'sv.Exento = fc.TotalEstatico.TotalExento
+        
         sv.FEcha = fc.FechaEmision
 
-        'If fc.numero = 10125 Then Stop
-        'If sv.ComprobanteNro = 9225 Then Stop
         sv.Iva = RedondearDecimales(fc.TotalEstatico.TotalIVADiscrimandoONo * fc.CambioAPatron) * negativo
 
         sv.percepciones = RedondearDecimales(fc.TotalEstatico.TotalPercepcionesIB * fc.CambioAPatron) * negativo
-
-        'If sv.PercepcionesIB > 0.01 And sv.PercepcionesIB < 0.1 Then Stop
-
+        
+        sv.AlicuotaPercepcion = fc.AlicuotaPercepcionesIIBB
+        
+        sv.Exento = RedondearDecimales(fc.TotalEstatico.TotalExento * fc.CambioAPatron) * negativo
+        
+        sv.NetoGravado = RedondearDecimales(fc.TotalEstatico.TotalNetoGravado * fc.CambioAPatron) * negativo
 
         sv.Exento = RedondearDecimales(fc.TotalEstatico.TotalExento * fc.CambioAPatron) * negativo
-        ' If sv.Exento = 0 Then
+
         sv.NetoGravado = RedondearDecimales(fc.TotalEstatico.TotalNetoGravado * fc.CambioAPatron) * negativo
-        'End If
+
         sv.total = funciones.RedondearDecimales(sv.percepciones + sv.NetoGravado + sv.Iva)  '* negativo '+ excento quitado 19-11-14
 
         sv.RazonSocial = fc.Cliente.razon
+        
         sv.estado = fc.estado
+        
         sv.FacturaId = fc.Id
-
+        
+        
+        
         newcol.Add sv
     Next
 
