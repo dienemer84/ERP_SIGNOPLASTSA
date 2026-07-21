@@ -17,9 +17,6 @@ Public Id As Long
 Public Monto As Double
 
 Public moneda As clsMoneda
-
-
-
 Public FechaCarga As Date
 Public FechaOperacion As Date
 Public IdPertenencia As Long
@@ -31,8 +28,15 @@ Public OrdenPagoID As String
 Public OrdenPago As OrdenPago
 Public LiquidacionCaja As clsLiquidacionCaja
 
+
 Public PagoACuentaID As Long
 Public PagoACuentaProveedor As String
+
+Public NombreCaja As String
+
+Public MovimientoCajaBancoID As Long
+Public TipoMovimientoCajaBanco As String
+Public ObservacionesMovimiento As String
 
 Public ProveedorRazon As String
 Public Proveedor As clsProveedor
@@ -47,4 +51,9 @@ Public OPAplicada As Long
 Private Sub Class_Initialize()
     Me.EntradaSalida = OPEntrada
 End Sub
+
+Public Property Get EsMovimientoCajaBanco() As Boolean
+    EsMovimientoCajaBanco = (Me.MovimientoCajaBancoID > 0)
+End Property
+
 

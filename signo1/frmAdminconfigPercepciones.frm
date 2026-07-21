@@ -230,6 +230,7 @@ Dim clasea As New classAdministracion
 Private Sub Command1_Click()
     Unload Me
 End Sub
+
 Private Sub Command2_Click()
     On Error GoTo err55
     Dim strsql As String
@@ -253,12 +254,14 @@ err55:
     End If
     verRecordset
 End Sub
+
 Private Sub verRecordset()
     Set rs = conectar.RSFactoryCliente("select * from AdminConfigPercepciones")
 
 
     Set Me.DataGrid1.DataSource = rs
 End Sub
+
 Private Sub DataGrid1_DblClick()
     Dim estado As Boolean
     If MsgBox("¿Desea cambiar el estado de esta perecpción?", vbYesNo, "Confirmación") = vbYes Then
@@ -269,6 +272,7 @@ Private Sub DataGrid1_DblClick()
         verRecordset
     End If
 End Sub
+
 Private Sub Form_Load()
     FormHelper.Customize Me
     verRecordset

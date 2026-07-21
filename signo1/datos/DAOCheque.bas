@@ -463,11 +463,11 @@ Public Function Map3(ByRef rs As Recordset, _
         tmpCheque.IdLiquidacionCajaOrigen = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "liquidacion_caja_origen")
         
-        If IsNull(rs.Fields("numero_liquidacion_caja").value) Then
-            tmpCheque.NumeroLiquidacionCaja = 0
+        If LenB(LiquidacionesC) > 0 Then
+            tmpCheque.NumeroLiquidacionCaja = GetValue( _
+                rs, fieldsIndex, LiquidacionesC, "numero_liq")
         Else
-            tmpCheque.NumeroLiquidacionCaja = _
-                CLng(rs.Fields("numero_liquidacion_caja").value)
+            tmpCheque.NumeroLiquidacionCaja = 0
         End If
 
         tmpCheque.NumeroPagoACuenta = GetValue( _

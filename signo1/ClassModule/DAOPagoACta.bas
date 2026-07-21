@@ -540,7 +540,14 @@ Public Function Guardar(pcta As clsPagoACta, Optional cascada As Boolean = False
         q = q & ")"
         Set rs = conectar.RSFactory(q)
         While Not rs.EOF
-            q = "UPDATE Cheques SET en_cartera = 1, observaciones = NULL, origen= NULL WHERE id = " & rs!id_cheque
+            
+            q = "UPDATE Cheques SET " _
+            & "en_cartera = 1, " _
+            & "observaciones = NULL, " _
+            & "origen = NULL, " _
+            & "pago_a_cuenta_origen = NULL " _
+            & "WHERE id = " & rs!id_cheque
+            
             If Not conectar.execute(q) Then GoTo E
             rs.MoveNext
         Wend
@@ -550,26 +557,40 @@ Public Function Guardar(pcta As clsPagoACta, Optional cascada As Boolean = False
         If Not conectar.execute(q) Then GoTo E
 
         Dim che As cheque
+        
         For Each che In pcta.ChequesTerceros
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = pcta.Id
+        
+            che.IdOrdenPagoOrigen = 0
+            che.IdLiquidacionCajaOrigen = 0
+            che.NumeroMovimiento = 0
+            che.NumeroPagoACuenta = pcta.Id
+        
             che.FechaEmision = pcta.FEcha
-            
+        
             If Not DAOCheques.Guardar(che) Then GoTo E
-
-            q = "INSERT INTO pagos_a_cuenta_cheques VALUES (" & pcta.Id & ", " & che.Id & ")"
+        
+            q = "INSERT INTO pagos_a_cuenta_cheques " _
+              & "VALUES (" & pcta.Id & ", " & che.Id & ")"
+        
             If Not conectar.execute(q) Then GoTo E
-            
         Next che
 
         For Each che In pcta.ChequesPropios
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = pcta.Id
+        
+            che.IdOrdenPagoOrigen = 0
+            che.IdLiquidacionCajaOrigen = 0
+            che.NumeroMovimiento = 0
+            che.NumeroPagoACuenta = pcta.Id
+        
             che.FechaEmision = pcta.FEcha
         
+            If Not DAOCheques.Guardar(che) Then GoTo E
         
-        If Not DAOCheques.Guardar(che) Then GoTo E
-            q = "INSERT INTO pagos_a_cuenta_cheques VALUES (" & pcta.Id & ", " & che.Id & ")"
+            q = "INSERT INTO pagos_a_cuenta_cheques " _
+              & "VALUES (" & pcta.Id & ", " & che.Id & ")"
+        
             If Not conectar.execute(q) Then GoTo E
         Next che
  

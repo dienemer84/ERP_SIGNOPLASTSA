@@ -1552,14 +1552,8 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
         Dim DetalleComprobante As clsDetalleComprobante
         Dim colDetallesOP As New Collection
         
-        totalComprobantes = 0
-        
-        Set colDetallesOP = DAOOrdenPago.FindAllDetallesAbonadoOP(F.Id, Orden.Id)
-        
-        For Each DetalleComprobante In colDetallesOP
-            totalComprobantes = totalComprobantes + DetalleComprobante.Otros + DetalleComprobante.NetoGravado
-        Next DetalleComprobante
-        
+        totalComprobantes = DAOOrdenPago.GetImporteAbonadoOP(F.Id, Orden.Id)
+ 
         totalStr = Replace(FormatCurrency(funciones.FormatearDecimales(totalComprobantes)), "$", "")
 
         Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) - Printer.TextWidth(totalStr)
@@ -1728,24 +1722,24 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.Print "PERCEPCIONES: "
     Printer.FontBold = False
 
-    Dim percepcion As clsPercepcionesOrdenPago
+    Dim Percepcion As clsPercepcionesOrdenPago
     Dim monedaPercepcion As String
     c = 0
 
-    For Each percepcion In Orden.percepciones
+    For Each Percepcion In Orden.percepciones
         c = c + 1
         
         monedaPercepcion = ""
-        If Not percepcion.moneda Is Nothing Then
-            monedaPercepcion = percepcion.moneda.NombreCorto & " "
+        If Not Percepcion.moneda Is Nothing Then
+            monedaPercepcion = Percepcion.moneda.NombreCorto & " "
         End If
         
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print "Fecha: " & percepcion.FEcha & _
-                      " | Comprobante: " & percepcion.Comprobante & _
-                      " | Tipo: " & percepcion.Tipo & _
-                      " | " & monedaPercepcion & Replace(FormatCurrency(funciones.FormatearDecimales(percepcion.Monto)), "$", "")
-    Next percepcion
+        Printer.Print "Fecha: " & Percepcion.FEcha & _
+                      " | Comprobante: " & Percepcion.Comprobante & _
+                      " | Tipo: " & Percepcion.Tipo & _
+                      " | " & monedaPercepcion & Replace(FormatCurrency(funciones.FormatearDecimales(Percepcion.Monto)), "$", "")
+    Next Percepcion
     
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -2156,3 +2150,42 @@ Public Function ExportarOrdenPago(OrdenPago As OrdenPago) As Boolean
 err1:
     ExportarOrdenPago = False
 End Function
+
+
+Public Function GetImporteAbonadoOP(facid As Long, opid As Long) As Double
+    On Error GoTo ErrorHandler
+
+    Dim q As String
+    Dim rs As Recordset
+
+    q = "SELECT IFNULL(SUM(" & _
+        "IFNULL(neto_gravado_abonado, 0) + " & _
+        "IFNULL(otros_abonado, 0)), 0) AS importe " & _
+        "FROM ordenes_pago_facturas " & _
+        "WHERE id_factura_proveedor = " & facid & " " & _
+        "AND id_orden_pago = " & opid
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+        GetImporteAbonadoOP = CDbl(rs!Importe)
+    Else
+        GetImporteAbonadoOP = 0
+    End If
+
+    rs.Close
+    Set rs = Nothing
+    Exit Function
+
+ErrorHandler:
+    GetImporteAbonadoOP = 0
+
+    If Not rs Is Nothing Then
+        If rs.State = adStateOpen Then rs.Close
+    End If
+
+    Set rs = Nothing
+End Function
+
+
+

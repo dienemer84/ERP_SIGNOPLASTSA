@@ -7,77 +7,52 @@ Public Const CAMPO_MINIMO As String = "minimo_imponible"
 Public Const TABLA_RETENCION As String = "ret"
 
 
-
-
 Public Function FindAllWithAlicuotas(Cuit As String) As Collection
-
-    Dim d As New clsDTOPadronIIBB
-    Dim col2 As New Collection
-    Dim ali As New Collection
-
-    Set col2 = DTOPadronIIBB.FindByCUIT2(Cuit)
-
+    Dim colPadron As Collection
     Dim retenciones As Collection
-    Set retenciones = FindAllEsAgente
+    Dim ali As Collection
 
     Dim rx As Retencion
-    Dim C As clsDTOPadronIIBB
-    Set alicuotas = New Collection
+    Dim c As clsDTOPadronIIBB
     Dim x As DTORetencionAlicuota
-    For Each C In col2
 
-        For Each rx In retenciones
+    Set colPadron = DTOPadronIIBB.FindByCUIT2(Cuit)
+    Set retenciones = FindAllEsAgente()
+    Set ali = New Collection
 
-            If rx.IdPadron = C.IdPadron Then
+    For Each rx In retenciones
 
-                Set x = New DTORetencionAlicuota
-                x.alicuotaRetencion = C.alicuotaRetencion
-                x.alicuotaPercepcion = C.alicuotaPercepcion
-                x.importe = 0
-                x.dePadron = True
-                Set x.Retencion = rx
-                ali.Add x, CStr(C.IdPadron)
+        Set c = Nothing
 
-            End If
-
-        Next
-
-    Next
-
-    Dim P As New Collection
-    Set P = DAORetenciones.FindAllEsAgente
-
-    Dim aa As Retencion
-
-
-    For Each aa In P
-        If Not Contains(aa, ali) Then
-
-            Dim xl As New DTORetencionAlicuota
-            Set xl = New DTORetencionAlicuota
-
-            Set xl.Retencion = aa
-            xl.dePadron = False
-            If aa.IdPadron = 0 Then
-                ali.Add xl    ', aa.nombre
-            Else
-                ali.Add xl    ', aa.IdPadron
-            End If
+        If rx.idPadron <> 0 Then
+            Set c = BuscarPadronPorId(colPadron, rx.idPadron)
         End If
-    Next
 
+        Set x = New DTORetencionAlicuota
+        Set x.Retencion = rx
+        x.Importe = 0
 
+        If Not c Is Nothing Then
+            x.alicuotaRetencion = c.alicuotaRetencion
+            x.alicuotaPercepcion = c.alicuotaPercepcion
+            x.dePadron = True
+        Else
+            x.dePadron = False
+        End If
 
+        ali.Add x
 
+    Next rx
 
     Set FindAllWithAlicuotas = ali
-
 End Function
-Private Function Contains(r As Retencion, C As Collection)
+
+
+Private Function Contains(r As Retencion, c As Collection)
     Dim c1 As Boolean
     c1 = False
     Dim i As DTORetencionAlicuota
-    For Each i In C
+    For Each i In c
         If i.Retencion.Id = r.Id Then
             c1 = True
         End If
@@ -87,40 +62,43 @@ End Function
 
 
 Public Function FindAllWithAlicuotasAnt(Cuit As String) As Collection
-
-    Dim d As New clsDTOPadronIIBB
-    Dim col2 As New Collection
-    Dim ali As New Collection
-
-    Set col2 = DTOPadronIIBB.FindByCUITAnt(Cuit)
-
+    Dim colPadron As Collection
     Dim retenciones As Collection
-    Set retenciones = FindAllEsAgente
+    Dim ali As Collection
 
     Dim rx As Retencion
-    Dim C As clsDTOPadronIIBB
-    Set alicuotas = New Collection
+    Dim c As clsDTOPadronIIBB
     Dim x As DTORetencionAlicuota
-    For Each C In col2
 
-        For Each rx In retenciones
+    Set colPadron = DTOPadronIIBB.FindByCUITAnt(Cuit)
+    Set retenciones = FindAllEsAgente()
+    Set ali = New Collection
 
-            If rx.IdPadron = C.IdPadron Then
+    For Each rx In retenciones
 
-                Set x = New DTORetencionAlicuota
-                x.alicuotaRetencion = C.alicuotaRetencion
-                x.alicuotaPercepcion = C.alicuotaPercepcion
-                Set x.Retencion = rx
-                ali.Add x, CStr(C.IdPadron)
+        Set c = Nothing
 
-            End If
+        If rx.idPadron <> 0 Then
+            Set c = BuscarPadronPorId(colPadron, rx.idPadron)
+        End If
 
-        Next
+        Set x = New DTORetencionAlicuota
+        Set x.Retencion = rx
+        x.Importe = 0
 
-    Next
+        If Not c Is Nothing Then
+            x.alicuotaRetencion = c.alicuotaRetencion
+            x.alicuotaPercepcion = c.alicuotaPercepcion
+            x.dePadron = True
+        Else
+            x.dePadron = False
+        End If
+
+        ali.Add x
+
+    Next rx
 
     Set FindAllWithAlicuotasAnt = ali
-
 End Function
 
 Public Function FindById(Id As Long) As Retencion
@@ -133,21 +111,23 @@ Public Function FindById(Id As Long) As Retencion
 End Function
 
 Public Function FindAllEsAgente() As Collection
-    Set FindAllEsAgente = FindAll("1=1 and retiene=1")  'fix 28-3-2020  'reemplazar por EsAgente cuando vea el tema de los permisos de la tabla.
+    Set FindAllEsAgente = FindAll("1=1 AND retiene=1", OrderByRetencionesFijo())
+    
 End Function
 
-Public Function FindAll(Optional whereFilter As String = "1 = 1") As Collection
-    Dim tickStart As Double
-    Dim tickend As Double
-    tickStart = GetTickCount
+Public Function FindAll(Optional whereFilter As String = "1 = 1", Optional orderBy As String = "") As Collection
     Dim rs As ADODB.Recordset
     Dim q As String
     Dim col As New Collection
 
-    q = "SELECT * from retenciones ret WHERE " & whereFilter
+    q = "SELECT * FROM retenciones ret WHERE " & whereFilter
 
+    If LenB(Trim$(orderBy)) > 0 Then
+        q = q & " ORDER BY " & orderBy
+    End If
 
     Set rs = conectar.RSFactory(q)
+
     Dim fieldsIndex As Dictionary
     BuildFieldsIndex rs, fieldsIndex
 
@@ -174,7 +154,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As R
         T.nombre = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_NOMBRE)
         T.Porcentaje = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_PORCENTAJE)
         T.MinimoImponible = GetValue(rs, indice, tabla, DAORetenciones.CAMPO_MINIMO)
-        T.IdPadron = GetValue(rs, indice, tabla, "id_padron")
+        T.idPadron = GetValue(rs, indice, tabla, "id_padron")
     End If
 
     Set Map = T
@@ -195,4 +175,33 @@ Public Function llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
         cbo.ListIndex = 0
     End If
 
+End Function
+
+
+Private Function OrderByRetencionesFijo() As String
+    OrderByRetencionesFijo = _
+        "CASE " & _
+        " WHEN UPPER(ret.retencion) LIKE '%IIBB%' " & _
+        "  AND (UPPER(ret.retencion) LIKE '%BS AS%' " & _
+        "       OR UPPER(ret.retencion) LIKE '%BSAS%' " & _
+        "       OR UPPER(ret.retencion) LIKE '%BUENOS AIRES%') THEN 10 " & _
+        " WHEN UPPER(ret.retencion) LIKE '%IIBB%' " & _
+        "  AND UPPER(ret.retencion) LIKE '%CABA%' THEN 20 " & _
+        " WHEN UPPER(ret.retencion) LIKE '%GANANCIAS%' THEN 30 " & _
+        " ELSE 999 " & _
+        "END, ret.retencion"
+End Function
+
+
+Private Function BuscarPadronPorId(ByVal colPadron As Collection, ByVal idPadron As Long) As clsDTOPadronIIBB
+    Dim c As clsDTOPadronIIBB
+
+    For Each c In colPadron
+        If c.idPadron = idPadron Then
+            Set BuscarPadronPorId = c
+            Exit Function
+        End If
+    Next c
+
+    Set BuscarPadronPorId = Nothing
 End Function

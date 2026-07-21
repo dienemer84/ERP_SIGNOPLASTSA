@@ -424,17 +424,17 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Column(6)       =   "frmAdminPagosTransferenciasBancarias.frx":077C
       Column(7)       =   "frmAdminPagosTransferenciasBancarias.frx":0940
       Column(8)       =   "frmAdminPagosTransferenciasBancarias.frx":0ABC
-      Column(9)       =   "frmAdminPagosTransferenciasBancarias.frx":0C2C
-      Column(10)      =   "frmAdminPagosTransferenciasBancarias.frx":0DA0
+      Column(9)       =   "frmAdminPagosTransferenciasBancarias.frx":0C30
+      Column(10)      =   "frmAdminPagosTransferenciasBancarias.frx":0DA4
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0F1C
-      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":1054
-      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":1104
-      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":11B8
-      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":1290
-      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":1348
+      FormatStyle(1)  =   "frmAdminPagosTransferenciasBancarias.frx":0F20
+      FormatStyle(2)  =   "frmAdminPagosTransferenciasBancarias.frx":1058
+      FormatStyle(3)  =   "frmAdminPagosTransferenciasBancarias.frx":1108
+      FormatStyle(4)  =   "frmAdminPagosTransferenciasBancarias.frx":11BC
+      FormatStyle(5)  =   "frmAdminPagosTransferenciasBancarias.frx":1294
+      FormatStyle(6)  =   "frmAdminPagosTransferenciasBancarias.frx":134C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":1428
+      PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":142C
    End
    Begin XtremeSuiteControls.Label Label 
       Height          =   255
@@ -577,7 +577,12 @@ Private Sub CompletarGridEx()
     
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    Set transferencias = DAOTransferenciaBcaria.FindAll(Banco, condition, "op.id DESC")
+    Set transferencias = _
+        DAOTransferenciaBcaria.FindAll( _
+            Banco, _
+            condition, _
+            "op.id DESC", _
+            True)
     
     Me.gridTransferencias.ItemCount = transferencias.count
 
@@ -685,44 +690,118 @@ Private Sub gridTransferencias_MouseUp(Button As Integer, Shift As Integer, x As
 End Sub
 
 
-Private Sub gridTransferencias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And transferencias.count > 0 Then
-        Dim T As clsTransferenciaBcaria
-    
-        Set T = transferencias.item(RowIndex)
-        
-        Values(1) = T.Id
-        Values(3) = "N° " & T.CuentaBancaria & " | " & T.NombreBanco
-        Values(4) = T.FechaOperacion
+Private Sub gridTransferencias_UnboundReadData( _
+    ByVal RowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
+
+    On Error GoTo err1
+
+    If RowIndex <= 0 Then Exit Sub
+    If transferencias.count = 0 Then Exit Sub
+    If RowIndex > transferencias.count Then Exit Sub
+
+    Dim T As clsTransferenciaBcaria
+
+    Set T = transferencias.item(RowIndex)
+
+    Values(1) = T.Id
+    Values(3) = DescripcionOrigen(T)
+    Values(4) = T.FechaOperacion
+
+    If IsSomething(T.moneda) Then
         Values(5) = T.moneda.NombreCorto
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(T.Monto)), "$", "")
-        Values(7) = T.Comprobante
-        
-        If T.LiquidacionCaja Is Nothing Then
-            If T.OrdenPago Is Nothing Then
-                Values(8) = "PCTA: " & T.PagoACuentaID
-                Values(2) = UCase(T.PagoACuentaProveedor)
-                
-                If T.OPAplicada = "0" Then
-                    Values(9) = "Disponible"
-                Else
-                    Values(9) = "Procesada"
-                End If
-                
-                Values(10) = T.OPAplicada
-            Else
-                Values(8) = "OP: " & T.OrdenPago.Id
-                Values(2) = UCase(T.ProveedorRazon)
-                Values(9) = ""
-                Values(10) = ""
-            End If
+    Else
+        Values(5) = ""
+    End If
+
+    Values(6) = Replace( _
+                    FormatCurrency( _
+                        funciones.FormatearDecimales(T.Monto)), _
+                    "$", "")
+
+    Values(7) = T.Comprobante
+
+    '================================================
+    ' MOVIMIENTO MANUAL DE CAJA Y BANCOS
+    '================================================
+    If T.EsMovimientoCajaBanco Then
+
+        Values(2) = "MOVIMIENTO MANUAL"
+
+        Values(8) = _
+            "MOV: " & T.MovimientoCajaBancoID
+
+        If T.Pertenencia = Banco Then
+
+            Values(9) = _
+                UCase$(T.TipoMovimientoCajaBanco) & _
+                " - BANCO"
+
+        ElseIf T.Pertenencia = caja Then
+
+            Values(9) = _
+                UCase$(T.TipoMovimientoCajaBanco) & _
+                " - CAJA"
+
         Else
-            Values(8) = "LIQ: " & T.LiquidacionCaja.NumeroLiq
-            Values(2) = "VARIOS"
+
+            Values(9) = _
+                UCase$(T.TipoMovimientoCajaBanco)
+
+        End If
+
+        Values(10) = ""
+
+        Exit Sub
+
+    End If
+
+    '================================================
+    ' PAGO A CUENTA / ORDEN DE PAGO / LIQUIDACIÓN
+    '================================================
+    If T.LiquidacionCaja Is Nothing Then
+
+        If T.OrdenPago Is Nothing Then
+
+            Values(8) = "PCTA: " & T.PagoACuentaID
+            Values(2) = UCase$(T.PagoACuentaProveedor)
+
+            If T.OPAplicada = 0 Then
+                Values(9) = "Disponible"
+            Else
+                Values(9) = "Procesada"
+            End If
+
+            Values(10) = T.OPAplicada
+
+        Else
+
+            Values(8) = "OP: " & T.OrdenPago.Id
+            Values(2) = UCase$(T.ProveedorRazon)
             Values(9) = ""
             Values(10) = ""
+
         End If
+
+    Else
+
+        Values(8) = _
+            "LIQ: " & T.LiquidacionCaja.NumeroLiq
+
+        Values(2) = "VARIOS"
+        Values(9) = ""
+        Values(10) = ""
+
     End If
+
+    Exit Sub
+
+err1:
+    Debug.Print _
+        "gridTransferencias_UnboundReadData: " & _
+        Err.Number & " - " & Err.Description
+
 End Sub
 
 'Private Sub gridTransferencias_SelectionChange()
@@ -738,43 +817,146 @@ End Sub
 
 
 Private Sub mnuModificar_Click()
-    Dim f_ADFE As New frmAdminPagosTransferenciasBancariasEditar
+
+    Set TransfBancaria = BuscarTransferenciaSeleccionada()
+
+    If TransfBancaria Is Nothing Then Exit Sub
+
+    '================================================
+    ' MOVIMIENTO DE CAJA Y BANCOS
+    '================================================
+    If TransfBancaria.EsMovimientoCajaBanco Then
+
+        Dim mov As clsAsientoContable
+
+        Set mov = DAOAsientoContable.FindById( _
+                    TransfBancaria.MovimientoCajaBancoID)
+
+        If mov Is Nothing Then
+
+            MsgBox _
+                "No se encontró el movimiento de Caja y Bancos.", _
+                vbExclamation
+
+            Exit Sub
+
+        End If
+
+        Dim fMov As New frmAdminCajaBancosCrearAsientoBancario
+
+        Load fMov
+
+        fMov.ReadOnly = False
+        fMov.Cargar mov
+        fMov.Show
+
+        Exit Sub
+
+    End If
+
+    '================================================
+    ' TRANSFERENCIA TRADICIONAL
+    '================================================
+    Dim f_ADFE As New _
+        frmAdminPagosTransferenciasBancariasEditar
+
     f_ADFE.idTransfBancaria = TransfBancaria.Id
     f_ADFE.Show
-    
+
 End Sub
 
 Private Sub mnuVer_Click()
 
+    Set TransfBancaria = BuscarTransferenciaSeleccionada()
+
     If TransfBancaria Is Nothing Then Exit Sub
 
+    '================================================
+    ' MOVIMIENTO DE CAJA Y BANCOS
+    '================================================
+    If TransfBancaria.EsMovimientoCajaBanco Then
+
+        Dim mov As clsAsientoContable
+
+        Set mov = DAOAsientoContable.FindById( _
+                    TransfBancaria.MovimientoCajaBancoID)
+
+        If mov Is Nothing Then
+
+            MsgBox _
+                "No se encontró el movimiento de Caja y Bancos.", _
+                vbExclamation
+
+            Exit Sub
+
+        End If
+
+        Dim fMov As New frmAdminCajaBancosCrearAsientoBancario
+
+        Load fMov
+
+        fMov.ReadOnly = True
+        fMov.Cargar mov
+        fMov.Show
+
+        Exit Sub
+
+    End If
+
+    '================================================
+    ' LIQUIDACIÓN
+    '================================================
     If Not TransfBancaria.LiquidacionCaja Is Nothing Then
+
         Dim f25 As New frmAdminPagosLiqCajaListaDG
-        
-        MsgBox "Abriendo Liquidación de Caja: " & TransfBancaria.LiquidacionCaja.NumeroLiq
-        
+
+        MsgBox _
+            "Abriendo Liquidación de Caja: " & _
+            TransfBancaria.LiquidacionCaja.NumeroLiq
+
         Load f25
+
         f25.ReadOnly = True
         f25.Cargar TransfBancaria.LiquidacionCaja
         f25.Show
+
         Exit Sub
+
     End If
 
+    '================================================
+    ' ORDEN DE PAGO
+    '================================================
     If Not TransfBancaria.OrdenPago Is Nothing Then
+
         Dim f22 As New frmAdminPagosCrearOrdenPago
-        
-        MsgBox "Abriendo OP: " & TransfBancaria.OrdenPago.Id
-        
+
+        MsgBox _
+            "Abriendo OP: " & _
+            TransfBancaria.OrdenPago.Id
+
         Load f22
+
         f22.ReadOnly = True
         f22.Cargar TransfBancaria.OrdenPago
         f22.Show
+
         Exit Sub
+
     End If
 
+    '================================================
+    ' PAGO A CUENTA
+    '================================================
     If TransfBancaria.PagoACuentaID > 0 Then
-        MsgBox "La transferencia seleccionada corresponde a un Pago a Cuenta.", vbInformation
+
+        MsgBox _
+            "La transferencia seleccionada corresponde " & _
+            "a un Pago a Cuenta.", _
+            vbInformation
+
         Exit Sub
+
     End If
 
 End Sub
@@ -837,3 +1019,33 @@ Private Sub gridTransferencias_DblClick()
 '''    mnuVer_Click
     
 End Sub
+
+
+Private Function DescripcionOrigen( _
+    ByVal T As clsTransferenciaBcaria _
+) As String
+
+    If T Is Nothing Then
+        DescripcionOrigen = vbNullString
+        Exit Function
+    End If
+
+    If T.Pertenencia = Banco Then
+
+        DescripcionOrigen = _
+            "N° " & T.CuentaBancaria & _
+            " | " & T.NombreBanco
+
+    ElseIf T.Pertenencia = caja Then
+
+        DescripcionOrigen = _
+            "CAJA | " & T.NombreCaja
+
+    Else
+
+        DescripcionOrigen = "SIN ORIGEN"
+
+    End If
+
+End Function
+

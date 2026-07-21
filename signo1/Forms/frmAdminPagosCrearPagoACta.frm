@@ -705,7 +705,7 @@ Private caja As caja
 Private CuentaBancaria As CuentaBancaria
 Private moneda As clsMoneda
 Private alicuotaRetencion As DTORetencionAlicuota
-Private cuentasBancarias As New Collection
+Private CuentasBancarias As New Collection
 Private retenciones As New Collection
 Private Monedas As New Collection
 Private Cajas As New Collection
@@ -839,8 +839,8 @@ Private Sub Form_Load()
     Set Monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = Monedas.count
 
-    Set cuentasBancarias = DAOCuentaBancaria.FindAll()
-    Me.gridCuentasBancarias.ItemCount = cuentasBancarias.count
+    Set CuentasBancarias = DAOCuentaBancaria.FindAll()
+    Me.gridCuentasBancarias.ItemCount = CuentasBancarias.count
 
     Set bancos = DAOBancos.GetAll()
     Me.gridBancos.ItemCount = bancos.count
@@ -1194,8 +1194,8 @@ Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookm
 End Sub
 
 Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If cuentasBancarias.count >= RowIndex Then
-        Set CuentaBancaria = cuentasBancarias.item(RowIndex)
+    If CuentasBancarias.count >= RowIndex Then
+        Set CuentaBancaria = CuentasBancarias.item(RowIndex)
         Values(1) = CuentaBancaria.Id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If

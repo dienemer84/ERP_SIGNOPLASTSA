@@ -27,6 +27,7 @@ err22:
     conectar = False
     Err.Clear
 End Function
+
 Public Function obternerConexion() As ADODB.Connection
     Set obternerConexion = cn
 End Function
@@ -49,8 +50,11 @@ Public Function RSFactory(consulta) As ADODB.Recordset
     Exit Function
 err10:
     Debug.Print (consulta)
-    Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & consulta
-
+    
+'''    Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & consulta
+    
+    Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & "Se ha detectado un corte de red por eso mismo el sistema debe reiniciarse."
+    
 End Function
 
 

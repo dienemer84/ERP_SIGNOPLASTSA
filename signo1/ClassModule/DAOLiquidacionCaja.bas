@@ -176,13 +176,15 @@ End Function
 Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As String = "1") As Collection
     Dim q As String
 
-    q = "SELECT *, (operaciones.pertenencia + 0) AS pertenencia2" _
+    q = "SELECT *, " _
+        & "liquidaciones_caja.numero_liq AS numero_liquidacion_caja, " _
+        & "(operaciones.pertenencia + 0) AS pertenencia2" _
         & " FROM liquidaciones_caja" _
         & " LEFT JOIN liquidaciones_caja_cheques ON (liquidaciones_caja.id = liquidaciones_caja_cheques.id_liquidacion_caja)" _
-        & " LEFT JOIN ordenes_pago_operaciones ON (liquidaciones_caja.id = ordenes_pago_operaciones.id_orden_pago)" _
+        & " LEFT JOIN liquidaciones_caja_operaciones lco ON (liquidaciones_caja.id = lco.id_liquidacion_caja)" _
+        & " LEFT JOIN operaciones ON  (operaciones.id = lco.id_operacion)" _
         & " LEFT JOIN liquidaciones_caja_facturas ON (liquidaciones_caja.id = liquidaciones_caja_facturas.id_liquidacion_caja)" _
         & " LEFT JOIN AdminComprasCuentasContables cuentacontableordenpago ON (liquidaciones_caja.id_cuenta_contable = cuentacontableordenpago.id)" _
-        & " LEFT JOIN operaciones ON (operaciones.id = ordenes_pago_operaciones.id_operacion)" _
         & " LEFT JOIN Cheques ON (Cheques.id = liquidaciones_caja_cheques.id_cheque)" _
         & " LEFT JOIN Chequeras ON (Chequeras.id = Cheques.id_chequera)" _
         & " LEFT JOIN AdminConfigBancos monbanco ON (monbanco.id = Chequeras.id_banco)" _
@@ -209,7 +211,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
     Dim col As New Collection
     Dim liq As clsLiquidacionCaja
     Dim fac As clsFacturaProveedor
-        Dim che As cheque
+    Dim che As cheque
     Dim oper As operacion
 
     Dim idx As Dictionary
@@ -237,8 +239,18 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
             End If
 
         End If
-       Set che = DAOCheques.Map3(rs, idx, "Cheques", "bancocheque", "moncheque", "Chequeras", "monchequera", "monbanco", "rec")
         
+        Set che = DAOCheques.Map3( _
+            rs, _
+            idx, _
+            "Cheques", _
+            "bancocheque", _
+            "moncheque", _
+            "Chequeras", _
+            "monchequera", _
+            "monbanco", _
+            vbNullString, _
+            "liquidaciones_caja")
 
 If IsSomething(che) Then
             If che.Propio Then
@@ -688,36 +700,63 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     '------------------------------------------------------
 
 
-    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id & ")"
+    q = "DELETE FROM operaciones WHERE id IN (" _
+      & "SELECT id_operacion " _
+      & "FROM liquidaciones_caja_operaciones " _
+      & "WHERE id_liquidacion_caja = " & op.Id & ")"
+    
     If Not conectar.execute(q) Then GoTo E
-    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & op.Id
+    
+    q = "DELETE FROM liquidaciones_caja_operaciones " _
+      & "WHERE id_liquidacion_caja = " & op.Id
+    
     If Not conectar.execute(q) Then GoTo E
+    
 
     Dim oper As operacion
+    
     For Each oper In op.operacionesBanco
-        'oper.IdPertenencia = op.Id no se usa creo
+    
         oper.FechaCarga = Now
+    
         If DAOOperacion.Save(oper) Then
+    
             oper.Id = conectar.UltimoId2
+    
             If oper.Id = 0 Then GoTo E
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
+    
+            q = "INSERT INTO liquidaciones_caja_operaciones " _
+              & "(id_liquidacion_caja, id_operacion) VALUES (" _
+              & op.Id & ", " & oper.Id & ")"
+    
             If Not conectar.execute(q) Then GoTo E
+    
         Else
             GoTo E
         End If
+    
     Next oper
 
     For Each oper In op.OperacionesCaja
-        'oper.IdPertenencia = op.Id no se usa creo
+    
         oper.FechaCarga = Now
+    
         If DAOOperacion.Save(oper) Then
+    
             oper.Id = conectar.UltimoId2
+    
             If oper.Id = 0 Then GoTo E
-            q = "INSERT INTO ordenes_pago_operaciones VALUES (" & op.Id & ", " & oper.Id & ")"
+    
+            q = "INSERT INTO liquidaciones_caja_operaciones " _
+              & "(id_liquidacion_caja, id_operacion) VALUES (" _
+              & op.Id & ", " & oper.Id & ")"
+    
             If Not conectar.execute(q) Then GoTo E
+    
         Else
             GoTo E
         End If
+    
     Next oper
 
     End If
@@ -986,17 +1025,18 @@ Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Bool
     Dim q As String
 
     q = "UPDATE AdminComprasFacturasProveedores SET estado = " & EstadoFacturaProveedor.Aprobada & " WHERE id IN (SELECT id_factura_proveedor FROM liquidaciones_caja_facturas WHERE id_liquidacion_caja = " & liqid & ")"
-'    Debug.Print (q)
     If Not conectar.execute(q) Then GoTo E
 
-    q = "DELETE FROM operaciones WHERE id IN (SELECT id_operacion FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid & ")"
-'    Debug.Print (q)
+    q = "DELETE FROM operaciones WHERE id IN (" _
+      & "SELECT id_operacion " _
+      & "FROM liquidaciones_caja_operaciones " _
+      & "WHERE id_liquidacion_caja = " & liqid & ")"
     If Not conectar.execute(q) Then GoTo E
 
-    q = "DELETE FROM ordenes_pago_operaciones WHERE id_orden_pago = " & liqid
-'    Debug.Print (q)
-    If Not conectar.execute(q) Then GoTo E
 
+    q = "DELETE FROM liquidaciones_caja_operaciones " _
+      & "WHERE id_liquidacion_caja = " & liqid
+    If Not conectar.execute(q) Then GoTo E
 
     If Not conectar.execute(q) Then GoTo E
     Dim estado_anterior As EstadoLiquidacionCaja
@@ -1018,141 +1058,441 @@ E:
 End Function
 
 
-Public Function ResumenPagos(ByRef Cheques As Collection, ByRef caja As Collection, ByRef bancos As Collection, ByRef comp As Collection, ByRef retenciones As Collection, ByRef cheques3 As Collection, Optional filtro As String, Optional idProveedor As Long = -1) As Boolean
+'''Public Function ResumenPagos(ByRef Cheques As Collection, ByRef caja As Collection, ByRef bancos As Collection, ByRef comp As Collection, ByRef retenciones As Collection, ByRef cheques3 As Collection, Optional filtro As String, Optional idProveedor As Long = -1) As Boolean
+'''    On Error GoTo err1
+'''    ResumenPagos = True
+'''    Dim q As String
+'''    Dim rs As Recordset
+'''
+'''    '#'CHEQUES'
+'''    q = "SELECT b.Nombre,SUM(monto * acm.cambio) as monto FROM ordenes_pago  op " _
+'''        & " INNER JOIN ordenes_pago_cheques opc ON opc.id_liquidacion_caja=op.id " _
+'''        & " LEFT JOIN Cheques c ON opc.id_cheque=c.id " _
+'''        & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
+'''        & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=1 and 1=1 " _
+'''
+'''If LenB(filtro) > 0 Then
+'''        q = q & " and " & filtro
+'''    End If
+'''    q = q & " GROUP BY b.id "
+'''
+'''    Dim d As DTONombreMonto
+'''
+'''    Set rs = conectar.RSFactory(q)
+'''    While Not rs.EOF And Not rs.BOF
+'''        Set d = New DTONombreMonto
+'''        d.Monto = rs!Monto
+'''        d.nombre = rs!nombre
+'''        Cheques.Add d
+'''        rs.MoveNext
+'''    Wend
+'''
+'''    '#OPERACIONES CAJA
+'''    q = " SELECT ca.nombre,SUM(monto * acm.cambio ) as monto FROM ordenes_pago op " _
+'''        & " INNER JOIN ordenes_pago_operaciones opo ON opo.id_liquidacion_caja=op.id " _
+'''        & " LEFT JOIN operaciones o ON opo.id_operacion=o.id " _
+'''        & " LEFT JOIN cajas ca ON ca.id=o.cuentabanc_o_caja_id " _
+'''        & " LEFT JOIN AdminConfigMonedas acm ON o.moneda_id=acm.id " _
+'''        & " WHERE o.pertenencia='caja' AND entrada_salida=-1 AND 1=1 "
+'''    If LenB(filtro) > 0 Then
+'''        q = q & " and " & filtro
+'''    End If
+'''
+'''    q = q & " GROUP BY o.cuentabanc_o_caja_id"
+'''
+'''    Set rs = conectar.RSFactory(q)
+'''    While Not rs.EOF And Not rs.BOF
+'''        Set d = New DTONombreMonto
+'''        d.Monto = rs!Monto
+'''        d.nombre = rs!nombre
+'''        caja.Add d
+'''        rs.MoveNext
+'''    Wend
+'''
+'''    '#OPERACIONES BANCO
+'''    q = "SELECT  ba.nombre,  SUM(monto * acm.cambio ) AS monto " _
+'''        & " FROM ordenes_pago op   INNER JOIN ordenes_pago_operaciones opo     ON opo.id_liquidacion_caja = op.id " _
+'''        & " LEFT JOIN operaciones o     ON opo.id_operacion = o.id " _
+'''        & " LEFT JOIN AdminConfigCuentas cba     ON cba.id = o.cuentabanc_o_caja_id " _
+'''        & " INNER JOIN AdminConfigBancos ba ON cba.idBanco=ba.id    LEFT JOIN AdminConfigMonedas acm     ON o.moneda_id = acm.id " _
+'''        & " WHERE o.pertenencia='banco' AND entrada_salida=-1 AND 1=1 "
+'''    If LenB(filtro) > 0 Then
+'''        q = q & " and " & filtro
+'''    End If
+'''
+'''    q = q & "GROUP BY o.cuentabanc_o_caja_id"
+'''    Set rs = conectar.RSFactory(q)
+'''    While Not rs.EOF And Not rs.BOF
+'''        Set d = New DTONombreMonto
+'''        d.Monto = rs!Monto
+'''
+'''        If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
+'''
+'''        bancos.Add d
+'''        rs.MoveNext
+'''    Wend
+'''
+'''
+'''    '#compensatorios
+'''    q = "SELECT fp.numero_factura, (IF (com.tipo=1,(com.importe * acm.cambio),(com.importe * acm.cambio*-1))) AS monto  FROM ordenes_pago op " _
+'''        & " INNER JOIN ordenes_pago_compensatorios com ON com.id_liquidacion_caja=op.id " _
+'''        & " INNER JOIN AdminComprasFacturasProveedores fp ON com.id_comprobante=fp.id " _
+'''        & " INNER JOIN AdminConfigMonedas acm ON fp.id_moneda=acm.id  where 1=1 "
+'''
+'''    If LenB(filtro) > 0 Then
+'''        q = q & " and " & filtro
+'''    End If
+'''
+'''
+'''    Set rs = conectar.RSFactory(q)
+'''    While Not rs.EOF And Not rs.BOF
+'''        Set d = New DTONombreMonto
+'''        d.Monto = rs!Monto
+'''        If Not IsNull(rs!numero_factura) Then d.nombre = rs!numero_factura Else d.nombre = vbNullString
+'''
+'''        comp.Add d
+'''        rs.MoveNext
+'''    Wend
+'''
+'''    q = "SELECT 'IIBB' AS nombre, SUM(static_total_a_retener) AS monto FROM ordenes_pago op WHERE 1=1"
+'''
+'''    If LenB(filtro) > 0 Then
+'''        q = q & " and " & filtro
+'''    End If
+'''
+'''    'q = q & " GROUP BY id "
+'''
+'''    Set rs = conectar.RSFactory(q)
+'''    While Not rs.EOF And Not rs.BOF
+'''        Set d = New DTONombreMonto
+'''        d.Monto = rs!Monto
+'''        d.nombre = rs!nombre
+'''        retenciones.Add d
+'''        rs.MoveNext
+'''    Wend
+'''
+'''    '#'CHEQUES 3ROS'
+'''    q = "SELECT b.Nombre,SUM(monto * acm.cambio) as monto FROM ordenes_pago  op " _
+'''        & " INNER JOIN ordenes_pago_cheques opc ON opc.id_liquidacion_caja=op.id " _
+'''        & " LEFT JOIN Cheques c ON opc.id_cheque=c.id " _
+'''        & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
+'''        & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=0 and 1=1 " _
+'''
+'''If LenB(filtro) > 0 Then
+'''        q = q & " and " & filtro
+'''    End If
+'''    q = q & " GROUP BY b.id "
+'''
+'''    Set rs = conectar.RSFactory(q)
+'''    While Not rs.EOF And Not rs.BOF
+'''        Set d = New DTONombreMonto
+'''        d.Monto = rs!Monto
+'''        If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
+'''        cheques3.Add d
+'''        rs.MoveNext
+'''    Wend
+'''    Exit Function
+'''err1:
+'''    ResumenPagos = False
+'''
+'''End Function
+
+
+Public Function ResumenPagos( _
+    ByRef Cheques As Collection, _
+    ByRef caja As Collection, _
+    ByRef bancos As Collection, _
+    ByRef comp As Collection, _
+    ByRef retenciones As Collection, _
+    ByRef cheques3 As Collection, _
+    Optional ByVal filtro As String = vbNullString, _
+    Optional ByVal idProveedor As Long = -1 _
+) As Boolean
+
     On Error GoTo err1
-    ResumenPagos = True
+
+    ResumenPagos = False
+
     Dim q As String
     Dim rs As Recordset
-
-    '#'CHEQUES'
-    q = "SELECT b.Nombre,SUM(monto * acm.cambio) as monto FROM ordenes_pago  op " _
-        & " INNER JOIN ordenes_pago_cheques opc ON opc.id_liquidacion_caja=op.id " _
-        & " LEFT JOIN Cheques c ON opc.id_cheque=c.id " _
-        & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
-        & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=1 and 1=1 " _
-
-If LenB(filtro) > 0 Then
-        q = q & " and " & filtro
-    End If
-    q = q & " GROUP BY b.id "
-
     Dim d As DTONombreMonto
 
+    ' Evita errores si alguna colección llega como Nothing
+    If Cheques Is Nothing Then Set Cheques = New Collection
+    If caja Is Nothing Then Set caja = New Collection
+    If bancos Is Nothing Then Set bancos = New Collection
+    If comp Is Nothing Then Set comp = New Collection
+    If retenciones Is Nothing Then Set retenciones = New Collection
+    If cheques3 Is Nothing Then Set cheques3 = New Collection
+
+    '=========================================================
+    ' CHEQUES PROPIOS
+    '=========================================================
+    q = "SELECT " _
+      & " IFNULL(b.nombre, 'SIN BANCO') AS nombre, " _
+      & " SUM(IFNULL(c.monto, 0) * IFNULL(acm.cambio, 1)) AS monto " _
+      & "FROM liquidaciones_caja op " _
+      & "INNER JOIN liquidaciones_caja_cheques lcc " _
+      & " ON lcc.id_liquidacion_caja = op.id " _
+      & "INNER JOIN Cheques c " _
+      & " ON c.id = lcc.id_cheque " _
+      & "LEFT JOIN Chequeras ch " _
+      & " ON ch.id = c.id_chequera " _
+      & "LEFT JOIN AdminConfigBancos b " _
+      & " ON b.id = COALESCE(NULLIF(c.id_banco, 0), ch.id_banco) " _
+      & "LEFT JOIN AdminConfigMonedas acm " _
+      & " ON acm.id = COALESCE(NULLIF(c.id_moneda, 0), ch.id_moneda) " _
+      & "WHERE c.propio = 1 "
+
+    If LenB(filtro) > 0 Then
+        q = q & " AND " & filtro
+    End If
+
+    q = q & " GROUP BY b.id, b.nombre"
+
     Set rs = conectar.RSFactory(q)
-    While Not rs.EOF And Not rs.BOF
+
+    While Not rs.EOF
         Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        d.nombre = rs!nombre
+
+        If IsNull(rs!nombre) Then
+            d.nombre = "SIN BANCO"
+        Else
+            d.nombre = rs!nombre
+        End If
+
+        If IsNull(rs!Monto) Then
+            d.Monto = 0
+        Else
+            d.Monto = CDbl(rs!Monto)
+        End If
+
         Cheques.Add d
         rs.MoveNext
     Wend
 
-    '#OPERACIONES CAJA
-    q = " SELECT ca.nombre,SUM(monto * acm.cambio ) as monto FROM ordenes_pago op " _
-        & " INNER JOIN ordenes_pago_operaciones opo ON opo.id_liquidacion_caja=op.id " _
-        & " LEFT JOIN operaciones o ON opo.id_operacion=o.id " _
-        & " LEFT JOIN cajas ca ON ca.id=o.cuentabanc_o_caja_id " _
-        & " LEFT JOIN AdminConfigMonedas acm ON o.moneda_id=acm.id " _
-        & " WHERE o.pertenencia='caja' AND entrada_salida=-1 AND 1=1 "
+    rs.Close
+    Set rs = Nothing
+
+    '=========================================================
+    ' OPERACIONES DE CAJA
+    '=========================================================
+    q = "SELECT " _
+      & " IFNULL(ca.nombre, 'SIN CAJA') AS nombre, " _
+      & " SUM(IFNULL(o.monto, 0) * IFNULL(acm.cambio, 1)) AS monto " _
+      & "FROM liquidaciones_caja op " _
+      & "INNER JOIN liquidaciones_caja_operaciones lco " _
+      & " ON lco.id_liquidacion_caja = op.id " _
+      & "INNER JOIN operaciones o " _
+      & " ON o.id = lco.id_operacion " _
+      & "LEFT JOIN cajas ca " _
+      & " ON ca.id = o.cuentabanc_o_caja_id " _
+      & "LEFT JOIN AdminConfigMonedas acm " _
+      & " ON acm.id = o.moneda_id " _
+      & "WHERE o.pertenencia = 'caja' " _
+      & " AND o.entrada_salida = -1 "
+
     If LenB(filtro) > 0 Then
-        q = q & " and " & filtro
+        q = q & " AND " & filtro
     End If
 
-    q = q & " GROUP BY o.cuentabanc_o_caja_id"
+    q = q & " GROUP BY ca.id, ca.nombre"
 
     Set rs = conectar.RSFactory(q)
-    While Not rs.EOF And Not rs.BOF
+
+    While Not rs.EOF
         Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        d.nombre = rs!nombre
+
+        If IsNull(rs!nombre) Then
+            d.nombre = "SIN CAJA"
+        Else
+            d.nombre = rs!nombre
+        End If
+
+        If IsNull(rs!Monto) Then
+            d.Monto = 0
+        Else
+            d.Monto = CDbl(rs!Monto)
+        End If
+
         caja.Add d
         rs.MoveNext
     Wend
 
-    '#OPERACIONES BANCO
-    q = "SELECT  ba.nombre,  SUM(monto * acm.cambio ) AS monto " _
-        & " FROM ordenes_pago op   INNER JOIN ordenes_pago_operaciones opo     ON opo.id_liquidacion_caja = op.id " _
-        & " LEFT JOIN operaciones o     ON opo.id_operacion = o.id " _
-        & " LEFT JOIN AdminConfigCuentas cba     ON cba.id = o.cuentabanc_o_caja_id " _
-        & " INNER JOIN AdminConfigBancos ba ON cba.idBanco=ba.id    LEFT JOIN AdminConfigMonedas acm     ON o.moneda_id = acm.id " _
-        & " WHERE o.pertenencia='banco' AND entrada_salida=-1 AND 1=1 "
+    rs.Close
+    Set rs = Nothing
+
+    '=========================================================
+    ' OPERACIONES BANCARIAS
+    '=========================================================
+    q = "SELECT " _
+      & " cba.id AS id_cuenta_bancaria, " _
+      & " CONCAT(" _
+      & "     IFNULL(ba.nombre, 'SIN BANCO'), " _
+      & "     ' - ', " _
+      & "     IFNULL(cba.cuenta, 'SIN CUENTA')" _
+      & " ) AS nombre, " _
+      & " SUM(IFNULL(o.monto, 0) * IFNULL(acm.cambio, 1)) AS monto " _
+      & "FROM liquidaciones_caja op " _
+      & "INNER JOIN liquidaciones_caja_operaciones lco " _
+      & " ON lco.id_liquidacion_caja = op.id " _
+      & "INNER JOIN operaciones o " _
+      & " ON o.id = lco.id_operacion " _
+      & "LEFT JOIN AdminConfigCuentas cba " _
+      & " ON cba.id = o.cuentabanc_o_caja_id " _
+      & "LEFT JOIN AdminConfigBancos ba " _
+      & " ON ba.id = cba.idBanco " _
+      & "LEFT JOIN AdminConfigMonedas acm " _
+      & " ON acm.id = o.moneda_id " _
+      & "WHERE o.pertenencia = 'banco' " _
+      & " AND o.entrada_salida = -1 "
+
     If LenB(filtro) > 0 Then
-        q = q & " and " & filtro
+        q = q & " AND " & filtro
     End If
 
-    q = q & "GROUP BY o.cuentabanc_o_caja_id"
-    Set rs = conectar.RSFactory(q)
-    While Not rs.EOF And Not rs.BOF
-        Set d = New DTONombreMonto
-        d.Monto = rs!Monto
+    q = q & " GROUP BY " _
+          & " cba.id, " _
+          & " ba.id, " _
+          & " ba.nombre, " _
+          & " cba.cuenta"
 
-        If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
+    Set rs = conectar.RSFactory(q)
+
+    While Not rs.EOF
+        Set d = New DTONombreMonto
+
+        If IsNull(rs!nombre) Then
+            d.nombre = "SIN BANCO / CUENTA"
+        Else
+            d.nombre = rs!nombre
+        End If
+
+        If IsNull(rs!Monto) Then
+            d.Monto = 0
+        Else
+            d.Monto = CDbl(rs!Monto)
+        End If
 
         bancos.Add d
         rs.MoveNext
     Wend
 
+    rs.Close
+    Set rs = Nothing
 
-    '#compensatorios
-    q = "SELECT fp.numero_factura, (IF (com.tipo=1,(com.importe * acm.cambio),(com.importe * acm.cambio*-1))) AS monto  FROM ordenes_pago op " _
-        & " INNER JOIN ordenes_pago_compensatorios com ON com.id_liquidacion_caja=op.id " _
-        & " INNER JOIN AdminComprasFacturasProveedores fp ON com.id_comprobante=fp.id " _
-        & " INNER JOIN AdminConfigMonedas acm ON fp.id_moneda=acm.id  where 1=1 "
+    '=========================================================
+    ' COMPENSATORIOS
+    '=========================================================
+    ' DAOLiquidacionCaja no guarda compensatorios en ninguna
+    ' tabla propia ni posee una relación confirmada.
+    '
+    ' Por seguridad no se ejecuta la consulta copiada desde
+    ' DAOOrdenPago. La colección "comp" queda vacía.
+    '
+    ' No usar:
+    ' ordenes_pago_compensatorios.id_liquidacion_caja
+    '
+    ' hasta confirmar que ese campo realmente existe y que
+    ' las liquidaciones guardan datos allí.
+
+    '=========================================================
+    ' RETENCIONES
+    '=========================================================
+    q = "SELECT " _
+      & " 'IIBB' AS nombre, " _
+      & " IFNULL(SUM(op.static_total_a_retener), 0) AS monto " _
+      & "FROM liquidaciones_caja op " _
+      & "WHERE 1 = 1 "
 
     If LenB(filtro) > 0 Then
-        q = q & " and " & filtro
+        q = q & " AND " & filtro
     End If
 
-
     Set rs = conectar.RSFactory(q)
-    While Not rs.EOF And Not rs.BOF
+
+    If Not rs.EOF Then
         Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        If Not IsNull(rs!numero_factura) Then d.nombre = rs!numero_factura Else d.nombre = vbNullString
+        d.nombre = "IIBB"
 
-        comp.Add d
-        rs.MoveNext
-    Wend
+        If IsNull(rs!Monto) Then
+            d.Monto = 0
+        Else
+            d.Monto = CDbl(rs!Monto)
+        End If
 
-    q = "SELECT 'IIBB' AS nombre, SUM(static_total_a_retener) AS monto FROM ordenes_pago op WHERE 1=1"
-
-    If LenB(filtro) > 0 Then
-        q = q & " and " & filtro
-    End If
-
-    'q = q & " GROUP BY id "
-
-    Set rs = conectar.RSFactory(q)
-    While Not rs.EOF And Not rs.BOF
-        Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        d.nombre = rs!nombre
         retenciones.Add d
-        rs.MoveNext
-    Wend
-
-    '#'CHEQUES 3ROS'
-    q = "SELECT b.Nombre,SUM(monto * acm.cambio) as monto FROM ordenes_pago  op " _
-        & " INNER JOIN ordenes_pago_cheques opc ON opc.id_liquidacion_caja=op.id " _
-        & " LEFT JOIN Cheques c ON opc.id_cheque=c.id " _
-        & " LEFT JOIN AdminConfigBancos b ON c.id_banco=b.id " _
-        & " LEFT JOIN AdminConfigMonedas acm ON c.id_moneda=acm.id WHERE c.propio=0 and 1=1 " _
-
-If LenB(filtro) > 0 Then
-        q = q & " and " & filtro
     End If
-    q = q & " GROUP BY b.id "
+
+    rs.Close
+    Set rs = Nothing
+
+    '=========================================================
+    ' CHEQUES DE TERCEROS
+    '=========================================================
+    q = "SELECT " _
+      & " IFNULL(b.nombre, 'SIN BANCO') AS nombre, " _
+      & " SUM(IFNULL(c.monto, 0) * IFNULL(acm.cambio, 1)) AS monto " _
+      & "FROM liquidaciones_caja op " _
+      & "INNER JOIN liquidaciones_caja_cheques lcc " _
+      & " ON lcc.id_liquidacion_caja = op.id " _
+      & "INNER JOIN Cheques c " _
+      & " ON c.id = lcc.id_cheque " _
+      & "LEFT JOIN Chequeras ch " _
+      & " ON ch.id = c.id_chequera " _
+      & "LEFT JOIN AdminConfigBancos b " _
+      & " ON b.id = COALESCE(NULLIF(c.id_banco, 0), ch.id_banco) " _
+      & "LEFT JOIN AdminConfigMonedas acm " _
+      & " ON acm.id = COALESCE(NULLIF(c.id_moneda, 0), ch.id_moneda) " _
+      & "WHERE c.propio = 0 "
+
+    If LenB(filtro) > 0 Then
+        q = q & " AND " & filtro
+    End If
+
+    q = q & " GROUP BY b.id, b.nombre"
 
     Set rs = conectar.RSFactory(q)
-    While Not rs.EOF And Not rs.BOF
+
+    While Not rs.EOF
         Set d = New DTONombreMonto
-        d.Monto = rs!Monto
-        If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
+
+        If IsNull(rs!nombre) Then
+            d.nombre = "SIN BANCO"
+        Else
+            d.nombre = rs!nombre
+        End If
+
+        If IsNull(rs!Monto) Then
+            d.Monto = 0
+        Else
+            d.Monto = CDbl(rs!Monto)
+        End If
+
         cheques3.Add d
         rs.MoveNext
     Wend
+
+    rs.Close
+    Set rs = Nothing
+
+    ResumenPagos = True
     Exit Function
+
 err1:
+    Debug.Print "Error en DAOLiquidacionCaja.ResumenPagos"
+    Debug.Print "Numero: " & Err.Number
+    Debug.Print "Descripcion: " & Err.Description
+    Debug.Print "SQL: " & q
+
+    On Error Resume Next
+
+    If Not (rs Is Nothing) Then
+        If rs.State = adStateOpen Then rs.Close
+    End If
+
+    Set rs = Nothing
+
     ResumenPagos = False
 
 End Function

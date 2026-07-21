@@ -11,23 +11,70 @@ Begin VB.Form frmSistemaTests
    MDIChild        =   -1  'True
    ScaleHeight     =   6060
    ScaleWidth      =   14985
+   WindowState     =   2  'Maximized
+   Begin GridEX20.GridEX GridEX1 
+      Height          =   3855
+      Left            =   240
+      TabIndex        =   9
+      Top             =   4320
+      Width           =   14295
+      _ExtentX        =   25215
+      _ExtentY        =   6800
+      Version         =   "2.0"
+      BoundColumnIndex=   ""
+      ReplaceColumnIndex=   ""
+      MethodHoldFields=   -1  'True
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      ColumnsCount    =   7
+      Column(1)       =   "frmSistemasTests.frx":000C
+      Column(2)       =   "frmSistemasTests.frx":011C
+      Column(3)       =   "frmSistemasTests.frx":0208
+      Column(4)       =   "frmSistemasTests.frx":0314
+      Column(5)       =   "frmSistemasTests.frx":0408
+      Column(6)       =   "frmSistemasTests.frx":04FC
+      Column(7)       =   "frmSistemasTests.frx":0600
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmSistemasTests.frx":071C
+      FormatStyle(2)  =   "frmSistemasTests.frx":0854
+      FormatStyle(3)  =   "frmSistemasTests.frx":0904
+      FormatStyle(4)  =   "frmSistemasTests.frx":09B8
+      FormatStyle(5)  =   "frmSistemasTests.frx":0A90
+      FormatStyle(6)  =   "frmSistemasTests.frx":0B48
+      ImageCount      =   0
+      PrinterProperties=   "frmSistemasTests.frx":0C28
+   End
+   Begin XtremeSuiteControls.PushButton cmdProbarResumen 
+      Height          =   495
+      Left            =   240
+      TabIndex        =   8
+      Top             =   3600
+      Width           =   2055
+      _Version        =   786432
+      _ExtentX        =   3625
+      _ExtentY        =   873
+      _StockProps     =   79
+      Caption         =   "Probar Resumen"
+      Appearance      =   6
+   End
    Begin VB.CommandButton Command2 
       Caption         =   "Command2"
       Height          =   495
-      Left            =   5280
+      Left            =   15000
       TabIndex        =   7
-      Top             =   5280
+      Top             =   840
       Width           =   1935
    End
    Begin XtremeSuiteControls.PushButton btnSeguimientoAvanzado 
-      Height          =   2655
+      Height          =   495
       Left            =   240
       TabIndex        =   6
-      Top             =   3120
+      Top             =   2280
       Width           =   4935
       _Version        =   786432
       _ExtentX        =   8705
-      _ExtentY        =   4683
+      _ExtentY        =   873
       _StockProps     =   79
       Caption         =   "PushButton1"
       UseVisualStyle  =   -1  'True
@@ -35,9 +82,9 @@ Begin VB.Form frmSistemaTests
    Begin VB.CommandButton Command1 
       Caption         =   "Command1"
       Height          =   375
-      Left            =   5280
+      Left            =   15000
       TabIndex        =   5
-      Top             =   4080
+      Top             =   360
       Width           =   1935
    End
    Begin GridEX20.GridEX grilla_monedas 
@@ -62,20 +109,20 @@ Begin VB.Form frmSistemaTests
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   5
-      Column(1)       =   "frmSistemasTests.frx":000C
-      Column(2)       =   "frmSistemasTests.frx":00F8
-      Column(3)       =   "frmSistemasTests.frx":020C
-      Column(4)       =   "frmSistemasTests.frx":0318
-      Column(5)       =   "frmSistemasTests.frx":0404
+      Column(1)       =   "frmSistemasTests.frx":0E00
+      Column(2)       =   "frmSistemasTests.frx":0EEC
+      Column(3)       =   "frmSistemasTests.frx":1000
+      Column(4)       =   "frmSistemasTests.frx":110C
+      Column(5)       =   "frmSistemasTests.frx":11F8
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmSistemasTests.frx":0508
-      FormatStyle(2)  =   "frmSistemasTests.frx":0640
-      FormatStyle(3)  =   "frmSistemasTests.frx":06F0
-      FormatStyle(4)  =   "frmSistemasTests.frx":07A4
-      FormatStyle(5)  =   "frmSistemasTests.frx":087C
-      FormatStyle(6)  =   "frmSistemasTests.frx":0934
+      FormatStyle(1)  =   "frmSistemasTests.frx":12FC
+      FormatStyle(2)  =   "frmSistemasTests.frx":1434
+      FormatStyle(3)  =   "frmSistemasTests.frx":14E4
+      FormatStyle(4)  =   "frmSistemasTests.frx":1598
+      FormatStyle(5)  =   "frmSistemasTests.frx":1670
+      FormatStyle(6)  =   "frmSistemasTests.frx":1728
       ImageCount      =   0
-      PrinterProperties=   "frmSistemasTests.frx":0A14
+      PrinterProperties=   "frmSistemasTests.frx":1808
    End
    Begin GridEX20.GridEX grilla_moneda 
       Height          =   3495
@@ -105,27 +152,27 @@ Begin VB.Form frmSistemaTests
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmSistemasTests.frx":0BEC
-      Column(2)       =   "frmSistemasTests.frx":0D10
+      Column(1)       =   "frmSistemasTests.frx":19E0
+      Column(2)       =   "frmSistemasTests.frx":1B04
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmSistemasTests.frx":0E04
-      FormatStyle(2)  =   "frmSistemasTests.frx":0F3C
-      FormatStyle(3)  =   "frmSistemasTests.frx":0FEC
-      FormatStyle(4)  =   "frmSistemasTests.frx":10A0
-      FormatStyle(5)  =   "frmSistemasTests.frx":1178
-      FormatStyle(6)  =   "frmSistemasTests.frx":1230
+      FormatStyle(1)  =   "frmSistemasTests.frx":1BF8
+      FormatStyle(2)  =   "frmSistemasTests.frx":1D30
+      FormatStyle(3)  =   "frmSistemasTests.frx":1DE0
+      FormatStyle(4)  =   "frmSistemasTests.frx":1E94
+      FormatStyle(5)  =   "frmSistemasTests.frx":1F6C
+      FormatStyle(6)  =   "frmSistemasTests.frx":2024
       ImageCount      =   0
-      PrinterProperties=   "frmSistemasTests.frx":1310
+      PrinterProperties=   "frmSistemasTests.frx":2104
    End
    Begin XtremeSuiteControls.PushButton PushButton 
-      Height          =   735
+      Height          =   495
       Left            =   240
       TabIndex        =   2
-      Top             =   2160
+      Top             =   1680
       Width           =   4935
       _Version        =   786432
       _ExtentX        =   8705
-      _ExtentY        =   1296
+      _ExtentY        =   873
       _StockProps     =   79
       Caption         =   "Agenda nueva"
       Appearance      =   6
@@ -153,7 +200,7 @@ Begin VB.Form frmSistemaTests
       Height          =   615
       Left            =   240
       TabIndex        =   0
-      Top             =   1200
+      Top             =   960
       Width           =   4935
    End
 End
@@ -172,6 +219,39 @@ Private operacion As operacion
 Private Sub btnSeguimientoAvanzado_Click()
     Dim f228 As New frmAdminPagosTransferenciasBancariasCobro
     f228.Show
+End Sub
+
+Private Sub cmdProbarResumen_Click()
+
+    Dim Movimientos As Collection
+    Dim mov As DTOResumenBancario
+
+    Set Movimientos = DAOResumenBancario.FindAll( _
+        DateSerial(2026, 7, 1), _
+        DateSerial(2026, 7, 31))
+
+    If Movimientos Is Nothing Then
+        MsgBox "Ocurrió un error al generar el resumen.", vbCritical
+        Exit Sub
+    End If
+
+    For Each mov In Movimientos
+
+        Debug.Print _
+            mov.FEcha, _
+            mov.Banco, _
+            mov.CuentaBancaria, _
+            mov.Origen, _
+            mov.NumeroOrigen, _
+            mov.Ingreso, _
+            mov.Egreso, _
+            mov.SaldoAcumulado
+
+    Next mov
+
+    MsgBox Movimientos.count & _
+           " movimientos encontrados.", vbInformation
+
 End Sub
 
 Private Sub Command1_Click()

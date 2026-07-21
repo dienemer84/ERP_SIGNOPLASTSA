@@ -1086,7 +1086,7 @@ Private Banco As Banco
 Private caja As caja
 Private CuentaBancaria As CuentaBancaria
 Private moneda As clsMoneda
-Private cuentasBancarias As New Collection
+Private CuentasBancarias As New Collection
 Private Monedas As New Collection
 Private Cajas As New Collection
 Private bancos As New Collection
@@ -1477,8 +1477,8 @@ Private Sub Form_Load()
     Set Monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = Monedas.count
 
-    Set cuentasBancarias = DAOCuentaBancaria.FindAll()
-    Me.gridCuentasBancarias.ItemCount = cuentasBancarias.count
+    Set CuentasBancarias = DAOCuentaBancaria.FindAll()
+    Me.gridCuentasBancarias.ItemCount = CuentasBancarias.count
 
     Set bancos = DAOBancos.GetAll()
     Me.gridBancos.ItemCount = bancos.count
@@ -2093,8 +2093,8 @@ End Sub
 
 
 Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If cuentasBancarias.count >= RowIndex Then
-        Set CuentaBancaria = cuentasBancarias.item(RowIndex)
+    If CuentasBancarias.count >= RowIndex Then
+        Set CuentaBancaria = CuentasBancarias.item(RowIndex)
         Values(1) = CuentaBancaria.Id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
@@ -2427,12 +2427,22 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
         
     End If
 
-    Totalizar
+        Totalizar
+        
+        Me.grillaConfirmados.ItemCount = 0
+      
+        If Not facturasConfirmadas Is Nothing Then
+            Me.grillaConfirmados.ItemCount = facturasConfirmadas.count
+            Me.lblCbtesConfirmados.caption = "Comprobantes: " & facturasConfirmadas.count
+        Else
+            Me.grillaConfirmados.ItemCount = 0
+            Me.lblCbtesConfirmados.caption = "Comprobantes: 0"
+        End If
     
-    Me.grillaConfirmados.ItemCount = 0
-  
-    Me.grillaConfirmados.ItemCount = facturasConfirmadas.count
+        Me.lblComprobantesMostrados.caption = "Comprobantes: 0"
     
+        Me.grillaConfirmados.Refresh
+        Me.grilla.Refresh
     
     Exit Sub
 err1:

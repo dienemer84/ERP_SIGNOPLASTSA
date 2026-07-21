@@ -18,11 +18,13 @@ Public Id As Long
 Public Banco As Banco
 Public NumeroDesde As Long
 Public NumeroHasta As Long
-Public FechaCreacion As Date
+Public fechaCreacion As Date
 Public moneda As clsMoneda
 Public numero As Long
-Public observaciones As String
+Public Observaciones As String
 Public Cheques As New Collection
+
+Public usada As Boolean
 
 Public Property Get Description() As String
     Dim ret As String

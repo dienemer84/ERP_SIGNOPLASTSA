@@ -1,6 +1,7 @@
 VERSION 5.00
 Object = "{7CAC59E5-B703-4CCF-B326-8B956D962F27}#12.0#0"; "CODEJO~3.OCX"
 Object = "{555E8FCC-830E-45CC-AF00-A012D5AE7451}#12.0#0"; "CODEJO~1.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmDesarrollo 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
@@ -26,17 +27,30 @@ Begin VB.Form frmDesarrollo
    ScaleHeight     =   7560
    ScaleWidth      =   18450
    Begin XtremeReportControl.ReportControl reportControlPiezas 
-      Height          =   7395
-      Left            =   60
+      Height          =   6795
+      Left            =   120
       TabIndex        =   8
-      Top             =   105
+      Top             =   600
       Width           =   7365
       _Version        =   786432
       _ExtentX        =   12991
-      _ExtentY        =   13044
+      _ExtentY        =   11986
       _StockProps     =   64
       BorderStyle     =   3
       MultipleSelection=   0   'False
+   End
+   Begin XtremeSuiteControls.PushButton btnActualizar 
+      Height          =   375
+      Left            =   5640
+      TabIndex        =   9
+      Top             =   120
+      Width           =   1815
+      _Version        =   786432
+      _ExtentX        =   3201
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Actualizar"
+      UseVisualStyle  =   -1  'True
    End
    Begin VB.Frame fraManoObra 
       BackColor       =   &H00FFC0C0&
@@ -127,8 +141,8 @@ Begin VB.Form frmDesarrollo
       End
    End
    Begin XtremeCommandBars.ImageManager ImageManager1 
-      Left            =   4680
-      Top             =   0
+      Left            =   120
+      Top             =   120
       _Version        =   786432
       _ExtentX        =   635
       _ExtentY        =   635
@@ -232,8 +246,12 @@ Public Sub CargarPieza(piezaId As Long)
 End Sub
 
 
-Private Sub AgregarPieza2(ByVal Pieza As Pieza, Optional ByVal parent As ReportRecord = Nothing)
+Private Sub AgregarPieza2( _
+    ByVal Pieza As Pieza, _
+    Optional ByVal parent As ReportRecord = Nothing)
+
     Dim rec As ReportRecord
+    Dim piezaHija As Pieza
 
     If parent Is Nothing Then
         Set rec = Me.reportControlPiezas.Records.Add
@@ -241,26 +259,26 @@ Private Sub AgregarPieza2(ByVal Pieza As Pieza, Optional ByVal parent As ReportR
         Set rec = parent.Childs.Add
     End If
 
-    Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
-
-
-
     rec.AddItem Pieza.nombre
-    If CantArchivos.item(Pieza.Id) > 0 Then
-        rec.item(0).Icon = 13
-    Else
-        rec.item(0).Icon = 0
+
+    rec.item(0).Icon = 0
+
+    If Not CantArchivos Is Nothing Then
+        If CantArchivos.Exists(Pieza.Id) Then
+            If CantArchivos.item(Pieza.Id) > 0 Then
+                rec.item(0).Icon = 13
+            End If
+        End If
     End If
 
     rec.AddItem Pieza.Cantidad
+
     rec.Tag = Pieza.Id
     rec.Expanded = True
 
-    Dim piezaHija As Pieza
     For Each piezaHija In Pieza.PiezasHijas
         AgregarPieza2 piezaHija, rec
     Next piezaHija
-
 End Sub
 
 
@@ -285,6 +303,56 @@ Private Sub AgregarPieza(ByVal tmpDetaHist As clsPresupuestoDetalleHistorico, Op
 
 End Sub
 
+
+
+Private Sub btnActualizar_Click()
+    On Error GoTo ErrHandler
+
+    Screen.MousePointer = vbHourglass
+    Me.btnActualizar.Enabled = False
+
+    ActualizarVista
+
+Salir:
+    Me.btnActualizar.Enabled = True
+    Screen.MousePointer = vbDefault
+    Exit Sub
+
+ErrHandler:
+    MsgBox "No se pudo actualizar la información." & vbCrLf & _
+           Err.Number & " - " & Err.Description, _
+           vbExclamation, "Actualizar vista"
+
+    Resume Salir
+End Sub
+
+
+Private Sub ActualizarVista()
+    Dim piezaSeleccionadaId As Long
+
+    'Guardar la selección actual.
+    If Me.reportControlPiezas.SelectedRows.count > 0 Then
+        piezaSeleccionadaId = _
+            CLng(Me.reportControlPiezas.SelectedRows(0).record.Tag)
+    End If
+
+    'Limpiar las grillas.
+    Me.reportControlPiezas.Records.DeleteAll
+    Me.reportControlMateriales.Records.DeleteAll
+    Me.reportControlManoObra.Records.DeleteAll
+
+    LimpiarLabels
+
+    Select Case vis
+
+        Case DesarrolloPieza
+            ActualizarDesarrolloPieza piezaSeleccionadaId
+
+        Case DesarrolloHistoricoDetallePresupuesto
+            ActualizarDetalleHistorico piezaSeleccionadaId
+
+    End Select
+End Sub
 
 
 Private Sub Form_Load()
@@ -392,8 +460,8 @@ Private Sub mnuCambiar_Click()
     If frm2.cboComplejidad.ListIndex = -1 Then
         frm2.cboComplejidad.ListIndex = 0
     End If
-    frm2.cboClientes.ListIndex = funciones.PosIndexCbo(P.cliente.Id, frm2.cboClientes)
-    frm2.txtIdCliente = P.cliente.Id
+    frm2.cboClientes.ListIndex = funciones.PosIndexCbo(P.Cliente.Id, frm2.cboClientes)
+    frm2.txtIdCliente = P.Cliente.Id
 
     basene.llenarListaMDO P.Id, frm2.ListView2
     basene.llenarLstmateriales P.Id, frm2.ListView1
@@ -447,7 +515,7 @@ Private Sub mnuCostos_Click()
     Dim P As Pieza
     Set P = m_pieza.LocatePiezaInPiezasHijas(Me.reportControlPiezas.SelectedRows(0).record.Tag)
 
-    frmCostosIncidencia.cliente = P.cliente.Id
+    frmCostosIncidencia.Cliente = P.Cliente.Id
     frmCostosIncidencia.idp = P.Id
     frmCostosIncidencia.Show 1
 End Sub
@@ -526,7 +594,7 @@ Private Sub mnuModifConj_Click()
 
         Dim frm As New frmDefinirConjunto
 
-        frm.accion = 1
+        frm.Accion = 1
         frm.idPiezaMadre = P.Id
         frm.Show
     End If
@@ -596,7 +664,7 @@ Private Sub reportControlPiezas_SelectionChanged()
 
             Me.lblCostoMateriales.caption = Me.lblCostoMateriales.Tag & funciones.FormatearDecimales(pdh.TotalCostoMateriales)
             Me.lblCostoManoObra.caption = Me.lblCostoManoObra.Tag & funciones.FormatearDecimales(pdh.TotalCostoMDO)
-            Me.lblTotalKg.caption = Me.lblTotalKg.Tag & pdh.TotalKGMateriales
+            Me.lblTotalKG.caption = Me.lblTotalKG.Tag & pdh.TotalKGMateriales
             Me.lblTotalM2.caption = Me.lblTotalM2.Tag & pdh.TotalM2Materiales
         ElseIf vis = DesarrolloPieza Then
             Dim P As Pieza
@@ -610,7 +678,7 @@ Private Sub reportControlPiezas_SelectionChanged()
 
                 Me.lblCostoMateriales.caption = Me.lblCostoMateriales.Tag & funciones.FormatearDecimales(P.TotalCostoMateriales)
                 Me.lblCostoManoObra.caption = Me.lblCostoManoObra.Tag & funciones.FormatearDecimales(P.TotalCostoManoObra)
-                Me.lblTotalKg.caption = Me.lblTotalKg.Tag & P.TotalKG
+                Me.lblTotalKG.caption = Me.lblTotalKG.Tag & P.TotalKG
                 Me.lblTotalM2.caption = Me.lblTotalM2.Tag & P.TotalM2
 
             End If
@@ -719,3 +787,61 @@ Private Sub CargarManoObra(histManoObra As Collection)
 
     Me.reportControlManoObra.Populate
 End Sub
+
+
+Private Sub ActualizarDesarrolloPieza(ByVal piezaSeleccionadaId As Long)
+    Dim idPiezaPrincipal As Long
+
+    If m_pieza Is Nothing Then Exit Sub
+
+    idPiezaPrincipal = m_pieza.Id
+
+    'Volver a consultar la pieza y todos sus hijos.
+    Set m_pieza = Nothing
+    Set m_pieza = DAOPieza.FindById( _
+                        idPiezaPrincipal, _
+                        FL_4, _
+                        False, _
+                        False)
+
+    If m_pieza Is Nothing Then
+        MsgBox "La pieza ya no se encuentra disponible.", _
+               vbExclamation, _
+               "Actualizar"
+        Exit Sub
+    End If
+
+    Set CantArchivos = _
+        DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
+
+    AgregarPieza2 m_pieza
+
+    Me.reportControlPiezas.Populate
+
+    If Me.reportControlPiezas.rows.count > 0 Then
+        Set Me.reportControlPiezas.FocusedRow = _
+            Me.reportControlPiezas.rows(0)
+    End If
+
+    Me.caption = "Desarrollo de Pieza " & m_pieza.nombre
+End Sub
+
+
+Private Sub ActualizarDetalleHistorico(ByVal detalleSeleccionadoId As Long)
+    Dim tmpDetaHist As clsPresupuestoDetalleHistorico
+
+    Set detallesHistoricos = _
+        DAODetallePresupuestoHistorico.FindAllByDetallePresupuestoId(detaPresuId)
+
+    For Each tmpDetaHist In detallesHistoricos
+        AgregarPieza tmpDetaHist
+    Next tmpDetaHist
+
+    Me.reportControlPiezas.Populate
+
+    If Me.reportControlPiezas.rows.count > 0 Then
+        Set Me.reportControlPiezas.FocusedRow = _
+            Me.reportControlPiezas.rows(0)
+    End If
+End Sub
+

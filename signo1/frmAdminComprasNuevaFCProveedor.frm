@@ -6,17 +6,17 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Comprobantes de Proveedores"
-   ClientHeight    =   8130
+   ClientHeight    =   9570
    ClientLeft      =   45
    ClientTop       =   480
-   ClientWidth     =   10515
+   ClientWidth     =   14175
    Icon            =   "frmAdminComprasNuevaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8130
-   ScaleWidth      =   10515
+   ScaleHeight     =   9570
+   ScaleWidth      =   14175
    Begin XtremeSuiteControls.GroupBox GroupBox2 
       Height          =   855
       Left            =   120
@@ -563,7 +563,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16842753
+      Format          =   66322433
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 

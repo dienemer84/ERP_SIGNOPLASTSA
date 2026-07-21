@@ -814,7 +814,7 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Column(21)      =   "frmAdminComprasListaFCProveedor.frx":2202
       Column(22)      =   "frmAdminComprasListaFCProveedor.frx":23A6
       Column(23)      =   "frmAdminComprasListaFCProveedor.frx":24FE
-      FormatStylesCount=   9
+      FormatStylesCount=   10
       FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":260E
       FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":2746
       FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":27F6
@@ -824,9 +824,10 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":2B1A
       FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2BDA
       FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2C9E
+      FormatStyle(10) =   "frmAdminComprasListaFCProveedor.frx":2D5E
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2D5E
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":3078
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2E26
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":3140
    End
    Begin XtremeSuiteControls.ComboBox cboFantasia 
       Height          =   315
@@ -1490,13 +1491,16 @@ Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
     On Error GoTo err1
     Set Factura = facturas(RowBuffer.RowIndex)
 
-    If Factura.estado = EstadoFacturaProveedor.Aprobada Then
-        RowBuffer.CellStyle(16) = "EstadoAprobado"
-    ElseIf Factura.estado = EstadoFacturaProveedor.EnProceso Then
-        RowBuffer.CellStyle(16) = " EstadoEnProceso"
-    ElseIf Factura.estado = EstadoFacturaProveedor.Saldada Then
-        RowBuffer.CellStyle(16) = "EstadoSaldado"
-    End If
+        If Factura.estado = EstadoFacturaProveedor.Aprobada Then
+            RowBuffer.CellStyle(16) = "EstadoAprobado"
+        ElseIf Factura.estado = EstadoFacturaProveedor.EnProceso Then
+            RowBuffer.CellStyle(16) = "EstadoEnProceso"
+        ElseIf Factura.estado = EstadoFacturaProveedor.Saldada Then
+            RowBuffer.CellStyle(16) = "EstadoSaldado"
+        ElseIf Factura.estado = EstadoFacturaProveedor.pagoParcial Then
+            RowBuffer.CellStyle(16) = "EstadoPagoParcial"
+        End If
+   
     Exit Sub
 err1:
 End Sub

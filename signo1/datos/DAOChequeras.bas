@@ -10,9 +10,9 @@ Public Const CAMPO_OBSERVACIONES As String = "observaciones"
 Public Const CAMPO_DESDE As String = "numero_desde"
 Public Const CAMPO_HASTA As String = "numero_hasta"
 Public Const CAMPO_FECHA_CREACION As String = "fecha_creacion"
+Public Const CAMPO_USADA As String = "usada"
 
-
-Public Sub llenarComboXtremeSuite(cbo As XtremeSuiteControls.ComboBox)
+Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     Dim col As New Collection
     Set col = DAOChequeras.GetAll
     Dim bco As chequera
@@ -53,8 +53,8 @@ q = Replace(q, "'numero'", Escape(chequera.numero))
     q = Replace(q, "'numero_desde'", Escape(chequera.NumeroDesde))
     q = Replace(q, "'numero_hasta'", Escape(chequera.NumeroHasta))
     q = Replace(q, "'id_moneda'", Escape(chequera.moneda.Id))
-    q = Replace(q, "'fecha_creacion'", Escape(chequera.FechaCreacion))
-    q = Replace(q, "'observaciones'", Escape(chequera.observaciones))
+    q = Replace(q, "'fecha_creacion'", Escape(chequera.fechaCreacion))
+    q = Replace(q, "'observaciones'", Escape(chequera.Observaciones))
 
     Guardar = conectar.execute(q)
     If Not Guardar Then GoTo err1
@@ -62,7 +62,7 @@ q = Replace(q, "'numero'", Escape(chequera.numero))
     chequera.Id = nuevo_id
     If chequera.Cheques.count > 0 Then
         For Each cheque In chequera.Cheques
-            cheque.IdChequera = chequera.Id
+            cheque.idChequera = chequera.Id
             If Not DAOCheques.Guardar(cheque) Then GoTo err1
         Next cheque
     End If
@@ -79,14 +79,32 @@ Public Function GetById(Id As Long) As chequera
     If col.count = 0 Then
         Set GetById = Nothing
     Else
-        Set GetById = col.Item(1)
+        Set GetById = col.item(1)
     End If
 End Function
 
+'''Public Function FindAllWithChequesDisponibles() As Collection
+'''    Dim F As String
+'''    F = "chs.id IN (SELECT DISTINCT id_chequera FROM Cheques WHERE id_chequera IS NOT NULL AND en_cartera = 0 AND fecha_vencimiento IS NULL ) ORDER BY fecha_creacion DESC"
+'''    Set FindAllWithChequesDisponibles = GetAll(F)
+'''End Function
+
 Public Function FindAllWithChequesDisponibles() As Collection
+
     Dim F As String
-    F = "chs.id IN (SELECT DISTINCT id_chequera FROM Cheques WHERE id_chequera IS NOT NULL AND en_cartera = 0 AND fecha_vencimiento IS NULL ) ORDER BY fecha_creacion DESC"
+
+    F = "IFNULL(chs.usada, 0) = 0 " _
+      & "AND chs.id IN (" _
+      & "   SELECT DISTINCT id_chequera " _
+      & "   FROM Cheques " _
+      & "   WHERE id_chequera IS NOT NULL " _
+      & "   AND en_cartera = 0 " _
+      & "   AND fecha_vencimiento IS NULL " _
+      & ") " _
+      & "ORDER BY chs.fecha_creacion DESC"
+
     Set FindAllWithChequesDisponibles = GetAll(F)
+
 End Function
 
 
@@ -114,29 +132,81 @@ err1:
     Set GetAll = Nothing
 End Function
 
-Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tablaChequera As String, Optional tablaMoneda As String, Optional tablaBanco As String) As chequera
-    Dim tmp As chequera
 
+Public Function Map( _
+    ByRef rs As Recordset, _
+    ByRef indice As Dictionary, _
+    ByRef tablaChequera As String, _
+    Optional tablaMoneda As String, _
+    Optional tablaBanco As String) As chequera
+
+    Dim tmp As chequera
     Dim Id As Variant
+    Dim valorUsada As Variant
+
     Id = GetValue(rs, indice, tablaChequera, CAMPO_ID)
+
     If Id > 0 Then
         Set tmp = New chequera
 
         tmp.Id = Id
-        tmp.numero = GetValue(rs, indice, tablaChequera, DAOChequeras.CAMPO_NUMERO)
-        tmp.NumeroDesde = GetValue(rs, indice, tablaChequera, CAMPO_DESDE)
-        tmp.FechaCreacion = GetValue(rs, indice, tablaChequera, CAMPO_FECHA_CREACION)
-        tmp.NumeroHasta = GetValue(rs, indice, tablaChequera, CAMPO_HASTA)
-        If LenB(tablaMoneda) > 0 Then Set tmp.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
-        If LenB(tablaBanco) > 0 Then Set tmp.Banco = DAOBancos.Map(rs, indice, tablaBanco)
+        tmp.numero = GetValue( _
+            rs, indice, tablaChequera, CAMPO_NUMERO)
 
+        tmp.NumeroDesde = GetValue( _
+            rs, indice, tablaChequera, CAMPO_DESDE)
 
+        tmp.fechaCreacion = GetValue( _
+            rs, indice, tablaChequera, CAMPO_FECHA_CREACION)
 
+        tmp.NumeroHasta = GetValue( _
+            rs, indice, tablaChequera, CAMPO_HASTA)
 
+        valorUsada = GetValue( _
+            rs, indice, tablaChequera, CAMPO_USADA)
 
+        If IsNull(valorUsada) Or IsEmpty(valorUsada) Then
+            tmp.usada = False
+        Else
+            tmp.usada = (CLng(valorUsada) <> 0)
+        End If
 
+        If LenB(tablaMoneda) > 0 Then
+            Set tmp.moneda = DAOMoneda.Map( _
+                rs, indice, tablaMoneda)
+        End If
+
+        If LenB(tablaBanco) > 0 Then
+            Set tmp.Banco = DAOBancos.Map( _
+                rs, indice, tablaBanco)
+        End If
     End If
 
     Set Map = tmp
+
+End Function
+
+Public Function ActualizarUsada( _
+    ByVal idChequera As Long, _
+    ByVal usada As Boolean) As Boolean
+    
+    On Error GoTo err1
+    
+    Dim q As String
+    Dim valorUsada As Integer
+    
+    valorUsada = Abs(CInt(usada))
+    
+    q = "UPDATE Chequeras " _
+      & "SET usada = " & valorUsada & "  " _
+      & "WHERE id = " & idChequera
+    
+    ActualizarUsada = conectar.execute(q)
+    Exit Function
+    
+err1:
+    ActualizarUsada = False
+
+
 End Function
 

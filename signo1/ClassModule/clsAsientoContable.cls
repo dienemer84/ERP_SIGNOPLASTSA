@@ -18,7 +18,9 @@ Public NumeroLiq As Long
 Public moneda As clsMoneda
 Public FEcha As Date
 
+Public CuentaBancaria As CuentaBancaria
 Public CuentaContable As clsCuentaContable
+Public CuentaBancariaDestino As CuentaBancaria
 
 Public ChequesTerceros As New Collection
 Public ChequesPropios As New Collection
@@ -36,6 +38,12 @@ Public StaticTotalOrigenes As Double
 
 Public Creada As Date
 
+Public TipoMovimiento As String
+
+Public Observaciones As String
+
+Public idUsuario As Long
+Public Usuario As clsUsuario
 
 
 Public Property Get TotalOrigenes() As Double
@@ -43,7 +51,7 @@ Public Property Get TotalOrigenes() As Double
     Dim cheq As cheque
     For Each cheq In Me.ChequesTerceros
         If IsSomething(cheq.moneda) Then
-            total = total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(cheq.monto, cheq.moneda.Id, Me.moneda.Id)
         End If
     Next cheq
 
@@ -52,20 +60,20 @@ Public Property Get TotalOrigenes() As Double
             '  Debug.Print cheq.numero, cheq.Monto
 
 
-            total = total + MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            total = total + MonedaConverter.Convertir(cheq.monto, cheq.moneda.Id, Me.moneda.Id)
         End If
     Next cheq
 
     Dim op As operacion
     For Each op In Me.operacionesBanco
         If IsSomething(op.moneda) Then
-            total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, 0)
+            total = total + MonedaConverter.Convertir(op.monto, op.moneda.Id, 0)
         End If
     Next op
 
     For Each op In Me.OperacionesCaja
         If IsSomething(op.moneda) Then
-            total = total + MonedaConverter.Convertir(op.Monto, op.moneda.Id, 0)
+            total = total + MonedaConverter.Convertir(op.monto, op.moneda.Id, 0)
         End If
     Next op
     '13/08/12 corregi con sabrina esta funcion para que cierre bien la Op. A pedido de karin. chequear.
@@ -93,7 +101,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
         If IsSomething(cheq.moneda) Then
             Set itemRetorno = New Collection
             itemRetorno.Add cheq.FechaVencimiento
-            itemRetorno.Add MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            itemRetorno.Add MonedaConverter.Convertir(cheq.monto, cheq.moneda.Id, Me.moneda.Id)
             colRetorno.Add itemRetorno
         End If
     Next cheq
@@ -102,7 +110,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
         If IsSomething(cheq.moneda) Then
             Set itemRetorno = New Collection
             itemRetorno.Add cheq.FechaVencimiento
-            itemRetorno.Add MonedaConverter.Convertir(cheq.Monto, cheq.moneda.Id, Me.moneda.Id)
+            itemRetorno.Add MonedaConverter.Convertir(cheq.monto, cheq.moneda.Id, Me.moneda.Id)
             colRetorno.Add itemRetorno
         End If
     Next cheq
@@ -112,7 +120,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
         If IsSomething(op.moneda) Then
             Set itemRetorno = New Collection
             itemRetorno.Add op.FechaOperacion
-            itemRetorno.Add MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
+            itemRetorno.Add MonedaConverter.Convertir(op.monto, op.moneda.Id, Me.moneda.Id)
             colRetorno.Add itemRetorno
         End If
     Next op
@@ -121,7 +129,7 @@ Public Property Get TotalOrigenesDiscriminado() As Collection
         If IsSomething(op.moneda) Then
             Set itemRetorno = New Collection
             itemRetorno.Add op.FechaOperacion
-            itemRetorno.Add MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
+            itemRetorno.Add MonedaConverter.Convertir(op.monto, op.moneda.Id, Me.moneda.Id)
             colRetorno.Add itemRetorno
         End If
     Next op

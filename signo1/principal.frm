@@ -496,6 +496,9 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         
     Case ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_VAA:
        frmAdminExtrasCbtesVentasAdeudadosAl.Show
+       
+    Case ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_BANCARIO:
+       frmResumenBancario.Show
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES:
         Dim cccfff As New frmAdminCheques
@@ -526,7 +529,7 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__TABLERO: frmSistemaTablero.Show
     
     Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA:
-        frmCambiarPassword.Frame1 = "[ " & funciones.GetUserObj.usuario & " ]"
+        frmCambiarPassword.Frame1 = "[ " & funciones.GetUserObj.Usuario & " ]"
         frmCambiarPassword.Show
 
         ' Desactivaciones dienemer 11.09.20
@@ -637,7 +640,7 @@ Private Sub MDIForm_Load()
 
             Set Me.TrayIcon.Icon = pic
 
-            If LenB(LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)) > 0 And InStr(1, funciones.GetUserObj.usuario, "puesto") Then
+            If LenB(LeerIni(App.path & "\config.ini", "Configurar", "puesto", vbNullString)) > 0 And InStr(1, funciones.GetUserObj.Usuario, "puesto") Then
                 Dim frmT As New frmTiempoProcesoDetalle
                 frmT.Show 1
             End If
@@ -768,7 +771,7 @@ Private Sub CreateRibbonBar()
     statusBar.RibbonDividerIndex = 3    'para que me pinte todos azules
 
     Set statusbarpane = statusBar.AddPane(1)
-    statusbarpane.Text = " Usuario: " & GetUserObj.usuario
+    statusbarpane.Text = " Usuario: " & GetUserObj.Usuario
     statusbarpane.Style = SBPS_NOBORDERS
     statusbarpane.BeginGroup = True
 
@@ -1059,7 +1062,7 @@ Private Sub CreateRibbonBar()
     
     AddButton ribbonGroup, "Saldos Compras", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_CAA, Permisos.AdminSubdiariosControl
     AddButton ribbonGroup, "Saldos Ventas", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_VAA, Permisos.AdminSubdiariosControl
-    
+    AddButton ribbonGroup, "Reporte Bancario", ID_BUTTON_ADMINISTRACION__EXTRAS__REPORTE_BANCARIO, Permisos.AdminSubdiariosControl
     'frmAdminExtrasReporteCMC
 
     '        Set cmdBarCtrl = AddButton(ribbonGroup, "Subdiarios Compras ", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_COMPRAS, , , xtpControlButtonPopup)
@@ -1095,7 +1098,7 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Agenda", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA
     AddButton ribbonGroup, "Cambiar contraseÑa", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA
     AddButton ribbonGroup, "Eventos", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__EVENTOS
-    AddButton ribbonGroup, "Asignación Eventos", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS___ASIGNACION_EVENTOS, (funciones.GetUserObj.usuario = "marceloto" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "raulco")
+    AddButton ribbonGroup, "Asignación Eventos", ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS___ASIGNACION_EVENTOS, (funciones.GetUserObj.Usuario = "marceloto" Or funciones.GetUserObj.Usuario = "nicolasba" Or funciones.GetUserObj.Usuario = "raulco")
 
     CommandBars.ShowTabWorkspace True
     RibbonBar.EnableFrameTheme
