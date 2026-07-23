@@ -57,7 +57,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Begin XtremeSuiteControls.PushButton btnClearCtaBcaria 
          Height          =   255
          Left            =   4530
-         TabIndex        =   34
+         TabIndex        =   30
          Top             =   610
          Width           =   420
          _Version        =   786432
@@ -70,7 +70,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Begin XtremeSuiteControls.ComboBox cboCtaBcaria 
          Height          =   315
          Left            =   960
-         TabIndex        =   32
+         TabIndex        =   28
          Top             =   600
          Width           =   3495
          _Version        =   786432
@@ -165,67 +165,10 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
             UseVisualStyle  =   -1  'True
          End
       End
-      Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
-         Height          =   1215
-         Index           =   0
-         Left            =   240
-         TabIndex        =   9
-         Top             =   1920
-         Visible         =   0   'False
-         Width           =   2355
-         _Version        =   786432
-         _ExtentX        =   4154
-         _ExtentY        =   2143
-         _StockProps     =   79
-         Caption         =   "Estado Proveedor"
-         UseVisualStyle  =   -1  'True
-         Begin XtremeSuiteControls.CheckBox chkContado 
-            Height          =   195
-            Left            =   405
-            TabIndex        =   10
-            Top             =   225
-            Width           =   1635
-            _Version        =   786432
-            _ExtentX        =   2884
-            _ExtentY        =   344
-            _StockProps     =   79
-            Caption         =   "Contado"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-         Begin XtremeSuiteControls.CheckBox chkCtaCte 
-            Height          =   315
-            Left            =   405
-            TabIndex        =   11
-            Top             =   465
-            Width           =   1800
-            _Version        =   786432
-            _ExtentX        =   3175
-            _ExtentY        =   556
-            _StockProps     =   79
-            Caption         =   "Cuenta Corriente"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-         Begin XtremeSuiteControls.CheckBox chkEliminado 
-            Height          =   315
-            Left            =   405
-            TabIndex        =   12
-            Top             =   765
-            Width           =   1800
-            _Version        =   786432
-            _ExtentX        =   3175
-            _ExtentY        =   556
-            _StockProps     =   79
-            Caption         =   "Inactivos"
-            UseVisualStyle  =   -1  'True
-            Value           =   1
-         End
-      End
       Begin XtremeSuiteControls.ComboBox cboCuenta 
          Height          =   315
          Left            =   945
-         TabIndex        =   13
+         TabIndex        =   9
          Top             =   975
          Width           =   3510
          _Version        =   786432
@@ -238,7 +181,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Begin XtremeSuiteControls.PushButton btnClearCtaCble 
          Height          =   255
          Left            =   4530
-         TabIndex        =   14
+         TabIndex        =   10
          Top             =   980
          Width           =   420
          _Version        =   786432
@@ -253,7 +196,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Height          =   315
          Index           =   0
          Left            =   3405
-         TabIndex        =   15
+         TabIndex        =   11
          Top             =   2100
          Width           =   1470
          _Version        =   786432
@@ -267,7 +210,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Height          =   315
          Index           =   0
          Left            =   3390
-         TabIndex        =   16
+         TabIndex        =   12
          Top             =   2595
          Width           =   1470
          _Version        =   786432
@@ -280,7 +223,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Begin XtremeSuiteControls.ComboBox cboEstado 
          Height          =   315
          Left            =   945
-         TabIndex        =   17
+         TabIndex        =   13
          Top             =   1320
          Width           =   3510
          _Version        =   786432
@@ -294,7 +237,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
          Height          =   255
          Left            =   4530
-         TabIndex        =   18
+         TabIndex        =   14
          Top             =   1350
          Width           =   420
          _Version        =   786432
@@ -309,7 +252,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Height          =   1575
          Index           =   1
          Left            =   5160
-         TabIndex        =   19
+         TabIndex        =   15
          Top             =   240
          Width           =   4695
          _Version        =   786432
@@ -332,7 +275,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
             Height          =   315
             Index           =   1
             Left            =   720
-            TabIndex        =   20
+            TabIndex        =   16
             Top             =   720
             Width           =   1470
             _Version        =   786432
@@ -346,7 +289,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
             Height          =   315
             Index           =   1
             Left            =   2925
-            TabIndex        =   21
+            TabIndex        =   17
             Top             =   720
             Width           =   1470
             _Version        =   786432
@@ -359,7 +302,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Begin XtremeSuiteControls.ComboBox cboRangos 
             Height          =   315
             Left            =   720
-            TabIndex        =   22
+            TabIndex        =   18
             Top             =   300
             Width           =   3675
             _Version        =   786432
@@ -374,7 +317,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
             Height          =   195
             Index           =   1
             Left            =   120
-            TabIndex        =   25
+            TabIndex        =   21
             Top             =   360
             Width           =   480
             _Version        =   786432
@@ -389,7 +332,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
             Height          =   195
             Index           =   1
             Left            =   165
-            TabIndex        =   24
+            TabIndex        =   20
             Top             =   780
             Width           =   465
             _Version        =   786432
@@ -404,7 +347,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
             Height          =   195
             Index           =   1
             Left            =   2400
-            TabIndex        =   23
+            TabIndex        =   19
             Top             =   780
             Width           =   420
             _Version        =   786432
@@ -421,7 +364,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Caption         =   "Cta. Cble"
          Height          =   255
          Left            =   -150
-         TabIndex        =   33
+         TabIndex        =   29
          Top             =   1005
          Width           =   975
       End
@@ -429,7 +372,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Height          =   195
          Index           =   0
          Left            =   330
-         TabIndex        =   30
+         TabIndex        =   26
          Top             =   1380
          Width           =   495
          _Version        =   786432
@@ -444,7 +387,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Height          =   195
          Index           =   0
          Left            =   2880
-         TabIndex        =   29
+         TabIndex        =   25
          Top             =   2655
          Width           =   420
          _Version        =   786432
@@ -459,7 +402,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Height          =   195
          Index           =   0
          Left            =   2865
-         TabIndex        =   28
+         TabIndex        =   24
          Top             =   2145
          Width           =   465
          _Version        =   786432
@@ -473,7 +416,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Begin XtremeSuiteControls.Label lbl 
          Height          =   195
          Left            =   0
-         TabIndex        =   27
+         TabIndex        =   23
          Top             =   660
          Width           =   825
          _Version        =   786432
@@ -486,7 +429,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Begin XtremeSuiteControls.Label Label1 
          Height          =   195
          Left            =   240
-         TabIndex        =   26
+         TabIndex        =   22
          Top             =   330
          Width           =   585
          _Version        =   786432
@@ -500,8 +443,8 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
    Begin GridEX20.GridEX gridOrdenes 
       Height          =   5505
       Left            =   120
-      TabIndex        =   31
-      Top             =   2160
+      TabIndex        =   27
+      Top             =   2400
       Width           =   14775
       _ExtentX        =   26061
       _ExtentY        =   9710
@@ -551,6 +494,14 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       _ExtentY        =   847
       _Version        =   393216
       Flags           =   1
+   End
+   Begin VB.Label Label3 
+      Caption         =   "Movimientos mostrados [ 0 ]"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   31
+      Top             =   2160
+      Width           =   6375
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -615,7 +566,7 @@ End Sub
 
 
 Private Sub cmdBuscar_Click()
-    If (Me.chkContado.value = xtpChecked Or Me.chkCtaCte.value = xtpChecked Or Me.chkEliminado.value = xtpGrayed) Then llenarLista Else Me.gridOrdenes.ItemCount = 0
+    If 1 = 1 Then llenarLista Else Me.gridOrdenes.ItemCount = 0
 
 End Sub
 
@@ -733,7 +684,7 @@ Private Sub llenarLista()
     Me.gridOrdenes.ItemCount = Movimientos.count
 
     Me.caption = "Listado de Movimientos" & " [Cant: " & Movimientos.count & "]"
-
+    Me.Label3.caption = "Movimientos mostrados" & " [Cant: " & Movimientos.count & "]"
 
 End Sub
 
@@ -755,7 +706,20 @@ End Sub
 
 
 Private Sub gridOrdenes_DblClick()
-    mnuVer_Click
+    SeleccionarOP
+
+    If Not IsSomething(AsientoContable) Then Exit Sub
+
+    If AsientoContable.estado = _
+            EstadoMovimientoCajaYBancos.EnEdicion Then
+
+        mnuEditar_Click
+
+    Else
+
+        mnuVer_Click
+
+    End If
 End Sub
 
 
@@ -935,10 +899,28 @@ End Sub
 
 Private Sub mnuEditar_Click()
     SeleccionarOP
-    
+
+    If Not IsSomething(AsientoContable) Then
+        MsgBox "Debe seleccionar un movimiento.", vbExclamation
+        Exit Sub
+    End If
+
+    If AsientoContable.estado <> _
+            EstadoMovimientoCajaYBancos.EnEdicion Then
+
+        MsgBox "Solo se pueden editar movimientos en edición.", _
+               vbExclamation
+        Exit Sub
+
+    End If
+
     Dim f22 As New frmAdminCajaBancosCrearAsientoBancario
-    f22.Show
+
+    Load f22
+
+    f22.ReadOnly = False
     f22.Cargar AsientoContable
+    f22.Show
 End Sub
 
 
@@ -956,13 +938,20 @@ End Sub
 
 
 Private Sub mnuVer_Click()
-    Dim f22 As New frmAdminCajaBancosCrearAsientoBancario
-    f22.Show
     SeleccionarOP
 
-    f22.ReadOnly = True
+    If Not IsSomething(AsientoContable) Then
+        MsgBox "Debe seleccionar un movimiento.", vbExclamation
+        Exit Sub
+    End If
 
+    Dim f22 As New frmAdminCajaBancosCrearAsientoBancario
+
+    Load f22
+
+    f22.ReadOnly = True
     f22.Cargar AsientoContable
+    f22.Show
 
 End Sub
 

@@ -86,7 +86,7 @@ Public Function grabarArchivo(idPieza As Long, nombre As String, ruta As String,
 
     rss!archivo = My.Read
     rss!Tamano = My.Size
-    rss!usuario = funciones.getUser
+    rss!Usuario = funciones.getUser
     rss!Origen = Origen
     rss!de_compra = DeCompra
     My.Close
@@ -183,16 +183,36 @@ Private Sub Class_Terminate()
 End Sub
 
 
-Public Function cargarActualizacion(nom, rut, vmax, vmin, vrev, Optional notas As String = Empty) As Boolean
+Public Function cargarActualizacion( _
+    nom, _
+    rut, _
+    vmax, _
+    vmin, _
+    vrev, _
+    Optional notas As String = Empty _
+) As Boolean
+
     On Error GoTo err221
-    cn.BeginTrans
-    cargarActualizacion = True
+
     Dim My As ADODB.Stream
+    Dim Id_ As Long
+    Dim transActiva As Boolean
+
+    cargarActualizacion = False
+
+    cn.BeginTrans
+    transActiva = True
+
     Set My = New ADODB.Stream
-
     My.Open
+    My.Type = adTypeBinary
+    My.LoadFromFile rut
 
-    Me.ejecutar "select * from ActualizacionSistema limit 1"
+    If Not Me.ejecutar("SELECT * FROM ActualizacionSistema LIMIT 1") Then
+        Err.Raise vbObjectError + 1000, _
+                  "cargarActualizacion", _
+                  "No se pudo abrir la tabla ActualizacionSistema."
+    End If
 
     rs.AddNew
 
@@ -200,54 +220,80 @@ Public Function cargarActualizacion(nom, rut, vmax, vmin, vrev, Optional notas A
     rs!version_max = vmax
     rs!version_min = vmin
     rs!version_rev = vrev
-
-    My.Type = adTypeBinary
-
-    My.LoadFromFile rut
-
     rs!archivo = My.Read
     rs!Tamano = My.Size
     rs!FEcha = funciones.datetimeFormateada(Now)
     rs!notas_version = notas
 
-    My.Close
-
     rs.Update
 
+    My.Close
+    Set My = Nothing
 
     rs.Close
-
-
-    Dim Id_ As Long
-
-    MsgBox "Carga exitosa!", vbInformation, "Información"
+    Set rs = Nothing
 
     conectar.UltimoId "ActualizacionSistema", Id_
 
+    If Id_ <= 0 Then
+        Err.Raise vbObjectError + 1001, _
+                  "cargarActualizacion", _
+                  "No se pudo obtener el ID de la actualización."
+    End If
 
     cn.CommitTrans
+    transActiva = False
 
-    If MsgBox("¿Desea cargar notas de la actualización?", vbYesNo, "Confirmación") = vbYes Then
-        frmSistemaAgregarNotasActualizacion.Show
+    cargarActualizacion = True
+
+    MsgBox "Carga exitosa!", vbInformation, "Información"
+
+    'Primero se cargan las notas.
+    If MsgBox("¿Desea cargar notas de la actualización?", _
+              vbQuestion + vbYesNo, _
+              "Confirmación") = vbYes Then
+
+        frmSistemaAgregarNotasActualizacion.idVersion = Id_
+        frmSistemaAgregarNotasActualizacion.Show vbModal
 
     End If
 
-    If MsgBox("¿Desea agregar más archivos a esta actualización?", vbYesNo, "Confirmación") = vbYes Then
+    'Esta pregunta aparecerá después de cerrar el formulario de notas.
+    If MsgBox("¿Desea agregar más archivos a esta actualización?", _
+              vbQuestion + vbYesNo, _
+              "Confirmación") = vbYes Then
+
         frmArchivosActualizacion.idVersion = Id_
-        frmArchivosActualizacion.Show 1
+        frmArchivosActualizacion.Show vbModal
 
     End If
-
-
-
-
-
 
     Exit Function
+
 err221:
-    MsgBox Err.Description
+
+    On Error Resume Next
+
+    If Not My Is Nothing Then
+        If My.State = adStateOpen Then My.Close
+    End If
+
+    If Not rs Is Nothing Then
+        If rs.State = adStateOpen Then rs.Close
+    End If
+
+    If transActiva Then
+        cn.RollbackTrans
+    End If
+
+    On Error GoTo 0
+
     cargarActualizacion = False
-    cn.RollbackTrans
+
+    MsgBox "No se pudo cargar la actualización:" & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Error"
+
 End Function
 
 
@@ -291,7 +337,7 @@ err3:
 End Function
 
 
-Public Function exportarArchivoSistema(idarchivo As Long) As Boolean
+Public Function exportarArchivoSistema(idArchivo As Long) As Boolean
 
     On Error GoTo err22
     exportarArchivoSistema = False
@@ -300,7 +346,7 @@ Public Function exportarArchivoSistema(idarchivo As Long) As Boolean
     exportarArchivoSistema = True
     Set My = New ADODB.Stream
     rsmy.CursorLocation = adUseClient
-    rsmy.Open "select * from sp.ActualizacionSistema where id= " & idarchivo, cn, adOpenKeyset, adLockOptimistic
+    rsmy.Open "select * from sp.ActualizacionSistema where id= " & idArchivo, cn, adOpenKeyset, adLockOptimistic
     c = 0
     While Not rs.EOF
         c = c + 1

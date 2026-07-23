@@ -767,11 +767,11 @@ Private Sub cmdCrear_Click()
     Dim esTransferencia As Boolean
 
     Dim cuentaOrigen As CuentaBancaria
-    Dim cuentaDestino As CuentaBancaria
+    Dim CuentaDestino As CuentaBancaria
 
-    Dim monto As Double
-    Dim comprobante As String
-    Dim entradaSalida As Integer
+    Dim Monto As Double
+    Dim Comprobante As String
+    Dim EntradaSalida As Integer
 
     Dim fechaMantener As Date
     Dim idCuentaMantener As Long
@@ -808,7 +808,7 @@ Private Sub cmdCrear_Click()
     AsientoContable.Observaciones = Trim$(Me.FlatEdit1.Text)
     AsientoContable.idUsuario = funciones.GetUserObj.Id
 
-    comprobante = Trim$(Me.txtComprobante.Text)
+    Comprobante = Trim$(Me.txtComprobante.Text)
 
     If LenB(Trim$(Me.txtMonto.Text)) > 0 Then
         If Not IsNumeric(Me.txtMonto.Text) Then
@@ -816,9 +816,9 @@ Private Sub cmdCrear_Click()
             Exit Sub
         End If
 
-        monto = CDbl(Me.txtMonto.Text)
+        Monto = CDbl(Me.txtMonto.Text)
     Else
-        monto = 0
+        Monto = 0
     End If
 
     ' Limpio operaciones para reconstruirlas según el tipo de movimiento
@@ -837,25 +837,25 @@ Private Sub cmdCrear_Click()
             Exit Sub
         End If
 
-        Set cuentaDestino = ObtenerCuentaSeleccionada(Me.cboCuentasBancarias)
-        Set AsientoContable.CuentaBancaria = cuentaDestino
+        Set CuentaDestino = ObtenerCuentaSeleccionada(Me.cboCuentasBancarias)
+        Set AsientoContable.CuentaBancaria = CuentaDestino
 
-        If Not CuentaCoincideConMoneda(cuentaDestino, AsientoContable.moneda) Then
+        If Not CuentaCoincideConMoneda(CuentaDestino, AsientoContable.moneda) Then
             MsgBox "La moneda de la cuenta destino no coincide con la moneda seleccionada.", vbExclamation
             Exit Sub
         End If
 
-        If monto > 0 Then
-            If LenB(comprobante) = 0 Then
+        If Monto > 0 Then
+            If LenB(Comprobante) = 0 Then
                 MsgBox "Debe ingresar un comprobante.", vbExclamation
                 Exit Sub
             End If
 
             AsientoContable.operacionesBanco.Add _
-                CrearOperacionBancaria(cuentaDestino, monto, comprobante, OPEntrada)
+                CrearOperacionBancaria(CuentaDestino, Monto, Comprobante, OPEntrada)
         End If
 
-        If monto <= 0 And AsientoContable.ChequesPropios.count = 0 Then
+        If Monto <= 0 And AsientoContable.ChequesPropios.count = 0 Then
             MsgBox "Debe cargar un monto o al menos un cheque propio.", vbExclamation
             Exit Sub
         End If
@@ -888,17 +888,17 @@ Private Sub cmdCrear_Click()
         Set AsientoContable.CuentaContable = _
             DAOCuentaContable.GetById(Me.cboCuentasContables.ItemData(Me.cboCuentasContables.ListIndex))
 
-        If monto > 0 Then
-            If LenB(comprobante) = 0 Then
+        If Monto > 0 Then
+            If LenB(Comprobante) = 0 Then
                 MsgBox "Debe ingresar un comprobante.", vbExclamation
                 Exit Sub
             End If
 
             AsientoContable.operacionesBanco.Add _
-                CrearOperacionBancaria(cuentaOrigen, monto, comprobante, OPSalida)
+                CrearOperacionBancaria(cuentaOrigen, Monto, Comprobante, OPSalida)
         End If
 
-        If monto <= 0 And AsientoContable.ChequesPropios.count = 0 Then
+        If Monto <= 0 And AsientoContable.ChequesPropios.count = 0 Then
             MsgBox "Debe cargar un monto o al menos un cheque propio.", vbExclamation
             Exit Sub
         End If
@@ -911,11 +911,7 @@ Private Sub cmdCrear_Click()
         AsientoContable.TipoMovimiento = "TRANSFERENCIA"
         Set AsientoContable.CuentaContable = Nothing
 
-        If AsientoContable.ChequesPropios.count > 0 Then
-            MsgBox "Las transferencias bancarias no deben tener cheques propios.", vbExclamation
-            Exit Sub
-        End If
-
+        
         If Me.cboCuentasBancarias.ListIndex = -1 Then
             MsgBox "Debe seleccionar una cuenta origen.", vbExclamation
             Exit Sub
@@ -927,9 +923,9 @@ Private Sub cmdCrear_Click()
         End If
 
         Set cuentaOrigen = ObtenerCuentaSeleccionada(Me.cboCuentasBancarias)
-        Set cuentaDestino = ObtenerCuentaSeleccionada(Me.cboCuentaBancariaDestino)
+        Set CuentaDestino = ObtenerCuentaSeleccionada(Me.cboCuentaBancariaDestino)
 
-        If cuentaOrigen.Id = cuentaDestino.Id Then
+        If cuentaOrigen.Id = CuentaDestino.Id Then
             MsgBox "La cuenta origen y la cuenta destino no pueden ser la misma.", vbExclamation
             Exit Sub
         End If
@@ -939,17 +935,17 @@ Private Sub cmdCrear_Click()
             Exit Sub
         End If
 
-        If Not CuentaCoincideConMoneda(cuentaDestino, AsientoContable.moneda) Then
+        If Not CuentaCoincideConMoneda(CuentaDestino, AsientoContable.moneda) Then
             MsgBox "La moneda de la cuenta destino no coincide con la moneda seleccionada.", vbExclamation
             Exit Sub
         End If
 
-        If monto <= 0 Then
+        If Monto <= 0 Then
             MsgBox "Debe ingresar un monto mayor a cero para la transferencia.", vbExclamation
             Exit Sub
         End If
 
-        If LenB(comprobante) = 0 Then
+        If LenB(Comprobante) = 0 Then
             MsgBox "Debe ingresar un comprobante.", vbExclamation
             Exit Sub
         End If
@@ -958,11 +954,11 @@ Private Sub cmdCrear_Click()
 
         ' Salida de la cuenta origen
         AsientoContable.operacionesBanco.Add _
-            CrearOperacionBancaria(cuentaOrigen, monto, comprobante, OPSalida)
+            CrearOperacionBancaria(cuentaOrigen, Monto, Comprobante, OPSalida)
 
         ' Entrada en la cuenta destino
         AsientoContable.operacionesBanco.Add _
-            CrearOperacionBancaria(cuentaDestino, monto, comprobante, OPEntrada)
+            CrearOperacionBancaria(CuentaDestino, Monto, Comprobante, OPEntrada)
 
     End If
 
@@ -970,7 +966,7 @@ Private Sub cmdCrear_Click()
     ' Totales y guardado
     '-----------------------------
     If AsientoContable.TipoMovimiento = "TRANSFERENCIA" Then
-    AsientoContable.StaticTotalOrigenes = monto
+    AsientoContable.StaticTotalOrigenes = Monto
     Else
         AsientoContable.StaticTotalOrigenes = AsientoContable.TotalOrigenes
     End If
@@ -1020,15 +1016,43 @@ Private Sub Form_Load()
 
     formLoading = True
 
-    Me.Left = _
-    frmPrincipal.ScaleWidth / 6
+    Me.Left = frmPrincipal.ScaleWidth / 6
     Me.Top = frmPrincipal.ScaleHeight / 22
-    
+
     Me.gridChequeras.Visible = False
     Me.gridChequesChequera.Visible = False
-    
-    GridEXHelper.CustomizeGrid Me.gridChequesDisponibles, False, False
 
+    GridEXHelper.CustomizeGrid _
+        Me.gridChequeras, False, False
+
+    GridEXHelper.CustomizeGrid _
+        Me.gridChequesChequera, False, False
+
+    '---------------------------------------------
+    ' Chequeras y cheques disponibles
+    '---------------------------------------------
+    Set chequeras = _
+        DAOChequeras.FindAllWithChequesDisponibles()
+
+    Me.gridChequeras.ItemCount = chequeras.count
+
+    Set Me.gridChequesPropios.Columns("chequera").DropDownControl = _
+        Me.gridChequeras
+
+    Set Me.gridChequesPropios.Columns("numero").DropDownControl = _
+        Me.gridChequesChequera
+
+    Set chequesChequeraSeleccionada = New Collection
+
+    Me.gridChequesChequera.ItemCount = 0
+    Me.gridChequesPropios.ItemCount = _
+        AsientoContable.ChequesPropios.count
+
+    GridEXHelper.AutoSizeColumns Me.gridChequeras
+
+    '---------------------------------------------
+    ' Combos
+    '---------------------------------------------
     llenarComboCuentas
 
     DAOCuentaBancaria.llenarComboXtremeSuite _
@@ -1041,19 +1065,12 @@ Private Sub Form_Load()
     Me.cboCuentaBancariaDestino.ListIndex = -1
 
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedas
-    Me.cboMonedas.ListIndex = -1
-    
-    Set chequeras = DAOChequeras.FindAllWithChequesDisponibles()
-    
-    Me.gridChequeras.ItemCount = chequeras.count
-    
-    Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
 
-    Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
-
-    gridChequesChequera.ItemCount = 0
-    
-    GridEXHelper.AutoSizeColumns Me.gridChequeras
+    If Me.cboMonedas.ListCount > 0 Then
+        Me.cboMonedas.ListIndex = 0
+    Else
+        Me.cboMonedas.ListIndex = -1
+    End If
 
     Me.dtpFecha.value = Date
 
@@ -1067,6 +1084,7 @@ Private Sub Form_Load()
     formLoading = False
 
 End Sub
+
 
 Private Sub llenarComboCuentas()
   
@@ -1134,7 +1152,7 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Values(1) = cheque.numero & " "
 
         'FORMATCURRENCY
-        Values(2) = FormatCurrency(cheque.monto)
+        Values(2) = FormatCurrency(cheque.Monto)
         Values(3) = cheque.FechaVencimiento
         If IsSomething(cheque.moneda) Then Values(4) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(5) = cheque.Banco.nombre
@@ -1156,11 +1174,21 @@ Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As 
     End If
 End Sub
 
-Private Sub gridChequesChequera_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And chequesChequeraSeleccionada.count > 0 Then
-        Values(1) = chequesChequeraSeleccionada(RowIndex).numero
-        Values(2) = chequesChequeraSeleccionada(RowIndex).Id
-    End If
+
+Private Sub gridChequesChequera_UnboundReadData( _
+    ByVal RowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
+
+    If RowIndex <= 0 Then Exit Sub
+    If RowIndex > chequesChequeraSeleccionada.count Then Exit Sub
+
+    Values(1) = _
+        chequesChequeraSeleccionada.item(RowIndex).numero
+
+    Values(2) = _
+        chequesChequeraSeleccionada.item(RowIndex).Id
+
 End Sub
 
 
@@ -1174,7 +1202,7 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal
         Set cheque = chequesDisponibles.item(RowIndex)
         Values(1) = cheque.numero
         'FORMATCURRENCY
-        Values(2) = FormatCurrency(cheque.monto)
+        Values(2) = FormatCurrency(cheque.Monto)
         Values(3) = cheque.FechaVencimiento
         If IsSomething(cheque.moneda) Then Values(4) = cheque.moneda.NombreCorto
         If IsSomething(cheque.Banco) Then Values(5) = cheque.Banco.nombre
@@ -1186,37 +1214,36 @@ Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal
 
 End Sub
 
-Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
+
+Private Sub gridChequesPropios_BeforeUpdate( _
+    ByVal Cancel As GridEX20.JSRetBoolean)
+
     Dim msg As New Collection
 
-    If LenB(Me.gridChequesPropios.value(1)) = 0 Then
+    If LenB(Trim$(CStr(Me.gridChequesPropios.value(1)))) = 0 Then
         msg.Add "Debe especificar una chequera."
     End If
 
-    If LenB(Me.gridChequesPropios.value(2)) = 0 Then
+    If Not IsNumeric(Me.gridChequesPropios.value(2)) Then
         msg.Add "Debe especificar un cheque."
-    End If
-
-    ' REVISA QUE EN LA COLECCION DE CHEQUES PROPIOS QUE SE ESTAN CARGANDO NO EST? INGRESADO EL MISMO CHEQUE, SI LO DETECTA GENERA MSG DE ERROR
-    If funciones.BuscarEnColeccion(AsientoContable.ChequesPropios, CStr(Me.gridChequesPropios.value(2))) Then
-        msg.Add "El cheque seleccionado ya fue ingresado anteriormente."
     End If
 
     If Not IsNumeric(Me.gridChequesPropios.value(3)) Then
         msg.Add "Debe especificar un monto válido."
-    End If
-    ' REVISA QUE SE HAYA CARGADO UN MONTO DEL CHEQUE INGRESADO, SI NO SE CARGA GENERA MSG DE ERROR
-
-    If LenB(Me.gridChequesPropios.value(3)) = 0 Then
-        msg.Add "Debe especificar un monto mayor a 0."
+    ElseIf CDbl(Me.gridChequesPropios.value(3)) <= 0 Then
+        msg.Add "Debe especificar un monto mayor a cero."
     End If
 
     If Not IsDate(Me.gridChequesPropios.value(4)) Then
-        msg.Add "Debe especificar una fecha valida."
+        msg.Add "Debe especificar una fecha válida."
     End If
 
     Cancel = (msg.count > 0)
-    If Cancel Then MsgBox funciones.JoinCollectionValues(msg, vbNewLine), vbExclamation
+
+    If Cancel Then
+        MsgBox funciones.JoinCollectionValues(msg, vbNewLine), _
+               vbExclamation
+    End If
 
 End Sub
 
@@ -1237,11 +1264,6 @@ End Sub
 
 Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
 
-    If Me.RadioButton3.value = True Then
-        MsgBox "No se pueden cargar cheques propios en una transferencia bancaria.", vbExclamation
-        Exit Sub
-    End If
-
     Set cheque = Nothing
 
     If IsNumeric(Values(2)) Then
@@ -1249,7 +1271,7 @@ Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JS
     End If
 
     If IsSomething(cheque) Then
-        cheque.monto = CDbl(Values(3))
+        cheque.Monto = CDbl(Values(3))
         cheque.FechaVencimiento = Values(4)
         cheque.Propio = True
         cheque.EnCartera = False
@@ -1269,26 +1291,146 @@ Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookm
 End Sub
 
 
-Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If AsientoContable.ChequesPropios.count >= RowIndex Then
-        Set cheque = AsientoContable.ChequesPropios.item(RowIndex)
+Private Sub gridChequesPropios_UnboundReadData( _
+    ByVal RowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
+
+    If RowIndex <= 0 Then Exit Sub
+    If RowIndex > AsientoContable.ChequesPropios.count Then Exit Sub
+
+    Set cheque = _
+        AsientoContable.ChequesPropios.item(RowIndex)
+
+    If IsSomething(cheque.chequera) Then
         Values(1) = cheque.chequera.Description
-        Values(2) = vbNullString
-        'FORMATCURRENCY
-        Values(3) = FormatCurrency(cheque.monto)
-        Values(4) = cheque.FechaVencimiento
-        Values(5) = cheque.numero
+    Else
+        Values(1) = vbNullString
     End If
+
+    'ID utilizado por el dropdown
+    Values(2) = cheque.Id
+
+    'Valor numérico, sin FormatCurrency
+    Values(3) = cheque.Monto
+
+    Values(4) = cheque.FechaVencimiento
+
+    'Número visible
+    Values(5) = cheque.numero
+
 End Sub
 
 
-Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If AsientoContable.ChequesPropios.count >= RowIndex Then
-        Set cheque = AsientoContable.ChequesPropios.item(RowIndex)
-        cheque.monto = Values(3)
-        cheque.FechaVencimiento = Values(4)
+Private Sub gridChequesPropios_UnboundUpdate( _
+    ByVal RowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
+
+    On Error GoTo err1
+
+    If RowIndex <= 0 Then Exit Sub
+    If RowIndex > AsientoContable.ChequesPropios.count Then Exit Sub
+    If IsNull(Values(2)) Then Exit Sub
+    If Not IsNumeric(Values(2)) Then Exit Sub
+
+    Dim chequeActual As cheque
+    Dim chequeNuevo As cheque
+    Dim idChequeNuevo As Long
+
+    Set chequeActual = _
+        AsientoContable.ChequesPropios.item(RowIndex)
+
+    idChequeNuevo = CLng(Values(2))
+
+    '---------------------------------------------
+    ' Si seleccionó otro cheque
+    '---------------------------------------------
+    If idChequeNuevo <> chequeActual.Id Then
+
+        If funciones.BuscarEnColeccion( _
+                AsientoContable.ChequesPropios, _
+                CStr(idChequeNuevo)) Then
+
+            MsgBox "El cheque seleccionado ya fue agregado.", _
+                   vbExclamation
+
+            Me.gridChequesPropios.RefreshRowIndex RowIndex
+            Exit Sub
+
+        End If
+
+        Set chequeNuevo = _
+            DAOCheques.FindById(idChequeNuevo)
+
+        If Not IsSomething(chequeNuevo) Then
+
+            MsgBox "No se encontró el cheque seleccionado.", _
+                   vbExclamation
+
+            Me.gridChequesPropios.RefreshRowIndex RowIndex
+            Exit Sub
+
+        End If
+
+        chequeNuevo.Propio = True
+        chequeNuevo.EnCartera = False
+
+        'Eliminar el cheque anterior
+        AsientoContable.ChequesPropios.remove RowIndex
+
+        'Insertar el nuevo en la misma posición
+        If RowIndex <= AsientoContable.ChequesPropios.count Then
+
+            AsientoContable.ChequesPropios.Add _
+                chequeNuevo, _
+                CStr(chequeNuevo.Id), _
+                RowIndex
+
+        Else
+
+            AsientoContable.ChequesPropios.Add _
+                chequeNuevo, _
+                CStr(chequeNuevo.Id)
+
+        End If
+
+        Set cheque = chequeNuevo
+
+    Else
+
+        Set cheque = chequeActual
+
     End If
-    
+
+    '---------------------------------------------
+    ' Monto y vencimiento
+    '---------------------------------------------
+    If Not IsNull(Values(3)) Then
+
+        If IsNumeric(Values(3)) Then
+            cheque.Monto = CDbl(Values(3))
+        End If
+
+    End If
+
+    If Not IsNull(Values(4)) Then
+
+        If IsDate(Values(4)) Then
+            cheque.FechaVencimiento = CDate(Values(4))
+        End If
+
+    End If
+
+    Me.gridChequesPropios.RefreshRowIndex RowIndex
+
+    Exit Sub
+
+err1:
+    MsgBox "Error al modificar el cheque: " & _
+           Err.Description, _
+           vbCritical
+
 End Sub
 
 
@@ -1406,26 +1548,106 @@ Public Sub Cargar(aContable As clsAsientoContable)
         '------------------------------
         ' Grillas
         '------------------------------
+        Me.gridChequesPropios.ItemCount = 0
+        Me.gridChequesPropios.ItemCount = _
+            AsientoContable.ChequesPropios.count
+        Me.gridChequesPropios.Refresh
+        
+        
+        '------------------------------
+        ' Monto y comprobante
+        '------------------------------
+        Dim opMovimiento As operacion
+        Dim operacionEncontrada As Boolean
+        
+        Me.txtMonto.Text = vbNullString
+        Me.txtComprobante.Text = vbNullString
+        
+        operacionEncontrada = False
+        
+        For Each opMovimiento In AsientoContable.operacionesBanco
+        
+            If AsientoContable.TipoMovimiento = "TRANSFERENCIA" Then
+        
+                'Para una transferencia usamos la operación
+                'de salida como operación principal.
+                If opMovimiento.EntradaSalida = OPSalida Then
+        
+                    Me.txtMonto.Text = CStr(opMovimiento.Monto)
+                    Me.txtComprobante.Text = opMovimiento.Comprobante
+        
+                    operacionEncontrada = True
+                    Exit For
+        
+                End If
+        
+            Else
+        
+                Me.txtMonto.Text = CStr(opMovimiento.Monto)
+                Me.txtComprobante.Text = opMovimiento.Comprobante
+        
+                operacionEncontrada = True
+                Exit For
+        
+            End If
+        
+        Next opMovimiento
+        
+        'Respaldo por si el movimiento no tiene operaciones
+        If Not operacionEncontrada Then
+            Me.txtMonto.Text = CStr(AsientoContable.StaticTotalOrigenes)
+        End If
         
     End With
+    
+    ActualizarModoMovimiento
 
+    Dim esEgresoActual As Boolean
+    Dim esTransferenciaActual As Boolean
+    
+    esEgresoActual = _
+        (AsientoContable.TipoMovimiento = "EGRESO" Or _
+         AsientoContable.TipoMovimiento = "SALIDA")
+    
+    esTransferenciaActual = _
+        (AsientoContable.TipoMovimiento = "TRANSFERENCIA")
+    
     Me.cboCuentasBancarias.Enabled = Not ReadOnly
-    Me.gridBancos.AllowEdit = Not ReadOnly
-
+    
+    Me.cboCuentasContables.Enabled = _
+        (Not ReadOnly And esEgresoActual)
+    
+    Me.cboCuentaBancariaDestino.Enabled = _
+        (Not ReadOnly And esTransferenciaActual)
+    
+    Me.btnClearCtaBancaria.Enabled = Not ReadOnly
+    
+    Me.btnClearCtaContable.Enabled = _
+        (Not ReadOnly And esEgresoActual)
+    
+    Me.btnClearCtaBancariaDestino.Enabled = _
+        (Not ReadOnly And esTransferenciaActual)
+    
     Me.cboMonedas.Enabled = Not ReadOnly
     Me.dtpFecha.Enabled = Not ReadOnly
-    Me.btnClearCtaBancaria.Enabled = Not ReadOnly
-    Me.btnClearCtaContable.Enabled = Not ReadOnly
     Me.FlatEdit1.Enabled = Not ReadOnly
+    
+    Me.txtMonto.Enabled = Not ReadOnly
+    Me.txtComprobante.Enabled = Not ReadOnly
+    
     Me.RadioButton1.Enabled = Not ReadOnly
     Me.RadioButton2.Enabled = Not ReadOnly
-    Me.cmdCrear.Enabled = Not ReadOnly
-    Me.Label(0).Enabled = Not ReadOnly
-    Me.Label1(0).Enabled = Not ReadOnly
-    Me.Label(1).Enabled = Not ReadOnly
-    Me.Label(2).Enabled = Not ReadOnly
+    Me.RadioButton3.Enabled = Not ReadOnly
     
-
+    Me.gridChequesPropios.Enabled = True
+    Me.gridChequesPropios.AllowEdit = Not ReadOnly
+    Me.gridChequesPropios.AllowDelete = Not ReadOnly
+    
+    Me.gridChequeras.Enabled = Not ReadOnly
+    Me.gridChequesChequera.Enabled = Not ReadOnly
+    
+    Me.cmdCrear.Enabled = Not ReadOnly
+    
 End Sub
 
 
@@ -1511,24 +1733,26 @@ Private Sub ActualizarModoMovimiento()
         Set AsientoContable.CuentaContable = Nothing
     End If
     
-    ' Cheques propios: solo ingreso/egreso, nunca transferencia
-    Me.gridChequesPropios.Enabled = esIngreso Or esEgreso
-    Me.gridChequesPropios.Visible = esIngreso Or esEgreso
+    '---------------------------------------------
+    ' Cheques propios:
+    ' ingreso, egreso y transferencia
+    '---------------------------------------------
+    Me.gridChequesPropios.Enabled = _
+        esIngreso Or esEgreso Or esTransferencia
     
-    Me.gridChequeras.Enabled = esIngreso Or esEgreso
-    Me.gridChequesChequera.Enabled = esIngreso Or esEgreso
+    Me.gridChequesPropios.Visible = _
+        esIngreso Or esEgreso Or esTransferencia
     
-    Me.gridChequeras.Visible = esIngreso Or esEgreso
-    Me.gridChequesChequera.Visible = esIngreso Or esEgreso
+    'Grillas usadas como DropDownControl
+    Me.gridChequeras.Enabled = _
+        esIngreso Or esEgreso Or esTransferencia
     
-    If esTransferencia Then
-        Do While AsientoContable.ChequesPropios.count > 0
-            AsientoContable.ChequesPropios.remove 1
-        Loop
+    Me.gridChequesChequera.Enabled = _
+        esIngreso Or esEgreso Or esTransferencia
     
-        Me.gridChequesPropios.ItemCount = 0
-        Me.gridChequesPropios.Refresh
-    End If
+    Me.gridChequeras.Visible = False
+    Me.gridChequesChequera.Visible = False
+        
 
 
 End Sub
@@ -1589,18 +1813,18 @@ End Sub
 
 Private Function CrearOperacionBancaria( _
     ByVal cuenta As CuentaBancaria, _
-    ByVal monto As Double, _
-    ByVal comprobante As String, _
-    ByVal entradaSalida As Integer _
+    ByVal Monto As Double, _
+    ByVal Comprobante As String, _
+    ByVal EntradaSalida As Integer _
 ) As operacion
 
     Dim op As New operacion
 
     op.Pertenencia = OrigenOperacion.Banco
-    op.monto = monto
-    op.comprobante = comprobante
+    op.Monto = Monto
+    op.Comprobante = Comprobante
     op.FechaOperacion = Me.dtpFecha.value
-    op.entradaSalida = entradaSalida
+    op.EntradaSalida = EntradaSalida
 
     Set op.CuentaBancaria = cuenta
     Set op.moneda = AsientoContable.moneda
@@ -1633,11 +1857,51 @@ Private Function CuentaCoincideConMoneda( _
 End Function
 
 
-Private Sub gridChequeras_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= chequeras.count Then
-        Set tmpChequera = chequeras.item(RowIndex)
-        Values(1) = tmpChequera.Description
-        Values(2) = tmpChequera.Id
-    End If
+Private Sub gridChequeras_UnboundReadData( _
+    ByVal RowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
+
+    If RowIndex <= 0 Then Exit Sub
+    If RowIndex > chequeras.count Then Exit Sub
+
+    Set tmpChequera = chequeras.item(RowIndex)
+
+    Values(1) = tmpChequera.Description
+    Values(2) = tmpChequera.Id
+
 End Sub
+
+
+Private Sub CargarChequesDisponibles()
+
+    On Error GoTo err1
+
+    Set chequesDisponibles = _
+        DAOCheques.FindAllEnCarteraDeTerceros
+
+    If Not IsSomething(chequesDisponibles) Then
+        Set chequesDisponibles = New Collection
+    End If
+
+    Me.gridChequesDisponibles.ItemCount = 0
+    Me.gridChequesDisponibles.ItemCount = chequesDisponibles.count
+    Me.gridChequesDisponibles.Refresh
+
+    GridEXHelper.AutoSizeColumns Me.gridChequesDisponibles
+
+    Exit Sub
+
+err1:
+    Set chequesDisponibles = New Collection
+
+    Me.gridChequesDisponibles.ItemCount = 0
+
+    MsgBox "No se pudieron cargar los cheques disponibles." & _
+           vbCrLf & Err.Description, _
+           vbExclamation, _
+           "Cheques disponibles"
+
+End Sub
+
 

@@ -197,7 +197,7 @@ Public Function Map( _
         
     End If
     
-            '---------------------------------------------
+        '---------------------------------------------
         ' Caja
         '---------------------------------------------
         If LenB(tablaCaja) > 0 Then
@@ -289,12 +289,8 @@ Public Function Map( _
 
         End If
 
-
-
     Set Map = op
     
-
-    Set Map = op
 End Function
 
 

@@ -9,14 +9,14 @@ Begin VB.Form frmUsuarios
    ClientHeight    =   7155
    ClientLeft      =   45
    ClientTop       =   255
-   ClientWidth     =   13785
+   ClientWidth     =   16710
    ClipControls    =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   7155
-   ScaleWidth      =   13785
+   ScaleWidth      =   16710
    Begin VB.CommandButton Command6 
       BackColor       =   &H00E0E0E0&
       Caption         =   "Agregar Seleccionado"
@@ -30,7 +30,7 @@ Begin VB.Form frmUsuarios
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   4320
+      Left            =   6840
       Style           =   1  'Graphical
       TabIndex        =   83
       Top             =   3120
@@ -49,10 +49,10 @@ Begin VB.Form frmUsuarios
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   4320
+      Left            =   6840
       Style           =   1  'Graphical
       TabIndex        =   82
-      Top             =   5640
+      Top             =   5760
       Width           =   4095
    End
    Begin VB.CommandButton Command8 
@@ -68,17 +68,17 @@ Begin VB.Form frmUsuarios
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   4320
+      Left            =   6840
       Style           =   1  'Graphical
       TabIndex        =   81
-      Top             =   6000
+      Top             =   6120
       Width           =   4095
    End
    Begin TabDlg.SSTab SSTab1 
       Height          =   6285
-      Left            =   8565
+      Left            =   11280
       TabIndex        =   5
-      Top             =   135
+      Top             =   120
       Width           =   5055
       _ExtentX        =   8916
       _ExtentY        =   11086
@@ -99,118 +99,90 @@ Begin VB.Form frmUsuarios
       TabCaption(0)   =   "Configuracion"
       TabPicture(0)   =   "frmUsuarios.frx":0000
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "chConf(72)"
-      Tab(0).Control(0).Enabled=   0   'False
-      Tab(0).Control(1)=   "chConf(71)"
-      Tab(0).Control(1).Enabled=   0   'False
-      Tab(0).Control(2)=   "chConf(65)"
-      Tab(0).Control(2).Enabled=   0   'False
-      Tab(0).Control(3)=   "chConf(64)"
-      Tab(0).Control(3).Enabled=   0   'False
-      Tab(0).Control(4)=   "chConf(63)"
-      Tab(0).Control(4).Enabled=   0   'False
-      Tab(0).Control(5)=   "chConf(3)"
-      Tab(0).Control(5).Enabled=   0   'False
-      Tab(0).Control(6)=   "chConf(2)"
-      Tab(0).Control(6).Enabled=   0   'False
-      Tab(0).Control(7)=   "chConf(1)"
-      Tab(0).Control(7).Enabled=   0   'False
-      Tab(0).Control(8)=   "chConf(0)"
-      Tab(0).Control(8).Enabled=   0   'False
-      Tab(0).Control(9)=   "chConf(6)"
-      Tab(0).Control(9).Enabled=   0   'False
-      Tab(0).Control(10)=   "chConf(8)"
-      Tab(0).Control(10).Enabled=   0   'False
-      Tab(0).Control(11)=   "chConf(7)"
-      Tab(0).Control(11).Enabled=   0   'False
-      Tab(0).Control(12)=   "chConf(5)"
-      Tab(0).Control(12).Enabled=   0   'False
-      Tab(0).Control(13)=   "chConf(4)"
-      Tab(0).Control(13).Enabled=   0   'False
-      Tab(0).Control(14)=   "Label4"
-      Tab(0).Control(14).Enabled=   0   'False
-      Tab(0).Control(15)=   "Label1"
-      Tab(0).Control(15).Enabled=   0   'False
+      Tab(0).Control(0)=   "Label1"
+      Tab(0).Control(1)=   "Label4"
+      Tab(0).Control(2)=   "chConf(4)"
+      Tab(0).Control(3)=   "chConf(5)"
+      Tab(0).Control(4)=   "chConf(7)"
+      Tab(0).Control(5)=   "chConf(8)"
+      Tab(0).Control(6)=   "chConf(6)"
+      Tab(0).Control(7)=   "chConf(0)"
+      Tab(0).Control(8)=   "chConf(1)"
+      Tab(0).Control(9)=   "chConf(2)"
+      Tab(0).Control(10)=   "chConf(3)"
+      Tab(0).Control(11)=   "chConf(63)"
+      Tab(0).Control(12)=   "chConf(64)"
+      Tab(0).Control(13)=   "chConf(65)"
+      Tab(0).Control(14)=   "chConf(71)"
+      Tab(0).Control(15)=   "chConf(72)"
       Tab(0).ControlCount=   16
       TabCaption(1)   =   "Ventas"
       TabPicture(1)   =   "frmUsuarios.frx":001C
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "chConf(14)"
-      Tab(1).Control(0).Enabled=   0   'False
-      Tab(1).Control(1)=   "chConf(18)"
-      Tab(1).Control(1).Enabled=   0   'False
-      Tab(1).Control(2)=   "chConf(11)"
-      Tab(1).Control(2).Enabled=   0   'False
-      Tab(1).Control(3)=   "chConf(12)"
-      Tab(1).Control(3).Enabled=   0   'False
-      Tab(1).Control(4)=   "chConf(13)"
-      Tab(1).Control(4).Enabled=   0   'False
-      Tab(1).Control(5)=   "chConf(15)"
-      Tab(1).Control(5).Enabled=   0   'False
-      Tab(1).Control(6)=   "chConf(16)"
-      Tab(1).Control(6).Enabled=   0   'False
-      Tab(1).Control(7)=   "chConf(17)"
-      Tab(1).Control(7).Enabled=   0   'False
-      Tab(1).Control(8)=   "chConf(9)"
-      Tab(1).Control(8).Enabled=   0   'False
-      Tab(1).Control(9)=   "chConf(10)"
-      Tab(1).Control(9).Enabled=   0   'False
-      Tab(1).Control(10)=   "Label3"
-      Tab(1).Control(10).Enabled=   0   'False
-      Tab(1).Control(11)=   "Label2"
-      Tab(1).Control(11).Enabled=   0   'False
+      Tab(1).Control(0)=   "Label2"
+      Tab(1).Control(1)=   "Label3"
+      Tab(1).Control(2)=   "chConf(10)"
+      Tab(1).Control(3)=   "chConf(9)"
+      Tab(1).Control(4)=   "chConf(17)"
+      Tab(1).Control(5)=   "chConf(16)"
+      Tab(1).Control(6)=   "chConf(15)"
+      Tab(1).Control(7)=   "chConf(13)"
+      Tab(1).Control(8)=   "chConf(12)"
+      Tab(1).Control(9)=   "chConf(11)"
+      Tab(1).Control(10)=   "chConf(18)"
+      Tab(1).Control(11)=   "chConf(14)"
       Tab(1).ControlCount=   12
       TabCaption(2)   =   "Compras"
       TabPicture(2)   =   "frmUsuarios.frx":0038
       Tab(2).ControlEnabled=   0   'False
-      Tab(2).Control(0)=   "chConf(76)"
-      Tab(2).Control(1)=   "chConf(75)"
-      Tab(2).Control(2)=   "chConf(74)"
-      Tab(2).Control(3)=   "chConf(73)"
-      Tab(2).Control(4)=   "chConf(70)"
-      Tab(2).Control(5)=   "chConf(69)"
-      Tab(2).Control(6)=   "chConf(68)"
-      Tab(2).Control(7)=   "chConf(62)"
+      Tab(2).Control(0)=   "Label8"
+      Tab(2).Control(1)=   "Label9"
+      Tab(2).Control(2)=   "chConf(41)"
+      Tab(2).Control(3)=   "chConf(42)"
+      Tab(2).Control(4)=   "chConf(56)"
+      Tab(2).Control(5)=   "chConf(57)"
+      Tab(2).Control(6)=   "chConf(59)"
+      Tab(2).Control(7)=   "chConf(60)"
       Tab(2).Control(8)=   "chConf(61)"
-      Tab(2).Control(9)=   "chConf(60)"
-      Tab(2).Control(10)=   "chConf(59)"
-      Tab(2).Control(11)=   "chConf(57)"
-      Tab(2).Control(12)=   "chConf(56)"
-      Tab(2).Control(13)=   "chConf(42)"
-      Tab(2).Control(14)=   "chConf(41)"
-      Tab(2).Control(15)=   "Label9"
-      Tab(2).Control(16)=   "Label8"
+      Tab(2).Control(9)=   "chConf(62)"
+      Tab(2).Control(10)=   "chConf(68)"
+      Tab(2).Control(11)=   "chConf(69)"
+      Tab(2).Control(12)=   "chConf(70)"
+      Tab(2).Control(13)=   "chConf(73)"
+      Tab(2).Control(14)=   "chConf(74)"
+      Tab(2).Control(15)=   "chConf(75)"
+      Tab(2).Control(16)=   "chConf(76)"
       Tab(2).ControlCount=   17
       TabCaption(3)   =   "Planeamiento"
       TabPicture(3)   =   "frmUsuarios.frx":0054
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "chConf(33)"
-      Tab(3).Control(1)=   "chConf(31)"
-      Tab(3).Control(2)=   "chConf(32)"
-      Tab(3).Control(3)=   "chConf(27)"
-      Tab(3).Control(4)=   "chConf(28)"
-      Tab(3).Control(5)=   "chConf(25)"
-      Tab(3).Control(6)=   "chConf(26)"
-      Tab(3).Control(7)=   "chConf(23)"
-      Tab(3).Control(8)=   "chConf(24)"
-      Tab(3).Control(9)=   "chConf(29)"
-      Tab(3).Control(10)=   "chConf(30)"
-      Tab(3).Control(11)=   "chConf(19)"
-      Tab(3).Control(12)=   "chConf(20)"
-      Tab(3).Control(13)=   "chConf(21)"
-      Tab(3).Control(14)=   "chConf(22)"
-      Tab(3).Control(15)=   "Label6"
+      Tab(3).Control(0)=   "Label6"
+      Tab(3).Control(1)=   "chConf(22)"
+      Tab(3).Control(2)=   "chConf(21)"
+      Tab(3).Control(3)=   "chConf(20)"
+      Tab(3).Control(4)=   "chConf(19)"
+      Tab(3).Control(5)=   "chConf(30)"
+      Tab(3).Control(6)=   "chConf(29)"
+      Tab(3).Control(7)=   "chConf(24)"
+      Tab(3).Control(8)=   "chConf(23)"
+      Tab(3).Control(9)=   "chConf(26)"
+      Tab(3).Control(10)=   "chConf(25)"
+      Tab(3).Control(11)=   "chConf(28)"
+      Tab(3).Control(12)=   "chConf(27)"
+      Tab(3).Control(13)=   "chConf(32)"
+      Tab(3).Control(14)=   "chConf(31)"
+      Tab(3).Control(15)=   "chConf(33)"
       Tab(3).ControlCount=   16
       TabCaption(4)   =   "Desarrollo"
       TabPicture(4)   =   "frmUsuarios.frx":0070
       Tab(4).ControlEnabled=   0   'False
-      Tab(4).Control(0)=   "Label5"
-      Tab(4).Control(1)=   "chConf(37)"
-      Tab(4).Control(2)=   "chConf(34)"
+      Tab(4).Control(0)=   "chConf(39)"
+      Tab(4).Control(1)=   "chConf(38)"
+      Tab(4).Control(2)=   "chConf(36)"
       Tab(4).Control(3)=   "chConf(35)"
-      Tab(4).Control(4)=   "chConf(36)"
-      Tab(4).Control(5)=   "chConf(38)"
-      Tab(4).Control(6)=   "chConf(39)"
+      Tab(4).Control(4)=   "chConf(34)"
+      Tab(4).Control(5)=   "chConf(37)"
+      Tab(4).Control(6)=   "Label5"
       Tab(4).ControlCount=   7
       TabCaption(5)   =   "Administración"
       TabPicture(5)   =   "frmUsuarios.frx":008C
@@ -265,9 +237,9 @@ Begin VB.Form frmUsuarios
       TabCaption(6)   =   "RRHH"
       TabPicture(6)   =   "frmUsuarios.frx":00A8
       Tab(6).ControlEnabled=   0   'False
-      Tab(6).Control(0)=   "Label10"
+      Tab(6).Control(0)=   "chConf(67)"
       Tab(6).Control(1)=   "chConf(66)"
-      Tab(6).Control(2)=   "chConf(67)"
+      Tab(6).Control(2)=   "Label10"
       Tab(6).ControlCount=   3
       Begin VB.CheckBox chConf 
          Caption         =   "FP Ver solo propias"
@@ -2136,7 +2108,7 @@ Begin VB.Form frmUsuarios
       Left            =   0
       TabIndex        =   0
       Top             =   6480
-      Width           =   13695
+      Width           =   16335
       Begin VB.CommandButton Command4 
          BackColor       =   &H00E0E0E0&
          Cancel          =   -1  'True
@@ -2160,7 +2132,7 @@ Begin VB.Form frmUsuarios
       End
       Begin MSComctlLib.ProgressBar pb1 
          Height          =   255
-         Left            =   10680
+         Left            =   13320
          TabIndex        =   74
          Top             =   240
          Visible         =   0   'False
@@ -2184,7 +2156,7 @@ Begin VB.Form frmUsuarios
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   4200
+         Left            =   8040
          Style           =   1  'Graphical
          TabIndex        =   4
          Top             =   240
@@ -2203,7 +2175,7 @@ Begin VB.Form frmUsuarios
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   8640
+         Left            =   11280
          Style           =   1  'Graphical
          TabIndex        =   2
          Top             =   240
@@ -2230,18 +2202,17 @@ Begin VB.Form frmUsuarios
       End
    End
    Begin MSComctlLib.ListView lstUsuarios 
-      Height          =   6495
+      Height          =   6255
       Left            =   120
       TabIndex        =   29
       Top             =   120
-      Width           =   4095
-      _ExtentX        =   7223
-      _ExtentY        =   11456
+      Width           =   6495
+      _ExtentX        =   11456
+      _ExtentY        =   11033
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
       HideSelection   =   0   'False
-      FlatScrollBar   =   -1  'True
       FullRowSelect   =   -1  'True
       GridLines       =   -1  'True
       _Version        =   393217
@@ -2249,7 +2220,7 @@ Begin VB.Form frmUsuarios
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      NumItems        =   3
+      NumItems        =   4
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Usuario"
          Object.Width           =   2187
@@ -2264,6 +2235,11 @@ Begin VB.Form frmUsuarios
          Text            =   "Apellido"
          Object.Width           =   2364
       EndProperty
+      BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   3
+         Text            =   "Id"
+         Object.Width           =   2540
+      EndProperty
    End
    Begin VB.CommandButton Command2 
       Caption         =   "Command2"
@@ -2277,15 +2253,15 @@ Begin VB.Form frmUsuarios
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   2760
+      Left            =   6840
       TabIndex        =   3
-      Top             =   6240
+      Top             =   3480
       Visible         =   0   'False
-      Width           =   855
+      Width           =   4095
    End
    Begin MSComctlLib.ListView lstGruposDisponibles 
       Height          =   2895
-      Left            =   4320
+      Left            =   6840
       TabIndex        =   84
       Top             =   120
       Width           =   4095
@@ -2311,9 +2287,9 @@ Begin VB.Form frmUsuarios
    End
    Begin MSComctlLib.ListView LstGruposUsuarios 
       Height          =   1935
-      Left            =   4320
+      Left            =   6840
       TabIndex        =   85
-      Top             =   3600
+      Top             =   3720
       Width           =   4095
       _ExtentX        =   7223
       _ExtentY        =   3413
@@ -2381,12 +2357,12 @@ Private Sub Command3_Click()
         pb1.min = 0
         pb1.max = it - 1
         For x = 0 To it - 1
-            nro = Me.chConf(x).Tag
+            NRO = Me.chConf(x).Tag
             pb1.value = 1
             ids = Me.lstUsuarios.selectedItem.Tag
             Valor = Me.chConf(x).value
 
-            claseSP.verSeleccionado nro, ids, True, Valor
+            claseSP.verSeleccionado NRO, ids, True, Valor
         Next x
         pb1.Visible = False
     End If
@@ -2479,9 +2455,10 @@ Private Function llenarLST()
     Me.lstUsuarios.ListItems.Clear
     Dim x As ListItem
     While Not rs.EOF
-        Set x = Me.lstUsuarios.ListItems.Add(, , rs!usuario)
+        Set x = Me.lstUsuarios.ListItems.Add(, , rs!Usuario)
         If Not IsNull(rs!nombre) Then x.SubItems(1) = rs!nombre
         If Not IsNull(rs!Apellido) Then x.SubItems(2) = rs!Apellido
+        If Not IsNull(rs!Id) Then x.SubItems(3) = rs!Id
         x.Tag = rs!Id
 
         rs.MoveNext
@@ -2554,8 +2531,8 @@ Public Sub verPermisos(Id As Long)
 
     it = Me.chConf.count
     For x = 0 To it - 1
-        nro = Me.chConf(x).Tag
-        Me.chConf(x).value = claseSP.verSeleccionado(nro, Id)
+        NRO = Me.chConf(x).Tag
+        Me.chConf(x).value = claseSP.verSeleccionado(NRO, Id)
     Next x
 
 End Sub

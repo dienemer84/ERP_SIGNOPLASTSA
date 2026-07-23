@@ -49,18 +49,37 @@ Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
 End Sub
 
 
-Public Function Map(rs As Recordset, indice As Dictionary, tabla As String) As caja
+Public Function Map( _
+    rs As Recordset, _
+    indice As Dictionary, _
+    tabla As String _
+) As caja
+
     Dim c As caja
     Dim Id As Long
+    Dim valorCuenta As Variant
 
     Id = GetValue(rs, indice, tabla, "id")
 
     If Id > 0 Then
+
         Set c = New caja
+
         c.Id = Id
         c.nombre = GetValue(rs, indice, tabla, "nombre")
+
+        valorCuenta = GetValue( _
+            rs, indice, tabla, "id_cuenta_financiera")
+
+        If IsNull(valorCuenta) Or IsEmpty(valorCuenta) Then
+            c.IdCuentaFinanciera = 0
+        Else
+            c.IdCuentaFinanciera = CLng(valorCuenta)
+        End If
+
     End If
 
     Set Map = c
+
 End Function
 

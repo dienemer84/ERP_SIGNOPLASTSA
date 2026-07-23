@@ -14,5 +14,5 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Id As Long
-Public Nombre As String
-
+Public nombre As String
+Public IdCuentaFinanciera As Long

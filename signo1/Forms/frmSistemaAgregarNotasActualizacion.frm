@@ -125,51 +125,98 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
+
+Public idVersion As Long
+
 Private Nota As clsNotas
 
 
 Private Sub Form_Load()
-    DateTimePicker1 = Now()
+
+    DateTimePicker1.value = Now
+
+    If idVersion <= 0 Then
+        MsgBox "No se pudo identificar la versión de la actualización.", _
+               vbCritical, "Error"
+
+        Unload Me
+        Exit Sub
+    End If
 
 End Sub
+
 
 Private Sub PushButtonCargar_Click(Index As Integer)
+
     CargarDetalleNuevo
+
 End Sub
+
 
 Private Sub CargarDetalleNuevo()
 
     On Error GoTo E
 
-    If Nota Is Nothing Then Set Nota = New clsNotas
+    If idVersion <= 0 Then
+        MsgBox "No se pudo identificar la versión de la actualización.", _
+               vbExclamation, "Validación"
+        Exit Sub
+    End If
 
+    If Len(Trim$(Text1.Text)) = 0 Then
+        MsgBox "Debe ingresar el detalle de la nota.", _
+               vbExclamation, "Validación"
 
-    Nota.FechaD_ = Now
-    Nota.TextoD_ = Me.Text1
-    Nota.Modulo_ = Me.Text2
+        Text1.SetFocus
+        Exit Sub
+    End If
 
+    'Crear un objeto nuevo para cada nota.
+    Set Nota = New clsNotas
+
+    Nota.FechaD_ = DateTimePicker1.value
+    Nota.TextoD_ = Trim$(Text1.Text)
+    Nota.Modulo_ = Trim$(Text2.Text)
+
+    'Relacionar la nota con la actualización.
+    Nota.IdVersion_ = idVersion
 
     If DAOActualizar.CargarNuevoDetalle(Nota) Then
 
-        MsgBox "Nueva nota ingresada con éxito!", vbInformation, "Información"
+        MsgBox "Nueva nota ingresada con éxito!", _
+               vbInformation, "Información"
 
-        Me.Text1 = ""
-        Me.Text2 = ""
+        Text1.Text = vbNullString
+        Text2.Text = vbNullString
+        DateTimePicker1.value = Now
+
+        Set Nota = Nothing
+
+        Text1.SetFocus
 
     Else
 
-        MsgBox "Se produjo algún error, no se guardó la nota!", vbCritical, "Error"
+        MsgBox "Se produjo algún error. No se guardó la nota.", _
+               vbCritical, "Error"
 
     End If
 
     Exit Sub
+
 E:
-    MsgBox Err.Description, vbCritical
+
+    MsgBox "No se pudo cargar la nota:" & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Error"
+
+    Set Nota = Nothing
 
 End Sub
 
 
 Private Sub PushButtonCerrar_Click()
+
     Unload Me
 
 End Sub
+

@@ -29,17 +29,20 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
+      SelectedItem    =   1
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   3
       Item(0).Control(0)=   "Frame3"
       Item(0).Control(1)=   "grid_cartera_cheques"
       Item(0).Control(2)=   "lbContadorChequesEnCartera"
       Item(1).Caption =   "Administrar Chequeras"
-      Item(1).ControlCount=   4
+      Item(1).ControlCount=   6
       Item(1).Control(0)=   "grid_chequeras"
       Item(1).Control(1)=   "grid_cheques"
       Item(1).Control(2)=   "GroupBox1"
       Item(1).Control(3)=   "GroupBox4"
+      Item(1).Control(4)=   "Label12"
+      Item(1).Control(5)=   "Label13"
       Item(2).Caption =   "Cheques Propios Utilizados"
       Item(2).ControlCount=   3
       Item(2).Control(0)=   "GroupBox2"
@@ -52,10 +55,9 @@ Begin VB.Form frmAdminCheques
       Item(3).Control(2)=   "lbContador3erosUtilizados"
       Begin XtremeSuiteControls.GroupBox GroupBox4 
          Height          =   2700
-         Left            =   -62440
+         Left            =   7560
          TabIndex        =   126
          Top             =   360
-         Visible         =   0   'False
          Width           =   12375
          _Version        =   786432
          _ExtentX        =   21828
@@ -72,10 +74,59 @@ Begin VB.Form frmAdminCheques
             Strikethrough   =   0   'False
          EndProperty
          UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.GroupBox GroupBox5 
+            Height          =   2415
+            Left            =   8160
+            TabIndex        =   151
+            Top             =   120
+            Width           =   4095
+            _Version        =   786432
+            _ExtentX        =   7223
+            _ExtentY        =   4260
+            _StockProps     =   79
+            UseVisualStyle  =   -1  'True
+            Begin XtremeSuiteControls.PushButton btnExportarEnChequera 
+               Height          =   495
+               Index           =   0
+               Left            =   2160
+               TabIndex        =   152
+               Top             =   1800
+               Width           =   1815
+               _Version        =   786432
+               _ExtentX        =   3201
+               _ExtentY        =   873
+               _StockProps     =   79
+               Caption         =   "Exportar"
+               UseVisualStyle  =   -1  'True
+            End
+            Begin XtremeSuiteControls.PushButton btnBuscarEnChequera 
+               Height          =   495
+               Index           =   1
+               Left            =   120
+               TabIndex        =   153
+               Top             =   1800
+               Width           =   1815
+               _Version        =   786432
+               _ExtentX        =   3201
+               _ExtentY        =   873
+               _StockProps     =   79
+               Caption         =   "Buscar"
+               BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+                  Name            =   "MS Sans Serif"
+                  Size            =   8.25
+                  Charset         =   0
+                  Weight          =   700
+                  Underline       =   0   'False
+                  Italic          =   0   'False
+                  Strikethrough   =   0   'False
+               EndProperty
+               UseVisualStyle  =   -1  'True
+            End
+         End
          Begin XtremeSuiteControls.PushButton PushButton1 
             Height          =   315
             Left            =   2760
-            TabIndex        =   144
+            TabIndex        =   142
             Top             =   480
             Width           =   375
             _Version        =   786432
@@ -88,46 +139,9 @@ Begin VB.Form frmAdminCheques
          Begin VB.TextBox TxtNumeroChequeEnChequera 
             Height          =   285
             Left            =   120
-            TabIndex        =   143
+            TabIndex        =   141
             Top             =   480
             Width           =   2535
-         End
-         Begin XtremeSuiteControls.PushButton btnExportarEnChequera 
-            Height          =   495
-            Index           =   0
-            Left            =   10320
-            TabIndex        =   142
-            Top             =   2040
-            Width           =   1815
-            _Version        =   786432
-            _ExtentX        =   3201
-            _ExtentY        =   873
-            _StockProps     =   79
-            Caption         =   "Exportar"
-            UseVisualStyle  =   -1  'True
-         End
-         Begin XtremeSuiteControls.PushButton btnBuscarEnChequera 
-            Height          =   495
-            Index           =   1
-            Left            =   8400
-            TabIndex        =   141
-            Top             =   2040
-            Width           =   1815
-            _Version        =   786432
-            _ExtentX        =   3201
-            _ExtentY        =   873
-            _StockProps     =   79
-            Caption         =   "Buscar"
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            UseVisualStyle  =   -1  'True
          End
          Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
             Height          =   1215
@@ -361,7 +375,7 @@ Begin VB.Form frmAdminCheques
             Caption         =   "Número:"
             Height          =   255
             Left            =   120
-            TabIndex        =   146
+            TabIndex        =   144
             Top             =   240
             Width           =   2535
          End
@@ -378,9 +392,10 @@ Begin VB.Form frmAdminCheques
             Strikethrough   =   0   'False
          EndProperty
          Height          =   3015
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   86
          Top             =   360
+         Visible         =   0   'False
          Width           =   15135
          Begin VB.TextBox txtNumeroChequeCartera 
             Alignment       =   1  'Right Justify
@@ -391,7 +406,7 @@ Begin VB.Form frmAdminCheques
             Width           =   2535
          End
          Begin VB.Frame Frame 
-            Height          =   2555
+            Height          =   2775
             Index           =   0
             Left            =   11160
             TabIndex        =   94
@@ -403,7 +418,7 @@ Begin VB.Form frmAdminCheques
                Index           =   0
                Left            =   120
                TabIndex        =   95
-               Top             =   1920
+               Top             =   2160
                Width           =   1575
                _Version        =   786432
                _ExtentX        =   2778
@@ -424,9 +439,9 @@ Begin VB.Form frmAdminCheques
             Begin XtremeSuiteControls.PushButton btnExportarCartera 
                Height          =   495
                Index           =   1
-               Left            =   2040
+               Left            =   2160
                TabIndex        =   96
-               Top             =   1920
+               Top             =   2160
                Width           =   1575
                _Version        =   786432
                _ExtentX        =   2778
@@ -440,10 +455,10 @@ Begin VB.Form frmAdminCheques
                Index           =   0
                Left            =   120
                TabIndex        =   97
-               Top             =   1440
-               Width           =   3495
+               Top             =   1680
+               Width           =   3615
                _Version        =   786432
-               _ExtentX        =   6165
+               _ExtentX        =   6376
                _ExtentY        =   661
                _StockProps     =   93
                Appearance      =   6
@@ -800,7 +815,7 @@ Begin VB.Form frmAdminCheques
          End
       End
       Begin XtremeSuiteControls.GroupBox GroupBox3 
-         Height          =   3735
+         Height          =   3855
          Left            =   -69880
          TabIndex        =   28
          Top             =   360
@@ -808,7 +823,7 @@ Begin VB.Form frmAdminCheques
          Width           =   15135
          _Version        =   786432
          _ExtentX        =   26696
-         _ExtentY        =   6588
+         _ExtentY        =   6800
          _StockProps     =   79
          Caption         =   "Parámetros de búsqueda"
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -836,7 +851,7 @@ Begin VB.Form frmAdminCheques
          End
          Begin XtremeSuiteControls.PushButton PushButton4 
             Height          =   315
-            Left            =   5040
+            Left            =   5160
             TabIndex        =   83
             Top             =   2280
             Width           =   375
@@ -876,7 +891,7 @@ Begin VB.Form frmAdminCheques
          End
          Begin XtremeSuiteControls.PushButton btnBorrarOrigenTerceros 
             Height          =   315
-            Left            =   3960
+            Left            =   4080
             TabIndex        =   75
             Top             =   1680
             Width           =   375
@@ -889,7 +904,7 @@ Begin VB.Form frmAdminCheques
          End
          Begin XtremeSuiteControls.PushButton btnBorrarBancosTerceros 
             Height          =   315
-            Left            =   2760
+            Left            =   2880
             TabIndex        =   74
             Top             =   1080
             Width           =   375
@@ -902,7 +917,7 @@ Begin VB.Form frmAdminCheques
          End
          Begin XtremeSuiteControls.PushButton btnBorrarNumeroTerceros 
             Height          =   315
-            Left            =   2760
+            Left            =   2880
             TabIndex        =   73
             Top             =   480
             Width           =   375
@@ -959,7 +974,7 @@ Begin VB.Form frmAdminCheques
             Begin XtremeSuiteControls.PushButton btnExportar 
                Height          =   495
                Index           =   1
-               Left            =   2040
+               Left            =   2160
                TabIndex        =   68
                Top             =   3000
                Width           =   1575
@@ -976,9 +991,9 @@ Begin VB.Form frmAdminCheques
                Left            =   120
                TabIndex        =   69
                Top             =   2400
-               Width           =   3495
+               Width           =   3615
                _Version        =   786432
-               _ExtentX        =   6165
+               _ExtentX        =   6376
                _ExtentY        =   661
                _StockProps     =   93
                Appearance      =   6
@@ -1426,7 +1441,7 @@ Begin VB.Form frmAdminCheques
          Appearance      =   6
          Begin XtremeSuiteControls.PushButton PushButton2 
             Height          =   315
-            Left            =   5060
+            Left            =   5160
             TabIndex        =   81
             Top             =   2280
             Width           =   375
@@ -1452,7 +1467,7 @@ Begin VB.Form frmAdminCheques
          End
          Begin XtremeSuiteControls.PushButton btnBorrarNumeroPropios 
             Height          =   315
-            Left            =   2760
+            Left            =   2880
             TabIndex        =   78
             Top             =   480
             Width           =   375
@@ -1510,7 +1525,7 @@ Begin VB.Form frmAdminCheques
             Begin XtremeSuiteControls.PushButton btnExportarChePropios 
                Height          =   495
                Index           =   0
-               Left            =   2040
+               Left            =   2160
                TabIndex        =   64
                Top             =   2160
                Width           =   1575
@@ -1527,9 +1542,9 @@ Begin VB.Form frmAdminCheques
                Left            =   120
                TabIndex        =   65
                Top             =   1680
-               Width           =   3495
+               Width           =   3615
                _Version        =   786432
-               _ExtentX        =   6165
+               _ExtentX        =   6376
                _ExtentY        =   661
                _StockProps     =   93
                Appearance      =   6
@@ -1579,7 +1594,7 @@ Begin VB.Form frmAdminCheques
          End
          Begin XtremeSuiteControls.PushButton CMDsINCliente 
             Height          =   315
-            Left            =   2760
+            Left            =   2880
             TabIndex        =   19
             Top             =   1080
             Width           =   375
@@ -1606,7 +1621,7 @@ Begin VB.Form frmAdminCheques
          End
          Begin XtremeSuiteControls.PushButton PushButton3 
             Height          =   315
-            Left            =   4730
+            Left            =   4800
             TabIndex        =   23
             Top             =   1680
             Width           =   375
@@ -1896,10 +1911,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox1 
          Height          =   2700
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   1
          Top             =   360
-         Visible         =   0   'False
          Width           =   7365
          _Version        =   786432
          _ExtentX        =   12991
@@ -1994,7 +2008,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.Label Label11 
             Height          =   615
             Left            =   0
-            TabIndex        =   147
+            TabIndex        =   145
             Top             =   2040
             Width           =   5415
             _Version        =   786432
@@ -2055,14 +2069,13 @@ Begin VB.Form frmAdminCheques
          End
       End
       Begin GridEX20.GridEX grid_cheques 
-         Height          =   8655
-         Left            =   -62440
+         Height          =   8535
+         Left            =   7560
          TabIndex        =   14
-         Top             =   3240
-         Visible         =   0   'False
+         Top             =   3360
          Width           =   12405
          _ExtentX        =   21881
-         _ExtentY        =   15266
+         _ExtentY        =   15055
          Version         =   "2.0"
          PreviewRowIndent=   200
          BoundColumnIndex=   ""
@@ -2097,14 +2110,13 @@ Begin VB.Form frmAdminCheques
          PrinterProperties=   "frmAdminCheques.frx":0D34
       End
       Begin GridEX20.GridEX grid_chequeras 
-         Height          =   9330
-         Left            =   -69880
+         Height          =   9210
+         Left            =   120
          TabIndex        =   15
-         Top             =   3240
-         Visible         =   0   'False
+         Top             =   3360
          Width           =   7335
          _ExtentX        =   12938
-         _ExtentY        =   16457
+         _ExtentY        =   16245
          Version         =   "2.0"
          HoldSortSettings=   -1  'True
          DefaultGroupMode=   1
@@ -2142,10 +2154,10 @@ Begin VB.Form frmAdminCheques
          Height          =   4665
          Left            =   -69880
          TabIndex        =   124
-         Top             =   4440
+         Top             =   4560
          Visible         =   0   'False
-         Width           =   14655
-         _ExtentX        =   25850
+         Width           =   15135
+         _ExtentX        =   26696
          _ExtentY        =   8229
          Version         =   "2.0"
          BoundColumnIndex=   ""
@@ -2192,8 +2204,8 @@ Begin VB.Form frmAdminCheques
          TabIndex        =   125
          Top             =   3720
          Visible         =   0   'False
-         Width           =   14655
-         _ExtentX        =   25850
+         Width           =   15135
+         _ExtentX        =   26696
          _ExtentY        =   9499
          Version         =   "2.0"
          BoundColumnIndex=   ""
@@ -2233,11 +2245,12 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grid_cartera_cheques 
          Height          =   4665
-         Left            =   120
-         TabIndex        =   145
+         Left            =   -69880
+         TabIndex        =   143
          Top             =   3720
-         Width           =   14655
-         _ExtentX        =   25850
+         Visible         =   0   'False
+         Width           =   15135
+         _ExtentX        =   26696
          _ExtentY        =   8229
          Version         =   "2.0"
          DefaultGroupMode=   1
@@ -2277,11 +2290,28 @@ Begin VB.Form frmAdminCheques
          ImageCount      =   0
          PrinterProperties=   "frmAdminCheques.frx":6558
       End
+      Begin VB.Label Label13 
+         Caption         =   "Label13"
+         Height          =   255
+         Left            =   7560
+         TabIndex        =   150
+         Top             =   3075
+         Width           =   8055
+      End
+      Begin VB.Label Label12 
+         Caption         =   "Label12"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   149
+         Top             =   3080
+         Width           =   7335
+      End
       Begin XtremeSuiteControls.Label lbContadorChequesEnCartera 
          Height          =   375
-         Left            =   120
-         TabIndex        =   150
+         Left            =   -69880
+         TabIndex        =   148
          Top             =   3360
+         Visible         =   0   'False
          Width           =   5415
          _Version        =   786432
          _ExtentX        =   9551
@@ -2292,8 +2322,8 @@ Begin VB.Form frmAdminCheques
       Begin XtremeSuiteControls.Label lbContador3erosUtilizados 
          Height          =   375
          Left            =   -69880
-         TabIndex        =   149
-         Top             =   4080
+         TabIndex        =   147
+         Top             =   4200
          Visible         =   0   'False
          Width           =   6375
          _Version        =   786432
@@ -2305,7 +2335,7 @@ Begin VB.Form frmAdminCheques
       Begin XtremeSuiteControls.Label lbContadorChequesPropiosUtilizados 
          Height          =   375
          Left            =   -69880
-         TabIndex        =   148
+         TabIndex        =   146
          Top             =   3360
          Visible         =   0   'False
          Width           =   6375
@@ -2637,7 +2667,7 @@ Private Sub btnExportar_Click(Index As Integer)
 
         Set xlWorkbook = xlApplication.Workbooks.Add
 
-        Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+        Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
         xlWorksheet.Activate
         
@@ -2778,7 +2808,7 @@ Private Sub btnExportarCartera_Click(Index As Integer)
 
         Set xlWorkbook = xlApplication.Workbooks.Add
 
-        Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+        Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
         xlWorksheet.Activate
         
@@ -2926,7 +2956,7 @@ Me.ProgressBar(1).max = cheques1.count
 
     Set xlWorkbook = xlApplication.Workbooks.Add
     
-    Set xlWorksheet = xlWorkbook.Worksheets.Item(1)
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
     
@@ -3367,7 +3397,7 @@ Private Sub Form_Load()
 
     If Not chequeras Is Nothing Then
         If chequeras.count > 0 Then
-            Set tmpChequera = chequeras.Item(1)
+            Set tmpChequera = chequeras.item(1)
             idChequeraMostrada = tmpChequera.Id
     
             MostrarChequera
@@ -3483,6 +3513,8 @@ Private Sub MostrarChequera()
     Me.grid_cheques.ItemCount = 0
     Me.grid_cheques.ItemCount = tmpChequera.Cheques.count
     
+    Me.Label13.caption = "Cheques mostrados: [ " & tmpChequera.Cheques.count & " ]"
+    
 End Sub
 
 
@@ -3548,6 +3580,9 @@ Private Sub MostrarChequeras()
     Set chequeras = DAOChequeras.GetAll
     Me.grid_chequeras.ItemCount = 0
     Me.grid_chequeras.ItemCount = chequeras.count
+    
+   Me.Label12.caption = "Chequeras mostradas: [ " & chequeras.count & " ]"
+    
 End Sub
 
 Private Sub grdCheques3eros_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
@@ -3556,7 +3591,7 @@ End Sub
 
 Private Sub grdCheques3eros_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 
-    Set tmpCheque3eros = cheques3.Item(RowIndex)
+    Set tmpCheque3eros = cheques3.item(RowIndex)
 
     Values(1) = tmpCheque3eros.OrigenDestino
     Values(2) = tmpCheque3eros.Id
@@ -3620,7 +3655,7 @@ End Sub
 
 Private Sub grid_cartera_cheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error GoTo err1
-    Set tmpCheque = cartera.Item(RowIndex)
+    Set tmpCheque = cartera.item(RowIndex)
     With Values
         .value(1) = tmpCheque.Id
         .value(2) = tmpCheque.numero
@@ -3644,7 +3679,7 @@ Private Sub grid_cartera_cheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Boo
 
     ant = tmpCheque.OrigenDestino
 
-    Set tmpCheque = cartera.Item(RowIndex)
+    Set tmpCheque = cartera.item(RowIndex)
     tmpCheque.OrigenDestino = Values(4)
     If Not DAOCheques.Guardar(tmpCheque) Then GoTo err1
     Exit Sub
@@ -3683,7 +3718,7 @@ Private Sub grid_chequeras_UnboundReadData( _
     If RowIndex < 1 Or RowIndex > chequeras.count Then Exit Sub
 
     Dim chFila As chequera
-    Set chFila = chequeras.Item(RowIndex)
+    Set chFila = chequeras.item(RowIndex)
 
     With Values
         .value(1) = chFila.numero
@@ -3718,7 +3753,7 @@ Private Sub grid_chequeras_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark 
     Dim usadaAnterior As Boolean
     Dim nuevaUsada As Boolean
 
-    Set ch = chequeras.Item(RowIndex)
+    Set ch = chequeras.item(RowIndex)
 
     usadaAnterior = ch.usada
 
@@ -3805,7 +3840,7 @@ Private Sub grid_cheques_UnboundReadData( _
     If RowIndex > tmpChequera.Cheques.count Then Exit Sub
 
     Dim chFila As cheque
-    Set chFila = tmpChequera.Cheques.Item(RowIndex)
+    Set chFila = tmpChequera.Cheques.item(RowIndex)
 
     With Values
         .value(1) = chFila.numero
@@ -3842,7 +3877,7 @@ End Sub
 
 Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex <= bancos.count Then
-        Set Banco = bancos.Item(RowIndex)
+        Set Banco = bancos.item(RowIndex)
         Values(1) = Banco.Id
         Values(2) = Banco.nombre
     End If
@@ -3861,7 +3896,7 @@ Private Function buscarOP(chequeid As Long) As String
 End Function
 
 Private Sub gridChequesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set tmpCheque = cheques1.Item(RowIndex)
+    Set tmpCheque = cheques1.item(RowIndex)
     
     Values(1) = ""
     Values(2) = tmpCheque.Banco.nombre
@@ -3986,7 +4021,7 @@ Private Sub CargarChequeraSeleccionada( _
     If fila < 1 Or fila > chequeras.count Then Exit Sub
 
     Dim chSeleccionada As chequera
-    Set chSeleccionada = chequeras.Item(fila)
+    Set chSeleccionada = chequeras.item(fila)
 
     'Evita ejecutar dos consultas por el mismo clic
     If Not Forzar Then
