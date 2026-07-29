@@ -68,7 +68,19 @@ Public Property Get Utilizado() As Boolean
     Utilizado = _
         (IdOrdenPagoOrigen > 0) Or _
         (IdLiquidacionCajaOrigen > 0) Or _
+        (NumeroLiquidacionCaja > 0) Or _
         (NumeroPagoACuenta > 0) Or _
         (NumeroMovimiento > 0)
 
 End Property
+
+
+Public Sub LimpiarOrigenUso()
+
+    IdOrdenPagoOrigen = 0
+    IdLiquidacionCajaOrigen = 0
+    NumeroLiquidacionCaja = 0
+    NumeroPagoACuenta = 0
+    NumeroMovimiento = 0
+
+End Sub

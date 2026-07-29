@@ -526,7 +526,7 @@ Public Function Guardar(cheque As cheque) As Boolean
           & "en_cartera," _
           & "propio," _
           & "id_moneda," _
-          & "observaciones, teceros_propio,ingresado,fecha_emision,orden_pago_origen,liquidacion_caja_origen, depositado" _
+          & "observaciones, teceros_propio, ingresado, fecha_emision, orden_pago_origen, liquidacion_caja_origen, pago_a_cuenta_origen, movimiento_origen, depositado" _
           & ") Values " _
           & "('numero'," _
           & "'fecha_recibido'," _
@@ -538,7 +538,7 @@ Public Function Guardar(cheque As cheque) As Boolean
           & "'en_cartera'," _
           & "'propio'," _
           & "'id_moneda'," _
-          & "'observaciones','teceros_propio','ingresado','fecha_emision','orden_pago_origen','liquidacion_caja_origen','depositado' " _
+          & "'observaciones','teceros_propio','ingresado','fecha_emision','orden_pago_origen','liquidacion_caja_origen', 'pago_a_cuenta_origen', 'movimiento_origen', 'depositado' " _
           & ")"
 
     Else
@@ -559,10 +559,12 @@ Public Function Guardar(cheque As cheque) As Boolean
           & "teceros_propio='teceros_propio', " _
           & "ingresado='ingresado', " _
           & "fecha_emision='fecha_emision', " _
-          & "orden_pago_origen='orden_pago_origen', " _
-          & "liquidacion_caja_origen='liquidacion_caja_origen', " _
-          & "estado='estado', " _
-          & "depositado='depositado' " _
+          & "orden_pago_origen = 'orden_pago_origen', " _
+          & "liquidacion_caja_origen = 'liquidacion_caja_origen', " _
+          & "pago_a_cuenta_origen = 'pago_a_cuenta_origen', " _
+          & "movimiento_origen = 'movimiento_origen', " _
+          & "estado = 'estado', " _
+          & "depositado = 'depositado' " _
           & " Where " _
           & "id = 'id' " _
 
@@ -584,6 +586,8 @@ q = Replace(q, "'id'", cheque.Id)
     q = Replace(q, "'teceros_propio'", conectar.Escape(cheque.TercerosPropio))
     q = Replace(q, "'ingresado'", conectar.Escape(Abs(cheque.entro)))
     q = Replace(q, "'orden_pago_origen'", conectar.Escape(cheque.IdOrdenPagoOrigen))
+    q = Replace(q, "'pago_a_cuenta_origen'", conectar.Escape(cheque.NumeroPagoACuenta))
+    q = Replace(q, "'movimiento_origen'", conectar.Escape(cheque.NumeroMovimiento))
     q = Replace(q, "'liquidacion_caja_origen'", conectar.Escape(cheque.IdLiquidacionCajaOrigen))
     q = Replace(q, "'estado'", conectar.Escape(cheque.estado))
     q = Replace(q, "'depositado'", conectar.Escape(cheque.Depositado))

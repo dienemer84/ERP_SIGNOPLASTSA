@@ -4,14 +4,14 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmComprasProveedoresLista 
    BackColor       =   &H00FF8080&
    Caption         =   "Proveedores"
-   ClientHeight    =   7470
+   ClientHeight    =   7815
    ClientLeft      =   60
    ClientTop       =   270
    ClientWidth     =   17790
    Icon            =   "frmListaProveedores.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   7470
+   ScaleHeight     =   7815
    ScaleWidth      =   17790
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1815
@@ -85,14 +85,14 @@ Begin VB.Form frmComprasProveedoresLista
       End
       Begin XtremeSuiteControls.PushButton Command1 
          Default         =   -1  'True
-         Height          =   375
+         Height          =   495
          Left            =   9600
          TabIndex        =   11
-         Top             =   1320
-         Width           =   1335
+         Top             =   1200
+         Width           =   2175
          _Version        =   786432
-         _ExtentX        =   2355
-         _ExtentY        =   661
+         _ExtentX        =   3836
+         _ExtentY        =   873
          _StockProps     =   79
          Caption         =   "Filtrar"
          UseVisualStyle  =   -1  'True
@@ -173,7 +173,7 @@ Begin VB.Form frmComprasProveedoresLista
       Height          =   5280
       Left            =   120
       TabIndex        =   0
-      Top             =   2040
+      Top             =   2160
       Width           =   17415
       _ExtentX        =   30718
       _ExtentY        =   9313
@@ -217,6 +217,14 @@ Begin VB.Form frmComprasProveedoresLista
       FormatStyle(7)  =   "frmListaProveedores.frx":1070
       ImageCount      =   0
       PrinterProperties=   "frmListaProveedores.frx":1090
+   End
+   Begin VB.Label Label1 
+      Caption         =   "Label1"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   14
+      Top             =   1920
+      Width           =   5415
    End
    Begin VB.Menu m2 
       Caption         =   "m2"
@@ -295,6 +303,7 @@ Private Sub Buscar()
     Set proveedores = DAOProveedor.FindAll(filtro, False, , , ctacte, contado, elim, False)
     grilla.ItemCount = 0
     grilla.ItemCount = proveedores.count
+    Me.Label1.caption = "Proveedores mostrados [ " & proveedores.count & " ]"
     grilla.ReBind
 End Sub
 
@@ -330,6 +339,8 @@ Private Sub Form_Load()
 
 
     Buscar
+    
+    Me.Label1.caption = "Proveedores mostrados [ " & proveedores.count & " ]"
 
     ''Me.caption = caption & " (" & Name & ")"
 
@@ -397,7 +408,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(1) = Format(.Id, "0000")
         Values(2) = .RazonSocial
         Values(3) = .razonFantasia
-        Values(4) = .Cuit
+        Values(4) = .cuit
         Values(5) = .IIBB
         Values(6) = .tel
         Values(7) = .Fax
@@ -438,7 +449,7 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
                 Proveedor.estado = tmp.estado
                 Proveedor.razonFantasia = tmp.razonFantasia
                 Proveedor.RazonSocial = tmp.RazonSocial
-                Proveedor.Cuit = tmp.Cuit
+                Proveedor.cuit = tmp.cuit
                 Proveedor.IIBB = tmp.IIBB
                 Proveedor.direccion = tmp.direccion
 

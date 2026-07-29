@@ -1151,7 +1151,7 @@ Private Sub btnConfirmar_Click()
             TotalizarComprobantes
         End If
     Else
-        MsgBox "No se pudo seleccionar la factura."
+        MsgBox "No se pudo seleccionar el comprobante."
     End If
 End Sub
 
@@ -1464,7 +1464,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, False
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
     GridEXHelper.CustomizeGrid Me.gridChequeras, False, False
     GridEXHelper.CustomizeGrid Me.gridChequesPropios, False, True
     GridEXHelper.CustomizeGrid Me.gridCompensatorios, False, True
@@ -1472,7 +1472,7 @@ Private Sub Form_Load()
     'GridEXHelper.CustomizeGrid Me.gridRetenciones, False, True
 
     Set Cajas = DAOCaja.FindAll()
-    Me.gridCajas.ItemCount = Cajas.count
+    Me.GridCajas.ItemCount = Cajas.count
 
     Set Monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = Monedas.count
@@ -1503,7 +1503,7 @@ Private Sub Form_Load()
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
     
     Set Me.gridChequesPropios.Columns("chequera").DropDownControl = Me.gridChequeras
     Set Me.gridChequesPropios.Columns("numero").DropDownControl = Me.gridChequesChequera
@@ -1927,11 +1927,65 @@ Private Sub PusGuardar_Click()
         End If
     Next
     
-    ' Validar objeto antes de guardar
-    If Not LiquidacionCaja.IsValid Then
-        MsgBox "Datos de liquidación no válidos:" & vbCrLf & vbCrLf & LiquidacionCaja.ValidationMessages, _
-               vbCritical, "Error de validación"
+    '========================================================
+    ' MOSTRAR DIFERENCIA ENTRE VALORES Y COMPROBANTES
+    '========================================================
+    
+    Dim totalComprobantes As Double
+    Dim totalValores As Double
+    Dim diferencia As Double
+    Dim descripcionDiferencia As String
+    Dim estiloMensaje As VbMsgBoxStyle
+    
+    'Actualizar el total de valores por seguridad
+    LiquidacionCaja.StaticTotalOrigenes = LiquidacionCaja.TotalOrigenes
+    
+    'Usamos los mismos totales que se muestran en pantalla
+    totalComprobantes = funciones.RedondearDecimales( _
+                            LiquidacionCaja.StaticTotal)
+    
+    totalValores = funciones.RedondearDecimales( _
+                        LiquidacionCaja.StaticTotalOrigenes + _
+                        LiquidacionCaja.StaticTotalRetenido)
+    
+    'Diferencia positiva: sobran valores
+    'Diferencia negativa: faltan valores
+    diferencia = funciones.RedondearDecimales( _
+                    totalValores - totalComprobantes)
+    
+    If Abs(diferencia) <= 0.01 Then
+    
+        diferencia = 0
+        descripcionDiferencia = "Los valores coinciden con los comprobantes."
+        estiloMensaje = vbQuestion
+    
+    ElseIf diferencia > 0 Then
+    
+        descripcionDiferencia = _
+            "Sobran valores por " & FormatCurrency(Abs(diferencia))
+    
+        estiloMensaje = vbExclamation
+    
+    Else
+    
+        descripcionDiferencia = _
+            "Faltan valores por " & FormatCurrency(Abs(diferencia))
+    
+        estiloMensaje = vbExclamation
+    
+    End If
+    
+    If MsgBox( _
+        "Total comprobantes: " & FormatCurrency(totalComprobantes) & vbCrLf & _
+        "Total valores cargados: " & FormatCurrency(totalValores) & vbCrLf & _
+        "Diferencia: " & FormatCurrency(diferencia) & vbCrLf & vbCrLf & _
+        descripcionDiferencia & vbCrLf & vbCrLf & _
+        "¿Desea guardar la Liquidación de Caja?", _
+        vbYesNo + estiloMensaje, _
+        "Confirmar Liquidación de Caja") = vbNo Then
+    
         Exit Sub
+    
     End If
     
     ' Intentar guardar en la base de datos
@@ -2390,7 +2444,7 @@ Public Sub Cargar(liq As clsLiquidacionCaja)
     Me.gridBancos.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowEdit = Not ReadOnly
     Me.gridCajaOperaciones.AllowDelete = Not ReadOnly
-    Me.gridCajas.AllowEdit = Not ReadOnly
+    Me.GridCajas.AllowEdit = Not ReadOnly
     Me.gridCheques.AllowEdit = Not ReadOnly
     Me.gridCheques.AllowDelete = Not ReadOnly
     Me.gridChequeras.AllowEdit = Not ReadOnly

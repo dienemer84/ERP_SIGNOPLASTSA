@@ -3,27 +3,69 @@ Option Explicit
 
 
 
-Public Function FindAll(Optional filtro As String) As Collection
-    On Error GoTo err1
+Public Function FindAll( _
+    Optional ByVal filtro As String = vbNullString _
+) As Collection
+
+    On Error GoTo ManejarError
+
     Dim idx As Dictionary
     Dim rs As Recordset
     Dim strsql As String
-    strsql = "SELECT * FROM Provincia p INNER JOIN Pais pa ON p.idPais = pa.id WHERE 1=1 "
-    If LenB(filtro) > 0 Then strsql = strsql & filtro
-    Dim col As New Collection
+    Dim col As Collection
+    Dim objProvincia As provincia
+
+    Set idx = New Dictionary
+    Set col = New Collection
+
+    strsql = _
+        "SELECT * " & _
+        "FROM Provincia p " & _
+        "INNER JOIN Pais pa ON p.idPais = pa.id " & _
+        "WHERE 1 = 1 "
+
+    If LenB(filtro) > 0 Then
+        strsql = strsql & filtro
+    End If
+
     Set rs = conectar.RSFactory(strsql)
+
+    If rs Is Nothing Then
+        Err.Raise _
+            vbObjectError + 1100, _
+            "DAOProvincias.FindAll", _
+            "No se pudo abrir el Recordset de provincias."
+    End If
+
     conectar.BuildFieldsIndex rs, idx
 
-    While Not rs.EOF And Not rs.BOF
-        col.Add Map(rs, idx, "p", "pa")
+    Do While Not rs.EOF
+
+        Set objProvincia = Map(rs, idx, "p", "pa")
+
+        If Not objProvincia Is Nothing Then
+            col.Add objProvincia
+        End If
 
         rs.MoveNext
-    Wend
+
+    Loop
 
     Set FindAll = col
     Exit Function
-err1:
-    Set FindAll = Nothing
+
+ManejarError:
+
+    Dim numeroError As Long
+    Dim descripcionError As String
+
+    numeroError = Err.Number
+    descripcionError = Err.Description
+
+    Err.Raise _
+        numeroError, _
+        "DAOProvincias.FindAll", _
+        descripcionError
 
 End Function
 
@@ -31,17 +73,17 @@ End Function
 '''    Set FindAllByPais = FindAll("and pa.id=" & idpais)
 '''End Function
 
-Public Function FindAllByPais(idpais As Long) As Collection
+Public Function FindAllByPais(idPais As Long) As Collection
     Set FindAllByPais = FindAll( _
-        " AND pa.id=" & idpais & _
+        " AND pa.id=" & idPais & _
         " ORDER BY CASE WHEN UCASE(p.Nombre) = 'EXTERIOR' THEN 1 ELSE 0 END, p.Nombre")
 End Function
 
 
-Public Function FindById(IdProvincia As Long) As provincia
+Public Function FindById(idProvincia As Long) As provincia
 
     Dim col As New Collection
-    Set col = FindAll("and p.id=" & IdProvincia)
+    Set col = FindAll("and p.id=" & idProvincia)
 
 
     Set FindById = col(1)
@@ -63,24 +105,61 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Opti
     Set Map = prov
 End Function
 
-Public Function LlenarCombo(cbo As Xtremesuitecontrols.ComboBox, Id As Long)
+Public Sub LlenarCombo( _
+    ByRef cbo As XtremeSuiteControls.ComboBox, _
+    ByVal idPais As Long _
+)
+
+    On Error GoTo ManejarError
+
     Dim P As provincia
+    Dim col As Collection
+
     cbo.Clear
-    Dim col As New Collection
-    Set col = FindAllByPais(Id)
+
+    Set col = FindAllByPais(idPais)
+
+    If col Is Nothing Then
+        Err.Raise _
+            vbObjectError + 1101, _
+            "DAOProvincias.LlenarCombo", _
+            "No se pudo obtener la colección de provincias."
+    End If
+
     For Each P In col
-        If IsSomething(P) Then
+
+        If Not P Is Nothing Then
+
             cbo.AddItem P.nombre
             cbo.ItemData(cbo.NewIndex) = P.Id
+
         End If
-    Next
+
+    Next P
+
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
     End If
-End Function
+
+    Exit Sub
+
+ManejarError:
+
+    Dim numeroError As Long
+    Dim descripcionError As String
+
+    numeroError = Err.Number
+    descripcionError = Err.Description
+
+    Err.Raise _
+        numeroError, _
+        "DAOProvincias.LlenarCombo", _
+        descripcionError
+
+End Sub
 
 
-Public Function LlenarComboNoDefinido(cbo As Xtremesuitecontrols.ComboBox, Id As Long, Optional incluirSinDefinir As Boolean = True)
+Public Function LlenarComboNoDefinido(cbo As XtremeSuiteControls.ComboBox, Id As Long, Optional incluirSinDefinir As Boolean = True)
     Dim P As provincia
     Dim col As Collection
 

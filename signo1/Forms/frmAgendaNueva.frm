@@ -31,7 +31,7 @@ Begin VB.Form frmAgendaNueva
          Height          =   5415
          Left            =   120
          TabIndex        =   8
-         Top             =   480
+         Top             =   360
          Width           =   12615
          _ExtentX        =   22251
          _ExtentY        =   9551
@@ -64,16 +64,24 @@ Begin VB.Form frmAgendaNueva
          ImageCount      =   0
          PrinterProperties=   "frmAgendaNueva.frx":09FC
       End
+      Begin VB.Label Label2 
+         Caption         =   "Label2"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   21
+         Top             =   120
+         Width           =   5055
+      End
       Begin XtremeSuiteControls.Label Label 
-         Height          =   135
+         Height          =   255
          Index           =   4
          Left            =   7440
          TabIndex        =   20
-         Top             =   240
+         Top             =   120
          Width           =   5175
          _Version        =   786432
          _ExtentX        =   9128
-         _ExtentY        =   238
+         _ExtentY        =   450
          _StockProps     =   79
          Caption         =   "Doble-click sobre el contacto para abrir el detalle"
          Alignment       =   1
@@ -164,10 +172,10 @@ Begin VB.Form frmAgendaNueva
          Height          =   495
          Left            =   10680
          TabIndex        =   9
-         Top             =   240
-         Width           =   1815
+         Top             =   600
+         Width           =   2055
          _Version        =   786432
-         _ExtentX        =   3201
+         _ExtentX        =   3625
          _ExtentY        =   873
          _StockProps     =   79
          Caption         =   "Nuevo"
@@ -283,10 +291,10 @@ Begin VB.Form frmAgendaNueva
          Height          =   495
          Left            =   10680
          TabIndex        =   7
-         Top             =   1080
-         Width           =   1815
+         Top             =   1440
+         Width           =   2055
          _Version        =   786432
-         _ExtentX        =   3201
+         _ExtentX        =   3625
          _ExtentY        =   873
          _StockProps     =   79
          Caption         =   "Buscar"
@@ -400,7 +408,7 @@ End Sub
 
 Private Sub verDeta()
     If Me.dgDatos.rowcount Then
-        Set rectemp = contactos(Me.dgDatos.rowIndex(Me.dgDatos.row))
+        Set rectemp = contactos(Me.dgDatos.RowIndex(Me.dgDatos.row))
 
 
             frmAgendaNuevaDetalles.Contacto = rectemp
@@ -410,9 +418,9 @@ Private Sub verDeta()
 End Sub
 
 
-Private Sub dgDatos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub dgDatos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set rectemp = contactos.item(rowIndex)
+    Set rectemp = contactos.item(RowIndex)
     With rectemp
 
         Values(1) = .Id
@@ -431,6 +439,8 @@ Private Sub Form_Load()
     FormHelper.Customize Me
     
     llenarGrilla
+    
+    Me.Label2.caption = "Contactos mostrados [ " & contactos.count & " ]"
     
     End Sub
 
@@ -464,6 +474,8 @@ Public Function llenarGrilla()
     Me.dgDatos.ItemCount = 0
     
     Me.dgDatos.ItemCount = contactos.count
+    
+    Me.Label2.caption = "Contactos mostrados [ " & contactos.count & " ]"
     
     Me.dgDatos.ReBind
 

@@ -467,7 +467,7 @@ Begin VB.Form frmAdminPagosPagoACtaLista
       Height          =   5505
       Left            =   120
       TabIndex        =   24
-      Top             =   2160
+      Top             =   2400
       Width           =   14775
       _ExtentX        =   26061
       _ExtentY        =   9710
@@ -514,6 +514,14 @@ Begin VB.Form frmAdminPagosPagoACtaLista
       _ExtentY        =   847
       _Version        =   393216
       Flags           =   1
+   End
+   Begin VB.Label Label2 
+      Caption         =   "Label2"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   32
+      Top             =   2160
+      Width           =   5175
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -642,6 +650,8 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = i
     
+    Me.Label2 = "Pagos a cta mostrados " & " [Cant: " & pagosacuenta.count & "]"
+    
 End Sub
 
 
@@ -697,7 +707,8 @@ Private Sub llenarLista()
 
     Me.caption = "Listado de Pagos a cta" & " [Cant: " & pagosacuenta.count & "]"
 
-
+    Me.Label2 = "Pagos a cta mostrados " & " [Cant: " & pagosacuenta.count & "]"
+    
 End Sub
 
 

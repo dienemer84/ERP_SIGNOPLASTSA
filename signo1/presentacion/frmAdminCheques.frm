@@ -2436,34 +2436,44 @@ End Sub
 Private Sub btnBuscar_Click_1()
 
     Dim q As String
+
     Set cheques3 = New Collection
 
-    q = "propio=0 and en_cartera=0 and orden_pago_origen!=0"
+    q = "cheq.propio = 0 " _
+      & "AND cheq.en_cartera = 0 " _
+      & "AND (" _
+      & "IFNULL(cheq.orden_pago_origen, 0) > 0 OR " _
+      & "IFNULL(cheq.liquidacion_caja_origen, 0) > 0 OR " _
+      & "IFNULL(cheq.pago_a_cuenta_origen, 0) > 0 OR " _
+      & "IFNULL(cheq.movimiento_origen, 0) > 0" _
+      & ")"
 
-    
-    If LenB(Me.txtNumeroCheque3ero) > 0 Then
-        q = q & " and cheq.numero=" & val(Me.txtNumeroCheque3ero)
+    If LenB(Me.txtNumeroCheque3ero.Text) > 0 Then
+        q = q & " AND cheq.numero = " & _
+                val(Me.txtNumeroCheque3ero.Text)
     End If
 
-    If LenB(Me.txtNumeroOP) > 0 Then
-        q = q & " and cheq.orden_pago_origen=" & val(Me.txtNumeroOP)
+    If LenB(Me.txtNumeroOP.Text) > 0 Then
+        q = q & " AND cheq.orden_pago_origen = " & _
+                val(Me.txtNumeroOP.Text)
     End If
-
 
     Me.grdCheques3eros.ItemCount = 0
 
-    Set cheques3 = New Collection
+    Set cheques3 = DAOCheques.FindAllTercerosUti(q)
 
-    Set cheques3 = DAOCheques.FindAll(q)
+    If cheques3 Is Nothing Then
+        Set cheques3 = New Collection
+    End If
 
     Me.grdCheques3eros.ItemCount = cheques3.count
 
-'''    Me.grpResultadosPropios(1).caption = "Resultados: [ " & cheques3.count & " ] cheques"
+    Me.lbContador3erosUtilizados.caption = _
+        "Cheques encontrados: [ " & cheques3.count & " ]"
 
     GridEXHelper.AutoSizeColumns Me.grdCheques3eros
 
 End Sub
-
 Private Sub btnBuscarEnCartera_Click_1()
     MostrarCartera
 End Sub
@@ -3814,6 +3824,7 @@ Private Sub grid_cheques_MouseDown(Button As Integer, Shift As Integer, x As Sin
         Me.mnuAnularCheque.Enabled = (tmpCheque.IdOrdenPagoOrigen <= 0) Or tmpCheque.estado = ChequeAnulado
         Me.PopupMenu Me.mnuOpcionesChequeChequera
     End If
+    
 End Sub
 
 
@@ -3857,15 +3868,8 @@ Private Sub grid_cheques_UnboundReadData( _
             .value(5) = Empty
         End If
 
-        If chFila.estado = ChequeAnulado Then
-            .value(6) = "ANULADO"
-        ElseIf chFila.Utilizado Then
-            .value(6) = _
-                "Utilizado en Orden de Pago N° " & _
-                chFila.IdOrdenPagoOrigen
-        Else
-            .value(6) = "DISPONIBLE"
-        End If
+            .value(6) = DescripcionUsoCheque(chFila)
+            
     End With
 
     Exit Sub
@@ -3945,13 +3949,16 @@ Private Sub mnuPasarCartera_Click()
     grid_cheques_DblClick
 End Sub
 
+
 Private Sub btnBorrarNumeroTerceros_Click()
     txtNumeroCheque3ero = ""
 End Sub
 
+
 Private Sub PushButton1_Click()
     TxtNumeroChequeEnChequera.Text = ""
 End Sub
+
 
 '''Private Sub PushButton1_Click()
 '''    Me.cboProveedores.ListIndex = -1
@@ -3960,7 +3967,6 @@ End Sub
 Private Sub PushButton2_Click()
     Me.cboProveedoresPropios.ListIndex = -1
 End Sub
-
 
 Private Sub PushButton3_Click()
     Me.cboChequera2.ListIndex = -1
@@ -3974,18 +3980,26 @@ Private Sub txtDesde_Validate(Cancel As Boolean)
     ValidarTextBox Me.txtDesde, Cancel
 End Sub
 
+
 Private Sub txtHasta_Validate(Cancel As Boolean)
     ValidarTextBox Me.txtHasta, Cancel
 End Sub
+
+
 Private Sub txtIdOP_GotFocus()
     foco Me.txtIdOP
 End Sub
+
+
 Private Sub txtNroChequePropio_GotFocus()
     foco Me.txtNroChequePropio
 End Sub
+
+
 Private Sub txtNumero_Validate(Cancel As Boolean)
     funciones.ValidarTextBox Me.txtNumero, Cancel
 End Sub
+
 
 Private Sub AjustarGrid(ByVal grd As Object, ByVal ctrlSuperior As Object, _
                         ByVal margen As Long, ByVal espacioInferior As Long)
@@ -4003,6 +4017,7 @@ Private Sub AjustarGrid(ByVal grd As Object, ByVal ctrlSuperior As Object, _
         grd.Height = altoGrid
     End If
 End Sub
+
 
 Private Sub CargarChequeraSeleccionada( _
     Optional ByVal Forzar As Boolean = False)
@@ -4053,4 +4068,66 @@ err1:
 
     Resume salir
 End Sub
+
+
+Private Function DescripcionUsoCheque(ByVal ch As cheque) As String
+
+    Dim numeroLiquidacion As Long
+
+    If ch Is Nothing Then
+        DescripcionUsoCheque = vbNullString
+        Exit Function
+    End If
+
+    If ch.estado = ChequeAnulado Then
+        DescripcionUsoCheque = "ANULADO"
+        Exit Function
+    End If
+
+    'Primero se verifica Movimiento porque actualmente
+    'puede haber registros históricos con ambos campos cargados.
+    If ch.NumeroMovimiento > 0 Then
+
+        DescripcionUsoCheque = _
+            "Utilizado en Movimiento de Caja y Bancos N° " & _
+            ch.NumeroMovimiento
+
+    ElseIf ch.NumeroPagoACuenta > 0 Then
+
+        DescripcionUsoCheque = _
+            "Utilizado en Pago a Cuenta N° " & _
+            ch.NumeroPagoACuenta
+
+    ElseIf ch.NumeroLiquidacionCaja > 0 Or _
+           ch.IdLiquidacionCajaOrigen > 0 Then
+
+        numeroLiquidacion = ch.NumeroLiquidacionCaja
+
+        If numeroLiquidacion = 0 Then
+            numeroLiquidacion = ch.IdLiquidacionCajaOrigen
+        End If
+
+        DescripcionUsoCheque = _
+            "Utilizado en Liquidación de Caja N° " & _
+            numeroLiquidacion
+
+    ElseIf ch.IdOrdenPagoOrigen > 0 Then
+
+        DescripcionUsoCheque = _
+            "Utilizado en Orden de Pago N° " & _
+            ch.IdOrdenPagoOrigen
+
+    ElseIf ch.Utilizado Then
+
+        DescripcionUsoCheque = _
+            "UTILIZADO - ORIGEN NO IDENTIFICADO"
+
+    Else
+
+        DescripcionUsoCheque = "DISPONIBLE"
+
+    End If
+
+End Function
+
 

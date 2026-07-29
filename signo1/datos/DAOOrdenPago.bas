@@ -1488,15 +1488,20 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.Print
     Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.ScaleWidth, Printer.CurrentY)
 
+    'Recargar los comprobantes asociados a esta OP
+    Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
+    
+    Dim F As clsFacturaProveedor
+    Dim cantidadComprobantes As Long
+    
+    cantidadComprobantes = Orden.FacturasProveedor.count
+    
     Printer.FontSize = 10
     Printer.FontBold = True
     Printer.CurrentX = lmargin
-    Printer.Print "COMPROBANTES: "
+    Printer.Print "COMPROBANTES ASOCIADOS: " & cantidadComprobantes
     Printer.FontBold = False
     Printer.FontSize = 8
-    
-    Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
-    Dim F As clsFacturaProveedor
         
     ' Definir el ancho de las columnas
     Dim colWidth(1 To 6) As Single

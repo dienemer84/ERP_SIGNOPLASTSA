@@ -39,18 +39,92 @@ Public Function BuscarPorID(Id As Long) As clsCliente
 End Function
 
 
-Public Function crear(Cliente As clsCliente) As Boolean
+Public Function crear(ByRef Cliente As clsCliente) As Boolean
+
+    On Error GoTo ManejarError
+
+    Dim rsNuevoId As ADODB.Recordset
+
     Set cn = conectar.obternerConexion
-    On Error GoTo err1
-    crear = True
+
     With Cliente
-        strsql = "INSERT INTO clientes (cuit_pais, id_impositivo, id_localidad,CP, id_moneda_default, razon,domicilio,telefono,Fax,email,cuit,iva,id_provincia,FP,FP_detalle,valido_remito_factura) VALUES " _
-               & "('" & .CuitPais & "', '" & .IDImpositivo & "'," & .localidad.Id & ", " & .CodigoPostal & ", " & .idMonedaDefault & ",'" & .razon & "','" & .Domicilio & "','" & .telefono & "','" & .Fax & "','" & .email & "','" & .Cuit & "'," & .TipoIVA.idIVA & "," & .provincia.Id & "," & .FP & ",'" & .FormaPago & "'," & conectar.Escape(.ValidoRemitoFactura) & ")"
-        cn.execute strsql
+
+        strsql = _
+            "INSERT INTO clientes (" & _
+                "cuit_pais, id_impositivo, id_localidad, CP, id_moneda_default, razon, domicilio, telefono, Fax, email, cuit, iva, id_provincia, FP, FP_detalle, valido_remito_factura , estado" & _
+            " ) VALUES (" & _
+                "'" & .CuitPais & "', " & _
+                "'" & .IDImpositivo & "', " & _
+                CStr(.localidad.Id) & ", " & _
+                "'" & .CodigoPostal & "', " & _
+                CStr(.idMonedaDefault) & ", " & _
+                "'" & .razon & "', " & _
+                "'" & .Domicilio & "', " & _
+                "'" & .telefono & "', " & _
+                "'" & .Fax & "', " & _
+                "'" & .email & "', " & _
+                "'" & .cuit & "', " & _
+                CStr(.TipoIVA.idIVA) & ", " & _
+                CStr(.provincia.Id) & ", " & _
+                CStr(.FP) & ", " & _
+                "'" & .FormaPago & "', " & _
+                conectar.Escape(.ValidoRemitoFactura) & ", " & _
+                CStr(.estado) & _
+            ")"
+
     End With
+
+    cn.execute strsql
+
+    'LAST_INSERT_ID debe consultarse usando la misma conexión
+    'con la que se ejecutó el INSERT.
+    Set rsNuevoId = cn.execute( _
+                        "SELECT LAST_INSERT_ID() AS nuevo_id" _
+                    )
+
+    If rsNuevoId Is Nothing Then
+
+        Err.Raise _
+            vbObjectError + 1500, _
+            "DAOCliente.crear", _
+            "No se pudo obtener el ID del cliente creado."
+
+    End If
+
+    If rsNuevoId.EOF Then
+
+        Err.Raise _
+            vbObjectError + 1501, _
+            "DAOCliente.crear", _
+            "La consulta del ID generado no devolvió resultados."
+
+    End If
+
+    Cliente.Id = CLng(rsNuevoId.Fields("nuevo_id").value)
+
+    If Cliente.Id <= 0 Then
+
+        Err.Raise _
+            vbObjectError + 1502, _
+            "DAOCliente.crear", _
+            "El ID generado para el cliente no es válido."
+
+    End If
+
+    crear = True
+
+    Set rsNuevoId = Nothing
     Exit Function
-err1:
+
+ManejarError:
+
     crear = False
+
+    Debug.Print _
+        "DAOCliente.crear - Error " & _
+        CStr(Err.Number) & ": " & Err.Description
+
+    Set rsNuevoId = Nothing
 
 End Function
 
@@ -60,7 +134,8 @@ Public Function modificar(Cliente As clsCliente) As Boolean
     On Error GoTo err11
     modificar = True
     With Cliente
-        strsql = "UPDATE clientes SET id_localidad=" & .localidad.Id & ", CP=" & .CodigoPostal & ",id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .email & "',cuit='" & .Cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & "  where id=" & .Id
+        strsql = "UPDATE clientes SET id_localidad=" & .localidad.Id & ", CP=" & .CodigoPostal & ",id_moneda_default=" & .idMonedaDefault & ", razon='" & .razon & " ',domicilio='" & .Domicilio & "',telefono='" & .telefono & "',Fax='" & .Fax & "',email='" & .email & "',cuit='" & .cuit & "',iva=" & .TipoIVA.idIVA & ",id_provincia='" & .provincia.Id & "',FP=" & .FP & ", FP_detalle='" & .FormaPago & "',valido_remito_factura = " & conectar.Escape(.ValidoRemitoFactura) & " , estado=" & .estado & _
+        " where id=" & .Id
         cn.execute strsql
     End With
     Exit Function
@@ -93,7 +168,7 @@ Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, _
         c.TipoDocumento = GetValue(rs, fieldsIndex, tableNameOrAlias, "tipo_doc")
 
         c.email = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_EMAIL)
-        c.Cuit = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CUIT)
+        c.cuit = GetValue(rs, fieldsIndex, tableNameOrAlias, CAMPO_CUIT)
         
 
         

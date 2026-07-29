@@ -16,3 +16,4 @@ Option Explicit
 Public FechaD_ As Date
 Public TextoD_ As String
 Public Modulo_ As String
+Public IdVersion_ As String

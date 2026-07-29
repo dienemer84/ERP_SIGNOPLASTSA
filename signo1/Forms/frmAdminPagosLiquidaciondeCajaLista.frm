@@ -326,7 +326,7 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       Height          =   5505
       Left            =   120
       TabIndex        =   7
-      Top             =   2040
+      Top             =   2280
       Width           =   16215
       _ExtentX        =   28601
       _ExtentY        =   9710
@@ -372,6 +372,14 @@ Begin VB.Form frmAdminPagosLiquidaciondeCajaLista
       _ExtentY        =   847
       _Version        =   393216
       Flags           =   1
+   End
+   Begin VB.Label Label2 
+      Caption         =   "Label2"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   22
+      Top             =   2040
+      Width           =   5895
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -458,6 +466,8 @@ Private Sub Form_Load()
     Me.cboEstado.ItemData(Me.cboEstado.NewIndex) = EstadoOrdenPago.EstadoOrdenPago_Anulada
 
     'llenarLista
+    
+    Me.Label2.caption = "Liquidaciones de Caja mostradas [Cantidad: 0]"
     
 End Sub
 
@@ -585,6 +595,8 @@ Private Sub llenarLista()
     Me.gridOrdenes.ItemCount = liquidaciones.count
 
     Me.caption = "Listado de Liquidaciones de Caja" & " [Cantidad: " & liquidaciones.count & "]"
+    
+    Me.Label2.caption = "Liquidaciones de Caja mostradas " & " [Cantidad: " & liquidaciones.count & "]"
 
 End Sub
 
@@ -614,7 +626,7 @@ End Sub
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
-        Set LiquidacionCaja = liquidaciones.Item(RowBuffer.RowIndex)
+        Set LiquidacionCaja = liquidaciones.item(RowBuffer.RowIndex)
         If LiquidacionCaja.estado = EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada Then
             RowBuffer.CellStyle(9) = "Aprobada"
         ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada Then
@@ -630,14 +642,14 @@ End Sub
 
 Private Sub gridOrdenes_SelectionChange()
     On Error Resume Next
-    Set LiquidacionCaja = liquidaciones.Item(gridOrdenes.RowIndex(gridOrdenes.row))
+    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
 End Sub
 
 
 Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     If RowIndex > 0 And liquidaciones.count > 0 Then
 
-        Set LiquidacionCaja = liquidaciones.Item(RowIndex)
+        Set LiquidacionCaja = liquidaciones.item(RowIndex)
 
         Values(1) = LiquidacionCaja.NumeroLiq
         Values(2) = LiquidacionCaja.FEcha
@@ -649,7 +661,7 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido)), "$", "")
 
         If LiquidacionCaja.EsParaFacturaProveedor Then
-            Set fac = LiquidacionCaja.FacturasProveedor.Item(1)
+            Set fac = LiquidacionCaja.FacturasProveedor.item(1)
             Values(7) = "Factura Proveedor"
             Values(8) = "VARIOS"
         Else

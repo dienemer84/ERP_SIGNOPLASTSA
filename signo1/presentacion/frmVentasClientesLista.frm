@@ -31,14 +31,14 @@ Begin VB.Form frmVentasClientesLista
          Width           =   2175
       End
       Begin XtremeSuiteControls.PushButton PushButton1 
-         Height          =   375
-         Left            =   9360
+         Height          =   495
+         Left            =   8520
          TabIndex        =   6
          Top             =   1200
-         Width           =   1335
+         Width           =   2415
          _Version        =   786432
-         _ExtentX        =   2355
-         _ExtentY        =   661
+         _ExtentX        =   4260
+         _ExtentY        =   873
          _StockProps     =   79
          Caption         =   "Filtrar"
          UseVisualStyle  =   -1  'True
@@ -99,7 +99,7 @@ Begin VB.Form frmVentasClientesLista
       Height          =   4695
       Left            =   120
       TabIndex        =   0
-      Top             =   2040
+      Top             =   2160
       Width           =   13455
       _ExtentX        =   23733
       _ExtentY        =   8281
@@ -143,6 +143,14 @@ Begin VB.Form frmVentasClientesLista
       FormatStyle(6)  =   "frmVentasClientesLista.frx":1402
       ImageCount      =   0
       PrinterProperties=   "frmVentasClientesLista.frx":14E2
+   End
+   Begin VB.Label Label3 
+      Caption         =   "Label3"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   9
+      Top             =   1920
+      Width           =   4695
    End
    Begin VB.Menu m3 
       Caption         =   "m3"
@@ -196,6 +204,8 @@ Private Sub Form_Activate()
     If rows = 0 Then Exit Sub
     grilla.RefreshRowIndex rows
     Me.grilla.Refresh
+    
+    
 End Sub
 
 Private Sub Form_Deactivate()
@@ -212,7 +222,7 @@ Private Sub Form_Load()
     id_suscriber = funciones.CreateGUID
     Channel.AgregarSuscriptor Me, Clientes_
 
-    ''Me.caption = caption & " (" & Name & ")"
+    Me.Label3.caption = "Clientes mostrados [ " & clientes.count & " ]"
 
 
 End Sub
@@ -247,7 +257,7 @@ End Sub
 
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        Set rectemp = clientes(grilla.rowIndex(Me.grilla.row))
+        Set rectemp = clientes(grilla.RowIndex(Me.grilla.row))
         Me.numero.caption = "Nro." & Format(rectemp.Id, "0000")
         If rectemp.estado = 0 Then
             Me.CambiarEstado.caption = "Activar..."
@@ -259,16 +269,16 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 
 Private Sub grilla_SelectionChange()
-    rows = grilla.rowIndex(grilla.row)
+    rows = grilla.RowIndex(grilla.row)
 
 End Sub
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set rectemp = clientes.item(rowIndex)
+    Set rectemp = clientes.item(RowIndex)
     With rectemp
         Values(1) = Format(.Id, "0000")
-        Values(2) = .Cuit
+        Values(2) = .cuit
         Values(3) = UCase(.razon)
         Values(4) = .Domicilio
         Values(5) = .localidad.nombre
@@ -318,8 +328,8 @@ End Function
 
 Private Sub masContacto_Click()
     If grilla.rowcount > 0 Then
-        Set rectemp = clientes(grilla.rowIndex(grilla.row))
-        frmVentasClientesNuevoContacto.cliente = rectemp
+        Set rectemp = clientes(grilla.RowIndex(grilla.row))
+        frmVentasClientesNuevoContacto.Cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
     End If
@@ -327,8 +337,8 @@ End Sub
 
 Private Sub masContactos_Click()
     If grilla.rowcount > 0 Then
-        Set rectemp = clientes(grilla.rowIndex(grilla.row))
-        frmVentasClientesNuevoContacto.cliente = rectemp
+        Set rectemp = clientes(grilla.RowIndex(grilla.row))
+        frmVentasClientesNuevoContacto.Cliente = rectemp
         frmVentasClientesNuevoContacto.Show
 
     End If
@@ -372,13 +382,16 @@ Public Sub llenar_Grilla()
     Set clientes = DAOCliente.FindAll(filter, "c.id DESC")
 
     grilla.ItemCount = clientes.count
+    
+    Me.Label3.caption = "Clientes mostrados [ " & clientes.count & " ]"
+    
     grilla.ReBind
 End Sub
 
 Private Sub verDeta()
     If grilla.rowcount Then
-        Set rectemp = clientes(grilla.rowIndex(grilla.row))
-        frmVentasClienteNuevo.cliente = rectemp
+        Set rectemp = clientes(grilla.RowIndex(grilla.row))
+        frmVentasClienteNuevo.Cliente = rectemp
         frmVentasClienteNuevo.Show
     End If
 End Sub

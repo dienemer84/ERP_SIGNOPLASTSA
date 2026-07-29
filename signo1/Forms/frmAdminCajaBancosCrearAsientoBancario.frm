@@ -360,7 +360,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
                Left            =   1920
                TabIndex        =   30
                Top             =   360
-               Width           =   1815
+               Width           =   2055
             End
             Begin VB.TextBox txtComprobante 
                Alignment       =   1  'Right Justify
@@ -368,7 +368,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
                Left            =   1920
                TabIndex        =   29
                Top             =   840
-               Width           =   3135
+               Width           =   2055
             End
             Begin VB.Label Label3 
                Alignment       =   1  'Right Justify
@@ -940,25 +940,54 @@ Private Sub cmdCrear_Click()
             Exit Sub
         End If
 
-        If Monto <= 0 Then
-            MsgBox "Debe ingresar un monto mayor a cero para la transferencia.", vbExclamation
+        Dim tieneChequesPropios As Boolean
+        
+        tieneChequesPropios = _
+            (AsientoContable.ChequesPropios.count > 0)
+        
+        If Monto <= 0 And Not tieneChequesPropios Then
+        
+            MsgBox "Debe ingresar un monto o cargar " & _
+                   "al menos un cheque propio.", _
+                   vbExclamation
+        
             Exit Sub
+        
+        End If
+        
+        'El comprobante solamente es obligatorio
+        'cuando existe un importe bancario.
+        If Monto > 0 And LenB(Comprobante) = 0 Then
+        
+            MsgBox "Debe ingresar un comprobante.", _
+                   vbExclamation
+        
+            Exit Sub
+        
         End If
 
-        If LenB(Comprobante) = 0 Then
-            MsgBox "Debe ingresar un comprobante.", vbExclamation
-            Exit Sub
-        End If
 
         Set AsientoContable.CuentaBancaria = cuentaOrigen
-
-        ' Salida de la cuenta origen
-        AsientoContable.operacionesBanco.Add _
-            CrearOperacionBancaria(cuentaOrigen, Monto, Comprobante, OPSalida)
-
-        ' Entrada en la cuenta destino
-        AsientoContable.operacionesBanco.Add _
-            CrearOperacionBancaria(CuentaDestino, Monto, Comprobante, OPEntrada)
+        
+        If Monto > 0 Then
+        
+            'Salida de la cuenta origen
+            AsientoContable.operacionesBanco.Add _
+                CrearOperacionBancaria( _
+                    cuentaOrigen, _
+                    Monto, _
+                    Comprobante, _
+                    OPSalida)
+        
+            'Entrada en la cuenta destino
+            AsientoContable.operacionesBanco.Add _
+                CrearOperacionBancaria( _
+                    CuentaDestino, _
+                    Monto, _
+                    Comprobante, _
+                    OPEntrada)
+        
+        End If
 
     End If
 
@@ -985,10 +1014,24 @@ Private Sub cmdCrear_Click()
             End If
 
             If n Then
-                If MsgBox("Desea registrar un nuevo movimiento?", vbQuestion + vbYesNo) = vbYes Then
+                If MsgBox("Desea registrar un nuevo movimiento?", _
+                          vbQuestion + vbYesNo) = vbYes Then
+            
                     Dim f12 As New frmAdminCajaBancosCrearAsientoBancario
+                    Dim tipoMovimientoMantener As String
+            
+                    tipoMovimientoMantener = _
+                        AsientoContable.TipoMovimiento
+            
+                    Load f12
+            
+                    f12.CargarValoresIniciales _
+                        fechaMantener, _
+                        idCuentaMantener, _
+                        tipoMovimientoMantener
+            
                     f12.Show
-                    f12.CargarValoresIniciales fechaMantener, idCuentaMantener
+            
                 End If
             End If
 
@@ -1018,9 +1061,6 @@ Private Sub Form_Load()
 
     Me.Left = frmPrincipal.ScaleWidth / 6
     Me.Top = frmPrincipal.ScaleHeight / 22
-
-    Me.gridChequeras.Visible = False
-    Me.gridChequesChequera.Visible = False
 
     GridEXHelper.CustomizeGrid _
         Me.gridChequeras, False, False
@@ -1559,43 +1599,58 @@ Public Sub Cargar(aContable As clsAsientoContable)
         '------------------------------
         Dim opMovimiento As operacion
         Dim operacionEncontrada As Boolean
+        Dim cargadoConCheques As Boolean
         
         Me.txtMonto.Text = vbNullString
         Me.txtComprobante.Text = vbNullString
         
         operacionEncontrada = False
         
-        For Each opMovimiento In AsientoContable.operacionesBanco
+        'El movimiento fue cargado utilizando cheques propios
+        cargadoConCheques = _
+            (AsientoContable.ChequesPropios.count > 0)
         
-            If AsientoContable.TipoMovimiento = "TRANSFERENCIA" Then
+        'Si tiene cheques, dejamos los TextBox vacíos.
+        'El importe se muestra en la grilla de cheques.
+        If Not cargadoConCheques Then
         
-                'Para una transferencia usamos la operación
-                'de salida como operación principal.
-                If opMovimiento.EntradaSalida = OPSalida Then
+            For Each opMovimiento In AsientoContable.operacionesBanco
+        
+                If AsientoContable.TipoMovimiento = "TRANSFERENCIA" Then
+        
+                    'Para una transferencia usamos
+                    'la operación bancaria de salida.
+                    If opMovimiento.EntradaSalida = OPSalida Then
+        
+                        Me.txtMonto.Text = CStr(opMovimiento.Monto)
+                        Me.txtComprobante.Text = _
+                            opMovimiento.Comprobante
+        
+                        operacionEncontrada = True
+                        Exit For
+        
+                    End If
+        
+                Else
         
                     Me.txtMonto.Text = CStr(opMovimiento.Monto)
-                    Me.txtComprobante.Text = opMovimiento.Comprobante
+                    Me.txtComprobante.Text = _
+                        opMovimiento.Comprobante
         
                     operacionEncontrada = True
                     Exit For
         
                 End If
         
-            Else
+            Next opMovimiento
         
-                Me.txtMonto.Text = CStr(opMovimiento.Monto)
-                Me.txtComprobante.Text = opMovimiento.Comprobante
-        
-                operacionEncontrada = True
-                Exit For
-        
+            'Solamente usar el total de respaldo cuando
+            'el movimiento no contiene cheques.
+            If Not operacionEncontrada Then
+                Me.txtMonto.Text = _
+                    CStr(AsientoContable.StaticTotalOrigenes)
             End If
         
-        Next opMovimiento
-        
-        'Respaldo por si el movimiento no tiene operaciones
-        If Not operacionEncontrada Then
-            Me.txtMonto.Text = CStr(AsientoContable.StaticTotalOrigenes)
         End If
         
     End With
@@ -1740,8 +1795,8 @@ Private Sub ActualizarModoMovimiento()
     Me.gridChequesPropios.Enabled = _
         esIngreso Or esEgreso Or esTransferencia
     
-    Me.gridChequesPropios.Visible = _
-        esIngreso Or esEgreso Or esTransferencia
+'''    Me.gridChequesPropios.Visible = _
+'''        esIngreso Or esEgreso Or esTransferencia
     
     'Grillas usadas como DropDownControl
     Me.gridChequeras.Enabled = _
@@ -1752,25 +1807,66 @@ Private Sub ActualizarModoMovimiento()
     
     Me.gridChequeras.Visible = False
     Me.gridChequesChequera.Visible = False
-        
-
 
 End Sub
 
 
-Public Sub CargarValoresIniciales(ByVal pFecha As Date, ByVal pIdCuentaBancaria As Long)
+Public Sub CargarValoresIniciales( _
+    ByVal pFecha As Date, _
+    ByVal pIdCuentaBancaria As Long, _
+    ByVal pTipoMovimiento As String)
 
+    '---------------------------------------------
+    ' Fecha
+    '---------------------------------------------
     Me.dtpFecha.value = pFecha
 
+    '---------------------------------------------
+    ' Cuenta bancaria anterior
+    '---------------------------------------------
     If pIdCuentaBancaria > 0 Then
-        Me.cboCuentasBancarias.ListIndex = funciones.PosIndexCbo(pIdCuentaBancaria, Me.cboCuentasBancarias)
+
+        Me.cboCuentasBancarias.ListIndex = _
+            funciones.PosIndexCbo( _
+                pIdCuentaBancaria, _
+                Me.cboCuentasBancarias)
 
         If Me.cboCuentasBancarias.ListIndex <> -1 Then
-            Set AsientoContable.CuentaBancaria = DAOCuentaBancaria.FindById(pIdCuentaBancaria)
+
+            Set AsientoContable.CuentaBancaria = _
+                DAOCuentaBancaria.FindById( _
+                    pIdCuentaBancaria)
+
         End If
+
     Else
+
         Me.cboCuentasBancarias.ListIndex = -1
+        Set AsientoContable.CuentaBancaria = Nothing
+
     End If
+
+    '---------------------------------------------
+    ' Tipo de movimiento anterior
+    '---------------------------------------------
+    Me.RadioButton1.value = False
+    Me.RadioButton2.value = False
+    Me.RadioButton3.value = False
+
+    Select Case UCase$(Trim$(pTipoMovimiento))
+
+        Case "INGRESO"
+            Me.RadioButton1.value = True
+
+        Case "EGRESO", "SALIDA"
+            Me.RadioButton2.value = True
+
+        Case "TRANSFERENCIA"
+            Me.RadioButton3.value = True
+
+    End Select
+
+    ActualizarModoMovimiento
 
 End Sub
 

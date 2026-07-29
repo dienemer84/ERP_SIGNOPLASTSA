@@ -6,17 +6,17 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    BackColor       =   &H00FF8080&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Comprobantes de Proveedores"
-   ClientHeight    =   9570
+   ClientHeight    =   8130
    ClientLeft      =   45
    ClientTop       =   480
-   ClientWidth     =   14175
+   ClientWidth     =   10470
    Icon            =   "frmAdminComprasNuevaFCProveedor.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   9570
-   ScaleWidth      =   14175
+   ScaleHeight     =   8130
+   ScaleWidth      =   10470
    Begin XtremeSuiteControls.GroupBox GroupBox2 
       Height          =   855
       Left            =   120
@@ -227,9 +227,9 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
    End
    Begin XtremeSuiteControls.PushButton btnNuevoProveedor 
       Height          =   300
-      Left            =   4755
+      Left            =   4800
       TabIndex        =   14
-      Top             =   915
+      Top             =   840
       Width           =   1575
       _Version        =   786432
       _ExtentX        =   2778
@@ -243,18 +243,31 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       Left            =   120
       TabIndex        =   40
       Top             =   975
-      Width           =   6435
+      Width           =   7275
       _Version        =   786432
-      _ExtentX        =   11351
+      _ExtentX        =   12832
       _ExtentY        =   2646
       _StockProps     =   79
       Caption         =   "Datos del proveedor"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton cmdConsultarARCAProveedor 
+         Height          =   375
+         Left            =   3720
+         TabIndex        =   62
+         Top             =   240
+         Width           =   2295
+         _Version        =   786432
+         _ExtentX        =   4048
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Cargar desde ARCA"
+         UseVisualStyle  =   -1  'True
+      End
       Begin XtremeSuiteControls.PushButton btnDisponerProveedor 
          Height          =   375
-         Left            =   5160
+         Left            =   6120
          TabIndex        =   19
-         Top             =   990
+         Top             =   975
          Width           =   1095
          _Version        =   786432
          _ExtentX        =   1931
@@ -265,12 +278,12 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       End
       Begin XtremeSuiteControls.ComboBox cboTipoIva 
          Height          =   315
-         Left            =   1440
+         Left            =   1320
          TabIndex        =   18
-         Top             =   990
-         Width           =   2895
+         Top             =   1005
+         Width           =   2055
          _Version        =   786432
-         _ExtentX        =   5106
+         _ExtentX        =   3625
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -278,26 +291,26 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       End
       Begin VB.TextBox txtIB 
          Height          =   285
-         Left            =   3855
+         Left            =   4200
          TabIndex        =   17
-         Top             =   630
-         Width           =   2370
+         Top             =   1020
+         Width           =   1770
       End
       Begin VB.TextBox txtRazonSocial 
          Height          =   285
-         Left            =   1440
+         Left            =   1320
          TabIndex        =   15
-         Top             =   270
-         Width           =   4785
+         Top             =   645
+         Width           =   4635
       End
       Begin XtremeSuiteControls.FlatEdit txtCuit 
          Height          =   285
-         Left            =   1440
+         Left            =   1320
          TabIndex        =   16
-         Top             =   630
-         Width           =   1590
+         Top             =   285
+         Width           =   2295
          _Version        =   786432
-         _ExtentX        =   2805
+         _ExtentX        =   4048
          _ExtentY        =   503
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -308,7 +321,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          BackColor       =   &H00FF8080&
          Caption         =   "Tipo IVA"
          Height          =   255
-         Left            =   135
+         Left            =   0
          TabIndex        =   44
          Top             =   1035
          Width           =   1215
@@ -318,9 +331,9 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          BackColor       =   &H00FF8080&
          Caption         =   "IIBB"
          Height          =   255
-         Left            =   3150
+         Left            =   3480
          TabIndex        =   43
-         Top             =   660
+         Top             =   1035
          Width           =   615
       End
       Begin VB.Label Label3 
@@ -328,19 +341,19 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
          BackColor       =   &H00FF8080&
          Caption         =   "CUIT"
          Height          =   255
-         Left            =   150
+         Left            =   600
          TabIndex        =   42
-         Top             =   660
-         Width           =   1215
+         Top             =   300
+         Width           =   615
       End
       Begin VB.Label Label2 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00FF8080&
          Caption         =   "Razón Social"
          Height          =   255
-         Left            =   120
+         Left            =   0
          TabIndex        =   41
-         Top             =   300
+         Top             =   660
          Width           =   1215
       End
    End
@@ -563,7 +576,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   66322433
+      Format          =   16777217
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1041,34 +1054,10 @@ Private Sub cboProveedores_Click()
 
     If Not loading Then
         OcultarDetalleCtaCte
-'''        MostrarSaldoCtaCteProveedor
+
     End If
 End Sub
 
-
-
-'''Private Sub cboTiposFactura_Click()
-'''
-'''    grabado = False
-'''    'vFactura.IvaAplicado = Nothing
-'''    FacturaRequiereNumeroFormateado
-'''
-'''    If Me.cboTiposFactura.ListCount > 0 Then
-'''        Dim idtipo As Long
-'''        idtipo = Me.cboTiposFactura.ItemData(Me.cboTiposFactura.ListIndex)
-'''
-'''        llenarAlicuotas idtipo
-'''
-'''            If Not loading Then
-'''                 If colAlicuotas.count > 0 Then
-'''                    vFactura.IvaAplicado = Nothing
-'''                    Me.grilla_alicuotas.ItemCount = 0
-'''                    Me.grilla_alicuotas.Refresh
-'''                    AddDefaultAlicuota colAlicuotas(1).Id
-'''                End If
-'''            End If
-'''        End If
-'''End Sub
 
 
 Private Sub cboTiposFactura_Click()
@@ -1111,7 +1100,7 @@ Private Sub mostrar()
         '        Dim accion As Integer
         Set Proveedor = DAOProveedor.FindById(idProveedor, False, False, False, False)
         If IsSomething(Proveedor) Then
-            Me.txtCuit = Proveedor.Cuit
+            Me.txtCuit = Proveedor.cuit
             Me.txtIB = Proveedor.IIBB
             Me.txtRazonSocial = Proveedor.RazonSocial
             Me.cboTipoIva.ListIndex = funciones.PosIndexCbo(Proveedor.TipoIVA.Id, Me.cboTipoIva)
@@ -1123,166 +1112,115 @@ End Sub
 
 
 Private Sub LimpiarProveedor()
-    Me.txtCuit = vbNullString
-    Me.txtIB = vbNullString
-    Me.txtRazonSocial = vbNullString
+    On Error Resume Next
+
+    Me.txtCuit.Text = vbNullString
+    Me.txtIB.Text = vbNullString
+    Me.txtRazonSocial.Text = vbNullString
+
+    Me.cboTipoIva.ListIndex = -1
     Me.cboTiposFactura.Clear
+    
+End Sub
+
+Private Sub LimpiarProveedorPorFalloARCA()
+
+    On Error Resume Next
+
+    'Se crea nuevamente el objeto para eliminar cualquier
+    'dato interno que hubiera quedado de una consulta anterior.
+    Set Proveedor = New clsProveedor
+
+    LimpiarProveedor
+
+    Me.GroupBox1.Enabled = True
+    Me.btnDisponerProveedor.Visible = True
+
+    Me.cmdConsultarARCAProveedor.Visible = True
+    Me.cmdConsultarARCAProveedor.Enabled = True
+
 End Sub
 
 
 Private Sub btnDisponerProveedor_Click()
-    If Proveedor.Id = 0 Then
-        Proveedor.RazonSocial = Me.txtRazonSocial
-        Proveedor.Cuit = Replace(Me.txtCuit, "-", vbNullString)
-        Proveedor.IIBB = Me.txtIB
-        Proveedor.estado = EstadoProveedorContado
-        Set Proveedor.TipoIVA = DAOTipoIvaProveedor.GetById(Me.cboTipoIva.ItemData(Me.cboTipoIva.ListIndex))
-        llenarTiposFacturas
+
+    On Error GoTo ManejarError
+
+    If Proveedor Is Nothing Then
+        Set Proveedor = New clsProveedor
     End If
+
+    If Proveedor.Id <> 0 Then
+        Exit Sub
+    End If
+
+    If Len(Trim$(Me.txtRazonSocial.Text)) = 0 Then
+
+        MsgBox _
+            "Debe ingresar la razón social del proveedor.", _
+            vbExclamation, _
+            "Proveedor"
+
+        Me.txtRazonSocial.SetFocus
+        Exit Sub
+
+    End If
+
+    If Len(SoloNumerosProveedor(Me.txtCuit.Text)) <> 11 Then
+
+        MsgBox _
+            "Debe ingresar un CUIT válido.", _
+            vbExclamation, _
+            "Proveedor"
+
+        Me.txtCuit.SetFocus
+        Exit Sub
+
+    End If
+
+    If Me.cboTipoIva.ListIndex < 0 Then
+
+        MsgBox _
+            "Debe seleccionar el Tipo IVA del proveedor.", _
+            vbExclamation, _
+            "Proveedor"
+
+        Me.cboTipoIva.SetFocus
+        Exit Sub
+
+    End If
+
+    Proveedor.RazonSocial = _
+        UCase$(Trim$(Me.txtRazonSocial.Text))
+
+    Proveedor.cuit = _
+        SoloNumerosProveedor(Me.txtCuit.Text)
+
+    Proveedor.IIBB = _
+        UCase$(Trim$(Me.txtIB.Text))
+
+    Proveedor.estado = EstadoProveedorContado
+
+    Set Proveedor.TipoIVA = _
+        DAOTipoIvaProveedor.GetById( _
+            Me.cboTipoIva.ItemData( _
+                Me.cboTipoIva.ListIndex _
+            ) _
+        )
+
+    llenarTiposFacturas
+
+    Exit Sub
+
+ManejarError:
+
+    MsgBox _
+        "Error al preparar el proveedor: " & _
+        CStr(Err.Number) & " - " & Err.Description, _
+        vbCritical, _
+        "Proveedor"
+
 End Sub
-
-
-'''Private Sub btnGuardar_Click()
-'''    On Error GoTo err1
-'''
-'''    If Me.grilla_alicuotas.EditMode = jgexEditModeOn Then
-'''        MsgBox "Todavia esta editando la grilla de Alicuotas de IVA." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
-'''        Exit Sub
-'''    End If
-'''
-'''
-'''    If Me.grilla_percepciones.EditMode = jgexEditModeOn Then
-'''        MsgBox "Todavia esta editando la grilla de Percepciones." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
-'''        Exit Sub
-'''    End If
-'''
-'''    If Me.grid_cuentascontables.EditMode = jgexEditModeOn Then
-'''        MsgBox "Todavia esta editando la grilla de Cuentas Contables." & vbNewLine & "Presione [ENTER] en la grilla para guardar los cambios.", vbExclamation + vbOKOnly
-'''        Exit Sub
-'''    End If
-'''
-'''
-'''    If Not Me.optContado.value And Not Me.optCtaCte.value Then
-'''        MsgBox "Debe seleccionar la forma de pago.", vbExclamation
-'''        Exit Sub
-'''    End If
-'''
-'''    conectar.BeginTransaction
-'''    '    Dim A As Boolean
-'''    Dim montonero As Double
-'''    '    Dim nroNuevo As Long
-'''    Dim EVENTO As clsEventoObserver
-'''    Dim nuevoproveedor As Boolean
-'''
-'''    If Not validarFactura Then
-'''        Err.Raise 203
-'''    End If
-'''
-''''''    ' Si se elije la letra B y hay cargado alicuotas
-'''''''    If Me.cboTiposFactura.ListIndex = 1 Then
-'''''''        MsgBox "Recuerdo que si el comprobante es letra B no debe tener alicuotas discriminadas", vbCritical, "Error"
-'''''''    End If
-'''
-'''    'If MsgBox("¿Está seguro de guardar la factura?", vbYesNo, "Confirmación") = vbYes Then
-'''
-'''    armarFactura
-'''
-''''''    If vFactura.NetoGravado <= 0 Then
-''''''        If vFactura.tipoDocumentoContable <> vFactura.tipoDocumentoContable.notaDebito Then Err.Raise 202
-''''''        End If
-''''''    End If
-'''
-'''
-'''
-'''    montonero = CDbl(Me.txtMontoNeto)
-'''
-'''
-'''    If Me.txtNumeroMask.Text <> "______-________" And Len(Me.txtNumeroMask.Text) > 0 Then
-'''        '    If Me.txtNumeroMask.text <> "" And Len(Me.txtNumeroMask.text) > 0 Then
-'''
-''''''        If vFactura.cuentasContables.count = 0 And vFactura.tipoDocumentoContable <> notaDebito Then Err.Raise 201
-'''
-'''        If funciones.RedondearDecimales(vFactura.TotalAplicadoACuentas) <> funciones.RedondearDecimales(vFactura.NetoGravado) Then Err.Raise 200
-'''
-'''        If Me.cboMonedas.ListIndex <> -1 Then
-'''            Set vFactura.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
-'''        Else
-'''            Set vFactura.moneda = Nothing
-'''        End If
-'''
-'''        'creo el proveedor si es contado
-'''
-'''        If vFactura.Proveedor.Id = 0 Then
-'''            If Trim(Me.txtRazonSocial) = vbNullString Or Not IsNumeric(Replace(Me.txtCuit, "-", vbNullString)) Then
-'''                If Not funciones.VerificarCUIT(Replace(Me.txtCuit, "-", vbNullString)) Then
-'''                    Err.Raise 1000
-'''                End If
-'''            Else
-'''                nuevoproveedor = True
-'''                Set colPercepcionesTMP = colPercepciones
-'''                If Not DAOProveedor.Guardar(vFactura.Proveedor) Then Err.Raise 300
-'''            End If
-'''
-'''        End If
-'''
-'''        If DAOFacturaProveedor.existeFactura(vFactura) Then Err.Raise 101
-'''
-'''        Dim Nueva As Boolean
-'''        Nueva = (vFactura.Id = 0)
-'''
-'''        If DAOFacturaProveedor.Guardar(vFactura) Then
-'''            Set EVENTO = New clsEventoObserver
-'''            Set EVENTO.Elemento = vFactura
-'''            If Nueva Then
-'''                EVENTO.EVENTO = agregar_
-'''            Else
-'''                EVENTO.EVENTO = modificar_
-'''            End If
-'''            Set EVENTO.Originador = Me
-'''            EVENTO.Tipo = TipoSuscripcion.FacturaProveedor_
-'''
-'''            ' Desactivo este evento Notificar porque aparentemente da Error (dienemer 11.09.20)
-'''            'Channel.Notificar EVENTO, TipoSuscripcion.FacturaProveedor_
-'''
-'''            MsgBox "Factura almacenada con éxito!", vbInformation, "Información"
-'''            grabado = True
-'''
-'''            Me.cboProveedores.SetFocus
-'''
-'''        Else
-'''            Err.Raise 100
-'''        End If
-'''    Else
-'''        Err.Raise 101
-'''    End If
-'''    'End If
-'''    conectar.CommitTransaction
-'''    Exit Sub
-'''
-'''err1:
-'''    conectar.RollBackTransaction
-'''
-'''    If Err.Number = 100 Then
-'''        MsgBox "Se produjo algún error, no se guardarán los cambios!", vbCritical, "Error"
-'''    ElseIf Err.Number = 101 Then
-'''        MsgBox "La factura que intenta guardar ya existe!", vbCritical, "Error"
-'''    ElseIf Err.Number = 200 Then
-'''        MsgBox "Debe tener todo neto gravado aplicado a cuenta(s) contable(s)!", vbCritical, "Error"
-'''    ElseIf Err.Number = 1000 Then
-'''        MsgBox "Debe definir datos correctos para el proveedor que está creando!", vbCritical, "Error"
-'''    ElseIf Err.Number = 201 Then
-'''        MsgBox "Debe ingresar al menos una cuenta contable!", vbCritical, "Error"
-'''    ElseIf Err.Number = 202 Then
-'''        MsgBox "Debe ingresar montos válidos!", vbCritical, "Error"
-'''    ElseIf Err.Number = 203 Then
-'''        MsgBox "Los totales de la factura no coinciden." & vbNewLine & "Total esperado: " & funciones.RedondearDecimales(CDbl(Me.txtMontoManual)) & vbNewLine & "Total ingresado: " & vFactura.total, vbCritical, "Error"
-'''    ElseIf Err.Number = 300 Or nuevoproveedor Then
-'''        vFactura.Proveedor = Nothing
-'''        nuevoproveedor = False
-'''    Else
-'''        MsgBox Err.Description, vbCritical
-'''    End If
-'''End Sub
 
 
 Private Sub btnGuardar_Click()
@@ -1424,17 +1362,17 @@ err1:
 End Sub
 
 
-Private Function TryGetDouble(ByVal Valor As String, ByRef Resultado As Double) As Boolean
+Private Function TryGetDouble(ByVal valor As String, ByRef resultado As Double) As Boolean
     On Error GoTo err1
 
-    Valor = Trim$(Valor)
-    Valor = Replace(Valor, "$", "")
-    Valor = Replace(Valor, " ", "")
+    valor = Trim$(valor)
+    valor = Replace(valor, "$", "")
+    valor = Replace(valor, " ", "")
 
-    If Valor = vbNullString Then Exit Function
-    If Not IsNumeric(Valor) Then Exit Function
+    If valor = vbNullString Then Exit Function
+    If Not IsNumeric(valor) Then Exit Function
 
-    Resultado = CDbl(Valor)
+    resultado = CDbl(valor)
     TryGetDouble = True
     Exit Function
 
@@ -1535,8 +1473,8 @@ Private Sub Form_Load()
         Me.btnGuardar.Enabled = False
         Me.fraAlicuotas.Enabled = False
         Me.fraFormaPago.Enabled = False
-        Me.Frame2.Enabled = False
-        Me.Frame3.Enabled = False
+        Me.frame2.Enabled = False
+        Me.frame3.Enabled = False
         Me.cboProveedores.Enabled = False
         Me.cboTiposFactura.Enabled = False
         Me.txtImpuestos.Enabled = False
@@ -1625,8 +1563,17 @@ End Sub
 
 
 Private Sub ProtegerProveedor()
-    Me.GroupBox1.Enabled = (Proveedor.Id = 0)
-    Me.btnDisponerProveedor.Visible = Me.GroupBox1.Enabled
+
+    Dim esNuevo As Boolean
+
+    esNuevo = (Proveedor.Id = 0)
+
+    Me.GroupBox1.Enabled = esNuevo
+    Me.btnDisponerProveedor.Visible = esNuevo
+
+    Me.cmdConsultarARCAProveedor.Visible = esNuevo
+    Me.cmdConsultarARCAProveedor.Enabled = esNuevo
+
 End Sub
 
 
@@ -1883,6 +1830,206 @@ Private Sub btnNuevoCbte_Click()
 End Sub
 
 
+Private Sub cmdConsultarARCAProveedor_Click()
+
+    On Error GoTo ManejarError
+
+    Dim consulta As clsConsultaARCA
+    Dim cuitIngresado As String
+    Dim mensajeError As String
+    Dim condicionIVAEncontrada As Boolean
+
+    Dim numeroError As Long
+    Dim descripcionError As String
+
+    If Proveedor Is Nothing Then
+        Set Proveedor = New clsProveedor
+    End If
+
+    If Proveedor.Id > 0 Then
+
+        MsgBox _
+            "La consulta ARCA solamente está disponible " & _
+            "para un proveedor nuevo.", _
+            vbExclamation, _
+            "Consulta ARCA"
+
+        Exit Sub
+
+    End If
+
+    cuitIngresado = SoloNumerosProveedor( _
+                        Me.txtCuit.Text _
+                    )
+
+    If Len(cuitIngresado) = 0 Then
+
+        MsgBox _
+            "Ingrese primero el CUIT del proveedor.", _
+            vbExclamation, _
+            "Consulta ARCA"
+
+        Me.txtCuit.SetFocus
+        Exit Sub
+
+    End If
+
+    Me.cmdConsultarARCAProveedor.Enabled = False
+    Me.cmdConsultarARCAProveedor.caption = "Consultando..."
+
+    Screen.MousePointer = vbHourglass
+    DoEvents
+
+    Set consulta = New clsConsultaARCA
+
+    If Not consulta.Consultar(cuitIngresado) Then
+
+        mensajeError = consulta.UltimoError
+
+        LimpiarProveedorPorFalloARCA
+
+        MsgBox _
+            mensajeError & _
+            vbCrLf & vbCrLf & _
+            "No se obtuvieron datos desde ARCA." & _
+            vbCrLf & _
+            "Los datos del proveedor fueron limpiados.", _
+            vbExclamation, _
+            "Consulta ARCA"
+
+        GoTo Salir
+
+    End If
+
+    '============================================
+    ' Completar los controles visibles
+    '============================================
+
+    Me.txtCuit.Text = FormatearCUITProveedor( _
+                                consulta.cuit _
+                            )
+
+    Me.txtRazonSocial.Text = UCase$( _
+                                    Trim$( _
+                                        consulta.RazonSocial _
+                                    ) _
+                                )
+
+    'ARCA no devuelve IIBB en esta consulta.
+    Me.txtIB.Text = vbNullString
+
+    condicionIVAEncontrada = _
+        SeleccionarTipoIVAProveedorARCA( _
+            consulta.CondicionIVA _
+        )
+
+    '============================================
+    ' Completar el objeto proveedor
+    '============================================
+
+    With Proveedor
+
+        .cuit = consulta.cuit
+        .RazonSocial = UCase$(Trim$(consulta.RazonSocial))
+
+        'Estos datos no se ven en este formulario,
+        'pero DAOProveedor los guardará.
+        .direccion = UCase$(Trim$(consulta.direccion))
+        .Ciudad = UCase$(Trim$(consulta.localidad))
+        .cp = Trim$(consulta.CodigoPostal)
+
+        .IIBB = vbNullString
+        .estado = EstadoProveedorContado
+
+        If condicionIVAEncontrada Then
+
+            Set .TipoIVA = _
+                DAOTipoIvaProveedor.GetById( _
+                    Me.cboTipoIva.ItemData( _
+                        Me.cboTipoIva.ListIndex _
+                    ) _
+                )
+
+        End If
+
+    End With
+
+    If condicionIVAEncontrada Then
+
+        'Carga los tipos de factura correspondientes
+        'a la condición frente al IVA encontrada.
+        llenarTiposFacturas
+
+    Else
+
+        Me.cboTiposFactura.Clear
+
+    End If
+
+    If Not condicionIVAEncontrada Then
+
+        MsgBox _
+            "ARCA devolvió los datos del proveedor," & _
+            vbCrLf & _
+            "pero no se encontró en el ERP una condición " & _
+            "de IVA equivalente a:" & _
+            vbCrLf & vbCrLf & _
+            consulta.CondicionIVA & _
+            vbCrLf & vbCrLf & _
+            "Seleccione el Tipo IVA manualmente.", _
+            vbExclamation, _
+            "Consulta ARCA"
+
+    Else
+
+        MsgBox _
+            "Los datos del proveedor se obtuvieron " & _
+            "correctamente desde ARCA." & _
+            vbCrLf & vbCrLf & _
+            "Razón social: " & consulta.RazonSocial & vbCrLf & _
+            "Condición IVA: " & consulta.CondicionIVA & vbCrLf & _
+            "Domicilio: " & consulta.Domicilio & vbCrLf & vbCrLf & _
+            "El número de IIBB debe completarse manualmente " & _
+            "si corresponde.", _
+            vbInformation, _
+            "Consulta ARCA"
+
+    End If
+
+Salir:
+
+    Screen.MousePointer = vbDefault
+
+    Me.cmdConsultarARCAProveedor.Enabled = True
+    Me.cmdConsultarARCAProveedor.caption = "Consultar ARCA"
+
+    Set consulta = Nothing
+    Exit Sub
+
+ManejarError:
+
+    numeroError = Err.Number
+    descripcionError = Err.Description
+
+    Screen.MousePointer = vbDefault
+
+    LimpiarProveedorPorFalloARCA
+
+    Me.cmdConsultarARCAProveedor.Enabled = True
+    Me.cmdConsultarARCAProveedor.caption = "Consultar ARCA"
+
+    MsgBox _
+        "Error al consultar ARCA: " & _
+        CStr(numeroError) & " - " & descripcionError & _
+        vbCrLf & vbCrLf & _
+        "Los datos del proveedor fueron limpiados.", _
+        vbCritical, _
+        "Consulta ARCA"
+
+    Set consulta = Nothing
+
+End Sub
+
 Private Sub txtCodigoProveedor_Change()
     On Error Resume Next
     Me.cboProveedores.ListIndex = funciones.PosIndexCbo(CLng(Me.txtCodigoProveedor), Me.cboProveedores)
@@ -2003,32 +2150,6 @@ Private Sub llenarAlicuotas(idtipo As Long)
     Me.grilla_alicuota.ItemCount = colAlicuotas.count
     Set Me.grilla_alicuotas.Columns("alicuota").DropDownControl = Me.grilla_alicuota
 End Sub
-
-
-'Private Sub limpiar()
-'    If MsgBox("¿Desea limpiar la factura?", vbYesNo, "Confirmación") Then
-'        Me.txtNumeroMask.text = vbNullString
-'    End If
-'End Sub
-
-'Private Sub txtNoGravado_Change()
-'    On Error Resume Next
-'    vFactura.ConceptoNoGravado = CDbl(Me.txtNoGravado)
-'    TotalFactura
-'    grabado = False
-'End Sub
-
-'Private Sub txtNumeroMask_Change()
-'    On Error Resume Next
-'    If Me.txtNumeroMask.text <> "______-________" Then
-'        '    If Me.txtNumeroMask.text <> "" Then
-'        vFactura.numero = Me.txtNumeroMask.text
-'        TotalFactura
-'        grabado = False
-'    End If
-'
-'
-'End Sub
 
 Private Sub txtNumeroMask_GotFocus()
     foco Me.txtNumeroMask
@@ -2192,8 +2313,6 @@ Private Sub MostrarSaldoCtaCteProveedor()
     Dim detallesSaldo As Collection
     Dim saldoProv As Double
 
-'''    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: 0.00"
-
     If Me.cboProveedores.ListIndex = -1 Then Exit Sub
 
     Id = CLng(Me.cboProveedores.ItemData(Me.cboProveedores.ListIndex))
@@ -2203,17 +2322,10 @@ Private Sub MostrarSaldoCtaCteProveedor()
 
     Set detallesSaldo = DAOCuentaCorriente.FindAllDetallesProveedor2(Id, , condition, True)
 
-'''    If IsSomething(detallesSaldo) Then
-'''        saldoProv = DAOCuentaCorriente.GetSaldo(detallesSaldo)
-'''
-'''        Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: " & _
-'''            Replace(FormatCurrency(funciones.FormatearDecimales(saldoProv)), "$", "")
-'''    End If
-
     Exit Sub
 
 err1:
-'''    Me.lblSaldoCtaCteProveedor.caption = "Saldo Cta. Cte.: -"
+
 End Sub
 
 
@@ -2235,3 +2347,185 @@ Private Function EsProveedorExteriorSeleccionado() As Boolean
 err1:
     EsProveedorExteriorSeleccionado = False
 End Function
+
+
+Private Function SoloNumerosProveedor( _
+    ByVal valor As String _
+) As String
+
+    Dim i As Long
+    Dim caracter As String
+    Dim resultado As String
+
+    resultado = vbNullString
+
+    For i = 1 To Len(valor)
+
+        caracter = Mid$(valor, i, 1)
+
+        If caracter >= "0" And _
+           caracter <= "9" Then
+
+            resultado = resultado & caracter
+
+        End If
+
+    Next i
+
+    SoloNumerosProveedor = resultado
+
+End Function
+
+Private Function FormatearCUITProveedor( _
+    ByVal cuit As String _
+) As String
+
+    If Len(cuit) <> 11 Then
+
+        FormatearCUITProveedor = cuit
+        Exit Function
+
+    End If
+
+    FormatearCUITProveedor = _
+        Left$(cuit, 2) & "-" & _
+        Mid$(cuit, 3, 8) & "-" & _
+        Right$(cuit, 1)
+
+End Function
+
+Private Function NormalizarTextoProveedor( _
+    ByVal valor As String _
+) As String
+
+    Dim resultado As String
+
+    resultado = UCase$(Trim$(valor))
+
+    resultado = Replace(resultado, "Á", "A")
+    resultado = Replace(resultado, "É", "E")
+    resultado = Replace(resultado, "Í", "I")
+    resultado = Replace(resultado, "Ó", "O")
+    resultado = Replace(resultado, "Ú", "U")
+    resultado = Replace(resultado, "Ü", "U")
+
+    resultado = Replace(resultado, ".", " ")
+    resultado = Replace(resultado, ",", " ")
+    resultado = Replace(resultado, "-", " ")
+    resultado = Replace(resultado, "_", " ")
+
+    Do While InStr(resultado, "  ") > 0
+        resultado = Replace(resultado, "  ", " ")
+    Loop
+
+    NormalizarTextoProveedor = Trim$(resultado)
+
+End Function
+
+Private Function BuscarTextoExactoComboProveedor( _
+    ByVal combo As Object, _
+    ByVal textoBuscado As String _
+) As Long
+
+    Dim i As Long
+    Dim textoNormalizado As String
+    Dim textoCombo As String
+
+    BuscarTextoExactoComboProveedor = -1
+
+    textoNormalizado = _
+        NormalizarTextoProveedor(textoBuscado)
+
+    For i = 0 To combo.ListCount - 1
+
+        textoCombo = NormalizarTextoProveedor( _
+                            CStr(combo.list(i)) _
+                        )
+
+        If textoCombo = textoNormalizado Then
+
+            BuscarTextoExactoComboProveedor = i
+            Exit Function
+
+        End If
+
+    Next i
+
+End Function
+
+Private Function SeleccionarTipoIVAProveedorARCA( _
+    ByVal condicionARCA As String _
+) As Boolean
+
+    Dim condicionNormalizada As String
+    Dim candidatos As Variant
+    Dim posicion As Long
+    Dim i As Long
+
+    SeleccionarTipoIVAProveedorARCA = False
+
+    condicionNormalizada = _
+        NormalizarTextoProveedor(condicionARCA)
+
+    Select Case condicionNormalizada
+
+        Case "MONOTRIBUTO"
+
+            candidatos = Array( _
+                            "Monotributo" _
+                        )
+
+        Case "EXENTO", _
+             "IVA EXENTO"
+
+            candidatos = Array( _
+                            "Exento", _
+                            "IVA Exento" _
+                        )
+
+        Case "RESP INSCRIPTO", _
+             "RESPONSABLE INSCRIPTO", _
+             "IVA RESPONSABLE INSCRIPTO"
+
+            candidatos = Array( _
+                            "Resp. Inscripto", _
+                            "Responsable Inscripto" _
+                        )
+
+        Case "SIN DATOS", ""
+
+            candidatos = Array( _
+                            "Sin Datos" _
+                        )
+
+        Case Else
+
+            candidatos = Array( _
+                            condicionARCA _
+                        )
+
+    End Select
+
+    For i = LBound(candidatos) To UBound(candidatos)
+
+        posicion = BuscarTextoExactoComboProveedor( _
+                        Me.cboTipoIva, _
+                        CStr(candidatos(i)) _
+                    )
+
+        If posicion >= 0 Then
+
+            Me.cboTipoIva.ListIndex = posicion
+
+            SeleccionarTipoIVAProveedorARCA = True
+            Exit Function
+
+        End If
+
+    Next i
+
+End Function
+
+
+
+

@@ -115,7 +115,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
       Height          =   5505
       Left            =   120
       TabIndex        =   0
-      Top             =   2160
+      Top             =   2400
       Width           =   14775
       _ExtentX        =   26061
       _ExtentY        =   9710
@@ -326,7 +326,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
-         Height          =   1335
+         Height          =   1575
          Index           =   1
          Left            =   5160
          TabIndex        =   22
@@ -334,7 +334,7 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          Width           =   4695
          _Version        =   786432
          _ExtentX        =   8281
-         _ExtentY        =   2355
+         _ExtentY        =   2778
          _StockProps     =   79
          Caption         =   "Fecha OP"
          BackColor       =   16744576
@@ -528,6 +528,14 @@ Begin VB.Form frmAdminPagosOrdenesPagoLista
          AutoSize        =   -1  'True
       End
    End
+   Begin VB.Label Label2 
+      Caption         =   "Label2"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   31
+      Top             =   2160
+      Width           =   5295
+   End
    Begin VB.Menu menu 
       Caption         =   "menu"
       Visible         =   0   'False
@@ -671,6 +679,9 @@ Private Sub Form_Load()
     Next i
     Me.cboRangos.ListIndex = i
     
+    Me.Label2.caption = "OP mostradas" & " [Cant: " & ordenes.count & "]"
+
+    
 End Sub
 
 
@@ -730,6 +741,8 @@ Private Sub llenarLista()
     Me.gridOrdenes.ItemCount = ordenes.count
 
     Me.caption = "Listado de OP" & " [Cant: " & ordenes.count & "]"
+    
+    Me.Label2.caption = "OP mostradas" & " [Cant: " & ordenes.count & "]"
 
 
 End Sub

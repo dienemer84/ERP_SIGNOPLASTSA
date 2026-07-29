@@ -7,12 +7,12 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
    ClientHeight    =   8880
    ClientLeft      =   60
    ClientTop       =   750
-   ClientWidth     =   13725
+   ClientWidth     =   18015
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    ScaleHeight     =   24657.09
    ScaleMode       =   0  'User
-   ScaleWidth      =   13725
+   ScaleWidth      =   18015
    WindowState     =   2  'Maximized
    Begin VB.PictureBox pic 
       BeginProperty Font 
@@ -38,9 +38,9 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Left            =   120
       TabIndex        =   1
       Top             =   120
-      Width           =   15165
+      Width           =   21885
       _Version        =   786432
-      _ExtentX        =   26749
+      _ExtentX        =   38603
       _ExtentY        =   3413
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
@@ -54,6 +54,27 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.GroupBox Totales 
+         Height          =   1575
+         Left            =   15120
+         TabIndex        =   32
+         Top             =   240
+         Width           =   6615
+         _Version        =   786432
+         _ExtentX        =   11668
+         _ExtentY        =   2778
+         _StockProps     =   79
+         Caption         =   "Resumen"
+         UseVisualStyle  =   -1  'True
+         Begin VB.Label Label4 
+            Caption         =   "Label4"
+            Height          =   375
+            Left            =   120
+            TabIndex        =   33
+            Top             =   360
+            Width           =   3375
+         End
+      End
       Begin XtremeSuiteControls.PushButton btnClearCtaBcaria 
          Height          =   255
          Left            =   4530
@@ -471,7 +492,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Column(9)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0A70
       Column(10)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0BA8
       Column(11)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0CF0
-      FormatStylesCount=   12
+      FormatStylesCount=   13
       FormatStyle(1)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0E10
       FormatStyle(2)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0F38
       FormatStyle(3)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0FE8
@@ -484,8 +505,9 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       FormatStyle(10) =   "frmAdminCajaBancosListaAsientoBancario.frx":152C
       FormatStyle(11) =   "frmAdminCajaBancosListaAsientoBancario.frx":15E8
       FormatStyle(12) =   "frmAdminCajaBancosListaAsientoBancario.frx":169C
+      FormatStyle(13) =   "frmAdminCajaBancosListaAsientoBancario.frx":174C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":174C
+      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":17E8
    End
    Begin MSComDlg.CommonDialog CommonDialog 
       Left            =   840
@@ -617,6 +639,9 @@ Private Sub Form_Load()
     Me.dtpHasta(1).value = Now
     
     Me.gridOrdenes.ItemCount = 0
+    
+    Me.Label4.caption = "Total: " & FormatCurrency(0)
+    
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
     ids = funciones.CreateGUID
       
@@ -682,9 +707,17 @@ Private Sub llenarLista()
     Set Movimientos = DAOAsientoContable.FindAll(filter, "movimientos_caja_bancos.id DESC")
     
     Me.gridOrdenes.ItemCount = Movimientos.count
-
-    Me.caption = "Listado de Movimientos" & " [Cant: " & Movimientos.count & "]"
-    Me.Label3.caption = "Movimientos mostrados" & " [Cant: " & Movimientos.count & "]"
+    
+    Me.caption = _
+        "Listado de Movimientos" & _
+        " [Cant: " & Movimientos.count & "]"
+    
+    Me.Label3.caption = _
+        "Movimientos mostrados" & _
+        " [Cant: " & Movimientos.count & "]"
+    
+    TotalizarMovimientos
+    
 
 End Sub
 
@@ -706,20 +739,24 @@ End Sub
 
 
 Private Sub gridOrdenes_DblClick()
-    SeleccionarOP
 
-    If Not IsSomething(AsientoContable) Then Exit Sub
+    Dim movSeleccionado As clsAsientoContable
 
-    If AsientoContable.estado = _
+    Set movSeleccionado = ObtenerMovimientoSeleccionado()
+
+    If Not IsSomething(movSeleccionado) Then Exit Sub
+
+    If movSeleccionado.estado = _
             EstadoMovimientoCajaYBancos.EnEdicion Then
 
-        mnuEditar_Click
+        AbrirMovimiento movSeleccionado, False
 
     Else
 
-        mnuVer_Click
+        AbrirMovimiento movSeleccionado, True
 
     End If
+
 End Sub
 
 
@@ -728,68 +765,107 @@ Private Sub gridOrdenes_SelectionChange()
 End Sub
 
 
-Private Sub SeleccionarOP()
-    On Error Resume Next
-    Set AsientoContable = Movimientos.item(gridOrdenes.RowIndex(gridOrdenes.row))
+Private Sub gridOrdenes_MouseUp( _
+    Button As Integer, _
+    Shift As Integer, _
+    x As Single, _
+    y As Single)
+
+    If Button <> 2 Then Exit Sub
+    If Movimientos.count = 0 Then Exit Sub
+
+    Set AsientoContable = ObtenerMovimientoSeleccionado()
+
+    If Not IsSomething(AsientoContable) Then Exit Sub
+
+    Me.mnuEditar.Enabled = _
+        (AsientoContable.estado = _
+         EstadoMovimientoCajaYBancos.EnEdicion)
+
+    Me.mnuAprobar.Enabled = _
+        (AsientoContable.estado = _
+         EstadoMovimientoCajaYBancos.EnEdicion)
+
+    Me.mnuAnular.Enabled = _
+        (AsientoContable.estado <> _
+         EstadoMovimientoCajaYBancos.EnEdicion)
+
+    Me.mnuVer.Enabled = True
+
+    Me.mnuImprimir.Enabled = _
+        (AsientoContable.estado = _
+         EstadoMovimientoCajaYBancos.Aprobado)
+
+    Me.PopupMenu menu
 
 End Sub
 
 
-Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Movimientos.count > 0 Then
-        gridOrdenes_SelectionChange
-        If Button = 2 Then
-            Me.mnuEditar.Enabled = (AsientoContable.estado = EstadoMovimientoCajaYBancos.EnEdicion)
-            Me.mnuAprobar.Enabled = (AsientoContable.estado = EstadoMovimientoCajaYBancos.EnEdicion)
-            Me.mnuAnular.Enabled = Not (AsientoContable.estado = EstadoMovimientoCajaYBancos.EnEdicion)
-            Me.mnuVer.Enabled = (AsientoContable.estado = EstadoMovimientoCajaYBancos.EnEdicion) Or (AsientoContable.estado = EstadoMovimientoCajaYBancos.Aprobado)
-            Me.mnuImprimir.Enabled = (AsientoContable.estado = EstadoMovimientoCajaYBancos.Aprobado)
-            Me.PopupMenu menu
-        End If
-    End If
-End Sub
+Private Sub gridOrdenes_RowFormat( _
+    RowBuffer As GridEX20.JSRowData)
 
+    On Error GoTo salir
 
-Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And Movimientos.count > 0 Then
-        Set AsientoContable = Movimientos.item(RowBuffer.RowIndex)
-        If AsientoContable.estado = EstadoMovimientoCajaYBancos.EnEdicion Then
+    If RowBuffer.RowIndex <= 0 Then Exit Sub
+    If RowBuffer.RowIndex > Movimientos.count Then Exit Sub
+
+    Dim mov As clsAsientoContable
+
+    Set mov = Movimientos.item(RowBuffer.RowIndex)
+
+    Select Case mov.estado
+
+        Case EstadoMovimientoCajaYBancos.EnEdicion
             RowBuffer.CellStyle(6) = "pendiente"
-        ElseIf AsientoContable.estado = EstadoMovimientoCajaYBancos.EnEdicion Then
-            RowBuffer.RowStyle = "anulada2"
-            RowBuffer.CellStyle(6) = "anulada"
-        ElseIf AsientoContable.estado = EstadoMovimientoCajaYBancos.Aprobado Then
+
+        Case EstadoMovimientoCajaYBancos.Aprobado
             RowBuffer.CellStyle(6) = "aprobada"
-        End If
-        
-        If AsientoContable.TipoMovimiento = "INGRESO" Then
+
+    End Select
+
+    Select Case UCase$(mov.TipoMovimiento)
+
+        Case "INGRESO"
             RowBuffer.CellStyle(3) = "INGRESO"
-        ElseIf AsientoContable.TipoMovimiento = "EGRESO" Then
+
+        Case "EGRESO", "SALIDA"
             RowBuffer.CellStyle(3) = "EGRESO"
-        End If
-    End If
+
+        Case "TRANSFERENCIA"
+            RowBuffer.CellStyle(3) = "TRANSFERENCIA"
+
+    End Select
+
+salir:
+
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridOrdenes_UnboundReadData( _
+    ByVal RowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
 
-    If RowIndex > 0 And Movimientos.count > 0 Then
+    If RowIndex <= 0 Then Exit Sub
+    If RowIndex > Movimientos.count Then Exit Sub
 
-        Set AsientoContable = Movimientos.item(RowIndex)
+    Dim mov As clsAsientoContable
 
-        Values(1) = AsientoContable.Id
-        Values(2) = AsientoContable.FEcha
-        Values(3) = AsientoContable.TipoMovimiento
+    Set mov = Movimientos.item(RowIndex)
 
-        If AsientoContable.TipoMovimiento = "TRANSFERENCIA" Then
+    Values(1) = mov.Id
+    Values(2) = mov.FEcha
+    Values(3) = mov.TipoMovimiento
+
+        If mov.TipoMovimiento = "TRANSFERENCIA" Then
         
-            If IsSomething(AsientoContable.CuentaBancaria) And IsSomething(AsientoContable.CuentaBancariaDestino) Then
-                Values(4) = AsientoContable.CuentaBancaria.DescripcionFormateada _
+            If IsSomething(mov.CuentaBancaria) And IsSomething(mov.CuentaBancariaDestino) Then
+                Values(4) = mov.CuentaBancaria.DescripcionFormateada _
                             & "  ->  " _
-                            & AsientoContable.CuentaBancariaDestino.DescripcionFormateada
+                            & mov.CuentaBancariaDestino.DescripcionFormateada
         
-            ElseIf IsSomething(AsientoContable.CuentaBancaria) Then
-                Values(4) = AsientoContable.CuentaBancaria.DescripcionFormateada
+            ElseIf IsSomething(mov.CuentaBancaria) Then
+                Values(4) = mov.CuentaBancaria.DescripcionFormateada
         
             Else
                 Values(4) = vbNullString
@@ -797,40 +873,40 @@ Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
         
         Else
         
-            If IsSomething(AsientoContable.CuentaBancaria) Then
-                Values(4) = AsientoContable.CuentaBancaria.DescripcionFormateadaCompleta
+            If IsSomething(mov.CuentaBancaria) Then
+                Values(4) = mov.CuentaBancaria.DescripcionFormateadaCompleta
             Else
                 Values(4) = vbNullString
             End If
         
         End If
 
-        If IsSomething(AsientoContable.CuentaContable) Then
-            Values(5) = AsientoContable.CuentaContable.nombre
+        If IsSomething(mov.CuentaContable) Then
+            Values(5) = mov.CuentaContable.nombre
         Else
             Values(5) = vbNullString
         End If
 
-        Values(6) = enums.enumEstadoMovimientosCajaYBancos(AsientoContable.estado)
+        Values(6) = enums.enumEstadoMovimientosCajaYBancos(mov.estado)
 
-        If IsSomething(AsientoContable.moneda) Then
-            Values(7) = AsientoContable.moneda.NombreCorto
+        If IsSomething(mov.moneda) Then
+            Values(7) = mov.moneda.NombreCorto
         Else
             Values(7) = vbNullString
         End If
 
-        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(AsientoContable.StaticTotalOrigenes)), "$", "")
-        Values(9) = AsientoContable.Observaciones
+        Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(mov.StaticTotalOrigenes)), "$", "")
+        Values(9) = mov.Observaciones
         
-        If IsSomething(AsientoContable.Usuario) Then
-            Values(10) = AsientoContable.Usuario.Usuario
+        If IsSomething(mov.Usuario) Then
+            Values(10) = mov.Usuario.Usuario
         Else
             Values(10) = vbNullString
         End If
         
-        Values(11) = AsientoContable.Creada
+        Values(11) = mov.Creada
 
-    End If
+
 
 End Sub
 
@@ -897,31 +973,6 @@ Private Sub mnuAprobar_Click()
 End Sub
 
 
-Private Sub mnuEditar_Click()
-    SeleccionarOP
-
-    If Not IsSomething(AsientoContable) Then
-        MsgBox "Debe seleccionar un movimiento.", vbExclamation
-        Exit Sub
-    End If
-
-    If AsientoContable.estado <> _
-            EstadoMovimientoCajaYBancos.EnEdicion Then
-
-        MsgBox "Solo se pueden editar movimientos en edición.", _
-               vbExclamation
-        Exit Sub
-
-    End If
-
-    Dim f22 As New frmAdminCajaBancosCrearAsientoBancario
-
-    Load f22
-
-    f22.ReadOnly = False
-    f22.Cargar AsientoContable
-    f22.Show
-End Sub
 
 
 Private Sub mnuImprimir_Click()
@@ -938,20 +989,21 @@ End Sub
 
 
 Private Sub mnuVer_Click()
-    SeleccionarOP
 
-    If Not IsSomething(AsientoContable) Then
-        MsgBox "Debe seleccionar un movimiento.", vbExclamation
+    Dim movSeleccionado As clsAsientoContable
+
+    Set movSeleccionado = ObtenerMovimientoSeleccionado()
+
+    If Not IsSomething(movSeleccionado) Then
+
+        MsgBox "Debe seleccionar un movimiento.", _
+               vbExclamation
+
         Exit Sub
+
     End If
 
-    Dim f22 As New frmAdminCajaBancosCrearAsientoBancario
-
-    Load f22
-
-    f22.ReadOnly = True
-    f22.Cargar AsientoContable
-    f22.Show
+    AbrirMovimiento movSeleccionado, True
 
 End Sub
 
@@ -959,3 +1011,131 @@ End Sub
 Private Sub cboRangos_Click()
     funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde(1), Me.dtpHasta(1)
 End Sub
+
+
+Private Sub SeleccionarOP()
+
+    Set AsientoContable = ObtenerMovimientoSeleccionado()
+
+End Sub
+
+
+Private Sub AbrirMovimiento( _
+    ByVal mov As clsAsientoContable, _
+    ByVal modoSoloLectura As Boolean)
+
+    If Not IsSomething(mov) Then
+
+        MsgBox "Debe seleccionar un movimiento.", _
+               vbExclamation
+
+        Exit Sub
+
+    End If
+
+    Dim f22 As New frmAdminCajaBancosCrearAsientoBancario
+
+    Load f22
+
+    f22.ReadOnly = modoSoloLectura
+    f22.Cargar mov
+    f22.Show
+
+End Sub
+
+
+Private Sub mnuEditar_Click()
+
+    Dim movSeleccionado As clsAsientoContable
+
+    Set movSeleccionado = ObtenerMovimientoSeleccionado()
+
+    If Not IsSomething(movSeleccionado) Then
+
+        MsgBox "Debe seleccionar un movimiento.", _
+               vbExclamation
+
+        Exit Sub
+
+    End If
+
+    If movSeleccionado.estado <> _
+            EstadoMovimientoCajaYBancos.EnEdicion Then
+
+        MsgBox "Solo se pueden editar movimientos en edición.", _
+               vbExclamation
+
+        Exit Sub
+
+    End If
+
+    AbrirMovimiento movSeleccionado, False
+
+End Sub
+
+Private Function ObtenerMovimientoSeleccionado() _
+    As clsAsientoContable
+
+    On Error GoTo err1
+
+    Dim idMovimiento As Long
+    Dim mov As clsAsientoContable
+    Dim valorId As Variant
+
+    Set ObtenerMovimientoSeleccionado = Nothing
+
+    If Movimientos.count = 0 Then Exit Function
+    If Me.gridOrdenes.row <= 0 Then Exit Function
+
+    valorId = Me.gridOrdenes.value(1)
+
+    If IsNull(valorId) Or IsEmpty(valorId) Then Exit Function
+    If Not IsNumeric(valorId) Then Exit Function
+
+    idMovimiento = CLng(valorId)
+
+    For Each mov In Movimientos
+
+        If mov.Id = idMovimiento Then
+            Set ObtenerMovimientoSeleccionado = mov
+            Exit Function
+        End If
+
+    Next mov
+
+    Exit Function
+
+err1:
+    Set ObtenerMovimientoSeleccionado = Nothing
+
+End Function
+
+
+Private Sub TotalizarMovimientos()
+
+    Dim mov As clsAsientoContable
+    Dim totalValores As Double
+
+    totalValores = 0
+
+    If Movimientos Is Nothing Then
+        Me.Label4.caption = "Total: " & FormatCurrency(0)
+        Exit Sub
+    End If
+
+    For Each mov In Movimientos
+
+        If IsSomething(mov) Then
+            totalValores = totalValores + mov.StaticTotalOrigenes
+        End If
+
+    Next mov
+
+    Me.Label4.caption = _
+        "Total: " & _
+        FormatCurrency( _
+            funciones.FormatearDecimales(totalValores))
+
+End Sub
+
+

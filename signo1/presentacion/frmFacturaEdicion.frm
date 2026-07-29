@@ -277,7 +277,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   65667073
          CurrentDate     =   43967
       End
       Begin MSComCtl2.DTPicker dtFechaPagoCreditoDesde 
@@ -299,7 +299,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   65667073
          CurrentDate     =   43967
       End
       Begin VB.Line Line8 
@@ -405,7 +405,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   65667073
          CurrentDate     =   43983
       End
       Begin MSComCtl2.DTPicker dtFechaServHasta1 
@@ -427,7 +427,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   65667073
          CurrentDate     =   43983
       End
       Begin VB.Label lblFechaServDesde1 
@@ -945,7 +945,7 @@ Begin VB.Form frmAdminFacturasEdicion
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   65994753
+         Format          =   65667073
          CurrentDate     =   43967
       End
       Begin VB.Label lblFechaPagoCredito 
@@ -1558,6 +1558,8 @@ Public NuevoTipoDocumento As tipoDocumentoContable
 Public EsAnticipo As Boolean
 Public ReadOnly As Boolean
 Private detaFactRemito As FacturaDetalle
+Private mFrmClienteNuevo As frmVentasClienteNuevo
+
 
 Public Property Let idFactura(value As Long)
     Set Factura = DAOFactura.FindById(value, True, True)
@@ -1565,9 +1567,29 @@ End Property
 
 Private Sub btnCrearCliente_Click()
 
-        frmVentasClienteNuevo.Show 1
-        
-        CargarClientesEnCbo
+    On Error GoTo ManejarError
+
+    Set mFrmClienteNuevo = New frmVentasClienteNuevo
+
+    Set mFrmClienteNuevo.FormularioFacturaOrigen = Me
+
+    mFrmClienteNuevo.Show
+    mFrmClienteNuevo.ZOrder 0
+
+    Exit Sub
+
+ManejarError:
+
+    MsgBox _
+        "Error al abrir el formulario de clientes." & _
+        vbCrLf & vbCrLf & _
+        "Número: " & CStr(Err.Number) & vbCrLf & _
+        "Origen: " & Err.Source & vbCrLf & _
+        "Descripción: " & Err.Description, _
+        vbCritical, _
+        "Clientes"
+
+    Set mFrmClienteNuevo = Nothing
 
 End Sub
 
@@ -1841,7 +1863,7 @@ Private Sub btnGuardar_Click()
             Exit Sub
         End If
               
-        Factura.IdProvincia = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+        Factura.idProvincia = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
  
         If DAOFactura.Save(Factura, True) Then
             MsgBox "La " & StrConv(Factura.TipoDocumentoDescription, vbProperCase) & " ha sido guardada.", vbOKOnly + vbInformation
@@ -1977,7 +1999,7 @@ Private Sub btnItemsDescuentoAnticipo_Click()
                                 Set detalleAnticipo = New FacturaDetalle
 
                                 detalleAnticipo.OtIdAnticipo = Ot.Id
-                                detalleAnticipo.PorcentajeDescuento = Ot.Anticipo
+                                detalleAnticipo.PorcentajeDescuento = 100 - Ot.Anticipo
                                 detalleAnticipo.IvaAplicado = Factura.EstaDiscriminada
                                 detalleAnticipo.IBAplicado = True
                                 detalleAnticipo.Cantidad = -1
@@ -2092,7 +2114,7 @@ Private Sub cboCliente_Click()
         
         DAOProvincias.LlenarComboNoDefinido Me.cboProvincias, 1, True
         Me.cboProvincias.ListIndex = funciones.PosIndexCbo(0, Me.cboProvincias)
-        Factura.IdProvincia = 0
+        Factura.idProvincia = 0
         
         MostrarPercepcionIIBB
         
@@ -2119,7 +2141,7 @@ Private Sub MostrarPercepcionIIBB()
         'Me.lblBuscandoPercepcion.Visible = True
         DoEvents
         Dim rs As Recordset
-        Set rs = conectar.RSFactory("SELECT * FROM sp_permisos." & tabla & " WHERE cuit='" & Factura.Cliente.Cuit & "'")
+        Set rs = conectar.RSFactory("SELECT * FROM sp_permisos." & tabla & " WHERE cuit='" & Factura.Cliente.cuit & "'")
         'Me.lblBuscandoPercepcion.Visible = False
         DoEvents
         If IsSomething(rs) Then
@@ -2377,10 +2399,7 @@ Private Sub Form_Load()
     dataLoading = True
     
     CargarClientesEnCbo
-    
-    Me.cboCliente.ListIndex = 345
-    
-    cboCliente_Click
+    Me.cboCliente.ListIndex = -1
     
     DAOMoneda.llenarComboXtremeSuite Me.cboMoneda
     DAOMoneda.llenarComboXtremeSuite Me.cboMonedaAjuste, True
@@ -2423,7 +2442,12 @@ Private Sub Form_Load()
     End If
 
     suscId = funciones.CreateGUID
-    Channel.AgregarSuscriptor Me, TipoSuscripcion.FacturarRemitosDetalle_, True
+
+    Channel.AgregarSuscriptor _
+        Me, _
+        TipoSuscripcion.FacturarRemitosDetalle_, _
+        True
+          
     ' Me.lblBuscandoPercepcion.Visible = False
     GridEXHelper.CustomizeGrid Me.gridDetalles, , True
 
@@ -2656,8 +2680,8 @@ Private Sub CargarFactura()
     
     Me.cboProvincias.ListIndex = funciones.PosIndexCbo(0, Me.cboProvincias)
     
-    If Factura.IdProvincia > 0 Then
-    Me.cboProvincias.ListIndex = funciones.PosIndexCbo(Factura.IdProvincia, Me.cboProvincias)
+    If Factura.idProvincia > 0 Then
+    Me.cboProvincias.ListIndex = funciones.PosIndexCbo(Factura.idProvincia, Me.cboProvincias)
     Else
         Me.cboProvincias.ListIndex = funciones.PosIndexCbo(0, Me.cboProvincias)
     End If
@@ -2829,13 +2853,13 @@ Private Sub MostrarCliente()
     On Error Resume Next
     If Factura Is Nothing Then Exit Sub
     If Factura.Cliente Is Nothing Then Exit Sub
-    Me.lblCuit.caption = Factura.Cliente.Cuit
+    Me.lblCuit.caption = Factura.Cliente.cuit
     Me.lblIVA.caption = Factura.Cliente.TipoIVA.detalle
     Me.lblDireccion.caption = Factura.Cliente.Domicilio
     Me.lblLocalidad.caption = Factura.Cliente.localidad.nombre
     Me.lblCodPostal.caption = Factura.Cliente.CodigoPostal
     Me.lblCuitPais = Factura.Cliente.CuitPais
-    Me.lblIdImpositivo = Factura.Cliente.IDImpositivo
+    Me.lblIDImpositivo = Factura.Cliente.IDImpositivo
 
     Me.lblProvincia = Factura.Cliente.provincia.nombre
 
@@ -2862,9 +2886,9 @@ Private Sub gridDetalles_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolean)
     Cancel = Not IsNumeric(Me.gridDetalles.value(1)) Or Not IsNumeric(Me.gridDetalles.value(3)) Or Not IsNumeric(Me.gridDetalles.value(4))
 End Sub
 
-Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(X, Y) = jgexHitTestConstants.jgexHTCell Then
-        Dim row As Long: row = Me.gridDetalles.RowFromPoint(X, Y)
+Private Sub gridDetalles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Button = 2 And ReadOnly And Me.gridDetalles.HitTest(x, y) = jgexHitTestConstants.jgexHTCell Then
+        Dim row As Long: row = Me.gridDetalles.RowFromPoint(x, y)
         If row > 0 Then
             Set detalle = Factura.detalles.item(Me.gridDetalles.RowIndex(row))
             If IsSomething(detalle) Then
@@ -2917,7 +2941,7 @@ Private Sub gridDetalles_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVar
     
     If Not IsNull(Values(10)) Then
         If IsNumeric(Values(10)) Then
-            detalle.IdProvincia = CLng(Values(10))
+            detalle.idProvincia = CLng(Values(10))
         End If
     End If
     
@@ -2950,7 +2974,7 @@ Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark 
         Values(8) = detalle.IBAplicado
         Values(9) = detalle.VerOrigen
 
-        Values(10) = detalle.IdProvincia
+        Values(10) = detalle.idProvincia
         
     End If
 End Sub
@@ -2968,7 +2992,7 @@ Private Sub gridDetalles_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As
         
         If Not IsNull(Values(10)) Then
             If IsNumeric(Values(10)) Then
-                detalle.IdProvincia = CLng(Values(10))
+                detalle.idProvincia = CLng(Values(10))
             End If
         End If
 
@@ -2981,14 +3005,70 @@ Private Property Get ISuscriber_id() As String
     ISuscriber_id = suscId
 End Property
 
+
 Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
+
     On Error GoTo err1
 
     Dim A As frmPlaneamientoRemitoVer
+    Dim clienteNuevo As clsCliente
 
+    '=========================================
+    ' Evento de alta de clientes
+    '=========================================
+    If EVENTO.Tipo = TipoSuscripcion.Clientes_ Then
+
+        If EVENTO.EVENTO = agregar_ Then
+
+            If Not IsSomething(EVENTO.Elemento) Then
+                Exit Function
+            End If
+
+            Set clienteNuevo = EVENTO.Elemento
+
+            If clienteNuevo.Id <= 0 Then
+
+                MsgBox _
+                    "El cliente fue guardado, pero no se pudo " & _
+                    "obtener el ID generado." & vbCrLf & vbCrLf & _
+                    "Revise DAOCliente.crear.", _
+                    vbExclamation, _
+                    "Clientes"
+
+                Exit Function
+
+            End If
+
+
+        End If
+
+        'Muy importante: no continuar con la parte de remitos.
+        Exit Function
+
+    End If
+
+    '=========================================
+    ' Ignorar cualquier otro tipo de evento
+    '=========================================
+    If EVENTO.Tipo <> _
+       TipoSuscripcion.FacturarRemitosDetalle_ Then
+
+        Exit Function
+
+    End If
+
+    '=========================================
+    ' Evento existente de detalle de remitos
+    '=========================================
     Set A = EVENTO.Originador
 
-    If A.IdFormSuscriber <> ISuscriber_id Then Exit Function
+    If A Is Nothing Then
+        Exit Function
+    End If
+
+    If A.IdFormSuscriber <> ISuscriber_id Then
+        Exit Function
+    End If
 
     If EVENTO.Tipo = FacturarRemitosDetalle_ Then
         If ReadOnly Then
@@ -3056,6 +3136,16 @@ Private Function ISuscriber_Notificarse(EVENTO As clsEventoObserver) As Variant
     Exit Function
 
 err1:
+
+    MsgBox _
+        "Error al procesar la notificación." & _
+        vbCrLf & vbCrLf & _
+        "Evento: " & CStr(EVENTO.Tipo) & vbCrLf & _
+        "Error " & CStr(Err.Number) & ": " & _
+        Err.Description, _
+        vbCritical, _
+        "Notificación"
+
 End Function
 
 Private Sub Label23_Click()
@@ -3297,8 +3387,102 @@ Private Sub cboProvincias_Click()
     If Not IsSomething(Factura) Then Exit Sub
 
     If Me.cboProvincias.ListIndex >= 0 Then
-        Factura.IdProvincia = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
+        Factura.idProvincia = Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
     Else
-        Factura.IdProvincia = 0
+        Factura.idProvincia = 0
     End If
+End Sub
+
+
+Public Sub SeleccionarClienteCreado( _
+    ByVal idCliente As Long _
+)
+
+    On Error GoTo ManejarError
+
+    Dim i As Long
+    Dim posicion As Long
+    Dim loadingAnterior As Boolean
+    Dim clienteGuardado As clsCliente
+
+    posicion = -1
+    loadingAnterior = dataLoading
+
+    dataLoading = True
+
+    'Reconstruir el combo desde la base.
+    DAOCliente.llenarComboXtremeSuite Me.cboCliente
+
+    'Buscar directamente por ItemData.
+    For i = 0 To Me.cboCliente.ListCount - 1
+
+        If CLng(Me.cboCliente.ItemData(i)) = idCliente Then
+
+            posicion = i
+            Exit For
+
+        End If
+
+    Next i
+
+    'Respaldo: si por algún motivo el DAO no lo agregó,
+    'lo buscamos directamente y lo incorporamos al combo.
+    If posicion < 0 Then
+
+        Set clienteGuardado = _
+            DAOCliente.BuscarPorID(idCliente)
+
+        If IsSomething(clienteGuardado) Then
+
+            Me.cboCliente.AddItem clienteGuardado.razon
+
+            posicion = Me.cboCliente.NewIndex
+
+            Me.cboCliente.ItemData(posicion) = _
+                clienteGuardado.Id
+
+        End If
+
+    End If
+
+    If posicion < 0 Then
+
+        Err.Raise _
+            vbObjectError + 1600, _
+            "SeleccionarClienteCreado", _
+            "No se encontró el cliente creado. ID: " & _
+            CStr(idCliente)
+
+    End If
+
+    'Seleccionar mientras los eventos están bloqueados.
+    Me.cboCliente.ListIndex = posicion
+
+    dataLoading = False
+
+    'Cargar el cliente dentro del objeto Factura y actualizar
+    'los datos de IVA, domicilio, tipos de comprobante, etc.
+    cboCliente_Click
+
+    Me.cboCliente.SetFocus
+
+    Set clienteGuardado = Nothing
+    Exit Sub
+
+ManejarError:
+
+    dataLoading = loadingAnterior
+
+    MsgBox _
+        "El cliente fue creado, pero ocurrió un error " & _
+        "al seleccionarlo en la factura." & _
+        vbCrLf & vbCrLf & _
+        "ID: " & CStr(idCliente) & vbCrLf & _
+        "Error " & CStr(Err.Number) & ": " & _
+        Err.Description, _
+        vbCritical, _
+        "Clientes"
+
+    Set clienteGuardado = Nothing
+
 End Sub

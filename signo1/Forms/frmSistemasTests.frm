@@ -1,207 +1,73 @@
 VERSION 5.00
-Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmSistemaTests 
    Caption         =   "Tests"
-   ClientHeight    =   6060
+   ClientHeight    =   9135
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   14985
+   ClientWidth     =   17850
    Icon            =   "frmSistemasTests.frx":0000
    MDIChild        =   -1  'True
-   ScaleHeight     =   6060
-   ScaleWidth      =   14985
+   ScaleHeight     =   9135
+   ScaleWidth      =   17850
    WindowState     =   2  'Maximized
-   Begin GridEX20.GridEX GridEX1 
-      Height          =   3855
-      Left            =   240
-      TabIndex        =   9
-      Top             =   4320
-      Width           =   14295
-      _ExtentX        =   25215
-      _ExtentY        =   6800
-      Version         =   "2.0"
-      BoundColumnIndex=   ""
-      ReplaceColumnIndex=   ""
-      MethodHoldFields=   -1  'True
-      DataMode        =   99
-      ColumnHeaderHeight=   285
-      IntProp1        =   0
-      ColumnsCount    =   7
-      Column(1)       =   "frmSistemasTests.frx":000C
-      Column(2)       =   "frmSistemasTests.frx":011C
-      Column(3)       =   "frmSistemasTests.frx":0208
-      Column(4)       =   "frmSistemasTests.frx":0314
-      Column(5)       =   "frmSistemasTests.frx":0408
-      Column(6)       =   "frmSistemasTests.frx":04FC
-      Column(7)       =   "frmSistemasTests.frx":0600
-      FormatStylesCount=   6
-      FormatStyle(1)  =   "frmSistemasTests.frx":071C
-      FormatStyle(2)  =   "frmSistemasTests.frx":0854
-      FormatStyle(3)  =   "frmSistemasTests.frx":0904
-      FormatStyle(4)  =   "frmSistemasTests.frx":09B8
-      FormatStyle(5)  =   "frmSistemasTests.frx":0A90
-      FormatStyle(6)  =   "frmSistemasTests.frx":0B48
-      ImageCount      =   0
-      PrinterProperties=   "frmSistemasTests.frx":0C28
-   End
-   Begin XtremeSuiteControls.PushButton cmdProbarResumen 
-      Height          =   495
-      Left            =   240
-      TabIndex        =   8
-      Top             =   3600
-      Width           =   2055
-      _Version        =   786432
-      _ExtentX        =   3625
-      _ExtentY        =   873
-      _StockProps     =   79
-      Caption         =   "Probar Resumen"
-      Appearance      =   6
-   End
-   Begin VB.CommandButton Command2 
-      Caption         =   "Command2"
-      Height          =   495
-      Left            =   15000
-      TabIndex        =   7
-      Top             =   840
-      Width           =   1935
-   End
-   Begin XtremeSuiteControls.PushButton btnSeguimientoAvanzado 
-      Height          =   495
-      Left            =   240
-      TabIndex        =   6
-      Top             =   2280
-      Width           =   4935
-      _Version        =   786432
-      _ExtentX        =   8705
-      _ExtentY        =   873
-      _StockProps     =   79
-      Caption         =   "PushButton1"
-      UseVisualStyle  =   -1  'True
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "Command1"
-      Height          =   375
-      Left            =   15000
-      TabIndex        =   5
-      Top             =   360
-      Width           =   1935
-   End
-   Begin GridEX20.GridEX grilla_monedas 
-      Height          =   3495
-      Left            =   5280
-      TabIndex        =   4
-      Top             =   360
-      Width           =   7815
-      _ExtentX        =   13785
-      _ExtentY        =   6165
-      Version         =   "2.0"
-      BoundColumnIndex=   "numero"
-      ReplaceColumnIndex=   "moneda"
-      HideSelection   =   2
-      MethodHoldFields=   -1  'True
-      ContScroll      =   -1  'True
-      AllowEdit       =   0   'False
-      RowHeaders      =   -1  'True
-      DataMode        =   99
-      ColumnHeaderHeight=   285
-      IntProp1        =   0
-      IntProp2        =   0
-      IntProp7        =   0
-      ColumnsCount    =   5
-      Column(1)       =   "frmSistemasTests.frx":0E00
-      Column(2)       =   "frmSistemasTests.frx":0EEC
-      Column(3)       =   "frmSistemasTests.frx":1000
-      Column(4)       =   "frmSistemasTests.frx":110C
-      Column(5)       =   "frmSistemasTests.frx":11F8
-      FormatStylesCount=   6
-      FormatStyle(1)  =   "frmSistemasTests.frx":12FC
-      FormatStyle(2)  =   "frmSistemasTests.frx":1434
-      FormatStyle(3)  =   "frmSistemasTests.frx":14E4
-      FormatStyle(4)  =   "frmSistemasTests.frx":1598
-      FormatStyle(5)  =   "frmSistemasTests.frx":1670
-      FormatStyle(6)  =   "frmSistemasTests.frx":1728
-      ImageCount      =   0
-      PrinterProperties=   "frmSistemasTests.frx":1808
-   End
-   Begin GridEX20.GridEX grilla_moneda 
-      Height          =   3495
-      Left            =   13200
-      TabIndex        =   3
-      Top             =   360
-      Visible         =   0   'False
-      Width           =   1575
-      _ExtentX        =   2778
-      _ExtentY        =   6165
-      Version         =   "2.0"
-      AllowRowSizing  =   -1  'True
-      AutomaticSort   =   -1  'True
-      BoundColumnIndex=   "id"
-      ReplaceColumnIndex=   "moneda"
-      ActAsDropDown   =   -1  'True
-      ColumnAutoResize=   -1  'True
-      HideSelection   =   2
-      MethodHoldFields=   -1  'True
-      ContScroll      =   -1  'True
-      AllowEdit       =   0   'False
-      GroupByBoxVisible=   0   'False
-      ColumnHeaders   =   0   'False
-      DataMode        =   99
-      ColumnHeaderHeight=   285
-      IntProp1        =   0
-      IntProp2        =   0
-      IntProp7        =   0
-      ColumnsCount    =   2
-      Column(1)       =   "frmSistemasTests.frx":19E0
-      Column(2)       =   "frmSistemasTests.frx":1B04
-      FormatStylesCount=   6
-      FormatStyle(1)  =   "frmSistemasTests.frx":1BF8
-      FormatStyle(2)  =   "frmSistemasTests.frx":1D30
-      FormatStyle(3)  =   "frmSistemasTests.frx":1DE0
-      FormatStyle(4)  =   "frmSistemasTests.frx":1E94
-      FormatStyle(5)  =   "frmSistemasTests.frx":1F6C
-      FormatStyle(6)  =   "frmSistemasTests.frx":2024
-      ImageCount      =   0
-      PrinterProperties=   "frmSistemasTests.frx":2104
-   End
-   Begin XtremeSuiteControls.PushButton PushButton 
-      Height          =   495
-      Left            =   240
-      TabIndex        =   2
-      Top             =   1680
-      Width           =   4935
-      _Version        =   786432
-      _ExtentX        =   8705
-      _ExtentY        =   873
-      _StockProps     =   79
-      Caption         =   "Agenda nueva"
-      Appearance      =   6
-   End
-   Begin VB.CommandButton Command 
-      Caption         =   "frmAdminExtrasReporteIVACompras"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   615
-      Index           =   0
-      Left            =   240
-      TabIndex        =   1
-      Top             =   240
-      Width           =   4935
-   End
-   Begin VB.CommandButton btnPrueba_04_Click 
-      Caption         =   "frmAdminPagosCrearOrdenPagoNew"
-      Height          =   615
-      Left            =   240
+   Begin XtremeSuiteControls.GroupBox GroupBox1 
+      Height          =   4935
+      Left            =   120
       TabIndex        =   0
-      Top             =   960
-      Width           =   4935
+      Top             =   120
+      Width           =   7695
+      _Version        =   786432
+      _ExtentX        =   13573
+      _ExtentY        =   8705
+      _StockProps     =   79
+      Caption         =   "Consulta a ARCA"
+      UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtCuit 
+         Height          =   405
+         Left            =   240
+         TabIndex        =   2
+         Text            =   "Text1"
+         Top             =   360
+         Width           =   3375
+      End
+      Begin XtremeSuiteControls.PushButton cmdConsultarARCA 
+         Height          =   495
+         Left            =   4200
+         TabIndex        =   1
+         Top             =   315
+         Width           =   3015
+         _Version        =   786432
+         _ExtentX        =   5318
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Traer Datos"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Label1"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   5
+         Top             =   1080
+         Width           =   7095
+      End
+      Begin VB.Label Label2 
+         Caption         =   "Label2"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   4
+         Top             =   1560
+         Width           =   7095
+      End
+      Begin VB.Label Label3 
+         Caption         =   "Label3"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   3
+         Top             =   2040
+         Width           =   7095
+      End
    End
 End
 Attribute VB_Name = "frmSistemaTests"
@@ -209,110 +75,459 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Private moneda As clsMoneda
-Private colMonedas As New Collection
-Dim vOrdenPago As OrdenPago
-Dim monedaplicada As clsMonedaAplicada
-Private operacion As operacion
+Option Explicit
 
-
-Private Sub btnSeguimientoAvanzado_Click()
-    Dim f228 As New frmAdminPagosTransferenciasBancariasCobro
-    f228.Show
-End Sub
-
-Private Sub cmdProbarResumen_Click()
-
-    Dim Movimientos As Collection
-    Dim mov As DTOResumenBancario
-
-    Set Movimientos = DAOResumenBancario.FindAll( _
-        DateSerial(2026, 7, 1), _
-        DateSerial(2026, 7, 31))
-
-    If Movimientos Is Nothing Then
-        MsgBox "Ocurrió un error al generar el resumen.", vbCritical
-        Exit Sub
-    End If
-
-    For Each mov In Movimientos
-
-        Debug.Print _
-            mov.FEcha, _
-            mov.Banco, _
-            mov.CuentaBancaria, _
-            mov.Origen, _
-            mov.NumeroOrigen, _
-            mov.Ingreso, _
-            mov.Egreso, _
-            mov.SaldoAcumulado
-
-    Next mov
-
-    MsgBox Movimientos.count & _
-           " movimientos encontrados.", vbInformation
-
-End Sub
-
-Private Sub Command1_Click()
-    
-    Set monedaplicada = New clsMonedaAplicada
-
-   If colMonedas.count > 0 Then
-   
-       Me.grilla_monedas.ItemCount = 0
-       Me.grilla_monedas.Refresh
-       
-       monedaplicada.moneda = DAOMoneda.GetById(colMonedas(1).Id)
-
-       Me.grilla_monedas.ItemCount = 1
-       
-    End If
-    
-End Sub
+Private Const URL_API As String = "http://192.168.0.2:8011"
 
 
 Private Sub Form_Load()
-    FormHelper.Customize Me
-    
-    GridEXHelper.CustomizeGrid Me.grilla_moneda, False, True
-    GridEXHelper.CustomizeGrid Me.grilla_monedas, False, True
-    
-    Set colMonedas = DAOMoneda.GetAll()
-    Me.grilla_moneda.ItemCount = colMonedas.count
-  
-    Set Me.grilla_monedas.Columns("moneda").DropDownControl = Me.grilla_moneda
-  
+
+    txtCuit.Text = ""
+    txtCuit.MaxLength = 13
+
+    cmdConsultarARCA.caption = "Consultar ARCA"
+
+    Label1.caption = "Razón social:"
+    Label2.caption = "Domicilio:"
+    Label3.caption = "Estado: esperando ingreso"
+
+    Label1.ForeColor = vbWindowText
+    Label2.ForeColor = vbWindowText
+    Label3.ForeColor = vbWindowText
+
 End Sub
 
 
-Private Sub grilla_moneda_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set moneda = colMonedas.item(RowIndex)
-        Values(1) = moneda.Id
-        Values(2) = moneda.NombreCorto
+Private Sub txtCUIT_KeyPress(KeyAscii As Integer)
+
+    Select Case KeyAscii
+
+        Case 8
+            'Backspace
+
+        Case 45
+            'Guion
+
+        Case 48 To 57
+            'Números del 0 al 9
+
+        Case Else
+            KeyAscii = 0
+
+    End Select
+
 End Sub
 
 
-Private Sub grilla_monedas_GotFocus()
-    grilla_monedas.SelStart = 0
-    grilla_monedas.SelLength = -1
+Private Sub cmdConsultarARCA_Click()
+
+    On Error GoTo ManejarError
+
+    Dim consulta As New clsConsultaARCA
+
+    Label1.caption = "Razón social:"
+    Label2.caption = "Domicilio:"
+    Label3.caption = "Estado: consultando ARCA..."
+
+    Label1.ForeColor = vbWindowText
+    Label2.ForeColor = vbWindowText
+    Label3.ForeColor = vbWindowText
+
+    cmdConsultarARCA.Enabled = False
+    DoEvents
+
+    If Not consulta.Consultar(txtCuit.Text) Then
+
+        Label3.caption = _
+            "Estado: " & consulta.UltimoError
+
+        Label3.ForeColor = vbRed
+
+        cmdConsultarARCA.Enabled = True
+        Exit Sub
+
+    End If
+
+    Label1.caption = _
+        "Razón social: " & consulta.RazonSocial
+
+    Label2.caption = _
+        "Domicilio: " & consulta.Domicilio
+
+    Label3.caption = _
+        "Estado: " & consulta.estado
+
+    Label3.ForeColor = vbGreen
+
+    cmdConsultarARCA.Enabled = True
+
+    Set consulta = Nothing
+    Exit Sub
+
+ManejarError:
+
+    cmdConsultarARCA.Enabled = True
+
+    Label3.caption = _
+        "Estado: error " & _
+        CStr(Err.Number) & _
+        " - " & Err.Description
+
+    Label3.ForeColor = vbRed
+
+    Set consulta = Nothing
+
 End Sub
 
 
-Private Sub grilla_monedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub ConsultarARCA(ByVal cuit As String)
+
+    On Error GoTo ManejarError
+
+    Dim Http As Object
+    Dim url As String
+    Dim respuesta As String
+
+    Dim RazonSocial As String
+    Dim Domicilio As String
+    Dim estado As String
+
+    url = URL_API & "/arca/constancia/" & cuit
+
+    Set Http = CrearClienteHTTP()
+
+    Http.setTimeouts 5000, 5000, 10000, 10000
+
+    Http.Open "GET", url, False
+
+    Http.setRequestHeader "Accept", "application/json"
+
+    Http.send
+
+    If Http.Status <> 200 Then
+
+        Label1.caption = "Razón social:"
+        Label2.caption = "Domicilio:"
+
+        Label3.caption = "Error HTTP " & CStr(Http.Status) & _
+                         ": " & ObtenerMensajeError(Http.responseText)
+
+        Label3.ForeColor = vbRed
+
+        Set Http = Nothing
+        Exit Sub
+
+    End If
+
+    respuesta = CStr(Http.responseText)
+
+    RazonSocial = ExtraerValorJSON(respuesta, "razon_social")
+    Domicilio = ExtraerValorJSON(respuesta, "domicilio")
+    estado = ExtraerValorJSON(respuesta, "estado")
+
+    If Len(RazonSocial) = 0 Then
+        RazonSocial = "(sin información)"
+    End If
+
+    If Len(Domicilio) = 0 Then
+        Domicilio = "(sin información)"
+    End If
+
+    If Len(estado) = 0 Then
+        estado = "(sin información)"
+    End If
+
+    Label1.caption = "Razón social: " & RazonSocial
+    Label2.caption = "Domicilio: " & Domicilio
+    Label3.caption = "Estado: " & estado
+
+    Label1.ForeColor = vbWindowText
+    Label2.ForeColor = vbWindowText
+    Label3.ForeColor = vbGreen
+
+    Set Http = Nothing
+
+    Exit Sub
+
+ManejarError:
+
+    Label1.caption = "Razón social:"
+    Label2.caption = "Domicilio:"
+
+    Label3.caption = "No se pudo conectar con la API. " & _
+                     "Error " & Err.Number & ": " & Err.Description
+
+    Label3.ForeColor = vbRed
+
+    Set Http = Nothing
+
+End Sub
+
+
+Private Function CrearClienteHTTP() As Object
+
+    Dim Http As Object
+
     On Error Resume Next
-    Set monedaplicada = vFactura.IvaAplicado.item(RowIndex)
-    Values(1) = ""
-    Values(2) = monedaplicada.moneda.NombreCorto
-    Values(3) = ""
-    Values(4) = ""
-    Values(5) = ""
-End Sub
+
+    Set Http = CreateObject("MSXML2.ServerXMLHTTP.6.0")
+
+    If Http Is Nothing Then
+        Set Http = CreateObject("MSXML2.ServerXMLHTTP.3.0")
+    End If
+
+    On Error GoTo 0
+
+    If Http Is Nothing Then
+
+        Err.Raise vbObjectError + 1000, _
+                  "CrearClienteHTTP", _
+                  "No se encontró Microsoft XML ServerHTTP."
+
+    End If
+
+    Set CrearClienteHTTP = Http
+
+End Function
 
 
+Private Function SoloNumeros(ByVal valor As String) As String
 
-Private Sub PushButton_Click()
-    Dim f227 As New frmAgendaNueva
-    f227.Show
-End Sub
+    Dim i As Long
+    Dim caracter As String
+    Dim resultado As String
+
+    resultado = ""
+
+    For i = 1 To Len(valor)
+
+        caracter = Mid$(valor, i, 1)
+
+        If caracter >= "0" And caracter <= "9" Then
+            resultado = resultado & caracter
+        End If
+
+    Next i
+
+    SoloNumeros = resultado
+
+End Function
+
+
+Private Function FormatearCUIT(ByVal cuit As String) As String
+
+    If Len(cuit) <> 11 Then
+
+        FormatearCUIT = cuit
+        Exit Function
+
+    End If
+
+    FormatearCUIT = Left$(cuit, 2) & "-" & _
+                    Mid$(cuit, 3, 8) & "-" & _
+                    Right$(cuit, 1)
+
+End Function
+
+
+Private Function CUITValido(ByVal cuit As String) As Boolean
+
+    Dim multiplicadores As String
+
+    Dim suma As Long
+    Dim digitoCalculado As Integer
+    Dim digitoIngresado As Integer
+
+    Dim i As Integer
+    Dim caracter As String
+
+    CUITValido = False
+
+    If Len(cuit) <> 11 Then
+        Exit Function
+    End If
+
+    For i = 1 To 11
+
+        caracter = Mid$(cuit, i, 1)
+
+        If InStr(1, "0123456789", caracter) = 0 Then
+            Exit Function
+        End If
+
+    Next i
+
+    multiplicadores = "5432765432"
+
+    suma = 0
+
+    For i = 1 To 10
+
+        suma = suma + _
+               CInt(Mid$(cuit, i, 1)) * _
+               CInt(Mid$(multiplicadores, i, 1))
+
+    Next i
+
+    digitoCalculado = 11 - (suma Mod 11)
+
+    Select Case digitoCalculado
+
+        Case 11
+            digitoCalculado = 0
+
+        Case 10
+            digitoCalculado = 9
+
+    End Select
+
+    digitoIngresado = CInt(Right$(cuit, 1))
+
+    CUITValido = (digitoCalculado = digitoIngresado)
+
+End Function
+
+
+Private Function ExtraerValorJSON( _
+    ByVal json As String, _
+    ByVal clave As String _
+) As String
+
+    Dim textoBuscar As String
+
+    Dim posicion As Long
+    Dim posicionValor As Long
+    Dim i As Long
+
+    Dim caracter As String
+    Dim resultado As String
+    Dim escapado As Boolean
+
+    ExtraerValorJSON = ""
+
+    textoBuscar = """" & clave & """:"
+
+    posicion = InStr(1, json, textoBuscar, vbTextCompare)
+
+    If posicion = 0 Then
+        Exit Function
+    End If
+
+    posicionValor = posicion + Len(textoBuscar)
+
+    Do While posicionValor <= Len(json)
+
+        caracter = Mid$(json, posicionValor, 1)
+
+        If caracter <> " " And _
+           caracter <> vbTab And _
+           caracter <> vbCr And _
+           caracter <> vbLf Then
+
+            Exit Do
+
+        End If
+
+        posicionValor = posicionValor + 1
+
+    Loop
+
+    If posicionValor > Len(json) Then
+        Exit Function
+    End If
+
+    caracter = Mid$(json, posicionValor, 1)
+
+    If caracter = """" Then
+
+        resultado = ""
+        escapado = False
+
+        For i = posicionValor + 1 To Len(json)
+
+            caracter = Mid$(json, i, 1)
+
+            If escapado Then
+
+                Select Case caracter
+
+                    Case """"
+                        resultado = resultado & """"
+
+                    Case "\"
+                        resultado = resultado & "\"
+
+                    Case "n"
+                        resultado = resultado & vbCrLf
+
+                    Case "r"
+                        'No agregamos nada.
+
+                    Case "t"
+                        resultado = resultado & vbTab
+
+                    Case Else
+                        resultado = resultado & caracter
+
+                End Select
+
+                escapado = False
+
+            ElseIf caracter = "\" Then
+
+                escapado = True
+
+            ElseIf caracter = """" Then
+
+                Exit For
+
+            Else
+
+                resultado = resultado & caracter
+
+            End If
+
+        Next i
+
+        ExtraerValorJSON = resultado
+        Exit Function
+
+    End If
+
+    resultado = ""
+
+    For i = posicionValor To Len(json)
+
+        caracter = Mid$(json, i, 1)
+
+        If caracter = "," Or caracter = "}" Then
+            Exit For
+        End If
+
+        resultado = resultado & caracter
+
+    Next i
+
+    resultado = Trim$(resultado)
+
+    If LCase$(resultado) <> "null" Then
+        ExtraerValorJSON = resultado
+    End If
+
+End Function
+
+
+Private Function ObtenerMensajeError(ByVal respuesta As String) As String
+
+    Dim detalle As String
+
+    detalle = ExtraerValorJSON(respuesta, "detail")
+
+    If Len(detalle) > 0 Then
+        ObtenerMensajeError = detalle
+    Else
+        ObtenerMensajeError = "Respuesta incorrecta del servidor"
+    End If
+
+End Function
 
