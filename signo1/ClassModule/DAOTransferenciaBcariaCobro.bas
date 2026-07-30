@@ -1,0 +1,242 @@
+Attribute VB_Name = "DAOTransferenciaBcariaCobro"
+Option Explicit
+
+Public Function FindAll(Origen As OrigenOperacion, Optional ByVal extraFilter As String = "1 = 1", Optional orderBy As String = "1") As Collection
+    Dim q As String
+     
+    q = "SELECT *, (op.pertenencia + 0) as pertenencia2 FROM" _
+      & " operaciones op" _
+      & " LEFT JOIN AdminConfigCuentas cu ON cu.id = op.cuentabanc_o_caja_id" _
+      & " LEFT JOIN AdminConfigMonedas mon ON op.moneda_id = mon.id" _
+      & " LEFT JOIN AdminConfigBancos ban ON ban.id = cu.idBanco" _
+      & " LEFT JOIN operaciones_recibos oprec ON oprec.operacionId = op.id" _
+      & " LEFT JOIN AdminRecibos rec ON rec.id = oprec.reciboId" _
+      & " LEFT JOIN clientes cli ON cli.id = rec.idCliente" _
+      & " WHERE op.pertenencia = " & Origen & "" _
+      & " AND op.entrada_salida = '1'" _
+      & " AND " & extraFilter & ""
+      
+    q = q & " ORDER BY " & orderBy
+      
+    Dim col As New Collection
+
+    Dim op As clsTransferenciaBcariaCobro
+    
+    Dim idx As Dictionary
+    
+    Dim rs As Recordset
+
+    Set rs = conectar.RSFactory(q)
+    
+    BuildFieldsIndex rs, idx
+
+    While Not rs.EOF
+
+        Set op = Map(rs, idx, "op", "cu", "mon", "ban", "oprec", "rec", "cli")
+        
+        If Not funciones.BuscarEnColeccion(col, CStr(op.Id)) Then col.Add op, CStr(op.Id)
+        rs.MoveNext
+
+    Wend
+
+    Set FindAll = col
+End Function
+
+
+Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
+                    Optional tablaCuentaBanc As String = vbNullString, _
+                    Optional tablaMoneda As String = vbNullString, _
+                    Optional tablaConfigBancos As String = vbNullString, _
+                    Optional tablaOperacionesRecibos As String = vbNullString, _
+                    Optional tablaRecibos As String = vbNullString, _
+                    Optional tablaClientes As String = vbNullString _
+                  ) As clsTransferenciaBcariaCobro
+   
+    Dim Id As Long: Id = GetValue(rs, indice, tabla, "id")
+    Dim op As clsTransferenciaBcariaCobro
+
+
+    If Id > 0 Then
+        Set op = New clsTransferenciaBcariaCobro
+        op.Id = Id
+        op.FechaCarga = GetValue(rs, indice, tabla, "fecha_carga")
+        op.FechaOperacion = GetValue(rs, indice, tabla, "fecha_operacion")
+        op.Pertenencia = GetValue(rs, indice, vbNullString, "pertenencia2")
+        op.Monto = GetValue(rs, indice, tabla, "monto")
+        op.EntradaSalida = GetValue(rs, indice, tabla, "entrada_salida")
+        op.Comprobante = GetValue(rs, indice, tabla, "comprobante")
+
+        If LenB(tablaMoneda) > 0 Then Set op.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+     
+        op.IdCtaBancaria = GetValue(rs, indice, tablaCuentaBanc, "id")
+        op.CuentaBancaria = GetValue(rs, indice, tablaCuentaBanc, "cuenta")
+        op.NombreBanco = GetValue(rs, indice, tablaConfigBancos, "Nombre")
+
+        op.ClienteRazon = GetValue(rs, indice, tablaClientes, "razon")
+
+        If GetValue(rs, indice, tablaRecibos, "id") > 0 Then
+            Set op.Recibo = New Recibo
+            op.Recibo.Id = GetValue(rs, indice, tablaRecibos, "id")
+        End If
+
+      
+    End If
+
+    Set Map = op
+End Function
+
+
+Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Object) As Boolean
+    On Error GoTo err1
+
+    ExportarColeccion = True
+
+    Dim xlApplication As Object
+    Dim xlWorkbook As Object
+    Dim xlWorksheet As Object
+    
+    Set xlApplication = CreateObject("Excel.Application")
+    
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlWorksheet.Activate
+    
+    Dim titulo As String
+    titulo = "Reporte de Transferencias Bancarias de Cobro"
+    
+    With xlWorksheet.Range("A1:G1")
+        .Merge
+        .Font.Bold = True
+        .value = titulo
+        .HorizontalAlignment = -4108 ' xlCenter
+    End With
+
+    'fila, columna
+
+    Dim offset As Long
+    offset = 3
+    xlWorksheet.Cells(offset, 1).value = "ID"
+    xlWorksheet.Cells(offset, 2).value = "Cliente Origen"
+    xlWorksheet.Cells(offset, 3).value = "N° Cta | Banco"
+    xlWorksheet.Cells(offset, 4).value = "Fecha Operación"
+    xlWorksheet.Cells(offset, 5).value = "Moneda"
+    xlWorksheet.Cells(offset, 6).value = "Importe"
+    xlWorksheet.Cells(offset, 7).value = "Recibo"
+        
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 7)).Font.Bold = True
+    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 7)).Interior.Color = &HC0C0C0
+
+    Dim transf As clsTransferenciaBcariaCobro
+
+    Dim initoffset As Long
+    
+    initoffset = offset
+
+    frmLoading.ProgressBar.min = 0
+    
+    frmLoading.ProgressBar.max = col.count
+    Dim i As Integer
+    i = 0
+    
+    For Each transf In col
+
+        i = i + 1
+        
+        offset = offset + 1
+       
+        xlWorksheet.Cells(offset, 1).value = transf.Id
+        xlWorksheet.Cells(offset, 2).value = transf.ClienteRazon
+        xlWorksheet.Cells(offset, 3).value = "N° " & transf.CuentaBancaria & " | " & transf.NombreBanco
+        xlWorksheet.Cells(offset, 4).value = transf.FechaOperacion
+        xlWorksheet.Cells(offset, 5).value = transf.moneda.NombreCorto
+        xlWorksheet.Cells(offset, 6).value = transf.Monto
+        
+        If Not transf.Recibo Is Nothing Then
+            xlWorksheet.Cells(offset, 7).value = transf.Recibo.Id
+        Else
+            xlWorksheet.Cells(offset, 7).value = "-"
+        End If
+        
+        frmLoading.ProgressBar.value = i
+        
+    Next
+
+        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 7)).Borders.LineStyle = xlContinuous
+
+    'autosize
+    xlApplication.ScreenUpdating = False
+    Dim wkSt As String
+    wkSt = xlWorksheet.Name
+    xlWorksheet.Cells.EntireColumn.AutoFit
+    xlWorkbook.Sheets(wkSt).Select
+    xlApplication.ScreenUpdating = True
+    ''
+
+    Dim ruta As String
+    ruta = Environ$("TEMP")
+    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
+    If LenB(ruta) = 0 Then ruta = App.path
+    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
+
+    xlWorkbook.SaveAs ruta
+
+    xlWorkbook.Saved = True
+    xlWorkbook.Close
+    xlApplication.Quit
+
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    If i = frmLoading.ProgressBar.max Then Unload frmLoading
+
+    Exit Function
+    
+err1:
+    ExportarColeccion = False
+End Function
+
+
+Public Function FindById(Id As Long) As clsTransferenciaBcaria
+    Dim col As Collection
+    Dim filtro As String
+   
+    filtro = "op.id = " & Id
+    
+    Set col = FindAll(Banco, filtro)
+    
+    If col.count = 0 Then
+        Set FindById = Nothing
+    Else
+        Set FindById = col.item(1)
+    End If
+    
+End Function
+
+Public Function ActualizarDetallesComprobante(T As clsTransferenciaBcaria) As Boolean
+    On Error GoTo err1
+
+    Dim q As String
+    q = "UPDATE sp.operaciones SET comprobante='comprobante', fecha_operacion = 'fecha_operacion', cuentabanc_o_caja_id='cuentabanc_o_caja_id' where id='id'"
+
+    q = Replace$(q, "'id'", conectar.Escape(T.Id))
+    q = Replace$(q, "'comprobante'", conectar.Escape(T.Comprobante))
+    q = Replace$(q, "'fecha_operacion'", conectar.Escape(T.FechaOperacion))
+    q = Replace$(q, "'cuentabanc_o_caja_id'", conectar.Escape(T.IdCtaBancaria))
+
+    If Not conectar.execute(q) Then
+        Err.Raise 112233, "No se pudieron actualizar los datos de la transferencia."
+    End If
+    ActualizarDetallesComprobante = True
+    Exit Function
+err1:
+    Err.Raise Err.Number, Err.Description
+    
+End Function
+
+
+
+

@@ -1881,8 +1881,8 @@ Private Sub ActualizarAlicuotas()
 
         For Each B In OrdenPago.RetencionesAlicuota
             If A.Retencion.Id = B.Retencion.Id Then
-                If B.Importe > 0 Then
-                    A.Importe = B.Importe
+                If B.importe > 0 Then
+                    A.importe = B.importe
                 End If
             End If
         Next
@@ -2963,7 +2963,7 @@ Private Sub gridRetenciones_RowFormat(RowBuffer As GridEX20.JSRowData)
 
     Set alicuotaRetencion = alicuotas.item(RowBuffer.RowIndex)
 
-    If alicuotaRetencion.Importe > 0 Then    '.Retencion.id <> 2 Then
+    If alicuotaRetencion.importe > 0 Then    '.Retencion.id <> 2 Then
         RowBuffer.RowStyle = "padronganancias"
     Else
         RowBuffer.RowStyle = "padroningresos"
@@ -2982,7 +2982,7 @@ Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
         Set alicuotaRetencion = alicuotas.item(RowIndex)
         Values(2) = alicuotaRetencion.alicuotaRetencion
         Values(1) = alicuotaRetencion.Retencion.nombre
-        Values(3) = alicuotaRetencion.Importe
+        Values(3) = alicuotaRetencion.importe
         Values(4) = alicuotaRetencion.certificados
     End If
 End Sub
@@ -2993,10 +2993,10 @@ Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark
         Set alicuotaRetencion = alicuotas.item(RowIndex)
         alicuotaRetencion.alicuotaRetencion = Values(2)
         If Not IsNumeric(Values(3)) Then
-            alicuotaRetencion.Importe = 0
+            alicuotaRetencion.importe = 0
             alicuotaRetencion.certificados = "-"
         Else
-            alicuotaRetencion.Importe = Values(3)
+            alicuotaRetencion.importe = Values(3)
             alicuotaRetencion.certificados = Values(4)
         End If
         Totalizar
@@ -4364,37 +4364,26 @@ End Sub
 
 
 Private Function EsImporteValido(ByVal valor As Variant) As Boolean
-    On Error GoTo err1
 
-    Dim s As String
-    s = CStr(valor)
+    Dim importe As Double
 
-    s = Replace(s, "$", "")
-    s = Replace(s, "AR$", "")
-    s = Replace(s, " ", "")
-    s = Replace(s, ".", "")
-    s = Replace(s, ",", ".")
+    EsImporteValido = TryImporteDesdeTexto(valor, importe)
 
-    EsImporteValido = IsNumeric(s)
-    Exit Function
-
-err1:
-    EsImporteValido = False
 End Function
 
 
 Private Function ImporteDesdeTexto(ByVal valor As Variant) As Double
-    Dim s As String
 
-    s = CStr(valor)
+    Dim importe As Double
 
-    s = Replace(s, "$", "")
-    s = Replace(s, "AR$", "")
-    s = Replace(s, " ", "")
-    s = Replace(s, ".", "")
-    s = Replace(s, ",", ".")
+    If Not TryImporteDesdeTexto(valor, importe) Then
+        Err.Raise 13, _
+                  "ImporteDesdeTexto", _
+                  "El importe ingresado no es válido."
+    End If
 
-    ImporteDesdeTexto = CDbl(s)
+    ImporteDesdeTexto = importe
+
 End Function
 
 
@@ -4460,3 +4449,85 @@ Private Sub InicializarFacturaSeleccionada(ByVal item As Long)
         F.OtrosAbonado
 
 End Sub
+
+
+Private Function TryImporteDesdeTexto( _
+        ByVal valor As Variant, _
+        ByRef resultado As Double) As Boolean
+
+    On Error GoTo ImporteInvalido
+
+    Dim s As String
+    Dim posPunto As Long
+    Dim posComa As Long
+    Dim cantidadDecimales As Long
+    Dim separadorDecimalSistema As String
+
+    If IsNull(valor) Or IsEmpty(valor) Then GoTo ImporteInvalido
+
+    s = Trim$(CStr(valor))
+
+    s = Replace(s, "AR$", "", 1, -1, vbTextCompare)
+    s = Replace(s, "$", "")
+    s = Replace(s, " ", "")
+
+    If LenB(s) = 0 Then GoTo ImporteInvalido
+
+    posPunto = InStrRev(s, ".")
+    posComa = InStrRev(s, ",")
+
+    If posPunto > 0 And posComa > 0 Then
+
+        'Si contiene ambos separadores, el último es el decimal.
+        'Ejemplos:
+        '1.010,50  -> 1010,50
+        '1,010.50  -> 1010.50
+        If posComa > posPunto Then
+            s = Replace(s, ".", "")
+            s = Replace(s, ",", "|")
+        Else
+            s = Replace(s, ",", "")
+            s = Replace(s, ".", "|")
+        End If
+
+    ElseIf posPunto > 0 Then
+
+        cantidadDecimales = Len(s) - posPunto
+
+        If cantidadDecimales = 1 Or cantidadDecimales = 2 Then
+            '10.10 se interpreta como diez con diez centavos.
+            s = Replace(s, ".", "|")
+        Else
+            '1.010 se interpreta como mil diez.
+            s = Replace(s, ".", "")
+        End If
+
+    ElseIf posComa > 0 Then
+
+        cantidadDecimales = Len(s) - posComa
+
+        If cantidadDecimales = 1 Or cantidadDecimales = 2 Then
+            '10,10 se interpreta como diez con diez centavos.
+            s = Replace(s, ",", "|")
+        Else
+            '1,010 se interpreta como mil diez.
+            s = Replace(s, ",", "")
+        End If
+
+    End If
+
+    'Utilizar el separador decimal configurado en Windows.
+    separadorDecimalSistema = Mid$(Format$(0.5, "0.0"), 2, 1)
+    s = Replace(s, "|", separadorDecimalSistema)
+
+    If Not IsNumeric(s) Then GoTo ImporteInvalido
+
+    resultado = CDbl(s)
+    TryImporteDesdeTexto = True
+    Exit Function
+
+ImporteInvalido:
+    resultado = 0
+    TryImporteDesdeTexto = False
+
+End Function

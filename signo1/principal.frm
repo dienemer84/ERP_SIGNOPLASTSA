@@ -625,7 +625,11 @@ Private Sub MDIForm_Load()
     
     
     
-    Else: frmLogin.Show 1
+    Else
+        VerificarActualizacionAntesDelLogin
+    
+        frmLogin.Show 1
+        
         'conectar.SetServidorBBDD  servidorBBDD 'ahora lohace el login
         If conectar.conectar Then
 
@@ -1227,3 +1231,63 @@ Private Sub TrayIcon_DblClick()
 End Sub
 
 
+Private Sub VerificarActualizacionAntesDelLogin()
+    On Error GoTo ControlError
+
+    Dim servidor As String
+    Dim datosServidor() As String
+    Dim ip As String
+    Dim puerto As String
+    Dim idNueva As Long
+    Dim actualizador As classSignoplast
+
+    If funciones.InIDE Then Exit Sub
+    If servidorBBDD.count = 0 Then Exit Sub
+
+    'El login actualmente selecciona por defecto el primer servidor.
+    servidor = CStr(servidorBBDD.item(1))
+
+    datosServidor = Split(servidor, ":")
+
+    ip = datosServidor(0)
+    puerto = "3306"
+
+    If UBound(datosServidor) >= 1 Then
+        puerto = datosServidor(1)
+    End If
+
+    servidorActual = servidor
+
+    conectar.port = puerto
+    conectar.SetServidorBBDD ip
+
+    If Not conectar.conectar Then Exit Sub
+
+    Set actualizador = New classSignoplast
+
+    If actualizador.VerificarSiHayActualizacion(idNueva) Then
+
+        If MsgBox( _
+            "Hay una nueva actualización del sistema." & vbNewLine & _
+            "¿Desea aplicarla ahora?", _
+            vbYesNo + vbQuestion, _
+            "Actualización disponible") = vbYes Then
+
+            frmTip.Show 1
+            actualizador.actualizarSistema CLng(idNueva)
+
+            'Si la actualización fue correcta,
+            'actualizarSistema cierra la aplicación.
+        End If
+
+    End If
+
+Salida:
+    Set actualizador = Nothing
+    Exit Sub
+
+ControlError:
+    MsgBox "No se pudo comprobar la actualización: " & _
+           Err.Description, vbExclamation, "Actualización"
+    Resume Salida
+End Sub

@@ -260,9 +260,9 @@ Private Sub Command1_Click()
     Dim usu As String
     usu = Trim(LCase(Me.Text1))
     Set r = conectar.RSFactory("select password,id from usuarios where usuario='" & usu & "'")
-    C = 0
+    c = 0
     While Not r.EOF
-        C = C + 1
+        c = c + 1
         r.MoveNext
     Wend
 
@@ -275,7 +275,7 @@ Private Sub Command1_Click()
         'funciones.ValidarPermisos (idU)
         Unload Me
     Else
-        If C = 1 Then
+        If c = 1 Then
             r.MoveFirst
 
             idUsu = r!Id
@@ -292,27 +292,7 @@ Private Sub Command1_Click()
 
                     SaveSetting App.ProductName, "config", "user", usu
 
-
-                    If Not funciones.InIDE Then
-                        If clssp.VerificarSiHayActualizacion(idnueva) Then
-                            If MsgBox("Hay una nueva actualización del sistema." & vbNewLine & "¿Desea aplicarla ahora?", vbYesNo + vbQuestion, "Confirmación") = vbYes Then
-
-                                frmTip.Show 1
-
-                                clssp.actualizarSistema CLng(idnueva)
-
-                            End If
-
-                        End If
-                    Else
-
-                        'frmTip.Show 1
-
-                    End If
-
-
                     Unload Me
-
 
                 Else
                     Me.mensaje = "* Password incorrecto *"

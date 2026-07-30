@@ -686,6 +686,9 @@ End Sub
 
 
 Private Sub llenarLista()
+
+On Error GoTo ManejaError
+
     Dim filter As String
     filter = "1 = 1"
 
@@ -744,6 +747,15 @@ Private Sub llenarLista()
     
     Me.Label2.caption = "OP mostradas" & " [Cant: " & ordenes.count & "]"
 
+Exit Sub
+
+
+ManejaError:
+    On Error Resume Next
+    conectar.RollBackTransaction
+    On Error GoTo 0
+    
+    conectar.MostrarErrorBaseDatos Err.Number, Err.Description
 
 End Sub
 
@@ -809,49 +821,98 @@ Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single
 End Sub
 
 
-Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowBuffer.RowIndex)
-        If Orden.estado = EstadoOrdenPago.EstadoOrdenPago_Aprobada Then
-            RowBuffer.CellStyle(10) = "aprobada"
-        ElseIf Orden.estado = EstadoOrdenPago_Anulada Then
-            RowBuffer.RowStyle = "anulada2"
+Private Sub gridOrdenes_RowFormat( _
+        RowBuffer As GridEX20.JSRowData)
 
-            RowBuffer.CellStyle(10) = "anulada"
-        ElseIf Orden.estado = EstadoOrdenPago_pendiente Then
-            RowBuffer.CellStyle(10) = "pendiente"
-        End If
+    Dim OrdenFila As OrdenPago
+
+    If RowBuffer.RowIndex < 1 Then Exit Sub
+    If ordenes Is Nothing Then Exit Sub
+    If RowBuffer.RowIndex > ordenes.count Then Exit Sub
+
+    Set OrdenFila = ordenes.item(RowBuffer.RowIndex)
+
+    If OrdenFila.estado = EstadoOrdenPago_Aprobada Then
+
+        RowBuffer.CellStyle(10) = "aprobada"
+
+    ElseIf OrdenFila.estado = EstadoOrdenPago_Anulada Then
+
+        RowBuffer.RowStyle = "anulada2"
+        RowBuffer.CellStyle(10) = "anulada"
+
+    ElseIf OrdenFila.estado = EstadoOrdenPago_pendiente Then
+
+        RowBuffer.CellStyle(10) = "pendiente"
+
     End If
+
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And ordenes.count > 0 Then
-        Set Orden = ordenes.item(RowIndex)
-        Values(1) = Orden.Id
-        Values(2) = Orden.FEcha
+Private Sub gridOrdenes_UnboundReadData( _
+        ByVal RowIndex As Long, _
+        ByVal Bookmark As Variant, _
+        ByVal Values As GridEX20.JSRowData)
 
-        Values(3) = Orden.moneda.NombreCorto
+    Dim OrdenFila As OrdenPago
+    Dim FacturaFila As clsFacturaProveedor
 
-        Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes)), "$", "")
-        Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalRetenido)), "$", "")
-  
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalPagosACta)), "$", "")
-        Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Orden.StaticTotalOrigenes + Orden.StaticTotalRetenido)), "$", "")
+    If RowIndex < 1 Then Exit Sub
+    If ordenes Is Nothing Then Exit Sub
+    If RowIndex > ordenes.count Then Exit Sub
 
-        If Orden.EsParaFacturaProveedor Then
-            Set fac = Orden.FacturasProveedor.item(1)
+    Set OrdenFila = ordenes.item(RowIndex)
+
+    Values(1) = OrdenFila.Id
+    Values(2) = OrdenFila.FEcha
+    Values(3) = OrdenFila.moneda.NombreCorto
+
+    Values(4) = Replace( _
+                    FormatCurrency(funciones.FormatearDecimales( _
+                        OrdenFila.StaticTotalOrigenes)), _
+                    "$", "")
+
+    Values(5) = Replace( _
+                    FormatCurrency(funciones.FormatearDecimales( _
+                        OrdenFila.StaticTotalRetenido)), _
+                    "$", "")
+
+    Values(6) = Replace( _
+                    FormatCurrency(funciones.FormatearDecimales( _
+                        OrdenFila.StaticTotalPagosACta)), _
+                    "$", "")
+
+    Values(7) = Replace( _
+                    FormatCurrency(funciones.FormatearDecimales( _
+                        OrdenFila.StaticTotalOrigenes + _
+                        OrdenFila.StaticTotalRetenido)), _
+                    "$", "")
+
+    If OrdenFila.EsParaFacturaProveedor Then
+
+        If OrdenFila.FacturasProveedor.count > 0 Then
+            Set FacturaFila = OrdenFila.FacturasProveedor.item(1)
+
             Values(8) = "Factura Proveedor"
-            Values(9) = fac.Proveedor.RazonSocial
-        Else
-            Values(8) = "Cuenta Contable"
-            If IsSomething(Orden.CuentaContable) Then
-                Values(9) = Orden.CuentaContable.nombre & " (" & Orden.CuentaContable.codigo & ")"
-            End If
+            Values(9) = FacturaFila.Proveedor.RazonSocial
         End If
 
-        Values(10) = enums.EnumEstadoOrdenPago(Orden.estado)
+    Else
+
+        Values(8) = "Cuenta Contable"
+
+        If IsSomething(OrdenFila.CuentaContable) Then
+            Values(9) = OrdenFila.CuentaContable.nombre & _
+                        " (" & _
+                        OrdenFila.CuentaContable.codigo & _
+                        ")"
+        End If
+
     End If
+
+    Values(10) = enums.EnumEstadoOrdenPago(OrdenFila.estado)
+
 End Sub
 
 
@@ -934,14 +995,62 @@ End Sub
 
 Private Sub mnuImprimir_Click()
 
-    On Error GoTo err4
+    On Error GoTo ControlarError
+
+    Dim OrdenAImprimir As OrdenPago
+    Dim posicion As Long
+
+    If ordenes Is Nothing Then Exit Sub
+
+    If ordenes.count = 0 Then
+        MsgBox "No hay órdenes de pago para imprimir.", _
+               vbExclamation, _
+               "Imprimir orden de pago"
+        Exit Sub
+    End If
+
+    posicion = Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+
+    If posicion < 1 Or posicion > ordenes.count Then
+        MsgBox "Seleccione una orden de pago para imprimir.", _
+               vbExclamation, _
+               "Imprimir orden de pago"
+        Exit Sub
+    End If
+
+    'Guardar localmente la OP seleccionada.
+    Set OrdenAImprimir = ordenes.item(posicion)
+
+    'Hace que el botón Cancelar genere el error 32755.
+    Me.CommonDialog.CancelError = True
     Me.CommonDialog.ShowPrinter
 
-   If Not DAOOrdenPago.PrintOP(Orden) Then GoTo err4
-   Exit Sub
-   
-err4:
- 
+    'Solo llega aquí si el usuario confirmó la impresión.
+'Solo llega aquí si el usuario confirmó la impresión.
+    If DAOOrdenPago.PrintOP(OrdenAImprimir) Then
+    
+        MsgBox "No se pudo imprimir la orden de pago N.º " & _
+               OrdenAImprimir.Id & ".", _
+               vbCritical, _
+               "Error de impresión"
+    End If
+
+    Exit Sub
+
+ControlarError:
+
+    If Err.Number = 32755 Then
+        'El usuario presionó Cancelar: no se imprime nada.
+        Err.Clear
+        Exit Sub
+    End If
+
+    MsgBox "Se produjo un error al imprimir la orden de pago." & _
+           vbCrLf & vbCrLf & _
+           "Error " & Err.Number & ": " & Err.Description, _
+           vbCritical, _
+           "Error de impresión"
+
 End Sub
 
 
