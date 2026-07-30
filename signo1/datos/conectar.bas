@@ -3,6 +3,13 @@ Dim serverBBDD As String
 Public port As String
 Dim cn As ADODB.Connection
 Dim vcount As Long
+Private mTransaccionActiva As Boolean
+
+Public Const ERR_CONEXION_BD As Long = vbObjectError + 2100
+Public Const ERR_TRANSACCION_BD As Long = vbObjectError + 2101
+Public Const ERR_RESULTADO_INCIERTO_BD As Long = vbObjectError + 2102
+
+
 Public Function conectar() As Boolean
     conectar = True
     On Error GoTo err22
@@ -28,7 +35,120 @@ err22:
     Err.Clear
 End Function
 
+Private Sub DescartarConexion()
+    On Error Resume Next
+
+    If Not cn Is Nothing Then
+        If cn.State <> adStateClosed Then cn.Close
+    End If
+
+    Set cn = Nothing
+End Sub
+
+
+Private Function AbrirConexionNueva( _
+                    Optional ByVal MostrarMensaje As Boolean = False) As Boolean
+
+    Dim detalleError As String
+
+    On Error GoTo ErrorAbrir
+
+    DescartarConexion
+
+    Set cn = New ADODB.Connection
+
+    cn.ConnectionTimeout = 5
+    cn.CommandTimeout = 30
+    cn.CursorLocation = adUseClient
+
+    cn.ConnectionString = "driver={MySQL ODBC 3.51 Driver};port=" & port & " ;server=" & serverBBDD & ";uid=root;pwd=3l3c720n;database=sp;Option=" & (1 + 1024) & "';AllowZeroDateTime=true; ConvertZeroDateTime=True'"  ';connection=adUseClient" ' era 3 ' eraç 1 + 1024
+
+    cn.Open
+
+    vcount = 0
+    mTransaccionActiva = False
+    AbrirConexionNueva = True
+    Exit Function
+
+ErrorAbrir:
+    detalleError = Err.Description
+
+    mTransaccionActiva = False
+    DescartarConexion
+
+    If MostrarMensaje Then
+        MsgBox "No se pudo conectar con el servidor." & vbCrLf & _
+               detalleError, _
+               vbCritical, "Conexión"
+    End If
+
+    AbrirConexionNueva = False
+End Function
+
+
+
+Public Function ConexionActiva() As Boolean
+    Dim rsPing As ADODB.Recordset
+
+    On Error GoTo ErrorConexion
+
+    If cn Is Nothing Then GoTo Salir
+    If cn.State <> adStateOpen Then GoTo Salir
+
+    'No alcanza con comprobar State: se ejecuta una consulta real.
+    Set rsPing = cn.execute("SELECT 1")
+
+    ConexionActiva = True
+
+Salir:
+    On Error Resume Next
+
+    If Not rsPing Is Nothing Then
+        If rsPing.State = adStateOpen Then rsPing.Close
+    End If
+
+    Set rsPing = Nothing
+    Exit Function
+
+ErrorConexion:
+    ConexionActiva = False
+    Resume Salir
+End Function
+
+
+Public Function IntentarReconectar() As Boolean
+    'Nunca se reconstruye una conexión en medio de una transacción.
+    If mTransaccionActiva Then Exit Function
+
+    IntentarReconectar = AbrirConexionNueva(False)
+End Function
+
+
+Public Function AsegurarConexion() As Boolean
+    If ConexionActiva() Then
+        AsegurarConexion = True
+        Exit Function
+    End If
+
+    If mTransaccionActiva Then
+        'La transacción que utilizaba la conexión anterior ya no es válida.
+        mTransaccionActiva = False
+        DescartarConexion
+        Exit Function
+    End If
+
+    AsegurarConexion = AbrirConexionNueva(False)
+End Function
+
+
 Public Function obternerConexion() As ADODB.Connection
+
+    If Not AsegurarConexion() Then
+        Err.Raise ERR_CONEXION_BD, _
+                  "Motor de base de datos", _
+                  "No fue posible restablecer la conexión con el servidor."
+    End If
+
     Set obternerConexion = cn
 End Function
 
@@ -38,37 +158,115 @@ Public Property Get count() As Long
 End Property
 
 
-Public Function RSFactory(consulta) As ADODB.Recordset
-    Dim rstmp As New ADODB.Recordset
-    On Error GoTo err10
+Private Function AbrirRecordsetConReconexion( _
+                    ByVal consulta As String, _
+                    ByVal usarCursorCliente As Boolean) As ADODB.Recordset
 
-    If rstmp.State = 1 Then rstmp.Close
-    rstmp.Open consulta, cn, CursorTypeEnum.adOpenStatic, LockTypeEnum.adLockOptimistic, adCmdText
-    Set RSFactory = rstmp
+    Dim rstmp As ADODB.Recordset
+    Dim reintentado As Boolean
+    Dim estabaEnTransaccion As Boolean
+
+    Dim numeroError As Long
+    Dim origenError As String
+    Dim descripcionError As String
+
+    estabaEnTransaccion = mTransaccionActiva
+
+Reintentar:
+    On Error GoTo ErrorConsulta
+
+    If Not AsegurarConexion() Then
+
+        If estabaEnTransaccion Then
+            Err.Raise ERR_TRANSACCION_BD, _
+                      "Motor de base de datos", _
+                      "La conexión se perdió durante una transacción."
+        Else
+            Err.Raise ERR_CONEXION_BD, _
+                      "Motor de base de datos", _
+                      "No fue posible conectarse con el servidor."
+        End If
+
+    End If
+
+    Set rstmp = New ADODB.Recordset
+
+    If usarCursorCliente Then
+        rstmp.CursorLocation = adUseClient
+        rstmp.Open consulta, cn, _
+                   adOpenDynamic, adLockOptimistic, adCmdText
+    Else
+        rstmp.Open consulta, cn, _
+                   adOpenStatic, adLockOptimistic, adCmdText
+    End If
+
+    Set AbrirRecordsetConReconexion = rstmp
 
     vcount = vcount + 1
     Exit Function
-err10:
-    Debug.Print (consulta)
-    
-'''    Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & consulta
-    
-    Err.Raise 2, "Motor de base de datos", "Imposible realizar la consulta solicitada" & Chr(10) & "Se ha detectado un corte de red por eso mismo el sistema debe reiniciarse."
-    
+
+ErrorConsulta:
+    numeroError = Err.Number
+    origenError = Err.Source
+    descripcionError = Err.Description
+
+    Debug.Print consulta
+
+    On Error Resume Next
+
+    If Not rstmp Is Nothing Then
+        If rstmp.State = adStateOpen Then rstmp.Close
+    End If
+
+    Set rstmp = Nothing
+    On Error GoTo 0
+
+    'Si la conexión realmente murió, se intenta una sola vez.
+    If Not ConexionActiva() Then
+
+        If estabaEnTransaccion Then
+            mTransaccionActiva = False
+            DescartarConexion
+
+            Err.Raise ERR_TRANSACCION_BD, _
+                      "Motor de base de datos", _
+                      "Se perdió la conexión durante una transacción." & _
+                      vbCrLf & _
+                      "La operación no fue confirmada."
+        End If
+
+        If Not reintentado Then
+            reintentado = True
+
+            If AbrirConexionNueva(False) Then
+                GoTo Reintentar
+            End If
+        End If
+
+        Err.Raise ERR_CONEXION_BD, _
+                  "Motor de base de datos", _
+                  "No hay conexión con el servidor." & vbCrLf & _
+                  "El sistema permanecerá abierto."
+    End If
+
+    'Era un error SQL, no un problema de conexión.
+    Err.Raise numeroError, origenError, descripcionError
 End Function
 
 
-Public Function RSFactoryCliente(consulta) As ADODB.Recordset
-    Dim rstmp As New ADODB.Recordset
-    On Error GoTo err10
-    rstmp.CursorLocation = adUseClient
-    If rstmp.State = 1 Then rstmp.Close
-    rstmp.Open consulta, cn, adOpenDynamic, adLockOptimistic, adCmdText
-    Set RSFactoryCliente = rstmp
-    vcount = vcount + 1
-    Exit Function
-err10:
-    MsgBox "Se produjo un error: " & Err.Description
+Public Function RSFactory(ByVal consulta As String) As ADODB.Recordset
+
+    Set RSFactory = _
+        AbrirRecordsetConReconexion(consulta, False)
+
+End Function
+
+
+Public Function RSFactoryCliente(ByVal consulta As String) As ADODB.Recordset
+
+    Set RSFactoryCliente = _
+        AbrirRecordsetConReconexion(consulta, True)
+
 End Function
 
 
@@ -81,14 +279,76 @@ Public Function GetServidorBBDD() As String
 End Function
 
 
-Public Function execute(cmdText As String) As Boolean
-    On Error GoTo e12
+Public Function execute(ByVal cmdText As String) As Boolean
+
+    Dim comandoIniciado As Boolean
+    Dim estabaEnTransaccion As Boolean
+
+    Dim numeroError As Long
+    Dim origenError As String
+    Dim descripcionError As String
+
+    estabaEnTransaccion = mTransaccionActiva
+
+    On Error GoTo ErrorExecute
+
+    If Not AsegurarConexion() Then
+
+        If estabaEnTransaccion Then
+            Err.Raise ERR_TRANSACCION_BD, _
+                      "Motor de base de datos", _
+                      "La conexión se perdió durante la transacción."
+        Else
+            Err.Raise ERR_CONEXION_BD, _
+                      "Motor de base de datos", _
+                      "No fue posible conectarse con el servidor."
+        End If
+
+    End If
+
+    comandoIniciado = True
     cn.execute cmdText
+
     execute = True
     Exit Function
-e12:
-    Err.Raise 1, "Motor de bases de datos", "Imposible ejecutar el comando " & Chr(10) & cmdText
+
+ErrorExecute:
+    numeroError = Err.Number
+    origenError = Err.Source
+    descripcionError = Err.Description
+
     execute = False
+
+    If comandoIniciado And Not ConexionActiva() Then
+
+        mTransaccionActiva = False
+        DescartarConexion
+
+        'Se reconecta solamente para las operaciones posteriores.
+        'No se vuelve a ejecutar el comando.
+        If Not estabaEnTransaccion Then
+            AbrirConexionNueva False
+        End If
+
+        If estabaEnTransaccion Then
+            Err.Raise ERR_TRANSACCION_BD, _
+                      "Motor de base de datos", _
+                      "Se perdió la conexión durante una transacción." & _
+                      vbCrLf & _
+                      "La operación completa debe volver a realizarse."
+        Else
+            Err.Raise ERR_RESULTADO_INCIERTO_BD, _
+                      "Motor de base de datos", _
+                      "La conexión se perdió durante el guardado." & _
+                      vbCrLf & _
+                      "El comando no fue repetido para evitar duplicados." & _
+                      vbCrLf & _
+                      "Verifique el registro antes de volver a guardar."
+        End If
+
+    End If
+
+    Err.Raise numeroError, origenError, descripcionError
 End Function
 
 
@@ -103,17 +363,54 @@ err1:
 End Function
 
 Public Sub BeginTransaction()
+
+    If Not AsegurarConexion() Then
+        Err.Raise ERR_CONEXION_BD, _
+                  "Motor de base de datos", _
+                  "No se puede iniciar la transacción porque no hay conexión."
+    End If
+
     cn.BeginTrans
+    mTransaccionActiva = True
 End Sub
 
 
 Public Sub CommitTransaction()
+    Dim detalleError As String
+
+    On Error GoTo ErrorCommit
+
     cn.CommitTrans
+    mTransaccionActiva = False
+    Exit Sub
+
+ErrorCommit:
+    detalleError = Err.Description
+
+    mTransaccionActiva = False
+    DescartarConexion
+
+    'Reconexión para las próximas operaciones.
+    AbrirConexionNueva False
+
+    Err.Raise ERR_RESULTADO_INCIERTO_BD, _
+              "Motor de base de datos", _
+              "No fue posible confirmar la transacción." & vbCrLf & _
+              "Verifique si la operación fue registrada." & vbCrLf & _
+              detalleError
 End Sub
 
 
 Public Sub RollBackTransaction()
-    cn.RollbackTrans
+    On Error Resume Next
+
+    If mTransaccionActiva Then
+        If Not cn Is Nothing Then
+            If cn.State = adStateOpen Then cn.RollbackTrans
+        End If
+    End If
+
+    mTransaccionActiva = False
 End Sub
 
 
@@ -239,4 +536,34 @@ Public Function GetEntityId(entity As Object) As Variant
     End If
 End Function
 
+
+Public Sub MostrarErrorBaseDatos( _
+                ByVal numero As Long, _
+                ByVal descripcion As String)
+
+    Select Case numero
+
+    Case ERR_CONEXION_BD
+        MsgBox "No hay conexión con el servidor." & vbCrLf & _
+               "El sistema permanecerá abierto." & vbCrLf & _
+               "Verifique la red y vuelva a intentar.", _
+               vbCritical, "Servidor no disponible"
+
+    Case ERR_TRANSACCION_BD
+        MsgBox "La conexión se perdió durante la operación." & vbCrLf & _
+               "La operación no fue confirmada." & vbCrLf & _
+               "Los datos permanecerán en pantalla.", _
+               vbExclamation, "Operación interrumpida"
+
+    Case ERR_RESULTADO_INCIERTO_BD
+        MsgBox descripcion, _
+               vbExclamation, "Verificar operación"
+
+    Case Else
+        MsgBox "Se produjo un error:" & vbCrLf & _
+               descripcion, _
+               vbExclamation, "Signo Plast ERP"
+
+    End Select
+End Sub
 

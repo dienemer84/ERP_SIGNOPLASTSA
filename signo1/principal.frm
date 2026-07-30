@@ -107,6 +107,9 @@ Private contMinutosInformesAccidente As Long
 Dim statusBar As XtremeCommandBars.statusBar
 
 Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarControl)
+
+ On Error GoTo ManejarError
+ 
     Select Case Control.Id
     Case ID_BUTTON.ID_BUTTON_PANEL_DE_CONTROL__USUARIOS_EMPLEADOS__NUEVO_EMPLEADO:
         Dim f32423 As New frmAltaEmpleados
@@ -587,6 +590,10 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         famigo.Show
 
     End Select
+    Exit Sub
+
+ManejarError:
+    conectar.MostrarErrorBaseDatos Err.Number, Err.Description
 End Sub
 
 
@@ -724,24 +731,48 @@ Private Sub PrepararPopUp()
 End Sub
 
 
-
 Private Sub Timer2_Timer()
+    On Error GoTo SinConexion
+
+    If Not conectar.AsegurarConexion() Then
+        GoTo SinConexion
+    End If
 
     Dim idNuevo As Long
+
     If Not funciones.InIDE Then
+
         If classP.VerificarSiHayActualizacion(idNuevo) Then
+
             statusBar(5).Text = "** ACTUALIZACION DISPONIBLE **"
-            If Permisos.SistemaVerUpdate Then
+
+            If idNuevo > 0 Then
                 Me.Popup.item(2).Id = idNuevo
+
                 If Me.Popup.State = xtpPopupStateClosed Then
                     Me.Popup.Show
                 End If
             End If
+
         Else
             statusBar(5).Text = vbNullString
         End If
+
     End If
+
+    Exit Sub
+
+SinConexion:
+    On Error Resume Next
+
+    If Not statusBar Is Nothing Then
+        statusBar(5).Text = _
+            "** SIN CONEXIÓN - REINTENTANDO AUTOMÁTICAMENTE **"
+    End If
+
+    Err.Clear
 End Sub
+
 
 Private Function AddButton(ribbonGroup As ribbonGroup, caption As String, Id As Long, Optional enabledCondition As Boolean = True, Optional iconId As Long = -1, Optional controlType As XTPControlType = xtpControlButton, Optional cmdBarCtrlParent As CommandBarControl = Nothing) As CommandBarControl
     Dim cmdControl As CommandBarControl
@@ -1133,6 +1164,9 @@ End Sub
 
 
 Private Sub tmrInformeAccidentes_Timer()
+
+    On Error GoTo ManejarError
+    
     If Not Permisos.RRHHInformeAccidente Then Exit Sub
 
     contMinutosInformesAccidente = contMinutosInformesAccidente + 1
@@ -1156,6 +1190,12 @@ Private Sub tmrInformeAccidentes_Timer()
         contMinutosInformesAccidente = 0
 
     End If
+    
+    Exit Sub
+
+ManejarError:
+    'Es un proceso automático: no debe cerrar ni molestar al usuario.
+    Err.Clear
 End Sub
 
 
