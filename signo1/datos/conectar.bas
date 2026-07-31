@@ -92,15 +92,15 @@ Public Function ConexionActiva() As Boolean
 
     On Error GoTo ErrorConexion
 
-    If cn Is Nothing Then GoTo Salir
-    If cn.State <> adStateOpen Then GoTo Salir
+    If cn Is Nothing Then GoTo salir
+    If cn.State <> adStateOpen Then GoTo salir
 
     'No alcanza con comprobar State: se ejecuta una consulta real.
     Set rsPing = cn.execute("SELECT 1")
 
     ConexionActiva = True
 
-Salir:
+salir:
     On Error Resume Next
 
     If Not rsPing Is Nothing Then
@@ -112,7 +112,7 @@ Salir:
 
 ErrorConexion:
     ConexionActiva = False
-    Resume Salir
+    Resume salir
 End Function
 
 
@@ -443,25 +443,45 @@ er1:
 End Function
 
 
-Public Sub BuildFieldsIndex(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary)
-    Dim F As Field
-    Dim counter As Long
-    counter = 0
-    'If fieldsIndex Is Nothing Then Set fieldsIndex = New Dictionary
-    Set fieldsIndex = New Dictionary
+Public Sub BuildFieldsIndex( _
+                ByRef rs As ADODB.Recordset, _
+                ByRef fieldsIndex As Dictionary)
 
-    Dim prop As Property
+    Dim F As ADODB.Field
+    Dim counter As Long
+    Dim nombreTabla As String
+    Dim clave As String
+
+    Set fieldsIndex = New Dictionary
+    counter = 0
 
     For Each F In rs.Fields
-        'For Each prop In f.Properties
-        '    Debug.Print prop.Name, prop.value, prop.Attributes
-        'Next prop
 
-        fieldsIndex.Add F.Properties(3).value & "." & F.Name, counter
+        nombreTabla = vbNullString
 
+        If Not IsNull(F.Properties(3).value) Then
+            nombreTabla = CStr(F.Properties(3).value)
+        End If
+
+        clave = nombreTabla & "." & CStr(F.Name)
+
+        If Not fieldsIndex.Exists(clave) Then
+
+            fieldsIndex.Add clave, counter
+
+        Else
+
+            'El SELECT con varios JOIN devolvió esta clave repetida.
+            'Se conserva la primera aparición.
+            Debug.Print "BuildFieldsIndex - clave repetida: " & _
+                        clave & _
+                        " - campo ignorado número: " & _
+                        CStr(counter)
+
+        End If
 
         counter = counter + 1
-        '''debug.print (F.Name)
+
     Next F
 
 End Sub

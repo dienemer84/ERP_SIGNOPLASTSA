@@ -687,9 +687,12 @@ End Sub
 
 Private Sub llenarLista()
 
-On Error GoTo ManejaError
-
+    Dim numeroError As Long
+    Dim descripcionError As String
     Dim filter As String
+
+    On Error GoTo ManejaError
+
     filter = "1 = 1"
 
     If Me.cboProveedores.ListIndex > -1 Then
@@ -733,13 +736,8 @@ On Error GoTo ManejaError
         filtroor = " AND (" & Right(filtroor, Len(filtroor) - 3) & " )"
         filter = filter & filtroor
     End If
-
-    Me.gridOrdenes.ItemCount = 0
-    
     
     Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
-    
-
     
     Me.gridOrdenes.ItemCount = ordenes.count
 
@@ -749,14 +747,12 @@ On Error GoTo ManejaError
 
 Exit Sub
 
-
 ManejaError:
-    On Error Resume Next
-    conectar.RollBackTransaction
-    On Error GoTo 0
-    
-    conectar.MostrarErrorBaseDatos Err.Number, Err.Description
+    numeroError = Err.Number
+    descripcionError = Err.Description
+    Err.Clear
 
+    conectar.MostrarErrorBaseDatos numeroError, descripcionError
 End Sub
 
 
