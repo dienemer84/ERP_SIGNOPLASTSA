@@ -606,76 +606,103 @@ Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 
-Private Sub gridOrdenes_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If liquidaciones.count > 0 Then
-        gridOrdenes_SelectionChange
-        If Button = 2 Then
-            Me.mnuAprobar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
-            Me.mnuImprimir.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_Aprobada)
-            Me.mnuEditar.Enabled = (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
-            
-            'OCULTO LA OPCION DE ANULAR QUE NO EST√Å DESARROLLADA (DNEMER 30.05.2023)
-            'Me.mnuAnular.Enabled = Not (LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada)
+Private Sub gridOrdenes_MouseUp(Button As Integer, _
+                                Shift As Integer, _
+                                x As Single, _
+                                y As Single)
 
-            Me.PopupMenu menu
+    If Button <> 2 Then Exit Sub
+    If Not SeleccionarLiquidacion() Then Exit Sub
 
-        End If
-    End If
+    Me.mnuAprobar.Enabled = _
+        (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+
+    Me.mnuImprimir.Enabled = _
+        (LiquidacionCaja.estado = EstadoLiquidacionCaja_Aprobada)
+
+    Me.mnuEditar.Enabled = _
+        (LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente)
+
+    Me.PopupMenu menu
+
 End Sub
 
 
 Private Sub gridOrdenes_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 And liquidaciones.count > 0 Then
-        Set LiquidacionCaja = liquidaciones.item(RowBuffer.RowIndex)
-        If LiquidacionCaja.estado = EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada Then
-            RowBuffer.CellStyle(9) = "Aprobada"
-        ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_Anulada Then
-            RowBuffer.RowStyle = "Anulada"
+    Dim LiquidacionFila As clsLiquidacionCaja
 
-            RowBuffer.CellStyle(9) = "Anulada"
-        ElseIf LiquidacionCaja.estado = EstadoLiquidacionCaja_pendiente Then
-            RowBuffer.CellStyle(9) = "Pendiente"
-        End If
+    If RowBuffer.RowIndex < 1 Then Exit Sub
+    If liquidaciones Is Nothing Then Exit Sub
+    If RowBuffer.RowIndex > liquidaciones.count Then Exit Sub
+
+    Set LiquidacionFila = liquidaciones.item(RowBuffer.RowIndex)
+
+    If LiquidacionFila.estado = EstadoLiquidacionCaja_Aprobada Then
+        RowBuffer.CellStyle(9) = "Aprobada"
+
+    ElseIf LiquidacionFila.estado = EstadoLiquidacionCaja_Anulada Then
+        RowBuffer.RowStyle = "Anulada"
+        RowBuffer.CellStyle(9) = "Anulada"
+
+    ElseIf LiquidacionFila.estado = EstadoLiquidacionCaja_pendiente Then
+        RowBuffer.CellStyle(9) = "Pendiente"
     End If
+
 End Sub
 
 
 Private Sub gridOrdenes_SelectionChange()
-    On Error Resume Next
-    Set LiquidacionCaja = liquidaciones.item(gridOrdenes.RowIndex(gridOrdenes.row))
+    SeleccionarLiquidacion
+    
 End Sub
 
 
-Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And liquidaciones.count > 0 Then
+Private Sub gridOrdenes_UnboundReadData(ByVal RowIndex As Long, _
+                                        ByVal Bookmark As Variant, _
+                                        ByVal Values As GridEX20.JSRowData)
 
-        Set LiquidacionCaja = liquidaciones.item(RowIndex)
+    Dim LiquidacionFila As clsLiquidacionCaja
 
-        Values(1) = LiquidacionCaja.NumeroLiq
-        Values(2) = LiquidacionCaja.FEcha
+    If liquidaciones Is Nothing Then Exit Sub
+    If RowIndex < 1 Or RowIndex > liquidaciones.count Then Exit Sub
 
-        Values(3) = LiquidacionCaja.moneda.NombreCorto
+    Set LiquidacionFila = liquidaciones.item(RowIndex)
 
-        Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes)), "$", "")
-        Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalRetenido)), "$", "")
-        Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales(LiquidacionCaja.StaticTotalOrigenes + LiquidacionCaja.StaticTotalRetenido)), "$", "")
+    Values(1) = LiquidacionFila.NumeroLiq
+    Values(2) = LiquidacionFila.FEcha
+    Values(3) = LiquidacionFila.moneda.NombreCorto
 
-        If LiquidacionCaja.EsParaFacturaProveedor Then
-            Set fac = LiquidacionCaja.FacturasProveedor.item(1)
-            Values(7) = "Factura Proveedor"
-            Values(8) = "VARIOS"
-        Else
-            Values(7) = "Cuenta Contable"
-            If IsSomething(LiquidacionCaja.CuentaContable) Then
-                Values(8) = LiquidacionCaja.CuentaContable.nombre & " (" & LiquidacionCaja.CuentaContable.codigo & ")"
-            End If
+    Values(4) = Replace(FormatCurrency(funciones.FormatearDecimales( _
+                    LiquidacionFila.StaticTotalOrigenes)), "$", "")
+
+    Values(5) = Replace(FormatCurrency(funciones.FormatearDecimales( _
+                    LiquidacionFila.StaticTotalRetenido)), "$", "")
+
+    Values(6) = Replace(FormatCurrency(funciones.FormatearDecimales( _
+                    LiquidacionFila.StaticTotalOrigenes + _
+                    LiquidacionFila.StaticTotalRetenido)), "$", "")
+
+    If LiquidacionFila.EsParaFacturaProveedor Then
+        Set fac = LiquidacionFila.FacturasProveedor.item(1)
+        Values(7) = "Factura Proveedor"
+        Values(8) = "VARIOS"
+    Else
+        Values(7) = "Cuenta Contable"
+
+        If IsSomething(LiquidacionFila.CuentaContable) Then
+            Values(8) = LiquidacionFila.CuentaContable.nombre & _
+                        " (" & LiquidacionFila.CuentaContable.codigo & ")"
         End If
-
-        Values(9) = enums.EnumEstadoOrdenPago(LiquidacionCaja.estado)
     End If
+
+    Values(9) = enums.EnumEstadoOrdenPago(LiquidacionFila.estado)
+
 End Sub
 
 Private Sub mnuAnular_Click()
+
+If Not SeleccionarLiquidacion() Then Exit Sub
+
     If MsgBox("øDesea anular la LiquidaciÛn?", vbQuestion + vbYesNo) = vbYes Then
         If DAOLiquidacionCaja.Delete(LiquidacionCaja.Id, True) Then
             MsgBox "AnulaciÛn Exitosa.", vbInformation + vbOKOnly
@@ -691,6 +718,9 @@ End Sub
 
 
 Private Sub mnuAprobar_Click()
+
+If Not SeleccionarLiquidacion() Then Exit Sub
+
     If DAOLiquidacionCaja.aprobar(LiquidacionCaja, True) Then
         MsgBox "AprobaciÛn Èxitosa!", vbInformation + vbOKOnly
         Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
@@ -702,13 +732,20 @@ Private Sub mnuAprobar_Click()
 End Sub
 
 Private Sub mnuEditar_Click()
-        Dim f22 As New frmAdminPagosLiqCajaListaDG
-        f22.Show
-        f22.Cargar LiquidacionCaja
+    Dim f22 As New frmAdminPagosLiqCajaListaDG
+
+    If Not SeleccionarLiquidacion() Then Exit Sub
+
+    f22.Show
+    f22.Cargar LiquidacionCaja
+
 End Sub
 
 
 Private Sub mnuImprimir_Click()
+
+If Not SeleccionarLiquidacion() Then Exit Sub
+
     On Error GoTo err4
     '''gridOrdenes_SelectionChange
     
@@ -723,6 +760,9 @@ End Sub
 
 Private Sub mnuVer_Click()
     Dim f22 As New frmAdminPagosLiqCajaListaDG
+
+    If Not SeleccionarLiquidacion() Then Exit Sub
+
     f22.Show
     f22.ReadOnly = True
     f22.Cargar LiquidacionCaja
@@ -734,3 +774,26 @@ Private Property Get ISuscriber_id() As String
     ISuscriber_id = ids
 End Property
 
+
+Private Function SeleccionarLiquidacion() As Boolean
+    On Error GoTo ManejarError
+
+    Dim posicion As Long
+
+    If liquidaciones Is Nothing Then Exit Function
+    If liquidaciones.count = 0 Then Exit Function
+
+    posicion = Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+
+    If posicion < 1 Or posicion > liquidaciones.count Then
+        Exit Function
+    End If
+
+    Set LiquidacionCaja = liquidaciones.item(posicion)
+    SeleccionarLiquidacion = True
+    Exit Function
+
+ManejarError:
+    Set LiquidacionCaja = Nothing
+    SeleccionarLiquidacion = False
+End Function
