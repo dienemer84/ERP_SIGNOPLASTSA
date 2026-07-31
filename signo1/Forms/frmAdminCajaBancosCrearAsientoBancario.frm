@@ -18,7 +18,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin XtremeSuiteControls.PushButton cmdCrear 
       Height          =   495
       Left            =   7800
-      TabIndex        =   19
+      TabIndex        =   15
       Top             =   9480
       Width           =   2055
       _Version        =   786432
@@ -31,7 +31,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1095
       Left            =   120
-      TabIndex        =   12
+      TabIndex        =   26
       Top             =   8280
       Width           =   9735
       _Version        =   786432
@@ -43,7 +43,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.FlatEdit FlatEdit1 
          Height          =   735
          Left            =   240
-         TabIndex        =   13
+         TabIndex        =   14
          Top             =   240
          Width           =   9255
          _Version        =   786432
@@ -56,7 +56,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin XtremeSuiteControls.GroupBox grpTipo 
       Height          =   735
       Left            =   120
-      TabIndex        =   8
+      TabIndex        =   24
       Top             =   120
       Width           =   9735
       _Version        =   786432
@@ -77,7 +77,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.RadioButton RadioButton3 
          Height          =   375
          Left            =   6720
-         TabIndex        =   24
+         TabIndex        =   2
          Top             =   240
          Width           =   2655
          _Version        =   786432
@@ -99,7 +99,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.RadioButton RadioButton2 
          Height          =   375
          Left            =   3720
-         TabIndex        =   10
+         TabIndex        =   1
          Top             =   240
          Width           =   1575
          _Version        =   786432
@@ -121,7 +121,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.RadioButton RadioButton1 
          Height          =   375
          Left            =   240
-         TabIndex        =   9
+         TabIndex        =   0
          Top             =   240
          Width           =   1575
          _Version        =   786432
@@ -145,7 +145,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Height          =   7215
       Index           =   0
       Left            =   120
-      TabIndex        =   0
+      TabIndex        =   16
       Top             =   960
       Width           =   9735
       _Version        =   786432
@@ -166,7 +166,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.PushButton btnClearCtaBancariaDestino 
          Height          =   375
          Left            =   7680
-         TabIndex        =   26
+         TabIndex        =   8
          Top             =   1895
          Width           =   375
          _Version        =   786432
@@ -179,7 +179,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.ComboBox cboCuentaBancariaDestino 
          Height          =   315
          Left            =   2160
-         TabIndex        =   25
+         TabIndex        =   7
          Top             =   1920
          Width           =   5415
          _Version        =   786432
@@ -192,7 +192,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.PushButton btnClearCtaBancaria 
          Height          =   375
          Left            =   7680
-         TabIndex        =   20
+         TabIndex        =   6
          Top             =   1440
          Width           =   375
          _Version        =   786432
@@ -205,7 +205,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.ComboBox cboCuentasBancarias 
          Height          =   315
          Left            =   2160
-         TabIndex        =   18
+         TabIndex        =   5
          Top             =   1470
          Width           =   5415
          _Version        =   786432
@@ -218,7 +218,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.PushButton btnClearCtaContable 
          Height          =   375
          Left            =   7680
-         TabIndex        =   23
+         TabIndex        =   10
          Top             =   2760
          Width           =   375
          _Version        =   786432
@@ -231,7 +231,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.ComboBox cboCuentasContables 
          Height          =   315
          Left            =   2160
-         TabIndex        =   21
+         TabIndex        =   9
          Top             =   2790
          Width           =   5415
          _Version        =   786432
@@ -244,7 +244,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.DateTimePicker dtpFecha 
          Height          =   330
          Left            =   2160
-         TabIndex        =   15
+         TabIndex        =   4
          Top             =   900
          Width           =   1245
          _Version        =   786432
@@ -257,7 +257,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.ComboBox cboMonedas 
          Height          =   315
          Left            =   2160
-         TabIndex        =   17
+         TabIndex        =   3
          Top             =   360
          Width           =   1245
          _Version        =   786432
@@ -271,7 +271,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       Begin XtremeSuiteControls.GroupBox grpOrigen 
          Height          =   3855
          Left            =   120
-         TabIndex        =   22
+         TabIndex        =   29
          Top             =   3240
          Width           =   9495
          _Version        =   786432
@@ -292,7 +292,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
          Begin XtremeSuiteControls.GroupBox GroupBox3 
             Height          =   2055
             Left            =   120
-            TabIndex        =   33
+            TabIndex        =   34
             Top             =   1680
             Width           =   9255
             _Version        =   786432
@@ -304,7 +304,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
             Begin GridEX20.GridEX gridChequesPropios 
                Height          =   1575
                Left            =   120
-               TabIndex        =   34
+               TabIndex        =   13
                Top             =   360
                Width           =   8970
                _ExtentX        =   15822
@@ -345,7 +345,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
          Begin XtremeSuiteControls.GroupBox GroupBox2 
             Height          =   1335
             Left            =   120
-            TabIndex        =   28
+            TabIndex        =   31
             Top             =   240
             Width           =   9255
             _Version        =   786432
@@ -358,7 +358,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
                Alignment       =   1  'Right Justify
                Height          =   315
                Left            =   1920
-               TabIndex        =   30
+               TabIndex        =   11
                Top             =   360
                Width           =   2055
             End
@@ -366,7 +366,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
                Alignment       =   1  'Right Justify
                Height          =   285
                Left            =   1920
-               TabIndex        =   29
+               TabIndex        =   12
                Top             =   840
                Width           =   2055
             End
@@ -375,7 +375,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
                Caption         =   "Monto"
                Height          =   255
                Left            =   120
-               TabIndex        =   32
+               TabIndex        =   33
                Top             =   390
                Width           =   1695
             End
@@ -384,7 +384,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
                Caption         =   "Comprobante"
                Height          =   255
                Left            =   0
-               TabIndex        =   31
+               TabIndex        =   32
                Top             =   855
                Width           =   1815
             End
@@ -394,7 +394,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
          Height          =   375
          Index           =   1
          Left            =   720
-         TabIndex        =   27
+         TabIndex        =   30
          Top             =   1860
          Width           =   1335
          _Version        =   786432
@@ -414,7 +414,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
          Height          =   255
          Index           =   1
          Left            =   1080
-         TabIndex        =   16
+         TabIndex        =   28
          Top             =   390
          Width           =   975
          _Version        =   786432
@@ -428,7 +428,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
          Height          =   375
          Index           =   2
          Left            =   1200
-         TabIndex        =   14
+         TabIndex        =   27
          Top             =   885
          Width           =   855
          _Version        =   786432
@@ -442,7 +442,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
          Height          =   375
          Index           =   0
          Left            =   720
-         TabIndex        =   11
+         TabIndex        =   25
          Top             =   1420
          Width           =   1335
          _Version        =   786432
@@ -456,7 +456,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
          Height          =   375
          Index           =   0
          Left            =   120
-         TabIndex        =   1
+         TabIndex        =   17
          Top             =   2760
          Width           =   1935
          _Version        =   786432
@@ -470,7 +470,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
       Left            =   10080
-      TabIndex        =   2
+      TabIndex        =   18
       Top             =   5880
       Width           =   3465
       _ExtentX        =   6112
@@ -508,7 +508,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   1695
       Left            =   10080
-      TabIndex        =   3
+      TabIndex        =   19
       Top             =   4080
       Width           =   4185
       _ExtentX        =   7382
@@ -545,7 +545,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin GridEX20.GridEX gridMonedas 
       Height          =   1815
       Left            =   10080
-      TabIndex        =   4
+      TabIndex        =   20
       Top             =   7800
       Width           =   4260
       _ExtentX        =   7514
@@ -582,7 +582,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin GridEX20.GridEX gridChequesDisponibles 
       Height          =   1905
       Left            =   10080
-      TabIndex        =   5
+      TabIndex        =   21
       Top             =   2040
       Width           =   5955
       _ExtentX        =   10504
@@ -625,7 +625,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin GridEX20.GridEX gridChequeras 
       Height          =   1815
       Left            =   360
-      TabIndex        =   6
+      TabIndex        =   22
       Top             =   10200
       Width           =   4035
       _ExtentX        =   7117
@@ -663,7 +663,7 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
    Begin GridEX20.GridEX gridChequesChequera 
       Height          =   1710
       Left            =   10080
-      TabIndex        =   7
+      TabIndex        =   23
       Top             =   240
       Width           =   1980
       _ExtentX        =   3493
@@ -731,6 +731,7 @@ Private cheque As cheque
 Private tmpChequera As chequera
 Private chequesChequeraSeleccionada As New Collection
 Public ReadOnly As Boolean
+Private formateandoMonto As Boolean
 
 
 Private Sub btnClearCtaContable_Click()
@@ -811,14 +812,20 @@ Private Sub cmdCrear_Click()
     Comprobante = Trim$(Me.txtComprobante.Text)
 
     If LenB(Trim$(Me.txtMonto.Text)) > 0 Then
-        If Not IsNumeric(Me.txtMonto.Text) Then
-            MsgBox "Debe ingresar un monto válido.", vbExclamation
+    
+        If Not TextoAMonto(Me.txtMonto.Text, Monto) Then
+    
+            MsgBox "Debe ingresar un monto válido.", _
+                   vbExclamation
+    
             Exit Sub
+    
         End If
-
-        Monto = CDbl(Me.txtMonto.Text)
+    
     Else
+    
         Monto = 0
+    
     End If
 
     ' Limpio operaciones para reconstruirlas según el tipo de movimiento
@@ -2001,3 +2008,186 @@ err1:
 End Sub
 
 
+Private Function SoloDigitos(ByVal texto As String) As String
+
+    Dim i As Long
+    Dim caracter As String
+    Dim resultado As String
+
+    resultado = vbNullString
+
+    For i = 1 To Len(texto)
+
+        caracter = Mid$(texto, i, 1)
+
+        If caracter >= "0" And caracter <= "9" Then
+            resultado = resultado & caracter
+        End If
+
+    Next i
+
+    SoloDigitos = resultado
+
+End Function
+
+
+Private Function FormatearEnteroMiles( _
+    ByVal texto As String _
+) As String
+
+    Dim i As Long
+    Dim contador As Long
+    Dim resultado As String
+
+    texto = SoloDigitos(texto)
+
+    'Eliminar ceros innecesarios al principio
+    Do While Len(texto) > 1 And Left$(texto, 1) = "0"
+        texto = Mid$(texto, 2)
+    Loop
+
+    If Len(texto) = 0 Then
+        texto = "0"
+    End If
+
+    resultado = vbNullString
+    contador = 0
+
+    For i = Len(texto) To 1 Step -1
+
+        resultado = Mid$(texto, i, 1) & resultado
+        contador = contador + 1
+
+        If contador Mod 3 = 0 And i > 1 Then
+            resultado = "." & resultado
+        End If
+
+    Next i
+
+    FormatearEnteroMiles = resultado
+
+End Function
+
+Private Function TextoAMonto( _
+    ByVal texto As String, _
+    ByRef valor As Double _
+) As Boolean
+
+    On Error GoTo err1
+
+    texto = Trim$(texto)
+
+    If LenB(texto) = 0 Then
+        valor = 0
+        TextoAMonto = True
+        Exit Function
+    End If
+
+    'Eliminar los puntos de miles
+    texto = Replace$(texto, ".", vbNullString)
+
+    'Val siempre interpreta el punto como decimal
+    texto = Replace$(texto, ",", ".")
+
+    valor = val(texto)
+
+    TextoAMonto = True
+    Exit Function
+
+err1:
+    valor = 0
+    TextoAMonto = False
+
+End Function
+
+
+Private Sub txtMonto_Change()
+
+    If formateandoMonto Then Exit Sub
+
+    On Error GoTo salir
+
+    formateandoMonto = True
+
+    Dim texto As String
+    Dim parteEntera As String
+    Dim parteDecimal As String
+    Dim nuevoTexto As String
+
+    Dim posicionComa As Long
+    Dim tieneComa As Boolean
+
+    texto = Trim$(Me.txtMonto.Text)
+
+    If LenB(texto) = 0 Then GoTo salir
+
+    posicionComa = InStr(1, texto, ",")
+    tieneComa = (posicionComa > 0)
+
+    If tieneComa Then
+
+        parteEntera = Left$(texto, posicionComa - 1)
+        parteDecimal = Mid$(texto, posicionComa + 1)
+
+    Else
+
+        parteEntera = texto
+        parteDecimal = vbNullString
+
+    End If
+
+    parteEntera = SoloDigitos(parteEntera)
+    parteDecimal = SoloDigitos(parteDecimal)
+
+    'Máximo dos decimales
+    If Len(parteDecimal) > 2 Then
+        parteDecimal = Left$(parteDecimal, 2)
+    End If
+
+    nuevoTexto = FormatearEnteroMiles(parteEntera)
+
+    If tieneComa Then
+        nuevoTexto = nuevoTexto & "," & parteDecimal
+    End If
+
+    Me.txtMonto.Text = nuevoTexto
+
+    'Dejar el cursor al final
+    Me.txtMonto.SelStart = Len(Me.txtMonto.Text)
+
+salir:
+    formateandoMonto = False
+    
+End Sub
+
+Private Sub txtMonto_KeyPress(KeyAscii As Integer)
+
+    Select Case KeyAscii
+
+        'Backspace
+        Case 8
+
+        'Números
+        Case 48 To 57
+
+        'Coma o punto decimal
+        Case 44, 46
+
+            'Solo permitir un separador decimal
+            If InStr(1, Me.txtMonto.Text, ",") > 0 Then
+                KeyAscii = 0
+            Else
+                'Convertir el punto en coma
+                KeyAscii = 44
+            End If
+
+        'Pegar con Ctrl+V
+        Case 22
+
+        Case Else
+            KeyAscii = 0
+
+    End Select
+
+
+End Sub

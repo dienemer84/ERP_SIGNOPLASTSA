@@ -1022,11 +1022,11 @@ Private Sub CreateRibbonBar()
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Ctas. Ctes. Clientes", ID_GROUP.ID_GROUP_ADMINISTRACION__CUENTAS_CORRIENTES)
 
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Cta. Cte. Clientes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES, , , xtpControlButtonPopup)
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Cta. Cte. Clientes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES, Permisos.AdminCtaCteControl, , xtpControlButtonPopup)
     AddButton ribbonGroup, "Ver Detalle de Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__MOVIMIENTOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CTAS_CTES__SALDOS, Permisos.AdminCtaCteControl, , , cmdBarCtrl
 
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Informes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Informes", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, Permisos.AdminCtaCteControl, , xtpControlButtonPopup)
     AddButton ribbonGroup, "Por cliente", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_CLIENTE, Permisos.AdminInformesVarios, , , cmdBarCtrl
     AddButton ribbonGroup, "Por período", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES_PERIODO, Permisos.AdminInformesVarios, , , cmdBarCtrl
     AddButton ribbonGroup, "Cashflow", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__DEUDORES, Permisos.AdminFacturaConsultas, , , cmdBarCtrl
@@ -1048,42 +1048,42 @@ Private Sub CreateRibbonBar()
 
 
     '''' MOVIMIENTOS DE CAJA Y BANCOS
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Movimientos de Caja y Bancos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS, , , xtpControlButtonPopup)
-    AddButton ribbonGroup, "Cargar nuevo Movimiento", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ASIENTO_BANCARIO, , , , cmdBarCtrl
-    AddButton ribbonGroup, "Ver Listado de Movimientos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_ASIENTO_BANCARIO, , , , cmdBarCtrl
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Movimientos de Caja y Bancos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS, Permisos.AdminOPConsultas, , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Cargar nuevo Movimiento", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ASIENTO_BANCARIO, Permisos.AdminOPConsultas, , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Listado de Movimientos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_ASIENTO_BANCARIO, Permisos.AdminOPConsultas, , , cmdBarCtrl
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Pagos", ID_GROUP.ID_GROUP_ADMINISTRACION__VARIOS)
 
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
-    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA_DG, , , , cmdBarCtrl
-    AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, , , , cmdBarCtrl
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Liquidaciones de Caja", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, Permisos.AdminOPConsultas, , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Crear Liquidación", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_LIQUIDACION_CAJA_DG, Permisos.AdminOPConsultas, , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Listado de Liquidaciones", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__LISTA_LIQUIDACION_CAJA, Permisos.AdminOPConsultas, , , cmdBarCtrl
 
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, Permisos.AdminOPConsultas, , xtpControlButtonPopup)
     AddButton ribbonGroup, "Crear Orden Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_ORDEN_PAGO, Permisos.AdminOPControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Listado de Ordenes de Pago", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__ORDEN_PAGO_LISTA, Permisos.AdminOPConsultas, , , cmdBarCtrl
 
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Pagos a Cuenta", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, , , xtpControlButtonPopup)
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Pagos a Cuenta", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__INFORMES, Permisos.AdminOPConsultas, , xtpControlButtonPopup)
     AddButton ribbonGroup, "Crear Pago a Cuenta", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__CREAR_PAGO_A_CTA, Permisos.AdminOPControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Ver Listado de Pagos a Cuenta", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__PAGO_A_CTA_LISTA, Permisos.AdminOPConsultas, , , cmdBarCtrl
 
     AddButton ribbonGroup, "Transferencias", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__TRANSFERENCIAS, Permisos.AdminCajayBancos
     AddButton ribbonGroup, "Resúmen de pagos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__RESUMEN_PAGOS, Permisos.AdminOPConsultas
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Compras", ID_GROUP.ID_GROUP_ADMINISTRACION__COMPRAS)
-    AddButton ribbonGroup, "Ingresar Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA
-    AddButton ribbonGroup, "Listado Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO
+    AddButton ribbonGroup, "Ingresar Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__NUEVA, Permisos.AdminCentroCambio
+    AddButton ribbonGroup, "Listado Comprobante", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__LISTADO, Permisos.AdminCentroCambio
 
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Plan de cuentas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS, , , xtpControlButtonPopup)
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Plan de cuentas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS, Permisos.AdminCentroCambio, , xtpControlButtonPopup)
     AddButton ribbonGroup, "Ver", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_VER, , , , cmdBarCtrl
     AddButton ribbonGroup, "Definir", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__PLAN_DE_CUENTAS_DEFINIR, , , , cmdBarCtrl
 
-    AddButton ribbonGroup, "Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__CTA_CTE
-    AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS
+    AddButton ribbonGroup, "Cta. Cte.", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__CTA_CTE, Permisos.AdminCentroCambio
+    AddButton ribbonGroup, "Resúmen Saldos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COMPRAS__RESUMEN__SALDOS, Permisos.AdminCentroCambio
 
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Varios", ID_GROUP.ID_GROUP_ADMINISTRACION__VARIOS)
     AddButton ribbonGroup, "Padrones IIBB", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__PADRON_IIBB, Permisos.AdminIIBB
     AddButton ribbonGroup, "Centro de cambio", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__CENTRO_CAMBIO, Permisos.AdminCentroCambio
 
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Subdiarios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS, , , xtpControlButtonPopup)
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Subdiarios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS, Permisos.AdminFacturaControl, , xtpControlButtonPopup)
     AddButton ribbonGroup, "IVA Ventas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_VENTAS, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
     AddButton ribbonGroup, "IVA Compras", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_IVACOMPRAS, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
     AddButton ribbonGroup, "Cobranzas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__VARIOS__SUBDIARIOS_COBRANZAS, Permisos.AdminSubdiariosControl, , , cmdBarCtrl
@@ -1120,8 +1120,6 @@ Private Sub CreateRibbonBar()
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Agenda", ID_GROUP.ID_GROUP_CLIENTES_PROVEEDORES__AGENDA)
     'AddButton ribbonGroup, "Nuevo", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__NUEVO
     AddButton ribbonGroup, "Ver", ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__AGENDA__VER
-
-
 
 
     'USUARIO--------------------------------------------------------------------------------------------------------------------
@@ -1238,7 +1236,7 @@ Private Sub VerificarActualizacionAntesDelLogin()
     Dim datosServidor() As String
     Dim ip As String
     Dim puerto As String
-    Dim idNueva As Long
+    Dim idnueva As Long
     Dim actualizador As classSignoplast
 
     If funciones.InIDE Then Exit Sub
@@ -1265,7 +1263,7 @@ Private Sub VerificarActualizacionAntesDelLogin()
 
     Set actualizador = New classSignoplast
 
-    If actualizador.VerificarSiHayActualizacion(idNueva) Then
+    If actualizador.VerificarSiHayActualizacion(idnueva) Then
 
         If MsgBox( _
             "Hay una nueva actualización del sistema." & vbNewLine & _
@@ -1274,7 +1272,7 @@ Private Sub VerificarActualizacionAntesDelLogin()
             "Actualización disponible") = vbYes Then
 
             frmTip.Show 1
-            actualizador.actualizarSistema CLng(idNueva)
+            actualizador.actualizarSistema CLng(idnueva)
 
             'Si la actualización fue correcta,
             'actualizarSistema cierra la aplicación.
