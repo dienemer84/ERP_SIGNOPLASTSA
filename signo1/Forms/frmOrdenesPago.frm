@@ -739,6 +739,8 @@ Private Sub llenarLista()
     
     Set ordenes = DAOOrdenPago.FindAll(filter, "ordenes_pago.id DESC")
     
+    Me.gridOrdenes.ItemCount = 0
+    
     Me.gridOrdenes.ItemCount = ordenes.count
 
     Me.caption = "Listado de OP" & " [Cant: " & ordenes.count & "]"
@@ -753,6 +755,7 @@ ManejaError:
     Err.Clear
 
     conectar.MostrarErrorBaseDatos numeroError, descripcionError
+    
 End Sub
 
 

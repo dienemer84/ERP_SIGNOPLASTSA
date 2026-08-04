@@ -805,7 +805,13 @@ Private Sub cmdCrear_Click()
     Set AsientoContable.moneda = _
         DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
 
-    AsientoContable.FEcha = Me.dtpFecha.value
+
+    AsientoContable.FEcha = _
+        DateSerial( _
+            Year(Me.dtpFecha.value), _
+            Month(Me.dtpFecha.value), _
+            Day(Me.dtpFecha.value))
+    
     AsientoContable.Observaciones = Trim$(Me.FlatEdit1.Text)
     AsientoContable.idUsuario = funciones.GetUserObj.Id
 
@@ -1926,7 +1932,7 @@ Private Function CrearOperacionBancaria( _
     op.Pertenencia = OrigenOperacion.Banco
     op.Monto = Monto
     op.Comprobante = Comprobante
-    op.FechaOperacion = Me.dtpFecha.value
+    op.FechaOperacion = AsientoContable.FEcha
     op.EntradaSalida = EntradaSalida
 
     Set op.CuentaBancaria = cuenta

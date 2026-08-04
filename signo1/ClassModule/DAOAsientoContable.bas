@@ -89,13 +89,13 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
         '---------------------------------------------
         If op.TipoMovimiento = "TRANSFERENCIA" Then
 
-            If oper.entradaSalida = OPSalida Then
+            If oper.EntradaSalida = OPSalida Then
 
                 If IsSomething(oper.CuentaBancaria) Then
                     Set op.CuentaBancaria = oper.CuentaBancaria
                 End If
 
-            ElseIf oper.entradaSalida = OPEntrada Then
+            ElseIf oper.EntradaSalida = OPEntrada Then
 
                 If IsSomething(oper.CuentaBancaria) Then
                     Set op.CuentaBancariaDestino = oper.CuentaBancaria
@@ -200,29 +200,46 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
     Dim Nueva As Boolean
     Dim che As cheque
     Dim oper As operacion
-
+    Dim fechaMovimiento As Date
+    
     On Error GoTo E
 
     Nueva = False
+    
+    fechaMovimiento = _
+    DateSerial( _
+        Year(aContable.FEcha), _
+        Month(aContable.FEcha), _
+        Day(aContable.FEcha))
+        
 
     If aContable.Id = 0 Then
         Nueva = True
 
         q = "INSERT INTO movimientos_caja_bancos " _
-          & " (fecha, id_moneda, tipo_movimiento, id_cuentacontable, id_cuenta_bancaria_principal, estado, static_total_origen, creada, id_usuario, observaciones)" _
-          & " VALUES ('fecha', 'id_moneda', 'tipo_movimiento', 'id_cuentacontable', 'id_cuenta_bancaria_principal', 'estado', 'static_total_origen', NOW(), 'id_usuario', 'observaciones')"
-    Else
+          & " (tipo_movimiento, fecha, id_cuentacontable, " _
+          & " id_cuenta_bancaria_principal, estado, " _
+          & " static_total_origen, creada, id_usuario, observaciones)" _
+          & " VALUES ('tipo_movimiento', 'fecha', " _
+          & " 'id_cuentacontable', " _
+          & " 'id_cuenta_bancaria_principal', " _
+          & " 'estado', 'static_total_origen', NOW(), " _
+          & " 'id_usuario', 'observaciones')"
+          Else
         q = "UPDATE movimientos_caja_bancos" _
-          & " SET fecha = 'fecha', id_moneda = 'id_moneda', tipo_movimiento = 'tipo_movimiento'," _
+          & " SET tipo_movimiento = 'tipo_movimiento'," _
+          & " fecha = 'fecha'," _
           & " id_cuentacontable = 'id_cuentacontable'," _
-          & " id_cuenta_bancaria_principal = 'id_cuenta_bancaria_principal'," _
+          & " id_cuenta_bancaria_principal = " _
+          & " 'id_cuenta_bancaria_principal'," _
           & " estado = 'estado'," _
           & " static_total_origen = 'static_total_origen'," _
           & " id_usuario = 'id_usuario'," _
           & " observaciones = 'observaciones'" _
           & " WHERE id = 'id'"
-
+        
         q = Replace(q, "'id'", GetEntityId(aContable))
+        
     End If
     
     
@@ -239,14 +256,35 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
         q = Replace(q, "'id_cuentacontable'", "NULL")
     End If
     
-    q = Replace(q, "'fecha'", Escape(aContable.FEcha))
-    q = Replace(q, "'id_moneda'", Escape(aContable.moneda.Id))
-    q = Replace(q, "'tipo_movimiento'", Escape(aContable.TipoMovimiento))
-    q = Replace(q, "'id_usuario'", Escape(aContable.idUsuario))
-    q = Replace(q, "'estado'", Escape(aContable.estado))
-    q = Replace(q, "'static_total_origen'", Escape(aContable.StaticTotalOrigenes))
-
-    q = Replace(q, "'observaciones'", Escape(aContable.Observaciones))
+    q = Replace( _
+            q, _
+            "'tipo_movimiento'", _
+            Escape(aContable.TipoMovimiento))
+    
+    q = Replace( _
+            q, _
+            "'fecha'", _
+            Escape(fechaMovimiento))
+    
+    q = Replace( _
+            q, _
+            "'id_usuario'", _
+            Escape(aContable.idUsuario))
+    
+    q = Replace( _
+            q, _
+            "'estado'", _
+            Escape(aContable.estado))
+    
+    q = Replace( _
+            q, _
+            "'static_total_origen'", _
+            Escape(aContable.StaticTotalOrigenes))
+    
+    q = Replace( _
+            q, _
+            "'observaciones'", _
+            Escape(aContable.Observaciones))
 
     If Not conectar.execute(q) Then GoTo E
 
@@ -316,33 +354,57 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
         If Not conectar.execute(q) Then GoTo E
 
         For Each oper In aContable.operacionesBanco
+        
             oper.Id = 0
             oper.FechaCarga = Now
+            
+            'Sincronizar con la fecha del movimiento
+            oper.FechaOperacion = fechaMovimiento
 
             If DAOOperacion.Save(oper) Then
+            
                 oper.Id = conectar.UltimoId2
+                
                 If oper.Id = 0 Then GoTo E
 
                 q = "INSERT INTO movimientos_caja_bancos_operaciones VALUES (" & aContable.Id & ", " & oper.Id & ")"
+                
                 If Not conectar.execute(q) Then GoTo E
+                
             Else
+            
                 GoTo E
+                
             End If
+            
         Next oper
+        
 
         For Each oper In aContable.OperacionesCaja
+        
             oper.Id = 0
             oper.FechaCarga = Now
-
+        
+            'Sincronizar con la fecha del movimiento
+            oper.FechaOperacion = fechaMovimiento
+        
             If DAOOperacion.Save(oper) Then
+        
                 oper.Id = conectar.UltimoId2
+        
                 If oper.Id = 0 Then GoTo E
-
-                q = "INSERT INTO movimientos_caja_bancos_operaciones VALUES (" & aContable.Id & ", " & oper.Id & ")"
+        
+                q = "INSERT INTO movimientos_caja_bancos_operaciones " _
+                  & "VALUES (" & aContable.Id & ", " & oper.Id & ")"
+        
                 If Not conectar.execute(q) Then GoTo E
+        
             Else
+        
                 GoTo E
+        
             End If
+        
         Next oper
 
     End If
@@ -379,7 +441,7 @@ If LenB(filtro) > 0 Then
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
         Set d = New DTONombreMonto
-        d.monto = rs!monto
+        d.Monto = rs!Monto
         d.nombre = rs!nombre
         Cheques.Add d
         rs.MoveNext
@@ -402,7 +464,7 @@ If LenB(filtro) > 0 Then
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
         Set d = New DTONombreMonto
-        d.monto = rs!monto
+        d.Monto = rs!Monto
         d.nombre = rs!nombre
         caja.Add d
         rs.MoveNext
@@ -423,7 +485,7 @@ If LenB(filtro) > 0 Then
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
         Set d = New DTONombreMonto
-        d.monto = rs!monto
+        d.Monto = rs!Monto
 
         If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
 
@@ -446,7 +508,7 @@ If LenB(filtro) > 0 Then
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
         Set d = New DTONombreMonto
-        d.monto = rs!monto
+        d.Monto = rs!Monto
         If Not IsNull(rs!numero_factura) Then d.nombre = rs!numero_factura Else d.nombre = vbNullString
 
         comp.Add d
@@ -464,7 +526,7 @@ If LenB(filtro) > 0 Then
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
         Set d = New DTONombreMonto
-        d.monto = rs!monto
+        d.Monto = rs!Monto
         d.nombre = rs!nombre
         retenciones.Add d
         rs.MoveNext
@@ -487,7 +549,7 @@ If LenB(filtro) > 0 Then
     Set rs = conectar.RSFactory(q)
     While Not rs.EOF And Not rs.BOF
         Set d = New DTONombreMonto
-        d.monto = rs!monto
+        d.Monto = rs!Monto
         If Not IsNull(rs!nombre) Then d.nombre = rs!nombre Else d.nombre = vbNullString
         cheques3.Add d
         rs.MoveNext
@@ -742,7 +804,7 @@ Public Function PrintMovimiento(aContable As clsAsientoContable) As Boolean
     For Each cheq In aContable.ChequesPropios
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.monto)), "$", "")
+        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.Banco.nombre & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "")
     Next cheq
     
     If c = 0 Then
@@ -759,7 +821,7 @@ Public Function PrintMovimiento(aContable As clsAsientoContable) As Boolean
     For Each cheq In aContable.ChequesTerceros
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
+        Printer.Print "Cheque Nro: " & cheq.numero & " | " & cheq.FechaVencimiento & " | " & cheq.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(cheq.Monto)), "$", "") & " | " & cheq.Banco.nombre & String$(16, " ")
     Next cheq
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -782,7 +844,7 @@ Public Function PrintMovimiento(aContable As clsAsientoContable) As Boolean
         
         Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
         
-        Printer.Print "Comprobante Nro: " & op.comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.monto)), "$", "") & " | " & ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
+        Printer.Print "Comprobante Nro: " & op.Comprobante & " | " & op.FechaOperacion & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "") & " | " & ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
     
     Next op
     
@@ -801,7 +863,7 @@ Public Function PrintMovimiento(aContable As clsAsientoContable) As Boolean
     For Each op In aContable.OperacionesCaja
         c = c + 1
         Printer.CurrentX = lmargin + TAB1 + TAB2
-        Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.monto)), "$", "")
+        Printer.Print op.FechaOperacion & String$(8, " ") & " | " & op.moneda.NombreCorto & " " & Replace(FormatCurrency(funciones.FormatearDecimales(op.Monto)), "$", "")
     Next op
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2
@@ -997,13 +1059,13 @@ Public Function ExportarOrdenPago(OrdenPago As OrdenPago) As Boolean
             For Each cheq In OrdenPago.ChequesPropios
                 .Cells(offset, 1).value = cheq.numero
                 .Cells(offset, 2).value = cheq.Banco.nombre
-                .Cells(offset, 3).value = cheq.monto
+                .Cells(offset, 3).value = cheq.Monto
                 .Cells(offset, 4).value = cheq.moneda.NombreCorto
                 .Cells(offset, 5).value = ""
                 .Cells(offset, 6).value = cheq.FechaVencimiento
                 offset = offset + 1
                 
-                totalChequesPropios = totalChequesPropios + cheq.monto
+                totalChequesPropios = totalChequesPropios + cheq.Monto
                 
             Next cheq
                  ' Agregar fila con el totalizador
@@ -1040,13 +1102,13 @@ Public Function ExportarOrdenPago(OrdenPago As OrdenPago) As Boolean
             For Each cheq In OrdenPago.ChequesTerceros
                 .Cells(offset, 1).value = cheq.numero
                 .Cells(offset, 2).value = cheq.Banco.nombre
-                .Cells(offset, 3).value = cheq.monto
+                .Cells(offset, 3).value = cheq.Monto
                 .Cells(offset, 4).value = cheq.FechaVencimiento
                 .Cells(offset, 5).value = cheq.moneda.NombreCorto
 
                 offset = offset + 1
                 
-                totalChequesTerceros = totalChequesTerceros + cheq.monto
+                totalChequesTerceros = totalChequesTerceros + cheq.Monto
             Next cheq
             
             ' Agregar fila con el totalizador
@@ -1083,13 +1145,13 @@ Public Function ExportarOrdenPago(OrdenPago As OrdenPago) As Boolean
             For Each op In OrdenPago.operacionesBanco
                 Set ctabancaria = DAOCuentaBancaria.FindById(op.CuentaBancaria.Id)
                 
-                .Cells(offset, 1).value = op.comprobante
+                .Cells(offset, 1).value = op.Comprobante
                 .Cells(offset, 2).value = op.FechaOperacion
-                .Cells(offset, 3).value = op.monto
+                .Cells(offset, 3).value = op.Monto
                 .Cells(offset, 4).value = op.moneda.NombreCorto
                 .Cells(offset, 5).value = ctabancaria.Banco.nombre & " - " & op.CuentaBancaria.DescripcionFormateada
                 
-                totalTransferencias = totalTransferencias + op.monto
+                totalTransferencias = totalTransferencias + op.Monto
                 
                 offset = offset + 1
             Next op
@@ -1125,10 +1187,10 @@ Public Function ExportarOrdenPago(OrdenPago As OrdenPago) As Boolean
             For Each op In OrdenPago.OperacionesCaja
                 .Cells(offset, 1).value = op.FechaOperacion
                 .Cells(offset, 2).value = op.moneda.NombreCorto
-                .Cells(offset, 3).value = op.monto
+                .Cells(offset, 3).value = op.Monto
                 offset = offset + 1
                 
-                totalCaja = totalCaja + op.monto
+                totalCaja = totalCaja + op.Monto
                 
             Next op
             
