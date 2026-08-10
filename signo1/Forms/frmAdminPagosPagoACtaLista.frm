@@ -544,14 +544,17 @@ Begin VB.Form frmAdminPagosPagoACtaLista
       End
       Begin VB.Menu separador1 
          Caption         =   "-"
+         Visible         =   0   'False
       End
       Begin VB.Menu acccionesespeciales 
          Caption         =   "Acciones Especiales"
+         Visible         =   0   'False
          Begin VB.Menu Editarpagoacuenta 
             Caption         =   "Editar pago a cuenta"
          End
          Begin VB.Menu Eliminarpagoacuenta 
             Caption         =   "Eliminar pago a cuenta"
+            Visible         =   0   'False
          End
       End
    End

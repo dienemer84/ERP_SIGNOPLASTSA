@@ -3,7 +3,7 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.OCX"
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminPagosLiquidaciondeCajaLista 
-   Caption         =   "Listado de Liquidaciones de Caja"
+   Caption         =   "Liquidaciones de Caja"
    ClientHeight    =   10380
    ClientLeft      =   165
    ClientTop       =   555
@@ -594,7 +594,7 @@ Private Sub llenarLista()
     Set liquidaciones = DAOLiquidacionCaja.FindAll(filter, "liquidaciones_caja.id DESC")
     Me.gridOrdenes.ItemCount = liquidaciones.count
 
-    Me.caption = "Listado de Liquidaciones de Caja" & " [Cantidad: " & liquidaciones.count & "]"
+    Me.caption = "Liquidaciones de Caja" & " [Cantidad: " & liquidaciones.count & "]"
     
     Me.Label2.caption = "Liquidaciones de Caja mostradas " & " [Cantidad: " & liquidaciones.count & "]"
 

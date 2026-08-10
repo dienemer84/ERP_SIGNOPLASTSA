@@ -49,13 +49,25 @@ Public DiferenciaCambioEnTOTAL As Double
 Public staticTotalDeudaCompensatorios As Double
 Public StaticTotalPercepciones As Double
 
+
 Public Property Get StaticTotalPagosACta() As Double
+
     Dim pago As clsPagoACta
     Dim total As Double
+
+    total = 0
+
     For Each pago In Me.pagosacuenta
-        total = total + pago.TotalOrigenes
+
+        If Not pago Is Nothing Then
+            total = total + pago.StaticTotalOrigenes
+        End If
+
     Next pago
-    StaticTotalPagosACta = total
+
+    StaticTotalPagosACta = _
+        funciones.RedondearDecimales(total)
+
 End Property
 
 
