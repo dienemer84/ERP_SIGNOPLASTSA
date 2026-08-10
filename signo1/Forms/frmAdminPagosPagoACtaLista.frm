@@ -542,6 +542,18 @@ Begin VB.Form frmAdminPagosPagoACtaLista
       Begin VB.Menu mnuImprimir 
          Caption         =   "Imprimir"
       End
+      Begin VB.Menu separador1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu acccionesespeciales 
+         Caption         =   "Acciones Especiales"
+         Begin VB.Menu Editarpagoacuenta 
+            Caption         =   "Editar pago a cuenta"
+         End
+         Begin VB.Menu Eliminarpagoacuenta 
+            Caption         =   "Eliminar pago a cuenta"
+         End
+      End
    End
 End
 Attribute VB_Name = "frmAdminPagosPagoACtaLista"
@@ -614,6 +626,8 @@ End Sub
 Private Sub cmdLimpiaEstado_Click()
     Me.cboEstado.ListIndex = -1
 End Sub
+
+
 Private Sub Form_Load()
     Customize Me
     

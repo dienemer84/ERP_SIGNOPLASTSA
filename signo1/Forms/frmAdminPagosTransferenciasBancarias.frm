@@ -14,7 +14,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
    ScaleWidth      =   18082.37
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox 
-      Height          =   1815
+      Height          =   1695
       Index           =   0
       Left            =   120
       TabIndex        =   1
@@ -22,7 +22,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Width           =   17175
       _Version        =   786432
       _ExtentX        =   30295
-      _ExtentY        =   3201
+      _ExtentY        =   2990
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -39,7 +39,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          Height          =   1335
          Index           =   2
          Left            =   5760
-         TabIndex        =   25
+         TabIndex        =   21
          Top             =   240
          Width           =   3855
          _Version        =   786432
@@ -60,14 +60,14 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
          Begin VB.TextBox textbMayor 
             Height          =   315
             Left            =   120
-            TabIndex        =   27
+            TabIndex        =   23
             Top             =   720
             Width           =   1215
          End
          Begin VB.TextBox textbMenor 
             Height          =   315
             Left            =   2040
-            TabIndex        =   26
+            TabIndex        =   22
             Top             =   720
             Width           =   1215
          End
@@ -75,7 +75,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
             Height          =   255
             Index           =   0
             Left            =   1440
-            TabIndex        =   28
+            TabIndex        =   24
             Top             =   750
             Width           =   420
             _Version        =   786432
@@ -89,7 +89,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
             Height          =   255
             Index           =   1
             Left            =   3360
-            TabIndex        =   29
+            TabIndex        =   25
             Top             =   750
             Width           =   420
             _Version        =   786432
@@ -103,7 +103,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
             Height          =   255
             Index           =   5
             Left            =   2040
-            TabIndex        =   31
+            TabIndex        =   27
             Top             =   480
             Width           =   1695
             _Version        =   786432
@@ -116,7 +116,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
             Height          =   255
             Index           =   4
             Left            =   120
-            TabIndex        =   30
+            TabIndex        =   26
             Top             =   480
             Width           =   1215
             _Version        =   786432
@@ -151,9 +151,9 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       End
       Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   495
-         Left            =   14640
+         Left            =   14760
          TabIndex        =   10
-         Top             =   960
+         Top             =   1080
          Width           =   2295
          _Version        =   786432
          _ExtentX        =   4048
@@ -165,7 +165,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Begin XtremeSuiteControls.PushButton btnTraerDatos 
          Height          =   495
          Index           =   0
-         Left            =   14640
+         Left            =   14760
          TabIndex        =   2
          Top             =   240
          Width           =   2295
@@ -399,7 +399,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       Height          =   6495
       Left            =   120
       TabIndex        =   0
-      Top             =   3120
+      Top             =   2160
       Width           =   17175
       _ExtentX        =   30295
       _ExtentY        =   11456
@@ -436,66 +436,13 @@ Begin VB.Form frmAdminPagosTransferenciasBancarias
       ImageCount      =   0
       PrinterProperties=   "frmAdminPagosTransferenciasBancarias.frx":142C
    End
-   Begin XtremeSuiteControls.Label Label 
+   Begin VB.Label Label3 
+      Caption         =   "Label3"
       Height          =   255
-      Index           =   3
-      Left            =   240
-      TabIndex        =   24
-      Top             =   2760
-      Width           =   13575
-      _Version        =   786432
-      _ExtentX        =   23945
-      _ExtentY        =   450
-      _StockProps     =   79
-      Caption         =   "* Modificar el número de transferencia ingresado."
-   End
-   Begin XtremeSuiteControls.Label Label 
-      Height          =   255
-      Index           =   2
-      Left            =   360
-      TabIndex        =   23
-      Top             =   2520
-      Width           =   13575
-      _Version        =   786432
-      _ExtentX        =   23945
-      _ExtentY        =   450
-      _StockProps     =   79
-      Caption         =   "* Ver los Documentos de Pago (OP/LIQ/PCTA)."
-   End
-   Begin XtremeSuiteControls.Label Label 
-      Height          =   255
-      Index           =   1
-      Left            =   240
-      TabIndex        =   22
-      Top             =   2280
-      Width           =   17175
-      _Version        =   786432
-      _ExtentX        =   30295
-      _ExtentY        =   450
-      _StockProps     =   79
-      Caption         =   "Menú del boton derecho sobre cada transferencia:"
-   End
-   Begin XtremeSuiteControls.Label Label 
-      Height          =   255
-      Index           =   0
-      Left            =   240
-      TabIndex        =   21
-      Top             =   2040
-      Width           =   17175
-      _Version        =   786432
-      _ExtentX        =   30295
-      _ExtentY        =   450
-      _StockProps     =   79
-      Caption         =   "Se muestran las transferencias que están aplicadas a cada OP/Liquidación o Pago a cuenta"
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
+      Left            =   120
+      TabIndex        =   28
+      Top             =   1920
+      Width           =   5055
    End
    Begin VB.Menu menu 
       Caption         =   "menu"
@@ -589,6 +536,8 @@ Private Sub CompletarGridEx()
     GridEXHelper.AutoSizeColumns Me.gridTransferencias, True
 
     Me.caption = "Transferencias [Cantidad: " & transferencias.count & "]"
+    
+    Me.Label3.caption = "Transferencias mostradas [" & transferencias.count & "]"
   
 End Sub
 
@@ -656,6 +605,7 @@ Private Sub Form_Load()
     
     Me.gridTransferencias.ItemCount = 0
     
+    Me.Label3.caption = "Transferencias mostradas [" & transferencias.count & "]"
     
 End Sub
 

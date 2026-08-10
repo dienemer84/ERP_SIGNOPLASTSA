@@ -869,9 +869,9 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    End
    Begin GridEX20.GridEX gridBancos 
       Height          =   1845
-      Left            =   5040
+      Left            =   5160
       TabIndex        =   3
-      Top             =   11640
+      Top             =   12000
       Visible         =   0   'False
       Width           =   5745
       _ExtentX        =   10134
@@ -910,7 +910,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       Height          =   1695
       Left            =   5880
       TabIndex        =   4
-      Top             =   11640
+      Top             =   12000
       Visible         =   0   'False
       Width           =   6345
       _ExtentX        =   11192
@@ -948,7 +948,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       Height          =   1815
       Left            =   1680
       TabIndex        =   5
-      Top             =   11640
+      Top             =   12120
       Visible         =   0   'False
       Width           =   1380
       _ExtentX        =   2434
@@ -984,9 +984,9 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
    End
    Begin GridEX20.GridEX gridCajas 
       Height          =   1695
-      Left            =   120
+      Left            =   240
       TabIndex        =   6
-      Top             =   11640
+      Top             =   12120
       Visible         =   0   'False
       Width           =   1500
       _ExtentX        =   2646
@@ -1022,7 +1022,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       Height          =   1905
       Left            =   3120
       TabIndex        =   7
-      Top             =   11640
+      Top             =   12120
       Visible         =   0   'False
       Width           =   8235
       _ExtentX        =   14526
@@ -1066,7 +1066,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       Height          =   1815
       Left            =   9000
       TabIndex        =   11
-      Top             =   11640
+      Top             =   12000
       Visible         =   0   'False
       Width           =   8235
       _ExtentX        =   14526
@@ -1105,7 +1105,7 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
       Height          =   1710
       Left            =   10560
       TabIndex        =   12
-      Top             =   11880
+      Top             =   12120
       Visible         =   0   'False
       Width           =   3420
       _ExtentX        =   6033
@@ -1415,17 +1415,30 @@ Begin VB.Form frmAdminPagosCrearOrdenPago
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
-      Begin XtremeSuiteControls.PushButton btnExportarCbtes 
+      Begin XtremeSuiteControls.PushButton btnExportarPagos 
          Height          =   375
-         Left            =   5280
-         TabIndex        =   79
+         Left            =   4860
+         TabIndex        =   92
          Top             =   5640
-         Width           =   1335
+         Width           =   1815
          _Version        =   786432
-         _ExtentX        =   2355
+         _ExtentX        =   3201
          _ExtentY        =   661
          _StockProps     =   79
-         Caption         =   "Exportar"
+         Caption         =   "Exportar pagos"
+         UseVisualStyle  =   -1  'True
+      End
+      Begin XtremeSuiteControls.PushButton btnExportarCbtes 
+         Height          =   375
+         Left            =   120
+         TabIndex        =   79
+         Top             =   5640
+         Width           =   2055
+         _Version        =   786432
+         _ExtentX        =   3625
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Exportar cbtes"
          UseVisualStyle  =   -1  'True
       End
       Begin VB.TextBox txtOtrosParcialAbonar 
@@ -2084,6 +2097,169 @@ err1:
 End Sub
 
 
+Private Sub btnExportarPagos_Click()
+
+    ExportarPagosComprobanteAExcel
+
+End Sub
+
+
+Private Sub ExportarPagosComprobanteAExcel()
+
+    On Error GoTo ControlarError
+
+    Dim xlApp As Object
+    Dim xlLibro As Object
+    Dim xlHoja As Object
+
+    Dim detalle As clsDetalleComprobante
+    Dim fila As Long
+    Dim totalPagado As Double
+    Dim importe As Double
+
+    '==================================================
+    ' VALIDACIONES
+    '==================================================
+    If vFactElegida Is Nothing Then
+
+        MsgBox "Primero seleccione un comprobante de la lista.", _
+               vbExclamation, _
+               "Exportar pagos"
+
+        Exit Sub
+
+    End If
+
+    If colDetalles Is Nothing Then
+
+        MsgBox "El comprobante seleccionado no tiene pagos efectuados.", _
+               vbInformation, _
+               "Exportar pagos"
+
+        Exit Sub
+
+    End If
+
+    If colDetalles.count = 0 Then
+
+        MsgBox "El comprobante seleccionado no tiene pagos efectuados.", _
+               vbInformation, _
+               "Exportar pagos"
+
+        Exit Sub
+
+    End If
+
+    '==================================================
+    ' CREAR EXCEL
+    '==================================================
+    Set xlApp = CreateObject("Excel.Application")
+    Set xlLibro = xlApp.Workbooks.Add
+    Set xlHoja = xlLibro.Worksheets(1)
+
+    xlHoja.Name = "Pagos efectuados"
+
+    '==================================================
+    ' DATOS DEL COMPROBANTE
+    '==================================================
+    With xlHoja
+
+        .Cells(1, 1).value = "PAGOS EFECTUADOS DEL COMPROBANTE"
+        .Range("A1:C1").Merge
+        .Range("A1:C1").Font.Bold = True
+        .Range("A1:C1").Font.Size = 14
+
+        .Cells(2, 1).value = "Comprobante:"
+        .Cells(2, 2).value = vFactElegida.NumeroFormateado
+
+        .Cells(3, 1).value = "Proveedor:"
+
+        If Not vFactElegida.Proveedor Is Nothing Then
+            .Cells(3, 2).value = _
+                vFactElegida.Proveedor.RazonSocial
+        End If
+
+        .Cells(4, 1).value = "Fecha del comprobante:"
+        .Cells(4, 2).value = vFactElegida.FEcha
+        .Cells(4, 2).NumberFormat = "dd/mm/yyyy"
+
+        'Encabezados
+        .Cells(6, 1).value = "Importe abonado"
+        .Cells(6, 2).value = "Fecha"
+        .Cells(6, 3).value = "Orden de pago"
+
+        .Range("A6:C6").Font.Bold = True
+
+
+    End With
+
+    '==================================================
+    ' EXPORTAR PAGOS
+    '==================================================
+    fila = 7
+    totalPagado = 0
+
+    For Each detalle In colDetalles
+
+        importe = detalle.NetoGravado + detalle.Otros
+
+        xlHoja.Cells(fila, 1).value = importe
+        xlHoja.Cells(fila, 2).value = detalle.FechaEmision
+        xlHoja.Cells(fila, 3).value = detalle.IdOrdenPago
+
+        totalPagado = totalPagado + importe
+        fila = fila + 1
+
+    Next detalle
+
+    '==================================================
+    ' TOTAL
+    '==================================================
+    xlHoja.Cells(fila + 1, 1).value = "TOTAL PAGADO"
+    xlHoja.Cells(fila + 1, 2).value = totalPagado
+
+    xlHoja.Range( _
+        xlHoja.Cells(fila + 1, 1), _
+        xlHoja.Cells(fila + 1, 2) _
+    ).Font.Bold = True
+
+    '==================================================
+    ' FORMATO
+    '==================================================
+    xlHoja.Range("A7:A" & CStr(fila - 1)).NumberFormat = _
+        "#,##0.00"
+
+    xlHoja.Cells(fila + 1, 2).NumberFormat = "#,##0.00"
+
+    xlHoja.Range("B7:B" & CStr(fila - 1)).NumberFormat = _
+        "dd/mm/yyyy"
+
+    xlHoja.Columns("A:C").AutoFit
+    xlHoja.Range("A6:C" & CStr(fila - 1)).Borders.LineStyle = 1
+
+    xlApp.Visible = True
+
+    Set xlHoja = Nothing
+    Set xlLibro = Nothing
+    Set xlApp = Nothing
+
+    Exit Sub
+
+ControlarError:
+
+    MsgBox "No se pudieron exportar los pagos." & _
+           vbCrLf & vbCrLf & _
+           "Error " & Err.Number & ": " & Err.Description, _
+           vbCritical, _
+           "Exportar pagos"
+
+    Set xlHoja = Nothing
+    Set xlLibro = Nothing
+    Set xlApp = Nothing
+
+End Sub
+
+
 Private Sub btnGuardar_Click()
     If Me.gridChequesPropios.EditMode = jgexEditModeOn Then
         MsgBox "Todavia esta editando la tabla de cheques propios.", vbExclamation
@@ -2311,6 +2487,10 @@ Private Sub dtpFecha_Change()
 
 End Sub
 
+
+Private Sub Exportarpagos_Click()
+
+End Sub
 
 Private Sub Form_Load()
     formLoading = True

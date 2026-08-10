@@ -12,7 +12,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasCobro
    ScaleHeight     =   10815
    ScaleWidth      =   16440
    Begin XtremeSuiteControls.GroupBox GroupBox 
-      Height          =   1815
+      Height          =   1695
       Index           =   0
       Left            =   120
       TabIndex        =   0
@@ -20,7 +20,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasCobro
       Width           =   17175
       _Version        =   786432
       _ExtentX        =   30295
-      _ExtentY        =   3201
+      _ExtentY        =   2990
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -133,9 +133,9 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasCobro
       End
       Begin XtremeSuiteControls.PushButton btnExportar 
          Height          =   495
-         Left            =   14520
+         Left            =   14760
          TabIndex        =   9
-         Top             =   960
+         Top             =   1080
          Width           =   2295
          _Version        =   786432
          _ExtentX        =   4048
@@ -147,7 +147,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasCobro
       Begin XtremeSuiteControls.PushButton btnTraerDatos 
          Height          =   495
          Index           =   0
-         Left            =   14520
+         Left            =   14760
          TabIndex        =   10
          Top             =   240
          Width           =   2295
@@ -347,7 +347,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasCobro
    End
    Begin GridEX20.GridEX gridTransferencias 
       Height          =   6495
-      Left            =   0
+      Left            =   120
       TabIndex        =   23
       Top             =   2040
       Width           =   17175
@@ -383,6 +383,14 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasCobro
       ImageCount      =   0
       PrinterProperties=   "frmAdminPagosTransferenciasBancariasCobro.frx":0FB4
    End
+   Begin VB.Label Label3 
+      Caption         =   "Label3"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   24
+      Top             =   1800
+      Width           =   5775
+   End
 End
 Attribute VB_Name = "frmAdminPagosTransferenciasBancariasCobro"
 Attribute VB_GlobalNameSpace = False
@@ -414,8 +422,6 @@ err1:
 End Sub
 
 Private Sub CompletarGridEx()
-
-    Me.gridTransferencias.ItemCount = 0
 
     Dim condition As String
     condition = " 1 = 1 "
@@ -449,8 +455,9 @@ Private Sub CompletarGridEx()
     Me.gridTransferencias.ItemCount = transferencias.count
 
     GridEXHelper.AutoSizeColumns Me.gridTransferencias, True
+    
 
-    Me.caption = "Transferencias [Cantidad: " & transferencias.count & "]"
+    Me.Label3.caption = "Transferencias mostradas [ " & transferencias.count & " ]"
   
 End Sub
 
@@ -501,6 +508,8 @@ Private Sub Form_Load()
     Me.cboCuentaBancaria.ListIndex = -1
     
     Me.gridTransferencias.ItemCount = 0
+    
+    Me.Label3.caption = "Transferencias mostradas [ 0 ]"
     
     
 End Sub
