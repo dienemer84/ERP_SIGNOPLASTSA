@@ -8,9 +8,10 @@ Begin VB.Form frmAdminBoletasDepositoLista
    ClientTop       =   450
    ClientWidth     =   18585
    LinkTopic       =   "Form1"
+   MDIChild        =   -1  'True
    ScaleHeight     =   9840
    ScaleWidth      =   18585
-   StartUpPosition =   3  'Windows Default
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1935
       Left            =   120
@@ -142,7 +143,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          _StockProps     =   79
          Caption         =   "Resumen"
          UseVisualStyle  =   -1  'True
-         Begin VB.Label Label4 
+         Begin VB.Label lblDetalle 
             Caption         =   "Label4"
             Height          =   375
             Left            =   120
@@ -521,28 +522,46 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-
+Private desde
 Private mBoletas As Collection
 Private mCheques As Collection
 Private mCargando As Boolean
-
+Dim i As Integer
 
 Private Sub Form_Load()
 
     On Error GoTo err1
 
+    mCargando = True
+    
     Customize Me
+    
+    GridEXHelper.CustomizeGrid Me.gridBoletas, True
+    GridEXHelper.CustomizeGrid Me.gridDetalle, True
+    
+    GridEXHelper.AutoSizeColumns Me.gridBoletas
+    GridEXHelper.AutoSizeColumns Me.gridDetalle
+    
+    Me.dtpHasta(1).value = Now
+    
+    Me.dtpDesde(1).value = Year(Now) & "-01-01"
 
-    GridEXHelper.CustomizeGrid Me.gridBoletas, False, False
-    GridEXHelper.CustomizeGrid Me.gridDetalle, False, False
+    desde = DateSerial(Year(Date), Month(Date), 1)   ' CDate(1 & "-" & Month(Now) & "-" & Year(Now))
+    funciones.FillComboBoxDateRanges Me.cboRangos
+
+    Me.cboRangos.ListIndex = i
+    
+    For i = 0 To Me.cboRangos.ListCount - 1
+        If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
+    Next i
+    Me.cboRangos.ListIndex = i
+
 
 
     Set mBoletas = New Collection
     Set mCheques = New Collection
 
-
     CargarCuentas
-
 
     'Mes actual
     Me.dtpDesde(1).value = _
@@ -550,21 +569,25 @@ Private Sub Form_Load()
 
     Me.dtpHasta(1).value = Date
 
-
     Me.txtNumeroBoleta.Text = vbNullString
 
-
-    CargarHistorial
+    mCargando = False
 
     Exit Sub
 
-
 err1:
 
-    MsgBox "No se pudo abrir el historial de depósitos." & _
-           vbCrLf & Err.Description, _
+    mCargando = False
+
+    MsgBox "No se pudo abrir el historial de boletas." & vbCrLf & _
+           Err.Description, _
            vbCritical, "Boletas de depósito"
 
+End Sub
+
+
+Private Sub cboRangos_Click()
+    funciones.CalculateDateRange Me.cboRangos, Me.dtpDesde(1), Me.dtpHasta(1)
 End Sub
 
 
@@ -656,22 +679,21 @@ Private Sub CargarHistorial()
     ' CONSULTAR
     '-------------------------------------------------------
 
-'''    Set mBoletas = _
-'''        DAOBoletaDeposito.FindAllHistorialCheques( _
-'''            Me.dtpDesde(1).value, _
-'''            Me.dtpHasta(1).value, _
-'''            numeroBoleta, _
-'''            idCuenta)
-
-
+    Set mBoletas = DAOBoletaDeposito.FindAll( _
+                        Me.dtpDesde(1).value, _
+                        Me.dtpHasta(1).value, _
+                        numeroBoleta, _
+                        idCuenta)
+    
+    
     If mBoletas Is Nothing Then
-
+    
         Set mBoletas = New Collection
-
+    
         MsgBox "No se pudo cargar el historial." & vbCrLf & _
                DAOBoletaDeposito.UltimoError, _
                vbCritical, "Boletas de depósito"
-
+    
     End If
 
 
@@ -696,8 +718,24 @@ Private Sub CargarHistorial()
 
 salir:
 
+    Me.gridBoletas.ItemCount = 0
+    Me.gridBoletas.ItemCount = mBoletas.count
+    Me.gridBoletas.Update
+    
+    Me.lblCantidad.caption = _
+        "Boletas: " & mBoletas.count
+    
+    Set mCheques = New Collection
+    Me.gridDetalle.ItemCount = 0
+    
     mCargando = False
-
+    
+    'Si existe alguna boleta, cargar automáticamente
+    'el detalle de la seleccionada.
+    If mBoletas.count > 0 Then
+        CargarDetalleBoletaSeleccionada
+    End If
+    
     Exit Sub
 
 
@@ -716,161 +754,56 @@ Private Sub gridBoletas_UnboundReadData( _
             ByVal Bookmark As Variant, _
             ByVal Values As GridEX20.JSRowData)
 
-
-    Dim b As DTOBoletaDepositoHistorial
+    Dim b As BoletaDeposito
 
 
     If rowIndex <= 0 Then Exit Sub
-
     If mBoletas Is Nothing Then Exit Sub
-
     If rowIndex > mBoletas.count Then Exit Sub
 
 
     Set b = mBoletas.item(rowIndex)
 
+    Values(1) = b.Id
+    Values(2) = b.numero
+    Values(3) = b.fechaDeposito
 
-    Values(1) = b.numeroBoleta
-    Values(2) = b.fechaDeposito
-    Values(3) = b.BancoNombre
-    Values(4) = b.CuentaNumero
-    Values(5) = b.MonedaNombre
-    Values(6) = b.CantidadCheques
-    Values(7) = b.Monto
+
+    If Not b.CuentaDestino Is Nothing Then
+
+        If Not b.CuentaDestino.Banco Is Nothing Then
+            Values(4) = b.CuentaDestino.Banco.nombre
+        End If
+
+        Values(5) = b.CuentaDestino.numero
+
+
+        If Not b.CuentaDestino.moneda Is Nothing Then
+            Values(6) = b.CuentaDestino.moneda.NombreCorto
+        End If
+
+    End If
+
+
+    Values(7) = b.CantidadCheques
+    Values(8) = b.Monto
 
 End Sub
+
 
 Private Sub gridBoletas_SelectionChange()
 
-    On Error GoTo err1
-
-
-    Dim idx As Long
-    Dim b As DTOBoletaDepositoHistorial
-
-    Dim ch As cheque
-    Dim total As Double
-
-
-    If mCargando Then Exit Sub
-
-    If mBoletas Is Nothing Then Exit Sub
-
-
-    idx = Me.gridBoletas.rowIndex( _
-            Me.gridBoletas.row)
-
-
-    If idx <= 0 Then Exit Sub
-
-    If idx > mBoletas.count Then Exit Sub
-
-
-    Set b = mBoletas.item(idx)
-
-
-    Set mCheques = _
-        DAOBoletaDeposito.FindChequesByBoleta(b.Id)
-
-
-    If mCheques Is Nothing Then
-
-        Set mCheques = New Collection
-
-        MsgBox "No se pudo obtener el detalle." & vbCrLf & _
-               DAOBoletaDeposito.UltimoError, _
-               vbCritical, "Boletas de depósito"
-
-        Exit Sub
-
-    End If
-
-
-    Me.gridDetalle.ItemCount = 0
-    Me.gridDetalle.ItemCount = mCheques.count
-
-    Me.gridDetalle.Update
-
-
-    '-------------------------------------------------------
-    ' TOTAL DETALLE
-    '-------------------------------------------------------
-
-    total = 0
-
-    For Each ch In mCheques
-        total = total + ch.Monto
-    Next ch
-
-
-    Me.lblDetalle.caption = _
-        "Boleta Nº " & b.numeroBoleta & _
-        "  |  " & _
-        Format$(b.fechaDeposito, "dd/mm/yyyy") & _
-        "  |  " & _
-        b.BancoNombre & _
-        "  |  " & _
-        b.CuentaNumero & _
-        "  |  Total: " & _
-        b.MonedaNombre & " " & _
-        Format$(total, "#,##0.00")
-
-
-    Exit Sub
-
-
-err1:
-
-    MsgBox "No se pudo cargar el detalle de la boleta." & _
-           vbCrLf & Err.Description, _
-           vbCritical, "Boletas de depósito"
+    CargarDetalleBoletaSeleccionada
 
 End Sub
 
-Private Sub gridDetalle_UnboundReadData( _
-            ByVal rowIndex As Long, _
-            ByVal Bookmark As Variant, _
-            ByVal Values As GridEX20.JSRowData)
 
+Private Sub gridBoletas_Click()
 
-    Dim ch As cheque
-
-
-    If rowIndex <= 0 Then Exit Sub
-
-    If mCheques Is Nothing Then Exit Sub
-
-    If rowIndex > mCheques.count Then Exit Sub
-
-
-    Set ch = mCheques.item(rowIndex)
-
-
-    Values(1) = ch.numero
-    Values(2) = ch.FechaVencimiento
-
-
-    If Not ch.Banco Is Nothing Then
-        Values(3) = ch.Banco.nombre
-    Else
-        Values(3) = vbNullString
-    End If
-
-
-    Values(4) = ch.OrigenCheque
-
-
-    If Not ch.moneda Is Nothing Then
-        Values(5) = ch.moneda.NombreCorto
-    Else
-        Values(5) = vbNullString
-    End If
-
-
-    Values(6) = ch.Monto
-    Values(7) = ch.FechaRecibido
+    CargarDetalleBoletaSeleccionada
 
 End Sub
+
 
 
 Private Sub cmdBuscar_Click()
@@ -896,3 +829,169 @@ Private Sub cmdRestablecer_Click()
     CargarHistorial
 
 End Sub
+
+
+Private Sub gridDetalle_UnboundReadData( _
+            ByVal rowIndex As Long, _
+            ByVal Bookmark As Variant, _
+            ByVal Values As GridEX20.JSRowData)
+
+    Dim ch As cheque
+
+    If rowIndex <= 0 Then Exit Sub
+    If mCheques Is Nothing Then Exit Sub
+    If rowIndex > mCheques.count Then Exit Sub
+
+    Set ch = mCheques.item(rowIndex)
+
+    '1 - ID
+    Values(1) = ch.Id
+
+    '2 - Número de cheque
+    Values(2) = ch.numero
+
+    '3 - Fecha de vencimiento
+    If ch.FechaVencimiento > 0 Then
+        Values(3) = ch.FechaVencimiento
+    Else
+        Values(3) = Null
+    End If
+
+    '4 - Banco
+    If Not ch.Banco Is Nothing Then
+        Values(4) = ch.Banco.nombre
+    Else
+        Values(4) = vbNullString
+    End If
+
+    '5 - Tipo / origen del cheque
+    Values(5) = ch.OrigenCheque
+
+    '6 - Moneda
+    If Not ch.moneda Is Nothing Then
+        Values(6) = ch.moneda.NombreCorto
+    Else
+        Values(6) = vbNullString
+    End If
+
+    '7 - Monto
+    Values(7) = ch.Monto
+
+    '8 - Fecha recibido
+    If ch.FechaRecibido > 0 Then
+        Values(8) = ch.FechaRecibido
+    Else
+        Values(8) = Null
+    End If
+
+End Sub
+
+
+Private Sub CargarDetalleBoletaSeleccionada()
+
+    On Error GoTo err1
+
+    Dim idx As Long
+    Dim b As BoletaDeposito
+    Dim ch As cheque
+    Dim total As Double
+
+    Dim nombreBanco As String
+    Dim numeroCuenta As String
+    Dim nombreMoneda As String
+
+    If mCargando Then Exit Sub
+    If mBoletas Is Nothing Then Exit Sub
+    If mBoletas.count = 0 Then Exit Sub
+
+    idx = Me.gridBoletas.rowIndex(Me.gridBoletas.row)
+
+    If idx <= 0 Then Exit Sub
+    If idx > mBoletas.count Then Exit Sub
+
+    Set b = mBoletas.item(idx)
+
+    '-------------------------------------------------------
+    ' CARGAR CHEQUES DE LA BOLETA
+    '-------------------------------------------------------
+
+    Set mCheques = _
+        DAOBoletaDeposito.FindChequesByBoleta(b.Id)
+
+    If mCheques Is Nothing Then
+
+        Set mCheques = New Collection
+
+        MsgBox "No se pudo obtener el detalle." & vbCrLf & _
+               DAOBoletaDeposito.UltimoError, _
+               vbCritical, "Boletas de depósito"
+
+        Exit Sub
+
+    End If
+
+    'DEBUG TEMPORAL
+    'MsgBox "Boleta ID: " & b.Id & vbCrLf & _
+    '       "Cheques encontrados: " & mCheques.count
+
+    Me.gridDetalle.ItemCount = 0
+    Me.gridDetalle.ItemCount = mCheques.count
+    Me.gridDetalle.Update
+
+    GridEXHelper.AutoSizeColumns Me.gridDetalle, True
+
+    '-------------------------------------------------------
+    ' DATOS CUENTA
+    '-------------------------------------------------------
+
+    nombreBanco = vbNullString
+    numeroCuenta = vbNullString
+    nombreMoneda = vbNullString
+
+    If Not b.CuentaDestino Is Nothing Then
+
+        numeroCuenta = b.CuentaDestino.numero
+
+        If Not b.CuentaDestino.Banco Is Nothing Then
+            nombreBanco = b.CuentaDestino.Banco.nombre
+        End If
+
+        If Not b.CuentaDestino.moneda Is Nothing Then
+            nombreMoneda = b.CuentaDestino.moneda.NombreCorto
+        End If
+
+    End If
+
+    '-------------------------------------------------------
+    ' TOTAL
+    '-------------------------------------------------------
+
+    total = 0
+
+    For Each ch In mCheques
+        total = total + ch.Monto
+    Next ch
+
+    Me.lblDetalle.caption = _
+        "Boleta Nº " & b.numero & _
+        "  |  " & _
+        Format$(b.fechaDeposito, "dd/mm/yyyy") & _
+        "  |  " & _
+        nombreBanco & _
+        "  |  " & _
+        numeroCuenta & _
+        "  |  Total: " & _
+        nombreMoneda & " " & _
+        Format$(total, "#,##0.00")
+
+    Exit Sub
+
+err1:
+
+    MsgBox "No se pudo cargar el detalle de la boleta." & _
+           vbCrLf & Err.Description, _
+           vbCritical, "Boletas de depósito"
+
+End Sub
+
+

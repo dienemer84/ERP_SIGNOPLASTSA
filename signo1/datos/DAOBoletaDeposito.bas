@@ -38,7 +38,7 @@ Public Function Save(ByVal boleta As BoletaDeposito) As Boolean
     End If
 
 
-    If boleta.Cheques.count = 0 Then
+    If boleta.cheques.count = 0 Then
         UltimoError = "La boleta no contiene cheques."
         Exit Function
     End If
@@ -71,7 +71,7 @@ Public Function Save(ByVal boleta As BoletaDeposito) As Boolean
     montoTotal = 0
 
 
-    For Each chequeSeleccionado In boleta.Cheques
+    For Each chequeSeleccionado In boleta.cheques
 
         Set chequeActual = DAOCheques.FindById( _
                                 chequeSeleccionado.Id)
@@ -241,7 +241,7 @@ Private Function DepositarChequeInterno( _
             ByVal cheque As cheque, _
             ByVal cuenta As CuentaBancaria, _
             ByVal fechaDeposito As Date, _
-            ByVal comprobante As String, _
+            ByVal Comprobante As String, _
             ByVal idBoleta As Long) As Boolean
 
 
@@ -274,7 +274,7 @@ Private Function DepositarChequeInterno( _
 
     Set op.CuentaBancaria = cuenta
 
-    op.comprobante = comprobante
+    op.Comprobante = Comprobante
 
 
     If Not DAOOperacion.Save(op) Then
@@ -413,6 +413,247 @@ err1:
 
 
     Depositar = False
+
+End Function
+
+
+Public Function FindAll( _
+            Optional ByVal fechaDesde As Variant, _
+            Optional ByVal fechaHasta As Variant, _
+            Optional ByVal numeroBoleta As Long = 0, _
+            Optional ByVal idCuenta As Long = 0) As Collection
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As ADODB.Recordset
+    Dim col As New Collection
+
+    Dim tmp As BoletaDeposito
+    Dim idCuentaTmp As Long
+
+    UltimoError = vbNullString
+
+
+    q = "SELECT " & _
+        "b.id, " & _
+        "b.monto, " & _
+        "b.fecha_deposito, " & _
+        "b.tipo_deposito, " & _
+        "b.numero_boleta, " & _
+        "b.id_cuenta, " & _
+        "COUNT(cd.id) AS cantidad_cheques " & _
+        "FROM boleta_deposito b " & _
+        "LEFT JOIN cheques_depositos cd " & _
+        "ON cd.id_boleta = b.id " & _
+        "WHERE b.numero_boleta IS NOT NULL "
+
+
+    '---------------------------------------------------
+    ' FECHA DESDE
+    '---------------------------------------------------
+
+    If Not IsEmpty(fechaDesde) Then
+
+        If Not IsNull(fechaDesde) Then
+
+            q = q & _
+                " AND b.fecha_deposito >= " & _
+                conectar.Escape(CDate(fechaDesde))
+
+        End If
+
+    End If
+
+
+    '---------------------------------------------------
+    ' FECHA HASTA
+    '---------------------------------------------------
+
+    If Not IsEmpty(fechaHasta) Then
+
+        If Not IsNull(fechaHasta) Then
+
+            q = q & _
+                " AND b.fecha_deposito <= " & _
+                conectar.Escape(CDate(fechaHasta))
+
+        End If
+
+    End If
+
+
+    '---------------------------------------------------
+    ' NUMERO DE BOLETA
+    '---------------------------------------------------
+
+    If numeroBoleta > 0 Then
+
+        q = q & _
+            " AND b.numero_boleta = " & numeroBoleta
+
+    End If
+
+
+    '---------------------------------------------------
+    ' CUENTA
+    '---------------------------------------------------
+
+    If idCuenta > 0 Then
+
+        q = q & _
+            " AND b.id_cuenta = " & idCuenta
+
+    End If
+
+
+    '---------------------------------------------------
+    ' AGRUPAR
+    '---------------------------------------------------
+
+    q = q & _
+        " GROUP BY " & _
+        "b.id, " & _
+        "b.monto, " & _
+        "b.fecha_deposito, " & _
+        "b.tipo_deposito, " & _
+        "b.numero_boleta, " & _
+        "b.id_cuenta " & _
+        "ORDER BY b.fecha_deposito DESC, b.id DESC"
+
+
+    Set rs = conectar.RSFactory(q)
+
+
+    '---------------------------------------------------
+    ' MAPEAR
+    '---------------------------------------------------
+
+    While Not rs.EOF
+
+        Set tmp = New BoletaDeposito
+
+
+        tmp.Id = CLng(rs!Id)
+
+
+        If Not IsNull(rs!numero_boleta) Then
+            tmp.numero = CLng(rs!numero_boleta)
+        End If
+
+
+        If Not IsNull(rs!Monto) Then
+            tmp.Monto = CDbl(rs!Monto)
+        End If
+
+
+        If Not IsNull(rs!fecha_deposito) Then
+            tmp.fechaDeposito = CDate(rs!fecha_deposito)
+        End If
+
+
+        If Not IsNull(rs!tipo_deposito) Then
+            tmp.TipoDeposito = CLng(rs!tipo_deposito)
+        End If
+
+
+        If Not IsNull(rs!cantidad_cheques) Then
+            tmp.CantidadCheques = CLng(rs!cantidad_cheques)
+        End If
+
+
+        '-----------------------------------------------
+        ' CUENTA BANCARIA
+        '-----------------------------------------------
+
+        If Not IsNull(rs!id_cuenta) Then
+
+            idCuentaTmp = CLng(rs!id_cuenta)
+
+            If idCuentaTmp > 0 Then
+
+                Set tmp.CuentaDestino = _
+                    DAOCuentaBancaria.FindById(idCuentaTmp)
+
+            End If
+
+        End If
+
+
+        col.Add tmp, CStr(tmp.Id)
+
+
+        rs.MoveNext
+
+    Wend
+
+
+    Set FindAll = col
+
+    Exit Function
+
+
+err1:
+
+    UltimoError = Err.Description
+
+    Set FindAll = Nothing
+
+End Function
+
+
+Public Function FindChequesByBoleta( _
+            ByVal idBoleta As Long) As Collection
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As ADODB.Recordset
+
+    Dim col As New Collection
+    Dim ch As cheque
+
+
+    UltimoError = vbNullString
+
+
+    q = "SELECT id_cheque " & _
+        "FROM cheques_depositos " & _
+        "WHERE id_boleta = " & idBoleta & " " & _
+        "ORDER BY id"
+
+
+    Set rs = conectar.RSFactory(q)
+
+
+    While Not rs.EOF
+
+        Set ch = DAOCheques.FindById( _
+                    CLng(rs!id_cheque))
+
+
+        If Not ch Is Nothing Then
+
+            col.Add ch, CStr(ch.Id)
+
+        End If
+
+
+        rs.MoveNext
+
+    Wend
+
+
+    Set FindChequesByBoleta = col
+
+    Exit Function
+
+
+err1:
+
+    UltimoError = Err.Description
+
+    Set FindChequesByBoleta = Nothing
 
 End Function
 
