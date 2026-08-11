@@ -482,7 +482,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   7
+      ColumnsCount    =   8
       Column(1)       =   "frmAdminBoletasDepositoLista.frx":15C4
       Column(2)       =   "frmAdminBoletasDepositoLista.frx":16DC
       Column(3)       =   "frmAdminBoletasDepositoLista.frx":17E0
@@ -490,22 +490,23 @@ Begin VB.Form frmAdminBoletasDepositoLista
       Column(5)       =   "frmAdminBoletasDepositoLista.frx":19C0
       Column(6)       =   "frmAdminBoletasDepositoLista.frx":1AB4
       Column(7)       =   "frmAdminBoletasDepositoLista.frx":1BA0
+      Column(8)       =   "frmAdminBoletasDepositoLista.frx":1C9C
       FormatStylesCount=   13
-      FormatStyle(1)  =   "frmAdminBoletasDepositoLista.frx":1C9C
-      FormatStyle(2)  =   "frmAdminBoletasDepositoLista.frx":1DC4
-      FormatStyle(3)  =   "frmAdminBoletasDepositoLista.frx":1E74
-      FormatStyle(4)  =   "frmAdminBoletasDepositoLista.frx":1F28
-      FormatStyle(5)  =   "frmAdminBoletasDepositoLista.frx":2000
-      FormatStyle(6)  =   "frmAdminBoletasDepositoLista.frx":20B8
-      FormatStyle(7)  =   "frmAdminBoletasDepositoLista.frx":2198
-      FormatStyle(8)  =   "frmAdminBoletasDepositoLista.frx":224C
-      FormatStyle(9)  =   "frmAdminBoletasDepositoLista.frx":2304
-      FormatStyle(10) =   "frmAdminBoletasDepositoLista.frx":23B8
-      FormatStyle(11) =   "frmAdminBoletasDepositoLista.frx":2474
-      FormatStyle(12) =   "frmAdminBoletasDepositoLista.frx":2528
-      FormatStyle(13) =   "frmAdminBoletasDepositoLista.frx":25D8
+      FormatStyle(1)  =   "frmAdminBoletasDepositoLista.frx":1D40
+      FormatStyle(2)  =   "frmAdminBoletasDepositoLista.frx":1E68
+      FormatStyle(3)  =   "frmAdminBoletasDepositoLista.frx":1F18
+      FormatStyle(4)  =   "frmAdminBoletasDepositoLista.frx":1FCC
+      FormatStyle(5)  =   "frmAdminBoletasDepositoLista.frx":20A4
+      FormatStyle(6)  =   "frmAdminBoletasDepositoLista.frx":215C
+      FormatStyle(7)  =   "frmAdminBoletasDepositoLista.frx":223C
+      FormatStyle(8)  =   "frmAdminBoletasDepositoLista.frx":22F0
+      FormatStyle(9)  =   "frmAdminBoletasDepositoLista.frx":23A8
+      FormatStyle(10) =   "frmAdminBoletasDepositoLista.frx":245C
+      FormatStyle(11) =   "frmAdminBoletasDepositoLista.frx":2518
+      FormatStyle(12) =   "frmAdminBoletasDepositoLista.frx":25CC
+      FormatStyle(13) =   "frmAdminBoletasDepositoLista.frx":267C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminBoletasDepositoLista.frx":2674
+      PrinterProperties=   "frmAdminBoletasDepositoLista.frx":2718
    End
    Begin VB.Label lblCantidad 
       Caption         =   "Boletas mostradas [ 0 ]"
@@ -555,7 +556,6 @@ Private Sub Form_Load()
         If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then Exit For
     Next i
     Me.cboRangos.ListIndex = i
-
 
 
     Set mBoletas = New Collection
@@ -750,43 +750,43 @@ err1:
 End Sub
 
 Private Sub gridBoletas_UnboundReadData( _
-            ByVal rowIndex As Long, _
+            ByVal RowIndex As Long, _
             ByVal Bookmark As Variant, _
             ByVal Values As GridEX20.JSRowData)
 
-    Dim b As BoletaDeposito
+    Dim B As BoletaDeposito
 
 
-    If rowIndex <= 0 Then Exit Sub
+    If RowIndex <= 0 Then Exit Sub
     If mBoletas Is Nothing Then Exit Sub
-    If rowIndex > mBoletas.count Then Exit Sub
+    If RowIndex > mBoletas.count Then Exit Sub
 
 
-    Set b = mBoletas.item(rowIndex)
+    Set B = mBoletas.item(RowIndex)
 
-    Values(1) = b.Id
-    Values(2) = b.numero
-    Values(3) = b.fechaDeposito
+    Values(1) = B.Id
+    Values(2) = B.numero
+    Values(3) = B.fechaDeposito
 
 
-    If Not b.CuentaDestino Is Nothing Then
+    If Not B.CuentaDestino Is Nothing Then
 
-        If Not b.CuentaDestino.Banco Is Nothing Then
-            Values(4) = b.CuentaDestino.Banco.nombre
+        If Not B.CuentaDestino.Banco Is Nothing Then
+            Values(4) = B.CuentaDestino.Banco.nombre
         End If
 
-        Values(5) = b.CuentaDestino.numero
+        Values(5) = B.CuentaDestino.numero
 
 
-        If Not b.CuentaDestino.moneda Is Nothing Then
-            Values(6) = b.CuentaDestino.moneda.NombreCorto
+        If Not B.CuentaDestino.moneda Is Nothing Then
+            Values(6) = B.CuentaDestino.moneda.NombreCorto
         End If
 
     End If
 
 
-    Values(7) = b.CantidadCheques
-    Values(8) = b.Monto
+    Values(7) = B.CantidadCheques
+    Values(8) = B.Monto
 
 End Sub
 
@@ -832,17 +832,17 @@ End Sub
 
 
 Private Sub gridDetalle_UnboundReadData( _
-            ByVal rowIndex As Long, _
+            ByVal RowIndex As Long, _
             ByVal Bookmark As Variant, _
             ByVal Values As GridEX20.JSRowData)
 
     Dim ch As cheque
 
-    If rowIndex <= 0 Then Exit Sub
+    If RowIndex <= 0 Then Exit Sub
     If mCheques Is Nothing Then Exit Sub
-    If rowIndex > mCheques.count Then Exit Sub
+    If RowIndex > mCheques.count Then Exit Sub
 
-    Set ch = mCheques.item(rowIndex)
+    Set ch = mCheques.item(RowIndex)
 
     '1 - ID
     Values(1) = ch.Id
@@ -879,7 +879,7 @@ Private Sub gridDetalle_UnboundReadData( _
 
     '8 - Fecha recibido
     If ch.FechaRecibido > 0 Then
-        Values(8) = ch.FechaRecibido
+        Values(8) = ch.FechaVencimiento
     Else
         Values(8) = Null
     End If
@@ -892,11 +892,11 @@ Private Sub CargarDetalleBoletaSeleccionada()
     On Error GoTo err1
 
     Dim idx As Long
-    Dim b As BoletaDeposito
+    Dim B As BoletaDeposito
     Dim ch As cheque
     Dim total As Double
 
-    Dim nombreBanco As String
+    Dim NombreBanco As String
     Dim numeroCuenta As String
     Dim nombreMoneda As String
 
@@ -904,19 +904,19 @@ Private Sub CargarDetalleBoletaSeleccionada()
     If mBoletas Is Nothing Then Exit Sub
     If mBoletas.count = 0 Then Exit Sub
 
-    idx = Me.gridBoletas.rowIndex(Me.gridBoletas.row)
+    idx = Me.gridBoletas.RowIndex(Me.gridBoletas.row)
 
     If idx <= 0 Then Exit Sub
     If idx > mBoletas.count Then Exit Sub
 
-    Set b = mBoletas.item(idx)
+    Set B = mBoletas.item(idx)
 
     '-------------------------------------------------------
     ' CARGAR CHEQUES DE LA BOLETA
     '-------------------------------------------------------
 
     Set mCheques = _
-        DAOBoletaDeposito.FindChequesByBoleta(b.Id)
+        DAOBoletaDeposito.FindChequesByBoleta(B.Id)
 
     If mCheques Is Nothing Then
 
@@ -944,20 +944,20 @@ Private Sub CargarDetalleBoletaSeleccionada()
     ' DATOS CUENTA
     '-------------------------------------------------------
 
-    nombreBanco = vbNullString
+    NombreBanco = vbNullString
     numeroCuenta = vbNullString
     nombreMoneda = vbNullString
 
-    If Not b.CuentaDestino Is Nothing Then
+    If Not B.CuentaDestino Is Nothing Then
 
-        numeroCuenta = b.CuentaDestino.numero
+        numeroCuenta = B.CuentaDestino.numero
 
-        If Not b.CuentaDestino.Banco Is Nothing Then
-            nombreBanco = b.CuentaDestino.Banco.nombre
+        If Not B.CuentaDestino.Banco Is Nothing Then
+            NombreBanco = B.CuentaDestino.Banco.nombre
         End If
 
-        If Not b.CuentaDestino.moneda Is Nothing Then
-            nombreMoneda = b.CuentaDestino.moneda.NombreCorto
+        If Not B.CuentaDestino.moneda Is Nothing Then
+            nombreMoneda = B.CuentaDestino.moneda.NombreCorto
         End If
 
     End If
@@ -973,11 +973,11 @@ Private Sub CargarDetalleBoletaSeleccionada()
     Next ch
 
     Me.lblDetalle.caption = _
-        "Boleta Nº " & b.numero & _
+        "Boleta Nº " & B.numero & _
         "  |  " & _
-        Format$(b.fechaDeposito, "dd/mm/yyyy") & _
+        Format$(B.fechaDeposito, "dd/mm/yyyy") & _
         "  |  " & _
-        nombreBanco & _
+        NombreBanco & _
         "  |  " & _
         numeroCuenta & _
         "  |  Total: " & _
