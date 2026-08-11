@@ -73,8 +73,18 @@ Public Function FindAll(Optional filter As String = "1 = 1", Optional orderBy As
             End If
         End If
 
-        Set oper = DAOOperacion.Map(rs, idx, "operaciones", "AdminComprasCuentasContables", "monedaoperacion", "AdminConfigCuentas", "cajas")
-       If IsSomething(oper) Then
+    Set oper = DAOOperacion.Map( _
+        rs, _
+        idx, _
+        "operaciones", _
+        "AdminComprasCuentasContables", _
+        "monedaoperacion", _
+        "AdminConfigCuentas", _
+        "cajas", _
+        "AdminConfigBancos", _
+        "moncuentabancaria")
+        
+    If IsSomething(oper) Then
 
     If oper.Pertenencia = Banco Then
 

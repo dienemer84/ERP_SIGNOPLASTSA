@@ -72,15 +72,15 @@ Public Property Get DescripcionFormateada() As String
         col.Add "Nº " & Me.numero
     End If
 
-    If TipoCuenta = TipoCuentaBancaria.CajaAhorro Then
-        col.Add "Caja de ahorro"
-    ElseIf TipoCuenta = TipoCuentaBancaria.CuentaCorriente Then
-        col.Add "Cuenta Corriente"
-    End If
-
-    If IsSomething(Me.moneda) Then
-        col.Add Me.moneda.NombreCorto
-    End If
+'''    If TipoCuenta = TipoCuentaBancaria.CajaAhorro Then
+'''        col.Add "Caja de ahorro"
+'''    ElseIf TipoCuenta = TipoCuentaBancaria.CuentaCorriente Then
+'''        col.Add "Cuenta Corriente"
+'''    End If
+'''
+'''    If IsSomething(Me.moneda) Then
+'''        col.Add Me.moneda.NombreCorto
+'''    End If
 
     Dim i As Long
     Dim arr() As String

@@ -771,7 +771,7 @@ Private Sub cmdCrear_Click()
     Dim CuentaDestino As CuentaBancaria
 
     Dim Monto As Double
-    Dim Comprobante As String
+    Dim comprobante As String
     Dim EntradaSalida As Integer
 
     Dim fechaMantener As Date
@@ -815,7 +815,7 @@ Private Sub cmdCrear_Click()
     AsientoContable.Observaciones = Trim$(Me.FlatEdit1.Text)
     AsientoContable.idUsuario = funciones.GetUserObj.Id
 
-    Comprobante = Trim$(Me.txtComprobante.Text)
+    comprobante = Trim$(Me.txtComprobante.Text)
 
     If LenB(Trim$(Me.txtMonto.Text)) > 0 Then
     
@@ -859,13 +859,13 @@ Private Sub cmdCrear_Click()
         End If
 
         If Monto > 0 Then
-            If LenB(Comprobante) = 0 Then
+            If LenB(comprobante) = 0 Then
                 MsgBox "Debe ingresar un comprobante.", vbExclamation
                 Exit Sub
             End If
 
             AsientoContable.operacionesBanco.Add _
-                CrearOperacionBancaria(CuentaDestino, Monto, Comprobante, OPEntrada)
+                CrearOperacionBancaria(CuentaDestino, Monto, comprobante, OPEntrada)
         End If
 
         If Monto <= 0 And AsientoContable.ChequesPropios.count = 0 Then
@@ -902,13 +902,13 @@ Private Sub cmdCrear_Click()
             DAOCuentaContable.GetById(Me.cboCuentasContables.ItemData(Me.cboCuentasContables.ListIndex))
 
         If Monto > 0 Then
-            If LenB(Comprobante) = 0 Then
+            If LenB(comprobante) = 0 Then
                 MsgBox "Debe ingresar un comprobante.", vbExclamation
                 Exit Sub
             End If
 
             AsientoContable.operacionesBanco.Add _
-                CrearOperacionBancaria(cuentaOrigen, Monto, Comprobante, OPSalida)
+                CrearOperacionBancaria(cuentaOrigen, Monto, comprobante, OPSalida)
         End If
 
         If Monto <= 0 And AsientoContable.ChequesPropios.count = 0 Then
@@ -970,7 +970,7 @@ Private Sub cmdCrear_Click()
         
         'El comprobante solamente es obligatorio
         'cuando existe un importe bancario.
-        If Monto > 0 And LenB(Comprobante) = 0 Then
+        If Monto > 0 And LenB(comprobante) = 0 Then
         
             MsgBox "Debe ingresar un comprobante.", _
                    vbExclamation
@@ -989,7 +989,7 @@ Private Sub cmdCrear_Click()
                 CrearOperacionBancaria( _
                     cuentaOrigen, _
                     Monto, _
-                    Comprobante, _
+                    comprobante, _
                     OPSalida)
         
             'Entrada en la cuenta destino
@@ -997,7 +997,7 @@ Private Sub cmdCrear_Click()
                 CrearOperacionBancaria( _
                     CuentaDestino, _
                     Monto, _
-                    Comprobante, _
+                    comprobante, _
                     OPEntrada)
         
         End If
@@ -1148,9 +1148,9 @@ Private Sub llenarComboCuentas()
 End Sub
 
 
-Private Sub gridBancos_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= bancos.count Then
-        Set Banco = bancos.item(RowIndex)
+Private Sub gridBancos_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= bancos.count Then
+        Set Banco = bancos.item(rowIndex)
         Values(1) = Banco.Id
         Values(2) = Banco.nombre
     End If
@@ -1191,16 +1191,16 @@ Private Sub gridCheques_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVari
 
 End Sub
 
-Private Sub gridCheques_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 Then
-        AsientoContable.ChequesTerceros.remove RowIndex
+Private Sub gridCheques_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 Then
+        AsientoContable.ChequesTerceros.remove rowIndex
 
     End If
 End Sub
 
-Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= AsientoContable.ChequesTerceros.count Then
-        Set cheque = AsientoContable.ChequesTerceros.item(RowIndex)
+Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= AsientoContable.ChequesTerceros.count Then
+        Set cheque = AsientoContable.ChequesTerceros.item(rowIndex)
 
         Values(1) = cheque.numero & " "
 
@@ -1215,13 +1215,13 @@ Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark A
     End If
 End Sub
 
-Private Sub gridCheques_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And AsientoContable.ChequesTerceros.count >= RowIndex Then
+Private Sub gridCheques_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And AsientoContable.ChequesTerceros.count >= rowIndex Then
         Set cheque = Nothing
         If IsNumeric(Values(1)) Then Set cheque = DAOCheques.FindById(Values(1))
         If IsSomething(cheque) Then
-            AsientoContable.ChequesTerceros.Add cheque, , , RowIndex
-            AsientoContable.ChequesTerceros.remove RowIndex
+            AsientoContable.ChequesTerceros.Add cheque, , , rowIndex
+            AsientoContable.ChequesTerceros.remove rowIndex
         End If
 '        Totalizar
     End If
@@ -1229,18 +1229,18 @@ End Sub
 
 
 Private Sub gridChequesChequera_UnboundReadData( _
-    ByVal RowIndex As Long, _
+    ByVal rowIndex As Long, _
     ByVal Bookmark As Variant, _
     ByVal Values As GridEX20.JSRowData)
 
-    If RowIndex <= 0 Then Exit Sub
-    If RowIndex > chequesChequeraSeleccionada.count Then Exit Sub
+    If rowIndex <= 0 Then Exit Sub
+    If rowIndex > chequesChequeraSeleccionada.count Then Exit Sub
 
     Values(1) = _
-        chequesChequeraSeleccionada.item(RowIndex).numero
+        chequesChequeraSeleccionada.item(rowIndex).numero
 
     Values(2) = _
-        chequesChequeraSeleccionada.item(RowIndex).Id
+        chequesChequeraSeleccionada.item(rowIndex).Id
 
 End Sub
 
@@ -1250,9 +1250,9 @@ Private Sub gridChequesDisponibles_ColumnHeaderClick(ByVal Column As GridEX20.JS
 End Sub
 
 
-Private Sub gridChequesDisponibles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex <= chequesDisponibles.count Then
-        Set cheque = chequesDisponibles.item(RowIndex)
+Private Sub gridChequesDisponibles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex <= chequesDisponibles.count Then
+        Set cheque = chequesDisponibles.item(rowIndex)
         Values(1) = cheque.numero
         'FORMATCURRENCY
         Values(2) = FormatCurrency(cheque.Monto)
@@ -1337,23 +1337,23 @@ Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JS
 End Sub
 
 
-Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
-    If RowIndex > 0 And AsientoContable.ChequesPropios.count >= RowIndex Then
-        AsientoContable.ChequesPropios.remove RowIndex
+Private Sub gridChequesPropios_UnboundDelete(ByVal rowIndex As Long, ByVal Bookmark As Variant)
+    If rowIndex > 0 And AsientoContable.ChequesPropios.count >= rowIndex Then
+        AsientoContable.ChequesPropios.remove rowIndex
     End If
 End Sub
 
 
 Private Sub gridChequesPropios_UnboundReadData( _
-    ByVal RowIndex As Long, _
+    ByVal rowIndex As Long, _
     ByVal Bookmark As Variant, _
     ByVal Values As GridEX20.JSRowData)
 
-    If RowIndex <= 0 Then Exit Sub
-    If RowIndex > AsientoContable.ChequesPropios.count Then Exit Sub
+    If rowIndex <= 0 Then Exit Sub
+    If rowIndex > AsientoContable.ChequesPropios.count Then Exit Sub
 
     Set cheque = _
-        AsientoContable.ChequesPropios.item(RowIndex)
+        AsientoContable.ChequesPropios.item(rowIndex)
 
     If IsSomething(cheque.chequera) Then
         Values(1) = cheque.chequera.Description
@@ -1376,14 +1376,14 @@ End Sub
 
 
 Private Sub gridChequesPropios_UnboundUpdate( _
-    ByVal RowIndex As Long, _
+    ByVal rowIndex As Long, _
     ByVal Bookmark As Variant, _
     ByVal Values As GridEX20.JSRowData)
 
     On Error GoTo err1
 
-    If RowIndex <= 0 Then Exit Sub
-    If RowIndex > AsientoContable.ChequesPropios.count Then Exit Sub
+    If rowIndex <= 0 Then Exit Sub
+    If rowIndex > AsientoContable.ChequesPropios.count Then Exit Sub
     If IsNull(Values(2)) Then Exit Sub
     If Not IsNumeric(Values(2)) Then Exit Sub
 
@@ -1392,7 +1392,7 @@ Private Sub gridChequesPropios_UnboundUpdate( _
     Dim idChequeNuevo As Long
 
     Set chequeActual = _
-        AsientoContable.ChequesPropios.item(RowIndex)
+        AsientoContable.ChequesPropios.item(rowIndex)
 
     idChequeNuevo = CLng(Values(2))
 
@@ -1408,7 +1408,7 @@ Private Sub gridChequesPropios_UnboundUpdate( _
             MsgBox "El cheque seleccionado ya fue agregado.", _
                    vbExclamation
 
-            Me.gridChequesPropios.RefreshRowIndex RowIndex
+            Me.gridChequesPropios.RefreshRowIndex rowIndex
             Exit Sub
 
         End If
@@ -1421,7 +1421,7 @@ Private Sub gridChequesPropios_UnboundUpdate( _
             MsgBox "No se encontró el cheque seleccionado.", _
                    vbExclamation
 
-            Me.gridChequesPropios.RefreshRowIndex RowIndex
+            Me.gridChequesPropios.RefreshRowIndex rowIndex
             Exit Sub
 
         End If
@@ -1430,15 +1430,15 @@ Private Sub gridChequesPropios_UnboundUpdate( _
         chequeNuevo.EnCartera = False
 
         'Eliminar el cheque anterior
-        AsientoContable.ChequesPropios.remove RowIndex
+        AsientoContable.ChequesPropios.remove rowIndex
 
         'Insertar el nuevo en la misma posición
-        If RowIndex <= AsientoContable.ChequesPropios.count Then
+        If rowIndex <= AsientoContable.ChequesPropios.count Then
 
             AsientoContable.ChequesPropios.Add _
                 chequeNuevo, _
                 CStr(chequeNuevo.Id), _
-                RowIndex
+                rowIndex
 
         Else
 
@@ -1475,7 +1475,7 @@ Private Sub gridChequesPropios_UnboundUpdate( _
 
     End If
 
-    Me.gridChequesPropios.RefreshRowIndex RowIndex
+    Me.gridChequesPropios.RefreshRowIndex rowIndex
 
     Exit Sub
 
@@ -1487,18 +1487,18 @@ err1:
 End Sub
 
 
-Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If CuentasBancarias.count >= RowIndex Then
-        Set CuentaBancaria = CuentasBancarias.item(RowIndex)
+Private Sub gridCuentasBancarias_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If CuentasBancarias.count >= rowIndex Then
+        Set CuentaBancaria = CuentasBancarias.item(rowIndex)
         Values(1) = CuentaBancaria.Id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
 End Sub
 
 
-Private Sub gridMonedas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If RowIndex > 0 And Monedas.count > 0 Then
-        Set moneda = Monedas.item(RowIndex)
+Private Sub gridMonedas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If rowIndex > 0 And Monedas.count > 0 Then
+        Set moneda = Monedas.item(rowIndex)
         Values(1) = moneda.Id
         Values(2) = moneda.NombreCorto
     End If
@@ -1637,7 +1637,7 @@ Public Sub Cargar(aContable As clsAsientoContable)
         
                         Me.txtMonto.Text = CStr(opMovimiento.Monto)
                         Me.txtComprobante.Text = _
-                            opMovimiento.Comprobante
+                            opMovimiento.comprobante
         
                         operacionEncontrada = True
                         Exit For
@@ -1648,7 +1648,7 @@ Public Sub Cargar(aContable As clsAsientoContable)
         
                     Me.txtMonto.Text = CStr(opMovimiento.Monto)
                     Me.txtComprobante.Text = _
-                        opMovimiento.Comprobante
+                        opMovimiento.comprobante
         
                     operacionEncontrada = True
                     Exit For
@@ -1923,7 +1923,7 @@ End Sub
 Private Function CrearOperacionBancaria( _
     ByVal cuenta As CuentaBancaria, _
     ByVal Monto As Double, _
-    ByVal Comprobante As String, _
+    ByVal comprobante As String, _
     ByVal EntradaSalida As Integer _
 ) As operacion
 
@@ -1931,7 +1931,7 @@ Private Function CrearOperacionBancaria( _
 
     op.Pertenencia = OrigenOperacion.Banco
     op.Monto = Monto
-    op.Comprobante = Comprobante
+    op.comprobante = comprobante
     op.FechaOperacion = AsientoContable.FEcha
     op.EntradaSalida = EntradaSalida
 
@@ -1967,14 +1967,14 @@ End Function
 
 
 Private Sub gridChequeras_UnboundReadData( _
-    ByVal RowIndex As Long, _
+    ByVal rowIndex As Long, _
     ByVal Bookmark As Variant, _
     ByVal Values As GridEX20.JSRowData)
 
-    If RowIndex <= 0 Then Exit Sub
-    If RowIndex > chequeras.count Then Exit Sub
+    If rowIndex <= 0 Then Exit Sub
+    If rowIndex > chequeras.count Then Exit Sub
 
-    Set tmpChequera = chequeras.item(RowIndex)
+    Set tmpChequera = chequeras.item(rowIndex)
 
     Values(1) = tmpChequera.Description
     Values(2) = tmpChequera.Id

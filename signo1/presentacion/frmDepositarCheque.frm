@@ -398,7 +398,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Dim col As New Collection
 Public cheque As cheque
-Dim cheques As New Collection
+Dim Cheques As New Collection
 Dim Cajas As New Collection
 Dim OpCaja As operacion
 
@@ -412,22 +412,73 @@ Private Sub cmdAgregarCaja_Click()
 End Sub
 
 Private Sub cmdAgregarCheque_Click()
-    Set cheque = DAOCheques.FindById(Me.cboCheques.ItemData(Me.cboCheques.ListIndex))
-    If IsSomething(cheque) Then
 
-        If Not BuscarEnColeccion(cheques, cheque.Id) Then
-            cheques.Add cheque, CStr(cheque.Id)
-        End If
+    On Error GoTo err1
+
+
+    If Me.cboCheques.ListIndex < 0 Then
+        MsgBox "Debe seleccionar un cheque.", _
+               vbExclamation, "Boleta de depósito"
+        Exit Sub
+    End If
+
+
+    Set cheque = DAOCheques.FindById( _
+                    Me.cboCheques.ItemData(Me.cboCheques.ListIndex))
+
+
+    If cheque Is Nothing Then
+        MsgBox "No se pudo obtener el cheque seleccionado.", _
+               vbExclamation, "Boleta de depósito"
+        Exit Sub
+    End If
+
+
+    If Not cheque.EnCartera Then
+        MsgBox "El cheque seleccionado ya no se encuentra en cartera.", _
+               vbExclamation, "Boleta de depósito"
+        Exit Sub
+    End If
+
+
+    If cheque.Depositado Then
+        MsgBox "El cheque seleccionado ya figura como depositado.", _
+               vbExclamation, "Boleta de depósito"
+        Exit Sub
+    End If
+
+
+    If Not BuscarEnColeccion(Cheques, cheque.Id) Then
+
+        Cheques.Add cheque, CStr(cheque.Id)
+
+    Else
+
+        MsgBox "El cheque ya fue agregado a esta boleta.", _
+               vbInformation, "Boleta de depósito"
 
     End If
 
-    Me.gridCheques.ItemCount = cheques.count
+
+    Me.gridCheques.ItemCount = Cheques.count
+
     GridEXHelper.AutoSizeColumns Me.gridCheques, True
+
+    Exit Sub
+
+
+err1:
+
+    MsgBox "No se pudo agregar el cheque." & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Boleta de depósito"
+
 End Sub
+
 
 Private Sub Form_Load()
     Customize Me
-    GridEXHelper.CustomizeGrid Me.gridCajas, False, True
+    GridEXHelper.CustomizeGrid Me.GridCajas, False, True
     GridEXHelper.CustomizeGrid Me.gridCheques, False, False
 
     Me.DateTimePicker1.value = Now
@@ -436,11 +487,12 @@ Private Sub Form_Load()
     DAOCaja.llenarComboXtremeSuite Me.cboCaja
 
     Me.gridCheques.ItemCount = 0
-    Me.gridCajas.ItemCount = 0
+    Me.GridCajas.ItemCount = 0
 End Sub
 
-Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set cheque = cheques(rowIndex)
+
+Private Sub gridCheques_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set cheque = Cheques(RowIndex)
     Values(1) = cheque.numero
     Values(2) = cheque.FechaVencimiento
     Values(3) = cheque.moneda.NombreCorto & " " & cheque.Monto
@@ -450,38 +502,228 @@ Private Sub gridCheques_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark A
 
 End Sub
 
+
 Private Sub PushButton1_Click()
 
+    On Error GoTo err1
 
 
-    If MsgBox("¿Confirma el deposito?", vbYesNo, "Consulta") = vbYes Then
+    Dim cuenta As CuentaBancaria
+    Dim boleta As BoletaDeposito
+    Dim ch As cheque
 
-        Dim cuenta As New CuentaBancaria
-        Set cuenta = DAOCuentaBancaria.FindById(Me.cboCuentasBancarias.ItemData(Me.cboCuentasBancarias.ListIndex))
-
-        Dim boleta As New BoletaDeposito
-        Set boleta.CuentaDestino = cuenta
-        boleta.FechaDeposito = Me.DateTimePicker1.value
-        boleta.numero = Me.txtBoletaDeposito
-        boleta.TipoDeposito = DepositoCheque
+    Dim numeroBoleta As Double
+    Dim detalleError As String
 
 
+    '-------------------------------------------------------
+    ' NUMERO DE BOLETA
+    '-------------------------------------------------------
 
-        If Not IsSomething(cuenta) Then Exit Sub
-        If DAOBoletaDeposito.Save() Then
-            MsgBox "Depósito exitoso!", vbInformation, "Información"
-        Else
-            MsgBox "No se pudo efectuar el depósito", vbCritical, "Error"
+    If LenB(Trim$(Me.txtBoletaDeposito.Text)) = 0 Then
+
+        MsgBox "Debe ingresar el número de la boleta de depósito.", _
+               vbExclamation, "Boleta de depósito"
+
+        Me.txtBoletaDeposito.SetFocus
+        Exit Sub
+
+    End If
+
+
+    If Not IsNumeric(Me.txtBoletaDeposito.Text) Then
+
+        MsgBox "El número de boleta debe ser numérico.", _
+               vbExclamation, "Boleta de depósito"
+
+        Me.txtBoletaDeposito.SetFocus
+        Exit Sub
+
+    End If
+
+
+    numeroBoleta = CDbl(Me.txtBoletaDeposito.Text)
+
+
+    If numeroBoleta <= 0 Or _
+       numeroBoleta <> Fix(numeroBoleta) Or _
+       numeroBoleta > 2147483647# Then
+
+        MsgBox "Ingrese un número de boleta válido.", _
+               vbExclamation, "Boleta de depósito"
+
+        Me.txtBoletaDeposito.SetFocus
+        Exit Sub
+
+    End If
+
+
+    '-------------------------------------------------------
+    ' CUENTA BANCARIA
+    '-------------------------------------------------------
+
+    If Me.cboCuentasBancarias.ListIndex < 0 Then
+
+        MsgBox "Debe seleccionar la cuenta bancaria destino.", _
+               vbExclamation, "Boleta de depósito"
+
+        Exit Sub
+
+    End If
+
+
+    Set cuenta = DAOCuentaBancaria.FindById( _
+                    Me.cboCuentasBancarias.ItemData( _
+                        Me.cboCuentasBancarias.ListIndex))
+
+
+    If cuenta Is Nothing Then
+
+        MsgBox "No se pudo obtener la cuenta bancaria seleccionada.", _
+               vbCritical, "Boleta de depósito"
+
+        Exit Sub
+
+    End If
+
+
+    If cuenta.moneda Is Nothing Then
+
+        MsgBox "La cuenta bancaria seleccionada no tiene moneda definida.", _
+               vbExclamation, "Boleta de depósito"
+
+        Exit Sub
+
+    End If
+
+
+    '-------------------------------------------------------
+    ' CHEQUES
+    '-------------------------------------------------------
+
+    If Cheques.count = 0 Then
+
+        MsgBox "Debe agregar por lo menos un cheque a la boleta.", _
+               vbExclamation, "Boleta de depósito"
+
+        Exit Sub
+
+    End If
+
+
+    'Validar moneda antes de preguntarle al usuario
+    For Each ch In Cheques
+
+        If ch.moneda Is Nothing Then
+
+            MsgBox "El cheque Nº " & ch.numero & _
+                   " no tiene moneda definida.", _
+                   vbExclamation, "Boleta de depósito"
+
+            Exit Sub
+
         End If
 
 
+        If ch.moneda.Id <> cuenta.moneda.Id Then
+
+            MsgBox "El cheque Nº " & ch.numero & _
+                   " está expresado en " & ch.moneda.NombreCorto & _
+                   " y la cuenta seleccionada está expresada en " & _
+                   cuenta.moneda.NombreCorto & "." & vbCrLf & vbCrLf & _
+                   "No se puede realizar el depósito.", _
+                   vbExclamation, "Boleta de depósito"
+
+            Exit Sub
+
+        End If
+
+    Next ch
+
+
+    '-------------------------------------------------------
+    ' CONFIRMACION
+    '-------------------------------------------------------
+
+    If MsgBox( _
+        "¿Confirma el depósito de " & _
+        Cheques.count & " cheque(s) en la cuenta seleccionada?", _
+        vbQuestion + vbYesNo, _
+        "Boleta de depósito") <> vbYes Then
+
+        Exit Sub
+
     End If
+
+
+    '-------------------------------------------------------
+    ' ARMAR BOLETA
+    '-------------------------------------------------------
+
+    Set boleta = New BoletaDeposito
+
+    boleta.numero = CLng(numeroBoleta)
+
+    boleta.fechaDeposito = Me.DateTimePicker1.value
+
+    Set boleta.CuentaDestino = cuenta
+
+    boleta.TipoDeposito = DepositoCheque
+
+
+    'Pasar los cheques del formulario al objeto BoletaDeposito
+    For Each ch In Cheques
+
+        boleta.Cheques.Add ch, CStr(ch.Id)
+
+    Next ch
+
+
+    '-------------------------------------------------------
+    ' GUARDAR
+    '-------------------------------------------------------
+
+    If DAOBoletaDeposito.Save(boleta) Then
+
+        MsgBox "El depósito se registró correctamente.", _
+               vbInformation, "Boleta de depósito"
+
+        'Se cierra para no permitir volver a depositar
+        'los mismos cheques desde la colección que quedó cargada.
+        Unload Me
+
+    Else
+
+        detalleError = DAOBoletaDeposito.UltimoError
+
+        If LenB(detalleError) > 0 Then
+            detalleError = vbCrLf & vbCrLf & detalleError
+        End If
+
+
+        MsgBox "No se pudo efectuar el depósito." & _
+               detalleError, _
+               vbCritical, "Boleta de depósito"
+
+    End If
+
+
+    Exit Sub
+
+
+err1:
+
+    MsgBox "Se produjo un error al realizar el depósito." & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Boleta de depósito"
+
 End Sub
+
 
 Private Sub txtNroCheque_Change()
     On Error Resume Next
     Dim mostrar As String
-    Set col = DAOCheques.FindAll(DAOCheques.CAMPO_EN_CARTERA & "=1 and  " & DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & "=" & Val(Me.txtNroCheque))
+    Set col = DAOCheques.FindAll(DAOCheques.CAMPO_EN_CARTERA & "=1 and  " & DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & "=" & val(Me.txtNroCheque))
     If col.count >= 1 Then
         cboCheques.Clear
         For Each cheque In col

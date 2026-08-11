@@ -597,6 +597,7 @@ Class=DTOResumenBancario; ClassModule\DTOResumenBancario.cls
 Module=DAOResumenBancario; Modules\DAOResumenBancario.bas
 Form=Forms\frmResumenBancario.frm
 Class=clsConsultaARCA; ClassModule\clsConsultaARCA.cls
+Form=Forms\frmAdminBoletasDepositoLista.frm
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""

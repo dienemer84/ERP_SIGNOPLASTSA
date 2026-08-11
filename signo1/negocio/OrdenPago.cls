@@ -15,7 +15,7 @@ Option Explicit
 
 Public Id As Long
 Public moneda As clsMoneda
-Public FEcha As Date
+Public Fecha As Date
 Public FacturasProveedor As New Collection
 Public DeudaCompensatorios As New Collection
 Public CuentaContable As clsCuentaContable
@@ -108,21 +108,10 @@ Public Property Get TotalFacturas() As Double
     Dim F As clsFacturaProveedor
     Dim SUM As Double
     For Each F In Me.FacturasProveedor
-'''        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
-        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente)) * -1, (F.total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))), F.moneda.Id, Me.moneda.Id)
+    SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, (F.totalAbonado - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente)) * -1, (F.total - (F.TotalAbonadoGlobal + F.TotalAbonadoGlobalPendiente))), F.moneda.Id, Me.moneda.Id)
     Next F
     TotalFacturas = funciones.RedondearDecimales(SUM)
 End Property
-
-
-'''Public Property Get TotalFacturasNuevo() As Double
-'''    Dim F As clsFacturaProveedor
-'''    Dim SUM As Double
-'''    For Each F In Me.FacturasProveedor
-'''        SUM = SUM + MonedaConverter.Convertir(IIf(F.tipoDocumentoContable = tipoDocumentoContable.notaCredito, F.total * -1, F.total), F.moneda.Id, Me.moneda.Id)
-'''    Next F
-'''    TotalFacturas = funciones.RedondearDecimales(SUM)
-'''End Property
 
 Public Property Get TotalFacturasNG() As Double
     Dim F As clsFacturaProveedor
@@ -194,14 +183,6 @@ Public Property Get TotalOrigenes() As Double
 End Property
 
 
-'Public Property Get TotalOrdenPago() As Double
-''totFact - totRet - OrdenPago.DiferenciaCambio - OrdenPago.OtrosDescuentos
-'
-'TotalOrdenPago = TotalFacturas - Me.StaticTotalRetenido - DiferenciaCambio - OtrosDescuentos + TotalCompensatorios
-'
-'
-'End Property
-
 Public Property Get TotalOrigenesDiscriminado() As Collection
 
     If Me.moneda Is Nothing Then
@@ -256,7 +237,7 @@ End Property
 
 
 Private Sub Class_Initialize()
-    Me.FEcha = Now
+    Me.Fecha = Now
 End Sub
 
 
@@ -318,9 +299,6 @@ Property Get StaticTotal() As Double
     StaticTotal = Me.TotalFacturas - Me.StaticTotalRetenido - Me.DiferenciaCambio - Me.OtrosDescuentos + Me.TotalCompensatorios + Me.DiferenciaCambioEnTOTAL + Me.staticTotalDeudaCompensatorios
 End Property
 
-'''Property Get StaticTotalNuevo() As Double
-'''    StaticTotalNuevo = (Me.TotalFacturas - (Me.total + Me.TotalAbonadoGlobalPendiente))
-'''End Property
 
 Public Property Get ValidationMessages() As String
     ValidationMessages = m_validationMessages
@@ -339,10 +317,6 @@ Public Property Get EsParaFacturaProveedor() As Boolean
 End Property
 
 Public Property Get TotalOrdenPago() As Double
-'If Id = 7180 Then Stop
-
-
-'Debug.Print "totales", Me.TotalOrigenes + Me.StaticTotalRetenido, "totales staticos", Me.StaticTotalOrigenes + Me.StaticTotalRetenido
 
     TotalOrdenPago = Me.TotalOrigenes + Me.StaticTotalRetenido    '+ Me.TotalCompensatorios
 

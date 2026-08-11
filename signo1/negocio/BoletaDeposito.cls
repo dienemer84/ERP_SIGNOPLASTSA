@@ -15,12 +15,11 @@ Option Explicit
 
 Public Id As Long
 Public numero As Long
-Public FechaDeposito As Long
+Public Monto As Double
+Public fechaDeposito As Date
 Public CuentaDestino As CuentaBancaria
 Public Cheques As New Collection
 Public OperacionesCaja As New Collection
 
-
 Public OperacionOrigen As operacion
 Public TipoDeposito As TipoDeposito
-

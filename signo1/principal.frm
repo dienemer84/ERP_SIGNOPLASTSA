@@ -510,6 +510,10 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR:
         Dim dep As New frmDepositarCheque
         dep.Show
+        
+    Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR_LISTA:
+        Dim depLista As New frmAdminBoletasDepositoLista
+        depLista.Show
 
     Case ID_BUTTON.ID_BUTTON_CLIENTES_PROVEEDORES__CLIENTES__NUEVO:
         Dim ff111 As New frmVentasClienteNuevo
@@ -1038,8 +1042,13 @@ Private Sub CreateRibbonBar()
     AddButton ribbonGroup, "Transferencias", ID_BUTTON.ID_BUTTON_ADMINISTRACION__COBRANZAS__TRANSfERENCIAS, Permisos.AdminCobroControl
     
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Caja y Bancos", ID_GROUP.ID_GROUP_ADMINISTRACION__CAJAYBANCOS)
+    
     AddButton ribbonGroup, "Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES, Permisos.AdminCajayBancos
-    AddButton ribbonGroup, "Depositos", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR, Permisos.AdminCajayBancos
+
+    '''' BOLETAS DE DEPOSITO
+    Set cmdBarCtrl = AddButton(ribbonGroup, "Boletas de deposito", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS, Permisos.AdminOPConsultas, , xtpControlButtonPopup)
+    AddButton ribbonGroup, "Crear Boleta de deposito", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR, Permisos.AdminCajayBancos, , , cmdBarCtrl
+    AddButton ribbonGroup, "Ver Listado de Boletas", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR_LISTA, Permisos.AdminCajayBancos, , , cmdBarCtrl
 
     AddButton ribbonGroup, "Compensatorios", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS__COMPENSATORIOS, Permisos.AdminOPControl
     

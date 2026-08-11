@@ -483,31 +483,31 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       ColumnsCount    =   11
       Column(1)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0000
       Column(2)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0178
-      Column(3)       =   "frmAdminCajaBancosListaAsientoBancario.frx":02B8
-      Column(4)       =   "frmAdminCajaBancosListaAsientoBancario.frx":03F8
-      Column(5)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0538
-      Column(6)       =   "frmAdminCajaBancosListaAsientoBancario.frx":06A0
-      Column(7)       =   "frmAdminCajaBancosListaAsientoBancario.frx":07E8
-      Column(8)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0930
-      Column(9)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0A70
-      Column(10)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0BA8
-      Column(11)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0CF0
+      Column(3)       =   "frmAdminCajaBancosListaAsientoBancario.frx":02D8
+      Column(4)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0418
+      Column(5)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0558
+      Column(6)       =   "frmAdminCajaBancosListaAsientoBancario.frx":06C0
+      Column(7)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0808
+      Column(8)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0950
+      Column(9)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0A90
+      Column(10)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0BC8
+      Column(11)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0D10
       FormatStylesCount=   13
-      FormatStyle(1)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0E10
-      FormatStyle(2)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0F38
-      FormatStyle(3)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0FE8
-      FormatStyle(4)  =   "frmAdminCajaBancosListaAsientoBancario.frx":109C
-      FormatStyle(5)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1174
-      FormatStyle(6)  =   "frmAdminCajaBancosListaAsientoBancario.frx":122C
-      FormatStyle(7)  =   "frmAdminCajaBancosListaAsientoBancario.frx":130C
-      FormatStyle(8)  =   "frmAdminCajaBancosListaAsientoBancario.frx":13C0
-      FormatStyle(9)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1478
-      FormatStyle(10) =   "frmAdminCajaBancosListaAsientoBancario.frx":152C
-      FormatStyle(11) =   "frmAdminCajaBancosListaAsientoBancario.frx":15E8
-      FormatStyle(12) =   "frmAdminCajaBancosListaAsientoBancario.frx":169C
-      FormatStyle(13) =   "frmAdminCajaBancosListaAsientoBancario.frx":174C
+      FormatStyle(1)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0E30
+      FormatStyle(2)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0F58
+      FormatStyle(3)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1008
+      FormatStyle(4)  =   "frmAdminCajaBancosListaAsientoBancario.frx":10BC
+      FormatStyle(5)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1194
+      FormatStyle(6)  =   "frmAdminCajaBancosListaAsientoBancario.frx":124C
+      FormatStyle(7)  =   "frmAdminCajaBancosListaAsientoBancario.frx":132C
+      FormatStyle(8)  =   "frmAdminCajaBancosListaAsientoBancario.frx":13E0
+      FormatStyle(9)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1498
+      FormatStyle(10) =   "frmAdminCajaBancosListaAsientoBancario.frx":154C
+      FormatStyle(11) =   "frmAdminCajaBancosListaAsientoBancario.frx":1608
+      FormatStyle(12) =   "frmAdminCajaBancosListaAsientoBancario.frx":16BC
+      FormatStyle(13) =   "frmAdminCajaBancosListaAsientoBancario.frx":176C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":17E8
+      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":1808
    End
    Begin MSComDlg.CommonDialog CommonDialog 
       Left            =   840
@@ -806,12 +806,12 @@ Private Sub gridOrdenes_RowFormat( _
 
     On Error GoTo salir
 
-    If RowBuffer.RowIndex <= 0 Then Exit Sub
-    If RowBuffer.RowIndex > Movimientos.count Then Exit Sub
+    If RowBuffer.rowIndex <= 0 Then Exit Sub
+    If RowBuffer.rowIndex > Movimientos.count Then Exit Sub
 
     Dim mov As clsAsientoContable
 
-    Set mov = Movimientos.item(RowBuffer.RowIndex)
+    Set mov = Movimientos.item(RowBuffer.rowIndex)
 
     Select Case mov.estado
 
@@ -842,16 +842,16 @@ End Sub
 
 
 Private Sub gridOrdenes_UnboundReadData( _
-    ByVal RowIndex As Long, _
+    ByVal rowIndex As Long, _
     ByVal Bookmark As Variant, _
     ByVal Values As GridEX20.JSRowData)
 
-    If RowIndex <= 0 Then Exit Sub
-    If RowIndex > Movimientos.count Then Exit Sub
+    If rowIndex <= 0 Then Exit Sub
+    If rowIndex > Movimientos.count Then Exit Sub
 
     Dim mov As clsAsientoContable
 
-    Set mov = Movimientos.item(RowIndex)
+    Set mov = Movimientos.item(rowIndex)
 
     Values(1) = mov.Id
     Values(2) = mov.FEcha
@@ -861,7 +861,7 @@ Private Sub gridOrdenes_UnboundReadData( _
         
             If IsSomething(mov.CuentaBancaria) And IsSomething(mov.CuentaBancariaDestino) Then
                 Values(4) = mov.CuentaBancaria.DescripcionFormateada _
-                            & "  ->  " _
+                            & "  --->  " _
                             & mov.CuentaBancariaDestino.DescripcionFormateada
         
             ElseIf IsSomething(mov.CuentaBancaria) Then
@@ -964,7 +964,7 @@ Private Sub mnuAprobar_Click()
     
     If DAOAsientoContable.aprobar(AsientoContable, False) Then
         MsgBox "Aprobación exitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
     Else
         MsgBox "Error, no se aprobó el movimiento!", vbCritical + vbOKOnly
