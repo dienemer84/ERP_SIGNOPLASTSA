@@ -7,22 +7,22 @@ Begin VB.Form frmDepositarCheque
    ClientHeight    =   7110
    ClientLeft      =   45
    ClientTop       =   735
-   ClientWidth     =   7920
+   ClientWidth     =   9795
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   7110
-   ScaleWidth      =   7920
+   ScaleWidth      =   9795
    ShowInTaskbar   =   0   'False
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   2610
       Left            =   60
       TabIndex        =   11
       Top             =   3840
-      Width           =   7725
+      Width           =   9645
       _Version        =   786432
-      _ExtentX        =   13626
+      _ExtentX        =   17013
       _ExtentY        =   4604
       _StockProps     =   79
       Caption         =   "Contenido"
@@ -32,9 +32,9 @@ Begin VB.Form frmDepositarCheque
          Left            =   210
          TabIndex        =   12
          Top             =   360
-         Width           =   7410
+         Width           =   9330
          _Version        =   786432
-         _ExtentX        =   13070
+         _ExtentX        =   16457
          _ExtentY        =   3651
          _StockProps     =   68
          Appearance      =   10
@@ -52,8 +52,8 @@ Begin VB.Form frmDepositarCheque
             Left            =   195
             TabIndex        =   14
             Top             =   510
-            Width           =   7065
-            _ExtentX        =   12462
+            Width           =   8985
+            _ExtentX        =   15849
             _ExtentY        =   2381
             Version         =   "2.0"
             BoundColumnIndex=   ""
@@ -128,14 +128,14 @@ Begin VB.Form frmDepositarCheque
       End
    End
    Begin XtremeSuiteControls.PushButton PushButton1 
-      Height          =   345
-      Left            =   6390
+      Height          =   465
+      Left            =   7920
       TabIndex        =   4
-      Top             =   6600
-      Width           =   1380
+      Top             =   6480
+      Width           =   1620
       _Version        =   786432
-      _ExtentX        =   2434
-      _ExtentY        =   609
+      _ExtentX        =   2857
+      _ExtentY        =   820
       _StockProps     =   79
       Caption         =   "Depositar"
       UseVisualStyle  =   -1  'True
@@ -145,9 +145,9 @@ Begin VB.Form frmDepositarCheque
       Left            =   105
       TabIndex        =   0
       Top             =   1605
-      Width           =   7680
+      Width           =   9600
       _Version        =   786432
-      _ExtentX        =   13547
+      _ExtentX        =   16933
       _ExtentY        =   3651
       _StockProps     =   79
       Caption         =   "Origenes"
@@ -157,9 +157,9 @@ Begin VB.Form frmDepositarCheque
          Left            =   135
          TabIndex        =   9
          Top             =   255
-         Width           =   7410
+         Width           =   9330
          _Version        =   786432
-         _ExtentX        =   13070
+         _ExtentX        =   16457
          _ExtentY        =   3016
          _StockProps     =   68
          Appearance      =   10
@@ -189,12 +189,12 @@ Begin VB.Form frmDepositarCheque
          End
          Begin XtremeSuiteControls.ComboBox cboCheques 
             Height          =   315
-            Left            =   1560
+            Left            =   2640
             TabIndex        =   19
             Top             =   585
-            Width           =   5760
+            Width           =   6480
             _Version        =   786432
-            _ExtentX        =   10160
+            _ExtentX        =   11430
             _ExtentY        =   556
             _StockProps     =   77
             BackColor       =   -2147483643
@@ -205,7 +205,7 @@ Begin VB.Form frmDepositarCheque
             Left            =   735
             TabIndex        =   18
             Top             =   600
-            Width           =   810
+            Width           =   1770
          End
          Begin XtremeSuiteControls.PushButton cmdAgregarCaja 
             Height          =   300
@@ -222,14 +222,14 @@ Begin VB.Form frmDepositarCheque
             UseVisualStyle  =   -1  'True
          End
          Begin XtremeSuiteControls.PushButton cmdAgregarCheque 
-            Height          =   300
-            Left            =   5790
+            Height          =   420
+            Left            =   7560
             TabIndex        =   16
-            Top             =   1260
-            Width           =   1485
+            Top             =   1140
+            Width           =   1605
             _Version        =   786432
-            _ExtentX        =   2619
-            _ExtentY        =   529
+            _ExtentX        =   2831
+            _ExtentY        =   741
             _StockProps     =   79
             Caption         =   "Agregar a Boleta"
             UseVisualStyle  =   -1  'True
@@ -389,6 +389,14 @@ Begin VB.Form frmDepositarCheque
          Width           =   750
       End
    End
+   Begin VB.Label lblTotalBoleta 
+      Caption         =   "Label5"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   25
+      Top             =   6600
+      Width           =   3855
+   End
 End
 Attribute VB_Name = "frmDepositarCheque"
 Attribute VB_GlobalNameSpace = False
@@ -411,46 +419,70 @@ Private Sub cmdAgregarCaja_Click()
 
 End Sub
 
+
 Private Sub cmdAgregarCheque_Click()
 
     On Error GoTo err1
 
+    Dim agregado As Boolean
+
+    agregado = False
+
 
     If Me.cboCheques.ListIndex < 0 Then
+
         MsgBox "Debe seleccionar un cheque.", _
                vbExclamation, "Boleta de depósito"
+
         Exit Sub
+
     End If
 
 
     Set cheque = DAOCheques.FindById( _
-                    Me.cboCheques.ItemData(Me.cboCheques.ListIndex))
+                    Me.cboCheques.ItemData( _
+                        Me.cboCheques.ListIndex))
 
 
     If cheque Is Nothing Then
+
         MsgBox "No se pudo obtener el cheque seleccionado.", _
                vbExclamation, "Boleta de depósito"
+
         Exit Sub
+
     End If
 
 
     If Not cheque.EnCartera Then
+
         MsgBox "El cheque seleccionado ya no se encuentra en cartera.", _
                vbExclamation, "Boleta de depósito"
+
         Exit Sub
+
     End If
 
 
     If cheque.Depositado Then
+
         MsgBox "El cheque seleccionado ya figura como depositado.", _
                vbExclamation, "Boleta de depósito"
+
         Exit Sub
+
     End If
 
+
+    '-------------------------------------------------------
+    ' AGREGAR A LA BOLETA
+    '-------------------------------------------------------
 
     If Not BuscarEnColeccion(Cheques, cheque.Id) Then
 
         Cheques.Add cheque, CStr(cheque.Id)
+
+        agregado = True
 
     Else
 
@@ -460,9 +492,35 @@ Private Sub cmdAgregarCheque_Click()
     End If
 
 
+    '-------------------------------------------------------
+    ' ACTUALIZAR GRILLA
+    '-------------------------------------------------------
+
+    Me.gridCheques.ItemCount = 0
+
     Me.gridCheques.ItemCount = Cheques.count
 
+    Me.gridCheques.Update
+
     GridEXHelper.AutoSizeColumns Me.gridCheques, True
+
+
+    '-------------------------------------------------------
+    ' SI SE AGREGÓ CORRECTAMENTE:
+    '
+    ' 1 - RECALCULAR TOTAL
+    ' 2 - LIMPIAR BUSQUEDA
+    ' 3 - DEJAR CURSOR PARA EL SIGUIENTE CHEQUE
+    '-------------------------------------------------------
+
+    If agregado Then
+
+        ActualizarTotalBoleta
+
+        LimpiarBusquedaCheque
+
+    End If
+
 
     Exit Sub
 
@@ -474,7 +532,6 @@ err1:
            vbCritical, "Boleta de depósito"
 
 End Sub
-
 
 Private Sub Form_Load()
     Customize Me
@@ -488,6 +545,9 @@ Private Sub Form_Load()
 
     Me.gridCheques.ItemCount = 0
     Me.GridCajas.ItemCount = 0
+    
+    ActualizarTotalBoleta
+    
 End Sub
 
 
@@ -744,6 +804,61 @@ Private Sub txtNroCheque_Change()
 
 End Sub
 
+
 Private Sub txtNroCheque_GotFocus()
+
     foco Me.txtNroCheque
+    
 End Sub
+
+
+Private Sub ActualizarTotalBoleta()
+
+    Dim ch As cheque
+    Dim total As Double
+    Dim moneda As String
+
+    total = 0
+    moneda = vbNullString
+
+    For Each ch In Cheques
+
+        total = total + ch.Monto
+
+        If LenB(moneda) = 0 Then
+            If Not ch.moneda Is Nothing Then
+                moneda = ch.moneda.NombreCorto
+            End If
+        End If
+
+    Next ch
+
+    If Cheques.count = 0 Then
+
+        Me.lblTotalBoleta.caption = _
+            "TOTAL BOLETA: $ 0,00"
+
+    Else
+
+        Me.lblTotalBoleta.caption = _
+            "TOTAL BOLETA: " & _
+            moneda & " " & _
+             Replace(FormatCurrency(funciones.FormatearDecimales(total)), "$", "")
+
+    End If
+
+End Sub
+
+
+Private Sub LimpiarBusquedaCheque()
+
+    Me.txtNroCheque.Text = vbNullString
+
+    Me.cboCheques.Clear
+
+    Set cheque = Nothing
+
+    Me.txtNroCheque.SetFocus
+
+End Sub
+

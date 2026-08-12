@@ -17,9 +17,9 @@ Begin VB.Form frmAdminBoletasDepositoLista
       Left            =   120
       TabIndex        =   0
       Top             =   120
-      Width           =   21885
+      Width           =   15195
       _Version        =   786432
-      _ExtentX        =   38603
+      _ExtentX        =   26802
       _ExtentY        =   3413
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
@@ -37,40 +37,14 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Height          =   865
          Index           =   0
          Left            =   9960
-         TabIndex        =   8
+         TabIndex        =   6
          Top             =   960
          Width           =   5055
-         Begin XtremeSuiteControls.PushButton cmdRestablecer 
-            Height          =   450
-            Left            =   1440
-            TabIndex        =   30
-            Top             =   240
-            Width           =   615
-            _Version        =   786432
-            _ExtentX        =   1085
-            _ExtentY        =   794
-            _StockProps     =   79
-            Caption         =   "Reset"
-            UseVisualStyle  =   -1  'True
-         End
-         Begin XtremeSuiteControls.PushButton btnExportar 
-            Height          =   450
-            Left            =   2160
-            TabIndex        =   9
-            Top             =   240
-            Width           =   1335
-            _Version        =   786432
-            _ExtentX        =   2355
-            _ExtentY        =   794
-            _StockProps     =   79
-            Caption         =   "Exportar"
-            UseVisualStyle  =   -1  'True
-         End
          Begin XtremeSuiteControls.PushButton cmdBuscar 
             Default         =   -1  'True
             Height          =   450
-            Left            =   0
-            TabIndex        =   10
+            Left            =   120
+            TabIndex        =   7
             Top             =   240
             Width           =   1350
             _Version        =   786432
@@ -89,31 +63,18 @@ Begin VB.Form frmAdminBoletasDepositoLista
             EndProperty
             UseVisualStyle  =   -1  'True
          End
-         Begin XtremeSuiteControls.PushButton cmdImprimir 
-            Height          =   450
-            Left            =   3600
-            TabIndex        =   11
-            Top             =   240
-            Width           =   1350
-            _Version        =   786432
-            _ExtentX        =   2381
-            _ExtentY        =   794
-            _StockProps     =   79
-            Caption         =   "Imprimir"
-            UseVisualStyle  =   -1  'True
-         End
       End
       Begin VB.Frame Frame1 
          Height          =   735
          Index           =   1
          Left            =   9960
-         TabIndex        =   6
+         TabIndex        =   4
          Top             =   240
          Width           =   5055
          Begin XtremeSuiteControls.ProgressBar progreso 
             Height          =   375
             Left            =   120
-            TabIndex        =   7
+            TabIndex        =   5
             Top             =   240
             Width           =   4815
             _Version        =   786432
@@ -127,40 +88,19 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Alignment       =   1  'Right Justify
          Height          =   285
          Left            =   945
-         TabIndex        =   5
+         TabIndex        =   3
          Top             =   285
          Width           =   2280
       End
-      Begin XtremeSuiteControls.GroupBox Totales 
-         Height          =   1575
-         Left            =   15120
-         TabIndex        =   1
-         Top             =   240
-         Width           =   6615
-         _Version        =   786432
-         _ExtentX        =   11668
-         _ExtentY        =   2778
-         _StockProps     =   79
-         Caption         =   "Resumen"
-         UseVisualStyle  =   -1  'True
-         Begin VB.Label lblDetalle 
-            Caption         =   "Label4"
-            Height          =   375
-            Left            =   120
-            TabIndex        =   2
-            Top             =   360
-            Width           =   3375
-         End
-      End
       Begin XtremeSuiteControls.PushButton btnClearCtaBcaria 
-         Height          =   255
+         Height          =   360
          Left            =   4530
-         TabIndex        =   3
-         Top             =   610
+         TabIndex        =   1
+         Top             =   577
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
-         _ExtentY        =   450
+         _ExtentY        =   635
          _StockProps     =   79
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
@@ -169,7 +109,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Height          =   315
          Index           =   1
          Left            =   960
-         TabIndex        =   4
+         TabIndex        =   2
          Top             =   600
          Width           =   3495
          _Version        =   786432
@@ -183,7 +123,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Height          =   315
          Index           =   0
          Left            =   3405
-         TabIndex        =   12
+         TabIndex        =   8
          Top             =   2100
          Width           =   1470
          _Version        =   786432
@@ -197,7 +137,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Height          =   315
          Index           =   0
          Left            =   3390
-         TabIndex        =   13
+         TabIndex        =   9
          Top             =   2595
          Width           =   1470
          _Version        =   786432
@@ -207,39 +147,11 @@ Begin VB.Form frmAdminBoletasDepositoLista
          CheckBox        =   -1  'True
          Format          =   1
       End
-      Begin XtremeSuiteControls.ComboBox cboEstado 
-         Height          =   315
-         Left            =   945
-         TabIndex        =   14
-         Top             =   1320
-         Width           =   3510
-         _Version        =   786432
-         _ExtentX        =   6191
-         _ExtentY        =   556
-         _StockProps     =   77
-         BackColor       =   -2147483643
-         Style           =   2
-         Text            =   "ComboBox1"
-      End
-      Begin XtremeSuiteControls.PushButton cmdLimpiaEstado 
-         Height          =   255
-         Left            =   4530
-         TabIndex        =   15
-         Top             =   1350
-         Width           =   420
-         _Version        =   786432
-         _ExtentX        =   741
-         _ExtentY        =   450
-         _StockProps     =   79
-         Caption         =   "X"
-         BackColor       =   12632256
-         UseVisualStyle  =   -1  'True
-      End
       Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
          Height          =   1575
          Index           =   1
          Left            =   5160
-         TabIndex        =   16
+         TabIndex        =   10
          Top             =   240
          Width           =   4695
          _Version        =   786432
@@ -262,7 +174,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
             Height          =   315
             Index           =   1
             Left            =   720
-            TabIndex        =   17
+            TabIndex        =   11
             Top             =   720
             Width           =   1470
             _Version        =   786432
@@ -276,7 +188,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
             Height          =   315
             Index           =   1
             Left            =   2925
-            TabIndex        =   18
+            TabIndex        =   12
             Top             =   720
             Width           =   1470
             _Version        =   786432
@@ -289,7 +201,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Begin XtremeSuiteControls.ComboBox cboRangos 
             Height          =   315
             Left            =   720
-            TabIndex        =   19
+            TabIndex        =   13
             Top             =   300
             Width           =   3675
             _Version        =   786432
@@ -304,7 +216,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
             Height          =   195
             Index           =   1
             Left            =   2400
-            TabIndex        =   22
+            TabIndex        =   16
             Top             =   780
             Width           =   420
             _Version        =   786432
@@ -319,7 +231,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
             Height          =   195
             Index           =   1
             Left            =   165
-            TabIndex        =   21
+            TabIndex        =   15
             Top             =   780
             Width           =   465
             _Version        =   786432
@@ -334,7 +246,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
             Height          =   195
             Index           =   1
             Left            =   120
-            TabIndex        =   20
+            TabIndex        =   14
             Top             =   360
             Width           =   480
             _Version        =   786432
@@ -349,7 +261,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
       Begin XtremeSuiteControls.Label Label1 
          Height          =   195
          Left            =   150
-         TabIndex        =   27
+         TabIndex        =   20
          Top             =   360
          Width           =   675
          _Version        =   786432
@@ -362,7 +274,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
       Begin XtremeSuiteControls.Label lbl 
          Height          =   195
          Left            =   315
-         TabIndex        =   26
+         TabIndex        =   19
          Top             =   660
          Width           =   510
          _Version        =   786432
@@ -376,7 +288,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Height          =   195
          Index           =   0
          Left            =   2865
-         TabIndex        =   25
+         TabIndex        =   18
          Top             =   2145
          Width           =   465
          _Version        =   786432
@@ -391,7 +303,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Height          =   195
          Index           =   0
          Left            =   2880
-         TabIndex        =   24
+         TabIndex        =   17
          Top             =   2655
          Width           =   420
          _Version        =   786432
@@ -402,29 +314,14 @@ Begin VB.Form frmAdminBoletasDepositoLista
          BackColor       =   12632256
          AutoSize        =   -1  'True
       End
-      Begin XtremeSuiteControls.Label lblRango 
-         Height          =   195
-         Index           =   0
-         Left            =   330
-         TabIndex        =   23
-         Top             =   1380
-         Width           =   495
-         _Version        =   786432
-         _ExtentX        =   873
-         _ExtentY        =   344
-         _StockProps     =   79
-         Caption         =   "Estado"
-         BackColor       =   12632256
-         AutoSize        =   -1  'True
-      End
    End
    Begin GridEX20.GridEX gridBoletas 
       Height          =   4185
       Left            =   120
-      TabIndex        =   28
+      TabIndex        =   21
       Top             =   2400
-      Width           =   14775
-      _ExtentX        =   26061
+      Width           =   15015
+      _ExtentX        =   26485
       _ExtentY        =   7382
       Version         =   "2.0"
       BoundColumnIndex=   ""
@@ -440,37 +337,37 @@ Begin VB.Form frmAdminBoletasDepositoLista
       ColumnsCount    =   8
       Column(1)       =   "frmAdminBoletasDepositoLista.frx":0000
       Column(2)       =   "frmAdminBoletasDepositoLista.frx":015C
-      Column(3)       =   "frmAdminBoletasDepositoLista.frx":027C
-      Column(4)       =   "frmAdminBoletasDepositoLista.frx":03DC
-      Column(5)       =   "frmAdminBoletasDepositoLista.frx":051C
-      Column(6)       =   "frmAdminBoletasDepositoLista.frx":063C
-      Column(7)       =   "frmAdminBoletasDepositoLista.frx":0784
-      Column(8)       =   "frmAdminBoletasDepositoLista.frx":08CC
+      Column(3)       =   "frmAdminBoletasDepositoLista.frx":02A4
+      Column(4)       =   "frmAdminBoletasDepositoLista.frx":0404
+      Column(5)       =   "frmAdminBoletasDepositoLista.frx":0544
+      Column(6)       =   "frmAdminBoletasDepositoLista.frx":068C
+      Column(7)       =   "frmAdminBoletasDepositoLista.frx":07D4
+      Column(8)       =   "frmAdminBoletasDepositoLista.frx":091C
       FormatStylesCount=   13
-      FormatStyle(1)  =   "frmAdminBoletasDepositoLista.frx":0A1C
-      FormatStyle(2)  =   "frmAdminBoletasDepositoLista.frx":0B44
-      FormatStyle(3)  =   "frmAdminBoletasDepositoLista.frx":0BF4
-      FormatStyle(4)  =   "frmAdminBoletasDepositoLista.frx":0CA8
-      FormatStyle(5)  =   "frmAdminBoletasDepositoLista.frx":0D80
-      FormatStyle(6)  =   "frmAdminBoletasDepositoLista.frx":0E38
-      FormatStyle(7)  =   "frmAdminBoletasDepositoLista.frx":0F18
-      FormatStyle(8)  =   "frmAdminBoletasDepositoLista.frx":0FCC
-      FormatStyle(9)  =   "frmAdminBoletasDepositoLista.frx":1084
-      FormatStyle(10) =   "frmAdminBoletasDepositoLista.frx":1138
-      FormatStyle(11) =   "frmAdminBoletasDepositoLista.frx":11F4
-      FormatStyle(12) =   "frmAdminBoletasDepositoLista.frx":12A8
-      FormatStyle(13) =   "frmAdminBoletasDepositoLista.frx":1358
+      FormatStyle(1)  =   "frmAdminBoletasDepositoLista.frx":0AB4
+      FormatStyle(2)  =   "frmAdminBoletasDepositoLista.frx":0BDC
+      FormatStyle(3)  =   "frmAdminBoletasDepositoLista.frx":0C8C
+      FormatStyle(4)  =   "frmAdminBoletasDepositoLista.frx":0D40
+      FormatStyle(5)  =   "frmAdminBoletasDepositoLista.frx":0E18
+      FormatStyle(6)  =   "frmAdminBoletasDepositoLista.frx":0ED0
+      FormatStyle(7)  =   "frmAdminBoletasDepositoLista.frx":0FB0
+      FormatStyle(8)  =   "frmAdminBoletasDepositoLista.frx":1064
+      FormatStyle(9)  =   "frmAdminBoletasDepositoLista.frx":111C
+      FormatStyle(10) =   "frmAdminBoletasDepositoLista.frx":11D0
+      FormatStyle(11) =   "frmAdminBoletasDepositoLista.frx":128C
+      FormatStyle(12) =   "frmAdminBoletasDepositoLista.frx":1340
+      FormatStyle(13) =   "frmAdminBoletasDepositoLista.frx":13F0
       ImageCount      =   0
-      PrinterProperties=   "frmAdminBoletasDepositoLista.frx":13F4
+      PrinterProperties=   "frmAdminBoletasDepositoLista.frx":148C
    End
    Begin GridEX20.GridEX gridDetalle 
-      Height          =   2985
+      Height          =   2865
       Left            =   120
-      TabIndex        =   31
-      Top             =   6720
-      Width           =   14775
-      _ExtentX        =   26061
-      _ExtentY        =   5265
+      TabIndex        =   23
+      Top             =   7080
+      Width           =   15015
+      _ExtentX        =   26485
+      _ExtentY        =   5054
       Version         =   "2.0"
       BoundColumnIndex=   ""
       ReplaceColumnIndex=   ""
@@ -483,36 +380,44 @@ Begin VB.Form frmAdminBoletasDepositoLista
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   8
-      Column(1)       =   "frmAdminBoletasDepositoLista.frx":15C4
-      Column(2)       =   "frmAdminBoletasDepositoLista.frx":16DC
-      Column(3)       =   "frmAdminBoletasDepositoLista.frx":17E0
-      Column(4)       =   "frmAdminBoletasDepositoLista.frx":18CC
-      Column(5)       =   "frmAdminBoletasDepositoLista.frx":19C0
-      Column(6)       =   "frmAdminBoletasDepositoLista.frx":1AB4
-      Column(7)       =   "frmAdminBoletasDepositoLista.frx":1BA0
-      Column(8)       =   "frmAdminBoletasDepositoLista.frx":1C9C
+      Column(1)       =   "frmAdminBoletasDepositoLista.frx":165C
+      Column(2)       =   "frmAdminBoletasDepositoLista.frx":17B8
+      Column(3)       =   "frmAdminBoletasDepositoLista.frx":1900
+      Column(4)       =   "frmAdminBoletasDepositoLista.frx":1A78
+      Column(5)       =   "frmAdminBoletasDepositoLista.frx":1BB8
+      Column(6)       =   "frmAdminBoletasDepositoLista.frx":1CD8
+      Column(7)       =   "frmAdminBoletasDepositoLista.frx":1E20
+      Column(8)       =   "frmAdminBoletasDepositoLista.frx":1F60
       FormatStylesCount=   13
-      FormatStyle(1)  =   "frmAdminBoletasDepositoLista.frx":1D40
-      FormatStyle(2)  =   "frmAdminBoletasDepositoLista.frx":1E68
-      FormatStyle(3)  =   "frmAdminBoletasDepositoLista.frx":1F18
-      FormatStyle(4)  =   "frmAdminBoletasDepositoLista.frx":1FCC
-      FormatStyle(5)  =   "frmAdminBoletasDepositoLista.frx":20A4
-      FormatStyle(6)  =   "frmAdminBoletasDepositoLista.frx":215C
-      FormatStyle(7)  =   "frmAdminBoletasDepositoLista.frx":223C
-      FormatStyle(8)  =   "frmAdminBoletasDepositoLista.frx":22F0
-      FormatStyle(9)  =   "frmAdminBoletasDepositoLista.frx":23A8
-      FormatStyle(10) =   "frmAdminBoletasDepositoLista.frx":245C
-      FormatStyle(11) =   "frmAdminBoletasDepositoLista.frx":2518
-      FormatStyle(12) =   "frmAdminBoletasDepositoLista.frx":25CC
-      FormatStyle(13) =   "frmAdminBoletasDepositoLista.frx":267C
+      FormatStyle(1)  =   "frmAdminBoletasDepositoLista.frx":20D0
+      FormatStyle(2)  =   "frmAdminBoletasDepositoLista.frx":21F8
+      FormatStyle(3)  =   "frmAdminBoletasDepositoLista.frx":22A8
+      FormatStyle(4)  =   "frmAdminBoletasDepositoLista.frx":235C
+      FormatStyle(5)  =   "frmAdminBoletasDepositoLista.frx":2434
+      FormatStyle(6)  =   "frmAdminBoletasDepositoLista.frx":24EC
+      FormatStyle(7)  =   "frmAdminBoletasDepositoLista.frx":25CC
+      FormatStyle(8)  =   "frmAdminBoletasDepositoLista.frx":2680
+      FormatStyle(9)  =   "frmAdminBoletasDepositoLista.frx":2738
+      FormatStyle(10) =   "frmAdminBoletasDepositoLista.frx":27EC
+      FormatStyle(11) =   "frmAdminBoletasDepositoLista.frx":28A8
+      FormatStyle(12) =   "frmAdminBoletasDepositoLista.frx":295C
+      FormatStyle(13) =   "frmAdminBoletasDepositoLista.frx":2A0C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminBoletasDepositoLista.frx":2718
+      PrinterProperties=   "frmAdminBoletasDepositoLista.frx":2AA8
+   End
+   Begin VB.Label Label2 
+      Caption         =   "Detalle de Cheques"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   24
+      Top             =   6840
+      Width           =   5175
    End
    Begin VB.Label lblCantidad 
       Caption         =   "Boletas mostradas [ 0 ]"
       Height          =   255
       Left            =   120
-      TabIndex        =   29
+      TabIndex        =   22
       Top             =   2160
       Width           =   6375
    End
@@ -528,6 +433,11 @@ Private mBoletas As Collection
 Private mCheques As Collection
 Private mCargando As Boolean
 Dim i As Integer
+
+
+Private Sub btnClearCtaBcaria_Click()
+    Me.cboCuenta(1).ListIndex = -1
+End Sub
 
 Private Sub Form_Load()
 
@@ -618,9 +528,10 @@ Private Sub CargarCuentas()
     Next cuenta
 
 
-    Me.cboCuenta(1).ListIndex = 0
+    Me.cboCuenta(1).ListIndex = -1
 
 End Sub
+
 
 Private Sub CargarHistorial()
 
@@ -786,7 +697,7 @@ Private Sub gridBoletas_UnboundReadData( _
 
 
     Values(7) = B.CantidadCheques
-    Values(8) = B.Monto
+    Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(B.Monto)), "$", "")
 
 End Sub
 
@@ -805,12 +716,12 @@ Private Sub gridBoletas_Click()
 End Sub
 
 
-
 Private Sub cmdBuscar_Click()
 
     CargarHistorial
 
 End Sub
+
 
 Private Sub cmdRestablecer_Click()
 
@@ -875,7 +786,7 @@ Private Sub gridDetalle_UnboundReadData( _
     End If
 
     '7 - Monto
-    Values(7) = ch.Monto
+    Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(ch.Monto)), "$", "")
 
     '8 - Fecha recibido
     If ch.FechaRecibido > 0 Then
@@ -972,17 +883,6 @@ Private Sub CargarDetalleBoletaSeleccionada()
         total = total + ch.Monto
     Next ch
 
-    Me.lblDetalle.caption = _
-        "Boleta Nº " & B.numero & _
-        "  |  " & _
-        Format$(B.fechaDeposito, "dd/mm/yyyy") & _
-        "  |  " & _
-        NombreBanco & _
-        "  |  " & _
-        numeroCuenta & _
-        "  |  Total: " & _
-        nombreMoneda & " " & _
-        Format$(total, "#,##0.00")
 
     Exit Sub
 
@@ -993,5 +893,6 @@ err1:
            vbCritical, "Boletas de depósito"
 
 End Sub
+
 
 
