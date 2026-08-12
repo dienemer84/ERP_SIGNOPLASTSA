@@ -42,12 +42,12 @@ Public Function FindAll( _
       & " ON opp.id = opope.id_orden_pago LEFT JOIN ordenes_pago_facturas opfac" _
       & " ON opfac.id_orden_pago = opp.id LEFT JOIN ordenes_pago_pagos_a_cuenta" _
       & " ON ordenes_pago_pagos_a_cuenta.id_pago_a_cuenta = pagoscta.id" _
-      & " LEFT JOIN liquidaciones_caja liqc ON liqc.id = opope.id_orden_pago" _
+      & " LEFT JOIN liquidaciones_caja_operaciones lco ON lco.id_operacion = op.id" _
+      & " LEFT JOIN liquidaciones_caja liqc ON liqc.id = lco.id_liquidacion_caja" _
       & " LEFT JOIN liquidaciones_caja_facturas liqf ON liqf.id_liquidacion_caja = liqc.id" _
       & " LEFT JOIN AdminComprasFacturasProveedores facprov ON facprov.id = opfac.id_factura_proveedor" _
       & " LEFT JOIN proveedores prov ON prov.id = facprov.id_proveedor" _
-      & " LEFT JOIN proveedores prov1" _
-      & " ON prov1.id = pagoscta.id_proveedor" _
+      & " LEFT JOIN proveedores prov1 ON prov1.id = pagoscta.id_proveedor" _
       & " LEFT JOIN movimientos_caja_bancos_operaciones mcbop" _
       & " ON mcbop.id_operacion = op.id" _
       & " LEFT JOIN movimientos_caja_bancos mcb" _
