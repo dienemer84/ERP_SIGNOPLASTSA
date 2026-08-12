@@ -79,10 +79,10 @@ Public Function FindAll( _
     q = q & SQLPagosACuentaCaja()
     q = q & " UNION ALL "
     
-    q = q & SQLMovimientosManuales()
+    q = q & SQLBoletasDeposito()
+    q = q & " UNION ALL "
     
-    q = q & ") movimientos "
-    q = q & "WHERE 1 = 1 "
+    q = q & SQLMovimientosManuales()
 
     q = q & "AND movimientos.fecha >= " _
           & conectar.Escape(FechaDesde) & " "
@@ -578,7 +578,7 @@ Private Function ValorFecha( _
 
     On Error GoTo fechaInvalida
 
-    Dim Valor As Variant
+    Dim valor As Variant
     Dim texto As String
 
     Dim anio As Integer
@@ -589,25 +589,25 @@ Private Function ValorFecha( _
     Dim minuto As Integer
     Dim segundo As Integer
 
-    Valor = rs.Fields(campo).value
+    valor = rs.Fields(campo).value
 
-    If IsNull(Valor) Or IsEmpty(Valor) Then
+    If IsNull(valor) Or IsEmpty(valor) Then
         ValorFecha = 0
         Exit Function
     End If
 
     ' ADO ya entregó una fecha real.
-    If VarType(Valor) = vbDate Then
-        ValorFecha = CDate(Valor)
+    If VarType(valor) = vbDate Then
+        ValorFecha = CDate(valor)
         Exit Function
     End If
 
     ' Algunos drivers MySQL entregan el resultado de un UNION
     ' como un arreglo de bytes.
-    If VarType(Valor) = (vbArray Or vbByte) Then
-        texto = StrConv(Valor, vbUnicode)
+    If VarType(valor) = (vbArray Or vbByte) Then
+        texto = StrConv(valor, vbUnicode)
     Else
-        texto = CStr(Valor)
+        texto = CStr(valor)
     End If
 
     texto = Trim$(texto)
@@ -664,8 +664,8 @@ fechaInvalida:
     Debug.Print String$(60, "-")
     Debug.Print "Fecha inválida"
     Debug.Print "Campo: "; campo
-    Debug.Print "Tipo Variant: "; VarType(Valor)
-    Debug.Print "Tipo: "; TypeName(Valor)
+    Debug.Print "Tipo Variant: "; VarType(valor)
+    Debug.Print "Tipo: "; TypeName(valor)
     Debug.Print "Texto: "; texto
     Debug.Print String$(60, "-")
 
@@ -970,5 +970,113 @@ Private Function SQLPagosACuentaCaja() As String
     SQLPagosACuentaCaja = q
 
 End Function
+
+
+Private Function SQLBoletasDeposito() As String
+
+    Dim q As String
+
+    q = "SELECT "
+
+    '----------------------------------------------------------
+    ' FECHAS
+    '----------------------------------------------------------
+    q = q & " bd.fecha_deposito AS fecha,"
+    q = q & " MIN(o.fecha_carga) AS fecha_carga,"
+
+    '----------------------------------------------------------
+    ' BANCO
+    '----------------------------------------------------------
+    q = q & " IFNULL(b.id, 0) AS id_banco,"
+    q = q & " IFNULL(b.nombre, 'SIN BANCO') AS banco,"
+
+    '----------------------------------------------------------
+    ' CUENTA BANCARIA DESTINO
+    '----------------------------------------------------------
+    q = q & " IFNULL(c.id, 0) AS id_cuenta_bancaria,"
+    q = q & " IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria,"
+    q = q & " IFNULL(c.cbu, '') AS cbu,"
+
+    '----------------------------------------------------------
+    ' MONEDA
+    '----------------------------------------------------------
+    q = q & " COALESCE(" _
+          & " NULLIF(c.moneda_id, 0)," _
+          & " MAX(NULLIF(o.moneda_id, 0))," _
+          & " 0" _
+          & " ) AS id_moneda,"
+
+    '----------------------------------------------------------
+    ' TIPO / ORIGEN
+    '----------------------------------------------------------
+    q = q & " 'INGRESO' AS tipo_movimiento,"
+    q = q & " 'DEPOSITO' AS origen,"
+
+    '----------------------------------------------------------
+    ' IDENTIFICACION
+    '----------------------------------------------------------
+    q = q & " bd.id AS id_origen,"
+    q = q & " CAST(bd.numero_boleta AS CHAR) AS numero_origen,"
+
+    ' Una boleta puede tener varias operaciones, una por cheque.
+    q = q & " MIN(o.id) AS id_operacion,"
+
+    q = q & " CAST(bd.numero_boleta AS CHAR) AS comprobante,"
+
+    '----------------------------------------------------------
+    ' DETALLE
+    '----------------------------------------------------------
+    q = q & " CONCAT(" _
+          & " 'Boleta de deposito Nro ', " _
+          & " bd.numero_boleta, " _
+          & " ' - ', COUNT(cd.id_cheque), ' cheque(s)'" _
+          & " ) AS detalle,"
+
+    '----------------------------------------------------------
+    ' IMPORTES
+    '----------------------------------------------------------
+    q = q & " IFNULL(bd.monto, 0) AS ingreso,"
+    q = q & " 0 AS egreso "
+
+    '----------------------------------------------------------
+    ' TABLAS
+    '----------------------------------------------------------
+    q = q & "FROM boleta_deposito bd "
+
+    q = q & "INNER JOIN cheques_depositos cd "
+    q = q & " ON cd.id_boleta = bd.id "
+
+    q = q & "INNER JOIN operaciones o "
+    q = q & " ON o.id = cd.id_operacion "
+
+    q = q & "LEFT JOIN AdminConfigCuentas c "
+    q = q & " ON c.id = bd.id_cuenta "
+
+    q = q & "LEFT JOIN AdminConfigBancos b "
+    q = q & " ON b.id = c.idBanco "
+
+    q = q & "WHERE bd.numero_boleta IS NOT NULL "
+    q = q & "AND o.pertenencia = 'banco' "
+    q = q & "AND o.entrada_salida = 1 "
+
+    '----------------------------------------------------------
+    ' AGRUPAR UNA SOLA FILA POR BOLETA
+    '----------------------------------------------------------
+    q = q & "GROUP BY "
+    q = q & " bd.id,"
+    q = q & " bd.monto,"
+    q = q & " bd.fecha_deposito,"
+    q = q & " bd.numero_boleta,"
+    q = q & " c.id,"
+    q = q & " c.cuenta,"
+    q = q & " c.cbu,"
+    q = q & " c.moneda_id,"
+    q = q & " b.id,"
+    q = q & " b.nombre "
+
+    SQLBoletasDeposito = q
+
+End Function
+
 
 

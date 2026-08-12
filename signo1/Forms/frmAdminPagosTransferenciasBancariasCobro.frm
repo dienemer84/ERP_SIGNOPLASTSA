@@ -11,6 +11,7 @@ Begin VB.Form frmAdminPagosTransferenciasBancariasCobro
    MDIChild        =   -1  'True
    ScaleHeight     =   10815
    ScaleWidth      =   16440
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox 
       Height          =   1695
       Index           =   0
@@ -451,6 +452,8 @@ Private Sub CompletarGridEx()
     End If
     
     Set transferencias = DAOTransferenciaBcariaCobro.FindAll(Banco, condition, "op.id DESC")
+    
+    Me.gridTransferencias.ItemCount = 0
     
     Me.gridTransferencias.ItemCount = transferencias.count
 

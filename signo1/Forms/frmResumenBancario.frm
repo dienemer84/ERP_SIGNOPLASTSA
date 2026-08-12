@@ -940,6 +940,9 @@ Private Sub CargarComboOrigen()
     Me.cboOrigen.AddItem "PAGO A CUENTA"
     Me.cboOrigen.ItemData(Me.cboOrigen.NewIndex) = 5
     
+    Me.cboOrigen.AddItem "DEPOSITO"
+    Me.cboOrigen.ItemData(Me.cboOrigen.NewIndex) = 6
+    
 End Sub
 
 
@@ -1003,6 +1006,9 @@ Private Function ObtenerOrigen() As String
             
         Case 5
             ObtenerOrigen = "PAGO A CUENTA"
+            
+        Case 6
+            ObtenerOrigen = "DEPOSITO"
 
         Case Else
             ObtenerOrigen = vbNullString
