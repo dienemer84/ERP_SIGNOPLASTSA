@@ -3,8 +3,8 @@ Option Explicit
 
 
 Public Function FindAll( _
-    ByVal FechaDesde As Date, _
-    ByVal FechaHasta As Date, _
+    ByVal fechaDesde As Date, _
+    ByVal fechaHasta As Date, _
     Optional ByVal IdCuentaBancaria As Long = 0, _
     Optional ByVal IdMoneda As Long = 0, _
     Optional ByVal TipoMovimiento As String = vbNullString, _
@@ -83,12 +83,16 @@ Public Function FindAll( _
     q = q & " UNION ALL "
     
     q = q & SQLMovimientosManuales()
+    
+    ' Cerrar el SELECT interno
+    q = q & ") movimientos "
+    q = q & "WHERE 1 = 1 "
 
     q = q & "AND movimientos.fecha >= " _
-          & conectar.Escape(FechaDesde) & " "
+          & conectar.Escape(fechaDesde) & " "
 
     q = q & "AND movimientos.fecha <= " _
-          & conectar.Escape(FechaHasta) & " "
+          & conectar.Escape(fechaHasta) & " "
 
     If IdCuentaBancaria > 0 Then
         q = q & "AND movimientos.id_cuenta_bancaria = " _
@@ -982,7 +986,7 @@ Private Function SQLBoletasDeposito() As String
     ' FECHAS
     '----------------------------------------------------------
     q = q & " bd.fecha_deposito AS fecha,"
-    q = q & " MIN(o.fecha_carga) AS fecha_carga,"
+    q = q & " bd.fecha_deposito AS fecha_carga,"
 
     '----------------------------------------------------------
     ' BANCO
@@ -991,7 +995,7 @@ Private Function SQLBoletasDeposito() As String
     q = q & " IFNULL(b.nombre, 'SIN BANCO') AS banco,"
 
     '----------------------------------------------------------
-    ' CUENTA BANCARIA DESTINO
+    ' CUENTA BANCARIA
     '----------------------------------------------------------
     q = q & " IFNULL(c.id, 0) AS id_cuenta_bancaria,"
     q = q & " IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria,"
@@ -1000,14 +1004,10 @@ Private Function SQLBoletasDeposito() As String
     '----------------------------------------------------------
     ' MONEDA
     '----------------------------------------------------------
-    q = q & " COALESCE(" _
-          & " NULLIF(c.moneda_id, 0)," _
-          & " MAX(NULLIF(o.moneda_id, 0))," _
-          & " 0" _
-          & " ) AS id_moneda,"
+    q = q & " IFNULL(c.moneda_id, 0) AS id_moneda,"
 
     '----------------------------------------------------------
-    ' TIPO / ORIGEN
+    ' TIPO
     '----------------------------------------------------------
     q = q & " 'INGRESO' AS tipo_movimiento,"
     q = q & " 'DEPOSITO' AS origen,"
@@ -1018,8 +1018,9 @@ Private Function SQLBoletasDeposito() As String
     q = q & " bd.id AS id_origen,"
     q = q & " CAST(bd.numero_boleta AS CHAR) AS numero_origen,"
 
-    ' Una boleta puede tener varias operaciones, una por cheque.
-    q = q & " MIN(o.id) AS id_operacion,"
+    ' No necesitamos la operación individual del cheque.
+    ' Usamos el ID de la boleta para mantener un valor único.
+    q = q & " bd.id AS id_operacion,"
 
     q = q & " CAST(bd.numero_boleta AS CHAR) AS comprobante,"
 
@@ -1028,12 +1029,11 @@ Private Function SQLBoletasDeposito() As String
     '----------------------------------------------------------
     q = q & " CONCAT(" _
           & " 'Boleta de deposito Nro ', " _
-          & " bd.numero_boleta, " _
-          & " ' - ', COUNT(cd.id_cheque), ' cheque(s)'" _
+          & " bd.numero_boleta" _
           & " ) AS detalle,"
 
     '----------------------------------------------------------
-    ' IMPORTES
+    ' IMPORTE
     '----------------------------------------------------------
     q = q & " IFNULL(bd.monto, 0) AS ingreso,"
     q = q & " 0 AS egreso "
@@ -1043,12 +1043,6 @@ Private Function SQLBoletasDeposito() As String
     '----------------------------------------------------------
     q = q & "FROM boleta_deposito bd "
 
-    q = q & "INNER JOIN cheques_depositos cd "
-    q = q & " ON cd.id_boleta = bd.id "
-
-    q = q & "INNER JOIN operaciones o "
-    q = q & " ON o.id = cd.id_operacion "
-
     q = q & "LEFT JOIN AdminConfigCuentas c "
     q = q & " ON c.id = bd.id_cuenta "
 
@@ -1056,27 +1050,9 @@ Private Function SQLBoletasDeposito() As String
     q = q & " ON b.id = c.idBanco "
 
     q = q & "WHERE bd.numero_boleta IS NOT NULL "
-    q = q & "AND o.pertenencia = 'banco' "
-    q = q & "AND o.entrada_salida = 1 "
-
-    '----------------------------------------------------------
-    ' AGRUPAR UNA SOLA FILA POR BOLETA
-    '----------------------------------------------------------
-    q = q & "GROUP BY "
-    q = q & " bd.id,"
-    q = q & " bd.monto,"
-    q = q & " bd.fecha_deposito,"
-    q = q & " bd.numero_boleta,"
-    q = q & " c.id,"
-    q = q & " c.cuenta,"
-    q = q & " c.cbu,"
-    q = q & " c.moneda_id,"
-    q = q & " b.id,"
-    q = q & " b.nombre "
 
     SQLBoletasDeposito = q
 
 End Function
-
 
 
