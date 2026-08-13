@@ -806,12 +806,12 @@ Private Sub gridOrdenes_RowFormat( _
 
     On Error GoTo salir
 
-    If RowBuffer.rowIndex <= 0 Then Exit Sub
-    If RowBuffer.rowIndex > Movimientos.count Then Exit Sub
+    If RowBuffer.RowIndex <= 0 Then Exit Sub
+    If RowBuffer.RowIndex > Movimientos.count Then Exit Sub
 
     Dim mov As clsAsientoContable
 
-    Set mov = Movimientos.item(RowBuffer.rowIndex)
+    Set mov = Movimientos.item(RowBuffer.RowIndex)
 
     Select Case mov.estado
 
@@ -842,16 +842,16 @@ End Sub
 
 
 Private Sub gridOrdenes_UnboundReadData( _
-    ByVal rowIndex As Long, _
+    ByVal RowIndex As Long, _
     ByVal Bookmark As Variant, _
     ByVal Values As GridEX20.JSRowData)
 
-    If rowIndex <= 0 Then Exit Sub
-    If rowIndex > Movimientos.count Then Exit Sub
+    If RowIndex <= 0 Then Exit Sub
+    If RowIndex > Movimientos.count Then Exit Sub
 
     Dim mov As clsAsientoContable
 
-    Set mov = Movimientos.item(rowIndex)
+    Set mov = Movimientos.item(RowIndex)
 
     Values(1) = mov.Id
     Values(2) = mov.FEcha
@@ -957,14 +957,14 @@ Private Sub mnuAprobar_Click()
               "Importe: " & Replace(FormatCurrency(funciones.FormatearDecimales(AsientoContable.StaticTotalOrigenes)), "$", "") & vbCrLf & vbCrLf & _
               "Una vez aprobado, el movimiento no podrá editarse." & vbCrLf & _
               "¿Desea continuar?", _
-              vbQuestion + vbYesNo + vbDefaultButton2, _
+              vbQuestion + vbYesNo + vbDefaultButton1, _
               "Confirmar aprobación") = vbNo Then
         Exit Sub
     End If
     
     If DAOAsientoContable.aprobar(AsientoContable, False) Then
         MsgBox "Aprobación exitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.rowIndex(Me.gridOrdenes.row)
+        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
         cmdBuscar_Click
     Else
         MsgBox "Error, no se aprobó el movimiento!", vbCritical + vbOKOnly
