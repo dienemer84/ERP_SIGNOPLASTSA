@@ -906,13 +906,22 @@ Private Sub cmdCrear_Click()
             Exit Sub
         End If
 
-        If Me.cboCuentasContables.ListIndex = -1 Then
-            MsgBox "Debe seleccionar una cuenta contable destino para el egreso.", vbExclamation
-            Exit Sub
+        '---------------------------------------------
+        ' Cuenta contable del ingreso
+        ' Es opcional
+        '---------------------------------------------
+        If Me.cboCuentasContables.ListIndex <> -1 Then
+        
+            Set AsientoContable.CuentaContable = _
+                DAOCuentaContable.GetById( _
+                    Me.cboCuentasContables.ItemData( _
+                        Me.cboCuentasContables.ListIndex))
+        
+        Else
+        
+            Set AsientoContable.CuentaContable = Nothing
+        
         End If
-
-        Set AsientoContable.CuentaContable = _
-            DAOCuentaContable.GetById(Me.cboCuentasContables.ItemData(Me.cboCuentasContables.ListIndex))
 
         If Monto > 0 Then
             If LenB(Comprobante) = 0 Then
@@ -1529,52 +1538,42 @@ Public Sub Cargar(aContable As clsAsientoContable)
         '------------------------------
         ' Tipo de movimiento
         '------------------------------
-        If .TipoMovimiento = "INGRESO" Then
-            Me.RadioButton1.value = True
-            Me.RadioButton2.value = False
-            
-            Me.Label1(0).caption = "Cuenta destino"
-            
-            Me.cboCuentasContables.Enabled = False
-            Me.Label(0).Enabled = False
-            Me.btnClearCtaContable.Enabled = False
-            
-        ElseIf .TipoMovimiento = "SALIDA" Or .TipoMovimiento = "EGRESO" Then
-            Me.RadioButton1.value = False
-            Me.RadioButton2.value = True
-            
-            Me.Label1(0).caption = "Cuenta origen"
-            
-            Me.cboCuentasContables.Enabled = True
-            Me.Label(0).Enabled = True
-            Me.btnClearCtaContable.Enabled = True
-            
-        ElseIf .TipoMovimiento = "TRANSFERENCIA" Then
-        
-            Me.RadioButton1.value = False
-            Me.RadioButton2.value = False
-            Me.RadioButton3.value = True
-        
-            Me.Label1(0).caption = "Cuenta origen"
-            Me.Label1(1).caption = "Cuenta destino"
-        
-            If IsSomething(.CuentaBancaria) Then
-                Me.cboCuentasBancarias.ListIndex = funciones.PosIndexCbo(.CuentaBancaria.Id, Me.cboCuentasBancarias)
-            Else
-                Me.cboCuentasBancarias.ListIndex = -1
-            End If
-        
-            If IsSomething(.CuentaBancariaDestino) Then
-                Me.cboCuentaBancariaDestino.ListIndex = funciones.PosIndexCbo(.CuentaBancariaDestino.Id, Me.cboCuentaBancariaDestino)
-            Else
-                Me.cboCuentaBancariaDestino.ListIndex = -1
-            End If
-        
-        End If
-                
-        Me.cboCuentasBancarias.Enabled = True
-        Me.Label1(0).Enabled = True
-        Me.btnClearCtaBancaria.Enabled = True
+If .TipoMovimiento = "INGRESO" Then
+
+    Me.RadioButton1.value = True
+    Me.RadioButton2.value = False
+    Me.RadioButton3.value = False
+
+    Me.Label1(0).caption = "Cuenta destino"
+
+ElseIf .TipoMovimiento = "SALIDA" Or _
+       .TipoMovimiento = "EGRESO" Then
+
+    Me.RadioButton1.value = False
+    Me.RadioButton2.value = True
+    Me.RadioButton3.value = False
+
+    Me.Label1(0).caption = "Cuenta origen"
+
+ElseIf .TipoMovimiento = "TRANSFERENCIA" Then
+
+    Me.RadioButton1.value = False
+    Me.RadioButton2.value = False
+    Me.RadioButton3.value = True
+
+    Me.Label1(0).caption = "Cuenta origen"
+    Me.Label1(1).caption = "Cuenta destino"
+
+    If IsSomething(.CuentaBancariaDestino) Then
+        Me.cboCuentaBancariaDestino.ListIndex = _
+            funciones.PosIndexCbo( _
+                .CuentaBancariaDestino.Id, _
+                Me.cboCuentaBancariaDestino)
+    Else
+        Me.cboCuentaBancariaDestino.ListIndex = -1
+    End If
+
+End If
         
         '------------------------------
         ' Cuenta bancaria principal
@@ -1702,53 +1701,68 @@ usaCuentaContableActual = _
     esIngresoActual Or esEgresoActual
 
 
+'---------------------------------------------
+' Cuenta bancaria principal
+'---------------------------------------------
 Me.cboCuentasBancarias.Enabled = Not ReadOnly
+Me.btnClearCtaBancaria.Enabled = Not ReadOnly
 
+
+'---------------------------------------------
+' Cuenta contable
+' INGRESO / EGRESO
+'---------------------------------------------
 Me.cboCuentasContables.Enabled = _
     (Not ReadOnly And usaCuentaContableActual)
 
 Me.btnClearCtaContable.Enabled = _
     (Not ReadOnly And usaCuentaContableActual)
 
+
+'---------------------------------------------
+' Cuenta destino de transferencia
+'---------------------------------------------
 Me.cboCuentaBancariaDestino.Enabled = _
     (Not ReadOnly And esTransferenciaActual)
 
-Me.btnClearCtaBancaria.Enabled = Not ReadOnly
-
 Me.btnClearCtaBancariaDestino.Enabled = _
     (Not ReadOnly And esTransferenciaActual)
-    
-    Me.cboCuentaBancariaDestino.Enabled = _
-        (Not ReadOnly And esTransferenciaActual)
-    
-    Me.btnClearCtaBancaria.Enabled = Not ReadOnly
-    
-    Me.btnClearCtaContable.Enabled = _
-        (Not ReadOnly And esEgresoActual)
-    
-    Me.btnClearCtaBancariaDestino.Enabled = _
-        (Not ReadOnly And esTransferenciaActual)
-    
-    Me.cboMonedas.Enabled = Not ReadOnly
-    Me.dtpFecha.Enabled = Not ReadOnly
-    Me.FlatEdit1.Enabled = Not ReadOnly
-    
-    Me.txtMonto.Enabled = Not ReadOnly
-    Me.txtComprobante.Enabled = Not ReadOnly
-    
-    Me.RadioButton1.Enabled = Not ReadOnly
-    Me.RadioButton2.Enabled = Not ReadOnly
-    Me.RadioButton3.Enabled = Not ReadOnly
-    
-    Me.gridChequesPropios.Enabled = True
-    Me.gridChequesPropios.AllowEdit = Not ReadOnly
-    Me.gridChequesPropios.AllowDelete = Not ReadOnly
-    
-    Me.gridChequeras.Enabled = Not ReadOnly
-    Me.gridChequesChequera.Enabled = Not ReadOnly
-    
-    Me.cmdCrear.Enabled = Not ReadOnly
-    
+
+
+'---------------------------------------------
+' Datos generales
+'---------------------------------------------
+Me.cboMonedas.Enabled = Not ReadOnly
+Me.dtpFecha.Enabled = Not ReadOnly
+Me.FlatEdit1.Enabled = Not ReadOnly
+
+Me.txtMonto.Enabled = Not ReadOnly
+Me.txtComprobante.Enabled = Not ReadOnly
+
+
+'---------------------------------------------
+' Tipo de movimiento
+'---------------------------------------------
+Me.RadioButton1.Enabled = Not ReadOnly
+Me.RadioButton2.Enabled = Not ReadOnly
+Me.RadioButton3.Enabled = Not ReadOnly
+
+
+'---------------------------------------------
+' Cheques
+'---------------------------------------------
+Me.gridChequesPropios.Enabled = True
+Me.gridChequesPropios.AllowEdit = Not ReadOnly
+Me.gridChequesPropios.AllowDelete = Not ReadOnly
+
+Me.gridChequeras.Enabled = Not ReadOnly
+Me.gridChequesChequera.Enabled = Not ReadOnly
+
+
+'---------------------------------------------
+' Guardar
+'---------------------------------------------
+Me.cmdCrear.Enabled = Not ReadOnly
 End Sub
 
 
@@ -2102,7 +2116,7 @@ Private Function FormatearEnteroMiles( _
 ) As String
 
     Dim i As Long
-    Dim contador As Long
+    Dim Contador As Long
     Dim resultado As String
 
     texto = SoloDigitos(texto)
@@ -2117,14 +2131,14 @@ Private Function FormatearEnteroMiles( _
     End If
 
     resultado = vbNullString
-    contador = 0
+    Contador = 0
 
     For i = Len(texto) To 1 Step -1
 
         resultado = Mid$(texto, i, 1) & resultado
-        contador = contador + 1
+        Contador = Contador + 1
 
-        If contador Mod 3 = 0 And i > 1 Then
+        If Contador Mod 3 = 0 And i > 1 Then
             resultado = "." & resultado
         End If
 
