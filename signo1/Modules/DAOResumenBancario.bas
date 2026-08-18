@@ -44,7 +44,51 @@ Public Function FindAll( _
     q = q & " movimientos.banco,"
     q = q & " movimientos.id_cuenta_bancaria,"
     q = q & " movimientos.cuenta_bancaria,"
+    
+    '----------------------------------------------------------
+    ' CUENTA ORIGEN DE TRANSFERENCIA INTERBANCARIA
+    '----------------------------------------------------------
+    q = q & " CASE "
+    
+    q = q & " WHEN movimientos.origen = " _
+          & " 'TRANSFERENCIA INTERBANCARIA' " _
+          & " AND movimientos.tipo_movimiento = 'INGRESO' "
+    
+    q = q & " THEN IFNULL(("
+    
+    q = q & " SELECT CONCAT(" _
+          & " IFNULL(bo.nombre, '')," _
+          & " ' | N° '," _
+          & " IFNULL(co.cuenta, '')" _
+          & " ) "
+    
+    q = q & " FROM movimientos_caja_bancos_operaciones mo "
+    
+    q = q & " INNER JOIN operaciones oo "
+    q = q & " ON oo.id = mo.id_operacion "
+    
+    q = q & " LEFT JOIN AdminConfigCuentas co "
+    q = q & " ON co.id = oo.cuentabanc_o_caja_id "
+    
+    q = q & " LEFT JOIN AdminConfigBancos bo "
+    q = q & " ON bo.id = co.idBanco "
+    
+    q = q & " WHERE mo.id_movimiento_caja_bancos = " _
+          & " movimientos.id_origen "
+    
+    q = q & " AND oo.pertenencia = 'banco' "
+    q = q & " AND oo.entrada_salida = -1 "
+    
+    q = q & " LIMIT 1"
+    
+    q = q & " ), '-') "
+    
+    q = q & " ELSE '-' "
+    
+    q = q & " END AS cuenta_origen,"
+    
     q = q & " movimientos.cbu,"
+    
     q = q & " movimientos.id_moneda,"
     q = q & " movimientos.tipo_movimiento,"
     q = q & " movimientos.origen,"
@@ -157,6 +201,10 @@ While Not rs.EOF
     etapa = "cuenta_bancaria"
     mov.CuentaBancaria = _
         ValorTexto(rs, "cuenta_bancaria")
+    
+    etapa = "cuenta_origen"
+    mov.CuentaOrigen = _
+        ValorTexto(rs, "cuenta_origen")
 
     etapa = "cbu"
     mov.CBU = ValorTexto(rs, "cbu")

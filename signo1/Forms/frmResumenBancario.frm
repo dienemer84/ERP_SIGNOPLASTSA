@@ -30,25 +30,26 @@ Begin VB.Form frmResumenBancario
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   9
+      ColumnsCount    =   10
       Column(1)       =   "frmResumenBancario.frx":0000
       Column(2)       =   "frmResumenBancario.frx":0184
       Column(3)       =   "frmResumenBancario.frx":029C
       Column(4)       =   "frmResumenBancario.frx":03DC
-      Column(5)       =   "frmResumenBancario.frx":04FC
-      Column(6)       =   "frmResumenBancario.frx":0644
-      Column(7)       =   "frmResumenBancario.frx":079C
-      Column(8)       =   "frmResumenBancario.frx":08E4
-      Column(9)       =   "frmResumenBancario.frx":0A64
+      Column(5)       =   "frmResumenBancario.frx":0514
+      Column(6)       =   "frmResumenBancario.frx":0634
+      Column(7)       =   "frmResumenBancario.frx":077C
+      Column(8)       =   "frmResumenBancario.frx":08D4
+      Column(9)       =   "frmResumenBancario.frx":0A1C
+      Column(10)      =   "frmResumenBancario.frx":0B9C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmResumenBancario.frx":0BD4
-      FormatStyle(2)  =   "frmResumenBancario.frx":0D0C
-      FormatStyle(3)  =   "frmResumenBancario.frx":0DBC
-      FormatStyle(4)  =   "frmResumenBancario.frx":0E70
-      FormatStyle(5)  =   "frmResumenBancario.frx":0F48
-      FormatStyle(6)  =   "frmResumenBancario.frx":1000
+      FormatStyle(1)  =   "frmResumenBancario.frx":0D0C
+      FormatStyle(2)  =   "frmResumenBancario.frx":0E44
+      FormatStyle(3)  =   "frmResumenBancario.frx":0EF4
+      FormatStyle(4)  =   "frmResumenBancario.frx":0FA8
+      FormatStyle(5)  =   "frmResumenBancario.frx":1080
+      FormatStyle(6)  =   "frmResumenBancario.frx":1138
       ImageCount      =   0
-      PrinterProperties=   "frmResumenBancario.frx":10E0
+      PrinterProperties=   "frmResumenBancario.frx":1218
    End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   2415
@@ -597,12 +598,12 @@ End Sub
 
 
 
-Private Function TextoCombo(ByVal cbo As Object) As String
+Private Function textoCombo(ByVal cbo As Object) As String
 
     If cbo.ListIndex >= 0 Then
-        TextoCombo = cbo.list(cbo.ListIndex)
+        textoCombo = cbo.list(cbo.ListIndex)
     Else
-        TextoCombo = "TODOS"
+        textoCombo = "TODOS"
     End If
 
 End Function
@@ -836,14 +837,15 @@ Private Sub gridResumenBancario_UnboundReadData( _
     Values(1) = Movimiento.FEcha
     Values(2) = Movimiento.Banco
     Values(3) = Movimiento.CuentaBancaria
-    Values(4) = Movimiento.Origen
-    Values(5) = Movimiento.NumeroOrigen
-    Values(6) = Movimiento.Comprobante
+    Values(4) = Movimiento.CuentaOrigen
+    Values(5) = Movimiento.Origen
+    Values(6) = Movimiento.NumeroOrigen
+    Values(7) = Movimiento.Comprobante
 
     ' Mantener como valores numéricos.
-Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(Movimiento.Ingreso)), "$", "")
-Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(Movimiento.Egreso)), "$", "")
-Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Movimiento.SaldoAcumulado)), "$", "")
+    Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(Movimiento.Ingreso)), "$", "")
+    Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(Movimiento.Egreso)), "$", "")
+    Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Movimiento.SaldoAcumulado)), "$", "")
 
 
 End Sub
@@ -1162,19 +1164,19 @@ Private Function ExportarResumenBancario( _
 
     xlWorksheet.Cells(3, 1).value = "Cuenta:"
     xlWorksheet.Cells(3, 2).value = _
-        TextoCombo(Me.cboCuentasBancarias)
+        textoCombo(Me.cboCuentasBancarias)
 
     xlWorksheet.Cells(3, 3).value = "Moneda:"
     xlWorksheet.Cells(3, 4).value = _
-        TextoCombo(Me.cboMonedas)
+        textoCombo(Me.cboMonedas)
 
     xlWorksheet.Cells(4, 1).value = "Origen:"
     xlWorksheet.Cells(4, 2).value = _
-        TextoCombo(Me.cboOrigen)
+        textoCombo(Me.cboOrigen)
 
     xlWorksheet.Cells(4, 3).value = "Tipo:"
     xlWorksheet.Cells(4, 4).value = _
-        TextoCombo(Me.cboTipoMovimiento)
+        textoCombo(Me.cboTipoMovimiento)
 
     xlWorksheet.Range("B2").NumberFormat = "dd/mm/yyyy"
     xlWorksheet.Range("D2").NumberFormat = "dd/mm/yyyy"

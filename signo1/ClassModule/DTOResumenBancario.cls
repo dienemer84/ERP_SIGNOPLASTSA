@@ -13,12 +13,13 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public Fecha As Date
+Public FEcha As Date
 Public FechaCarga As Date
 
 Public IdBanco As Long
 Public Banco As String
 
+Public CuentaOrigen As String
 Public IdCuentaBancaria As Long
 Public CuentaBancaria As String
 Public CBU As String
@@ -33,7 +34,7 @@ Public NumeroOrigen As String
 
 Public IdOperacion As Long
 Public Comprobante As String
-Public Detalle As String
+Public detalle As String
 
 Public Ingreso As Double
 Public Egreso As Double
