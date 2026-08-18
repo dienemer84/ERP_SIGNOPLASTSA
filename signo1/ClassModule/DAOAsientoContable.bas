@@ -1,13 +1,31 @@
 Attribute VB_Name = "DAOAsientoContable"
 Option Explicit
 
-'''Public Function FindLast() As OrdenPago
-'''    Set FindLast = FindAll("ordenes_pago.id = (SELECT MAX(id) FROM ordenes_pago)")(1)
-'''End Function
 
+Public Function FindById( _
+    ByVal Id As Long _
+) As clsAsientoContable
 
-Public Function FindById(Id As Long) As clsAsientoContable
-    Set FindById = FindAll("movimientos_caja_bancos.id = " & Id)(1)
+    On Error GoTo err1
+
+    Dim col As Collection
+
+    If Id <= 0 Then Exit Function
+
+    Set col = FindAll( _
+        "movimientos_caja_bancos.id = " & Id)
+
+    If col Is Nothing Then Exit Function
+
+    If col.count = 0 Then Exit Function
+
+    Set FindById = col.item(1)
+
+    Exit Function
+
+err1:
+    Set FindById = Nothing
+
 End Function
 
 
@@ -332,7 +350,8 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
 
         For Each che In aContable.ChequesTerceros
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = aContable.Id
+            che.IdOrdenPagoOrigen = 0
+            che.NumeroMovimiento = aContable.Id
             che.FechaEmision = aContable.FEcha
 
             If Not DAOCheques.Guardar(che) Then GoTo E
@@ -343,7 +362,8 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
 
         For Each che In aContable.ChequesPropios
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = aContable.Id
+            che.IdOrdenPagoOrigen = 0
+            che.NumeroMovimiento = aContable.Id
             che.FechaEmision = aContable.FEcha
 
             If Not DAOCheques.Guardar(che) Then GoTo E
@@ -1309,5 +1329,179 @@ Public Function aprobar(aContable As clsAsientoContable, insideTransaction As Bo
 err1:
     If startedTransaction Then conectar.RollBackTransaction
     aprobar = False
+End Function
+
+
+Public Function EliminarMovimiento( _
+    ByVal idMovimiento As Long, _
+    Optional ByVal insideTransaction As Boolean = False _
+) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As Recordset
+
+    Dim idsOperaciones As String
+    Dim startedTransaction As Boolean
+    Dim estadoActual As Long
+
+    EliminarMovimiento = False
+
+    If idMovimiento <= 0 Then Exit Function
+
+    '------------------------------------------------
+    ' TRANSACCIÓN
+    '------------------------------------------------
+    If Not insideTransaction Then
+        conectar.BeginTransaction
+        startedTransaction = True
+    End If
+
+    '------------------------------------------------
+    ' 1. Volver a comprobar en la BASE que exista
+    '    y que todavía esté En Edición.
+    '
+    ' FOR UPDATE evita que otro proceso lo modifique
+    ' mientras estamos eliminándolo.
+    '------------------------------------------------
+    q = "SELECT estado " & _
+        "FROM movimientos_caja_bancos " & _
+        "WHERE id = " & idMovimiento & " " & _
+        "FOR UPDATE"
+
+    Set rs = conectar.RSFactory(q)
+
+    If rs.EOF Then GoTo err1
+
+    '------------------------------------------------
+    ' 2. Guardar IDs de las operaciones asociadas
+    '    ANTES de eliminar la relación.
+    '------------------------------------------------
+    idsOperaciones = "-1"
+
+    q = "SELECT id_operacion " & _
+        "FROM movimientos_caja_bancos_operaciones " & _
+        "WHERE id_movimiento_caja_bancos = " & idMovimiento
+
+    Set rs = conectar.RSFactory(q)
+
+    While Not rs.EOF
+
+        If Not IsNull(rs!id_operacion) Then
+            idsOperaciones = idsOperaciones & _
+                             "," & CLng(rs!id_operacion)
+        End If
+
+        rs.MoveNext
+
+    Wend
+
+    '------------------------------------------------
+    ' 3. LIBERAR CHEQUES PROPIOS
+    '
+    ' Los propios vuelven a quedar disponibles
+    ' dentro de su chequera.
+    '------------------------------------------------
+    q = "UPDATE Cheques c " & _
+        "INNER JOIN movimientos_caja_bancos_cheques mc " & _
+        "ON mc.id_cheque = c.id " & _
+        "SET c.en_cartera = 0, " & _
+        "    c.fecha_vencimiento = NULL, " & _
+        "    c.monto = 0, " & _
+        "    c.fecha_emision = NULL, " & _
+        "    c.orden_pago_origen = NULL, " & _
+        "    c.movimiento_origen = NULL " & _
+        "WHERE mc.id_movimiento_caja_bancos = " & _
+            idMovimiento & " " & _
+        "AND c.propio = 1"
+
+    If Not conectar.execute(q) Then GoTo err1
+
+    '------------------------------------------------
+    ' 4. LIBERAR CHEQUES DE TERCEROS
+    '
+    ' Estos vuelven a cartera, pero NO borramos
+    ' monto ni vencimiento porque son datos propios
+    ' del cheque recibido.
+    '------------------------------------------------
+    q = "UPDATE Cheques c " & _
+        "INNER JOIN movimientos_caja_bancos_cheques mc " & _
+        "ON mc.id_cheque = c.id " & _
+        "SET c.en_cartera = 1, " & _
+        "    c.orden_pago_origen = NULL, " & _
+        "    c.movimiento_origen = NULL " & _
+        "WHERE mc.id_movimiento_caja_bancos = " & _
+            idMovimiento & " " & _
+        "AND c.propio = 0"
+
+    If Not conectar.execute(q) Then GoTo err1
+
+    '------------------------------------------------
+    ' 5. Eliminar relaciones con cheques
+    '
+    ' NO eliminamos el cheque físico.
+    '------------------------------------------------
+    q = "DELETE FROM movimientos_caja_bancos_cheques " & _
+        "WHERE id_movimiento_caja_bancos = " & idMovimiento
+
+    If Not conectar.execute(q) Then GoTo err1
+
+    '------------------------------------------------
+    ' 6. Eliminar relaciones con operaciones
+    '------------------------------------------------
+    q = "DELETE FROM movimientos_caja_bancos_operaciones " & _
+        "WHERE id_movimiento_caja_bancos = " & idMovimiento
+
+    If Not conectar.execute(q) Then GoTo err1
+
+    '------------------------------------------------
+    ' 7. Eliminar las operaciones creadas
+    '    exclusivamente para este movimiento
+    '------------------------------------------------
+    If idsOperaciones <> "-1" Then
+
+        q = "DELETE FROM operaciones " & _
+            "WHERE id IN (" & idsOperaciones & ")"
+
+        If Not conectar.execute(q) Then GoTo err1
+
+    End If
+
+    '------------------------------------------------
+    ' 8. Dejar historial antes de eliminar cabecera
+    '------------------------------------------------
+    DaoHistorico.Save _
+        "orden_pago_historial", _
+        "Movimiento de Caja y Bancos Eliminado", _
+        idMovimiento
+
+    '------------------------------------------------
+    ' 9. Finalmente eliminar la cabecera
+    '------------------------------------------------
+    q = "DELETE FROM movimientos_caja_bancos " & _
+        "WHERE id = " & idMovimiento
+
+    If Not conectar.execute(q) Then GoTo err1
+
+    '------------------------------------------------
+    ' COMMIT
+    '------------------------------------------------
+    If startedTransaction Then
+        conectar.CommitTransaction
+    End If
+
+    EliminarMovimiento = True
+
+    Exit Function
+
+err1:
+
+    If startedTransaction Then
+        conectar.RollBackTransaction
+    End If
+
+    EliminarMovimiento = False
+
 End Function
 

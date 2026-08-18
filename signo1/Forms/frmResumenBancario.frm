@@ -5,7 +5,7 @@ Begin VB.Form frmResumenBancario
    Caption         =   "Reporte Bancario"
    ClientHeight    =   10290
    ClientLeft      =   60
-   ClientTop       =   450
+   ClientTop       =   750
    ClientWidth     =   18735
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
@@ -455,6 +455,12 @@ Begin VB.Form frmResumenBancario
       Top             =   2640
       Width           =   6015
    End
+   Begin VB.Menu mnuContextualResumen 
+      Caption         =   "Opciones"
+      Begin VB.Menu mnuAbrirMovimientoCajaBancos 
+         Caption         =   "Abrir movimiento de Caja y Bancos"
+      End
+   End
 End
 Attribute VB_Name = "frmResumenBancario"
 Attribute VB_GlobalNameSpace = False
@@ -777,6 +783,39 @@ Private Sub Form_Load()
 
 End Sub
 
+
+Private Sub gridResumenBancario_MouseDown( _
+    Button As Integer, _
+    Shift As Integer, _
+    x As Single, _
+    y As Single)
+
+    Dim Movimiento As DTOResumenBancario
+    Dim origenMovimiento As String
+
+    If Button <> 2 Then Exit Sub
+
+    Set Movimiento = ObtenerMovimientoResumenSeleccionado()
+
+    If Movimiento Is Nothing Then Exit Sub
+
+    origenMovimiento = _
+        UCase$(Trim$(Movimiento.Origen))
+
+    '------------------------------------------------------
+    ' SOLAMENTE LOS REGISTROS QUE PROVIENEN
+    ' DE MOVIMIENTOS DE CAJA Y BANCOS
+    '------------------------------------------------------
+    Select Case origenMovimiento
+
+        Case "MOVIMIENTO CAJA/BANCOS", _
+             "TRANSFERENCIA INTERBANCARIA"
+
+            Me.PopupMenu Me.mnuContextualResumen
+
+    End Select
+
+End Sub
 
 Private Sub gridResumenBancario_UnboundReadData( _
     ByVal RowIndex As Long, _
@@ -1614,3 +1653,133 @@ Private Function SeleccionarItemDataCombo( _
     cbo.ListIndex = -1
 
 End Function
+
+
+Private Function ObtenerMovimientoResumenSeleccionado() _
+    As DTOResumenBancario
+
+    On Error GoTo err1
+
+    Dim indice As Long
+
+    If Movimientos Is Nothing Then Exit Function
+    If Movimientos.count = 0 Then Exit Function
+    If Me.gridResumenBancario.ItemCount = 0 Then Exit Function
+
+    indice = Me.gridResumenBancario.RowIndex( _
+        Me.gridResumenBancario.row)
+
+    If indice < 1 Then Exit Function
+    If indice > Movimientos.count Then Exit Function
+
+    Set ObtenerMovimientoResumenSeleccionado = _
+        Movimientos.item(indice)
+
+    Exit Function
+
+err1:
+    Set ObtenerMovimientoResumenSeleccionado = Nothing
+
+End Function
+
+Private Sub mnuAbrirMovimientoCajaBancos_Click()
+
+    On Error GoTo err1
+
+    Dim MovimientoResumen As DTOResumenBancario
+    Dim MovimientoCajaBanco As clsAsientoContable
+
+    Dim F As frmAdminCajaBancosCrearAsientoBancario
+
+    Set MovimientoResumen = _
+        ObtenerMovimientoResumenSeleccionado()
+
+    If MovimientoResumen Is Nothing Then
+
+        MsgBox "No se pudo determinar el movimiento seleccionado.", _
+               vbExclamation, _
+               "Reporte bancario"
+
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' VALIDAR ORIGEN
+    '------------------------------------------------------
+    Select Case UCase$(Trim$(MovimientoResumen.Origen))
+
+        Case "MOVIMIENTO CAJA/BANCOS", _
+             "TRANSFERENCIA INTERBANCARIA"
+
+            ' Correcto.
+
+        Case Else
+
+            MsgBox "El registro seleccionado no corresponde " & _
+                   "a un movimiento de Caja y Bancos.", _
+                   vbExclamation, _
+                   "Reporte bancario"
+
+            Exit Sub
+
+    End Select
+
+    '------------------------------------------------------
+    ' VALIDAR ID
+    '------------------------------------------------------
+    If MovimientoResumen.IdOrigen <= 0 Then
+
+        MsgBox "El movimiento seleccionado no tiene " & _
+               "un identificador válido.", _
+               vbExclamation, _
+               "Reporte bancario"
+
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' BUSCAR MOVIMIENTO COMPLETO
+    '------------------------------------------------------
+    Set MovimientoCajaBanco = _
+        DAOAsientoContable.FindById( _
+            MovimientoResumen.IdOrigen)
+
+    If MovimientoCajaBanco Is Nothing Then
+
+        MsgBox "No se encontró el movimiento de Caja y Bancos Nro " & _
+               MovimientoResumen.IdOrigen & ".", _
+               vbExclamation, _
+               "Reporte bancario"
+
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' ABRIR EN SOLO LECTURA
+    '------------------------------------------------------
+    Set F = New frmAdminCajaBancosCrearAsientoBancario
+
+    Load F
+
+    F.ReadOnly = True
+    F.Cargar MovimientoCajaBanco
+
+    F.Show
+
+    Exit Sub
+
+err1:
+
+    MsgBox "No se pudo abrir el movimiento de Caja y Bancos." & _
+           vbCrLf & _
+           "Error: " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Reporte bancario"
+
+End Sub
+
+

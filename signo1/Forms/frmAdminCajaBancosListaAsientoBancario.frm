@@ -107,7 +107,7 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Left            =   945
          TabIndex        =   8
          Top             =   285
-         Width           =   2280
+         Width           =   1440
       End
       Begin VB.Frame Frame1 
          Height          =   735
@@ -533,12 +533,14 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Begin VB.Menu mnuAprobar 
          Caption         =   "Aprobar"
       End
-      Begin VB.Menu mnuAnular 
-         Caption         =   "Anular"
-         Visible         =   0   'False
-      End
       Begin VB.Menu mnuVer 
          Caption         =   "Ver"
+      End
+      Begin VB.Menu mnuEliminar 
+         Caption         =   "Eliminar"
+      End
+      Begin VB.Menu separador 
+         Caption         =   "-"
       End
       Begin VB.Menu mnuImprimir 
          Caption         =   "Imprimir"
@@ -786,9 +788,7 @@ Private Sub gridOrdenes_MouseUp( _
         (AsientoContable.estado = _
          EstadoMovimientoCajaYBancos.EnEdicion)
 
-    Me.mnuAnular.Enabled = _
-        (AsientoContable.estado <> _
-         EstadoMovimientoCajaYBancos.EnEdicion)
+    Me.mnuEliminar.Enabled = IsSomething(AsientoContable)
 
     Me.mnuVer.Enabled = True
 
@@ -974,6 +974,117 @@ End Sub
 
 
 
+
+Private Sub mnuEliminar_Click()
+
+    On Error GoTo err1
+
+    Dim movSeleccionado As clsAsientoContable
+    Dim respuesta As VbMsgBoxResult
+    Dim cuentaTxt As String
+
+    Set movSeleccionado = ObtenerMovimientoSeleccionado()
+
+    If Not IsSomething(movSeleccionado) Then
+        MsgBox "Debe seleccionar un movimiento.", _
+               vbExclamation, _
+               "Eliminar movimiento"
+        Exit Sub
+    End If
+
+
+    '------------------------------------------------
+    ' Descripción de cuenta
+    '------------------------------------------------
+    cuentaTxt = vbNullString
+
+    If movSeleccionado.TipoMovimiento = "TRANSFERENCIA" Then
+
+        If IsSomething(movSeleccionado.CuentaBancaria) Then
+            cuentaTxt = _
+                movSeleccionado.CuentaBancaria.DescripcionFormateada
+        End If
+
+        If IsSomething(movSeleccionado.CuentaBancariaDestino) Then
+
+            If LenB(cuentaTxt) > 0 Then
+                cuentaTxt = cuentaTxt & " -> "
+            End If
+
+            cuentaTxt = cuentaTxt & _
+                movSeleccionado.CuentaBancariaDestino.DescripcionFormateada
+
+        End If
+
+    Else
+
+        If IsSomething(movSeleccionado.CuentaBancaria) Then
+            cuentaTxt = _
+                movSeleccionado.CuentaBancaria.DescripcionFormateada
+        End If
+
+    End If
+
+    '------------------------------------------------
+    ' Confirmación
+    '------------------------------------------------
+    respuesta = MsgBox( _
+        "Está por ELIMINAR el movimiento Nº " & _
+            movSeleccionado.Id & "." & vbCrLf & vbCrLf & _
+        "Fecha: " & Format$(movSeleccionado.FEcha, "dd/mm/yyyy") & vbCrLf & _
+        "Tipo: " & movSeleccionado.TipoMovimiento & vbCrLf & _
+        "Cuenta: " & cuentaTxt & vbCrLf & _
+        "Importe: " & _
+            Replace( _
+                FormatCurrency( _
+                    funciones.FormatearDecimales( _
+                        movSeleccionado.StaticTotalOrigenes)), _
+                "$", "") & vbCrLf & vbCrLf & _
+        "También se eliminarán las operaciones asociadas " & _
+        "y se liberarán los cheques vinculados." & vbCrLf & vbCrLf & _
+        "Esta acción no se puede deshacer." & vbCrLf & _
+        "¿Desea continuar?", _
+        vbExclamation + vbYesNo + vbDefaultButton2, _
+        "Confirmar eliminación")
+
+    If respuesta <> vbYes Then Exit Sub
+
+    '------------------------------------------------
+    ' Eliminación
+    '------------------------------------------------
+    If DAOAsientoContable.EliminarMovimiento( _
+            movSeleccionado.Id) Then
+
+        MsgBox "Movimiento Nº " & _
+               movSeleccionado.Id & _
+               " eliminado correctamente.", _
+               vbInformation, _
+               "Eliminar movimiento"
+
+        'Recargar completamente la colección y la grilla.
+        llenarLista
+
+    Else
+
+        MsgBox "No se pudo eliminar el movimiento." & _
+               vbCrLf & _
+               "No se realizó ningún cambio en la base de datos.", _
+               vbCritical, _
+               "Eliminar movimiento"
+
+    End If
+
+    Exit Sub
+
+err1:
+
+    MsgBox "Error al intentar eliminar el movimiento." & _
+           vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Eliminar movimiento"
+
+End Sub
 
 Private Sub mnuImprimir_Click()
 
