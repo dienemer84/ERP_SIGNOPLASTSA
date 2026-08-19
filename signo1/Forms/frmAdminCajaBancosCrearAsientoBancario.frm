@@ -752,9 +752,21 @@ Private Sub cboMonedas_Click()
 End Sub
 
 
-Private Sub cboCuentas_Click()
-    If IsSomething(AsientoContable) And Me.cboCuentasContables.ListIndex <> -1 Then
-        Set AsientoContable.CuentaContable = DAOCuentaContable.GetById(Me.cboCuentasContables.ItemData(Me.cboCuentasContables.ListIndex))
+Private Sub cboCuentasContables_Click()
+
+    If Not IsSomething(AsientoContable) Then Exit Sub
+
+    If Me.cboCuentasContables.ListIndex = -1 Then
+
+        Set AsientoContable.CuentaContable = Nothing
+
+    Else
+
+        Set AsientoContable.CuentaContable = _
+            DAOCuentaContable.GetById( _
+                Me.cboCuentasContables.ItemData( _
+                    Me.cboCuentasContables.ListIndex))
+
     End If
 
 End Sub
@@ -849,19 +861,19 @@ Private Sub cmdCrear_Click()
             Exit Sub
         End If
         
-        If Me.cboCuentasContables.ListIndex = -1 Then
+        'Cuenta contable opcional para INGRESOS
+        If Me.cboCuentasContables.ListIndex <> -1 Then
         
-            MsgBox "Debe seleccionar una cuenta contable origen para el ingreso.", _
-                   vbExclamation
+            Set AsientoContable.CuentaContable = _
+                DAOCuentaContable.GetById( _
+                    Me.cboCuentasContables.ItemData( _
+                        Me.cboCuentasContables.ListIndex))
         
-            Exit Sub
+        Else
+        
+            Set AsientoContable.CuentaContable = Nothing
         
         End If
-        
-        Set AsientoContable.CuentaContable = _
-            DAOCuentaContable.GetById( _
-                Me.cboCuentasContables.ItemData( _
-                    Me.cboCuentasContables.ListIndex))
 
         Set CuentaDestino = ObtenerCuentaSeleccionada(Me.cboCuentasBancarias)
         Set AsientoContable.CuentaBancaria = CuentaDestino

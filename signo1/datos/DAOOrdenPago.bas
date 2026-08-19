@@ -612,7 +612,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
                 If op.FacturasProveedor(1).Proveedor.estado <> 2 Then
                     Dim d As New clsDTOPadronIIBB
                     'todo: cambiar validacion
-                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
+                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.cuit, TipoPadronRetencion)
                     Dim ret As Double
 
                     If IsSomething(d) Then
@@ -1053,17 +1053,37 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
 
     q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid
     If Not conectar.execute(q) Then GoTo E
+    
 
-    q = "DELETE FROM ordenes_pago_compensatorios WHERE id_orden_pago = " & opid
+    q = "DELETE FROM ordenes_pago_compensatorios " & _
+        "WHERE id_orden_pago = " & opid
     If Not conectar.execute(q) Then GoTo E
-
-    '    q = "DELETE FROM ordenes_pago WHERE id = " & opid
+    
+    
+    'Liberar los pagos a cuenta utilizados en la OP anulada
+    q = "UPDATE pagos_a_cuenta " & _
+        "SET estado = 0 " & _
+        "WHERE id IN (" & _
+            "SELECT id_pago_a_cuenta " & _
+            "FROM ordenes_pago_pagos_a_cuenta " & _
+            "WHERE id_orden_pago = " & opid & _
+        ")"
     If Not conectar.execute(q) Then GoTo E
+    
+    
+    'Eliminar la vinculación con la OP anulada
+    q = "DELETE FROM ordenes_pago_pagos_a_cuenta " & _
+        "WHERE id_orden_pago = " & opid
+    If Not conectar.execute(q) Then GoTo E
+    
+   
     Dim estado_anterior As EstadoOrdenPago
+    
     estado_anterior = op.estado
+    
     op.estado = EstadoOrdenPago_Anulada
+    
     If Not DAOOrdenPago.Guardar(op, False) Then GoTo E
-
 
     DaoHistorico.Save "orden_pago_historial", "OP Anulada", op.Id
 
