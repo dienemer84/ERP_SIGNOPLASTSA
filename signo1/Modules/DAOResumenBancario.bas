@@ -897,7 +897,16 @@ Private Function SQLPagosACuentaBanco() As String
     q = q & " 'PAGO A CUENTA' AS origen,"
 
     q = q & " pcta.id AS id_origen,"
-    q = q & " CAST(pcta.id AS CHAR) AS numero_origen,"
+    
+    q = q & " CASE "
+    q = q & " WHEN IFNULL(opcta.id_orden_pago, 0) > 0 "
+    q = q & " THEN CONCAT(" _
+          & " CAST(pcta.id AS CHAR)," _
+          & " ' / OP '," _
+          & " CAST(opcta.id_orden_pago AS CHAR)" _
+          & " ) "
+    q = q & " ELSE CAST(pcta.id AS CHAR) "
+    q = q & " END AS numero_origen,"
 
     q = q & " o.id AS id_operacion,"
     q = q & " IFNULL(o.comprobante, '-') AS comprobante,"
@@ -911,6 +920,16 @@ Private Function SQLPagosACuentaBanco() As String
     q = q & " IFNULL(o.monto, 0) AS egreso "
 
     q = q & "FROM pagos_a_cuenta pcta "
+    
+    ' OP donde fue aplicado el Pago a Cuenta.
+    q = q & "LEFT JOIN (" _
+          & " SELECT id_pago_a_cuenta," _
+          & " MAX(id_orden_pago) AS id_orden_pago " _
+          & " FROM ordenes_pago_pagos_a_cuenta " _
+          & " GROUP BY id_pago_a_cuenta" _
+          & ") opcta "
+    
+    q = q & " ON opcta.id_pago_a_cuenta = pcta.id "
 
     ' Se usa DISTINCT como protección ante relaciones repetidas.
     q = q & "INNER JOIN (" _
@@ -977,7 +996,16 @@ Private Function SQLPagosACuentaCaja() As String
     q = q & " 'PAGO A CUENTA' AS origen,"
 
     q = q & " pcta.id AS id_origen,"
-    q = q & " CAST(pcta.id AS CHAR) AS numero_origen,"
+    
+    q = q & " CASE "
+    q = q & " WHEN IFNULL(opcta.id_orden_pago, 0) > 0 "
+    q = q & " THEN CONCAT(" _
+          & " CAST(pcta.id AS CHAR)," _
+          & " ' / OP '," _
+          & " CAST(opcta.id_orden_pago AS CHAR)" _
+          & " ) "
+    q = q & " ELSE CAST(pcta.id AS CHAR) "
+    q = q & " END AS numero_origen,"
 
     q = q & " o.id AS id_operacion,"
     q = q & " IFNULL(o.comprobante, '-') AS comprobante,"
@@ -991,6 +1019,16 @@ Private Function SQLPagosACuentaCaja() As String
     q = q & " IFNULL(o.monto, 0) AS egreso "
 
     q = q & "FROM pagos_a_cuenta pcta "
+    
+    ' OP donde fue aplicado el Pago a Cuenta.
+    q = q & "LEFT JOIN (" _
+          & " SELECT id_pago_a_cuenta," _
+          & " MAX(id_orden_pago) AS id_orden_pago " _
+          & " FROM ordenes_pago_pagos_a_cuenta " _
+          & " GROUP BY id_pago_a_cuenta" _
+          & ") opcta "
+    
+    q = q & " ON opcta.id_pago_a_cuenta = pcta.id "
 
     q = q & "INNER JOIN (" _
           & " SELECT DISTINCT " _
