@@ -20,6 +20,7 @@ Public FechaVencimiento As Date
 Public FechaRecibo As Date
 Public Monto As Double
 Public entro As Boolean
+Public FechaIngresoBanco As Date
 Public IdChequera As Long
 Public chequera As chequera
 Public Banco As Banco

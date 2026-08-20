@@ -222,7 +222,8 @@ Public Function Map(ByRef rs As Recordset, _
 
     Dim tmpCheque As cheque
     Dim Id As Variant
-
+    Dim fechaIngreso As Variant
+    
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
 
     If Id > 0 Then
@@ -263,6 +264,18 @@ Public Function Map(ByRef rs As Recordset, _
 
         tmpCheque.entro = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "ingresado")
+
+        fechaIngreso = GetValue( _
+                            rs, _
+                            fieldsIndex, _
+                            tableNameOrAlias, _
+                            "fecha_ingreso_banco")
+        
+        If IsNull(fechaIngreso) Or IsEmpty(fechaIngreso) Then
+            tmpCheque.FechaIngresoBanco = 0
+        Else
+            tmpCheque.FechaIngresoBanco = CDate(fechaIngreso)
+        End If
 
         tmpCheque.Depositado = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "depositado")
@@ -315,6 +328,7 @@ Public Function Map2(ByRef rs As Recordset, _
 
     Dim tmpCheque As cheque
     Dim Id As Variant
+    Dim fechaIngreso As Variant
     
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
 
@@ -356,6 +370,18 @@ Public Function Map2(ByRef rs As Recordset, _
         
         tmpCheque.entro = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "ingresado")
+
+        fechaIngreso = GetValue( _
+                            rs, _
+                            fieldsIndex, _
+                            tableNameOrAlias, _
+                            "fecha_ingreso_banco")
+        
+        If IsNull(fechaIngreso) Or IsEmpty(fechaIngreso) Then
+            tmpCheque.FechaIngresoBanco = 0
+        Else
+            tmpCheque.FechaIngresoBanco = CDate(fechaIngreso)
+        End If
 
         tmpCheque.Depositado = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "depositado")
@@ -415,7 +441,8 @@ Public Function Map3(ByRef rs As Recordset, _
 
     Dim tmpCheque As cheque
     Dim Id As Variant
-
+    Dim fechaIngreso As Variant
+    
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
 
     If Id > 0 Then
@@ -478,6 +505,18 @@ Public Function Map3(ByRef rs As Recordset, _
 
         tmpCheque.entro = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "ingresado")
+
+        fechaIngreso = GetValue( _
+                            rs, _
+                            fieldsIndex, _
+                            tableNameOrAlias, _
+                            "fecha_ingreso_banco")
+        
+        If IsNull(fechaIngreso) Or IsEmpty(fechaIngreso) Then
+            tmpCheque.FechaIngresoBanco = 0
+        Else
+            tmpCheque.FechaIngresoBanco = CDate(fechaIngreso)
+        End If
 
         tmpCheque.Depositado = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "depositado")
@@ -610,4 +649,34 @@ End Function
 
 Public Function FindAllEnCarteraDeTerceros() As Collection
     Set FindAllEnCarteraDeTerceros = FindAll(DAOCheques.CAMPO_EN_CARTERA & " = 1 and " & DAOCheques.CAMPO_PROPIO & " = 0")
+End Function
+
+
+Public Function ActualizarIngresoBanco( _
+    ByVal idCheque As Long, _
+    ByVal ingresado As Boolean, _
+    ByVal fechaIngreso As Date) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim sqlFecha As String
+
+    If ingresado And CDbl(fechaIngreso) > 0 Then
+        sqlFecha = conectar.Escape(fechaIngreso)
+    Else
+        sqlFecha = "NULL"
+    End If
+
+    q = "UPDATE Cheques SET " & _
+        "ingresado = " & Abs(CInt(ingresado)) & ", " & _
+        "fecha_ingreso_banco = " & sqlFecha & " " & _
+        "WHERE id = " & idCheque
+
+    ActualizarIngresoBanco = conectar.execute(q)
+    Exit Function
+
+err1:
+    ActualizarIngresoBanco = False
+
 End Function

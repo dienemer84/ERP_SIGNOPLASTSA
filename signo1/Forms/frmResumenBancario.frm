@@ -563,6 +563,7 @@ err1:
 
 End Sub
 
+
 Private Sub cmdExportar_Click()
 
     If Movimientos Is Nothing Then
@@ -683,6 +684,7 @@ err1:
 
 End Sub
 
+
 Private Sub cmdReestablecerCtaBancaria_Click()
     If Not SeleccionarItemDataCombo( _
         Me.cboCuentasBancarias, 0) Then
@@ -696,6 +698,7 @@ Private Sub cmdReestablecerCtaBancaria_Click()
 
     Me.cboCuentasBancarias.SetFocus
 End Sub
+
 
 Private Sub cmdReestablecerMoneda_Click()
     If Not SeleccionarItemDataCombo( _
