@@ -3880,7 +3880,7 @@ Private Sub grid_chequeras_UnboundReadData( _
         End If
 
         If Not chFila.CuentaBancaria Is Nothing Then
-            .value(4) = chFila.CuentaBancaria.DescripcionFormateadaCompleta
+            .value(4) = chFila.CuentaBancaria
         Else
             .value(4) = vbNullString
         End If
@@ -4426,17 +4426,17 @@ Private Sub cboBancos_Click()
 
     Dim cuentas As Collection
     Dim cuenta As CuentaBancaria
-    Dim idBanco As Long
+    Dim IdBanco As Long
 
     Me.cboCuentaBancariaChequera.Clear
 
     If Me.cboBancos.ListIndex = -1 Then Exit Sub
 
-    idBanco = Me.cboBancos.ItemData( _
+    IdBanco = Me.cboBancos.ItemData( _
                     Me.cboBancos.ListIndex)
 
     Set cuentas = DAOCuentaBancaria.FindAll( _
-                    "c.idBanco = " & idBanco)
+                    "c.idBanco = " & IdBanco)
 
     For Each cuenta In cuentas
 

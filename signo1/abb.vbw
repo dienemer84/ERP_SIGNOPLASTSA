@@ -1,4 +1,4 @@
-frmPrincipal = 772, 330, 1158, 660, C, 772, 0, 1158, 330, C
+frmPrincipal = 772, 330, 1158, 660, , 772, 0, 1158, 330, C
 funciones = 910, 327, 1365, 654, C
 frmRubrosGrupos = 110, 145, 1393, 612, C, 154, 203, 1282, 670, C
 frmMaterialesNuevo = 88, 116, 697, 358, C, 0, 0, 609, 242, C
