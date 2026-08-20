@@ -36,7 +36,7 @@ Begin VB.Form frmAdminCheques
       Item(0).Control(1)=   "grid_cartera_cheques"
       Item(0).Control(2)=   "lbContadorChequesEnCartera"
       Item(1).Caption =   "Administrar Chequeras"
-      Item(1).ControlCount=   7
+      Item(1).ControlCount=   8
       Item(1).Control(0)=   "grid_chequeras"
       Item(1).Control(1)=   "grid_cheques"
       Item(1).Control(2)=   "GroupBox1"
@@ -44,6 +44,7 @@ Begin VB.Form frmAdminCheques
       Item(1).Control(4)=   "Label12"
       Item(1).Control(5)=   "Label13"
       Item(1).Control(6)=   "Label14"
+      Item(1).Control(7)=   "cmdExportar"
       Item(2).Caption =   "Cheques Propios Utilizados"
       Item(2).ControlCount=   3
       Item(2).Control(0)=   "GroupBox2"
@@ -54,6 +55,19 @@ Begin VB.Form frmAdminCheques
       Item(3).Control(0)=   "GroupBox3"
       Item(3).Control(1)=   "grdCheques3eros"
       Item(3).Control(2)=   "lbContador3erosUtilizados"
+      Begin XtremeSuiteControls.PushButton cmdExportar 
+         Height          =   255
+         Left            =   7560
+         TabIndex        =   157
+         Top             =   3080
+         Width           =   1935
+         _Version        =   786432
+         _ExtentX        =   3413
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Exportar"
+         UseVisualStyle  =   -1  'True
+      End
       Begin XtremeSuiteControls.GroupBox GroupBox4 
          Height          =   2700
          Left            =   9720
@@ -98,6 +112,7 @@ Begin VB.Form frmAdminCheques
                _ExtentY        =   873
                _StockProps     =   79
                Caption         =   "Exportar"
+               Enabled         =   0   'False
                UseVisualStyle  =   -1  'True
             End
             Begin XtremeSuiteControls.PushButton btnBuscarEnChequera 
@@ -1993,14 +2008,14 @@ Begin VB.Form frmAdminCheques
             AutoComplete    =   -1  'True
          End
          Begin XtremeSuiteControls.PushButton cmdCrear 
-            Height          =   390
-            Left            =   7800
+            Height          =   510
+            Left            =   7440
             TabIndex        =   4
-            Top             =   2160
-            Width           =   1575
+            Top             =   2040
+            Width           =   1935
             _Version        =   786432
-            _ExtentX        =   2778
-            _ExtentY        =   688
+            _ExtentX        =   3413
+            _ExtentY        =   900
             _StockProps     =   79
             Caption         =   "Crear"
             UseVisualStyle  =   -1  'True
@@ -2679,6 +2694,14 @@ Private Sub btnBuscarEnChequera_Click(Index As Integer)
     BuscarChequeEnChequera
 End Sub
 
+
+Private Sub PushButton5_Click()
+
+End Sub
+
+Private Sub cmdExportar_Click()
+
+End Sub
 
 Private Sub TxtNumeroChequeEnChequera_KeyPress(KeyAscii As Integer)
 
@@ -3870,31 +3893,37 @@ Private Sub grid_chequeras_UnboundReadData( _
     Set chFila = chequeras.item(RowIndex)
 
     With Values
+
         .value(1) = chFila.numero
         .value(2) = chFila.fechaCreacion
 
+        'Banco
         If Not chFila.Banco Is Nothing Then
             .value(3) = chFila.Banco.nombre
         Else
             .value(3) = vbNullString
         End If
 
+        'Cuenta bancaria
         If Not chFila.CuentaBancaria Is Nothing Then
-            .value(4) = chFila.CuentaBancaria
+            .value(4) = chFila.CuentaBancaria.numero
         Else
             .value(4) = vbNullString
         End If
-        
+
         .value(5) = chFila.NumeroDesde
         .value(6) = chFila.NumeroHasta
-        
+
         .value(8) = Abs(CInt(chFila.usada))
+
     End With
 
     Exit Sub
 
 err1:
-    Debug.Print "grid_chequeras_UnboundReadData: " & Err.Description
+    Debug.Print "grid_chequeras_UnboundReadData: " & _
+                Err.Number & " - " & Err.Description
+
 End Sub
 
 

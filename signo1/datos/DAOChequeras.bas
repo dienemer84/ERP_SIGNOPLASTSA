@@ -200,12 +200,25 @@ Public Function Map( _
         Else
             tmp.usada = (CLng(valorUsada) <> 0)
         End If
-
+        
         If LenB(tablaMoneda) > 0 Then
             Set tmp.moneda = DAOMoneda.Map( _
                 rs, indice, tablaMoneda)
         End If
-
+        
+        '--------------------------------------------------
+        ' BANCO DE LA CHEQUERA
+        '--------------------------------------------------
+        If LenB(tablaBanco) > 0 Then
+            Set tmp.Banco = DAOBancos.Map( _
+                rs, _
+                indice, _
+                tablaBanco)
+        End If
+        
+        '--------------------------------------------------
+        ' CUENTA BANCARIA DE LA CHEQUERA
+        '--------------------------------------------------
         If LenB(tablaCuentaBancaria) > 0 Then
         
             Set tmp.CuentaBancaria = _
