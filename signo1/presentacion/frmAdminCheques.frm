@@ -36,7 +36,7 @@ Begin VB.Form frmAdminCheques
       Item(0).Control(1)=   "grid_cartera_cheques"
       Item(0).Control(2)=   "lbContadorChequesEnCartera"
       Item(1).Caption =   "Administrar Chequeras"
-      Item(1).ControlCount=   8
+      Item(1).ControlCount=   9
       Item(1).Control(0)=   "grid_chequeras"
       Item(1).Control(1)=   "grid_cheques"
       Item(1).Control(2)=   "GroupBox1"
@@ -45,6 +45,7 @@ Begin VB.Form frmAdminCheques
       Item(1).Control(5)=   "Label13"
       Item(1).Control(6)=   "Label14"
       Item(1).Control(7)=   "cmdExportar"
+      Item(1).Control(8)=   "cmdExportarChequeras"
       Item(2).Caption =   "Cheques Propios Utilizados"
       Item(2).ControlCount=   3
       Item(2).Control(0)=   "GroupBox2"
@@ -55,17 +56,30 @@ Begin VB.Form frmAdminCheques
       Item(3).Control(0)=   "GroupBox3"
       Item(3).Control(1)=   "grdCheques3eros"
       Item(3).Control(2)=   "lbContador3erosUtilizados"
+      Begin XtremeSuiteControls.PushButton cmdExportarChequeras 
+         Height          =   255
+         Left            =   7920
+         TabIndex        =   158
+         Top             =   3120
+         Width           =   1695
+         _Version        =   786432
+         _ExtentX        =   2990
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Exportar"
+         UseVisualStyle  =   -1  'True
+      End
       Begin XtremeSuiteControls.PushButton cmdExportar 
          Height          =   255
-         Left            =   7560
+         Left            =   20160
          TabIndex        =   157
-         Top             =   3080
+         Top             =   3075
          Width           =   1935
          _Version        =   786432
          _ExtentX        =   3413
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Exportar"
+         Caption         =   "Exportar Chequeras"
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.GroupBox GroupBox4 
@@ -2700,6 +2714,641 @@ Private Sub PushButton5_Click()
 End Sub
 
 Private Sub cmdExportar_Click()
+
+    On Error GoTo err1
+
+    Const xlCenter As Long = -4108
+    Const xlLandscape As Long = 2
+    Const xlOpenXMLWorkbook As Long = 51
+
+    Dim xlApplication As Object
+    Dim xlWorkbook As Object
+    Dim xlWorksheet As Object
+
+    Dim ch As cheque
+    Dim fila As Long
+    Dim filaEncabezado As Long
+    Dim ultimaFila As Long
+    Dim archivo As String
+
+    Dim nombreBanco As String
+    Dim nombreMoneda As String
+
+    If tmpChequera Is Nothing Then
+        MsgBox "Seleccione una chequera para exportar.", _
+               vbExclamation, _
+               "Exportar chequera"
+        Exit Sub
+    End If
+
+    If tmpChequera.Cheques Is Nothing Then
+        MsgBox "No hay cheques para exportar.", _
+               vbInformation, _
+               "Exportar chequera"
+        Exit Sub
+    End If
+
+    If tmpChequera.Cheques.count = 0 Then
+        MsgBox "No hay cheques para exportar.", _
+               vbInformation, _
+               "Exportar chequera"
+        Exit Sub
+    End If
+
+    If Not tmpChequera.Banco Is Nothing Then
+        nombreBanco = tmpChequera.Banco.nombre
+    End If
+
+    If Not tmpChequera.moneda Is Nothing Then
+        nombreMoneda = tmpChequera.moneda.NombreCorto
+    End If
+
+    Me.MousePointer = vbHourglass
+
+    Set xlApplication = CreateObject("Excel.Application")
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlApplication.ScreenUpdating = False
+    xlApplication.DisplayAlerts = False
+
+    xlWorksheet.Name = "Chequera " & tmpChequera.numero
+
+    'Título
+    With xlWorksheet.Range("A1:H1")
+        .Merge
+        .value = "REPORTE DE CHEQUERA"
+        .Font.Bold = True
+        .Font.Size = 14
+        .HorizontalAlignment = xlCenter
+        .Interior.Color = &HD9EAD3
+    End With
+
+    'Datos generales
+    xlWorksheet.Cells(2, 1).value = "Banco:"
+    xlWorksheet.Cells(2, 2).value = nombreBanco
+
+    xlWorksheet.Cells(2, 4).value = "Chequera N°:"
+    xlWorksheet.Cells(2, 5).value = tmpChequera.numero
+
+    xlWorksheet.Cells(2, 7).value = "Moneda:"
+    xlWorksheet.Cells(2, 8).value = nombreMoneda
+
+    xlWorksheet.Cells(3, 1).value = "Rango:"
+    xlWorksheet.Cells(3, 2).value = _
+        tmpChequera.NumeroDesde & " al " & tmpChequera.NumeroHasta
+
+    xlWorksheet.Cells(3, 4).value = "Creación:"
+    xlWorksheet.Cells(3, 5).value = tmpChequera.fechaCreacion
+    xlWorksheet.Cells(3, 5).NumberFormat = "dd/mm/yyyy"
+
+    xlWorksheet.Cells(3, 7).value = "Registros:"
+    xlWorksheet.Cells(3, 8).value = tmpChequera.Cheques.count
+
+    xlWorksheet.Range("A2:A3").Font.Bold = True
+    xlWorksheet.Range("D2:D3").Font.Bold = True
+    xlWorksheet.Range("G2:G3").Font.Bold = True
+
+    'Encabezados
+    filaEncabezado = 5
+
+    xlWorksheet.Cells(filaEncabezado, 1).value = "Número"
+    xlWorksheet.Cells(filaEncabezado, 2).value = "Monto"
+    xlWorksheet.Cells(filaEncabezado, 3).value = "Vencimiento"
+    xlWorksheet.Cells(filaEncabezado, 4).value = "Emisión"
+    xlWorksheet.Cells(filaEncabezado, 5).value = "Destino"
+    xlWorksheet.Cells(filaEncabezado, 6).value = "Uso"
+    xlWorksheet.Cells(filaEncabezado, 7).value = "Ingresado"
+    xlWorksheet.Cells(filaEncabezado, 8).value = "Fecha ingreso"
+
+    With xlWorksheet.Range( _
+            xlWorksheet.Cells(filaEncabezado, 1), _
+            xlWorksheet.Cells(filaEncabezado, 8))
+
+        .Font.Bold = True
+        .Interior.Color = &HC0C0C0
+        .HorizontalAlignment = xlCenter
+        .Borders.LineStyle = 1
+    End With
+
+    'Datos
+    fila = filaEncabezado + 1
+
+    For Each ch In tmpChequera.Cheques
+
+        xlWorksheet.Cells(fila, 1).value = ch.numero
+
+        If ch.Utilizado Then
+
+            xlWorksheet.Cells(fila, 2).value = ch.Monto
+
+            If CDbl(ch.FechaVencimiento) > 0 Then
+                xlWorksheet.Cells(fila, 3).value = _
+                    ch.FechaVencimiento
+            End If
+
+            If CDbl(ch.FechaEmision) > 0 Then
+                xlWorksheet.Cells(fila, 4).value = _
+                    ch.FechaEmision
+            End If
+
+            xlWorksheet.Cells(fila, 5).value = _
+                ch.OrigenDestino
+
+        End If
+
+        xlWorksheet.Cells(fila, 6).value = _
+            DescripcionUsoCheque(ch)
+
+        If ch.entro Then
+            xlWorksheet.Cells(fila, 7).value = "SÍ"
+        Else
+            xlWorksheet.Cells(fila, 7).value = "NO"
+        End If
+
+        If CDbl(ch.FechaIngresoBanco) > 0 Then
+            xlWorksheet.Cells(fila, 8).value = _
+                ch.FechaIngresoBanco
+        End If
+
+        fila = fila + 1
+
+    Next ch
+
+    ultimaFila = fila - 1
+
+    'Formato
+    xlWorksheet.Range("B6:B" & ultimaFila).NumberFormat = _
+        "#,##0.00"
+
+    xlWorksheet.Range("C6:D" & ultimaFila).NumberFormat = _
+        "dd/mm/yyyy"
+
+    xlWorksheet.Range("H6:H" & ultimaFila).NumberFormat = _
+        "dd/mm/yyyy"
+
+    xlWorksheet.Range( _
+        "A" & filaEncabezado & ":H" & ultimaFila).Borders.LineStyle = 1
+
+    xlWorksheet.Range( _
+        "A" & filaEncabezado & ":H" & ultimaFila).AutoFilter
+
+    'Total
+    xlWorksheet.Cells(fila, 1).value = "TOTAL"
+    xlWorksheet.Cells(fila, 1).Font.Bold = True
+
+    xlWorksheet.Cells(fila, 2).Formula = _
+        "=SUM(B6:B" & ultimaFila & ")"
+
+    xlWorksheet.Cells(fila, 2).Font.Bold = True
+    xlWorksheet.Cells(fila, 2).NumberFormat = "#,##0.00"
+
+    xlWorksheet.Columns("A:H").AutoFit
+
+    xlWorksheet.PageSetup.Orientation = xlLandscape
+    xlWorksheet.PageSetup.BottomMargin = _
+        xlApplication.CentimetersToPoints(1)
+
+    xlWorksheet.PageSetup.TopMargin = _
+        xlApplication.CentimetersToPoints(1)
+
+    xlWorksheet.PageSetup.LeftMargin = _
+        xlApplication.CentimetersToPoints(1)
+
+    xlWorksheet.PageSetup.RightMargin = _
+        xlApplication.CentimetersToPoints(1)
+
+    archivo = funciones.GetTmpPath() & _
+              "Chequera_" & tmpChequera.numero & "_" & _
+              Format$(Now, "yyyymmdd_hhnnss") & ".xlsx"
+
+    If Dir$(archivo) <> vbNullString Then
+        Kill archivo
+    End If
+
+    xlWorkbook.SaveAs archivo, xlOpenXMLWorkbook
+
+    xlApplication.ScreenUpdating = True
+
+    xlWorkbook.Close False
+    xlApplication.Quit
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    Me.MousePointer = vbDefault
+
+    funciones.ShellExecute _
+        0, "open", archivo, vbNullString, vbNullString, 1
+
+    Exit Sub
+
+err1:
+    Me.MousePointer = vbDefault
+
+    On Error Resume Next
+
+    If Not xlWorkbook Is Nothing Then
+        xlWorkbook.Close False
+    End If
+
+    If Not xlApplication Is Nothing Then
+        xlApplication.Quit
+    End If
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    On Error GoTo 0
+
+    MsgBox "No se pudo exportar la chequera." & _
+           vbCrLf & Err.Description, _
+           vbExclamation, _
+           "Exportar a Excel"
+
+End Sub
+
+Private Sub cmdExportarChequeras_Click()
+
+    On Error GoTo err1
+
+    Const xlCenter As Long = -4108
+    Const xlLandscape As Long = 2
+    Const xlOpenXMLWorkbook As Long = 51
+
+    Dim listaChequeras As Collection
+    Dim ch As chequera
+    Dim cuenta As CuentaBancaria
+
+    Dim xlApplication As Object
+    Dim xlWorkbook As Object
+    Dim xlWorksheet As Object
+
+    Dim fila As Long
+    Dim filaEncabezado As Long
+    Dim ultimaFila As Long
+    Dim archivo As String
+
+    Dim tipoCuentaTexto As String
+    Dim estadoBanco As String
+    Dim estadoMoneda As String
+    Dim mensajeError As String
+
+    'Traer todas las chequeras ordenadas por banco
+    Set listaChequeras = DAOChequeras.GetAll( _
+        "1 = 1 ORDER BY banco.nombre, chs.numero")
+
+    If listaChequeras Is Nothing Then
+        MsgBox "No se pudieron obtener las chequeras.", _
+               vbExclamation, _
+               "Exportar chequeras"
+        Exit Sub
+    End If
+
+    If listaChequeras.count = 0 Then
+        MsgBox "No hay chequeras para exportar.", _
+               vbInformation, _
+               "Exportar chequeras"
+        Exit Sub
+    End If
+
+    Me.MousePointer = vbHourglass
+
+    Set xlApplication = CreateObject("Excel.Application")
+    Set xlWorkbook = xlApplication.Workbooks.Add
+    Set xlWorksheet = xlWorkbook.Worksheets.item(1)
+
+    xlApplication.ScreenUpdating = False
+    xlApplication.DisplayAlerts = False
+
+    xlWorksheet.Name = "Chequeras y cuentas"
+
+    'Título
+    With xlWorksheet.Range("A1:U1")
+        .Merge
+        .value = "CONTROL DE CHEQUERAS Y CUENTAS BANCARIAS"
+        .Font.Bold = True
+        .Font.Size = 14
+        .HorizontalAlignment = xlCenter
+
+    End With
+
+    xlWorksheet.Cells(2, 1).value = "Fecha de exportación:"
+    xlWorksheet.Cells(2, 2).value = Now
+    xlWorksheet.Cells(2, 2).NumberFormat = "dd/mm/yyyy hh:mm"
+
+    xlWorksheet.Cells(2, 4).value = "Cantidad de chequeras:"
+    xlWorksheet.Cells(2, 5).value = listaChequeras.count
+
+    xlWorksheet.Cells(2, 1).Font.Bold = True
+    xlWorksheet.Cells(2, 4).Font.Bold = True
+
+    With xlWorksheet.Range("A3:U3")
+        .Merge
+        .value = _
+            "La validación compara el banco asignado a la " & _
+            "chequera con el banco de la cuenta bancaria."
+        .Font.Italic = True
+    End With
+
+    'Encabezados
+    filaEncabezado = 5
+
+    xlWorksheet.Cells(filaEncabezado, 1).value = "ID Chequera"
+    xlWorksheet.Cells(filaEncabezado, 2).value = "N° Chequera"
+    xlWorksheet.Cells(filaEncabezado, 3).value = "Fecha creación"
+    xlWorksheet.Cells(filaEncabezado, 4).value = "Desde"
+    xlWorksheet.Cells(filaEncabezado, 5).value = "Hasta"
+    xlWorksheet.Cells(filaEncabezado, 6).value = "Usada/Antigua"
+
+    xlWorksheet.Cells(filaEncabezado, 7).value = _
+        "ID Banco Chequera"
+
+    xlWorksheet.Cells(filaEncabezado, 8).value = _
+        "Banco Chequera"
+
+    xlWorksheet.Cells(filaEncabezado, 9).value = _
+        "ID Cuenta Bancaria"
+
+    xlWorksheet.Cells(filaEncabezado, 10).value = _
+        "Número Cuenta"
+
+    xlWorksheet.Cells(filaEncabezado, 11).value = _
+        "Tipo Cuenta"
+
+    xlWorksheet.Cells(filaEncabezado, 12).value = "CBU"
+
+    xlWorksheet.Cells(filaEncabezado, 13).value = _
+        "ID Banco Cuenta"
+
+    xlWorksheet.Cells(filaEncabezado, 14).value = _
+        "Banco de la Cuenta"
+
+    xlWorksheet.Cells(filaEncabezado, 15).value = _
+        "ID Moneda Chequera"
+
+    xlWorksheet.Cells(filaEncabezado, 16).value = _
+        "Moneda Chequera"
+
+    xlWorksheet.Cells(filaEncabezado, 17).value = _
+        "ID Moneda Cuenta"
+
+    xlWorksheet.Cells(filaEncabezado, 18).value = _
+        "Moneda Cuenta"
+
+    xlWorksheet.Cells(filaEncabezado, 19).value = _
+        "Validación Banco"
+
+    xlWorksheet.Cells(filaEncabezado, 20).value = _
+        "Validación Moneda"
+
+    xlWorksheet.Cells(filaEncabezado, 21).value = _
+        "Observaciones"
+
+    With xlWorksheet.Range("A5:U5")
+        .Font.Bold = True
+
+        .HorizontalAlignment = xlCenter
+        .Borders.LineStyle = 1
+        .WrapText = True
+    End With
+
+    'El número de cuenta y el CBU deben tratarse como texto
+    xlWorksheet.Columns("J:J").NumberFormat = "@"
+    xlWorksheet.Columns("L:L").NumberFormat = "@"
+
+    fila = filaEncabezado + 1
+
+    For Each ch In listaChequeras
+
+        Set cuenta = Nothing
+        tipoCuentaTexto = vbNullString
+        estadoBanco = vbNullString
+        estadoMoneda = vbNullString
+
+        If Not ch.CuentaBancaria Is Nothing Then
+            Set cuenta = ch.CuentaBancaria
+        End If
+
+        'Datos generales de la chequera
+        xlWorksheet.Cells(fila, 1).value = ch.Id
+        xlWorksheet.Cells(fila, 2).value = ch.numero
+        xlWorksheet.Cells(fila, 3).value = ch.fechaCreacion
+        xlWorksheet.Cells(fila, 4).value = ch.NumeroDesde
+        xlWorksheet.Cells(fila, 5).value = ch.NumeroHasta
+
+        If ch.usada Then
+            xlWorksheet.Cells(fila, 6).value = "SÍ"
+        Else
+            xlWorksheet.Cells(fila, 6).value = "NO"
+        End If
+
+        'Banco asignado directamente a la chequera
+        If Not ch.Banco Is Nothing Then
+            xlWorksheet.Cells(fila, 7).value = ch.Banco.Id
+            xlWorksheet.Cells(fila, 8).value = ch.Banco.nombre
+        End If
+
+        'Moneda de la chequera
+        If Not ch.moneda Is Nothing Then
+            xlWorksheet.Cells(fila, 15).value = ch.moneda.Id
+            xlWorksheet.Cells(fila, 16).value = _
+                ch.moneda.NombreCorto
+        End If
+
+        'Cuenta bancaria asociada
+        If Not cuenta Is Nothing Then
+
+            xlWorksheet.Cells(fila, 9).value = cuenta.Id
+
+            xlWorksheet.Cells(fila, 10).value = _
+                CStr(cuenta.numero)
+
+            Select Case cuenta.TipoCuenta
+
+                Case TipoCuentaBancaria.CuentaCorriente
+                    tipoCuentaTexto = "Cuenta corriente"
+
+                Case TipoCuentaBancaria.CajaAhorro
+                    tipoCuentaTexto = "Caja de ahorro"
+
+                Case Else
+                    tipoCuentaTexto = "Sin definir"
+
+            End Select
+
+            xlWorksheet.Cells(fila, 11).value = _
+                tipoCuentaTexto
+
+            xlWorksheet.Cells(fila, 12).value = _
+                CStr(cuenta.CBU)
+
+            If Not cuenta.Banco Is Nothing Then
+                xlWorksheet.Cells(fila, 13).value = _
+                    cuenta.Banco.Id
+
+                xlWorksheet.Cells(fila, 14).value = _
+                    cuenta.Banco.nombre
+            End If
+
+            If Not cuenta.moneda Is Nothing Then
+                xlWorksheet.Cells(fila, 17).value = _
+                    cuenta.moneda.Id
+
+                xlWorksheet.Cells(fila, 18).value = _
+                    cuenta.moneda.NombreCorto
+            End If
+
+        End If
+
+        '---------------------------------------------
+        ' VALIDACIÓN DEL BANCO
+        '---------------------------------------------
+        If cuenta Is Nothing Then
+
+            estadoBanco = "SIN CUENTA ASOCIADA"
+
+        ElseIf ch.Banco Is Nothing Then
+
+            estadoBanco = "CHEQUERA SIN BANCO"
+
+        ElseIf cuenta.Banco Is Nothing Then
+
+            estadoBanco = "CUENTA SIN BANCO"
+
+        ElseIf ch.Banco.Id = cuenta.Banco.Id Then
+
+            estadoBanco = "CORRECTO"
+
+        Else
+
+            estadoBanco = "REVISAR: BANCO DISTINTO"
+
+        End If
+
+        xlWorksheet.Cells(fila, 19).value = estadoBanco
+
+        If estadoBanco = "CORRECTO" Then
+            xlWorksheet.Cells(fila, 19).Interior.Color = Gray
+
+        Else
+            xlWorksheet.Cells(fila, 19).Interior.Color = Gray
+        End If
+
+        '---------------------------------------------
+        ' VALIDACIÓN DE LA MONEDA
+        '---------------------------------------------
+        If cuenta Is Nothing Then
+
+            estadoMoneda = "SIN CUENTA ASOCIADA"
+
+        ElseIf ch.moneda Is Nothing Then
+
+            estadoMoneda = "CHEQUERA SIN MONEDA"
+
+        ElseIf cuenta.moneda Is Nothing Then
+
+            estadoMoneda = "CUENTA SIN MONEDA"
+
+        ElseIf ch.moneda.Id = cuenta.moneda.Id Then
+
+            estadoMoneda = "CORRECTO"
+
+        Else
+
+            estadoMoneda = "REVISAR: MONEDA DISTINTA"
+
+        End If
+
+        xlWorksheet.Cells(fila, 20).value = estadoMoneda
+
+
+
+        xlWorksheet.Cells(fila, 21).value = _
+            ch.Observaciones
+
+        fila = fila + 1
+
+    Next ch
+
+    ultimaFila = fila - 1
+
+    'Formatos
+    xlWorksheet.Range( _
+        "C6:C" & ultimaFila).NumberFormat = "dd/mm/yyyy"
+
+    xlWorksheet.Range( _
+        "A5:U" & ultimaFila).Borders.LineStyle = 1
+
+    xlWorksheet.Range( _
+        "A5:U" & ultimaFila).AutoFilter
+
+    xlWorksheet.Columns("A:U").AutoFit
+
+    'Evitar columnas excesivamente anchas
+    xlWorksheet.Columns("H:H").ColumnWidth = 25
+    xlWorksheet.Columns("N:N").ColumnWidth = 25
+    xlWorksheet.Columns("S:T").ColumnWidth = 26
+    xlWorksheet.Columns("U:U").ColumnWidth = 35
+    xlWorksheet.Columns("U:U").WrapText = True
+
+    xlWorksheet.PageSetup.Orientation = xlLandscape
+    xlWorksheet.PageSetup.Zoom = False
+    xlWorksheet.PageSetup.FitToPagesWide = 1
+    xlWorksheet.PageSetup.FitToPagesTall = False
+
+    archivo = funciones.GetTmpPath() & _
+              "Chequeras_Cuentas_" & _
+              Format$(Now, "yyyymmdd_hhnnss") & ".xlsx"
+
+    If Dir$(archivo) <> vbNullString Then
+        Kill archivo
+    End If
+
+    xlWorkbook.SaveAs archivo, xlOpenXMLWorkbook
+
+    xlApplication.ScreenUpdating = True
+
+    xlWorkbook.Close False
+    xlApplication.Quit
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    Me.MousePointer = vbDefault
+
+    funciones.ShellExecute _
+        0, "open", archivo, vbNullString, vbNullString, 1
+
+    Exit Sub
+
+err1:
+    mensajeError = Err.Description
+    Me.MousePointer = vbDefault
+
+    On Error Resume Next
+
+    If Not xlWorkbook Is Nothing Then
+        xlWorkbook.Close False
+    End If
+
+    If Not xlApplication Is Nothing Then
+        xlApplication.Quit
+    End If
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    On Error GoTo 0
+
+    MsgBox "No se pudieron exportar las chequeras." & _
+           vbCrLf & mensajeError, _
+           vbExclamation, _
+           "Exportar a Excel"
 
 End Sub
 
