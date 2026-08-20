@@ -788,6 +788,7 @@ Private Sub cmdCrear_Click()
 
     Dim fechaMantener As Date
     Dim idCuentaMantener As Long
+    Dim idCuentaContableMantener As Long
 
     esIngreso = Me.RadioButton1.value
     esEgreso = Me.RadioButton2.value
@@ -799,6 +800,21 @@ Private Sub cmdCrear_Click()
         idCuentaMantener = Me.cboCuentasBancarias.ItemData(Me.cboCuentasBancarias.ListIndex)
     Else
         idCuentaMantener = 0
+    End If
+    
+    '-------------------------------------------------
+    ' Mantener última cuenta contable seleccionada
+    '-------------------------------------------------
+    If Me.cboCuentasContables.ListIndex <> -1 Then
+    
+        idCuentaContableMantener = _
+            Me.cboCuentasContables.ItemData( _
+                Me.cboCuentasContables.ListIndex)
+    
+    Else
+    
+        idCuentaContableMantener = 0
+    
     End If
 
     '-----------------------------
@@ -1075,7 +1091,8 @@ Private Sub cmdCrear_Click()
                     f12.CargarValoresIniciales _
                         fechaMantener, _
                         idCuentaMantener, _
-                        tipoMovimientoMantener
+                        tipoMovimientoMantener, _
+                        idCuentaContableMantener
             
                     f12.Show
             
@@ -1913,7 +1930,8 @@ End Sub
 Public Sub CargarValoresIniciales( _
     ByVal pFecha As Date, _
     ByVal pIdCuentaBancaria As Long, _
-    ByVal pTipoMovimiento As String)
+    ByVal pTipoMovimiento As String, _
+    ByVal pIdCuentaContable As Long)
 
     '---------------------------------------------
     ' Fecha
@@ -1944,6 +1962,36 @@ Public Sub CargarValoresIniciales( _
         Set AsientoContable.CuentaBancaria = Nothing
 
     End If
+        
+    '---------------------------------------------
+    ' Cuenta contable anterior
+    '---------------------------------------------
+    If pIdCuentaContable > 0 Then
+    
+        Me.cboCuentasContables.ListIndex = _
+            funciones.PosIndexCbo( _
+                pIdCuentaContable, _
+                Me.cboCuentasContables)
+    
+        If Me.cboCuentasContables.ListIndex <> -1 Then
+    
+            Set AsientoContable.CuentaContable = _
+                DAOCuentaContable.GetById( _
+                    pIdCuentaContable)
+    
+        Else
+    
+            Set AsientoContable.CuentaContable = Nothing
+    
+        End If
+    
+    Else
+    
+        Me.cboCuentasContables.ListIndex = -1
+        Set AsientoContable.CuentaContable = Nothing
+    
+    End If
+
 
     '---------------------------------------------
     ' Tipo de movimiento anterior
