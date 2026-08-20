@@ -11,7 +11,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-
 Option Explicit
 
 Public Id As Long
@@ -23,8 +22,9 @@ Public moneda As clsMoneda
 Public numero As Long
 Public Observaciones As String
 Public Cheques As New Collection
-
+Public CuentaBancaria As CuentaBancaria
 Public usada As Boolean
+
 
 Public Property Get Description() As String
     Dim ret As String

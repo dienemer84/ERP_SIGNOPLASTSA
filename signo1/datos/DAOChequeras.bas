@@ -36,6 +36,7 @@ Public Function Guardar(chequera As chequera) As Boolean
     q = "INSERT INTO Chequeras" _
       & "(numero," _
       & "id_banco," _
+      & "id_cuenta_bancaria," _
       & "numero_desde," _
       & "numero_hasta," _
       & "fecha_creacion," _
@@ -43,18 +44,21 @@ Public Function Guardar(chequera As chequera) As Boolean
       & "observaciones) Values" _
       & "('numero'," _
       & "'id_banco'," _
+      & "'id_cuenta_bancaria'," _
       & "'numero_desde'," _
       & "'numero_hasta'," _
       & "'fecha_creacion'," _
-      & "'id_moneda','observaciones')" _
+      & "'id_moneda'," _
+      & "'observaciones')" _
 
-q = Replace(q, "'numero'", Escape(chequera.numero))
-    q = Replace(q, "'id_banco'", Escape(chequera.Banco.Id))
-    q = Replace(q, "'numero_desde'", Escape(chequera.NumeroDesde))
-    q = Replace(q, "'numero_hasta'", Escape(chequera.NumeroHasta))
-    q = Replace(q, "'id_moneda'", Escape(chequera.moneda.Id))
-    q = Replace(q, "'fecha_creacion'", Escape(chequera.fechaCreacion))
-    q = Replace(q, "'observaciones'", Escape(chequera.Observaciones))
+    q = Replace(q, "'numero'", Escape(chequera.numero))
+        q = Replace(q, "'id_banco'", Escape(chequera.Banco.Id))
+        q = Replace(q, "'numero_desde'", Escape(chequera.NumeroDesde))
+        q = Replace(q, "'numero_hasta'", Escape(chequera.NumeroHasta))
+        q = Replace(q, "'id_moneda'", Escape(chequera.moneda.Id))
+        q = Replace(q, "'fecha_creacion'", Escape(chequera.fechaCreacion))
+        q = Replace(q, "'id_cuenta_bancaria'", Escape(chequera.CuentaBancaria.Id))
+        q = Replace(q, "'observaciones'", Escape(chequera.Observaciones))
 
     Guardar = conectar.execute(q)
     If Not Guardar Then GoTo err1

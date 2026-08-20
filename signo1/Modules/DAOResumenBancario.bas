@@ -126,6 +126,9 @@ Public Function FindAll( _
     q = q & SQLBoletasDeposito()
     q = q & " UNION ALL "
     
+    q = q & SQLChequesIngresadosBanco()
+    q = q & " UNION ALL "
+
     q = q & SQLMovimientosManuales()
     
     ' Cerrar el SELECT interno
@@ -189,7 +192,7 @@ While Not rs.EOF
     mov.FechaCarga = ValorFecha(rs, "fecha_carga")
 
     etapa = "id_banco"
-    mov.IdBanco = ValorLong(rs, "id_banco")
+    mov.idBanco = ValorLong(rs, "id_banco")
 
     etapa = "banco"
     mov.Banco = ValorTexto(rs, "banco")
@@ -1138,6 +1141,118 @@ Private Function SQLBoletasDeposito() As String
     q = q & "WHERE bd.numero_boleta IS NOT NULL "
 
     SQLBoletasDeposito = q
+
+End Function
+
+Private Function SQLChequesIngresadosBanco() As String
+
+    Dim q As String
+
+    q = "SELECT "
+
+    '----------------------------------------------------------
+    ' FECHA REAL DE IMPACTO BANCARIO
+    '----------------------------------------------------------
+    q = q & " ch.fecha_ingreso_banco AS fecha,"
+    q = q & " ch.fecha_ingreso_banco AS fecha_carga,"
+
+    '----------------------------------------------------------
+    ' BANCO / CUENTA DE LA CHEQUERA
+    '----------------------------------------------------------
+    q = q & " IFNULL(b.id, 0) AS id_banco,"
+    q = q & " IFNULL(b.nombre, 'SIN BANCO') AS banco,"
+
+    q = q & " IFNULL(c.id, 0) AS id_cuenta_bancaria,"
+    q = q & " IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria,"
+    q = q & " IFNULL(c.cbu, '') AS cbu,"
+
+    '----------------------------------------------------------
+    ' MONEDA
+    '----------------------------------------------------------
+    q = q & " COALESCE(" _
+          & " NULLIF(ch.id_moneda, 0)," _
+          & " NULLIF(c.moneda_id, 0)," _
+          & " NULLIF(chq.id_moneda, 0)," _
+          & " 0" _
+          & " ) AS id_moneda,"
+
+    '----------------------------------------------------------
+    ' MOVIMIENTO
+    '----------------------------------------------------------
+    q = q & " 'EGRESO' AS tipo_movimiento,"
+    q = q & " 'CHEQUE PROPIO' AS origen,"
+
+    ' ID interno = cheque.
+    q = q & " ch.id AS id_origen,"
+
+    ' Lo que ve el usuario = número del cheque.
+    q = q & " CAST(ch.numero AS CHAR) AS numero_origen,"
+
+    q = q & " ch.id AS id_operacion,"
+
+    '----------------------------------------------------------
+    ' COMPROBANTE QUE ORIGINÓ EL CHEQUE
+    '----------------------------------------------------------
+    q = q & " CASE "
+
+    q = q & " WHEN IFNULL(ch.orden_pago_origen, 0) > 0 "
+    q = q & " THEN CONCAT('OP ', ch.orden_pago_origen) "
+
+    q = q & " WHEN IFNULL(ch.pago_a_cuenta_origen, 0) > 0 "
+    q = q & " THEN CONCAT('PCTA ', ch.pago_a_cuenta_origen) "
+
+    q = q & " WHEN IFNULL(ch.liquidacion_caja_origen, 0) > 0 "
+    q = q & " THEN CONCAT(" _
+          & " 'LIQ ', " _
+          & " IFNULL(lc.numero_liq, ch.liquidacion_caja_origen)" _
+          & " ) "
+
+    q = q & " WHEN IFNULL(ch.movimiento_origen, 0) > 0 "
+    q = q & " THEN CONCAT('MOV ', ch.movimiento_origen) "
+
+    q = q & " ELSE '-' "
+
+    q = q & " END AS comprobante,"
+
+    '----------------------------------------------------------
+    ' DETALLE
+    '----------------------------------------------------------
+    q = q & " CONCAT(" _
+          & " 'Cheque Nro ', ch.numero" _
+          & " ) AS detalle,"
+
+    '----------------------------------------------------------
+    ' IMPORTE
+    '----------------------------------------------------------
+    q = q & " 0 AS ingreso,"
+    q = q & " ABS(IFNULL(ch.monto, 0)) AS egreso "
+
+    '----------------------------------------------------------
+    ' TABLAS
+    '----------------------------------------------------------
+    q = q & "FROM Cheques ch "
+
+    q = q & "INNER JOIN Chequeras chq "
+    q = q & " ON chq.id = ch.id_chequera "
+
+    q = q & "INNER JOIN AdminConfigCuentas c "
+    q = q & " ON c.id = chq.id_cuenta_bancaria "
+
+    q = q & "LEFT JOIN AdminConfigBancos b "
+    q = q & " ON b.id = c.idBanco "
+
+    q = q & "LEFT JOIN liquidaciones_caja lc "
+    q = q & " ON lc.id = ch.liquidacion_caja_origen "
+
+    '----------------------------------------------------------
+    ' SOLAMENTE CHEQUES PROPIOS QUE YA INGRESARON AL BANCO
+    '----------------------------------------------------------
+    q = q & "WHERE IFNULL(ch.propio, 0) = 1 "
+    q = q & "AND IFNULL(ch.ingresado, 0) = 1 "
+    q = q & "AND ch.fecha_ingreso_banco IS NOT NULL "
+    q = q & "AND ch.id_chequera IS NOT NULL "
+
+    SQLChequesIngresadosBanco = q
 
 End Function
 
