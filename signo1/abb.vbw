@@ -1,4 +1,4 @@
-frmPrincipal = 772, 330, 1158, 660, , 772, 0, 1158, 330, C
+frmPrincipal = 772, 330, 1158, 660, C, 772, 0, 1158, 330, C
 funciones = 910, 327, 1365, 654, C
 frmRubrosGrupos = 110, 145, 1393, 612, C, 154, 203, 1282, 670, C
 frmMaterialesNuevo = 88, 116, 697, 358, C, 0, 0, 609, 242, C
@@ -273,7 +273,7 @@ PlaneamientoTiempoProceso = 0, 0, 0, 0, C
 frmEmpleadosTareas = 0, 0, 0, 0, C, 44, 58, 1172, 525, C
 EntregaPetOfDetalle = 0, 0, 0, 0, C
 frmComprasOrdenEdit = 0, 0, 0, 0, C, 66, 87, 1194, 554, C
-RibbonBarButtonsID = 0, 0, 433, 670, Z
+RibbonBarButtonsID = 0, 0, 433, 670, C
 DAOOrdenCompra = 0, 0, 0, 0, C
 ConfigFacturaCliente = 0, 0, 0, 0, C
 FormHelper = 154, 203, 885, 694, C
