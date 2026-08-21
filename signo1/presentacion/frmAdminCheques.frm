@@ -2731,7 +2731,7 @@ Private Sub cmdExportar_Click()
     Dim ultimaFila As Long
     Dim archivo As String
 
-    Dim nombreBanco As String
+    Dim NombreBanco As String
     Dim nombreMoneda As String
 
     If tmpChequera Is Nothing Then
@@ -2756,7 +2756,7 @@ Private Sub cmdExportar_Click()
     End If
 
     If Not tmpChequera.Banco Is Nothing Then
-        nombreBanco = tmpChequera.Banco.nombre
+        NombreBanco = tmpChequera.Banco.nombre
     End If
 
     If Not tmpChequera.moneda Is Nothing Then
@@ -2786,7 +2786,7 @@ Private Sub cmdExportar_Click()
 
     'Datos generales
     xlWorksheet.Cells(2, 1).value = "Banco:"
-    xlWorksheet.Cells(2, 2).value = nombreBanco
+    xlWorksheet.Cells(2, 2).value = NombreBanco
 
     xlWorksheet.Cells(2, 4).value = "Chequera N°:"
     xlWorksheet.Cells(2, 5).value = tmpChequera.numero
