@@ -177,9 +177,9 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
 
 End Function
 
-Public Function FindByChequeraAndNro(chequeraId As Long, NRO As String) As cheque
+Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As cheque
     Dim col As Collection
-    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(NRO))
+    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(nro))
     If col.count = 0 Then
         Set FindByChequeraAndNro = Nothing
     Else
@@ -680,3 +680,206 @@ err1:
     ActualizarIngresoBanco = False
 
 End Function
+
+
+Public Function FindAllPropiosConciliacion( _
+    Optional ByRef filter As String = vbNullString, _
+    Optional ByVal mostrarIngresados As Boolean = False) As Collection
+
+    On Error GoTo err1
+
+    Dim rs As ADODB.Recordset
+    Dim resultado As New Collection
+    Dim tmpCheque As cheque
+    Dim q As String
+
+    q = "SELECT "
+    q = q & "cheq.id AS cheque_id, "
+    q = q & "cheq.numero AS cheque_numero, "
+    q = q & "cheq.monto AS cheque_monto, "
+    q = q & "cheq.fecha_vencimiento AS cheque_vencimiento, "
+    q = q & "cheq.fecha_emision AS cheque_emision, "
+    q = q & "cheq.origen AS cheque_origen, "
+    q = q & "cheq.ingresado AS cheque_ingresado, "
+    q = q & "cheq.fecha_ingreso_banco AS cheque_fecha_ingreso, "
+    q = q & "cheq.estado AS cheque_estado, "
+    q = q & "cheq.orden_pago_origen AS cheque_op, "
+    q = q & "cheq.liquidacion_caja_origen AS cheque_liquidacion, "
+    q = q & "cheq.pago_a_cuenta_origen AS cheque_pago_cuenta, "
+    q = q & "cheq.movimiento_origen AS cheque_movimiento, "
+    q = q & "cheqs.id AS chequera_id, "
+    q = q & "cheqs.numero AS chequera_numero, "
+    q = q & "banco.id AS banco_id, "
+    q = q & "banco.Nombre AS banco_nombre, "
+    q = q & "cta.id AS cuenta_id, "
+    q = q & "cta.cuenta AS cuenta_numero, "
+    q = q & "liq.numero_liq AS numero_liquidacion "
+
+    q = q & "FROM Cheques cheq "
+
+    q = q & "INNER JOIN Chequeras cheqs "
+    q = q & "ON cheqs.id = cheq.id_chequera "
+
+    q = q & "LEFT JOIN AdminConfigBancos banco "
+    q = q & "ON banco.id = cheqs.id_banco "
+
+    q = q & "LEFT JOIN AdminConfigCuentas cta "
+    q = q & "ON cta.id = cheqs.id_cuenta_bancaria "
+
+    q = q & "LEFT JOIN liquidaciones_caja liq "
+    q = q & "ON liq.id = cheq.liquidacion_caja_origen "
+
+    q = q & "WHERE cheq.propio = 1 "
+    q = q & "AND cheq.id_chequera > 0 "
+
+    'Solamente cheques que realmente fueron utilizados
+    q = q & "AND ("
+    q = q & "COALESCE(cheq.orden_pago_origen, 0) > 0 "
+    q = q & "OR COALESCE(cheq.liquidacion_caja_origen, 0) > 0 "
+    q = q & "OR COALESCE(cheq.pago_a_cuenta_origen, 0) > 0 "
+    q = q & "OR COALESCE(cheq.movimiento_origen, 0) > 0"
+    q = q & ") "
+
+    If Not mostrarIngresados Then
+        q = q & "AND COALESCE(cheq.ingresado, 0) = 0 "
+    End If
+
+    If LenB(filter) > 0 Then
+        q = q & "AND (" & filter & ") "
+    End If
+
+    q = q & "ORDER BY "
+    q = q & "banco.Nombre, "
+    q = q & "cta.cuenta, "
+    q = q & "cheqs.numero, "
+    q = q & "CAST(cheq.numero AS UNSIGNED), "
+    q = q & "cheq.id"
+
+    Set rs = conectar.RSFactory(q)
+
+    While Not rs.EOF
+
+        Set tmpCheque = New cheque
+
+        tmpCheque.Id = CLng(rs.Fields("cheque_id").value)
+        tmpCheque.numero = CStr(rs.Fields("cheque_numero").value)
+        tmpCheque.Propio = True
+
+        If Not IsNull(rs.Fields("cheque_monto").value) Then
+            tmpCheque.Monto = CDbl( _
+                rs.Fields("cheque_monto").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_vencimiento").value) Then
+            tmpCheque.FechaVencimiento = CDate( _
+                rs.Fields("cheque_vencimiento").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_emision").value) Then
+            tmpCheque.FechaEmision = CDate( _
+                rs.Fields("cheque_emision").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_origen").value) Then
+            tmpCheque.OrigenDestino = CStr( _
+                rs.Fields("cheque_origen").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_ingresado").value) Then
+            tmpCheque.entro = CBool( _
+                rs.Fields("cheque_ingresado").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_fecha_ingreso").value) Then
+            tmpCheque.FechaIngresoBanco = CDate( _
+                rs.Fields("cheque_fecha_ingreso").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_estado").value) Then
+            tmpCheque.estado = CLng( _
+                rs.Fields("cheque_estado").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_op").value) Then
+            tmpCheque.IdOrdenPagoOrigen = CLng( _
+                rs.Fields("cheque_op").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_liquidacion").value) Then
+            tmpCheque.IdLiquidacionCajaOrigen = CLng( _
+                rs.Fields("cheque_liquidacion").value)
+        End If
+
+        If Not IsNull(rs.Fields("numero_liquidacion").value) Then
+            tmpCheque.NumeroLiquidacionCaja = CLng( _
+                rs.Fields("numero_liquidacion").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_pago_cuenta").value) Then
+            tmpCheque.NumeroPagoACuenta = CLng( _
+                rs.Fields("cheque_pago_cuenta").value)
+        End If
+
+        If Not IsNull(rs.Fields("cheque_movimiento").value) Then
+            tmpCheque.NumeroMovimiento = CLng( _
+                rs.Fields("cheque_movimiento").value)
+        End If
+
+        Set tmpCheque.chequera = New chequera
+
+        tmpCheque.chequera.Id = CLng( _
+            rs.Fields("chequera_id").value)
+
+        tmpCheque.IdChequera = tmpCheque.chequera.Id
+
+        If Not IsNull(rs.Fields("chequera_numero").value) Then
+            tmpCheque.chequera.numero = CLng( _
+                rs.Fields("chequera_numero").value)
+        End If
+
+        If Not IsNull(rs.Fields("banco_id").value) Then
+
+            Set tmpCheque.chequera.Banco = New Banco
+
+            tmpCheque.chequera.Banco.Id = CLng( _
+                rs.Fields("banco_id").value)
+
+            If Not IsNull(rs.Fields("banco_nombre").value) Then
+                tmpCheque.chequera.Banco.nombre = CStr( _
+                    rs.Fields("banco_nombre").value)
+            End If
+
+        End If
+
+        If Not IsNull(rs.Fields("cuenta_id").value) Then
+
+            Set tmpCheque.chequera.CuentaBancaria = _
+                New CuentaBancaria
+
+            tmpCheque.chequera.CuentaBancaria.Id = CLng( _
+                rs.Fields("cuenta_id").value)
+
+            If Not IsNull(rs.Fields("cuenta_numero").value) Then
+                tmpCheque.chequera.CuentaBancaria.numero = CStr( _
+                    rs.Fields("cuenta_numero").value)
+            End If
+
+        End If
+
+        resultado.Add tmpCheque, CStr(tmpCheque.Id)
+
+        rs.MoveNext
+
+    Wend
+
+    Set FindAllPropiosConciliacion = resultado
+    Exit Function
+
+err1:
+    Debug.Print "FindAllPropiosConciliacion: " & _
+                Err.Number & " - " & Err.Description
+
+    Set FindAllPropiosConciliacion = Nothing
+
+End Function
+

@@ -596,9 +596,12 @@ Private Sub Form_Load()
     'FIN- Llenado de Combo Proveedores
     
     'INICIO- Llenado de Combo Proveedores
+    
+
+    
     Set colCuentasBancarias = DAOCuentaBancaria.FindAll
     For Each ctabancaria In colCuentasBancarias
-        cboCuentaBancaria.AddItem "N° " & ctabancaria.numero & " | " & ctabancaria.Banco.nombre
+        cboCuentaBancaria.AddItem ctabancaria.DescripcionFormateada
         cboCuentaBancaria.ItemData(cboCuentaBancaria.NewIndex) = ctabancaria.Id
     Next
     'FIN- Llenado de Combo Proveedores
