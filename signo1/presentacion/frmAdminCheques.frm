@@ -79,7 +79,7 @@ Begin VB.Form frmAdminCheques
          _ExtentX        =   3413
          _ExtentY        =   450
          _StockProps     =   79
-         Caption         =   "Exportar Chequeras"
+         Caption         =   "Exportar Cheques"
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.GroupBox GroupBox4 
@@ -124,15 +124,15 @@ Begin VB.Form frmAdminCheques
                Value           =   1  'Checked
                Width           =   2895
             End
-            Begin XtremeSuiteControls.PushButton PushButton5 
-               Height          =   495
-               Left            =   1800
+            Begin XtremeSuiteControls.PushButton cmdConciliarSeleccionados 
+               Height          =   615
+               Left            =   1680
                TabIndex        =   160
-               Top             =   960
-               Width           =   1215
+               Top             =   840
+               Width           =   1335
                _Version        =   786432
-               _ExtentX        =   2143
-               _ExtentY        =   873
+               _ExtentX        =   2355
+               _ExtentY        =   1085
                _StockProps     =   79
                Caption         =   "Conciliar seleccionados"
                UseVisualStyle  =   -1  'True
@@ -149,6 +149,15 @@ Begin VB.Form frmAdminCheques
                _StockProps     =   68
                Format          =   1
                CurrentDate     =   46258.5631828704
+            End
+            Begin VB.Label Label6 
+               Caption         =   "Fecha de ingreso"
+               Height          =   255
+               Index           =   1
+               Left            =   120
+               TabIndex        =   163
+               Top             =   840
+               Width           =   1455
             End
          End
          Begin XtremeSuiteControls.GroupBox GroupBox5 
@@ -452,6 +461,7 @@ Begin VB.Form frmAdminCheques
          Begin VB.Label Label6 
             Caption         =   "Número:"
             Height          =   255
+            Index           =   0
             Left            =   120
             TabIndex        =   144
             Top             =   240
@@ -2158,13 +2168,13 @@ Begin VB.Form frmAdminCheques
          End
       End
       Begin GridEX20.GridEX grid_cheques 
-         Height          =   8535
+         Height          =   6735
          Left            =   9720
          TabIndex        =   14
          Top             =   3360
          Width           =   12405
          _ExtentX        =   21881
-         _ExtentY        =   15055
+         _ExtentY        =   11880
          Version         =   "2.0"
          PreviewRowIndent=   200
          BoundColumnIndex=   ""
@@ -2201,13 +2211,13 @@ Begin VB.Form frmAdminCheques
          PrinterProperties=   "frmAdminCheques.frx":1048
       End
       Begin GridEX20.GridEX grid_chequeras 
-         Height          =   8490
+         Height          =   6690
          Left            =   120
          TabIndex        =   15
          Top             =   3360
          Width           =   9495
          _ExtentX        =   16748
-         _ExtentY        =   14975
+         _ExtentY        =   11800
          Version         =   "2.0"
          HoldSortSettings=   -1  'True
          DefaultGroupMode=   1
@@ -2387,7 +2397,7 @@ Begin VB.Form frmAdminCheques
          Height          =   255
          Left            =   120
          TabIndex        =   154
-         Top             =   11880
+         Top             =   10200
          Width           =   7335
       End
       Begin VB.Label Label13 
@@ -2396,15 +2406,15 @@ Begin VB.Form frmAdminCheques
          Left            =   9720
          TabIndex        =   149
          Top             =   3075
-         Width           =   8055
+         Width           =   3975
       End
       Begin VB.Label Label12 
          Caption         =   "Label12"
          Height          =   255
          Left            =   120
          TabIndex        =   148
-         Top             =   3080
-         Width           =   7335
+         Top             =   3075
+         Width           =   3975
       End
       Begin XtremeSuiteControls.Label lbContadorChequesEnCartera 
          Height          =   375
@@ -2532,6 +2542,8 @@ Dim Banco As Banco
 Private desde
 Private cargandoChequera As Boolean
 Private idChequeraMostrada As Long
+Private chequesPendientesConciliar As Dictionary
+Private procesandoSeleccionConciliacion As Boolean
 
 Private Sub btnBorrarBanco_Click()
     Me.cboBancoCartera.ListIndex = -1
@@ -2770,7 +2782,7 @@ Private Sub cmdExportar_Click()
     Dim xlWorksheet As Object
 
     Dim ch As cheque
-    Dim fila As Long
+    Dim Fila As Long
     Dim filaEncabezado As Long
     Dim ultimaFila As Long
     Dim archivo As String
@@ -2876,50 +2888,50 @@ Private Sub cmdExportar_Click()
     End With
 
     'Datos
-    fila = filaEncabezado + 1
+    Fila = filaEncabezado + 1
 
     For Each ch In tmpChequera.Cheques
 
-        xlWorksheet.Cells(fila, 1).value = ch.numero
+        xlWorksheet.Cells(Fila, 1).value = ch.numero
 
         If ch.Utilizado Then
 
-            xlWorksheet.Cells(fila, 2).value = ch.Monto
+            xlWorksheet.Cells(Fila, 2).value = ch.Monto
 
             If CDbl(ch.FechaVencimiento) > 0 Then
-                xlWorksheet.Cells(fila, 3).value = _
+                xlWorksheet.Cells(Fila, 3).value = _
                     ch.FechaVencimiento
             End If
 
             If CDbl(ch.FechaEmision) > 0 Then
-                xlWorksheet.Cells(fila, 4).value = _
+                xlWorksheet.Cells(Fila, 4).value = _
                     ch.FechaEmision
             End If
 
-            xlWorksheet.Cells(fila, 5).value = _
+            xlWorksheet.Cells(Fila, 5).value = _
                 ch.OrigenDestino
 
         End If
 
-        xlWorksheet.Cells(fila, 6).value = _
+        xlWorksheet.Cells(Fila, 6).value = _
             DescripcionUsoCheque(ch)
 
         If ch.entro Then
-            xlWorksheet.Cells(fila, 7).value = "SÍ"
+            xlWorksheet.Cells(Fila, 7).value = "SÍ"
         Else
-            xlWorksheet.Cells(fila, 7).value = "NO"
+            xlWorksheet.Cells(Fila, 7).value = "NO"
         End If
 
         If CDbl(ch.FechaIngresoBanco) > 0 Then
-            xlWorksheet.Cells(fila, 8).value = _
+            xlWorksheet.Cells(Fila, 8).value = _
                 ch.FechaIngresoBanco
         End If
 
-        fila = fila + 1
+        Fila = Fila + 1
 
     Next ch
 
-    ultimaFila = fila - 1
+    ultimaFila = Fila - 1
 
     'Formato
     xlWorksheet.Range("B6:B" & ultimaFila).NumberFormat = _
@@ -2938,14 +2950,14 @@ Private Sub cmdExportar_Click()
         "A" & filaEncabezado & ":H" & ultimaFila).AutoFilter
 
     'Total
-    xlWorksheet.Cells(fila, 1).value = "TOTAL"
-    xlWorksheet.Cells(fila, 1).Font.Bold = True
+    xlWorksheet.Cells(Fila, 1).value = "TOTAL"
+    xlWorksheet.Cells(Fila, 1).Font.Bold = True
 
-    xlWorksheet.Cells(fila, 2).Formula = _
+    xlWorksheet.Cells(Fila, 2).Formula = _
         "=SUM(B6:B" & ultimaFila & ")"
 
-    xlWorksheet.Cells(fila, 2).Font.Bold = True
-    xlWorksheet.Cells(fila, 2).NumberFormat = "#,##0.00"
+    xlWorksheet.Cells(Fila, 2).Font.Bold = True
+    xlWorksheet.Cells(Fila, 2).NumberFormat = "#,##0.00"
 
     xlWorksheet.Columns("A:H").AutoFit
 
@@ -3030,7 +3042,7 @@ Private Sub cmdExportarChequeras_Click()
     Dim xlWorkbook As Object
     Dim xlWorksheet As Object
 
-    Dim fila As Long
+    Dim Fila As Long
     Dim filaEncabezado As Long
     Dim ultimaFila As Long
     Dim archivo As String
@@ -3163,7 +3175,7 @@ Private Sub cmdExportarChequeras_Click()
     xlWorksheet.Columns("J:J").NumberFormat = "@"
     xlWorksheet.Columns("L:L").NumberFormat = "@"
 
-    fila = filaEncabezado + 1
+    Fila = filaEncabezado + 1
 
     For Each ch In listaChequeras
 
@@ -3177,37 +3189,37 @@ Private Sub cmdExportarChequeras_Click()
         End If
 
         'Datos generales de la chequera
-        xlWorksheet.Cells(fila, 1).value = ch.Id
-        xlWorksheet.Cells(fila, 2).value = ch.numero
-        xlWorksheet.Cells(fila, 3).value = ch.fechaCreacion
-        xlWorksheet.Cells(fila, 4).value = ch.NumeroDesde
-        xlWorksheet.Cells(fila, 5).value = ch.NumeroHasta
+        xlWorksheet.Cells(Fila, 1).value = ch.Id
+        xlWorksheet.Cells(Fila, 2).value = ch.numero
+        xlWorksheet.Cells(Fila, 3).value = ch.fechaCreacion
+        xlWorksheet.Cells(Fila, 4).value = ch.NumeroDesde
+        xlWorksheet.Cells(Fila, 5).value = ch.NumeroHasta
 
         If ch.usada Then
-            xlWorksheet.Cells(fila, 6).value = "SÍ"
+            xlWorksheet.Cells(Fila, 6).value = "SÍ"
         Else
-            xlWorksheet.Cells(fila, 6).value = "NO"
+            xlWorksheet.Cells(Fila, 6).value = "NO"
         End If
 
         'Banco asignado directamente a la chequera
         If Not ch.Banco Is Nothing Then
-            xlWorksheet.Cells(fila, 7).value = ch.Banco.Id
-            xlWorksheet.Cells(fila, 8).value = ch.Banco.nombre
+            xlWorksheet.Cells(Fila, 7).value = ch.Banco.Id
+            xlWorksheet.Cells(Fila, 8).value = ch.Banco.nombre
         End If
 
         'Moneda de la chequera
         If Not ch.moneda Is Nothing Then
-            xlWorksheet.Cells(fila, 15).value = ch.moneda.Id
-            xlWorksheet.Cells(fila, 16).value = _
+            xlWorksheet.Cells(Fila, 15).value = ch.moneda.Id
+            xlWorksheet.Cells(Fila, 16).value = _
                 ch.moneda.NombreCorto
         End If
 
         'Cuenta bancaria asociada
         If Not cuenta Is Nothing Then
 
-            xlWorksheet.Cells(fila, 9).value = cuenta.Id
+            xlWorksheet.Cells(Fila, 9).value = cuenta.Id
 
-            xlWorksheet.Cells(fila, 10).value = _
+            xlWorksheet.Cells(Fila, 10).value = _
                 CStr(cuenta.numero)
 
             Select Case cuenta.TipoCuenta
@@ -3223,25 +3235,25 @@ Private Sub cmdExportarChequeras_Click()
 
             End Select
 
-            xlWorksheet.Cells(fila, 11).value = _
+            xlWorksheet.Cells(Fila, 11).value = _
                 tipoCuentaTexto
 
-            xlWorksheet.Cells(fila, 12).value = _
+            xlWorksheet.Cells(Fila, 12).value = _
                 CStr(cuenta.CBU)
 
             If Not cuenta.Banco Is Nothing Then
-                xlWorksheet.Cells(fila, 13).value = _
+                xlWorksheet.Cells(Fila, 13).value = _
                     cuenta.Banco.Id
 
-                xlWorksheet.Cells(fila, 14).value = _
+                xlWorksheet.Cells(Fila, 14).value = _
                     cuenta.Banco.nombre
             End If
 
             If Not cuenta.moneda Is Nothing Then
-                xlWorksheet.Cells(fila, 17).value = _
+                xlWorksheet.Cells(Fila, 17).value = _
                     cuenta.moneda.Id
 
-                xlWorksheet.Cells(fila, 18).value = _
+                xlWorksheet.Cells(Fila, 18).value = _
                     cuenta.moneda.NombreCorto
             End If
 
@@ -3272,13 +3284,13 @@ Private Sub cmdExportarChequeras_Click()
 
         End If
 
-        xlWorksheet.Cells(fila, 19).value = estadoBanco
+        xlWorksheet.Cells(Fila, 19).value = estadoBanco
 
         If estadoBanco = "CORRECTO" Then
-            xlWorksheet.Cells(fila, 19).Interior.Color = Gray
+            xlWorksheet.Cells(Fila, 19).Interior.Color = Gray
 
         Else
-            xlWorksheet.Cells(fila, 19).Interior.Color = Gray
+            xlWorksheet.Cells(Fila, 19).Interior.Color = Gray
         End If
 
         '---------------------------------------------
@@ -3306,18 +3318,18 @@ Private Sub cmdExportarChequeras_Click()
 
         End If
 
-        xlWorksheet.Cells(fila, 20).value = estadoMoneda
+        xlWorksheet.Cells(Fila, 20).value = estadoMoneda
 
 
 
-        xlWorksheet.Cells(fila, 21).value = _
+        xlWorksheet.Cells(Fila, 21).value = _
             ch.Observaciones
 
-        fila = fila + 1
+        Fila = Fila + 1
 
     Next ch
 
-    ultimaFila = fila - 1
+    ultimaFila = Fila - 1
 
     'Formatos
     xlWorksheet.Range( _
@@ -4003,10 +4015,16 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridBancos, False, True
     GridEXHelper.CustomizeGrid Me.gridChequesEmitidos, False, False
     GridEXHelper.CustomizeGrid Me.grdCheques3eros, False, False
+    
     Dim i As Integer
     
     i = 1
     
+    
+    Set chequesPendientesConciliar = New Dictionary
+    
+    Me.dtFechaConciliar.value = Date
+
     'SOLAPA CARTERA
     DAOBancos.llenarComboXtremeSuite Me.cboBancoCartera
     Me.cboBancoCartera.ListIndex = -1
@@ -4285,15 +4303,32 @@ Private Sub Form_Resize()
     With Me.grid_chequeras
        .Top = Me.TabControl1.ScaleHeight + Me.TabControl1.Top + margen
 '''       .Width = Me.TabControl1.Width - margen
-       .Height = Me.TabControl1.Height / 1.75
+       .Height = Me.TabControl1.Height / 2.5
     End With
     
     With Me.grid_cheques
        .Top = Me.TabControl1.ScaleHeight + Me.TabControl1.Top + margen
 '''       .Width = Me.TabControl1.Width - margen
-       .Height = Me.TabControl1.Height / 1.75
+       .Height = Me.TabControl1.Height / 2.5
     End With
     
+End Sub
+
+Private Sub chkOcultarIngresados_Click()
+
+    On Error GoTo err1
+
+    If tmpChequera Is Nothing Then Exit Sub
+
+    MostrarChequera
+    Exit Sub
+
+err1:
+    MsgBox "No se pudo aplicar el filtro de cheques ingresados." & _
+           vbCrLf & Err.Description, _
+           vbExclamation, _
+           "Conciliación de cheques"
+
 End Sub
 
 
@@ -4313,6 +4348,19 @@ Private Sub MostrarChequera( _
         filter2 = filter2 & _
                   " AND cheq.numero LIKE " & _
                   conectar.Escape("%" & numeroBuscado & "%")
+    End If
+
+
+    If Me.chkOcultarIngresados.value = vbChecked Then
+    
+        'Oculta solamente los que tienen tilde y fecha
+        filter2 = filter2 & _
+                  " AND (" & _
+                  "cheq.ingresado IS NULL " & _
+                  "OR cheq.ingresado = 0 " & _
+                  "OR cheq.fecha_ingreso_banco IS NULL" & _
+                  ")"
+    
     End If
 
     'Filtros propios de la solapa Administrar Chequeras
@@ -4738,7 +4786,8 @@ Private Sub grid_cheques_UnboundReadData( _
 
             .value(6) = DescripcionUsoCheque(chFila)
             
-            .value(7) = Abs(CInt(chFila.entro))
+            .value(7) = _
+                Abs(CInt(ChequeSeleccionadoParaConciliar(chFila)))
 
             If CDbl(chFila.FechaIngresoBanco) > 0 Then
                 .value(8) = chFila.FechaIngresoBanco
@@ -4909,15 +4958,15 @@ Private Sub CargarChequeraSeleccionada( _
     If chequeras Is Nothing Then Exit Sub
     If chequeras.count = 0 Then Exit Sub
 
-    Dim fila As Long
+    Dim Fila As Long
 
-    fila = Me.grid_chequeras.RowIndex( _
+    Fila = Me.grid_chequeras.RowIndex( _
                 Me.grid_chequeras.row)
 
-    If fila < 1 Or fila > chequeras.count Then Exit Sub
+    If Fila < 1 Or Fila > chequeras.count Then Exit Sub
 
     Dim chSeleccionada As chequera
-    Set chSeleccionada = chequeras.item(fila)
+    Set chSeleccionada = chequeras.item(Fila)
 
     'Evita ejecutar dos consultas por el mismo clic
     If Not Forzar Then
@@ -4931,6 +4980,8 @@ Private Sub CargarChequeraSeleccionada( _
     'La búsqueda anterior no debe aplicarse a la nueva chequera
     Me.TxtNumeroChequeEnChequera.Text = vbNullString
     
+    LimpiarSeleccionConciliacion
+        
     Set tmpChequera = chSeleccionada
 
     MostrarChequera
@@ -5021,25 +5072,28 @@ Private Sub grid_cheques_UnboundUpdate( _
     ByVal Values As GridEX20.JSRowData)
 
     On Error GoTo err1
+    
+    Dim fechaIngresada As Date
+    Dim hayFechaIngresada As Boolean
 
-    If tmpChequera Is Nothing Then Exit Sub
-    If tmpChequera.Cheques Is Nothing Then Exit Sub
-
-    If RowIndex < 1 Or _
-       RowIndex > tmpChequera.Cheques.count Then
-        Exit Sub
-    End If
+    If procesandoSeleccionConciliacion Then Exit Sub
+    procesandoSeleccionConciliacion = True
 
     Dim ch As cheque
     Dim nuevoIngresado As Boolean
-    Dim nuevaFecha As Date
+    Dim clave As String
     Dim respuesta As VbMsgBoxResult
-    Dim mensaje As String
-    Dim estadoAnterior As Boolean
+
+    If tmpChequera Is Nothing Then GoTo salir
+    If tmpChequera.Cheques Is Nothing Then GoTo salir
+
+    If RowIndex < 1 Or _
+       RowIndex > tmpChequera.Cheques.count Then
+        GoTo salir
+    End If
 
     Set ch = tmpChequera.Cheques.item(RowIndex)
-
-    estadoAnterior = ch.entro
+    clave = CStr(ch.Id)
 
     If IsNull(Values(7)) Or IsEmpty(Values(7)) Then
         nuevoIngresado = False
@@ -5047,102 +5101,180 @@ Private Sub grid_cheques_UnboundUpdate( _
         nuevoIngresado = CBool(Values(7))
     End If
 
-    'Definir fecha
+    If chequesPendientesConciliar Is Nothing Then
+        Set chequesPendientesConciliar = New Dictionary
+    End If
+    
+    '--------------------------------------------------
+    'Edición individual de Fecha Ingreso
+    '--------------------------------------------------
+    hayFechaIngresada = False
+    
+    If Not IsNull(Values(8)) And _
+       Not IsEmpty(Values(8)) Then
+    
+        If Len(Trim$(CStr(Values(8)))) > 0 Then
+            hayFechaIngresada = True
+        End If
+    
+    End If
+    
+    If nuevoIngresado And hayFechaIngresada Then
+    
+        If Not IsDate(Values(8)) Then
+    
+            MsgBox "Ingrese una fecha válida.", _
+                   vbExclamation, _
+                   "Fecha de ingreso"
+    
+            If CDbl(ch.FechaIngresoBanco) > 0 Then
+                Values(8) = ch.FechaIngresoBanco
+            Else
+                Values(8) = Empty
+            End If
+    
+            GoTo salir
+        End If
+    
+        fechaIngresada = CDate(Values(8))
+    
+        If fechaIngresada > Date Then
+    
+            MsgBox "La fecha de ingreso no puede ser posterior a hoy.", _
+                   vbExclamation, _
+                   "Fecha de ingreso"
+    
+            If CDbl(ch.FechaIngresoBanco) > 0 Then
+                Values(8) = ch.FechaIngresoBanco
+            Else
+                Values(8) = Empty
+            End If
+    
+            GoTo salir
+        End If
+    
+        If Not ch.Utilizado Then
+    
+            MsgBox "El cheque N° " & ch.numero & _
+                   " todavía no fue utilizado." & vbCrLf & _
+                   "No puede registrarse su ingreso.", _
+                   vbExclamation, _
+                   "Conciliación de cheques"
+    
+            Values(7) = 0
+            Values(8) = Empty
+            GoTo salir
+        End If
+    
+        If Not DAOCheques.ActualizarIngresoBanco( _
+                    ch.Id, True, fechaIngresada) Then
+    
+            Err.Raise vbObjectError + 1004, _
+                      "grid_cheques_UnboundUpdate", _
+                      "No se pudo guardar la fecha de ingreso."
+        End If
+    
+        'Actualizar el objeto para que Janus no borre la fecha
+        ch.entro = True
+        ch.FechaIngresoBanco = fechaIngresada
+    
+        Values(7) = 1
+        Values(8) = fechaIngresada
+    
+        'Ya fue conciliado individualmente:
+        'no debe permanecer en la selección del lote
+        If chequesPendientesConciliar.Exists(clave) Then
+            chequesPendientesConciliar.remove clave
+        End If
+    
+        GoTo salir
+    End If
+
+    '--------------------------------------------------
+    'El cheque ya estaba ingresado en la base
+    '--------------------------------------------------
+    If ch.entro Then
+
+        If Not nuevoIngresado Then
+
+            respuesta = MsgBox( _
+                "¿Confirma que desea quitar la conciliación " & _
+                "del cheque N° " & ch.numero & "?" & vbCrLf & vbCrLf & _
+                "También se eliminará la fecha de ingreso.", _
+                vbQuestion + vbYesNo + vbDefaultButton2, _
+                "Quitar conciliación")
+
+            If respuesta = vbYes Then
+
+                If Not DAOCheques.ActualizarIngresoBanco( _
+                            ch.Id, False, 0) Then
+
+                    Err.Raise vbObjectError + 1001, _
+                              "grid_cheques_UnboundUpdate", _
+                              "No se pudo quitar la conciliación."
+                End If
+
+                ch.entro = False
+                ch.FechaIngresoBanco = 0
+
+                Values(7) = 0
+                Values(8) = Empty
+
+            Else
+                'Restaurar visualmente el tilde
+                Values(7) = 1
+            End If
+
+        Else
+            Values(7) = 1
+        End If
+
+        GoTo salir
+    End If
+
+    '--------------------------------------------------
+    'Cheque todavía no conciliado
+    '--------------------------------------------------
     If nuevoIngresado Then
 
-        If IsDate(Values(8)) Then
-            nuevaFecha = CDate(Values(8))
-        Else
-            nuevaFecha = Date
+        If Not ch.Utilizado Then
+
+            MsgBox "El cheque N° " & ch.numero & _
+                   " todavía no fue utilizado." & vbCrLf & _
+                   "No puede seleccionarse para conciliar.", _
+                   vbExclamation, _
+                   "Conciliación de cheques"
+
+            Values(7) = 0
+            GoTo salir
+        End If
+
+        If Not chequesPendientesConciliar.Exists(clave) Then
+            chequesPendientesConciliar.Add clave, ch.Id
         End If
 
     Else
-        nuevaFecha = 0
-    End If
 
-    'Validar solamente cuando cambia el tilde
-    If nuevoIngresado <> estadoAnterior Then
-
-        If nuevoIngresado Then
-
-            'Opcional: impedir marcar cheques disponibles
-            If Not ch.Utilizado Then
-                MsgBox "El cheque N° " & ch.numero & _
-                       " todavía no fue utilizado." & vbCrLf & _
-                       "No se puede registrar su ingreso al banco.", _
-                       vbExclamation, _
-                       "Administración de cheques"
-
-                MostrarChequera
-                Exit Sub
-            End If
-
-            mensaje = _
-                "¿Confirma que el cheque N° " & ch.numero & _
-                " ingresó al banco?" & vbCrLf & vbCrLf & _
-                "Fecha de ingreso: " & _
-                Format$(nuevaFecha, "dd/mm/yyyy")
-
-        Else
-
-            mensaje = _
-                "¿Confirma que desea quitar la marca de ingresado " & _
-                "del cheque N° " & ch.numero & "?" & _
-                vbCrLf & vbCrLf & _
-                "También se eliminará la fecha de ingreso."
-
-        End If
-
-        respuesta = MsgBox( _
-                        mensaje, _
-                        vbQuestion + vbYesNo + vbDefaultButton1, _
-                        "Confirmar modificación")
-
-        If respuesta <> vbYes Then
-            MostrarChequera
-            Exit Sub
+        If chequesPendientesConciliar.Exists(clave) Then
+            chequesPendientesConciliar.remove clave
         End If
 
     End If
 
-    'Validar fecha
-    If nuevoIngresado Then
-        If nuevaFecha > Date Then
-            MsgBox "La fecha de ingreso no puede ser posterior a hoy.", _
-                   vbExclamation, _
-                   "Fecha incorrecta"
-
-            MostrarChequera
-            Exit Sub
-        End If
-    End If
-
-    'Guardar
-    If Not DAOCheques.ActualizarIngresoBanco( _
-                ch.Id, _
-                nuevoIngresado, _
-                nuevaFecha) Then
-
-        Err.Raise vbObjectError + 1001, _
-                  "grid_cheques_UnboundUpdate", _
-                  "No se pudo actualizar el cheque."
-    End If
-
-    'Actualizar el objeto
-    ch.entro = nuevoIngresado
-    ch.FechaIngresoBanco = nuevaFecha
-
+salir:
+    procesandoSeleccionConciliacion = False
     Exit Sub
 
 err1:
-    MsgBox "No se pudo guardar el ingreso del cheque." & _
+    procesandoSeleccionConciliacion = False
+
+    MsgBox "No se pudo modificar la selección del cheque." & _
            vbCrLf & Err.Description, _
            vbExclamation, _
-           "Administración de cheques"
-
-    MostrarChequera
+           "Conciliación de cheques"
 
 End Sub
+
 
 Private Sub cboBancos_Click()
 
@@ -5175,4 +5307,127 @@ Private Sub cboBancos_Click()
     End If
 
 End Sub
+
+Private Sub LimpiarSeleccionConciliacion()
+
+    Set chequesPendientesConciliar = New Dictionary
+
+End Sub
+
+
+Private Function ChequeSeleccionadoParaConciliar( _
+    ByVal ch As cheque) As Boolean
+
+    ChequeSeleccionadoParaConciliar = False
+
+    If ch Is Nothing Then Exit Function
+
+    'Ya está guardado como ingresado
+    If ch.entro Then
+        ChequeSeleccionadoParaConciliar = True
+        Exit Function
+    End If
+
+    'Fue seleccionado temporalmente
+    If chequesPendientesConciliar Is Nothing Then Exit Function
+
+    ChequeSeleccionadoParaConciliar = _
+        chequesPendientesConciliar.Exists(CStr(ch.Id))
+
+End Function
+
+
+Private Sub cmdConciliarSeleccionados_Click()
+
+    On Error GoTo err1
+    
+        'Confirmar el último tilde que todavía está en edición
+    If Me.grid_cheques.EditMode = jgexEditModeOn Then
+        Me.grid_cheques.Update
+    End If
+
+
+    Dim fechaConciliacion As Date
+    Dim idsCheques As Collection
+    Dim clave As Variant
+    Dim Cantidad As Long
+    Dim respuesta As VbMsgBoxResult
+
+    If chequesPendientesConciliar Is Nothing Then
+        Set chequesPendientesConciliar = New Dictionary
+    End If
+
+    Cantidad = chequesPendientesConciliar.count
+
+    If Cantidad = 0 Then
+
+        MsgBox "No hay cheques seleccionados para conciliar.", _
+               vbInformation, _
+               "Conciliación de cheques"
+
+        Exit Sub
+    End If
+
+    If IsNull(Me.dtFechaConciliar.value) Or _
+       Not IsDate(Me.dtFechaConciliar.value) Then
+
+        MsgBox "Seleccione una fecha válida.", _
+               vbExclamation, _
+               "Conciliación de cheques"
+
+        Exit Sub
+    End If
+
+    fechaConciliacion = CDate(Me.dtFechaConciliar.value)
+
+    If fechaConciliacion > Date Then
+
+        MsgBox "La fecha de ingreso no puede ser posterior a hoy.", _
+               vbExclamation, _
+               "Conciliación de cheques"
+
+        Exit Sub
+    End If
+
+    respuesta = MsgBox( _
+        "¿Confirma la conciliación de " & Cantidad & _
+        " cheque(s)?" & vbCrLf & vbCrLf & _
+        "Fecha de ingreso: " & _
+        Format$(fechaConciliacion, "dd/mm/yyyy"), _
+        vbQuestion + vbYesNo + vbDefaultButton2, _
+        "Confirmar conciliación")
+
+    If respuesta <> vbYes Then Exit Sub
+
+    Set idsCheques = New Collection
+
+    For Each clave In chequesPendientesConciliar.Keys
+        idsCheques.Add CLng(clave)
+    Next clave
+
+    If Not DAOCheques.ActualizarIngresosBancoLote( _
+                idsCheques, fechaConciliacion) Then
+
+        Err.Raise vbObjectError + 1002, _
+                  "PushButton5_Click", _
+                  "No se pudieron actualizar los cheques."
+    End If
+
+    LimpiarSeleccionConciliacion
+    MostrarChequera
+
+    MsgBox Cantidad & " cheque(s) conciliado(s) correctamente.", _
+           vbInformation, _
+           "Conciliación de cheques"
+
+    Exit Sub
+
+err1:
+    MsgBox "No se pudo completar la conciliación." & _
+           vbCrLf & Err.Description, _
+           vbCritical, _
+           "Conciliación de cheques"
+
+End Sub
+
 

@@ -13,14 +13,6 @@ Public Function FindAbonadoPendienteEnEstaOP(facid As Long, ocid As Long) As Col
       & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago = " & ocid & "),0 ) AS otros_pendiente "
 
-    'q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS total_pendiente, " _
-     '    & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS netogravado_pendiente, " _
-     '     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS otros_pendiente "
-
-
 
     Dim rs As Recordset
     Set rs = conectar.RSFactory(q)
@@ -50,14 +42,6 @@ Public Function FindAbonadoPendiente(facid As Long, ocid As Long) As Collection
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago <> " & ocid & "),0 ) AS netogravado_pendiente, " _
       & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
       & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " and opf.id_orden_pago <> " & ocid & "),0 ) AS otros_pendiente "
-
-    'q = "SELECT IFNULL( (SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS total_pendiente, " _
-     '    & " IFNULL( (SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS netogravado_pendiente, " _
-     '     & " IFNULL( (SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id " _
-     '    & " WHERE op1.estado=0 AND opf.id_factura_proveedor=" & facid & " AND opf.id_orden_pago=" & ocid & "),0 ) AS otros_pendiente "
-
 
 
     Dim rs As Recordset
@@ -752,13 +736,40 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             q = q & ", " & funciones.JoinCollectionValues(op.ChequesPropios, ", ", "id")
         End If
         q = q & ")"
-        Set rs = conectar.RSFactory(q)
-        While Not rs.EOF
-            q = "UPDATE Cheques SET  en_cartera = 1, observaciones = NULL, origen= NULL WHERE id = " & rs!id_cheque
-            If Not conectar.execute(q) Then GoTo E
-            rs.MoveNext
-        Wend
-
+        
+    Set rs = conectar.RSFactory(q)
+    
+    While Not rs.EOF
+    
+        'Cheque propio: vuelve a quedar disponible en su chequera
+        q = "UPDATE Cheques SET " & _
+            "orden_pago_origen = 0, " & _
+            "fecha_emision = NULL, " & _
+            "fecha_vencimiento = NULL, " & _
+            "monto = 0, " & _
+            "en_cartera = 0, " & _
+            "observaciones = NULL, " & _
+            "origen = NULL " & _
+            "WHERE id = " & rs!id_cheque & _
+            " AND propio = 1"
+    
+        If Not conectar.execute(q) Then GoTo E
+    
+    
+        'Cheque de terceros: vuelve a cartera
+        q = "UPDATE Cheques SET " & _
+            "orden_pago_origen = 0, " & _
+            "en_cartera = 1, " & _
+            "observaciones = NULL, " & _
+            "origen = NULL " & _
+            "WHERE id = " & rs!id_cheque & _
+            " AND propio = 0"
+    
+        If Not conectar.execute(q) Then GoTo E
+    
+        rs.MoveNext
+    
+    Wend
 
         q = "DELETE FROM ordenes_pago_cheques WHERE id_orden_pago = " & op.Id
         If Not conectar.execute(q) Then GoTo E
@@ -807,9 +818,6 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
             If Not conectar.execute(q) Then GoTo E
         Next
         
-        
-
-
         Dim es As EstadoFacturaProveedor
         Dim nopago As Double
         Dim cp As Compensatorio
@@ -820,14 +828,8 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
 
             If Not conectar.execute(q) Then GoTo E
 
-            '            If BuscarEnColeccion(op.Compensatorios, CStr(fac.id)) Then
-            '
-            '                Set compe = op.Compensatorios(CStr(fac.id))
-            '                nopago = compe.Monto
-            '            Else
-            '                nopago = 0
-            '            End If
             nopago = 0
+            
             'validar si se pagan facturas o compensatorios
 
             For Each cp In op.Compensatorios
@@ -1386,7 +1388,6 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
     xlWorksheet.Cells.EntireColumn.AutoFit
     xlWorkbook.Sheets(wkSt).Select
     xlApplication.ScreenUpdating = True
-    ''
 
     Dim ruta As String
     ruta = Environ$("TEMP")

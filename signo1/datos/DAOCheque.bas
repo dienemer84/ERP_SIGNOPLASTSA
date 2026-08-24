@@ -177,9 +177,9 @@ Public Function FindByChequeraAndId(chequeraId As Long, Id As Long) As cheque
 
 End Function
 
-Public Function FindByChequeraAndNro(chequeraId As Long, nro As String) As cheque
+Public Function FindByChequeraAndNro(chequeraId As Long, NRO As String) As cheque
     Dim col As Collection
-    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(nro))
+    Set col = FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID_CHEQUERA & "=" & chequeraId & " AND " & TABLA_CHEQUE & "." & DAOCheques.CAMPO_NUMERO & " = " & Escape(NRO))
     If col.count = 0 Then
         Set FindByChequeraAndNro = Nothing
     Else
@@ -222,7 +222,7 @@ Public Function Map(ByRef rs As Recordset, _
 
     Dim tmpCheque As cheque
     Dim Id As Variant
-    Dim fechaIngreso As Variant
+    Dim FechaIngreso As Variant
     
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
 
@@ -265,16 +265,16 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.entro = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "ingresado")
 
-        fechaIngreso = GetValue( _
+        FechaIngreso = GetValue( _
                             rs, _
                             fieldsIndex, _
                             tableNameOrAlias, _
                             "fecha_ingreso_banco")
         
-        If IsNull(fechaIngreso) Or IsEmpty(fechaIngreso) Then
+        If IsNull(FechaIngreso) Or IsEmpty(FechaIngreso) Then
             tmpCheque.FechaIngresoBanco = 0
         Else
-            tmpCheque.FechaIngresoBanco = CDate(fechaIngreso)
+            tmpCheque.FechaIngresoBanco = CDate(FechaIngreso)
         End If
 
         tmpCheque.Depositado = GetValue( _
@@ -328,7 +328,7 @@ Public Function Map2(ByRef rs As Recordset, _
 
     Dim tmpCheque As cheque
     Dim Id As Variant
-    Dim fechaIngreso As Variant
+    Dim FechaIngreso As Variant
     
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
 
@@ -371,16 +371,16 @@ Public Function Map2(ByRef rs As Recordset, _
         tmpCheque.entro = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "ingresado")
 
-        fechaIngreso = GetValue( _
+        FechaIngreso = GetValue( _
                             rs, _
                             fieldsIndex, _
                             tableNameOrAlias, _
                             "fecha_ingreso_banco")
         
-        If IsNull(fechaIngreso) Or IsEmpty(fechaIngreso) Then
+        If IsNull(FechaIngreso) Or IsEmpty(FechaIngreso) Then
             tmpCheque.FechaIngresoBanco = 0
         Else
-            tmpCheque.FechaIngresoBanco = CDate(fechaIngreso)
+            tmpCheque.FechaIngresoBanco = CDate(FechaIngreso)
         End If
 
         tmpCheque.Depositado = GetValue( _
@@ -441,7 +441,7 @@ Public Function Map3(ByRef rs As Recordset, _
 
     Dim tmpCheque As cheque
     Dim Id As Variant
-    Dim fechaIngreso As Variant
+    Dim FechaIngreso As Variant
     
     Id = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID)
 
@@ -506,16 +506,16 @@ Public Function Map3(ByRef rs As Recordset, _
         tmpCheque.entro = GetValue( _
             rs, fieldsIndex, tableNameOrAlias, "ingresado")
 
-        fechaIngreso = GetValue( _
+        FechaIngreso = GetValue( _
                             rs, _
                             fieldsIndex, _
                             tableNameOrAlias, _
                             "fecha_ingreso_banco")
         
-        If IsNull(fechaIngreso) Or IsEmpty(fechaIngreso) Then
+        If IsNull(FechaIngreso) Or IsEmpty(FechaIngreso) Then
             tmpCheque.FechaIngresoBanco = 0
         Else
-            tmpCheque.FechaIngresoBanco = CDate(fechaIngreso)
+            tmpCheque.FechaIngresoBanco = CDate(FechaIngreso)
         End If
 
         tmpCheque.Depositado = GetValue( _
@@ -630,7 +630,22 @@ q = Replace(q, "'id'", cheque.Id)
     q = Replace(q, "'liquidacion_caja_origen'", conectar.Escape(cheque.IdLiquidacionCajaOrigen))
     q = Replace(q, "'estado'", conectar.Escape(cheque.estado))
     q = Replace(q, "'depositado'", conectar.Escape(cheque.Depositado))
-    q = Replace(q, "'fecha_emision'", conectar.Escape(Format(cheque.FechaEmision, "yyyy-mm-dd")))
+    
+    Dim sqlFechaEmision As String
+
+    If CDbl(cheque.FechaEmision) > 0 Then
+    
+        sqlFechaEmision = conectar.Escape( _
+            Format$(cheque.FechaEmision, "yyyy-mm-dd"))
+    
+    Else
+    
+        sqlFechaEmision = "NULL"
+    
+    End If
+    
+    q = Replace(q, "'fecha_emision'", sqlFechaEmision)
+    
     Guardar = conectar.execute(q)
     If Not Guardar Then Exit Function
 
@@ -655,15 +670,15 @@ End Function
 Public Function ActualizarIngresoBanco( _
     ByVal idCheque As Long, _
     ByVal ingresado As Boolean, _
-    ByVal fechaIngreso As Date) As Boolean
+    ByVal FechaIngreso As Date) As Boolean
 
     On Error GoTo err1
 
     Dim q As String
     Dim sqlFecha As String
 
-    If ingresado And CDbl(fechaIngreso) > 0 Then
-        sqlFecha = conectar.Escape(fechaIngreso)
+    If ingresado And CDbl(FechaIngreso) > 0 Then
+        sqlFecha = conectar.Escape(FechaIngreso)
     Else
         sqlFecha = "NULL"
     End If
@@ -880,6 +895,59 @@ err1:
                 Err.Number & " - " & Err.Description
 
     Set FindAllPropiosConciliacion = Nothing
+
+End Function
+
+
+Public Function ActualizarIngresosBancoLote( _
+    ByVal idsCheques As Collection, _
+    ByVal FechaIngreso As Date) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim listaIds As String
+    Dim valor As Variant
+
+    ActualizarIngresosBancoLote = False
+
+    If idsCheques Is Nothing Then Exit Function
+    If idsCheques.count = 0 Then Exit Function
+    If CDbl(FechaIngreso) <= 0 Then Exit Function
+
+    For Each valor In idsCheques
+
+        If IsNumeric(valor) Then
+
+            If CLng(valor) > 0 Then
+
+                If LenB(listaIds) > 0 Then
+                    listaIds = listaIds & ","
+                End If
+
+                listaIds = listaIds & CStr(CLng(valor))
+
+            End If
+
+        End If
+
+    Next valor
+
+    If LenB(listaIds) = 0 Then Exit Function
+
+    q = "UPDATE Cheques SET " & _
+        "ingresado = 1, " & _
+        "fecha_ingreso_banco = " & _
+            conectar.Escape(Format$(FechaIngreso, "yyyy-mm-dd")) & " " & _
+        "WHERE id IN (" & listaIds & ") " & _
+        "AND propio = 1 " & _
+        "AND (ingresado IS NULL OR ingresado = 0)"
+
+    ActualizarIngresosBancoLote = conectar.execute(q)
+    Exit Function
+
+err1:
+    ActualizarIngresosBancoLote = False
 
 End Function
 

@@ -1694,7 +1694,7 @@ Dim monedaDefault As clsMoneda
 Public DetalleComprobante As clsDetalleComprobante
 Public colDetalles As New Collection
 Public colDetallesOP As New Collection
-
+Private ultimaChequeraPropiaId As Long
 Private Percepcion As clsPercepcionesOrdenPago
 
 
@@ -1894,8 +1894,8 @@ Private Sub ActualizarAlicuotas()
 
         For Each B In OrdenPago.RetencionesAlicuota
             If A.Retencion.Id = B.Retencion.Id Then
-                If B.importe > 0 Then
-                    A.importe = B.importe
+                If B.Importe > 0 Then
+                    A.Importe = B.Importe
                 End If
             End If
         Next
@@ -2114,8 +2114,8 @@ Private Sub ExportarPagosComprobanteAExcel()
 
     Dim detalle As clsDetalleComprobante
     Dim fila As Long
-    Dim totalPagado As Double
-    Dim importe As Double
+    Dim TotalPagado As Double
+    Dim Importe As Double
 
     '==================================================
     ' VALIDACIONES
@@ -2197,17 +2197,17 @@ Private Sub ExportarPagosComprobanteAExcel()
     ' EXPORTAR PAGOS
     '==================================================
     fila = 7
-    totalPagado = 0
+    TotalPagado = 0
 
     For Each detalle In colDetalles
 
-        importe = detalle.NetoGravado + detalle.Otros
+        Importe = detalle.NetoGravado + detalle.Otros
 
-        xlHoja.Cells(fila, 1).value = importe
+        xlHoja.Cells(fila, 1).value = Importe
         xlHoja.Cells(fila, 2).value = detalle.FechaEmision
         xlHoja.Cells(fila, 3).value = detalle.IdOrdenPago
 
-        totalPagado = totalPagado + importe
+        TotalPagado = TotalPagado + Importe
         fila = fila + 1
 
     Next detalle
@@ -2216,7 +2216,7 @@ Private Sub ExportarPagosComprobanteAExcel()
     ' TOTAL
     '==================================================
     xlHoja.Cells(fila + 1, 1).value = "TOTAL PAGADO"
-    xlHoja.Cells(fila + 1, 2).value = totalPagado
+    xlHoja.Cells(fila + 1, 2).value = TotalPagado
 
     xlHoja.Range( _
         xlHoja.Cells(fila + 1, 1), _
@@ -2520,6 +2520,8 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridRetenciones, False, True
     GridEXHelper.CustomizeGrid Me.gridDetalleComprobante, False, False
     GridEXHelper.CustomizeGrid Me.gridPercepciones, False, True
+    
+    ultimaChequeraPropiaId = 0
     
     Set Cajas = DAOCaja.FindAll()
     Me.gridCajas.ItemCount = Cajas.count
@@ -2917,17 +2919,39 @@ Private Sub gridChequesPropios_BeforeUpdate(ByVal Cancel As GridEX20.JSRetBoolea
 
 End Sub
 
-Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal ValueListIndex As Long, ByVal value As Variant)
-    If ColIndex = 1 Then
-        'If Not IsNumeric(Me.gridChequesPropios.Value(1)) Or LenB(Me.gridChequesPropios.Value(1)) = 0 Then
-        If Not IsNumeric(value) Or LenB(value) = 0 Then
-            Set chequesChequeraSeleccionada = New Collection
-        Else
-            Set chequesChequeraSeleccionada = DAOCheques.FindAllDisponiblesByChequera(val(value))  ' Me.gridChequesPropios.Value(1))
-        End If
+Private Sub gridChequesPropios_ListSelected( _
+        ByVal ColIndex As Integer, _
+        ByVal ValueListIndex As Long, _
+        ByVal value As Variant)
 
-        Me.gridChequesChequera.ItemCount = chequesChequeraSeleccionada.count
+    If ColIndex <> 1 Then Exit Sub
+
+    If Not IsNumeric(value) Or LenB(Trim$(CStr(value))) = 0 Then
+
+        ultimaChequeraPropiaId = 0
+
+        Set chequesChequeraSeleccionada = _
+            New Collection
+
+    Else
+
+        ultimaChequeraPropiaId = CLng(value)
+
+        Set chequesChequeraSeleccionada = _
+            DAOCheques.FindAllDisponiblesByChequera( _
+                ultimaChequeraPropiaId)
+
+        'La misma chequera queda sugerida
+        'para las próximas filas nuevas.
+        Me.gridChequesPropios.Columns( _
+            "chequera").DefaultValue = _
+            ultimaChequeraPropiaId
+
     End If
+
+    Me.gridChequesChequera.ItemCount = _
+        chequesChequeraSeleccionada.count
+
 End Sub
 
 
@@ -3143,7 +3167,7 @@ Private Sub gridRetenciones_RowFormat(RowBuffer As GridEX20.JSRowData)
 
     Set alicuotaRetencion = alicuotas.item(RowBuffer.RowIndex)
 
-    If alicuotaRetencion.importe > 0 Then    '.Retencion.id <> 2 Then
+    If alicuotaRetencion.Importe > 0 Then    '.Retencion.id <> 2 Then
         RowBuffer.RowStyle = "padronganancias"
     Else
         RowBuffer.RowStyle = "padroningresos"
@@ -3162,7 +3186,7 @@ Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
         Set alicuotaRetencion = alicuotas.item(RowIndex)
         Values(2) = alicuotaRetencion.alicuotaRetencion
         Values(1) = alicuotaRetencion.Retencion.nombre
-        Values(3) = alicuotaRetencion.importe
+        Values(3) = alicuotaRetencion.Importe
         Values(4) = alicuotaRetencion.certificados
     End If
 End Sub
@@ -3173,10 +3197,10 @@ Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark
         Set alicuotaRetencion = alicuotas.item(RowIndex)
         alicuotaRetencion.alicuotaRetencion = Values(2)
         If Not IsNumeric(Values(3)) Then
-            alicuotaRetencion.importe = 0
+            alicuotaRetencion.Importe = 0
             alicuotaRetencion.certificados = "-"
         Else
-            alicuotaRetencion.importe = Values(3)
+            alicuotaRetencion.Importe = Values(3)
             alicuotaRetencion.certificados = Values(4)
         End If
         Totalizar
@@ -4545,24 +4569,24 @@ End Sub
 
 Private Function EsImporteValido(ByVal valor As Variant) As Boolean
 
-    Dim importe As Double
+    Dim Importe As Double
 
-    EsImporteValido = TryImporteDesdeTexto(valor, importe)
+    EsImporteValido = TryImporteDesdeTexto(valor, Importe)
 
 End Function
 
 
 Private Function ImporteDesdeTexto(ByVal valor As Variant) As Double
 
-    Dim importe As Double
+    Dim Importe As Double
 
-    If Not TryImporteDesdeTexto(valor, importe) Then
+    If Not TryImporteDesdeTexto(valor, Importe) Then
         Err.Raise 13, _
                   "ImporteDesdeTexto", _
                   "El importe ingresado no es válido."
     End If
 
-    ImporteDesdeTexto = importe
+    ImporteDesdeTexto = Importe
 
 End Function
 

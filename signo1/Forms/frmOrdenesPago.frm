@@ -942,33 +942,208 @@ End Function
 
 
 Private Sub mnuAnular_Click()
+
+    Dim respuesta As VbMsgBoxResult
+    Dim destinoOP As String
+    Dim importeOP As String
+
     SeleccionarOP
-    
-    If MsgBox("Desea anular la OP?", vbQuestion + vbYesNo) = vbYes Then
 
-        If DAOOrdenPago.Delete(Orden.Id, True) Then
+    If Orden Is Nothing Then
 
-            MsgBox "Anulacion Exitosa.", vbInformation + vbOKOnly
-            Me.gridOrdenes.ItemCount = 0
-            ordenes.remove CStr(Orden.Id)
-            Me.gridOrdenes.ItemCount = ordenes.count
-            cmdBuscar_Click
-        Else
-            MsgBox "No se pudo borrar.", vbCritical + vbOKOnly
-        End If
+        MsgBox "No se pudo identificar la orden de pago seleccionada.", _
+               vbExclamation, _
+               "Anular orden de pago"
+
+        Exit Sub
+
     End If
+
+    If Orden.estado = EstadoOrdenPago_Anulada Then
+
+        MsgBox "La OP N.º " & Orden.Id & _
+               " ya se encuentra anulada.", _
+               vbExclamation, _
+               "Anular orden de pago"
+
+        Exit Sub
+
+    End If
+
+    destinoOP = "Sin destino definido"
+
+    If Orden.EsParaFacturaProveedor Then
+
+        If Orden.FacturasProveedor.count > 0 Then
+
+            If Not Orden.FacturasProveedor.item(1).Proveedor Is Nothing Then
+
+                destinoOP = _
+                    Orden.FacturasProveedor.item(1).Proveedor.RazonSocial
+
+            End If
+
+        End If
+
+    ElseIf Not Orden.CuentaContable Is Nothing Then
+
+        destinoOP = _
+            "Cuenta contable: " & _
+            Orden.CuentaContable.nombre
+
+    End If
+
+    importeOP = Replace( _
+                    FormatCurrency( _
+                        funciones.FormatearDecimales( _
+                            Orden.TotalOrdenPago)), _
+                    "$", "")
+
+    respuesta = MsgBox( _
+        "¿Confirma la anulación de esta orden de pago?" & _
+        vbCrLf & vbCrLf & _
+        "OP N.º: " & Orden.Id & vbCrLf & _
+        "Destino: " & destinoOP & vbCrLf & _
+        "Importe: " & _
+            Orden.moneda.NombreCorto & " " & importeOP & _
+        vbCrLf & vbCrLf & _
+        "Al anularla se liberarán los comprobantes y " & _
+        "valores relacionados.", _
+        vbQuestion + vbYesNo + vbDefaultButton1, _
+        "Confirmar anulación")
+
+    If respuesta <> vbYes Then Exit Sub
+
+    Screen.MousePointer = vbHourglass
+    Me.mnuAnular.Enabled = False
+
+    If DAOOrdenPago.Delete(Orden.Id, True) Then
+
+        Screen.MousePointer = vbDefault
+
+        MsgBox "La OP N.º " & Orden.Id & _
+               " fue anulada correctamente.", _
+               vbInformation, _
+               "Orden de pago anulada"
+
+        Me.gridOrdenes.ItemCount = 0
+
+        ordenes.remove CStr(Orden.Id)
+
+        Me.gridOrdenes.ItemCount = ordenes.count
+
+        cmdBuscar_Click
+
+    Else
+
+        Screen.MousePointer = vbDefault
+        Me.mnuAnular.Enabled = True
+
+        MsgBox "No se pudo anular la OP N.º " & Orden.Id & ".", _
+               vbCritical, _
+               "Error de anulación"
+
+    End If
+
 End Sub
 
 
 Private Sub mnuAprobar_Click()
+
+    Dim respuesta As VbMsgBoxResult
+    Dim proveedorOP As String
+    Dim importeOP As String
+
     SeleccionarOP
-    
+
+    If Orden Is Nothing Then
+
+        MsgBox "No se pudo identificar la orden de pago seleccionada.", _
+               vbExclamation, _
+               "Aprobar orden de pago"
+
+        Exit Sub
+
+    End If
+
+    If Orden.estado <> EstadoOrdenPago_pendiente Then
+
+        MsgBox "La OP N.º " & Orden.Id & _
+               " no está pendiente y no puede aprobarse.", _
+               vbExclamation, _
+               "Aprobar orden de pago"
+
+        Exit Sub
+
+    End If
+
+    proveedorOP = "Sin proveedor"
+
+    If Orden.EsParaFacturaProveedor Then
+
+        If Orden.FacturasProveedor.count > 0 Then
+
+            If Not Orden.FacturasProveedor.item(1).Proveedor Is Nothing Then
+
+                proveedorOP = _
+                    Orden.FacturasProveedor.item(1).Proveedor.RazonSocial
+
+            End If
+
+        End If
+
+    ElseIf Not Orden.CuentaContable Is Nothing Then
+
+        proveedorOP = _
+            "Cuenta contable: " & Orden.CuentaContable.nombre
+
+    End If
+
+    importeOP = Replace( _
+                    FormatCurrency( _
+                        funciones.FormatearDecimales( _
+                            Orden.TotalOrdenPago)), _
+                    "$", "")
+
+    respuesta = MsgBox( _
+        "¿Confirma la aprobación de esta orden de pago?" & _
+        vbCrLf & vbCrLf & _
+        "OP N.º: " & Orden.Id & vbCrLf & _
+        "Destino: " & proveedorOP & vbCrLf & _
+        "Importe: " & Orden.moneda.NombreCorto & " " & importeOP & _
+        vbCrLf & vbCrLf & _
+        "Una vez aprobada no podrá editarse.", _
+        vbQuestion + vbYesNo + vbDefaultButton1, _
+        "Confirmar aprobación")
+
+    If respuesta <> vbYes Then Exit Sub
+
+    Screen.MousePointer = vbHourglass
+    Me.mnuAprobar.Enabled = False
+
     If DAOOrdenPago.aprobar(Orden, True) Then
-        MsgBox "Aprobación éxitosa!", vbInformation + vbOKOnly
-        Me.gridOrdenes.RefreshRowIndex Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+
+        Screen.MousePointer = vbDefault
+
+        MsgBox "La OP N.º " & Orden.Id & _
+               " fue aprobada correctamente.", _
+               vbInformation, _
+               "Orden de pago aprobada"
+
+        Me.gridOrdenes.RefreshRowIndex _
+            Me.gridOrdenes.RowIndex(Me.gridOrdenes.row)
+
         cmdBuscar_Click
+
     Else
-        MsgBox "Error, no se aprobó la OP!", vbCritical + vbOKOnly
+
+        Screen.MousePointer = vbDefault
+        Me.mnuAprobar.Enabled = True
+
+        MsgBox "No se pudo aprobar la OP N.º " & Orden.Id & ".", _
+               vbCritical, _
+               "Error de aprobación"
+
     End If
 
 End Sub

@@ -507,10 +507,6 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
         Dim cccfff1 As New frmAdminCheques
         cccfff1.Show
         
-   Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_CONCILIACION:
-        Dim cccfff2 As New frmAdminChequesConciliacion
-        cccfff2.Show
-        
 
     Case ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_DEPOSITAR:
         Dim dep As New frmDepositarCheque
@@ -543,23 +539,6 @@ Private Sub CommandBars_Execute(ByVal Control As XtremeCommandBars.ICommandBarCo
     Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__CAMBIAR_CONTRASEÑA:
         frmCambiarPassword.Frame1 = "[ " & funciones.GetUserObj.Usuario & " ]"
         frmCambiarPassword.Show
-
-        ' Desactivaciones dienemer 11.09.20
-        '        Se desactiva AGENDA porque da error. Aparentemente no est? desarrollada.
-        '        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__AGENDA:
-        '               frmUsuariosAgendaPersonal.Show
-
-        '        Se desactiva EVENTOS porque da error. Para ver luego.
-        '        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS__EVENTOS:
-        '            Dim f2k2 As New frmEventos
-        '            f2k2.Show
-        '            f2k2.llenar
-
-        '       Se desactiva ASIGNACION EVENTOS porque da error. No recuerdo si esto funcionaba
-        '        Case ID_BUTTON.ID_BUTTON_USUARIO__HERRAMIENTAS___ASIGNACION_EVENTOS
-        '            Dim f212l As New frmUsuariosEventos
-        '            f212l.Show
-
 
     Case ID_BUTTON.ID_BUTTON_PLANEAMIENTO__SEGUIMIENTO__BARCODE_INICIO_TAREAS_ASIGNADAS
         Dim F2221KMA As New frmTareasAsignadasInicio
@@ -1048,11 +1027,8 @@ Private Sub CreateRibbonBar()
     
     Set ribbonGroup = ribbonTab.Groups.AddGroup("Caja y Bancos", ID_GROUP.ID_GROUP_ADMINISTRACION__CAJAYBANCOS)
     
-    '''' CHEQUES Y SU ADMINISTRACION
-    Set cmdBarCtrl = AddButton(ribbonGroup, "Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS, Permisos.AdminOPConsultas, , xtpControlButtonPopup)
-    AddButton ribbonGroup, "Administración de Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES, Permisos.AdminCajayBancos, , , cmdBarCtrl
-    AddButton ribbonGroup, "Conciliación de Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES_CONCILIACION, Permisos.AdminCajayBancos, , , cmdBarCtrl
-
+    '''' CHEQUES
+    AddButton ribbonGroup, "Cheques", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CHEQUES, Permisos.AdminCajayBancos
 
     '''' BOLETAS DE DEPOSITO
     Set cmdBarCtrl = AddButton(ribbonGroup, "Boletas de deposito", ID_BUTTON.ID_BUTTON_ADMINISTRACION__CAJABANCOS, Permisos.AdminOPConsultas, , xtpControlButtonPopup)
