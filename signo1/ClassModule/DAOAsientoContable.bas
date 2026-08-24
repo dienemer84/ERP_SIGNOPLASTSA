@@ -161,6 +161,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
                   ) As clsAsientoContable
 
   Dim aContable As clsAsientoContable
+  
    Dim Id As Long
    Id = GetValue(rs, indice, tabla, "id")
 
@@ -181,11 +182,33 @@ Public Function Map(rs As Recordset, indice As Dictionary, _
         End If
         
         aContable.Observaciones = GetValue(rs, indice, tabla, "observaciones")
+        
         aContable.Creada = GetValue(rs, indice, tabla, "creada")
              
         Dim idCuentaBancariaPrincipal As Long
 
         idCuentaBancariaPrincipal = val(GetValue(rs, indice, tabla, "id_cuenta_bancaria_principal") & vbNullString)
+        
+        Dim idCuentaBancariaDestino As Long
+
+        idCuentaBancariaDestino = _
+            val(GetValue( _
+                rs, _
+                indice, _
+                tabla, _
+                "id_cuenta_bancaria_destino") & vbNullString)
+        
+        If idCuentaBancariaDestino > 0 Then
+        
+            Set aContable.CuentaBancariaDestino = _
+                DAOCuentaBancaria.FindById( _
+                    idCuentaBancariaDestino)
+        
+        Else
+        
+            Set aContable.CuentaBancariaDestino = Nothing
+        
+        End If
         
         If idCuentaBancariaPrincipal > 0 Then
             Set aContable.CuentaBancaria = DAOCuentaBancaria.FindById(idCuentaBancariaPrincipal)
@@ -246,11 +269,14 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
 
         q = "INSERT INTO movimientos_caja_bancos " _
           & " (tipo_movimiento, fecha, id_cuentacontable, " _
-          & " id_cuenta_bancaria_principal, estado, " _
-          & " static_total_origen, creada, id_usuario, observaciones)" _
+          & " id_cuenta_bancaria_principal, " _
+          & " id_cuenta_bancaria_destino, " _
+          & " estado, static_total_origen, creada, " _
+          & " id_usuario, observaciones)" _
           & " VALUES ('tipo_movimiento', 'fecha', " _
           & " 'id_cuentacontable', " _
           & " 'id_cuenta_bancaria_principal', " _
+          & " 'id_cuenta_bancaria_destino', " _
           & " 'estado', 'static_total_origen', NOW(), " _
           & " 'id_usuario', 'observaciones')"
           Else
@@ -260,6 +286,8 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
           & " id_cuentacontable = 'id_cuentacontable'," _
           & " id_cuenta_bancaria_principal = " _
           & " 'id_cuenta_bancaria_principal'," _
+          & " id_cuenta_bancaria_destino = " _
+          & " 'id_cuenta_bancaria_destino'," _
           & " estado = 'estado'," _
           & " static_total_origen = 'static_total_origen'," _
           & " id_usuario = 'id_usuario'," _
@@ -277,6 +305,21 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
         q = Replace(q, "'id_cuenta_bancaria_principal'", "NULL")
     End If
 
+
+    If IsSomething(aContable.CuentaBancariaDestino) Then
+    
+        q = Replace( _
+                q, _
+                "'id_cuenta_bancaria_destino'", _
+                Escape(aContable.CuentaBancariaDestino.Id))
+    Else
+    
+        q = Replace( _
+                q, _
+                "'id_cuenta_bancaria_destino'", _
+                "NULL")
+    End If
+    
 
     If IsSomething(aContable.CuentaContable) Then
         q = Replace(q, "'id_cuentacontable'", Escape(aContable.CuentaContable.Id))

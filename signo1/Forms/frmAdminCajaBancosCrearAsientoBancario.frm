@@ -1031,6 +1031,7 @@ Private Sub cmdCrear_Click()
 
 
         Set AsientoContable.CuentaBancaria = CuentaOrigen
+        Set AsientoContable.CuentaBancariaDestino = CuentaDestino
         
         If Monto > 0 Then
         
@@ -1057,10 +1058,21 @@ Private Sub cmdCrear_Click()
     '-----------------------------
     ' Totales y guardado
     '-----------------------------
+    
     If AsientoContable.TipoMovimiento = "TRANSFERENCIA" Then
-    AsientoContable.StaticTotalOrigenes = Monto
+    
+        'En transferencia puede existir:
+        ' - monto bancario
+        ' - cheques
+        ' - ambos
+        AsientoContable.StaticTotalOrigenes = _
+            Monto + TotalChequesMovimiento()
+    
     Else
-        AsientoContable.StaticTotalOrigenes = AsientoContable.TotalOrigenes
+    
+        AsientoContable.StaticTotalOrigenes = _
+            AsientoContable.TotalOrigenes
+    
     End If
 
     If AsientoContable.IsValid Then
@@ -2331,3 +2343,57 @@ Private Sub txtMonto_KeyPress(KeyAscii As Integer)
 
 
 End Sub
+
+
+Private Function TotalChequesMovimiento() As Double
+
+    Dim total As Double
+    Dim ch As cheque
+
+    total = 0
+
+    For Each ch In AsientoContable.ChequesPropios
+
+        If IsSomething(ch.moneda) And _
+           IsSomething(AsientoContable.moneda) Then
+
+            total = total + _
+                MonedaConverter.Convertir( _
+                    ch.Monto, _
+                    ch.moneda.Id, _
+                    AsientoContable.moneda.Id)
+
+        Else
+
+            total = total + ch.Monto
+
+        End If
+
+    Next ch
+
+    For Each ch In AsientoContable.ChequesTerceros
+
+        If IsSomething(ch.moneda) And _
+           IsSomething(AsientoContable.moneda) Then
+
+            total = total + _
+                MonedaConverter.Convertir( _
+                    ch.Monto, _
+                    ch.moneda.Id, _
+                    AsientoContable.moneda.Id)
+
+        Else
+
+            total = total + ch.Monto
+
+        End If
+
+    Next ch
+
+    TotalChequesMovimiento = _
+        funciones.RedondearDecimales(total)
+
+End Function
+
+
+

@@ -1039,15 +1039,37 @@ Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boole
     If Not conectar.execute(q) Then GoTo E
 
 
-    'se deben borrar los cheques creados para esta orden de pago (solo los propios)
-    'fix 14-10-2020
-    'q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ")"
-    q = "UPDATE Cheques SET orden_pago_origen=0, fecha_emision=NULL, monto=0, en_cartera = 0, fecha_vencimiento=NULL, observaciones = NULL, origen= NULL WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=1"
+    q = "UPDATE Cheques SET " & _
+        "orden_pago_origen = 0, " & _
+        "fecha_emision = NULL, " & _
+        "monto = 0, " & _
+        "en_cartera = 0, " & _
+        "fecha_vencimiento = NULL, " & _
+        "observaciones = NULL, " & _
+        "origen = NULL " & _
+        "WHERE propio = 1 AND (" & _
+            "orden_pago_origen = " & opid & _
+            " OR id IN (" & _
+                "SELECT id_cheque " & _
+                "FROM ordenes_pago_cheques " & _
+                "WHERE id_orden_pago = " & opid & _
+            ")" & _
+        ")"
+    
     If Not conectar.execute(q) Then GoTo E
 
-    q = "UPDATE Cheques SET orden_pago_origen=0,en_cartera = 1  WHERE id IN (SELECT id_cheque FROM ordenes_pago_cheques WHERE id_orden_pago = " & opid & ") and propio=0"
-
-
+    q = "UPDATE Cheques SET " & _
+        "orden_pago_origen = 0, " & _
+        "en_cartera = 1 " & _
+        "WHERE propio = 0 AND (" & _
+            "orden_pago_origen = " & opid & _
+            " OR id IN (" & _
+                "SELECT id_cheque " & _
+                "FROM ordenes_pago_cheques " & _
+                "WHERE id_orden_pago = " & opid & _
+            ")" & _
+        ")"
+    
     If Not conectar.execute(q) Then GoTo E
 
 

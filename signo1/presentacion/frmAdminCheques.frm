@@ -10,9 +10,9 @@ Begin VB.Form frmAdminCheques
    Icon            =   "frmAdminCheques.frx":0000
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   10680
+   ScaleHeight     =   13980
    ScaleMode       =   0  'User
-   ScaleWidth      =   14415
+   ScaleWidth      =   26915.51
    WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.TabControl TabControl1 
       Height          =   12315
@@ -103,6 +103,54 @@ Begin VB.Form frmAdminCheques
             Strikethrough   =   0   'False
          EndProperty
          UseVisualStyle  =   -1  'True
+         Begin XtremeSuiteControls.GroupBox GroupBox6 
+            Height          =   1575
+            Left            =   120
+            TabIndex        =   159
+            Top             =   960
+            Width           =   3135
+            _Version        =   786432
+            _ExtentX        =   5530
+            _ExtentY        =   2778
+            _StockProps     =   79
+            Caption         =   "Conciliación de cheques"
+            UseVisualStyle  =   -1  'True
+            Begin VB.CheckBox chkOcultarIngresados 
+               Caption         =   "Ocultar ingresados"
+               Height          =   255
+               Left            =   120
+               TabIndex        =   162
+               Top             =   360
+               Value           =   1  'Checked
+               Width           =   2895
+            End
+            Begin XtremeSuiteControls.PushButton PushButton5 
+               Height          =   495
+               Left            =   1800
+               TabIndex        =   160
+               Top             =   960
+               Width           =   1215
+               _Version        =   786432
+               _ExtentX        =   2143
+               _ExtentY        =   873
+               _StockProps     =   79
+               Caption         =   "Conciliar seleccionados"
+               UseVisualStyle  =   -1  'True
+            End
+            Begin XtremeSuiteControls.DateTimePicker dtFechaConciliar 
+               Height          =   315
+               Left            =   120
+               TabIndex        =   161
+               Top             =   1080
+               Width           =   1470
+               _Version        =   786432
+               _ExtentX        =   2593
+               _ExtentY        =   556
+               _StockProps     =   68
+               Format          =   1
+               CurrentDate     =   46258.5631828704
+            End
+         End
          Begin XtremeSuiteControls.GroupBox GroupBox5 
             Height          =   2415
             Left            =   8160
@@ -2709,10 +2757,6 @@ Private Sub btnBuscarEnChequera_Click(Index As Integer)
 End Sub
 
 
-Private Sub PushButton5_Click()
-
-End Sub
-
 Private Sub cmdExportar_Click()
 
     On Error GoTo err1
@@ -5051,7 +5095,7 @@ Private Sub grid_cheques_UnboundUpdate( _
 
         respuesta = MsgBox( _
                         mensaje, _
-                        vbQuestion + vbYesNo + vbDefaultButton2, _
+                        vbQuestion + vbYesNo + vbDefaultButton1, _
                         "Confirmar modificación")
 
         If respuesta <> vbYes Then
