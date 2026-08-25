@@ -1378,7 +1378,9 @@ Private Sub gridChequesPropios_ListSelected(ByVal ColIndex As Integer, ByVal Val
 End Sub
 
 
-Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JSRetVariant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridChequesPropios_UnboundAddNew( _
+    ByVal NewRowBookmark As GridEX20.JSRetVariant, _
+    ByVal Values As GridEX20.JSRowData)
 
     Set cheque = Nothing
 
@@ -1387,14 +1389,28 @@ Private Sub gridChequesPropios_UnboundAddNew(ByVal NewRowBookmark As GridEX20.JS
     End If
 
     If IsSomething(cheque) Then
+
         cheque.Monto = CDbl(Values(3))
         cheque.FechaVencimiento = Values(4)
         cheque.Propio = True
         cheque.EnCartera = False
 
-        If Not funciones.BuscarEnColeccion(AsientoContable.ChequesPropios, CStr(cheque.Id)) Then
-            AsientoContable.ChequesPropios.Add cheque, CStr(cheque.Id)
+        If Not funciones.BuscarEnColeccion( _
+                AsientoContable.ChequesPropios, _
+                CStr(cheque.Id)) Then
+
+            AsientoContable.ChequesPropios.Add _
+                cheque, _
+                CStr(cheque.Id)
+
         End If
+
+        'Volver a dibujar la fila usando UnboundReadData
+        Me.gridChequesPropios.ItemCount = _
+            AsientoContable.ChequesPropios.count
+
+        Me.gridChequesPropios.Refresh
+
     End If
 
 End Sub
@@ -1424,15 +1440,19 @@ Private Sub gridChequesPropios_UnboundReadData( _
         Values(1) = vbNullString
     End If
 
-    'ID utilizado por el dropdown
     Values(2) = cheque.Id
 
-    'Valor numérico, sin FormatCurrency
-    Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(cheque.Monto)), "$", "")
+    'Monto con divisor de miles
+    
+    
+    Values(3) = FormatNumber( _
+                    cheque.Monto, _
+                    2, _
+                    vbTrue, _
+                    vbFalse, _
+                    vbTrue)
 
     Values(4) = cheque.FechaVencimiento
-
-    'Número visible
     Values(5) = cheque.numero
 
 End Sub
