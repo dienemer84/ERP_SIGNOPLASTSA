@@ -5072,17 +5072,16 @@ Private Sub grid_cheques_UnboundUpdate( _
     ByVal Values As GridEX20.JSRowData)
 
     On Error GoTo err1
-    
-    Dim fechaIngresada As Date
-    Dim hayFechaIngresada As Boolean
-
-    If procesandoSeleccionConciliacion Then Exit Sub
-    procesandoSeleccionConciliacion = True
 
     Dim ch As cheque
     Dim nuevoIngresado As Boolean
+    Dim fechaIngresada As Date
+    Dim hayFechaIngresada As Boolean
     Dim clave As String
     Dim respuesta As VbMsgBoxResult
+
+    If procesandoSeleccionConciliacion Then Exit Sub
+    procesandoSeleccionConciliacion = True
 
     If tmpChequera Is Nothing Then GoTo salir
     If tmpChequera.Cheques Is Nothing Then GoTo salir
@@ -5095,107 +5094,43 @@ Private Sub grid_cheques_UnboundUpdate( _
     Set ch = tmpChequera.Cheques.item(RowIndex)
     clave = CStr(ch.Id)
 
+    'Leer el tilde
     If IsNull(Values(7)) Or IsEmpty(Values(7)) Then
         nuevoIngresado = False
     Else
         nuevoIngresado = CBool(Values(7))
     End If
 
+    'Leer la fecha
+    hayFechaIngresada = False
+
+    If Not IsNull(Values(8)) And _
+       Not IsEmpty(Values(8)) Then
+
+        If LenB(Trim$(CStr(Values(8)))) > 0 Then
+            hayFechaIngresada = True
+        End If
+
+    End If
+
     If chequesPendientesConciliar Is Nothing Then
         Set chequesPendientesConciliar = New Dictionary
     End If
-    
-    '--------------------------------------------------
-    'Edición individual de Fecha Ingreso
-    '--------------------------------------------------
-    hayFechaIngresada = False
-    
-    If Not IsNull(Values(8)) And _
-       Not IsEmpty(Values(8)) Then
-    
-        If Len(Trim$(CStr(Values(8)))) > 0 Then
-            hayFechaIngresada = True
-        End If
-    
-    End If
-    
-    If nuevoIngresado And hayFechaIngresada Then
-    
-        If Not IsDate(Values(8)) Then
-    
-            MsgBox "Ingrese una fecha válida.", _
-                   vbExclamation, _
-                   "Fecha de ingreso"
-    
-            If CDbl(ch.FechaIngresoBanco) > 0 Then
-                Values(8) = ch.FechaIngresoBanco
-            Else
-                fechaIngresada = CDate(Values(8))
-            End If
-    
-            GoTo salir
-        End If
-    
-        fechaIngresada = CDate(Values(8))
-    
-        If fechaIngresada > Date Then
-    
-            MsgBox "La fecha de ingreso no puede ser posterior a hoy.", _
-                   vbExclamation, _
-                   "Fecha de ingreso"
-    
-            If CDbl(ch.FechaIngresoBanco) > 0 Then
-                Values(8) = ch.FechaIngresoBanco
-            Else
-                fechaIngresada = CDate(Values(8))
-            End If
-    
-            GoTo salir
-        End If
-    
-        If Not ch.Utilizado Then
-    
-            MsgBox "El cheque N° " & ch.numero & _
-                   " todavía no fue utilizado." & vbCrLf & _
-                   "No puede registrarse su ingreso.", _
-                   vbExclamation, _
-                   "Conciliación de cheques"
-    
-            nuevoIngresado = CBool(Values(7))
-            fechaIngresada = CDate(Values(8)) = Empty
-            GoTo salir
-        End If
-    
-        If Not DAOCheques.ActualizarIngresoBanco( _
-                    ch.Id, True, fechaIngresada) Then
-    
-            Err.Raise vbObjectError + 1004, _
-                      "grid_cheques_UnboundUpdate", _
-                      "No se pudo guardar la fecha de ingreso."
-        End If
-
-        'Actualizar el objeto para que Janus conserve la fecha
-        ch.entro = True
-        ch.FechaIngresoBanco = fechaIngresada
-        
-        If chequesPendientesConciliar.Exists(clave) Then
-            chequesPendientesConciliar.remove clave
-        End If
-        
-        GoTo salir
-    End If
 
     '--------------------------------------------------
-    'El cheque ya estaba ingresado en la base
+    'Cheque que ya estaba conciliado
     '--------------------------------------------------
     If ch.entro Then
 
-        If Not nuevoIngresado Then
+        'Destildó el cheque o eliminó la fecha
+        If Not nuevoIngresado Or Not hayFechaIngresada Then
 
             respuesta = MsgBox( _
                 "¿Confirma que desea quitar la conciliación " & _
-                "del cheque N° " & ch.numero & "?" & vbCrLf & vbCrLf & _
-                "También se eliminará la fecha de ingreso.", _
+                "del cheque N° " & ch.numero & "?" & _
+                vbCrLf & vbCrLf & _
+                "Se eliminarán el tilde de ingresado y " & _
+                "la fecha de ingreso.", _
                 vbQuestion + vbYesNo + vbDefaultButton2, _
                 "Quitar conciliación")
 
@@ -5212,46 +5147,117 @@ Private Sub grid_cheques_UnboundUpdate( _
                 ch.entro = False
                 ch.FechaIngresoBanco = 0
 
-                nuevoIngresado = CBool(Values(7))
-                fechaIngresada = CDate(Values(8))
+                If chequesPendientesConciliar.Exists(clave) Then
+                    chequesPendientesConciliar.remove clave
+                End If
 
-            Else
-                'Restaurar visualmente el tilde
-                nuevoIngresado = CBool(Values(7))
             End If
 
-        Else
-            nuevoIngresado = CBool(Values(7))
+            GoTo salir
         End If
+
+        'Está cambiando la fecha de un cheque conciliado
+        If Not IsDate(Values(8)) Then
+
+            MsgBox "Ingrese una fecha válida.", _
+                   vbExclamation, _
+                   "Fecha de ingreso"
+
+            GoTo salir
+        End If
+
+        fechaIngresada = CDate(Values(8))
+
+        If fechaIngresada > Date Then
+
+            MsgBox "La fecha de ingreso no puede ser posterior a hoy.", _
+                   vbExclamation, _
+                   "Fecha de ingreso"
+
+            GoTo salir
+        End If
+
+        If Not DAOCheques.ActualizarIngresoBanco( _
+                    ch.Id, True, fechaIngresada) Then
+
+            Err.Raise vbObjectError + 1002, _
+                      "grid_cheques_UnboundUpdate", _
+                      "No se pudo modificar la fecha de ingreso."
+        End If
+
+        ch.entro = True
+        ch.FechaIngresoBanco = fechaIngresada
 
         GoTo salir
     End If
 
     '--------------------------------------------------
-    'Cheque todavía no conciliado
+    'Cheque que todavía no estaba conciliado
     '--------------------------------------------------
-    If nuevoIngresado Then
+    If Not nuevoIngresado Then
 
-        If Not ch.Utilizado Then
+        If chequesPendientesConciliar.Exists(clave) Then
+            chequesPendientesConciliar.remove clave
+        End If
 
-            MsgBox "El cheque N° " & ch.numero & _
-                   " todavía no fue utilizado." & vbCrLf & _
-                   "No puede seleccionarse para conciliar.", _
+        GoTo salir
+    End If
+
+    If Not ch.Utilizado Then
+
+        MsgBox "El cheque N° " & ch.numero & _
+               " todavía no fue utilizado." & vbCrLf & _
+               "No puede seleccionarse para conciliar.", _
+               vbExclamation, _
+               "Conciliación de cheques"
+
+        GoTo salir
+    End If
+
+    'Si ingresó una fecha directamente en la fila,
+    'se concilia individualmente
+    If hayFechaIngresada Then
+
+        If Not IsDate(Values(8)) Then
+
+            MsgBox "Ingrese una fecha válida.", _
                    vbExclamation, _
-                   "Conciliación de cheques"
+                   "Fecha de ingreso"
 
-            Values(7) = 0
             GoTo salir
         End If
 
-        If Not chequesPendientesConciliar.Exists(clave) Then
-            chequesPendientesConciliar.Add clave, ch.Id
+        fechaIngresada = CDate(Values(8))
+
+        If fechaIngresada > Date Then
+
+            MsgBox "La fecha de ingreso no puede ser posterior a hoy.", _
+                   vbExclamation, _
+                   "Fecha de ingreso"
+
+            GoTo salir
+        End If
+
+        If Not DAOCheques.ActualizarIngresoBanco( _
+                    ch.Id, True, fechaIngresada) Then
+
+            Err.Raise vbObjectError + 1003, _
+                      "grid_cheques_UnboundUpdate", _
+                      "No se pudo guardar la fecha de ingreso."
+        End If
+
+        ch.entro = True
+        ch.FechaIngresoBanco = fechaIngresada
+
+        If chequesPendientesConciliar.Exists(clave) Then
+            chequesPendientesConciliar.remove clave
         End If
 
     Else
 
-        If chequesPendientesConciliar.Exists(clave) Then
-            chequesPendientesConciliar.remove clave
+        'Solamente fue seleccionado para la conciliación en lote
+        If Not chequesPendientesConciliar.Exists(clave) Then
+            chequesPendientesConciliar.Add clave, ch.Id
         End If
 
     End If
@@ -5263,13 +5269,12 @@ salir:
 err1:
     procesandoSeleccionConciliacion = False
 
-    MsgBox "No se pudo modificar la selección del cheque." & _
+    MsgBox "No se pudo modificar la conciliación del cheque." & _
            vbCrLf & Err.Description, _
            vbExclamation, _
            "Conciliación de cheques"
 
 End Sub
-
 
 Private Sub cboBancos_Click()
 

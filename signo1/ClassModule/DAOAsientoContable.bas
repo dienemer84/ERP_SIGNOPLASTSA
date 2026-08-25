@@ -393,7 +393,7 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
 
         For Each che In aContable.ChequesTerceros
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = 0
+            che.LimpiarOrigenUso
             che.NumeroMovimiento = aContable.Id
             che.FechaEmision = aContable.FEcha
 
@@ -405,7 +405,7 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
 
         For Each che In aContable.ChequesPropios
             che.EnCartera = False
-            che.IdOrdenPagoOrigen = 0
+            che.LimpiarOrigenUso
             che.NumeroMovimiento = aContable.Id
             che.FechaEmision = aContable.FEcha
 

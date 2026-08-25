@@ -92,7 +92,13 @@ Public Function FindAllTercerosUti(Optional ByRef filter As String = vbNullStrin
     Dim tmpCheque As cheque
 
     ' Construir la consulta SQL
-    q = "SELECT *, liq.numero_liq AS numero_liquidacion_caja, COALESCE(prov.razon, prov_pcta.razon) AS razon_proveedor " _
+    q = "SELECT *, liq.numero_liq AS numero_liquidacion_caja, CASE " _
+      & "WHEN COALESCE(cheq.movimiento_origen, 0) > 0 THEN " _
+      & "COALESCE(NULLIF(CONCAT_WS(' | ', " _
+      & "cta_mov.codigo, cta_mov.nombre), ''), " _
+      & "'MOVIMIENTO SIN CUENTA CONTABLE') " _
+      & "ELSE COALESCE(prov.razon, prov_pcta.razon, '') " _
+      & "END AS razon_proveedor " _
       & " FROM Cheques cheq" _
       & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
       & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
@@ -104,6 +110,8 @@ Public Function FindAllTercerosUti(Optional ByRef filter As String = vbNullStrin
       & " LEFT JOIN pagos_a_cuenta pcta ON pcta.id = cheq.pago_a_cuenta_origen" _
       & " LEFT JOIN proveedores prov_pcta ON prov_pcta.id = pcta.id_proveedor" _
       & " LEFT JOIN movimientos_caja_bancos mov ON mov.id = cheq.movimiento_origen" _
+      & " LEFT JOIN AdminComprasCuentasContables cta_mov " _
+      & " ON cta_mov.id = mov.id_cuentacontable" _
       & " LEFT JOIN ordenes_pago_facturas opf ON op.id = opf.id_orden_pago" _
       & " LEFT JOIN AdminComprasFacturasProveedores acfp ON acfp.id = opf.id_factura_proveedor" _
       & " LEFT JOIN proveedores prov ON prov.id = acfp.id_proveedor" _
