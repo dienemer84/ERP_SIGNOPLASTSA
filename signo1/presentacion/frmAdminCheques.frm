@@ -2782,7 +2782,7 @@ Private Sub cmdExportar_Click()
     Dim xlWorksheet As Object
 
     Dim ch As cheque
-    Dim Fila As Long
+    Dim fila As Long
     Dim filaEncabezado As Long
     Dim ultimaFila As Long
     Dim archivo As String
@@ -2888,50 +2888,50 @@ Private Sub cmdExportar_Click()
     End With
 
     'Datos
-    Fila = filaEncabezado + 1
+    fila = filaEncabezado + 1
 
     For Each ch In tmpChequera.Cheques
 
-        xlWorksheet.Cells(Fila, 1).value = ch.numero
+        xlWorksheet.Cells(fila, 1).value = ch.numero
 
         If ch.Utilizado Then
 
-            xlWorksheet.Cells(Fila, 2).value = ch.Monto
+            xlWorksheet.Cells(fila, 2).value = ch.Monto
 
             If CDbl(ch.FechaVencimiento) > 0 Then
-                xlWorksheet.Cells(Fila, 3).value = _
+                xlWorksheet.Cells(fila, 3).value = _
                     ch.FechaVencimiento
             End If
 
             If CDbl(ch.FechaEmision) > 0 Then
-                xlWorksheet.Cells(Fila, 4).value = _
+                xlWorksheet.Cells(fila, 4).value = _
                     ch.FechaEmision
             End If
 
-            xlWorksheet.Cells(Fila, 5).value = _
+            xlWorksheet.Cells(fila, 5).value = _
                 ch.OrigenDestino
 
         End If
 
-        xlWorksheet.Cells(Fila, 6).value = _
+        xlWorksheet.Cells(fila, 6).value = _
             DescripcionUsoCheque(ch)
 
         If ch.entro Then
-            xlWorksheet.Cells(Fila, 7).value = "SÍ"
+            xlWorksheet.Cells(fila, 7).value = "SÍ"
         Else
-            xlWorksheet.Cells(Fila, 7).value = "NO"
+            xlWorksheet.Cells(fila, 7).value = "NO"
         End If
 
         If CDbl(ch.FechaIngresoBanco) > 0 Then
-            xlWorksheet.Cells(Fila, 8).value = _
+            xlWorksheet.Cells(fila, 8).value = _
                 ch.FechaIngresoBanco
         End If
 
-        Fila = Fila + 1
+        fila = fila + 1
 
     Next ch
 
-    ultimaFila = Fila - 1
+    ultimaFila = fila - 1
 
     'Formato
     xlWorksheet.Range("B6:B" & ultimaFila).NumberFormat = _
@@ -2950,14 +2950,14 @@ Private Sub cmdExportar_Click()
         "A" & filaEncabezado & ":H" & ultimaFila).AutoFilter
 
     'Total
-    xlWorksheet.Cells(Fila, 1).value = "TOTAL"
-    xlWorksheet.Cells(Fila, 1).Font.Bold = True
+    xlWorksheet.Cells(fila, 1).value = "TOTAL"
+    xlWorksheet.Cells(fila, 1).Font.Bold = True
 
-    xlWorksheet.Cells(Fila, 2).Formula = _
+    xlWorksheet.Cells(fila, 2).Formula = _
         "=SUM(B6:B" & ultimaFila & ")"
 
-    xlWorksheet.Cells(Fila, 2).Font.Bold = True
-    xlWorksheet.Cells(Fila, 2).NumberFormat = "#,##0.00"
+    xlWorksheet.Cells(fila, 2).Font.Bold = True
+    xlWorksheet.Cells(fila, 2).NumberFormat = "#,##0.00"
 
     xlWorksheet.Columns("A:H").AutoFit
 
@@ -3042,7 +3042,7 @@ Private Sub cmdExportarChequeras_Click()
     Dim xlWorkbook As Object
     Dim xlWorksheet As Object
 
-    Dim Fila As Long
+    Dim fila As Long
     Dim filaEncabezado As Long
     Dim ultimaFila As Long
     Dim archivo As String
@@ -3175,7 +3175,7 @@ Private Sub cmdExportarChequeras_Click()
     xlWorksheet.Columns("J:J").NumberFormat = "@"
     xlWorksheet.Columns("L:L").NumberFormat = "@"
 
-    Fila = filaEncabezado + 1
+    fila = filaEncabezado + 1
 
     For Each ch In listaChequeras
 
@@ -3189,37 +3189,37 @@ Private Sub cmdExportarChequeras_Click()
         End If
 
         'Datos generales de la chequera
-        xlWorksheet.Cells(Fila, 1).value = ch.Id
-        xlWorksheet.Cells(Fila, 2).value = ch.numero
-        xlWorksheet.Cells(Fila, 3).value = ch.fechaCreacion
-        xlWorksheet.Cells(Fila, 4).value = ch.NumeroDesde
-        xlWorksheet.Cells(Fila, 5).value = ch.NumeroHasta
+        xlWorksheet.Cells(fila, 1).value = ch.Id
+        xlWorksheet.Cells(fila, 2).value = ch.numero
+        xlWorksheet.Cells(fila, 3).value = ch.fechaCreacion
+        xlWorksheet.Cells(fila, 4).value = ch.NumeroDesde
+        xlWorksheet.Cells(fila, 5).value = ch.NumeroHasta
 
         If ch.usada Then
-            xlWorksheet.Cells(Fila, 6).value = "SÍ"
+            xlWorksheet.Cells(fila, 6).value = "SÍ"
         Else
-            xlWorksheet.Cells(Fila, 6).value = "NO"
+            xlWorksheet.Cells(fila, 6).value = "NO"
         End If
 
         'Banco asignado directamente a la chequera
         If Not ch.Banco Is Nothing Then
-            xlWorksheet.Cells(Fila, 7).value = ch.Banco.Id
-            xlWorksheet.Cells(Fila, 8).value = ch.Banco.nombre
+            xlWorksheet.Cells(fila, 7).value = ch.Banco.Id
+            xlWorksheet.Cells(fila, 8).value = ch.Banco.nombre
         End If
 
         'Moneda de la chequera
         If Not ch.moneda Is Nothing Then
-            xlWorksheet.Cells(Fila, 15).value = ch.moneda.Id
-            xlWorksheet.Cells(Fila, 16).value = _
+            xlWorksheet.Cells(fila, 15).value = ch.moneda.Id
+            xlWorksheet.Cells(fila, 16).value = _
                 ch.moneda.NombreCorto
         End If
 
         'Cuenta bancaria asociada
         If Not cuenta Is Nothing Then
 
-            xlWorksheet.Cells(Fila, 9).value = cuenta.Id
+            xlWorksheet.Cells(fila, 9).value = cuenta.Id
 
-            xlWorksheet.Cells(Fila, 10).value = _
+            xlWorksheet.Cells(fila, 10).value = _
                 CStr(cuenta.numero)
 
             Select Case cuenta.TipoCuenta
@@ -3235,25 +3235,25 @@ Private Sub cmdExportarChequeras_Click()
 
             End Select
 
-            xlWorksheet.Cells(Fila, 11).value = _
+            xlWorksheet.Cells(fila, 11).value = _
                 tipoCuentaTexto
 
-            xlWorksheet.Cells(Fila, 12).value = _
+            xlWorksheet.Cells(fila, 12).value = _
                 CStr(cuenta.CBU)
 
             If Not cuenta.Banco Is Nothing Then
-                xlWorksheet.Cells(Fila, 13).value = _
+                xlWorksheet.Cells(fila, 13).value = _
                     cuenta.Banco.Id
 
-                xlWorksheet.Cells(Fila, 14).value = _
+                xlWorksheet.Cells(fila, 14).value = _
                     cuenta.Banco.nombre
             End If
 
             If Not cuenta.moneda Is Nothing Then
-                xlWorksheet.Cells(Fila, 17).value = _
+                xlWorksheet.Cells(fila, 17).value = _
                     cuenta.moneda.Id
 
-                xlWorksheet.Cells(Fila, 18).value = _
+                xlWorksheet.Cells(fila, 18).value = _
                     cuenta.moneda.NombreCorto
             End If
 
@@ -3284,13 +3284,13 @@ Private Sub cmdExportarChequeras_Click()
 
         End If
 
-        xlWorksheet.Cells(Fila, 19).value = estadoBanco
+        xlWorksheet.Cells(fila, 19).value = estadoBanco
 
         If estadoBanco = "CORRECTO" Then
-            xlWorksheet.Cells(Fila, 19).Interior.Color = Gray
+            xlWorksheet.Cells(fila, 19).Interior.Color = Gray
 
         Else
-            xlWorksheet.Cells(Fila, 19).Interior.Color = Gray
+            xlWorksheet.Cells(fila, 19).Interior.Color = Gray
         End If
 
         '---------------------------------------------
@@ -3318,18 +3318,18 @@ Private Sub cmdExportarChequeras_Click()
 
         End If
 
-        xlWorksheet.Cells(Fila, 20).value = estadoMoneda
+        xlWorksheet.Cells(fila, 20).value = estadoMoneda
 
 
 
-        xlWorksheet.Cells(Fila, 21).value = _
+        xlWorksheet.Cells(fila, 21).value = _
             ch.Observaciones
 
-        Fila = Fila + 1
+        fila = fila + 1
 
     Next ch
 
-    ultimaFila = Fila - 1
+    ultimaFila = fila - 1
 
     'Formatos
     xlWorksheet.Range( _
@@ -4958,15 +4958,15 @@ Private Sub CargarChequeraSeleccionada( _
     If chequeras Is Nothing Then Exit Sub
     If chequeras.count = 0 Then Exit Sub
 
-    Dim Fila As Long
+    Dim fila As Long
 
-    Fila = Me.grid_chequeras.RowIndex( _
+    fila = Me.grid_chequeras.RowIndex( _
                 Me.grid_chequeras.row)
 
-    If Fila < 1 Or Fila > chequeras.count Then Exit Sub
+    If fila < 1 Or fila > chequeras.count Then Exit Sub
 
     Dim chSeleccionada As chequera
-    Set chSeleccionada = chequeras.item(Fila)
+    Set chSeleccionada = chequeras.item(fila)
 
     'Evita ejecutar dos consultas por el mismo clic
     If Not Forzar Then
@@ -5130,7 +5130,7 @@ Private Sub grid_cheques_UnboundUpdate( _
             If CDbl(ch.FechaIngresoBanco) > 0 Then
                 Values(8) = ch.FechaIngresoBanco
             Else
-                Values(8) = Empty
+                fechaIngresada = CDate(Values(8))
             End If
     
             GoTo salir
@@ -5147,7 +5147,7 @@ Private Sub grid_cheques_UnboundUpdate( _
             If CDbl(ch.FechaIngresoBanco) > 0 Then
                 Values(8) = ch.FechaIngresoBanco
             Else
-                Values(8) = Empty
+                fechaIngresada = CDate(Values(8))
             End If
     
             GoTo salir
@@ -5161,8 +5161,8 @@ Private Sub grid_cheques_UnboundUpdate( _
                    vbExclamation, _
                    "Conciliación de cheques"
     
-            Values(7) = 0
-            Values(8) = Empty
+            nuevoIngresado = CBool(Values(7))
+            fechaIngresada = CDate(Values(8)) = Empty
             GoTo salir
         End If
     
@@ -5173,20 +5173,15 @@ Private Sub grid_cheques_UnboundUpdate( _
                       "grid_cheques_UnboundUpdate", _
                       "No se pudo guardar la fecha de ingreso."
         End If
-    
-        'Actualizar el objeto para que Janus no borre la fecha
+
+        'Actualizar el objeto para que Janus conserve la fecha
         ch.entro = True
         ch.FechaIngresoBanco = fechaIngresada
-    
-        Values(7) = 1
-        Values(8) = fechaIngresada
-    
-        'Ya fue conciliado individualmente:
-        'no debe permanecer en la selección del lote
+        
         If chequesPendientesConciliar.Exists(clave) Then
             chequesPendientesConciliar.remove clave
         End If
-    
+        
         GoTo salir
     End If
 
@@ -5217,16 +5212,16 @@ Private Sub grid_cheques_UnboundUpdate( _
                 ch.entro = False
                 ch.FechaIngresoBanco = 0
 
-                Values(7) = 0
-                Values(8) = Empty
+                nuevoIngresado = CBool(Values(7))
+                fechaIngresada = CDate(Values(8))
 
             Else
                 'Restaurar visualmente el tilde
-                Values(7) = 1
+                nuevoIngresado = CBool(Values(7))
             End If
 
         Else
-            Values(7) = 1
+            nuevoIngresado = CBool(Values(7))
         End If
 
         GoTo salir
