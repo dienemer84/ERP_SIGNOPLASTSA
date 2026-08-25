@@ -1428,7 +1428,7 @@ Private Sub gridChequesPropios_UnboundReadData( _
     Values(2) = cheque.Id
 
     'Valor numérico, sin FormatCurrency
-    Values(3) = cheque.Monto
+    Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(cheque.Monto)), "$", "")
 
     Values(4) = cheque.FechaVencimiento
 

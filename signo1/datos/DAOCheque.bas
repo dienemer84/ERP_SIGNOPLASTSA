@@ -26,9 +26,12 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
     Dim q As String
     
     q = "SELECT *, " _
-      & " liq.numero_liq AS numero_liquidacion_caja, " _
-      & " rec.fecha AS fecha_rec" _
-      & " FROM Cheques cheq" _
+      & "CASE " _
+      & "WHEN COALESCE(cheq.movimiento_origen, 0) > 0 THEN " _
+      & "COALESCE(NULLIF(CONCAT_WS(' | ', cta_mov.codigo, cta_mov.nombre), ''), " _
+      & "'MOVIMIENTO SIN CUENTA CONTABLE') ELSE COALESCE(cheq.origen, '') " _
+      & "END AS destino_mostrado, liq.numero_liq AS numero_liquidacion_caja, " _
+      & "rec.fecha AS fecha_rec FROM Cheques cheq" _
       & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
       & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
       & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
@@ -38,6 +41,10 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
       & " LEFT JOIN liquidaciones_caja liq " _
       & " ON liq.id = cheq.liquidacion_caja_origen" _
       & " LEFT JOIN pagos_a_cuenta pac ON pac.id = cheq.pago_a_cuenta_origen" _
+      & " LEFT JOIN movimientos_caja_bancos mov " _
+      & " ON mov.id = cheq.movimiento_origen" _
+      & " LEFT JOIN AdminComprasCuentasContables cta_mov " _
+      & " ON cta_mov.id = mov.id_cuentacontable" _
       & " LEFT JOIN AdminRecibosCheques reccheq ON cheq.id = reccheq.idCheque" _
       & " LEFT JOIN AdminRecibos rec ON reccheq.idRecibo = rec.id" _
       & " WHERE 1 = 1 "
@@ -245,7 +252,12 @@ Public Function Map(ByRef rs As Recordset, _
         tmpCheque.FechaVencimiento = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_FECHA_VENCIMIENTO)
         tmpCheque.Monto = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_MONTO)
         tmpCheque.numero = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_NUMERO)
-        tmpCheque.OrigenDestino = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ORIGEN)
+        If IsNull(rs.Fields("destino_mostrado").value) Then
+            tmpCheque.OrigenDestino = vbNullString
+        Else
+            tmpCheque.OrigenDestino = _
+                CStr(rs.Fields("destino_mostrado").value)
+        End If
         tmpCheque.Propio = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_PROPIO)
         tmpCheque.IdChequera = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_ID_CHEQUERA)
         tmpCheque.TercerosPropio = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCheques.CAMPO_TERCEROS_PROPIO)
