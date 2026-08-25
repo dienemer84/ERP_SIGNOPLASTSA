@@ -4434,7 +4434,7 @@ End Sub
 Private Sub MostrarCartera()
 
     Dim filter2 As String
-    Dim Orden As String
+    Dim orden As String
 
 
     filter2 = "1 = 1"
@@ -4477,9 +4477,9 @@ Private Sub MostrarCartera()
         End If
     End If
 
-    Orden = "cheq.id DESC"
+    orden = "cheq.id DESC"
 
-    Set cartera = DAOCheques.FindAllEnCartera(filter2, Orden)
+    Set cartera = DAOCheques.FindAllEnCartera(filter2, orden)
 
     Me.grid_cartera_cheques.ItemCount = 0
     Me.grid_cartera_cheques.ItemCount = cartera.count
@@ -4490,7 +4490,7 @@ End Sub
 
 
 Private Sub MostrarChequeras()
-    Set chequeras = DAOChequeras.GetAll
+    Set chequeras = DAOChequeras.GetAll(, " ORDER BY chs.id_banco ASC, chs.numero_desde DESC")
     Me.grid_chequeras.ItemCount = 0
     Me.grid_chequeras.ItemCount = chequeras.count
     
@@ -4719,11 +4719,26 @@ Private Sub grid_cheques_DblClick()
 End Sub
 
 Private Sub PasarACartera(ch As cheque)
+
+    If ch Is Nothing Then Exit Sub
+
+    If ch.estado = ChequeAnulado Then
+
+        MsgBox "El cheque N° " & ch.numero & _
+               " está anulado y no puede pasarse a cartera.", _
+               vbExclamation, _
+               "Cheque anulado"
+
+        Exit Sub
+    End If
+
     If ch.EnCartera Then
-        MsgBox "El cheque ya se encuentra en cartera.", vbInformation
+        MsgBox "El cheque ya se encuentra en cartera.", _
+               vbInformation
     Else
         If ch.Utilizado Then
-            MsgBox "El cheque ya fue utilizado.", vbInformation
+            MsgBox "El cheque ya fue utilizado.", _
+                   vbInformation
         Else
             Dim f000 As New frmChequePropioACartera
             Set f000.cheque = ch
@@ -4732,24 +4747,69 @@ Private Sub PasarACartera(ch As cheque)
             mostrarCheques
         End If
     End If
+
 End Sub
 
-Private Sub grid_cheques_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Button = 2 Then
-        Set tmpCheque = tmpChequera.Cheques(Me.grid_cheques.RowIndex(Me.grid_cheques.row))
-        Me.mnuAnularCheque.Enabled = (tmpCheque.IdOrdenPagoOrigen <= 0) Or tmpCheque.estado = ChequeAnulado
-        Me.PopupMenu Me.mnuOpcionesChequeChequera
+
+Private Sub grid_cheques_MouseDown( _
+    Button As Integer, _
+    Shift As Integer, _
+    x As Single, _
+    y As Single)
+
+    On Error GoTo salir
+
+    Dim fila As Long
+
+    If Button <> 2 Then Exit Sub
+
+    If tmpChequera Is Nothing Then Exit Sub
+    If tmpChequera.Cheques Is Nothing Then Exit Sub
+
+    fila = Me.grid_cheques.RowIndex(Me.grid_cheques.row)
+
+    If fila < 1 Then Exit Sub
+    If fila > tmpChequera.Cheques.count Then Exit Sub
+
+    Set tmpCheque = tmpChequera.Cheques.item(fila)
+
+    Me.mnuAnularCheque.caption = "Anular cheque..."
+
+    Me.mnuAnularCheque.Enabled = _
+        tmpCheque.Propio And _
+        tmpCheque.estado <> ChequeAnulado And _
+        Not tmpCheque.Utilizado And _
+        Not tmpCheque.entro And _
+        Not tmpCheque.Depositado
+
+    'Un cheque anulado tampoco puede pasarse a cartera
+    Me.mnuPasarCartera.Enabled = _
+        tmpCheque.estado <> ChequeAnulado And _
+        Not tmpCheque.Utilizado
+
+    Me.PopupMenu Me.mnuOpcionesChequeChequera
+
+salir:
+
+End Sub
+
+
+Private Sub grid_cheques_RowFormat( _
+    RowBuffer As GridEX20.JSRowData)
+
+    On Error GoTo salir
+
+    'La columna 6 contiene la descripción del estado/uso
+    If IsNull(RowBuffer.value(6)) Or _
+       IsEmpty(RowBuffer.value(6)) Then
+        Exit Sub
     End If
-    
-End Sub
 
+    If UCase$(Trim$(CStr(RowBuffer.value(6)))) = "ANULADO" Then
+        RowBuffer.RowStyle = "anulado"
+    End If
 
-Private Sub grid_cheques_RowFormat(RowBuffer As GridEX20.JSRowData)
-    On Error GoTo err1
-
-    If tmpCheque.estado = ChequeAnulado Then RowBuffer.RowStyle = "anulado"
-    Exit Sub
-err1:
+salir:
 
 End Sub
 
@@ -4983,6 +5043,9 @@ Private Sub CargarChequeraSeleccionada( _
     LimpiarSeleccionConciliacion
         
     Set tmpChequera = chSeleccionada
+    
+    Me.grid_cheques.ItemCount = 0
+    Me.grid_cheques.Refresh
 
     MostrarChequera
 
@@ -5430,4 +5493,162 @@ err1:
 
 End Sub
 
+Private Sub mnuAnularCheque_Click()
 
+    On Error GoTo err1
+
+    Dim respuesta As VbMsgBoxResult
+    Dim mensaje As String
+    Dim bancoNombre As String
+    Dim chequeraNumero As String
+    Dim estabaEnCartera As Boolean
+
+    If tmpCheque Is Nothing Then
+
+        MsgBox "No se pudo identificar el cheque seleccionado.", _
+               vbExclamation, _
+               "Anular cheque"
+
+        Exit Sub
+    End If
+
+    If Not tmpCheque.Propio Then
+
+        MsgBox "Solamente pueden anularse cheques propios.", _
+               vbExclamation, _
+               "Anular cheque"
+
+        Exit Sub
+    End If
+
+    If tmpCheque.estado = ChequeAnulado Then
+
+        MsgBox "El cheque N° " & tmpCheque.numero & _
+               " ya se encuentra anulado.", _
+               vbInformation, _
+               "Anular cheque"
+
+        Exit Sub
+    End If
+
+    If tmpCheque.Utilizado Then
+
+        MsgBox "El cheque N° " & tmpCheque.numero & _
+               " no puede anularse porque está utilizado." & _
+               vbCrLf & vbCrLf & _
+               "Uso actual: " & _
+               DescripcionUsoCheque(tmpCheque), _
+               vbExclamation, _
+               "Anular cheque"
+
+        Exit Sub
+    End If
+
+    If tmpCheque.entro Or _
+       CDbl(tmpCheque.FechaIngresoBanco) > 0 Then
+
+        MsgBox "El cheque N° " & tmpCheque.numero & _
+               " está marcado como ingresado al banco." & _
+               vbCrLf & _
+               "Primero debe quitar su conciliación.", _
+               vbExclamation, _
+               "Anular cheque"
+
+        Exit Sub
+    End If
+
+    If tmpCheque.Depositado Then
+
+        MsgBox "El cheque N° " & tmpCheque.numero & _
+               " figura como depositado y no puede anularse.", _
+               vbExclamation, _
+               "Anular cheque"
+
+        Exit Sub
+    End If
+
+    bancoNombre = vbNullString
+    chequeraNumero = vbNullString
+
+    If Not tmpChequera Is Nothing Then
+
+        chequeraNumero = CStr(tmpChequera.numero)
+
+        If Not tmpChequera.Banco Is Nothing Then
+            bancoNombre = tmpChequera.Banco.nombre
+        End If
+
+    End If
+
+    mensaje = _
+        "¿Confirma que desea anular este cheque?" & _
+        vbCrLf & vbCrLf & _
+        "Número: " & tmpCheque.numero & vbCrLf & _
+        "Chequera: " & chequeraNumero & vbCrLf & _
+        "Banco: " & bancoNombre
+
+    If tmpCheque.EnCartera Then
+        mensaje = mensaje & vbCrLf & vbCrLf & _
+                  "El cheque también será retirado de cartera."
+    End If
+
+    mensaje = mensaje & vbCrLf & vbCrLf & _
+              "Esta operación no elimina el cheque, " & _
+              "pero impedirá que vuelva a utilizarse."
+
+    respuesta = MsgBox( _
+                    mensaje, _
+                    vbQuestion + vbYesNo + vbDefaultButton2, _
+                    "Confirmar anulación de cheque")
+
+    If respuesta <> vbYes Then Exit Sub
+
+    estabaEnCartera = tmpCheque.EnCartera
+
+    If Not DAOCheques.AnularCheque(tmpCheque.Id) Then
+
+        Err.Raise vbObjectError + 1101, _
+                  "mnuAnularCheque_Click", _
+                  "El cheque no pudo anularse. " & _
+                  "Verifique que no esté asociado a una operación."
+    End If
+
+    'Actualizar el objeto en memoria
+    tmpCheque.estado = ChequeAnulado
+    tmpCheque.EnCartera = False
+    tmpCheque.entro = False
+    tmpCheque.FechaIngresoBanco = 0
+    tmpCheque.Depositado = False
+
+    If Not chequesPendientesConciliar Is Nothing Then
+
+        If chequesPendientesConciliar.Exists( _
+                                    CStr(tmpCheque.Id)) Then
+
+            chequesPendientesConciliar.remove _
+                                    CStr(tmpCheque.Id)
+        End If
+
+    End If
+
+    'Recargar fuera de los eventos de edición de la grilla
+    MostrarChequera
+
+    If estabaEnCartera Then
+        MostrarCartera
+    End If
+
+    MsgBox "El cheque N° " & tmpCheque.numero & _
+           " fue anulado correctamente.", _
+           vbInformation, _
+           "Cheque anulado"
+
+    Exit Sub
+
+err1:
+    MsgBox "No se pudo anular el cheque." & _
+           vbCrLf & Err.Description, _
+           vbCritical, _
+           "Anular cheque"
+
+End Sub

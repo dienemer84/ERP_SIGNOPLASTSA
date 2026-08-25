@@ -576,7 +576,7 @@ Begin VB.Form frmAdminComprasNuevaFCProveedor
       _ExtentX        =   2884
       _ExtentY        =   529
       _Version        =   393216
-      Format          =   16777217
+      Format          =   67698689
       CurrentDate     =   39897
    End
    Begin XtremeSuiteControls.GroupBox frame3 
@@ -1232,6 +1232,11 @@ Private Sub btnGuardar_Click()
     Dim totalManual As Double
     Dim transIniciada As Boolean
     Dim nroComprobante As String
+    
+    Dim numeroError As Long
+    Dim descripcionError As String
+    Dim origenError As String
+
 
     If Me.grilla_alicuotas.EditMode = jgexEditModeOn Then
         MsgBox "Todavia esta editando la grilla de Alicuotas de IVA." & vbNewLine & _
@@ -1335,29 +1340,103 @@ Private Sub btnGuardar_Click()
     Exit Sub
 
 err1:
-    If transIniciada Then conectar.RollBackTransaction
+    'Guardar el error antes de ejecutar el RollBack.
+    numeroError = Err.Number
+    descripcionError = Err.Description
+    origenError = Err.Source
 
-    If Err.Number = 100 Then
-        MsgBox "Se produjo algún error, no se guardarán los cambios!", vbCritical, "Error"
-    ElseIf Err.Number = 101 Then
-        MsgBox "La factura que intenta guardar ya existe!", vbCritical, "Error"
-    ElseIf Err.Number = 200 Then
-        MsgBox "Debe tener todo neto gravado aplicado a cuenta(s) contable(s)!", vbCritical, "Error"
-    ElseIf Err.Number = 1000 Then
-        MsgBox "Debe definir datos correctos para el proveedor que está creando!", vbCritical, "Error"
-    ElseIf Err.Number = 201 Then
-        MsgBox "Debe ingresar al menos una cuenta contable!", vbCritical, "Error"
-    ElseIf Err.Number = 202 Then
-        MsgBox "Debe ingresar montos válidos!", vbCritical, "Error"
-    ElseIf Err.Number = 203 Then
-        MsgBox "Los totales de la factura no coinciden." & vbNewLine & _
-               "Total esperado: " & funciones.RedondearDecimales(totalManual) & vbNewLine & _
-               "Total ingresado: " & funciones.RedondearDecimales(vFactura.total), vbCritical, "Error"
-    ElseIf Err.Number = 300 Or nuevoproveedor Then
+    On Error Resume Next
+
+    If transIniciada Then
+        conectar.RollBackTransaction
+        transIniciada = False
+    End If
+
+    On Error GoTo 0
+
+    Select Case numeroError
+
+        Case 100
+            MsgBox _
+                "Se produjo un error y no se guardaron los cambios.", _
+                vbCritical, _
+                "Error al guardar"
+
+        Case 101
+            MsgBox _
+                "El comprobante ya se encuentra cargado." & _
+                vbCrLf & vbCrLf & _
+                "Proveedor: " & vFactura.Proveedor.RazonSocial & vbCrLf & _
+                "Tipo: " & vFactura.configFactura.TipoFactura & vbCrLf & _
+                "Número: " & vFactura.numero & vbCrLf & vbCrLf & _
+                "No se guardaron cambios.", _
+                vbExclamation, _
+                "Comprobante duplicado"
+
+        Case 200
+            MsgBox _
+                "Debe tener todo el neto gravado aplicado a una o más cuentas contables.", _
+                vbExclamation, _
+                "Validación"
+
+        Case 1000
+            MsgBox _
+                "Debe definir datos correctos para el proveedor que está creando.", _
+                vbExclamation, _
+                "Validación del proveedor"
+
+        Case 201
+            MsgBox _
+                "Debe ingresar al menos una cuenta contable.", _
+                vbExclamation, _
+                "Validación"
+
+        Case 202
+            MsgBox _
+                "Debe ingresar montos válidos.", _
+                vbExclamation, _
+                "Validación"
+
+        Case 203
+            MsgBox _
+                "Los totales de la factura no coinciden." & _
+                vbCrLf & vbCrLf & _
+                "Total esperado: " & _
+                funciones.RedondearDecimales(totalManual) & vbCrLf & _
+                "Total calculado: " & _
+                funciones.RedondearDecimales(vFactura.total), _
+                vbExclamation, _
+                "Diferencia en los totales"
+
+        Case 300
+            MsgBox _
+                "No se pudo guardar el proveedor nuevo." & _
+                vbCrLf & vbCrLf & _
+                descripcionError, _
+                vbCritical, _
+                "Error al guardar proveedor"
+
+        Case Else
+            If Len(Trim$(descripcionError)) = 0 Then
+                descripcionError = "No se recibió una descripción del error."
+            End If
+
+            MsgBox _
+                "No se pudo guardar el comprobante." & _
+                vbCrLf & vbCrLf & _
+                "Error: " & CStr(numeroError) & vbCrLf & _
+                "Descripción: " & descripcionError & _
+                IIf(Len(Trim$(origenError)) > 0, _
+                    vbCrLf & "Origen: " & origenError, _
+                    vbNullString), _
+                vbCritical, _
+                "Error al guardar"
+
+    End Select
+
+    If numeroError = 300 Or nuevoproveedor Then
         Set vFactura.Proveedor = Nothing
         nuevoproveedor = False
-    Else
-        MsgBox "Error " & Err.Number & ": " & Err.Description, vbCritical
     End If
 End Sub
 
@@ -1897,7 +1976,7 @@ Private Sub cmdConsultarARCAProveedor_Click()
             vbExclamation, _
             "Consulta ARCA"
 
-        GoTo Salir
+        GoTo salir
 
     End If
 
@@ -1996,7 +2075,7 @@ Private Sub cmdConsultarARCAProveedor_Click()
 
     End If
 
-Salir:
+salir:
 
     Screen.MousePointer = vbDefault
 

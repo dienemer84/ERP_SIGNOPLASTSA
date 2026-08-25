@@ -112,7 +112,7 @@ Public Function FindAllWithChequesDisponibles() As Collection
 End Function
 
 
-Public Function GetAll(Optional filtro As String = Empty) As Collection    'of chequeras
+Public Function GetAll(Optional filtro As String = Empty, Optional orden As String) As Collection    'of chequeras
     On Error GoTo err1
     Dim rs As Recordset
     Dim col As New Collection
@@ -134,6 +134,10 @@ Public Function GetAll(Optional filtro As String = Empty) As Collection    'of c
       
     If LenB(filtro) > 0 Then
         q = q & " AND " & filtro
+    End If
+    
+    If LenB(orden) > 0 Then
+        q = q & " " & orden
     End If
     
     Set rs = conectar.RSFactory(q)

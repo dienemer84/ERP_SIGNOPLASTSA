@@ -489,25 +489,25 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Column(6)       =   "frmAdminCajaBancosListaAsientoBancario.frx":06C0
       Column(7)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0808
       Column(8)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0950
-      Column(9)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0A90
-      Column(10)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0BC8
-      Column(11)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0D10
+      Column(9)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0ADC
+      Column(10)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0C14
+      Column(11)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0D5C
       FormatStylesCount=   13
-      FormatStyle(1)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0E30
-      FormatStyle(2)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0F58
-      FormatStyle(3)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1008
-      FormatStyle(4)  =   "frmAdminCajaBancosListaAsientoBancario.frx":10BC
-      FormatStyle(5)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1194
-      FormatStyle(6)  =   "frmAdminCajaBancosListaAsientoBancario.frx":124C
-      FormatStyle(7)  =   "frmAdminCajaBancosListaAsientoBancario.frx":132C
-      FormatStyle(8)  =   "frmAdminCajaBancosListaAsientoBancario.frx":13E0
-      FormatStyle(9)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1498
-      FormatStyle(10) =   "frmAdminCajaBancosListaAsientoBancario.frx":154C
-      FormatStyle(11) =   "frmAdminCajaBancosListaAsientoBancario.frx":1608
-      FormatStyle(12) =   "frmAdminCajaBancosListaAsientoBancario.frx":16BC
-      FormatStyle(13) =   "frmAdminCajaBancosListaAsientoBancario.frx":176C
+      FormatStyle(1)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0E7C
+      FormatStyle(2)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0FA4
+      FormatStyle(3)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1054
+      FormatStyle(4)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1108
+      FormatStyle(5)  =   "frmAdminCajaBancosListaAsientoBancario.frx":11E0
+      FormatStyle(6)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1298
+      FormatStyle(7)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1378
+      FormatStyle(8)  =   "frmAdminCajaBancosListaAsientoBancario.frx":142C
+      FormatStyle(9)  =   "frmAdminCajaBancosListaAsientoBancario.frx":14E4
+      FormatStyle(10) =   "frmAdminCajaBancosListaAsientoBancario.frx":1598
+      FormatStyle(11) =   "frmAdminCajaBancosListaAsientoBancario.frx":1654
+      FormatStyle(12) =   "frmAdminCajaBancosListaAsientoBancario.frx":1708
+      FormatStyle(13) =   "frmAdminCajaBancosListaAsientoBancario.frx":17B8
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":1808
+      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":1854
    End
    Begin MSComDlg.CommonDialog CommonDialog 
       Left            =   840
@@ -556,6 +556,8 @@ Private desde
 Dim ids As String
 Private Movimientos As New Collection
 Private AsientoContable As clsAsientoContable
+Private ordenValorAscendente As Boolean
+
 Dim i As Integer
 
 
@@ -735,8 +737,32 @@ Private Sub Form_Resize()
 End Sub
 
 
-Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
-    GridEXHelper.ColumnHeaderClick Me.gridOrdenes, Column
+Private Sub gridOrdenes_ColumnHeaderClick( _
+    ByVal Column As GridEX20.JSColumn)
+
+    '---------------------------------------------
+    ' VALOR:
+    ' ordenar manualmente por el Double real
+    '---------------------------------------------
+    If Column.Index = 8 Then
+
+        ordenValorAscendente = _
+            Not ordenValorAscendente
+
+        OrdenarMovimientosPorValor _
+            ordenValorAscendente
+
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------
+    ' Resto de columnas:
+    ' comportamiento normal de GridEX
+    '---------------------------------------------
+    GridEXHelper.ColumnHeaderClick _
+        Me.gridOrdenes, Column
+
 End Sub
 
 
@@ -896,6 +922,7 @@ Private Sub gridOrdenes_UnboundReadData( _
         End If
 
         Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(mov.StaticTotalOrigenes)), "$", "")
+        
         Values(9) = mov.Observaciones
         
         If IsSomething(mov.Usuario) Then
@@ -1249,4 +1276,89 @@ Private Sub TotalizarMovimientos()
 
 End Sub
 
+Private Sub OrdenarMovimientosPorValor( _
+    ByVal ascendente As Boolean)
+
+    On Error GoTo err1
+
+    Dim arr() As clsAsientoContable
+    Dim movTemp As clsAsientoContable
+
+    Dim i As Long
+    Dim j As Long
+    Dim cantidad As Long
+    Dim intercambiar As Boolean
+
+    cantidad = Movimientos.count
+
+    If cantidad <= 1 Then Exit Sub
+
+    ReDim arr(1 To cantidad)
+
+    '---------------------------------------------
+    ' Pasar la colección a un array
+    '---------------------------------------------
+    For i = 1 To cantidad
+        Set arr(i) = Movimientos.item(i)
+    Next i
+
+    '---------------------------------------------
+    ' Ordenar por el valor NUMÉRICO REAL
+    ' StaticTotalOrigenes es Double
+    '---------------------------------------------
+    For i = 1 To cantidad - 1
+
+        For j = i + 1 To cantidad
+
+            If ascendente Then
+
+                intercambiar = _
+                    (arr(i).StaticTotalOrigenes > _
+                     arr(j).StaticTotalOrigenes)
+
+            Else
+
+                intercambiar = _
+                    (arr(i).StaticTotalOrigenes < _
+                     arr(j).StaticTotalOrigenes)
+
+            End If
+
+            If intercambiar Then
+
+                Set movTemp = arr(i)
+                Set arr(i) = arr(j)
+                Set arr(j) = movTemp
+
+            End If
+
+        Next j
+
+    Next i
+
+    '---------------------------------------------
+    ' Reconstruir colección ya ordenada
+    '---------------------------------------------
+    Set Movimientos = New Collection
+
+    For i = 1 To cantidad
+        Movimientos.Add arr(i)
+    Next i
+
+    '---------------------------------------------
+    ' Redibujar la grilla
+    '---------------------------------------------
+    Me.gridOrdenes.ItemCount = 0
+    Me.gridOrdenes.ItemCount = Movimientos.count
+    Me.gridOrdenes.Refresh
+
+    Exit Sub
+
+err1:
+
+    MsgBox "Error al ordenar por valor: " & _
+           Err.Description, _
+           vbExclamation
+
+End Sub
 

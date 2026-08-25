@@ -687,6 +687,58 @@ Public Function FindAllEnCarteraDeTerceros() As Collection
 End Function
 
 
+Public Function AnularCheque(ByVal idCheque As Long) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rsVerificacion As ADODB.Recordset
+
+    AnularCheque = False
+
+    If idCheque <= 0 Then Exit Function
+
+    q = "UPDATE Cheques SET " & _
+        "estado = " & CLng(ChequeAnulado) & ", " & _
+        "en_cartera = 0, " & _
+        "ingresado = 0, " & _
+        "fecha_ingreso_banco = NULL, " & _
+        "depositado = 0 " & _
+        "WHERE id = " & idCheque & " " & _
+        "AND propio = 1 " & _
+        "AND IFNULL(estado, 1) <> " & CLng(ChequeAnulado) & " " & _
+        "AND IFNULL(orden_pago_origen, 0) = 0 " & _
+        "AND IFNULL(liquidacion_caja_origen, 0) = 0 " & _
+        "AND IFNULL(pago_a_cuenta_origen, 0) = 0 " & _
+        "AND IFNULL(movimiento_origen, 0) = 0 " & _
+        "AND NOT EXISTS (" & _
+            "SELECT 1 " & _
+            "FROM ordenes_pago_cheques opc " & _
+            "WHERE opc.id_cheque = Cheques.id" & _
+        ")"
+
+    If Not conectar.execute(q) Then Exit Function
+
+    'Verificar que efectivamente quedó anulado
+    Set rsVerificacion = conectar.RSFactory( _
+        "SELECT estado FROM Cheques " & _
+        "WHERE id = " & idCheque)
+
+    If rsVerificacion Is Nothing Then Exit Function
+    If rsVerificacion.EOF Then Exit Function
+    If IsNull(rsVerificacion!estado) Then Exit Function
+
+    AnularCheque = _
+        (CLng(rsVerificacion!estado) = CLng(ChequeAnulado))
+
+    Exit Function
+
+err1:
+    AnularCheque = False
+
+End Function
+
+
 Public Function ActualizarIngresoBanco( _
     ByVal idCheque As Long, _
     ByVal ingresado As Boolean, _
