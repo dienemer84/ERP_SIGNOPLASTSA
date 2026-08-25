@@ -329,17 +329,17 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
                Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":0000
                Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":0168
                Column(3)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":029C
-               Column(4)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":03D8
-               Column(5)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":0540
+               Column(4)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":0424
+               Column(5)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":058C
                FormatStylesCount=   6
-               FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0638
-               FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0770
-               FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0820
-               FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":08D4
-               FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":09AC
-               FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0A64
+               FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0684
+               FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":07BC
+               FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":086C
+               FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0920
+               FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":09F8
+               FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0AB0
                ImageCount      =   0
-               PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":0B44
+               PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":0B90
             End
          End
          Begin XtremeSuiteControls.GroupBox GroupBox2 
@@ -493,17 +493,17 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":0D1C
-      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":0E1C
+      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":0D68
+      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":0E68
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0F0C
-      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1044
-      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":10F4
-      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":11A8
-      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1280
-      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1338
+      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":0F58
+      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1090
+      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1140
+      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":11F4
+      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":12CC
+      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1384
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":1418
+      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":1464
    End
    Begin GridEX20.GridEX gridCuentasBancarias 
       Height          =   1695
@@ -530,17 +530,17 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":15F0
-      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":1714
+      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":163C
+      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":1760
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1808
-      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1940
-      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":19F0
-      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1AA4
-      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1B7C
-      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1C34
+      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1854
+      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":198C
+      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1A3C
+      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1AF0
+      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1BC8
+      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":1C80
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":1D14
+      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":1D60
    End
    Begin GridEX20.GridEX gridMonedas 
       Height          =   1815
@@ -567,17 +567,17 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":1EEC
-      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2010
+      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":1F38
+      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":205C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":2104
-      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":223C
-      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":22EC
-      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":23A0
-      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":2478
-      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":2530
+      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":2150
+      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":2288
+      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":2338
+      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":23EC
+      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":24C4
+      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":257C
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":2610
+      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":265C
    End
    Begin GridEX20.GridEX gridChequesDisponibles 
       Height          =   1905
@@ -604,23 +604,23 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   8
-      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":27E8
-      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2968
-      Column(3)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2B08
-      Column(4)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2C00
-      Column(5)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2D3C
-      Column(6)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2E48
-      Column(7)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2F68
-      Column(8)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":3074
+      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2834
+      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":29B4
+      Column(3)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2B54
+      Column(4)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2C4C
+      Column(5)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2D88
+      Column(6)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2E94
+      Column(7)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":2FB4
+      Column(8)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":30C0
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3168
-      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":32A0
-      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3350
-      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3404
-      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":34DC
-      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3594
+      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":31B4
+      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":32EC
+      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":339C
+      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3450
+      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3528
+      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":35E0
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":3674
+      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":36C0
    End
    Begin GridEX20.GridEX gridChequeras 
       Height          =   1815
@@ -648,17 +648,17 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":384C
-      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":396C
+      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":3898
+      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":39B8
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3A6C
-      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3BA4
-      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3C54
-      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3D08
-      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3DE0
-      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3E98
+      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3AB8
+      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3BF0
+      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3CA0
+      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3D54
+      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3E2C
+      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":3EE4
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":3F78
+      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":3FC4
    End
    Begin GridEX20.GridEX gridChequesChequera 
       Height          =   1710
@@ -687,19 +687,19 @@ Begin VB.Form frmAdminCajaBancosCrearAsientoBancario
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   2
-      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":4150
-      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":4280
+      Column(1)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":419C
+      Column(2)       =   "frmAdminCajaBancosCrearAsientoBancario.frx":42CC
       SortKeysCount   =   1
-      SortKey(1)      =   "frmAdminCajaBancosCrearAsientoBancario.frx":4380
+      SortKey(1)      =   "frmAdminCajaBancosCrearAsientoBancario.frx":43CC
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":43E8
-      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":4520
-      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":45D0
-      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":4684
-      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":475C
-      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":4814
+      FormatStyle(1)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":4434
+      FormatStyle(2)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":456C
+      FormatStyle(3)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":461C
+      FormatStyle(4)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":46D0
+      FormatStyle(5)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":47A8
+      FormatStyle(6)  =   "frmAdminCajaBancosCrearAsientoBancario.frx":4860
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":48F4
+      PrinterProperties=   "frmAdminCajaBancosCrearAsientoBancario.frx":4940
    End
 End
 Attribute VB_Name = "frmAdminCajaBancosCrearAsientoBancario"
@@ -1143,7 +1143,7 @@ Private Sub Form_Load()
 
     GridEXHelper.CustomizeGrid _
         Me.gridChequesChequera, False, False
-
+        
     '---------------------------------------------
     ' Chequeras y cheques disponibles
     '---------------------------------------------
@@ -1344,12 +1344,20 @@ Private Sub gridChequesPropios_BeforeUpdate( _
         msg.Add "Debe especificar un cheque."
     End If
 
-    If Not IsNumeric(Me.gridChequesPropios.value(3)) Then
+    Dim montoCheque As Double
+    
+    If Not TextoAMonto( _
+            CStr(Me.gridChequesPropios.value(3)), _
+            montoCheque) Then
+    
         msg.Add "Debe especificar un monto válido."
-    ElseIf CDbl(Me.gridChequesPropios.value(3)) <= 0 Then
+    
+    ElseIf montoCheque <= 0 Then
+    
         msg.Add "Debe especificar un monto mayor a cero."
+    
     End If
-
+    
     If Not IsDate(Me.gridChequesPropios.value(4)) Then
         msg.Add "Debe especificar una fecha válida."
     End If
@@ -1382,39 +1390,67 @@ Private Sub gridChequesPropios_UnboundAddNew( _
     ByVal NewRowBookmark As GridEX20.JSRetVariant, _
     ByVal Values As GridEX20.JSRowData)
 
+    On Error GoTo err1
+
+    Dim montoCheque As Double
+
     Set cheque = Nothing
 
     If IsNumeric(Values(2)) Then
-        Set cheque = DAOCheques.FindById(Values(2))
+        Set cheque = DAOCheques.FindById(CLng(Values(2)))
     End If
 
-    If IsSomething(cheque) Then
+    If Not IsSomething(cheque) Then Exit Sub
 
-        cheque.Monto = CDbl(Values(3))
-        cheque.FechaVencimiento = Values(4)
-        cheque.Propio = True
-        cheque.EnCartera = False
+    '---------------------------------------------
+    ' Monto
+    '---------------------------------------------
+    If Not TextoAMonto(CStr(Values(3)), montoCheque) Then
 
-        If Not funciones.BuscarEnColeccion( _
-                AsientoContable.ChequesPropios, _
-                CStr(cheque.Id)) Then
+        MsgBox "El monto ingresado no es válido.", _
+               vbExclamation
 
-            AsientoContable.ChequesPropios.Add _
-                cheque, _
-                CStr(cheque.Id)
-
-        End If
-
-        'Volver a dibujar la fila usando UnboundReadData
-        Me.gridChequesPropios.ItemCount = _
-            AsientoContable.ChequesPropios.count
-
-        Me.gridChequesPropios.Refresh
+        Exit Sub
 
     End If
+
+    cheque.Monto = montoCheque
+
+    If IsDate(Values(4)) Then
+        cheque.FechaVencimiento = CDate(Values(4))
+    End If
+
+    cheque.Propio = True
+    cheque.EnCartera = False
+
+    If Not funciones.BuscarEnColeccion( _
+            AsientoContable.ChequesPropios, _
+            CStr(cheque.Id)) Then
+
+        AsientoContable.ChequesPropios.Add _
+            cheque, _
+            CStr(cheque.Id)
+
+    End If
+
+    'Solamente cambiar lo que queda visualmente
+    'en la fila. NO Refresh.
+    Values(3) = FormatNumber( _
+                    cheque.Monto, _
+                    2, _
+                    vbTrue, _
+                    vbFalse, _
+                    vbTrue)
+
+    Exit Sub
+
+err1:
+
+    MsgBox "Error al cargar el cheque: " & _
+           Err.Description, _
+           vbCritical
 
 End Sub
-
 
 Private Sub gridChequesPropios_UnboundDelete(ByVal RowIndex As Long, ByVal Bookmark As Variant)
     If RowIndex > 0 And AsientoContable.ChequesPropios.count >= RowIndex Then
@@ -1442,21 +1478,13 @@ Private Sub gridChequesPropios_UnboundReadData( _
 
     Values(2) = cheque.Id
 
-    'Monto con divisor de miles
-    
-    
-    Values(3) = FormatNumber( _
-                    cheque.Monto, _
-                    2, _
-                    vbTrue, _
-                    vbFalse, _
-                    vbTrue)
+    'Solo presentación
+    Values(3) = cheque.Monto
 
     Values(4) = cheque.FechaVencimiento
     Values(5) = cheque.numero
 
 End Sub
-
 
 Private Sub gridChequesPropios_UnboundUpdate( _
     ByVal RowIndex As Long, _
