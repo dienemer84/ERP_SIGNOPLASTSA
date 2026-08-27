@@ -29,7 +29,9 @@ Public Function FindAll(Optional ByRef filter As String = vbNullString, Optional
       & "CASE " _
       & "WHEN COALESCE(cheq.movimiento_origen, 0) > 0 THEN " _
       & "COALESCE(NULLIF(CONCAT_WS(' | ', cta_mov.codigo, cta_mov.nombre), ''), " _
-      & "'MOVIMIENTO SIN CUENTA CONTABLE') ELSE COALESCE(cheq.origen, '') " _
+      & "'MOVIMIENTO SIN CUENTA CONTABLE') " _
+      & "WHEN COALESCE(cheq.liquidacion_caja_origen, 0) > 0 THEN 'PROVEEDORES VARIOS' " _
+      & "ELSE COALESCE(cheq.origen, '') " _
       & "END AS destino_mostrado, liq.numero_liq AS numero_liquidacion_caja, " _
       & "rec.fecha AS fecha_rec FROM Cheques cheq" _
       & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _

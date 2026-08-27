@@ -464,7 +464,7 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
                 If liq.FacturasProveedor(1).Proveedor.estado <> 2 Then
                     Dim d As New clsDTOPadronIIBB
                     'todo: cambiar validacion
-                    Set d = DTOPadronIIBB.FindByCUIT(liq.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
+                    Set d = DTOPadronIIBB.FindByCUIT(liq.FacturasProveedor(1).Proveedor.cuit, TipoPadronRetencion)
                     Dim ret As Double
 
                     If IsSomething(d) Then
@@ -627,12 +627,15 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         Next che
 
         For Each che In op.ChequesPropios
+        
             che.EnCartera = False
             che.IdOrdenPagoOrigen = 0
             che.IdLiquidacionCajaOrigen = op.Id
             che.FechaEmision = op.FEcha
-            'che.Observaciones = "Utilizado en Orden de Pago Nº " & op.Id
-            If op.EsParaFacturaProveedor And op.FacturasProveedor.count > 0 Then che.OrigenDestino = op.FacturasProveedor(1).Proveedor.RazonSocial
+            
+            'Una liquidación puede incluir facturas de distintos proveedores
+            che.OrigenDestino = "PROVEEDORES VARIOS"
+            
             If Not DAOCheques.Guardar(che) Then GoTo E
             
 

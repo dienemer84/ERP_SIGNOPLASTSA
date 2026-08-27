@@ -4434,7 +4434,7 @@ End Sub
 Private Sub MostrarCartera()
 
     Dim filter2 As String
-    Dim orden As String
+    Dim Orden As String
 
 
     filter2 = "1 = 1"
@@ -4477,9 +4477,9 @@ Private Sub MostrarCartera()
         End If
     End If
 
-    orden = "cheq.id DESC"
+    Orden = "cheq.id DESC"
 
-    Set cartera = DAOCheques.FindAllEnCartera(filter2, orden)
+    Set cartera = DAOCheques.FindAllEnCartera(filter2, Orden)
 
     Me.grid_cartera_cheques.ItemCount = 0
     Me.grid_cartera_cheques.ItemCount = cartera.count
@@ -4896,7 +4896,7 @@ Private Sub gridChequesEmitidos_UnboundReadData(ByVal RowIndex As Long, ByVal Bo
     Values(7) = funciones.FormatearDecimales(tmpCheque.Monto)
     
     If tmpCheque.NumeroLiquidacionCaja <> 0 Then
-        Values(8) = "VARIOS PROVEEDORES"
+        Values(8) = "PROVEEDORES VARIOS"
         Values(10) = ""
         Values(11) = tmpCheque.NumeroLiquidacionCaja
         Values(12) = ""
@@ -5413,16 +5413,16 @@ Private Sub cmdConciliarSeleccionados_Click()
     Dim fechaConciliacion As Date
     Dim idsCheques As Collection
     Dim clave As Variant
-    Dim Cantidad As Long
+    Dim cantidad As Long
     Dim respuesta As VbMsgBoxResult
 
     If chequesPendientesConciliar Is Nothing Then
         Set chequesPendientesConciliar = New Dictionary
     End If
 
-    Cantidad = chequesPendientesConciliar.count
+    cantidad = chequesPendientesConciliar.count
 
-    If Cantidad = 0 Then
+    If cantidad = 0 Then
 
         MsgBox "No hay cheques seleccionados para conciliar.", _
                vbInformation, _
@@ -5453,7 +5453,7 @@ Private Sub cmdConciliarSeleccionados_Click()
     End If
 
     respuesta = MsgBox( _
-        "¿Confirma la conciliación de " & Cantidad & _
+        "¿Confirma la conciliación de " & cantidad & _
         " cheque(s)?" & vbCrLf & vbCrLf & _
         "Fecha de ingreso: " & _
         Format$(fechaConciliacion, "dd/mm/yyyy"), _
@@ -5479,7 +5479,7 @@ Private Sub cmdConciliarSeleccionados_Click()
     LimpiarSeleccionConciliacion
     MostrarChequera
 
-    MsgBox Cantidad & " cheque(s) conciliado(s) correctamente.", _
+    MsgBox cantidad & " cheque(s) conciliado(s) correctamente.", _
            vbInformation, _
            "Conciliación de cheques"
 
@@ -5499,7 +5499,7 @@ Private Sub mnuAnularCheque_Click()
 
     Dim respuesta As VbMsgBoxResult
     Dim mensaje As String
-    Dim bancoNombre As String
+    Dim BancoNombre As String
     Dim chequeraNumero As String
     Dim estabaEnCartera As Boolean
 
@@ -5567,7 +5567,7 @@ Private Sub mnuAnularCheque_Click()
         Exit Sub
     End If
 
-    bancoNombre = vbNullString
+    BancoNombre = vbNullString
     chequeraNumero = vbNullString
 
     If Not tmpChequera Is Nothing Then
@@ -5575,7 +5575,7 @@ Private Sub mnuAnularCheque_Click()
         chequeraNumero = CStr(tmpChequera.numero)
 
         If Not tmpChequera.Banco Is Nothing Then
-            bancoNombre = tmpChequera.Banco.nombre
+            BancoNombre = tmpChequera.Banco.nombre
         End If
 
     End If
@@ -5585,7 +5585,7 @@ Private Sub mnuAnularCheque_Click()
         vbCrLf & vbCrLf & _
         "Número: " & tmpCheque.numero & vbCrLf & _
         "Chequera: " & chequeraNumero & vbCrLf & _
-        "Banco: " & bancoNombre
+        "Banco: " & BancoNombre
 
     If tmpCheque.EnCartera Then
         mensaje = mensaje & vbCrLf & vbCrLf & _

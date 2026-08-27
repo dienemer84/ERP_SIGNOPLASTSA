@@ -2312,20 +2312,65 @@ Private Sub txtMonto_Change()
     Dim parteDecimal As String
     Dim nuevoTexto As String
 
-    Dim posicionComa As Long
-    Dim tieneComa As Boolean
+    Dim posComa As Long
+    Dim posPunto As Long
+    Dim posDecimal As Long
+    Dim tieneDecimal As Boolean
+    Dim decimalesDespuesPunto As Long
 
     texto = Trim$(Me.txtMonto.Text)
 
     If LenB(texto) = 0 Then GoTo salir
 
-    posicionComa = InStr(1, texto, ",")
-    tieneComa = (posicionComa > 0)
+    posComa = InStrRev(texto, ",")
+    posPunto = InStrRev(texto, ".")
 
-    If tieneComa Then
+    tieneDecimal = False
+    posDecimal = 0
 
-        parteEntera = Left$(texto, posicionComa - 1)
-        parteDecimal = Mid$(texto, posicionComa + 1)
+    '-------------------------------------------------
+    ' Si hay coma, siempre la consideramos decimal.
+    ' Ejemplo: 1.234,56
+    '-------------------------------------------------
+    If posComa > 0 Then
+
+        posDecimal = posComa
+        tieneDecimal = True
+
+    '-------------------------------------------------
+    ' Si solamente hay punto:
+    '
+    ' 149.41  -> punto decimal
+    ' 2434.39 -> punto decimal
+    '
+    ' Pero:
+    ' 14.941  -> punto de miles
+    '-------------------------------------------------
+    ElseIf posPunto > 0 Then
+
+        decimalesDespuesPunto = _
+            Len(texto) - posPunto
+
+        If decimalesDespuesPunto = 1 Or _
+           decimalesDespuesPunto = 2 Then
+
+            posDecimal = posPunto
+            tieneDecimal = True
+
+        End If
+
+    End If
+
+    '-------------------------------------------------
+    ' Separar parte entera y decimal
+    '-------------------------------------------------
+    If tieneDecimal Then
+
+        parteEntera = _
+            Left$(texto, posDecimal - 1)
+
+        parteDecimal = _
+            Mid$(texto, posDecimal + 1)
 
     Else
 
@@ -2334,6 +2379,7 @@ Private Sub txtMonto_Change()
 
     End If
 
+    'Quitar puntos/comas de miles
     parteEntera = SoloDigitos(parteEntera)
     parteDecimal = SoloDigitos(parteDecimal)
 
@@ -2342,20 +2388,23 @@ Private Sub txtMonto_Change()
         parteDecimal = Left$(parteDecimal, 2)
     End If
 
-    nuevoTexto = FormatearEnteroMiles(parteEntera)
+    nuevoTexto = _
+        FormatearEnteroMiles(parteEntera)
 
-    If tieneComa Then
-        nuevoTexto = nuevoTexto & "," & parteDecimal
+    If tieneDecimal Then
+        nuevoTexto = _
+            nuevoTexto & "," & parteDecimal
     End If
 
     Me.txtMonto.Text = nuevoTexto
 
-    'Dejar el cursor al final
-    Me.txtMonto.SelStart = Len(Me.txtMonto.Text)
+    Me.txtMonto.SelStart = _
+        Len(Me.txtMonto.Text)
 
 salir:
+
     formateandoMonto = False
-    
+
 End Sub
 
 Private Sub txtMonto_KeyPress(KeyAscii As Integer)
