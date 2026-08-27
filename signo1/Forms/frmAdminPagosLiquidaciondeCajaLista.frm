@@ -420,6 +420,7 @@ Dim ids As String
 Private liquidaciones As New Collection
 Private LiquidacionCaja As clsLiquidacionCaja
 Private fac As clsFacturaProveedor
+Private ordenValorAscendente As Boolean
 
 
 Private Sub btnExportar_Click()

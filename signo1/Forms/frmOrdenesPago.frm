@@ -577,6 +577,7 @@ Dim ids As String
 Private ordenes As New Collection
 Private Orden As OrdenPago
 Private fac As clsFacturaProveedor
+Private ordenValorAscendente As Boolean
 Dim i As Integer
 
 
@@ -782,8 +783,32 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 
-Private Sub gridOrdenes_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
-    GridEXHelper.ColumnHeaderClick Me.gridOrdenes, Column
+Private Sub gridOrdenes_ColumnHeaderClick( _
+    ByVal Column As GridEX20.JSColumn)
+
+    '---------------------------------------------
+    ' VALOR:
+    ' ordenar manualmente por el Double real
+    '---------------------------------------------
+    If Column.Index = 7 Then
+
+        ordenValorAscendente = _
+            Not ordenValorAscendente
+
+        OrdenarMovimientosPorValor _
+            ordenValorAscendente
+
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------
+    ' Resto de columnas:
+    ' comportamiento normal de GridEX
+    '---------------------------------------------
+    GridEXHelper.ColumnHeaderClick _
+        Me.gridOrdenes, Column
+
 End Sub
 
 
@@ -1257,3 +1282,88 @@ Private Sub cboRangos_Click()
 End Sub
 
 
+Private Sub OrdenarMovimientosPorValor( _
+    ByVal ascendente As Boolean)
+
+    On Error GoTo err1
+
+    Dim arr() As OrdenPago
+    Dim movTemp As OrdenPago
+
+    Dim i As Long
+    Dim j As Long
+    Dim cantidad As Long
+    Dim intercambiar As Boolean
+
+    cantidad = ordenes.count
+
+    If cantidad <= 1 Then Exit Sub
+
+    ReDim arr(1 To cantidad)
+
+    '---------------------------------------------
+    ' Pasar la colección a un array
+    '---------------------------------------------
+    For i = 1 To cantidad
+        Set arr(i) = ordenes.item(i)
+    Next i
+
+    '---------------------------------------------
+    ' Ordenar por el valor NUMÉRICO REAL
+    ' StaticTotalOrigenes es Double
+    '---------------------------------------------
+    For i = 1 To cantidad - 1
+
+        For j = i + 1 To cantidad
+
+            If ascendente Then
+
+                intercambiar = _
+                    (arr(i).StaticTotalOrigenes + arr(i).StaticTotalRetenido > _
+                     arr(j).StaticTotalOrigenes + arr(j).StaticTotalRetenido)
+
+            Else
+
+                intercambiar = _
+                    (arr(i).StaticTotalOrigenes + arr(i).StaticTotalRetenido < _
+                     arr(j).StaticTotalOrigenes + arr(j).StaticTotalRetenido)
+
+            End If
+
+            If intercambiar Then
+
+                Set movTemp = arr(i)
+                Set arr(i) = arr(j)
+                Set arr(j) = movTemp
+
+            End If
+
+        Next j
+
+    Next i
+
+    '---------------------------------------------
+    ' Reconstruir colección ya ordenada
+    '---------------------------------------------
+    Set ordenes = New Collection
+
+    For i = 1 To cantidad
+        ordenes.Add arr(i)
+    Next i
+
+    '---------------------------------------------
+    ' Redibujar la grilla
+    '---------------------------------------------
+    Me.gridOrdenes.ItemCount = 0
+    Me.gridOrdenes.ItemCount = ordenes.count
+    Me.gridOrdenes.Refresh
+
+    Exit Sub
+
+err1:
+
+    MsgBox "Error al ordenar por valor: " & _
+           Err.Description, _
+           vbExclamation
+
+End Sub

@@ -724,15 +724,15 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       Begin XtremeSuiteControls.Label Label2 
          Height          =   195
          Index           =   0
-         Left            =   0
+         Left            =   600
          TabIndex        =   5
          Top             =   1200
-         Width           =   1395
+         Width           =   735
          _Version        =   786432
-         _ExtentX        =   2461
+         _ExtentX        =   1296
          _ExtentY        =   344
          _StockProps     =   79
-         Caption         =   "Nº Comprobante"
+         Caption         =   "Nº Cbte."
          BackColor       =   12632256
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
@@ -792,42 +792,42 @@ Begin VB.Form frmAdminComprasListaFCProveedor
       IntProp7        =   0
       ColumnsCount    =   23
       Column(1)       =   "frmAdminComprasListaFCProveedor.frx":0326
-      Column(2)       =   "frmAdminComprasListaFCProveedor.frx":048A
-      Column(3)       =   "frmAdminComprasListaFCProveedor.frx":05C6
-      Column(4)       =   "frmAdminComprasListaFCProveedor.frx":06EE
-      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":080E
-      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":0952
-      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0AD2
-      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0C16
-      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":0E82
-      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":107E
-      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":12AE
-      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":149E
-      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":16AA
-      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":18AA
-      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1A1A
-      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B5A
-      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CC2
-      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E1A
-      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1F72
-      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":20AA
-      Column(21)      =   "frmAdminComprasListaFCProveedor.frx":2202
-      Column(22)      =   "frmAdminComprasListaFCProveedor.frx":23A6
-      Column(23)      =   "frmAdminComprasListaFCProveedor.frx":24FE
+      Column(2)       =   "frmAdminComprasListaFCProveedor.frx":04B6
+      Column(3)       =   "frmAdminComprasListaFCProveedor.frx":05F2
+      Column(4)       =   "frmAdminComprasListaFCProveedor.frx":071A
+      Column(5)       =   "frmAdminComprasListaFCProveedor.frx":083A
+      Column(6)       =   "frmAdminComprasListaFCProveedor.frx":097E
+      Column(7)       =   "frmAdminComprasListaFCProveedor.frx":0AFE
+      Column(8)       =   "frmAdminComprasListaFCProveedor.frx":0C42
+      Column(9)       =   "frmAdminComprasListaFCProveedor.frx":0EAE
+      Column(10)      =   "frmAdminComprasListaFCProveedor.frx":10AA
+      Column(11)      =   "frmAdminComprasListaFCProveedor.frx":12DA
+      Column(12)      =   "frmAdminComprasListaFCProveedor.frx":14CA
+      Column(13)      =   "frmAdminComprasListaFCProveedor.frx":16D6
+      Column(14)      =   "frmAdminComprasListaFCProveedor.frx":18D6
+      Column(15)      =   "frmAdminComprasListaFCProveedor.frx":1A46
+      Column(16)      =   "frmAdminComprasListaFCProveedor.frx":1B86
+      Column(17)      =   "frmAdminComprasListaFCProveedor.frx":1CEE
+      Column(18)      =   "frmAdminComprasListaFCProveedor.frx":1E46
+      Column(19)      =   "frmAdminComprasListaFCProveedor.frx":1F9E
+      Column(20)      =   "frmAdminComprasListaFCProveedor.frx":20D6
+      Column(21)      =   "frmAdminComprasListaFCProveedor.frx":222E
+      Column(22)      =   "frmAdminComprasListaFCProveedor.frx":23D2
+      Column(23)      =   "frmAdminComprasListaFCProveedor.frx":252A
       FormatStylesCount=   10
-      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":260E
-      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":2746
-      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":27F6
-      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":28AA
-      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":2982
-      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":2A3A
-      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":2B1A
-      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2BDA
-      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2C9E
-      FormatStyle(10) =   "frmAdminComprasListaFCProveedor.frx":2D5E
+      FormatStyle(1)  =   "frmAdminComprasListaFCProveedor.frx":263A
+      FormatStyle(2)  =   "frmAdminComprasListaFCProveedor.frx":2772
+      FormatStyle(3)  =   "frmAdminComprasListaFCProveedor.frx":2822
+      FormatStyle(4)  =   "frmAdminComprasListaFCProveedor.frx":28D6
+      FormatStyle(5)  =   "frmAdminComprasListaFCProveedor.frx":29AE
+      FormatStyle(6)  =   "frmAdminComprasListaFCProveedor.frx":2A66
+      FormatStyle(7)  =   "frmAdminComprasListaFCProveedor.frx":2B46
+      FormatStyle(8)  =   "frmAdminComprasListaFCProveedor.frx":2C06
+      FormatStyle(9)  =   "frmAdminComprasListaFCProveedor.frx":2CCA
+      FormatStyle(10) =   "frmAdminComprasListaFCProveedor.frx":2D8A
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2E26
-      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":3140
+      ImagePicture(1) =   "frmAdminComprasListaFCProveedor.frx":2E52
+      PrinterProperties=   "frmAdminComprasListaFCProveedor.frx":316C
    End
    Begin XtremeSuiteControls.ComboBox cboFantasia 
       Height          =   315
@@ -922,6 +922,8 @@ Private desde
 Private Factura As clsFacturaProveedor
 Private facturas As Collection
 Dim m_Archivos As Dictionary
+Private ordenValorAscendente As Boolean
+
 
 Private Sub btnClearCtaCble_Click_Click()
     Me.cboCuentasContables.ListIndex = -1
@@ -1432,8 +1434,33 @@ Private Sub Form_Unload(Cancel As Integer)
     Channel.RemoverSuscripcionTotal Me
 End Sub
 
-Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
-    GridEXHelper.ColumnHeaderClick Me.grilla, Column
+
+Private Sub grilla_ColumnHeaderClick( _
+    ByVal Column As GridEX20.JSColumn)
+
+    '---------------------------------------------
+    ' VALOR:
+    ' ordenar manualmente por el Double real
+    '---------------------------------------------
+    If Column.Index = 13 Then
+
+        ordenValorAscendente = _
+            Not ordenValorAscendente
+
+        OrdenarMovimientosPorValor _
+            ordenValorAscendente
+
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------
+    ' Resto de columnas:
+    ' comportamiento normal de GridEX
+    '---------------------------------------------
+    GridEXHelper.ColumnHeaderClick _
+        Me.grilla, Column
+
 End Sub
 
 Private Sub grilla_DblClick()
@@ -1452,7 +1479,7 @@ Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Me.finalizar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.editar.Enabled = (Factura.estado = EstadoFacturaProveedor.EnProceso)
             Me.mnuPagarEnEfectivo.Enabled = (Factura.estado = EstadoFacturaProveedor.Aprobada)
-            Me.mnuEliminar.Enabled = (funciones.GetUserObj.usuario = "karinrz" Or funciones.GetUserObj.usuario = "nicolasba" Or funciones.GetUserObj.usuario = "diegonr" Or funciones.GetUserObj.usuario = "natalilo")
+            Me.mnuEliminar.Enabled = (funciones.GetUserObj.Usuario = "karinrz" Or funciones.GetUserObj.Usuario = "nicolasba" Or funciones.GetUserObj.Usuario = "diegonr" Or funciones.GetUserObj.Usuario = "natalilo")
             Me.mnuFacturaFisicaRecibida.Enabled = Factura.EsArca
             
             If (Factura.estado = Saldada Or Factura.estado = pagoParcial) Then
@@ -1594,7 +1621,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
             End Select
         End If
 
-        Values(20) = Factura.UsuarioCarga.usuario
+        Values(20) = Factura.UsuarioCarga.Usuario
         Values(21) = Factura.TipoCambio
         Values(22) = "(" & val(m_Archivos.item(Factura.Id)) & ")"
         Values(23) = Factura.Id
@@ -1773,5 +1800,95 @@ Private Sub mnuFacturaFisicaRecibida_Click()
 
 err1:
     MsgBox "Error al actualizar factura física recibida: " & Err.Description, vbCritical
+End Sub
+
+
+Private Sub OrdenarMovimientosPorValor( _
+    ByVal ascendente As Boolean)
+
+    On Error GoTo err1
+
+    Dim arr() As clsFacturaProveedor
+    Dim movTemp As clsFacturaProveedor
+
+    Dim i As Long
+    Dim j As Long
+    Dim h As Integer
+    Dim cantidad As Long
+    Dim intercambiar As Boolean
+
+    cantidad = facturas.count
+    
+    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then h = -1 Else h = 1
+
+    If cantidad <= 1 Then Exit Sub
+
+    ReDim arr(1 To cantidad)
+
+    '---------------------------------------------
+    ' Pasar la colección a un array
+    '---------------------------------------------
+    For i = 1 To cantidad
+        Set arr(i) = facturas.item(i)
+    Next i
+
+    '---------------------------------------------
+    ' Ordenar por el valor NUMÉRICO REAL
+    ' StaticTotalOrigenes es Double
+    '---------------------------------------------
+    For i = 1 To cantidad - 1
+
+        For j = i + 1 To cantidad
+
+            If ascendente Then
+
+                intercambiar = _
+                    (arr(i).total * h > _
+                     arr(j).total * h)
+
+            Else
+
+                intercambiar = _
+                    (arr(i).total * h < _
+                     arr(j).total * h)
+
+            End If
+
+            If intercambiar Then
+
+                Set movTemp = arr(i)
+                Set arr(i) = arr(j)
+                Set arr(j) = movTemp
+
+            End If
+
+        Next j
+
+    Next i
+
+    '---------------------------------------------
+    ' Reconstruir colección ya ordenada
+    '---------------------------------------------
+    Set facturas = New Collection
+
+    For i = 1 To cantidad
+        facturas.Add arr(i)
+    Next i
+
+    '---------------------------------------------
+    ' Redibujar la grilla
+    '---------------------------------------------
+    Me.grilla.ItemCount = 0
+    Me.grilla.ItemCount = facturas.count
+    Me.grilla.Refresh
+
+    Exit Sub
+
+err1:
+
+    MsgBox "Error al ordenar por valor: " & _
+           Err.Description, _
+           vbExclamation
+
 End Sub
 
