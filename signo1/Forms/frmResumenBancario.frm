@@ -72,6 +72,19 @@ Begin VB.Form frmResumenBancario
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton btnImprimir 
+         Height          =   495
+         Left            =   17760
+         TabIndex        =   29
+         Top             =   1200
+         Width           =   2175
+         _Version        =   786432
+         _ExtentX        =   3836
+         _ExtentY        =   873
+         _StockProps     =   79
+         Caption         =   "Imprimir"
+         UseVisualStyle  =   -1  'True
+      End
       Begin XtremeSuiteControls.GroupBox GroupBox2 
          Height          =   2055
          Left            =   6000
@@ -198,7 +211,7 @@ Begin VB.Form frmResumenBancario
          Height          =   495
          Left            =   17760
          TabIndex        =   14
-         Top             =   1200
+         Top             =   240
          Width           =   2175
          _Version        =   786432
          _ExtentX        =   3836
@@ -479,6 +492,52 @@ Private MontoInicialEstablecido As Boolean
 Private desde As Date
 Private CargandoFiltros As Boolean
 Private i As Integer
+
+
+Private Sub btnImprimir_Click()
+    Dim elegidos As Boolean
+    Dim q As String
+
+    Dim rf As String
+
+    rf = Me.lblNetoGravadoFiltrado & Chr(10)
+    rf = rf & Me.lblTotalNoGravadoFiltrado & Chr(10)
+    rf = rf & Me.lblTotalNeto & Chr(10)
+    rf = rf & Me.lblTotalIVA & Chr(10)
+    rf = rf & Me.lblTotal & Chr(10)
+
+
+    If Not IsNull(Me.dtpDesde) Then
+        q = "Desde " & Format(Me.dtpDesde, "dd-mm-yyyy") & Chr(10)
+    End If
+    If Not IsNull(Me.dtpHasta) Then
+        q = q & "Hasta " & Format(Me.dtpHasta, "dd-mm-yyyy") & Chr(10)
+
+    End If
+
+
+    If IsNull(Me.dtpHasta) And IsNull(Me.dtpDesde) Then
+        q = "PERIODO SIN ESPECIFICAR" & Chr(10)
+    End If
+
+
+    With Me.grilla.PrinterProperties
+
+        .FitColumns = True
+        .RepeatHeaders = True
+        .Orientation = jgexPPLandscape
+        .HeaderString(jgexHFCenter) = "Listado de Comprobantes de Proveedores" & Chr(10) & pro
+        .FooterString(jgexHFCenter) = Now
+        .FooterString(jgexHFLeft) = rf
+        .BottomMargin = 1500
+        .FooterDistance = 1400
+
+    End With
+    Load frmPrintPreview
+    frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
+    Me.grilla.PrintPreview frmPrintPreview.GEXPreview1, elegidos
+    frmPrintPreview.Show 1
+End Sub
 
 
 Private Sub cmdEstablecerMontoInicial_Click()

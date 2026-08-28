@@ -1809,56 +1809,82 @@ Private Sub OrdenarMovimientosPorValor( _
     On Error GoTo err1
 
     Dim arr() As clsFacturaProveedor
-    Dim movTemp As clsFacturaProveedor
+    Dim facturaTemp As clsFacturaProveedor
 
     Dim i As Long
     Dim j As Long
-    Dim h As Integer
     Dim cantidad As Long
     Dim intercambiar As Boolean
 
+    Dim valorI As Double
+    Dim valorJ As Double
+
     cantidad = facturas.count
-    
-    If Factura.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then h = -1 Else h = 1
 
     If cantidad <= 1 Then Exit Sub
 
     ReDim arr(1 To cantidad)
 
     '---------------------------------------------
-    ' Pasar la colección a un array
+    ' Pasar colección a array
     '---------------------------------------------
     For i = 1 To cantidad
         Set arr(i) = facturas.item(i)
     Next i
 
     '---------------------------------------------
-    ' Ordenar por el valor NUMÉRICO REAL
-    ' StaticTotalOrigenes es Double
+    ' Ordenar por el TOTAL REAL,
+    ' considerando NC como negativas
     '---------------------------------------------
     For i = 1 To cantidad - 1
 
         For j = i + 1 To cantidad
 
-            If ascendente Then
+            'Factura i
+            If arr(i).tipoDocumentoContable = _
+                    tipoDocumentoContable.notaCredito Then
 
-                intercambiar = _
-                    (arr(i).total * h > _
-                     arr(j).total * h)
+                valorI = arr(i).total * -1
 
             Else
 
-                intercambiar = _
-                    (arr(i).total * h < _
-                     arr(j).total * h)
+                valorI = arr(i).total
 
             End If
 
+
+            'Factura j
+            If arr(j).tipoDocumentoContable = _
+                    tipoDocumentoContable.notaCredito Then
+
+                valorJ = arr(j).total * -1
+
+            Else
+
+                valorJ = arr(j).total
+
+            End If
+
+
+            '-------------------------------------
+            ' Comparar
+            '-------------------------------------
+            If ascendente Then
+
+                intercambiar = (valorI > valorJ)
+
+            Else
+
+                intercambiar = (valorI < valorJ)
+
+            End If
+
+
             If intercambiar Then
 
-                Set movTemp = arr(i)
+                Set facturaTemp = arr(i)
                 Set arr(i) = arr(j)
-                Set arr(j) = movTemp
+                Set arr(j) = facturaTemp
 
             End If
 
@@ -1867,7 +1893,7 @@ Private Sub OrdenarMovimientosPorValor( _
     Next i
 
     '---------------------------------------------
-    ' Reconstruir colección ya ordenada
+    ' Reconstruir colección
     '---------------------------------------------
     Set facturas = New Collection
 
@@ -1876,7 +1902,7 @@ Private Sub OrdenarMovimientosPorValor( _
     Next i
 
     '---------------------------------------------
-    ' Redibujar la grilla
+    ' Refrescar grilla
     '---------------------------------------------
     Me.grilla.ItemCount = 0
     Me.grilla.ItemCount = facturas.count
@@ -1891,4 +1917,3 @@ err1:
            vbExclamation
 
 End Sub
-

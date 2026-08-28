@@ -1016,6 +1016,21 @@ Private Sub cmdCrear_Click()
         
             Exit Sub
         
+        If Monto > 0 And tieneChequesPropios Then
+
+        MsgBox "La transferencia no puede tener al mismo tiempo " & _
+               "un monto bancario y cheques propios." & _
+               vbCrLf & vbCrLf & _
+               "Si la transferencia se realiza mediante cheque, " & _
+               "deje el campo Monto vacío y cargue únicamente " & _
+               "el cheque correspondiente.", _
+               vbExclamation, _
+               "Transferencia"
+    
+        Exit Sub
+    
+    End If
+
         End If
         
         'El comprobante solamente es obligatorio

@@ -192,7 +192,7 @@ While Not rs.EOF
     mov.FechaCarga = ValorFecha(rs, "fecha_carga")
 
     etapa = "id_banco"
-    mov.idBanco = ValorLong(rs, "id_banco")
+    mov.IdBanco = ValorLong(rs, "id_banco")
 
     etapa = "banco"
     mov.Banco = ValorTexto(rs, "banco")
@@ -547,7 +547,58 @@ Private Function SQLMovimientosManuales() As String
     q = q & " ON b.id = c.idBanco "
 
     q = q & "WHERE mov.estado = 1 "
-    q = q & "AND o.pertenencia = 'banco' "
+    
+    '----------------------------------------------------------
+    ' EVITAR DOBLE IMPACTO:
+    '
+    ' Si una TRANSFERENCIA tiene cheques propios asociados
+    ' desde la misma cuenta origen y dichos cheques conforman
+    ' el importe de la operación de salida, NO mostrar esa
+    ' salida bancaria.
+    '
+    ' El egreso real aparecerá cuando el cheque ingrese al
+    ' banco mediante fecha_ingreso_banco.
+    '----------------------------------------------------------
+    
+    q = q & "AND NOT ("
+    
+    q = q & " UPPER(IFNULL(mov.tipo_movimiento, '')) " _
+        & " IN ('TRANSFERENCIA', 'EGRESO') "
+    
+    q = q & " AND o.entrada_salida = -1 "
+    
+    q = q & " AND EXISTS ("
+    
+    q = q & " SELECT 1 "
+    
+    q = q & " FROM movimientos_caja_bancos_cheques mcc "
+    
+    q = q & " INNER JOIN Cheques chx "
+    q = q & " ON chx.id = mcc.id_cheque "
+    
+    q = q & " INNER JOIN Chequeras chqx "
+    q = q & " ON chqx.id = chx.id_chequera "
+    
+    q = q & " WHERE mcc.id_movimiento_caja_bancos = mov.id "
+    
+    q = q & " AND IFNULL(chx.propio, 0) = 1 "
+    
+    'El cheque debe pertenecer a la misma cuenta bancaria
+    'que estamos intentando debitar.
+    q = q & " AND chqx.id_cuenta_bancaria = " _
+          & " o.cuentabanc_o_caja_id "
+    
+    q = q & " GROUP BY " _
+          & " mcc.id_movimiento_caja_bancos," _
+          & " chqx.id_cuenta_bancaria "
+    
+    'El total de los cheques debe coincidir con el egreso.
+    q = q & " HAVING ABS(SUM(IFNULL(chx.monto, 0))) = " _
+          & " ABS(IFNULL(o.monto, 0)) "
+    
+    q = q & " )"
+    
+    q = q & ") "
 
     SQLMovimientosManuales = q
 
