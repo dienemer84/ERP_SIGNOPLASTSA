@@ -14,6 +14,38 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
    ScaleMode       =   0  'User
    ScaleWidth      =   18015
    WindowState     =   2  'Maximized
+   Begin GridEX20.GridEX gridTotalesCuenta 
+      Height          =   5535
+      Left            =   21120
+      TabIndex        =   34
+      Top             =   2400
+      Width           =   6015
+      _ExtentX        =   10610
+      _ExtentY        =   9763
+      Version         =   "2.0"
+      BoundColumnIndex=   ""
+      ReplaceColumnIndex=   ""
+      ColumnAutoResize=   -1  'True
+      MethodHoldFields=   -1  'True
+      GroupByBoxVisible=   0   'False
+      DataMode        =   99
+      ColumnHeaderHeight=   285
+      IntProp1        =   0
+      IntProp2        =   0
+      IntProp7        =   0
+      ColumnsCount    =   2
+      Column(1)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0000
+      Column(2)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0164
+      FormatStylesCount=   6
+      FormatStyle(1)  =   "frmAdminCajaBancosListaAsientoBancario.frx":02A4
+      FormatStyle(2)  =   "frmAdminCajaBancosListaAsientoBancario.frx":03DC
+      FormatStyle(3)  =   "frmAdminCajaBancosListaAsientoBancario.frx":048C
+      FormatStyle(4)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0540
+      FormatStyle(5)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0618
+      FormatStyle(6)  =   "frmAdminCajaBancosListaAsientoBancario.frx":06D0
+      ImageCount      =   0
+      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":07B0
+   End
    Begin VB.PictureBox pic 
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -38,9 +70,9 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Left            =   120
       TabIndex        =   1
       Top             =   120
-      Width           =   21885
+      Width           =   19365
       _Version        =   786432
-      _ExtentX        =   38603
+      _ExtentX        =   34158
       _ExtentY        =   3413
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
@@ -59,9 +91,9 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
          Left            =   15120
          TabIndex        =   32
          Top             =   240
-         Width           =   6615
+         Width           =   4095
          _Version        =   786432
-         _ExtentX        =   11668
+         _ExtentX        =   7223
          _ExtentY        =   2778
          _StockProps     =   79
          Caption         =   "Resumen"
@@ -466,8 +498,8 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       Left            =   120
       TabIndex        =   27
       Top             =   2400
-      Width           =   14775
-      _ExtentX        =   26061
+      Width           =   20895
+      _ExtentX        =   36856
       _ExtentY        =   9710
       Version         =   "2.0"
       BoundColumnIndex=   ""
@@ -481,33 +513,33 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
       IntProp2        =   0
       IntProp7        =   0
       ColumnsCount    =   11
-      Column(1)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0000
-      Column(2)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0178
-      Column(3)       =   "frmAdminCajaBancosListaAsientoBancario.frx":02D8
-      Column(4)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0418
-      Column(5)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0558
-      Column(6)       =   "frmAdminCajaBancosListaAsientoBancario.frx":06C0
-      Column(7)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0808
-      Column(8)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0950
-      Column(9)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0ADC
-      Column(10)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0C14
-      Column(11)      =   "frmAdminCajaBancosListaAsientoBancario.frx":0D5C
+      Column(1)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0988
+      Column(2)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0B00
+      Column(3)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0C60
+      Column(4)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0DA0
+      Column(5)       =   "frmAdminCajaBancosListaAsientoBancario.frx":0EE0
+      Column(6)       =   "frmAdminCajaBancosListaAsientoBancario.frx":1048
+      Column(7)       =   "frmAdminCajaBancosListaAsientoBancario.frx":1190
+      Column(8)       =   "frmAdminCajaBancosListaAsientoBancario.frx":12D8
+      Column(9)       =   "frmAdminCajaBancosListaAsientoBancario.frx":1464
+      Column(10)      =   "frmAdminCajaBancosListaAsientoBancario.frx":159C
+      Column(11)      =   "frmAdminCajaBancosListaAsientoBancario.frx":16E4
       FormatStylesCount=   13
-      FormatStyle(1)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0E7C
-      FormatStyle(2)  =   "frmAdminCajaBancosListaAsientoBancario.frx":0FA4
-      FormatStyle(3)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1054
-      FormatStyle(4)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1108
-      FormatStyle(5)  =   "frmAdminCajaBancosListaAsientoBancario.frx":11E0
-      FormatStyle(6)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1298
-      FormatStyle(7)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1378
-      FormatStyle(8)  =   "frmAdminCajaBancosListaAsientoBancario.frx":142C
-      FormatStyle(9)  =   "frmAdminCajaBancosListaAsientoBancario.frx":14E4
-      FormatStyle(10) =   "frmAdminCajaBancosListaAsientoBancario.frx":1598
-      FormatStyle(11) =   "frmAdminCajaBancosListaAsientoBancario.frx":1654
-      FormatStyle(12) =   "frmAdminCajaBancosListaAsientoBancario.frx":1708
-      FormatStyle(13) =   "frmAdminCajaBancosListaAsientoBancario.frx":17B8
+      FormatStyle(1)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1804
+      FormatStyle(2)  =   "frmAdminCajaBancosListaAsientoBancario.frx":192C
+      FormatStyle(3)  =   "frmAdminCajaBancosListaAsientoBancario.frx":19DC
+      FormatStyle(4)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1A90
+      FormatStyle(5)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1B68
+      FormatStyle(6)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1C20
+      FormatStyle(7)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1D00
+      FormatStyle(8)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1DB4
+      FormatStyle(9)  =   "frmAdminCajaBancosListaAsientoBancario.frx":1E6C
+      FormatStyle(10) =   "frmAdminCajaBancosListaAsientoBancario.frx":1F20
+      FormatStyle(11) =   "frmAdminCajaBancosListaAsientoBancario.frx":1FDC
+      FormatStyle(12) =   "frmAdminCajaBancosListaAsientoBancario.frx":2090
+      FormatStyle(13) =   "frmAdminCajaBancosListaAsientoBancario.frx":2140
       ImageCount      =   0
-      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":1854
+      PrinterProperties=   "frmAdminCajaBancosListaAsientoBancario.frx":21DC
    End
    Begin MSComDlg.CommonDialog CommonDialog 
       Left            =   840
@@ -556,7 +588,11 @@ Private desde
 Dim ids As String
 Private Movimientos As New Collection
 Private AsientoContable As clsAsientoContable
+
 Private ordenValorAscendente As Boolean
+Private ordenCuentaAscendente As Boolean
+
+Private TotalesCuentas As New Collection
 
 Dim i As Integer
 
@@ -633,7 +669,8 @@ Private Sub Form_Load()
 
     Customize Me
     GridEXHelper.CustomizeGrid Me.gridOrdenes, True
-    
+    GridEXHelper.CustomizeGrid Me.gridTotalesCuenta, False, False
+
     DAOCuentaBancaria.llenarComboXtremeSuite Me.cboCtaBcaria
     Me.cboCtaBcaria.ListIndex = -1
     
@@ -722,17 +759,21 @@ Private Sub llenarLista()
     
     TotalizarMovimientos
     
+    TotalizarPorCuentaContable
 
 End Sub
 
 
 Private Sub Form_Resize()
     On Error Resume Next
-    Me.gridOrdenes.Width = Me.ScaleWidth - 300
+'''    Me.gridOrdenes.Width = Me.ScaleWidth - 300
     Me.gridOrdenes.Height = (Me.ScaleHeight * 75) / 100
+    
+    Me.gridTotalesCuenta.Height = (Me.ScaleHeight * 75) / 100
 
     Me.GroupBox1.Width = Me.gridOrdenes.Width
     GridEXHelper.AutoSizeColumns Me.gridOrdenes
+    GridEXHelper.AutoSizeColumns Me.gridTotalesCuenta
     
 End Sub
 
@@ -942,6 +983,52 @@ Private Property Get ISuscriber_id() As String
     ISuscriber_id = ids
 End Property
 
+
+Private Sub gridTotalesCuenta_UnboundReadData( _
+    ByVal RowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
+
+    If RowIndex <= 0 Then Exit Sub
+    If RowIndex > TotalesCuentas.count Then Exit Sub
+
+    Dim cuenta As clsCuentaContable
+
+    Set cuenta = TotalesCuentas.item(RowIndex)
+
+    Values(1) = _
+        cuenta.codigo & " | " & cuenta.nombre
+
+    Values(2) = _
+        Replace( _
+            FormatCurrency( _
+                funciones.FormatearDecimales( _
+                    cuenta.TotalAcumulado)), _
+            "$", "")
+
+End Sub
+
+Private Sub gridTotalesCuenta_ColumnHeaderClick( _
+    ByVal Column As GridEX20.JSColumn)
+
+    'Cuenta Contable
+    If Column.Index = 1 Then
+
+        ordenCuentaAscendente = _
+            Not ordenCuentaAscendente
+
+        OrdenarTotalesPorCuenta _
+            ordenCuentaAscendente
+
+        Exit Sub
+
+    End If
+
+    GridEXHelper.ColumnHeaderClick _
+        Me.gridTotalesCuenta, _
+        Column
+
+End Sub
 
 Private Sub mnuAprobar_Click()
     SeleccionarOP
@@ -1362,3 +1449,181 @@ err1:
 
 End Sub
 
+Private Sub TotalizarPorCuentaContable()
+
+    On Error GoTo err1
+
+    Dim mov As clsAsientoContable
+    Dim cuentaResumen As clsCuentaContable
+    Dim cuentaExistente As clsCuentaContable
+
+    Set TotalesCuentas = New Collection
+
+    If Movimientos Is Nothing Then
+        Me.gridTotalesCuenta.ItemCount = 0
+        Exit Sub
+    End If
+
+    For Each mov In Movimientos
+
+        If IsSomething(mov.CuentaContable) Then
+
+            Set cuentaExistente = Nothing
+
+            On Error Resume Next
+            Set cuentaExistente = _
+                TotalesCuentas(CStr(mov.CuentaContable.Id))
+            On Error GoTo err1
+
+            If cuentaExistente Is Nothing Then
+
+                Set cuentaResumen = _
+                    New clsCuentaContable
+
+                cuentaResumen.Id = _
+                    mov.CuentaContable.Id
+
+                cuentaResumen.codigo = _
+                    mov.CuentaContable.codigo
+
+                cuentaResumen.nombre = _
+                    mov.CuentaContable.nombre
+
+                cuentaResumen.TotalAcumulado = _
+                    mov.StaticTotalOrigenes
+
+                TotalesCuentas.Add _
+                    cuentaResumen, _
+                    CStr(cuentaResumen.Id)
+
+            Else
+
+                cuentaExistente.TotalAcumulado = _
+                    cuentaExistente.TotalAcumulado + _
+                    mov.StaticTotalOrigenes
+
+            End If
+
+        End If
+
+    Next mov
+
+
+    '---------------------------------------------
+    ' Recargar grilla resumen
+    '---------------------------------------------
+    Me.gridTotalesCuenta.ItemCount = 0
+    
+    Me.gridTotalesCuenta.ItemCount = _
+        TotalesCuentas.count
+    
+    Me.gridTotalesCuenta.Refresh
+    
+    'GridEX20 a veces no repinta la primera fila
+    If TotalesCuentas.count > 0 Then
+        Me.gridTotalesCuenta.RefreshRowIndex 1
+    End If
+
+    Exit Sub
+    
+    ordenCuentaAscendente = True
+
+    OrdenarTotalesPorCuenta _
+        ordenCuentaAscendente, _
+        False
+    
+
+err1:
+
+    MsgBox "Error al totalizar por cuenta contable: " & _
+           Err.Description, _
+           vbExclamation
+
+End Sub
+
+Private Sub OrdenarTotalesPorCuenta( _
+    ByVal ascendente As Boolean, _
+    Optional ByVal refrescarGrilla As Boolean = True)
+
+    On Error GoTo err1
+
+    Dim arr() As clsCuentaContable
+    Dim cuentaTemp As clsCuentaContable
+
+    Dim i As Long
+    Dim j As Long
+    Dim cantidad As Long
+    Dim intercambiar As Boolean
+
+    Dim nombreI As String
+    Dim nombreJ As String
+
+    cantidad = TotalesCuentas.count
+
+    If cantidad <= 1 Then Exit Sub
+
+    ReDim arr(1 To cantidad)
+
+    'Pasar colección a array
+    For i = 1 To cantidad
+        Set arr(i) = TotalesCuentas.item(i)
+    Next i
+
+    'Orden alfabético por nombre
+    For i = 1 To cantidad - 1
+
+        For j = i + 1 To cantidad
+
+            nombreI = UCase$(Trim$(arr(i).nombre))
+            nombreJ = UCase$(Trim$(arr(j).nombre))
+
+            If ascendente Then
+                intercambiar = (nombreI > nombreJ)
+            Else
+                intercambiar = (nombreI < nombreJ)
+            End If
+
+            If intercambiar Then
+
+                Set cuentaTemp = arr(i)
+                Set arr(i) = arr(j)
+                Set arr(j) = cuentaTemp
+
+            End If
+
+        Next j
+
+    Next i
+
+    'Reconstruir colección
+    Set TotalesCuentas = New Collection
+
+    For i = 1 To cantidad
+
+        TotalesCuentas.Add _
+            arr(i), _
+            CStr(arr(i).Id)
+
+    Next i
+
+    If refrescarGrilla Then
+
+        Me.gridTotalesCuenta.ItemCount = 0
+        Me.gridTotalesCuenta.ItemCount = TotalesCuentas.count
+        Me.gridTotalesCuenta.Refresh
+
+        If TotalesCuentas.count > 0 Then
+            Me.gridTotalesCuenta.RefreshRowIndex 1
+        End If
+
+    End If
+
+    Exit Sub
+
+err1:
+
+    MsgBox "Error al ordenar cuentas contables: " & _
+           Err.Description, _
+           vbExclamation
+
+End Sub

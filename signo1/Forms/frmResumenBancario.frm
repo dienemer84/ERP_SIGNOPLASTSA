@@ -495,48 +495,124 @@ Private i As Integer
 
 
 Private Sub btnImprimir_Click()
-    Dim elegidos As Boolean
-    Dim q As String
 
-    Dim rf As String
+    On Error GoTo err1
 
-    rf = Me.lblNetoGravadoFiltrado & Chr(10)
-    rf = rf & Me.lblTotalNoGravadoFiltrado & Chr(10)
-    rf = rf & Me.lblTotalNeto & Chr(10)
-    rf = rf & Me.lblTotalIVA & Chr(10)
-    rf = rf & Me.lblTotal & Chr(10)
+    Dim encabezadoIzq As String
+    Dim encabezadoDer As String
 
+    '------------------------------------------------------
+    ' VALIDAR QUE HAYA UN REPORTE GENERADO
+    '------------------------------------------------------
+    If Movimientos Is Nothing Then
 
-    If Not IsNull(Me.dtpDesde) Then
-        q = "Desde " & Format(Me.dtpDesde, "dd-mm-yyyy") & Chr(10)
-    End If
-    If Not IsNull(Me.dtpHasta) Then
-        q = q & "Hasta " & Format(Me.dtpHasta, "dd-mm-yyyy") & Chr(10)
+        MsgBox "Primero debe generar el reporte bancario.", _
+               vbExclamation, _
+               "Reporte bancario"
 
-    End If
+        Exit Sub
 
-
-    If IsNull(Me.dtpHasta) And IsNull(Me.dtpDesde) Then
-        q = "PERIODO SIN ESPECIFICAR" & Chr(10)
     End If
 
+    If Movimientos.count = 0 Then
 
-    With Me.grilla.PrinterProperties
+        MsgBox "No hay movimientos para imprimir.", _
+               vbInformation, _
+               "Reporte bancario"
 
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' ENCABEZADO IZQUIERDO
+    '------------------------------------------------------
+    encabezadoIzq = _
+        "Desde: " & _
+        Format$(Me.dtpDesde(1).value, "dd/mm/yyyy") & _
+        "    Hasta: " & _
+        Format$(Me.dtpHasta(1).value, "dd/mm/yyyy") & _
+        vbCrLf
+
+    encabezadoIzq = encabezadoIzq & _
+        "Cuenta: " & textoCombo(Me.cboCuentasBancarias) & _
+        vbCrLf
+
+    encabezadoIzq = encabezadoIzq & _
+        "Origen: " & textoCombo(Me.cboOrigen)
+
+    '------------------------------------------------------
+    ' ENCABEZADO DERECHO
+    '------------------------------------------------------
+    encabezadoDer = _
+        "Moneda: " & textoCombo(Me.cboMonedas) & _
+        vbCrLf
+
+    encabezadoDer = encabezadoDer & _
+        "Tipo: " & textoCombo(Me.cboTipoMovimiento) & _
+        vbCrLf
+
+    encabezadoDer = encabezadoDer & _
+        "Registros: " & CStr(Movimientos.count)
+
+    '------------------------------------------------------
+    ' CONFIGURAR IMPRESION DEL GRID
+    '------------------------------------------------------
+    With Me.gridResumenBancario.PrinterProperties
+
+        'Ajustar todas las columnas al ancho de hoja.
         .FitColumns = True
+
+        'Repetir encabezados de columnas en cada página.
         .RepeatHeaders = True
+
+        'El reporte es ancho, imprimir apaisado.
         .Orientation = jgexPPLandscape
-        .HeaderString(jgexHFCenter) = "Listado de Comprobantes de Proveedores" & Chr(10) & pro
-        .FooterString(jgexHFCenter) = Now
-        .FooterString(jgexHFLeft) = rf
-        .BottomMargin = 1500
-        .FooterDistance = 1400
+
+        'Título.
+        .HeaderString(jgexHFCenter) = _
+            "REPORTE BANCARIO"
+
+        'Filtros.
+        .HeaderString(jgexHFLeft) = encabezadoIzq
+        .HeaderString(jgexHFRight) = encabezadoDer
+
+        'Pie.
+        .FooterString(jgexHFCenter) = _
+            "Emitido: " & Format$(Now, "dd/mm/yyyy HH:nn:ss")
+
+        .BottomMargin = 1200
+        .FooterDistance = 700
 
     End With
+
+    '------------------------------------------------------
+    ' VISTA PREVIA
+    '------------------------------------------------------
     Load frmPrintPreview
-    frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
-    Me.grilla.PrintPreview frmPrintPreview.GEXPreview1, elegidos
+
+    frmPrintPreview.Move _
+        Me.Left, _
+        Me.Top, _
+        Me.Width, _
+        Me.Height
+
+    Me.gridResumenBancario.PrintPreview _
+        frmPrintPreview.GEXPreview1
+
     frmPrintPreview.Show 1
+
+    Exit Sub
+
+err1:
+
+    MsgBox "No se pudo generar la vista previa del reporte bancario." & _
+           vbCrLf & vbCrLf & _
+           "Error: " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Reporte bancario"
+
 End Sub
 
 
@@ -1170,10 +1246,14 @@ Private Function ExportarResumenBancario( _
     Dim primeraFilaDatos As Long
     Dim ultimaFila As Long
     Dim indice As Long
+    
+    Dim FechaEmision As Date
 
     Dim ruta As String
 
     ExportarResumenBancario = False
+    
+    FechaEmision = Now
 
     '=========================================================
     ' VALIDACIONES
@@ -1249,7 +1329,17 @@ Private Function ExportarResumenBancario( _
     '=========================================================
     ' ENCABEZADOS
     '=========================================================
+    
+    With xlWorksheet.Range("A5:I5")
+        .Merge
+        .value = "Reporte generado el: " & _
+                 Format$(FechaEmision, "dd/mm/yyyy HH:nn:ss")
+        .Font.Italic = True
+        .HorizontalAlignment = xlRight
+    End With
+    
     filaEncabezado = 6
+    
     primeraFilaDatos = filaEncabezado + 1
 
     xlWorksheet.Cells(filaEncabezado, 1).value = "Fecha"
