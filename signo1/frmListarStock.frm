@@ -10,7 +10,6 @@ Begin VB.Form frmListarStock
    ClientWidth     =   18105
    Icon            =   "frmListarStock.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MDIChild        =   -1  'True
    ScaleHeight     =   9345
    ScaleWidth      =   18105
@@ -26,11 +25,32 @@ Begin VB.Form frmListarStock
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.PushButton cmdBuscarNombreArchivo 
+         Height          =   375
+         Left            =   10680
+         TabIndex        =   11
+         Top             =   720
+         Width           =   1185
+         _Version        =   786432
+         _ExtentX        =   2090
+         _ExtentY        =   661
+         _StockProps     =   79
+         Caption         =   "Buscar"
+         Appearance      =   6
+      End
+      Begin VB.TextBox Text2 
+         Height          =   285
+         Left            =   7440
+         TabIndex        =   10
+         Text            =   "Text2"
+         Top             =   765
+         Width           =   3135
+      End
       Begin VB.TextBox Text1 
          Height          =   285
          Left            =   1425
          TabIndex        =   6
-         Top             =   750
+         Top             =   765
          Width           =   2955
       End
       Begin XtremeSuiteControls.PushButton CMDsINCliente 
@@ -65,7 +85,7 @@ Begin VB.Form frmListarStock
          Height          =   390
          Left            =   4470
          TabIndex        =   5
-         Top             =   720
+         Top             =   712
          Width           =   1185
          _Version        =   786432
          _ExtentX        =   2090
@@ -73,6 +93,25 @@ Begin VB.Form frmListarStock
          _StockProps     =   79
          Caption         =   "Buscar"
          Appearance      =   6
+      End
+      Begin VB.Label Label2 
+         BackColor       =   &H00FF8080&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nombre Archivo"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   195
+         Left            =   6000
+         TabIndex        =   12
+         Top             =   810
+         Width           =   1500
       End
       Begin VB.Label P 
          AutoSize        =   -1  'True
@@ -111,7 +150,7 @@ Begin VB.Form frmListarStock
          Height          =   195
          Left            =   150
          TabIndex        =   7
-         Top             =   765
+         Top             =   810
          Width           =   1170
       End
    End
@@ -254,12 +293,61 @@ Private Sub archivos_Click()
         frmArchi.Show
     End If
 End Sub
+
+Private Sub cmdBuscarNombreArchivo_Click()
+    llenarListaNombreArchivo
+End Sub
+
+Private Sub llenarListaNombreArchivo()
+
+    Set pieza_actual = Nothing
+
+    Dim filtro As String
+    filtro = "1 = 1"
+
+    If LenB(Me.Text1.Text) > 0 Then
+        filtro = filtro & " AND ({pieza}.{nombre} LIKE '%{valor_nombre}%'"
+
+        If IsNumeric(Me.Text1.Text) Then
+            If val(Me.Text1.Text) <> 0 Then
+                filtro = filtro & " OR {pieza}.id = " & val(Me.Text1.Text)
+            End If
+        End If
+
+        filtro = filtro & ")"
+
+        filtro = Replace(filtro, "{valor_nombre}", Me.Text1.Text)
+    End If
+    
+    If Me.cboCliente.ListIndex > -1 Then
+        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> -1 Then
+            filtro = filtro & " AND {pieza}.{cliente_id} = " & Me.cboCliente.ItemData(Me.cboCliente.ListIndex)
+        End If
+    End If
+
+    filtro = Replace(filtro, "{cliente_id}", DAOPieza.CAMPO_ID_CLIENTE)
+    filtro = Replace(filtro, "{pieza}", DAOPieza.TABLA_PIEZA)
+    filtro = Replace(filtro, "{nombre}", DAOPieza.CAMPO_NOMBRE)
+    Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
+    Set m_piezas = DAOPieza.FindAll(0, filtro)
+    Me.grid.ItemCount = 0
+    Me.grid.ItemCount = m_piezas.count
+    Me.caption = "Piezas [ Cantidad: " & m_piezas.count & " ]"
+    GridEXHelper.AutoSizeColumns Me.grid, True
+    Me.grid.Refresh
+    grid_SelectionChange
+    GridEXHelper.AutoSizeColumns Me.grid, True
+End Sub
+
+
 Private Sub CMDsINCliente_Click()
     Me.cboCliente.ListIndex = -1
 End Sub
+
 Private Sub Command1_Click()
     llenarLista
 End Sub
+
 Private Sub llenarLista()
 
     Set pieza_actual = Nothing
@@ -271,8 +359,8 @@ Private Sub llenarLista()
         filtro = filtro & " AND ({pieza}.{nombre} LIKE '%{valor_nombre}%'"
 
         If IsNumeric(Me.Text1.Text) Then
-            If Val(Me.Text1.Text) <> 0 Then
-                filtro = filtro & " OR {pieza}.id = " & Val(Me.Text1.Text)
+            If val(Me.Text1.Text) <> 0 Then
+                filtro = filtro & " OR {pieza}.id = " & val(Me.Text1.Text)
             End If
         End If
 
@@ -334,9 +422,9 @@ Private Sub grid_DblClick()
     End If
 End Sub
 
-Private Sub grid_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grid_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
-    Set pieza_actual = m_piezas(grid.rowIndex(RowPosition))
+    Set pieza_actual = m_piezas(grid.RowIndex(RowPosition))
 
     If ColIndex = 7 And CantArchivos.item(pieza_actual.Id) > 0 Then
         IconIndex = 1
@@ -403,8 +491,8 @@ End Sub
 Private Sub grid_RowFormat(RowBuffer As GridEX20.JSRowData)
     If RowBuffer.value(5) > 0 Then RowBuffer.CellStyle(5) = "TieneIncidenciasArchivos"
 
-    If RowBuffer.rowIndex > 0 Then
-        Set pieza_actual = m_piezas.item(RowBuffer.rowIndex)
+    If RowBuffer.RowIndex > 0 Then
+        Set pieza_actual = m_piezas.item(RowBuffer.RowIndex)
         If Not pieza_actual.Activa Then RowBuffer.RowStyle = "desactivado"
     End If
 
@@ -425,30 +513,30 @@ Private Sub grid_SelectionChange()
     On Error Resume Next
     Dim RowPosition As Long
     RowPosition = grid.row
-    If grid.rowIndex(RowPosition) > 0 Then
-        Set pieza_actual = m_piezas(grid.rowIndex(RowPosition))
+    If grid.RowIndex(RowPosition) > 0 Then
+        Set pieza_actual = m_piezas(grid.RowIndex(RowPosition))
     Else
         Set pieza_actual = Nothing
     End If
 End Sub
 
-Private Sub grid_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 'On Error Resume Next
     If m_piezas.count > 0 Then
-        Set pieza_actual = m_piezas.item(rowIndex)
+        Set pieza_actual = m_piezas.item(RowIndex)
         With pieza_actual
             Values(1) = .Id
             Values(2) = .nombre
             Values(3) = .Revision
 
-            If .cliente Is Nothing Then
+            If .Cliente Is Nothing Then
                 Values(4) = vbNullString
             Else
-                Values(4) = .cliente.razon
+                Values(4) = .Cliente.razon
             End If
             Values(5) = .CantidadStock
             Values(6) = IIf(.EsConjunto, "Conjunto", "Unidad")
-            Values(7) = " (" & Val(CantArchivos(pieza_actual.Id)) & ")"
+            Values(7) = " (" & val(CantArchivos(pieza_actual.Id)) & ")"
             Values(8) = enums.EnumTiposComplejidad(.Complejidad)
         End With
     End If
@@ -479,7 +567,7 @@ Private Sub mnuNuevaRevision_Click()
             revisionActual = pieza_actual.Revision
 
             If IsNumeric(revisionActual) Then
-                nuevaRevision = Val(pieza_actual.Revision) + 1
+                nuevaRevision = val(pieza_actual.Revision) + 1
             End If
 
             nuevaRevision = InputBox("Ingrese la revisión de la nueva pieza." & vbNewLine & "Revisión actual: " & revisionActual, , nuevaRevision)
@@ -542,7 +630,7 @@ Private Function Versionar(Pieza As Pieza, idOriginal As Long, Revision As Strin
 
         For Each P In Pieza.PiezasHijas
             If Not Versionar(P, P.Id, P.Revision) Then GoTo E
-            conectar.execute "INSERT INTO stockConjuntos_rev (idPiezaPadre, idPiezaHija, cantidad) VALUES (" & Pieza.Id & ", " & P.Id & ", " & P.Cantidad & ")"
+            conectar.execute "INSERT INTO stockConjuntos_rev (idPiezaPadre, idPiezaHija, cantidad) VALUES (" & Pieza.Id & ", " & P.Id & ", " & P.cantidad & ")"
         Next P
 
         Versionar = True
@@ -561,7 +649,7 @@ End Function
 Private Sub MovStock_Click()
     If Not pieza_actual Is Nothing Then
         frmMovimientosStock.Frame1.caption = "[ " & pieza_actual.nombre & " ]"
-        frmMovimientosStock.lblCliente = IIf(pieza_actual.cliente Is Nothing, vbNullString, pieza_actual.cliente.razon)
+        frmMovimientosStock.lblCliente = IIf(pieza_actual.Cliente Is Nothing, vbNullString, pieza_actual.Cliente.razon)
         frmMovimientosStock.lblid = pieza_actual.Id
         frmMovimientosStock.Show
     End If
