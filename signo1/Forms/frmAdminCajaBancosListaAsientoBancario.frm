@@ -1457,6 +1457,8 @@ Private Sub TotalizarPorCuentaContable()
     Dim cuentaResumen As clsCuentaContable
     Dim cuentaExistente As clsCuentaContable
 
+    Dim valorMovimiento As Double
+
     Set TotalesCuentas = New Collection
 
     If Movimientos Is Nothing Then
@@ -1468,12 +1470,37 @@ Private Sub TotalizarPorCuentaContable()
 
         If IsSomething(mov.CuentaContable) Then
 
+            '---------------------------------------------
+            ' Determinar signo según tipo de movimiento
+            '---------------------------------------------
+            Select Case UCase$(Trim$(mov.TipoMovimiento))
+
+                Case "INGRESO"
+
+                    valorMovimiento = _
+                        mov.StaticTotalOrigenes
+
+                Case "EGRESO", "SALIDA"
+
+                    valorMovimiento = _
+                        mov.StaticTotalOrigenes * -1
+
+                Case Else
+
+                    'TRANSFERENCIA u otro tipo
+                    'No afecta una cuenta contable
+                    valorMovimiento = 0
+
+            End Select
+
+
             Set cuentaExistente = Nothing
 
             On Error Resume Next
             Set cuentaExistente = _
                 TotalesCuentas(CStr(mov.CuentaContable.Id))
             On Error GoTo err1
+
 
             If cuentaExistente Is Nothing Then
 
@@ -1490,7 +1517,7 @@ Private Sub TotalizarPorCuentaContable()
                     mov.CuentaContable.nombre
 
                 cuentaResumen.TotalAcumulado = _
-                    mov.StaticTotalOrigenes
+                    valorMovimiento
 
                 TotalesCuentas.Add _
                     cuentaResumen, _
@@ -1500,7 +1527,7 @@ Private Sub TotalizarPorCuentaContable()
 
                 cuentaExistente.TotalAcumulado = _
                     cuentaExistente.TotalAcumulado + _
-                    mov.StaticTotalOrigenes
+                    valorMovimiento
 
             End If
 
@@ -1510,28 +1537,30 @@ Private Sub TotalizarPorCuentaContable()
 
 
     '---------------------------------------------
-    ' Recargar grilla resumen
+    ' Orden inicial A-Z
     '---------------------------------------------
-    Me.gridTotalesCuenta.ItemCount = 0
-    
-    Me.gridTotalesCuenta.ItemCount = _
-        TotalesCuentas.count
-    
-    Me.gridTotalesCuenta.Refresh
-    
-    'GridEX20 a veces no repinta la primera fila
-    If TotalesCuentas.count > 0 Then
-        Me.gridTotalesCuenta.RefreshRowIndex 1
-    End If
-
-    Exit Sub
-    
     ordenCuentaAscendente = True
 
     OrdenarTotalesPorCuenta _
         ordenCuentaAscendente, _
         False
-    
+
+
+    '---------------------------------------------
+    ' Recargar grilla resumen
+    '---------------------------------------------
+    Me.gridTotalesCuenta.ItemCount = 0
+
+    Me.gridTotalesCuenta.ItemCount = _
+        TotalesCuentas.count
+
+    Me.gridTotalesCuenta.Refresh
+
+    If TotalesCuentas.count > 0 Then
+        Me.gridTotalesCuenta.RefreshRowIndex 1
+    End If
+
+    Exit Sub
 
 err1:
 

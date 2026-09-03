@@ -1,14 +1,15 @@
 Attribute VB_Name = "DAOCuentaBancaria"
 Option Explicit
 
+
 Public Sub LlenarCombo(cbo As ComboBox)
     Dim col As Collection
     Set col = FindAll()
-    Dim C As CuentaBancaria
+    Dim c As CuentaBancaria
 
-    For Each C In col
-        cbo.AddItem C.DescripcionFormateada
-        cbo.ItemData(cbo.NewIndex) = C.Id
+    For Each c In col
+        cbo.AddItem c.DescripcionFormateada
+        cbo.ItemData(cbo.NewIndex) = c.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -19,11 +20,11 @@ End Sub
 Public Sub llenarComboXtremeSuite(cbo As Xtremesuitecontrols.ComboBox)
     Dim col As Collection
     Set col = FindAll()
-    Dim C As CuentaBancaria
+    Dim c As CuentaBancaria
 
-    For Each C In col
-        cbo.AddItem C.DescripcionFormateada
-        cbo.ItemData(cbo.NewIndex) = C.Id
+    For Each c In col
+        cbo.AddItem c.DescripcionFormateada
+        cbo.ItemData(cbo.NewIndex) = c.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -34,11 +35,11 @@ End Sub
 Public Sub llenarComboCBU(cbo As ComboBox)
     Dim col As Collection
     Set col = FindAllWithCBU()
-    Dim C As CuentaBancaria
+    Dim c As CuentaBancaria
 
-    For Each C In col
-        cbo.AddItem C.DescripcionCBUFormateada
-        cbo.ItemData(cbo.NewIndex) = C.Id
+    For Each c In col
+        cbo.AddItem c.DescripcionCBUFormateada
+        cbo.ItemData(cbo.NewIndex) = c.Id
     Next
     If cbo.ListCount > 0 Then
         cbo.ListIndex = 0
@@ -52,6 +53,7 @@ Public Function FindAllWithCBU() As Collection
 
     Set FindAllWithCBU = col
 End Function
+
 
 Public Function FindById(Id As Long) As CuentaBancaria
     Dim col As Collection
@@ -75,19 +77,23 @@ Public Function FindByCBU(CBU As String) As CuentaBancaria
 End Function
 
 
-
-Public Function FindAll(Optional ByVal filter As String = " 1 = 1 ") As Collection
+Public Function FindAll(Optional ByVal filter As String = " 1 = 1 ", Optional ByVal orden As String) As Collection
     Dim q As String
+    
     q = "SELECT *" _
       & " FROM AdminConfigCuentas c" _
       & " LEFT JOIN AdminConfigBancos b ON b.id = c.idBanco" _
-      & " LEFT JOIN AdminConfigMonedas m ON m.id = c.moneda_id WHERE " & filter
+      & " LEFT JOIN AdminConfigMonedas m ON m.id = c.moneda_id WHERE " & filter & orden
 
     Dim col As New Collection
     Dim rs As Recordset
+    
     Set rs = conectar.RSFactory(q)
+    
     Dim fieldsIndex As New Dictionary
+    
     BuildFieldsIndex rs, fieldsIndex
+    
     Dim tmp As CuentaBancaria
 
     While Not rs.EOF
@@ -97,27 +103,28 @@ Public Function FindAll(Optional ByVal filter As String = " 1 = 1 ") As Collecti
     Wend
 
     Set FindAll = col
+    
 End Function
 
 
-
 Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, Optional tablaBanco As String = vbNullString, Optional tablaMoneda As String = vbNullString) As CuentaBancaria
-    Dim C As CuentaBancaria
+    Dim c As CuentaBancaria
     Dim Id As Long
 
     Id = GetValue(rs, indice, tabla, "id")
     If Id > 0 Then
-        Set C = New CuentaBancaria
-        C.Id = Id
-        C.numero = GetValue(rs, indice, tabla, "cuenta")
-        C.TipoCuenta = GetValue(rs, indice, tabla, "tipo")
-        C.CBU = GetValue(rs, indice, tabla, "cbu")
-        If LenB(tablaBanco) > 0 Then Set C.Banco = DAOBancos.Map(rs, indice, tablaBanco)
-        If LenB(tablaMoneda) > 0 Then Set C.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
+        Set c = New CuentaBancaria
+        c.Id = Id
+        c.numero = GetValue(rs, indice, tabla, "cuenta")
+        c.TipoCuenta = GetValue(rs, indice, tabla, "tipo")
+        c.CBU = GetValue(rs, indice, tabla, "cbu")
+        If LenB(tablaBanco) > 0 Then Set c.Banco = DAOBancos.Map(rs, indice, tablaBanco)
+        If LenB(tablaMoneda) > 0 Then Set c.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
     End If
 
-    Set Map = C
+    Set Map = c
 End Function
+
 
 Public Function Save(cuenta As CuentaBancaria) As Boolean
     Dim q As String

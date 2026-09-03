@@ -13,6 +13,7 @@ Begin VB.Form frmListarStock
    MDIChild        =   -1  'True
    ScaleHeight     =   9345
    ScaleWidth      =   18105
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   1335
       Left            =   120
@@ -25,32 +26,31 @@ Begin VB.Form frmListarStock
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
-      Begin XtremeSuiteControls.PushButton cmdBuscarNombreArchivo 
-         Height          =   375
+      Begin XtremeSuiteControls.PushButton cmdBuscarArchivo 
+         Height          =   390
          Left            =   10680
          TabIndex        =   11
-         Top             =   720
+         Top             =   840
          Width           =   1185
          _Version        =   786432
          _ExtentX        =   2090
-         _ExtentY        =   661
+         _ExtentY        =   688
          _StockProps     =   79
          Caption         =   "Buscar"
          Appearance      =   6
       End
-      Begin VB.TextBox Text2 
+      Begin VB.TextBox txtNombreArchivo 
          Height          =   285
          Left            =   7440
          TabIndex        =   10
-         Text            =   "Text2"
-         Top             =   765
+         Top             =   885
          Width           =   3135
       End
       Begin VB.TextBox Text1 
          Height          =   285
          Left            =   1425
          TabIndex        =   6
-         Top             =   765
+         Top             =   885
          Width           =   2955
       End
       Begin XtremeSuiteControls.PushButton CMDsINCliente 
@@ -85,7 +85,7 @@ Begin VB.Form frmListarStock
          Height          =   390
          Left            =   4470
          TabIndex        =   5
-         Top             =   712
+         Top             =   825
          Width           =   1185
          _Version        =   786432
          _ExtentX        =   2090
@@ -110,7 +110,7 @@ Begin VB.Form frmListarStock
          Height          =   195
          Left            =   6000
          TabIndex        =   12
-         Top             =   810
+         Top             =   960
          Width           =   1500
       End
       Begin VB.Label P 
@@ -150,7 +150,7 @@ Begin VB.Form frmListarStock
          Height          =   195
          Left            =   150
          TabIndex        =   7
-         Top             =   810
+         Top             =   960
          Width           =   1170
       End
    End
@@ -294,49 +294,9 @@ Private Sub archivos_Click()
     End If
 End Sub
 
-Private Sub cmdBuscarNombreArchivo_Click()
-    llenarListaNombreArchivo
-End Sub
 
-Private Sub llenarListaNombreArchivo()
-
-    Set pieza_actual = Nothing
-
-    Dim filtro As String
-    filtro = "1 = 1"
-
-    If LenB(Me.Text1.Text) > 0 Then
-        filtro = filtro & " AND ({pieza}.{nombre} LIKE '%{valor_nombre}%'"
-
-        If IsNumeric(Me.Text1.Text) Then
-            If val(Me.Text1.Text) <> 0 Then
-                filtro = filtro & " OR {pieza}.id = " & val(Me.Text1.Text)
-            End If
-        End If
-
-        filtro = filtro & ")"
-
-        filtro = Replace(filtro, "{valor_nombre}", Me.Text1.Text)
-    End If
-    
-    If Me.cboCliente.ListIndex > -1 Then
-        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> -1 Then
-            filtro = filtro & " AND {pieza}.{cliente_id} = " & Me.cboCliente.ItemData(Me.cboCliente.ListIndex)
-        End If
-    End If
-
-    filtro = Replace(filtro, "{cliente_id}", DAOPieza.CAMPO_ID_CLIENTE)
-    filtro = Replace(filtro, "{pieza}", DAOPieza.TABLA_PIEZA)
-    filtro = Replace(filtro, "{nombre}", DAOPieza.CAMPO_NOMBRE)
-    Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
-    Set m_piezas = DAOPieza.FindAll(0, filtro)
-    Me.grid.ItemCount = 0
-    Me.grid.ItemCount = m_piezas.count
-    Me.caption = "Piezas [ Cantidad: " & m_piezas.count & " ]"
-    GridEXHelper.AutoSizeColumns Me.grid, True
-    Me.grid.Refresh
-    grid_SelectionChange
-    GridEXHelper.AutoSizeColumns Me.grid, True
+Private Sub cmdBuscarArchivo_Click()
+    BuscarPorNombreArchivo
 End Sub
 
 
@@ -344,48 +304,261 @@ Private Sub CMDsINCliente_Click()
     Me.cboCliente.ListIndex = -1
 End Sub
 
+
 Private Sub Command1_Click()
     llenarLista
 End Sub
 
-Private Sub llenarLista()
+Private Sub BuscarPorNombreArchivo()
+
+    On Error GoTo ErrHandler
 
     Set pieza_actual = Nothing
 
     Dim filtro As String
+    Dim textoArchivo As String
+    Dim palabras() As String
+    Dim palabra As String
+    Dim i As Long
+
+    textoArchivo = Trim$(Me.txtNombreArchivo.Text)
+
+    If LenB(textoArchivo) = 0 Then
+        MsgBox "Ingrese parte del nombre del archivo que desea buscar.", _
+               vbInformation, "Buscar archivo"
+        Me.txtNombreArchivo.SetFocus
+        Exit Sub
+    End If
+
+    Screen.MousePointer = vbHourglass
+
     filtro = "1 = 1"
 
-    If LenB(Me.Text1.Text) > 0 Then
-        filtro = filtro & " AND ({pieza}.{nombre} LIKE '%{valor_nombre}%'"
+    '--------------------------------------------------
+    ' FILTRO POR CLIENTE, SI HAY UNO SELECCIONADO
+    '--------------------------------------------------
+    If Me.cboCliente.ListIndex > -1 Then
 
-        If IsNumeric(Me.Text1.Text) Then
-            If val(Me.Text1.Text) <> 0 Then
-                filtro = filtro & " OR {pieza}.id = " & val(Me.Text1.Text)
+        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> -1 Then
+
+            filtro = filtro & _
+                     " AND s." & DAOPieza.CAMPO_ID_CLIENTE & " = " & _
+                     Me.cboCliente.ItemData(Me.cboCliente.ListIndex)
+
+        End If
+
+    End If
+
+
+    '--------------------------------------------------
+    ' ARCHIVOS ASOCIADOS A PIEZAS
+    '--------------------------------------------------
+    filtro = filtro & _
+             " AND EXISTS (" & _
+             " SELECT 1" & _
+             " FROM sp_archivos.archivos arch_busqueda" & _
+             " WHERE arch_busqueda.idPieza = s.id" & _
+             " AND arch_busqueda.origen = " & OrigenArchivos.OA_Piezas
+
+
+    '--------------------------------------------------
+    ' PERMITIR VARIAS PALABRAS
+    '--------------------------------------------------
+    palabras = Split(textoArchivo, " ")
+
+    For i = LBound(palabras) To UBound(palabras)
+
+        palabra = Trim$(palabras(i))
+
+        If LenB(palabra) > 0 Then
+
+            palabra = Replace(palabra, "'", "''")
+
+            filtro = filtro & _
+                     " AND arch_busqueda.nombre LIKE '%" & _
+                     palabra & "%'"
+
+        End If
+
+    Next i
+
+
+    filtro = filtro & ")"
+
+
+    '--------------------------------------------------
+    ' BUSCAR PIEZAS
+    '--------------------------------------------------
+    Set CantArchivos = _
+        DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
+
+    Set m_piezas = DAOPieza.FindAll(0, filtro)
+
+
+    '--------------------------------------------------
+    ' ACTUALIZAR GRILLA
+    '--------------------------------------------------
+    Me.grid.ItemCount = 0
+    Me.grid.ItemCount = m_piezas.count
+
+    Me.caption = "Piezas [ Cantidad: " & m_piezas.count & " ]"
+
+    GridEXHelper.AutoSizeColumns Me.grid, True
+
+    Me.grid.Refresh
+
+    grid_SelectionChange
+
+    Screen.MousePointer = vbDefault
+
+    If m_piezas.count = 0 Then
+        MsgBox "No se encontraron piezas con archivos que coincidan con:" & _
+               vbCrLf & vbCrLf & _
+               textoArchivo, _
+               vbInformation, "Buscar archivo"
+    End If
+
+    Exit Sub
+
+
+ErrHandler:
+
+    Screen.MousePointer = vbDefault
+
+    MsgBox "Error al buscar por nombre de archivo:" & _
+           vbCrLf & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Buscar archivo"
+
+End Sub
+
+
+Private Sub llenarLista()
+
+    On Error GoTo ErrHandler
+
+    Screen.MousePointer = vbHourglass
+
+    Set pieza_actual = Nothing
+
+    Dim filtro As String
+    Dim textoBusqueda As String
+    Dim idsPiezas As Variant
+
+    filtro = "1 = 1"
+
+    textoBusqueda = Trim$(Me.Text1.Text)
+
+    '--------------------------------------------------
+    ' NOMBRE / ID PIEZA
+    '--------------------------------------------------
+    If LenB(textoBusqueda) > 0 Then
+
+        textoBusqueda = Replace(textoBusqueda, "'", "''")
+
+        filtro = filtro & _
+                 " AND ({pieza}.{nombre} LIKE '%" & _
+                 textoBusqueda & "%'"
+
+        If IsNumeric(textoBusqueda) Then
+            If val(textoBusqueda) <> 0 Then
+
+                filtro = filtro & _
+                         " OR {pieza}.id = " & _
+                         CLng(val(textoBusqueda))
+
             End If
         End If
 
         filtro = filtro & ")"
 
-        filtro = Replace(filtro, "{valor_nombre}", Me.Text1.Text)
-    End If
-    If Me.cboCliente.ListIndex > -1 Then
-        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> -1 Then
-            filtro = filtro & " AND {pieza}.{cliente_id} = " & Me.cboCliente.ItemData(Me.cboCliente.ListIndex)
-        End If
     End If
 
-    filtro = Replace(filtro, "{cliente_id}", DAOPieza.CAMPO_ID_CLIENTE)
-    filtro = Replace(filtro, "{pieza}", DAOPieza.TABLA_PIEZA)
-    filtro = Replace(filtro, "{nombre}", DAOPieza.CAMPO_NOMBRE)
-    Set CantArchivos = DAOArchivo.GetCantidadArchivosPorReferencia(OA_Piezas)
+
+    '--------------------------------------------------
+    ' CLIENTE
+    '--------------------------------------------------
+    If Me.cboCliente.ListIndex > -1 Then
+
+        If Me.cboCliente.ItemData(Me.cboCliente.ListIndex) <> -1 Then
+
+            filtro = filtro & _
+                     " AND {pieza}.{cliente_id} = " & _
+                     Me.cboCliente.ItemData(Me.cboCliente.ListIndex)
+
+        End If
+
+    End If
+
+
+    filtro = Replace(filtro, _
+                     "{cliente_id}", _
+                     DAOPieza.CAMPO_ID_CLIENTE)
+
+    filtro = Replace(filtro, _
+                     "{pieza}", _
+                     DAOPieza.TABLA_PIEZA)
+
+    filtro = Replace(filtro, _
+                     "{nombre}", _
+                     DAOPieza.CAMPO_NOMBRE)
+
+
+    '==================================================
+    ' PRIMERO BUSCAMOS LAS PIEZAS
+    '==================================================
     Set m_piezas = DAOPieza.FindAll(0, filtro)
+
+
+    '==================================================
+    ' SOLO BUSCAMOS CANTIDAD DE ARCHIVOS
+    ' DE LAS PIEZAS ENCONTRADAS
+    '==================================================
+    If m_piezas.count > 0 Then
+
+        idsPiezas = ObtenerIdsPiezas(m_piezas)
+
+        Set CantArchivos = _
+            DAOArchivo.GetCantidadArchivosPorReferencia( _
+                OA_Piezas, _
+                idsPiezas)
+
+    Else
+
+        Set CantArchivos = New Dictionary
+
+    End If
+
+
+    '--------------------------------------------------
+    ' ACTUALIZAR GRILLA
+    '--------------------------------------------------
     Me.grid.ItemCount = 0
     Me.grid.ItemCount = m_piezas.count
-    Me.caption = "Piezas [ Cantidad: " & m_piezas.count & " ]"
-    GridEXHelper.AutoSizeColumns Me.grid, True
+
+    Me.caption = _
+        "Piezas [ Cantidad: " & _
+        m_piezas.count & " ]"
+
     Me.grid.Refresh
+
     grid_SelectionChange
-    GridEXHelper.AutoSizeColumns Me.grid, True
+
+    Screen.MousePointer = vbDefault
+
+    Exit Sub
+
+
+ErrHandler:
+
+    Screen.MousePointer = vbDefault
+
+    MsgBox "Error al buscar piezas:" & _
+           vbCrLf & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Búsqueda de piezas"
+
 End Sub
 
 Private Sub Command2_Click()
@@ -706,6 +879,8 @@ Private Sub VerDesarrollo_Click()
     End If
 
 End Sub
+
+
 Private Sub verIncidencias_Click()
     If Not pieza_actual Is Nothing Then
         frmVerIncidencias.referencia = pieza_actual.Id
@@ -714,3 +889,24 @@ Private Sub verIncidencias_Click()
     End If
 End Sub
 
+
+Private Function ObtenerIdsPiezas( _
+    ByVal piezas As Collection) As Variant
+
+    Dim ids() As String
+    Dim i As Long
+    Dim P As Pieza
+
+    ReDim ids(0 To piezas.count - 1)
+
+    For i = 1 To piezas.count
+
+        Set P = piezas.item(i)
+
+        ids(i - 1) = CStr(P.Id)
+
+    Next i
+
+    ObtenerIdsPiezas = ids
+
+End Function

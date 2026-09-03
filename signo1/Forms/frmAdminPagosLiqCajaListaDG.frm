@@ -1752,13 +1752,18 @@ Private Sub gridChequesPropios_UnboundReadData(ByVal RowIndex As Long, ByVal Boo
 End Sub
 
 Private Sub gridChequesPropios_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If LiquidacionCaja.ChequesPropios.count >= RowIndex Then
-        Set cheque = OrdenPago.ChequesPropios.item(RowIndex)
-        cheque.Monto = Values(3)
-        cheque.FechaVencimiento = Values(4)
+
+    If RowIndex > 0 And RowIndex <= LiquidacionCaja.ChequesPropios.count Then
+
+        Set cheque = LiquidacionCaja.ChequesPropios.item(RowIndex)
+
+        cheque.Monto = CDbl(Values(3))
+        cheque.FechaVencimiento = CDate(Values(4))
+
     End If
 
     Totalizar
+
 End Sub
 
 

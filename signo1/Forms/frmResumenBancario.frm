@@ -461,6 +461,15 @@ Begin VB.Form frmResumenBancario
          Alignment       =   1
       End
    End
+   Begin VB.Label lblTotales 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Totales: | |"
+      Height          =   255
+      Left            =   8520
+      TabIndex        =   30
+      Top             =   2640
+      Width           =   11655
+   End
    Begin VB.Label Label3 
       Caption         =   "Label3"
       Height          =   255
@@ -1198,13 +1207,14 @@ End Function
 
 
 Private Sub PushButton1_Click()
+
     CargarFiltros
 
     Set Movimientos = New Collection
+    Set MovimientosBase = New Collection
 
-    Me.gridResumenBancario.ItemCount = 0
-    Me.gridResumenBancario.Refresh
-    
+    ActualizarGridResumen
+
 End Sub
 
 
@@ -1746,15 +1756,26 @@ Private Sub ActualizarGridResumen()
     Me.gridResumenBancario.Refresh
 
     If Movimientos Is Nothing Then
-        Me.Label3.caption = "Registros mostrados: 0"
+
+        Me.Label3.caption = _
+            "Registros mostrados: 0"
+
+        ActualizarTotalesResumen
+
         Exit Sub
+
     End If
 
-    Me.gridResumenBancario.ItemCount = Movimientos.count
+    Me.gridResumenBancario.ItemCount = _
+        Movimientos.count
+
     Me.gridResumenBancario.Refresh
 
     Me.Label3.caption = _
-        "Registros mostrados: " & Movimientos.count
+        "Registros mostrados: " & _
+        Movimientos.count
+
+    ActualizarTotalesResumen
 
     GridEXHelper.AutoSizeColumns _
         Me.gridResumenBancario
@@ -1937,3 +1958,67 @@ err1:
 End Sub
 
 
+Private Sub ActualizarTotalesResumen()
+
+    Dim Movimiento As DTOResumenBancario
+
+    Dim totalIngresos As Double
+    Dim totalEgresos As Double
+    Dim saldoFinal As Double
+
+    totalIngresos = 0
+    totalEgresos = 0
+    saldoFinal = 0
+
+    If Movimientos Is Nothing Then
+        Me.lblTotales.caption = _
+            "Total ingresos: 0,00   |   " & _
+            "Total egresos: 0,00   |   " & _
+            "Saldo final: 0,00"
+        Exit Sub
+    End If
+
+    For Each Movimiento In Movimientos
+
+        'El saldo inicial no es un movimiento real.
+        If UCase$(Trim$(Movimiento.Origen)) <> _
+           "SALDO INICIAL" Then
+
+            totalIngresos = _
+                totalIngresos + Movimiento.Ingreso
+
+            totalEgresos = _
+                totalEgresos + Movimiento.Egreso
+
+        End If
+
+    Next Movimiento
+
+    'El último saldo acumulado es el saldo final del reporte.
+    If Movimientos.count > 0 Then
+
+        Set Movimiento = _
+            Movimientos.item(Movimientos.count)
+
+        saldoFinal = Movimiento.SaldoAcumulado
+
+    End If
+
+    Me.lblTotales.caption = _
+        "Total ingresos: " & _
+        Replace( _
+            FormatCurrency( _
+                funciones.FormatearDecimales(totalIngresos)), _
+            "$", "") & _
+        "   |   Total egresos: " & _
+        Replace( _
+            FormatCurrency( _
+                funciones.FormatearDecimales(totalEgresos)), _
+            "$", "") & _
+        "   |   Saldo final: " & _
+        Replace( _
+            FormatCurrency( _
+                funciones.FormatearDecimales(saldoFinal)), _
+            "$", "")
+
+End Sub

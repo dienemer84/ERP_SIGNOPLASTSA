@@ -143,8 +143,9 @@ Begin VB.Form frmAdminFacturasEditarDatos
       Begin VB.TextBox Text6 
          Height          =   2295
          Left            =   240
+         MultiLine       =   -1  'True
          TabIndex        =   4
-         Text            =   "Text6"
+         Text            =   "frmAdminFacturasEditarDatos.frx":0000
          Top             =   3600
          Width           =   7695
       End
@@ -333,7 +334,7 @@ Private Sub CargarDatos()
     DAOProvincias.LlenarComboNoDefinido Me.cboProvincias, 1, True
 
     Me.cboProvincias.ListIndex = _
-        funciones.PosIndexCbo(Factura.IdProvincia, Me.cboProvincias)
+        funciones.PosIndexCbo(Factura.idProvincia, Me.cboProvincias)
 
     If Me.cboProvincias.ListIndex < 0 Then
         Me.cboProvincias.ListIndex = _
@@ -358,7 +359,7 @@ Private Sub PushButton2_Click()
     Me.Text6.Text = Factura.TextoAdicional
 
     Me.cboProvincias.ListIndex = _
-        funciones.PosIndexCbo(Factura.IdProvincia, Me.cboProvincias)
+        funciones.PosIndexCbo(Factura.idProvincia, Me.cboProvincias)
 
     If Me.cboProvincias.ListIndex < 0 Then
         Me.cboProvincias.ListIndex = _
@@ -386,10 +387,10 @@ Private Sub PushButton3_Click()
     Factura.TextoAdicional = Me.Text6.Text
 
     If Me.cboProvincias.ListIndex >= 0 Then
-        Factura.IdProvincia = _
+        Factura.idProvincia = _
             Me.cboProvincias.ItemData(Me.cboProvincias.ListIndex)
     Else
-        Factura.IdProvincia = 0
+        Factura.idProvincia = 0
     End If
 
     If Not DAOFactura.Save(Factura, True) Then

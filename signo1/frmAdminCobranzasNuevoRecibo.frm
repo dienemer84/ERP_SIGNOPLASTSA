@@ -6,7 +6,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Recibo"
-   ClientHeight    =   8205
+   ClientHeight    =   8130
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   19530
@@ -16,7 +16,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8205
+   ScaleHeight     =   8130
    ScaleWidth      =   19530
    Begin XtremeSuiteControls.PushButton cmdCerrar 
       Height          =   405
@@ -713,7 +713,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   16842753
+         Format          =   64815105
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -945,7 +945,7 @@ Private Factura As Factura
 Private bancos As New Collection
 Private Banco As Banco
 Private CuentaBancaria As CuentaBancaria
-Private cuentasBancarias As New Collection
+Private CuentasBancarias As New Collection
 Private Monedas As New Collection
 Private moneda As clsMoneda
 Private operacion As operacion
@@ -960,7 +960,7 @@ Public Property Let editar(nValue As Boolean)
 End Property
 
 
-Public Property Let reciboId(nIdRecibo As Long)
+Public Property Let ReciboID(nIdRecibo As Long)
     Set Recibo = DAORecibo.FindById(nIdRecibo, True, True, True, True, True)
 
     If Recibo Is Nothing Then
@@ -973,13 +973,13 @@ Public Property Let reciboId(nIdRecibo As Long)
     Me.txtRedondeo.Text = Recibo.redondeo
 
     Set Cajas = DAOCaja.FindAll()
-    Me.gridCajas.ItemCount = Cajas.count
+    Me.GridCajas.ItemCount = Cajas.count
 
     Set Monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = Monedas.count
 
-    Set cuentasBancarias = DAOCuentaBancaria.FindAll()
-    Me.gridCuentasBancarias.ItemCount = cuentasBancarias.count
+    Set CuentasBancarias = DAOCuentaBancaria.FindAll(, " ORDER BY b.Nombre")
+    Me.gridCuentasBancarias.ItemCount = CuentasBancarias.count
 
     Set bancos = DAOBancos.GetAll()
     Me.gridBancos.ItemCount = bancos.count
@@ -994,7 +994,7 @@ Public Property Let reciboId(nIdRecibo As Long)
     Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
 
     Set retenciones = DAORetenciones.FindAll()
@@ -1223,7 +1223,7 @@ Private Sub Form_Load()
 
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
 
     GridEXHelper.CustomizeGrid Me.gridDepositosOperaciones, False, True
     GridEXHelper.CustomizeGrid Me.gridCajaOperaciones, False, True
@@ -1417,8 +1417,8 @@ End Sub
 
 
 Private Sub gridCuentasBancarias_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If cuentasBancarias.count >= RowIndex Then
-        Set CuentaBancaria = cuentasBancarias.item(RowIndex)
+    If CuentasBancarias.count >= RowIndex Then
+        Set CuentaBancaria = CuentasBancarias.item(RowIndex)
         Values(1) = CuentaBancaria.Id
         Values(2) = CuentaBancaria.DescripcionFormateada
     End If
@@ -1639,7 +1639,7 @@ Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
         If IsSomething(retencionRecibo.Retencion) Then
             Values(2) = retencionRecibo.Retencion.nombre
         End If
-        Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(retencionRecibo.Valor)), "$", "")
+        Values(3) = Replace(FormatCurrency(funciones.FormatearDecimales(retencionRecibo.valor)), "$", "")
         Values(4) = Format(retencionRecibo.FEcha, "dd-mm-yyyy")
 
     End If
@@ -1649,7 +1649,7 @@ End Sub
 Private Sub UpdateAddRetencion(ByRef retencionRecibo As retencionRecibo, Values As GridEX20.JSRowData)
     retencionRecibo.idRecibo = Recibo.Id
     retencionRecibo.NroRetencion = Values(1)
-    retencionRecibo.Valor = val(Values(3))
+    retencionRecibo.valor = val(Values(3))
 
     If LenB(Values(4)) = 0 Or Not IsDate(Values(4)) Then
         retencionRecibo.FEcha = Me.dtpFecha.value    'Now

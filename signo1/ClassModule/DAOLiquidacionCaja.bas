@@ -588,9 +588,10 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     
         If cascada Then
 
-        q = "SELECT id_cheque " _
-            & "FROM liquidaciones_caja_cheques " _
-            & "WHERE id_liquidacion_caja = " & op.Id
+        q = "SELECT lcc.id_cheque, c.propio " _
+            & "FROM liquidaciones_caja_cheques lcc " _
+            & "INNER JOIN Cheques c ON c.id = lcc.id_cheque " _
+            & "WHERE lcc.id_liquidacion_caja = " & op.Id
             
         q = q & " AND id_cheque NOT IN (-1"
         
@@ -601,13 +602,41 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
             q = q & ", " & funciones.JoinCollectionValues(op.ChequesPropios, ", ", "id")
         End If
         q = q & ")"
+        
         Set rs = conectar.RSFactory(q)
+        
         While Not rs.EOF
-            q = "UPDATE Cheques SET  en_cartera = 1, observaciones = NULL, origen= NULL WHERE id = " & rs!id_cheque
+        
+            If rs!Propio Then
+        
+                'Cheque propio: vuelve a quedar disponible en la chequera
+                q = "UPDATE Cheques SET " & _
+                    "liquidacion_caja_origen = 0, " & _
+                    "fecha_emision = NULL, " & _
+                    "fecha_vencimiento = NULL, " & _
+                    "monto = 0, " & _
+                    "en_cartera = 0, " & _
+                    "observaciones = NULL, " & _
+                    "origen = NULL " & _
+                    "WHERE id = " & rs!id_cheque
+        
+            Else
+        
+                'Cheque de terceros: vuelve a cartera
+                q = "UPDATE Cheques SET " & _
+                    "liquidacion_caja_origen = 0, " & _
+                    "en_cartera = 1, " & _
+                    "observaciones = NULL, " & _
+                    "origen = NULL " & _
+                    "WHERE id = " & rs!id_cheque
+        
+            End If
+        
             If Not conectar.execute(q) Then GoTo E
+        
             rs.MoveNext
+        
         Wend
-
 
         q = "DELETE FROM liquidaciones_caja_cheques " _
             & "WHERE id_liquidacion_caja = " & op.Id
@@ -669,27 +698,12 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
     Dim fac As clsFacturaProveedor
 
     For Each fac In op.FacturasProveedor
-    
-        'fac.ImporteTotalAbonado = fac.NetoGravado + fac.TotalOtros
         
         fac.ImporteTotalAbonado = fac.ImporteTotalSaldo
         
-'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.id & ", " & fac.id & "," & fac.ImporteTotalAbonado & "," & fac.NetoGravado & "," & fac.TotalOtros & ")"
-
         q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & fac.ImporteTotalAbonado & "," & fac.ImporteNetoGravadoSaldo & "," & fac.ImporteOtrosSaldo & ")"
 
-'        q = "INSERT INTO liquidaciones_caja_facturas VALUES (" & op.Id & ", " & fac.Id & "," & 0 & "," & 0 & "," & 0 & ")"
-
         If Not conectar.execute(q) Then GoTo E
-
-''''        nopago = 0
-''''
-''''        fac.TotalAbonado = fac.TotalPendiente
-''''
-''''        ''''nopago = fac.total - fac.TotalAbonadoGlobal - fac.TotalAbonado
-''''
-''''        nopago = 0
-        
         
         es = EstadoFacturaProveedor.Saldada
 
@@ -698,7 +712,6 @@ Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = 
         If Not conectar.execute(q) Then GoTo E
     
     Next fac
-
 
     '------------------------------------------------------
 
