@@ -7,7 +7,7 @@ Begin VB.Form frmCategoriasSueldo
    ClientHeight    =   5835
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   6060
+   ClientWidth     =   11115
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -23,7 +23,7 @@ Begin VB.Form frmCategoriasSueldo
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   5835
-   ScaleWidth      =   6060
+   ScaleWidth      =   11115
    Begin XtremeReportControl.ReportControl ReportControl 
       Height          =   3450
       Left            =   90
@@ -35,6 +35,17 @@ Begin VB.Form frmCategoriasSueldo
       _ExtentY        =   6085
       _StockProps     =   64
       BorderStyle     =   3
+   End
+   Begin XtremeReportControl.ReportControl ReportHistorico 
+      Height          =   5175
+      Left            =   6240
+      TabIndex        =   15
+      Top             =   480
+      Width           =   4695
+      _Version        =   786432
+      _ExtentX        =   8281
+      _ExtentY        =   9128
+      _StockProps     =   64
    End
    Begin VB.CommandButton cmdActualizarValores 
       BackColor       =   &H00E0E0E0&
@@ -167,6 +178,14 @@ Begin VB.Form frmCategoriasSueldo
          Width           =   555
       End
    End
+   Begin VB.Label Label3 
+      Caption         =   "Historial de valores de la categoría"
+      Height          =   300
+      Left            =   6255
+      TabIndex        =   14
+      Top             =   150
+      Width           =   4680
+   End
 End
 Attribute VB_Name = "frmCategoriasSueldo"
 Attribute VB_GlobalNameSpace = False
@@ -195,7 +214,7 @@ Private Sub cmdActualizarValores_Click()
     On Error GoTo err1:
     Dim Sueldo As Double
 
-    Sueldo = Val(InputBox("Ingrese incremental", "Actualización Salarial Global", 0))
+    Sueldo = val(InputBox("Ingrese incremental", "Actualización Salarial Global", 0))
     Dim cat As CategoriaSueldo
 
     Dim categorias As Collection
@@ -204,7 +223,7 @@ Private Sub cmdActualizarValores_Click()
     Dim porc As Double
     porc = 1 + (Sueldo / 100)
     For Each cat In categorias
-        cat.Valor = funciones.RedondearDecimales(cat.Valor * porc, 2)
+        cat.valor = funciones.RedondearDecimales(cat.valor * porc, 2)
         If Not DAOCategoriaSueldo.Save(cat) Then GoTo err1
     Next
     conectar.CommitTransaction
@@ -252,9 +271,9 @@ Private Sub cmdGuardar_Click()
 
     If categoria Is Nothing Then Set categoria = New CategoriaSueldo
 
-    categoria.nombre = Me.txtNombre.text
-    categoria.PorcentajeEspecializacion = CDbl(Me.txtEspecializacion.text)
-    categoria.Valor = CDbl(Me.txtValor.text)
+    categoria.nombre = Me.txtNombre.Text
+    categoria.PorcentajeEspecializacion = CDbl(Me.txtEspecializacion.Text)
+    categoria.valor = CDbl(Me.txtValor.Text)
 
     If DAOCategoriaSueldo.Save(categoria) Then
         Dim EVENTO As New clsEventoObserver
@@ -292,9 +311,9 @@ Private Sub cmdNuevo_Click()
 End Sub
 
 Private Sub LimpiarControles()
-    Me.txtEspecializacion.text = vbNullString
-    Me.txtNombre.text = vbNullString
-    Me.txtValor.text = vbNullString
+    Me.txtEspecializacion.Text = vbNullString
+    Me.txtNombre.Text = vbNullString
+    Me.txtValor.Text = vbNullString
 
     Set categoria = Nothing
 End Sub
@@ -327,6 +346,30 @@ Private Sub Form_Load()
     Me.ReportControl.PaintManager.HorizontalGridStyle = xtpGridSmallDots
     Me.ReportControl.PaintManager.VerticalGridStyle = xtpGridSmallDots
 
+    
+    '----------------------------------------
+    ' Columnas del historial de sueldos
+    '----------------------------------------
+    
+    Set Column = Me.ReportHistorico.Columns.Add(0, "Fecha", 100, True)
+    Column.Sortable = True
+    Column.AllowDrag = False
+    Column.AllowRemove = False
+    
+    Set Column = Me.ReportHistorico.Columns.Add(1, "Valor", 100, True)
+    Column.Sortable = True
+    Column.AllowDrag = False
+    Column.AllowRemove = False
+    Column.Alignment = xtpAlignmentRight
+    
+    Set Column = Me.ReportHistorico.Columns.Add(2, "Usuario", 100, True)
+    Column.Sortable = True
+    Column.AllowDrag = False
+    Column.AllowRemove = False
+    
+    Me.ReportHistorico.PaintManager.HorizontalGridStyle = xtpGridSmallDots
+    Me.ReportHistorico.PaintManager.VerticalGridStyle = xtpGridSmallDots
+
     CargarLista
 
     idle = True
@@ -341,7 +384,7 @@ Private Sub CargarLista()
     For Each categoria In categorias
         Set rec = Me.ReportControl.Records.Add
         rec.AddItem categoria.nombre
-        rec.AddItem funciones.FormatearDecimales(categoria.Valor)
+        rec.AddItem funciones.FormatearDecimales(categoria.valor)
         rec.AddItem categoria.PorcentajeEspecializacion
         rec.Tag = categoria.Id
     Next categoria
@@ -353,22 +396,109 @@ Private Sub CargarLista()
 End Sub
 
 Private Sub ReportControl_SelectionChanged()
-    Set categoria = categorias.item(CStr(Me.ReportControl.SelectedRows(0).record.Tag))
-    If Not categoria Is Nothing Then
-        Me.txtEspecializacion.text = categoria.PorcentajeEspecializacion
-        Me.txtValor.text = categoria.Valor
-        Me.txtNombre.text = categoria.nombre
-    Else
+
+    If Me.ReportControl.SelectedRows.count = 0 Then
+
+        Set categoria = Nothing
+
         LimpiarControles
+
+        Me.ReportHistorico.Records.DeleteAll
+        Me.ReportHistorico.Populate
+
+        ActivarControles
+
+        Exit Sub
+
     End If
 
-    If Me.ReportControl.SelectedRows.count > 0 Then
-        registro = Me.ReportControl.SelectedRows(0).Index
+    Set categoria = categorias.item( _
+        CStr(Me.ReportControl.SelectedRows(0).record.Tag))
+
+    If Not categoria Is Nothing Then
+
+        Me.txtEspecializacion.Text = categoria.PorcentajeEspecializacion
+        Me.txtValor.Text = categoria.valor
+        Me.txtNombre.Text = categoria.nombre
+
+        'Cargar historial de la categoría seleccionada
+        CargarHistorico categoria.Id
+
+    Else
+
+        LimpiarControles
+
+        Me.ReportHistorico.Records.DeleteAll
+        Me.ReportHistorico.Populate
+
     End If
+
+    registro = Me.ReportControl.SelectedRows(0).Index
 
     ActivarControles
+
 End Sub
 
 Private Sub txtEspecializacion_Validate(Cancel As Boolean)
     funciones.ValidarTextBox Me.txtEspecializacion, Cancel
+End Sub
+
+Private Sub CargarHistorico(ByVal idCategoriaSueldo As Long)
+
+    On Error GoTo E
+
+    Dim rs As ADODB.Recordset
+    Dim rec As ReportRecord
+
+    Me.ReportHistorico.Records.DeleteAll
+
+    If idCategoriaSueldo <= 0 Then
+        Me.ReportHistorico.Populate
+        Exit Sub
+    End If
+
+    Set rs = DAOCategoriaSueldo.FindHistorico(idCategoriaSueldo)
+
+    While Not rs.EOF
+
+        Set rec = Me.ReportHistorico.Records.Add
+
+        'Fecha
+        If IsNull(rs!FEcha) Then
+            rec.AddItem vbNullString
+        Else
+            rec.AddItem Format$(rs!FEcha, "dd/mm/yyyy")
+        End If
+
+        'Valor
+        If IsNull(rs!valor) Then
+            rec.AddItem vbNullString
+        Else
+            rec.AddItem funciones.FormatearDecimales(CDbl(rs!valor))
+        End If
+
+        'Usuario
+        If IsNull(rs!Usuario) Then
+            rec.AddItem vbNullString
+        Else
+            rec.AddItem CStr(rs!Usuario)
+        End If
+
+        rs.MoveNext
+    Wend
+
+    Me.ReportHistorico.Populate
+
+    If Not rs Is Nothing Then
+        If rs.State = adStateOpen Then rs.Close
+    End If
+
+    Set rs = Nothing
+
+    Exit Sub
+
+E:
+    MsgBox "Error al cargar el historial de la categoría." & vbCrLf & _
+           Err.Description, vbCritical, "Historial de sueldos"
+
 End Sub

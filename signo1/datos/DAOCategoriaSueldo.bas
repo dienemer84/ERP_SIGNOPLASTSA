@@ -56,7 +56,7 @@ Public Function Map(ByRef rs As Recordset, ByRef fieldsIndex As Dictionary, ByRe
         c.Id = Id
         c.nombre = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_NOMBRE)
         c.PorcentajeEspecializacion = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_PORCENTAJE_ESPECIALIZACION)
-        c.Valor = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_VALOR)
+        c.valor = GetValue(rs, fieldsIndex, tableNameOrAlias, DAOCategoriaSueldo.CAMPO_VALOR)
         If LenB(tablaMoneda) > 0 Then Set c.moneda = DAOMoneda.Map(rs, fieldsIndex, tablaMoneda)
     End If
 
@@ -75,13 +75,13 @@ Public Function Save(catSueldo As CategoriaSueldo) As Boolean
           & " valor," _
           & " porcentaje_especializacion)" _
           & " VALUES (" & conectar.Escape(UCase(catSueldo.nombre)) & ", " _
-          & conectar.Escape(catSueldo.Valor) & "," _
+          & conectar.Escape(catSueldo.valor) & "," _
           & conectar.Escape(catSueldo.PorcentajeEspecializacion) & ")"
     Else
         q = "update categoria_sueldo" _
           & " SET" _
           & " nombre = " & conectar.Escape(UCase(catSueldo.nombre)) & "," _
-          & " valor = " & conectar.Escape(catSueldo.Valor) & "," _
+          & " valor = " & conectar.Escape(catSueldo.valor) & "," _
           & " porcentaje_especializacion = " & conectar.Escape(catSueldo.PorcentajeEspecializacion) _
           & " Where" _
           & " id = " & catSueldo.Id
@@ -94,7 +94,7 @@ Public Function Save(catSueldo As CategoriaSueldo) As Boolean
         End If
 
         q = "INSERT INTO categoria_sueldo_historico (id_categoria_sueldo, valor, fecha, id_usuario)   VALUES " _
-          & "(" & catSueldo.Id & "," & catSueldo.Valor & "," & conectar.Escape(Now) & "," & funciones.getUser & ")"
+          & "(" & catSueldo.Id & "," & catSueldo.valor & "," & conectar.Escape(Now) & "," & funciones.getUser & ")"
         Save = conectar.execute(q)
 
 
@@ -107,10 +107,34 @@ E:
     Save = False
 End Function
 
+
 Public Function Delete(catSueldo As CategoriaSueldo) As Boolean
     On Error GoTo E
     Delete = conectar.execute("DELETE FROM categoria_sueldo WHERE id = " & catSueldo.Id)
     Exit Function
 E:
     Delete = False
+End Function
+
+Public Function FindHistorico(ByVal idCategoriaSueldo As Long) As ADODB.Recordset
+
+    Dim q As String
+    Dim rs As ADODB.Recordset
+
+    q = "SELECT " _
+      & "h.id, " _
+      & "h.id_categoria_sueldo, " _
+      & "h.valor, " _
+      & "h.fecha, " _
+      & "h.id_usuario, " _
+      & "u.usuario " _
+      & "FROM categoria_sueldo_historico h " _
+      & "LEFT JOIN usuarios u ON u.id = h.id_usuario " _
+      & "WHERE h.id_categoria_sueldo = " & idCategoriaSueldo & " " _
+      & "ORDER BY h.fecha DESC, h.id DESC"
+
+    Set rs = conectar.RSFactory(q)
+
+    Set FindHistorico = rs
+
 End Function

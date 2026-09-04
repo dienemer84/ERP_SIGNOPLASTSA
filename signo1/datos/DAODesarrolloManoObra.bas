@@ -40,7 +40,9 @@ Public Function FindAll(Optional whereFilter As String = vbNullString, Optional 
     If LenB(whereFilter) > 0 Then
         q = q & " AND " & whereFilter
     End If
-
+    
+    q = q & " ORDER BY dmo.orden, dmo.id"
+    
     Set rs = conectar.RSFactory(q)
 
     Dim fieldsIndex As Dictionary
@@ -91,7 +93,7 @@ Public Function Map(ByRef rs As Recordset, _
     If Id > 0 Then
         Set dmo = New DesarrolloManoObra
         dmo.Id = Id
-        dmo.Cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_CANTIDAD)
+        dmo.cantidad = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_CANTIDAD)
         dmo.detalle = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_DETALLE)
         dmo.Tiempo = GetValue(rs, fieldsIndex, tableNameOrAlias, DAODesarrolloManoObra.CAMPO_TIEMPO)
 
@@ -127,7 +129,7 @@ Public Function Save(dmo As DesarrolloManoObra, Optional ByVal paraRevision As B
 
     q = Replace$(q, "'id_pieza'", dmo.Pieza.Id)
     q = Replace$(q, "'codigo'", dmo.Tarea.Id)
-    q = Replace$(q, "'cantidad'", Escape(dmo.Cantidad))
+    q = Replace$(q, "'cantidad'", Escape(dmo.cantidad))
     q = Replace$(q, "'tiempo'", Escape(dmo.Tiempo))
     q = Replace$(q, "'detalle'", Escape(dmo.detalle))
     q = Replace$(q, "'id'", dmo.Id)

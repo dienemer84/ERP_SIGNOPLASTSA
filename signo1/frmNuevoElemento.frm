@@ -62,6 +62,22 @@ Begin VB.Form frmNuevoElemento
          TabIndex        =   32
          Top             =   6000
          Width           =   12855
+         Begin VB.CommandButton cmdBajarTarea 
+            Caption         =   "Bajar"
+            Height          =   255
+            Left            =   2880
+            TabIndex        =   87
+            Top             =   4440
+            Width           =   735
+         End
+         Begin VB.CommandButton cmdSubirTarea 
+            Caption         =   "Subir"
+            Height          =   255
+            Left            =   2040
+            TabIndex        =   86
+            Top             =   4440
+            Width           =   735
+         End
          Begin VB.CommandButton Command2 
             BackColor       =   &H00E0E0E0&
             Caption         =   "Invertir"
@@ -1172,18 +1188,18 @@ Dim m2
 
 
 Public Sub calcularTotalMateriales(ByVal lst As ListView, ByRef Kg, ByRef m2, ByRef costo)
-    Dim K As Double, m As Double, C As Double
+    Dim K As Double, m As Double, c As Double
     Dim i As Integer
 
     For i = 1 To lst.ListItems.count
         K = K + CDbl(lst.ListItems(i).ListSubItems(10))
         m = m + CDbl(lst.ListItems(i).ListSubItems(11))
-        C = C + CDbl(lst.ListItems(i).ListSubItems(12))
+        c = c + CDbl(lst.ListItems(i).ListSubItems(12))
     Next
     Kg = K
     m2 = m
-    costo = C
-    Me.lblTotalKG = Kg
+    costo = c
+    Me.lblTotalKg = Kg
     Me.lblTotalM2 = m2
     Me.lblCosto = costo
 End Sub
@@ -1201,7 +1217,7 @@ Public Sub calcular_totales_mdo()
     Next i
     Me.lblfijos = Math.Round(totalFIJO, 2)
     Me.lblmdo = Math.Round(TotalMDO, 2)
-    Me.lblCambio = Math.Round(totalCAMBIO, 2)
+    Me.lblcambio = Math.Round(totalCAMBIO, 2)
     Me.lblCtoMDO = Math.Round(cto, 2)
 End Sub
 Private Function verDetalleMateriales(Id)
@@ -1228,7 +1244,7 @@ Private Function verDetalleMateriales(Id)
     Espesor = baseS.Espesor
     Grupo = baseS.Grupo
     rubro = baseS.rubro
-    Scrap = Val(Me.txtScrap)
+    Scrap = val(Me.txtScrap)
     VerDetalle cxh, descripcion, Espesor, Kg, m2ml, Grupo, rubro
 End Function
 
@@ -1247,16 +1263,16 @@ Private Sub btnAgregarMDO_Click()
         x.SubItems(6) = Me.lblTarea
         x.SubItems(8) = Me.lblDescripcion
 
-        Valor = CDbl(Me.lblValor)
+        valor = CDbl(Me.lblValor)
         Tiempo = CDbl(Me.txtTiempo)
         cpp = CInt(Me.lblidCPP)
         cantop = CDbl(Me.txtCantOp)
         If cpp > 0 Then    '(cpp variable)
             totmin = cantop * Tiempo / cpp
-            totplata = totmin * Valor
+            totplata = totmin * valor
         Else
             totmin = cantop * Tiempo
-            totplata = totmin * Valor
+            totplata = totmin * valor
 
         End If
         x.SubItems(9) = Math.Round(totmin, 2)
@@ -1444,7 +1460,7 @@ Private Sub Command3_Click()
                 m2 = Me.ListView1.ListItems(i).ListSubItems(11)
                 Largo = Me.ListView1.ListItems(i).ListSubItems(7)
                 Ancho = Me.ListView1.ListItems(i).ListSubItems(8)
-                Cantidad = Me.ListView1.ListItems(i).ListSubItems(14)
+                cantidad = Me.ListView1.ListItems(i).ListSubItems(14)
                 medida = Me.ListView1.ListItems(i).ListSubItems(4)
                 Set x = frmConfigurarTerminacion.lstPiezas.ListItems.Add(, , codigo)
                 x.SubItems(1) = descripcion
@@ -1453,7 +1469,7 @@ Private Sub Command3_Click()
                 x.SubItems(4) = medida
                 x.SubItems(5) = 2
                 x.SubItems(6) = 1
-                x.SubItems(7) = Cantidad
+                x.SubItems(7) = cantidad
                 x.SubItems(8) = Largo
                 x.SubItems(9) = Ancho
 
@@ -1573,6 +1589,10 @@ Private Sub Command6_Click()
 
 End Sub
 
+Private Sub Command7_Click()
+
+End Sub
+
 Private Sub Form_Activate()
 
     Me.calcular_totales_mdo
@@ -1588,7 +1608,7 @@ Private Sub Form_Load()
     Me.calcular_totales_mdo
     'Me.calcularTotalMateriales Me.ListView1, kg, m2, costo
     Me.lblCosto = costo
-    Me.lblTotalKG = Kg
+    Me.lblTotalKg = Kg
     Me.lblTotalM2 = m2
     grabado = False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes
@@ -1645,13 +1665,13 @@ Private Sub ListView1_DblClick()
         yhoja = Me.ListView1.selectedItem.ListSubItems(6)
         xpieza = Me.ListView1.selectedItem.ListSubItems(7)
         ypieza = Me.ListView1.selectedItem.ListSubItems(8)
-        Cantidad = Me.ListView1.selectedItem.ListSubItems(14)
+        cantidad = Me.ListView1.selectedItem.ListSubItems(14)
         codigo = Me.ListView1.selectedItem
         idcodigo = Me.ListView1.selectedItem.ListSubItems(1)
 
         frmDesarrolloModificarMaterial.nuevo_form = Me
         frmDesarrolloModificarMaterial.txtScrap = Scrap
-        frmDesarrolloModificarMaterial.txtCantidad = Cantidad
+        frmDesarrolloModificarMaterial.txtCantidad = cantidad
         frmDesarrolloModificarMaterial.txtCodigo = codigo
         frmDesarrolloModificarMaterial.txtXHoja = xhoja
         frmDesarrolloModificarMaterial.txtXPieza = xpieza
@@ -1876,14 +1896,14 @@ End Sub
 Private Sub txtCodigoMDO_KeyPress(KeyAscii As Integer)
     Set base = New classNuevoElemento
     If KeyAscii = 13 Then
-        base.ver_detalle_mdo CInt(Me.txtCodigoMDO), idcpp, cantxproc, mdoDescrip, Tarea, Sector, Valor
+        base.ver_detalle_mdo CInt(Me.txtCodigoMDO), idcpp, cantxproc, mdoDescrip, Tarea, Sector, valor
         Me.lblidMDO = Me.txtCodigoMDO
         Me.lblCPP = cantxproc
         Me.lblidCPP = idcpp
         lblTarea = Tarea
         lblDescripcion = mdoDescrip
         lblSector = Sector
-        Me.lblValor = Valor
+        Me.lblValor = valor
 
 
     End If
@@ -1892,14 +1912,14 @@ End Sub
 Private Sub txtCodigoMDO_LostFocus()
     Set base = New classNuevoElemento
     If Not Trim(Me.txtCodigoMDO) = Empty Then
-        base.ver_detalle_mdo CInt(Me.txtCodigoMDO), idcpp, cantxproc, mdoDescrip, Tarea, Sector, Valor
+        base.ver_detalle_mdo CInt(Me.txtCodigoMDO), idcpp, cantxproc, mdoDescrip, Tarea, Sector, valor
         Me.lblidMDO = Me.txtCodigoMDO
         Me.lblCPP = cantxproc
         Me.lblidCPP = idcpp
         lblTarea = Tarea
         lblDescripcion = mdoDescrip
         lblSector = Sector
-        Me.lblValor = Valor
+        Me.lblValor = valor
 
     End If
 End Sub
@@ -1993,4 +2013,117 @@ End Sub
 
 Private Sub txtTiempo_Validate(Cancel As Boolean)
     If Not IsNumeric(Me.txtTiempo) Then Cancel = True
+End Sub
+
+Private Sub cmdSubirTarea_Click()
+
+    If Me.ListView2.selectedItem Is Nothing Then
+        MsgBox "Seleccione una tarea para subir.", vbInformation, "Reordenar tareas"
+        Exit Sub
+    End If
+
+    If Me.ListView2.selectedItem.Index = 1 Then
+        Exit Sub
+    End If
+
+    MoverTarea Me.ListView2.selectedItem.Index, -1
+
+End Sub
+
+
+Private Sub cmdBajarTarea_Click()
+
+    If Me.ListView2.selectedItem Is Nothing Then
+        MsgBox "Seleccione una tarea para bajar.", vbInformation, "Reordenar tareas"
+        Exit Sub
+    End If
+
+    If Me.ListView2.selectedItem.Index = Me.ListView2.ListItems.count Then
+        Exit Sub
+    End If
+
+    MoverTarea Me.ListView2.selectedItem.Index, 1
+
+End Sub
+
+
+Private Sub MoverTarea(ByVal indiceActual As Long, ByVal direccion As Long)
+
+    Dim indiceNuevo As Long
+    Dim i As Integer
+
+    Dim textoActual As String
+    Dim textoNuevo As String
+
+    Dim subActual(1 To 10) As String
+    Dim subNuevo(1 To 10) As String
+
+    Dim tagActual As Variant
+    Dim tagNuevo As Variant
+
+    Dim checkedActual As Boolean
+    Dim checkedNuevo As Boolean
+
+    indiceNuevo = indiceActual + direccion
+
+    If indiceNuevo < 1 Then Exit Sub
+    If indiceNuevo > Me.ListView2.ListItems.count Then Exit Sub
+
+
+    '-----------------------------------------
+    ' GUARDAR DATOS DE AMBAS FILAS
+    '-----------------------------------------
+    textoActual = Me.ListView2.ListItems(indiceActual).Text
+    textoNuevo = Me.ListView2.ListItems(indiceNuevo).Text
+
+    For i = 1 To 10
+
+        subActual(i) = Me.ListView2.ListItems(indiceActual).ListSubItems(i).Text
+        subNuevo(i) = Me.ListView2.ListItems(indiceNuevo).ListSubItems(i).Text
+
+    Next i
+
+    tagActual = Me.ListView2.ListItems(indiceActual).Tag
+    tagNuevo = Me.ListView2.ListItems(indiceNuevo).Tag
+
+    checkedActual = Me.ListView2.ListItems(indiceActual).Checked
+    checkedNuevo = Me.ListView2.ListItems(indiceNuevo).Checked
+
+
+    '-----------------------------------------
+    ' PASAR FILA NUEVA A POSICION ACTUAL
+    '-----------------------------------------
+    Me.ListView2.ListItems(indiceActual).Text = textoNuevo
+
+    For i = 1 To 10
+        Me.ListView2.ListItems(indiceActual).ListSubItems(i).Text = subNuevo(i)
+    Next i
+
+    Me.ListView2.ListItems(indiceActual).Tag = tagNuevo
+    Me.ListView2.ListItems(indiceActual).Checked = checkedNuevo
+
+
+    '-----------------------------------------
+    ' PASAR FILA ACTUAL A NUEVA POSICION
+    '-----------------------------------------
+    Me.ListView2.ListItems(indiceNuevo).Text = textoActual
+
+    For i = 1 To 10
+        Me.ListView2.ListItems(indiceNuevo).ListSubItems(i).Text = subActual(i)
+    Next i
+
+    Me.ListView2.ListItems(indiceNuevo).Tag = tagActual
+    Me.ListView2.ListItems(indiceNuevo).Checked = checkedActual
+
+
+    '-----------------------------------------
+    ' DEJAR SELECCIONADA LA TAREA QUE MOVIMOS
+    '-----------------------------------------
+    Me.ListView2.ListItems(indiceActual).Selected = False
+    Me.ListView2.ListItems(indiceNuevo).Selected = True
+
+    Me.ListView2.ListItems(indiceNuevo).EnsureVisible
+
+    grabado = False
+
 End Sub

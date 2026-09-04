@@ -53,7 +53,7 @@ Public Function ejecutar_consulta3(consulta As String)
 err12:
     MsgBox "Se produjo un error: " & Err.Description
 End Function
-Public Sub ver_detalle_elemento(ByVal cod As String, frm As frmNuevoElemento, accion As Integer)
+Public Sub ver_detalle_elemento(ByVal cod As String, frm As frmNuevoElemento, Accion As Integer)
     strsql = "select v.valor_unitario, v.fecha_actualizacion,v.id_moneda,g.grupo,m.id, m.codigo, m.descripcion,m.espesor,m.pesoxunidad,m.id_unidad,r.rubro from materiales m inner join rubros r on m.id_rubro=r.id inner join grupos g on g.id=m.id_grupo inner join valores_MATERIALES v on v.id_material=m.id and m.codigo= '" & cod & "'"
     Me.ejecutar_consulta1 strsql
     c = 0
@@ -131,7 +131,7 @@ Public Sub ver_detalle_elemento(ByVal cod As String, frm As frmNuevoElemento, ac
 
                     prec = prec / valor_dolar
                     prec = Math.Round(prec, 3)
-                    If accion = 1 Then    'agregar
+                    If Accion = 1 Then    'agregar
                         Set x = frm.ListView1.ListItems.Add(, , Id)
                         x.SubItems(1) = UCase(cod)
                         x.SubItems(2) = frm.lblMaterial & " " & frm.lblEspesor & " mm"
@@ -154,7 +154,7 @@ Public Sub ver_detalle_elemento(ByVal cod As String, frm As frmNuevoElemento, ac
                 End If
             End If
         Else
-            If accion <> 2 And accion <> 3 Then
+            If Accion <> 2 And Accion <> 3 Then
                 MsgBox "El código es inexistente", vbCritical, "Error"
                 frm.txtCodigoMaterial.SetFocus
             End If
@@ -178,7 +178,7 @@ Public Function calcular_totales_material(frm As frmNuevoElemento)
 
 End Function
 
-Public Sub ver_detalle_mdo(ByVal codi As Integer, ByRef idcpp, ByRef cantxproc, ByRef mdoDescrip, ByRef Tarea, ByRef Sector, ByRef Valor)
+Public Sub ver_detalle_mdo(ByVal codi As Integer, ByRef idcpp, ByRef cantxproc, ByRef mdoDescrip, ByRef Tarea, ByRef Sector, ByRef valor)
     strsql = "select v.id_tarea,v.valor, v.fecha, v.descripcion,s.sector,t.tarea,t.id_sector,t.cantxproc from tareas t inner join sectores s on t.id_sector=s.id inner join  valores_MDO v on v.id_tarea=t.id and t.id=" & codi
     Me.ejecutar_consulta2 strsql
 
@@ -201,7 +201,7 @@ Public Sub ver_detalle_mdo(ByVal codi As Integer, ByRef idcpp, ByRef cantxproc, 
         idcpp = rs2!cantxproc
         Tarea = rs2!Tarea
         mdoDescrip = rs2!descripcion
-        Valor = rs2!Valor
+        valor = rs2!valor
         ' frm.lblCPP = cantxproc
         ' rm.lblTarea = tarea
         ' frm.lblDescripcion = MDOdescrip
@@ -214,12 +214,11 @@ Public Sub ver_detalle_mdo(ByVal codi As Integer, ByRef idcpp, ByRef cantxproc, 
 End Sub
 
 
-
 Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id_cliente As Integer, Complejidad As Integer)
     On Error GoTo er2
     'id_cliente = 120
     detail = UCase(detalle)
-    Cantidad = 0
+    cantidad = 0
 
     cn.BeginTrans
     'alta en stock.
@@ -229,7 +228,14 @@ Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id
     If Complejidad = 1 Then tipo_complejidad = ComplejidadMedia
     If Complejidad = 2 Then tipo_complejidad = ComplejidadAlta
 
-    cn.execute "insert into stock (detalle,id_cliente,cantidad, tipo_complejidad) VALUES ('" & detail & "'," & id_cliente & "," & Cantidad & "," & Complejidad & ")"
+    cn.execute "insert into desarrollo_mdo " & _
+           "(id_pieza,codigo,cantidad,tiempo,detalle,orden) values (" & _
+           CInt(ultid) & "," & _
+           CInt(id_mdo) & "," & _
+           CDbl(Cant) & "," & _
+           CDbl(Tiempo) & ",'" & _
+           deta1 & "'," & _
+           y & ")"
 
     Me.ejecutar_consulta3 "select last_insert_id() as idd from stock"
     ultid = rs3!idd
@@ -242,9 +248,9 @@ Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id
         Ancho = lstMAT.ListItems(x).ListSubItems(6)
         largoT = lstMAT.ListItems(x).ListSubItems(7)
         anchoT = lstMAT.ListItems(x).ListSubItems(8)
-        Cantidad = lstMAT.ListItems(x).ListSubItems(14)
+        cantidad = lstMAT.ListItems(x).ListSubItems(14)
         deta = UCase(Trim(lstMAT.ListItems(x).Tag))
-        cn.execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(Scrap) & "," & CDbl(Largo) & "," & CDbl(Ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & Cantidad & ",'" & deta & "')"
+        cn.execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(Scrap) & "," & CDbl(Largo) & "," & CDbl(Ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & cantidad & ",'" & deta & "')"
 
 
     Next x
@@ -281,13 +287,21 @@ End Sub
 Public Sub llenarListaMDO(idPieza, lst As ListView)
     Dim x As ListItem
 
-    'Me.ejecutar_consulta1 "select vm.valor,t.tarea,d.id,t.id as codigo,t.cantxproc,d.cantidad,d.tiempo,s.sector,t.cantxproc from sectores s,stock.desarrollo_mdo d, tareas t  where d.id_pieza=" & idPieza & " and t.id=d.codigo and s.id=t.id_sector"
-    Me.ejecutar_consulta1 "select vm.valor,t.cantxproc,vm.descripcion,t.id as codigo,d.id,d.cantidad,t.tarea,d.detalle,d.tiempo,s.sector,t.cantxproc from valores_MDO vm,sectores s,desarrollo_mdo d, tareas t  where d.id_pieza=" & idPieza & " and t.id=d.codigo and s.id=t.id_sector and t.id=vm.id_tarea"
+    Me.ejecutar_consulta1 _
+        "select vm.valor,t.cantxproc,vm.descripcion,t.id as codigo," & _
+        "d.id,d.cantidad,t.tarea,d.detalle,d.tiempo,s.sector,t.cantxproc " & _
+        "from valores_MDO vm,sectores s,desarrollo_mdo d,tareas t " & _
+        "where d.id_pieza=" & idPieza & _
+        " and t.id=d.codigo" & _
+        " and s.id=t.id_sector" & _
+        " and t.id=vm.id_tarea" & _
+        " order by d.orden, d.id"
+        
     While Not rs1.EOF
         Set x = lst.ListItems.Add(, , rs1!Id)
-        Valor = rs1!Valor
+        valor = rs1!valor
         Tiempo = rs1!Tiempo
-        cantop = rs1!Cantidad
+        cantop = rs1!cantidad
         cpa = rs1!cantxproc
         cpp = rs1!cantxproc
         Tarea = rs1!Tarea
@@ -309,10 +323,10 @@ Public Sub llenarListaMDO(idPieza, lst As ListView)
 
         If cpp > 0 Then    '(cpp variable)
             totmin = cantop * Tiempo / cpp
-            totplata = totmin * Valor
+            totplata = totmin * valor
         Else
             totmin = cantop * Tiempo
-            totplata = totmin * Valor
+            totplata = totmin * valor
 
         End If
         x.SubItems(9) = Math.Round(totmin, 2)
@@ -336,7 +350,7 @@ Public Sub llenarLstmateriales(idPieza, lst As ListView)
         y1 = rs1!LargoTerm
         deta = rs1!detalle
         Scrap = rs1!Scrap
-        Cant = rs1!Cantidad
+        Cant = rs1!cantidad
         codigo = rs1!codigo
         'si existe el código
         If Id <> -1 Then
@@ -394,14 +408,19 @@ End Sub
 Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, id_cliente As Integer, idPieza As Long, Complejidad As TipoComplejidad)
     On Error GoTo err555
     detail = UCase(detalle)
-    Cantidad = 0
+    cantidad = 0
     cn.BeginTrans
     tra = True
     'modifico en stock.
 
-    cn.execute "update stock set tipo_complejidad='" & Complejidad & "', detalle='" & detail & "',id_cliente= " & id_cliente & " where id=" & idPieza
-
-
+    cn.execute "insert into desarrollo_mdo " & _
+           "(id_pieza,codigo,cantidad,tiempo,detalle,orden) values (" & _
+           CInt(ultid) & "," & _
+           CInt(id_mdo) & "," & _
+           CDbl(Cant) & "," & _
+           CDbl(Tiempo) & ",'" & _
+           deta1 & "'," & _
+           y & ")"
 
     ultid = idPieza
     cantL1 = lstMAT.ListItems.count
@@ -415,9 +434,9 @@ Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, 
         Ancho = lstMAT.ListItems(x).ListSubItems(6)
         largoT = lstMAT.ListItems(x).ListSubItems(7)
         anchoT = lstMAT.ListItems(x).ListSubItems(8)
-        Cantidad = lstMAT.ListItems(x).ListSubItems(14)
+        cantidad = lstMAT.ListItems(x).ListSubItems(14)
         deta = UCase(Trim(lstMAT.ListItems(x).Tag))
-        cn.execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(Scrap) & "," & CDbl(Largo) & "," & CDbl(Ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & Cantidad & ",'" & deta & "')"
+        cn.execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(Scrap) & "," & CDbl(Largo) & "," & CDbl(Ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & cantidad & ",'" & deta & "')"
         'CN3.Execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(scrap) & "," & CDbl(largo) & "," & CDbl(ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & cantidad & ")"
 
     Next x
