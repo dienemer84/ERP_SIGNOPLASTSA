@@ -1199,7 +1199,7 @@ Public Sub calcularTotalMateriales(ByVal lst As ListView, ByRef Kg, ByRef m2, By
     Kg = K
     m2 = m
     costo = c
-    Me.lblTotalKG = Kg
+    Me.lblTotalKg = Kg
     Me.lblTotalM2 = m2
     Me.lblCosto = costo
 End Sub
@@ -1217,7 +1217,7 @@ Public Sub calcular_totales_mdo()
     Next i
     Me.lblfijos = Math.Round(totalFIJO, 2)
     Me.lblmdo = Math.Round(TotalMDO, 2)
-    Me.lblCambio = Math.Round(totalCAMBIO, 2)
+    Me.lblcambio = Math.Round(totalCAMBIO, 2)
     Me.lblCtoMDO = Math.Round(cto, 2)
 End Sub
 Private Function verDetalleMateriales(Id)
@@ -1286,44 +1286,63 @@ End Sub
 
 
 Private Sub btnModificar_Click()
-    On Error GoTo errb
-    Dim idPieza As Long
 
-    If IsNumeric(Trim(Me.lblidStock)) Then    'si est definido el id de la pieza a modificar
+    On Error GoTo errb
+
+    Dim idPieza As Long
+    Dim h As VbMsgBoxResult
+
+    If IsNumeric(Trim(Me.lblidStock)) Then
+
         ErrorCode = 0
         idPieza = CLng(Me.lblidStock)
+
         If Trim(Me.txtNombreElemento) = Empty Then
-            MsgBox "Error, debe completar todos los campos.", vbCritical, "Error"
+
+            MsgBox "Error, debe completar todos los campos.", _
+                   vbCritical, _
+                   "Error"
+
         Else
-            Dim h As VbMsgBoxResult
 
+            h = MsgBox("¿Está conforme con los datos ingresados?", _
+                       vbYesNo + vbQuestion, _
+                       "Confirmación")
 
+            If h = vbYes Then
 
-            h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
-            If h = 6 Then
-            
                 base.modificar Me.ListView1, _
                                Me.ListView2, _
                                Me.txtNombreElemento, _
                                CInt(Me.txtIdCliente), _
                                idPieza, _
                                CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
-            
+
                 grabado = True
-            
+
                 Channel.Notificar Nothing, EdicionPieza_
-            
+
                 MsgBox "El elemento fue actualizado correctamente.", _
                        vbInformation, _
                        "Modificar elemento"
-            
+
                 Unload Me
-            
+
             End If
+
+        End If
+
     End If
+
     Exit Sub
+
 errb:
-    MsgBox Err.Description
+
+    MsgBox "No se pudo actualizar el elemento:" & _
+           vbCrLf & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Modificar elemento"
 
 End Sub
 
@@ -1635,7 +1654,7 @@ Private Sub Form_Load()
     Me.calcular_totales_mdo
     'Me.calcularTotalMateriales Me.ListView1, kg, m2, costo
     Me.lblCosto = costo
-    Me.lblTotalKG = Kg
+    Me.lblTotalKg = Kg
     Me.lblTotalM2 = m2
     grabado = False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes

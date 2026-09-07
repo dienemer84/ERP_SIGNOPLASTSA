@@ -178,7 +178,7 @@ Public Function calcular_totales_material(frm As frmNuevoElemento)
             TotalM2 = TotalM2 + CDbl(frm.ListView1.ListItems(i).ListSubItems(8))
         End If
     Next i
-    frm.lblTotalKG = Math.Round(TotalKG, 3)
+    frm.lblTotalKg = Math.Round(TotalKG, 3)
     frm.lblTotalM2 = Math.Round(TotalM2, 3)
 
 End Function
@@ -220,34 +220,42 @@ Public Sub ver_detalle_mdo(ByVal codi As Integer, ByRef idcpp, ByRef cantxproc, 
 End Sub
 
 
-Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id_cliente As Integer, Complejidad As Integer)
+Public Sub agregar(lstMAT As ListView, _
+                   lstMdo As ListView, _
+                   detalle As String, _
+                   id_cliente As Integer, _
+                   Complejidad As Integer)
+
     On Error GoTo er2
-    'id_cliente = 120
+
     detail = UCase(detalle)
     cantidad = 0
 
     cn.BeginTrans
-    'alta en stock.
 
-    Dim tipo_complejidad As TipoComplejidad
-    tipo_complejidad = ComplejidadBaja
-    If Complejidad = 1 Then tipo_complejidad = ComplejidadMedia
-    If Complejidad = 2 Then tipo_complejidad = ComplejidadAlta
-    
+    '-------------------------------------------
+    ' ALTA DE PIEZA
+    '-------------------------------------------
     cn.execute "insert into stock " & _
                "(detalle,id_cliente,cantidad,tipo_complejidad) VALUES (" & _
                "'" & detail & "'," & _
                id_cliente & "," & _
                cantidad & "," & _
                Complejidad & ")"
-               
-    Me.ejecutar_consulta3 "select last_insert_id() as idd from stock"
-    
+
+    Me.ejecutar_consulta3 _
+        "select last_insert_id() as idd from stock"
+
     ultid = rs3!idd
-    
+
+
+    '-------------------------------------------
+    ' MATERIALES
+    '-------------------------------------------
     cantL1 = lstMAT.ListItems.count
-    'alta en desarrollo materiales del elemento
+
     For x = 1 To cantL1
+
         Scrap = lstMAT.ListItems(x).ListSubItems(9)
         id_material = lstMAT.ListItems(x).ListSubItems(1)
         Largo = lstMAT.ListItems(x).ListSubItems(5)
@@ -256,42 +264,81 @@ Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id
         anchoT = lstMAT.ListItems(x).ListSubItems(8)
         cantidad = lstMAT.ListItems(x).ListSubItems(14)
         deta = UCase(Trim(lstMAT.ListItems(x).Tag))
-        
-        cn.execute "insert into desarrollo_mdo " & _
-                   "(id_pieza,codigo,cantidad,tiempo,detalle,orden) values (" & _
-                   CInt(ultid) & "," & _
-                   CInt(id_mdo) & "," & _
-                   CDbl(Cant) & "," & _
-                   CDbl(Tiempo) & ",'" & _
-                   deta1 & "'," & _
-                   y & ")"
+
+        cn.execute _
+            "insert into desarrollo_material " & _
+            "(id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) " & _
+            "values (" & _
+            CInt(ultid) & "," & _
+            CDbl(Scrap) & "," & _
+            CDbl(Largo) & "," & _
+            CDbl(Ancho) & "," & _
+            CDbl(largoT) & "," & _
+            CDbl(anchoT) & "," & _
+            id_material & "," & _
+            cantidad & ",'" & _
+            deta & "')"
 
     Next x
 
-    cantL2 = lstMdo.ListItems.count
-    'alta en desarrollo de mdo del elemento
-    For y = 1 To cantL2
 
+    '-------------------------------------------
+    ' MANO DE OBRA
+    '-------------------------------------------
+    cantL2 = lstMdo.ListItems.count
+
+    For y = 1 To cantL2
 
         id_mdo = lstMdo.ListItems(y).ListSubItems(1)
         Cant = lstMdo.ListItems(y).ListSubItems(2)
         Tiempo = lstMdo.ListItems(y).ListSubItems(3)
         deta1 = UCase(Trim(lstMdo.ListItems(y).Tag))
-        cn.execute "insert into desarrollo_mdo (id_pieza,codigo,cantidad,tiempo,detalle) values (" & CInt(ultid) & "," & CInt(id_mdo) & "," & CDbl(Cant) & "," & CDbl(Tiempo) & ",'" & deta1 & "')"
+
+        cn.execute _
+            "insert into desarrollo_mdo " & _
+            "(id_pieza,codigo,cantidad,tiempo,detalle,orden) values (" & _
+            CInt(ultid) & "," & _
+            CInt(id_mdo) & "," & _
+            CDbl(Cant) & "," & _
+            CDbl(Tiempo) & ",'" & _
+            deta1 & "'," & _
+            y & ")"
+
     Next y
 
 
-    baseS.crearHistoricoPieza2 ultid, "PIEZA AGREGADA"
+    baseS.crearHistoricoPieza2 _
+        ultid, _
+        "PIEZA AGREGADA"
+
     cn.CommitTrans
+
     Dim nico As Long
     nico = ultid
+
     Set baseS = New classStock
-    baseS.modifica_Stock nico, 0, 0, 0, ""    'doy d alta en bbdd historicos de stock
+
+    baseS.modifica_Stock _
+        nico, 0, 0, 0, ""
+
     rs3.Close
 
     Exit Sub
+
+
 er2:
+
+    Dim descripcionError As String
+
+    descripcionError = Err.Description
+
+    On Error Resume Next
     cn.RollbackTrans
+    On Error GoTo 0
+
+    Err.Raise vbObjectError + 513, _
+              "classNuevoElemento.agregar", _
+              descripcionError
 
 End Sub
 
@@ -487,6 +534,7 @@ Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, 
     'baseS.modifica_Stock nico, 0, 0, 0 'doy d alta en bbdd historicos de stock
     Exit Sub
 err555:
+
     Dim descripcionError As String
 
     descripcionError = Err.Description
@@ -495,11 +543,9 @@ err555:
     cn.RollbackTrans
     On Error GoTo 0
 
-    MsgBox "Error al modificar la pieza:" & _
-           vbCrLf & vbCrLf & _
-           descripcionError, _
-           vbCritical, _
-           "Modificar pieza"
+    Err.Raise vbObjectError + 514, _
+              "classNuevoElemento.modificar", _
+              descripcionError
 
 
 End Sub
