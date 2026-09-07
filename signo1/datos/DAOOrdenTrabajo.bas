@@ -197,7 +197,7 @@ Private Sub exportarEntregas(yPos, detalleid As Long, xlWorksheet)
 
                 xlWorksheet.Cells(yPos, 6).value = entrega.RemitoAlQuePertenece.numero
                 xlWorksheet.Cells(yPos, 7).value = entrega.FEcha
-                xlWorksheet.Cells(yPos, 8).value = entrega.Cantidad
+                xlWorksheet.Cells(yPos, 8).value = entrega.cantidad
                 yPos = yPos + 1
             End If
         Next entrega
@@ -399,20 +399,40 @@ Public Sub ImprimirRuta(Ot As OrdenTrabajo, detOT As DetalleOrdenTrabajo, Option
     End If
 
     If IsSomething(detOTConj) Then
+    
         Set pedido_pieza2.DataSource = conectar.RSFactory( _
-            "SELECT concat('*', dm.id,'*') as codigo, t.cantxproc, t.tarea, s.sector " & _
+            "SELECT concat('*', dm.id,'*') as codigo, " & _
+            "t.cantxproc, t.tarea, s.sector " & _
             "FROM tareas t, sectores s, PlaneamientoTiemposProcesos dm " & _
             "WHERE dm.codigoTarea = t.id " & _
             "AND s.id = t.id_sector " & _
-            "AND dm.idDetallePedidoConj = " & tmpId)
+            "AND dm.idDetallePedidoConj = " & tmpId & _
+            " ORDER BY " & _
+            "IFNULL(NULLIF((" & _
+            "SELECT MIN(dmo.orden) " & _
+            "FROM desarrollo_mdo dmo " & _
+            "WHERE dmo.id_pieza = " & idPieza & _
+            " AND dmo.codigo = dm.codigoTarea" & _
+            "), 0), 999999), dm.id")
+    
     Else
+    
         Set pedido_pieza2.DataSource = conectar.RSFactory( _
-            "SELECT concat('*', dm.id,'*') as codigo, t.cantxproc, t.tarea, s.sector " & _
+            "SELECT concat('*', dm.id,'*') as codigo, " & _
+            "t.cantxproc, t.tarea, s.sector " & _
             "FROM tareas t, sectores s, PlaneamientoTiemposProcesos dm " & _
             "WHERE dm.codigoTarea = t.id " & _
             "AND s.id = t.id_sector " & _
             "AND dm.idDetallePedidoConj = 0 " & _
-            "AND dm.idDetallePedido = " & tmpId)
+            "AND dm.idDetallePedido = " & tmpId & _
+            " ORDER BY " & _
+            "IFNULL(NULLIF((" & _
+            "SELECT MIN(dmo.orden) " & _
+            "FROM desarrollo_mdo dmo " & _
+            "WHERE dmo.id_pieza = " & idPieza & _
+            " AND dmo.codigo = dm.codigoTarea" & _
+            "), 0), 999999), dm.id")
+    
     End If
 
     DAOOrdenTrabajoHistorial.agregar detOT.OrdenTrabajo, "RUTA " & detOT.Id & " IMPRESA"
@@ -773,7 +793,7 @@ Public Function Map(ByRef rs As Recordset, _
         If LenB(clienteTableNameOrAlias) > 0 Then Set tmpOrdenTrabajo.Cliente = DAOCliente.Map(rs, fieldsIndex, clienteTableNameOrAlias, ivaTableNameOrAlias, "Localidades", "Pais", "Provincia")
         If LenB(clienteFacturarTableNameOrAlias) > 0 Then Set tmpOrdenTrabajo.ClienteFacturar = DAOCliente.Map(rs, fieldsIndex, clienteFacturarTableNameOrAlias, ivaTableNameOrAlias)
         If LenB(monedaTableNameOrAlias) > 0 Then Set tmpOrdenTrabajo.moneda = DAOMoneda.Map(rs, fieldsIndex, monedaTableNameOrAlias)
-        If LenB(usuarioTableNameOrAlias) > 0 Then Set tmpOrdenTrabajo.usuario = DAOUsuarios.Map(rs, fieldsIndex, usuarioTableNameOrAlias)
+        If LenB(usuarioTableNameOrAlias) > 0 Then Set tmpOrdenTrabajo.Usuario = DAOUsuarios.Map(rs, fieldsIndex, usuarioTableNameOrAlias)
         If LenB(usuarioAprobadoTableNameOrAlias) > 0 Then Set tmpOrdenTrabajo.UsuarioAprobado = DAOUsuarios.Map(rs, fieldsIndex, usuarioAprobadoTableNameOrAlias)
         If LenB(usuarioModificadoTableNameOrAlias) > 0 Then Set tmpOrdenTrabajo.UsuarioModificado = DAOUsuarios.Map(rs, fieldsIndex, usuarioModificadoTableNameOrAlias)
         If LenB(usuarioFinalizadoTableNameOrAlias) > 0 Then Set tmpOrdenTrabajo.UsuarioFinalizado = DAOUsuarios.Map(rs, fieldsIndex, usuarioFinalizadoTableNameOrAlias)
@@ -837,7 +857,7 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
           & conectar.Escape(Ot.estado) & "," & conectar.Escape(Ot.TipoOrden) & "," _
           & conectar.Escape(Ot.Activa) & "," _
           & conectar.Escape(Ot.Entregada) & "," _
-          & conectar.GetEntityId(Ot.usuario) & "," _
+          & conectar.GetEntityId(Ot.Usuario) & "," _
           & conectar.Escape(Ot.Descuento) & "," _
           & conectar.GetEntityId(Ot.moneda) & "," _
           & conectar.GetEntityId(Ot.UsuarioAprobado) & "," _
@@ -879,7 +899,7 @@ Public Function Guardar(Ot As OrdenTrabajo, Optional Cascade As Boolean = True, 
           & " activo = " & conectar.Escape(Ot.Activa) & " ," _
           & " entregado = " & conectar.Escape(Ot.Entregada) & " ," _
           & " fechaCerrado = " & conectar.Escape(Ot.FechaCerrado) & " ," _
-          & " idUsuario = " & conectar.GetEntityId(Ot.usuario) & " ," _
+          & " idUsuario = " & conectar.GetEntityId(Ot.Usuario) & " ," _
           & " dto = " & conectar.Escape(Ot.Descuento) & " ," _
           & " idMoneda = " & conectar.GetEntityId(Ot.moneda) & " ," _
           & " fechaAprobado = " & conectar.Escape(Ot.fechaAprobado) & " ," _
@@ -1042,7 +1062,7 @@ Public Function informePedidoPlaneamiento(Id As Long, DIALOGO As Boolean, rsSect
     Dim c As Long
     c = 0
     While Not rs.EOF
-        c = c + s.TiemposPieza(rs!idPieza, rs!Cantidad)
+        c = c + s.TiemposPieza(rs!idPieza, rs!cantidad)
         rs.MoveNext
     Wend
     Dim tim As String
@@ -1271,12 +1291,12 @@ Private Function rs_materiales(Id As Long, Origen As Integer, Optional ListaPiez
     Dim Espesor As Double
     Dim largop As Double
     Dim anchop As Double
-    Dim Cantidad As Long
+    Dim cantidad As Long
     Dim PesoXUnidad As Double
     Dim moneda As String
     Dim codigo As String
     Dim id_Unidad As Long
-    Dim Valor As Double
+    Dim valor As Double
     Dim fec_act As Date
 
 
@@ -1287,7 +1307,7 @@ Private Function rs_materiales(Id As Long, Origen As Integer, Optional ListaPiez
 
     While Not r_piezas.EOF
         Pieza = CLng(r_piezas!idPieza)
-        cantidad_p = CDbl(r_piezas!Cantidad)
+        cantidad_p = CDbl(r_piezas!cantidad)
 
         strsql = " select mo.nombre_corto,m.valor_unitario,m.fecha_valor as fecha_actualizacion,m.descripcion,r.rubro,g.grupo,m.espesor,m.codigo,m.id as id_material, dm.largo,dm.ancho,largoTerm,AnchoTerm,dm.cantidad,id_unidad,pesoxunidad,r.rubro,g.grupo from desarrollo_material dm, rubros r, grupos g, materiales m, AdminConfigMonedas mo where m.id_moneda=mo.id and dm.id_material=m.id and m.id_rubro = r.id and  m.id_grupo=g.id and id_pieza=" & Pieza
         Set r_1 = conectar.RSFactory(strsql)
@@ -1302,38 +1322,38 @@ Private Function rs_materiales(Id As Long, Origen As Integer, Optional ListaPiez
             Espesor = r_1!Espesor
             largop = r_1!LargoTerm
             anchop = r_1!AnchoTerm
-            Cantidad = r_1!Cantidad * cantidad_p
+            cantidad = r_1!cantidad * cantidad_p
             PesoXUnidad = r_1!PesoXUnidad
             moneda = r_1!Nombre_corto
             codigo = r_1!codigo
             id_Unidad = r_1!id_Unidad
-            Valor = r_1!valor_unitario
+            valor = r_1!valor_unitario
             fec_act = r_1!FEcha_actualizacion
             'tengo que buscar en el RS temporal a ver si ya agregé el material
             'si está agregado lo sumo
             If id_Unidad = 3 Then    'ml
-                medida = largop / 1000 * Cantidad
+                medida = largop / 1000 * cantidad
                 unidad = Math.Round(medida, 2)
                 totUnit = Math.Round(unidad * PesoXUnidad, 2)
                 UN = "Ml"
 
             ElseIf id_Unidad = 1 Then    'kg
-                medida = PesoXUnidad * Cantidad
+                medida = PesoXUnidad * cantidad
                 unidad = Math.Round(medida, 2)
                 totUnit = Math.Round(unidad, 2)
                 UN = "Kg"
             ElseIf id_Unidad = 2 Then    'm2
                 medida = (anchop * largop) / 1000000
-                unidad = Math.Round(medida * Cantidad, 2)
+                unidad = Math.Round(medida * cantidad, 2)
                 totUnit = Math.Round(unidad * PesoXUnidad, 2)
                 UN = "M2"
             ElseIf id_Unidad = 4 Then    'uni
-                medida = Cantidad
+                medida = cantidad
                 unidad = Math.Round(medida, 2)
                 totUnit = Math.Round(unidad, 2)
                 UN = "Un"
             End If
-            agregarARSmateriales r_mat, id_Unidad, IdMaterial, unidad, totUnit, codigo, descrip, rubro, Grupo, Espesor, UN, Valor, fec_act, moneda
+            agregarARSmateriales r_mat, id_Unidad, IdMaterial, unidad, totUnit, codigo, descrip, rubro, Grupo, Espesor, UN, valor, fec_act, moneda
 
             r_1.MoveNext
         Wend
@@ -1369,7 +1389,7 @@ Private Sub agregarARSmateriales(r_mat As Recordset, unidad, IdMaterial, m2kg, t
         r_mat!descripcion = UCase(descripcion)
         r_mat!unidad = UN
         r_mat!Espesor = Espesor
-        r_mat!Valor = valor_unit
+        r_mat!valor = valor_unit
         r_mat!FEcha = fec_act
         r_mat!moneda = moneda
         r_mat.Update
@@ -1458,7 +1478,7 @@ Public Function imprimirEtiquetas(IdPedido As Long) As Boolean
 
     Set r = conectar.RSFactory("select p.id,p.descripcion,c.razon,dp.item,s.detalle,dp.cantidad,dp.cantidad_fabricados,dp.cantidad_entregada from pedidos p inner join detalles_pedidos dp on dp.idPedido=p.id inner join clientes c on p.idCliente=c.id inner join stock s on dp.idPieza=s.id where idPedido=" & IdPedido)
     While Not r.EOF
-        Cant = r!Cantidad
+        Cant = r!cantidad
         oc = r!descripcion
         it = r!item
         detalle = r!detalle
@@ -1481,7 +1501,7 @@ Public Function imprimirEtiquetas(IdPedido As Long) As Boolean
                 !oc = oc
                 !detalle = detalle
                 !item = it
-                !Cantidad = P
+                !cantidad = P
                 !cantidad_total = Cant
 
                 .Update
@@ -1657,7 +1677,7 @@ Private Sub ProcesarDetalleOT(sectoresTiempo As Collection, deta As DetalleOTCon
     Set procesos = DAOTiemposProceso.FindAllByDetallePedidoId(detaPadreId, deta.Id)
 
     For Each proceso In procesos
-        AddTarea sectoresTiempo, proceso.Tarea, deta.Cantidad * cantPadre, proceso.OperariosCotizado, proceso.TiempoCotizado, CantidadFabricada, proceso
+        AddTarea sectoresTiempo, proceso.Tarea, deta.cantidad * cantPadre, proceso.OperariosCotizado, proceso.TiempoCotizado, CantidadFabricada, proceso
 
     Next proceso
 
@@ -1929,7 +1949,7 @@ Function Cerrar(Ot As OrdenTrabajo, Optional a_stock = False) As Boolean
                             Dim detaOTDto As DetalleOTConjuntoDTO
                             'si es conjunto tengo que abrirlo y actualizar todas las piezas x la cantidad de todo el conjunto en plano
                             For Each detaOTDto In DAODetalleOrdenTrabajo.FindAllConjunto(deta.Id)
-                                If Not DAOPieza.ModificarStock(detaOTDto.Pieza, ModificarStock_AltaOT, (deta.CantidadFabricados - deta.CantidadEntregada) * detaOTDto.Cantidad, , Ot.Id) Then GoTo err33
+                                If Not DAOPieza.ModificarStock(detaOTDto.Pieza, ModificarStock_AltaOT, (deta.CantidadFabricados - deta.CantidadEntregada) * detaOTDto.cantidad, , Ot.Id) Then GoTo err33
                             Next detaOTDto
                         End If
 

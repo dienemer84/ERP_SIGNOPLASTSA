@@ -460,6 +460,7 @@ Begin VB.Form frmConfigurarTerminacion
          Begin VB.ComboBox cboFosf 
             Height          =   315
             Left            =   240
+            Sorted          =   -1  'True
             Style           =   2  'Dropdown List
             TabIndex        =   35
             Top             =   1200
@@ -468,6 +469,7 @@ Begin VB.Form frmConfigurarTerminacion
          Begin VB.ComboBox cboCant 
             Height          =   315
             Left            =   240
+            Sorted          =   -1  'True
             Style           =   2  'Dropdown List
             TabIndex        =   34
             Top             =   600
@@ -768,15 +770,19 @@ Private Sub Check6_Click()
         Check5.value = 0
     End If
 End Sub
+
 Private Sub Command1_Click()
     quitar_de_lista Me.lstPiezas
 End Sub
+
 Private Sub Command2_Click()
     calcular
 End Sub
+
 Private Sub Command4_Click()
     Unload Me
 End Sub
+
 Private Sub Command3_Click()
     On Error Resume Next
     Cant = formu.ListView1.ListItems.count
@@ -875,7 +881,9 @@ Private Sub Command3_Click()
     End If
     Unload Me
 End Sub
-Public Function agrego(operarios, Tiempo, Sector, codigo As Integer, lst As ListView, Optional Valor)
+
+
+Public Function agrego(operarios, Tiempo, Sector, codigo As Integer, lst As ListView, Optional valor)
     Dim totmin As Double
     Dim totplata As Double
     esta = False
@@ -902,16 +910,16 @@ Public Function agrego(operarios, Tiempo, Sector, codigo As Integer, lst As List
         x.SubItems(6) = Tarea
         x.SubItems(8) = descripcion
         baseSP.ejecutar "select valor from valores_MDO where id_tarea=" & codigo
-        Valor = baseSP.valorMDO
+        valor = baseSP.valorMDO
         Tiempo = Tiempo
         cpp = cantxproc
         cantop = operarios
         If cpp > 0 Then    '(cpp variable)
             totmin = cantop * Tiempo / cpp
-            totplata = totmin * Valor
+            totplata = totmin * valor
         Else
             totmin = cantop * Tiempo
-            totplata = totmin * Valor
+            totplata = totmin * valor
         End If
 
         x.SubItems(9) = funciones.FormatearDecimales(totmin, 2)
@@ -924,16 +932,16 @@ Public Function agrego(operarios, Tiempo, Sector, codigo As Integer, lst As List
         lst.ListItems(pos).SubItems(3) = Tiempo
 
         baseSP.ejecutar "select valor from valores_MDO where id_tarea=" & codigo
-        Valor = baseSP.valorMDO
+        valor = baseSP.valorMDO
         Tiempo = Tiempo
         cpp = cantxproc
         cantop = operarios
         If cpp > 0 Then    '(cpp variable)
             totmin = cantop * Tiempo / cpp
-            totplata = totmin * Valor
+            totplata = totmin * valor
         Else
             totmin = cantop * Tiempo
-            totplata = totmin * Valor
+            totplata = totmin * valor
         End If
 
         lst.ListItems(pos).SubItems(9) = funciones.FormatearDecimales(totmin, 2)
@@ -941,6 +949,8 @@ Public Function agrego(operarios, Tiempo, Sector, codigo As Integer, lst As List
 
     End If
 End Function
+
+
 Private Sub Form_Activate()
     Dim i As Integer
     Me.txtOperarios = 1
@@ -953,6 +963,8 @@ Private Sub Form_Activate()
     Dim r As Integer
     Me.Refresh
 End Sub
+
+
 Private Sub LlenarCuentasMDO()
     On Error Resume Next
     DAOTareas.LlenarComboPorSector Me.cboHorno, dto.Sector
@@ -964,6 +976,7 @@ Private Sub LlenarCuentasMDO()
 
 End Sub
 
+
 Private Sub LlenarCuentasMAT()
     On Error Resume Next
     DAOMateriales.LlenarComboPorRubro Me.cboCant, dto.rubro
@@ -971,6 +984,7 @@ Private Sub LlenarCuentasMAT()
     Me.cboCant.ListIndex = funciones.PosIndexCbo(dto.CantidadPintura.Id, cboCant)
     Me.cboFosf.ListIndex = funciones.PosIndexCbo(dto.CantidadFosfatos.Id, cboFosf)
 End Sub
+
 
 Private Sub Form_Load()
     FormHelper.Customize Me
@@ -986,7 +1000,6 @@ Private Sub Form_Load()
     Me.Textf = g    'factor mat
 
     ''Me.caption = caption & " (" & Name & ")"
-
 
 End Sub
 

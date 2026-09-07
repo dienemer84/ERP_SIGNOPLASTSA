@@ -176,6 +176,7 @@ Public Sub SalirForzado()
     Shell aa, vbNormalFocus
 End Sub
 
+
 Public Function GetFileName(ByVal path As String) As String
     Dim Contador As Integer
     Contador = 1
@@ -594,12 +595,12 @@ Function CentrarImpresion(texto As String) As Long
     CentrarImpresion = usado / 2
 End Function
 
-Function truncar(str, Cantidad As Long) As String
+Function truncar(str, cantidad As Long) As String
 'trunca el texto a la cantidad de
 'caracteres que quiera
     If Trim(str) <> Empty Then
-        If Len(Trim(str)) > Cantidad Then
-            str = Left(str, Cantidad - 3)
+        If Len(Trim(str)) > cantidad Then
+            str = Left(str, cantidad - 3)
             str = str & "..."
         End If
         truncar = str
@@ -633,12 +634,12 @@ Function FEcha(d As Date) As String
 End Function
 
 
-Function PosIndexCbo(Valor As Long, cbo As Object) As Integer
+Function PosIndexCbo(valor As Long, cbo As Object) As Integer
 'devuelve el indice de un combo... para poder posicionar cuando
 'se hace una modificacion
 'ej: me.cbo.listindex=posindexcbo(valor_a_modificar,cbo)
     For i = 0 To cbo.ListCount - 1
-        If cbo.ItemData(i) = Valor Then
+        If cbo.ItemData(i) = valor Then
             PosIndexCbo = i
             Exit Function
         End If
@@ -647,12 +648,12 @@ Function PosIndexCbo(Valor As Long, cbo As Object) As Integer
 End Function
 
 
-Function PosIndexLST(Valor As Long, lst As Object) As Integer
+Function PosIndexLST(valor As Long, lst As Object) As Integer
 'devuelve el indice de un combo... para poder posicionar cuando
 'se hace una modificacion
 'ej: me.cbo.listindex=posindexcbo(valor_a_modificar,cbo)
     For i = 0 To lst.ListCount - 1
-        If lst.ItemData(i) = Valor Then
+        If lst.ItemData(i) = valor Then
             PosIndexLST = i
             Exit Function
         End If
@@ -723,21 +724,21 @@ Function dateFormateada(fec As Date) As String
 End Function
 
 
-Function amortiza(Cantidad) As Long    'para amortizar por cantidad
-    If Cantidad < 10 Then
+Function amortiza(cantidad) As Long    'para amortizar por cantidad
+    If cantidad < 10 Then
         amortiza = 10
     Else
-        amortiza = Cantidad * 2
+        amortiza = cantidad * 2
     End If
 End Function
 
 
-Function amortizaV2(Id, Cantidad, forma As FormaCotizar, Optional amort = 0, Optional esCon As Boolean = True) As Long    'para amortizar por cantidad
+Function amortizaV2(Id, cantidad, forma As FormaCotizar, Optional amort = 0, Optional esCon As Boolean = True) As Long    'para amortizar por cantidad
     On Error GoTo err1
     Dim rs As Recordset
     Dim canti
 
-    canti = Cantidad
+    canti = cantidad
 
     If forma = automatica_ Then
         If canti < 10 Then
@@ -758,7 +759,7 @@ Function amortizaV2(Id, Cantidad, forma As FormaCotizar, Optional amort = 0, Opt
 
 
 
-        amortizaV2 = Cantidad + A
+        amortizaV2 = cantidad + A
     ElseIf forma = fijo_ Then
 
         If Not esCon Then canti = 1
@@ -1114,10 +1115,10 @@ Public Function cuantasHoras(Inicio As Date, Fin As Date)
     horas = Math.Round(minutos / 60, 2)
     cuantasHoras = horas
 End Function
-Public Function ingreso(Optional msg = Empty) As Variant
+Public Function Ingreso(Optional msg = Empty) As Variant
     frmSistemaIngresar.nombre = msg
     frmSistemaIngresar.Show 1
-    ingreso = frmSistemaIngresar.nombre
+    Ingreso = frmSistemaIngresar.nombre
     Unload frmSistemaIngresar
 
 End Function
@@ -1135,9 +1136,9 @@ Public Function Redondear(dblntor As Double, Optional cntdecas As Integer) As Do
 End Function
 
 
-Public Function ImprimirLista(titulo, lst As ListView, CD As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
+Public Function ImprimirLista(titulo, lst As ListView, cd As CommonDialog, Optional linea2 = Empty, Optional F_1 = Empty, Optional F_2 = Empty) As Boolean
     On Error GoTo err91
-    CD.ShowPrinter
+    cd.ShowPrinter
 
     AnchoCol = 0
 
@@ -1260,22 +1261,22 @@ er1:
 End Function
 
 
-Public Function VerificarCUIT(Cuit) As Boolean
+Public Function VerificarCUIT(cuit) As Boolean
 'Verifica si el tamaño es el correcto.
     VerificarCUIT = True
 
-    If Len(Cuit) = 11 Then
+    If Len(cuit) = 11 Then
         'Individualiza y multiplica los dígitos.
-        xa = val(Mid$(Cuit, 1, 1)) * 5
-        XB = val(Mid$(Cuit, 2, 1)) * 4
-        XC = val(Mid$(Cuit, 3, 1)) * 3
-        XD = val(Mid$(Cuit, 4, 1)) * 2
-        XE = val(Mid$(Cuit, 5, 1)) * 7
-        XF = val(Mid$(Cuit, 6, 1)) * 6
-        XG = val(Mid$(Cuit, 7, 1)) * 5
-        XH = val(Mid$(Cuit, 8, 1)) * 4
-        XI = val(Mid$(Cuit, 9, 1)) * 3
-        XJ = val(Mid$(Cuit, 10, 1)) * 2
+        xa = val(Mid$(cuit, 1, 1)) * 5
+        XB = val(Mid$(cuit, 2, 1)) * 4
+        XC = val(Mid$(cuit, 3, 1)) * 3
+        XD = val(Mid$(cuit, 4, 1)) * 2
+        XE = val(Mid$(cuit, 5, 1)) * 7
+        XF = val(Mid$(cuit, 6, 1)) * 6
+        XG = val(Mid$(cuit, 7, 1)) * 5
+        XH = val(Mid$(cuit, 8, 1)) * 4
+        XI = val(Mid$(cuit, 9, 1)) * 3
+        XJ = val(Mid$(cuit, 10, 1)) * 2
         'xj2 = Val(Mid$(Cuit, 11, 1)) * 1
 
 
@@ -1286,7 +1287,7 @@ Public Function VerificarCUIT(Cuit) As Boolean
         Control = (11 - (x Mod 11)) Mod 11
 
         'Verifica si el dígito de control ingresado difiere con el calculado.
-        If Control <> val(Mid$(Cuit, 11, 1)) Then
+        If Control <> val(Mid$(cuit, 11, 1)) Then
 
             'Presenta la ventana de aviso.
             '        MsgBox "El CUIT ingresado es incorrecto. Verifíquelo e intente nuevamente." + Chr$(13) + Chr$(13) + "CUIT Ingresado: " + CUIT + Chr$(13) + "CUIT Estimativo: " + Left(CUIT, 12) + Trim$(str$(Control)), 48, "CUIT ERRONEO"

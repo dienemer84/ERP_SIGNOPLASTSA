@@ -18,6 +18,8 @@ Dim rs1 As ADODB.Recordset
 Dim rs2 As ADODB.Recordset
 Dim rs3 As ADODB.Recordset
 Dim valor_dolar As Double
+
+
 Private Sub Class_Initialize()
 'On Error GoTo err22
     Set cn = conectar.obternerConexion
@@ -45,6 +47,7 @@ Public Function ejecutar_consulta2(consulta As String)
 err11:
     MsgBox "Se produjo un error: " & Err.Description
 End Function
+
 Public Function ejecutar_consulta3(consulta As String)
     On Error GoTo err12
 
@@ -53,6 +56,7 @@ Public Function ejecutar_consulta3(consulta As String)
 err12:
     MsgBox "Se produjo un error: " & Err.Description
 End Function
+
 Public Sub ver_detalle_elemento(ByVal cod As String, frm As frmNuevoElemento, Accion As Integer)
     strsql = "select v.valor_unitario, v.fecha_actualizacion,v.id_moneda,g.grupo,m.id, m.codigo, m.descripcion,m.espesor,m.pesoxunidad,m.id_unidad,r.rubro from materiales m inner join rubros r on m.id_rubro=r.id inner join grupos g on g.id=m.id_grupo inner join valores_MATERIALES v on v.id_material=m.id and m.codigo= '" & cod & "'"
     Me.ejecutar_consulta1 strsql
@@ -162,6 +166,7 @@ Public Sub ver_detalle_elemento(ByVal cod As String, frm As frmNuevoElemento, Ac
     End If
 End Sub
 
+
 Public Function calcular_totales_material(frm As frmNuevoElemento)
     canti = frm.ListView1.ListItems.count
     TotalKG = 0
@@ -173,10 +178,11 @@ Public Function calcular_totales_material(frm As frmNuevoElemento)
             TotalM2 = TotalM2 + CDbl(frm.ListView1.ListItems(i).ListSubItems(8))
         End If
     Next i
-    frm.lblTotalKg = Math.Round(TotalKG, 3)
+    frm.lblTotalKG = Math.Round(TotalKG, 3)
     frm.lblTotalM2 = Math.Round(TotalM2, 3)
 
 End Function
+
 
 Public Sub ver_detalle_mdo(ByVal codi As Integer, ByRef idcpp, ByRef cantxproc, ByRef mdoDescrip, ByRef Tarea, ByRef Sector, ByRef valor)
     strsql = "select v.id_tarea,v.valor, v.fecha, v.descripcion,s.sector,t.tarea,t.id_sector,t.cantxproc from tareas t inner join sectores s on t.id_sector=s.id inner join  valores_MDO v on v.id_tarea=t.id and t.id=" & codi
@@ -227,18 +233,18 @@ Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id
     tipo_complejidad = ComplejidadBaja
     If Complejidad = 1 Then tipo_complejidad = ComplejidadMedia
     If Complejidad = 2 Then tipo_complejidad = ComplejidadAlta
-
-    cn.execute "insert into desarrollo_mdo " & _
-           "(id_pieza,codigo,cantidad,tiempo,detalle,orden) values (" & _
-           CInt(ultid) & "," & _
-           CInt(id_mdo) & "," & _
-           CDbl(Cant) & "," & _
-           CDbl(Tiempo) & ",'" & _
-           deta1 & "'," & _
-           y & ")"
-
+    
+    cn.execute "insert into stock " & _
+               "(detalle,id_cliente,cantidad,tipo_complejidad) VALUES (" & _
+               "'" & detail & "'," & _
+               id_cliente & "," & _
+               cantidad & "," & _
+               Complejidad & ")"
+               
     Me.ejecutar_consulta3 "select last_insert_id() as idd from stock"
+    
     ultid = rs3!idd
+    
     cantL1 = lstMAT.ListItems.count
     'alta en desarrollo materiales del elemento
     For x = 1 To cantL1
@@ -250,8 +256,15 @@ Public Sub agregar(lstMAT As ListView, lstMdo As ListView, detalle As String, id
         anchoT = lstMAT.ListItems(x).ListSubItems(8)
         cantidad = lstMAT.ListItems(x).ListSubItems(14)
         deta = UCase(Trim(lstMAT.ListItems(x).Tag))
-        cn.execute "insert into desarrollo_material (id_pieza,scrap,largo,ancho,largoTerm,AnchoTerm,id_material,cantidad,detalle) values (" & CInt(ultid) & "," & CDbl(Scrap) & "," & CDbl(Largo) & "," & CDbl(Ancho) & " ," & CDbl(largoT) & "," & CDbl(anchoT) & ", " & id_material & "," & cantidad & ",'" & deta & "')"
-
+        
+        cn.execute "insert into desarrollo_mdo " & _
+                   "(id_pieza,codigo,cantidad,tiempo,detalle,orden) values (" & _
+                   CInt(ultid) & "," & _
+                   CInt(id_mdo) & "," & _
+                   CDbl(Cant) & "," & _
+                   CDbl(Tiempo) & ",'" & _
+                   deta1 & "'," & _
+                   y & ")"
 
     Next x
 
@@ -409,21 +422,22 @@ Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, 
     On Error GoTo err555
     detail = UCase(detalle)
     cantidad = 0
+    
     cn.BeginTrans
+    
     tra = True
+    
     'modifico en stock.
-
-    cn.execute "insert into desarrollo_mdo " & _
-           "(id_pieza,codigo,cantidad,tiempo,detalle,orden) values (" & _
-           CInt(ultid) & "," & _
-           CInt(id_mdo) & "," & _
-           CDbl(Cant) & "," & _
-           CDbl(Tiempo) & ",'" & _
-           deta1 & "'," & _
-           y & ")"
-
+    cn.execute "update stock set " & _
+               "tipo_complejidad='" & Complejidad & "', " & _
+               "detalle='" & detail & "', " & _
+               "id_cliente=" & id_cliente & _
+               " where id=" & idPieza
+    
     ultid = idPieza
+    
     cantL1 = lstMAT.ListItems.count
+    
     'elimino datos anteriores
     cn.execute "delete from desarrollo_material where id_pieza=" & idPieza
     'alta en desarrollo materiales del elemento
@@ -446,15 +460,23 @@ Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, 
     cn.execute "delete from desarrollo_mdo where id_pieza=" & idPieza
     'alta en desarrollo de mdo del elemento
     For y = 1 To cantL2
-
-
+    
         id_mdo = lstMdo.ListItems(y).ListSubItems(1)
         Cant = lstMdo.ListItems(y).ListSubItems(2)
         Tiempo = lstMdo.ListItems(y).ListSubItems(3)
         deta1 = UCase(Trim(lstMdo.ListItems(y).Tag))
-        cn.execute "insert into desarrollo_mdo (id_pieza,codigo,cantidad,tiempo,detalle) values (" & CInt(ultid) & "," & CInt(id_mdo) & "," & CDbl(Cant) & "," & CDbl(Tiempo) & ",'" & deta1 & "')"
-        'CN3.Execute "insert into desarrollo_mdo (id_pieza,codigo,cantidad,tiempo) values (" & CInt(ultid) & "," & CInt(id_mdo) & "," & CDbl(Cant) & "," & CDbl(tiempo) & ")"
+    
+        cn.execute "insert into desarrollo_mdo " & _
+                   "(id_pieza,codigo,cantidad,tiempo,detalle,orden) values (" & _
+                   CInt(ultid) & "," & _
+                   CInt(id_mdo) & "," & _
+                   CDbl(Cant) & "," & _
+                   CDbl(Tiempo) & ",'" & _
+                   deta1 & "'," & _
+                   y & ")"
+    
     Next y
+    
     tra = False
 
     cn.CommitTrans
@@ -465,7 +487,20 @@ Public Sub modificar(lstMAT As ListView, lstMdo As ListView, detalle As String, 
     'baseS.modifica_Stock nico, 0, 0, 0 'doy d alta en bbdd historicos de stock
     Exit Sub
 err555:
+    Dim descripcionError As String
+
+    descripcionError = Err.Description
+
+    On Error Resume Next
     cn.RollbackTrans
+    On Error GoTo 0
+
+    MsgBox "Error al modificar la pieza:" & _
+           vbCrLf & vbCrLf & _
+           descripcionError, _
+           vbCritical, _
+           "Modificar pieza"
+
 
 End Sub
 

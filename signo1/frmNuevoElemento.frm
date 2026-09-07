@@ -1199,7 +1199,7 @@ Public Sub calcularTotalMateriales(ByVal lst As ListView, ByRef Kg, ByRef m2, By
     Kg = K
     m2 = m
     costo = c
-    Me.lblTotalKg = Kg
+    Me.lblTotalKG = Kg
     Me.lblTotalM2 = m2
     Me.lblCosto = costo
 End Sub
@@ -1217,7 +1217,7 @@ Public Sub calcular_totales_mdo()
     Next i
     Me.lblfijos = Math.Round(totalFIJO, 2)
     Me.lblmdo = Math.Round(TotalMDO, 2)
-    Me.lblcambio = Math.Round(totalCAMBIO, 2)
+    Me.lblCambio = Math.Round(totalCAMBIO, 2)
     Me.lblCtoMDO = Math.Round(cto, 2)
 End Sub
 Private Function verDetalleMateriales(Id)
@@ -1301,12 +1301,25 @@ Private Sub btnModificar_Click()
 
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
-                base.modificar Me.ListView1, Me.ListView2, Me.txtNombreElemento, CInt(Me.txtIdCliente), idPieza, CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
+            
+                base.modificar Me.ListView1, _
+                               Me.ListView2, _
+                               Me.txtNombreElemento, _
+                               CInt(Me.txtIdCliente), _
+                               idPieza, _
+                               CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
+            
                 grabado = True
-
+            
                 Channel.Notificar Nothing, EdicionPieza_
+            
+                MsgBox "El elemento fue actualizado correctamente.", _
+                       vbInformation, _
+                       "Modificar elemento"
+            
+                Unload Me
+            
             End If
-        End If
     End If
     Exit Sub
 errb:
@@ -1477,6 +1490,7 @@ Private Sub Command3_Click()
         Next i
 
         frmConfigurarTerminacion.nuevo_form = Me
+        
         frmConfigurarTerminacion.Show 1
         calcularTotalMateriales Me.ListView1, Kg, m2, costo
 
@@ -1515,8 +1529,21 @@ Private Sub Command5_Click()
             Dim h As VbMsgBoxResult
             h = MsgBox("¿Está conforme con los datos ingresados?", vbYesNo, "Confirmación")
             If h = 6 Then
-                base.agregar Me.ListView1, Me.ListView2, Me.txtNombreElemento, CInt(Me.txtIdCliente), CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
-                grabado = False
+            
+                base.agregar Me.ListView1, _
+                             Me.ListView2, _
+                             Me.txtNombreElemento, _
+                             CInt(Me.txtIdCliente), _
+                             CInt(Me.cboComplejidad.ItemData(Me.cboComplejidad.ListIndex))
+            
+                grabado = True
+            
+                MsgBox "El elemento fue agregado correctamente.", _
+                       vbInformation, _
+                       "Agregar elemento"
+            
+                Unload Me
+            
             End If
         End If
     End If
@@ -1608,7 +1635,7 @@ Private Sub Form_Load()
     Me.calcular_totales_mdo
     'Me.calcularTotalMateriales Me.ListView1, kg, m2, costo
     Me.lblCosto = costo
-    Me.lblTotalKg = Kg
+    Me.lblTotalKG = Kg
     Me.lblTotalM2 = m2
     grabado = False
     DAOCliente.llenarComboXtremeSuite Me.cboClientes

@@ -19,6 +19,7 @@ Dim vtabla As Integer
 Dim Cantidad_rubros As Integer
 Dim Cantidad_grupos As Integer
 Dim vusu As Long
+
 Public Function ejecutarComando(comando) As Boolean
     On Error GoTo err45
     ejecutarComando = True
@@ -30,7 +31,7 @@ err45:
 End Function
 
 
-Public Function verSeleccionado(ByVal indice, idUsuario As Long, Optional actualizar As Boolean = False, Optional Valor = Empty) As String
+Public Function verSeleccionado(ByVal indice, idUsuario As Long, Optional actualizar As Boolean = False, Optional valor = Empty) As String
     Select Case indice
         'panel de control y config
     Case 100: strs = "rootPanelControl"
@@ -246,7 +247,7 @@ Public Function verSeleccionado(ByVal indice, idUsuario As Long, Optional actual
         'If Not rs.EOF Then verSeleccionado = rs!resu
         verSeleccionado = rs!resu
     Else
-        strsql = "update  sp_permisos." & tabla & " set " & permiso & "=" & Valor & " where idUsuario=" & idUsuario
+        strsql = "update  sp_permisos." & tabla & " set " & permiso & "=" & valor & " where idUsuario=" & idUsuario
         cn.execute strsql
     End If
 
@@ -254,7 +255,7 @@ Public Function verSeleccionado(ByVal indice, idUsuario As Long, Optional actual
 End Function
 
 Property Get valorMDO() As Double
-    valorMDO = rs!Valor
+    valorMDO = rs!valor
 End Property
 Public Property Let idUsuarioLogueado(idUsuario As Long)
     vusu = idUsuario
@@ -262,10 +263,10 @@ End Property
 Public Property Get idUsuarioLogueado() As Long
     idUsuarioLogueado = vusu
 End Property
-Public Function cambiarPass(usuario, nuevo) As Boolean
+Public Function cambiarPass(Usuario, nuevo) As Boolean
     On Error GoTo rr
     cambiarPass = True
-    cn.execute "update usuarios set password='" & nuevo & "' where id=" & usuario
+    cn.execute "update usuarios set password='" & nuevo & "' where id=" & Usuario
     Exit Function
 rr:
     cambiarPass = False
@@ -306,9 +307,9 @@ Public Sub llenarLstRubros(lst As ListView)
     lst.Gridlines = True
     lst.ColumnHeaders.Clear
     lst.Width = 3600
-    lst.ColumnHeaders.Add(1).text = "Cód"
+    lst.ColumnHeaders.Add(1).Text = "Cód"
     lst.ColumnHeaders(1).Width = 700
-    lst.ColumnHeaders.Add(2).text = "Rubro"
+    lst.ColumnHeaders.Add(2).Text = "Rubro"
     lst.ColumnHeaders(2).Width = 2550
     lst.ColumnHeaders(2).Alignment = lvwColumnLeft
     Me.ejecutar "select * from rubros"
@@ -328,9 +329,9 @@ Public Function llenarLstGrupos(id_rubro As Integer, lst As ListView)
     lst.Gridlines = True
     lst.ColumnHeaders.Clear
     lst.Width = 3600
-    lst.ColumnHeaders.Add(1).text = "Cód"
+    lst.ColumnHeaders.Add(1).Text = "Cód"
     lst.ColumnHeaders(1).Width = 700
-    lst.ColumnHeaders.Add(2).text = "Grupo"
+    lst.ColumnHeaders.Add(2).Text = "Grupo"
     lst.ColumnHeaders(2).Width = 2550
     lst.ColumnHeaders(2).Alignment = lvwColumnLeft
 
@@ -360,18 +361,18 @@ Public Function llenarLstmateriales(id_rubro As Integer, id_grupo As Integer, ls
     lst.Gridlines = True
     lst.ColumnHeaders.Clear
     lst.Width = 6450
-    lst.ColumnHeaders.Add(1).text = "id"
+    lst.ColumnHeaders.Add(1).Text = "id"
     lst.ColumnHeaders(1).Width = 0
-    lst.ColumnHeaders.Add(2).text = "Descripción"
+    lst.ColumnHeaders.Add(2).Text = "Descripción"
     lst.ColumnHeaders(2).Width = 4000
     lst.ColumnHeaders(2).Alignment = lvwColumnLeft
-    lst.ColumnHeaders.Add(3).text = "Moneda"
+    lst.ColumnHeaders.Add(3).Text = "Moneda"
     lst.ColumnHeaders(3).Width = 500
     lst.ColumnHeaders(3).Alignment = lvwColumnRight
-    lst.ColumnHeaders.Add(4).text = "Valor"
+    lst.ColumnHeaders.Add(4).Text = "Valor"
     lst.ColumnHeaders(4).Width = 900
     lst.ColumnHeaders(4).Alignment = lvwColumnRight
-    lst.ColumnHeaders.Add(5).text = "Unidad"
+    lst.ColumnHeaders.Add(5).Text = "Unidad"
     lst.ColumnHeaders(5).Width = 700
     lst.ColumnHeaders(5).Alignment = lvwColumnRight
 
@@ -448,17 +449,17 @@ End Function
 
 Public Function queUsuario(idUsuario As Long) As String
     Me.ejecutar "select usuario from usuarios where id=" & idUsuario
-    If Not rs.EOF And Not rs.BOF Then queUsuario = rs!usuario
+    If Not rs.EOF And Not rs.BOF Then queUsuario = rs!Usuario
 End Function
 
 
 Public Function agregarIncidencia(IdReferencia As Long, Origen As OrigenIncidencias, nIncidencia As String) As Boolean
     On Error GoTo err551
     agregarIncidencia = True
-    usuario = funciones.getUser
+    Usuario = funciones.getUser
     fec = funciones.datetimeFormateada(Now)
     Nota = nIncidencia
-    cn.execute "insert into Incidencias (origen,usuario,fecha,nota,idReferencia) values (" & Origen & "," & usuario & ",'" & fec & "','" & Nota & "'," & IdReferencia & ")"
+    cn.execute "insert into Incidencias (origen,usuario,fecha,nota,idReferencia) values (" & Origen & "," & Usuario & ",'" & fec & "','" & Nota & "'," & IdReferencia & ")"
 
 
     Exit Function
@@ -504,8 +505,6 @@ Public Function cantidadGruposUsuario(idUsuario) As Long
 End Function
 
 
-
-
 Public Function actualizarGrupos(idUsuario, lst As ListView) As Boolean
     On Error GoTo fuck
     actualizarGrupos = True
@@ -528,7 +527,6 @@ fuck:
 End Function
 
 
-
 Public Function VerificarSiHayActualizacion(Optional ByRef idnueva) As Boolean
     On Error GoTo err23
     maxi = App.Major
@@ -545,17 +543,141 @@ err23:
     Err.Clear
 End Function
 
+
 Public Function actualizarSistema(idNuevo As Long) As Boolean
-    If clasea.exportarArchivoSistema(idNuevo) Then
-        aa = App.path & "\updater.exe " & App.path & "\abb.exe|" & App.path & "\abb.tmp"
 
-        Shell aa, vbNormalFocus
+    On Error GoTo ControlError
 
+    Dim rutaBat As String
+    Dim carpetaTemp As String
+    Dim comando As String
+    Dim f As Integer
 
-        SalirForzado
+    Dim nroError As Long
+    Dim descError As String
 
-        End
-    Else
-        MsgBox "Hubo un error al exportar la nueva versión del sistema.", vbCritical
+    actualizarSistema = False
+
+    '-------------------------------------------------------
+    ' 1 - Exportar la nueva version como abb.tmp
+    '-------------------------------------------------------
+    If Not clasea.exportarArchivoSistema(idNuevo) Then
+        MsgBox "Hubo un error al exportar la nueva versión del sistema.", _
+               vbCritical, "Actualización"
+        Exit Function
     End If
+
+    '-------------------------------------------------------
+    ' 2 - Verificar que exista el Updater
+    '-------------------------------------------------------
+    If Dir$(App.path & "\updater.exe") = vbNullString Then
+        MsgBox "No se encontró el archivo:" & vbCrLf & _
+               App.path & "\updater.exe", _
+               vbCritical, "Actualización"
+        Exit Function
+    End If
+
+    '-------------------------------------------------------
+    ' 3 - Verificar que se haya generado abb.tmp
+    '-------------------------------------------------------
+    If Dir$(App.path & "\abb.tmp") = vbNullString Then
+        MsgBox "No se generó el archivo temporal de actualización:" & _
+               vbCrLf & App.path & "\abb.tmp", _
+               vbCritical, "Actualización"
+        Exit Function
+    End If
+
+    '-------------------------------------------------------
+    ' 4 - Obtener carpeta temporal de Windows
+    '-------------------------------------------------------
+    carpetaTemp = Environ$("TEMP")
+
+    If Len(carpetaTemp) = 0 Then
+        carpetaTemp = Environ$("TMP")
+    End If
+
+    If Len(carpetaTemp) = 0 Then
+        carpetaTemp = App.path
+    End If
+
+    If Right$(carpetaTemp, 1) <> "\" Then
+        carpetaTemp = carpetaTemp & "\"
+    End If
+
+    rutaBat = carpetaTemp & "SignoPlast_Actualizar.cmd"
+
+    '-------------------------------------------------------
+    ' 5 - Crear lanzador temporal
+    '
+    ' Este archivo espera hasta que abb.exe haya terminado
+    ' realmente antes de ejecutar Updater.exe
+    '-------------------------------------------------------
+    f = FreeFile
+
+    Open rutaBat For Output As #f
+
+    Print #f, "@echo off"
+
+    'Ubicarse en la carpeta del ERP
+    Print #f, "cd /d """ & App.path & """"
+
+    'Esperar mientras abb.exe siga ejecutándose
+    Print #f, ":esperar"
+    Print #f, "tasklist /FI ""IMAGENAME eq abb.exe"" /NH 2>NUL | find /I ""abb.exe"" >NUL"
+    Print #f, "if not errorlevel 1 ("
+    Print #f, "  ping 127.0.0.1 -n 2 >NUL"
+    Print #f, "  goto esperar"
+    Print #f, ")"
+
+    'abb.exe ya terminó: ejecutar el actualizador
+    Print #f, "start """" updater.exe abb.exe^|abb.tmp"
+
+    'Eliminar este mismo CMD cuando ya no sea necesario
+    Print #f, "del ""%~f0"""
+
+    Close #f
+    f = 0
+
+    '-------------------------------------------------------
+    ' 6 - Ejecutar el lanzador temporal
+    '-------------------------------------------------------
+    comando = Environ$("COMSPEC")
+
+    If Len(comando) = 0 Then
+        comando = "cmd.exe"
+    End If
+
+    Shell comando & " /c """ & rutaBat & """", vbHide
+
+    actualizarSistema = True
+
+    '-------------------------------------------------------
+    ' 7 - Cerrar inmediatamente Signo Plast
+    '
+    ' El .CMD queda esperando hasta que Windows confirme
+    ' que abb.exe ya no está ejecutándose.
+    '-------------------------------------------------------
+    End
+
+    Exit Function
+
+ControlError:
+
+    nroError = Err.Number
+    descError = Err.Description
+
+    On Error Resume Next
+
+    If f <> 0 Then
+        Close #f
+    End If
+
+    On Error GoTo 0
+
+    MsgBox "No se pudo iniciar la actualización." & vbCrLf & vbCrLf & _
+           "Error " & nroError & ": " & descError, _
+           vbCritical, "Actualización"
+
+    actualizarSistema = False
+
 End Function
