@@ -1588,28 +1588,22 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
 '''        End If
 
         If Factura.estado = EstadoFacturaProveedor.Saldada Or Factura.estado = EstadoFacturaProveedor.pagoParcial Then
-            Select Case Factura.OrdenesPagoEstado
-                Case 1
-                    Values(18) = Factura.OrdenesPagoId
-                Case "-"
-                    Values(18) = Factura.OrdenesPagoId
-                Case 4
-                    Values(18) = Factura.OrdenesPagoId
-                Case 3
-                    Values(18) = Factura.OrdenesPagoId
-                Case "1,1"
-                    Values(18) = Factura.OrdenesPagoId
-                Case "1,1,1"
-                    Values(18) = Factura.OrdenesPagoId
-                Case "1,1,1,1"
-                    Values(18) = Factura.OrdenesPagoId
-                Case "1,1,1,1.1"
-                    Values(18) = Factura.OrdenesPagoId
-                Case "0"
-                    Values(18) = Factura.OrdenesPagoId & " (P)" 'PENDIENTE
-                    
-                    
-            End Select
+            If LenB(Trim$(Factura.OrdenesPagoId)) > 0 _
+                    And Factura.OrdenesPagoId <> "-" Then
+            
+                'Muestra todas las OP, sin importar la cantidad.
+                Values(18) = Factura.OrdenesPagoId
+            
+                'Si alguna OP está pendiente, agrega la marca (P).
+                If InStr(1, _
+                         "," & Replace(Factura.OrdenesPagoEstado, " ", "") & ",", _
+                         ",0,", _
+                         vbTextCompare) > 0 Then
+            
+                    Values(18) = Factura.OrdenesPagoId & " (P)"
+                End If
+            
+            End If
             
             Select Case Factura.LiquidacionesCajaEstado
                 Case 1

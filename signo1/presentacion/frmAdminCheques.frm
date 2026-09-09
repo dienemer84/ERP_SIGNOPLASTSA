@@ -3408,6 +3408,110 @@ err1:
 
 End Sub
 
+Private Sub grid_chequeras_BeforeUpdate( _
+    ByVal Cancel As GridEX20.JSRetBoolean)
+
+    On Error GoTo err1
+
+    Dim fila As Long
+    Dim ch As chequera
+    Dim nuevaUsada As Boolean
+    Dim respuesta As VbMsgBoxResult
+    Dim mensaje As String
+    Dim titulo As String
+    Dim bancoNombre As String
+    Dim cuentaNumero As String
+
+    If chequeras Is Nothing Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    fila = Me.grid_chequeras.RowIndex( _
+                Me.grid_chequeras.row)
+
+    If fila <= 0 Or fila > chequeras.count Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    Set ch = chequeras.item(fila)
+
+    If IsNull(Me.grid_chequeras.value(8)) Or _
+       IsEmpty(Me.grid_chequeras.value(8)) Then
+
+        nuevaUsada = False
+
+    Else
+
+        nuevaUsada = CBool( _
+                        Me.grid_chequeras.value(8))
+
+    End If
+
+    'Si el estado no cambió, no preguntar.
+    If nuevaUsada = ch.usada Then Exit Sub
+
+    bancoNombre = "SIN DEFINIR"
+    cuentaNumero = "SIN DEFINIR"
+
+    If Not ch.Banco Is Nothing Then
+        bancoNombre = ch.Banco.nombre
+    End If
+
+    If Not ch.CuentaBancaria Is Nothing Then
+        cuentaNumero = CStr(ch.CuentaBancaria.numero)
+    End If
+
+    If nuevaUsada Then
+
+        titulo = "Marcar chequera como usada"
+
+        mensaje = _
+            "¿Confirma que desea marcar esta chequera " & _
+            "como USADA/ANTIGUA?" & vbCrLf & vbCrLf & _
+            "La chequera dejará de aparecer en los " & _
+            "listados de chequeras disponibles."
+
+    Else
+
+        titulo = "Volver a habilitar chequera"
+
+        mensaje = _
+            "¿Confirma que desea quitar la marca de " & _
+            "USADA/ANTIGUA de esta chequera?" & _
+            vbCrLf & vbCrLf & _
+            "La chequera volverá a aparecer en los " & _
+            "listados disponibles si todavía contiene " & _
+            "cheques sin utilizar."
+
+    End If
+
+    mensaje = mensaje & vbCrLf & vbCrLf & _
+              "Chequera N°: " & ch.numero & vbCrLf & _
+              "Banco: " & bancoNombre & vbCrLf & _
+              "Cuenta: " & cuentaNumero & vbCrLf & _
+              "Cheques: " & ch.NumeroDesde & _
+              " al " & ch.NumeroHasta
+
+    respuesta = MsgBox( _
+                    mensaje, _
+                    vbQuestion + vbYesNo + vbDefaultButton2, _
+                    titulo)
+
+    Cancel = (respuesta <> vbYes)
+    Exit Sub
+
+err1:
+    Cancel = True
+
+    MsgBox "No se pudo validar el cambio de estado." & _
+           vbCrLf & Err.Description, _
+           vbExclamation, _
+           "Estado de chequera"
+
+End Sub
+
 Private Sub TxtNumeroChequeEnChequera_KeyPress(KeyAscii As Integer)
 
     If KeyAscii = vbKeyReturn Then
@@ -5499,7 +5603,7 @@ Private Sub mnuAnularCheque_Click()
 
     Dim respuesta As VbMsgBoxResult
     Dim mensaje As String
-    Dim BancoNombre As String
+    Dim bancoNombre As String
     Dim chequeraNumero As String
     Dim estabaEnCartera As Boolean
 
@@ -5567,7 +5671,7 @@ Private Sub mnuAnularCheque_Click()
         Exit Sub
     End If
 
-    BancoNombre = vbNullString
+    bancoNombre = vbNullString
     chequeraNumero = vbNullString
 
     If Not tmpChequera Is Nothing Then
@@ -5575,7 +5679,7 @@ Private Sub mnuAnularCheque_Click()
         chequeraNumero = CStr(tmpChequera.numero)
 
         If Not tmpChequera.Banco Is Nothing Then
-            BancoNombre = tmpChequera.Banco.nombre
+            bancoNombre = tmpChequera.Banco.nombre
         End If
 
     End If
@@ -5585,7 +5689,7 @@ Private Sub mnuAnularCheque_Click()
         vbCrLf & vbCrLf & _
         "Número: " & tmpCheque.numero & vbCrLf & _
         "Chequera: " & chequeraNumero & vbCrLf & _
-        "Banco: " & BancoNombre
+        "Banco: " & bancoNombre
 
     If tmpCheque.EnCartera Then
         mensaje = mensaje & vbCrLf & vbCrLf & _
