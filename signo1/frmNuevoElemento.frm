@@ -1690,13 +1690,19 @@ Function limpiar_txt()
 End Function
 
 Private Sub Form_Unload(Cancel As Integer)
+
     If Not grabado Then
-        If MsgBox("¿Desea descartar los cambios?", vbYesNo, "Confirmación") = vbYes Then
-            Unload Me
-        Else
+
+        If MsgBox("¿Desea descartar los cambios?", _
+                  vbYesNo + vbQuestion, _
+                  "Confirmación") <> vbYes Then
+
             Cancel = 1
+
         End If
+
     End If
+
 End Sub
 
 Private Sub lblCliente_Click()

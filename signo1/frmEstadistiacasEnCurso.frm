@@ -65,7 +65,7 @@ Begin VB.Form frmEstadistiacasEnCurso
       Left            =   3720
       Style           =   1  'Graphical
       TabIndex        =   1
-      Top             =   7920
+      Top             =   8040
       Width           =   1095
    End
    Begin MSChart20Lib.MSChart grafica_torta 
@@ -152,8 +152,8 @@ Public Function GetTiemposPorCategoria() As Dictionary
 End Function
 
 
-Public Property Set listadtopiezacantidad(nvalue As Collection)
-    Set mlistadtopiezacantidad = nvalue
+Public Property Set listadtopiezacantidad(nValue As Collection)
+    Set mlistadtopiezacantidad = nValue
     llenarGrid
 
     If mlistadtopiezacantidad.count > 0 Then
@@ -202,44 +202,44 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Command2_Click()
-    
-    Dim col2 As New Dictionary
-    Dim cs As CategoriaSueldo
-    Set col2 = GetTiemposPorCategoria
-    Dim d As Double
-    Dim i As Variant
-    Debug.Print "Categoria,Cant. Horas, Valor Hora, total"
-    For Each i In col2.Keys
-        Set cs = DAOCategoriaSueldo.FindAll("cs.id=" & i)(1)
-        Debug.Print cs.nombre & "," & col2.item(i) & "," & funciones.FormatearDecimales(cs.Valor * 60) & "," & col2.item(i) * funciones.FormatearDecimales(cs.Valor) * 60
 
-        d = d + col2.item(i)
+    On Error GoTo ErrorImpresion
 
-    Next
-    Debug.Print "total" & d
+    If col Is Nothing Then
+        MsgBox "No hay datos para imprimir.", vbExclamation, "Imprimir"
+        Exit Sub
+    End If
 
-    grafica.EditCopy
-    grafica_torta.EditCopy
-    
-    '    On Error GoTo err22
-    '    Me.CommonDialog1.ShowPrinter
-    '    c = Me.CommonDialog1.Copies
-    '    For x = 1 To c
-    '      Imprimir (est)
-    '    Next x
-    '    Exit Sub
-    'err22:
+    If col.count = 0 Then
+        MsgBox "No hay datos para imprimir.", vbExclamation, "Imprimir"
+        Exit Sub
+    End If
 
-    Load frmPrintPreview
-    
-    frmPrintPreview.Move Me.Left, Me.Top, Me.Width, Me.Height
-    
-    GridEX1.PrintPreview frmPrintPreview.GEXPreview1
-    
-    GridEX1.PrintPreview frmPrintPreview.GEXPreview1
+    'Si todavía no se seleccionó ningún sector,
+    'usamos el primero para generar el gráfico de torta.
+    If dto Is Nothing Then
+        Set dto = col.item(1)
+    End If
 
-    
-    frmPrintPreview.Show 1
+    'Nos aseguramos de que ambos gráficos estén actualizados.
+    grafico
+    GraficoTorta
+
+    grafica.Refresh
+    grafica_torta.Refresh
+
+    DoEvents
+
+    'Imprimir todo junto.
+    ImprimirEstadisticasCompleto
+
+    Exit Sub
+
+ErrorImpresion:
+
+    MsgBox "Se produjo un error al imprimir." & vbCrLf & vbCrLf & _
+           "Error " & Err.Number & ": " & Err.Description, _
+           vbExclamation, "Imprimir estadísticas"
 
 End Sub
 
@@ -302,7 +302,7 @@ Public Sub grafico()
     ReDim ARRSECTORES(1 To col.count, 1 To 5)
     Dim i As Integer
     Dim dto As DTOSectoresTiempo
-    Dim C As Double
+    Dim c As Double
     Dim tmpSectorTiempo As DTOSectoresTiempo
     i = 0
     For Each dto In col
@@ -328,7 +328,7 @@ Public Sub grafico()
         Else
             ARRSECTORES(i, 5) = dto.Tiempo
         End If
-        C = C + dto.Tiempo
+        c = c + dto.Tiempo
     Next dto
 
     grafica.ChartData = ARRSECTORES
@@ -344,7 +344,7 @@ Public Sub grafico()
     grafica.ColumnLabel = "asdsad"
     grafica.Refresh
 
-    Me.lblTotal = "Carga Total: " & funciones.FormatearDecimales(C) & " horas"
+    Me.lbltotal = "Carga Total: " & funciones.FormatearDecimales(c) & " horas"
 
 End Sub
 
@@ -361,12 +361,12 @@ End Sub
 
 
 Private Sub GridEX1_SelectionChange()
-    Set dto = col.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
+    Set dto = col.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
     GraficoTorta
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Set dto = col(rowIndex)
+Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Set dto = col(RowIndex)
     Values(1) = dto.Sector.Sector
     Values(2) = funciones.FormatearDecimales(dto.Tiempo) & " hs."
 
@@ -385,3 +385,456 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
 End Sub
 
 
+Private Sub ImprimirGraficoTorta()
+
+    Dim picGrafico As StdPicture
+
+    On Error GoTo ErrorImpresion
+
+    Clipboard.Clear
+
+    grafica_torta.Refresh
+    grafica_torta.EditCopy
+
+    DoEvents
+
+    If Clipboard.GetFormat(vbCFMetafile) Then
+
+        Set picGrafico = Clipboard.GetData(vbCFMetafile)
+
+    ElseIf Clipboard.GetFormat(vbCFBitmap) Then
+
+        Set picGrafico = Clipboard.GetData(vbCFBitmap)
+
+    Else
+
+        MsgBox "No se pudo obtener el gráfico de torta para imprimir.", _
+               vbExclamation, "Imprimir gráfico"
+
+        Exit Sub
+
+    End If
+
+    Printer.ScaleMode = vbTwips
+
+    Printer.PaintPicture picGrafico, _
+                         500, _
+                         500, _
+                         Printer.ScaleWidth - 1000, _
+                         Printer.ScaleHeight - 1000
+
+    Printer.EndDoc
+
+    Exit Sub
+
+ErrorImpresion:
+
+    MsgBox "Error al imprimir el gráfico de torta: " & Err.Description, _
+           vbExclamation, "Imprimir gráfico"
+
+End Sub
+
+
+Private Function CapturarGrafico(ByRef Chart As MSChart20Lib.MSChart) As StdPicture
+
+    On Error GoTo ErrorCaptura
+
+    Clipboard.Clear
+
+    Chart.Refresh
+    DoEvents
+
+    Chart.EditCopy
+    DoEvents
+
+    'MSChart normalmente copia como Metafile.
+    If Clipboard.GetFormat(vbCFMetafile) Then
+
+        Set CapturarGrafico = Clipboard.GetData(vbCFMetafile)
+
+    ElseIf Clipboard.GetFormat(vbCFBitmap) Then
+
+        Set CapturarGrafico = Clipboard.GetData(vbCFBitmap)
+
+    Else
+
+        Set CapturarGrafico = Nothing
+
+    End If
+
+    Exit Function
+
+ErrorCaptura:
+
+    Set CapturarGrafico = Nothing
+
+End Function
+
+Private Sub ImprimirEstadisticasCompleto()
+
+    Dim picGrafico As StdPicture
+    Dim picTorta As StdPicture
+
+    Dim dtoSector As DTOSectoresTiempo
+    Dim tmpAvance As DTOSectoresTiempo
+
+    Dim margen As Single
+
+    Dim anchoPagina As Single
+    Dim altoPagina As Single
+
+    Dim xTabla As Single
+    Dim yTabla As Single
+    Dim anchoTabla As Single
+    Dim altoFila As Single
+
+    Dim anchoCol1 As Single
+    Dim anchoCol2 As Single
+    Dim anchoCol3 As Single
+
+    Dim xGrafico As Single
+    Dim anchoGrafico As Single
+
+    Dim yGrafico1 As Single
+    Dim altoGrafico1 As Single
+
+    Dim yGrafico2 As Single
+    Dim altoGrafico2 As Single
+
+    Dim y As Single
+
+    Dim tiempoReal As Double
+
+    On Error GoTo ErrorImpresion
+
+    '-----------------------------------------
+    ' CAPTURAR LOS DOS GRAFICOS
+    '-----------------------------------------
+
+    Set picGrafico = CapturarGrafico(grafica)
+
+    If picGrafico Is Nothing Then
+        MsgBox "No se pudo obtener el gráfico principal.", _
+               vbExclamation, "Imprimir"
+        Exit Sub
+    End If
+
+
+    Set picTorta = CapturarGrafico(grafica_torta)
+
+    If picTorta Is Nothing Then
+        MsgBox "No se pudo obtener el gráfico de torta.", _
+               vbExclamation, "Imprimir"
+        Exit Sub
+    End If
+
+
+    '-----------------------------------------
+    ' CONFIGURAR IMPRESORA
+    '-----------------------------------------
+
+    Printer.ScaleMode = vbTwips
+
+    'Hoja horizontal.
+    On Error Resume Next
+    Printer.Orientation = vbPRORLandscape
+    On Error GoTo ErrorImpresion
+
+    anchoPagina = Printer.ScaleWidth
+    altoPagina = Printer.ScaleHeight
+
+    margen = 400
+
+
+    '-----------------------------------------
+    ' TITULO
+    '-----------------------------------------
+
+    Printer.Font.Name = "Arial"
+    Printer.Font.Size = 14
+    Printer.Font.Bold = True
+
+    Printer.CurrentX = margen
+    Printer.CurrentY = margen
+
+    Printer.Print "Estadísticas - Carga de producción actual"
+
+
+    Printer.Font.Size = 9
+    Printer.Font.Bold = False
+
+    Printer.CurrentX = margen
+    Printer.CurrentY = margen + 350
+
+    Printer.Print lbltotal.caption
+
+
+    '-----------------------------------------
+    ' MEDIDAS DE LA HOJA
+    '-----------------------------------------
+
+    yTabla = margen + 850
+    xTabla = margen
+
+    'La tabla ocupa aproximadamente el 33%.
+    anchoTabla = anchoPagina * 0.33
+
+    'Los gráficos ocupan el resto.
+    xGrafico = xTabla + anchoTabla + 400
+    anchoGrafico = anchoPagina - xGrafico - margen
+
+
+    '-----------------------------------------
+    ' COLUMNAS DE LA TABLA
+    '-----------------------------------------
+
+    anchoCol1 = anchoTabla * 0.5
+    anchoCol2 = anchoTabla * 0.25
+    anchoCol3 = anchoTabla * 0.25
+
+    altoFila = 320
+
+
+    'Si hay muchos sectores reducimos un poco
+    'la altura de las filas.
+    If ((col.count + 1) * altoFila) > (altoPagina - yTabla - margen) Then
+
+        altoFila = (altoPagina - yTabla - margen) / (col.count + 1)
+
+        If altoFila < 190 Then
+            altoFila = 190
+        End If
+
+    End If
+
+
+    '-----------------------------------------
+    ' ENCABEZADO DE TABLA
+    '-----------------------------------------
+
+    y = yTabla
+
+    Printer.Font.Name = "Arial"
+    Printer.Font.Size = 8
+    Printer.Font.Bold = True
+
+
+    'Sector
+    Printer.Line _
+        (xTabla, y)- _
+        (xTabla + anchoCol1, y + altoFila), _
+        vbBlack, B
+
+    Printer.CurrentX = xTabla + 60
+    Printer.CurrentY = y + 60
+    Printer.Print "Sector"
+
+
+    'Tiempo previsto
+    Printer.Line _
+        (xTabla + anchoCol1, y)- _
+        (xTabla + anchoCol1 + anchoCol2, y + altoFila), _
+        vbBlack, B
+
+    Printer.CurrentX = xTabla + anchoCol1 + 60
+    Printer.CurrentY = y + 60
+    Printer.Print "Tiempo"
+
+
+    'Tiempo realizado
+    Printer.Line _
+        (xTabla + anchoCol1 + anchoCol2, y)- _
+        (xTabla + anchoTabla, y + altoFila), _
+        vbBlack, B
+
+    Printer.CurrentX = xTabla + anchoCol1 + anchoCol2 + 60
+    Printer.CurrentY = y + 60
+    Printer.Print "Realizado"
+
+
+    y = y + altoFila
+
+
+    '-----------------------------------------
+    ' DATOS DE LA TABLA
+    '-----------------------------------------
+
+    Printer.Font.Bold = False
+
+    If altoFila < 250 Then
+        Printer.Font.Size = 7
+    Else
+        Printer.Font.Size = 8
+    End If
+
+
+    For Each dtoSector In col
+
+        tiempoReal = 0
+
+        Set tmpAvance = Nothing
+
+        If avancesOT.count > 0 Then
+
+            If funciones.BuscarEnColeccion( _
+                        avancesOT, _
+                        CStr(dtoSector.Sector.Id)) Then
+
+                Set tmpAvance = _
+                    avancesOT.item(CStr(dtoSector.Sector.Id))
+
+                tiempoReal = tmpAvance.Tiempo
+
+            End If
+
+        End If
+
+
+        '---------------------------------
+        ' SECTOR
+        '---------------------------------
+
+        Printer.Line _
+            (xTabla, y)- _
+            (xTabla + anchoCol1, y + altoFila), _
+            vbBlack, B
+
+        Printer.CurrentX = xTabla + 60
+        Printer.CurrentY = y + 60
+
+        Printer.Print dtoSector.Sector.Sector
+
+
+        '---------------------------------
+        ' TIEMPO
+        '---------------------------------
+
+        Printer.Line _
+            (xTabla + anchoCol1, y)- _
+            (xTabla + anchoCol1 + anchoCol2, y + altoFila), _
+            vbBlack, B
+
+        Printer.CurrentX = xTabla + anchoCol1 + 60
+        Printer.CurrentY = y + 60
+
+        Printer.Print _
+            funciones.FormatearDecimales(dtoSector.Tiempo) & " hs."
+
+
+        '---------------------------------
+        ' REALIZADO
+        '---------------------------------
+
+        Printer.Line _
+            (xTabla + anchoCol1 + anchoCol2, y)- _
+            (xTabla + anchoTabla, y + altoFila), _
+            vbBlack, B
+
+        Printer.CurrentX = _
+            xTabla + anchoCol1 + anchoCol2 + 60
+
+        Printer.CurrentY = y + 60
+
+        Printer.Print _
+            funciones.FormatearDecimales(tiempoReal) & " hs."
+
+
+        y = y + altoFila
+
+    Next dtoSector
+
+
+    '-----------------------------------------
+    ' GRAFICO PRINCIPAL
+    '-----------------------------------------
+
+    yGrafico1 = yTabla + 280
+
+    altoGrafico1 = _
+        ((altoPagina - yTabla - margen) * 0.52) - 280
+
+
+    Printer.Font.Name = "Arial"
+    Printer.Font.Size = 10
+    Printer.Font.Bold = True
+
+    Printer.CurrentX = xGrafico
+    Printer.CurrentY = yTabla
+
+    Printer.Print "Carga por sector"
+
+
+    Printer.PaintPicture _
+        picGrafico, _
+        xGrafico, _
+        yGrafico1, _
+        anchoGrafico, _
+        altoGrafico1
+
+
+    '-----------------------------------------
+    ' GRAFICO DE TORTA
+    '-----------------------------------------
+
+    yGrafico2 = _
+        yGrafico1 + altoGrafico1 + 500
+
+    altoGrafico2 = _
+        altoPagina - yGrafico2 - margen
+
+
+    Printer.CurrentX = xGrafico
+    Printer.CurrentY = yGrafico2 - 280
+
+    Printer.Print _
+        "Detalle de tareas - " & dto.Sector.Sector
+
+
+    Printer.PaintPicture _
+        picTorta, _
+        xGrafico, _
+        yGrafico2, _
+        anchoGrafico, _
+        altoGrafico2
+
+
+    '-----------------------------------------
+    ' TERMINAR UN SOLO DOCUMENTO
+    '-----------------------------------------
+
+    Printer.EndDoc
+    
+    'El trabajo ya fue enviado correctamente.
+    'Si Windows tiene ocupado el Clipboard,
+    'no consideramos eso un error de impresión.
+    On Error Resume Next
+    Clipboard.Clear
+    Err.Clear
+    On Error GoTo 0
+    
+    Exit Sub
+
+
+ErrorImpresion:
+
+    Dim nroError As Long
+    Dim descError As String
+
+    nroError = Err.Number
+    descError = Err.Description
+
+    On Error Resume Next
+
+    Printer.KillDoc
+    Clipboard.Clear
+
+    On Error GoTo 0
+
+    MsgBox _
+        "Error al imprimir las estadísticas." & _
+        vbCrLf & vbCrLf & _
+        "Error " & nroError & ": " & descError, _
+        vbExclamation, _
+        "Imprimir"
+
+End Sub

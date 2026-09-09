@@ -23,6 +23,7 @@ Begin VB.Form frmPlaneamientoPedidosPendientes
    ScaleHeight     =   8985
    ScaleWidth      =   14265
    Tag             =   "Ordenes de trabajo"
+   WindowState     =   2  'Maximized
    Begin XtremeSuiteControls.PushButton Command1 
       Height          =   375
       Left            =   135
@@ -559,11 +560,32 @@ Begin VB.Form frmPlaneamientoPedidosPendientes
          EndProperty
          UseVisualStyle  =   -1  'True
       End
+      Begin XtremeSuiteControls.Label LBLMENSAJE3 
+         Height          =   350
+         Left            =   9960
+         TabIndex        =   29
+         Top             =   1005
+         Width           =   5000
+         _Version        =   786432
+         _ExtentX        =   8819
+         _ExtentY        =   617
+         _StockProps     =   79
+         Caption         =   "Label8"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      End
       Begin XtremeSuiteControls.Label LBLMENSAJE2 
          Height          =   360
-         Left            =   9990
+         Left            =   9975
          TabIndex        =   28
-         Top             =   870
+         Top             =   600
          Width           =   945
          _Version        =   786432
          _ExtentX        =   1667
@@ -586,7 +608,7 @@ Begin VB.Form frmPlaneamientoPedidosPendientes
          Height          =   360
          Left            =   9975
          TabIndex        =   27
-         Top             =   390
+         Top             =   240
          Width           =   945
          _Version        =   786432
          _ExtentX        =   1667
@@ -962,7 +984,7 @@ Private Sub Command1_Click()
             For Each dp In ped.detalles
                 Set dto = New DTOPiezaCantidad
                 Set dto.Pieza = dp.Pieza
-                dto.Cantidad = dp.CantidadPedida
+                dto.cantidad = dp.CantidadPedida
                 listadtopiezacantidad.Add dto
             Next dp
         ElseIf ped.estado = EstadoOT_Desactivado Then    ' no hace nada
@@ -1201,14 +1223,19 @@ End Sub
 Private Sub MostrarMensajePendientes()
     Dim msg As String
     Dim msg2 As String
+    Dim msg3 As String
     Dim haypend As Long
     Dim hayactiv As Long
+    Dim hayenproceso As Long
+    
 
     haypend = HayPendientes
     hayactiv = HayParaActivar
+    hayenproceso = HayEn_proceso
     
     msg = "hay " & haypend & " ordenes pendientes para aprobar"
     msg2 = "hay " & hayactiv & " ordenes aprobadas para activar"
+    msg3 = "hay " & hayenproceso & " ordenes En Proceso"
 
     If haypend > 0 And hayactiv < 1 Then
         Me.LBLMENSAJE.caption = msg
@@ -1218,14 +1245,17 @@ Private Sub MostrarMensajePendientes()
         Me.LBLMENSAJE.caption = msg2
     End If
 
-    If haypend > 0 And hayactiv > 0 Then
+    If haypend > 0 And hayactiv > 0 And hayenproceso > 0 Then
         Me.LBLMENSAJE.caption = msg
         Me.LBLMENSAJE2.caption = msg2
+        Me.LBLMENSAJE3.caption = msg3
     End If
 
     Me.LBLMENSAJE.Visible = (haypend > 0 Or hayactiv > 0)
 
     Me.LBLMENSAJE2.Visible = (haypend > 0 And hayactiv > 0)
+    
+    Me.LBLMENSAJE3.Visible = (haypend > 0 And hayactiv > 0 And hayenproceso > 0)
 
 End Sub
 
@@ -1238,7 +1268,7 @@ Private Function HayPendientes() As Integer
         strsql = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_Pendiente
         Set rs = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
-            HayPendientes = rs!Cantidad
+            HayPendientes = rs!cantidad
         End If
     End If
 
@@ -1254,11 +1284,28 @@ Private Function HayParaActivar() As Integer
 
         Set rs = conectar.RSFactory(strsql)
         If Not rs.EOF And Not rs.BOF Then
-            HayParaActivar = rs!Cantidad
+            HayParaActivar = rs!cantidad
         End If
     End If
 
 End Function
+
+Private Function HayEn_proceso() As Integer
+
+    If Permisos.planOTaprobaciones Then
+        Dim rs As Recordset
+        Dim strsql As String
+        HayEn_proceso = 0
+        strsql = "select count(id) as cantidad from pedidos where estado= " & EstadoOrdenTrabajo.EstadoOT_EnProceso
+
+        Set rs = conectar.RSFactory(strsql)
+        If Not rs.EOF And Not rs.BOF Then
+            HayEn_proceso = rs!cantidad
+        End If
+    End If
+
+End Function
+
 Private Sub Form_Resize()
     On Error Resume Next
     Me.grid.Width = Me.ScaleWidth - 50
@@ -1270,11 +1317,15 @@ Private Sub Form_Resize()
     Me.cmdImprimir.Top = Top
     Me.cmdConsultas.Top = Top
     Me.btnTareasOrdenes.Top = Top
+    
     Me.LBLMENSAJE.Top = 300
     Me.LBLMENSAJE2.Top = Me.LBLMENSAJE.Top + Me.LBLMENSAJE.Height + 100
+    Me.LBLMENSAJE3.Top = Me.LBLMENSAJE2.Top + Me.LBLMENSAJE2.Height + 100
+    
     Me.LBLMENSAJE.Left = (Me.GroupBox1.Width - 5500)
     Me.LBLMENSAJE2.Left = Me.LBLMENSAJE.Left
-
+    Me.LBLMENSAJE3.Left = Me.LBLMENSAJE.Left
+    
 End Sub
 
 Private Sub Form_Terminate()
@@ -1384,7 +1435,7 @@ Private Sub grid_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Varia
             Values(4) = IIf(.NroPresupuesto = -1, "Manual", Format(.NroPresupuesto, "0000"))
             Values(5) = .descripcion
             Values(6) = .fechaCreado
-            Values(7) = .usuario.usuario
+            Values(7) = .Usuario.Usuario
 
             If aux_ordenTrabajo.EsMarco Then
                 Values(8) = .FechaFinMarco
@@ -1556,7 +1607,7 @@ Private Sub mnuFacturasAplicadas_Click()
     If Not aux_ordenTrabajo Is Nothing Then
         Dim F As New frmAdminFacturasAplicadas
         F.Origen = 1
-        F.idOrigen = aux_ordenTrabajo.Id
+        F.IdOrigen = aux_ordenTrabajo.Id
         F.Show
     End If
 End Sub
