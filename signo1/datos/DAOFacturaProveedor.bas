@@ -93,7 +93,7 @@ Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
-        existeFactura = rs!Cantidad > 0
+        existeFactura = rs!cantidad > 0
 
     End If
     Exit Function
@@ -761,7 +761,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
 
 
     Dim d As New clsDTOPadronIIBB
-    Set d = DTOPadronIIBB.FindByCUIT(fac.Proveedor.Cuit, TipoPadronRetencion)
+    Set d = DTOPadronIIBB.FindByCUIT(fac.Proveedor.cuit, TipoPadronRetencion)
     op.alicuota = d.alicuota
 
     op.StaticTotalFacturas = funciones.RedondearDecimales(MonedaConverter.Convertir(IIf(fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito, fac.total * -1, fac.total), fac.moneda.Id, op.moneda.Id))
@@ -893,7 +893,7 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         ProgressBar.value = d
 
         offset = offset + 1
-        xlWorksheet.Cells(offset, 1).value = fac.Proveedor.Cuit
+        xlWorksheet.Cells(offset, 1).value = fac.Proveedor.cuit
         xlWorksheet.Cells(offset, 2).value = fac.Proveedor.RazonSocial
         xlWorksheet.Cells(offset, 3).value = fac.NumeroFormateado
         xlWorksheet.Cells(offset, 4).value = fac.FEcha
@@ -911,14 +911,16 @@ Public Function ExportarColeccion(col As Collection, Optional ProgressBar As Obj
         xlWorksheet.Cells(offset, 14).value = enums.enumEstadoFacturaProveedor(fac.estado)
         If fac.FormaPagoCuentaCorriente Then xlWorksheet.Cells(offset, 15).value = "Cta. Cte." Else xlWorksheet.Cells(offset, 15).value = "Contado"
 
-        xlWorksheet.Cells(offset, 16).value = fac.OrdenesPagoId
-        
-        xlWorksheet.Cells(offset, 17).value = fac.LiquidacionesCajaId
-      
+        'Definir primero las celdas como texto para que Excel
+        'no convierta las listas de números a notación científica.
         xlWorksheet.Cells(offset, 16).NumberFormat = "@"
+        xlWorksheet.Cells(offset, 17).NumberFormat = "@"
+        
+        xlWorksheet.Cells(offset, 16).value = CStr(fac.OrdenesPagoId)
+        xlWorksheet.Cells(offset, 17).value = CStr(fac.LiquidacionesCajaId)
 
         xlWorksheet.Cells(offset, 18).value = fac.TipoCambio
-        xlWorksheet.Cells(offset, 19).value = fac.UsuarioCarga.usuario
+        xlWorksheet.Cells(offset, 19).value = fac.UsuarioCarga.Usuario
         xlWorksheet.Cells(offset, 20).value = fac.Id
 
 
@@ -1010,7 +1012,7 @@ Public Function CrearTablaTempComprobantes(facturas) As Boolean
         
 
         strsql = "INSERT INTO sp_temporal.ComprobantesCargadosSP (idcomprobante, numero, cuit, clave, puntodeventa, numerodesde)" _
-                 & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.Cuit & ", '" & puntoDeVenta + "-" + NumeroDesde + fac.Proveedor.Cuit & "', '" & puntoDeVenta & "', '" & NumeroDesde & "')"
+                 & " VALUES (" & fac.Id & ", '" & fac.numero & "', " & fac.Proveedor.cuit & ", '" & puntoDeVenta + "-" + NumeroDesde + fac.Proveedor.cuit & "', '" & puntoDeVenta & "', '" & NumeroDesde & "')"
 
         cn.execute strsql
         
@@ -1274,7 +1276,7 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
         offset = offset + 1
         xlWorksheet.Cells(offset, 1).value = fac.Id
         xlWorksheet.Cells(offset, 2).value = UCase(fac.Proveedor.RazonSocial)
-        xlWorksheet.Cells(offset, 3).value = fac.Proveedor.Cuit
+        xlWorksheet.Cells(offset, 3).value = fac.Proveedor.cuit
         xlWorksheet.Cells(offset, 4).value = enums.EnumTipoDocumentoContableShort(fac.tipoDocumentoContable)
         xlWorksheet.Cells(offset, 5).value = fac.configFactura.TipoFactura
         xlWorksheet.Cells(offset, 6).value = fac.numero

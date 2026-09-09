@@ -285,16 +285,42 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
 Dim tmpOe As OrdenDeEntrega
 Dim ordenes As New Collection
 
+Private mOESeleccionada As OrdenDeEntrega
+Private mModoVerEditar As Integer
+
+Private Const MODO_EDITAR As Integer = 1
+Private Const MODO_VER As Integer = 2
+
+
+Private Sub cboRangos_Click()
+
+    funciones.CalculateDateRange _
+        Me.cboRangos, _
+        Me.dtpDesde, _
+        Me.dtpHasta
+
+End Sub
 
 
 Public Sub LlenarListaOE()
 
+    On Error GoTo errHandler
+
     Set ordenes = DAOOrdenDeEntrega.GetAll()
+
+    Me.gridEntregas.ItemCount = 0
     Me.gridEntregas.ItemCount = ordenes.count
+    Me.gridEntregas.Update
+
+    Exit Sub
+
+errHandler:
+    MsgBox "Error al cargar las Ordenes de Entrega." & vbCrLf & _
+           Err.Description, vbCritical, "Ordenes de Entrega"
+
 End Sub
 
 
@@ -315,78 +341,136 @@ Private Sub cmdBuscar_Click()
     LlenarListaOE
 End Sub
 
+
 Private Sub Command1_Click()
     Unload Me
 End Sub
 
+
 Private Sub Form_Load()
+
+    On Error GoTo errHandler
+
     FormHelper.Customize Me
+
     GridEXHelper.CustomizeGrid Me.gridEntregas, True
-    GridEXHelper.AutoSizeColumns Me.gridEntregas, True
-    Me.gridEntregas.ItemCount = 0
-End Sub
 
+    'Clientes
+    DAOCliente.LlenarCombo Me.cboClientes, True
 
+    'Rangos de fecha
+    Dim i As Integer
 
-Private Sub lstOE_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-'If Me.lstOE.ListItems.count > 0 Then
-    If Button = 2 Then
-        'IDOE = Me.lstOE.selectedItem
-        Me.OENumero.caption = "[ Nro. " & IDOE & " ]"
-        Set rs = conectar.RSFactory("select estado from PedidosEntregas where id=" & IDOE)
+    funciones.FillComboBoxDateRanges Me.cboRangos
 
-        If rs!estado = 1 Then    'pendiente
-            Me.vereditar.caption = "Editar..."
-            Me.remitar.Enabled = False
-            Me.cerrarOE.Enabled = False
-            Me.RtosEntregados.Enabled = False
-            vereditarOE = 1
-            Me.printOrder.Enabled = False
-            Me.AprobarOE.Enabled = True
-        ElseIf rs!estado = 2 Then    'aprobado
-            Me.remitar.Enabled = True
-            Me.vereditar.Enabled = True
-            Me.cerrarOE.Enabled = False
-            Me.RtosEntregados.Enabled = False
-            Me.vereditar.caption = "Ver..."
-            vereditarOE = 3
-            Me.printOrder.Enabled = True
-            Me.AprobarOE.Enabled = False
-        ElseIf rs!estado = 4 Then    'entregada
-            Me.remitar.Enabled = False
-            Me.cerrarOE.Enabled = True
-            Me.RtosEntregados.Enabled = False
-            Me.vereditar.caption = "Ver..."
-            vereditarOE = 3
-            Me.printOrder.Enabled = False
-            Me.AprobarOE.Enabled = False
-        ElseIf rs!estado = 3 Then    'finalizada
-            Me.vereditar.caption = "Ver..."
-            vereditarOE = 3
-            Me.remitar.Enabled = False
-            Me.cerrarOE.Enabled = False
-            Me.RtosEntregados.Enabled = True
-            Me.printOrder.Enabled = False
-            Me.AprobarOE.Enabled = False
+    For i = 0 To Me.cboRangos.ListCount - 1
+        If Me.cboRangos.ItemData(i) = DateRangeValue.DRV_YearCurrent Then
+            Exit For
         End If
+    Next i
 
-        If Not Permisos.planOEaprobaciones Then Me.AprobarOE.Enabled = False
-        Me.PopupMenu entrega
+    If i < Me.cboRangos.ListCount Then
+        Me.cboRangos.ListIndex = i
     End If
-    'End If
+
+    'Carga inicial
+    LlenarListaOE
+
+    GridEXHelper.AutoSizeColumns Me.gridEntregas, True
+
+    Exit Sub
+
+errHandler:
+    MsgBox "Error al inicializar el listado de Ordenes de Entrega." & _
+           vbCrLf & Err.Description, _
+           vbCritical, "Ordenes de Entrega"
 
 End Sub
 
-Private Sub gridEntregas_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+
+Private Sub gridEntregas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+
+    On Error GoTo errHandler
+
+    If Button <> 2 Then Exit Sub
+
+    Set mOESeleccionada = ObtenerOESeleccionada()
+
+    If mOESeleccionada Is Nothing Then Exit Sub
+
+    Me.OENumero.caption = "[ Nro. " & mOESeleccionada.Id & " ]"
+
+    'Primero dejo todo deshabilitado.
+    Me.vereditar.Enabled = False
+    Me.AprobarOE.Enabled = False
+    Me.remitar.Enabled = False
+    Me.cerrarOE.Enabled = False
+    Me.RtosEntregados.Enabled = False
+    Me.printOrder.Enabled = False
+    Me.verHistorialOE.Enabled = False
+
+    Select Case mOESeleccionada.estado
+
+        Case EstadoOrdenEntrega.Pendiente
+
+            Me.vereditar.caption = "Editar..."
+            Me.vereditar.Enabled = True
+
+            mModoVerEditar = MODO_EDITAR
+
+            Me.AprobarOE.Enabled = True
+
+            If Not Permisos.planOEaprobaciones Then
+                Me.AprobarOE.Enabled = False
+            End If
+
+
+        Case EstadoOrdenEntrega.Aprobado
+
+            Me.vereditar.caption = "Ver..."
+            Me.vereditar.Enabled = True
+
+            mModoVerEditar = MODO_VER
+
+            Me.remitar.Enabled = True
+            Me.printOrder.Enabled = True
+            Me.verHistorialOE.Enabled = True
+
+
+        Case EstadoOrdenEntrega.FINALIZADO
+
+            Me.vereditar.caption = "Ver..."
+            Me.vereditar.Enabled = True
+
+            mModoVerEditar = MODO_VER
+
+            Me.RtosEntregados.Enabled = True
+            Me.printOrder.Enabled = True
+            Me.verHistorialOE.Enabled = True
+
+    End Select
+
+    Me.PopupMenu entrega
+
+    Exit Sub
+
+errHandler:
+    MsgBox "Error al seleccionar la Orden de Entrega." & vbCrLf & _
+           Err.Description, vbCritical, "Ordenes de Entrega"
+
+End Sub
+
+
+Private Sub gridEntregas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     On Error Resume Next
-    Set tmpOe = ordenes.item(rowIndex)
+    Set tmpOe = ordenes.item(RowIndex)
     With Values
         .value(1) = tmpOe.Id
         .value(2) = tmpOe.FEcha
-        .value(3) = tmpOe.cliente.razon
+        .value(3) = tmpOe.Cliente.razon
         .value(4) = tmpOe.referencia
-        .value(5) = tmpOe.usuarioCreador.usuario
-        .value(6) = tmpOe.usuarioAprobador.usuario
+        .value(5) = tmpOe.usuarioCreador.Usuario
+        .value(6) = tmpOe.usuarioAprobador.Usuario
         .value(7) = enumEstadoOrdenEntrega(tmpOe.estado)
     End With
 
@@ -419,12 +503,78 @@ Private Sub RtosEntregados_Click()
     ' End If
 End Sub
 
-Private Sub vereditar_Click()
-    If vereditarOE = 3 Then    'ver (porque la oe esta finalziada)
-'   frmPlaneamientoOEVer.IDOE = CLng(Me.lstOE.selectedItem)
-        frmPlaneamientoOEVer.Show
-    ElseIf vereditarOE = 1 Then    'editar (porq la oe esta en proceso)
-        '    frmPlaneamientoOEEditar.IDOE = CLng(Me.lstOE.selectedItem)
-        frmPlaneamientoOEEditar.Show
-    End If
+
+Private Sub Form_Activate()
+
+    On Error Resume Next
+
+    LlenarListaOE
+
 End Sub
+
+
+Private Sub vereditar_Click()
+
+    On Error GoTo errHandler
+
+    If mOESeleccionada Is Nothing Then
+        MsgBox "Seleccione una Orden de Entrega.", _
+               vbExclamation, "Ordenes de Entrega"
+        Exit Sub
+    End If
+
+    Select Case mModoVerEditar
+
+        Case MODO_EDITAR
+
+            frmPlaneamientoOEEditar.IDOE = mOESeleccionada.Id
+            frmPlaneamientoOEEditar.Show
+
+
+        Case MODO_VER
+
+            frmPlaneamientoOEVer.IDOE = mOESeleccionada.Id
+            frmPlaneamientoOEVer.Show
+
+    End Select
+
+    Exit Sub
+
+errHandler:
+    MsgBox "Error al abrir la Orden de Entrega." & vbCrLf & _
+           Err.Description, vbCritical, "Ordenes de Entrega"
+
+End Sub
+
+
+Private Function ObtenerOESeleccionada() As OrdenDeEntrega
+
+    On Error GoTo errHandler
+
+    If Me.gridEntregas.SelectedItems.count = 0 Then
+        Set ObtenerOESeleccionada = Nothing
+        Exit Function
+    End If
+
+    Dim indice As Long
+
+    indice = Me.gridEntregas.SelectedItems(1).RowIndex
+
+    If indice <= 0 Then
+        Set ObtenerOESeleccionada = Nothing
+        Exit Function
+    End If
+
+    If indice > ordenes.count Then
+        Set ObtenerOESeleccionada = Nothing
+        Exit Function
+    End If
+
+    Set ObtenerOESeleccionada = ordenes.item(indice)
+
+    Exit Function
+
+errHandler:
+    Set ObtenerOESeleccionada = Nothing
+
+End Function
