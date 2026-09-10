@@ -4,13 +4,12 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoOELista 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   4  'Fixed ToolWindow
+   BorderStyle     =   0  'None
    Caption         =   "Ordenes de entrega..."
    ClientHeight    =   6255
    ClientLeft      =   1800
-   ClientTop       =   2985
+   ClientTop       =   3105
    ClientWidth     =   11565
-   ClipControls    =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
@@ -18,6 +17,7 @@ Begin VB.Form frmPlaneamientoOELista
    ScaleHeight     =   6255
    ScaleWidth      =   11565
    ShowInTaskbar   =   0   'False
+   WindowState     =   2  'Maximized
    Begin GridEX20.GridEX gridEntregas 
       Height          =   4455
       Left            =   120
@@ -285,6 +285,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
 Dim tmpOe As OrdenDeEntrega
 Dim ordenes As New Collection
 
@@ -312,17 +314,22 @@ Public Sub LlenarListaOE()
     Set ordenes = DAOOrdenDeEntrega.GetAll()
 
     Me.gridEntregas.ItemCount = 0
-    Me.gridEntregas.ItemCount = ordenes.count
-    Me.gridEntregas.Update
+
+    If Not ordenes Is Nothing Then
+        Me.gridEntregas.ItemCount = ordenes.count
+    End If
 
     Exit Sub
 
 errHandler:
+
     MsgBox "Error al cargar las Ordenes de Entrega." & vbCrLf & _
-           Err.Description, vbCritical, "Ordenes de Entrega"
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description & vbCrLf & _
+           "Origen: " & Err.Source, _
+           vbCritical, "Ordenes de Entrega"
 
 End Sub
-
 
 Private Sub AprobarOE_Click()
 'Dim vidOe As Long
@@ -356,7 +363,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridEntregas, True
 
     'Clientes
-    DAOCliente.LlenarCombo Me.cboClientes, True
+    DAOCliente.llenarComboXtremeSuite Me.cboClientes
 
     'Rangos de fecha
     Dim i As Integer
@@ -461,18 +468,60 @@ errHandler:
 End Sub
 
 
-Private Sub gridEntregas_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    On Error Resume Next
-    Set tmpOe = ordenes.item(RowIndex)
+Private Sub gridEntregas_UnboundReadData( _
+    ByVal rowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
+
+    On Error GoTo errHandler
+
+    If rowIndex <= 0 Then Exit Sub
+    If ordenes Is Nothing Then Exit Sub
+    If rowIndex > ordenes.count Then Exit Sub
+
+    Set tmpOe = ordenes.item(rowIndex)
+
+    If tmpOe Is Nothing Then Exit Sub
+
     With Values
+
         .value(1) = tmpOe.Id
         .value(2) = tmpOe.FEcha
-        .value(3) = tmpOe.Cliente.razon
+
+        'Cliente
+        If Not tmpOe.Cliente Is Nothing Then
+            .value(3) = tmpOe.Cliente.razon
+        Else
+            .value(3) = ""
+        End If
+
         .value(4) = tmpOe.referencia
-        .value(5) = tmpOe.usuarioCreador.Usuario
-        .value(6) = tmpOe.usuarioAprobador.Usuario
+
+        'Usuario creador
+        If Not tmpOe.usuarioCreador Is Nothing Then
+            .value(5) = tmpOe.usuarioCreador.Usuario
+        Else
+            .value(5) = ""
+        End If
+
+        'Usuario aprobador
+        If Not tmpOe.usuarioAprobador Is Nothing Then
+            .value(6) = tmpOe.usuarioAprobador.Usuario
+        Else
+            .value(6) = ""
+        End If
+
         .value(7) = enumEstadoOrdenEntrega(tmpOe.estado)
+
     End With
+
+    Exit Sub
+
+errHandler:
+
+    Debug.Print "gridEntregas_UnboundReadData - Fila: " & rowIndex & _
+                " - Error " & Err.Number & _
+                " - " & Err.Description
 
 End Sub
 
@@ -558,7 +607,7 @@ Private Function ObtenerOESeleccionada() As OrdenDeEntrega
 
     Dim indice As Long
 
-    indice = Me.gridEntregas.SelectedItems(1).RowIndex
+    indice = Me.gridEntregas.SelectedItems(1).rowIndex
 
     If indice <= 0 Then
         Set ObtenerOESeleccionada = Nothing

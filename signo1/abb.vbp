@@ -599,6 +599,7 @@ Form=Forms\frmResumenBancario.frm
 Class=clsConsultaARCA; ClassModule\clsConsultaARCA.cls
 Form=Forms\frmAdminBoletasDepositoLista.frm
 Form=Forms\frmAdminChequesConciliacion.frm
+Module=DAOOrdenDeEntrega; datos\DAOOrdenDeEntrega.bas
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""

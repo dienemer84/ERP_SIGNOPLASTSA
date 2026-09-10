@@ -713,7 +713,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   64815105
+         Format          =   16777217
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
