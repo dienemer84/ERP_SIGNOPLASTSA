@@ -558,4 +558,4 @@ clsConsultaARCA = 66, 87, 1119, 562, C
 frmAdminBoletasDepositoLista = 176, 232, 1231, 802, C, 110, 145, 1165, 715, C
 frmAdminChequesConciliacion = 44, 58, 1012, 628, C, 110, 145, 1078, 715, C
 DAOOrdenDeEntrega = 586, 554, 1172, 831, C
-frmPlaneamientoOEEditar = 44, 58, 1134, 628, I, 22, 29, 1112, 599, C
+frmPlaneamientoOEEditar = 44, 58, 1134, 628, C, 22, 29, 1112, 599, C

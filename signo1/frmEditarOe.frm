@@ -1,6 +1,7 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoOEEditar 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00C0C0C0&
@@ -33,16 +34,21 @@ Begin VB.Form frmPlaneamientoOEEditar
       EndProperty
       Height          =   3135
       Left            =   0
-      TabIndex        =   16
+      TabIndex        =   15
       Top             =   0
       Width           =   9735
-      Begin VB.ComboBox cboClientes 
+      Begin XtremeSuiteControls.ComboBox cboClientes 
          Height          =   315
-         Left            =   960
-         Style           =   2  'Dropdown List
-         TabIndex        =   19
+         Left            =   840
+         TabIndex        =   26
          Top             =   360
          Width           =   7455
+         _Version        =   786432
+         _ExtentX        =   13150
+         _ExtentY        =   556
+         _StockProps     =   77
+         BackColor       =   -2147483643
+         Text            =   "ComboBox1"
       End
       Begin VB.CommandButton Command1 
          BackColor       =   &H00E0E0E0&
@@ -51,14 +57,14 @@ Begin VB.Form frmPlaneamientoOEEditar
          Height          =   375
          Left            =   8520
          Style           =   1  'Graphical
-         TabIndex        =   18
+         TabIndex        =   17
          Top             =   360
          Width           =   1095
       End
       Begin MSComctlLib.ListView lstStockPositivo 
          Height          =   2175
          Left            =   120
-         TabIndex        =   17
+         TabIndex        =   16
          Top             =   840
          Width           =   9495
          _ExtentX        =   16748
@@ -90,7 +96,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          Caption         =   "Cliente"
          Height          =   255
          Left            =   240
-         TabIndex        =   21
+         TabIndex        =   19
          Top             =   360
          Width           =   1215
       End
@@ -99,7 +105,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          Caption         =   "Label6"
          Height          =   255
          Left            =   8760
-         TabIndex        =   20
+         TabIndex        =   18
          Top             =   600
          Visible         =   0   'False
          Width           =   735
@@ -129,7 +135,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          Height          =   375
          Left            =   1200
          Style           =   1  'Graphical
-         TabIndex        =   26
+         TabIndex        =   24
          Top             =   960
          Width           =   975
       End
@@ -139,7 +145,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          Height          =   375
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   22
+         TabIndex        =   20
          Top             =   960
          Width           =   975
       End
@@ -151,13 +157,26 @@ Begin VB.Form frmPlaneamientoOEEditar
          TabIndex        =   3
          Top             =   1440
          Width           =   9495
+         Begin XtremeSuiteControls.ComboBox cboClientesDestino 
+            Height          =   315
+            Left            =   840
+            TabIndex        =   27
+            Top             =   3000
+            Width           =   4335
+            _Version        =   786432
+            _ExtentX        =   7646
+            _ExtentY        =   556
+            _StockProps     =   77
+            BackColor       =   -2147483643
+            Text            =   "ComboBox1"
+         End
          Begin VB.CommandButton q 
             BackColor       =   &H00E0E0E0&
             Caption         =   "Quitar"
             Height          =   255
             Left            =   120
             Style           =   1  'Graphical
-            TabIndex        =   27
+            TabIndex        =   25
             Top             =   2640
             Width           =   735
          End
@@ -165,17 +184,9 @@ Begin VB.Form frmPlaneamientoOEEditar
             Height          =   315
             Left            =   6000
             Style           =   2  'Dropdown List
-            TabIndex        =   23
+            TabIndex        =   21
             Top             =   3000
             Width           =   1215
-         End
-         Begin VB.ComboBox cboClientesDestino 
-            Height          =   315
-            Left            =   840
-            Style           =   2  'Dropdown List
-            TabIndex        =   6
-            Top             =   3000
-            Width           =   4215
          End
          Begin VB.TextBox txrRefe 
             Height          =   285
@@ -193,13 +204,13 @@ Begin VB.Form frmPlaneamientoOEEditar
             _ExtentX        =   2143
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   62259201
+            Format          =   65929217
             CurrentDate     =   38923
          End
          Begin MSComctlLib.ListView lstOE 
             Height          =   1815
             Left            =   120
-            TabIndex        =   7
+            TabIndex        =   6
             Top             =   720
             Width           =   9255
             _ExtentX        =   16325
@@ -252,7 +263,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             Caption         =   "Moneda"
             Height          =   255
             Left            =   5160
-            TabIndex        =   24
+            TabIndex        =   22
             Top             =   3000
             Width           =   735
          End
@@ -270,7 +281,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   10
+            TabIndex        =   9
             Top             =   3000
             Width           =   735
          End
@@ -279,7 +290,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             Caption         =   "Entrega"
             Height          =   255
             Left            =   7440
-            TabIndex        =   9
+            TabIndex        =   8
             Top             =   3000
             Width           =   615
          End
@@ -288,7 +299,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             Caption         =   "Referencia"
             Height          =   255
             Left            =   120
-            TabIndex        =   8
+            TabIndex        =   7
             Top             =   360
             Width           =   855
          End
@@ -325,7 +336,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   15
+         TabIndex        =   14
          Top             =   360
          Width           =   615
       End
@@ -333,7 +344,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          BackColor       =   &H00C0C0C0&
          Height          =   255
          Left            =   960
-         TabIndex        =   14
+         TabIndex        =   13
          Top             =   360
          Width           =   7575
       End
@@ -351,7 +362,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   13
+         TabIndex        =   12
          Top             =   600
          Width           =   1815
       End
@@ -359,7 +370,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          BackColor       =   &H00C0C0C0&
          Height          =   255
          Left            =   2160
-         TabIndex        =   12
+         TabIndex        =   11
          Top             =   600
          Width           =   735
       End
@@ -377,7 +388,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          EndProperty
          Height          =   255
          Left            =   3120
-         TabIndex        =   11
+         TabIndex        =   10
          Top             =   600
          Width           =   1815
       End
@@ -385,7 +396,7 @@ Begin VB.Form frmPlaneamientoOEEditar
    Begin VB.Label idPieza 
       Height          =   255
       Left            =   0
-      TabIndex        =   25
+      TabIndex        =   23
       Top             =   0
       Width           =   615
    End
@@ -395,6 +406,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
 Dim clasea As New classAdministracion
 Dim grabado As Boolean
 Dim claseC As New classConfigurar
@@ -426,31 +439,29 @@ Private Sub llenarLstClientes(rs As Recordset)
         rs.MoveNext
     Wend
 End Sub
-Private Sub llenarListaStock()
-    Dim rs As Recordset
-    Dim strsql As String
-    cla = Me.cboClientes.ItemData(cboClientes.ListIndex)
-    Me.idCliente = cla
-    If Me.cboClientes.ItemData(cboClientes.ListIndex) = -1 Then
-        strsql = "select id ,detalle,cantidad from stock where cantidad>0 order by detalle "
-    Else
-        strsql = "select id,detalle,cantidad from stock where cantidad>0 and id_cliente=" & cla & " order by detalle"
+
+Public Sub LlenarListaOE()
+
+    On Error GoTo errHandler
+
+    Set ordenes = DAOOrdenDeEntrega.GetAll()
+
+    Me.gridEntregas.ItemCount = 0
+
+    If Not ordenes Is Nothing Then
+        Me.gridEntregas.ItemCount = ordenes.count
     End If
-    Set rs = conectar.RSFactory(strsql)
-    Me.lstStockPositivo.ListItems.Clear
 
-    While Not rs.EOF
-        Set x = Me.lstStockPositivo.ListItems.Add(, , rs!detalle)
-        x.SubItems(1) = rs!Cantidad
-        x.Tag = rs!Id
+    Exit Sub
 
-        rs.MoveNext
-    Wend
+errHandler:
 
+    MsgBox "Error al cargar las Ordenes de Entrega." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description & vbCrLf & _
+           "Origen: " & Err.Source, _
+           vbCritical, "Ordenes de Entrega"
 
-
-
-    verMarcado
 End Sub
 
 Private Sub cboMonedas_Click()
@@ -574,8 +585,8 @@ Private Sub Form_Load()
     FormHelper.Customize Me
     grabado = True
 
-    DAOCliente.LlenarCombo Me.cboClientes
-    DAOCliente.LlenarCombo Me.cboClientesDestino, True
+    DAOCliente.llenarComboXtremeSuite Me.cboClientes, True
+    DAOCliente.llenarComboXtremeSuite Me.cboClientesDestino, True
     DAOMoneda.LlenarCombo Me.cboMonedas
     Me.DTPicker1 = Now
     llenarDatosOE
@@ -591,8 +602,13 @@ Public Sub llenarDatosOE()
     While Not rs.EOF
         Me.DTPicker1 = rs!FEcha
         Me.txrRefe = rs!referencia
-        Me.cboMonedas.ListIndex = rs!IdMoneda
-        IdMoneda = CInt(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+        
+        Me.cboMonedas.ListIndex = funciones.PosIndexCbo(rs!IdMoneda, Me.cboMonedas)
+        
+        If Me.cboMonedas.ListIndex >= 0 Then
+            IdMoneda = CInt(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+        End If
+        
         Me.cboClientesDestino.ListIndex = funciones.PosIndexCbo(rs!idCliente, Me.cboClientesDestino)
         rs.MoveNext
     Wend
