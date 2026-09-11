@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Begin VB.Form frmPlaneamientoOEEditar 
    AutoRedraw      =   -1  'True
    BackColor       =   &H00C0C0C0&
@@ -193,7 +193,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             _ExtentX        =   2143
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   62259201
+            Format          =   58982401
             CurrentDate     =   38923
          End
          Begin MSComctlLib.ListView lstOE 
@@ -521,8 +521,8 @@ Private Sub Command2_Click()
                 Set x = Me.lstOE.ListItems.Add(, , detalle)
                 x.SubItems(1) = funciones.FormatearDecimales(cantpedida, 2)
                 x.SubItems(2) = funciones.FormatearDecimales(valorr, 2)
-                x.SubItems(3) = Pieza.Cliente.razon
-                x.SubItems(4) = Pieza.Cliente.Id
+                x.SubItems(3) = Pieza.cliente.razon
+                x.SubItems(4) = Pieza.cliente.Id
 
 
                 x.Tag = idStock

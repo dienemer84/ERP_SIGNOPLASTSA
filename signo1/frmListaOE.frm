@@ -2,22 +2,16 @@ VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoOELista 
-   AutoRedraw      =   -1  'True
-   BackColor       =   &H00C0C0C0&
-   BorderStyle     =   0  'None
-   Caption         =   "Ordenes de entrega..."
-   ClientHeight    =   6255
-   ClientLeft      =   1800
-   ClientTop       =   3105
+   Caption         =   "Ordenes de entrega"
+   ClientHeight    =   10620
+   ClientLeft      =   60
+   ClientTop       =   3120
    ClientWidth     =   11565
    LinkTopic       =   "Form1"
-   MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   MinButton       =   0   'False
-   ScaleHeight     =   6255
-   ScaleWidth      =   11565
-   ShowInTaskbar   =   0   'False
-   WindowState     =   2  'Maximized
+   ScaleHeight     =   10620
+   ScaleMode       =   0  'User
+   ScaleWidth      =   18735
    Begin GridEX20.GridEX gridEntregas 
       Height          =   4455
       Left            =   120
@@ -77,6 +71,7 @@ Begin VB.Form frmPlaneamientoOELista
       _ExtentY        =   2725
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
+      BackColor       =   12632256
       UseVisualStyle  =   -1  'True
       Begin VB.TextBox txtNroRemito 
          Height          =   285
@@ -116,20 +111,31 @@ Begin VB.Form frmPlaneamientoOELista
          _ExtentY        =   503
          _StockProps     =   79
          Caption         =   "X"
+         BackColor       =   12632256
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.PushButton cmdBuscar 
          Default         =   -1  'True
-         Height          =   375
-         Left            =   8445
+         Height          =   495
+         Left            =   9960
          TabIndex        =   7
-         Top             =   600
-         Width           =   1095
+         Top             =   960
+         Width           =   1335
          _Version        =   786432
-         _ExtentX        =   1931
-         _ExtentY        =   661
+         _ExtentX        =   2355
+         _ExtentY        =   873
          _StockProps     =   79
          Caption         =   "Buscar"
+         BackColor       =   12632256
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
@@ -215,6 +221,7 @@ Begin VB.Form frmPlaneamientoOELista
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   "Hasta"
+         BackColor       =   12632256
          AutoSize        =   -1  'True
       End
       Begin XtremeSuiteControls.Label Label5 
@@ -228,6 +235,7 @@ Begin VB.Form frmPlaneamientoOELista
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   "Desde"
+         BackColor       =   12632256
          AutoSize        =   -1  'True
       End
       Begin XtremeSuiteControls.Label Label7 
@@ -241,6 +249,7 @@ Begin VB.Form frmPlaneamientoOELista
          _ExtentY        =   344
          _StockProps     =   79
          Caption         =   "Rango"
+         BackColor       =   12632256
          AutoSize        =   -1  'True
       End
    End
@@ -307,11 +316,11 @@ Private Sub cboRangos_Click()
 End Sub
 
 
-Public Sub LlenarListaOE()
+Public Sub LlenarListaOE(Optional ByVal filtro As String = vbNullString)
 
     On Error GoTo errHandler
 
-    Set ordenes = DAOOrdenDeEntrega.GetAll()
+    Set ordenes = DAOOrdenDeEntrega.GetAll(filtro)
 
     Me.gridEntregas.ItemCount = 0
 
@@ -331,6 +340,7 @@ errHandler:
 
 End Sub
 
+
 Private Sub AprobarOE_Click()
 'Dim vidOe As Long
 'vidOe = CLng(Me.lstOE.selectedItem)
@@ -344,8 +354,113 @@ Private Sub AprobarOE_Click()
 
 End Sub
 
+
 Private Sub cmdBuscar_Click()
-    LlenarListaOE
+
+    On Error GoTo errHandler
+
+    Dim filtro As String
+    Dim texto As String
+    Dim idCliente As Long
+
+    filtro = vbNullString
+
+
+    '--------------------------------------------------
+    ' NUMERO DE ORDEN DE ENTREGA
+    '--------------------------------------------------
+    texto = Trim$(Me.txtNroRemito.Text)
+
+    If Len(texto) > 0 Then
+
+        If Not IsNumeric(texto) Then
+            MsgBox "El número de Orden de Entrega debe ser numérico.", _
+                   vbExclamation, "Ordenes de Entrega"
+
+            Me.txtNroRemito.SetFocus
+            Exit Sub
+        End If
+
+        AgregarFiltro filtro, _
+            "pe.id = " & CLng(texto)
+
+    End If
+
+
+    '--------------------------------------------------
+    ' DESCRIPCION / REFERENCIA
+    '--------------------------------------------------
+    texto = Trim$(Me.txtDescripcion.Text)
+
+    If Len(texto) > 0 Then
+
+        AgregarFiltro filtro, _
+            "pe.referencia LIKE " & _
+            conectar.Escape("%" & texto & "%")
+
+    End If
+
+
+    '--------------------------------------------------
+    ' CLIENTE
+    '--------------------------------------------------
+    If Me.cboClientes.ListIndex >= 0 Then
+
+        idCliente = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
+
+        If idCliente > 0 Then
+
+            AgregarFiltro filtro, _
+                "pe.IdCliente = " & idCliente
+
+        End If
+
+    End If
+
+
+    '--------------------------------------------------
+    ' FECHA DESDE
+    '--------------------------------------------------
+    If Not IsNull(Me.dtpDesde.value) Then
+
+        AgregarFiltro filtro, _
+            "pe.fecha >= " & _
+            conectar.Escape( _
+                Format$(Me.dtpDesde.value, _
+                        "yyyy-mm-dd 00:00:00"))
+
+    End If
+
+
+    '--------------------------------------------------
+    ' FECHA HASTA
+    '--------------------------------------------------
+    If Not IsNull(Me.dtpHasta.value) Then
+
+        AgregarFiltro filtro, _
+            "pe.fecha <= " & _
+            conectar.Escape( _
+                Format$(Me.dtpHasta.value, _
+                        "yyyy-mm-dd 23:59:59"))
+
+    End If
+
+
+    '--------------------------------------------------
+    ' BUSCAR
+    '--------------------------------------------------
+    LlenarListaOE filtro
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al buscar Ordenes de Entrega." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Ordenes de Entrega"
+
 End Sub
 
 
@@ -363,7 +478,7 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.gridEntregas, True
 
     'Clientes
-    DAOCliente.llenarComboXtremeSuite Me.cboClientes
+    DAOCliente.llenarComboXtremeSuite Me.cboClientes, True
 
     'Rangos de fecha
     Dim i As Integer
@@ -380,106 +495,72 @@ Private Sub Form_Load()
         Me.cboRangos.ListIndex = i
     End If
 
-    'Carga inicial
+    'Carga de Ordenes de Entrega
     LlenarListaOE
 
-    GridEXHelper.AutoSizeColumns Me.gridEntregas, True
+    'NO hacer AutoSize acá.
+    'GridEXHelper.AutoSizeColumns Me.gridEntregas, True
 
     Exit Sub
 
 errHandler:
+
     MsgBox "Error al inicializar el listado de Ordenes de Entrega." & _
-           vbCrLf & Err.Description, _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description & vbCrLf & _
+           "Origen: " & Err.Source, _
            vbCritical, "Ordenes de Entrega"
 
 End Sub
 
 
-Private Sub gridEntregas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub gridEntregas_MouseUp( _
+    Button As Integer, _
+    Shift As Integer, _
+    x As Single, _
+    y As Single)
 
     On Error GoTo errHandler
 
     If Button <> 2 Then Exit Sub
 
+    If Me.gridEntregas.ItemCount = 0 Then Exit Sub
+
     Set mOESeleccionada = ObtenerOESeleccionada()
 
     If mOESeleccionada Is Nothing Then Exit Sub
 
-    Me.OENumero.caption = "[ Nro. " & mOESeleccionada.Id & " ]"
+    ConfigurarMenuContextualOE
 
-    'Primero dejo todo deshabilitado.
-    Me.vereditar.Enabled = False
-    Me.AprobarOE.Enabled = False
-    Me.remitar.Enabled = False
-    Me.cerrarOE.Enabled = False
-    Me.RtosEntregados.Enabled = False
-    Me.printOrder.Enabled = False
-    Me.verHistorialOE.Enabled = False
-
-    Select Case mOESeleccionada.estado
-
-        Case EstadoOrdenEntrega.Pendiente
-
-            Me.vereditar.caption = "Editar..."
-            Me.vereditar.Enabled = True
-
-            mModoVerEditar = MODO_EDITAR
-
-            Me.AprobarOE.Enabled = True
-
-            If Not Permisos.planOEaprobaciones Then
-                Me.AprobarOE.Enabled = False
-            End If
-
-
-        Case EstadoOrdenEntrega.Aprobado
-
-            Me.vereditar.caption = "Ver..."
-            Me.vereditar.Enabled = True
-
-            mModoVerEditar = MODO_VER
-
-            Me.remitar.Enabled = True
-            Me.printOrder.Enabled = True
-            Me.verHistorialOE.Enabled = True
-
-
-        Case EstadoOrdenEntrega.FINALIZADO
-
-            Me.vereditar.caption = "Ver..."
-            Me.vereditar.Enabled = True
-
-            mModoVerEditar = MODO_VER
-
-            Me.RtosEntregados.Enabled = True
-            Me.printOrder.Enabled = True
-            Me.verHistorialOE.Enabled = True
-
-    End Select
-
-    Me.PopupMenu entrega
+    Me.PopupMenu Me.entrega
 
     Exit Sub
 
+
 errHandler:
-    MsgBox "Error al seleccionar la Orden de Entrega." & vbCrLf & _
-           Err.Description, vbCritical, "Ordenes de Entrega"
+
+    MsgBox "Error al abrir el menú de la Orden de Entrega." & _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Ordenes de Entrega"
 
 End Sub
 
 
 Private Sub gridEntregas_UnboundReadData( _
-    ByVal rowIndex As Long, _
+    ByVal RowIndex As Long, _
     ByVal Bookmark As Variant, _
     ByVal Values As GridEX20.JSRowData)
 
     On Error GoTo errHandler
 
-    If rowIndex <= 0 Then Exit Sub
+    If RowIndex <= 0 Then Exit Sub
     If ordenes Is Nothing Then Exit Sub
-    If rowIndex > ordenes.count Then Exit Sub
+    If RowIndex > ordenes.count Then Exit Sub
 
-    Set tmpOe = ordenes.item(rowIndex)
+    Set tmpOe = ordenes.item(RowIndex)
 
     If tmpOe Is Nothing Then Exit Sub
 
@@ -519,7 +600,7 @@ Private Sub gridEntregas_UnboundReadData( _
 
 errHandler:
 
-    Debug.Print "gridEntregas_UnboundReadData - Fila: " & rowIndex & _
+    Debug.Print "gridEntregas_UnboundReadData - Fila: " & RowIndex & _
                 " - Error " & Err.Number & _
                 " - " & Err.Description
 
@@ -530,6 +611,28 @@ Private Sub printOrder_Click()
 'claseP.imprimirOrdenEntrega (CLng(Me.lstOE.selectedItem))
 '  End If
 
+
+End Sub
+
+Private Sub PushButton1_Click()
+
+    On Error GoTo errHandler
+
+    'Dejar cliente en "Todos"
+    If Me.cboClientes.ListCount > 0 Then
+        Me.cboClientes.ListIndex = 0
+    End If
+
+    'Volver a ejecutar búsqueda con los demás filtros
+    cmdBuscar_Click
+
+    Exit Sub
+
+errHandler:
+
+    MsgBox "Error al limpiar el cliente." & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Ordenes de Entrega"
 
 End Sub
 
@@ -553,26 +656,23 @@ Private Sub RtosEntregados_Click()
 End Sub
 
 
-Private Sub Form_Activate()
-
-    On Error Resume Next
-
-    LlenarListaOE
-
-End Sub
-
-
 Private Sub vereditar_Click()
 
     On Error GoTo errHandler
 
     If mOESeleccionada Is Nothing Then
-        MsgBox "Seleccione una Orden de Entrega.", _
-               vbExclamation, "Ordenes de Entrega"
+
+        MsgBox "No hay una Orden de Entrega seleccionada.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
         Exit Sub
+
     End If
 
+
     Select Case mModoVerEditar
+
 
         Case MODO_EDITAR
 
@@ -585,13 +685,38 @@ Private Sub vereditar_Click()
             frmPlaneamientoOEVer.IDOE = mOESeleccionada.Id
             frmPlaneamientoOEVer.Show
 
+
+        Case Else
+
+            MsgBox "No se pudo determinar la acción para la O/E.", _
+                   vbExclamation, _
+                   "Ordenes de Entrega"
+
     End Select
+
 
     Exit Sub
 
+
 errHandler:
-    MsgBox "Error al abrir la Orden de Entrega." & vbCrLf & _
-           Err.Description, vbCritical, "Ordenes de Entrega"
+
+    MsgBox "Error al abrir la Orden de Entrega Nro. " & _
+           CStr(mOESeleccionada.Id) & "." & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Ordenes de Entrega"
+
+End Sub
+
+
+Private Sub AgregarFiltro(ByRef filtro As String, ByVal condicion As String)
+
+    If Len(Trim$(condicion)) = 0 Then Exit Sub
+
+    If Len(Trim$(filtro)) > 0 Then
+        filtro = filtro & " AND "
+    End If
+
+    filtro = filtro & condicion
 
 End Sub
 
@@ -600,30 +725,128 @@ Private Function ObtenerOESeleccionada() As OrdenDeEntrega
 
     On Error GoTo errHandler
 
-    If Me.gridEntregas.SelectedItems.count = 0 Then
-        Set ObtenerOESeleccionada = Nothing
-        Exit Function
-    End If
-
     Dim indice As Long
 
-    indice = Me.gridEntregas.SelectedItems(1).rowIndex
+    Set ObtenerOESeleccionada = Nothing
 
-    If indice <= 0 Then
-        Set ObtenerOESeleccionada = Nothing
-        Exit Function
-    End If
+    If Me.gridEntregas.ItemCount = 0 Then Exit Function
+    If ordenes Is Nothing Then Exit Function
 
-    If indice > ordenes.count Then
-        Set ObtenerOESeleccionada = Nothing
-        Exit Function
-    End If
+    indice = Me.gridEntregas.RowIndex(Me.gridEntregas.row)
+
+    If indice <= 0 Then Exit Function
+    If indice > ordenes.count Then Exit Function
 
     Set ObtenerOESeleccionada = ordenes.item(indice)
 
     Exit Function
 
 errHandler:
+
     Set ObtenerOESeleccionada = Nothing
 
 End Function
+
+
+Private Sub ConfigurarMenuContextualOE()
+
+    On Error GoTo errHandler
+
+    If mOESeleccionada Is Nothing Then Exit Sub
+
+    '-----------------------------------------
+    ' Cabecera
+    '-----------------------------------------
+    Me.OENumero.caption = _
+        "[ O/E Nro. " & CStr(mOESeleccionada.Id) & " ]"
+
+
+    '-----------------------------------------
+    ' Reset general
+    '-----------------------------------------
+    Me.vereditar.Enabled = False
+    Me.AprobarOE.Enabled = False
+    Me.remitar.Enabled = False
+    Me.cerrarOE.Enabled = False
+    Me.verHistorialOE.Enabled = False
+    Me.RtosEntregados.Enabled = False
+    Me.printOrder.Enabled = False
+
+    mModoVerEditar = 0
+
+
+    '-----------------------------------------
+    ' Estado de la OE
+    '-----------------------------------------
+    Select Case mOESeleccionada.estado
+
+
+        '=====================================
+        ' PENDIENTE
+        '=====================================
+        Case EstadoOrdenEntrega.Pendiente
+
+            Me.vereditar.caption = "Editar..."
+            Me.vereditar.Enabled = True
+            mModoVerEditar = MODO_EDITAR
+
+            If Permisos.planOEaprobaciones Then
+                Me.AprobarOE.Enabled = True
+            End If
+
+            Me.verHistorialOE.Enabled = True
+
+
+        '=====================================
+        ' APROBADA
+        '=====================================
+        Case EstadoOrdenEntrega.Aprobado
+
+            Me.vereditar.caption = "Ver..."
+            Me.vereditar.Enabled = True
+            mModoVerEditar = MODO_VER
+
+            Me.remitar.Enabled = True
+            Me.RtosEntregados.Enabled = True
+            Me.printOrder.Enabled = True
+            Me.verHistorialOE.Enabled = True
+
+
+        '=====================================
+        ' FINALIZADA
+        '=====================================
+        Case EstadoOrdenEntrega.FINALIZADO
+
+            Me.vereditar.caption = "Ver..."
+            Me.vereditar.Enabled = True
+            mModoVerEditar = MODO_VER
+
+            Me.RtosEntregados.Enabled = True
+            Me.printOrder.Enabled = True
+            Me.verHistorialOE.Enabled = True
+
+
+        '=====================================
+        ' ESTADO DESCONOCIDO
+        '=====================================
+        Case Else
+
+            Me.vereditar.caption = "Ver..."
+            Me.vereditar.Enabled = True
+            mModoVerEditar = MODO_VER
+
+    End Select
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al configurar el menú de la Orden de Entrega." & _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, "Ordenes de Entrega"
+
+End Sub
+

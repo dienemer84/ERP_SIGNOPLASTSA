@@ -7,7 +7,7 @@ End Function
 
 Public Function GetAll(Optional filter As String = vbNullString) As Collection
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim strsql As String
     Dim indice As Dictionary
@@ -27,9 +27,11 @@ Public Function GetAll(Optional filter As String = vbNullString) As Collection
            & "LEFT JOIN clientes c ON pe.IdCliente = c.id " _
            & "WHERE 1=1 "
 
-    If Len(filter) > 0 Then
-        strsql = strsql & " " & filter
+    If Len(Trim$(filter)) > 0 Then
+        strsql = strsql & " AND (" & filter & ")"
     End If
+    
+    strsql = strsql & " ORDER BY pe.id DESC"
 
     paso = "Ejecutando SQL"
 
@@ -73,7 +75,7 @@ Public Function GetAll(Optional filter As String = vbNullString) As Collection
     Exit Function
 
 
-errHandler:
+ErrHandler:
 
     MsgBox "DAOOrdenDeEntrega.GetAll" & vbCrLf & vbCrLf & _
            "Paso: " & paso & vbCrLf & _
@@ -85,6 +87,7 @@ errHandler:
     Set GetAll = Nothing
 
 End Function
+
 
 Public Function Map(ByRef rs As Recordset, ByRef indice As Dictionary, ByRef tabla As String, Optional ByRef tablaCliente As String, Optional ByRef tablaUsuCreador As String, Optional ByRef TablaUsuAprobador As String, Optional ByRef tablaMoneda As String) As OrdenDeEntrega
 
