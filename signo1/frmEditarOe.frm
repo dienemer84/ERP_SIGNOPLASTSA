@@ -204,7 +204,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             _ExtentX        =   2143
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   16777217
+            Format          =   66060289
             CurrentDate     =   38923
          End
          Begin MSComctlLib.ListView lstOE 
@@ -410,6 +410,7 @@ Option Explicit
 
 Dim clasea As New classAdministracion
 Dim grabado As Boolean
+Dim mCargando As Boolean
 Dim claseC As New classConfigurar
 Dim vidOe As Long
 Dim rss As Recordset
@@ -419,7 +420,7 @@ Dim IdMoneda As Long
 Dim claseS As New classStock
 
 Dim claseP As New classPlaneamiento
-Dim Cantidad As Double
+Dim cantidad As Double
 Dim detalle As String
 Dim idStock As Long
 Dim vValor As Double
@@ -434,7 +435,7 @@ Private Sub llenarLstClientes(rs As Recordset)
     lstStockPositivo.ListItems.Clear
     While Not rs.EOF
         Set x = Me.lstStockPositivo.ListItems.Add(, , rs!detalle)
-        x.SubItems(1) = rs!Cantidad
+        x.SubItems(1) = rs!cantidad
         x.SubItems(2) = rs!razon
         x.SubItems(3) = rs!id_cliente
         x.Tag = rs!idPieza
@@ -467,16 +468,49 @@ errHandler:
 
 End Sub
 
+
+
+
 Private Sub cboMonedas_Click()
 
+    On Error GoTo errHandler
+    
+    If mCargando Then Exit Sub
 
-    If IdMoneda = CInt(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex)) Then
+    Dim monedaAnterior As Long
+    Dim monedaNueva As Long
 
-    Else
-        IdMoneda = CInt(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
-        cambiarPrecios IdMoneda
+    If Me.cboMonedas.ListIndex < 0 Then Exit Sub
+
+    monedaNueva = CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+    monedaAnterior = IdMoneda
+
+    'Primera carga del formulario
+    If monedaAnterior <= 0 Then
+        IdMoneda = monedaNueva
+        Exit Sub
     End If
+
+    If monedaAnterior = monedaNueva Then Exit Sub
+
+    cambiarPrecios monedaAnterior, monedaNueva
+
+    IdMoneda = monedaNueva
+    grabado = False
+
+    Exit Sub
+
+errHandler:
+
+    MsgBox "Error al cambiar la moneda de la Orden de Entrega." & _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Orden de Entrega"
+
 End Sub
+
 
 Private Sub Command1_Click()
 'If MsgBox("¿Desea crear una nueva O/E?", vbYesNo, "Confirmación") = vbYes Then
@@ -492,7 +526,7 @@ Private Sub Command2_Click()
 
     On Error GoTo errHandler
 
-    Dim cantPedida As Double
+    Dim cantpedida As Double
     Dim esta As Boolean
     Dim valorPieza As Double
     Dim idMonedaPieza As Long
@@ -544,9 +578,9 @@ Private Sub Command2_Click()
     End If
 
 
-    cantPedida = CDbl(Me.txtCantidad.Text)
+    cantpedida = CDbl(Me.txtCantidad.Text)
 
-    If cantPedida <= 0 Then
+    If cantpedida <= 0 Then
 
         MsgBox "La cantidad debe ser mayor a cero.", _
                vbExclamation, _
@@ -565,7 +599,7 @@ Private Sub Command2_Click()
 
     detalle = Me.lstStockPositivo.selectedItem.Text
 
-    Cantidad = CDbl( _
+    cantidad = CDbl( _
         Me.lstStockPositivo.selectedItem.ListSubItems(1).Text _
     )
 
@@ -573,11 +607,11 @@ Private Sub Command2_Click()
     '--------------------------------------------------
     ' CONTROL DE STOCK
     '--------------------------------------------------
-    If cantPedida > Cantidad Then
+    If cantpedida > cantidad Then
 
         MsgBox "No hay stock suficiente de esta pieza." & vbCrLf & _
-               "Disponible: " & funciones.FormatearDecimales(Cantidad, 2) & vbCrLf & _
-               "Solicitado: " & funciones.FormatearDecimales(cantPedida, 2), _
+               "Disponible: " & funciones.FormatearDecimales(cantidad, 2) & vbCrLf & _
+               "Solicitado: " & funciones.FormatearDecimales(cantpedida, 2), _
                vbExclamation, _
                "Orden de Entrega"
 
@@ -599,13 +633,13 @@ Private Sub Command2_Click()
 
             cantidadNueva = _
                 CDbl(Me.lstOE.ListItems(i).ListSubItems(1).Text) + _
-                cantPedida
+                cantpedida
 
 
-            If cantidadNueva > Cantidad Then
+            If cantidadNueva > cantidad Then
 
                 MsgBox "No hay disponibilidad de stock suficiente." & vbCrLf & _
-                       "Disponible: " & funciones.FormatearDecimales(Cantidad, 2) & vbCrLf & _
+                       "Disponible: " & funciones.FormatearDecimales(cantidad, 2) & vbCrLf & _
                        "Cantidad total solicitada: " & _
                        funciones.FormatearDecimales(cantidadNueva, 2), _
                        vbExclamation, _
@@ -664,7 +698,7 @@ Private Sub Command2_Click()
         End If
 
 
-        If piezaSeleccionada.cliente Is Nothing Then
+        If piezaSeleccionada.Cliente Is Nothing Then
 
             MsgBox "La pieza seleccionada no tiene un cliente asociado.", _
                    vbExclamation, _
@@ -683,19 +717,19 @@ Private Sub Command2_Click()
 
 
         itemOE.SubItems(1) = _
-            funciones.FormatearDecimales(cantPedida, 2)
+            funciones.FormatearDecimales(cantpedida, 2)
 
         itemOE.SubItems(2) = _
             funciones.FormatearDecimales(valorPieza, 2)
 
         itemOE.SubItems(3) = _
-            piezaSeleccionada.cliente.razon
+            piezaSeleccionada.Cliente.razon
 
         itemOE.SubItems(4) = _
-            piezaSeleccionada.cliente.Id
+            piezaSeleccionada.Cliente.Id
 
         itemOE.SubItems(5) = _
-            funciones.FormatearDecimales(Cantidad, 2)
+            funciones.FormatearDecimales(cantidad, 2)
 
         itemOE.Tag = idStock
 
@@ -722,53 +756,229 @@ End Sub
 
 
 Private Sub Command3_Click()
-'On Error Resume Next
+
+    On Error GoTo errHandler
+
     Dim refe As String
-    Dim nroOEGenerada As Long
-    Dim clie As Long
-    Dim IdMoneda As Integer
-    clie = Me.cboClientesDestino.ItemData(cboClientesDestino.ListIndex)
-    refe = normaliza(Me.txrRefe)
-    If MsgBox("¿Desea guardar los cambios?", vbYesNo, "Confirmacion") = vbYes Then
-        IdMoneda = CInt(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
-        If claseP.editarOE(Me.lstOE, Me.DTPicker1, refe, clie, vidOe, IdMoneda) Then
-            MsgBox "Cambios guardados correctamente", vbInformation, "Información"
-            grabado = True
-        Else
-            MsgBox "Cambios no guardados", vbInformation, "Información"
-            grabado = False
-        End If
+    Dim idClienteDestino As Long
+    Dim idMonedaSeleccionada As Long
+
+
+    '--------------------------------------------------
+    ' VALIDAR OE
+    '--------------------------------------------------
+    If vidOe <= 0 Then
+
+        MsgBox "No se pudo determinar la Orden de Entrega a modificar.", _
+               vbCritical, _
+               "Orden de Entrega"
+
+        Exit Sub
 
     End If
+
+
+    '--------------------------------------------------
+    ' VALIDAR CLIENTE DESTINO
+    '--------------------------------------------------
+    If Me.cboClientesDestino.ListIndex < 0 Then
+
+        MsgBox "Seleccione el cliente destino de la Orden de Entrega.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Me.cboClientesDestino.SetFocus
+        Exit Sub
+
+    End If
+
+
+    idClienteDestino = _
+        CLng(Me.cboClientesDestino.ItemData(Me.cboClientesDestino.ListIndex))
+
+
+    If idClienteDestino <= 0 Then
+
+        MsgBox "Debe seleccionar un cliente destino válido.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Me.cboClientesDestino.SetFocus
+        Exit Sub
+
+    End If
+
+
+    '--------------------------------------------------
+    ' VALIDAR MONEDA
+    '--------------------------------------------------
+    If Me.cboMonedas.ListIndex < 0 Then
+
+        MsgBox "Seleccione la moneda de la Orden de Entrega.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Me.cboMonedas.SetFocus
+        Exit Sub
+
+    End If
+
+
+    idMonedaSeleccionada = _
+        CLng(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+
+
+    If idMonedaSeleccionada <= 0 Then
+
+        MsgBox "La moneda seleccionada no es válida.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Me.cboMonedas.SetFocus
+        Exit Sub
+
+    End If
+
+
+    '--------------------------------------------------
+    ' REFERENCIA
+    '--------------------------------------------------
+    refe = normaliza(Trim$(Me.txrRefe.Text))
+
+
+    '--------------------------------------------------
+    ' CONFIRMAR
+    '--------------------------------------------------
+    If MsgBox( _
+        "¿Desea guardar los cambios de la Orden de Entrega Nro. " & _
+        CStr(vidOe) & "?", _
+        vbYesNo + vbQuestion + vbDefaultButton2, _
+        "Confirmación") <> vbYes Then
+
+        Exit Sub
+
+    End If
+
+
+    '--------------------------------------------------
+    ' GUARDAR
+    '--------------------------------------------------
+    If claseP.editarOE( _
+            Me.lstOE, _
+            Me.DTPicker1.value, _
+            refe, _
+            idClienteDestino, _
+            vidOe, _
+            idMonedaSeleccionada) Then
+    
+    
+        IdMoneda = idMonedaSeleccionada
+    
+        grabado = True
+    
+    
+        '--------------------------------------------------
+        ' ACTUALIZAR LISTADO PRINCIPAL
+        '--------------------------------------------------
+        If FormularioCargado("frmPlaneamientoOELista") Then
+    
+            frmPlaneamientoOELista.RefrescarListadoActual
+    
+        End If
+    
+    
+        MsgBox "Los cambios de la Orden de Entrega Nro. " & _
+               CStr(vidOe) & _
+               " fueron guardados correctamente.", _
+               vbInformation, _
+               "Orden de Entrega"
+
+    Else
+
+        grabado = False
+
+        MsgBox "No fue posible guardar los cambios de la Orden de Entrega.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+    End If
+
+
+    Exit Sub
+
+
+errHandler:
+
+    grabado = False
+
+    MsgBox "Error al guardar la Orden de Entrega Nro. " & _
+           CStr(vidOe) & "." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Orden de Entrega"
+
 End Sub
 
 
 Private Sub Command4_Click()
+
     If grabado Then
+
         Unload Me
+
     Else
-        If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
+
+        If MsgBox( _
+            "¿Está seguro de salir?" & vbCrLf & _
+            "Hay cambios que no fueron guardados.", _
+            vbYesNo + vbQuestion + vbDefaultButton2, _
+            "Confirmación") = vbYes Then
+
             Unload Me
+
         End If
+
     End If
+
 End Sub
 
 
 Private Sub Form_Load()
-    FormHelper.Customize Me
+
+    On Error GoTo errHandler
+
+    mCargando = True
     grabado = True
+
+    FormHelper.Customize Me
 
     DAOCliente.llenarComboXtremeSuite Me.cboClientes, True
     DAOCliente.llenarComboXtremeSuite Me.cboClientesDestino, True
-    DAOMoneda.LlenarCombo Me.cboMonedas
-    Me.DTPicker1 = Now
-    llenarDatosOE
-    'lleno el combo de cliente destino
-    'lleno la lista de OE armada
-    'lleno la fecha de entrega
-    'lleno el campo descripción
-End Sub
 
+    DAOMoneda.LlenarCombo Me.cboMonedas
+
+    Me.DTPicker1.value = Now
+
+    llenarDatosOE
+
+    'Terminó la carga inicial
+    grabado = True
+    mCargando = False
+
+    Exit Sub
+
+errHandler:
+
+    mCargando = False
+
+    MsgBox "Error al cargar la Orden de Entrega." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Orden de Entrega"
+
+End Sub
 
 Public Sub llenarDatosOE()
     Dim x As ListItem
@@ -791,7 +1001,7 @@ Public Sub llenarDatosOE()
     Set rs = conectar.RSFactory("Select s.cantidad as cantStock,s.id as idpieza,s.detalle,dp.cantidad,dp.vale,c.razon,c.id as idcliente from stock s,detallesPedidosEntregas dp, PedidosEntregas p, clientes c  where idPedidoEntrega=" & vidOe & " And s.id_cliente = c.id And p.id = dp.idPedidoEntrega And dp.idPieza = s.id")
     While Not rs.EOF
         Set x = Me.lstOE.ListItems.Add(, , rs!detalle)
-        x.SubItems(1) = funciones.FormatearDecimales(rs!Cantidad, 2)
+        x.SubItems(1) = funciones.FormatearDecimales(rs!cantidad, 2)
         x.SubItems(2) = funciones.FormatearDecimales(rs!vale, 2)
         x.SubItems(3) = rs!razon
         x.SubItems(4) = rs!idCliente
@@ -799,7 +1009,7 @@ Public Sub llenarDatosOE()
         x.Tag = rs!idPieza
 
 
-        If rs!cantStock < rs!Cantidad Then
+        If rs!cantStock < rs!cantidad Then
             x.ForeColor = vbRed
             x.ListSubItems(1).ForeColor = vbRed
             x.ListSubItems(2).ForeColor = vbRed
@@ -824,8 +1034,8 @@ Private Sub verMarcado()
     If Me.lstStockPositivo.ListItems.count > 0 Then
         idStock = CLng(Me.lstStockPositivo.selectedItem.Tag)
         detalle = Me.lstStockPositivo.selectedItem
-        Cantidad = CDbl(Me.lstStockPositivo.selectedItem.ListSubItems(1).Text)
-        Me.lblCantDispo = Cantidad
+        cantidad = CDbl(Me.lstStockPositivo.selectedItem.ListSubItems(1).Text)
+        Me.lblCantDispo = cantidad
         Me.lblDetalle = detalle
         Me.idPieza = idStock
     End If
@@ -928,23 +1138,44 @@ Private Sub txtCantidad_Validate(Cancel As Boolean)
 End Sub
 
 
-Private Sub cambiarPrecios(IdMoneda)
+Private Sub cambiarPrecios( _
+    ByVal monedaOrigen As Long, _
+    ByVal monedaDestino As Long)
+
+    On Error GoTo errHandler
 
     Dim vale As Double
-    Dim idMoneda_pieza As Long
     Dim x As Long
 
+    If monedaOrigen <= 0 Then Exit Sub
+    If monedaDestino <= 0 Then Exit Sub
+    If monedaOrigen = monedaDestino Then Exit Sub
+
     For x = 1 To Me.lstOE.ListItems.count
-        idStock = Me.lstOE.ListItems(x).Tag
-        'vale = claseP.precio_pieza(idStock, idMoneda_pieza) '0  'elegir valor más alto vendido de la pieza
-        vale = CLng(Me.lstOE.ListItems(x).ListSubItems(2))
-        'If idMoneda <> idMoneda_pieza Then
-        vale = clasea.realizaCambio(vale, idMoneda_pieza, IdMoneda)
-        'si no es la misma moneda convierto a lo necesario
-        'subitem2 de la lista
-        Me.lstOE.ListItems(x).ListSubItems(2) = funciones.FormatearDecimales(vale, 2)
-        'End If
-    Next
+
+        vale = CDbl(Me.lstOE.ListItems(x).ListSubItems(2).Text)
+
+        vale = clasea.realizaCambio( _
+                    vale, _
+                    monedaOrigen, _
+                    monedaDestino)
+
+        Me.lstOE.ListItems(x).ListSubItems(2).Text = _
+            funciones.FormatearDecimales(vale, 2)
+
+    Next x
+
+    Exit Sub
+
+errHandler:
+
+    MsgBox "Error al convertir los valores de la Orden de Entrega." & _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Orden de Entrega"
+
 End Sub
 
 
@@ -1047,7 +1278,7 @@ Private Sub llenarListaStock()
                 CStr(rsStock!detalle))
 
         itemStock.SubItems(1) = _
-            funciones.FormatearDecimales(CDbl(rsStock!Cantidad), 2)
+            funciones.FormatearDecimales(CDbl(rsStock!cantidad), 2)
 
         itemStock.Tag = CLng(rsStock!Id)
 
@@ -1073,3 +1304,53 @@ errHandler:
     Set rsStock = Nothing
 
 End Sub
+
+
+Private Sub txrRefe_Change()
+
+    If mCargando Then Exit Sub
+
+    grabado = False
+
+End Sub
+
+
+Private Sub DTPicker1_Change()
+
+    If mCargando Then Exit Sub
+
+    grabado = False
+
+End Sub
+
+
+Private Sub cboClientesDestino_Click()
+
+    If mCargando Then Exit Sub
+
+    grabado = False
+
+End Sub
+
+
+Private Function FormularioCargado(ByVal nombreFormulario As String) As Boolean
+
+    Dim frm As Form
+
+    FormularioCargado = False
+
+    For Each frm In Forms
+
+        If StrComp(frm.Name, _
+                   nombreFormulario, _
+                   vbTextCompare) = 0 Then
+
+            FormularioCargado = True
+            Exit Function
+
+        End If
+
+    Next frm
+
+End Function
+

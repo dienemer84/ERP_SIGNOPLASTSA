@@ -91,7 +91,7 @@ Begin VB.Form frmPlaneamientoOELista
          Height          =   315
          Left            =   4530
          TabIndex        =   5
-         Top             =   240
+         Top             =   225
          Width           =   6015
          _Version        =   786432
          _ExtentX        =   10610
@@ -102,9 +102,9 @@ Begin VB.Form frmPlaneamientoOELista
       End
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   285
-         Left            =   10620
+         Left            =   10680
          TabIndex        =   6
-         Top             =   225
+         Top             =   240
          Width           =   495
          _Version        =   786432
          _ExtentX        =   873
@@ -166,12 +166,12 @@ Begin VB.Form frmPlaneamientoOELista
       End
       Begin XtremeSuiteControls.ComboBox cboRangos 
          Height          =   315
-         Left            =   1380
+         Left            =   1425
          TabIndex        =   10
          Top             =   1050
-         Width           =   3645
+         Width           =   3510
          _Version        =   786432
-         _ExtentX        =   6429
+         _ExtentX        =   6191
          _ExtentY        =   556
          _StockProps     =   77
          BackColor       =   -2147483643
@@ -186,7 +186,7 @@ Begin VB.Form frmPlaneamientoOELista
          Height          =   255
          Left            =   270
          TabIndex        =   16
-         Top             =   270
+         Top             =   255
          Width           =   1095
       End
       Begin VB.Label Label2 
@@ -195,7 +195,7 @@ Begin VB.Form frmPlaneamientoOELista
          BackStyle       =   0  'Transparent
          Caption         =   "Descripción"
          Height          =   255
-         Left            =   240
+         Left            =   270
          TabIndex        =   15
          Top             =   645
          Width           =   1095
@@ -207,7 +207,7 @@ Begin VB.Form frmPlaneamientoOELista
          Height          =   255
          Left            =   3315
          TabIndex        =   14
-         Top             =   240
+         Top             =   255
          Width           =   1095
       End
       Begin XtremeSuiteControls.Label Label6 
@@ -240,7 +240,7 @@ Begin VB.Form frmPlaneamientoOELista
       End
       Begin XtremeSuiteControls.Label Label7 
          Height          =   195
-         Left            =   795
+         Left            =   885
          TabIndex        =   11
          Top             =   1110
          Width           =   480
@@ -561,8 +561,8 @@ Private Sub gridEntregas_UnboundReadData( _
         .value(2) = tmpOe.FEcha
 
         'Cliente
-        If Not tmpOe.cliente Is Nothing Then
-            .value(3) = tmpOe.cliente.razon
+        If Not tmpOe.Cliente Is Nothing Then
+            .value(3) = tmpOe.Cliente.razon
         Else
             .value(3) = ""
         End If
@@ -627,6 +627,7 @@ errHandler:
 
 End Sub
 
+
 Private Sub remitar_Click()
 
     On Error GoTo errHandler
@@ -642,9 +643,14 @@ Private Sub remitar_Click()
     End If
 
 
+    '--------------------------------------------------
+    ' SOLO SE PUEDE REMITIR UNA OE APROBADA
+    '--------------------------------------------------
     If mOESeleccionada.estado <> EstadoOrdenEntrega.Aprobado Then
 
-        MsgBox "La Orden de Entrega debe estar aprobada para poder remitirla.", _
+        MsgBox "La Orden de Entrega Nro. " & _
+               CStr(mOESeleccionada.Id) & _
+               " debe estar aprobada para poder remitirla.", _
                vbExclamation, _
                "Ordenes de Entrega"
 
@@ -653,18 +659,31 @@ Private Sub remitar_Click()
     End If
 
 
-    MsgBox "O/E seleccionada para remitir: " & _
-           CStr(mOESeleccionada.Id), _
-           vbInformation, _
-           "Ordenes de Entrega"
+    '--------------------------------------------------
+    ' ABRIR FORMULARIO DE REMISION
+    '--------------------------------------------------
+    frmRemitar.idPedidoEntrega.caption = _
+        CStr(mOESeleccionada.Id)
+
+    'idPe corresponde después al detalle seleccionado,
+    'no al número de OE.
+    frmRemitar.idPe.caption = "0"
+
+    frmRemitar.Frame1.caption = _
+        "[ O/E Nro. " & CStr(mOESeleccionada.Id) & " ]"
+
+    frmRemitar.caption = _
+        "Remitar O/E Nro. " & CStr(mOESeleccionada.Id)
+
+    frmRemitar.Show
 
     Exit Sub
 
 
 errHandler:
 
-    MsgBox "Error al iniciar el remito de la Orden de Entrega." & _
-           vbCrLf & _
+    MsgBox "Error al abrir la remisión de la Orden de Entrega Nro. " & _
+           CStr(mOESeleccionada.Id) & "." & vbCrLf & _
            "Error " & Err.Number & vbCrLf & _
            Err.Description, _
            vbCritical, _
@@ -883,7 +902,7 @@ Private Sub AprobarOE_Click()
     On Error GoTo errHandler
 
     Dim claseP As New classPlaneamiento
-    Dim cliente As String
+    Dim Cliente As String
     Dim mensaje As String
 
 
@@ -911,10 +930,10 @@ Private Sub AprobarOE_Click()
     End If
 
 
-    cliente = ""
+    Cliente = ""
 
-    If Not mOESeleccionada.cliente Is Nothing Then
-        cliente = mOESeleccionada.cliente.razon
+    If Not mOESeleccionada.Cliente Is Nothing Then
+        Cliente = mOESeleccionada.Cliente.razon
     End If
 
 
@@ -922,7 +941,7 @@ Private Sub AprobarOE_Click()
         "¿Está seguro de aprobar la Orden de Entrega?" & _
         vbCrLf & vbCrLf & _
         "O/E Nro.: " & CStr(mOESeleccionada.Id) & vbCrLf & _
-        "Cliente: " & cliente & vbCrLf & _
+        "Cliente: " & Cliente & vbCrLf & _
         "Referencia: " & mOESeleccionada.referencia & vbCrLf & _
         "Fecha: " & Format$(mOESeleccionada.FEcha, "dd/mm/yyyy") & _
         vbCrLf & vbCrLf & _
@@ -967,6 +986,31 @@ Private Sub AprobarOE_Click()
 errHandler:
 
     MsgBox "Error al aprobar la Orden de Entrega." & _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Ordenes de Entrega"
+
+End Sub
+
+
+Public Sub RefrescarListadoActual()
+
+    On Error GoTo errHandler
+
+    'La OE seleccionada pertenece a la colección anterior.
+    'Al recargar, debe volver a obtenerse desde la grilla.
+    Set mOESeleccionada = Nothing
+
+    'Reutiliza exactamente los filtros visibles actuales
+    cmdBuscar_Click
+
+    Exit Sub
+
+errHandler:
+
+    MsgBox "Error al actualizar el listado de Ordenes de Entrega." & _
            vbCrLf & _
            "Error " & Err.Number & vbCrLf & _
            Err.Description, _
