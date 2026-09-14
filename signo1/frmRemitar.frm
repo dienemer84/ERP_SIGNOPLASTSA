@@ -19,10 +19,10 @@ Begin VB.Form frmRemitar
    Begin VB.CommandButton Command2 
       Cancel          =   -1  'True
       Caption         =   "Salir"
-      Height          =   255
-      Left            =   6720
+      Height          =   375
+      Left            =   4200
       TabIndex        =   15
-      Top             =   5640
+      Top             =   5520
       Width           =   1095
    End
    Begin VB.Frame Frame3 
@@ -42,14 +42,6 @@ Begin VB.Form frmRemitar
       TabIndex        =   4
       Top             =   3480
       Width           =   4095
-      Begin VB.CommandButton Command3 
-         Caption         =   "Cerrar"
-         Height          =   255
-         Left            =   1440
-         TabIndex        =   16
-         Top             =   2160
-         Width           =   1095
-      End
       Begin VB.TextBox txtRemito 
          Height          =   285
          Left            =   960
@@ -62,11 +54,11 @@ Begin VB.Form frmRemitar
       Begin VB.CommandButton Command1 
          Caption         =   "Agregar"
          Default         =   -1  'True
-         Height          =   255
-         Left            =   240
+         Height          =   375
+         Left            =   2760
          TabIndex        =   9
-         Top             =   2160
-         Width           =   1095
+         Top             =   2040
+         Width           =   1215
       End
       Begin VB.TextBox txtCantEntregar 
          Height          =   285
@@ -299,6 +291,7 @@ Attribute VB_Exposed = False
 Dim claseP As New classPlaneamiento
 Dim pedidos As Long, Entregados As Long
 Attribute Entregados.VB_VarUserMemId = 1073938433
+Private mIdRemitoSeleccionado As Long
 
 Public Sub listaOE()
     Dim rs As Recordset
@@ -318,8 +311,37 @@ Public Sub listaOE()
 End Sub
 
 Private Sub Command1_Click()
-    If Trim(Me.txtRemito) = Empty Then Exit Sub
-    CANTIDAD_items = 0
+
+    If Len(Trim$(Me.txtRemito.Text)) = 0 Then
+
+        MsgBox "Debe seleccionar un remito.", _
+               vbExclamation, _
+               "Remitar"
+
+        Exit Sub
+
+    End If
+
+    If mIdRemitoSeleccionado <= 0 Then
+    
+        MsgBox "Debe seleccionar un remito.", _
+               vbExclamation, _
+               "Remitar"
+    
+        Exit Sub
+    
+    End If
+
+    If CLng(Me.txtRemito.Text) <= 0 Then
+
+        MsgBox "Debe seleccionar un remito válido.", _
+               vbExclamation, _
+               "Remitar"
+
+        Exit Sub
+
+    End If
+    
     For x = 1 To Me.lstDetalleEntrega.ListItems.count
         If Me.lstDetalleEntrega.ListItems(x).Selected Then
             CANTIDAD_items = CANTIDAD_items + 1
@@ -331,7 +353,13 @@ Private Sub Command1_Click()
             If MsgBox("¿Está seguro de remitar " & Trim(Me.txtCantEntregar) & " unidades de este ítem?", vbYesNo, "Confirmación") = vbYes Then
                 modo = 1
 
-                alfa = claseP.RealizarEntrega(modo, CLng(Me.txtRemito), CLng(Me.txtCantEntregar), CLng(Me.idPe), CLng(Me.idPedidoEntrega), 2)
+                alfa = claseP.RealizarEntrega( _
+                modo, _
+                mIdRemitoSeleccionado, _
+                CDbl(Me.txtCantEntregar), _
+                CLng(Me.idPe), _
+                CLng(Me.idPedidoEntrega), _
+                2)
             End If
         End If
 
@@ -350,13 +378,9 @@ Private Sub Command1_Click()
             End If
         Next o
         If MsgBox("¿Desea realizar la entrega de los items seleccionados en el remito " & CLng(Me.txtRemito) & "?", vbYesNo, "Confirmación") Then
-            alfa = claseP.RealizarEntrega(modo, CLng(Me.txtRemito), CLng(Me.txtCantEntregar), CLng(Me.idPe), CLng(Me.idPedidoEntrega), 2, v)
+            alfa = claseP.RealizarEntrega(modo, mIdRemitoSeleccionado, CLng(Me.txtCantEntregar), CLng(Me.idPe), CLng(Me.idPedidoEntrega), 2, v)
         End If
     End If
-
-
-
-
 
 
     If alfa Then
@@ -366,14 +390,9 @@ Private Sub Command1_Click()
             'devuelve verdadero si está todo lo pedido, Remitado.
             If MsgBox("Orden completamente remitada ¿Proceder con la entrega?", vbYesNo, "Confirmación") = vbYes Then
                 'si procede con la entrega, cambio el estado del pedido a 3 que es estado cerrado.
-
             End If
 
-
-
         End If
-
-
 
         verMarcado
     End If
@@ -390,15 +409,15 @@ Private Sub Command2_Click()
 
 End Sub
 
-Private Sub Command4_Click()
 
-End Sub
 
 Private Sub Form_Activate()
     listaOE
     verMarcado
     validar
 End Sub
+
+
 Private Sub verMarcado()
     can = 0
     For x = 1 To Me.lstDetalleEntrega.ListItems.count
@@ -484,16 +503,45 @@ Public Sub llenarLstEntregas()
 
 End Sub
 
-Private Sub txtRemito_DblClick()
-    Dim strsql As String
-    Dim idRto As Long
-    Dim r As Recordset
 
-    frmPlaneamientoRemitosListaProceso.mostrar = 0
+Private Sub txtRemito_DblClick()
+
+    On Error GoTo errHandler
+
+    mIdRemitoSeleccionado = 0
+    Me.txtRemito.Text = vbNullString
+
+    Set Selecciones.RemitoElegido = Nothing
+
+    frmPlaneamientoRemitosListaProceso.mostrar = MostrarEnProceso
     frmPlaneamientoRemitosListaProceso.Show 1
-    If funciones.queRemitoElegido <> -1 Then
-        Me.txtRemito = funciones.queRemitoElegido
-    Else
-        Me.txtRemito = Empty
+
+
+    If Not Selecciones.RemitoElegido Is Nothing Then
+
+        mIdRemitoSeleccionado = Selecciones.RemitoElegido.Id
+
+        'Mostrar al usuario el NUMERO del remito
+        Me.txtRemito.Text = _
+            CStr(Selecciones.RemitoElegido.numero)
+
     End If
+
+    validar
+
+    Exit Sub
+
+
+errHandler:
+
+    mIdRemitoSeleccionado = 0
+    Me.txtRemito.Text = vbNullString
+
+    MsgBox "Error al seleccionar el remito." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Remitar"
+
 End Sub
+

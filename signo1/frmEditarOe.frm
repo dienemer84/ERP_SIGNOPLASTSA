@@ -7,7 +7,7 @@ Begin VB.Form frmPlaneamientoOEEditar
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Editar OE"
-   ClientHeight    =   8805
+   ClientHeight    =   8760
    ClientLeft      =   3720
    ClientTop       =   1995
    ClientWidth     =   9780
@@ -17,7 +17,7 @@ Begin VB.Form frmPlaneamientoOEEditar
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8805
+   ScaleHeight     =   8760
    ScaleWidth      =   9780
    ShowInTaskbar   =   0   'False
    Begin VB.CommandButton Command4 
@@ -28,8 +28,8 @@ Begin VB.Form frmPlaneamientoOEEditar
       Left            =   120
       Style           =   1  'Graphical
       TabIndex        =   27
-      Top             =   8280
-      Width           =   975
+      Top             =   8300
+      Width           =   1575
    End
    Begin VB.CommandButton Command3 
       BackColor       =   &H00E0E0E0&
@@ -38,7 +38,7 @@ Begin VB.Form frmPlaneamientoOEEditar
       Left            =   8040
       Style           =   1  'Graphical
       TabIndex        =   26
-      Top             =   8280
+      Top             =   8300
       Width           =   1575
    End
    Begin VB.Frame Frame1 
@@ -204,7 +204,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             _ExtentX        =   2143
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   66060289
+            Format          =   65601537
             CurrentDate     =   38923
          End
          Begin MSComctlLib.ListView lstOE 
@@ -420,13 +420,13 @@ Dim IdMoneda As Long
 Dim claseS As New classStock
 
 Dim claseP As New classPlaneamiento
-Dim cantidad As Double
+Dim Cantidad As Double
 Dim detalle As String
 Dim idStock As Long
 Dim vValor As Double
 Dim c As Long
 
-Public Property Let IDOE(nidoe As Long)
+Public Property Let idOE(nidoe As Long)
     vidOe = nidoe
 End Property
 
@@ -435,7 +435,7 @@ Private Sub llenarLstClientes(rs As Recordset)
     lstStockPositivo.ListItems.Clear
     While Not rs.EOF
         Set x = Me.lstStockPositivo.ListItems.Add(, , rs!detalle)
-        x.SubItems(1) = rs!cantidad
+        x.SubItems(1) = rs!Cantidad
         x.SubItems(2) = rs!razon
         x.SubItems(3) = rs!id_cliente
         x.Tag = rs!idPieza
@@ -599,7 +599,7 @@ Private Sub Command2_Click()
 
     detalle = Me.lstStockPositivo.selectedItem.Text
 
-    cantidad = CDbl( _
+    Cantidad = CDbl( _
         Me.lstStockPositivo.selectedItem.ListSubItems(1).Text _
     )
 
@@ -607,10 +607,10 @@ Private Sub Command2_Click()
     '--------------------------------------------------
     ' CONTROL DE STOCK
     '--------------------------------------------------
-    If cantpedida > cantidad Then
+    If cantpedida > Cantidad Then
 
         MsgBox "No hay stock suficiente de esta pieza." & vbCrLf & _
-               "Disponible: " & funciones.FormatearDecimales(cantidad, 2) & vbCrLf & _
+               "Disponible: " & funciones.FormatearDecimales(Cantidad, 2) & vbCrLf & _
                "Solicitado: " & funciones.FormatearDecimales(cantpedida, 2), _
                vbExclamation, _
                "Orden de Entrega"
@@ -636,10 +636,10 @@ Private Sub Command2_Click()
                 cantpedida
 
 
-            If cantidadNueva > cantidad Then
+            If cantidadNueva > Cantidad Then
 
                 MsgBox "No hay disponibilidad de stock suficiente." & vbCrLf & _
-                       "Disponible: " & funciones.FormatearDecimales(cantidad, 2) & vbCrLf & _
+                       "Disponible: " & funciones.FormatearDecimales(Cantidad, 2) & vbCrLf & _
                        "Cantidad total solicitada: " & _
                        funciones.FormatearDecimales(cantidadNueva, 2), _
                        vbExclamation, _
@@ -729,7 +729,7 @@ Private Sub Command2_Click()
             piezaSeleccionada.Cliente.Id
 
         itemOE.SubItems(5) = _
-            funciones.FormatearDecimales(cantidad, 2)
+            funciones.FormatearDecimales(Cantidad, 2)
 
         itemOE.Tag = idStock
 
@@ -1001,7 +1001,7 @@ Public Sub llenarDatosOE()
     Set rs = conectar.RSFactory("Select s.cantidad as cantStock,s.id as idpieza,s.detalle,dp.cantidad,dp.vale,c.razon,c.id as idcliente from stock s,detallesPedidosEntregas dp, PedidosEntregas p, clientes c  where idPedidoEntrega=" & vidOe & " And s.id_cliente = c.id And p.id = dp.idPedidoEntrega And dp.idPieza = s.id")
     While Not rs.EOF
         Set x = Me.lstOE.ListItems.Add(, , rs!detalle)
-        x.SubItems(1) = funciones.FormatearDecimales(rs!cantidad, 2)
+        x.SubItems(1) = funciones.FormatearDecimales(rs!Cantidad, 2)
         x.SubItems(2) = funciones.FormatearDecimales(rs!vale, 2)
         x.SubItems(3) = rs!razon
         x.SubItems(4) = rs!idCliente
@@ -1009,7 +1009,7 @@ Public Sub llenarDatosOE()
         x.Tag = rs!idPieza
 
 
-        If rs!cantStock < rs!cantidad Then
+        If rs!cantStock < rs!Cantidad Then
             x.ForeColor = vbRed
             x.ListSubItems(1).ForeColor = vbRed
             x.ListSubItems(2).ForeColor = vbRed
@@ -1034,8 +1034,8 @@ Private Sub verMarcado()
     If Me.lstStockPositivo.ListItems.count > 0 Then
         idStock = CLng(Me.lstStockPositivo.selectedItem.Tag)
         detalle = Me.lstStockPositivo.selectedItem
-        cantidad = CDbl(Me.lstStockPositivo.selectedItem.ListSubItems(1).Text)
-        Me.lblCantDispo = cantidad
+        Cantidad = CDbl(Me.lstStockPositivo.selectedItem.ListSubItems(1).Text)
+        Me.lblCantDispo = Cantidad
         Me.lblDetalle = detalle
         Me.idPieza = idStock
     End If
@@ -1140,7 +1140,7 @@ End Sub
 
 Private Sub cambiarPrecios( _
     ByVal monedaOrigen As Long, _
-    ByVal monedaDestino As Long)
+    ByVal MonedaDestino As Long)
 
     On Error GoTo errHandler
 
@@ -1148,8 +1148,8 @@ Private Sub cambiarPrecios( _
     Dim x As Long
 
     If monedaOrigen <= 0 Then Exit Sub
-    If monedaDestino <= 0 Then Exit Sub
-    If monedaOrigen = monedaDestino Then Exit Sub
+    If MonedaDestino <= 0 Then Exit Sub
+    If monedaOrigen = MonedaDestino Then Exit Sub
 
     For x = 1 To Me.lstOE.ListItems.count
 
@@ -1158,7 +1158,7 @@ Private Sub cambiarPrecios( _
         vale = clasea.realizaCambio( _
                     vale, _
                     monedaOrigen, _
-                    monedaDestino)
+                    MonedaDestino)
 
         Me.lstOE.ListItems(x).ListSubItems(2).Text = _
             funciones.FormatearDecimales(vale, 2)
@@ -1278,7 +1278,7 @@ Private Sub llenarListaStock()
                 CStr(rsStock!detalle))
 
         itemStock.SubItems(1) = _
-            funciones.FormatearDecimales(CDbl(rsStock!cantidad), 2)
+            funciones.FormatearDecimales(CDbl(rsStock!Cantidad), 2)
 
         itemStock.Tag = CLng(rsStock!Id)
 

@@ -92,10 +92,38 @@ Private Sub Form_Resize()
     Me.Command1.Top = Me.GridEX1.Height + 150
 End Sub
 
-Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    On Error Resume Next
+Private Sub GridEX1_UnboundReadData( _
+    ByVal RowIndex As Long, _
+    ByVal Bookmark As Variant, _
+    ByVal Values As GridEX20.JSRowData)
+
+    On Error GoTo errHandler
+
+    If vLista Is Nothing Then Exit Sub
+    If RowIndex <= 0 Then Exit Sub
+    If RowIndex > vLista.count Then Exit Sub
+
     Set tmp = vLista.item(RowIndex)
+
+    If tmp Is Nothing Then Exit Sub
+
+
     Values(1) = tmp.FEcha
-    Values(2) = tmp.Usuario.Usuario
+
+    If Not tmp.Usuario Is Nothing Then
+        Values(2) = tmp.Usuario.Usuario
+    Else
+        Values(2) = ""
+    End If
+
     Values(3) = tmp.mensaje
+
+    Exit Sub
+
+
+errHandler:
+
+    Debug.Print "frmHistoriales - Error " & _
+                Err.Number & " - " & Err.Description
+
 End Sub

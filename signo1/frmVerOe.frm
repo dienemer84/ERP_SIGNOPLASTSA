@@ -4,7 +4,7 @@ Begin VB.Form frmPlaneamientoOEVer
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Ver Orden de entrega"
-   ClientHeight    =   5475
+   ClientHeight    =   5640
    ClientLeft      =   45
    ClientTop       =   315
    ClientWidth     =   6240
@@ -14,7 +14,7 @@ Begin VB.Form frmPlaneamientoOEVer
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   5475
+   ScaleHeight     =   5640
    ScaleWidth      =   6240
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox txtReferencia 
@@ -51,20 +51,20 @@ Begin VB.Form frmPlaneamientoOEVer
    End
    Begin VB.CommandButton Command1 
       Caption         =   "Imprimir"
-      Height          =   255
-      Left            =   120
+      Height          =   375
+      Left            =   4800
       TabIndex        =   1
-      Top             =   5160
-      Width           =   855
+      Top             =   5200
+      Width           =   1335
    End
    Begin VB.CommandButton Command2 
       Cancel          =   -1  'True
       Caption         =   "Salir"
-      Height          =   255
-      Left            =   1080
+      Height          =   375
+      Left            =   120
       TabIndex        =   0
-      Top             =   5160
-      Width           =   855
+      Top             =   5200
+      Width           =   1335
    End
    Begin MSComctlLib.ListView lstOe 
       Height          =   3255

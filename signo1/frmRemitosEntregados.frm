@@ -159,13 +159,46 @@ End Sub
 
 Private Sub lstRemitos_DblClick()
 
-
+    On Error GoTo errHandler
 
     Dim frm As frmPlaneamientoRemitoVer
+
+
+    If Me.lstRemitos.ListItems.count = 0 Then Exit Sub
+
+    If Me.lstRemitos.selectedItem Is Nothing Then Exit Sub
+
+
     Set frm = New frmPlaneamientoRemitoVer
-    Set frm.Remito = DAORemitoS.FindById(Me.lstRemitos.selectedItem.Tag)
+
+    Set frm.Remito = _
+        DAORemitoS.FindById( _
+            CLng(Me.lstRemitos.selectedItem.Tag))
+
+
+    If frm.Remito Is Nothing Then
+
+        MsgBox "No se pudo recuperar el remito seleccionado.", _
+               vbExclamation, _
+               "Remitos"
+
+        Exit Sub
+
+    End If
+
+
     frm.MostrarInfoAdministracion = True
     frm.Show
 
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al abrir el remito." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Remitos"
 
 End Sub

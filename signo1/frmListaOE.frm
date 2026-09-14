@@ -2,16 +2,20 @@ VERSION 5.00
 Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmPlaneamientoOELista 
+   BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Ordenes de entrega"
-   ClientHeight    =   10620
-   ClientLeft      =   60
-   ClientTop       =   3120
-   ClientWidth     =   11565
+   ClientHeight    =   6300
+   ClientLeft      =   45
+   ClientTop       =   3105
+   ClientWidth     =   11535
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   10620
+   MinButton       =   0   'False
+   ScaleHeight     =   6300
    ScaleMode       =   0  'User
-   ScaleWidth      =   18735
+   ScaleWidth      =   18686.4
+   ShowInTaskbar   =   0   'False
    Begin GridEX20.GridEX gridEntregas 
       Height          =   4455
       Left            =   120
@@ -597,13 +601,60 @@ errHandler:
 
 End Sub
 
-Private Sub printOrder_Click()
-' If Me.lstOE.ListItems.count > 0 Then
-'claseP.imprimirOrdenEntrega (CLng(Me.lstOE.selectedItem))
-'  End If
 
+Private Sub printOrder_Click()
+
+    On Error GoTo errHandler
+
+    Dim claseP As New classPlaneamiento
+
+
+    If mOESeleccionada Is Nothing Then
+
+        MsgBox "No hay una Orden de Entrega seleccionada.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    If MsgBox( _
+        "¿Desea imprimir la Orden de Entrega Nro. " & _
+        CStr(mOESeleccionada.Id) & "?", _
+        vbYesNo + vbQuestion + vbDefaultButton2, _
+        "Imprimir Orden de Entrega") <> vbYes Then
+
+        Exit Sub
+
+    End If
+
+
+    If Not claseP.imprimirOrdenEntrega(mOESeleccionada.Id) Then
+
+        MsgBox "No fue posible imprimir la Orden de Entrega Nro. " & _
+               CStr(mOESeleccionada.Id) & ".", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+    End If
+
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al imprimir la Orden de Entrega Nro. " & _
+           CStr(mOESeleccionada.Id) & "." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Ordenes de Entrega"
 
 End Sub
+
 
 Private Sub PushButton1_Click()
 
@@ -693,12 +744,50 @@ End Sub
 
 
 Private Sub RtosEntregados_Click()
-'  If Me.lstOE.ListItems.count > 0 Then
+
+    On Error GoTo errHandler
+
+    If mOESeleccionada Is Nothing Then
+
+        MsgBox "No hay una Orden de Entrega seleccionada.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    '--------------------------------------------------
+    ' CONFIGURAR FORMULARIO DE REMITOS ENTREGADOS
+    '--------------------------------------------------
     frmRemitosEntregados.Origen = 2
-    'frmRemitosEntregados.idPedidoEntrega = Me.lstOE.selectedItem
-    'frmRemitosEntregados.caption = "Nro." & Me.lstOE.selectedItem
-    '        frmRemitosEntregados.Show
-    ' End If
+
+    frmRemitosEntregados.idPedidoEntrega.caption = _
+        CStr(mOESeleccionada.Id)
+
+    frmRemitosEntregados.caption = _
+        "Remitos aplicados a O/E Nro. " & _
+        CStr(mOESeleccionada.Id)
+
+
+    '--------------------------------------------------
+    ' ABRIR
+    '--------------------------------------------------
+    frmRemitosEntregados.Show
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al abrir los remitos de la Orden de Entrega Nro. " & _
+           CStr(mOESeleccionada.Id) & "." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Ordenes de Entrega"
+
 End Sub
 
 
@@ -722,13 +811,13 @@ Private Sub vereditar_Click()
 
         Case MODO_EDITAR
 
-            frmPlaneamientoOEEditar.IDOE = mOESeleccionada.Id
+            frmPlaneamientoOEEditar.idOE = mOESeleccionada.Id
             frmPlaneamientoOEEditar.Show
 
 
         Case MODO_VER
 
-            frmPlaneamientoOEVer.IDOE = mOESeleccionada.Id
+            frmPlaneamientoOEVer.idOE = mOESeleccionada.Id
             frmPlaneamientoOEVer.Show
 
 
@@ -1019,3 +1108,64 @@ errHandler:
 
 End Sub
 
+
+Private Sub verHistorialOE_Click()
+
+    On Error GoTo errHandler
+
+    Dim historial As Collection
+
+
+    If mOESeleccionada Is Nothing Then
+
+        MsgBox "No hay una Orden de Entrega seleccionada.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    Set historial = _
+        DAOOrdenEntregaHistorial.GetAllByOE(mOESeleccionada.Id)
+
+
+    If historial Is Nothing Then
+        Exit Sub
+    End If
+
+
+    If historial.count = 0 Then
+
+        MsgBox "La Orden de Entrega Nro. " & _
+               CStr(mOESeleccionada.Id) & _
+               " no posee movimientos registrados en el historial.", _
+               vbInformation, _
+               "Historial O/E"
+
+        Exit Sub
+
+    End If
+
+
+    frmHistoriales.lista = historial
+
+    frmHistoriales.caption = _
+        "Historial O/E Nro. " & CStr(mOESeleccionada.Id)
+
+    frmHistoriales.Show
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al abrir el historial de la Orden de Entrega Nro. " & _
+           CStr(mOESeleccionada.Id) & "." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Ordenes de Entrega"
+
+End Sub

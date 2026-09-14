@@ -600,6 +600,7 @@ Form=Forms\frmAdminBoletasDepositoLista.frm
 Form=Forms\frmAdminChequesConciliacion.frm
 Module=DAOOrdenDeEntrega; datos\DAOOrdenDeEntrega.bas
 Form=frmEditarOe.frm
+Module=DAOOrdenEntregaHistorial; Modules\DAOOrdenEntregaHistorial.bas
 IconForm="frmPrincipal"
 Startup="frmPrincipal"
 HelpFile=""
