@@ -17,7 +17,7 @@ Dim rs As ADODB.Recordset
 Dim rs2 As ADODB.Recordset
 Dim claseS As New classStock
 Dim idPiezaFabriacada As Long
-Dim Cuit
+Dim cuit
 
 
 Public Property Get TipoOrden() As TipoOt
@@ -29,11 +29,11 @@ End Property
 Public Property Get FechaEntrega() As Date
     FechaEntrega = rs!FechaEntrega
 End Property
-Public Property Get FechaFIn() As Date
+Public Property Get FechaFin() As Date
     If IsNull(rs!FechaCerrado) Then
-        FechaFIn = 0
+        FechaFin = 0
     Else
-        FechaFIn = rs!FechaCerrado
+        FechaFin = rs!FechaCerrado
     End If
 End Property
 Public Property Get Fabricados() As Long
@@ -57,8 +57,8 @@ End Property
 Public Property Get cantidadItems() As Long
     cantidadItems = rs!cantidadItems
 End Property
-Public Property Get Cliente() As String
-    Cliente = rs!Cliente
+Public Property Get cliente() As String
+    cliente = rs!cliente
 End Property
 Public Property Get count() As Long
     count = rs!count
@@ -93,8 +93,8 @@ err2:
 End Function
 
 
-Public Function ExistePedido(idpedido As Long) As Integer
-    Me.ejecutar_consulta "Select count(id) as canti from pedidos where id=" & idpedido
+Public Function ExistePedido(IdPedido As Long) As Integer
+    Me.ejecutar_consulta "Select count(id) as canti from pedidos where id=" & IdPedido
     If rs!canti = 1 Then
         ExistePedido = 1
     ElseIf rs!canti = 0 Then
@@ -158,7 +158,7 @@ Public Function informePedidoContaduria(Id As Integer, DIALOGO As Boolean, Optio
         entrega = rs!fe
         Creado = rs!fechaCreado
         presu = rs!NroPresupuesto
-        Cuit = rs!Cuit
+        cuit = rs!cuit
         Dim tit As String
 
         If EsMarco Then
@@ -268,7 +268,7 @@ err2:
 End Function
 
 
-Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As Double, Optional idDetallePedido As Long, Optional idpedido As Long, Optional otoe = 1, Optional vector, Optional valor2, Optional deta As DetalleOrdenTrabajo, Optional mostrar_obs As Boolean = False, Optional ot_header As String = vbNullString) As Boolean
+Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As Double, Optional idDetallePedido As Long, Optional IdPedido As Long, Optional otoe = 1, Optional vector, Optional valor2, Optional deta As DetalleOrdenTrabajo, Optional mostrar_obs As Boolean = False, Optional ot_header As String = vbNullString) As Boolean
     Dim rto As Remito
     Set rto = DAORemitoS.FindById(CLng(Remito))
     Dim Nota As String
@@ -301,7 +301,7 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
         If otoe = 1 Then Me.ejecutar_consulta "select cantidad_entregada as entregados,cantidad,precio as valor from detalles_pedidos where id=" & idDetallePedido
 
 
-        Valor = rs!Valor
+        valor = rs!valor
         Cantidad = deta.CantidadPedida   'rs!Cantidad
         Entregados = deta.CantidadEntregada  'rs!Entregados
         If Cantidad - Entregados >= CantAEntregar Then
@@ -327,9 +327,9 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
                 End If
 
                 If mostrar_obs Then
-                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ",'" & UCase(Nota) & "')"
+                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & IdPedido & "," & valor & ",'" & UCase(Nota) & "')"
                 Else
-                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
+                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & IdPedido & "," & valor & ")"
                 End If
             End If
         Else
@@ -346,14 +346,14 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
         'cambio la cant entregada por el total solicitado
         'busco dato para crear el registro de entregas
         If otoe = 1 Then
-            Me.ejecutar_consulta "select nota,precio as valor,id,cantidad as cantAEntregar, cantidad_entregada as entregados from detalles_pedidos where idPedido=" & idpedido
+            Me.ejecutar_consulta "select nota,precio as valor,id,cantidad as cantAEntregar, cantidad_entregada as entregados from detalles_pedidos where idPedido=" & IdPedido
             '      cn.execute "update detalles_pedidos set cantidad_entregada=(cantidad-cantidad_entregada)+cantidad_entregada Where idPedido=" & idpedido
             Dim col As New Collection
-            Set col = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(idpedido)
+            Set col = DAODetalleOrdenTrabajo.FindAllByOrdenTrabajo(IdPedido)
             Dim det As DetalleOrdenTrabajo
 
         Else
-            Me.ejecutar_consulta "select precio as valor,id,cantidad as entregada,entregados from detallePedidosEntrega where idPedido=" & idpedido
+            Me.ejecutar_consulta "select precio as valor,id,cantidad as entregada,entregados from detallePedidosEntrega where idPedido=" & IdPedido
             '      cn.execute "update detallesPedidosEntregas set entregados=entregados+" & CantAEntregar & " Where id=" & idDetallePedido
         End If
         'actualizo el detalle_pedido con el nro de rto para las entregas
@@ -369,11 +369,11 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
 
             Entregados = rs!Entregados
             If CantAEntregar > Entregados Then
-                Valor = rs!Valor
+                valor = rs!valor
                 If mostrar_obs Then
-                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ",'" & deta.Nota & "')"
+                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & IdPedido & "," & valor & ",'" & deta.Nota & "')"
                 Else
-                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & CantAEntregar - Entregados & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
+                    cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & CantAEntregar - Entregados & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & IdPedido & "," & valor & ")"
                 End If
             End If
             rs.MoveNext
@@ -413,12 +413,12 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
             'cambio la cant entregada por el total solicitado
             'busco dato para crear el registro de entregas
             If otoe = 1 Then
-                Me.ejecutar_consulta "select nota,precio,id,cantidad, cantidad_entregada, cantidad_fabricados from detalles_pedidos where idPedido=" & idpedido & " and id=" & idDetallePedido
+                Me.ejecutar_consulta "select nota,precio,id,cantidad, cantidad_entregada, cantidad_fabricados from detalles_pedidos where idPedido=" & IdPedido & " and id=" & idDetallePedido
                 Nota = rs!Nota
                 If LenB(ot_header) > 0 Then
                     Nota = ot_header & " | " & rs!Nota
                 End If
-                Valor = rs!Precio
+                valor = rs!Precio
                 Cantidad = rs!Cantidad
                 ' Cantidad_Entregada = rs!Cantidad_Entregada
 
@@ -442,9 +442,9 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
                         '                  cn.execute "update detalles_pedidos set cantidad_entregada=cantidad_entregada+" & aentregar & " Where idPedido=" & idpedido & " and id=" & idDetallePedido
                         '                  DAODetalleOrdenTrabajo.SaveCantidad idDetallePedido, aentregar, CantidadEntregada_, 0
                         If mostrar_obs Then
-                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ",'" & UCase(Nota) & "')"
+                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & IdPedido & "," & valor & ",'" & UCase(Nota) & "')"
                         Else
-                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
+                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & IdPedido & "," & valor & ")"
                         End If
 
                     End If
@@ -453,11 +453,11 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
             Else
 
                 'si la cantidad pedida menos la cantidad entregada es mayor a lo que piden, procedo c la entrega
-                Me.ejecutar_consulta "select vale,id,cantidad, entregados from detallesPedidosEntregas where idPedidoEntrega=" & idpedido & " and id=" & idDetallePedido
+                Me.ejecutar_consulta "select vale,id,cantidad, entregados from detallesPedidosEntregas where idPedidoEntrega=" & IdPedido & " and id=" & idDetallePedido
 
                 If Not rs.EOF And Not rs.BOF Then
 
-                    Valor = rs!vale
+                    valor = rs!vale
                     Cantidad = rs!Cantidad
                     Cantidad_Entregada = rs!Entregados
                     If Cantidad > Cantidad_Entregada Then
@@ -467,9 +467,9 @@ Public Function RealizarEntrega(modo, Remito As Long, Optional CantAEntregar As 
                         cn.execute "update detallesPedidosEntregas set entregados=entregados+" & aentregar & " Where id=" & idDetallePedido
 
                         If mostrar_obs Then
-                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ",'" & UCase(Nota) & "')"
+                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor,observaciones) values (" & idDetallePedido & "," & CantAEntregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & IdPedido & "," & valor & ",'" & UCase(Nota) & "')"
                         Else
-                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & idpedido & "," & Valor & ")"
+                            cn.execute "insert into entregas (idDetallePedido, cantidad, Remito, fecha,origen,idPedido,valor) values (" & rs!Id & "," & aentregar & "," & CLng(Remito) & ",'" & fec & "'," & Origen & "," & IdPedido & "," & valor & ")"
                         End If
 
 
@@ -498,11 +498,11 @@ Private Sub Class_Terminate()
 End Sub
 
 
-Public Function estaTodoFabricado(idpedido As Long) As Boolean
+Public Function estaTodoFabricado(IdPedido As Long) As Boolean
 'si está todo fabricado,
 'cambio el estado del pedido.
     Dim esta As Boolean
-    Me.ejecutar_consulta "select dp.retirado,dp.cantidad,dp.cantidad_fabricados,dp.reserva_stock from detalles_pedidos dp, pedidos p where dp.idPedido=p.id and p.id=" & idpedido
+    Me.ejecutar_consulta "select dp.retirado,dp.cantidad,dp.cantidad_fabricados,dp.reserva_stock from detalles_pedidos dp, pedidos p where dp.idPedido=p.id and p.id=" & IdPedido
     esta = True
     estaTodoFabricado = esta
     While Not rs.EOF
@@ -542,7 +542,7 @@ Public Function imprimirOrdenEntrega(nroOE As Long) As Boolean
         fecCre = rs!fechaCreado
         razon = rs!razon
         dire = rs!Domicilio
-        Cuit = rs!Cuit
+        cuit = rs!cuit
         ordenEntrega.Sections("cabeza").Controls("lblOT").caption = nroOE
         ordenEntrega.Sections("cabeza").Controls("lblCliente").caption = razon
         ordenEntrega.Sections("cabeza").Controls("lblCliente2").caption = razon
@@ -586,88 +586,6 @@ errh23:
     verificarOrdenEntrega = False
 End Function
 
-Public Function AprobarOrdenEntrega(IDOE As Long) As Boolean
-    Dim iDst As Long
-    On Error GoTo errh24:
-    AprobarOrdenEntrega = True
-    ok = True
-    Dim r As Recordset
-    'r es el recordset del detalle del pedido entrega
-    Set r = conectar.RSFactory("select * from detallesPedidosEntregas where idPedidoEntrega=" & IDOE)
-
-    While Not r.EOF
-        ids = r!idPieza
-        Me.ejecutar_consulta "select cantidad from stock where id=" & ids
-        If rs!Cantidad < r!Cantidad Then
-            ok = False
-        End If
-        r.MoveNext
-    Wend
-    r.MoveFirst
-
-    If ok Then
-        cn.BeginTrans
-        tra = True
-        Me.ejecutar_consulta "Select estado,idmoneda from PedidosEntregas where id=" & IDOE
-        idMP = rs!IdMoneda
-        If rs!estado = 2 Then    'si está en 2, significa que ya está aprobada
-            MsgBox "La orden se encuentra aprobada!", vbCritical, "Error"
-            Exit Function
-        ElseIf rs!estado = 1 Then
-            'aca se aprueba la OE
-            cn.execute "update PedidosEntregas set estado=2 where id=" & IDOE
-            'aca se carga en históricos
-            Autor = funciones.getUser
-            Nota = "O/E Aprobada"
-            fec = funciones.datetimeFormateada(Now)
-            cn.execute "insert into historico_PedidoEntrega (usuario,nota,fecha) values (" & Autor & ",'" & Nota & "','" & fec & "')"
-            'acá se actualiza el stock.
-            Dim asume As Boolean
-
-            If MsgBox("¿Desea asumir el precio de estas piezas como precio definido?", vbYesNo, "Confirmación") Then
-                asume = True
-            End If
-
-
-
-            While Not r.EOF
-                iDst = r!idPieza
-                Cantidad = r!Cantidad
-                vale = r!vale
-                ahora = funciones.dateFormateada(Now)
-                If asume Then
-
-                    strsql = "update stock set cantidad=cantidad-" & Cantidad & ",precio_definido=" & vale & ",fecha_precio_definido='" & ahora & "',id_moneda_precio=" & idMP & "  where id=" & iDst
-                Else
-                    strsql = "update stock set cantidad=cantidad-" & Cantidad & " where id=" & iDst
-                End If
-                cn.execute strsql
-                cha = Format(Date, "yyyy/mm/dd")
-                cn.execute "insert into movimiento_stock (id_pieza,cantidad,operacion,fecha,nota) values (" & iDst & "," & Cantidad & "," & 3 & ",'" & cha & "'," & IDOE & ")"
-
-                r.MoveNext
-            Wend
-
-
-
-        ElseIf rs!estado = 3 Then
-            'la orden ya esta aprobada y en proceso
-            MsgBox "La orden se encuentra aprobada y en proceso.!", vbCritical, "Error"
-        ElseIf rs!estado = 4 Then
-            MsgBox "La orden se encuentra finalizada!", vbCritical, "Error"
-        End If
-
-        ' CN.Execute "update PedidosEntregas set estado=3 where id=" & idOE
-        tra = False
-        cn.CommitTrans
-    Else
-        MsgBox "No hay disponibilidad de stock para aprobar esta O/E", vbCritical, "Error"
-    End If
-    Exit Function
-errh24:
-    AprobarOrdenEntrega = True
-    If tra Then cn.RollbackTrans
-End Function
 
 Public Function informePieza2(idPiezaPedido, DIALOGO As Boolean, Optional conjunto = False, Optional idPiezaHija = -1, Optional pos = 1, Optional CantElemConj = 0, Optional PosConj = 0, Optional cantEnConj = 1, Optional detalle = Empty, Optional idPiezaPedidoConjunto = -1) As Boolean    '1- enviar 2-imprimir
     On Error GoTo err2
@@ -897,12 +815,12 @@ Public Function editarOE(lst As ListView, FEcha As Date, referencia As String, i
         For l = 1 To lst.ListItems.count
             iDst = CLng(lst.ListItems(l).Tag)
             Cantidad = CLng(lst.ListItems(l).ListSubItems(1))
-            Valor = CDbl(lst.ListItems(l).ListSubItems(2))
+            valor = CDbl(lst.ListItems(l).ListSubItems(2))
 
             'actualizo el stock
             'CN.Execute "update stock set cantidad=cantidad-" & CLng(lst.ListItems(l).ListSubItems(2)) & " where id=" & idst
             'creo el contenido de la O/E
-            cn.execute "insert into detallesPedidosEntregas (idPedidoEntrega,idPieza,cantidad,vale) values (" & nroOE & "," & iDst & "," & Cantidad & "," & Valor & ")"
+            cn.execute "insert into detallesPedidosEntregas (idPedidoEntrega,idPieza,cantidad,vale) values (" & nroOE & "," & iDst & "," & Cantidad & "," & valor & ")"
         Next l
         locka = False
         'CN.Execute "UNLOCK TABLES"
@@ -978,18 +896,18 @@ Public Function precio_pieza2(idPieza, ByRef IdMoneda) As Double
     End If
 End Function
 
-Public Function cantidadFabricada(idPieza As Long, Optional cantidadNueva As Double = 0) As Double
+Public Function CantidadFabricada(idPieza As Long, Optional cantidadNueva As Double = 0) As Double
     Me.ejecutar_consulta "Select sum(cantidad) as c from detalles_pedidos where idPieza=" & idPieza
     If Not rs.EOF And Not rs.BOF Then
         c = rs!c
         If IsNull(rs!c) Then c = 0
-        cantidadFabricada = c + cantidadNueva
+        CantidadFabricada = c + cantidadNueva
     Else
-        cantidadFabricada = -1
+        CantidadFabricada = -1
     End If
 End Function
 
-Public Function aplicarRemitoAOT(idpedido As Long, idEntrega As Long, idDetalle As Long, Cantidad As Double) As Boolean
+Public Function aplicarRemitoAOT(IdPedido As Long, idEntrega As Long, IdDetalle As Long, Cantidad As Double) As Boolean
     On Error GoTo err3
     erro = True
     cn.BeginTrans
@@ -997,11 +915,11 @@ Public Function aplicarRemitoAOT(idpedido As Long, idEntrega As Long, idDetalle 
     Dim rto As remitoDetalle
     Set rto = DAORemitoSDetalle.FindById(idEntrega)
 
-    cn.execute "update entregas set idPedido=" & idpedido & ",idDetallePedido=" & idDetalle & ",origen=4 where id=" & idEntrega
+    cn.execute "update entregas set idPedido=" & IdPedido & ",idDetallePedido=" & IdDetalle & ",origen=4 where id=" & idEntrega
 
-    cn.execute "update detalles_pedidos set cantidad_entregada=cantidad_entregada+" & Cantidad & " where id=" & idDetalle
+    cn.execute "update detalles_pedidos set cantidad_entregada=cantidad_entregada+" & Cantidad & " where id=" & IdDetalle
 
-    If Not DAODetalleOrdenTrabajo.SaveCantidad(idDetalle, Cantidad, CantidadEntregada_, 0, rto.Remito, 0, 0, 0) Then GoTo err3
+    If Not DAODetalleOrdenTrabajo.SaveCantidad(IdDetalle, Cantidad, CantidadEntregada_, 0, rto.Remito, 0, 0, 0) Then GoTo err3
 
     cn.CommitTrans
 
@@ -1013,20 +931,20 @@ err3:
     aplicarRemitoAOT = erro
     cn.RollbackTrans
 End Function
-Public Function definirPrecios(idPieza, Valor, IdMoneda) As Boolean
+Public Function definirPrecios(idPieza, valor, IdMoneda) As Boolean
     On Error GoTo err4
     definirPrecios = True
-    cn.execute "update stock set precio_definido=" & Valor & ",fecha_precio_definido='" & funciones.dateFormateada(Now) & "',id_moneda_precio=" & IdMoneda & " where id=" & idPieza
+    cn.execute "update stock set precio_definido=" & valor & ",fecha_precio_definido='" & funciones.dateFormateada(Now) & "',id_moneda_precio=" & IdMoneda & " where id=" & idPieza
     Exit Function
 err4:
     definirPrecios = False
 End Function
 
 
-Public Function procesos_definidos(idpedido) As Boolean
+Public Function procesos_definidos(IdPedido) As Boolean
     procesos_definidos = True
     Dim rs1 As Recordset
-    Set rs1 = conectar.RSFactory("Select procesos_definidos from detalles_pedidos where idPedido=" & idpedido)
+    Set rs1 = conectar.RSFactory("Select procesos_definidos from detalles_pedidos where idPedido=" & IdPedido)
     While Not rs1.EOF And Not rs1.BOF
         If rs1!procesos_definidos = 0 Then
             procesos_definidos = False
@@ -1189,7 +1107,7 @@ Public Function rs_materiales(Id As Long, Origen As Integer) As Recordset
             moneda = r_1!Nombre_corto
             codigo = r_1!codigo
             id_Unidad = r_1!id_Unidad
-            Valor = r_1!valor_unitario
+            valor = r_1!valor_unitario
             fec_act = r_1!FEcha_actualizacion
             'tengo que buscar en el RS temporal a ver si ya agregé el material
             'si está agregado lo sumo
@@ -1215,7 +1133,7 @@ Public Function rs_materiales(Id As Long, Origen As Integer) As Recordset
                 totUnit = Math.Round(unidad, 2)
                 UN = "Un"
             End If
-            agregarARSmateriales r_mat, id_Unidad, IdMaterial, unidad, totUnit, codigo, descrip, rubro, Grupo, Espesor, UN, Valor, fec_act, moneda
+            agregarARSmateriales r_mat, id_Unidad, IdMaterial, unidad, totUnit, codigo, descrip, rubro, Grupo, Espesor, UN, valor, fec_act, moneda
 
             r_1.MoveNext
         Wend
@@ -1250,7 +1168,7 @@ Private Sub agregarARSmateriales(r_mat As Recordset, unidad, IdMaterial, m2kg, t
         r_mat!descripcion = UCase(descripcion)
         r_mat!unidad = UN
         r_mat!Espesor = Espesor
-        r_mat!Valor = valor_unit
+        r_mat!valor = valor_unit
         r_mat!FEcha = fec_act
         r_mat!moneda = moneda
         r_mat.Update
@@ -1270,4 +1188,314 @@ Private Sub agregarARSmateriales(r_mat As Recordset, unidad, IdMaterial, m2kg, t
 
 End Sub
 
+
+Public Function AprobarOrdenEntrega(ByVal IDOE As Long) As Boolean
+
+    On Error GoTo errHandler
+
+    Dim rsDetalle As ADODB.Recordset
+    Dim rsStock As ADODB.Recordset
+    Dim rsOE As ADODB.Recordset
+
+    Dim idPieza As Long
+    Dim cantidadOE As Double
+    Dim cantidadStock As Double
+    Dim valor As Double
+
+    Dim idMonedaOE As Long
+    Dim idUsuario As Long
+
+    Dim asumirPrecio As Boolean
+    Dim transActiva As Boolean
+
+    Dim fechaAprobacion As String
+    Dim fechaPrecio As String
+    Dim fechaMovimiento As String
+
+    Dim strCantidad As String
+    Dim strValor As String
+
+    Dim sql As String
+    Dim afectados As Variant
+
+
+    AprobarOrdenEntrega = False
+
+
+    '--------------------------------------------------
+    ' VALIDAR QUE EXISTA LA OE
+    '--------------------------------------------------
+    Set rsOE = cn.execute( _
+        "SELECT estado, idMoneda " & _
+        "FROM PedidosEntregas " & _
+        "WHERE id = " & CStr(IDOE))
+
+
+    If rsOE.EOF Then
+
+        MsgBox "No existe la Orden de Entrega Nro. " & _
+               CStr(IDOE) & ".", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Exit Function
+
+    End If
+
+
+    '--------------------------------------------------
+    ' VALIDAR ESTADO
+    '--------------------------------------------------
+    If CLng(rsOE!estado) <> EstadoOrdenEntrega.Pendiente Then
+
+        MsgBox "La Orden de Entrega Nro. " & _
+               CStr(IDOE) & _
+               " ya no se encuentra pendiente.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Exit Function
+
+    End If
+
+
+    If Not IsNull(rsOE!IdMoneda) Then
+        idMonedaOE = CLng(rsOE!IdMoneda)
+    Else
+        idMonedaOE = 0
+    End If
+
+
+    '--------------------------------------------------
+    ' OBTENER DETALLE
+    '--------------------------------------------------
+    Set rsDetalle = cn.execute( _
+        "SELECT idPieza, cantidad, vale " & _
+        "FROM detallesPedidosEntregas " & _
+        "WHERE idPedidoEntrega = " & CStr(IDOE))
+
+
+    If rsDetalle.EOF Then
+
+        MsgBox "La Orden de Entrega Nro. " & _
+               CStr(IDOE) & _
+               " no tiene piezas cargadas." & vbCrLf & _
+               "No puede ser aprobada.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Exit Function
+
+    End If
+
+
+    '--------------------------------------------------
+    ' VALIDAR STOCK DE TODAS LAS PIEZAS
+    '--------------------------------------------------
+    rsDetalle.MoveFirst
+
+    Do While Not rsDetalle.EOF
+
+        idPieza = CLng(rsDetalle!idPieza)
+        cantidadOE = CDbl(rsDetalle!Cantidad)
+
+
+        Set rsStock = cn.execute( _
+            "SELECT cantidad " & _
+            "FROM stock " & _
+            "WHERE id = " & CStr(idPieza))
+
+
+        If rsStock.EOF Then
+
+            MsgBox "No se encontró en stock la pieza ID " & _
+                   CStr(idPieza) & ".", _
+                   vbCritical, _
+                   "Orden de Entrega"
+
+            Exit Function
+
+        End If
+
+
+        cantidadStock = CDbl(rsStock!Cantidad)
+
+
+        If cantidadStock < cantidadOE Then
+
+            MsgBox "No hay stock suficiente para aprobar la O/E." & _
+                   vbCrLf & vbCrLf & _
+                   "Pieza ID: " & CStr(idPieza) & vbCrLf & _
+                   "Stock disponible: " & _
+                   funciones.FormatearDecimales(cantidadStock, 2) & vbCrLf & _
+                   "Cantidad requerida: " & _
+                   funciones.FormatearDecimales(cantidadOE, 2), _
+                   vbExclamation, _
+                   "Orden de Entrega"
+
+            Exit Function
+
+        End If
+
+
+        rsDetalle.MoveNext
+
+    Loop
+
+
+    '--------------------------------------------------
+    ' CONSULTAR SI ASUME LOS PRECIOS
+    '--------------------------------------------------
+    asumirPrecio = False
+
+    If MsgBox( _
+        "¿Desea asumir el valor de las piezas de esta O/E " & _
+        "como precio definido en el stock?", _
+        vbYesNo + vbQuestion + vbDefaultButton2, _
+        "Precio definido") = vbYes Then
+
+        asumirPrecio = True
+
+    End If
+
+
+    '--------------------------------------------------
+    ' COMENZAR TRANSACCION
+    '--------------------------------------------------
+    cn.BeginTrans
+    transActiva = True
+
+
+    idUsuario = funciones.getUser
+    fechaAprobacion = funciones.datetimeFormateada(Now)
+
+
+    '--------------------------------------------------
+    ' APROBAR CABECERA
+    '--------------------------------------------------
+    sql = _
+        "UPDATE PedidosEntregas SET " & _
+        "estado = " & CStr(EstadoOrdenEntrega.Aprobado) & ", " & _
+        "IdUsuarioAprobado = " & CStr(idUsuario) & ", " & _
+        "fechaAprobado = '" & fechaAprobacion & "' " & _
+        "WHERE id = " & CStr(IDOE) & _
+        " AND estado = " & CStr(EstadoOrdenEntrega.Pendiente)
+
+
+    cn.execute sql, afectados
+
+
+    If CLng(afectados) <> 1 Then
+
+        Err.Raise vbObjectError + 2500, _
+                  "classPlaneamiento.AprobarOrdenEntrega", _
+                  "La O/E cambió de estado mientras se intentaba aprobar."
+
+    End If
+
+
+    '--------------------------------------------------
+    ' HISTORIAL
+    '--------------------------------------------------
+    cn.execute _
+        "INSERT INTO historico_PedidoEntrega " & _
+        "(usuario, nota, fecha) VALUES (" & _
+        CStr(idUsuario) & ", " & _
+        "'O/E Aprobada', " & _
+        "'" & fechaAprobacion & "')"
+
+
+    '--------------------------------------------------
+    ' DESCONTAR STOCK
+    '--------------------------------------------------
+    rsDetalle.MoveFirst
+
+    Do While Not rsDetalle.EOF
+
+        idPieza = CLng(rsDetalle!idPieza)
+        cantidadOE = CDbl(rsDetalle!Cantidad)
+
+        If IsNull(rsDetalle!vale) Then
+            valor = 0
+        Else
+            valor = CDbl(rsDetalle!vale)
+        End If
+
+
+        strCantidad = Replace$(CStr(cantidadOE), ",", ".")
+        strValor = Replace$(CStr(valor), ",", ".")
+
+
+        If asumirPrecio Then
+
+            fechaPrecio = funciones.dateFormateada(Now)
+
+            sql = _
+                "UPDATE stock SET " & _
+                "cantidad = cantidad - " & strCantidad & ", " & _
+                "precio_definido = " & strValor & ", " & _
+                "fecha_precio_definido = '" & fechaPrecio & "', " & _
+                "id_moneda_precio = " & CStr(idMonedaOE) & " " & _
+                "WHERE id = " & CStr(idPieza)
+
+        Else
+
+            sql = _
+                "UPDATE stock SET " & _
+                "cantidad = cantidad - " & strCantidad & " " & _
+                "WHERE id = " & CStr(idPieza)
+
+        End If
+
+
+        cn.execute sql
+
+
+        '--------------------------------------------------
+        ' MOVIMIENTO DE STOCK
+        '--------------------------------------------------
+        fechaMovimiento = Format$(Date, "yyyy/mm/dd")
+
+        cn.execute _
+            "INSERT INTO movimiento_stock " & _
+            "(id_pieza, cantidad, operacion, fecha, nota) VALUES (" & _
+            CStr(idPieza) & ", " & _
+            strCantidad & ", " & _
+            "3, " & _
+            "'" & fechaMovimiento & "', " & _
+            CStr(IDOE) & ")"
+
+
+        rsDetalle.MoveNext
+
+    Loop
+
+
+    '--------------------------------------------------
+    ' CONFIRMAR
+    '--------------------------------------------------
+    cn.CommitTrans
+    transActiva = False
+
+    AprobarOrdenEntrega = True
+
+    Exit Function
+
+
+errHandler:
+
+    If transActiva Then
+        cn.RollbackTrans
+    End If
+
+    AprobarOrdenEntrega = False
+
+    MsgBox "Error al aprobar la Orden de Entrega Nro. " & _
+           CStr(IDOE) & "." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Orden de Entrega"
+
+End Function
 

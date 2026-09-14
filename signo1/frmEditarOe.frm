@@ -7,7 +7,7 @@ Begin VB.Form frmPlaneamientoOEEditar
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Editar OE"
-   ClientHeight    =   8190
+   ClientHeight    =   8805
    ClientLeft      =   3720
    ClientTop       =   1995
    ClientWidth     =   9780
@@ -17,9 +17,30 @@ Begin VB.Form frmPlaneamientoOEEditar
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8190
+   ScaleHeight     =   8805
    ScaleWidth      =   9780
    ShowInTaskbar   =   0   'False
+   Begin VB.CommandButton Command4 
+      BackColor       =   &H00E0E0E0&
+      Cancel          =   -1  'True
+      Caption         =   "Salir"
+      Height          =   375
+      Left            =   120
+      Style           =   1  'Graphical
+      TabIndex        =   27
+      Top             =   8280
+      Width           =   975
+   End
+   Begin VB.CommandButton Command3 
+      BackColor       =   &H00E0E0E0&
+      Caption         =   "Guadar"
+      Height          =   375
+      Left            =   8040
+      Style           =   1  'Graphical
+      TabIndex        =   26
+      Top             =   8280
+      Width           =   1575
+   End
    Begin VB.Frame Frame1 
       BackColor       =   &H00C0C0C0&
       Caption         =   "[ Orígen stock ]"
@@ -40,7 +61,7 @@ Begin VB.Form frmPlaneamientoOEEditar
       Begin XtremeSuiteControls.ComboBox cboClientes 
          Height          =   315
          Left            =   840
-         TabIndex        =   26
+         TabIndex        =   24
          Top             =   360
          Width           =   7455
          _Version        =   786432
@@ -128,27 +149,6 @@ Begin VB.Form frmPlaneamientoOEEditar
       TabIndex        =   0
       Top             =   3240
       Width           =   9735
-      Begin VB.CommandButton Command4 
-         BackColor       =   &H00E0E0E0&
-         Cancel          =   -1  'True
-         Caption         =   "Salir"
-         Height          =   375
-         Left            =   1200
-         Style           =   1  'Graphical
-         TabIndex        =   24
-         Top             =   960
-         Width           =   975
-      End
-      Begin VB.CommandButton Command3 
-         BackColor       =   &H00E0E0E0&
-         Caption         =   "Guadar"
-         Height          =   375
-         Left            =   120
-         Style           =   1  'Graphical
-         TabIndex        =   20
-         Top             =   960
-         Width           =   975
-      End
       Begin VB.Frame Frame3 
          BackColor       =   &H00C0C0C0&
          Caption         =   "[ Detalle ]"
@@ -160,7 +160,7 @@ Begin VB.Form frmPlaneamientoOEEditar
          Begin XtremeSuiteControls.ComboBox cboClientesDestino 
             Height          =   315
             Left            =   840
-            TabIndex        =   27
+            TabIndex        =   25
             Top             =   3000
             Width           =   4335
             _Version        =   786432
@@ -176,7 +176,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             Height          =   255
             Left            =   120
             Style           =   1  'Graphical
-            TabIndex        =   25
+            TabIndex        =   23
             Top             =   2640
             Width           =   735
          End
@@ -184,7 +184,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             Height          =   315
             Left            =   6000
             Style           =   2  'Dropdown List
-            TabIndex        =   21
+            TabIndex        =   20
             Top             =   3000
             Width           =   1215
          End
@@ -204,7 +204,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             _ExtentX        =   2143
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   65929217
+            Format          =   16777217
             CurrentDate     =   38923
          End
          Begin MSComctlLib.ListView lstOE 
@@ -263,7 +263,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             Caption         =   "Moneda"
             Height          =   255
             Left            =   5160
-            TabIndex        =   22
+            TabIndex        =   21
             Top             =   3000
             Width           =   735
          End
@@ -396,7 +396,7 @@ Begin VB.Form frmPlaneamientoOEEditar
    Begin VB.Label idPieza 
       Height          =   255
       Left            =   0
-      TabIndex        =   23
+      TabIndex        =   22
       Top             =   0
       Width           =   615
    End
@@ -419,14 +419,16 @@ Dim IdMoneda As Long
 Dim claseS As New classStock
 
 Dim claseP As New classPlaneamiento
-Dim Cantidad As Long
+Dim Cantidad As Double
 Dim detalle As String
 Dim idStock As Long
 Dim vValor As Double
 Dim c As Long
+
 Public Property Let IDOE(nidoe As Long)
     vidOe = nidoe
 End Property
+
 Private Sub llenarLstClientes(rs As Recordset)
     Dim x As ListItem
     lstStockPositivo.ListItems.Clear
@@ -439,6 +441,7 @@ Private Sub llenarLstClientes(rs As Recordset)
         rs.MoveNext
     Wend
 End Sub
+
 
 Public Sub LlenarListaOE()
 
@@ -484,71 +487,240 @@ Private Sub Command1_Click()
 
 End Sub
 
+
 Private Sub Command2_Click()
-    Dim cantpedida As Double
+
+    On Error GoTo errHandler
+
+    Dim cantPedida As Double
     Dim esta As Boolean
-    If CLng(Me.txtCantidad) > 0 Then
+    Dim valorPieza As Double
+    Dim idMonedaPieza As Long
+    Dim i As Long
+    Dim cantidadNueva As Double
 
-        Dim valorr As Double
-        idStock = CLng(Me.idPieza)
-        Dim idMoneda_pieza As Long
-        cantpedida = CLng(Me.txtCantidad)
-        If cantpedida <= Cantidad Then
-            'si la cantidad que piden es menor ue la cantidad en stock real opero
-            'y agrego datos a la lista a procesar como nueva orden de entrega
-            esta = False
-            'tengo que fijarme que no exista la pieza en la OE, si existe tengo que sumarla
-            For y = 1 To Me.lstOE.ListItems.count
-                If Me.lstOE.ListItems(y).Tag = idStock Then
-                    esta = True
-                    aponer = funciones.FormatearDecimales(CDbl(Me.lstOE.ListItems(y).ListSubItems(1)) + CDbl(cantpedida), 2)
-                    'controlo que haya stock
-                    If aponer > Cantidad Then
-                        MsgBox "No hay disponibilidad de stock!", vbCritical, "Error"
-                    Else
-                        'si hay stock disponible
-                        Me.lstOE.ListItems(y).ListSubItems(1) = aponer
-                    End If
-                End If
-            Next y
+    Dim itemOE As MSComctlLib.ListItem
+    Dim piezaSeleccionada As Pieza
 
 
-            valorr = claseP.precio_pieza2(idStock, idMoneda_pieza)    '0  'elegir valor más alto vendido de la pieza
+    '--------------------------------------------------
+    ' VALIDAR QUE HAYA UNA PIEZA SELECCIONADA
+    '--------------------------------------------------
+    If Me.lstStockPositivo.selectedItem Is Nothing Then
 
-            If IdMoneda <> idMoneda_pieza Then
-                'si no es la misma moneda convierto a lo necesario
-                'subitem2 de la lista
-                valorr = clasea.realizaCambio(valorr, idMoneda_pieza, IdMoneda)
-            End If
+        MsgBox "Seleccione una pieza del stock.", _
+               vbExclamation, _
+               "Orden de Entrega"
 
+        Exit Sub
 
-
-            Dim x As ListItem
-            If Not esta Then
-                Dim Pieza As Pieza
-                'claseP.ejecutar_consulta "select s.id as idpieza,c.razon,c.id as idCliente from clientes c,stock s where c.id=s.id_cliente and s.id=" & CLng(Me.idPieza)
-                Set Pieza = DAOPieza.FindById(CLng(Me.idPieza), FL_0)
-
-                Set x = Me.lstOE.ListItems.Add(, , detalle)
-                x.SubItems(1) = funciones.FormatearDecimales(cantpedida, 2)
-                x.SubItems(2) = funciones.FormatearDecimales(valorr, 2)
-                x.SubItems(3) = Pieza.Cliente.razon
-                x.SubItems(4) = Pieza.Cliente.Id
-
-
-                x.Tag = idStock
-
-            End If
-
-
-
-
-            verMarcado
-        Else
-            MsgBox "No hay stock suficiente de esta pieza para la cantidad solicitada.", vbCritical, "Error"
-        End If
     End If
+
+
+    '--------------------------------------------------
+    ' VALIDAR CANTIDAD
+    '--------------------------------------------------
+    If Len(Trim$(Me.txtCantidad.Text)) = 0 Then
+
+        MsgBox "Ingrese la cantidad requerida.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Me.txtCantidad.SetFocus
+        Exit Sub
+
+    End If
+
+
+    If Not IsNumeric(Me.txtCantidad.Text) Then
+
+        MsgBox "La cantidad ingresada no es válida.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Me.txtCantidad.SetFocus
+        Exit Sub
+
+    End If
+
+
+    cantPedida = CDbl(Me.txtCantidad.Text)
+
+    If cantPedida <= 0 Then
+
+        MsgBox "La cantidad debe ser mayor a cero.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Me.txtCantidad.SetFocus
+        Exit Sub
+
+    End If
+
+
+    '--------------------------------------------------
+    ' PIEZA SELECCIONADA
+    '--------------------------------------------------
+    idStock = CLng(Me.lstStockPositivo.selectedItem.Tag)
+
+    detalle = Me.lstStockPositivo.selectedItem.Text
+
+    Cantidad = CDbl( _
+        Me.lstStockPositivo.selectedItem.ListSubItems(1).Text _
+    )
+
+
+    '--------------------------------------------------
+    ' CONTROL DE STOCK
+    '--------------------------------------------------
+    If cantPedida > Cantidad Then
+
+        MsgBox "No hay stock suficiente de esta pieza." & vbCrLf & _
+               "Disponible: " & funciones.FormatearDecimales(Cantidad, 2) & vbCrLf & _
+               "Solicitado: " & funciones.FormatearDecimales(cantPedida, 2), _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    '--------------------------------------------------
+    ' VER SI YA ESTA EN LA OE
+    '--------------------------------------------------
+    esta = False
+
+    For i = 1 To Me.lstOE.ListItems.count
+
+        If CLng(Me.lstOE.ListItems(i).Tag) = idStock Then
+
+            esta = True
+
+            cantidadNueva = _
+                CDbl(Me.lstOE.ListItems(i).ListSubItems(1).Text) + _
+                cantPedida
+
+
+            If cantidadNueva > Cantidad Then
+
+                MsgBox "No hay disponibilidad de stock suficiente." & vbCrLf & _
+                       "Disponible: " & funciones.FormatearDecimales(Cantidad, 2) & vbCrLf & _
+                       "Cantidad total solicitada: " & _
+                       funciones.FormatearDecimales(cantidadNueva, 2), _
+                       vbExclamation, _
+                       "Orden de Entrega"
+
+                Exit Sub
+
+            End If
+
+
+            Me.lstOE.ListItems(i).ListSubItems(1).Text = _
+                funciones.FormatearDecimales(cantidadNueva, 2)
+
+            Exit For
+
+        End If
+
+    Next i
+
+
+    '--------------------------------------------------
+    ' SI NO EXISTE, AGREGARLA
+    '--------------------------------------------------
+    If Not esta Then
+
+        valorPieza = claseP.precio_pieza2( _
+                        idStock, _
+                        idMonedaPieza)
+
+
+        'Convertir precio si la moneda es distinta
+        If IdMoneda > 0 And _
+           idMonedaPieza > 0 And _
+           IdMoneda <> idMonedaPieza Then
+
+            valorPieza = clasea.realizaCambio( _
+                            valorPieza, _
+                            idMonedaPieza, _
+                            IdMoneda)
+
+        End If
+
+
+        Set piezaSeleccionada = _
+            DAOPieza.FindById(idStock, FL_0)
+
+
+        If piezaSeleccionada Is Nothing Then
+
+            MsgBox "No se pudo recuperar la pieza seleccionada.", _
+                   vbCritical, _
+                   "Orden de Entrega"
+
+            Exit Sub
+
+        End If
+
+
+        If piezaSeleccionada.cliente Is Nothing Then
+
+            MsgBox "La pieza seleccionada no tiene un cliente asociado.", _
+                   vbExclamation, _
+                   "Orden de Entrega"
+
+            Exit Sub
+
+        End If
+
+
+        Set itemOE = _
+            Me.lstOE.ListItems.Add( _
+                , _
+                , _
+                detalle)
+
+
+        itemOE.SubItems(1) = _
+            funciones.FormatearDecimales(cantPedida, 2)
+
+        itemOE.SubItems(2) = _
+            funciones.FormatearDecimales(valorPieza, 2)
+
+        itemOE.SubItems(3) = _
+            piezaSeleccionada.cliente.razon
+
+        itemOE.SubItems(4) = _
+            piezaSeleccionada.cliente.Id
+
+        itemOE.SubItems(5) = _
+            funciones.FormatearDecimales(Cantidad, 2)
+
+        itemOE.Tag = idStock
+
+    End If
+
+
+    grabado = False
+
+    Me.txtCantidad.Text = "0"
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al agregar la pieza a la Orden de Entrega." & _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Orden de Entrega"
+
 End Sub
+
+
 Private Sub Command3_Click()
 'On Error Resume Next
     Dim refe As String
@@ -570,11 +742,12 @@ Private Sub Command3_Click()
     End If
 End Sub
 
+
 Private Sub Command4_Click()
     If grabado Then
         Unload Me
     Else
-        If MsgBox("¿Está seguro de Salir?", vbYesNo, "Confirmación") = vbYes Then
+        If MsgBox("¿Está seguro de salir?", vbYesNo, "Confirmación") = vbYes Then
             Unload Me
         End If
     End If
@@ -595,6 +768,8 @@ Private Sub Form_Load()
     'lleno la fecha de entrega
     'lleno el campo descripción
 End Sub
+
+
 Public Sub llenarDatosOE()
     Dim x As ListItem
     On Error GoTo err551
@@ -631,16 +806,10 @@ Public Sub llenarDatosOE()
             x.ListSubItems(3).ForeColor = vbRed
             x.ListSubItems(4).ForeColor = vbRed
             x.ListSubItems(5).ForeColor = vbRed
-
-
         End If
-
-
 
         rs.MoveNext
     Wend
-
-
 
     Exit Sub
 err551:
@@ -648,22 +817,31 @@ err551:
 
 
 End Sub
+
+
 Private Sub verMarcado()
+
     If Me.lstStockPositivo.ListItems.count > 0 Then
         idStock = CLng(Me.lstStockPositivo.selectedItem.Tag)
         detalle = Me.lstStockPositivo.selectedItem
-        Cantidad = CLng(Me.lstStockPositivo.selectedItem.ListSubItems(1))
+        Cantidad = CDbl(Me.lstStockPositivo.selectedItem.ListSubItems(1).Text)
         Me.lblCantDispo = Cantidad
         Me.lblDetalle = detalle
         Me.idPieza = idStock
     End If
+    
 End Sub
+
+
 Private Sub Form_Terminate()
     Set rss = Nothing
 End Sub
+
+
 Private Sub Form_Unload(Cancel As Integer)
     Set rss = Nothing
 End Sub
+
 
 Private Sub lstOE_DblClick()
     If Me.lstOE.ListItems.count > 0 Then
@@ -676,36 +854,85 @@ Private Sub lstOE_DblClick()
     End If
 End Sub
 
+
 Private Sub lstStockPositivo_ItemClick(ByVal item As MSComctlLib.ListItem)
     verMarcado
 End Sub
 
+
 Private Sub q_Click()
 
-    If MsgBox("¿Está seguro de eliminar los items seleecionados?", vbYesNo, "Confirmacion") = vbYes Then
-        For i = Me.lstOE.ListItems.count To 1 Step -1
-            If Me.lstOE.ListItems(i).Checked = True Then
-                Me.lstOE.ListItems.remove (i)
-                grabado = False
-            End If
-        Next i
+    On Error GoTo errHandler
+
+    Dim i As Long
+    Dim cantidadEliminados As Long
+
+    cantidadEliminados = 0
+
+    If Me.lstOE.ListItems.count = 0 Then
+        MsgBox "No hay items para quitar.", _
+               vbExclamation, _
+               "Orden de Entrega"
+        Exit Sub
     End If
+
+    If MsgBox( _
+        "¿Está seguro de eliminar los items seleccionados?", _
+        vbYesNo + vbQuestion, _
+        "Confirmación") <> vbYes Then
+
+        Exit Sub
+
+    End If
+
+    For i = Me.lstOE.ListItems.count To 1 Step -1
+
+        If Me.lstOE.ListItems(i).Checked Then
+
+            Me.lstOE.ListItems.remove i
+
+            cantidadEliminados = cantidadEliminados + 1
+            grabado = False
+
+        End If
+
+    Next i
+
+    If cantidadEliminados = 0 Then
+
+        MsgBox "No había ningún item marcado para quitar.", _
+               vbInformation, _
+               "Orden de Entrega"
+
+    End If
+
+    Exit Sub
+
+errHandler:
+
+    MsgBox "Error al quitar items de la Orden de Entrega." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Orden de Entrega"
 
 End Sub
 
 Private Sub txtCantidad_GotFocus()
     foco Me.txtCantidad
 End Sub
+
+
 Private Sub txtCantidad_Validate(Cancel As Boolean)
     If Not IsNumeric(Me.txtCantidad) Then Cancel = True
 End Sub
 
 
 Private Sub cambiarPrecios(IdMoneda)
+
     Dim vale As Double
     Dim idMoneda_pieza As Long
-
-
+    Dim x As Long
 
     For x = 1 To Me.lstOE.ListItems.count
         idStock = Me.lstOE.ListItems(x).Tag
@@ -718,7 +945,131 @@ Private Sub cambiarPrecios(IdMoneda)
         Me.lstOE.ListItems(x).ListSubItems(2) = funciones.FormatearDecimales(vale, 2)
         'End If
     Next
+End Sub
 
 
+Private Sub llenarListaStock()
+
+    On Error GoTo errHandler
+
+    Dim rsStock As ADODB.Recordset
+    Dim strsql As String
+    Dim idClienteSeleccionado As Long
+    Dim itemStock As MSComctlLib.ListItem
+
+    '--------------------------------------------
+    ' Validar cliente seleccionado
+    '--------------------------------------------
+    If Me.cboClientes.ListCount = 0 Then
+
+        MsgBox "No hay clientes cargados.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Exit Sub
+
+    End If
+
+    If Me.cboClientes.ListIndex < 0 Then
+
+        MsgBox "Seleccione un cliente para consultar el stock.", _
+               vbExclamation, _
+               "Orden de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    '--------------------------------------------
+    ' Obtener cliente
+    '--------------------------------------------
+    idClienteSeleccionado = _
+        CLng(Me.cboClientes.ItemData(Me.cboClientes.ListIndex))
+
+    Me.idCliente.caption = CStr(idClienteSeleccionado)
+
+
+    '--------------------------------------------
+    ' Armar consulta
+    '--------------------------------------------
+    If idClienteSeleccionado = -1 Then
+
+        strsql = _
+            "SELECT id, detalle, cantidad " & _
+            "FROM stock " & _
+            "WHERE cantidad > 0 " & _
+            "ORDER BY detalle"
+
+    Else
+
+        strsql = _
+            "SELECT id, detalle, cantidad " & _
+            "FROM stock " & _
+            "WHERE cantidad > 0 " & _
+            "AND id_cliente = " & CStr(idClienteSeleccionado) & " " & _
+            "ORDER BY detalle"
+
+    End If
+
+
+    '--------------------------------------------
+    ' Ejecutar
+    '--------------------------------------------
+    Set rsStock = conectar.RSFactory(strsql)
+
+    If rsStock Is Nothing Then
+
+        MsgBox "No se pudo consultar el stock.", _
+               vbCritical, _
+               "Orden de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    '--------------------------------------------
+    ' Limpiar lista anterior
+    '--------------------------------------------
+    Me.lstStockPositivo.ListItems.Clear
+
+
+    '--------------------------------------------
+    ' Cargar stock
+    '--------------------------------------------
+    Do While Not rsStock.EOF
+
+        Set itemStock = _
+            Me.lstStockPositivo.ListItems.Add( _
+                , _
+                , _
+                CStr(rsStock!detalle))
+
+        itemStock.SubItems(1) = _
+            funciones.FormatearDecimales(CDbl(rsStock!Cantidad), 2)
+
+        itemStock.Tag = CLng(rsStock!Id)
+
+        rsStock.MoveNext
+
+    Loop
+
+
+    Set rsStock = Nothing
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al cargar el stock." & vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description & vbCrLf & vbCrLf & _
+           "Consulta:" & vbCrLf & strsql, _
+           vbCritical, _
+           "Orden de Entrega"
+
+    Set rsStock = Nothing
 
 End Sub

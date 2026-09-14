@@ -7,7 +7,7 @@ End Function
 
 Public Function GetAll(Optional filter As String = vbNullString) As Collection
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim strsql As String
     Dim indice As Dictionary
@@ -28,7 +28,7 @@ Public Function GetAll(Optional filter As String = vbNullString) As Collection
            & "WHERE 1=1 "
 
     If Len(Trim$(filter)) > 0 Then
-        strsql = strsql & " AND (" & filter & ")"
+        strsql = strsql & " AND " & filter
     End If
     
     strsql = strsql & " ORDER BY pe.id DESC"
@@ -75,7 +75,7 @@ Public Function GetAll(Optional filter As String = vbNullString) As Collection
     Exit Function
 
 
-ErrHandler:
+errHandler:
 
     MsgBox "DAOOrdenDeEntrega.GetAll" & vbCrLf & vbCrLf & _
            "Paso: " & paso & vbCrLf & _

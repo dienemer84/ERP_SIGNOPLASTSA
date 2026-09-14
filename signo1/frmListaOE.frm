@@ -341,20 +341,6 @@ errHandler:
 End Sub
 
 
-Private Sub AprobarOE_Click()
-'Dim vidOe As Long
-'vidOe = CLng(Me.lstOE.selectedItem)
-'    If MsgBox("¿Está seguro de aprobar la O/E?", vbYesNo, "Confirmación") = vbYes Then
-'        If claseP.AprobarOrdenEntrega(vidOe) Then
-'            MsgBox "Orden de Entrega aprobada con éxito!", vbInformation, "Información"
-'        Else
-'            MsgBox "Se produjo un error al aprobar la OE!", vbCritical, "Error"
-'        End If
-'    End If
-
-End Sub
-
-
 Private Sub cmdBuscar_Click()
 
     On Error GoTo errHandler
@@ -399,22 +385,27 @@ Private Sub cmdBuscar_Click()
             conectar.Escape("%" & texto & "%")
 
     End If
-
-
+    
     '--------------------------------------------------
     ' CLIENTE
     '--------------------------------------------------
     If Me.cboClientes.ListIndex >= 0 Then
-
-        idCliente = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
-
-        If idCliente > 0 Then
-
-            AgregarFiltro filtro, _
-                "pe.IdCliente = " & idCliente
-
+    
+        texto = Trim$(Me.cboClientes.Text)
+    
+        If Len(texto) > 0 And texto <> "-" Then
+    
+            idCliente = Me.cboClientes.ItemData(Me.cboClientes.ListIndex)
+    
+            If idCliente > 0 Then
+    
+                AgregarFiltro filtro, _
+                    "pe.IdCliente = " & CStr(idCliente)
+    
+            End If
+    
         End If
-
+    
     End If
 
 
@@ -570,8 +561,8 @@ Private Sub gridEntregas_UnboundReadData( _
         .value(2) = tmpOe.FEcha
 
         'Cliente
-        If Not tmpOe.Cliente Is Nothing Then
-            .value(3) = tmpOe.Cliente.razon
+        If Not tmpOe.cliente Is Nothing Then
+            .value(3) = tmpOe.cliente.razon
         Else
             .value(3) = ""
         End If
@@ -637,12 +628,48 @@ errHandler:
 End Sub
 
 Private Sub remitar_Click()
-'If Me.lstOE.ListItems.count > 0 Then
-'frmRemitar.idPedidoEntrega = CLng(Me.lstOE.selectedItem)
-'        frmRemitar.idPe = CLng(Me.lstOE.selectedItem)
-'        frmRemitar.Frame1.caption = "[ Nro." & Me.lstOE.selectedItem & " ]"
-'        frmRemitar.Show
-' End If
+
+    On Error GoTo errHandler
+
+    If mOESeleccionada Is Nothing Then
+
+        MsgBox "No hay una Orden de Entrega seleccionada.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    If mOESeleccionada.estado <> EstadoOrdenEntrega.Aprobado Then
+
+        MsgBox "La Orden de Entrega debe estar aprobada para poder remitirla.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    MsgBox "O/E seleccionada para remitir: " & _
+           CStr(mOESeleccionada.Id), _
+           vbInformation, _
+           "Ordenes de Entrega"
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al iniciar el remito de la Orden de Entrega." & _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Ordenes de Entrega"
+
 End Sub
 
 
@@ -847,6 +874,104 @@ errHandler:
            "Error " & Err.Number & vbCrLf & _
            Err.Description, _
            vbCritical, "Ordenes de Entrega"
+
+End Sub
+
+
+Private Sub AprobarOE_Click()
+
+    On Error GoTo errHandler
+
+    Dim claseP As New classPlaneamiento
+    Dim cliente As String
+    Dim mensaje As String
+
+
+    If mOESeleccionada Is Nothing Then
+
+        MsgBox "No hay una Orden de Entrega seleccionada.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    If mOESeleccionada.estado <> EstadoOrdenEntrega.Pendiente Then
+
+        MsgBox "La Orden de Entrega Nro. " & _
+               CStr(mOESeleccionada.Id) & _
+               " no se encuentra pendiente.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+        Exit Sub
+
+    End If
+
+
+    cliente = ""
+
+    If Not mOESeleccionada.cliente Is Nothing Then
+        cliente = mOESeleccionada.cliente.razon
+    End If
+
+
+    mensaje = _
+        "¿Está seguro de aprobar la Orden de Entrega?" & _
+        vbCrLf & vbCrLf & _
+        "O/E Nro.: " & CStr(mOESeleccionada.Id) & vbCrLf & _
+        "Cliente: " & cliente & vbCrLf & _
+        "Referencia: " & mOESeleccionada.referencia & vbCrLf & _
+        "Fecha: " & Format$(mOESeleccionada.FEcha, "dd/mm/yyyy") & _
+        vbCrLf & vbCrLf & _
+        "ATENCIÓN: al aprobar la O/E se descontará el stock."
+
+
+    If MsgBox( _
+        mensaje, _
+        vbYesNo + vbQuestion + vbDefaultButton2, _
+        "Aprobar Orden de Entrega") <> vbYes Then
+
+        Exit Sub
+
+    End If
+
+
+    If claseP.AprobarOrdenEntrega(mOESeleccionada.Id) Then
+
+        MsgBox "La Orden de Entrega Nro. " & _
+               CStr(mOESeleccionada.Id) & _
+               " fue aprobada correctamente.", _
+               vbInformation, _
+               "Ordenes de Entrega"
+
+        Set mOESeleccionada = Nothing
+
+        'Mantiene los filtros actuales del listado
+        cmdBuscar_Click
+
+    Else
+
+        MsgBox "No fue posible aprobar la Orden de Entrega.", _
+               vbExclamation, _
+               "Ordenes de Entrega"
+
+    End If
+
+
+    Exit Sub
+
+
+errHandler:
+
+    MsgBox "Error al aprobar la Orden de Entrega." & _
+           vbCrLf & _
+           "Error " & Err.Number & vbCrLf & _
+           Err.Description, _
+           vbCritical, _
+           "Ordenes de Entrega"
 
 End Sub
 
