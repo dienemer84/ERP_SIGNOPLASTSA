@@ -685,10 +685,14 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     Exit Function
 err1:
 
-    op.estado = es
-    
-    If insideTransaction Then conectar.RollBackTransaction
-    
+    If IsSomething(op) Then
+        op.estado = es
+    End If
+
+    If insideTransaction Then
+        conectar.RollBackTransaction
+    End If
+
     aprobar = False
     
 End Function
@@ -700,25 +704,33 @@ Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As
     
     On Error GoTo E
     
-    '------------------------------------------------------
-    ' VALIDAR NUEVOS IMPACTOS BANCARIOS
-    '------------------------------------------------------
-    If Not ValidarOperacionesBancoContraConciliacion(op) Then
-        GoTo E
+    '======================================================
+    ' SI ESTAMOS EDITANDO UNA OP EXISTENTE
+    ' EN FORMA COMPLETA:
+    '
+    ' primero proteger lo que YA ESTA GUARDADO.
+    '======================================================
+    If cascada And op.Id > 0 Then
+    
+        '--------------------------------------------------
+        ' CHEQUES PROPIOS HISTORICOS
+        '--------------------------------------------------
+        If Not ValidarChequesOPContraConciliacion( _
+                    op.Id) Then
+    
+            GoTo E
+    
+        End If
+    
     End If
     
     
-    '------------------------------------------------------
-    ' SI ESTAMOS EDITANDO LA OP COMPLETA,
-    ' NO PERMITIR ALTERAR CHEQUES YA CONCILIADOS
-    '------------------------------------------------------
-    If cascada And op.Id > 0 Then
-    
-        If Not ValidarChequesOPContraConciliacion( _
-                    op.Id) Then
-            GoTo E
-        End If
-    
+    '======================================================
+    ' VALIDAR LOS NUEVOS VALORES QUE EL USUARIO
+    ' ESTA INTENTANDO GUARDAR
+    '======================================================
+    If Not ValidarOperacionesBancoContraConciliacion(op) Then
+        GoTo E
     End If
     
     Dim Nueva As Boolean: Nueva = False
@@ -2396,7 +2408,7 @@ Private Function ValidarChequesOPContraConciliacion( _
     End If
 
     q = "SELECT ch.id, ch.numero, ch.fecha_ingreso_banco, " _
-      & "cta.cuenta AS cuenta_bancaria, cb.id AS id_conciliacion " _
+      & "IFNULL(cta.cuenta, 'SIN CUENTA') AS cuenta_bancaria, cb.id AS id_conciliacion " _
       & "FROM Cheques ch " _
       & "INNER JOIN Chequeras chq " _
       & " ON chq.id = ch.id_chequera " _
@@ -2412,7 +2424,7 @@ Private Function ValidarChequesOPContraConciliacion( _
       & "AND IFNULL(ch.ingresado, 0) = 1 " _
       & "AND ch.fecha_ingreso_banco IS NOT NULL " _
       & "AND (" _
-      & " ch.orden_pago_origen = " & IdOrdenPago _
+      & " IFNULL(ch.orden_pago_origen, 0) = " & IdOrdenPago _
       & " OR EXISTS ( SELECT 1 FROM ordenes_pago_cheques opc WHERE opc.id_orden_pago = " & IdOrdenPago & " " _
       & "     AND opc.id_cheque = ch.id" _
       & " )" _
@@ -2469,7 +2481,7 @@ Private Function PuedeAnularOPPorConciliacion( _
     '======================================================
     q = "SELECT " _
       & "o.fecha_operacion, " _
-      & "cta.cuenta AS cuenta_bancaria, " _
+      & "IFNULL(cta.cuenta, 'SIN CUENTA') AS cuenta_bancaria, " _
       & "cb.id AS id_conciliacion " _
       & "FROM ordenes_pago_operaciones opo " _
       & "INNER JOIN operaciones o " _
@@ -2525,3 +2537,6 @@ err1:
     PuedeAnularOPPorConciliacion = False
 
 End Function
+
+
+

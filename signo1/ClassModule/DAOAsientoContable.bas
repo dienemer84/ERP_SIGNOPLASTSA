@@ -265,14 +265,28 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
     
     
     '------------------------------------------------------
-    ' VALIDAR CONCILIACION BANCARIA
-    ' ANTES DE MODIFICAR CUALQUIER DATO
+    ' VALIDAR OPERACIONES BANCARIAS
     '------------------------------------------------------
     If Not MovimientoPuedeModificarse( _
             aContable, _
             FechaMovimiento) Then
     
         GoTo E
+    
+    End If
+    
+    '------------------------------------------------------
+    ' SI SE ESTA EDITANDO EL MOVIMIENTO COMPLETO,
+    ' PROTEGER CHEQUES PROPIOS YA CONCILIADOS
+    '------------------------------------------------------
+    If cascada And aContable.Id > 0 Then
+    
+        If Not ValidarChequesMovimientoContraConciliacion( _
+                    aContable.Id) Then
+    
+            GoTo E
+    
+        End If
     
     End If
 
@@ -1404,7 +1418,7 @@ End Function
 
 
 Public Function EliminarMovimiento( _
-    ByVal idMovimiento As Long, _
+    ByVal IdMovimiento As Long, _
     Optional ByVal insideTransaction As Boolean = False _
 ) As Boolean
 
@@ -1419,7 +1433,7 @@ Public Function EliminarMovimiento( _
 
     EliminarMovimiento = False
 
-    If idMovimiento <= 0 Then Exit Function
+    If IdMovimiento <= 0 Then Exit Function
 
     '------------------------------------------------
     ' TRANSACCIÓN
@@ -1438,12 +1452,56 @@ Public Function EliminarMovimiento( _
     '------------------------------------------------
     q = "SELECT estado " & _
         "FROM movimientos_caja_bancos " & _
-        "WHERE id = " & idMovimiento & " " & _
+        "WHERE id = " & IdMovimiento & " " & _
         "FOR UPDATE"
 
     Set rs = conectar.RSFactory(q)
 
     If rs.EOF Then GoTo err1
+    
+    '======================================================
+    ' VALIDAR CONCILIACION ANTES DE ELIMINAR NADA
+    '======================================================
+    
+    Dim movActual As clsAsientoContable
+    Dim FechaMovimiento As Date
+    
+    Set movActual = FindById(IdMovimiento)
+    
+    If Not IsSomething(movActual) Then
+        GoTo err1
+    End If
+    
+    
+    FechaMovimiento = _
+        DateSerial( _
+            Year(movActual.FEcha), _
+            Month(movActual.FEcha), _
+            Day(movActual.FEcha))
+    
+    
+    '------------------------------------------------------
+    ' OPERACIONES BANCARIAS
+    '------------------------------------------------------
+    If Not MovimientoPuedeModificarse( _
+                movActual, _
+                FechaMovimiento) Then
+    
+        GoTo err1
+    
+    End If
+    
+    
+    '------------------------------------------------------
+    ' CHEQUES PROPIOS
+    '------------------------------------------------------
+    If Not ValidarChequesMovimientoContraConciliacion( _
+                IdMovimiento) Then
+    
+        GoTo err1
+    
+    End If
+
 
     '------------------------------------------------
     ' 2. Guardar IDs de las operaciones asociadas
@@ -1453,7 +1511,7 @@ Public Function EliminarMovimiento( _
 
     q = "SELECT id_operacion " & _
         "FROM movimientos_caja_bancos_operaciones " & _
-        "WHERE id_movimiento_caja_bancos = " & idMovimiento
+        "WHERE id_movimiento_caja_bancos = " & IdMovimiento
 
     Set rs = conectar.RSFactory(q)
 
@@ -1484,7 +1542,7 @@ Public Function EliminarMovimiento( _
         "    c.orden_pago_origen = NULL, " & _
         "    c.movimiento_origen = NULL " & _
         "WHERE mc.id_movimiento_caja_bancos = " & _
-            idMovimiento & " " & _
+            IdMovimiento & " " & _
         "AND c.propio = 1"
 
     If Not conectar.execute(q) Then GoTo err1
@@ -1503,7 +1561,7 @@ Public Function EliminarMovimiento( _
         "    c.orden_pago_origen = NULL, " & _
         "    c.movimiento_origen = NULL " & _
         "WHERE mc.id_movimiento_caja_bancos = " & _
-            idMovimiento & " " & _
+            IdMovimiento & " " & _
         "AND c.propio = 0"
 
     If Not conectar.execute(q) Then GoTo err1
@@ -1514,7 +1572,7 @@ Public Function EliminarMovimiento( _
     ' NO eliminamos el cheque físico.
     '------------------------------------------------
     q = "DELETE FROM movimientos_caja_bancos_cheques " & _
-        "WHERE id_movimiento_caja_bancos = " & idMovimiento
+        "WHERE id_movimiento_caja_bancos = " & IdMovimiento
 
     If Not conectar.execute(q) Then GoTo err1
 
@@ -1522,7 +1580,7 @@ Public Function EliminarMovimiento( _
     ' 6. Eliminar relaciones con operaciones
     '------------------------------------------------
     q = "DELETE FROM movimientos_caja_bancos_operaciones " & _
-        "WHERE id_movimiento_caja_bancos = " & idMovimiento
+        "WHERE id_movimiento_caja_bancos = " & IdMovimiento
 
     If Not conectar.execute(q) Then GoTo err1
 
@@ -1545,13 +1603,13 @@ Public Function EliminarMovimiento( _
     DaoHistorico.Save _
         "orden_pago_historial", _
         "Movimiento de Caja y Bancos Eliminado", _
-        idMovimiento
+        IdMovimiento
 
     '------------------------------------------------
     ' 9. Finalmente eliminar la cabecera
     '------------------------------------------------
     q = "DELETE FROM movimientos_caja_bancos " & _
-        "WHERE id = " & idMovimiento
+        "WHERE id = " & IdMovimiento
 
     If Not conectar.execute(q) Then GoTo err1
 
@@ -1690,6 +1748,98 @@ err1:
     MsgBox _
         "No se pudo verificar el cierre bancario." & _
         vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+
+Private Function ValidarChequesMovimientoContraConciliacion( _
+    ByVal IdMovimiento As Long) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As ADODB.Recordset
+
+    ValidarChequesMovimientoContraConciliacion = False
+
+    If IdMovimiento <= 0 Then
+        ValidarChequesMovimientoContraConciliacion = True
+        Exit Function
+    End If
+
+
+    '======================================================
+    ' BUSCAR CHEQUES PROPIOS DEL MOVIMIENTO QUE YA
+    ' INGRESARON AL BANCO Y FORMAN PARTE DE UNA
+    ' CONCILIACION CERRADA.
+    '
+    ' Se controla tanto movimiento_origen como la tabla
+    ' de relación para cubrir datos históricos.
+    '======================================================
+    q = "SELECT ch.id, ch.numero, ch.fecha_ingreso_banco, " _
+      & "IFNULL(cta.cuenta, 'SIN CUENTA') AS cuenta_bancaria, " _
+      & "IFNULL(b.Nombre, 'SIN BANCO') AS banco, cb.id AS id_conciliacion " _
+      & "FROM Cheques ch INNER JOIN Chequeras chq ON chq.id = ch.id_chequera " _
+      & "INNER JOIN conciliaciones_bancarias cb ON cb.id_cuenta_bancaria = chq.id_cuenta_bancaria " _
+      & " AND cb.estado = 1 AND ch.fecha_ingreso_banco " _
+      & "     BETWEEN cb.fecha_desde AND cb.fecha_hasta " _
+      & "LEFT JOIN AdminConfigCuentas cta ON cta.id = chq.id_cuenta_bancaria " _
+      & "LEFT JOIN AdminConfigBancos b ON b.id = cta.idBanco WHERE ch.propio = 1 " _
+      & "AND IFNULL(ch.ingresado, 0) = 1 " _
+      & "AND ch.fecha_ingreso_banco IS NOT NULL " _
+      & "AND (IFNULL(ch.movimiento_origen, 0) = " & IdMovimiento & " " _
+      & " OR EXISTS (SELECT 1 " _
+      & " FROM movimientos_caja_bancos_cheques mcc " _
+      & " WHERE mcc.id_movimiento_caja_bancos = " & IdMovimiento & "" _
+      & " AND mcc.id_cheque = ch.id)) LIMIT 1"
+
+
+    Set rs = conectar.RSFactory(q)
+
+
+    If Not rs.EOF Then
+
+        MsgBox _
+            "No se puede modificar el Movimiento de " & _
+            "Caja y Bancos Nro " & IdMovimiento & "." & _
+            vbCrLf & vbCrLf & _
+            "El cheque propio N° " & _
+            CStr(rs!numero) & _
+            " ya ingresó al banco el " & _
+            Format$(rs!fecha_ingreso_banco, "dd/mm/yyyy") & "." & _
+            vbCrLf & vbCrLf & _
+            "Banco: " & CStr(rs!Banco) & vbCrLf & _
+            "Cuenta: " & CStr(rs!cuenta_bancaria) & vbCrLf & _
+            vbCrLf & _
+            "Ese cheque forma parte de la " & _
+            "Conciliación Bancaria Nro " & _
+            CLng(rs!id_conciliacion) & "." & _
+            vbCrLf & vbCrLf & _
+            "Los cheques incluidos en una conciliación " & _
+            "cerrada no pueden modificarse.", _
+            vbExclamation, _
+            "Período bancario cerrado"
+
+        Exit Function
+
+    End If
+
+
+    ValidarChequesMovimientoContraConciliacion = True
+    Exit Function
+
+
+err1:
+
+    ValidarChequesMovimientoContraConciliacion = False
+
+    MsgBox _
+        "No se pudo verificar los cheques del Movimiento " & _
+        "de Caja y Bancos." & _
+        vbCrLf & vbCrLf & _
         Err.Number & " - " & Err.Description, _
         vbCritical, _
         "Conciliación bancaria"
