@@ -159,6 +159,7 @@ ErrorHandler:
     MsgBox "Error en FindAllDetallesAbonado: " & Err.Description, vbCritical
 End Function
 
+
 Public Function FindAllDetallesAbonadoOP(facid As Long, opid As Long) As Collection
     On Error GoTo ErrorHandler
     
@@ -233,9 +234,11 @@ ErrorHandler:
     MsgBox "Error en FindAllDetallesAbonadoOP: " & Err.Description, vbCritical
 End Function
 
+
 Public Function FindLast() As OrdenPago
     Set FindLast = FindAll("ordenes_pago.id = (SELECT MAX(id) FROM ordenes_pago)")(1)
 End Function
+
 
 Public Function FindByFacturaId(facid As Long) As OrdenPago
     Dim col As Collection
@@ -246,6 +249,7 @@ Public Function FindByFacturaId(facid As Long) As OrdenPago
         Set FindByFacturaId = Nothing
     End If
 End Function
+
 
 Public Function FindAllByProveedor(provid As Long, Optional cond As String, Optional soloOp As Boolean = False) As Collection
     Dim q As String
@@ -514,14 +518,30 @@ End Function
 
 
 Public Function Save(op As OrdenPago, Optional cascada As Boolean = False) As Boolean
+
     On Error GoTo err1
-    conectar.BeginTransaction
-    Save = Guardar(op, cascada)
-    conectar.CommitTransaction
-    Exit Function
-err1:
+
     Save = False
+
+    conectar.BeginTransaction
+
+    If Not Guardar(op, cascada) Then
+        GoTo err1
+    End If
+
+    conectar.CommitTransaction
+
+    Save = True
+    Exit Function
+
+err1:
+
+    On Error Resume Next
+
     conectar.RollBackTransaction
+
+    Save = False
+
 End Function
 
 

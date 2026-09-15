@@ -109,19 +109,19 @@ Public Function Guardar( _
 
     q = Replace$(q, _
         "'saldo_inicial'", _
-        conectar.Escape(Conciliacion.saldoInicial))
+        conectar.Escape(Conciliacion.SaldoInicial))
 
     q = Replace$(q, _
         "'total_ingresos'", _
-        conectar.Escape(Conciliacion.totalIngresos))
+        conectar.Escape(Conciliacion.TotalIngresos))
 
     q = Replace$(q, _
         "'total_egresos'", _
-        conectar.Escape(Conciliacion.totalEgresos))
+        conectar.Escape(Conciliacion.TotalEgresos))
 
     q = Replace$(q, _
         "'saldo_final'", _
-        conectar.Escape(Conciliacion.saldoFinal))
+        conectar.Escape(Conciliacion.SaldoFinal))
 
     q = Replace$(q, _
         "'cantidad_movimientos'", _
@@ -267,14 +267,16 @@ End Function
 
 Public Function ObtenerIdConciliacionCerrada( _
     ByVal IdCuentaBancaria As Long, _
-    ByVal FechaMovimiento As Date _
-) As Long
+    ByVal FechaMovimiento As Date) As Long
 
     On Error GoTo err1
 
     Dim q As String
     Dim rs As Recordset
     Dim fechaSolo As Date
+
+    Dim numeroError As Long
+    Dim descripcionError As String
 
     ObtenerIdConciliacionCerrada = 0
 
@@ -304,10 +306,15 @@ Public Function ObtenerIdConciliacionCerrada( _
     Exit Function
 
 err1:
-    ObtenerIdConciliacionCerrada = 0
+
+    numeroError = Err.Number
+    descripcionError = Err.Description
+
+    Err.Raise numeroError, _
+              "DAOConciliacionBancaria.ObtenerIdConciliacionCerrada", _
+              descripcionError
 
 End Function
-
 
 Public Function PeriodoCerrado( _
     ByVal IdCuentaBancaria As Long, _

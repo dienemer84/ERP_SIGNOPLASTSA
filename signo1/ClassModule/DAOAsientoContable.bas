@@ -1370,6 +1370,21 @@ Public Function aprobar(aContable As clsAsientoContable, insideTransaction As Bo
     ' Validar objeto
     If Not IsSomething(aContable) Then GoTo err1
 
+    Dim FechaMovimiento As Date
+    
+    FechaMovimiento = DateSerial( _
+                        Year(aContable.FEcha), _
+                        Month(aContable.FEcha), _
+                        Day(aContable.FEcha))
+    
+    If Not MovimientoPuedeModificarse( _
+                aContable, _
+                FechaMovimiento) Then
+    
+        GoTo err1
+    
+    End If
+
     ' Actualizar estado del movimiento
     Dim q As String
     q = "UPDATE movimientos_caja_bancos SET estado = 1 WHERE id = " & aContable.Id

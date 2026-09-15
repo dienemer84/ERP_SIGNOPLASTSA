@@ -3,8 +3,8 @@ Option Explicit
 
 
 Public Function FindAll( _
-    ByVal fechaDesde As Date, _
-    ByVal fechaHasta As Date, _
+    ByVal FechaDesde As Date, _
+    ByVal FechaHasta As Date, _
     Optional ByVal IdCuentaBancaria As Long = 0, _
     Optional ByVal IdMoneda As Long = 0, _
     Optional ByVal TipoMovimiento As String = vbNullString, _
@@ -136,10 +136,10 @@ Public Function FindAll( _
     q = q & "WHERE 1 = 1 "
 
     q = q & "AND movimientos.fecha >= " _
-          & conectar.Escape(fechaDesde) & " "
+          & conectar.Escape(FechaDesde) & " "
 
     q = q & "AND movimientos.fecha <= " _
-          & conectar.Escape(fechaHasta) & " "
+          & conectar.Escape(FechaHasta) & " "
 
     If IdCuentaBancaria > 0 Then
         q = q & "AND movimientos.id_cuenta_bancaria = " _
@@ -547,7 +547,8 @@ Private Function SQLMovimientosManuales() As String
     q = q & " ON b.id = c.idBanco "
 
     q = q & "WHERE mov.estado = 1 "
-    
+    q = q & "AND o.pertenencia = 'banco' "
+  
     '----------------------------------------------------------
     ' EVITAR DOBLE IMPACTO:
     '

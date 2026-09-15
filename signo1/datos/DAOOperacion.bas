@@ -90,6 +90,8 @@ End Function
 
 Public Function Save(ope As operacion) As Boolean
 
+On Error GoTo err1
+
     Dim q As String
     Dim IdConciliacion As Long
 
@@ -173,5 +175,11 @@ Public Function Save(ope As operacion) As Boolean
     End If
 
     Save = conectar.execute(q)
+    
+    
+Exit Function
+
+err1:
+    Save = False
 End Function
 
