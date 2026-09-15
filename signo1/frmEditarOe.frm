@@ -204,7 +204,7 @@ Begin VB.Form frmPlaneamientoOEEditar
             _ExtentX        =   2143
             _ExtentY        =   450
             _Version        =   393216
-            Format          =   65601537
+            Format          =   64880641
             CurrentDate     =   38923
          End
          Begin MSComctlLib.ListView lstOE 
@@ -442,33 +442,6 @@ Private Sub llenarLstClientes(rs As Recordset)
         rs.MoveNext
     Wend
 End Sub
-
-
-Public Sub LlenarListaOE()
-
-    On Error GoTo errHandler
-
-    Set ordenes = DAOOrdenDeEntrega.GetAll()
-
-    Me.gridEntregas.ItemCount = 0
-
-    If Not ordenes Is Nothing Then
-        Me.gridEntregas.ItemCount = ordenes.count
-    End If
-
-    Exit Sub
-
-errHandler:
-
-    MsgBox "Error al cargar las Ordenes de Entrega." & vbCrLf & _
-           "Error " & Err.Number & vbCrLf & _
-           Err.Description & vbCrLf & _
-           "Origen: " & Err.Source, _
-           vbCritical, "Ordenes de Entrega"
-
-End Sub
-
-
 
 
 Private Sub cboMonedas_Click()

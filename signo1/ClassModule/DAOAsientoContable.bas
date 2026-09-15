@@ -251,18 +251,31 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
     Dim Nueva As Boolean
     Dim che As cheque
     Dim oper As operacion
-    Dim fechaMovimiento As Date
+    Dim FechaMovimiento As Date
     
     On Error GoTo E
 
     Nueva = False
     
-    fechaMovimiento = _
+    FechaMovimiento = _
     DateSerial( _
         Year(aContable.FEcha), _
         Month(aContable.FEcha), _
         Day(aContable.FEcha))
-        
+    
+    
+    '------------------------------------------------------
+    ' VALIDAR CONCILIACION BANCARIA
+    ' ANTES DE MODIFICAR CUALQUIER DATO
+    '------------------------------------------------------
+    If Not MovimientoPuedeModificarse( _
+            aContable, _
+            FechaMovimiento) Then
+    
+        GoTo E
+    
+    End If
+
 
     If aContable.Id = 0 Then
         Nueva = True
@@ -335,7 +348,7 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
     q = Replace( _
             q, _
             "'fecha'", _
-            Escape(fechaMovimiento))
+            Escape(FechaMovimiento))
     
     q = Replace( _
             q, _
@@ -432,7 +445,7 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
             oper.FechaCarga = Now
             
             'Sincronizar con la fecha del movimiento
-            oper.FechaOperacion = fechaMovimiento
+            oper.FechaOperacion = FechaMovimiento
 
             If DAOOperacion.Save(oper) Then
             
@@ -459,7 +472,7 @@ Public Function Guardar(aContable As clsAsientoContable, Optional cascada As Boo
             oper.FechaCarga = Now
         
             'Sincronizar con la fecha del movimiento
-            oper.FechaOperacion = fechaMovimiento
+            oper.FechaOperacion = FechaMovimiento
         
             If DAOOperacion.Save(oper) Then
         
@@ -1548,3 +1561,122 @@ err1:
 
 End Function
 
+
+Private Function MovimientoPuedeModificarse( _
+    ByRef aContable As clsAsientoContable, _
+    ByVal FechaNueva As Date _
+) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As Recordset
+
+    Dim oper As operacion
+    Dim IdConciliacion As Long
+
+    MovimientoPuedeModificarse = False
+
+    '======================================================
+    ' 1. SI YA EXISTE:
+    '    VALIDAR LAS OPERACIONES HISTORICAS ACTUALES
+    '======================================================
+    If aContable.Id > 0 Then
+
+        q = "SELECT " _
+          & " o.cuentabanc_o_caja_id AS id_cuenta," _
+          & " o.fecha_operacion " _
+          & "FROM movimientos_caja_bancos_operaciones mco " _
+          & "INNER JOIN operaciones o " _
+          & " ON o.id = mco.id_operacion " _
+          & "WHERE mco.id_movimiento_caja_bancos = " _
+          & aContable.Id & " " _
+          & "AND o.pertenencia = 'banco'"
+
+        Set rs = conectar.RSFactory(q)
+
+        While Not rs.EOF
+
+            IdConciliacion = _
+                DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+                    CLng(rs!id_cuenta), _
+                    CDate(rs!fecha_operacion))
+
+            If IdConciliacion > 0 Then
+
+                MsgBox _
+                    "No se puede modificar el Movimiento de " & _
+                    "Caja y Bancos Nro " & aContable.Id & "." & _
+                    vbCrLf & vbCrLf & _
+                    "Una de sus operaciones pertenece a la " & _
+                    "Conciliación Bancaria Nro " & _
+                    IdConciliacion & "." & _
+                    vbCrLf & vbCrLf & _
+                    "Los movimientos incluidos en una " & _
+                    "conciliación cerrada no pueden modificarse.", _
+                    vbExclamation, _
+                    "Período bancario cerrado"
+
+                Exit Function
+
+            End If
+
+            rs.MoveNext
+
+        Wend
+
+    End If
+
+    '======================================================
+    ' 2. VALIDAR LAS NUEVAS OPERACIONES QUE SE
+    '    INTENTAN GUARDAR
+    '======================================================
+    For Each oper In aContable.operacionesBanco
+
+        If IsSomething(oper.CuentaBancaria) Then
+
+            IdConciliacion = _
+                DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+                    oper.CuentaBancaria.Id, _
+                    FechaNueva)
+
+            If IdConciliacion > 0 Then
+
+                MsgBox _
+                    "No se puede guardar el movimiento." & _
+                    vbCrLf & vbCrLf & _
+                    "Cuenta: " & _
+                    oper.CuentaBancaria.DescripcionFormateada & _
+                    vbCrLf & _
+                    "Fecha: " & _
+                    Format$(FechaNueva, "dd/mm/yyyy") & _
+                    vbCrLf & vbCrLf & _
+                    "La cuenta se encuentra cerrada por la " & _
+                    "Conciliación Bancaria Nro " & _
+                    IdConciliacion & ".", _
+                    vbExclamation, _
+                    "Período bancario cerrado"
+
+                Exit Function
+
+            End If
+
+        End If
+
+    Next oper
+
+    MovimientoPuedeModificarse = True
+    Exit Function
+
+err1:
+
+    MovimientoPuedeModificarse = False
+
+    MsgBox _
+        "No se pudo verificar el cierre bancario." & _
+        vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function

@@ -89,7 +89,49 @@ End Function
 
 
 Public Function Save(ope As operacion) As Boolean
+
     Dim q As String
+    Dim IdConciliacion As Long
+
+    Save = False
+
+    '------------------------------------------------------
+    ' BLOQUEO POR CONCILIACION BANCARIA
+    '------------------------------------------------------
+    If ope.Pertenencia = Banco Then
+
+        If IsSomething(ope.CuentaBancaria) Then
+
+            IdConciliacion = _
+                DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+                    ope.CuentaBancaria.Id, _
+                    ope.FechaOperacion)
+
+            If IdConciliacion > 0 Then
+
+                MsgBox _
+                    "No se puede registrar la operación bancaria." & _
+                    vbCrLf & vbCrLf & _
+                    "Cuenta: " & _
+                    ope.CuentaBancaria.DescripcionFormateada & _
+                    vbCrLf & _
+                    "Fecha: " & _
+                    Format$(ope.FechaOperacion, "dd/mm/yyyy") & _
+                    vbCrLf & vbCrLf & _
+                    "El período se encuentra cerrado por la " & _
+                    "Conciliación Bancaria Nro " & _
+                    IdConciliacion & ".", _
+                    vbExclamation, _
+                    "Período bancario cerrado"
+
+                Exit Function
+
+            End If
+
+        End If
+
+    End If
+
 
     q = "INSERT INTO operaciones" _
       & " (monto," _

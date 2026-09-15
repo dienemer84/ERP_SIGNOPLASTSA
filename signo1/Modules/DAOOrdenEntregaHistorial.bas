@@ -9,7 +9,6 @@ Public Function GetAllByOE(ByVal idOE As Long) As Collection
     On Error GoTo errHandler
 
     Dim col As New Collection
-
     Dim cn As ADODB.Connection
     Dim rsHistorial As ADODB.Recordset
 
@@ -36,12 +35,14 @@ Public Function GetAllByOE(ByVal idOE As Long) As Collection
     '--------------------------------------------------
     sql = _
         "SELECT " & _
-        "fecha, " & _
-        "mensaje, " & _
-        "usuario " & _
-        "FROM historico_PedidoEntrega " & _
-        "WHERE id_source = " & CStr(idOE) & " " & _
-        "ORDER BY fecha DESC"
+        "h.fecha, " & _
+        "h.nota, " & _
+        "h.usuario AS idUsuario, " & _
+        "u.usuario AS nombreUsuario " & _
+        "FROM historico_PedidoEntrega h " & _
+        "LEFT JOIN usuarios u ON u.id = h.usuario " & _
+        "WHERE h.idPedidoEntrega = " & CStr(idOE) & " " & _
+        "ORDER BY h.fecha DESC"
 
 
     paso = "Ejecutando consulta de historial"
@@ -53,6 +54,7 @@ Public Function GetAllByOE(ByVal idOE As Long) As Collection
     ' ARMAR COLECCION
     '--------------------------------------------------
     paso = "Leyendo registros"
+
 
     Do While Not rsHistorial.EOF
 
@@ -69,25 +71,32 @@ Public Function GetAllByOE(ByVal idOE As Long) As Collection
 
         '----------------------------------------------
         ' MENSAJE
+        ' La columna real se llama NOTA
         '----------------------------------------------
-        If IsNull(rsHistorial!mensaje) Then
+        If IsNull(rsHistorial!Nota) Then
             h.mensaje = vbNullString
         Else
-            h.mensaje = CStr(rsHistorial!mensaje)
+            h.mensaje = CStr(rsHistorial!Nota)
         End If
 
 
         '----------------------------------------------
         ' USUARIO
-        ' En esta tabla está guardado como TEXTO
+        ' historico_PedidoEntrega.usuario es BIGINT
         '----------------------------------------------
-        If Not IsNull(rsHistorial!Usuario) Then
+        If Not IsNull(rsHistorial!idUsuario) Then
 
             Set u = New clsUsuario
 
-            u.Usuario = CStr(rsHistorial!Usuario)
+            u.Id = CLng(rsHistorial!idUsuario)
 
-            Set h.Usuario = u
+            If IsNull(rsHistorial!nombreUsuario) Then
+                u.Usuario = "Usuario ID " & CStr(u.Id)
+            Else
+                u.Usuario = CStr(rsHistorial!nombreUsuario)
+            End If
+
+            h.Usuario = u
 
         End If
 

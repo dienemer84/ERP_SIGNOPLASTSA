@@ -12,6 +12,19 @@ Begin VB.Form frmResumenBancario
    ScaleHeight     =   10290
    ScaleWidth      =   18735
    WindowState     =   2  'Maximized
+   Begin XtremeSuiteControls.PushButton btnCerrarConciliacion 
+      Height          =   495
+      Left            =   17760
+      TabIndex        =   31
+      Top             =   9720
+      Width           =   2175
+      _Version        =   786432
+      _ExtentX        =   3836
+      _ExtentY        =   873
+      _StockProps     =   79
+      Caption         =   "Cerrar Conciliación"
+      UseVisualStyle  =   -1  'True
+   End
    Begin GridEX20.GridEX gridResumenBancario 
       Height          =   6615
       Left            =   120
@@ -502,6 +515,258 @@ Private desde As Date
 Private CargandoFiltros As Boolean
 Private i As Integer
 
+
+Private Sub btnCerrarConciliacion_Click()
+
+    On Error GoTo err1
+
+    Dim IdCuentaBancaria As Long
+    Dim Conciliacion As clsConciliacionBancaria
+    Dim Movimiento As DTOResumenBancario
+
+    Dim totalIngresos As Double
+    Dim totalEgresos As Double
+    Dim saldoFinal As Double
+    Dim saldoInicial As Double
+
+    '------------------------------------------------------
+    ' DEBE HABER REPORTE
+    '------------------------------------------------------
+    If Movimientos Is Nothing Then
+
+        MsgBox "Primero debe generar el reporte bancario.", _
+               vbExclamation, _
+               "Cerrar conciliación"
+
+        Exit Sub
+
+    End If
+
+    If Movimientos.count = 0 Then
+
+        MsgBox "No hay movimientos para conciliar.", _
+               vbExclamation, _
+               "Cerrar conciliación"
+
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' CUENTA ESPECIFICA
+    '------------------------------------------------------
+    IdCuentaBancaria = _
+        ObtenerIdCombo(Me.cboCuentasBancarias)
+
+    If IdCuentaBancaria <= 0 Then
+
+        MsgBox "Debe seleccionar una cuenta bancaria específica.", _
+               vbExclamation, _
+               "Cerrar conciliación"
+
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' NO PERMITIR FILTROS PARCIALES
+    '------------------------------------------------------
+    If ObtenerIdCombo(Me.cboOrigen) <> 0 Then
+
+        MsgBox "Para cerrar una conciliación el filtro Origen " & _
+               "debe estar en TODOS.", _
+               vbExclamation, _
+               "Cerrar conciliación"
+
+        Exit Sub
+
+    End If
+
+    If ObtenerIdCombo(Me.cboTipoMovimiento) <> 0 Then
+
+        MsgBox "Para cerrar una conciliación el filtro Tipo de Mov. " & _
+               "debe estar en TODOS.", _
+               vbExclamation, _
+               "Cerrar conciliación"
+
+        Exit Sub
+
+    End If
+
+    If ObtenerIdCombo(Me.cboMonedas) <> 0 Then
+
+        MsgBox "Para cerrar una conciliación el filtro Moneda " & _
+               "debe estar en TODAS.", _
+               vbExclamation, _
+               "Cerrar conciliación"
+
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' VALIDAR PERIODO
+    '------------------------------------------------------
+    If Me.dtpDesde(1).value > _
+       Me.dtpHasta(1).value Then
+
+        MsgBox "La fecha desde no puede ser mayor que " & _
+               "la fecha hasta.", _
+               vbExclamation, _
+               "Cerrar conciliación"
+
+        Exit Sub
+
+    End If
+
+    If DAOConciliacionBancaria.ExistePeriodoCerrado( _
+            IdCuentaBancaria, _
+            Me.dtpDesde(1).value, _
+            Me.dtpHasta(1).value) Then
+
+        MsgBox "Ya existe una conciliación cerrada que " & _
+               "se superpone con este período.", _
+               vbExclamation, _
+               "Cerrar conciliación"
+
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' CALCULAR TOTALES
+    '------------------------------------------------------
+    saldoInicial = 0
+    totalIngresos = 0
+    totalEgresos = 0
+    saldoFinal = 0
+
+    If MontoInicialEstablecido Then
+        saldoInicial = MontoInicial
+    End If
+
+    For Each Movimiento In Movimientos
+
+        If UCase$(Trim$(Movimiento.Origen)) <> _
+           "SALDO INICIAL" Then
+
+            totalIngresos = _
+                totalIngresos + Movimiento.Ingreso
+
+            totalEgresos = _
+                totalEgresos + Movimiento.Egreso
+
+        End If
+
+    Next Movimiento
+
+    Set Movimiento = _
+        Movimientos.item(Movimientos.count)
+
+    saldoFinal = Movimiento.SaldoAcumulado
+
+    '------------------------------------------------------
+    ' CONFIRMACION
+    '------------------------------------------------------
+    If MsgBox( _
+        "¿Confirma el cierre de la conciliación bancaria?" & _
+        vbCrLf & vbCrLf & _
+        "Cuenta: " & textoCombo(Me.cboCuentasBancarias) & _
+        vbCrLf & _
+        "Período: " & _
+        Format$(Me.dtpDesde(1).value, "dd/mm/yyyy") & _
+        " al " & _
+        Format$(Me.dtpHasta(1).value, "dd/mm/yyyy") & _
+        vbCrLf & vbCrLf & _
+        "Saldo inicial: " & _
+        FormatCurrency(saldoInicial) & vbCrLf & _
+        "Ingresos: " & _
+        FormatCurrency(totalIngresos) & vbCrLf & _
+        "Egresos: " & _
+        FormatCurrency(totalEgresos) & vbCrLf & _
+        "Saldo final: " & _
+        FormatCurrency(saldoFinal) & vbCrLf & vbCrLf & _
+        "Una vez cerrada, el período quedará bloqueado.", _
+        vbQuestion + vbYesNo + vbDefaultButton2, _
+        "Cerrar conciliación") <> vbYes Then
+
+        Exit Sub
+
+    End If
+
+    '------------------------------------------------------
+    ' CREAR SNAPSHOT
+    '------------------------------------------------------
+    Set Conciliacion = _
+        New clsConciliacionBancaria
+
+    Conciliacion.IdCuentaBancaria = _
+        IdCuentaBancaria
+
+    Conciliacion.FechaDesde = _
+        Me.dtpDesde(1).value
+
+    Conciliacion.FechaHasta = _
+        Me.dtpHasta(1).value
+
+    Conciliacion.FechaCierre = Now
+
+    Conciliacion.IdUsuarioCierre = _
+        funciones.GetUserObj.Id
+
+    Conciliacion.saldoInicial = saldoInicial
+    Conciliacion.totalIngresos = totalIngresos
+    Conciliacion.totalEgresos = totalEgresos
+    Conciliacion.saldoFinal = saldoFinal
+
+    Conciliacion.CantidadMovimientos = _
+        Movimientos.count
+
+    Conciliacion.estado = 1
+
+    Conciliacion.Observaciones = _
+        "Cierre generado desde Reporte Bancario"
+
+    Set Conciliacion.Detalles = Movimientos
+
+    '------------------------------------------------------
+    ' GUARDAR
+    '------------------------------------------------------
+    Me.MousePointer = vbHourglass
+
+    If DAOConciliacionBancaria.Guardar(Conciliacion) Then
+
+        Me.MousePointer = vbDefault
+
+        MsgBox "La conciliación bancaria Nro " & _
+               Conciliacion.Id & _
+               " fue cerrada correctamente.", _
+               vbInformation, _
+               "Conciliación bancaria"
+
+    Else
+
+        Me.MousePointer = vbDefault
+
+        MsgBox "No se pudo cerrar la conciliación bancaria.", _
+               vbCritical, _
+               "Conciliación bancaria"
+
+    End If
+
+    Exit Sub
+
+err1:
+
+    Me.MousePointer = vbDefault
+
+    MsgBox "Error al cerrar la conciliación bancaria:" & _
+           vbCrLf & _
+           Err.Number & " - " & Err.Description, _
+           vbCritical, _
+           "Conciliación bancaria"
+
+End Sub
 
 Private Sub btnImprimir_Click()
 
