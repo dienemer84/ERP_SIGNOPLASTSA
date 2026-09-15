@@ -321,15 +321,107 @@ Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
 End Function
 
 
-Public Function Save(pcta As clsPagoACta, Optional cascada As Boolean = False) As Boolean
+Private Function ValidarOperacionesBancoPagoACuentaContraConciliacion( _
+    ByRef pcta As clsPagoACta _
+) As Boolean
+
     On Error GoTo err1
-    conectar.BeginTransaction
-    Save = Guardar(pcta, cascada)
-    conectar.CommitTransaction
+
+    Dim oper As operacion
+    Dim IdConciliacion As Long
+
+    ValidarOperacionesBancoPagoACuentaContraConciliacion = False
+
+    If pcta Is Nothing Then Exit Function
+
+    If pcta.operacionesBanco Is Nothing Then
+        ValidarOperacionesBancoPagoACuentaContraConciliacion = True
+        Exit Function
+    End If
+
+    For Each oper In pcta.operacionesBanco
+
+        If IsSomething(oper.CuentaBancaria) Then
+
+            If CDbl(oper.FechaOperacion) > 0 Then
+
+                IdConciliacion = _
+                    DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+                        oper.CuentaBancaria.Id, _
+                        oper.FechaOperacion)
+
+                If IdConciliacion > 0 Then
+
+                    MsgBox _
+                        "No se puede guardar el Pago a Cuenta." & _
+                        vbCrLf & vbCrLf & _
+                        "Cuenta: " & _
+                        oper.CuentaBancaria.DescripcionFormateada & _
+                        vbCrLf & _
+                        "Fecha de operación: " & _
+                        Format$(oper.FechaOperacion, "dd/mm/yyyy") & _
+                        vbCrLf & vbCrLf & _
+                        "El período pertenece a la " & _
+                        "Conciliación Bancaria Nro " & _
+                        IdConciliacion & ".", _
+                        vbExclamation, _
+                        "Período bancario cerrado"
+
+                    Exit Function
+
+                End If
+
+            End If
+
+        End If
+
+    Next oper
+
+    ValidarOperacionesBancoPagoACuentaContraConciliacion = True
     Exit Function
+
 err1:
+
+    ValidarOperacionesBancoPagoACuentaContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar el período bancario del Pago a Cuenta." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+
+Public Function Save( _
+    pcta As clsPagoACta, _
+    Optional cascada As Boolean = False _
+) As Boolean
+
+    On Error GoTo err1
+
     Save = False
+
+    conectar.BeginTransaction
+
+    If Not Guardar(pcta, cascada) Then
+        GoTo err1
+    End If
+
+    conectar.CommitTransaction
+
+    Save = True
+    Exit Function
+
+err1:
+
+    On Error Resume Next
+
     conectar.RollBackTransaction
+
+    Save = False
+
 End Function
 
 
@@ -404,7 +496,7 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
                 If op.FacturasProveedor(1).Proveedor.estado <> 2 Then
                     Dim d As New clsDTOPadronIIBB
                     'todo: cambiar validacion
-                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.Cuit, TipoPadronRetencion)
+                    Set d = DTOPadronIIBB.FindByCUIT(op.FacturasProveedor(1).Proveedor.cuit, TipoPadronRetencion)
                     Dim ret As Double
 
                     If IsSomething(d) Then
@@ -478,12 +570,49 @@ End Function
 
 Public Function Guardar(pcta As clsPagoACta, Optional cascada As Boolean = False) As Boolean
 
-'TODO: tengo que revisar que las facturas no esten en otra op aprobada antes de continuar
-
     Dim q As String
     Dim rs As Recordset
     On Error GoTo E
     Dim Nueva As Boolean: Nueva = False
+    
+    '======================================================
+    ' VALIDAR ANTES DE MODIFICAR ABSOLUTAMENTE NADA
+    '======================================================
+    
+    '------------------------------------------------------
+    ' OPERACIONES NUEVAS / MODIFICADAS
+    '------------------------------------------------------
+    If Not ValidarOperacionesBancoPagoACuentaContraConciliacion( _
+                pcta) Then
+    
+        GoTo E
+    
+    End If
+    
+    
+    '------------------------------------------------------
+    ' SI ES UN PAGO A CUENTA EXISTENTE Y SE VA A GUARDAR
+    ' EN CASCADA, PROTEGER LO YA REGISTRADO.
+    '------------------------------------------------------
+    If cascada And pcta.Id > 0 Then
+    
+        If Not ValidarOperacionesHistoricasPagoACuentaContraConciliacion( _
+                    pcta.Id) Then
+    
+            GoTo E
+    
+        End If
+    
+    
+        If Not ValidarChequesPagoACuentaContraConciliacion( _
+                    pcta.Id) Then
+    
+            GoTo E
+    
+        End If
+    
+    End If
+    
     If pcta.Id = 0 Then
         Nueva = True
         q = "INSERT INTO pagos_a_cuenta (id_moneda, fecha, id_proveedor, estado, static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen, dif_cambio_ng,dif_cambio_total)" _
@@ -1527,4 +1656,169 @@ Public Function ExportarOrdenPago(OrdenPago As OrdenPago) As Boolean
 err1:
     ExportarOrdenPago = False
 End Function
+
+
+Private Function ValidarOperacionesHistoricasPagoACuentaContraConciliacion( _
+    ByVal IdPagoACuenta As Long _
+) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As Recordset
+
+    ValidarOperacionesHistoricasPagoACuentaContraConciliacion = False
+
+    If IdPagoACuenta <= 0 Then
+        ValidarOperacionesHistoricasPagoACuentaContraConciliacion = True
+        Exit Function
+    End If
+
+    q = "SELECT " _
+      & "o.fecha_operacion, " _
+      & "IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria, " _
+      & "IFNULL(b.nombre, 'SIN BANCO') AS banco, " _
+      & "cb.id AS id_conciliacion " _
+      & "FROM pagos_a_cuenta_operaciones pco " _
+      & "INNER JOIN operaciones o " _
+      & " ON o.id = pco.id_operacion " _
+      & "INNER JOIN conciliaciones_bancarias cb " _
+      & " ON cb.id_cuenta_bancaria = o.cuentabanc_o_caja_id " _
+      & " AND cb.estado = 1 " _
+      & " AND o.fecha_operacion " _
+      & "     BETWEEN cb.fecha_desde AND cb.fecha_hasta " _
+      & "LEFT JOIN AdminConfigCuentas c " _
+      & " ON c.id = o.cuentabanc_o_caja_id " _
+      & "LEFT JOIN AdminConfigBancos b " _
+      & " ON b.id = c.idBanco " _
+      & "WHERE pco.id_pago_a_cuenta = " & IdPagoACuenta & " " _
+      & "AND o.pertenencia = 'banco' " _
+      & "LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        MsgBox _
+            "No se puede modificar el Pago a Cuenta Nro " & _
+            IdPagoACuenta & "." & _
+            vbCrLf & vbCrLf & _
+            "Posee una operación bancaria incluida en una " & _
+            "conciliación cerrada." & _
+            vbCrLf & vbCrLf & _
+            "Banco: " & CStr(rs!Banco) & vbCrLf & _
+            "Cuenta: " & CStr(rs!cuenta_bancaria) & vbCrLf & _
+            "Fecha: " & _
+            Format$(rs!fecha_operacion, "dd/mm/yyyy") & _
+            vbCrLf & vbCrLf & _
+            "Conciliación Bancaria Nro " & _
+            CLng(rs!id_conciliacion) & ".", _
+            vbExclamation, _
+            "Período bancario cerrado"
+
+        Exit Function
+
+    End If
+
+    ValidarOperacionesHistoricasPagoACuentaContraConciliacion = True
+    Exit Function
+
+err1:
+
+    ValidarOperacionesHistoricasPagoACuentaContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar las operaciones históricas " & _
+        "del Pago a Cuenta." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+
+Private Function ValidarChequesPagoACuentaContraConciliacion( _
+    ByVal IdPagoACuenta As Long _
+) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As Recordset
+
+    ValidarChequesPagoACuentaContraConciliacion = False
+
+    If IdPagoACuenta <= 0 Then
+        ValidarChequesPagoACuentaContraConciliacion = True
+        Exit Function
+    End If
+
+    q = "SELECT " _
+      & "ch.numero, " _
+      & "ch.fecha_ingreso_banco, " _
+      & "IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria, " _
+      & "IFNULL(b.nombre, 'SIN BANCO') AS banco, " _
+      & "cb.id AS id_conciliacion " _
+      & "FROM pagos_a_cuenta_cheques pcc " _
+      & "INNER JOIN Cheques ch " _
+      & " ON ch.id = pcc.id_cheque " _
+      & "INNER JOIN Chequeras chq " _
+      & " ON chq.id = ch.id_chequera " _
+      & "INNER JOIN conciliaciones_bancarias cb " _
+      & " ON cb.id_cuenta_bancaria = chq.id_cuenta_bancaria " _
+      & " AND cb.estado = 1 " _
+      & " AND ch.fecha_ingreso_banco " _
+      & "     BETWEEN cb.fecha_desde AND cb.fecha_hasta " _
+      & "LEFT JOIN AdminConfigCuentas c " _
+      & " ON c.id = chq.id_cuenta_bancaria " _
+      & "LEFT JOIN AdminConfigBancos b " _
+      & " ON b.id = c.idBanco " _
+      & "WHERE pcc.id_pago_a_cuenta = " & IdPagoACuenta & " " _
+      & "AND IFNULL(ch.propio, 0) = 1 " _
+      & "AND IFNULL(ch.ingresado, 0) = 1 " _
+      & "AND ch.fecha_ingreso_banco IS NOT NULL " _
+      & "LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        MsgBox _
+            "No se puede modificar el Pago a Cuenta Nro " & _
+            IdPagoACuenta & "." & _
+            vbCrLf & vbCrLf & _
+            "El cheque propio Nro " & _
+            CStr(rs!numero) & _
+            " ya ingresó al banco el " & _
+            Format$(rs!fecha_ingreso_banco, "dd/mm/yyyy") & "." & _
+            vbCrLf & vbCrLf & _
+            "Banco: " & CStr(rs!Banco) & vbCrLf & _
+            "Cuenta: " & CStr(rs!cuenta_bancaria) & _
+            vbCrLf & vbCrLf & _
+            "Conciliación Bancaria Nro " & _
+            CLng(rs!id_conciliacion) & ".", _
+            vbExclamation, _
+            "Período bancario cerrado"
+
+        Exit Function
+
+    End If
+
+    ValidarChequesPagoACuentaContraConciliacion = True
+    Exit Function
+
+err1:
+
+    ValidarChequesPagoACuentaContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar los cheques del Pago a Cuenta." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
 

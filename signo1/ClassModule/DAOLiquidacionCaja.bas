@@ -359,17 +359,108 @@ Public Function MapAlicuotaRetencion(rs As Recordset, indice As Dictionary, _
     Set MapAlicuotaRetencion = ra
 End Function
 
+Private Function ValidarOperacionesHistoricasLiquidacionContraConciliacion( _
+    ByVal IdLiquidacion As Long, _
+    ByVal Accion As String _
+) As Boolean
 
-Public Function Save(op As clsLiquidacionCaja, Optional cascada As Boolean = False) As Boolean
-'Public Function Save(1=1, Optional cascada As Boolean = False) As Boolean
     On Error GoTo err1
-    conectar.BeginTransaction
-    Save = Guardar(op, cascada)
-    conectar.CommitTransaction
+
+    Dim q As String
+    Dim rs As Recordset
+
+    ValidarOperacionesHistoricasLiquidacionContraConciliacion = False
+
+    If IdLiquidacion <= 0 Then
+        ValidarOperacionesHistoricasLiquidacionContraConciliacion = True
+        Exit Function
+    End If
+
+    q = "SELECT " _
+      & "o.fecha_operacion, " _
+      & "IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria, " _
+      & "cb.id AS id_conciliacion " _
+      & "FROM liquidaciones_caja_operaciones lco " _
+      & "INNER JOIN operaciones o " _
+      & " ON o.id = lco.id_operacion " _
+      & "INNER JOIN conciliaciones_bancarias cb " _
+      & " ON cb.id_cuenta_bancaria = o.cuentabanc_o_caja_id " _
+      & " AND cb.estado = 1 " _
+      & " AND o.fecha_operacion BETWEEN cb.fecha_desde AND cb.fecha_hasta " _
+      & "LEFT JOIN AdminConfigCuentas c " _
+      & " ON c.id = o.cuentabanc_o_caja_id " _
+      & "WHERE lco.id_liquidacion_caja = " & IdLiquidacion & " " _
+      & "AND o.pertenencia = 'banco' " _
+      & "LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        MsgBox _
+            "No se puede " & Accion & _
+            " la Liquidación de Caja." & _
+            vbCrLf & vbCrLf & _
+            "Cuenta: " & CStr(rs!cuenta_bancaria) & _
+            vbCrLf & _
+            "Fecha de operación: " & _
+            Format$(rs!fecha_operacion, "dd/mm/yyyy") & _
+            vbCrLf & vbCrLf & _
+            "El movimiento pertenece a la " & _
+            "Conciliación Bancaria Nro " & _
+            CLng(rs!id_conciliacion) & ".", _
+            vbExclamation, _
+            "Período bancario cerrado"
+
+        Exit Function
+    End If
+
+    ValidarOperacionesHistoricasLiquidacionContraConciliacion = True
     Exit Function
+
 err1:
+
+    ValidarOperacionesHistoricasLiquidacionContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar la Liquidación de Caja contra " & _
+        "los períodos bancarios cerrados." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+
+Public Function Save( _
+    op As clsLiquidacionCaja, _
+    Optional cascada As Boolean = False _
+) As Boolean
+
+    On Error GoTo err1
+
     Save = False
+
+    conectar.BeginTransaction
+
+    If Not Guardar(op, cascada) Then
+        GoTo err1
+    End If
+
+    conectar.CommitTransaction
+
+    Save = True
+    Exit Function
+
+err1:
+
+    On Error Resume Next
+
     conectar.RollBackTransaction
+
+    Save = False
+
 End Function
 
 
@@ -386,6 +477,19 @@ Public Function aprobar(liq_mem As clsLiquidacionCaja, insideTransaction As Bool
 
     If Not IsSomething(liq) Then
         GoTo err1
+    End If
+
+
+    If liq.estado = EstadoLiquidacionCaja_pendiente Then
+    
+        If Not ValidarOperacionesHistoricasLiquidacionContraConciliacion( _
+                    liq.Id, _
+                    "aprobar") Then
+    
+            GoTo err1
+    
+        End If
+    
     End If
 
     'VALIDAR BIEN LOS TOTALES ANTES DE PODER APROBAR
@@ -515,12 +619,39 @@ End Function
 
 Public Function Guardar(op As clsLiquidacionCaja, Optional cascada As Boolean = False) As Boolean
 
-'TODO: tengo que revisar que las facturas no esten en otra op aprobada antes de continuar
-
     Dim q As String
     Dim rs As Recordset
+
     On Error GoTo E
-    Dim Nueva As Boolean: Nueva = False
+
+    Dim Nueva As Boolean
+    Nueva = False
+
+    '------------------------------------------------------
+    ' VALIDAR NUEVAS OPERACIONES BANCARIAS
+    '------------------------------------------------------
+    If Not ValidarOperacionesBancoLiquidacionContraConciliacion(op) Then
+        GoTo E
+    End If
+
+    '------------------------------------------------------
+    ' SI ESTAMOS MODIFICANDO UNA LIQUIDACION EXISTENTE,
+    ' PROTEGER LOS MOVIMIENTOS Y CHEQUES HISTORICOS.
+    '------------------------------------------------------
+    If cascada And op.Id > 0 Then
+
+        If Not ValidarOperacionesHistoricasLiquidacionContraConciliacion( _
+                    op.Id, _
+                    "modificar") Then
+            GoTo E
+        End If
+
+        If Not ValidarChequesLiquidacionContraConciliacion( _
+                    op.Id) Then
+            GoTo E
+        End If
+
+    End If
 
     If op.Id = 0 Then
 
@@ -1034,8 +1165,21 @@ Public Function Delete(liqid As Long, useInternalTransaction As Boolean) As Bool
     On Error GoTo E
 
     Dim liq As clsLiquidacionCaja
+    
     Set liq = DAOLiquidacionCaja.FindById(liqid)
-
+    
+    If Not IsSomething(liq) Then
+        Exit Function
+    End If
+    
+    If Not ValidarOperacionesHistoricasLiquidacionContraConciliacion( _
+                liqid, _
+                "anular") Then
+    
+        Exit Function
+    
+    End If
+    
     If useInternalTransaction Then conectar.BeginTransaction
 
     Dim q As String
@@ -1906,3 +2050,155 @@ Public Function GetProximoNumeroLiquidacion() As Long
     rs.Close
     Set rs = Nothing
 End Function
+
+Private Function ValidarOperacionesBancoLiquidacionContraConciliacion( _
+    ByRef liq As clsLiquidacionCaja _
+) As Boolean
+
+    On Error GoTo err1
+
+    Dim oper As operacion
+    Dim IdConciliacion As Long
+
+    ValidarOperacionesBancoLiquidacionContraConciliacion = False
+
+    If liq Is Nothing Then Exit Function
+
+    If liq.operacionesBanco Is Nothing Then
+        ValidarOperacionesBancoLiquidacionContraConciliacion = True
+        Exit Function
+    End If
+
+    For Each oper In liq.operacionesBanco
+
+        If IsSomething(oper.CuentaBancaria) Then
+
+            If CDbl(oper.FechaOperacion) > 0 Then
+
+                IdConciliacion = _
+                    DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+                        oper.CuentaBancaria.Id, _
+                        oper.FechaOperacion)
+
+                If IdConciliacion > 0 Then
+
+                    MsgBox _
+                        "No se puede guardar la Liquidación de Caja." & _
+                        vbCrLf & vbCrLf & _
+                        "Cuenta bancaria ID: " & _
+                        oper.CuentaBancaria.Id & _
+                        vbCrLf & _
+                        "Fecha de operación: " & _
+                        Format$(oper.FechaOperacion, "dd/mm/yyyy") & _
+                        vbCrLf & vbCrLf & _
+                        "La cuenta se encuentra cerrada por la " & _
+                        "Conciliación Bancaria Nro " & _
+                        IdConciliacion & ".", _
+                        vbExclamation, _
+                        "Período bancario cerrado"
+
+                    Exit Function
+
+                End If
+
+            End If
+
+        End If
+
+    Next oper
+
+    ValidarOperacionesBancoLiquidacionContraConciliacion = True
+    Exit Function
+
+err1:
+
+    ValidarOperacionesBancoLiquidacionContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar el período bancario de la Liquidación." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+Private Function ValidarChequesLiquidacionContraConciliacion( _
+    ByVal IdLiquidacion As Long _
+) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As Recordset
+
+    ValidarChequesLiquidacionContraConciliacion = False
+
+    If IdLiquidacion <= 0 Then
+        ValidarChequesLiquidacionContraConciliacion = True
+        Exit Function
+    End If
+
+    q = "SELECT " _
+      & "ch.numero, " _
+      & "ch.fecha_ingreso_banco, " _
+      & "IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria, " _
+      & "cb.id AS id_conciliacion " _
+      & "FROM liquidaciones_caja_cheques lcc " _
+      & "INNER JOIN Cheques ch " _
+      & " ON ch.id = lcc.id_cheque " _
+      & "INNER JOIN Chequeras chq " _
+      & " ON chq.id = ch.id_chequera " _
+      & "INNER JOIN conciliaciones_bancarias cb " _
+      & " ON cb.id_cuenta_bancaria = chq.id_cuenta_bancaria " _
+      & " AND cb.estado = 1 " _
+      & " AND ch.fecha_ingreso_banco BETWEEN " _
+      & "     cb.fecha_desde AND cb.fecha_hasta " _
+      & "LEFT JOIN AdminConfigCuentas c " _
+      & " ON c.id = chq.id_cuenta_bancaria " _
+      & "WHERE lcc.id_liquidacion_caja = " & IdLiquidacion & " " _
+      & "AND IFNULL(ch.propio, 0) = 1 " _
+      & "AND IFNULL(ch.ingresado, 0) = 1 " _
+      & "AND ch.fecha_ingreso_banco IS NOT NULL " _
+      & "LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        MsgBox _
+            "No se puede modificar la Liquidación de Caja." & _
+            vbCrLf & vbCrLf & _
+            "El cheque propio Nro " & CStr(rs!numero) & _
+            " ya ingresó al banco el " & _
+            Format$(rs!fecha_ingreso_banco, "dd/mm/yyyy") & "." & _
+            vbCrLf & _
+            "Cuenta: " & CStr(rs!cuenta_bancaria) & _
+            vbCrLf & vbCrLf & _
+            "Ese movimiento pertenece a la " & _
+            "Conciliación Bancaria Nro " & _
+            CLng(rs!id_conciliacion) & ".", _
+            vbExclamation, _
+            "Período bancario cerrado"
+
+        Exit Function
+
+    End If
+
+    ValidarChequesLiquidacionContraConciliacion = True
+    Exit Function
+
+err1:
+
+    ValidarChequesLiquidacionContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar los cheques de la Liquidación." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+
