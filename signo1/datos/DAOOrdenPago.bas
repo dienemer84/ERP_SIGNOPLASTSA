@@ -539,9 +539,17 @@ Public Function aprobar(op_mem As OrdenPago, insideTransaction As Boolean) As Bo
     If Not IsSomething(op) Then
         GoTo err1
     End If
+    
+    '------------------------------------------------------
+    ' NO PERMITIR APROBAR UNA OP QUE GENERE
+    ' MOVIMIENTOS EN UN PERIODO BANCARIO CERRADO
+    '------------------------------------------------------
+    If Not ValidarOperacionesBancoContraConciliacion(op) Then
+        GoTo err1
+    End If
 
     'VALIDAR BIEN LOS TOTALES ANTES DE PODER APROBAR
-    'verificar que las facturas esten todas aprobadsa...
+    'verificar que las facturas esten todas aprobadas..
     Dim F As clsFacturaProveedor
     Dim nopago As Double
     Dim nopago1 As Double
@@ -667,13 +675,34 @@ End Function
 
 
 Public Function Guardar(op As OrdenPago, Optional cascada As Boolean = False) As Boolean
-
-'TODO: tengo que revisar que las facturas no esten en otra op aprobada antes de continuar
-
     Dim q As String
     Dim rs As Recordset
+    
     On Error GoTo E
+    
+    '------------------------------------------------------
+    ' VALIDAR NUEVOS IMPACTOS BANCARIOS
+    '------------------------------------------------------
+    If Not ValidarOperacionesBancoContraConciliacion(op) Then
+        GoTo E
+    End If
+    
+    
+    '------------------------------------------------------
+    ' SI ESTAMOS EDITANDO LA OP COMPLETA,
+    ' NO PERMITIR ALTERAR CHEQUES YA CONCILIADOS
+    '------------------------------------------------------
+    If cascada And op.Id > 0 Then
+    
+        If Not ValidarChequesOPContraConciliacion( _
+                    op.Id) Then
+            GoTo E
+        End If
+    
+    End If
+    
     Dim Nueva As Boolean: Nueva = False
+    
     If op.Id = 0 Then
         Nueva = True
         q = "INSERT INTO ordenes_pago (id_moneda_pago,tipo_cambio,id_moneda, fecha, id_cuenta_contable,cuenta_contable_desc,estado,alicuota,static_total_facturas, static_total_factura_ng, static_total_a_retener, static_total_origen,dif_cambio, otros_descuentos,dif_cambio_ng,dif_cambio_total)" _
@@ -1018,13 +1047,33 @@ Public Function RemoveFactura(opid As Long, facid As Long) As Boolean
 
 End Function
 
-Public Function Delete(opid As Long, useInternalTransaction As Boolean) As Boolean
+
+Public Function Delete( _
+    opid As Long, _
+    useInternalTransaction As Boolean) As Boolean
+
     On Error GoTo E
+
+    Delete = False
 
     Dim op As OrdenPago
     Set op = DAOOrdenPago.FindById(opid)
 
-    If useInternalTransaction Then conectar.BeginTransaction
+    If Not IsSomething(op) Then Exit Function
+
+
+    '------------------------------------------------------
+    ' VALIDAR CONCILIACION BANCARIA
+    ' ANTES DE BORRAR ABSOLUTAMENTE NADA
+    '------------------------------------------------------
+    If Not PuedeAnularOPPorConciliacion(opid) Then
+        Exit Function
+    End If
+
+
+    If useInternalTransaction Then
+        conectar.BeginTransaction
+    End If
 
     Dim q As String
 
@@ -2236,4 +2285,223 @@ ErrorHandler:
 End Function
 
 
+Private Function ValidarOperacionesBancoContraConciliacion( _
+    ByRef op As OrdenPago) As Boolean
 
+    On Error GoTo err1
+
+    Dim oper As operacion
+    Dim IdConciliacion As Long
+
+    ValidarOperacionesBancoContraConciliacion = False
+
+    If op Is Nothing Then Exit Function
+
+    If op.operacionesBanco Is Nothing Then
+        ValidarOperacionesBancoContraConciliacion = True
+        Exit Function
+    End If
+
+    For Each oper In op.operacionesBanco
+
+        If Not IsSomething(oper.CuentaBancaria) Then
+            GoTo siguiente
+        End If
+
+        If CDbl(oper.FechaOperacion) <= 0 Then
+            GoTo siguiente
+        End If
+
+        IdConciliacion = _
+            DAOConciliacionBancaria. _
+                ObtenerIdConciliacionCerrada( _
+                    oper.CuentaBancaria.Id, _
+                    oper.FechaOperacion)
+
+        If IdConciliacion > 0 Then
+
+            MsgBox _
+                "No se puede guardar la Orden de Pago." & _
+                vbCrLf & vbCrLf & _
+                "Cuenta: " & _
+                oper.CuentaBancaria.DescripcionFormateada & _
+                vbCrLf & _
+                "Fecha de operación: " & _
+                Format$(oper.FechaOperacion, "dd/mm/yyyy") & _
+                vbCrLf & vbCrLf & _
+                "La cuenta se encuentra cerrada por la " & _
+                "Conciliación Bancaria Nro " & _
+                IdConciliacion & ".", _
+                vbExclamation, _
+                "Período bancario cerrado"
+
+            Exit Function
+
+        End If
+
+siguiente:
+
+    Next oper
+
+    ValidarOperacionesBancoContraConciliacion = True
+    Exit Function
+
+err1:
+
+    ValidarOperacionesBancoContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar el período bancario de la OP." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+
+Private Function ValidarChequesOPContraConciliacion( _
+    ByVal IdOrdenPago As Long) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As ADODB.Recordset
+
+    ValidarChequesOPContraConciliacion = False
+
+    If IdOrdenPago <= 0 Then
+        ValidarChequesOPContraConciliacion = True
+        Exit Function
+    End If
+
+    q = "SELECT ch.id, ch.numero, ch.fecha_ingreso_banco, " _
+      & "cta.cuenta AS cuenta_bancaria, cb.id AS id_conciliacion " _
+      & "FROM Cheques ch " _
+      & "INNER JOIN Chequeras chq " _
+      & " ON chq.id = ch.id_chequera " _
+      & "INNER JOIN conciliaciones_bancarias cb " _
+      & " ON cb.id_cuenta_bancaria = " _
+      & "    chq.id_cuenta_bancaria " _
+      & " AND cb.estado = 1 " _
+      & " AND ch.fecha_ingreso_banco " _
+      & "     BETWEEN cb.fecha_desde AND cb.fecha_hasta " _
+      & "LEFT JOIN AdminConfigCuentas cta " _
+      & " ON cta.id = chq.id_cuenta_bancaria " _
+      & "WHERE ch.propio = 1 " _
+      & "AND IFNULL(ch.ingresado, 0) = 1 " _
+      & "AND ch.fecha_ingreso_banco IS NOT NULL " _
+      & "AND (" _
+      & " ch.orden_pago_origen = " & IdOrdenPago _
+      & " OR EXISTS ( SELECT 1 FROM ordenes_pago_cheques opc WHERE opc.id_orden_pago = " & IdOrdenPago & " " _
+      & "     AND opc.id_cheque = ch.id" _
+      & " )" _
+      & ") " _
+      & "LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        MsgBox _
+            "No se puede modificar la Orden de Pago Nro " & _
+            IdOrdenPago & "." & _
+            vbCrLf & vbCrLf & _
+            "El cheque propio N° " & _
+            CStr(rs!numero) & _
+            " ya ingresó al banco el " & _
+            Format$(rs!fecha_ingreso_banco, "dd/mm/yyyy") & "." & _
+            vbCrLf & _
+            "Cuenta: " & CStr(rs!cuenta_bancaria) & _
+            vbCrLf & vbCrLf & _
+            "Ese movimiento pertenece a la " & _
+            "Conciliación Bancaria Nro " & _
+            CLng(rs!id_conciliacion) & ".", _
+            vbExclamation, _
+            "Período bancario cerrado"
+
+        Exit Function
+
+    End If
+
+    ValidarChequesOPContraConciliacion = True
+    Exit Function
+
+err1:
+
+    ValidarChequesOPContraConciliacion = False
+
+End Function
+
+
+Private Function PuedeAnularOPPorConciliacion( _
+    ByVal IdOrdenPago As Long) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As ADODB.Recordset
+
+    PuedeAnularOPPorConciliacion = False
+
+    '======================================================
+    ' OPERACIONES BANCARIAS DE LA OP
+    '======================================================
+    q = "SELECT " _
+      & "o.fecha_operacion, " _
+      & "cta.cuenta AS cuenta_bancaria, " _
+      & "cb.id AS id_conciliacion " _
+      & "FROM ordenes_pago_operaciones opo " _
+      & "INNER JOIN operaciones o " _
+      & " ON o.id = opo.id_operacion " _
+      & "INNER JOIN conciliaciones_bancarias cb " _
+      & " ON cb.id_cuenta_bancaria = " _
+      & "    o.cuentabanc_o_caja_id " _
+      & " AND cb.estado = 1 " _
+      & " AND o.fecha_operacion " _
+      & "     BETWEEN cb.fecha_desde AND cb.fecha_hasta " _
+      & "LEFT JOIN AdminConfigCuentas cta " _
+      & " ON cta.id = o.cuentabanc_o_caja_id " _
+      & "WHERE opo.id_orden_pago = " & IdOrdenPago & " " _
+      & "AND o.pertenencia = 'banco' " _
+      & "LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        MsgBox _
+            "No se puede anular la Orden de Pago Nro " & _
+            IdOrdenPago & "." & _
+            vbCrLf & vbCrLf & _
+            "Cuenta: " & CStr(rs!cuenta_bancaria) & _
+            vbCrLf & _
+            "Fecha de operación: " & _
+            Format$(rs!fecha_operacion, "dd/mm/yyyy") & _
+            vbCrLf & vbCrLf & _
+            "El movimiento pertenece a la " & _
+            "Conciliación Bancaria Nro " & _
+            CLng(rs!id_conciliacion) & ".", _
+            vbExclamation, _
+            "Período bancario cerrado"
+
+        Exit Function
+
+    End If
+
+    '======================================================
+    ' CHEQUES PROPIOS
+    '======================================================
+    If Not ValidarChequesOPContraConciliacion( _
+                IdOrdenPago) Then
+        Exit Function
+    End If
+
+    PuedeAnularOPPorConciliacion = True
+    Exit Function
+
+err1:
+
+    PuedeAnularOPPorConciliacion = False
+
+End Function

@@ -38,7 +38,7 @@ Public Function Save(ByVal boleta As BoletaDeposito) As Boolean
     End If
 
 
-    If boleta.cheques.count = 0 Then
+    If boleta.Cheques.count = 0 Then
         UltimoError = "La boleta no contiene cheques."
         Exit Function
     End If
@@ -55,6 +55,17 @@ Public Function Save(ByVal boleta As BoletaDeposito) As Boolean
         Exit Function
     End If
 
+    '-------------------------------------------------------
+    ' VALIDAR CONCILIACION BANCARIA
+    '-------------------------------------------------------
+    
+    If Not PuedeGuardarDeposito( _
+                boleta.CuentaDestino, _
+                boleta.fechaDeposito) Then
+    
+        Exit Function
+    
+    End If
 
     '-------------------------------------------------------
     ' INICIAR TRANSACCION
@@ -71,7 +82,7 @@ Public Function Save(ByVal boleta As BoletaDeposito) As Boolean
     montoTotal = 0
 
 
-    For Each chequeSeleccionado In boleta.cheques
+    For Each chequeSeleccionado In boleta.Cheques
 
         Set chequeActual = DAOCheques.FindById( _
                                 chequeSeleccionado.Id)
@@ -377,6 +388,13 @@ Public Function Depositar( _
 
     End If
 
+    If Not PuedeGuardarDeposito( _
+                cuenta, _
+                FEcha) Then
+    
+        Exit Function
+    
+    End If
 
     conectar.BeginTransaction
 
@@ -418,8 +436,8 @@ End Function
 
 
 Public Function FindAll( _
-            Optional ByVal fechaDesde As Variant, _
-            Optional ByVal fechaHasta As Variant, _
+            Optional ByVal FechaDesde As Variant, _
+            Optional ByVal FechaHasta As Variant, _
             Optional ByVal numeroBoleta As Long = 0, _
             Optional ByVal idCuenta As Long = 0) As Collection
 
@@ -453,13 +471,13 @@ Public Function FindAll( _
     ' FECHA DESDE
     '---------------------------------------------------
 
-    If Not IsEmpty(fechaDesde) Then
+    If Not IsEmpty(FechaDesde) Then
 
-        If Not IsNull(fechaDesde) Then
+        If Not IsNull(FechaDesde) Then
 
             q = q & _
                 " AND b.fecha_deposito >= " & _
-                conectar.Escape(CDate(fechaDesde))
+                conectar.Escape(CDate(FechaDesde))
 
         End If
 
@@ -470,13 +488,13 @@ Public Function FindAll( _
     ' FECHA HASTA
     '---------------------------------------------------
 
-    If Not IsEmpty(fechaHasta) Then
+    If Not IsEmpty(FechaHasta) Then
 
-        If Not IsNull(fechaHasta) Then
+        If Not IsNull(FechaHasta) Then
 
             q = q & _
                 " AND b.fecha_deposito <= " & _
-                conectar.Escape(CDate(fechaHasta))
+                conectar.Escape(CDate(FechaHasta))
 
         End If
 
@@ -654,6 +672,57 @@ err1:
     UltimoError = Err.Description
 
     Set FindChequesByBoleta = Nothing
+
+End Function
+
+
+Private Function PuedeGuardarDeposito( _
+    ByVal cuenta As CuentaBancaria, _
+    ByVal fechaDeposito As Date) As Boolean
+
+    On Error GoTo err1
+
+    Dim IdConciliacion As Long
+
+    PuedeGuardarDeposito = False
+
+    If cuenta Is Nothing Then Exit Function
+    If cuenta.Id <= 0 Then Exit Function
+    If CDbl(fechaDeposito) <= 0 Then Exit Function
+
+    IdConciliacion = _
+        DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+            cuenta.Id, _
+            fechaDeposito)
+
+    If IdConciliacion > 0 Then
+
+        UltimoError = _
+            "No se puede registrar la boleta de depósito." & _
+            vbCrLf & vbCrLf & _
+            "Cuenta: " & cuenta.numero & vbCrLf & _
+            "Fecha de depósito: " & _
+            Format$(fechaDeposito, "dd/mm/yyyy") & _
+            vbCrLf & vbCrLf & _
+            "La cuenta se encuentra cerrada por la " & _
+            "Conciliación Bancaria Nro " & _
+            IdConciliacion & "."
+
+        Exit Function
+
+    End If
+
+    PuedeGuardarDeposito = True
+    Exit Function
+
+err1:
+
+    PuedeGuardarDeposito = False
+
+    UltimoError = _
+        "No se pudo verificar el período bancario." & _
+        vbCrLf & _
+        Err.Number & " - " & Err.Description
 
 End Function
 
