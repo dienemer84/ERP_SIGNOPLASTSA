@@ -561,4 +561,4 @@ DAOOrdenDeEntrega = 586, 554, 1172, 831, C
 frmPlaneamientoOEEditar = 44, 58, 1134, 628, C, 22, 29, 1112, 599, C
 DAOOrdenEntregaHistorial = 110, 145, 1200, 715, C
 DAOConciliacionBancaria = 198, 261, 1288, 831, 
-clsConciliacionBancaria = 110, 145, 1200, 715, 
+clsConciliacionBancaria = 110, 145, 1200, 715, C

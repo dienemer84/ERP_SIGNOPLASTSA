@@ -700,11 +700,41 @@ Public Function AnularCheque(ByVal IdCheque As Long) As Boolean
 
     Dim q As String
     Dim rsVerificacion As ADODB.Recordset
+    Dim che As cheque
 
     AnularCheque = False
 
     If IdCheque <= 0 Then Exit Function
 
+    '======================================================
+    ' CARGAR EL CHEQUE ACTUAL
+    '======================================================
+    Set che = FindById(IdCheque)
+
+    If Not IsSomething(che) Then
+
+        MsgBox "No se encontró el cheque que se intenta anular.", _
+               vbExclamation, _
+               "Anular cheque"
+
+        Exit Function
+
+    End If
+
+    '======================================================
+    ' VALIDAR CONCILIACION BANCARIA CERRADA
+    '
+    ' Si el cheque ya ingresó al banco y esa fecha
+    ' pertenece a una conciliación cerrada, no se puede
+    ' eliminar ese impacto bancario.
+    '======================================================
+    If Not PuedeModificarIngresoBancoCheque(che) Then
+        Exit Function
+    End If
+
+    '======================================================
+    ' ANULAR
+    '======================================================
     q = "UPDATE Cheques SET " & _
         "estado = " & CLng(ChequeAnulado) & ", " & _
         "en_cartera = 0, " & _
@@ -713,7 +743,8 @@ Public Function AnularCheque(ByVal IdCheque As Long) As Boolean
         "depositado = 0 " & _
         "WHERE id = " & IdCheque & " " & _
         "AND propio = 1 " & _
-        "AND IFNULL(estado, 1) <> " & CLng(ChequeAnulado) & " " & _
+        "AND IFNULL(estado, 1) <> " & _
+            CLng(ChequeAnulado) & " " & _
         "AND IFNULL(orden_pago_origen, 0) = 0 " & _
         "AND IFNULL(liquidacion_caja_origen, 0) = 0 " & _
         "AND IFNULL(pago_a_cuenta_origen, 0) = 0 " & _
@@ -726,7 +757,9 @@ Public Function AnularCheque(ByVal IdCheque As Long) As Boolean
 
     If Not conectar.execute(q) Then Exit Function
 
-    'Verificar que efectivamente quedó anulado
+    '======================================================
+    ' VERIFICAR QUE REALMENTE HAYA QUEDADO ANULADO
+    '======================================================
     Set rsVerificacion = conectar.RSFactory( _
         "SELECT estado FROM Cheques " & _
         "WHERE id = " & IdCheque)
@@ -736,12 +769,21 @@ Public Function AnularCheque(ByVal IdCheque As Long) As Boolean
     If IsNull(rsVerificacion!estado) Then Exit Function
 
     AnularCheque = _
-        (CLng(rsVerificacion!estado) = CLng(ChequeAnulado))
+        (CLng(rsVerificacion!estado) = _
+         CLng(ChequeAnulado))
 
     Exit Function
 
+
 err1:
+
     AnularCheque = False
+
+    MsgBox "No se pudo anular el cheque." & _
+           vbCrLf & vbCrLf & _
+           Err.Number & " - " & Err.Description, _
+           vbCritical, _
+           "Anular cheque"
 
 End Function
 
@@ -756,34 +798,79 @@ Public Function ActualizarIngresoBanco( _
 
     Dim che As cheque
     Dim q As String
+    Dim sqlFecha As String
 
     ActualizarIngresoBanco = False
 
     Set che = FindById(IdCheque)
+
     If Not IsSomething(che) Then Exit Function
 
-    che.Ingresado = Ingresado
+    '------------------------------------------------------
+    ' PREPARAR NUEVO ESTADO
+    '------------------------------------------------------
+    che.entro = Ingresado
 
-    If IsDate(FechaIngresoBanco) Then
-        che.FechaIngresoBanco = CDate(FechaIngresoBanco)
+    If Ingresado Then
+
+        If Not IsDate(FechaIngresoBanco) Then
+
+            MsgBox "Debe indicar una fecha de ingreso válida.", _
+                   vbExclamation, _
+                   "Ingreso bancario"
+
+            Exit Function
+
+        End If
+
+        If CDbl(CDate(FechaIngresoBanco)) <= 0 Then
+
+            MsgBox "Debe indicar una fecha de ingreso válida.", _
+                   vbExclamation, _
+                   "Ingreso bancario"
+
+            Exit Function
+
+        End If
+
+        che.FechaIngresoBanco = _
+            CDate(FechaIngresoBanco)
+
+        sqlFecha = _
+            conectar.Escape( _
+                Format$( _
+                    che.FechaIngresoBanco, _
+                    "yyyy-mm-dd"))
+
     Else
-        che.FechaIngresoBanco = Empty
+
+        che.FechaIngresoBanco = 0
+        sqlFecha = "NULL"
+
     End If
 
-    If Not PuedeModificarIngresoBancoCheque(che) Then Exit Function
+    '------------------------------------------------------
+    ' VALIDAR CONCILIACION CERRADA
+    '------------------------------------------------------
+    If Not PuedeModificarIngresoBancoCheque(che) Then
+        Exit Function
+    End If
 
+    '------------------------------------------------------
+    ' ACTUALIZAR
+    '------------------------------------------------------
     q = "UPDATE Cheques SET " _
-      & " ingresado = " & Abs(CInt(Ingresado)) & ", " _
-      & " fecha_ingreso_banco = " & _
-        IIf(IsDate(FechaIngresoBanco), _
-            Escape(CDate(FechaIngresoBanco)), _
-            "NULL") & _
-      " WHERE id = " & IdCheque
+      & "ingresado = " & Abs(CInt(Ingresado)) & ", " _
+      & "fecha_ingreso_banco = " & sqlFecha & " " _
+      & "WHERE id = " & IdCheque
 
-    ActualizarIngresoBanco = conectar.execute(q)
+    ActualizarIngresoBanco = _
+        conectar.execute(q)
+
     Exit Function
 
 err1:
+
     ActualizarIngresoBanco = False
 
 End Function
@@ -960,14 +1047,14 @@ Public Function FindAllPropiosConciliacion( _
 
         If Not IsNull(rs.Fields("cuenta_id").value) Then
 
-            Set tmpCheque.chequera.CuentaBancaria = _
-                New CuentaBancaria
+            Set tmpCheque.chequera.cuentaBancaria = _
+                New cuentaBancaria
 
-            tmpCheque.chequera.CuentaBancaria.Id = CLng( _
+            tmpCheque.chequera.cuentaBancaria.Id = CLng( _
                 rs.Fields("cuenta_id").value)
 
             If Not IsNull(rs.Fields("cuenta_numero").value) Then
-                tmpCheque.chequera.CuentaBancaria.numero = CStr( _
+                tmpCheque.chequera.cuentaBancaria.numero = CStr( _
                     rs.Fields("cuenta_numero").value)
             End If
 
@@ -1001,45 +1088,185 @@ Public Function ActualizarIngresosBancoLote( _
     Dim listaIds As String
     Dim valor As Variant
 
+    Dim che As cheque
+    Dim IdCheque As Long
+
     ActualizarIngresosBancoLote = False
 
+    '------------------------------------------------------
+    ' VALIDACIONES GENERALES
+    '------------------------------------------------------
     If idsCheques Is Nothing Then Exit Function
-    If idsCheques.count = 0 Then Exit Function
-    If CDbl(FechaIngreso) <= 0 Then Exit Function
 
+    If idsCheques.count = 0 Then Exit Function
+
+    If CDbl(FechaIngreso) <= 0 Then
+
+        MsgBox "Debe indicar una fecha de ingreso válida.", _
+               vbExclamation, _
+               "Conciliación de cheques"
+
+        Exit Function
+
+    End If
+
+    If FechaIngreso > Date Then
+
+        MsgBox "La fecha de ingreso no puede ser posterior a hoy.", _
+               vbExclamation, _
+               "Conciliación de cheques"
+
+        Exit Function
+
+    End If
+
+    listaIds = vbNullString
+
+    '======================================================
+    ' PRIMERA ETAPA
+    '
+    ' VALIDAR TODOS LOS CHEQUES.
+    '
+    ' IMPORTANTE:
+    ' todavía NO modificamos nada en la base.
+    ' Si uno falla, no se modifica ninguno.
+    '======================================================
     For Each valor In idsCheques
 
-        If IsNumeric(valor) Then
+        If Not IsNumeric(valor) Then
 
-            If CLng(valor) > 0 Then
+            MsgBox "Se encontró un identificador de cheque inválido." & _
+                   vbCrLf & vbCrLf & _
+                   "No se realizó ninguna modificación.", _
+                   vbExclamation, _
+                   "Conciliación de cheques"
 
-                If LenB(listaIds) > 0 Then
-                    listaIds = listaIds & ","
-                End If
-
-                listaIds = listaIds & CStr(CLng(valor))
-
-            End If
+            Exit Function
 
         End If
+
+        IdCheque = CLng(valor)
+
+        If IdCheque <= 0 Then
+
+            MsgBox "Se encontró un identificador de cheque inválido." & _
+                   vbCrLf & vbCrLf & _
+                   "No se realizó ninguna modificación.", _
+                   vbExclamation, _
+                   "Conciliación de cheques"
+
+            Exit Function
+
+        End If
+
+        Set che = FindById(IdCheque)
+
+        If Not IsSomething(che) Then
+
+            MsgBox "No se encontró el cheque ID " & _
+                   IdCheque & "." & _
+                   vbCrLf & vbCrLf & _
+                   "No se realizó ninguna modificación.", _
+                   vbExclamation, _
+                   "Conciliación de cheques"
+
+            Exit Function
+
+        End If
+
+        '--------------------------------------------------
+        ' SOLO CHEQUES PROPIOS
+        '--------------------------------------------------
+        If Not che.Propio Then
+
+            MsgBox "El cheque N° " & che.numero & _
+                   " no es un cheque propio." & _
+                   vbCrLf & vbCrLf & _
+                   "No se realizó ninguna modificación.", _
+                   vbExclamation, _
+                   "Conciliación de cheques"
+
+            Exit Function
+
+        End If
+
+        '--------------------------------------------------
+        ' NO DEBE ESTAR YA INGRESADO
+        '--------------------------------------------------
+        If che.entro Then
+
+            MsgBox "El cheque N° " & che.numero & _
+                   " ya se encuentra ingresado al banco." & _
+                   vbCrLf & vbCrLf & _
+                   "No se realizó ninguna modificación.", _
+                   vbExclamation, _
+                   "Conciliación de cheques"
+
+            Exit Function
+
+        End If
+
+        '--------------------------------------------------
+        ' SIMULAR EL NUEVO ESTADO
+        '--------------------------------------------------
+        che.entro = True
+        che.FechaIngresoBanco = FechaIngreso
+
+        '--------------------------------------------------
+        ' MISMA VALIDACION QUE EL INGRESO INDIVIDUAL
+        '--------------------------------------------------
+        If Not PuedeModificarIngresoBancoCheque(che) Then
+
+            'PuedeModificarIngresoBancoCheque ya muestra
+            'el motivo exacto del bloqueo.
+            Exit Function
+
+        End If
+
+        '--------------------------------------------------
+        ' AGREGAR A LA LISTA SQL
+        '--------------------------------------------------
+        If LenB(listaIds) > 0 Then
+            listaIds = listaIds & ","
+        End If
+
+        listaIds = listaIds & CStr(IdCheque)
 
     Next valor
 
     If LenB(listaIds) = 0 Then Exit Function
 
-    q = "UPDATE Cheques SET " & _
-        "ingresado = 1, " & _
-        "fecha_ingreso_banco = " & _
-            conectar.Escape(Format$(FechaIngreso, "yyyy-mm-dd")) & " " & _
-        "WHERE id IN (" & listaIds & ") " & _
-        "AND propio = 1 " & _
-        "AND (ingresado IS NULL OR ingresado = 0)"
 
-    ActualizarIngresosBancoLote = conectar.execute(q)
+    '======================================================
+    ' SEGUNDA ETAPA
+    '
+    ' TODOS PASARON LAS VALIDACIONES.
+    ' AHORA SI MODIFICAMOS TODOS JUNTOS.
+    '======================================================
+    q = "UPDATE Cheques SET " _
+      & "ingresado = 1, " _
+      & "fecha_ingreso_banco = " _
+      & conectar.Escape( _
+            Format$(FechaIngreso, "yyyy-mm-dd")) & " " _
+      & "WHERE id IN (" & listaIds & ") " _
+      & "AND propio = 1 " _
+      & "AND (ingresado IS NULL OR ingresado = 0)"
+
+    ActualizarIngresosBancoLote = _
+        conectar.execute(q)
+
     Exit Function
 
+
 err1:
+
     ActualizarIngresosBancoLote = False
+
+    MsgBox "No se pudieron actualizar los cheques." & _
+           vbCrLf & vbCrLf & _
+           Err.Number & " - " & Err.Description, _
+           vbCritical, _
+           "Conciliación de cheques"
 
 End Function
 
@@ -1057,9 +1284,9 @@ Private Function ObtenerIdCuentaBancariaChequera(ByVal IdChequera As Long) As Lo
     Set chq = DAOChequeras.GetById(IdChequera)
 
     If Not IsSomething(chq) Then Exit Function
-    If Not IsSomething(chq.CuentaBancaria) Then Exit Function
+    If Not IsSomething(chq.cuentaBancaria) Then Exit Function
 
-    ObtenerIdCuentaBancariaChequera = chq.CuentaBancaria.Id
+    ObtenerIdCuentaBancariaChequera = chq.cuentaBancaria.Id
     Exit Function
 
 err1:
@@ -1075,7 +1302,7 @@ Private Function PuedeModificarIngresoBancoCheque( _
     On Error GoTo err1
 
     Dim chequeActual As cheque
-    Dim IdCuenta As Long
+    Dim idCuenta As Long
     Dim IdConciliacion As Long
 
     PuedeModificarIngresoBancoCheque = False
@@ -1091,17 +1318,18 @@ Private Function PuedeModificarIngresoBancoCheque( _
 
             If chequeActual.Propio Then
 
-                If IsDate(chequeActual.FechaIngresoBanco) Then
+               If chequeActual.entro And _
+                    CDbl(chequeActual.FechaIngresoBanco) > 0 Then
 
-                    IdCuenta = ObtenerIdCuentaBancariaChequera( _
+                    idCuenta = ObtenerIdCuentaBancariaChequera( _
                                     chequeActual.IdChequera)
 
-                    If IdCuenta > 0 Then
+                    If idCuenta > 0 Then
 
                         IdConciliacion = _
                             DAOConciliacionBancaria. _
                                 ObtenerIdConciliacionCerrada( _
-                                    IdCuenta, _
+                                    idCuenta, _
                                     chequeActual.FechaIngresoBanco)
 
                         If IdConciliacion > 0 Then
@@ -1140,12 +1368,13 @@ Private Function PuedeModificarIngresoBancoCheque( _
     ' 2. VALIDAR EL NUEVO VALOR A GUARDAR
     '======================================================
     If che.Propio Then
+    
+        If che.entro And _
+           CDbl(che.FechaIngresoBanco) > 0 Then
 
-        If IsDate(che.FechaIngresoBanco) Then
+            idCuenta = ObtenerIdCuentaBancariaChequera(che.IdChequera)
 
-            IdCuenta = ObtenerIdCuentaBancariaChequera(che.IdChequera)
-
-            If IdCuenta <= 0 Then
+            If idCuenta <= 0 Then
 
                 MsgBox _
                     "La chequera del cheque N° " & che.numero & _
@@ -1163,7 +1392,7 @@ Private Function PuedeModificarIngresoBancoCheque( _
             IdConciliacion = _
                 DAOConciliacionBancaria. _
                     ObtenerIdConciliacionCerrada( _
-                        IdCuenta, _
+                        idCuenta, _
                         che.FechaIngresoBanco)
 
             If IdConciliacion > 0 Then
@@ -1204,4 +1433,3 @@ err1:
         "Conciliación bancaria"
 
 End Function
-
