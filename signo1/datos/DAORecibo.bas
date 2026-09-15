@@ -35,124 +35,183 @@ err1:
 End Function
 
 Public Function Anular(Recibo As Recibo) As Boolean
-    
-        On Error GoTo err101
-    
-        Anular = False
-    
-        If Recibo Is Nothing Then Exit Function
-    
-        If Recibo.estado <> EstadoRecibo.Aprobado Then
-            MsgBox _
-                "El recibo debe estar aprobado para poder anularlo.", _
-                vbExclamation, _
-                "Anular recibo"
-    
-            Exit Function
-        End If
-    
-    
-        '------------------------------------------------------
-        ' VALIDAR ANTES DE BORRAR ABSOLUTAMENTE NADA
-        '------------------------------------------------------
-        If Not ValidarOperacionesHistoricasReciboContraConciliacion( _
-                    Recibo.Id, _
-                    "anular") Then
-    
-            Exit Function
-    
-        End If
-    
-    
-        Dim estadoAnterior As EstadoRecibo
-        estadoAnterior = Recibo.estado
-    
-        conectar.BeginTransaction
-    
-        Recibo.estado = EstadoRecibo.ReciboAnulado
+
+    On Error GoTo err101
+
+    Dim estadoAnterior As EstadoRecibo
+    Dim numeroError As Long
+    Dim descripcionError As String
+
+    Anular = False
+
+    If Recibo Is Nothing Then Exit Function
+
+    If Recibo.estado <> EstadoRecibo.Aprobado Then
+
+        MsgBox _
+            "El recibo debe estar aprobado para poder anularlo.", _
+            vbExclamation, _
+            "Anular recibo"
+
+        Exit Function
+
+    End If
 
 
-        'borro los cheques
-        If Not conectar.execute("DELETE FROM Cheques WHERE id IN (SELECT idCheque FROM AdminRecibosCheques a WHERE a.`idRecibo`=" & Recibo.Id & ")") Then GoTo err101
+    '------------------------------------------------------
+    ' VALIDAR CONCILIACION ANTES DE MODIFICAR NADA
+    '------------------------------------------------------
+    If Not ValidarOperacionesHistoricasReciboContraConciliacion( _
+                Recibo.Id, _
+                "anular") Then
 
-        'borro los cheques x recibo
-        If Not conectar.execute("DELETE FROM AdminRecibosCheques WHERE idRecibo=" & Recibo.Id) Then GoTo err101
+        Exit Function
 
-
-        'borro las operaciones
-        If Not conectar.execute("DELETE FROM `AdminRecibosDepositos` WHERE idRecibo=" & Recibo.Id) Then GoTo err101
-        'DELETE FROM `AdminRecibosDepositos` WHERE idRecibo=5331
-
-
-        'borro las facturas
-        'if Not conectar.execute("DELETE FROM `AdminRecibosDetalleFacturas` WHERE idRecibo= " & recibo.Id) Then GoTo err101
-        'DELETE FROM `AdminRecibosDetalleFacturas` WHERE idRecibo=5311
+    End If
 
 
-        Dim q As String
-        q = "select * from AdminRecibosDetalleFacturas where idRecibo=" & Recibo.Id
-        Dim rs As Recordset
-        Set rs = conectar.RSFactory(q)
-        Dim F As Factura
-        Dim rs2 As Recordset
-        While Not rs.EOF And Not rs.BOF
+    estadoAnterior = Recibo.estado
 
-            q = "SELECT * FROM `AdminRecibosDetalleFacturas` f WHERE f.`idFactura`= " & rs!idFactura & "  AND f.`idRecibo`<>" & Recibo.Id
+    conectar.BeginTransaction
 
-            Set rs2 = conectar.RSFactory(q)
-            Dim pagoParcial As Boolean
-            pagoParcial = False
+    Recibo.estado = EstadoRecibo.ReciboAnulado
 
-            While Not rs2.EOF And Not rs2.BOF
 
-                'si hay facturas aca es porq estan pagas en otro recibo
-                pagoParcial = True
+    '------------------------------------------------------
+    ' BORRAR CHEQUES
+    '------------------------------------------------------
+    If Not conectar.execute( _
+        "DELETE FROM Cheques " & _
+        "WHERE id IN (" & _
+        "SELECT idCheque " & _
+        "FROM AdminRecibosCheques " & _
+        "WHERE idRecibo = " & Recibo.Id & _
+        ")") Then
 
-                rs2.MoveNext
+        GoTo err101
 
-            Wend
+    End If
 
-            Set F = DAOFactura.FindById(rs!idFactura)
-            If IsSomething(F) Then
-                If pagoParcial Then
-                    F.Saldado = SaldadoParcial
-                Else
-                    F.Saldado = NoSaldada
-                End If
-                DAOFactura.Guardar F
+
+    If Not conectar.execute( _
+        "DELETE FROM AdminRecibosCheques " & _
+        "WHERE idRecibo = " & Recibo.Id) Then
+
+        GoTo err101
+
+    End If
+
+
+    '------------------------------------------------------
+    ' TABLA HISTORICA DE DEPOSITOS
+    '------------------------------------------------------
+    If Not conectar.execute( _
+        "DELETE FROM AdminRecibosDepositos " & _
+        "WHERE idRecibo = " & Recibo.Id) Then
+
+        GoTo err101
+
+    End If
+
+
+    '------------------------------------------------------
+    ' RESTAURAR ESTADO DE FACTURAS
+    '------------------------------------------------------
+    Dim q As String
+    Dim rs As Recordset
+    Dim rs2 As Recordset
+    Dim F As Factura
+    Dim pagoParcial As Boolean
+
+    q = "SELECT * " & _
+        "FROM AdminRecibosDetalleFacturas " & _
+        "WHERE idRecibo = " & Recibo.Id
+
+    Set rs = conectar.RSFactory(q)
+
+    While Not rs.EOF And Not rs.BOF
+
+        q = "SELECT * " & _
+            "FROM AdminRecibosDetalleFacturas f " & _
+            "WHERE f.idFactura = " & rs!idFactura & " " & _
+            "AND f.idRecibo <> " & Recibo.Id
+
+        Set rs2 = conectar.RSFactory(q)
+
+        pagoParcial = False
+
+        While Not rs2.EOF And Not rs2.BOF
+
+            pagoParcial = True
+            rs2.MoveNext
+
+        Wend
+
+
+        Set F = DAOFactura.FindById(rs!idFactura)
+
+        If IsSomething(F) Then
+
+            If pagoParcial Then
+                F.Saldado = SaldadoParcial
             Else
+                F.Saldado = NoSaldada
+            End If
+
+            If Not DAOFactura.Guardar(F) Then
                 GoTo err101
             End If
-            rs.MoveNext
-        Wend
-        If Not conectar.execute("DELETE FROM `AdminRecibosDetalleFacturas` WHERE idRecibo= " & Recibo.Id) Then GoTo err101
+
+        Else
+
+            GoTo err101
+
+        End If
+
+        rs.MoveNext
+
+    Wend
 
 
+    If Not conectar.execute( _
+        "DELETE FROM AdminRecibosDetalleFacturas " & _
+        "WHERE idRecibo = " & Recibo.Id) Then
 
-        'borro retencione
-        If Not conectar.execute("DELETE FROM `AdminRecibosDetalleRetenciones` WHERE idRecibo=" & Recibo.Id) Then GoTo err101
-        'DELETE FROM `AdminRecibosDetalleRetenciones` WHERE idRecibo=5331
+        GoTo err101
+
+    End If
 
 
+    '------------------------------------------------------
+    ' BORRAR RETENCIONES
+    '------------------------------------------------------
+    If Not conectar.execute( _
+        "DELETE FROM AdminRecibosDetalleRetenciones " & _
+        "WHERE idRecibo = " & Recibo.Id) Then
 
-        'libero los comprobasntes
+        GoTo err101
 
+    End If
+
+
+    '------------------------------------------------------
+    ' GUARDAR RECIBO ANULADO
+    '------------------------------------------------------
     If Not DAORecibo.Guardar(Recibo) Then
         GoTo err101
     End If
-    
+
+
     conectar.CommitTransaction
-    
+
     Anular = True
     Exit Function
 
-    Else
-        GoTo err100
 
-
-    End If
-    Exit Function
 err101:
+
+    numeroError = Err.Number
+    descripcionError = Err.Description
 
     On Error Resume Next
 
@@ -165,7 +224,7 @@ err101:
     MsgBox _
         "Error al anular el recibo." & _
         vbCrLf & vbCrLf & _
-        Err.Number & " - " & Err.Description, _
+        numeroError & " - " & descripcionError, _
         vbCritical, _
         "Anular recibo"
 
@@ -173,75 +232,94 @@ End Function
 
 
 Public Function aprobar(Recibo As Recibo) As Boolean
+
     On Error GoTo err5
+
     Dim estAnt As EstadoRecibo
-    
-    estAnt = Recibo.estado
-    fechaAnt = Recibo.FechaAprobacion
-    
-    Recibo.FechaAprobacion = Now
-
-
     Dim fechaAnt As Variant
     Dim Factura As Factura
-    conectar.BeginTransaction
-
 
     estAnt = Recibo.estado
+    fechaAnt = Recibo.FechaAprobacion
+
+    conectar.BeginTransaction
+
     Recibo.FechaAprobacion = Now
     Set Recibo.usuarioAprobador = funciones.GetUserObj
     Recibo.estado = EstadoRecibo.Aprobado
 
 
     If Recibo.IsValid Then
-        'totalizo recibo
+
         Dim totEst As New TotalEstaticoRecibo
+
         totEst.TotalChequesEstatico = Recibo.TotalCheques
         totEst.TotalDepositosEstatico = Recibo.TotalOperacionesBanco
         totEst.TotalEfectivoEstatico = Recibo.TotalOperacionesCaja
         totEst.TotalReciboEstatico = Recibo.total
+
         Set Recibo.TotalEstatico = totEst
 
-        If Not DAORecibo.Guardar(Recibo) Then GoTo err5
+        If Not DAORecibo.Guardar(Recibo) Then
+            GoTo err5
+        End If
 
-        Dim q As String
+
         Dim montoSaldado As Double
-        Dim r2 As Recordset
         Dim newEstadoSaldadoFactura As TipoSaldadoFactura
 
         For Each Factura In Recibo.facturas
+
             montoSaldado = DAOFactura.PagosRealizados(Factura.Id)
 
             If montoSaldado = 0 Then
+
                 newEstadoSaldadoFactura = NoSaldada
+
             ElseIf montoSaldado >= Factura.total Then
+
                 newEstadoSaldadoFactura = saldadoTotal
+
             Else
+
                 newEstadoSaldadoFactura = SaldadoParcial
+
             End If
 
-            If Not conectar.execute("update AdminFacturas set saldada=" & newEstadoSaldadoFactura & " where id=" & Factura.Id) Then
+
+            If Not conectar.execute( _
+                "UPDATE AdminFacturas " & _
+                "SET saldada = " & newEstadoSaldadoFactura & " " & _
+                "WHERE id = " & Factura.Id) Then
+
                 GoTo err5
+
             End If
 
         Next Factura
 
     Else
+
         GoTo err5
+
     End If
 
 
-
-
-
     aprobar = True
+
     conectar.CommitTransaction
+
     Exit Function
+
+
 err5:
+
     aprobar = False
+
     Recibo.estado = estAnt
     Set Recibo.usuarioAprobador = Nothing
     Recibo.FechaAprobacion = fechaAnt
+
     conectar.RollBackTransaction
 
 End Function
