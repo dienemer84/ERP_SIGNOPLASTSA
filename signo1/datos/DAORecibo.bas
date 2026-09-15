@@ -35,15 +35,41 @@ err1:
 End Function
 
 Public Function Anular(Recibo As Recibo) As Boolean
-
-'''    Err.Raise 9999, , "Funcionalidad en desarrollo"
-
-    conectar.BeginTransaction
-
-    If Recibo.estado = EstadoRecibo.Aprobado Then
-        'cambio el estado del recibo
+    
+        On Error GoTo err101
+    
+        Anular = False
+    
+        If Recibo Is Nothing Then Exit Function
+    
+        If Recibo.estado <> EstadoRecibo.Aprobado Then
+            MsgBox _
+                "El recibo debe estar aprobado para poder anularlo.", _
+                vbExclamation, _
+                "Anular recibo"
+    
+            Exit Function
+        End If
+    
+    
+        '------------------------------------------------------
+        ' VALIDAR ANTES DE BORRAR ABSOLUTAMENTE NADA
+        '------------------------------------------------------
+        If Not ValidarOperacionesHistoricasReciboContraConciliacion( _
+                    Recibo.Id, _
+                    "anular") Then
+    
+            Exit Function
+    
+        End If
+    
+    
+        Dim estadoAnterior As EstadoRecibo
+        estadoAnterior = Recibo.estado
+    
+        conectar.BeginTransaction
+    
         Recibo.estado = EstadoRecibo.ReciboAnulado
-
 
 
         'borro los cheques
@@ -111,13 +137,14 @@ Public Function Anular(Recibo As Recibo) As Boolean
 
         'libero los comprobasntes
 
-
-
-
-
-        DAORecibo.Guardar Recibo
-
-        conectar.CommitTransaction
+    If Not DAORecibo.Guardar(Recibo) Then
+        GoTo err101
+    End If
+    
+    conectar.CommitTransaction
+    
+    Anular = True
+    Exit Function
 
     Else
         GoTo err100
@@ -125,15 +152,22 @@ Public Function Anular(Recibo As Recibo) As Boolean
 
     End If
     Exit Function
-err100:
-    Err.Raise 100, , "El recibo debería estar aprobado para poder anularlo"
-    conectar.RollBackTransaction
 err101:
-    Err.Raise 101, , "Error al anular el recibo." & Chr(10) & Err.Description
+
+    On Error Resume Next
+
+    Recibo.estado = estadoAnterior
+
     conectar.RollBackTransaction
 
+    Anular = False
 
-
+    MsgBox _
+        "Error al anular el recibo." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Anular recibo"
 
 End Function
 
@@ -141,6 +175,13 @@ End Function
 Public Function aprobar(Recibo As Recibo) As Boolean
     On Error GoTo err5
     Dim estAnt As EstadoRecibo
+    
+    estAnt = Recibo.estado
+    fechaAnt = Recibo.FechaAprobacion
+    
+    Recibo.FechaAprobacion = Now
+
+
     Dim fechaAnt As Variant
     Dim Factura As Factura
     conectar.BeginTransaction
@@ -336,6 +377,161 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
     Set Map = r
 End Function
 
+
+Private Function ValidarOperacionesBancoReciboContraConciliacion( _
+    ByRef rec As Recibo _
+) As Boolean
+
+    On Error GoTo err1
+
+    Dim op As operacion
+    Dim IdConciliacion As Long
+
+    ValidarOperacionesBancoReciboContraConciliacion = False
+
+    If rec Is Nothing Then Exit Function
+
+    If rec.operacionesBanco Is Nothing Then
+        ValidarOperacionesBancoReciboContraConciliacion = True
+        Exit Function
+    End If
+
+    For Each op In rec.operacionesBanco
+
+        If IsSomething(op.CuentaBancaria) Then
+
+            If CDbl(op.FechaOperacion) > 0 Then
+
+                IdConciliacion = _
+                    DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+                        op.CuentaBancaria.Id, _
+                        op.FechaOperacion)
+
+                If IdConciliacion > 0 Then
+
+                    MsgBox _
+                        "No se puede guardar el Recibo." & _
+                        vbCrLf & vbCrLf & _
+                        "Cuenta: " & _
+                        op.CuentaBancaria.DescripcionFormateada & _
+                        vbCrLf & _
+                        "Fecha de operación: " & _
+                        Format$(op.FechaOperacion, "dd/mm/yyyy") & _
+                        vbCrLf & vbCrLf & _
+                        "El período pertenece a la " & _
+                        "Conciliación Bancaria Nro " & _
+                        IdConciliacion & ".", _
+                        vbExclamation, _
+                        "Período bancario cerrado"
+
+                    Exit Function
+
+                End If
+
+            End If
+
+        End If
+
+    Next op
+
+    ValidarOperacionesBancoReciboContraConciliacion = True
+    Exit Function
+
+err1:
+
+    ValidarOperacionesBancoReciboContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar el período bancario del Recibo." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+
+Private Function ValidarOperacionesHistoricasReciboContraConciliacion( _
+    ByVal IdRecibo As Long, _
+    ByVal Accion As String _
+) As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As Recordset
+
+    ValidarOperacionesHistoricasReciboContraConciliacion = False
+
+    If IdRecibo <= 0 Then
+        ValidarOperacionesHistoricasReciboContraConciliacion = True
+        Exit Function
+    End If
+
+    q = "SELECT " _
+      & "o.fecha_operacion, " _
+      & "IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria, " _
+      & "IFNULL(b.nombre, 'SIN BANCO') AS banco, " _
+      & "cb.id AS id_conciliacion " _
+      & "FROM operaciones_recibos opr " _
+      & "INNER JOIN operaciones o " _
+      & " ON o.id = opr.operacionId " _
+      & "INNER JOIN conciliaciones_bancarias cb " _
+      & " ON cb.id_cuenta_bancaria = o.cuentabanc_o_caja_id " _
+      & " AND cb.estado = 1 " _
+      & " AND o.fecha_operacion " _
+      & "     BETWEEN cb.fecha_desde AND cb.fecha_hasta " _
+      & "LEFT JOIN AdminConfigCuentas c " _
+      & " ON c.id = o.cuentabanc_o_caja_id " _
+      & "LEFT JOIN AdminConfigBancos b " _
+      & " ON b.id = c.idBanco " _
+      & "WHERE opr.reciboId = " & IdRecibo & " " _
+      & "AND o.pertenencia = 'banco' " _
+      & "AND o.entrada_salida = 1 " _
+      & "LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        MsgBox _
+            "No se puede " & Accion & _
+            " el Recibo Nro " & IdRecibo & "." & _
+            vbCrLf & vbCrLf & _
+            "Posee una operación bancaria incluida " & _
+            "en una conciliación cerrada." & _
+            vbCrLf & vbCrLf & _
+            "Banco: " & CStr(rs!Banco) & vbCrLf & _
+            "Cuenta: " & CStr(rs!cuenta_bancaria) & vbCrLf & _
+            "Fecha: " & _
+            Format$(rs!fecha_operacion, "dd/mm/yyyy") & _
+            vbCrLf & vbCrLf & _
+            "Conciliación Bancaria Nro " & _
+            CLng(rs!id_conciliacion) & ".", _
+            vbExclamation, _
+            "Período bancario cerrado"
+
+        Exit Function
+
+    End If
+
+    ValidarOperacionesHistoricasReciboContraConciliacion = True
+    Exit Function
+
+err1:
+
+    ValidarOperacionesHistoricasReciboContraConciliacion = False
+
+    MsgBox _
+        "No se pudo validar las operaciones históricas del Recibo." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Conciliación bancaria"
+
+End Function
+
+
 Public Function Save(rec As Recibo) As Boolean
     On Error GoTo E
     conectar.BeginTransaction
@@ -354,9 +550,36 @@ End Function
 Public Function Guardar(rec As Recibo) As Boolean
     On Error GoTo E
 
+    '======================================================
+    ' VALIDAR PERIODO BANCARIO ANTES DE MODIFICAR NADA
+    '======================================================
 
+    If Not ValidarOperacionesBancoReciboContraConciliacion( _
+                rec) Then
+
+        GoTo E
+
+    End If
+
+
+    'Si el recibo ya está aprobado, proteger también
+    'las operaciones originales almacenadas.
+    If rec.Id > 0 And _
+       rec.estado = EstadoRecibo.Aprobado Then
+
+        If Not ValidarOperacionesHistoricasReciboContraConciliacion( _
+                    rec.Id, _
+                    "modificar") Then
+
+            GoTo E
+
+        End If
+
+    End If
+    
+    
     Dim q As String
-    Dim reciboId As Long
+    Dim ReciboID As Long
 
     If rec.Id = 0 Then
 
@@ -558,9 +781,9 @@ E:
 End Function
 
 
-Public Sub Imprimir(idRecibo As Long)
+Public Sub Imprimir(IdRecibo As Long)
     Dim Recibo As Recibo
-    Set Recibo = DAORecibo.FindById(idRecibo, True, True, True, True, True)
+    Set Recibo = DAORecibo.FindById(IdRecibo, True, True, True, True, True)
 
     If IsSomething(Recibo) Then
         Dim origin As Integer
@@ -627,7 +850,7 @@ Public Sub Imprimir(idRecibo As Long)
         Dim r As retencionRecibo
         For Each r In Recibo.retenciones
             Printer.CurrentX = lmargin
-            Printer.Print r.FEcha, r.Retencion.nombre, r.NroRetencion, Replace(FormatCurrency(funciones.FormatearDecimales(r.Valor)), "$", "")
+            Printer.Print r.FEcha, r.Retencion.nombre, r.NroRetencion, Replace(FormatCurrency(funciones.FormatearDecimales(r.valor)), "$", "")
         Next r
         
         If Recibo.retenciones.count > 0 Then

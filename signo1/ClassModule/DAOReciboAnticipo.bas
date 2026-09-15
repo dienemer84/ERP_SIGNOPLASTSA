@@ -1,16 +1,16 @@
 Attribute VB_Name = "DAOReciboAnticipo"
 Option Explicit
 
-Public Function FindById(id As Long, _
+Public Function FindById(Id As Long, _
                          Optional includeRetenciones As Boolean = False, _
                          Optional includeCheques As Boolean = False, _
                          Optional includeBanco As Boolean = False, _
                          Optional includeCaja As Boolean = False, _
                          Optional includeFacturas As Boolean = False _
-                         ) As recibo
+                         ) As Recibo
 
     Dim col As Collection
-    Set col = FindAll("rec.id = " & id, includeRetenciones, includeCheques, includeBanco, includeCaja, includeFacturas)
+    Set col = FindAll("rec.id = " & Id, includeRetenciones, includeCheques, includeBanco, includeCaja, includeFacturas)
     If col.count = 0 Then
         Set FindById = Nothing
     Else
@@ -34,27 +34,27 @@ proximo = -1
 
 End Function
 
-Public Function Anular(recibo As recibo) As Boolean
+Public Function Anular(Recibo As Recibo) As Boolean
     
 Err.Raise 9999, , "Funcionalidad en desarrollo"
     
     conectar.BeginTransaction
 
-    If recibo.estado = EstadoRecibo.Aprobado Then
+    If Recibo.estado = EstadoRecibo.Aprobado Then
         'cambio el estado del recibo
-        recibo.estado = EstadoRecibo.Reciboanulado
+        Recibo.estado = EstadoRecibo.ReciboAnulado
 
 
 
         'borro los cheques
-        If Not conectar.execute("DELETE FROM Cheques WHERE id IN (SELECT idCheque FROM AdminRecibosCheques a WHERE a.`idRecibo`=" & recibo.id & ")") Then GoTo err101
+        If Not conectar.execute("DELETE FROM Cheques WHERE id IN (SELECT idCheque FROM AdminRecibosCheques a WHERE a.`idRecibo`=" & Recibo.Id & ")") Then GoTo err101
 
         'borro los cheques x recibo
-        If Not conectar.execute("DELETE FROM AdminRecibosCheques WHERE idRecibo=" & recibo.id) Then GoTo err101
+        If Not conectar.execute("DELETE FROM AdminRecibosCheques WHERE idRecibo=" & Recibo.Id) Then GoTo err101
 
 
         'borro las operaciones
-        If Not conectar.execute("DELETE FROM `AdminRecibosDepositos` WHERE idRecibo=" & recibo.id) Then GoTo err101
+        If Not conectar.execute("DELETE FROM `AdminRecibosDepositos` WHERE idRecibo=" & Recibo.Id) Then GoTo err101
         'DELETE FROM `AdminRecibosDepositos` WHERE idRecibo=5331
 
 
@@ -64,14 +64,14 @@ Err.Raise 9999, , "Funcionalidad en desarrollo"
 
 
         Dim q As String
-        q = "select * from AdminRecibosDetalleFacturas where idRecibo=" & recibo.id
+        q = "select * from AdminRecibosDetalleFacturas where idRecibo=" & Recibo.Id
         Dim rs As Recordset
         Set rs = conectar.RSFactory(q)
         Dim F As Factura
         Dim rs2 As Recordset
         While Not rs.EOF And Not rs.BOF
 
-            q = "SELECT * FROM `AdminRecibosDetalleFacturas` f WHERE f.`idFactura`= " & rs!idFactura & "  AND f.`idRecibo`<>" & recibo.id
+            q = "SELECT * FROM `AdminRecibosDetalleFacturas` f WHERE f.`idFactura`= " & rs!idFactura & "  AND f.`idRecibo`<>" & Recibo.Id
 
             Set rs2 = conectar.RSFactory(q)
             Dim pagoParcial As Boolean
@@ -99,25 +99,26 @@ Err.Raise 9999, , "Funcionalidad en desarrollo"
             End If
             rs.MoveNext
         Wend
-        If Not conectar.execute("DELETE FROM `AdminRecibosDetalleFacturas` WHERE idRecibo= " & recibo.id) Then GoTo err101
+        If Not conectar.execute("DELETE FROM `AdminRecibosDetalleFacturas` WHERE idRecibo= " & Recibo.Id) Then GoTo err101
 
 
 
         'borro retencione
-        If Not conectar.execute("DELETE FROM `AdminRecibosDetalleRetenciones` WHERE idRecibo=" & recibo.id) Then GoTo err101
+        If Not conectar.execute("DELETE FROM `AdminRecibosDetalleRetenciones` WHERE idRecibo=" & Recibo.Id) Then GoTo err101
         'DELETE FROM `AdminRecibosDetalleRetenciones` WHERE idRecibo=5331
 
 
 
         'libero los comprobasntes
         
-
-
-
-
-        DAORecibo.Guardar recibo
-
-        conectar.CommitTransaction
+    If Not DAORecibo.Guardar(Recibo) Then
+        GoTo err101
+    End If
+    
+    conectar.CommitTransaction
+    
+    Anular = True
+    Exit Function
 
     Else
         GoTo err100
@@ -125,61 +126,74 @@ Err.Raise 9999, , "Funcionalidad en desarrollo"
 
     End If
     Exit Function
-err100:
-    Err.Raise 100, , "El recibo debería estar aprobado para poder anularlo"
-    conectar.RollBackTransaction
 err101:
-    Err.Raise 101, , "Error al anular el recibo." & Chr(10) & Err.Description
+
+    On Error Resume Next
+
+    Recibo.estado = estadoAnterior
+
     conectar.RollBackTransaction
 
+    Anular = False
 
-
+    MsgBox _
+        "Error al anular el recibo." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Anular recibo"
 
 End Function
 
 
-Public Function aprobar(recibo As recibo) As Boolean
+Public Function aprobar(Recibo As Recibo) As Boolean
     On Error GoTo err5
     Dim estAnt As EstadoRecibo
+    
+    estAnt = Recibo.estado
+    fechaAnt = Recibo.FechaAprobacion
+    
+    Recibo.FechaAprobacion = Now
+
     Dim fechaAnt As Variant
     Dim Factura As Factura
     conectar.BeginTransaction
 
 
-    estAnt = recibo.estado
-    recibo.fechaAprobacion = Now
-    Set recibo.usuarioAprobador = funciones.GetUserObj
-    recibo.estado = EstadoRecibo.Aprobado
+    estAnt = Recibo.estado
+    Recibo.FechaAprobacion = Now
+    Set Recibo.usuarioAprobador = funciones.GetUserObj
+    Recibo.estado = EstadoRecibo.Aprobado
 
 
-    If recibo.IsValid Then
+    If Recibo.IsValid Then
         'totalizo recibo
         Dim totEst As New TotalEstaticoRecibo
-        totEst.TotalChequesEstatico = recibo.TotalCheques
-        totEst.TotalDepositosEstatico = recibo.TotalOperacionesBanco
-        totEst.TotalEfectivoEstatico = recibo.TotalOperacionesCaja
-        totEst.TotalReciboEstatico = recibo.Total
-        Set recibo.totalEstatico = totEst
+        totEst.TotalChequesEstatico = Recibo.TotalCheques
+        totEst.TotalDepositosEstatico = Recibo.TotalOperacionesBanco
+        totEst.TotalEfectivoEstatico = Recibo.TotalOperacionesCaja
+        totEst.TotalReciboEstatico = Recibo.total
+        Set Recibo.TotalEstatico = totEst
 
-        If Not DAOReciboAnticipo.Guardar(recibo) Then GoTo err5
+        If Not DAOReciboAnticipo.Guardar(Recibo) Then GoTo err5
 
         Dim q As String
         Dim montoSaldado As Double
         Dim r2 As Recordset
         Dim newEstadoSaldadoFactura As TipoSaldadoFactura
 
-        For Each Factura In recibo.facturas
-            montoSaldado = DAOFactura.PagosRealizados(Factura.id)
+        For Each Factura In Recibo.facturas
+            montoSaldado = DAOFactura.PagosRealizados(Factura.Id)
 
             If montoSaldado = 0 Then
                 newEstadoSaldadoFactura = NoSaldada
-            ElseIf montoSaldado >= Factura.Total Then
+            ElseIf montoSaldado >= Factura.total Then
                 newEstadoSaldadoFactura = saldadoTotal
             Else
                 newEstadoSaldadoFactura = SaldadoParcial
             End If
 
-            If Not conectar.execute("update AdminFacturas set saldada=" & newEstadoSaldadoFactura & " where id=" & Factura.id) Then
+            If Not conectar.execute("update AdminFacturas set saldada=" & newEstadoSaldadoFactura & " where id=" & Factura.Id) Then
                 GoTo err5
             End If
 
@@ -198,9 +212,9 @@ Public Function aprobar(recibo As recibo) As Boolean
     Exit Function
 err5:
     aprobar = False
-    recibo.estado = estAnt
-    Set recibo.usuarioAprobador = Nothing
-    recibo.fechaAprobacion = fechaAnt
+    Recibo.estado = estAnt
+    Set Recibo.usuarioAprobador = Nothing
+    Recibo.FechaAprobacion = fechaAnt
     conectar.RollBackTransaction
 
 End Function
@@ -228,7 +242,7 @@ Public Function FindAll(Optional filter As String = "1 = 1", _
 
 
 Dim col As New Collection
-    Dim rec As recibo
+    Dim rec As Recibo
 
     Dim idx As Dictionary
     Dim rs As Recordset
@@ -241,29 +255,29 @@ Dim col As New Collection
     While Not rs.EOF
         Set rec = Map(rs, idx, "rec", "cli", "mon", "ucre", "uapro")
 
-        If funciones.BuscarEnColeccion(col, CStr(rec.id)) Then
-            Set rec = col.item(CStr(rec.id))
+        If funciones.BuscarEnColeccion(col, CStr(rec.Id)) Then
+            Set rec = col.item(CStr(rec.Id))
         End If
 
 
 
 
         If includeCheques Then
-            Set rec.cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.id & ")")
+            Set rec.Cheques = DAOCheques.FindAll(DAOCheques.TABLA_CHEQUE & "." & DAOCheques.CAMPO_ID & " IN (SELECT idCheque FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id & ")")
         End If
 
         If includeBanco Then
-            Set rec.operacionesBanco = DAOOperacion.FindAll(Banco, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.id & ")")
+            Set rec.operacionesBanco = DAOOperacion.FindAll(Banco, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
         End If
 
         If includeCaja Then
-            Set rec.operacionesCaja = DAOOperacion.FindAll(caja, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.id & ")")
+            Set rec.OperacionesCaja = DAOOperacion.FindAll(caja, "op.id IN (SELECT operacionId FROM operaciones_recibos WHERE reciboId = " & rec.Id & ")")
         End If
 
 
 
-        If Not funciones.BuscarEnColeccion(col, CStr(rec.id)) Then
-            col.Add rec, CStr(rec.id)
+        If Not funciones.BuscarEnColeccion(col, CStr(rec.Id)) Then
+            col.Add rec, CStr(rec.Id)
         End If
 
         rs.MoveNext
@@ -277,18 +291,18 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
                     Optional tablaMoneda As String = vbNullString, _
                     Optional tablaUsuarioCreador As String = vbNullString, _
                     Optional tablaUsuarioAprobador As String = vbNullString _
-                    ) As recibo
+                    ) As Recibo
 
-    Dim r As recibo
-    Dim id As Long
+    Dim r As Recibo
+    Dim Id As Long
 
-    id = GetValue(rs, indice, tabla, "id")
+    Id = GetValue(rs, indice, tabla, "id")
 
-    If id > 0 Then
-        Set r = New recibo
-        r.id = id
+    If Id > 0 Then
+        Set r = New Recibo
+        r.Id = Id
         r.estado = GetValue(rs, indice, tabla, "estado")
-        r.fechaAprobacion = GetValue(rs, indice, tabla, "fechaAprobacion")
+        r.FechaAprobacion = GetValue(rs, indice, tabla, "fechaAprobacion")
         r.fechaCreacion = GetValue(rs, indice, tabla, "fechaCreacion")
         r.fechaModificacion = GetValue(rs, indice, tabla, "fechaModificacion")
         'r.PagoACuenta = GetValue(rs, indice, tabla, "pagoACuenta")
@@ -303,11 +317,11 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         totEstatico.TotalDepositosEstatico = GetValue(rs, indice, tabla, "tot_estatico_depositos")
         totEstatico.TotalEfectivoEstatico = GetValue(rs, indice, tabla, "tot_estatico_efectivo")
         totEstatico.TotalReciboEstatico = GetValue(rs, indice, tabla, "tot_estatico_recibo")
-        Set r.totalEstatico = totEstatico
+        Set r.TotalEstatico = totEstatico
 
 
         If LenB(tablaMoneda) > 0 Then Set r.moneda = DAOMoneda.Map(rs, indice, tablaMoneda)
-        If LenB(tablaCliente) > 0 Then Set r.cliente = DAOCliente.Map(rs, indice, tablaCliente)
+        If LenB(tablaCliente) > 0 Then Set r.Cliente = DAOCliente.Map(rs, indice, tablaCliente)
         If LenB(tablaUsuarioCreador) > 0 Then Set r.usuarioCreador = DAOUsuarios.Map(rs, indice, tablaUsuarioCreador)
         If LenB(tablaUsuarioAprobador) > 0 Then Set r.usuarioAprobador = DAOUsuarios.Map(rs, indice, tablaUsuarioAprobador)
     End If
@@ -315,7 +329,7 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
     Set Map = r
 End Function
 
-Public Function Save(rec As recibo) As Boolean
+Public Function Save(rec As Recibo) As Boolean
     On Error GoTo E
     conectar.BeginTransaction
 
@@ -330,14 +344,14 @@ E:
 
 End Function
 
-Public Function Guardar(rec As recibo) As Boolean
+Public Function Guardar(rec As Recibo) As Boolean
     On Error GoTo E
 
 
     Dim q As String
-    Dim reciboId As Long
+    Dim ReciboID As Long
 
-    If rec.id = 0 Then
+    If rec.Id = 0 Then
 
         q = "INSERT INTO AdminRecibosAnticipo" _
             & "            (idCliente," _
@@ -396,13 +410,13 @@ Public Function Guardar(rec As recibo) As Boolean
         q = Replace(q, "'idUsuarioAprobador'", conectar.GetEntityId(rec.usuarioAprobador))
         q = Replace(q, "'id'", conectar.GetEntityId(rec))
         q = Replace(q, "'idUsuarioModificador'", funciones.getUser)
-        q = Replace(q, "'fechaAprobacion'", conectar.Escape(rec.fechaAprobacion))
+        q = Replace(q, "'fechaAprobacion'", conectar.Escape(rec.FechaAprobacion))
 
-        If IsSomething(rec.totalEstatico) Then
-            q = Replace(q, "'tot_estatico_cheques'", conectar.Escape(rec.totalEstatico.TotalChequesEstatico))
-            q = Replace(q, "'tot_estatico_efectivo'", conectar.Escape(rec.totalEstatico.TotalEfectivoEstatico))
-            q = Replace(q, "'tot_estatico_depositos'", conectar.Escape(rec.totalEstatico.TotalDepositosEstatico))
-            q = Replace(q, "'tot_estatico_recibo'", conectar.Escape(rec.totalEstatico.TotalReciboEstatico))
+        If IsSomething(rec.TotalEstatico) Then
+            q = Replace(q, "'tot_estatico_cheques'", conectar.Escape(rec.TotalEstatico.TotalChequesEstatico))
+            q = Replace(q, "'tot_estatico_efectivo'", conectar.Escape(rec.TotalEstatico.TotalEfectivoEstatico))
+            q = Replace(q, "'tot_estatico_depositos'", conectar.Escape(rec.TotalEstatico.TotalDepositosEstatico))
+            q = Replace(q, "'tot_estatico_recibo'", conectar.Escape(rec.TotalEstatico.TotalReciboEstatico))
         Else
             q = Replace(q, "'tot_estatico_cheques'", 0)
             q = Replace(q, "'tot_estatico_efectivo'", 0)
@@ -413,7 +427,7 @@ Public Function Guardar(rec As recibo) As Boolean
 
     End If
 
-    q = Replace(q, "'idCliente'", conectar.GetEntityId(rec.cliente))
+    q = Replace(q, "'idCliente'", conectar.GetEntityId(rec.Cliente))
     q = Replace(q, "'fechaCreacion'", conectar.Escape(rec.fechaCreacion))
     q = Replace(q, "'idUsuarioCreador'", conectar.GetEntityId(rec.usuarioCreador))
     q = Replace(q, "'fechaModificacion'", conectar.Escape(rec.fechaModificacion))
@@ -426,20 +440,20 @@ Public Function Guardar(rec As recibo) As Boolean
     Dim esNuevo As Boolean
     esNuevo = False
     If Not conectar.execute(q) Then GoTo E
-    If rec.id = 0 Then esNuevo = True
-    If rec.id <> 0 And rec.estado = EstadoRecibo.Pendiente Then  'en el insert no tiene nada de agregacion
+    If rec.Id = 0 Then esNuevo = True
+    If rec.Id <> 0 And rec.estado = EstadoRecibo.Pendiente Then  'en el insert no tiene nada de agregacion
 
 
         'CHEQUES----------------------------------------------------------
-        q = "DELETE FROM AdminRecibosCheques WHERE idRecibo = " & rec.id
+        q = "DELETE FROM AdminRecibosCheques WHERE idRecibo = " & rec.Id
         If Not conectar.execute(q) Then GoTo E
         Dim cheq As cheque
-        For Each cheq In rec.cheques
+        For Each cheq In rec.Cheques
 
-            If cheq.id = 0 Then
+            If cheq.Id = 0 Then
                 cheq.EnCartera = True
                 cheq.Propio = False
-                cheq.OrigenDestino = UCase(rec.cliente.razon)
+                cheq.OrigenDestino = UCase(rec.Cliente.razon)
             Else
                 'If IsSomething(DAOCheques.FindById(cheq.id)) Then
                 '    q = "DELETE FROM Cheques WHERE id = " & cheq.id
@@ -449,7 +463,7 @@ Public Function Guardar(rec As recibo) As Boolean
 
             If Not DAOCheques.Guardar(cheq) Then GoTo E
 
-            q = "INSERT INTO AdminRecibosCheques (idRecibo, idCheque) VALUES (" & rec.id & ", " & cheq.id & ")"
+            q = "INSERT INTO AdminRecibosCheques (idRecibo, idCheque) VALUES (" & rec.Id & ", " & cheq.Id & ")"
             If Not conectar.execute(q) Then GoTo E
         Next cheq
 
@@ -457,11 +471,11 @@ Public Function Guardar(rec As recibo) As Boolean
         'CAJA----------------------------------------------------------
         Dim op As operacion
         Dim recId As Long
-        For Each op In rec.operacionesCaja
+        For Each op In rec.OperacionesCaja
             If Not DAOOperacion.Save(op) Then GoTo E
             conectar.UltimoId "operaciones", recId
             If recId = 0 Then GoTo E
-            If Not conectar.execute("INSERT INTO operaciones_recibos VALUES (" & recId & "," & rec.id & ")") Then GoTo E
+            If Not conectar.execute("INSERT INTO operaciones_recibos VALUES (" & recId & "," & rec.Id & ")") Then GoTo E
         Next op
 
         'BANCO----------------------------------------------------------
@@ -469,7 +483,7 @@ Public Function Guardar(rec As recibo) As Boolean
             If Not DAOOperacion.Save(op) Then GoTo E
             conectar.UltimoId "operaciones", recId
             If recId = 0 Then GoTo E
-            If Not conectar.execute("INSERT INTO operaciones_recibos VALUES (" & recId & "," & rec.id & ")") Then GoTo E
+            If Not conectar.execute("INSERT INTO operaciones_recibos VALUES (" & recId & "," & rec.Id & ")") Then GoTo E
         Next op
 
     End If
@@ -500,15 +514,15 @@ E:
 End Function
 
 
-Public Sub Imprimir(idRecibo As Long)
+Public Sub Imprimir(IdRecibo As Long)
 
-    Dim recibo As recibo
-    Set recibo = DAOReciboAnticipo.FindById(idRecibo, True, True, True, True, True)
+    Dim Recibo As Recibo
+    Set Recibo = DAOReciboAnticipo.FindById(IdRecibo, True, True, True, True, True)
     
     Dim Espacio As Integer
     Espacio = 300
     
-    If IsSomething(recibo) Then
+    If IsSomething(Recibo) Then
 
         Dim origin As Integer
         Printer.CurrentY = Espacio
@@ -528,13 +542,13 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.Print "RECIBO DE ANTICIPO CLIENTE"
         Printer.FontSize = origin + 3
                 Printer.CurrentX = Espacio
-                Printer.Print "Número: " & recibo.id
+                Printer.Print "Número: " & Recibo.Id
                 Printer.CurrentX = Espacio
-                Printer.Print "Estado: " & enums.EnumEstadoRecibo(recibo.estado)
+                Printer.Print "Estado: " & enums.EnumEstadoRecibo(Recibo.estado)
                 Printer.CurrentX = Espacio
-                Printer.Print "Fecha: " & Format(Day(recibo.FEcha), "00") & "/" & Format(Month(recibo.FEcha), "00") & "/" & Format(Year(recibo.FEcha), "0000")
+                Printer.Print "Fecha: " & Format(Day(Recibo.FEcha), "00") & "/" & Format(Month(Recibo.FEcha), "00") & "/" & Format(Year(Recibo.FEcha), "0000")
                 Printer.CurrentX = Espacio
-                Printer.Print "Cliente: " & recibo.cliente.razon
+                Printer.Print "Cliente: " & Recibo.Cliente.razon
         Printer.FontSize = origin
         Printer.FontBold = False
                         Printer.Print Chr(10)
@@ -545,7 +559,7 @@ Public Sub Imprimir(idRecibo As Long)
         Printer.CurrentX = Espacio
         Printer.Print "Valores recibidos "
         Printer.FontBold = False
-        If recibo.operacionesBanco.count > 0 Then
+        If Recibo.operacionesBanco.count > 0 Then
             Printer.FontBold = True
  Printer.CurrentX = Espacio
             Printer.Print "Banco"
@@ -556,20 +570,20 @@ Public Sub Imprimir(idRecibo As Long)
         End If
 
         Dim o As operacion
-        For Each o In recibo.operacionesBanco
+        For Each o In Recibo.operacionesBanco
            Printer.CurrentX = Espacio
            Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, (FormatCurrency(funciones.FormatearDecimales(o.Monto)))
         Next o
 
-        If recibo.operacionesBanco.count > 0 Then
+        If Recibo.operacionesBanco.count > 0 Then
             Printer.FontBold = True
             Printer.CurrentX = Espacio
-            Printer.Print "Total Banco: " & (FormatCurrency(funciones.FormatearDecimales(recibo.TotalOperacionesBanco)))
+            Printer.Print "Total Banco: " & (FormatCurrency(funciones.FormatearDecimales(Recibo.TotalOperacionesBanco)))
         End If
 
         Printer.Print Chr(10)
         
-        If recibo.operacionesCaja.count > 0 Then
+        If Recibo.OperacionesCaja.count > 0 Then
             Printer.FontBold = True
             Printer.CurrentX = Espacio
             Printer.Print "Caja"
@@ -580,7 +594,7 @@ Printer.CurrentX = Espacio
 
         End If
 
-        For Each o In recibo.operacionesCaja
+        For Each o In Recibo.OperacionesCaja
             'Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto
             
             Printer.CurrentX = Espacio
@@ -588,14 +602,14 @@ Printer.CurrentX = Espacio
         Next o
         
         Printer.FontBold = True
-        If recibo.operacionesCaja.count > 0 Then
+        If Recibo.OperacionesCaja.count > 0 Then
             Printer.CurrentX = Espacio
-            Printer.Print "Total Caja: " & (FormatCurrency(funciones.FormatearDecimales(recibo.TotalOperacionesCaja)))
+            Printer.Print "Total Caja: " & (FormatCurrency(funciones.FormatearDecimales(Recibo.TotalOperacionesCaja)))
         End If
      
         Printer.Print Chr(10)
         
-        If recibo.cheques.count > 0 Then
+        If Recibo.Cheques.count > 0 Then
             Printer.FontBold = True
             Printer.CurrentX = Espacio
             Printer.Print "Cheques Recibidos"
@@ -611,7 +625,7 @@ Printer.CurrentX = Espacio
 
         
         Dim che As cheque
-        For Each che In recibo.cheques
+        For Each che In Recibo.Cheques
             
             'Printer.Print o.FechaOperacion, o.CuentaBancaria.DescripcionFormateada, o.Monto
 Printer.CurrentX = Espacio
@@ -619,16 +633,16 @@ Printer.CurrentX = Espacio
         Next che
         
         Printer.FontBold = True
-        If recibo.cheques.count > 0 Then
+        If Recibo.Cheques.count > 0 Then
         Printer.CurrentX = Espacio
-            Printer.Print "Total Cheques Recibidos: " & (FormatCurrency(funciones.FormatearDecimales(recibo.TotalCheques)))
+            Printer.Print "Total Cheques Recibidos: " & (FormatCurrency(funciones.FormatearDecimales(Recibo.TotalCheques)))
         End If
         Printer.Print Chr(10)
         Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.Width, Printer.CurrentY)
 '        Printer.CurrentX = Espacio
 '        Printer.Print " Total Recibo:  " & (FormatCurrency(funciones.FormatearDecimales(recibo.Total)))
         Printer.CurrentX = Espacio
-        Printer.Print " Total Recibido:  " & (FormatCurrency(funciones.FormatearDecimales(recibo.TotalRecibido)))
+        Printer.Print " Total Recibido:  " & (FormatCurrency(funciones.FormatearDecimales(Recibo.TotalRecibido)))
         Printer.FontBold = False
                 Printer.Print Chr(10)
                 Printer.Line (Printer.CurrentX, Printer.CurrentY)-(Printer.Width, Printer.CurrentY)

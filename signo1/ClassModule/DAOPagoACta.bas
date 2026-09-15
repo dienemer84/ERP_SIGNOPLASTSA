@@ -1759,26 +1759,26 @@ Private Function ValidarChequesPagoACuentaContraConciliacion( _
       & "ch.fecha_ingreso_banco, " _
       & "IFNULL(c.cuenta, 'SIN CUENTA') AS cuenta_bancaria, " _
       & "IFNULL(b.nombre, 'SIN BANCO') AS banco, " _
-      & "cb.id AS id_conciliacion " _
-      & "FROM pagos_a_cuenta_cheques pcc " _
-      & "INNER JOIN Cheques ch " _
-      & " ON ch.id = pcc.id_cheque " _
-      & "INNER JOIN Chequeras chq " _
-      & " ON chq.id = ch.id_chequera " _
-      & "INNER JOIN conciliaciones_bancarias cb " _
-      & " ON cb.id_cuenta_bancaria = chq.id_cuenta_bancaria " _
-      & " AND cb.estado = 1 " _
-      & " AND ch.fecha_ingreso_banco " _
+      & "cb.id AS id_conciliacion FROM Cheques ch " _
+      & "INNER JOIN Chequeras chq ON chq.id = ch.id_chequera " _
+      & "INNER JOIN conciliaciones_bancarias cb ON cb.id_cuenta_bancaria = chq.id_cuenta_bancaria " _
+      & " AND cb.estado = 1 AND ch.fecha_ingreso_banco " _
       & "     BETWEEN cb.fecha_desde AND cb.fecha_hasta " _
       & "LEFT JOIN AdminConfigCuentas c " _
       & " ON c.id = chq.id_cuenta_bancaria " _
       & "LEFT JOIN AdminConfigBancos b " _
       & " ON b.id = c.idBanco " _
-      & "WHERE pcc.id_pago_a_cuenta = " & IdPagoACuenta & " " _
-      & "AND IFNULL(ch.propio, 0) = 1 " _
+      & "WHERE IFNULL(ch.propio, 0) = 1 " _
       & "AND IFNULL(ch.ingresado, 0) = 1 " _
       & "AND ch.fecha_ingreso_banco IS NOT NULL " _
-      & "LIMIT 1"
+      & "AND (" _
+      & " IFNULL(ch.pago_a_cuenta_origen, 0) = " & IdPagoACuenta & " " _
+      & " OR EXISTS (" _
+      & "     SELECT 1 " _
+      & "     FROM pagos_a_cuenta_cheques pcc " _
+      & "     WHERE pcc.id_pago_a_cuenta = " & IdPagoACuenta & " " _
+      & "     AND pcc.id_cheque = ch.id" _
+      & " )) LIMIT 1"
 
     Set rs = conectar.RSFactory(q)
 
