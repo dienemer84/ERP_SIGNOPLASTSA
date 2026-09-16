@@ -14,6 +14,19 @@ Begin VB.Form frmAdminCajaBancosListaAsientoBancario
    ScaleMode       =   0  'User
    ScaleWidth      =   18015
    WindowState     =   2  'Maximized
+   Begin XtremeSuiteControls.PushButton btnExportarExcel 
+      Height          =   495
+      Left            =   25080
+      TabIndex        =   35
+      Top             =   1800
+      Width           =   2055
+      _Version        =   786432
+      _ExtentX        =   3625
+      _ExtentY        =   873
+      _StockProps     =   79
+      Caption         =   "Exportar a Excel"
+      UseVisualStyle  =   -1  'True
+   End
    Begin GridEX20.GridEX gridTotalesCuenta 
       Height          =   5535
       Left            =   21120
@@ -626,6 +639,10 @@ err1:
 
 End Sub
 
+
+Private Sub btnExportarExcel_Click()
+
+End Sub
 
 Private Sub cmdBuscar_Click()
     If 1 = 1 Then llenarLista Else Me.gridOrdenes.ItemCount = 0
@@ -1303,7 +1320,7 @@ Private Function ObtenerMovimientoSeleccionado() _
 
     On Error GoTo err1
 
-    Dim idMovimiento As Long
+    Dim IdMovimiento As Long
     Dim mov As clsAsientoContable
     Dim valorId As Variant
 
@@ -1317,11 +1334,11 @@ Private Function ObtenerMovimientoSeleccionado() _
     If IsNull(valorId) Or IsEmpty(valorId) Then Exit Function
     If Not IsNumeric(valorId) Then Exit Function
 
-    idMovimiento = CLng(valorId)
+    IdMovimiento = CLng(valorId)
 
     For Each mov In Movimientos
 
-        If mov.Id = idMovimiento Then
+        If mov.Id = IdMovimiento Then
             Set ObtenerMovimientoSeleccionado = mov
             Exit Function
         End If
@@ -1373,19 +1390,19 @@ Private Sub OrdenarMovimientosPorValor( _
 
     Dim i As Long
     Dim j As Long
-    Dim cantidad As Long
+    Dim Cantidad As Long
     Dim intercambiar As Boolean
 
-    cantidad = Movimientos.count
+    Cantidad = Movimientos.count
 
-    If cantidad <= 1 Then Exit Sub
+    If Cantidad <= 1 Then Exit Sub
 
-    ReDim arr(1 To cantidad)
+    ReDim arr(1 To Cantidad)
 
     '---------------------------------------------
     ' Pasar la colección a un array
     '---------------------------------------------
-    For i = 1 To cantidad
+    For i = 1 To Cantidad
         Set arr(i) = Movimientos.item(i)
     Next i
 
@@ -1393,9 +1410,9 @@ Private Sub OrdenarMovimientosPorValor( _
     ' Ordenar por el valor NUMÉRICO REAL
     ' StaticTotalOrigenes es Double
     '---------------------------------------------
-    For i = 1 To cantidad - 1
+    For i = 1 To Cantidad - 1
 
-        For j = i + 1 To cantidad
+        For j = i + 1 To Cantidad
 
             If ascendente Then
 
@@ -1428,7 +1445,7 @@ Private Sub OrdenarMovimientosPorValor( _
     '---------------------------------------------
     Set Movimientos = New Collection
 
-    For i = 1 To cantidad
+    For i = 1 To Cantidad
         Movimientos.Add arr(i)
     Next i
 
@@ -1581,27 +1598,27 @@ Private Sub OrdenarTotalesPorCuenta( _
 
     Dim i As Long
     Dim j As Long
-    Dim cantidad As Long
+    Dim Cantidad As Long
     Dim intercambiar As Boolean
 
     Dim nombreI As String
     Dim nombreJ As String
 
-    cantidad = TotalesCuentas.count
+    Cantidad = TotalesCuentas.count
 
-    If cantidad <= 1 Then Exit Sub
+    If Cantidad <= 1 Then Exit Sub
 
-    ReDim arr(1 To cantidad)
+    ReDim arr(1 To Cantidad)
 
     'Pasar colección a array
-    For i = 1 To cantidad
+    For i = 1 To Cantidad
         Set arr(i) = TotalesCuentas.item(i)
     Next i
 
     'Orden alfabético por nombre
-    For i = 1 To cantidad - 1
+    For i = 1 To Cantidad - 1
 
-        For j = i + 1 To cantidad
+        For j = i + 1 To Cantidad
 
             nombreI = UCase$(Trim$(arr(i).nombre))
             nombreJ = UCase$(Trim$(arr(j).nombre))
@@ -1627,7 +1644,7 @@ Private Sub OrdenarTotalesPorCuenta( _
     'Reconstruir colección
     Set TotalesCuentas = New Collection
 
-    For i = 1 To cantidad
+    For i = 1 To Cantidad
 
         TotalesCuentas.Add _
             arr(i), _
