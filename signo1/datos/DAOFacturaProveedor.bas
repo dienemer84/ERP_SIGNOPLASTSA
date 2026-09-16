@@ -93,7 +93,7 @@ Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
-        existeFactura = rs!Cantidad > 0
+        existeFactura = rs!cantidad > 0
 
     End If
     Exit Function
@@ -501,7 +501,7 @@ Public Function Delete(facid As Long) As Boolean
 
             Dim facs As Collection
             Dim F As clsFacturaProveedor
-            Set facs = op.facturasProveedor
+            Set facs = op.FacturasProveedor
             For Each F In facs
                 If F.Id <> facid Then
                     facsOrphan.Add F
@@ -731,7 +731,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     If insideTransaction Then conectar.BeginTransaction
 
     Dim op As New OrdenPago
-    op.facturasProveedor.Add fac
+    op.FacturasProveedor.Add fac
     fac.totalAbonado = fac.total
     fac.TipoCambio = 1
     fac.NetoGravadoAbonado = fac.NetoGravado
@@ -1038,7 +1038,7 @@ End Function
 ' No depende solamente del estado actual del anticipo.
 '=========================================================
 Public Function TotalAnticiposPendientesAl( _
-    ByVal IdProveedor As Long, _
+    ByVal idProveedor As Long, _
     ByVal FechaCorte As Date, _
     ByVal IdMoneda As Long _
 ) As Double
@@ -1048,21 +1048,21 @@ Public Function TotalAnticiposPendientesAl( _
     Dim q As String
     Dim rs As Recordset
 
-    Dim fechaHasta As Date
+    Dim FechaHasta As Date
 
     Dim numeroError As Long
     Dim descripcionError As String
 
     TotalAnticiposPendientesAl = 0
 
-    If IdProveedor <= 0 Then
+    If idProveedor <= 0 Then
         Err.Raise 5, _
                   "TotalAnticiposPendientesAl", _
                   "El proveedor no es valido."
     End If
 
     'Trabajar solamente con la fecha, sin horario.
-    fechaHasta = DateSerial( _
+    FechaHasta = DateSerial( _
         Year(FechaCorte), _
         Month(FechaCorte), _
         Day(FechaCorte))
@@ -1074,9 +1074,9 @@ Public Function TotalAnticiposPendientesAl( _
       & "IFNULL(SUM(p.static_total_origen), 0) " _
       & "AS total_anticipos " _
       & "FROM pagos_a_cuenta p " _
-      & "WHERE p.id_proveedor = " & IdProveedor & " " _
+      & "WHERE p.id_proveedor = " & idProveedor & " " _
       & "AND p.id_moneda = " & IdMoneda & " " _
-      & "AND p.fecha <= " & conectar.Escape(fechaHasta) & " " _
+      & "AND p.fecha <= " & conectar.Escape(FechaHasta) & " " _
       & "AND p.estado IN (0, 1) "
 
     '------------------------------------------------------
@@ -1091,7 +1091,7 @@ Public Function TotalAnticiposPendientesAl( _
           & " WHERE vinc.id_pago_a_cuenta = p.id " _
           & " AND op.estado = 1 " _
           & " AND op.fecha <= " _
-          & conectar.Escape(fechaHasta) & " " _
+          & conectar.Escape(FechaHasta) & " " _
           & ")"
 
     Set rs = conectar.RSFactory(q)
@@ -1272,235 +1272,591 @@ err1:
 End Function
 
 
+'=========================================================
+' SITUACION DE UNA FACTURA A LA FECHA DE CORTE
+'
+' Utiliza los importes historicos que ya fueron
+' cargados mediante FindAllTotalizadores.
+'=========================================================
+Public Function SituacionComprobanteAlCorte( _
+    ByVal fac As clsFacturaProveedor _
+) As String
+
+    Dim importeFactura As Double
+    Dim saldo As Double
+
+    importeFactura = _
+        fac.Monto + _
+        fac.TotalIVA + _
+        fac.totalPercepciones + _
+        fac.ImpuestoInterno + _
+        fac.redondeo
+
+    saldo = funciones.FormatearDecimales( _
+        importeFactura - fac.TotalAbonadoGlobal)
+
+    If fac.tipoDocumentoContable = _
+            tipoDocumentoContable.notaCredito Then
+
+        SituacionComprobanteAlCorte = _
+            "Nota de credito - ver saldo"
+
+    ElseIf Abs(saldo) < 0.01 Then
+
+        SituacionComprobanteAlCorte = _
+            "Saldada al corte"
+
+    ElseIf saldo < 0 Then
+
+        SituacionComprobanteAlCorte = _
+            "Saldo acreedor - revisar"
+
+    ElseIf fac.TotalAbonadoGlobal > 0 Then
+
+        SituacionComprobanteAlCorte = _
+            "Pago parcial al corte"
+
+    Else
+
+        SituacionComprobanteAlCorte = _
+            "Pendiente al corte"
+
+    End If
+
+End Function
+
+
 Public Function ExportarColeccionTotalizadores( _
     col As Collection, _
     Optional ProgressBar As Object, _
     Optional FechaFin As String, _
     Optional ByVal IdProveedorResumen As Long = 0, _
     Optional ByVal SaldoFacturasResumen As Double = 0, _
-    Optional ByVal AnticiposResumen As Double = 0 _
+    Optional ByVal AnticiposResumen As Double = 0, _
+    Optional ByVal AplicacionesPosteriores As Object = Nothing _
 ) As Boolean
 
     On Error GoTo err1
 
-    ExportarColeccionTotalizadores = True
-
-    Dim xlWorkbook As Object
-    Set xlWorkbook = CreateObject("Excel.Application")
-
-    Dim xlWorksheet As Object
-    Set xlWorksheet = CreateObject("Excel.Application")
+    ExportarColeccionTotalizadores = False
 
     Dim xlApplication As Object
+    Dim xlWorkbook As Object
+    Dim xlWorksheet As Object
+
+    Dim fac As clsFacturaProveedor
+
+    Dim fila As Long
+    Dim filaTotal As Long
+    Dim filaResumen As Long
+
+    Dim cantidad As Long
+    Dim signo As Integer
+
+    Dim importeFactura As Double
+    Dim importePagado As Double
+    Dim importeSaldo As Double
+
+    Dim situacion As String
+    Dim aplicacion As String
+
+    Dim claveFactura As String
+    Dim claveMoneda As String
+
+    Dim totalesPorMoneda As New Dictionary
+
+    Dim datosMoneda As Variant
+    Dim monedaClave As Variant
+
+    Dim fechaReporte As Date
+
+    Dim ruta As String
+    Dim nombreHoja As String
+
+    '==================================================
+    ' VALIDACIONES
+    '==================================================
+
+    If col Is Nothing Then
+        Err.Raise 5, , _
+            "No se recibio la coleccion de comprobantes."
+    End If
+
+    If LenB(Trim$(FechaFin)) = 0 Then
+        Err.Raise 5, , _
+            "No se recibio la fecha de corte."
+    End If
+
+    fechaReporte = DateValue(CDate(FechaFin))
+
+    '==================================================
+    ' INICIAR EXCEL
+    '==================================================
+
     Set xlApplication = CreateObject("Excel.Application")
 
     Set xlWorkbook = xlApplication.Workbooks.Add
+
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
     xlWorksheet.Activate
-        xlWorksheet.Range("A1:K1").Merge
-        xlWorksheet.Range("A2:K2").Merge
-        xlWorksheet.Range("A1:K3").HorizontalAlignment = xlHAlignCenter
-       xlWorksheet.Range("A1:K2").Font.Bold = True
-        xlWorksheet.Range("A3:K2").Font.Bold = True
-        
-                Dim Fin As Date
 
+    xlWorksheet.Range("A1:M1").Merge
+    xlWorksheet.Range("A2:M2").Merge
 
-        Fin = FechaFin
+    xlWorksheet.Range("A1:M2").HorizontalAlignment = _
+        xlHAlignCenter
 
-    'fila, columna
-    xlWorksheet.Cells(1, 1).value = "REPORTE DE COMPROBANTES DE COMPRA ADEUDADOS AL " & Format(Fin, "dd/mm/yyyy")
+    xlWorksheet.Range("A1:M2").Font.Bold = True
 
-    Dim offset As Long
-    offset = 3
-    xlWorksheet.Cells(offset, 1).value = "ID"
-    xlWorksheet.Cells(offset, 2).value = "Razon Social"
-    xlWorksheet.Cells(offset, 3).value = "CUIT"
-    xlWorksheet.Cells(offset, 4).value = "Documento"
-    xlWorksheet.Cells(offset, 5).value = "Letra"
-    xlWorksheet.Cells(offset, 6).value = "Número"
-    xlWorksheet.Cells(offset, 7).value = "Fecha"
-    xlWorksheet.Cells(offset, 8).value = "Moneda"
-    xlWorksheet.Cells(offset, 9).value = "Total"
-    xlWorksheet.Cells(offset, 10).value = "Pagado"
-    xlWorksheet.Cells(offset, 11).value = "Saldo"
+    xlWorksheet.Cells(1, 1).value = _
+        "REPORTE DE COMPROBANTES DE COMPRA ADEUDADOS AL " & _
+        Format$(fechaReporte, "dd/mm/yyyy")
 
+    xlWorksheet.Cells(2, 1).value = _
+        "Las OP posteriores son informativas. " & _
+        "Los anticipos asociados no se imputan " & _
+        "individualmente a cada factura."
 
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 11)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset, 1), xlWorksheet.Cells(offset, 11)).Interior.Color = &HC0C0C0
+    '==================================================
+    ' ENCABEZADOS - 13 COLUMNAS
+    '==================================================
 
+    fila = 3
 
-    '.Borders.LineStyle = xlContinuous
+    xlWorksheet.Cells(fila, 1).value = "ID"
+    xlWorksheet.Cells(fila, 2).value = "Razon Social"
+    xlWorksheet.Cells(fila, 3).value = "CUIT"
+    xlWorksheet.Cells(fila, 4).value = "Documento"
+    xlWorksheet.Cells(fila, 5).value = "Letra"
+    xlWorksheet.Cells(fila, 6).value = "Numero"
+    xlWorksheet.Cells(fila, 7).value = "Fecha"
+    xlWorksheet.Cells(fila, 8).value = "Moneda"
+    xlWorksheet.Cells(fila, 9).value = "Total"
+    xlWorksheet.Cells(fila, 10).value = "Pagado"
+    xlWorksheet.Cells(fila, 11).value = "Saldo"
 
-    Dim fac As clsFacturaProveedor
-    Dim initoffset As Long
-    initoffset = offset
+    xlWorksheet.Cells(fila, 12).value = _
+        "Situacion al corte"
 
-    Dim c As Integer
-    Dim total As Double
-    Dim totalneto As Double
-    Dim totalno As Double
-    Dim totIva As Double
-    'Agregar DNEMER 03/02/2021
-    Dim totalpercep As Double
-    Dim TotalPendiente As Double
-    Dim pagado As Double
-    Dim saldo As Double
-    Dim TotalFactura As Double
-    Dim TotalPagado As Double
-    Dim totalsaldo As Double
+    xlWorksheet.Cells(fila, 13).value = _
+        "Aplicacion posterior / Anticipo asociado"
 
-    ProgressBar(0).min = 0
-    ProgressBar(0).max = col.count
+    With xlWorksheet.Range("A3:M3")
 
+        .Font.Bold = True
+        .Interior.Color = &HC0C0C0
+        .Borders.LineStyle = xlContinuous
 
-    Dim d As Long
-    d = 0
+    End With
 
-    For Each fac In col
-        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then c = -1 Else c = 1
-        
-        TotalFactura = ((fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno + fac.redondeo) * c
-        total = total + TotalFactura
-              
-        TotalPagado = (fac.TotalAbonadoGlobal) * c
-        pagado = pagado + TotalPagado
-        
-        
-        TotalSaldado = TotalFactura - TotalPagado
-        saldo = saldo + TotalSaldado
+    'Conservar numeros de comprobante como texto.
+    xlWorksheet.Columns("F").NumberFormat = "@"
 
-        'Agrega DNEMER 03/02/2021
-        totalpercep = totalpercep + fac.totalPercepciones * c
-        'Agrega DNEMER 24/04/2023
-        TotalPendiente = TotalPendiente + ((fac.total - (fac.NetoGravadoAbonadoGlobal + fac.OtrosAbonadoGlobal)) * c)
-        
+    '==================================================
+    ' BARRA DE PROGRESO
+    '==================================================
 
-        TotalFactura = (fac.Monto - fac.TotalNetoGravadoDiscriminado(0)) + fac.TotalIVA + fac.TotalNetoGravadoDiscriminado(0) + fac.totalPercepciones + fac.ImpuestoInterno
-        
-        Dim saldoComprobante As Double
-        
-        saldoComprobante = FormatearDecimales((TotalFactura + fac.redondeo) - fac.TotalAbonadoGlobal)
-        
-        If saldoComprobante <> 0 Then
-        
+    If Not ProgressBar Is Nothing Then
 
-        If fac.tipoDocumentoContable = tipoDocumentoContable.notaCredito Then i = -1 Else i = 1
+        ProgressBar(0).min = 0
 
-        d = d + 1
-        ProgressBar(0).value = d
+        If col.count > 0 Then
 
-        offset = offset + 1
-        xlWorksheet.Cells(offset, 1).value = fac.Id
-        xlWorksheet.Cells(offset, 2).value = UCase(fac.Proveedor.RazonSocial)
-        xlWorksheet.Cells(offset, 3).value = fac.Proveedor.cuit
-        xlWorksheet.Cells(offset, 4).value = enums.EnumTipoDocumentoContableShort(fac.tipoDocumentoContable)
-        xlWorksheet.Cells(offset, 5).value = fac.configFactura.TipoFactura
-        xlWorksheet.Cells(offset, 6).value = fac.numero
-        xlWorksheet.Cells(offset, 7).value = fac.FEcha
-        xlWorksheet.Cells(offset, 8).value = fac.moneda.NombreCorto
-        xlWorksheet.Cells(offset, 9).value = funciones.FormatearDecimales(TotalFactura + fac.redondeo) * i
-        xlWorksheet.Cells(offset, 10).value = funciones.FormatearDecimales(fac.TotalAbonadoGlobal) * i
-        xlWorksheet.Cells(offset, 11).value = funciones.FormatearDecimales((TotalFactura + fac.redondeo) - fac.TotalAbonadoGlobal) * i
-        xlWorksheet.Range(xlWorksheet.Cells(initoffset, 1), xlWorksheet.Cells(offset, 11)).Borders.LineStyle = xlContinuous
+            ProgressBar(0).max = col.count
+
+        Else
+
+            ProgressBar(0).max = 1
 
         End If
-        
-    Next
-    
-    xlWorksheet.Range("I3:K" & offset + 1).HorizontalAlignment = xlRight
-    xlWorksheet.Range("I3:K" & offset + 1).NumberFormat = "#,##0.00"
 
-    xlWorksheet.Range(xlWorksheet.Cells(offset + 1, 1), xlWorksheet.Cells(offset + 1, 11)).Font.Bold = True
-    xlWorksheet.Range(xlWorksheet.Cells(offset + 1, 1), xlWorksheet.Cells(offset + 1, 11)).Interior.Color = &HC0C0C0
-    
-    xlWorksheet.Cells(offset + 1, 8).value = "Totales"
+        ProgressBar(0).value = 0
 
-    xlWorksheet.Cells(offset + 1, 9).Formula = "=sum(I3:I" & offset & ")"
-    xlWorksheet.Cells(offset + 1, 10).Formula = "=sum(J3:J" & offset & ")"
-    
-    xlWorksheet.Cells(offset + 1, 11).Formula = "=sum(K3:K" & offset & ")"
-    
-    
+    End If
+
     '==================================================
-    ' RESUMEN GLOBAL DEL PROVEEDOR
+    ' RECORRER EXACTAMENTE LA COLECCION DE LA GRILLA
     '==================================================
-    
+
+    cantidad = 0
+
+    For Each fac In col
+
+        cantidad = cantidad + 1
+
+        fila = fila + 1
+
+        signo = 1
+
+        If fac.tipoDocumentoContable = _
+                tipoDocumentoContable.notaCredito Then
+
+            signo = -1
+
+        End If
+
+        '----------------------------------------------
+        ' MISMOS IMPORTES QUE grilla_UnboundReadData
+        '----------------------------------------------
+
+        importeFactura = _
+            fac.Monto + _
+            fac.TotalIVA + _
+            fac.totalPercepciones + _
+            fac.ImpuestoInterno + _
+            fac.redondeo
+
+        importePagado = fac.TotalAbonadoGlobal
+
+        importeSaldo = _
+            importeFactura - importePagado
+
+        importeFactura = _
+            funciones.FormatearDecimales(importeFactura) * signo
+
+        importePagado = _
+            funciones.FormatearDecimales(importePagado) * signo
+
+        importeSaldo = _
+            funciones.FormatearDecimales(importeSaldo) * signo
+
+        '----------------------------------------------
+        ' SITUACION HISTORICA
+        '----------------------------------------------
+
+        situacion = _
+            DAOFacturaProveedor.SituacionComprobanteAlCorte(fac)
+
+        '----------------------------------------------
+        ' OP Y PAGOS A CUENTA POSTERIORES
+        '----------------------------------------------
+
+        aplicacion = ""
+
+        claveFactura = CStr(fac.Id)
+
+        If Not AplicacionesPosteriores Is Nothing Then
+
+            If AplicacionesPosteriores.Exists( _
+                    claveFactura) Then
+
+                aplicacion = _
+                    CStr(AplicacionesPosteriores( _
+                        claveFactura))
+
+            End If
+
+        End If
+
+        '----------------------------------------------
+        ' ESCRIBIR LA FILA
+        '----------------------------------------------
+
+        xlWorksheet.Cells(fila, 1).value = fac.Id
+
+        xlWorksheet.Cells(fila, 2).value = _
+            UCase(funciones.RazonSocialFormateada( _
+                fac.Proveedor.RazonSocial))
+
+        xlWorksheet.Cells(fila, 3).value = _
+            fac.Proveedor.cuit
+
+        xlWorksheet.Cells(fila, 4).value = _
+            enums.EnumTipoDocumentoContableShort( _
+                fac.tipoDocumentoContable)
+
+        xlWorksheet.Cells(fila, 5).value = _
+            fac.configFactura.TipoFactura
+
+        xlWorksheet.Cells(fila, 6).value = _
+            CStr(fac.numero)
+
+        xlWorksheet.Cells(fila, 7).value = _
+            fac.FEcha
+
+        xlWorksheet.Cells(fila, 8).value = _
+            fac.moneda.NombreCorto
+
+        xlWorksheet.Cells(fila, 9).value = _
+            importeFactura
+
+        xlWorksheet.Cells(fila, 10).value = _
+            importePagado
+
+        xlWorksheet.Cells(fila, 11).value = _
+            importeSaldo
+
+        xlWorksheet.Cells(fila, 12).value = _
+            situacion
+
+        xlWorksheet.Cells(fila, 13).value = _
+            aplicacion
+
+        '----------------------------------------------
+        ' ACUMULAR TOTALES POR MONEDA
+        '----------------------------------------------
+
+        claveMoneda = CStr(fac.moneda.Id)
+
+        If Not totalesPorMoneda.Exists(claveMoneda) Then
+
+            datosMoneda = Array( _
+                0#, _
+                0#, _
+                0#, _
+                fac.moneda.NombreCorto)
+
+            totalesPorMoneda.Add _
+                claveMoneda, datosMoneda
+
+        End If
+
+        datosMoneda = totalesPorMoneda(claveMoneda)
+
+        datosMoneda(0) = _
+            CDbl(datosMoneda(0)) + importeFactura
+
+        datosMoneda(1) = _
+            CDbl(datosMoneda(1)) + importePagado
+
+        datosMoneda(2) = _
+            CDbl(datosMoneda(2)) + importeSaldo
+
+        totalesPorMoneda(claveMoneda) = datosMoneda
+
+        '----------------------------------------------
+        ' ACTUALIZAR PROGRESO
+        '----------------------------------------------
+
+        If Not ProgressBar Is Nothing Then
+
+            ProgressBar(0).value = cantidad
+
+        End If
+
+    Next fac
+
+    '==================================================
+    ' FORMATO DEL DETALLE
+    '==================================================
+
+    If cantidad > 0 Then
+
+        xlWorksheet.Range( _
+            xlWorksheet.Cells(4, 7), _
+            xlWorksheet.Cells(fila, 7)).NumberFormat = _
+            "dd/mm/yyyy"
+
+        xlWorksheet.Range( _
+            xlWorksheet.Cells(4, 9), _
+            xlWorksheet.Cells(fila, 11)).NumberFormat = _
+            "#,##0.00"
+
+        xlWorksheet.Range( _
+            xlWorksheet.Cells(3, 1), _
+            xlWorksheet.Cells(fila, 13)).Borders.LineStyle = _
+            xlContinuous
+
+        xlWorksheet.Range( _
+            xlWorksheet.Cells(3, 1), _
+            xlWorksheet.Cells(fila, 13)).AutoFilter
+
+    Else
+
+        fila = fila + 1
+
+        xlWorksheet.Cells(fila, 1).value = _
+            "No se encontraron comprobantes."
+
+    End If
+
+    '==================================================
+    ' TOTALES SEPARADOS POR MONEDA
+    '==================================================
+
+    filaTotal = fila
+
+    For Each monedaClave In totalesPorMoneda.Keys
+
+        datosMoneda = totalesPorMoneda(monedaClave)
+
+        filaTotal = filaTotal + 1
+
+        xlWorksheet.Cells(filaTotal, 8).value = _
+            "TOTAL " & CStr(datosMoneda(3))
+
+        xlWorksheet.Cells(filaTotal, 9).value = _
+            CDbl(datosMoneda(0))
+
+        xlWorksheet.Cells(filaTotal, 10).value = _
+            CDbl(datosMoneda(1))
+
+        xlWorksheet.Cells(filaTotal, 11).value = _
+            CDbl(datosMoneda(2))
+
+        With xlWorksheet.Range( _
+            xlWorksheet.Cells(filaTotal, 1), _
+            xlWorksheet.Cells(filaTotal, 13))
+
+            .Font.Bold = True
+            .Interior.Color = &HC0C0C0
+
+        End With
+
+        xlWorksheet.Range( _
+            xlWorksheet.Cells(filaTotal, 9), _
+            xlWorksheet.Cells(filaTotal, 11)).NumberFormat = _
+            "#,##0.00"
+
+    Next monedaClave
+
+    '==================================================
+    ' RESUMEN GLOBAL DEL PROVEEDOR EN PESOS
+    '
+    ' Este resumen NO depende de los filtros parciales
+    ' de la grilla.
+    '==================================================
+
     If IdProveedorResumen > 0 Then
-    
-        Dim filaResumen As Long
-    
-        filaResumen = offset + 3
-    
+
+        filaResumen = filaTotal + 3
+
         xlWorksheet.Cells(filaResumen, 8).value = _
             "PROVEEDOR ID: " & IdProveedorResumen & _
             " - RESUMEN GLOBAL AR$"
-    
+
         xlWorksheet.Cells(filaResumen + 1, 8).value = _
             "Deuda por facturas al corte"
-    
+
         xlWorksheet.Cells(filaResumen + 1, 11).value = _
             SaldoFacturasResumen
-    
+
         xlWorksheet.Cells(filaResumen + 2, 8).value = _
             "Anticipos sin aplicar al corte"
-    
+
         xlWorksheet.Cells(filaResumen + 2, 11).value = _
             -AnticiposResumen
-    
+
         xlWorksheet.Cells(filaResumen + 3, 8).value = _
-            "DEUDA NETA DEL PROVEEDOR AR$"
-    
+            "DEUDA NETA AR$ DEL PROVEEDOR"
+
         xlWorksheet.Cells(filaResumen + 3, 11).value = _
             SaldoFacturasResumen - AnticiposResumen
-    
-        xlWorksheet.Range( _
+
+        With xlWorksheet.Range( _
             xlWorksheet.Cells(filaResumen, 8), _
-            xlWorksheet.Cells(filaResumen + 3, 11)).Font.Bold = True
-    
+            xlWorksheet.Cells(filaResumen + 3, 11))
+
+            .Font.Bold = True
+
+        End With
+
         xlWorksheet.Range( _
             xlWorksheet.Cells(filaResumen + 1, 11), _
             xlWorksheet.Cells(filaResumen + 3, 11)).NumberFormat = _
             "#,##0.00"
-    
+
+        xlWorksheet.Cells(filaResumen + 5, 8).value = _
+            "Resumen informativo: validar con cuenta corriente."
+
     End If
-    
-    
-    ProgressBar(0).value = col.count
-    
-    xlApplication.ScreenUpdating = False
-    Dim wkSt As String
-    wkSt = xlWorksheet.Name
+
+    '==================================================
+    ' FORMATO FINAL
+    '==================================================
+
     xlWorksheet.Cells.EntireColumn.AutoFit
-    xlWorkbook.Sheets(wkSt).Select
+
+    xlWorksheet.Columns("M").ColumnWidth = 60
+
+    xlWorksheet.Columns("M").WrapText = True
+
+    xlWorksheet.Columns("L").ColumnWidth = 26
+
+    xlApplication.ScreenUpdating = False
+
+    nombreHoja = xlWorksheet.Name
+
+    xlWorkbook.Sheets(nombreHoja).Select
+
     xlApplication.ScreenUpdating = True
 
-    Dim ruta As String
+    '==================================================
+    ' GUARDAR
+    '==================================================
+
     ruta = Environ$("TEMP")
-    If LenB(ruta) = 0 Then ruta = Environ$("TMP")
-    If LenB(ruta) = 0 Then ruta = App.path
-    ruta = ruta & "\" & funciones.CreateGUID() & ".xls"
+
+    If LenB(ruta) = 0 Then
+        ruta = Environ$("TMP")
+    End If
+
+    If LenB(ruta) = 0 Then
+        ruta = App.path
+    End If
+
+    ruta = ruta & "\" & _
+           funciones.CreateGUID() & ".xls"
 
     xlWorkbook.SaveAs ruta
 
     xlWorkbook.Saved = True
-    xlWorkbook.Close
-    xlApplication.Quit
 
-    ShellExecute -1, "open", ruta, "", "", 4
+    xlWorkbook.Close False
+
+    xlApplication.Quit
 
     Set xlWorksheet = Nothing
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
-    ProgressBar(0).value = 0
+    If Not ProgressBar Is Nothing Then
+        ProgressBar(0).value = 0
+    End If
+
+    'Abrir el archivo generado.
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    ExportarColeccionTotalizadores = True
 
     Exit Function
+
 err1:
+
     ExportarColeccionTotalizadores = False
-    
+
+    Dim descripcionError As String
+
+    descripcionError = _
+        Err.Number & " - " & Err.Description
+
+    On Error Resume Next
+
+    If Not xlWorkbook Is Nothing Then
+        xlWorkbook.Close False
+    End If
+
+    If Not xlApplication Is Nothing Then
+        xlApplication.Quit
+    End If
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    If Not ProgressBar Is Nothing Then
+        ProgressBar(0).value = 0
+    End If
+
+    MsgBox _
+        "Error al exportar los comprobantes." & _
+        vbCrLf & vbCrLf & descripcionError, _
+        vbCritical, _
+        "Exportacion a Excel"
+
 End Function
+
 
 'ESTA FUNCION DEJA TODO EN 0 PARA QUE PUEDA SER EDITADO
 Public Function ColeccionAEditable(col As Collection) As Boolean
