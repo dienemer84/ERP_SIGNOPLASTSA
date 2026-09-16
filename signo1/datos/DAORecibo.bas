@@ -74,7 +74,7 @@ Public Function Anular(Recibo As Recibo) As Boolean
 
     conectar.BeginTransaction
 
-    Recibo.estado = EstadoRecibo.ReciboAnulado
+    Recibo.estado = EstadoRecibo.Reciboanulado
 
 
     '------------------------------------------------------
@@ -247,7 +247,6 @@ Public Function aprobar(Recibo As Recibo) As Boolean
     Recibo.FechaAprobacion = Now
     Set Recibo.usuarioAprobador = funciones.GetUserObj
     Recibo.estado = EstadoRecibo.Aprobado
-
 
     If Recibo.IsValid Then
 
@@ -530,7 +529,7 @@ End Function
 
 
 Private Function ValidarOperacionesHistoricasReciboContraConciliacion( _
-    ByVal IdRecibo As Long, _
+    ByVal idRecibo As Long, _
     ByVal Accion As String _
 ) As Boolean
 
@@ -541,7 +540,7 @@ Private Function ValidarOperacionesHistoricasReciboContraConciliacion( _
 
     ValidarOperacionesHistoricasReciboContraConciliacion = False
 
-    If IdRecibo <= 0 Then
+    If idRecibo <= 0 Then
         ValidarOperacionesHistoricasReciboContraConciliacion = True
         Exit Function
     End If
@@ -563,7 +562,7 @@ Private Function ValidarOperacionesHistoricasReciboContraConciliacion( _
       & " ON c.id = o.cuentabanc_o_caja_id " _
       & "LEFT JOIN AdminConfigBancos b " _
       & " ON b.id = c.idBanco " _
-      & "WHERE opr.reciboId = " & IdRecibo & " " _
+      & "WHERE opr.reciboId = " & idRecibo & " " _
       & "AND o.pertenencia = 'banco' " _
       & "AND o.entrada_salida = 1 " _
       & "LIMIT 1"
@@ -574,7 +573,7 @@ Private Function ValidarOperacionesHistoricasReciboContraConciliacion( _
 
         MsgBox _
             "No se puede " & Accion & _
-            " el Recibo Nro " & IdRecibo & "." & _
+            " el Recibo Nro " & idRecibo & "." & _
             vbCrLf & vbCrLf & _
             "Posee una operación bancaria incluida " & _
             "en una conciliación cerrada." & _
@@ -859,9 +858,9 @@ E:
 End Function
 
 
-Public Sub Imprimir(IdRecibo As Long)
+Public Sub Imprimir(idRecibo As Long)
     Dim Recibo As Recibo
-    Set Recibo = DAORecibo.FindById(IdRecibo, True, True, True, True, True)
+    Set Recibo = DAORecibo.FindById(idRecibo, True, True, True, True, True)
 
     If IsSomething(Recibo) Then
         Dim origin As Integer

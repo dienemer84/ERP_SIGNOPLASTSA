@@ -36,13 +36,15 @@ End Function
 
 Public Function Anular(Recibo As Recibo) As Boolean
     
-Err.Raise 9999, , "Funcionalidad en desarrollo"
+    Dim estadoAnterior As EstadoRecibo
+    Dim numeroError As Long
+    Dim descripcionError As String
     
     conectar.BeginTransaction
 
     If Recibo.estado = EstadoRecibo.Aprobado Then
         'cambio el estado del recibo
-        Recibo.estado = EstadoRecibo.ReciboAnulado
+        Recibo.estado = EstadoRecibo.Reciboanulado
 
 
 
@@ -121,7 +123,7 @@ Err.Raise 9999, , "Funcionalidad en desarrollo"
     Exit Function
 
     Else
-        GoTo err100
+        GoTo err101
 
 
     End If
@@ -148,23 +150,19 @@ End Function
 
 Public Function aprobar(Recibo As Recibo) As Boolean
     On Error GoTo err5
+    
     Dim estAnt As EstadoRecibo
+    Dim fechaAnt As Variant
+    Dim Factura As Factura
     
     estAnt = Recibo.estado
     fechaAnt = Recibo.FechaAprobacion
     
-    Recibo.FechaAprobacion = Now
-
-    Dim fechaAnt As Variant
-    Dim Factura As Factura
     conectar.BeginTransaction
-
-
-    estAnt = Recibo.estado
+    
     Recibo.FechaAprobacion = Now
     Set Recibo.usuarioAprobador = funciones.GetUserObj
     Recibo.estado = EstadoRecibo.Aprobado
-
 
     If Recibo.IsValid Then
         'totalizo recibo
@@ -514,10 +512,10 @@ E:
 End Function
 
 
-Public Sub Imprimir(IdRecibo As Long)
+Public Sub Imprimir(idRecibo As Long)
 
     Dim Recibo As Recibo
-    Set Recibo = DAOReciboAnticipo.FindById(IdRecibo, True, True, True, True, True)
+    Set Recibo = DAOReciboAnticipo.FindById(idRecibo, True, True, True, True, True)
     
     Dim Espacio As Integer
     Espacio = 300

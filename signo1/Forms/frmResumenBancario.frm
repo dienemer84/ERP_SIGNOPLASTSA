@@ -515,6 +515,51 @@ Private desde As Date
 Private CargandoFiltros As Boolean
 Private i As Integer
 
+Private IdCuentaMontoInicial As Long
+Private FechaDesdeMontoInicial As Date
+
+
+Private Function CargarMovimientosExactosParaCierre( _
+    ByVal IdCuentaBancaria As Long _
+) As Boolean
+
+    On Error GoTo err1
+
+    CargarMovimientosExactosParaCierre = False
+
+    'La conciliación siempre se cierra:
+    ' - para UNA cuenta
+    ' - TODAS las monedas
+    ' - TODOS los tipos
+    ' - TODOS los orígenes
+    Set MovimientosBase = DAOResumenBancario.FindAll( _
+        Me.dtpDesde(1).value, _
+        Me.dtpHasta(1).value, _
+        IdCuentaBancaria, _
+        0, _
+        vbNullString, _
+        vbNullString)
+
+    If MovimientosBase Is Nothing Then
+        Exit Function
+    End If
+
+    'Reconstruye también el saldo inicial,
+    'si fue establecido.
+    ReconstruirMovimientosMostrados
+
+    'Mostrar exactamente lo que se va a cerrar.
+    ActualizarGridResumen
+
+    CargarMovimientosExactosParaCierre = True
+    Exit Function
+
+err1:
+
+    CargarMovimientosExactosParaCierre = False
+
+End Function
+
 
 Private Sub btnCerrarConciliacion_Click()
 
@@ -524,33 +569,11 @@ Private Sub btnCerrarConciliacion_Click()
     Dim Conciliacion As clsConciliacionBancaria
     Dim Movimiento As DTOResumenBancario
 
-    Dim totalIngresos As Double
-    Dim totalEgresos As Double
-    Dim saldoFinal As Double
-    Dim saldoInicial As Double
+    Dim TotalIngresos As Double
+    Dim TotalEgresos As Double
+    Dim SaldoFinal As Double
+    Dim SaldoInicial As Double
 
-    '------------------------------------------------------
-    ' DEBE HABER REPORTE
-    '------------------------------------------------------
-    If Movimientos Is Nothing Then
-
-        MsgBox "Primero debe generar el reporte bancario.", _
-               vbExclamation, _
-               "Cerrar conciliación"
-
-        Exit Sub
-
-    End If
-
-    If Movimientos.count = 0 Then
-
-        MsgBox "No hay movimientos para conciliar.", _
-               vbExclamation, _
-               "Cerrar conciliación"
-
-        Exit Sub
-
-    End If
 
     '------------------------------------------------------
     ' CUENTA ESPECIFICA
@@ -632,17 +655,91 @@ Private Sub btnCerrarConciliacion_Click()
         Exit Sub
 
     End If
+    
+    '------------------------------------------------------
+    ' VALIDAR QUE EL MONTO INICIAL CORRESPONDA
+    ' A ESTA CUENTA Y A ESTE PERIODO
+    '------------------------------------------------------
+    If MontoInicialEstablecido Then
+    
+        If IdCuentaMontoInicial <> IdCuentaBancaria Or _
+           DateValue(FechaDesdeMontoInicial) <> _
+           DateValue(Me.dtpDesde(1).value) Then
+    
+            MsgBox _
+                "El monto inicial fue establecido para otra " & _
+                "cuenta o para otra fecha de inicio." & _
+                vbCrLf & vbCrLf & _
+                "Vuelva a establecer el monto inicial antes " & _
+                "de cerrar esta conciliación.", _
+                vbExclamation, _
+                "Cerrar conciliación"
+    
+            Exit Sub
+    
+        End If
+    
+    End If
+
+    
+    '------------------------------------------------------
+    ' RECARGAR EXACTAMENTE LOS MOVIMIENTOS A CONCILIAR
+    '------------------------------------------------------
+    Me.MousePointer = vbHourglass
+    
+    If Not CargarMovimientosExactosParaCierre( _
+                IdCuentaBancaria) Then
+    
+        Me.MousePointer = vbDefault
+    
+        MsgBox _
+            "No se pudieron obtener los movimientos " & _
+            "actualizados para cerrar la conciliación.", _
+            vbCritical, _
+            "Cerrar conciliación"
+    
+        Exit Sub
+    
+    End If
+    
+    Me.MousePointer = vbDefault
+    
+    
+    If Movimientos Is Nothing Then
+    
+        MsgBox _
+            "No se pudieron obtener los movimientos " & _
+            "del período.", _
+            vbExclamation, _
+            "Cerrar conciliación"
+    
+        Exit Sub
+    
+    End If
+    
+    
+    If Movimientos.count = 0 Then
+    
+        MsgBox _
+            "No hay movimientos para conciliar " & _
+            "en la cuenta y período seleccionados.", _
+            vbInformation, _
+            "Cerrar conciliación"
+    
+        Exit Sub
+    
+    End If
 
     '------------------------------------------------------
     ' CALCULAR TOTALES
     '------------------------------------------------------
-    saldoInicial = 0
-    totalIngresos = 0
-    totalEgresos = 0
-    saldoFinal = 0
+    SaldoInicial = 0
+    TotalIngresos = 0
+    TotalEgresos = 0
+    SaldoFinal = 0
 
     If MontoInicialEstablecido Then
-        saldoInicial = MontoInicial
+        SaldoInicial = MontoInicial
     End If
 
     For Each Movimiento In Movimientos
@@ -650,11 +747,11 @@ Private Sub btnCerrarConciliacion_Click()
         If UCase$(Trim$(Movimiento.Origen)) <> _
            "SALDO INICIAL" Then
 
-            totalIngresos = _
-                totalIngresos + Movimiento.Ingreso
+            TotalIngresos = _
+                TotalIngresos + Movimiento.Ingreso
 
-            totalEgresos = _
-                totalEgresos + Movimiento.Egreso
+            TotalEgresos = _
+                TotalEgresos + Movimiento.Egreso
 
         End If
 
@@ -663,7 +760,7 @@ Private Sub btnCerrarConciliacion_Click()
     Set Movimiento = _
         Movimientos.item(Movimientos.count)
 
-    saldoFinal = Movimiento.SaldoAcumulado
+    SaldoFinal = Movimiento.SaldoAcumulado
 
     '------------------------------------------------------
     ' CONFIRMACION
@@ -679,13 +776,13 @@ Private Sub btnCerrarConciliacion_Click()
         Format$(Me.dtpHasta(1).value, "dd/mm/yyyy") & _
         vbCrLf & vbCrLf & _
         "Saldo inicial: " & _
-        FormatCurrency(saldoInicial) & vbCrLf & _
+        FormatCurrency(SaldoInicial) & vbCrLf & _
         "Ingresos: " & _
-        FormatCurrency(totalIngresos) & vbCrLf & _
+        FormatCurrency(TotalIngresos) & vbCrLf & _
         "Egresos: " & _
-        FormatCurrency(totalEgresos) & vbCrLf & _
+        FormatCurrency(TotalEgresos) & vbCrLf & _
         "Saldo final: " & _
-        FormatCurrency(saldoFinal) & vbCrLf & vbCrLf & _
+        FormatCurrency(SaldoFinal) & vbCrLf & vbCrLf & _
         "Una vez cerrada, el período quedará bloqueado.", _
         vbQuestion + vbYesNo + vbDefaultButton2, _
         "Cerrar conciliación") <> vbYes Then
@@ -714,10 +811,10 @@ Private Sub btnCerrarConciliacion_Click()
     Conciliacion.IdUsuarioCierre = _
         funciones.GetUserObj.Id
 
-    Conciliacion.saldoInicial = saldoInicial
-    Conciliacion.totalIngresos = totalIngresos
-    Conciliacion.totalEgresos = totalEgresos
-    Conciliacion.saldoFinal = saldoFinal
+    Conciliacion.SaldoInicial = SaldoInicial
+    Conciliacion.TotalIngresos = TotalIngresos
+    Conciliacion.TotalEgresos = TotalEgresos
+    Conciliacion.SaldoFinal = SaldoFinal
 
     Conciliacion.CantidadMovimientos = _
         Movimientos.count
@@ -950,6 +1047,9 @@ Private Sub cmdEstablecerMontoInicial_Click()
     ' También se permiten saldos negativos.
     MontoInicial = CDbl(textoMonto)
     MontoInicialEstablecido = True
+    
+    IdCuentaMontoInicial = IdCuentaBancaria
+    FechaDesdeMontoInicial = Me.dtpDesde(1).value
 
     If MovimientosBase Is Nothing Then
         Set MovimientosBase = New Collection
@@ -1006,8 +1106,6 @@ Private Sub cmdExportar_Click()
 End Sub
 
 
-
-
 Private Function textoCombo(ByVal cbo As Object) As String
 
     If cbo.ListIndex >= 0 Then
@@ -1020,15 +1118,20 @@ End Function
 
 
 Private Sub cmdLimpiarMontoInicial_Click()
+
     MontoInicial = 0
     MontoInicialEstablecido = False
+
+    IdCuentaMontoInicial = 0
+    FechaDesdeMontoInicial = 0
 
     Me.txtMontoInicial.Text = "0"
 
     ReconstruirMovimientosMostrados
     ActualizarGridResumen
-    
+
 End Sub
+
 
 Private Sub cmdProbarResumen_Click()
 
@@ -2227,13 +2330,13 @@ Private Sub ActualizarTotalesResumen()
 
     Dim Movimiento As DTOResumenBancario
 
-    Dim totalIngresos As Double
-    Dim totalEgresos As Double
-    Dim saldoFinal As Double
+    Dim TotalIngresos As Double
+    Dim TotalEgresos As Double
+    Dim SaldoFinal As Double
 
-    totalIngresos = 0
-    totalEgresos = 0
-    saldoFinal = 0
+    TotalIngresos = 0
+    TotalEgresos = 0
+    SaldoFinal = 0
 
     If Movimientos Is Nothing Then
         Me.lblTotales.caption = _
@@ -2249,11 +2352,11 @@ Private Sub ActualizarTotalesResumen()
         If UCase$(Trim$(Movimiento.Origen)) <> _
            "SALDO INICIAL" Then
 
-            totalIngresos = _
-                totalIngresos + Movimiento.Ingreso
+            TotalIngresos = _
+                TotalIngresos + Movimiento.Ingreso
 
-            totalEgresos = _
-                totalEgresos + Movimiento.Egreso
+            TotalEgresos = _
+                TotalEgresos + Movimiento.Egreso
 
         End If
 
@@ -2265,7 +2368,7 @@ Private Sub ActualizarTotalesResumen()
         Set Movimiento = _
             Movimientos.item(Movimientos.count)
 
-        saldoFinal = Movimiento.SaldoAcumulado
+        SaldoFinal = Movimiento.SaldoAcumulado
 
     End If
 
@@ -2273,17 +2376,17 @@ Private Sub ActualizarTotalesResumen()
         "Total ingresos: " & _
         Replace( _
             FormatCurrency( _
-                funciones.FormatearDecimales(totalIngresos)), _
+                funciones.FormatearDecimales(TotalIngresos)), _
             "$", "") & _
         "   |   Total egresos: " & _
         Replace( _
             FormatCurrency( _
-                funciones.FormatearDecimales(totalEgresos)), _
+                funciones.FormatearDecimales(TotalEgresos)), _
             "$", "") & _
         "   |   Saldo final: " & _
         Replace( _
             FormatCurrency( _
-                funciones.FormatearDecimales(saldoFinal)), _
+                funciones.FormatearDecimales(SaldoFinal)), _
             "$", "")
 
 End Sub

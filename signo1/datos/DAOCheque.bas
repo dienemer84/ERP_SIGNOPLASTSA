@@ -101,31 +101,170 @@ Public Function FindAllTercerosUti(Optional ByRef filter As String = vbNullStrin
     Dim tmpCheque As cheque
 
     ' Construir la consulta SQL
-    q = "SELECT *, liq.numero_liq AS numero_liquidacion_caja, CASE " _
-      & "WHEN COALESCE(cheq.movimiento_origen, 0) > 0 THEN " _
-      & "COALESCE(NULLIF(CONCAT_WS(' | ', " _
-      & "cta_mov.codigo, cta_mov.nombre), ''), " _
-      & "'MOVIMIENTO SIN CUENTA CONTABLE') " _
-      & "ELSE COALESCE(prov.razon, prov_pcta.razon, '') " _
-      & "END AS razon_proveedor " _
-      & " FROM Cheques cheq" _
-      & " LEFT JOIN Chequeras cheqs ON cheqs.id = cheq.id_chequera" _
-      & " LEFT JOIN AdminConfigBancos banc ON banc.id = cheq.id_banco" _
-      & " LEFT JOIN AdminConfigMonedas mon ON mon.id = cheq.id_moneda" _
-      & " LEFT JOIN AdminConfigMonedas mon2 ON mon2.id = cheqs.id_moneda" _
-      & " LEFT JOIN AdminConfigBancos banc2 ON banc2.id = cheqs.id_banco" _
-      & " LEFT JOIN ordenes_pago op ON op.id = cheq.orden_pago_origen" _
-      & " LEFT JOIN liquidaciones_caja liq ON liq.id = cheq.liquidacion_caja_origen" _
-      & " LEFT JOIN pagos_a_cuenta pcta ON pcta.id = cheq.pago_a_cuenta_origen" _
-      & " LEFT JOIN proveedores prov_pcta ON prov_pcta.id = pcta.id_proveedor" _
-      & " LEFT JOIN movimientos_caja_bancos mov ON mov.id = cheq.movimiento_origen" _
-      & " LEFT JOIN AdminComprasCuentasContables cta_mov " _
-      & " ON cta_mov.id = mov.id_cuentacontable" _
-      & " LEFT JOIN ordenes_pago_facturas opf ON op.id = opf.id_orden_pago" _
-      & " LEFT JOIN AdminComprasFacturasProveedores acfp ON acfp.id = opf.id_factura_proveedor" _
-      & " LEFT JOIN proveedores prov ON prov.id = acfp.id_proveedor" _
-      & " LEFT JOIN AdminRecibosCheques admincheq ON admincheq.idCheque = cheq.id" _
-      & " WHERE 1 = 1 "
+    '----------------------------------------------------------
+    ' CONSTRUIR CONSULTA SQL
+    '----------------------------------------------------------
+    
+    q = "SELECT *, "
+    q = q & "liq.numero_liq AS numero_liquidacion_caja, "
+    
+    '----------------------------------------------------------
+    ' DESTINO DEL CHEQUE
+    '----------------------------------------------------------
+    
+    q = q & "CASE "
+    
+    'Cheque depositado en una cuenta bancaria
+    q = q & "WHEN IFNULL(cheq.depositado, 0) = 1 "
+    q = q & "OR dep.id IS NOT NULL THEN "
+    
+    q = q & "CONCAT("
+    q = q & "'DEPOSITADO EN BANCO ', "
+    q = q & "COALESCE("
+    q = q & "NULLIF(TRIM(banc_dep.nombre), ''), "
+    q = q & "'SIN DEFINIR'"
+    q = q & "), "
+    
+    q = q & "CASE "
+    q = q & "WHEN cta_dep.cuenta IS NOT NULL "
+    q = q & "AND TRIM(cta_dep.cuenta) <> '' THEN "
+    q = q & "CONCAT(' | CTA. ', cta_dep.cuenta) "
+    q = q & "ELSE '' "
+    q = q & "END"
+    
+    q = q & ") "
+    
+    'Cheque utilizado en un movimiento de caja y bancos
+    q = q & "WHEN IFNULL(cheq.movimiento_origen, 0) > 0 THEN "
+    
+    q = q & "COALESCE("
+    q = q & "NULLIF("
+    q = q & "CONCAT_WS(' | ', cta_mov.codigo, cta_mov.nombre), "
+    q = q & "''"
+    q = q & "), "
+    q = q & "'MOVIMIENTO SIN CUENTA CONTABLE'"
+    q = q & ") "
+    
+    'Cheque utilizado en una liquidación de caja
+    q = q & "WHEN IFNULL(cheq.liquidacion_caja_origen, 0) > 0 THEN "
+    q = q & "'PROVEEDORES VARIOS' "
+    
+    'Cheque utilizado en un pago a cuenta
+    q = q & "WHEN IFNULL(cheq.pago_a_cuenta_origen, 0) > 0 THEN "
+    q = q & "COALESCE(prov_pcta.razon, '') "
+    
+    'Cheque utilizado en una orden de pago
+    q = q & "WHEN IFNULL(cheq.orden_pago_origen, 0) > 0 THEN "
+    q = q & "COALESCE(prov.razon, '') "
+    
+    'Cheque sin destino determinado
+    q = q & "ELSE '' "
+    
+    q = q & "END AS razon_proveedor "
+    
+    '----------------------------------------------------------
+    ' TABLA PRINCIPAL
+    '----------------------------------------------------------
+    
+    q = q & "FROM Cheques cheq "
+    
+    '----------------------------------------------------------
+    ' CHEQUERA, BANCO Y MONEDA
+    '----------------------------------------------------------
+    
+    q = q & "LEFT JOIN Chequeras cheqs "
+    q = q & "ON cheqs.id = cheq.id_chequera "
+    
+    q = q & "LEFT JOIN AdminConfigBancos banc "
+    q = q & "ON banc.id = cheq.id_banco "
+    
+    q = q & "LEFT JOIN AdminConfigMonedas mon "
+    q = q & "ON mon.id = cheq.id_moneda "
+    
+    q = q & "LEFT JOIN AdminConfigMonedas mon2 "
+    q = q & "ON mon2.id = cheqs.id_moneda "
+    
+    q = q & "LEFT JOIN AdminConfigBancos banc2 "
+    q = q & "ON banc2.id = cheqs.id_banco "
+    
+    '----------------------------------------------------------
+    ' ORDEN DE PAGO
+    '----------------------------------------------------------
+    
+    q = q & "LEFT JOIN ordenes_pago op "
+    q = q & "ON op.id = cheq.orden_pago_origen "
+    
+    q = q & "LEFT JOIN ordenes_pago_facturas opf "
+    q = q & "ON op.id = opf.id_orden_pago "
+    
+    q = q & "LEFT JOIN AdminComprasFacturasProveedores acfp "
+    q = q & "ON acfp.id = opf.id_factura_proveedor "
+    
+    q = q & "LEFT JOIN proveedores prov "
+    q = q & "ON prov.id = acfp.id_proveedor "
+    
+    '----------------------------------------------------------
+    ' LIQUIDACIÓN DE CAJA
+    '----------------------------------------------------------
+    
+    q = q & "LEFT JOIN liquidaciones_caja liq "
+    q = q & "ON liq.id = cheq.liquidacion_caja_origen "
+    
+    '----------------------------------------------------------
+    ' PAGO A CUENTA
+    '----------------------------------------------------------
+    
+    q = q & "LEFT JOIN pagos_a_cuenta pcta "
+    q = q & "ON pcta.id = cheq.pago_a_cuenta_origen "
+    
+    q = q & "LEFT JOIN proveedores prov_pcta "
+    q = q & "ON prov_pcta.id = pcta.id_proveedor "
+    
+    '----------------------------------------------------------
+    ' MOVIMIENTO DE CAJA Y BANCOS
+    '----------------------------------------------------------
+    
+    q = q & "LEFT JOIN movimientos_caja_bancos mov "
+    q = q & "ON mov.id = cheq.movimiento_origen "
+    
+    q = q & "LEFT JOIN AdminComprasCuentasContables cta_mov "
+    q = q & "ON cta_mov.id = mov.id_cuentacontable "
+    
+    '----------------------------------------------------------
+    ' RECIBO DE ORIGEN
+    '----------------------------------------------------------
+    
+    q = q & "LEFT JOIN AdminRecibosCheques admincheq "
+    q = q & "ON admincheq.idCheque = cheq.id "
+    
+    '----------------------------------------------------------
+    ' DEPÓSITO DEL CHEQUE
+    '----------------------------------------------------------
+    
+    q = q & "LEFT JOIN cheques_depositos dep "
+    q = q & "ON dep.id_cheque = cheq.id "
+    
+    q = q & "LEFT JOIN boleta_deposito bol_dep "
+    q = q & "ON bol_dep.id = dep.id_boleta "
+    
+    q = q & "LEFT JOIN operaciones op_dep "
+    q = q & "ON op_dep.id = dep.id_operacion "
+    
+    'La cuenta puede provenir de la boleta o de la operación
+    q = q & "LEFT JOIN AdminConfigCuentas cta_dep "
+    q = q & "ON cta_dep.id = COALESCE("
+    q = q & "bol_dep.id_cuenta, "
+    q = q & "op_dep.cuentabanc_o_caja_id"
+    q = q & ") "
+    
+    q = q & "LEFT JOIN AdminConfigBancos banc_dep "
+    q = q & "ON banc_dep.id = cta_dep.idBanco "
+    
+    '----------------------------------------------------------
+    ' CONDICIÓN BASE
+    '----------------------------------------------------------
+    
+    q = q & "WHERE 1 = 1 "
 
     If LenB(filter) > 0 Then
         q = q & " AND " & filter

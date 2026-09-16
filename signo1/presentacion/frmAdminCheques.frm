@@ -29,7 +29,7 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
-      SelectedItem    =   1
+      SelectedItem    =   3
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   3
       Item(0).Control(0)=   "Frame3"
@@ -58,9 +58,10 @@ Begin VB.Form frmAdminCheques
       Item(3).Control(2)=   "lbContador3erosUtilizados"
       Begin XtremeSuiteControls.PushButton cmdExportarChequeras 
          Height          =   255
-         Left            =   7920
-         TabIndex        =   158
+         Left            =   -62080
+         TabIndex        =   157
          Top             =   3120
+         Visible         =   0   'False
          Width           =   1695
          _Version        =   786432
          _ExtentX        =   2990
@@ -71,9 +72,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.PushButton cmdExportar 
          Height          =   255
-         Left            =   20160
-         TabIndex        =   157
+         Left            =   -49840
+         TabIndex        =   156
          Top             =   3075
+         Visible         =   0   'False
          Width           =   1935
          _Version        =   786432
          _ExtentX        =   3413
@@ -84,9 +86,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox4 
          Height          =   2700
-         Left            =   9720
-         TabIndex        =   126
+         Left            =   -60280
+         TabIndex        =   125
          Top             =   360
+         Visible         =   0   'False
          Width           =   12375
          _Version        =   786432
          _ExtentX        =   21828
@@ -106,7 +109,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.GroupBox GroupBox6 
             Height          =   1575
             Left            =   120
-            TabIndex        =   159
+            TabIndex        =   158
             Top             =   960
             Width           =   3135
             _Version        =   786432
@@ -119,7 +122,7 @@ Begin VB.Form frmAdminCheques
                Caption         =   "Ocultar ingresados"
                Height          =   255
                Left            =   120
-               TabIndex        =   162
+               TabIndex        =   161
                Top             =   360
                Value           =   1  'Checked
                Width           =   2895
@@ -127,7 +130,7 @@ Begin VB.Form frmAdminCheques
             Begin XtremeSuiteControls.PushButton cmdConciliarSeleccionados 
                Height          =   615
                Left            =   1680
-               TabIndex        =   160
+               TabIndex        =   159
                Top             =   840
                Width           =   1335
                _Version        =   786432
@@ -140,7 +143,7 @@ Begin VB.Form frmAdminCheques
             Begin XtremeSuiteControls.DateTimePicker dtFechaConciliar 
                Height          =   315
                Left            =   120
-               TabIndex        =   161
+               TabIndex        =   160
                Top             =   1080
                Width           =   1470
                _Version        =   786432
@@ -155,7 +158,7 @@ Begin VB.Form frmAdminCheques
                Height          =   255
                Index           =   1
                Left            =   120
-               TabIndex        =   163
+               TabIndex        =   162
                Top             =   840
                Width           =   1455
             End
@@ -163,7 +166,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.GroupBox GroupBox5 
             Height          =   2415
             Left            =   8160
-            TabIndex        =   150
+            TabIndex        =   149
             Top             =   120
             Width           =   4095
             _Version        =   786432
@@ -175,7 +178,7 @@ Begin VB.Form frmAdminCheques
                Height          =   495
                Index           =   0
                Left            =   2160
-               TabIndex        =   151
+               TabIndex        =   150
                Top             =   1800
                Width           =   1815
                _Version        =   786432
@@ -190,7 +193,7 @@ Begin VB.Form frmAdminCheques
                Height          =   495
                Index           =   1
                Left            =   120
-               TabIndex        =   152
+               TabIndex        =   151
                Top             =   1800
                Width           =   1815
                _Version        =   786432
@@ -213,7 +216,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.PushButton PushButton1 
             Height          =   315
             Left            =   2760
-            TabIndex        =   142
+            TabIndex        =   141
             Top             =   480
             Width           =   375
             _Version        =   786432
@@ -226,7 +229,7 @@ Begin VB.Form frmAdminCheques
          Begin VB.TextBox TxtNumeroChequeEnChequera 
             Height          =   285
             Left            =   120
-            TabIndex        =   141
+            TabIndex        =   140
             Top             =   480
             Width           =   2535
          End
@@ -234,7 +237,7 @@ Begin VB.Form frmAdminCheques
             Height          =   1215
             Index           =   7
             Left            =   3360
-            TabIndex        =   127
+            TabIndex        =   126
             Top             =   120
             Width           =   4695
             _Version        =   786432
@@ -257,7 +260,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   720
-               TabIndex        =   128
+               TabIndex        =   127
                Top             =   300
                Width           =   3675
                _Version        =   786432
@@ -272,7 +275,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   720
-               TabIndex        =   129
+               TabIndex        =   128
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -287,7 +290,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   2925
-               TabIndex        =   130
+               TabIndex        =   129
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -302,7 +305,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   7
                Left            =   2400
-               TabIndex        =   133
+               TabIndex        =   132
                Top             =   780
                Width           =   420
                _Version        =   786432
@@ -317,7 +320,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   7
                Left            =   165
-               TabIndex        =   132
+               TabIndex        =   131
                Top             =   780
                Width           =   465
                _Version        =   786432
@@ -332,7 +335,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   7
                Left            =   120
-               TabIndex        =   131
+               TabIndex        =   130
                Top             =   360
                Width           =   480
                _Version        =   786432
@@ -348,7 +351,7 @@ Begin VB.Form frmAdminCheques
             Height          =   1215
             Index           =   8
             Left            =   3360
-            TabIndex        =   134
+            TabIndex        =   133
             Top             =   1320
             Width           =   4695
             _Version        =   786432
@@ -371,7 +374,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   720
-               TabIndex        =   135
+               TabIndex        =   134
                Top             =   300
                Width           =   3675
                _Version        =   786432
@@ -386,7 +389,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   2925
-               TabIndex        =   136
+               TabIndex        =   135
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -401,7 +404,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   720
-               TabIndex        =   137
+               TabIndex        =   136
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -416,7 +419,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   8
                Left            =   2400
-               TabIndex        =   140
+               TabIndex        =   139
                Top             =   780
                Width           =   420
                _Version        =   786432
@@ -431,7 +434,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   8
                Left            =   165
-               TabIndex        =   139
+               TabIndex        =   138
                Top             =   780
                Width           =   465
                _Version        =   786432
@@ -446,7 +449,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   8
                Left            =   120
-               TabIndex        =   138
+               TabIndex        =   137
                Top             =   360
                Width           =   480
                _Version        =   786432
@@ -463,7 +466,7 @@ Begin VB.Form frmAdminCheques
             Height          =   255
             Index           =   0
             Left            =   120
-            TabIndex        =   144
+            TabIndex        =   143
             Top             =   240
             Width           =   2535
          End
@@ -484,12 +487,12 @@ Begin VB.Form frmAdminCheques
          TabIndex        =   86
          Top             =   360
          Visible         =   0   'False
-         Width           =   15135
+         Width           =   18735
          Begin VB.TextBox txtNumeroChequeCartera 
             Alignment       =   1  'Right Justify
             Height          =   315
             Left            =   240
-            TabIndex        =   98
+            TabIndex        =   97
             Top             =   480
             Width           =   2535
          End
@@ -501,11 +504,9 @@ Begin VB.Form frmAdminCheques
             Top             =   120
             Width           =   3855
             Begin XtremeSuiteControls.PushButton btnBuscarEnCartera 
-               Default         =   -1  'True
                Height          =   495
-               Index           =   0
                Left            =   120
-               TabIndex        =   95
+               TabIndex        =   163
                Top             =   2160
                Width           =   1575
                _Version        =   786432
@@ -528,7 +529,7 @@ Begin VB.Form frmAdminCheques
                Height          =   495
                Index           =   1
                Left            =   2160
-               TabIndex        =   96
+               TabIndex        =   95
                Top             =   2160
                Width           =   1575
                _Version        =   786432
@@ -542,7 +543,7 @@ Begin VB.Form frmAdminCheques
                Height          =   375
                Index           =   0
                Left            =   120
-               TabIndex        =   97
+               TabIndex        =   96
                Top             =   1680
                Width           =   3615
                _Version        =   786432
@@ -641,7 +642,7 @@ Begin VB.Form frmAdminCheques
             Height          =   1215
             Index           =   1
             Left            =   5400
-            TabIndex        =   99
+            TabIndex        =   98
             Top             =   240
             Width           =   4695
             _Version        =   786432
@@ -664,7 +665,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   720
-               TabIndex        =   100
+               TabIndex        =   99
                Top             =   300
                Width           =   3675
                _Version        =   786432
@@ -679,7 +680,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   1
                Left            =   720
-               TabIndex        =   101
+               TabIndex        =   100
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -694,7 +695,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   1
                Left            =   2925
-               TabIndex        =   102
+               TabIndex        =   101
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -709,7 +710,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   1
                Left            =   120
-               TabIndex        =   105
+               TabIndex        =   104
                Top             =   360
                Width           =   480
                _Version        =   786432
@@ -724,7 +725,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   1
                Left            =   165
-               TabIndex        =   104
+               TabIndex        =   103
                Top             =   780
                Width           =   465
                _Version        =   786432
@@ -739,7 +740,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   1
                Left            =   2400
-               TabIndex        =   103
+               TabIndex        =   102
                Top             =   780
                Width           =   420
                _Version        =   786432
@@ -755,7 +756,7 @@ Begin VB.Form frmAdminCheques
             Height          =   1335
             Index           =   0
             Left            =   5400
-            TabIndex        =   106
+            TabIndex        =   105
             Top             =   1560
             Width           =   4695
             _Version        =   786432
@@ -778,7 +779,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   1
                Left            =   720
-               TabIndex        =   107
+               TabIndex        =   106
                Top             =   300
                Width           =   3675
                _Version        =   786432
@@ -793,7 +794,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   2
                Left            =   2925
-               TabIndex        =   108
+               TabIndex        =   107
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -808,7 +809,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   2
                Left            =   720
-               TabIndex        =   109
+               TabIndex        =   108
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -823,7 +824,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   0
                Left            =   120
-               TabIndex        =   112
+               TabIndex        =   111
                Top             =   360
                Width           =   480
                _Version        =   786432
@@ -838,7 +839,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   0
                Left            =   165
-               TabIndex        =   111
+               TabIndex        =   110
                Top             =   780
                Width           =   465
                _Version        =   786432
@@ -853,7 +854,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   0
                Left            =   2400
-               TabIndex        =   110
+               TabIndex        =   109
                Top             =   780
                Width           =   420
                _Version        =   786432
@@ -870,7 +871,7 @@ Begin VB.Form frmAdminCheques
             Height          =   255
             Index           =   1
             Left            =   240
-            TabIndex        =   116
+            TabIndex        =   115
             Top             =   240
             Width           =   2535
          End
@@ -879,7 +880,7 @@ Begin VB.Form frmAdminCheques
             Height          =   255
             Index           =   2
             Left            =   240
-            TabIndex        =   115
+            TabIndex        =   114
             Top             =   870
             Width           =   2535
          End
@@ -888,7 +889,7 @@ Begin VB.Form frmAdminCheques
             Height          =   255
             Index           =   3
             Left            =   240
-            TabIndex        =   114
+            TabIndex        =   113
             Top             =   1440
             Width           =   2535
          End
@@ -897,20 +898,19 @@ Begin VB.Form frmAdminCheques
             Height          =   255
             Index           =   4
             Left            =   240
-            TabIndex        =   113
+            TabIndex        =   112
             Top             =   2040
             Width           =   2535
          End
       End
       Begin XtremeSuiteControls.GroupBox GroupBox3 
          Height          =   3855
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   28
          Top             =   360
-         Visible         =   0   'False
-         Width           =   15135
+         Width           =   18735
          _Version        =   786432
-         _ExtentX        =   26696
+         _ExtentX        =   33046
          _ExtentY        =   6800
          _StockProps     =   79
          Caption         =   "Parámetros de búsqueda"
@@ -1335,7 +1335,7 @@ Begin VB.Form frmAdminCheques
             Height          =   1215
             Index           =   6
             Left            =   6360
-            TabIndex        =   117
+            TabIndex        =   116
             Top             =   2520
             Width           =   4695
             _Version        =   786432
@@ -1358,7 +1358,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   720
-               TabIndex        =   118
+               TabIndex        =   117
                Top             =   300
                Width           =   3675
                _Version        =   786432
@@ -1373,7 +1373,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   2925
-               TabIndex        =   119
+               TabIndex        =   118
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -1388,7 +1388,7 @@ Begin VB.Form frmAdminCheques
                Height          =   315
                Index           =   0
                Left            =   720
-               TabIndex        =   120
+               TabIndex        =   119
                Top             =   720
                Width           =   1470
                _Version        =   786432
@@ -1403,7 +1403,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   6
                Left            =   120
-               TabIndex        =   123
+               TabIndex        =   122
                Top             =   360
                Width           =   480
                _Version        =   786432
@@ -1418,7 +1418,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   6
                Left            =   165
-               TabIndex        =   122
+               TabIndex        =   121
                Top             =   780
                Width           =   465
                _Version        =   786432
@@ -1433,7 +1433,7 @@ Begin VB.Form frmAdminCheques
                Height          =   195
                Index           =   6
                Left            =   2400
-               TabIndex        =   121
+               TabIndex        =   120
                Top             =   780
                Width           =   420
                _Version        =   786432
@@ -1511,9 +1511,9 @@ Begin VB.Form frmAdminCheques
          TabIndex        =   16
          Top             =   360
          Visible         =   0   'False
-         Width           =   15135
+         Width           =   18735
          _Version        =   786432
-         _ExtentX        =   26696
+         _ExtentX        =   33046
          _ExtentY        =   5318
          _StockProps     =   79
          Caption         =   "Parámetros de búsqueda"
@@ -1999,9 +1999,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox1 
          Height          =   2700
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   1
          Top             =   360
+         Visible         =   0   'False
          Width           =   9525
          _Version        =   786432
          _ExtentX        =   16801
@@ -2021,7 +2022,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.ComboBox cboCuentaBancariaChequera 
             Height          =   315
             Left            =   960
-            TabIndex        =   155
+            TabIndex        =   154
             Top             =   1635
             Width           =   2970
             _Version        =   786432
@@ -2112,7 +2113,7 @@ Begin VB.Form frmAdminCheques
             Caption         =   "Cta. Bcia."
             Height          =   255
             Left            =   165
-            TabIndex        =   156
+            TabIndex        =   155
             Top             =   1680
             Width           =   735
          End
@@ -2169,9 +2170,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grid_cheques 
          Height          =   6735
-         Left            =   9720
+         Left            =   -60280
          TabIndex        =   14
          Top             =   3360
+         Visible         =   0   'False
          Width           =   12405
          _ExtentX        =   21881
          _ExtentY        =   11880
@@ -2212,9 +2214,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grid_chequeras 
          Height          =   6690
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   15
          Top             =   3360
+         Visible         =   0   'False
          Width           =   9495
          _ExtentX        =   16748
          _ExtentY        =   11800
@@ -2254,12 +2257,11 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grdCheques3eros 
          Height          =   4665
-         Left            =   -69880
-         TabIndex        =   124
+         Left            =   120
+         TabIndex        =   123
          Top             =   4560
-         Visible         =   0   'False
-         Width           =   15135
-         _ExtentX        =   26696
+         Width           =   18735
+         _ExtentX        =   33046
          _ExtentY        =   8229
          Version         =   "2.0"
          BoundColumnIndex=   ""
@@ -2303,7 +2305,7 @@ Begin VB.Form frmAdminCheques
       Begin GridEX20.GridEX gridChequesEmitidos 
          Height          =   5385
          Left            =   -69880
-         TabIndex        =   125
+         TabIndex        =   124
          Top             =   3720
          Visible         =   0   'False
          Width           =   15135
@@ -2348,7 +2350,7 @@ Begin VB.Form frmAdminCheques
       Begin GridEX20.GridEX grid_cartera_cheques 
          Height          =   4665
          Left            =   -69880
-         TabIndex        =   143
+         TabIndex        =   142
          Top             =   3720
          Visible         =   0   'False
          Width           =   15135
@@ -2395,31 +2397,34 @@ Begin VB.Form frmAdminCheques
       Begin VB.Label Label14 
          Caption         =   "* Las chequeras que tienen el tilde marcado no apareceran en el listado de chequeras."
          Height          =   255
-         Left            =   120
-         TabIndex        =   154
+         Left            =   -69880
+         TabIndex        =   153
          Top             =   10200
+         Visible         =   0   'False
          Width           =   7335
       End
       Begin VB.Label Label13 
          Caption         =   "Label13"
          Height          =   255
-         Left            =   9720
-         TabIndex        =   149
+         Left            =   -60280
+         TabIndex        =   148
          Top             =   3075
+         Visible         =   0   'False
          Width           =   3975
       End
       Begin VB.Label Label12 
          Caption         =   "Label12"
          Height          =   255
-         Left            =   120
-         TabIndex        =   148
+         Left            =   -69880
+         TabIndex        =   147
          Top             =   3075
+         Visible         =   0   'False
          Width           =   3975
       End
       Begin XtremeSuiteControls.Label lbContadorChequesEnCartera 
          Height          =   375
          Left            =   -69880
-         TabIndex        =   147
+         TabIndex        =   146
          Top             =   3360
          Visible         =   0   'False
          Width           =   5415
@@ -2431,10 +2436,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.Label lbContador3erosUtilizados 
          Height          =   375
-         Left            =   -69880
-         TabIndex        =   146
+         Left            =   120
+         TabIndex        =   145
          Top             =   4200
-         Visible         =   0   'False
          Width           =   6375
          _Version        =   786432
          _ExtentX        =   11245
@@ -2445,7 +2449,7 @@ Begin VB.Form frmAdminCheques
       Begin XtremeSuiteControls.Label lbContadorChequesPropiosUtilizados 
          Height          =   375
          Left            =   -69880
-         TabIndex        =   145
+         TabIndex        =   144
          Top             =   3360
          Visible         =   0   'False
          Width           =   6375
@@ -2497,7 +2501,7 @@ Begin VB.Form frmAdminCheques
    Begin XtremeSuiteControls.Label Label11 
       Height          =   13575
       Left            =   7560
-      TabIndex        =   153
+      TabIndex        =   152
       Top             =   -9720
       Width           =   8535
       _Version        =   786432
@@ -2545,6 +2549,7 @@ Private idChequeraMostrada As Long
 Private chequesPendientesConciliar As Dictionary
 Private procesandoSeleccionConciliacion As Boolean
 Private procesandoCambioChequeraUsada As Boolean
+Private indiceSolapaActual As Long
 
 
 Private Sub btnBorrarBanco_Click()
@@ -2600,7 +2605,7 @@ Private Sub btnBuscar_Click_1()
     GridEXHelper.AutoSizeColumns Me.grdCheques3eros
 
 End Sub
-Private Sub btnBuscarEnCartera_Click_1()
+Private Sub btnBuscarEnCartera_Click()
     MostrarCartera
 End Sub
 
@@ -2695,10 +2700,6 @@ Private Sub btnBuscar_Click(Index As Integer)
     
 End Sub
 
-
-Private Sub btnBuscarCartera_Click(Index As Integer)
-
-End Sub
 
 Private Sub btnBuscarChePropios_Click(Index As Integer)
     
@@ -4013,6 +4014,9 @@ End Sub
 Private Sub Form_Load()
     FormHelper.Customize Me
     
+    'Administrar Chequeras es la solapa inicial
+    indiceSolapaActual = 1
+    
     GridEXHelper.CustomizeGrid Me.grid_chequeras, True, True
     GridEXHelper.CustomizeGrid Me.grid_cartera_cheques, True, True
     GridEXHelper.CustomizeGrid Me.grid_cheques, True, True
@@ -4023,7 +4027,6 @@ Private Sub Form_Load()
     Dim i As Integer
     
     i = 1
-    
     
     Set chequesPendientesConciliar = New Dictionary
     
@@ -4234,12 +4237,6 @@ Private Sub Form_Load()
     
 '''''''''''''''''''''''''''''''''''
 
-'    Me.dtpDesde(1).value = Nothing
-'    Me.dtpHasta(1).value = Nothing
-'    Me.dtpDesde(2).value = Nothing
-'    Me.dtpHasta(2).value = Nothing
-    
-    
     '''''''''''''''''''''''''''''''''''''''''''''''
     'endregion FECHAS EN CARTERA
     
@@ -4260,63 +4257,250 @@ Private Sub Form_Load()
             MostrarChequera
         End If
     End If
+    
+    AcomodarGrillas
 
 End Sub
 
 
 Private Sub Form_Resize()
-    On Error Resume Next
-    
-    Dim margen As Long
-    Dim espacioInferior As Long
-    Dim masmargen As Long
-    
-    margen = 120
-    espacioInferior = 120
-    masmargen = 2000
-    
+
+    On Error GoTo salir
+
+    If Me.WindowState = vbMinimized Then Exit Sub
+
     With Me.TabControl1
         .Left = 0
         .Top = 0
         .Width = Me.ScaleWidth
         .Height = Me.ScaleHeight
     End With
-    
-    With Me.gridChequesEmitidos
-'''       .Left = Me.TabControl1.Left + margen
-       .Top = Me.TabControl1.ScaleHeight + Me.TabControl1.Top + margen
-       .Width = Me.TabControl1.Width - margen
-       .Height = Me.TabControl1.Height / 1.75
-        
-    End With
-    
-    With Me.grdCheques3eros
-'''       .Left = Me.TabControl1.Left + margen
-       .Top = Me.TabControl1.ScaleHeight + Me.TabControl1.Top + margen
-       .Width = Me.TabControl1.Width - margen
-       .Height = Me.TabControl1.Height / 1.75
-        
-    End With
-    
-    With Me.grid_cartera_cheques
-       .Top = Me.TabControl1.ScaleHeight + Me.TabControl1.Top + margen
-       .Width = Me.TabControl1.Width - margen
-       .Height = Me.TabControl1.Height / 1.75
-    End With
-    
-    With Me.grid_chequeras
-       .Top = Me.TabControl1.ScaleHeight + Me.TabControl1.Top + margen
-'''       .Width = Me.TabControl1.Width - margen
-       .Height = Me.TabControl1.Height / 2.5
-    End With
-    
-    With Me.grid_cheques
-       .Top = Me.TabControl1.ScaleHeight + Me.TabControl1.Top + margen
-'''       .Width = Me.TabControl1.Width - margen
-       .Height = Me.TabControl1.Height / 2.5
-    End With
-    
+
+    AcomodarGrillas
+
+salir:
+
 End Sub
+
+
+Private Sub AcomodarGrillas()
+
+    On Error GoTo salir
+
+    Const MARGEN As Long = 120
+    Const SEPARACION As Long = 120
+    Const MARGEN_INFERIOR As Long = 240
+    Const ESPACIO_CONTADOR As Long = 345
+    Const ESPACIO_NOTA As Long = 600
+
+    Dim anchoDisponible As Long
+    Dim anchoAdministrar As Long
+    Dim anchoChequeras As Long
+    Dim anchoCheques As Long
+    Dim izquierdaCheques As Long
+
+    Dim topCartera As Long
+    Dim topAdministrar As Long
+    Dim topPropios As Long
+    Dim topTerceros As Long
+
+    Dim altoCartera As Long
+    Dim altoAdministrar As Long
+    Dim altoPropios As Long
+    Dim altoTerceros As Long
+
+    If Me.WindowState = vbMinimized Then Exit Sub
+    If Me.TabControl1.ScaleWidth <= MARGEN * 2 Then Exit Sub
+    If Me.TabControl1.ScaleHeight <= 1000 Then Exit Sub
+    
+    'Usar el área interna disponible del TabControl
+    anchoDisponible = Me.TabControl1.ScaleWidth - (MARGEN * 2)
+
+    'Posición vertical debajo de cada sector de búsqueda
+    topCartera = _
+        Me.Frame3.Top + _
+        Me.Frame3.Height + _
+        ESPACIO_CONTADOR
+
+    topAdministrar = _
+        Me.GroupBox1.Top + _
+        Me.GroupBox1.Height + 300
+
+    topPropios = _
+        Me.GroupBox2.Top + _
+        Me.GroupBox2.Height + _
+        ESPACIO_CONTADOR
+
+    topTerceros = _
+        Me.GroupBox3.Top + _
+        Me.GroupBox3.Height + _
+        ESPACIO_CONTADOR
+
+    'Altura disponible hasta el final de la pantalla
+    altoCartera = Me.TabControl1.ScaleHeight - _
+                  topCartera - MARGEN_INFERIOR
+    
+    altoAdministrar = Me.TabControl1.ScaleHeight - _
+                      topAdministrar - ESPACIO_NOTA
+    
+    altoPropios = Me.TabControl1.ScaleHeight - _
+                  topPropios - MARGEN_INFERIOR
+    
+    altoTerceros = Me.TabControl1.ScaleHeight - _
+                   topTerceros - MARGEN_INFERIOR
+                   
+
+    If altoCartera < 600 Then altoCartera = 600
+    If altoAdministrar < 600 Then altoAdministrar = 600
+    If altoPropios < 600 Then altoPropios = 600
+    If altoTerceros < 600 Then altoTerceros = 600
+
+    '--------------------------------------------------
+    'Cartera
+    '--------------------------------------------------
+    Me.Frame3.Width = anchoDisponible
+
+    With Me.grid_cartera_cheques
+        .Top = topCartera
+        .Width = anchoDisponible
+        
+        .Height = altoCartera
+    End With
+
+    Me.lbContadorChequesEnCartera.Top = _
+        topCartera - _
+        Me.lbContadorChequesEnCartera.Height
+
+    '--------------------------------------------------
+    'Administrar Chequeras
+    '--------------------------------------------------
+    anchoAdministrar = anchoDisponible - SEPARACION
+
+    anchoChequeras = _
+        CLng(anchoAdministrar * 0.43)
+
+    anchoCheques = _
+        anchoAdministrar - anchoChequeras
+
+    izquierdaCheques = _
+        MARGEN + anchoChequeras + SEPARACION
+
+    Me.GroupBox1.Width = anchoChequeras
+    Me.GroupBox4.Width = anchoCheques
+
+    With Me.grid_chequeras
+        .Top = topAdministrar
+        .Width = anchoChequeras
+        .Height = altoAdministrar
+    End With
+
+    With Me.grid_cheques
+        .Top = topAdministrar
+        .Width = anchoCheques
+        .Height = altoAdministrar
+    End With
+
+    Me.Label12.Top = _
+        topAdministrar - Me.Label12.Height
+
+    Me.Label13.Top = _
+        topAdministrar - Me.Label13.Height
+
+    Me.Label14.Top = _
+        topAdministrar + altoAdministrar + 120
+
+    Me.Label14.Width = anchoDisponible
+
+    '--------------------------------------------------
+    'Cheques propios utilizados
+    '--------------------------------------------------
+    Me.GroupBox2.Width = anchoDisponible
+
+    With Me.gridChequesEmitidos
+        .Top = topPropios
+        .Width = anchoDisponible
+        .Height = altoPropios
+    End With
+
+    Me.lbContadorChequesPropiosUtilizados.Top = _
+        topPropios - _
+        Me.lbContadorChequesPropiosUtilizados.Height
+
+    '--------------------------------------------------
+    'Cheques de terceros utilizados
+    '--------------------------------------------------
+    Me.GroupBox3.Width = anchoDisponible
+
+    With Me.grdCheques3eros
+        .Top = topTerceros
+        .Width = anchoDisponible
+        .Height = altoTerceros
+    End With
+
+    Me.lbContador3erosUtilizados.Top = _
+        topTerceros - _
+        Me.lbContador3erosUtilizados.Height
+
+    'Codejock mueve a la izquierda los controles
+    'pertenecientes a las solapas inactivas.
+    'Por eso solamente modificamos Left en la solapa activa.
+    Select Case indiceSolapaActual
+
+        Case 0
+            Me.Frame3.Left = MARGEN
+            Me.grid_cartera_cheques.Left = MARGEN
+
+            Me.lbContadorChequesEnCartera.Left = _
+                MARGEN
+
+        Case 1
+            Me.GroupBox1.Left = MARGEN
+            Me.GroupBox4.Left = izquierdaCheques
+
+            Me.grid_chequeras.Left = MARGEN
+            Me.grid_cheques.Left = izquierdaCheques
+
+            Me.Label12.Left = MARGEN
+            Me.Label13.Left = izquierdaCheques
+            Me.Label14.Left = MARGEN
+
+            Me.cmdExportarChequeras.Left = _
+                MARGEN + anchoChequeras - _
+                Me.cmdExportarChequeras.Width
+
+            Me.cmdExportar.Left = _
+                izquierdaCheques + anchoCheques - _
+                Me.cmdExportar.Width
+
+        Case 2
+            Me.GroupBox2.Left = MARGEN
+            Me.gridChequesEmitidos.Left = MARGEN
+
+            Me.lbContadorChequesPropiosUtilizados.Left = _
+                MARGEN
+
+        Case 3
+            Me.GroupBox3.Left = MARGEN
+            Me.grdCheques3eros.Left = MARGEN
+
+            Me.lbContador3erosUtilizados.Left = _
+                MARGEN
+
+    End Select
+
+salir:
+
+End Sub
+
+
+Private Sub TabControl1_SelectedChanged( _
+    ByVal item As Xtremesuitecontrols.ITabControlItem)
+
+    indiceSolapaActual = item.Index
+    AcomodarGrillas
+
+End Sub
+
 
 Private Sub chkOcultarIngresados_Click()
 
@@ -4707,7 +4891,7 @@ Private Sub grid_chequeras_UnboundUpdate( _
     Dim respuesta As VbMsgBoxResult
     Dim mensaje As String
     Dim titulo As String
-    Dim bancoNombre As String
+    Dim BancoNombre As String
     Dim cuentaNumero As String
     Dim mensajeError As String
 
@@ -4731,11 +4915,11 @@ Private Sub grid_chequeras_UnboundUpdate( _
     'Si el valor no cambió, no hacer nada
     If nuevaUsada = usadaAnterior Then GoTo salir
 
-    bancoNombre = "SIN DEFINIR"
+    BancoNombre = "SIN DEFINIR"
     cuentaNumero = "SIN DEFINIR"
 
     If Not ch.Banco Is Nothing Then
-        bancoNombre = ch.Banco.nombre
+        BancoNombre = ch.Banco.nombre
     End If
 
     If Not ch.CuentaBancaria Is Nothing Then
@@ -4768,7 +4952,7 @@ Private Sub grid_chequeras_UnboundUpdate( _
 
     mensaje = mensaje & vbCrLf & vbCrLf & _
               "Chequera N°: " & ch.numero & vbCrLf & _
-              "Banco: " & bancoNombre & vbCrLf & _
+              "Banco: " & BancoNombre & vbCrLf & _
               "Cuenta: " & cuentaNumero & vbCrLf & _
               "Cheques: " & ch.NumeroDesde & _
               " al " & ch.NumeroHasta
@@ -5118,15 +5302,15 @@ End Sub
 
 
 Private Sub AjustarGrid(ByVal grd As Object, ByVal ctrlSuperior As Object, _
-                        ByVal margen As Long, ByVal espacioInferior As Long)
+                        ByVal MARGEN As Long, ByVal espacioInferior As Long)
     Dim topGrid As Long
     Dim altoGrid As Long
     
-    topGrid = ctrlSuperior.Top + ctrlSuperior.Height + margen
+    topGrid = ctrlSuperior.Top + ctrlSuperior.Height + MARGEN
     
-    grd.Left = margen
+    grd.Left = MARGEN
     grd.Top = topGrid
-    grd.Width = Me.ScaleWidth - (margen * 2)
+    grd.Width = Me.ScaleWidth - (MARGEN * 2)
     
     altoGrid = Me.ScaleHeight - topGrid - espacioInferior
     If altoGrid > 300 Then
@@ -5539,16 +5723,16 @@ Private Sub cmdConciliarSeleccionados_Click()
     Dim fechaConciliacion As Date
     Dim idsCheques As Collection
     Dim clave As Variant
-    Dim cantidad As Long
+    Dim Cantidad As Long
     Dim respuesta As VbMsgBoxResult
 
     If chequesPendientesConciliar Is Nothing Then
         Set chequesPendientesConciliar = New Dictionary
     End If
 
-    cantidad = chequesPendientesConciliar.count
+    Cantidad = chequesPendientesConciliar.count
 
-    If cantidad = 0 Then
+    If Cantidad = 0 Then
 
         MsgBox "No hay cheques seleccionados para conciliar.", _
                vbInformation, _
@@ -5579,7 +5763,7 @@ Private Sub cmdConciliarSeleccionados_Click()
     End If
 
     respuesta = MsgBox( _
-        "¿Confirma la conciliación de " & cantidad & _
+        "¿Confirma la conciliación de " & Cantidad & _
         " cheque(s)?" & vbCrLf & vbCrLf & _
         "Fecha de ingreso: " & _
         Format$(fechaConciliacion, "dd/mm/yyyy"), _
@@ -5605,7 +5789,7 @@ Private Sub cmdConciliarSeleccionados_Click()
     LimpiarSeleccionConciliacion
     MostrarChequera
 
-    MsgBox cantidad & " cheque(s) conciliado(s) correctamente.", _
+    MsgBox Cantidad & " cheque(s) conciliado(s) correctamente.", _
            vbInformation, _
            "Conciliación de cheques"
 
@@ -5625,7 +5809,7 @@ Private Sub mnuAnularCheque_Click()
 
     Dim respuesta As VbMsgBoxResult
     Dim mensaje As String
-    Dim bancoNombre As String
+    Dim BancoNombre As String
     Dim chequeraNumero As String
     Dim estabaEnCartera As Boolean
 
@@ -5693,7 +5877,7 @@ Private Sub mnuAnularCheque_Click()
         Exit Sub
     End If
 
-    bancoNombre = vbNullString
+    BancoNombre = vbNullString
     chequeraNumero = vbNullString
 
     If Not tmpChequera Is Nothing Then
@@ -5701,7 +5885,7 @@ Private Sub mnuAnularCheque_Click()
         chequeraNumero = CStr(tmpChequera.numero)
 
         If Not tmpChequera.Banco Is Nothing Then
-            bancoNombre = tmpChequera.Banco.nombre
+            BancoNombre = tmpChequera.Banco.nombre
         End If
 
     End If
@@ -5711,7 +5895,7 @@ Private Sub mnuAnularCheque_Click()
         vbCrLf & vbCrLf & _
         "Número: " & tmpCheque.numero & vbCrLf & _
         "Chequera: " & chequeraNumero & vbCrLf & _
-        "Banco: " & bancoNombre
+        "Banco: " & BancoNombre
 
     If tmpCheque.EnCartera Then
         mensaje = mensaje & vbCrLf & vbCrLf & _

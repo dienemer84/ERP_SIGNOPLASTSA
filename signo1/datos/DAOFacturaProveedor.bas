@@ -93,7 +93,7 @@ Public Function existeFactura(Factura As clsFacturaProveedor) As Boolean
 
     Set rs = conectar.RSFactory(q)
     If Not rs.EOF And Not rs.BOF Then
-        existeFactura = rs!cantidad > 0
+        existeFactura = rs!Cantidad > 0
 
     End If
     Exit Function
@@ -501,7 +501,7 @@ Public Function Delete(facid As Long) As Boolean
 
             Dim facs As Collection
             Dim F As clsFacturaProveedor
-            Set facs = op.FacturasProveedor
+            Set facs = op.facturasProveedor
             For Each F In facs
                 If F.Id <> facid Then
                     facsOrphan.Add F
@@ -731,7 +731,7 @@ Public Function PagarEnEfectivo(fac As clsFacturaProveedor, fechaPago As Date, i
     If insideTransaction Then conectar.BeginTransaction
 
     Dim op As New OrdenPago
-    op.FacturasProveedor.Add fac
+    op.facturasProveedor.Add fac
     fac.totalAbonado = fac.total
     fac.TipoCambio = 1
     fac.NetoGravadoAbonado = fac.NetoGravado
@@ -1028,6 +1028,99 @@ err1:
 End Function
 
 
+'=========================================================
+' ANTICIPOS PENDIENTES A UNA FECHA DETERMINADA
+'
+' Incluye pagos a cuenta realizados hasta la fecha
+' de corte que todavia no estaban aplicados mediante
+' una OP aprobada a esa fecha.
+'
+' No depende solamente del estado actual del anticipo.
+'=========================================================
+Public Function TotalAnticiposPendientesAl( _
+    ByVal IdProveedor As Long, _
+    ByVal FechaCorte As Date, _
+    ByVal IdMoneda As Long _
+) As Double
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As Recordset
+
+    Dim fechaHasta As Date
+
+    Dim numeroError As Long
+    Dim descripcionError As String
+
+    TotalAnticiposPendientesAl = 0
+
+    If IdProveedor <= 0 Then
+        Err.Raise 5, _
+                  "TotalAnticiposPendientesAl", _
+                  "El proveedor no es valido."
+    End If
+
+    'Trabajar solamente con la fecha, sin horario.
+    fechaHasta = DateSerial( _
+        Year(FechaCorte), _
+        Month(FechaCorte), _
+        Day(FechaCorte))
+
+    '------------------------------------------------------
+    ' BUSCAR ANTICIPOS EXISTENTES AL CIERRE
+    '------------------------------------------------------
+    q = "SELECT " _
+      & "IFNULL(SUM(p.static_total_origen), 0) " _
+      & "AS total_anticipos " _
+      & "FROM pagos_a_cuenta p " _
+      & "WHERE p.id_proveedor = " & IdProveedor & " " _
+      & "AND p.id_moneda = " & IdMoneda & " " _
+      & "AND p.fecha <= " & conectar.Escape(fechaHasta) & " " _
+      & "AND p.estado IN (0, 1) "
+
+    '------------------------------------------------------
+    ' EXCLUIR ANTICIPOS QUE YA ESTABAN APLICADOS
+    ' EN UNA OP APROBADA A LA FECHA DE CORTE
+    '------------------------------------------------------
+    q = q & "AND NOT EXISTS ( " _
+          & " SELECT 1 " _
+          & " FROM ordenes_pago_pagos_a_cuenta vinc " _
+          & " INNER JOIN ordenes_pago op " _
+          & " ON op.id = vinc.id_orden_pago " _
+          & " WHERE vinc.id_pago_a_cuenta = p.id " _
+          & " AND op.estado = 1 " _
+          & " AND op.fecha <= " _
+          & conectar.Escape(fechaHasta) & " " _
+          & ")"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        TotalAnticiposPendientesAl = _
+            CDbl(rs!total_anticipos)
+
+    End If
+
+    Set rs = Nothing
+
+    Exit Function
+
+err1:
+
+    numeroError = Err.Number
+    descripcionError = Err.Description
+
+    TotalAnticiposPendientesAl = 0
+
+    Err.Raise numeroError, _
+              "DAOFacturaProveedor.TotalAnticiposPendientesAl", _
+              descripcionError
+
+End Function
+
+
 
 Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, Optional FechaFin As String = vbNullString, Optional withHistorial As Boolean = False, Optional orderBy As String = vbNullString, Optional soloPropias As Boolean = False, Optional widhCompensatorios As Boolean = False) As Collection
     On Error Resume Next
@@ -1053,6 +1146,34 @@ Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, O
     q = q & ",IFNULL((SELECT SUM(total_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFin & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS total_abonado"
     q = q & ",IFNULL((SELECT SUM(neto_gravado_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <= " & FechaFin & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS neto_gravado_abonado "
     q = q & ",IFNULL((SELECT SUM(otros_abonado) FROM ordenes_pago_facturas opf JOIN ordenes_pago op1 ON opf.id_orden_pago=op1.id WHERE op1.estado=1 AND op1.fecha <=" & FechaFin & " AND opf.id_factura_proveedor=AdminComprasFacturasProveedores.id),0) AS otros_abonado "
+    
+    '------------------------------------------------------
+    ' LIQUIDACIONES APROBADAS HASTA LA FECHA DE CORTE
+    '------------------------------------------------------
+    
+    q = q & ",IFNULL((" _
+          & "SELECT SUM(lcf.neto_gravado_liquidado) " _
+          & "FROM liquidaciones_caja_facturas lcf " _
+          & "INNER JOIN liquidaciones_caja lc " _
+          & "ON lc.id = lcf.id_liquidacion_caja " _
+          & "WHERE lcf.id_factura_proveedor = " _
+          & "AdminComprasFacturasProveedores.id " _
+          & "AND lc.estado = 1 " _
+          & "AND lc.fecha <= " & FechaFin _
+          & "),0) AS ng_liquidado_al_corte "
+    
+    q = q & ",IFNULL((" _
+          & "SELECT SUM(lcf.otros_liquidado) " _
+          & "FROM liquidaciones_caja_facturas lcf " _
+          & "INNER JOIN liquidaciones_caja lc " _
+          & "ON lc.id = lcf.id_liquidacion_caja " _
+          & "WHERE lcf.id_factura_proveedor = " _
+          & "AdminComprasFacturasProveedores.id " _
+          & "AND lc.estado = 1 " _
+          & "AND lc.fecha <= " & FechaFin _
+          & "),0) AS otros_liquidado_al_corte "
+          
+    
     q = q & " ,  CONVERT((SELECT IFNULL(GROUP_CONCAT(id_orden_pago),'-') FROM ordenes_pago_facturas INNER JOIN ordenes_pago ON ordenes_pago_facturas.id_orden_pago=ordenes_pago.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND ordenes_pago.estado<>2  AND ordenes_pago.fecha <=" & FechaFin & "),NCHAR) AS ordenes_pago "
     q = q & ",   CONVERT((SELECT IFNULL(GROUP_CONCAT(numero_liq),'-') From liquidaciones_caja_facturas INNER JOIN liquidaciones_caja ON liquidaciones_caja_facturas.id_liquidacion_caja=liquidaciones_caja.id WHERE id_factura_proveedor = AdminComprasFacturasProveedores.id AND liquidaciones_caja.estado<>2  AND liquidaciones_caja.fecha <=" & FechaFin & "),NCHAR) AS num_liquidaciones_caja "
     q = q & " From" _
@@ -1067,7 +1188,6 @@ Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, O
         & " LEFT JOIN AdminConfigPercepciones ON AdminComprasFacturasProveedoresPercepciones.id_percepcion=AdminConfigPercepciones.id " _
         & " LEFT JOIN AdminConfigIvaAlicuotas AS a1 ON AdminComprasFacturasProveedoresIva.id_iva=a1.id " _
         & " LEFT JOIN usuarios ON AdminComprasFacturasProveedores.id_usuario_creador=usuarios.id " _
-        & " LEFT JOIN liquidaciones_caja_facturas ON (AdminComprasFacturasProveedores.id = liquidaciones_caja_facturas.id_factura_proveedor) " _
         & " WHERE 1=1 "
     If LenB(filtro) > 0 Then
         q = q & " and " & filtro
@@ -1096,30 +1216,20 @@ Public Function FindAllTotalizadores(Optional filtro As String = vbNullString, O
     While Not rs.EOF
         Set F = Map(rs, indice, "AdminComprasFacturasProveedores", "proveedores", "AdminConfigFacturasProveedor", "AdminConfigIVAProveedor", "AdminConfigMonedas")
 
-        If rs!ordenes_pago <> "-" Or rs!num_liquidaciones_caja <> "-" Then
+        '------------------------------------------------------
+        ' IMPORTES ABONADOS HASTA LA FECHA DE CORTE
+        '------------------------------------------------------
         
-                Dim neto_gravado_liquidado As Variant
-                neto_gravado_liquidado = rs!neto_gravado_liquidado
-                If Not IsNull(neto_gravado_liquidado) Then
-                    F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado + neto_gravado_liquidado
-                Else
-                    F.NetoGravadoAbonadoGlobal = rs!neto_gravado_abonado
-                End If
+        F.NetoGravadoAbonadoGlobal = _
+            CDbl(rs!neto_gravado_abonado) + _
+            CDbl(rs!ng_liquidado_al_corte)
         
-                Dim otros_liquidado As Variant
-                otros_liquidado = rs!otros_liquidado
-                If Not IsNull(otros_liquidado) Then
-                    F.OtrosAbonadoGlobal = rs!otros_abonado + otros_liquidado
-                Else
-                    F.OtrosAbonadoGlobal = rs!otros_abonado
-                End If
-        
-        End If
+        F.OtrosAbonadoGlobal = _
+            CDbl(rs!otros_abonado) + _
+            CDbl(rs!otros_liquidado_al_corte)
 
         F.OrdenesPagoId = rs!ordenes_pago
         F.LiquidacionesCajaId = rs!num_liquidaciones_caja
-
-
 
 
         If funciones.BuscarEnColeccion(col, CStr(F.Id)) Then
@@ -1162,7 +1272,15 @@ err1:
 End Function
 
 
-Public Function ExportarColeccionTotalizadores(col As Collection, Optional ProgressBar As Object, Optional FechaFin As String) As Boolean
+Public Function ExportarColeccionTotalizadores( _
+    col As Collection, _
+    Optional ProgressBar As Object, _
+    Optional FechaFin As String, _
+    Optional ByVal IdProveedorResumen As Long = 0, _
+    Optional ByVal SaldoFacturasResumen As Double = 0, _
+    Optional ByVal AnticiposResumen As Double = 0 _
+) As Boolean
+
     On Error GoTo err1
 
     ExportarColeccionTotalizadores = True
@@ -1301,9 +1419,52 @@ Public Function ExportarColeccionTotalizadores(col As Collection, Optional Progr
 
     xlWorksheet.Cells(offset + 1, 9).Formula = "=sum(I3:I" & offset & ")"
     xlWorksheet.Cells(offset + 1, 10).Formula = "=sum(J3:J" & offset & ")"
-    xlWorksheet.Cells(offset + 1, 11).Formula = "=sum(K3:K" & offset & ")"
-
     
+    xlWorksheet.Cells(offset + 1, 11).Formula = "=sum(K3:K" & offset & ")"
+    
+    
+    '==================================================
+    ' RESUMEN GLOBAL DEL PROVEEDOR
+    '==================================================
+    
+    If IdProveedorResumen > 0 Then
+    
+        Dim filaResumen As Long
+    
+        filaResumen = offset + 3
+    
+        xlWorksheet.Cells(filaResumen, 8).value = _
+            "PROVEEDOR ID: " & IdProveedorResumen & _
+            " - RESUMEN GLOBAL AR$"
+    
+        xlWorksheet.Cells(filaResumen + 1, 8).value = _
+            "Deuda por facturas al corte"
+    
+        xlWorksheet.Cells(filaResumen + 1, 11).value = _
+            SaldoFacturasResumen
+    
+        xlWorksheet.Cells(filaResumen + 2, 8).value = _
+            "Anticipos sin aplicar al corte"
+    
+        xlWorksheet.Cells(filaResumen + 2, 11).value = _
+            -AnticiposResumen
+    
+        xlWorksheet.Cells(filaResumen + 3, 8).value = _
+            "DEUDA NETA DEL PROVEEDOR AR$"
+    
+        xlWorksheet.Cells(filaResumen + 3, 11).value = _
+            SaldoFacturasResumen - AnticiposResumen
+    
+        xlWorksheet.Range( _
+            xlWorksheet.Cells(filaResumen, 8), _
+            xlWorksheet.Cells(filaResumen + 3, 11)).Font.Bold = True
+    
+        xlWorksheet.Range( _
+            xlWorksheet.Cells(filaResumen + 1, 11), _
+            xlWorksheet.Cells(filaResumen + 3, 11)).NumberFormat = _
+            "#,##0.00"
+    
+    End If
     
     
     ProgressBar(0).value = col.count

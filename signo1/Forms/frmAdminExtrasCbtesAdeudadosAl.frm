@@ -3,14 +3,14 @@ Object = "{E684D8A3-716C-4E59-AA94-7144C04B0074}#1.1#0"; "GridEX20.ocx"
 Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmAdminExtrasCbtesAdeudadosAl 
    Caption         =   "Comprobantes Compra adeudados al"
-   ClientHeight    =   6930
+   ClientHeight    =   8940
    ClientLeft      =   60
    ClientTop       =   465
    ClientWidth     =   14415
    ClipControls    =   0   'False
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
-   ScaleHeight     =   6645
+   ScaleHeight     =   8572.338
    ScaleMode       =   0  'User
    ScaleWidth      =   14415
    WindowState     =   2  'Maximized
@@ -20,9 +20,9 @@ Begin VB.Form frmAdminExtrasCbtesAdeudadosAl
       Left            =   120
       TabIndex        =   0
       Top             =   120
-      Width           =   18570
+      Width           =   26250
       _Version        =   786432
-      _ExtentX        =   32755
+      _ExtentX        =   46302
       _ExtentY        =   3810
       _StockProps     =   79
       Caption         =   "Comprobantes de proveedores"
@@ -445,8 +445,8 @@ Begin VB.Form frmAdminExtrasCbtesAdeudadosAl
       Left            =   120
       TabIndex        =   11
       Top             =   2400
-      Width           =   18570
-      _ExtentX        =   32755
+      Width           =   26250
+      _ExtentX        =   46302
       _ExtentY        =   7011
       Version         =   "2.0"
       PreviewRowIndent=   100
@@ -473,7 +473,7 @@ Begin VB.Form frmAdminExtrasCbtesAdeudadosAl
       IntProp1        =   0
       IntProp2        =   0
       IntProp7        =   0
-      ColumnsCount    =   11
+      ColumnsCount    =   13
       Column(1)       =   "frmAdminExtrasCbtesAdeudadosAl.frx":031A
       Column(2)       =   "frmAdminExtrasCbtesAdeudadosAl.frx":0476
       Column(3)       =   "frmAdminExtrasCbtesAdeudadosAl.frx":05A6
@@ -485,19 +485,79 @@ Begin VB.Form frmAdminExtrasCbtesAdeudadosAl
       Column(9)       =   "frmAdminExtrasCbtesAdeudadosAl.frx":0D46
       Column(10)      =   "frmAdminExtrasCbtesAdeudadosAl.frx":0E86
       Column(11)      =   "frmAdminExtrasCbtesAdeudadosAl.frx":0FCE
+      Column(12)      =   "frmAdminExtrasCbtesAdeudadosAl.frx":110E
+      Column(13)      =   "frmAdminExtrasCbtesAdeudadosAl.frx":1272
       FormatStylesCount=   9
-      FormatStyle(1)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":110E
-      FormatStyle(2)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":1246
-      FormatStyle(3)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":12F6
-      FormatStyle(4)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":13AA
-      FormatStyle(5)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":1482
-      FormatStyle(6)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":153A
-      FormatStyle(7)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":161A
-      FormatStyle(8)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":16DA
-      FormatStyle(9)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":179E
+      FormatStyle(1)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":1402
+      FormatStyle(2)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":153A
+      FormatStyle(3)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":15EA
+      FormatStyle(4)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":169E
+      FormatStyle(5)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":1776
+      FormatStyle(6)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":182E
+      FormatStyle(7)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":190E
+      FormatStyle(8)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":19CE
+      FormatStyle(9)  =   "frmAdminExtrasCbtesAdeudadosAl.frx":1A92
       ImageCount      =   1
-      ImagePicture(1) =   "frmAdminExtrasCbtesAdeudadosAl.frx":185E
-      PrinterProperties=   "frmAdminExtrasCbtesAdeudadosAl.frx":1B78
+      ImagePicture(1) =   "frmAdminExtrasCbtesAdeudadosAl.frx":1B52
+      PrinterProperties=   "frmAdminExtrasCbtesAdeudadosAl.frx":1E6C
+   End
+   Begin XtremeSuiteControls.Label lblDeudaNetaProveedor 
+      Height          =   375
+      Left            =   120
+      TabIndex        =   32
+      Top             =   7440
+      Width           =   2655
+      _Version        =   786432
+      _ExtentX        =   4683
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Label3"
+   End
+   Begin XtremeSuiteControls.Label lblAnticiposProveedor 
+      Height          =   255
+      Left            =   120
+      TabIndex        =   31
+      Top             =   7200
+      Width           =   2535
+      _Version        =   786432
+      _ExtentX        =   4471
+      _ExtentY        =   450
+      _StockProps     =   79
+      Caption         =   "Label3"
+   End
+   Begin XtremeSuiteControls.Label lblDeudaProveedor 
+      Height          =   255
+      Left            =   120
+      TabIndex        =   30
+      Top             =   6840
+      Width           =   2535
+      _Version        =   786432
+      _ExtentX        =   4471
+      _ExtentY        =   450
+      _StockProps     =   79
+      Caption         =   "Label3"
+   End
+   Begin XtremeSuiteControls.Label lblAnticiposPendientes 
+      Height          =   255
+      Left            =   120
+      TabIndex        =   29
+      Top             =   6480
+      Width           =   2535
+      _Version        =   786432
+      _ExtentX        =   4471
+      _ExtentY        =   450
+      _StockProps     =   79
+      Caption         =   "Anticipos AR$ del proveedor: -"
+      BackColor       =   65535
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
    End
 End
 Attribute VB_Name = "frmAdminExtrasCbtesAdeudadosAl"
@@ -510,6 +570,82 @@ Private desde
 Private Factura As clsFacturaProveedor
 Private facturas As Collection
 Dim m_Archivos As Dictionary
+Private DatosAplicacionesPosteriores As Dictionary
+
+Private mSaldoFacturasProveedor As Double
+Private mAnticiposProveedor As Double
+Private mSaldoNetoProveedor As Double
+
+Private mIdProveedorResumen As Long
+Private mResumenValido As Boolean
+
+
+
+Private Sub MostrarAnticiposAlCorte()
+
+    On Error GoTo err1
+
+    Dim IdProveedor As Long
+    Dim FechaCorte As Date
+    Dim TotalAnticipos As Double
+
+    'Valor inicial
+    Me.lblAnticiposPendientes.caption = _
+        "Anticipos AR$ del proveedor: -"
+
+    '--------------------------------------------------
+    ' DEBE HABER UN PROVEEDOR SELECCIONADO
+    '--------------------------------------------------
+    If Me.cboProveedores.ListIndex < 0 Then
+        Exit Sub
+    End If
+
+    '--------------------------------------------------
+    ' DEBE HABER FECHA DE CORTE
+    '--------------------------------------------------
+    If IsNull(Me.dtpHastaFIN(1).value) Then
+        Exit Sub
+    End If
+
+    IdProveedor = CLng( _
+        Me.cboProveedores.ItemData( _
+            Me.cboProveedores.ListIndex))
+
+    FechaCorte = CDate(Me.dtpHastaFIN(1).value)
+
+    '--------------------------------------------------
+    ' CONSULTAR ANTICIPOS PENDIENTES A ESA FECHA
+    '--------------------------------------------------
+    TotalAnticipos = _
+        DAOFacturaProveedor.TotalAnticiposPendientesAl( _
+            IdProveedor, _
+            FechaCorte, _
+            0)
+
+    '--------------------------------------------------
+    ' MOSTRAR RESULTADO
+    '--------------------------------------------------
+    Me.lblAnticiposPendientes.caption = _
+        "Anticipos AR$ del proveedor sin aplicar al " & _
+        Format$(FechaCorte, "dd/mm/yyyy") & ": " & _
+        FormatCurrency(TotalAnticipos)
+    Me.lblAnticiposPendientes.backColor = &HFFFF&
+    Exit Sub
+
+err1:
+
+    Me.lblAnticiposPendientes.caption = _
+        "No se pudieron calcular los anticipos."
+
+    MsgBox _
+        "Error al consultar los Pagos a Cuenta." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Anticipos de proveedores"
+
+End Sub
+
 
 Private Sub btnBuscar_Click(Index As Integer)
     If IsNull(dtpHastaFIN(1).value) Then
@@ -528,19 +664,45 @@ Private Sub btnCargarProveedores_Click()
 '''        cboProveedores.ItemData(cboProveedores.NewIndex) = prov.Id
 '''    Next
 
-    Call DAOProveedor.LlenarComboProveedores(cboProveedores)
+    Call DAOProveedor.llenarComboProveedores(cboProveedores)
     
 End Sub
+
 
 Private Sub btnExportar_Click(Index As Integer)
     Me.progreso(0).Visible = True
 
-    Dim FechaFIn As String
+    Dim FechaFin As String
 
-    FechaFIn = Me.dtpHastaFIN(1).value
+    FechaFin = Me.dtpHastaFIN(1).value
     
     If IsSomething(facturas) Then
-        If Not DAOFacturaProveedor.ExportarColeccionTotalizadores(facturas, Me.progreso, FechaFIn) Then GoTo err1
+       If mResumenValido Then
+
+        If Not DAOFacturaProveedor.ExportarColeccionTotalizadores( _
+            facturas, _
+            Me.progreso, _
+            FechaFin, _
+            mIdProveedorResumen, _
+            mSaldoFacturasProveedor, _
+            mAnticiposProveedor) Then
+    
+            GoTo err1
+    
+        End If
+    
+    Else
+    
+        If Not DAOFacturaProveedor.ExportarColeccionTotalizadores( _
+            facturas, _
+            Me.progreso, _
+            FechaFin) Then
+    
+            GoTo err1
+    
+        End If
+    
+    End If
 
     End If
 
@@ -583,11 +745,357 @@ Private Sub Form_Load()
 End Sub
 
 
+Private Function CargarAplicacionesPosteriores() As Boolean
+
+    On Error GoTo err1
+
+    Dim q As String
+    Dim rs As Recordset
+
+    Dim fac As clsFacturaProveedor
+    Dim IdsFacturas As String
+
+    Dim FechaCorte As Date
+
+    Dim claveFactura As String
+    Dim claveOP As String
+    Dim ultimaOP As String
+
+    CargarAplicacionesPosteriores = False
+
+    Set DatosAplicacionesPosteriores = New Dictionary
+
+    If facturas Is Nothing Then
+        CargarAplicacionesPosteriores = True
+        Exit Function
+    End If
+
+    If facturas.count = 0 Then
+        CargarAplicacionesPosteriores = True
+        Exit Function
+    End If
+
+    If IsNull(Me.dtpHastaFIN(1).value) Then
+        Exit Function
+    End If
+
+    FechaCorte = CDate(Me.dtpHastaFIN(1).value)
+
+    '==================================================
+    ' ARMAR LISTA DE FACTURAS QUE ESTAN EN LA GRILLA
+    '==================================================
+
+    IdsFacturas = ""
+
+    For Each fac In facturas
+
+        If LenB(IdsFacturas) > 0 Then
+            IdsFacturas = IdsFacturas & ","
+        End If
+
+        IdsFacturas = IdsFacturas & CStr(fac.Id)
+
+    Next fac
+
+    If LenB(IdsFacturas) = 0 Then
+        CargarAplicacionesPosteriores = True
+        Exit Function
+    End If
+
+    '==================================================
+    ' CONSULTAR OP APROBADAS POSTERIORES AL CORTE
+    ' Y LOS PAGOS A CUENTA ASOCIADOS
+    '==================================================
+
+    q = "SELECT DISTINCT " _
+      & "opf.id_factura_proveedor AS id_factura, " _
+      & "op.id AS id_op, " _
+      & "op.fecha AS fecha_op, " _
+      & "p.id AS id_pcta, " _
+      & "p.fecha AS fecha_pcta " _
+      & "FROM ordenes_pago_facturas opf " _
+      & "INNER JOIN ordenes_pago op " _
+      & " ON op.id = opf.id_orden_pago " _
+      & "LEFT JOIN ordenes_pago_pagos_a_cuenta vinc " _
+      & " ON vinc.id_orden_pago = op.id " _
+      & "LEFT JOIN pagos_a_cuenta p " _
+      & " ON p.id = vinc.id_pago_a_cuenta " _
+      & "WHERE opf.id_factura_proveedor IN (" _
+      & IdsFacturas & ") " _
+      & "AND op.estado = 1 " _
+      & "AND op.fecha > " _
+      & conectar.Escape(FechaCorte) & " " _
+      & "ORDER BY " _
+      & "opf.id_factura_proveedor, " _
+      & "op.fecha, op.id, p.id"
+
+    Set rs = conectar.RSFactory(q)
+
+    ultimaOP = ""
+
+    '==================================================
+    ' GUARDAR EL TEXTO CORRESPONDIENTE A CADA FACTURA
+    '==================================================
+
+    While Not rs.EOF
+
+        claveFactura = CStr(rs!id_factura)
+
+        claveOP = claveFactura & ":" & CStr(rs!id_op)
+
+        If Not DatosAplicacionesPosteriores.Exists( _
+                    claveFactura) Then
+
+            DatosAplicacionesPosteriores.Add _
+                claveFactura, ""
+
+        End If
+
+        'Agregar cada OP una sola vez.
+        If claveOP <> ultimaOP Then
+
+            If LenB(DatosAplicacionesPosteriores( _
+                    claveFactura)) > 0 Then
+
+                DatosAplicacionesPosteriores( _
+                    claveFactura) = _
+                    DatosAplicacionesPosteriores( _
+                    claveFactura) & " ; "
+
+            End If
+
+            DatosAplicacionesPosteriores( _
+                claveFactura) = _
+                DatosAplicacionesPosteriores( _
+                claveFactura) & _
+                "OP " & CStr(rs!id_op) & _
+                " (" & Format$(rs!fecha_op, _
+                              "dd/mm/yyyy") & ")"
+
+            ultimaOP = claveOP
+
+        End If
+
+        'Agregar PCTA asociado a esa OP.
+        If Not IsNull(rs!id_pcta) Then
+
+            DatosAplicacionesPosteriores( _
+                claveFactura) = _
+                DatosAplicacionesPosteriores( _
+                claveFactura) & _
+                " | PCTA " & CStr(rs!id_pcta) & _
+                " (" & Format$(rs!fecha_pcta, _
+                              "dd/mm/yyyy") & ")"
+
+        End If
+
+        rs.MoveNext
+
+    Wend
+
+    Set rs = Nothing
+
+    CargarAplicacionesPosteriores = True
+
+    Exit Function
+
+err1:
+
+    CargarAplicacionesPosteriores = False
+
+    MsgBox _
+        "Error al consultar las aplicaciones posteriores." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Comprobantes adeudados"
+
+End Function
+
+
+Private Function CalcularResumenProveedor() As Boolean
+
+    On Error GoTo err1
+
+    Dim IdProveedor As Long
+    Dim FechaCorte As Date
+
+    Dim filtro As String
+    Dim fechaSQL As String
+
+    Dim facturasProveedor As Collection
+    Dim fac As clsFacturaProveedor
+
+    Dim signo As Integer
+    Dim importeFactura As Double
+
+    CalcularResumenProveedor = False
+
+    mResumenValido = False
+    mIdProveedorResumen = 0
+
+    mSaldoFacturasProveedor = 0
+    mAnticiposProveedor = 0
+    mSaldoNetoProveedor = 0
+
+    Me.lblDeudaProveedor.caption = _
+        "Deuda del proveedor AR$: -"
+
+    Me.lblAnticiposProveedor.caption = _
+        "Anticipos sin aplicar AR$: -"
+
+    Me.lblDeudaNetaProveedor.caption = _
+        "Deuda neta AR$: -"
+
+    'Debe haber un proveedor seleccionado.
+    If Me.cboProveedores.ListIndex < 0 Then
+        CalcularResumenProveedor = True
+        Exit Function
+    End If
+
+    If IsNull(Me.dtpHastaFIN(1).value) Then
+        Exit Function
+    End If
+
+    'No presentar una deuda global calculada
+    'sobre facturas que el usuario no puede consultar.
+    If Permisos.AdminFaPVerSoloPropias Then
+
+        Me.lblDeudaNetaProveedor.caption = _
+            "Deuda neta: no disponible con permisos parciales"
+
+        CalcularResumenProveedor = True
+        Exit Function
+
+    End If
+
+    IdProveedor = CLng( _
+        Me.cboProveedores.ItemData( _
+            Me.cboProveedores.ListIndex))
+
+    FechaCorte = DateValue( _
+        Me.dtpHastaFIN(1).value)
+
+    fechaSQL = conectar.Escape(FechaCorte)
+
+    '--------------------------------------------------
+    ' TODAS LAS FACTURAS DEL PROVEEDOR EN PESOS
+    ' HASTA LA FECHA DE CORTE.
+    '
+    ' No aplicamos los filtros de la grilla.
+    '--------------------------------------------------
+
+    filtro = _
+        "AdminComprasFacturasProveedores.id_proveedor = " & _
+        IdProveedor
+
+    filtro = filtro & _
+        " AND AdminComprasFacturasProveedores.id_moneda = 0"
+
+    filtro = filtro & _
+        " AND AdminComprasFacturasProveedores.fecha <= " & _
+        fechaSQL
+
+    Set facturasProveedor = _
+        DAOFacturaProveedor.FindAllTotalizadores( _
+            filtro, fechaSQL)
+
+    If facturasProveedor Is Nothing Then
+        Err.Raise 5, , _
+            "No se pudieron obtener las facturas del proveedor."
+    End If
+
+    '--------------------------------------------------
+    ' CALCULAR DEUDA POR FACTURAS
+    '--------------------------------------------------
+
+    For Each fac In facturasProveedor
+
+        signo = 1
+
+        If fac.tipoDocumentoContable = _
+                tipoDocumentoContable.notaCredito Then
+
+            signo = -1
+
+        End If
+
+        importeFactura = _
+            fac.Monto + _
+            fac.TotalIVA + _
+            fac.totalPercepciones + _
+            fac.ImpuestoInterno + _
+            fac.redondeo
+
+        mSaldoFacturasProveedor = _
+            mSaldoFacturasProveedor + _
+            ((importeFactura - fac.TotalAbonadoGlobal) * signo)
+
+    Next fac
+
+    '--------------------------------------------------
+    ' ANTICIPOS EXISTENTES SIN APLICAR AL CORTE
+    '--------------------------------------------------
+
+    mAnticiposProveedor = _
+        DAOFacturaProveedor.TotalAnticiposPendientesAl( _
+            IdProveedor, FechaCorte, 0)
+
+    '--------------------------------------------------
+    ' SALDO NETO
+    '--------------------------------------------------
+
+    mSaldoNetoProveedor = _
+        funciones.FormatearDecimales( _
+            mSaldoFacturasProveedor - mAnticiposProveedor)
+
+    mIdProveedorResumen = IdProveedor
+    mResumenValido = True
+
+    '--------------------------------------------------
+    ' MOSTRAR RESULTADOS
+    '--------------------------------------------------
+
+    Me.lblDeudaProveedor.caption = _
+        "Deuda del proveedor AR$: " & _
+        FormatCurrency(mSaldoFacturasProveedor)
+
+    Me.lblAnticiposProveedor.caption = _
+        "Anticipos sin aplicar AR$: -" & _
+        FormatCurrency(mAnticiposProveedor)
+
+    Me.lblDeudaNetaProveedor.caption = _
+        "Deuda neta AR$ al " & _
+        Format$(FechaCorte, "dd/mm/yyyy") & ": " & _
+        FormatCurrency(mSaldoNetoProveedor)
+
+    CalcularResumenProveedor = True
+
+    Exit Function
+
+err1:
+
+    mResumenValido = False
+
+    Me.lblDeudaNetaProveedor.caption = _
+        "No se pudo calcular la deuda neta."
+
+    MsgBox _
+        "Error al calcular el resumen del proveedor." & _
+        vbCrLf & vbCrLf & _
+        Err.Number & " - " & Err.Description, _
+        vbCritical, _
+        "Comprobantes adeudados"
+
+End Function
+
+
+
 Public Sub llenarGrilla()
     grilla.ItemCount = 0
     Dim condition As String
     condition = " 1 = 1 "
-    Dim FechaFIn As String
+    Dim FechaFin As String
     
     If Not IsNull(Me.dtpDesde(0).value) Then
         condition = condition & " AND AdminComprasFacturasProveedores.fecha >= " & conectar.Escape(Me.dtpDesde(0).value)
@@ -604,13 +1112,32 @@ Public Sub llenarGrilla()
     If LenB(Me.txtComprobante) > 0 Then
         condition = condition & " AND AdminComprasFacturasProveedores.numero_factura like '%" & Trim(Me.txtComprobante.Text) & "%'"
     End If
-
+    
     If Not IsNull(dtpHastaFIN(1).value) Then
-        FechaFIn = conectar.Escape(dtpHastaFIN(1).value)
+    
+        FechaFin = conectar.Escape( _
+            dtpHastaFIN(1).value)
+    
+        'No incluir facturas posteriores al corte.
+        condition = condition & _
+            " AND AdminComprasFacturasProveedores.fecha <= " & _
+            FechaFin
+    
     End If
     
-    Set facturas = DAOFacturaProveedor.FindAllTotalizadores(condition, FechaFIn, , , Permisos.AdminFaPVerSoloPropias)
+    Set facturas = DAOFacturaProveedor.FindAllTotalizadores(condition, FechaFin, , , Permisos.AdminFaPVerSoloPropias)
     
+    '==================================================
+    ' CARGAR OP POSTERIORES Y ANTICIPOS ASOCIADOS
+    '==================================================
+    
+    If Not CargarAplicacionesPosteriores() Then
+    
+        grilla.ItemCount = 0
+        Exit Sub
+    
+    End If
+
     ''''''''''''''''
     
     Dim total As Double
@@ -641,6 +1168,17 @@ Public Sub llenarGrilla()
     Me.lblTotalSaldo(1).caption = FormatCurrency(funciones.FormatearDecimales(saldo))
     Me.lblTotalPagado(3).caption = FormatCurrency(funciones.FormatearDecimales(pagado))
     
+        If Not CalcularResumenProveedor() Then
+        Exit Sub
+        
+    End If
+
+    '==================================================
+    ' MOSTRAR ANTICIPOS PENDIENTES A LA FECHA DE CORTE
+    '==================================================
+    
+    MostrarAnticiposAlCorte
+    
     '''''''''''''''
     
 
@@ -659,10 +1197,27 @@ End Sub
 
 
 Private Sub Form_Resize()
+
     On Error Resume Next
+
+    'Ajustar ancho de la grilla
     Me.grilla.Width = Me.ScaleWidth - 200
-    Me.grilla.Height = (Me.ScaleHeight * 75) / 100
+
+    'Reservar espacio debajo de la grilla
+    Me.grilla.Height = _
+        Me.ScaleHeight - Me.grilla.Top - 650
+
+    'Ajustar ancho del grupo superior
     Me.GroupBox(2).Width = Me.grilla.Width
+
+    'Ubicar el Label debajo de la grilla
+    Me.lblAnticiposPendientes.Left = Me.grilla.Left
+
+    Me.lblAnticiposPendientes.Top = _
+        Me.grilla.Top + Me.grilla.Height + 120
+
+    Me.lblAnticiposPendientes.Width = _
+        Me.grilla.Width
 
 End Sub
 
@@ -707,7 +1262,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         
         If IsSomething(Factura.Proveedor) Then
             Values(2) = UCase(funciones.RazonSocialFormateada(Factura.Proveedor.RazonSocial))
-            Values(3) = Factura.Proveedor.Cuit
+            Values(3) = Factura.Proveedor.cuit
         End If
 
         Values(4) = enums.EnumTipoDocumentoContableShort(Factura.tipoDocumentoContable)
@@ -722,9 +1277,58 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Var
         Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.TotalAbonadoGlobal) * i), "$", "")
         Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales((TotalFactura + Factura.redondeo) - Factura.TotalAbonadoGlobal) * i), "$", "")
 
+        '==================================================
+        ' COLUMNA 12 - SITUACION AL CORTE
+        '==================================================
+        
+        Dim SaldoAlCorte As Double
+        
+        SaldoAlCorte = funciones.FormatearDecimales( _
+            Factura.total - Factura.TotalAbonadoGlobal)
+        
+        If Factura.tipoDocumentoContable = _
+                tipoDocumentoContable.notaCredito Then
+        
+            Values(12) = "Nota de crédito - ver saldo"
+        
+        ElseIf Abs(SaldoAlCorte) < 0.01 Then
+        
+            Values(12) = "Saldada al corte"
+        
+        ElseIf Factura.TotalAbonadoGlobal > 0 Then
+        
+            Values(12) = "Pago parcial al corte"
+        
+        Else
+        
+            Values(12) = "Pendiente al corte"
+        
+        End If
+        
+        
+        '==================================================
+        ' COLUMNA 13 - APLICACION POSTERIOR
+        '==================================================
+        
+        Values(13) = ""
+        
+        If Not DatosAplicacionesPosteriores Is Nothing Then
+        
+            If DatosAplicacionesPosteriores.Exists( _
+                    CStr(Factura.Id)) Then
+        
+                Values(13) = _
+                    DatosAplicacionesPosteriores( _
+                        CStr(Factura.Id))
+        
+            End If
+        
+        End If
+
     End With
 
 End Sub
+
 
 
 Private Sub txtComprobante_GotFocus()
