@@ -1530,7 +1530,7 @@ Private Sub gridChequesPropios_UnboundUpdate( _
             MsgBox "El cheque seleccionado ya fue agregado.", _
                    vbExclamation
 
-            Me.gridChequesPropios.RefreshRowIndex RowIndex
+            
             Exit Sub
 
         End If
@@ -1543,7 +1543,7 @@ Private Sub gridChequesPropios_UnboundUpdate( _
             MsgBox "No se encontró el cheque seleccionado.", _
                    vbExclamation
 
-            Me.gridChequesPropios.RefreshRowIndex RowIndex
+            
             Exit Sub
 
         End If
@@ -1599,8 +1599,7 @@ Private Sub gridChequesPropios_UnboundUpdate( _
 
     End If
 
-    Me.gridChequesPropios.RefreshRowIndex RowIndex
-
+    
     Exit Sub
 
 err1:
