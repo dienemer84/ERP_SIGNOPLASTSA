@@ -59,7 +59,8 @@ End Function
 
 
 Public Function FindResumenSaldosProveedoresRapido( _
-    Optional ByVal FechaHasta As String = vbNullString) As Collection
+    Optional ByVal FechaHasta As String = vbNullString, _
+    Optional ByVal FechaDesde As String = vbNullString) As Collection
 
     On Error GoTo errHandler
 
@@ -68,16 +69,18 @@ Public Function FindResumenSaldosProveedoresRapido( _
     Dim resultado As Collection
     Dim dto As DTONombreMonto
     Dim q As String
+    
     Dim fechaSQL As String
+    Dim fechaDesdeSQL As String
     Dim mensajeError As String
 
     Set resultado = New Collection
     Set cn = conectar.obternerConexion
 
-    If LenB(Trim$(FechaHasta)) > 0 Then
-        fechaSQL = conectar.Escape(FechaHasta)
+    If LenB(Trim$(FechaDesde)) > 0 Then
+        fechaDesdeSQL = conectar.Escape(FechaDesde)
     Else
-        fechaSQL = conectar.Escape("9999-12-31")
+        fechaDesdeSQL = conectar.Escape("1000-01-01")
     End If
 
     '=========================================================
@@ -110,20 +113,36 @@ Public Function FindResumenSaldosProveedoresRapido( _
 
     q = "UPDATE tmp_resumen_proveedores r "
     q = q & "INNER JOIN ("
+    
     q = q & "SELECT h.id_persona AS id_proveedor, "
-    q = q & "SUM(IFNULL(hd.debe, 0) - IFNULL(hd.haber, 0)) AS importe, "
+    
+    'El importe respeta Desde, pero fecha_cierre conserva
+    'el último movimiento histórico para evitar duplicados.
+    q = q & "SUM(CASE "
+    q = q & "WHEN hd.fecha >= " & fechaDesdeSQL & " THEN "
+    q = q & "IFNULL(hd.debe, 0) - IFNULL(hd.haber, 0) "
+    q = q & "ELSE 0 END) AS importe, "
+    
     q = q & "MAX(hd.fecha) AS fecha_cierre "
+    
     q = q & "FROM cuenta_corriente_historic h "
     q = q & "INNER JOIN cuenta_corriente_historic_detalle hd "
     q = q & "ON hd.id_cuenta_corriente_historic = h.id "
-    q = q & "WHERE h.tipo_persona = " & CStr(TipoPersona.proveedor_) & " "
+    
+    q = q & "WHERE h.tipo_persona = "
+    q = q & CStr(TipoPersona.proveedor_) & " "
+    
     q = q & "AND hd.tipo_comprobante <> "
     q = q & CStr(TipoComprobanteUsado.SaldoInicial_) & " "
+    
     q = q & "AND hd.fecha <= " & fechaSQL & " "
     q = q & "GROUP BY h.id_persona"
+    
     q = q & ") h ON h.id_proveedor = r.id_proveedor "
+    
     q = q & "SET r.saldo = h.importe, "
-    q = q & "r.fecha_cierre = IFNULL(h.fecha_cierre, '1990-01-01')"
+    q = q & "r.fecha_cierre = "
+    q = q & "IFNULL(h.fecha_cierre, '1990-01-01')"
 
     EjecutarPasoResumen cn, _
     "3 - Calcular saldos históricos", q
@@ -198,6 +217,7 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & CStr(EstadoFacturaProveedor.Saldada) & ", "
     q = q & CStr(EstadoFacturaProveedor.pagoParcial) & ") "
 
+    q = q & "AND f.fecha >= " & fechaDesdeSQL & " "
     q = q & "AND f.fecha > r.fecha_cierre "
     q = q & "AND f.fecha <= " & fechaSQL
 
@@ -349,7 +369,8 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "ON f.id = opf.id_factura_proveedor "
     q = q & "INNER JOIN tmp_resumen_proveedores r "
     q = q & "ON r.id_proveedor = f.id_proveedor "
-    q = q & "WHERE op.fecha > r.fecha_cierre "
+    q = q & "WHERE op.fecha >= " & fechaDesdeSQL & " "
+    q = q & "AND op.fecha > r.fecha_cierre "
     q = q & "AND op.fecha <= " & fechaSQL & " "
     q = q & "GROUP BY f.id_proveedor, op.id, op.estado, "
     q = q & "op.static_total_origen, op.static_total_a_retener"
@@ -371,6 +392,7 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "WHERE p.estado IN ("
     q = q & CStr(EstadoPagoACuenta.Disponible) & ", "
     q = q & CStr(EstadoPagoACuenta.Procesada) & ") "
+    q = q & "AND p.fecha >= " & fechaDesdeSQL & " "
     q = q & "AND p.fecha > r.fecha_cierre "
     q = q & "AND p.fecha <= " & fechaSQL
 
@@ -476,9 +498,9 @@ Private Sub EjecutarPasoResumen( _
     ByVal nombrePaso As String, _
     ByVal consulta As String)
 
-    Dim inicio As Double
+    Dim Inicio As Double
 
-    inicio = GetTickCount
+    Inicio = GetTickCount
 
     Debug.Print Format$(Now, "hh:nn:ss") & _
                 " - INICIO: " & nombrePaso
@@ -490,7 +512,7 @@ Private Sub EjecutarPasoResumen( _
     Debug.Print Format$(Now, "hh:nn:ss") & _
                 " - FIN: " & nombrePaso & _
                 " - Tiempo: " & _
-                Format$((GetTickCount - inicio) / 1000, "0.00") & _
+                Format$((GetTickCount - Inicio) / 1000, "0.00") & _
                 " segundos"
 
     DoEvents

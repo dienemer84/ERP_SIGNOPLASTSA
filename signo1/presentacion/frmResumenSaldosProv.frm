@@ -18,48 +18,46 @@ Begin VB.Form frmResumenSaldosProv
    Begin XtremeSuiteControls.GroupBox GroupBox2 
       Height          =   495
       Left            =   120
-      TabIndex        =   12
+      TabIndex        =   10
       Top             =   720
       Width           =   9855
       _Version        =   786432
       _ExtentX        =   17383
       _ExtentY        =   873
       _StockProps     =   79
-      Caption         =   "GroupBox2"
+      Caption         =   "Período de movimientos"
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
-         Height          =   315
-         Index           =   1
-         Left            =   2160
+         Height          =   255
+         Left            =   3000
          TabIndex        =   13
          Top             =   120
-         Width           =   1470
+         Width           =   1455
          _Version        =   786432
-         _ExtentX        =   2593
-         _ExtentY        =   556
+         _ExtentX        =   2566
+         _ExtentY        =   450
          _StockProps     =   68
-         CheckBox        =   -1  'True
          Format          =   1
+         CurrentDate     =   46282.6832175926
       End
-      Begin XtremeSuiteControls.DateTimePicker dtpHasta2 
-         Height          =   315
-         Index           =   0
-         Left            =   4440
-         TabIndex        =   15
+      Begin XtremeSuiteControls.DateTimePicker dtpHasta 
+         Height          =   255
+         Left            =   5280
+         TabIndex        =   14
          Top             =   120
-         Width           =   1470
+         Width           =   1455
          _Version        =   786432
-         _ExtentX        =   2593
-         _ExtentY        =   556
+         _ExtentX        =   2566
+         _ExtentY        =   450
          _StockProps     =   68
-         CheckBox        =   -1  'True
          Format          =   1
+         CurrentDate     =   46282.6835763889
       End
       Begin XtremeSuiteControls.Label lblHasta 
          Height          =   195
          Index           =   0
-         Left            =   3840
-         TabIndex        =   16
+         Left            =   4680
+         TabIndex        =   12
          Top             =   180
          Width           =   420
          _Version        =   786432
@@ -73,8 +71,8 @@ Begin VB.Form frmResumenSaldosProv
       Begin XtremeSuiteControls.Label lblDesde 
          Height          =   195
          Index           =   1
-         Left            =   1560
-         TabIndex        =   14
+         Left            =   2400
+         TabIndex        =   11
          Top             =   180
          Width           =   465
          _Version        =   786432
@@ -89,7 +87,7 @@ Begin VB.Form frmResumenSaldosProv
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   735
       Left            =   120
-      TabIndex        =   9
+      TabIndex        =   7
       Top             =   7440
       Width           =   9975
       _Version        =   786432
@@ -100,7 +98,7 @@ Begin VB.Form frmResumenSaldosProv
       Begin XtremeSuiteControls.PushButton PushButton1 
          Height          =   480
          Left            =   6120
-         TabIndex        =   10
+         TabIndex        =   8
          Top             =   180
          Width           =   1815
          _Version        =   786432
@@ -113,7 +111,7 @@ Begin VB.Form frmResumenSaldosProv
       Begin XtremeSuiteControls.PushButton btnExportarXLS 
          Height          =   480
          Left            =   8040
-         TabIndex        =   11
+         TabIndex        =   9
          Top             =   240
          Width           =   1815
          _Version        =   786432
@@ -127,7 +125,7 @@ Begin VB.Form frmResumenSaldosProv
    Begin XtremeSuiteControls.PushButton cmdParar 
       Height          =   420
       Left            =   9480
-      TabIndex        =   8
+      TabIndex        =   6
       Top             =   160
       Width           =   525
       _Version        =   786432
@@ -182,29 +180,15 @@ Begin VB.Form frmResumenSaldosProv
       Caption         =   "Obtener"
       UseVisualStyle  =   -1  'True
    End
-   Begin XtremeSuiteControls.DateTimePicker dtpHasta 
-      Height          =   315
-      Index           =   0
-      Left            =   2325
-      TabIndex        =   4
-      Top             =   225
-      Width           =   1470
-      _Version        =   786432
-      _ExtentX        =   2593
-      _ExtentY        =   556
-      _StockProps     =   68
-      CheckBox        =   -1  'True
-      Format          =   1
-   End
    Begin XtremeSuiteControls.ProgressBar ProgressBar1 
       Height          =   300
-      Left            =   3855
+      Left            =   1695
       TabIndex        =   3
       Top             =   225
       Visible         =   0   'False
-      Width           =   4455
+      Width           =   7560
       _Version        =   786432
-      _ExtentX        =   7858
+      _ExtentX        =   13335
       _ExtentY        =   529
       _StockProps     =   93
       Appearance      =   6
@@ -212,7 +196,7 @@ Begin VB.Form frmResumenSaldosProv
    Begin VB.Label lblCant 
       Height          =   195
       Left            =   8400
-      TabIndex        =   7
+      TabIndex        =   5
       Top             =   280
       Width           =   990
    End
@@ -221,24 +205,9 @@ Begin VB.Form frmResumenSaldosProv
       AutoSize        =   -1  'True
       Height          =   435
       Left            =   7800
-      TabIndex        =   6
+      TabIndex        =   4
       Top             =   6960
       Width           =   2205
-   End
-   Begin XtremeSuiteControls.Label Label6 
-      Height          =   195
-      Index           =   0
-      Left            =   1800
-      TabIndex        =   5
-      Top             =   285
-      Width           =   420
-      _Version        =   786432
-      _ExtentX        =   741
-      _ExtentY        =   344
-      _StockProps     =   79
-      Caption         =   "Hasta"
-      BackColor       =   12632256
-      AutoSize        =   -1  'True
    End
    Begin VB.Label lblproceso 
       Height          =   390
@@ -336,18 +305,19 @@ Private Sub cmdParar_Click()
 End Sub
 
 Private Sub Form_Load()
+
     Customize Me
     GridEXHelper.CustomizeGrid Me.GridEX1, False, False
     Me.GridEX1.ItemCount = 0
 
-    'Desde es opcional.
+    'La fecha Desde queda desactivada inicialmente.
     Me.dtpDesde.value = Null
 
-    'Hasta queda seleccionado con la fecha actual.
-    If IsNull(Me.dtpHasta(1).value) Then
-        Me.dtpHasta(1).value = Date
+    'La fecha Hasta queda seleccionada con la fecha actual.
+    If IsNull(Me.dtpHasta.value) Then
+        Me.dtpHasta.value = Date
     End If
-    
+
 End Sub
 
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
@@ -375,7 +345,9 @@ Private Sub Obtener_Click()
 
     Dim itemResumen As DTONombreMonto
 
+    Dim fechaDesdeResumen As String
     Dim fechaHastaResumen As String
+    
     Dim tipoResultado As String
     Dim mensajeError As String
 
@@ -386,9 +358,12 @@ Private Sub Obtener_Click()
     tickStart = GetTickCount
 
     enable = True
+    
     condition = vbNullString
+    
     fechaHastaResumen = vbNullString
-
+    fechaHastaResumen = vbNullString
+    
     Me.cmdParar.Enabled = True
     Me.lblCant.Visible = True
     Me.lblproceso.Visible = True
@@ -402,17 +377,39 @@ Private Sub Obtener_Click()
 
     Set col2 = New Collection
 
-    '=========================================================
-    ' OBTENER FECHA HASTA
-    '=========================================================
-
+    '----------------------------------------------------------
+    ' OBTENER FECHAS DEL BALANCE
+    '----------------------------------------------------------
+    
+    If Not IsNull(Me.dtpDesde.value) Then
+        fechaDesdeResumen = Format$(Me.dtpDesde.value, "yyyy-mm-dd")
+    End If
+    
     If Not IsNull(Me.dtpHasta.value) Then
-
-        fechaHastaResumen = _
-            Format$(Me.dtpHasta.value, "yyyy-mm-dd")
-
+        fechaHastaResumen = Format$(Me.dtpHasta.value, "yyyy-mm-dd")
+    
+        'Se mantiene para el procedimiento anterior de clientes.
         condition = fechaHastaResumen
-
+    End If
+    
+    'Si se seleccionó Desde, también debe existir Hasta.
+    If LenB(fechaDesdeResumen) > 0 And LenB(fechaHastaResumen) = 0 Then
+        MsgBox "Debe seleccionar una fecha Hasta.", _
+               vbExclamation, _
+               "Resumen de saldos"
+'        GoTo salir
+    End If
+    
+    'Validar el orden de las fechas.
+    If LenB(fechaDesdeResumen) > 0 And LenB(fechaHastaResumen) > 0 Then
+    
+        If CDate(Me.dtpDesde.value) > CDate(Me.dtpHasta.value) Then
+            MsgBox "La fecha Desde no puede ser posterior a la fecha Hasta.", _
+                   vbExclamation, _
+                   "Resumen de saldos"
+'            GoTo salir
+        End If
+    
     End If
 
     '=========================================================
@@ -434,9 +431,10 @@ Private Sub Obtener_Click()
 
         DoEvents
 
-        Set col2 = _
-            DAOCuentaCorriente.FindResumenSaldosProveedoresRapido( _
-                fechaHastaResumen)
+    Set col2 = _
+        DAOCuentaCorriente.FindResumenSaldosProveedoresRapido( _
+            fechaHastaResumen, _
+            fechaDesdeResumen)
 
     Else
 
