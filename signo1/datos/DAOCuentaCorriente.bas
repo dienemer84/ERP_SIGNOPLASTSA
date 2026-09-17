@@ -77,6 +77,12 @@ Public Function FindResumenSaldosProveedoresRapido( _
     Set resultado = New Collection
     Set cn = conectar.obternerConexion
 
+    If LenB(Trim$(FechaHasta)) > 0 Then
+        fechaSQL = conectar.Escape(FechaHasta)
+    Else
+        fechaSQL = conectar.Escape(Format$(Date, "yyyy-mm-dd"))
+    End If
+
     If LenB(Trim$(FechaDesde)) > 0 Then
         fechaDesdeSQL = conectar.Escape(FechaDesde)
     Else
@@ -108,7 +114,7 @@ Public Function FindResumenSaldosProveedoresRapido( _
     "2 - Cargar proveedores", q
 
     '=========================================================
-    ' SALDOS HISTÓRICOS
+    ' SALDOS HISTÃ“RICOS
     '=========================================================
 
     q = "UPDATE tmp_resumen_proveedores r "
@@ -117,7 +123,7 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "SELECT h.id_persona AS id_proveedor, "
     
     'El importe respeta Desde, pero fecha_cierre conserva
-    'el último movimiento histórico para evitar duplicados.
+    'el Ãºltimo movimiento histÃ³rico para evitar duplicados.
     q = q & "SUM(CASE "
     q = q & "WHEN hd.fecha >= " & fechaDesdeSQL & " THEN "
     q = q & "IFNULL(hd.debe, 0) - IFNULL(hd.haber, 0) "
@@ -145,10 +151,10 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "IFNULL(h.fecha_cierre, '1990-01-01')"
 
     EjecutarPasoResumen cn, _
-    "3 - Calcular saldos históricos", q
+    "3 - Calcular saldos histÃ³ricos", q
 
     '=========================================================
-    ' TABLA TEMPORAL DE MOVIMIENTOS POSTERIORES AL HISTÓRICO
+    ' TABLA TEMPORAL DE MOVIMIENTOS POSTERIORES AL HISTÃ“RICO
     '=========================================================
 
     q = "CREATE TEMPORARY TABLE tmp_resumen_prov_mov ("
@@ -160,11 +166,11 @@ Public Function FindResumenSaldosProveedoresRapido( _
     "4 - Crear tabla temporal de movimientos", q
 
     '=========================================================
-    ' FACTURAS, NOTAS DE DÉBITO Y NOTAS DE CRÉDITO
+    ' FACTURAS, NOTAS DE DÃ‰BITO Y NOTAS DE CRÃ‰DITO
     '=========================================================
 
     '=========================================================
-    ' FACTURAS, NOTAS DE DÉBITO Y NOTAS DE CRÉDITO
+    ' FACTURAS, NOTAS DE DÃ‰BITO Y NOTAS DE CRÃ‰DITO
     '=========================================================
 
     '---------------------------------------------------------
@@ -186,7 +192,7 @@ Public Function FindResumenSaldosProveedoresRapido( _
         "5.1 - Crear temporal de facturas", q
 
     '---------------------------------------------------------
-    ' 5.2 - Cargar solamente las facturas del período.
+    ' 5.2 - Cargar solamente las facturas del perÃ­odo.
     '---------------------------------------------------------
 
     q = "INSERT INTO tmp_resumen_facturas ("
@@ -240,7 +246,7 @@ Public Function FindResumenSaldosProveedoresRapido( _
         "5.3 - Crear temporal de importes", q
 
     '---------------------------------------------------------
-    ' 5.4 - Calcular neto e IVA únicamente para las facturas
+    ' 5.4 - Calcular neto e IVA Ãºnicamente para las facturas
     '       seleccionadas.
     '---------------------------------------------------------
 
@@ -351,7 +357,7 @@ Public Function FindResumenSaldosProveedoresRapido( _
         "tmp_resumen_facturas"
 
     '=========================================================
-    ' ÓRDENES DE PAGO
+    ' Ã“RDENES DE PAGO
     '=========================================================
 
     q = "INSERT INTO tmp_resumen_prov_mov "
@@ -376,7 +382,33 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "op.static_total_origen, op.static_total_a_retener"
 
     EjecutarPasoResumen cn, _
-    "6 - Calcular órdenes de pago", q
+    "6 - Calcular Ã³rdenes de pago", q
+
+    '=========================================================
+    ' LIQUIDACIONES DE CAJA APLICADAS A FACTURAS
+    '=========================================================
+
+    q = "INSERT INTO tmp_resumen_prov_mov "
+    q = q & "(id_proveedor, importe) "
+    q = q & "SELECT f.id_proveedor, "
+    q = q & "-ROUND(SUM("
+    q = q & "IFNULL(lcf.neto_gravado_liquidado, 0) + "
+    q = q & "IFNULL(lcf.otros_liquidado, 0)), 2) "
+    q = q & "FROM liquidaciones_caja_facturas lcf "
+    q = q & "INNER JOIN liquidaciones_caja lc "
+    q = q & "ON lc.id = lcf.id_liquidacion_caja "
+    q = q & "INNER JOIN AdminComprasFacturasProveedores f "
+    q = q & "ON f.id = lcf.id_factura_proveedor "
+    q = q & "INNER JOIN tmp_resumen_proveedores r "
+    q = q & "ON r.id_proveedor = f.id_proveedor "
+    q = q & "WHERE lc.estado = 1 "
+    q = q & "AND lc.fecha >= " & fechaDesdeSQL & " "
+    q = q & "AND lc.fecha > r.fecha_cierre "
+    q = q & "AND lc.fecha <= " & fechaSQL & " "
+    q = q & "GROUP BY f.id_proveedor"
+
+    EjecutarPasoResumen cn, _
+    "7 - Calcular liquidaciones de caja", q
 
     '=========================================================
     ' PAGOS A CUENTA
@@ -397,10 +429,10 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "AND p.fecha <= " & fechaSQL
 
     EjecutarPasoResumen cn, _
-    "7 - Calcular pagos a cuenta", q
+    "8 - Calcular pagos a cuenta", q
 
     '=========================================================
-    ' SUMAR LOS MOVIMIENTOS AL SALDO HISTÓRICO
+    ' SUMAR LOS MOVIMIENTOS AL SALDO HISTÃ“RICO
     '=========================================================
 
     q = "UPDATE tmp_resumen_proveedores r "
@@ -412,10 +444,10 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "SET r.saldo = r.saldo + IFNULL(mov.total, 0)"
 
     EjecutarPasoResumen cn, _
-    "8 - Consolidar saldos", q
+    "9 - Consolidar saldos", q
 
     '=========================================================
-    ' DEVOLVER ÚNICAMENTE PROVEEDORES CON SALDO
+    ' DEVOLVER ÃšNICAMENTE PROVEEDORES CON SALDO
     '=========================================================
 
     q = "SELECT razon, saldo "
@@ -424,14 +456,14 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "ORDER BY razon"
 
     Debug.Print Format$(Now, "hh:nn:ss") & _
-                " - INICIO: 9 - Leer resultados finales"
+                " - INICIO: 10 - Leer resultados finales"
     
     DoEvents
     
     Set rs = cn.execute(q)
     
     Debug.Print Format$(Now, "hh:nn:ss") & _
-                " - FIN: 9 - Leer resultados finales"
+                " - FIN: 10 - Leer resultados finales"
     
     DoEvents
 
